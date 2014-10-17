@@ -5,6 +5,7 @@ from caliopen.config import Configuration
 from caliopen.messaging.queue import Publisher
 from caliopen.core.raw import RawMail
 from caliopen.core.user import User
+from caliopen.core.deliver import UserMessageDelivery
 
 log = logging.getLogger(__name__)
 
@@ -13,13 +14,23 @@ class DeliveryAgent(object):
     """Main logic for delivery of a mail message"""
 
     def __init__(self):
-        self.publisher = Publisher(Configuration('global').get('broker'))
+        self.conf = Configuration('global').get('delivery_agent')
+        if self.conf.get('direct'):
+            self.direct = True
+            self.publisher = None
+        else:
+            self.direct = False
+            self.publisher = Publisher(self.conf['broker'])
 
     def process_user_mail(self, user, message_id):
         # XXX : logic here, for user rules etc
         qmsg = {'user_id': user.user_id, 'message_id': message_id}
         log.debug('Will publish %r' % qmsg)
-        self.publisher.publish(qmsg)
+        if not self.direct:
+            self.publisher.publish(qmsg)
+        else:
+            udeliver = UserMessageDelivery()
+            udeliver.process(user.user_id, message_id)
 
     def resolve_users(self, rpcts):
         users = []
