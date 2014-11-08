@@ -41,7 +41,6 @@ def import_email(email, import_path, format, **kwargs):
             mode = 'mbox'
             emails = mbox(import_path)
 
-    print email
     user = User.get(email)
 
     agent = DeliveryAgent()
