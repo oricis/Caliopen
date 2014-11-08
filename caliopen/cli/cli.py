@@ -8,14 +8,11 @@ Command Line Interface (CLI) for caliopen project
 import sys
 import argparse
 
-from pyramid.paster import get_appsettings, setup_logging
-from pyramid.config import Configurator
-from pyramid.settings import aslist
 
 from caliopen.config import Configuration
-from caliopen.core.config import includeme as include_caliop_core
-
-from caliopen.cli.commands import shell, import_email, setup_storage, create_user
+from caliopen.core.config import includeme
+from caliopen.cli.commands import (shell, import_email,
+                                   setup_storage, create_user)
 
 
 def main(args=sys.argv):
@@ -54,22 +51,8 @@ def main(args=sys.argv):
     config_uri = kwargs.pop('conffile')
     func = kwargs.pop('func')
 
-    setup_logging(config_uri)
-    settings = get_appsettings(config_uri, u'main')
-    # do not declare routes and others useless includes
-    del settings['pyramid.includes']
-
-    kwargs['settings'] = settings
-
-    config = Configurator(settings=settings)
-
-    if func != setup_storage:  # Don't try to configure if it's not setup up
-        include_caliop_core(config)
-    else:
-        for file in aslist(settings['caliopen.config']):
-            name, path = file.split(':', 1)
-            Configuration.load(path, name)
-    config.end()
+    Configuration.load(config_uri, 'global')
+    includeme()
     func(**kwargs)
 
 
