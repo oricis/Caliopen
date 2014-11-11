@@ -11,6 +11,8 @@ from email import message_from_file
 from os import listdir
 from mailbox import mbox, Maildir
 
+from caliopen.core.exception import NotFound
+
 
 log = logging.getLogger(__name__)
 
@@ -41,7 +43,7 @@ def import_email(email, import_path, format, **kwargs):
             mode = 'mbox'
             emails = mbox(import_path)
 
-    user = User.get(email)
+    user = User.by_name(email)
 
     agent = DeliveryAgent()
     mailfrom = ''
@@ -61,8 +63,9 @@ def import_email(email, import_path, format, **kwargs):
             if not addresses:
                 continue
             for alias, _address in addresses:
-                lookup = ContactLookup.get(user, alias)
-                if not lookup:
+                try:
+                    ContactLookup.get(user, alias)
+                except NotFound:
                     log.info('Creating contact %s' % alias)
                     infos = {'mail': alias}
                     name, domain = alias.split('@')
