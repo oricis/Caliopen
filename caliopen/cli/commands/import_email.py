@@ -11,7 +11,7 @@ from email import message_from_file
 from os import listdir
 from mailbox import mbox, Maildir
 
-from caliopen.core.exception import NotFound
+from caliopen.storage.exception import NotFound
 
 
 log = logging.getLogger(__name__)
