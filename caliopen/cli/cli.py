@@ -12,7 +12,8 @@ import argparse
 from caliopen.config import Configuration
 from caliopen.core.config import includeme
 from caliopen.cli.commands import (shell, import_email,
-                                   setup_storage, create_user)
+                                   setup_storage, create_user,
+                                   dump_model)
 
 
 def main(args=sys.argv):
@@ -44,6 +45,11 @@ def main(args=sys.argv):
 
     sp_shell = subparsers.add_parser('shell')
     sp_shell.set_defaults(func=shell)
+
+    sp_dump = subparsers.add_parser('dump')
+    sp_dump.set_defaults(func=dump_model)
+    sp_dump.add_argument('-m', dest='model', help='model to dump')
+    sp_dump.add_argument('-o', dest='output_path', help='output path')
 
     kwargs = parser.parse_args(args[1:])
     kwargs = vars(kwargs)
