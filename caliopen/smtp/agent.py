@@ -5,7 +5,7 @@ from caliopen.config import Configuration
 from caliopen.messaging.queue import Publisher
 from caliopen.core.raw import RawMail
 from caliopen.core.user import User
-from caliopen.core.deliver import UserMessageDelivery
+from caliopen.core.user import UserMessageDelivery
 
 log = logging.getLogger(__name__)
 
