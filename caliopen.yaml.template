@@ -40,10 +40,12 @@ interfaces:
             IContactLookup: caliopen.storage.data.cassandra.ContactLookup
             ICounter: caliopen.storage.data.cassandra.Counter
             IMessage: caliopen.storage.data.cassandra.Message
-            IMessageLookup: caliopen.storage.data.cassandra.MessageLookup
             ITag: caliopen.storage.data.cassandra.Tag
             IFilterRule: caliopen.storage.data.cassandra.FilterRule
             IThread: caliopen.storage.data.cassandra.Thread
+            IThreadExternalLookup: caliopen.storage.data.cassandra.ThreadExternalLookup
+            IThreadMessageLookup: caliopen.storage.data.cassandra.ThreadMessageLookup
+            IThreadRecipientLookup: caliopen.storage.data.cassandra.ThreadRecipientLookup
         index:
             IStorageIndex: caliopen.storage.index.elasticsearch.StorageIndex
             IUserIndex: caliopen.storage.index.elasticsearch.UserIndex
