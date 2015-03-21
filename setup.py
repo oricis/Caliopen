@@ -12,6 +12,7 @@ requires = [
     'PyYAML',
     'elasticsearch-dsl',
     'cqlengine',
+    'schematics',
     ]
 
 setup(name='caliopen.base',
