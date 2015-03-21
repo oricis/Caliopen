@@ -8,6 +8,8 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
     'setuptools',
+    'bcrypt',
+    'PyYAML',
     'elasticsearch-dsl',
     'cqlengine',
     ]
