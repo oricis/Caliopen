@@ -97,9 +97,9 @@ class User(BaseCore):
     @classmethod
     def create(cls, user):
         """Create a new user."""
+        user.validate()
         user.password = bcrypt.hashpw(user.password.encode('utf-8'),
                                       bcrypt.gensalt())
-        user.validate()
         # At this time reserved words must be defined in configuration
         if user.name in Configuration('global').get('reserved_user_names', []):
             raise Exception('User name not allowed %s' % user.name)
