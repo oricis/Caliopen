@@ -5,17 +5,17 @@ import logging
 import uuid
 from datetime import datetime
 
-from caliopen.base.store import (Contact as ModelContact, IndexContact,
-                                 ContactLookup as ModelContactLookup,
-                                 Organization as ModelOrganization,
-                                 PostalAddress as ModelAddress,
-                                 Email as ModelEmail, IM as ModelIM,
-                                 Phone as ModelPhone,
-                                 SocialIdentity as ModelSocialIdentity,
-                                 PublicKey as ModelPublicKey
-                                 )
-from caliopen.base.exception import NotFound
+from caliopen.base.store.contact import (Contact as ModelContact,
+                                         IndexedContact,
+                                         Lookup as ModelContactLookup,
+                                         Organization as ModelOrganization,
+                                         PostalAddress as ModelAddress,
+                                         Email as ModelEmail, IM as ModelIM,
+                                         Phone as ModelPhone,
+                                         SocialIdentity as ModelSocialIdentity,
+                                         PublicKey as ModelPublicKey)
 
+from caliopen.base.exception import NotFound
 from caliopen.base.core import BaseCore, BaseUserCore
 from caliopen.base.core.mixin import MixinCoreRelation, MixinCoreIndex
 
@@ -106,7 +106,7 @@ class PublicKey(BaseContactSubCore):
 class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
 
     _model_class = ModelContact
-    _index_class = IndexContact
+    _index_class = IndexedContact
     _pkey_name = 'contact_id'
 
     _relations = {

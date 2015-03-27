@@ -5,8 +5,8 @@ from datetime import datetime
 import uuid
 
 from cqlengine import columns
-from caliopen.base.store.model import (BaseModel, BaseIndexDocument,
-                                       IndexTagMixin)
+from caliopen.base.store.model import BaseModel, BaseIndexDocument
+from caliopen.base.store.mixin import IndexTagMixin
 
 
 class BaseContactModel(BaseModel):
