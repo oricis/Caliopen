@@ -13,6 +13,7 @@ requires = [
     'elasticsearch-dsl',
     'cqlengine',
     'schematics',
+    'simplejson',
     ]
 
 setup(name='caliopen.base',

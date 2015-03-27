@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 """Caliopen helpers related to json data."""
 
-import json
+# Strange situation under python 2.x where json do not have JSONENcoder
+try:
+    import simplejson as json
+except ImportError:
+    import json
+
 import datetime
 from uuid import UUID
 from decimal import Decimal
