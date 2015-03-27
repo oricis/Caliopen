@@ -7,9 +7,9 @@ log = logging.getLogger(__name__)
 
 def create_user(**kwargs):
 
-    from caliopen.core.user import User
-    from caliopen.core.parameters.user import NewUser
-    from caliopen.core.parameters.contact import NewContact
+    from caliopen.base.core.user import User
+    from caliopen.base.parameters.user import NewUser
+    from caliopen.base.parameters.contact import NewContact
     param = NewUser()
     param.name = kwargs['email']
     param.password = kwargs['password']
