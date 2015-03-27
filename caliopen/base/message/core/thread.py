@@ -13,10 +13,10 @@ from caliopen.base.parameters import ReturnIndexObject
 
 from caliopen.base.message.model import  \
     (ThreadExternalLookup as ModelExternalLookup,
-        ThreadRecipientLookup as ModelRecipientLookup,
-        ThreadMessageLookup as ModelMessageLookup,
-        Thread as ModelThread, IndexThread)
-from caliopen.base.message.parameters import ThreadParam
+     ThreadRecipientLookup as ModelRecipientLookup,
+     ThreadMessageLookup as ModelMessageLookup,
+     Thread as ModelThread, IndexedThread)
+from caliopen.base.message.parameters import Thread as ThreadParam
 
 
 log = logging.getLogger(__name__)
@@ -51,7 +51,7 @@ class Thread(BaseUserCore, MixinCoreIndex):
     """Thread core object."""
 
     _model_class = ModelThread
-    _index_class = IndexThread
+    _index_class = IndexedThread
 
     _pkey_name = 'thread_id'
 
@@ -141,5 +141,5 @@ class Thread(BaseUserCore, MixinCoreIndex):
 
 class ReturnIndexThread(ReturnIndexObject):
 
-    _index_class = IndexThread
+    _index_class = IndexedThread
     _return_class = ThreadParam

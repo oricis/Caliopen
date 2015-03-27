@@ -3,9 +3,8 @@
 
 from schematics.models import Model
 from schematics.types import (StringType, DateTimeType,
-                              IntType, UUIDType, BooleanType,
-                              DictType)
-from schematics.types.compound import ListType, ModelType
+                              IntType, UUIDType, BooleanType)
+from schematics.types.compound import ListType, ModelType, DictType
 from schematics.transforms import blacklist
 
 RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc']

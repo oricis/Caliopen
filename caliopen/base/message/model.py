@@ -3,7 +3,7 @@
 
 from cqlengine import columns
 from caliopen.base.store.model import BaseModel, BaseIndexDocument
-from caliopen.base.store.mixin import TagMixin
+from caliopen.base.store.mixin import IndexTagMixin
 
 
 class RawMessage(BaseModel):
@@ -77,7 +77,7 @@ class Message(BaseModel):
     offset = columns.Integer()
 
 
-class IndexedMessage(BaseIndexDocument, TagMixin):
+class IndexedMessage(BaseIndexDocument, IndexTagMixin):
 
     """Message from index server with helpers methods."""
 
@@ -90,7 +90,7 @@ class IndexedMessage(BaseIndexDocument, TagMixin):
                ]
 
 
-class IndexedThread(BaseIndexDocument, TagMixin):
+class IndexedThread(BaseIndexDocument, IndexTagMixin):
 
     """Thread from index server."""
 

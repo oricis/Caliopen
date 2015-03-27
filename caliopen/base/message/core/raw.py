@@ -6,7 +6,7 @@ import hashlib
 from caliopen.base.core import BaseUserCore
 
 from caliopen.base.message.model import RawMessage as ModelRaw
-from caliopen.base.messsage.format.mail import MailMessage
+from caliopen.base.message.format.email import MailMessage
 
 
 class RawMessage(BaseUserCore):

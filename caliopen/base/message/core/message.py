@@ -10,9 +10,9 @@ from caliopen.base.core import BaseUserCore
 from caliopen.base.core.mixin import MixinCoreIndex
 from caliopen.base.parameters import ReturnCoreObject, ReturnIndexObject
 
-from caliopen.base.message.model import Message as ModelMessage, IndexMessage
-from caliopen.base.message.core import RawMessage
-from caliopen.base.message.parameters import ParamMessage
+from caliopen.base.message.model import Message as ModelMessage, IndexedMessage
+from caliopen.base.message.core.raw import RawMessage
+from caliopen.base.message.parameters import Message as ParamMessage
 
 
 log = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ class Message(BaseUserCore, MixinCoreIndex):
     """Message core object."""
 
     _model_class = ModelMessage
-    _index_class = IndexMessage
+    _index_class = IndexedMessage
     _pkey_name = 'message_id'
 
     @classmethod
@@ -94,5 +94,5 @@ class ReturnIndexMessage(ReturnIndexObject):
 
     """Return parameter from an indexed message."""
 
-    _index_class = IndexMessage
+    _index_class = IndexedMessage
     _return_class = ParamMessage
