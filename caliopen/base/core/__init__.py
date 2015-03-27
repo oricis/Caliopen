@@ -6,14 +6,34 @@ Core are glue code to the storage layer.
 """
 
 from __future__ import absolute_import, print_function, unicode_literals
+from six import add_metaclass
 from uuid import UUID
 import logging
 
-from caliopen.storage.exception import NotFound
+from caliopen.base.exception import NotFound
 
 log = logging.getLogger(__name__)
 
+core_registry = {}  # registry for all core classes
 
+
+class CoreMetaClass(type):
+
+    """
+    Metaclass for all core.
+
+    For all core classes related to a model, add it to core_registry.
+    """
+
+    def __init__(cls, name, bases, namespace):
+        super(CoreMetaClass, cls).__init__(name, bases, namespace)
+        if cls._model_class:
+            table_name = cls._model_class.__name__
+            if not core_registry.get(table_name):
+                core_registry.update({table_name: cls})
+
+
+@add_metaclass(CoreMetaClass)
 class BaseCore(object):
 
     """Base class for all core objects."""
