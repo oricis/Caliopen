@@ -3,12 +3,11 @@
 
 from schematics.models import Model
 from schematics.types import (StringType, UUIDType, IntType,
-                              DateTimeType, BooleanType,
-                              ListType)
-from schematics.types.compound import ModelType, DictType
+                              DateTimeType, BooleanType)
+from schematics.types.compound import ModelType, DictType, ListType
 from schematics.transforms import blacklist
 
-from .contact import NewContact, Contact
+from caliopen.base.parameters.contact import NewContact, Contact
 
 
 class NewUser(Model):

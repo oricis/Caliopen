@@ -8,7 +8,7 @@ import uuid
 
 from cqlengine import columns
 from elasticsearch import Elasticsearch
-from elasticsearch.client import IndiceClient
+from elasticsearch.client.indices import IndicesClient
 
 from caliopen.base.config import Configuration
 from caliopen.base.store.model import BaseModel
@@ -88,7 +88,7 @@ class IndexUser(object):
         """Create user index."""
         # Create index for user
         client = Elasticsearch(cls.__url__)
-        indice = IndiceClient(client)
+        indice = IndicesClient(client)
         if not indice.exists(index=user.user_id):
             log.info('Creating index for user %s' % user.user_id)
             indice.create(index=user.user_id)
