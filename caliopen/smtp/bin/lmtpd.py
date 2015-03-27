@@ -1,21 +1,17 @@
+import sys
 import logging
+import argparse
 from gsmtpd import LMTPServer
-from cqlengine import connection
 
-from caliopen.config import Configuration
+from caliopen.base.config import Configuration
 
-Configuration.load('caliopen.yaml', 'global')
-connection.setup(['127.0.0.1:9160'])
-
-from caliopen.core.config import includeme
-includeme(None)
 
 log = logging.getLogger(__name__)
-from caliopen.smtp.agent import DeliveryAgent
 
 
 class LmtpServer(LMTPServer):
     def process_message(self, peer, mailfrom, rcpttos, data):
+        from caliopen.smtp.agent import DeliveryAgent
         agent = DeliveryAgent()
         messages = agent.process(mailfrom, rcpttos, data)
         log.info('Deliver of %d messages' % len(messages))
@@ -23,5 +19,14 @@ class LmtpServer(LMTPServer):
 
 
 if __name__ == '__main__':
-    s = LmtpServer(("127.0.0.1", 4000))
+    args = sys.argv
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', dest='conffile')
+    kwargs = parser.parse_args(args[1:])
+    kwargs = vars(kwargs)
+    Configuration.load(kwargs['conffile'], 'global')
+    bind_address = Configuration('global').get('lmtp.bind_address',
+                                               '127.0.0.1')
+    port = Configuration('global').get('lmtp.port', 4000)
+    s = LmtpServer((bind_address, port))
     s.serve_forever()
