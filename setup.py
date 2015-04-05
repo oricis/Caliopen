@@ -11,7 +11,6 @@ requires = [
     'pyramid',
     'zope.interface',
     'cornice',
-    'waitress',
     ]
 
 setup(name='caliopen.api.base',
