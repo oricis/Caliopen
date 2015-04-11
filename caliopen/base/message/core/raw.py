@@ -24,7 +24,9 @@ class RawMessage(BaseUserCore):
     def create(cls, user, message_id, raw):
         """Create raw message."""
         key = hashlib.sha256(message_id).hexdigest()
-        return super(RawMessage, cls).create(user=user, raw_id=key, data=raw)
+        return super(RawMessage, cls).create(user_id=user.user_id,
+                                             raw_id=key,
+                                             data=raw)
 
     @classmethod
     def get(cls, user, message_id):
