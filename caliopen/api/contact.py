@@ -10,7 +10,8 @@ from caliopen.base.core.contact import (Contact as CoreContact,
                                         Organization as CoreOrganization,
                                         PostalAddress as CoreAddress)
 
-from caliopen.base.returns.contact import (ReturnContact, ReturnShortContact,
+from caliopen.base.returns.contact import (ReturnContact,
+                                           ReturnIndexShortContact,
                                            ReturnAddress, ReturnEmail,
                                            ReturnIM, ReturnPhone,
                                            ReturnOrganization,
@@ -36,10 +37,10 @@ class Contact(Api):
         self.user = self.check_user()
 
     def collection_get(self):
-        results = CoreContact.find_index(self.user,
+        results = CoreContact.find_index(self.user, None,
                                          limit=self.get_limit(),
                                          offset=self.get_offset())
-        data = [ReturnShortContact.build(x).serialize()
+        data = [ReturnIndexShortContact.build(x).serialize()
                 for x in results['data']]
         return {'contacts': data, 'total': results['total']}
 
