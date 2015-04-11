@@ -16,7 +16,7 @@ from caliopen.base.message.core.thread import (Thread,
 
 from caliopen.base.message.parameters import Recipient
 # XXX use a message formatter registry not directly mail format
-from caliopen.base.message.format.email import MailMessage
+from caliopen.base.message.format.mail import MailMessage
 
 
 log = logging.getLogger(__name__)
