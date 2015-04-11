@@ -21,7 +21,7 @@ def import_email(email, import_path, format, **kwargs):
 
     from caliopen.base.core.user import User
     from caliopen.base.core.contact import Contact, ContactLookup
-    from caliopen.base.message.format.email import MailMessage
+    from caliopen.base.message.format.mail import MailMessage
     from caliopen.base.parameters.contact import NewContact, NewEmail
     from caliopen.smtp.agent import DeliveryAgent
 
