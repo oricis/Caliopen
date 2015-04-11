@@ -9,7 +9,7 @@ def make_url(url):
     return '%s%s' % (BASE_URL, url)
 
 
-DEFAULT_LIMIT = Configuration('global').get('site.item_per_page')
+DEFAULT_LIMIT = Configuration('global').get('site.item_per_page', 20)
 
 
 class Api(object):
