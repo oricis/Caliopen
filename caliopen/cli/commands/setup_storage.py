@@ -12,6 +12,8 @@ def setup_storage(settings=None):
     # Make discovery happen
     from caliopen.base.core.user import User
     from caliopen.base.core.contact import Contact
+    from caliopen.base.message.core.thread import Thread
+    from caliopen.base.message.core.message import Message
     from cqlengine.management import sync_table, create_keyspace
     keyspace = Configuration('global').get('cassandra.keyspace')
     if not keyspace:
