@@ -77,7 +77,7 @@ class Message(BaseUserCore, MixinCoreIndex):
     def text(self):
         """Return text from message."""
         # XXX do not use RawMail lookup
-        raw = RawMessage.get(str(self.external_message_id))
+        raw = RawMessage.get(self.user, str(self.external_message_id))
         msg = raw.parse()
         return msg.text
 
