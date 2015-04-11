@@ -34,6 +34,11 @@ class ReturnIndexContact(ReturnIndexObject):
     _return_class = ContactParam
 
 
+class ReturnIndexShortContact(ReturnIndexObject):
+    _index_class = IndexedContact
+    _return_class = ContactShortParam
+
+
 class ReturnEmail(ReturnCoreObject):
 
     _core_class = Email
