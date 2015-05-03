@@ -16,6 +16,11 @@ requires = [
     'simplejson',
     ]
 
+extras_require = {
+    'test': ['nose', 'coverage', 'freezegun', 'docker-py'],
+}
+
+
 setup(name='caliopen.base',
       namespace_packages=['caliopen.base'],
       version='0.0.1',
