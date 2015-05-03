@@ -89,9 +89,13 @@ class IndexUser(object):
         # Create index for user
         client = Elasticsearch(cls.__url__)
         indice = IndicesClient(client)
-        if not indice.exists(index=user.user_id):
-            log.info('Creating index for user %s' % user.user_id)
-            indice.create(index=user.user_id)
-        else:
-            log.warn('Index already exists for user %s' % user.user_id)
+        if indice.exists(index=user.user_id):
+            if 'delete_existing' in kwargs and kwargs['delete_existing']:
+                log.warn('Deleting existing index for user %s' % user.user_id)
+                indice.delete(index=user.user_id)
+            else:
+                log.warn('Index already exists for user %s' % user.user_id)
+                return False
+        log.info('Creating index for user %s' % user.user_id)
+        indice.create(index=user.user_id)
         return True
