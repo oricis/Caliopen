@@ -10,6 +10,7 @@ import argparse
 
 
 from caliopen.base.config import Configuration
+from caliopen.base.helpers.connection import connect_storage
 from caliopen.cli.commands import (shell, import_email,
                                    setup_storage, create_user,
                                    dump_model)
@@ -57,6 +58,8 @@ def main(args=sys.argv):
     func = kwargs.pop('func')
 
     Configuration.load(config_uri, 'global')
+    connect_storage()
+
     func(**kwargs)
 
 
