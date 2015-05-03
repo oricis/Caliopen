@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+from caliopen.base.helpers.connection import connect_storage
 from caliopen.api.exception import (ValidationError, AuthenticationError,
                                     AuthorizationError, ResourceNotFound)
 
@@ -38,7 +39,7 @@ def resource_not_found_error(exc, request):
 
 def includeme(config):
     """Configure REST API."""
-
+    connect_storage()
     config.commit()
     config.add_renderer('text_plain', renderer.TextPlainRenderer)
     config.add_renderer('json', renderer.JsonRenderer)
