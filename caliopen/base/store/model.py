@@ -4,7 +4,6 @@ import logging
 
 from cqlengine.models import Model
 from cqlengine.query import DoesNotExist
-from cqlengine.connection import setup as setup_cassandra
 
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
@@ -15,11 +14,6 @@ from caliopen.base.helpers.json import to_json, json
 
 
 log = logging.getLogger(__name__)
-
-# Setup cassandra connection
-setup_cassandra(Configuration('global').get('cassandra.hosts'),
-                Configuration('global').get('cassandra.keyspace'),
-                Configuration('global').get('cassandra.consistency_level'))
 
 
 class BaseModel(Model):
