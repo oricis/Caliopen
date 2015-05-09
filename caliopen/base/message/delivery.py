@@ -3,8 +3,7 @@
 import logging
 
 from caliopen.base.exception import NotFound
-from caliopen.base.core.contact import ContactLookup
-from caliopen.base.core.user import User
+from caliopen.base.user.core import User, ContactLookup
 
 from caliopen.base.message.core.message import Message
 from caliopen.base.message.core.raw import RawMessage

@@ -5,11 +5,11 @@ import logging
 from datetime import datetime
 
 from caliopen.base.exception import NotFound
-
 from caliopen.base.core import BaseUserCore
 from caliopen.base.core.mixin import MixinCoreIndex
-from caliopen.base.core.contact import Contact
 from caliopen.base.parameters import ReturnIndexObject
+
+from caliopen.base.user.core import Contact
 
 from caliopen.base.message.model import  \
     (ThreadExternalLookup as ModelExternalLookup,

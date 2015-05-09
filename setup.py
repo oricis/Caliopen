@@ -8,6 +8,7 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
     'caliopen.base',
+    'caliopen.base.user',
     ]
 
 setup(name='caliopen.base.message',
