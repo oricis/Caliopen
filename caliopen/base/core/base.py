@@ -11,10 +11,9 @@ from uuid import UUID
 import logging
 
 from caliopen.base.exception import NotFound
+from caliopen.base.core.registry import core_registry
 
 log = logging.getLogger(__name__)
-
-core_registry = {}  # registry for all core classes
 
 
 class CoreMetaClass(type):
