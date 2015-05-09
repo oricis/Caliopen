@@ -1,11 +1,11 @@
 from caliopen.base.parameters import ReturnCoreObject, ReturnIndexObject
 
-from caliopen.base.core.contact import (
+from caliopen.base.user.core import (
     Contact, IndexedContact, Email,
     Phone, IM, Organization, PublicKey,
     PostalAddress, SocialIdentity,
     )
-from caliopen.base.parameters.contact import (
+from caliopen.base.user.parameters import (
     Contact as ContactParam,
     ShortContact as ContactShortParam,
     Email as EmailParam,
