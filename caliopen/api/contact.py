@@ -1,25 +1,25 @@
 from cornice.resource import resource
 from pyramid.response import Response
 
-from caliopen.base.core.contact import (Contact as CoreContact,
-                                        Email as CoreEmail,
-                                        IM as CoreIM,
-                                        Phone as CorePhone,
-                                        SocialIdentity as CoreIdentity,
-                                        PublicKey as CorePublicKey,
-                                        Organization as CoreOrganization,
-                                        PostalAddress as CoreAddress)
+from caliopen.base.user.core import (Contact as CoreContact,
+                                     Email as CoreEmail,
+                                     IM as CoreIM,
+                                     Phone as CorePhone,
+                                     SocialIdentity as CoreIdentity,
+                                     PublicKey as CorePublicKey,
+                                     Organization as CoreOrganization,
+                                     PostalAddress as CoreAddress)
 
-from caliopen.base.returns.contact import (ReturnContact,
-                                           ReturnIndexShortContact,
-                                           ReturnAddress, ReturnEmail,
-                                           ReturnIM, ReturnPhone,
-                                           ReturnOrganization,
-                                           ReturnSocialIdentity,
-                                           ReturnPublicKey)
+from caliopen.base.user.returns import (ReturnContact,
+                                        ReturnIndexShortContact,
+                                        ReturnAddress, ReturnEmail,
+                                        ReturnIM, ReturnPhone,
+                                        ReturnOrganization,
+                                        ReturnSocialIdentity,
+                                        ReturnPublicKey)
 
-from caliopen.base.parameters.contact import (NewContact,
-                                              Contact as ContactParam)
+from caliopen.base.user.parameters import (NewContact,
+                                           Contact as ContactParam)
 
 from caliopen.api.base import Api, make_url
 from caliopen.base.exception import NotFound
