@@ -19,10 +19,10 @@ log = logging.getLogger(__name__)
 
 def import_email(email, import_path, format, **kwargs):
 
-    from caliopen.base.core.user import User
-    from caliopen.base.core.contact import Contact, ContactLookup
+    from caliopen.base.user.core import User
+    from caliopen.base.user.core import Contact, ContactLookup
     from caliopen.base.message.format.mail import MailMessage
-    from caliopen.base.parameters.contact import NewContact, NewEmail
+    from caliopen.base.user.parameters import NewContact, NewEmail
     from caliopen.smtp.agent import DeliveryAgent
 
     AVATAR_DIR = '../../../caliopen.ng/src/assets/images/avatars'

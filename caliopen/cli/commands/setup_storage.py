@@ -10,8 +10,7 @@ def setup_storage(settings=None):
     """Create cassandra models."""
     from caliopen.base.core import core_registry
     # Make discovery happen
-    from caliopen.base.core.user import User
-    from caliopen.base.core.contact import Contact
+    from caliopen.base.user.core import User
     from caliopen.base.message.core.thread import Thread
     from caliopen.base.message.core.message import Message
     from cqlengine.management import sync_table, create_keyspace

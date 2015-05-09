@@ -8,6 +8,8 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
     'caliopen.base',
+    'caliopen.base.user',
+    'ipython',
 ]
 
 setup(name='caliopen.cli',
