@@ -7,7 +7,7 @@ from schematics.types import (StringType, UUIDType, IntType,
 from schematics.types.compound import ModelType, DictType, ListType
 from schematics.transforms import blacklist
 
-from caliopen.base.parameters.contact import NewContact, Contact
+from caliopen.base.user.parameters.contact import NewContact, Contact
 
 
 class NewUser(Model):

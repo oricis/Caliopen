@@ -1,6 +1,6 @@
 from caliopen.base.parameters import ReturnCoreObject
-from caliopen.base.core.user import User
-from caliopen.base.parameters.user import User as UserParam
+from caliopen.base.user.core import User
+from caliopen.base.user.parameters import User as UserParam
 
 
 class ReturnUser(ReturnCoreObject):
