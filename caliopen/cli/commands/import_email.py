@@ -11,7 +11,7 @@ from email import message_from_file
 from os import listdir
 from mailbox import mbox, Maildir
 
-from caliopen.storage.exception import NotFound
+from caliopen.base.exception import NotFound
 
 
 log = logging.getLogger(__name__)
@@ -19,10 +19,10 @@ log = logging.getLogger(__name__)
 
 def import_email(email, import_path, format, **kwargs):
 
-    from caliopen.core.user import User
-    from caliopen.core.contact import Contact, ContactLookup
-    from caliopen.core.format.mail import MailMessage
-    from caliopen.core.parameters.contact import NewContact, NewEmail
+    from caliopen.base.user.core import User
+    from caliopen.base.user.core import Contact, ContactLookup
+    from caliopen.base.message.format.mail import MailMessage
+    from caliopen.base.user.parameters import NewContact, NewEmail
     from caliopen.smtp.agent import DeliveryAgent
 
     AVATAR_DIR = '../../../caliopen.ng/src/assets/images/avatars'

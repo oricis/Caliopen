@@ -7,8 +7,9 @@ README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
-    'caliopen.config',
-    'caliopen.core',
+    'caliopen.base',
+    'caliopen.base.user',
+    'ipython',
 ]
 
 setup(name='caliopen.cli',
