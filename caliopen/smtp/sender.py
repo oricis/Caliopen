@@ -3,7 +3,7 @@ import uuid
 from email.mime.text import MIMEText
 from itertools import groupby
 
-from caliopen.base.message.core.message import Message
+from caliopen.base.message.core import Message
 
 
 class MailSender(object):

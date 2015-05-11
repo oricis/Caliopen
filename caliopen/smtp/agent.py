@@ -3,7 +3,7 @@ from mailbox import Message as Rfc2822
 
 from caliopen.base.config import Configuration
 from caliopen.messaging.queue import Publisher
-from caliopen.base.message.core.message import RawMessage
+from caliopen.base.message.core import RawMessage
 from caliopen.base.user.core import User
 from caliopen.base.message.delivery import UserMessageDelivery
 
