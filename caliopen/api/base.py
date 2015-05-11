@@ -1,4 +1,4 @@
-from caliopen.base.core.user import User
+from caliopen.base.user.core import User
 from caliopen.base.config import Configuration
 from caliopen.api.exception import AuthenticationError
 
