@@ -7,13 +7,13 @@ import bcrypt
 
 from caliopen.base.config import Configuration
 from caliopen.base.exception import NotFound, CredentialException
-from caliopen.base.store.user import (User as ModelUser, IndexUser,
+from caliopen.base.user.store import (User as ModelUser, IndexUser,
                                       Counter as ModelCounter,
                                       Tag as ModelTag,
                                       FilterRule as ModelFilterRule,)
 
 from caliopen.base.core import BaseCore, BaseUserCore
-from caliopen.base.core.contact import Contact
+from .contact import Contact
 
 
 class Counter(BaseCore):

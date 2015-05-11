@@ -5,7 +5,7 @@ import logging
 import uuid
 from datetime import datetime
 
-from caliopen.base.store.contact import (Contact as ModelContact,
+from ..store.contact import (Contact as ModelContact,
                                          IndexedContact,
                                          Lookup as ModelContactLookup,
                                          Organization as ModelOrganization,
