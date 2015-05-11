@@ -3,7 +3,7 @@ import logging
 
 from cornice.resource import resource, view
 
-from caliopen.base.message.core.message import (
+from caliopen.base.message.core import (
     RawMessage,
     Message as CoreMessage,
     ReturnIndexMessage)

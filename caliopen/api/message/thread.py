@@ -2,8 +2,8 @@ import logging
 
 from cornice.resource import resource
 
-from caliopen.base.message.core.thread import (Thread as UserThread,
-                                               ReturnIndexThread)
+from caliopen.base.message.core import (Thread as UserThread,
+                                        ReturnIndexThread)
 from caliopen.api.base import Api, make_url
 from caliopen.base.exception import NotFound
 from caliopen.api.exception import ResourceNotFound
