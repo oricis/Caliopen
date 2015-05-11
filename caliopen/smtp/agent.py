@@ -1,17 +1,18 @@
 import logging
 from mailbox import Message as Rfc2822
 
-from caliopen.config import Configuration
+from caliopen.base.config import Configuration
 from caliopen.messaging.queue import Publisher
-from caliopen.core.raw import RawMail
-from caliopen.core.user import User
-from caliopen.core.user import UserMessageDelivery
+from caliopen.base.message.core import RawMessage
+from caliopen.base.user.core import User
+from caliopen.base.message.delivery import UserMessageDelivery
 
 log = logging.getLogger(__name__)
 
 
 class DeliveryAgent(object):
-    """Main logic for delivery of a mail message"""
+
+    """Main logic for delivery of a mail message."""
 
     def __init__(self):
         conf = Configuration('global').get('delivery_agent')
@@ -44,7 +45,7 @@ class DeliveryAgent(object):
     def parse_mail(self, buf):
         try:
             mail = Rfc2822(buf)
-        except Exception, exc:
+        except Exception as exc:
             log.error('Parse message failed %s' % exc)
             raise
         if mail.defects:
@@ -62,13 +63,12 @@ class DeliveryAgent(object):
             message_id = mail.get('Message-ID')
             if not message_id:
                 raise Exception('No Message-ID found')
-            user_ids = [x.user_id for x in users]
-            # Create raw mail
-            log.debug('Will create raw mail for message-id %s and users %r' %
-                      (message_id, user_ids))
-            raw = RawMail.create(message_id, user_ids, buf)
-            log.debug('Created raw mail %r' % raw.raw_id)
             for user in users:
+                # Create raw message
+                log.debug('Will create raw for message-id %s and user %r' %
+                          (message_id, user.user_id))
+                raw = RawMessage.create(user, message_id, buf)
+                log.debug('Created raw message %r' % raw.raw_id)
                 self.process_user_mail(user, message_id)
             return raw.raw_id
         else:

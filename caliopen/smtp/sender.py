@@ -3,7 +3,7 @@ import uuid
 from email.mime.text import MIMEText
 from itertools import groupby
 
-from caliopen.core.message import Message
+from caliopen.base.message.core import Message
 
 
 class MailSender(object):
@@ -35,7 +35,7 @@ class MailSender(object):
         msg['Date'] = message.date
         msg['Message-Id'] = self.new_message_id(user_id)
         # TOFIX: got such value from index ?
-        #if message.parent_message_id:
+        # if message.parent_message_id:
         #    msg['In-Reply-To'] = message.parent_message_id
         self.process_recipients(message.contacts, msg)
         return msg.as_string()
