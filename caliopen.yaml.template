@@ -8,6 +8,7 @@ cassandra:
     keyspace: caliopen
     hosts:
         - '127.0.0.1'
+    consistency_level: 1
 
 system:
     default_tags:
