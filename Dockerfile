@@ -19,7 +19,7 @@ ADD . /srv/caliopen.smtp
 WORKDIR /srv/caliopen.smtp
 
 # Copy configuration
-COPY caliopen.yaml.template caliopen.yaml
+ADD  https://raw.githubusercontent.com/CaliOpen/caliopen.base/master/caliopen.yaml.template caliopen.yaml
 
 VOLUME ['/srv/caliopen.smtp']
 
