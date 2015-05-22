@@ -11,6 +11,7 @@ def includeme(config):
     config.commit()
 
     # Activate cornice in any case and scan
-    log.debug('Loading message and thread API')
+    log.debug('Loading message API')
     config.scan('caliopen.api.message.message')
+    log.debug('Loading thread API')
     config.scan('caliopen.api.message.thread')
