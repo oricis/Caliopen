@@ -3,10 +3,11 @@
 from __future__ import unicode_literals
 
 from caliopen.base.helpers.connection import connect_storage
-from caliopen.api.exception import (ValidationError, AuthenticationError,
-                                    AuthorizationError, ResourceNotFound)
+from caliopen.api.base.exception import (ValidationError, AuthenticationError,
+                                         AuthorizationError, ResourceNotFound)
 
-from caliopen.api.helpers import renderer
+from caliopen.api.base.renderer import (TextPlainRenderer, JsonRenderer,
+                                        PartRenderer)
 
 
 def format_error(exc, request, code, name):
@@ -41,15 +42,14 @@ def includeme(config):
     """Configure REST API."""
     connect_storage()
     config.commit()
-    config.add_renderer('text_plain', renderer.TextPlainRenderer)
-    config.add_renderer('json', renderer.JsonRenderer)
-    config.add_renderer('simplejson', renderer.JsonRenderer)
-    config.add_renderer('part', renderer.PartRenderer)
 
-    # Activate cornice in any case and scan
-    config.scan('caliopen.api.contact')
+    # configure renderers
+    config.add_renderer('text_plain', TextPlainRenderer)
+    config.add_renderer('json', JsonRenderer)
+    config.add_renderer('simplejson', JsonRenderer)
+    config.add_renderer('part', PartRenderer)
 
-    # Specific views for API errors
+    # configure specific views for API errors
     config.add_view(validation_error,
                     context=ValidationError,
                     renderer='simplejson')
