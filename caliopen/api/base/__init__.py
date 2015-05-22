@@ -1,6 +1,7 @@
 from caliopen.base.user.core import User
 from caliopen.base.config import Configuration
-from caliopen.api.exception import AuthenticationError
+from .exception import AuthenticationError
+from .config import includeme
 
 
 def make_url(url):
