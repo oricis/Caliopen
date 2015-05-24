@@ -7,6 +7,13 @@ from caliopen.base.config import Configuration
 
 def connect_storage():
     """Connect to storage engines."""
+    try:
+        from cassandra.io.libevreactor import LibevConnection
+        kwargs = {'connection_class': LibevConnection}
+    except ImportError:
+        kwargs = {}
     setup_cassandra(Configuration('global').get('cassandra.hosts'),
                     Configuration('global').get('cassandra.keyspace'),
-                    Configuration('global').get('cassandra.consistency_level'))
+                    Configuration('global').get('cassandra.consistency_level'),
+                    lazy_connect=True,
+                    **kwargs)
