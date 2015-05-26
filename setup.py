@@ -22,7 +22,7 @@ extras_require = {
 
 
 setup(name='caliopen.base',
-      namespace_packages=['caliopen.base'],
+      namespace_packages=['caliopen'],
       version='0.0.1',
       description='Caliopen base package.',
       long_description=README + '\n\n' + CHANGES,
