@@ -12,13 +12,13 @@ requires = [
     ]
 
 setup(name='caliopen.base.message',
-      namespace_packages=['caliopen.base'],
+      namespace_packages=['caliopen', 'caliopen.base'],
       version='0.0.1',
       description='Caliopen base package for message management.',
       long_description=README + '\n\n' + CHANGES,
       classifiers=["Programming Language :: Python", ],
-      author='Aymeric Barantal',
-      author_email='mric@gandi.net',
+      author='Caliopen contributors',
+      author_email='contact@caliopen.org',
       url='https://caliopen.org',
       license='AGPLv3',
       packages=find_packages(),
