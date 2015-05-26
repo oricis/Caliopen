@@ -12,7 +12,7 @@ requires = [
 
 
 setup(name='caliopen.api.user',
-      namespace_packages=['caliopen.api'],
+      namespace_packages=['caliopen', 'caliopen.api'],
       version='0.0.1',
       description='Caliopen REST API for user and contact management.',
       long_description=README + '\n\n' + CHANGES,
