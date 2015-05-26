@@ -7,7 +7,6 @@ README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
-    'caliopen.base',
     'caliopen.base.user',
     'pyramid',
     'zope.interface',
@@ -15,7 +14,7 @@ requires = [
     ]
 
 setup(name='caliopen.api.base',
-      namespace_packages=['caliopen.api'],
+      namespace_packages=['caliopen', 'caliopen.api'],
       version='0.0.1',
       description='Caliopen base REST API package.',
       long_description=README + '\n\n' + CHANGES,
@@ -23,8 +22,8 @@ setup(name='caliopen.api.base',
                   "Programming Language :: Python",
                   "Framework :: Pyramid"],
       author='Caliopen Contributors',
-      author_email='',
-      url='https://github.com/Caliopen/caliopen.api.base',
+      author_email='contact@caliopen.org',
+      url='https://caliopen.org',
       license='AGPLv3',
       packages=find_packages(),
       include_package_data=True,
