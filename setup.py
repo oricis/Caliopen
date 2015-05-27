@@ -10,6 +10,11 @@ requires = [
     'caliopen.api.base',
     ]
 
+extras_require = {
+    'dev': [],
+    'test': [],
+}
+
 
 setup(name='caliopen.api.user',
       namespace_packages=['caliopen', 'caliopen.api'],
@@ -24,6 +29,7 @@ setup(name='caliopen.api.user',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
+      extras_require=extras_require,
       install_requires=requires,
       tests_require=requires,
       )
