@@ -10,6 +10,11 @@ requires = [
     'caliopen.api.user',
     ]
 
+extras_require = {
+    'dev': [],
+    'test': [],
+}
+
 setup(name='caliopen.api.message',
       namespace_packages=['caliopen', 'caliopen.api'],
       version='0.0.1',
@@ -25,6 +30,7 @@ setup(name='caliopen.api.message',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
+      extras_require=extras_require,
       install_requires=requires,
       tests_require=requires,
       )
