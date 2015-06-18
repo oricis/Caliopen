@@ -42,26 +42,28 @@ class AuthenticatedUser(object):
 
         self.user_id = user_id
         self.access_token = token
-        self._user_info = None
+        self._user = None
 
-    def load_user_info(self):
-        if self._user_info:
+    def _load_user(self):
+        if self._user:
             return
-        user = User.get(self.user_id)
-        self._user_info = user.to_dict()
+        self._user = User.get(self.user_id)
 
     @property
     def id(self):
-        self.load_user_info()
-        return self._user_info['user_id']
+        self._load_user()
+        return self._user.user_id
 
     @property
     def username(self):
-        self.load_user_info()
-        return self._user_info['name']
+        self._load_user()
+        return self._user.name
 
 
 class AuthenticationPolicy(object):
+
+    """Global authentication policy."""
+
     implements(IAuthenticationPolicy)
 
     def authenticated_userid(self, request):
@@ -88,7 +90,7 @@ class AuthenticationPolicy(object):
             return None
 
     def remember(self, request, principal, **kw):
-        """Tokens Key mechanism can't remember anyone"""
+        """Token Key mechanism can't remember anyone."""
         return []
 
     def forget(self, request):
