@@ -17,8 +17,9 @@ class Api(object):
 
     """Base class for all Api."""
 
-    def __init__(self, request):
+    def __init__(self, context, request):
         self.request = request
+        self.context = context
 
     def check_user(self):
         if 'user' in self.request.session:
