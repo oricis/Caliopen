@@ -1,4 +1,4 @@
-from cornice.resource import resource
+from cornice.resource import resource, view
 from pyramid.response import Response
 
 from caliopen.base.user.core import (Contact as CoreContact,
@@ -36,6 +36,7 @@ class Contact(Api):
         self.request = request
         self.user = self.check_user()
 
+    @view(renderer='json', permission='authenticated')
     def collection_get(self):
         results = CoreContact.find_index(self.user, None,
                                          limit=self.get_limit(),
@@ -44,6 +45,7 @@ class Contact(Api):
                 for x in results['data']]
         return {'contacts': data, 'total': results['total']}
 
+    @view(renderer='json', permission='authenticated')
     def get(self):
         contact_id = self.request.matchdict.get('contact_id')
         try:
@@ -52,6 +54,7 @@ class Contact(Api):
             raise ResourceNotFound('No such contact')
         return {'contacts': ReturnContact.build(contact).serialize()}
 
+    @view(renderer='json', permission='authenticated')
     def collection_post(self):
         """Create a new contact from json post data structure."""
         data = self.request.json
@@ -77,6 +80,7 @@ class BaseSubContactApi(Api):
         contact_id = self.request.matchdict.get('contact_id')
         self.contact = CoreContact.get(self.user, contact_id)
 
+    @view(renderer='json', permission='authenticated')
     def collection_get(self):
         # XXX define filters from request
         filters = {}
