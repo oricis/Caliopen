@@ -2,12 +2,11 @@
 from __future__ import unicode_literals
 
 import logging
-from datetime import datetime
 
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.httpexceptions import HTTPBadRequest
 from cornice.resource import resource, view
-from .context import DefaultContext
+from caliopen.api.base.context import DefaultContext
 from .util import create_token
 
 from caliopen.base.user.core import User
@@ -36,9 +35,8 @@ class AuthenticationAPI(Api):
         Store generated tokens in a cache entry related to user_id
         and return a structure with this tokens for client usage.
         """
-        params = self.request.validated
-        user = User.authenticate(params['username'],
-                                 params['password'])
+        params = self.request.params
+        user = User.authenticate(params['username'], params['password'])
         if not user:
             self._raise()
 
