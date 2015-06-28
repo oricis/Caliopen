@@ -2,12 +2,15 @@
 from __future__ import absolute_import
 
 import logging
+import base64
 
-from zope.interface import implements
-from pyramid.interfaces import IAuthenticationPolicy
-from pyramid.security import Everyone
+from zope.interface import implements, implementer
+from pyramid.interfaces import IAuthenticationPolicy, IAuthorizationPolicy
+from pyramid.security import Everyone, NO_PERMISSION_REQUIRED
+from pyramid.httpexceptions import HTTPOk
 
-from caliopen.base.user import User
+
+from caliopen.base.user.core import User
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +25,6 @@ class AuthenticatedUser(object):
     """Represent an authenticated user."""
 
     def __init__(self, request):
-
         if 'Authorization' not in request.headers:
             raise _NotAuthenticated
 
@@ -32,12 +34,13 @@ class AuthenticatedUser(object):
             raise _NotAuthenticated
 
         log.debug('Authentication via Access Token')
-        if ':' not in authorization[1]:
+        auth = base64.decodestring(authorization[1])
+        if ':' not in auth:
             raise _NotAuthenticated
 
-        user_id, token = authorization[1].split(':')
+        user_id, token = auth.split(':')
         infos = request.cache.get(user_id)
-        if infos.get('tokens', {}).get('access_token') != token:
+        if infos.get('access_token') != token:
             raise _NotAuthenticated
 
         self.user_id = user_id
@@ -95,3 +98,28 @@ class AuthenticationPolicy(object):
 
     def forget(self, request):
         return [('WWW-Authenticate', 'Bearer realm="Caliopen"')]
+
+
+@implementer(IAuthorizationPolicy)
+class AuthorizationPolicy(object):
+
+    """Basic authorization policy."""
+
+    def permits(self, context, principals, permission):
+        """ Return an instance of
+        :class:`pyramid.security.ACLAllowed` instance if the policy
+        permits access, return an instance of
+        :class:`pyramid.security.ACLDenied` if not."""
+        if permission == NO_PERMISSION_REQUIRED:
+            return True
+
+        if not principals:
+            False
+
+        token = principals[0]
+        result = token
+        log.info('principals %r, result %r' % (principals, result))
+        return True
+
+    def principals_allowed_by_permission(self, context, permission):
+        raise NotImplementedError
