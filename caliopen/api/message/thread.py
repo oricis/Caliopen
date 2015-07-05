@@ -17,10 +17,10 @@ class Thread(Api):
 
     def __init__(self, request):
         self.request = request
-        self.user = self.check_user()
+        self.user = request.authenticated_userid
 
     def collection_get(self):
-        threads = UserThread.find_index(self.user,
+        threads = UserThread.find_index(self.user, None,
                                         limit=self.get_limit(),
                                         offset=self.get_offset())
         results = [ReturnIndexThread.build(x).serialize()

@@ -19,7 +19,7 @@ class Message(Api):
 
     def __init__(self, request):
         self.request = request
-        self.user = self.check_user()
+        self.user = request.authenticated_userid
 
     def extract_recipients(self):
         """Get recipients from request"""
@@ -77,7 +77,7 @@ class Raw(Api):
 
     def __init__(self, request):
         self.request = request
-        self.user = self.check_user()
+        self.user = request.authenticated_userid
 
     @view(renderer='text_plain')
     def get(self):
