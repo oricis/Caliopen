@@ -7,7 +7,6 @@ import base64
 from zope.interface import implements, implementer
 from pyramid.interfaces import IAuthenticationPolicy, IAuthorizationPolicy
 from pyramid.security import Everyone, NO_PERMISSION_REQUIRED
-from pyramid.httpexceptions import HTTPOk
 
 
 from caliopen.base.user.core import User
@@ -28,13 +27,13 @@ class AuthenticatedUser(object):
         if 'Authorization' not in request.headers:
             raise _NotAuthenticated
 
-        # Case sensitive ?
         authorization = request.headers['Authorization'].split()
         if authorization[0] != 'Bearer' and len(authorization) != 2:
             raise _NotAuthenticated
 
         log.debug('Authentication via Access Token')
         auth = base64.decodestring(authorization[1])
+        # authentication values is user_id:token
         if ':' not in auth:
             raise _NotAuthenticated
 
@@ -117,9 +116,11 @@ class AuthorizationPolicy(object):
             False
 
         token = principals[0]
-        result = token
-        log.info('principals %r, result %r' % (principals, result))
-        return True
+        if ':' in token and permission == 'authenticated':
+            # All managed objects belong to authenticated user
+            # no other policy to apply
+            return True
+        return False
 
     def principals_allowed_by_permission(self, context, permission):
         raise NotImplementedError
