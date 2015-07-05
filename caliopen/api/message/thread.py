@@ -1,6 +1,6 @@
 import logging
 
-from cornice.resource import resource
+from cornice.resource import resource, view
 
 from caliopen.base.message.core import (Thread as UserThread,
                                         ReturnIndexThread)
@@ -19,6 +19,7 @@ class Thread(Api):
         self.request = request
         self.user = request.authenticated_userid
 
+    @view(renderer='json', permission='authenticated')
     def collection_get(self):
         threads = UserThread.find_index(self.user, None,
                                         limit=self.get_limit(),
@@ -27,6 +28,7 @@ class Thread(Api):
                    for x in threads['data']]
         return {'threads': results}
 
+    @view(renderer='json', permission='authenticated')
     def get(self):
         thread_id = int(self.request.matchdict.get('thread_id'))
         try:
