@@ -34,7 +34,7 @@ class Contact(Api):
 
     def __init__(self, request):
         self.request = request
-        self.user = self.check_user()
+        self.user = request.authenticated_userid
 
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
@@ -76,7 +76,7 @@ class BaseSubContactApi(Api):
 
     def __init__(self, request):
         self.request = request
-        self.user = self.check_user()
+        self.user = request.authenticated_userid
         contact_id = self.request.matchdict.get('contact_id')
         self.contact = CoreContact.get(self.user, contact_id)
 
