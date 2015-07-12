@@ -1,6 +1,4 @@
-from caliopen.base.user.core import User
 from caliopen.base.config import Configuration
-from .exception import AuthenticationError
 from .config import includeme
 
 
@@ -17,13 +15,9 @@ class Api(object):
 
     """Base class for all Api."""
 
-    def __init__(self, request):
+    def __init__(self, context, request):
         self.request = request
-
-    def check_user(self):
-        if 'user' in self.request.session:
-            return User.get(self.request.session['user'])
-        raise AuthenticationError('No valid user')
+        self.context = context
 
     def get_limit(self):
         """Return pagination limit from request else default."""
