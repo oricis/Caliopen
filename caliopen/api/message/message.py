@@ -19,7 +19,7 @@ class Message(Api):
 
     def __init__(self, request):
         self.request = request
-        self.user = self.check_user()
+        self.user = request.authenticated_userid
 
     def extract_recipients(self):
         """Get recipients from request"""
@@ -32,6 +32,7 @@ class Message(Api):
         recipients['from'] = [(self.user.user_id, self.user.user_id)]
         return recipients
 
+    @view(renderer='json', permission='authenticated')
     def collection_get(self):
         thread_id = int(self.request.matchdict.get('thread_id'))
         messages = CoreMessage.by_thread_id(self.user, thread_id,
@@ -40,6 +41,7 @@ class Message(Api):
         results = [ReturnIndexMessage.build(x).serialize() for x in messages]
         return {'messages': results, 'total': messages['total']}
 
+    @view(renderer='json', permission='authenticated')
     def collection_post(self):
         thread_id = int(self.request.matchdict.get('thread_id'))
         reply_to = self.request.json.get('reply_to')
@@ -77,12 +79,10 @@ class Raw(Api):
 
     def __init__(self, request):
         self.request = request
-        self.user = self.check_user()
+        self.user = request.authenticated_userid
 
-    @view(renderer='text_plain')
+    @view(renderer='text_plain', permission='authenticated')
     def get(self):
         raw_id = self.request.matchdict.get('raw_id')
-        raw = RawMessage.get(raw_id)
-        if self.user.user_id not in raw.users:
-            return {'error': 'Not allowed'}
+        raw = RawMessage.get(self.user, raw_id)
         return raw.data
