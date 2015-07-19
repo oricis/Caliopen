@@ -15,7 +15,9 @@ from caliopen.base.message.model import  \
     (ThreadExternalLookup as ModelExternalLookup,
      ThreadRecipientLookup as ModelRecipientLookup,
      ThreadMessageLookup as ModelMessageLookup,
-     Thread as ModelThread, IndexedThread)
+     Thread as ModelThread,
+     ThreadCounter as ModelCounter,
+     IndexedThread)
 from caliopen.base.message.parameters import Thread as ThreadParam
 
 
@@ -46,6 +48,13 @@ class ThreadMessageLookup(BaseUserCore):
     _pkey_name = 'external_message_id'
 
 
+class Counter(BaseUserCore):
+
+    """Counters related to thread."""
+
+    _model_class = ModelCounter
+
+
 class Thread(BaseUserCore, MixinCoreIndex):
 
     """Thread core object."""
@@ -72,6 +81,10 @@ class Thread(BaseUserCore, MixinCoreIndex):
             kwargs['_indexed_extra']['tags'] = message.tags
         thread = cls.create(**kwargs)
         log.debug('Created thread %s' % thread.thread_id)
+        counters = Counter.create(user_id=user.user_id,
+                                  thread_id=thread.thread_id,
+                                  total_count=1, unread_count=1)
+        log.debug('Created thread counters %r' % counters)
         return thread
 
     def update_from_message(self, message):
@@ -99,6 +112,11 @@ class Thread(BaseUserCore, MixinCoreIndex):
             index_data.update({'tags': message.tags})
         index.update({'doc': index_data})
         log.debug('Update index for thread %s' % self.thread_id)
+        # Update counters
+        counters = Counter.get(user=self.user, thread_id=self.thread_id)
+        counters.model.total_count += 1
+        counters.model.unread_count += 1
+        counters.save()
         return True
 
     @classmethod
