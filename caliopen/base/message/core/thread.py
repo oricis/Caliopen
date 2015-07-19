@@ -64,9 +64,8 @@ class Thread(BaseUserCore, MixinCoreIndex):
                   'thread_id': new_id,
                   'date_insert': datetime.utcnow(),
                   'privacy_index': message.privacy_index,
-                  'subject': message.subject,
+                  'slug': message.text[:200],
                   '_indexed_extra': {'date_update': datetime.utcnow(),
-                                     'slug': message.text[:200],
                                      'contacts': contacts, }
                   }
         if message.tags:

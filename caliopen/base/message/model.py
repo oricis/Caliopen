@@ -24,7 +24,8 @@ class Thread(BaseModel):
     thread_id = columns.Integer(primary_key=True)  # counter.thread_id
     date_insert = columns.DateTime()
     privacy_index = columns.Integer()
-    subject = columns.Text()
+    importance_level = columns.Integer()
+    slug = columns.Text()
 
 
 class ThreadRecipientLookup(BaseModel):
