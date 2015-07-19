@@ -27,10 +27,15 @@ class Thread(Model):
     thread_id = IntType(required=True)
     date_insert = DateTimeType()
     date_update = DateTimeType()
-    slug = StringType()
-    security_level = IntType()
+    slug = StringType(required=True)
+    privacy_index = IntType(required=True)
+    importance_level = IntType(required=True)
     labels = ListType(StringType(), default=lambda: [])
     contacts = ListType(ModelType(Recipient), default=lambda: {})
+    total_count = IntType(required=True, default=0)
+    unread_count = IntType(required=True, default=0)
+    messages = ListType(StringType, default=lambda: [])
+    attachments = ListType(StringType, default=lambda: [])
 
     class Options:
         roles = {'default': blacklist('user_id')}
