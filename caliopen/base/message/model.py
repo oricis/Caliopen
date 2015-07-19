@@ -28,6 +28,15 @@ class Thread(BaseModel):
     slug = columns.Text()
 
 
+class ThreadCounter(BaseModel):
+
+    """Counters related to thread."""
+    user_id = columns.UUID(primary_key=True)
+    thread_id = columns.Integer(primary_key=True)
+    total_count = columns.Counter()
+    unread_count = columns.Counter()
+
+
 class ThreadRecipientLookup(BaseModel):
 
     """Lookup thread by a recipient name."""
