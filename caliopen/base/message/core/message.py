@@ -50,7 +50,7 @@ class Message(BaseUserCore, MixinCoreIndex):
                                          from_=message.from_,
                                          date=message.date,
                                          date_insert=datetime.utcnow(),
-                                         security_level=message.security_level,
+                                         privacy_index=message.privacy_index,
                                          subject=message.subject,
                                          external_message_id=
                                             message.external_message_id,

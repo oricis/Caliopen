@@ -63,7 +63,7 @@ class NewMessage(Model):
     from_ = StringType(required=True)
     subject = StringType()
     text = StringType(required=True)
-    security_level = IntType(default=0)
+    privacy_index = IntType(default=0)
     date = DateTimeType(required=True)
     tags = ListType(StringType)
     # XXX define a part parameter
