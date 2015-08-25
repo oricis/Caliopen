@@ -1,4 +1,5 @@
 from caliopen.base.config import Configuration
+from caliopen.api.base.config import includeme
 
 DEFAULT_LIMIT = 20
 
