@@ -1,14 +1,12 @@
 from caliopen.base.config import Configuration
-from .config import includeme
+
+DEFAULT_LIMIT = 20
 
 
 def make_url(url):
     # XXX : should use cornice.route_prefix configuration
     BASE_URL = Configuration('global').get('api.url', '/api')
     return '%s%s' % (BASE_URL, url)
-
-
-DEFAULT_LIMIT = Configuration('global').get('site.item_per_page', 20)
 
 
 class Api(object):
