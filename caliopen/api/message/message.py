@@ -38,7 +38,9 @@ class Message(Api):
         messages = CoreMessage.by_thread_id(self.user, thread_id,
                                             limit=self.get_limit(),
                                             offset=self.get_offset())
-        results = [ReturnIndexMessage.build(x).serialize() for x in messages]
+        results = []
+        for msg in messages.get('data', []):
+            results.append(ReturnIndexMessage.build(msg).serialize())
         return {'messages': results, 'total': messages['total']}
 
     @view(renderer='json', permission='authenticated')
