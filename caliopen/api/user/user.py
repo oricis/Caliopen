@@ -10,13 +10,13 @@ from caliopen.api.base.context import DefaultContext
 from .util import create_token
 
 from caliopen.base.user.core import User
-from caliopen.api.base import Api
+from caliopen.api.base import Api, make_url
 
 log = logging.getLogger(__name__)
 
 
 @resource(path='',
-          collection_path='/authentications',
+          collection_path=make_url('/authentications'),
           name='Authentication',
           factory=DefaultContext,
           )
