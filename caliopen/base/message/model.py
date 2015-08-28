@@ -63,7 +63,7 @@ class ThreadMessageLookup(BaseModel):
     user_id = columns.UUID(primary_key=True)
     external_message_id = columns.Text(primary_key=True)
     thread_id = columns.UUID()
-    message_id = columns.Integer()
+    message_id = columns.UUID()
 
 
 class Message(BaseModel):
@@ -71,7 +71,7 @@ class Message(BaseModel):
     """Message model."""
 
     user_id = columns.UUID(primary_key=True)
-    message_id = columns.Integer(primary_key=True)  # counter.message_id
+    message_id = columns.UUID(primary_key=True)
     thread_id = columns.UUID()
     type = columns.Text()
     from_ = columns.Text()

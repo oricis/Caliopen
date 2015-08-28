@@ -2,6 +2,7 @@
 """Caliop core user's messages."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
+import uuid
 
 from datetime import datetime
 
@@ -31,7 +32,7 @@ class Message(BaseUserCore, MixinCoreIndex):
         """Create a new message for a given user and thread."""
         message.validate()
         parent_id = message.external_parent_id
-        message_id = user.new_message_id()
+        message_id = uuid.uuid4()
         answer_to = lookup.message_id if lookup else None
 
         # TODO : index parts information
