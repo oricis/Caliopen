@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import logging
+import datetime
 
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.httpexceptions import HTTPBadRequest, HTTPUnauthorized
@@ -48,9 +49,12 @@ class AuthenticationAPI(Api):
         refresh_token = create_token(80)
 
         ttl = self.request.cache.client.ttl
+        expires_at = (datetime.datetime.utcnow() +
+                      datetime.timedelta(seconds=ttl))
         tokens = {'access_token': access_token,
                   'refresh_token': refresh_token,
-                  'expires_in': ttl}
+                  'expires_in': ttl,  # TODO : remove this value
+                  'expires_at': expires_at.utcformat()}
         self.request.cache.set(user.user_id, tokens)
 
         return {'user_id': user.user_id,
