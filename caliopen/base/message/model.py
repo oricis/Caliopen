@@ -21,7 +21,7 @@ class Thread(BaseModel):
 
     # XXX threading simplest model, most data are only in index
     user_id = columns.UUID(primary_key=True)
-    thread_id = columns.Integer(primary_key=True)  # counter.thread_id
+    thread_id = columns.UUID(primary_key=True)
     date_insert = columns.DateTime()
     privacy_index = columns.Integer()
     importance_level = columns.Integer()
@@ -32,7 +32,7 @@ class ThreadCounter(BaseModel):
 
     """Counters related to thread."""
     user_id = columns.UUID(primary_key=True)
-    thread_id = columns.Integer(primary_key=True)
+    thread_id = columns.UUID(primary_key=True)
     total_count = columns.Counter()
     unread_count = columns.Counter()
 
@@ -44,7 +44,7 @@ class ThreadRecipientLookup(BaseModel):
     # XXX temporary, until a recipients able lookup can be design
     user_id = columns.UUID(primary_key=True)
     recipient_name = columns.Text(primary_key=True)
-    thread_id = columns.Integer()
+    thread_id = columns.UUID()
 
 
 class ThreadExternalLookup(BaseModel):
@@ -53,7 +53,7 @@ class ThreadExternalLookup(BaseModel):
 
     user_id = columns.UUID(primary_key=True)
     external_id = columns.Text(primary_key=True)
-    thread_id = columns.Integer()
+    thread_id = columns.UUID()
 
 
 class ThreadMessageLookup(BaseModel):
@@ -62,7 +62,7 @@ class ThreadMessageLookup(BaseModel):
 
     user_id = columns.UUID(primary_key=True)
     external_message_id = columns.Text(primary_key=True)
-    thread_id = columns.Integer()
+    thread_id = columns.UUID()
     message_id = columns.Integer()
 
 
@@ -72,7 +72,7 @@ class Message(BaseModel):
 
     user_id = columns.UUID(primary_key=True)
     message_id = columns.Integer(primary_key=True)  # counter.message_id
-    thread_id = columns.Integer()                   # counter.thread_id
+    thread_id = columns.UUID()
     type = columns.Text()
     from_ = columns.Text()
     date = columns.DateTime()

@@ -2,6 +2,7 @@
 """Caliopen core thread related classes."""
 
 import logging
+import uuid
 from datetime import datetime
 
 from caliopen.base.exception import NotFound
@@ -66,7 +67,7 @@ class Thread(BaseUserCore, MixinCoreIndex):
 
     @classmethod
     def create_from_message(cls, user, message):
-        new_id = user.new_thread_id()
+        new_id = uuid.uuid4()
         contacts = [contact.to_primitive()
                     for contact in message.recipients]
         kwargs = {'user_id': user.user_id,
