@@ -55,6 +55,16 @@ class Counter(BaseUserCore):
 
     _model_class = ModelCounter
 
+    @classmethod
+    def get(cls, user_id, thread_id):
+        """Get Counter core object related to a thread_id."""
+        try:
+            obj = cls._model_class.get(user_id=user_id,
+                                       thread_id=thread_id)
+            return cls(obj)
+        except Exception:
+            return None
+
 
 class Thread(BaseUserCore, MixinCoreIndex):
 
@@ -114,7 +124,7 @@ class Thread(BaseUserCore, MixinCoreIndex):
         index.update({'doc': index_data})
         log.debug('Update index for thread %s' % self.thread_id)
         # Update counters
-        counters = Counter.get(user=self.user, thread_id=self.thread_id)
+        counters = Counter.get(self.user_id, self.thread_id)
         counters.model.total_count += 1
         counters.model.unread_count += 1
         counters.save()
