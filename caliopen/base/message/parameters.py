@@ -24,7 +24,7 @@ class Thread(Model):
     """Existing thread."""
 
     user_id = UUIDType()
-    thread_id = IntType(required=True)
+    thread_id = UUIDType(required=True)
     date_insert = DateTimeType()
     date_update = DateTimeType()
     slug = StringType(required=True)
@@ -82,7 +82,7 @@ class Message(NewMessage):
     """Existing message parameter."""
 
     user_id = UUIDType()
-    message_id = IntType(required=True)
+    message_id = UUIDType(required=True)
     date_insert = DateTimeType(required=True)
     text = StringType()
 
