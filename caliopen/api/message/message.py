@@ -8,13 +8,13 @@ from caliopen.base.message.core import (
     Message as CoreMessage,
     ReturnIndexMessage)
 from caliopen.base.message.parameters import NewMessage
-from caliopen.api.base import Api, make_url
+from caliopen.api.base import Api
 
 log = logging.getLogger(__name__)
 
 
-@resource(collection_path=make_url('/threads/{thread_id}/messages'),
-          path=make_url('/threads/{thread_id}/messages/{message_id}'))
+@resource(collection_path='/threads/{thread_id}/messages',
+          path='/threads/{thread_id}/messages/{message_id}')
 class Message(Api):
 
     def __init__(self, request):
@@ -76,7 +76,7 @@ class Message(Api):
         return idx_msg
 
 
-@resource(path=make_url('/mails/{raw_id}'))
+@resource(path='/raws/{raw_id}')
 class Raw(Api):
 
     def __init__(self, request):

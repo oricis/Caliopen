@@ -4,15 +4,15 @@ from cornice.resource import resource, view
 
 from caliopen.base.message.core import (Thread as UserThread,
                                         ReturnIndexThread)
-from caliopen.api.base import Api, make_url
+from caliopen.api.base import Api
 from caliopen.base.exception import NotFound
 from caliopen.api.base.exception import ResourceNotFound
 
 log = logging.getLogger(__name__)
 
 
-@resource(collection_path=make_url('/threads'),
-          path=make_url('/threads/{thread_id}'))
+@resource(collection_path='/threads',
+          path='/threads/{thread_id}')
 class Thread(Api):
 
     def __init__(self, request):
@@ -24,6 +24,7 @@ class Thread(Api):
         threads = UserThread.find_index(self.user, None,
                                         limit=self.get_limit(),
                                         offset=self.get_offset())
+        log.debug('Got threads %r' % threads['data'])
         results = [ReturnIndexThread.build(x).serialize()
                    for x in threads['data']]
         return {'threads': results}
