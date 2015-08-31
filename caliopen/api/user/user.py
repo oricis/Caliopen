@@ -11,7 +11,7 @@ from caliopen.api.base.context import DefaultContext
 from .util import create_token
 
 from caliopen.base.user.core import User
-from caliopen.api.base import Api, make_url
+from caliopen.api.base import Api
 
 from caliopen.base.user.returns import ReturnUser
 
@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 
 
 @resource(path='',
-          collection_path=make_url('/authentications'),
+          collection_path='/authentications',
           name='Authentication',
           factory=DefaultContext,
           )
@@ -62,7 +62,7 @@ class AuthenticationAPI(Api):
                 'tokens': tokens}
 
 
-@resource(path=make_url('/users/{user_id}'),
+@resource(path='/users/{user_id}',
           name='User',
           factory=DefaultContext)
 class UserAPI(Api):

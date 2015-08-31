@@ -21,13 +21,13 @@ from caliopen.base.user.returns import (ReturnContact,
 from caliopen.base.user.parameters import (NewContact,
                                            Contact as ContactParam)
 
-from caliopen.api.base import Api, make_url
+from caliopen.api.base import Api
 from caliopen.base.exception import NotFound
 from caliopen.api.base.exception import ResourceNotFound, ValidationError
 
 
-@resource(collection_path=make_url('/contacts'),
-          path=make_url('/contacts/{contact_id}'))
+@resource(collection_path='/contacts',
+          path='/contacts/{contact_id}')
 class Contact(Api):
 
     """Contact API."""
@@ -91,8 +91,8 @@ class BaseSubContactApi(Api):
         return {self.namespace: rets, 'total': objs['total']}
 
 
-@resource(collection_path=make_url('/contacts/{contact_id}/addresses'),
-          path=make_url('/contacts/{contact_id}/addresses/{address_id}'))
+@resource(collection_path='/contacts/{contact_id}/addresses',
+          path='/contacts/{contact_id}/addresses/{address_id}')
 class ContactAddress(BaseSubContactApi):
 
     core_class = CoreAddress
@@ -100,8 +100,8 @@ class ContactAddress(BaseSubContactApi):
     namespace = 'addresses'
 
 
-@resource(collection_path=make_url('/contacts/{contact_id}/emails'),
-          path=make_url('/contacts/{contact_id}/emails/{email_id}'))
+@resource(collection_path='/contacts/{contact_id}/emails',
+          path='/contacts/{contact_id}/emails/{email_id}')
 class ContactEmail(BaseSubContactApi):
 
     core_class = CoreEmail
@@ -109,8 +109,8 @@ class ContactEmail(BaseSubContactApi):
     namespace = 'emails'
 
 
-@resource(collection_path=make_url('/contacts/{contact_id}/ims'),
-          path=make_url('/contacts/{contact_id}/ims/{im_id}'))
+@resource(collection_path='/contacts/{contact_id}/ims',
+          path='/contacts/{contact_id}/ims/{im_id}')
 class ContactIM(BaseSubContactApi):
 
     core_class = CoreIM
@@ -118,8 +118,8 @@ class ContactIM(BaseSubContactApi):
     namespace = 'ims'
 
 
-@resource(collection_path=make_url('/contacts/{contact_id}/identities'),
-          path=make_url('/contacts/{contact_id}/identities/{identity_id}'))
+@resource(collection_path='/contacts/{contact_id}/identities',
+          path='/contacts/{contact_id}/identities/{identity_id}')
 class ContactSocialIdentity(BaseSubContactApi):
 
     core_class = CoreIdentity
@@ -127,8 +127,8 @@ class ContactSocialIdentity(BaseSubContactApi):
     namespace = 'identities'
 
 
-@resource(collection_path=make_url('/contacts/{contact_id}/phones'),
-          path=make_url('/contacts/{contact_id}/phones/{phone_id}'))
+@resource(collection_path='/contacts/{contact_id}/phones',
+          path='/contacts/{contact_id}/phones/{phone_id}')
 class ContactPhone(BaseSubContactApi):
 
     core_class = CorePhone
@@ -136,8 +136,8 @@ class ContactPhone(BaseSubContactApi):
     namespace = 'phones'
 
 
-@resource(collection_path=make_url('/contacts/{contact_id}/organizations'),
-          path=make_url('/contacts/{contact_id}/organizations/{org_id}'))
+@resource(collection_path='/contacts/{contact_id}/organizations',
+          path='/contacts/{contact_id}/organizations/{org_id}')
 class ContactOrganization(BaseSubContactApi):
 
     core_class = CoreOrganization
@@ -145,8 +145,8 @@ class ContactOrganization(BaseSubContactApi):
     namespace = 'organizations'
 
 
-@resource(collection_path=make_url('/contacts/{contact_id}/keys'),
-          path=make_url('/contacts/{contact_id}/keys/{key_id}'))
+@resource(collection_path='/contacts/{contact_id}/keys',
+          path='/contacts/{contact_id}/keys/{key_id}')
 class ContactPublicKey(BaseSubContactApi):
 
     core_class = CorePublicKey
