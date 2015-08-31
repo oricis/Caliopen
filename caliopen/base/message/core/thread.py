@@ -93,8 +93,10 @@ class Thread(BaseUserCore, MixinCoreIndex):
         thread = cls.create(**kwargs)
         log.debug('Created thread %s' % thread.thread_id)
         counters = Counter.create(user_id=user.user_id,
-                                  thread_id=thread.thread_id,
-                                  total_count=1, unread_count=1)
+                                  thread_id=thread.thread_id)
+        counters.model.total_count = 1
+        counters.model.unread_count = 1
+        counters.save()
         log.debug('Created thread counters %r' % counters)
         return thread
 
