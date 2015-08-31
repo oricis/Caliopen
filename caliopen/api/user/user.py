@@ -54,7 +54,7 @@ class AuthenticationAPI(Api):
         tokens = {'access_token': access_token,
                   'refresh_token': refresh_token,
                   'expires_in': ttl,  # TODO : remove this value
-                  'expires_at': expires_at.utcformat()}
+                  'expires_at': expires_at.isoformat()}
         self.request.cache.set(user.user_id, tokens)
 
         return {'user_id': user.user_id,
