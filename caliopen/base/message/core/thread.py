@@ -84,7 +84,7 @@ class Thread(BaseUserCore, MixinCoreIndex):
                   'thread_id': new_id,
                   'date_insert': datetime.utcnow(),
                   'privacy_index': message.privacy_index,
-                  'slug': message.text[:200],
+                  'text': message.text[:200],
                   '_indexed_extra': {'date_update': datetime.utcnow(),
                                      'contacts': contacts, }
                   }
@@ -110,7 +110,7 @@ class Thread(BaseUserCore, MixinCoreIndex):
             log.error('Index not found for thread %s' % self.thread_id)
             raise Exception
         index_data = {
-            'slug': message.text[:200],
+            'text': message.text[:200],
             'date_update': datetime.utcnow(),
             'privacy_index': self.privacy_index,
         }

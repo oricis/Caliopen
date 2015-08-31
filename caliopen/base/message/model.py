@@ -25,7 +25,7 @@ class Thread(BaseModel):
     date_insert = columns.DateTime()
     privacy_index = columns.Integer()
     importance_level = columns.Integer()
-    slug = columns.Text()
+    text = columns.Text()
 
 
 class ThreadCounter(BaseModel):
@@ -105,6 +105,6 @@ class IndexedThread(BaseIndexDocument, IndexTagMixin):
     """Thread from index server."""
 
     columns = ['thread_id', 'date_insert', 'date_update',
-               'privacy_index', 'slug', 'tags', 'contacts']
+               'privacy_index', 'text', 'tags', 'contacts']
 
     doc_type = 'threads'

@@ -27,7 +27,7 @@ class Thread(Model):
     thread_id = UUIDType(required=True)
     date_insert = DateTimeType()
     date_update = DateTimeType()
-    slug = StringType(required=True)
+    text = StringType(required=True)
     privacy_index = IntType(required=True, default=0)
     importance_level = IntType(required=True, default=0)
     labels = ListType(StringType(), default=lambda: [])
