@@ -64,6 +64,7 @@ class NewMessage(Model):
     subject = StringType()
     text = StringType(required=True)
     privacy_index = IntType(default=0)
+    importance_level = IntType(default=0)
     date = DateTimeType(required=True)
     tags = ListType(StringType)
     # XXX define a part parameter

@@ -171,6 +171,12 @@ class MailMessage(object):
         return 100.0
 
     @property
+    def importance_level(self):
+        """Return percent estimated importance level of this message."""
+        # XXX. real compute needed
+        return 0 if self.spam_level else random.randint(50, 100)
+
+    @property
     def lists(self):
         """List related to message."""
         lists = []
@@ -225,4 +231,5 @@ class MailMessage(object):
         # XXX well ....
         msg.privacy_index = (self.transport_privacy_index +
                              self.content_privacy_index) / 2
+        msg.importance_level = self.importance_level
         return msg

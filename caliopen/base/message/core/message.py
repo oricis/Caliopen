@@ -52,6 +52,8 @@ class Message(BaseUserCore, MixinCoreIndex):
                                          date=message.date,
                                          date_insert=datetime.utcnow(),
                                          privacy_index=message.privacy_index,
+                                         importance_level=
+                                            message.importance_level,
                                          subject=message.subject,
                                          external_message_id=
                                             message.external_message_id,

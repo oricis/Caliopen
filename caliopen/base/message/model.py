@@ -78,6 +78,7 @@ class Message(BaseModel):
     date = columns.DateTime()
     date_insert = columns.DateTime()
     privacy_index = columns.Integer()
+    importance_level = columns.Integer()
     subject = columns.Text()  # Subject of email, the message for short
     external_message_id = columns.Text()
     external_parent_id = columns.Text()
@@ -93,7 +94,8 @@ class IndexedMessage(BaseIndexDocument, IndexTagMixin):
 
     doc_type = 'messages'
     columns = ['message_id', 'type',
-               'external_message_id', 'thread_id', 'privacy_index',
+               'external_message_id', 'thread_id',
+               'privacy_index', 'importance_level',
                'subject', 'from_', 'date', 'date_insert',
                'text', 'size', 'answer_to', 'offset', 'headers',
                'tags', 'flags', 'parts', 'contacts',
@@ -105,6 +107,7 @@ class IndexedThread(BaseIndexDocument, IndexTagMixin):
     """Thread from index server."""
 
     columns = ['thread_id', 'date_insert', 'date_update',
-               'privacy_index', 'text', 'tags', 'contacts']
+               'privacy_index', 'importance_level',
+               'text', 'tags', 'contacts']
 
     doc_type = 'threads'
