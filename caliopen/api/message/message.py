@@ -34,7 +34,7 @@ class Message(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
-        thread_id = int(self.request.matchdict.get('thread_id'))
+        thread_id = self.request.matchdict.get('thread_id')
         messages = CoreMessage.by_thread_id(self.user, thread_id,
                                             limit=self.get_limit(),
                                             offset=self.get_offset())
@@ -45,7 +45,7 @@ class Message(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
-        thread_id = int(self.request.matchdict.get('thread_id'))
+        thread_id = self.request.matchdict.get('thread_id')
         reply_to = self.request.json.get('reply_to')
         if reply_to:
             parent = CoreMessage.get(self.user, reply_to)
