@@ -8,7 +8,7 @@ from datetime import datetime
 from caliopen.base.exception import NotFound
 from caliopen.base.core import BaseUserCore
 from caliopen.base.core.mixin import MixinCoreIndex
-from caliopen.base.parameters import ReturnIndexObject
+from caliopen.base.parameters import ReturnCoreObject, ReturnIndexObject
 
 from caliopen.base.user.core import Contact
 
@@ -172,4 +172,10 @@ class Thread(BaseUserCore, MixinCoreIndex):
 class ReturnIndexThread(ReturnIndexObject):
 
     _index_class = IndexedThread
+    _return_class = ThreadParam
+
+
+class ReturnThread(ReturnCoreObject):
+
+    _core_class = Thread
     _return_class = ThreadParam
