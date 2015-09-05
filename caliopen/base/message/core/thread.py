@@ -74,6 +74,7 @@ class Thread(BaseUserCore, MixinCoreIndex):
     _index_class = IndexedThread
 
     _pkey_name = 'thread_id'
+    _counter = None
 
     @classmethod
     def create_from_message(cls, user, message):
@@ -167,6 +168,24 @@ class Thread(BaseUserCore, MixinCoreIndex):
             else:
                 log.warn('Unknow user tag %r' % tag)
         return results
+
+    @property
+    def counters(self):
+        """return ``Counter`` core related to threads."""
+        # XXX need of a reify decorator ?
+        if not self._counter:
+            self._counter = Counter.get(self.user_id, self.thread_id)
+        return self._counter
+
+    @property
+    def total_count(self):
+        """Total messages counter."""
+        return self.counters.total_count
+
+    @property
+    def unread_count(self):
+        """Unread messages counter."""
+        return self.counters.unread_count
 
 
 class ReturnIndexThread(ReturnIndexObject):
