@@ -35,6 +35,7 @@ class ThreadCounter(BaseModel):
     thread_id = columns.UUID(primary_key=True)
     total_count = columns.Counter()
     unread_count = columns.Counter()
+    attachment_count = columns.Counter()
 
 
 class ThreadRecipientLookup(BaseModel):

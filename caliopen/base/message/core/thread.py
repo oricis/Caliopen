@@ -25,6 +25,16 @@ from caliopen.base.message.parameters import Thread as ThreadParam
 log = logging.getLogger(__name__)
 
 
+def count_attachment(message):
+    """Return number of attachment in message."""
+    cpt = 0
+    if message.parts:
+        for p in message.parts:
+            if p.filename:
+                cpt += 1
+    return cpt
+
+
 class ThreadExternalLookup(BaseUserCore):
 
     """Lookup thread by external id (facebook, gmail, ...)."""
@@ -97,6 +107,7 @@ class Thread(BaseUserCore, MixinCoreIndex):
                                   thread_id=thread.thread_id)
         counters.model.total_count = 1
         counters.model.unread_count = 1
+        counters.model.attachment_count = count_attachment(message)
         counters.save()
         log.debug('Created thread counters %r' % counters)
         return thread
@@ -130,6 +141,9 @@ class Thread(BaseUserCore, MixinCoreIndex):
         counters = Counter.get(self.user_id, self.thread_id)
         counters.model.total_count += 1
         counters.model.unread_count += 1
+        nb_attachments = count_attachment(message)
+        if nb_attachments:
+            counters.model.attachment_count += nb_attachments
         counters.save()
         return True
 
@@ -186,6 +200,11 @@ class Thread(BaseUserCore, MixinCoreIndex):
     def unread_count(self):
         """Unread messages counter."""
         return self.counters.unread_count
+
+    @property
+    def attachment_count(self):
+        """Total number of attachments."""
+        return self.counters.attachment_count
 
 
 class ReturnIndexThread(ReturnIndexObject):

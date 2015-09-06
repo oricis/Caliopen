@@ -8,6 +8,7 @@ from schematics.types.compound import ListType, ModelType, DictType
 from schematics.transforms import blacklist
 
 RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc']
+MESSAGE_TYPES = ['email']
 
 
 class Recipient(Model):
@@ -34,13 +35,10 @@ class Thread(Model):
     contacts = ListType(ModelType(Recipient), default=lambda: {})
     total_count = IntType(required=True, default=0)
     unread_count = IntType(required=True, default=0)
-    messages = ListType(StringType, default=lambda: [])
-    attachments = ListType(StringType, default=lambda: [])
+    attachment_count = IntType(default=0)
 
     class Options:
         roles = {'default': blacklist('user_id')}
-
-MESSAGE_TYPES = ['email']
 
 
 class Part(Model):
