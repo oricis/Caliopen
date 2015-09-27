@@ -16,6 +16,21 @@ from caliopen.base.store.model import BaseModel
 log = logging.getLogger(__name__)
 
 
+class UserName(BaseModel):
+
+    """Maintain unicity of user name and permit lookup to user_id."""
+
+    name = columns.Text(primary_key=True)
+    user_id = columns.UUID(required=True)
+
+
+class ReservedName(BaseModel):
+
+    """List of reserved user names."""
+
+    name = columns.Text(primary_key=True)
+
+
 class User(BaseModel):
 
     """User main model."""
