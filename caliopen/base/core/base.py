@@ -42,9 +42,15 @@ class BaseCore(object):
     _index_class = None
     _pkey_name = 'id'
 
-    def __init__(self, model):
-        """Initialize a core object with a model."""
+    _index_data = None
+
+    def __init__(self, model, index_data=None):
+        """Initialize a core object with a model.
+
+        Data from index entry can be added to instance.
+        """
         self.model = model
+        self._index_data = index_data
 
     @classmethod
     def create(cls, **kwargs):
@@ -53,16 +59,16 @@ class BaseCore(object):
         obj = cls._model_class.create(**kwargs)
         obj = cls(obj)
         if cls._index_class:
-            cls._index_class.create(obj, **indexed_extra)
+            obj._index_data = cls._index_class.create(obj, **indexed_extra)
         return obj
 
     @classmethod
-    def get(cls, key):
+    def get(cls, key, index_data=None):
         """Get a core object by key."""
         params = {cls._pkey_name: key}
         obj = cls._model_class.get(**params)
         if obj:
-            return cls(obj)
+            return cls(obj, index_data)
         raise NotFound('%s #%s not found' % (cls._model_class.__name__, key))
 
     def save(self):
@@ -117,12 +123,12 @@ class BaseUserCore(BaseCore):
     """Used by objects related to only one user (most core)."""
 
     @classmethod
-    def get(cls, user, obj_id):
+    def get(cls, user, obj_id, index_data=None):
         """Get a core object belong to user, with model related id."""
         param = {cls._pkey_name: obj_id}
         obj = cls._model_class.get(user_id=user.user_id, **param)
         if obj:
-            return cls(obj)
+            return cls(obj, index_data)
         raise NotFound('%s #%s not found for user %s' %
                        (cls.__class__.name, obj_id, user.user_id))
 
