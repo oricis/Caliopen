@@ -38,7 +38,7 @@ class AuthenticationAPI(Api):
         Store generated tokens in a cache entry related to user_id
         and return a structure with this tokens for client usage.
         """
-        params = self.request.params
+        params = self.request.json_body
         user = User.authenticate(params['username'], params['password'])
         if not user:
             self._raise()
