@@ -206,6 +206,29 @@ class Thread(BaseUserCore, MixinCoreIndex):
         """Total number of attachments."""
         return self.counters.attachment_count
 
+    @property
+    def contacts(self):
+        if self._index_data:
+            return self._index_data.get('contacts', [])
+        return []
+
+    @property
+    def tags(self):
+        if self._index_data:
+            return self._index_data.get('tags', [])
+        return []
+
+    @classmethod
+    def main_view(cls, user, limit, offset):
+        """Build the main view results."""
+        index_threads = cls.find_index(user, None,
+                                       limit=limit,
+                                       offset=offset)
+
+        core_threads = [cls.get(user, x['thread_id'], index_data=x)
+                        for x in index_threads['data']]
+        return {'threads': core_threads, 'total': index_threads['total']}
+
 
 class ReturnIndexThread(ReturnIndexObject):
 
