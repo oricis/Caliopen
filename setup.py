@@ -7,7 +7,6 @@ README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
-    'caliopen.base',
     'caliopen.base.message',
     'caliopen.messaging',
     # 'git+https://github.com/ekini/gsmtpd.git'  # OK I shouldn't, or not ...
