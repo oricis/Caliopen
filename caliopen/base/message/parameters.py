@@ -31,7 +31,7 @@ class Thread(Model):
     text = StringType(required=True)
     privacy_index = IntType(required=True, default=0)
     importance_level = IntType(required=True, default=0)
-    labels = ListType(StringType(), default=lambda: [])
+    tags = ListType(StringType(), default=lambda: [])
     contacts = ListType(ModelType(Recipient), default=lambda: {})
     total_count = IntType(required=True, default=0)
     unread_count = IntType(required=True, default=0)
