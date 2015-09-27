@@ -2,12 +2,13 @@
 """Caliopen core thread related classes."""
 
 import logging
+import uuid
 from datetime import datetime
 
 from caliopen.base.exception import NotFound
 from caliopen.base.core import BaseUserCore
 from caliopen.base.core.mixin import MixinCoreIndex
-from caliopen.base.parameters import ReturnIndexObject
+from caliopen.base.parameters import ReturnCoreObject, ReturnIndexObject
 
 from caliopen.base.user.core import Contact
 
@@ -15,11 +16,23 @@ from caliopen.base.message.model import  \
     (ThreadExternalLookup as ModelExternalLookup,
      ThreadRecipientLookup as ModelRecipientLookup,
      ThreadMessageLookup as ModelMessageLookup,
-     Thread as ModelThread, IndexedThread)
+     Thread as ModelThread,
+     ThreadCounter as ModelCounter,
+     IndexedThread)
 from caliopen.base.message.parameters import Thread as ThreadParam
 
 
 log = logging.getLogger(__name__)
+
+
+def count_attachment(message):
+    """Return number of attachment in message."""
+    cpt = 0
+    if message.parts:
+        for p in message.parts:
+            if p.filename:
+                cpt += 1
+    return cpt
 
 
 class ThreadExternalLookup(BaseUserCore):
@@ -46,6 +59,23 @@ class ThreadMessageLookup(BaseUserCore):
     _pkey_name = 'external_message_id'
 
 
+class Counter(BaseUserCore):
+
+    """Counters related to thread."""
+
+    _model_class = ModelCounter
+
+    @classmethod
+    def get(cls, user_id, thread_id):
+        """Get Counter core object related to a thread_id."""
+        try:
+            obj = cls._model_class.get(user_id=user_id,
+                                       thread_id=thread_id)
+            return cls(obj)
+        except Exception:
+            return None
+
+
 class Thread(BaseUserCore, MixinCoreIndex):
 
     """Thread core object."""
@@ -54,32 +84,39 @@ class Thread(BaseUserCore, MixinCoreIndex):
     _index_class = IndexedThread
 
     _pkey_name = 'thread_id'
+    _counter = None
 
     @classmethod
     def create_from_message(cls, user, message):
-        new_id = user.new_thread_id()
+        new_id = uuid.uuid4()
         contacts = [contact.to_primitive()
                     for contact in message.recipients]
         kwargs = {'user_id': user.user_id,
                   'thread_id': new_id,
                   'date_insert': datetime.utcnow(),
-                  'security_level': message.security_level,
-                  'subject': message.subject,
+                  'privacy_index': message.privacy_index,
+                  'text': message.text[:200],
                   '_indexed_extra': {'date_update': datetime.utcnow(),
-                                     'slug': message.text[:200],
                                      'contacts': contacts, }
                   }
         if message.tags:
             kwargs['_indexed_extra']['tags'] = message.tags
         thread = cls.create(**kwargs)
         log.debug('Created thread %s' % thread.thread_id)
+        counters = Counter.create(user_id=user.user_id,
+                                  thread_id=thread.thread_id)
+        counters.model.total_count = 1
+        counters.model.unread_count = 1
+        counters.model.attachment_count = count_attachment(message)
+        counters.save()
+        log.debug('Created thread counters %r' % counters)
         return thread
 
     def update_from_message(self, message):
         # XXX concurrency will have to be considered correctly
-        if message.security_level < self.security_level:
+        if message.privacy_index < self.privacy_index:
             # XXX : use min value, is it correct ?
-            self.security_level = message.security_level
+            self.privacy_index = message.privacy_index
             self.save()
         index = self._index_class.get(self.user_id,
                                       self.thread_id)
@@ -87,9 +124,9 @@ class Thread(BaseUserCore, MixinCoreIndex):
             log.error('Index not found for thread %s' % self.thread_id)
             raise Exception
         index_data = {
-            'slug': message.text[:200],
+            'text': message.text[:200],
             'date_update': datetime.utcnow(),
-            'security_level': self.security_level,
+            'privacy_index': self.privacy_index,
         }
         if message.recipients:
             contacts = [x.to_primitive() for x in message.recipients]
@@ -100,6 +137,14 @@ class Thread(BaseUserCore, MixinCoreIndex):
             index_data.update({'tags': message.tags})
         index.update({'doc': index_data})
         log.debug('Update index for thread %s' % self.thread_id)
+        # Update counters
+        counters = Counter.get(self.user_id, self.thread_id)
+        counters.model.total_count += 1
+        counters.model.unread_count += 1
+        nb_attachments = count_attachment(message)
+        if nb_attachments:
+            counters.model.attachment_count += nb_attachments
+        counters.save()
         return True
 
     @classmethod
@@ -138,8 +183,60 @@ class Thread(BaseUserCore, MixinCoreIndex):
                 log.warn('Unknow user tag %r' % tag)
         return results
 
+    @property
+    def counters(self):
+        """return ``Counter`` core related to threads."""
+        # XXX need of a reify decorator ?
+        if not self._counter:
+            self._counter = Counter.get(self.user_id, self.thread_id)
+        return self._counter
+
+    @property
+    def total_count(self):
+        """Total messages counter."""
+        return self.counters.total_count
+
+    @property
+    def unread_count(self):
+        """Unread messages counter."""
+        return self.counters.unread_count
+
+    @property
+    def attachment_count(self):
+        """Total number of attachments."""
+        return self.counters.attachment_count
+
+    @property
+    def contacts(self):
+        if self._index_data:
+            return self._index_data.get('contacts', [])
+        return []
+
+    @property
+    def tags(self):
+        if self._index_data:
+            return self._index_data.get('tags', [])
+        return []
+
+    @classmethod
+    def main_view(cls, user, limit, offset):
+        """Build the main view results."""
+        index_threads = cls.find_index(user, None,
+                                       limit=limit,
+                                       offset=offset)
+
+        core_threads = [cls.get(user, x['thread_id'], index_data=x)
+                        for x in index_threads['data']]
+        return {'threads': core_threads, 'total': index_threads['total']}
+
 
 class ReturnIndexThread(ReturnIndexObject):
 
     _index_class = IndexedThread
+    _return_class = ThreadParam
+
+
+class ReturnThread(ReturnCoreObject):
+
+    _core_class = Thread
     _return_class = ThreadParam

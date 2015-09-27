@@ -21,10 +21,21 @@ class Thread(BaseModel):
 
     # XXX threading simplest model, most data are only in index
     user_id = columns.UUID(primary_key=True)
-    thread_id = columns.Integer(primary_key=True)  # counter.thread_id
+    thread_id = columns.UUID(primary_key=True)
     date_insert = columns.DateTime()
-    security_level = columns.Integer()
-    subject = columns.Text()
+    privacy_index = columns.Integer()
+    importance_level = columns.Integer()
+    text = columns.Text()
+
+
+class ThreadCounter(BaseModel):
+
+    """Counters related to thread."""
+    user_id = columns.UUID(primary_key=True)
+    thread_id = columns.UUID(primary_key=True)
+    total_count = columns.Counter()
+    unread_count = columns.Counter()
+    attachment_count = columns.Counter()
 
 
 class ThreadRecipientLookup(BaseModel):
@@ -34,7 +45,7 @@ class ThreadRecipientLookup(BaseModel):
     # XXX temporary, until a recipients able lookup can be design
     user_id = columns.UUID(primary_key=True)
     recipient_name = columns.Text(primary_key=True)
-    thread_id = columns.Integer()
+    thread_id = columns.UUID()
 
 
 class ThreadExternalLookup(BaseModel):
@@ -43,7 +54,7 @@ class ThreadExternalLookup(BaseModel):
 
     user_id = columns.UUID(primary_key=True)
     external_id = columns.Text(primary_key=True)
-    thread_id = columns.Integer()
+    thread_id = columns.UUID()
 
 
 class ThreadMessageLookup(BaseModel):
@@ -52,8 +63,8 @@ class ThreadMessageLookup(BaseModel):
 
     user_id = columns.UUID(primary_key=True)
     external_message_id = columns.Text(primary_key=True)
-    thread_id = columns.Integer()
-    message_id = columns.Integer()
+    thread_id = columns.UUID()
+    message_id = columns.UUID()
 
 
 class Message(BaseModel):
@@ -61,13 +72,14 @@ class Message(BaseModel):
     """Message model."""
 
     user_id = columns.UUID(primary_key=True)
-    message_id = columns.Integer(primary_key=True)  # counter.message_id
-    thread_id = columns.Integer()                   # counter.thread_id
+    message_id = columns.UUID(primary_key=True)
+    thread_id = columns.UUID()
     type = columns.Text()
     from_ = columns.Text()
     date = columns.DateTime()
     date_insert = columns.DateTime()
-    security_level = columns.Integer()
+    privacy_index = columns.Integer()
+    importance_level = columns.Integer()
     subject = columns.Text()  # Subject of email, the message for short
     external_message_id = columns.Text()
     external_parent_id = columns.Text()
@@ -83,7 +95,8 @@ class IndexedMessage(BaseIndexDocument, IndexTagMixin):
 
     doc_type = 'messages'
     columns = ['message_id', 'type',
-               'external_message_id', 'thread_id', 'security_level',
+               'external_message_id', 'thread_id',
+               'privacy_index', 'importance_level',
                'subject', 'from_', 'date', 'date_insert',
                'text', 'size', 'answer_to', 'offset', 'headers',
                'tags', 'flags', 'parts', 'contacts',
@@ -95,6 +108,7 @@ class IndexedThread(BaseIndexDocument, IndexTagMixin):
     """Thread from index server."""
 
     columns = ['thread_id', 'date_insert', 'date_update',
-               'security_level', 'slug', 'tags', 'contacts']
+               'privacy_index', 'importance_level',
+               'text', 'tags', 'contacts']
 
     doc_type = 'threads'

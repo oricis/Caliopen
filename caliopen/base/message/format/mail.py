@@ -142,14 +142,14 @@ class MailMessage(object):
         return MailPart(part)
 
     @property
-    def transport_security_level(self):
-        """Evaluate transport security level."""
+    def transport_privacy_index(self):
+        """Evaluate transport privacy index."""
         # XXX : TODO
         return random.randint(0, 50)
 
     @property
-    def content_security_level(self):
-        """Evaluate content security level."""
+    def content_privacy_index(self):
+        """Evaluate content privacy index."""
         # XXX: real evaluation needed ;)
         if 'PGP' in [x.content_type for x in self.parts]:
             return random.randint(50, 100)
@@ -169,6 +169,12 @@ class MailMessage(object):
         if score >= 5.0 and score < 15.0:
             return min(score * 10, 100.0)
         return 100.0
+
+    @property
+    def importance_level(self):
+        """Return percent estimated importance level of this message."""
+        # XXX. real compute needed
+        return 0 if self.spam_level else random.randint(50, 100)
 
     @property
     def lists(self):
@@ -223,6 +229,7 @@ class MailMessage(object):
         msg.external_parent_id = self.external_parent_id
         msg.external_message_id = self.external_message_id
         # XXX well ....
-        msg.security_level = (self.transport_security_level +
-                              self.content_security_level) / 2
+        msg.privacy_index = (self.transport_privacy_index +
+                             self.content_privacy_index) / 2
+        msg.importance_level = self.importance_level
         return msg

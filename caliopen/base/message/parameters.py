@@ -8,6 +8,7 @@ from schematics.types.compound import ListType, ModelType, DictType
 from schematics.transforms import blacklist
 
 RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc']
+MESSAGE_TYPES = ['email']
 
 
 class Recipient(Model):
@@ -24,18 +25,20 @@ class Thread(Model):
     """Existing thread."""
 
     user_id = UUIDType()
-    thread_id = IntType(required=True)
+    thread_id = UUIDType(required=True)
     date_insert = DateTimeType()
     date_update = DateTimeType()
-    slug = StringType()
-    security_level = IntType()
-    labels = ListType(StringType(), default=lambda: [])
+    text = StringType(required=True)
+    privacy_index = IntType(required=True, default=0)
+    importance_level = IntType(required=True, default=0)
+    tags = ListType(StringType(), default=lambda: [])
     contacts = ListType(ModelType(Recipient), default=lambda: {})
+    total_count = IntType(required=True, default=0)
+    unread_count = IntType(required=True, default=0)
+    attachment_count = IntType(default=0)
 
     class Options:
         roles = {'default': blacklist('user_id')}
-
-MESSAGE_TYPES = ['email']
 
 
 class Part(Model):
@@ -58,7 +61,8 @@ class NewMessage(Model):
     from_ = StringType(required=True)
     subject = StringType()
     text = StringType(required=True)
-    security_level = IntType(default=0)
+    privacy_index = IntType(default=0)
+    importance_level = IntType(default=0)
     date = DateTimeType(required=True)
     tags = ListType(StringType)
     # XXX define a part parameter
@@ -77,7 +81,7 @@ class Message(NewMessage):
     """Existing message parameter."""
 
     user_id = UUIDType()
-    message_id = IntType(required=True)
+    message_id = UUIDType(required=True)
     date_insert = DateTimeType(required=True)
     text = StringType()
 
