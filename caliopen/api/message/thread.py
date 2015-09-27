@@ -3,7 +3,7 @@ import logging
 from cornice.resource import resource, view
 
 from caliopen.base.message.core import (Thread as UserThread,
-                                        ReturnIndexThread)
+                                        ReturnThread)
 from caliopen.api.base import Api
 from caliopen.base.exception import NotFound
 from caliopen.api.base.exception import ResourceNotFound
@@ -21,13 +21,12 @@ class Thread(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
-        threads = UserThread.find_index(self.user, None,
-                                        limit=self.get_limit(),
-                                        offset=self.get_offset())
-        log.debug('Got threads %r' % threads['data'])
-        results = [ReturnIndexThread.build(x).serialize()
-                   for x in threads['data']]
-        return {'threads': results}
+        threads = UserThread.main_view(self.user,
+                                       limit=self.get_limit(),
+                                       offset=self.get_offset())
+        results = [ReturnThread.build(x).serialize()
+                   for x in threads['threads']]
+        return {'threads': results, 'total': threads['total']}
 
     @view(renderer='json', permission='authenticated')
     def get(self):
@@ -36,4 +35,4 @@ class Thread(Api):
             thread = UserThread.get(self.user, thread_id)
         except NotFound:
             raise ResourceNotFound('No such thread %r' % thread_id)
-        return {'thread': ReturnIndexThread.build(thread).serialize()}
+        return {'thread': ReturnThread.build(thread).serialize()}
