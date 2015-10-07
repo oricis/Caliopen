@@ -14,6 +14,7 @@ from caliopen.base.user.core import User
 from caliopen.api.base import Api
 
 from caliopen.base.user.returns import ReturnUser
+from caliopen.base.exception import CredentialException
 
 log = logging.getLogger(__name__)
 
@@ -39,7 +40,12 @@ class AuthenticationAPI(Api):
         and return a structure with this tokens for client usage.
         """
         params = self.request.json_body
-        user = User.authenticate(params['username'], params['password'])
+
+        try:
+            user = User.authenticate(params['username'], params['password'])
+        except CredentialException:
+            self._raise()
+
         if not user:
             self._raise()
 
