@@ -2,12 +2,17 @@
 
 from __future__ import unicode_literals
 
+import logging
+
+from pyramid.httpexception import HTTPServerError
 from caliopen.base.helpers.connection import connect_storage
 from caliopen.api.base.exception import (ValidationError, AuthenticationError,
                                          AuthorizationError, ResourceNotFound)
 
 from caliopen.api.base.renderer import (TextPlainRenderer, JsonRenderer,
                                         PartRenderer)
+
+log = logging.getLogger(__name__)
 
 
 def format_error(exc, request, code, name):
@@ -38,6 +43,11 @@ def resource_not_found_error(exc, request):
     return format_error(exc, request, 404, 'Resource not found')
 
 
+def internal_server_error(exc, request):
+    """Raise HTTP 500 correctly."""
+    return format_error(exc, request, 404, 'Internal server error')
+
+
 def includeme(config):
     """Configure REST API."""
     connect_storage()
@@ -62,3 +72,8 @@ def includeme(config):
     config.add_view(resource_not_found_error,
                     context=ResourceNotFound,
                     renderer='simplejson')
+    config.add_view(internal_server_error,
+                    context=HTTPServerError,
+                    render='simplejson')
+    config.commit()
+    log.info('Base API configured')
