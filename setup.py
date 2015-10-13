@@ -11,6 +11,7 @@ requires = [
     'pyramid',
     'zope.interface',
     'cornice',
+    'colander',
     ]
 
 extras_require = {
