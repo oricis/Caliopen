@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import logging
 
-from pyramid.httpexception import HTTPServerError
+from pyramid.httpexceptions import HTTPServerError
 from caliopen.base.helpers.connection import connect_storage
 from caliopen.api.base.exception import (ValidationError, AuthenticationError,
                                          AuthorizationError, ResourceNotFound)
@@ -72,8 +72,8 @@ def includeme(config):
     config.add_view(resource_not_found_error,
                     context=ResourceNotFound,
                     renderer='simplejson')
-    config.add_view(internal_server_error,
-                    context=HTTPServerError,
-                    render='simplejson')
+    # config.add_view(internal_server_error,
+    #                context=HTTPServerError,
+    #                render='simplejson')
     config.commit()
     log.info('Base API configured')
