@@ -4,31 +4,38 @@ from __future__ import unicode_literals
 import logging
 import datetime
 
+import colander
 from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.httpexceptions import HTTPBadRequest, HTTPUnauthorized
 from cornice.resource import resource, view
 from caliopen.api.base.context import DefaultContext
 from .util import create_token
 
 from caliopen.base.user.core import User
 from caliopen.api.base import Api
+from caliopen.api.base.exception import AuthenticationError, ValidationError
 
 from caliopen.base.user.returns import ReturnUser
 
 log = logging.getLogger(__name__)
 
 
+class UserAuthenticationParameter(colander.MappingSchema):
+
+    """Parameter for user authentication."""
+
+    username = colander.SchemaNode(colander.String(), location='body')
+    password = colander.SchemaNode(colander.String(), location='body')
+
+
 @resource(path='',
           collection_path='/authentications',
           name='Authentication',
+          schema=UserAuthenticationParameter,
           factory=DefaultContext,
           )
 class AuthenticationAPI(Api):
 
     """User authentication API."""
-
-    def _raise(self):
-        raise HTTPBadRequest(explanation='Bad username or password')
 
     @view(renderer='json', permission=NO_PERMISSION_REQUIRED)
     def collection_post(self):
@@ -38,12 +45,14 @@ class AuthenticationAPI(Api):
         Store generated tokens in a cache entry related to user_id
         and return a structure with this tokens for client usage.
         """
-        params = self.request.json_body
-        user = User.authenticate(params['username'], params['password'])
-        if not user:
-            self._raise()
-
-        log.info('Authenticate user {username}'.format(username=user.name))
+        params = self.request.validated
+        try:
+            user = User.authenticate(params['username'], params['password'])
+            log.info('Authenticate user {username}'.format(username=user.name))
+        except Exception as exc:
+            log.info('Authentication error for {name} : {error}'.
+                     format(name=params['username'], error=exc))
+            raise AuthenticationError(exc)
 
         access_token = create_token()
         refresh_token = create_token(80)
@@ -73,6 +82,6 @@ class UserAPI(Api):
     def get(self):
         user_id = self.request.matchdict.get('user_id')
         if user_id != self.request.authenticated_userid.user_id:
-            raise HTTPUnauthorized()
+            raise AuthenticationError()
         user = User.get(user_id)
         return ReturnUser.build(user).serialize()
