@@ -71,16 +71,24 @@ class AuthenticationAPI(Api):
                 'tokens': tokens}
 
 
+class UserGetParameter(colander.MappingSchema):
+
+    """Parameter to get user informations."""
+
+    user_id = colander.SchemaNode(colander.String(), location='path')
+
+
 @resource(path='/users/{user_id}',
           name='User',
-          factory=DefaultContext)
+          factory=DefaultContext,
+          schema=UserGetParameter)
 class UserAPI(Api):
 
     """User API."""
 
     @view(renderer='json', permission='authenticated')
     def get(self):
-        user_id = self.request.matchdict.get('user_id')
+        user_id = self.request.validated['user_id']
         if user_id != self.request.authenticated_userid.user_id:
             raise AuthenticationError()
         user = User.get(user_id)
