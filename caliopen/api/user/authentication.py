@@ -10,13 +10,9 @@ from pyramid.security import Everyone, NO_PERMISSION_REQUIRED
 
 
 from caliopen.base.user.core import User
+from caliopen.api.base.exception import AuthenticationError
 
 log = logging.getLogger(__name__)
-
-
-class _NotAuthenticated(Exception):
-
-    """Raised when the authenticated user cannot be built."""
 
 
 class AuthenticatedUser(object):
@@ -25,22 +21,22 @@ class AuthenticatedUser(object):
 
     def __init__(self, request):
         if 'Authorization' not in request.headers:
-            raise _NotAuthenticated
+            raise AuthenticationError
 
         authorization = request.headers['Authorization'].split()
         if authorization[0] != 'Bearer' and len(authorization) != 2:
-            raise _NotAuthenticated
+            raise AuthenticationError
 
         log.debug('Authentication via Access Token')
         auth = base64.decodestring(authorization[1])
         # authentication values is user_id:token
         if ':' not in auth:
-            raise _NotAuthenticated
+            raise AuthenticationError
 
         user_id, token = auth.split(':')
         infos = request.cache.get(user_id)
         if infos.get('access_token') != token:
-            raise _NotAuthenticated
+            raise AuthenticationError
 
         self.user_id = user_id
         self.access_token = token
@@ -74,7 +70,7 @@ class AuthenticationPolicy(object):
 
         try:
             request._CaliopenUser = AuthenticatedUser(request)
-        except _NotAuthenticated:
+        except AuthenticationError:
             return None
 
         return request._CaliopenUser
@@ -88,7 +84,7 @@ class AuthenticationPolicy(object):
     def unauthenticated_userid(self, request):
         try:
             return AuthenticatedUser(request)
-        except _NotAuthenticated:
+        except AuthenticationError:
             return None
 
     def remember(self, request, principal, **kw):
