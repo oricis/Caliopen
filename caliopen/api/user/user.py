@@ -15,6 +15,7 @@ from caliopen.api.base import Api
 from caliopen.api.base.exception import AuthenticationError, ValidationError
 
 from caliopen.base.user.returns import ReturnUser
+from caliopen.base.exception import CredentialException
 
 log = logging.getLogger(__name__)
 
