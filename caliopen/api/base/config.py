@@ -11,6 +11,7 @@ from caliopen.api.base.exception import (ValidationError, AuthenticationError,
 
 from caliopen.api.base.renderer import (TextPlainRenderer, JsonRenderer,
                                         PartRenderer)
+from caliopen.api.base.deserializer import json_deserializer
 
 log = logging.getLogger(__name__)
 
@@ -75,5 +76,7 @@ def includeme(config):
     # config.add_view(internal_server_error,
     #                context=HTTPServerError,
     #                render='simplejson')
+    config.add_cornice_deserializer('application/json',
+                                    json_deserializer)
     config.commit()
     log.info('Base API configured')
