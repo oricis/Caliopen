@@ -12,7 +12,7 @@ from .util import create_token
 
 from caliopen.base.user.core import User
 from caliopen.api.base import Api
-from caliopen.api.base.exception import AuthenticationError, ValidationError
+from caliopen.api.base.exception import AuthenticationError
 
 from caliopen.base.user.returns import ReturnUser
 from caliopen.base.exception import CredentialException
@@ -53,7 +53,7 @@ class AuthenticationAPI(Api):
         except Exception as exc:
             log.info('Authentication error for {name} : {error}'.
                      format(name=params['username'], error=exc))
-            raise AuthenticationError(exc)
+            raise AuthenticationError()
 
         access_token = create_token()
         refresh_token = create_token(80)
