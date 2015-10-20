@@ -1,0 +1,26 @@
+delivery_agent:
+    direct: True
+
+index_server:
+    url: http://localhost:9200
+
+cassandra:
+    keyspace: caliopen
+    hosts:
+        - '127.0.0.1'
+    consistency_level: 1
+
+system:
+    default_tags:
+        -
+            label: INBOX
+            background: '#000000'
+            color: black
+        -
+            label: SPAM
+            background: '#AAAAAA'
+            color: white
+        -
+            label: IMPORTANT
+            background: '#FF0000'
+            color: white
