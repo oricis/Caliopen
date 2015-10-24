@@ -89,6 +89,16 @@ class UserPostPararameter(colander.MappingSchema):
     password = colander.SchemaNode(colander.String(), location='body')
 
 
+def no_such_user(request):
+    """Validator that an user does not exist."""
+    try:
+        user = User.by_name(request.validated['username'])
+        if user:
+            raise AuthenticationError('User already exist')
+    except NotFound:
+        pass
+
+
 @resource(path='/users/{user_id}',
           collection_path='/users',
           name='User',
@@ -110,15 +120,10 @@ class UserAPI(Api):
 
     @view(renderer='json',
           permission=NO_PERMISSION_REQUIRED,
-          schema=UserPostPararameter)
+          schema=UserPostPararameter,
+          validators=no_such_user)
     def collection_post(self):
         """Create a new user."""
-        try:
-            user = User.by_name(self.request.validated['username'])
-            if user:
-                raise AuthenticationError('User already exist')
-        except NotFound:
-            pass
 
         param = NewUser({'name': self.request.validated['username'],
                          'password': self.request.validated['password']})
