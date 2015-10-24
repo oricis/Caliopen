@@ -6,7 +6,6 @@ import datetime
 
 import colander
 from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.httpexceptions import HTTPCreated
 from cornice.resource import resource, view
 
 from caliopen.api.base.context import DefaultContext
@@ -82,7 +81,7 @@ class UserGetParameter(colander.MappingSchema):
     user_id = colander.SchemaNode(colander.String(), location='path')
 
 
-class PostUserPararameter(colander.MappingSchema):
+class UserPostPararameter(colander.MappingSchema):
 
     """Parameter to create a new user."""
 
@@ -111,7 +110,7 @@ class UserAPI(Api):
 
     @view(renderer='json',
           permission=NO_PERMISSION_REQUIRED,
-          schema=PostUserPararameter)
+          schema=UserPostPararameter)
     def collection_post(self):
         """Create a new user."""
         try:
@@ -127,5 +126,5 @@ class UserAPI(Api):
         log.info('Created user {} with name {}'.
                  format(user.user_id, user.name))
         user_url = self.request.route_path('User', user_id=user.user_id)
-        return HTTPCreated({'location': user_url},
-                           headers={'Location': user_url})
+        self.request.response.location = user_url.encode('utf-8')
+        return {'location': user_url}
