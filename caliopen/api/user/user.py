@@ -127,7 +127,10 @@ class UserAPI(Api):
 
         param = NewUser({'name': self.request.validated['username'],
                          'password': self.request.validated['password']})
-        user = User.create(param)
+        try:
+            user = User.create(param)
+        except Exception as exc:
+            raise AuthenticationError(exc.message)
         log.info('Created user {} with name {}'.
                  format(user.user_id, user.name))
         user_url = self.request.route_path('User', user_id=user.user_id)
