@@ -2,12 +2,12 @@ delivery_agent:
     direct: True
 
 index_server:
-    url: http://localhost:9200
+    url: http://es.dev.caliopen.org:9200
 
 cassandra:
     keyspace: caliopen
     hosts:
-        - '127.0.0.1'
+        - 'cassandra.dev.caliopen.org'
     consistency_level: 1
 
 system:
