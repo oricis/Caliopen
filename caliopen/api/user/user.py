@@ -18,7 +18,7 @@ from caliopen.api.base.exception import AuthenticationError
 
 from caliopen.base.user.parameters import NewUser
 from caliopen.base.user.returns import ReturnUser
-from caliopen.base.exception import CredentialException
+from caliopen.base.exception import NotFound
 
 log = logging.getLogger(__name__)
 
@@ -84,21 +84,10 @@ class UserGetParameter(colander.MappingSchema):
 
 class PostUserPararameter(colander.MappingSchema):
 
-  """Parameter to create a new user."""
+    """Parameter to create a new user."""
 
-  username = colander.SchemaNode(colander.String(), location='body')
-  password = colander.SchemaNode(colander.String(), location='body')
-
-
-class PostUserReturn(colander.MappingSchema):
-
-    """Return parameter upon user creation."""
-
-    location = colander.SchemaNode(colander.String(encoding='utf-8'),
-                                   location='header')
-    status_code = colander.SchemaNode(colander.Integer(),
-                                      location='status_code',
-                                      default=HTTPCreated.code)
+    username = colander.SchemaNode(colander.String(), location='body')
+    password = colander.SchemaNode(colander.String(), location='body')
 
 
 @resource(path='/users/{user_id}',
@@ -113,6 +102,7 @@ class UserAPI(Api):
           permission='authenticated',
           schema=UserGetParameter)
     def get(self):
+        """Get information about logged user."""
         user_id = self.request.validated['user_id']
         if user_id != self.request.authenticated_userid.user_id:
             raise AuthenticationError()
@@ -124,9 +114,18 @@ class UserAPI(Api):
           schema=PostUserPararameter)
     def collection_post(self):
         """Create a new user."""
+        try:
+            user = User.by_name(self.request.validated['username'])
+            if user:
+                raise AuthenticationError('User already exist')
+        except NotFound:
+            pass
+
         param = NewUser({'name': self.request.validated['username'],
                          'password': self.request.validated['password']})
         user = User.create(param)
-        log.info('Created user {} with name {}'.format(user.user_id, user.name))
+        log.info('Created user {} with name {}'.
+                 format(user.user_id, user.name))
         user_url = self.request.route_path('User', user_id=user.user_id)
-        return {'location': user_url}
+        return HTTPCreated({'location': user_url},
+                           headers={'Location': user_url})
