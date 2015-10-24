@@ -1,5 +1,5 @@
 *.pyc
-sequoia.api.organization.egg-info/*
+*.egg-info/*
 *.project
 *.pydevproject
 *.swp
@@ -12,5 +12,3 @@ dist/*
 build/*
 venv*
 debian/*
-development-integ.ini
-sequoia/api/organizations/bin/alembic.integ.ini
