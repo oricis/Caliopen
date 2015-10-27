@@ -7,6 +7,7 @@ import datetime
 import colander
 from pyramid.security import NO_PERMISSION_REQUIRED
 from cornice.resource import resource, view
+
 from caliopen.api.base.context import DefaultContext
 from .util import create_token
 
@@ -14,8 +15,9 @@ from caliopen.base.user.core import User
 from caliopen.api.base import Api
 from caliopen.api.base.exception import AuthenticationError
 
+from caliopen.base.user.parameters import NewUser
 from caliopen.base.user.returns import ReturnUser
-from caliopen.base.exception import CredentialException
+from caliopen.base.exception import NotFound
 
 log = logging.getLogger(__name__)
 
@@ -79,18 +81,58 @@ class UserGetParameter(colander.MappingSchema):
     user_id = colander.SchemaNode(colander.String(), location='path')
 
 
+class UserPostPararameter(colander.MappingSchema):
+
+    """Parameter to create a new user."""
+
+    username = colander.SchemaNode(colander.String(), location='body')
+    password = colander.SchemaNode(colander.String(), location='body')
+
+
+def no_such_user(request):
+    """Validator that an user does not exist."""
+    try:
+        user = User.by_name(request.validated['username'])
+        if user:
+            raise AuthenticationError('User already exist')
+    except NotFound:
+        pass
+
+
 @resource(path='/users/{user_id}',
+          collection_path='/users',
           name='User',
-          factory=DefaultContext,
-          schema=UserGetParameter)
+          factory=DefaultContext)
 class UserAPI(Api):
 
     """User API."""
 
-    @view(renderer='json', permission='authenticated')
+    @view(renderer='json',
+          permission='authenticated',
+          schema=UserGetParameter)
     def get(self):
+        """Get information about logged user."""
         user_id = self.request.validated['user_id']
         if user_id != self.request.authenticated_userid.user_id:
             raise AuthenticationError()
         user = User.get(user_id)
         return ReturnUser.build(user).serialize()
+
+    @view(renderer='json',
+          permission=NO_PERMISSION_REQUIRED,
+          schema=UserPostPararameter,
+          validators=no_such_user)
+    def collection_post(self):
+        """Create a new user."""
+
+        param = NewUser({'name': self.request.validated['username'],
+                         'password': self.request.validated['password']})
+        try:
+            user = User.create(param)
+        except Exception as exc:
+            raise AuthenticationError(exc.message)
+        log.info('Created user {} with name {}'.
+                 format(user.user_id, user.name))
+        user_url = self.request.route_path('User', user_id=user.user_id)
+        self.request.response.location = user_url.encode('utf-8')
+        return {'location': user_url}
