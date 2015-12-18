@@ -7,10 +7,13 @@ import bcrypt
 
 from caliopen.base.config import Configuration
 from caliopen.base.exception import NotFound, CredentialException
-from caliopen.base.user.store import (User as ModelUser, IndexUser,
+from caliopen.base.user.store import (User as ModelUser,
+                                      UserName as ModelUserName,
+                                      IndexUser,
                                       Counter as ModelCounter,
                                       Tag as ModelTag,
-                                      FilterRule as ModelFilterRule,)
+                                      FilterRule as ModelFilterRule,
+                                      ReservedName as ModelReservedName)
 
 from caliopen.base.core import BaseCore, BaseUserCore
 from .contact import Contact
@@ -86,6 +89,22 @@ class FilterRule(BaseUserCore):
         return [], False
 
 
+class ReservedName(BaseCore):
+
+    """Reserved name core object."""
+
+    _model_class = ModelReservedName
+    _pkey_name = 'name'
+
+
+class UserName(BaseCore):
+
+    """User name core object."""
+
+    _model_class = ModelUserName
+    _pkey_name = 'name'
+
+
 class User(BaseCore):
 
     """User core object."""
@@ -100,16 +119,22 @@ class User(BaseCore):
         user.validate()
         user.password = bcrypt.hashpw(user.password.encode('utf-8'),
                                       bcrypt.gensalt())
-        # At this time reserved words must be defined in configuration
-        if user.name in Configuration('global').get('reserved_user_names', []):
-            raise Exception('User name not allowed %s' % user.name)
-        # XXX check unicity on email differently ?
-        if cls.find(name=user.name):
+        try:
+            ReservedName.get(user.name)
+            raise ValueError('Reserved user name')
+        except NotFound:
+            pass
+        try:
+            UserName.get(user.name)
             raise Exception('User %s already exist' % user.name)
+        except NotFound:
+            pass
         core = super(User, cls).create(name=user.name,
                                        password=user.password,
                                        params=user.params,
                                        date_insert=datetime.utcnow())
+        # Ensure unicity
+        UserName.create(name=user.name, user_id=core.user_id)
         if user.contact:
             contact = Contact.create(user=core, contact=user.contact)
             # XXX should use core proxy, not directly model attribute
@@ -126,10 +151,8 @@ class User(BaseCore):
     @classmethod
     def by_name(cls, name):
         """Get user by name."""
-        res = cls.find(name=name)
-        if res:
-            return res[0]
-        raise NotFound('User %s not found' % name)
+        uname = UserName.get(name)
+        return cls.get(uname.user_id)
 
     @classmethod
     def authenticate(cls, user_name, password):
