@@ -151,10 +151,8 @@ class User(BaseCore):
     @classmethod
     def by_name(cls, name):
         """Get user by name."""
-        res = cls.find(name=name)
-        if res:
-            return res[0]
-        raise NotFound('User %s not found' % name)
+        uname = UserName.get(name)
+        return cls.get(uname.user_id)
 
     @classmethod
     def authenticate(cls, user_name, password):

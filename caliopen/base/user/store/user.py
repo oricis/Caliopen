@@ -36,7 +36,7 @@ class User(BaseModel):
     """User main model."""
 
     user_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    name = columns.Text(index=True)
+    name = columns.Text(required=True)
     password = columns.Text(required=True)
     date_insert = columns.DateTime()
     given_name = columns.Text()
