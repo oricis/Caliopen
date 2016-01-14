@@ -11,7 +11,7 @@ requires = [
     'bcrypt',
     'PyYAML',
     'elasticsearch-dsl',
-    'cqlengine',
+    'cassandra-driver',
     'schematics',
     'simplejson',
     ]

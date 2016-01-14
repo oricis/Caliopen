@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Caliopen storage session helpers."""
 
-from cqlengine.connection import setup as setup_cassandra
+from cassandra.cqlengine.connection import setup as setup_cassandra
 from caliopen.base.config import Configuration
 
 
