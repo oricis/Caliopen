@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Caliopen storage model for messages."""
 
-from cqlengine import columns
+from cassandra.cqlengine import columns
 from caliopen.base.store.model import BaseModel, BaseIndexDocument
 from caliopen.base.store.mixin import IndexTagMixin
 
