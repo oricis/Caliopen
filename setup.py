@@ -9,6 +9,8 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 requires = [
     'caliopen.base',
     'caliopen.base.user',
+    'caliopen.base.message',
+    'caliopen.smtp',
     'ipython==4.0.0',
 ]
 
