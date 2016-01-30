@@ -13,12 +13,12 @@ def setup_storage(settings=None):
     from caliopen.base.user.core import User
     from caliopen.base.message.core.thread import Thread
     from caliopen.base.message.core.message import Message
-    from cqlengine.management import sync_table, create_keyspace
+    from cassandra.cqlengine.management import sync_table, create_keyspace_simple
     keyspace = Configuration('global').get('cassandra.keyspace')
     if not keyspace:
         raise Exception('Configuration missing for cassandra keyspace')
     # XXX tofix : define strategy and replication_factor in configuration
-    create_keyspace(keyspace, 'SimpleStrategy', 1)
+    create_keyspace_simple(keyspace, 'SimpleStrategy', 1)
     for name, kls in core_registry.items():
         log.info('Creating cassandra model %s' % name)
         sync_table(kls._model_class)
