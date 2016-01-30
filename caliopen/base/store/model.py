@@ -2,8 +2,8 @@
 """Caliopen cassandra base model classes."""
 import logging
 
-from cqlengine.models import Model
-from cqlengine.query import DoesNotExist
+from cassandra.cqlengine.models import Model
+from cassandra.cqlengine.query import DoesNotExist
 
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
