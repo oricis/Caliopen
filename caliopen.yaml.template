@@ -1,7 +1,7 @@
 delivery_agent:
     direct: True
 
-index_server:
+elasticsearch:
     url: http://es.dev.caliopen.org:9200
 
 cassandra:
