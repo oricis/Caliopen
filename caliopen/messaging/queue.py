@@ -34,7 +34,7 @@ class Publisher(KombuConfReader):
         self.connection = Connection(self.broker_url)
         try:
             self._init_amqp()
-        except Exception, exc:
+        except Exception as exc:
             self._log.error('Publisher fail in init connection: %s' % exc)
             raise
 
@@ -93,11 +93,11 @@ class Publisher(KombuConfReader):
         """
         try:
             return self._publish(msg)
-        except Exception, exc:
+        except Exception as exc:
             try:
                 self.switch_connection()
                 return self._publish(msg)
-            except Exception, exc:
+            except Exception as exc:
                 self._log.error('Publish fail when switching connection: %s' %
                                 exc)
             return False
