@@ -136,3 +136,19 @@ class UserAPI(Api):
         user_url = self.request.route_path('User', user_id=user.user_id)
         self.request.response.location = user_url.encode('utf-8')
         return {'location': user_url}
+
+
+@resource(path='/me',
+          name='MeUser',
+          factory=DefaultContext)
+class MeUserAPI(Api):
+
+    """Me API."""
+
+    @view(renderer='json',
+          permission='authenticated')
+    def get(self):
+        """Get information about logged user."""
+        user_id = self.request.authenticated_userid.user_id
+        user = User.get(user_id)
+        return ReturnUser.build(user).serialize()
