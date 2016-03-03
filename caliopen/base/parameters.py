@@ -41,6 +41,8 @@ class ReturnCoreObject(BaseReturnObject):
             attr = getattr(core, core_key)
             if hasattr(cls._core_class, '_relations') \
                and k in cls._core_class._relations:
+                if 'data' in attr:
+                    attr = attr['data']
                 attr = [x.to_dict() for x in attr]
             setattr(obj, k, attr)
         obj.validate()
