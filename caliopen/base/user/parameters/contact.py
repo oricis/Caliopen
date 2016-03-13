@@ -46,6 +46,7 @@ class NewOrganization(Model):
     title = StringType()
     # XXX Add enumerated list
     type = StringType(choices=ORG_TYPES)
+    is_primary = IntType(default=0)
 
 
 class Organization(NewOrganization):
@@ -57,6 +58,7 @@ class Organization(NewOrganization):
     organization_id = UUIDType(required=True)
     date_insert = DateTimeType(required=True)
     date_update = DateTimeType()
+    deleted = IntType(default=0)
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
@@ -190,6 +192,8 @@ class NewPublicKey(Model):
     type = StringType(choices=KEY_CHOICES)
     size = IntType()
     key = StringType(required=True)
+    fingerprint = StringType()
+    expire_date = DateTimeType()
 
 
 class PublicKey(NewPublicKey):
