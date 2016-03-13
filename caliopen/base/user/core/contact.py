@@ -6,18 +6,19 @@ import uuid
 from datetime import datetime
 
 from ..store.contact import (Contact as ModelContact,
-                                         IndexedContact,
-                                         Lookup as ModelContactLookup,
-                                         Organization as ModelOrganization,
-                                         PostalAddress as ModelAddress,
-                                         Email as ModelEmail, IM as ModelIM,
-                                         Phone as ModelPhone,
-                                         SocialIdentity as ModelSocialIdentity,
-                                         PublicKey as ModelPublicKey)
+                             IndexedContact,
+                             Lookup as ModelContactLookup,
+                             Organization as ModelOrganization,
+                             PostalAddress as ModelAddress,
+                             Email as ModelEmail, IM as ModelIM,
+                             Phone as ModelPhone,
+                             SocialIdentity as ModelSocialIdentity,
+                             PublicKey as ModelPublicKey)
 
 from caliopen.base.exception import NotFound
 from caliopen.base.core import BaseCore, BaseUserCore
 from caliopen.base.core.mixin import MixinCoreRelation, MixinCoreIndex
+from caliopen.base.helpers import clean_email_address
 
 log = logging.getLogger(__name__)
 
@@ -82,10 +83,15 @@ class Email(BaseContactSubCore):
     _model_class = ModelEmail
     _pkey_name = 'address'
 
+    @property
+    def clean_name(self):
+        clean, _ = clean_email_address(self.name)
+        return clean
 
-class IM(BaseContactSubCore):
+
+class IM(Email):
+    # Inherit from Email as many methods are duplicate
     _model_class = ModelIM
-    _pkey_name = 'address'
 
 
 class Phone(BaseContactSubCore):
@@ -96,6 +102,13 @@ class Phone(BaseContactSubCore):
 class SocialIdentity(BaseContactSubCore):
     _model_class = ModelSocialIdentity
     _pkey_name = 'name'
+
+    @property
+    def clean_name(self):
+        if self.type == 'twitter':
+            return self.name[1:] if self.name.startswith('@') else self.name
+        # XXX processing for others type
+        return self.name
 
 
 class PublicKey(BaseContactSubCore):
