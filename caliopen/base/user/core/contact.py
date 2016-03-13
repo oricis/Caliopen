@@ -19,7 +19,7 @@ from ..store.contact import (Contact as ModelContact,
 from caliopen.base.exception import NotFound
 from caliopen.base.core import BaseCore, BaseUserCore
 from caliopen.base.core.mixin import MixinCoreRelation, MixinCoreIndex
-from caliopen.base.helpers import clean_email_address
+from caliopen.base.user.helpers.normalize import clean_email_address
 
 log = logging.getLogger(__name__)
 
@@ -103,7 +103,8 @@ class Phone(BaseContactSubCore):
     def clean_name(self):
         if self.number.startswith('+'):
             number = phonenumbers.parse(self.number, None)
-            return '+{}{}'.format(number.country_code, number.national_number)
+            phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
+            return phonenumbers.format_number(number, phone_format)
         log.warn('Unable to format phone number {}'.format(self.number))
         return self.number
 
@@ -292,6 +293,21 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
         return self._delete_relation('ims', im_addr)
 
     def add_phone(self, phone):
+        if not phone.number.startswith('+'):
+            # try to guess the country code from others phones
+            # and postal addresses
+            others = [phonenumbers.parse(x.number) for x in self.phones]
+            country_codes = list(set([x.country_code for x in others]))
+            if len(country_codes) == 1:
+                code = country_codes[0]
+                country_isos = phonenumbers.COUNTRY_CODE_TO_REGION_CODE[code]
+                if len(country_isos) == 1:
+                    number = phonenumbers.parse(phone.number, country_isos[0])
+                    phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
+                    phone.number = phonenumbers.format_number(number,
+                                                              phone_format)
+                    log.debug('Phone normalized to {}, guess country is {}'.
+                              format(phone.number, country_isos[0]))
         return self._add_relation('phones', phone)
 
     def delete_phone(self, phone_num):
