@@ -13,7 +13,8 @@ class MixinCoreRelation(object):
 
     def _expand_relation(self, reltype):
         """Return collection for given relation."""
-        return self._relations[reltype].find(self.user, self)
+        res = self._relations[reltype].find(self.user, self)
+        return res['data'] if res else []
 
     def _get_relation(self, reltype, id):
         """Get a specific core by in in relation."""
@@ -21,7 +22,7 @@ class MixinCoreRelation(object):
         result = self._relations[reltype].find(self.user,
                                                self,
                                                {rel_pkey: id})
-        return result
+        return result['data'][0] if result and result['data'] else None
 
     def _add_relation(self, reltype, param):
         """Add a new core to given relation."""
@@ -66,11 +67,11 @@ class MixinCoreRelation(object):
             rel_list.remove(id)
         self.save()
         related = self._get_relation(reltype, id)
-        if self._index_class:
-            pkey = related[0]._pkey_name
+        if self._index_class and related:
+            pkey = related._pkey_name
             self._delete_relation_index(reltype, pkey, id)
         if related:
-            related[0].model.delete()
+            related.model.delete()
         if hasattr(self, '_lookup_objects') and \
            reltype in self._lookup_objects:
             lookupkls = self._lookup_class
