@@ -4,6 +4,7 @@
 import logging
 import uuid
 from datetime import datetime
+import phonenumbers
 
 from ..store.contact import (Contact as ModelContact,
                              IndexedContact,
@@ -97,6 +98,14 @@ class IM(Email):
 class Phone(BaseContactSubCore):
     _model_class = ModelPhone
     _pkey_name = 'number'
+
+    @property
+    def clean_name(self):
+        if self.number.startswith('+'):
+            number = phonenumbers.parse(self.number, None)
+            return '+{}{}'.format(number.country_code, number.national_number)
+        log.warn('Unable to format phone number {}'.format(self.number))
+        return self.number
 
 
 class SocialIdentity(BaseContactSubCore):
