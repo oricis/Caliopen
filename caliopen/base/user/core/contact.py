@@ -4,20 +4,22 @@
 import logging
 import uuid
 from datetime import datetime
+import phonenumbers
 
 from ..store.contact import (Contact as ModelContact,
-                                         IndexedContact,
-                                         Lookup as ModelContactLookup,
-                                         Organization as ModelOrganization,
-                                         PostalAddress as ModelAddress,
-                                         Email as ModelEmail, IM as ModelIM,
-                                         Phone as ModelPhone,
-                                         SocialIdentity as ModelSocialIdentity,
-                                         PublicKey as ModelPublicKey)
+                             IndexedContact,
+                             Lookup as ModelContactLookup,
+                             Organization as ModelOrganization,
+                             PostalAddress as ModelAddress,
+                             Email as ModelEmail, IM as ModelIM,
+                             Phone as ModelPhone,
+                             SocialIdentity as ModelSocialIdentity,
+                             PublicKey as ModelPublicKey)
 
 from caliopen.base.exception import NotFound
 from caliopen.base.core import BaseCore, BaseUserCore
 from caliopen.base.core.mixin import MixinCoreRelation, MixinCoreIndex
+from caliopen.base.user.helpers.normalize import clean_email_address
 
 log = logging.getLogger(__name__)
 
@@ -82,20 +84,41 @@ class Email(BaseContactSubCore):
     _model_class = ModelEmail
     _pkey_name = 'address'
 
+    @property
+    def clean_name(self):
+        clean, _ = clean_email_address(self.name)
+        return clean
 
-class IM(BaseContactSubCore):
+
+class IM(Email):
+    # Inherit from Email as many methods are duplicate
     _model_class = ModelIM
-    _pkey_name = 'address'
 
 
 class Phone(BaseContactSubCore):
     _model_class = ModelPhone
     _pkey_name = 'number'
 
+    @property
+    def clean_name(self):
+        if self.number.startswith('+'):
+            number = phonenumbers.parse(self.number, None)
+            phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
+            return phonenumbers.format_number(number, phone_format)
+        log.warn('Unable to format phone number {}'.format(self.number))
+        return self.number
+
 
 class SocialIdentity(BaseContactSubCore):
     _model_class = ModelSocialIdentity
     _pkey_name = 'name'
+
+    @property
+    def clean_name(self):
+        if self.type == 'twitter':
+            return self.name[1:] if self.name.startswith('@') else self.name
+        # XXX processing for others type
+        return self.name
 
 
 class PublicKey(BaseContactSubCore):
@@ -270,6 +293,21 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
         return self._delete_relation('ims', im_addr)
 
     def add_phone(self, phone):
+        if not phone.number.startswith('+'):
+            # try to guess the country code from others phones
+            # and postal addresses
+            others = [phonenumbers.parse(x.number) for x in self.phones]
+            country_codes = list(set([x.country_code for x in others]))
+            if len(country_codes) == 1:
+                code = country_codes[0]
+                country_isos = phonenumbers.COUNTRY_CODE_TO_REGION_CODE[code]
+                if len(country_isos) == 1:
+                    number = phonenumbers.parse(phone.number, country_isos[0])
+                    phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
+                    phone.number = phonenumbers.format_number(number,
+                                                              phone_format)
+                    log.debug('Phone normalized to {}, guess country is {}'.
+                              format(phone.number, country_isos[0]))
         return self._add_relation('phones', phone)
 
     def delete_phone(self, phone_num):
