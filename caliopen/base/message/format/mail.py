@@ -15,23 +15,13 @@ import random
 from itertools import groupby
 from mailbox import Message
 from datetime import datetime
-from email.utils import parseaddr, parsedate_tz, mktime_tz
+from email.utils import parsedate_tz, mktime_tz
 
 from caliopen.base.message.parameters import NewMessage, Part
+from caliopen.base.user.helpers.normalize import clean_email_address
+
 
 log = logging.getLogger(__name__)
-
-
-def clean_email_address(addr):
-    """Clean an email address for user resolve."""
-    real_name, email = parseaddr(addr)
-    if not email:
-        raise Exception('Invalid email address %s' % addr)
-    name, domain = email.lower().split('@', 2)
-    if '+' in name:
-        name, ext = name.split('+', 2)
-    # unicode everywhere
-    return (u'%s@%s' % (name, domain), email)
 
 
 class MailPart(object):
