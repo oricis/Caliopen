@@ -30,7 +30,7 @@ class Thread(Api):
 
     @view(renderer='json', permission='authenticated')
     def get(self):
-        thread_id = int(self.request.matchdict.get('thread_id'))
+        thread_id = self.request.matchdict.get('thread_id')
         try:
             thread = UserThread.get(self.user, thread_id)
         except NotFound:
