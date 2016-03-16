@@ -1,5 +1,9 @@
+
+import json
+import colander
 from cornice.resource import resource, view
 from pyramid.response import Response
+import logging
 
 from caliopen.base.user.core import (Contact as CoreContact,
                                      Email as CoreEmail,
@@ -19,11 +23,15 @@ from caliopen.base.user.returns import (ReturnContact,
                                         ReturnPublicKey)
 
 from caliopen.base.user.parameters import (NewContact,
-                                           Contact as ContactParam)
+                                           Contact as ContactParam,
+                                           NewPostalAddress,
+                                           NewEmail, NewIM)
 
 from caliopen.api.base import Api
 from caliopen.base.exception import NotFound
 from caliopen.api.base.exception import ResourceNotFound, ValidationError
+
+log = logging.getLogger(__name__)
 
 
 @resource(collection_path='/contacts',
@@ -90,6 +98,29 @@ class BaseSubContactApi(Api):
         rets = [self.return_class.build(x).serialize() for x in objs['data']]
         return {self.namespace: rets, 'total': objs['total']}
 
+    def _create(self, contact_id, params, add_func, return_obj):
+        """Create sub object from param using add_func."""
+        contact = CoreContact.get(self.user, contact_id)
+        created = getattr(contact, add_func)(params)
+        log.debug('Created object {} for contact {}'.
+                  format(created.address_id, contact.contact_id))
+        return return_obj.build(created).serialize()
+
+
+class NewAddressParam(colander.MappingSchema):
+
+    """Parameter to create a new postal address."""
+    contact_id = colander.SchemaNode(colander.String(), location='path')
+    label = colander.SchemaNode(colander.String(), location='body',
+                                missing=colander.drop)
+    type = colander.SchemaNode(colander.String(), location='body')
+    street = colander.SchemaNode(colander.String(), location='body')
+    city = colander.SchemaNode(colander.String(), location='body')
+    postal_code = colander.SchemaNode(colander.String(), location='body')
+    country = colander.SchemaNode(colander.String(), location='body')
+    region = colander.SchemaNode(colander.String(), location='body',
+                                 missing=colander.drop)
+
 
 @resource(collection_path='/contacts/{contact_id}/addresses',
           path='/contacts/{contact_id}/addresses/{address_id}')
@@ -98,6 +129,24 @@ class ContactAddress(BaseSubContactApi):
     core_class = CoreAddress
     return_class = ReturnAddress
     namespace = 'addresses'
+
+    @view(renderer='json', permission='authenticated',
+          schema=NewAddressParam)
+    def collection_post(self):
+        validated = self.request.validated
+        contact_id = validated.pop('contact_id')
+        address = NewPostalAddress(validated)
+        out_obj = self._create(contact_id, address, 'add_address',
+                               ReturnAddress)
+        return Response(status=201, body=json.dumps({'addresses': out_obj}))
+
+
+class NewEmailParam(colander.MappingSchema):
+
+    """Parameter to create a new email."""
+    contact_id = colander.SchemaNode(colander.String(), location='path')
+    type = colander.SchemaNode(colander.String(), location='body')
+    address = colander.SchemaNode(colander.String(), location='body')
 
 
 @resource(collection_path='/contacts/{contact_id}/emails',
@@ -108,6 +157,24 @@ class ContactEmail(BaseSubContactApi):
     return_class = ReturnEmail
     namespace = 'emails'
 
+    @view(renderer='json', permission='authenticated',
+          schema=NewEmailParam)
+    def collection_post(self):
+        validated = self.request.validated
+        contact_id = validated.pop('contact_id')
+        email = NewEmail(validated)
+        out_obj = self._create(contact_id, email, 'add_email',
+                               ReturnEmail)
+        return Response(status=201, body=json.dumps({'addresses': out_obj}))
+
+
+class NewIMParam(colander.MappingSchema):
+
+    """Parameter to create a new email."""
+    contact_id = colander.SchemaNode(colander.String(), location='path')
+    type = colander.SchemaNode(colander.String(), location='body')
+    address = colander.SchemaNode(colander.String(), location='body')
+
 
 @resource(collection_path='/contacts/{contact_id}/ims',
           path='/contacts/{contact_id}/ims/{im_id}')
@@ -116,6 +183,16 @@ class ContactIM(BaseSubContactApi):
     core_class = CoreIM
     return_class = ReturnIM
     namespace = 'ims'
+
+    @view(renderer='json', permission='authenticated',
+          schema=NewIMParam)
+    def collection_post(self):
+        validated = self.request.validated
+        contact_id = validated.pop('contact_id')
+        im = NewIM(validated)
+        out_obj = self._create(contact_id, im, 'add_im',
+                               ReturnIM)
+        return Response(status=201, body=json.dumps({'addresses': out_obj}))
 
 
 @resource(collection_path='/contacts/{contact_id}/identities',
