@@ -31,6 +31,8 @@ class User(NewUser):
     """Existing user."""
 
     user_id = UUIDType(required=True)
+    privacy_index = IntType(default=0)
+    privacy_features = DictType(StringType, default=lambda: {})
     password = StringType()     # not outpout by default, not required
     date_insert = DateTimeType()
     given_name = StringType()
