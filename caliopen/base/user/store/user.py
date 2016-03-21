@@ -44,6 +44,8 @@ class User(BaseModel):
     params = columns.Map(columns.Text, columns.Text)
     contact_id = columns.UUID()
     main_user_id = columns.UUID()
+    privacy_index = columns.Integer()
+    privacy_features = columns.Map(columns.Text(), columns.Text())
 
 
 class Counter(BaseModel):
