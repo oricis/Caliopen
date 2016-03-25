@@ -45,8 +45,8 @@ class MixinCoreRelation(object):
         rel_list = getattr(self, reltype)
         rel_list.append(new_obj.get_id())
         self.save()
-        if self._index_class:
-            self._add_relation_index(reltype, attrs)
+        # if self._index_class:
+        #    self._add_relation_index(reltype, attrs)
         if hasattr(self, '_lookup_objects') and \
            reltype in self._lookup_objects:
             lookupkls = self._lookup_class
@@ -67,9 +67,9 @@ class MixinCoreRelation(object):
             rel_list.remove(id)
         self.save()
         related = self._get_relation(reltype, id)
-        if self._index_class and related:
-            pkey = related._pkey_name
-            self._delete_relation_index(reltype, pkey, id)
+        # if self._index_class and related:
+        #    pkey = related._pkey_name
+        #    self._delete_relation_index(reltype, pkey, id)
         if related:
             related.model.delete()
         if hasattr(self, '_lookup_objects') and \
