@@ -4,6 +4,7 @@
 All input and ouput parameters of core object methods must
 use a class that inherit from of of these.
 """
+from caliopen.base.core import BaseCore
 
 
 class BaseReturnObject(object):
@@ -41,9 +42,16 @@ class ReturnCoreObject(BaseReturnObject):
             attr = getattr(core, core_key)
             if hasattr(cls._core_class, '_relations') \
                and k in cls._core_class._relations:
+                # XXX bad design using data key
                 if 'data' in attr:
                     attr = attr['data']
                 attr = [x.to_dict() for x in attr]
+            if isinstance(attr, BaseCore):
+                new_attr = {}
+                for col in attr._model_class._columns.keys():
+                    value = getattr(attr, col)
+                    new_attr.update({col: value})
+                attr = new_attr
             setattr(obj, k, attr)
         obj.validate()
         return obj
