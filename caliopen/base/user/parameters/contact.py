@@ -242,7 +242,7 @@ class NewContact(Model):
 class Contact(NewContact):
 
     """Existing contact."""
-
+    user_id = UUIDType(required=True)
     contact_id = UUIDType(required=True)
     privacy_index = IntType(default=0)
     # XXX not such default here
@@ -263,7 +263,12 @@ class Contact(NewContact):
                           default=lambda: [])
     public_keys = ListType(ModelType(PublicKey),
                            default=lambda: [])
+    deleted = IntType()
+    date_insert = DateTimeType()
+    date_update = DateTimeType()
 
+    class Options:
+        roles = {'default': blacklist('user_id')}
 
 class ShortContact(Model):
 
