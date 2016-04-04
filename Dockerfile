@@ -8,9 +8,7 @@ MAINTAINER Caliopen
 ENV DEBIAN_FRONTEND noninteractive
 
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y locales
-RUN locale-gen en_US.UTF-8  
-ENV LANG en_US.UTF-8  
+RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install -y python python-dev python-pip git libffi-dev
 RUN pip install -U pip     # use a decent version
