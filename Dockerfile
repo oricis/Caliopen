@@ -18,16 +18,18 @@ RUN apt-get remove -y python-cffi
 
 
 ADD . /srv/caliopen/api
-WORKDIR /srv/caliopen/api/
+WORKDIR /srv/caliopen/
 
 # Install the source in the /srv/caliopen/api
 RUN pip install bcrypt
-RUN pip install git+https://github.com/CaliOpen/caliopen.base.git
-RUN pip install git+https://github.com/CaliOpen/caliopen.base.user.git
-RUN pip install git+https://github.com/CaliOpen/caliopen.base.message.git
-RUN pip install git+https://github.com/CaliOpen/caliopen.api.base.git
-RUN pip install git+https://github.com/CaliOpen/caliopen.api.user.git
-RUN pip install git+https://github.com/CaliOpen/caliopen.api.message.git
+RUN pip install -e git+https://github.com/CaliOpen/caliopen.base.git#egg=caliopen.base
+RUN pip install -e git+https://github.com/CaliOpen/caliopen.base.user.git#egg=caliopen.base.user
+RUN pip install -e git+https://github.com/CaliOpen/caliopen.base.message.git#egg=caliopen.base.message
+RUN pip install -e git+https://github.com/CaliOpen/caliopen.api.base.git#egg=caliopen.api.base
+RUN pip install -e git+https://github.com/CaliOpen/caliopen.api.user.git#egg=caliopen.api.user
+RUN pip install -e git+https://github.com/CaliOpen/caliopen.api.message.git#egg=caliopen.api.message
+
+WORKDIR /srv/caliopen/api/
 RUN python setup.py develop
 
 RUN useradd docker
