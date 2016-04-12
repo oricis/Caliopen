@@ -30,7 +30,8 @@ class Message(BaseUserCore, MixinCoreIndex):
     @classmethod
     def create(cls, user, message, thread, lookup):
         """Create a new message for a given user and thread."""
-#        message.validate()
+        message = unicode(message, "utf-8")
+        message.validate()
         parent_id = message.external_parent_id
         message_id = uuid.uuid4()
         answer_to = lookup.message_id if lookup else None
