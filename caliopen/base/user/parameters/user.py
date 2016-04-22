@@ -40,7 +40,7 @@ class User(NewUser):
     contact = ModelType(Contact)
 
     class Options:
-        roles = {'default': blacklist('contact', 'password')}
+        roles = {'default': blacklist('password')}
 
 
 class Tag(Model):
