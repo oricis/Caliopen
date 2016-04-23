@@ -267,8 +267,6 @@ class Contact(NewContact):
     date_insert = DateTimeType()
     date_update = DateTimeType()
 
-    class Options:
-        roles = {'default': blacklist('user_id')}
 
 class ShortContact(Model):
 
