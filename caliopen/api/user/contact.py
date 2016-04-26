@@ -188,7 +188,7 @@ class DeleteEmailParam(colander.MappingSchema):
 
 
 @resource(collection_path='/contacts/{contact_id}/emails',
-          path='/contacts/{contact_id}/emails/{email_id}')
+          path='/contacts/{contact_id}/emails/{address}')
 class ContactEmail(BaseSubContactApi):
 
     core_class = CoreEmail
@@ -235,7 +235,7 @@ class DeleteIMParam(colander.MappingSchema):
 
 
 @resource(collection_path='/contacts/{contact_id}/ims',
-          path='/contacts/{contact_id}/ims/{im_id}')
+          path='/contacts/{contact_id}/ims/{address}')
 class ContactIM(BaseSubContactApi):
 
     core_class = CoreIM
