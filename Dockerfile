@@ -2,45 +2,52 @@
 # Important:
 # Author: Caliopen
 # Date: 2015-10-23
-
 FROM debian:jessie
 MAINTAINER Caliopen
 ENV DEBIAN_FRONTEND noninteractive
 
-
-RUN apt-get update && apt-get upgrade -y && apt-get install -y locales
-RUN locale-gen en_US.UTF-8  
-ENV LANG en_US.UTF-8  
+RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install -y python python-dev python-pip git libffi-dev
-RUN pip install -U pip     # use a decent version
+# use a decent version
+RUN pip install -U pip
 
 # Version installed in Debian do not work !#@!@#!@#
 RUN apt-get remove -y python-cffi
 
-
-ADD . /srv/caliopen/smtp
-WORKDIR /srv/caliopen/smtp/
-
-# Copy configuration
-ADD  https://raw.githubusercontent.com/CaliOpen/caliopen.base/master/caliopen.yaml.template caliopen.yaml
-
-# Install the source in the /srv/caliopen/smtp
-RUN pip install bcrypt
-RUN pip install git+https://github.com/CaliOpen/caliopen.base.git
-RUN pip install git+https://github.com/CaliOpen/caliopen.base.user.git
-RUN pip install git+https://github.com/CaliOpen/caliopen.base.message.git
-RUN pip install git+https://github.com/CaliOpen/caliopen.messaging.git
-RUN pip install git+https://github.com/ekini/gsmtpd.git
-RUN python setup.py develop
-
+# Entrypoint
 RUN useradd docker
-
-RUN cp /srv/caliopen/smtp/docker/entrypoint.sh /docker-entrypoint.sh
+COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 RUN chmod 750  /docker-entrypoint.sh
 RUN chown docker /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-EXPOSE 25 465
+# Dependencies
+WORKDIR /srv/caliopen/
+RUN pip install bcrypt
+RUN pip install -e git+https://github.com/CaliOpen/caliopen.base.git#egg=caliopen.base
+RUN pip install -e git+https://github.com/CaliOpen/caliopen.base.user.git#egg=caliopen.base.user
+RUN pip install -e git+https://github.com/CaliOpen/caliopen.base.message.git#egg=caliopen.base.message
+RUN pip install -e git+https://github.com/CaliOpen/caliopen.messaging.git#egg=caliopen.messaging
+RUN pip install git+https://github.com/ekini/gsmtpd.git
 
-CMD ["caliopen/smtp/bin/lmtpd.py", "-f", "caliopen.yaml"]
+# Codebase
+ADD . /srv/caliopen/smtp
+WORKDIR /srv/caliopen/smtp/
+RUN python setup.py develop
+
+# caliopen.smtp configuration
+RUN ln -s /srv/caliopen/src/caliopen.base/caliopen.yaml.template /caliopen.yaml
+
+# postfix installation (can be moved to an other container)
+RUN apt-get --no-install-recommends install rsyslog --yes --force-yes
+RUN apt-get install postfix --yes --force-yes
+RUN postconf -e virtual_transport=lmtp:localhost:4000
+RUN postconf -e virtual_mailbox_domains=
+
+# Expose
+ENV CALIOPEN_SMTP_DOMAIN mail.example.tld
+EXPOSE 25 465 4000
+VOLUME /var/spool/postfix
+
+CMD ["docker/start-server.sh"]
