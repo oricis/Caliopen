@@ -46,7 +46,7 @@ RUN postconf -e virtual_transport=lmtp:localhost:4000
 RUN postconf -e virtual_mailbox_domains=
 
 # Expose
-ENV CALIOPEN_SMTP_DOMAIN mail.example.tld
+ENV CALIOPEN_VIRTUAL_MAILBOX_DOMAINS mail.example.tld
 EXPOSE 25 465 4000
 VOLUME /var/spool/postfix
 
