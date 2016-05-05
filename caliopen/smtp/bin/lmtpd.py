@@ -9,7 +9,7 @@ import argparse
 from gsmtpd import LMTPServer
 
 from caliopen.base.config import Configuration
-
+from caliopen.base.helpers.connection import connect_storage
 
 log = logging.getLogger(__name__)
 
@@ -37,8 +37,11 @@ if __name__ == '__main__':
     kwargs = parser.parse_args(args[1:])
     kwargs = vars(kwargs)
     Configuration.load(kwargs['conffile'], 'global')
+    connect_storage()
+
     bind_address = Configuration('global').get('lmtp.bind_address',
                                                '127.0.0.1')
     port = Configuration('global').get('lmtp.port', 4000)
+    log.info('Starting LMTP server on {}:{}'.format(bind_address, port))
     s = LmtpServer((bind_address, port))
     s.serve_forever()
