@@ -77,11 +77,18 @@ class MailMessage(object):
         self.parts = self._extract_parts()
         self.headers = self._extract_headers()
         self.subject = self.mail.get('Subject')
-        tmp_date = parsedate_tz(self.mail['Date'])
-        self.date = datetime.fromtimestamp(mktime_tz(tmp_date))
+        mail_date = self.mail.get('Date')
+        if mail_date:
+            tmp_date = parsedate_tz(mail_date)
+            self.date = datetime.fromtimestamp(mktime_tz(tmp_date))
+        else:
+            log.debug('No date on mail using now (UTC)')
+            self.date = datetime.utcnow()
         self.external_message_id = self.mail.get('Message-Id')
         self.external_parent_id = self.mail.get('In-Reply-To')
         self.size = len(raw)
+        log.debug('Parsed mail {} with size {}'.
+                  format(self.external_message_id, self.size))
 
     @property
     def text(self):
