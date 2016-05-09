@@ -42,8 +42,6 @@ RUN ln -s /srv/caliopen/src/caliopen.base/caliopen.yaml.template /caliopen.yaml
 # postfix installation (can be moved to an other container)
 RUN apt-get --no-install-recommends install rsyslog --yes --force-yes
 RUN apt-get install postfix --yes --force-yes
-RUN postconf -e virtual_transport=lmtp:localhost:4000
-RUN postconf -e virtual_mailbox_domains=
 
 # Expose
 ENV CALIOPEN_VIRTUAL_MAILBOX_DOMAINS mail.example.tld

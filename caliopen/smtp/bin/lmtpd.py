@@ -9,9 +9,10 @@ import argparse
 from gsmtpd import LMTPServer
 
 from caliopen.base.config import Configuration
-
+from caliopen.base.helpers.connection import connect_storage
 
 log = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class LmtpServer(LMTPServer):
@@ -25,8 +26,11 @@ class LmtpServer(LMTPServer):
         agent = DeliveryAgent()
         log.debug('Receive peer {} from {} to {}'.
                   format(peer, mailfrom, rcpttos))
-        messages = agent.process(mailfrom, rcpttos, data)
-        log.info('Deliver of %d messages' % len(messages))
+        try:
+            messages = agent.process(mailfrom, rcpttos, data)
+            log.info('Deliver of %d messages' % len(messages))
+        except Exception as exc:
+            log.error('Exception when delivering mail : {}'.format(exc))
         return None
 
 
@@ -37,8 +41,11 @@ if __name__ == '__main__':
     kwargs = parser.parse_args(args[1:])
     kwargs = vars(kwargs)
     Configuration.load(kwargs['conffile'], 'global')
+    connect_storage()
+
     bind_address = Configuration('global').get('lmtp.bind_address',
-                                               '127.0.0.1')
+                                               '0.0.0.0')
     port = Configuration('global').get('lmtp.port', 4000)
+    log.info('Starting LMTP server on {}:{}'.format(bind_address, port))
     s = LmtpServer((bind_address, port))
     s.serve_forever()
