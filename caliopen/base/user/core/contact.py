@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Caliopen contact core classes."""
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import uuid
@@ -7,16 +8,9 @@ from datetime import datetime
 import phonenumbers
 
 from ..store.contact import (Contact as ModelContact,
-                             IndexedContact,
                              Lookup as ModelContactLookup,
-                             Organization as ModelOrganization,
-                             PostalAddress as ModelAddress,
-                             Email as ModelEmail, IM as ModelIM,
-                             Phone as ModelPhone,
-                             SocialIdentity as ModelSocialIdentity,
                              PublicKey as ModelPublicKey)
 
-from caliopen.base.exception import NotFound
 from caliopen.base.core import BaseCore, BaseUserCore
 from caliopen.base.core.mixin import MixinCoreRelation, MixinCoreIndex
 from caliopen.base.user.helpers.normalize import clean_email_address
@@ -70,57 +64,6 @@ class BaseContactSubCore(BaseCore):
                 for col in self._model_class._columns.keys()}
 
 
-class Organization(BaseContactSubCore):
-    _model_class = ModelOrganization
-    _pkey_name = 'organization_id'
-
-
-class PostalAddress(BaseContactSubCore):
-    _model_class = ModelAddress
-    _pkey_name = 'address_id'
-
-
-class Email(BaseContactSubCore):
-    _model_class = ModelEmail
-    _pkey_name = 'address'
-
-    @property
-    def clean_name(self):
-        clean, _ = clean_email_address(self.name)
-        return clean
-
-
-class IM(Email):
-    # Inherit from Email as many methods are duplicate
-    _model_class = ModelIM
-
-
-class Phone(BaseContactSubCore):
-    _model_class = ModelPhone
-    _pkey_name = 'number'
-
-    @property
-    def clean_name(self):
-        if self.number.startswith('+'):
-            number = phonenumbers.parse(self.number, None)
-            phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
-            return phonenumbers.format_number(number, phone_format)
-        log.warn('Unable to format phone number {}'.format(self.number))
-        return self.number
-
-
-class SocialIdentity(BaseContactSubCore):
-    _model_class = ModelSocialIdentity
-    _pkey_name = 'name'
-
-    @property
-    def clean_name(self):
-        if self.type == 'twitter':
-            return self.name[1:] if self.name.startswith('@') else self.name
-        # XXX processing for others type
-        return self.name
-
-
 class PublicKey(BaseContactSubCore):
     _model_class = ModelPublicKey
     _pkey_name = 'name'
@@ -129,16 +72,9 @@ class PublicKey(BaseContactSubCore):
 class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
 
     _model_class = ModelContact
-    _index_class = IndexedContact
     _pkey_name = 'contact_id'
 
     _relations = {
-        'organizations': Organization,
-        'postal_addresses': PostalAddress,
-        'emails': Email,
-        'ims': IM,
-        'phones': Phone,
-        'social_identities': SocialIdentity,
         'public_keys': PublicKey,
     }
 
@@ -186,7 +122,13 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
                                     family_name=contact.family_name,
                                     prefix_name=contact.name_prefix,
                                     suffix_name=contact.name_suffix,
-                                    title=title)
+                                    title=title,
+                                    organizations=contact.organizations,
+                                    postal_addresses=contact.postal_addresses,
+                                    emails=contact.emails,
+                                    ims=contact.ims,
+                                    social_identities=contact.social_identities
+                                    )
         c = cls(o)
         log.debug('Created contact %s' % c.contact_id)
         # Create relations
@@ -209,7 +151,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
                         log.debug('Created lookup %r of type %s' %
                                   (look, k))
         # Index contact and related objects
-        cls._index_class.create(c, **related_cores)
+        c.create_index()
         return c
 
     @classmethod
@@ -220,47 +162,10 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
         # XXX something else to do ?
         return None
 
-    @classmethod
-    def get_index(cls, user, id):
-        idx = cls._index_class.get(user.user_id, id)
-        if idx:
-            return idx.to_dict()
-        raise NotFound()
-
     def delete(self):
         if self.user.contact_id == self.contact_id:
             raise Exception("Can't delete contact related to user")
         return super(Contact, self).delete()
-
-    @property
-    def organizations(self):
-        """Return detailed organizations."""
-        return self._expand_relation('organizations')
-
-    @property
-    def postal_addresses(self):
-        """Return detailed postal addresses."""
-        return self._expand_relation('postal_addresses')
-
-    @property
-    def phones(self):
-        """Return detailed phones."""
-        return self._expand_relation('phones')
-
-    @property
-    def emails(self):
-        """Return detailed emails."""
-        return self._expand_relation('emails')
-
-    @property
-    def ims(self):
-        """Return detailed instant messenging."""
-        return self._expand_relation('ims')
-
-    @property
-    def social_identities(self):
-        """Return detailed social identities."""
-        return self._expand_relation('social_identities')
 
     @property
     def public_keys(self):

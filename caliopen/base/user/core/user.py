@@ -4,6 +4,9 @@
 from __future__ import absolute_import, print_function, unicode_literals
 from datetime import datetime
 import bcrypt
+import logging
+
+from elasticsearch import Elasticsearch
 
 from caliopen.base.config import Configuration
 from caliopen.base.exception import NotFound, CredentialException
@@ -15,8 +18,10 @@ from caliopen.base.user.store import (User as ModelUser,
                                       FilterRule as ModelFilterRule,
                                       ReservedName as ModelReservedName)
 
-from caliopen.base.core import BaseCore, BaseUserCore
+from caliopen.base.core import BaseCore, BaseUserCore, core_registry
 from .contact import Contact
+
+log = logging.getLogger(__name__)
 
 
 class Counter(BaseCore):
@@ -105,6 +110,21 @@ class UserName(BaseCore):
     _pkey_name = 'name'
 
 
+def setup_user_index(user):
+    """Create user index and setup mappings."""
+    url = Configuration('global').get('elasticsearch.url')
+    client = Elasticsearch(url)
+    log.debug('Creating index for user {}'.format(user.user_id))
+    client.indices.create(user.user_id)
+
+    for name, kls in core_registry.items():
+        if kls._index_class and hasattr(kls._model_class, 'user_id'):
+            idx_kls = kls._index_class()
+            log.debug('Init index for {}'.format(idx_kls))
+            if hasattr(idx_kls, 'init'):
+                idx_kls.init(using=client, index=user.user_id)
+
+
 class User(BaseCore):
 
     """User core object."""
@@ -142,6 +162,8 @@ class User(BaseCore):
             core.save()
         # Create counters
         Counter.create(user_id=core.user_id)
+        # Setup index
+        setup_user_index(core)
         # Create default tags
         default_tags = Configuration('global').get('system.default_tags')
         for tag in default_tags:
