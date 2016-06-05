@@ -110,21 +110,6 @@ class UserName(BaseCore):
     _pkey_name = 'name'
 
 
-def setup_user_index(user):
-    """Create user index and setup mappings."""
-    url = Configuration('global').get('elasticsearch.url')
-    client = Elasticsearch(url)
-    log.debug('Creating index for user {}'.format(user.user_id))
-    client.indices.create(user.user_id)
-
-    for name, kls in core_registry.items():
-        if kls._index_class and hasattr(kls._model_class, 'user_id'):
-            idx_kls = kls._index_class()
-            log.debug('Init index for {}'.format(idx_kls))
-            if hasattr(idx_kls, 'init'):
-                idx_kls.init(using=client, index=user.user_id)
-
-
 class User(BaseCore):
 
     """User core object."""
@@ -163,7 +148,7 @@ class User(BaseCore):
         # Create counters
         Counter.create(user_id=core.user_id)
         # Setup index
-        setup_user_index(core)
+        core._setup_user_index()
         # Create default tags
         default_tags = Configuration('global').get('system.default_tags')
         for tag in default_tags:
@@ -188,6 +173,24 @@ class User(BaseCore):
                          str(user.password)) == user.password:
             return user
         raise CredentialException('Invalid credentials')
+
+    def _setup_user_index(self):
+        """Create user index and setup mappings."""
+        url = Configuration('global').get('elasticsearch.url')
+        client = Elasticsearch(url)
+        log.debug('Creating index for user {}'.format(self.user_id))
+        if not client.indices.exists(self.user_id):
+            client.indices.create(self.user_id)
+        else:
+            log.warn('Index already exist {}'.format(self.user_id))
+
+        for name, kls in core_registry.items():
+            if kls._model_class._index_class and \
+               hasattr(kls._model_class, 'user_id'):
+                idx_kls = kls._model_class._index_class()
+                log.debug('Init index for {}'.format(idx_kls))
+                if hasattr(idx_kls, 'init'):
+                    idx_kls.init(using=client, index=self.user_id)
 
     def new_message_id(self):
         """Create a new message_id from ``Counter``."""
