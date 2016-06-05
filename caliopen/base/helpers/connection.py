@@ -16,4 +16,5 @@ def connect_storage():
                     Configuration('global').get('cassandra.keyspace'),
                     Configuration('global').get('cassandra.consistency_level'),
                     lazy_connect=True,
+                    protocol_version=4,
                     **kwargs)
