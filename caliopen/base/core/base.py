@@ -39,7 +39,6 @@ class BaseCore(object):
 
     _model_class = None
     _lookup_class = None
-    _index_class = None
     _pkey_name = 'id'
 
     _index_data = None
@@ -51,16 +50,6 @@ class BaseCore(object):
         """
         self.model = model
         self._index_data = index_data
-
-    @classmethod
-    def create(cls, **kwargs):
-        """Create a new core object."""
-        indexed_extra = kwargs.pop('_indexed_extra', {})
-        obj = cls._model_class.create(**kwargs)
-        obj = cls(obj)
-        if cls._index_class:
-            obj._index_data = cls._index_class.create(obj, **indexed_extra)
-        return obj
 
     @classmethod
     def get(cls, key, index_data=None):

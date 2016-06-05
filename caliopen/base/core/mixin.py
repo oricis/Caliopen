@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Caliop core mixin classes."""
-
+from __future__ import absolute_import, print_function, unicode_literals
 import logging
+
 from caliopen.base.exception import NotFound
 
 log = logging.getLogger(__name__)
@@ -45,8 +46,8 @@ class MixinCoreRelation(object):
         rel_list = getattr(self, reltype)
         rel_list.append(new_obj.get_id())
         self.save()
-        # if self._index_class:
-        #    self._add_relation_index(reltype, attrs)
+        if self._index_class:
+            self._add_relation_index(reltype, attrs)
         if hasattr(self, '_lookup_objects') and \
            reltype in self._lookup_objects:
             lookupkls = self._lookup_class
@@ -67,9 +68,9 @@ class MixinCoreRelation(object):
             rel_list.remove(id)
         self.save()
         related = self._get_relation(reltype, id)
-        # if self._index_class and related:
-        #    pkey = related._pkey_name
-        #    self._delete_relation_index(reltype, pkey, id)
+        if self._index_class and related:
+            pkey = related._pkey_name
+            self._delete_relation_index(reltype, pkey, id)
         if related:
             related.model.delete()
         if hasattr(self, '_lookup_objects') and \
@@ -85,9 +86,11 @@ class MixinCoreRelation(object):
     def _add_relation_index(self, reltype, attrs):
         """Add a relation to indexed object."""
         idx = self._index_class.get(self.user_id, self.get_id())
-        if not idx.update_field_add(reltype, attrs):
-            log.error('Fail to update index when adding relation %r' % reltype)
-        idx.refresh()
+        nested = getattr(idx, reltype)
+        if not nested:
+            log.warn('Nested index {} not found for {}'.format(reltype, self))
+            return False
+        nested.append(attrs)
         return True
 
     def _delete_relation_index(self, reltype, key, id):
@@ -95,18 +98,17 @@ class MixinCoreRelation(object):
         idx = self._index_class.get(self.user_id, self.get_id())
         # Look for existing entry
         found = None
-        if reltype in idx.to_dict():
-            for attr in idx.to_dict()[reltype]:
-                if attr[key] == id:
-                    found = attr
+        nested = getattr(idx, reltype)
+        if not nested:
+            log.warn('Nested index {} not found for {}'.format(reltype, self))
+            return False
+        for child in nested:
+            if getattr(child, key) == id:
+                found = child
         if not found:
             log.warn('Relation %s %s with id %s not found in index' %
                      (reltype, key, id))
-            return True
-        if not idx.update_field_delete(reltype, found):
-            log.error('Fail to update index when deleting relation %r' %
-                      reltype)
-        idx.refresh()
+        nested.remove(found)
         return True
 
 
