@@ -8,10 +8,12 @@ from datetime import datetime
 
 from ..store.contact import (Contact as ModelContact,
                              Lookup as ModelContactLookup,
-                             PublicKey as ModelPublicKey)
+                             PublicKey as ModelPublicKey,
+                             Organization, Email, IM, PostalAddress,
+                             Phone, SocialIdentity)
 
 from caliopen.base.core import BaseCore, BaseUserCore
-from caliopen.base.core.mixin import MixinCoreRelation, MixinCoreIndex
+from caliopen.base.core.mixin import MixinCoreRelation
 
 log = logging.getLogger(__name__)
 
@@ -67,7 +69,7 @@ class PublicKey(BaseContactSubCore):
     _pkey_name = 'name'
 
 
-class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
+class Contact(BaseUserCore, MixinCoreRelation):
 
     _model_class = ModelContact
     _pkey_name = 'contact_id'
@@ -76,8 +78,14 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
         'public_keys': PublicKey,
     }
 
+    # Any of these nested objects,can be a lookup value
     _lookup_class = ContactLookup
-    _lookup_objects = ['emails', 'ims', 'phones', 'social_identities']
+    _lookup_values = {
+        'emails': {'value': 'address', 'type': 'email'},
+        'ims': {'value': 'address', 'type': 'email'},
+        'phones': {'value': 'number', 'type': 'phone'},
+        'social_identities': {'value': 'name', 'type': 'social'},
+    }
 
     @property
     def user(self):
@@ -97,10 +105,36 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
         # XXX may be empty, got info from related infos
         return " ".join(elmts)
 
+    def _create_lookup(self, type, value):
+        """Create one contact lookup."""
+        lookup = ContactLookup.create(self.user, value=value, type=type,
+                                      contact_id=self.contact_id)
+        log.debug('Created contact lookup {}'.format(lookup))
+        return lookup
+
+    def _create_lookups(self):
+        """Create lookups for a contact using its nested attributes."""
+        for attr_name, obj in self._lookup_values.items():
+            nested = getattr(self, attr_name)
+            if nested:
+                for attr in nested:
+                    lookup_value = attr.get(obj['value'])
+                    if lookup_value:
+                        self._create_lookup(obj['type'], lookup_value)
+
     @classmethod
     def create(cls, user, contact, **related):
         # XXX do sanity check about only one primary for related objects
         # XXX check no extra arguments in related than relations
+        def create_nested(values, kls):
+            """Create nested objects in store format."""
+            nested = []
+            for param in values:
+                param.validate()
+                attrs = param.to_primitive()
+                nested.append(kls(**attrs))
+            return nested
+
         contact.validate()
         for k, v in related.iteritems():
             if k in cls._relations:
@@ -110,25 +144,30 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
         # XXX check and format tags and groups
         title = cls._compute_title(contact)
         contact_id = uuid.uuid4()
-        o = cls._model_class.create(user_id=user.user_id,
-                                    contact_id=contact_id,
-                                    infos=contact.infos,
-                                    tags=contact.tags, groups=contact.groups,
-                                    date_insert=datetime.utcnow(),
-                                    given_name=contact.given_name,
-                                    additional_name=contact.additional_name,
-                                    family_name=contact.family_name,
-                                    prefix_name=contact.name_prefix,
-                                    suffix_name=contact.name_suffix,
-                                    title=title,
-                                    organizations=contact.organizations,
-                                    postal_addresses=contact.postal_addresses,
-                                    emails=contact.emails,
-                                    ims=contact.ims,
-                                    social_identities=contact.social_identities
-                                    )
-        c = cls(o)
-        log.debug('Created contact %s' % c.contact_id)
+        attrs = {'contact_id': contact_id,
+                 'info': contact.infos,
+                 'tags': contact.tags,
+                 'groups': contact.groups,
+                 'date_insert': datetime.utcnow(),
+                 'given_name': contact.given_name,
+                 'additional_name': contact.additional_name,
+                 'family_name': contact.family_name,
+                 'prefix_name': contact.name_prefix,
+                 'suffix_name': contact.name_suffix,
+                 'title': title,
+                 'emails': create_nested(contact.emails, Email),
+                 'ims': create_nested(contact.ims, IM),
+                 'phones': create_nested(contact.phones, Phone),
+                 'postal_addresses': create_nested(contact.addresses,
+                                                   PostalAddress),
+                 'social_identities': create_nested(contact.identities,
+                                                    SocialIdentity),
+                 'organizations': create_nested(contact.organizations,
+                                                Organization)}
+
+        core = super(Contact, cls).create(user, **attrs)
+        log.debug('Created contact %s' % core.contact_id)
+        core._create_lookups()
         # Create relations
         related_cores = {}
         for k, v in related.iteritems():
@@ -136,21 +175,10 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
                 for obj in v:
                     log.debug('Processing object %r' % obj)
                     # XXX check only one is_primary per relation using it
-                    new_core = cls._relations[k].create(user, c, **obj)
+                    new_core = cls._relations[k].create(user, core, **obj)
                     related_cores.setdefault(k, []).append(new_core.to_dict())
-                    log.debug('Created core %r' % new_core)
-                    if k in cls._lookup_objects:
-                        look = ContactLookup.create(user_id=user.user_id,
-                                                    value=new_core.get_id(),
-                                                    contact_id=c.contact_id,
-                                                    type=k,
-                                                    lookup_id=new_core.get_id()
-                                                    )
-                        log.debug('Created lookup %r of type %s' %
-                                  (look, k))
-        # Index contact and related objects
-        c.create_index()
-        return c
+                    log.debug('Created related core %r' % new_core)
+        return core
 
     @classmethod
     def lookup(cls, user, value):

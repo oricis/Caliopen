@@ -149,6 +149,6 @@ class Lookup(BaseModel):
 
     user_id = columns.UUID(primary_key=True)
     value = columns.Text(primary_key=True)
+    type = columns.Text(primary_key=True)
     contact_id = columns.UUID()
-    type = columns.Text()
     lookup_id = columns.Text()

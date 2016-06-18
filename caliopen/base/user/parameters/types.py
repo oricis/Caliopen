@@ -6,7 +6,7 @@ from schematics.types import StringType
 from schematics.exceptions import ValidationError
 import phonenumbers
 
-from caliopen.user.helpers.normalize import clean_email_address
+from ..helpers.normalize import clean_email_address
 
 
 class InternetAddressType(StringType):
