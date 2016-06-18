@@ -226,7 +226,7 @@ class MailMessage(object):
         msg.external_parent_id = self.external_parent_id
         msg.external_message_id = self.external_message_id
         # XXX well ....
-        msg.privacy_index = (self.transport_privacy_index +
-                             self.content_privacy_index) / 2
+        msg.privacy_index = int(self.transport_privacy_index +
+                                self.content_privacy_index) / 2
         msg.importance_level = self.importance_level
         return msg
