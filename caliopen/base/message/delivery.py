@@ -43,12 +43,13 @@ class UserMessageDelivery(object):
                     recipient.address = real_addr
                     recipient.type = type
                     recipient.protocol = 'email'
-                    recipient.label = real_addr
+                    recipient.label = addr
                     try:
                         log.debug('Try to resolve contact %s' % addr)
                         contact = ContactLookup.get(user, addr)
                         recipient.contact_id = str(contact.contact_id)
-                        recipient.label = contact.title
+                        if contact.title:
+                            recipient.label = contact.title
                     except NotFound:
                         pass
 
@@ -118,8 +119,18 @@ class UserMessageDelivery(object):
         lookup_sequence = mail.lookup_sequence()
         lookup = self.lookup(user, lookup_sequence)
 
+        # Create or update existing thread thread
+        if lookup:
+            log.debug('Found thread %r' % lookup.thread_id)
+            thread = Thread.get(user, lookup.thread_id)
+            thread.update_from_message(message)
+        else:
+            log.debug('Creating new thread')
+            thread = Thread.create_from_message(user, message)
+        thread_id = thread.thread_id if thread else None
+
         # XXX missing thread management
-        msg = Message.create(user, message, thread_id=None, lookup=lookup)
+        msg = Message.create(user, message, thread_id=thread_id, lookup=lookup)
         # XXX Init lookup
         if not lookup:
             self.__init_lookups(user, lookup_sequence, msg)
