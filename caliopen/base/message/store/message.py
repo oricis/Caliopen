@@ -28,6 +28,7 @@ class MessageRecipient(UserType):
     protocol = columns.Text()
     address = columns.Text()
     contact_id = columns.UUID()
+    label = columns.Text()
 
 
 class Message(BaseModel, IndexedModelMixin):

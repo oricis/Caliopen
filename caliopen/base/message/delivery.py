@@ -42,10 +42,13 @@ class UserMessageDelivery(object):
                     recipient = Recipient()
                     recipient.address = real_addr
                     recipient.type = type
+                    recipient.protocol = 'email'
+                    recipient.label = real_addr
                     try:
                         log.debug('Try to resolve contact %s' % addr)
                         contact = ContactLookup.get(user, addr)
                         recipient.contact_id = str(contact.contact_id)
+                        recipient.label = contact.title
                     except NotFound:
                         pass
 
