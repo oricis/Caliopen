@@ -41,3 +41,4 @@ class Message(BaseModel, IndexedModelMixin):
     tags = columns.List(columns.Text)
     flags = columns.List(columns.Text)  # Seen, Recent, Deleted, ... IMAP?
     offset = columns.Integer()
+    state = columns.Text(default='draft')

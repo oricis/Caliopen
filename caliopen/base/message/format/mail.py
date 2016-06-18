@@ -208,6 +208,7 @@ class MailMessage(object):
         """Transform mail to a NewMessage parameter."""
         msg = NewMessage()
         msg.type = 'email'
+        msg.state = 'unread'
         msg.subject = self.subject
         msg.from_ = self.from_
         # XXX need transform to part parameter

@@ -44,6 +44,7 @@ class Message(BaseUserCore):
         attrs = {'message_id': message_id,
                  'thread_id': thread_id,
                  'type': message.type,
+                 'state': message.state,
                  'from_': message.from_,
                  'date': message.date,
                  'date_insert': datetime.utcnow(),
