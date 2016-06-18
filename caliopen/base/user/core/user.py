@@ -152,7 +152,7 @@ class User(BaseCore):
         # Create default tags
         default_tags = Configuration('global').get('system.default_tags')
         for tag in default_tags:
-            Tag.create(user_id=core.user_id, **tag)
+            Tag.create(core, **tag)
         return core
 
     @classmethod
