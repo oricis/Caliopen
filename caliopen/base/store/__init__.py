@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function, unicode_literals
+
 from .model import BaseModel, BaseIndexDocument
-from .mixin import IndexTagMixin
 
 __all__ = [
     'BaseModel', 'BaseIndexDocument',
-    'IndexTagMixin'
 ]

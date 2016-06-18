@@ -137,3 +137,9 @@ class BaseUserCore(BaseCore):
     def count(cls, user, filters=None):
         """Count core objects that belong to an user."""
         return cls.find(user, filters, count=True)
+
+    @classmethod
+    def create(cls, user, **attrs):
+        """Create a core object belong to an user."""
+        obj = cls._model_class.create(user_id=user.user_id, **attrs)
+        return cls(obj)
