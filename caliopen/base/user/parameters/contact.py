@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 """Caliopen contact parameters classes."""
+from __future__ import absolute_import, print_function, unicode_literals
 
 from schematics.models import Model
-from schematics.types import (StringType, IntType,
-                              URLType, EmailType, UUIDType, DateTimeType)
+from schematics.types import (StringType, IntType, URLType,
+                              UUIDType, DateTimeType)
 from schematics.types.compound import ListType, ModelType, DictType
 from schematics.transforms import blacklist
+
+from .types import InternetAddressType, PhoneNumberType
 
 ORG_TYPES = ['work', 'home']
 ADDRESS_TYPES = ['work', 'home', 'other']
@@ -95,7 +98,7 @@ class PostalAddress(NewPostalAddress):
 class NewEmail(Model):
 
     """Input structure for a new email."""
-    address = EmailType(required=True)
+    address = InternetAddressType(required=True)
     label = StringType()
     is_primary = IntType(default=0)
     type = StringType(choices=EMAIL_TYPES, default='other')
@@ -118,7 +121,7 @@ class NewIM(Model):
 
     """Input structure for a new IM."""
 
-    address = EmailType(required=True)
+    address = InternetAddressType(required=True)
     label = StringType()
     is_primary = IntType(default=0)
     type = StringType(choices=IM_TYPES, default='other')
@@ -142,7 +145,7 @@ class NewPhone(Model):
 
     """Input structure for a new phone."""
 
-    number = StringType(required=True)
+    number = PhoneNumberType(required=True)
     type = StringType(choices=PHONE_TYPES, default='other')
     is_primary = IntType(default=0)
     uri = URLType()
