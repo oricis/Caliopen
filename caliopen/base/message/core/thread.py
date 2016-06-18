@@ -12,13 +12,12 @@ from caliopen.base.parameters import ReturnCoreObject, ReturnIndexObject
 
 from caliopen.base.user.core import Contact
 
-from caliopen.base.message.model import  \
+from caliopen.base.message.store import  \
     (ThreadExternalLookup as ModelExternalLookup,
      ThreadRecipientLookup as ModelRecipientLookup,
      ThreadMessageLookup as ModelMessageLookup,
      Thread as ModelThread,
-     ThreadCounter as ModelCounter,
-     IndexedThread)
+     ThreadCounter as ModelCounter)
 from caliopen.base.message.parameters import Thread as ThreadParam
 
 
@@ -76,12 +75,11 @@ class Counter(BaseUserCore):
             return None
 
 
-class Thread(BaseUserCore, MixinCoreIndex):
+class Thread(BaseUserCore):
 
     """Thread core object."""
 
     _model_class = ModelThread
-    _index_class = IndexedThread
 
     _pkey_name = 'thread_id'
     _counter = None
@@ -91,8 +89,7 @@ class Thread(BaseUserCore, MixinCoreIndex):
         new_id = uuid.uuid4()
         contacts = [contact.to_primitive()
                     for contact in message.recipients]
-        kwargs = {'user_id': user.user_id,
-                  'thread_id': new_id,
+        kwargs = {'thread_id': new_id,
                   'date_insert': datetime.utcnow(),
                   'privacy_index': message.privacy_index,
                   'text': message.text[:200],
@@ -101,7 +98,7 @@ class Thread(BaseUserCore, MixinCoreIndex):
                   }
         if message.tags:
             kwargs['_indexed_extra']['tags'] = message.tags
-        thread = cls.create(**kwargs)
+        thread = cls.create(user, **kwargs)
         log.debug('Created thread %s' % thread.thread_id)
         counters = Counter.create(user_id=user.user_id,
                                   thread_id=thread.thread_id)
@@ -206,18 +203,6 @@ class Thread(BaseUserCore, MixinCoreIndex):
         """Total number of attachments."""
         return self.counters.attachment_count
 
-    @property
-    def contacts(self):
-        if self._index_data:
-            return self._index_data.get('contacts', [])
-        return []
-
-    @property
-    def tags(self):
-        if self._index_data:
-            return self._index_data.get('tags', [])
-        return []
-
     @classmethod
     def main_view(cls, user, limit, offset):
         """Build the main view results."""
@@ -228,12 +213,6 @@ class Thread(BaseUserCore, MixinCoreIndex):
         core_threads = [cls.get(user, x['thread_id'], index_data=x)
                         for x in index_threads['data']]
         return {'threads': core_threads, 'total': index_threads['total']}
-
-
-class ReturnIndexThread(ReturnIndexObject):
-
-    _index_class = IndexedThread
-    _return_class = ThreadParam
 
 
 class ReturnThread(ReturnCoreObject):
