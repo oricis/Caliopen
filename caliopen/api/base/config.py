@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
-from pyramid.httpexceptions import HTTPServerError
 from caliopen.base.helpers.connection import connect_storage
-from caliopen.api.base.exception import (ValidationError, AuthenticationError,
-                                         AuthorizationError, ResourceNotFound)
 
-from caliopen.api.base.renderer import (TextPlainRenderer, JsonRenderer,
-                                        PartRenderer)
-from caliopen.api.base.deserializer import json_deserializer
+from .renderer import TextPlainRenderer, JsonRenderer, PartRenderer
+from .deserializer import json_deserializer
+from .exception import (ValidationError, AuthenticationError,
+                        AuthorizationError, ResourceNotFound)
 
 log = logging.getLogger(__name__)
 
