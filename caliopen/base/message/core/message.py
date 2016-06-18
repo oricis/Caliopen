@@ -10,7 +10,8 @@ from datetime import datetime
 from caliopen.base.core import BaseUserCore
 from caliopen.base.parameters import ReturnCoreObject
 
-from caliopen.base.message.store import Message as ModelMessage, RawMessage
+from caliopen.base.message.store import (Message as ModelMessage,
+                                         MessageRecipient, RawMessage)
 from caliopen.base.message.parameters import Message as ParamMessage
 
 
@@ -28,19 +29,26 @@ class Message(BaseUserCore):
     def create(cls, user, message, thread_id=None, lookup=None):
         """Create a new message for a given user."""
         message.validate()
+
+        def create_nested(values, kls):
+            """Create nested objects in store format."""
+            nested = []
+            for param in values:
+                param.validate()
+                attrs = param.to_primitive()
+                nested.append(kls(**attrs))
+            return nested
+
         parent_id = message.external_parent_id
         message_id = uuid.uuid4()
         answer_to = lookup.message_id if lookup else None
 
+        recipients = create_nested(message.recipients, MessageRecipient)
+
         # TODO : index parts information
         extras = {'headers': message.headers,
                   'text': message.text,
-                  'answer_to': answer_to,
-                  'contacts': [contact.to_primitive()
-                               for contact in message.recipients],
-                  'date': message.date,
-                  'size': message.size,
-                  'from_': message.from_}
+                  'answer_to': answer_to}
         attrs = {'message_id': message_id,
                  'thread_id': thread_id,
                  'type': message.type,
@@ -48,6 +56,7 @@ class Message(BaseUserCore):
                  'from_': message.from_,
                  'date': message.date,
                  'date_insert': datetime.utcnow(),
+                 'size': message.size,
                  'privacy_index': message.privacy_index,
                  'importance_level': message.importance_level,
                  'subject': message.subject,
@@ -56,6 +65,7 @@ class Message(BaseUserCore):
                  'tags': message.tags,
                  'flags': ['Recent'],
                  'lookup': lookup,
+                 'recipients': recipients,
                  '_indexed_extra': extras}
         return super(Message, cls).create(user, **attrs)
 

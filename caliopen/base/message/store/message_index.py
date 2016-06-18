@@ -27,7 +27,8 @@ class IndexedMessage(BaseIndexDocument):
     tags = dsl.String()
     flags = dsl.String()
     offset = dsl.Integer()
+    size = dsl.Integer()
 
     # XXX better nested definition
     headers = dsl.Nested()
-    contacts = dsl.Nested()
+    recipients = dsl.Nested()

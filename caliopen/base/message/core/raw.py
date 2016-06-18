@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """Caliopen core raw message class."""
+from __future__ import absolute_import, print_function, unicode_literals
 
 import hashlib
 
 from caliopen.base.core import BaseUserCore
 
 from caliopen.base.message.store import RawMessage as ModelRaw
-from caliopen.base.message.format.mail import MailMessage
+from caliopen.base.message.format import MailMessage
 
 
 class RawMessage(BaseUserCore):

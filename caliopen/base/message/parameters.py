@@ -19,6 +19,7 @@ class Recipient(Model):
 
     address = StringType(required=True)
     type = StringType(required=True, choices=RECIPIENT_TYPES)
+    protocol = StringType(choices=MESSAGE_TYPES)
     contact_id = UUIDType()
 
 
