@@ -46,6 +46,12 @@ class BaseCore(object):
         self.model = model
 
     @classmethod
+    def create(cls, **attrs):
+        """Create a core object."""
+        obj = cls._model_class.create(**attrs)
+        return cls(obj)
+
+    @classmethod
     def get(cls, key):
         """Get a core object by key."""
         params = {cls._pkey_name: key}

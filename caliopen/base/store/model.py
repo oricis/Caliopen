@@ -7,11 +7,10 @@ from cassandra.cqlengine.models import Model
 from cassandra.cqlengine.query import DoesNotExist
 
 from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Search, DocType
+from elasticsearch_dsl import DocType
 
 from caliopen.base.config import Configuration
 from caliopen.base.exception import NotFound
-from caliopen.base.helpers.json import to_json, json
 
 
 log = logging.getLogger(__name__)
@@ -28,11 +27,12 @@ class BaseModel(Model):
     @classmethod
     def create(cls, **kwargs):
         """Create a new model record."""
-        kwargs = {key: val for key, val in kwargs.items()
-                  if key in cls._columns}
-        obj = super(BaseModel, cls).create(**kwargs)
+        attrs = {key: val for key, val in kwargs.items()
+                 if key in cls._columns}
+        obj = super(BaseModel, cls).create(**attrs)
         if obj._index_class:
-            obj.create_index()
+            extras = kwargs.get('_indexed_extra', {})
+            obj.create_index(**extras)
         return obj
 
     @classmethod

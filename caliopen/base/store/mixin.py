@@ -43,7 +43,7 @@ class IndexedModelMixin(object):
             else:
                 setattr(idx, col_name, col_value)
 
-    def create_index(self):
+    def create_index(self, **extras):
         """Translate a model object into an indexed document."""
         if not self._index_class:
             return False
@@ -56,6 +56,7 @@ class IndexedModelMixin(object):
                     idx.meta.id = getattr(self, name)
             else:
                 self._process_column(desc, self, idx)
-
+        for k, v in extras.items():
+            setattr(idx, k, v)
         idx.save(using=idx.client())
         return True
