@@ -17,7 +17,7 @@ class Organization(BaseUserType):
     """Contact organizations model."""
     uniq_name = 'organization_id'
 
-    organization_id = columns.UUID(primary_key=True, default=uuid.uuid4)
+    organization_id = columns.UUID(default=uuid.uuid4)
     deleted = columns.Integer(default=0)
     label = columns.Text()
     department = columns.Text()
@@ -33,7 +33,7 @@ class PostalAddress(BaseUserType):
     """Contact postal addresses model."""
     uniq_name = 'address_id'
 
-    address_id = columns.UUID(primary_key=True, default=uuid.uuid4)
+    address_id = columns.UUID(default=uuid.uuid4)
     label = columns.Text()
     type = columns.Text()
     is_primary = columns.Integer(default=0)
@@ -49,7 +49,7 @@ class Email(BaseUserType):
     """Contact emails model."""
     uniq_name = 'address'
 
-    address = columns.Text(primary_key=True)
+    address = columns.Text()
     label = columns.Text()
     is_primary = columns.Integer(default=0)
     type = columns.Text()   # home, work, other
@@ -60,7 +60,7 @@ class IM(BaseUserType):
     """Contact instant messaging adresses model."""
     uniq_name = 'address'
 
-    address = columns.Text(primary_key=True)
+    address = columns.Text()
     label = columns.Text()
     type = columns.Text()
     protocol = columns.Text()
@@ -72,7 +72,7 @@ class Phone(BaseUserType):
     """Contact phones model."""
     uniq_name = 'number'
 
-    number = columns.Text(primary_key=True)
+    number = columns.Text()
     type = columns.Text()
     is_primary = columns.Integer(default=0)
     uri = columns.Text()    # RFC3966
@@ -83,7 +83,7 @@ class SocialIdentity(BaseUserType):
     """Any contact social identity (facebook, twitter, linkedin, etc)."""
     uniq_name = 'social_id'
 
-    social_id = columns.UUID(primary_key=True, default=uuid.uuid4)
+    social_id = columns.UUID(default=uuid.uuid4)
     name = columns.Text()
     type = columns.Text()
     # Abstract everything else in a map

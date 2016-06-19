@@ -59,8 +59,6 @@ class Organization(NewOrganization):
     user_id = UUIDType()
     contact_id = UUIDType()
     organization_id = UUIDType(required=True)
-    date_insert = DateTimeType(required=True)
-    date_update = DateTimeType()
     deleted = IntType(default=0)
 
     class Options:
@@ -88,8 +86,6 @@ class PostalAddress(NewPostalAddress):
     user_id = UUIDType()
     contact_id = UUIDType()
     address_id = UUIDType(required=True)
-    date_insert = DateTimeType(required=True)
-    date_update = DateTimeType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
@@ -110,8 +106,6 @@ class Email(NewEmail):
 
     user_id = UUIDType()
     contact_id = UUIDType()
-    date_insert = DateTimeType(required=True)
-    date_update = DateTimeType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
@@ -134,8 +128,6 @@ class IM(NewIM):
 
     user_id = UUIDType()
     contact_id = UUIDType()
-    date_insert = DateTimeType(required=True)
-    date_update = DateTimeType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
@@ -157,8 +149,6 @@ class Phone(NewPhone):
 
     user_id = UUIDType()
     contact_id = UUIDType()
-    date_insert = DateTimeType(required=True)
-    date_update = DateTimeType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
@@ -180,8 +170,6 @@ class SocialIdentity(NewSocialIdentity):
 
     user_id = UUIDType()
     contact_id = UUIDType()
-    date_insert = DateTimeType(required=True)
-    date_update = DateTimeType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
