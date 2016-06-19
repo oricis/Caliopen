@@ -5,15 +5,14 @@ from datetime import datetime
 import uuid
 
 from cassandra.cqlengine import columns
-from cassandra.cqlengine.usertype import UserType
 
 from caliopen.base.store.mixin import IndexedModelMixin
-from caliopen.base.store.model import BaseModel
+from caliopen.base.store import BaseModel, BaseUserType
 
 from .contact_index import IndexedContact
 
 
-class Organization(UserType):
+class Organization(BaseUserType):
 
     """Contact organizations model."""
     uniq_name = 'organization_id'
@@ -29,7 +28,7 @@ class Organization(UserType):
     type = columns.Text()   # work, other
 
 
-class PostalAddress(UserType):
+class PostalAddress(BaseUserType):
 
     """Contact postal addresses model."""
     uniq_name = 'address_id'
@@ -45,7 +44,7 @@ class PostalAddress(UserType):
     region = columns.Text()
 
 
-class Email(UserType):
+class Email(BaseUserType):
 
     """Contact emails model."""
     uniq_name = 'address'
@@ -56,7 +55,7 @@ class Email(UserType):
     type = columns.Text()   # home, work, other
 
 
-class IM(UserType):
+class IM(BaseUserType):
 
     """Contact instant messaging adresses model."""
     uniq_name = 'address'
@@ -68,7 +67,7 @@ class IM(UserType):
     is_primary = columns.Integer(default=0)
 
 
-class Phone(UserType):
+class Phone(BaseUserType):
 
     """Contact phones model."""
     uniq_name = 'number'
@@ -79,7 +78,7 @@ class Phone(UserType):
     uri = columns.Text()    # RFC3966
 
 
-class SocialIdentity(UserType):
+class SocialIdentity(BaseUserType):
 
     """Any contact social identity (facebook, twitter, linkedin, etc)."""
     uniq_name = 'social_id'
