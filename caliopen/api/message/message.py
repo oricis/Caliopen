@@ -1,12 +1,13 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function, unicode_literals
+
 from datetime import datetime
 import logging
 
 from cornice.resource import resource, view
 
-from caliopen.base.message.core import (
-    RawMessage,
-    Message as CoreMessage,
-    ReturnIndexMessage)
+from caliopen.base.message.core import (RawMessage, ReturnMessage,
+                                        Message as CoreMessage)
 from caliopen.base.message.parameters import NewMessage
 from caliopen.api.base import Api
 
@@ -40,8 +41,8 @@ class Message(Api):
                                             offset=self.get_offset())
         results = []
         for msg in messages.get('data', []):
-            results.append(ReturnIndexMessage.build(msg).serialize())
-        return {'messages': results, 'total': messages['total']}
+            results.append(ReturnMessage.build(msg).serialize())
+        return {'messages': results, 'total': len(results)}
 
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
