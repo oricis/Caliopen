@@ -3,9 +3,8 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from cassandra.cqlengine import columns
-from cassandra.cqlengine.usertype import UserType
 
-from caliopen.base.store.model import BaseModel
+from caliopen.base.store.model import BaseModel, BaseUserType
 from caliopen.base.store.mixin import IndexedModelMixin
 
 from .message_index import IndexedMessage
@@ -20,7 +19,7 @@ class RawMessage(BaseModel):
     data = columns.Bytes()
 
 
-class MessageRecipient(UserType):
+class MessageRecipient(BaseUserType):
 
     """Recipient involved in a message."""
 
