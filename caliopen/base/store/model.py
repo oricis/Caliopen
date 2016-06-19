@@ -5,6 +5,7 @@ import logging
 
 from cassandra.cqlengine.models import Model
 from cassandra.cqlengine.query import DoesNotExist
+from cassandra.cqlengine.usertype import UserType
 
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import DocType
@@ -67,3 +68,11 @@ class BaseIndexDocument(DocType):
     def client(cls):
         """Return an elasticsearch client."""
         return Elasticsearch(cls.__url__)
+
+
+class BaseUserType(UserType):
+
+    """Base class for UsermDefined Type in store layer."""
+
+    def to_dict(self):
+        return {k: v for k, v in self.items()}
