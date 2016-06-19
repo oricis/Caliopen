@@ -11,26 +11,18 @@ from pyramid.httpexceptions import HTTPBadRequest
 
 
 from caliopen.base.user.core import (Contact as CoreContact,
-                                     Email as CoreEmail,
-                                     IM as CoreIM,
-                                     Phone as CorePhone,
-                                     SocialIdentity as CoreIdentity,
-                                     PublicKey as CorePublicKey,
-                                     Organization as CoreOrganization,
-                                     PostalAddress as CoreAddress)
+                                     PublicKey as CorePublicKey)
 
 from caliopen.base.user.returns import (ReturnContact,
-                                        ReturnIndexShortContact,
                                         ReturnAddress, ReturnEmail,
                                         ReturnIM, ReturnPhone,
                                         ReturnOrganization,
                                         ReturnSocialIdentity,
                                         ReturnPublicKey)
 
-from caliopen.base.user.parameters import (NewContact,
+from caliopen.base.user.parameters import (NewContact as NewContactParam,
                                            Contact as ContactParam,
-                                           NewPostalAddress,
-                                           NewEmail, NewIM)
+                                           NewPostalAddress, NewEmail, NewIM)
 
 from caliopen.api.base import Api
 from caliopen.base.exception import NotFound
@@ -51,12 +43,12 @@ class Contact(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
-        results = CoreContact.find_index(self.user, None,
-                                         limit=self.get_limit(),
-                                         offset=self.get_offset())
-        data = [ReturnIndexShortContact.build(x).serialize()
-                for x in results['data']]
-        return {'contacts': data, 'total': results['total']}
+        results = CoreContact.find(self.user, None,
+                                   limit=self.get_limit(),
+                                   offset=self.get_offset())
+        data = [ReturnContact.build(x).serialize()
+                for x in results]
+        return {'contacts': data, 'total': len(data)}
 
     @view(renderer='json', permission='authenticated')
     def get(self):
@@ -71,7 +63,7 @@ class Contact(Api):
     def collection_post(self):
         """Create a new contact from json post data structure."""
         data = self.request.json
-        contact_param = NewContact(data)
+        contact_param = NewContactParam(data)
         try:
             contact_param.validate()
         except Exception as exc:
@@ -82,6 +74,8 @@ class Contact(Api):
 
 
 class BaseSubContactApi(Api):
+
+    """Base class for contact sub objects, not nested one."""
 
     core_class = None
     return_class = None
@@ -96,7 +90,6 @@ class BaseSubContactApi(Api):
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
         # XXX define filters from request
-        filters = {}
         objs = self.core_class.find(self.user, self.contact)
         rets = [self.return_class.build(x).serialize() for x in objs['data']]
         return {self.namespace: rets, 'total': objs['total']}
@@ -114,6 +107,38 @@ class BaseSubContactApi(Api):
         contact_id = self.request.validated['contact_id']
         contact = CoreContact.get(self.user, contact_id)
         return getattr(contact, delete_func)(relation_id)
+
+
+class BaseContactNestedApi(Api):
+
+    """Base class for API related to nested attributes of a contact."""
+
+    return_class = None
+    namespace = None
+
+    def __init__(self, request):
+        self.request = request
+        self.user = request.authenticated_userid
+        contact_id = self.request.matchdict.get('contact_id')
+        self.contact = CoreContact.get(self.user, contact_id)
+
+    @view(renderer='json', permission='authenticated')
+    def collection_get(self):
+        # XXX define filters from request
+        attrs = getattr(self.contact, self.namespace, [])
+        rets = [self.return_class.build(x).serialize() for x in attrs]
+        return {self.namespace: rets, 'total': len(attrs)}
+
+    def _create(self, contact_id, params, return_obj):
+        """Create sub object from param using add_func."""
+        attr = getattr(self.contact, self.namespace)
+        attr.append(params)
+        self.contact.save()
+        return return_obj.build(params).serialize()
+
+    def _delete(self, relation_id, delete_func):
+        """Delete sub object relation_id using delete_fund."""
+        raise NotImplementedError()
 
 
 class NewAddressParam(colander.MappingSchema):
@@ -142,9 +167,8 @@ class DeleteAddressParam(colander.MappingSchema):
 
 @resource(collection_path='/contacts/{contact_id}/addresses',
           path='/contacts/{contact_id}/addresses/{address_id}')
-class ContactAddress(BaseSubContactApi):
+class ContactAddress(BaseContactNestedApi):
 
-    core_class = CoreAddress
     return_class = ReturnAddress
     namespace = 'addresses'
 
@@ -154,8 +178,7 @@ class ContactAddress(BaseSubContactApi):
         validated = self.request.validated
         contact_id = validated.pop('contact_id')
         address = NewPostalAddress(validated)
-        out_obj = self._create(contact_id, address, 'add_address',
-                               ReturnAddress)
+        out_obj = self._create(contact_id, address, ReturnAddress)
         return Response(status=201, body=json.dumps({'addresses': out_obj}))
 
     @view(renderer='json', permission='authenticated',
@@ -189,9 +212,8 @@ class DeleteEmailParam(colander.MappingSchema):
 
 @resource(collection_path='/contacts/{contact_id}/emails',
           path='/contacts/{contact_id}/emails/{address}')
-class ContactEmail(BaseSubContactApi):
+class ContactEmail(BaseContactNestedApi):
 
-    core_class = CoreEmail
     return_class = ReturnEmail
     namespace = 'emails'
 
@@ -201,8 +223,7 @@ class ContactEmail(BaseSubContactApi):
         validated = self.request.validated
         contact_id = validated.pop('contact_id')
         email = NewEmail(validated)
-        out_obj = self._create(contact_id, email, 'add_email',
-                               ReturnEmail)
+        out_obj = self._create(contact_id, email, ReturnEmail)
         return Response(status=201, body=json.dumps({'addresses': out_obj}))
 
     @view(renderer='json', permission='authenticated',
@@ -236,9 +257,8 @@ class DeleteIMParam(colander.MappingSchema):
 
 @resource(collection_path='/contacts/{contact_id}/ims',
           path='/contacts/{contact_id}/ims/{address}')
-class ContactIM(BaseSubContactApi):
+class ContactIM(BaseContactNestedApi):
 
-    core_class = CoreIM
     return_class = ReturnIM
     namespace = 'ims'
 
@@ -248,8 +268,7 @@ class ContactIM(BaseSubContactApi):
         validated = self.request.validated
         contact_id = validated.pop('contact_id')
         im = NewIM(validated)
-        out_obj = self._create(contact_id, im, 'add_im',
-                               ReturnIM)
+        out_obj = self._create(contact_id, im, ReturnIM)
         return Response(status=201, body=json.dumps({'addresses': out_obj}))
 
     @view(renderer='json', permission='authenticated',
@@ -267,27 +286,24 @@ class ContactIM(BaseSubContactApi):
 
 @resource(collection_path='/contacts/{contact_id}/identities',
           path='/contacts/{contact_id}/identities/{identity_id}')
-class ContactSocialIdentity(BaseSubContactApi):
+class ContactSocialIdentity(BaseContactNestedApi):
 
-    core_class = CoreIdentity
     return_class = ReturnSocialIdentity
     namespace = 'identities'
 
 
 @resource(collection_path='/contacts/{contact_id}/phones',
           path='/contacts/{contact_id}/phones/{phone_id}')
-class ContactPhone(BaseSubContactApi):
+class ContactPhone(BaseContactNestedApi):
 
-    core_class = CorePhone
     return_class = ReturnPhone
     namespace = 'phones'
 
 
 @resource(collection_path='/contacts/{contact_id}/organizations',
           path='/contacts/{contact_id}/organizations/{org_id}')
-class ContactOrganization(BaseSubContactApi):
+class ContactOrganization(BaseContactNestedApi):
 
-    core_class = CoreOrganization
     return_class = ReturnOrganization
     namespace = 'organizations'
 
