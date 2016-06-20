@@ -90,6 +90,7 @@ class Thread(BaseUserCore):
         kwargs = {'thread_id': new_id,
                   'date_insert': datetime.utcnow(),
                   'privacy_index': message.privacy_index,
+                  'importance_level': message.importance_level,
                   'text': message.text[:200],
                   }
         thread = cls.create(user, **kwargs)

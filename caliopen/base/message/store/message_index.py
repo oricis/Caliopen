@@ -10,7 +10,7 @@ class IndexedMessage(BaseIndexDocument):
 
     """Contact indexed message model."""
 
-    doc_type = 'messages'
+    doc_type = 'indexed_message'
 
     message_id = dsl.String()
     thread_id = dsl.String()

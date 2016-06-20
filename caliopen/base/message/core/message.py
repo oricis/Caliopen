@@ -72,11 +72,18 @@ class Message(BaseUserCore):
     @classmethod
     def by_thread_id(cls, user, thread_id, order=None, limit=None, offset=0):
         """Get messages for a given thread from index."""
-        raise NotImplementedError()
+        res = cls._model_class.search(user, thread_id=thread_id,
+                                      limit=limit,
+                                      offset=offset)
+        log.debug('search  result{}'.format(res))
+        messages = []
+        if res.hits:
+            messages = [cls.get(user, x.meta.id) for x in res.hits]
+        return messages
 
     @property
-    def text(self):
-        """Return text from message."""
+    def raw(self):
+        """Return raw text from message."""
         # XXX do not use RawMessage lookup
         raw = RawMessage.get(self.user, str(self.external_message_id))
         msg = raw.parse()
