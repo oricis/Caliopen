@@ -3,6 +3,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from cassandra.cqlengine import columns
+from elasticsearch_dsl import Search
 
 log = logging.getLogger(__name__)
 
@@ -60,3 +61,15 @@ class IndexedModelMixin(object):
             setattr(idx, k, v)
         idx.save(using=idx.client())
         return True
+
+    @classmethod
+    def search(cls, user, limit=None, offset=None, **params):
+        """Search in index using a dict parameter."""
+        search = cls._index_class.search(using=cls._index_class.client(),
+                                         index=user.user_id)
+        for k, v in params.items():
+            term = {k: v}
+            search = search.filter('match', **term)
+        log.debug('Search is {}'.format(search.to_dict()))
+        resp = search.execute()
+        return resp
