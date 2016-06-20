@@ -40,7 +40,7 @@ class Message(Api):
                                             limit=self.get_limit(),
                                             offset=self.get_offset())
         results = []
-        for msg in messages.get('data', []):
+        for msg in messages:
             results.append(ReturnMessage.build(msg).serialize())
         return {'messages': results, 'total': len(results)}
 
