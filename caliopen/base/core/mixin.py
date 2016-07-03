@@ -110,31 +110,3 @@ class MixinCoreRelation(object):
                      (reltype, key, id))
         nested.remove(found)
         return True
-
-
-class MixinCoreIndex(object):
-
-    """Mixin for core class with a related index."""
-
-    @classmethod
-    def find_index(cls, user, filters, order=None, limit=None, offset=0):
-        """Query index to get object matching query."""
-        if not filters:
-            results = cls._index_class.all(user.user_id,
-                                           order=order,
-                                           limit=limit,
-                                           offset=offset)
-        else:
-            results = cls._index_class.filter(user.user_id, filters,
-                                              order=order,
-                                              limit=limit,
-                                              offset=offset)
-        return results
-
-    @classmethod
-    def get_index(cls, user, id):
-        """Get index entry."""
-        idx = cls._index_class.get(user.user_id, id)
-        if idx:
-            return idx.to_dict()
-        raise NotFound()
