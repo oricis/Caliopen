@@ -69,13 +69,52 @@ class PublicKey(BaseContactSubCore):
     _pkey_name = 'name'
 
 
-class Contact(BaseUserCore, MixinCoreRelation):
+class MixinContactNested(object):
+
+    """Mixin class for contact nested objects management."""
+
+    def _add_nested(self, column, nested):
+        """Add a nested object to a list."""
+        nested.validate()
+        kls = self._nested.get(column)
+        if not kls:
+            raise Exception('No nested class for {}'.format(column))
+
+        attr = getattr(self._model, column)
+        if hasattr(nested, 'is_primary') and nested.is_primary:
+            for old_primary in attr:
+                attr.is_primary = False
+        value = nested.to_primitive()
+        return attr.append(kls(**value))
+
+    def _delete_nested(self, column, nested_id):
+        """Delete a nested object with its id from a list."""
+        attr = getattr(self._model, column)
+        for nested in attr:
+            current_id = getattr(nested, nested.uniq_name)
+            if current_id == nested_id:
+                return attr.pop(nested)
+        log.warn('Nested object {}#{} not found for deletion'.
+                 format(column, nested_id))
+        return False
+
+
+class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
 
     _model_class = ModelContact
     _pkey_name = 'contact_id'
 
     _relations = {
         'public_keys': PublicKey,
+    }
+
+    _nested = {
+        'emails': Email,
+        'phones': Phone,
+        'ims': IM,
+        'social_identities': SocialIdentity,
+        'postal_addresses': PostalAddress,
+        'organizations': Organization,
     }
 
     # Any of these nested objects,can be a lookup value
@@ -200,40 +239,40 @@ class Contact(BaseUserCore, MixinCoreRelation):
 
     # MixinCoreRelation methods
     def add_organization(self, organization):
-        return self._add_relation('organizations', organization)
+        return self._add_nested('organizations', organization)
 
     def delete_organization(self, organization_id):
-        return self._delete_relation('organizations', organization_id)
+        return self._delete_nested('organizations', organization_id)
 
     def add_address(self, address):
-        return self._add_relation('postal_addresses', address)
+        return self._add_nested('postal_addresses', address)
 
     def delete_address(self, address_id):
-        return self._delete_relation('postal_addresses', address_id)
+        return self._delete_nested('postal_addresses', address_id)
 
     def add_email(self, email):
-        return self._add_relation('emails', email)
+        return self._add_nested('emails', email)
 
     def delete_email(self, email_addr):
-        return self._delete_relation('emails', email_addr)
+        return self._delete_nested('emails', email_addr)
 
     def add_im(self, im):
-        return self._add_relation('ims', im)
+        return self._add_nested('ims', im)
 
     def delete_im(self, im_addr):
-        return self._delete_relation('ims', im_addr)
+        return self._delete_nested('ims', im_addr)
 
     def add_phone(self, phone):
-        return self._add_relation('phones', phone)
+        return self._add_nested('phones', phone)
 
     def delete_phone(self, phone_num):
-        return self._delete_relation('phones', phone_num)
+        return self._delete_nested('phones', phone_num)
 
     def add_social_identity(self, identity):
-        return self._add_relation('social_identities', identity)
+        return self._add_nested('social_identities', identity)
 
     def delete_social_identity(self, identity_name):
-        return self._delete_relation('social_identities', identity_name)
+        return self._delete_nested('social_identities', identity_name)
 
     def add_public_key(self, key):
         # XXX Compute fingerprint and check key validity

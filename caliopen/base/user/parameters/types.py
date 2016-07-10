@@ -14,7 +14,7 @@ class InternetAddressType(StringType):
     """Validate an email or instant messaging address, return normalized."""
 
     def validate(self, value, context=None):
-        value = super(InternetAddressType, self).validate(value, context)
+        value = super(InternetAddressType, self).validate(value)
         try:
             clean, email = clean_email_address(value)
         except Exception as exc:
