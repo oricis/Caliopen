@@ -99,7 +99,7 @@ class MixinContactNested(object):
         """Delete a nested object with its id from a list."""
         attr = getattr(self, column)
         for nested in attr:
-            current_id = getattr(nested, nested.uniq_name)
+            current_id = getattr(nested, nested._pkey)
             if current_id == nested_id:
                 return attr.pop(nested)
         log.warn('Nested object {}#{} not found for deletion'.
