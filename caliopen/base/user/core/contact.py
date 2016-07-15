@@ -152,9 +152,10 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
 
     def _create_lookup(self, type, value):
         """Create one contact lookup."""
+        log.debug('Will create lookup for type {} and value {}'.
+                  format(type, value))
         lookup = ContactLookup.create(self.user, value=value, type=type,
                                       contact_id=self.contact_id)
-        log.debug('Created contact lookup {}'.format(lookup))
         return lookup
 
     def _create_lookups(self):
@@ -163,7 +164,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
             nested = getattr(self, attr_name)
             if nested:
                 for attr in nested:
-                    lookup_value = attr.get(obj['value'])
+                    lookup_value = attr.to_dict()[obj['value']]
                     if lookup_value:
                         self._create_lookup(obj['type'], lookup_value)
 
@@ -179,7 +180,6 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
                 attrs = param.to_primitive()
                 nested.append(kls(**attrs))
             return nested
-
         contact.validate()
         for k, v in related.iteritems():
             if k in cls._relations:
