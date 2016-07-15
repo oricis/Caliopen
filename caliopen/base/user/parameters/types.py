@@ -13,12 +13,11 @@ class InternetAddressType(StringType):
 
     """Validate an email or instant messaging address, return normalized."""
 
-    def validate(self, value, context=None):
-        value = super(InternetAddressType, self).validate(value)
+    def validate_email(self, value, context=None):
         try:
             clean, email = clean_email_address(value)
         except Exception as exc:
-            raise ValidationError(exc)
+            raise ValidationError(exc.message)
         return clean
 
 
@@ -26,11 +25,10 @@ class PhoneNumberType(StringType):
 
     """Validate a phone number and normalize in international format."""
 
-    def validate(self, value, context=None):
-        value = super(PhoneNumberType, self).validate(value, context)
+    def validate_phone(self, value, context=None):
         try:
             number = phonenumbers.parse(value, None)
             phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
             return phonenumbers.format_number(number, phone_format)
         except Exception as exc:
-            raise ValidationError(exc)
+            raise ValidationError(exc.message)
