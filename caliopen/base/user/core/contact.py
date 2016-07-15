@@ -90,6 +90,8 @@ class MixinContactNested(object):
             for old_primary in column:
                 column.is_primary = False
         value = nested.to_primitive()
+        pkey = getattr(kls, '_pkey')
+        value[pkey] = uuid.uuid4()
         log.debug('Will insert nested {} : {}'.format(column, value))
         return column.append(kls(**value))
 
@@ -178,6 +180,9 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
             for param in values:
                 param.validate()
                 attrs = param.to_primitive()
+                # XXX default value not correctly handled
+                pkey = getattr(kls, '_pkey')
+                attrs[pkey] = uuid.uuid4()
                 nested.append(kls(**attrs))
             return nested
         contact.validate()

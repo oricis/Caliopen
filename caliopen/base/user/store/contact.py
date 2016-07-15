@@ -15,6 +15,7 @@ from .contact_index import IndexedContact
 class Organization(BaseUserType):
 
     """Contact organizations model."""
+    _pkey = 'organization_id'
 
     organization_id = columns.UUID(default=uuid.uuid4)
     deleted = columns.Integer(default=0)
@@ -30,6 +31,7 @@ class Organization(BaseUserType):
 class PostalAddress(BaseUserType):
 
     """Contact postal addresses model."""
+    _pkey = 'address_id'
 
     address_id = columns.UUID(default=uuid.uuid4)
     label = columns.Text()
@@ -45,6 +47,7 @@ class PostalAddress(BaseUserType):
 class Email(BaseUserType):
 
     """Contact emails model."""
+    _pkey = 'email_id'
     uniq_name = 'address'
 
     email_id = columns.UUID(default=uuid.uuid4)
@@ -57,6 +60,7 @@ class Email(BaseUserType):
 class IM(BaseUserType):
 
     """Contact instant messaging adresses model."""
+    _pkey = 'im_id'
     uniq_name = 'address'
 
     im_id = columns.UUID(default=uuid.uuid4)
@@ -70,6 +74,7 @@ class IM(BaseUserType):
 class Phone(BaseUserType):
 
     """Contact phones model."""
+    _pkey = 'phone_id'
     uniq_name = 'number'
 
     phone_id = columns.UUID(default=uuid.uuid4)
@@ -82,6 +87,7 @@ class Phone(BaseUserType):
 class SocialIdentity(BaseUserType):
 
     """Any contact social identity (facebook, twitter, linkedin, etc)."""
+    _pkey = 'social_id'
 
     social_id = columns.UUID(default=uuid.uuid4)
     name = columns.Text()
