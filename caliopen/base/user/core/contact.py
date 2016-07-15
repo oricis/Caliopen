@@ -79,14 +79,19 @@ class MixinContactNested(object):
         kls = self._nested.get(column)
         if not kls:
             raise Exception('No nested class for {}'.format(column))
-
-        attr = getattr(self, column)
+        column = getattr(self, column)
+        # Ensure unicity
+        if hasattr(kls, 'uniq_name'):
+            for value in column:
+                uniq = getattr(value, kls.uniq_name)
+                if uniq == getattr(nested, kls.uniq_name):
+                    raise Exception('Unicity conflict for {}'.format(uniq))
         if hasattr(nested, 'is_primary') and nested.is_primary:
-            for old_primary in attr:
-                attr.is_primary = False
+            for old_primary in column:
+                column.is_primary = False
         value = nested.to_primitive()
         log.debug('Will insert nested {} : {}'.format(column, value))
-        return attr.append(kls(**value))
+        return column.append(kls(**value))
 
     def _delete_nested(self, column, nested_id):
         """Delete a nested object with its id from a list."""
