@@ -129,12 +129,13 @@ class BaseContactNestedApi(Api):
         rets = [self.return_class.build(x).serialize() for x in attrs]
         return {self.namespace: rets, 'total': len(attrs)}
 
-    def _create(self, contact_id, params, return_obj):
+    def _create(self, params, add_func, return_obj):
         """Create sub object from param using add_func."""
-        attr = getattr(self.contact, self.namespace)
-        attr.append(params)
+        func = getattr(self.contact, add_func)
+        nested = func(params)
         self.contact.save()
-        return return_obj.build(params).serialize()
+        ret = return_obj.build(params).serialize()
+        return Response(status=201, body=json.dumps({'addresses': ret}))
 
     def _delete(self, relation_id, delete_func):
         """Delete sub object relation_id using delete_fund."""
@@ -170,16 +171,16 @@ class DeleteAddressParam(colander.MappingSchema):
 class ContactAddress(BaseContactNestedApi):
 
     return_class = ReturnAddress
-    namespace = 'addresses'
+    namespace = 'postal_addresses'
 
     @view(renderer='json', permission='authenticated',
           schema=NewAddressParam)
     def collection_post(self):
         validated = self.request.validated
-        contact_id = validated.pop('contact_id')
+        log.debug('Will add address {}'.format(validated))
+        validated.pop('contact_id')
         address = NewPostalAddress(validated)
-        out_obj = self._create(contact_id, address, ReturnAddress)
-        return Response(status=201, body=json.dumps({'addresses': out_obj}))
+        return self._create(address, 'add_address', ReturnAddress)
 
     @view(renderer='json', permission='authenticated',
           schema=DeleteAddressParam)
