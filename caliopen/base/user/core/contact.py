@@ -79,7 +79,7 @@ class MixinContactNested(object):
         kls = self._nested.get(column)
         if not kls:
             raise Exception('No nested class for {}'.format(column))
-        column = getattr(self, column)
+        column = getattr(self.model, column)
         # Ensure unicity
         if hasattr(kls, 'uniq_name'):
             for value in column:
@@ -93,7 +93,8 @@ class MixinContactNested(object):
         pkey = getattr(kls, '_pkey')
         value[pkey] = uuid.uuid4()
         log.debug('Will insert nested {} : {}'.format(column, value))
-        return column.append(kls(**value))
+        column.append(kls(**value))
+        return value
 
     def _delete_nested(self, column, nested_id):
         """Delete a nested object with its id from a list."""
@@ -139,6 +140,11 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
         # XXX TOFIX we should not be there, bad design
         from .user import User
         return User.get(self.user_id)
+
+    @property
+    def addresses(self):
+        """Return postal_addresses values."""
+        return self.postal_addresses
 
     @classmethod
     def _compute_title(cls, contact):
