@@ -70,6 +70,7 @@ class Contact(Api):
             raise ValidationError(exc)
         contact = CoreContact.create(self.user, contact_param)
         out_contact = ReturnContact.build(contact).serialize()
+        # XXX return a Location to get contact not send it direct
         return Response(status=201, body={'contacts': out_contact})
 
 
@@ -133,9 +134,9 @@ class BaseContactNestedApi(Api):
         """Create sub object from param using add_func."""
         func = getattr(self.contact, add_func)
         nested = func(params)
+        log.debug('Created nested {}'.format(nested))
         self.contact.save()
-        ret = return_obj.build(params).serialize()
-        return Response(status=201, body=json.dumps({'addresses': ret}))
+        return {'addresses': nested}
 
     def _delete(self, relation_id, delete_func):
         """Delete sub object relation_id using delete_fund."""
