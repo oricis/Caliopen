@@ -139,8 +139,11 @@ class BaseContactNestedApi(Api):
         return {'addresses': nested}
 
     def _delete(self, relation_id, delete_func):
-        """Delete sub object relation_id using delete_fund."""
-        raise NotImplementedError()
+        """Delete sub object relation_id using delete_func."""
+        func = getattr(self.contact, delete_func)
+        res = func(relation_id)
+        self.contact.save()
+        return res
 
 
 class NewAddressParam(colander.MappingSchema):
