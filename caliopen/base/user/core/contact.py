@@ -99,13 +99,18 @@ class MixinContactNested(object):
     def _delete_nested(self, column, nested_id):
         """Delete a nested object with its id from a list."""
         attr = getattr(self, column)
-        for nested in attr:
-            current_id = getattr(nested, nested._pkey)
+        log.debug('Will delete {} with id {}'.format(column, nested_id))
+        found = -1
+        for pos in xrange(0, len(attr)):
+            nested = attr[pos]
+            current_id = str(getattr(nested, nested._pkey))
             if current_id == nested_id:
-                return attr.pop(nested)
-        log.warn('Nested object {}#{} not found for deletion'.
-                 format(column, nested_id))
-        return False
+                found = pos
+        if found == -1:
+            log.warn('Nested object {}#{} not found for deletion'.
+                     format(column, nested_id))
+            return None
+        return attr.pop(found)
 
 
 class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
