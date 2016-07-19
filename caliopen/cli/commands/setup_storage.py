@@ -21,4 +21,6 @@ def setup_storage(settings=None):
     create_keyspace_simple(keyspace, 1)
     for name, kls in core_registry.items():
         log.info('Creating cassandra model %s' % name)
-        sync_table(kls._model_class)
+        if hasattr(kls._model_class, 'pk'):
+            # XXX find a better way to detect model from udt
+            sync_table(kls._model_class)

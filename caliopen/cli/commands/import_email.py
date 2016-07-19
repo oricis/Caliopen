@@ -5,6 +5,8 @@ and import mails. Contacts (recipients) involved will be lookup
 User must be created before import
 
 """
+from __future__ import absolute_import, print_function, unicode_literals
+
 import os
 import logging
 from email import message_from_file
@@ -76,6 +78,7 @@ def import_email(email, import_path, format, **kwargs):
                     contact.family_name = name
                     email = NewEmail()
                     email.address = alias
-                    Contact.create(user, contact, emails=[email])
+                    contact.emails = [email]
+                    Contact.create(user, contact)
         res = agent.process(mailfrom, rcpts, msg.mail.as_string())
         log.info('Process result %r' % res)

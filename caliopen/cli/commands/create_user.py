@@ -1,6 +1,8 @@
 """
 Create a user with a password in a Calipen instance
 """
+from __future__ import absolute_import, print_function, unicode_literals
+
 import logging
 log = logging.getLogger(__name__)
 
