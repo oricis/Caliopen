@@ -1,25 +1,19 @@
 # -*- coding: utf-8 -*-
 """Caliopen contact core classes."""
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import uuid
 from datetime import datetime
-import phonenumbers
 
 from ..store.contact import (Contact as ModelContact,
-                             IndexedContact,
                              Lookup as ModelContactLookup,
-                             Organization as ModelOrganization,
-                             PostalAddress as ModelAddress,
-                             Email as ModelEmail, IM as ModelIM,
-                             Phone as ModelPhone,
-                             SocialIdentity as ModelSocialIdentity,
-                             PublicKey as ModelPublicKey)
+                             PublicKey as ModelPublicKey,
+                             Organization, Email, IM, PostalAddress,
+                             Phone, SocialIdentity)
 
-from caliopen.base.exception import NotFound
 from caliopen.base.core import BaseCore, BaseUserCore
-from caliopen.base.core.mixin import MixinCoreRelation, MixinCoreIndex
-from caliopen.base.user.helpers.normalize import clean_email_address
+from caliopen.base.core.mixin import MixinCoreRelation
 
 log = logging.getLogger(__name__)
 
@@ -70,86 +64,92 @@ class BaseContactSubCore(BaseCore):
                 for col in self._model_class._columns.keys()}
 
 
-class Organization(BaseContactSubCore):
-    _model_class = ModelOrganization
-    _pkey_name = 'organization_id'
-
-
-class PostalAddress(BaseContactSubCore):
-    _model_class = ModelAddress
-    _pkey_name = 'address_id'
-
-
-class Email(BaseContactSubCore):
-    _model_class = ModelEmail
-    _pkey_name = 'address'
-
-    @property
-    def clean_name(self):
-        clean, _ = clean_email_address(self.name)
-        return clean
-
-
-class IM(Email):
-    # Inherit from Email as many methods are duplicate
-    _model_class = ModelIM
-
-
-class Phone(BaseContactSubCore):
-    _model_class = ModelPhone
-    _pkey_name = 'number'
-
-    @property
-    def clean_name(self):
-        if self.number.startswith('+'):
-            number = phonenumbers.parse(self.number, None)
-            phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
-            return phonenumbers.format_number(number, phone_format)
-        log.warn('Unable to format phone number {}'.format(self.number))
-        return self.number
-
-
-class SocialIdentity(BaseContactSubCore):
-    _model_class = ModelSocialIdentity
-    _pkey_name = 'name'
-
-    @property
-    def clean_name(self):
-        if self.type == 'twitter':
-            return self.name[1:] if self.name.startswith('@') else self.name
-        # XXX processing for others type
-        return self.name
-
-
 class PublicKey(BaseContactSubCore):
     _model_class = ModelPublicKey
     _pkey_name = 'name'
 
 
-class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
+class MixinContactNested(object):
+
+    """Mixin class for contact nested objects management."""
+
+    def _add_nested(self, column, nested):
+        """Add a nested object to a list."""
+        nested.validate()
+        kls = self._nested.get(column)
+        if not kls:
+            raise Exception('No nested class for {}'.format(column))
+        column = getattr(self.model, column)
+        # Ensure unicity
+        if hasattr(kls, 'uniq_name'):
+            for value in column:
+                uniq = getattr(value, kls.uniq_name)
+                if uniq == getattr(nested, kls.uniq_name):
+                    raise Exception('Unicity conflict for {}'.format(uniq))
+        if hasattr(nested, 'is_primary') and nested.is_primary:
+            for old_primary in column:
+                column.is_primary = False
+        value = nested.to_primitive()
+        pkey = getattr(kls, '_pkey')
+        value[pkey] = uuid.uuid4()
+        log.debug('Will insert nested {} : {}'.format(column, value))
+        column.append(kls(**value))
+        return value
+
+    def _delete_nested(self, column, nested_id):
+        """Delete a nested object with its id from a list."""
+        attr = getattr(self, column)
+        log.debug('Will delete {} with id {}'.format(column, nested_id))
+        found = -1
+        for pos in xrange(0, len(attr)):
+            nested = attr[pos]
+            current_id = str(getattr(nested, nested._pkey))
+            if current_id == nested_id:
+                found = pos
+        if found == -1:
+            log.warn('Nested object {}#{} not found for deletion'.
+                     format(column, nested_id))
+            return None
+        return attr.pop(found)
+
+
+class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
 
     _model_class = ModelContact
-    _index_class = IndexedContact
     _pkey_name = 'contact_id'
 
     _relations = {
-        'organizations': Organization,
-        'postal_addresses': PostalAddress,
-        'emails': Email,
-        'ims': IM,
-        'phones': Phone,
-        'social_identities': SocialIdentity,
         'public_keys': PublicKey,
     }
 
+    _nested = {
+        'emails': Email,
+        'phones': Phone,
+        'ims': IM,
+        'social_identities': SocialIdentity,
+        'postal_addresses': PostalAddress,
+        'organizations': Organization,
+    }
+
+    # Any of these nested objects,can be a lookup value
     _lookup_class = ContactLookup
-    _lookup_objects = ['emails', 'ims', 'phones', 'social_identities']
+    _lookup_values = {
+        'emails': {'value': 'address', 'type': 'email'},
+        'ims': {'value': 'address', 'type': 'email'},
+        'phones': {'value': 'number', 'type': 'phone'},
+        'social_identities': {'value': 'name', 'type': 'social'},
+    }
 
     @property
     def user(self):
         # XXX TOFIX we should not be there, bad design
         from .user import User
         return User.get(self.user_id)
+
+    @property
+    def addresses(self):
+        """Return postal_addresses values."""
+        return self.postal_addresses
 
     @classmethod
     def _compute_title(cls, contact):
@@ -163,10 +163,39 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
         # XXX may be empty, got info from related infos
         return " ".join(elmts)
 
+    def _create_lookup(self, type, value):
+        """Create one contact lookup."""
+        log.debug('Will create lookup for type {} and value {}'.
+                  format(type, value))
+        lookup = ContactLookup.create(self.user, value=value, type=type,
+                                      contact_id=self.contact_id)
+        return lookup
+
+    def _create_lookups(self):
+        """Create lookups for a contact using its nested attributes."""
+        for attr_name, obj in self._lookup_values.items():
+            nested = getattr(self, attr_name)
+            if nested:
+                for attr in nested:
+                    lookup_value = attr.to_dict()[obj['value']]
+                    if lookup_value:
+                        self._create_lookup(obj['type'], lookup_value)
+
     @classmethod
     def create(cls, user, contact, **related):
         # XXX do sanity check about only one primary for related objects
         # XXX check no extra arguments in related than relations
+        def create_nested(values, kls):
+            """Create nested objects in store format."""
+            nested = []
+            for param in values:
+                param.validate()
+                attrs = param.to_primitive()
+                # XXX default value not correctly handled
+                pkey = getattr(kls, '_pkey')
+                attrs[pkey] = uuid.uuid4()
+                nested.append(kls(**attrs))
+            return nested
         contact.validate()
         for k, v in related.iteritems():
             if k in cls._relations:
@@ -176,19 +205,30 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
         # XXX check and format tags and groups
         title = cls._compute_title(contact)
         contact_id = uuid.uuid4()
-        o = cls._model_class.create(user_id=user.user_id,
-                                    contact_id=contact_id,
-                                    infos=contact.infos,
-                                    tags=contact.tags, groups=contact.groups,
-                                    date_insert=datetime.utcnow(),
-                                    given_name=contact.given_name,
-                                    additional_name=contact.additional_name,
-                                    family_name=contact.family_name,
-                                    prefix_name=contact.name_prefix,
-                                    suffix_name=contact.name_suffix,
-                                    title=title)
-        c = cls(o)
-        log.debug('Created contact %s' % c.contact_id)
+        attrs = {'contact_id': contact_id,
+                 'info': contact.infos,
+                 'tags': contact.tags,
+                 'groups': contact.groups,
+                 'date_insert': datetime.utcnow(),
+                 'given_name': contact.given_name,
+                 'additional_name': contact.additional_name,
+                 'family_name': contact.family_name,
+                 'prefix_name': contact.name_prefix,
+                 'suffix_name': contact.name_suffix,
+                 'title': title,
+                 'emails': create_nested(contact.emails, Email),
+                 'ims': create_nested(contact.ims, IM),
+                 'phones': create_nested(contact.phones, Phone),
+                 'postal_addresses': create_nested(contact.addresses,
+                                                   PostalAddress),
+                 'social_identities': create_nested(contact.identities,
+                                                    SocialIdentity),
+                 'organizations': create_nested(contact.organizations,
+                                                Organization)}
+
+        core = super(Contact, cls).create(user, **attrs)
+        log.debug('Created contact %s' % core.contact_id)
+        core._create_lookups()
         # Create relations
         related_cores = {}
         for k, v in related.iteritems():
@@ -196,21 +236,10 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
                 for obj in v:
                     log.debug('Processing object %r' % obj)
                     # XXX check only one is_primary per relation using it
-                    new_core = cls._relations[k].create(user, c, **obj)
+                    new_core = cls._relations[k].create(user, core, **obj)
                     related_cores.setdefault(k, []).append(new_core.to_dict())
-                    log.debug('Created core %r' % new_core)
-                    if k in cls._lookup_objects:
-                        look = ContactLookup.create(user_id=user.user_id,
-                                                    value=new_core.get_id(),
-                                                    contact_id=c.contact_id,
-                                                    type=k,
-                                                    lookup_id=new_core.get_id()
-                                                    )
-                        log.debug('Created lookup %r of type %s' %
-                                  (look, k))
-        # Index contact and related objects
-        cls._index_class.create(c, **related_cores)
-        return c
+                    log.debug('Created related core %r' % new_core)
+        return core
 
     @classmethod
     def lookup(cls, user, value):
@@ -220,47 +249,10 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
         # XXX something else to do ?
         return None
 
-    @classmethod
-    def get_index(cls, user, id):
-        idx = cls._index_class.get(user.user_id, id)
-        if idx:
-            return idx.to_dict()
-        raise NotFound()
-
     def delete(self):
         if self.user.contact_id == self.contact_id:
             raise Exception("Can't delete contact related to user")
         return super(Contact, self).delete()
-
-    @property
-    def organizations(self):
-        """Return detailed organizations."""
-        return self._expand_relation('organizations')
-
-    @property
-    def postal_addresses(self):
-        """Return detailed postal addresses."""
-        return self._expand_relation('postal_addresses')
-
-    @property
-    def phones(self):
-        """Return detailed phones."""
-        return self._expand_relation('phones')
-
-    @property
-    def emails(self):
-        """Return detailed emails."""
-        return self._expand_relation('emails')
-
-    @property
-    def ims(self):
-        """Return detailed instant messenging."""
-        return self._expand_relation('ims')
-
-    @property
-    def social_identities(self):
-        """Return detailed social identities."""
-        return self._expand_relation('social_identities')
 
     @property
     def public_keys(self):
@@ -269,55 +261,40 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreIndex):
 
     # MixinCoreRelation methods
     def add_organization(self, organization):
-        return self._add_relation('organizations', organization)
+        return self._add_nested('organizations', organization)
 
     def delete_organization(self, organization_id):
-        return self._delete_relation('organizations', organization_id)
+        return self._delete_nested('organizations', organization_id)
 
     def add_address(self, address):
-        return self._add_relation('postal_addresses', address)
+        return self._add_nested('postal_addresses', address)
 
     def delete_address(self, address_id):
-        return self._delete_relation('postal_addresses', address_id)
+        return self._delete_nested('postal_addresses', address_id)
 
     def add_email(self, email):
-        return self._add_relation('emails', email)
+        return self._add_nested('emails', email)
 
     def delete_email(self, email_addr):
-        return self._delete_relation('emails', email_addr)
+        return self._delete_nested('emails', email_addr)
 
     def add_im(self, im):
-        return self._add_relation('ims', im)
+        return self._add_nested('ims', im)
 
     def delete_im(self, im_addr):
-        return self._delete_relation('ims', im_addr)
+        return self._delete_nested('ims', im_addr)
 
     def add_phone(self, phone):
-        if not phone.number.startswith('+'):
-            # try to guess the country code from others phones
-            # and postal addresses
-            others = [phonenumbers.parse(x.number) for x in self.phones]
-            country_codes = list(set([x.country_code for x in others]))
-            if len(country_codes) == 1:
-                code = country_codes[0]
-                country_isos = phonenumbers.COUNTRY_CODE_TO_REGION_CODE[code]
-                if len(country_isos) == 1:
-                    number = phonenumbers.parse(phone.number, country_isos[0])
-                    phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
-                    phone.number = phonenumbers.format_number(number,
-                                                              phone_format)
-                    log.debug('Phone normalized to {}, guess country is {}'.
-                              format(phone.number, country_isos[0]))
-        return self._add_relation('phones', phone)
+        return self._add_nested('phones', phone)
 
     def delete_phone(self, phone_num):
-        return self._delete_relation('phones', phone_num)
+        return self._delete_nested('phones', phone_num)
 
     def add_social_identity(self, identity):
-        return self._add_relation('social_identities', identity)
+        return self._add_nested('social_identities', identity)
 
     def delete_social_identity(self, identity_name):
-        return self._delete_relation('social_identities', identity_name)
+        return self._delete_nested('social_identities', identity_name)
 
     def add_public_key(self, key):
         # XXX Compute fingerprint and check key validity

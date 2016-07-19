@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function, unicode_literals
 
 from .user import User, UserName, Counter, Tag, FilterRule, ReservedName
 from .user import RemoteIdentity, IndexUser

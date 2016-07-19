@@ -4,6 +4,9 @@
 from __future__ import absolute_import, print_function, unicode_literals
 from datetime import datetime
 import bcrypt
+import logging
+
+from elasticsearch import Elasticsearch
 
 from caliopen.base.config import Configuration
 from caliopen.base.exception import NotFound, CredentialException
@@ -15,8 +18,10 @@ from caliopen.base.user.store import (User as ModelUser,
                                       FilterRule as ModelFilterRule,
                                       ReservedName as ModelReservedName)
 
-from caliopen.base.core import BaseCore, BaseUserCore
+from caliopen.base.core import BaseCore, BaseUserCore, core_registry
 from .contact import Contact
+
+log = logging.getLogger(__name__)
 
 
 class Counter(BaseCore):
@@ -142,10 +147,12 @@ class User(BaseCore):
             core.save()
         # Create counters
         Counter.create(user_id=core.user_id)
+        # Setup index
+        core._setup_user_index()
         # Create default tags
         default_tags = Configuration('global').get('system.default_tags')
         for tag in default_tags:
-            Tag.create(user_id=core.user_id, **tag)
+            Tag.create(core, **tag)
         return core
 
     @classmethod
@@ -166,6 +173,24 @@ class User(BaseCore):
                          str(user.password)) == user.password:
             return user
         raise CredentialException('Invalid credentials')
+
+    def _setup_user_index(self):
+        """Create user index and setup mappings."""
+        url = Configuration('global').get('elasticsearch.url')
+        client = Elasticsearch(url)
+        log.debug('Creating index for user {}'.format(self.user_id))
+        if not client.indices.exists(self.user_id):
+            client.indices.create(self.user_id)
+        else:
+            log.warn('Index already exist {}'.format(self.user_id))
+
+        for name, kls in core_registry.items():
+            if kls._model_class._index_class and \
+               hasattr(kls._model_class, 'user_id'):
+                idx_kls = kls._model_class._index_class()
+                log.debug('Init index for {}'.format(idx_kls))
+                if hasattr(idx_kls, 'init'):
+                    idx_kls.init(using=client, index=self.user_id)
 
     def new_message_id(self):
         """Create a new message_id from ``Counter``."""
