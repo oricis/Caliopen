@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 """Specific API exception to be process with Specific view."""
+from __future__ import absolute_import, print_function, unicode_literals
 
 
 class ValidationError(Exception):

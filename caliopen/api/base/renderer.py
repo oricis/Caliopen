@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+"""Caliopen pyramid renderer."""
+from __future__ import absolute_import, print_function, unicode_literals
+
+import logging
 import datetime
 from uuid import UUID
 from decimal import Decimal
@@ -5,6 +10,9 @@ from decimal import Decimal
 import simplejson as json
 from zope.interface import implementer
 from pyramid.interfaces import ITemplateRenderer
+
+
+log = logging.getLogger(__name__)
 
 
 @implementer(ITemplateRenderer)
@@ -47,7 +55,7 @@ class JsonRenderer(object):
         response = context['request'].response
         content_type = (context['request'].accept.best_match(acceptable)
                         or acceptable[0])
-        response.content_type = content_type
+        response.content_type = str(content_type)
         return json.dumps(data, cls=JSONEncoder)
 
 

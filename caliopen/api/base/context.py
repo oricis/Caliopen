@@ -4,7 +4,7 @@ The Root Context
 
 used when a view did not declare it's own context.
 """
-from __future__ import unicode_literals
+from __future__ import absolute_import, print_function, unicode_literals
 
 from pyramid.security import (Everyone, Authenticated, Allow,
                               NO_PERMISSION_REQUIRED, ALL_PERMISSIONS,
