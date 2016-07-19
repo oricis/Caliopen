@@ -73,6 +73,8 @@ class MixinCoreRelation(object):
             self._delete_relation_index(reltype, pkey, id)
         if related:
             related.model.delete()
+        else:
+            raise NotFound
         if hasattr(self, '_lookup_objects') and \
            reltype in self._lookup_objects:
             lookupkls = self._lookup_class
