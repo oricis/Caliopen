@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 """Caliopen user message delivery logic."""
+from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from caliopen.base.exception import NotFound
-from caliopen.base.user.core import User, ContactLookup
+from caliopen.base.user.core import ContactLookup
 
-from caliopen.base.message.core.message import Message
-from caliopen.base.message.core.raw import RawMessage
+from caliopen.base.message.core import Message, RawMessage
 
-from caliopen.base.message.core.thread import (Thread,
-                                               ThreadMessageLookup,
-                                               ThreadRecipientLookup,
-                                               ThreadExternalLookup)
+from caliopen.base.message.core import (Thread,
+                                        ThreadMessageLookup,
+                                        ThreadRecipientLookup,
+                                        ThreadExternalLookup)
 
 from caliopen.base.message.parameters import Recipient
 # XXX use a message formatter registry not directly mail format
-from caliopen.base.message.format.mail import MailMessage
+from caliopen.base.message.format import MailMessage
 
 
 log = logging.getLogger(__name__)
@@ -42,10 +42,14 @@ class UserMessageDelivery(object):
                     recipient = Recipient()
                     recipient.address = real_addr
                     recipient.type = type
+                    recipient.protocol = 'email'
+                    recipient.label = addr
                     try:
                         log.debug('Try to resolve contact %s' % addr)
                         contact = ContactLookup.get(user, addr)
                         recipient.contact_id = str(contact.contact_id)
+                        if contact.title:
+                            recipient.label = contact.title
                     except NotFound:
                         pass
 
@@ -79,37 +83,42 @@ class UserMessageDelivery(object):
                           (prop[0], prop[1]))
         return None
 
-    def __init_lookups(self, sequence, message):
+    def __init_lookups(self, user, sequence, message):
         for prop in sequence:
             kls = self._lookups[prop[0]]
             params = {
-                'user_id': message.user_id,
                 kls._pkey_name: prop[1],
                 'thread_id': message.thread_id
             }
             if 'message_id' in kls._model_class._columns.keys():
                 params.update({'message_id': message.message_id})
-            lookup = kls.create(**params)
+            lookup = kls.create(user, **params)
             log.debug('Create lookup %r' % lookup)
             if prop[0] == 'list':
                 return
 
-    def process(self, user_id, message_id):
+    def process(self, user, message_id):
         """Process a message for an user."""
-        user = User.get(user_id)
         msg = RawMessage.get(user, message_id)
+        log.debug('Retrieved raw message {} for message_id {}'.
+                  format(msg.raw_id, message_id))
+
         # XXX should use raw message type to use correct message formatter
         mail = MailMessage(msg.data)
 
         message = mail.to_parameter()
         message.recipients = self._get_recipients(user, mail)
+        addresses = [x.address for x in message.recipients]
+        log.debug('Resolved recipients {}'.format(addresses))
 
         # compute tags
         message.tags = self._get_tags(user, mail)
+        log.debug('Resolved tags {}'.format(message.tags))
 
         # lookup by external references
         lookup_sequence = mail.lookup_sequence()
         lookup = self.lookup(user, lookup_sequence)
+
         # Create or update existing thread thread
         if lookup:
             log.debug('Found thread %r' % lookup.thread_id)
@@ -118,19 +127,20 @@ class UserMessageDelivery(object):
         else:
             log.debug('Creating new thread')
             thread = Thread.create_from_message(user, message)
+        thread_id = thread.thread_id if thread else None
 
-        msg = Message.create(user, message, thread, lookup)
+        # XXX missing thread management
+        msg = Message.create(user, message, thread_id=thread_id, lookup=lookup)
         # XXX Init lookup
         if not lookup:
-            self.__init_lookups(lookup_sequence, msg)
+            self.__init_lookups(user, lookup_sequence, msg)
         else:
             if msg.external_message_id:
                 params = {
-                    'user_id': msg.user_id,
                     'external_message_id': msg.external_message_id,
                     'thread_id': msg.thread_id,
                     'message_id': msg.message_id,
                 }
-                new_lookup = ThreadMessageLookup.create(**params)
+                new_lookup = ThreadMessageLookup.create(user, **params)
                 log.debug('Created message lookup %r' % new_lookup)
         return msg

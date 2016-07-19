@@ -9,6 +9,8 @@ from schematics.transforms import blacklist
 
 RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc']
 MESSAGE_TYPES = ['email']
+MESSAGE_STATES = ['draft', 'sending', 'sent', 'cancel',
+                  'unread', 'read', 'deleted']
 
 
 class Recipient(Model):
@@ -16,7 +18,9 @@ class Recipient(Model):
     """Store a contact reference and one of it's address used in a message."""
 
     address = StringType(required=True)
+    label = StringType(required=True)
     type = StringType(required=True, choices=RECIPIENT_TYPES)
+    protocol = StringType(choices=MESSAGE_TYPES)
     contact_id = UUIDType()
 
 
@@ -74,6 +78,8 @@ class NewMessage(Model):
     # XXX compute ?
     size = IntType()
     type = StringType(required=True, choices=MESSAGE_TYPES)
+    # Only initial state allowed and can bypass unread to read directly
+    state = StringType(required=True, choices=['unread', 'draft', 'read'])
 
 
 class Message(NewMessage):
@@ -84,6 +90,8 @@ class Message(NewMessage):
     message_id = UUIDType(required=True)
     date_insert = DateTimeType(required=True)
     text = StringType()
+    # All states allowed
+    state = StringType(required=True, choices=MESSAGE_STATES)
 
     class Options:
         roles = {'default': blacklist('user_id')}

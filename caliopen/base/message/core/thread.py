@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Caliopen core thread related classes."""
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import uuid
@@ -7,18 +8,16 @@ from datetime import datetime
 
 from caliopen.base.exception import NotFound
 from caliopen.base.core import BaseUserCore
-from caliopen.base.core.mixin import MixinCoreIndex
-from caliopen.base.parameters import ReturnCoreObject, ReturnIndexObject
+from caliopen.base.parameters import ReturnCoreObject
 
 from caliopen.base.user.core import Contact
 
-from caliopen.base.message.model import  \
+from caliopen.base.message.store import  \
     (ThreadExternalLookup as ModelExternalLookup,
      ThreadRecipientLookup as ModelRecipientLookup,
      ThreadMessageLookup as ModelMessageLookup,
      Thread as ModelThread,
-     ThreadCounter as ModelCounter,
-     IndexedThread)
+     ThreadCounter as ModelCounter)
 from caliopen.base.message.parameters import Thread as ThreadParam
 
 
@@ -76,12 +75,11 @@ class Counter(BaseUserCore):
             return None
 
 
-class Thread(BaseUserCore, MixinCoreIndex):
+class Thread(BaseUserCore):
 
     """Thread core object."""
 
     _model_class = ModelThread
-    _index_class = IndexedThread
 
     _pkey_name = 'thread_id'
     _counter = None
@@ -89,27 +87,20 @@ class Thread(BaseUserCore, MixinCoreIndex):
     @classmethod
     def create_from_message(cls, user, message):
         new_id = uuid.uuid4()
-        contacts = [contact.to_primitive()
-                    for contact in message.recipients]
-        kwargs = {'user_id': user.user_id,
-                  'thread_id': new_id,
+        kwargs = {'thread_id': new_id,
                   'date_insert': datetime.utcnow(),
                   'privacy_index': message.privacy_index,
+                  'importance_level': message.importance_level,
                   'text': message.text[:200],
-                  '_indexed_extra': {'date_update': datetime.utcnow(),
-                                     'contacts': contacts, }
                   }
-        if message.tags:
-            kwargs['_indexed_extra']['tags'] = message.tags
-        thread = cls.create(**kwargs)
-        log.debug('Created thread %s' % thread.thread_id)
-        counters = Counter.create(user_id=user.user_id,
-                                  thread_id=thread.thread_id)
+        thread = cls.create(user, **kwargs)
+        log.debug('Created thread {}' .format(thread.thread_id))
+        counters = Counter.create(user, thread_id=thread.thread_id)
         counters.model.total_count = 1
         counters.model.unread_count = 1
         counters.model.attachment_count = count_attachment(message)
         counters.save()
-        log.debug('Created thread counters %r' % counters)
+        log.debug('Created thread counters {}'.format(counters))
         return thread
 
     def update_from_message(self, message):
@@ -118,25 +109,7 @@ class Thread(BaseUserCore, MixinCoreIndex):
             # XXX : use min value, is it correct ?
             self.privacy_index = message.privacy_index
             self.save()
-        index = self._index_class.get(self.user_id,
-                                      self.thread_id)
-        if not index:
-            log.error('Index not found for thread %s' % self.thread_id)
-            raise Exception
-        index_data = {
-            'text': message.text[:200],
-            'date_update': datetime.utcnow(),
-            'privacy_index': self.privacy_index,
-        }
-        if message.recipients:
-            contacts = [x.to_primitive() for x in message.recipients]
-            index_data.update({
-                'contacts': contacts,
-            })
-        if message.tags:
-            index_data.update({'tags': message.tags})
-        index.update({'doc': index_data})
-        log.debug('Update index for thread %s' % self.thread_id)
+
         # Update counters
         counters = Counter.get(self.user_id, self.thread_id)
         counters.model.total_count += 1
@@ -180,7 +153,7 @@ class Thread(BaseUserCore, MixinCoreIndex):
             if tag in user_tags:
                 results.append(user_tags[tag])
             else:
-                log.warn('Unknow user tag %r' % tag)
+                log.warn('Unknow user tag {}'.format(tag))
         return results
 
     @property
@@ -206,34 +179,12 @@ class Thread(BaseUserCore, MixinCoreIndex):
         """Total number of attachments."""
         return self.counters.attachment_count
 
-    @property
-    def contacts(self):
-        if self._index_data:
-            return self._index_data.get('contacts', [])
-        return []
-
-    @property
-    def tags(self):
-        if self._index_data:
-            return self._index_data.get('tags', [])
-        return []
-
     @classmethod
     def main_view(cls, user, limit, offset):
         """Build the main view results."""
-        index_threads = cls.find_index(user, None,
-                                       limit=limit,
-                                       offset=offset)
-
-        core_threads = [cls.get(user, x['thread_id'], index_data=x)
-                        for x in index_threads['data']]
-        return {'threads': core_threads, 'total': index_threads['total']}
-
-
-class ReturnIndexThread(ReturnIndexObject):
-
-    _index_class = IndexedThread
-    _return_class = ThreadParam
+        # XXX use of correct pagination and correct datasource (index)
+        threads = cls.find(user, None,  limit=limit, offset=offset)
+        return {'threads': threads, 'total': len(threads)}
 
 
 class ReturnThread(ReturnCoreObject):

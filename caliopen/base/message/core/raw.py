@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """Caliopen core raw message class."""
+from __future__ import absolute_import, print_function, unicode_literals
 
 import hashlib
 
 from caliopen.base.core import BaseUserCore
 
-from caliopen.base.message.model import RawMessage as ModelRaw
-from caliopen.base.message.format.mail import MailMessage
+from caliopen.base.message.store import RawMessage as ModelRaw
+from caliopen.base.message.format import MailMessage
 
 
 class RawMessage(BaseUserCore):
@@ -24,9 +25,7 @@ class RawMessage(BaseUserCore):
     def create(cls, user, message_id, raw):
         """Create raw message."""
         key = hashlib.sha256(message_id).hexdigest()
-        return super(RawMessage, cls).create(user_id=user.user_id,
-                                             raw_id=key,
-                                             data=raw)
+        return super(RawMessage, cls).create(user, raw_id=key, data=raw)
 
     @classmethod
     def get(cls, user, message_id):
