@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get upgrade -y
 
-RUN apt-get install -y python python-dev python-pip git libffi-dev
+RUN apt-get install -y python python-dev python-pip git libffi-dev libev4 libev-dev
 # use a decent version
 RUN pip install -U pip
 
