@@ -37,7 +37,7 @@ class DeliveryAgent(object):
             self.publisher.publish(qmsg)
         else:
             udeliver = UserMessageDelivery()
-            udeliver.process(user.user_id, message_id)
+            udeliver.process(user, message_id)
 
     def resolve_users(self, rpcts):
         users = []
