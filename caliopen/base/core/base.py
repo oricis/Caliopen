@@ -39,36 +39,25 @@ class BaseCore(object):
 
     _model_class = None
     _lookup_class = None
-    _index_class = None
     _pkey_name = 'id'
 
-    _index_data = None
-
-    def __init__(self, model, index_data=None):
-        """Initialize a core object with a model.
-
-        Data from index entry can be added to instance.
-        """
+    def __init__(self, model):
+        """Initialize a core object with a model."""
         self.model = model
-        self._index_data = index_data
 
     @classmethod
-    def create(cls, **kwargs):
-        """Create a new core object."""
-        indexed_extra = kwargs.pop('_indexed_extra', {})
-        obj = cls._model_class.create(**kwargs)
-        obj = cls(obj)
-        if cls._index_class:
-            obj._index_data = cls._index_class.create(obj, **indexed_extra)
-        return obj
+    def create(cls, **attrs):
+        """Create a core object."""
+        obj = cls._model_class.create(**attrs)
+        return cls(obj)
 
     @classmethod
-    def get(cls, key, index_data=None):
+    def get(cls, key):
         """Get a core object by key."""
         params = {cls._pkey_name: key}
         obj = cls._model_class.get(**params)
         if obj:
-            return cls(obj, index_data)
+            return cls(obj)
         raise NotFound('%s #%s not found' % (cls._model_class.__name__, key))
 
     def save(self):
@@ -123,12 +112,12 @@ class BaseUserCore(BaseCore):
     """Used by objects related to only one user (most core)."""
 
     @classmethod
-    def get(cls, user, obj_id, index_data=None):
+    def get(cls, user, obj_id):
         """Get a core object belong to user, with model related id."""
         param = {cls._pkey_name: obj_id}
         obj = cls._model_class.get(user_id=user.user_id, **param)
         if obj:
-            return cls(obj, index_data)
+            return cls(obj)
         raise NotFound('%s #%s not found for user %s' %
                        (cls.__class__.name, obj_id, user.user_id))
 
@@ -154,3 +143,9 @@ class BaseUserCore(BaseCore):
     def count(cls, user, filters=None):
         """Count core objects that belong to an user."""
         return cls.find(user, filters, count=True)
+
+    @classmethod
+    def create(cls, user, **attrs):
+        """Create a core object belong to an user."""
+        obj = cls._model_class.create(user_id=user.user_id, **attrs)
+        return cls(obj)

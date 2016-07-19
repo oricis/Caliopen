@@ -4,7 +4,11 @@
 All input and ouput parameters of core object methods must
 use a class that inherit from of of these.
 """
+import logging
+
 from caliopen.base.core import BaseCore
+
+log = logging.getLogger(__name__)
 
 
 class BaseReturnObject(object):
@@ -51,6 +55,15 @@ class ReturnCoreObject(BaseReturnObject):
                 for col in attr._model_class._columns.keys():
                     value = getattr(attr, col)
                     new_attr.update({col: value})
+                attr = new_attr
+            elif isinstance(attr, (list, tuple)):
+                new_attr = []
+                for val in attr:
+                    if hasattr(val, 'to_dict'):
+                        value = val.to_dict()
+                    else:
+                        value = val
+                    new_attr.append(value)
                 attr = new_attr
             setattr(obj, k, attr)
         obj.validate()
