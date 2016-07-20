@@ -127,7 +127,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
         'phones': Phone,
         'ims': IM,
         'social_identities': SocialIdentity,
-        'postal_addresses': PostalAddress,
+        'addresses': PostalAddress,
         'organizations': Organization,
     }
 
@@ -145,11 +145,6 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
         # XXX TOFIX we should not be there, bad design
         from .user import User
         return User.get(self.user_id)
-
-    @property
-    def addresses(self):
-        """Return postal_addresses values."""
-        return self.postal_addresses
 
     @classmethod
     def _compute_title(cls, contact):
@@ -219,8 +214,8 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
                  'emails': create_nested(contact.emails, Email),
                  'ims': create_nested(contact.ims, IM),
                  'phones': create_nested(contact.phones, Phone),
-                 'postal_addresses': create_nested(contact.addresses,
-                                                   PostalAddress),
+                 'addresses': create_nested(contact.addresses,
+                                            PostalAddress),
                  'social_identities': create_nested(contact.identities,
                                                     SocialIdentity),
                  'organizations': create_nested(contact.organizations,
@@ -267,10 +262,10 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
         return self._delete_nested('organizations', organization_id)
 
     def add_address(self, address):
-        return self._add_nested('postal_addresses', address)
+        return self._add_nested('addresses', address)
 
     def delete_address(self, address_id):
-        return self._delete_nested('postal_addresses', address_id)
+        return self._delete_nested('addresses', address_id)
 
     def add_email(self, email):
         return self._add_nested('emails', email)

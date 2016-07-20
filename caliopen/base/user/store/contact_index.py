@@ -81,7 +81,7 @@ class IndexedContact(BaseIndexDocument):
     privacy_index = dsl.Integer()
 
     organizations = dsl.Nested(doc_class=IndexedOrganization)
-    postal_addresses = dsl.Nested(doc_class=IndexedPostalAddress)
+    addresses = dsl.Nested(doc_class=IndexedPostalAddress)
     emails = dsl.Nested(doc_class=IndexedInternetAddress)
     ims = dsl.Nested(doc_class=IndexedInternetAddress)
     phones = dsl.Nested(doc_class=IndexedPhone)

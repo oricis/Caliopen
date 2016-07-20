@@ -121,7 +121,7 @@ class Contact(BaseModel, IndexedModelMixin):
 
     # UDT
     organizations = columns.List(columns.UserDefinedType(Organization))
-    postal_addresses = columns.List(columns.UserDefinedType(PostalAddress))
+    addresses = columns.List(columns.UserDefinedType(PostalAddress))
     emails = columns.List(columns.UserDefinedType(Email))
     ims = columns.List(columns.UserDefinedType(IM))
     phones = columns.List(columns.UserDefinedType(Phone))
