@@ -175,7 +175,7 @@ class DeleteAddressParam(colander.MappingSchema):
 class ContactAddress(BaseContactNestedApi):
 
     return_class = ReturnAddress
-    namespace = 'postal_addresses'
+    namespace = 'addresses'
 
     @view(renderer='json', permission='authenticated',
           schema=NewAddressParam)
