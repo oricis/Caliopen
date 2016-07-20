@@ -37,9 +37,12 @@ def import_email(email, import_path, format, **kwargs):
             files = [f for f in os.listdir(import_path) if
                      os.path.isfile(os.path.join(import_path, f))]
             for f in files:
-                log.debug('Importing mail from file {}'.format(f))
-                with open('%s/%s' % (import_path, f)) as fh:
-                    emails[f] = message_from_file(fh)
+                try:
+                    log.debug('Importing mail from file {}'.format(f))
+                    with open('%s/%s' % (import_path, f)) as fh:
+                        emails[f] = message_from_file(fh)
+                except Exception as exc:
+                    log.error('Error importing email {}'.format(exc))
         else:
             mode = 'mbox'
             emails = mbox(import_path)
