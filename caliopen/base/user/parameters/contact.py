@@ -77,6 +77,7 @@ class NewPostalAddress(Model):
     postal_code = StringType()
     country = StringType()
     region = StringType()
+    is_primary = IntType(default=0)
 
 
 class PostalAddress(NewPostalAddress):
