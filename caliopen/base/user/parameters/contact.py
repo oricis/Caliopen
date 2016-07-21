@@ -104,6 +104,7 @@ class Email(NewEmail):
 
     """Existing email."""
 
+    email_id = UUIDType(required=True)
     user_id = UUIDType()
     contact_id = UUIDType()
 
@@ -126,6 +127,7 @@ class IM(NewIM):
 
     """Existing IM."""
 
+    im_id = UUIDType(required=True)
     user_id = UUIDType()
     contact_id = UUIDType()
 
@@ -147,6 +149,7 @@ class Phone(NewPhone):
 
     """Existing phone."""
 
+    phone_id = UUIDType(required=True)
     user_id = UUIDType()
     contact_id = UUIDType()
 
@@ -168,6 +171,7 @@ class SocialIdentity(NewSocialIdentity):
 
     """Existing social identity."""
 
+    identity_id = UUIDType(required=True)
     user_id = UUIDType()
     contact_id = UUIDType()
 
