@@ -226,10 +226,9 @@ class ContactEmail(BaseContactNestedApi):
           schema=NewEmailParam)
     def collection_post(self):
         validated = self.request.validated
-        contact_id = validated.pop('contact_id')
+        validated.pop('contact_id')
         email = NewEmail(validated)
-        out_obj = self._create(contact_id, email, ReturnEmail)
-        return Response(status=201, body=json.dumps({'addresses': out_obj}))
+        return self._create(email, 'add_email', ReturnEmail)
 
     @view(renderer='json', permission='authenticated',
           schema=DeleteEmailParam)
@@ -271,10 +270,9 @@ class ContactIM(BaseContactNestedApi):
           schema=NewIMParam)
     def collection_post(self):
         validated = self.request.validated
-        contact_id = validated.pop('contact_id')
+        validated.pop('contact_id')
         im = NewIM(validated)
-        out_obj = self._create(contact_id, im, ReturnIM)
-        return Response(status=201, body=json.dumps({'addresses': out_obj}))
+        return self._create(im, 'add_im', ReturnIM)
 
     @view(renderer='json', permission='authenticated',
           schema=DeleteIMParam)
