@@ -32,8 +32,7 @@ class Thread(Api):
     def get(self):
         thread_id = self.request.matchdict.get('thread_id')
         try:
-            idx = UserThread.get_index(self.user, thread_id)
-            thread = UserThread.get(self.user, thread_id, idx)
+            thread = UserThread.get(self.user, thread_id)
         except NotFound:
             raise ResourceNotFound('No such thread %r' % thread_id)
         return {'thread': ReturnThread.build(thread).serialize()}
