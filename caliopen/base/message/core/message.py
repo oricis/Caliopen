@@ -66,6 +66,7 @@ class Message(BaseUserCore):
                  'flags': ['Recent'],
                  'lookup': lookup,
                  'recipients': recipients,
+                 'text': message.text,
                  '_indexed_extra': extras}
         return super(Message, cls).create(user, **attrs)
 

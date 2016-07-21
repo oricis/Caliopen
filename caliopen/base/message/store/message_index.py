@@ -32,3 +32,4 @@ class IndexedMessage(BaseIndexDocument):
     # XXX better nested definition
     headers = dsl.Nested()
     recipients = dsl.Nested()
+    text = dsl.String()

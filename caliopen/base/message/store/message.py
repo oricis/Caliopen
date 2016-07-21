@@ -55,3 +55,4 @@ class Message(BaseModel, IndexedModelMixin):
     offset = columns.Integer()
     state = columns.Text(default='draft')
     recipients = columns.List(columns.UserDefinedType(MessageRecipient))
+    text = columns.Text()
