@@ -138,6 +138,9 @@ class User(BaseCore):
                                        password=user.password,
                                        params=user.params,
                                        date_insert=datetime.utcnow())
+        # Setup index
+        core._setup_user_index()
+
         # Ensure unicity
         UserName.create(name=user.name.lower(), user_id=core.user_id)
         if user.contact:
@@ -147,8 +150,6 @@ class User(BaseCore):
             core.save()
         # Create counters
         Counter.create(user_id=core.user_id)
-        # Setup index
-        core._setup_user_index()
         # Create default tags
         default_tags = Configuration('global').get('system.default_tags')
         for tag in default_tags:

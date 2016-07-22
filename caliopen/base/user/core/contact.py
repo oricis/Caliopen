@@ -172,7 +172,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
             nested = getattr(self, attr_name)
             if nested:
                 for attr in nested:
-                    lookup_value = attr.to_dict()[obj['value']]
+                    lookup_value = attr[obj['value']]
                     if lookup_value:
                         self._create_lookup(obj['type'], lookup_value)
 
