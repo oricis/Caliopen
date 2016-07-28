@@ -8,7 +8,7 @@ User must be created before import
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
-import sys
+import random
 import logging
 from email import message_from_file
 from mailbox import mbox, Maildir
@@ -78,6 +78,7 @@ def import_email(email, import_path, format, **kwargs):
                         email = NewEmail()
                         email.address = alias
                         contact.emails = [email]
+                    contact.privacy_index = random.randint(0, 100)
                     Contact.create(user, contact)
         res = agent.process(mailfrom, rcpts, msg.mail.as_string())
         log.info('Process result %r' % res)
