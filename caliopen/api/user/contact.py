@@ -9,7 +9,6 @@ from cornice.resource import resource, view
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
 
-
 from caliopen.base.user.core import (Contact as CoreContact,
                                      PublicKey as CorePublicKey)
 
@@ -142,6 +141,8 @@ class BaseContactNestedApi(Api):
         """Delete sub object relation_id using delete_func."""
         func = getattr(self.contact, delete_func)
         res = func(relation_id)
+        if not res:
+            raise ResourceNotFound()
         self.contact.save()
         return res
 
