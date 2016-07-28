@@ -211,6 +211,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
                  'prefix_name': contact.name_prefix,
                  'suffix_name': contact.name_suffix,
                  'title': title,
+                 'privacy_index': contact.privacy_index,
                  'emails': create_nested(contact.emails, Email),
                  'ims': create_nested(contact.ims, IM),
                  'phones': create_nested(contact.phones, Phone),
