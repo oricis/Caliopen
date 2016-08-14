@@ -49,7 +49,7 @@ class Contact(Api):
                          'offset': self.get_offset()}
         log.debug('Filter parameters {}'.format(filter_params))
         results = CoreContact._model_class.search(self.user, **filter_params)
-        data = [ReturnContact.build(CoreContact.get(self.user, x.meta.id)).
+        data = [ReturnContact.build(CoreContact.get(self.user, x.contact_id)).
                 serialize() for x in results]
         return {'contacts': data, 'total': len(data)}
 
