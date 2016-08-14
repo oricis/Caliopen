@@ -36,7 +36,10 @@ class Message(Api):
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
         thread_id = self.request.matchdict.get('thread_id')
+        pi_range = self.request.authenticated_userid.pi_range
         messages = CoreMessage.by_thread_id(self.user, thread_id,
+                                            min_pi=pi_range[0],
+                                            max_pi=pi_range[1],
                                             limit=self.get_limit(),
                                             offset=self.get_offset())
         results = []
