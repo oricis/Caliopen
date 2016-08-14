@@ -86,3 +86,8 @@ class IndexedContact(BaseIndexDocument):
     ims = dsl.Nested(doc_class=IndexedInternetAddress)
     phones = dsl.Nested(doc_class=IndexedPhone)
     social_identities = dsl.Nested(doc_class=IndexedSocialIdentity)
+
+    @property
+    def contact_id(self):
+        """The compound primary key for a contact is contact_id."""
+        return self.meta.id
