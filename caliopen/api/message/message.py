@@ -55,12 +55,12 @@ class Message(Api):
             parent = CoreMessage.get(self.user, reply_to)
             parent_message_id = parent.external_id
             thread_id = parent.thread_id
-            sec_level = parent.security_level
+            pi_value = parent.privacy_index
         else:
             parent_message_id = None
             thread_id = None
             # XXX : how to compute ?
-            sec_level = 0
+            pi_value = 0
         recipients = self.extract_recipients()
         # XXX : make recipient for UserMessage using Recipient class
         subject = self.request.json.get('subject')
@@ -70,7 +70,7 @@ class Message(Api):
                              subject=subject,
                              text=text, tags=tags,
                              date=datetime.utcnow(),
-                             security_level=sec_level,
+                             privacy_index=pi_value,
                              thread_id=thread_id,
                              parent_message_id=parent_message_id)
         msg = CoreMessage.create(self.user, new_msg)
@@ -89,6 +89,7 @@ class Raw(Api):
 
     @view(renderer='text_plain', permission='authenticated')
     def get(self):
+        # XXX how to check privacy_index ?
         raw_id = self.request.matchdict.get('raw_id')
         raw = RawMessage.get(self.user, raw_id)
         return raw.data

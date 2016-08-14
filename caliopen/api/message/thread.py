@@ -21,7 +21,8 @@ class Thread(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
-        threads = UserThread.main_view(self.user,
+        pi_range = self.request.authenticated_userid.pi_range
+        threads = UserThread.main_view(self.user, pi_range[0], pi_range[1],
                                        limit=self.get_limit(),
                                        offset=self.get_offset())
         results = [ReturnThread.build(x).serialize()
