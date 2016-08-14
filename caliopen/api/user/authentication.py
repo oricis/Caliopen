@@ -20,10 +20,15 @@ class AuthenticatedUser(object):
     """Represent an authenticated user."""
 
     def __init__(self, request):
-        if 'Authorization' not in request.headers:
+        self.request = request
+        self._check_user()
+        self.pi_range = self._get_pi_range()
+
+    def _check_user(self):
+        if 'Authorization' not in self.request.headers:
             raise AuthenticationError
 
-        authorization = request.headers['Authorization'].split()
+        authorization = self.request.headers['Authorization'].split()
         if authorization[0] != 'Bearer' and len(authorization) != 2:
             raise AuthenticationError
 
@@ -34,13 +39,27 @@ class AuthenticatedUser(object):
             raise AuthenticationError
 
         user_id, token = auth.split(':')
-        infos = request.cache.get(user_id)
+        infos = self.request.cache.get(user_id)
         if infos.get('access_token') != token:
             raise AuthenticationError
 
         self.user_id = user_id
         self.access_token = token
         self._user = None
+
+    def _get_pi_range(self):
+        pi_range = self.request.headers.get('X-Caliopen-PI', None)
+        if not pi_range:
+            log.warn('No X-Caliopen-PI header')
+            return (-1, -1)
+        min_pi, max_pi = pi_range.split(';', 1)
+        try:
+            return (int(min_pi), int(max_pi))
+        except ValueError:
+            log.error('Invalid value for PI {}'.format(pi_range))
+        except Exception as exc:
+            log.error('Invalid range for PI {}: {}'.format(pi_range, exc))
+        return (-1, -1)
 
     def _load_user(self):
         if self._user:
