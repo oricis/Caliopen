@@ -33,3 +33,8 @@ class IndexedMessage(BaseIndexDocument):
     headers = dsl.Nested()
     recipients = dsl.Nested()
     text = dsl.String()
+
+    @property
+    def message_id(self):
+        """The compound primary key for a message is message_id."""
+        return self.meta.id
