@@ -55,11 +55,14 @@ class Contact(Api):
 
     @view(renderer='json', permission='authenticated')
     def get(self):
+        pi_range = self.request.authenticated_userid.pi_range
         contact_id = self.request.matchdict.get('contact_id')
         try:
             contact = CoreContact.get(self.user, contact_id)
         except NotFound:
             raise ResourceNotFound('No such contact')
+        if pi_range[0] > contact.privacy_index < pi_range[1]:
+            raise HTTPBadRequest('Invalid privacy index')
         return {'contacts': ReturnContact.build(contact).serialize()}
 
     @view(renderer='json', permission='authenticated')
