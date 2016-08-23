@@ -7,7 +7,7 @@ import json
 import colander
 from cornice.resource import resource, view
 from pyramid.response import Response
-from pyramid.httpexceptions import HTTPBadRequest
+from pyramid.httpexceptions import HTTPBadRequest, HTTPExpectationFailed
 
 from caliopen.base.user.core import (Contact as CoreContact,
                                      PublicKey as CorePublicKey)
@@ -62,7 +62,7 @@ class Contact(Api):
         except NotFound:
             raise ResourceNotFound('No such contact')
         if pi_range[0] > contact.privacy_index < pi_range[1]:
-            raise HTTPBadRequest('Invalid privacy index')
+            raise HTTPExpectationFailed('Invalid privacy index')
         return {'contacts': ReturnContact.build(contact).serialize()}
 
     @view(renderer='json', permission='authenticated')
