@@ -3,6 +3,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
+from pyramid.httpexceptions import HTTPExpectationFailed
+
 from caliopen.base.helpers.connection import connect_storage
 
 from .renderer import TextPlainRenderer, JsonRenderer, PartRenderer
@@ -41,6 +43,11 @@ def resource_not_found_error(exc, request):
     return format_error(exc, request, 404, 'Resource not found')
 
 
+def expectation_failed(exc, request):
+    """Raise HTTP 417."""
+    return format_error(exc, request, 417, 'Expectation failed')
+
+
 def internal_server_error(exc, request):
     """Raise HTTP 500 correctly."""
     return format_error(exc, request, 404, 'Internal server error')
@@ -69,6 +76,9 @@ def includeme(config):
                     renderer='simplejson')
     config.add_view(resource_not_found_error,
                     context=ResourceNotFound,
+                    renderer='simplejson')
+    config.add_view(expectation_failed,
+                    context=HTTPExpectationFailed,
                     renderer='simplejson')
     # config.add_view(internal_server_error,
     #                context=HTTPServerError,
