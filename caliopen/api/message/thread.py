@@ -1,7 +1,7 @@
 import logging
 
 from cornice.resource import resource, view
-from pyramid.httpexceptions import HTTPBadRequest
+from pyramid.httpexceptions import HTTPExpectationFailed
 
 from caliopen.base.message.core import (Thread as UserThread,
                                         ReturnThread)
@@ -39,5 +39,5 @@ class Thread(Api):
         except NotFound:
             raise ResourceNotFound('No such thread %r' % thread_id)
         if pi_range[0] > thread.privacy_index < pi_range[1]:
-            raise HTTPBadRequest('Invalid pi range')
+            raise HTTPExpectationFailed('Invalid pi range')
         return {'thread': ReturnThread.build(thread).serialize()}
