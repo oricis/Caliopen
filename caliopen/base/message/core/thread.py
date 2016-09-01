@@ -180,11 +180,15 @@ class Thread(BaseUserCore):
         return self.counters.attachment_count
 
     @classmethod
-    def main_view(cls, user, limit, offset):
+    def main_view(cls, user, pi_min, pi_max, limit, offset):
         """Build the main view results."""
         # XXX use of correct pagination and correct datasource (index)
         threads = cls.find(user, None,  limit=limit, offset=offset)
-        return {'threads': threads, 'total': len(threads)}
+        res = []
+        for th in threads:
+            if pi_min <= th.privacy_index <= pi_max:
+                res.append(th)
+        return {'threads': res, 'total': len(threads)}
 
 
 class ReturnThread(ReturnCoreObject):
