@@ -63,13 +63,17 @@ class IndexedModelMixin(object):
         return True
 
     @classmethod
-    def search(cls, user, limit=None, offset=None, **params):
+    def search(cls, user, limit=None, offset=None,
+               min_pi=0, max_pi=0, **params):
         """Search in index using a dict parameter."""
         search = cls._index_class.search(using=cls._index_class.client(),
                                          index=user.user_id)
         for k, v in params.items():
             term = {k: v}
             search = search.filter('match', **term)
+        search = search.filter('range', **{'privacy_index': {'gte': min_pi}})
+        search = search.filter('range', **{'privacy_index': {'lte': max_pi}})
         log.debug('Search is {}'.format(search.to_dict()))
         resp = search.execute()
+        log.debug('Search result {}'.format(resp))
         return resp
