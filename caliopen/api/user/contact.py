@@ -7,7 +7,7 @@ import json
 import colander
 from cornice.resource import resource, view
 from pyramid.response import Response
-from pyramid.httpexceptions import HTTPBadRequest
+from pyramid.httpexceptions import HTTPBadRequest, HTTPExpectationFailed
 
 from caliopen.base.user.core import (Contact as CoreContact,
                                      PublicKey as CorePublicKey)
@@ -42,20 +42,27 @@ class Contact(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
-        results = CoreContact.find(self.user, None,
-                                   limit=self.get_limit(),
-                                   offset=self.get_offset())
-        data = [ReturnContact.build(x).serialize()
-                for x in results]
+        pi_range = self.request.authenticated_userid.pi_range
+        filter_params = {'min_pi': pi_range[0],
+                         'max_pi': pi_range[1],
+                         'limit': self.get_limit(),
+                         'offset': self.get_offset()}
+        log.debug('Filter parameters {}'.format(filter_params))
+        results = CoreContact._model_class.search(self.user, **filter_params)
+        data = [ReturnContact.build(CoreContact.get(self.user, x.contact_id)).
+                serialize() for x in results]
         return {'contacts': data, 'total': len(data)}
 
     @view(renderer='json', permission='authenticated')
     def get(self):
+        pi_range = self.request.authenticated_userid.pi_range
         contact_id = self.request.matchdict.get('contact_id')
         try:
             contact = CoreContact.get(self.user, contact_id)
         except NotFound:
             raise ResourceNotFound('No such contact')
+        if pi_range[0] > contact.privacy_index < pi_range[1]:
+            raise HTTPExpectationFailed('Invalid privacy index')
         return {'contacts': ReturnContact.build(contact).serialize()}
 
     @view(renderer='json', permission='authenticated')
