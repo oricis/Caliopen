@@ -217,6 +217,7 @@ class NewContact(Model):
     tags = ListType(StringType)
     groups = ListType(StringType)
     infos = DictType(StringType)
+    privacy_index = IntType(default=0)
     privacy_features = DictType(StringType, default=lambda: {})
 
     organizations = ListType(ModelType(NewOrganization),
@@ -240,7 +241,6 @@ class Contact(NewContact):
     """Existing contact."""
     user_id = UUIDType(required=True)
     contact_id = UUIDType(required=True)
-    privacy_index = IntType(default=0)
     # XXX not such default here
     title = StringType()
     avatar = StringType(default='avatar.png')
