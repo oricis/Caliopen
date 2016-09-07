@@ -34,6 +34,25 @@ class ReturnCoreObject(BaseReturnObject):
     _core_class = None
 
     @classmethod
+    def _build_sub_core(cls, core):
+        """Build return for a core object attached to another."""
+        attr = {}
+        for col in core._model_class._columns.keys():
+            value = getattr(core, col)
+            if isinstance(value, (list, tuple)):
+                new_value = []
+                for val in value:
+                    if hasattr(val, 'to_dict'):
+                        new_value.append(val.to_dict())
+                    else:
+                        new_value.append(val)
+                value = new_value
+            elif hasattr(value, 'to_dict'):
+                value = value.to_dict()
+            attr.update({col: value})
+        return attr
+
+    @classmethod
     def build(cls, core):
         """Main method to build a return object from a core."""
         kls = cls._return_class
@@ -51,11 +70,7 @@ class ReturnCoreObject(BaseReturnObject):
                     attr = attr['data']
                 attr = [x.to_dict() for x in attr]
             if isinstance(attr, BaseCore):
-                new_attr = {}
-                for col in attr._model_class._columns.keys():
-                    value = getattr(attr, col)
-                    new_attr.update({col: value})
-                attr = new_attr
+                attr = cls._build_sub_core(attr)
             elif isinstance(attr, (list, tuple)):
                 new_attr = []
                 for val in attr:
