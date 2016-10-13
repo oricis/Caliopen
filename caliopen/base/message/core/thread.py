@@ -188,7 +188,9 @@ class Thread(BaseUserCore):
         for th in threads:
             if pi_min <= th.privacy_index <= pi_max:
                 res.append(th)
-        return {'threads': res, 'total': len(threads)}
+            else:
+                log.debug('Thread do not fit PI range {}'.format(th.thread_id))
+        return {'threads': res, 'total': len(res)}
 
 
 class ReturnThread(ReturnCoreObject):
