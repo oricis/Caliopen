@@ -63,7 +63,7 @@ class IndexedModelMixin(object):
         return True
 
     @classmethod
-    def search(cls, user, limit=None, offset=None,
+    def search(cls, user, limit=None, offset=0,
                min_pi=0, max_pi=0, **params):
         """Search in index using a dict parameter."""
         search = cls._index_class.search(using=cls._index_class.client(),
@@ -73,6 +73,11 @@ class IndexedModelMixin(object):
             search = search.filter('match', **term)
         search = search.filter('range', **{'privacy_index': {'gte': min_pi}})
         search = search.filter('range', **{'privacy_index': {'lte': max_pi}})
+        if limit:
+            search = search[offset:offset+limit]
+        else:
+            log.warn('Pagination not set for search query,'
+                     ' using default storage one')
         log.debug('Search is {}'.format(search.to_dict()))
         resp = search.execute()
         log.debug('Search result {}'.format(resp))
