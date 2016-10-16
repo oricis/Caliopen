@@ -80,7 +80,10 @@ class ReturnCoreObject(BaseReturnObject):
                         value = val
                     new_attr.append(value)
                 attr = new_attr
-            setattr(obj, k, attr)
+            if attr is None and v is not None:
+                setattr(obj, k, v)
+            else:
+                setattr(obj, k, attr)
         obj.validate()
         return obj
 
