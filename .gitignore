@@ -146,3 +146,16 @@ ENV/
 
 # Rope project settings
 .ropeproject
+src/backend/interfaces/REST/py.server/caliopen-api/
+src/backend/main/legacy/base.message/caliopen/base/message/
+src/backend/main/legacy/base.user/caliopen/base/user/
+src/backend/main/py.main/caliopen-main/
+src/backend/main/py.storage/caliopen-storage/
+src/backend/protocols/
+src/backend/tools/
+src/frontends/
+/.idea/
+/src/backend/main/py.main/caliopen_main.egg-info/
+/src/backend/main/py.storage/caliopen_storage.egg-info/
+/src/backend/main/py.storage/.idea/
+/src/backend/main/py.main/.idea/
