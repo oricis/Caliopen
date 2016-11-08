@@ -11,7 +11,8 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
     'pyramid_jinja2',
-    'caliopen.api.user',
+    'caliopen-storage',
+    'caliopen-main',
     'pyramid_kvs',
     'waitress',
     ]
@@ -31,9 +32,9 @@ extras_require = {
     'test': tests_require
 }
 
-setup(name='caliopen.api',
-      namespace_packages=['caliopen', 'caliopen.api'],
-      version='0.0.1',
+setup(name='caliopen-api',
+      namespace_packages=['caliopen-api'],
+      version='0.0.2',
       description='Caliopen REST API Server',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[

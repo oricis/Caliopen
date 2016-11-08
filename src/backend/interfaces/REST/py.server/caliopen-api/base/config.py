@@ -5,7 +5,7 @@ import logging
 
 from pyramid.httpexceptions import HTTPExpectationFailed
 
-from caliopen.base.helpers.connection import connect_storage
+from caliopen-storage.helpers.connection import connect_storage
 
 from .renderer import TextPlainRenderer, JsonRenderer, PartRenderer
 from .deserializer import json_deserializer
