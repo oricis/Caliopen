@@ -1,0 +1,26 @@
+delivery_agent:
+    direct: True
+
+elasticsearch:
+    url: http://es.dev.caliopen.org:9200
+
+cassandra:
+    keyspace: caliopen
+    hosts:
+        - 'cassandra.dev.caliopen.org'
+    consistency_level: 1
+
+system:
+    default_tags:
+        -
+            label: INBOX
+            background: '#000000'
+            color: black
+        -
+            label: SPAM
+            background: '#AAAAAA'
+            color: white
+        -
+            label: IMPORTANT
+            background: '#FF0000'
+            color: white
