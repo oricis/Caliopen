@@ -7,19 +7,26 @@ README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
-    'caliopen.base',
     'phonenumbers',
+    'dnsknife',
+    'PGpy',
+    'caliopen-storage'
     ]
 
 extras_require = {
     'dev': [],
-    'test': [],
+    'test': [
+        'coverage',
+        'docker-py',
+        'freezegun',
+        'nose'
+    ],
 }
 
-setup(name='caliopen.base.user',
-      namespace_packages=['caliopen', 'caliopen.base'],
-      version='0.0.1',
-      description='Caliopen base package for user management.',
+setup(name='caliopen-main',
+      namespace_packages=['caliopen-main'],
+      version='0.0.2',
+      description='Caliopen main package. Entry point for whole application',
       long_description=README + '\n\n' + CHANGES,
       classifiers=["Programming Language :: Python", ],
       author='Caliopen contributors',
