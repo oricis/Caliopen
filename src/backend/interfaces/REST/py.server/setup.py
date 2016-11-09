@@ -11,10 +11,12 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
     'pyramid_jinja2',
-    'caliopen-storage',
-    'caliopen-main',
+    'caliopen_storage',
+    'caliopen_main',
     'pyramid_kvs',
     'waitress',
+    'cornice==1.2.1',
+    'colander'
     ]
 
 tests_require = ['nose', 'coverage']
@@ -32,8 +34,8 @@ extras_require = {
     'test': tests_require
 }
 
-setup(name='caliopen-api',
-      namespace_packages=['caliopen-api'],
+setup(name='caliopen_api',
+      namespace_packages=['caliopen_api'],
       version='0.0.2',
       description='Caliopen REST API Server',
       long_description=README + '\n\n' + CHANGES,
@@ -54,7 +56,7 @@ setup(name='caliopen-api',
       install_requires=requires,
       tests_require=tests_require,
       extras_require=extras_require,
-      test_suite="caliopen.api.tests",
+      test_suite="caliopen_api.tests",
       entry_points={
-          'paste.app_factory': ['main = caliopen.api:main'],
+          'paste.app_factory': ['main = caliopen_api:main'],
       })

@@ -10,7 +10,7 @@ requires = [
     'setuptools',
     'bcrypt',
     'PyYAML',
-    'elasticsearch-dsl',
+    'elasticsearch-dsl==2.1.0',
     'cassandra-driver==3.4.1',
     'schematics',
     'simplejson',
@@ -22,8 +22,8 @@ extras_require = {
 }
 
 
-setup(name='caliopen-storage',
-      namespace_packages=['caliopen-storage'],
+setup(name='caliopen_storage',
+      namespace_packages=['caliopen_storage'],
       version='0.0.2',
       description='Caliopen base package for storage routines.',
       long_description=README + '\n\n' + CHANGES,

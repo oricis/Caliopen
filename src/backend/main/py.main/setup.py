@@ -10,7 +10,7 @@ requires = [
     'phonenumbers',
     'dnsknife',
     'PGpy',
-    'caliopen-storage'
+    'caliopen_storage'
     ]
 
 extras_require = {
@@ -23,8 +23,8 @@ extras_require = {
     ],
 }
 
-setup(name='caliopen-main',
-      namespace_packages=['caliopen-main'],
+setup(name='caliopen_main',
+      namespace_packages=['caliopen_main'],
       version='0.0.2',
       description='Caliopen main package. Entry point for whole application',
       long_description=README + '\n\n' + CHANGES,

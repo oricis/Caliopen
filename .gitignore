@@ -32,7 +32,6 @@
 
 # IntelliJ
 /out/
-.idea/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -68,7 +67,6 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-.Python
 env/
 build/
 develop-eggs/
@@ -148,16 +146,17 @@ ENV/
 
 # Rope project settings
 .ropeproject
-
-.gitignore
-.idea/
+src/backend/interfaces/REST/py.server/caliopen-api/
 src/backend/main/legacy/base.message/caliopen/base/message/
 src/backend/main/legacy/base.user/caliopen/base/user/
+src/backend/main/py.main/caliopen-main/
+src/backend/main/py.storage/caliopen-storage/
 src/backend/protocols/
 src/backend/tools/
 src/frontends/
-.idea/compiler.xml
-.idea/copyright/
-.idea/misc.xml
-.idea/modules.xml
-.idea/monoRepo.iml
+/.idea/
+/src/backend/main/py.main/caliopen_main.egg-info/
+/src/backend/main/py.storage/caliopen_storage.egg-info/
+/src/backend/main/py.storage/.idea/
+/src/backend/main/py.main/.idea/
+*.iml
