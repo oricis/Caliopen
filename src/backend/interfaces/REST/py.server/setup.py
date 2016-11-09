@@ -10,6 +10,7 @@ README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
+    'pyramid >=1.5, <=1.5.99',
     'pyramid_jinja2',
     'caliopen_storage',
     'caliopen_main',
