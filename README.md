@@ -1,0 +1,95 @@
+# Caliopen Messaging Platform
+
+This repository hosts all code source, scripts and tools for the CaliOpen project.
+
+All issues related to this project must be created in this [repository](https://github.com/CaliOpen/Caliopen/issues).
+
+
+# Repositories architecture
+Below is our target repository structure.  
+For now, all directories are not created, as some Caliopen's components are still missing or are not yet implemented.
+
+###top level 
+```
+├── distrib : (to be done) binaries for different platforms
+├── doc     : (to be done) all documentation for developers, administrators and users
+├── infra   : (to be done) tools to manage and supervise Caliopen platform
+└── src     : all source code goes here
+```
+
+### the `src` directory
+Source code for Caliopen platform and clients applications.  
+**NB**: Caliopen is not bind to a specific language : one will find softwares components written in python, Go, C, java… 
+
+Caliopen is made of :
+
+ * the *frontend__s__* => applications that run on clients' devices : navigators, computers, smartphones…
+ * the *backend* => the Caliopen platform that runs on servers.   
+ 
+Here is our target architecture for `src` :
+ 
+```
+├── backend
+│   ├── agents
+│   ├── brokers
+│   ├── configs
+│   ├── components
+│   ├── defs
+│   ├── interfaces
+│   ├── main
+│   ├── protocols
+│   ├── tests
+│   └── tools
+└── frontends
+    ├── android_app
+    ├── browser_extensions
+    ├── ios_app
+    ├── web_server
+    └── web_app
+```
+
+## Code organization for the backend
+
+#### `main` directory
+The main application goes here. This is the entry point for the platform. From here, all relevant programs, servers and daemons are spawned, and core services/API are launched.  
+For now, there are 2 python packages : `py.main` and `py.storage`.  
+The startup program is … « `startup` » !
+#### `interfaces` directory
+Public APIs consumed by frontends and clients applications over HTTP/HTTP2.  
+Examples : REST server, gRPC server
+#### `brokers` directory
+Brokers are program modules that offer services to parse/unparse and/or unmarshall/marshall objects between the formal external protocol of the sender and the formal internal protocol of Caliopen.  
+Examples : email broker, sms broker, vcard broker…
+#### `protocols` directory
+Program modules that implement standard protocols to connect *Brokers* to external tiers.  
+Examples : SMTP, XMPP…
+#### `components` directory
+Software components that add features to Caliopen by exposing services directly to the main process.  
+Each component can be enhanced thanks to a plugin architecture, as long as the plugin don't break the component's contract.  
+Components could be distributed to the community as standalone packages.  
+Examples : messages qualifiers (PI computing, importance computing), keys manager, DNS…
+#### `configs` directory
+Configuration files for all platform components are centralized here.
+#### `defs` directory (ie definitions)
+Interfaces, objects and methods definitions.  
+One finds here the « Single Source of Truth » to work with Caliopen's inner world.  
+Examples : protobuf files, python packages for base classes, Go struct definitions…
+#### `agents` directory
+Programs that run tasks and jobs for main process and/or offer services to end-users.  
+Example : credentials manager, notifier…
+#### `tools` directory
+Standalone programs to manage the backend and the databases outside the standard interfaces.  
+Examples : caliopen CLI to setup the platform, initialize databases, import mailboxes…
+#### `tests` directory
+Test suits go there.
+
+## Code organization for the frontends
+
+#### `web_server` directory
+HTTP server to distribute the webapp. For now, it is a *Node/Express* application.
+#### `web_app` directory
+User Interface that runs into the browser. For now, it is a *React* application.
+#### `ios_app` directory
+User Interface application for iOS. (to be implemented)
+#### `android_app` directory
+User Interface application for android devices. (to be implemented)

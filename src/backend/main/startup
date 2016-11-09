@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# startup script
+# to be implemented
+# tasks :
+# * parses relevant config files
+# * ensures all components are installed, including databases
+# * launches databases and ensures they are initialized
+# * launches main program, APIs servers and helpers (if any).
