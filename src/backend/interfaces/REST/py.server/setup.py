@@ -1,13 +1,19 @@
 import os
 import sys
+import re
 
 from setuptools import setup, find_packages
 
 PY3 = sys.version_info[0] == 3
 
+name = "caliopen_api"
+
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
+
+with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file:
+    version = re.compile(r".*__version__ = '(.*?)'", re.S).match(v_file.read()).group(1)
 
 requires = [
     'pyramid >=1.5, <=1.5.99',
@@ -35,9 +41,9 @@ extras_require = {
     'test': tests_require
 }
 
-setup(name='caliopen_api',
-      namespace_packages=['caliopen_api'],
-      version='0.0.2',
+setup(name=name,
+      namespace_packages=[name],
+      version=version,
       description='Caliopen REST API Server',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
