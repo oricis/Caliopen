@@ -11,7 +11,7 @@ For now, all directories are not created, as some Caliopen's components are stil
 
 ### top level 
 ```
-├── doc     : (to be contiued) all documentation for developers, administrators and users
+├── doc     : (work in progress) all documentation for developers, administrators and users
 ├── infra   : (to be done) tools to manage and supervise Caliopen platform
 └── src     : all source code goes here
 ```
@@ -76,7 +76,7 @@ Interfaces, objects and methods definitions.
 One finds here the « Single Source of Truth » to work with Caliopen's inner world.  
 Examples : databases models, protobuf files, python packages for base classes, Go struct definitions…
 #### `agents` directory
-Programs that run tasks and jobs for main process and/or offer services to end-users.  
+Programs that run on-demand tasks and cron-jobs for main process and/or offer on-demand services to end-users.  
 Example : credentials manager, notifier…
 #### `tools` directory
 Standalone programs to manage the backend and the databases outside the standard interfaces.  
