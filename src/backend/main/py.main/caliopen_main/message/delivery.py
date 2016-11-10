@@ -4,18 +4,18 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from caliopen_storage.exception import NotFound
-from caliopen_storage.user.core import ContactLookup
+from ..user.core import ContactLookup
 
-from caliopen_storage.message.core import Message, RawMessage
+from ..message.core import Message, RawMessage
 
-from caliopen_storage.message.core import (Thread,
+from ..message.core import (Thread,
                                         ThreadMessageLookup,
                                         ThreadRecipientLookup,
                                         ThreadExternalLookup)
 
-from caliopen_storage.message.parameters import Recipient
+from ..message.parameters import Recipient
 # XXX use a message formatter registry not directly mail format
-from caliopen_storage.message.format import MailMessage
+from ..message.format import MailMessage
 
 log = logging.getLogger(__name__)
 
