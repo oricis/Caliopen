@@ -1,6 +1,6 @@
 # Caliopen Messaging Platform
 
-This repository hosts all code source, scripts and tools for the CaliOpen project.
+This repository hosts all the code source, the scripts and the tools for the CaliOpen project.
 
 All issues related to this project must be created in this [repository](https://github.com/CaliOpen/Caliopen/issues).
 
@@ -9,10 +9,9 @@ All issues related to this project must be created in this [repository](https://
 Below is our target repository structure.  
 For now, all directories are not created, as some Caliopen's components are still missing or are not yet implemented.
 
-###top level 
+### top level 
 ```
-├── distrib : (to be done) binaries for different platforms
-├── doc     : (to be done) all documentation for developers, administrators and users
+├── doc     : (to be contiued) all documentation for developers, administrators and users
 ├── infra   : (to be done) tools to manage and supervise Caliopen platform
 └── src     : all source code goes here
 ```
@@ -51,12 +50,14 @@ Here is our target architecture for `src` :
 ## Code organization for the backend
 
 #### `main` directory
-The main application goes here. This is the entry point for the platform. From here, all relevant programs, servers and daemons are spawned, and core services/API are launched.  
-For now, there are 2 python packages : `py.main` and `py.storage`.  
-The startup program is … « `startup` » !
+The main application goes here. This is the entry point for the platform. From here, all relevant programs, servers and daemons are spawned, and core services/APIs are started.  
+For now, there are 2 python packages : `main/py.main` and `main/py.storage`.  
+
+To startup the Caliopen platform, run the command `main/startup` 
 #### `interfaces` directory
 Public APIs consumed by frontends and clients applications over HTTP/HTTP2.  
-Examples : REST server, gRPC server
+Examples : REST server, gRPC server…  
+For now, there is a REST python server (pyramid) into `interfaces/REST/py.server`
 #### `brokers` directory
 Brokers are program modules that offer services to parse/unparse and/or unmarshall/marshall objects between the formal external protocol of the sender and the formal internal protocol of Caliopen.  
 Examples : email broker, sms broker, vcard broker…
@@ -64,16 +65,16 @@ Examples : email broker, sms broker, vcard broker…
 Program modules that implement standard protocols to connect *Brokers* to external tiers.  
 Examples : SMTP, XMPP…
 #### `components` directory
-Software components that add features to Caliopen by exposing services directly to the main process.  
+Software components that add features to Caliopen by exposing services or procedures directly to main processes.  
 Each component can be enhanced thanks to a plugin architecture, as long as the plugin don't break the component's contract.  
-Components could be distributed to the community as standalone packages.  
-Examples : messages qualifiers (PI computing, importance computing), keys manager, DNS…
+Some components could be distributed outside Caliopen as standalone packages.  
+Examples : parsers, messages qualifiers (PI computing, importance computing), keys manager, DNS…
 #### `configs` directory
-Configuration files for all platform components are centralized here.
+Configuration files for every platform components.
 #### `defs` directory (ie definitions)
 Interfaces, objects and methods definitions.  
 One finds here the « Single Source of Truth » to work with Caliopen's inner world.  
-Examples : protobuf files, python packages for base classes, Go struct definitions…
+Examples : databases models, protobuf files, python packages for base classes, Go struct definitions…
 #### `agents` directory
 Programs that run tasks and jobs for main process and/or offer services to end-users.  
 Example : credentials manager, notifier…
