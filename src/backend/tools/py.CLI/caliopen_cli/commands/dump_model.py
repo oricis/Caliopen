@@ -1,11 +1,11 @@
 
-from caliopen.base.helpers.json import json, JSONEncoder
+from caliopen_storage.helpers.json import json, JSONEncoder
 
 
 def dump_model(model, output_path, **kwargs):
     # Discover base core classes
-    from caliopen.base.core.user import User
-    from caliopen.base.core import core_registry
+    from caliopen_main.user.core import User
+    from caliopen_storage.core import core_registry
     _exports = {
         'contact': ['Contact', 'Organization', 'PostalAddress', 'Email', 'IM',
                     'Ohone', 'PublicKey', 'SocialIdentity'],

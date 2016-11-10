@@ -13,7 +13,7 @@ import logging
 from email import message_from_file
 from mailbox import mbox, Maildir
 
-from caliopen.base.exception import NotFound
+from caliopen_storage.exception import NotFound
 
 
 log = logging.getLogger(__name__)
@@ -21,11 +21,11 @@ log = logging.getLogger(__name__)
 
 def import_email(email, import_path, format, **kwargs):
 
-    from caliopen.base.user.core import User
-    from caliopen.base.user.core import Contact, ContactLookup
-    from caliopen.base.message.format.mail import MailMessage
-    from caliopen.base.user.parameters import NewContact, NewEmail
-    from caliopen.smtp.agent import DeliveryAgent
+    from caliopen_main.user.core import User
+    from caliopen_main.user.core import Contact, ContactLookup
+    from caliopen_main.message.format.mail import MailMessage
+    from caliopen_main.user.parameters import NewContact, NewEmail
+    from caliopen_smtp.agent import DeliveryAgent
 
     if format == 'maildir':
         emails = Maildir(import_path, factory=message_from_file)

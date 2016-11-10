@@ -1,4 +1,5 @@
 import os
+import re
 
 from setuptools import setup, find_packages
 
@@ -6,17 +7,21 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
+name = "caliopen_cli"
+
+with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file:
+    version = re.compile(r".*__version__ = '(.*?)'", re.S).match(v_file.read()).group(1)
+
 requires = [
-    'caliopen.base',
-    'caliopen.base.user',
-    'caliopen.base.message',
-    'caliopen.smtp',
+    'caliopen_main',
+    'caliopen_storage',
+    'caliopen_smtp',
     'ipython==4.0.0',
 ]
 
-setup(name='caliopen.cli',
-      namespace_packages=['caliopen'],
-      version='0.0.1',
+setup(name=name,
+      namespace_packages=[name],
+      version=version,
       description='Caliopen Command Line Interface`',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[

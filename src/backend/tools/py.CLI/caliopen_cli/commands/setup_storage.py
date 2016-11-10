@@ -1,18 +1,18 @@
 """Setup storage backend."""
 
 import logging
-from caliopen.base.config import Configuration
+from caliopen_storage.config import Configuration
 
 log = logging.getLogger(__name__)
 
 
 def setup_storage(settings=None):
     """Create cassandra models."""
-    from caliopen.base.core import core_registry
+    from caliopen_storage.core import core_registry
     # Make discovery happen
-    from caliopen.base.user.core import User
-    from caliopen.base.message.core.thread import Thread
-    from caliopen.base.message.core.message import Message
+    from caliopen_main.user.core import User
+    from caliopen_main.message.core.thread import Thread
+    from caliopen_main.message.core.message import Message
     from cassandra.cqlengine.management import sync_table, create_keyspace_simple
     keyspace = Configuration('global').get('cassandra.keyspace')
     if not keyspace:
