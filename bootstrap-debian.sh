@@ -42,9 +42,11 @@ python setup.py develop
 # Start services
 cd ${CALIOPEN_BASE_DIR}/ext/apache-cassandra-${CASSANDRA_VERSION}
 sed -i -e '/#MAX_HEAP_SIZE=/ s/.*/MAX_HEAP_SIZE="1G"/' conf/cassandra-env.sh
+sed -i -e '/#HEAP_NEWSIZE=/ s/.*/HEAP_NEWSIZE="512M"/' conf/cassandra-env.sh
 ./bin/cassandra
 
 sed -i -e '/#START_DAEMON=true/ s/.*/START_DAEMON=true/' /etc/default/elasticsearch
+/etc/init.d/elasticsearch stop
 /etc/init.d/elasticsearch start
 
 cd ${CALIOPEN_BASE_DIR}/code/src/backend/interfaces/REST/py.server
