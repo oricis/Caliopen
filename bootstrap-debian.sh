@@ -1,5 +1,8 @@
 #!/bin/bash
+CALIOPEN_BASE_DIR="/opt/caliopen"
+CASSANDRA_VERSION="2.2.8"
 
+# Install system packages
 apt-get -y update
 apt-get -y upgrade
 apt-get install -y git libffi-dev python-pip gcc python-dev libssl-dev libev4 libev-dev redis-server elasticsearch
@@ -15,12 +18,10 @@ pip install --upgrade pyasn1
 
 
 # Create CaliOpen work directory
-CALIOPEN_BASE_DIR="/opt/caliopen"
 mkdir ${CALIOPEN_BASE_DIR}
-mkdir ${CALIOPEN_BASE_DIR}/ext && cd $_
 
 # Install storage engines
-CASSANDRA_VERSION="2.2.8"
+mkdir ${CALIOPEN_BASE_DIR}/ext && cd $_
 
 wget -q http://www-eu.apache.org/dist/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 tar xzf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
