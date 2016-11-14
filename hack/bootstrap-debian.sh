@@ -36,7 +36,20 @@ cd ${CALIOPEN_BASE_DIR}/code/src/backend/main/py.storage
 python setup.py develop
 cd ${CALIOPEN_BASE_DIR}/code/src/backend/main/py.main
 python setup.py develop
+
+# API
 cd ${CALIOPEN_BASE_DIR}/code/src/backend/interfaces/REST/py.server
+python setup.py develop
+
+# SMTP
+cd ${CALIOPEN_BASE_DIR}/code/src/backend/components/py.messaging
+python setup.py develop
+
+cd ${CALIOPEN_BASE_DIR}/code/src/backend/protocols/py.smtp
+pip install -r requirements.txt
+python setup.py develop
+
+cd ${CALIOPEN_BASE_DIR}/code/src/backend/tools/py.CLI
 python setup.py develop
 
 # Start services
