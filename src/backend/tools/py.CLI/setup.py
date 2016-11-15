@@ -39,5 +39,5 @@ setup(name=name,
       tests_require=requires,
       test_suite="caliopen.cli.tests",
       entry_points={
-          'console_scripts': 'caliopen = caliopen.cli.cli:main',
+          'console_scripts': 'caliopen = caliopen_cli.cli:main',
       })
