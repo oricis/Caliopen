@@ -13,16 +13,17 @@ For now, all directories are not created, as some Caliopen's components are stil
 ```
 ├── doc     : (work in progress) all documentation for developers, administrators and users
 ├── infra   : (to be done) tools to manage and supervise Caliopen platform
-└── src     : all source code goes here
+├── src     : all source code goes here
+└── devtools: scripts, fixtures and other tools to build development environment
 ```
 
 ### the `src` directory
 Source code for Caliopen platform and clients applications.  
-**NB**: Caliopen is not bind to a specific language : one will find softwares components written in python, Go, C, java… 
+**NB**: Caliopen is not bind to a specific language : one may finds softwares components written in python, Go, C, java… 
 
 Caliopen is made of :
 
- * the *frontend__s__* => applications that run on clients' devices : navigators, computers, smartphones…
+ * the *frontends* => applications that run on clients' devices : browsers, computers, smartphones…
  * the *backend* => the Caliopen platform that runs on servers.   
  
 Here is our target architecture for `src` :
@@ -43,8 +44,7 @@ Here is our target architecture for `src` :
     ├── android_app
     ├── browser_extensions
     ├── ios_app
-    ├── web_server
-    └── web_app
+    └── web_application
 ```
 
 ## Code organization for the backend
@@ -80,16 +80,14 @@ Programs that run on-demand tasks and cron-jobs for main process and/or offer on
 Example : credentials manager, notifier…
 #### `tools` directory
 Standalone programs to manage the backend and the databases outside the standard interfaces.  
-Examples : caliopen CLI to setup the platform, initialize databases, import mailboxes…
+Examples : caliopen CLI to import mailboxes…
 #### `tests` directory
 Test suits go there.
 
 ## Code organization for the frontends
 
-#### `web_server` directory
-HTTP server to distribute the webapp. For now, it is a *Node/Express* application.
-#### `web_app` directory
-User Interface that runs into the browser. For now, it is a *React* application.
+#### `web_appliaction` directory
+All the code needed to render and to distribute the User Interface that runs into the browser. For now, it is a *Node/Express/React* application.
 #### `ios_app` directory
 User Interface application for iOS. (to be implemented)
 #### `android_app` directory
