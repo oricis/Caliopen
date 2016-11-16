@@ -2,7 +2,7 @@
 
 - each package version have its own git tag in form of :  
 `<ressource>.<package_name>-<version>`  
-*\<ressources\>* values are one of :  `backend/components/` or `frontends/web_app/` …
+*\<ressources\>* values are names of the subdirectories under /src/ :  `backend/components/`, `frontends/web_app/` …
 
 - each global release have its git tag in form of :  
     `release-<version>`
@@ -17,7 +17,7 @@ Caliopen follows the [semver](http://semver.org/)'s Semantic Versioning rules.
 each python package **MUST** have in the `__init__.py` file on it's exposed namespace :
     
 ```
-__version__ = x.x.x
+__version__ = 'x.x.x'
 ```
 
 package's `setup.py` must expose package version using reading of this version number.
