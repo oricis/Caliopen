@@ -1,3 +1,9 @@
+**All source code for Caliopen has been moved under a single directory at https://github.com/CaliOpen/Caliopen**  
+  
+**This legacy repo is deprecated**  
+
+Below is the legacy readme :
+
 caliopen.smtp
 =============
 
