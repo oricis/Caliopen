@@ -1,0 +1,181 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aoyLS-0008PG-Fw
+	for mharc-dev@caliopen.local; Sat, 09 Apr 2016 15:14:58 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:50364)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aoyLQ-0008Mc-GX
+	for dev@caliopen.local; Sat, 09 Apr 2016 15:14:57 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aoyLN-00068V-AY
+	for dev@caliopen.local; Sat, 09 Apr 2016 15:14:56 -0400
+Received: from mout.kundenserver.de ([217.72.192.74]:53617)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aoyLN-00068B-1n
+	for dev@caliopen.local; Sat, 09 Apr 2016 15:14:53 -0400
+Received: from [18.189.83.142] ([18.189.83.142]) by mrelayeu.kundenserver.de
+	(mreue103) with ESMTPSA (Nemesis) id 0MTNxP-1bGi5s46Yp-00SRVq for
+	<emacs-devel@gnu.org>; Sat, 09 Apr 2016 21:14:52 +0200
+To: Emacs developers <emacs-devel@gnu.org>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Subject: How do I set up font fallback in a robust way?
+Message-ID: <570954AA.7070604@gmail.com>
+Date: Sat, 9 Apr 2016 15:14:50 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="srf1LWFWLDoHfT97sPl7QNaTkKL1FsinC"
+X-Provags-ID: V03:K0:CjpE8H5QAjwGyvGqxLoPpO4MNbrUhChWjCBGhCWzObkVMqYk0eY
+	bCNTDoZfRQvtRS5BowhPzLWBZXtCJal4BJVk8t2Gl+uavXL5tmTuQ2yoGsQciyO8nVCxN2C
+	4pwLbhMQBOiJBEf17Q1nGI+RBe6IcsfJO65f3QxchKbzl1M9LjgPCZgz7ButYaZ/y2Hr8ED
+	ffWSadruXSe42auMj8cDA==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:sG9C08WjMhw=:wjrzwuliBeWZxl/pqm96b1
+	gqeKneFivIObM0KcBW8X4fji1DZCQai6mxSnon8HZ+aMyFg1/Fd6iPPwQbwmFMVEIzOkkC8Wl
+	CE8AdIktI/kg4rMaDPlHuFh5TBCj+INNkizE/x8HzFp+/IBrbs47zuRHNacHBTY4M/zUVuYYf
+	YmsYYhOeX7eq/rumkfcuwUkoga+gnUrtbUhQJvtM8M3AfKAqKugo0eI9ylJJRud2ny57uNoi0
+	92ZI3CjK7As7YD1xKboR0zu2gffz1R6OI2MNNrTHa9d7/tlUbHPGU4YQHzyS9t1S49S4qtmYS
+	sLs5PHlCAFNcYZLEYkseDyBjeMN7SHNZYrXa9410YlbPxRdB4R/89LEbyCuF9CoEDycoqJEL5
+	D5WxanajyZdWmqNl5BIsIA8nMESqPrNO8wmdrZKYNxhbURZPBDMPGnLelNsDfwdD3pknhTZV5
+	S2n9R3WjqzK6UhUOBtKHVS883soEO1oi0eMZ7n5ioz+xkqgDog+kR5hkbOMIg50BTVKldpIEL
+	LxMLOSJ/yAoB7H+l6x9qjgMSiNRaMGex42FLC/WkEy1Hg9Y4tkqciuPFXSFyn63l7NPdBOaat
+	J9dN38rBs5voPy99OK2K9RhNHkBW4x0RSlSnCxbIQDXQJT6vgTbhc7RUszzrrje7NSSqGWCjr
+	RMkJyYhdsEtf+9IlikvVJFHN5fL5vM3hVfddFGRBTcIK3/lafiZBtE+0lLCIF5e1HZko=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 217.72.192.74
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sat, 09 Apr 2016 19:14:57 -0000
+Content-Length: 4702
+Lines: 121
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--srf1LWFWLDoHfT97sPl7QNaTkKL1FsinC
+Content-Type: multipart/mixed; boundary="xXfnMjuugMLluqle5Iws71T0R88D3ljOb"
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+To: Emacs developers <emacs-devel@gnu.org>
+Message-ID: <570954AA.7070604@gmail.com>
+Subject: How do I set up font fallback in a robust way?
+
+--xXfnMjuugMLluqle5Iws71T0R88D3ljOb
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi emacs-devel,
+
+I'm cross-posting this from https://emacs.stackexchange.com/questions/172=
+05 following Eli's suggestion; I couldn't figure this out from reading th=
+e manual.
+
+TL;DR: What's a simple way to reliably say: use Ubuntu Mono as the defaul=
+t font, FreeMono for the characters unsupported by Ubuntu Mono, and Symbo=
+la for characters unsupported by both?
+
+Since my main programming font does not cover all the mathematical symbol=
+s I need, I initially set up font fallback as shown below:
+
+    (set-fontset-font t 'unicode (font-spec :name "FreeMono") nil 'append=
+)
+    (set-fontset-font t 'unicode (font-spec :name "Symbola") nil 'append)=
+
+
+Unfortunately this also changed the font for some of the character that m=
+y main font (Ubuntu Mono) supports, so I changed it to
+
+    (set-fontset-font t 'unicode (font-spec :name "Ubuntu Mono") nil)
+    (set-fontset-font t 'unicode (font-spec :name "FreeMono") nil 'append=
+)
+    (set-fontset-font t 'unicode (font-spec :name "Symbola") nil 'append)=
+
+
+If my understanding is correct, this should ensure that characters that U=
+buntu Mono cannot handle are handled by FreeMono, unless FreeMono doesn't=
+ have them, in which case they should be displayed using Symbola. It is a=
+lso my understanding that `t` does the same as `"fontset-default"` above.=
+
+
+Unfortunately, there were still cases where the right font wasn't selecte=
+d; I found that changing to
+
+    (set-fontset-font t 'unicode (font-spec :name "Ubuntu Mono") nil)
+    (set-fontset-font t 'unicode (font-spec :name "FreeMono") nil 'append=
+)
+    (set-fontset-font t 'unicode (font-spec :name "Symbola") nil 'append)=
+
+    (set-fontset-font "fontset-startup" 'unicode (font-spec :name "Ubuntu=
+ Mono") nil)
+    (set-fontset-font "fontset-startup" 'unicode (font-spec :name "FreeMo=
+no") nil 'append)
+    (set-fontset-font "fontset-startup" 'unicode (font-spec :name "Symbol=
+a") nil 'append)
+
+worked better, but not always: changing the font size using
+
+    (set-face-attribute 'default nil :height some-size)
+
+caused the fallbacks to be ignored, due to new fontsets being created.
+
+My current solution is to do
+
+    (set-fontset-font fontset 'unicode (font-spec :name "Ubuntu Mono") ni=
+l)
+    (set-fontset-font fontset 'unicode (font-spec :name "FreeMono") nil '=
+append)
+    (set-fontset-font fontset 'unicode (font-spec :name "Symbola") nil 'a=
+ppend)
+
+on each fontset (`fontset-list`), after each font size change. This is cu=
+mbersome, and I have trouble imagining that it's the right solution.
+
+What's the proper way to configure font fallback?
+
+*Note*: for testing purposes, here are a few math characters: `=E2=84=95=F0=
+=9D=93=9F=E2=A7=BA=C3=97=E2=89=A0=E2=89=A5=E2=89=A4=C2=B1=C2=AC=E2=88=A8=E2=
+=88=A7=E2=88=83=E2=88=80=CE=BB=E2=9F=BF=E2=9F=B9=E2=8A=A5=E2=8A=A4=E2=8A=A2=
+`
+
+*References*: Emacs manual on [fontsets](https://www.gnu.org/software/ema=
+cs/manual/html_node/emacs/Fontsets.html) and on [modifying fontsets](http=
+s://www.gnu.org/software/emacs/manual/html_node/emacs/Defining-Fontsets.h=
+tml#Defining-Fontsets)
+
+Cheers,
+Cl=C3=A9ment.
+
+
+--xXfnMjuugMLluqle5Iws71T0R88D3ljOb--
+
+--srf1LWFWLDoHfT97sPl7QNaTkKL1FsinC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJXCVSqAAoJEPqg+cTm90wjthYP/iuCP+7wC8y95TSXUBFYi2UZ
+S/2JeKFPc/+DOvzv05v/GJtT4iGAFgJ2d0ok4Fgs009HZPTsEn2KMd1c9lfa9ccA
+gLsLO+6ntVvK6VeJMdhXnbkFrTY2VSPItsXq+kgY1S8zOVc7V0AgqZS/a3PBKoZV
+zIqWmJPbiYyLjUyoAe2GnVkoJQo6OuCUw984tvW2nDSrvzVULrTUX9xjEo9Zc0rc
+i8FgzrKLnTNSikfJTwX5SFPFiVHELPk3FyBFWmOGis4lJY6URKuyitRW8WJBGb1E
++43BRbReZmFU2jUteYIgwMS+CGk0c3ml5CYTgZ2rK0pwhm7rLg716a4N3338KNvW
+heaZSpalD/3smpjs3EgBED13ymPxnL0KdT2jLO77r6Db0YQYF2eSsDkzxbxKzquZ
+ow0t7YTjB4yLApK7ETGtmybvRCaDtvpmrs8WJegz0ensZuljFeSmlW0WkGswr3TW
+COplFB5/qFvicenRR5nt7zGkGQVHH6xV6AY49OmRIV9wNSzRCTKtWVXinRXM86UO
+t8ZCYIailEx2PihIKc0oH9BSPsu6OlBCwd+uq0Zhun+itnxXoiWx+dVm67XfX667
+EZGZXG+SGu0ZFdSXuqY8zp0myZxhwHuvWWI6FIAdAzMtTZ5zRniZwslj05mH7sXB
+DFBwlEWVq44fR/xLezZP
+=McN9
+-----END PGP SIGNATURE-----
+
+--srf1LWFWLDoHfT97sPl7QNaTkKL1FsinC--
+

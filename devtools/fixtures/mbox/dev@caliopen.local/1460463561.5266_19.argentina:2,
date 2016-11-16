@@ -1,0 +1,526 @@
+Return-Path: <bounce@client.flash-des-affaires.com>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id 171B020BBD886
+	for <laurent@brasil.brainstorm.fr>; Sun, 10 Apr 2016 23:37:28 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 0B16833181F7; Sun, 10 Apr 2016 23:37:28 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id EFD4033181FC; Sun, 10 Apr 2016 23:37:27 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: *****************
+X-Spam-Status: Yes, score=17.6 required=5.0 tests=AWL,BAYES_99,
+	DATE_IN_PAST_06_12,HTML_FONT_FACE_BAD,HTML_IMAGE_RATIO_04,HTML_MESSAGE,
+	RAZOR2_CF_RANGE_51_100,RAZOR2_CF_RANGE_E8_51_100,RAZOR2_CHECK,
+	RCVD_IN_BRBL_LASTEXT,RCVD_IN_CSS,RCVD_IN_PSBL,T_KHOP_FOREIGN_CLICK,
+	URIBL_BLACK,URIBL_DBL_SPAM autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  1.0 RCVD_IN_CSS RBL: Received via a relay in Spamhaus CSS
+	*      [209.159.156.189 listed in zen.spamhaus.org]
+	*  1.4 RCVD_IN_BRBL_LASTEXT RBL: RCVD_IN_BRBL_LASTEXT
+	*      [209.159.156.189 listed in bb.barracudacentral.org]
+	*  1.5 DATE_IN_PAST_06_12 Date: is 6 to 12 hours before Received: date
+	*  2.7 RCVD_IN_PSBL RBL: Received via a relay in PSBL
+	*      [209.159.156.189 listed in psbl.surriel.com]
+	*  1.7 URIBL_DBL_SPAM Contains an URL listed in the DBL blocklist
+	*      [URIs: flash-des-affaires.com]
+	*  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
+	*      [URIs: flash-des-affaires.com]
+	*  0.6 HTML_IMAGE_RATIO_04 BODY: HTML has a low ratio of text to image area
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  1.0 HTML_FONT_FACE_BAD BODY: HTML font face is not a word
+	*  0.0 T_KHOP_FOREIGN_CLICK T_KHOP_FOREIGN_CLICK
+	*  0.9 RAZOR2_CHECK Listed in Razor2 (http://razor.sf.net/)
+	*  1.9 RAZOR2_CF_RANGE_E8_51_100 Razor2 gives engine 8 confidence level
+	*      above 50%
+	*      [cf: 100]
+	*  0.5 RAZOR2_CF_RANGE_51_100 Razor2 gives confidence level above 50%
+	*      [cf: 100]
+	* -0.9 AWL AWL: From: address is in the auto white-list
+X-Spam-DCC: : 
+Received: from server101.mon-offre-privee.com (server101.mon-offre-privee.com [209.159.156.189])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id 48C9B33181F7
+	for <dev@caliopen.local>; Sun, 10 Apr 2016 23:37:25 +0200 (CEST)
+To: dev@caliopen.local
+Subject: =?UTF-8?B?TGVzIHRhdXggbuKAmW9udCBqYW1haXMgw6l0w6kgYXVzc2kgYmFzICE=?=
+Message-ID: <ade0ff014706c7dd50066b130844c395@client.flash-des-affaires.com>
+Date: Sun, 10 Apr 2016 05:31:00 -0500
+From: "KreditConso" <emma@client.flash-des-affaires.com>
+Reply-To: emma@client.flash-des-affaires.com
+MIME-Version: 1.0
+X-Mailer-LID: 69,67,68
+List-Unsubscribe: <http://client.flash-des-affaires.com/unsubscribe.php?M=9434452&C=93d58a5715cb65846c9a27598497eb91&L=68&N=1498>
+X-Mailer-RecptId: 9434452
+X-Mailer-SID: 1498
+X-Mailer-Sent-By: 1
+Content-Type: multipart/alternative; charset="UTF-8"; boundary="b1_2aecade6cb042d3eb87cadc02790c768"
+Content-Transfer-Encoding: 8bit
+X-Spam-Prev-Subject: =?UTF-8?B?TGVzIHRhdXggbuKAmW9udCBqYW1haXMgw6l0w6kgYXVzc2kgYmFzICE=?=
+Content-Length: 20978
+Lines: 460
+
+--b1_2aecade6cb042d3eb87cadc02790c768
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+Votre client de messagerie ne peut pas lire cet email.
+Pour consulter en ligne, Veuillez allez ici:
+http://client.flash-des-affaires.com/display.php?M=9434452&C=93d58a5715cb65846c9a27598497eb91&S=1498&L=68&N=337
+
+
+Pour ne plus recevoir ces
+emails:http://client.flash-des-affaires.com/unsubscribe.php?M=9434452&C=93d58a5715cb65846c9a27598497eb91&L=68&N=1498
+<!-- #*#*# FLIPMODE! #*#*# -->
+
+--b1_2aecade6cb042d3eb87cadc02790c768
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+<html><head></head><body>
+<div>
+<div>
+<title>&nbsp;</title>
+<title>Kreditconso</title>
+<center></center></div>
+</div>
+<style type="text/css"><!--
+ .ReadMsgBody { width: 100%;background-color: #ffffff;}
+ .ExternalClass {width: 100%;background-color: #ffffff;}
+ td { border-collapse: collapse; }
+ img {outline:none; text-decoration:none; -ms-interpolation-mode:
+bicubic;}
+ a img {border:none;}
+ body{background-color: #ffffff;}
+ .ExternalClass * {line-height: 100%;}
+--></style>
+<div><center><link
+href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800"
+rel="stylesheet" type="text/css" /> <link
+href="https://fonts.googleapis.com/css?family=Roboto:400,300,500,700,900"
+rel="stylesheet" type="text/css" />
+<table align="center">
+<tbody>
+<tr>
+<td>Pour visualiser correctement ce message, [<a target="_blank"
+href="http://client.flash-des-affaires.com/display.php?M=9434452&C=93d58a5715cb65846c9a27598497eb91&S=1498&L=68&N=337">cliquez
+ici</a>]</td>
+</tr>
+<tr></tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td width="580" height="35" bgcolor="#f67a0a" style="text-align: center;
+background-color: #f67a0a;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<font face="Arial, verdana, sans-serif" color="#ffffff" style="font-size:
+12px;"> Comparateur de cr&eacute;dit en ligne </font> </a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#ffffff" style="text-align: center; background-color:
+#ffffff;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="font-family: Arial, sans-serif; font-size: 20px; color: #605d5d;
+text-decoration: none;"> <img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img02.jpg"
+width="580" height="75" border="0" alt="Krediconso.com" /> </a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td width="256" height="58" bgcolor="#35b9c3"
+background="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img03.jpg"
+style="text-align: center; text-transform: uppercase;"><font face="'Open
+Sans', Arial, sans-serif" color="#ffffff" style="font-size: 24px;
+font-weight: bold;"> PR&Ecirc;T EN LIGNE </font></td>
+<td bgcolor="#35b9c3" style="text-align: center; background-color:
+#35b9c3;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img04.jpg"
+width="10" height="58" border="0" /> </a></td>
+<td width="284" height="58" bgcolor="#35b9c3"
+background="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img05.jpg"
+style="text-align: left; padding-left: 30px;"><font face="'Open Sans',
+Arial, sans-serif" color="#ffffff" style="font-size: 20px; font-weight:
+600;"> <font face="'Open Sans', Arial, sans-serif" color="#ffffff"
+style="font-size: 20px; font-weight: bold;">Economisez</font> gr&acirc;ce
+&agrave; notre<br /> comparateur de Cr&eacute;dit </font></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img06.jpg"
+width="580" height="35" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td width="580" height="60" bgcolor="#ffffff" style="text-align: center;
+background-color: #ffffff;"><font face="'Open Sans', Arial, sans-serif"
+color="#404040" style="font-size: 26px; font-weight: 600;"> Les taux
+n&rsquo;ont jamais &eacute;t&eacute; <font face="'Open Sans', Arial,
+sans-serif" color="#f67a0a" style="font-size: 26px; font-weight: bold;
+text-transform: uppercase;">aussi bas !</font> </font></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img08.jpg"
+width="580" height="32" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img09.jpg"
+width="266" height="45" border="0" /></a></td>
+<td width="293" height="45" bgcolor="#3cc1c6"
+background="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img10.jpg"
+style="text-align: center;"><font face="'Open Sans', Arial, sans-serif"
+color="#ffffff" style="font-size: 21px; font-weight: 600;"> Choisissez
+votre projet </font></td>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img11.jpg"
+width="21" height="45" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img12.jpg"
+width="266" height="55" border="0" /></a></td>
+<td width="224" height="52" bgcolor="#ffffff"
+background="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img13b.jpg"
+style="text-align: left; padding-left: 26px; padding-top: 3px;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="text-decoration: none;"> <font face="Arial, sans-serif"
+color="#2e2e2e" style="font-size: 13px;"> <strong>Pr&ecirc;ts tous
+projets</strong> </font> </a></td>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/fleche1.jpg"
+width="43" height="55" border="0" /> </a></td>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img14.jpg"
+width="21" height="55" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img15.jpg"
+width="266" height="48" border="0" /></a></td>
+<td width="224" height="48" bgcolor="#ffffff"
+background="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img16b.jpg"
+style="text-align: left; padding-left: 26px;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="text-decoration: none;"> <font face="Arial, sans-serif"
+color="#2e2e2e" style="font-size: 13px;"> <strong>1 500 &euro;</strong>
+</font> </a></td>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/fleche2.jpg"
+width="43" height="48" border="0" /> </a></td>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img17.jpg"
+width="21" height="48" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img18.jpg"
+width="266" height="51" border="0" /> </a></td>
+<td width="224" height="48" bgcolor="#ffffff"
+background="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img19b.jpg"
+style="text-align: left; padding-left: 26px;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="text-decoration: none;"> <font face="Arial, sans-serif"
+color="#2e2e2e" style="font-size: 13px;"> <strong>24 mois</strong> </font>
+</a></td>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/fleche3.jpg"
+width="43" height="51" border="0" /> </a></td>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img20.jpg"
+width="21" height="51" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img21.jpg"
+width="300" height="72" border="0" /></a></td>
+<td width="236" height="72" bgcolor="#f48110"
+background="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img22.jpg"
+style="text-align: center;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="text-decoration: none;"> <font face="'Open Sans', Arial, sans-serif"
+color="#ffffff" style="font-size: 23px; font-weight: 600;"> <strong>Je
+compare</strong> </font> </a></td>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img23.jpg"
+width="44" height="72" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="font-family: Arial, sans-serif; font-size: 20px; color: #333333;
+text-decoration: none;"> <img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img24.jpg"
+width="382" height="147" border="0" alt="Voiture, travaux, Rachat de
+cr&eacute;dit..." /></a></td>
+<td bgcolor="#f3e5b8" style="text-align: center; background-color:
+#f3e5b8;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #333333;
+text-decoration: none;"> <img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img25.jpg"
+width="198" height="147" border="0" alt="R&eacute;ponse en 3'min chrono"
+/></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#f67a0a" style="text-align: center; background-color:
+#f67a0a;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img26.jpg"
+width="45" height="39" border="0" /></a></td>
+<td width="165" height="39" bgcolor="#f67a0a" style="text-align: left;
+background-color: #f67a0a;"><font face="'Roboto', Arial, sans-serif"
+color="#ffffff" style="font-size: 17px; font-weight: 600;"> 1.
+S&eacute;lectionnez </font></td>
+<td bgcolor="#f67a0a" style="text-align: center; background-color:
+#f67a0a;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img28.jpg"
+width="48" height="39" border="0" /></a></td>
+<td width="148" height="39" bgcolor="#f67a0a" style="text-align: left;
+background-color: #f67a0a;"><font face="'Roboto', Arial, sans-serif"
+color="#ffffff" style="font-size: 17px; font-weight: 600;"> 2. Comparez
+</font></td>
+<td bgcolor="#f67a0a" style="text-align: center; background-color:
+#f67a0a;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H">
+<img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img30.jpg"
+width="43" height="39" border="0" /></a></td>
+<td width="131" height="39" bgcolor="#f67a0a" style="text-align: left;
+background-color: #f67a0a;"><font face="'Roboto', Arial, sans-serif"
+color="#ffffff" style="font-size: 17px; font-weight: 600;"> 3. Economisez
+</font></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#ffffff" style="text-align: center; background-color:
+#ffffff;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="font-family: Arial, sans-serif; font-size: 14px; color: #333333;
+text-decoration: none;"> <img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img32.jpg"
+width="111" height="101" border="0" alt="Pr&ecirc;t Tous Projet" />
+</a></td>
+<td bgcolor="#ffffff" style="text-align: center; background-color:
+#ffffff;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="font-family: Arial, sans-serif; font-size: 14px; color: #333333;
+text-decoration: none;"> <img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img33.jpg"
+width="123" height="101" border="0" alt="Cr&eacute;dit Auto" /> </a></td>
+<td bgcolor="#ffffff" style="text-align: center; background-color:
+#ffffff;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="font-family: Arial, sans-serif; font-size: 14px; color: #333333;
+text-decoration: none;"> <img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img34.jpg"
+width="121" height="101" border="0" alt="Cr&eacute;dit Travaux" />
+</a></td>
+<td bgcolor="#ffffff" style="text-align: center; background-color:
+#ffffff;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="font-family: Arial, sans-serif; font-size: 14px; color: #333333;
+text-decoration: none;"> <img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img35.jpg"
+width="123" height="101" border="0" alt="Cr&eacute;dit immobilier" />
+</a></td>
+<td bgcolor="#ffffff" style="text-align: center; background-color:
+#ffffff;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="font-family: Arial, sans-serif; font-size: 14px; color: #333333;
+text-decoration: none;"> <img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img36.jpg"
+width="102" height="101" border="0" alt="Rachat cr&eacute;dit" />
+</a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td width="580" height="44" bgcolor="#ffffff" style="text-align: center;
+background-color: #ffffff;"><font face="'Roboto', Arial, sans-serif"
+color="#363636" style="font-size: 21px; font-weight: 400;"> Simulation
+<font face="'Roboto', Arial, sans-serif" color="#f58412" style="font-size:
+21px; font-weight: 600;">gratuite</font> et <font face="'Roboto', Arial,
+sans-serif" color="#f58412" style="font-size: 21px; font-weight: 600;">sans
+engagement</font> </font></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td bgcolor="#ffffff" style="text-align: center; background-color:
+#ffffff;"><a
+href="http://client.flash-des-affaires.com/link.php?M=9434452&N=1498&L=283&F=H"
+style="font-family: Arial, sans-serif; font-size: 12px; color: #605d5d;
+text-decoration: none;"> <img style="display: block;"
+src="http://assets.vftraining.net/LANDINGS/FR/kreditconso/2016-04-01/images/img38.jpg"
+width="580" height="53" border="0" alt="Cetelem - Cofidis - cofinoga" />
+</a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td width="580" height="31" bgcolor="#ffffff" style="text-align: center;
+background-color: #ffffff;"><font face="'Roboto', Arial, sans-serif"
+color="#454545" style="font-size: 13px; font-weight: 400;"> En cliquant,
+j&rsquo;accepte d&rsquo;&ecirc;tre contact&eacute; par Kreditconso.com
+</font></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 580px;">
+<tbody>
+<tr>
+<td width="560" height="262" bgcolor="#616161" style="text-align: left;
+background-color: #616161; padding-left: 20px;"><font face="'Open Sans',
+Arial, sans-serif" color="#ffffff" style="font-size: 11px; font-weight:
+400;"> <strong>Gr&acirc;ce aux accords conclus avec nos partenaires
+Cr&eacute;dit, nous vous offrons la possibilit&eacute; :</strong> <br /><br
+/> &bull; de visualiser la liste des &eacute;tablissements proposant le
+cr&eacute;dit que vous recherchez.<br /> &bull; de simuler librement votre
+cr&eacute;dit chez le(s) partenaire(s) de votre choix.<br /> &bull; de
+faire une demande en ligne, tout cela gratuitement et sans engagement.<br
+/> <br /><br /> <strong>Pourquoi utiliser le comparateur de cr&eacute;dit
+Kreditconso ?</strong><br /> Kreditconso est mandataire bancaire et
+services de paiement inscrit &agrave; l&rsquo;ORIAS sous le num&eacute;ro
+13002711.<br /> Nous s&eacute;lectionnons nos partenaires pour la
+qualit&eacute; de leurs services, leurs produits, leur s&eacute;rieux et
+leur<br /> popularit&eacute;. Gagnez du temps et soyez assur&eacute; de
+trouver le bon partenaire pour financer vos projets.<br /> Faites confiance
+&agrave; un des principaux comparateur de Cr&eacute;dit sur Internet. <br
+/><br /> <font face="'Open Sans', Arial, sans-serif" color="#ff5757"
+style="font-size: 12px; font-weight: 400;">Un cr&eacute;dit vous engage et
+doit &ecirc;tre rembours&eacute;.<br /> V&eacute;rifiez vos
+capacit&eacute;s de remboursement avant de vous engager</font>
+</font></td>
+</tr>
+</tbody>
+</table>
+<table align="center">
+<tbody>
+<tr>
+<td>Pour cesser de recevoir nos informations [<a target="_blank"
+href="http://client.flash-des-affaires.com/unsubscribe.php?M=9434452&C=93d58a5715cb65846c9a27598497eb91&L=68&N=1498">cliquez
+ici</a>]</td>
+</tr>
+</tbody>
+</table>
+<img src="http://impfr.tradedoubler.com/imp?type(inv)g(23233332)a(2814831)"
+border="0" /></center></div>
+<br/><!-- #*#*# FLIPMODE! #*#*# --><img
+src="http://client.flash-des-affaires.com/open.php?M=9434452&L=68&N=1498&F=H&image=.jpg"
+height="1" width="10"></body></html>
+
+--b1_2aecade6cb042d3eb87cadc02790c768--
+

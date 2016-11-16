@@ -1,0 +1,162 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai13v-0005uv-JD
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 10:44:07 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:47605)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai13t-0005uP-Ds
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:44:06 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai13n-0008Cr-Fe
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:44:05 -0400
+Received: from ironport2-out.teksavvy.com ([206.248.154.181]:2020)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai13n-0008CP-9k
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:43:59 -0400
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: A0CtCwA731xV/7yMCkxcgxCEAsEMCYdLBAICgTw5FAEBAQEBAQGBCkEFg10BAQMBViMFCwstBxIUGA0kiDcIzyMBAQEBBgEBAQEeizqELVgHCoQjBYtEkCCDMxOGVosrghSBRSOBZlWBWSKBNAEEG4EkAQEB
+X-IPAS-Result: A0CtCwA731xV/7yMCkxcgxCEAsEMCYdLBAICgTw5FAEBAQEBAQGBCkEFg10BAQMBViMFCwstBxIUGA0kiDcIzyMBAQEBBgEBAQEeizqELVgHCoQjBYtEkCCDMxOGVosrghSBRSOBZlWBWSKBNAEEG4EkAQEB
+X-IronPort-AV: E=Sophos;i="5.13,465,1427774400"; d="scan'208";a="197426201"
+Received: from 76-10-140-188.dsl.teksavvy.com (HELO pastel.home)
+	([76.10.140.188])
+	by ironport2-out.teksavvy.com with ESMTP; 21 Mar 2016 10:43:57 -0400
+Received: by pastel.home (Postfix, from userid 20848)
+	id B9D1D605A0; Mon, 21 Mar 2016 10:43:56 -0400 (EDT)
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+To: Vitalie Spinu <spinuvit@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+Message-ID: <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com>
+Date: Mon, 21 Mar 2016 10:43:56 -0400
+In-Reply-To: <877fgvgbr1.fsf@gmail.com> (Vitalie Spinu's message of "Mon, 21
+	Mar 2016 15:13:22 +0100")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 206.248.154.181
+Cc: Alan Mackenzie <acm@muc.de>, Dmitry Gutov <dgutov@yandex.ru>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 14:44:06 -0000
+Content-Length: 4203
+Lines: 93
+
+> parse-partial-sexp is called from code exclusively and it just happens
+> that in multi-modes it is called outside of narrow region quite often.
+
+How/why?  Can you give some concrete scenario?
+
+> That's a major inconvenience. Why on earth one would need to
+> take account in user narrowing for syntax parsing?
+
+Because you need it for *everything* that looks at the buffer.
+Why should parse-partial-sexp be different from (say) scan-sexps?
+
+> If parse-partial-sexp could be made to always widen to hard limits it
+> will automatically solve a bunch of problems. bug#22983 being one of them,
+
+Bug#22983 should be fixed by widening, indeed, but it should be done in
+syntax.el.  Widening in parse-partial-sexp would only address some cases
+but not all (e.g. the syntax-begin-function cases or the
+syntax-propertize-function cases).  Those other cases can only be fixed
+in syntax.el.
+
+> the ubiquitous out-of-range errors in font-lock in multi-modes being
+> the most important one.
+
+I'm not familiar with those, so if you could give some examples it
+would help us judge if they would indeed benefit from a fix in
+parse-partial-sexp rather than elsewhere.
+
+>> Notice how syntax-ppss is different in this regard: since it doesn't
+>> receive FROM, that same rule doesn't prevent syntax-ppss from widening
+>> to (car hard-widen-limits).
+> Well, not quite different. It has POS which might be outside of user narrowed
+> range.
+
+No: POS should be within point-min/max.
+
+> Major mode author has to deal with the span explicitly as defined in
+> previous-chunk in prog-indentation-context. Cognitively this is a more
+> demanding task. Ask a new person to go and read the doc of
+> prog-indentation-context and ask how much he or she understands of
+> it. I read it and I think I understand most of it, but looking at all
+> the usages of prog-widen and prog-first-column in python.el my brain
+> gives up. Previous-chunk is not even used in python.el!
+
+Replace all your widen calls with calls to `prog-widen' and you get
+the same result (since (nth 1 prog-indentation-context) is basically
+another name for your hard-widen-limit).  So I don't think prog-widen is
+that very complicated.
+
+As for prog-first-column the local major mode can just ignore it in
+which case the multi-mode can do the same that you do.  It's only useful
+if you need/want to provide a more complex behavior than what
+polymode supports.  So, of course, it's more complex.
+
+> The prog-calculate-indent-function is more general. You can call it on
+> any buffer position (need not be last point in the previous span).
+
+[ Note: In my mind, the "natural main case" for multi-mode indentation
+  is when you call the indentation function on the *first position* of
+  a span.  But you seem to look at it from the other end, where you call
+  the indentation function on the *last position* of the previous span.
+  I think I'm beginning to see why.  ]
+
+Note that "is more general" here means that the major mode's function
+has to handle more cases, so it would seem to fundamentally require more
+work on the major mode's side.
+
+> Current prog-indentation-context allows for possibility of a string to
+> be inserted before begging in of current chunk.  STRING-BEFORE is more
+> more general than that because of the arbitrary POS that it can be
+> applied to. 
+
+Good point.  I didn't think of that.  Do you make use of that
+possibility, and/or can you give an example where it's useful?
+
+> Here is a simple example when inner mode cannot decide by itself on
+> the indentation.  Assume for concreteness a noweb header with some code
+> immediately following the header:
+>
+>   <<foo, some_arg=4>>= some_call(blabla) 
+>       some_other_call(blabla) ## indented by offset 2 with respect to header or prev_chunk
+>
+> How do you indent the some_call(blabal) after the header? The most
+> meaningful way is to keep it untouched just as user defined it. If
+> inner mode would indent it by itself it would give offset of 4. This
+> is a simple example of header dependence.
+
+Maybe it's because I'm not familiar with noweb, but I didn't understand
+this example.  It looks like a very interesting example, so could you go
+over it again in much more detail?
+
+
+        Stefan
+

@@ -1,0 +1,151 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aiS6J-0000Af-Q1
+	for mharc-dev@caliopen.local; Tue, 22 Mar 2016 15:36:23 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:37798)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiS6G-0000A4-ME
+	for dev@caliopen.local; Tue, 22 Mar 2016 15:36:21 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiS6D-0002tY-FC
+	for dev@caliopen.local; Tue, 22 Mar 2016 15:36:20 -0400
+Received: from mail-wm0-x22d.google.com ([2a00:1450:400c:c09::22d]:33196)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiS6D-0002tQ-4Z
+	for dev@caliopen.local; Tue, 22 Mar 2016 15:36:17 -0400
+Received: by mail-wm0-x22d.google.com with SMTP id l68so206705951wml.0
+	for <dev@caliopen.local>; Tue, 22 Mar 2016 12:36:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=UVhRf+vH0LDro8iH+0SpBWc03gtZg2R+dOwROGP4UQ0=;
+	b=rR4bmrsdvryZMDTqCt20oAwWbfAe5BePY2Y/1qr3ZyjvhNrMnVq4V2uuZShr7zz8Hq
+	54j7cVLymTMzNRDf+lk6EmHvl3hXh3eJtu0i7z+nvjjEqo7s5abP7IrdoK3ejePSDMEg
+	SSszXieYlrrOPdhnMEwUI2us9evMCO60TP4XznPHSrjMmzWDxpzCn6LcvYGQ9IPBQ9wO
+	c05APahsDpCSFZmzk5m6apHVhLkPAbRNT24nuUfJcSYpHudgJKdwbCkRdR6KFw3Nl4S0
+	05iPuVWN1trvRC104+NXkaGuNJ7lKFtOP0R6sF6gXE1w9f6Fpo6fjCYWypxkzF1tpwV0
+	x40w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=UVhRf+vH0LDro8iH+0SpBWc03gtZg2R+dOwROGP4UQ0=;
+	b=ReP7lYwrk6kZWBemZpmH6XgCmF2yyNcqSeMKFG+ZbG53cT7VR68/Y1xLiTjJvRBHTe
+	mfhU022yc+rcPmNweMxd2bbscr8fS0GehmULjLc7nt4yGyxzAME9MY/Hv2ymKMmOdp4n
+	ZljeIe6fHXqE9cUMHoiDOWn8UM9c8sG0VVkBCdwDCVzInLs9otMGX4j4x7l1lvpHLLb3
+	fGouflANkA0NNmHq5sZdRIFMa/2WTK2eZ1N1tvIRAoZaHLGhwyodkZbvQoyr7GMkbPD9
+	bZtffb7LGU0dAPshBY3nT3noboZ7Ec7fZEMhlrI5I8ZlDKa8Us9XI5oc1Z6aDkFnCXs8
+	NSJg==
+X-Gm-Message-State: AD7BkJKAVes0tJ6V7TQj1Bv1BJT40lXt+D3V0bY+6WqCu5F1zN0f8T2TWtQ1ca0sRspv8A==
+X-Received: by 10.28.232.87 with SMTP id f84mr22614534wmh.56.1458675376082;
+	Tue, 22 Mar 2016 12:36:16 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	gb9sm31668120wjb.26.2016.03.22.12.36.15
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Tue, 22 Mar 2016 12:36:15 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+	<jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87pounew9e.fsf@gmail.com>
+	<jwva8lrx4ov.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzda4h.fsf@gmail.com> <jwvwpovwuip.fsf-monnier+Inbox@gnu.org>
+	<87lh5bd4ib.fsf@gmail.com> <87egb3ryjc.fsf@gmail.com>
+	<877fgusum3.fsf@gmail.com> <8737risu8d.fsf@gmail.com>
+	<jwvbn66viar.fsf-monnier+Inbox@gnu.org> <87mvpqqxy7.fsf@gmail.com>
+	<jwvzitqpj68.fsf-monnier+gmane.emacs.devel@gnu.org>
+Date: Tue, 22 Mar 2016 20:36:14 +0100
+In-Reply-To: <jwvzitqpj68.fsf-monnier+gmane.emacs.devel@gnu.org> (Stefan
+	Monnier's message of "Tue, 22 Mar 2016 12:44:27 -0400")
+Message-ID: <877fguqp8x.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22d
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 22 Mar 2016 19:36:21 -0000
+Content-Length: 2759
+Lines: 62
+
+
+
+>> On Tue, Mar 22 2016 12:44, Stefan Monnier wrote:
+
+> "hard narrowing" would only be available from Elisp, not interactively.
+
+Interactive or not, doesn't matter. The danger is the whatever eslip used within
+hard-narrowed regions.
+
+>> If users and major modes decide to use hard limits we might end up in
+>> the same situation as now when narrow/widen is not perceived as a good
+>> tool for multi-modes.
+
+> Could be.  Maybe there are more "kinds of narrowing" than just 2, indeed.
+
+> But for me, the main consideration is whether the text before/after
+> point-min can be taken into account as a kind of context, or whether the
+> text between point-min/max should be treated (even if temporarily) as
+> being the whole&sole truth.
+
+I agree completely. But I think defining an "whole&sole" universe need not
+involve current implementation of narrowing. It's about inability to widen not
+ability to narrow. My patch didn't even touch `narrow` because that's not
+needed.
+
+There is no real need to invent extra type of narrowing. It's a lot of extra
+work with no additional benefit. It's simply enough to define hard limits that
+none of the standard functions can lift.
+
+In order to define a different type of narrowing you would need to introduce
+alternatives to BEGV, BEGV_BYTE ZV, ZV_BYTE and the hunt them everywhere where
+BEGV or BEGV_BYTE are used right now.
+
+What concrete semantics do you have in mind? If a user or elisp already narrowed
+the buffer, will hard narrowing re-narrow it? If user typed within a hard region
+the hard narrowed region, will the upper hard limit expand just as ZV does?
+
+My approach is simpler and leaves current narrowing functionality alone. You set
+the limits and allow narrowing happening inside those limits normally. Even
+widen cannot lift those limits. You create a small universe within the buffer
+with only one exit (set-widen-limits nil nil).
+
+You might end up loosing text outside of the bounds if you modify the buffer and
+then call widen, but that's by design and this is how it's different from visual
+narrowing. Hard limits stay the same irrespective of what happens to the buffer.
+
+>> limits at the end. Problems will occur if major modes start using hard
+>> limits in such contexts directly.
+
+> I don't see any reason why problems *will* occur in that case (tho, of
+> course, Murphy could be that reason).  So until such problems do show up,
+> I wouldn't worry.
+
+The problem is not hypothetical. It's occurring right now. If you impose limits
+in order to do font-lock and font-lock-fontify-region-function changes those
+limits that screws your multi mode. That's what is happening with current
+narrowing/widening mechanism and that's precisely the reason for extra widen
+limits in the first place.
+
+
+  Vitalie
+

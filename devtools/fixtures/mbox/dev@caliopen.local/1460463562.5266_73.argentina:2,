@@ -1,0 +1,100 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ap7dc-0000I2-8Q
+	for mharc-dev@caliopen.local; Sun, 10 Apr 2016 01:10:20 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39388)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <vibhavp@gmail.com>) id 1ap7da-0000Fu-6V
+	for dev@caliopen.local; Sun, 10 Apr 2016 01:10:18 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <vibhavp@gmail.com>) id 1ap7dZ-0005tf-9U
+	for dev@caliopen.local; Sun, 10 Apr 2016 01:10:18 -0400
+Received: from mail-io0-x22f.google.com ([2607:f8b0:4001:c06::22f]:32907)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <vibhavp@gmail.com>) id 1ap7dZ-0005tb-3M
+	for dev@caliopen.local; Sun, 10 Apr 2016 01:10:17 -0400
+Received: by mail-io0-x22f.google.com with SMTP id o126so151620955iod.0
+	for <dev@caliopen.local>; Sat, 09 Apr 2016 22:10:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:in-reply-to:references:date:message-id:subject:from:cc; 
+	bh=qswc9pTkZY1IlpArbfHJ/dLRHjooOsgDDv5LPaGuf+E=;
+	b=FjjPSGRJ7z9kbdibmCeV85tYuAqaIISmFBUKpJ54nlsHzDNh8JQE4ATLep7NROdx7F
+	gO+3jyZ12yDg5grLnorin6r36k/yucvk86S5vM+N8mCiXMH9R8IhykFyYiYjlUXe9/il
+	yqkNzyXzBp1IiYDHBhggBTyiLYQvoGo4MHYiNkNUbeRNfcjI9JXBZVnxIXpjpOlYAJe9
+	orGmKcIEcmttqhS/XYYfUrbgbkAkEUQQNaiFE9+OSHvdnA4MU6HTsOXSgrMUzQXvuJiW
+	sCTEgLG7643N9vWCebqNjS7FFrT8aMsn2BEGPwNss2TGjkhAqCHJIQEEA+DDVV7CRiDP
+	IBJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:in-reply-to:references:date
+	:message-id:subject:from:cc;
+	bh=qswc9pTkZY1IlpArbfHJ/dLRHjooOsgDDv5LPaGuf+E=;
+	b=e4KhiOANgn4ayHfdjQsdDcaa5awMPlS9Eooy/HNk85vyF6DfxtSrjpnJ4e9pC49DUO
+	qdKWViYz6wKepXDR3wig/H5KDGbtpCwEhjo2oJlG4INCRDi/3Zx5u2hjNrzjTJ43WJJR
+	D+JheMwr8yFm1dVY/0s9V61S2IX6tFspdAtxpTSFXwJ2BscPoJxpg0nelxwDRfvPO5hd
+	wsKKoSwsPVoDqEtqIjN0gxzL50V+gobYZkwp6Y4Czk/hFHxbxlRA+WX51fc9QhQ4HhQD
+	t/xP+SNud6Ic+JWCvG+zJE/43/c+Kgf7mjEf4mtWVoGstY6BFuOMEK0P5Fk2LHuNSS2G
+	5zWw==
+X-Gm-Message-State: AD7BkJL4FAkhG9rBsFrEfdxhRe8tiuRjhMB5qaYYP2A3ahEPXc9vpNp/Wd600ua3rzZByQIhobXdQAvleNSfng==
+MIME-Version: 1.0
+X-Received: by 10.107.3.193 with SMTP id e62mt19337443ioi.40.1460265016503;
+	Sat, 09 Apr 2016 22:10:16 -0700 (PDT)
+Received: by 10.79.17.132 with HTTP; Sat, 9 Apr 2016 22:10:16 -0700 (PDT)
+In-Reply-To: <m2io0bihz2.fsf@Mandala.local>
+References: <56F42269.10400@gmail.com>
+	<m2io0bihz2.fsf@Mandala.local>
+Date: Sun, 10 Apr 2016 10:40:16 +0530
+Message-ID: <CA+T2Sh24WOc9MifckO5v8zRa_xrVDnmcbH0mnmtnknyMQMb0jQ@mail.gmail.com>
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+From: Vibhav Pant <vibhavp@gmail.com>
+Cc: =?UTF-8?B?Q2zDqW1lbnQgUGl0LS1DbGF1ZGVs?= <clement.pit@gmail.com>, 
+	Emacs developers <emacs-devel@gnu.org>
+Content-Type: text/plain; charset=UTF-8
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4001:c06::22f
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 10 Apr 2016 05:10:19 -0000
+Content-Length: 1100
+Lines: 31
+
+ERC exposes emacs' version number in quit messages already:
+           "(Quit: ERC (IRC client for Emacs 25.0.50.3))"
+So I don't see why there should be an exception for url.
+
+On Fri, Mar 25, 2016 at 4:47 AM, Steve Purcell <steve@sanityinc.com> wrote:
+> As a MELPA maintainer, I'd be very keen to be able to provide users and
+> package authors with package downloads stats broken down by emacs
+> version and/or platform.
+
+That could also be done with adding a `X-Emacs-Version` header to HTTP
+requests made to package repositories, if we still don't want to
+expose the user
+agent.
+
+On Fri, Mar 25, 2016 at 4:47 AM, Steve Purcell <steve@sanityinc.com> wrote:
+> As a MELPA maintainer, I'd be very keen to be able to provide users and
+> package authors with package downloads stats broken down by emacs
+> version and/or platform.
+>
+> I don't personally see any tangible privacy concerns with this proposal;
+> it would be fine for this specific use case to set a more informative
+> User-Agent header only for requests initiated by package.el if that's an
+> issue.
+>
+
+
+
+-- 
+Vibhav Pant
+vibhavp@gmail.com
+

@@ -1,0 +1,96 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amr5h-00081R-BY
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 19:05:57 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:36139)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amr5e-00080V-A8
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:05:55 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amr5b-00087p-4y
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:05:54 -0400
+Received: from mail-ob0-x22b.google.com ([2607:f8b0:4003:c01::22b]:36568)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amr5b-00087l-07
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:05:51 -0400
+Received: by mail-ob0-x22b.google.com with SMTP id j9so39363239obd.3
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 16:05:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=WVgZdkUS37ucciyJIPyxPDBf5LrxmkdNtvd14uUP4+g=;
+	b=ZxCSIu0sTgbUAiwUYtgkMtIGxTLnbkxci44J1yQl891++Z8MopYom/l1LIw/JjaZgZ
+	XeTdFjAP0atQel1kAzoW0TcQUEt3DhMCtC8ebiB8eQJQSvBJ8mbWLKXTeV1MnWInfEpv
+	ZmujVbgcUarc/xNT2kY+ZPio2HSPcjEkXGcIIh72FZuLcjEnXgPRXHCd9qS71IZoZBHP
+	gRWabul+PYcbR85AbFgNVC67Jn+i5erOPS0V8RLj1YGADG0cuNFSriA+cQdlnW3ed/Tl
+	wBHBZbGyB+Ck3jjvNAPEly0zcsejTfjDeKYblO5Ro8KM2SnMrG8cFCMK8NZ1NrI6we06
+	P/uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=WVgZdkUS37ucciyJIPyxPDBf5LrxmkdNtvd14uUP4+g=;
+	b=ePMtdV0x9+N7NkMCnNXmmboDKGAt4H2UgLqhRg1DPEspCDtaX7Tu9ZLHTgIiuLp4AD
+	e5F3EYM1iMJ76SdX+Il1vJ+zKA0A6pTzvob1f39Hop8s8+AVPe3YKRgBTg43H/R7gvwK
+	qsBVaBsSGGLM+r0fhfTZFhRQ3kCF3zWrOS4nChV4VTNH/+tqllnS7UPDeejZDxqxt7X+
+	okTikBko6B48D+ZepUdAljx806lDvFQ6vBkOaR+RoTcbagLht62bTSaNzc4ar+QVb32Y
+	t6MZah/jQwzvTRITkldI+6zQfpZUnqOz+kJb+5FjaVuMeE7Mnyd0qpuupZbgQoJievpU
+	m62g==
+X-Gm-Message-State: AD7BkJJxz4e7JOR+wP2Nll1rKjlsqcOSe3JZP4FOBEmzFTRaf49u+TPmxMVLyHMFgYBRVw==
+X-Received: by 10.60.176.100 with SMTP id ch4mr9010841oec.7.1459724750477;
+	Sun, 03 Apr 2016 16:05:50 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79]) by smtp.gmail.com with ESMTPSA id
+	l17sm5881739otb.35.2016.04.03.16.05.49
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 16:05:49 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id A7F7613DAE274; Sun,  3 Apr 2016 16:05:48 -0700 (PDT)
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Thinking about changed buffers
+In-Reply-To: <jwvwpolbe3o.fsf-monnier+gmane.emacs.devel@gnu.org> (Stefan
+	Monnier's message of "Tue, 29 Mar 2016 09:39:54 -0400")
+Date: Sun, 03 Apr 2016 16:05:09 -0700
+Message-ID: <m2r3emfg4a.fsf@newartisans.com>
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<2d55f05e4ba00afeb3f7269953eb0e13.squirrel@cloud103.planethippo.com>
+	<jwvwpolbe3o.fsf-monnier+gmane.emacs.devel@gnu.org>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: Stefan Monnier <monnier@iro.umontreal.ca>,
+	emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c01::22b
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 23:05:55 -0000
+Content-Length: 664
+Lines: 15
+
+>>>>> Stefan Monnier <monnier@iro.umontreal.ca> writes:
+
+> BTW, another solution for fill-paragraph is to reimplement it from scratch
+> such that it doesn't "unfill+refill". I.e. it could instead loop go to each
+> LF in the paragraph, such if that LF is found to be "at the right spot", it
+> moves on, if it's "too soon", then it removes it, and if it's "too far" then
+> it adds another somewhere earlier.
+
+I too think this is the best solution, and I believe it was mentioned in the
+bug thread on this subject.
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

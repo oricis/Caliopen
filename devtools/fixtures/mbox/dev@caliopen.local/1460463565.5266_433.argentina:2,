@@ -1,0 +1,94 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akvdN-00013y-O6
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 11:32:45 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:47325)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akvdK-0000yQ-Rr
+	for dev@caliopen.local; Tue, 29 Mar 2016 11:32:44 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akvdH-0004lA-J9
+	for dev@caliopen.local; Tue, 29 Mar 2016 11:32:42 -0400
+Received: from plane.gmane.org ([80.91.229.3]:41694)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akvdH-0004kW-6B
+	for dev@caliopen.local; Tue, 29 Mar 2016 11:32:39 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akvcR-0000G2-OK
+	for dev@caliopen.local; Tue, 29 Mar 2016 17:31:48 +0200
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Tue, 29 Mar 2016 17:31:47 +0200
+Received: from larsi by cm-84.215.1.64.getinternet.no with local (Gmexim 0.1
+	(Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Tue, 29 Mar 2016 17:31:47 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+Mail-Followup-To: dev@caliopen.local
+To: dev@caliopen.local
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: Re: Thinking about changed buffers
+Date: Tue, 29 Mar 2016 17:30:20 +0200
+Organization: Programmerer Ingebrigtsen
+Message-ID: <m31t6tcneb.fsf@gnus.org>
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<2d55f05e4ba00afeb3f7269953eb0e13.squirrel@cloud103.planethippo.com>
+	<jwvwpolbe3o.fsf-monnier+gmane.emacs.devel@gnu.org>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: cm-84.215.1.64.getinternet.no
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAGFBMVEUYCg0RBgkbDxIsHhxn
+	TjgKAgPRt28VCAzWTtCKAAACR0lEQVQ4jW2UTXPjIAyGsXc6vpq0LtcE8nFNDcm5u1Cf4yRsz7th
+	2Ct4JuO/v0K222ZSnTx6eF9JRITQkPObEBKDUBrIFHhEjsBSlvNaiASKQFBgjJakalmHJyAeQIN5
+	IIS2jIiRABBD3hioUZJkPQcnWxyn/ADGYC2PUt0Dau01h3zjvbsBlbX2qFLe+xtgUxDjR8BebgBX
+	EygXN+B8+ASs/wJOu+Z7xfHPHcgQWLf+XtH6Z5/m0HfFfTMCtghfrX6PQJLZoKBEvKATAoMAFbQT
+	Csja//VN49IPxTJQBFJ2UpvV2Xs9AShetIEwLs3+AjbPycjIZMWKCtgPZZzz/rL3ThnNa+iK9SUj
+	5SldOE7daCNrBIFFUm6UNglcnqCArDleInu3XS01nnfaaS23HK1i1eawBJjfp5ZEByAyEq8UmlKu
+	geprEIgu54RGFnpaCfnq3KVxTXKqCz5Y9SQKpZ267F1qSaY9Ix2CTDwpB3O4xqjtBHoES+Pgnv41
+	WnGZtp7kGwAh48tHqAH+OzmrO1RswCoU/F1JrbSC7c44gpBqhAURDdSAGbSIA2BZAhmT6hdsrJLb
+	edEhSFfS99lMqjetl+f5blXOBgWCeKxf38TP02PYXNsSAaUAWDzKxUKt5CJr7SHyESTWCXgyNQw9
+	rw58AC1NIKRXud3yEFoyggpBn3NRw4XaeBie+6DoewqERxaraxj+CODlUQwYJjyURYSPCbR0imvq
+	vAfJHED1AfpiALCXSWE/QCBFOl+MNUBRTRI0CkNX/wGyse1Ht0Yu2gAAAABJRU5ErkJggg==
+Mail-Copies-To: never
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:2PuXHYIwaG4E/8wm7mvzmZxEgmM=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 15:32:44 -0000
+Content-Length: 704
+Lines: 20
+
+I think the conclusion here is that this would be feasible to
+implement.  There's a lot of details you'd have to cover, but it's
+doable.
+
+And it wouldn't have to be enabled (for those that enable it) in very
+large buffers.  And if so, it'd be fast enough that you wouldn't notice
+it.
+
+However, it seems like it would be a rather unusual feature for an
+editor to have, and many people might not like it, so it's perhaps not
+worth doing.
+
+But one take away from this discussion is that Emacs needs a convenient
+command to save an unchanged buffer.  I think I'll file a wishlist bug
+report for that.
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+
+
+

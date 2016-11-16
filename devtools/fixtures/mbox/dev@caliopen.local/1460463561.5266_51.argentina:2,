@@ -1,0 +1,124 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aNb7c-0003dG-UV
+	for mharc-dev@caliopen.local; Mon, 25 Jan 2016 01:59:32 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:47186)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <joakim@verona.se>) id 1aNb7a-0003Zl-DU
+	for dev@caliopen.local; Mon, 25 Jan 2016 01:59:31 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <joakim@verona.se>) id 1aNb7X-0003cc-7p
+	for dev@caliopen.local; Mon, 25 Jan 2016 01:59:30 -0500
+Received: from mx2.bahnhof.se ([213.80.101.12]:42871)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <joakim@verona.se>) id 1aNb7W-0003cN-Ts
+	for dev@caliopen.local; Mon, 25 Jan 2016 01:59:27 -0500
+Received: from localhost (mf.bahnhof.se [213.80.101.20])
+	by mx2-reinject (Postfix) with ESMTP id 2AAEE40C59;
+	Mon, 25 Jan 2016 07:59:24 +0100 (CET)
+X-Virus-Scanned: by amavisd-new using ClamAV at bahnhof.se (MF1)
+Received: from mf1.bahnhof.se ([127.0.0.1])
+	by localhost (mf1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id FKZAhpFj9RSt; Mon, 25 Jan 2016 07:59:19 +0100 (CET)
+Received: from mta.verona.se (h-235-62.a149.priv.bahnhof.se [85.24.235.62])
+	by mf1.bahnhof.se (Postfix) with ESMTP id 0441F330AD8;
+	Mon, 25 Jan 2016 07:59:18 +0100 (CET)
+Received: from localhost (unknown [127.0.0.1])
+	by mta.verona.se (Postfix) with ESMTP id 73E034E8F87;
+	Mon, 25 Jan 2016 06:59:18 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at verona.se
+Received: from mta.verona.se ([127.0.0.1])
+	by localhost (exodia.verona.se [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ZoBSG-aEyljc; Mon, 25 Jan 2016 07:59:08 +0100 (CET)
+Received: from exodia.verona.se (www.verona.se [192.168.200.15])
+	by mta.verona.se (Postfix) with ESMTP id 102504E8F1A;
+	Mon, 25 Jan 2016 07:59:08 +0100 (CET)
+From: joakim@verona.se
+To: YAMAMOTO Mitsuharu <mituharu@math.s.chiba-u.ac.jp>
+Subject: Re: About x_draw_xwidget_glyph_string
+References: <wlvb6il8dn.wl%mituharu@math.s.chiba-u.ac.jp>
+Date: Mon, 25 Jan 2016 07:59:07 +0100
+In-Reply-To: <wlvb6il8dn.wl%mituharu@math.s.chiba-u.ac.jp> (YAMAMOTO
+	Mitsuharu's message of "Mon, 25 Jan 2016 11:07:16 +0900")
+Message-ID: <m37fiy5emc.fsf@exodia.verona.se>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 213.80.101.12
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 25 Jan 2016 06:59:31 -0000
+Content-Length: 2421
+Lines: 61
+
+YAMAMOTO Mitsuharu <mituharu@math.s.chiba-u.ac.jp> writes:
+
+> I have a question and a comment about x_draw_xwidget_glyph_string in
+> src/xwidget.c.
+>
+> 1. Question about xwidget initialization.
+>
+>    559	x_draw_xwidget_glyph_string (struct glyph_string *s)
+>    560	{
+>    561	  /* This method is called by the redisplay engine and places the
+>    562	     xwidget on screen.  Moving and clipping is done here.  Also view
+>    563	     initialization.  */
+>    564	  struct xwidget *xww = s->xwidget;
+>    565	  struct xwidget_view *xv = xwidget_view_lookup (xww, s->w);
+> (snip)
+>    574	  /* Do initialization here in the display loop because there is no
+>    575	     other time to know things like window placement etc.  */
+>    576	  xv = xwidget_init_view (xww, s, x, y);
+>
+> Line 576 indicates a new xwidget view is created in every
+> x_draw_xwidget_glyph_string call.  But this makes xwidget-view-list
+> longer and longer, and looks like a waste of memory, if not a leak.
+> Also, if it is an intended behavior, then it looks strange to look up
+> a view at Line 565.
+>
+> 2. Comment on clipping.
+>
+>    578	  /* Calculate clipping, which is used for all manner of onscreen
+>    579	     xwidget views.  Each widget border can get clipped by other emacs
+>    580	     objects so there are four clipping variables.  */
+>    581	  clip_right =
+>    582	    min (xww->width,
+>    583	         WINDOW_RIGHT_EDGE_X (s->w) - x -
+>    584	         WINDOW_RIGHT_SCROLL_BAR_AREA_WIDTH (s->w) -
+>    585	         WINDOW_RIGHT_FRINGE_WIDTH (s->w));
+>    586	  clip_left =
+>    587	    max (0,
+>    588	         WINDOW_LEFT_EDGE_X (s->w) - x +
+>    589	         WINDOW_LEFT_SCROLL_BAR_AREA_WIDTH (s->w) +
+>    590	         WINDOW_LEFT_FRINGE_WIDTH (s->w));
+>    591	
+>    592	  clip_bottom =
+>    593	    min (xww->height,
+>    594	         WINDOW_BOTTOM_EDGE_Y (s->w) - WINDOW_MODE_LINE_HEIGHT (s->w) - y);
+>    595	  clip_top = max (0, WINDOW_TOP_EDGE_Y (s->w) - y);
+>
+> I think the calculation of clipping should use the function window_box
+> rather than manual calculation with various window macros.  Otherwise,
+> xwidget views will cover horizontal scroll bars, for example.
+>
+> 				     YAMAMOTO Mitsuharu
+> 				mituharu@math.s.chiba-u.ac.jp
+>
+
+I won't have time to have a look at this until a couple of days, but
+your suggestions sound promising. If you have a patch I can test I would
+be grateful.
+
+-- 
+Joakim Verona
+

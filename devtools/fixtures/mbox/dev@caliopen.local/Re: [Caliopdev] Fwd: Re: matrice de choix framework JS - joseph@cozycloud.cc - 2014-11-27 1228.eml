@@ -1,0 +1,339 @@
+Return-Path: <joseph@cozycloud.cc>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id B4F49120AD4
+	for <dev@caliopen.local>; Thu, 27 Nov 2014 12:28:31 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 1.337
+X-Spam-Level: *
+X-Spam-Status: No, score=1.337 tagged_above=-999 required=5
+	tests=[BAYES_50=0.001, HTML_30_40=0.374, HTML_MESSAGE=0.001,
+	NO_REAL_NAME=0.961]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id m-LVGJn2ROMj for <dev@caliopen.local>;
+	Thu, 27 Nov 2014 12:28:29 +0100 (CET)
+Received: from mo7.mail-out.ovh.net (20.mo7.mail-out.ovh.net [46.105.49.208])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 1F671120AD3
+	for <dev@caliopen.local>; Thu, 27 Nov 2014 12:28:28 +0100 (CET)
+Received: from mail374.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+	by mo7.mail-out.ovh.net (Postfix) with ESMTP id 054D5FF8441
+	for <dev@caliopen.local>; Thu, 27 Nov 2014 12:28:27 +0100 (CET)
+Received: from ssl0.ovh.net (localhost [127.0.0.1])
+	by mail374.ha.ovh.net (Postfix) with ESMTPA id 107E740058;
+	Thu, 27 Nov 2014 12:28:26 +0100 (CET)
+Received: from 186-146-190-109.dsl.ovh.fr ([109.190.146.186])
+ by ssl0.ovh.net
+ with HTTP (HTTP/1.1 POST); Thu, 27 Nov 2014 12:28:25 +0100
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="=_00abe01f2cc39e11b3ba37f5c1699adc"
+Date: Thu, 27 Nov 2014 12:28:25 +0100
+From: joseph@cozycloud.cc
+To: =?UTF-8?Q?Liste_de_d=C3=A9veloppement_Caliopen?= <caliopdev@caliop.net>
+Cc: julien muetton <dev@caliopen.local>, romain@cozycloud.cc,
+ brice@cozycloud.cc
+Subject: Re: [Caliopdev] Fwd: Re: matrice de choix framework JS
+In-Reply-To: <547706E2.4030805@gandi.net>
+References: <547453AE.70408@chamal.fr> <547457A9.9070801@chamal.fr>
+ <5475EC1E.4010603@chamal.fr> <20141126224605.GH8770@brasil.brainstorm.fr>
+ <CA+tgzei=imZu9xfDGJuVYiXzgOqEo=kBVojf-16uo-gBheEjow@mail.gmail.com>
+ <5476E9CF.70601@albancrommer.com>
+ <e58b3dee04100f500d35b49b5a10ec71@cozycloud.cc> <547706E2.4030805@gandi.net>
+Message-ID: <8bdc1ae7396c65d043e516cd97c1b6da@cozycloud.cc>
+X-Sender: joseph@cozycloud.cc
+User-Agent: Roundcube Webmail/1.0.3
+X-Originating-IP: 109.190.146.186
+X-Ovh-Tracer-Id: 781937485586717060
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeejiedrtdeiucetufdoteggodetrfcurfhrohhfihhlvgemucfqggfjnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+
+--=_00abe01f2cc39e11b3ba37f5c1699adc
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+
+ 
+
+Ton analyse et tes incertitudes sur React/Flux sont justifiées. On a
+pris un risque de notre côté et heureusement les deux dév ont fait un
+bon boulot de prise en main et d'adaptation. 
+
+Pas de retour concernant Reflux, que je veux regarder en bloc et en
+détail car je ne suis pas satisfait de l'implémentation "officielle" de
+Flux, dont Fluxxor s'inspire fortement (on utilisait Fluxxor à la base,
+ça n'apporte rien AMHA, donc supprimé. Mais je n'ai pas regardé son
+évolution depuis plusieurs mois). 
+
+Je n'avais pas pensé à la nécessité de Node pour utiliser React pour
+fair le rendu côté serveur, comme Caliopen est en Python (de mémoire) ce
+n'est effectivement pas un argument. Par contre, pour bénéficier de
+l'isomorphisme, il faut obligatoire du Node à un moment (à ma
+connaissance). 
+
+Joseph. 
+
+PS : je me suis permis de mettre en copie Romain et Brice, nos deux
+héros de l'email. 
+
+Le 11/27/2014 12:11, julien muetton a écrit : 
+
+> Salut Joseph,
+> 
+> Je partage assez ton avis sur React.
+> 
+> La problématique que je vois pour Caliopen, est peu de temps, et des contributeurs venant de différents mondes.
+> Pour répondre à ces problématique, je pense qu'un framework structurant est nécessaire. Je ne porte pas non plus angular dans mon coeur, et la communauté arrive enfin à un consensus sur le sujet. Dans tous les cas (car je ne veux pas troller) il n'est pas structurant.
+> Ember est plus pragmatique, mais la partie rendu côté serveur est effectivement un manque. Dans la roadmap pour la v2 ils annoncent l'intégration des meilleures parties de React et surtout, la possibilité de migrer sans trop d'efforts (de la v1 à v2) ce qui est rassurant.
+> 
+> Fluxxor et Reflux semblent être les projets les plus en vogue pour faire du Flux, as tu de la visibilité en terme de stabilité ? On peut s'en sortir pour structurer les choses autour de flux moyennant un peu de boulot, mais pour le rendu server side, ca nécessite une application node pour rendre les pages. Ca rajoute en complexité, mais reste également gérable.
+> 
+> En résumé, passer sur React + (Flux* || Backbone) demande pas mal de travail supplémentaire pour la mise en place, ce qui me semble être un risque, tempéré par la pérennité du modèle (je ne crois plus au MVC depuis pas mal de temps maintenant).
+> 
+> Tant que Gandi ne peut pas me libérer pour bosser sur Caliopen, je ne sais pas à quel point je serai disponible, c'est pourquoi je penche plus pour Ember qui permet un démarrage plus rapide IMHO (guides, structure imposée...).
+> 
+> my 2 cents,
+> 
+> Julien
+> 
+> On 11/27/2014 11:20 AM, joseph@cozycloud.cc wrote: 
+> 
+> Bonjour à tous, 
+> 
+> Je suis Joseph de chez Cozy (https://cozy.io [2]). Certains d'entre vous le savent peut-être (je ne sais pas qui exactement à part Laurent était présent à nos discussions) nous développons un client email. Notre choix technologique s'est porté sur React et en trois mois, à deux développeurs et demi (dont 1,5 sur le front), on a quelque chose qui va bientôt être montrable. 
+> 
+> Je me permets d'intervenir sur cette question car c'est moi qui ai posé les premières pierres de l'application (et donc fait les choix techno). 
+> 
+> Il faut bien avoir en tête que comparer Angular et Ember est tout à fait possible, mais que de comparer ces deux *frameworks* à React est plus délicat. React est une *lib* qui ne gère que la partie affichage, il n'y a aucun composant modèle, gestion de la persistence. Facebook, les créateurs de React, proposent une architecture autour de React qui s'appelle Flux (que nous utilisons dans notre app) qui tourne autour du principe de "flux unidirectionnel de données". 
+> 
+> Je vous suggère cette présentation sur React qui exprime bien mieux que moi ce que je voulais dire et qui présente les avantages de la techno : https://speakerdeck.com/player/44129b9054c901328b89221e99b278fe# [3] (notamment la distinction framework vs libs). J'attire votre attention sur une fonctionnalité sous-estimé de React, qui est le rendu côté serveur avec le même code que le client (je ne sais pas si c'est un cas de "performance" important dans Caliopen). 
+> 
+> Je n'ai malheureusement pas de ressource équivalente à vous présenter sur Flux, car je n'en ai toujours pas trouvée. Je vous suggère cependant cet article sur le blog de React : http://facebook.github.io/react/blog/2014/07/30/flux-actions-and-the-dispatcher.html [4] 
+> 
+> En résumé, React, c'est très bien (à mon humble avis) : ça permet d'écrire du code vite, maintenable et *performant* (sans y penser). Mais ce n'est qu'une partie du problème, la "Vue", et il faut accepter (s'habituer à) une nouvelle façon de faire. 
+> 
+> Vous pourriez ajouter Backbone+React (ils jouent relativement bien ensemble) et/ou Flux+React à votre matrice pour la compléter. A la question React+Angular et React+Ember, je ne connais pas l'état de l'art, ne portant pas du tout Angular dans mon coeur et ne m'étant jamais intéressé à Ember. 
+> 
+> Je vous laisse ici l'adresse du dépôt de notre application, si vous voulez jeter un oeil au code. A mon avis on est à des kilomètres de faire les choses parfaitement, mais si ça peut aider...https://github.com/cozy/cozy-emails 
+> 
+> En espérant que mon retour d'expérience puisse être utile, je reste à disposition pour des questions / demande de renseignements supplémentaires concernant React et Flux. 
+> 
+> Joseph. 
+> 
+> Le 11/27/2014 10:07, Alban Crommer a écrit : 
+> Bonjour,
+> 
+> Désolé, je ne connais pas suffisamment ces 3 frameworks pour avoir un avis éclairant sur la question.
+> 
+> Mais je suis content que ça puisse servir, et rassuré de voir des résultats vraisemblablement sérieux et pointant dans la même direction ;)
+> 
+> +a
+> 
+> Le 27/11/2014 01:32, Kajan Sivaramalingam a écrit : 
+> 
+> Voici ma contribution. 
+> 
+> A bientôt pour la délibération. 
+> 
+> _______________________________________________
+> Caliopdev mailing list
+> Caliopdev@caliop.net
+> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev [1]
+> 
+> _______________________________________________
+> Caliopdev mailing list
+> Caliopdev@caliop.net
+> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev [1]
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev [1]
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev [1]
+
+ 
+
+Links:
+------
+[1] http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+[2] https://cozy.io
+[3] https://speakerdeck.com/player/44129b9054c901328b89221e99b278fe#
+[4]
+http://facebook.github.io/react/blog/2014/07/30/flux-actions-and-the-dispatcher.html
+--=_00abe01f2cc39e11b3ba37f5c1699adc
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=UTF-8
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+<html><body style=3D'font-size: 10pt'>
+<p>Ton analyse et tes incertitudes sur React/Flux sont justifi&eacute;es. O=
+n a pris un risque de notre c&ocirc;t&eacute; et heureusement les deux d&ea=
+cute;v ont fait un bon boulot de prise en main et d'adaptation.</p>
+<p>Pas de retour concernant Reflux, que je veux regarder en bloc et en d&ea=
+cute;tail car je ne suis pas satisfait de l'impl&eacute;mentation "officiel=
+le" de Flux, dont Fluxxor s'inspire fortement (on utilisait Fluxxor &agrave=
+; la base, &ccedil;a n'apporte rien AMHA, donc supprim&eacute;. Mais je n'a=
+i pas regard&eacute; son &eacute;volution depuis plusieurs mois).</p>
+<p>Je n'avais pas pens&eacute; &agrave; la n&eacute;cessit&eacute; de Node =
+pour utiliser React pour fair le rendu c&ocirc;t&eacute; serveur, comme Cal=
+iopen est en Python (de m&eacute;moire) ce n'est effectivement pas un argum=
+ent. Par contre, pour b&eacute;n&eacute;ficier de l'isomorphisme, il faut o=
+bligatoire du Node &agrave; un moment (&agrave; ma connaissance).</p>
+<p>Joseph.</p>
+<p>PS : je me suis permis de mettre en copie Romain et Brice, nos deux h&ea=
+cute;ros de l'email.</p>
+<p>Le 11/27/2014 12:11, julien muetton a &eacute;crit&nbsp;:</p>
+<blockquote type=3D"cite" style=3D"padding-left:5px; border-left:#1010ff 2p=
+x solid; margin-left:5px"><!-- html ignored --><!-- head ignored --><!-- me=
+ta ignored -->Salut Joseph,<br /><br /> Je partage assez ton avis sur React=
+=2E<br /><br /> La probl&eacute;matique que je vois pour Caliopen, est peu =
+de temps, et des contributeurs venant de diff&eacute;rents mondes.<br /> Po=
+ur r&eacute;pondre &agrave; ces probl&eacute;matique, je pense qu'un framew=
+ork structurant est n&eacute;cessaire. Je ne porte pas non plus angular dan=
+s mon coeur, et la communaut&eacute; arrive enfin &agrave; un consensus sur=
+ le sujet. Dans tous les cas (car je ne veux pas troller) il n'est pas stru=
+cturant.<br /> Ember est plus pragmatique, mais la partie rendu c&ocirc;t&e=
+acute; serveur est effectivement un manque. Dans la roadmap pour la v2 ils =
+annoncent l'int&eacute;gration des meilleures parties de React et surtout, =
+la possibilit&eacute; de migrer sans trop d'efforts (de la v1 &agrave; v2) =
+ce qui est rassurant.<br /><br /> Fluxxor et Reflux semblent &ecirc;tre les=
+ projets les plus en vogue pour faire du Flux, as tu de la visibilit&eacute=
+; en terme de stabilit&eacute; ? On peut s'en sortir pour structurer les ch=
+oses autour de flux moyennant un peu de boulot, mais pour le rendu server s=
+ide, ca n&eacute;cessite une application node pour rendre les pages. Ca raj=
+oute en complexit&eacute;, mais reste &eacute;galement g&eacute;rable.<br /=
+><br /> En r&eacute;sum&eacute;, passer sur React + (Flux* || Backbone) dem=
+ande pas mal de travail suppl&eacute;mentaire pour la mise en place, ce qui=
+ me semble &ecirc;tre un risque, temp&eacute;r&eacute; par la p&eacute;renn=
+it&eacute; du mod&egrave;le (je ne crois plus au MVC depuis pas mal de temp=
+s maintenant).<br /><br /> Tant que Gandi ne peut pas me lib&eacute;rer pou=
+r bosser sur Caliopen, je ne sais pas &agrave; quel point je serai disponib=
+le, c'est pourquoi je penche plus pour Ember qui permet un d&eacute;marrage=
+ plus rapide IMHO (guides, structure impos&eacute;e...).<br /><br /> my 2 c=
+ents,<br /><br /> Julien<br /><br />
+<div class=3D"moz-cite-prefix">On 11/27/2014 11:20 AM, <a class=3D"moz-txt-=
+link-abbreviated" href=3D"mailto:joseph@cozycloud.cc">joseph@cozycloud.cc</=
+a> wrote:</div>
+<blockquote type=3D"cite" style=3D"padding-left:5px; border-left:#1010ff 2p=
+x solid; margin-left:5px">
+<p>Bonjour &agrave; tous,</p>
+<p>Je suis Joseph de chez Cozy (<a class=3D"moz-txt-link-freetext" href=3D"=
+https://cozy.io">https://cozy.io</a>). Certains d'entre vous le savent peut=
+-&ecirc;tre (je ne sais pas qui exactement &agrave; part Laurent &eacute;ta=
+it pr&eacute;sent &agrave; nos discussions) nous d&eacute;veloppons un clie=
+nt email. Notre choix technologique s'est port&eacute; sur React et en troi=
+s mois, &agrave; deux d&eacute;veloppeurs et demi (dont 1,5 sur le front), =
+on a quelque chose qui va bient&ocirc;t &ecirc;tre montrable.</p>
+<p>Je me permets d'intervenir sur cette question car c'est moi qui ai pos&e=
+acute; les premi&egrave;res pierres de l'application (et donc fait les choi=
+x techno).</p>
+<p>Il faut bien avoir en t&ecirc;te que comparer Angular et Ember est tout =
+&agrave; fait possible, mais que de comparer ces deux *frameworks* &agrave;=
+ React est plus d&eacute;licat. React est une *lib* qui ne g&egrave;re que =
+la partie affichage, il n'y a aucun composant mod&egrave;le, gestion de la =
+persistence. Facebook, les cr&eacute;ateurs de React, proposent une archite=
+cture autour de React qui s'appelle Flux (que nous utilisons dans notre app=
+) qui tourne autour du principe de "flux unidirectionnel de donn&eacute;es"=
+=2E</p>
+<p>Je vous sugg&egrave;re cette pr&eacute;sentation sur React qui exprime b=
+ien mieux que moi ce que je voulais dire et qui pr&eacute;sente les avantag=
+es de la techno :&nbsp;<a class=3D"moz-txt-link-freetext" href=3D"https://s=
+peakerdeck.com/player/44129b9054c901328b89221e99b278fe#">https://speakerdec=
+k.com/player/44129b9054c901328b89221e99b278fe#</a> (notamment la distinctio=
+n framework vs libs). J'attire votre attention sur une fonctionnalit&eacute=
+; sous-estim&eacute; de React, qui est le rendu c&ocirc;t&eacute; serveur a=
+vec le m&ecirc;me code que le client (je ne sais pas si c'est un cas de "pe=
+rformance" important dans Caliopen).</p>
+<p>Je n'ai malheureusement pas de ressource &eacute;quivalente &agrave; vou=
+s pr&eacute;senter sur Flux, car je n'en ai toujours pas trouv&eacute;e. Je=
+ vous sugg&egrave;re cependant cet article sur le blog de React :&nbsp;<a c=
+lass=3D"moz-txt-link-freetext" href=3D"http://facebook.github.io/react/blog=
+/2014/07/30/flux-actions-and-the-dispatcher.html">http://facebook.github.io=
+/react/blog/2014/07/30/flux-actions-and-the-dispatcher.html</a></p>
+<p>En r&eacute;sum&eacute;, React, c'est tr&egrave;s bien (&agrave; mon hum=
+ble avis) : &nbsp;&ccedil;a permet d'&eacute;crire du code vite, maintenabl=
+e et *performant* (sans y penser).&nbsp;Mais ce n'est qu'une partie du prob=
+l&egrave;me, la "Vue", et il faut accepter (s'habituer &agrave;) une nouvel=
+le fa&ccedil;on de faire.</p>
+<p>Vous pourriez ajouter Backbone+React (ils jouent relativement bien ensem=
+ble) et/ou Flux+React &agrave; votre matrice pour la compl&eacute;ter. A la=
+ question React+Angular et React+Ember, je ne connais pas l'&eacute;tat de =
+l'art, ne portant pas du tout Angular dans mon coeur et ne m'&eacute;tant j=
+amais int&eacute;ress&eacute; &agrave; Ember.</p>
+<p>Je vous laisse ici l'adresse du d&eacute;p&ocirc;t de notre application,=
+ si vous voulez jeter un oeil au code. A mon avis on est &agrave; des kilom=
+&egrave;tres de faire les choses parfaitement, mais si &ccedil;a peut aider=
+=2E..https://github.com/cozy/cozy-emails</p>
+<p>En esp&eacute;rant que mon retour d'exp&eacute;rience puisse &ecirc;tre =
+utile, je reste &agrave; disposition pour des questions / demande de rensei=
+gnements suppl&eacute;mentaires concernant React et Flux.</p>
+<p>Joseph.</p>
+<p>Le 11/27/2014 10:07, Alban Crommer a &eacute;crit&nbsp;:</p>
+<blockquote style=3D"padding-left: 5px; border-left: #1010ff 2px solid; mar=
+gin-left: 5px;"><!-- node type 8 --><!-- node type 8 --><!-- node type 8 --=
+>
+<div class=3D"moz-cite-prefix">Bonjour,<br /><br /> D&eacute;sol&eacute;, j=
+e ne connais pas suffisamment ces 3 frameworks pour avoir un avis &eacute;c=
+lairant sur la question.<br /><br /> Mais je suis content que &ccedil;a pui=
+sse servir, et rassur&eacute; de voir des r&eacute;sultats vraisemblablemen=
+t s&eacute;rieux et pointant dans la m&ecirc;me direction ;)<br /><br /> +a=
+<br /><br /> Le 27/11/2014 01:32, Kajan Sivaramalingam a &eacute;crit&nbsp;=
+:</div>
+<blockquote style=3D"padding-left: 5px; border-left: #1010ff 2px solid; mar=
+gin-left: 5px;">
+<div dir=3D"ltr">
+<div class=3D"gmail_extra">Voici ma contribution.</div>
+<div class=3D"gmail_extra">&nbsp;</div>
+<div class=3D"gmail_extra">&nbsp;</div>
+<div class=3D"gmail_extra">A bient&ocirc;t pour la d&eacute;lib&eacute;rati=
+on.</div>
+</div>
+<br /><fieldset class=3D"mimeAttachmentHeader"></fieldset><br />
+<pre>_______________________________________________
+Caliopdev mailing list
+<a class=3D"moz-txt-link-abbreviated" href=3D"mailto:Caliopdev@caliop.net">=
+Caliopdev@caliop.net</a>
+<a class=3D"moz-txt-link-freetext" href=3D"http://brassens.heberge.info/cgi=
+-bin/mailman/listinfo/caliopdev">http://brassens.heberge.info/cgi-bin/mailm=
+an/listinfo/caliopdev</a>
+</pre>
+</blockquote>
+<br /><!-- node type 8 --><br />
+<pre>_______________________________________________
+Caliopdev mailing list
+<a href=3D"mailto:Caliopdev@caliop.net">Caliopdev@caliop.net</a>
+<a href=3D"http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev"=
+>http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev</a>
+</pre>
+</blockquote>
+<p>&nbsp;</p>
+<div>&nbsp;</div>
+<br /><fieldset class=3D"mimeAttachmentHeader"></fieldset><br />
+<pre>_______________________________________________
+Caliopdev mailing list
+<a class=3D"moz-txt-link-abbreviated" href=3D"mailto:Caliopdev@caliop.net">=
+Caliopdev@caliop.net</a>
+<a class=3D"moz-txt-link-freetext" href=3D"http://brassens.heberge.info/cgi=
+-bin/mailman/listinfo/caliopdev">http://brassens.heberge.info/cgi-bin/mailm=
+an/listinfo/caliopdev</a>
+</pre>
+</blockquote>
+<br /><!-- html ignored --><br />
+<pre>_______________________________________________
+Caliopdev mailing list
+<a href=3D"mailto:Caliopdev@caliop.net">Caliopdev@caliop.net</a>
+<a href=3D"http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev"=
+>http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev</a>
+</pre>
+</blockquote>
+<p>&nbsp;</p>
+<div>&nbsp;</div>
+</body></html>
+
+--=_00abe01f2cc39e11b3ba37f5c1699adc--

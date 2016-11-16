@@ -1,0 +1,192 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahoHi-0000Ms-Se
+	for mharc-dev@caliopen.local; Sun, 20 Mar 2016 21:05:31 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:47916)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahoHe-0000MW-Ud
+	for dev@caliopen.local; Sun, 20 Mar 2016 21:05:28 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahoHb-0007sw-MP
+	for dev@caliopen.local; Sun, 20 Mar 2016 21:05:26 -0400
+Received: from mail-wm0-x22a.google.com ([2a00:1450:400c:c09::22a]:33815)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahoHb-0007so-Aw
+	for dev@caliopen.local; Sun, 20 Mar 2016 21:05:23 -0400
+Received: by mail-wm0-x22a.google.com with SMTP id p65so134135362wmp.1
+	for <dev@caliopen.local>; Sun, 20 Mar 2016 18:05:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=v147AQ7+gtpUKat6EQmVLOIvKly9FY+UWQ2uaoZ8CaA=;
+	b=Sa+LTM347S4AcRW+Q3+Mh74Ixlw2uEtSHr4zxaxkBco67Y/Zz8Yrm5UHdJ0XiOYnYZ
+	1C0xePp2zZzJV5Ad/D/4eBQ/ulWs/FTmfhHfJybsTVKvgiD5dItgdD9S/r218+xKuMDJ
+	sIwnAdoIC+yjkMLHizl57wh3UF/gTJNurscWjJ1nFubtUxW6mClKzNacGAHCPODDFLa4
+	24O+J3JIvGSApfC5Ug1RC4XBfO599mrBKvh/Mx6GEB7dass87+jyfg3JPRc0JtxY5pqr
+	0OnUmmniuA1fGe5WseHtmHEGVjeRsiozd8tL8sepwhI2qlN1J3o31nLEmbcP55ozSzMZ
+	+nbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=v147AQ7+gtpUKat6EQmVLOIvKly9FY+UWQ2uaoZ8CaA=;
+	b=cbYqp3krnNFqjwXPKqfU0NVrDdqkmlSSEV8Swss+1SB9Pnl5sobooeRe5hIG/xxxOI
+	LHWuTPWx7pPpdA4n8iR7v9+0GfidUYnujweU3/8rgu1MervP5JVw4qP3scrZghHFjYCX
+	tW4cjHBbTeiOY+AT7PGCpCmGNUnnh67/jFMfxaHuLf4xoGBQ3o83lGDI09XEd+1cX0Ly
+	Lwv6Vi7ahPYq3IVIFNhJp7EvQekjjXvi+mCk7ka1hHbGE5oEAZfokdbeyjoSLMBpWzUG
+	XgKwvCFEDB8hCzrYz4hulTo9544Gg2iEa53A7SbyC00bmfQtIS2ZEyCYh1SapCqkfm2Q
+	e9nQ==
+X-Gm-Message-State: AD7BkJKnPD/YCC+EwYIG7EuzsV2aPzN+LuNc3Nb7CpctaDL4CydQK3Rt6kQfCICQaSMZGQ==
+X-Received: by 10.28.215.79 with SMTP id o76mr11235741wmg.95.1458522322327;
+	Sun, 20 Mar 2016 18:05:22 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	p125sm9986429wmd.16.2016.03.20.18.05.20
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Sun, 20 Mar 2016 18:05:21 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Dmitry Gutov <dgutov@yandex.ru>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+Date: Mon, 21 Mar 2016 02:05:20 +0100
+In-Reply-To: <aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru> (Dmitry Gutov's
+	message of "Sun, 20 Mar 2016 17:58:11 +0200")
+Message-ID: <87a8lsd4j3.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22a
+Cc: Alan Mackenzie <acm@muc.de>, Stefan Monnier <monnier@IRO.UMontreal.CA>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 01:05:28 -0000
+Content-Length: 5152
+Lines: 106
+
+
+>> On Sun, Mar 20 2016 17:58, Dmitry Gutov wrote:
+
+> On 03/20/2016 02:15 PM, Vitalie Spinu wrote:
+
+> IIRC, using first-column is fairly justified, the outer mode can't add extra
+> indentation to the submode is a reliable, sane way
+
+The inner mode cannot often make that decision either. Same inner mode can be
+used in very different multi-mode contexts, each with their own semantics for
+chunks/headers/indentation. Reducing all that to a simple (first-column
+. previous-chunk) pair and letting inner mode do the job is surely not
+enough. The only actor to make that decision should be multi-mode engine itself.
+
+Instead of teaching modes about multi-modes, a much better idea is to introduce
+`calculate-indent-function` which would accept POS and optional STRING-AFTER and
+STRING-BEFORE. This function will return the indentation of STRING-AFTER at POS
+assuming there is a virtual STRING-BEFORE just before POS.
+
+This way, a multi-mode engine can call inner-mode's calculate-indent-function at
+the end of previous chunk with STRING-AFTER being the line at point and
+STRING-BEFORE being the content of current chunk. Most modes indent reliably
+based on one previous line, so in 99% of the cases STRING-BEFORE can be nil and
+multi-mode engine can call calculate-indent-function only on first line of the
+current chunk (and that only for continuation chunks, which are a minority out
+there). Then a lot of modes don't even care about what's in the current line, so
+STRING-AFTER will be irrelevant as well. Thus most modes will not even need a an
+implementation of calculate-indent-function.
+
+This is both more general than prog-indentation-context and doesn't require
+teaching major-modes about multi-modes. Moreover, a lot of major-modes already
+have such a "calculator" in place.
+
+>> It's essentially a half-backed implementation of "hard widening" discussed
+>> earlier. Why not impose the widening restriction directly in `widen` then?
+>> Maybe bring widen to elisp and rename C widen into widen-internal. Then add
+>> generic `prog-hard-widen-limits` which would be checked along
+>> prog-indentation-context limits.
+
+> Right! At the very least, I we should extract the second element of
+> prog-indentation-context into a separate variable, and make prog-widen more
+> prominent.
+
+Not sure about removing second element. Good thing about keeping all of them in
+one place is for the indentation engine to be concerned with a single variable.
+
+BTW, third argument should be renamed into PREVIOUS-CHUNK. The function returns
+one chunk.
+
+> But a proper implementation of hard-widen would be even better in my
+> book. Although someone would need to comb through all low-level functions, at
+> least, and decide which of them need to call widen-internal, and which will be
+> fine with just widen.
+
+No need to decide on widen-internal. All functions are free to call widen just
+as they do before. It's 100% backward compatible. The only reason to use
+`widen-internal` is to bring `widen` to elisp in order to allow for advise and
+better debugging. Actually, with hard-widen-limits, there will be no need for
+advice, so it can be kept in C.
+
+Only consumers of `hard-widen-limits` should be concerned with its side
+effects. But that's uniformly better than current situation when you cannot do
+much about restricting widen.
+
+In my experience hard-widen and parse-partial-sexp are the only hurdle in the
+way of proper multi-modes. I don't remember a single problem that would occur
+for a different reason.
+
+BTW, I parse-partial-sexp must abide hard-widen-limits as well. This way the
+request aired in bug#22983 of parse-partial-sexp == syntax-ppss will be
+automatically satisfied. You won't need syntax-ppss-dont-widen either.
+
+> Are you interested in working on a patch? Also Cc'ing Stefan.
+
+My knowledge of emacs C internals is close to 0. Elisp side (and probably C
+side) of this is trivial. I will look into it but I don't think I am the best
+person for that.
+
+> Looking back on it, it seems prog-indentation-context was merged too early: it
+> only has one usage so far, so it's not clear if the approach is generally
+> viable.
+
+> Christoph sort of promised to add support in CC Mode, but then
+> disappeared. Which is not so surprising, that stuff is difficult.
+
+A patch that would require hunting every single mode out there and implementing
+multi-modes locally should have been more carefully considered IMO. Emacs 25 is
+not yet there, so it's not late to reconsider that decision.
+
+> AFAICT, though, the ultimate justification for having first-column is Python's
+> indentation cycling behavior:
+> http://lists.gnu.org/archive/html/emacs-devel/2015-02/msg01096.html
+
+> Which is not that convincing, but makes some things clearner anyway.
+
+It's not convincing to me either. I use Christoph's indentation-0 trick in and
+it indeed works reliably for all modes I have tried except python. But python's
+issue can be fixed with a simple advice of python-indent-line-function, no need
+to overhaul python indentation because of that. This is how it's now done in
+polymode:
+
+  https://github.com/vspinu/polymode/blob/master/polymode-compat.el#L189-L199
+
+
+  Vitalie
+

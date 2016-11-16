@@ -1,0 +1,76 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an6El-0003JO-6q
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 11:16:19 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:54555)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1an6Ef-0003Bg-08
+	for dev@caliopen.local; Mon, 04 Apr 2016 11:16:16 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1an6Eb-0005Ru-1f
+	for dev@caliopen.local; Mon, 04 Apr 2016 11:16:12 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:48585)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1an6Ea-0005Rl-UA; Mon, 04 Apr 2016 11:16:08 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:1495
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1an6Ea-0005wR-6e; Mon, 04 Apr 2016 11:16:08 -0400
+Date: Mon, 04 Apr 2016 18:15:43 +0300
+Message-Id: <83r3elo15s.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: John Wiegley <jwiegley@gmail.com>
+In-reply-to: <m2wpoe9cjg.fsf@newartisans.com> (message from John Wiegley on
+	Sun, 03 Apr 2016 22:18:59 -0700)
+Subject: Re: master 0695108 2/2: Revert "Add `r'/`l' grep command history
+	commands"
+References: <20160403224658.6944.52006@vcs.savannah.gnu.org>
+	<E1amqnL-0001p7-2f@vcs.savannah.gnu.org> <m3wpoe54yr.fsf@gnus.org>
+	<m2wpoe9cjg.fsf@newartisans.com>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: larsi@gnus.org, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 15:16:17 -0000
+Content-Length: 1066
+Lines: 28
+
+> From: John Wiegley <jwiegley@gmail.com>
+> Date: Sun, 03 Apr 2016 22:18:59 -0700
+> Cc: dev@caliopen.local
+> 
+> >>>>> Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+> 
+> > An contrary to popular belief, reverting code is not a great way to motivate
+> > people to contribute.
+> 
+> I agree, I just wanted to stop any further work before we started having merge
+> commits and other changes sitting on top of those.
+
+Can we continue discussing the design from the point we stopped,
+please?
+
+One comment that I have about the feature as it was committed is that
+if we want to have an easy way of rerunning past commands, then it
+should be defined in compilation-mode, so that all its derivatives
+will get it.
+
+I also don't see a lot of mnemonic value in binding these commands to
+'l' and 'r', and would suggest additional bindings which would be
+easier to remember even for those who don't browse URLs all day long.
+
+I also think that 100-long history for these commands is waaaaay too
+much.  It should be a defcustom, and the default value should be maybe
+10 or 16.
+

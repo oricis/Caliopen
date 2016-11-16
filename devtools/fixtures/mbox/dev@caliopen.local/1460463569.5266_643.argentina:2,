@@ -1,0 +1,140 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aizh4-0000Rp-1s
+	for mharc-dev@caliopen.local; Thu, 24 Mar 2016 03:28:34 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:38946)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1aizh0-0000QO-NY
+	for dev@caliopen.local; Thu, 24 Mar 2016 03:28:31 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1aizgv-0004SQ-M9
+	for dev@caliopen.local; Thu, 24 Mar 2016 03:28:30 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:61517)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1aizgv-0004SE-Bo
+	for dev@caliopen.local; Thu, 24 Mar 2016 03:28:25 -0400
+Received: from [192.168.178.35] ([77.3.41.115]) by mrelayeu.kundenserver.de
+	(mreue003) with ESMTPSA (Nemesis) id 0La0Mr-1a3vFh02JB-00llq5;
+	Thu, 24 Mar 2016 08:28:20 +0100
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+To: dev@caliopen.local
+References: <20160311151512.GD2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+	<jwvmvpswowh.fsf-monnier+Inbox@gnu.org> <87twk0beuh.fsf@gmail.com>
+	<jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org> <877fgvgbr1.fsf@gmail.com>
+	<jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org> <87bn67eq4t.fsf@gmail.com>
+	<jwvy49ar473.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87bn66qsgo.fsf@gmail.com> <jwvzitquf5p.fsf-monnier+emacs@gnu.org>
+	<87fuvhpimn.fsf@gmail.com> <jwv1t71v3lb.fsf-monnier+emacs@gnu.org>
+From: =?UTF-8?Q?Andreas_R=c3=b6hler?= <andreas.roehler@online.de>
+Message-ID: <56F3977B.5030308@online.de>
+Date: Thu, 24 Mar 2016 08:30:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:38.0) Gecko/20100101
+	Icedove/38.5.0
+MIME-Version: 1.0
+In-Reply-To: <jwv1t71v3lb.fsf-monnier+emacs@gnu.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K0:mMPAf2IPO/4uxYp2N0ZxeYc8c2dnfQrQHVxc7/OqPqteMFjql1c
+	4LyjkYB5ChQ9TniUQqiyPYXk7bk+Z+l0JcyhnS+rh4R4PRB04gDTidIjpHFGHHRUd+yko2g
+	IKWHJAxiFD2kBHx5twHXtGzmXuHtXaKFqZTuJ6/LEbPEYvybb7umy2NqAr5EXLn8HfRzfOs
+	dQ8W92Vdvw5NlK5FPVGHw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:rxl33/cItUs=:QuszTJlKYV9ZVlirhsf/Ir
+	mvB/yASOLrF5QWA2Z+VJ1cKkGn2SmWt7EOIBDuf44F7kv2gm/l6ApEM3bllAYik7KmuiSIMqW
+	jbOEgrZN4tYPXqeVLQBqejd3xM2wximHKn408uqAEfrr61M1hvho6hmPeYfdb7MmREWRli7GB
+	JJJxiitedV31vG6A4nbCwfsOMfSb63OlOwYXrtD44yW3zyGj5/wNO/cMnVZmjonNezVUMLkc9
+	9rYyEN3Ry2P0GsOj2vz/MXM1Kpzp4OtQdICXMhY+10xhGuMES1likJk2GqdpXR3gTeL8cERfJ
+	PSz9RZk4RDz/H0DX42GO0uFa7ezY9RgsWd0IOFAHsBES126rSJKanIbe2tEyEr1cpu2+lQMdd
+	I79nZaqgabfisFoCiL/9s52weqsDrR3WTekeOlHHdaM0EZGofcDFOdLxlb/ALh3bMmTXCOAAo
+	rEZO0Ev6FwHH5u/DAex5XAXqtdPJlp9NTYaweOADR8sJ5v5AHOst7hr5cybtOiXoArWWqqJ4S
+	3Lvydk2mjMDUSHsdQ+BT0YBZuJ7mVUGcPBSeVbncEVL6OCAac9Y9vo83hb02nKYbWU5tM0TLv
+	/5hF7I04wf2Ofr3c8p/4JZJ/JFMMyT4ojwf7NnoAnWXjoMIfQiSNICnWPR06rM69rFYgpqgAp
+	UZnjusWJLFggfW5dXP+JlwTtRMEbZ5nLs/vnYovr286Ygpbon622hkw6wonpffKKNzvqah8Z8
+	4abUo+SgO7wILdVm
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.126.135
+Cc: Vitalie Spinu <spinuvit@gmail.com>,
+	Stefan Monnier <monnier@iro.umontreal.ca>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 24 Mar 2016 07:28:31 -0000
+Content-Length: 2338
+Lines: 59
+
+
+
+On 23.03.2016 12:41, Stefan Monnier wrote:
+>> No, no. Context should not have absolute positions in it. That would ruin the
+>> whole thing. It should contain information about the nesting of language
+>> constructs sufficient to be able to indent first line of an inner span without
+>> any other positional knowledge.
+> As explained, the SMIE indentation has no such "summary of context".
+> The only context it could use is either a position or the complete text
+> before that position.
+>
+>> For example, if current line is directly part of IF block, most
+>> languages don't care what precedes IF head at all, only the offset
+>> of IF.
+> Yes, there are simple cases we know how to handle.  The problem is the
+> general case, along with the work to modify the existing indentation
+> codes to be able to generate and use that data.
+>
+>> So an entry in the context data structure might look like (IF
+>> . IF-OFFSET). If line number within the block is important then you
+>> can pass (IF IF-OFFSET . RELATIVE-LINE). My hunch is that for most
+>> languages you would be able to reduce indentation to a small number of
+>> block-continuation constructs (less than 10).
+> Consider
+>
+>      x = a << b + c * d
+>
+> the code after this line can be indented in various different ways:
+>
+>                   * e
+> or
+>               + e
+> or
+>          == e
+> or
+>    ; e
+>
+> And of course, in this example, I put all relevant operators, but in
+> practice they'll generally be on different lines.  And SMIE (which
+> supports that kinds of indentation, e.g. in sm-c-mode) doesn't
+> pre-compute that context: it's only when it sees the "+" at the
+> beginning of line that it moves back over higher-precedence operators to
+> find the matching alignment spot.
+>
+> In theory, SMIE could try to create the kind of context you're thinking
+> of, but that would amount to a complete rewrite (and it would likely be
+> very difficult if not impossible to make it work with existing
+> smie-rules-functions, so it'd break backward compatibility).
+>
+>
+>          Stefan
+>
+
+
+Stefan, came across SMIE as it looked like an interesting abstraction. 
+Estimate your efforts. Nonetheless think that path turned out wrong 
+meanwhile. SMIE-based indentation will not be easier, but run into more 
+and more complexity instead. The reasons deserve being discussed elsewhere.
+

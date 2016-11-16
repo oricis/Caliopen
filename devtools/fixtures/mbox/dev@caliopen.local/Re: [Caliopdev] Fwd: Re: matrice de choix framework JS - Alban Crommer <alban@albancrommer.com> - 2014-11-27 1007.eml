@@ -1,0 +1,228 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id C8CFE120AAC;
+	Thu, 27 Nov 2014 10:07:40 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 1.507
+X-Spam-Level: *
+X-Spam-Status: No, score=1.507 tagged_above=-999 required=5
+	tests=[BAYES_40=-0.185, HTML_MESSAGE=0.001, RATWARE_GECKO_BUILD=1.691]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id Dw9gO6P3z4Cj; Thu, 27 Nov 2014 10:07:38 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 6256C120A27;
+	Thu, 27 Nov 2014 10:07:38 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 2F70569F25FCB;
+	Thu, 27 Nov 2014 10:07:38 +0100 (CET)
+Authentication-Results: brassens.heberge.info; dkim=fail
+	reason="verification failed; insecure key"
+	header.d=albancrommer.com header.i=@albancrommer.com
+	header.b=gmBOgAAZ; dkim-adsp=none (insecure policy);
+	dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id RId7jMhFlMey; Thu, 27 Nov 2014 10:07:34 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id C9EE969F0479A;
+	Thu, 27 Nov 2014 10:07:33 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id F27D869F0479A
+ for <caliopdev@caliop.net>; Thu, 27 Nov 2014 10:07:31 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id RTKsUV0flgjS for <caliopdev@caliop.net>;
+ Thu, 27 Nov 2014 10:07:28 +0100 (CET)
+Received: from alban.octopuce.fr (alban.octopuce.fr [91.194.60.111])
+ by brassens.heberge.info (Postfix) with ESMTP id EEA7E69F25FC5
+ for <caliopdev@caliop.net>; Thu, 27 Nov 2014 10:07:27 +0100 (CET)
+Received: from [IPv6:2001:67c:288:1::201] (unknown [IPv6:2001:67c:288:1::201])
+ (using TLSv1 with cipher ECDHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by alban.octopuce.fr (Postfix) with ESMTPSA id BEE32F1CC56A
+ for <caliopdev@caliop.net>; Thu, 27 Nov 2014 10:07:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=albancrommer.com;
+ s=alternc; t=1417079247;
+ bh=204ytZf8IOY9VMXeTPeDENQ35RmOa3v8XthXeFRpKYk=;
+ h=Date:From:To:Subject:References:In-Reply-To;
+ b=gmBOgAAZDk50HzqoDsoH/r1BdEHNkV0/FnoohKBmsupps/hxdKFDSPEyueXremctm
+ XmXRXmTl6zmwfzvdC+b6Ov1RhTqGe1XhAZtVPaPDq0F0qqg8tkb6Nd9H/smFPoFgF9
+ Zs/jVwAXW1UECdEL7HbZ6xaBp/XEw0ZPqzx+P4J0=
+Message-ID: <5476E9CF.70601@albancrommer.com>
+Date: Thu, 27 Nov 2014 10:07:27 +0100
+From: Alban Crommer <alban@albancrommer.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64;
+ rv:24.0) Gecko/20100101 Icedove/24.8.1
+MIME-Version: 1.0
+To: =?ISO-8859-1?Q?Liste_de_d=E9veloppement_Caliopen?= <caliopdev@caliop.net>
+References: <547453AE.70408@chamal.fr> <547457A9.9070801@chamal.fr>
+ <5475EC1E.4010603@chamal.fr> <20141126224605.GH8770@brasil.brainstorm.fr>
+ <CA+tgzei=imZu9xfDGJuVYiXzgOqEo=kBVojf-16uo-gBheEjow@mail.gmail.com>
+In-Reply-To: <CA+tgzei=imZu9xfDGJuVYiXzgOqEo=kBVojf-16uo-gBheEjow@mail.gmail.com>
+X-Enigmail-Version: 1.6
+Content-Type: multipart/mixed; boundary="------------070104090908020006080706"
+Subject: Re: [Caliopdev] Fwd: Re: matrice de choix framework JS
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+This is a multi-part message in MIME format.
+--------------070104090908020006080706
+Content-Type: multipart/alternative;
+ boundary="------------000301070809050108050107"
+
+
+--------------000301070809050108050107
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+
+Bonjour,
+
+D�sol�, je ne connais pas suffisamment ces 3 frameworks pour avoir un
+avis �clairant sur la question.
+
+Mais je suis content que �a puisse servir, et rassur� de voir des
+r�sultats vraisemblablement s�rieux et pointant dans la m�me direction ;)
+
++a
+
+Le 27/11/2014 01:32, Kajan Sivaramalingam a �crit :
+> Voici ma contribution.
+>
+>
+> A bient�t pour la d�lib�ration.
+>
+>
+> _______________________________________________
+> Caliopdev mailing list
+> Caliopdev@caliop.net
+> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+
+--------------000301070809050108050107
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    <div class="moz-cite-prefix">Bonjour,<br>
+      <br>
+      D&eacute;sol&eacute;, je ne connais pas suffisamment ces 3 frameworks pour avoir
+      un avis &eacute;clairant sur la question.<br>
+      <br>
+      Mais je suis content que &ccedil;a puisse servir, et rassur&eacute; de voir des
+      r&eacute;sultats vraisemblablement s&eacute;rieux et pointant dans la m&ecirc;me
+      direction ;)<br>
+      <br>
+      +a<br>
+      <br>
+      Le 27/11/2014 01:32, Kajan Sivaramalingam a &eacute;crit&nbsp;:<br>
+    </div>
+    <blockquote
+cite="mid:CA+tgzei=imZu9xfDGJuVYiXzgOqEo=kBVojf-16uo-gBheEjow@mail.gmail.com"
+      type="cite">
+      <meta http-equiv="Context-Type" content="text/html; charset=UTF-8">
+      <div dir="ltr">
+        <div class="gmail_extra">Voici ma contribution.</div>
+        <div class="gmail_extra"><br>
+        </div>
+        <div class="gmail_extra"><br>
+        </div>
+        <div class="gmail_extra">A bient&ocirc;t pour la d&eacute;lib&eacute;ration.</div>
+      </div>
+      <br>
+      <fieldset class="mimeAttachmentHeader"></fieldset>
+      <br>
+      <pre wrap="">_______________________________________________
+Caliopdev mailing list
+<a class="moz-txt-link-abbreviated" href="mailto:Caliopdev@caliop.net">Caliopdev@caliop.net</a>
+<a class="moz-txt-link-freetext" href="http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev">http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev</a>
+</pre>
+    </blockquote>
+    <br>
+  </body>
+</html>
+
+--------------000301070809050108050107--
+
+--------------070104090908020006080706
+Content-Type: application/pgp-keys;
+ name="0xED3CE492.asc"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="0xED3CE492.asc"
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+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
+MXWgD+JLmfNKbhzzf547qhkjPqSPDxpk
+=64CM
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------070104090908020006080706
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--------------070104090908020006080706--

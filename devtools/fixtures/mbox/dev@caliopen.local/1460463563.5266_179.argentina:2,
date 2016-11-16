@@ -1,0 +1,107 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1apIOa-0003nY-RC
+	for mharc-dev@caliopen.local; Sun, 10 Apr 2016 12:39:32 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:37069)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1apIOY-0003kF-6V
+	for dev@caliopen.local; Sun, 10 Apr 2016 12:39:31 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1apIOU-0007sf-Ue
+	for dev@caliopen.local; Sun, 10 Apr 2016 12:39:30 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:40895)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1apIOU-0007sb-Qm; Sun, 10 Apr 2016 12:39:26 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:3643
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1apIOU-0002sN-25; Sun, 10 Apr 2016 12:39:26 -0400
+Date: Sun, 10 Apr 2016 19:38:51 +0300
+Message-Id: <83k2k5h10k.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: =?utf-8?Q?Cl=C3=A9ment?= Pit--Claudel <clement.pit@gmail.com>
+CC: dev@caliopen.local
+In-reply-to: <570A5CB0.8070107@gmail.com> (message from =?utf-8?Q?Cl=C3=A9?=
+	=?utf-8?Q?ment?= Pit--Claudel on Sun, 10 Apr 2016 10:01:20 -0400)
+Subject: Re: How do I set up font fallback in a robust way?
+Reply-to: Eli Zaretskii <eliz@gnu.org>
+References: <570954AA.7070604@gmail.com> <834mbain03.fsf@gnu.org>
+	<57095F97.4060305@gmail.com> <83y48mgp1x.fsf@gnu.org>
+	<570A5CB0.8070107@gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 10 Apr 2016 16:39:31 -0000
+Content-Length: 3415
+Lines: 57
+
+> Cc: dev@caliopen.local
+> From: Clément Pit--Claudel <clement.pit@gmail.com>
+> Date: Sun, 10 Apr 2016 10:01:20 -0400
+> 
+> In emacs -Q, insert the following in the *scratch* buffer:
+> 
+>     (set-fontset-font "fontset-default" 'unicode (font-spec :name "Ubuntu Mono") nil)
+>     (set-fontset-font "fontset-default" 'unicode (font-spec :name "FreeMono") nil 'append)
+>     (set-fontset-font "fontset-default" 'unicode (font-spec :name "Symbola") nil 'append)
+> 
+>     (insert "ℕ𝓟⧺×≠≥≤±¬∨∧∃∀λ⟿⟹⊥⊤⊢")
+> 
+> Now run the lines one by one, and observe the "(insert ...)" line. Before running anything, it looks fine. It still looks fine after running the first line. Running the second line causes the 𝓟 to disappear; it is replaced by a square containing 01D4DF, and C-u C-x = says "display: no font available". Finally, running the third line fixes the 𝓟.
+> 
+> I don't understand how this is possible. How can adding FreeMono cause Emacs to think that no font is available to display the 𝓟?
+
+If this surprises you, your mental model of how Emacs looks for a
+suitable font needs to be updated. ;-)
+
+I'm guessing you expect Emacs to test whether each font can actually
+display a character.  But doing so would be prohibitively slow,
+because it requires opening each font, an expensive operation.  There
+are hundreds of fonts installed on any given system, and opening all
+of them one by one takes a long time and considerably slows redisplay.
+
+So Emacs uses shortcuts: it examines the font meta-data, where a font
+declares which blocks of Unicode it supports, and picks up the first
+font that claims support for the block of the character.  But if a
+font claims support for a certain block, but has no glyphs for the
+specific character we need to display, we lose.  Coupled with the fact
+that you have no control on the order in which Emacs looks up fonts,
+this is why adding a font to a fontset could actually make things
+worse.
+
+For this reason, just lumping fonts indiscriminately into the fontset
+is not a good idea.  Instead, you should examine the character ranges
+where you have problems, and add fonts in a way that instructs Emacs
+to use each font only in the range of characters where you know it
+will produce good results.  And since "good results" is largely in the
+eyes of the beholder, this can only approximately be done in the
+default settings, the rest must be done by the end user.
+
+> Same here; I need to find a good example. I ran into issues that seemed to be connected with the fact that (set-face-attribute 'default nil :height 120) creates a new fontset, as reported by fontset-list:
+> 
+>     (fontset-list)
+>     => ("-unknown-Ubuntu Mono-normal-normal-normal-*-15-*-*-*-m-0-fontset-startup" "-*-fixed-medium-r-normal-*-16-*-*-*-*-*-fontset-standard" "-*-*-*-*-*-*-*-*-*-*-*-*-fontset-default")
+> 
+>     (set-face-attribute 'default nil :height 120)
+>     => nil
+> 
+>     (fontset-list)
+>     => ("-unknown-Ubuntu Mono-normal-normal-normal-*-16-*-*-*-m-0-fontset-auto1" "-unknown-Ubuntu Mono-normal-normal-normal-*-15-*-*-*-m-0-fontset-startup" "-*-fixed-medium-r-normal-*-16-*-*-*-*-*-fontset-standard" "-*-*-*-*-*-*-*-*-*-*-*-*-fontset-default")
+
+It just added the fonts for the larger height, but they are fonts from
+the same families, so I see no issues here: if the original fontset
+supported the characters you want, the updated one will, too.
+

@@ -1,0 +1,126 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amOQE-0003IH-Ew
+	for mharc-dev@caliopen.local; Sat, 02 Apr 2016 12:29:14 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:51823)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <lokedhs@gmail.com>) id 1amOQC-0003I2-91
+	for dev@caliopen.local; Sat, 02 Apr 2016 12:29:13 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <lokedhs@gmail.com>) id 1amOQB-00042z-C9
+	for dev@caliopen.local; Sat, 02 Apr 2016 12:29:12 -0400
+Received: from mail-vk0-x234.google.com ([2607:f8b0:400c:c05::234]:35459)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <lokedhs@gmail.com>) id 1amOQB-00042t-6w
+	for dev@caliopen.local; Sat, 02 Apr 2016 12:29:11 -0400
+Received: by mail-vk0-x234.google.com with SMTP id e6so136579905vkh.2
+	for <dev@caliopen.local>; Sat, 02 Apr 2016 09:29:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+	:cc; bh=m+kFOi6JQ2HyeHJtwg16uKnEzDIzRM8dhLTXxYpWcOo=;
+	b=oxlmlFwr/0LsgHbhdDVXPPX0R8GBl2093El7/UV/hhu9n0vCHOxO0wZB5CaWcFw1wm
+	vJcLDgBOOXchsbQbXOms1i9S7Ddg3lyJ4L5KpOFmgg685CdOFJuXY3aGJ5uguNIFskq9
+	lAh+OyLq4epQhxExFzNSsYWzi604oZKv8ZmvLv5eZ7AUJfRovnSxgv4v14E9XcBNFmNZ
+	uRzdjJtZsnVmsjLzZyoL8DSxJfmu/BTnXrFdozgAHqyoy7CEOHuiB5DpTt2AmF1vLQbs
+	H91B6HyaU5jLEwXTtIHdcoUiQxTVSZgjCpUxL0NvITVYY5y9dYn/RxWY/Lq1Y14PdXB4
+	UI/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:in-reply-to:references:date
+	:message-id:subject:from:to:cc;
+	bh=m+kFOi6JQ2HyeHJtwg16uKnEzDIzRM8dhLTXxYpWcOo=;
+	b=YeXcxo56S6tU72hvnIC5ZiB40oYg9d1DO2/j9SNjnL6Hdpc5UmLYJRewqKLCz8CEf+
+	8OhyUGE9ALtZ0RMgsP6LT1DOxVKzKwLaFC/CsDbP7kyT2/mRKrpUCZnVX2wSRQkte6YD
+	KCQ2rSfwWEqXV/iW2oSQ6VydgmZ5PLbAIoK+cWE1rEGHmxae0EKyBwsJ00naQPw5nFHQ
+	y+VV2uQDqLLGGHThXwQ2ejaktm970TJ46q6aeEZ+tAqZHIAhL84xnUbqpQt9I7ORRjYK
+	5b84oC5+9ENIj/rApIAZPGX5igpoSf0GpNdPYSSMWeSXUcVUSurNPl2bCQkx6f8OC1/9
+	Gg8w==
+X-Gm-Message-State: AD7BkJLIFnt/j+1R0no9FJIZIh4dMHV0yMhn4M7fCvTa+pbSnx07woghFh6VU4OTqvyrVsLAkyEBejnCsgxR6g==
+MIME-Version: 1.0
+X-Received: by 10.159.37.100 with SMTP id 91mr4375684uaz.79.1459614550442;
+	Sat, 02 Apr 2016 09:29:10 -0700 (PDT)
+Received: by 10.176.5.163 with HTTP; Sat, 2 Apr 2016 09:29:10 -0700 (PDT)
+In-Reply-To: <jwv8u0y49bt.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <56FB02BB.3090501@alice.it> <83wpokuh3a.fsf@gnu.org>
+	<56FC0CDB.9090707@alice.it>
+	<CAP_d_8XDQmTR1M6=+a4yMAjkHFkDEnx4oFQiH57UUNLW2dzM4Q@mail.gmail.com>
+	<87poubvnhh.fsf@linux-m68k.org>
+	<CAP_d_8V=4W26O-r-DcOdfpFwwzpZKDtXnd71jOCwvhO0bL38og@mail.gmail.com>
+	<87lh4zvlp2.fsf@linux-m68k.org>
+	<CAP_d_8WSBJMZ2aLbnUwiRh1-ieG9mdcTyE-TnFo5AF+hE+_GyA@mail.gmail.com>
+	<jwvbn5u6cnu.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<56FD53F6.5090805@gmail.com>
+	<jwv8u0y49bt.fsf-monnier+gmane.emacs.devel@gnu.org>
+Date: Sun, 3 Apr 2016 00:29:10 +0800
+Message-ID: <CADtN0W+eax-pPtn5cxhLOubyjiV_s3Cr5MrfSkVhGm4Chm9t8w@mail.gmail.com>
+Subject: Re: About column numbers
+From: =?UTF-8?Q?Elias_M=C3=A5rtenson?= <lokedhs@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Content-Type: multipart/alternative; boundary=94eb2c122da4c9cb15052f82fe2f
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:400c:c05::234
+Cc: emacs-devel <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sat, 02 Apr 2016 16:29:13 -0000
+Content-Length: 2181
+Lines: 50
+
+--94eb2c122da4c9cb15052f82fe2f
+Content-Type: text/plain; charset=UTF-8
+
+On 1 April 2016 at 05:39, Stefan Monnier <monnier@iro.umontreal.ca> wrote:
+
+> >> (it would break some code, but most of it is already fundamentally
+> >> broken because it should use `point-min` rather than hardcoding 1, so
+> >> it's not *that* terrible).
+> > Amusingly, always using (point-min) also leads to interesting bugs.
+>
+> Oh yes.  Along with the "hard narrowing" discussion, it would be good to
+> have a way to get the "external point-min".  Currently the only portable
+> way (short of hardcoding 1) is via (save-restriction (widen)
+> (point-min)) which is rather round-about and inefficient.
+
+
+I have done this on occasions. Are there any cases where the save/widen
+dance actually gives a result which is not 1?
+
+Regards,
+Elias
+
+--94eb2c122da4c9cb15052f82fe2f
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail_extra"><div class=3D"gmail_quote">On 1=
+ April 2016 at 05:39, Stefan Monnier <span dir=3D"ltr">&lt;<a href=3D"mailt=
+o:monnier@iro.umontreal.ca" target=3D"_blank">monnier@iro.umontreal.ca</a>&=
+gt;</span> wrote:<br><blockquote class=3D"gmail_quote" style=3D"margin:0 0 =
+0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><span class=3D"">&gt;&g=
+t; (it would break some code, but most of it is already fundamentally<br>
+&gt;&gt; broken because it should use `point-min` rather than hardcoding 1,=
+ so<br>
+&gt;&gt; it&#39;s not *that* terrible).<br>
+&gt; Amusingly, always using (point-min) also leads to interesting bugs.<br=
+>
+<br>
+</span>Oh yes.=C2=A0 Along with the &quot;hard narrowing&quot; discussion, =
+it would be good to<br>
+have a way to get the &quot;external point-min&quot;.=C2=A0 Currently the o=
+nly portable<br>
+way (short of hardcoding 1) is via (save-restriction (widen)<br>
+(point-min)) which is rather round-about and inefficient.</blockquote><div>=
+<br></div><div>I have done this on occasions. Are there any cases where the=
+ save/widen dance actually gives a result which is not 1?</div><div><br></d=
+iv><div>Regards,</div><div>Elias</div></div></div></div>
+
+--94eb2c122da4c9cb15052f82fe2f--
+

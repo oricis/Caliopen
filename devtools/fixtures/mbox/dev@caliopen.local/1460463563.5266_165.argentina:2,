@@ -1,0 +1,111 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aXsnI-00063L-5z
+	for mharc-dev@caliopen.local; Mon, 22 Feb 2016 10:53:04 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:38120)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andlind@gmail.com>) id 1aXsnG-00063C-7G
+	for dev@caliopen.local; Mon, 22 Feb 2016 10:53:03 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <andlind@gmail.com>) id 1aXsnF-0007qB-CT
+	for dev@caliopen.local; Mon, 22 Feb 2016 10:53:02 -0500
+Received: from mail-vk0-x22b.google.com ([2607:f8b0:400c:c05::22b]:36665)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andlind@gmail.com>) id 1aXsnE-0007q5-VB
+	for dev@caliopen.local; Mon, 22 Feb 2016 10:53:01 -0500
+Received: by mail-vk0-x22b.google.com with SMTP id c3so133213090vkb.3
+	for <dev@caliopen.local>; Mon, 22 Feb 2016 07:53:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+	:cc:content-type;
+	bh=Ry/Z0CQNbxsQYYLGGSRG9+ZLz1IfBe634SdF7d6fUrY=;
+	b=pfQSqbh43CL31oeRyyK+chmLXhfz2VFYnQ0Ri8dOd3I9Z90Y6q5BE9fWLvW5TMCmvA
+	1ltIlRH2SL2NoH/grCKNqZyQzUWOZKsxRcVaEPFgw+o+E01DO41A2bnzN1gYxqDNf2MD
+	WEIikSX4eKGpt8CEkcUXz57lBI7+48F9vNBRd40w0rljkF6oJdNa9dH5ITJlVHZHe1hk
+	s11d1RojCiQvbxolSE1t1ZZbh0OfhUaGVg/JVZVwbIyjdK2VXS14rF28E52ocUvGobgG
+	Pal8sam2/R5osYhSMXy0/dQ0AR4odjX9hLwXALNHDULu7KbR11jbW7saCWF4029wTIx/
+	qKRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:in-reply-to:references:date
+	:message-id:subject:from:to:cc:content-type;
+	bh=Ry/Z0CQNbxsQYYLGGSRG9+ZLz1IfBe634SdF7d6fUrY=;
+	b=EmiogDBoGd5xn/mMWV5TLZv98cmoREA38bpIgPVkTcYyrGNoJRqmRinynsPN/ACWya
+	PzU4o6KO9LGW3DaTOSw/m75Z3saXeLKeYBSggo0t3PF6XkLlAWkx4JSVv8C4rbE7mF2P
+	72bXoJcSfCXu8TnQpQJ51+8mzhmWI0s9Pe1Www73AYx9ss86cIlEhvTA+EHO/qJ/cwsn
+	GkhdS4l33Et+1BJV92Y7LOHWG1S7I0Stx+MRdRxRJwgQ4qMEUSf3CE4yzyJHemMAGPYq
+	mTgqfHKUtG2FQbfwUZ0JvRDNnwm6SYN+S8Mj/7Hao2OY2Jt8wBKgznPH7kioc6An5+9J
+	kI4g==
+X-Gm-Message-State: AG10YOTVz3lyStK3x+TAUO8zLKSqMXbE8/ElLBIlPsuqMTSechwVJ7Y+b1EZMOroWmBApR7UM3l8EidTD2AQdg==
+MIME-Version: 1.0
+X-Received: by 10.31.56.140 with SMTP id f134mr24060687vka.23.1456156380472;
+	Mon, 22 Feb 2016 07:53:00 -0800 (PST)
+Received: by 10.31.214.131 with HTTP; Mon, 22 Feb 2016 07:53:00 -0800 (PST)
+In-Reply-To: <56CB11FC.9090705@gmail.com>
+References: <56CA94A8.3000205@gmail.com>
+	<CABr8ebYOYkvzhqNhvYQ3tQjDftJOwGcyVMmSNV-+yhKZJYc5wQ@mail.gmail.com>
+	<56CB11FC.9090705@gmail.com>
+Date: Mon, 22 Feb 2016 16:53:00 +0100
+Message-ID: <CABr8ebY-s5jHqm0RjOSMPPFEje0gX9-AdayR8OurPP5WArCJgQ@mail.gmail.com>
+Subject: Re: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+From: Anders Lindgren <andlind@gmail.com>
+To: =?UTF-8?B?Q2zDqW1lbnQgUGl0LS1DbGF1ZGVs?= <clement.pit@gmail.com>
+Content-Type: multipart/alternative; boundary=001a1143f0cccbabd6052c5dd362
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:400c:c05::22b
+Cc: Emacs developers <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 22 Feb 2016 15:53:03 -0000
+Content-Length: 1607
+Lines: 40
+
+--001a1143f0cccbabd6052c5dd362
+Content-Type: text/plain; charset=UTF-8
+
+>
+> > I've been using `(font-lock-region (point-min) (point-max))' to force
+> > a refontification of the entire buffer, for my htmlize-like packages
+> > (`faceup' and `e2ani'). I'm not sure if it's the "right way" to do
+> > it, but it works in practice.
+>
+> Thanks. Won't that refontify the whole buffer though, even the non-visible
+> (and not yet fontified) areas, though? That would be a performance issue
+> for me.
+>
+
+Yes, it does, so I guess this is not the correct solution for you.
+
+    -- Anders
+
+--001a1143f0cccbabd6052c5dd362
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail_extra"><div class=3D"gmail_quote"><blo=
+ckquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #c=
+cc solid;padding-left:1ex"><span class=3D"">&gt; I&#39;ve been using `(font=
+-lock-region (point-min) (point-max))&#39; to force<br>
+&gt; a refontification of the entire buffer, for my htmlize-like packages<b=
+r>
+&gt; (`faceup&#39; and `e2ani&#39;). I&#39;m not sure if it&#39;s the &quot=
+;right way&quot; to do<br>
+&gt; it, but it works in practice.<br>
+<br>
+</span>Thanks. Won&#39;t that refontify the whole buffer though, even the n=
+on-visible (and not yet fontified) areas, though? That would be a performan=
+ce issue for me.<br></blockquote><div><br></div><div>Yes, it does, so I gue=
+ss this is not the correct solution for you.</div><div><br></div><div>=C2=
+=A0 =C2=A0 -- Anders</div><div><br></div></div></div></div>
+
+--001a1143f0cccbabd6052c5dd362--
+

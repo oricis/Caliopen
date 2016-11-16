@@ -1,0 +1,96 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amrT2-0006kT-NT
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 19:30:04 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:40974)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrT0-0006jk-QJ
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:30:03 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrSx-00050b-KW
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:30:02 -0400
+Received: from mail-ob0-x234.google.com ([2607:f8b0:4003:c01::234]:36201)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrSx-00050O-FT
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:29:59 -0400
+Received: by mail-ob0-x234.google.com with SMTP id j9so39587788obd.3
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 16:29:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=sXPgiwnjg4JX627S4QiZ0YhpMj4zHXv70Rjycztrg1Y=;
+	b=gOfrkTwh1d2e9MdJF7I4wajDHuAjJpVYwVU24hL8pvJNYueE3sYQJZ5BaotRJ2w7BT
+	TWqKBHQElouMA6VkZIZqqMeTJJUnr/0exXn+GIbfFh+2xG+BXsZsjECiZeQ98DSsJuXl
+	JOB7kaSDrDXQ9y74n5v71Y5Mf5dfjwLbO6pbntl5SFF66e6aNcUpkAFD6E7BdApSpcw1
+	1zjMBg01GG59C7Mr1VgexAeokIMvPalpuEwVEzBUF9c774QhvQ5A3AZbmKFm0qWnadkh
+	N808/eucvyUZPtzKUBTVfcy+1+5ozY8sf7F/TVmJsOjQqgXRcO/FTclHyK3t5fiQZlc9
+	58vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=sXPgiwnjg4JX627S4QiZ0YhpMj4zHXv70Rjycztrg1Y=;
+	b=IbIXRzFDx2OCD0LFfuSE9qMDhGbMudU1eQcmhb0k0D7U3kLm8cBh/XOltkApAyJWPA
+	Pqg+uuvx8mtqbxsR1o7K6LqQJ7goYae/wvyaMdbVkY5BVQ0XA1rdhRAgVFiSJBIlNkCW
+	EXSl+o1dxOUeM6NvS4AuipoSgCWscMShaGbpl3wWkxxAgnhOW0sgzwhrDeDPIqcHkkPo
+	qX+WwNczM4dm6boCPXp0AHgRdwL6QyK/OvkYCi4cxQNrvPPyrfNZkMP9RLyMmgsoRKRc
+	T4kdigAehWf40qiThIXKV6rhlONtge43ueNVqGFVAWK6raIGgSfl9rflFOR5OVBsrg/C
+	nuGA==
+X-Gm-Message-State: AD7BkJKX8cauKdmmJDhWksHM4N/x5tE2gXs3V529TsaeRDxV7pGFtbH35F7qwZEeqfUDzA==
+X-Received: by 10.182.105.201 with SMTP id go9mr4912211obb.71.1459726199074;
+	Sun, 03 Apr 2016 16:29:59 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79]) by smtp.gmail.com with ESMTPSA id
+	cc15sm7705877obb.2.2016.04.03.16.29.58
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 16:29:58 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id 5D1FA13DAE6E4; Sun,  3 Apr 2016 16:29:57 -0700 (PDT)
+To: Sebastian Wiesner <swiesner@lunaryorn.com>
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+In-Reply-To: <05663DCE-3E5B-41E2-8657-460B2D013B49@lunaryorn.com> (Sebastian
+	Wiesner's message of "Thu, 24 Mar 2016 22:08:11 +0100")
+Date: Sun, 03 Apr 2016 16:29:49 -0700
+Message-ID: <m2pou6clua.fsf@newartisans.com>
+References: <56F42269.10400@gmail.com>
+	<jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<E16BD3EC-F7ED-463C-804C-DCBA8E548B15@lunaryorn.com>
+	<jwvshzffwix.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<05663DCE-3E5B-41E2-8657-460B2D013B49@lunaryorn.com>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: Sebastian Wiesner <swiesner@lunaryorn.com>, Stefan Monnier
+	<monnier@iro.umontreal.ca>, emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c01::234
+Cc: Stefan Monnier <monnier@iro.umontreal.ca>, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 23:30:03 -0000
+Content-Length: 519
+Lines: 12
+
+>>>>> Sebastian Wiesner <swiesner@lunaryorn.com> writes:
+
+> I must admit that I find it hard to agree. I do not see how the OS, or the
+> Emacs version, or the combination of both could be used to identify you as a
+> person. But if the can't, why would you consider this information private?
+
+One might not want RMS to know they're using OS X, for example? :)  Oops!!
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

@@ -1,0 +1,72 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anaph-0007FO-ND
+	for mharc-dev@caliopen.local; Tue, 05 Apr 2016 19:56:29 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:55951)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1anapf-0007Cl-PM
+	for dev@caliopen.local; Tue, 05 Apr 2016 19:56:28 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <rms@gnu.org>) id 1anape-0005TO-VU
+	for dev@caliopen.local; Tue, 05 Apr 2016 19:56:27 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:57047)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1anapd-0005RN-9j; Tue, 05 Apr 2016 19:56:25 -0400
+Received: from rms by fencepost.gnu.org with local (Exim 4.82)
+	(envelope-from <rms@gnu.org>)
+	id 1anapc-0006WG-Pg; Tue, 05 Apr 2016 19:56:24 -0400
+From: Richard Stallman <rms@gnu.org>
+To: =?utf-8?Q?Cl=C3=A9ment?= Pit--Claudel <clement.pit@gmail.com>
+In-reply-to: <5703D7BA.4070507@gmail.com> (message from =?utf-8?Q?Cl=C3=A9?=
+	=?utf-8?Q?ment?= Pit--Claudel on Tue, 5 Apr 2016 16:20:26 +0100)
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+References: <56F42269.10400@gmail.com>
+	<jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<E16BD3EC-F7ED-463C-804C-DCBA8E548B15@lunaryorn.com>
+	<jwvshzffwix.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<05663DCE-3E5B-41E2-8657-460B2D013B49@lunaryorn.com>
+	<m2pou6clua.fsf@newartisans.com> <E1an5SI-0007tk-5H@fencepost.gnu.org>
+	<570280D9.6030706@gmail.com> <E1anSM6-00051o-H9@fencepost.gnu.org>
+	<5703D7BA.4070507@gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Message-Id: <E1anapc-0006WG-Pg@fencepost.gnu.org>
+Date: Tue, 05 Apr 2016 19:56:24 -0400
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: rms@gnu.org
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 05 Apr 2016 23:56:28 -0000
+Content-Length: 634
+Lines: 18
+
+[[[ To any NSA and FBI agents reading my email: please consider    ]]]
+[[[ whether defending the US Constitution against all enemies,     ]]]
+[[[ foreign or domestic, requires you to follow Snowden's example. ]]]
+
+  > I meant IceCat. It sends its precise version, and it reveals that I'm using Firefox. 
+
+Are you sure?  I don't think so.  I think that string is entirely made up.
+That is what Ruben told me.
+
+I am sorry if I misunderstood the context of this.
+
+-- 
+Dr Richard Stallman
+President, Free Software Foundation (gnu.org, fsf.org)
+Internet Hall-of-Famer (internethalloffame.org)
+Skype: No way! See stallman.org/skype.html.
+
+

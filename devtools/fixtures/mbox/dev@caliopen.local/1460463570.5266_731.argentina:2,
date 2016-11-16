@@ -1,0 +1,65 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1albyL-0007Vr-Qc
+	for mharc-dev@caliopen.local; Thu, 31 Mar 2016 08:45:13 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:51823)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1albyJ-0007S1-SG
+	for dev@caliopen.local; Thu, 31 Mar 2016 08:45:12 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1albyE-0001cz-Ds
+	for dev@caliopen.local; Thu, 31 Mar 2016 08:45:11 -0400
+Received: from plane.gmane.org ([80.91.229.3]:56781)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1albyE-0001bP-8E
+	for dev@caliopen.local; Thu, 31 Mar 2016 08:45:06 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1albyC-0005Ff-M8
+	for dev@caliopen.local; Thu, 31 Mar 2016 14:45:04 +0200
+Received: from 45.72.141.202 ([45.72.141.202])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Thu, 31 Mar 2016 14:45:04 +0200
+Received: from monnier by 45.72.141.202 with local (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Thu, 31 Mar 2016 14:45:04 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: More convenient default rollback for users
+Date: Thu, 31 Mar 2016 08:41:10 -0400
+Message-ID: <jwvh9fm6crq.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <m3poudb86o.fsf@gnus.org> <83io05w9s7.fsf@gnu.org>
+	<m3bn5xb60l.fsf@gnus.org> <83egatw7lm.fsf@gnu.org>
+	<m3wpokas0n.fsf@gnus.org> <56FC10B1.3000808@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 45.72.141.202
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:19a5lS5buF8vxMQ/LvOOui0VY5Y=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 31 Mar 2016 12:45:12 -0000
+Content-Length: 76
+Lines: 6
+
+> Is that what customize-set-variable does?
+
+I think so.
+
+
+        Stefan
+
+

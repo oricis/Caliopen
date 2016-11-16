@@ -1,0 +1,88 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aiilN-000470-HY
+	for mharc-dev@caliopen.local; Wed, 23 Mar 2016 09:23:53 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39053)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aiilG-00045y-HV
+	for dev@caliopen.local; Wed, 23 Mar 2016 09:23:52 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aiilC-0000WN-Ku
+	for dev@caliopen.local; Wed, 23 Mar 2016 09:23:46 -0400
+Received: from plane.gmane.org ([80.91.229.3]:47340)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aiilC-0000WG-ER
+	for dev@caliopen.local; Wed, 23 Mar 2016 09:23:42 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aiil9-0000MU-Vj
+	for dev@caliopen.local; Wed, 23 Mar 2016 14:23:40 +0100
+Received: from 69-196-182-150.dsl.teksavvy.com ([69.196.182.150])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Wed, 23 Mar 2016 14:23:39 +0100
+Received: from monnier by 69-196-182-150.dsl.teksavvy.com with local (Gmexim
+	0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Wed, 23 Mar 2016 14:23:39 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+Date: Wed, 23 Mar 2016 09:23:34 -0400
+Message-ID: <jwvpoulnxgx.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87bn67eq4t.fsf@gmail.com>
+	<jwvy49ar473.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87bn66qsgo.fsf@gmail.com> <jwvzitquf5p.fsf-monnier+emacs@gnu.org>
+	<87fuvhpimn.fsf@gmail.com> <jwv1t71v3lb.fsf-monnier+emacs@gnu.org>
+	<8737rhpdv2.fsf@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 69-196-182-150.dsl.teksavvy.com
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:d7B3IEbVxAnS0NELuZ8um4GXyDI=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 23 Mar 2016 13:23:52 -0000
+Content-Length: 623
+Lines: 15
+
+> SMIE is relatively new; 7 modes in emacs and 5 in ELPA are already
+> using it, but it probably can be still molded here and there.
+
+Sure.  I'm just pointing out that it's a difficult modification to make,
+at least for some indentation codes (and probably for many of them).
+
+Maybe it's OK to design a multi-mode system which requires every major
+mode that wants to play with it well (e.g. well enough to get the kind
+of behavior we want for ERB) to basically rewrite its indentation code.
+
+But this won't fly unless we also make it possible to use major modes
+which haven't been rewritten in that way.
+
+
+        Stefan
+
+

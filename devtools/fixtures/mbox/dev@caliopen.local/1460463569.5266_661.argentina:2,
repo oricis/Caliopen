@@ -1,0 +1,173 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai2v2-00019l-31
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 12:43:04 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:36977)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai2uw-00018g-CC
+	for dev@caliopen.local; Mon, 21 Mar 2016 12:43:02 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai2ut-0005c3-47
+	for dev@caliopen.local; Mon, 21 Mar 2016 12:42:58 -0400
+Received: from mail-wm0-x230.google.com ([2a00:1450:400c:c09::230]:33303)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai2us-0005bh-Q6
+	for dev@caliopen.local; Mon, 21 Mar 2016 12:42:55 -0400
+Received: by mail-wm0-x230.google.com with SMTP id l68so159026872wml.0
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 09:42:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=CuynuobnTlYAw718edC6rgRAY5lRLwYPzXI6PRkEyrc=;
+	b=z/oW0vjh+M3NhGujtiFGMcb4R+VzD12gVKlVaPathFH/zLm+7b1lQ52psunIgN4GlW
+	CAP8Rjdbir/rIkP/nc09J8EZ3wCWUjBzP8A+tZvMpo07iGCCVPK0i7QCb602x87b9otx
+	k/ruuYkPdLPctbzWwTazx7R2MiepXVk9ygObXDcD3ns3RovjhsEKpZ2VeaPzGknWOYxc
+	rvd4VIRvLbvZd/VN/CxXAysKufHSZINkEmxsQ9FbF0hwhicnRt06Tx4P/TYlXEwLJp6N
+	M1NtZFkwYpefrknF9A0bwEpfCx+A3a8RqZ/GlzlYb+hYY7/YcyAQPK3+wTaiT5xUmv6S
+	1t2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=CuynuobnTlYAw718edC6rgRAY5lRLwYPzXI6PRkEyrc=;
+	b=R7cnubhcRALRf1JNh1ug6EZ+lpuqBEhISPVl2YRRDdBvVIHZ8ZGN49kWmVtS8BiAif
+	w3wsq0b7nHwGGGVWLbUJGND07fQ1dsZ56MkZvZg20LZgK89aUqetuvAincuqhdxe2XSs
+	tVIZbQr8UxEQ8zqbnuz8K9nBiHf4BZ9lxGmJ35Vu99+4amyXV5fR4CRWdHWTy3ZnOy7c
+	7v4bQUpexg/AzZKehuuXqir0JdrKLYB6aj/Ec6pbNYrULpo6gKCShjEHE8i+289cJcVU
+	xup6FvUHDuNQIJ3M3K1L6VvUOtBk5QBm4WEEWo6fKHFsTXuSauQg8EHU4R+U5jfISKB1
+	MUUQ==
+X-Gm-Message-State: AD7BkJIloZbV7ZvdF7rXT1cTN/lD2pCT/qyH12Sv8hRe1BNUcOQEi3j66uM47Vcw2mL6JA==
+X-Received: by 10.28.179.7 with SMTP id c7mr15782229wmf.46.1458578573827;
+	Mon, 21 Mar 2016 09:42:53 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	t7sm26171800wjf.39.2016.03.21.09.42.52
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Mon, 21 Mar 2016 09:42:52 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+Date: Mon, 21 Mar 2016 17:42:51 +0100
+In-Reply-To: <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org> (Stefan Monnier's message
+	of "Mon, 21 Mar 2016 10:43:56 -0400")
+Message-ID: <87fuvjeq9g.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::230
+Cc: Alan Mackenzie <acm@muc.de>, emacs-devel <dev@caliopen.local>,
+	Dmitry Gutov <dgutov@yandex.ru>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 16:43:02 -0000
+Content-Length: 3997
+Lines: 84
+
+
+>> On Mon, Mar 21 2016 10:43, Stefan Monnier wrote:
+
+>> parse-partial-sexp is called from code exclusively and it just happens
+>> that in multi-modes it is called outside of narrow region quite often.
+
+> How/why?  Can you give some concrete scenario?
+
+MM engine narrows to span region for a lot of tasks, most importantly
+font-lock. If inner mode fortification functions misbehaves (ignoring
+font-lock-dont-widen for example) like c-mode does this leads to trouble. So to
+avoid those troubles you would advice individual functions and narrow them
+properly or apply other tricks like overwriting output value or input args.  It
+all works fine till that function calls parse-partial-sexp (or some other low
+level function) and blows with args-out-of-range error.
+
+To be frank, the issue of parse-partial-sexp is fading because modes are now
+using syntax-ppss more extensively. Most of the problems with parse-partial-sexp
+from the past are now internalized in condition-case inside syntax-ppss. That
+condition-case is triggered very often (almost always) from inside polymode
+chunk narrowing.
+
+>> That's a major inconvenience. Why on earth one would need to
+>> take account in user narrowing for syntax parsing?
+
+> Because you need it for *everything* that looks at the buffer.
+> Why should parse-partial-sexp be different from (say) scan-sexps?
+
+I think parse-partial-sexp, syntax-ppss and maybe some others, are special in
+the sense that in order to return a correct value they need to be aware of the
+whole buffer. I don't see this as an inconsistency but I might be too naive.
+
+>> If parse-partial-sexp could be made to always widen to hard limits it
+>> will automatically solve a bunch of problems. bug#22983 being one of them,
+
+> Bug#22983 should be fixed by widening, indeed, but it should be done in
+> syntax.el.  Widening in parse-partial-sexp would only address some cases
+> but not all (e.g. the syntax-begin-function cases or the
+> syntax-propertize-function cases).  Those other cases can only be fixed
+> in syntax.el.
+
+>> the ubiquitous out-of-range errors in font-lock in multi-modes being
+>> the most important one.
+
+> I'm not familiar with those, so if you could give some examples it
+> would help us judge if they would indeed benefit from a fix in
+> parse-partial-sexp rather than elsewhere.
+
+c-mode provides an example. I don't remember where exactly and how but it has to
+do with but c-before-context-fl-expand-region and c-state-semi-safe-place
+because I am advising these two functions currently.
+
+The logic is roughly like this, c-mode engine doesn't respect
+font-lock-dont-widen, widens stuff in some of it's functions, then calls its
+parsing, gets back some points outside font-lock range and blows when trying to
+access those points from narrowed region.
+
+I was not collecting these cases carefully but I will start doing it and will
+get with more concrete examples in the following weeks.
+
+Another directions of problems is syntax-propertize. It can be called with POS
+outside of current narrowed region. Particularly from
+internal--syntax-propertize. But again I don't recall how exactly that was
+happening now.
+
+> Replace all your widen calls with calls to `prog-widen' and you get the same
+> result (since (nth 1 prog-indentation-context) is basically another name for
+> your hard-widen-limit).  So I don't think prog-widen is that very complicated.
+
+It's not but you have to enforce that in all known modes.
+
+> Note that "is more general" here means that the major mode's function has to
+> handle more cases, so it would seem to fundamentally require more work on the
+> major mode's side.
+
+I don't agree. Work must be done only in the generic multi-mode engines
+(mmm-mode, polymode etc). Other modes should re-use that generic infrastructure,
+or even better, do nothing, and leave to someone else to define a new polymode
+with host chunk being *the* mode. That every mode with basic needs for inner
+sub-modes tries to re-invent the wheel is a dead end.
+
+
+  Vitalie
+

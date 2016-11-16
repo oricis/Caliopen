@@ -1,0 +1,98 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alL0V-0002e4-9C
+	for mharc-dev@caliopen.local; Wed, 30 Mar 2016 14:38:19 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:46427)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <yurivkhan@gmail.com>) id 1alL0S-0002dE-Ni
+	for dev@caliopen.local; Wed, 30 Mar 2016 14:38:17 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <yurivkhan@gmail.com>) id 1alL0O-00044W-Uw
+	for dev@caliopen.local; Wed, 30 Mar 2016 14:38:16 -0400
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242]:32989)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <yurivkhan@gmail.com>)
+	id 1alL0O-00044M-N5; Wed, 30 Mar 2016 14:38:12 -0400
+Received: by mail-lf0-x242.google.com with SMTP id v198so5797661lfd.0;
+	Wed, 30 Mar 2016 11:38:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:sender:in-reply-to:references:from:date:message-id
+	:subject:to:cc:content-transfer-encoding;
+	bh=PoIrEo++EGLWC/Ve5Z5I5HEvCCbZ+jc9ahfot8R3p3s=;
+	b=fhfZ+ynJiumWhxG4B3pr0gZusoE+/uesHWe7sg10Ge/GgEeVwb6huAXLjN5rIk2Gxx
+	3UCNyHYmdLvgyqkA3eHU0GhMecVM0gosXzCz+NOs9bZjOOD+rwAH2DzJA5e9hDkODrAa
+	M93y6Bv2y1sQJ0swj/aGwOLy13iq09FNY6Df7nIz/3KCQjjkuUN4DsJsuBG94oz2H3CV
+	1Hn5uhL0M30JzBi9kZbEM6H+SZNUULG6qCZnbPAyqZ5qP9FqsX+h6Vv3ZpttteC2cgsu
+	4bQYiOJd5bfsRPtn4L296drZLP3ipgoy7A2T1fM9PqbMa1Fa8ZVgqOWeYrnkqWUjvfB8
+	cUzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+	:date:message-id:subject:to:cc:content-transfer-encoding;
+	bh=PoIrEo++EGLWC/Ve5Z5I5HEvCCbZ+jc9ahfot8R3p3s=;
+	b=UT2jqTAcqGbP+LFJhyAenKhyXsWko8YXSff2R0VJykG11iMdnQA8aQaOLrB+CdVqMm
+	HGbcjrI+xCr6WR6s251x0e8EYNjMF1A7VDqGwb1f9gvkSSAU59E07rv1mS/62R9jPoad
+	fspjfHnGf52pBtS2hgoNtz+ZZPYjhwn5IsrpwfJnfqpFZRIUppv18yJFB8D1xZnAyQxq
+	3QgfAIutBtjGwwuaPsiIq3HnmOWB4Zzsy8Al2i53YWx1KBM+amxBmDQyfCu9TxHaUO7t
+	/3pLnFDkrgXWwrb3lwTkLkhVBxdWqG3HI5XPOoemHClWkp5mNQLcNlOw8wy8hy55MpeI
+	ClcQ==
+X-Gm-Message-State: AD7BkJJ4AmQ6tY+BzT+ws4A3zQepdLQjNgxGph8MaG9q0w75qY0STym26mcK4EtmubjCETig/3uiaFJ/Bo+PHg==
+X-Received: by 10.25.148.208 with SMTP id w199mr4831098lfd.124.1459363091807; 
+	Wed, 30 Mar 2016 11:38:11 -0700 (PDT)
+MIME-Version: 1.0
+Sender: yurivkhan@gmail.com
+Received: by 10.112.254.164 with HTTP; Wed, 30 Mar 2016 11:37:52 -0700 (PDT)
+In-Reply-To: <87poubvnhh.fsf@linux-m68k.org>
+References: <56FB02BB.3090501@alice.it> <83wpokuh3a.fsf@gnu.org>
+	<56FC0CDB.9090707@alice.it>
+	<CAP_d_8XDQmTR1M6=+a4yMAjkHFkDEnx4oFQiH57UUNLW2dzM4Q@mail.gmail.com>
+	<87poubvnhh.fsf@linux-m68k.org>
+From: Yuri Khan <yuri.v.khan@gmail.com>
+Date: Thu, 31 Mar 2016 00:37:52 +0600
+X-Google-Sender-Auth: hLXnBbS-TIeZuaCrCy6gFmwvpDE
+Message-ID: <CAP_d_8V=4W26O-r-DcOdfpFwwzpZKDtXnd71jOCwvhO0bL38og@mail.gmail.com>
+Subject: Re: About column numbers
+To: Andreas Schwab <schwab@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:4010:c07::242
+Cc: Eli Zaretskii <eliz@gnu.org>, Emacs developers <dev@caliopen.local>,
+	Angelo Graziosi <angelo.graziosi@alice.it>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 30 Mar 2016 18:38:17 -0000
+Content-Length: 612
+Lines: 23
+
+On Thu, Mar 31, 2016 at 12:18 AM, Andreas Schwab <schwab@linux-m68k.org> wr=
+ote:
+
+>> Lines are a different beast =E2=80=94 you have to be compatible with the
+>> convention compilers use to report errors, and pretty much all of them
+>> count lines from 1.
+>
+> They also count columns from 1.
+
+At least GCC doesn=E2=80=99t. It counts bytes. Perhaps that=E2=80=99s a bug=
+.
+
+$ cat test1.c
+/*=D1=8F*/foo
+
+$ gcc test1.c
+test1.c:1:7: error: expected =E2=80=98=3D=E2=80=99, =E2=80=98,=E2=80=99, =
+=E2=80=98;=E2=80=99, =E2=80=98asm=E2=80=99 or =E2=80=98__attribute__=E2=80=
+=99
+at end of input
+ /*=D1=8F*/foo
+       ^
+

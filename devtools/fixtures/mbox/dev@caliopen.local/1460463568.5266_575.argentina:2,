@@ -1,0 +1,82 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai0cB-00067w-Ry
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 10:15:27 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39919)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ai0c3-0005y6-PG
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:15:25 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ai0bx-0001OQ-Td
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:15:19 -0400
+Received: from plane.gmane.org ([80.91.229.3]:40664)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ai0bx-0001OC-NG
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:15:13 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ai0bq-0000Vy-Ao
+	for dev@caliopen.local; Mon, 21 Mar 2016 15:15:06 +0100
+Received: from 157-52-2-179.cpe.teksavvy.com ([157.52.2.179])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 15:15:06 +0100
+Received: from monnier by 157-52-2-179.cpe.teksavvy.com with local (Gmexim 0.1
+	(Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 15:15:06 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+Date: Mon, 21 Mar 2016 10:04:58 -0400
+Message-ID: <jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 157-52-2-179.cpe.teksavvy.com
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:aE9OsrP7pHwW4G2EJ9k2vgIBqh8=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 14:15:25 -0000
+Content-Length: 363
+Lines: 11
+
+>     (defun call-with-hard-narrowing (from to func)
+>       (make-local-variable 'internal--hard-widen-limits)
+>       (let ((internal--hard-widen-limits (cons from to)))
+>         (funcall func)))
+
+Hmm... I now realize that this won't handle the case of info-mode
+buffers (and similarly rmail buffers) where the hard-narrowing is not
+scoped.
+
+
+        Stefan
+
+

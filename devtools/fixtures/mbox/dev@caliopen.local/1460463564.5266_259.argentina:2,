@@ -1,0 +1,98 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anQlY-0003tb-R3
+	for mharc-dev@caliopen.local; Tue, 05 Apr 2016 09:11:32 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59201)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <phillip.lord@russet.org.uk>) id 1anQlQ-0003qL-QX
+	for dev@caliopen.local; Tue, 05 Apr 2016 09:11:28 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <phillip.lord@russet.org.uk>) id 1anQlN-0004Nz-4M
+	for dev@caliopen.local; Tue, 05 Apr 2016 09:11:24 -0400
+Received: from cloud103.planethippo.com ([31.216.48.48]:41285)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <phillip.lord@russet.org.uk>) id 1anQlM-0004Nn-RA
+	for dev@caliopen.local; Tue, 05 Apr 2016 09:11:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=russet.org.uk; s=default; h=Content-Type:MIME-Version:Message-ID:
+	In-Reply-To:Date:References:Subject:Cc:To:From;
+	bh=sg9hHEaqiTaFgeWxTqXBZ21ubbc/RCfs9LaB+Oqp5IY=;
+	b=FKnq+ge7DY6BIyA1Ev2Jz0Mn8u
+	5wpZRg3NjJGtwz/mV3q9/CtihLEiHK4Bs2DT/NGYCzkRIhsvBlh//zASUfj7JgkE/Qj7h/lXiSwrl
+	DGXd1PQem0YQPCSGctlzfxcURcmYO2GM71jZ2DDraomZigEeI5yncZUGaaBO0B6mr5WAISIuwNxoa
+	IUyPA4Kw7T3Uq/QAUPRFVn7LcX175bHf5rvg4VEqN/VOAmtwloKsB4B69rqOTmbhG6eOVZz6y6TzN
+	ZGnhpWGZBMgvvgg/DcFSzGL8MRf64eST53EMy0ah1bDBAE2pvBefYotMFR5QDaGmjmT7CC8loTfwm
+	DvDJL20w==;
+Received: from janus-nat-128-240-225-60.ncl.ac.uk ([128.240.225.60]:32363
+	helo=russet.org.uk) by cloud103.planethippo.com with esmtpsa
+	(TLSv1.2:DHE-RSA-AES128-SHA:128) (Exim 4.86_1)
+	(envelope-from <phillip.lord@russet.org.uk>)
+	id 1anQlL-000Qqx-Qb; Tue, 05 Apr 2016 14:11:19 +0100
+From: phillip.lord@russet.org.uk (Phillip Lord)
+To: Lode Leroy <lode.leroy@gmail.com>
+Subject: Re: pre-test windows binaries
+References: <CA+N9e5b+U7kkiHDG9+NRzwpHD1-y0cnnp8NsJv1Vsig88L-H5A@mail.gmail.com>
+Date: Tue, 05 Apr 2016 14:11:19 +0100
+In-Reply-To: <CA+N9e5b+U7kkiHDG9+NRzwpHD1-y0cnnp8NsJv1Vsig88L-H5A@mail.gmail.com>
+	(Lode Leroy's message of "Mon, 4 Apr 2016 15:51:42 +0200")
+Message-ID: <87bn5oqjyg.fsf@russet.org.uk>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-AntiAbuse: This header was added to track abuse,
+	please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cloud103.planethippo.com
+X-AntiAbuse: Original Domain - gnu.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - russet.org.uk
+X-Get-Message-Sender-Via: cloud103.planethippo.com: authenticated_id:
+	phillip.lord@russet.org.uk
+X-Authenticated-Sender: cloud103.planethippo.com: phillip.lord@russet.org.uk
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 31.216.48.48
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 05 Apr 2016 13:11:29 -0000
+Content-Length: 1226
+Lines: 31
+
+Lode Leroy <lode.leroy@gmail.com> writes:
+
+> I installed this version:
+> http://www.russet.org.uk/scratch/emacs-25.0.92-x86_64-w64-mingw32.zip
+> and when clicking the "Emacs Guided Tour" in the "About GNU Emacs"
+> text, I get this error:
+>     Contacting host: www.gnu.org:80
+>     libxml2 library not found
+>
+> could libxml2.dll be added to the zip archive?
+
+
+It could be, but the reason for not doing this is that I then have to
+distribute the source for libxml2.dll. And, of course, any dependencies.
+And, if libxml2, why not gnutls, libjpeg and all the others (again, with
+all their source). I think it is mainly for this reason that the dlls
+haven't been distributed previously with the exception of libXpm --
+although Emacs can even function without this.
+
+The only solution I know of is that, you can unpack my binaries on top
+of a msys2 installation and all should work.
+
+I find this not an ideal solution at the moment, as it makes Emacs
+installation painful. I do have a better potential solution in mind:
+which is to write an ELPA package which pulls all the relevant DLLs
+straight down from the msys repositories. This way, we don't have to
+distribute any DLLs at all, so source distribution isn't needed.
+
+Phil
+
+

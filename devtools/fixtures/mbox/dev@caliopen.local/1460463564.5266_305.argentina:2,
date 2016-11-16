@@ -1,0 +1,98 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an3z8-0007XY-9T
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 08:52:02 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:46958)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1an3z6-0007XS-7R
+	for dev@caliopen.local; Mon, 04 Apr 2016 08:52:01 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1an3z2-0005Ru-73
+	for dev@caliopen.local; Mon, 04 Apr 2016 08:52:00 -0400
+Received: from plane.gmane.org ([80.91.229.3]:59036)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1an3z2-0005Rq-03
+	for dev@caliopen.local; Mon, 04 Apr 2016 08:51:56 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1an3yz-0007p1-MG
+	for dev@caliopen.local; Mon, 04 Apr 2016 14:51:53 +0200
+Received: from 69-165-138-79.dsl.teksavvy.com ([69.165.138.79])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 14:51:53 +0200
+Received: from monnier by 69-165-138-79.dsl.teksavvy.com with local (Gmexim
+	0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 14:51:53 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: "Staying in the same place"
+Date: Mon, 04 Apr 2016 08:51:47 -0400
+Message-ID: <jwv7fgd1r7w.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <m3oa9q53uq.fsf@gnus.org>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 69-165-138-79.dsl.teksavvy.com
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:pkrwxJt6BXGMp1bqnSXqFulfiwY=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 12:52:01 -0000
+Content-Length: 1728
+Lines: 41
+
+> There's a lot of modes in Emacs that don't reflect a physical file, but
+> has only generated content (for some values of "generated").  Many of
+> these implement a version of "revert", usually bound to the `g' key,
+> which basically do an `erase-buffer' and then generate the buffer anew.
+
+I think it'd good to think of such solutions in the context of bookmarks
+as well.
+
+IOW, I think ideally, there should be a special-mode-revert-buffer
+function (which special-mode sets as the default value of
+revert-buffer-function), which basically just does a "get bookmark data,
+then go back to that bookmark".
+
+I don't think it can be done with the current bookmark data, tho.
+IIRC there were 2 main reasons:
+- You need to be able to distinguish the case "go back to bookmark in
+  a new buffer" and "go back to bookmark in the current buffer".
+- You probably want to distinguish between the case where you want to
+  revert/refresh, and the case where it's OK to just jump to some
+  spot in some existing buffer.
+
+Last time I looked at it, I also figured that it'd be nice if the
+help-xref-* could use the same infrastructure.
+
+> And then you have to implement some way of "staying in the same place".
+
+Bookmarks do that part acceptably, I think.
+
+> (The reason I'm thinking about this is that I was thinking about what
+> would be necessary to make `g' in compilation buffers remain in "the
+> same place".  Which is useful when you're trying to weed out compilation
+> warnings.)
+
+Oohh.. that's yet another step up in complexity since in that case you
+can't "go back" right away, you first have to wait for the process to
+send enough data.
+But yes, that would be great (I'd particularly appreciate it in
+*vc-diff*).
+
+
+        Stefan
+
+

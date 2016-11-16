@@ -1,0 +1,85 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amgBX-00034r-3X
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 07:27:15 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:34732)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1amgBU-00033o-Hv
+	for dev@caliopen.local; Sun, 03 Apr 2016 07:27:13 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1amgBP-0003RC-To
+	for dev@caliopen.local; Sun, 03 Apr 2016 07:27:12 -0400
+Received: from mail-out.m-online.net ([2001:a60:0:28:0:1:25:1]:34712)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1amgBP-0003Qf-Mq
+	for dev@caliopen.local; Sun, 03 Apr 2016 07:27:07 -0400
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 3qdCWX1cRVz3hjlq;
+	Sun,  3 Apr 2016 13:27:04 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
+	by mail.m-online.net (Postfix) with ESMTP id 3qdCWX1F7Kzvh2B;
+	Sun,  3 Apr 2016 13:27:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+	by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavisd-new,
+	port 10024)
+	with ESMTP id jLBdywdG4pcQ; Sun,  3 Apr 2016 13:27:03 +0200 (CEST)
+X-Auth-Info: aL2uiX2ovP+BoERlzkD9R01i3dPU8BT3+tlrcpEWC6bx5IkFJAhGq7+aPWdk2UgN
+Received: from igel.home (ppp-88-217-22-197.dynamic.mnet-online.de
+	[88.217.22.197]) by mail.mnet-online.de (Postfix) with ESMTPA;
+	Sun,  3 Apr 2016 13:27:02 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id B00372C3440; Sun,  3 Apr 2016 13:27:02 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Alan Mackenzie <acm@muc.de>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<20160403111708.GA3537@acm.fritz.box>
+X-Yow: Mmmmmm-MMMMMM!!  A plate of STEAMING PIECES of a PIG mixed
+	with the shreds of SEVERAL CHICKENS!!...  Oh BOY!!  I'm
+	about to swallow a TORN-OFF section of a COW'S LEFT LEG
+	soaked in COTTONSEED OIL and SUGAR!!  ..  Let's see..
+	Next, I'll have the GROUND-UP flesh of CUTE, BABY LAMBS
+	fried in the MELTED, FATTY TISSUES from a warm-blooded
+	animal someone once PETTED!!  ...  YUM!!  That was GOOD!!
+	For DESSERT, I'll have a TOFU BURGER with BEAN SPROUTS
+	on a stone-ground, WHOLE WHEAT BUN!!
+Date: Sun, 03 Apr 2016 13:27:02 +0200
+In-Reply-To: <20160403111708.GA3537@acm.fritz.box> (Alan Mackenzie's message
+	of "Sun, 3 Apr 2016 11:17:08 +0000")
+Message-ID: <87shz3yltl.fsf@linux-m68k.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 2001:a60:0:28:0:1:25:1
+Cc: Emacs developers <dev@caliopen.local>,
+	Kaushal Modi <kaushal.modi@gmail.com>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 11:27:13 -0000
+Content-Length: 351
+Lines: 13
+
+Alan Mackenzie <acm@muc.de> writes:
+
+> It would also be nice if such "pseudo merges" could be handled locally,
+
+In git, *all* operations happen locally (until you run git push).
+
+Andreas.
+
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
+"And now for something completely different."
+

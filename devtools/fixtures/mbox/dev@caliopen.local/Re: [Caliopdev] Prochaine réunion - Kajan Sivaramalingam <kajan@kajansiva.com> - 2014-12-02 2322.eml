@@ -1,0 +1,156 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id E67CA120A2F;
+	Tue,  2 Dec 2014 23:22:31 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 0.498
+X-Spam-Level: 
+X-Spam-Status: No, score=0.498 tagged_above=-999 required=5
+	tests=[BAYES_50=0.001, HTML_40_50=0.496, HTML_MESSAGE=0.001]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id HvRNWLoozfHA; Tue,  2 Dec 2014 23:22:29 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id D9F1E120A2D;
+	Tue,  2 Dec 2014 23:22:29 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 879916B647148;
+	Tue,  2 Dec 2014 23:22:29 +0100 (CET)
+Authentication-Results: brassens.heberge.info; dkim=fail
+	reason="verification failed; insecure key"
+	header.d=gmail.com header.i=@gmail.com header.b=rCf620dT;
+	dkim-adsp=none (insecure policy); dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id YNJ5b-EH6lL8; Tue,  2 Dec 2014 23:22:28 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id CF5BF6B647143;
+	Tue,  2 Dec 2014 23:22:27 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 952E16B647146
+ for <caliopdev@caliop.net>; Tue,  2 Dec 2014 23:22:26 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id PV7FKdII0VeA for <caliopdev@caliop.net>;
+ Tue,  2 Dec 2014 23:22:25 +0100 (CET)
+Received: from mail-la0-f45.google.com (mail-la0-f45.google.com
+ [209.85.215.45])
+ (using TLSv1 with cipher ECDHE-RSA-RC4-SHA (128/128 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id 275AB6B647143
+ for <caliopdev@caliop.net>; Tue,  2 Dec 2014 23:22:25 +0100 (CET)
+Received: by mail-la0-f45.google.com with SMTP id gq15so11569224lab.32
+ for <caliopdev@caliop.net>; Tue, 02 Dec 2014 14:22:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+ h=mime-version:sender:in-reply-to:references:date:message-id:subject
+ :from:to:content-type;
+ bh=Z4DOlniyxCuI7YFB/WXaptW7JpKgsdrI76bPwP+bwoE=;
+ b=rCf620dTgOrMHIUELx/F3weF0WHWH9McXUyz9W3r6rH+YHdypxdqNHAJYh/3oWKwMX
+ Kc3iTo77lHtM151ohaWGqNfsOVu1xOAOMpzDQ4O3L1RNXQ8VbTNM3Xjm8fRO/poUF0b+
+ n0E8yD/9V3VT6xqPVeUc52WtxgE2adUdBpSzXOI/QqgPLuTiQgAZL18iAwr3/lAyFo+g
+ wFBKFlM63uc9XFDzGvrdUKok+QuDWkeEuG+5CaSOLUfW7PnfnvdUpg0kJYM7Tr+aqe+M
+ lpJxptMZlvx26oJ2YtMjp8EQ83+v461NOvLEhpGvl9eHAoJV/8Hj7j9wd0WUM2ITLAYX
+ P8Kw==
+MIME-Version: 1.0
+X-Received: by 10.152.29.41 with SMTP id g9mr1476580lah.32.1417558944339; Tue,
+ 02 Dec 2014 14:22:24 -0800 (PST)
+Received: by 10.25.20.216 with HTTP; Tue, 2 Dec 2014 14:22:24 -0800 (PST)
+In-Reply-To: <547DC86D.6010806@chamal.fr>
+References: <5478A041.8020105@chamal.fr>
+ <20141130162431.GF14633@brasil.brainstorm.fr>
+ <BC28FFD7-1F1D-4854-96B2-723CCB0DC6F7@gandi.net>
+ <20141201111410.GI14633@brasil.brainstorm.fr>
+ <20141201204235.GC7323@brasil.brainstorm.fr>
+ <547DC86D.6010806@chamal.fr>
+Date: Tue, 2 Dec 2014 23:22:24 +0100
+X-Google-Sender-Auth: -jmCzCEtbXXk8t0vEAKwH57f3TQ
+Message-ID: <CA+tgzehro25o_3QqyKNrzjhUKRBfGjpbegGEE9ED7ynEiN-exA@mail.gmail.com>
+From: Kajan Sivaramalingam <kajan@kajansiva.com>
+To: =?UTF-8?Q?Liste_de_d=C3=A9veloppement_Caliopen?= <caliopdev@caliop.net>
+Subject: Re: [Caliopdev] =?utf-8?q?Prochaine_r=C3=A9union?=
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============1524340671=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+--===============1524340671==
+Content-Type: multipart/alternative; boundary=089e0158c09a535c820509432947
+
+--089e0158c09a535c820509432947
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+>
+>
+>>  On a un gagnant qui se demarque en regardant les quelques
+> reponses recues et meme en excluant ma matrice (j'ai une
+> legitimite toute relative a choisir une librairie / framework JS AMA).
+>
+> Le consensus semble donc se faire autour d'Ember qui est
+> globalement mieux note.
+>
+> ++ chamal
+
+
+Cool, je vais donc commencer =C3=A0 regarder plus s=C3=A9rieusement Ember d=
+ans ce cas.
+
+On a une id=C3=A9e des personnes qui seront amen=C3=A9s =C3=A0 participer a=
+u d=C3=A9veloppement
+front ? Pour voir comment s'organiser, avec qui poser les bases, etc...
+
+--089e0158c09a535c820509432947
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail_extra"><div class=3D"gmail_quote"><blo=
+ckquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #c=
+cc solid;padding-left:1ex"><span class=3D""><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">=
+<br>
+</blockquote></span>
+On a un gagnant qui se demarque en regardant les quelques<br>
+reponses recues et meme en excluant ma matrice (j&#39;ai une<br>
+legitimite toute relative a choisir une librairie / framework JS AMA).<br>
+<br>
+Le consensus semble donc se faire autour d&#39;Ember qui est<br>
+globalement mieux note.<br>
+<br>
+++ chamal</blockquote><div><br></div><div>Cool, je vais donc commencer =C3=
+=A0 regarder plus s=C3=A9rieusement Ember dans ce cas.</div><div><br></div>=
+<div>On a une id=C3=A9e des personnes qui seront amen=C3=A9s =C3=A0 partici=
+per au d=C3=A9veloppement front ? Pour voir comment s&#39;organiser, avec q=
+ui poser les bases, etc...=C2=A0</div></div><br></div></div>
+
+--089e0158c09a535c820509432947--
+
+--===============1524340671==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============1524340671==--

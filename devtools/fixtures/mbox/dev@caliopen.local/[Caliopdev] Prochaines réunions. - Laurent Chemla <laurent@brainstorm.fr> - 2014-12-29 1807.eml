@@ -1,0 +1,93 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+Delivered-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by gandi.net (Postfix) with ESMTP id 67BFFE39E5;
+	Mon, 29 Dec 2014 18:08:07 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -0.185
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.185 tagged_above=-999 required=5
+	tests=[BAYES_40=-0.185]
+Received: from gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id 51vxoEnr-2Us; Mon, 29 Dec 2014 18:08:05 +0100 (CET)
+Received: from smtp-out1.octopuce.fr (bck3.octopuce.fr [91.194.60.153])
+	by gandi.net (Postfix) with ESMTP id 4390FE39BD;
+	Mon, 29 Dec 2014 18:08:05 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	by smtp-out1.octopuce.fr (Postfix) with ESMTPS id E95791070AAD8;
+	Mon, 29 Dec 2014 18:08:04 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 238A16B6D94AE;
+	Mon, 29 Dec 2014 18:08:04 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id oGoNXfDa7Ich; Mon, 29 Dec 2014 18:08:00 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id BCD736B6D94AC;
+	Mon, 29 Dec 2014 18:07:59 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 8AF1B6B6D94AE
+ for <caliopdev@caliop.net>; Mon, 29 Dec 2014 18:07:58 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id oo3E1zN0VRqg for <caliopdev@caliop.net>;
+ Mon, 29 Dec 2014 18:07:57 +0100 (CET)
+Received: from brasil.brainstorm.fr (brasil.brainstorm.fr [193.56.58.33])
+ by brassens.heberge.info (Postfix) with ESMTP id BD0846B6D94AC
+ for <caliopdev@caliop.net>; Mon, 29 Dec 2014 18:07:57 +0100 (CET)
+Received: by brasil.brainstorm.fr (Postfix, from userid 1000)
+ id 9EA9D20B3740F; Mon, 29 Dec 2014 18:07:56 +0100 (CET)
+Date: Mon, 29 Dec 2014 18:07:56 +0100
+From: Laurent Chemla <laurent@brainstorm.fr>
+To: caliopdev@caliop.net
+Message-ID: <20141229170756.GG25421@brasil.brainstorm.fr>
+MIME-Version: 1.0
+Content-Disposition: inline
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Subject: [Caliopdev] =?iso-8859-1?q?Prochaines_r=E9unions=2E?=
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+
+Salut,
+
+Les r=E9unions "th=E9matiques" vont =EAtre plus difficiles =E0 organiser, je
+propose qu'on conserve le principe des r=E9unions quinzomadaires, mais
+qu'en fonction des besoins, celles-ci soient limit=E9es aux sujets qui
+ont besoin d'=EAtre affin=E9s.
+
+Par exemple, si on pr=E9voit 2 dates en janvier (le 9 et le 23 ?), il
+faut que les personnes int=E9ress=E9es par une discussion sur le back le
+signalent ici, celles qui veulent parler de l'UI aussi, idem pour la
+communication.
+
+En fonction des pr=E9sents sur chaque sujet, on d=E9cidera du ou des
+th=E8mes de la ou des r=E9unions, ainsi que de leur horaire pour ceux
+qui voudraient participer =E0 plusieurs.
+
+=C7a vous semble faisable, les gens ?
+
+L.
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev

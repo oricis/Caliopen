@@ -1,0 +1,136 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1al8us-0002ZT-Me
+	for mharc-dev@caliopen.local; Wed, 30 Mar 2016 01:43:42 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:52519)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <iclcoolster@gmail.com>) id 1al8uq-0002ZK-2l
+	for dev@caliopen.local; Wed, 30 Mar 2016 01:43:41 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <iclcoolster@gmail.com>) id 1al8uo-00006z-Tw
+	for dev@caliopen.local; Wed, 30 Mar 2016 01:43:39 -0400
+Received: from mail-ob0-x22a.google.com ([2607:f8b0:4003:c01::22a]:33515)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <iclcoolster@gmail.com>) id 1al8uo-00006t-Nq
+	for dev@caliopen.local; Wed, 30 Mar 2016 01:43:38 -0400
+Received: by mail-ob0-x22a.google.com with SMTP id x3so47460610obt.0
+	for <dev@caliopen.local>; Tue, 29 Mar 2016 22:43:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+	:cc; bh=0iNpCiZo5YiZi1sWWViyExgGMp73IalnrPMhmK6/8ck=;
+	b=clGMnmTX/N6zizfKy/YC3PjkWSKyX/yxqndriVAIpnjL3FC/0RwBfuUJ4BN2+YuglV
+	SPrbAlUEIcWYsN66wl2Nt6tdYf6bHGdueNnFa21JkCVvnK7a2DLiYKEShsGCzSZrvtoB
+	bSmVO2vmGVx+QGneyneBjevFuRu7zNv8icnyLhhQGUIAyxv4p1sGoqtOdmIDR/jWxkTL
+	LIMIPNkkMiV972YSMy0o4pDD/jgLrAjwSX7D2ZW5p3ricwLqw4/JxAWqONp5KGBpl30m
+	YIgL9GsOhgr6CpV2kobCa14l41NKucO9FGlWQ75nlBZh2IXecXvDO1NKomvSe8jpcnQV
+	O1Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+	:message-id:subject:to:cc;
+	bh=0iNpCiZo5YiZi1sWWViyExgGMp73IalnrPMhmK6/8ck=;
+	b=UaDthEQzYHhgmpxIHGGo/CxdMZIwtBVm6QHDHMlE8mPly+aiEmi4XCKxouPkAXmFh6
+	D18iEMraRd40AskA9p5GgWZGTCmJbhxJqFGnyhwW6pFogsyz+leYlPw5UDIC7xS4J6Mk
+	EoBuG3+2gG2N2hiB4OfHCAtC4ITH1CI08FjOzOs8vyfpKL2AnZHpWw364a4Q00t+PCzj
+	aor4pGFin39CpMj6iR9wHpWv8OyPlk2skTVbutqmfZrDgQkhQzQhvQ/KOgJYqF3g3xfH
+	kLEEem3C/BInn+qcpqlzREuuOdiZbKj0tvfCANVWOarwas5agwz3Dy8dszjIsS1iP+Iz
+	DbCw==
+X-Gm-Message-State: AD7BkJJeT6/MwYa0Iy3L/2wTcXCS2QpcWp29DSSC+vfq3dsleddIHd1yv43P8BlT/HqZlyLUteCSe8ShGI183g==
+X-Received: by 10.202.183.7 with SMTP id h7mr3240695oif.25.1459316617881; Tue,
+	29 Mar 2016 22:43:37 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.202.108.214 with HTTP; Tue, 29 Mar 2016 22:43:18 -0700 (PDT)
+In-Reply-To: <56FB02BB.3090501@alice.it>
+References: <56FB02BB.3090501@alice.it>
+From: psachin <iclcoolster@gmail.com>
+Date: Wed, 30 Mar 2016 11:13:18 +0530
+Message-ID: <CANN44o-NhMiysEk3y7EakWSNxzdEAqm=1theKRibPzjFd8_t+Q@mail.gmail.com>
+Subject: Re: About column numbers
+To: Angelo Graziosi <angelo.graziosi@alice.it>
+Content-Type: multipart/alternative; boundary=001a113ce0469fb248052f3da088
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c01::22a
+Cc: Emacs developers <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 30 Mar 2016 05:43:41 -0000
+Content-Length: 2294
+Lines: 69
+
+--001a113ce0469fb248052f3da088
+Content-Type: text/plain; charset=UTF-8
+
+Digging goes back to file src/indent.c. Function: current-column
+
+On Wed, Mar 30, 2016 at 4:03 AM, Angelo Graziosi <angelo.graziosi@alice.it>
+wrote:
+
+> When the option about column numbers is enabled, the column numbers start
+> from "0" (zero). In other words, when the cursor in in the top-left corner
+> of the buffer, the mode line displays
+>
+>   (1,0)
+>
+> line number   : 1
+> column number : 0
+>
+> Why columns start from 0 (zero) and not 1 as for lines? Would it be better
+> (1,1)?
+>
+> Is there some settings to change this behavior? If not, I would suggest to
+> change this in Emacs.. or to add some settings to change this..
+>
+>  Angelo
+>
+>
+
+
+-- 
+Sachin
+psachin.github.io
+
+--001a113ce0469fb248052f3da088
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Digging goes back to file src/indent.c. Function: current-=
+column</div><div class=3D"gmail_extra"><br><div class=3D"gmail_quote">On We=
+d, Mar 30, 2016 at 4:03 AM, Angelo Graziosi <span dir=3D"ltr">&lt;<a href=
+=3D"mailto:angelo.graziosi@alice.it" target=3D"_blank">angelo.graziosi@alic=
+e.it</a>&gt;</span> wrote:<br><blockquote class=3D"gmail_quote" style=3D"ma=
+rgin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">When the optio=
+n about column numbers is enabled, the column numbers start from &quot;0&qu=
+ot; (zero). In other words, when the cursor in in the top-left corner of th=
+e buffer, the mode line displays<br>
+<br>
+=C2=A0 (1,0)<br>
+<br>
+line number=C2=A0 =C2=A0: 1<br>
+column number : 0<br>
+<br>
+Why columns start from 0 (zero) and not 1 as for lines? Would it be better =
+(1,1)?<br>
+<br>
+Is there some settings to change this behavior? If not, I would suggest to =
+change this in Emacs.. or to add some settings to change this..<span class=
+=3D"HOEnZb"><font color=3D"#888888"><br>
+<br>
+=C2=A0Angelo<br>
+<br>
+</font></span></blockquote></div><br><br clear=3D"all"><br>-- <br><div clas=
+s=3D"gmail_signature"><div dir=3D"ltr"><div><div dir=3D"ltr"><div><div dir=
+=3D"ltr"><div><font color=3D"#000000">Sachin<br><a href=3D"http://psachin.g=
+ithub.io/" target=3D"_blank">psachin.github.io</a><br></font></div></div></=
+div></div></div></div></div>
+</div>
+
+--001a113ce0469fb248052f3da088--
+

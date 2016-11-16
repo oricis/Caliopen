@@ -1,0 +1,150 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amH2k-0000hW-N6
+	for mharc-dev@caliopen.local; Sat, 02 Apr 2016 04:36:30 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:45034)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1amH2i-0000h5-9x
+	for dev@caliopen.local; Sat, 02 Apr 2016 04:36:29 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1amH2f-0003Lh-3Q
+	for dev@caliopen.local; Sat, 02 Apr 2016 04:36:28 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:36080)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1amH2U-0003Gy-An; Sat, 02 Apr 2016 04:36:14 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:4469
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1amH2T-0007Ty-9I; Sat, 02 Apr 2016 04:36:13 -0400
+Date: Sat, 02 Apr 2016 11:35:41 +0300
+Message-Id: <83pou8s90i.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Paul Eggert <eggert@cs.ucla.edu>
+In-reply-to: <56FE276C.2050306@cs.ucla.edu> (message from Paul Eggert on Fri, 
+	1 Apr 2016 00:46:52 -0700)
+Subject: Re: [PATCH] src/print.c: Check for __GLIBC__ rather than GNU_LINUX
+References: <1459315328-3663-1-git-send-email-somasissounds@gmail.com>
+	<56FD8A8B.3040808@cs.ucla.edu> <83shz5u8vs.fsf@gnu.org>
+	<56FE276C.2050306@cs.ucla.edu>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local, somasis@exherbo.org, somasissounds@gmail.com
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sat, 02 Apr 2016 08:36:29 -0000
+Content-Length: 3553
+Lines: 103
+
+> Cc: somasissounds@gmail.com, dev@caliopen.local, somasis@exherbo.org
+> From: Paul Eggert <eggert@cs.ucla.edu>
+> Date: Fri, 1 Apr 2016 00:46:52 -0700
+> 
+> > After that, temacs seems to hang during loadup.  Looks like it hangs
+> > inside the libc function 'close'.  I don't have enough free time now
+> > to do anything serious on master.
+> 
+> No rush. When you get time, if you happen to know who's calling 'close' I could 
+> ifdef that call out on MS-Windows.
+
+It turns out the call to dup2 with 2 identical arguments has a strange
+side effect with MS implementation: the subsequent attempt to fclose
+the corresponding stdio stream hangs.  I was unable to understand why
+that happens, since according to my references, such a dup2 call
+should just validate the original file descriptor and do nothing else.
+But since we already have a sys_dup2 function that wraps the MS dup2,
+I added a workaround there, see the patch below.
+
+For the record, what init_standard_fds does is unnecessary on
+MS-Windows, since we already have the equivalent code in init_ntproc
+(for reasons explained in the comments there).  So an alternative
+would be to make init_standard_fds a no-op for WINDOWSNT.  I preferred
+to have less #ifdef's in mainline Emacs code, but if you think the
+alternative is better, it's fine with me.
+
+Btw, are changes like the one below safe?
+
+     /* Manipulate tty.  */
+     if (hide_char)
+       {
+  -      etty_valid = emacs_get_tty (fileno (stdin), &etty) == 0;
+  +      etty_valid = emacs_get_tty (STDIN_FILENO, &etty) == 0;
+	 if (etty_valid)
+  -	set_binary_mode (fileno (stdin), O_BINARY);
+  -      suppress_echo_on_tty (fileno (stdin));
+  +	set_binary_mode (STDIN_FILENO, O_BINARY);
+  +      suppress_echo_on_tty (STDIN_FILENO);
+       }
+
+Are we sure fileno(stdin) will necessarily return 0, what with all the
+redirections and stuff?  Why not keep the original code?
+
+So to sum it up, these additional changes are required for MS-Windows:
+
+diff --git a/src/print.c b/src/print.c
+index 2b53d75..ee60f57 100644
+--- a/src/print.c
++++ b/src/print.c
+@@ -38,6 +38,10 @@ along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.  */
+ #include <float.h>
+ #include <ftoastr.h>
+ 
++#ifdef WINDOWSNT
++#include <sys/socket.h>		/* for F_DUPFD_CLOEXEC */
++#endif
++
+ struct terminal;
+ 
+ /* Avoid actual stack overflow in print.  */
+diff --git a/src/w32.c b/src/w32.c
+index 3f4ac88..94aa7d8 100644
+--- a/src/w32.c
++++ b/src/w32.c
+@@ -8181,17 +8181,33 @@ sys_dup2 (int src, int dst)
+       return -1;
+     }
+ 
+-  /* make sure we close the destination first if it's a pipe or socket */
+-  if (src != dst && fd_info[dst].flags != 0)
++  /* MS _dup2 seems to have weird side effect when invoked with 2
++     identical arguments: an attempt to fclose the corresponding stdio
++     stream after that hangs (we do close standard streams in
++     init_ntproc).  Attempt to avoid that by not calling _dup2 that
++     way: if SRC is valid, we know that dup2 should be a no-op, so do
++     nothing and return DST.  */
++  if (src == dst)
++    {
++      if ((HANDLE)_get_osfhandle (src) == INVALID_HANDLE_VALUE)
++	{
++	  errno = EBADF;
++	  return -1;
++	}
++      return dst;
++    }
++
++  /* Make sure we close the destination first if it's a pipe or socket.  */
++  if (fd_info[dst].flags != 0)
+     sys_close (dst);
+ 
+   rc = _dup2 (src, dst);
+   if (rc == 0)
+     {
+-      /* duplicate our internal info as well */
++      /* Duplicate our internal info as well.  */
+       fd_info[dst] = fd_info[src];
+     }
+-  return rc;
++  return rc == 0 ? dst : rc;
+ }
+ 
+ int
+

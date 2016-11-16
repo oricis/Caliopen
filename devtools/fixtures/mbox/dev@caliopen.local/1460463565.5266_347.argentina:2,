@@ -1,0 +1,105 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anBB3-0000Xn-R9
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 16:32:49 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:34818)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1anBB1-0000Wl-H6
+	for dev@caliopen.local; Mon, 04 Apr 2016 16:32:48 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1anBAx-0003e1-Gv
+	for dev@caliopen.local; Mon, 04 Apr 2016 16:32:47 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:49715)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>)
+	id 1anBAx-0003do-AQ; Mon, 04 Apr 2016 16:32:43 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>)
+	id 1anBAt-0007T7-H8; Mon, 04 Apr 2016 22:32:41 +0200
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: Eli Zaretskii <eliz@gnu.org>
+Subject: Re: master 0695108 2/2: Revert "Add `r'/`l' grep command history
+	commands"
+References: <20160403224658.6944.52006@vcs.savannah.gnu.org>
+	<E1amqnL-0001p7-2f@vcs.savannah.gnu.org> <m3wpoe54yr.fsf@gnus.org>
+	<m2wpoe9cjg.fsf@newartisans.com> <83r3elo15s.fsf@gnu.org>
+	<m3bn5pnrrd.fsf@gnus.org> <83egalnmtw.fsf@gnu.org>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAElBMVEV8LTEVEDWpwc95Z3KV
+	n5f4+PfWwgebAAACUklEQVQ4jXWUy3bjIBBE8WP2xvLsIx77oMZ7Q6N9gtX//yspEPZkMxwfCeuK
+	7qoSklJn46y+qKNpR3XQfWDWQNEap99AtZFNCQ0YUYr1AGeAaEoa4GQGUce91qwvA9jRIvdarfup
+	gbOZBzB7E4c/A1waOJ87OBoDMdkLZqkD3KsuvYmetL43EA57iw5UnvUafgMoUc1Lfl4l6b9NlX6v
+	aHajeJkBWKXLufs+7kCJYMW1ekmX+9wDAcDp5GVT+vqt70mt26HdelS6JysPpW8AQfntcXsgyw7g
+	7Uvp6VuvVsnXOQ+gkYZ/dqDWKqUYNwDE+Yo5wB+Rko353MFlMYjjsLYVAGYH824U3WUAZNq01qYX
+	4EPJk4oX2Yr5aD0kXVvwzAtKmMKLKPOpTgBP/wFAFKVEnFhURBS6pbGpaiMVl7kwsWu+ZW5A7gJA
+	ZbWEUQC81A5ELC8U70/OuAFPDld2UBM5omyZbxM/mugBNq0p6Gxx0JNrCwYoU1jIllwi8S3e32Cb
+	Jrql4niiyJb8GzwnooXC+gwUKep/K2YKtCyLrzFiDS1vQMwFDmQLcE78BhsuxsTsawM6tih3MFEf
+	frMxckm3lw8bqMBHkMoUY0n0AqlVpinBT9AIgGmAJaF24CgC46SvYfId1P3tmifIg27qG78DVO5P
+	T8bAbhqqMKu1+j1oqeYl1xW+vYCZqWJr7IBzmjaYZ+tiDHgZ3V5qK1DpLI62hMi6uLI3t+3TgOae
+	cnaYF46xA+xJB120JMJeNYZbng14j58Rs25NDjZoKYhRyX/GD76yzr8rivSgAAAAAElFTkSuQmCC
+Date: Mon, 04 Apr 2016 22:32:39 +0200
+In-Reply-To: <83egalnmtw.fsf@gnu.org> (Eli Zaretskii's message of "Mon, 04 Apr
+	2016 23:25:15 +0300")
+Message-ID: <m3shz1868o.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+Cc: jwiegley@gmail.com, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 20:32:48 -0000
+Content-Length: 1679
+Lines: 41
+
+Eli Zaretskii <eliz@gnu.org> writes:
+
+> Then the user will not rerun those commands.  Most commands are not
+> destructive, though.  In addition, Grep mode is not the only one
+> derived from Compilation.
+
+The user will hit `r'/`l'.  I mean, I do.
+
+>> > I also don't see a lot of mnemonic value in binding these commands to
+>> > 'l' and 'r', and would suggest additional bindings which would be
+>> > easier to remember even for those who don't browse URLs all day long.
+>> 
+>> They are used in all the other special modes that offer traversing a
+>> history of generated buffers: Info, *Help*, eww...
+>
+> I asked for _additional_ bindings.  I didn't say these should be
+> removed.
+
+I agree that they aren't very mnemonic bindings, but those are the
+bindings that all modes that I know of that has a history uses.  I don't
+even know what they stand for.  "Return"?  "L..."  uhm...
+
+If you want to have an additional set of keystrokes available, I'm all
+for that, but that's an orthogonal issue.  All these modes should have
+the same keystrokes for these navigation commands.
+
+> I'm not talking about memory it takes.  I'm talking about someone
+> sitting and pressing 'l' 100 times, re-running all those commands in
+> between.  I cannot imagine someone will want that.
+
+I obviously chose 100 as a number that is larger than anybody could
+reasonably want.  But I could well imagine 10.  Perhaps somebody would
+want 20?  So we leave it at 100, and nobody will ever complain, and we
+don't need to offer this as a customisation option.
+
+There are no downsides to 100 that I can see.
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

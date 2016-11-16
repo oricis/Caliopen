@@ -1,0 +1,118 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alrsG-0003k0-De
+	for mharc-dev@caliopen.local; Fri, 01 Apr 2016 01:44:00 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:43114)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <kaushal.modi@gmail.com>) id 1alrsE-0003jp-IF
+	for dev@caliopen.local; Fri, 01 Apr 2016 01:43:59 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <kaushal.modi@gmail.com>) id 1alrsD-0006G4-1h
+	for dev@caliopen.local; Fri, 01 Apr 2016 01:43:58 -0400
+Received: from mail-oi0-x22f.google.com ([2607:f8b0:4003:c06::22f]:34194)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <kaushal.modi@gmail.com>) id 1alrsC-0006Fz-Ss
+	for dev@caliopen.local; Fri, 01 Apr 2016 01:43:56 -0400
+Received: by mail-oi0-x22f.google.com with SMTP id o62so91559856oig.1
+	for <dev@caliopen.local>; Thu, 31 Mar 2016 22:43:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:in-reply-to:references:from:date:message-id:subject:to; 
+	bh=GjA1nKAYZZoji1r2aEnOi5RKHh7N2xnjaqmlZgrkUjA=;
+	b=lA8YHwvycxzwS878URMAhHUqgL32WTAw3wcruRpeUwDSJiAavJB3o314htPGqPz9aZ
+	aqyujisDw20rsy4RMsEgfiftOwxQeh2G6sNIf6W/ELfIH/wcvAOBn0vF4aiTXy8sBQx7
+	TSow/w6c0WaI0wpGzTqiTaBJeYUX/8S1/ItKOFCoeBYMJFZQfhgNO7TDyT1bboGd54Hy
+	EregVKvN+/uXA4h69QfGP3TU7t6DcvhsGSCb+HEfAfj1rRzOw4uUJv4tfeFrfJuolUlb
+	vnTQLjIRxOMa7E5HdOyJS3G2BH9dCIBzu7p3wLL7z6InmDyy6/RI/k+P2JQV1BmMGdOw
+	KZTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+	:message-id:subject:to;
+	bh=GjA1nKAYZZoji1r2aEnOi5RKHh7N2xnjaqmlZgrkUjA=;
+	b=SmsMWOdFxfgxKt30pcRMo8ldk1v3zSJxxf2/pLgZoSRr30pMoitiIUbYyVMRrlEblP
+	rub5O2afp8ijzf8oR3+/D/7SEobhAm4gLWE5TmB71wshqcC3Onxl7sxGo4aV9cIcIvfN
+	KOdvXLgPsFW9ElWnNp67tFrBVOVkVIMSx6VdHeuYHAWLIFRc3zzTjUzlgFm5p0mfCE/t
+	FmmHY10Kurfjeoc/BTiqVw/ecANmrgScCbefF/xgghbydG5HC5MU50umkHh7GrRZLlom
+	dq7tosjgGu4gn6jsn6Nva1h4RhLJRyAbGwlvaVOIcg9fsuRY6g4hbUfPPijRd+sSIjOs
+	2G5g==
+X-Gm-Message-State: AD7BkJI+qbjssFTrPyrx346ZYBp2CMg6j1jTatvEmwGr/YYuUs0Nd16U8Fsr/j0JEMMmAHXgLUc2rzl+fDuAIQ==
+X-Received: by 10.202.177.3 with SMTP id a3mr1477319oif.2.1459489436315; Thu,
+	31 Mar 2016 22:43:56 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.202.204.2 with HTTP; Thu, 31 Mar 2016 22:43:16 -0700 (PDT)
+In-Reply-To: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+From: Kaushal Modi <kaushal.modi@gmail.com>
+Date: Fri, 1 Apr 2016 01:43:16 -0400
+Message-ID: <CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+To: Emacs developers <emacs-devel@gnu.org>, Alan Mackenzie <acm@muc.de>
+Content-Type: multipart/alternative; boundary=001a113cfa1667b829052f65dd9a
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c06::22f
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Fri, 01 Apr 2016 05:43:59 -0000
+Content-Length: 2768
+Lines: 52
+
+--001a113cfa1667b829052f65dd9a
+Content-Type: text/plain; charset=UTF-8
+
+OK, I think I need some git education.
+
+There was one section in your commit (
+http://git.savannah.gnu.org/cgit/emacs.git/diff/lisp/isearch.el?h=emacs-25&id=ed19f207449c43f7f08285ada87ae7a46c61c8d1
+) which was already committed earlier (
+http://git.savannah.gnu.org/cgit/emacs.git/commit/lisp/isearch.el?h=emacs-25&id=91e667692ba1362ca1334b8d58fd16c305ad5e2a
+). As I am familiar with that single commit, I know that they are identical.
+
+Also I noted that your commit has a repeat of all the backquote/straight
+quote changes in NEWS that happened recently.
+
+But without this prior knowledge, how can one separate these duplicate
+commits from the commits that actually are new?
+Also, what is the reason for such duplicate commits happening?
+
+Apologies for this git 101 question here. Please forward me to a resource,
+if available, where I can understand such mega commits.
+
+Thanks.
+
+--001a113cfa1667b829052f65dd9a
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail_extra">OK, I think I need some git edu=
+cation.</div><div class=3D"gmail_extra"><br></div><div class=3D"gmail_extra=
+">There was one section in your commit ( <a href=3D"http://git.savannah.gnu=
+.org/cgit/emacs.git/diff/lisp/isearch.el?h=3Demacs-25&amp;id=3Ded19f207449c=
+43f7f08285ada87ae7a46c61c8d1">http://git.savannah.gnu.org/cgit/emacs.git/di=
+ff/lisp/isearch.el?h=3Demacs-25&amp;id=3Ded19f207449c43f7f08285ada87ae7a46c=
+61c8d1</a> ) which was already committed earlier (=C2=A0<a href=3D"http://g=
+it.savannah.gnu.org/cgit/emacs.git/commit/lisp/isearch.el?h=3Demacs-25&amp;=
+id=3D91e667692ba1362ca1334b8d58fd16c305ad5e2a">http://git.savannah.gnu.org/=
+cgit/emacs.git/commit/lisp/isearch.el?h=3Demacs-25&amp;id=3D91e667692ba1362=
+ca1334b8d58fd16c305ad5e2a</a> ). As I am familiar with that single commit, =
+I know that they are identical.</div><div class=3D"gmail_extra"><br></div><=
+div class=3D"gmail_extra">Also I noted that your commit has a repeat of all=
+ the backquote/straight quote changes in NEWS that happened recently.</div>=
+<div class=3D"gmail_extra"><br></div><div class=3D"gmail_extra">But without=
+ this prior knowledge, how can one separate these duplicate commits from th=
+e commits that actually are new?</div><div class=3D"gmail_extra">Also, what=
+ is the reason for such duplicate commits happening?</div><div class=3D"gma=
+il_extra"><br></div><div class=3D"gmail_extra">Apologies for this git 101 q=
+uestion here. Please forward me to a resource, if available, where I can un=
+derstand such mega commits.</div><div class=3D"gmail_extra"><br></div><div =
+class=3D"gmail_extra">Thanks.=C2=A0</div></div>
+
+--001a113cfa1667b829052f65dd9a--
+

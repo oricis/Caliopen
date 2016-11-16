@@ -1,0 +1,132 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aiXRs-0003GA-Nd
+	for mharc-dev@caliopen.local; Tue, 22 Mar 2016 21:19:00 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:34563)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1aiXRq-0003FX-C5
+	for dev@caliopen.local; Tue, 22 Mar 2016 21:18:59 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1aiXRg-0007zD-Jj
+	for dev@caliopen.local; Tue, 22 Mar 2016 21:18:53 -0400
+Received: from mail-wm0-x22f.google.com ([2a00:1450:400c:c09::22f]:33471)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1aiXRg-0007yv-8o
+	for dev@caliopen.local; Tue, 22 Mar 2016 21:18:48 -0400
+Received: by mail-wm0-x22f.google.com with SMTP id l68so214602093wml.0
+	for <dev@caliopen.local>; Tue, 22 Mar 2016 18:18:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=sender:subject:to:references:cc:from:message-id:date:user-agent
+	:mime-version:in-reply-to:content-transfer-encoding;
+	bh=Koc01c0n/g5FGAcQSOME6lo3CYOFdSsBKcr5Sf+l13Q=;
+	b=Ym+9cMbwQURdeIT/dl/sogAdXhdr1TyMZ2en+x5CWT7asVfa2MkFuTOwrcIKU7g93N
+	SACNUuQJncD1a0Pd9IL70NKNbyIZoYs2Bk62l0ubrxPrINP0WdWzecLtjLJfbV/svaeU
+	IkoguCjdfiNldgkXHLpu5XhWMfEbchiIU5J+vJ4tXJ3L9WFIS+K8huoTbjhflMF7M+AY
+	X8gJqeuxDL6OexKRFNyNaPpjhGp9d8v/zJsIfleE5iZmG7dqffSkhQT5lMBldhlZ51Zh
+	7SxXmBl1J4ONtG9Cy/NCKeRBMbo1AW5wO1oZ5C+bMmMBTJ+e3xMnuR1p6Ltth1X5aM+F
+	VmsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
+	:date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+	bh=Koc01c0n/g5FGAcQSOME6lo3CYOFdSsBKcr5Sf+l13Q=;
+	b=ET9jPb+ctaN3jpSSrtGTIiebtoj3JlG43KhkCj9VuiEfcaTGNiExLbNNgHrHmMYyhZ
+	JbWzw8gihEYhVMaMQE7ovvrbkXjabZlOw6g4BUALfcREF5VEO3M5WXpzdzdvPaQGbXKP
+	IASzuR9t4Zm9axekcP+KSDGr3P/EnurujW5kzBCio31xq3LseMAQdtK/taT04MmPHnFZ
+	Bh3soaNKqjhv4HDkQhDPZa5P1wOqwaOciygxuK//H8ZuVpCBc5X7UUrwzTAuCKY92R4H
+	3PURKTr71zQzz/G1MDawWxH4HOW9E3RLIoxMaB8OJmEZbDi3D+0NebeR87xS1W5lDfoG
+	kWFQ==
+X-Gm-Message-State: AD7BkJIyVK9DHLVSu1VGpvEb34A3xVWMPov0DdqmFyBMjvh3AeJbdRz0c4PWtzw4uSUudw==
+X-Received: by 10.194.105.42 with SMTP id gj10mr161725wjb.49.1458695927353;
+	Tue, 22 Mar 2016 18:18:47 -0700 (PDT)
+Received: from [192.168.1.2] ([185.105.175.24])
+	by smtp.googlemail.com with ESMTPSA id
+	da6sm56530wjb.24.2016.03.22.18.18.45
+	(version=TLSv1/SSLv3 cipher=OTHER);
+	Tue, 22 Mar 2016 18:18:46 -0700 (PDT)
+Sender: DG <raaahh@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+To: Vitalie Spinu <spinuvit@gmail.com>,
+	Stefan Monnier <monnier@iro.umontreal.ca>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+	<jwvmvpswowh.fsf-monnier+Inbox@gnu.org> <87twk0beuh.fsf@gmail.com>
+	<jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org> <877fgvgbr1.fsf@gmail.com>
+	<jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org> <87bn67eq4t.fsf@gmail.com>
+	<jwvy49ar473.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87io0eqswd.fsf@gmail.com>
+From: Dmitry Gutov <dgutov@yandex.ru>
+Message-ID: <15d2151b-f79a-398e-094d-d7edc5e95e06@yandex.ru>
+Date: Wed, 23 Mar 2016 03:18:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+	Thunderbird/45.0
+MIME-Version: 1.0
+In-Reply-To: <87io0eqswd.fsf@gmail.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22f
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 23 Mar 2016 01:18:59 -0000
+Content-Length: 1800
+Lines: 37
+
+On 03/22/2016 08:17 PM, Vitalie Spinu wrote:
+
+> This will not work in above case. <%else-%> chunk needs to know about where <%if
+> signed_in? -%> was indented which is not an immediately preceding chunk.
+>
+> It's hard to think of better solution than collecting all relevant previous
+> chunks in one place and indenting according to inner mode. In order to indent
+> "<%else-%>", STRING-BEFORE should be full "link_to ..." line. So basically
+> STRING-BEFORE must consist of all ruby spans in between "if" and "else" chunks.
+
+...and the multi-mode package would have to know, somehow, that the "if" 
+chunk is special in this regard, and know which "if" matches which 
+"end", etc. Or simply always include all previous chunks in the given 
+mode in STRING-BEFORE.
+
+>> How should the "generic" code that links HTML and Ruby know when to indent
+>> using the HTML indentation code and when to use the Ruby indentation rules?
+>
+> No idea. Dmitry should have an answer for that. He implemented mmm-erb.
+
+Again, mmm-erb is written to support a limited set of template languages 
+(currently, two, though supporting JSP would be trivial-ish, were 
+java-mode not a part of CC Mode, with associated pitfalls).
+
+So IME, the multi-mode package needs to hardcode, in some form of 
+another, the knowledge which file formats use this approach to indentation.
+
+And since we're doing that anyway, using a simpler indentation code in 
+those particular files doesn't seem like a bad idea either. (For 
+non-continuation hunks, at least).
+
+BTW, web-mode doesn't seem to dispatch to inner modes's functions at 
+all: 
+https://github.com/fxbois/web-mode/blob/c5aacacb8f4c233844306806a102405c8e9671c9/web-mode.el#L7164-L7198. 
+I'm not a fan of this approach in general, but that clearly means that 
+it can work for indentation.
+

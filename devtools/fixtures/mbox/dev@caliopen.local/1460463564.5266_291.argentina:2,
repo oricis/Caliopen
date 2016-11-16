@@ -1,0 +1,85 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anJIl-0005As-S0
+	for mharc-dev@caliopen.local; Tue, 05 Apr 2016 01:13:19 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:49060)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <yamaoka@jpl.org>) id 1anJIk-0005Ad-6r
+	for dev@caliopen.local; Tue, 05 Apr 2016 01:13:18 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <yamaoka@jpl.org>) id 1anJIf-0001Z1-83
+	for dev@caliopen.local; Tue, 05 Apr 2016 01:13:18 -0400
+Received: from mail-hampton.hostforweb.net ([205.234.186.191]:57897
+	helo=hampton.hostforweb.net) by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <yamaoka@jpl.org>) id 1anJIf-0001Tk-4K
+	for dev@caliopen.local; Tue, 05 Apr 2016 01:13:13 -0400
+Received: from s70.gtokyofl21.vectant.ne.jp ([202.215.75.70]:60231
+	helo=localhost) by hampton.hostforweb.net with esmtpsa
+	(TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128) (Exim 4.86_1)
+	(envelope-from <yamaoka@jpl.org>)
+	id 1anJHv-003tti-6t; Tue, 05 Apr 2016 00:12:28 -0500
+Date: Tue, 05 Apr 2016 14:12:34 +0900
+Message-ID: <b4mr3ekabb1.fsf@jpl.org>
+From: Katsumi Yamaoka <yamaoka@jpl.org>
+To: emacs-devel <emacs-devel@gnu.org>
+Subject: Re: master 17cb263: New C macro AUTO_STRING_WITH_LEN
+References: <20160404173130.17984.53277@vcs.savannah.gnu.org>
+	<E1an8La-0004gu-Mw@vcs.savannah.gnu.org>
+Organization: Emacsen advocacy group
+X-Face: #kKnN,xUnmKia.'[pp`;
+	Omh}odZK)?7wQSl"4o04=EixTF+V[""w~iNbM9ZL+.b*_CxUmFk
+	B#Fu[*?MZZH@IkN:!"\w%I_zt>[$nm7nQosZ<3eu;
+	B:$Q_:p!',P.c0-_Cy[dz4oIpw0ESA^D*1Lw= L&i*6&(
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (i686-pc-cygwin)
+Cancel-Lock: sha1:VO0drZXyaEUKrPmhvWgF4egcnO0=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-OutGoing-Spam-Status: No, score=-2.9
+X-AntiAbuse: This header was added to track abuse,
+	please include it with any abuse report
+X-AntiAbuse: Primary Hostname - hampton.hostforweb.net
+X-AntiAbuse: Original Domain - gnu.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - jpl.org
+X-Get-Message-Sender-Via: hampton.hostforweb.net: authenticated_id:
+	yamaoka/from_h
+X-Authenticated-Sender: hampton.hostforweb.net: yamaoka@jpl.org
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x (barebone)
+	[generic]
+X-Received-From: 205.234.186.191
+Cc: Paul Eggert <eggert@cs.ucla.edu>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 05 Apr 2016 05:13:19 -0000
+Content-Length: 490
+Lines: 18
+
+On Mon, 04 Apr 2016 17:31:30 +0000, Paul Eggert wrote:
+> branch: master
+> commit 17cb263adb7c37803140604f0a2e4df8a38fbcff
+> Author: Paul Eggert <eggert@cs.ucla.edu>
+> Commit: Paul Eggert <eggert@cs.ucla.edu>
+
+>     New C macro AUTO_STRING_WITH_LEN
+
+What should I add to let it know what prtdiff_t is on Cygwin?
+I got:
+
+coding.c: In function 'from_unicode_buffer':
+coding.c:8423:3: error: unknown type name 'prtdiff_t'
+   prtdiff_t len = 1 + sizeof (wchar_t) * wcslen (wstr);
+   ^
+
+Thanks.
+

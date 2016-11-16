@@ -1,0 +1,109 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an96i-0003TQ-AT
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 14:20:12 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:52377)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1an96c-0003Hg-FW
+	for dev@caliopen.local; Mon, 04 Apr 2016 14:20:10 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1an96X-0002Xl-Gc
+	for dev@caliopen.local; Mon, 04 Apr 2016 14:20:06 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:47476)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1an96X-0002Xh-B9
+	for dev@caliopen.local; Mon, 04 Apr 2016 14:20:01 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>)
+	id 1an96U-0005jZ-N4; Mon, 04 Apr 2016 20:20:00 +0200
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: "Staying in the same place"
+References: <m3oa9q53uq.fsf@gnus.org>
+	<jwv7fgd1r7w.fsf-monnier+gmane.emacs.devel@gnu.org>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAFVBMVEVBLS3xwrCgcme+iHpc
+	Q0EjFRZ8W1bWwY36AAACc0lEQVQ4jXWTwXLjIAyGtQ72OY5nck6xy7mBbM7UljmzrcnZa1O9/yOs
+	wG263dlqEgf+T+KXgYCL4KxAS7GKUKGdiAR6R8AfGhGBwSi8LW2voISF0+NEoy/90glwY5jmQglI
+	1RSn+Hp1x55zkOaKprmax2kEsmJ8qOt6tqvBZZ7oBTB6K0CUMLBeN0z3NI/4a2ZHdi6HrOdohG3o
+	YQ8lMjCm/ozjc3p2w5Fb+wLuwV2Z8//AU/kNqNV3wLyDJlrheHS4fQVdEBjRDl8Ad/Um2jy7DvXf
+	4HzqP3wOQ+eGO7hWd/9m0ZciDxI4te/pP+pubc7nO8gFB33zRX19qC+brhkU4ufj874odtEcwJl+
+	qc0GenjqVquGKq5Ka3eZ2qYxaal+fup3s0WAHbnO7cremAyoA8fnDyDW1ZgYTxXrkgEg8EmCaM/1
+	7+bkFHrmyQMJEd3CaTV/OyFCsQHqpZSL0cQ/hhsQ424DEqUx/rRjRPhIZbSF0clDKscJ86tuTQc2
+	hBjf2gwurUIXsVrrw6JGL+YYhwyu87IQv8VaH41GQIuukgpadgfhwILAKy0RUQh3Y8DG5sTXNgJi
+	IfgS8nWbb5JAcolRlP4QrV412ZJvLSoGqURLfknebcpD64gSSCXpHFOC4omUiigy2EiX97TtVp0B
+	fgBNawK6nfsEIgMFCxMdtxWVmqTkAoQYwotMq5vNClwuQChDuMkPI+5JpoIEQgiVTAsnlPVknYCH
+	6hS8/IxUwEcaACqukoo3qyvDIh9v5DAE8IBs47mHHCK88XbBBliH8E94Bsmm/JS2HFZZ9CU/WfBl
+	ltLSKT0JICxPc6FHHnr4A6Hy1TBvDubcAAAAAElFTkSuQmCC
+Date: Mon, 04 Apr 2016 20:19:58 +0200
+In-Reply-To: <jwv7fgd1r7w.fsf-monnier+gmane.emacs.devel@gnu.org> (Stefan
+	Monnier's message of "Mon, 04 Apr 2016 08:51:47 -0400")
+Message-ID: <m3mvp9nsmp.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 18:20:10 -0000
+Content-Length: 1899
+Lines: 47
+
+Stefan Monnier <monnier@iro.umontreal.ca> writes:
+
+> I think it'd good to think of such solutions in the context of bookmarks
+> as well.
+
+Hm...  interesting...
+
+I know next to nothing about Emacs bookmarking.  How are bookmarks
+stored (for special mode buffers)?
+
+> I don't think it can be done with the current bookmark data, tho.
+> IIRC there were 2 main reasons:
+> - You need to be able to distinguish the case "go back to bookmark in
+>   a new buffer" and "go back to bookmark in the current buffer".
+> - You probably want to distinguish between the case where you want to
+>   revert/refresh, and the case where it's OK to just jump to some
+>   spot in some existing buffer.
+
+I'm trying to envision how this would work from a UX point of view.
+Let's say you're trying to do some "-Wall" cleanups in emacs/src, and
+you've gotten halfway down the list of things you're able to clean up,
+so you set a bookmark there.  Then the next time you compile something
+in that directory, then point moves to around that point?  
+
+>> (The reason I'm thinking about this is that I was thinking about what
+>> would be necessary to make `g' in compilation buffers remain in "the
+>> same place".  Which is useful when you're trying to weed out compilation
+>> warnings.)
+>
+> Oohh.. that's yet another step up in complexity since in that case you
+> can't "go back" right away, you first have to wait for the process to
+> send enough data.
+
+Yes, it's an added wrinkle, but I think it should be possible to
+handle.  I made a first stab at it in the recently reverted `r'/`l'
+code, and it seemed to be kinda nice, even if the implementation wasn't
+very general.
+
+> But yes, that would be great (I'd particularly appreciate it in
+> *vc-diff*).
+
+Indeed, staying in the "same place" in *vc-diff* would be very nice.
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

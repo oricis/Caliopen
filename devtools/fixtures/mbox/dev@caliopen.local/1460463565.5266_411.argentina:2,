@@ -1,0 +1,71 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an5On-00077R-Ni
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 10:22:37 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:37956)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1an5Ol-000760-0H
+	for dev@caliopen.local; Mon, 04 Apr 2016 10:22:35 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <rms@gnu.org>) id 1an5Oh-0000Ar-2p
+	for dev@caliopen.local; Mon, 04 Apr 2016 10:22:34 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:47645)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1an5Oa-00006d-Ed; Mon, 04 Apr 2016 10:22:24 -0400
+Received: from rms by fencepost.gnu.org with local (Exim 4.82)
+	(envelope-from <rms@gnu.org>)
+	id 1an5OY-0006qi-AK; Mon, 04 Apr 2016 10:22:22 -0400
+Content-Type: text/plain; charset=Utf-8
+From: Richard Stallman <rms@gnu.org>
+To: Vibhav Pant <vibhavp@gmail.com>
+In-reply-to: <CA+T2Sh0-EMD9chUckGuoEhMjL+sdCCYZpsW=8k_2R1q+wbkkgA@mail.gmail.com>
+	(message from Vibhav Pant on Sun, 3 Apr 2016 11:35:00 +0530)
+Subject: Re: melpa.org doesn't work without nonfree software
+References: <E1am6ik-0000Kc-JJ@fencepost.gnu.org>
+	<m2pou7y8tf.fsf@newartisans.com>
+	<CA+T2Sh0-EMD9chUckGuoEhMjL+sdCCYZpsW=8k_2R1q+wbkkgA@mail.gmail.com>
+Message-Id: <E1an5OY-0006qi-AK@fencepost.gnu.org>
+Date: Mon, 04 Apr 2016 10:22:22 -0400
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: rms@gnu.org
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 14:22:35 -0000
+Content-Length: 854
+Lines: 25
+
+[[[ To any NSA and FBI agents reading my email: please consider    ]]]
+[[[ whether defending the US Constitution against all enemies,     ]]]
+[[[ foreign or domestic, requires you to follow Snowden's example. ]]]
+
+  > The source for Melpa's website is available here, and is licensed
+  > under the GPL v3: https://github.com/melpa/melpa/tree/master/html
+
+Is that the source code for ALL the Javascript used in the page?
+
+If so, it should be a small job to label the code so that LibreJS
+will recognize it as free.  That doesn't mean we can assume it
+will get done soon, but we can encourage the to do it.
+
+But if there is other Javascript code used as well, that may
+be harder.
+
+
+
+-- 
+Dr Richard Stallman
+President, Free Software Foundation (gnu.org, fsf.org)
+Internet Hall-of-Famer (internethalloffame.org)
+Skype: No way! See stallman.org/skype.html.
+
+

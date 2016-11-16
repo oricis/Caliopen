@@ -1,0 +1,106 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aiqgX-0008LJ-B4
+	for mharc-dev@caliopen.local; Wed, 23 Mar 2016 17:51:25 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39726)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiqgV-0008LD-Jt
+	for dev@caliopen.local; Wed, 23 Mar 2016 17:51:24 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiqgS-0008P1-Be
+	for dev@caliopen.local; Wed, 23 Mar 2016 17:51:23 -0400
+Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e]:32917)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiqgS-0008Ot-4j
+	for dev@caliopen.local; Wed, 23 Mar 2016 17:51:20 -0400
+Received: by mail-wm0-x22e.google.com with SMTP id l68so250996981wml.0
+	for <dev@caliopen.local>; Wed, 23 Mar 2016 14:51:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=hdfcbYPvmclSkisAjRBDfBbpc1VTkIFp1pxxh8TU84Q=;
+	b=XS5xToWUlWA68o7ZvLQGzwbsQ8XxXuRijocxZSvVPe3anERRn7QSc9XAUbyZBScAJ9
+	BYYixx4sK9f0YrZmP0U8H36g9fbCdgSNBKFuHk7nPHkVWaFKkOqdtRLa3QjImUnwgNrC
+	eu723BQvnAXVCHGc7ncjgQLI7El0+9RA56ZmQ/jENamfKvcvrN6OIIZsU/oJm3Qg13wC
+	ZnVvSWPL2BMZSG/T94xanrmxYzciOT2LqfIawVcipfuhYPG8YyX5UtoSQyKraN5W7plS
+	ttL/ERMwKg7AaqEsIj3pUYRYluX50MwH7zYV9+t5XHpsfPr4sziqEJIXglUZ5K7OY/cD
+	0fnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=hdfcbYPvmclSkisAjRBDfBbpc1VTkIFp1pxxh8TU84Q=;
+	b=GerOThZbxtPYrvLIbwOCrCdQYpG1nnbe6QuU6rH1XN3LaovFMeSWsFHeARdW01RUiL
+	iXHbb3W6ZNcc7F5lhuoFm5dnAVJD48cmkqO2mPYS3kVX92F2PARB/voR5yNiE78pD6tV
+	irZbS+Myqa/A6iGhelOina0SPERRb9yFJcI+9We/eoeoBUWWKaL+FWvYE2qoWJjIexJ3
+	QDbm2Amh3b2pdqFlVGvgeXJiWC3TA6c1RoKfZVA5/yCfhsJX8BWOghhEUBFGxsl61Xqx
+	hwlPPCny41Zkd9skXm3MrV5XKyie6DlvEL8EP1fI2fT8CQGYGVA4cPFHiMsPW/w6iJBx
+	ralA==
+X-Gm-Message-State: AD7BkJKEc+tvSHNBtTColzMGDV+HSBFDStrRrgRV0Mv0o6EqtjPiZWo/UvNLRotmfEu3zA==
+X-Received: by 10.28.145.8 with SMTP id t8mr29351324wmd.103.1458769879247;
+	Wed, 23 Mar 2016 14:51:19 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	ux5sm4443176wjc.17.2016.03.23.14.51.17
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Wed, 23 Mar 2016 14:51:17 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Dmitry Gutov <dgutov@yandex.ru>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87bn67eq4t.fsf@gmail.com>
+	<jwvy49ar473.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87bn66qsgo.fsf@gmail.com> <jwvzitquf5p.fsf-monnier+emacs@gnu.org>
+	<87fuvhpimn.fsf@gmail.com> <jwv1t71v3lb.fsf-monnier+emacs@gnu.org>
+	<8737rhpdv2.fsf@gmail.com>
+	<jwvpoulnxgx.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<368c79cd-c8cb-126f-f11c-6dd2e6b0ed80@yandex.ru>
+Date: Wed, 23 Mar 2016 22:51:17 +0100
+In-Reply-To: <368c79cd-c8cb-126f-f11c-6dd2e6b0ed80@yandex.ru> (Dmitry Gutov's
+	message of "Wed, 23 Mar 2016 17:28:10 +0200")
+Message-ID: <8737rgoobu.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22e
+Cc: Stefan Monnier <monnier@iro.umontreal.ca>, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 23 Mar 2016 21:51:24 -0000
+Content-Length: 458
+Lines: 17
+
+
+
+>> On Wed, Mar 23 2016 17:28, Dmitry Gutov wrote:
+
+> On 03/23/2016 03:23 PM, Stefan Monnier wrote:
+
+> Can we agree to shelve the PREVIOUS-CHUNKS/STRING-BEFORE/etc discussion until
+> someone comes with a patch that shows a convincing usage of it, in multiple
+> modes?
+
+> Preferably with some performance numbers, showing a corresponding improvement
+> when used together with some multi-mode package.
+
+Yeps. The topic has been exhausted for now.
+
+  Vitalie
+

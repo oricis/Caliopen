@@ -1,0 +1,85 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amkpQ-0001Yv-2I
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 12:24:44 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:51266)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1amkpO-0001Yn-9a
+	for dev@caliopen.local; Sun, 03 Apr 2016 12:24:42 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1amkpN-0002TO-GP
+	for dev@caliopen.local; Sun, 03 Apr 2016 12:24:42 -0400
+Received: from mail-out.m-online.net ([212.18.0.10]:40031)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>)
+	id 1amkpH-0002Sy-Rs; Sun, 03 Apr 2016 12:24:35 -0400
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 3qdL6p4s7wz3hjYZ;
+	Sun,  3 Apr 2016 18:24:34 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
+	by mail.m-online.net (Postfix) with ESMTP id 3qdL6p4F6pzvh21;
+	Sun,  3 Apr 2016 18:24:34 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+	by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavisd-new,
+	port 10024)
+	with ESMTP id PO1rDZHo7t55; Sun,  3 Apr 2016 18:24:33 +0200 (CEST)
+X-Auth-Info: Of88e/izxFPojKFrxXbVSZsXiftwyeFOG2ZUZbMPRcuEhRwuA1FUjD/ip02LLvh0
+Received: from igel.home (ppp-88-217-22-197.dynamic.mnet-online.de
+	[88.217.22.197]) by mail.mnet-online.de (Postfix) with ESMTPA;
+	Sun,  3 Apr 2016 18:24:33 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id 3DAEE2C305E; Sun,  3 Apr 2016 18:24:33 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Eli Zaretskii <eliz@gnu.org>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<20160403111708.GA3537@acm.fritz.box>
+	<87lh4uex9h.fsf@acer.localhost.com>
+	<20160403121458.GC3537@acm.fritz.box>
+	<87bn5qeuxo.fsf@acer.localhost.com> <838u0urb1w.fsf@gnu.org>
+	<8760vyemy0.fsf@acer.localhost.com> <8337r2r996.fsf@gnu.org>
+	<8737r2el7d.fsf@acer.localhost.com> <83zitapsvl.fsf@gnu.org>
+X-Yow: ONE:  I will donate my entire ``BABY HUEY'' comic book collection
+	to the downtown PLASMA CENTER..
+	TWO:  I won't START a BAND called ``KHADAFY & THE HIT SQUAD''..
+	THREE:  I won't ever TUMBLE DRY my FOX TERRIER again!!
+Date: Sun, 03 Apr 2016 18:24:33 +0200
+In-Reply-To: <83zitapsvl.fsf@gnu.org> (Eli Zaretskii's message of "Sun, 03 Apr
+	2016 19:19:26 +0300")
+Message-ID: <8760vyzmm6.fsf@linux-m68k.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 212.18.0.10
+Cc: acm@muc.de, Ingo Lohmar <i.lohmar@gmail.com>, dev@caliopen.local,
+	kaushal.modi@gmail.com
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 16:24:43 -0000
+Content-Length: 290
+Lines: 13
+
+Eli Zaretskii <eliz@gnu.org> writes:
+
+> But we were talking about "git pull", not about merge.
+
+pull == fetch+merge.
+
+Andreas.
+
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
+"And now for something completely different."
+

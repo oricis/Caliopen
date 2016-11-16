@@ -1,0 +1,101 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aXmIf-0005jB-IQ
+	for mharc-dev@caliopen.local; Mon, 22 Feb 2016 03:57:01 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:45993)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andlind@gmail.com>) id 1aXmId-0005ip-LB
+	for dev@caliopen.local; Mon, 22 Feb 2016 03:57:00 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <andlind@gmail.com>) id 1aXmIc-0001lN-Op
+	for dev@caliopen.local; Mon, 22 Feb 2016 03:56:59 -0500
+Received: from mail-vk0-x22d.google.com ([2607:f8b0:400c:c05::22d]:33677)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andlind@gmail.com>) id 1aXmIc-0001lC-Hq
+	for dev@caliopen.local; Mon, 22 Feb 2016 03:56:58 -0500
+Received: by mail-vk0-x22d.google.com with SMTP id k196so124555872vka.0
+	for <dev@caliopen.local>; Mon, 22 Feb 2016 00:56:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+	:cc:content-type;
+	bh=GyFMFpVVFz9jIuqBEf9QF8fUJd9Iwqd0/cUSx9Jd5wI=;
+	b=PC2ZmDemTADdL1rAEVTtxuyUavBoT7r/DBqUs6JxmvCsldJl79BM9Io+G0IpaTiPKL
+	EuWCDalzc6GSIZ8fWpFu72pUtREPEuiOcgnmRbg23Oajz5SrtkvxE289itdiMagp38dv
+	+lHACChAuRcu78UNyvKTXupfEU7hW9lGVjlqOxUEAwQc++KmwclV7ZzPmbAcroElwBBP
+	Sx0T4hoiHnWyU43Q+fwnsLkEoRGzrlhQHn8K6H/Im8qRtIrJbrOjVyZyiMVBGBsV8Btk
+	x4yb9EwUYwoX2tRWWqGQ5lgfeMCI/A3/H9NNSflNwzzK3pK40gzY8DPih6v+fb7absm8
+	rL0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:in-reply-to:references:date
+	:message-id:subject:from:to:cc:content-type;
+	bh=GyFMFpVVFz9jIuqBEf9QF8fUJd9Iwqd0/cUSx9Jd5wI=;
+	b=Yp3pyG5KjXzONX88GGhVB3B8NEWhNWdQG3U+8NTzvPuVG0xv1k/LvjbhTyKMGC5eiu
+	uNP6kTHY8FM596WlCBosDdFL6rrRuV+RA9s7vBug8HD/Vzadxx2iB066oRJpAFcwjggU
+	Gp5QuUuAvx6Q1vArK4BSUp/wsPpiTkS2+4KwPRltPMfhG9zGeA3XrOqb0r0lNoO0X/U5
+	5XSgpp9Z5NPCsbmczmBqCcsD+NSS8eNZD+9fNLQWje/iH8ITGJ0UYtHunDV/LD80iyjF
+	eDGt9CESRYFKnZlfyMzXRMDlyV/1uzbZArQmTSfZHIeelLHJF7jxpipRBP9UstPTQ7Jl
+	AAiA==
+X-Gm-Message-State: AG10YOR2ZU6W4oZi50T8TC7miWkBO0apx3+qHWkUl6j6rbr7gUI3o1CcFb8V2xhxctk3ia6etgg59cvqM1GCMA==
+MIME-Version: 1.0
+X-Received: by 10.31.138.73 with SMTP id m70mr22189540vkd.70.1456131418056;
+	Mon, 22 Feb 2016 00:56:58 -0800 (PST)
+Received: by 10.31.214.131 with HTTP; Mon, 22 Feb 2016 00:56:58 -0800 (PST)
+In-Reply-To: <56CA94A8.3000205@gmail.com>
+References: <56CA94A8.3000205@gmail.com>
+Date: Mon, 22 Feb 2016 09:56:58 +0100
+Message-ID: <CABr8ebYOYkvzhqNhvYQ3tQjDftJOwGcyVMmSNV-+yhKZJYc5wQ@mail.gmail.com>
+Subject: Re: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+From: Anders Lindgren <andlind@gmail.com>
+To: =?UTF-8?B?Q2zDqW1lbnQgUGl0LS1DbGF1ZGVs?= <clement.pit@gmail.com>
+Content-Type: multipart/alternative; boundary=001a1143dd18eb70ed052c580365
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:400c:c05::22d
+Cc: Emacs developers <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 22 Feb 2016 08:57:00 -0000
+Content-Length: 1322
+Lines: 32
+
+--001a1143dd18eb70ed052c580365
+Content-Type: text/plain; charset=UTF-8
+
+>
+> What's the proper way to mark a buffer for refontification (and refontify
+> the visible portion) immediately in 25?
+>
+
+I've been using `(font-lock-region (point-min) (point-max))' to force a
+refontification of the entire buffer, for my htmlize-like packages
+(`faceup' and `e2ani'). I'm not sure if it's the "right way" to do it, but
+it works in practice.
+
+    -- Anders Lindgren
+
+--001a1143dd18eb70ed052c580365
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail_extra"><div class=3D"gmail_quote"><blo=
+ckquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #c=
+cc solid;padding-left:1ex">What&#39;s the proper way to mark a buffer for r=
+efontification (and refontify the visible portion) immediately in 25?<br></=
+blockquote><div><br></div><div>I&#39;ve been using `(font-lock-region (poin=
+t-min) (point-max))&#39; to force a refontification of the entire buffer, f=
+or my htmlize-like packages (`faceup&#39; and `e2ani&#39;). I&#39;m not sur=
+e if it&#39;s the &quot;right way&quot; to do it, but it works in practice.=
+</div><div><br></div><div>=C2=A0 =C2=A0 -- Anders Lindgren</div><div><br></=
+div></div></div></div>
+
+--001a1143dd18eb70ed052c580365--
+

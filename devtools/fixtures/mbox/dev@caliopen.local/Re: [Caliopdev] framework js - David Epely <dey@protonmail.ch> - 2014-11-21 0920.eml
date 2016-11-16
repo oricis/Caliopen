@@ -1,0 +1,192 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 059BF120ADB;
+	Fri, 21 Nov 2014 09:20:24 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 0.777
+X-Spam-Level: 
+X-Spam-Status: No, score=0.777 tagged_above=-999 required=5
+	tests=[BAYES_50=0.001, FORGED_RCVD_HELO=0.135, FUZZY_AMBIEN=0.416,
+	HTML_MESSAGE=0.001, MIME_BASE64_NO_NAME=0.224]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id 5RYHpHyNGft9; Fri, 21 Nov 2014 09:20:22 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id A83BF120A3A;
+	Fri, 21 Nov 2014 09:20:22 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id AED3868317826;
+	Fri, 21 Nov 2014 09:20:14 +0100 (CET)
+Authentication-Results: brassens.heberge.info; dkim=fail
+	reason="verification failed; insecure key"
+	header.d=protonmail.ch header.i=@protonmail.ch header.b=teefjIwn;
+	dkim-adsp=discard (insecure policy); dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id SopLyUgFMVui; Fri, 21 Nov 2014 09:20:12 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id D8E0868317822;
+	Fri, 21 Nov 2014 09:20:08 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id A501968317824
+ for <caliopdev@caliop.net>; Fri, 21 Nov 2014 09:20:07 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id lGO7vXzEq1FD for <caliopdev@caliop.net>;
+ Fri, 21 Nov 2014 09:20:06 +0100 (CET)
+Received: from mail.protonmail.ch (protonmail.ch [37.35.106.36])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id 3CD3A68317822
+ for <caliopdev@caliop.net>; Fri, 21 Nov 2014 09:20:06 +0100 (CET)
+Received: by mail.protonmail.ch (Postfix, from userid 48)
+ id 76B6914252D01; Fri, 21 Nov 2014 08:20:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=protonmail.ch;
+ s=default; t=1416558005;
+ bh=mSCCWWu/QIFeD5XVuYzUiAjxgxm/BibjCKn2IXz8K9I=;
+ h=To:Subject:Date:From:Reply-To;
+ b=teefjIwnVJk9CAdMoVG0rHjXfCwPFZxXYwYtoSD1i0R8hHJg/BMtfndFi4443MLvq
+ qCsPCYYn3rJ+cw2qmxejMgVMMyOte4qw0P4raqgWB+5nUMjfl4HYjemvW+ypgKKnuh
+ Owj+0B/IQG0mHqLyUmWZrWp5iPt8KIvXRafwwylI=
+To: "kajan@kajansiva.com" <kajan@kajansiva.com>,
+ "caliopdev@caliop.net" <caliopdev@caliop.net>
+Date: Fri, 21 Nov 2014 03:20:05 -0500
+From: David Epely <dey@protonmail.ch>
+Message-ID: <d1a6fe609f06473eb6cf0d9e7be9731a@protonmail.ch>
+X-Priority: 3
+MIME-Version: 1.0
+Subject: Re: [Caliopdev] framework js
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: David Epely <dey@protonmail.ch>,
+ =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============1608807487=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+--===============1608807487==
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: base64
+
+w4BtaGEgYydlc3QgYXUgImxlYWQgZGV2IiBkZSBjb25maXJtZXIgbGUgY2hvaXggZGUgbGEgdGVj
+aG5vIHF1aSBjb252aWVudCBsZSBtaWV1eCBhdSBwcm9qZXQgZXQgaidhaSBsJ2ltcHJlc3Npb24g
+cXVlIGxlIGNob2l4IGVzdCBkw6lqw6AgZmFpdCwgaW51dGlsZSBkZSB0b3VybmVyIGF1dG91ciBk
+dSBwb3QuPGJyPjxicj5wb3VyIGFuZ3VsYXIgMiBqZSBuZSBzYWlzIHBhcyDDoCBxdWVsIHN0YWRl
+IGlscyBlbiBzb250IG1haXMgb24gcGV1dCBzdXBwb3NlciBxdWUgc2Egc29ydGllIHBvdXJyYWl0
+IMOqdHJlIHByb2NoZSBkdSBtb21lbnQgb8O5IGNhbGlvcGVuIGRldmllbnQgZm9uY3Rpb25uZWwg
+KG91IGF1IG1vaW5zIHVuIHByb3RvIG1pbmltdW0gdmlhYmxlKSBldCBjb21tZSB1bmUgdmVyc2lv
+biAyIGVzdCBnw6luw6lyYWxlbWVudCB1bmUgcmVmb250ZSBjb21wbMOodGUgZW4gcHJlbmFudCBs
+ZSBtZWlsbGV1cnMsIHBvdXIgZW5zdWl0ZSBwcm9wb3NlciBkZXMgdmVyc2lvbnMgbWFqZXVycyBh
+dmVjIG1pZ3JhdGlvbiDDoCBmYWlibGUgY2/Du3QgKGMnZXN0IHR5cGlxdWVtZW50IGNlIHF1ZSBs
+J29uIHZvaXQgYXZlYyBkZXMgcHJvamV0cyBjb21tZSBzeW1mb255IDEgPSZndDsgU3ltZm9ueSAy
+IC0mZ3Q7IFN5bWZvbnkgMyAuLi4gZXQgc8O7cmVtZW50IGQnYXV0cmVzKSA8YnI+Vm9pbMOgIHBv
+dXJxdW9pIGxhIHF1ZXN0aW9uIHNlIHBvc2UuPGJyPjxicj5FbiB0b3V0IGNhcyBjZSBxdWkgZXN0
+IHPDu3IgY2UgcXVlIHBvdXIgYW5ndWxhciAxIGlsIGZhdWRyYSBpbXBvc2VyIHVuZSBjb252ZW50
+aW9uIGRlIGNvZGUgY29tcGzDqHRlIGplIHZvaXMgdHJvcCBkZSBtYW5pw6hyZSBkZSBmYWlyZSBl
+dCBqYW1haXMgdnJhaW1lbnQgdW5lIGJvbm5lLiBTdXIgbW9uIHByb2pldCBwcm8gb24gYSDDoCBw
+ZXUgcHLDqHMgcmllbiBzdWl2aSBhdSBkw6lidXQgZXQgbWFpbnRlbmFudCBxdWUgYydlc3QgZ3Jv
+cywgb24geSB2b2l0IHBsZWluIGRlIGxhY3VuZXMgZXQgcGFzIG1hbCBkZSBkZXR0ZSB0ZWNobmlx
+dWUuPGJyPkzDoCBvbiBlc3NhaSBkZSByZWZhY3RvcmVyIGF1IGZ1ciBldCDDoCBtZXN1cmUgZW4g
+c3VpdmFudCDDp2EgOiA8YSBocmVmPSJodHRwczovL2dpdGh1Yi5jb20vam9obnBhcGEvYW5ndWxh
+cmpzLXN0eWxlZ3VpZGUiIHJlbD0ibm9mb2xsb3ciIHRhcmdldD0iX2JsYW5rIj5odHRwczovL2dp
+dGh1Yi5jb20vam9obnBhcGEvYW5ndWxhcmpzLXN0eWxlZ3VpZGU8L2E+PGJyPjxicj48c3Bhbj4t
+LS0tLS0tLSBPcmlnaW5hbCBNZXNzYWdlIC0tLS0tLS0tPGJyPlN1YmplY3Q6IFJlOiBbQ2FsaW9w
+ZGV2XSBmcmFtZXdvcmsganM8YnI+VGltZSAoR01UKTogTm92IDIwIDIwMTQgMjM6NTk6MTg8YnI+
+RnJvbToga2FqYW5Aa2FqYW5zaXZhLmNvbTxicj5UbzogY2FsaW9wZGV2QGNhbGlvcC5uZXQ8YnI+
+PGJyPjxkaXY+PGRpdj48ZGl2PkJvbmpvdXIsPC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj48YnI+
+PC9kaXY+PGRpdj48c3Bhbj4NCiAgDQogICAgDQogIA0KICA8ZGl2Pg0KICAgIDxkaXY+Qm9uam91
+ciw8YnI+PGJyPg0KICAgICAgU3VpdGUgw6AgZGlzY3Vzc2lvbiBJUkMgdy8gQ2hhbWFsLCB2b3Vz
+IHBvdXZleiBjb25zdWx0ZXIgLw0KICAgICAgcGFydGljaXBlciDDoDxicj48YnI+PGI+Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7IDxhIGhyZWY9Imh0dHBzOi8vcGFkLmNhbGlvcGVuLm9yZy9wL1Rl
+Y2hub0Zyb250IiByZWw9Im5vZm9sbG93IiB0YXJnZXQ9Il9ibGFuayI+aHR0cHM6Ly9wYWQuY2Fs
+aW9wZW4ub3JnL3AvVGVjaG5vRnJvbnQ8L2E+IDwvYj48Yj48YnI+PC9iPjxicj4NCiAgICAgIFBv
+dXIgcGFydGljaXBlciwgaWwgZmF1ZHJhaXQgZGlzY3V0ZXIgZXQgYWZmaW5lciBsZXMgY3JpdMOo
+cmVzLA0KICAgICAgcHVpcyBwcm9jw6lkZXIgw6AgbGEgbm90YXRpb24gKGonYWkgbWlzIHVuIGxp
+ZW4gdmVycyB1biBldGhlcnNoZWV0DQogICAgICBwb3VyIGV4ZW1wbGUgLyB0ZXN0KTxicj48YnI+
+PGJyPjxiPkwnaWTDqWUgZCd1bmUgZ3JpbGxlIGRlIG5vdGF0aW9uPC9iPjxicj48YnI+DQogICAg
+ICBGYWlyZSB1bmUgZ3JpbGxlIGQnw6l2YWx1YXRpb24gZGVzIGRpZmbDqXJlbnRzIGZyYW1ld29y
+a3MgZW4gc2UNCiAgICAgIGJhc2FudCBzdXIgbGVzIGNyaXTDqHJlcyBkJ2V4aWdlbmNlIGTDqWZp
+bmlzIHBvdXIgQ2FsaW9wZW4uIDxicj48YnI+DQogICAgICBBdSBmaW5hbCwgdW5lIG5vdGUgcGFy
+IGZyYW1ld29yayByYXRpb25hbGlzZSBsZSBjaG9peC4gPGJyPjxicj4NCiAgICAgIFNpbm9uID8g
+T24gcmVzdGUgZGFucyBsZSBmbG91IGRlcyBpbXByZXNzaW9ucyBpbmRpdmlkdWVsbGVzLjxicj48
+YnI+PC9kaXY+PC9kaXY+PC9zcGFuPjxkaXY+PGJyPjwvZGl2PjxkaXY+T2sgcG91ciBsYSBncmls
+bGUgZGUgbm90YXRpb24uIFBhciBjb250cmUgcXVlbHF1ZXMgcmVtYXJxdWVzIDo8L2Rpdj48ZGl2
+Pjxicj48L2Rpdj48ZGl2Pi0gU2FpbHNKUyBlc3QgdW4gZnJhbWV3b3JrIGJhY2stZW5kIGJhc8Op
+IHN1ciBOb2RlSlMsIGRvbmMgb24gcGV1dCBkw6lqw6AgbCdlbmxldmVyIGRlIGxhIGxpc3RlPC9k
+aXY+PGRpdj4tIEFuZ3VsYXIgdjIgZXN0IHNldWxlbWVudCBhdSBzdGFkZSBwcm9qZXQuIElsIG4n
+eSBhIG3Dqm1lIHBhcyBkZSB2ZXJzaW9uIGFscGhhIGFjdHVlbGxlbWVudCwgZG9uYyDDoCBzb3J0
+aXIgw6lnYWxlbWVudCBkZSBsYSBsaXN0ZTwvZGl2PjxkaXY+PGJyPjwvZGl2PjxkaXY+RW5zdWl0
+ZSwgcGFyIHJhcHBvcnQgw6AgY2V0dGUgZ3JpbGxlIGRlIG5vdGF0aW9uLCBxdWVsIGVzdCBsZSAi
+cGxhbm5pbmciID88L2Rpdj48ZGl2Pi0gQ29tYmllbiBkZSBwZXJzb25uZXMgaW1wbGlxdcOpZXMg
+ZGFucyBsZSBwcm9qZXQgc29udCBjZW5zw6lzIHLDqXBvbmRyZSDDoCBjZXR0ZSBncmlsbGUgZGUg
+bm90YXRpb24gPzwvZGl2PjxkaXY+LSBRdWVsbGUgc2VyYSBsYSBkYXRlIGRlIGNsw7R0dXJlIGRl
+cyByw6ljb2x0ZXMgZCdhdmlzID88L2Rpdj48ZGl2PiZuYnNwOzwvZGl2PjxkaXY+PGRpdj4NCiAg
+ICAgIDxicj48Yj5Qb3J0w6llIGR1IGNvZGUgSlMgZGFucyBjYWxpb3BlbjwvYj48YnI+PGJyPg0K
+ICAgICAgUGFybGFudCBkZSBmbG91LCBqJ2FpbWVyYWkgYXZvaXIgcGx1cyBkZSBkw6l0YWlscyA6
+PGJyPjxicj4NCiAgICAgIFNpIG9uIHZldXQgZGVzIGludGVyZmFjZXMgcsOpYWN0aXZlcyBjb21t
+ZSBsZSBwZXJtZXR0ZW50IGxlcw0KICAgICAgZnJhbWV3b3JrcyBKUyBtb2Rlcm5lcywgaWwgZmF1
+dCB1biBtaW5pbXVtIGRlIGJhc2UgZGUgZG9ubsOpZXMNCiAgICAgIGVtYmFycXXDqWUgZXQgZGUg
+Z2VzdGlvbiBkZXMgdGVtcGxhdGVzIEhUTUwgY8O0dMOpIGNsaWVudCAoZHUNCiAgICAgIENvbnRy
+b2xsZXIgTW9kZWwgVmlldyAsIGVuIHNvbW1lKSBhdmVjIGR1IHdlYnNvY2tldCwgbGUgcGx1cw0K
+ICAgICAgc291dmVudCBnw6lyw6kgcGFyIHVuZSBhcHBsaSBub2RlLjxicj48YnI+DQogICAgICBP
+ciBsZXMgY29udHLDtGxldXJzIGV0IGxlIHJlbmR1IEhUTUwgc29udCBhIHByaW9yaSBmYWl0IGPD
+tHTDqSBQeXRob24NCiAgICAgIHF1aSBlbnZvaWUgZHUgSFRNTCA/PGJyPjxiPjxicj48L2I+RW4g
+dGVybWUgZGUgcmVuZHUgSFRNTCBldCBkZSBiYXNlIGRlIGRvbm7DqWVzIG/DuSBzZSBzaXR1ZW50
+IGxlcw0KICAgICAgZnJvbnRpw6hyZXMgZW50cmUgZnJvbnRlbmQgLyBiYWNrZW5kJm5ic3A7ID8g
+PGJyPjxicj4NCiAgICAgIEVuIHRlcm1lIGRlIGRlIG3DqXRob2RlcyBkJ2Vudm9pIC8gcsOpY2Vw
+dGlvbiBkZXMgZG9uLCB5IGEgdCdpbCB1bg0KICAgICAgc2Now6ltYSBkw6lmaW5pIGV0IHByw6lj
+aXMgPyA8YnI+PGJyPg0KICAgICAgU2kgb24gdmV1dCB1bmUgaW50ZXJmYWNlIGZyb250ZW5kIGF1
+IG5pdmVhdSBwb3VyIGxlcyA1IGFucyDDoA0KICAgICAgdmVuaXIsIGlsIG1lIHNlbWJsZSBpbXBv
+cnRhbnQgZCfDqnRyZSBjbGFpciBsw6AgZGVzc3VzLjxicj48YnI+PGJyPg0KICAgICAgOjphPGJy
+PjwvZGl2PjwvZGl2PjwvZGl2Pjxicj48L2Rpdj48ZGl2PkwnaWTDqWUgc2VyYSwgcXVlbCBxdWUg
+c29pdCBsZSBmcmFtZXdvcmsgZnJvbnQtZW5kIGNob2lzaSwgYXVyYSBsYSBkaXNwb3NpdGlvbiBz
+dWl2YW50ZSA6PC9kaXY+PGRpdj4tIHVuIGJhY2stZW5kIHF1aSBmb3Vybml0IHVuZSBBUEk8L2Rp
+dj48ZGl2Pi0gdW4gZnJvbnQtZW5kIHF1aSBzZXJhIGNvbXBvc8OpIGRlIGZpY2hpZXJzICJzdGF0
+aXF1ZXMiIEhUTUwgLyBKYXZhc2NyaXB0PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj5MZSBiYWNr
+LWVuZCBnw6lyZXJhIHRvdXRlIGxhIGxvZ2lxdWUgbG91cmRlLCBjb21tZSBuJ2ltcG9ydGUgcXVl
+bCBzZXJ2aWNlIHdlYi48L2Rpdj48ZGl2PkV0IGxlIGZyb250IHNlcmEgYmFzw6kgc3VyIGxlIHBy
+aW5jaXBlIGRlICJzaW5nbGUgcGFnZSBhcHBsaWNhdGlvbiIgOiBvbiBhY2PDqWRlcmEgYXUgc2l0
+ZSB2aWEgdW4gdW5pcXVlIGZpY2hpZXIgaHRtbCwgcXVpIGNoYXJnZXJhIGVuc3VpdGUgZW4gZm9u
+Y3Rpb24gZGUgc2VzIGJlc29pbnMgZGVzIHZ1ZXMgcGFydGllbGxlcyBIVE1MLCBlZmZlY3R1ZXJh
+IGxlcyBhcHBlbHMgdmVycyBsJ0FQSSBwb3VyIHJlbXBsaXIgc2VzIHZ1ZXMgZXRjLi4uPC9kaXY+
+PGRpdj48YnI+PC9kaXY+PGRpdj5FbnN1aXRlLCBjZSBzY2jDqW1hIHBvdXJyYSDDqnRyZSBjb21w
+bGV0IHBhciBsJ3V0aWxpc2F0aW9uIGRlIHdlYnNvY2tldCBzdXIgY2VydGFpbmVzIHBhcnRpZXMg
+cXVpIG9udCBiZXNvaW4gZCdhdm9pciBkZXMgbW9kaWZpY2F0aW9ucyAidGVtcHMgcsOpZWxzIiBl
+dGMuLi48L2Rpdj48ZGl2Pjxicj48L2Rpdj48ZGl2PlZvdXMgcG91cnJleiB0cm91dmVyIHVuZSBw
+csOpc2VudGF0aW9uIGRlIGNlIGNvbmNlcHQgaWNpIDombmJzcDs8YSBocmVmPSJodHRwOi8vc3Rh
+Y2tvdmVyZmxvdy5jb20vcXVlc3Rpb25zLzI2MTk2MDQyL3NpbmdsZS1wYWdlLWFwcGxpY2F0aW9u
+LWZyb250ZW5kLWluZGVwZW5kZW50LW9mLWJhY2tlbmQiIHJlbD0ibm9mb2xsb3ciIHRhcmdldD0i
+X2JsYW5rIj5odHRwOi8vc3RhY2tvdmVyZmxvdy5jb20vcXVlc3Rpb25zLzI2MTk2MDQyL3Npbmds
+ZS1wYWdlLWFwcGxpY2F0aW9uLWZyb250ZW5kLWluZGVwZW5kZW50LW9mLWJhY2tlbmQ8L2E+PC9k
+aXY+PGRpdj48YnI+PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj5BIHZvdHJlIGRpc3BvLCBwb3Vy
+IHRvdXRlcyBkZW1hbmRlcyBkJ2luZm9zLjwvZGl2PjwvZGl2Pg0KPC9zcGFuPjxicj48YnI+
+
+
+--===============1608807487==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============1608807487==--

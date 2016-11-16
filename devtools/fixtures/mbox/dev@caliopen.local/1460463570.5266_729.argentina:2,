@@ -1,0 +1,126 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alKBN-0004Pf-KD
+	for mharc-dev@caliopen.local; Wed, 30 Mar 2016 13:45:29 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59489)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1alKBL-0004NT-EY
+	for dev@caliopen.local; Wed, 30 Mar 2016 13:45:28 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1alKBH-00064I-4O
+	for dev@caliopen.local; Wed, 30 Mar 2016 13:45:27 -0400
+Received: from mout.kundenserver.de ([212.227.17.10]:65129)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1alKBG-000647-Rg
+	for dev@caliopen.local; Wed, 30 Mar 2016 13:45:23 -0400
+Received: from [192.168.1.82] ([109.24.225.43]) by mrelayeu.kundenserver.de
+	(mreue102) with ESMTPSA (Nemesis) id 0Lc8iD-1a2g9k1ejd-00jYzk for
+	<emacs-devel@gnu.org>; Wed, 30 Mar 2016 19:45:21 +0200
+Subject: Re: More convenient default rollback for users
+To: dev@caliopen.local
+References: <m3poudb86o.fsf@gnus.org> <83io05w9s7.fsf@gnu.org>
+	<m3bn5xb60l.fsf@gnus.org> <83egatw7lm.fsf@gnu.org>
+	<m3wpokas0n.fsf@gnus.org>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Message-ID: <56FC10B1.3000808@gmail.com>
+Date: Wed, 30 Mar 2016 19:45:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <m3wpokas0n.fsf@gnus.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="dodibsv5x47d8LROf4gg5lUBsAk76hFr6"
+X-Provags-ID: V03:K0:TXKhq5JpSeZuM0lnbREBMwYN79PxyUvvDn07yWXmdlSeEwX3UX0
+	1TYNUQASswp0xmXBbDIe3JhXp6LfhxUMEmlIKBdCuYCWULX7j0D56mW8zWkuo1yexNkgq0B
+	RrrxHNwBOsgaT2wcdsmYles5MSuA5u7i+v2ZV0R3fWTkAhl4ttNY3DT0BKdWW4l9z855ux0
+	AynNI3FgfwALRlpKa61rg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:GGrkelxxt4E=:f3FC/62b2ctMGXqRPi8xGw
+	hBpq4IaqgusakA9pCWbwaxPhQWsYVjJbb63qZ/XZiaixZ/NlJkKPTuIS4Xz/RJ7zkDpLxCa9e
+	2QYZXpjBqB6zSBpMED6qx9KMXP9aKQAOYavysDd1VigqDfE2MOhGccFVUfsjmwFkto7gpT9od
+	QNsx+hekIluAEbnhnysfZAszDnhebwDYuu3z6wBeNhQg6M63Y/kI8iNfR2md1Y/JlPQrGRIrj
+	Hs+vAm2mk3pbqqNwYLRrUwxZktOUEGUqGvyellXWB6ackXcWdd2Y+dSQab4Rb6kGnoxQpJt+Q
+	jR4e3zmm3ufXjUDZ/eioqi9U4tTTzTmAgx/8jlxOIF++DSA63zpBclz7CNNW7xEBizmBOlQgW
+	QEb9l0NmRpevTHMwSB79Fn5mZVfaaUdf5HNwIbDumb0bEr2r1FzOFEjDLr6SsCLAYeNybfELe
+	/GBFejr7qivLhoeoGqep2X5iI4EsZuJS+6Cqlkrt5n84uSvQMazdsJyAXJrF95bq4/o4KhOOR
+	b8p/dA205AnRKY1rNLAuEq1BwpDPpY9zp4Re+X4uPlVHpOxio7hQ+WXWwJ6oRyqYU4G51rCeA
+	rC4L6v90AHt2BhxAh5yMELM8sUupjFdkLxqwa67oxg0SA32gYHxEnko5Re8+CG8I+YnzFuDH1
+	/xCosbbr499UGddZRaPR1foaCylVwKMNglbVw6NgAAZqKlh7AWaSLujImwWCQ27XPxVA=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.17.10
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 30 Mar 2016 17:45:28 -0000
+Content-Length: 2689
+Lines: 62
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--dodibsv5x47d8LROf4gg5lUBsAk76hFr6
+Content-Type: multipart/mixed; boundary="q30FobonNj0svGPsRtObJsLLD6M9KDRv8"
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+To: dev@caliopen.local
+Message-ID: <56FC10B1.3000808@gmail.com>
+Subject: Re: More convenient default rollback for users
+References: <m3poudb86o.fsf@gnus.org> <83io05w9s7.fsf@gnu.org>
+ <m3bn5xb60l.fsf@gnus.org> <83egatw7lm.fsf@gnu.org> <m3wpokas0n.fsf@gnus.org>
+In-Reply-To: <m3wpokas0n.fsf@gnus.org>
+
+--q30FobonNj0svGPsRtObJsLLD6M9KDRv8
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+On 03/30/2016 05:45 PM, Lars Magne Ingebrigtsen wrote:
+> Eli Zaretskii <eliz@gnu.org> writes:
+>> The problem is that some options are supposed to be changed via
+>> defcustoms, because those invoke a special function for the new value
+>> to take effect.  In NEWS, we usually say "customize the option
+>> so-and-so to such-and-such value", but how do you do that in
+>> copy/paste-able way? invoke the function by hand?
+>=20
+> Perhaps there should be a `custom-setq' function that the user could
+> eval?  Or perhaps this rollback buffer could be in a mode where just
+> hitting RET on a form would execute the proper custom incantations...
+
+Is that what customize-set-variable does? If not, then it would be very v=
+ery very nice; most Emacs configs that I see online are nicely structured=
+ and split into a number of files, but they use setq even for variables t=
+hat have custom setters.
+
+Cl=E9ment.
+
+
+--q30FobonNj0svGPsRtObJsLLD6M9KDRv8--
+
+--dodibsv5x47d8LROf4gg5lUBsAk76hFr6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJW/BCxAAoJEPqg+cTm90wj1UkP/je9z8EjoxYZRK6nreGQiJX9
+mHiaVpW6t7O5gPEn+B8KfCYPQkt4Zoi+MUvuiWPvwRDrgeTtUOKY/0hlBIoRoy3j
+WuaCRSG4IR3pRHAR/NQfhCE3KX9buxCRzmWANiMQaweYFVHjXpqrhNTo7WvFuGAm
+3WWcHGwPupjYbbgT5at6nF/ndo4IZFt/hqOOXhefqo/jKBfWwtfZc3xJuHYtilhq
+/uMkvml7qCILIxOsx0XQP9qj/7eAS2+jB1HCXLHMDXmZi8eiVyo4MjETegbst9zi
+UlP0Etxcwfm06XaqrX55EjQDKNBwkiuoOiwyWDRALkW7gbIPyAWD1tAZLfnurpku
+omvOcNbB3pq8u3s2P8okM+FTt/l0pg0JUk+wxnc70NyzO13fopo2q8MBE3/M+N/q
+j0RbKacD0Ua5X9VZx+nTXcl5a6Rea5lPJZuMpyI9Ld9fpzoBAMdpdtjjJ8YIFEGe
+BIQFzqlJOrV1V7MgbKBm5W4vznUrI3DheatrSwuHFsOw2IA08T1jeHRso8cfEQPU
+XSdbyUqlmLGOmcW+VAL7frVRgdM5Kq0RZ3+atyLyn9JsRDt4JvsMt9XysAoVzyOD
+8WjHLXdWrFuQO4NJlrv29RJwzZ/HQT4VYB/RqVYxmoFj7eYpyWynRTYI3NbkbSl8
+WxjJsLTjbLEWYv5BEeYr
+=eT4j
+-----END PGP SIGNATURE-----
+
+--dodibsv5x47d8LROf4gg5lUBsAk76hFr6--
+

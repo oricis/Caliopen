@@ -1,0 +1,96 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 521B2120AD3;
+	Sat,  6 Dec 2014 21:35:57 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -0.74
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.74 tagged_above=-999 required=5
+	tests=[BAYES_20=-0.74]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id 94Nk0gk5QLpz; Sat,  6 Dec 2014 21:35:56 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 3618B120A50;
+	Sat,  6 Dec 2014 21:35:56 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 320A66826688C;
+	Sat,  6 Dec 2014 21:35:55 +0100 (CET)
+Received: from brasil.brainstorm.fr (brasil.brainstorm.fr [193.56.58.33])
+ by brassens.heberge.info (Postfix) with ESMTP id AE3296826688C
+ for <caliopdev@caliop.net>; Sat,  6 Dec 2014 21:35:53 +0100 (CET)
+Received: by brasil.brainstorm.fr (Postfix, from userid 1000)
+ id 81A6720BE02F5; Sat,  6 Dec 2014 21:35:53 +0100 (CET)
+Date: Sat, 6 Dec 2014 21:35:53 +0100
+From: Laurent Chemla <laurent@brainstorm.fr>
+To: Liste de =?iso-8859-1?Q?d=E9veloppement?= Caliopen <caliopdev@caliop.net>
+Message-ID: <20141206203553.GD11160@brasil.brainstorm.fr>
+References: <CA+tgzeg9KmeU2B_=609YsLtS05xj-pCRZSL4R2A-QTR0ThuEeA@mail.gmail.com>
+ <CA+tgzeir52HN-cGebJitqXEo2YysQZAu37aTvix2wgE83FgAJQ@mail.gmail.com>
+ <CA+tgzehWJrANZdeGvfn+fFSDe8Dm9X9GMeDjr9LesmfZ4SgjZA@mail.gmail.com>
+ <CA+tgzehWtaqTp6pNVxFvNRXR5620RuY530EWxbrWNBKeB2eS0g@mail.gmail.com>
+ <CA+tgzej7rZ-EBSYXC81Os0emcdCoVSVfMEAZvY_1tShwshzb=w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CA+tgzej7rZ-EBSYXC81Os0emcdCoVSVfMEAZvY_1tShwshzb=w@mail.gmail.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Subject: Re: [Caliopdev] =?iso-8859-1?q?Prochaines_=E9tapes_=3F?=
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+
+> Comment s'est d=E9roul=E9 la r=E9union d'hier ?
+
+Annul=E9e pour cause de gr=E8ve TGV.
+
+> Quelles sont les prochaines =E9tapes ?
+
+Il faut absolument construire une base de travail pour l'UI, avec
+Ember donc. A priori vous serez l=E0 tous les deux Julien et toi, le
+12, mais si on pouvait avancer d'ici l=E0 ce serait super.
+
+J'ai commenc=E9 =E0 r=E9diger les id=E9es concernant la gamification, sur
+https://pad.caliopen.org/p/Ludification , et Chamal essaye de voir
+comment pr=E9senter au mieux un fil de conversation quand les messages
+viennent de plusieurs sources (le threading est quasi impossible, il
+faut des id=E9es neuves).
+
+Pour rappel, dans l'alpha on ne vise qu'=E0 g=E9rer l'email mais m=EAme
+dans ce cas, si on a plusieurs sources le threading sera compliqu=E9.
+
+Les trucs qu'on doit absolument pouvoir montrer, =E0 ce stade dans
+l'id=E9al c'est:
+
+- La cr=E9ation de compte et l'ajout d'un compte email externe,
+- Des niveaux de confidentialit=E9 (m=EAme mal calcul=E9s, ou fixes)
+  associ=E9s =E0 chaque =E9l=E9ment, et un syst=E8me de bulles d'aide et
+  d'incitation "dynamiques" (m=EAme si =E7a ne pointe sur rien),
+- L'affichage des conversations et la saisie de messages sortants.
+
+Il faut vraiment commencer =E0 bosser sur l'UI, c'est hyper important
+pour conserver un momentum qu'on a d=E9j=E0 eu pas mal de difficult=E9 =E0
+obtenir. La recherche de financement passe aussi par =E7a.
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev

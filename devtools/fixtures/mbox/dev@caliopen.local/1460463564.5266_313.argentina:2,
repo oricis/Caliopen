@@ -1,0 +1,134 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anA7v-0007Nk-68
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 15:25:31 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:45265)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <kfogel@gmail.com>) id 1anA7s-0007NV-83
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:25:29 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <kfogel@gmail.com>) id 1anA7n-0003Sf-7S
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:25:28 -0400
+Received: from mail-yw0-x232.google.com ([2607:f8b0:4002:c05::232]:33402)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <kfogel@gmail.com>) id 1anA7n-0003SR-2p
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:25:23 -0400
+Received: by mail-yw0-x232.google.com with SMTP id t10so77233403ywa.0
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 12:25:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=sender:from:to:cc:subject:references:reply-to:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=fRD+6OKKAWfbg74aUnH0UFE+zuMZ2cSy8oKseKZJ7m8=;
+	b=YYCxCxlTlCRkxKkEpnA27UtSMx+ljxMsw1vGmM+1iqdWL2e4eXZPcQu0PokZK+3osi
+	GgiLUx5ogmhQtg00qNHRqYqaDO3RgiLbQcGQjJq+034iMIQBo85u7WYT3XrIPkcF+MDE
+	ZD13danZH6wnJsZGFx8fDS5AlIZ0Dgw52pgGk5ILyrj3fWOzd7hFDui6VZtcSvd53Kke
+	MlVCV9lkKCphfF7AHOs20x7g0M3mDdNaKEFz/OxJMFnajQbKsQwyGOvlnFAWQ9LFFUgZ
+	PiUI7Ynt5uriDYL0BR765sb404KFLdwd6K7Fdhkt38V+SYT63iIL7eqkQc3F3Mb6iz5C
+	5PBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:sender:from:to:cc:subject:references:reply-to
+	:date:in-reply-to:message-id:user-agent:mime-version;
+	bh=fRD+6OKKAWfbg74aUnH0UFE+zuMZ2cSy8oKseKZJ7m8=;
+	b=PkdEzGmnej0Mo602FPJLR38evDlTMHaR/gHMyHEJFt5Hb8WkIian0Td/ncGgAMNomZ
+	C63ctGj80Ke93yZ20OdLQ+B3TVZRfoywdDtp4G5gmv4gDRF1J/LH5NUPJDT0B8TJzQty
+	+cheBL3psMy/lQLAvSUUbx+tyWTFqYLNs/W9OVVM3myvS8A69V+pE+K0U25BuVF793Ub
+	yPa7vCnc2GDSXHp6yV9ODNJ0h3mKG1VQFLJ7K4RIjnrsAHUEVBd2ZDoBm06A7tVlBnDS
+	IV6PV/0bzlRkWgD3lUu+Dt4yYEiPLxLW8PBXVm6EpCZB6P9I+f+SbhgnzQN/mvs5IWlT
+	abxw==
+X-Gm-Message-State: AD7BkJIIjVKzdqGUXnNM+YjJEPy4VXKYnh63yVUY1kN/HMbM4Ug0UVZNQO0fHvzIIqqtCA==
+X-Received: by 10.37.2.200 with SMTP id 191mr17898069ybc.12.1459797922391;
+	Mon, 04 Apr 2016 12:25:22 -0700 (PDT)
+Received: from floss (74-92-190-114-Illinois.hfc.comcastbusiness.net.
+	[74.92.190.114]) by smtp.gmail.com with ESMTPSA id
+	z201sm18252419ywd.21.2016.04.04.12.25.21
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Mon, 04 Apr 2016 12:25:21 -0700 (PDT)
+Sender: Karl Fogel <kfogel@gmail.com>
+From: Karl Fogel <kfogel@red-bean.com>
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: Re: "Staying in the same place"
+References: <m3oa9q53uq.fsf@gnus.org>
+	<jwv7fgd1r7w.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m3mvp9nsmp.fsf@gnus.org> <jwv8u0tql7y.fsf-monnier+Inbox@gnu.org>
+	<m37fgdnrks.fsf@gnus.org>
+Date: Mon, 04 Apr 2016 14:25:20 -0500
+In-Reply-To: <m37fgdnrks.fsf@gnus.org> (Lars Magne Ingebrigtsen's message of
+	"Mon, 04 Apr 2016 20:42:43 +0200")
+Message-ID: <87h9fhrxb3.fsf@red-bean.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4002:c05::232
+Cc: Stefan Monnier <monnier@IRO.UMontreal.CA>, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Karl Fogel <kfogel@red-bean.com>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 19:25:29 -0000
+Content-Length: 2418
+Lines: 55
+
+Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+>Stefan Monnier <monnier@IRO.UMontreal.CA> writes:
+>
+>> The important part is that you can build a "bookmark object" which should
+>> contain enough data to reproduce the current buffer&position.
+>
+>Yes, but would that work they way I sketched out in the second message
+>in this thread?  I.e., the mode would supply a function that would
+>provide a list of (say) 20 places to look for a place that's "the same"?
+
+Yes, see below...
+
+>> You might be able to do that, but what I was proposing was not to let
+>> users use the bookmark functionality, but simply to have a default
+>> special-mode-revert-buffer function which would do something along
+>> the lines of:
+>>
+>>     (defun special-mode-revert-function ()
+>>       (let ((here (funcall bookmark-make-record-function)))
+>>         (erase-buffer)
+>>         (bookmark-goback here)))
+>
+>Aha, I see.  Yes, that sounds very nice.  As long as the bookmark
+>functionality is sufficiently flexible about the `here' it's willing to
+>accept..
+
+So, stepping back a moment:
+
+First, bookmark has the idea of a fuzzily-recorded place -- a position (in a buffer of text) that is somehow "the same" as it used to be, even though some things about the text have changed.  Obviously, if the text changes too much, the concept of "the same place" becomes meaningless, and bookmark can't recover the position.
+
+Second, bookmark already has a mechanism for delegating that notion of a fuzzily-recorded position to other modes (e.g., to Info mode).
+
+And Stefan has pointed out that what you're proposing is essentially what bookmark already does.  Maybe that idea of recording a position fuzzily should be abstracted out, and then bookmark would use the new abstraction too, or maybe this new function should just use bookmark's existing code (which, in turn, already hooks into mode-specific code in some cases, and could do more of that).
+
+In any case, though, should the new thing be defined as a macro?  That seems like the more natural way, at least IMHO.  Something like:
+
+(defmacro fuzzy-save-excursion (&rest body)
+   record-the-position-fuzzily-using-mode-specific-code
+   run-the-body
+   restore-the-fuzzily-recorded-position
+)
+
+Or maybe:
+
+(defmacro fuzzy-save-excursion (save-func restore-func &rest body)
+   record-the-position-fuzzily-with-save-func
+   run-the-body
+   restore-using-restored-func
+)
+
+?
+
+Best regards,
+-Karl
+

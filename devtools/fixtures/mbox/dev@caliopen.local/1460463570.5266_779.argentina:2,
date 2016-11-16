@@ -1,0 +1,125 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amkSJ-0001CJ-0W
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 12:00:51 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:46604)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>) id 1amkSF-000157-7K
+	for dev@caliopen.local; Sun, 03 Apr 2016 12:00:48 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>) id 1amkSE-0005od-BO
+	for dev@caliopen.local; Sun, 03 Apr 2016 12:00:47 -0400
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244]:33744)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>)
+	id 1amkSA-0005nT-7p; Sun, 03 Apr 2016 12:00:42 -0400
+Received: by mail-lf0-x244.google.com with SMTP id r62so5895742lfd.0;
+	Sun, 03 Apr 2016 09:00:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:references:user-agent:date
+	:message-id:mime-version;
+	bh=dvOZOYxB9zIbhQZGaqTr6joZU8JZiD5BWyeOULvYxFM=;
+	b=NryENgeCJi91K7WTNyyQCXPVm7Rt3CfyoE0kkOmXOTZPbIvYdfLlQU6Yalp1diJ+L/
+	1W6lnKv5UiW2x58NypQR9Xau1VY0wXQA6cIq0zFqXFJemsec0kmIsv6RERuGgDLIdUET
+	TKXJLV9MSZQbhz/ZgsxikhsqXdCq4Cv072QkzERd8C3Wwk8/u82e/SDFxm45/lXBrW1k
+	gvzsoEOe/dCz1US2+4L0bQV//XLxXBj6AooVevyc7vx/O1KzZi8XCHIe+p2BUY+HfJgr
+	OPC+HbPgZR7FWYA1GBgy7JOyv70uJI5gmW/P8uFLfGFnAEsZyCBdEGf6qVGp9fthLI9b
+	S5MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:references
+	:user-agent:date:message-id:mime-version;
+	bh=dvOZOYxB9zIbhQZGaqTr6joZU8JZiD5BWyeOULvYxFM=;
+	b=hrKeBLn/+sGAfFcVc6424kgRBL4GVCqoxOMrmZYWN78RMyfeIUlDM6ESR3sjpoZGtA
+	obMcHQQwLHFRgK6lZCB23oevKyIaTi9fTeAtAI97+JY/BlxO/zPjoHb/yG2Fz6626G9t
+	q0JVD97T0niPp1w4LvVAnWNX/jF9/GcuUgjQ3dx2yDNCYfI6FWEsaBoVhp0SrqI3G0mz
+	al74gCqJk5cHOc5U66uO/5lbJPy/xfKgI8YFt9XH5CsWwA8q2MD7AVFQx5jL+3KsYcIF
+	j+4HN1uCrsUL9vVezTPG1OYfNaHErKjSL11ooc52nCZFU4bss4JSryKjT7ft7pF1ODht
+	udog==
+X-Gm-Message-State: AD7BkJLVABARpdhjdwxg125j5W0Tr8VObU7/OocTpofQxZLUGxNDyWRptqJvudNs9zy+OA==
+X-Received: by 10.194.2.41 with SMTP id 9mr5991278wjr.10.1459699241095;
+	Sun, 03 Apr 2016 09:00:41 -0700 (PDT)
+Received: from localhost (xdsl-87-79-226-7.netcologne.de. [87.79.226.7])
+	by smtp.gmail.com with ESMTPSA id y3sm9278563wmy.17.2016.04.03.09.00.39
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Sun, 03 Apr 2016 09:00:39 -0700 (PDT)
+From: Ingo Lohmar <i.lohmar@gmail.com>
+To: Eli Zaretskii <eliz@gnu.org>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+In-Reply-To: <8337r2r996.fsf@gnu.org>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<20160403111708.GA3537@acm.fritz.box>
+	<87lh4uex9h.fsf@acer.localhost.com>
+	<20160403121458.GC3537@acm.fritz.box>
+	<87bn5qeuxo.fsf@acer.localhost.com> <838u0urb1w.fsf@gnu.org>
+	<8760vyemy0.fsf@acer.localhost.com> <8337r2r996.fsf@gnu.org>
+User-Agent: Notmuch/0.20.2+113~g6332e6e (http://notmuchmail.org)
+	Emacs/25.0.90.1 (x86_64-pc-linux-gnu)
+Date: Sun, 03 Apr 2016 18:00:38 +0200
+Message-ID: <8737r2el7d.fsf@acer.localhost.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:4010:c07::244
+Cc: acm@muc.de, kaushal.modi@gmail.com, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 16:00:49 -0000
+Content-Length: 2122
+Lines: 46
+
+On Sun, Apr 03 2016 18:40 (+0300), Eli Zaretskii wrote:
+> I think your documentation might be outdated.  Here's what the "git
+> pull" man page I have says:
+>
+>   In Git 1.7.0 or later, to cancel a conflicting merge, use git reset
+>   --merge. Warning: In older versions of Git, running git pull with
+>   uncommitted changes is discouraged: while possible, it leaves you in a
+>   state that may be hard to back out of in the case of a conflict.
+>
+>   If any of the remote changes overlap with local uncommitted changes,
+>   the merge will be automatically cancelled and the work tree
+>   untouched. It is generally best to get any local changes in working
+>   order before pulling or stash them away with git-stash(1).
+>
+> This is with Git 2.8.0.
+>
+> IOW, for a recent enough Git, they _recommend_ stashing, but no longer
+> _warn_ about merging in this situation.  Which is exactly my
+> experience.
+
+For the sake of completeness, my 'git merge' man page for 2.8.0.rc3 says
+(in the DESCRIPTION section):
+
+       Warning: Running git merge with non-trivial uncommitted changes
+       is discouraged: while possible, it may leave you in a state that
+       is hard to back out of in the case of a conflict.
+
+> I agree that it's preferable to have a clean repo, but in practice it
+> doesn't always work to have it.  Being able to pull when you have
+> uncommitted changes is an important feature; a VCS that doesn't
+> support it is IMO severely broken, because it will get in the way.
+
+We'll just have to disagree about the "severely broken" part.
+
+>> It is my understanding (and I made it clear that it was partly
+>> guesswork) that Alan asked precisely for that functionality.  I am not
+>> sufficiently patronizing to tell intelligent people they are not ready
+>> for something when they explicitly ask for it. :)
+>
+> You may wish re-reading some of Alan's past messages about his
+> adventures with Git, to get a better idea about that.
+
+I assume you mean a better idea about Alan's wishes..  Well, I actually
+followed those threads, but what was asked for here does not remind me
+of them.  Sorry if I was missing the point.
+

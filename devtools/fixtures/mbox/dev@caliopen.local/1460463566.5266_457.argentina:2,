@@ -1,0 +1,71 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akbOx-0005lu-Nm
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 13:56:31 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:58480)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1akbOw-0005lg-8D
+	for dev@caliopen.local; Mon, 28 Mar 2016 13:56:30 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1akbOt-0002g0-1V
+	for dev@caliopen.local; Mon, 28 Mar 2016 13:56:30 -0400
+Received: from mail-out.m-online.net ([212.18.0.9]:58393)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1akbOs-0002dE-Sg
+	for dev@caliopen.local; Mon, 28 Mar 2016 13:56:26 -0400
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 3qYhRX0kCDz3hjKQ
+	for <dev@caliopen.local>; Mon, 28 Mar 2016 19:56:23 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
+	by mail.m-online.net (Postfix) with ESMTP id 3qYhRW1qnNzvhMK
+	for <dev@caliopen.local>; Mon, 28 Mar 2016 19:56:23 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+	by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavisd-new,
+	port 10024) with ESMTP id WJvfOLwm8OHu for <dev@caliopen.local>;
+	Mon, 28 Mar 2016 19:56:22 +0200 (CEST)
+X-Auth-Info: PGo2aXoHXfwS3mPhOXQNoGado1PxEXzQwVdz834tfJATVAAZ6PSRKeVqW/r4ljnz
+Received: from igel.home (ppp-88-217-16-153.dynamic.mnet-online.de
+	[88.217.16.153]) by mail.mnet-online.de (Postfix) with ESMTPA
+	for <dev@caliopen.local>; Mon, 28 Mar 2016 19:56:22 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id 1BB482C3DDA; Mon, 28 Mar 2016 19:56:22 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: dev@caliopen.local
+Subject: Re: Thinking about changed buffers
+References: <m3bn5ya4ro.fsf@gnus.org>
+X-Yow: PARDON me, am I speaking ENGLISH?
+Date: Mon, 28 Mar 2016 19:56:22 +0200
+In-Reply-To: <m3bn5ya4ro.fsf@gnus.org> (Lars Magne Ingebrigtsen's message of
+	"Mon, 28 Mar 2016 19:31:07 +0200")
+Message-ID: <87fuvafpvd.fsf@linux-m68k.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 212.18.0.9
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 17:56:31 -0000
+Content-Length: 321
+Lines: 11
+
+You cannot just look at the decoded contents.  If the coding system is
+changed the encoded contents will change even if the buffer contents
+didn't.
+
+Andreas.
+
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
+"And now for something completely different."
+

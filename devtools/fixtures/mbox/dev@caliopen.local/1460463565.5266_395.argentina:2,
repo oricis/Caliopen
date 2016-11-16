@@ -1,0 +1,83 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alk7x-0006Rj-RT
+	for mharc-dev@caliopen.local; Thu, 31 Mar 2016 17:27:41 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:42453)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <somasissounds@gmail.com>) id 1alk7u-0006Qy-Rc
+	for dev@caliopen.local; Thu, 31 Mar 2016 17:27:39 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <somasissounds@gmail.com>) id 1alk7t-0001al-PS
+	for dev@caliopen.local; Thu, 31 Mar 2016 17:27:38 -0400
+Received: from mail-ob0-x233.google.com ([2607:f8b0:4003:c01::233]:35680)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <somasissounds@gmail.com>) id 1alk7t-0001af-Ja
+	for dev@caliopen.local; Thu, 31 Mar 2016 17:27:37 -0400
+Received: by mail-ob0-x233.google.com with SMTP id fp4so32656035obb.2
+	for <dev@caliopen.local>; Thu, 31 Mar 2016 14:27:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+	:cc; bh=PHvkbMkNbH0rnM55uoOT+D0dTG8Md6zTJL1Z2NXq2CU=;
+	b=XjZmLq7pSh5C979CM6vwk47NzkBoS3lb9K0XysIkc0HEoBnoAvT3cxJqAI6brF/la2
+	QAfPyN7kiD+hqxarMjLBYrvftsyNmZG1f6AdR1E6RmhR+k6gzxk1NakH+wwFzQntEyqK
+	yzqMlzW9BrHP2EzZke27E83fct14TKFT7hEJ6hAmYMjZinOh2cdWLqpS/6fEwMhTg1ra
+	SS3y45EylVFzr7laRp1kxPtI5jZ0nUOJ6VP3xRV+oqPtfv2Fl5TeJAbe/S0Aq7L7OlRU
+	+Bc1yzXXszsPVb4VDxZqS8dGuZY7/yok1zUmzJquRIKk/xxr4fain2W4rN4cJ8O/PgZ4
+	zypg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+	:message-id:subject:to:cc;
+	bh=PHvkbMkNbH0rnM55uoOT+D0dTG8Md6zTJL1Z2NXq2CU=;
+	b=YKPmFazUFDHmpbe3MrbwRp2lXioApO9eB59E9nqRge+JfHDNFTJaMT7Zq3Iup0mzCo
+	/z4Q+Ut6b6MQ87hg9d05Rv4HJJxSwELMNryLwcQpx1CGXwMihARwu2BgpetW14tbTUmT
+	sPt1pqRFgrO6XQvJQv5Ikd/ZsRfHzRHOll0SUvyWJM8CnC7BabhLI85QWmnZh1awtKns
+	yfu7mfYu4lYnh89oHAuly/cjOSjWqIT7MPN2qOKwqE8JSmQIVqEd9H58ERBIIHI2iG7p
+	ycalmfB1vqmfk5vdFdpC+cLb9LYRlRtONH5pUSgzJSOXFfMSC6yiE/LGSu3iLXKu2hTn
+	GCTw==
+X-Gm-Message-State: AD7BkJKX6rOnfCqdRF7s3h/PQbkyd2o3SOOlmywgR7AnWgfWiMX8hWhbO4D/2v++0Oy663iMvUMksKkzdaNC/g==
+X-Received: by 10.60.161.144 with SMTP id xs16mr743871oeb.15.1459459655622;
+	Thu, 31 Mar 2016 14:27:35 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.157.12.221 with HTTP; Thu, 31 Mar 2016 14:26:56 -0700 (PDT)
+In-Reply-To: <56FD8A8B.3040808@cs.ucla.edu>
+References: <1459315328-3663-1-git-send-email-somasissounds@gmail.com>
+	<56FD8A8B.3040808@cs.ucla.edu>
+From: Kylie McClain <somasissounds@gmail.com>
+Date: Thu, 31 Mar 2016 17:26:56 -0400
+Message-ID: <CAOji9TBmsW1EKzW5yMuq5UtXdeNOyjtSOxHzoT+3iWWD9jBbVQ@mail.gmail.com>
+Subject: Re: [PATCH] src/print.c: Check for __GLIBC__ rather than GNU_LINUX
+To: Paul Eggert <eggert@cs.ucla.edu>
+Content-Type: text/plain; charset=UTF-8
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c01::233
+Cc: Kylie McClain <somasis@exherbo.org>, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 31 Mar 2016 21:27:39 -0000
+Content-Length: 569
+Lines: 15
+
+On Thu, Mar 31, 2016 at 4:37 PM, Paul Eggert <eggert@cs.ucla.edu> wrote:
+> Thanks for reporting that. I filed a bug report with a proposed patch here:
+>
+> http://debbugs.gnu.org/cgi/bugreport.cgi?bug=23173
+>
+> Instead of disabling redirect-debugging-output, this patch ports it to
+> systems like musl where stderr is not an lvalue. Please give it a try if you
+> have the time. it's against master commit
+> 750e1e19429cd781e2e60b462d19ef827d4da943.
+>
+> I haven't installed it into 'master' yet, to give Eli a heads-up about the
+> impending change.
+
+Works just fine! :)
+

@@ -1,0 +1,92 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1al8a7-0000Az-Vp
+	for mharc-dev@caliopen.local; Wed, 30 Mar 2016 01:22:16 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:48497)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <somasissounds@gmail.com>) id 1al8a5-00006J-R1
+	for dev@caliopen.local; Wed, 30 Mar 2016 01:22:14 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <somasissounds@gmail.com>) id 1al8a2-000306-KA
+	for dev@caliopen.local; Wed, 30 Mar 2016 01:22:13 -0400
+Received: from mail-qg0-x243.google.com ([2607:f8b0:400d:c04::243]:35445)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <somasissounds@gmail.com>) id 1al8a2-000300-G2
+	for dev@caliopen.local; Wed, 30 Mar 2016 01:22:10 -0400
+Received: by mail-qg0-x243.google.com with SMTP id b32so2794769qgf.2
+	for <dev@caliopen.local>; Tue, 29 Mar 2016 22:22:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:date:message-id;
+	bh=qsPFBfAmZZRn5ZrDEyY2WtgVr/b5Tg2HAB/I/+79yfc=;
+	b=HVrTwiT1Krg9ZVNY0v07UBqKAX2A6XsSM6AQlcdWnXUGsmhr12L7C0LdrxbtIMFlRc
+	/CYDvn9OItzzqWqIRlg6XquMCYrk3/0p1ozM2IcdkK2jRewHtfKyUo0Jw5XZcwbhria1
+	B7yWJVr9HId+OxEHjMSFUk1JVnIpyXTpRVJwty0N7tWa3/Etm11yrKQWCL/i5/CY7ZXj
+	p1upL2xhkldd1VeTfCLRNdnJFEuuRqNdzhizFjdwokZoWHVeSNvuAB671auPqBZqNjHV
+	L8/CtHC6oMI8+ZDsaKeyM07cCxuAd4+DLyworVac5jcmuxpbe0uOppFcWfTRBSizf8rR
+	AvQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:date:message-id;
+	bh=qsPFBfAmZZRn5ZrDEyY2WtgVr/b5Tg2HAB/I/+79yfc=;
+	b=KjQbBJgO+0dDGrkkUobOjMx+UujmZrjxWLD9AHwKHEREgoYOHYXcF0n9qmuCltxjhg
+	TrmhF12ENAkxM8+TorI7J0IyL6veJnB5cRho2p1YJsmhQ/t974E/L3YzQHvGqM1UQHM/
+	IM6f6ep88KZvOhfMeK4TRwPsq6h7QFMcRTeTmtdh6+/JMoUz/9wvqjM8zH6JAGhkstCw
+	snpYrsRCocMkwKSErHCRb47KSydWM5gUHj7EdhEY4FN495IkfQqnM3kDoCHcWJ79kHFt
+	JvoOXbuTOrH2Fr8ciJPbTi7WJ8vF/A1jxdkuJxI9etVuuwTSQmeoRNplK6c0us9IJJVz
+	uIQQ==
+X-Gm-Message-State: AD7BkJIg9BHpc41r4gab9BZGbB8AJBUuX/wg+xzULEl2iBHiWGnrvLPJCPwYWgTMRCt6vw==
+X-Received: by 10.140.223.17 with SMTP id t17mr7711844qhb.65.1459315329947;
+	Tue, 29 Mar 2016 22:22:09 -0700 (PDT)
+Received: from seneca.local (cpe-65-184-25-62.carolina.res.rr.com.
+	[65.184.25.62]) by smtp.gmail.com with ESMTPSA id
+	z65sm1020501qhb.36.2016.03.29.22.22.09
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+	Tue, 29 Mar 2016 22:22:09 -0700 (PDT)
+From: Kylie McClain <somasissounds@gmail.com>
+To: dev@caliopen.local
+Subject: [PATCH] src/print.c: Check for __GLIBC__ rather than GNU_LINUX
+Date: Wed, 30 Mar 2016 01:22:08 -0400
+Message-Id: <1459315328-3663-1-git-send-email-somasissounds@gmail.com>
+X-Mailer: git-send-email 2.7.4
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:400d:c04::243
+Cc: Kylie McClain <somasis@exherbo.org>, somasissounds@gmail.com
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 30 Mar 2016 05:22:14 -0000
+Content-Length: 594
+Lines: 25
+
+From: Kylie McClain <somasis@exherbo.org>
+
+Not all Linux libcs (ex. musl libc) support the functionality used
+under this #ifdef.
+---
+ src/print.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/print.c b/src/print.c
+index 2b53d75..331f3c4 100644
+--- a/src/print.c
++++ b/src/print.c
+@@ -775,7 +775,7 @@ debug_output_compilation_hack (bool x)
+   print_output_debug_flag = x;
+ }
+ 
+-#if defined (GNU_LINUX)
++#if defined (__GLIBC__)
+ 
+ /* This functionality is not vitally important in general, so we rely on
+    non-portable ability to use stderr as lvalue.  */
+-- 
+2.7.4
+
+

@@ -1,0 +1,73 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aljLc-000892-Vz
+	for mharc-dev@caliopen.local; Thu, 31 Mar 2016 16:37:44 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:57679)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1aljLa-00088l-CD
+	for dev@caliopen.local; Thu, 31 Mar 2016 16:37:43 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1aljLW-0005om-Bi
+	for dev@caliopen.local; Thu, 31 Mar 2016 16:37:42 -0400
+Received: from zimbra.cs.ucla.edu ([131.179.128.68]:39421)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1aljLW-0005o0-5n
+	for dev@caliopen.local; Thu, 31 Mar 2016 16:37:38 -0400
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTP id 06647160FF0;
+	Thu, 31 Mar 2016 13:37:37 -0700 (PDT)
+Received: from zimbra.cs.ucla.edu ([127.0.0.1])
+	by localhost (zimbra.cs.ucla.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id UEqLJVPHiQKJ; Thu, 31 Mar 2016 13:37:35 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTP id 81263161235;
+	Thu, 31 Mar 2016 13:37:35 -0700 (PDT)
+X-Virus-Scanned: amavisd-new at zimbra.cs.ucla.edu
+Received: from zimbra.cs.ucla.edu ([127.0.0.1])
+	by localhost (zimbra.cs.ucla.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id su5Vo0e5vuYR; Thu, 31 Mar 2016 13:37:35 -0700 (PDT)
+Received: from penguin.cs.ucla.edu (Penguin.CS.UCLA.EDU [131.179.64.200])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTPSA id 67527160FF0;
+	Thu, 31 Mar 2016 13:37:35 -0700 (PDT)
+Subject: Re: [PATCH] src/print.c: Check for __GLIBC__ rather than GNU_LINUX
+To: Kylie McClain <somasissounds@gmail.com>, emacs-devel@gnu.org
+References: <1459315328-3663-1-git-send-email-somasissounds@gmail.com>
+From: Paul Eggert <eggert@cs.ucla.edu>
+Organization: UCLA Computer Science Department
+Message-ID: <56FD8A8B.3040808@cs.ucla.edu>
+Date: Thu, 31 Mar 2016 13:37:31 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.7.1
+MIME-Version: 1.0
+In-Reply-To: <1459315328-3663-1-git-send-email-somasissounds@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 131.179.128.68
+Cc: Kylie McClain <somasis@exherbo.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 31 Mar 2016 20:37:43 -0000
+Content-Length: 460
+Lines: 12
+
+Thanks for reporting that. I filed a bug report with a proposed patch here:
+
+http://debbugs.gnu.org/cgi/bugreport.cgi?bug=23173
+
+Instead of disabling redirect-debugging-output, this patch ports it to 
+systems like musl where stderr is not an lvalue. Please give it a try if 
+you have the time. it's against master commit 
+750e1e19429cd781e2e60b462d19ef827d4da943.
+
+I haven't installed it into 'master' yet, to give Eli a heads-up about 
+the impending change.
+

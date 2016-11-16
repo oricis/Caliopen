@@ -1,0 +1,63 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akce0-00056B-0m
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 15:16:08 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:56159)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1akcdu-00054t-Gk
+	for dev@caliopen.local; Mon, 28 Mar 2016 15:16:06 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1akcdq-0004lb-PO
+	for dev@caliopen.local; Mon, 28 Mar 2016 15:16:02 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:33517)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1akcdq-0004lX-Ld; Mon, 28 Mar 2016 15:15:58 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:4942
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1akcdp-0002kH-Ar; Mon, 28 Mar 2016 15:15:57 -0400
+Date: Mon, 28 Mar 2016 22:15:38 +0300
+Message-Id: <83y492wh0l.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+In-reply-to: <m3io06ifs4.fsf@gnus.org> (message from Lars Magne Ingebrigtsen
+	on Mon, 28 Mar 2016 21:06:03 +0200)
+Subject: Re: Thinking about changed buffers
+References: <m3bn5ya4ro.fsf@gnus.org> <87fuvafpvd.fsf@linux-m68k.org>
+	<m34mbqjxdt.fsf@gnus.org> <87bn5yfp8l.fsf@linux-m68k.org>
+	<m3zitiihy6.fsf@gnus.org> <8337raxxnk.fsf@gnu.org>
+	<m3mvpiigcs.fsf@gnus.org> <83zitiwhve.fsf@gnu.org>
+	<m3io06ifs4.fsf@gnus.org>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: schwab@linux-m68k.org, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 19:16:06 -0000
+Content-Length: 463
+Lines: 14
+
+> From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+> Cc: schwab@linux-m68k.org,  dev@caliopen.local
+> Date: Mon, 28 Mar 2016 21:06:03 +0200
+> 
+> Eli Zaretskii <eliz@gnu.org> writes:
+> 
+> > I'm not sure what you mean by "what that means".  Did you know about
+> > write-region-annotate-functions?
+> 
+> Nope.  Now that I know about it, I still have no idea what it does.  :-)
+> And there's nothing in the lispref concept index about "annotation".
+
+Look in fileio.c.
+

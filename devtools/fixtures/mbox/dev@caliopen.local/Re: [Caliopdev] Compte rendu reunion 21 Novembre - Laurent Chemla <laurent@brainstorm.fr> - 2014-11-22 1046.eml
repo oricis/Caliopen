@@ -1,0 +1,148 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 82090120AEA;
+	Sat, 22 Nov 2014 10:47:20 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -0.324
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.324 tagged_above=-999 required=5
+	tests=[BAYES_20=-0.74, FUZZY_AMBIEN=0.416]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id DooBOLJ8jwcP; Sat, 22 Nov 2014 10:47:18 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 2A01F120AE8;
+	Sat, 22 Nov 2014 10:47:00 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id E1A0A69781C85;
+	Sat, 22 Nov 2014 10:46:56 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id qRhk6fjn1ALc; Sat, 22 Nov 2014 10:46:53 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 5CF9A6977D454;
+	Sat, 22 Nov 2014 10:46:52 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 792E36977F9C5
+ for <caliopdev@caliop.net>; Sat, 22 Nov 2014 10:46:51 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id ZwhkHpp79oki for <caliopdev@caliop.net>;
+ Sat, 22 Nov 2014 10:46:46 +0100 (CET)
+Received: from brasil.brainstorm.fr (brasil.brainstorm.fr [193.56.58.33])
+ by brassens.heberge.info (Postfix) with ESMTP id 94D406977D454
+ for <caliopdev@caliop.net>; Sat, 22 Nov 2014 10:46:46 +0100 (CET)
+Received: by brasil.brainstorm.fr (Postfix, from userid 1000)
+ id 77356209B3BF7; Sat, 22 Nov 2014 10:46:46 +0100 (CET)
+Date: Sat, 22 Nov 2014 10:46:46 +0100
+From: Laurent Chemla <laurent@brainstorm.fr>
+To: caliopdev@caliop.net
+Message-ID: <20141122094646.GA8770@brasil.brainstorm.fr>
+References: <20141121112137.GA15318@tao.gandi.net>
+MIME-Version: 1.0
+In-Reply-To: <20141121112137.GA15318@tao.gandi.net>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Subject: Re: [Caliopdev] Compte rendu reunion 21 Novembre
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============0262745348=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+
+--===============0262745348==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Y/WcH0a6A93yCHGr"
+Content-Disposition: inline
+
+
+--Y/WcH0a6A93yCHGr
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+
+Ajout au CR sur la r=E9union avec Qwant (Eric Leandri et Guillaume
+Vassault-Houli=E8re.
+
+Arriv=E9s avec 30mn de retard, rest=E9 =E0 peine une 30aine de minutes:
+Guillaume enthousiaste sur le projet, Eric... =E9trange mais on me
+dit que c'est son attitude normale. Il consid=E8re qu'ils financent
+tout un tas de projets inutiles, alors que Caliopen est utile, bien
+pens=E9, et peut r=E9pondre =E0 ses besoins un jour tout en correspondant
+=E0 l'=E9thique de la boite.
+
+Ses besoins: disposer d'un syst=E8me de messagerie pour proposer un
+service et pouvoir plugger son API de pub (ne reposant pas sur les
+donn=E9es priv=E9es). Deadline il a 6 mois, n'ont toujours rien =E0 part
+un webmail gmail-like non s=E9curis=E9 qui n'a aucun succ=E8s.
+
+Donc conclusion rapide: se dit pr=EAt =E0 financer une alpha mais veut
+que Guillaume et ses devs viennent =E0 la prochaine r=E9u pour pouvoir
+=E9valuer le boulot =E0 r=E9aliser, et estimer les besoins financiers.
+
+Ses devs ne sont pas libres parce qu'il consid=E8re (haha) que m=EAme
+s'il les met sur Caliopen leurs projets internes finiront par les
+rattraper avant qu'ils aient pu commencer. Donc ils viennent juste
+pour =E9valuer, pour voir =E0 combien =E7a reviendrait de financer des
+prestas externes.
+
+Eric sera pas en France le 5/12 (date de la prochaine r=E9union), il
+pourra participer, du Br=E9sil, via Skype ou autre
+
+Voil=E0. Bon. On verra.
+
+--Y/WcH0a6A93yCHGr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iQIcBAEBCAAGBQJUcFuGAAoJEDDctlh2zQ8hoN0P/24hl4Bn/DHP/j2vVYp4zogA
+n9YB9EOcx0Vz/HpAnMRDyVnqr2cfWjmzt3EsQm3CGKzWc4aAYq8QBGGpLuy1jJz2
+RPR8iGybREvEwBYhq+Y4n4PXZoEg2lv6R/Cq3ZdUPmIHJIbpp4X8IPHUvqH/3dDS
+Bs6tC0fcZou+yhO1/GPTP0wYIiujxyyC0GNb4thhU9vnMSpiV7GYGmUn/7gG5ppi
+EQc1+ZWWU4OB5WyZIV9uN21YqsYsIood5pgou0uKW8QHlcpq3k8rY2hwC9ShooCz
+HFHfxnYW/Il783Ag28wpt3nn/WNIOdnNt1v+ksCmywY7+wMTyUuY0Kp5rd3MvtO1
+vFhfu4/aRkDEXMMpCStZzyw7LqDl/cdzGBhAV90Jt6UQWih32IJw6W63dRAQDkGs
+vYp6ZXgRzSM+9rqaYGs5kryLYYa5vJ4wBFYJtfy+8Ti+1ozdzhKttgZ5v3XWqhKY
+6VES+jYH7ymJEHpohXRTbh1FrRgJZuNxiJTm2D9tmicatdAxkqwxkbMwgA4e3PCR
+I0vA5gE2AoVxQd4kujGCggV/jUERZkJkjTwPlEIxce6xpCbG9TIzXh6dwRALRSae
+7Pu/yKwdPfNC21JKCfLtGjvfHSTrrdhJLauZtKIzOdidE1GGHJitCdu0gtE8kbn5
+h+Isi8DY/B9KCRFDV8zK
+=z1jS
+-----END PGP SIGNATURE-----
+
+--Y/WcH0a6A93yCHGr--
+
+--===============0262745348==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============0262745348==--

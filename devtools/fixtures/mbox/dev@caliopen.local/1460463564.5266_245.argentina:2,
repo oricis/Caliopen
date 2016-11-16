@@ -1,0 +1,101 @@
+Return-Path: <billing@awayswinning.xyz>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id F13FD209A30D5
+	for <laurent@brasil.brainstorm.fr>; Sat,  9 Apr 2016 05:30:36 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id D3361F705A9; Sat,  9 Apr 2016 05:30:36 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id BB45CF705B8; Sat,  9 Apr 2016 05:30:36 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: ******
+X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_80,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_BRBL_LASTEXT,
+	RCVD_IN_CSS,RDNS_NONE,SUBJECT_NEEDS_ENCODING autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in bl.spamcop.net
+	*      [Blocked - see <http://www.spamcop.net/bl.shtml?69.163.33.53>]
+	*  1.0 RCVD_IN_CSS RBL: Received via a relay in Spamhaus CSS
+	*      [69.163.33.53 listed in zen.spamhaus.org]
+	*  1.4 RCVD_IN_BRBL_LASTEXT RBL: RCVD_IN_BRBL_LASTEXT
+	*      [69.163.33.53 listed in bb.barracudacentral.org]
+	*  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
+	*      [score: 0.8767]
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	*  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+	*  0.0 SUBJECT_NEEDS_ENCODING SUBJECT_NEEDS_ENCODING
+X-Spam-DCC: : 
+Received: from parishes.awayswinning.xyz (unknown [69.163.33.53])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id 6D6A9331770C
+	for <dev@caliopen.local>; Sat,  9 Apr 2016 05:30:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha1; c=simple/simple; d=awayswinning.xyz;
+	s=dkim; t=1460172631; bh=g8Hjmh3ulnSl7oWZG/aw8Cltk10=;
+	h=From:Subject:Message-ID:To:Date;
+	b=BwY8nk9A0AL9jLz48TPs9arNgXDR5HSm8ucbO+pEYrc0N9JLxpKCmPKlwfU4kxf9k
+	 jtyUF0qkO4my5FnOCkH+lgXRF6KnSPsiOgcTSdMOIIFs6RknH8W10PTI/Z7pBniazY
+	 C8IRXWwqmJzSz+RuXSinQdY4N+JwXWBxJXAAWXT4=
+X-Authentication-Warning: parishes.awayswinning.xyz : apache set sender to billing@awayswinning.xyz using -f
+MIME-Version: 1.0
+From: Christine <billing@awayswinning.xyz>
+Subject: Join An Elite Network Of Business Leaders�
+X-Uberinst: 6562gsokdfykmcxsijjobmrtfduvgybtqdycvlfigmhhcscabdckyjryiv
+Message-ID: <19885vykodexvaxhlfewegymxemaxqaa@contact.awayswinning.xyz>
+To: laurent <dev@caliopen.local>
+X-Priority: 3
+Content-Type: text/plain;
+X-Mailer: PHPMailer (phpmailer.sourceforge.net) [version 2.0.4]
+X-Mailer: Ubersmith
+Date: Fri, 08 Apr 2016 23:30:31 -0400
+X-PHP-Originating-Script: 48:class.phpmailer.php
+X-Spam-Prev-Subject: Join An Elite Network Of Business Leaders�
+Content-Length: 1415
+Lines: 41
+
+Congratulations,
+
+I am pleased to inform you that based on your professional background, you have been selected to apply for inclusion into the International Society of
+Executives & Professionals. Our research department nominates a handful of potential candidates based on a variety of criteria such as your current
+professional standing, recent accomplishments, honors/awards, published articles, as well as information present on authoritative media outlets,
+social networks, and professional directories. Based on this, I feel you would be a fitting addition to our elite network of professionals.
+
+As we compile our data from a variety of secondary sources, you must verify your information by completing your application.
+
+http://www.awayswinning.xyz/1e87b0d60a165cc001680c82e4ba2a_57770857-010101010003/C/
+
+There is no cost to apply or to be included. Please note, the submission deadline is Apr 8, 2016, so it's important you finalize your
+application before
+this date.
+
+Sincerely,
+
+Misty
+Managing Director, Research & Selection Department
+ISoEP
+
+Copyright © 2016 The International Society of Executives & Professionals, All rights reserved.
+
+Our mailing address is:
+1051 Franklin Avenue
+Garden City, NY 11530
+
+
+
+
+
+
+unsubscribe from this list
+
+
+
+
+
+Click Below To Unsubscribe
+ http://awayswinning.xyz/19848d22a7c65cc001680c82e_57770857/U/
+THREE NINE 8 3 SEVEN N . MESNER WAYE. NEWRIVERS AZ EIGHT 5 ZERO 8 6

@@ -1,0 +1,75 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anWzQ-0007Un-Sg
+	for mharc-dev@caliopen.local; Tue, 05 Apr 2016 15:50:16 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:60093)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1anWzL-0007UZ-DH
+	for dev@caliopen.local; Tue, 05 Apr 2016 15:50:15 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1anWzG-0005iE-Oq
+	for dev@caliopen.local; Tue, 05 Apr 2016 15:50:11 -0400
+Received: from plane.gmane.org ([80.91.229.3]:38327)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1anWzG-0005hE-Ii
+	for dev@caliopen.local; Tue, 05 Apr 2016 15:50:06 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1anWzE-0006YC-Cl
+	for dev@caliopen.local; Tue, 05 Apr 2016 21:50:04 +0200
+Received: from hsi-kbw-109-193-084-181.hsi7.kabel-badenwuerttemberg.de
+	([109.193.84.181]) by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Tue, 05 Apr 2016 21:50:04 +0200
+Received: from esbati by
+	hsi-kbw-109-193-084-181.hsi7.kabel-badenwuerttemberg.de with
+	local (Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Tue, 05 Apr 2016 21:50:04 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+Mail-Followup-To: dev@caliopen.local
+To: dev@caliopen.local
+From: Arash Esbati <esbati@gmx.de>
+Subject: Re: pre-test windows binaries
+Date: Tue, 05 Apr 2016 21:46:39 +0200
+Message-ID: <ne14nb$48n$1@ger.gmane.org>
+References: <CA+N9e5b+U7kkiHDG9+NRzwpHD1-y0cnnp8NsJv1Vsig88L-H5A@mail.gmail.com>
+	<m337r1nr0b.fsf@gnus.org>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: hsi-kbw-109-193-084-181.hsi7.kabel-badenwuerttemberg.de
+Mail-Copies-To: never
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 05 Apr 2016 19:50:15 -0000
+Content-Length: 394
+Lines: 15
+
+Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+
+> Try installing this version instead:
+>
+> http://emacsbinw64.sourceforge.net/
+>
+> It comes with all the libraries you need for a fully features Emacs.
+> It's only up to 25.0.50, though.
+
+There is also the pretest directory containing the latest and greatest
+version:
+
+https://sourceforge.net/projects/emacsbinw64/files/pretest/
+
+Best, Arash
+
+

@@ -1,0 +1,75 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai6ln-0002EY-Fl
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 16:49:47 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:49952)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai6ll-00028p-2Y
+	for dev@caliopen.local; Mon, 21 Mar 2016 16:49:45 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai6lh-00022n-R0
+	for dev@caliopen.local; Mon, 21 Mar 2016 16:49:44 -0400
+Received: from chene.dit.umontreal.ca ([132.204.246.20]:49034)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai6lh-00022j-M9
+	for dev@caliopen.local; Mon, 21 Mar 2016 16:49:41 -0400
+Received: from pastel.home (lechon.iro.umontreal.ca [132.204.27.242])
+	by chene.dit.umontreal.ca (8.14.1/8.14.1) with ESMTP id u2LKo9KJ017337; 
+	Mon, 21 Mar 2016 16:50:09 -0400
+Received: by pastel.home (Postfix, from userid 20848)
+	id C234A60587; Mon, 21 Mar 2016 16:49:38 -0400 (EDT)
+From: Stefan Monnier <monnier@IRO.UMontreal.CA>
+To: Alan Mackenzie <acm@muc.de>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+Message-ID: <jwvr3f3v9pc.fsf-monnier+Inbox@gnu.org>
+References: <fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87fuvjeq9g.fsf@gmail.com> <20160321203358.GB3641@acm.fritz.box>
+Date: Mon, 21 Mar 2016 16:49:38 -0400
+In-Reply-To: <20160321203358.GB3641@acm.fritz.box> (Alan Mackenzie's message
+	of "Mon, 21 Mar 2016 20:33:58 +0000")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 5
+X-NAI-Spam-Score: 0
+X-NAI-Spam-Rules: 1 Rules triggered
+	RV5617=0
+X-NAI-Spam-Version: 2.3.0.9418 : core <5617> : inlines <4542> : streams
+	<1606670> : uri <2171606>
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 132.204.246.20
+Cc: Vitalie Spinu <spinuvit@gmail.com>, Dmitry Gutov <dgutov@yandex.ru>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 20:49:46 -0000
+Content-Length: 362
+Lines: 11
+
+> Reading some of the posts on emacs-devel today, it strikes me that
+> narrowing might be the wrong tool for marking the boundaries of distinct
+> regions where different major modes are in effect.  It seems to cause
+> nothing but trouble.
+
+That's why prog-indent-context just provides the boundaries of the
+current chunk but without narrowing.
+
+
+        Stefan
+

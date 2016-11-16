@@ -1,0 +1,89 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amTYz-0001r5-2g
+	for mharc-dev@caliopen.local; Sat, 02 Apr 2016 17:58:37 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:41347)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amTYw-0001qE-0Z
+	for dev@caliopen.local; Sat, 02 Apr 2016 17:58:34 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amTYs-00038j-1G
+	for dev@caliopen.local; Sat, 02 Apr 2016 17:58:33 -0400
+Received: from mail-ob0-x236.google.com ([2607:f8b0:4003:c01::236]:34985)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>)
+	id 1amTYr-00038Z-S1; Sat, 02 Apr 2016 17:58:29 -0400
+Received: by mail-ob0-x236.google.com with SMTP id fp4so71391548obb.2;
+	Sat, 02 Apr 2016 14:58:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=oK4lth9b8eQKy7S3Gr9JCpxVyiB6+afg8u6H5F/F1U8=;
+	b=TIe18VDnIVCguLJHoyEywPYIHw48trPoj1O9jsCDZ3dsFelDMKVmxJjGr9P04JAIUJ
+	lYnTyqCuOJ0rHEwR7lCL7JAkR8zjcGkdJrfCnP8f3VVxi24+e1bX5il6V65Dh6wAw0qm
+	MZEhzX6cUE0LdiL91qneqB5Q4J8DDc68TqJq41xey/53jVMHbdlIC0WIVWhjgRFvvY44
+	x8UUdAG7unP0xHv+Y6n7dguGbtRdCDSVrzsxOR1mdbuvDbxD36WffE8W0eXoQEnAEKJN
+	CSMWkCE2C5NJZ2/Dj3QUspA7Fxbc+XA6AZIE68JlZIB5xFRFyHIXWImdp5asAx2kyPJ+
+	inyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=oK4lth9b8eQKy7S3Gr9JCpxVyiB6+afg8u6H5F/F1U8=;
+	b=FWdFV1g1VmN9UfjLknts3rUtVpAdGIIPClV0Q1BHyKKvEnDAp3F97X2xo3tPRkpZJC
+	ljSyXZYGDFRaMNqSvJRyLGKVwJuHk4riU2Tb6PxefrtrTrKj3TeAddTzVKDBpu/Qpqta
+	29wz0nFVALhJARwIVfzkQ0VlA4p9oMZ5PJlExcbq4g46juQzyYhaMT3d1AAz88WIahgj
+	GdIskJQQCKtuAdgIddd+KPCLIUszrX/I1eGWEqv18zoEa6AQJhKPCPGfQVuG/YnudEb/
+	+1n+d3S4gLFMriW0YUqX8V53sdtp/paXG22/4x5VIntqn4OPxDzbWlAVxyr1vQuBuiwl
+	NMzA==
+X-Gm-Message-State: AD7BkJLyfEU2xvr/IW/jKblZO1HSqt9Sjk3FT66PmflzZBDlg/qjDGYpGgTTKW7Oj3XpaA==
+X-Received: by 10.182.22.137 with SMTP id d9mr7182868obf.83.1459634309223;
+	Sat, 02 Apr 2016 14:58:29 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79]) by smtp.gmail.com with ESMTPSA id
+	h202sm6193031oic.17.2016.04.02.14.58.28
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sat, 02 Apr 2016 14:58:28 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id 5809D13D2A1CB; Sat,  2 Apr 2016 14:58:27 -0700 (PDT)
+To: Richard Stallman <rms@gnu.org>
+Subject: Re: melpa.org doesn't work without nonfree software
+In-Reply-To: <E1am6ik-0000Kc-JJ@fencepost.gnu.org> (Richard Stallman's message
+	of "Fri, 01 Apr 2016 17:35:10 -0400")
+Date: Sat, 02 Apr 2016 14:55:40 -0700
+Message-ID: <m2pou7y8tf.fsf@newartisans.com>
+References: <E1am6ik-0000Kc-JJ@fencepost.gnu.org>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.0.92 (darwin)
+Mail-Followup-To: Richard Stallman <rms@gnu.org>, emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c01::236
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sat, 02 Apr 2016 21:58:35 -0000
+Content-Length: 339
+Lines: 11
+
+>>>>> Richard Stallman <rms@gnu.org> writes:
+
+> I hope that we can get this fixed. John Wiegley, would you like to talk with
+> them about it?
+
+Sure, I'll talk with the MELPA maintainers.
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

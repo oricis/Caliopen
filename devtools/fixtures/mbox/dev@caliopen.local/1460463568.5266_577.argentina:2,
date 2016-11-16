@@ -1,0 +1,106 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai0tZ-0003eb-Sk
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 10:33:25 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:45015)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai0tX-0003da-LO
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:33:24 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai0tT-0005fU-L0
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:33:23 -0400
+Received: from mail-wm0-x22c.google.com ([2a00:1450:400c:c09::22c]:38813)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai0tT-0005ez-Dp
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:33:19 -0400
+Received: by mail-wm0-x22c.google.com with SMTP id l68so124361761wml.1
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 07:33:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=Gd6CZDpN6EoXM+Pryda/3qzq76XdDTQN8oMo2ET4PR4=;
+	b=RGBDbcUHqY1wRPPnNWgXsTtUznhbGM/H/HDN92pPQe8CXl2QTMp1MimgjivnKmkH9S
+	eMgkU6KojMsqTJUA4wucYJckiu+pX4p4mqxQBKepvlF8W5YJ4sbegBiSrBKOrenWtiHg
+	FAFuV5061m6oV2RKZQm5iPcRy/N70hw39I2HDm+QJKUoxFMyDBP2UY35a66SOfAJ4juf
+	81TAZg60L6Jhb/88gzFMovXEerkNzN++83CeZShm3AEE/tWdEUtIDB07077JKdWdBUMi
+	yPVV2HgrTs1imV9JEOWnNU1dqrilNbSGK/KeRXdiU1VuZajJwUOApQpLI1dHEXQR3RxU
+	GAJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=Gd6CZDpN6EoXM+Pryda/3qzq76XdDTQN8oMo2ET4PR4=;
+	b=BodZxTPKXLRbqa/+IZd59XlLR/G+XCQzilP9v5tPTSq0LX4ZW5hEcRjF0Pnd7IV4P0
+	rOXfjXz2TUr64dDWVWtAwwKe5TUlal6WxohT0XmaQCbM3yS+oE/RLsCPWBRyMxtq+7hB
+	daOiJy6fZD6Xe7SMfEQAHl6VANKdbszoGtYbFlFYbLcMg/aaAVx3RIUnA1kalGhCUNGQ
+	uEYW3Hj6i8lHzKtYNpznUdXgyJhK0WDkNHPsD1L1oi6TGLUxiENhAA/sD3gHSlxbaXkn
+	AsYtNGymfvn3JMVZ9pghXxNnBydAAtMZAx3uLoDzROxAhM3DM6kQ7ReBxk8ESbTV2d/u
+	Bt1Q==
+X-Gm-Message-State: AD7BkJLu+NyLqYBAzepIsK6FYEvagqsArSzbLDiouyKlAcw2ApsXItplh429Dn4ZfQjH6g==
+X-Received: by 10.28.46.5 with SMTP id u5mr14778612wmu.75.1458570798808;
+	Mon, 21 Mar 2016 07:33:18 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	wr2sm25667008wjc.49.2016.03.21.07.33.17
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Mon, 21 Mar 2016 07:33:18 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+	<jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+Date: Mon, 21 Mar 2016 15:33:17 +0100
+In-Reply-To: <jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org> (Stefan
+	Monnier's message of "Mon, 21 Mar 2016 10:04:58 -0400")
+Message-ID: <87pounew9e.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22c
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 14:33:24 -0000
+Content-Length: 461
+Lines: 18
+
+
+
+>> On Mon, Mar 21 2016 10:04, Stefan Monnier wrote:
+
+>>     (defun call-with-hard-narrowing (from to func)
+>>       (make-local-variable 'internal--hard-widen-limits)
+>>       (let ((internal--hard-widen-limits (cons from to)))
+>>         (funcall func)))
+
+> Hmm... I now realize that this won't handle the case of info-mode
+> buffers (and similarly rmail buffers) where the hard-narrowing is not
+> scoped.
+
+What does this mean in plain English?
+
+
+  Vitalie
+

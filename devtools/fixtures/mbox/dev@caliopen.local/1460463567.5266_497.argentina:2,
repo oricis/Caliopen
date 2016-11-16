@@ -1,0 +1,91 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akcuM-000128-QM
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 15:33:02 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:32944)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1akcuL-00011i-0O
+	for dev@caliopen.local; Mon, 28 Mar 2016 15:33:01 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1akcuG-0002qA-15
+	for dev@caliopen.local; Mon, 28 Mar 2016 15:33:00 -0400
+Received: from mail-wm0-x232.google.com ([2a00:1450:400c:c09::232]:34681)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1akcuF-0002q6-QJ
+	for dev@caliopen.local; Mon, 28 Mar 2016 15:32:55 -0400
+Received: by mail-wm0-x232.google.com with SMTP id p65so110915466wmp.1
+	for <dev@caliopen.local>; Mon, 28 Mar 2016 12:32:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=sender:subject:to:references:cc:from:message-id:date:user-agent
+	:mime-version:in-reply-to:content-transfer-encoding;
+	bh=1Cq7dsNxQq9WtH0qY2Vt6vGP8GyTab28MXIlTS8Ohz4=;
+	b=bz+AyaW64a5evoLMQeSKBMe2bXAqJG1WKOGwPZOGDmG9YcnpgwaAvouGrHEJ5F18pN
+	uK88QSU3CgXabJXboerk0HGoi2NYaLXSE+AvB8qzQrVHUUeFrOY/aaTppJQO948sTXdl
+	1gTrzAU7XpzoqUnwC6UoCHr9oETItthf8iK1oOUmS1FNOvf+7MxjcAU/f622AMdNHyP5
+	rJCSQaE7y3W1BC9tIq1jqPs4llr6eD267HdFb51Om91eqe1sXpqzmpMPq+MQeqt0xyZG
+	dwtcq6fjkLCGrXco8Ov/Vo4BA9cbKua4SK+w2hHiCyU/5fLaDNuoz+3wBIh2+DSlSngw
+	WA5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
+	:date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+	bh=1Cq7dsNxQq9WtH0qY2Vt6vGP8GyTab28MXIlTS8Ohz4=;
+	b=Gon958u4dwbAa4qcMhiilYlZTVCDDPrEtX2QqznuMuLMjqYF/Eid4aGfJkGc/ILI8w
+	qbjePZXrev2obhSw26hzE2xr8wTXini2KwS2JSAy1Wp0T+MJNzuRPC76t660OiwG/BPE
+	afwqsNTzLN+TphmAGrQNgl95+lauihXoby2acasnxjpvb3h/40OYn1n+/syRSopxCX0p
+	zIAjXtLOkqSduNGXW3H8L8PZ0UwUyHV35GFDXM6FfnSoaD71O1vqS+LQjlwZ4EgV8qkz
+	O8t6EsBMkacXAqAEn9ltXxuno3gY/WIGopsRxf179gcyY48wbx/+EowZk0e7AbEdHJZO
+	SnzA==
+X-Gm-Message-State: AD7BkJJaFWcd0RJZ2yvru3/ZmZ2v7GMHek4JfOdm7JzLBSy6FDpi+egmQ99bvoxTv3QaWA==
+X-Received: by 10.28.194.9 with SMTP id s9mr12855114wmf.101.1459193575026;
+	Mon, 28 Mar 2016 12:32:55 -0700 (PDT)
+Received: from [192.168.1.2] ([185.105.175.24])
+	by smtp.googlemail.com with ESMTPSA id
+	o128sm11412505wmb.19.2016.03.28.12.32.51
+	(version=TLSv1/SSLv3 cipher=OTHER);
+	Mon, 28 Mar 2016 12:32:54 -0700 (PDT)
+Sender: DG <raaahh@gmail.com>
+Subject: Re: Thinking about changed buffers
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>,
+	Stefan Monnier <monnier@iro.umontreal.ca>
+References: <m3bn5ya4ro.fsf@gnus.org> <m3r3euigfp.fsf@gnus.org>
+	<jwvy49276pc.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m34mbqiesf.fsf@gnus.org>
+From: Dmitry Gutov <dgutov@yandex.ru>
+Message-ID: <c7bc13b9-e578-a5b0-d7a7-74172196ed22@yandex.ru>
+Date: Mon, 28 Mar 2016 22:32:49 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+	Thunderbird/45.0
+MIME-Version: 1.0
+In-Reply-To: <m34mbqiesf.fsf@gnus.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::232
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 19:33:02 -0000
+Content-Length: 529
+Lines: 12
+
+On 03/28/2016 10:27 PM, Lars Magne Ingebrigtsen wrote:
+
+>> Still seems problematic if your 5 year old takes 2.7s to compute it on
+>> a 1GB file.  You don't want to freeze for 2s in the normal course of
+>> editing just because you happen to cross the "original size" threshold.
+>
+> Yeah, I don't see any way around that.
+
+Don't use hashing. Use e.g. buffer-undo-list. We save enough data to 
+return the buffer contents to the previous state, right? It should be 
+possible to detect whether a given sequence of undo-s is a no-op.
+

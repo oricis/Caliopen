@@ -1,0 +1,73 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aoyqV-0004rJ-4B
+	for mharc-dev@caliopen.local; Sat, 09 Apr 2016 15:47:03 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:55725)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aoyqS-0004mt-UO
+	for dev@caliopen.local; Sat, 09 Apr 2016 15:47:01 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aoyqP-0004WY-NJ
+	for dev@caliopen.local; Sat, 09 Apr 2016 15:47:00 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:47710)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1aoyqP-0004WU-Jy; Sat, 09 Apr 2016 15:46:57 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:2190
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1aoyqO-00079I-U0; Sat, 09 Apr 2016 15:46:57 -0400
+Date: Sat, 09 Apr 2016 22:46:20 +0300
+Message-Id: <834mbain03.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: =?utf-8?Q?Cl=C3=A9ment?= Pit--Claudel <clement.pit@gmail.com>
+CC: dev@caliopen.local
+In-reply-to: <570954AA.7070604@gmail.com> (message from =?utf-8?Q?Cl=C3=A9?=
+	=?utf-8?Q?ment?= Pit--Claudel on Sat, 9 Apr 2016 15:14:50 -0400)
+Subject: Re: How do I set up font fallback in a robust way?
+Reply-to: Eli Zaretskii <eliz@gnu.org>
+References: <570954AA.7070604@gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sat, 09 Apr 2016 19:47:01 -0000
+Content-Length: 1139
+Lines: 25
+
+> From: Clément Pit--Claudel <clement.pit@gmail.com>
+> Date: Sat, 9 Apr 2016 15:14:50 -0400
+> 
+> Since my main programming font does not cover all the mathematical symbols I need, I initially set up font fallback as shown below:
+> 
+>     (set-fontset-font t 'unicode (font-spec :name "FreeMono") nil 'append)
+>     (set-fontset-font t 'unicode (font-spec :name "Symbola") nil 'append)
+
+The default fontset already defines specific blocks to be handled by
+these fonts, see fontset.el.  What problems, specifically, do you have
+with the default setup and the current emacs-25 branch?
+
+> What's the proper way to configure font fallback?
+
+In general: find the characters you want to change and augment the
+default fontset to use the font you want for them.
+
+But let's first see the specific problems you have with the Emacs 25
+defaults.  This issue got some attention a few months ago, so I'm
+surprised to hear there are still problems in that area.
+
+> *Note*: for testing purposes, here are a few math characters: `ℕ𝓟⧺×≠≥≤±¬∨∧∃∀λ⟿⟹⊥⊤⊢`
+
+Which, if any, of those give you trouble with the default fontset?
+

@@ -1,0 +1,81 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amuQD-00073j-1v
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 22:39:21 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:33142)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raman@google.com>) id 1amuQA-00072s-HN
+	for dev@caliopen.local; Sun, 03 Apr 2016 22:39:19 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <raman@google.com>) id 1amuQ5-0004CC-J7
+	for dev@caliopen.local; Sun, 03 Apr 2016 22:39:18 -0400
+Received: from mail-pf0-x234.google.com ([2607:f8b0:400e:c00::234]:36715)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raman@google.com>) id 1amuQ5-0004C8-Ab
+	for dev@caliopen.local; Sun, 03 Apr 2016 22:39:13 -0400
+Received: by mail-pf0-x234.google.com with SMTP id e128so112043481pfe.3
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 19:39:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113;
+	h=from:mime-version:content-transfer-encoding:message-id:date:to:cc
+	:subject; bh=c0jAU/X1I0NkQa8c5X+qSKVxUUi7z/LFPbLcQXIuuPY=;
+	b=lY+HiecHoPj5TS+oxvJTTt8TWLBGGtF4eGzsE94+9osX+PpCx2QfIy4jdTbldFsa21
+	w3rCsx2Gc2tl/ga2FJIiz8syF8h9csvHbFrZjP9SQEKjtn/7/bD19/NOkmEnT6sNcaOZ
+	9wgNX4TMsq87wv5yKhKKRChVwxWSOz3d5+F38FqQ0LGVUOBICTe9kbu4QhAQsjlYVv/A
+	Wd9uhm6x1HjUiK3KTheJ37j1lRFpcEkOXs5pPgGC3dlNWMQgfGvkVXfj3YgMLyJyxyrZ
+	XfjOQZxfwPWNCtT9QvaBwYfdagd1plXj9LkUQPOrSSQXCEm0pXQzc3ubRnhiqzPZxOOB
+	1nWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:mime-version:content-transfer-encoding
+	:message-id:date:to:cc:subject;
+	bh=c0jAU/X1I0NkQa8c5X+qSKVxUUi7z/LFPbLcQXIuuPY=;
+	b=W7cYsQbZz8ws6lXpNG5nen7O/A67lYeTz1nTb0nw4CC3hV+Sy5X8s12AuW2b1s/sFS
+	hqAWRsi1ErUktdT1gcqomFcABIUU9BwF3u5uetdTHEJhyvLpOyyiGfjBn4TOieYAHidC
+	ikDD42QbmuqHSjl2ISrir4QX4OvbUh5+wOBnI34auv9ZceeZGEyUNXludo+7R1Xt/MfO
+	jgoMZnyY/OxkFulORY0Oe9HFP5foJD0QlXyTjJFdQIZX7Km9MGLivLE+TpmEkyhUJthw
+	24BFS1jDIMOWho8Iz3qDsU6gdwrH+5gr1kNHm7FWv8PiaLzP/6L2Lf6dd8OxRNCzSrwU
+	UOMg==
+X-Gm-Message-State: AD7BkJJW9joLiNYP1ia3w6dr/a+DALydrSkNHRmYsUjGmsLVxuObDgbq14UDtFF5P2aCD8m0
+X-Received: by 10.98.33.74 with SMTP id h71mr16765022pfh.157.1459737550392;
+	Sun, 03 Apr 2016 19:39:10 -0700 (PDT)
+Received: from raman-glaptop2 (c-73-170-121-60.hsd1.ca.comcast.net.
+	[73.170.121.60]) by smtp.gmail.com with ESMTPSA id
+	p26sm35039268pfi.84.2016.04.03.19.39.09
+	(version=TLS1_2 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 19:39:09 -0700 (PDT)
+From: raman@google.com
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <22273.54220.381234.312729@gargle.gargle.HOWL>
+Date: Sun, 3 Apr 2016 19:39:08 -0700
+To: dev@caliopen.local
+CC: 
+Subject: Should outline-minor-mode be globalized?
+X-Mailer: VM 8.1.1 under 25.0.92.1 (x86_64-unknown-linux-gnu)
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:400e:c00::234
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 02:39:19 -0000
+Content-Length: 284
+Lines: 10
+
+It's nice to be able to globally turn on font-lock mode; on a similar
+note, it would be nice to be able to turn on outline-minor-mode
+globally -- rather than   setting mode-specific hooks to turn on
+outline-minor-mode. 
+
+Is there any risk in globalizing outline-minor-mode?
+-- 
+
+-- 
+

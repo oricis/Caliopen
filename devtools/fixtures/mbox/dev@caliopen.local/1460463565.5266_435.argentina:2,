@@ -1,0 +1,92 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amr5l-00088S-JP
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 19:06:01 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:36150)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amr5f-00080c-T8
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:05:59 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amr5b-00087y-Ur
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:05:55 -0400
+Received: from mail-oi0-x22b.google.com ([2607:f8b0:4003:c06::22b]:34209)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amr5b-00087t-Pt
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:05:51 -0400
+Received: by mail-oi0-x22b.google.com with SMTP id s79so46365501oie.1
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 16:05:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:subject:in-reply-to:date:message-id:references:user-agent
+	:mail-followup-to:mime-version;
+	bh=g/zGMqsZ3xxfJ1qO3czg2nlBQ873z/+LX8tx5gz57mw=;
+	b=c98zUh9ClpZRmQhBuu27VkeS4dTT5PxEH6DRCK8bULghHBk71tq6WcrX+BkL9JM6Y+
+	C+ytD+l+rXDZK+N4OwsVUdHesjHw2HeUu9vn+TYyIACnlXHhv71fsfvk6pGGdMFv8R7H
+	AOd54d2dVV4+uY9ELNbVeYDOlCR66aYyRXWLwUQRFmNuBZrIqd9Kvbwk1uCouF+ZVDgy
+	bZ0zYuGYtZqjb23pRbVfs9LYC42KPriXJwqWHiklPaD8SwlYNAELa1xOmcKD9rgMm/hU
+	XZR0w4ka0umSMKv8VDd5/y5RahCSaUiSifGFrmao2/YrHcChFfX9jqFBvCzr1hWwERXe
+	PE/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=g/zGMqsZ3xxfJ1qO3czg2nlBQ873z/+LX8tx5gz57mw=;
+	b=ianUjfBu/l3Y5t3wGKnDQNctJLXupaACuEzT5GKAeNA9VhQlXMcs+EKB0moK1/x7fz
+	SMGiEArUcEy5IEjFPfzy7qI+mej7YBWBkwOmSOHmsun0Jj2QfOdgCe492Lii7K1kiNhN
+	clvxTEFsqXH3GTnDZ6G7nF7yb+MWFp5GXiPZ60u7Jza7czWKn7QHrL5gsh0QFDChsWYD
+	MVSHemf/Lg+xxC3yfhagDm4gMDsuyXDw2INTKWGaz10TjTlnPdjyVZOeI8XuTuf18If3
+	PNA2VS9nG0ep9fn2E1f+KBPzX3scAYZ8prcopVzh43Bl2mEwGpV+hhJLEvIZsLfS9MOm
+	vgBQ==
+X-Gm-Message-State: AD7BkJJC1pnSwQvgHRcpLslJ2coztufl+nIYecxZelgErPu29qZHhQuQiMPO/wjkwnio6A==
+X-Received: by 10.202.53.198 with SMTP id c189mr8509369oia.129.1459724751362; 
+	Sun, 03 Apr 2016 16:05:51 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79]) by smtp.gmail.com with ESMTPSA id
+	t141sm1263335oie.18.2016.04.03.16.05.49 for <dev@caliopen.local>
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 16:05:50 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id EBBEE13DAE277; Sun,  3 Apr 2016 16:05:48 -0700 (PDT)
+To: dev@caliopen.local
+Subject: Re: Thinking about changed buffers
+In-Reply-To: <m31t6tcneb.fsf@gnus.org> (Lars Magne Ingebrigtsen's message of
+	"Tue, 29 Mar 2016 17:30:20 +0200")
+Date: Sun, 03 Apr 2016 16:05:43 -0700
+Message-ID: <m2mvpafg3c.fsf@newartisans.com>
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<2d55f05e4ba00afeb3f7269953eb0e13.squirrel@cloud103.planethippo.com>
+	<jwvwpolbe3o.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m31t6tcneb.fsf@gnus.org>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: dev@caliopen.local
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c06::22b
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 23:06:00 -0000
+Content-Length: 436
+Lines: 12
+
+>>>>> Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+
+> But one take away from this discussion is that Emacs needs a convenient
+> command to save an unchanged buffer. I think I'll file a wishlist bug report
+> for that.
+
+C-x C-w RET will do that, and I use it often for that effect.
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

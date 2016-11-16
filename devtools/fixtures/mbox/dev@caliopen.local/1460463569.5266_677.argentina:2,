@@ -1,0 +1,130 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahu0B-00065D-Lt
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 03:11:47 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:55105)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1ahu08-00063w-SG
+	for dev@caliopen.local; Mon, 21 Mar 2016 03:11:45 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1ahu04-0001wT-Rf
+	for dev@caliopen.local; Mon, 21 Mar 2016 03:11:44 -0400
+Received: from mout.kundenserver.de ([217.72.192.75]:57139)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1ahu04-0001w7-IO
+	for dev@caliopen.local; Mon, 21 Mar 2016 03:11:40 -0400
+Received: from [192.168.178.35] ([77.6.149.198]) by mrelayeu.kundenserver.de
+	(mreue101) with ESMTPSA (Nemesis) id 0LnSVK-1a95Hh0jSY-00hb0L for
+	<emacs-devel@gnu.org>; Mon, 21 Mar 2016 08:11:39 +0100
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+To: dev@caliopen.local
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+	<jwvmvpswowh.fsf-monnier+Inbox@gnu.org> <87twk0beuh.fsf@gmail.com>
+From: =?UTF-8?Q?Andreas_R=c3=b6hler?= <andreas.roehler@online.de>
+Message-ID: <56EF9F0D.8040600@online.de>
+Date: Mon, 21 Mar 2016 08:13:17 +0100
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:38.0) Gecko/20100101
+	Icedove/38.5.0
+MIME-Version: 1.0
+In-Reply-To: <87twk0beuh.fsf@gmail.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K0:Hzbr5TF7R/I1eDGWL7+68JbvOZFlGiaEp8QoCD6+6iFCQ2gknOy
+	5thkMhUxZtYQ7NGIyXbPp5FYxLgBRcVsC4mZsX2+WDU+dqtysYZ1C0AWGTa0TDK73I1ggEM
+	XoC1Zw0H6dnohQadTcqryFVZ8XwO3W5ECRk1IoCB6viwxmxPy67ryP9i44R6ds2IzswNC33
+	hkys1C1Up03b0a06aJoww==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:VDHaHe7sKIs=:3OfWDOs57lFb2j15Y95dIS
+	GFs4O3LWAb4xi7sa3r2oD7vH8ADFlkEa8tcxgP74fI60K6F8DhV3kEWeKmInKvliVVA6iEqcF
+	/yyYGTGn59N7Rr7ECDPtChwHmPWv413bVtisObZY+YqZKYy+UKavDwzsF56OZ68WoCRa6q74H
+	DNM4Xy3RD/8Q+o9/fnTl4x/H4O5MOwYQiw53QWsvBVGwjUOuSjS/4ZI6w/mcak1eEJUIehSpV
+	JZ0L9UuZalGRf6B9Np2Ti0d6W0MSG6osSE0nuu8812g7bDwiPNwoHIVmsHBZrae3c53Wsb30o
+	cfKhT1PBYlj3C1DMl/rTlOva+bFkblIz7ykGk8kIKr3LTwpyDqwnphTVsoTuMlXBgXPoBUEEw
+	BP9tGK1RuW++my9SOyoZDTtnMeR6wX0K2pg7kqhYOSEDa/PRdi6cttXPyht7JR2VLnU+ZNGHa
+	iB91QSUQAt7qsiPPyso/xJXtxBOwVbZRNshotTKjUORcjNc8fLoU+BgzA/QeTCfyqT7EarONb
+	md9xTAN6DAbM4kgNreepSrZiD1A6AWPdb8ENgqEwwGLgge/G1dXzF/2NaKcDIjbSnCZmC395x
+	vLEeLZsinpcPGChZQ7YPQaspj1srxxQUcXzvOWKsp2OzBlTTmdhI6wTYGbL9cv+j1v+YWaqb8
+	puPTtdXLvNI4xjWsbfdlgdzFqbRjyMnL1i3m826Mo6qrbwJJABAA/GtjCLGT9VCw/glczxM3T
+	t4w2U/5EM5I4Sooj
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 217.72.192.75
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 07:11:46 -0000
+Content-Length: 2294
+Lines: 54
+
+
+
+On 21.03.2016 06:05, Vitalie Spinu wrote:
+>
+>>> On Sun, Mar 20 2016 23:11, Stefan Monnier wrote:
+>>> BTW, I parse-partial-sexp must abide hard-widen-limits as well.
+>> I don't understand what this means.  parse-partial-sexp is passed
+>> 2 locations and it works between them.  There's not much opportunity
+>> for widening.
+> parse-partial-sexp should work between hard limits (at least the lower
+> bound). It should operate as if hard-narrowed buffer is the real buffer.
+>
+> So ideally it should take (max FROM (car hard-widen-limits)) as the starting
+> position. This will give the desired consistency between parse-partial-sexp and
+> syntax-ppss with the price of slightly modifying the semantics of
+> parse-partial-sexp in a backward compatible way.
+>
+>>> A patch that would require hunting every single mode out there and
+>>> implementing multi-modes locally should have been more carefully
+>>> considered IMO.
+>> I must say I don't understand how what we have is so very different from
+>> what you suggest.
+> It's quite a bit different:
+>
+>    - Major mode authors won't need to know about multi-modes. That means not
+>      dealing with chunks/spans/headers etc. These concepts are not even uniformly
+>      defined between existing multi-mode engines.
+>    
+>    - Major mode authors won't need to re-implement the indentation logic already
+>      there in multi-modes. The logic is likely to be too simplistic and major
+>      mode authors will have to re-do it anyways.
+>
+>    - Setup is more general. multi-mode engine decides where to call
+>      calculate-indent-function and with what parameters and with what narrowing.
+>
+>    - Arguably calculate-indent-function is a simpler concept to grasp
+>
+>    - calculate-indent-function is needed anyways
+>
+>> I think both suggestions require changes to every mode, and in both cases the
+>> changes can be reduced to a one-liner or close enough (for the simple
+>> case). Admittedly, for it to be a one-liner, we'll need to provide a standard
+>> helper function.
+> Judging from python.el it might be quite hard to provide a generic one liner to
+> deal with all those 3 elements. For calculate-indent-function instead you can
+> provide a straightforward one line assuming that STRING-BEFORE/AFTER do not
+> matter.
+>
+>
+>    Vitalie
+>
+
++1
+

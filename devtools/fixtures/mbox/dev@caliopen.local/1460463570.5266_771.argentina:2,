@@ -1,0 +1,125 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amhAs-0003qn-Dp
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 08:30:38 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:44477)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>) id 1amhAp-0003pM-EP
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:30:36 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>) id 1amhAk-00071F-ET
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:30:35 -0400
+Received: from mail-lb0-x241.google.com ([2a00:1450:4010:c04::241]:32836)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>) id 1amhAj-00070s-TV
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:30:30 -0400
+Received: by mail-lb0-x241.google.com with SMTP id bc4so16784474lbc.0
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 05:30:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:references:user-agent:date
+	:message-id:mime-version;
+	bh=TwxD7C9Gd0vEF1NZQUSILSsffMBlouSQ2ewDsFFg1fo=;
+	b=vSKOV7GfqzEnlJJcq6omqzq5td6tAbZWNMlqT8dsx6ubHyfywCDW9zZ79GgeHKreLQ
+	RCv7zMIG1sxQdzgNbDgh1f6PpeRDfPCoO615gO+GPcpSgeelXLUkob+kJNMCvSudzNI9
+	wuVyGD13xEhg89gSq6alVM6nCp7qwRwgZTT7e6/zIFLdqgfe7S81p/kmUUqAPbPgfyZ0
+	wnhCsz0P0RveRQ22jSFd3Hqg5ro08tusj6R9mykqA1JUm3+4g/Wch8E1bQXieSjVTb4V
+	lPBsNnxSC8GVnhjKFloXBZBtlMHPWMH7MdwubVZj6f8YeAd16ovSspz67Ro1WE9MDkmR
+	EBAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:references
+	:user-agent:date:message-id:mime-version;
+	bh=TwxD7C9Gd0vEF1NZQUSILSsffMBlouSQ2ewDsFFg1fo=;
+	b=FyEQIvqXqHuecSNvvd8D5MWNVtUBbSHTvHpxFnJ2xKrOtFQddkVsIXkeC/31ij+NOP
+	xcZ7wNdKI07Wt+uZRKeog1Lr7wbMp5DvetPg9+ND2dGVzEVRY9c2FKkQ7oiLQvOKGSzQ
+	5P1DNf7/vjZikIAh6SM7B98oOqzkmAnyjZi6aiWyNxr+XBiBGQLygpYTVPsF+Tu39cNv
+	zw6xet/YvpImBzkeU0Lu8VASWSWi2SY+rq/uvO5hUE28KXAM+y0jFpEsC8DkWV4p4QoP
+	REgCQ/wXRgT8FjF4Yqn1nBGPeU9sB1YtKeg7Ti4LPbJHQ6/LC5GvWi75BeJ/7paQETUP
+	5rXg==
+X-Gm-Message-State: AD7BkJILdqL22qODqvoIp7/Xhdkb14ogjeql2EerE5UF0YFvMZjjriaOprspIh9QA/FLxg==
+X-Received: by 10.28.36.85 with SMTP id k82mr6988328wmk.65.1459686629151;
+	Sun, 03 Apr 2016 05:30:29 -0700 (PDT)
+Received: from localhost (xdsl-87-79-226-7.netcologne.de. [87.79.226.7])
+	by smtp.gmail.com with ESMTPSA id u3sm8422970wmg.15.2016.04.03.05.30.28
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Sun, 03 Apr 2016 05:30:28 -0700 (PDT)
+From: Ingo Lohmar <i.lohmar@gmail.com>
+To: Alan Mackenzie <acm@muc.de>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+In-Reply-To: <20160403121458.GC3537@acm.fritz.box>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<20160403111708.GA3537@acm.fritz.box>
+	<87lh4uex9h.fsf@acer.localhost.com>
+	<20160403121458.GC3537@acm.fritz.box>
+User-Agent: Notmuch/0.20.2+113~g6332e6e (http://notmuchmail.org)
+	Emacs/25.0.90.1 (x86_64-pc-linux-gnu)
+Date: Sun, 03 Apr 2016 14:30:27 +0200
+Message-ID: <87bn5qeuxo.fsf@acer.localhost.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:4010:c04::241
+Cc: Emacs developers <dev@caliopen.local>,
+	Kaushal Modi <kaushal.modi@gmail.com>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 12:30:36 -0000
+Content-Length: 2042
+Lines: 47
+
+Hi Alan,
+
+On Sun, Apr 03 2016 12:14 (+0000), Alan Mackenzie wrote:
+
+> Is there a way of asking "if I attempt git merge, will there be any
+> conflicts?"?  It would be nice to find this out before one's working
+> directory gets lots of uncommitted changes.
+
+Just do the merge, and if you get conflicts that you do not want to
+resolve, 'git merge --abort'.
+
+Single caveat: Do NOT start a merge when you have uncommited changes.
+If you want, do 'git stash' first to recover them later.
+
+>
+> Is there a way of recovering after doing git pull, when git has already
+> written all the pulled changes to the working directory?  Is there some
+> way of saying git undo-partial-pull, leaving the working directory as it
+> was before the pull, and cancelling the merge which git has started?
+
+See above.
+
+> Sorry, I wasn't very clear.  What I meant was, is there a way of
+> finishing the merge locally, then pushing real changes without the
+> confusing "pseudo-merge" escaping upstream with them?
+>
+> When I did git pull, there were, let's say, 20 commits.  19 of these
+> could have been moved directly into my local repository; only one had a
+> conflict.  It would be nice to be able to fix the local repo, so that
+> the "pseudo-merge" of these 19 blameless commits remains a purely local
+> affair, and doesn't get pushed upstream.
+
+It seems you are confused about some concepts.  The 'fetch' part of
+'pull' has already dragged *all* commits into your local repository.
+Now the question is about how to merge the branches (say 'master' and
+'origin/master').  Here I can no longer follow your explanation.  I have
+a feeling you actually want to avoid the merge commit as far as
+possible.
+
+In this case, you have to learn about rebase, as in 'git rebase
+origin/master'.  This replays your commits (which should be only local)
+on top of origin/master.  You will have to fix any conflict in your
+commits, and you will end up with a linear history with your commits on
+top of those already on origin/master.
+
+Abort a rebase-gone-bad by 'git rebase --abort'.
+

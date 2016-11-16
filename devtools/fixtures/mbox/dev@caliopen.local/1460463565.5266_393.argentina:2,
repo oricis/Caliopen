@@ -1,0 +1,76 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amdLQ-0003pa-5B
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 04:25:16 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:43569)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1amdLO-0003pQ-GX
+	for dev@caliopen.local; Sun, 03 Apr 2016 04:25:15 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1amdLN-0004XB-QJ
+	for dev@caliopen.local; Sun, 03 Apr 2016 04:25:14 -0400
+Received: from zimbra.cs.ucla.edu ([131.179.128.68]:47071)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>)
+	id 1amdLJ-0004Wu-Cy; Sun, 03 Apr 2016 04:25:09 -0400
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTP id C95B8161244;
+	Sun,  3 Apr 2016 01:25:07 -0700 (PDT)
+Received: from zimbra.cs.ucla.edu ([127.0.0.1])
+	by localhost (zimbra.cs.ucla.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id 7i_ghJhp17uA; Sun,  3 Apr 2016 01:25:07 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTP id 10342161245;
+	Sun,  3 Apr 2016 01:25:07 -0700 (PDT)
+X-Virus-Scanned: amavisd-new at zimbra.cs.ucla.edu
+Received: from zimbra.cs.ucla.edu ([127.0.0.1])
+	by localhost (zimbra.cs.ucla.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Zpr5g1J-DTsA; Sun,  3 Apr 2016 01:25:06 -0700 (PDT)
+Received: from [192.168.1.9] (unknown [100.32.155.148])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTPSA id D72E2161244;
+	Sun,  3 Apr 2016 01:25:06 -0700 (PDT)
+Subject: Re: [PATCH] src/print.c: Check for __GLIBC__ rather than GNU_LINUX
+To: Eli Zaretskii <eliz@gnu.org>
+References: <1459315328-3663-1-git-send-email-somasissounds@gmail.com>
+	<56FD8A8B.3040808@cs.ucla.edu> <83shz5u8vs.fsf@gnu.org>
+	<56FE276C.2050306@cs.ucla.edu> <83pou8s90i.fsf@gnu.org>
+From: Paul Eggert <eggert@cs.ucla.edu>
+Organization: UCLA Computer Science Department
+Message-ID: <5700D353.40107@cs.ucla.edu>
+Date: Sun, 3 Apr 2016 01:24:51 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <83pou8s90i.fsf@gnu.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 131.179.128.68
+Cc: dev@caliopen.local, somasis@exherbo.org, somasissounds@gmail.com
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 08:25:15 -0000
+Content-Length: 434
+Lines: 13
+
+Eli Zaretskii wrote:
+
+> Are we sure fileno(stdin) will necessarily return 0, what with all the
+> redirections and stuff?
+
+Yes.  The redirections in Emacs don't change the file descriptor numbers 
+associated with stdin, stdout, and stderr.  They will always be 0, 1, and 2.
+
+> Why not keep the original code?
+
+It's a bit slower, and (more important) it leads the reader to wonder whether 
+fileno (stdin) might not equal STDIN_FILENO.
+

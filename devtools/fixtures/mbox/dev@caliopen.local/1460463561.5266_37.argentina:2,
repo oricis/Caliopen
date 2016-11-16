@@ -1,0 +1,77 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aNjKo-0007v8-FW
+	for mharc-dev@caliopen.local; Mon, 25 Jan 2016 10:45:42 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:40088)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aNjKm-0007so-Oh
+	for dev@caliopen.local; Mon, 25 Jan 2016 10:45:41 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aNjKi-0005pJ-On
+	for dev@caliopen.local; Mon, 25 Jan 2016 10:45:40 -0500
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:39371)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1aNjKi-0005pA-MT; Mon, 25 Jan 2016 10:45:36 -0500
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:4728
+	helo=HOME-C4E4A596F7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1aNjKi-0006CN-1Z; Mon, 25 Jan 2016 10:45:36 -0500
+Date: Mon, 25 Jan 2016 17:46:00 +0200
+Message-Id: <83oac93bnr.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: YAMAMOTO Mitsuharu <mituharu@math.s.chiba-u.ac.jp>
+In-reply-to: <wlvb6il8dn.wl%mituharu@math.s.chiba-u.ac.jp> (message from
+	YAMAMOTO Mitsuharu on Mon, 25 Jan 2016 11:07:16 +0900)
+Subject: Re: About x_draw_xwidget_glyph_string
+References: <wlvb6il8dn.wl%mituharu@math.s.chiba-u.ac.jp>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 25 Jan 2016 15:45:41 -0000
+Content-Length: 1222
+Lines: 32
+
+> Date: Mon, 25 Jan 2016 11:07:16 +0900
+> From: YAMAMOTO Mitsuharu <mituharu@math.s.chiba-u.ac.jp>
+> 
+> 2. Comment on clipping.
+> 
+>    578	  /* Calculate clipping, which is used for all manner of onscreen
+>    579	     xwidget views.  Each widget border can get clipped by other emacs
+>    580	     objects so there are four clipping variables.  */
+>    581	  clip_right =
+>    582	    min (xww->width,
+>    583	         WINDOW_RIGHT_EDGE_X (s->w) - x -
+>    584	         WINDOW_RIGHT_SCROLL_BAR_AREA_WIDTH (s->w) -
+>    585	         WINDOW_RIGHT_FRINGE_WIDTH (s->w));
+>    586	  clip_left =
+>    587	    max (0,
+>    588	         WINDOW_LEFT_EDGE_X (s->w) - x +
+>    589	         WINDOW_LEFT_SCROLL_BAR_AREA_WIDTH (s->w) +
+>    590	         WINDOW_LEFT_FRINGE_WIDTH (s->w));
+>    591	
+>    592	  clip_bottom =
+>    593	    min (xww->height,
+>    594	         WINDOW_BOTTOM_EDGE_Y (s->w) - WINDOW_MODE_LINE_HEIGHT (s->w) - y);
+>    595	  clip_top = max (0, WINDOW_TOP_EDGE_Y (s->w) - y);
+> 
+> I think the calculation of clipping should use the function window_box
+> rather than manual calculation with various window macros.  Otherwise,
+> xwidget views will cover horizontal scroll bars, for example.
+
+I agree.
+
+Thanks.
+

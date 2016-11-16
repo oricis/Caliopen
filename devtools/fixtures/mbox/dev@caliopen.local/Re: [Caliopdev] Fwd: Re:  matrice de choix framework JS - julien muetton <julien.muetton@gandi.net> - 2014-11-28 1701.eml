@@ -1,0 +1,357 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 86A61120AC2;
+	Fri, 28 Nov 2014 17:00:54 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -100.907
+X-Spam-Level: 
+X-Spam-Status: No, score=-100.907 tagged_above=-999 required=5
+	tests=[BAYES_00=-2.599, HTML_MESSAGE=0.001, RATWARE_GECKO_BUILD=1.691,
+	USER_IN_WHITELIST=-100]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id B2YVaNH3k2oC; Fri, 28 Nov 2014 17:00:52 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 07806120A19;
+	Fri, 28 Nov 2014 17:00:52 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id D8B2D6B3F1257;
+	Fri, 28 Nov 2014 17:00:51 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id L_Yl7oet0zm7; Fri, 28 Nov 2014 17:00:50 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 760326AAC5AC2;
+	Fri, 28 Nov 2014 17:00:50 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 993056B386732
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:00:48 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id VX7VM8U1X77c for <caliopdev@caliop.net>;
+ Fri, 28 Nov 2014 17:00:47 +0100 (CET)
+Received: from mail4.gandi.net (mail4.gandi.net [217.70.183.210])
+ by brassens.heberge.info (Postfix) with ESMTP id 872FA6AAC5AC2
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:00:47 +0100 (CET)
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+ by mail4.gandi.net (Postfix) with ESMTP id 6031F120AD9
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:00:47 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+Received: from mail4.gandi.net ([217.70.183.210])
+ by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new,
+ port 10024) with ESMTP id aSSqUZfLj3AN for <caliopdev@caliop.net>;
+ Fri, 28 Nov 2014 17:00:45 +0100 (CET)
+Received: from [10.242.2.58] (corp-ras.gandi.net [217.70.181.25])
+ (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by mail4.gandi.net (Postfix) with ESMTPSA id 3DE3E120A19
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:00:45 +0100 (CET)
+Message-ID: <54789C63.8050606@gandi.net>
+Date: Fri, 28 Nov 2014 17:01:39 +0100
+From: julien muetton <dev@caliopen.local>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64;
+ rv:31.0) Gecko/20100101 Icedove/31.2.0
+MIME-Version: 1.0
+To: caliopdev@caliop.net
+References: <547453AE.70408@chamal.fr> <547457A9.9070801@chamal.fr>
+In-Reply-To: <547457A9.9070801@chamal.fr>
+Content-Type: multipart/mixed; boundary="------------070107090202040807080200"
+Subject: Re: [Caliopdev] Fwd: Re:  matrice de choix framework JS
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+This is a multi-part message in MIME format.
+--------------070107090202040807080200
+Content-Type: multipart/alternative;
+ boundary="------------010007040905010201030503"
+
+
+--------------010007040905010201030503
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+
+J'ai rempli la matrice.
+
+Je ne suis pas sur d'avoir saisi les points spec:*
+AMHA on a toujours la libert� d'utiliser une lib qui va bien pour 
+r�pondre � un probl�me, sinon on risque de rencontrer beaucoup de choses 
+qui ressemblent � un clou...
+
+Pour la partie s�cu, dans le front, on ne peut pas acc�der aux donn�es 
+que l'api ne renvoie pas, par contre tout le reste est accessible.
+
+Julien
+
+On 11/25/2014 11:19 AM, Aymeric Barantal wrote:
+>
+> Rate sur le To, groumpfff
+>
+>
+> -------- Forwarded Message --------
+> Subject: 	Re: [Caliopdev] matrice de choix framework JS
+> Date: 	Tue, 25 Nov 2014 11:02:22 +0100
+> From: 	Aymeric Barantal <mric@chamal.fr>
+> To: 	David Epely <dey@protonmail.ch>
+>
+>
+>
+> On 11/24/2014 03:17 PM, David Epely wrote:
+> > bon j'ai rempli vite fait ce que je sais ... pas trop le temps, je
+> > m'occupe d'un nouveau n� l� tout de suite.
+> >
+> > (mais toujours envie de m'impliquer)
+>
+> Cool, merci ;)
+>
+> Voici la mienne.
+>
+> ++ chamal
+>
+>
+>
+>
+>
+>
+>
+> _______________________________________________
+> Caliopdev mailing list
+> Caliopdev@caliop.net
+> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+
+--------------010007040905010201030503
+Content-Type: text/html; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=windows-1252"
+      http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    J'ai rempli la matrice.<br>
+    <br>
+    Je ne suis pas sur d'avoir saisi les points spec:*<br>
+    AMHA on a toujours la libert� d'utiliser une lib qui va bien pour
+    r�pondre � un probl�me, sinon on risque de rencontrer beaucoup de
+    choses qui ressemblent � un clou...<br>
+    <br>
+    Pour la partie s�cu, dans le front, on ne peut pas acc�der aux
+    donn�es que l'api ne renvoie pas, par contre tout le reste est
+    accessible.<br>
+    <br>
+    Julien<br>
+    <br>
+    <div class="moz-cite-prefix">On 11/25/2014 11:19 AM, Aymeric
+      Barantal wrote:<br>
+    </div>
+    <blockquote cite="mid:547457A9.9070801@chamal.fr" type="cite">
+      <meta http-equiv="content-type" content="text/html;
+        charset=windows-1252">
+      <br>
+      <div class="moz-forward-container">Rate sur le To, groumpfff<br>
+        <br>
+        <br>
+        -------- Forwarded Message --------
+        <table class="moz-email-headers-table" border="0"
+          cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <th align="RIGHT" nowrap="nowrap" valign="BASELINE">Subject:
+
+              </th>
+              <td>Re: [Caliopdev] matrice de choix framework JS</td>
+            </tr>
+            <tr>
+              <th align="RIGHT" nowrap="nowrap" valign="BASELINE">Date:
+              </th>
+              <td>Tue, 25 Nov 2014 11:02:22 +0100</td>
+            </tr>
+            <tr>
+              <th align="RIGHT" nowrap="nowrap" valign="BASELINE">From:
+              </th>
+              <td>Aymeric Barantal <a moz-do-not-send="true"
+                  class="moz-txt-link-rfc2396E"
+                  href="mailto:mric@chamal.fr">&lt;mric@chamal.fr&gt;</a></td>
+            </tr>
+            <tr>
+              <th align="RIGHT" nowrap="nowrap" valign="BASELINE">To: </th>
+              <td>David Epely <a moz-do-not-send="true"
+                  class="moz-txt-link-rfc2396E"
+                  href="mailto:dey@protonmail.ch">&lt;dey@protonmail.ch&gt;</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <pre>On 11/24/2014 03:17 PM, David Epely wrote:
+&gt; bon j'ai rempli vite fait ce que je sais ... pas trop le temps, je 
+&gt; m'occupe d'un nouveau n� l� tout de suite.
+&gt;
+&gt; (mais toujours envie de m'impliquer)
+
+Cool, merci ;)
+
+Voici la mienne.
+
+++ chamal
+
+
+
+</pre>
+        <br>
+      </div>
+      <br>
+      <br>
+      <fieldset class="mimeAttachmentHeader"></fieldset>
+      <br>
+      <pre wrap="">_______________________________________________
+Caliopdev mailing list
+<a class="moz-txt-link-abbreviated" href="mailto:Caliopdev@caliop.net">Caliopdev@caliop.net</a>
+<a class="moz-txt-link-freetext" href="http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev">http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev</a>
+</pre>
+    </blockquote>
+    <br>
+  </body>
+</html>
+
+--------------010007040905010201030503--
+
+--------------070107090202040807080200
+Content-Type: text/csv;
+ name="matrice-themouette.csv"
+Content-Transfer-Encoding: 8bit
+Content-Disposition: attachment;
+ filename="matrice-themouette.csv"
+
+,,,,,,,,,,,,,,,,,,,,
+,3,3,3,3,3,3,,,,,,,,,,,,,,
+Framework,Structure,Stabilité,User base,Specs : réseau ,Specs : secu,Specs : api,perfs,,Total,,,,,,,,,,,
+Angular,3,1,5,4,X,4,3,,=sum(B4:I4),,,,,,,,,,,
+React + Fluxx,2,3,4,??,X,??,4,,,,,,,,,,,,,
+Ember,5,4,4,4,X,4,3,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+ex,3,1,2,3,1,2,,,=sum(cellReference(&quot;c1a2e60b-2d2e-4674-965f-434454f7a01b&quot;, &quot;995b7a79-e433-41fd-82e2-5750ac69e1f5&quot;, &quot;ff8615a5-d987-4692-b4bc-1f4d9f28ec6c&quot;):cellReference(&quot;c1a2e60b-2d2e-4674-965f-434454f7a01b&quot;, &quot;995b7a79-e433-41fd-82e2-5750ac69e1f5&quot;, &quot;056cae5e-ad3f-4919-a122-85b2611d02be&quot;)),,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+??,On utilise la librairie que l&#39;on veut, il y a forcément quelque chose qui colle au besoin,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+X,Pas de notion de sécurité côté front, l&#39;api s&#39;en charge.,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+
+
+--------------070107090202040807080200
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--------------070107090202040807080200--

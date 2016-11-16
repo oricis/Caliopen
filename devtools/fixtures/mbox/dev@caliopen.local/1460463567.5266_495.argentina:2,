@@ -1,0 +1,77 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akewv-0005K3-7V
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 17:43:49 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39005)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1akews-0005Jx-OQ
+	for dev@caliopen.local; Mon, 28 Mar 2016 17:43:47 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1akewp-00030g-IY
+	for dev@caliopen.local; Mon, 28 Mar 2016 17:43:46 -0400
+Received: from chene.dit.umontreal.ca ([132.204.246.20]:34904)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1akewp-00030Z-D9
+	for dev@caliopen.local; Mon, 28 Mar 2016 17:43:43 -0400
+Received: from ceviche.home (lechon.iro.umontreal.ca [132.204.27.242])
+	by chene.dit.umontreal.ca (8.14.1/8.14.1) with ESMTP id u2SLiErM018993; 
+	Mon, 28 Mar 2016 17:44:14 -0400
+Received: by ceviche.home (Postfix, from userid 20848)
+	id 09EA766184; Mon, 28 Mar 2016 17:43:39 -0400 (EDT)
+From: Stefan Monnier <monnier@IRO.UMontreal.CA>
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: Re: Thinking about changed buffers
+Message-ID: <jwvshza709k.fsf-monnier+Inbox@gnu.org>
+References: <m3bn5ya4ro.fsf@gnus.org> <m3r3euigfp.fsf@gnus.org>
+	<jwvy49276pc.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m34mbqiesf.fsf@gnus.org>
+Date: Mon, 28 Mar 2016 17:43:39 -0400
+In-Reply-To: <m34mbqiesf.fsf@gnus.org> (Lars Magne Ingebrigtsen's message of
+	"Mon, 28 Mar 2016 21:27:28 +0200")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 5
+X-NAI-Spam-Score: 0
+X-NAI-Spam-Rules: 1 Rules triggered
+	RV5625=0
+X-NAI-Spam-Version: 2.3.0.9418 : core <5625> : inlines <4598> : streams
+	<1610396> : uri <2175072>
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 132.204.246.20
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 21:43:47 -0000
+Content-Length: 852
+Lines: 19
+
+>> Still seems problematic if your 5 year old takes 2.7s to compute it on
+>> a 1GB file.  You don't want to freeze for 2s in the normal course of
+>> editing just because you happen to cross the "original size" threshold.
+> Yeah, I don't see any way around that.
+
+I guess to do better, you'd have to keep track of some bounds of
+changes, and to only hash the part of the buffer within those bounds.
+E.g. instead of a single hash, keep a list of hash-per-megabyte, plus
+a bitmap of touched-megabytes (one bit per megabyte), so you can limit
+your check to just those megabytes that have been touched.
+
+This said, it doesn't strike me as a worthwhile exercise.  The benefit
+seems very small, and the extra work is out of proportion to that
+benefit (and then you have to add the backward incompatibilities this
+will inevitably introduce).
+
+
+        Stefan
+

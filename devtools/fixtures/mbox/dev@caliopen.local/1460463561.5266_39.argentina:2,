@@ -1,0 +1,130 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aoYS4-0001mN-EQ
+	for mharc-dev@caliopen.local; Fri, 08 Apr 2016 11:36:04 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:54608)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <joakim@verona.se>) id 1aoYS1-0001iH-TJ
+	for dev@caliopen.local; Fri, 08 Apr 2016 11:36:02 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <joakim@verona.se>) id 1aoYS0-0008KH-VR
+	for dev@caliopen.local; Fri, 08 Apr 2016 11:36:01 -0400
+Received: from mx1.bahnhof.se ([213.80.101.11]:31359)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <joakim@verona.se>)
+	id 1aoYRu-0008Jx-7C; Fri, 08 Apr 2016 11:35:54 -0400
+Received: from localhost (mf.bahnhof.se [213.80.101.20])
+	by mx1-reinject (Postfix) with ESMTP id 94F3E4504D;
+	Fri,  8 Apr 2016 17:35:50 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new using ClamAV at bahnhof.se (MF2)
+Received: from mf2.bahnhof.se ([127.0.0.1])
+	by localhost (mf2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id STLgGa3go6LY; Fri,  8 Apr 2016 17:35:42 +0200 (CEST)
+Received: from mta.verona.se (h-235-62.a149.priv.bahnhof.se [85.24.235.62])
+	by mf2.bahnhof.se (Postfix) with ESMTP id 2EF5B9401C3;
+	Fri,  8 Apr 2016 17:35:40 +0200 (CEST)
+Received: from localhost (unknown [127.0.0.1])
+	by mta.verona.se (Postfix) with ESMTP id CF6574EEFB8;
+	Fri,  8 Apr 2016 15:35:40 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at verona.se
+Received: from mta.verona.se ([127.0.0.1])
+	by localhost (exodia.verona.se [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id x0ayTIB_udXc; Fri,  8 Apr 2016 17:35:23 +0200 (CEST)
+Received: from exodia.verona.se (www.verona.se [192.168.200.15])
+	by mta.verona.se (Postfix) with ESMTP id 84D444EEFB3;
+	Fri,  8 Apr 2016 17:35:23 +0200 (CEST)
+From: joakim@verona.se
+To: Eli Zaretskii <eliz@gnu.org>
+Cc: YAMAMOTO Mitsuharu <mituharu@math.s.chiba-u.ac.jp>,  dev@caliopen.local
+Subject: Re: About x_draw_xwidget_glyph_string
+References: <wlvb6il8dn.wl%mituharu@math.s.chiba-u.ac.jp>
+	<83oac93bnr.fsf@gnu.org>
+Date: Fri, 08 Apr 2016 17:35:23 +0200
+In-Reply-To: <83oac93bnr.fsf@gnu.org> (Eli Zaretskii's message of "Mon, 25 Jan
+	2016 17:46:00 +0200")
+Message-ID: <m38u0oazb8.fsf@exodia.verona.se>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 213.80.101.11
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Fri, 08 Apr 2016 15:36:03 -0000
+Content-Length: 1987
+Lines: 66
+
+Eli Zaretskii <eliz@gnu.org> writes:
+
+>> Date: Mon, 25 Jan 2016 11:07:16 +0900
+>> From: YAMAMOTO Mitsuharu <mituharu@math.s.chiba-u.ac.jp>
+>> 
+>> 2. Comment on clipping.
+>> 
+>>    578	  /* Calculate clipping, which is used for all manner of onscreen
+>>    579	     xwidget views.  Each widget border can get clipped by other emacs
+>>    580	     objects so there are four clipping variables.  */
+>>    581	  clip_right =
+>>    582	    min (xww->width,
+>>    583	         WINDOW_RIGHT_EDGE_X (s->w) - x -
+>>    584	         WINDOW_RIGHT_SCROLL_BAR_AREA_WIDTH (s->w) -
+>>    585	         WINDOW_RIGHT_FRINGE_WIDTH (s->w));
+>>    586	  clip_left =
+>>    587	    max (0,
+>>    588	         WINDOW_LEFT_EDGE_X (s->w) - x +
+>>    589	         WINDOW_LEFT_SCROLL_BAR_AREA_WIDTH (s->w) +
+>>    590	         WINDOW_LEFT_FRINGE_WIDTH (s->w));
+>>    591	
+>>    592	  clip_bottom =
+>>    593	    min (xww->height,
+>>    594	         WINDOW_BOTTOM_EDGE_Y (s->w) - WINDOW_MODE_LINE_HEIGHT (s->w) - y);
+>>    595	  clip_top = max (0, WINDOW_TOP_EDGE_Y (s->w) - y);
+>> 
+>> I think the calculation of clipping should use the function window_box
+>> rather than manual calculation with various window macros.  Otherwise,
+>> xwidget views will cover horizontal scroll bars, for example.
+>
+> I agree.
+>
+> Thanks.
+>
+
+I tried to do this, but I'm doing something wrong. How is window_box
+meant to be used?
+
+This is my attempt to replace the code above:
+
+  //JAVE work in progressing, suggested by YAMAMOTO Mitsuharu
+  int text_area_x, text_area_y, text_area_width, text_area_height;
+  
+  window_box (s->w,
+              ANY_AREA, //also tried TEXT_AREA
+              &text_area_x,
+              &text_area_y,
+              &text_area_width,
+              &text_area_height);
+  clip_right =
+    min (xww->width,
+         text_area_width);
+  clip_left =
+    max (0,
+         text_area_x);
+
+  clip_bottom =
+    min (xww->height,
+         text_area_y);
+  clip_top = max (0, text_area_height);
+
+
+
+-- 
+Joakim Verona
+

@@ -1,0 +1,75 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amirE-0004xs-MU
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 10:18:28 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:56430)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amirB-0004xi-Vu
+	for dev@caliopen.local; Sun, 03 Apr 2016 10:18:26 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amir8-0001Gw-P8
+	for dev@caliopen.local; Sun, 03 Apr 2016 10:18:25 -0400
+Received: from plane.gmane.org ([80.91.229.3]:58897)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amir8-0001Gq-Hq
+	for dev@caliopen.local; Sun, 03 Apr 2016 10:18:22 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amir7-0000LL-6E
+	for dev@caliopen.local; Sun, 03 Apr 2016 16:18:21 +0200
+Received: from 69-165-138-79.dsl.teksavvy.com ([69.165.138.79])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 16:18:21 +0200
+Received: from monnier by 69-165-138-79.dsl.teksavvy.com with local (Gmexim
+	0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 16:18:21 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+Date: Sun, 03 Apr 2016 10:18:14 -0400
+Message-ID: <jwvinzykcdn.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<56FE1882.9030904@cs.ucla.edu> <20160403120300.GB3537@acm.fritz.box>
+	<8760vy6gfi.fsf@Rainer.invalid>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 69-165-138-79.dsl.teksavvy.com
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:2zJxHdfKynqJqDYhgxRgFG/9VDw=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 14:18:26 -0000
+Content-Length: 493
+Lines: 15
+
+>> It was git that prepared the merge, not me.
+> Blaming the tools?
+
+Yes.  Git makes it all too easy here to create such annoying merge
+commits, and if you don't have enough experience with Git you won't
+even notice it.
+
+But even if you do notice it, it can be pretty challenging to fix it
+after the fact, or to avoid it before the fact.
+
+It's not just that Git is a sharp tool here: in this instance, it makes
+it easy to do the wrong thing, and hard to do the right thing.
+
+
+        Stefan
+
+

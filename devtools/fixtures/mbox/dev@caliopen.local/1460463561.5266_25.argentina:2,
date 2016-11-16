@@ -1,0 +1,84 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aeIOq-0004XI-2r
+	for mharc-dev@caliopen.local; Fri, 11 Mar 2016 03:26:20 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:48412)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aeIOm-0004WU-To
+	for dev@caliopen.local; Fri, 11 Mar 2016 03:26:17 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aeIOj-0005NV-JI
+	for dev@caliopen.local; Fri, 11 Mar 2016 03:26:16 -0500
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:56819)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1aeIOj-0005NH-Fe; Fri, 11 Mar 2016 03:26:13 -0500
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:3176
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1aeIOi-0000jN-H7; Fri, 11 Mar 2016 03:26:12 -0500
+Date: Fri, 11 Mar 2016 10:26:07 +0200
+Message-Id: <83y49pju8w.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Charles Strahan <charles@cstrahan.com>
+In-reply-to: <1457660934.533185.545912986.04028913@webmail.messagingengine.com>
+	(message from Charles Strahan on Thu, 10 Mar 2016 20:48:54 -0500)
+Subject: Re: support for true-color terminals
+References: <1457660934.533185.545912986.04028913@webmail.messagingengine.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Fri, 11 Mar 2016 08:26:18 -0000
+Content-Length: 1514
+Lines: 36
+
+> From: Charles Strahan <charles@cstrahan.com>
+> Date: Thu, 10 Mar 2016 20:48:54 -0500
+> 
+> A while back, there was an effort to add support for true-color
+> terminals (by which I mean terminals supporting 16777216 simultaneous
+> colors):
+> 
+> http://emacs.1067599.n5.nabble.com/RFC-Add-tty-True-Color-support-td299962.html
+> 
+> I've contacted R�diger, asking if he wouldn't mind if I pick up from
+> where he left off, and he said that was fine as he's been too busy to
+> work on this.
+> 
+> I've attached to this email the patch that I'm using, based on his work.
+> Any feedback would be greatly appreciated.
+> 
+> This is my first (attempted) contribution to Emacs, and I'm very new to
+> the code base, so there might be some silly mistakes that I'm unaware
+> of. If we can get this polished enough for inclusion, I'd be more than
+> happy to assign copyright.
+
+Thanks.
+
+First, I suggest that you start the legal paperwork rolling right now,
+because without that, discussing such a non-trivial change would be
+rather pointless.  If you agree, I will send you the form off-list.
+
+As for the patch: my first comment is about the changes in
+tty_look_up_color and in map_tty_color -- why are these needed?  The
+sheer number of the supported colors doesn't necessarily require any
+changes in the basic design of TTY color support, so I'm not sure what
+was the motivation for these changes.
+
+Also, why do we need the 'true-color' option introduced in
+tty-colors.el? why isn't 'auto' enough for supporting this terminal?
+

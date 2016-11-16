@@ -1,0 +1,99 @@
+Return-Path: <derrick@awayswinning.xyz>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id EF7D3209A30D5
+	for <laurent@brasil.brainstorm.fr>; Sat,  9 Apr 2016 06:05:56 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id BE0A9331770C; Sat,  9 Apr 2016 06:05:56 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id A76B9C746A4; Sat,  9 Apr 2016 06:05:56 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: ***********
+X-Spam-Status: Yes, score=11.6 required=5.0 tests=BAYES_99,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FROM_12LTRDOM,HTML_IMAGE_ONLY_16,HTML_MESSAGE,
+	HTML_SHORT_LINK_IMG_2,INVALID_DATE,MIME_HTML_ONLY,RCVD_IN_BRBL_LASTEXT,
+	RCVD_IN_CSS,RDNS_NONE,T_REMOTE_IMAGE autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  1.1 INVALID_DATE Invalid Date: header (not RFC 2822)
+	*  1.0 RCVD_IN_CSS RBL: Received via a relay in Spamhaus CSS
+	*      [69.163.33.52 listed in zen.spamhaus.org]
+	*  1.4 RCVD_IN_BRBL_LASTEXT RBL: RCVD_IN_BRBL_LASTEXT
+	*      [69.163.33.52 listed in bb.barracudacentral.org]
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.7 MIME_HTML_ONLY BODY: Message only has text/html MIME parts
+	*  1.1 HTML_IMAGE_ONLY_16 BODY: HTML: images with 1200-1600 bytes of words
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	*  0.0 HTML_SHORT_LINK_IMG_2 HTML is very short with a linked image
+	*  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+	*  0.0 T_REMOTE_IMAGE Message contains an external image
+	*  2.0 FROM_12LTRDOM From a 12-letter domain
+X-Spam-DCC: : 
+Received: from massine.awayswinning.xyz (unknown [69.163.33.52])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id C9448331770C
+	for <dev@caliopen.local>; Sat,  9 Apr 2016 06:05:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha1; c=simple/simple; d=awayswinning.xyz;
+	s=dkim; t=1460174752; bh=lXQT9tRue3Gqc+zOEqR/K46u+P0=;
+	h=To:Subject:Date:From:Message-ID;
+	b=aBi9qutn3voR457NoPwN/UrnXTNmSL6dVC3dGQ/sMzhecclQE6C1n4tGHRBIn0OfB
+	 6Ja5YIWo3L5sGlSrguOlijbuSDQRyuRJ3Rlx0eOaCzFwjivT5fz3GRHV/JwRq1krUe
+	 v6KXy4MM1abWVjs6T31X6iRfkMCotE6SgZ8scgBo=
+To: laurent <dev@caliopen.local>
+Subject: Who should be our next president? Trump - Clinton
+Date: Sat, 09 Apr 2016 00:05:52 -0400 EST
+From: "Vote Now" <Derrick@awayswinning.xyz>
+Message-ID: <201604090005.127744579767wmlnqa@awayswinning.xyz>
+X-Priority: 3
+X-Mailer: Webhosting Solutions
+MIME-Version: 1.0
+Content-Type: text/html;
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any
+	abuse report:
+X-AntiAbuse: Primary Hostname - massine.awayswinning.xyz
+X-AntiAbuse: Original Domain - brainstorm.fr
+X-AntiAbuse: Originator/Caller UID/GID - [8353 1987abebccd679c001680c82e_a07f0857] / [83 80]
+X-AntiAbuse: Sender Address Domain - massine.awayswinning.xyz
+X-Get-Message-Sender-Via: massine.awayswinning.xyz: authenticated_id: /from_h
+X-Source: /usr/bin/php
+X-Source-Args: php -q /home/drive/public_html/clients/adminkey/cron.php 
+X-Source-Dir: /public_html/clients/eadminkey
+X-Spam-Prev-Subject: Who should be our next president? Trump - Clinton
+Content-Length: 1304
+Lines: 27
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title></title>
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+<body>
+<div style="text-align: center"><a href="http://www.awayswinning.xyz/1e8e1ae7858679c001680c82e4c92a_a07f0857-010101010001/C/"><span style="font-family: Arial, Helvetica, sans-serif;
+font-size: medium"><strong>Complete the survey to unlock coupons and deals.</strong></span></a></div>
+
+<center><a href="http://www.awayswinning.xyz/1e8e1ae7858679c001680c82e4c92a_a07f0857-010101010001/C/"><img src="http://www.awayswinning.xyz/1c80e2ba205679c001680c82e26f_a07f0857-010101010001/V/" /></a><br />
+<br />
+<span style="FONT-SIZE:12px;COLOR:#666666;LINE-HEIGHT:20px;FONT-FAMILY:Arial,Helvetica,sans-serif;FONT-WEIGHT:normal">To stop receiving emails from
+Ions Media, please <a href="http://www.awayswinning.xyz/1e8d2d9a7b8679c001680c82e4c72a_a07f0857-010101010001/C/">visit here</a>.<br />
+Ions Media, 8000 Research Forest, Suite 115-144, The Woodlands, TX 77382</span><br />
+<br />
+<br />
+&nbsp;</center>
+</body>
+</html>
+
+
+
+
+</body></html>
+ http://awayswinning.xyz/1987abebccd679c001680c82e_a07f0857/uns/970364365220416854580902445/5197730EPM78278
+3 NINE EIGHT THREE 7 N . MESSNER WAY. NEWRIVERS Aldus ARIZONA 8 5 ZERO EIGHT SIX

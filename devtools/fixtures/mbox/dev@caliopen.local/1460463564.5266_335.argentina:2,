@@ -1,0 +1,97 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amwuv-0007tU-Rq
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 01:19:13 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59289)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amwuq-0007tC-SO
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:19:12 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amwum-0008O4-Nv
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:19:08 -0400
+Received: from mail-oi0-x22b.google.com ([2607:f8b0:4003:c06::22b]:35307)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amwum-0008O0-If
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:19:04 -0400
+Received: by mail-oi0-x22b.google.com with SMTP id p188so152720256oih.2
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 22:19:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=y1UPgtxwWFCj0Q0451PkfzDVLQuIRQsicR7mHL/jXYk=;
+	b=JAYn8u/MdogzYAXV8yumACWwpdgRWKWayFbH/OztgRNol3Y4wJ5Ivt5flY9EHYpykB
+	mfeoksnbMoMUmn2xtOd623mCN5OSLmqnvf4DwThuVS1pFADdY8S/46SFRNvDaibCeD2S
+	6s1a3iEfE+5Whw9yE7JxU6eBi5uWxg2wZmcBGGtnHnWrUVqfhu2eqpEPRpBQisUCQQVp
+	Oh9RrylkhHI9wnMcCNK/hXGMuYHBTvQaN64o1mOhIt2knFP796mFd+f9cTme2gakswpa
+	kSYRqrclfi2gMGI69yGe01QzJNGOswv6QamtIywRGyhVgppu0qesuL5tvrhrJ8foKp3E
+	CW3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=y1UPgtxwWFCj0Q0451PkfzDVLQuIRQsicR7mHL/jXYk=;
+	b=H8T2HySgfuFM45OzzpJRS9QuD+400dSgvZ1fyzKgB4uqhvjdIsjofhTc8fgu+kZ3qv
+	Xsm1DZPLTT8u5YSaK9C0pPWCOhie3wRb2XOsia1OQG8340cJmfGP5vyvaNeW60nMWeTx
+	qhUqyeKiNFeP7aSbWXP0Qxj3zfpEKErPq6btW+mC0BZ9JRteOHEyaRcca5llu+/8LApm
+	2xCKwNbQ2Rq2dBlYyFdhcFbnybdnlfQN0MByIuPOE11aAYpu1fhqm5ZPap5hS83vvtNC
+	WfF5TdCYyJ7aksd9xed2kbQjpbPK2JWAka4cy8w4iY5RTaiGqaUAccijpSTDmyzSm7ju
+	BiOg==
+X-Gm-Message-State: AD7BkJLE8paYddY+6NJT4yULLvgifTQY3uaK18BuwMxcgUkd+xeoLjHUQ9kbQiKaqgSzsQ==
+X-Received: by 10.157.32.167 with SMTP id x36mr5783568ota.129.1459747144023;
+	Sun, 03 Apr 2016 22:19:04 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79])
+	by smtp.gmail.com with ESMTPSA id m2sm7749687oia.1.2016.04.03.22.19.02
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 22:19:03 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id 362D413DB0856; Sun,  3 Apr 2016 22:19:02 -0700 (PDT)
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: Re: master 0695108 2/2: Revert "Add `r'/`l' grep command history
+	commands"
+In-Reply-To: <m3wpoe54yr.fsf@gnus.org> (Lars Magne Ingebrigtsen's message of
+	"Mon, 04 Apr 2016 07:16:12 +0200")
+Date: Sun, 03 Apr 2016 22:18:59 -0700
+Message-ID: <m2wpoe9cjg.fsf@newartisans.com>
+References: <20160403224658.6944.52006@vcs.savannah.gnu.org>
+	<E1amqnL-0001p7-2f@vcs.savannah.gnu.org> <m3wpoe54yr.fsf@gnus.org>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: Lars Magne Ingebrigtsen <larsi@gnus.org>, emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c06::22b
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 05:19:13 -0000
+Content-Length: 739
+Lines: 17
+
+>>>>> Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+
+> An contrary to popular belief, reverting code is not a great way to motivate
+> people to contribute.
+
+I agree, I just wanted to stop any further work before we started having merge
+commits and other changes sitting on top of those.
+
+My apologies for the abrupt revert, without comments (I'll remember to do that
+in future). I like the direction your change is headed, but it shouldn't
+happen before consensus either. The master branch, while intended for Emacs
+26, isn't open for new features without some discussion beforehand.
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

@@ -1,0 +1,435 @@
+Return-Path: <posts@futurfast.eu>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id F333D20ADC0A7
+	for <laurent@brasil.brainstorm.fr>; Sat,  9 Apr 2016 15:47:06 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id E8C9D3317721; Sat,  9 Apr 2016 15:47:06 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id DAE153317704; Sat,  9 Apr 2016 15:47:06 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: ***********
+X-Spam-Status: Yes, score=11.2 required=5.0 tests=AWL,BAYES_99,
+	DATE_IN_PAST_12_24,DKIM_SIGNED,HTML_MESSAGE,RAZOR2_CF_RANGE_51_100,
+	RAZOR2_CF_RANGE_E8_51_100,RAZOR2_CHECK,T_DKIM_INVALID,URIBL_BLACK,
+	URIBL_DBL_SPAM autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  1.7 URIBL_DBL_SPAM Contains an URL listed in the DBL blocklist
+	*      [URIs: npmd9ti3wa.com]
+	*  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
+	*      [URIs: npmd9ti3wa.com]
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  1.0 DATE_IN_PAST_12_24 Date: is 12 to 24 hours before Received: date
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.9 RAZOR2_CHECK Listed in Razor2 (http://razor.sf.net/)
+	*  1.9 RAZOR2_CF_RANGE_E8_51_100 Razor2 gives engine 8 confidence level
+	*      above 50%
+	*      [cf: 100]
+	*  0.5 RAZOR2_CF_RANGE_51_100 Razor2 gives confidence level above 50%
+	*      [cf: 100]
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	*  0.0 T_DKIM_INVALID DKIM-Signature header exists but is not valid
+	* -0.2 AWL AWL: From: address is in the auto white-list
+X-Spam-DCC: : 
+Received: from mail.futurfast.eu (mail.futurfast.eu [176.20.27.58])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id A609133181F9
+	for <dev@caliopen.local>; Sat,  9 Apr 2016 15:47:04 +0200 (CEST)
+DKIM-Signature: a=rsa-sha1; t=1460209627; x=1460814427; s=futurfastkey; d=futurfast.eu; c=relaxed/relaxed; q=dns; h=From:Reply-To:Subject:Date:Message-ID:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+   b=a0M1+PPQbtH5t04P+/eqSyniI+c0RKb4BHSGuQJFoAiC9efDK4SrABvkPYduagk67rQDMxEGKitQ5rZjcKCNqDTafZTqZ19SXwhPt9cpt2KDVmbxz2AcZhW6MjvqGyMdn2iIUrMTEcOwMEZAxZ6DzAfHfwuLzjIeTkHcS9vYTqI=
+Received: from www.supprabyte.co.uk
+        by mail.futurstats.eu (IceWarp 9.3.1) with SMTP id XRE00007
+        for <dev@caliopen.local>; Sat, 09 Apr 2016 15:47:07 +0200
+To: dev@caliopen.local
+Subject: Gestion du nettoyage de vos locaux
+Message-ID: <cd945ac3821f7f5539321dd0be3447c6@www.supprabyte.co.uk>
+Date: Sat, 09 Apr 2016 01:08:16 +0200
+From: "Nettoyage des Locaux" <sfp@futurfast.eu>
+Reply-To: sfp@futurfast.eu
+MIME-Version: 1.0
+X-Mailer-LID: 326
+List-Unsubscribe: <http://www.supprabyte.co.uk/unsubscribe.php?M=7474945&C=f2d22bbcfd54ce5513062bfbe27380ea&L=326&N=2337>
+X-Mailer-SID: 2337
+X-Mailer-Sent-By: 1
+Content-Type: multipart/alternative; charset="UTF-8"; boundary="b1_f3224b53f82e9d84e7308c170dfebdba"
+Content-Transfer-Encoding: 8bit
+X-Spam-Prev-Subject: Gestion du nettoyage de vos locaux
+Content-Length: 10954
+Lines: 372
+
+--b1_f3224b53f82e9d84e7308c170dfebdba
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+Your email client cannot read this email.
+To view it online, please go here:
+http://www.supprabyte.co.uk/display.php?M=7474945&C=f2d22bbcfd54ce5513062bfbe27380ea&S=2337&L=326&N=223
+
+
+To stop receiving these
+emails:http://www.supprabyte.co.uk/unsubscribe.php?M=7474945&C=f2d22bbcfd54ce5513062bfbe27380ea&L=326&N=2337
+
+--b1_f3224b53f82e9d84e7308c170dfebdba
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+<html><head></head><body><div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div align="center"><font style="font-size: 11px; font-family:
+Arial,Helvetica,sans-serif; color: #523122;" face="Arial, Helvetica,
+sans-serif" color="#523122" size="1">Si vous ne parvenez pas &agrave; lire
+cet email veuillez trouver la page <a style="color: #523122;"
+href="http://www.supprabyte.co.uk/display.php?M=7474945&C=f2d22bbcfd54ce5513062bfbe27380ea&S=2337&L=326&N=223">suivante</a><a>
+<center class="wrapper" style="width: 100%; table-layout: fixed;
+-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+<div class="webkit" style="max-width:600px;
+background-color:#ffffff"><!--[if (gte mso 9)|(IE)]>
+<table width="600" align="center"
+style="border-spacing:0;font-family:sans-serif;color:#333333;"
+mce_style="border-spacing:0;font-family:sans-serif;color:#333333;"
+border="0"  cellpadding="0" cellspacing="0" >
+<tr>
+<td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"
+mce_style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"
+><![endif]-->
+<table style="border-spacing: 0px; margin: 0px auto; width: 600px;
+max-width: 600px;" align="center" bgcolor="ececec" border="0"
+cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="max-width:600;" height="26" align="center" valign="middle"><font
+style=" font-family:Arial, Helvetica, sans-serif; font-size:11px ;
+font-weight: normal; color:#a4a7a8;">Faites appel &agrave; une
+soci&eacute;t&eacute; de nettoyage !&nbsp;</font></td>
+</tr>
+</tbody>
+</table>
+<table class="outer" style="border-spacing: 0; font-family: sans-serif;
+color: #333333; margin: 0 auto; width: 100%; max-width: 600px;"
+align="center" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="header" style="background-color: #ec9600; height: 70px;
+text-align: center; padding: 0;">
+<table style="border-spacing: 0px; font-family: sans-serif; color: #333333;
+width: 100%;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="inner contents"
+style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;"><a
+style="text-decoration:none"
+href="http://www.supprabyte.co.uk/link.php?M=7474945&N=2337&L=983&F=H"
+target="_blank"> <!--
+<p class="h2"
+style="Margin:0;font-size:17px;color:#ffffff;text-align:center;
+line-height:26px;"
+mce_style="Margin:0;font-size:17px;color:#ffffff;text-align:center;
+line-height:26px;" >&nbsp;</p>
+-->
+<p class="h1"
+style="Margin:0;font-size:21px;font-weight:bold;color:#ffffff;text-align:center;">Confiez
+le nettoyage de vos locaux <br /> &agrave; des professionnels !</p>
+</a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td
+style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;">
+<table class="outer" style="border-spacing: 0; font-family: sans-serif;
+color: #333333; margin: 0 auto; width: 100%; max-width: 600px;"
+align="center" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="full-width-image"
+style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"><a
+href="http://www.supprabyte.co.uk/link.php?M=7474945&N=2337&L=983&F=H"
+target="_blank"><img
+src="http://www.mesdevisgratuits.fr/1422_MB_0116/img/Visu_News.jpg"
+style="border-width: 0; width: 100%; max-width: 600px; height: auto;
+display: block;" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td class="one-column Btn" style="padding-top: 0; padding-right: 0;
+padding-left: 0; background-color: #ffffff; text-align: center; width:
+100%; height: auto;" border="0">
+<table style="border-spacing: 0px; font-family: sans-serif; color: #333333;
+width: 100%;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="inner"
+style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;
+text-align:center;font-family:Arial, Helvetica, sans-serif; color:#FFFFFF;
+font-size:22px; text-transform: uppercase; font-weight:bold;
+text-decoration:underline;"><a
+href="http://www.supprabyte.co.uk/link.php?M=7474945&N=2337&L=983&F=H"
+target="_blank"><img
+src="http://www.mesdevisgratuits.fr/1422_MB_0116/img/Btn_News.jpg" alt="en
+savoir plus" style="border-width:0; text-align:center;display:inline-block;
+background-color:#00a0dc" height="43" border="0" width="300" /></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td class="three-column Argu"
+style="padding-right:0;padding-left:0;text-align:center;font-size:0;padding-top:10px;padding-bottom:10px;border-bottom-width:2px;border-bottom-style:solid;border-bottom-color:#EC9600;"><!--[if
+(gte mso 9)|(IE)]>
+<table width="100%"
+style="border-spacing:0;font-family:sans-serif;color:#333333;"
+mce_style="border-spacing:0;font-family:sans-serif;color:#333333;"
+border="0"  cellpadding="0" cellspacing="0" >
+<tr>
+<td width="198" valign="top"
+style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"
+mce_style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"
+><![endif]-->
+<table class="column" style="border-spacing: 0; font-family: sans-serif;
+color: #333333; text-align: center; width: 100%; max-width: 198px; display:
+inline-block; vertical-align: top; margin-top: 0; margin-bottom: 0;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td width="10"></td>
+<td
+style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;">
+<table class="contents" style="border-spacing: 0px; font-family:
+sans-serif; color: #333333; font-size: 14px; text-align: center; width:
+178px;" border="0">
+<tbody>
+<tr>
+<td
+style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"><img
+src="http://www.mesdevisgratuits.fr/1422_MB_0116/img/Argu_1.jpg"
+style="border-width: 0; width: 100%; max-width: 178px; height: auto;
+display: block;" /></td>
+</tr>
+<tr valign="middle">
+<td class="text ArguContenu inner" style="background-color: #f0f0f0;
+height: 60px; padding: 10px;" align="center" width="178">Des locaux propres
+<br /> <b>&agrave; tout moment</b></td>
+</tr>
+</tbody>
+</table>
+</td>
+<td width="10"></td>
+</tr>
+</tbody>
+</table>
+<!--[if (gte mso 9)|(IE)]></td>
+<td width="198" valign="top"
+style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"
+mce_style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"
+><![endif]-->
+<table class="column" style="border-spacing: 0; font-family: sans-serif;
+color: #333333; text-align: center; width: 100%; max-width: 198px; display:
+inline-block; vertical-align: top; margin-top: 0; margin-bottom: 0;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td width="10"></td>
+<td
+style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;">
+<table class="contents" style="border-spacing: 0px; font-family:
+sans-serif; color: #333333; font-size: 14px; text-align: center; width:
+178px;" border="0">
+<tbody>
+<tr>
+<td
+style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"><img
+src="http://www.mesdevisgratuits.fr/1422_MB_0116/img/Argu_2.jpg"
+style="border-width: 0; width: 100%; max-width: 178px; height: auto;
+display: block;" /></td>
+</tr>
+<tr>
+<td class="text ArguContenu inner" style="background-color: #f0f0f0;
+height: 60px; padding: 10px;" align="center" valign="middle"
+width="178">Une tarification <br /> <b>&agrave; la carte</b></td>
+</tr>
+</tbody>
+</table>
+</td>
+<td width="10"></td>
+</tr>
+</tbody>
+</table>
+<!--[if (gte mso 9)|(IE)]></td>
+<td width="198" valign="top"
+style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"
+mce_style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"
+><![endif]-->
+<table class="column" style="border-spacing: 0; font-family: sans-serif;
+color: #333333; text-align: center; width: 100%; max-width: 198px; display:
+inline-block; vertical-align: top; margin-top: 0; margin-bottom: 0;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td width="10"></td>
+<td
+style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;">
+<table class="contents" style="border-spacing: 0px; font-family:
+sans-serif; color: #333333; font-size: 14px; text-align: center; width:
+178px;" border="0">
+<tbody>
+<tr>
+<td
+style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;"><img
+src="http://www.mesdevisgratuits.fr/1422_MB_0116/img/Argu_3.jpg"
+style="border-width: 0; width: 100%; max-width: 178px; height: auto;
+display: block;" /></td>
+</tr>
+<tr>
+<td class="text ArguContenu inner" style="background-color: #f0f0f0;
+height: 60px; padding: 10px;" align="center" valign="middle"
+width="178">Des sp&eacute;cialistes <b>pr&egrave;s de votre entreprise</b>
+pour s'en occuper</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td width="10"></td>
+</tr>
+</tbody>
+</table>
+<!--[if (gte mso 9)|(IE)]></td>
+</tr>
+</table>
+<![endif]--></td>
+</tr>
+</tbody>
+</table>
+<!--[if (gte mso 9)|(IE)]></td>
+</tr>
+</table>
+<![endif]--></div>
+</center><img
+src="http://nodes.npmd9ti3wa.com/mailing-338-9-5659?rgroup=p_10575&amp;group="
+height="1" border="0" width="1" /></a>
+<div align="center"><a></a><a></a><a></a><a></a><a></a><a><font
+style="font-size: 11px; font-family: Arial,Helvetica,sans-serif; color:
+#523122;" face="Arial, Helvetica, sans-serif" color="#523122" size="1">Si
+vous ne souhaitez plus recevoir d'offre commerciale de notre part
+</font></a><font style="font-size: 11px; font-family:
+Arial,Helvetica,sans-serif; color: #523122;" face="Arial, Helvetica,
+sans-serif" color="#523122" size="1"><a style="color: #523122;"
+href="http://www.supprabyte.co.uk/link.php?M=7474945&N=2337&L=1027&F=H">suivez
+ce lien <br /></a></font></div>
+<font style="font-size: 11px; font-family: Arial,Helvetica,sans-serif;
+color: #523122;" face="Arial, Helvetica, sans-serif" color="#523122"
+size="1"> </font></font></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><img
+src="http://www.supprabyte.co.uk/open.php?M=7474945&L=326&N=2337&F=H&image=.jpg"
+height="1" width="10"></body></html>
+
+--b1_f3224b53f82e9d84e7308c170dfebdba--
+

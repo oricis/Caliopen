@@ -1,0 +1,134 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai8jb-00032A-Dj
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 18:55:39 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:41758)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ai8jZ-000320-Dh
+	for dev@caliopen.local; Mon, 21 Mar 2016 18:55:38 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ai8jW-0000VF-3v
+	for dev@caliopen.local; Mon, 21 Mar 2016 18:55:37 -0400
+Received: from mail-wm0-x229.google.com ([2a00:1450:400c:c09::229]:35928)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ai8jV-0000VA-T4
+	for dev@caliopen.local; Mon, 21 Mar 2016 18:55:34 -0400
+Received: by mail-wm0-x229.google.com with SMTP id r129so69765959wmr.1
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 15:55:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=sender:subject:to:references:cc:from:message-id:date:user-agent
+	:mime-version:in-reply-to:content-transfer-encoding;
+	bh=9qLmOdF4aIwI2KsQK4saAgJW4LF/fOeiaGVFHuSD0JE=;
+	b=yd//DYuiBSqRxWCgbpD9fn4tqMZQiUlJYnMAiDhgMlmYpnGNWLz/L5IFq9QQQFr9Bu
+	5Fwp+PVRLMa2kY3ITBXNVW3jnSdB/n7Dct9s6p4lFiSV544L/UwDLvfVF69LsLCT5Ypa
+	2PXHylwowTnsU9JblsauozCogre1LnSyzI0oiqDLJO0bBxEEeD02qGk68RGWYg4s+zDi
+	GgQLO9gGUvZ71oA5+lDYDdGm9YvKog0sfhSfPMgRM6lf3dDP03Kc+S1PXKZ6yuEV5Xzw
+	/IYTjhg+PnxI60KlYbUJ/Gcfgw2Q+PuLck3Cmo+9xq3fQM666SudemlrKqMM1jpMuvZv
+	uy7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
+	:date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+	bh=9qLmOdF4aIwI2KsQK4saAgJW4LF/fOeiaGVFHuSD0JE=;
+	b=lYuI7G+Pl8MgFS6oQGIhs9Q/jgxcisEd4O4RRTABVnNj9XwY1ZLeFiEgP7d3WK6Zd6
+	CcvLkmIbHL4lxvM/y9BiitIwmFPvSfKwgWzGFIPf7HRGMK0FMorsb69C+tCPkUCGLCeW
+	51I1SIYsvjd8QdZSTS9zmR5HDZjhIKmj84YzLueSWPQZu8tJAUhSjZzTgsNPhHhal0Fp
+	d1mOOlT2Arq3K2V2v5sSh4JfpTXxfmQ9uFT/prz0C9leca7leFPcsdeVztyC2xf84JEs
+	Isx3CU8Dz21uNRJROqf2Xl6OfLjCDgLBGAHoxa5T8mRQKHOZtLFqehf4ilJ1lvdbWE7c
+	qn/g==
+X-Gm-Message-State: AD7BkJKxJf1we/qoTE7XMFLmcZAMZmt0QQNvd0f4oK5OhEpFqNKN4pXhFvPK+T55kwtoHg==
+X-Received: by 10.28.128.80 with SMTP id b77mr17236575wmd.42.1458600933056;
+	Mon, 21 Mar 2016 15:55:33 -0700 (PDT)
+Received: from [192.168.1.2] ([185.105.175.24])
+	by smtp.googlemail.com with ESMTPSA id
+	u16sm14569126wmd.5.2016.03.21.15.55.31
+	(version=TLSv1/SSLv3 cipher=OTHER);
+	Mon, 21 Mar 2016 15:55:32 -0700 (PDT)
+Sender: DG <raaahh@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+To: Vitalie Spinu <spinuvit@gmail.com>,
+	Stefan Monnier <monnier@iro.umontreal.ca>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+	<jwvmvpswowh.fsf-monnier+Inbox@gnu.org> <87twk0beuh.fsf@gmail.com>
+	<jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org> <877fgvgbr1.fsf@gmail.com>
+	<jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org> <87bn67eq4t.fsf@gmail.com>
+From: Dmitry Gutov <dgutov@yandex.ru>
+Message-ID: <113082e0-f01b-c290-4e31-009a30f55759@yandex.ru>
+Date: Tue, 22 Mar 2016 00:55:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+	Thunderbird/45.0
+MIME-Version: 1.0
+In-Reply-To: <87bn67eq4t.fsf@gmail.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::229
+Cc: Alan Mackenzie <acm@muc.de>, emacs-devel <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 22:55:38 -0000
+Content-Length: 1923
+Lines: 41
+
+On 03/21/2016 06:45 PM, Vitalie Spinu wrote:
+
+> Real trouble comes with continuation chunks. You might need to have a completely
+> reversed indentation logic - in outer/host spans MM engine needs to call inner
+> mode for indentation. Consider this example of erb mode taken from
+> https://github.com/fxbois/web-mode/blob/master/tests/demo.erb.
+>
+>     <div id='header'>
+>       <% if signed_in? -%>
+>         <%= link_to t('.sign_out'), sign_out_path, :method => :delete %>
+>       <% else -%>
+>         <%= link_to t('.sign_in'), sign_in_path %>
+>       <% end -%>
+>     </div>
+
+FWIW, I've successfully implemented indentation for ERB (and EJS) files 
+without delegating to ruby-mode and js-mode indentation code:
+
+https://github.com/purcell/mmm-mode/blob/c9a857a638701482931ffaaee262b61ce53489f3/mmm-erb.el#L157-L225
+
+(it indents web-mode's example almost identically)
+
+It should be easy to add support for similar types of files with almost 
+the same code. But yes, it implies adding support for each new template 
+format manually.
+
+> One meaningful approach here is to indent if-else-end block using inner mode
+> rules, right? This is what web-mode seems to be currently doing. Assume you are
+> just in front of `<%= link_to`. This is host hmtl mode. But you need to indent
+> according to inner mode construct. So what do you do? You go to the end of
+> previous code chunk and call prog-indentation-function of inner mode with
+> STRING-BEFORE = "\n" and STRING-AFTER="link_to t('.sign_out'), sign_out_path,
+> :method => :delete". Simple isn't it? That's precisely my proposal.
+
+It's simpler for the caller, but I'm having hard time imagining how to 
+implement it properly on a major mode's side without inserting those 
+strings into the buffer, or using a temporary buffer.
+
+If STRING-BEFORE and STRING-AFTER are not allowed to contain newlines, 
+yes, that becomes easier to handle, but that also loses in generality.
+

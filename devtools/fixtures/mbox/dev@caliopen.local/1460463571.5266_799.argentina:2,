@@ -1,0 +1,102 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amgSK-0007O1-NR
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 07:44:36 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:36915)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1amgSH-0007NU-SJ
+	for dev@caliopen.local; Sun, 03 Apr 2016 07:44:34 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1amgSE-0006Ss-Kn
+	for dev@caliopen.local; Sun, 03 Apr 2016 07:44:33 -0400
+Received: from mail-lf0-x234.google.com ([2a00:1450:4010:c07::234]:35860)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1amgSE-0006So-CN
+	for dev@caliopen.local; Sun, 03 Apr 2016 07:44:30 -0400
+Received: by mail-lf0-x234.google.com with SMTP id g184so56919989lfb.3
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 04:44:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=sender:subject:to:references:cc:from:message-id:date:user-agent
+	:mime-version:in-reply-to:content-transfer-encoding;
+	bh=zszrp6A3rwWGu7fYTVX9THq7/pClVFhNy4hdFbyo/ZY=;
+	b=nv1HzSXIdOrqC4yGKqTw4Cy3AS0ggrjaXImvnWIwtmW2kSC+b6od2wYfe/C9WNQemM
+	KNSseyr3RgMPYPpNnhnh/8mAwMnr6Rph8Xb5vBouza+QydocY4gYuzSx3mUq9QnmNAPQ
+	xBb9QWZLXBqSRXayWVAkga8uFf8SOaGtfAx+UgJLfajUAgt+YO4Ll81o0BxY7BjcwfsF
+	61wMy54XakVjqRzDa6sEFduR7NNx2lGI+SbUOmGhyZksd5IEE+8mBpcX4IgJah0uEEK6
+	ObvVBRfxZMBm5VoH449GvGB2ae4K1mUyQoauMCrCZGw4tPzM/JXf71cgsPqPyCM8uUAm
+	nvoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
+	:date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+	bh=zszrp6A3rwWGu7fYTVX9THq7/pClVFhNy4hdFbyo/ZY=;
+	b=mjOC60PiQ3AUXKNZnPFVROlVbYB0+QTu4JYTL3OIN3c8sO8chhaZYStFZZt6EFwWWJ
+	E/MvgL2/CvrD0XraiZQkYchBXstqQkzWidmdhCJydZdw+DbZNYgfZSuiM1K9eSBJKMTd
+	UgtI23hALDZNx5tZKQS0gYX3NaF9MOQG4PYkD/zbyMYIamXLnmVzf8dyafYAvZr0e7dK
+	IIveYedVRXgpR5o9ObCW9qGmGtd137AZQdmS5uV2akHFoLJ9k6yB23JWmckPMej8LU1c
+	05c7b4F2WYNweKAkTqltcSYsTITGZhN/pbgrWeHQHC8nF61qs02GBQSLQL1FfV4C2YqC
+	GqMw==
+X-Gm-Message-State: AD7BkJKwkrToZYQyMGfSiv4dfoqCShpUNGSu2lnUNG9OwEHbqDK3dyoLtoyKZxFiR2pvRg==
+X-Received: by 10.194.236.198 with SMTP id uw6mr2135655wjc.42.1459683869354;
+	Sun, 03 Apr 2016 04:44:29 -0700 (PDT)
+Received: from [192.168.1.2] ([185.105.175.24])
+	by smtp.googlemail.com with ESMTPSA id
+	t3sm23433559wjz.11.2016.04.03.04.44.27
+	(version=TLSv1/SSLv3 cipher=OTHER);
+	Sun, 03 Apr 2016 04:44:28 -0700 (PDT)
+Sender: DG <raaahh@gmail.com>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+To: Alan Mackenzie <acm@muc.de>, Kaushal Modi <kaushal.modi@gmail.com>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<20160403111708.GA3537@acm.fritz.box>
+From: Dmitry Gutov <dgutov@yandex.ru>
+Message-ID: <3bd07b4b-1636-4558-3ebe-e8c6b6a85396@yandex.ru>
+Date: Sun, 3 Apr 2016 14:44:25 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+	Thunderbird/45.0
+MIME-Version: 1.0
+In-Reply-To: <20160403111708.GA3537@acm.fritz.box>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:4010:c07::234
+Cc: Emacs developers <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 11:44:35 -0000
+Content-Length: 905
+Lines: 24
+
+On 04/03/2016 02:17 PM, Alan Mackenzie wrote:
+
+> That massive commit happened because of git.  I attempted a 'git pull'
+> prior to making a (moderately small) commit.
+
+It must have been after.
+
+> There was a one-letter
+> typo in one of my existing files (which I think had been committed).
+> Because of that, git failed to merge in all the stuff which it had just
+> fetched from savannah, instead prompting me to do a manual merge, which
+> I then did.
+
+You can ask Git not to do that in the future by passing '--ff-only' to 
+'git pull'. But then you'll have to learn to rebase.
+
+> If I had been aware of what was happening, I might have
+> been able to adjust my copy of the repository somehow so as to avoid
+> that large merge.
+
+If you run 'git log --graph' before every time you push and examine the 
+output, you can be aware of everything what's happening, as well as undo 
+the changes you don't like.
+

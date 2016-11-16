@@ -1,0 +1,83 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anSvh-0002fX-Q2
+	for mharc-dev@caliopen.local; Tue, 05 Apr 2016 11:30:09 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:53517)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raman@google.com>) id 1anSvf-0002bL-9h
+	for dev@caliopen.local; Tue, 05 Apr 2016 11:30:08 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <raman@google.com>) id 1anSvc-0006Ha-18
+	for dev@caliopen.local; Tue, 05 Apr 2016 11:30:07 -0400
+Received: from mail-io0-x230.google.com ([2607:f8b0:4001:c06::230]:34379)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raman@google.com>) id 1anSvb-0006HF-T5
+	for dev@caliopen.local; Tue, 05 Apr 2016 11:30:03 -0400
+Received: by mail-io0-x230.google.com with SMTP id 2so23083219ioy.1
+	for <dev@caliopen.local>; Tue, 05 Apr 2016 08:30:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=ExbSxB+zKKYPyI7LKDukTWjHmOj2GCsQsY0uIhhWX3Y=;
+	b=QaURdyhw4LCZeKpAhdacjgpzmxIikPa7Bm+kP7opEBk2QHO6f24B5E+zb6yKTxodBV
+	bv/flqKTGX00JUyT2qmlrFeF/kQS93H/75J9QUgAFU99wLBlbwEPQsq6W/S3LIs4uTIv
+	ugN8UIxRqfz0ox5kjLHaJNsgjyE/6TvwTYRXnAMHCrDwhm3tQm8hG/eAmtS3P+unG66H
+	k978i2gUR7xZ/xYpzKP7D9nj0hViOQY3IzUso26LRPLUIMsJWwJVkErIbds2S4y4E22D
+	ofXCUo9pcS7GlD0TLJqQSANYf9uEyBwoA/OU99UkHzU+b2g9ip7wQ61uRKZNkKkAg/gQ
+	aEdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=ExbSxB+zKKYPyI7LKDukTWjHmOj2GCsQsY0uIhhWX3Y=;
+	b=DdJdEzxmw53Z9pEUG3Zg/zg2WWfsp1w2fIVi3qvt7td9x/tOK9r7c+pSKXYBixMKf8
+	LrU0Zv0WE8TJRjPwOOG7gX4hOiRFzo4NPJt2CvgHHi4bVwIHUKacBUmRSUZYkwNr4rTt
+	Vs+hmKyHIQ0QhDgXSz7ndOknTK5ZlcbygQAj4IEOV14uWBKiAVjTwYtL5QgxJoBWRQSC
+	57GPgOMj+EdEaXZB3bUwEBxYHQu4dT6/ozaS8JSPbDBv3+t43svVI/BVrg9oCOMs/389
+	O3G7+ZtyikwVfOJZjmLsv1FcO6FNtLoJLag5+rvrELp1e3A3/aLkcH5coGdye71JWqXN
+	lObw==
+X-Gm-Message-State: AD7BkJIGqHAVgl3XMpXpu0yooeXP+T3+bHmV7cHo3xZRGwwxk60uQTUnvR6dUaQx4cSadDzV
+X-Received: by 10.107.152.17 with SMTP id a17mr19986059ioe.195.1459870202955; 
+	Tue, 05 Apr 2016 08:30:02 -0700 (PDT)
+Received: from raman-glaptop2 ([207.198.106.151])
+	by smtp.gmail.com with ESMTPSA id
+	h75sm5853440ioe.39.2016.04.05.08.29.58
+	(version=TLS1_2 cipher=AES128-SHA bits=128/128);
+	Tue, 05 Apr 2016 08:29:59 -0700 (PDT)
+From: raman <raman@google.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Should outline-minor-mode be globalized?
+References: <22273.54220.381234.312729@gargle.gargle.HOWL>
+	<m260vyar84.fsf@newartisans.com>
+	<jwvd1q51re4.fsf-monnier+gmane.emacs.devel@gnu.org>
+Date: Tue, 05 Apr 2016 08:29:55 -0700
+In-Reply-To: <jwvd1q51re4.fsf-monnier+gmane.emacs.devel@gnu.org> (Stefan
+	Monnier's message of "Mon, 04 Apr 2016 08:39:18 -0400")
+Message-ID: <p9160vwoyz0.fsf@google.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4001:c06::230
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 05 Apr 2016 15:30:08 -0000
+Content-Length: 202
+Lines: 7
+
+outline-minor-mode would be nice in prog-modes -- but there many of the
+needs are served by selective display since programming languages
+usually rely on indentation to show  structure visually.
+
+
+-- 
+

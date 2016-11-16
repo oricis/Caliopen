@@ -1,0 +1,105 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amgzV-00080y-GL
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 08:18:53 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:42730)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>) id 1amgzR-0007z6-FG
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:18:50 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>) id 1amgzM-00054F-QX
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:18:49 -0400
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242]:32912)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>) id 1amgzM-00053r-JA
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:18:44 -0400
+Received: by mail-lf0-x242.google.com with SMTP id r62so5193995lfd.0
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 05:18:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:references:user-agent:date
+	:message-id:mime-version;
+	bh=+uc0WpsPBBMqYPTq7qNNJxXewrgcE8oMSAnJS5ZhV3k=;
+	b=G1T8x+y2048bFJ3vLDU0PKYR8EV0MEl9i0+pnYANi4kkb4ZFOiTRRZYioV+g3qOqYX
+	hPtEfkEBBb5saF1/+PRkXn94jTUxVUL0Te5x9Bob8S6i5zeCLclGAD+dHHefTakSDV+j
+	wa2g4QHvrnP4BI7219BkK2XmmE0eSjC7kaYfAJiiRBCm0usDBxO2ibzI/sglxIoXckcj
+	7k9+UBE6jHir2MnOP+3lpv029tJgAiojC//vV5tipNXS+UCzgyMNmN3Ho35auNTv8hPs
+	KjpqwSmBM/ncjLQGTi0RHxUlClYDmIGfMs9d/KoZIhSZa3C1RtK1McgAPPwwkpjhN4H0
+	ZgBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:references
+	:user-agent:date:message-id:mime-version;
+	bh=+uc0WpsPBBMqYPTq7qNNJxXewrgcE8oMSAnJS5ZhV3k=;
+	b=A/KBhzdme6vX0QS2itEvfwri2yN0nLV/nOJdyAcK0C2ULH4cS4ojzGUVE1Ga1JGc2X
+	BlMxvYcQ6tj+gRmI55tiV88RPlydgeuJHSGzOVmts1J7nk5PWt5zxATe1VOwf6wyHqC8
+	i8Lk7iy0urhcwce6QyFTwfNJT590/Py7qTCkWk2dZSlQ19unx+xoW63Uv923WSt+QGXW
+	m9QzYAQM0UP3+Aka85+0OX8uoyjOSwbVPqIeZ/teL1y1gxgJ4VMmb9QH5o0zqBnQGffq
+	R03CqtQGy6b5xnk031iLJYhcCDqhEVUupUzH1XDc5xguO+qB/xi/nQgKf2mMlByJ7Fni
+	PYmA==
+X-Gm-Message-State: AD7BkJJIPmPaolDfETFAJ7fTO/sGL4t7oh29Y3lSilL3pQ7h75fxm88mqEvk800MHkvmZw==
+X-Received: by 10.194.115.196 with SMTP id jq4mr13390532wjb.101.1459685923694; 
+	Sun, 03 Apr 2016 05:18:43 -0700 (PDT)
+Received: from localhost (xdsl-87-79-226-7.netcologne.de. [87.79.226.7])
+	by smtp.gmail.com with ESMTPSA id
+	i5sm23483791wja.23.2016.04.03.05.18.41
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Sun, 03 Apr 2016 05:18:42 -0700 (PDT)
+From: Ingo Lohmar <i.lohmar@gmail.com>
+To: Alan Mackenzie <acm@muc.de>, Paul Eggert <eggert@cs.ucla.edu>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+In-Reply-To: <20160403120300.GB3537@acm.fritz.box>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<56FE1882.9030904@cs.ucla.edu>
+	<20160403120300.GB3537@acm.fritz.box>
+User-Agent: Notmuch/0.20.2+113~g6332e6e (http://notmuchmail.org)
+	Emacs/25.0.90.1 (x86_64-pc-linux-gnu)
+Date: Sun, 03 Apr 2016 14:18:41 +0200
+Message-ID: <87egamevha.fsf@acer.localhost.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:4010:c07::242
+Cc: Kaushal Modi <kaushal.modi@gmail.com>,
+	Emacs developers <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 12:18:51 -0000
+Content-Length: 1113
+Lines: 27
+
+Hi Alan,
+
+On Sun, Apr 03 2016 12:03 (+0000), Alan Mackenzie wrote:
+>
+> It was git that prepared the merge, not me.  What happened was that the
+> "more recent" commit 22443312... created a conflict with the commits in
+> a git pull.  git, rather than aborting the pull operation, splurged the
+> contents of all the other commits in the pull into my working directory,
+> saying "Conflict in ....  You need to merge".  I simply merged as
+> directed.
+>
+> Is there a better way out of this situation than just merging as
+> directed?  Can one somehow get out of this partially completed git pull,
+> then redo it with --rebase?
+
+I am not Paul, but feel competent to answer this.  You can 'git merge
+--abort' to return to the previous state.  Then you can 'git rebase
+<where-to>', and <where-to> might be sth like 'origin/master'.
+
+But you can avoid all this trouble by not doing 'git pull' in the first
+place.  Do 'git fetch --all', and then have a look at 'git log --graph'
+as Dmitry suggested (gitk may or may not come with the git package you
+use, but the information is essentially the same).
+
+Hope this helps,
+Ingo
+

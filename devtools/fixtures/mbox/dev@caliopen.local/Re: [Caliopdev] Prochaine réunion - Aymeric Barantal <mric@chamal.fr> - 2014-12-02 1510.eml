@@ -1,0 +1,101 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 40D00120A19;
+	Tue,  2 Dec 2014 15:10:47 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -0.908
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.908 tagged_above=-999 required=5
+	tests=[BAYES_00=-2.599, RATWARE_GECKO_BUILD=1.691]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id SDg6XJt7z-EX; Tue,  2 Dec 2014 15:10:46 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 310DC120A12;
+	Tue,  2 Dec 2014 15:10:46 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 0BD1E6B602977;
+	Tue,  2 Dec 2014 15:10:46 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id n-WLGF_W4tC8; Tue,  2 Dec 2014 15:10:45 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 33A476B602949;
+	Tue,  2 Dec 2014 15:10:44 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 55CA66B602964
+ for <caliopdev@caliop.net>; Tue,  2 Dec 2014 15:10:43 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id PEqJDshBRuF0 for <caliopdev@caliop.net>;
+ Tue,  2 Dec 2014 15:10:38 +0100 (CET)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
+ [217.70.183.196])
+ (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id B311C6B602949
+ for <caliopdev@caliop.net>; Tue,  2 Dec 2014 15:10:38 +0100 (CET)
+Received: from [IPv6:2001:4b98:beef:a:a9fb:b50f:64e2:9778] (unknown
+ [IPv6:2001:4b98:beef:a:a9fb:b50f:64e2:9778])
+ (Authenticated sender: mric@chamal.fr)
+ by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 631D21720E9
+ for <caliopdev@caliop.net>; Tue,  2 Dec 2014 15:10:38 +0100 (CET)
+Message-ID: <547DC86D.6010806@chamal.fr>
+Date: Tue, 02 Dec 2014 15:10:53 +0100
+From: Aymeric Barantal <mric@chamal.fr>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64;
+ rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To: caliopdev@caliop.net
+References: <5478A041.8020105@chamal.fr>
+ <20141130162431.GF14633@brasil.brainstorm.fr>
+ <BC28FFD7-1F1D-4854-96B2-723CCB0DC6F7@gandi.net>
+ <20141201111410.GI14633@brasil.brainstorm.fr>
+ <20141201204235.GC7323@brasil.brainstorm.fr>
+In-Reply-To: <20141201204235.GC7323@brasil.brainstorm.fr>
+Subject: Re: [Caliopdev] =?windows-1252?q?Prochaine_r=E9union?=
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+On 12/01/2014 09:42 PM, Laurent Chemla wrote:
+> Puisque les mecs de Qwant me disent que j'aurais d=FB les relancer
+> plus t=F4t (ils sont pas s=FBrs de pouvoir venir du coup), je pr=E9f=E8re
+> assurer de ce c=F4t=E9-ci de l'email et vous rappeler la prochaine
+> r=E9union, vendredi prochain (5/12) =E0 10h30 chez Gandi.
+>
+> Les th=E8mes seront:
+>
+> - choix final (?) du framework,
+On a un gagnant qui se demarque en regardant les quelques
+reponses recues et meme en excluant ma matrice (j'ai une
+legitimite toute relative a choisir une librairie / framework JS AMA).
+
+Le consensus semble donc se faire autour d'Ember qui est
+globalement mieux note.
+
+++ chamal
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev

@@ -1,0 +1,98 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amrZg-0000Ie-CQ
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 19:36:56 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:41896)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrZe-0000IP-8e
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:36:55 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrZb-0006F3-2j
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:36:54 -0400
+Received: from mail-oi0-x22b.google.com ([2607:f8b0:4003:c06::22b]:36415)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrZa-0006Ex-UD
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:36:51 -0400
+Received: by mail-oi0-x22b.google.com with SMTP id y204so30003374oie.3
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 16:36:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version:content-transfer-encoding;
+	bh=aeA4tMR+X+GLZV7VE6F4GwQXlW3IX424fymp5O/TYdo=;
+	b=R7FNo2vmQjhDm56I6FewMcFbpxmXGrPZL6tveSxVAMNpX9WmpLAbaZcOugkI92gcNE
+	EuK0X40+1O7gjO+ZH2m6kL/rFJW2QdP/adiZlHmclQ2Xsp/0cJNGYj0GoPia63ZSPqVv
+	JLqI+bCixNUBKjLhsv05Xmua2LTsHHCxgIJEQ55Br6OKyOviF1XNJRG2Bj6pYza/Bapi
+	wIXW1EsinkU0Z8QHspIJRvfj/P5P+rj4bICDvITY/LL4GfzxRaHC1EF/mdM9yJJptXnc
+	gtC+3TjYJbroECrSNWp1P7YOa72bONvLYO3YwcG8/OWgfnClmLVYJpBBdTYtD8hXGUn4
+	BU/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version
+	:content-transfer-encoding;
+	bh=aeA4tMR+X+GLZV7VE6F4GwQXlW3IX424fymp5O/TYdo=;
+	b=JNsgcib4DMNzcLFHFeGL+IPZMKDcOrVQ7f6Bnhe0jI5KBoSKKvSBftJYNx7AXQ+9Af
+	uttseIkqvQM8vf7hUP7x6xHMMIutkeBwaJJI3EIpSW/uYomVbydberQhDULOmt+tXVc9
+	/kkzlfLGkdsTooJxJLAR/IaYEg7jdVdWGD8l+zT78fh+Q5l6JlOxZW4aX8TJM1nPShde
+	TX4GjFEz+laXB8QqsGZju5e6Klmc6xjtdu99B2+bV49yx+XqNBaMkBw8fqVafp0wDERb
+	jcrwmhq8uWxBCQjKEvHsaEeZm8wAvWDe40bipx2vD8Hwt3yv3Qx37a4roPcF14N4umLj
+	ByPA==
+X-Gm-Message-State: AD7BkJLLoAkiiXChOc4h5RGk4ReitV0mUX2x5kNKEtV1XFRHzBiwRJ4W+uqIrU+C46NDRQ==
+X-Received: by 10.157.15.136 with SMTP id d8mr9120667otd.20.1459726610317;
+	Sun, 03 Apr 2016 16:36:50 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79]) by smtp.gmail.com with ESMTPSA id
+	j45sm5356699otd.23.2016.04.03.16.36.49
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 16:36:49 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id 7A0F613DAEA03; Sun,  3 Apr 2016 16:36:48 -0700 (PDT)
+To: =?utf-8?Q?Cl=C3=A9ment?= Pit--Claudel <clement.pit@gmail.com>
+Subject: Re: Thinking about changed buffers
+In-Reply-To: <5701A74B.2050902@gmail.com> (=?utf-8?Q?=22Cl=C3=A9ment?=
+	Pit--Claudel"'s message of "Mon, 4 Apr 2016 00:29:15 +0100")
+Date: Sun, 03 Apr 2016 16:30:28 -0700
+Message-ID: <m2fuv2clt7.fsf@newartisans.com>
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<2d55f05e4ba00afeb3f7269953eb0e13.squirrel@cloud103.planethippo.com>
+	<jwvwpolbe3o.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m31t6tcneb.fsf@gnus.org> <m2mvpafg3c.fsf@newartisans.com>
+	<5701A74B.2050902@gmail.com>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: =?utf-8?Q?Cl=C3=A9ment?= Pit--Claudel
+	<clement.pit@gmail.com>, emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c06::22b
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 23:36:55 -0000
+Content-Length: 500
+Lines: 13
+
+>>>>> Cl=C3=A9ment Pit--Claudel <clement.pit@gmail.com> writes:
+
+>> C-x C-w RET will do that, and I use it often for that effect.
+
+> You need two `RET's, actually, don't you? And it shows a scary overwrite
+> message. Also, it doesn't work with ido-mode, unfortunately.
+
+Ah, maybe. And for ido, I think you just need to use C-j in place of RET.
+
+--=20
+John Wiegley                  GPG fingerprint =3D 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

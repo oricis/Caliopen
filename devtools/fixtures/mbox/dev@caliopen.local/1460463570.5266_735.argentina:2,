@@ -1,0 +1,69 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akx02-0008Ui-2e
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 13:00:14 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:50895)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akx00-0008Si-8C
+	for dev@caliopen.local; Tue, 29 Mar 2016 13:00:12 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akwzu-00007w-JH
+	for dev@caliopen.local; Tue, 29 Mar 2016 13:00:12 -0400
+Received: from plane.gmane.org ([80.91.229.3]:51736)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akwzu-000077-Cv
+	for dev@caliopen.local; Tue, 29 Mar 2016 13:00:06 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akwzr-0005CQ-68
+	for dev@caliopen.local; Tue, 29 Mar 2016 19:00:03 +0200
+Received: from 23-91-145-163.cpe.pppoe.ca ([23.91.145.163])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Tue, 29 Mar 2016 19:00:03 +0200
+Received: from monnier by 23-91-145-163.cpe.pppoe.ca with local (Gmexim 0.1
+	(Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Tue, 29 Mar 2016 19:00:03 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: More convenient default rollback for users
+Date: Tue, 29 Mar 2016 12:56:20 -0400
+Message-ID: <jwvvb459qbe.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <m3poudb86o.fsf@gnus.org>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 23-91-145-163.cpe.pppoe.ca
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:ATCNoB6tw6Dq1myCS0VTTP70Skg=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 17:00:13 -0000
+Content-Length: 265
+Lines: 12
+
+> But wouldn't it be nice if we had this in a more convenient,
+> cut-and-pastable format?
+
+Sounds good.
+
+> (And this would also mean that we could introduce new behaviours more
+> often, because rollback would be so trivial for the users.)
+
+Haha!
+
+
+        Stefan
+
+

@@ -1,0 +1,80 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ajC5V-0003gI-63
+	for mharc-dev@caliopen.local; Thu, 24 Mar 2016 16:42:37 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:57913)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1ajC5T-0003fk-8S
+	for dev@caliopen.local; Thu, 24 Mar 2016 16:42:36 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1ajC5Q-00076l-2E
+	for dev@caliopen.local; Thu, 24 Mar 2016 16:42:35 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:53874)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1ajC5P-00075Z-Rx
+	for dev@caliopen.local; Thu, 24 Mar 2016 16:42:31 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>)
+	id 1ajC5G-0000fi-DC; Thu, 24 Mar 2016 21:42:24 +0100
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+References: <56F42269.10400@gmail.com>
+	<jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAD1BMVEXublvcMSP+RTf3VEP8
+	TTzbt3PmAAACX0lEQVQ4jXVT7a3kIAz0hRSQZLeAZHABLKaALLj/mm6c5N2Pkx4SKwUvng8Psv6y
+	ZJFf1u+FmlLxJGU3O5dhbS8yFRbWqm4YMO3QN4CXWx1msmxqFeo8dsArYAnKwtpMZjul9VM6igAl
+	YZSZhfNofr478gvduT85l1SJwQ5Q/CxCYUiCrKUhp75mw5rTsQ07NpPKgqRA8JMfF4IgW64q68rD
+	jQik2l+xtYihEwP/rSG8RPBNSTNz7wnbyW2FTUl3UEc7C3WUzi5BiQhJ1j5W97yp5wfBBvxLVuQd
+	ZvxsL63mhqBLHVKPnSgn6ZpMsAbStdRCw1lqL4UHqWtKcOpwzRsQKHjBUbf20U4dtz3sTlOg7J6p
+	zKNABOzRLGxPuDd12PDaz731snfYDky8OTVZfRw3gm5sSMeODf0g3cah2nHkgSP4a9swaphI0jfC
+	ZXlMPFAe2zVQOPQCtB0aKLISgd1V6TJpAe/Rv9o8bLd+acgyTYFiLZu1Rwc1aKETj44hV4FBKS9n
+	LLtW6vhk758aljyG8GKLSB7d8e2ytAthHUUqh4vR4n8KWYx2C4c5N+p43KKNsqzdbWNNvuhLw4cD
+	pu2I+PQBpmDaAiwCWjHbBU4dkdb8INAjv3UUp7aZjuHRQ5SJBV272nLgis/S9E8mCm4d1zj527WZ
+	t8TBV1nieRByv6mqNTfzoGv3AzuLNcaHxWFpvnSQzgIOlgkJDf90NJx14nsOY+jSFZ7ZIj5K+/Rq
+	yJT480ZoIvKk2Hf3iE8x74RHIytOtvYL4U3PF86CWWV86Fu85k6Emk1n9xGa+l/ibqHMw6QJzAAA
+	AABJRU5ErkJggg==
+Date: Thu, 24 Mar 2016 21:42:22 +0100
+In-Reply-To: <jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org> (Stefan
+	Monnier's message of "Thu, 24 Mar 2016 15:03:21 -0400")
+Message-ID: <m3zitn7glt.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 24 Mar 2016 20:42:36 -0000
+Content-Length: 567
+Lines: 17
+
+Stefan Monnier <monnier@iro.umontreal.ca> writes:
+
+>> (Stefan, for example, your emails are tagged with "Gnus/5.13 (Gnus v5.13)
+>> Emacs/25.1.50 (gnu/linux)").  Has there been complaints about Gnus
+>> doing that?
+>
+> I never liked it, but admittedly, I never complained about it.
+
+Well, in emails you also have the From header (etc), so the added
+privacy of not having a User-Agent string is pretty slim.
+
+When talking to web servers, things are very different.
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

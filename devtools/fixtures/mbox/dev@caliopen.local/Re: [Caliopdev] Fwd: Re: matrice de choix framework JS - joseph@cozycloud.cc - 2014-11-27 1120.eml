@@ -1,0 +1,298 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 25821120A27;
+	Thu, 27 Nov 2014 11:24:18 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 1.337
+X-Spam-Level: *
+X-Spam-Status: No, score=1.337 tagged_above=-999 required=5
+	tests=[BAYES_50=0.001, HTML_30_40=0.374, HTML_MESSAGE=0.001,
+	NO_REAL_NAME=0.961]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id sHmcQyRDWPCE; Thu, 27 Nov 2014 11:24:16 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 744B712090F;
+	Thu, 27 Nov 2014 11:24:16 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 033986825D3C3;
+	Thu, 27 Nov 2014 11:24:16 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id PkjISpWEyJOE; Thu, 27 Nov 2014 11:24:14 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id ACB0F6825D3BC;
+	Thu, 27 Nov 2014 11:24:13 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id E49256825D3AB
+ for <caliopdev@caliop.net>; Thu, 27 Nov 2014 11:20:14 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id zFoo038rubs1 for <caliopdev@caliop.net>;
+ Thu, 27 Nov 2014 11:20:11 +0100 (CET)
+Received: from mo7.mail-out.ovh.net (17.mo7.mail-out.ovh.net [188.165.35.227])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id A1F1A6825D3A9
+ for <caliopdev@caliop.net>; Thu, 27 Nov 2014 11:20:10 +0100 (CET)
+Received: from mail374.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo7.mail-out.ovh.net (Postfix) with ESMTP id 6DAAFFF8941
+ for <caliopdev@caliop.net>; Thu, 27 Nov 2014 11:20:09 +0100 (CET)
+Received: from ssl0.ovh.net (localhost [127.0.0.1])
+ by mail374.ha.ovh.net (Postfix) with ESMTPA id E811B40058;
+ Thu, 27 Nov 2014 11:20:08 +0100 (CET)
+Received: from 186-146-190-109.dsl.ovh.fr ([109.190.146.186]) by ssl0.ovh.net
+ with HTTP (HTTP/1.1 POST); Thu, 27 Nov 2014 11:20:04 +0100
+MIME-Version: 1.0
+Date: Thu, 27 Nov 2014 11:20:04 +0100
+From: joseph@cozycloud.cc
+To: =?UTF-8?Q?Liste_de_d=C3=A9veloppement_Caliopen?= <caliopdev@caliop.net>
+In-Reply-To: <5476E9CF.70601@albancrommer.com>
+References: <547453AE.70408@chamal.fr> <547457A9.9070801@chamal.fr>
+ <5475EC1E.4010603@chamal.fr> <20141126224605.GH8770@brasil.brainstorm.fr>
+ <CA+tgzei=imZu9xfDGJuVYiXzgOqEo=kBVojf-16uo-gBheEjow@mail.gmail.com>
+ <5476E9CF.70601@albancrommer.com>
+Message-ID: <e58b3dee04100f500d35b49b5a10ec71@cozycloud.cc>
+X-Sender: joseph@cozycloud.cc
+User-Agent: Roundcube Webmail/1.0.3
+X-Originating-IP: 109.190.146.186
+X-Ovh-Tracer-Id: 18075478582261733764
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeejiedrtdeiucetufdoteggodetrfcurfhrohhfihhlvgemucfqggfjnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+X-Mailman-Approved-At: Thu, 27 Nov 2014 11:24:12 +0100
+Subject: Re: [Caliopdev] Fwd: Re: matrice de choix framework JS
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============2078041789=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+--===============2078041789==
+Content-Type: multipart/alternative;
+ boundary="=_f372ed4d216e3dfe74e8a3f2eee10210"
+
+--=_f372ed4d216e3dfe74e8a3f2eee10210
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+
+ 
+
+Bonjour à tous, 
+
+Je suis Joseph de chez Cozy (https://cozy.io). Certains d'entre vous le
+savent peut-être (je ne sais pas qui exactement à part Laurent était
+présent à nos discussions) nous développons un client email. Notre choix
+technologique s'est porté sur React et en trois mois, à deux
+développeurs et demi (dont 1,5 sur le front), on a quelque chose qui va
+bientôt être montrable. 
+
+Je me permets d'intervenir sur cette question car c'est moi qui ai posé
+les premières pierres de l'application (et donc fait les choix techno). 
+
+Il faut bien avoir en tête que comparer Angular et Ember est tout à fait
+possible, mais que de comparer ces deux *frameworks* à React est plus
+délicat. React est une *lib* qui ne gère que la partie affichage, il n'y
+a aucun composant modèle, gestion de la persistence. Facebook, les
+créateurs de React, proposent une architecture autour de React qui
+s'appelle Flux (que nous utilisons dans notre app) qui tourne autour du
+principe de "flux unidirectionnel de données". 
+
+Je vous suggère cette présentation sur React qui exprime bien mieux que
+moi ce que je voulais dire et qui présente les avantages de la techno :
+https://speakerdeck.com/player/44129b9054c901328b89221e99b278fe#
+(notamment la distinction framework vs libs). J'attire votre attention
+sur une fonctionnalité sous-estimé de React, qui est le rendu côté
+serveur avec le même code que le client (je ne sais pas si c'est un cas
+de "performance" important dans Caliopen). 
+
+Je n'ai malheureusement pas de ressource équivalente à vous présenter
+sur Flux, car je n'en ai toujours pas trouvée. Je vous suggère cependant
+cet article sur le blog de React :
+http://facebook.github.io/react/blog/2014/07/30/flux-actions-and-the-dispatcher.html
+
+
+En résumé, React, c'est très bien (à mon humble avis) : ça permet
+d'écrire du code vite, maintenable et *performant* (sans y penser). Mais
+ce n'est qu'une partie du problème, la "Vue", et il faut accepter
+(s'habituer à) une nouvelle façon de faire. 
+
+Vous pourriez ajouter Backbone+React (ils jouent relativement bien
+ensemble) et/ou Flux+React à votre matrice pour la compléter. A la
+question React+Angular et React+Ember, je ne connais pas l'état de
+l'art, ne portant pas du tout Angular dans mon coeur et ne m'étant
+jamais intéressé à Ember. 
+
+Je vous laisse ici l'adresse du dépôt de notre application, si vous
+voulez jeter un oeil au code. A mon avis on est à des kilomètres de
+faire les choses parfaitement, mais si ça peut
+aider...https://github.com/cozy/cozy-emails 
+
+En espérant que mon retour d'expérience puisse être utile, je reste à
+disposition pour des questions / demande de renseignements
+supplémentaires concernant React et Flux. 
+
+Joseph. 
+
+Le 11/27/2014 10:07, Alban Crommer a écrit : 
+
+> Bonjour,
+> 
+> Désolé, je ne connais pas suffisamment ces 3 frameworks pour avoir un avis éclairant sur la question.
+> 
+> Mais je suis content que ça puisse servir, et rassuré de voir des résultats vraisemblablement sérieux et pointant dans la même direction ;)
+> 
+> +a
+> 
+> Le 27/11/2014 01:32, Kajan Sivaramalingam a écrit : 
+> 
+>> Voici ma contribution. 
+>> 
+>> A bientôt pour la délibération. 
+>> 
+>> _______________________________________________
+>> Caliopdev mailing list
+>> Caliopdev@caliop.net
+>> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev [1]
+> 
+> _______________________________________________
+> Caliopdev mailing list
+> Caliopdev@caliop.net
+> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev [1]
+
+ 
+
+Links:
+------
+[1] http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--=_f372ed4d216e3dfe74e8a3f2eee10210
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=UTF-8
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+<html><body style=3D'font-size: 10pt'>
+<p>Bonjour &agrave; tous,</p>
+<p>Je suis Joseph de chez Cozy (https://cozy.io). Certains d'entre vous le =
+savent peut-&ecirc;tre (je ne sais pas qui exactement &agrave; part Laurent=
+ &eacute;tait pr&eacute;sent &agrave; nos discussions) nous d&eacute;velopp=
+ons un client email. Notre choix technologique s'est port&eacute; sur React=
+ et en trois mois, &agrave; deux d&eacute;veloppeurs et demi (dont 1,5 sur =
+le front), on a quelque chose qui va bient&ocirc;t &ecirc;tre montrable.</p=
+>
+<p>Je me permets d'intervenir sur cette question car c'est moi qui ai pos&e=
+acute; les premi&egrave;res pierres de l'application (et donc fait les choi=
+x techno).</p>
+<p>Il faut bien avoir en t&ecirc;te que comparer Angular et Ember est tout =
+&agrave; fait possible, mais que de comparer ces deux *frameworks* &agrave;=
+ React est plus d&eacute;licat. React est une *lib* qui ne g&egrave;re que =
+la partie affichage, il n'y a aucun composant mod&egrave;le, gestion de la =
+persistence. Facebook, les cr&eacute;ateurs de React, proposent une archite=
+cture autour de React qui s'appelle Flux (que nous utilisons dans notre app=
+) qui tourne autour du principe de "flux unidirectionnel de donn&eacute;es"=
+=2E</p>
+<p>Je vous sugg&egrave;re cette pr&eacute;sentation sur React qui exprime b=
+ien mieux que moi ce que je voulais dire et qui pr&eacute;sente les avantag=
+es de la techno :&nbsp;https://speakerdeck.com/player/44129b9054c901328b892=
+21e99b278fe# (notamment la distinction framework vs libs). J'attire votre a=
+ttention sur une fonctionnalit&eacute; sous-estim&eacute; de React, qui est=
+ le rendu c&ocirc;t&eacute; serveur avec le m&ecirc;me code que le client (=
+je ne sais pas si c'est un cas de "performance" important dans Caliopen).</=
+p>
+<p>Je n'ai malheureusement pas de ressource &eacute;quivalente &agrave; vou=
+s pr&eacute;senter sur Flux, car je n'en ai toujours pas trouv&eacute;e. Je=
+ vous sugg&egrave;re cependant cet article sur le blog de React :&nbsp;http=
+://facebook.github.io/react/blog/2014/07/30/flux-actions-and-the-dispatcher=
+=2Ehtml</p>
+<p>En r&eacute;sum&eacute;, React, c'est tr&egrave;s bien (&agrave; mon hum=
+ble avis) : &nbsp;&ccedil;a permet d'&eacute;crire du code vite, maintenabl=
+e et *performant* (sans y penser).&nbsp;Mais ce n'est qu'une partie du prob=
+l&egrave;me, la "Vue", et il faut accepter (s'habituer &agrave;) une nouvel=
+le fa&ccedil;on de faire.</p>
+<p>Vous pourriez ajouter Backbone+React (ils jouent relativement bien ensem=
+ble) et/ou Flux+React &agrave; votre matrice pour la compl&eacute;ter. A la=
+ question React+Angular et React+Ember, je ne connais pas l'&eacute;tat de =
+l'art, ne portant pas du tout Angular dans mon coeur et ne m'&eacute;tant j=
+amais int&eacute;ress&eacute; &agrave; Ember.</p>
+<p>Je vous laisse ici l'adresse du d&eacute;p&ocirc;t de notre application,=
+ si vous voulez jeter un oeil au code. A mon avis on est &agrave; des kilom=
+&egrave;tres de faire les choses parfaitement, mais si &ccedil;a peut aider=
+=2E..https://github.com/cozy/cozy-emails</p>
+<p>En esp&eacute;rant que mon retour d'exp&eacute;rience puisse &ecirc;tre =
+utile, je reste &agrave; disposition pour des questions / demande de rensei=
+gnements suppl&eacute;mentaires concernant React et Flux.</p>
+<p>Joseph.</p>
+<p>Le 11/27/2014 10:07, Alban Crommer a &eacute;crit&nbsp;:</p>
+<blockquote type=3D"cite" style=3D"padding-left:5px; border-left:#1010ff 2p=
+x solid; margin-left:5px"><!-- html ignored --><!-- head ignored --><!-- me=
+ta ignored -->
+<div class=3D"moz-cite-prefix">Bonjour,<br /><br /> D&eacute;sol&eacute;, j=
+e ne connais pas suffisamment ces 3 frameworks pour avoir un avis &eacute;c=
+lairant sur la question.<br /><br /> Mais je suis content que &ccedil;a pui=
+sse servir, et rassur&eacute; de voir des r&eacute;sultats vraisemblablemen=
+t s&eacute;rieux et pointant dans la m&ecirc;me direction ;)<br /><br /> +a=
+<br /><br /> Le 27/11/2014 01:32, Kajan Sivaramalingam a &eacute;crit&nbsp;=
+:</div>
+<blockquote type=3D"cite" style=3D"padding-left:5px; border-left:#1010ff 2p=
+x solid; margin-left:5px">
+<div dir=3D"ltr">
+<div class=3D"gmail_extra">Voici ma contribution.</div>
+<div class=3D"gmail_extra">&nbsp;</div>
+<div class=3D"gmail_extra">&nbsp;</div>
+<div class=3D"gmail_extra">A bient&ocirc;t pour la d&eacute;lib&eacute;rati=
+on.</div>
+</div>
+<br /><fieldset class=3D"mimeAttachmentHeader"></fieldset><br />
+<pre>_______________________________________________
+Caliopdev mailing list
+<a class=3D"moz-txt-link-abbreviated" href=3D"mailto:Caliopdev@caliop.net">=
+Caliopdev@caliop.net</a>
+<a class=3D"moz-txt-link-freetext" href=3D"http://brassens.heberge.info/cgi=
+-bin/mailman/listinfo/caliopdev">http://brassens.heberge.info/cgi-bin/mailm=
+an/listinfo/caliopdev</a>
+</pre>
+</blockquote>
+<br /><!-- html ignored --><br />
+<pre>_______________________________________________
+Caliopdev mailing list
+<a href=3D"mailto:Caliopdev@caliop.net">Caliopdev@caliop.net</a>
+<a href=3D"http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev"=
+>http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev</a>
+</pre>
+</blockquote>
+<p>&nbsp;</p>
+<div>&nbsp;</div>
+</body></html>
+
+--=_f372ed4d216e3dfe74e8a3f2eee10210--
+
+
+--===============2078041789==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============2078041789==--

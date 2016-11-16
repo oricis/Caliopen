@@ -1,0 +1,72 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amQo3-00055r-W7
+	for mharc-dev@caliopen.local; Sat, 02 Apr 2016 15:02:00 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:44604)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1amQo1-00054X-3T
+	for dev@caliopen.local; Sat, 02 Apr 2016 15:01:58 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <rms@gnu.org>) id 1amQnz-0001EL-Vy
+	for dev@caliopen.local; Sat, 02 Apr 2016 15:01:57 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:42680)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1amQny-0001Dm-7X; Sat, 02 Apr 2016 15:01:54 -0400
+Received: from rms by fencepost.gnu.org with local (Exim 4.82)
+	(envelope-from <rms@gnu.org>)
+	id 1amQnx-0005FL-JO; Sat, 02 Apr 2016 15:01:53 -0400
+From: Richard Stallman <rms@gnu.org>
+To: =?utf-8?Q?Cl=C3=A9ment?= Pit--Claudel <clement.pit@gmail.com>
+In-reply-to: <56FEF043.3020803@gmail.com> (message from =?utf-8?Q?Cl=C3=A9?=
+	=?utf-8?Q?ment?= Pit--Claudel on Sat, 2 Apr 2016 00:03:47 +0200)
+Subject: Re: melpa.org doesn't work without nonfree software
+References: <E1am6ik-0000Kc-JJ@fencepost.gnu.org> <56FEF043.3020803@gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Message-Id: <E1amQnx-0005FL-JO@fencepost.gnu.org>
+Date: Sat, 02 Apr 2016 15:01:53 -0400
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: rms@gnu.org
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sat, 02 Apr 2016 19:01:58 -0000
+Content-Length: 1012
+Lines: 26
+
+[[[ To any NSA and FBI agents reading my email: please consider    ]]]
+[[[ whether defending the US Constitution against all enemies,     ]]]
+[[[ foreign or domestic, requires you to follow Snowden's example. ]]]
+
+  > All the code it runs is MIT or GPL licensed, it seems.
+
+"MIT licensed" is an ambiguous term, which we should avoid: see
+http://gnu.org/licenses/license-list.html.  But you must mean
+it carries some lax, permissive free license.
+
+If all the code is in fact free, the proble could be fixed by putting
+the appropriate license notices on the JS files (plus source pointers,
+in any minified files).
+
+But it does need to be actually fixed, before we can refer to it.  If
+a page uses Javascript that LibreJS can't recognize as free, and if
+that Javascript is _necessary_ for the page to serve its purpose,
+we can't link to it.
+
+-- 
+Dr Richard Stallman
+President, Free Software Foundation (gnu.org, fsf.org)
+Internet Hall-of-Famer (internethalloffame.org)
+Skype: No way! See stallman.org/skype.html.
+
+

@@ -1,0 +1,488 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 60595120AEE;
+	Fri, 28 Nov 2014 16:25:31 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 1.448
+X-Spam-Level: *
+X-Spam-Status: No, score=1.448 tagged_above=-999 required=5
+	tests=[BAYES_20=-0.74, HTML_40_50=0.496, HTML_MESSAGE=0.001,
+	RATWARE_GECKO_BUILD=1.691]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id lLzW+UjymByn; Fri, 28 Nov 2014 16:25:29 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 0176E120A20;
+	Fri, 28 Nov 2014 16:25:29 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 767346AACB839;
+	Fri, 28 Nov 2014 16:25:28 +0100 (CET)
+Authentication-Results: brassens.heberge.info; dkim=fail
+	reason="verification failed; insecure key"
+	header.d=albancrommer.com header.i=@albancrommer.com
+	header.b=dryFrpum; dkim-adsp=none (insecure policy);
+	dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id USnepjzrsBTY; Fri, 28 Nov 2014 16:25:27 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 89D696AACB836;
+	Fri, 28 Nov 2014 16:25:26 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 7D4336AACB838
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 16:25:25 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id cZNUGob-MMZn for <caliopdev@caliop.net>;
+ Fri, 28 Nov 2014 16:25:19 +0100 (CET)
+Received: from alban.octopuce.fr (alban.octopuce.fr [91.194.60.111])
+ by brassens.heberge.info (Postfix) with ESMTP id 40C3B6AACB835
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 16:25:19 +0100 (CET)
+Received: from [IPv6:2001:67c:288:1::201] (unknown [IPv6:2001:67c:288:1::201])
+ (using TLSv1 with cipher ECDHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by alban.octopuce.fr (Postfix) with ESMTPSA id DF5DFF1CFECD
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 16:25:18 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=albancrommer.com;
+ s=alternc; t=1417188319;
+ bh=pXCUAcZprSaVoqK4KDdB/tyUG2aAbYiuXKj9b58yIb0=;
+ h=Date:From:To:Subject:References:In-Reply-To;
+ b=dryFrpumWqmtV/pPcQVFSuJJ7gzNnnrsiOVBTdFSB2Qzmd9sw28zQEAQS9kXhWU/H
+ oEUXVv+aVbrG/M/7yEyX5rRuExm4AvtnFc6q/qKuOqDrOXbiiClmyM46Odsj3v1O+E
+ IzItZX53+vvLogrRVYucpC8mjOA9bZUU7cvW/mD0=
+Message-ID: <547893DE.20601@albancrommer.com>
+Date: Fri, 28 Nov 2014 16:25:18 +0100
+From: Alban Crommer <alban@albancrommer.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64;
+ rv:24.0) Gecko/20100101 Icedove/24.8.1
+MIME-Version: 1.0
+To: =?ISO-8859-1?Q?Liste_de_d=E9veloppement_Caliopen?= <caliopdev@caliop.net>
+References: <547453AE.70408@chamal.fr> <547457A9.9070801@chamal.fr>
+ <5475EC1E.4010603@chamal.fr> <20141126224605.GH8770@brasil.brainstorm.fr>
+ <CA+tgzei=imZu9xfDGJuVYiXzgOqEo=kBVojf-16uo-gBheEjow@mail.gmail.com>
+ <5476E9CF.70601@albancrommer.com>
+ <e58b3dee04100f500d35b49b5a10ec71@cozycloud.cc> <547706E2.4030805@gandi.net>
+ <8bdc1ae7396c65d043e516cd97c1b6da@cozycloud.cc>
+ <20141127192529.GA1819@tao.gandi.net> <54778C34.90802@gandi.net>
+ <54784A99.3020306@chamal.fr> <54785B09.9010402@gandi.net>
+ <54788421.1040800@gandi.net>
+In-Reply-To: <54788421.1040800@gandi.net>
+X-Enigmail-Version: 1.6
+Content-Type: multipart/mixed; boundary="------------070709000702030804080801"
+Subject: Re: [Caliopdev] Fwd: Re: matrice de choix framework JS
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+This is a multi-part message in MIME format.
+--------------070709000702030804080801
+Content-Type: multipart/alternative;
+ boundary="------------010906010708050009070702"
+
+
+--------------010906010708050009070702
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+
+Je trouve cette discussion fort int�ressante.
+
+N�anmoins, Aymeric a bien pr�cis� il me semble que l'architecture de
+Caliopen exclut Node et le JS server side. Il me semble d'ailleurs que
+�a fait partie des crit�res �nonc�s dans la matrice de choix ?
+
+J'aimerai -personnellement- une architecture avec Python en API "pure"
+(ie. non HTML) r�utilisable comme une brique int�grable.
+
+Avec un serveur HTTPS en NodeJS isomorphe � la pointe pour servir un
+frontend r�actif et r�silient.
+
+Mais je comprends bien que �a ne soit pas optimal, car -encore plus-
+long � r�aliser.
+
+Note/Rappel : est-ce que les d�vs cal�s en JS qui ont rejoint la
+discussion ont vu (et rempli) la matrice de choix de framework ?
+
++a+
+
+Le 28/11/2014 15:18, Alexis a �crit :
+>
+> Le 28/11/2014 12:22, julien muetton a �crit :
+>>
+>> On 11/28/2014 11:12 AM, Aymeric Barantal wrote:
+>>> On 11/27/2014 09:40 PM, julien muetton wrote:
+>>>>
+>>>> On 11/27/2014 08:25 PM, Aymeric Barantal wrote:
+>>>>> On Thursday 27 Nov 2014 � 12:28:25 (+0100), joseph@cozycloud.cc wrote:
+>>>>>> Ton analyse et tes incertitudes sur React/Flux sont justifi�es. On a pris un
+>>>>>> risque de notre c�t� et heureusement les deux d�v ont fait un bon boulot de
+>>>>>> prise en main et d'adaptation.
+>>>>>>
+>>>>>> Pas de retour concernant Reflux, que je veux regarder en bloc et en d�tail car
+>>>>>> je ne suis pas satisfait de l'impl�mentation "officielle" de Flux, dont Fluxxor
+>>>>>> s'inspire fortement (on utilisait Fluxxor � la base, �a n'apporte rien AMHA,
+>>>>>> donc supprim�. Mais je n'ai pas regard� son �volution depuis plusieurs mois).
+>>>>>>
+>>>>>> Je n'avais pas pens� � la n�cessit� de Node pour utiliser React pour fair le
+>>>>>> rendu c�t� serveur, comme Caliopen est en Python (de m�moire) ce n'est
+>>>>>> effectivement pas un argument. Par contre, pour b�n�ficier de l'isomorphisme,
+>>>>>> il faut obligatoire du Node � un moment (� ma connaissance).
+>>>>> Alors il ne faut absolument pas de ce type d'isomorphisme, les inconvenients
+>>>>> sont bien moins importants [1] que les avantages que je vois a cette stricte
+>>>>> separation technologique entre front et api.
+>>>> Il est aussi possible d'avoir un serveur nodeJS qui sert les pages
+>>>> HTML et l'API en python.
+>>>> Un reverse proxy permet d'agr�ger les deux via des r�gles simples
+>>>> (HAProxy, Nginx, Apache...)
+>>> De quelles pages html est il question ? celles qui passent par
+>>> l'internationalisation ?
+>> L'isomorphisme signifie rendre indiff�remment sur le serveur et sur
+>> le client, comme twitter et wallmart.
+>>> J'ai du mal a voir le gain reel d'une plate-forme node.js a part du
+>>> code en commun, qui semble etre
+>>> la notion principale cachee derriere le terme d'isomorphisme.
+>> c'est pour avoir une meilleure exp�rience utilisateur.
+>> la premi�re page est affich�e directement, ce qui r�duit le "time to
+>> first interaction" (introduit par twitter comme "time to tweet")
+>>> A ce jour c'est le serveur fournissant l'api qui sait fournir
+>>> egalement des pages html (enfin une
+>>> seule du fait de l'utilisation d'angular sur le POC).
+>>>>
+>>>>     /api -> api python
+>>>>     cdn.domain.tld -> asset statics
+>>>>     default -> serveur nodeJS
+>>>>
+>>>> Ca colle bien avec l'approche �Service.
+>>> L'orientation globale n'est pas microservice cote API / backend
+>>>
+>>>>
+>>>> Maintenant, je ne sais pas � quel point il faut dupliquer la
+>>>> logique pour tirer partie de l'isomorphisme.
+>>>> Je regarde comment on consomme les donn�es sur le serveur
+>>>> (notamment est-ce que l'on passe par les stores).
+>>> La je suis perdu ;)
+>>>
+>> En rendant les pages sur le serveur, il faut aussi r�cup�rer les
+>> donn�es � travers l'API.
+>> Ce que je cherche � trouver c'est la quantit� de code � dupliquer,
+>> car consommer une API dans le browser passe par XMLHttpRequest, alors
+>> que sur le serveur XMLHttpRequest n'est pas dispo.
+>>
+>> La logique en Fluxx, sauf erreur de ma part, est de placer tout le
+>> code m�tier dans les Stores qui sont � la fois "data mapper" et
+>> logique domaine.
+>> Si c'est top pour ne pas coupler son code � un framework (on
+>> d�veloppe notre m�tier/domaine comme on l'entend), il y a forc�ment
+>> des diff�rences entre le client et le serveur.
+>
+> Par isomorphisme, moi j'entends que le code est le m�me est peut �tre
+> utilis� c�t� serveur ou c�t� client.
+> Donc pas de duplication, juste 1 code : 2 utilisations possibles.
+>
+> Browserify est de la partie bien sur pour faire tout �a.
+>
+> Tuto pr�sentant un m�me code qui s'ex�cute comme je disais Julien,
+> c�t� serveur pour le 1er load, c�t� client ensuite :
+> http://scotch.io/tutorials/javascript/build-a-real-time-twitter-stream-with-node-and-react-js
+>
+>>
+>> @Joseph, @romain, @brice, vous avez une visibilit� sur la quantit� de
+>> code � dupliquer ?
+>>> Quelle logique serait a dupliquer et finalement qu'est qui est
+>>> entendu par isomorphisme dans ce cadre, j'ai
+>>> l'impression de ne plus comprendre ce terme.
+>>>
+>>> De quels stores est il question ? Le local storage sera certainement
+>>> a exploiter s'il fait parti de cette definition.
+>>>
+>>> ++ chamal
+>>>
+>>>
+>>> _______________________________________________
+>>> Caliopdev mailing list
+>>> Caliopdev@caliop.net
+>>> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+>>
+>>
+>>
+>> _______________________________________________
+>> Caliopdev mailing list
+>> Caliopdev@caliop.net
+>> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+>
+>
+>
+> _______________________________________________
+> Caliopdev mailing list
+> Caliopdev@caliop.net
+> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+
+--------------010906010708050009070702
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    <div class="moz-cite-prefix">Je trouve cette discussion fort
+      int&eacute;ressante.<br>
+      <br>
+      N&eacute;anmoins, Aymeric a bien pr&eacute;cis&eacute; il me semble que l'architecture
+      de Caliopen exclut Node et le JS server side. Il me semble
+      d'ailleurs que &ccedil;a fait partie des crit&egrave;res &eacute;nonc&eacute;s dans la matrice
+      de choix ?<br>
+      <br>
+      J'aimerai -personnellement- une architecture avec Python en API
+      "pure" (ie. non HTML) r&eacute;utilisable comme une brique int&eacute;grable. <br>
+      <br>
+      Avec un serveur HTTPS en NodeJS isomorphe &agrave; la pointe pour servir
+      un frontend r&eacute;actif et r&eacute;silient.<br>
+      <br>
+      Mais je comprends bien que &ccedil;a ne soit pas optimal, car -encore
+      plus- long &agrave; r&eacute;aliser.<br>
+      <br>
+      Note/Rappel : est-ce que les d&eacute;vs cal&eacute;s en JS qui ont rejoint la
+      discussion ont vu (et rempli) la matrice de choix de framework ? <br>
+      <br>
+      +a+<br>
+      <br>
+      Le 28/11/2014 15:18, Alexis a &eacute;crit&nbsp;:<br>
+    </div>
+    <blockquote cite="mid:54788421.1040800@gandi.net" type="cite">
+      <meta http-equiv="Context-Type" content="text/html;
+        charset=windows-1252">
+      <br>
+      <div class="moz-cite-prefix">Le 28/11/2014 12:22, julien muetton a
+        &eacute;crit&nbsp;:<br>
+      </div>
+      <blockquote cite="mid:54785B09.9010402@gandi.net" type="cite"> <br>
+        <div class="moz-cite-prefix">On 11/28/2014 11:12 AM, Aymeric
+          Barantal wrote:<br>
+        </div>
+        <blockquote cite="mid:54784A99.3020306@chamal.fr" type="cite">
+          <div class="moz-cite-prefix">On 11/27/2014 09:40 PM, julien
+            muetton wrote:<br>
+          </div>
+          <blockquote cite="mid:54778C34.90802@gandi.net" type="cite"> <br>
+            <div class="moz-cite-prefix">On 11/27/2014 08:25 PM, Aymeric
+              Barantal wrote:<br>
+            </div>
+            <blockquote cite="mid:20141127192529.GA1819@tao.gandi.net"
+              type="cite">
+              <pre wrap="">On Thursday 27 Nov 2014 &agrave; 12:28:25 (+0100), <a moz-do-not-send="true" class="moz-txt-link-abbreviated" href="mailto:joseph@cozycloud.cc">joseph@cozycloud.cc</a> wrote:
+</pre>
+              <blockquote type="cite">
+                <pre wrap="">Ton analyse et tes incertitudes sur React/Flux sont justifi&eacute;es. On a pris un
+risque de notre c&ocirc;t&eacute; et heureusement les deux d&eacute;v ont fait un bon boulot de
+prise en main et d'adaptation.
+
+Pas de retour concernant Reflux, que je veux regarder en bloc et en d&eacute;tail car
+je ne suis pas satisfait de l'impl&eacute;mentation "officielle" de Flux, dont Fluxxor
+s'inspire fortement (on utilisait Fluxxor &agrave; la base, &ccedil;a n'apporte rien AMHA,
+donc supprim&eacute;. Mais je n'ai pas regard&eacute; son &eacute;volution depuis plusieurs mois).
+
+Je n'avais pas pens&eacute; &agrave; la n&eacute;cessit&eacute; de Node pour utiliser React pour fair le
+rendu c&ocirc;t&eacute; serveur, comme Caliopen est en Python (de m&eacute;moire) ce n'est
+effectivement pas un argument. Par contre, pour b&eacute;n&eacute;ficier de l'isomorphisme,
+il faut obligatoire du Node &agrave; un moment (&agrave; ma connaissance).
+</pre>
+              </blockquote>
+              <pre wrap="">Alors il ne faut absolument pas de ce type d'isomorphisme, les inconvenients
+sont bien moins importants [1] que les avantages que je vois a cette stricte
+separation technologique entre front et api.
+</pre>
+            </blockquote>
+            Il est aussi possible d'avoir un serveur nodeJS qui sert les
+            pages HTML et l'API en python.<br>
+            Un reverse proxy permet d'agr&eacute;ger les deux via des r&egrave;gles
+            simples (HAProxy, Nginx, Apache...)<br>
+          </blockquote>
+          De quelles pages html est il question ? celles qui passent par
+          l'internationalisation ?<br>
+        </blockquote>
+        L'isomorphisme signifie rendre indiff&eacute;remment sur le serveur et
+        sur le client, comme twitter et wallmart.<br>
+        <blockquote cite="mid:54784A99.3020306@chamal.fr" type="cite">
+          J'ai du mal a voir le gain reel d'une plate-forme node.js a
+          part du code en commun, qui semble etre<br>
+          la notion principale cachee derriere le terme d'isomorphisme.<br>
+        </blockquote>
+        c'est pour avoir une meilleure exp&eacute;rience utilisateur.<br>
+        la premi&egrave;re page est affich&eacute;e directement, ce qui r&eacute;duit le
+        "time to first interaction" (introduit par twitter comme "time
+        to tweet")<br>
+        <blockquote cite="mid:54784A99.3020306@chamal.fr" type="cite"> A
+          ce jour c'est le serveur fournissant l'api qui sait fournir
+          egalement des pages html (enfin une<br>
+          seule du fait de l'utilisation d'angular sur le POC).<br>
+          <blockquote cite="mid:54778C34.90802@gandi.net" type="cite"> <br>
+            <blockquote>/api -&gt; api python<br>
+              cdn.domain.tld -&gt; asset statics<br>
+              default -&gt; serveur nodeJS<br>
+            </blockquote>
+            Ca colle bien avec l'approche &micro;Service.<br>
+          </blockquote>
+          L'orientation globale n'est pas microservice cote API /
+          backend<br>
+          <br>
+          <blockquote cite="mid:54778C34.90802@gandi.net" type="cite"> <br>
+            Maintenant, je ne sais pas &agrave; quel point il faut dupliquer la
+            logique pour tirer partie de l'isomorphisme.<br>
+            Je regarde comment on consomme les donn&eacute;es sur le serveur
+            (notamment est-ce que l'on passe par les stores).<br>
+          </blockquote>
+          La je suis perdu ;)<br>
+          <br>
+        </blockquote>
+        En rendant les pages sur le serveur, il faut aussi r&eacute;cup&eacute;rer les
+        donn&eacute;es &agrave; travers l'API.<br>
+        Ce que je cherche &agrave; trouver c'est la quantit&eacute; de code &agrave;
+        dupliquer, car consommer une API dans le browser passe par
+        XMLHttpRequest, alors que sur le serveur XMLHttpRequest n'est
+        pas dispo.<br>
+        <br>
+        La logique en Fluxx, sauf erreur de ma part, est de placer tout
+        le code m&eacute;tier dans les Stores qui sont &agrave; la fois "data mapper"
+        et logique domaine.<br>
+        Si c'est top pour ne pas coupler son code &agrave; un framework (on
+        d&eacute;veloppe notre m&eacute;tier/domaine comme on l'entend), il y a
+        forc&eacute;ment des diff&eacute;rences entre le client et le serveur.<br>
+      </blockquote>
+      <br>
+      Par isomorphisme, moi j'entends que le code est le m&ecirc;me est peut
+      &ecirc;tre utilis&eacute; c&ocirc;t&eacute; serveur ou c&ocirc;t&eacute; client.<br>
+      Donc pas de duplication, juste 1 code : 2 utilisations possibles.<br>
+      <br>
+      Browserify est de la partie bien sur pour faire tout &ccedil;a.<br>
+      <br>
+      Tuto pr&eacute;sentant un m&ecirc;me code qui s'ex&eacute;cute comme je disais Julien,
+      c&ocirc;t&eacute; serveur pour le 1er load, c&ocirc;t&eacute; client ensuite :<br>
+      <a moz-do-not-send="true" class="moz-txt-link-freetext"
+href="http://scotch.io/tutorials/javascript/build-a-real-time-twitter-stream-with-node-and-react-js">http://scotch.io/tutorials/javascript/build-a-real-time-twitter-stream-with-node-and-react-js</a><br>
+      <br>
+      <blockquote cite="mid:54785B09.9010402@gandi.net" type="cite"> <br>
+        @Joseph, @romain, @brice, vous avez une visibilit&eacute; sur la
+        quantit&eacute; de code &agrave; dupliquer ?<br>
+        <blockquote cite="mid:54784A99.3020306@chamal.fr" type="cite">
+          Quelle logique serait a dupliquer et finalement qu'est qui est
+          entendu par isomorphisme dans ce cadre, j'ai<br>
+          l'impression de ne plus comprendre ce terme.<br>
+          <br>
+          De quels stores est il question ? Le local storage sera
+          certainement a exploiter s'il fait parti de cette definition.<br>
+          <br>
+          ++ chamal<br>
+          <br>
+          <fieldset class="mimeAttachmentHeader"></fieldset>
+          <br>
+          <pre wrap="">_______________________________________________
+Caliopdev mailing list
+<a moz-do-not-send="true" class="moz-txt-link-abbreviated" href="mailto:Caliopdev@caliop.net">Caliopdev@caliop.net</a>
+<a moz-do-not-send="true" class="moz-txt-link-freetext" href="http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev">http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev</a>
+</pre>
+        </blockquote>
+        <br>
+        <br>
+        <fieldset class="mimeAttachmentHeader"></fieldset>
+        <br>
+        <pre wrap="">_______________________________________________
+Caliopdev mailing list
+<a moz-do-not-send="true" class="moz-txt-link-abbreviated" href="mailto:Caliopdev@caliop.net">Caliopdev@caliop.net</a>
+<a moz-do-not-send="true" class="moz-txt-link-freetext" href="http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev">http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev</a>
+</pre>
+      </blockquote>
+      <br>
+      <br>
+      <fieldset class="mimeAttachmentHeader"></fieldset>
+      <br>
+      <pre wrap="">_______________________________________________
+Caliopdev mailing list
+<a class="moz-txt-link-abbreviated" href="mailto:Caliopdev@caliop.net">Caliopdev@caliop.net</a>
+<a class="moz-txt-link-freetext" href="http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev">http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev</a>
+</pre>
+    </blockquote>
+    <br>
+  </body>
+</html>
+
+--------------010906010708050009070702--
+
+--------------070709000702030804080801
+Content-Type: application/pgp-keys;
+ name="0xED3CE492.asc"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="0xED3CE492.asc"
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+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
+MXWgD+JLmfNKbhzzf547qhkjPqSPDxpk
+=64CM
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------070709000702030804080801
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--------------070709000702030804080801--

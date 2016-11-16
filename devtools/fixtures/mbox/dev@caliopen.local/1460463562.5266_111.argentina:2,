@@ -1,0 +1,129 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ajCt5-00088R-UH
+	for mharc-dev@caliopen.local; Thu, 24 Mar 2016 17:33:51 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:40911)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1ajCt3-00088I-G7
+	for dev@caliopen.local; Thu, 24 Mar 2016 17:33:50 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1ajCt0-0002hl-Ac
+	for dev@caliopen.local; Thu, 24 Mar 2016 17:33:49 -0400
+Received: from mout.kundenserver.de ([212.227.126.131]:64886)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1ajCt0-0002hM-1o
+	for dev@caliopen.local; Thu, 24 Mar 2016 17:33:46 -0400
+Received: from [128.30.9.181] ([128.30.9.181]) by mrelayeu.kundenserver.de
+	(mreue005) with ESMTPSA (Nemesis) id 0MKMb4-1aieek3gMY-001fNi for
+	<emacs-devel@gnu.org>; Thu, 24 Mar 2016 22:33:45 +0100
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+To: dev@caliopen.local
+References: <56F42269.10400@gmail.com>
+	<jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<E16BD3EC-F7ED-463C-804C-DCBA8E548B15@lunaryorn.com>
+	<jwvshzffwix.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<05663DCE-3E5B-41E2-8657-460B2D013B49@lunaryorn.com>
+	<jwvh9fvfu8n.fsf-monnier+gmane.emacs.devel@gnu.org>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Message-ID: <56F45D37.1090505@gmail.com>
+Date: Thu, 24 Mar 2016 17:33:43 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <jwvh9fvfu8n.fsf-monnier+gmane.emacs.devel@gnu.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="kgho5IsnKgKLFNhBCNu4TqWX3LObCuV2n"
+X-Provags-ID: V03:K0:usbFR9bDbEAQPYMKp1qzFliADJQgfbTPaUu3DHVD1rgGq7TE5pC
+	QNbZqs7gydzpWfEe5/8pRuVPG1pLsJ/WH659tUd9H52GMdP5q+htQseEWZQJlYw5NwtETlz
+	bfQ7VLdWeICPQiq9jc6N53SgCxXv+PLfQmSffT8zBNZTLekNeeo0Mf4i+6P6eqMM9/Y0c+1
+	I0YafL06BemlPqTw/ArxA==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:W649sarFqxs=:zYnpvQOuGhL1VNrfiUadUn
+	Ub4uoGppKrOJAI8LBLa/PpEm/nBImBOH3nJ7VaxAGqZXFO/ZRnzwLGh5iAupD/7napjQ85mUc
+	obmn+OO5ydgGsYDWvFNauAYHgDaaPmVK5zP827W6HLGVMDrSXKidjao55dhse4Q7c159ybuba
+	VgkN2xEEuksptPYdurBGrTlGMMZ8mREG0Xd0Uivvcj2+3uXUdCUwAcVhgVlgKwaTllwlp2dfE
+	62CwEgB3j1xh/yeXwyYXglM7hF2mzZo2IRaz2jAlv3d5/fEvTpCsBTK9nsUl0UHmD+fjeQut0
+	8DTm3r6kWSKO5o4dG0aUEwIamr6vsPLfEV7EWkN6c1vp+hx5jM9AOoQzh3ryqKzrOZbM3QPx8
+	v9ebeyE4DNhyxO67OlOfxEiVR8IpxfR7cva/188d/hTVjBIoQEW8pyvORShxz5SPKNR7eeMfq
+	DodN+wTiEA57HZVoO2agLG2lSngFKNiguLNIR5hKN8WilXEfA9oouvvs80ZU4FO6OrhMMzDoF
+	0RGRGyh4sOfEfNS3ttMNRLqNPa0ygPxZ943D+KFyIohj/4L3c8xHZDfcwEKjhrpE1x4Grc5lo
+	kHFCb5uY2Vb/yPq+NS9evjWy49bAEIamGN9JuBMri6FkKRWSEWRtJzFy33MGwBixxXtNYeVGk
+	60HvUHY0V/4vbQKxihzByPz1JloOMuKBh0AGWEbpagP5OQz/m29LVqPipY2zY9sFY/YVxwbf1
+	J1kYQTCYDYYWD0ZLjmFHYis0+dtiCYCT3jJVMBpc/z++u5R8MnhxMMhHzCReZsGQK/OcMNEnZ
+	9zq9CddAkLcN+oeeq4zMviWg0uz4B1NO/2PnPO89PYXg13SPAMvvAJld3rPuOYw0pPVV2RCBx
+	7F7NQOAK5B53uuubMLm5DSX8aMbRIMe+x/Ywqeudk=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.126.131
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 24 Mar 2016 21:33:50 -0000
+Content-Length: 2421
+Lines: 58
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--kgho5IsnKgKLFNhBCNu4TqWX3LObCuV2n
+Content-Type: multipart/mixed; boundary="C9IvVUAhx81vUD5pr3Ti8K9rb0N0ekwVh"
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+To: dev@caliopen.local
+Message-ID: <56F45D37.1090505@gmail.com>
+Subject: Re: Should the default value of url-user-agent include a version
+ number? What about the specific case of package.el?
+References: <56F42269.10400@gmail.com>
+ <jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+ <E16BD3EC-F7ED-463C-804C-DCBA8E548B15@lunaryorn.com>
+ <jwvshzffwix.fsf-monnier+gmane.emacs.devel@gnu.org>
+ <05663DCE-3E5B-41E2-8657-460B2D013B49@lunaryorn.com>
+ <jwvh9fvfu8n.fsf-monnier+gmane.emacs.devel@gnu.org>
+In-Reply-To: <jwvh9fvfu8n.fsf-monnier+gmane.emacs.devel@gnu.org>
+
+--C9IvVUAhx81vUD5pr3Ti8K9rb0N0ekwVh
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+On 03/24/2016 05:27 PM, Stefan Monnier wrote:
+> Your medical records are considered private information, not because
+> they would allow someone to identify you, but because they say things
+> about you which not everyone should know.
+
+Note that anonymized medical records are generally not considered private=
+; only sensitive. See e.g. the MIMIC2 database.
+
+Cl=E9ment.
+
+
+--C9IvVUAhx81vUD5pr3Ti8K9rb0N0ekwVh--
+
+--kgho5IsnKgKLFNhBCNu4TqWX3LObCuV2n
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJW9F03AAoJEPqg+cTm90wjCB0QAKvNJxw/ncjuJ+l/VwCt/RtJ
+0mCi5zlWaJkzw+SHlkyzUZb7DkEy6AthlnXjvhR53VXw6rzp6w24rvSxl2r6c4Vy
+D+9JDDY2RA3NFgA+RjJyhxhN0f/2JP1hNH44U9PkBuCApuEVh8TkURUqMNYY5Wfw
+KKTsYQmPrLULHuqr4v5HpjGu5lfIYQaU8gndbL8nJpvhPGfN9vRFQVU2TlShHIRB
+R4JRJCKww7AmWnpx7arGKTU/fr1Pbh8WzYWchgHTLk4jwWxorsZgToyMrA+G8/7h
+y/tVG4oNaSDdOL6NLJQWep0XnZl9x81EQyAXHCa/Pzi8f7h9vwLC6Laq2zKoM/CD
+EwO7m3PPQj1BNIfeGO4hK5dCDNlL3gDbP+iK+FQsooElpOc6vmMSftQQXE8+2XCp
+4pcRUUf9MQ/JcQY0gU7Q8588YaXUWndX7zs6lX6o4bddc00rzD0cKGqPNV15i47s
+T8ng2QxYGFMBHuYAeAe1lv5rZJxWqAhrdze4Pc5+vHfWrmP458FTcMmqZ2xNfYr9
+mMLQJAIct5WG1zKq7h+1ykpkhVbbvR2orZqAAkVsYkjN0QjGHLtxUpUKgFG9DxIy
+voLuk9clkBsv6vLOkVmTm9f9I2Km2b+cB4S2XOHy5NHQMmVTyFWrR9r9HKCXhR+i
+n3Ul6Nk/zmDjU0LB1mkv
+=6jwz
+-----END PGP SIGNATURE-----
+
+--kgho5IsnKgKLFNhBCNu4TqWX3LObCuV2n--
+

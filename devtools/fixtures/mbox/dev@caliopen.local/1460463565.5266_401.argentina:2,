@@ -1,0 +1,90 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an6oN-0006ta-HJ
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 11:53:07 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:35665)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ulf.jasper@web.de>) id 1an6oI-0006nU-KX
+	for dev@caliopen.local; Mon, 04 Apr 2016 11:53:06 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ulf.jasper@web.de>) id 1an6oF-0006Jv-Cw
+	for dev@caliopen.local; Mon, 04 Apr 2016 11:53:02 -0400
+Received: from mout.web.de ([212.227.17.12]:62980)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ulf.jasper@web.de>) id 1an6oF-0006Jo-3Y
+	for dev@caliopen.local; Mon, 04 Apr 2016 11:52:59 -0400
+Received: from p55m-ud2 ([217.226.80.48]) by smtp.web.de (mrweb103) with
+	ESMTPSA (Nemesis) id 0MJTVP-1ap1ga3kxX-0033FG; Mon, 04 Apr 2016 17:52:55
+	+0200
+From: Ulf Jasper <ulf.jasper@web.de>
+To: Andreas Schwab <schwab@suse.de>
+Subject: Re: Initial occurence of 'diary-anniversary' in calendar
+References: <877fgdojar.fsf@web.de> <mvm1t6l4uqe.fsf@hawking.suse.de>
+Date: Mon, 04 Apr 2016 17:52:54 +0200
+In-Reply-To: <mvm1t6l4uqe.fsf@hawking.suse.de> (Andreas Schwab's message of
+	"Mon, 04 Apr 2016 10:57:13 +0200")
+Message-ID: <87mvp9mkvd.fsf@web.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Provags-ID: V03:K0:m8XO7tGnbyb+hUhjmqUotI9ZN/O3g+KkoZTMiCshHvJQyfrJ57B
+	Y4Tdnsk5o8VQX+EmgyTgcX5UOpJfH2E06oi6qZnjai0QGW8VI0u8clGFCGKoPGKZE9nn6jz
+	B6W/Q9LIil7panCVucNq0DpbmDj2o5jEupxEu/lMIG1mDqni9ohLd7KPcgEUpvFTeAVry2v
+	6pPeMoRVT8nqWD2fgpD2g==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:4X4W1twS/6Q=:RcILxtdsOJYbwosJumKABh
+	tt7YI+ESgnpKzQfr+K17XDbq2150oSEaEfFwNNbNTxfvb3LIh7z1oHMpkFp8cHlnPbcxJlAt+
+	TUo5JehKlA7fCg0N9PuSnwUn3RlhAvdx6n4B9xHy7HviSrUC09Bx2nONBNL0uiGewlNuauYFX
+	Owj/dU+uOdArVf9gtlyj23AgGb8dkNX2K4GlgcTpo+1O99ZbqQXnIXGc7z+ABE3DFH9ACHbWG
+	ebi3TvI10Bsn5qeULBdEPPKjnrfy30OlUATBzXreXNRHG65Waz0frL0zFROnatWXIsl0XgTNf
+	N3x1WpAxXA+LqB4reKIOVpghVemS07u3ZqQmpW2VDenek1YFvqefEq6EFFxV39zvQcEPDt6Fh
+	h782oJkyf85zNkLsw5gf/J4Ha0/T6OO00t+XyA8vi98oDvjJ4a5ZRrjnvaj64JH22DZZZ3w/j
+	dUi77xyDbw3PL12mDmy38lXyrgaO6dGflk352s5zDw9d3RdPluRQqC4xplpSXCkW4iZbqC5EO
+	igKXYeUXDeQ8ZpNGaBteqdquln69Wf9PZQ1haPPqJQcji5aKlzR/hZI1/HDtFPYAlGF0EAOLS
+	mCPq9JjQCzm9i7oa2vhduK0NhlP42HtmBxGpvNABB1SwZKXtu4LSnbskAlV3KGBS7L1oVdKAj
+	mecieQG92+BkoplBxJEYiB9NQMjR5eC/UwtqOg7wLyp1aJxUsRa3Vz76sq02WL8WSxnVP9R9Q
+	TK03S/wuD3vbO83RqS+ecfWJrQmhUVJk6lNee9RrEcFXL0CuNc/qsmC/P3/lZYgjs5cYsZ758
+	4U55OVC
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.17.12
+Cc: emacs-devel <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 15:53:06 -0000
+Content-Length: 748
+Lines: 27
+
+Am 04.04.2016 um 10:57 (+0200) schrieb Andreas Schwab:
+> Ulf Jasper <ulf.jasper@web.de> writes:
+>
+>> Anniversary entries like
+>>
+>>     %%(diary-anniversary 4 4 2016) Mark My Diary
+>>
+>> will show up in the calendar only from 4 4 2017 on, i.e. one year after
+>> the actual event.  The initial occurrence of an anniversary (4 4 2016)
+>> does not get marked in the calendar.  Why is that?
+>
+> The first anniversary is one year after the event.
+
+Agreed.  That is also what my dictionary tells me.  And the Emacs manual
+says the same:
+
+|      %%(diary-anniversary 10 31 1988) Arthur's birthday
+| 
+| This entry applies to October 31 in any year after 1988; 
+
+But still I would expect to see Arthur's actual birthday marked in the
+calendar.
+
+Best,
+Ulf
+
+

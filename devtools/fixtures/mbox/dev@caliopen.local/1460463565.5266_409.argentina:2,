@@ -1,0 +1,90 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amb9m-00014B-Iq
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 02:05:06 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:57539)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <vibhavp@gmail.com>) id 1amb9j-00011o-01
+	for dev@caliopen.local; Sun, 03 Apr 2016 02:05:03 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <vibhavp@gmail.com>) id 1amb9h-00058V-Ri
+	for dev@caliopen.local; Sun, 03 Apr 2016 02:05:02 -0400
+Received: from mail-ig0-x230.google.com ([2607:f8b0:4001:c05::230]:37966)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <vibhavp@gmail.com>)
+	id 1amb9h-00058A-Mo; Sun, 03 Apr 2016 02:05:01 -0400
+Received: by mail-ig0-x230.google.com with SMTP id ui10so37595258igc.1;
+	Sat, 02 Apr 2016 23:05:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:in-reply-to:references:date:message-id:subject:from:to; 
+	bh=4SLYU5AjeC0uBevx1mfK5YJHD2RnXE6tiVsgiYUhnFQ=;
+	b=PSxE3Ggg47napG7xfimjYtY4RZTEV19XcxERvnbrUdiAAkgrhNV4BjWYMGrdj78T0w
+	RRaRMqLq7Ijt8x1gQOqGiOyisgxEz7wRA3yTu1eTMvu3rAIJuK5RlO2Bcn5wPte+TYE5
+	A2DO3Xzqwvq6xssFSdp6dxz7A+wHQ/SH8n4ncASGCrydIf4ZCMXDbavLOa4unHtKLi77
+	flok8OgDnCRkgu6GnxpQZh08qZSQbKr6PlfZMvFv10XPXKOW42GK7cnCSU6WtyRXO2TP
+	tZTzyxPLgC22vNWx6HNGwEtlf7Csd3nBXEqfHOc8iv6ySJ54+AyTb2J0lOMcTnbVfoHJ
+	QcLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:in-reply-to:references:date
+	:message-id:subject:from:to;
+	bh=4SLYU5AjeC0uBevx1mfK5YJHD2RnXE6tiVsgiYUhnFQ=;
+	b=jRraDdFG8JIiuHQxxYK5fCV+cLWJ95UZSLCtEFpdj9Q53rvA8eO91mWaL7oK0zsfGe
+	16/11uE+Mnb4Ss0ApPabGxbDt62fMqt8ElTKT3eI006xrD9ANT9eIdBseAmoQQYRhRBb
+	5DX2IdQvfuO8ynTL4XjAXhrQbL31PM2NSLOM3sitYUYCXj3ZM/kZwDBINHAVzUJH4Tfk
+	zxBLs54gpYpO9zHP5W8noE5rWjNoIYLDmH5O2ZLKTiTpBhmOQWBH6SkBldXmcw8jwaej
+	J19xysJz4Y0P3UCSORqKVBbpr6grcaMyPFcDZ3qsea719vF9cV024rWfcK1RzTlT1FXj
+	YfJQ==
+X-Gm-Message-State: AD7BkJKCSh22fi2F9zNTX1pa80hunclcnY5AR/c6qD1qkLMG6K6mHIvyk52EQm0QCl+9UJ/8FIcr1Ue1gAYDtA==
+MIME-Version: 1.0
+X-Received: by 10.107.41.201 with SMTP id p192mr3033507iop.125.1459663500743; 
+	Sat, 02 Apr 2016 23:05:00 -0700 (PDT)
+Received: by 10.79.17.132 with HTTP; Sat, 2 Apr 2016 23:05:00 -0700 (PDT)
+In-Reply-To: <m2pou7y8tf.fsf@newartisans.com>
+References: <E1am6ik-0000Kc-JJ@fencepost.gnu.org>
+	<m2pou7y8tf.fsf@newartisans.com>
+Date: Sun, 3 Apr 2016 11:35:00 +0530
+Message-ID: <CA+T2Sh0-EMD9chUckGuoEhMjL+sdCCYZpsW=8k_2R1q+wbkkgA@mail.gmail.com>
+Subject: Re: melpa.org doesn't work without nonfree software
+From: Vibhav Pant <vibhavp@gmail.com>
+To: Richard Stallman <rms@gnu.org>, "emacs-devel@gnu.org" <emacs-devel@gnu.org>
+Content-Type: text/plain; charset=UTF-8
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4001:c05::230
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 06:05:04 -0000
+Content-Length: 598
+Lines: 23
+
+The source for Melpa's website is available here, and is licensed
+under the GPL v3: https://github.com/melpa/melpa/tree/master/html
+
+
+On Sun, Apr 3, 2016 at 3:25 AM, John Wiegley <jwiegley@gmail.com> wrote:
+>>>>>> Richard Stallman <rms@gnu.org> writes:
+>
+>> I hope that we can get this fixed. John Wiegley, would you like to talk with
+>> them about it?
+>
+> Sure, I'll talk with the MELPA maintainers.
+>
+> --
+> John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+> http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+>
+
+
+
+-- 
+Vibhav Pant
+vibhavp@gmail.com
+

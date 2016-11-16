@@ -1,0 +1,82 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alKCQ-0005Rm-SG
+	for mharc-dev@caliopen.local; Wed, 30 Mar 2016 13:46:34 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59896)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1alKCM-0005OX-PU
+	for dev@caliopen.local; Wed, 30 Mar 2016 13:46:33 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1alKCL-0006Kx-SH
+	for dev@caliopen.local; Wed, 30 Mar 2016 13:46:30 -0400
+Received: from aserp1040.oracle.com ([141.146.126.69]:48494)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>)
+	id 1alKCG-0006Iw-UJ; Wed, 30 Mar 2016 13:46:25 -0400
+Received: from aserv0021.oracle.com (aserv0021.oracle.com [141.146.126.233])
+	by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with
+	ESMTP id u2UHkKkG007777
+	(version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+	Wed, 30 Mar 2016 17:46:20 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+	by aserv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u2UHkKkn003084
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+	Wed, 30 Mar 2016 17:46:20 GMT
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+	by aserv0122.oracle.com (8.13.8/8.13.8) with ESMTP id u2UHkHJh005967;
+	Wed, 30 Mar 2016 17:46:19 GMT
+MIME-Version: 1.0
+Message-ID: <830ba1d5-5844-455c-9c8e-02671771dce4@default>
+Date: Wed, 30 Mar 2016 10:46:16 -0700 (PDT)
+From: Drew Adams <drew.adams@oracle.com>
+Sender: Drew Adams <drew.adams@oracle.com>
+To: Angelo Graziosi <angelo.graziosi@alice.it>, Eli Zaretskii <eliz@gnu.org>
+Subject: RE: About column numbers
+References: <56FB02BB.3090501@alice.it> <83wpokuh3a.fsf@gnu.org>
+	<56FC0CDB.9090707@alice.it>
+In-Reply-To: <56FC0CDB.9090707@alice.it>
+X-Priority: 3
+X-Mailer: Oracle Beehive Extensions for Outlook 2.0.1.9  (901082) [OL
+	12.0.6744.5000 (x86)]
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+X-Source-IP: aserv0021.oracle.com [141.146.126.233]
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.4.x-2.6.x [generic]
+X-Received-From: 141.146.126.69
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 30 Mar 2016 17:46:33 -0000
+Content-Length: 763
+Lines: 22
+
+> > Why is it a problem for column number to start at zero?  Emacs always
+> > worked like that.
+>=20
+> Yes, I know.. this is not a fundamental, but why that "unnatural"
+> convention? I don't know other editor/IDE which uses columns from zero..
+
+We should start with column 42. ;-)
+
+> >> If not, I would suggest to change this in Emacs.. or to add some
+> >> settings to change this..
+> >
+> > Then you'd need to change every interface that accepts or returns
+> > column numbers, like move-to-column, posn-at-point, etc.  Is it really
+> > worth it?
+> >
+>=20
+> what a pity! It would be an opportunity to modernize a bit Emacs...
+
+Modernize schmodernize. ;-)  Every new idea is not
+necessarily a great idea.  And every recently expressed
+idea is not necessarily new.
+

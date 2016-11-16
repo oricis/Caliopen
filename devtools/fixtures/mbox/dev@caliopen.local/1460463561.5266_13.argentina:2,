@@ -1,0 +1,385 @@
+Return-Path: <qfzwjsy_0gz7chidgb.4g@carre-parfait.fr>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id CD356209A30C2
+	for <laurent@brasil.brainstorm.fr>; Mon, 11 Apr 2016 05:01:18 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id C3B9E33181F7; Mon, 11 Apr 2016 05:01:18 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id B03E133181FC; Mon, 11 Apr 2016 05:01:18 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: *********
+X-Spam-Status: Yes, score=9.0 required=5.0 tests=BAYES_99,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HTML_IMAGE_RATIO_04,HTML_MESSAGE,
+	RAZOR2_CF_RANGE_51_100,RAZOR2_CF_RANGE_E8_51_100,RAZOR2_CHECK,T_REMOTE_IMAGE,
+	URIBL_BLACK autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
+	*      [URIs: carre-parfait.fr]
+	*  0.6 HTML_IMAGE_RATIO_04 BODY: HTML has a low ratio of text to image area
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	*  0.9 RAZOR2_CHECK Listed in Razor2 (http://razor.sf.net/)
+	*  1.9 RAZOR2_CF_RANGE_E8_51_100 Razor2 gives engine 8 confidence level
+	*      above 50%
+	*      [cf: 100]
+	*  0.5 RAZOR2_CF_RANGE_51_100 Razor2 gives confidence level above 50%
+	*      [cf: 100]
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	*  0.0 T_REMOTE_IMAGE Message contains an external image
+X-Spam-DCC: : 
+Received: from bsmtp-b37.carre-parfait.fr (bsmtp-b37.carre-parfait.fr [193.41.74.215])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id 5D50133181F7
+	for <dev@caliopen.local>; Mon, 11 Apr 2016 05:01:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=carre-parfait.fr; h=to
+	:subject:date:from:reply-to:list-unsubscribe:message-id
+	:mime-version:content-type; s=smf; bh=3mhm4d2V4ULqXCujGoRixeaSud
+	ecGLfsuLHYXAqF1co=; b=GJngu+LJLrFdPdRujpUiiatk0/iQe51HXclAMevOw3
+	sVj13B1b+wM9YWT+T/D1g1CNm6HSkceFQzA2LW4i/4b7M1rQiXzTKenNYaxgosnO
+	KGIRl87cmXVAwjKYIDLeBIaReBL0Z2mzhvq4LYayyrl3vdXTPGBYqnMw6tv1VC1c
+	c=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=carre-parfait.fr; h=to
+	:subject:date:from:reply-to:list-unsubscribe:message-id
+	:mime-version:content-type; q=dns; s=smf; b=eGJiAXAySAoSo2py9eMR
+	xxBIXHyBiej6yRfbeezSTgV/+ew5h57h0C6AyyoPZF0yNfj713SPFXIxv31slRlS
+	UFsIpej3vzAyFTHiqPEadXeoR92vT8B1JLo/pjV+em1QlDsFFP6oyvUIOxbQVPp/
+	YYNLwvlMnOCUoxAQc9LStBw=
+To: laurent <dev@caliopen.local>
+Subject: =?utf-8?Q?Optez_pour_une_sauvegarde_externe_de_vos_donn=C3=A9es_et_prot?=  =?utf-8?Q?=C3=A9gez_votre_entreprise!?=
+X-PHP-Originating-Script: 1002:class.phpmailer.php
+Date: Mon, 11 Apr 2016 04:03:50 +0200
+From: Sauvegarde informatique <Sauvegarde@carre-parfait.fr>
+Reply-to: Sauvegarde informatique <qfzwjsy_0gz7chidgb.4g@carre-parfait.fr>
+X-campaign_id: 155417847596220429914380_55
+X-uid_id_m: bGF1cmVudEBicmFpbnN0b3JtLmZy=376
+List-Unsubscribe: <http://app.carre-parfait.fr/d/?camp=155417847596220429914380_55&ms=bGF1cmVudEBicmFpbnN0b3JtLmZy>
+Message-ID: <9dd287879e77f57417e0debcc227ae6f@carre-parfait.fr>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="Part1_9dd287879e77f57417e0debcc227ae6f"
+X-Spam-Prev-Subject: =?utf-8?Q?Optez_pour_une_sauvegarde_externe_de_vos_donn=C3=A9es_et_prot?=  =?utf-8?Q?=C3=A9gez_votre_entreprise!?=
+Content-Length: 20480
+Lines: 314
+
+--Part1_9dd287879e77f57417e0debcc227ae6f
+Content-Type: text/plain; charset = "utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Pour visualiser et se d=C3=A9sabonner ce message,
+=20
+Veuillez, copier puis coller, l'adresse URL compl=C3=A8te ci-dessous dans=
+ la
+barre d'adresse de votre navigateur et appuyer sur la touche "Entr=C3=A9e=
+" de
+votre clavier.
+
+
+
+- - - - - - - - - - - - - - - - -=20
+
+http://app.carre-parfait.fr/v/?camp=3D155417847596220429914380_55&ms=3DbG=
+F1cmVudEBicmFpbnN0b3JtLmZy
+
+- - - - - - - - - - - - - - - - -=20
+
+
+
+
+--Part1_9dd287879e77f57417e0debcc227ae6f
+Content-Type: text/html; charset = "utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://ww=
+w.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xml:lang=3D"fr" lang=3D"fr">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8" =
+/>
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D=
+1.0" />
+<title>Optez pour une sauvegarde externe de vos donn=C3=A9es et prot=C3=A9=
+gez votre entreprise!</title>
+</head><body marginwidth=3D"0" leftmargin=3D"0" topmargin=3D"0" marginhei=
+ght=3D"0" style=3D"text-size-adjust:none; -moz-text-size-adjust:none; -we=
+bkit-text-size-adjust:none; padding:0px; -ms-text-size-adjust:none; margi=
+n:0px;">
+<center><p>
+<a href=3D"http://app.carre-parfait.fr/v/?camp=3D155417847596220429914380=
+_55&ms=3DbGF1cmVudEBicmFpbnN0b3JtLmZy" target=3D"_blank" title=3D"Si cet =
+e-mail ne s'affiche pas correctement, suivez ce lien." style=3D"color:#00=
+F; font-family:'Arial'; font-size:12px; text-decoration:underline;">Si ce=
+t email ne s&rsquo;affiche pas correctement, suivez ce lien.</a></p>     =
+  <style> #outlook a {padding:0;}  body{width:100% !important; -webkit-te=
+xt-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;} .Ex=
+ternalClass {width:100%;} .ExternalClass, .ExternalClass p, .ExternalClas=
+s span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-=
+height: 100%;}  body { 	background-color: #f2f2f2; 	margin: 0 !important;=
+ 	padding: 0 !important; 	-webkit-text-size-adjust:100%; 	-ms-text-size-a=
+djust:100%; 	} #table-principale { 	width:98%;  	max-width:600px;  	borde=
+r-spacing:0px;  	border-collapse:collapse; 	} .title1 { 	font-family:'Tre=
+buchet MS', Arial, Helvetica, sans-serif; 	font-size:
+ 20px; 	color:#3b3b3b; 	text-align: center; 	text-decoration: none; } .ti=
+tlebleu { 	font-family:'Trebuchet MS', Arial, Helvetica, sans-serif; 	fon=
+t-size:22px; 	color:#3baeab; 	text-align: center; 	text-decoration: none;=
+ } .bullets { 	font-family:'Trebuchet MS', Arial, Helvetica, sans-serif; =
+ 	font-size:15px;  	color:#414140; } .btn { 	font-family: 'Trebuchet MS',=
+ Arial, Helvetica, sans-serif;  	color:#ffffff;  	font-size:21px;  	text-=
+decoration:none; 	text-align:center; } .texte-mentions { 	font-family:'Tr=
+ebuchet MS', Arial, Helvetica, sans-serif;  	font-size:12px;  	font-weigh=
+t: normal;  	color:#979797; }	 	 	 </style>  Sauvegarde informatique     =
+<style> /* Target Outlook 2007 and 2010 */ </style>   <style> #tableForOu=
+tlook { width:600px; } </style>   <style> #tableForOutlook { width:600px;=
+ } </style>   <style> #tableForOutlook { width:600px; } </style>      <ta=
+ble align=3D"center" bgcolor=3D"#4a4452" cellpadding=3D"0" cellspacing=3D=
+"0" width=3D"100%">  <tbody><tr> <td align=3D"center"
+  height=3D"20" bgcolor=3D"#4a4452" width=3D"100%"> <font style=3D"font-f=
+amily: Arial,Helvetica,sans-serif; font-size: 10px; color:#9d93a9"> Faite=
+s une sauvegarde externe des donn&eacute;es de votre entreprise et assure=
+z la protection de son activit&eacute;.  <a style=3D"color:#399994" href=3D=
+"http://app.carre-parfait.fr/r/?m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&c=3D1554=
+17847596220429914380_55&rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL3IvY2xp=
+Yy0zNTktMzYyLTIwMTktdXJsLWFIUjBjRG92TDJKd2NtOHVabkl2TVRjelgwSlFYMDVGVDFBX=
+2NXTndQVEUzTTE5Q1VGOU9SVTlRSTNWMGJWOXpiM1Z5WTJVOWJpWjFkRzFmYldWa2FYVnRQV1=
+V0YldGcGJDWjFkRzFmWTJGdGNHRnBaMjQ5Ym1WM2MyTW1kWFJ0WDI1dmIzWmxjbkpwWkdVOU1=
+RP3Jncm91cD1wXzg5NjYmYW1wO3RyYWNrYWZmPSZhbXA7Z3JvdXA9" target=3D"_blank">=
+ Comparez les offres.</a></font> </td> </tr> </tbody></table>   <table st=
+yle=3D"width:100%;border-spacing:0px; border-collapse:collapse" align=3D"=
+center" bgcolor=3D"#4a4452" border=3D"0" cellpadding=3D"0" cellspacing=3D=
+"0">  <tbody><tr>     <td style=3D"width:100%; max-width:600px; height:10
+ px" align=3D"center" height=3D"10" bgcolor=3D"#4a4452" valign=3D"top"><b=
+r></td>   </tr>  <tr>           <td align=3D"center" height=3D"62" bgcolo=
+r=3D"#4a4452">           <table style=3D"width:150px; border-spacing:0px;=
+ border-collapse:collapse" align=3D"center" border=3D"0" cellpadding=3D"0=
+" cellspacing=3D"0">               <tbody><tr>                 <td align=3D=
+"center" height=3D"" bgcolor=3D"#4a4452" valign=3D"middle" width=3D"156">=
+<a style=3D"font-family:Arial, Helvetica, sans-serif; color:#3b3b3b; font=
+-size:21px; text-decoration:none" href=3D"http://app.carre-parfait.fr/r/?=
+m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&c=3D155417847596220429914380_55&rc=3DaHR=
+0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL3IvY2xpYy0zNTktMzYyLTIwMTktdXJsLWFIUjBj=
+RG92TDJKd2NtOHVabkl2TVRjelgwSlFYMDVGVDFBX2NXTndQVEUzTTE5Q1VGOU9SVTlRSTNWM=
+GJWOXpiM1Z5WTJVOWJpWjFkRzFmYldWa2FYVnRQV1V0YldGcGJDWjFkRzFmWTJGdGNHRnBaMj=
+Q5Ym1WM2MyTW1kWFJ0WDI1dmIzWmxjbkpwWkdVOU1RP3Jncm91cD1wXzg5NjYmYW1wO3RyYWN=
+rYWZmPSZhbXA7Z3JvdXA9" target=3D"_blank"><img src=3D"http://app.carre-par=
+fait.fr/r/?rc=3D
+ aHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91cGxvYWRzL3Zpc3VlbHMvMTMvMzU5L2tpdHMv=
+bG9nb19uZXdzLmpwZw=3D=3D" alt=3D"Bpro" style=3D"display:block" height=3D"=
+62" border=3D"0" width=3D"156"></a>                  </td>               =
+</tr>             </tbody></table></td>         </tr>         <tr>     <t=
+d style=3D"width:100%; max-width:600px; height:45px" align=3D"center" hei=
+ght=3D"45" bgcolor=3D"#4a4452" valign=3D"middle">     <font style=3D"font=
+-family:'Trebuchet MS', Arial, Helvetica, sans-serif; font-size:25px; col=
+or:#3baeab; font-weight:bold">SAUVEGARDE INFORMATIQUE</font></td>   </tr>=
+                  <tr>     <td style=3D"width:100%; max-width:600px; heig=
+ht:10px" align=3D"center" height=3D"10" bgcolor=3D"#4a4452" valign=3D"top=
+">     <img src=3D"http://app.carre-parfait.fr/r/?rc=3DaHR0cHM6Ly9ub2Rlcy=
+5uZW9wZXJmLmNvbS91cGxvYWRzL3Zpc3VlbHMvMTMvMzU5L2tpdHMvYm9yZGVyX2hlYWRlci5=
+qcGc=3D" style=3D"display:block" height=3D"10px" border=3D"0" width=3D"10=
+0%"></td>   </tr>                     </tbody></table>   <table id=3D"tab=
+leForOutlook" align=3D
+ "center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td=
+>      <table id=3D"tableForOutlook" align=3D"center" border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0"><tbody><tr><td>      <table id=3D"tableForO=
+utlook" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+><tbody><tr><td>  <table id=3D"table-principale" style=3D"width:98%; max-=
+width:600px; border-spacing:0px; border-collapse:collapse" align=3D"cente=
+r" border=3D"0" cellpadding=3D"0" cellspacing=3D"0">          <tbody><tr>=
+     <td style=3D"width:100%; max-width:600px; height:20px" align=3D"cent=
+er" height=3D"20" bgcolor=3D"#f2f2f2" valign=3D"top"><br></td>   </tr>   =
+               <tr>     <td bgcolor=3D"#f2f2f2"><table style=3D"width:100=
+%; max-width:600px; border-spacing:0px; border-collapse:collapse" bgcolor=
+=3D"#f2f2f2" border=3D"0" cellpadding=3D"0" cellspacing=3D"0">         <t=
+body><tr>           <td align=3D"left" bgcolor=3D"#f2f2f2" width=3D"20"><=
+br></td>           <td align=3D"center" valign=3D"middle"><a class=3D"tit=
+le1" style=3D"font-family:'Trebuchet MS',=20
+ Arial, Helvetica, sans-serif; font-size:20px; color:#3b3b3b; text-decora=
+tion:none" href=3D"http://app.carre-parfait.fr/r/?m=3DbGF1cmVudEBicmFpbnN=
+0b3JtLmZy&c=3D155417847596220429914380_55&rc=3DaHR0cDovL25vZGVzLm5wdjE3cW=
+VqYmQuY29tL3IvY2xpYy0zNTktMzYyLTIwMTktdXJsLWFIUjBjRG92TDJKd2NtOHVabkl2TVR=
+jelgwSlFYMDVGVDFBX2NXTndQVEUzTTE5Q1VGOU9SVTlRSTNWMGJWOXpiM1Z5WTJVOWJpWjFk=
+RzFmYldWa2FYVnRQV1V0YldGcGJDWjFkRzFmWTJGdGNHRnBaMjQ5Ym1WM2MyTW1kWFJ0WDI1d=
+mIzWmxjbkpwWkdVOU1RP3Jncm91cD1wXzg5NjYmYW1wO3RyYWNrYWZmPSZhbXA7Z3JvdXA9" =
+target=3D"_blank"><strong>Bulletins de paie, factures, base de donn&eacut=
+e;es clients?</strong> <br> Que se passerait-il si votre entreprise perda=
+it ses donn&eacute;es ? </a></td>           <td align=3D"right" bgcolor=3D=
+"#f2f2f2" width=3D"20"><br></td>         </tr>       </tbody></table></td=
+>   </tr>     <tr>     <td style=3D"width:100%; max-width:600px; height:2=
+0px" align=3D"center" height=3D"20" bgcolor=3D"#f2f2f2" valign=3D"top"><b=
+r></td>   </tr>  <tr>     <td align=3D"left" bgcolor=3D"#f2f2f2"><tabl
+ e style=3D"width:100%; max-width:600px; border-spacing:0px; border-colla=
+pse:collapse" bgcolor=3D"#f2f2f2" border=3D"0" cellpadding=3D"0" cellspac=
+ing=3D"0">         <tbody><tr>           <td align=3D"center"><img src=3D=
+"http://app.carre-parfait.fr/r/?rc=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91=
+cGxvYWRzL3Zpc3VlbHMvMTMvMzU5L2tpdHMvc2VwYXJhdGV1ci5qcGc=3D" height=3D"11"=
+ border=3D"0" width=3D"100%"></td>         </tr>       </tbody></table></=
+td>   </tr>  <tr>     <td style=3D"width:100%; max-width:600px; height:20=
+px" align=3D"center" height=3D"20" bgcolor=3D"#f2f2f2" valign=3D"top"><br=
+></td>   </tr>  <tr>     <td bgcolor=3D"#f2f2f2"><table style=3D"width:10=
+0%; max-width:600px; border-spacing:0px; border-collapse:collapse" bgcolo=
+r=3D"#f2f2f2" border=3D"0" cellpadding=3D"0" cellspacing=3D"0">         <=
+tbody><tr>           <td align=3D"left" bgcolor=3D"#f2f2f2" width=3D"20">=
+<br></td>           <td align=3D"center" valign=3D"middle"><font class=3D=
+"titlebleu" style=3D"font-family:'Trebuchet MS', Arial, Helvetica, sans-s=
+erif; font-size:22px; color:
+ #3baeab; font-weight:bold">Optez pour une sauvegarde externe de vos donn=
+&eacute;es<br> et prot&eacute;gez votre entreprise !</font></td>         =
+  <td align=3D"right" bgcolor=3D"#f2f2f2" width=3D"20"><br></td>         =
+</tr>       </tbody></table></td>   </tr> 	<tr>     <td style=3D"width:10=
+0%; max-width:600px; height:20px" align=3D"center" height=3D"20" bgcolor=3D=
+"#f2f2f2" valign=3D"top"><br></td>   </tr>      <tr>   <td style=3D"width=
+:100%; max-width:600px" align=3D"center" height=3D"" bgcolor=3D"#f2f2f2" =
+valign=3D"top">   	<a href=3D"http://app.carre-parfait.fr/r/?m=3DbGF1cmVu=
+dEBicmFpbnN0b3JtLmZy&c=3D155417847596220429914380_55&rc=3DaHR0cDovL25vZGV=
+zLm5wdjE3cWVqYmQuY29tL3IvY2xpYy0zNTktMzYyLTIwMTktdXJsLWFIUjBjRG92TDJKd2Nt=
+OHVabkl2TVRjelgwSlFYMDVGVDFBX2NXTndQVEUzTTE5Q1VGOU9SVTlRSTNWMGJWOXpiM1Z5W=
+TJVOWJpWjFkRzFmYldWa2FYVnRQV1V0YldGcGJDWjFkRzFmWTJGdGNHRnBaMjQ5Ym1WM2MyTW=
+1kWFJ0WDI1dmIzWmxjbkpwWkdVOU1RP3Jncm91cD1wXzg5NjYmYW1wO3RyYWNrYWZmPSZhbXA=
+7Z3JvdXA9" target=3D"_blank"><img src=3D"http://app.carre-parfait.fr/r/?r=
+c=3DaH
+ R0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91cGxvYWRzL3Zpc3VlbHMvMTMvMzU5L2tpdHMvdm=
+lzdV9uZXdzLmpwZw=3D=3D" border=3D"0" width=3D"100%"></a>   </td>   </tr> =
+ 	<tr>     <td style=3D"width:100%; max-width:600px; height:20px" align=3D=
+"center" height=3D"20" bgcolor=3D"#f2f2f2" valign=3D"top"><br></td>   </t=
+r>  	<tr>     <td style=3D"width:100%; max-width:600px" align=3D"center" =
+bgcolor=3D"#f2f2f2" valign=3D"top">     <table style=3D"border-spacing:0p=
+x; border-collapse:collapse" align=3D"center" bgcolor=3D"#ffb600" border=3D=
+"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"280">                   =
+        <tbody><tr>                             <td align=3D"center" heig=
+ht=3D"60" bgcolor=3D"#ffb600" valign=3D"middle" width=3D"280"><a class=3D=
+"btn" href=3D"http://app.carre-parfait.fr/r/?m=3DbGF1cmVudEBicmFpbnN0b3Jt=
+LmZy&c=3D155417847596220429914380_55&rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQ=
+uY29tL3IvY2xpYy0zNTktMzYyLTIwMTktdXJsLWFIUjBjRG92TDJKd2NtOHVabkl2TVRjelgw=
+SlFYMDVGVDFBX2NXTndQVEUzTTE5Q1VGOU9SVTlRSTNWMGJWOXpiM1Z5WTJVOWJpWjFkRzFmY=
+ldWa2FYVnRQV1V0YldGcGJDWj
+ FkRzFmWTJGdGNHRnBaMjQ5Ym1WM2MyTW1kWFJ0WDI1dmIzWmxjbkpwWkdVOU1RP3Jncm91cD=
+1wXzg5NjYmYW1wO3RyYWNrYWZmPSZhbXA7Z3JvdXA9" target=3D"_blank" style=3D"fo=
+nt-family: 'Trebuchet MS', Arial, Helvetica, sans-serif; color:#ffffff; f=
+ont-size:21px; text-decoration:none"><strong>Je compare les offres !</str=
+ong></a></td>         </tr>         <tr>         	<td height=3D"6" bgcolo=
+r=3D"#dc5023" width=3D"100%"><img src=3D"http://app.carre-parfait.fr/r/?r=
+c=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91cGxvYWRzL3Zpc3VlbHMvMTMvMzU5L2tpd=
+HMvYnRuX3NoYWRvdy5qcGc=3D" height=3D"6" border=3D"0" width=3D"100%"></td>=
+         </tr>                  </tbody></table></td></tr>           	<tr=
+>     <td style=3D"width:100%; max-width:600px; height:20px" align=3D"cen=
+ter" height=3D"20" bgcolor=3D"#f2f2f2" valign=3D"top"><br></td>   </tr>  =
+<tr>     <td align=3D"left" bgcolor=3D"#f2f2f2"><table style=3D"width:100=
+%; max-width:600px; border-spacing:0px; border-collapse:collapse" bgcolor=
+=3D"#f2f2f2" border=3D"0" cellpadding=3D"0" cellspacing=3D"0">         <t=
+body><tr>    =20
+       <td align=3D"center"><img src=3D"http://app.carre-parfait.fr/r/?rc=
+=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91cGxvYWRzL3Zpc3VlbHMvMTMvMzU5L2tpdH=
+Mvc2VwYXJhdGV1ci5qcGc=3D" height=3D"11" border=3D"0" width=3D"100%"></td>=
+         </tr>       </tbody></table></td>   </tr>     <tr>     <td style=
+=3D"width:100%; max-width:600px; height:20px" align=3D"center" height=3D"=
+20" bgcolor=3D"#f2f2f2" valign=3D"top"><br></td>   </tr>    <tr>     <td =
+bgcolor=3D"#f2f2f2">     <table style=3D"width:100%; max-width:600px; bor=
+der-spacing:0px; border-collapse:collapse" align=3D"left" bgcolor=3D"#f2f=
+2f2" border=3D"0" cellpadding=3D"0" cellspacing=3D"0">         <tbody><tr=
+>           <td align=3D"left" bgcolor=3D"#f2f2f2" width=3D"10"><br></td>=
+           <td><table style=3D"width:100%; max-width:580px; border-spacin=
+g:0px; border-collapse:collapse" align=3D"left" border=3D"0" cellpadding=3D=
+"0" cellspacing=3D"0">               <tbody><tr>                 <td alig=
+n=3D"left">                 <table style=3D"width:100%; max-width:580px; =
+border-spacing:0px; bord
+ er-collapse:collapse" align=3D"left" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">                     <tbody><tr>                       <td =
+valign=3D"top" width=3D"120"><img src=3D"http://app.carre-parfait.fr/r/?r=
+c=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91cGxvYWRzL3Zpc3VlbHMvMTMvMzU5L2tpd=
+HMvaW1nNS5qcGc=3D" style=3D"display:block" height=3D"120" border=3D"0" wi=
+dth=3D"120"></td>                       <td bgcolor=3D"#f2f2f2" width=3D"=
+10"><br></td>                       <td align=3D"left" valign=3D"middle">=
+<font class=3D"bullets" style=3D"font-family: 'Trebuchet MS', Arial, Helv=
+etica, sans-serif; font-size:15px; color:#414140">La <strong>sauvegarde d=
+e donn&eacute;es informatiques </strong>(ou &laquo; backup &raquo;) est u=
+ne op&eacute;ration cruciale pour les entreprises puisqu'elle permet de <=
+strong>mettre en s&eacute;curit&eacute; des donn&eacute;es essentielles.<=
+/strong></font></td>                     </tr>                   </tbody>=
+</table></td>               </tr>               <tr>                 <td =
+style=3D
+ "width:100%; max-width:600px; height:15px" align=3D"center" height=3D"20=
+" bgcolor=3D"#f2f2f2" valign=3D"top"><br></td>               </tr>       =
+                       <tr>               	<td align=3D"center"><img src=3D=
+"http://app.carre-parfait.fr/r/?rc=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91=
+cGxvYWRzL3Zpc3VlbHMvMTMvMzU5L2tpdHMvc2VwYXJhdGV1cjIuanBn" height=3D"11" b=
+order=3D"0" width=3D"100%"></td>               </tr>                     =
+         <tr>                 <td align=3D"left"><table style=3D"width:10=
+0%; max-width:580px; border-spacing:0px; border-collapse:collapse" align=3D=
+"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0">                 =
+    <tbody><tr>                       <td align=3D"left" valign=3D"middle=
+"><font class=3D"bullets" style=3D"font-family: 'Trebuchet MS', Arial, He=
+lvetica, sans-serif; font-size:15px; color:#414140"><strong>Plusieurs typ=
+es de solutions de sauvegarde possible</strong> : sauvegarde sur un serve=
+ur d&eacute;di&eacute; dans vos locaux, t&eacute;l&eacute;-sauvegarde dan=
+s un
+  centre d'h&eacute;bergement externe, etc? </font></td>  <td bgcolor=3D"=
+#f2f2f2" width=3D"10"><br></td>  <td valign=3D"top" width=3D"120"><img sr=
+c=3D"http://app.carre-parfait.fr/r/?rc=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNv=
+bS91cGxvYWRzL3Zpc3VlbHMvMTMvMzU5L2tpdHMvaW1nNS5qcGc=3D" style=3D"display:=
+block" height=3D"120" border=3D"0" width=3D"120"></td>                   =
+  </tr>                   </tbody></table></td>               </tr>      =
+         <tr>                 <td style=3D"width:100%; max-width:600px; h=
+eight:20px" align=3D"center" height=3D"20" bgcolor=3D"#f2f2f2" valign=3D"=
+top"><br></td>               </tr>                                       =
+      <tr>               	<td align=3D"center"><img src=3D"http://app.car=
+re-parfait.fr/r/?rc=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91cGxvYWRzL3Zpc3V=
+lbHMvMTMvMzU5L2tpdHMvc2VwYXJhdGV1cjIuanBn" height=3D"11" border=3D"0" wid=
+th=3D"100%"></td>               </tr>                              <tr>  =
+               <td align=3D"left"><table style=3D"width:100%; max-width:5=
+80px; border-spa
+ cing:0px; border-collapse:collapse" align=3D"left" border=3D"0" cellpadd=
+ing=3D"0" cellspacing=3D"0">                     <tbody><tr>             =
+          <td valign=3D"top" width=3D"120"><img src=3D"http://app.carre-p=
+arfait.fr/r/?rc=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91cGxvYWRzL3Zpc3VlbHM=
+vMTMvMzU5L2tpdHMvaW1nNS5qcGc=3D" style=3D"display:block" height=3D"120" b=
+order=3D"0" width=3D"120"></td>                       <td bgcolor=3D"#f2f=
+2f2" width=3D"10"><br></td>                       <td align=3D"left" vali=
+gn=3D"middle"><font class=3D"bullets" style=3D"font-family: 'Trebuchet MS=
+', Arial, Helvetica, sans-serif; font-size:15px; color:#414140">En compar=
+ant les offres de plusieurs prestataires, vous <strong>maximisez vos chan=
+ces</strong> de trouver la solution adapt&eacute;e &agrave; vos besoins a=
+u <strong>meilleur prix</strong> !</font></td>                     </tr> =
+                  </tbody></table></td>               </tr>              =
+ <tr>                 <td style=3D"width:100%; max-width:600px; height:20=
+px" alig
+ n=3D"center" height=3D"20" bgcolor=3D"#f2f2f2" valign=3D"top"><br></td> =
+              </tr>             </tbody></table>             </td>       =
+      </tr>              </tbody></table>              </td>           <t=
+d align=3D"right" bgcolor=3D"#f2f2f2" width=3D"10"><br></td>         </tr=
+>         </tbody></table>     </td></tr></tbody></table>      </td></tr>=
+</tbody></table>      </td></tr></tbody></table>     <table align=3D"cent=
+er" bgcolor=3D"#4a4452" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+width=3D"100%"> <tbody><tr>     <td style=3D"font-size: 10px; font-family=
+: Arial,Helvetica,sans-serif; color:#9d93a9;" align=3D"center" height=3D"=
+59" bgcolor=3D"#4a4452" width=3D"100%">       Se d&eacute;sabonner : <a s=
+tyle=3D"color:#399994" href=3D"http://app.carre-parfait.fr/r/?m=3DbGF1cmV=
+udEBicmFpbnN0b3JtLmZy&c=3D155417847596220429914380_55&rc=3DaHR0cDovL2Rldm=
+lzZGlyZWN0X2Rlc2Fiby5jb20v" target=3D"_blank"><u>ici</u></a><br> Votre Te=
+xte ici </td>   </tr>      <tr>     <td style=3D"width:100%; max-width:60=
+0px; height:10px"=20
+ align=3D"center" height=3D"10" bgcolor=3D"#4a4452" valign=3D"top"><br></=
+td>   </tr>    </tbody></table>    <img alt=3D"" src=3D"http://app.carre-=
+parfait.fr/r/?rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL21haWxpbmctMzU5LT=
+M2Mi0yMDE5P3Jncm91cD1wXzg5NjYmYW1wO2dyb3VwPQ=3D=3D" height=3D"1" border=3D=
+"0" width=3D"1"><img src=3D"http://app.carre-parfait.fr/t/?i=3D1554178475=
+96220429914380_55&m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&url=3Dhttp://app.carre=
+-parfait.fr/images/blank.jpg" alt=3D"_pspacer6"  /><p>
+<a href=3D"http://app.carre-parfait.fr/d/?camp=3D155417847596220429914380=
+_55&ms=3DbGF1cmVudEBicmFpbnN0b3JtLmZy" target=3D"_blank" title=3D"Ne plus=
+ recevoir d'informations de notre part" style=3D"color:#00F; font-family:=
+'Arial'; font-size:12px; text-decoration:underline;">Pour se d&eacute;sab=
+onner : Suivez ce lien.</a><br />Si ce message vous a caus&eacute; un que=
+lconque d&eacute;rangement, nous vous prions de nous en excuser.
+</p><center>
+</body>
+</html>
+
+
+
+--Part1_9dd287879e77f57417e0debcc227ae6f--

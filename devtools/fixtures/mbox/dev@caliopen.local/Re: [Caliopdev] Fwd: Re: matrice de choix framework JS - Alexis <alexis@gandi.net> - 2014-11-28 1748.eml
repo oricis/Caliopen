@@ -1,0 +1,148 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 1AC2E120AEC;
+	Fri, 28 Nov 2014 17:48:40 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -100.492
+X-Spam-Level: 
+X-Spam-Status: No, score=-100.492 tagged_above=-999 required=5
+	tests=[BAYES_00=-2.599, FUZZY_AMBIEN=0.416, RATWARE_GECKO_BUILD=1.691,
+	USER_IN_WHITELIST=-100]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id c4NcIGMIz8np; Fri, 28 Nov 2014 17:48:38 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 193B8120AD4;
+	Fri, 28 Nov 2014 17:48:38 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id E658F6B3A4184;
+	Fri, 28 Nov 2014 17:48:37 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id auNcj6d7Q2aF; Fri, 28 Nov 2014 17:48:36 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 8EBE36B3A416E;
+	Fri, 28 Nov 2014 17:48:36 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 203476B3A416E
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:48:36 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id OjmhxwdifBxs for <caliopdev@caliop.net>;
+ Fri, 28 Nov 2014 17:48:32 +0100 (CET)
+Received: from mail4.gandi.net (mail4.gandi.net [217.70.183.210])
+ by brassens.heberge.info (Postfix) with ESMTP id 801536B3A4182
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:48:32 +0100 (CET)
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+ by mail4.gandi.net (Postfix) with ESMTP id 617DA120AEC
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:48:32 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+Received: from mail4.gandi.net ([217.70.183.210])
+ by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new,
+ port 10024) with ESMTP id i9SwX94sp0+v for <caliopdev@caliop.net>;
+ Fri, 28 Nov 2014 17:48:30 +0100 (CET)
+Received: from [217.70.181.12] (crock.gandi.net [217.70.181.12])
+ by mail4.gandi.net (Postfix) with ESMTP id 69289120AD4
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:48:30 +0100 (CET)
+Message-ID: <5478A75E.4070303@gandi.net>
+Date: Fri, 28 Nov 2014 17:48:30 +0100
+From: Alexis <alexis@gandi.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64;
+ rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To: caliopdev@caliop.net
+References: <547453AE.70408@chamal.fr> <547457A9.9070801@chamal.fr>
+ <5475EC1E.4010603@chamal.fr> <20141126224605.GH8770@brasil.brainstorm.fr>
+ <CA+tgzei=imZu9xfDGJuVYiXzgOqEo=kBVojf-16uo-gBheEjow@mail.gmail.com>
+ <5476E9CF.70601@albancrommer.com>
+ <e58b3dee04100f500d35b49b5a10ec71@cozycloud.cc> <547706E2.4030805@gandi.net>
+ <8bdc1ae7396c65d043e516cd97c1b6da@cozycloud.cc>
+ <20141127192529.GA1819@tao.gandi.net> <54778C34.90802@gandi.net>
+ <54784A99.3020306@chamal.fr> <54785B09.9010402@gandi.net>
+ <54788421.1040800@gandi.net> <54788E1F.7060700@gandi.net>
+ <5478901C.4020201@gandi.net>
+In-Reply-To: <5478901C.4020201@gandi.net>
+Subject: Re: [Caliopdev] Fwd: Re: matrice de choix framework JS
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+
+Le 28/11/2014 16:09, julien muetton a =E9crit :
+>
+> On 11/28/2014 04:00 PM, Vincent MINEAUD wrote:
+>> On 28/11/2014 15:18, Alexis wrote:
+>>> Par isomorphisme, moi j'entends que le code est le m=EAme est peut =EAt=
+re
+>>> utilis=E9 c=F4t=E9 serveur ou c=F4t=E9 client.
+>>> Donc pas de duplication, juste 1 code : 2 utilisations possibles.
+>>>
+>>> Browserify est de la partie bien sur pour faire tout =E7a.
+>> Il semble que webpack est m=EAme plus performant que browserify (entendu
+>> lors d'un meetup)
+>> plus d'info ici : https://github.com/webpack/webpack
+> On disgresse, mais ca n'est pas aussi simple que ca.
+> On est =E0 6 mois de la sortie de es6, on a des confs sur es7, il est =
+
+> juste impensable de faire autre chose que des modules es6.
+
+Ouais doucement...
+
+Faut pas aller trop vite qd m=EAme, Angular n'est pas mort car la v2 =
+
+arrive et "casse tout" tout comme toutes les techniques de =
+
+modularisation JS ne sont pas mortes car ES6 pointe le bout de son nez.
+Caliopen aura le temps d'=EAtre r=E9=E9crit et de passer en v2 ou v3 d'ici =
+l=E0. =
+
+Faut juste =EAtre pragmatique. Ca bouge tellement dans le monde JS que le =
+
+code pondu aujourd'hui sera deprecated dans moins d'un an, quelque soit =
+
+la techno !
+
+> Ensuite, la techno de transpile/packaging/legacy, j'ai pas d'avis, =
+
+> webpack a l'air cool, 6to5 + browserify aussi.
+> Ca reste du d=E9tail d'impl=E9mentation.
+>
+> L'isomorphisme n=E9cessite forc=E9ment d'avoir du code qui diff=E8re selo=
+n =
+
+> la plateforme, dans une librairie ou dans notre code, mais =
+
+> g=E9n=E9ralement dans les deux.
+> La question c'est combien.
+>
+> my 2 cents
+> _______________________________________________
+> Caliopdev mailing list
+> Caliopdev@caliop.net
+> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+>
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev

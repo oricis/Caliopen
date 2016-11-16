@@ -1,0 +1,103 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai6Tt-0006fs-Lj
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 16:31:17 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:45575)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <acm@muc.de>)
+	id 1ai6Ts-0006fj-2U
+	for dev@caliopen.local; Mon, 21 Mar 2016 16:31:17 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <acm@muc.de>) id 1ai6To-00067V-Nm
+	for dev@caliopen.local; Mon, 21 Mar 2016 16:31:16 -0400
+Received: from mail.muc.de ([193.149.48.3]:12479)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <acm@muc.de>)
+	id 1ai6To-00067C-Ev
+	for dev@caliopen.local; Mon, 21 Mar 2016 16:31:12 -0400
+Received: (qmail 94986 invoked by uid 3782); 21 Mar 2016 20:31:10 -0000
+Received: from acm.muc.de (p579E9371.dip0.t-ipconnect.de [87.158.147.113]) by
+	colin.muc.de (tmda-ofmipd) with ESMTP;
+	Mon, 21 Mar 2016 21:31:08 +0100
+Received: (qmail 5821 invoked by uid 1000); 21 Mar 2016 20:33:58 -0000
+Date: Mon, 21 Mar 2016 20:33:58 +0000
+To: Vitalie Spinu <spinuvit@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+Message-ID: <20160321203358.GB3641@acm.fritz.box>
+References: <fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87fuvjeq9g.fsf@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87fuvjeq9g.fsf@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Delivery-Agent: TMDA/1.1.12 (Macallan)
+From: Alan Mackenzie <acm@muc.de>
+X-Primary-Address: acm@muc.de
+X-detected-operating-system: by eggs.gnu.org: FreeBSD 9.x
+X-Received-From: 193.149.48.3
+Cc: Dmitry Gutov <dgutov@yandex.ru>, Stefan Monnier <monnier@iro.umontreal.ca>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 20:31:17 -0000
+Content-Length: 1756
+Lines: 45
+
+Hello, Vitalie.
+
+On Mon, Mar 21, 2016 at 05:42:51PM +0100, Vitalie Spinu wrote:
+
+> >> On Mon, Mar 21 2016 10:43, Stefan Monnier wrote:
+
+> >> parse-partial-sexp is called from code exclusively and it just happens
+> >> that in multi-modes it is called outside of narrow region quite often.
+
+> > How/why?  Can you give some concrete scenario?
+
+> MM engine narrows to span region for a lot of tasks, most importantly
+> font-lock. If inner mode fortification functions misbehaves (ignoring
+> font-lock-dont-widen for example) like c-mode does this leads to trouble.
+
+That's a misunderstanding of what `font-lock-dont-widen' is.  It's
+purely a signal to font-lock.  Its doc string makes clear that it's
+intended for use by major modes.  It is for a major mode to set this
+flag, not to act on it.
+
+CC Mode absolutely needs to widen, to get the context necessary for
+correct fontification and indentation (which can be an arbitrary depth).  
+
+> So to avoid those troubles you would advice individual functions and
+> narrow them properly or apply other tricks like overwriting output
+> value or input args.  It all works fine till that function calls
+> parse-partial-sexp (or some other low level function) and blows with
+> args-out-of-range error.
+
+Reading some of the posts on emacs-devel today, it strikes me that
+narrowing might be the wrong tool for marking the boundaries of distinct
+regions where different major modes are in effect.  It seems to cause
+nothing but trouble.  I don't know what the right tool is, and it may
+not currently exist in Emacs.  But it might be a good use of time to
+work out what properties such boundary markers ought to have, and if
+necessary, to implement them.
+
+[ .... ]
+
+
+>   Vitalie
+
+-- 
+Alan Mackenzie (Nuremberg, Germany).
+

@@ -1,0 +1,202 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id C51BB120B18;
+	Fri, 21 Nov 2014 12:20:58 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -2.599
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.599 tagged_above=-999 required=5
+	tests=[BAYES_00=-2.599]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id PAmP2DnObEAY; Fri, 21 Nov 2014 12:20:56 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 6AD61120B0A;
+	Fri, 21 Nov 2014 12:20:56 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 469046971BD12;
+	Fri, 21 Nov 2014 12:20:48 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id v-Ecdp3iZ5FM; Fri, 21 Nov 2014 12:20:47 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id C94EA697569BF;
+	Fri, 21 Nov 2014 12:20:44 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 8AEFC6841C528
+ for <caliopdev@caliop.net>; Fri, 21 Nov 2014 12:20:42 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id TBBQxWFZ5x0f for <caliopdev@caliop.net>;
+ Fri, 21 Nov 2014 12:20:37 +0100 (CET)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
+ [217.70.183.197])
+ (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id A46FD6971BD0F
+ for <caliopdev@caliop.net>; Fri, 21 Nov 2014 12:20:37 +0100 (CET)
+Received: from tao.gandi.net (unknown [217.70.176.162])
+ (Authenticated sender: mric@chamal.fr)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 0D1FA41C0B8
+ for <caliopdev@caliop.net>; Fri, 21 Nov 2014 12:20:36 +0100 (CET)
+Date: Fri, 21 Nov 2014 12:21:37 +0100
+From: Aymeric Barantal <mric@chamal.fr>
+To: caliopdev@caliop.net
+Message-ID: <20141121112137.GA15318@tao.gandi.net>
+MIME-Version: 1.0
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Subject: [Caliopdev] Compte rendu reunion 21 Novembre
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============0091515836=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+
+--===============0091515836==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ew6BAiZeqk4r7MaW"
+Content-Disposition: inline
+
+
+--ew6BAiZeqk4r7MaW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Reunion Caliopen 21 novembre 2014
+
+Presents:
+
+- Thomas
+- Laurent
+- Kajan
+- Aymeric
+
+
+# Retours sur la premiere version du screencast propose par Thomas
+
+## Ajout d'ecrans pour configuration du compte
+
+- welcome popup apres connexion
+    -> Mode assistant, take a tour
+
+- ecrans de configuration d'une nouvelle adresse email
+    -> Sur certains serveur (gmail, yahoo) on peut ne demander en
+    complement que le mot de passe, les autres parametres peuvent
+    etre deduits.
+
+    -> que imaps pour le moment en protocole mail
+    -> choix de gestion du contenu a simplifier:
+        - que 2 choix (only all messages from now, all messages)
+        - faire comme les clients news, ne recuperer que les 100
+        derniers par defaut.
+
+    -> prevoir le suivi de l'importation une fois le compte
+    configure (estimer le nombre de message le plus tot possible)
+
+    -> Le take a tour continue ensuite, presentation des fonctions
+    principales (recherche, reglette de niveau de confidentialite et
+    d'importance)
+
+- Proposer dans la demo de creer autre chose qu'un compte mail
+
+- Comment inciter le client a remplir des infos qu'il n'a pas=20
+obligatoirement envie de remplir, pour ameliorer son niveau de
+confidentialite ?
+
+    -> Ce sont des achievements a presenter au client
+        - importer une cle
+        - avoir des contacts ayant des cles pgp, utilisant caliopen
+        - creer un compte caliopen
+        - declarer  un device
+
+        - limiter certaines fonctions tant qu'un certain niveau
+        pas atteint (partage calendrier, partage de filtre, de
+        fichiers).
+
+    -> Faire une liste des story de gamification: Laurent
+
+## Seconde version du screencast attendu pour vendredi 28.
+
+# Choix du framework JS
+
+- utilisation de la matrice proposee par Alban apres quelques
+  simplifications (un seul angular, peut etre ne pas garder
+  sails)
+
+- diffusion a tous les interesses voulant voter
+
+- il faudrait avoir toutes les matrices remplies pour
+vendredi 28 novembre.
+
+## Personnes participant a minima a ce vote
+
+- Alban
+- Alex
+- Julien
+- David
+- Diane
+- Kajan
+- Aymeric
+- ?
+
+# Realisation de spec demande par Kajan, en se basant sur
+le mockup.
+
+Derouler le mockup et ses fonctionnalites pour ce qui doit
+exister strictement en v1 -> Laurent
+
+On qualifiera ensuite la complexite de realisation cote
+frontend et backend.
+
+# Prochaine reunion vendredi 5 Decembre a 10h30 chez Gandi
+
+
+--ew6BAiZeqk4r7MaW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQEcBAEBAgAGBQJUbyBBAAoJEA5oxPhdBNj8HXEH/RF8zlyVBY/A6y/bxQSe9YSF
+zTwUxQZTzcYSjnAGxPdlktMCIm5zARNxuAoiup8jfQ8U4+565ULkZ2GGoeG/1CYJ
+/bVKu6NBBzQdTWIEaKLEizwZNW6KFYSNu6yYWuimYKTMZkAbMimQQrV76SPDMG58
+ViDGJj4xCzmt7Qza1163uxuf+G7Jibvj69onL+lr3sCkAlgMbnzSAFfqUpdrA6JS
+B7HGh1z94jBAzt4JhlbpdtVYIRDijvR2ouzkhgxATkvwO0GTADPqtOPz1HkOd8XJ
+sMMjZ/fLYspaUfX7kJcRmYpCh9+7Zz2CAlalcXCs9EOrw3uUkDcsfpoalE1+1MM=
+=qHnW
+-----END PGP SIGNATURE-----
+
+--ew6BAiZeqk4r7MaW--
+
+--===============0091515836==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============0091515836==--

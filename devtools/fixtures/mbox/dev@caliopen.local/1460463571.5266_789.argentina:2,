@@ -1,0 +1,80 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ammO2-00073u-Sb
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 14:04:34 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:40114)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1ammO0-000733-MM
+	for dev@caliopen.local; Sun, 03 Apr 2016 14:04:33 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1ammNx-00061d-Fn
+	for dev@caliopen.local; Sun, 03 Apr 2016 14:04:32 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:57100)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1ammNx-00061Z-Bv; Sun, 03 Apr 2016 14:04:29 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:3650
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1ammNw-0005ME-CU; Sun, 03 Apr 2016 14:04:28 -0400
+Date: Sun, 03 Apr 2016 21:04:00 +0300
+Message-Id: <83r3empo1b.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Andreas Schwab <schwab@linux-m68k.org>
+In-reply-to: <871t6mzjc3.fsf@linux-m68k.org> (message from Andreas Schwab on
+	Sun, 03 Apr 2016 19:35:24 +0200)
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<20160403111708.GA3537@acm.fritz.box>
+	<87lh4uex9h.fsf@acer.localhost.com>
+	<20160403121458.GC3537@acm.fritz.box>
+	<87bn5qeuxo.fsf@acer.localhost.com> <838u0urb1w.fsf@gnu.org>
+	<8760vyemy0.fsf@acer.localhost.com> <8337r2r996.fsf@gnu.org>
+	<8737r2el7d.fsf@acer.localhost.com> <83zitapsvl.fsf@gnu.org>
+	<8760vyzmm6.fsf@linux-m68k.org> <83wpoepqjf.fsf@gnu.org>
+	<871t6mzjc3.fsf@linux-m68k.org>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: acm@muc.de, i.lohmar@gmail.com, dev@caliopen.local, kaushal.modi@gmail.com
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 18:04:33 -0000
+Content-Length: 908
+Lines: 26
+
+> From: Andreas Schwab <schwab@linux-m68k.org>
+> Cc: i.lohmar@gmail.com,  acm@muc.de,  kaushal.modi@gmail.com,  dev@caliopen.local
+> Date: Sun, 03 Apr 2016 19:35:24 +0200
+> 
+> Eli Zaretskii <eliz@gnu.org> writes:
+> 
+> >> From: Andreas Schwab <schwab@linux-m68k.org>
+> >> Cc: Ingo Lohmar <i.lohmar@gmail.com>,  acm@muc.de,  kaushal.modi@gmail.com,  dev@caliopen.local
+> >> Date: Sun, 03 Apr 2016 18:24:33 +0200
+> >> 
+> >> Eli Zaretskii <eliz@gnu.org> writes:
+> >> 
+> >> > But we were talking about "git pull", not about merge.
+> >> 
+> >> pull == fetch+merge.
+> >
+> > But "git help pull" != "git help fetch"+"git help merge".
+> 
+> What's your point?  pull has additional options.
+
+My point is that we were talking about "git pull", and therefore the
+relevant documentation is the man page of "pull", not of "merge".  The
+man page of "pull" no longer warns about pulling when there are
+uncommitted changes.
+
+

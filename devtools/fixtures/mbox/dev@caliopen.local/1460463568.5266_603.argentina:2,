@@ -1,0 +1,146 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aihAU-0003aX-P3
+	for mharc-dev@caliopen.local; Wed, 23 Mar 2016 07:41:42 -0400
+Received: from eggs.gnu.org ([208.118.235.92]:33882)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aihAR-0003XB-O3
+	for dev@caliopen.local; Wed, 23 Mar 2016 07:41:40 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aihAO-0006J4-IB
+	for dev@caliopen.local; Wed, 23 Mar 2016 07:41:39 -0400
+Received: from mail-wm0-x231.google.com ([2a00:1450:400c:c09::231]:36930)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aihAO-0006IO-68
+	for dev@caliopen.local; Wed, 23 Mar 2016 07:41:36 -0400
+Received: by mail-wm0-x231.google.com with SMTP id p65so20112602wmp.0
+	for <dev@caliopen.local>; Wed, 23 Mar 2016 04:41:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=OBve/V5Q7sJhzr9U4IqgVcFAHZ9fr8YtluqV2+GKN8k=;
+	b=y/adXQ1KcEj9sKPsEM83fkF0YGjbaly/6v8N4wjoN2CBrom0weYdBvPWHQiXItlD3U
+	qlARH+FExEVgv6Mi8nsFsU4/G6rb2ok1p2F8mwktq4k8oGvCw+n4/tPh8xAQLosaJsoW
+	1uxHn8XZNuwoLc7Lfq66yINOVn74M00TrKKTiRcbl5pADMqOKCEafm8SKRONAGm5SULi
+	erTytaGv8HETpKcl9CBYlGY1qjcsaddXcq6tlc7slN/eg78KEa30/PhtsBKC3JZvYOKJ
+	6sxuOH27xm4nCwk6TmUe9zAW3rphUnDO50JF4ij4w/ztrE07c1iy0pUVJyvrsqApArxo
+	8OBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=OBve/V5Q7sJhzr9U4IqgVcFAHZ9fr8YtluqV2+GKN8k=;
+	b=gRpo/CwLKlJQ912OddXED5oop3OKKRzfbq8p6kIoc19JKgm6To26mp8DMmP+ZBLepx
+	GpdUQGmNyNce5Xs2xtVP7zJ01Am6U34JrYm80hf6aaRYGFQk65JgakKTrUIE7guw8/+O
+	k7Tq4hdat3k1ewG3TpCB8V9wOLm2c0LiD3rgu5WsESB0EQJaa3cFExR3uMSJD29IQcOY
+	iXuClhi+Y4tWm57ZKbZSsfgB03At22gU67GKVv5o+h1vFo5noNwnA3PmMPcg44ih7NDz
+	+eeFRZx86hJ785L6IMmSZHfopzMtJngUKBJURvA7OX17SW0xMdMpdDvpj/eVLNmz3pUG
+	NCRg==
+X-Gm-Message-State: AD7BkJL/oxdIPoDLBXNoQsk4r22JDs8O8jcfAfbjO5Sv8yAmFmD+A7OcbDQngXM1F8/i0A==
+X-Received: by 10.28.107.216 with SMTP id a85mr3265128wmi.96.1458733295407;
+	Wed, 23 Mar 2016 04:41:35 -0700 (PDT)
+Received: from localhost ([143.176.214.220])
+	by smtp.gmail.com with ESMTPSA id u16sm2578524wmd.5.2016.03.23.04.41.34
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Wed, 23 Mar 2016 04:41:34 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+	<jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87pounew9e.fsf@gmail.com>
+	<jwva8lrx4ov.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzda4h.fsf@gmail.com> <jwvwpovwuip.fsf-monnier+Inbox@gnu.org>
+	<87lh5bd4ib.fsf@gmail.com> <87egb3ryjc.fsf@gmail.com>
+	<877fgusum3.fsf@gmail.com> <8737risu8d.fsf@gmail.com>
+	<jwvbn66viar.fsf-monnier+Inbox@gnu.org> <87mvpqqxy7.fsf@gmail.com>
+	<jwvzitqpj68.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<877fguqp8x.fsf@gmail.com> <jwvio0euejl.fsf-monnier+emacs@gnu.org>
+Date: Wed, 23 Mar 2016 12:41:33 +0100
+In-Reply-To: <jwvio0euejl.fsf-monnier+emacs@gnu.org> (Stefan Monnier's message
+	of "Tue, 22 Mar 2016 22:22:57 -0400")
+Message-ID: <87bn65pgk2.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::231
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 23 Mar 2016 11:41:41 -0000
+Content-Length: 2618
+Lines: 58
+
+
+
+>> On Tue, Mar 22 2016 22:22, Stefan Monnier wrote:
+
+>> If user typed within a hard region the hard narrowed region, will the
+>> upper hard limit expand just as ZV does?
+
+> This is indispensable, yes.  No matter whether the hard limits are
+> folded int narrow-to-region or any other way: the upper limit has to be
+> a marker, and unless we strictly enforce that the hard limits can't be
+> circumvented at all, the lower limit would probably have to be a marker
+> as well.
+
+Ok. So we agree that there is work involved of tracking an extra
+marker. Whenever buffer is modified by low level code, it must track new ZH
+marker and respect the relationship between ZH and ZV. There are 544 occurrences
+of ZV in emacs source. In order to add this extra marker one would need to go
+through all of those cases and enforce the semantics of ZH.
+
+It might be that adjusting ZV macros might do the job, but I cannot judge
+because I am not yet familiar with buffer modification code.
+
+>> You might end up loosing text outside of the bounds if you modify the
+>> buffer and then call widen, but that's by design and this is how it's
+>> different from visual narrowing.  Hard limits stay the same
+>> irrespective of what happens to the buffer.
+
+> Sounds like a wart.  What's the benefit?
+
+True, but it's almost a direct implementation of the restriction in
+prog-widen. It has same limitations and multi-modes are completely fine with
+those. A with-widen-limits macro will suffice for multi-mode use case. But you
+proposed to extend it to permanent set-widen-limits or (narrow-to-region
+.. 'hard). I see the benefit of it in info mode but I think it's pretty
+marginal.
+
+The proposed non-marker implementation will deter usage of widen-limits in
+contexts that involve buffer modification. But it will work just fine with
+multi-modes and with read-only info use cases. It also works fine with editing
+as long as it's not followed by widen. If widen is used the buffer will be
+re-narrowed to old limits.
+
+I will look into ZH marker this weekend. Maybe it's not that hard as I imagine.
+
+>>>> limits at the end. Problems will occur if major modes start using hard
+>>>> limits in such contexts directly.
+>>> I don't see any reason why problems *will* occur in that case (tho, of
+>>> course, Murphy could be that reason).  So until such problems do show up,
+>>> I wouldn't worry.
+>> The problem is not hypothetical. It's occurring right now.
+
+> It can't because we don't have hard limits right now.
+
+Oh common. You know I was referring to current widen/narrow mechanism. It's one
+step to extrapolate to hard narrowing from there.
+
+  Vitalie
+

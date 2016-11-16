@@ -1,0 +1,117 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai5JD-0002aM-6S
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 15:16:11 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:55563)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai5JA-0002ZN-BZ
+	for dev@caliopen.local; Mon, 21 Mar 2016 15:16:09 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai5J5-0004yd-BF
+	for dev@caliopen.local; Mon, 21 Mar 2016 15:16:08 -0400
+Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236]:37290)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai5J5-0004yS-4F
+	for dev@caliopen.local; Mon, 21 Mar 2016 15:16:03 -0400
+Received: by mail-wm0-x236.google.com with SMTP id p65so134759067wmp.0
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 12:16:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=MS71ooPew5MGvkr2kA+snDoeywHwT3Ir19wh1/k5820=;
+	b=LiDeV70+eVrM5vJzWK7fhs7yJiCW0p4+Bgtftov6qewr0u/FpM4tVtYv3BJ1pXgKZj
+	XDfGu41srGMPBHLjjZPY9hgD4J8cCXJm2F7HdlGHJq48dfGDXLUwIIPo9SI0PNko+shd
+	2V16+KCuqqcQmTG8fVWo6L0kErMVb1410uwE2+79DIVMp5q/oXvgDZEuEoAam+gHk6sn
+	VbDqTKGyl5wphyuycqnYx0DzopMYWErw36OGlFHJV6N+WGcAe6kGG99enTptDRRvHIjX
+	ymG6oKLdEYFbDHN5Tl8WleC9b7YGIo7wZXL6G0qGSuCAFzQ5s5oo/R2G1GUiv7z+ROwt
+	OZMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=MS71ooPew5MGvkr2kA+snDoeywHwT3Ir19wh1/k5820=;
+	b=YgR2SRznfJyGdEvr3bZG+e5Hh/DaqymD8LO7blXn5rDGatg75t11qSMWx/Almu8Bw4
+	9lRyP5bxtKYRu6aRszym9+2A0q5xHWirxpRHmYIFA8d6GgW/wWwb4+eMcAz+wp/ZVT8f
+	mebsKjDLTP+eeENWCEGsIyILiq5UaAo8o2GktvK3Rryx7pJrTtc0LdXKE1SpMLnAKv86
+	1MIlxZIjRNWs5S1UxG04bbwfLin82SjrtCGAM5UY29oWkDzulbxcxK66qyltDBWlBjH4
+	Vmmj7Eq4Tb9d9lo4x8AxaDQApcHPAZjEMGp326VvEprLgW1PBkMQv6gZkWuIz+DhH1yk
+	PSEQ==
+X-Gm-Message-State: AD7BkJL/I+pUBkVAmFwtC9t1sIGN1TElpxXmyKhn1rZM23JYnn4BDPjMhC/qTNdP1QHJIA==
+X-Received: by 10.28.107.80 with SMTP id g77mr14773276wmc.18.1458587762543;
+	Mon, 21 Mar 2016 12:16:02 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	i5sm26693165wjx.15.2016.03.21.12.16.01
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Mon, 21 Mar 2016 12:16:01 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@IRO.UMontreal.CA>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87fuvjeq9g.fsf@gmail.com> <jwv37rjya4z.fsf-monnier+Inbox@gnu.org>
+Date: Mon, 21 Mar 2016 20:16:01 +0100
+In-Reply-To: <jwv37rjya4z.fsf-monnier+Inbox@gnu.org> (Stefan Monnier's message
+	of "Mon, 21 Mar 2016 14:31:48 -0400")
+Message-ID: <87pound4lq.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::236
+Cc: Alan Mackenzie <acm@muc.de>, Dmitry Gutov <dgutov@yandex.ru>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 19:16:09 -0000
+Content-Length: 1242
+Lines: 27
+
+
+
+>> On Mon, Mar 21 2016 14:31, Stefan Monnier wrote:
+
+>> Other modes should re-use that generic infrastructure, or even better,
+>> do nothing, and leave to someone else to define a new polymode with
+>> host chunk being *the* mode. That every mode with basic needs for
+>> inner sub-modes tries to re-invent the wheel is a dead end.
+
+> I don't understand: every major mode's indentation code will have to pay
+> attention to the STRING-BEFORE/AFTER that it receives from the generic
+> code and will have to do something with it (it can ignore it but at the
+> cost of sub-optimal results).  And AFAIK this can only be done by the
+> major mode's code, not the generic mode's code.
+> [ I feel like I must be missing something.  ]
+
+The hope is that most modes will need the default implementation. Maybe
+prog-indentation-funciton need not even know about those arguments. Along what
+Dmitry proposed, there could be an optional extra piece
+prog-indentation-with-virtual-context-function that modes might choose to set.
+
+I think it might be good to try this as part of a multi-mode engine first. I can
+try it with polymode. If it's generic enough it could be ported into emacs in a
+later stage to be re-used with other multi-mode setups.
+
+  Vitalie
+

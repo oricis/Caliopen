@@ -1,0 +1,79 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an07B-0007Wd-8S
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 04:44:05 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:35301)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ulf.jasper@web.de>) id 1an078-0007Vr-Ux
+	for dev@caliopen.local; Mon, 04 Apr 2016 04:44:03 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ulf.jasper@web.de>) id 1an075-0006WC-OO
+	for dev@caliopen.local; Mon, 04 Apr 2016 04:44:02 -0400
+Received: from mout.web.de ([212.227.17.12]:56444)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ulf.jasper@web.de>) id 1an075-0006W6-Es
+	for dev@caliopen.local; Mon, 04 Apr 2016 04:43:59 -0400
+Received: from p55m-ud2 ([217.226.80.48]) by smtp.web.de (mrweb102) with
+	ESMTPSA (Nemesis) id 0LkPnr-1bOFny0LkJ-00cMhm; Mon, 04 Apr 2016 10:43:57
+	+0200
+From: Ulf Jasper <ulf.jasper@web.de>
+To: emacs-devel <emacs-devel@gnu.org>
+Subject: Initial occurence of 'diary-anniversary' in calendar
+Date: Mon, 04 Apr 2016 10:43:56 +0200
+Message-ID: <877fgdojar.fsf@web.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Provags-ID: V03:K0:YPhmZlMPeh3VptzyVKe47KmVnVBDmx2bz14v4vm7o1irjfuuGdT
+	CnW/3F/BDsDsegakDq3JhlEphriNEs1MwXYcORJ1y3JhIi/WvygpjN9buizt4i3niFkfD22
+	K5X0ZfIc2kjIw5czjcrH/Lo65TWlLbQKvwj9WInYNDxJTxxyceQ0gjkNr6SW08HiEGcQJRG
+	YOt28v0orM5HOdN8sp43Q==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:+5+PBHcOI5o=:dZkLpDdZ1xViRD3Vseyvzn
+	oY+DSFipmwn3q7DtF51Vr412S+UcZTS6yh+8g89s7MFtFdk3trelvxg9hM4kKcK/Pt0VIzFz5
+	WTXdwO5xxDSTpphln9cyWsA1vqi/Wwt3a0GKES2zzZJbqZQmvVDpo/+SP9wD9YT3vBfhPPIsY
+	bHUcPKbO0jv8Qua3USKoJVm/EJmyDxmcgTk8WHkb+U9891yh1y4O1IMt6wogTCjK2RANc2R67
+	/ZJYgqMG+5blfQ6Gqe+5/rBK4Ark/l5+XmACIkD0xPyEABpWL49I0y713AD7IvuK/k+ZUFs2l
+	HjlYYHhlc6sU6leCidu1Ya0uc39plM5m7T2i1IRay8MN4j74dqqbloVb3c50PnO4/lZbTK9xY
+	iCT5ipXg5tYxIohOobO/lYONH0ZWDm5Q5sRKLN3G8HKjYHXJUMFTlvbnT5xM3D1HbJDaaJ9bn
+	UupEjbuCZwBwDHULU+TxYtBcBAyMlwAdn/g/64hzVj1yoZGi1ry1EMAZbJ0yFx+DIDwodl7Rr
+	Id6Db92QCFkDjhsblj5sJA6rLe0azwZWw7qf/vRu4/lof9i6E4aySQG5VLYE6wwVug9FyY5BD
+	Q4smsIRmNX9m1DSUABeRQv52WgSGGi7OCOMHNwsPmC3OWg4ExeGFOaz5n8jlb2iSEeF2tdLoa
+	H/7gQHfBJ5LJaC+r11UdaqcJ9IjwzBJrZMxv84F5MMPpwzJyc9DdkEyd+t2bGJ8KltyzCT/qe
+	j3+8+yctSmX0LQ/E0Zs49Gu0InRLyKQRscTIxMR2A5+fct+7humX1+MPOVHiV7joUr1OUSLrB
+	kjVFE14
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.17.12
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 08:44:03 -0000
+Content-Length: 609
+Lines: 20
+
+Anniversary entries like
+
+    %%(diary-anniversary 4 4 2016) Mark My Diary
+
+will show up in the calendar only from 4 4 2017 on, i.e. one year after
+the actual event.  The initial occurrence of an anniversary (4 4 2016)
+does not get marked in the calendar.  Why is that?
+
+(Changing this behaviour would fix bug#23100 which results from that
+fact that icalendar.el considers 'diary-anniversary' to be equivalent to
+a YEARLY ical event.)
+
+Making the initial occurrence of an anniversary show up seems natural to
+me.  So I would like to implement that.  But maybe I am missing
+something here.  Am I?
+
+Best,
+Ulf
+
+

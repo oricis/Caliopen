@@ -1,0 +1,102 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id D6A4E120A59;
+	Sun, 30 Nov 2014 17:24:44 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -0.74
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.74 tagged_above=-999 required=5
+	tests=[BAYES_20=-0.74]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id 7e8xIVQo8Ouo; Sun, 30 Nov 2014 17:24:43 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 50C7D120A50;
+	Sun, 30 Nov 2014 17:24:43 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 2BE686B596B05;
+	Sun, 30 Nov 2014 17:24:42 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id hLW0ygKp1PN7; Sun, 30 Nov 2014 17:24:38 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 8D9756B4C0627;
+	Sun, 30 Nov 2014 17:24:37 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 758EC6B4C0627
+ for <caliopdev@caliop.net>; Sun, 30 Nov 2014 17:24:36 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id PD-x7LdQtjgi for <caliopdev@caliop.net>;
+ Sun, 30 Nov 2014 17:24:31 +0100 (CET)
+Received: from brasil.brainstorm.fr (brasil.brainstorm.fr [193.56.58.33])
+ by brassens.heberge.info (Postfix) with ESMTP id 929A06B4D6806
+ for <caliopdev@caliop.net>; Sun, 30 Nov 2014 17:24:31 +0100 (CET)
+Received: by brasil.brainstorm.fr (Postfix, from userid 1000)
+ id 77215209FBE6E; Sun, 30 Nov 2014 17:24:31 +0100 (CET)
+Date: Sun, 30 Nov 2014 17:24:31 +0100
+From: Laurent Chemla <laurent@brainstorm.fr>
+To: caliopdev@caliop.net
+Message-ID: <20141130162431.GF14633@brasil.brainstorm.fr>
+References: <5478A041.8020105@chamal.fr>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <5478A041.8020105@chamal.fr>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Subject: Re: [Caliopdev] Nouveau screencast (brut)
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+
+> N???h=E9sitez pas =E0 me faire vos remarques, bousculer un peu ce que
+> j???ai fait pour n???en tirer que le meilleur ;)
+
+Ok pour les lenteurs ajout=E9es pour rendre le truc plus r=E9el, mais
+elles sont parfois exag=E9r=E9e en sens inverse (on veut pas non plus
+que les gens abandonnent parce que =E7a bouge pas).
+
+"What type of account do you want to use ?" me semble mauvais: il
+va revenir l=E0 =E0 chaque fois qu'il ajoutera un compte externe, donc
+au minimum "do you want to add" mais =E7a me semble encore pas bon
+("type of account" me g=E8ne").
+
+Idem "add _at least_ one in your settings".
+
+"Enter one of your email addresses" pas au pluriel la majorit=E9 des
+gens n'en ont qu'une (en r=E9alit=E9 plusieurs mais ils l'ignorent) et
+=E7a va les perdre. "Information about session" est encore pire, et
+la suite aussi. Il faut revoir les textes compl=E8tement.
+
+RAS sur la suite: Benjamin Sonntag est en train de r=E9diger un
+texte pour mettre une voix (en/fr) sur la video, en plus des sous
+titres, donc signaler toute modif pour qu'on puisse tout faire
+coller ensuite. =C7a va =EAtre dans un pad =E0 venir.
+
+L.
+
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev

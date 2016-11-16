@@ -1,0 +1,64 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an5SW-0000cu-7G
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 10:26:28 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:40622)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1an5SU-0000cm-Lj
+	for dev@caliopen.local; Mon, 04 Apr 2016 10:26:27 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <rms@gnu.org>) id 1an5ST-0001jJ-OE
+	for dev@caliopen.local; Mon, 04 Apr 2016 10:26:26 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:47801)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1an5SJ-0001gP-1o; Mon, 04 Apr 2016 10:26:15 -0400
+Received: from rms by fencepost.gnu.org with local (Exim 4.82)
+	(envelope-from <rms@gnu.org>)
+	id 1an5SI-0007tk-5H; Mon, 04 Apr 2016 10:26:14 -0400
+Content-Type: text/plain; charset=Utf-8
+From: Richard Stallman <rms@gnu.org>
+To: John Wiegley <jwiegley@gmail.com>
+In-reply-to: <m2pou6clua.fsf@newartisans.com> (message from John Wiegley on
+	Sun, 03 Apr 2016 16:29:49 -0700)
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+References: <56F42269.10400@gmail.com>
+	<jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<E16BD3EC-F7ED-463C-804C-DCBA8E548B15@lunaryorn.com>
+	<jwvshzffwix.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<05663DCE-3E5B-41E2-8657-460B2D013B49@lunaryorn.com>
+	<m2pou6clua.fsf@newartisans.com>
+Message-Id: <E1an5SI-0007tk-5H@fencepost.gnu.org>
+Date: Mon, 04 Apr 2016 10:26:14 -0400
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local, swiesner@lunaryorn.com, monnier@iro.umontreal.ca
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: rms@gnu.org
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 14:26:27 -0000
+Content-Length: 527
+Lines: 14
+
+[[[ To any NSA and FBI agents reading my email: please consider    ]]]
+[[[ whether defending the US Constitution against all enemies,     ]]]
+[[[ foreign or domestic, requires you to follow Snowden's example. ]]]
+
+I think url should do what IceCat does: send a user-agent string that
+is widely encountered on the net, to thwart identification of users.
+
+-- 
+Dr Richard Stallman
+President, Free Software Foundation (gnu.org, fsf.org)
+Internet Hall-of-Famer (internethalloffame.org)
+Skype: No way! See stallman.org/skype.html.
+
+

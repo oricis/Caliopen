@@ -1,0 +1,147 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 56FFC120FFA;
+	Mon,  1 Dec 2014 11:49:51 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -100.605
+X-Spam-Level: 
+X-Spam-Status: No, score=-100.605 tagged_above=-999 required=5
+	tests=[BAYES_20=-0.74, FORGED_RCVD_HELO=0.135, USER_IN_WHITELIST=-100]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id r4VjpuS3xxHi; Mon,  1 Dec 2014 11:49:49 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 4EC76120FF6;
+	Mon,  1 Dec 2014 11:49:49 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id C0CF76A160D0D;
+	Mon,  1 Dec 2014 11:49:48 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id yv2ax5dUJHJX; Mon,  1 Dec 2014 11:49:45 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 659E06A160D02;
+	Mon,  1 Dec 2014 11:49:44 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 4E4256A160D0B
+ for <caliopdev@caliop.net>; Mon,  1 Dec 2014 11:49:43 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id SjTqdj7udKSh for <caliopdev@caliop.net>;
+ Mon,  1 Dec 2014 11:49:42 +0100 (CET)
+Received: from mail4.gandi.net (mail4.gandi.net [217.70.183.210])
+ by brassens.heberge.info (Postfix) with ESMTP id 3DD756A160D02
+ for <caliopdev@caliop.net>; Mon,  1 Dec 2014 11:49:42 +0100 (CET)
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+ by mail4.gandi.net (Postfix) with ESMTP id 195E9120FF7
+ for <caliopdev@caliop.net>; Mon,  1 Dec 2014 11:49:42 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+Received: from mail4.gandi.net ([217.70.183.210])
+ by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new,
+ port 10024) with ESMTP id mlNwDKa+FsBm for <caliopdev@caliop.net>;
+ Mon,  1 Dec 2014 11:49:41 +0100 (CET)
+Received: from new-host-2.home (ALille-653-1-407-5.w92-142.abo.wanadoo.fr
+ [92.142.63.5])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mail4.gandi.net (Postfix) with ESMTPSA id 17B99120FF6
+ for <caliopdev@caliop.net>; Mon,  1 Dec 2014 11:49:41 +0100 (CET)
+Mime-Version: 1.0 (Mac OS X Mail 8.1 \(1993\))
+From: Thomas Laurent <thomas.laurent@gandi.net>
+In-Reply-To: <20141130162431.GF14633@brasil.brainstorm.fr>
+Date: Mon, 1 Dec 2014 11:49:40 +0100
+Message-Id: <BC28FFD7-1F1D-4854-96B2-723CCB0DC6F7@gandi.net>
+References: <5478A041.8020105@chamal.fr>
+ <20141130162431.GF14633@brasil.brainstorm.fr>
+To: =?windows-1252?Q?Liste_de_d=E9veloppement_Caliopen?= <caliopdev@caliop.net>
+X-Mailer: Apple Mail (2.1993)
+Subject: Re: [Caliopdev] Nouveau screencast (brut)
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+
+> Le 30 nov. 2014 =E0 17:24, Laurent Chemla <laurent@brainstorm.fr> a =E9cr=
+it :
+> =
+
+> =
+
+>> N???h=E9sitez pas =E0 me faire vos remarques, bousculer un peu ce que
+>> j???ai fait pour n???en tirer que le meilleur ;)
+> =
+
+> Ok pour les lenteurs ajout=E9es pour rendre le truc plus r=E9el, mais
+> elles sont parfois exag=E9r=E9e en sens inverse (on veut pas non plus
+> que les gens abandonnent parce que =E7a bouge pas).
+
+A quel(s) moment(s) ?
+
+> =
+
+> "What type of account do you want to use ?" me semble mauvais: il
+> va revenir l=E0 =E0 chaque fois qu'il ajoutera un compte externe, donc
+> au minimum "do you want to add" mais =E7a me semble encore pas bon
+> ("type of account" me g=E8ne =BB).
+> =
+
+> Idem "add _at least_ one in your settings".
+> =
+
+> "Enter one of your email addresses" pas au pluriel la majorit=E9 des
+> gens n'en ont qu'une (en r=E9alit=E9 plusieurs mais ils l'ignorent) et
+> =E7a va les perdre. "Information about session" est encore pire, et
+> la suite aussi. Il faut revoir les textes compl=E8tement.
+
+Je suis compl=E8tement d=92accord. =C0 ce stade, je me suis content=E9 de =
+
+faire du maquettage. Comme je dis toujours : r=E9dacteur de contenu, =
+
+=E7a ne s=92improvise pas. Et m=EAme si je pense pouvoir aider sur ce point=
+, =
+
+je ne voulais pas faire l=92un au d=E9triment de l=92autre.
+
+> RAS sur la suite: Benjamin Sonntag est en train de r=E9diger un
+> texte pour mettre une voix (en/fr) sur la video, en plus des sous
+> titres, donc signaler toute modif pour qu'on puisse tout faire
+> coller ensuite. =C7a va =EAtre dans un pad =E0 venir.
+
+Okay, super !
+
+> =
+
+> L.
+> =
+
+> =
+
+> _______________________________________________
+> Caliopdev mailing list
+> Caliopdev@caliop.net
+> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev

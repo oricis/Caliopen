@@ -1,0 +1,321 @@
+Return-Path: <mail@info.astucemail.com>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id 91B1B209A30D5
+	for <laurent@brasil.brainstorm.fr>; Sat,  9 Apr 2016 08:49:03 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 7FDD33310011; Sat,  9 Apr 2016 08:49:03 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id 6CA35331690D; Sat,  9 Apr 2016 08:49:03 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: *******
+X-Spam-Status: Yes, score=7.2 required=5.0 tests=AWL,BAYES_50,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FROM_EXCESS_BASE64,HTML_MESSAGE,
+	RAZOR2_CF_RANGE_51_100,RAZOR2_CF_RANGE_E8_51_100,RAZOR2_CHECK,
+	RCVD_IN_DNSWL_NONE,URIBL_BLACK autolearn=spam version=3.3.2
+X-Spam-Report: 
+	* -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at http://www.dnswl.org/, no
+	*      trust
+	*      [195.154.17.233 listed in list.dnswl.org]
+	*  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
+	*      [URIs: noerec.com]
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+	*      [score: 0.5393]
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	*  0.9 RAZOR2_CHECK Listed in Razor2 (http://razor.sf.net/)
+	*  1.9 RAZOR2_CF_RANGE_E8_51_100 Razor2 gives engine 8 confidence level
+	*      above 50%
+	*      [cf: 100]
+	*  0.5 RAZOR2_CF_RANGE_51_100 Razor2 gives confidence level above 50%
+	*      [cf: 100]
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	*  1.0 FROM_EXCESS_BASE64 From: base64 encoded unnecessarily
+	*  0.5 AWL AWL: From: address is in the auto white-list
+X-Spam-DCC: : 
+Received: from mail10.mxea3.com (mail10.mxea3.com [195.154.17.233])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id 7126533181FC
+	for <dev@caliopen.local>; Sat,  9 Apr 2016 08:49:00 +0200 (CEST)
+X-QHPSI: clean
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed;
+	d=info.astucemail.com; s=default; h=Date:Message-ID:To:From:
+	Reply-To:Subject:X-Mailer:Precedence:List-Unsubscribe:
+	MIME-Version:Content-Type:Content-Transfer-Encoding; bh=hcEaG68/
+	phcmAa8QHl9rmAeZrHQ=; b=ntiIRW5bes3v0MXVBJVNkIwKGg/XrcNOBbLwSzFj
+	SB1iYPE8dGoKQfWSzROHm6RCcmXFpJqyksrbIW50trL1DGg12bpJDAJL/r8G38CX
+	J9X7ni4+F+4CBe55k6dk2UDdZSLiNfom+dA5pQXlvb+pE+nGeAQFYH/AD6/icDI9
+	dbI=
+Received: (indimail 4847 invoked by uid 0); Sat, 9 Apr 2016 08:39:37 +0200
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed;
+	d=info.astucemail.com; s=default; x=1460788777; h=DomainKey-Signature:
+	Date:Message-ID:To:From:Reply-To:Subject:X-Mailer:Precedence:
+	List-Unsubscribe:MIME-Version:Content-Type:
+	Content-Transfer-Encoding; bh=hcEaG68/phcmAa8QHl9rmAeZrHQ=; b=s5
+	G0ZJOhAzZFTi882PxaYYSh4aUQ8JQeDn1+v49uCY/I3DD59LrfeDTRZA8YME2Mjb
+	FRsoxMHeozxq09Q+9YHO9/FHG5gJEucoi3XaBx1uxTuJh5o0kXLFC821+yFazodf
+	742UAykV2bBJa3VzDrfawqwONXPZhvEn0R2hLB/SU=
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+    s=default; d=info.astucemail.com;
+    b=YBi21gPc5Q/bXK8UzrkoFmXtPjPgYGyR7vkhKBI8/lwLrLp5rmA5l/8YHlpNq8Z7RZZN1IkRyScMuh2GdXdjdS7oJWD89mSJ2yp2Lg1reRxNVXIEMzPC1xW/An+beWsGHC1GRFxAOGn8GnlKyZKT802yA6w+lJIc4FExWuCYr68=;
+Date: Sat, 9 Apr 2016 08:39:37 +0200
+Message-ID: <20160409063937.4825.indimail@im3.mxea3.com>
+To: dev@caliopen.local
+From: =?utf-8?B?Vm90cmUgbXV0dWVsbGU=?= <mail@info.astucemail.com>
+Reply-To: mail@info.astucemail.com <mail@info.astucemail.com>
+Subject: =?utf-8?B?VHJvdXZleiB1bmUgbXV0dWVsbGUgc2VuaW9yIG1vaW5zIGNoZXJl?=
+X-Mailer: Mailxpertise
+X-List: 10
+X-Account: 187
+X-Campaign: 1568
+X-Outip: 195.154.17.233
+X-Unique: 107487
+X-Abuse: abuse@mailxpertise.com
+X-Mode: 1
+Precedence: bulk
+List-Unsubscribe: <http://info.astucemail.com/JTI2YSUzRDE4NyUyNmMlM0QxNTY4JTI2ZSUzRDEwNzQ4NyUyNmVtJTNEbGF1cmVudCU0MGJyYWluc3Rvcm0uZnIlMjZ0JTNEYyUyNmwlM0QyOTQwNyUyNmYlM0Qy>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="e65a887235fca42a65ffaaa285cc0b8c"
+Content-Transfer-Encoding: 8bit
+X-Spam-Prev-Subject: =?utf-8?B?VHJvdXZleiB1bmUgbXV0dWVsbGUgc2VuaW9yIG1vaW5zIGNoZXJl?=
+Content-Length: 12166
+Lines: 233
+
+--e65a887235fca42a65ffaaa285cc0b8c
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+http://info.astucemail.com/YSUzRDE4NyUyNmMlM0QxNTY4JTI2ZSUzRDEwNzQ4NyUyNmwlM0QyOTQwNCUyNnMlM0QyMDM4NTY0JTI2dCUzRGMlMjZscyUzRDEwJTI2dW5zdWJzY3JpYmVfbGluayUzRCUyNm1pcnJvcl9saW5rJTNE 
+
+ 		Mutuelle Senior [1]
+
+ 		 [1]
+
+ 		Pourquoi payer plus cher ?
+
+ 		Vos contrats d'assurance sont trop chers ? Ils ne sont plus adaptés à votre situation ?
+
+ 		Nous vous proposons de vous mettre en relation avec des experts qui vous guideront dans le choix
+de la bonne assurance et vous feront économiser jusqu'à 2500 euros par an en fonction du produit
+souhaité.
+
+ 		TROUVER UNE MUTUELLE SENIOR MOINS CHèRE [1]
+
+ 		 [1]
+
+ 		 Remboursements adaptés
+
+ 		 Comparatif en 2 minutes
+
+ 		 Gratuit et sans engagement
+
+http://info.astucemail.com/YSUzRDE4NyUyNmMlM0QxNTY4JTI2ZSUzRDEwNzQ4NyUyNmwlM0QyOTQwNiUyNnMlM0QyMDM4NTY0JTI2dCUzRGMlMjZscyUzRDEw 
+
+Links:
+------
+[1] http://Clicks.noerec.com/click_c(664)-s(701)-m(2076)-e(4637)?u=http%3A%2F%2Fmes-meilleures-assurances.fr%2Fmutuelle-senior%2F003%23siteKey%3Dhttpdata-factroy-santefr
+
+
+--e65a887235fca42a65ffaaa285cc0b8c
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="NOINDEX, NOFOLLOW" name="ROBOTS">
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<meta content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" name="viewport">
+	<title>Mutuelle SENIOR</title>
+	<style type="text/css">/* Reset */
+    * { margin-top: 0px; margin-bottom: 0px; padding: 0px; border: none; line-height: normal; outline: none; list-style: none; -webkit-text-size-adjust: none; -ms-text-size-adjust: none; }
+    table { border-collapse: collapse !important; padding: 0px !important; border: none !important; border-bottom-width: 0px !important; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    table td { border-collapse: collapse; }
+    body { margin: 0px; padding: 0px; }
+    .ExternalClass * { line-height: 100%; }
+
+    /* Responsive */
+    @media only screen and (max-width:600px) {
+
+    /* Tables
+    parameters: width, alignment, padding */
+     
+    table[class=scale] { width: 100%!important; }
+    table[class=scale90] { width: 90%!important; }
+    table[class=scale85] { width: 85%!important; }
+    table[class=scale80] { width: 80%!important; }
+    table[class=scale75] { width: 55%!important; }
+    table[class=scale-reset] { width: 100%!important; height: auto!important; }
+
+    /* Td */
+    td[class=scale-left] { width: 100%!important; text-align: left!important;}
+    td[class=scale-left-bottom] { width: 100%!important; text-align: left!important; padding-bottom: 25px!important; }
+    td[class=scale-left-top] { width: 100%!important; text-align: left!important; padding-top: 25px!important; }
+    td[class=scale-left-all] { width: 100%!important; text-align: left!important; padding-top: 25px!important; padding-bottom: 25px!important; }
+    td[class=scale-center] { width: 100%!important; text-align: center!important;}
+    td[class=scale-center-both] { width: 100%!important; text-align: center!important; padding-left: 20px!important; padding-right: 20px!important; }
+    td[class=scale-center-both-top] { width: 100%!important; text-align: center!important; padding-left: 20px!important; padding-right: 20px!important; padding-top: 25px!important; }
+    td[class=scale-center-bottom] { width: 100%!important; text-align: center!important; padding-bottom: 25px!important; }
+    td[class=scale-center-top] { width: 100%!important; text-align: center!important; padding-top: 25px!important; }
+    td[class=scale-center-all] { width: 100%!important; text-align: center!important; padding-top: 25px!important; padding-bottom: 25px!important; padding-left: 20px!important; padding-right: 20px!important; }
+    td[class=scale-center-extraall] { width: 100%!important; text-align: center!important; padding-top: 54px!important; padding-bottom: 25px!important; }
+    td[class=scale-right] { width: 100%!important; text-align: right!important;}
+    td[class=scale-right-bottom] { width: 100%!important; text-align: right!important; padding-bottom: 25px!important; }
+    td[class=scale-right-top] { width: 100%!important; text-align: right!important; padding-top: 25px!important; }
+    td[class=scale-right-all] { width: 100%!important; text-align: right!important; padding-top: 25px!important; padding-bottom: 25px!important; }
+    td[class=scale-center-extratop] { width: 100%!important; text-align: center!important; padding-top: 60px!important; }
+    td[class=reset] { height: 0px!important; }
+
+    p[class=reset] { margin-left: 0px!important; margin-right: 0px!important; }
+    p[class=reset-top] { margin-top: 0px!important; }
+
+    img[class="reset"] { display: inline!important; }
+
+    }
+	</style>
+</head>
+<body style="margin-top: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; width: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+<div style="text-align: center;"><div align="center"><font color="#000000" style="font-size:11px;font-family:Verdana,Arial,Helvetica,sans-serif;"><br>Pour visualiser correctement ce message, accédez à la <a href="http://info.astucemail.com/YSUzRDE4NyUyNmMlM0QxNTY4JTI2ZSUzRDEwNzQ4NyUyNmwlM0QyOTQwNSUyNnMlM0QyMDM4NTY0JTI2dCUzRGMlMjZscyUzRDEwJTI2dW5zdWJzY3JpYmVfbGluayUzRCUyNm1pcnJvcl9saW5rJTNEJTI2ZW1haWwlM0RiR0YxY21WdWRFQmljbUZwYm5OMGIzSnRMbVp5">version en ligne</a><br><br></font></div></div>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="scale" width="100%">
+	<tbody>
+		<tr>
+			<td height="50" style="background-color: #4e9cb5 ;">
+			<table align="center" border="0" cellpadding="0" cellspacing="0" class="scale" width="620">
+				<tbody>
+					<tr>
+						<td>
+						<table align="left" border="0" cellpadding="0" cellspacing="0" class="scale" width="295">
+							<tbody>
+								<tr>
+									<td class="scale-center-both" height="60"><a href="http://info.astucemail.com/YSUzRDE4NyUyNmMlM0QxNTY4JTI2ZSUzRDEwNzQ4NyUyNmwlM0QyOTQwOCUyNnMlM0QyMDM4NTY0JTI2dCUzRGMlMjZscyUzRDEw" style="font-family: 'Arial', 'sans-serif';font-size: 22px; color: #fff; fontw-eight:bold;text-decoration:none; border-bottom: 2px solid #fff;
+    border-top: 2px solid #fff;">Mutuelle Senior</a></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table align="right" border="0" cellpadding="0" cellspacing="0" class="scale" style="font-family: 'Arial', 'sans-serif';font-size: 14px;" width="295">
+							<tbody>
+								<tr>
+									<td class="scale-center-both" height="60" style="text-align: right; color: #ffffff;"><a href="http://info.astucemail.com/YSUzRDE4NyUyNmMlM0QxNTY4JTI2ZSUzRDEwNzQ4NyUyNmwlM0QyOTQwOSUyNnMlM0QyMDM4NTY0JTI2dCUzRGMlMjZscyUzRDEw" style="color: #ffffff;"><img src="http://info.astucemail.com/img/1568/images/1614442513570.jpg" style="width: 295px;height:auto;" width="295"></a></td>
+								</tr>
+							</tbody>
+						</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="scale" width="100%">
+	<tbody>
+		<tr>
+			<td height="50"></td>
+		</tr>
+		<tr>
+			<td height="50">
+			<table align="center" border="0" cellpadding="0" cellspacing="0" class="scale85" width="620">
+				<tbody>
+					<tr>
+						<td class="scale-center-both" height="20" style="font-family: 'Arial','sans-serif';font-size: 30px; color: #444444;">Pourquoi payer plus cher ?</td>
+					</tr>
+					<tr>
+						<td height="20"></td>
+					</tr>
+					<tr>
+						<td class="scale-center" height="20" style="font-family:  'Arial','sans-serif';font-size: 16px; color: #788891;">Vos contrats d'assurance sont trop chers ? Ils ne sont plus adaptés à votre situation ?</td>
+					</tr>
+					<tr>
+						<td class="scale-center" height="20" style="font-family: 'Segoe UI', 'Segoe', 'Segoe WP', 'Helvetica Neue', 'Roboto', 'Helvetica', 'Arial', 'Tahoma', 'Verdana', 'sans-serif';font-size: 16px; color: #788891;"></td>
+					</tr>
+					<tr>
+						<td class="scale-center" height="20" style="font-family: 'Arial','sans-serif';font-size: 16px; color: #788891;">Nous vous proposons de vous mettre en relation avec des experts qui vous guideront dans le choix de la bonne assurance et vous feront économiser jusqu'à 2500 euros par an en fonction du produit souhaité.</td>
+					</tr>
+					<tr>
+						<td height="50"></td>
+					</tr>
+					<tr>
+						<td height="20">
+						<table align="center" border="0" cellpadding="0" cellspacing="0" max-width="400">
+							<tbody>
+								<tr>
+									<td style="font-family:'Arial','sans-serif';font-size: 20px; text-align: center; color: #222222;"><a href="http://info.astucemail.com/YSUzRDE4NyUyNmMlM0QxNTY4JTI2ZSUzRDEwNzQ4NyUyNmwlM0QyOTQxMCUyNnMlM0QyMDM4NTY0JTI2dCUzRGMlMjZscyUzRDEw" style="text-decoration: none; color: #222222; padding: 22px 21px 21px 21px; border-radius: 3px; background-color: #bad738;display:block;border-bottom:4px solid #92ac1e;"><strong>Trouver une Mutuelle SENIOR moins chère</strong></a></td>
+								</tr>
+							</tbody>
+						</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="scale" width="100%">
+	<tbody>
+		<tr>
+			<td height="50" style="background-color:#ffffff;"></td>
+		</tr>
+		<tr>
+			<td height="50" style="background-color:#ffffff;">
+			<table align="center" border="0" cellpadding="0" cellspacing="0" class="scale" width="620">
+				<tbody>
+					<tr>
+						<td>
+						<table align="left" border="0" cellpadding="0" cellspacing="0" class="scale" width="295">
+							<tbody>
+								<tr>
+									<td class="scale-center-both" height="auto"><a alt="mutuelle SENIOR" href="http://info.astucemail.com/YSUzRDE4NyUyNmMlM0QxNTY4JTI2ZSUzRDEwNzQ4NyUyNmwlM0QyOTQxMSUyNnMlM0QyMDM4NTY0JTI2dCUzRGMlMjZscyUzRDEw" style="display:block;border:0;"><img src="http://info.astucemail.com/img/1568/images/7579106355707.png" style="width: 295px; margin-bottom: -4px;" width="295"></a></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table align="left" border="0" cellpadding="0" cellspacing="0" class="scale" style="font-family: 'Arial','sans-serif';font-size: 20px; color: #444444;" width="295">
+							<tbody>
+								<tr>
+									<td class="scale-center" height="20" style="text-align: left; color: #444444;"><img src="http://info.astucemail.com/img/1568/images/1513169799570.png" style="display:inline;top:5px;position:relative;"> Remboursements adaptés</td>
+								</tr>
+								<tr>
+									<td height="20"></td>
+								</tr>
+								<tr>
+									<td class="scale-center" height="20" style="text-align: left; color: #444444;"><img src="http://info.astucemail.com/img/1568/images/1398114836570.png" style="display:inline;top:5px;position:relative;"> Comparatif en 2 minutes</td>
+								</tr>
+								<tr>
+									<td height="20"></td>
+								</tr>
+								<tr>
+									<td class="scale-center" style="text-align: left; color: #444444;"><img src="http://info.astucemail.com/img/1568/images/1026775430570.png" style="display:inline;top:5px;position:relative;"> Gratuit et sans engagement</td>
+								</tr>
+								<tr>
+									<td height="20"></td>
+								</tr>
+							</tbody>
+						</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="30" style="background-color:#4e9cb5;"></td>
+		</tr>
+	</tbody>
+</table>
+<img alt="" src="http://Clicks.noerec.com/display_c(664)-s(701)-m(2076)-e(4637)">
+<div style="text-align: center;"><div align="center"><font color="#000000" style="font-size:11px;font-family:Verdana,Arial,Helvetica,sans-serif;"><br>Pour cesser de recevoir nos informations sur l'adresse dev@caliopen.local, <a href="http://info.astucemail.com/YSUzRDE4NyUyNmMlM0QxNTY4JTI2ZSUzRDEwNzQ4NyUyNmwlM0QyOTQwNyUyNnMlM0QyMDM4NTY0JTI2dCUzRGMlMjZscyUzRDEw">désabonnez-vous</a>.</font></div></div>
+<img src="http://info.astucemail.com/YSUzRDE4NyUyNmMlM0QxNTY4JTI2ZSUzRDEwNzQ4NyUyNnMlM0QyMDM4NTY0JTI2bHMlM0QxMCUyNnQlM0Rv" alt="Afficher les images" width="1" height="1" /></body>
+</html>
+
+
+--e65a887235fca42a65ffaaa285cc0b8c--

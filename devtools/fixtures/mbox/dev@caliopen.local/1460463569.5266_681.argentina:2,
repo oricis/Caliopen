@@ -1,0 +1,103 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1afWMy-0001oS-Rs
+	for mharc-dev@caliopen.local; Mon, 14 Mar 2016 13:33:28 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:52570)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1afWMw-0001lF-2P
+	for dev@caliopen.local; Mon, 14 Mar 2016 13:33:26 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1afWMs-0007WC-2d
+	for dev@caliopen.local; Mon, 14 Mar 2016 13:33:26 -0400
+Received: from mout.kundenserver.de ([217.72.192.75]:49669)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1afWMr-0007Vl-QK
+	for dev@caliopen.local; Mon, 14 Mar 2016 13:33:22 -0400
+Received: from [192.168.178.35] ([77.12.82.127]) by mrelayeu.kundenserver.de
+	(mreue102) with ESMTPSA (Nemesis) id 0MBke7-1aVJEW1Gf1-00Ambm;
+	Mon, 14 Mar 2016 18:33:19 +0100
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+To: dev@caliopen.local
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+From: =?UTF-8?Q?Andreas_R=c3=b6hler?= <andreas.roehler@online.de>
+Message-ID: <56E6F635.6030400@online.de>
+Date: Mon, 14 Mar 2016 18:34:45 +0100
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:38.0) Gecko/20100101
+	Icedove/38.5.0
+MIME-Version: 1.0
+In-Reply-To: <20160314151621.GF1894@acm.fritz.box>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K0:31A34G4wZpQJcuFBb9DyAJ9m1nI7TaPO6HIX/4scPZq77lwg8K5
+	3GVl2vMmSQJG5cGwNnkzWk9DBJoYnKSdx2Q0yK4uP9q1cFCMGSlAdN2A6ls4nryKQBVYjc6
+	3/hyy/HRk+mSxf1YgK8MHmN8sO3x122SRTQedTRXRKXMh5POmKba9nIYHUdbfcI3OLqWnZD
+	j5TLSGhRmqZNZY2ms2l/A==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:1bMzXb9HGKY=:5WsVCP19DzN4a8+pVNvMKg
+	16sytt89fMUnuF2lxXrJICpPs39LXroKcxyTeXj1gYyR49dp/Zl0ug4Ed7wZHDBMEpsaWbeZz
+	GarShhldoWTI24O4joZGnSfBs01ST/0vWfLngzTwoj9EVFCFMaBXWLWmDAlYjIStOeW1VVYtP
+	xQxhVsWcAPD4nsV48f0vN1dcOmP17qV8Oyzv7MDhLxnVeuE02JVaMy45SUgYSSu9N9y0N7wys
+	UJSJaM4UTwtOftypicvL4hoiLGjvHORgFj3qCGkrZbhKn8swdKDFkKLpUOsZ1X+gYiHoFoazS
+	4GuczsK5dTPviBgxgma385u6QTIalUSZLEf5SoHEWD+JtG9BNWWu/mO+qT6IKcUtOv4a965YD
+	YjWWaPy3+6rbg4eQI8G2J6YeNx41JeaBcxeUeNXeOY5Gbp0CUH+MCa6bayADyCytzZMjRVUUu
+	gTexB67T13ko2blF4//IvXYH9v4IqGfmvYLkS5cbBAYLvNXOiioIt45g1yaiyEyaD05VO5xbc
+	2yV3oChLF1N2XDe4zlWbXVa6/EDc2qaDaNvh43ZP44k+sFA/EIVaGS/9RESvd+LR49jHb4/FN
+	rAEiuSbSau3p1tJzXV5zhN3XtMni6KR9GU/PGXQoLwpq4FTzOvz9fH4+KVZePONrlvWnWgkd+
+	obseu/OljdzcHm4h6LkZBQ9MDuoFeujJ43aXINbL/3k0hihp+uicoqVvkn2FWo1GJAYLB6A1D
+	Le8SKsZ+7TJFtQuz
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 217.72.192.75
+Cc: Alan Mackenzie <acm@muc.de>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 14 Mar 2016 17:33:27 -0000
+Content-Length: 1604
+Lines: 33
+
+
+
+On 14.03.2016 16:16, Alan Mackenzie wrote:
+> Hello, Dmitry.
+>
+> On Sat, Mar 12, 2016 at 12:38:49AM +0200, Dmitry Gutov wrote:
+>> On 03/12/2016 12:15 AM, Alan Mackenzie wrote:
+>>>> Except the multiple-major-mode case, which we'd ideally try to
+>>>> accommodate, too.
+>>> How does this code handle the changeover of syntax tables at a mode
+>>> boundary?
+>> The "inner" regions start with an "empty", top-level state. This is
+>> actually fine, because these are usually small enough not to benefit
+>> from the syntax-ppss cache too much (and syntax-ppss-last still helps).
+>> The parts of the outer region following a subregion with different
+>> syntax table... rely on a few hacks, and a manual application of a
+>> `syntax-table' property when necessary. We need a better solution there,
+>> but it's probably out of scope for this discussion.
+> How about an extension to the parse-partial-sexp (etc.) code?  For
+> example, a feature I would call an "island", where a character could be
+> marked with the "island start" syntax-table property, and another
+> character lower down could be marked with the "island end" character.
+> parse-partial-sexp, on encountering an island start syntax would somehow
+> stack the current parse state and start a new one with a different syntax
+> table.  The parse state, instead of consisting of the 10 elements
+> currently, would in general have 10n elements, where n is the depth of
+> nesting.
+> 0
+
+AFAIU narrowing would provide that already WRT  parse-partial-sexp, 
+maybe combined with some markup like folding-mode. Remains to hand over 
+these sheets to font-lock.
+

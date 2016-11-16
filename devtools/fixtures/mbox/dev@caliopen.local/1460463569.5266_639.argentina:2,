@@ -1,0 +1,126 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aigTB-0008O9-1q
+	for mharc-dev@caliopen.local; Wed, 23 Mar 2016 06:56:57 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:49142)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aigT8-0008MW-9I
+	for dev@caliopen.local; Wed, 23 Mar 2016 06:56:55 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aigT5-0005KR-Iz
+	for dev@caliopen.local; Wed, 23 Mar 2016 06:56:54 -0400
+Received: from mail-wm0-x22d.google.com ([2a00:1450:400c:c09::22d]:36744)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aigT5-0005KD-Bx
+	for dev@caliopen.local; Wed, 23 Mar 2016 06:56:51 -0400
+Received: by mail-wm0-x22d.google.com with SMTP id r129so130426202wmr.1
+	for <dev@caliopen.local>; Wed, 23 Mar 2016 03:56:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=/KSr9ixaJbcbNAy90NjNhYqU1jyslMeumoF3CNrGoPM=;
+	b=ThtWZxUOliXQCWaPgxp0eh+QTgFtOqcgCgjyZ6RdPFJMZIDjH81Nn2C+Ob5Dy+PsCG
+	cwq5d1exvO+/FlwrIMiIhBSuXsjDxwTi92gfoic8+pHhnxPn2QrR0pwXQKM8RISmfZwP
+	bScSaPqzV+YXXspFjw0F1HM9uEDlRlpwyrCXX4mk6atnShASOVKnuU0wnmgpDwDPmgIE
+	KdFqi9IM3I7z460hybqq5TDDhbw/FtoYnGsxO35y1e4Rk1Z0clJLpTA5wHLxfMDtpKrw
+	+BI2y1865i9vQQLitZzx6xg2rOCFmQyO9GKnWSHfKQxUphPVjaZnFrLNJ5lyncGb07BJ
+	aYqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=/KSr9ixaJbcbNAy90NjNhYqU1jyslMeumoF3CNrGoPM=;
+	b=FO9z6PJGeT3bk9oeZzubleLjDiE75RWpdWLRiqfaEHQsmNOGrp0HCF3/HFM+hE4Im2
+	zBlxiF/8gCod+auBq5eBc7uMeMeFqiL86EgpayK7xBqwm4l4hqt96Yv7Y11ZnuL/I3A3
+	TWnsLmNuVnQdnPqzhK+Nrph2r7M6P8VVrpkG1uRryM+3FDMUux7vF0OlNLOG4AIGmRGr
+	g1Y8n5czd1h88nkor67+0s81HZRw3aPdl2IstTgXJuAf+JnpTOaVx/VIcPjaxsNzNWk5
+	dEczvL4RsYAw7mxp8otVoll3TjjnK9Y2AjRyKWKt3GfMgi+uw4D12tC+JTU/QHPwuH8Z
+	9C6A==
+X-Gm-Message-State: AD7BkJJOVsOj1092BJGksV/sGg0OE5jNg5mO9EugFAB3fp+UUJ5/DIn+FNVbjdz83euHmw==
+X-Received: by 10.28.10.149 with SMTP id 143mr24372445wmk.38.1458730610035;
+	Wed, 23 Mar 2016 03:56:50 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	v5sm21544105wmg.16.2016.03.23.03.56.48
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Wed, 23 Mar 2016 03:56:48 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87bn67eq4t.fsf@gmail.com>
+	<jwvy49ar473.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87bn66qsgo.fsf@gmail.com> <jwvzitquf5p.fsf-monnier+emacs@gnu.org>
+Date: Wed, 23 Mar 2016 11:56:48 +0100
+In-Reply-To: <jwvzitquf5p.fsf-monnier+emacs@gnu.org> (Stefan Monnier's message
+	of "Tue, 22 Mar 2016 22:07:01 -0400")
+Message-ID: <87fuvhpimn.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22d
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 23 Mar 2016 10:56:55 -0000
+Content-Length: 1727
+Lines: 36
+
+
+
+>> On Tue, Mar 22 2016 22:07, Stefan Monnier wrote:
+
+> Still, in the ERB case we'd need to mix the HTML context with the Ruby
+> context, so the representation of the context can't be "internal to the
+> major mode".
+
+The signature is internal to the inner mode but will have a generic part which
+multi-mode can understand and modify. Multi-mode will take care of the
+interleaving and mixing when needed. I think there is absolutely no way to avoid
+a "superviser", but each inner mode need not know about the big picture.
+
+In erb case each ruby line will be asked for an indentation offset in a narrowed
+buffer with context from previous ruby span. Then multi-mode will indent the
+whole <% ... %> according to this inner offset plus an offset derived from
+parent html element. The last step is to ask the ruby mode to produce an
+indentation context at the end of this ruby line and cache it.
+
+> But I guess we could represent the context as an integer (the position from
+> which to parse backward).
+
+No, no. Context should not have absolute positions in it. That would ruin the
+whole thing. It should contain information about the nesting of language
+constructs sufficient to be able to indent first line of an inner span without
+any other positional knowledge.
+
+For example, if current line is directly part of IF block, most languages don't
+care what precedes IF head at all, only the offset of IF. So an entry in the
+context data structure might look like (IF . IF-OFFSET). If line number within
+the block is important then you can pass (IF IF-OFFSET . RELATIVE-LINE). My
+hunch is that for most languages you would be able to reduce indentation to a
+small number of block-continuation constructs (less than 10).
+
+  Vitalie
+

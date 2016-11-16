@@ -1,0 +1,452 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1al1QH-0007o5-TZ
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 17:43:37 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:56081)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1al1QF-0007mb-J2
+	for dev@caliopen.local; Tue, 29 Mar 2016 17:43:37 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1al1QC-0004B5-1v
+	for dev@caliopen.local; Tue, 29 Mar 2016 17:43:35 -0400
+Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236]:34366)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1al1QB-0004AN-NN
+	for dev@caliopen.local; Tue, 29 Mar 2016 17:43:31 -0400
+Received: by mail-wm0-x236.google.com with SMTP id p65so157878303wmp.1
+	for <dev@caliopen.local>; Tue, 29 Mar 2016 14:43:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=ckIi2ThB6s8MRlT6IJB+c9qHfYlGXBHn2bcT68LrpuM=;
+	b=FEJ2+suM3HKMkyzA24R5zESUJ0msusf6FxzB7Q4lQHdn43eRMxr1K/CkFAy6QDo0RT
+	0uUJje0h7yqUy+C+s4q+jMnXFq1f0RxpU+2sdIdqRIQj9KinWOQGSndztQqD0/iLOLcQ
+	iHFu4iNV8usplqq3Ffc8k/LMIryavUqAgdqQZVHKbh56K0M3aOHIhPb//J5I8+NneY2c
+	jhSUaGwKielV3iumyznZBucE1n2Rf42tE9sNMrUgn0QB2/85WUtRtDsp4GZq+5TG3S05
+	yqo4YNRxpES3+a7V71fleG/qTgg9/BDeZI02Euuky4wTnPV5+ohYZNU+iL8KnRc3QGXw
+	+RBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=ckIi2ThB6s8MRlT6IJB+c9qHfYlGXBHn2bcT68LrpuM=;
+	b=mCOPKc3Lv3BxwluF1NcUMv/6UX6Ny4+HtljON/nsxd01NodqYp0UD+mJMqonNcW1dp
+	WKA6+pASqwFJ74rxl/7BvwXGAtB1Ur6n8LrPH6GZlMeiFb8sN6V2xkE3WsgN/ZbbhmU6
+	isXCLh75GGavmzgz+t8B/BUJmAHqFjmegKR2gYF7PcpLEejCwbrk96+VFsfjODCTQd6P
+	BTkrjfZU+aQV09u48WUMudvsPFew7qmAKcjxJPFDjs6Rvmdbb/athr8cJtGdoNyABeWR
+	lA4NaBRuUCRCtVmTHGCIhPPRJiCm+V9xhKU4u0w0ZB/IVBh+QpekdWsOvC/GQ2Lal/Fc
+	RmfA==
+X-Gm-Message-State: AD7BkJKq+dOJ6N+WM6OVjdE6MGWB8/B2dcF1ziieZMPg8V30uUCnR4IdIH5q+V+1mJcJag==
+X-Received: by 10.28.52.72 with SMTP id b69mr5569257wma.35.1459287810735;
+	Tue, 29 Mar 2016 14:43:30 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	s66sm16525186wmb.6.2016.03.29.14.43.28
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Tue, 29 Mar 2016 14:43:29 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+References: <20160311151512.GD2888@acm.fritz.box> <87a8lsd4j3.fsf@gmail.com>
+	<87mvpsbeok.fsf_-_@gmail.com> <jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+	<jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87pounew9e.fsf@gmail.com>
+	<jwva8lrx4ov.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzda4h.fsf@gmail.com> <jwvwpovwuip.fsf-monnier+Inbox@gnu.org>
+	<87lh5bd4ib.fsf@gmail.com> <87egb3ryjc.fsf@gmail.com>
+	<877fgusum3.fsf@gmail.com> <8737risu8d.fsf@gmail.com>
+	<jwvbn66viar.fsf-monnier+Inbox@gnu.org> <87mvpqqxy7.fsf@gmail.com>
+	<jwvzitqpj68.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<877fguqp8x.fsf@gmail.com> <jwvio0euejl.fsf-monnier+emacs@gnu.org>
+	<87bn65pgk2.fsf@gmail.com> <jwvvb4dtlve.fsf-monnier+emacs@gnu.org>
+	<87y499nz79.fsf@gmail.com>
+Date: Tue, 29 Mar 2016 23:43:28 +0200
+In-Reply-To: <87y499nz79.fsf@gmail.com> (Vitalie Spinu's message of "Wed, 23
+	Mar 2016 13:41:46 +0100")
+Message-ID: <87zithez9b.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="=-=-="
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::236
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 21:43:37 -0000
+Content-Length: 12884
+Lines: 366
+
+--=-=-=
+Content-Type: text/plain
+
+
+
+>> On Wed, Mar 23 2016 12:41, Vitalie Spinu wrote:
+
+>> I'm just suggesting to keep the limits as markers rather than as integers.
+
+Attaching a patch for this. AFAIC it shapes pretty nicely. There are two types
+of narrowing, visual and hard. The imposition or lifting of these is done
+through narrow-to-region and widen depending on the value of optional HARD
+argument.
+
+I haven't tested it yet because of the following build problem with loaddeffs:
+
+    ...    
+    Finding pointers to doc strings...
+    Finding pointers to doc strings...done
+    Dumping under the name emacs
+    91970 pure bytes used
+    : paxctl -zex emacs
+    mv -f emacs bootstrap-emacs
+    make -C ../lisp compile-first EMACS="../src/bootstrap-emacs"
+    make[3]: Entering directory '/home/vspinu/bin/emacs-test/lisp'
+      ELC      emacs-lisp/macroexp.elc
+      ELC      emacs-lisp/cconv.elc
+      ELC      emacs-lisp/byte-opt.elc
+      ELC      emacs-lisp/bytecomp.elc
+      ELC      emacs-lisp/autoload.elc
+    make[3]: Leaving directory '/home/vspinu/bin/emacs-test/lisp'
+    make -C ../lisp autoloads EMACS="../src/bootstrap-emacs"
+    make[3]: Entering directory '/home/vspinu/bin/emacs-test/lisp'
+      GEN      calendar/cal-loaddefs.el
+    Loading macroexp.elc...
+    appt.el:0:0: error: wrong-type-argument: (markerp /home/vspinu/bin/emacs-test/lisp/calendar/appt.el)
+    Makefile:402: recipe for target 'calendar/cal-loaddefs.el' failed
+    make[3]: *** [calendar/cal-loaddefs.el] Error 255
+    make[3]: Leaving directory '/home/vspinu/bin/emacs-test/lisp'
+    Makefile:727: recipe for target '../lisp/loaddefs.el' failed
+    make[2]: *** [../lisp/loaddefs.el] Error 2
+    make[2]: Leaving directory '/home/vspinu/bin/emacs-test/src'
+    Makefile:398: recipe for target 'src' failed
+    make[1]: *** [src] Error 2
+    make[1]: Leaving directory '/home/vspinu/bin/emacs-test'
+    Makefile:1091: recipe for target 'bootstrap' failed
+    make: *** [bootstrap] Error 2
+
+
+Any ideas of why this is happening?
+
+The relevant branch is scratch/hard-narrow.
+
+
+  Vitalie
+
+
+--=-=-=
+Content-Type: text/x-diff
+Content-Disposition: inline
+
+scratch/hard-narrow origin/scratch/hard-narrow 7068e4c811f7530e14d2684fea68499418642b33
+Author:     Vitalie Spinu <spinuvit@gmail.com>
+AuthorDate: Mon Mar 21 05:41:55 2016 +0100
+Commit:     Vitalie Spinu <spinuvit@gmail.com>
+CommitDate: Tue Mar 29 23:29:54 2016 +0200
+
+Parent:     f99b512 In M-%, avoid making buffer-local binding of text-property-default-nonsticky
+Merged:     emacs-24 master scratch/hard-narrow
+Containing: scratch/hard-narrow
+Follows:    emacs-25.0.92 (138)
+
+Hard narrowing
+
+Idem
+
+modified   src/buffer.c
+@@ -571,6 +571,9 @@ even if it is dead.  The return value is never nil.  */)
+   bset_begv_marker (b, Qnil);
+   bset_zv_marker (b, Qnil);
+ 
++  bset_begh_marker (b, Qnil);
++  bset_zh_marker (b, Qnil);
++
+   name = Fcopy_sequence (buffer_or_name);
+   set_string_intervals (name, NULL);
+   bset_name (b, name);
+@@ -835,6 +838,7 @@ CLONE nil means the indirect buffer's state is reset to default values.  */)
+       bset_pt_marker (b, build_marker (b, b->pt, b->pt_byte));
+       bset_begv_marker (b, build_marker (b, b->begv, b->begv_byte));
+       bset_zv_marker (b, build_marker (b, b->zv, b->zv_byte));
++
+       XMARKER (BVAR (b, zv_marker))->insertion_type = 1;
+     }
+   else
+@@ -2165,9 +2169,9 @@ Any narrowing restriction in effect (see `narrow-to-region') is removed,
+ so the buffer is truly empty after this.  */)
+   (void)
+ {
+-  Fwiden ();
++  Fwiden (Qnil);
+ 
+-  del_range (BEG, Z);
++  del_range (BEGV, ZV);
+ 
+   current_buffer->last_window_start = 1;
+   /* Prevent warnings, or suspension of auto saving, that would happen
+@@ -2310,6 +2314,8 @@ DEFUN ("buffer-swap-text", Fbuffer_swap_text, Sbuffer_swap_text,
+   swapfield_ (pt_marker, Lisp_Object);
+   swapfield_ (begv_marker, Lisp_Object);
+   swapfield_ (zv_marker, Lisp_Object);
++  swapfield_ (begh_marker, Lisp_Object);
++  swapfield_ (zh_marker, Lisp_Object);
+   bset_point_before_scroll (current_buffer, Qnil);
+   bset_point_before_scroll (other_buffer, Qnil);
+ 
+@@ -2490,7 +2496,7 @@ current buffer is cleared.  */)
+ 	    }
+ 	}
+       if (narrowed)
+-	Fnarrow_to_region (make_number (begv), make_number (zv));
++	Fnarrow_to_region (make_number (begv), make_number (zv), Qnil);
+     }
+   else
+     {
+@@ -2571,7 +2577,7 @@ current buffer is cleared.  */)
+ 	TEMP_SET_PT (pt);
+ 
+       if (narrowed)
+-	Fnarrow_to_region (make_number (begv), make_number (zv));
++	Fnarrow_to_region (make_number (begv), make_number (zv), Qnil);
+ 
+       /* Do this first, so that chars_in_text asks the right question.
+ 	 set_intervals_multibyte needs it too.  */
+@@ -5053,6 +5059,8 @@ init_buffer_once (void)
+   bset_pt_marker (&buffer_local_flags, make_number (0));
+   bset_begv_marker (&buffer_local_flags, make_number (0));
+   bset_zv_marker (&buffer_local_flags, make_number (0));
++  bset_begh_marker (&buffer_local_flags, make_number (0));
++  bset_zh_marker (&buffer_local_flags, make_number (0));
+   bset_last_selected_window (&buffer_local_flags, make_number (0));
+ 
+   idx = 1;
+modified   src/buffer.h
+@@ -416,6 +416,26 @@ extern void enlarge_buffer_text (struct buffer *, ptrdiff_t);
+ 
+ #define BUF_FETCH_BYTE(buf, n) \
+   *(BUF_BYTE_ADDRESS ((buf), (n)))
++
++
++/* Macros for setting and accessing hard-narrow markers */
++
++/* Position of beginning of hard-narrowed range of buffer. */
++#define BEGH (BUF_BEGH (current_buffer))
++#define BUF_BEGH(buf)                                   \
++  ((NILP (BVAR (buf, begh_marker))) ? BUF_BEG (buf)     \
++   : marker_position (BVAR (buf, begh_marker)))
++#define SET_BUF_BEGH(buf, charpos)                               \
++  (bset_begh_marker (buf, build_marker(buf, charpos, buf_charpos_to_bytepos(buf, charpos))))
++
++/* Position of end of hard-narrowed range of buffer. */
++#define ZH (BUF_ZH(current_buffer))
++#define BUF_ZH(buf)                                     \
++  ((NILP (BVAR (buf, zh_marker))) ? BUF_Z (buf)         \
++   : marker_position (BVAR (buf, zh_marker)))
++#define SET_BUF_ZH(buf, charpos)                                 \
++  (bset_zh_marker (buf, build_marker(buf, charpos, buf_charpos_to_bytepos(buf, charpos))))
++
+ 
+ /* Define the actual buffer data structures.  */
+ 
+@@ -666,6 +686,12 @@ struct buffer
+      ZV for this buffer when the buffer is not current.  */
+   Lisp_Object zv_marker_;
+ 
++  /* Lower hard limit of the buffer.*/
++  Lisp_Object begh_marker_;
++
++  /* Upper hard limit of the buffer.*/
++  Lisp_Object zh_marker_;
++
+   /* This holds the point value before the last scroll operation.
+      Explicitly setting point sets this to nil.  */
+   Lisp_Object point_before_scroll_;
+@@ -984,6 +1010,16 @@ bset_width_table (struct buffer *b, Lisp_Object val)
+ {
+   b->width_table_ = val;
+ }
++INLINE void
++bset_begh_marker (struct buffer *b, Lisp_Object val)
++{
++  b->begh_marker_ = val;
++}
++INLINE void
++bset_zh_marker (struct buffer *b, Lisp_Object val)
++{
++  b->zh_marker_ = val;
++}
+ 
+ /* Number of Lisp_Objects at the beginning of struct buffer.
+    If you add, remove, or reorder Lisp_Objects within buffer
+modified   src/bytecode.c
+@@ -1682,17 +1682,18 @@ exec_byte_code (Lisp_Object bytestr, Lisp_Object vector, Lisp_Object maxdepth,
+ 
+ 	CASE (Bnarrow_to_region):
+ 	  {
+-	    Lisp_Object v1;
++	    Lisp_Object v1, v2;
+ 	    BEFORE_POTENTIAL_GC ();
+ 	    v1 = POP;
+-	    TOP = Fnarrow_to_region (TOP, v1);
++	    v2 = POP;
++	    TOP = Fnarrow_to_region (TOP, v2, v1);
+ 	    AFTER_POTENTIAL_GC ();
+ 	    NEXT;
+ 	  }
+ 
+ 	CASE (Bwiden):
+ 	  BEFORE_POTENTIAL_GC ();
+-	  PUSH (Fwiden ());
++	  TOP = Fwiden (TOP);
+ 	  AFTER_POTENTIAL_GC ();
+ 	  NEXT;
+ 
+modified   src/editfns.c
+@@ -3480,33 +3480,54 @@ DEFUN ("delete-and-extract-region", Fdelete_and_extract_region,
+     return empty_unibyte_string;
+   return del_range_1 (XINT (start), XINT (end), 1, 1);
+ }
++
+ 
+-DEFUN ("widen", Fwiden, Swiden, 0, 0, "",
++DEFUN ("widen", Fwiden, Swiden, 0, 1, "",
+        doc: /* Remove restrictions (narrowing) from current buffer.
+-This allows the buffer's full text to be seen and edited.  */)
+-  (void)
++If HARD is non-nil, remove the hard restriction imposed by a previous
++call to \\[narrow-to-region].  If HARD is nil, remove visual
++restriction up to the previously imposed hard limit (if any).  */)
++  (Lisp_Object hard)
+ {
+-  if (BEG != BEGV || Z != ZV)
+-    current_buffer->clip_changed = 1;
+-  BEGV = BEG;
+-  BEGV_BYTE = BEG_BYTE;
+-  SET_BUF_ZV_BOTH (current_buffer, Z, Z_BYTE);
+-  /* Changing the buffer bounds invalidates any recorded current column.  */
+-  invalidate_current_column ();
++
++  if(!NILP (hard))
++    {
++      bset_begh_marker(current_buffer, Qnil);
++      bset_zh_marker(current_buffer, Qnil);
++    }
++  else
++    {
++      if (BEG != BEGV || Z != ZV)
++        current_buffer->clip_changed = 1;
++      BEGV = BEG;
++      BEGV_BYTE = BEG_BYTE;
++      SET_BUF_ZV_BOTH (current_buffer, Z, Z_BYTE);
++      /* Changing the buffer bounds invalidates any recorded current column.  */
++      invalidate_current_column ();
++    }
++
+   return Qnil;
+ }
+ 
+-DEFUN ("narrow-to-region", Fnarrow_to_region, Snarrow_to_region, 2, 2, "r",
+-       doc: /* Restrict editing in this buffer to the current region.
+-The rest of the text becomes temporarily invisible and untouchable
+-but is not deleted; if you save the buffer in a file, the invisible
+-text is included in the file.  \\[widen] makes all visible again.
+-See also `save-restriction'.
++DEFUN ("narrow-to-region", Fnarrow_to_region, Snarrow_to_region, 2, 3, "r",
++       doc: /* Restrict editing in this buffer to the current
++region. START and END are positions (integers or markers) bounding the
++text that should restricted. There can be two types of restrictions,
++visual and hard. If HARD is nil, impose visual restriction, otherwise
++a hard one.
+ 
+-When calling from a program, pass two arguments; positions (integers
+-or markers) bounding the text that should remain visible.  */)
+-  (register Lisp_Object start, Lisp_Object end)
++When visual restriction is in place, the rest of the text is invisible
++and untouchable but is not deleted; if you save the buffer in a file,
++the invisible text is included in the file. \\[widen] with nil
++optional argument makes it all visible again.
++
++When hard restriction is in place, invocations of (visual) \\[widen]
++with nil argument removes visual narrowing up to the hard
++restriction. In order to lift hard restriction,  call \\[widen] with
++non-nil HARD argument.  */)
++  (register Lisp_Object start, Lisp_Object end, Lisp_Object hard)
+ {
++
+   CHECK_NUMBER_COERCE_MARKER (start);
+   CHECK_NUMBER_COERCE_MARKER (end);
+ 
+@@ -3519,6 +3540,15 @@ or markers) bounding the text that should remain visible.  */)
+   if (!(BEG <= XINT (start) && XINT (start) <= XINT (end) && XINT (end) <= Z))
+     args_out_of_range (start, end);
+ 
++  if (!NILP (hard))
++    {
++      SET_BUF_BEGH (current_buffer, XFASTINT (start));
++      SET_BUF_ZH (current_buffer, XFASTINT (end));
++      if (BEGV >= XFASTINT (start) && ZV <= XFASTINT (end))
++        /* Visual narrowing within hard limits.  */
++        return Qnil;
++    }
++
+   if (BEGV != XFASTINT (start) || ZV != XFASTINT (end))
+     current_buffer->clip_changed = 1;
+ 
+@@ -3533,6 +3563,7 @@ or markers) bounding the text that should remain visible.  */)
+   return Qnil;
+ }
+ 
++
+ Lisp_Object
+ save_restriction_save (void)
+ {
+modified   src/fileio.c
+@@ -4764,7 +4764,7 @@ write_region (Lisp_Object start, Lisp_Object end, Lisp_Object filename,
+ 	 This is useful in tar-mode.  --Stef
+       XSETFASTINT (start, BEG);
+       XSETFASTINT (end, Z); */
+-      Fwiden ();
++      Fwiden (Qnil);
+     }
+ 
+   record_unwind_protect (build_annotations_unwind,
+modified   src/lread.c
+@@ -1850,7 +1850,7 @@ readevalloop (Lisp_Object readcharfun,
+ 	  /* Set point and ZV around stuff to be read.  */
+ 	  Fgoto_char (start);
+ 	  if (!NILP (end))
+-	    Fnarrow_to_region (make_number (BEGV), end);
++	    Fnarrow_to_region (make_number (BEGV), end, Qnil);
+ 
+ 	  /* Just for cleanliness, convert END to a marker
+ 	     if it is an integer.  */
+modified   src/process.c
+@@ -5514,7 +5514,7 @@ Otherwise it discards the output.  */)
+       /* If the output marker is outside of the visible region, save
+ 	 the restriction and widen.  */
+       if (! (BEGV <= PT && PT <= ZV))
+-	Fwiden ();
++	Fwiden (Qnil);
+ 
+       /* Adjust the multibyteness of TEXT to that of the buffer.  */
+       if (NILP (BVAR (current_buffer, enable_multibyte_characters))
+@@ -5558,7 +5558,7 @@ Otherwise it discards the output.  */)
+ 
+       /* If the restriction isn't what it should be, set it.  */
+       if (old_begv != BEGV || old_zv != ZV)
+-	Fnarrow_to_region (make_number (old_begv), make_number (old_zv));
++	Fnarrow_to_region (make_number (old_begv), make_number (old_zv), Qnil);
+ 
+       bset_read_only (current_buffer, old_read_only);
+       SET_PT_BOTH (opoint, opoint_byte);
+
+[back]
+--=-=-=--
+

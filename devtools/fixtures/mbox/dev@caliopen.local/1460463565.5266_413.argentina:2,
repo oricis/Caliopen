@@ -1,0 +1,118 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ame2w-00059r-NO
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 05:10:14 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:48926)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1ame2u-00059j-C7
+	for dev@caliopen.local; Sun, 03 Apr 2016 05:10:13 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1ame2r-0004WJ-6r
+	for dev@caliopen.local; Sun, 03 Apr 2016 05:10:12 -0400
+Received: from mout.kundenserver.de ([217.72.192.74]:53918)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1ame2q-0004Vs-Tw
+	for dev@caliopen.local; Sun, 03 Apr 2016 05:10:09 -0400
+Received: from [192.168.1.82] ([109.24.225.43]) by mrelayeu.kundenserver.de
+	(mreue103) with ESMTPSA (Nemesis) id 0LnUdS-1bTvU11Gco-00hb1E for
+	<emacs-devel@gnu.org>; Sun, 03 Apr 2016 11:10:07 +0200
+Subject: Re: melpa.org doesn't work without nonfree software
+To: dev@caliopen.local
+References: <E1am6ik-0000Kc-JJ@fencepost.gnu.org>
+	<m2pou7y8tf.fsf@newartisans.com>
+	<CA+T2Sh0-EMD9chUckGuoEhMjL+sdCCYZpsW=8k_2R1q+wbkkgA@mail.gmail.com>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Message-ID: <5700DDE8.5040504@gmail.com>
+Date: Sun, 3 Apr 2016 11:10:00 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <CA+T2Sh0-EMD9chUckGuoEhMjL+sdCCYZpsW=8k_2R1q+wbkkgA@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="4bcsLGc52qVJtuVGFP9nC1cXfM6aHmjfM"
+X-Provags-ID: V03:K0:m4pm417x8nOOoziJYhhEanvIRDDiJ+Ua7vRu7Mw8iour7b0ZoyF
+	YKU5bNTVzq7x9oB308uBYNxNwME30Eth70b62B3rEk5ovNC1m9Kq7de/UbPDQt4Gk8XtwQk
+	OhpbOIk/wtx6esMvI22ZobmaQc/S6/lDcHSf4avFzwoRq9FnuFUy2iR4N8T/2mh56eCEpWP
+	ILYjG+M4IuwQORdSY9xyQ==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:eG91kT9/yuY=:eMoCNeDovcb/PuH40bEww9
+	DzPJ0SDGeXiPUgTlEKzVXeGpgBppT9uo0ERsLHTjCPV99tNgLK6e8vZ2YTib2SVML1KJNfeA2
+	YzFeFfsLePS0+kzpJQ289/rR9pFxYZfBTaxhGDPWyyVVqwETEcWdbgWqNJRZqOOtfawXdMGUs
+	vU/abFa/Z9+FqDThysAxmmsyMzHcNUK+r8oELlpqhwpCw6WOx+RsZYNRs+Tbdkgilk9Pxxsi+
+	wd1Ofzn+QUv9PaalDGfRc5CYjes6RlX2b4KBsEmPIckOIL6ioyQZmvZiKVcek3o+yHKKs7bs1
+	yUhiZnds/BRJnQauqs7X/c7JOW4l+rYtrd5iDXC/6O0D0nQHTMOTYPNgRmm9ZcbBxwI2aeUPw
+	dh3XU10QgCLFiAHHexEp7V/cd6QxYkyX/JUrF9TOLI7VTpzIUBzqpeqhh8jqkd1NRBuEvAOap
+	wAVyfw8NhYpQCUpGeNqmrwtYZqs/Bw/AOaXz8TGGes7aH6CA7kwVn7TXUfDRsdaIBLkkMXSag
+	TRcibKnFOHmADuTRMsyG/5zVQi9Dx/YhGnH2fLB/UJDvDXLG+y8f8nkApZtGCdEupJNANdfI9
+	/W/wkf5QJTzXprzCMORV5+WmQ/183olzIR8jCdRvJ2sEp4y9dIqNv+O2TD9h2Oil9mH5qrTGG
+	ugkRd+kBNlNGAagkBANpgnM9RALKxvdUvr8/iTPwqJDZmV5rTbAiV4WY+yuDIWtxbskM=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 217.72.192.74
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 09:10:13 -0000
+Content-Length: 2330
+Lines: 54
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--4bcsLGc52qVJtuVGFP9nC1cXfM6aHmjfM
+Content-Type: multipart/mixed; boundary="l1Wk7AaOuuGDJLmQKn6HimM5n4ka6cfEB"
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+To: dev@caliopen.local
+Message-ID: <5700DDE8.5040504@gmail.com>
+Subject: Re: melpa.org doesn't work without nonfree software
+References: <E1am6ik-0000Kc-JJ@fencepost.gnu.org>
+ <m2pou7y8tf.fsf@newartisans.com>
+ <CA+T2Sh0-EMD9chUckGuoEhMjL+sdCCYZpsW=8k_2R1q+wbkkgA@mail.gmail.com>
+In-Reply-To: <CA+T2Sh0-EMD9chUckGuoEhMjL+sdCCYZpsW=8k_2R1q+wbkkgA@mail.gmail.com>
+
+--l1Wk7AaOuuGDJLmQKn6HimM5n4ka6cfEB
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On 04/03/2016 08:05 AM, Vibhav Pant wrote:
+> The source for Melpa's website is available here, and is licensed
+> under the GPL v3: https://github.com/melpa/melpa/tree/master/html
+
+Yes, I pointed this out already I think Richard's concern is that the cod=
+e doesn't carry the right tags, so it cannot be properly identified by Li=
+breJS, a plugin that filters out nonfree code, and free code that hasn't =
+been labeled as such. Without that code, the MELPA website is pretty unus=
+able.
+
+
+--l1Wk7AaOuuGDJLmQKn6HimM5n4ka6cfEB--
+
+--4bcsLGc52qVJtuVGFP9nC1cXfM6aHmjfM
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJXAN3uAAoJEPqg+cTm90wjAXUP/3mDfaK1vF2h5lP7lo9m/tIr
+fcU1NJkmKAHNXG5kQ86PBDpQXzybLbMFlXtPwJl/7AP9JT27Qi/F72in4Mr/HmeJ
++bo4n2RsZ1MiWpYLt2v9CLiMVkiaIq+ysq5SfmcC+ESMniDqgad7JEL8izsaJWcR
+TwPv74bdNm4LSch6sXYAKIJGu1ELDmTHcu2z0UePwsCzst41OWqVpr5SIce5Q2sT
+LeFi2v6mXzzkIxyQqqU9DMYKvTDVZbIqCbImeRexWXe/FlLjRaySgqsYB5KlO94p
+vZREudwrLG8ze6ESFo9bYOEKoTiDMWXoTWwqPH6za4DRDz125WG1BX7/n05Ht2ys
+Q/IumdHw1IWQqnppBL7HV8X8t7iM0N7DNTnDNnigUSigiWvz/+0qy+lwN0MxH+ZH
+gsfGrIbQL4Tm9OkJXCvuazvDcKg+YdVxdxzGMeoA/dHUTfocEFTJXBKQCeLbyuo4
+2Fe57pL5SNZemVwOmZtvDFn2a4q48PRCTqMcV7butfcZUXB5vfrQkIQY4q6mU9Ns
+0oDYQK8N6KYwR4EazDJs4KKvpSc+ZSs5NPM6Shz5YWlAgYzba/fVco33tApwM975
+aegUVLqIRfWs7fdxKC1VpWQneg2CY8gt/OOaZVgdWzNwrXy8+opQyWVaQzgs7Rbb
+PhIAxEI8NEtTTuPUyFj/
+=HB92
+-----END PGP SIGNATURE-----
+
+--4bcsLGc52qVJtuVGFP9nC1cXfM6aHmjfM--
+

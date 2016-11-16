@@ -1,0 +1,106 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahyTR-0006mg-Ct
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 07:58:17 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59816)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ahyT6-0006OI-VT
+	for dev@caliopen.local; Mon, 21 Mar 2016 07:58:15 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ahyRx-0002bq-Du
+	for dev@caliopen.local; Mon, 21 Mar 2016 07:57:56 -0400
+Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e]:35580)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ahyRx-0002bH-35
+	for dev@caliopen.local; Mon, 21 Mar 2016 07:56:45 -0400
+Received: by mail-wm0-x22e.google.com with SMTP id l68so106736765wml.0
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 04:56:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=sender:subject:to:references:cc:from:message-id:date:user-agent
+	:mime-version:in-reply-to:content-transfer-encoding;
+	bh=PWfU5+CyeaNO5iH849XBduyOl8hNb+ZJHnRcQY4xfpk=;
+	b=M2Px7ohjkVk7BP8UqNHm4vWrtfN2ArZQXcIKwh4i7wvHOO4vt8BQ1WMQY7c0MCJY2e
+	80aONRbFpLV1KYkh0robULMCbpLP777+lrw1/es/dqu+/u1EZOKYs5Yc6DUv7gqt7RGv
+	FMzTwvP1SAzhiHJPdnYDACb+F2lQAmt8YZEsEEVWRbiBoQ/XHviwNXJnHP7QlaOyO9o+
+	oa/Urq0Ntrl1rJbqeqVzGL2nnmDYsySSU+XCkZltlpJeP/LP1s/A/lkxYLGdavLH79qR
+	DGCjnIGSm6ujKEnlHkYlHcqWU/XdsIQceDEna3up9K9f4AzrrS3WUhRVoB5ScXf8NDv6
+	7zYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
+	:date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+	bh=PWfU5+CyeaNO5iH849XBduyOl8hNb+ZJHnRcQY4xfpk=;
+	b=E55RLKYuImDx5S70dSDLcaqViq2Wghp33huMJZsuHO1cPpApiPd9ZbFMZ+/mI+k6uq
+	n4n8+1Q14+JdTqTr0Fi8SWoToXpivHwT/AaeloPOEo2FX8HTuWjxzcU70596tKBOxy2M
+	3Q4NjFamSufm7Ko1CV+FSEej/ITtTklTkCaUgmtraEQfabiTYabNZ361+W18R4ZihOYD
+	KahbO9Kx71p2YJflU4CRjRAmc4E8ShVu8FNXn6DjMiQR2u50oDwU5kRtPVmVBSjXQu/F
+	HTqlUGBhQT9QmQzBqcpC8bwrn4MoE0mqDdWTgtj/xMsQtPqSHb63qwvAzYpbI+6jWGaX
+	wIWA==
+X-Gm-Message-State: AD7BkJL7sn2rTJWLuJcvVaIKnVfib9FxDkjyDPMuddh6AVfRi7pWYyXttBqaNGxtFlhuvQ==
+X-Received: by 10.28.21.75 with SMTP id 72mr12856929wmv.64.1458561404330;
+	Mon, 21 Mar 2016 04:56:44 -0700 (PDT)
+Received: from [192.168.1.2] ([185.105.175.24])
+	by smtp.googlemail.com with ESMTPSA id
+	s66sm12203994wmb.6.2016.03.21.04.56.42
+	(version=TLSv1/SSLv3 cipher=OTHER);
+	Mon, 21 Mar 2016 04:56:43 -0700 (PDT)
+Sender: DG <raaahh@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+To: Stefan Monnier <monnier@IRO.UMontreal.CA>,
+	Vitalie Spinu <spinuvit@gmail.com>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+From: Dmitry Gutov <dgutov@yandex.ru>
+Message-ID: <c742dfdd-d455-6428-9462-5a6236256a1d@yandex.ru>
+Date: Mon, 21 Mar 2016 13:56:41 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+	Thunderbird/45.0
+MIME-Version: 1.0
+In-Reply-To: <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22e
+Cc: Alan Mackenzie <acm@muc.de>, emacs-devel <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 11:58:16 -0000
+Content-Length: 801
+Lines: 16
+
+On 03/21/2016 05:11 AM, Stefan Monnier wrote:
+
+> I must say I don't understand how what we have is so very different from
+> what you suggest.  Of course, I fully agree on the need to deprecate
+> indent-line-function and use a side-effect free replacement which
+> returns the desired indentation (instead performing the indentation).
+>
+> I think both suggestions require changes to every mode, and in both
+> cases the changes can be reduced to a one-liner or close enough (for
+> the simple case).  Admittedly, for it to be a one-liner, we'll need to
+> provide a standard helper function.
+
+It also sounds like we should revert the changes that brought in 
+prog-indentation-context in emacs-25, and proceed with the results of 
+this discussion on master. Provided we reach an agreement here, of course.
+

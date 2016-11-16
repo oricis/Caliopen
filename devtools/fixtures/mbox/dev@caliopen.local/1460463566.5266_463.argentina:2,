@@ -1,0 +1,77 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akbl8-0005LW-F8
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 14:19:26 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:37328)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1akbl4-0005Kg-CS
+	for dev@caliopen.local; Mon, 28 Mar 2016 14:19:24 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1akbl0-0002YV-NS
+	for dev@caliopen.local; Mon, 28 Mar 2016 14:19:22 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:42448)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1akbl0-0002YQ-Gu
+	for dev@caliopen.local; Mon, 28 Mar 2016 14:19:18 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>)
+	id 1akbkv-0003yq-U2; Mon, 28 Mar 2016 20:19:17 +0200
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: Andreas Schwab <schwab@linux-m68k.org>
+Subject: Re: Thinking about changed buffers
+References: <m3bn5ya4ro.fsf@gnus.org> <87fuvafpvd.fsf@linux-m68k.org>
+	<m34mbqjxdt.fsf@gnus.org> <87bn5yfp8l.fsf@linux-m68k.org>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAGFBMVEVcUTz+/v6Mbk8CEAZv
+	W0LSx7p4ZEooMyR32T31AAACQklEQVQ4jXXUMWvkMBAF4EERUp0ivXiI2TacAm6NMN76OMK1Qgil
+	FWuz+vs39iZ2iotY3HxIb2ZkLz3/sOj5+eX9/f339pD1sv9kbfB36ENk0qRNASuXneFpgz+hB8Wa
+	iEwC31N0pup9h8DNG4HbBJiUE1Xz2DGENzfLWWtlKAfX8gOWIay+pknO8lkxEuXygDBorqnQqFkp
+	8NhVPWDyU5F81lPm0m/8CB8GDa+SGXWMPvtCCo/wMBCcSpS0yS6zJ/MNUvVU7sVzRrH0BWGEK1XA
+	O4F6QheY0AyBHTDZ63lUZANbKcuoUHuKJ8CA/JpViZltyp/w2iISqK4zBJwdv2BogMu66gwTOVn6
+	gtAjHEw1GTIS308YNtB1rjDO+2Y/q1pCuIFZ+zpLkPPGHg2GN8hUfZ1AnLw+qgrhFzBbrgRC4dkd
+	De5AOesNXOGj3OUGjNJ3zSkXl+qRsSjgqtXIymNy48zf+sBHi5OXFiemcuwYZIezamaZlIJVZ7mS
+	4fusy5xxE6gHvMpZrWqtdFTcdTxAzpqaF4gy+U7qgBDhBYxROcsQ5wO6vEDN0d2oImE0nrAKJLrP
+	Uh5fRzqhgVeiRjHDfZh+QgfuWkBlla50wrDDKMDxYqmdsACr1gIlXq7fICxyR60JJLiLXg9YgoC2
+	Ag71sqpv0EBmg23uLT6+jx1eMQroO5DkI9xh2cJDRzVPXW/v9aXt0/3b9/QhZnqypOViLtY8YNkB
+	0E92FKjJPjK6SN9ax8dY5QlO+w3++O/z//UPGJ/SD7LwYVoAAAAASUVORK5CYII=
+Date: Mon, 28 Mar 2016 20:19:13 +0200
+In-Reply-To: <87bn5yfp8l.fsf@linux-m68k.org> (Andreas Schwab's message of
+	"Mon, 28 Mar 2016 20:10:02 +0200")
+Message-ID: <m3zitiihy6.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 18:19:24 -0000
+Content-Length: 409
+Lines: 16
+
+Andreas Schwab <schwab@linux-m68k.org> writes:
+
+> Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+>
+>> Or do you mean if the user explicitly changes the coding system... in
+>> the buffer?  How does that happen?
+>
+> C-x C-m f
+
+Ok, so `buffer-file-coding-system' is one more thing to include in the
+hash.
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

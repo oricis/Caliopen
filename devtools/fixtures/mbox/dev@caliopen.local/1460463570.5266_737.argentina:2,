@@ -1,0 +1,104 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alriA-0001Pr-Na
+	for mharc-dev@caliopen.local; Fri, 01 Apr 2016 01:33:34 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:41680)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <kaushal.modi@gmail.com>) id 1alri8-0001Oz-1y
+	for dev@caliopen.local; Fri, 01 Apr 2016 01:33:33 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <kaushal.modi@gmail.com>) id 1alri7-0004C0-3l
+	for dev@caliopen.local; Fri, 01 Apr 2016 01:33:31 -0400
+Received: from mail-oi0-x22c.google.com ([2607:f8b0:4003:c06::22c]:33317)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <kaushal.modi@gmail.com>) id 1alri6-0004Bw-VS
+	for dev@caliopen.local; Fri, 01 Apr 2016 01:33:31 -0400
+Received: by mail-oi0-x22c.google.com with SMTP id d205so91515895oia.0
+	for <dev@caliopen.local>; Thu, 31 Mar 2016 22:33:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:from:date:message-id:subject:to;
+	bh=Et+sel4/tJFIIRajClZWVzeDphTCyxKOHoYtZmw88Kg=;
+	b=fuw9uadbfYYanZeOKQwpaYvbl6ivZvQe9VIVGS/UacptKX8btk83UprHoCv7lAG1zk
+	XOcJUvEMVbyNeftYqxuW3PA02AiVf2unn0VX6kjoa1XfMBDdpRRPOzbtXpKp9jpAu0gB
+	tdQByPCxFbi/bC7ZBR0TgVghTc9HEL9R6QVcVLYE21p2jH7aKCUwOAZv6I6lT5+uZFxR
+	IWVRZcrqUmnk6Gj9m8zCm2vWUcA30WBTvZS/q9dvMXaRbCl/3+S5/jzczXLGvn6qbhKJ
+	VlejmVxHQxmS9nXpazRzabSmHZlGMS3OxDu5IeI6zq6OP7pWo4a4ehj6OvVSyATcUSLR
+	c05Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+	bh=Et+sel4/tJFIIRajClZWVzeDphTCyxKOHoYtZmw88Kg=;
+	b=k86MGeERz6/wEwPqRkUYvE6KNQmW+zXtRl/cFyByP2uDWQZO2TbdN9mD1sK63rfsdo
+	cAkw6kyuIjFF6y8qk/jnhHYSHTmwI3wjrPVO2L102J/1ENoHXP+wFKvzLhZEQo3JSR+H
+	Ltbie1GHz89gSXUW3Em75AlPF8wWG8n5+ikSGUWHDLXZ9wRRJhm0JgL3MdUquUU4HH4G
+	yTrFqWh0QaIdpE6gw2BC2pNlcmI/TvL3ehcQpvfWMCjQesUcVTjhGof5HREPcPrOKlkM
+	44ALqnv3RD/+XM5QP+K8CAY4EdU9nSKLTVbRIBQLoizfeH0lvKxzWNjDRW3+eRpVU9Jb
+	OeRg==
+X-Gm-Message-State: AD7BkJIrGIdVfDdHmyfv4CRr2ex0b5HCZEmuMkJVQjJuYwrm1UHFMPzNdIYd4+I3A07HNTqfyW+8vacXq46epQ==
+X-Received: by 10.157.59.119 with SMTP id z110mr1655164otb.164.1459488810136; 
+	Thu, 31 Mar 2016 22:33:30 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.202.204.2 with HTTP; Thu, 31 Mar 2016 22:32:50 -0700 (PDT)
+From: Kaushal Modi <kaushal.modi@gmail.com>
+Date: Fri, 1 Apr 2016 01:32:50 -0400
+Message-ID: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+Subject: Understanding a recent commit in emacs-25 branch [ed19f2]
+To: Emacs developers <emacs-devel@gnu.org>, Alan Mackenzie <acm@muc.de>
+Content-Type: multipart/alternative; boundary=001a1140707c14fc46052f65b8fa
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c06::22c
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Fri, 01 Apr 2016 05:33:33 -0000
+Content-Length: 1740
+Lines: 41
+
+--001a1140707c14fc46052f65b8fa
+Content-Type: text/plain; charset=UTF-8
+
+Hi Alan,
+
+I was looking at a recent commit:
+http://git.savannah.gnu.org/cgit/emacs.git/commit/?h=emacs-25&id=ed19f207449c43f7f08285ada87ae7a46c61c8d1
+
+It's a huge commit with lots of changes in many files. But I cannot
+completely understand what all changed in that commit. I was looking for
+that commit's commit log but I couldn't find one.
+
+Aren't commits in emacs-25 now limited to just bug fixes?
+
+Also as I am not an active contributor, I do not understand the full
+implication of such commits. So please forgive any misunderstanding.
+
+--
+Kaushal Modi
+
+--001a1140707c14fc46052f65b8fa
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi Alan,<div><br></div><div>I was looking at a recent comm=
+it:=C2=A0<a href=3D"http://git.savannah.gnu.org/cgit/emacs.git/commit/?h=3D=
+emacs-25&amp;id=3Ded19f207449c43f7f08285ada87ae7a46c61c8d1">http://git.sava=
+nnah.gnu.org/cgit/emacs.git/commit/?h=3Demacs-25&amp;id=3Ded19f207449c43f7f=
+08285ada87ae7a46c61c8d1</a></div><div><br></div><div>It&#39;s a huge commit=
+ with lots of changes in many files. But I cannot completely understand wha=
+t all changed in that commit. I was looking for that commit&#39;s commit lo=
+g but I couldn&#39;t find one.</div><div><br></div><div>Aren&#39;t commits =
+in emacs-25 now limited to just bug fixes?=C2=A0</div><div><br></div><div>A=
+lso as I am not an active contributor, I do not understand the full implica=
+tion of such commits. So please forgive any misunderstanding.<br clear=3D"a=
+ll"><div><div class=3D"gmail_signature"><div dir=3D"ltr"><br>--<br>Kaushal =
+Modi</div></div></div>
+</div></div>
+
+--001a1140707c14fc46052f65b8fa--
+

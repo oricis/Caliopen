@@ -1,0 +1,231 @@
+Return-Path: <contact@globalpromo.fr>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id 115D9209A3B9F
+	for <laurent@brasil.brainstorm.fr>; Sun, 10 Apr 2016 09:32:44 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 004153317708; Sun, 10 Apr 2016 09:32:44 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id E2E8A3317704; Sun, 10 Apr 2016 09:32:43 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: ******
+X-Spam-Status: Yes, score=6.1 required=5.0 tests=AWL,BAYES_50,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FROM_EXCESS_BASE64,HTML_IMAGE_RATIO_02,HTML_MESSAGE,
+	RAZOR2_CF_RANGE_51_100,RAZOR2_CF_RANGE_E8_51_100,RAZOR2_CHECK,URIBL_RED
+	autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  0.0 URIBL_RED Contains an URL listed in the URIBL redlist
+	*      [URIs: globalpromo.fr]
+	*  0.4 HTML_IMAGE_RATIO_02 BODY: HTML has a low ratio of text to image area
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+	*      [score: 0.5000]
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	*  0.9 RAZOR2_CHECK Listed in Razor2 (http://razor.sf.net/)
+	*  1.9 RAZOR2_CF_RANGE_E8_51_100 Razor2 gives engine 8 confidence level
+	*      above 50%
+	*      [cf: 100]
+	*  0.5 RAZOR2_CF_RANGE_51_100 Razor2 gives confidence level above 50%
+	*      [cf: 100]
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	*  1.0 FROM_EXCESS_BASE64 From: base64 encoded unnecessarily
+	*  0.6 AWL AWL: From: address is in the auto white-list
+X-Spam-DCC: : 
+Received: from smtp4.globalpromo.fr (smtp4.globalpromo.fr [163.172.248.227])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id B156033181F7
+	for <dev@caliopen.local>; Sun, 10 Apr 2016 09:32:40 +0200 (CEST)
+X-QHPSI: clean
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed;
+	d=globalpromo.fr; s=default; h=Date:Message-ID:To:From:Reply-To:
+	Subject:X-Mailer:Precedence:List-Unsubscribe:MIME-Version:
+	Content-Type:Content-Transfer-Encoding; bh=Vzi1FqLha8Qb+ef9Ww0fH
+	RPoLE0=; b=oaVniM1VB61kf2wLVOh81ssCe+4t1FOhlbswK4KL8NepnqcUnJJqb
+	8sWhxA1QgKCklkVVL8oct6YNX7ID0vpHfUBYIuRGl61OpcYCvbaY8YtV78MDTfi0
+	LmkgVz+ilrahziDv0z6Lzv94byJyIROgysDE3LRGNZfBUKucP4JzZg=
+DomainKey-Signature: a=rsa-sha1; q=dns; c=simple;
+  s=default; d=globalpromo.fr;
+  b=RD/xZaJ8YiNtdc2kV0ILxgJeiCm2faCJPDdNt4ADyuPc8lwd7yHfPhHwj35kBcAVu3JgnE4xtiY5p1INMZjj5eccQcYHAwaAPjEVBtl5eYRBxDsFwPXxdGUJgJwSHaegvHXz+FfkvgQe/oULCkxKxiyCJ5MisNFn2iPC70NbRD0=;
+Received: (qmail 17400 invoked by uid 0); Sun, 10 Apr 2016 09:32:39 +0200
+Date: Sun, 10 Apr 2016 09:32:39 +0200
+Message-ID: <20160410073239.17297.qmail@globalpromo.frglobalpromo.fr>
+To: dev@caliopen.local
+From: =?utf-8?B?TGVhZGVyIFBhcmZ1bSBwYXIgR2xvYmFscHJvbW8=?= <contact@globalpromo.fr>
+Reply-To: contact@globalpromo.fr <contact@globalpromo.fr>
+Subject: =?utf-8?B?TGVzIHBhcmZ1bXMgZHUgcHJpbnRlbXBzIHN1ciBMZWFkZXIgUGFyZnVtICE=?=
+X-Abuse: abuse@globalpromo.com
+X-Mailer: SL v1.55.3 
+X-Campaign: a29d1598024f9e87beab4b98411d48ce 
+Precedence: bulk
+List-Unsubscribe: <http://globalpromo.fr/Oed7fgsY_Qt4ZqGp2tH4xHE_gMwXmQQ3BL188hH_-x4Q6_CQ0AWbTGjTz79sZO6ATqP2vOiIWbu_dKq8qenzOyz0gM4WoAhvmuwMbSOwIHHcI2XpmNwhQ-eoxzRtjx6JOY6Qbi2RqTWVX1Hq5UhV7sOqMUoQC4AcywhmmzPJ2W0=>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="QsvfEYh+I/wrllhKImFEKRAZIF1Unz6LXX1Z/R3RK1e8sfI8SsyRCXzKVA5FOpds"
+Content-Transfer-Encoding: 8bit
+X-Spam-Prev-Subject: =?utf-8?B?TGVzIHBhcmZ1bXMgZHUgcHJpbnRlbXBzIHN1ciBMZWFkZXIgUGFyZnVtICE=?=
+Content-Length: 16835
+Lines: 159
+
+--QsvfEYh+I/wrllhKImFEKRAZIF1Unz6LXX1Z/R3RK1e8sfI8SsyRCXzKVA5FOpds
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+LA LIVRAISON EST GRATUITE AVEC NOTRE CODE PROMO !
+ http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VsmaWJM1dtTLOplvaWC5OG9XghhUWRQBDQZwP9zLjPybaURfev7E8r9VKrvKJ-XhhmURpEBQB4HgjUlv1iyxxp8LtdW237zzwXXKZka9HRKEM9Op52sJiz0fywq7nAQ0022cumsU3XPNZy02bS_0rQL0jdAW13Ymz7KgMr4teLrZyLo8X6kkSPErAwVs0Ht/xz-JqSRy7Z7946F9NQmpk_ixeVnHs7w3OTh-v5NDciYpI= 
+
+ 		 [1]
+ 		 [2]
+ 		 [3]
+ 		 [4]
+
+ 		 [1]
+
+ 		 [2]
+
+ 		 [5]
+ 		 [6]
+ 		 [7]
+ 		 [8]
+
+ 		 [3]
+
+ 		 [9]
+ 		 [10]
+ 		 [11]
+ 		 [12]
+
+ 		 [13]
+ 		 [13]
+ 		 [13]
+
+ 		 [1]
+
+Cette newsletter vous a été envoyée par le programme La belle affaire
+
+ Pour cesser de recevoir nos informations sur l'adresse dev@caliopen.local, désabonnez-vous [14]
+
+ Politique de confidentialité | © La belle affaire 2016 
+
+Links:
+------
+[1] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6Vjw1cLJaTHXii__5_CQxdx4MfS0SpAUyn0yYxs5lJjtRSQ6pek4kRBif3zfD7dB5_IB0BYolbit0s5d-NcI9hKTco9rm1FMfmF8al9aiM8tBJ4_FET7ObPZyamypQ81n62hB5vWJdJBPl2XsFjmJvaA==
+[2] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VooUoDeeOBH4p3or7LsDkY4Edp6hsoBn30jntWxCL1bZvJ1dH_EbtZN_9_F2hqW0QEsRAJdq8CCB4n1WlNf9ABJYiKnCpvVwUZWDRTXSbKJORV2vOaz07xwlWjzA6LhfwPoZiP_0Y2tN00LoVBP4yPA==
+[3] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VLCDR7f2uFgzhph1UvcbNRpy5Xk5xIb4nofhcogHSGTLIUHgvRRteotqKfA-ByCz3sAie4kWZTy8FDWyE8Gc3a_KSdWWTES7Y5IeLBwOuH4qNeD3-njEVhreIn26NKWkALdGpdbfhozxH5pQ_snPkFQ==
+[4] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VC_y56V3ZTxvc2krNZTEo9GyqsYDcowz4fDZMZkidzMV61PorjcBOtcSdAig02rUOL8Xnz6kocxafmUkLPrAxN2o7FkVAVqln_5vbUMmcvENbw_wlq0jz_FZy2270MHi-avMBE7Pt_-xQoP6tf_vSWQ==
+[5] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VT4i1V6ffKl16b8PpoJgjceyE3qune7n3hyzJCmAIzSapSB7HmuLeP5Bs3TeRc573Eh6ANuGNy2oO8Fh4pRTJ18_j6pNW8uEN21FEr8pDFOzMojHLKoUfZLVjd_YHvoTAcdSbEqGRR4COrxtTdZQOkg==
+[6] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VnjPtirRTaE3fVz-Xba_7rxYNTWTGhpPlZ3hZ2LE0jmo4Fv0sV9ewtyCsKlfGkC9gjW5ZUzoLnRswNmDv-Ai1-hN-f5DmHMKmmZWui-O5vG2E-IqlboIEfDzviHBjDmbh9Y513i-KAkUEZ-BGmPbRMQ==
+[7] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VUZ8oqAU3x6eRyLBMce_b5TpGPQiEccc-8zKYHRcSlwQqfnmOl1CQZNAy4YCasZ9yqMj-Ka0ui0lg5om2ekoOdpnEue_fHtooOPY4GJR0W6kisqIim44RygiYmE31Hfq27gE7NxcuzQC7X5V3Ns_YRg==
+[8] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VVb7WEwV9bLV3AlOVlZkjYoQEQJfi5_gwo0eQHkSlI70UmeOOUB_SLnprQtLpxiej08kmxVyk5sh7B2MLulGqqmj3rfKSyQ0OaYVzR9E1mhpecWD7waDWpqT_8hbX5EUg7wWecn02tI5gIo7FMKEfwA==
+[9] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VUdQM5dg-SkzqDZH3kBkiZJkbnu6OjRmRnSSsyly3Dn728B0DIpgCJxtrreR0tS35bgbVAH9Sxrr28vh8VA0Eba2gXNvIlbC9zN6J28C1nVoC0mJVfT_4JY-u6N6y5TAV96mMdrAPPSmrDdM3OaCnHA==
+[10] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VZ8thMDVYEw-kqAfoah1VEMtyCFf0c4cAbV2YEsA2YR2BMN_O_7MnjFIk11eX1XoCM8no6ExTMSnqXiOm7_wNLGZhqvqgspyqmFTtva2zQ9bWAoJaaqa4jSaEuEbcc0jp5KUl2hCPOkrPQyj6GxPrSg==
+[11] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VbCBT0_l9FCKqpplHpknweFt364p3-MtwOWN-meVgc0ObOvLkyEDzeEUQGVQBtiCnTtVbS50NLQRmXTF1DnNkfptd9koTdpkaUhnG6MN6E04BHfrlM__KGSTM1NluVfcS9-_UMwYfA_CuTBn54uoLwA==
+[12] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VOQMX2ARHeMjoDjxmcHRl-b8vpUeOH5CWEMZpNAFX0c_pyYBvwIuU6w-5KvrlOrq7vbTFFAI34cKkXyHUSQRB13X0Fp046nkAHX-XmR36mj8Cc6VzelbSbX6rcUDh0tXqOPPwtnhrge1Ph4E-rnMoNw==
+[13] http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VSQk37c77CsVhhCj5sL-a5HuNLkEiU0tKHlrfqJ7iL76jeHN5qqhtytfE3uNwLe5XKC_ewDUjbIfJPQh76o3p3O-kbU5GSFDBKLmuIcvvK0WHyzzpuAUJT1p4-387U8vBAF0DdJAWyG1n31QWRcOZZg==
+[14] http://globalpromo.fr/http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6V1UfDvuTTdgGTPaFl6OWADidkITuyvvj1CKv7Se3nE-b6FTvrSURVTzaXGx3w0QTYseBHicU6c9lAw6EJ60AH7w==
+
+
+--QsvfEYh+I/wrllhKImFEKRAZIF1Unz6LXX1Z/R3RK1e8sfI8SsyRCXzKVA5FOpds
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!doctype html>
+<html>
+<head>
+	<title>Leader Parfum</title>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+</head>
+<body><link rel="stylesheet" href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq919Gc99ET_JdY_odEq9PeGxmWI1b6dVddSDc7iufkG8utCJXttdc98VpNap3DdmvF4UvGPbpT_ozxuGkCvIueI"/>
+<div style="text-align: center;"><strong>La livraison est gratuite avec notre code promo !</strong><br>
+<div align="center"><font color="#000000" style="font-size:11px;font-family:Verdana,Arial,Helvetica,sans-serif;">Pour visualiser correctement ce message, accédez à la <a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VBhZfETY-c2I6x2A5acSbcfQ32KFOk51hhQgEtZTlIIOfonUK5VD6AErfkWvRxHZ5Xrmx97hcw5LEn2mPs4wovMHFwR72feP6M56Hxq5xJPz4kKzOSSnQVfDCGLM2LmRE1k-1W7--zfbNpUAoCBPJDySzTzHoElDz9LvtxL0QiHjO_m_CrwDHrmBslS2WNt/iy14aSY7mTOBtVIdlfBcAF4wdLQX72ELjKqFr4Ba7r4ZQ=">version en ligne</a></font></div></div>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" id="Table_01" width="850">
+	<tbody>
+		<tr>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VTxwpZ04-WG2c_CVS9Mtz0N705Q008JGqlK-JW_zf_Vqy_5I_hvFRHH2Jot0IFC5If48c5vhZIxn43jC4JXxTe9lmXTaYIK8PAPeyVDMBFP5aM-8fKQW52-I64yMlmxVJbw5v1wAzFmkyRvmMT6vplw==" target="_blank"><img alt="Leader Parfum" border="0" height="106" src="http://globalpromo.fr/img/2112/images/751073995706c.png" style="display:block" width="320"></a></td>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6V2FEiAarEcsAscnHY1MjHZgepkwY3FR-37gBADckpyjQnF3O7Y6Xbz7PlFFmsLgnAfwY6ttIzKBhu5C-pydSxcji5gJzIUkOe_o62rFV7YQyKJa5SCB-Gew71WP56hwP2sNtTI0XegeC6EOEaBbvPkw==" target="_blank"><img alt="Parfum Femme" border="0" height="106" src="http://globalpromo.fr/img/2112/images/5188531665706.png" style="display:block" width="155"></a></td>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VQqEGxVPWK2gIBBhwsvSHDoXGYFacb_sRnFrwiJ6bhjW-d5yUKpawqZhlRFXNOtfJ9v8YSpuXbmyfCsrBfbgBb71Zv4g7KS1oLXpbbOVNTmhahwlnz5lU85QnobuazILitcFW6oeTDomaFh7eCHyXnQ==" target="_blank"><img alt="Parfum Homme" border="0" height="106" src="http://globalpromo.fr/img/2112/images/8561171155706.png" style="display:block" width="156"></a></td>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VGggsLzjL5qcxvgVuJ6_-GNg5XHevNkfjkhgXURE-KbDKM-61nd-i-Zum9TD2h4GCdrRFAJA871vqbudSPu1GeDDSeN7zywO3lH6tEJddxiXtHM8iqI3jfGEXB28mL76ehPupsyMHXdKmgNUmhnVTUg==" target="_blank"><img alt="Parfum Enfant" border="0" height="106" src="http://globalpromo.fr/img/2112/images/1304215153570.png" style="display:block" width="219"></a></td>
+		</tr>
+	</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" id="Table_02" width="850">
+	<tbody>
+		<tr>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VWTR98w5Z7kiub-qpNzKn0O_VTYaoIEqS0eBgLgKbo3l9_v3VA9LKIszf90yz53B6OiMQ32egw877vk1BoVMooZI_8ZfF8MWPHoH1SQGslodBNYo2zSf53DiMfVPmoI0JtgtAkUaalOLRaS8z21c6XQ==" target="_blank"><img alt="Un air de printemps souffle sur Leader Parfum ! Dénichez la fragrance parfaite à travers notre sélection de parfums frais et fleuris au charme unique. Plus de 7000 parfums de grandes marques et jusqu'à -70% de réduction ... En bonus, la livraison vous est offerte avec le code LG2016" border="0" height="531" src="http://globalpromo.fr/img/2112/images/1454942690570.png" style="display:block" width="850"></a></td>
+		</tr>
+	</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" id="Table_03" width="850">
+	<tbody>
+		<tr>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VcqOPyNNIPkhDe2S5hC3BV8PM6670X4Fq8FGnK9kIO9MiPJfM0Jim_vqQCi0fIkMd7OGQm3NGboMKx6Xv4s6NUYUvls3bu3hpIpeTt94To93tmmOyZWlf5aZ8CipqJESTvJTULxSZHwKIE6k4lBXydQ==" target="_blank"><img alt="Les parfums femme du moment" border="0" height="107" src="http://globalpromo.fr/img/2112/images/1084840379570.png" style="display:block" width="850"></a></td>
+		</tr>
+	</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" id="Table_04" width="850">
+	<tbody>
+		<tr>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VdZY6UUU1sRWK6Brx_qnmSo_BUBpSLExvz1Q7Viyr2zmMU7Bn7xl1_Edeq5fNYN4hGkXSvX8ipa3t0kOCdEg256rxoR2dbWLAN2REMeArJ2QHtmygPPxiZATadLOUpmzfOCioOeHYJZCwJr4EiOWqVQ==" target="_blank"><img alt="FLOWER par Kenzo - Eau de parfum 100ml - 64,00 Euros au lieu de 107,40 Euros" border="0" height="359" src="http://globalpromo.fr/img/2112/images/8337513305706.jpg" style="display:block" width="258"></a></td>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VeQWOfyrqtX9aumWO43wycb9Vzm3UQHSTVxf6Lv1jrMGgKpgHP0pJz1DS8xfTSd0qcMQDdWnzqScLDyIv7e0N5eqB7KVM9Rkp2QFMImI4K6zKO1C4AXYZxo1iK4HnnVauJkXX0nvBs7D5tJ8jikfsRA==" target="_blank"><img alt="LA PETITE ROBE NOIRE - MA PREMIERE ROBE par Guerlain - Eau de parfum 100ml - 76,00 Euros au lieu de 131,00 Euros" border="0" height="359" src="http://globalpromo.fr/img/2112/images/1537572545706.jpg" style="display:block" width="167"></a></td>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VD3gAczG30LvHYjJNCu4hM-qNN59OBXZVFdNguIcPVfwhMdF4QzO8iiA2IlMeYBuJ_PP-VRheMEfome58pqSLKxeoA3WwT4pv37iVavhsaabKEdjF45-tlmHapz08JLTSD8NvPJhZOf-OecsoZslmuQ==" target="_blank"><img alt="VALENTINA PINK par Valentino - Eau de parfum 80ml - 92,00 Euros au lieu de 129,00 Euros" border="0" height="359" src="http://globalpromo.fr/img/2112/images/2090122656570.jpg" style="display:block" width="168"></a></td>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VNFhejFJGYj6VhdMZb_kTFWaW73Cg5qqMFJPGRTfE0HfRIdA7kogKvZSsPm6sFsuaL825qCUJTL2icUzS3ulOzL3ZEajlAqLMp28NGntK_QhkrNImHjWgDE2cabcV0x2BWYueWvuOxyoJtABur61QCA==" target="_blank"><img alt="ETERNITY PURPLE ORCHID par Calvin Klein - Eau de parfum 100ml - 38,50 Euros au lieu de 59,00 Euros" border="0" height="359" src="http://globalpromo.fr/img/2112/images/8343351925706.jpg" style="display:block" width="257"></a></td>
+		</tr>
+	</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" id="Table_05" width="850">
+	<tbody>
+		<tr>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6Vm1BGl-AMU2BsFGLWafBtKDIWX2yZ3HFkeEnm356mqda-iJQkMREMoTax05--6cUY9DRKtZXd4qKw9t--8Hw8mtxfoaEGiOZyzztqxGVhgAfeSiLXdP3hm54WecbFhr_NOEYngGyRlamQp89LvMQnxA==" target="_blank"><img alt="Les parfums homme du moment" border="0" height="111" src="http://globalpromo.fr/img/2112/images/1021530094570.jpg" style="display:block" width="850"></a></td>
+		</tr>
+	</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" id="Table_06" width="850">
+	<tbody>
+		<tr>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VjrtEhAqA4ZhuFT0105ibdbXkxYjqO3zFZzjdnjL26ifvyuJ2CTa987Xwxhv8oAFE6WzuZFWpxuWtwg2pgP5gPLSPeMcKR1PGL1Js-KaM4pcFgU2jEfcohB0HEcxhdZH8ua4IfbgFzFioa2ZUeWPulw==" target="_blank"><img alt="LA NUIT DE L'HOMME - L'INTENSE par Yves Saint Laurent - Eau de parfum 100ml - 78,00 Euros au lieu de 99,90 Euros" border="0" height="352" src="http://globalpromo.fr/img/2112/images/7497137965706.jpg" style="display:block" width="258"></a></td>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VIdcyMpxNVpYVPSEAlATu1-hllApnmR16PnDvfOVYzc5Pwd6syY5Pt6RSeMi7Fy0Qr5jgAxfHNNqNpyE0oAgs213GnECYJiYSNZsZXbey-wPp-Tb84UtbDzgwNnE4uAnNinjp3PqfUVfKLWHV9U9COw==" target="_blank"><img alt="AQUA FROST par Azzaro - Eau de toilette 75ml - 39,50 Euros au lieu de 52,00 Euros" border="0" height="352" src="http://globalpromo.fr/img/2112/images/8428035905706.jpg" style="display:block" width="167"></a></td>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VLoWkujNQ-ygy_NlueB7yJUtNVuwYQmn-To68fXpukSRDoxiUc8eXuJ-4NJTa5yC5pJFz8cH_PUJxmDWSuk0U1t5gt0VmK4pQHJ9KQykG9HYrgHxy10_0xXTBRW3vr-Bh3SgHt7xNSYUb-i6TgPnF3g==" target="_blank"><img alt="UNGARO 3 par Ungaro - Eau de toilette 100ml - 32,90 Euros au lieu de 54,50 Euros" border="0" height="352" src="http://globalpromo.fr/img/2112/images/1532299416570.jpg" style="display:block" width="168"></a></td>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VYzyk5tAqjMCOv4MGdD1xWbCPhkWaxsToY7QfI_19iB0pMWu5IXknLnnXi02dh8CP3Oc31u1KnaAQdogGHckGLR0JB3nrrulpNikJOHWx6O4E0Vpv97v2cL1RXzjWPqVYTwjrErdFCSca9DhIqmpZ6A==" target="_blank"><img alt="DIOR HOMME COLOGNE par Dior - Eau de Cologne 125ml - 76,90 Euros au lieu de 95,50 Euros" border="0" height="352" src="http://globalpromo.fr/img/2112/images/1398839465706.jpg" style="display:block" width="257"></a></td>
+		</tr>
+	</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" id="Table_07" width="850">
+	<tbody>
+		<tr>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VPR5C1tiKjshkaXRN80gVxiFXXtBvmEGDfhhvOG6_lFoYLRuxanHJohviXWVYm2kkatG5tDuc6mf2DDHSQY1N5eBRhXLU58Jc8yJZolV-Z_LdjNFxnux72cFqZQ3qc2YDWYyqWS0Kv-dFwOoPL8drsw=="><img alt="Livraison gratuite dès 150 Euros d'achat" border="0" height="91" src="http://globalpromo.fr/img/2112/images/1497603738570.jpg" style="display:block" width="320"></a></td>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VPT2ccFHrjQd0ZHM1iBKkzOnqEdDN1DgHTOtmHCstsrlBCvXqilusbmQmanvIGpPlWQXErGuuvbF5vBGx4iEmAwlZsXP16zxyWQ6-W6VHdecchUomqNqIlY4WmtqnjcOpJ8ky0rFDDFeQynTMJcxMtg==" target="_blank"><img alt="Paiement 100% sécurisé" border="0" height="91" src="http://globalpromo.fr/img/2112/images/1569683430570.jpg" style="display:block" width="231"></a></td>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VIGUZVjbSPeiLZwDsCeNBIHwjM5jVVgWOfqGguAYP6Thov5shO5bIPaSQgKTFlrh8s41XBuVuk_bYIHhHI9MXKKqzTfOc4WV3cCkYtpvgbL5H-ZOXyq-kj4Qdfj5p5gTpMdDniD9fts2wjxbZpQibVg==" target="_blank"><img alt="Parfums 100% de marques authentiques" border="0" height="91" src="http://globalpromo.fr/img/2112/images/1506586352570.jpg" style="display:block" width="299"></a></td>
+		</tr>
+	</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" id="Table_08" width="850">
+	<tbody>
+		<tr>
+			<td><a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6Vf5mpOJiBqS5n_l8LJ6bCiVbTyTC40aO5iWjfLJuOxxBOWq3vEj2smAb5SmVNrdBi8GCwDhV9ZhBY11k2S1FXNQC9Us7_8xqrgBwBaKm4OxJEJuQW7chGRxhLQjmR5zuGlQpA1Uhdux5ZkpkmHueyIQ==" target="_blank"><img alt="Footer" border="0" height="268" src="http://globalpromo.fr/img/2112/images/2081852155706.jpg" style="display:block" width="850"></a></td>
+		</tr>
+	</tbody>
+</table>
+<img height="1" src="http://camsender.fr/statistique/ouverture.php?news=N_LP_Printemps_2016&mail=dev@caliopen.local&produit=Cosmetique&plateforme=Mailxpertise" width="1">
+<div align="center">
+<p><font color="#000000" style="font-size:11px;font-family:Verdana,Arial,Helvetica,sans-serif;">Cette newsletter vous a été envoyée par le programme </font><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; text-align: -webkit-center;">Globalpromo</span><br>
+<br>
+<font color="#000000" style="font-size:11px;font-family:Verdana,Arial,Helvetica,sans-serif;">Pour cesser de recevoir nos informations sur l'adresse dev@caliopen.local, <a href="http://globalpromo.fr/wSvtOSW3yuJYYVlixDbKz5u1JUCKJnBQ522W4CCVLq8T0WgSGpL4_e_LRY4D_i6VMSr32sVatIir67MhmF5KwM3ZPzqWqGHyLbMmPVkrFpd4NJQC3kicKzfesHz3ysiBZTGhdH7NbAFM2rWK0us2Iw==">désabonnez-vous</a><br>
+<br>
+Politique de confidentialité | © </font><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; text-align: -webkit-center;">Globalpromo </span><font color="#000000" style="font-size:11px;font-family:Verdana,Arial,Helvetica,sans-serif;">2016</font></p>
+</div>
+</body>
+</html>
+
+
+--QsvfEYh+I/wrllhKImFEKRAZIF1Unz6LXX1Z/R3RK1e8sfI8SsyRCXzKVA5FOpds--

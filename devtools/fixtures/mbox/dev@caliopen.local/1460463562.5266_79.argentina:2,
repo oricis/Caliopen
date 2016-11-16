@@ -1,0 +1,71 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ajAXy-0006Wm-M1
+	for mharc-dev@caliopen.local; Thu, 24 Mar 2016 15:03:54 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39934)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ajAXs-0006Pg-R4
+	for dev@caliopen.local; Thu, 24 Mar 2016 15:03:53 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ajAXn-000335-S4
+	for dev@caliopen.local; Thu, 24 Mar 2016 15:03:48 -0400
+Received: from plane.gmane.org ([80.91.229.3]:44370)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ajAXn-000331-Lm
+	for dev@caliopen.local; Thu, 24 Mar 2016 15:03:43 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ajAXl-0005RS-O1
+	for dev@caliopen.local; Thu, 24 Mar 2016 20:03:41 +0100
+Received: from 69-196-182-150.dsl.teksavvy.com ([69.196.182.150])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Thu, 24 Mar 2016 20:03:41 +0100
+Received: from monnier by 69-196-182-150.dsl.teksavvy.com with local (Gmexim
+	0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Thu, 24 Mar 2016 20:03:41 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+Date: Thu, 24 Mar 2016 15:03:21 -0400
+Message-ID: <jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <56F42269.10400@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 69-196-182-150.dsl.teksavvy.com
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:4j9EO8FIQwNlcFa0s2iJXeNnqQQ=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 24 Mar 2016 19:03:53 -0000
+Content-Length: 432
+Lines: 13
+
+> (Stefan, for example, your emails are tagged with "Gnus/5.13 (Gnus v5.13)
+> Emacs/25.1.50 (gnu/linux)").  Has there been complaints about Gnus
+> doing that?
+
+I never liked it, but admittedly, I never complained about it.
+
+
+        Stefan
+
+
+PS: I could go along with package.el sending the Emacs version in the
+user-agent (tho I don't think the OS info belongs there and AFAIK most
+ELPA packages don't care about the OS either).
+
+

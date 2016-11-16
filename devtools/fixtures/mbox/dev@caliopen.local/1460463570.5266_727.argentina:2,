@@ -1,0 +1,73 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alIJl-0003uE-5l
+	for mharc-dev@caliopen.local; Wed, 30 Mar 2016 11:46:01 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:41162)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1alIJj-0003sD-1t
+	for dev@caliopen.local; Wed, 30 Mar 2016 11:45:59 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1alIJf-0002he-5w
+	for dev@caliopen.local; Wed, 30 Mar 2016 11:45:58 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:56185)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>)
+	id 1alIJe-0002h2-R1; Wed, 30 Mar 2016 11:45:55 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>)
+	id 1alIJV-000128-9h; Wed, 30 Mar 2016 17:45:47 +0200
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: Eli Zaretskii <eliz@gnu.org>
+Subject: Re: More convenient default rollback for users
+References: <m3poudb86o.fsf@gnus.org> <83io05w9s7.fsf@gnu.org>
+	<m3bn5xb60l.fsf@gnus.org> <83egatw7lm.fsf@gnu.org>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAALVBMVEUAAAAaGxwLCw0BAQMC
+	BAYBAQEAAQNUVVi5ubsCAgQBAgNxcnQJCQoICAgGBgb1ZQlrAAABJUlEQVQ4jWNQFDpz5tCZQ0pn
+	dM4AwSElGGBgiAxgwAJYgQirBCe6AFZVpCggaAAChBLWxRWAS44oe1hBPsemgRXN5wEICVRluDgI
+	EBqAQwKrBhKCB8UgVhQeA0rgoTsITC7F0IEqj8WKmZiiAQysoQyhR1AVQgEwqRkji8LCgQtoQyaG
+	UWCPcy3AtAMClpogG44USqwmWNWzhjJPQXESwlfGU7CoBwEzHBKsmX5QxgQkA0G0pR+aAJQMtvRF
+	dydUgfE8oCCWRMQKdi622A/F6qpQoDZLLOLs5UAgguIciKnc28sLqytRJcCAuwMIijEcysAFlqjC
+	YgdYohJJKVxid3k13A6GAJhvogIYy8urd4swrHz37u29t+/A4M7dt3fv3j0ELpwA2qxIS+pKHq4A
+	AAAASUVORK5CYII=
+Date: Wed, 30 Mar 2016 17:45:44 +0200
+In-Reply-To: <83egatw7lm.fsf@gnu.org> (Eli Zaretskii's message of "Tue, 29 Mar
+	2016 19:51:17 +0300")
+Message-ID: <m3wpokas0n.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 30 Mar 2016 15:46:00 -0000
+Content-Length: 670
+Lines: 16
+
+Eli Zaretskii <eliz@gnu.org> writes:
+
+> The problem is that some options are supposed to be changed via
+> defcustoms, because those invoke a special function for the new value
+> to take effect.  In NEWS, we usually say "customize the option
+> so-and-so to such-and-such value", but how do you do that in
+> copy/paste-able way? invoke the function by hand?
+
+Perhaps there should be a `custom-setq' function that the user could
+eval?  Or perhaps this rollback buffer could be in a mode where just
+hitting RET on a form would execute the proper custom incantations...
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

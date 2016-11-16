@@ -1,0 +1,111 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 8C9A6120AD3;
+	Sat,  6 Dec 2014 21:08:48 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 1.764
+X-Spam-Level: *
+X-Spam-Status: No, score=1.764 tagged_above=-999 required=5
+	tests=[BAYES_40=-0.185, HTML_30_40=0.374, HTML_MESSAGE=0.001,
+	HTML_SHORT_LENGTH=1.574]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id 2Ng6d2HWDL0C; Sat,  6 Dec 2014 21:08:47 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 76C3B120ACA;
+	Sat,  6 Dec 2014 21:08:47 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id E58786B491602;
+	Sat,  6 Dec 2014 21:08:45 +0100 (CET)
+Authentication-Results: brassens.heberge.info; dkim=fail
+	reason="verification failed; insecure key"
+	header.d=gmail.com header.i=@gmail.com header.b=J9vlzSDQ;
+	dkim-adsp=none (insecure policy); dkim-atps=neutral
+Received: from mail-lb0-x229.google.com (mail-lb0-x229.google.com
+ [IPv6:2a00:1450:4010:c04::229])
+ (using TLSv1 with cipher ECDHE-RSA-RC4-SHA (128/128 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id 9BF9D6B491602
+ for <caliopdev@caliop.net>; Sat,  6 Dec 2014 21:08:44 +0100 (CET)
+Received: by mail-lb0-f169.google.com with SMTP id p9so2120885lbv.28
+ for <caliopdev@caliop.net>; Sat, 06 Dec 2014 12:08:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+ h=mime-version:sender:in-reply-to:references:date:message-id:subject
+ :from:to:content-type;
+ bh=scluubGFmKcu21kNZdd8QyvQPjxBISf6bLjZdfhMuXk=;
+ b=J9vlzSDQX0t4m3WJa1/cD0+7hbhxbjISqmTdfA8fNdmU104eCvrZkei6xV0wKPJvTw
+ FFRg7is2KH2y3QRRnNlsErz1MA0vK4QBJk0MHgkIwOKHRmQvWgaUN+NGhO1eGn4E+UkC
+ JMee5a/ROJee0lta+B3HS+gK9EaXOq6acDDGrkl3/IvGKz+Ls4rDIfXHda8hUf41/V5r
+ 8lypdI6yG5CJR2j4p68rxA457AFt9i0s13bOl6yBxno/DTZ4UZnsvANH90M6IpSNDDGc
+ CE/0bnSy/xfqZw6W0cElnr5+MtEXHEtm5Z42aarFkuTgi8kmUQq41IOlWZwKaAtDYKvm
+ rusg==
+MIME-Version: 1.0
+X-Received: by 10.152.121.1 with SMTP id lg1mr8845471lab.28.1417896524025;
+ Sat, 06 Dec 2014 12:08:44 -0800 (PST)
+Received: by 10.25.20.216 with HTTP; Sat, 6 Dec 2014 12:08:43 -0800 (PST)
+Received: by 10.25.20.216 with HTTP; Sat, 6 Dec 2014 12:08:43 -0800 (PST)
+In-Reply-To: <CA+tgzehWtaqTp6pNVxFvNRXR5620RuY530EWxbrWNBKeB2eS0g@mail.gmail.com>
+References: <CA+tgzeg9KmeU2B_=609YsLtS05xj-pCRZSL4R2A-QTR0ThuEeA@mail.gmail.com>
+ <CA+tgzeir52HN-cGebJitqXEo2YysQZAu37aTvix2wgE83FgAJQ@mail.gmail.com>
+ <CA+tgzehWJrANZdeGvfn+fFSDe8Dm9X9GMeDjr9LesmfZ4SgjZA@mail.gmail.com>
+ <CA+tgzehWtaqTp6pNVxFvNRXR5620RuY530EWxbrWNBKeB2eS0g@mail.gmail.com>
+Date: Sat, 6 Dec 2014 21:08:43 +0100
+X-Google-Sender-Auth: KHYogue2T1CzZKsD69Hf3IqM9Cc
+Message-ID: <CA+tgzej7rZ-EBSYXC81Os0emcdCoVSVfMEAZvY_1tShwshzb=w@mail.gmail.com>
+From: Kajan Sivaramalingam <kajan@kajansiva.com>
+To: =?UTF-8?Q?Liste_de_d=C3=A9veloppement_Caliopen?= <caliopdev@caliop.net>
+Subject: [Caliopdev] =?utf-8?q?Prochaines_=C3=A9tapes_=3F?=
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============0005215019=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+--===============0005215019==
+Content-Type: multipart/alternative; boundary=089e0115ef10a493d7050991c2f7
+
+--089e0115ef10a493d7050991c2f7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Comment s'est d=C3=A9roul=C3=A9 la r=C3=A9union d'hier ?
+
+Quelles sont les prochaines =C3=A9tapes ?
+
+--089e0115ef10a493d7050991c2f7
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<p dir=3D"ltr">Comment s&#39;est d=C3=A9roul=C3=A9 la r=C3=A9union d&#39;hi=
+er ?</p>
+<p dir=3D"ltr">Quelles sont les prochaines =C3=A9tapes ?</p>
+
+--089e0115ef10a493d7050991c2f7--
+
+--===============0005215019==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============0005215019==--

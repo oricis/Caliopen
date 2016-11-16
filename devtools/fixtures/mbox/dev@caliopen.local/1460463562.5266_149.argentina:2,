@@ -1,0 +1,122 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aXtMM-0002Qu-KZ
+	for mharc-dev@caliopen.local; Mon, 22 Feb 2016 11:29:18 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:55110)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aXtMK-0002Qk-DE
+	for dev@caliopen.local; Mon, 22 Feb 2016 11:29:17 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aXtMH-0003HF-5o
+	for dev@caliopen.local; Mon, 22 Feb 2016 11:29:16 -0500
+Received: from mout.kundenserver.de ([212.227.126.130]:65362)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>)
+	id 1aXtMG-0003HB-SO; Mon, 22 Feb 2016 11:29:13 -0500
+Received: from [18.189.69.235] ([18.189.69.235]) by mrelayeu.kundenserver.de
+	(mreue003) with ESMTPSA (Nemesis) id 0MfE46-1aI0693jeE-00Oou1;
+	Mon, 22 Feb 2016 17:29:12 +0100
+Subject: Re: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+To: Eli Zaretskii <eliz@gnu.org>
+References: <56CA94A8.3000205@gmail.com> <83si0klo3c.fsf@gnu.org>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Message-ID: <56CB3756.6000906@gmail.com>
+Date: Mon, 22 Feb 2016 11:29:10 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.5.1
+MIME-Version: 1.0
+In-Reply-To: <83si0klo3c.fsf@gnu.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="wANWr7A5TdIMXS0QTt43OvEKE3q7oNTPN"
+X-Provags-ID: V03:K0:q9BMlAPhePrJlX72NSz6z4b7TDGwevstsGDW9Nj6LyAlVCwV9sY
+	qtCNc2MqnTefYS7QshPzZIdnKfvIlv8HpnUDavbxuePl8YSjF0dwkb09oVFgAIuHenZbt+F
+	kUymJqhZsQq+dcN88kMqRmXUyvOu9AAIvN8U/Mwsl2s2jqbgnW5OmlgOQGg1ltzrInNm6lW
+	bvZTn3JmoeopduDH2BkRg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:d7lcYDpwtwQ=:Qc1CdywrbLdJ/1FSgbBp/K
+	A05EOLBAtPcnXTbAyaaHpknL2qErKfuUEo1tftVU/RBwNojLTW8qqqB46saPo7YDmiVR+MXu6
+	5wkC0XqNrp5oz3ZdgEyequs4ti6rP6Wvgrbc5lgeFjMWPIbuSASak3HPJEL7LNZ8gLUFUMRUS
+	gc7hD3Q1ZE+2cEnq8QrSXEDa5BNpmdkKqwFToG0C3zYkK+jRsrAw02LYzZ+eiKELPcqcRkN1b
+	g7yGMOc3SsNNdeNv4imQEwXL+/MI5RZUY5Dm/omX0CYr0YM2Np54HoUivqfO+FDzaf/bQpGgP
+	T1PYDqRMS9bVjDnv3+bzELV1/M63BQ3BuEiDXNkYabhLvo6Vh0e4/qSx6REu25/e3kmyWt7iu
+	ndAcjyMbvweFItACgTC5fJPY3PYClDKM7yWrnM8S+sPtITA4C6kve8szayJ4QeUdAIHgjvNq5
+	nhZXbhkUoeS98Qt1ftgVhCJkxcl7u5gSeubESVYc/aZQ5O1aVfU1iTUohSgsGLy5iQkAez6+2
+	Iqohm81gDigybmop8qYNJTUVclI5tCiHhhhcihbeiYYjA/3fVTnx5G0e4N6TeU/F0rvzI33se
+	Cy+MFYNJuV5hXQBuivN7ieKAs1u/7UCaZ8x72n8/g/4RIpiBx0VayLRDpC2/r/KRhoHATqTBs
+	87NeD4DlTkB3zm8m4591hL1qEzhpLvZaqNdssH/OUaAM9CAas5OqCeHssAxFibOHV9JQ=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.126.130
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 22 Feb 2016 16:29:17 -0000
+Content-Length: 2486
+Lines: 58
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--wANWr7A5TdIMXS0QTt43OvEKE3q7oNTPN
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On 02/22/2016 11:13 AM, Eli Zaretskii wrote:
+>> From: Cl=C3=A9ment Pit--Claudel <clement.pit@gmail.com>
+>> Date: Sun, 21 Feb 2016 23:55:04 -0500
+>>
+>> IIUC the proper way in Emacs 25 to signal changes that require a refon=
+tification to font-lock is to call font-lock-flush. This doesn't always d=
+o as much as font-lock-fontify-buffer does, though.
+>>
+>> In particular, when the font-lock-fontified variable is nil (which doe=
+s happen, though I don't know why; I don't know what this variable is for=
+), then calling font-lock-fontify buffer does refontify the whole buffer,=
+ but font-lock-flush and font-lock-ensure don't seem to do anything.
+>>
+>> What's the proper way to mark a buffer for refontification (and refont=
+ify the visible portion) immediately in 25?
+>=20
+> I think what you describe _is_ the proper way.  Can you show a test
+> case which demonstrates how calling font-lock-flush followed by
+> font-lock-ensure fails to do the job?
+
+In any case where font-lock-fontified is nil font-lock-fontify-buffer wil=
+l properly refontify the whole buffer, but font-lock-flush and font-lock =
+ensure will not do anything. I don't know what causes that variable to be=
+ nil in the first place, though.
+
+Cl=C3=A9ment.
+
+
+--wANWr7A5TdIMXS0QTt43OvEKE3q7oNTPN
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJWyzdWAAoJEPqg+cTm90wjENEQALX9PPHi2wd6/1QUJHjDeMBI
+bwUcn2bnUkKxoWy60WHU/tFFRrAWkMqWAKnd+3sTGF4m9STpy2AMrL4WtZxtOrz2
+od8ihV2pYRffQJ0NigAVc8pheNIesrdjEntDW2px1ZXANH2vnXCOJiKoXTKoe871
+j/MzbtiVzFJBIhDQCXuKXuzfNAW8DuORPlsrdaqK2cfq9XiI/W4/reN77eu1PsbL
+bpuTsmehXfNxB1X9/H0RoBnhAsO+BEDTyrslggZbe10n0Q4i3sAcHhW70gUiICLV
+xDa6FiV2Z6WsxPmkyV4TvNpL4DjUB75pfQCLZrLpU5mu6P0cEVyyS+heWf5bAeuW
+chub8K6LvZbDRDjzCZCbD57vto9mlUAXlgfjFa3weQFeWvksAa17pRFv5mT6ffV/
+XR+BbF0lkB9JdX8l2lE3642Jk8h/2wwCwnGCCUleNgQMjqbrwL0Y80qexHzbhuGb
+ba3mgIk66YKgjnqBsTDgiJbWh3U4tRIqdXYIiaDmR34phqfm2TK+fgKG38qPsluS
+BEziqTiVsS3BA2Eg/KQwedYs4FoRk8mCONUveHG//e2TkxeqaPnBusTxQPVJnLOo
+PKYB5Y7VzG2qXjOkxQLekVBGlx7J1044Iy5Sf2sZJF3z6I6THutZG3cOMfs5xj+R
+Sd4dH6Z3KVa1xIW4ENz+
+=dGBh
+-----END PGP SIGNATURE-----
+
+--wANWr7A5TdIMXS0QTt43OvEKE3q7oNTPN--
+

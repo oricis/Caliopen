@@ -1,0 +1,1080 @@
+Return-Path: <posts@futurfast.eu>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id 863D120BA118D
+	for <laurent@brasil.brainstorm.fr>; Mon, 11 Apr 2016 16:00:57 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 73A8C33181F7; Mon, 11 Apr 2016 16:00:57 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id 6751433181FC; Mon, 11 Apr 2016 16:00:57 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: *********
+X-Spam-Status: Yes, score=9.1 required=5.0 tests=AWL,BAYES_99,
+	DATE_IN_PAST_12_24,DKIM_SIGNED,HTML_MESSAGE,MPART_ALT_DIFF,T_DKIM_INVALID,
+	URIBL_BLACK autolearn=no version=3.3.2
+X-Spam-Report:
+	*  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
+	*      [URIs: effiliation.com]
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  1.0 DATE_IN_PAST_12_24 Date: is 12 to 24 hours before Received: date
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.8 MPART_ALT_DIFF BODY: HTML and text parts are different
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	*  0.0 T_DKIM_INVALID DKIM-Signature header exists but is not valid
+	*  1.9 AWL AWL: From: address is in the auto white-list
+X-Spam-DCC: :
+Received: from mail.futurfast.eu (mail.futurfast.eu [176.20.27.58])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id 3F24A33181F7
+	for <dev@caliopen.local>; Mon, 11 Apr 2016 16:00:49 +0200 (CEST)
+DKIM-Signature: a=rsa-sha1; t=1460383252; x=1460988052; s=futurfastkey; d=futurfast.eu; c=relaxed/relaxed; q=dns; h=From:Reply-To:Subject:Date:Message-ID:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+   b=nKhNJ84bK1V3FA5+Ovo0x3UJFo3wOuUv/B0l3zlt7BMVN5a4O314Qvr0wNNltgFx3UB3YHp54KSrnSsCVBPJDS8buCyvO+Vb0zy0VYlpxR57gPwxzMEzcn3YTLKwqw7+pJwuTR7ia6i2VfVmUWajjgk2L5y2TP3f3rL5pORmXOM=
+Received: from www.supprabyte.co.uk
+        by mail.futurstats.eu (IceWarp 9.3.1) with SMTP id ZSL15752
+        for <dev@caliopen.local>; Mon, 11 Apr 2016 16:00:52 +0200
+To: dev@caliopen.local
+Subject: Votre offre 4G entreprises
+Message-ID: <297958308235d10ea583e40dec256776@www.supprabyte.co.uk>
+Date: Mon, 11 Apr 2016 01:32:08 +0200
+From: "Bouygues Telecom" <sfp@futurfast.eu>
+Reply-To: sfp@futurfast.eu
+MIME-Version: 1.0
+X-Mailer-LID: 326
+List-Unsubscribe: <http://www.supprabyte.co.uk/unsubscribe.php?M=7474945&C=f2d22bbcfd54ce5513062bfbe27380ea&L=326&N=2343>
+X-Mailer-SID: 2343
+X-Mailer-Sent-By: 1
+Content-Type: multipart/alternative; charset="UTF-8"; boundary="b1_0776ce0249e2dd5844e9986029f98224"
+Content-Transfer-Encoding: 8bit
+X-Spam-Prev-Subject: Votre offre 4G entreprises
+Content-Length: 30016
+Lines: 1026
+
+--b1_0776ce0249e2dd5844e9986029f98224
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+Your email client cannot read this email.
+To view it online, please go here:
+http://www.supprabyte.co.uk/display.php?M=7474945&C=f2d22bbcfd54ce5513062bfbe27380ea&S=2343&L=326&N=184
+
+
+To stop receiving these
+emails:http://www.supprabyte.co.uk/unsubscribe.php?M=7474945&C=f2d22bbcfd54ce5513062bfbe27380ea&L=326&N=2343
+
+--b1_0776ce0249e2dd5844e9986029f98224
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+<html><head></head><body><div><!-- NAME: 1:3 COLUMN --> <!--[if gte mso
+15]> <xml> <o:OfficeDocumentSettings> <o:AllowPNG />
+<o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml>
+<![endif]-->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bouygues Telecom - Le forfait Neo Entreprises 24/7 Data maintenant
+&agrave; 10 Go</title>
+<style type="text/css"><!--
+        p {
+            margin: 10px 0;
+            padding: 0;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            display: block;
+            margin: 0;
+            padding: 0;
+        }
+
+        img,
+        a img {
+            border: 0;
+            height: auto;
+            outline: none;
+            text-decoration: none;
+        }
+
+        body,
+        #bodyTable,
+        #bodyCell {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        #outlook a {
+            padding: 0;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        table {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        .ReadMsgBody {
+            width: 100%;
+        }
+
+        .ExternalClass {
+            width: 100%;
+        }
+
+        p,
+        a,
+        li,
+        td,
+        blockquote {
+            mso-line-height-rule: exactly;
+        }
+
+        a[href^=tel],
+        a[href^=sms] {
+            color: inherit;
+            cursor: default;
+            text-decoration: none;
+        }
+
+        p,
+        a,
+        li,
+        td,
+        body,
+        table,
+        blockquote {
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass td,
+        .ExternalClass div,
+        .ExternalClass span,
+        .ExternalClass font {
+            line-height: 100%;
+        }
+
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        #bodyCell {
+            padding: 10px;
+        }
+
+        .templateContainer {
+            max-width: 600px !important;
+        }
+
+        a.mcnButton {
+            display: block;
+        }
+
+        .mcnImage {
+            vertical-align: bottom;
+        }
+
+        .mcnTextContent {
+            word-break: break-word;
+        }
+
+        .mcnTextContent img {
+            height: auto !important;
+        }
+
+        .mcnDividerBlock {
+            table-layout: fixed !important;
+        }
+
+        body,
+        #bodyTable {
+            background-color: #ffffff;
+        }
+
+        #bodyCell {
+            border-top: 0;
+        }
+
+        .templateContainer {
+            border: 0;
+        }
+
+        h1 {
+            color: #202020;
+            font-family: Helvetica;
+            font-size: 26px;
+            font-style: normal;
+            font-weight: bold;
+            line-height: 125%;
+            letter-spacing: normal;
+            text-align: left;
+        }
+
+        h2 {
+            color: #202020;
+            font-family: Helvetica;
+            font-size: 22px;
+            font-style: normal;
+            font-weight: bold;
+            line-height: 125%;
+            letter-spacing: normal;
+            text-align: left;
+        }
+
+        h3 {
+            color: #202020;
+            font-family: Helvetica;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: bold;
+            line-height: 125%;
+            letter-spacing: normal;
+            text-align: left;
+        }
+
+        h4 {
+            color: #202020;
+            font-family: Helvetica;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: bold;
+            line-height: 125%;
+            letter-spacing: normal;
+            text-align: left;
+        }
+
+        #templatePreheader {
+            background-color: #ffffff;
+            border-top: 0;
+            border-bottom: 0;
+            padding-top: 0px;
+            padding-bottom: 9px;
+        }
+
+        #templatePreheader .mcnTextContent,
+        #templatePreheader .mcnTextContent p {
+            color: #6e6e69;
+            font-family: Helvetica;
+            font-size: 12px;
+            line-height: 150%;
+            text-align: left;
+        }
+
+        #templatePreheader .mcnTextContent a,
+        #templatePreheader .mcnTextContent p a {
+            color: #6e6e69;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+        #templateHeader {
+            background-color: #FFFFFF;
+            border-top: 0;
+            border-bottom: 0;
+            padding-top: 0px;
+            padding-bottom: 0;
+        }
+
+        #templateHeader .mcnTextContent,
+        #templateHeader .mcnTextContent p {
+            color: #202020;
+            font-family: Helvetica;
+            font-size: 16px;
+            line-height: 150%;
+            text-align: left;
+        }
+
+        #templateHeader .mcnTextContent a,
+        #templateHeader .mcnTextContent p a {
+            color: #2BAADF;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+        #templateBody {
+            background-color: #FFFFFF;
+            border-top: 0;
+            border-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        #templateBody .mcnTextContent,
+        #templateBody .mcnTextContent p {
+            color: #202020;
+            font-family: Helvetica;
+            font-size: 16px;
+            line-height: 150%;
+            text-align: left;
+        }
+
+        #templateBody .mcnTextContent a,
+        #templateBody .mcnTextContent p a {
+            color: #2BAADF;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+        #templateColumns {
+            background-color: #FFFFFF;
+            border-top: 0;
+            border-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0px;
+        }
+
+        #templateColumns .columnContainer .mcnTextContent,
+        #templateColumns .columnContainer .mcnTextContent p {
+            color: #202020;
+            font-family: Helvetica;
+            font-size: 16px;
+            line-height: 150%;
+            text-align: left;
+        }
+
+        #templateColumns .columnContainer .mcnTextContent a,
+        #templateColumns .columnContainer .mcnTextContent p a {
+            color: #2BAADF;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+        #templateFooter {
+            background-color: #ffffff;
+            border-top: 0;
+            border-bottom: 0;
+            padding-top: 9px;
+            padding-bottom: 9px;
+        }
+
+        #templateFooter .mcnTextContent,
+        #templateFooter .mcnTextContent p {
+            color: #6e6e69;
+            font-family: Helvetica;
+            font-size: 12px;
+            line-height: 150%;
+            text-align: center;
+        }
+
+        #templateFooter .mcnTextContent a,
+        #templateFooter .mcnTextContent p a {
+            color: #6e6e69;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+        .mcnTextContentTitle {
+            line-height: 200%!important;
+        }
+
+        @media only screen and (min-width:768px) {
+            .templateContainer {
+                width: 600px !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            body,
+            table,
+            td,
+            p,
+            a,
+            li,
+            blockquote {
+                -webkit-text-size-adjust: none !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            body {
+                width: 100% !important;
+                min-width: 100% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            #bodyCell {
+                padding-top: 10px !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .columnWrapper {
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnImage {
+                width: 100% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnCaptionTopContent,
+            .mcnCaptionBottomContent,
+            .mcnTextContentContainer,
+            .mcnBoxedTextContentContainer,
+            .mcnImageGroupContentContainer,
+            .mcnCaptionLeftTextContentContainer,
+            .mcnCaptionRightTextContentContainer,
+            .mcnCaptionLeftImageContentContainer,
+            .mcnCaptionRightImageContentContainer,
+            .mcnImageCardLeftTextContentContainer,
+            .mcnImageCardRightTextContentContainer {
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnCaptionRightImageContentContainer {
+                text-align: center !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnBoxedTextContentContainer {
+                min-width: 100% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            #logo {
+                padding-bottom: 20px !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnImageGroupContent {
+                padding: 9px !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnCaptionLeftContentOuter .mcnTextContent,
+            .mcnCaptionRightContentOuter .mcnTextContent {
+                padding-top: 9px !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnImageCardTopImageContent,
+            .mcnCaptionBlockInner .mcnCaptionTopContent:last-child
+mcnTextContent {
+                padding-top: 18px !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnImageCardBottomImageContent {
+                padding-bottom: 9px !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnImageGroupBlockInner {
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnImageGroupBlockOuter {
+                padding-top: 9px !important;
+                padding-bottom: 9px !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnTextContent,
+            .mcnBoxedTextContentColumn {
+                padding-right: 18px !important;
+                padding-left: 18px !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnTextContentTitle {
+                padding-right: 0px !important;
+                padding-left: 0px !important;
+                line-height: 200%!important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnBoxedTextContentColumnHeader {
+                padding-right: 0px !important;
+                padding-left: 0px !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnImageCardLeftImageContent,
+            .mcnImageCardRightImageContent {
+                padding-right: 18px !important;
+                padding-bottom: 0 !important;
+                padding-left: 18px !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcpreview-image-uploader {
+                display: none !important;
+                width: 100% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            h1 {
+                font-size: 22px !important;
+                line-height: 125% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            h2 {
+                font-size: 20px !important;
+                line-height: 125% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            h3 {
+                font-size: 18px !important;
+                line-height: 125% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            h4 {
+                font-size: 16px !important;
+                line-height: 150% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .mcnBoxedTextContentContainer .mcnTextContent,
+            .mcnBoxedTextContentContainer .mcnTextContent p {
+                font-size: 14px !important;
+                line-height: 150% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            #templatePreheader {
+                display: block !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            #templatePreheader .mcnTextContent,
+            #templatePreheader .mcnTextContent p {
+                font-size: 13px !important;
+                line-height: 150% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            #templateHeader .mcnTextContent,
+            #templateHeader .mcnTextContent p {
+                font-size: 16px !important;
+                line-height: 200% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            #templateBody .mcnTextContent,
+            #templateBody .mcnTextContent p {
+                font-size: 16px !important;
+                line-height: 150% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            #templateColumns .columnContainer .mcnTextContent,
+            #templateColumns .columnContainer .mcnTextContent p {
+                font-size: 16px !important;
+                line-height: 150% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            #templateFooter .mcnTextContent,
+            #templateFooter .mcnTextContent p {
+                font-size: 14px !important;
+                line-height: 150% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .borderRight {
+                border-right: none!important;
+                padding-right: none!important;
+            }
+            .borderRightFirst {
+                padding-top: 20px!important;
+                border-right: none!important;
+                padding-right: none!important;
+                border-bottom: none!important;
+            }
+            .borderRightLast {
+                border-right: none!important;
+                padding-right: none!important;
+                border-bottom: none!important;
+            }
+        }
+
+        @media only screen and (max-width:480px) {
+            .mcnTextContent {
+                border-right: none!important;
+            }
+
+            .mcnTextContentList {
+                border-bottom: solid 1px #ccc!important;
+                height: 110px!important;
+                vertical-align: middle;
+            }
+
+            .mcnTextContentListLast {
+                height: 110px!important;
+                vertical-align: middle;
+            }
+        }
+--></style>
+<center>
+<table style="width: 100%; height: 100%;" id="bodyTable" align="center"
+border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td id="bodyCell" align="center" valign="top"><!-- BEGIN TEMPLATE // -->
+<!--[if gte mso 9]>
+<table align="center" border="0" cellspacing="0" cellpadding="0"
+width="600" style="width:600px;">
+<tr>
+<td align="center" valign="top" width="600"
+style="width:600px;"><![endif]-->
+<table style="width: 100%;" class="templateContainer" border="0"
+cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td id="templatePreheader" valign="top">
+<table class="mcnTextBlock" style="min-width: 100%; width: 100%;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody class="mcnTextBlockOuter">
+<tr>
+<td class="mcnTextBlockInner" valign="top">
+<table style="min-width: 100%; width: 100%;"
+class="mcnTextContentContainer" align="left" border="0" cellpadding="0"
+cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnTextContent mcnBoxedTextContentColumnHeader" style="padding:
+9px 0px;color: #909196;font-size: 13px;" valign="top">
+<div style="text-align: center;">Pour consulter la version en ligne,
+dirigez-vous sur <a
+href="http://www.supprabyte.co.uk/display.php?M=7474945&C=f2d22bbcfd54ce5513062bfbe27380ea&S=2343&L=326&N=184"
+target="_blank">cette page</a>.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td id="templateHeader" valign="top">
+<table style="width: 100%;" class="mcnCaptionBlock" border="0"
+cellpadding="0" cellspacing="0">
+<tbody class="mcnCaptionBlockOuter">
+<tr>
+<td class="mcnCaptionBlockInner" style="padding:0px 0px 20px 0px;"
+valign="top">
+<table style="width: 100%;" class="mcnCaptionRightContentOuter" border="0"
+cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnCaptionRightContentInner" style="padding:0px;" valign="top">
+<table class="mcnCaptionRightImageContentContainer" align="left" border="0"
+cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnCaptionRightImageContent" valign="top"><a
+href="http://www.supprabyte.co.uk/link.php?M=7474945&N=2343&L=952&F=H"
+target="_blank"><img
+src="http://hosting.effiliation.com/BouyguesTelecom/routeur4Gdecembre15/BouyguesTelecom-Logo.png"
+style="max-width:280px;" class="mcnImage" id="logo" width="176"
+/></a></td>
+</tr>
+</tbody>
+</table>
+<table class="mcnCaptionRightTextContentContainer" style="background:
+transparent linear-gradient(to right, #00abd4 0%, #0060ae 100%) repeat
+scroll 0% 0%; border-radius: 5px; width: 404px; height: 55px;"
+align="right" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnTextContent" style="text-align:
+right;color:#ffffff;padding:14px 20px;" valign="top"><b>Le progr&egrave;s
+vous appartient</b></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="mcnTextBlock" style="min-width: 100%; width: 100%;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody class="mcnTextBlockOuter">
+<tr>
+<td class="mcnTextBlockInner" valign="top">
+<table style="min-width: 100%; width: 100%;"
+class="mcnTextContentContainer" align="left" border="0" cellpadding="0"
+cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnTextContent mcnTextContentTitle" style="padding: 9px 18px;
+line-height: 200%;" valign="top">
+<div style="text-align: center;"><span style="color:#0060ae"><b><span
+style="font-family:arial,helvetica neue,helvetica,sans-serif"><span
+style="font-size:35px"><span
+style="text-transform:uppercase;word-break:normal;">D&eacute;couvrez nos
+forfaits 4G pour les entreprises</span></span> </span> </b> </span></div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td id="templateBody" valign="top">
+<table class="mcnImageBlock" style="min-width: 100%; width: 100%;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody class="mcnImageBlockOuter">
+<tr>
+<td style="padding: 0px 0px 30px 0px;" class="mcnImageBlockInner"
+valign="top">
+<table class="mcnImageContentContainer" style="min-width: 100%; width:
+100%;" align="left" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnImageContent" style="padding-right: 9px; padding-left: 9px;
+padding-top: 0; padding-bottom: 0; text-align:center;" valign="top"><a
+href="http://www.supprabyte.co.uk/link.php?M=7474945&N=2343&L=952&F=H"
+target="_blank"><img
+src="http://hosting.effiliation.com/BouyguesTelecom/routeur4Gdecembre15/BouyguesTelecom-Button1.png"
+style="max-width:215px; padding-bottom: 0; display: inline !important;
+vertical-align: bottom;" class="mcnImage" align="middle" width="215"
+/></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="mcnImageBlock" style="min-width: 100%; width: 100%;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody class="mcnImageBlockOuter">
+<tr>
+<td style="padding:0px" class="mcnImageBlockInner" valign="top">
+<table class="mcnImageContentContainer" style="min-width: 100%; width:
+100%;" align="left" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnImageContent" style="padding-right: 0px; padding-left: 0px;
+padding-top: 0; padding-bottom: 0; text-align:center;" valign="top"><a
+href="http://www.supprabyte.co.uk/link.php?M=7474945&N=2343&L=952&F=H"
+target="_blank"><img
+src="http://hosting.effiliation.com/BouyguesTelecom/routeur4Gdecembre15/BouyguesTelecom-Hero.jpg"
+style="max-width:600px; padding-bottom: 0; display: inline !important;
+vertical-align: bottom;border-radius: 5px;" class="mcnImage" align="middle"
+width="600" /></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="mcnImageBlock" style="min-width: 100%; width: 100%;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody class="mcnImageBlockOuter">
+<tr>
+<td style="padding:20px" class="mcnImageBlockInner" valign="top">
+<table class="mcnImageContentContainer" style="min-width: 100%; width:
+100%;" align="left" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnImageContent" style="padding-right: 9px; padding-left: 9px;
+padding-top: 0; padding-bottom: 0; text-align:center;" valign="top"><a
+href="http://www.supprabyte.co.uk/link.php?M=7474945&N=2343&L=952&F=H"
+target="_blank"><img
+src="http://hosting.effiliation.com/BouyguesTelecom/routeur4Gdecembre15/BouyguesTelecom-Plus.png"
+style="max-width:32px; padding-bottom: 0; display: inline !important;
+vertical-align: bottom;" class="mcnImage" align="middle" width="32"
+/></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td id="templateColumns" style="border-collapse: collapse;border-radius:
+5px;border-style: hidden; /* hide standard table (collapsed) border
+*/box-shadow: 0 0 0 1px #cccccc; /* this draws the table border  */"
+valign="top"><!--[if gte mso 9]>
+<table align="center" border="0" cellspacing="0" cellpadding="0"
+width="600" style="width:600px;">
+<tr>
+<td align="center" valign="top" width="150"
+style="width:150px;"><![endif]-->
+<table style="width: 150px;" class="columnWrapper" align="left" border="0"
+cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="columnContainer" valign="top">
+<table class="mcnTextBlock" style="min-width: 100%; width: 100%;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody class="mcnTextBlockOuter">
+<tr>
+<td class="mcnTextBlockInner" valign="top">
+<table style="min-width: 100%; width: 100%;"
+class="mcnTextContentContainer" align="left" border="0" cellpadding="0"
+cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnTextContent mcnTextContentList" style="padding: 10px 0px 10px
+10px; color: #909196; font-size: 13px; height: 120px; border-right: solid
+1px #cccccc;" valign="top">
+<div style="text-align: center;padding-right: 10px;"><b><span
+style="color:#0060ae;">Appels, MMS et SMS illimit&eacute;s</span></b> <br
+/> En France m&eacute;tropolitaine + vers l'Europe,&nbsp;USA, Canada
+et&nbsp;DOM</div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if gte mso 9]></td>
+<td align="center" valign="top" width="150"
+style="width:150px;"><![endif]-->
+<table style="width: 150px; height: 134px;" class="columnWrapper"
+align="left" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="columnContainer" valign="top">
+<table class="mcnTextBlock" style="min-width: 100%; width: 100%;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody class="mcnTextBlockOuter">
+<tr>
+<td class="mcnTextBlockInner" valign="top">
+<table style="min-width: 100%; width: 100%;"
+class="mcnTextContentContainer" align="left" border="0" cellpadding="0"
+cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnTextContent mcnTextContentList" style="padding: 10px 0px 10px
+10px; color: #909196; font-size: 13px; height: 120px; border-right: solid
+1px #cccccc;" valign="top">
+<div style="text-align: center;padding-right: 10px;"><b
+style="text-align:center"><span style="color: #0060AE;">Data mobile
+4G</span></b> <br /> &nbsp;</div>
+<div style="text-align: center;padding-right: 10px;"
+class="borderRightLast"><span style="color:#cb4c6c"><b>10Go/mois</b></span>
+<br /> en France m&eacute;tropolitaine</div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if gte mso 9]></td>
+<td align="center" valign="top" width="150"
+style="width:150px;"><![endif]-->
+<table style="width: 150px; height: 134px;" class="columnWrapper"
+align="left" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="columnContainer" valign="top">
+<table class="mcnTextBlock" style="min-width: 100%; width: 100%;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody class="mcnTextBlockOuter">
+<tr>
+<td class="mcnTextBlockInner" valign="top">
+<table style="min-width: 100%; width: 100%;"
+class="mcnTextContentContainer" align="left" border="0" cellpadding="0"
+cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnTextContent mcnTextContentList" style="padding: 10px 0px 10px
+10px; color: #909196; font-size: 13px; height: 120px; border-right: solid
+1px #cccccc;" valign="top">
+<div style="text-align: center;padding-right: 10px;"><b
+style="text-align:center"><span style="color: #0060AE;">SAV</span></b> <br
+/> &nbsp;</div>
+<div style="text-align: center;padding-right: 10px;">Jusqu'&agrave; 3
+&eacute;changes sur site par an en France m&eacute;tropolitaine</div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if gte mso 9]></td>
+</tr>
+</table>
+<![endif]-->
+<table style="width: 150px; height: 134px;" class="columnWrapper"
+align="left" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="columnContainer" valign="top">
+<table class="mcnTextBlock" style="min-width: 100%; width: 100%;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody class="mcnTextBlockOuter">
+<tr>
+<td class="mcnTextBlockInner" valign="top">
+<table style="min-width: 100%; width: 100%;"
+class="mcnTextContentContainer" align="left" border="0" cellpadding="0"
+cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnTextContent mcnTextContentListLast" style="padding: 10px 10px
+10px 10px; color: #909196; font-size: 13px; height: 120px;" valign="top">
+<div style="text-align: center;"><b style="text-align:center"><span
+style="color: #0060AE;">Services inclus</span></b> <br /> &nbsp;</div>
+<div style="text-align: center;">3 licences <b
+style="color:#cb4c6c;">Office 365</b>, Mode Modem, VoIP, messagerie vocale
+visuelle</div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if gte mso 9]></td>
+</tr>
+</table>
+<![endif]--></td>
+</tr>
+</tbody>
+</table>
+<!--[if gte mso 9]></td>
+</tr>
+</table>
+<![endif]--> <!-- // END TEMPLATE -->
+<table class="mcnImageBlock" style="min-width: 100%; width: 100%;"
+border="0" cellpadding="0" cellspacing="0">
+<tbody class="mcnImageBlockOuter">
+<tr>
+<td style="padding:20px 0px" class="mcnImageBlockInner" valign="top">
+<table class="mcnImageContentContainer" style="min-width: 100%; width:
+100%;" align="left" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="mcnImageContent" style="padding-right: 9px; padding-left: 9px;
+padding-top: 0; padding-bottom: 0; text-align:center;" valign="top"><a
+href="http://www.supprabyte.co.uk/link.php?M=7474945&N=2343&L=952&F=H"
+target="_blank"><img
+src="http://hosting.effiliation.com/BouyguesTelecom/routeur4Gdecembre15/BouyguesTelecom-Button2.png"
+style="max-width:215px; padding-bottom: 0; display: inline !important;
+vertical-align: bottom;" class="mcnImage" align="middle" width="215"
+/></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</center> <img
+src="http://track13390400.effimails23bis.com/servlet/effi.pixel?id_compteur=13390400"
+/>
+<div align="center"><a></a><a></a><a><font style="font-size: 11px;
+font-family: Arial,Helvetica,sans-serif; color: #523122;" color="#523122"
+size="1" face="Arial, Helvetica, sans-serif">Si vous ne souhaitez plus
+recevoir d'offre commerciale de notre part </font></a><font
+style="font-size: 11px; font-family: Arial,Helvetica,sans-serif; color:
+#523122;" color="#523122" size="1" face="Arial, Helvetica, sans-serif"><a
+style="color: #523122;"
+href="http://www.supprabyte.co.uk/link.php?M=7474945&N=2343&L=951&F=H">Rejoignez
+cette page</a></font></div>
+<font style="font-size: 11px; font-family: Arial,Helvetica,sans-serif;
+color: #523122;" color="#523122" size="1" face="Arial, Helvetica,
+sans-serif"> </font> <font style="font-size: 11px; font-family:
+Arial,Helvetica,sans-serif; color: #523122;" color="#523122" size="1"
+face="Arial, Helvetica, sans-serif"> </font></div><img
+src="http://www.supprabyte.co.uk/open.php?M=7474945&L=326&N=2343&F=H&image=.jpg"
+height="1" width="10"></body></html>
+
+--b1_0776ce0249e2dd5844e9986029f98224--

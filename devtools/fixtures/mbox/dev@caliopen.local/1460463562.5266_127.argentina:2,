@@ -1,0 +1,72 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aYQVP-00034h-OH
+	for mharc-dev@caliopen.local; Tue, 23 Feb 2016 22:52:51 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39973)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aYQVN-00032f-Qg
+	for dev@caliopen.local; Tue, 23 Feb 2016 22:52:50 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aYQVJ-0000TW-RU
+	for dev@caliopen.local; Tue, 23 Feb 2016 22:52:49 -0500
+Received: from plane.gmane.org ([80.91.229.3]:45081)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aYQVJ-0000TK-Kp
+	for dev@caliopen.local; Tue, 23 Feb 2016 22:52:45 -0500
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aYQVI-0004Su-K8
+	for dev@caliopen.local; Wed, 24 Feb 2016 04:52:44 +0100
+Received: from 76-10-161-227.dsl.teksavvy.com ([76.10.161.227])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Wed, 24 Feb 2016 04:52:44 +0100
+Received: from monnier by 76-10-161-227.dsl.teksavvy.com with local (Gmexim
+	0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Wed, 24 Feb 2016 04:52:44 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+Date: Tue, 23 Feb 2016 22:52:38 -0500
+Message-ID: <jwvziuq4vjq.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <56CA94A8.3000205@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 76-10-161-227.dsl.teksavvy.com
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:Q8xRMWZkJKysFmDa0udKZq2Qb5Q=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 24 Feb 2016 03:52:50 -0000
+Content-Length: 574
+Lines: 14
+
+> In particular, when the font-lock-fontified variable is nil (which does
+> happen, though I don't know why; I don't know what this variable is for),
+
+AFAIK this only happens when font-lock-mode is OFF, or when jit-lock is
+not used and the buffer is larger than font-lock-maximum-size.
+
+> then calling font-lock-fontify buffer does refontify the whole buffer, but
+> font-lock-flush and font-lock-ensure don't seem to do anything.
+
+It's normal for font-lock-flush to do nothing.  As for font-lock-ensure
+it's a bug which I believe I fixed a few weeks ago.
+
+
+        Stefan
+
+

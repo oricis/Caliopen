@@ -1,0 +1,64 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akd06-0002NY-Am
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 15:38:58 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:33949)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1akd00-0002MK-JR
+	for dev@caliopen.local; Mon, 28 Mar 2016 15:38:56 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1akczv-0004Si-LM
+	for dev@caliopen.local; Mon, 28 Mar 2016 15:38:52 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:34172)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1akczv-0004Sa-Ia; Mon, 28 Mar 2016 15:38:47 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:4972
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1akczt-0001mS-TR; Mon, 28 Mar 2016 15:38:46 -0400
+Date: Mon, 28 Mar 2016 22:38:27 +0300
+Message-Id: <83wpomwfyk.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+In-reply-to: <m38u12ieyh.fsf@gnus.org> (message from Lars Magne Ingebrigtsen
+	on Mon, 28 Mar 2016 21:23:50 +0200)
+Subject: Re: Thinking about changed buffers
+References: <m3bn5ya4ro.fsf@gnus.org> <87fuvafpvd.fsf@linux-m68k.org>
+	<m34mbqjxdt.fsf@gnus.org> <87bn5yfp8l.fsf@linux-m68k.org>
+	<m3zitiihy6.fsf@gnus.org> <8337raxxnk.fsf@gnu.org>
+	<m3mvpiigcs.fsf@gnus.org> <83zitiwhve.fsf@gnu.org>
+	<m3io06ifs4.fsf@gnus.org> <83y492wh0l.fsf@gnu.org>
+	<m38u12ieyh.fsf@gnus.org>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: schwab@linux-m68k.org, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 19:38:56 -0000
+Content-Length: 444
+Lines: 14
+
+> From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+> Cc: schwab@linux-m68k.org,  dev@caliopen.local
+> Date: Mon, 28 Mar 2016 21:23:50 +0200
+> 
+> Eli Zaretskii <eliz@gnu.org> writes:
+> 
+> > Look in fileio.c.
+> 
+> I am, but I still don't understand what this has to do with whether we
+> consider a buffer to be modified or not.  You'll have to spell it out.
+
+It affects how buffer text is written to a disk file.  Like
+buffer-file-coding-system.
+

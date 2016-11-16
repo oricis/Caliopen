@@ -1,0 +1,104 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amxFR-0005Mf-C7
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 01:40:25 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:34146)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amxFP-0005MM-5w
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:40:24 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amxFL-00046A-Uu
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:40:23 -0400
+Received: from plane.gmane.org ([80.91.229.3]:57886)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amxFL-000465-Nb
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:40:19 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amxFK-0003TJ-C3
+	for dev@caliopen.local; Mon, 04 Apr 2016 07:40:18 +0200
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 07:40:18 +0200
+Received: from larsi by cm-84.215.1.64.getinternet.no with local (Gmexim 0.1
+	(Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 07:40:18 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+Mail-Followup-To: dev@caliopen.local
+To: dev@caliopen.local
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: "Staying in the same place"
+Date: Mon, 04 Apr 2016 07:40:13 +0200
+Organization: Programmerer Ingebrigtsen
+Message-ID: <m3oa9q53uq.fsf@gnus.org>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: cm-84.215.1.64.getinternet.no
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAD1BMVEX+AA+Qb6f/AAAL8frw
+	EDRIFBcCAAACXklEQVQ4jV1Ti5XcMAiUdSrArFSATFTAEVyAPvRfUwb5bnOJ39u3tkYMMAwhvJ80
+	/r6pBn4/bb1fDYCZxeer5tcbyBuYXxEqWT+f13+AD8UjCcf/AdkBvdmG9bGB/cxrn+tvAMUOB3qy
+	bmku8FCsJZqV3nKwTWYp+vVRWAu+UeGm6t0aelIzFdVCxLyCJWtO5Uw3frhAFPn6St4OBJBmFRT3
+	uiY3RAyiXDzAhIjw9VqQAFpleQolJIUaXM98fgEZhyMTfXV65nsDqgsUu0oouZUqD0BjqzQ8ogPo
+	hR6gn7skKhIbsNoN9TpQthxDUi7O1uqSCaBqYQh4Z2mkPqrAGSMLpYlZUhIAlkHOkQc0C3lAtkk3
+	mm5m9EJdNZMDt5+kBaDaXLLLFQMgKjGZV8xjNjcEMpYYILSc4MBgBy4u9ParjBsAQW7DnHHDiBta
+	yCLCiMC/2VUATfQOLkhBTpU1l14BCh8nr093BU0AS5fECk+c3ISveyFCygaK9lmTRdDPy4eAJ7h8
+	d7azgq/j/vXYQQG8GL4elqUMTI18Aig+oA1ubqyltmACGAJUAMhLSMcJY9G4IYfbAYfBrUx0QCgt
+	QztJBIjDsKvWnrvp3b0QiFh81RoJej7HC9knLmG2ww0V2KhXvWtB9jNjmp7Gc0S2DgfNA8rfS6D6
+	4SrtrU1V9bNhi+QDKtZnsxyoCcXHBOqjeMA22t7zfl6oBsDoexW/qTjxL2S54Dm0jsTlO6JGrLJw
+	yvDbOPSdAx5bLp3BiK1cZ96dx587PhnLxMslDvMHQM9+XLvB1xsY29JuOF+xP6y7tHae4BG4AAAA
+	AElFTkSuQmCC
+Mail-Copies-To: never
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:Ew0wejF7hO8r+Rt4YBVV47fBPoo=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 05:40:24 -0000
+Content-Length: 1464
+Lines: 32
+
+There's a lot of modes in Emacs that don't reflect a physical file, but
+has only generated content (for some values of "generated").  Many of
+these implement a version of "revert", usually bound to the `g' key,
+which basically do an `erase-buffer' and then generate the buffer anew.
+
+And then you have to implement some way of "staying in the same place".
+
+Which is a pretty fuzzy, do-what-I-mean kind of thing, because the data
+may have changed.  The size of the buffer usually has, and the line you
+were on may have disappeared.
+
+I think it would be nice if Emacs had a general function for "try to
+stay in the same place", but I don't know whether that's realistic.  For
+instance, dired notes both the point and the file name you're at, and
+first tries to go to the file in question, or if the file is gone, it...
+uhm...  Goes to the point and then goes to the file on that line?
+Something.
+
+I wonder if anybody has thought about the issue in a more general way --
+by providing a mechanism to save (perhaps a lot) of context, and then
+trying to go back to the same context again after regenerating the
+buffer, in a ... fuzzy way.
+
+(The reason I'm thinking about this is that I was thinking about what
+would be necessary to make `g' in compilation buffers remain in "the
+same place".  Which is useful when you're trying to weed out compilation
+warnings.)
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+
+
+

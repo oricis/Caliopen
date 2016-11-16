@@ -1,0 +1,140 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aXtTa-0003ag-6N
+	for mharc-dev@caliopen.local; Mon, 22 Feb 2016 11:36:46 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:57920)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <kaushal.modi@gmail.com>) id 1aXtTV-0003Qx-1f
+	for dev@caliopen.local; Mon, 22 Feb 2016 11:36:45 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <kaushal.modi@gmail.com>) id 1aXtTU-0005Pm-25
+	for dev@caliopen.local; Mon, 22 Feb 2016 11:36:40 -0500
+Received: from mail-ob0-x22c.google.com ([2607:f8b0:4003:c01::22c]:33543)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <kaushal.modi@gmail.com>)
+	id 1aXtTT-0005PR-De; Mon, 22 Feb 2016 11:36:39 -0500
+Received: by mail-ob0-x22c.google.com with SMTP id jq7so169988848obb.0;
+	Mon, 22 Feb 2016 08:36:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+	:cc:content-type;
+	bh=PMTUlBNurkKr6df9pRT7smv/9W6hbJbxFFk5oCIsdUc=;
+	b=DTUdR7jNTyhz3KJPzj+GvhTN2QbpNTM8xOLkpzzqoTXiHRwJ5f/GmoWaPNjYOsDE3u
+	PrnM3S7hZIM0a2z3cgRn2eSxudgWL938XFFayZOMnDOkpKiel+A6cguTUn1J/LNbmAAM
+	sr5AxPYF5N8gV8UDBBWl6R1xVKfM1EPxDaTislv93y8lWGjo14HzdxiEcQ5K69I7sxYF
+	dEkDV3q/M5M99bATFcivmoQpIiy3b9umrl24oACkrwhHMChXe+VtftFIf1ammCM0etpk
+	8a/GP8/f72apn29QWhlMPjt2KAoIxDcamUGla8MzYDfJyDwim2QotSx/tqFokJu9tkJe
+	avdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+	:message-id:subject:to:cc:content-type;
+	bh=PMTUlBNurkKr6df9pRT7smv/9W6hbJbxFFk5oCIsdUc=;
+	b=NP+zaC90025FsoWLciLOXy4q+06IkX82/6Ie8gdbnz5ezmf+bdMENbjIbiFgXOlDzd
+	HxBbktqAHmEDZRyH4L74Od3QTspwDx/s5hr2MFMEIiNV2uu1rwBRGMUH5G1pvlZ24Yx7
+	VMFAr4Fi6N6f9LBSmJGeblc0jD88ob6GHN9IcZRwT2UcVoF5jwEsfr2LvNJrropph0Wb
+	l2bS5Q9waBgH/REpbAMkKhAOvcp5hC9rSlBRYjfezBlday53C+XB81nA7Z0N0BJbPEol
+	MfVe/AJxjUvA6gAJGyG3WITr9eQlwZlG/P42ctntl2oJOzShsW6jsdN6jtGgBLvg9BFG
+	O2FQ==
+X-Gm-Message-State: AG10YOS8fxIo7GkrFQRYIawyxIbRfrN1RKVpc7Hzj7wKw4eDGSOJ1CTOQKHmzbnYgfeDaQ1mM3Ca8LJDgqH/dA==
+X-Received: by 10.182.241.134 with SMTP id wi6mr23259146obc.81.1456158998625; 
+	Mon, 22 Feb 2016 08:36:38 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.202.201.73 with HTTP; Mon, 22 Feb 2016 08:35:58 -0800 (PST)
+In-Reply-To: <56CB3756.6000906@gmail.com>
+References: <56CA94A8.3000205@gmail.com> <83si0klo3c.fsf@gnu.org>
+	<56CB3756.6000906@gmail.com>
+From: Kaushal Modi <kaushal.modi@gmail.com>
+Date: Mon, 22 Feb 2016 11:35:58 -0500
+Message-ID: <CAFyQvY2Cyh6h15pHAyzHz9goKraXmKmbTzjipn3XuHEvpkvjBA@mail.gmail.com>
+Subject: Re: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+To: =?UTF-8?B?Q2zDqW1lbnQgUGl0LS1DbGF1ZGVs?= <clement.pit@gmail.com>
+Content-Type: multipart/alternative; boundary=001a11c2b0ead98b2d052c5e6ffe
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c01::22c
+Cc: Eli Zaretskii <eliz@gnu.org>, Emacs developers <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 22 Feb 2016 16:36:45 -0000
+Content-Length: 3468
+Lines: 70
+
+--001a11c2b0ead98b2d052c5e6ffe
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Feb 22, 2016 at 11:29 AM, Cl=C3=A9ment Pit--Claudel <
+clement.pit@gmail.com> wrote:
+
+> In any case where font-lock-fontified is nil font-lock-fontify-buffer wil=
+l
+> properly refontify the whole buffer, but font-lock-flush and font-lock
+> ensure will not do anything. I don't know what causes that variable to be
+> nil in the first place, though.
+
+
+I am not sure if this is related. But in order for hi-lock-file-patterns to
+work in a text-mode buffer, I need to do the below because
+font-lock-fontified is nil for text-mode (as technically there are no
+comments or keywords to highlight in that major mode).
+
+    ;; Enable `hi-lock-mode' in `text-mode' too
+    ;; The hi-lock fontification will not be visible (the
+`font-lock-keywords'
+    ;; variable will not be updated unless `font-lock-fontified' is already
+`t'.
+    ;; This was derived by studying the definition of
+`hi-lock-font-lock-hook'
+    ;; function.
+    (defun modi/hi-lock-enable-in-text-mode ()
+      (setq-local font-lock-fontified t))
+    (add-hook 'text-mode-hook #'modi/hi-lock-enable-in-text-mode)
+
+--
+Kaushal Modi
+
+--001a11c2b0ead98b2d052c5e6ffe
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail_extra"><br><div class=3D"gmail_quote">=
+On Mon, Feb 22, 2016 at 11:29 AM, Cl=C3=A9ment Pit--Claudel <span dir=3D"lt=
+r">&lt;<a href=3D"mailto:clement.pit@gmail.com" target=3D"_blank">clement.p=
+it@gmail.com</a>&gt;</span> wrote:<br><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-color:rgb(=
+204,204,204);border-left-style:solid;padding-left:1ex">In any case where fo=
+nt-lock-fontified is nil font-lock-fontify-buffer will properly refontify t=
+he whole buffer, but font-lock-flush and font-lock ensure will not do anyth=
+ing. I don&#39;t know what causes that variable to be nil in the first plac=
+e, though.</blockquote></div><div class=3D"gmail_extra"><br></div>I am not =
+sure if this is related. But in order for hi-lock-file-patterns to work in =
+a text-mode buffer, I need to do the below because font-lock-fontified is n=
+il for text-mode (as technically there are no comments or keywords to highl=
+ight in that major mode).</div><div class=3D"gmail_extra"><br></div><div cl=
+ass=3D"gmail_extra"><div class=3D"gmail_extra">=C2=A0 =C2=A0 ;; Enable `hi-=
+lock-mode&#39; in `text-mode&#39; too</div><div class=3D"gmail_extra">=C2=
+=A0 =C2=A0 ;; The hi-lock fontification will not be visible (the `font-lock=
+-keywords&#39;</div><div class=3D"gmail_extra">=C2=A0 =C2=A0 ;; variable wi=
+ll not be updated unless `font-lock-fontified&#39; is already `t&#39;.</div=
+><div class=3D"gmail_extra">=C2=A0 =C2=A0 ;; This was derived by studying t=
+he definition of `hi-lock-font-lock-hook&#39;</div><div class=3D"gmail_extr=
+a">=C2=A0 =C2=A0 ;; function.</div><div class=3D"gmail_extra">=C2=A0 =C2=A0=
+ (defun modi/hi-lock-enable-in-text-mode ()</div><div class=3D"gmail_extra"=
+>=C2=A0 =C2=A0 =C2=A0 (setq-local font-lock-fontified t))</div><div class=
+=3D"gmail_extra">=C2=A0 =C2=A0 (add-hook &#39;text-mode-hook #&#39;modi/hi-=
+lock-enable-in-text-mode)</div><div><br></div></div><div class=3D"gmail_ext=
+ra"><div><div class=3D"gmail_signature"><div dir=3D"ltr">--<br>Kaushal Modi=
+</div></div></div>
+</div></div>
+
+--001a11c2b0ead98b2d052c5e6ffe--
+

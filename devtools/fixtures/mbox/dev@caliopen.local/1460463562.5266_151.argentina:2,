@@ -1,0 +1,65 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aXtXI-0001wM-Je
+	for mharc-dev@caliopen.local; Mon, 22 Feb 2016 11:40:36 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59691)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aXtXG-0001sH-FQ
+	for dev@caliopen.local; Mon, 22 Feb 2016 11:40:35 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aXtXB-0006Yg-FC
+	for dev@caliopen.local; Mon, 22 Feb 2016 11:40:34 -0500
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:39472)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1aXtXB-0006YY-B4; Mon, 22 Feb 2016 11:40:29 -0500
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:1271
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1aXtXA-0004fj-Nj; Mon, 22 Feb 2016 11:40:29 -0500
+Date: Mon, 22 Feb 2016 18:40:20 +0200
+Message-Id: <83k2lwlmvf.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: =?utf-8?Q?Cl=C3=A9ment?= Pit--Claudel <clement.pit@gmail.com>
+In-reply-to: <56CB3756.6000906@gmail.com> (message from =?utf-8?Q?Cl=C3=A9?=
+	=?utf-8?Q?ment?= Pit--Claudel on Mon, 22 Feb 2016 11:29:10 -0500)
+Subject: Re: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+References: <56CA94A8.3000205@gmail.com> <83si0klo3c.fsf@gnu.org>
+	<56CB3756.6000906@gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 22 Feb 2016 16:40:35 -0000
+Content-Length: 595
+Lines: 15
+
+> Cc: dev@caliopen.local
+> From: Clément Pit--Claudel <clement.pit@gmail.com>
+> Date: Mon, 22 Feb 2016 11:29:10 -0500
+> 
+> > I think what you describe _is_ the proper way.  Can you show a test
+> > case which demonstrates how calling font-lock-flush followed by
+> > font-lock-ensure fails to do the job?
+> 
+> In any case where font-lock-fontified is nil
+> font-lock-fontify-buffer will properly refontify the whole buffer,
+> but font-lock-flush and font-lock ensure will not do anything.
+
+That's not what I see in the code, that's why I asked for a test
+case.  I'm probably missing something.
+

@@ -1,0 +1,76 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amS13-0002tP-M3
+	for mharc-dev@caliopen.local; Sat, 02 Apr 2016 16:19:29 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:57664)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1amS10-0002se-Od
+	for dev@caliopen.local; Sat, 02 Apr 2016 16:19:27 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1amS0x-0000wJ-Gc
+	for dev@caliopen.local; Sat, 02 Apr 2016 16:19:26 -0400
+Received: from ironport2-out.teksavvy.com ([206.248.154.181]:4377)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1amS0x-0000vP-CP
+	for dev@caliopen.local; Sat, 02 Apr 2016 16:19:23 -0400
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: A0AxFgA731xV/0+KpUVcgxCEAoVVu0CHSwQCAoE8OxIBAQEBAQEBgQpBBYNdAQEDAVYjBQsLNBIUGA0kiDcIzyMBAQEHAgEfizqFBQeELQEEsz+BRSOEFCKCeAEBAQ
+X-IPAS-Result: A0AxFgA731xV/0+KpUVcgxCEAoVVu0CHSwQCAoE8OxIBAQEBAQEBgQpBBYNdAQEDAVYjBQsLNBIUGA0kiDcIzyMBAQEHAgEfizqFBQeELQEEsz+BRSOEFCKCeAEBAQ
+X-IronPort-AV: E=Sophos;i="5.13,465,1427774400"; d="scan'208";a="204592004"
+Received: from 69-165-138-79.dsl.teksavvy.com (HELO fmsmemgm.homelinux.net)
+	([69.165.138.79])
+	by ironport2-out.teksavvy.com with ESMTP/TLS/DHE-RSA-AES256-SHA;
+	02 Apr 2016 16:19:21 -0400
+Received: by fmsmemgm.homelinux.net (Postfix, from userid 20848)
+	id 4A921AE44F; Sat,  2 Apr 2016 16:19:21 -0400 (EDT)
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+To: Elias =?windows-1252?Q?M=E5rtenson?= <lokedhs@gmail.com>
+Subject: Re: About column numbers
+Message-ID: <jwvvb3zn4ue.fsf-monnier+emacs@gnu.org>
+References: <56FB02BB.3090501@alice.it> <83wpokuh3a.fsf@gnu.org>
+	<56FC0CDB.9090707@alice.it>
+	<CAP_d_8XDQmTR1M6=+a4yMAjkHFkDEnx4oFQiH57UUNLW2dzM4Q@mail.gmail.com>
+	<87poubvnhh.fsf@linux-m68k.org>
+	<CAP_d_8V=4W26O-r-DcOdfpFwwzpZKDtXnd71jOCwvhO0bL38og@mail.gmail.com>
+	<87lh4zvlp2.fsf@linux-m68k.org>
+	<CAP_d_8WSBJMZ2aLbnUwiRh1-ieG9mdcTyE-TnFo5AF+hE+_GyA@mail.gmail.com>
+	<jwvbn5u6cnu.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<56FD53F6.5090805@gmail.com>
+	<jwv8u0y49bt.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<CADtN0W+eax-pPtn5cxhLOubyjiV_s3Cr5MrfSkVhGm4Chm9t8w@mail.gmail.com>
+Date: Sat, 02 Apr 2016 16:19:21 -0400
+In-Reply-To: <CADtN0W+eax-pPtn5cxhLOubyjiV_s3Cr5MrfSkVhGm4Chm9t8w@mail.gmail.com>
+	("Elias =?windows-1252?Q?M=E5rtenson=22's?= message of "Sun, 3 Apr 2016
+	00:29:10 +0800")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 206.248.154.181
+Cc: emacs-devel <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sat, 02 Apr 2016 20:19:27 -0000
+Content-Length: 351
+Lines: 11
+
+> I have done this on occasions. Are there any cases where the save/widen
+> dance actually gives a result which is not 1?
+
+On my local Emacs it never returns 1, and on an Emacs with the
+hard-narrowing patch it can also return something else, but AFAIK it
+will always result in a value of 1 in any actually released version of
+Emacs.
+
+
+        Stefan
+

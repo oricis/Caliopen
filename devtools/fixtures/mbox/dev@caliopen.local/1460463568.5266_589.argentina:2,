@@ -1,0 +1,289 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aiJ49-00059r-CQ
+	for mharc-dev@caliopen.local; Tue, 22 Mar 2016 05:57:33 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:51464)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiJ46-000593-GW
+	for dev@caliopen.local; Tue, 22 Mar 2016 05:57:32 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiJ43-0006SA-98
+	for dev@caliopen.local; Tue, 22 Mar 2016 05:57:30 -0400
+Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236]:36590)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiJ42-0006S3-U5
+	for dev@caliopen.local; Tue, 22 Mar 2016 05:57:27 -0400
+Received: by mail-wm0-x236.google.com with SMTP id r129so84542869wmr.1
+	for <dev@caliopen.local>; Tue, 22 Mar 2016 02:57:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=NKPqWOeFjPop+SHNsIpA5N4IVZcZMO11Gp6pcF/zIHA=;
+	b=l33KzV9sdivsdvLO7dwveJCalAwZ/nKP5m3Zzf5IJ7wufx89YaEBGUV678gXmdzTyS
+	nmIF8O4fPQFNZJRvd8I0/pJQpohnnhLoM5gx4P3lfL4BiXJ+u2ocO2P1vtdUhn7Vcf1W
+	SsIen5az/KJv/TvzgJRXrsXcxQQf/qHCKwBMj8CIME5ZKC0RzO69tpqaOs+fGXecyTwh
+	IEeeJntS5L+l6uwF53Ne38tNzjBFmaFB/BT7dBIMwRHziXCHMG/vJEUTYwUxSWfGAvG+
+	Q7+YtfC+r3oCC9k8GuuuKfHQ2wmwZ8BxdwgAbRRR7/BhqJUDGTOSaAVMIGD14NomjFvE
+	69Gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=NKPqWOeFjPop+SHNsIpA5N4IVZcZMO11Gp6pcF/zIHA=;
+	b=KV2jKce9W9k4SetTSfP5UKgeyIVG31YoBTBfFkLbU+/Hy4WX253abJPWTQ7qTvDOa1
+	3dtKEj2PUCHVfqkLk7yDsVYWV/cPfc6ov3qo2ippatLxPKe+cpun0LmIC5i87/j6G6de
+	JbRzaH914YPgHSD5KDwjMvxgcBcZ7bsxS/9wjZ6Ltlgi9bqJ3d5m+tLjUB2f6V8zIzvQ
+	uNH3/VOAF9NDFH6RWmP1lfyEX9LQWthFH7DvpOZGojAnllr0ZTR/V8YZpfEoMrU7SlFA
+	6GQjLSAHIrPGz5crhReLi0Q8pPUcNHS2JIrwIBKbJFHUIg8wjiLyPrcufmiFsDhHuNO6
+	trjw==
+X-Gm-Message-State: AD7BkJKY2Siu30MEugBs6/JcmGGoJhN3zVgPqmV7SYKinAxVk+6sSk8coPWUEcmTCADPmw==
+X-Received: by 10.28.128.80 with SMTP id b77mr19928756wmd.42.1458640646128;
+	Tue, 22 Mar 2016 02:57:26 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	x203sm16436531wmg.23.2016.03.22.02.57.24
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Tue, 22 Mar 2016 02:57:24 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@IRO.UMontreal.CA>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+	<jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87pounew9e.fsf@gmail.com>
+	<jwva8lrx4ov.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzda4h.fsf@gmail.com> <jwvwpovwuip.fsf-monnier+Inbox@gnu.org>
+	<87lh5bd4ib.fsf@gmail.com> <87egb3ryjc.fsf@gmail.com>
+Date: Tue, 22 Mar 2016 10:57:24 +0100
+In-Reply-To: <87egb3ryjc.fsf@gmail.com> (Vitalie Spinu's message of "Tue, 22
+	Mar 2016 04:17:59 +0100")
+Message-ID: <877fgusum3.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::236
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 22 Mar 2016 09:57:32 -0000
+Content-Length: 7651
+Lines: 198
+
+
+I think having a local variable for this is not the best idea.
+
+In proposed implementation you first set buffer-widen-limits, but the effect of
+it will show only on the next invocation of widen. So the consumer will need to
+set this variable and always follow it by widen. If widen is not called, one can
+access outside regions. Particularly `narrow` doesn't know about hard limits, so
+you can narrow to outside those limits.
+
+I think a better implementation would be to have `set-widen-limits` function
+which would set the limits and narrow the region taking into account current
+narrowing. The supporting `with-widen-limits` macro will call `set-widen-limits`
+in unwind-protect.
+
+I guess this comes very close to the implementation that you suggested earlier
+for hiding the internals.
+
+  Vitalie
+
+>> On Tue, Mar 22 2016 04:17, Vitalie Spinu wrote:
+
+>>> On Mon, Mar 21 2016 20:18, Vitalie Spinu wrote:
+
+>>>> This is outside of use cases that I have in mind.
+
+>>> Indeed, it's a different case, but one where the narrowing should be
+>>> hard as well.
+
+>> Ok. This part is trickier but it might not be that hard. Will keep this in mind.
+
+> I have pushed the proposed change to `widen-limits` branch. The C level
+> consequences are fairly innocuous. There are only 3 instances of calls to Fwiden
+> in the whole emacs.
+
+> Given that there seem to be use cases of permanent limiting I kept it as buffer
+> local variable. I also switched to milder name buffer-widen-limits.
+
+>   Vitalie
+
+
+> 3 files changed, 48 insertions(+), 3 deletions(-)
+> src/buffer.c  | 19 +++++++++++++++++--
+> src/buffer.h  | 17 +++++++++++++++++
+> src/editfns.c | 15 ++++++++++++++-
+
+> modified   src/buffer.c
+> @@ -329,6 +329,11 @@ bset_scroll_up_aggressively (struct buffer *b, Lisp_Object val)
+>    b->scroll_up_aggressively_ = val;
+>  }
+>  static void
+> +bset_widen_limits (struct buffer *b, Lisp_Object val)
+> +{
+> +  b->widen_limits_ = val;
+> +}
+> +static void
+>  bset_selective_display (struct buffer *b, Lisp_Object val)
+>  {
+>    b->selective_display_ = val;
+> @@ -847,6 +852,7 @@ CLONE nil means the indirect buffer's state is reset to default values.  */)
+>        bset_display_count (b, make_number (0));
+>        bset_backed_up (b, Qnil);
+>        bset_auto_save_file_name (b, Qnil);
+> +      bset_widen_limits (b, b->base_buffer->widen_limits_);
+>        set_buffer_internal_1 (b);
+>        Fset (intern ("buffer-save-without-query"), Qnil);
+>        Fset (intern ("buffer-file-number"), Qnil);
+> @@ -961,6 +967,7 @@ reset_buffer_local_variables (struct buffer *b, bool permanent_too)
+>       things that depend on the major mode.
+>       default-major-mode is handled at a higher level.
+>       We ignore it here.  */
+> +  bset_widen_limits(b, Qnil);
+>    bset_major_mode (b, Qfundamental_mode);
+>    bset_keymap (b, Qnil);
+>    bset_mode_name (b, QSFundamental);
+> @@ -2167,7 +2174,7 @@ so the buffer is truly empty after this.  */)
+>  {
+>    Fwiden ();
+>  
+> -  del_range (BEG, Z);
+> +  del_range (BEGWL, ZWL);
+>  
+>    current_buffer->last_window_start = 1;
+>    /* Prevent warnings, or suspension of auto saving, that would happen
+> @@ -5037,6 +5044,7 @@ init_buffer_once (void)
+>    bset_display_count (&buffer_local_flags, make_number (-1));
+>    bset_display_time (&buffer_local_flags, make_number (-1));
+>    bset_enable_multibyte_characters (&buffer_local_flags, make_number (-1));
+> +  bset_widen_limits (&buffer_local_flags, make_number (-1));
+>  
+>    /* These used to be stuck at 0 by default, but now that the all-zero value
+>       means Qnil, we have to initialize them explicitly.  */
+> @@ -5160,6 +5168,7 @@ init_buffer_once (void)
+>    bset_cursor_type (&buffer_defaults, Qt);
+>    bset_extra_line_spacing (&buffer_defaults, Qnil);
+>    bset_cursor_in_non_selected_windows (&buffer_defaults, Qt);
+> +  bset_widen_limits (&buffer_defaults, Qnil);
+>  
+>    bset_enable_multibyte_characters (&buffer_defaults, Qt);
+>    bset_buffer_file_coding_system (&buffer_defaults, Qnil);
+> @@ -5367,7 +5376,6 @@ defvar_per_buffer (struct Lisp_Buffer_Objfwd *bo_fwd, const char *namestring,
+>      emacs_abort ();
+>  }
+>  
+> -
+>  /* Initialize the buffer routines.  */
+>  void
+>  syms_of_buffer (void)
+> @@ -5796,6 +5804,13 @@ If you set this to -2, that means don't turn off auto-saving in this buffer
+>  if its text size shrinks.   If you use `buffer-swap-text' on a buffer,
+>  you probably should set this to -2 in that buffer.  */);
+>  
+> +  DEFVAR_PER_BUFFER ("buffer-widen-limits", &BVAR (current_buffer, widen_limits),
+> +                     Qnil,
+> +                     doc: /* When non-nil `widen` will widen to these limits.
+> +Must be a cons of the form (MIN . MAX) where MIN and MAX are integers
+> +of hard widen limits in this buffer. This is an experimental variable
+> +intended primarily for multi-mode engines.  */);
+> +
+>    DEFVAR_PER_BUFFER ("selective-display", &BVAR (current_buffer, selective_display),
+>  		     Qnil,
+>  		     doc: /* Non-nil enables selective display.
+> modified   src/buffer.h
+> @@ -59,6 +59,10 @@ INLINE_HEADER_BEGIN
+>  #define Z (current_buffer->text->z)
+>  #define Z_BYTE (current_buffer->text->z_byte)
+>  
+> +/* Positions that take into account widen limits.  */
+> +#define BEGWL (BUF_BEGWL (current_buffer))
+> +#define ZWL (BUF_ZWL(current_buffer))
+> +
+>  /* Macros for the addresses of places in the buffer.  */
+>  
+>  /* Address of beginning of buffer.  */
+> @@ -128,6 +132,15 @@ INLINE_HEADER_BEGIN
+>      : NILP (BVAR (buf, begv_marker)) ? buf->begv_byte	\
+>      : marker_byte_position (BVAR (buf, begv_marker)))
+>  
+> +/* Hard positions in buffer. */
+> +#define BUF_BEGWL(buf)  	                                \
+> +  ((NILP (BVAR (buf, widen_limits))) ?  BUF_BEG (buf)    \
+> +   : XINT( XCAR (BVAR (buf, widen_limits))))
+> +
+> +#define BUF_ZWL(buf)  	                                \
+> +  ((NILP (BVAR (buf, widen_limits))) ?  BUF_Z (buf)      \
+> +   : XINT( XCDR (BVAR (buf, widen_limits))))
+> +
+>  /* Position of point in buffer.  */
+>  #define BUF_PT(buf)					\
+>     (buf == current_buffer ? PT				\
+> @@ -150,6 +163,7 @@ INLINE_HEADER_BEGIN
+>      : NILP (BVAR (buf, zv_marker)) ? buf->zv_byte	\
+>      : marker_byte_position (BVAR (buf, zv_marker)))
+>  
+> +
+>  /* Position of gap in buffer.  */
+>  #define BUF_GPT(buf) ((buf)->text->gpt)
+>  #define BUF_GPT_BYTE(buf) ((buf)->text->gpt_byte)
+> @@ -748,6 +762,9 @@ struct buffer
+>       See `cursor-type' for other values.  */
+>    Lisp_Object cursor_in_non_selected_windows_;
+>  
+> +  /* Cons of hard widen limits */
+> +  Lisp_Object widen_limits_;
+> +
+>    /* No more Lisp_Object beyond this point.  Except undo_list,
+>       which is handled specially in Fgarbage_collect.  */
+>  
+> modified   src/editfns.c
+> @@ -3480,12 +3480,25 @@ DEFUN ("delete-and-extract-region", Fdelete_and_extract_region,
+>      return empty_unibyte_string;
+>    return del_range_1 (XINT (start), XINT (end), 1, 1);
+>  }
+> +
+>  
+>  DEFUN ("widen", Fwiden, Swiden, 0, 0, "",
+>         doc: /* Remove restrictions (narrowing) from current buffer.
+> -This allows the buffer's full text to be seen and edited.  */)
+> +This allows the buffer's full text to be seen and edited.
+> +If `buffer-widen-limits` is non-nil, widen only to those limits.  */)
+>    (void)
+>  {
+> +
+> +  if (!NILP (BVAR(current_buffer, widen_limits)))
+> +    {
+> +      Lisp_Object hl = BVAR(current_buffer,  widen_limits);
+> +      CHECK_CONS(hl);
+> +      CHECK_NUMBER(XCAR(hl));
+> +      CHECK_NUMBER(XCDR(hl));
+> +      Fnarrow_to_region(XCAR(hl), XCDR(hl));
+> +      return Qnil;
+> +    }
+> +
+>    if (BEG != BEGV || Z != ZV)
+>      current_buffer->clip_changed = 1;
+>    BEGV = BEG;
+
+> [back]
+

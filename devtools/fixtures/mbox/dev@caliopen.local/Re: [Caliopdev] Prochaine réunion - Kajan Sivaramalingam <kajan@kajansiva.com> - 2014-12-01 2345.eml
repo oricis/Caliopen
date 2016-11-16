@@ -1,0 +1,229 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 40809120A2D;
+	Mon,  1 Dec 2014 23:45:25 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -0.365
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.365 tagged_above=-999 required=5
+	tests=[BAYES_20=-0.74, HTML_30_40=0.374, HTML_MESSAGE=0.001]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id 3KdBvYbPpnIf; Mon,  1 Dec 2014 23:45:22 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id C78B3120A26;
+	Mon,  1 Dec 2014 23:45:22 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 90F646B49C16F;
+	Mon,  1 Dec 2014 23:45:22 +0100 (CET)
+Authentication-Results: brassens.heberge.info; dkim=fail
+	reason="verification failed; insecure key"
+	header.d=gmail.com header.i=@gmail.com header.b=WFeo35Ap;
+	dkim-adsp=none (insecure policy); dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id FdHLKQABLzG6; Mon,  1 Dec 2014 23:45:21 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id B47986B476E65;
+	Mon,  1 Dec 2014 23:45:20 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 357CD6B49C158
+ for <caliopdev@caliop.net>; Mon,  1 Dec 2014 23:45:19 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id PR4lhVzCsITB for <caliopdev@caliop.net>;
+ Mon,  1 Dec 2014 23:45:18 +0100 (CET)
+Received: from mail-lb0-f179.google.com (mail-lb0-f179.google.com
+ [209.85.217.179])
+ (using TLSv1 with cipher ECDHE-RSA-RC4-SHA (128/128 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id C1CF16B476E65
+ for <caliopdev@caliop.net>; Mon,  1 Dec 2014 23:45:17 +0100 (CET)
+Received: by mail-lb0-f179.google.com with SMTP id z11so9407505lbi.10
+ for <caliopdev@caliop.net>; Mon, 01 Dec 2014 14:45:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+ h=mime-version:sender:in-reply-to:references:date:message-id:subject
+ :from:to:content-type;
+ bh=1KZmYTs/YXExEyLko56HdZ3s2aHcZCkH04lgouNlM5c=;
+ b=WFeo35Ap0xml076C3B9dT9usAuedU0bHAanznzeqgCOexiuX+8Me0eYTKAfHF30Dq2
+ tkLlnlNZFxiV9jot5B/7jRMWvk7K3b9xZ/bRGVwqR0tjkIgHYMpLi9s82grPdX9M/kih
+ nekIcYjJgvC1Fm4AFpGKgZXAChT5OQ4JR803lkkRypThLBhX9F6fqyt7NTB3t5q1QVo1
+ i/0EyqB3EgO1NzozwCXhhQ0P5AwiSRr1jCA6dxKQHRTLUZ3AS3i0inaggWpFVu65Cy1t
+ 9xQz92Je9j4TBwyoFKUlulArU3WtqlvumcwWDDzOros2MlKulvmYsx8blf92jxdESb/3
+ 4Anw==
+MIME-Version: 1.0
+X-Received: by 10.152.21.66 with SMTP id t2mr7657250lae.27.1417473917015; Mon,
+ 01 Dec 2014 14:45:17 -0800 (PST)
+Received: by 10.25.20.216 with HTTP; Mon, 1 Dec 2014 14:45:16 -0800 (PST)
+In-Reply-To: <20141201204235.GC7323@brasil.brainstorm.fr>
+References: <5478A041.8020105@chamal.fr>
+ <20141130162431.GF14633@brasil.brainstorm.fr>
+ <BC28FFD7-1F1D-4854-96B2-723CCB0DC6F7@gandi.net>
+ <20141201111410.GI14633@brasil.brainstorm.fr>
+ <20141201204235.GC7323@brasil.brainstorm.fr>
+Date: Mon, 1 Dec 2014 23:45:16 +0100
+X-Google-Sender-Auth: 7dlM_HwKrpk5GfDSw_JLMkdZoQM
+Message-ID: <CA+tgzejOJX4KWOM1eQdrn1XDh+Y_BSeKOAdf8dY+FWTthAL=7g@mail.gmail.com>
+From: Kajan Sivaramalingam <kajan@kajansiva.com>
+To: =?UTF-8?Q?Liste_de_d=C3=A9veloppement_Caliopen?= <caliopdev@caliop.net>
+Subject: Re: [Caliopdev] =?utf-8?q?Prochaine_r=C3=A9union?=
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============0572573564=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+--===============0572573564==
+Content-Type: multipart/alternative; boundary=089e0141a05e4d5c7d05092f5d7a
+
+--089e0141a05e4d5c7d05092f5d7a
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Le 1 d=C3=A9cembre 2014 21:42, Laurent Chemla <laurent@brainstorm.fr> a =C3=
+=A9crit :
+
+>
+> Puisque les mecs de Qwant me disent que j'aurais d=C3=BB les relancer
+> plus t=C3=B4t (ils sont pas s=C3=BBrs de pouvoir venir du coup), je pr=C3=
+=A9f=C3=A8re
+> assurer de ce c=C3=B4t=C3=A9-ci de l'email et vous rappeler la prochaine
+> r=C3=A9union, vendredi prochain (5/12) =C3=A0 10h30 chez Gandi.
+>
+> Les th=C3=A8mes seront:
+>
+> - choix final (?) du framework,
+> - d=C3=A9finition des sp=C3=A9cifs de la future alpha,
+> - 1er jet de sc=C3=A9narii de r=C3=A9compenses pour la judification,
+> - pr=C3=A9sentation du screencast (sonoris=C3=A9 ?).
+>
+> On va publier une note de blog incessament: on va communiquer sur
+> =C3=A7a, le screencast et le nouveau mockup d=C3=A8s que ce sera possible=
+.
+>
+> Aussi, si Benjamin veut se joindre =C3=A0 nous, il envisage d'intervenir
+> dans le cadre du 31c3 =C3=A0 Hamburg fin d=C3=A9cembre pour pr=C3=A9sente=
+r Caliopen.
+>
+> Sauf si c'est pas possible, j'aimerais repousser la r=C3=A9union suivante
+> au 26 (sauter 3 semaines donc): pas pour prendre des vacances mais
+> pour relever un peu le pied sur les allers-retours =C3=A0 Paris qui me
+> fatiguent beaucoup. Ou alors d'organiser la r=C3=A9union du 19 sans moi,
+> pour une fois, ou en videoconf=C3=A9rence. Ca va d=C3=A9pendre de Qwant: =
+s'ils
+> disent qu'ils ne peuvent venir que le 19, j'y serai.
+>
+> _______________________________________________
+> Caliopdev mailing list
+> Caliopdev@caliop.net
+> http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+>
+
+
+Hello,
+
+D=C3=A9sol=C3=A9 de ne pas avoir pu pr=C3=A9venir plus t=C3=B4t mais cette =
+semaine je ne
+pourrais pas passer =C3=A0 la r=C3=A9union, un peu de d=C3=A9bordement au b=
+oulot.
+
+Par contre d'ici la r=C3=A9union et apr=C3=A8s je suis dispo pour travaille=
+r sur ces
+points. Je sais que j'ai n'ai pas =C3=A9t=C3=A9 tr=C3=A8s bavard ces dernie=
+rs temps mais
+je suis bien l=C3=A0 :-)
+
+A bient=C3=B4t,
+
+--089e0141a05e4d5c7d05092f5d7a
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail_extra"><div class=3D"gmail_quote">Le 1=
+ d=C3=A9cembre 2014 21:42, Laurent Chemla <span dir=3D"ltr">&lt;<a href=3D"=
+mailto:laurent@brainstorm.fr" target=3D"_blank">laurent@brainstorm.fr</a>&g=
+t;</span> a =C3=A9crit :<br><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><br>
+Puisque les mecs de Qwant me disent que j&#39;aurais d=C3=BB les relancer<b=
+r>
+plus t=C3=B4t (ils sont pas s=C3=BBrs de pouvoir venir du coup), je pr=C3=
+=A9f=C3=A8re<br>
+assurer de ce c=C3=B4t=C3=A9-ci de l&#39;email et vous rappeler la prochain=
+e<br>
+r=C3=A9union, vendredi prochain (5/12) =C3=A0 10h30 chez Gandi.<br>
+<br>
+Les th=C3=A8mes seront:<br>
+<br>
+- choix final (?) du framework,<br>
+- d=C3=A9finition des sp=C3=A9cifs de la future alpha,<br>
+- 1er jet de sc=C3=A9narii de r=C3=A9compenses pour la judification,<br>
+- pr=C3=A9sentation du screencast (sonoris=C3=A9 ?).<br>
+<br>
+On va publier une note de blog incessament: on va communiquer sur<br>
+=C3=A7a, le screencast et le nouveau mockup d=C3=A8s que ce sera possible.<=
+br>
+<br>
+Aussi, si Benjamin veut se joindre =C3=A0 nous, il envisage d&#39;interveni=
+r<br>
+dans le cadre du 31c3 =C3=A0 Hamburg fin d=C3=A9cembre pour pr=C3=A9senter =
+Caliopen.<br>
+<br>
+Sauf si c&#39;est pas possible, j&#39;aimerais repousser la r=C3=A9union su=
+ivante<br>
+au 26 (sauter 3 semaines donc): pas pour prendre des vacances mais<br>
+pour relever un peu le pied sur les allers-retours =C3=A0 Paris qui me<br>
+fatiguent beaucoup. Ou alors d&#39;organiser la r=C3=A9union du 19 sans moi=
+,<br>
+pour une fois, ou en videoconf=C3=A9rence. Ca va d=C3=A9pendre de Qwant: s&=
+#39;ils<br>
+disent qu&#39;ils ne peuvent venir que le 19, j&#39;y serai.<br>
+<br>
+_______________________________________________<br>
+Caliopdev mailing list<br>
+<a href=3D"mailto:Caliopdev@caliop.net">Caliopdev@caliop.net</a><br>
+<a href=3D"http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev"=
+ target=3D"_blank">http://brassens.heberge.info/cgi-bin/mailman/listinfo/ca=
+liopdev</a><br>
+</blockquote></div><br></div><div class=3D"gmail_extra"><br></div><div clas=
+s=3D"gmail_extra">Hello,</div><div class=3D"gmail_extra"><br></div><div cla=
+ss=3D"gmail_extra">D=C3=A9sol=C3=A9 de ne pas avoir pu pr=C3=A9venir plus t=
+=C3=B4t mais cette semaine je ne pourrais pas passer =C3=A0 la r=C3=A9union=
+, un peu de d=C3=A9bordement au boulot.</div><div class=3D"gmail_extra"><br=
+></div><div class=3D"gmail_extra">Par contre d&#39;ici la r=C3=A9union et a=
+pr=C3=A8s je suis dispo pour travailler sur ces points. Je sais que j&#39;a=
+i n&#39;ai pas =C3=A9t=C3=A9 tr=C3=A8s bavard ces derniers temps mais je su=
+is bien l=C3=A0 :-)</div><div class=3D"gmail_extra"><br></div><div class=3D=
+"gmail_extra">A bient=C3=B4t,</div><div class=3D"gmail_extra"><br></div><di=
+v class=3D"gmail_extra"><br></div></div>
+
+--089e0141a05e4d5c7d05092f5d7a--
+
+--===============0572573564==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============0572573564==--

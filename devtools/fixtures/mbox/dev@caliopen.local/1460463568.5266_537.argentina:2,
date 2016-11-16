@@ -1,0 +1,147 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahcGL-0005WD-O1
+	for mharc-dev@caliopen.local; Sun, 20 Mar 2016 08:15:17 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:42833)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahcGF-0005VP-WE
+	for dev@caliopen.local; Sun, 20 Mar 2016 08:15:16 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahcGA-0003m3-HV
+	for dev@caliopen.local; Sun, 20 Mar 2016 08:15:11 -0400
+Received: from mail-wm0-x232.google.com ([2a00:1450:400c:c09::232]:33456)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahcGA-0003kd-7U
+	for dev@caliopen.local; Sun, 20 Mar 2016 08:15:06 -0400
+Received: by mail-wm0-x232.google.com with SMTP id l68so121423427wml.0
+	for <dev@caliopen.local>; Sun, 20 Mar 2016 05:15:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=ZhS6JNx7vE6enrKKAIU4R2pz51t4IK8XXBLHe/5ukIU=;
+	b=vRSJSnzVZ6QkzgtDqfBGyspY7dQOXoTswjYP9GczCtdgpzFGKgf6trxnbDjJ38OksN
+	WMljniBaezJ35FwWBuQt4RAp/VdgpVCW8RIR/jsuN3OZpqiC3DwyKSHl0Tj0MxrpnY34
+	t4qrTE8HmxZVuee1ej6X7XBBa7Hb6Z37AZyzXC/UULfZ5k/SBhX9HYkzpy1K/F0Sxdaj
+	pJRrFLJwkh/kg99h3GyDmXM2/yg4Cy/cls1tSk0r9VVjbGuSu2GElkr8UsB/vGkY7kWx
+	z3ytk367hNOZAu3jdXUI7A1ST+BDqn8/fQIYL1irGEFfP7RLXCzLosXAnEoOWY03LiiX
+	hnMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=ZhS6JNx7vE6enrKKAIU4R2pz51t4IK8XXBLHe/5ukIU=;
+	b=kp8VKgqscOmGBMVgv8SOca93IsQ9vAaknuJGsOQTCTQglmPt7AZuv/GltgSPBPD4Wq
+	4wHWL+a7q/v2KFtYWwqdNlZVypZ81FXjMpuUHT34zxqQPUJKQFg58GRNzzLOHomNFbDZ
+	dL/MjcqLyhFFyV721sjUbx5qBb/gI6HA29CzbnnV6xaOoIOsbIMe60FF2d1waXKnd+m0
+	lQvN8KdzVnBs1Bz2NxChfcg7W6i+nodnd9PrXp17kHtuP8ogUkHa/WOiu2MttXDU5Mgg
+	r1l9lAuC00yDMFfvXZPVCCbdKIypKLqI1+2XyHqK5kAzNTgVcNiAZ58aewrhI2bubLxc
+	1+1w==
+X-Gm-Message-State: AD7BkJJqPVtWLInNoZBHP2M48CyjGMGiakXFeN44KylyWSAJYOhxm671MjPT+AlrFuEYPQ==
+X-Received: by 10.28.217.146 with SMTP id q140mr8077889wmg.85.1458476105458;
+	Sun, 20 Mar 2016 05:15:05 -0700 (PDT)
+Received: from localhost ([143.176.214.220])
+	by smtp.gmail.com with ESMTPSA id a1sm4834638wje.43.2016.03.20.05.15.03
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Sun, 20 Mar 2016 05:15:03 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Dmitry Gutov <dgutov@yandex.ru>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+Date: Sun, 20 Mar 2016 13:15:03 +0100
+In-Reply-To: <fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru> (Dmitry Gutov's
+	message of "Sun, 20 Mar 2016 04:19:21 +0200")
+Message-ID: <87egb5cpmg.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::232
+Cc: Alan Mackenzie <acm@muc.de>, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 20 Mar 2016 12:15:16 -0000
+Content-Length: 3024
+Lines: 64
+
+
+
+>> On Sun, Mar 20 2016 04:19, Dmitry Gutov wrote:
+
+>> So if a mode author decides to regexpf for a wiki link on a full buffer after
+>> widening it, islands won't help.
+
+> Where does widening happens in this case? First, we have font-lock-dont-widen.
+
+Well, font-lock-dont-widen is not respected even in c-mode. Look at
+c-before-context-fl-expand-region and semi-safe-place which are called directly
+or indirectly from c-font-lock-fontify-region.
+
+> For indentation, we've introduced prog-indentation-context recently. And
+> indentation functions in programming modes are supposed to call prog-widen
+> instead of widen now.
+
+I was not aware of that. Not sure if it is a step in right direction though.
+
+`prog-indentation-context` looks fine to me but multi-modes already have their
+own wrappers for indentation which do just that according to their own semantics
+of modes/submodes/chunks/headers etc.
+
+The primary intent of `prog-indentation-context` is to be used in
+`prog-widen`. This part seems like a major complication. All mode authors now
+have to understand what is prog-widen, prog-first-column and
+prog-indentation-context. Why to burden prog-mode authors with notions that
+multi-mode engines can take care themselves?
+
+It is also not clear to me why should prog-widen be used in indentation context
+only? It makes perfect sense for this function to be used in font-locking and
+syntax-propertize-function as well.
+
+It's essentially a half-backed implementation of "hard widening" discussed
+earlier. Why not impose the widening restriction directly in `widen` then? Maybe
+bring widen to elisp and rename C widen into widen-internal. Then add generic
+`prog-hard-widen-limits` which would be checked along prog-indentation-context
+limits.
+
+Multi-mode engines can then impose those hard limits whenever they need to and
+adjust indentation accordingly. It's not that hard in my experience. Polymode
+has a few lines to wrap indentation and it works reasonably well in pretty much
+all contexts I have tried. All other problems can be solved with hard narrowing.
+
+  https://github.com/vspinu/polymode/blob/master/polymode-methods.el#L715-L809
+
+Unless I miss something essential it's really not worth imposing such
+complexities on mode authors. Judging from the python.el, which is the only mode
+using prog-first-column so far, it's not a trivial task. Each mode author will
+basically have to implement indentation logic that mmm-mode or polymode already
+implement. And even then, multi-mode engines will probably need to overwrite
+that because the semantics of submode spans is either emacs-mode or
+multi-mode-engine specific.
+
+> syntax-propertize-function's aren't supposed to call widen at all, I think.
+
+This should probably be in the docs then. Mode authors can decide to do loads of
+work in there. One instance is `markdown-mode` which caches all font-lock
+properties in syntax-propertize-function. While markdown-mode is clean and
+doesn't use widen anywhere, that might not be the case for other modes.
+
+
+  Vitalie
+

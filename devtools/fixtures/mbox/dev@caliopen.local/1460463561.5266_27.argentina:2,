@@ -1,0 +1,112 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1agpPT-00067Y-Js
+	for mharc-dev@caliopen.local; Fri, 18 Mar 2016 04:05:27 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:56677)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <charles@cstrahan.com>) id 1agpPR-00067Q-LM
+	for dev@caliopen.local; Fri, 18 Mar 2016 04:05:26 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <charles@cstrahan.com>) id 1agpPO-0002OM-TE
+	for dev@caliopen.local; Fri, 18 Mar 2016 04:05:25 -0400
+Received: from out2-smtp.messagingengine.com ([66.111.4.26]:43437)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <charles@cstrahan.com>) id 1agpPO-0002Nq-QC
+	for dev@caliopen.local; Fri, 18 Mar 2016 04:05:22 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailout.nyi.internal (Postfix) with ESMTP id 234D420BCC
+	for <dev@caliopen.local>; Fri, 18 Mar 2016 04:05:20 -0400 (EDT)
+Received: from web5 ([10.202.2.215])
+	by compute4.internal (MEProxy); Fri, 18 Mar 2016 04:05:20 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=cstrahan.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to:x-sasl-enc
+	:x-sasl-enc; s=mesmtp; bh=Yk97j42G2nJvKiT/mVMLQtLfgeE=; b=d67DOJ
+	cFq+xXxnOm4ZarhtfvUBDKmK41/tOqtMGlTjfTNNiBXZBY2+VJS+kpev1i6r+4mE
+	nC0LceYEwZc1OnNOdVa5Bn074lC3KHIzwBazSYr2PBuJvCizlw7u2t14tksOm/01
+	ALPJDReoKUc6tS7XhW27P4fYIba2pTu9VoL5w=
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:content-transfer-encoding:content-type
+	:date:from:in-reply-to:message-id:mime-version:references
+	:subject:to:x-sasl-enc:x-sasl-enc; s=smtpout; bh=Yk97j42G2nJvKiT
+	/mVMLQtLfgeE=; b=SjYIJis78bMyE58Q1W+aygSAur8MhJDpOSZp0N3Eyx/XT0H
+	yOUbiyAup/uLjozVG0vUCxkce4fCxaGOyCDFp1yZLcdkcShrIzmYkN9OQ6MZYm33
+	J1WjbBDDWA+VdlDLizZzAmL3J1rALbXSWH2TFcaNRUA+LGQt7t6/t09v09mw=
+Received: by web5.nyi.internal (Postfix, from userid 99)
+	id E9E69A7DED5; Fri, 18 Mar 2016 04:05:19 -0400 (EDT)
+Message-Id: <1458288319.29675.552786858.0C058E99@webmail.messagingengine.com>
+X-Sasl-Enc: ONr2YmZJLDHkDmJHFGOBZfLjqglkBZvF6gbs2AmZ0eKc 1458288319
+From: Charles Strahan <charles@cstrahan.com>
+To: Eli Zaretskii <eliz@gnu.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Mailer: MessagingEngine.com Webmail Interface - ajax-872772a7
+Subject: Re: support for true-color terminals
+Date: Fri, 18 Mar 2016 04:05:19 -0400
+In-Reply-To: <83y49pju8w.fsf@gnu.org>
+References: <1457660934.533185.545912986.04028913@webmail.messagingengine.com>
+	<83y49pju8w.fsf@gnu.org>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 66.111.4.26
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Fri, 18 Mar 2016 08:05:26 -0000
+Content-Length: 1832
+Lines: 46
+
+On Fri, Mar 11, 2016, at 04:26 AM, Eli Zaretskii wrote:
+> > From: Charles Strahan <charles@cstrahan.com>
+> > Date: Thu, 10 Mar 2016 20:48:54 -0500
+> >=20
+> > A while back, there was an effort to add support for true-color
+> > terminals (by which I mean terminals supporting 16777216 simultaneous
+> > colors):
+> >=20
+> > http://emacs.1067599.n5.nabble.com/RFC-Add-tty-True-Color-support-td299=
+962.html
+> >=20
+> > I've contacted R=FCdiger, asking if he wouldn't mind if I pick up from
+> > where he left off, and he said that was fine as he's been too busy to
+> > work on this.
+> >=20
+> > I've attached to this email the patch that I'm using, based on his work.
+> > Any feedback would be greatly appreciated.
+> >=20
+> > This is my first (attempted) contribution to Emacs, and I'm very new to
+> > the code base, so there might be some silly mistakes that I'm unaware
+> > of. If we can get this polished enough for inclusion, I'd be more than
+> > happy to assign copyright.
+>=20
+> Thanks.
+>=20
+> First, I suggest that you start the legal paperwork rolling right now,
+> because without that, discussing such a non-trivial change would be
+> rather pointless.  If you agree, I will send you the form off-list.
+
+Yes, I agree - thank you. I'll get the paperwork filled out as soon as I
+can.
+
+> As for the patch: my first comment is about the changes in
+> tty_look_up_color and in map_tty_color -- why are these needed?  The
+> sheer number of the supported colors doesn't necessarily require any
+> changes in the basic design of TTY color support, so I'm not sure what
+> was the motivation for these changes.
+>=20
+> Also, why do we need the 'true-color' option introduced in
+> tty-colors.el? why isn't 'auto' enough for supporting this terminal?
+
+I'll try to answer your questions in the next day or two when my
+schedule frees up.
+
+-Charles
+
