@@ -29,7 +29,7 @@ tar xzf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 
 # Clone repository
 cd ${CALIOPEN_BASE_DIR}
-git clone https://git.sapienssapide.com/caliopen/monoRepo.git code
+git clone https://github.com/CaliOpen/Caliopen.git code
 
 # Install python packages
 cd ${CALIOPEN_BASE_DIR}/code/src/backend/main/py.storage
