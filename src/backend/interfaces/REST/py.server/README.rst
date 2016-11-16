@@ -7,7 +7,7 @@ contribution instructions, please refer to https://caliopen.github.io
 caliopen.api
 ============
 
-caliopen.api package is a simple Pyramid container to include CaliOpen Rest API services.
+caliopen_api package is a simple Pyramid container to include CaliOpen Rest API services.
 
 Local Installation
 ------------------
@@ -38,7 +38,8 @@ Running API
 
 ::
 
-    pserve development.ini.sample --reload
+    cd src/backend/main
+    ./startup
 
 
 Components
@@ -46,8 +47,9 @@ Components
 
 Current components are :
 
-* `caliopen.api.user <https://github.com/caliopen/caliopen.api.user>`_,
-* `caliopen.api.message <https://github.com/caliopen/caliopen.api.message>`_,
+* `caliopen_api.user`
+* `caliopen_api.message`
+* `caliopen_api.base`
 
 Tests
 -----

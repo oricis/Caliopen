@@ -4,10 +4,10 @@ Entry point
 This repository is part of CaliOpen platform. For documentation, installation and
 contribution instructions, please refer to https://caliopen.github.io
 
-Caliopen Base
+Caliopen Storage
 =============
 
-This is the base package for caliopen platform.
+This is the base storage package for caliopen platform.
 
 It contains following sub packages:
 
