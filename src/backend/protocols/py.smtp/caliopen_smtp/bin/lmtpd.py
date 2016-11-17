@@ -8,8 +8,8 @@ import logging
 import argparse
 from gsmtpd import LMTPServer
 
-from caliopen.base.config import Configuration
-from caliopen.base.helpers.connection import connect_storage
+from caliopen_storage.config import Configuration
+from caliopen_storage.helpers.connection import connect_storage
 
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -22,7 +22,7 @@ class LmtpServer(LMTPServer):
     def process_message(self, peer, mailfrom, rcpttos, data):
         """Process a mail message."""
         # XXX can't import globally, configuration have to be loaded
-        from caliopen.smtp.agent import DeliveryAgent
+        from caliopen_smtp.agent import DeliveryAgent
         agent = DeliveryAgent()
         log.debug('Receive peer {} from {} to {}'.
                   format(peer, mailfrom, rcpttos))

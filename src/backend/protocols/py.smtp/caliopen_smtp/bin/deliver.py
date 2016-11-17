@@ -3,8 +3,8 @@ import sys
 import logging
 import argparse
 
-from caliopen.base.config import Configuration
-from caliopen.messaging.queue import Consumer
+from caliopen_storage.config import Configuration
+from caliopen_messaging.queue import Consumer
 
 
 log = logging.getLogger(__name__)
@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 
 def process_message(body, message):
     # XXX not import here, but configuration have to be loaded
-    from caliopen.base.message.deliver import UserMessageDelivery
+    from caliopen_main.message.delivery import UserMessageDelivery
     deliver = UserMessageDelivery()
     log.info("Will process %r" % body)
     msg = deliver.process(body['user_id'], body['message_id'])
