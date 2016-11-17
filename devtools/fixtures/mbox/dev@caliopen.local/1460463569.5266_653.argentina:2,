@@ -1,0 +1,161 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aiQrx-0003nn-Il
+	for mharc-dev@caliopen.local; Tue, 22 Mar 2016 14:17:29 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:43720)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiQrv-0003md-NF
+	for dev@caliopen.local; Tue, 22 Mar 2016 14:17:28 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiQrt-0007Fj-0k
+	for dev@caliopen.local; Tue, 22 Mar 2016 14:17:27 -0400
+Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236]:37534)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiQrs-0007Fa-Lq
+	for dev@caliopen.local; Tue, 22 Mar 2016 14:17:24 -0400
+Received: by mail-wm0-x236.google.com with SMTP id p65so175310152wmp.0
+	for <dev@caliopen.local>; Tue, 22 Mar 2016 11:17:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=pUWZXFzuA6fKSEmAQP5hnda/mGmmE5dmxyBrpuR2vBk=;
+	b=NuHsWrbPhhiMbIDSFfUrs98iTsuXa88Lp7DmGaEgNyAeYVi3oSKYYsUo91PLA+fEU2
+	0fSOC5D9ujq2k67VsN73WwVwELOt87Kp1VKhCjCVh0yF7Qje8ixKsXKY0MJUO2UN4zRh
+	aaBydayWwrw+Fof8qh54u2AHkpq5BcFCkQYuT0latShVR+h7zdzvf2kPnv4Z7uxsATsw
+	sUd57HxiDaNjE1ni6MjOmFNPC4d9OxwbtUomL8eiViS24PvMFePN6ih1eds+qyZVHYzK
+	Zr2dIfU2F0A1inYwci45FNbEWLwIWfXBo9J4CXHgmzP+G+2EcC7/H3zNwVxCAs9covl4
+	840g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=pUWZXFzuA6fKSEmAQP5hnda/mGmmE5dmxyBrpuR2vBk=;
+	b=kU2I4PDLJE2htlcqBFNtQcaxgBW8Qp1zVU8oQgaHvwt7ACbGhDmejpBZKiCihFpAoi
+	PMM5u7iVFkoKxc+SWy39YXRpdwl2dhIyIipP/8Ok4Fttlae3bT0ju3ESWJjaXx1NRPZQ
+	MlYz7FmKN52ocgG/3x/Qvp4eK4bZzV2dhLa4ksryHcVApvRzdH9UKlQpKsWGRHHoNdeL
+	mQu20ZiNdrQaEffCyLamZd4NJPaSl5Fdz3J+bTTbgYKuAOF4bFH1IzUKoJSdoJx3Io+1
+	XyrJrzVBy7hDh2rCl4QvwcR3RGXib1V/YngkWR1o12NwKD3SRgaDmLIP3YUyzOu0i7mW
+	WjQw==
+X-Gm-Message-State: AD7BkJKD4kcl70NQjmsfTLw1Gjpo9KH4Tgv6Q2Ss9Y9DFXaVyqVYdnUaJRLnO4DbPcHEwg==
+X-Received: by 10.28.18.85 with SMTP id 82mr22802693wms.5.1458670643672;
+	Tue, 22 Mar 2016 11:17:23 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	c128sm18478060wma.11.2016.03.22.11.17.22
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Tue, 22 Mar 2016 11:17:22 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87bn67eq4t.fsf@gmail.com>
+	<jwvy49ar473.fsf-monnier+gmane.emacs.devel@gnu.org>
+Date: Tue, 22 Mar 2016 19:17:22 +0100
+In-Reply-To: <jwvy49ar473.fsf-monnier+gmane.emacs.devel@gnu.org> (Stefan
+	Monnier's message of "Tue, 22 Mar 2016 10:51:33 -0400")
+Message-ID: <87io0eqswd.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::236
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 22 Mar 2016 18:17:29 -0000
+Content-Length: 2919
+Lines: 71
+
+
+
+>> On Tue, Mar 22 2016 10:51, Stefan Monnier wrote:
+
+>> The second issue is with respect to the first line immediately after the
+>> header.
+
+> Since it's not on its own line, I don't see why it would be an issue
+> for indentation.
+
+It's a problem if you narrow to current span and allow inner mode to indent
+first line. So one way or another, multi-mode has to interfere in this case
+beyond FIRST-COLUMN hint.
+
+Without narrowing it's not clear what is the contract that inner mode should
+respect to handle previous chunk locations. It's not even clear if previous
+locations should be of the same modes chunk, previous head span or maybe a set
+of heterogeneous chunks.
+
+In any case once the inner mode gets locations of previous chunks it all becomes
+an very messy open question. Modes can decide to do whatever they see fit. The
+STRING-BEFORE/AFTER system, not ideal of course, but it keeps the mode within
+its own world and doesn't leave much space for "improvisation".
+
+>> mode for indentation. Consider this example of erb mode taken from
+>> https://github.com/fxbois/web-mode/blob/master/tests/demo.erb.>
+>>     <div id='header'>
+>>       <% if signed_in? -%>
+>>         <%= link_to t('.sign_out'), sign_out_path, :method => :delete %>
+>>       <% else -%>
+>>         <%= link_to t('.sign_in'), sign_in_path %>
+>>       <% end -%>
+>>     </div>
+
+>> One meaningful approach here is to indent if-else-end block using inner mode
+>> rules, right?
+
+> Another approach would be to consider it as a sequence of chunks, rather
+> than as chunks of one mode nested in another.  So each chunk controls
+> the FIRST-COLUMN of the next chunk.
+
+This will not work in above case. <%else-%> chunk needs to know about where <%if
+signed_in? -%> was indented which is not an immediately preceding chunk.
+
+It's hard to think of better solution than collecting all relevant previous
+chunks in one place and indenting according to inner mode. In order to indent
+"<%else-%>", STRING-BEFORE should be full "link_to ..." line. So basically
+STRING-BEFORE must consist of all ruby spans in between "if" and "else" chunks.
+
+> In any case, this seems messy.
+
+Yeh. Very much.
+
+> As for STRING-AFTER, the example is compelling, but I don't yet
+> understand really how it would all work out overall.
+
+Neither do I. Strings are hard to process in emacs and the mode will need to
+either modify current buffer by inserting it in a special region or use a
+separate buffer for that.
+
+I tend to agree with Dmitry, if you decide not to pass chunk locations to inner
+modes then there is no much point in getting complicated with passing
+BEFORE/AFTER strings. Multi-mode engine can take care of that satisfactory.
+
+> How should the "generic" code that links HTML and Ruby know when to indent
+> using the HTML indentation code and when to use the Ruby indentation rules?
+
+No idea. Dmitry should have an answer for that. He implemented mmm-erb.
+
+  Vitalie
+

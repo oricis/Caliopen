@@ -1,0 +1,130 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an5wf-00031K-RD
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 10:57:37 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:48509)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1an5wd-0002vv-Ck
+	for dev@caliopen.local; Mon, 04 Apr 2016 10:57:36 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1an5wZ-0000Ia-KM
+	for dev@caliopen.local; Mon, 04 Apr 2016 10:57:35 -0400
+Received: from mout.kundenserver.de ([212.227.17.10]:60775)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1an5wZ-0000IA-BX
+	for dev@caliopen.local; Mon, 04 Apr 2016 10:57:31 -0400
+Received: from [172.30.34.146] ([194.81.217.65]) by mrelayeu.kundenserver.de
+	(mreue102) with ESMTPSA (Nemesis) id 0MZUYX-1b8Lot10YP-00LGnG for
+	<emacs-devel@gnu.org>; Mon, 04 Apr 2016 16:57:30 +0200
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+To: dev@caliopen.local
+References: <56F42269.10400@gmail.com>
+	<jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<E16BD3EC-F7ED-463C-804C-DCBA8E548B15@lunaryorn.com>
+	<jwvshzffwix.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<05663DCE-3E5B-41E2-8657-460B2D013B49@lunaryorn.com>
+	<m2pou6clua.fsf@newartisans.com> <E1an5SI-0007tk-5H@fencepost.gnu.org>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Message-ID: <570280D9.6030706@gmail.com>
+Date: Mon, 4 Apr 2016 15:57:29 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <E1an5SI-0007tk-5H@fencepost.gnu.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="ICIeVRwHQDVeXD37SMV48RTOB67D511Q2"
+X-Provags-ID: V03:K0:gSLl4Uuk+WVQdw2IJs2lddx26Qej41JliN8kSZk6y309HkcwRTI
+	uNuK55tglGiL9tjO39Yl7DEPdRGndakqolFoMzSnhtpjkQpXn4Lw1gjNAYj2p2qGTY4KXJ0
+	YVlaxdVMb9OrWAK1jqkgnDLiN3UAjZxdbYy4YfazwEb6PpilQEdzp/RRqX8gCIjErHVmVWd
+	NkOhhuCeWCkkMpPjZfchQ==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:08paG0aKbzc=:lO1SrmeScMkD8SHuCJAyiM
+	OxMH6p8OMFpPmujoRW0vztuqOymkxFsOY92OnhavTlpwcz3QarxVK63rT87PvZftb7OOEGYaL
+	v8b9x3oSpjo3mnSk2IRBA9IRss+E6fXKazoXH1max40+PiBYFVx54ktwToyywLoY1jDzHVlyh
+	pdO69M23tli9axd4HIMKIvHWHuMktbDZnQ+O7AFq9hlhC9TqyotEs+2fybuogQy91g9E1z+8r
+	m5DUpKfYI3G4EC20vciufEwa0fc1zU6k3dqMF+pbZ5Yy6nHFRV8nqjGoPnfaDDpBqVCYconf/
+	/ceqzaDPdrqrHLYuvuzl8Qi2gZQjIvFZSzR7qyNHs6yrTYO+9Fy8Q1qiFoHxDeG92ujn2LjPs
+	88xMjoP3VpVxsXJOd9eVQmcQype+5oW0rfr2LHZByai+KT2fhMrZNJAoUvvqW9VoDFoF37QUr
+	i/x34BE3DYRCxla1GkbXppKz0IZU61nj5n8D5MWmiP7nf/lg/Aypgbm9jy19yr9BBNhur9pvl
+	8RrXFOmCpcf+GXBrndlPwnbeiOEdSF8UO9XdbS1JKTE4LFsWMZluohq4DgwcnokJL2g9dW5BW
+	Gr4RCQ/qdGx5p595tmBKloJvXJZPgomZQvsFefZSN/p6MW032lWo4pH76dxuT70h7HjUrKGpM
+	2UECM30Cfm7vjPcUiFfVS8fY3U9iHDhSKP+z1EtRKStKVQomRGM6pkVgVfun3J7my18g=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.17.10
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 14:57:36 -0000
+Content-Length: 2774
+Lines: 62
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--ICIeVRwHQDVeXD37SMV48RTOB67D511Q2
+Content-Type: multipart/mixed; boundary="0NpJpe35bwXmTEBvxqshFFXfjCqxnRAHP"
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+To: dev@caliopen.local
+Message-ID: <570280D9.6030706@gmail.com>
+Subject: Re: Should the default value of url-user-agent include a version
+ number? What about the specific case of package.el?
+References: <56F42269.10400@gmail.com>
+ <jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+ <E16BD3EC-F7ED-463C-804C-DCBA8E548B15@lunaryorn.com>
+ <jwvshzffwix.fsf-monnier+gmane.emacs.devel@gnu.org>
+ <05663DCE-3E5B-41E2-8657-460B2D013B49@lunaryorn.com>
+ <m2pou6clua.fsf@newartisans.com> <E1an5SI-0007tk-5H@fencepost.gnu.org>
+In-Reply-To: <E1an5SI-0007tk-5H@fencepost.gnu.org>
+
+--0NpJpe35bwXmTEBvxqshFFXfjCqxnRAHP
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On 04/04/2016 03:26 PM, Richard Stallman wrote:
+> I think url should do what IceCat does: send a user-agent string that
+> is widely encountered on the net, to thwart identification of users.
+
+Does it really do that? Where is it documented?
+On my machine, it seems to consistently send "Mozilla/5.0 (Windows NT 6.1=
+; rv:38.0) Gecko/20100101 Firefox/38.0".
+
+In any case, I don't think this point is relevant to the package.el part =
+of this discussion. It's trivial for GNU ELPA and GNU MELPA to track thei=
+r users: they can just serve arbitrary code that Emacs will blindly run. =
+Thus, if you don't trust them enough to send them your version of Emacs, =
+then you probably shouldn't be talking to them in the first place.
+
+
+--0NpJpe35bwXmTEBvxqshFFXfjCqxnRAHP--
+
+--ICIeVRwHQDVeXD37SMV48RTOB67D511Q2
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJXAoDZAAoJEPqg+cTm90wjogAP/AmnSvrjlozk6VeWCfYi2QJ8
+khTT0cRkUzdP+3SyQGlRj8eJeg/KbfGsWOvtugZ4kz+4yvi2bG5rmRsqlbWnnkoa
+n7S0mSxbZ1O8B+yUqYD85L08GxLqeQzxf2JHpKE3Vq4VTxsa4NuEQJ7wrAVrxsxj
+UkuEJbxUPJP7cAafKZL1SuoozzXh1uO3+vf5iZN8Cpea/BrIYA70CBF6QSd7S23C
+uxN1TzaF1dYrQfkmGyes2KmK1kT2eZQ140E+2buGWCTKCzDZz7k4t+8kF8vJKyo8
+Wfiw9IOCNX2kdhwyYzp6I4pJLfzUjFxS0PAId2b+qopdSzf+l17Np30Cs7DQeluq
+Hg5e6u8APIA6I45zQYlsmcOc6IrvYT/uhcqq6qF5JMOCvu8ocQ6DJ1jdm9eVQRL6
+XccpkO28lZuHStHt5bSX5zgtNwogzJRZg88lTg7Wvw18qX2lUHeBXVzWS70P2Tp7
+DjQDdCWf4adFBY6jRDuLSDjgGxKqOtLFAjhq2CCSiRlfdjZX7/uR3SLi8OovLl6J
+qyGon9QlpF9KOh0/ys/aonbqKJc4BQcPagXuw7yE8zzJ8Ua+kreORYaEgWOKeR5c
+wL3JNh7QlVsOS3eIP6dG2KKpn/zxSwfUZA8pFLS0k91vMtfusI9XJ2I4ddQMT8tY
+fiUAgKIsYlWFdxMf4noL
+=iViQ
+-----END PGP SIGNATURE-----
+
+--ICIeVRwHQDVeXD37SMV48RTOB67D511Q2--
+

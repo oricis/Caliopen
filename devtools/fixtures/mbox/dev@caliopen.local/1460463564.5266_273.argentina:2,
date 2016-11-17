@@ -1,0 +1,94 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amwsR-0006QQ-5S
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 01:16:39 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:58289)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amwsO-0006NF-Rv
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:16:37 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amwsL-0007QG-Mo
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:16:36 -0400
+Received: from mail-oi0-x236.google.com ([2607:f8b0:4003:c06::236]:36144)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amwsL-0007Q6-I3
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:16:33 -0400
+Received: by mail-oi0-x236.google.com with SMTP id y204so36796602oie.3
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 22:16:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=AtqSdrYy8yMCW1t6W6OCa1Z3HWVYt7IaiCRk+6/jMUI=;
+	b=OkSwrpbdJy7QpX9CUJ+CYo23KTjJ964H62Uln1FPvhgmxF95stwsVDN5A5umfpA6fX
+	DRqjtiWxF72EFhbgmefxHTMjaPd7TD7ewojQHDGraiwLUwP1t62BOMkYAQLEiAiO6Fz3
+	PjXevnq/dTd5oduuzgQxw9YRzViluPkEtGMlTbbhxLs0aD+8mxffhK3olwya6z/tGCVv
+	bNaG5g8qN9ARKMZ7/JSNNb92PptSCg4/pt/lknuGnj8geyQZJw32cJ7HMKXfRhtRFoqu
+	JBQ21KVpNV9WZXl6cKtUDW9PL8ghyWppVGHA6q+tEW/D3+3hFdvDmKFkYBMbvlK3O0i2
+	ALgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=AtqSdrYy8yMCW1t6W6OCa1Z3HWVYt7IaiCRk+6/jMUI=;
+	b=a/mVNKmrsWiNDw588zC+aUipazvE34gzzOTLJA7Bn8DE21/pBouGKTy3VHWB4pDH2o
+	/y6/Ug1SwPOaHBcaOMIdiuESfFlzTo62V4mAHu0jEH4FU0MNmwv5PKXKY10iETDu9EUp
+	ljRnpMLEBZji8i70dTvsPBrb3EGmYgB72bS9RvE9kioWXvu2QAWW2zY0rGVK3nXhVIR4
+	CSh6B22VEB3tmv8IPajJBHW0dskqWZISOWKFzbZegXklLAd/YNXrzAW35XL8h0fJose+
+	x0UAO465EzE+ee08b526orYCVdK4qzocPo8aon/jPPT2Y2V1Tx0XjpPZC/K8e94dD4As
+	PnPg==
+X-Gm-Message-State: AD7BkJJRW2VqqRL5G/KhiN0HyNh6i2Ts58kyVYKMtzcCyfpaD1u+YrDAya96rKvoSKRTBw==
+X-Received: by 10.157.46.19 with SMTP id q19mr9588269otb.19.1459746992935;
+	Sun, 03 Apr 2016 22:16:32 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79]) by smtp.gmail.com with ESMTPSA id
+	a67sm7946576otc.15.2016.04.03.22.16.31
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 22:16:31 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id 0E98113DB0809; Sun,  3 Apr 2016 22:16:31 -0700 (PDT)
+To: raman@google.com
+Subject: Re: Should outline-minor-mode be globalized?
+In-Reply-To: <22273.54220.381234.312729@gargle.gargle.HOWL> (raman's message
+	of "Sun, 3 Apr 2016 19:39:08 -0700")
+Date: Sun, 03 Apr 2016 22:16:27 -0700
+Message-ID: <m260vyar84.fsf@newartisans.com>
+References: <22273.54220.381234.312729@gargle.gargle.HOWL>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: raman@google.com, emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c06::236
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 05:16:37 -0000
+Content-Length: 635
+Lines: 16
+
+>>>>> raman  <raman@google.com> writes:
+
+> It's nice to be able to globally turn on font-lock mode; on a similar note,
+> it would be nice to be able to turn on outline-minor-mode globally -- rather
+> than setting mode-specific hooks to turn on outline-minor-mode.
+
+> Is there any risk in globalizing outline-minor-mode?
+
+Wouldn't it really just be applicable in text-mode derived buffers? I have a
+hard time seeing its value when turned on for dired, Gnus, *Help*,
+compilation, etc.
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

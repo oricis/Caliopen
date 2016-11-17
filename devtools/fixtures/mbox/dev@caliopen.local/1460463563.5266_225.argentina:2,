@@ -1,0 +1,102 @@
+Return-Path: <info@db-gc.net>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id 42B7720B66F94
+	for <laurent@brasil.brainstorm.fr>; Sat,  9 Apr 2016 14:51:07 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 36ABB3317721; Sat,  9 Apr 2016 14:51:07 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id 273723317704; Sat,  9 Apr 2016 14:51:07 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: ********************
+X-Spam-Status: Yes, score=20.3 required=5.0 tests=BAYES_99,HTML_MESSAGE,
+	HTML_MIME_NO_HTML_TAG,MIME_HTML_ONLY,RAZOR2_CF_RANGE_51_100,
+	RAZOR2_CF_RANGE_E8_51_100,RAZOR2_CHECK,RCVD_IN_BRBL_LASTEXT,RCVD_IN_CSS,
+	RCVD_IN_RP_RNBL,RDNS_NONE,SUBJECT_NEEDS_ENCODING,SUBJ_ILLEGAL_CHARS,
+	TO_NO_BRKTS_NORDNS,TO_NO_BRKTS_NORDNS_HTML,T_SURBL_MULTI1,
+	T_URIBL_BLACK_OVERLAP,URIBL_BLACK,URIBL_DBL_SPAM,URIBL_JP_SURBL,
+	URIBL_WS_SURBL autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  1.0 RCVD_IN_CSS RBL: Received via a relay in Spamhaus CSS
+	*      [185.101.94.23 listed in zen.spamhaus.org]
+	*  1.3 RCVD_IN_RP_RNBL RBL: Relay in RNBL,
+	*      https://senderscore.org/blacklistlookup/
+	*      [185.101.94.23 listed in bl.score.senderscore.com]
+	*  1.4 RCVD_IN_BRBL_LASTEXT RBL: RCVD_IN_BRBL_LASTEXT
+	*      [185.101.94.23 listed in bb.barracudacentral.org]
+	*  1.6 URIBL_WS_SURBL Contains an URL listed in the WS SURBL blocklist
+	*      [URIs: gl-db.com]
+	*  1.2 URIBL_JP_SURBL Contains an URL listed in the JP SURBL blocklist
+	*      [URIs: gl-db.com]
+	*  1.7 URIBL_DBL_SPAM Contains an URL listed in the DBL blocklist
+	*      [URIs: gl-db.com]
+	*  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
+	*      [URIs: gl-db.com]
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.7 MIME_HTML_ONLY BODY: Message only has text/html MIME parts
+	*  0.9 RAZOR2_CHECK Listed in Razor2 (http://razor.sf.net/)
+	*  1.9 RAZOR2_CF_RANGE_E8_51_100 Razor2 gives engine 8 confidence level
+	*      above 50%
+	*      [cf: 100]
+	*  0.5 RAZOR2_CF_RANGE_51_100 Razor2 gives confidence level above 50%
+	*      [cf: 100]
+	*  0.4 HTML_MIME_NO_HTML_TAG HTML-only message, but there is no HTML tag
+	*  1.5 SUBJ_ILLEGAL_CHARS Subject: has too many raw illegal characters
+	*  0.0 T_URIBL_BLACK_OVERLAP T_URIBL_BLACK_OVERLAP
+	*  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+	*  0.0 SUBJECT_NEEDS_ENCODING SUBJECT_NEEDS_ENCODING
+	*  0.0 T_SURBL_MULTI1 T_SURBL_MULTI1
+	*  0.0 TO_NO_BRKTS_NORDNS_HTML To: misformatted and no rDNS and HTML only
+	*  0.0 TO_NO_BRKTS_NORDNS To: misformatted and no rDNS
+X-Spam-DCC: : 
+Received: from db-gc.net (unknown [185.101.94.23])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id C798C33181F9
+	for <dev@caliopen.local>; Sat,  9 Apr 2016 14:51:03 +0200 (CEST)
+To: dev@caliopen.local
+From: info@db-gc.net
+Subject: FW: Trova subito nuovi clienti‎.
+Date: Sat, 9 Apr 2016 14:51:03 +0200
+Message-ID: <20160409_125103_093883.info@db-gc.net>
+X-Mailer: XMAIL
+Content-Transfer-Encoding: 8bit
+Content-Type: text/html; charset="utf-8"
+Mime-Version: 1.0
+X-Spam-Prev-Subject: FW: Trova subito nuovi clienti‎.
+Content-Length: 1048
+Lines: 30
+
+Salve, <br /><br />
+
+Offriamo banche dati di aziende e clienti italiani potenzialmente interessati alla Vostra offerta.<br /><br />
+
+Le banche dati delle aziende sono suddivise in gruppi di destinatari, secondo le Vostre necessità.<br /><br />
+
+--<br />
+Database Aziende 2016 - 140 € * Scadenza promozione 08/04/2016 <br />
+--<br /><br />
+
+<a href="http://www.gl-db.com">www.gl-db.com</a> 
+
+<br /><br />
+I dati delle aziende contengono:<br />
+"Nome dell'azienda, Persona di contatto, E-mail, Telefono, Fax, CAP, Località, Via, ecc." <br /><br />
+
+Le possibilità di utilizzo delle banche dati sono praticamente illimitate.<br />
+Grazie ad esse potrete condurre campagne pubblicitarie in modo efficace e sicuro.<br /><br />
+
+I programmi da noi creati vi permettono di preparare una campagna pubblicitaria professionale,<br />
+personalizzando linvio delle offerte mediante e-mail o fax. <br /><br />
+
+Vi invitiamo a visitare il nostro sito internet:<br /><br />
+
+<a href="http://www.gl-db.com">www.gl-db.com</a>
+
+Cordiali Saluti
+Marco Coletti.
+
+

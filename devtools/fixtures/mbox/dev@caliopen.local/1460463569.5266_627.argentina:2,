@@ -1,0 +1,241 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai0aP-0003NY-Br
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 10:13:37 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39207)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai0aI-0003D2-Kh
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:13:35 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai0aD-0000q9-He
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:13:30 -0400
+Received: from mail-wm0-x235.google.com ([2a00:1450:400c:c09::235]:38757)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai0aD-0000q4-6A
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:13:25 -0400
+Received: by mail-wm0-x235.google.com with SMTP id l68so123609557wml.1
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 07:13:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=nqExY8w+E59Jmd4Zr+SlzPpVP/Bnt+XjB9SlyrEYaWQ=;
+	b=XYdJmhx6Wwwi4VmO5xpbBXyP/ti2FI9n9KThh61wqw/JsxAPVKUhQ3VS0cJr8bEvss
+	IYsFYwxhBJvf62Pmh0h6Q4uHj02w7hxlYImrJ7zJmAjaYFz/6aWrj7o1fZ4DNgo1hwOF
+	XeT6NqC/dsl+7QDgdD03kkOk0/SbEJSqUhCuqQALE0U9ryBZCmeSZk+l5wb9x6SwVnuX
+	6AEZcGIConuIMNWNuNLKVcpzgNrxKdDWwJwjn1qfGKcEIwT45XVQzBmc0+nzMyrfY3c9
+	c++eMiC1b+1mq7ieq60oWem55bQesgY3KYAaqPLbPyfiP1+EqljJOTrzeLKEoOjV6sAP
+	4u8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=nqExY8w+E59Jmd4Zr+SlzPpVP/Bnt+XjB9SlyrEYaWQ=;
+	b=FAtw/gJ6Fp/Z8yfT7cJztNncutqopHa7hbGLqGfc0nsyuEAaHASM0gMLt27jsHM/3z
+	V4Uy+zzEiAikt/3TaxT4S65JQkCrLBiEsJApsCOcuLqkyBptBVPi3RxYZYjZdyjQa1iw
+	6E5EMdjsnHh7XJC/6dOdoA842xCIRvUXBsTa6kZ8d3YSwCwYwLmVoNH7tP8CPjI5qC47
+	w6hmbVSmxu/ywjDLECgHQWhS8pz4ADTZRDm6EscmSe/IxatC9a/GKQMNJ9IQSaYjH9Hp
+	61+C9T4HrK13xVDebMqEbUx2EdjLmxZYkBtnjii/KhommLDKZs1Sv0BTOhH/u8Wnw/QC
+	nR3w==
+X-Gm-Message-State: AD7BkJKR8NifjryTeWDT7un7kcvYPR+zUk7mWIbLK/06nkg4mC4Yf2h8QPGjY0+KGzURZw==
+X-Received: by 10.28.129.213 with SMTP id c204mr14726010wmd.89.1458569604508; 
+	Mon, 21 Mar 2016 07:13:24 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	jo6sm25566640wjb.48.2016.03.21.07.13.22
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Mon, 21 Mar 2016 07:13:23 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+Date: Mon, 21 Mar 2016 15:13:22 +0100
+In-Reply-To: <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org> (Stefan Monnier's message
+	of "Mon, 21 Mar 2016 08:26:25 -0400")
+Message-ID: <877fgvgbr1.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::235
+Cc: Alan Mackenzie <acm@muc.de>, Dmitry Gutov <dgutov@yandex.ru>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 14:13:35 -0000
+Content-Length: 7403
+Lines: 153
+
+
+
+>> On Mon, Mar 21 2016 08:26, Stefan Monnier wrote:
+
+>> parse-partial-sexp should work between hard limits (at least the lower
+>> bound). It should operate as if hard-narrowed buffer is the real buffer.
+
+> You mean it should ignore the current (user)narrowing?  Why? I'd think that if
+> something needs to ignore the (user)narrowing it'd be parse-partial-sexp's
+> *caller* but not parse-partial-sexp itself.
+
+Currently it just throws out-of-range errors. So in that sense it does ignore
+user narrowing in a very inconvenient way.
+
+parse-partial-sexp is called from code exclusively and it just happens that in
+multi-modes it is called outside of narrow region quite often. That's a major
+inconvenience. Why on earth one would need to take account in user narrowing for
+syntax parsing? If parse-partial-sexp could be made to always widen to hard
+limits it will automatically solve a bunch of problems. bug#22983 being one of
+them, condition-case awkwardness in syntax-ppss being another one, and the
+ubiquitous out-of-range errors in font-lock in multi-modes being the most
+important one.
+
+>> So ideally it should take (max FROM (car hard-widen-limits)) as the starting
+>> position.
+
+> You mean: as opposed to (max FROM (point-min))?
+
+Yes.
+
+> I disagree.  Functions should usually not accept to talk about positions
+> outside of the point-min/max range.
+
+Depends on the function. point-max/min is mostly user level. Why wold syntax
+parsing would need to respect that? Bug#22983 ilustrates that clearly. If user
+narrows in the middles of a string, it creates huge problems.
+
+Note that with Dmitry's new syntax-ppps-dont-widen proposal syntax-ppps widens
+first.
+
+Can I ask you the reverse? What do you gain by respecting user narrowing in
+syntax parsing?
+
+> Notice how syntax-ppss is different in this regard: since it doesn't
+> receive FROM, that same rule doesn't prevent syntax-ppss from widening
+> to (car hard-widen-limits).
+
+Well, not quite different. It has POS which might be outside of user narrowed
+range.
+
+>> This will give the desired consistency between parse-partial-sexp and
+>> syntax-ppss with the price of slightly modifying the semantics of
+>> parse-partial-sexp in a backward compatible way.
+
+> I'd be curious to know in which circumstances (i.e. specific code in specific
+> packages) this would make a difference.  As mentioned above, I think these
+> cases would be better fixed by changing the calling code to perform widening
+> before calling parse-partial-sexp.
+
+I think bug#22983 is illustrative enough. Multi-mode code is a nightmare because
+of out-of-range errors in parsing. `syntax-ppss` is protected but that
+condition-case is triggered in 99.99% of the times in multi-modes.
+
+In multi modes you really want to keep narrowing because most of the major-mode
+functionality works well on narrowed code. Pretty much all of it except
+syntactic parsing and font-locking. Occasional property lockup outside of
+narrowed region could be dealt with on case by case basis or, hopefully, with
+new hard-narrowed-limits at the core of it.
+
+>>>> A patch that would require hunting every single mode out there and
+>>>> implementing multi-modes locally should have been more carefully
+>>>> considered IMO.
+
+>>   - Major mode authors won't need to know about multi-modes. That
+>>     means not dealing with chunks/spans/headers etc.  These concepts are
+>>     not even uniformly defined between existing multi-mode engines.
+
+> I understand that's your claim, but I don't understand why/how this is
+> different between the two proposals.
+
+Major mode author has to deal with the span explicitly as defined in
+previous-chunk in prog-indentation-context. Cognitively this is a more demanding
+task. Ask a new person to go and read the doc of prog-indentation-context and
+ask how much he or she understands of it. I read it and I think I understand
+most of it, but looking at all the usages of prog-widen and prog-first-column in
+python.el my brain gives up. Previous-chunk is not even used in python.el!
+
+The prog-calculate-indent-function is more general. You can call it on any
+buffer position (need not be last point in the previous span). It can be called
+with whatever STRING-BEFORE and STRING-AFTER (these can, but need not be, actual
+strings in the buffer). Current prog-indentation-context allows for possibility
+of a string to be inserted before begging in of current chunk. STRING-BEFORE is
+more more general than that because of the arbitrary POS that it can be applied
+to. 
+
+My claim is that we can achieve much higher generality and don't bother mode
+authors with all those concepts like current/previous span/chunk, starting/end
+position etc. Only multi-mode engine can take proper care of those anyways.
+
+Here is a simple example when inner mode cannot decide by itself on the
+indentation. Assume for concreteness a noweb header with some code immediately
+following the header:
+
+  <<foo, some_arg=4>>= some_call(blabla) 
+      some_other_call(blabla) ## indented by offset 2 with respect to header or prev_chunk
+
+How do you indent the some_call(blabal) after the header? The most meaningful
+way is to keep it untouched just as user defined it. If inner mode would indent
+it by itself it would give offset of 4. This is a simple example of header
+dependence.
+
+You can easily imagine more complex cases when not only one previous span need
+to be considered but a range of previous spans of the same inner mode. Moreover
+there might be nested inner chunks. Which chunk/span will you include in
+prog-indentation-context? The entire previous code chunk or only the last
+homogeneous span after the most recent inner-inner chunk?
+
+Indentation of a span is commonly dependent on the header of the chunk (note the
+terminology distinction). You can imagine having a parameter in the header that
+would determine the indentation of the chunk's body. Header-dependence is a
+simple and common case of inter-span dependence. It's not hard to imagine
+complex cases when indentation in current span will depend not only on the
+previous span of the same mode but on other spans of host mode or even other
+inner (nested or not) modes.
+
+IMO the best way is to leave all this complexities to multi-mode authors to deal
+with on case by case basis. You never know what sort of complexities and chunk
+dependencies new multi-modes will impose. Better keep things
+generic. prog-calculate-indent-function seems like a multi-mode agnostic
+solution. I am not sure if it will solve all problems, but it's surely solves
+more than prog-indentation-context does in a cleaner way.
+
+Note on terminology. I put quite some effort to sort things out in
+polymode. Glossary of terms is here:
+
+  https://github.com/vspinu/polymode/tree/master/modes#glossary-of-terms
+
+For many reasons it's important to distinguish between portions of code that
+include header/tails and homogeneous portions of the same mode. Former portions
+I call `chunks` and those can include other chunks of different sub-modes. The
+latter, homogeneous portions, I call `spans`.
+
+The fact that core emacs is now starting building pieces of multi-mode
+functionality here and there and thus entrenching a somewhat naive
+interpretation of a "chunk" doesn't make me happy. Not a big deal though.
+
+> My hunch is that if STRING-BEFORE/AFTER don't matter,
+
+It will actually matter for quite some modes in continuation chunks. I was too
+optimistic.
+
+  Vitalie
+

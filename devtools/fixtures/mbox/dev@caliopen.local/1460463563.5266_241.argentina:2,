@@ -1,0 +1,70 @@
+Return-Path: <>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id 2CBE8209A30D5
+	for <laurent@brasil.brainstorm.fr>; Sat,  9 Apr 2016 06:42:01 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 1C5B433181FC; Sat,  9 Apr 2016 06:42:01 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id 08BAD331690D; Sat,  9 Apr 2016 06:42:00 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: ********************
+X-Spam-Status: Yes, score=20.2 required=5.0 tests=BAYES_50,FSL_HELO_BARE_IP_1,
+	MISSING_MID,RAZOR2_CF_RANGE_51_100,RAZOR2_CF_RANGE_E8_51_100,RAZOR2_CHECK,
+	RCVD_IN_PBL,RCVD_NUMERIC_HELO,RDNS_NONE,TO_NO_BRKTS_NORDNS,TVD_RCVD_IP,
+	TVD_RCVD_IP4,T_SURBL_MULTI1,T_URIBL_BLACK_OVERLAP,T_URIBL_SEM,T_URIBL_SEM_RED,
+	URIBL_BLACK,URIBL_DBL_SPAM,URIBL_JP_SURBL,URIBL_SBL,URIBL_WS_SURBL
+	autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  2.3 FSL_HELO_BARE_IP_1 FSL_HELO_BARE_IP_1
+	*  0.0 TVD_RCVD_IP4 TVD_RCVD_IP4
+	*  0.0 TVD_RCVD_IP TVD_RCVD_IP
+	*  1.2 RCVD_NUMERIC_HELO Received: contains an IP address used for HELO
+	*  3.3 RCVD_IN_PBL RBL: Received via a relay in Spamhaus PBL
+	*      [187.136.114.116 listed in zen.spamhaus.org]
+	*  0.0 T_URIBL_SEM_RED Contains a URI listed in urired.spameatingmonkey.net
+	*      [URIs: perfectpillsgroup.ru]
+	*  0.0 T_URIBL_SEM Contains a URI listed in uribl.spameatingmonkey.net
+	*      [URIs: perfectpillsgroup.ru]
+	*  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
+	*      [URIs: perfectpillsgroup.ru]
+	*  1.7 URIBL_DBL_SPAM Contains an URL listed in the DBL blocklist
+	*      [URIs: perfectpillsgroup.ru]
+	*  1.6 URIBL_WS_SURBL Contains an URL listed in the WS SURBL blocklist
+	*      [URIs: perfectpillsgroup.ru]
+	*  1.2 URIBL_JP_SURBL Contains an URL listed in the JP SURBL blocklist
+	*      [URIs: perfectpillsgroup.ru]
+	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+	*      [score: 0.5090]
+	*  0.9 RAZOR2_CHECK Listed in Razor2 (http://razor.sf.net/)
+	*  1.9 RAZOR2_CF_RANGE_E8_51_100 Razor2 gives engine 8 confidence level
+	*      above 50%
+	*      [cf: 100]
+	*  0.5 RAZOR2_CF_RANGE_51_100 Razor2 gives confidence level above 50%
+	*      [cf: 100]
+	*  1.6 URIBL_SBL Contains an URL listed in the SBL blocklist
+	*      [URIs: perfectpillsgroup.ru]
+	*  0.5 MISSING_MID Missing Message-Id: header
+	*  0.0 T_URIBL_BLACK_OVERLAP T_URIBL_BLACK_OVERLAP
+	*  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+	*  0.0 T_SURBL_MULTI1 T_SURBL_MULTI1
+	*  0.0 TO_NO_BRKTS_NORDNS To: misformatted and no rDNS
+X-Spam-DCC: : 
+Received: from 187.136.114.116 (unknown [187.136.114.116])
+	by mexico.brainstorm.fr (Postfix) with SMTP id 2AA0233181FC
+	for <dev@caliopen.local>; Sat,  9 Apr 2016 06:41:56 +0200 (CEST)
+Received: from unknown (HELO localhost) (sueli-sodre@morepharmacorp.com@158.115.60.199)
+	by 187.136.114.116 with ESMTPA; Fri, 8 Apr 2016 21:46:39 -0700
+From: sueli-sodre@morepharmacorp.com
+To: dev@caliopen.local
+Subject: Win your loved one's addiction
+Date: Fri, 8 Apr 2016 21:40:06 -0700
+X-Spam-Prev-Subject: Win your loved one's addiction
+Message-Id: <20160409044201.08BAD331690D@mexico.brainstorm.fr>
+Content-Length: 58
+Lines: 1
+
+http://loads.perfectpillsgroup.ru/ Celebrate your victory

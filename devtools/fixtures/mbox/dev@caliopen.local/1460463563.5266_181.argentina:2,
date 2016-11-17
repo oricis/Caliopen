@@ -1,0 +1,111 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1apByT-0003XK-Mp
+	for mharc-dev@caliopen.local; Sun, 10 Apr 2016 05:48:09 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:51643)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <thomasf@jossystem.se>) id 1apByQ-0003TU-AQ
+	for dev@caliopen.local; Sun, 10 Apr 2016 05:48:07 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <thomasf@jossystem.se>) id 1apByP-0001b5-7c
+	for dev@caliopen.local; Sun, 10 Apr 2016 05:48:06 -0400
+Received: from mail-lf0-x236.google.com ([2a00:1450:4010:c07::236]:36300)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <thomasf@jossystem.se>) id 1apByO-0001aw-UI
+	for dev@caliopen.local; Sun, 10 Apr 2016 05:48:05 -0400
+Received: by mail-lf0-x236.google.com with SMTP id g184so123027976lfb.3
+	for <dev@caliopen.local>; Sun, 10 Apr 2016 02:48:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=jossystem-se.20150623.gappssmtp.com; s=20150623;
+	h=mime-version:from:date:message-id:subject:to;
+	bh=m2mTSgXCZDaZqqip1qv6haIOCkpfJAZH7SUtl8HuyX0=;
+	b=QKR4qyABa39eq2kRTXaizH6blbGkD5Gaeqjh5imFFhSqiWWGRSVxXiLA/2EYgbx6+m
+	jKlQtHnA3WgNZ44X1nRLIc5Opfg9p3bQF8pqMxID2sxEgq1wOm4vkj99ren7kVGEjdDH
+	QJQQwApboiOteX2bCWdgFGJQpRprBIXhd7T9+MqGYXITweyAt8CatzQEcmrvwNYOE2qw
+	nbpM8kqp4KD0SpGocL97Tui81yJ6qtOKiTI3Op6dH2YG7batKEGP2K3nnCRR9iE/TQ6z
+	ScTWo1HmMcONsI55QtZ/+lsqLFtNKO/juOyWbVL7Ff2Q3qpjFnyu5eamE340u+wtPu0l
+	XsBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+	bh=m2mTSgXCZDaZqqip1qv6haIOCkpfJAZH7SUtl8HuyX0=;
+	b=Vfjgr4QSNhmpEadDItAcgeQkKZCMw8jqtQ16OldWOyHJ2Uq89DxAU2sWUnUJObQZeH
+	nhNN4vvs2lS7EjpVOiHU249KKX2VL40Wc2Z6ztYVEJK7DzBY3X/UidHy8Sk2wqYqzJi2
+	nsM960M1hXrKgHrxB1//nlEiHp1YSceXlXb4OU3V0wFruR5bhjB47Y08sXg8gOfeyYOq
+	0C2SGSCFeFJl26p4eLksjFyTGHSvT7DxeU0PPmuMPby2am/m88Qn5EbqP6ToW/702ZoD
+	n1fc5SUwidzU4Kx+XSz1hfOtJDkOf3DEON10G+F5bg79abyh1V9fXYICEKb0K0kPZOwr
+	VBfg==
+X-Gm-Message-State: AD7BkJJvGMfqH7nRABP91aKcfGHk4R9jdwIFUlzdlVVMbBPlK60/X6bSeltdAeK5GiugeB7+23ZqR4PCbHbFzA==
+X-Received: by 10.112.125.9 with SMTP id mm9mr5224451lbb.113.1460281683556;
+	Sun, 10 Apr 2016 02:48:03 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.25.154.7 with HTTP; Sun, 10 Apr 2016 02:47:44 -0700 (PDT)
+From: =?UTF-8?Q?Thomas_Fr=C3=B6ssman?= <thomasf@jossystem.se>
+Date: Sun, 10 Apr 2016 11:47:44 +0200
+Message-ID: <CANDWisD_2-vtxm_p5z4T049=STnBgmjX674kEyO7vxCLqvifJA@mail.gmail.com>
+Subject: about bug#232: 25.0.92; cua-mode inhibits deactivate-region-hook
+To: dev@caliopen.local
+Content-Type: multipart/alternative; boundary=089e0112c02205532e05301e53db
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:4010:c07::236
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 10 Apr 2016 09:48:07 -0000
+Content-Length: 2088
+Lines: 47
+
+--089e0112c02205532e05301e53db
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+First I'm not sure if you prefer me to post to the bug or the mailing list
+so please tell me if I should restrict myself to the bugs list instead..
+
+Anyway, I think that it's an actual bug with cua-mode or something because
+the deactivate-mark-hook isn't fired when the region is removed, repeated
+pressing of C-g doesn't fire it either.
+It's also a consistent behavior, when cua-mode is active the
+deactivate-mark hook is not fired
+
+(by using git blame) I noticed that there was a change in September last
+year or something which modifies some bits about how cua-mode handles the
+mark.
+
+Please tell me if I'm wrong or if there is some additional digging I should
+do to further diagnose this issue..
+
+
+--=20
+Thomas Fr=C3=B6ssman
+http://t.jossystem.se
+
+--089e0112c02205532e05301e53db
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">First I&#39;m not sure if you prefer me to post to the bug=
+ or the mailing list so please tell me if I should restrict myself to the b=
+ugs list instead..<div><br></div><div>Anyway, I think that it&#39;s an actu=
+al bug with cua-mode or something because the deactivate-mark-hook isn&#39;=
+t fired when the region is removed, repeated pressing of C-g doesn&#39;t fi=
+re it either.</div><div>It&#39;s also a consistent behavior, when cua-mode =
+is active the deactivate-mark hook is not fired</div><div><br></div><div>(b=
+y using git blame) I noticed that there was a change in September last year=
+ or something which modifies some bits about how cua-mode handles the mark.=
+</div><div><br></div><div>Please tell me if I&#39;m wrong or if there is so=
+me additional digging I should do to further diagnose this issue..=C2=A0<br=
+></div><div><br></div><div><div><br></div>-- <br><div class=3D"gmail_signat=
+ure">Thomas Fr=C3=B6ssman<div><div><a href=3D"http://t.jossystem.se" target=
+=3D"_blank">http://t.jossystem.se</a></div></div></div>
+</div></div>
+
+--089e0112c02205532e05301e53db--
+

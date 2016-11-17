@@ -1,0 +1,78 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anAYC-0005aY-J4
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 15:52:40 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:52906)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1anAYA-0005aD-7K
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:52:39 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1anAY7-0001oq-2K
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:52:38 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:48358)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1anAY6-0001om-SI
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:52:34 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>)
+	id 1anAY4-0006ld-Dz; Mon, 04 Apr 2016 21:52:34 +0200
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: Karl Fogel <kfogel@red-bean.com>
+Subject: Re: "Staying in the same place"
+References: <m3oa9q53uq.fsf@gnus.org>
+	<jwv7fgd1r7w.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m3mvp9nsmp.fsf@gnus.org> <jwv8u0tql7y.fsf-monnier+Inbox@gnu.org>
+	<m37fgdnrks.fsf@gnus.org> <87h9fhrxb3.fsf@red-bean.com>
+	<m3twjhkvmw.fsf@gnus.org> <87d1q5rw72.fsf@red-bean.com>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAElBMVEV8LTEVEDWpwc95Z3KV
+	n5f4+PfWwgebAAACUklEQVQ4jXWUy3bjIBBE8WP2xvLsIx77oMZ7Q6N9gtX//yspEPZkMxwfCeuK
+	7qoSklJn46y+qKNpR3XQfWDWQNEap99AtZFNCQ0YUYr1AGeAaEoa4GQGUce91qwvA9jRIvdarfup
+	gbOZBzB7E4c/A1waOJ87OBoDMdkLZqkD3KsuvYmetL43EA57iw5UnvUafgMoUc1Lfl4l6b9NlX6v
+	aHajeJkBWKXLufs+7kCJYMW1ekmX+9wDAcDp5GVT+vqt70mt26HdelS6JysPpW8AQfntcXsgyw7g
+	7Uvp6VuvVsnXOQ+gkYZ/dqDWKqUYNwDE+Yo5wB+Rko353MFlMYjjsLYVAGYH824U3WUAZNq01qYX
+	4EPJk4oX2Yr5aD0kXVvwzAtKmMKLKPOpTgBP/wFAFKVEnFhURBS6pbGpaiMVl7kwsWu+ZW5A7gJA
+	ZbWEUQC81A5ELC8U70/OuAFPDld2UBM5omyZbxM/mugBNq0p6Gxx0JNrCwYoU1jIllwi8S3e32Cb
+	Jrql4niiyJb8GzwnooXC+gwUKep/K2YKtCyLrzFiDS1vQMwFDmQLcE78BhsuxsTsawM6tih3MFEf
+	frMxckm3lw8bqMBHkMoUY0n0AqlVpinBT9AIgGmAJaF24CgC46SvYfId1P3tmifIg27qG78DVO5P
+	T8bAbhqqMKu1+j1oqeYl1xW+vYCZqWJr7IBzmjaYZ+tiDHgZ3V5qK1DpLI62hMi6uLI3t+3TgOae
+	cnaYF46xA+xJB120JMJeNYZbng14j58Rs25NDjZoKYhRyX/GD76yzr8rivSgAAAAAElFTkSuQmCC
+Date: Mon, 04 Apr 2016 21:52:32 +0200
+In-Reply-To: <87d1q5rw72.fsf@red-bean.com> (Karl Fogel's message of "Mon, 04
+	Apr 2016 14:49:21 -0500")
+Message-ID: <m3egalkv7j.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+Cc: Stefan Monnier <monnier@IRO.UMontreal.CA>, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 19:52:39 -0000
+Content-Length: 483
+Lines: 14
+
+Karl Fogel <kfogel@red-bean.com> writes:
+
+> Yes, absolutely.  A "fuzzily recorded position" should be a
+> first-class object that can be passed around like any value.  There
+> can be a macro that generates and consumes such objects entirely
+> internally to the macro, but the objects can also be generated
+> explicitly in code and consumed later.
+
+This sounds great to me.  :-)
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

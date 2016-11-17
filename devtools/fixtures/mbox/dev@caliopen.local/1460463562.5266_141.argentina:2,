@@ -1,0 +1,63 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aoyhh-0001Qh-Mm
+	for mharc-dev@caliopen.local; Sat, 09 Apr 2016 15:37:57 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:54233)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aoyhe-0001MO-PX
+	for dev@caliopen.local; Sat, 09 Apr 2016 15:37:55 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aoyhb-0003D5-KX
+	for dev@caliopen.local; Sat, 09 Apr 2016 15:37:54 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:47635)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1aoyhb-0003Cu-HH; Sat, 09 Apr 2016 15:37:51 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:2174
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1aoyha-0006Ea-SO; Sat, 09 Apr 2016 15:37:51 -0400
+Date: Sat, 09 Apr 2016 22:37:14 +0300
+Message-Id: <8360vqinf9.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: =?windows-1252?Q?Cl=E9ment?= Pit--Claudel <clement.pit@gmail.com>
+CC: dev@caliopen.local
+In-reply-to: <5709511B.3060901@gmail.com> (message from =?windows-1252?Q?C?=
+	=?windows-1252?Q?l=E9ment?= Pit--Claudel
+	on Sat, 9 Apr 2016 14:59:39 -0400)
+Subject: Re: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+Reply-to: Eli Zaretskii <eliz@gnu.org>
+References: <56CA94A8.3000205@gmail.com>
+	<jwvziuq4vjq.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<83bn76hw1o.fsf@gnu.org>
+	<jwv1t829byc.fsf-monnier+emacs@gnu.org> <838u29hq9x.fsf@gnu.org>
+	<jwvziupeux5.fsf-monnier+emacs@gnu.org> <5709511B.3060901@gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sat, 09 Apr 2016 19:37:55 -0000
+Content-Length: 212
+Lines: 9
+
+> From: Cl�ment Pit--Claudel <clement.pit@gmail.com>
+> Date: Sat, 9 Apr 2016 14:59:39 -0400
+> 
+> Should I open a bug report about this?
+
+If you have a patch, it would be more efficient to just post it.
+
+Thanks.
+

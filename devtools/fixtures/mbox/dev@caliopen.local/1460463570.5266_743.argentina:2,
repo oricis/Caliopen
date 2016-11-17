@@ -1,0 +1,118 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amghQ-0002I5-Ur
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 08:00:12 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:38984)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <acm@muc.de>)
+	id 1amghN-0002E2-0P
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:00:10 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <acm@muc.de>) id 1amghJ-00013L-Lk
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:00:08 -0400
+Received: from mail.muc.de ([193.149.48.3]:37428)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <acm@muc.de>)
+	id 1amghJ-00010s-Dv
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:00:05 -0400
+Received: (qmail 6707 invoked by uid 3782); 3 Apr 2016 12:00:03 -0000
+Received: from acm.muc.de (p548A58C8.dip0.t-ipconnect.de [84.138.88.200]) by
+	colin.muc.de (tmda-ofmipd) with ESMTP;
+	Sun, 03 Apr 2016 14:00:02 +0200
+Received: (qmail 4715 invoked by uid 1000); 3 Apr 2016 12:03:00 -0000
+Date: Sun, 3 Apr 2016 12:03:00 +0000
+To: Paul Eggert <eggert@cs.ucla.edu>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+Message-ID: <20160403120300.GB3537@acm.fritz.box>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<56FE1882.9030904@cs.ucla.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <56FE1882.9030904@cs.ucla.edu>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Delivery-Agent: TMDA/1.1.12 (Macallan)
+From: Alan Mackenzie <acm@muc.de>
+X-Primary-Address: acm@muc.de
+X-detected-operating-system: by eggs.gnu.org: FreeBSD 9.x
+X-Received-From: 193.149.48.3
+Cc: Emacs developers <dev@caliopen.local>,
+	Kaushal Modi <kaushal.modi@gmail.com>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 12:00:11 -0000
+Content-Length: 3080
+Lines: 65
+
+Hello, Paul.
+
+On Thu, Mar 31, 2016 at 11:43:14PM -0700, Paul Eggert wrote:
+> Kaushal Modi wrote:
+> > OK, I think I need some git education.
+
+> > There was one section in your commit (
+> > http://git.savannah.gnu.org/cgit/emacs.git/diff/lisp/isearch.el?h=emacs-25&id=ed19f207449c43f7f08285ada87ae7a46c61c8d1
+> > ) which was already committed earlier (
+> > http://git.savannah.gnu.org/cgit/emacs.git/commit/lisp/isearch.el?h=emacs-25&id=91e667692ba1362ca1334b8d58fd16c305ad5e2a
+> > ). As I am familiar with that single commit, I know that they are identical.
+
+> > Also I noted that your commit has a repeat of all the backquote/straight
+> > quote changes in NEWS that happened recently.
+
+> > But without this prior knowledge, how can one separate these duplicate
+> > commits from the commits that actually are new?
+> > Also, what is the reason for such duplicate commits happening?
+
+> There aren't any duplicate commits.
+
+> When you visit 
+> http://git.savannah.gnu.org/cgit/emacs.git/commit/?h=emacs-25&id=ed19f207449c43f7f08285ada87ae7a46c61c8d1 
+> the website shows you the output of this command:
+
+> git diff 
+> ed19f207449c43f7f08285ada87ae7a46c61c8d1^..ed19f207449c43f7f08285ada87ae7a46c61c8d1
+
+> The commit ed19f207449c43f7f08285ada87ae7a46c61c8d1 is a merge with two parents: 
+> commits eabd667a9584fe5bd2422e296d256dceea67debf (which is a single incomplete 
+> fix for cc-mode) and 7c1802f6ffc2704ba8042c7c1c6faa73dfa210d1 (which is the main 
+> thread of the emacs-25 branch). The way Alan merged, the former commit is the 
+> first parent, so the abovementioned diff output looks large -- it contains many 
+> emacs-25 changes all squashed together. It might have been nicer if Alan had 
+> merged the other way, so that that the main thread was the first parent, but 
+> that's water under the bridge now. (In this particular case I would have avoided 
+> a merge entirely, and would have rebased instead, as that makes such changes 
+> easier for others to follow later; but that's also water under the bridge.)
+
+It was git that prepared the merge, not me.  What happened was that the
+"more recent" commit 22443312... created a conflict with the commits in
+a git pull.  git, rather than aborting the pull operation, splurged the
+contents of all the other commits in the pull into my working directory,
+saying "Conflict in ....  You need to merge".  I simply merged as
+directed.
+
+Is there a better way out of this situation than just merging as
+directed?  Can one somehow get out of this partially completed git pull,
+then redo it with --rebase?
+
+> Understanding what happened is somewhat complicated by the more-recent commit 
+> 22443312188ff097b69d9ff4b87c2b4f7bbbc263, which finished fixing the cc-mode 
+> patch and undid some of the effect of the incomplete fix.
+
+This was what created the conflict, I think.
+
+> You can see all this more easily by running the shell command "gitk" in a 
+> directory containing a checked-out copy of the emacs-25 branch.
+
+I haven't got gitk.  Is it supposed to be part of the main git
+distribution?
+
+-- 
+Alan Mackenzie (Nuremberg, Germany).
+

@@ -1,0 +1,97 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alKS9-0001qZ-1x
+	for mharc-dev@caliopen.local; Wed, 30 Mar 2016 14:02:49 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:36133)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <yurivkhan@gmail.com>) id 1alKS2-0001pk-UN
+	for dev@caliopen.local; Wed, 30 Mar 2016 14:02:47 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <yurivkhan@gmail.com>) id 1alKS1-0002lA-Vw
+	for dev@caliopen.local; Wed, 30 Mar 2016 14:02:42 -0400
+Received: from mail-lf0-x234.google.com ([2a00:1450:4010:c07::234]:35923)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <yurivkhan@gmail.com>)
+	id 1alKS1-0002ku-Nw; Wed, 30 Mar 2016 14:02:41 -0400
+Received: by mail-lf0-x234.google.com with SMTP id e133so42075020lfe.3;
+	Wed, 30 Mar 2016 11:02:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:sender:in-reply-to:references:from:date:message-id
+	:subject:to:cc:content-transfer-encoding;
+	bh=gFpiJGLYqMrixPuOUbH88akp+Y/V2qAieyPfHgxsZ34=;
+	b=umZQv/48PIgZ1Qs3GW08GF/ZAwDlD4tesA/FqJ/dgItjVy5us85Psd16nIHEaEZrBV
+	M+CIEE1tTrxVrgmYEyJcHpHxG+ClfiCGOooj9Dji3MNuXLXqtsZq023Omb9yDaX6n4d5
+	5wVTa+hLMICX6B1QhgKO+puJgCTcktvQEINqUExo1Gf2vW9qstSkjx2l2NSmdd8dDx//
+	2zCwreYs56NfzG/UwU0riQyYQVgPE8/Z9J1ulInjBy91Eree3ZLfR2omwKbiMXiP2bUy
+	AqF2KUJUGnr9CpZYFRvcuAdVuhmYK122lgpA3bbPDcVfPO1Kr5Gg8RQjK0fn3vXJYiQ6
+	RYDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+	:date:message-id:subject:to:cc:content-transfer-encoding;
+	bh=gFpiJGLYqMrixPuOUbH88akp+Y/V2qAieyPfHgxsZ34=;
+	b=WHZIzrswqgv3xWDxLPmxCcBREZceQbaeDhJEkbdaEPa8PDTApBORITMuCDfysNaxfr
+	snSPLMcqsclGKRUf/yil03LthCNPqu72LKyx+jI3+YOTWS8xiEpvZHBLOhmK5WvgCm3y
+	RyaMWZ7rA2WpPUc0LHczp0tRVInTc/t/XJnFjwLxaClxfLaobom+FaNlqujJFkG5mw33
+	aQ0oLjXXvxS2mW26SpJlPDs5XT1LDGNCraNa7RWvG8dvEjAhrdp8PRGFL2lvrp+uIel/
+	WWX1xnFOyrdSbeP4BTQuEQSyjJDp/SWAQI1eehtXBeNO2iudmYXluVY/NKaXwDyboqh4
+	ACUg==
+X-Gm-Message-State: AD7BkJLMe7mWT+P/aTiPSWR2nAIybo7JOCx7oQ21J5OxTNk57fbQzAAIy9JgPyBANpjgrO/RSLy3v1OcsvCWCQ==
+X-Received: by 10.25.144.143 with SMTP id s137mr4677068lfd.53.1459360960397;
+	Wed, 30 Mar 2016 11:02:40 -0700 (PDT)
+MIME-Version: 1.0
+Sender: yurivkhan@gmail.com
+Received: by 10.112.254.164 with HTTP; Wed, 30 Mar 2016 11:02:20 -0700 (PDT)
+In-Reply-To: <56FC0CDB.9090707@alice.it>
+References: <56FB02BB.3090501@alice.it> <83wpokuh3a.fsf@gnu.org>
+	<56FC0CDB.9090707@alice.it>
+From: Yuri Khan <yuri.v.khan@gmail.com>
+Date: Thu, 31 Mar 2016 00:02:20 +0600
+X-Google-Sender-Auth: 5j7mEdlsBJDiAyWlabWRubUohlo
+Message-ID: <CAP_d_8XDQmTR1M6=+a4yMAjkHFkDEnx4oFQiH57UUNLW2dzM4Q@mail.gmail.com>
+Subject: Re: About column numbers
+To: Angelo Graziosi <angelo.graziosi@alice.it>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:4010:c07::234
+Cc: Eli Zaretskii <eliz@gnu.org>, Emacs developers <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 30 Mar 2016 18:02:47 -0000
+Content-Length: 825
+Lines: 25
+
+On Wed, Mar 30, 2016 at 11:28 PM, Angelo Graziosi
+<angelo.graziosi@alice.it> wrote:
+
+> Yes, I know.. this is not a fundamental, but why that "unnatural"
+> convention? I don't know other editor/IDE which uses columns from zero..
+
+Vim counts columns from 1.
+Midnight Commander counts from 0.
+Mousepad counts from 0.
+Nano counts from 1.
+Joe counts from 1.
+Gedit counts from 1.
+Kate counts from 1.
+Geany counts from 0.
+Anjuta counts from 0.
+Firefox=E2=80=99s Scratchpad counts from 1.
+
+Counting columns from 0 is very convenient. You look at the column
+number and immediately know how many characters you have before the
+point, and whether you are on a tab stop.
+
+Lines are a different beast =E2=80=94 you have to be compatible with the
+convention compilers use to report errors, and pretty much all of them
+count lines from 1.
+

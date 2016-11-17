@@ -1,0 +1,98 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anDpv-00006G-6P
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 19:23:11 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:36501)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1anDpq-00005y-5A
+	for dev@caliopen.local; Mon, 04 Apr 2016 19:23:10 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1anDpm-00063V-05
+	for dev@caliopen.local; Mon, 04 Apr 2016 19:23:06 -0400
+Received: from mail-oi0-x235.google.com ([2607:f8b0:4003:c06::235]:36106)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1anDpl-00063I-Rp
+	for dev@caliopen.local; Mon, 04 Apr 2016 19:23:01 -0400
+Received: by mail-oi0-x235.google.com with SMTP id y204so71665910oie.3
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 16:23:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=tSxIm3Zrq/KTfdAfr9B0gNQrMjnGJDcL/em8iEvh+Vs=;
+	b=ewA8hDzPnpPhdtlnvJ9JRv5f1zZ807TwUIsAyChogslY6lTN1de85uwxpyBGTStCmY
+	eaAkXdKG52B3mQ1WuiIDuWRThL7fELJN3lkJbekSg8IZDEkuXVHG1MKMxNT4gxQORFcw
+	R+3Qcb9KKFlzF7w11Au/hiZ3YdN4xUQmGHJyQp49KJg47LCTIWSmTvFKdhrFe/0Cavyx
+	QvhD8slwCXvth5URK+EJ7pexNb4xExl0fXpJfNFdU82fXjMc5vUuNOXOar4EDi8qJp3l
+	V393wWBEnUDG+1hi7QB2k/8u0qTq8O9eSM/fyWvCc3RNLYJArTLjBxKSlIXp9dpzYuas
+	+4Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=tSxIm3Zrq/KTfdAfr9B0gNQrMjnGJDcL/em8iEvh+Vs=;
+	b=fLPtrF4HeINYIleiPn5ffiqRIqGkRRZ+IvmHavZZB0lBRkiYrX24zX9Rtsl/QtPVWT
+	REl9y1MezisB7/SS68/pJ0HPxTtkgkRe1gLENBEZ39l+S5qMTt3k2bcAFG34Xfz/90bn
+	U73D8kZ/ywq4fmjCAJ5gWfme4fLMUCXeHZhh9B5gOdsogAAxScLjb9TuUdDebkkCfyb9
+	mVLdRmYtGpVmepgtYtp6dPjbA8dZzFfwmXlRJnjVXYPXnhWqyOrZNzQUU0W/0iwj6qrJ
+	redLzs5LyBsVNLnCsF7L3/4gy/BxLnoeqIeQxOjH1zXDjIjpD1oqZnbVsQ8DF+W4Uqbt
+	dXiQ==
+X-Gm-Message-State: AD7BkJKVYPrBJrnjpMxAetXbJ4aDckuGcijdB2yXT2oFhlbdD2kSdB02kRW9D+TdwOjYzA==
+X-Received: by 10.157.9.71 with SMTP id 65mr12900534otp.51.1459812181086;
+	Mon, 04 Apr 2016 16:23:01 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79])
+	by smtp.gmail.com with ESMTPSA id s7sm9115004obk.17.2016.04.04.16.22.59
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Mon, 04 Apr 2016 16:22:59 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id 1983813DE061C; Mon,  4 Apr 2016 16:22:58 -0700 (PDT)
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: Re: master 0695108 2/2: Revert "Add `r'/`l' grep command history
+	commands"
+In-Reply-To: <m3inzxkva1.fsf@gnus.org> (Lars Magne Ingebrigtsen's message of
+	"Mon, 04 Apr 2016 21:51:02 +0200")
+Date: Mon, 04 Apr 2016 16:14:17 -0700
+Message-ID: <m2zit96k6u.fsf@newartisans.com>
+References: <20160403224658.6944.52006@vcs.savannah.gnu.org>
+	<E1amqnL-0001p7-2f@vcs.savannah.gnu.org> <m3wpoe54yr.fsf@gnus.org>
+	<m2wpoe9cjg.fsf@newartisans.com> <m3inzxkva1.fsf@gnus.org>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: Lars Magne Ingebrigtsen <larsi@gnus.org>, emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c06::235
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 23:23:10 -0000
+Content-Length: 786
+Lines: 17
+
+>>>>> Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+
+> I seem to recall that the conclusion to the last round of this debate (and
+> there's been a few) was that master is open for development of new features.
+> Without doing coordination for every single bit of these small, non-invasive
+> things.
+
+It's open for new features, but we'd like to have some agreement beforehand.
+That is, it's not a free-for-all, and never will be. But a lot of minor
+changes don't need any discussion at all. New APIs, behaviors, interfaces,
+etc., deserve some discussion, since we'll be living with and maintaining them
+for potentially a long time.
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

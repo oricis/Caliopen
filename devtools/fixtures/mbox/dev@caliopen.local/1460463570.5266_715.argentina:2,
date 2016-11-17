@@ -1,0 +1,92 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akvol-0001UE-FJ
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 11:44:31 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:53500)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1akvoh-0001PI-TF
+	for dev@caliopen.local; Tue, 29 Mar 2016 11:44:28 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1akvoe-0001Dc-J2
+	for dev@caliopen.local; Tue, 29 Mar 2016 11:44:27 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:50375)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1akvoe-0001Cm-Da
+	for dev@caliopen.local; Tue, 29 Mar 2016 11:44:24 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>) id 1akvoV-0004ym-LD
+	for dev@caliopen.local; Tue, 29 Mar 2016 17:44:17 +0200
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: dev@caliopen.local
+Subject: More convenient default rollback for users
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAGFBMVEUYCg0RBgkbDxIsHhxn
+	TjgKAgPRt28VCAzWTtCKAAACR0lEQVQ4jW2UTXPjIAyGsXc6vpq0LtcE8nFNDcm5u1Cf4yRsz7th
+	2Ct4JuO/v0K222ZSnTx6eF9JRITQkPObEBKDUBrIFHhEjsBSlvNaiASKQFBgjJakalmHJyAeQIN5
+	IIS2jIiRABBD3hioUZJkPQcnWxyn/ADGYC2PUt0Dau01h3zjvbsBlbX2qFLe+xtgUxDjR8BebgBX
+	EygXN+B8+ASs/wJOu+Z7xfHPHcgQWLf+XtH6Z5/m0HfFfTMCtghfrX6PQJLZoKBEvKATAoMAFbQT
+	Csja//VN49IPxTJQBFJ2UpvV2Xs9AShetIEwLs3+AjbPycjIZMWKCtgPZZzz/rL3ThnNa+iK9SUj
+	5SldOE7daCNrBIFFUm6UNglcnqCArDleInu3XS01nnfaaS23HK1i1eawBJjfp5ZEByAyEq8UmlKu
+	geprEIgu54RGFnpaCfnq3KVxTXKqCz5Y9SQKpZ267F1qSaY9Ix2CTDwpB3O4xqjtBHoES+Pgnv41
+	WnGZtp7kGwAh48tHqAH+OzmrO1RswCoU/F1JrbSC7c44gpBqhAURDdSAGbSIA2BZAhmT6hdsrJLb
+	edEhSFfS99lMqjetl+f5blXOBgWCeKxf38TP02PYXNsSAaUAWDzKxUKt5CJr7SHyESTWCXgyNQw9
+	rw58AC1NIKRXud3yEFoyggpBn3NRw4XaeBie+6DoewqERxaraxj+CODlUQwYJjyURYSPCbR0imvq
+	vAfJHED1AfpiALCXSWE/QCBFOl+MNUBRTRI0CkNX/wGyse1Ht0Yu2gAAAABJRU5ErkJggg==
+Date: Tue, 29 Mar 2016 17:44:15 +0200
+Message-ID: <m3poudb86o.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 15:44:29 -0000
+Content-Length: 1146
+Lines: 36
+
+When we introduce behavioural changes in Emacs, we often include a way
+to get back to the old behaviour, and we document this in NEWS etc.
+
+But wouldn't it be nice if we had this in a more convenient,
+cut-and-pastable format?
+
+Imagine you're using Emacs 26 for the first time.  Suddenly you notice
+that when you hit the `hyper z' key, Emacs doesn't florbnoze as it used
+to, but forblizes instead!  You're furious!  So you hit the `C-h R' (for
+rollback) keystroke, and you get a buffer that looks like:
+
+-------------
+;; To roll back changes between Emacs 26 and Emacs 25.1:
+
+;; If you want the `hyper z' key still to florbnoze instead of
+;; forblizing:
+(setq hyper-z-mode 'florbnoze)
+
+... more setqs here...
+
+;; To roll back changes between Emacs 25.1 and Emacs 24.3:
+
+...
+-------------
+
+And then the anger dissipates.  No need to read documentation or
+anything.  Just get back the old behaviour you enjoyed.
+
+(And this would also mean that we could introduce new behaviours more
+often, because rollback would be so trivial for the users.)
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+
+

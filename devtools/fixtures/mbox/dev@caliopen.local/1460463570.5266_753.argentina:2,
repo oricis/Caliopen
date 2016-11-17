@@ -1,0 +1,79 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amoEh-0001nR-4I
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 16:03:03 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59762)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1amoEf-0001kL-67
+	for dev@caliopen.local; Sun, 03 Apr 2016 16:03:01 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1amoEb-00044G-4x
+	for dev@caliopen.local; Sun, 03 Apr 2016 16:03:01 -0400
+Received: from zimbra.cs.ucla.edu ([131.179.128.68]:35704)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1amoEa-000448-VQ
+	for dev@caliopen.local; Sun, 03 Apr 2016 16:02:57 -0400
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTP id 6B0FE161242;
+	Sun,  3 Apr 2016 13:02:55 -0700 (PDT)
+Received: from zimbra.cs.ucla.edu ([127.0.0.1])
+	by localhost (zimbra.cs.ucla.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id 2QBwYItxDcL6; Sun,  3 Apr 2016 13:02:54 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTP id BAFD2161249;
+	Sun,  3 Apr 2016 13:02:54 -0700 (PDT)
+X-Virus-Scanned: amavisd-new at zimbra.cs.ucla.edu
+Received: from zimbra.cs.ucla.edu ([127.0.0.1])
+	by localhost (zimbra.cs.ucla.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id CB0Ef4ifPu2t; Sun,  3 Apr 2016 13:02:54 -0700 (PDT)
+Received: from [192.168.1.9] (unknown [100.32.155.148])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTPSA id 9D210161242;
+	Sun,  3 Apr 2016 13:02:54 -0700 (PDT)
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+To: Andreas Schwab <schwab@linux-m68k.org>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<56FE1882.9030904@cs.ucla.edu> <20160403120300.GB3537@acm.fritz.box>
+	<8760vy6gfi.fsf@Rainer.invalid>
+	<jwvinzykcdn.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<871t6m5zjq.fsf@Rainer.invalid> <87wpoey1ij.fsf@linux-m68k.org>
+From: Paul Eggert <eggert@cs.ucla.edu>
+Organization: UCLA Computer Science Department
+Message-ID: <570176DF.1060207@cs.ucla.edu>
+Date: Sun, 3 Apr 2016 13:02:39 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <87wpoey1ij.fsf@linux-m68k.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 131.179.128.68
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 20:03:02 -0000
+Content-Length: 631
+Lines: 13
+
+Andreas Schwab wrote:
+> Rebase should never be the default, because it is more complicated and
+> harder to get right.  It creates new commits that each must be retested.
+
+Rebasing makes sense for Alan's use case. He was working on the fix anyway, so 
+retesting was not that big a deal for him. Conversely, he's more of an Emacs 
+expert than a Git expert and merge conflicts are more of an hassle for him. This 
+particular case did not benefit much from the advantages of merging over 
+rebasing; quite the contrary.
+
+As one becomes more of a Git expert, merging becomes more attractive. It does 
+take some getting used to, though.
+

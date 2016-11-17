@@ -1,0 +1,268 @@
+Return-Path: <qfzwjsy_0gz7chidgb.4g@partenariat-pro.fr>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id D897420A3279F
+	for <laurent@brasil.brainstorm.fr>; Mon,  4 Apr 2016 22:51:58 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id A28CF33B3177; Mon,  4 Apr 2016 22:51:58 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id 7485B33B504C; Mon,  4 Apr 2016 22:51:58 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: *********
+X-Spam-Status: Yes, score=9.0 required=5.0 tests=BAYES_99,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HTML_IMAGE_RATIO_04,HTML_MESSAGE,
+	RAZOR2_CF_RANGE_51_100,RAZOR2_CF_RANGE_E8_51_100,RAZOR2_CHECK,T_REMOTE_IMAGE,
+	URIBL_BLACK autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
+	*      [URIs: partenariat-pro.fr]
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  0.6 HTML_IMAGE_RATIO_04 BODY: HTML has a low ratio of text to image area
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	*  0.9 RAZOR2_CHECK Listed in Razor2 (http://razor.sf.net/)
+	*  1.9 RAZOR2_CF_RANGE_E8_51_100 Razor2 gives engine 8 confidence level
+	*      above 50%
+	*      [cf: 100]
+	*  0.5 RAZOR2_CF_RANGE_51_100 Razor2 gives confidence level above 50%
+	*      [cf: 100]
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	*  0.0 T_REMOTE_IMAGE Message contains an external image
+X-Spam-DCC: : 
+Received: from esmtp-b6.partenariat-pro.fr (esmtp-b6.partenariat-pro.fr [193.41.74.135])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id B67F533B3177
+	for <dev@caliopen.local>; Mon,  4 Apr 2016 22:51:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=partenariat-pro.fr; h=to
+	:subject:date:from:reply-to:list-unsubscribe:message-id
+	:mime-version:content-type; s=mailservera; bh=/jz6NGtI0IbNwY6RGM
+	ocl02m8tegsRwKc5y2XRbpaUg=; b=Y3Y6UkMszGytl0CU4FbMWJBFQaMj75ekpA
+	q3Cc0ZWjMzNX3UmJOmLZMM25gPloJgIMY336E/aEZk0ltrSlXox7pB6LF8zGeRyr
+	KLCjL5N6DmfuYECXyO4GgP08kV6z+1BTs+/ovrYgHRAkbOaJ74q1wM7S2jj8d8WT
+	aSL9ozxWA=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=partenariat-pro.fr; h=to
+	:subject:date:from:reply-to:list-unsubscribe:message-id
+	:mime-version:content-type; q=dns; s=mailservera; b=Xcc6x0/8/swM
+	3qp+8u82QYuFJWOCx4TEVfzvLfbCo2k+IeVIBDuSLSLe7PzzHWbZ0oTyAuO4KemA
+	0X74F85wHmaBITGJa4l/d6syBBS0qAHM+XDr8XVx2Wrnyqe/L8/UaVRzoy4AtWHQ
+	jRQV3W18j9cRgpwR4S8ruCkwN5YHDhk=
+To: laurent <dev@caliopen.local>
+Subject: =?utf-8?Q?Am=C3=A9liorez_l'accueil_de_vos_visiteurs_et_la_convivialit?=  =?utf-8?Q?=C3=A9_de_votre_entreprise?=
+X-PHP-Originating-Script: 1002:class.phpmailer.php
+Date: Mon, 4 Apr 2016 22:51:15 +0200
+From: =?utf-8?Q?Machine_=C3=A0_caf=C3=A9?= <Machine@partenariat-pro.fr>
+Reply-to: =?utf-8?Q?Machine_=C3=A0_caf=C3=A9?= <qfzwjsy_0gz7chidgb.4g@partenariat-pro.fr>
+X-campaign_id: 210_22
+X-uid_id_m: bGF1cmVudEBicmFpbnN0b3JtLmZy=372
+List-Unsubscribe: <http://app.partenariat-pro.fr/d/?camp=210_22&ms=bGF1cmVudEBicmFpbnN0b3JtLmZy>
+Message-ID: <9d1bf0c6876c4eca3f1355e198ba7fa7@partenariat-pro.fr>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="Part1_9d1bf0c6876c4eca3f1355e198ba7fa7"
+X-Spam-Prev-Subject: =?utf-8?Q?Am=C3=A9liorez_l'accueil_de_vos_visiteurs_et_la_convivialit?=  =?utf-8?Q?=C3=A9_de_votre_entreprise?=
+Content-Length: 11959
+Lines: 197
+
+--Part1_9d1bf0c6876c4eca3f1355e198ba7fa7
+Content-Type: text/plain; charset = "utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Pour visualiser et se d=C3=A9sabonner ce message,
+=20
+Veuillez, copier puis coller, l'adresse URL compl=C3=A8te ci-dessous dans=
+ la
+barre d'adresse de votre navigateur et appuyer sur la touche "Entr=C3=A9e=
+" de
+votre clavier.
+
+
+
+- - - - - - - - - - - - - - - - -=20
+
+http://app.partenariat-pro.fr/v/?camp=3D210_22&ms=3DbGF1cmVudEBicmFpbnN0b=
+3JtLmZy
+
+- - - - - - - - - - - - - - - - -=20
+
+
+
+
+--Part1_9d1bf0c6876c4eca3f1355e198ba7fa7
+Content-Type: text/html; charset = "utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://ww=
+w.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xml:lang=3D"fr" lang=3D"fr">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8" =
+/>
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D=
+1.0" />
+<title>Am=C3=A9liorez l\'accueil de vos visiteurs et la convivialit=C3=A9=
+ de votre entreprise</title>
+</head><body marginwidth=3D"0" topmargin=3D"0" marginheight=3D"0" style=3D=
+"text-size-adjust:none; -moz-text-size-adjust:none; margin:0px; padding:0=
+px; -ms-text-size-adjust:none; -webkit-text-size-adjust:none;" leftmargin=
+=3D"0">
+<center><p>
+<a href=3D"http://app.partenariat-pro.fr/v/?camp=3D210_22&ms=3DbGF1cmVudE=
+BicmFpbnN0b3JtLmZy" target=3D"_blank" title=3D"Si cet e-mail ne s'affiche=
+ pas correctement, suivez ce lien." style=3D"color:#00F; font-family:'Ari=
+al'; font-size:12px; text-decoration:underline;">Si cet email ne s&rsquo;=
+affiche pas correctement, suivez ce lien.</a></p><table align=3D"center" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"600">     <tbod=
+y>         <tr>             <td>             <table align=3D"left" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"600">                =
+ <tbody>                     <tr>                         <td><a href=3D"=
+http://app.partenariat-pro.fr/r/?m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&c=3D210=
+_22&rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL3IvY2xpYy04My0zNjItNTY2Mi11=
+cmwtYUhSMGNEb3ZMM2QzZHk1a1pYWnBjeTFsYm5SeVpYQnlhWE5sTG1KcGVpOHhORFU1WDBSR=
+lh6QXhNVFl2YVc1a1pYZ3VhSFJ0YkQ5eFkzQTlNVFExT1Y5RVJWOHdNVEUySm5WMGJWOXpiM1=
+Z5WTJVOWJpWjFkRzFmYldWa2FYVnRQV1V0YldGcGJDWjFkRzFmWTJGdGNHRnBaMjQ5Ym1WM2M=
+yTW1kWFJ
+ 0WDI1dmIzWmxjbkpwWkdVOU1RP3Jncm91cD1wXzEwNjU5JmFtcDt0cmFja2FmZj0mYW1wO2d=
+yb3VwPQ=3D=3D" style=3D"font-family:Arial, Helvetica, sans-serif; text-de=
+coration:none ;" target=3D"_blank"><img style=3D"display:block" name=3D"d=
+evisentrepriseb_r1_c1" src=3D"http://app.partenariat-pro.fr/r/?rc=3DaHR0c=
+DovL3d3dy5kZXZpcy1lbnRyZXByaXNlLmJpei8xNDU5X0RFXzAxMTYvaW1nL2RldmlzLWVudH=
+JlcHJpc2ViX3IxX2MxLmpwZw=3D=3D" id=3D"devisentrepriseb_r1_c1" alt=3D"" he=
+ight=3D"62" width=3D"240"></a></td>                         <td><a href=3D=
+"http://app.partenariat-pro.fr/r/?m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&c=3D21=
+0_22&rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL3IvY2xpYy04My0zNjItNTY2Mi1=
+1cmwtYUhSMGNEb3ZMM2QzZHk1a1pYWnBjeTFsYm5SeVpYQnlhWE5sTG1KcGVpOHhORFU1WDBS=
+Rlh6QXhNVFl2YVc1a1pYZ3VhSFJ0YkQ5eFkzQTlNVFExT1Y5RVJWOHdNVEUySm5WMGJWOXpiM=
+1Z5WTJVOWJpWjFkRzFmYldWa2FYVnRQV1V0YldGcGJDWjFkRzFmWTJGdGNHRnBaMjQ5Ym1WM2=
+MyTW1kWFJ0WDI1dmIzWmxjbkpwWkdVOU1RP3Jncm91cD1wXzEwNjU5JmFtcDt0cmFja2FmZj0=
+mYW1wO2dyb3VwPQ=3D=3D" style=3D"font-family:Arial, Helvetica, sans-serif;=
+ text-dec
+ oration:none ;" target=3D"_blank"><img style=3D"display:block" name=3D"d=
+evisentrepriseb_r1_c4" src=3D"http://app.partenariat-pro.fr/r/?rc=3DaHR0c=
+DovL3d3dy5kZXZpcy1lbnRyZXByaXNlLmJpei8xNDU5X0RFXzAxMTYvaW1nL2RldmlzLWVudH=
+JlcHJpc2ViX3IxX2M0LmpwZw=3D=3D" id=3D"devisentrepriseb_r1_c4" alt=3D"" he=
+ight=3D"62" width=3D"360"></a></td>                     </tr>            =
+     </tbody>             </table>             </td>         </tr>       =
+  <tr>             <td><img style=3D"display:block" name=3D"devisentrepri=
+seb_r2_c1" src=3D"http://app.partenariat-pro.fr/r/?rc=3DaHR0cDovL3d3dy5kZ=
+XZpcy1lbnRyZXByaXNlLmJpei8xNDU5X0RFXzAxMTYvaW1nL2RldmlzLWVudHJlcHJpc2ViX3=
+IyX2MxLmpwZw=3D=3D" id=3D"devisentrepriseb_r2_c1" alt=3D"" height=3D"8" w=
+idth=3D"600"></td>         </tr>         <tr>             <td>           =
+  <table align=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+width=3D"600">                 <tbody>                     <tr>          =
+               <td bgcolor=3D"#C4C4C4"><img style=3D"display:block" name=3D=
+"devisentrepriseb_r3_c1"
+  src=3D"http://app.partenariat-pro.fr/r/?rc=3DaHR0cDovL3d3dy5kZXZpcy1lbn=
+RyZXByaXNlLmJpei8xNDU5X0RFXzAxMTYvaW1nL2RldmlzLWVudHJlcHJpc2ViX3IzX2MxLmp=
+wZw=3D=3D" id=3D"devisentrepriseb_r3_c1" alt=3D"" height=3D"278" width=3D=
+"29"></td>                         <td height=3D"278" bgcolor=3D"#01AFEC"=
+ width=3D"18">&nbsp;</td>                         <td height=3D"278" bgco=
+lor=3D"#01AFEC" width=3D"273">                         <table align=3D"le=
+ft" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"273">      =
+                       <tbody>                                 <tr>      =
+                               <td height=3D"95" width=3D"271"><a href=3D=
+"http://app.partenariat-pro.fr/r/?m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&c=3D21=
+0_22&rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL3IvY2xpYy04My0zNjItNTY2Mi1=
+1cmwtYUhSMGNEb3ZMM2QzZHk1a1pYWnBjeTFsYm5SeVpYQnlhWE5sTG1KcGVpOHhORFU1WDBS=
+Rlh6QXhNVFl2YVc1a1pYZ3VhSFJ0YkQ5eFkzQTlNVFExT1Y5RVJWOHdNVEUySm5WMGJWOXpiM=
+1Z5WTJVOWJpWjFkRzFmYldWa2FYVnRQV1V0YldGcGJDWjFkRzFmWTJGdGNHRnBaMjQ5Ym1WM2=
+MyTW1kWFJ0WDI1dmIz
+ WmxjbkpwWkdVOU1RP3Jncm91cD1wXzEwNjU5JmFtcDt0cmFja2FmZj0mYW1wO2dyb3VwPQ=3D=
+=3D" style=3D"font-family:Arial, Helvetica, sans-serif; text-decoration:n=
+one ;" target=3D"_blank"><span style=3D" font-family:Arial, Helvetica, sa=
+ns-serif; font-size:20px ; font-weight: normal; color: #FFFFFF;">R&eacute=
+;veillez votre &eacute;quipe avec<br>                                    =
+ <strong style=3D"font-size:24px;">un Caf&eacute; de qualit&eacute; !</st=
+rong> </span></a></td>                                 </tr>             =
+                    <tr>                                     <td height=3D=
+"12" width=3D"271"><img style=3D"display:block" src=3D"http://app.partena=
+riat-pro.fr/r/?rc=3DaHR0cDovL3d3dy5kZXZpcy1lbnRyZXByaXNlLmJpei8xNDU5X0RFX=
+zAxMTYvaW1nL2JhcnJlLnBuZw=3D=3D" alt=3D"----------" height=3D"12" border=3D=
+"0" width=3D"271"></td>                                 </tr>            =
+                     <tr>                                     <td height=3D=
+"168" width=3D"271"><a href=3D"http://app.partenariat-pro.fr/r/?m=3DbGF1c=
+mVud
+ EBicmFpbnN0b3JtLmZy&c=3D210_22&rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY29t=
+L3IvY2xpYy04My0zNjItNTY2Mi11cmwtYUhSMGNEb3ZMM2QzZHk1a1pYWnBjeTFsYm5SeVpYQ=
+nlhWE5sTG1KcGVpOHhORFU1WDBSRlh6QXhNVFl2YVc1a1pYZ3VhSFJ0YkQ5eFkzQTlNVFExT1=
+Y5RVJWOHdNVEUySm5WMGJWOXpiM1Z5WTJVOWJpWjFkRzFmYldWa2FYVnRQV1V0YldGcGJDWjF=
+kRzFmWTJGdGNHRnBaMjQ5Ym1WM2MyTW1kWFJ0WDI1dmIzWmxjbkpwWkdVOU1RP3Jncm91cD1w=
+XzEwNjU5JmFtcDt0cmFja2FmZj0mYW1wO2dyb3VwPQ=3D=3D" style=3D"font-family:Ar=
+ial, Helvetica, sans-serif; text-decoration:none ;" target=3D"_blank"><sp=
+an style=3D" font-family:Arial, Helvetica, sans-serif; font-size:14px ; f=
+ont-weight: normal; color: #FFFFFF;"><strong>Am&eacute;liorez l'accueil d=
+e vos visiteurs </strong><br>                                     et la c=
+onvivialit&eacute; de votre entreprise.<br>                              =
+       <br>                                     <strong>Achat, Location, =
+ou d&eacute;p&ocirc;t gratuit</strong> <br>                              =
+       &agrave; vous de choisir.<br>                  =20
+                   <br>                                     <strong>Caf&e=
+acute;, Th&eacute;, Chocolat, Soupe,</strong> <br>                       =
+              donnez vous le choix. </span></a></td>                     =
+            </tr>                             </tbody>                   =
+      </table>                         </td>                         <td =
+bgcolor=3D"#C4C4C4"><a href=3D"http://app.partenariat-pro.fr/r/?m=3DbGF1c=
+mVudEBicmFpbnN0b3JtLmZy&c=3D210_22&rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY=
+29tL3IvY2xpYy04My0zNjItNTY2Mi11cmwtYUhSMGNEb3ZMM2QzZHk1a1pYWnBjeTFsYm5SeV=
+pYQnlhWE5sTG1KcGVpOHhORFU1WDBSRlh6QXhNVFl2YVc1a1pYZ3VhSFJ0YkQ5eFkzQTlNVFE=
+xT1Y5RVJWOHdNVEUySm5WMGJWOXpiM1Z5WTJVOWJpWjFkRzFmYldWa2FYVnRQV1V0YldGcGJD=
+WjFkRzFmWTJGdGNHRnBaMjQ5Ym1WM2MyTW1kWFJ0WDI1dmIzWmxjbkpwWkdVOU1RP3Jncm91c=
+D1wXzEwNjU5JmFtcDt0cmFja2FmZj0mYW1wO2dyb3VwPQ=3D=3D" style=3D"font-family=
+:Arial, Helvetica, sans-serif; text-decoration:none ;" target=3D"_blank">=
+<img style=3D"display:block" name=3D"devisentrepriseb_r3_c5" sr
+ c=3D"http://app.partenariat-pro.fr/r/?rc=3DaHR0cDovL3d3dy5kZXZpcy1lbnRyZ=
+XByaXNlLmJpei8xNDU5X0RFXzAxMTYvaW1nL2RldmlzLWVudHJlcHJpc2ViX3IzX2M1LmpwZw=
+=3D=3D" id=3D"devisentrepriseb_r3_c5" alt=3D"" height=3D"278" width=3D"28=
+0"></a></td>                     </tr>                 </tbody>          =
+   </table>             </td>         </tr>         <tr>             <td>=
+             <table align=3D"left" border=3D"0" cellpadding=3D"0" cellspa=
+cing=3D"0" width=3D"600">                 <tbody>                     <tr=
+>                         <td bgcolor=3D"#C4C4C4"><img style=3D"display:b=
+lock" name=3D"devisentrepriseb_r4_c1" src=3D"http://app.partenariat-pro.f=
+r/r/?rc=3DaHR0cDovL3d3dy5kZXZpcy1lbnRyZXByaXNlLmJpei8xNDU5X0RFXzAxMTYvaW1=
+nL2RldmlzLWVudHJlcHJpc2ViX3I0X2MxLmpwZw=3D=3D" id=3D"devisentrepriseb_r4_=
+c1" alt=3D"" height=3D"107" width=3D"29"></td>                         <t=
+d align=3D"center" bgcolor=3D"#F65646"><a href=3D"http://app.partenariat-=
+pro.fr/r/?m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&c=3D210_22&rc=3DaHR0cDovL25vZG=
+VzLm5wdjE3cWVqYmQuY29tL3IvY2
+ xpYy04My0zNjItNTY2Mi11cmwtYUhSMGNEb3ZMM2QzZHk1a1pYWnBjeTFsYm5SeVpYQnlhWE=
+5sTG1KcGVpOHhORFU1WDBSRlh6QXhNVFl2YVc1a1pYZ3VhSFJ0YkQ5eFkzQTlNVFExT1Y5RVJ=
+WOHdNVEUySm5WMGJWOXpiM1Z5WTJVOWJpWjFkRzFmYldWa2FYVnRQV1V0YldGcGJDWjFkRzFm=
+WTJGdGNHRnBaMjQ5Ym1WM2MyTW1kWFJ0WDI1dmIzWmxjbkpwWkdVOU1RP3Jncm91cD1wXzEwN=
+jU5JmFtcDt0cmFja2FmZj0mYW1wO2dyb3VwPQ=3D=3D" style=3D"font-family:Arial, =
+Helvetica, sans-serif; text-decoration:none ;" target=3D"_blank"><img sty=
+le=3D"display:block" name=3D"devisentrepriseb_r4_c2" src=3D"http://app.pa=
+rtenariat-pro.fr/r/?rc=3DaHR0cDovL3d3dy5kZXZpcy1lbnRyZXByaXNlLmJpei8xNDU5=
+X0RFXzAxMTYvaW1nL2RldmlzLWVudHJlcHJpc2ViX3I0X2MyLmpwZw=3D=3D" id=3D"devis=
+entrepriseb_r4_c2" alt=3D"en savoir plus" height=3D"107" width=3D"291"></=
+a></td>                         <td bgcolor=3D"#C4C4C4"><img style=3D"dis=
+play:block" name=3D"devisentrepriseb_r4_c5" src=3D"http://app.partenariat=
+-pro.fr/r/?rc=3DaHR0cDovL3d3dy5kZXZpcy1lbnRyZXByaXNlLmJpei8xNDU5X0RFXzAxM=
+TYvaW1nL2RldmlzLWVudHJlcHJpc2ViX3I0X2M1LmpwZw=3D=3D" id=3D"devisentrepris=
+eb_r4_c5" al
+ t=3D"" height=3D"107" width=3D"280"></td>                     </tr>     =
+            </tbody>             </table>             </td>         </tr>=
+     </tbody> </table><img alt=3D"" src=3D"http://app.partenariat-pro.fr/=
+r/?rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL21haWxpbmctODMtMzYyLTU2NjI/c=
+mdyb3VwPXBfMTA2NTkmYW1wO2dyb3VwPQ=3D=3D" height=3D"1" border=3D"0" width=3D=
+"1"><img src=3D"http://app.partenariat-pro.fr/t/?i=3D210_22&m=3DbGF1cmVud=
+EBicmFpbnN0b3JtLmZy&url=3Dhttp://app.partenariat-pro.fr/images/blank.jpg"=
+ alt=3D"_pspacer5"  /><p>
+<a href=3D"http://app.partenariat-pro.fr/d/?camp=3D210_22&ms=3DbGF1cmVudE=
+BicmFpbnN0b3JtLmZy" target=3D"_blank" title=3D"Ne plus recevoir d'informa=
+tions de notre part" style=3D"color:#00F; font-family:'Arial'; font-size:=
+12px; text-decoration:underline;">Pour se d&eacute;sabonner : Suivez ce l=
+ien.</a><br />Si ce message vous a caus&eacute; un quelconque d&eacute;ra=
+ngement, nous vous prions de nous en excuser.
+</p><center>
+</body>
+</html>
+
+
+
+--Part1_9d1bf0c6876c4eca3f1355e198ba7fa7--

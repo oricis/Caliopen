@@ -1,0 +1,115 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aiPAS-00029m-Mp
+	for mharc-dev@caliopen.local; Tue, 22 Mar 2016 12:28:28 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:41457)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiPAM-00028H-F8
+	for dev@caliopen.local; Tue, 22 Mar 2016 12:28:28 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiPAJ-0003Lk-9q
+	for dev@caliopen.local; Tue, 22 Mar 2016 12:28:22 -0400
+Received: from mail-wm0-x22f.google.com ([2a00:1450:400c:c09::22f]:35990)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiPAI-0003LX-Vb
+	for dev@caliopen.local; Tue, 22 Mar 2016 12:28:19 -0400
+Received: by mail-wm0-x22f.google.com with SMTP id r129so101373881wmr.1
+	for <dev@caliopen.local>; Tue, 22 Mar 2016 09:28:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=C5ZxhYQd3Ic8Ye64rEARO32Boknyx6Sf7igAQG5loiI=;
+	b=aAGQuqYrLYcRC2Bsv+gchn8NQs8dvg9QhC0ZhbyLOV6UgBH1SPsw6mLd46V0XT0eTD
+	n/k0JDcrKLut/UW2iL7HtbeQ71z3Nw/5/2/lBn6zsdheLTL6eSqkajjyGzl6cVSKlD4o
+	3DlC1oVp4UhpDwOz8emUArIDlWkR9GXkpe5N7W4PKa0jDbvm3SFFWcL3NDcU80jxTG2Z
+	zY0HBohwBrGLvSj6lqvjwnrk76R0XF8ezOxyqJYQVRs4QP9FMUp2gveoFEmrMOzBu8gn
+	I9sYuE72GLFbPVWtJRfxveel0yYLtqnck0vs8kzTsXDS991Uh+Tc7VDMVU+hwbDQ4nem
+	X/Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=C5ZxhYQd3Ic8Ye64rEARO32Boknyx6Sf7igAQG5loiI=;
+	b=bGhaJQO1GHJ5BZgErJ5PmCBpHSMg8h6Nuddi6lrMfRBr1DTH20jICEr8D8Bw3NYeX8
+	itjIPwb1KetHZHFquCAA4PA7p78iJJ+zBilzfP4HCElBh3NTRxx58ZzAY3exgxFbQ97d
+	YF+ZVAJxD9z6A43crfpU0hoqTVCK+PVJgt297sYw2XJ/o2ZpNjwnqUS+UW6/93Xch6sm
+	85j4ALf1/RMee1thAUB2T3sfFXdgH0AfQRJBmjJb3yWIfZ65gonYyIoSSQIQFdxsMpVJ
+	RavWyjm74m5hF3onMMk5o1xF/LKLepDmEpWu4NvGQLmwTqa/TrgO1R7kxYAhLqmvryKr
+	Hbqw==
+X-Gm-Message-State: AD7BkJIVqUigF4aHYMt5H1E15YX98yufVHaYIopsR5fQqHKKrhV1+LZdW7tNmwyeNu9KtQ==
+X-Received: by 10.28.143.9 with SMTP id r9mr20265094wmd.37.1458664098239;
+	Tue, 22 Mar 2016 09:28:18 -0700 (PDT)
+Received: from localhost ([143.176.214.220])
+	by smtp.gmail.com with ESMTPSA id h7sm18084368wmf.9.2016.03.22.09.28.16
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Tue, 22 Mar 2016 09:28:16 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+	<jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87pounew9e.fsf@gmail.com>
+	<jwva8lrx4ov.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzda4h.fsf@gmail.com> <jwvwpovwuip.fsf-monnier+Inbox@gnu.org>
+	<87lh5bd4ib.fsf@gmail.com> <87egb3ryjc.fsf@gmail.com>
+	<877fgusum3.fsf@gmail.com> <8737risu8d.fsf@gmail.com>
+	<jwvbn66viar.fsf-monnier+Inbox@gnu.org>
+Date: Tue, 22 Mar 2016 17:28:16 +0100
+In-Reply-To: <jwvbn66viar.fsf-monnier+Inbox@gnu.org> (Stefan Monnier's message
+	of "Tue, 22 Mar 2016 07:57:27 -0400")
+Message-ID: <87mvpqqxy7.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22f
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 22 Mar 2016 16:28:28 -0000
+Content-Length: 1067
+Lines: 25
+
+
+
+>> On Tue, Mar 22 2016 07:57, Stefan Monnier wrote:
+
+> IIRC past discussions on this issue, one option was to merge your
+> set-widen-limits into narrow-to-region by adding an optional argument `hard'.
+
+If narrowing is already in place, set-widen-limits will not touch it unless the
+visible region expands beyond the hard limits. I think widen limits is
+fundamentally about widening and only indirectly about narrowing.
+
+Mixing hard limit into a common user level function is a bad marketing
+strategy. We don't want to encourage major modes to use it in funny ways. If
+users and major modes decide to use hard limits we might end up in the same
+situation as now when narrow/widen is not perceived as a good tool for
+multi-modes.
+
+Static usage of hard widening, like in Info example, is not really a
+problem. Multi modes need to impose hard limits transiently, in specific
+contexts like indentation, syntax parsing or font lock, and will restore the
+limits at the end. Problems will occur if major modes start using hard limits in
+such contexts directly.
+
+  Vitalie
+

@@ -1,0 +1,60 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amRah-0006Ml-Me
+	for mharc-dev@caliopen.local; Sat, 02 Apr 2016 15:52:15 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:53261)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1amRae-0006Hb-E4
+	for dev@caliopen.local; Sat, 02 Apr 2016 15:52:13 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1amRab-0003ya-8K
+	for dev@caliopen.local; Sat, 02 Apr 2016 15:52:12 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:43261)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1amRab-0003yL-5I
+	for dev@caliopen.local; Sat, 02 Apr 2016 15:52:09 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:1643
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1amRaU-0001NW-1M; Sat, 02 Apr 2016 15:52:02 -0400
+Date: Sat, 02 Apr 2016 22:51:32 +0300
+Message-Id: <83wpofrdq3.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: rms@gnu.org
+In-reply-to: <E1amQoi-0007Da-KE@fencepost.gnu.org> (message from Richard
+	Stallman on Sat, 02 Apr 2016 15:02:40 -0400)
+Subject: Re: melpa.org doesn't work without nonfree software
+References: <E1am6ik-0000Kc-JJ@fencepost.gnu.org> <83vb40sdug.fsf@gnu.org>
+	<E1amQoi-0007Da-KE@fencepost.gnu.org>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sat, 02 Apr 2016 19:52:13 -0000
+Content-Length: 383
+Lines: 13
+
+> From: Richard Stallman <rms@gnu.org>
+> CC: dev@caliopen.local
+> Date: Sat, 02 Apr 2016 15:02:40 -0400
+> 
+>   > > Is there anything in the Emacs sources mentioning melpa.org?
+> 
+>   > It's mentioned in the FAQ.
+> 
+> Would you please delete it, for now?  We should not recommend
+> sites that are useless when visited with LibreJS.
+
+Don't you want to wait for their response first?
+

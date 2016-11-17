@@ -1,0 +1,102 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amx2G-0001uL-Vw
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 01:26:48 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:60393)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amx2D-0001tN-2u
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:26:47 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amx29-0001LA-4V
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:26:45 -0400
+Received: from mail-oi0-x232.google.com ([2607:f8b0:4003:c06::232]:36211)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amx28-0001L5-W2
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:26:41 -0400
+Received: by mail-oi0-x232.google.com with SMTP id y204so37003067oie.3
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 22:26:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=r5J1OXHWpDOVYOrUWaqKonwuEMEihuw0rK5Xw8xNj34=;
+	b=vaFE61lfcRBT2V1EHuGCCV8M3NXnyFbpA2whlRzMzMKG1WCUueIZbTkfOvoM7XoPC3
+	0CnWfT96NWILpcSAifakzA/rsA7NUwiK2QdcGASWsT/BbTa+HmsRPOIKbLwbhOXhtn8v
+	H45ty6aMihQBIfi8WjVjL50uoLAkuOwFKji2QEG+qjqUkfJgntnSSAoaifXTmtoQKLQ8
+	MdpgX18Oj2RNzJvWVKalVuSUtRmTWV4q9W96fpkwL4afRgK2nN+uYUhYwtZ0htvePpii
+	SaqhMTxkbMVaudwtEzuFkRheAPHKsPa99bGPaYQlfRnSx2Mo34I7yCGzQVJp5sQjvJPK
+	vxDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=r5J1OXHWpDOVYOrUWaqKonwuEMEihuw0rK5Xw8xNj34=;
+	b=lc7qE6ON8HnUiieEnRevu2EgShpWUed87EOSXP26UR8qM549A5RanC2AgYUg+HqVOk
+	+pQ6YJmdnXo+c0S3nw9zA9yP1zEwcAWI+ayWdS+ByodWwVzkQQO1opnfY6Vq1mHxthOc
+	AHimRAF8EF8N9hof+PkkQC6UTZ/nEAG0dTwOG7mrUwjH/+1D6afDTQr69lQYMon2704o
+	RQs6yH5IkAMftJfPYHjP9SGnwlUcd4juNSMJ8G8FbaCIKYTT6CR6aW9p/XpVJZ/gjSHv
+	tq4ZEAjaD4cdmKjX2rw6nRk2u16xCTWD0hP0XlgnEOdVZf6g80iZr9QwTg/+CEbOwsr0
+	Dtug==
+X-Gm-Message-State: AD7BkJIux8TvfOJGylFc6jLnbkB/5ZEep0GKbvtNbRQZU52EyhDsPxgbMXeyP/gH+HBomw==
+X-Received: by 10.157.24.103 with SMTP id t36mr5377536ott.101.1459747600505;
+	Sun, 03 Apr 2016 22:26:40 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79]) by smtp.gmail.com with ESMTPSA id
+	ed8sm7849301obb.19.2016.04.03.22.26.39
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 22:26:39 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id B0A7B13DB0964; Sun,  3 Apr 2016 22:26:38 -0700 (PDT)
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: Re: Thinking about changed buffers
+In-Reply-To: <m3shz254qg.fsf@gnus.org> (Lars Magne Ingebrigtsen's message of
+	"Mon, 04 Apr 2016 07:21:11 +0200")
+Date: Sun, 03 Apr 2016 22:26:35 -0700
+Message-ID: <m2fuv29c6s.fsf@newartisans.com>
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<2d55f05e4ba00afeb3f7269953eb0e13.squirrel@cloud103.planethippo.com>
+	<jwvwpolbe3o.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m31t6tcneb.fsf@gnus.org> <m2mvpafg3c.fsf@newartisans.com>
+	<5701A74B.2050902@gmail.com> <87bn5q2r6h.fsf@wanadoo.es>
+	<m3shz254qg.fsf@gnus.org>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: Lars Magne Ingebrigtsen <larsi@gnus.org>,
+	=?utf-8?Q?=C3=93scar?= Fuentes
+	<ofv@wanadoo.es>, emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c06::232
+Cc: =?utf-8?Q?=C3=93scar?= Fuentes <ofv@wanadoo.es>, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 05:26:47 -0000
+Content-Length: 785
+Lines: 17
+
+>>>>> Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+
+> I think it's a psychological issue. If you've accepted doing convoluted
+> things for years because your favourite tool lacks obvious functionality,
+> then it's quite common to feel that that should never be fixed. Because
+> fixing the problem would mean accepting that you've done silly things for
+> years as a work around, and the obvious fix becomes a personal insult,
+> almost.
+
+I think the first part is certainly true. I've become so used to a silly
+command sequence that I see nothing wrong it; but if I had to explain it to
+someone else, there would be some shame. :)
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

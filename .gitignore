@@ -148,3 +148,6 @@ ENV/
 .ropeproject
 /.idea/
 *.iml
+
+# vagrant directory
+.vagrant

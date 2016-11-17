@@ -1,0 +1,123 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aYHOJ-0004Fr-VN
+	for mharc-dev@caliopen.local; Tue, 23 Feb 2016 13:08:55 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:57825)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aYHOG-0004F4-JH
+	for dev@caliopen.local; Tue, 23 Feb 2016 13:08:53 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aYHOD-0002S3-Ci
+	for dev@caliopen.local; Tue, 23 Feb 2016 13:08:52 -0500
+Received: from mout.kundenserver.de ([212.227.126.135]:49243)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>)
+	id 1aYHOD-0002Rw-3m; Tue, 23 Feb 2016 13:08:49 -0500
+Received: from [128.30.9.245] ([128.30.9.245]) by mrelayeu.kundenserver.de
+	(mreue003) with ESMTPSA (Nemesis) id 0LqH6S-1a3MUQ3fGa-00dkBd;
+	Tue, 23 Feb 2016 19:08:47 +0100
+Subject: Re: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+To: Eli Zaretskii <eliz@gnu.org>
+References: <56CA94A8.3000205@gmail.com> <83si0klo3c.fsf@gnu.org>
+	<56CB3756.6000906@gmail.com> <83k2lwlmvf.fsf@gnu.org>
+	<56CB452D.8090302@gmail.com> <83y4abicup.fsf@gnu.org>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Message-ID: <56CCA02E.2030009@gmail.com>
+Date: Tue, 23 Feb 2016 13:08:46 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.5.1
+MIME-Version: 1.0
+In-Reply-To: <83y4abicup.fsf@gnu.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="vpW7DhoBVUbhXTIuwrisvedkCuS1LDvla"
+X-Provags-ID: V03:K0:Gi6nT/zDCtpwuofxF7QQGqv3dxXSsjQoFZuBxY65Le0i/BOhKFr
+	syoX53w6SLa9Ftul0dufjzlLYXTn7C1bpIsZ6f3BNIHZKSKc7n45lq35TgKPLL18AJY72Xo
+	JCn6H4lsrC9JgQHNPMFWg5GNP5RZr/erMwVbzb3ONQI52OAvd1tXZL8rsXXXx7mk2Dr/GHV
+	tI/mmmODwTD+2rXg2MEhg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:8oAgGfgN9n4=:IXdGMlvwQQP2hQCrbRlh3A
+	sBLUvnmkrUjO4lbSZBD9k8eD9RjYCOSqCqEyyMbBt4zvFa4kT8efEGKhrwhRA00QGi+1/DSpb
+	OuYhr4zb0HqK5paeYW00DpLTGZUhfQa3Hc2pwDhyZHbqLUtTP/0UIFNPZEnMeTOnVIJIIzAQP
+	PJdapeuYsWlu9qKWbRuDoJ9YQVXIAqGecW3EylIRUNmA1wfFK+ixT3JoPwP+q6YW8SoYJInd3
+	6b8dli4dD+TRV2BshxOFZyd4e3tvWdUobyuO2LnuAkC0PX3ITN+iduNl42pAtiyroFo90/fCe
+	m8FT1nbfCXD4WCF3G0VdS9W9OACKariSvTTI4ua6KRFPlWQDMu2fNb8OqAsmSgiSHUSBStRJl
+	5eWUkEcP2YwFFweubiyqt0tAFUNMpp83kVYo8JcX56Ui1+a1XbiwtE565VLXngPQw/Ve2smEZ
+	exYrEEeh576zrGBROqoxUmoSvlUhTeNB5VDdTDaaa13mgwI/J98dJ7hjp7Xh7A3F6knj19KJF
+	wdFll0VfzZehEM7ac3k9x2D5eeT3WwsiaQiyHHK/fk1rrV0p+OW/V8ACOiKVg0QB1Nv3jAsya
+	vCGj0b8fZ/OhVesCdz0WNbj0QaFmxVVQr8XeY2Xeij3knHVEyguLEeOU8ko4LWaAHc1Z2Hcuq
+	Q+xXuyBSNiw9KCjD0gEJblliVzMpSAmKrnb5c3GGZ+tNA6+bQ1rx31zCYaTP0bGhq3Go=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.126.135
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 23 Feb 2016 18:08:53 -0000
+Content-Length: 2256
+Lines: 57
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--vpW7DhoBVUbhXTIuwrisvedkCuS1LDvla
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On 02/23/2016 11:57 AM, Eli Zaretskii wrote:
+>> Cc: dev@caliopen.local
+>> From: Cl=C3=A9ment Pit--Claudel <clement.pit@gmail.com>
+>> Date: Mon, 22 Feb 2016 12:28:13 -0500
+>>
+>> (with-current-buffer (get-buffer-create "temp")
+>>   (erase-buffer)
+>>   (setq-default prettify-symbols-unprettify-at-point 'right-edge)
+>>   (emacs-lisp-mode)
+>>   (prettify-symbols-mode)
+>>   (insert "lambda\n\nlambda")
+>>   (pop-to-buffer (current-buffer)))
+>>
+>> Moving around in this buffer unprettifies and reprettifies =E2=80=98la=
+mbda=E2=80=99s into =E2=80=98=CE=BB=E2=80=99s as the point moves in and o=
+ut of them. Setting =E2=80=98font-lock-fontified=E2=80=99 to nil breaks t=
+hat mechanism (the =E2=80=98=CE=BB=E2=80=99s are unprettified but no repr=
+ettified), and no series of =E2=80=98font-lock-flush=E2=80=99 and =E2=80=98=
+font-lock-ensure=E2=80=99 will reprettify them.
+>>
+>> Does this help?
+>=20
+> Yes, thanks.  I will look into this soon.
+
+Great; thank you very much. Let me know if I can help!
+
+
+--vpW7DhoBVUbhXTIuwrisvedkCuS1LDvla
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJWzKAuAAoJEPqg+cTm90wjvEkP/2856dLUPIUm+Y2M0NonskIK
+y4mdDqD6l6UX2becb7kTbOAhfDTWusCugJ9ECbVKooUjdvwlUd9UlS7/e9mRenSx
+JqE/a3B7CTywzsxsx26AKpysf4SBRaG8rYjng+/Rwp8Xnr5pIg7/9E87QRT359jD
+Xurvn9+pl22sD7EvuEnSf1OQT9mQbsvHvGLBoMpnRiypCUrOvHxYHdPi8Q+pRNdg
+LRNfbngjRDLMkT0skpEX/Lo+6hiUeTQ/KCdx3rUHPn2qClDMwdS5tWEtP1T37MFa
+eEXLK5aWE+K4mSHO3u11kdfWWXJ6coPI1YHPExI5qjYsbG3fsgOxl2ViJe5kN83w
+EGZumlkKOwcxXmHcAlr+hiSGChD5EWfJfuz97j0+wrr3ZylORjrVSz/HdHS1+ELr
+uBr89+xILX0RvwXpMMSaNhvyrChpSP9o53acOJB9e4yKAh3UP7A7Tks9u8NF3aWu
+e/q62ww9uVGwxnZrpG7PVp889nbr/cPXXH7Py8fgAF3v8mCB8zp0KBzn4WT6zB74
++wWf8Sb2P9oFrJfZ+gPk1GdxIwf6TPVS6bgBB0gRwzcE7VspomDbPigagcvGVb+/
+6PKL9o5UUTDv+EeU2A+QUVkAHbRqKVHxaTZQHwS0eIMEWAfkTTB/Nmnkhhy/eNFx
+ztOCLTm5ijAHMqjlFlPU
+=dFO/
+-----END PGP SIGNATURE-----
+
+--vpW7DhoBVUbhXTIuwrisvedkCuS1LDvla--
+

@@ -1,0 +1,84 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amje7-0001Nx-LO
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 11:08:59 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:38388)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1amje4-0001MF-Ue
+	for dev@caliopen.local; Sun, 03 Apr 2016 11:08:57 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1amje1-0003b0-Od
+	for dev@caliopen.local; Sun, 03 Apr 2016 11:08:56 -0400
+Received: from mail-out.m-online.net ([212.18.0.9]:56978)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1amje1-0003at-IK
+	for dev@caliopen.local; Sun, 03 Apr 2016 11:08:53 -0400
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 3qdJRS2D4Zz3hj8L;
+	Sun,  3 Apr 2016 17:08:52 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
+	by mail.m-online.net (Postfix) with ESMTP id 3qdJRS1jspzvh1v;
+	Sun,  3 Apr 2016 17:08:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+	by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavisd-new,
+	port 10024)
+	with ESMTP id rKqJi21anv1J; Sun,  3 Apr 2016 17:08:51 +0200 (CEST)
+X-Auth-Info: 13LSXXwIYG9z9dAMo13fnCFYjtEn7+AyP/QByjN8JqpWaq2y3tQgdtZ+1QosyS1H
+Received: from igel.home (ppp-88-217-22-197.dynamic.mnet-online.de
+	[88.217.22.197]) by mail.mnet-online.de (Postfix) with ESMTPA;
+	Sun,  3 Apr 2016 17:08:51 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id 1DF662C373A; Sun,  3 Apr 2016 17:08:51 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Ingo Lohmar <i.lohmar@gmail.com>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<20160403111708.GA3537@acm.fritz.box>
+	<87lh4uex9h.fsf@acer.localhost.com>
+	<20160403121458.GC3537@acm.fritz.box>
+	<87bn5qeuxo.fsf@acer.localhost.com> <87mvpazsqo.fsf@linux-m68k.org>
+	<878u0ueo3x.fsf@acer.localhost.com>
+X-Yow: TAPPING?  You POLITICIANS!  Don't you realize that the END of the
+	``Wash Cycle'' is a TREASURED MOMENT for most people?!
+Date: Sun, 03 Apr 2016 17:08:51 +0200
+In-Reply-To: <878u0ueo3x.fsf@acer.localhost.com> (Ingo Lohmar's message of
+	"Sun, 03 Apr 2016 16:57:54 +0200")
+Message-ID: <87a8lazq4c.fsf@linux-m68k.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 212.18.0.9
+Cc: Alan Mackenzie <acm@muc.de>, Kaushal Modi <kaushal.modi@gmail.com>,
+	Emacs developers <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 15:08:57 -0000
+Content-Length: 432
+Lines: 15
+
+Ingo Lohmar <i.lohmar@gmail.com> writes:
+
+> That's correct, but if the changes are in files unaffected by the merge,
+> git *does* start the merge.  But it will be hard to return to the exact
+> pre-merge state if you want to abort.
+
+git merge --abort will do.
+
+Andreas.
+
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
+"And now for something completely different."
+

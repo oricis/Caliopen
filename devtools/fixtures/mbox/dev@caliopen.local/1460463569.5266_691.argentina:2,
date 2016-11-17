@@ -1,0 +1,96 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amrIW-0002VP-Kb
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 19:19:12 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:38156)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrIU-0002T6-Ff
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:19:11 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrIT-0001kX-Gy
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:19:10 -0400
+Received: from mail-oi0-x22a.google.com ([2607:f8b0:4003:c06::22a]:35830)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>)
+	id 1amrIR-0001kC-7i; Sun, 03 Apr 2016 19:19:07 -0400
+Received: by mail-oi0-x22a.google.com with SMTP id p188so145576324oih.2;
+	Sun, 03 Apr 2016 16:19:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=KUJ4YnrYH+VWK7gQDx8I6onAZIQ28NZ2J/6xt8v8NcU=;
+	b=eamh85y9IU8ZbBeluZDOlc//f1c3pEzKerAxlwKjSFqbbQLrpieGLEmOsR1FB8yd6k
+	DwE8OQT9mjIlsvaeNQinNcUkOp8TXbgcKdFNM1PpDq4DFguA6WP2dvi5PMPjNhvSX8kg
+	gDXGrtydzVyH20apiZ8lkI0Ea7TdjdLIC0adnurpXjoSAMtUgRDrbeB3UUI+slAlRW7j
+	YIfd8p1r1NRJThgGr0WsqImxxvotwpDTptwgycxn6qCZifAYRuRdf4m7Hv5rEcnIy9/6
+	j0cspfV4LeSb7iNBKNoNgE5xpd+9VYw5lLEH9Fj57l8Q04Q1hO4kJyDLhvuDZrgNb831
+	Z30Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=KUJ4YnrYH+VWK7gQDx8I6onAZIQ28NZ2J/6xt8v8NcU=;
+	b=EmIDH97IGB4Sn1/CCdKgewKfr/o6nFhY2llw6zG7EuKQDJ5joK1/Dvs856H6mYkNrx
+	0TKLEkkfO2ENf21xy1/FTajSeG9Kyum9WT3GopDoSJwAKXWsN8F/V4+r6qdkQAIpwZVG
+	eQSb3szyCqlEV1wsb83JJlVC5JuML8K+XqZgUzOl1KTUv0PDDZSY+DNyQ2o5op+0dosS
+	B1ZSMftbm7b85kgOu3sTTT3sGRm6gyy0AzgD5XHHDhuQ00kmtIFz2k22hO1ogza6C1wQ
+	cwUDaopOOhpIQGZM1QMTCBYLAIRyv0q5tma2oz8E4Gbq1HSzwWrCM6LJCavhlAv2zcY3
+	2Fzg==
+X-Gm-Message-State: AD7BkJKOJ9M/z41shFYHhHAM5+3H8nN8wnw/FdBkYODd18fY3sTWOHyVBd43KRMQpAuASw==
+X-Received: by 10.202.4.86 with SMTP id 83mr9058066oie.132.1459725546852;
+	Sun, 03 Apr 2016 16:19:06 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79])
+	by smtp.gmail.com with ESMTPSA id 89sm360536otf.31.2016.04.03.16.19.04
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 16:19:05 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id 7007313DAE515; Sun,  3 Apr 2016 16:19:03 -0700 (PDT)
+To: Drew Adams <drew.adams@oracle.com>
+Subject: Re: About column numbers
+In-Reply-To: <830ba1d5-5844-455c-9c8e-02671771dce4@default> (Drew Adams's
+	message of "Wed, 30 Mar 2016 10:46:16 -0700 (PDT)")
+Date: Sun, 03 Apr 2016 16:15:20 -0700
+Message-ID: <m24mbiffnb.fsf@newartisans.com>
+References: <56FB02BB.3090501@alice.it> <83wpokuh3a.fsf@gnu.org>
+	<56FC0CDB.9090707@alice.it>
+	<830ba1d5-5844-455c-9c8e-02671771dce4@default>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: Drew Adams <drew.adams@oracle.com>, Angelo Graziosi
+	<angelo.graziosi@alice.it>, Eli Zaretskii <eliz@gnu.org>,
+	emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c06::22a
+Cc: Eli Zaretskii <eliz@gnu.org>, dev@caliopen.local,
+	Angelo Graziosi <angelo.graziosi@alice.it>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 23:19:11 -0000
+Content-Length: 483
+Lines: 13
+
+>>>>> Drew Adams <drew.adams@oracle.com> writes:
+
+>> what a pity! It would be an opportunity to modernize a bit Emacs...
+
+> Modernize schmodernize. ;-) Every new idea is not necessarily a great idea.
+> And every recently expressed idea is not necessarily new.
+
+I see no reason to change the starting column for Emacs at this time.
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

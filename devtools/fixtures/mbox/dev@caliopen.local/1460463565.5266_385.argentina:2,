@@ -1,0 +1,76 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1also8-00030R-9b
+	for mharc-dev@caliopen.local; Fri, 01 Apr 2016 02:43:48 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:55784)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1also5-0002wE-DE
+	for dev@caliopen.local; Fri, 01 Apr 2016 02:43:46 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1also1-0000bY-DG
+	for dev@caliopen.local; Fri, 01 Apr 2016 02:43:45 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:51838)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1alsnq-0000Vt-Ea; Fri, 01 Apr 2016 02:43:30 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:2602
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1alsnp-0005gj-3C; Fri, 01 Apr 2016 02:43:29 -0400
+Date: Fri, 01 Apr 2016 09:43:19 +0300
+Message-Id: <83shz5u8vs.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Paul Eggert <eggert@cs.ucla.edu>
+In-reply-to: <56FD8A8B.3040808@cs.ucla.edu> (message from Paul Eggert on Thu, 
+	31 Mar 2016 13:37:31 -0700)
+Subject: Re: [PATCH] src/print.c: Check for __GLIBC__ rather than GNU_LINUX
+References: <1459315328-3663-1-git-send-email-somasissounds@gmail.com>
+	<56FD8A8B.3040808@cs.ucla.edu>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local, somasis@exherbo.org, somasissounds@gmail.com
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Fri, 01 Apr 2016 06:43:46 -0000
+Content-Length: 975
+Lines: 30
+
+> From: Paul Eggert <eggert@cs.ucla.edu>
+> Date: Thu, 31 Mar 2016 13:37:31 -0700
+> Cc: Kylie McClain <somasis@exherbo.org>
+> 
+> I haven't installed it into 'master' yet, to give Eli a heads-up about 
+> the impending change.
+
+Thanks.  I needed the additional patch below to get the patch to
+compile (how do other ports get F_DUPFD_CLOEXEC?).
+
+After that, temacs seems to hang during loadup.  Looks like it hangs
+inside the libc function 'close'.  I don't have enough free time now
+to do anything serious on master.  Hopefully, someone else will be
+able to look into this, find out why it hangs, and suggest a remedy.
+
+
+--- src/print.c~0	2016-04-01 09:32:53.060500000 +0300
++++ src/print.c	2016-04-01 09:36:24.591750000 +0300
+@@ -38,6 +38,10 @@ along with GNU Emacs.  If not, see <http
+ #include <float.h>
+ #include <ftoastr.h>
+ 
++#ifdef WINDOWSNT
++#include <sys/socket.h>		/* for F_DUPFD_CLOEXEC */
++#endif
++
+ struct terminal;
+ 
+ /* Avoid actual stack overflow in print.  */
+

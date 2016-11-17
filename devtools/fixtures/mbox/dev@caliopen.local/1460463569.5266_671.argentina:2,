@@ -1,0 +1,173 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai4cR-0005d5-LY
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 14:31:59 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:44555)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai4cO-0005cI-Jy
+	for dev@caliopen.local; Mon, 21 Mar 2016 14:31:57 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai4cK-0002Lb-Hw
+	for dev@caliopen.local; Mon, 21 Mar 2016 14:31:56 -0400
+Received: from pruche.dit.umontreal.ca ([132.204.246.22]:40546)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai4cK-0002LT-Cj
+	for dev@caliopen.local; Mon, 21 Mar 2016 14:31:52 -0400
+Received: from pastel.home (lechon.iro.umontreal.ca [132.204.27.242])
+	by pruche.dit.umontreal.ca (8.14.7/8.14.1) with ESMTP id u2LIVmWU009015;
+	Mon, 21 Mar 2016 14:31:48 -0400
+Received: by pastel.home (Postfix, from userid 20848)
+	id 4FCD26059C; Mon, 21 Mar 2016 14:31:48 -0400 (EDT)
+From: Stefan Monnier <monnier@IRO.UMontreal.CA>
+To: Vitalie Spinu <spinuvit@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+Message-ID: <jwv37rjya4z.fsf-monnier+Inbox@gnu.org>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87fuvjeq9g.fsf@gmail.com>
+Date: Mon, 21 Mar 2016 14:31:48 -0400
+In-Reply-To: <87fuvjeq9g.fsf@gmail.com> (Vitalie Spinu's message of "Mon, 21
+	Mar 2016 17:42:51 +0100")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 5
+X-NAI-Spam-Score: 0
+X-NAI-Spam-Rules: 1 Rules triggered
+	RV5617=0
+X-NAI-Spam-Version: 2.3.0.9418 : core <5617> : inlines <4541> : streams
+	<1606620> : uri <2171518>
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 132.204.246.22
+Cc: Alan Mackenzie <acm@muc.de>, emacs-devel <dev@caliopen.local>,
+	Dmitry Gutov <dgutov@yandex.ru>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 18:31:57 -0000
+Content-Length: 4545
+Lines: 100
+
+> To be frank, the issue of parse-partial-sexp is fading because modes
+> are now using syntax-ppss more extensively.
+
+Aha!  So we agree: there's no reason to worry about parse-partial-sexp,
+since at this point pretty much all modes rely on syntax-ppss (other
+than CC-modes, obviously).
+
+> Most of the problems with parse-partial-sexp from the past are now
+> internalized in condition-case inside syntax-ppss. That condition-case
+> is triggered very often (almost always) from inside polymode
+> chunk narrowing.
+
+Right.  But I don't see it as a problem in parse-partial-sexp, rather
+than a problem in syntax.el.
+
+>> Because you need it for *everything* that looks at the buffer.
+>> Why should parse-partial-sexp be different from (say) scan-sexps?
+> I think parse-partial-sexp, syntax-ppss and maybe some others, are special in
+> the sense that in order to return a correct value they need to be aware of the
+> whole buffer. I don't see this as an inconsistency but I might be too naive.
+
+scan-sexps will complain about unmatched parens and things like that if
+it bumps into point-min/max.  Same for re-search-*.  I think you've just
+been too often exposed to the use of (parse-partial-sexp 1 ...) where
+the resulting signal bites you right away, whereas many other functions
+won't signal an error and will instead do *something* (which may not
+always be incorrect, but may often enough still result in acceptable
+behavior).
+
+> c-mode provides an example. I don't remember where exactly and how but
+> it has to do with but c-before-context-fl-expand-region and
+> c-state-semi-safe-place because I am advising these two
+> functions currently.
+
+CC-modes is definitely a very special case here.
+We should aim to limit the amount of changes in most major modes, so
+better not pay too much attention to cc-mode from that point of view.
+
+> The logic is roughly like this, c-mode engine doesn't respect
+> font-lock-dont-widen, widens stuff in some of it's functions, then
+> calls its parsing, gets back some points outside font-lock range and
+> blows when trying to access those points from narrowed region.
+
+Sounds like a problem in cc-mode, which will require changes in
+cc-mode.  The generic code shouldn't worry about that.
+
+> I was not collecting these cases carefully but I will start doing it and will
+> get with more concrete examples in the following weeks.
+
+Thanks.
+
+> Another directions of problems is syntax-propertize.  It can be called
+> with POS outside of current narrowed region.  Particularly from
+> internal--syntax-propertize.
+
+That would definitely be an error, so if you bump into such a case
+please report it.
+
+>> Replace all your widen calls with calls to `prog-widen' and you get
+>> the same result (since (nth 1 prog-indentation-context) is basically
+>> another name for your hard-widen-limit).  So I don't think prog-widen
+>> is that very complicated.
+> It's not but you have to enforce that in all known modes.
+
+I prefer to say that "any major mode which wants to play with the new
+snazzy multi-mode feature needs to be adjusted (e.g. with prog-widen)".
+It's perfectly fine if some major modes don't play along correctly until
+they're fixed.
+
+"Try to get multi-mode working without touching anyone's code"
+(e.g. using advice) is great, but we already have packages which do that.
+
+>> Note that "is more general" here means that the major mode's function has to
+>> handle more cases, so it would seem to fundamentally require more work on the
+>> major mode's side.
+
+> I don't agree. Work must be done only in the generic multi-mode engines
+> (mmm-mode, polymode etc).
+
+The "is more general" I was quoting was talking about the ways the
+generic code can call the major-mode-specific code.  If this is more
+generic, it means the major-mode-specific code needs to handle more
+situations (e.g. STRING-BEFORE appearing not just at the beginning of
+a chunk).
+
+> Other modes should re-use that generic infrastructure, or even better,
+> do nothing, and leave to someone else to define a new polymode with
+> host chunk being *the* mode. That every mode with basic needs for
+> inner sub-modes tries to re-invent the wheel is a dead end.
+
+I don't understand: every major mode's indentation code will have to pay
+attention to the STRING-BEFORE/AFTER that it receives from the generic
+code and will have to do something with it (it can ignore it but at the
+cost of sub-optimal results).  And AFAIK this can only be done by the
+major mode's code, not the generic mode's code.
+[ I feel like I must be missing something.  ]
+
+
+        Stefan
+

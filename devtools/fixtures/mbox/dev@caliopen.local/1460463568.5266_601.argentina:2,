@@ -1,0 +1,110 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aiYRz-0007Cn-17
+	for mharc-dev@caliopen.local; Tue, 22 Mar 2016 22:23:11 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:36753)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1aiYRx-0007BK-6d
+	for dev@caliopen.local; Tue, 22 Mar 2016 22:23:10 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1aiYRt-0000dq-13
+	for dev@caliopen.local; Tue, 22 Mar 2016 22:23:09 -0400
+Received: from ironport2-out.teksavvy.com ([206.248.154.181]:52238)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1aiYRs-0000d3-S4
+	for dev@caliopen.local; Tue, 22 Mar 2016 22:23:04 -0400
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: A0CdDQA731xV/5a2xEVcgxCEAshgBAICgTw9EAEBAQEBAQGBCkEFg10BAQMBViMFCws0BwsUGA0kiDcIzyMBAQEHAQEBAR6LOoQtWAeELQEEnxeSFIIUgUUjgWZVgVkigTWBQwEBAQ
+X-IPAS-Result: A0CdDQA731xV/5a2xEVcgxCEAshgBAICgTw9EAEBAQEBAQGBCkEFg10BAQMBViMFCws0BwsUGA0kiDcIzyMBAQEHAQEBAR6LOoQtWAeELQEEnxeSFIIUgUUjgWZVgVkigTWBQwEBAQ
+X-IronPort-AV: E=Sophos;i="5.13,465,1427774400"; d="scan'208";a="197856461"
+Received: from 69-196-182-150.dsl.teksavvy.com (HELO fmsmemgm.homelinux.net)
+	([69.196.182.150])
+	by ironport2-out.teksavvy.com with ESMTP/TLS/DHE-RSA-AES256-SHA;
+	22 Mar 2016 22:22:58 -0400
+Received: by fmsmemgm.homelinux.net (Postfix, from userid 20848)
+	id E10D0AE1F4; Tue, 22 Mar 2016 22:22:57 -0400 (EDT)
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+To: Vitalie Spinu <spinuvit@gmail.com>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+Message-ID: <jwvio0euejl.fsf-monnier+emacs@gnu.org>
+References: <20160311151512.GD2888@acm.fritz.box> <874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+	<jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87pounew9e.fsf@gmail.com>
+	<jwva8lrx4ov.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzda4h.fsf@gmail.com> <jwvwpovwuip.fsf-monnier+Inbox@gnu.org>
+	<87lh5bd4ib.fsf@gmail.com> <87egb3ryjc.fsf@gmail.com>
+	<877fgusum3.fsf@gmail.com> <8737risu8d.fsf@gmail.com>
+	<jwvbn66viar.fsf-monnier+Inbox@gnu.org> <87mvpqqxy7.fsf@gmail.com>
+	<jwvzitqpj68.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<877fguqp8x.fsf@gmail.com>
+Date: Tue, 22 Mar 2016 22:22:57 -0400
+In-Reply-To: <877fguqp8x.fsf@gmail.com> (Vitalie Spinu's message of "Tue, 22
+	Mar 2016 20:36:14 +0100")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 206.248.154.181
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 23 Mar 2016 02:23:10 -0000
+Content-Length: 1671
+Lines: 41
+
+> There is no real need to invent extra type of narrowing. It's a lot of extra
+> work with no additional benefit.
+
+I don't see any extra work.  (narrow-to-region BEG END 'hard) would just
+be the API used to set your hard limits, and that's all there is to it.
+
+> If user typed within a hard region the hard narrowed region, will the
+> upper hard limit expand just as ZV does?
+
+This is indispensable, yes.  No matter whether the hard limits are
+folded int narrow-to-region or any other way: the upper limit has to be
+a marker, and unless we strictly enforce that the hard limits can't be
+circumvented at all, the lower limit would probably have to be a marker
+as well.
+
+> My approach is simpler and leaves current narrowing functionality
+> alone.  You set the limits and allow narrowing happening inside those
+> limits normally.
+
+That's also how I imagine (narrow-to-region BEG END 'hard) working.
+It just won't allow widening outside of those hard limits.
+
+> You might end up loosing text outside of the bounds if you modify the
+> buffer and then call widen, but that's by design and this is how it's
+> different from visual narrowing.  Hard limits stay the same
+> irrespective of what happens to the buffer.
+
+Sounds like a wart.  What's the benefit?
+
+>>> limits at the end. Problems will occur if major modes start using hard
+>>> limits in such contexts directly.
+>> I don't see any reason why problems *will* occur in that case (tho, of
+>> course, Murphy could be that reason).  So until such problems do show up,
+>> I wouldn't worry.
+> The problem is not hypothetical. It's occurring right now.
+
+It can't because we don't have hard limits right now.
+
+
+        Stefan
+

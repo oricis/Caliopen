@@ -1,0 +1,65 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akwru-0004Ou-7p
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 12:51:50 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:47360)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1akwrm-0004JG-Vd
+	for dev@caliopen.local; Tue, 29 Mar 2016 12:51:48 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1akwrd-0005Q4-IF
+	for dev@caliopen.local; Tue, 29 Mar 2016 12:51:42 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:34760)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1akwrd-0005Pz-F7; Tue, 29 Mar 2016 12:51:33 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:2181
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1akwrc-000660-Rf; Tue, 29 Mar 2016 12:51:33 -0400
+Date: Tue, 29 Mar 2016 19:51:17 +0300
+Message-Id: <83egatw7lm.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+In-reply-to: <m3bn5xb60l.fsf@gnus.org> (message from Lars Magne Ingebrigtsen
+	on Tue, 29 Mar 2016 18:31:06 +0200)
+Subject: Re: More convenient default rollback for users
+References: <m3poudb86o.fsf@gnus.org> <83io05w9s7.fsf@gnu.org>
+	<m3bn5xb60l.fsf@gnus.org>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 16:51:48 -0000
+Content-Length: 662
+Lines: 19
+
+> From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+> Cc: dev@caliopen.local
+> Date: Tue, 29 Mar 2016 18:31:06 +0200
+> 
+> Eli Zaretskii <eliz@gnu.org> writes:
+> 
+> > How do you do that with defcustoms?
+> 
+> I don't know.  Does defcustom offer something like that?
+> 
+> In any case, having the user go through the custom interface is way too
+> much work.
+
+The problem is that some options are supposed to be changed via
+defcustoms, because those invoke a special function for the new value
+to take effect.  In NEWS, we usually say "customize the option
+so-and-so to such-and-such value", but how do you do that in
+copy/paste-able way? invoke the function by hand?
+

@@ -1,0 +1,76 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amsOU-0000YN-CZ
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 20:29:26 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:47589)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amsOR-0000XT-RK
+	for dev@caliopen.local; Sun, 03 Apr 2016 20:29:24 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amsOO-00077D-K3
+	for dev@caliopen.local; Sun, 03 Apr 2016 20:29:23 -0400
+Received: from plane.gmane.org ([80.91.229.3]:49180)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amsOO-000778-Do
+	for dev@caliopen.local; Sun, 03 Apr 2016 20:29:20 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amsOL-0007Sc-I4
+	for dev@caliopen.local; Mon, 04 Apr 2016 02:29:17 +0200
+Received: from 151.red-79-153-146.dynamicip.rima-tde.net ([79.153.146.151])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 02:29:17 +0200
+Received: from ofv by 151.red-79-153-146.dynamicip.rima-tde.net with local
+	(Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 02:29:17 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: =?utf-8?Q?=C3=93scar_Fuentes?= <ofv@wanadoo.es>
+Subject: Re: Thinking about changed buffers
+Date: Mon, 04 Apr 2016 02:29:09 +0200
+Message-ID: <877fge2p4a.fsf@wanadoo.es>
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<2d55f05e4ba00afeb3f7269953eb0e13.squirrel@cloud103.planethippo.com>
+	<jwvwpolbe3o.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m31t6tcneb.fsf@gnus.org> <m2mvpafg3c.fsf@newartisans.com>
+	<5701A74B.2050902@gmail.com> <87bn5q2r6h.fsf@wanadoo.es>
+	<5701B34D.20709@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 151.red-79-153-146.dynamicip.rima-tde.net
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+Cancel-Lock: sha1:kzucfQGUbsrzy/yofCIOQMcPP1U=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 00:29:24 -0000
+Content-Length: 455
+Lines: 13
+
+Clément Pit--Claudel <clement.pit@gmail.com> writes:
+
+> Agreed :) What about a setting that would make C-x C-s always save,
+> regardless of whether saving is actually needed?
+
+An option for `save-buffer' saving inconditionally when called
+interactively would be useful.
+
+> Also, I'd argue that it's almost a bug that you get a overwriting
+> warning using C-x C-w when you're writing to a patch equal to
+> buffer-file-name. Isn't it?
+
+Yea, a QoI issue.
+
+

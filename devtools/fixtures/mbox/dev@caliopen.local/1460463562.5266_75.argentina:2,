@@ -1,0 +1,65 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1apKbj-00036O-2p
+	for mharc-dev@caliopen.local; Sun, 10 Apr 2016 15:01:15 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:41519)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1apKbg-00033v-T9
+	for dev@caliopen.local; Sun, 10 Apr 2016 15:01:13 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <rms@gnu.org>) id 1apKbg-0004N2-2S
+	for dev@caliopen.local; Sun, 10 Apr 2016 15:01:12 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:43788)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1apKbd-0004MR-FJ; Sun, 10 Apr 2016 15:01:09 -0400
+Received: from rms by fencepost.gnu.org with local (Exim 4.82)
+	(envelope-from <rms@gnu.org>)
+	id 1apKbc-0008TH-Qs; Sun, 10 Apr 2016 15:01:08 -0400
+Content-Type: text/plain; charset=Utf-8
+From: Richard Stallman <rms@gnu.org>
+To: Vibhav Pant <vibhavp@gmail.com>
+CC: clement.pit@gmail.com, dev@caliopen.local
+In-reply-to: <CA+T2Sh24WOc9MifckO5v8zRa_xrVDnmcbH0mnmtnknyMQMb0jQ@mail.gmail.com>
+	(message from Vibhav Pant on Sun, 10 Apr 2016 10:40:16 +0530)
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+Reply-to: rms@gnu.org
+References: <56F42269.10400@gmail.com> <m2io0bihz2.fsf@Mandala.local>
+	<CA+T2Sh24WOc9MifckO5v8zRa_xrVDnmcbH0mnmtnknyMQMb0jQ@mail.gmail.com>
+Message-Id: <E1apKbc-0008TH-Qs@fencepost.gnu.org>
+Date: Sun, 10 Apr 2016 15:01:08 -0400
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 10 Apr 2016 19:01:13 -0000
+Content-Length: 736
+Lines: 19
+
+[[[ To any NSA and FBI agents reading my email: please consider    ]]]
+[[[ whether defending the US Constitution against all enemies,     ]]]
+[[[ foreign or domestic, requires you to follow Snowden's example. ]]]
+
+  > ERC exposes emacs' version number in quit messages already:
+  >            "(Quit: ERC (IRC client for Emacs 25.0.50.3))"
+  > So I don't see why there should be an exception for url.
+
+IRC and web browsing are different activities and raise different
+issues regarding surveillance.  There is no reason to insist a priori
+on treating them alike.
+
+-- 
+Dr Richard Stallman
+President, Free Software Foundation (gnu.org, fsf.org)
+Internet Hall-of-Famer (internethalloffame.org)
+Skype: No way! See stallman.org/skype.html.
+
+

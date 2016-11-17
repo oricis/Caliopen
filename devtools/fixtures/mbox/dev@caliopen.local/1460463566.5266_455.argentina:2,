@@ -1,0 +1,86 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akpOl-00044F-Bx
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 04:53:15 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:36499)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <fweimer@redhat.com>) id 1akpOi-00043t-J6
+	for dev@caliopen.local; Tue, 29 Mar 2016 04:53:13 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <fweimer@redhat.com>) id 1akpOf-00083v-Cw
+	for dev@caliopen.local; Tue, 29 Mar 2016 04:53:12 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:44578)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <fweimer@redhat.com>) id 1akpOf-00083r-7e
+	for dev@caliopen.local; Tue, 29 Mar 2016 04:53:09 -0400
+Received: from int-mx14.intmail.prod.int.phx2.redhat.com
+	(int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
+	by mx1.redhat.com (Postfix) with ESMTPS id 456B380085
+	for <dev@caliopen.local>; Tue, 29 Mar 2016 08:53:08 +0000 (UTC)
+Received: from oldenburg.str.redhat.com (dhcp-192-212.str.redhat.com
+	[10.33.192.212])
+	by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP
+	id u2T8r6hp016210
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <dev@caliopen.local>; Tue, 29 Mar 2016 04:53:07 -0400
+Subject: Re: Thinking about changed buffers
+To: dev@caliopen.local
+References: <m3bn5ya4ro.fsf@gnus.org>
+From: Florian Weimer <fweimer@redhat.com>
+Message-ID: <56FA4272.70209@redhat.com>
+Date: Tue, 29 Mar 2016 10:53:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <m3bn5ya4ro.fsf@gnus.org>
+Content-Type: text/plain; charset=windows-1252
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
+Content-Transfer-Encoding: quoted-printable
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 209.132.183.28
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 08:53:13 -0000
+Content-Length: 1395
+Lines: 32
+
+On 03/28/2016 07:31 PM, Lars Magne Ingebrigtsen wrote:
+> In conjunction with the wishlist item "`M-q' shouldn't say that the
+> buffer hasn't changed when it hasn't", we started talking a bit about
+> further issues about what it means that a buffer has changed or not.
+>=20
+> If you load a file, and then hit "a", and then delete the "a", then
+> Emacs will say that the buffer has changed.  If you hit "a" and then
+> `undo', Emacs will say that it hasn't.
+>=20
+> If there was a way to deal with this discrepancy, that would be very
+> nice, I think.
+
+I feel a bit silly, but I rely on this discrepancy (SPC DEL marks the
+buffer as changed) so that saving the buffer is an actual operation
+which updates the file timestamp, to trigger a rebuild of its dependencie=
+s.
+
+> One idea that popped up is that whenever we mark a buffer as unchanged
+> (that is, `(set-buffer-modified-p nil)', we save the byte size of the
+> buffer and a cryptographic hash of the buffer.  Then `buffer-modified-p=
+'
+> would simply see whether either the size had changed, and if not,
+> whether the hash had changed.  If both are identical, then the buffer
+> hasn't changed.
+
+For me, the major nuisance is that Emacs claims that the file has
+changed on disk, when it fact it hasn't=97the mtime changed, but the
+contents is the same.  At least it's easier to detect this case with the
+hashing approach you propose.
+
+Florian
+

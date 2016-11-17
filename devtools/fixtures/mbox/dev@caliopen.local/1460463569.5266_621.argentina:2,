@@ -1,0 +1,96 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahqGB-0005EG-8t
+	for mharc-dev@caliopen.local; Sun, 20 Mar 2016 23:12:03 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39496)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ahqG8-0005DN-Ql
+	for dev@caliopen.local; Sun, 20 Mar 2016 23:12:01 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ahqG5-0006ya-HM
+	for dev@caliopen.local; Sun, 20 Mar 2016 23:12:00 -0400
+Received: from pruche.dit.umontreal.ca ([132.204.246.22]:56075)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ahqG5-0006xa-BS
+	for dev@caliopen.local; Sun, 20 Mar 2016 23:11:57 -0400
+Received: from fmsmemgm.homelinux.net (lechon.iro.umontreal.ca
+	[132.204.27.242])
+	by pruche.dit.umontreal.ca (8.14.7/8.14.1) with ESMTP id u2L3BqGx020944;
+	Sun, 20 Mar 2016 23:11:52 -0400
+Received: by fmsmemgm.homelinux.net (Postfix, from userid 20848)
+	id 8B797AE240; Sun, 20 Mar 2016 23:11:52 -0400 (EDT)
+From: Stefan Monnier <monnier@IRO.UMontreal.CA>
+To: Vitalie Spinu <spinuvit@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+Message-ID: <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+Date: Sun, 20 Mar 2016 23:11:52 -0400
+In-Reply-To: <87a8lsd4j3.fsf@gmail.com> (Vitalie Spinu's message of "Mon, 21
+	Mar 2016 02:05:20 +0100")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 5
+X-NAI-Spam-Score: 0
+X-NAI-Spam-Rules: 1 Rules triggered
+	RV5616=0
+X-NAI-Spam-Version: 2.3.0.9418 : core <5616> : inlines <4536> : streams
+	<1606280> : uri <2170994>
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 132.204.246.22
+Cc: Alan Mackenzie <acm@muc.de>, emacs-devel <dev@caliopen.local>,
+	Dmitry Gutov <dgutov@yandex.ru>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 03:12:01 -0000
+Content-Length: 966
+Lines: 25
+
+> BTW, I parse-partial-sexp must abide hard-widen-limits as well.
+
+I don't understand what this means.  parse-partial-sexp is passed
+2 locations and it works between them.  There's not much opportunity
+for widening.
+
+But yes, syntax-ppss should obey hard-widen-limits.
+
+> A patch that would require hunting every single mode out there and
+> implementing multi-modes locally should have been more carefully
+> considered IMO.
+
+I must say I don't understand how what we have is so very different from
+what you suggest.  Of course, I fully agree on the need to deprecate
+indent-line-function and use a side-effect free replacement which
+returns the desired indentation (instead performing the indentation).
+
+I think both suggestions require changes to every mode, and in both
+cases the changes can be reduced to a one-liner or close enough (for
+the simple case).  Admittedly, for it to be a one-liner, we'll need to
+provide a standard helper function.
+
+
+        Stefan
+

@@ -1,0 +1,168 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 4C3071216C1;
+	Mon, 15 Dec 2014 18:25:19 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 0.001
+X-Spam-Level: 
+X-Spam-Status: No, score=0.001 tagged_above=-999 required=5
+	tests=[BAYES_50=0.001]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id szMVebRUNrct; Mon, 15 Dec 2014 18:25:17 +0100 (CET)
+Received: from smtp-out1.octopuce.fr (smtp-out1.octopuce.fr [91.194.60.153])
+	by mail4.gandi.net (Postfix) with ESMTP id ED2D91216BE;
+	Mon, 15 Dec 2014 18:25:16 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	by smtp-out1.octopuce.fr (Postfix) with ESMTPS id D2B8810300169;
+	Mon, 15 Dec 2014 18:25:16 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 5644E6B564311;
+	Mon, 15 Dec 2014 18:25:15 +0100 (CET)
+Received: from brasil.brainstorm.fr (brasil.brainstorm.fr [193.56.58.33])
+ by brassens.heberge.info (Postfix) with ESMTP id 8D8926B564311
+ for <caliopdev@caliop.net>; Mon, 15 Dec 2014 18:25:13 +0100 (CET)
+Received: by brasil.brainstorm.fr (Postfix, from userid 1000)
+ id 5FCB820C5F42F; Mon, 15 Dec 2014 18:25:13 +0100 (CET)
+Date: Mon, 15 Dec 2014 18:25:13 +0100
+From: Laurent Chemla <laurent@brainstorm.fr>
+To: caliopdev@caliop.net
+Message-ID: <20141215172513.GF23183@brasil.brainstorm.fr>
+MIME-Version: 1.0
+Content-Disposition: inline
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Subject: [Caliopdev] [benjamin@sonntag.fr: Fwd: ***UNCHECKED*** Caliopen FAQ]
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+----- Forwarded message from Benjamin Sonntag <benjamin@sonntag.fr> -----
+
+Salut Laurent,
+
+je te transmet les remarques de greg, avec qui on animera l'atelier =AB pri=
+vacy tools in the post-snowden era =BB ;) au 31C3
+
+pour action, aupr=E8s de je ne sais qui.
+
+bises,
+
+bs://
+
+
+
+-------- Forwarded Message --------
+Subject: 	***UNCHECKED*** Caliopen FAQ
+Date: 	Mon, 15 Dec 2014 18:16:36 +0100 (CET)
+From: 	Gregory Fabre <gfabre@resaction.com>
+To: 	Sonntag Benjamin <benjamin@sonntag.fr>
+
+
+
+*** Ce truc l=E0 dans la FAQ contredit quelque-chose que tu m'a dit
+
+> Will I be able to use Caliopen with Outlook or Gmail?
+> No, unless you're patient enough to let Microsoft or Gmail adopt Caliopen.
+
+Ca poppera dehors ou pas ?
+
+*** Par ailleurs
+
+> Each terminal declared by the user is graded according to its use (e.g. s=
+trictly personal, at home or as a public access within the enterprise), its=
+ type (a phone is necessarily less secure than a desktop PC, as it is much =
+easier to loose). When used for the first time, a non declared terminal rec=
+eives a note of zero.
+
+Mon iPhone sous iOS 8 est tout chiffr=E9, alors que tout ne l'est pas dans =
+mon ordi (je sais c'est mal, mais les choses importantes le sont).
+Par ailleurs pour l'ouvrir il faut mon doigt, alors qu'un mot de passe suff=
+it pour l'ordi.
+Et quand j'ouvre mon t=E9l=E9phone, personne ne voit mon mot de passe du co=
+up.
+
+*** Coquilles
+
+> In which ways is the human factor taken into account in CaliOpen? (in a d=
+evice usage context) De quelle mani=E8re est pris en compte le facteur huma=
+in dans l'utilisation de CaliOpen ?
+
+La traduction fran=E7aise est accol=E9e =E0 la version anglaise.
+
+> to give them back to another member of the assiocation in case of failure=
+), respect of users' privacy and
+
+
+association
+
+> contact nor of a senders white list (government, know online resellers..)=
+, in short a message that will likely have
+
+
+known
+
+> your "right to be offline" respected), you can only display only messages=
+ with a lower importance than a
+
+online r=E9p=E9t=E9
+
+> CaliOpen user interface is ment to display any type of private correspond=
+ance. Even though, for the time being,
+
+
+meant
+
+> private messages and so on), we are allready planning to be able to intro=
+duce over types of communicatoin
+
+other pas over
+
+> access a saticfying confidentiality level. He's private key is then store=
+d on its terminal: CaliOpen doesn't own it.
+
+His
+
+> Is sorting message by "recipient" instead of "by thread" hardcoded in the=
+ system (and as such not customizable) ? Will it be possible to sort by "Su=
+bject:" instead of by "To:" ?
+
+Pas indiqu=E9 comme question.
+
+> be labeled "work" if the associated contact is labeled himself to "work")=
+. In Caliopen main interface, clicking on
+
+is labeled himself to ? Gni ?
+
+> this service): if Caliopen //... je s=E8che sur MX ?// you will be able t=
+o create (or use) all the adresses @mydomain
+
+Ce pauvre traducteur ne comprenait pas Mail Exchanger :)
+
+-- =
+
+Gregory Fabre - @grrr - gpg 61F4D4C5
+gfabre@resaction.com - http://resaction.com
+
+
+
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev

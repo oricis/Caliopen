@@ -1,0 +1,79 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aiSbn-0001Vg-OT
+	for mharc-dev@caliopen.local; Tue, 22 Mar 2016 16:08:55 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:49795)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1aiSbk-0001UD-L5
+	for dev@caliopen.local; Tue, 22 Mar 2016 16:08:53 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <rms@gnu.org>) id 1aiSbj-0004tH-Rl
+	for dev@caliopen.local; Tue, 22 Mar 2016 16:08:52 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:34165)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1aiSbh-0004s7-8R; Tue, 22 Mar 2016 16:08:49 -0400
+Received: from rms by fencepost.gnu.org with local (Exim 4.82)
+	(envelope-from <rms@gnu.org>)
+	id 1aiSbg-00081O-OP; Tue, 22 Mar 2016 16:08:48 -0400
+Content-Type: text/plain; charset=Utf-8
+From: Richard Stallman <rms@gnu.org>
+To: Vitalie Spinu <spinuvit@gmail.com>
+In-reply-to: <8737risu8d.fsf@gmail.com> (message from Vitalie Spinu on Tue, 22
+	Mar 2016 11:05:38 +0100)
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+	<jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87pounew9e.fsf@gmail.com>
+	<jwva8lrx4ov.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzda4h.fsf@gmail.com> <jwvwpovwuip.fsf-monnier+Inbox@gnu.org>
+	<87lh5bd4ib.fsf@gmail.com> <87egb3ryjc.fsf@gmail.com>
+	<877fgusum3.fsf@gmail.com> <8737risu8d.fsf@gmail.com>
+Message-Id: <E1aiSbg-00081O-OP@fencepost.gnu.org>
+Date: Tue, 22 Mar 2016 16:08:48 -0400
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: monnier@IRO.UMontreal.CA, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: rms@gnu.org
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 22 Mar 2016 20:08:53 -0000
+Content-Length: 660
+Lines: 17
+
+[[[ To any NSA and FBI agents reading my email: please consider    ]]]
+[[[ whether defending the US Constitution against all enemies,     ]]]
+[[[ foreign or domestic, requires you to follow Snowden's example. ]]]
+
+  > > So the consumer will need to set this variable and always follow it by widen.
+
+In the context of Emacs -- or software, generally -- what does
+"consumer" mean?  One of the nice things about installing a program
+in your computer is that running it does not use it up.
+
+-- 
+Dr Richard Stallman
+President, Free Software Foundation (gnu.org, fsf.org)
+Internet Hall-of-Famer (internethalloffame.org)
+Skype: No way! See stallman.org/skype.html.
+
+

@@ -1,0 +1,139 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akbHW-0003Vm-L6
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 13:48:50 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:56107)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akbHR-0003VY-9K
+	for dev@caliopen.local; Mon, 28 Mar 2016 13:48:49 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akbHO-0000nQ-3J
+	for dev@caliopen.local; Mon, 28 Mar 2016 13:48:45 -0400
+Received: from plane.gmane.org ([80.91.229.3]:59152)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akbHN-0000nM-SR
+	for dev@caliopen.local; Mon, 28 Mar 2016 13:48:42 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akbFy-0008Db-Fj
+	for dev@caliopen.local; Mon, 28 Mar 2016 19:47:14 +0200
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 28 Mar 2016 19:47:14 +0200
+Received: from larsi by cm-84.215.1.64.getinternet.no with local (Gmexim 0.1
+	(Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 28 Mar 2016 19:47:14 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+Mail-Followup-To: dev@caliopen.local
+To: dev@caliopen.local
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: Thinking about changed buffers
+Date: Mon, 28 Mar 2016 19:31:07 +0200
+Organization: Programmerer Ingebrigtsen
+Message-ID: <m3bn5ya4ro.fsf@gnus.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: cm-84.215.1.64.getinternet.no
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAHlBMVEX7+vUgHRoLCQji3NSN
+	iIL////+//4JCAYHBgQEAgFEcs/RAAACSElEQVQ4jW2TPY/jIBCGZ4UvdVhzSk/jK0Gg1MaQ3JWR
+	snFtadf5AW5Ie6tIJu1V9r+9gcRJ1trxF8zjdz7AhsVhZi90AQIyOM78O5MfBRAD7QHeAcg7CAGC
+	rA9vVOAoc9DumHRLI53Nl8z8PJi8IQBaQbu3RubWaFvapdns6TbqLeZ4y6l0uXnJrMvpRrJ6AUSL
+	ChUbq9TWZoSoUgHd1qiwGcfkz5axRUNEJqoZqM3yAEShYAaw1maNGcwcyLxpCHHqdQb2+RZLyqzk
+	M4ACLCkJvoAPugEidBkFzwCX7wCKOKgSeKyupOsalCoz/lWhadkeG6HXFf+i0NTWbWzugz+DWtO8
+	3TWLuHzPgBhq2x8Ed87q4gYEKO2osfUO97DRtupuIN4oa9ojLrtAwYrfAKXMiYYcsVCCOyq7CQAs
+	oAGCh1K6zCYBx6lQRAhCiFAW7oII0PCDwbtTWcGLCbgIMC/Wpsiq53eF00kT/ary3vOu6K7AXd34
+	MH3nT2HqwzptnXP4CZkQTn03EewjdmKVe43+0BW+8N01VDLzK6D5vve9L/gd0FVI5gP3/nRNPn5+
+	Xp1DAsH7okuhwiVNw2R9z/0EcBbC5TIkPxZ1zTGOSE4hjOOk6booQTDiq0l2ugXz3PMCoh+vyzD2
+	U5aYPwIMPiC6h8JGQl+kUOlMAEtEAZbgIxhjLMeYcX/Nb4MDxlZJEW0wLpf6LI3UltknMFbaSnlm
+	TEqNv/YD/KuMo3/OZ2YqPFws9zJpYqrbAFuBh//JBiw3fAdwv/4D4BZXzkD5JOgAAAAASUVORK5C
+	YII=
+Mail-Copies-To: never
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:jTzgtpAAmdptRW3if2d5HHiBrY4=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 17:48:49 -0000
+Content-Length: 3124
+Lines: 66
+
+In conjunction with the wishlist item "`M-q' shouldn't say that the
+buffer hasn't changed when it hasn't", we started talking a bit about
+further issues about what it means that a buffer has changed or not.
+
+If you load a file, and then hit "a", and then delete the "a", then
+Emacs will say that the buffer has changed.  If you hit "a" and then
+`undo', Emacs will say that it hasn't.
+
+If there was a way to deal with this discrepancy, that would be very
+nice, I think.
+
+One idea that popped up is that whenever we mark a buffer as unchanged
+(that is, `(set-buffer-modified-p nil)', we save the byte size of the
+buffer and a cryptographic hash of the buffer.  Then `buffer-modified-p'
+would simply see whether either the size had changed, and if not,
+whether the hash had changed.  If both are identical, then the buffer
+hasn't changed.
+
+This would basically allow us to really tell the users "yes, your buffer
+is now back to the state it was when you loaded it".  I think that would
+be very nice.
+
+However, there are two problems:
+
+1) Speed.  When editing files normally, `buffer-modified-p' would be
+very fast, because buffers would change size, and we'd just be comparing
+the sizes and say "yup, changed".  If, however, you're somehow altering
+the buffer a lot but always returning to the same size, you'd have to
+compute the hash.  (On my five year old, the current implementation
+takes 2.7s on a 1GB buffer.)
+
+2) Text properties.  If you call `add-text-properties' on a buffer, the
+buffer becomes marked as changed.  The hashing function could look at
+the intervals, too, so that's not a problem, but many (most?) of the
+text properties are added by font locking mores with
+`with-silent-modifications', which means "no, no, these text properties
+here don't change the buffer".  But there's nothing in the text
+properties themselves that will reveal this after the fact, unless I'm
+reading the code incorrectly.
+
+�scar suggested that to deal with 2), Emacs should simply not regard
+text properties as changing the buffer at all, but I think there are
+various "rich text" modes that use text properties to generate the
+output file (i.e., you put "bold" on some text and it gets written out
+as <bold>).  I may be wrong about that.  Anybody know?
+
+Anybody have any thoughts on this issue?
+
+---------
+I feel the need to add this, given the way the discussion went in the
+`M-q' bug report, but let's hope it's unnecessary:
+
+(Let's take it as a given that, yes, you can create hash collisions, but
+that's irrelevant.  In normal, non-cryptographically-constructed text,
+the likelihood of two texts having the same MD5 hash is 10^-29 and for
+SHA1 it's 10^-39 (if I remember correctly), so it's Not Going To Happen
+and we don't need to have that discussions.  (And yes, you can construct
+MD5 collisions as fast as you want, but it. is. irrelevant.)  Sheesh.
+There's something about cryptography that brings out the most irrelevant
+stuff in some people.  If you want to discuss that part, please take it
+to emacs-tangents.)
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+
+
+

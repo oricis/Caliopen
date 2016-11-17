@@ -1,0 +1,109 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai6z7-0002fz-81
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 17:03:33 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:55395)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1ai6z4-0002aT-97
+	for dev@caliopen.local; Mon, 21 Mar 2016 17:03:31 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1ai6yz-0006RF-5J
+	for dev@caliopen.local; Mon, 21 Mar 2016 17:03:30 -0400
+Received: from userp1040.oracle.com ([156.151.31.81]:36457)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1ai6yy-0006Qe-Ta
+	for dev@caliopen.local; Mon, 21 Mar 2016 17:03:25 -0400
+Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
+	by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with
+	ESMTP id u2LL3IIn025926
+	(version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+	Mon, 21 Mar 2016 21:03:18 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+	by userv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u2LL3IbF019883
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
+	Mon, 21 Mar 2016 21:03:18 GMT
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+	by aserv0122.oracle.com (8.13.8/8.13.8) with ESMTP id u2LL3FWB020868;
+	Mon, 21 Mar 2016 21:03:16 GMT
+MIME-Version: 1.0
+Message-ID: <4e3e38d1-dd93-401e-8e54-c6e4396e17a9@default>
+Date: Mon, 21 Mar 2016 14:03:14 -0700 (PDT)
+From: Drew Adams <drew.adams@oracle.com>
+Sender: Drew Adams <drew.adams@oracle.com>
+To: Alan Mackenzie <acm@muc.de>, Vitalie Spinu <spinuvit@gmail.com>
+Subject: RE: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87fuvjeq9g.fsf@gmail.com> <20160321203358.GB3641@acm.fritz.box>
+In-Reply-To: <20160321203358.GB3641@acm.fritz.box>
+X-Priority: 3
+X-Mailer: Oracle Beehive Extensions for Outlook 2.0.1.9  (901082) [OL
+	12.0.6744.5000 (x86)]
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+X-Source-IP: userv0021.oracle.com [156.151.31.71]
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.4.x-2.6.x [generic]
+X-Received-From: 156.151.31.81
+Cc: emacs-devel <dev@caliopen.local>,
+	Stefan Monnier <monnier@iro.umontreal.ca>, Dmitry Gutov <dgutov@yandex.ru>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 21:03:31 -0000
+Content-Length: 1737
+Lines: 42
+
+> Reading some of the posts on emacs-devel today, it strikes me that
+> narrowing might be the wrong tool for marking the boundaries of distinct
+> regions where different major modes are in effect.  It seems to cause
+> nothing but trouble.
+>
+> I don't know what the right tool is, and it may not currently exist
+> in Emacs.  But it might be a good use of time to work out what
+> properties such boundary markers ought to have, and if necessary,
+> to implement them.
+
+Indeed.  Just what properties do you need for "such boundary
+markers"?
+
+What's wrong with using _markers_ to mark area boundaries?
+(That's what I use in library zones.el, for example.)
+
+What's wrong with using text properties to mark areas?
+(That's what I use in library isearch-prop.el, for example.)
+
+I haven't been following this thread except for scanning it,
+so I don't really know what the need is for messing with
+narrowing (or for defining another, "harder" narrowing).
+
+I'm just hoping that at the end of the day our age-old
+narrowing feature will at least remain as it has been, for
+both programs and interactive use.
+
+(It doesn't give me confidence, a priori, to have seen that
+at least one developer involved expressed little understanding
+of how users and programs actually use narrowing, thinking
+that narrowing is only for hiding text you do not want to see.)
+
+How about a bit of a spec (description, summary) of what you
+really need?  It's not even clear what the problem is that you
+are trying to solve.
+
+Look at the Subject line of this thread, and that of the bug
+thread that this one derived from, and that of the other
+derived thread, for the patch "hard-widen-limits".  Do they
+really characterize what this is all about: the problem to be
+solved?
+

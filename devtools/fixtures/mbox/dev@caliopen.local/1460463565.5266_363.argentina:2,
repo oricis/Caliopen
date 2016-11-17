@@ -1,0 +1,79 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai0NI-0002xN-Dh
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 10:00:04 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:34920)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1ai0NC-0002vh-GK
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:00:02 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1ai0N9-0005jG-Ag
+	for dev@caliopen.local; Mon, 21 Mar 2016 09:59:58 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:45790)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1ai0N9-0005i8-4c
+	for dev@caliopen.local; Mon, 21 Mar 2016 09:59:55 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>)
+	id 1ai0Mu-0002h2-CI; Mon, 21 Mar 2016 14:59:46 +0100
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Checking in files with trailing white space
+References: <m3fuvljolx.fsf@gnus.org>
+	<jwvshzkx9jc.fsf-monnier+gmane.emacs.devel@gnu.org>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAGFBMVEVuc3EWExY8PkSVnZRK
+	TVEyLzkmIy1ZXV4nyH3dAAACKUlEQVQ4jU2TwWorMQxFDVOYdTbzAcJ+3RbyA0Xo4b2pve8De22K
+	wb//rmQn6YSQic5c6UrWOHfc73fn5uDc0qfrDtcKPQG16g/3Au5+4O8U9n9resfd1LgqDgWDWThn
+	P2fvCj5U+aECL34QeZnT3Q10Z5mYEA3Zx2kCpJrmYwhRYs5QdIsfbpqPSTklDyrjUdsETkLImeAs
+	xv4bTIDyz8tgie7+G/yE0jKxiI/HMmU1+uRcWk3wuk0p6Nosl9Za8nNsUwqmfim3qyV+KpDmDfFT
+	qLSrJn6117VGn0Lt+6ap+hqtKk584BbgquTjAh94/jyRCeAGkJ6jOqfr55xxgaYzRLbDFDAyBpVv
+	VRhYuaCYJ451AY3HB4BimbrBFsBWwNN8gylVLInYCVrnMqz27QLQ1nV6Wh7FJajg1tqXNjxQRyeO
+	OIeywDvA2W2zXJQZKRu4atSu1sa5T1NYqguuhl9n7aAYP5wX+CIcesfKoHs3Y+QNGpY3jjjI8+fh
+	RhSxiSj5isJwPwa6wa/f4EoBVcSSiQPlDbAOiIugeyGHG94TaTmQYFxYbgJgz6Fthe6iPABq7/4a
+	DkQ0A+LJ4ZbCbjzn5PVpSoEcfrCeS5Gx2BbXVMQU/rTVRlXAeBnCUuT6vWtUPIsSIakiUHqkqiog
+	vCm4HGAuj1FVzbYuKMIGFxa+5SdIOa9MRixWDNQXaOsqJnSllvoLVCV1Kcqa1K6hQbhQRdvgkcqE
+	+T+VjQqyDOdlyAAAAABJRU5ErkJggg==
+Date: Mon, 21 Mar 2016 14:59:39 +0100
+In-Reply-To: <jwvshzkx9jc.fsf-monnier+gmane.emacs.devel@gnu.org> (Stefan
+	Monnier's message of "Mon, 21 Mar 2016 09:10:30 -0400")
+Message-ID: <m337rkszhw.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 14:00:02 -0000
+Content-Length: 493
+Lines: 18
+
+Stefan Monnier <monnier@iro.umontreal.ca> writes:
+
+> How 'bout you don't store files with trailing whitespace, but instead
+> store files which contain code which creates those trailing whitespaces.
+> E.g.
+>
+>   (ert-deftest ...
+>     (with-temp-buffer
+>       (insert "foo   ")
+>       <dosomething>))
+
+Having the test and result files be HTML and text files is much easier
+to work with.
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

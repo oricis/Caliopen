@@ -1,0 +1,87 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ajCn1-0005Jw-13
+	for mharc-dev@caliopen.local; Thu, 24 Mar 2016 17:27:35 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39497)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ajCmy-0005HN-4P
+	for dev@caliopen.local; Thu, 24 Mar 2016 17:27:32 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ajCmu-0001dm-Uy
+	for dev@caliopen.local; Thu, 24 Mar 2016 17:27:32 -0400
+Received: from plane.gmane.org ([80.91.229.3]:52380)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ajCmu-0001b9-O1
+	for dev@caliopen.local; Thu, 24 Mar 2016 17:27:28 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ajCms-0000cW-1v
+	for dev@caliopen.local; Thu, 24 Mar 2016 22:27:26 +0100
+Received: from 69-196-182-150.dsl.teksavvy.com ([69.196.182.150])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Thu, 24 Mar 2016 22:27:26 +0100
+Received: from monnier by 69-196-182-150.dsl.teksavvy.com with local (Gmexim
+	0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Thu, 24 Mar 2016 22:27:26 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+Date: Thu, 24 Mar 2016 17:27:19 -0400
+Message-ID: <jwvh9fvfu8n.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <56F42269.10400@gmail.com>
+	<jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<E16BD3EC-F7ED-463C-804C-DCBA8E548B15@lunaryorn.com>
+	<jwvshzffwix.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<05663DCE-3E5B-41E2-8657-460B2D013B49@lunaryorn.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 69-196-182-150.dsl.teksavvy.com
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:XcoOG8qBnPyXJTTuebhsCs2qJBo=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 24 Mar 2016 21:27:32 -0000
+Content-Length: 1023
+Lines: 25
+
+>>>> I never liked it, but admittedly, I never complained about it.
+>>> May I ask why you do not like this behaviour? What stands against it?
+>> That's just a leak of private information.
+> I must admit that I find it hard to agree.  I do not see how the OS,
+> or the Emacs version, or  the combination of both could be used to
+> identify you as a person.
+
+Your medical records are considered private information, not because
+they would allow someone to identify you, but because they say things
+about you which not everyone should know.
+
+> And even if it could, doesn't it pale beside the information that is
+> necessarily send to the archive (e.g. your IP, a partial list of the
+> packages you're using, etc.)?
+
+AFAIK we don't send a partial list of the packages we're using.
+
+> I think that our desire as package maintainers to learn how and where
+> their packages are used is legitimate.
+
+Of course.  But being legitimate doesn't trump other concerns.  It has
+to be weighed against the consequences.
+
+
+        Stefan
+
+

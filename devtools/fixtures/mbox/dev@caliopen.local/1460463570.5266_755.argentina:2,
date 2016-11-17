@@ -1,0 +1,104 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amrIV-0002TF-JL
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 19:19:11 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:38134)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrIS-0002Su-VO
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:19:09 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrIP-0001jz-Oo
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:19:08 -0400
+Received: from mail-ob0-x234.google.com ([2607:f8b0:4003:c01::234]:36468)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrIP-0001jv-Jb
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:19:05 -0400
+Received: by mail-ob0-x234.google.com with SMTP id j9so39489995obd.3
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 16:19:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=aowT5yQsdPMmFRbSK6hPwdkGPzClhKk7g3k/hK+yGS4=;
+	b=K3IOryfuswmnhgjkQe7SoR49TdgXyyI5nQgikDENEP1YNgHt6jawa6WKUXUQlWeVl4
+	4h0PApEXoUT/fZEOKXoiMCt2W2PskVJx/CsIqwI2nhkU5TiplCTOqtSgNMpn87k+e/fr
+	rnPYEj2QgWT4DinHEB3JH0qF+Hpd011sWiu6bE1IcPtUwOealSe7YPGaUQ5QUxEJCObN
+	YoxGEeJLPJCgC5X89WquJ3bFQlSaz7W/mX+AzA09t5g5aFNs8Bkzg5L/jUCMPUnrG3sq
+	GULH6xnYUWxzJWtnE/xsL69OKjU3avI6BY+xkmqWwksLlkJNW/IokWJxztHUB8txjF9H
+	jVfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=aowT5yQsdPMmFRbSK6hPwdkGPzClhKk7g3k/hK+yGS4=;
+	b=CiTgdiZju9PMWM6jt06FmJvubn7zTn1ZS7zLh2Eb3/D42T+b3iwtkvZRI+ad/r0Xxn
+	MaVIqISQtIzDEqO3G5i0PHhbNZ90m6kpQaETPxj4ky2zcrSOk1GmsoJ9XZV7r26fWuCb
+	e73LbI3mHLO0UcPuzOJqZggFS2tTWNwQ00U2VjozNj7Hz7Y9hMoZuxo2iQAi6UlOsvJB
+	3Dc+lf730e8A9WWtS5LUcMcudhKL07JLbfzhP9mvdsHKZZNiS9aRZVK2lGDSbI/GKtq8
+	sMCQnmQd7qbUsVm/AY8VkGz8cUK7btKYwgUGP+Y0e35RI7/1MlehgQopHgZVunRk5QhB
+	wHtQ==
+X-Gm-Message-State: AD7BkJL3HLk5te86jemSh3XM98GRBLgOqcRRCSGCpc3rJpiY9bxBlUUV2NkqT+IcSuIOdw==
+X-Received: by 10.60.138.9 with SMTP id qm9mr2629978oeb.80.1459725545031;
+	Sun, 03 Apr 2016 16:19:05 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79]) by smtp.gmail.com with ESMTPSA id
+	cq5sm7485869oeb.10.2016.04.03.16.19.03
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 16:19:04 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id 2C7B813DAE512; Sun,  3 Apr 2016 16:19:03 -0700 (PDT)
+To: Paul Eggert <eggert@cs.ucla.edu>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+In-Reply-To: <570176DF.1060207@cs.ucla.edu> (Paul Eggert's message of "Sun, 3
+	Apr 2016 13:02:39 -0700")
+Date: Sun, 03 Apr 2016 16:11:27 -0700
+Message-ID: <m28u0uffts.fsf@newartisans.com>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<56FE1882.9030904@cs.ucla.edu> <20160403120300.GB3537@acm.fritz.box>
+	<8760vy6gfi.fsf@Rainer.invalid>
+	<jwvinzykcdn.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<871t6m5zjq.fsf@Rainer.invalid> <87wpoey1ij.fsf@linux-m68k.org>
+	<570176DF.1060207@cs.ucla.edu>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: Paul Eggert <eggert@cs.ucla.edu>, Andreas Schwab
+	<schwab@linux-m68k.org>, emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c01::234
+Cc: Andreas Schwab <schwab@linux-m68k.org>, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 23:19:10 -0000
+Content-Length: 915
+Lines: 19
+
+>>>>> Paul Eggert <eggert@cs.ucla.edu> writes:
+
+> Rebasing makes sense for Alan's use case. He was working on the fix anyway,
+> so retesting was not that big a deal for him. Conversely, he's more of an
+> Emacs expert than a Git expert and merge conflicts are more of an hassle for
+> him. This particular case did not benefit much from the advantages of
+> merging over rebasing; quite the contrary.
+
+I agree that when working on a focused change, like a bug fix, that rebasing
+is much more preferable, as it avoids these unnecessary merge commits.
+
+However, we can't reasonably make this a requirement, because Git makes it
+very different to "get things right", nor do you always want rebasing if your
+feature work is longer than an easily retested commit-or-two.
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

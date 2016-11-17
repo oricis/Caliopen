@@ -1,0 +1,122 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ammZ0-0002MT-Ig
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 14:15:54 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:42786)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ammYw-0002LS-UO
+	for dev@caliopen.local; Sun, 03 Apr 2016 14:15:51 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ammYr-00008v-Ug
+	for dev@caliopen.local; Sun, 03 Apr 2016 14:15:50 -0400
+Received: from plane.gmane.org ([80.91.229.3]:38383)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ammYr-00008r-Nt
+	for dev@caliopen.local; Sun, 03 Apr 2016 14:15:45 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ammYp-0003yJ-JX
+	for dev@caliopen.local; Sun, 03 Apr 2016 20:15:43 +0200
+Received: from p54b46f42.dip0.t-ipconnect.de ([84.180.111.66])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 20:15:43 +0200
+Received: from Stromeko by p54b46f42.dip0.t-ipconnect.de with local (Gmexim
+	0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 20:15:43 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Achim Gratz <Stromeko@nexgo.de>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+Date: Sun, 03 Apr 2016 20:15:37 +0200
+Organization: Linux Private Site
+Message-ID: <871t6m5zjq.fsf@Rainer.invalid>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<56FE1882.9030904@cs.ucla.edu> <20160403120300.GB3537@acm.fritz.box>
+	<8760vy6gfi.fsf@Rainer.invalid>
+	<jwvinzykcdn.fsf-monnier+gmane.emacs.devel@gnu.org>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: p54b46f42.dip0.t-ipconnect.de
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+Cancel-Lock: sha1:yusADGqyRhq4GCuVSWcvRESH04Q=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 18:15:52 -0000
+Content-Length: 2452
+Lines: 60
+
+Stefan Monnier writes:
+>>> It was git that prepared the merge, not me.
+>> Blaming the tools?
+>
+> Yes.  Git makes it all too easy here to create such annoying merge
+> commits, and if you don't have enough experience with Git you won't
+> even notice it.
+
+Git actually stopped and asked to fix the conflicts I must assume.  I
+don't know which Git version Alan is using under what localization, but
+here an intentionally created merge conflict will create this message
+(I've set LC_MESSAGES=POSIX to avoid the localization):
+
+Auto-merging lisp/net/tramp-sh.el
+CONFLICT (content): Merge conflict in lisp/net/tramp-sh.el
+Automatic merge failed; fix conflicts and then commit the result.
+
+Note that nothing there even suggests you should do a manual merge,
+which is what Alan tells us he has done (I don't know if that's what he
+did).
+
+> But even if you do notice it, it can be pretty challenging to fix it
+> after the fact, or to avoid it before the fact.
+
+Either of
+
+git merge --abort
+git --reset merge
+
+would have put you back on square one to try again.  Also, based on what
+Alan said I believe there was just a single conflict, which would
+presumably have been easy to fix and commit.  And there's alway the
+possibility to branch just before any operation you think might fail
+(and if you forgot to do that there's the reflog).
+
+> It's not just that Git is a sharp tool here: in this instance, it makes
+> it easy to do the wrong thing, and hard to do the right thing.
+
+I don't think so.  For an upstream-tracking branch rebase=true should be
+the default.  For feature-branches that merge from some other branch,
+you can still rebase, but should preserve the merges from the other
+branch (rebase=preserve).  Both settings can be made the default on a
+per-branch basis to save you the bother of typing and remebering.
+
+I'd like to recommend again to anyone using a DVCS to just play around
+with a few throwaway clones of a reasonably sized repository.  Once you
+think that you understand what's going on, try to break things:
+introduce conflicts, delete files from the worktree, commit to the wrong
+branch, whatever.  Then find out what exactly broke and how to fix it.
+This doesn't take all that long, about an hour or two should cover a lot
+of ground already.
+
+
+Regards,
+Achim.
+-- 
++<[Q+ Matrix-12 WAVE#46+305 Neuron microQkb Andromeda XTk Blofeld]>+
+
+SD adaptation for Waldorf rackAttack V1.04R1:
+http://Synth.Stromeko.net/Downloads.html#WaldorfSDada
+
+

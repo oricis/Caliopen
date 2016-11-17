@@ -1,0 +1,120 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amxhr-000693-67
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 02:09:47 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:37968)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1amxhl-0005zJ-U6
+	for dev@caliopen.local; Mon, 04 Apr 2016 02:09:45 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1amxhi-00013E-3x
+	for dev@caliopen.local; Mon, 04 Apr 2016 02:09:41 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:51666)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1amxhh-000139-Sx
+	for dev@caliopen.local; Mon, 04 Apr 2016 02:09:38 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>) id 1amxhc-00060m-4R
+	for dev@caliopen.local; Mon, 04 Apr 2016 08:09:36 +0200
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: dev@caliopen.local
+Subject: Re: "Staying in the same place"
+References: <m3oa9q53uq.fsf@gnus.org>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAD1BMVEX+AA+Qb6f/AAAL8frw
+	EDRIFBcCAAACXklEQVQ4jV1Ti5XcMAiUdSrArFSATFTAEVyAPvRfUwb5bnOJ39u3tkYMMAwhvJ80
+	/r6pBn4/bb1fDYCZxeer5tcbyBuYXxEqWT+f13+AD8UjCcf/AdkBvdmG9bGB/cxrn+tvAMUOB3qy
+	bmku8FCsJZqV3nKwTWYp+vVRWAu+UeGm6t0aelIzFdVCxLyCJWtO5Uw3frhAFPn6St4OBJBmFRT3
+	uiY3RAyiXDzAhIjw9VqQAFpleQolJIUaXM98fgEZhyMTfXV65nsDqgsUu0oouZUqD0BjqzQ8ogPo
+	hR6gn7skKhIbsNoN9TpQthxDUi7O1uqSCaBqYQh4Z2mkPqrAGSMLpYlZUhIAlkHOkQc0C3lAtkk3
+	mm5m9EJdNZMDt5+kBaDaXLLLFQMgKjGZV8xjNjcEMpYYILSc4MBgBy4u9ParjBsAQW7DnHHDiBta
+	yCLCiMC/2VUATfQOLkhBTpU1l14BCh8nr093BU0AS5fECk+c3ISveyFCygaK9lmTRdDPy4eAJ7h8
+	d7azgq/j/vXYQQG8GL4elqUMTI18Aig+oA1ubqyltmACGAJUAMhLSMcJY9G4IYfbAYfBrUx0QCgt
+	QztJBIjDsKvWnrvp3b0QiFh81RoJej7HC9knLmG2ww0V2KhXvWtB9jNjmp7Gc0S2DgfNA8rfS6D6
+	4SrtrU1V9bNhi+QDKtZnsxyoCcXHBOqjeMA22t7zfl6oBsDoexW/qTjxL2S54Dm0jsTlO6JGrLJw
+	yvDbOPSdAx5bLp3BiK1cZ96dx587PhnLxMslDvMHQM9+XLvB1xsY29JuOF+xP6y7tHae4BG4AAAA
+	AElFTkSuQmCC
+Date: Mon, 04 Apr 2016 08:09:31 +0200
+In-Reply-To: <m3oa9q53uq.fsf@gnus.org> (Lars Magne Ingebrigtsen's message of
+	"Mon, 04 Apr 2016 07:40:13 +0200")
+Message-ID: <m3inzx6h2c.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 06:09:45 -0000
+Content-Length: 2446
+Lines: 60
+
+Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+
+> I wonder if anybody has thought about the issue in a more general way --
+> by providing a mechanism to save (perhaps a lot) of context, and then
+> trying to go back to the same context again after regenerating the
+> buffer, in a ... fuzzy way.
+
+Thinking about this a bit more, I think it's difficult to see a way to
+do this generally without support from each mode.  However:
+
+In general, if the buffer reflects things that don't really change a
+lot, just recording the current line (and the next and previous ten
+lines, say), would DWIM.
+
+For buffers where there is a strong "identity" (say, file names in dired
+and bug numbers in debbugs mode), the mode could provide a way to give
+those identities to `revert-buffer' (and a way to restore point).
+
+Take compilation modes, for instance.  Let's say there's a variable
+`revert-buffer-context-function'.  The mode would return a list of error
+points...
+
+make -k 
+  CC       vm-limit.o
+  CC       dispnew.o
+  CC       frame.o
+frame.c: In function 'x_set_frame_parameters':
+frame.c:3296:25: warning: 'height' may be used uninitialized in this function [-Wmaybe-uninitialized]
+frame.c:3296:25: warning: 'width' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  CC       scroll.o
+  CC       xdisp.o
+xdisp.c: In function 'move_it_in_display_line_to':
+xdisp.c:8556:13: warning: 'closest_pos' may be used uninitialized in this function [-Wmaybe-uninitialized]
+xdisp.c: In function 'display_line':
+xdisp.c:20348:8: warning: 'max_bpos' may be used uninitialized in this function [-Wmaybe-uninitialized]
+ ...
+
+The list would perhaps be '("^frame.c:3296:" "^xdisp.c:8556:" ...).
+`revert-buffer' would then basically do
+
+(let ((context (funcall revert-buffer-context-function)))
+  (funcall revert-buffer-function)
+  (revert-buffer-restore-point context))
+
+which would use those regexps to put point somewhere DWIM-ey.  And there
+could be a `revert-buffer-restore-point-function' variable, too, if the
+mode needs a more specialised way to use the context.
+
+Of course, the this specific example, this wouldn't work, since
+compilation is asynchronous, but the compilation mode could just use the
+context itself from the filter.  Or the sentinel.  Or something.
+
+Hm...
+
+But I think this approach might work for many modes...  perhaps...
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

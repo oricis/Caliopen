@@ -1,0 +1,84 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1apWsZ-00069Y-9w
+	for mharc-dev@caliopen.local; Mon, 11 Apr 2016 04:07:27 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:33146)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <nicolas@petton.fr>) id 1apWsW-00066E-OX
+	for dev@caliopen.local; Mon, 11 Apr 2016 04:07:25 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <nicolas@petton.fr>) id 1apWsR-0007yO-Ip
+	for dev@caliopen.local; Mon, 11 Apr 2016 04:07:24 -0400
+Received: from out3-smtp.messagingengine.com ([66.111.4.27]:53060)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <nicolas@petton.fr>) id 1apWsR-0007vt-En
+	for dev@caliopen.local; Mon, 11 Apr 2016 04:07:19 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.nyi.internal (Postfix) with ESMTP id 2BC5E208CD
+	for <dev@caliopen.local>; Mon, 11 Apr 2016 04:07:17 -0400 (EDT)
+Received: from frontend2 ([10.202.2.161])
+	by compute3.internal (MEProxy); Mon, 11 Apr 2016 04:07:17 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+	messagingengine.com; h=content-type:date:from:message-id
+	:mime-version:subject:to:x-sasl-enc:x-sasl-enc; s=smtpout; bh=4z
+	TDDOchdej5NaVfUZ2IM+wF7ik=; b=ce9GUQ2jijMS1oI/QpRQWdBRrR1XQ27cir
+	9q4bmlFt4A19VP6W+TwbWRdMAUpak8/UgByXlzzdpiLrVYTqnI5kPw+fH/JDMz+M
+	Ksss3N89Si/C4Gm6j5kU1nMcl0OuSwgSzEojdN/WwS1/Oy92xyyjXaiJjppNYQBU
+	vJPWMs2o8=
+X-Sasl-enc: QL8V6UXyCDmrNYeYa4pCV1NeA97vLK5RVcjhxHptND0M 1460362036
+Received: from blueberry (89-156-196-194.rev.numericable.fr [89.156.196.194])
+	by mail.messagingengine.com (Postfix) with ESMTPA id AF11F680174
+	for <dev@caliopen.local>; Mon, 11 Apr 2016 04:07:16 -0400 (EDT)
+From: Nicolas Petton <nicolas@petton.fr>
+To: dev@caliopen.local
+Subject: Windows pretest builds
+User-Agent: Notmuch/0.21 (http://notmuchmail.org) Emacs/25.0.92.2
+	(x86_64-unknown-linux-gnu)
+Date: Mon, 11 Apr 2016 10:07:15 +0200
+Message-ID: <87twj8k1qk.fsf@petton.fr>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha256; protocol="application/pgp-signature"
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 66.111.4.27
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 11 Apr 2016 08:07:25 -0000
+Content-Length: 742
+Lines: 28
+
+--=-=-=
+Content-Type: text/plain
+
+Hi guys,
+
+I just pushed Phillip Windows pretest builds at
+http://alpha.gnu.org/gnu/emacs/windows/
+
+Cheers,
+Nico
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+Comment: GPGTools - http://gpgtools.org
+
+iQEcBAEBCAAGBQJXC1szAAoJECM1h6R8IHkQ/T8H/0wMyJY3+E2VY94Mp4F0nDAY
+I6cguBfRrXo16vY+GJ1luuC3n6mz9D5XmFuW/Ms/s/1CVIkMnQqUlCFT4VeSe3t2
+dyqvAiXhd3qqNLxLARn6/ifrNM2l0N6crtFj7nwfAxnJajildQZJ+q+GDzhLPUZz
+7o2Cepu5RS8UtBJZqKoXifDSOmJW9dCYSJOlPPzSGQtrdS//Ma4/XVd8AwShaeYY
+TImhElsNnNDjnYV9aLywotzxZZLZpwSx0g5jW/EyF0f+Rc3QdF/50KILCnF/qHZO
+2Mi8rdd6il9yC4Q6ctw7GAOMly5EXRxOI4wxBxAeM1sVNjaM+rEjCtV/qmNoSC4=
+=Rf6V
+-----END PGP SIGNATURE-----
+--=-=-=--

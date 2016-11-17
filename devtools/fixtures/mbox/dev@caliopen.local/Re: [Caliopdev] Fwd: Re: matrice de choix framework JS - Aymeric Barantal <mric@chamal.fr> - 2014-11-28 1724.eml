@@ -1,0 +1,250 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 1B202120A73;
+	Fri, 28 Nov 2014 17:24:07 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -0.411
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.411 tagged_above=-999 required=5
+	tests=[BAYES_00=-2.599, HTML_40_50=0.496, HTML_MESSAGE=0.001,
+	RATWARE_GECKO_BUILD=1.691]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id HTg1Tv8+HPrZ; Fri, 28 Nov 2014 17:24:05 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 04C5E120A32;
+	Fri, 28 Nov 2014 17:24:04 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 9361A6B38672C;
+	Fri, 28 Nov 2014 17:24:04 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 5DxIRjSeVXHt; Fri, 28 Nov 2014 17:24:03 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 54E5069EA9685;
+	Fri, 28 Nov 2014 17:24:03 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id A8CD26AACB827
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:24:01 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id ybZddN5OH1jU for <caliopdev@caliop.net>;
+ Fri, 28 Nov 2014 17:24:00 +0100 (CET)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
+ [217.70.183.196])
+ (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id BBB8F69EA9685
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:24:00 +0100 (CET)
+Received: from [IPv6:2001:4b98:beef:a:d0d8:9686:95da:ec1f] (unknown
+ [IPv6:2001:4b98:beef:a:d0d8:9686:95da:ec1f])
+ (Authenticated sender: mric@chamal.fr)
+ by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 9E1901720EB
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:24:00 +0100 (CET)
+Message-ID: <5478A1AB.3020404@chamal.fr>
+Date: Fri, 28 Nov 2014 17:24:11 +0100
+From: Aymeric Barantal <mric@chamal.fr>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64;
+ rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To: caliopdev@caliop.net
+References: <547453AE.70408@chamal.fr> <547457A9.9070801@chamal.fr>
+ <5475EC1E.4010603@chamal.fr> <20141126224605.GH8770@brasil.brainstorm.fr>
+ <CA+tgzei=imZu9xfDGJuVYiXzgOqEo=kBVojf-16uo-gBheEjow@mail.gmail.com>
+ <5476E9CF.70601@albancrommer.com>
+ <e58b3dee04100f500d35b49b5a10ec71@cozycloud.cc> <547706E2.4030805@gandi.net>
+ <8bdc1ae7396c65d043e516cd97c1b6da@cozycloud.cc>
+ <20141127192529.GA1819@tao.gandi.net> <54778C34.90802@gandi.net>
+ <54784A99.3020306@chamal.fr> <54785B09.9010402@gandi.net>
+ <54788421.1040800@gandi.net> <547893DE.20601@albancrommer.com>
+In-Reply-To: <547893DE.20601@albancrommer.com>
+Subject: Re: [Caliopdev] Fwd: Re: matrice de choix framework JS
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============1966287538=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+This is a multi-part message in MIME format.
+--===============1966287538==
+Content-Type: multipart/alternative;
+ boundary="------------000408080501080009050600"
+
+This is a multi-part message in MIME format.
+--------------000408080501080009050600
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+
+On 11/28/2014 04:25 PM, Alban Crommer wrote:
+> Je trouve cette discussion fort int�ressante.
+>
+> N�anmoins, Aymeric a bien pr�cis� il me semble que l'architecture de 
+> Caliopen exclut Node et le JS server side. Il me semble d'ailleurs que 
+> �a fait partie des crit�res �nonc�s dans la matrice de choix ?
+Ce n'est pas totalement exclu, juste il me faut en comprendre les 
+raisons avant de rajouter cette couche node cote deploiement serveur.
+
+NDLR: c'est pas la panacee l'automatisation et l'installation de toutes 
+ces javascripteries cote serveur (node, npm and consorts)
+
+NDLpasR: que l'abruti de chez npm qui a decide de faire l'install en 
+"wget un install.sh | sh" se presente, ca sera un certain
+nombre de paires de baffes que je lui distriburais avec grand plaisir.
+
+> J'aimerai -personnellement- une architecture avec Python en API "pure" 
+> (ie. non HTML) r�utilisable comme une brique int�grable.
+L'API c'est un module a charger dans un conteneur a faire du http en 
+python (pyramid), on peut enlever facilement
+le module de base qui genere les pages HTML (/ pour le moment).
+
+>
+> Avec un serveur HTTPS en NodeJS isomorphe � la pointe pour servir un 
+> frontend r�actif et r�silient.
+Why not, mais bon s'il s'agit de fournir une page html preremplie pour 
+eviter les roundtrips
+cote browser et le phenomeme page blanche longue a s'afficher, un 
+template et c'est bon.
+
+Je rejoins Joseph sur le cote optimisation, et nous avons d'autres 
+priorites sauf si l'on arrive
+a me convaincre que l'on gagne en developpement en demarrant de la 
+sorte, promi je ne
+suis pas totalement reticent ;)
+
+>
+> Mais je comprends bien que �a ne soit pas optimal, car -encore plus- 
+> long � r�aliser.
+
+Ou pas, il semble plus facile de trouver des developpeurs ayant cette 
+competence
+et l'envie que dans le monde python, ca peut aider a decider sur la 
+techno pour cette partie.
+
+>
+> Note/Rappel : est-ce que les d�vs cal�s en JS qui ont rejoint la 
+> discussion ont vu (et rempli) la matrice de choix de framework ?
+pas encore tout le monde, merci de la piqure de rappel :))
+
+
+++ chamal
+
+--------------000408080501080009050600
+Content-Type: text/html; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=windows-1252"
+      http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    <div class="moz-cite-prefix">On 11/28/2014 04:25 PM, Alban Crommer
+      wrote:<br>
+    </div>
+    <blockquote cite="mid:547893DE.20601@albancrommer.com" type="cite">
+      <meta content="text/html; charset=windows-1252"
+        http-equiv="Content-Type">
+      <div class="moz-cite-prefix">Je trouve cette discussion fort
+        int�ressante.<br>
+        <br>
+        N�anmoins, Aymeric a bien pr�cis� il me semble que
+        l'architecture de Caliopen exclut Node et le JS server side. Il
+        me semble d'ailleurs que �a fait partie des crit�res �nonc�s
+        dans la matrice de choix ?<br>
+      </div>
+    </blockquote>
+    Ce n'est pas totalement exclu, juste il me faut en comprendre les
+    raisons avant de rajouter cette couche node cote deploiement serveur.<br>
+    <br>
+    NDLR: c'est pas la panacee l'automatisation et l'installation de
+    toutes ces javascripteries cote serveur (node, npm and consorts)<br>
+    <br>
+    NDLpasR: que l'abruti de chez npm qui a decide de faire l'install en
+    "wget un install.sh | sh" se presente, ca sera un certain<br>
+    nombre de paires de baffes que je lui distriburais avec grand
+    plaisir.<br>
+    <br>
+    <blockquote cite="mid:547893DE.20601@albancrommer.com" type="cite">
+      <div class="moz-cite-prefix"> J'aimerai -personnellement- une
+        architecture avec Python en API "pure" (ie. non HTML)
+        r�utilisable comme une brique int�grable. <br>
+      </div>
+    </blockquote>
+    L'API c'est un module a charger dans un conteneur a faire du http en
+    python (pyramid), on peut enlever facilement<br>
+    le module de base qui genere les pages HTML (/ pour le moment).<br>
+    <br>
+    <blockquote cite="mid:547893DE.20601@albancrommer.com" type="cite">
+      <div class="moz-cite-prefix"> <br>
+        Avec un serveur HTTPS en NodeJS isomorphe � la pointe pour
+        servir un frontend r�actif et r�silient.<br>
+      </div>
+    </blockquote>
+    Why not, mais bon s'il s'agit de fournir une page html preremplie
+    pour eviter les roundtrips<br>
+    cote browser et le phenomeme page blanche longue a s'afficher, un
+    template et c'est bon.<br>
+    <br>
+    Je rejoins Joseph sur le cote optimisation, et nous avons d'autres
+    priorites sauf si l'on arrive<br>
+    a me convaincre que l'on gagne en developpement en demarrant de la
+    sorte, promi je ne<br>
+    suis pas totalement reticent ;)<br>
+    <br>
+    <blockquote cite="mid:547893DE.20601@albancrommer.com" type="cite">
+      <div class="moz-cite-prefix"> <br>
+        Mais je comprends bien que �a ne soit pas optimal, car -encore
+        plus- long � r�aliser.<br>
+      </div>
+    </blockquote>
+    <br>
+    Ou pas, il semble plus facile de trouver des developpeurs ayant
+    cette competence<br>
+    et l'envie que dans le monde python, ca peut aider a decider sur la
+    techno pour cette partie.<br>
+    <br>
+    <blockquote cite="mid:547893DE.20601@albancrommer.com" type="cite">
+      <div class="moz-cite-prefix"> <br>
+        Note/Rappel : est-ce que les d�vs cal�s en JS qui ont rejoint la
+        discussion ont vu (et rempli) la matrice de choix de framework ?
+        <br>
+      </div>
+    </blockquote>
+    pas encore tout le monde, merci de la piqure de rappel :))<br>
+    <br>
+    <br>
+    ++ chamal<br>
+  </body>
+</html>
+
+--------------000408080501080009050600--
+
+--===============1966287538==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============1966287538==--

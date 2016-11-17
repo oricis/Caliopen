@@ -1,0 +1,103 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anEz8-00034J-SS
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 20:36:46 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:51274)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1anEz7-000339-9C
+	for dev@caliopen.local; Mon, 04 Apr 2016 20:36:46 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1anEz2-0005OT-96
+	for dev@caliopen.local; Mon, 04 Apr 2016 20:36:45 -0400
+Received: from userp1040.oracle.com ([156.151.31.81]:44309)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1anEz2-0005OO-17
+	for dev@caliopen.local; Mon, 04 Apr 2016 20:36:40 -0400
+Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
+	by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with
+	ESMTP id u350aWoP013168
+	(version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+	Tue, 5 Apr 2016 00:36:33 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+	by userv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u350aVm6024632
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+	Tue, 5 Apr 2016 00:36:31 GMT
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+	by userv0121.oracle.com (8.13.8/8.13.8) with ESMTP id u350aUbX014070;
+	Tue, 5 Apr 2016 00:36:30 GMT
+MIME-Version: 1.0
+Message-ID: <29972ee1-15f4-40fc-86dd-fb2217aa158a@default>
+Date: Mon, 4 Apr 2016 17:36:29 -0700 (PDT)
+From: Drew Adams <drew.adams@oracle.com>
+Sender: Drew Adams <drew.adams@oracle.com>
+To: John Wiegley <jwiegley@gmail.com>, Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: RE: "Staying in the same place"
+References: <m3oa9q53uq.fsf@gnus.org>
+	<jwv7fgd1r7w.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m3mvp9nsmp.fsf@gnus.org>
+	<jwv8u0tql7y.fsf-monnier+Inbox@gnu.org> <m37fgdnrks.fsf@gnus.org>
+	<87h9fhrxb3.fsf@red-bean.com> <m3twjhkvmw.fsf@gnus.org>
+	<87d1q5rw72.fsf@red-bean.com> <m3egalkv7j.fsf@gnus.org>
+	<m2twjh6jul.fsf@newartisans.com>
+In-Reply-To: <m2twjh6jul.fsf@newartisans.com>
+X-Priority: 3
+X-Mailer: Oracle Beehive Extensions for Outlook 2.0.1.9  (901082) [OL
+	12.0.6744.5000 (x86)]
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+X-Source-IP: userv0021.oracle.com [156.151.31.71]
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.4.x-2.6.x [generic]
+X-Received-From: 156.151.31.81
+Cc: Karl Fogel <kfogel@red-bean.com>, Stefan Monnier <monnier@IRO.UMontreal.CA>,
+	emacs-devel@gnu.org
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 05 Apr 2016 00:36:46 -0000
+Content-Length: 1169
+Lines: 37
+
+> Basically, a "fuzzy position" is three things:
+>=20
+>     Some internal value, potentially unique to each mode
+>     A method to return such a value based on point
+>     A method to restore point based on such a value
+>=20
+> Seeing this as an abstract data type, the default would be:
+>=20
+>     #<marker>, point-marker, goto-char
+
+Actually, the default for a bookmark is:
+
+1. A general context, such as a file or buffer (e.g. an absolute
+   file name or a buffer name).
+
+2. A position within that context (e.g. a buffer position).
+
+3. Some context text immediately after the position.
+
+4. Some context text immediately before the position.
+
+5. A handler function that accepts the bookmark as argument
+   and returns point to the place that was bookmarked.
+
+The default handler goes first to the recorded position.
+It then searches forward for the after-position context text.
+It then searches backward for the before-position context text.
+
+The point is to try to accommodate changes to the file or buffer
+text, i.e., to return to the most appropriate place that can be
+found.
+
+Special kinds of bookmarks (Info, Dired, `man', etc.) use special
+handler functions.
+
+
+

@@ -1,0 +1,123 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aihAH-0003KU-1y
+	for mharc-dev@caliopen.local; Wed, 23 Mar 2016 07:41:29 -0400
+Received: from eggs.gnu.org ([208.118.235.92]:33699)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1aihAE-0003JT-Nt
+	for dev@caliopen.local; Wed, 23 Mar 2016 07:41:27 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1aihAB-00069L-HZ
+	for dev@caliopen.local; Wed, 23 Mar 2016 07:41:26 -0400
+Received: from ironport2-out.teksavvy.com ([206.248.154.181]:19324)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1aihAB-00068z-D0
+	for dev@caliopen.local; Wed, 23 Mar 2016 07:41:23 -0400
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: A0A2FgA731xV/5a2xEVcgxCEAoVVwwsEAgKBPDwRAQEBAQEBAYEKQQWDXQEBAwFWIwULCzQSFBgNJIg3CM8jAQEBBwEBAQEeizqFBQeELQEEsz+BRSOBZlWBWSKCeAEBAQ
+X-IPAS-Result: A0A2FgA731xV/5a2xEVcgxCEAoVVwwsEAgKBPDwRAQEBAQEBAYEKQQWDXQEBAwFWIwULCzQSFBgNJIg3CM8jAQEBBwEBAQEeizqFBQeELQEEsz+BRSOBZlWBWSKCeAEBAQ
+X-IronPort-AV: E=Sophos;i="5.13,465,1427774400"; d="scan'208";a="197921844"
+Received: from 69-196-182-150.dsl.teksavvy.com (HELO fmsmemgm.homelinux.net)
+	([69.196.182.150])
+	by ironport2-out.teksavvy.com with ESMTP/TLS/DHE-RSA-AES256-SHA;
+	23 Mar 2016 07:41:21 -0400
+Received: by fmsmemgm.homelinux.net (Postfix, from userid 20848)
+	id 44331AE242; Wed, 23 Mar 2016 07:41:21 -0400 (EDT)
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+To: Vitalie Spinu <spinuvit@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+Message-ID: <jwv1t71v3lb.fsf-monnier+emacs@gnu.org>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87bn67eq4t.fsf@gmail.com>
+	<jwvy49ar473.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87bn66qsgo.fsf@gmail.com> <jwvzitquf5p.fsf-monnier+emacs@gnu.org>
+	<87fuvhpimn.fsf@gmail.com>
+Date: Wed, 23 Mar 2016 07:41:21 -0400
+In-Reply-To: <87fuvhpimn.fsf@gmail.com> (Vitalie Spinu's message of "Wed, 23
+	Mar 2016 11:56:48 +0100")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 206.248.154.181
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 23 Mar 2016 11:41:27 -0000
+Content-Length: 1921
+Lines: 52
+
+> No, no. Context should not have absolute positions in it. That would ruin the
+> whole thing. It should contain information about the nesting of language
+> constructs sufficient to be able to indent first line of an inner span without
+> any other positional knowledge.
+
+As explained, the SMIE indentation has no such "summary of context".
+The only context it could use is either a position or the complete text
+before that position.
+
+> For example, if current line is directly part of IF block, most
+> languages don't care what precedes IF head at all, only the offset
+> of IF.
+
+Yes, there are simple cases we know how to handle.  The problem is the
+general case, along with the work to modify the existing indentation
+codes to be able to generate and use that data.
+
+> So an entry in the context data structure might look like (IF
+> . IF-OFFSET). If line number within the block is important then you
+> can pass (IF IF-OFFSET . RELATIVE-LINE). My hunch is that for most
+> languages you would be able to reduce indentation to a small number of
+> block-continuation constructs (less than 10).
+
+Consider
+
+    x = a << b + c * d
+
+the code after this line can be indented in various different ways:
+
+                 * e
+or
+             + e
+or
+        == e
+or
+  ; e
+
+And of course, in this example, I put all relevant operators, but in
+practice they'll generally be on different lines.  And SMIE (which
+supports that kinds of indentation, e.g. in sm-c-mode) doesn't
+pre-compute that context: it's only when it sees the "+" at the
+beginning of line that it moves back over higher-precedence operators to
+find the matching alignment spot.
+
+In theory, SMIE could try to create the kind of context you're thinking
+of, but that would amount to a complete rewrite (and it would likely be
+very difficult if not impossible to make it work with existing
+smie-rules-functions, so it'd break backward compatibility).
+
+
+        Stefan
+

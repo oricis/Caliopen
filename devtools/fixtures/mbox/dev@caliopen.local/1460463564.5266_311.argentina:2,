@@ -1,0 +1,90 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an9Sf-0001ii-Ac
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 14:42:53 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:58464)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1an9Sc-0001gl-H5
+	for dev@caliopen.local; Mon, 04 Apr 2016 14:42:51 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1an9SY-0008OZ-I5
+	for dev@caliopen.local; Mon, 04 Apr 2016 14:42:50 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:47671)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1an9SY-0008OU-BW
+	for dev@caliopen.local; Mon, 04 Apr 2016 14:42:46 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>)
+	id 1an9SV-0005wr-QK; Mon, 04 Apr 2016 20:42:45 +0200
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: Stefan Monnier <monnier@IRO.UMontreal.CA>
+Subject: Re: "Staying in the same place"
+References: <m3oa9q53uq.fsf@gnus.org>
+	<jwv7fgd1r7w.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m3mvp9nsmp.fsf@gnus.org> <jwv8u0tql7y.fsf-monnier+Inbox@gnu.org>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAElBMVEUODhQ5OT4SExoNDRMI
+	CQ4MDBHdutiZAAACVUlEQVQ4jVWUwXKjMAyGDczekdLckZvcnXp9L2DuUKP3f5X9ZSDT9SQzoE+S
+	fwnLrh2SqvO2nNvze7kW7wHWwXkX1ZaZZw9weoNrTBqd7nkJ3q2+utfVhRg1FOT+gudvsCJbjF2M
+	2CAADRfAL8UYgztAW7PgD0sESc7Ad/UM3RmRStQSTtBdslyIX/Zs6d2KdyLiM6JhPMcLuPfex0oV
+	IK5uDEM0WXiMEWC21CGm+A78o6Vg8xVCO2dOV/UoXAGgLSVN+g5AJ5O1pERzAX5L0H03MKNvi+p/
+	IKfVuyUV3RcttT6IcUmZGKDUL6PxrKQT4iFtAPWTjc8VcgZNP6j76T+mwVJpHpksVVlgt3Vf+wMI
+	+ZudhNGaxo6xiXc55YlWIZf2fPjL5+2LADTTmFviVAMsJvYvRCw62QvRc6ruRM2TPZvckccsXliE
+	8CMamNkb2Ehe9217HXl6BhRvqX6eUOU3oc385d4KNwYifxALFLLtwHUfi5jDrf/Y9FNERi+wbA8R
+	rh+qp2w5aKvunLl/9XZ82h5vjemkkaSY8MbA3LREDzkk0Tg9ELgNFQjfYa8qmWXsxx+y4/MtfW9B
+	AMJJ6NaiSpuiWTx6dqS67ZN5eLazO7Pv3dm9lNHpxybeWR3m09WQT5tNJOJ6yGfvibwFHNM63ekY
+	yrVpTRMKy38NLDVRBbfgoNNGu4556dyZyibisH0/7SSFA0yefNs6XSzRA/y8J9BdaG5dt1/XxRWx
+	lNYNNqZ6gXIAeAQb5uEE+1JqyHHv2NDqmWvR9RcYQvpzAlw8dvP8A21Umiyfwqi7AAAAAElFTkSu
+	QmCC
+Date: Mon, 04 Apr 2016 20:42:43 +0200
+In-Reply-To: <jwv8u0tql7y.fsf-monnier+Inbox@gnu.org> (Stefan Monnier's message
+	of "Mon, 04 Apr 2016 14:36:59 -0400")
+Message-ID: <m37fgdnrks.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 18:42:51 -0000
+Content-Length: 1052
+Lines: 27
+
+Stefan Monnier <monnier@IRO.UMontreal.CA> writes:
+
+> The important part is that you can build a "bookmark object" which should
+> contain enough data to reproduce the current buffer&position.
+
+Yes, but would that work they way I sketched out in the second message
+in this thread?  I.e., the mode would supply a function that would
+provide a list of (say) 20 places to look for a place that's "the same"?
+
+> You might be able to do that, but what I was proposing was not to let
+> users use the bookmark functionality, but simply to have a default
+> special-mode-revert-buffer function which would do something along
+> the lines of:
+>
+>     (defun special-mode-revert-function ()
+>       (let ((here (funcall bookmark-make-record-function)))
+>         (erase-buffer)
+>         (bookmark-goback here)))
+
+Aha, I see.  Yes, that sounds very nice.  As long as the bookmark
+functionality is sufficiently flexible about the `here' it's willing to
+accept..
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

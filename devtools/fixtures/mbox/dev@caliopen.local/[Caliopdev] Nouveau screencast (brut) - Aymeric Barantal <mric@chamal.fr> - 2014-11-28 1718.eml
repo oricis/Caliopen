@@ -1,0 +1,268 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id D4602120ACA;
+	Fri, 28 Nov 2014 17:18:06 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -0.907
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.907 tagged_above=-999 required=5
+	tests=[BAYES_00=-2.599, HTML_MESSAGE=0.001, RATWARE_GECKO_BUILD=1.691]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id AvSyMJyRpY7v; Fri, 28 Nov 2014 17:18:04 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id B3378120A19;
+	Fri, 28 Nov 2014 17:18:04 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 4DDED6AA7E945;
+	Fri, 28 Nov 2014 17:18:04 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id JwpO0OuLAp4d; Fri, 28 Nov 2014 17:18:03 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id DB5CC6B38A1BF;
+	Fri, 28 Nov 2014 17:18:02 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 049626AA7E95C
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:18:02 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id kTO1d8g3k7_R for <caliopdev@caliop.net>;
+ Fri, 28 Nov 2014 17:17:58 +0100 (CET)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
+ [217.70.183.195])
+ (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id 3B6F76B38A1BF
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:17:58 +0100 (CET)
+Received: from [IPv6:2001:4b98:beef:a:d0d8:9686:95da:ec1f] (unknown
+ [IPv6:2001:4b98:beef:a:d0d8:9686:95da:ec1f])
+ (Authenticated sender: mric@chamal.fr)
+ by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 16AC0A80D2
+ for <caliopdev@caliop.net>; Fri, 28 Nov 2014 17:17:57 +0100 (CET)
+Message-ID: <5478A041.8020105@chamal.fr>
+Date: Fri, 28 Nov 2014 17:18:09 +0100
+From: Aymeric Barantal <mric@chamal.fr>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64;
+ rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To: =?UTF-8?B?TGlzdGUgZGUgZMOpdmVsb3BwZW1lbnQgQ2FsaW9wZW4=?=
+ <caliopdev@caliop.net>
+Subject: [Caliopdev] Nouveau screencast (brut)
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============1511068903=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+This is a multi-part message in MIME format.
+--===============1511068903==
+Content-Type: multipart/alternative;
+ boundary="------------020605060001040906060900"
+
+This is a multi-part message in MIME format.
+--------------020605060001040906060900
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+J'ai pas valide ce message sur la ML qui est bloque pour taille trop grosse.
+
+Le screencast est disponible sur une url :
+https://poc.caliopen.org/media/Screencast-20141128-brut.mov
+
+Et le mail qui va avec
+
+-----
+Hello,
+
+Je pose ici un nouveau screencast, brut, sans montage, sans indication 
+juste pour vous donner une idée d’où j’en suis :)
+
+N’hésitez pas à me faire vos remarques, bousculer un peu ce que j’ai 
+fait pour n’en tirer que le meilleur ;)
+
+
+
+
+
+Bon visionnage !
+
+A toute ;)
+
+--------
+Thomas LAURENT
+/Ergonome web/
+/(UX Architect & Designer)/
+/
+/
+/Tél : 01 70 37 78 56/
+
+/Gandi.net <http://Gandi.net> - No Bullshit ™/
+/63-65 boulevard Massena/
+/75013 Paris (France)/
+--------
+
+
+
+
+--------------020605060001040906060900
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    J'ai pas valide ce message sur la ML qui est bloque pour taille trop
+    grosse.<br>
+    <br>
+    Le screencast est disponible sur une url : <br>
+    <a class="moz-txt-link-freetext" href="https://poc.caliopen.org/media/Screencast-20141128-brut.mov">https://poc.caliopen.org/media/Screencast-20141128-brut.mov</a><br>
+    <br>
+    Et le mail qui va avec<br>
+    <br>
+    -----<br>
+    Hello,
+    <div class=""><br class="">
+    </div>
+    <div class="">Je pose ici un nouveau screencast, brut, sans montage,
+      sans indication juste pour vous donner une idée d’où j’en suis :)</div>
+    <div class=""><br class="">
+    </div>
+    <div class="">N’hésitez pas à me faire vos remarques, bousculer un
+      peu ce que j’ai fait pour n’en tirer que le meilleur ;)</div>
+    <div class=""><br class="">
+    </div>
+    <br>
+    <fieldset class="mimeAttachmentHeader"></fieldset>
+    <br>
+    <div class=""><br class="">
+    </div>
+    <div class=""><br class="">
+    </div>
+    <div class="">Bon visionnage !</div>
+    <div class=""><br class="">
+    </div>
+    A toute ;)<br class="">
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-size:
+      medium; font-style: normal; font-variant: normal; font-weight:
+      normal; letter-spacing: normal; line-height: normal; orphans: 2;
+      text-align: -webkit-auto; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; "
+      class=""><br class="Apple-interchange-newline">
+      --------</div>
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-style:
+      normal; font-variant: normal; font-weight: normal; letter-spacing:
+      normal; line-height: normal; orphans: 2; text-align: -webkit-auto;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto;
+      -webkit-text-stroke-width: 0px; " class="">Thomas LAURENT</div>
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-style:
+      normal; font-variant: normal; font-weight: normal; letter-spacing:
+      normal; line-height: normal; orphans: 2; text-align: -webkit-auto;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto;
+      -webkit-text-stroke-width: 0px; " class=""><i class="">Ergonome
+        web</i></div>
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-style:
+      normal; font-variant: normal; font-weight: normal; letter-spacing:
+      normal; line-height: normal; orphans: 2; text-align: -webkit-auto;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto;
+      -webkit-text-stroke-width: 0px; " class=""><i class="">(UX
+        Architect &amp; Designer)</i></div>
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-style:
+      normal; font-variant: normal; font-weight: normal; letter-spacing:
+      normal; line-height: normal; orphans: 2; text-align: -webkit-auto;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto;
+      -webkit-text-stroke-width: 0px; " class=""><i class=""><br
+          class="">
+      </i></div>
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-style:
+      normal; font-variant: normal; font-weight: normal; letter-spacing:
+      normal; line-height: normal; orphans: 2; text-align: -webkit-auto;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto;
+      -webkit-text-stroke-width: 0px; " class=""><i class="">Tél : 01 70
+        37 78 56</i></div>
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-style:
+      normal; font-variant: normal; font-weight: normal; letter-spacing:
+      normal; line-height: normal; orphans: 2; text-align: -webkit-auto;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto;
+      -webkit-text-stroke-width: 0px; " class=""><br class="">
+    </div>
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-style:
+      normal; font-variant: normal; font-weight: normal; letter-spacing:
+      normal; line-height: normal; orphans: 2; text-align: -webkit-auto;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto;
+      -webkit-text-stroke-width: 0px; " class=""><i class=""><a
+          href="http://Gandi.net" class="">Gandi.net</a> - No Bullshit ™</i></div>
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-style:
+      normal; font-variant: normal; font-weight: normal; letter-spacing:
+      normal; line-height: normal; orphans: 2; text-align: -webkit-auto;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto;
+      -webkit-text-stroke-width: 0px; " class=""><i class="">63-65
+        boulevard Massena</i></div>
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-style:
+      normal; font-variant: normal; font-weight: normal; letter-spacing:
+      normal; line-height: normal; orphans: 2; text-align: -webkit-auto;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto;
+      -webkit-text-stroke-width: 0px; " class=""><i class="">75013 Paris
+        (France)</i></div>
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-style:
+      normal; font-variant: normal; font-weight: normal; letter-spacing:
+      normal; line-height: normal; orphans: 2; text-align: -webkit-auto;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto;
+      -webkit-text-stroke-width: 0px; " class="">--------</div>
+    <div style="color: rgb(0, 0, 0); font-family: Helvetica; font-style:
+      normal; font-variant: normal; font-weight: normal; letter-spacing:
+      normal; line-height: normal; orphans: 2; text-align: -webkit-auto;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto;
+      -webkit-text-stroke-width: 0px; " class=""><br class="">
+    </div>
+    <br>
+    <br>
+  </body>
+</html>
+
+--------------020605060001040906060900--
+
+--===============1511068903==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============1511068903==--

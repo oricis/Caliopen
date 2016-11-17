@@ -1,0 +1,114 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amrZg-0000It-HB
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 19:36:56 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:41897)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrZe-0000IQ-8j
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:36:55 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrZb-0006FK-R5
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:36:54 -0400
+Received: from mail-oi0-x233.google.com ([2607:f8b0:4003:c06::233]:36416)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrZb-0006FE-Mi
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:36:51 -0400
+Received: by mail-oi0-x233.google.com with SMTP id y204so30003695oie.3
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 16:36:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=pMM/Y2HDIWtW8PBOHgdw7xHkvhqRAxUumq3pyZlzpcY=;
+	b=u8J6syPTsblcNeZYnKdhschEJpmmIb+yw4oIweGEEUoPKuKFHAFX/FRz4dyj8nSRe2
+	ISy2EJbrF866XMPMG8vX0MHF7wR/wB11WsOQgE+jdeapK48nNymRJk+vhML239aDCaPu
+	QECJ4E03Yv5RVX8Q6w5n9oNMPdR00HFYt0j510TEXJ59wXXa0U5YhaVFFzLxHFGaQmOW
+	ENbiPdjBPkxEPlqaUEe7AKfmjh5QjQP7NyBnPTLV9jDWwE2wn6l7l/tNyn8fktd75DsV
+	9IT2tnGHcHgxW4p76tLZ+haP1aAlN5xvqvXgUcSKy9s1+vvrI4B4qwnyJakBCWWyYeqW
+	lpjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=pMM/Y2HDIWtW8PBOHgdw7xHkvhqRAxUumq3pyZlzpcY=;
+	b=iLFMqe6ECzKNORwlu7eL+X0ThEY4mjqazgV/x3vUqPTEz85tvTkKmXLRZtpXMU9jYI
+	ZLJghY8NBIkBTvWMkTz+RqU+6g2Gh6O57um7hlgDTZjkbplXcjh381D1BbW5UV9ry+7d
+	HNDqj736rMz3EVqLVYIoPSgWVOZBiPZoVz2u5PJWttp+npMhp5m28aWIpAjqVRM9JZ3L
+	PWVMOa5BmwCCguOiPjj/xEYA7qYvX81zC8SVTsq23lQg9ThmGTIyBiznkcJB1jzwrFRb
+	dx1jO/w+ea0SgHGT5444yWTY1F9bXKJDx+MRPw1PH/EhO/SsdiraMp41dSxVDUujSd59
+	FwoA==
+X-Gm-Message-State: AD7BkJLXVwIJRKT5zCYbZO3hqYFrgZLrUfBq7f8kFGW+RRDbNJYT8RMix1D1DZDDEUpdxA==
+X-Received: by 10.157.15.101 with SMTP id 92mr7760464ott.156.1459726611254;
+	Sun, 03 Apr 2016 16:36:51 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79])
+	by smtp.gmail.com with ESMTPSA id q4sm7588069oew.6.2016.04.03.16.36.49
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 16:36:50 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id A0FD313DAEA06; Sun,  3 Apr 2016 16:36:48 -0700 (PDT)
+To: Dmitry Gutov <dgutov@yandex.ru>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+In-Reply-To: <7c941e57-756c-0081-9e78-fd31db305d7c@yandex.ru> (Dmitry Gutov's
+	message of "Mon, 21 Mar 2016 23:30:07 +0200")
+Date: Sun, 03 Apr 2016 16:34:36 -0700
+Message-ID: <m28u0uclmb.fsf@newartisans.com>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+	<328c7461-62c6-4228-f622-626349613a1d@yandex.ru>
+	<87fuvkf1gx.fsf@gmail.com>
+	<ae28a065-9500-0954-3c91-cd3a68bd2408@yandex.ru>
+	<87y49bewum.fsf@gmail.com>
+	<ea0d8779-3207-7a29-2c8b-3a047f1fcd46@yandex.ru>
+	<87lh5bevu9.fsf@gmail.com>
+	<83c0f91b-21ff-2514-d24a-5b6104ef012b@yandex.ru>
+	<877fgvept2.fsf@gmail.com>
+	<7c941e57-756c-0081-9e78-fd31db305d7c@yandex.ru>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: Dmitry Gutov <dgutov@yandex.ru>, Vitalie Spinu
+	<spinuvit@gmail.com>, Alan Mackenzie <acm@muc.de>, Stefan Monnier
+	<monnier@IRO.UMontreal.CA>, emacs-devel <emacs-devel@gnu.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c06::233
+Cc: Alan Mackenzie <acm@muc.de>, Vitalie Spinu <spinuvit@gmail.com>,
+	Stefan Monnier <monnier@IRO.UMontreal.CA>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 23:36:55 -0000
+Content-Length: 363
+Lines: 11
+
+>>>>> Dmitry Gutov <dgutov@yandex.ru> writes:
+
+> Performance may be a concern, but we don't know that yet. As long as they're
+> not required for correctness, let's not get ahead of ourselves.
+
+Yes, much agreed.
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

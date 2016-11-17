@@ -1,0 +1,63 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alEwh-0007T2-4e
+	for mharc-dev@caliopen.local; Wed, 30 Mar 2016 08:09:59 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:57171)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1alEwc-0007Sf-1G
+	for dev@caliopen.local; Wed, 30 Mar 2016 08:09:57 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <rms@gnu.org>) id 1alEwb-0004Iq-AS
+	for dev@caliopen.local; Wed, 30 Mar 2016 08:09:53 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:58855)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1alEwT-0004Ge-Nj; Wed, 30 Mar 2016 08:09:45 -0400
+Received: from rms by fencepost.gnu.org with local (Exim 4.82)
+	(envelope-from <rms@gnu.org>)
+	id 1alEwT-0001GY-5o; Wed, 30 Mar 2016 08:09:45 -0400
+Content-Type: text/plain; charset=Utf-8
+From: Richard Stallman <rms@gnu.org>
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+In-reply-to: <m3poudb86o.fsf@gnus.org> (message from Lars Magne Ingebrigtsen
+	on Tue, 29 Mar 2016 17:44:15 +0200)
+Subject: Re: More convenient default rollback for users
+References: <m3poudb86o.fsf@gnus.org>
+Message-Id: <E1alEwT-0001GY-5o@fencepost.gnu.org>
+Date: Wed, 30 Mar 2016 08:09:45 -0400
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: rms@gnu.org
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 30 Mar 2016 12:09:57 -0000
+Content-Length: 770
+Lines: 19
+
+[[[ To any NSA and FBI agents reading my email: please consider    ]]]
+[[[ whether defending the US Constitution against all enemies,     ]]]
+[[[ foreign or domestic, requires you to follow Snowden's example. ]]]
+
+  > Imagine you're using Emacs 26 for the first time.  Suddenly you notice
+  > that when you hit the `hyper z' key, Emacs doesn't florbnoze as it used
+  > to, but forblizes instead!  You're furious!  So you hit the `C-h R' (for
+  > rollback) keystroke, and you get a buffer that looks like:
+
+This sounds nice.  It goes with the Antinews feature we
+have always had in documentation.
+
+-- 
+Dr Richard Stallman
+President, Free Software Foundation (gnu.org, fsf.org)
+Internet Hall-of-Famer (internethalloffame.org)
+Skype: No way! See stallman.org/skype.html.
+
+

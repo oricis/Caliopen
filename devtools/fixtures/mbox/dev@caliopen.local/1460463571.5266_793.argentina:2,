@@ -1,0 +1,96 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amjTY-0005tr-Tv
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 10:58:04 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:36268)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>) id 1amjTW-0005tg-LZ
+	for dev@caliopen.local; Sun, 03 Apr 2016 10:58:03 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>) id 1amjTS-0001O8-LK
+	for dev@caliopen.local; Sun, 03 Apr 2016 10:58:02 -0400
+Received: from mail-lb0-x241.google.com ([2a00:1450:4010:c04::241]:34880)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <i.lohmar@gmail.com>) id 1amjTS-0001O4-Cu
+	for dev@caliopen.local; Sun, 03 Apr 2016 10:57:58 -0400
+Received: by mail-lb0-x241.google.com with SMTP id gk8so15079376lbc.2
+	for <dev@caliopen.local>; Sun, 03 Apr 2016 07:57:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:references:user-agent:date
+	:message-id:mime-version;
+	bh=IaSMuPwPDSEh/CCUuQN4hTpJQEDYfe7itAv8JhKkas4=;
+	b=izwNxW/bE3NlYIuoPRMoTSQBihHvHfyqUFED2M7kt315LNnluuU7q8nf+J3eiGX6Fp
+	MJlh4k/WxLOZ3N3D8WtE3EPIcHVY4atSDw29+2LaSPOBOL1PRhf8DwUf1RIaMPFfb+AD
+	ogW3uz2bM+PBKRABVk7w7oML/ADFadX6udZlj6CPvaAuABpBMO7SPAhOmrhFZ4SPujRL
+	xT9rA9szCQjEXpIBo3cBer0GVYw1+R4QlIeOpvMg4AS7Y7HRDhj90Dgpob9iIeIi4zfo
+	ywDT9cLnQkSfBbICgJ9IrmPnVIXemmVITwy3CjLg+UXFU98KVZJuseArbvm6PGtuZHEg
+	yAGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:references
+	:user-agent:date:message-id:mime-version;
+	bh=IaSMuPwPDSEh/CCUuQN4hTpJQEDYfe7itAv8JhKkas4=;
+	b=awrlBNwGxO5ncR9TD/3UpuOhlpebbASgJeJ72+L3X5mhbRjjDvswjZWtI0Ol+LEWsu
+	L9c/aMoYB4yTuPYk4FqSXfIl6taaKeAYk6Qt6/Ovta28aO3nF4eCXXKYwWb+ihMirYlp
+	XkBKegItees+kNOI1YrT/Rc36byJkFeqwDd7T1Ni/5Zmv95BOUt1eHLxiaTcIAqkfHi8
+	Re3bMrRRKQ01P4g/swURP8ykKD/cO8swiTrsAPi8rxZrAX+jm0Du6JH9KZqPqxJ7DVCX
+	BOKiQzKMSYj3+lZ/b04m6MJR6AoKEaB/bSO6FjJCCyxKtRcZBIQkZKvKOJ/gGTxplU0M
+	n9rA==
+X-Gm-Message-State: AD7BkJJnkZvvX2vLrk7T7UqYP19SIAzWzhsTpjk3Poz1+XPv+KNK/DupBow+fh5oe2WjYQ==
+X-Received: by 10.28.98.137 with SMTP id w131mr7583507wmb.30.1459695477493;
+	Sun, 03 Apr 2016 07:57:57 -0700 (PDT)
+Received: from localhost (xdsl-87-79-226-7.netcologne.de. [87.79.226.7])
+	by smtp.gmail.com with ESMTPSA id v6sm8997374wmv.16.2016.04.03.07.57.56
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Sun, 03 Apr 2016 07:57:56 -0700 (PDT)
+From: Ingo Lohmar <i.lohmar@gmail.com>
+To: Andreas Schwab <schwab@linux-m68k.org>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+In-Reply-To: <87mvpazsqo.fsf@linux-m68k.org>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<20160403111708.GA3537@acm.fritz.box>
+	<87lh4uex9h.fsf@acer.localhost.com>
+	<20160403121458.GC3537@acm.fritz.box>
+	<87bn5qeuxo.fsf@acer.localhost.com> <87mvpazsqo.fsf@linux-m68k.org>
+User-Agent: Notmuch/0.20.2+113~g6332e6e (http://notmuchmail.org)
+	Emacs/25.0.90.1 (x86_64-pc-linux-gnu)
+Date: Sun, 03 Apr 2016 16:57:54 +0200
+Message-ID: <878u0ueo3x.fsf@acer.localhost.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:4010:c04::241
+Cc: Alan Mackenzie <acm@muc.de>, Kaushal Modi <kaushal.modi@gmail.com>,
+	Emacs developers <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 14:58:03 -0000
+Content-Length: 559
+Lines: 17
+
+On Sun, Apr 03 2016 16:12 (+0200), Andreas Schwab wrote:
+
+> Ingo Lohmar <i.lohmar@gmail.com> writes:
+>
+>> Single caveat: Do NOT start a merge when you have uncommited changes.
+>
+> git merge will not allow overwriting uncommited changes anyway.
+>
+> Andreas.
+
+That's correct, but if the changes are in files unaffected by the merge,
+git *does* start the merge.  But it will be hard to return to the exact
+pre-merge state if you want to abort.
+
+At least that's what everybody and the man page tell me, I can't
+remember whether I tested it myself at some point.
+

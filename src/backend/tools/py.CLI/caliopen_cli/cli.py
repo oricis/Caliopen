@@ -9,9 +9,9 @@ import sys
 import argparse
 
 
-from caliopen.base.config import Configuration
-from caliopen.base.helpers.connection import connect_storage
-from caliopen.cli.commands import (shell, import_email,
+from caliopen_storage.config import Configuration
+from caliopen_storage.helpers.connection import connect_storage
+from caliopen_cli.commands import (shell, import_email,
                                    setup_storage, create_user,
                                    dump_model)
 

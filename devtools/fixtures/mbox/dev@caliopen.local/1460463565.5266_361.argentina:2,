@@ -1,0 +1,73 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahzbd-0001Ho-Q5
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 09:10:49 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:50252)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ahzbb-0001HZ-4t
+	for dev@caliopen.local; Mon, 21 Mar 2016 09:10:47 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ahzbV-0002gZ-JI
+	for dev@caliopen.local; Mon, 21 Mar 2016 09:10:47 -0400
+Received: from plane.gmane.org ([80.91.229.3]:35758)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ahzbV-0002gT-CL
+	for dev@caliopen.local; Mon, 21 Mar 2016 09:10:41 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ahzbT-0008Bu-PH
+	for dev@caliopen.local; Mon, 21 Mar 2016 14:10:39 +0100
+Received: from 157-52-2-179.cpe.teksavvy.com ([157.52.2.179])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 14:10:39 +0100
+Received: from monnier by 157-52-2-179.cpe.teksavvy.com with local (Gmexim 0.1
+	(Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 14:10:39 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Checking in files with trailing white space
+Date: Mon, 21 Mar 2016 09:10:30 -0400
+Message-ID: <jwvshzkx9jc.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <m3fuvljolx.fsf@gnus.org>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 157-52-2-179.cpe.teksavvy.com
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:jZiMk9RCNu4IivDlHPnw8Byu8Qk=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 13:10:48 -0000
+Content-Length: 522
+Lines: 16
+
+> I'm adding test cases for the shr HTML rendering, and in some of the
+> tests there should really be trailing white space in the result files.
+> Is there a way to say that the test/data/shr directory should be allowed
+> to have trailing spaces in our git/checkin thing?
+
+How 'bout you don't store files with trailing whitespace, but instead
+store files which contain code which creates those trailing whitespaces.
+E.g.
+
+  (ert-deftest ...
+    (with-temp-buffer
+      (insert "foo   ")
+      <dosomething>))
+
+
+-- Stefan
+
+

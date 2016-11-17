@@ -1,0 +1,120 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akcEP-0003Fs-6T
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 14:49:41 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:46920)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <Stephan.Mueller@microsoft.com>) id 1akcEK-0003Fk-Hi
+	for dev@caliopen.local; Mon, 28 Mar 2016 14:49:40 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <Stephan.Mueller@microsoft.com>) id 1akcEF-0004Kn-IC
+	for dev@caliopen.local; Mon, 28 Mar 2016 14:49:36 -0400
+Received: from mail-bl2on0120.outbound.protection.outlook.com
+	([65.55.169.120]:16569
+	helo=na01-bl2-obe.outbound.protection.outlook.com)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <Stephan.Mueller@microsoft.com>) id 1akcEF-0004KQ-0G
+	for dev@caliopen.local; Mon, 28 Mar 2016 14:49:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+	s=selector1; h=From:To:Date:Subject:Message-ID:Content-Type:MIME-Version;
+	bh=3WC5iVp5vRGSYK+Ltrz9nWpkNZbYrCVQSmDoBMPexig=;
+	b=V6TUUW3aaMXbqhJHQxjUkLt60iQTCQi5fyJ6RCj3rQfmmC6WQXHKuVOr2B6AN2+xOXoRJ193+agpr8tQatA9HB47yLPjztyEgn4JyTHV8+KD284ZQVmsEPuc0ias9yIaCI9WEknhoYdhZua6YjL/q0u1pPJbJxmaLsQhUJH5s6Y=
+Received: from CY1PR0301MB1659.namprd03.prod.outlook.com (10.162.166.145) by
+	CY1PR0301MB1659.namprd03.prod.outlook.com (10.162.166.145) with
+	Microsoft
+	SMTP Server (TLS) id 15.1.434.16; Mon, 28 Mar 2016 18:49:29 +0000
+Received: from CY1PR0301MB1659.namprd03.prod.outlook.com ([10.162.166.145]) by
+	CY1PR0301MB1659.namprd03.prod.outlook.com ([10.162.166.145]) with
+	mapi id 15.01.0434.023; Mon, 28 Mar 2016 18:49:29 +0000
+From: Stephan Mueller <Stephan.Mueller@microsoft.com>
+To: "emacs-devel@gnu.org" <emacs-devel@gnu.org>
+Subject: RE: Thinking about changed buffers
+Thread-Topic: Thinking about changed buffers
+Thread-Index: AQHRiRtwDzFZOS6EzEaUmyNeN8gGTJ9vLw4Q
+Date: Mon, 28 Mar 2016 18:49:12 +0000
+Deferred-Delivery: Mon, 28 Mar 2016 18:48:00 +0000
+Message-ID: <CY1PR0301MB165936869029245E623C8CDEF0860@CY1PR0301MB1659.namprd03.prod.outlook.com>
+References: <m3bn5ya4ro.fsf@gnus.org>
+In-Reply-To: <m3bn5ya4ro.fsf@gnus.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: gnu.org; dkim=none (message not signed)
+	header.d=none; gnu.org; dmarc=none action=none header.from=microsoft.com;
+x-originating-ip: [50.46.156.137]
+x-ms-office365-filtering-correlation-id: fe5b5bd6-1d2b-452b-3c1a-08d35739b1a2
+x-microsoft-exchange-diagnostics: 1; CY1PR0301MB1659;
+	5:sSRU+t2zbLwfoI5+E4cJIZyiMYT/GKAOYT5GwNa0x1WIb8myq4n3gOw5I9VptJpIRbNJgykYXnjkK84h0QHsFWRai0eT0BbO+4yfEc/kcD3brPpnHV6W63tCmYknU+/aGqQru6H1s0KIJVbCs2syWA==;
+	24:hRy3SxRVboxfi6ZyzAMPh37LniCw/yHLhOgXfRvfHA7fWOZU/Zlb5OSuuFEtWOSCjakQ1x8YA79YgW/dUES97tx6hK9vpEvjMymiKHFv6cw=
+x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:;SRVR:CY1PR0301MB1659;
+x-microsoft-antispam-prvs: <CY1PR0301MB16598A800F3FC62C7633D1E4F0860@CY1PR0301MB1659.namprd03.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
+x-exchange-antispam-report-cfa-test: BCL:0; PCL:0;
+	RULEID:(61425038)(601004)(2401047)(5005006)(8121501046)(3002001)(10201501046)(61426038)(61427038);
+	SRVR:CY1PR0301MB1659; BCL:0; PCL:0; RULEID:;
+	SRVR:CY1PR0301MB1659; 
+x-forefront-prvs: 0895DF8FFD
+x-forefront-antispam-report: SFV:NSPM;
+	SFS:(10019020)(6009001)(377454003)(33656002)(2900100001)(81166005)(5640700001)(5003600100002)(8990500004)(54356999)(2950100001)(10400500002)(110136002)(87936001)(76176999)(122556002)(2906002)(5005710100001)(77096005)(92566002)(5004730100002)(107886002)(11100500001)(3660700001)(2501003)(189998001)(5008740100001)(3280700002)(86612001)(586003)(99286002)(102836003)(1220700001)(6116002)(86362001)(5002640100001)(106116001)(66066001)(1096002)(50986999)(450100001)(2351001)(3480700003)(76576001)(10090500001)(74316001);
+	DIR:OUT; SFP:1102; SCL:1; SRVR:CY1PR0301MB1659;
+	H:CY1PR0301MB1659.namprd03.prod.outlook.com; FPR:; SPF:None;
+	MLV:sfv; LANG:en; 
+spamdiagnosticoutput: 1:23
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Mar 2016 18:49:29.2292 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR0301MB1659
+X-detected-operating-system: by eggs.gnu.org: Windows 7 or 8
+X-Received-From: 65.55.169.120
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 18:49:40 -0000
+Content-Length: 1510
+Lines: 32
+
+On Monday, March 28, 2016 10:31 AM Lars writes:
+
+" If you load a file, and then hit "a", and then delete the "a", then
+" Emacs will say that the buffer has changed.  If you hit "a" and then
+" `undo', Emacs will say that it hasn't.
+
+Personally, I have relied on the a-then-delete behavior when I
+_want_ the file to be considered modified*.  That is, my mental
+model of 'modified' matches the simplistic approach currently
+implemented.  (And I use undo when I don't want to have the
+buffer marked modified).
+
+I'm not convinced that this aspect (text change-and-happens-to
+-get-restored) is worth correcting.  Or even, a flaw at all; I suppose
+It may depend on whether one reads 'modified' as meaning "has
+been touched" or as "is no longer identical".
+
+I've not come across any other editor with the proposed behaviour;
+perhaps it's worth considering "compatibility with typical expectations"
+here as well as "can Emacs be better in this regard than other editors".
+
+stephan();
+
+* that said, I don't necessarily have a compelling reason for wanting
+a modified buffer.  I've used it to ensure that revert-buffer will
+reload the file to trigger a re-colourization of the buffer, fixing
+cases where cperl-mode got confused.  There's lots wrong with this
+scenario: I should pursue the cperl issue, and I've since found that
+the recolourization happens on revert-buffer without it being
+modified, but the point remains that char-then-backspace is a
+concise, intuitive, idiom that works with the current simple model.
+

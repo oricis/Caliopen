@@ -1,0 +1,59 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1apRk1-0005zO-Dt
+	for mharc-dev@caliopen.local; Sun, 10 Apr 2016 22:38:17 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:56291)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1apRjz-0005wc-67
+	for dev@caliopen.local; Sun, 10 Apr 2016 22:38:15 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1apRjw-0003mY-0K
+	for dev@caliopen.local; Sun, 10 Apr 2016 22:38:15 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:51672)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1apRjv-0003mU-S8; Sun, 10 Apr 2016 22:38:11 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:4455
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1apRjv-0002fB-73; Sun, 10 Apr 2016 22:38:11 -0400
+Date: Mon, 11 Apr 2016 05:37:38 +0300
+Message-Id: <8360vohnv1.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Charles Strahan <charles@cstrahan.com>
+CC: dev@caliopen.local
+In-reply-to: <1460340984.2930993.574696385.6C600EFA@webmail.messagingengine.com>
+	(message from Charles Strahan on Sun, 10 Apr 2016 22:16:24 -0400)
+Subject: Re: support for true-color terminals
+Reply-to: Eli Zaretskii <eliz@gnu.org>
+References: <1457660934.533185.545912986.04028913@webmail.messagingengine.com>
+	<83y49pju8w.fsf@gnu.org>
+	<1458288319.29675.552786858.0C058E99@webmail.messagingengine.com>
+	<1460340984.2930993.574696385.6C600EFA@webmail.messagingengine.com>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 11 Apr 2016 02:38:16 -0000
+Content-Length: 277
+Lines: 11
+
+> From: Charles Strahan <charles@cstrahan.com>
+> Date: Sun, 10 Apr 2016 22:16:24 -0400
+> 
+> Hello,
+> 
+> Unless I've missed it, I don't think I've received an email regarding
+> copyright assignment. Could you point me at the requisite paperwork,
+> please?
+
+Form sent off-list.
+

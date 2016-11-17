@@ -1,0 +1,85 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aorfA-0002Rz-3Q
+	for mharc-dev@caliopen.local; Sat, 09 Apr 2016 08:06:52 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:58946)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aorf7-0002OA-Lp
+	for dev@caliopen.local; Sat, 09 Apr 2016 08:06:50 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aorf4-0005sO-DN
+	for dev@caliopen.local; Sat, 09 Apr 2016 08:06:49 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:39700)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1aorf4-0005sJ-9e; Sat, 09 Apr 2016 08:06:46 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:1516
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1aorf3-00046l-I3; Sat, 09 Apr 2016 08:06:45 -0400
+Date: Sat, 09 Apr 2016 15:06:08 +0300
+Message-Id: <83fuuvhtqn.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: joakim@verona.se
+CC: mituharu@math.s.chiba-u.ac.jp, dev@caliopen.local
+In-reply-to: <m3shyv9gc3.fsf@exodia.verona.se> (joakim@verona.se)
+Subject: Re: About x_draw_xwidget_glyph_string
+Reply-to: Eli Zaretskii <eliz@gnu.org>
+References: <wlvb6il8dn.wl%mituharu@math.s.chiba-u.ac.jp>
+	<83oac93bnr.fsf@gnu.org> <m38u0oazb8.fsf@exodia.verona.se>
+	<83shyvi64r.fsf@gnu.org> <m3shyv9gc3.fsf@exodia.verona.se>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sat, 09 Apr 2016 12:06:50 -0000
+Content-Length: 1103
+Lines: 39
+
+> From: joakim@verona.se
+> Cc: mituharu@math.s.chiba-u.ac.jp,  dev@caliopen.local
+> Date: Sat, 09 Apr 2016 13:22:52 +0200
+> 
+> >> This is my attempt to replace the code above:
+> >> 
+> >>   //JAVE work in progressing, suggested by YAMAMOTO Mitsuharu
+> >>   int text_area_x, text_area_y, text_area_width, text_area_height;
+> >>   
+> >>   window_box (s->w,
+> >>               ANY_AREA, //also tried TEXT_AREA
+> >
+> > You should use TEXT_AREA here.
+> >
+> >>               &text_area_x,
+> >>               &text_area_y,
+> >>               &text_area_width,
+> >>               &text_area_height);
+> >>   clip_right =
+> >>     min (xww->width,
+> >>          text_area_width);
+> >>   clip_left =
+> >>     max (0,
+> >>          text_area_x);
+> >> 
+> >>   clip_bottom =
+> >>     min (xww->height,
+> >>          text_area_y);
+> >>   clip_top = max (0, text_area_height);
+> >
+> > I think clip_top should use text_area_y and clip_bottom should use
+> > text_area_height.
+> >
+> > Other than those two issues, what other problems do you see?
+> 
+> Well, I saw nothing at all :)
+
+Thanks, pushed to the emacs-25 branch.
+

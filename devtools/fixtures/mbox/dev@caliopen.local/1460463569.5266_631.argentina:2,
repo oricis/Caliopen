@@ -1,0 +1,184 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai2xe-0002YZ-NM
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 12:45:46 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:37906)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai2xc-0002XY-7n
+	for dev@caliopen.local; Mon, 21 Mar 2016 12:45:45 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai2xY-0006JG-Tu
+	for dev@caliopen.local; Mon, 21 Mar 2016 12:45:44 -0400
+Received: from mail-wm0-x22c.google.com ([2a00:1450:400c:c09::22c]:37173)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai2xY-0006Iw-Jr
+	for dev@caliopen.local; Mon, 21 Mar 2016 12:45:40 -0400
+Received: by mail-wm0-x22c.google.com with SMTP id p65so129506298wmp.0
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 09:45:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=gto1WBAGGwh+EP/tIG/7WzqcmML65U7m2lpJO++Mm0k=;
+	b=0MMLiv1gMr5+Y+j3fgpn9kNNgZddgE65lVC8ZD94879aecqYyCWmFDx84XGzgFIDWa
+	pUS5BGlgEVFQwv2bPScNwYzuPUkgBgJWcmrL7D1g6imFT+0dQkCV161pdwuVwvvKeO1C
+	t6VpNO7RtLg4epWSVKpQH67KOGLa9jgAePm05224nvVAVgSw4giTcUyt7e4oiO706PKK
+	kspUO2a5NVrZihjfpwmKNQuJU4ih98k7eSSb7zg1frj/rhHNkzj974L9zoy8mAk72bwE
+	qRpGfh2qXxS5QwRHFXwY8ofYiqMEyvXcUV/Zqlaw8f5sbNhFrl5kVfHiHMIInHHwkkyK
+	sXRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=gto1WBAGGwh+EP/tIG/7WzqcmML65U7m2lpJO++Mm0k=;
+	b=A/IxH3SjWyU4MHitZBzRFGsEwOIwfhaomiDUXHK+UG3RT3zlEHVj5eIoUUFNRSYinN
+	8z943ZJ8ZSL+WAOzX3hNdTf+cMKsWww6J9k6aTNfKuHkjzhWEghqIeTXKBxj2qS8abaF
+	8s9GvefJ8XSiBVVmz9yORaIJtrj8NGTLfqh7QV8i8ezA15M5HSkgdzVCrAz8hK8XtyOX
+	0wxunDQ4/h+129oEyFp3lzBdpucny1yCk376wHNqHyCTHgZ8P4KUwYJiU91E3QXVu5mt
+	fBg3LKePn4+vlhfMHejj00l9D1OAvCeqRjE+W8w1ivlU1GC1kzXOJ4S4PFQjanNv45Mu
+	8k2w==
+X-Gm-Message-State: AD7BkJIhkUg2n1vwKcpIBrXnNLag0aHB2u0qcQhufmi5TKA+KHhAnX+k/4hLKVajpzr5XA==
+X-Received: by 10.28.125.195 with SMTP id y186mr14161372wmc.79.1458578739860; 
+	Mon, 21 Mar 2016 09:45:39 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	n66sm13333852wmg.20.2016.03.21.09.45.38
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Mon, 21 Mar 2016 09:45:38 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+Date: Mon, 21 Mar 2016 17:45:38 +0100
+In-Reply-To: <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org> (Stefan Monnier's message
+	of "Mon, 21 Mar 2016 10:43:56 -0400")
+Message-ID: <87bn67eq4t.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22c
+Cc: Alan Mackenzie <acm@muc.de>, emacs-devel <dev@caliopen.local>,
+	Dmitry Gutov <dgutov@yandex.ru>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 16:45:45 -0000
+Content-Length: 4716
+Lines: 95
+
+
+I have split the answer in two separate conceptually distinct parts. This one is
+about indentation complexities of generic multi-modes.
+
+>> On Mon, Mar 21 2016 10:43, Stefan Monnier wrote:
+
+>> Current prog-indentation-context allows for possibility of a string to be
+>> inserted before begging in of current chunk.  STRING-BEFORE is more more
+>> general than that because of the arbitrary POS that it can be applied to.
+
+> Good point.  I didn't think of that.  Do you make use of that
+> possibility, and/or can you give an example where it's useful?
+
+Please see example of erb mode below.
+
+>> Here is a simple example when inner mode cannot decide by itself on
+>> the indentation.  Assume for concreteness a noweb header with some code
+>> immediately following the header:
+>>
+>>   <<foo, some_arg=4>>= some_call(blabla) 
+>>       some_other_call(blabla) ## indented by offset 2 with respect to header or prev_chunk
+>>
+>> How do you indent the some_call(blabal) after the header? The most
+>> meaningful way is to keep it untouched just as user defined it. If
+>> inner mode would indent it by itself it would give offset of 4. This
+>> is a simple example of header dependence.
+
+> Maybe it's because I'm not familiar with noweb, but I didn't understand this
+> example.  It looks like a very interesting example, so could you go over it
+> again in much more detail?
+
+
+Noweb is not essential here. The story will hold for pretty much all multi-modes
+with non-full-line headers. In noweb `<<foo, some_arg=4>>=` is a header of a
+chunk. Polymode places heads and tail in their own modes because they are not
+conceptually part of nor host or sub-mode. You can specify arbitrary parameters
+in the head which might even instruct how to indent the chunk. The first code
+line `some_call(blabla)` is placed on the same line with the head. This is
+uncommon but it's the simplest real case I can think of.
+
+There are two issues here.
+
+First one is how do you indent the head itself? Let's assume the point is after
+`foo`. If you follow the naive prog-indentation-context the indentation should
+be handled by the mode in the head chunk, right? Let's call it
+noweb-head-mode. This mode is the same for many noweb host-mode/inner-mode
+combinations and defaults to poly-head-tail-mode. Host mode is commonly LaTeX
+but it can be anything. One reasonable way to indent it is to use the host mode
+indentation engine. Note that this is in contrast of the
+prog-indentation-context assumption for which PREVIOUS-CHUNK is assumed to be of
+the same mode type as the current type.
+
+The second issue is with respect to the first line immediately after the
+header. If you naively call inner mode indentation engine on that line in a
+narrowed buffer starting after >>= you will get it indented to FIRST-COLUMN,
+which in the above case is the indentation of the head, plus noweb chunk offset
+which is a polymode specific thing and it is customizable per inner mode. Do you
+really want to insert that space after >>=? Probably not. So the code following
+the header is special. That means that you will either have to take care of that
+in multi-mode engine or extend prog-indentation-context.
+
+Think of markdown simple code spans `this = is(a, codes, span)` which can occur
+anywhere in the buffer. Indentation is not meaningful within the span at all,
+the whole chunk should be indented by the outer mode just before the opening `.
+
+Real trouble comes with continuation chunks. You might need to have a completely
+reversed indentation logic - in outer/host spans MM engine needs to call inner
+mode for indentation. Consider this example of erb mode taken from
+https://github.com/fxbois/web-mode/blob/master/tests/demo.erb.
+
+    <div id='header'>
+      <% if signed_in? -%>
+        <%= link_to t('.sign_out'), sign_out_path, :method => :delete %>
+      <% else -%>
+        <%= link_to t('.sign_in'), sign_in_path %>
+      <% end -%>
+    </div>
+
+One meaningful approach here is to indent if-else-end block using inner mode
+rules, right? This is what web-mode seems to be currently doing. Assume you are
+just in front of `<%= link_to`. This is host hmtl mode. But you need to indent
+according to inner mode construct. So what do you do? You go to the end of
+previous code chunk and call prog-indentation-function of inner mode with
+STRING-BEFORE = "\n" and STRING-AFTER="link_to t('.sign_out'), sign_out_path,
+:method => :delete". Simple isn't it? That's precisely my proposal.
+
+The message is that whatever you try you will not be able to completely leave
+all the work to inner mode or capture it with naive constructs like
+prog-indentation-context. Quite the opposite, new complexities are likely to
+make multi-mode authors life harder.
+
+
+  Vitalie
+
+

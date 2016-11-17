@@ -1,0 +1,204 @@
+Return-Path: <noreply@takel.fr>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id 420E720BBDA70
+	for <laurent@brasil.brainstorm.fr>; Sun, 10 Apr 2016 23:05:27 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 2D2CF33181F7; Sun, 10 Apr 2016 23:05:27 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id 1BABB33181FC; Sun, 10 Apr 2016 23:05:27 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: ******************
+X-Spam-Status: Yes, score=18.3 required=5.0 tests=BAYES_99,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HTML_IMAGE_RATIO_02,HTML_MESSAGE,MIME_HTML_ONLY,
+	RAZOR2_CF_RANGE_51_100,RAZOR2_CF_RANGE_E8_51_100,RAZOR2_CHECK,
+	RCVD_IN_BRBL_LASTEXT,RCVD_IN_PSBL,T_KHOP_FOREIGN_CLICK,T_SURBL_MULTI1,
+	T_URIBL_BLACK_OVERLAP,URIBL_BLACK,URIBL_DBL_SPAM,URIBL_JP_SURBL,
+	URIBL_WS_SURBL autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  2.7 RCVD_IN_PSBL RBL: Received via a relay in PSBL
+	*      [188.213.140.228 listed in psbl.surriel.com]
+	*  1.4 RCVD_IN_BRBL_LASTEXT RBL: RCVD_IN_BRBL_LASTEXT
+	*      [188.213.140.228 listed in bb.barracudacentral.org]
+	*  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
+	*      [URIs: takel.fr]
+	*  1.6 URIBL_WS_SURBL Contains an URL listed in the WS SURBL blocklist
+	*      [URIs: takel.fr]
+	*  1.2 URIBL_JP_SURBL Contains an URL listed in the JP SURBL blocklist
+	*      [URIs: takel.fr]
+	*  1.7 URIBL_DBL_SPAM Contains an URL listed in the DBL blocklist
+	*      [URIs: takel.fr]
+	*  0.4 HTML_IMAGE_RATIO_02 BODY: HTML has a low ratio of text to image area
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.0 T_KHOP_FOREIGN_CLICK T_KHOP_FOREIGN_CLICK
+	*  0.7 MIME_HTML_ONLY BODY: Message only has text/html MIME parts
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	*  0.9 RAZOR2_CHECK Listed in Razor2 (http://razor.sf.net/)
+	*  1.9 RAZOR2_CF_RANGE_E8_51_100 Razor2 gives engine 8 confidence level
+	*      above 50%
+	*      [cf: 100]
+	*  0.5 RAZOR2_CF_RANGE_51_100 Razor2 gives confidence level above 50%
+	*      [cf: 100]
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	*  0.0 T_URIBL_BLACK_OVERLAP T_URIBL_BLACK_OVERLAP
+	*  0.0 T_SURBL_MULTI1 T_SURBL_MULTI1
+X-Spam-DCC: : 
+Received: from mx3.takel.fr (mx3.takel.fr [188.213.140.228])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id B5AD233181F7
+	for <dev@caliopen.local>; Sun, 10 Apr 2016 23:05:23 +0200 (CEST)
+Received: from www.takel.fr (srv269.firstheberg.net [91.236.239.118])
+	by mx1.takel.fr (Postfix) with ESMTPA id 19176FE000A
+	for <dev@caliopen.local>; Sun, 10 Apr 2016 23:05:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=takel.fr; s=mail;
+	t=1460322323; bh=D3e+tobVXBw4JjxEhmuZJU0uJri3h8YqCLpDcAE9AGU=;
+	h=Date:Subject:From:Reply-To:To;
+	b=OHhhmXwa7TCmM3H5zsqxzDiUBVgj4FsEbe8GfTpdzL4oCTxP5bBGkj+qK7lqzE9Vv
+	 wohzNcPMnebYbRvjed5ZjZ2GeUXM1QDU1Jj6Whqj5fzKPhFuFrq9Uqm/Rt1Hg+7VeD
+	 hL3Ib8EKjPWDI6EjeziZhgi6VNCrObhi80teX8u4=
+Message-ID: <347f892c44faba7d8b084f04f8e20f75@www.takel.fr>
+Date: Sun, 10 Apr 2016 23:05:54 +0200
+Subject: Cartouches d'imprimantes =?utf-8?Q?=C3=A0?= prix discount +
+ livraison offerte
+From: Prix discount <noreply@takel.fr>
+Reply-To: Prix discount <noreply@takel.fr>
+To: "dev@caliopen.local" <dev@caliopen.local>
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SUB: 5002368SIDEND
+X-Priority: 3 (Normal)
+X-CMP: 317CMPEND
+X-Spam-Prev-Subject: Cartouches d'imprimantes =?utf-8?Q?=C3=A0?= prix discount +
+Content-Length: 9338
+Lines: 122
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns=3D"http://www.w3.=
+org/1999/xhtml"><head>=09=09<title>TONER Services Cartouches Discount</titl=
+e>=09<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-=
+8"></meta>=09<!--=09Don t remove the next meta=09-->=09=09<meta name=3D"pdl=
+bat1tkn" content=3D"XCOOemFT"></meta></head><body bgcolor=3D"#ffffff" color=
+=3D"#412224"><img src=3D"http://dbkpwi4c6v97q.cloudfront.net/?sc=3D3172&amp=
+;t=3D0&amp;l=3D169407&amp;p=3D10500" width=3D"1" height=3D"1" alt=3D"" bord=
+er=3D"0" />=09<div>=09=09<div style=3D"text-align: center;"><a target=3D"_b=
+lank" href=3D"http://www.takel.fr/subscriber/newsletter.php?e2=3Db2a8b7b9ad=
+b3b981a8b9a3b0b6b8b9b0b8b470adba&amp;c=3D317&amp;h=3D11&amp;t=3D0&l=3D207" =
+nvhide=3D"">Cliquez ici pour lire cet e-mail dans votre navigateur.</a><br =
+/>=09=09=09</div>=09=09<p>=09=09=09<table width=3D"700" border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0" align=3D"center">=09=09=09=09<tbody>=09=09=09=
+=09=09<tr>=09=09=09=09=09=09<td><a href=3D"http://www.takel.fr/inc/rdr.php?=
+r=3D5002368c317c90" target=3D"_blank"><img src=3D"http://d31epa2i3egyy4.clo=
+udfront.net/img/6641/d8225f4f1a3202bb52e3644f05454740_TONER_Cartouches_Disc=
+ount_01.jpg" width=3D"700" height=3D"86" alt=3D"Toner Services - Cartouches=
+ d=E2=80=99imprimantes =C3=A0 prix discount" border=3D"0" style=3D"display:=
+ block;" /></a></td>=09=09=09=09=09</tr>=09=09=09=09</tbody>=09=09=09</tabl=
+e></p>=09=09<table width=3D"700" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" align=3D"center">=09=09=09<tbody>=09=09=09=09<tr>=09=09=09=09=09<td>=
+<a href=3D"http://www.takel.fr/inc/rdr.php?r=3D5002368c317c90" target=3D"_b=
+lank"><img src=3D"http://d31epa2i3egyy4.cloudfront.net/img/6641/15059b967bd=
+2a9d7a2d89a5d526b2683_TONER_Cartouches_Discount_02.jpg" width=3D"145" heigh=
+t=3D"45" alt=3D"" border=3D"0" style=3D"display: block;" /></a></td>=09=09=
+=09=09=09<td><a href=3D"http://www.takel.fr/inc/rdr.php?r=3D5002368c317c91"=
+ target=3D"_blank"><img src=3D"http://d31epa2i3egyy4.cloudfront.net/img/664=
+1/f062f5ba5861e0c4db03a78e573f6e0a_TONER_Cartouches_Discount_03.jpg" width=
+=3D"82" height=3D"45" alt=3D"HP" border=3D"0" style=3D"display: block;" /><=
+/a></td>=09=09=09=09=09<td><a href=3D"http://www.takel.fr/inc/rdr.php?r=3D5=
+002368c317c92" target=3D"_blank"><img src=3D"http://d31epa2i3egyy4.cloudfro=
+nt.net/img/6641/08b0c2f59672865ae580703f368e7b7f_TONER_Cartouches_Discount_=
+04.jpg" width=3D"82" height=3D"45" alt=3D"Canon" border=3D"0" style=3D"disp=
+lay: block;" /></a></td>=09=09=09=09=09<td><a href=3D"http://www.takel.fr/i=
+nc/rdr.php?r=3D5002368c317c93" target=3D"_blank"><img src=3D"http://d31epa2=
+i3egyy4.cloudfront.net/img/6641/0db790dce78f93d8cf14da4dbc471397_TONER_Cart=
+ouches_Discount_05.jpg" width=3D"90" height=3D"45" alt=3D"Epson" border=3D"=
+0" style=3D"display: block;" /></a></td>=09=09=09=09=09<td><a href=3D"http:=
+//www.takel.fr/inc/rdr.php?r=3D5002368c317c94" target=3D"_blank"><img src=
+=3D"http://d31epa2i3egyy4.cloudfront.net/img/6641/7dd8d368195abcb9403c7a374=
+664f5d6_TONER_Cartouches_Discount_06.jpg" width=3D"98" height=3D"45" alt=3D=
+"Brother" border=3D"0" style=3D"display: block;" /></a></td>=09=09=09=09=09=
+<td><a href=3D"http://www.takel.fr/inc/rdr.php?r=3D5002368c317c95" target=
+=3D"_blank"><img src=3D"http://d31epa2i3egyy4.cloudfront.net/img/6641/32765=
+5050612f8841669edbbc95e2b7a_TONER_Cartouches_Discount_07.jpg" width=3D"100"=
+ height=3D"45" alt=3D"Lexmark" border=3D"0" style=3D"display: block;" /></a=
+></td>=09=09=09=09=09<td><a href=3D"http://www.takel.fr/inc/rdr.php?r=3D500=
+2368c317c96" target=3D"_blank"><img src=3D"http://d31epa2i3egyy4.cloudfront=
+.net/img/6641/b301dc9388b81da890ecaf4164ca3cb8_TONER_Cartouches_Discount_08=
+.jpg" width=3D"103" height=3D"45" alt=3D"Samsung" border=3D"0" style=3D"dis=
+play: block;" /></a></td>=09=09=09=09</tr>=09=09=09</tbody>=09=09</table>=
+=09=09<table width=3D"700" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ align=3D"center">=09=09=09<tbody>=09=09=09=09<tr>=09=09=09=09=09<td><a hre=
+f=3D"http://www.takel.fr/inc/rdr.php?r=3D5002368c317c90" target=3D"_blank">=
+<img src=3D"http://d31epa2i3egyy4.cloudfront.net/img/6641/149e07eb888bca318=
+2f1cc38f05fcaaf_TONER_Cartouches_Discount_09.jpg" width=3D"700" height=3D"8=
+1" alt=3D"Partout en France" border=3D"0" style=3D"display: block;" /></a><=
+/td>=09=09=09=09</tr>=09=09=09=09<tr>=09=09=09=09=09<td><a href=3D"http://w=
+ww.takel.fr/inc/rdr.php?r=3D5002368c317c90" target=3D"_blank"><img src=3D"h=
+ttp://d31epa2i3egyy4.cloudfront.net/img/6641/10759fb679ce407d4471259c3feac8=
+fb_TONER_Cartouches_Discount_10.jpg" width=3D"700" height=3D"162" alt=3D"Li=
+vraison offerte sur vos cartouches d=E2=80=99iprimante" border=3D"0" style=
+=3D"display: block;" /></a></td>=09=09=09=09</tr>=09=09=09=09<tr>=09=09=09=
+=09=09<td><a href=3D"http://www.takel.fr/inc/rdr.php?r=3D5002368c317c90" ta=
+rget=3D"_blank"><img src=3D"http://d31epa2i3egyy4.cloudfront.net/img/6641/8=
+84e369d92a2c5fdef10afed80d41efe_TONER_Cartouches_Discount_11.jpg" width=3D"=
+700" height=3D"81" alt=3D"sans aucune condition!" border=3D"0" style=3D"dis=
+play: block;" /></a></td>=09=09=09=09</tr>=09=09=09=09<tr>=09=09=09=09=09<t=
+d><a href=3D"http://www.takel.fr/inc/rdr.php?r=3D5002368c317c90" target=3D"=
+_blank"><img src=3D"http://d31epa2i3egyy4.cloudfront.net/img/6641/7ba1ef715=
+a286e4214adeebcbadafe0f_TONER_Cartouches_Discount_12.jpg" width=3D"700" hei=
+ght=3D"81" alt=3D"" border=3D"0" style=3D"display: block;" /></a></td>=09=
+=09=09=09</tr>=09=09=09=09<tr>=09=09=09=09=09<td><a href=3D"http://www.take=
+l.fr/inc/rdr.php?r=3D5002368c317c90" target=3D"_blank"><img src=3D"http://d=
+31epa2i3egyy4.cloudfront.net/img/6641/adb417be00d43aff4fbca06db2589882_TONE=
+R_Cartouches_Discount_13.jpg" width=3D"700" height=3D"81" alt=3D"" border=
+=3D"0" style=3D"display: block;" /></a></td>=09=09=09=09</tr>=09=09=09=09<t=
+r>=09=09=09=09=09<td><a href=3D"http://www.takel.fr/inc/rdr.php?r=3D5002368=
+c317c90" target=3D"_blank"><img src=3D"http://d31epa2i3egyy4.cloudfront.net=
+/img/6641/026b9d67d6d7fd4408bf03621878652a_TONER_Cartouches_Discount_14.jpg=
+" width=3D"700" height=3D"81" alt=3D"" border=3D"0" style=3D"display: block=
+;" /></a></td>=09=09=09=09</tr>=09=09=09=09<tr>=09=09=09=09=09<td><a href=
+=3D"http://www.takel.fr/inc/rdr.php?r=3D5002368c317c90" target=3D"_blank"><=
+img src=3D"http://d31epa2i3egyy4.cloudfront.net/img/6641/4709accbea55bd865a=
+abbd1c1a3fdeb8_TONER_Cartouches_Discount_15.jpg" width=3D"700" height=3D"13=
+2" alt=3D"J=E2=80=99en profite!" border=3D"0" style=3D"display: block;" /><=
+/a></td>=09=09=09=09</tr>=09=09=09</tbody>=09=09</table>=09=09<table width=
+=3D"700" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" align=3D"center">=
+=09=09=09<tbody>=09=09=09=09<tr>=09=09=09=09=09<td><img src=3D"http://d31ep=
+a2i3egyy4.cloudfront.net/img/6641/1d55d5398125b418e2fad7ab77a83dbb_TONER_Ca=
+rtouches_Discount_18.jpg" width=3D"300" height=3D"70" alt=3D"" border=3D"0"=
+ style=3D"display: block;" /></td>=09=09=09=09=09<td><a href=3D"http://www.=
+takel.fr/inc/rdr.php?r=3D5002368c317c97" target=3D"_blank"><img src=3D"http=
+://d31epa2i3egyy4.cloudfront.net/img/6641/ee8987df787e0b7c604e961835b8ced8_=
+TONER_Cartouches_Discount_18_01.jpg" width=3D"50" height=3D"70" alt=3D"Face=
+book" border=3D"0" style=3D"display: block;" /></a></td>=09=09=09=09=09<td>=
+<a href=3D"http://www.takel.fr/inc/rdr.php?r=3D5002368c317c98" target=3D"_b=
+lank"><img src=3D"http://d31epa2i3egyy4.cloudfront.net/img/6641/0960648025d=
+b6eb200cfef883f56dc1d_TONER_Cartouches_Discount_18_02.jpg" width=3D"50" hei=
+ght=3D"70" alt=3D"Twitter" border=3D"0" style=3D"display: block;" /></a></t=
+d>=09=09=09=09=09<td><img src=3D"http://d31epa2i3egyy4.cloudfront.net/img/6=
+641/ccdf697917af0190ae7308f9d610c11e_TONER_Cartouches_Discount_21.jpg" widt=
+h=3D"300" height=3D"70" alt=3D"" border=3D"0" style=3D"display: block;" /><=
+/td>=09=09=09=09</tr>=09=09=09</tbody>=09=09</table>=09=09<table width=3D"7=
+00" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" align=3D"center">=09=
+=09=09<tbody>=09=09=09=09<tr>=09=09=09=09=09<td height=3D"160" bgcolor=3D"#=
+ffffff" align=3D"center" valign=3D"top"><span style=3D"color: rgb(33, 34, 3=
+5);">            Les prix de nos produits sont indiqu&eacute;s toutes taxes=
+ comprises et b&eacute;n&eacute;ficient d=E2=80=99une garantie de un an.=09=
+            <br />=09=09=09=09=09=09=09            Le d&eacute;lai de livra=
+ison sur votre commande est de 48h/72h.<br />=09=09=09=09=09=09=09         =
+   Toner Services livre en France m&eacute;tropolitaine et en Belgique uniq=
+uement.=09            <br />=09=09=09=09=09=09=09            Toner Services=
+=09            <br />=09=09=09=09=09=09=09            10/14 av. du g&eacute=
+;n&eacute;ral Leclerc 78230 Le Pecq<br />=09=09=09=09=09=09=09        </spa=
+n>    </td>=09=09=09=09</tr>=09=09=09</tbody>=09=09</table></div>=09<div>&n=
+bsp;</div>=09<div style=3D"text-align: center;">&nbsp;<a href=3D"http://www=
+.takel.fr/subscriber/optOut.php?t=3D&l=3D207&c=3D317&e2=3Db2a8b7b9adb3b981a=
+8b9a3b0b6b8b9b0b8b470adba&a=3D1">Se d&eacute;sabonner</a></div>=09<div></di=
+v><img src=3D"http://www.takel.fr/inc/or.php?sid=3D5002368&c=3D317&h=3D11" =
+width=3D"1" height=3D"1"></body></html>

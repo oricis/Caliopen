@@ -1,0 +1,73 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1apPbw-0000SZ-RW
+	for mharc-dev@caliopen.local; Sun, 10 Apr 2016 20:21:48 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39661)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1apPbv-0000QR-0M
+	for dev@caliopen.local; Sun, 10 Apr 2016 20:21:47 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1apPbr-0005d3-03
+	for dev@caliopen.local; Sun, 10 Apr 2016 20:21:46 -0400
+Received: from ironport2-out.teksavvy.com ([206.248.154.181]:3589)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1apPbq-0005cZ-Sh
+	for dev@caliopen.local; Sun, 10 Apr 2016 20:21:42 -0400
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: A0A9FgA731xV/9KZ+M5cgxCEAoVVwwsEAgKBPD0QAQEBAQEBAYEKQQWDXQEBBFYjEAs0EhQYDYhjzyMBAQEBBgEBAQEeizqFBQcWhBcFsz+BRSNhgQWCLiKCeAEBAQ
+X-IPAS-Result: A0A9FgA731xV/9KZ+M5cgxCEAoVVwwsEAgKBPD0QAQEBAQEBAYEKQQWDXQEBBFYjEAs0EhQYDYhjzyMBAQEBBgEBAQEeizqFBQcWhBcFsz+BRSNhgQWCLiKCeAEBAQ
+X-IronPort-AV: E=Sophos;i="5.13,465,1427774400"; d="scan'208";a="205809406"
+Received: from 206-248-153-210.dsl.teksavvy.com (HELO pastel.home)
+	([206.248.153.210])
+	by ironport2-out.teksavvy.com with ESMTP; 10 Apr 2016 20:21:40 -0400
+Received: by pastel.home (Postfix, from userid 20848)
+	id 368DC640DE; Sun, 10 Apr 2016 20:21:40 -0400 (EDT)
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+To: dev@caliopen.local
+Cc: Etienne Prud'homme <e.e.f.prudhomme@gmail.com>
+Subject: Re: [Emacs-diffs] master d6ea645: Fix alignement rule for CSS
+Message-ID: <jwv1t6dkncp.fsf-monnier+emacsdiffs@gnu.org>
+References: <20160410213304.19687.66901@vcs.savannah.gnu.org>
+	<E1apMye-00058G-Rb@vcs.savannah.gnu.org>
+Date: Sun, 10 Apr 2016 20:21:40 -0400
+In-Reply-To: <E1apMye-00058G-Rb@vcs.savannah.gnu.org> (Simen Heggest's message
+	of "Sun, 10 Apr 2016 21:33:04 +0000")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 206.248.154.181
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 11 Apr 2016 00:21:47 -0000
+Content-Length: 593
+Lines: 19
+
+> --- a/lisp/align.el
+> +++ b/lisp/align.el
+> @@ -577,7 +577,7 @@ The possible settings for `align-region-separate' are:
+>  		     (eq '- current-prefix-arg)))))
+ 
+>      (css-declaration
+> -     (regexp . "^\\s-*\\w+:\\(\\s-*\\).*;")
+> +     (regexp . "^\\s-*\\(?:\\w-?\\)+:\\(\\s-*\\).*;")
+>       (group . (1))
+>       (modes . '(css-mode html-mode))))
+>    "A list describing all of the available alignment rules.
+
+BTW, I think, as is the case for font-lock, indent, imenu, and friends,
+the align settings should belong in the major mode's definition rather
+in align.el.
+
+
+        Stefan
+

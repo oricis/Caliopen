@@ -1,0 +1,146 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahzYY-00006j-Vq
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 09:07:38 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:49139)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ahzYV-00005Q-VQ
+	for dev@caliopen.local; Mon, 21 Mar 2016 09:07:36 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ahzYQ-00021c-UE
+	for dev@caliopen.local; Mon, 21 Mar 2016 09:07:35 -0400
+Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e]:37499)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ahzYQ-00021P-Jj
+	for dev@caliopen.local; Mon, 21 Mar 2016 09:07:30 -0400
+Received: by mail-wm0-x22e.google.com with SMTP id p65so121170457wmp.0
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 06:07:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=sender:subject:to:references:cc:from:message-id:date:user-agent
+	:mime-version:in-reply-to:content-transfer-encoding;
+	bh=Dw6aU+e0jBAOzQOsOGK1j5D43lEgyMNcBBpQzL+JQI0=;
+	b=XJYcOHj0Iex0gtEsbAg+yt7lsNJXj/GqYgF7q08IZEl8Y1AhnpsqLxsmv3WYVMHbEI
+	n0Y1mEIMPE+b1GTNgRNNCWDKw9yYSB943ymwUPO971LM0xTNN7dIe+QqrMwEkIoGT94K
+	gxuP02R0AedwbdIlG+7xAccnksCMdD12lj3P7umCSH4VztUr6wgatwpSTXDwwYb3dtgo
+	TPjmF8bMaJET/uKS+z4Sf/Fxy89dLvAkifLZhocvVfyaNUq7wv9HUwiBhjRyl4p4ezdf
+	0x4OBhoa776QRu0Sgx+6NT6vSIqaXE5ApHmNJgPwsQ33cyTC+P2OomF+P9HCBhAGDY8x
+	/m1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
+	:date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+	bh=Dw6aU+e0jBAOzQOsOGK1j5D43lEgyMNcBBpQzL+JQI0=;
+	b=NK9gcdunXIfv4528tDFTX8JB3TBFAWBgwxGV8Xme4fYJZDdRWCjqTg55fUrGWAx/wX
+	4IdMCVg+eOhPlmunbuKQf8kJeknsS1JP0suDqb91s1MigRkNIhj/8+s7+XAHhDMK41GW
+	W15IDIF1fDPa6IVWS+qFJlS+rtrHV3NC1c68L7SEIF/VypJqjGv8gXFFHWmOKrXKIOBy
+	RxWgcHVT6mUFh0z/GGemd01d0M/X1TogLqSJoWKbiUtToj2k2gnuVVjntd57LgdiFNww
+	MbcP78UQAXvMGnX0jkRLX7cNPE5yYyJvtUezdbEVQf1oTstb/vVeA6XV7/Kon4VqmZ7R
+	6bLw==
+X-Gm-Message-State: AD7BkJJu+usE43VLlab2KGj1x9fBxaGvGy2Va7Mw+5c3HU9V1M9oRIOmo6EfIRZlgcfEJw==
+X-Received: by 10.28.129.213 with SMTP id c204mr14356706wmd.89.1458565649509; 
+	Mon, 21 Mar 2016 06:07:29 -0700 (PDT)
+Received: from [192.168.1.2] ([185.105.175.24])
+	by smtp.googlemail.com with ESMTPSA id
+	192sm12437427wmw.0.2016.03.21.06.07.27
+	(version=TLSv1/SSLv3 cipher=OTHER);
+	Mon, 21 Mar 2016 06:07:28 -0700 (PDT)
+Sender: DG <raaahh@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+To: Vitalie Spinu <spinuvit@gmail.com>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+	<328c7461-62c6-4228-f622-626349613a1d@yandex.ru>
+	<87fuvkf1gx.fsf@gmail.com>
+From: Dmitry Gutov <dgutov@yandex.ru>
+Message-ID: <ae28a065-9500-0954-3c91-cd3a68bd2408@yandex.ru>
+Date: Mon, 21 Mar 2016 15:07:26 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+	Thunderbird/45.0
+MIME-Version: 1.0
+In-Reply-To: <87fuvkf1gx.fsf@gmail.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22e
+Cc: Alan Mackenzie <acm@muc.de>, Stefan Monnier <monnier@IRO.UMontreal.CA>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 13:07:37 -0000
+Content-Length: 2274
+Lines: 54
+
+On 03/21/2016 02:40 PM, Vitalie Spinu wrote:
+
+>> Strings? Indentation engines do not deal with strings, they deal with buffer
+>> contents. Having them handle this possibility would also amount to sharing a
+>> part of multi-mode logic.
+>
+> Yeh. That's the sucky part. My hope is that BEFORE-STRING will be seldom
+> used.
+
+Then let's not add that to the API until we see a concrete need for it.
+
+> Performance is not a primary concern for indentation. Correctness and conceptual
+> cleanness is at a much higher stake here. My hope is that generic helper
+> functions can be optimized to re-use same temp buffer for multiple invocations
+> of calculate-indent-function.
+
+So, how about trying my alternative proposal first?
+
+>>> Then a lot of modes don't even care about what's in the current line, so
+>>> STRING-AFTER will be irrelevant as well.
+>
+>> Almost all of them care whether the current line contains }, or `end', or
+>> `else', and so on.
+>
+> Indeed. But this information is trivial to retrieve from STRING-AFTER.
+
+Feeding it to each particular indentation engine is not going to be trivial.
+
+>> In any case, your hard-narrowing proposal is very similar. Surely you don't want
+>> to keep the second element of prog-indentation-context after hard-narrowing
+>> becomes available?
+>
+> Indeed. I was not thinking about algorithmic complexities.
+>
+> AFAIK if second element is removed, the third one should go as well. That leaves
+> only FIRST-COLUMN then, which I personally don't mind.
+
+OK. And that one could be replaced with the introduction of 
+prog-indentation-function. Though that might be getting ahead of ourselfves.
+
+>>> This way the
+>>> request aired in bug#22983 of parse-partial-sexp == syntax-ppss will be
+>>> automatically satisfied. You won't need syntax-ppss-dont-widen either.
+>
+>> That doesn't seem relevant. That bug is about stale cache values between
+>> different narrowing bounds.
+>
+> Right. Those stale values won't occur in multi-modes because both syntax-ppss
+> and parse-partial-sexp will always operate on same hard-narrowed regions.
+
+We could only be sure of that for syntax-ppss calls in facilities that 
+the multi-mode handles specially, like font-lock, syntax-propertize and 
+indentation. Not so with any other functions the user could call.
+

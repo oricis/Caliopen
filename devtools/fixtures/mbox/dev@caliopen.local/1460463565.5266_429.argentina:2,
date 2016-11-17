@@ -1,0 +1,99 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aktU2-0001za-A2
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 09:14:58 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:52125)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <phillip.lord@russet.org.uk>) id 1aktTz-0001yn-A7
+	for dev@caliopen.local; Tue, 29 Mar 2016 09:14:56 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <phillip.lord@russet.org.uk>) id 1aktTu-0002Xg-A7
+	for dev@caliopen.local; Tue, 29 Mar 2016 09:14:55 -0400
+Received: from cloud103.planethippo.com ([31.216.48.48]:57358)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <phillip.lord@russet.org.uk>) id 1aktTt-0002RE-Vt
+	for dev@caliopen.local; Tue, 29 Mar 2016 09:14:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=russet.org.uk; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:To:From:Subject:Date:References:In-Reply-To:Message-ID;
+	bh=M++JIXdo2leshWYJLkGW+tXBP7eYf+5M4aVrsKJ+5MM=;
+	b=PCDh0nwktPwDyS7HEdtVZPEBxs
+	y+tsnfcKukLA26TVFH4xQnqGoVkfkGKiJZmneD4rGHfQ+9yVyWy5BcwmJdIPXpC3/urjRzaOHP1+n
+	7dNFUszKljYR2R5Ixh3HkhqK/fAkzr9yeLfPL6oiAxqGQc/Ob6lcz7Yee0P1TdruhR53Wg/srAbr3
+	GfkWL4p+bhvzVycusKmRBx8ytzsEcCldyYOPkr16Q/3NqZT7M5EKXgCs9ZAoFdOLKw7mztJWWawrs
+	Q5bqiGUFwj+C0g9ScFGxlkB/3rI/Xtf1s1mD7fcf48FsMnJOpnB4HZPY86Lsr7fJ3Y3bmzIoygeeK
+	qPuZW4UQ==;
+Received: from [127.0.0.1] (port=50493 helo=cloud103.planethippo.com)
+	by cloud103.planethippo.com with esmtpa (Exim 4.86_1)
+	(envelope-from <phillip.lord@russet.org.uk>) id 1aktTE-002b47-BC
+	for dev@caliopen.local; Tue, 29 Mar 2016 14:14:08 +0100
+Received: from 92.28.198.187 ([92.28.198.187])
+	(SquirrelMail authenticated user phillip.lord@russet.org.uk)
+	by cloud103.planethippo.com with HTTP;
+	Tue, 29 Mar 2016 14:14:08 +0100
+Message-ID: <2d55f05e4ba00afeb3f7269953eb0e13.squirrel@cloud103.planethippo.com>
+In-Reply-To: <m3bn5ya4ro.fsf@gnus.org>
+References: <m3bn5ya4ro.fsf@gnus.org>
+Date: Tue, 29 Mar 2016 14:14:08 +0100
+Subject: Re: Thinking about changed buffers
+From: "Phillip Lord" <phillip.lord@russet.org.uk>
+To: dev@caliopen.local
+User-Agent: SquirrelMail/1.5.2 [SVN]
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse,
+	please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cloud103.planethippo.com
+X-AntiAbuse: Original Domain - gnu.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - russet.org.uk
+X-Get-Message-Sender-Via: cloud103.planethippo.com: authenticated_id:
+	phillip.lord@russet.org.uk
+X-Authenticated-Sender: cloud103.planethippo.com: phillip.lord@russet.org.uk
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 31.216.48.48
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 13:14:56 -0000
+Content-Length: 1344
+Lines: 30
+
+On Mon, March 28, 2016 6:31 pm, Lars Magne Ingebrigtsen wrote:
+> One idea that popped up is that whenever we mark a buffer as unchanged
+> (that is, `(set-buffer-modified-p nil)', we save the byte size of the
+> buffer and a cryptographic hash of the buffer.  Then `buffer-modified-p'
+> would simply see whether either the size had changed, and if not, whether
+> the hash had changed.  If both are identical, then the buffer hasn't
+> changed.
+>
+
+
+Rather than doing this in general, why not have a
+"with-potentially-unmodified" macro, which calculates this hash and
+restores buffer-modified-p if no changes have happened. This would solve
+the "fill-paragraph" problem.
+
+Although, I would worry about the implications for the before and
+after-change hooks. fill-paragraph is already problematic here because
+before and after changes hooks are not necessarily consistent. In the case
+where no changes happen, would we expect before and after change hook to
+run? Because they would have to, as we do not know whether the buffer will
+change before we change.
+
+The only solution I can see for fill-paragraph is to copy the paragraph to
+a temp buffer, fill that, check whether it has changed, then if it has,
+signal before-change, copy the changed paragraph back, signal after
+change. If it has not changed, then fill-paragraph becomes a no-op.
+
+Phil
+
+

@@ -1,0 +1,111 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aXqsE-0002pJ-H9
+	for mharc-dev@caliopen.local; Mon, 22 Feb 2016 08:50:02 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:35553)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aXqsC-0002nB-LD
+	for dev@caliopen.local; Mon, 22 Feb 2016 08:50:01 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aXqs5-00041B-4y
+	for dev@caliopen.local; Mon, 22 Feb 2016 08:49:56 -0500
+Received: from mout.kundenserver.de ([212.227.126.135]:61818)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aXqs4-000416-Qe
+	for dev@caliopen.local; Mon, 22 Feb 2016 08:49:53 -0500
+Received: from [18.189.69.235] ([18.189.69.235]) by mrelayeu.kundenserver.de
+	(mreue004) with ESMTPSA (Nemesis) id 0LjwS5-1ZwK7q0hab-00bqLZ;
+	Mon, 22 Feb 2016 14:49:51 +0100
+Subject: Re: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+To: Anders Lindgren <andlind@gmail.com>
+References: <56CA94A8.3000205@gmail.com>
+	<CABr8ebYOYkvzhqNhvYQ3tQjDftJOwGcyVMmSNV-+yhKZJYc5wQ@mail.gmail.com>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Message-ID: <56CB11FC.9090705@gmail.com>
+Date: Mon, 22 Feb 2016 08:49:48 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.5.1
+MIME-Version: 1.0
+In-Reply-To: <CABr8ebYOYkvzhqNhvYQ3tQjDftJOwGcyVMmSNV-+yhKZJYc5wQ@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="Csp7tom9H490M5K5tWfotaf1QUTUKaUt8"
+X-Provags-ID: V03:K0:kt8vRpzimA6fMDGUrlmgKVk0qfEaOipWsq+XaWYL/HCb51VLlb3
+	NHKAzjJN+zJ3FMvxjTambG9uLWkND8B8Ktmws5lovtfS7m0Y2zwoPv3seLiy782kixDM4oI
+	7KMaL1/ENJqgoKCC4MJJEsu13NbTU2XFZSVhUDn9LysaczOd0q8kXBFfuOUHqPYWuJ/AScD
+	lqV+WJ3mRizdB3CW/ROYw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:2HYFBUVjobs=:Uh1vCFyk9B2mAZ5n3+UZ0G
+	VmhBO5FIRH+3RjDHMurOrFAbQu1F3NtjdDokfzTw7AjWO78mcAPHmr3bNod9MwWRux+xUIBDo
+	oZDrvmCO4UkkwKxEcNbY1Jrb0gAr6osmCujm4aGQFF5DZbU9pU5UP/uNiC7cf2tsHk/Op2SrT
+	8xr1LsyuANeWBLkno0co872pda2BoiY2saO51p9RioSgPvi3AKOnrOTZgW/GEhjqlxDcV4DjE
+	cSmAtn/2MqtvdASCqt/07kkOjFAj9vqNnkZbD2A/McvYZMxqkYK06CoD78DiOC6Xjo87+edGA
+	XdRJMc33OWhG2eXYM02BnOlCU/Z2DFZzdq1w3JDRjdNImDBtyUPKmjnx40fcKeLHkNd5Gb4eo
+	5t2fYlskHmlZaG88ZfdlbuHulk4xOvbyCjsmWQlq00kJYb1QgztZiFG4gE6zPUIowAkK9v/IG
+	imfrm4qi4U9uOZTvdxCEiSmMqj5/61xTnzidBx3V3NrqRIej49R8KkpEfT6/5hUcipLDIqsJb
+	T9lCPIjYAajwhRnVY4isDfPdXZ0+6K3AlIO/PnvGnaNYBX0kGFlti6ATzGpgrFIj11RBAM14i
+	q4gHrkX9VKSRmBhbt+/7Rt2spsWyAh52BHtitgR/i2VyRriRHNnuCyJmJhfNDRt2DKiYnVdCC
+	hlP6JowK/1y7wIRmo+acjWbXH9QXq7XWJYNlPfdeC34UCciwJMLCSRiZR8bGNNYoDJ+Y=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.126.135
+Cc: Emacs developers <dev@caliopen.local>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 22 Feb 2016 13:50:01 -0000
+Content-Length: 1852
+Lines: 46
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--Csp7tom9H490M5K5tWfotaf1QUTUKaUt8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On 02/22/2016 03:56 AM, Anders Lindgren wrote:
+>> What's the proper way to mark a buffer for refontification (and
+>> refontify the visible portion) immediately in 25?
+>>
+> I've been using `(font-lock-region (point-min) (point-max))' to force
+> a refontification of the entire buffer, for my htmlize-like packages
+> (`faceup' and `e2ani'). I'm not sure if it's the "right way" to do
+> it, but it works in practice.
+
+Thanks. Won't that refontify the whole buffer though, even the non-visibl=
+e (and not yet fontified) areas, though? That would be a performance issu=
+e for me.
+
+Cl=C3=A9ment.
+
+
+--Csp7tom9H490M5K5tWfotaf1QUTUKaUt8
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJWyxH8AAoJEPqg+cTm90wj7TUP/RpK7IUR9vSCcZWxiq4/MZbV
+0uSeASZ2gnfK4tqWlJynabXqZO13Y12ajfbzosnvq/fd2jGrwDJWLvqtP/hLAvlv
+5xKhQe+7j5rTaTl9gjx+vNQqHKY+tjKAzbVtD5AFl2elGX4gmkAI8ZUMIqBs+L+J
+RQK68VhlcVLi2MGwbCCQMPMreMbLrI6Dsc53+EkmZLVHhAIXqNTWYbTwJkqfkJ4x
+72VEo0FCJM59IoTdcmkHTukEvtp/Bc3oNUvL4BGgv0ewY2ztEguqH1kbiA94J0Fk
+wfCIIkUsrwcmrA1fPnK4idTXdmYTCZXxmdtHuIDPlo+9GaEIdX4yBh4mq93xtEI3
+Lc3X182fOo8EWuSjxP7dNUCn6h15zdmlRwfTF/+fouK/44BtTGwO57ET04ibSFer
+clYymgdbMfJosUNmaN2kt8yAFA1Bo10Fz1xzcZV6HD364wM00qKQ/YLcDR68TM8G
+9SHEeJ8WF81n2j5PudNMBq2O1TqxGTa1BfxFAQhb3jL+4mjhRo8ZiPmHos6Qa5NV
+EsA7tu+EOG0Kuw2Eq/rG/buUqNyJGDBvLOf73/6nNCDVYCevShrr1wotJRnOzDFE
+g/ruAhD+uUCI7vbCrY0MIqtHgC5HpjI6tT5e8YXhcAkkubKHugjsI/GRotkKi26o
+YPdbU9k6hr8CG+Vcujj/
+=kSPB
+-----END PGP SIGNATURE-----
+
+--Csp7tom9H490M5K5tWfotaf1QUTUKaUt8--
+

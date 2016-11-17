@@ -1,0 +1,143 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai34U-0007Lx-Vg
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 12:52:51 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39484)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai34S-0007Hp-RD
+	for dev@caliopen.local; Mon, 21 Mar 2016 12:52:49 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai34N-00086v-O7
+	for dev@caliopen.local; Mon, 21 Mar 2016 12:52:48 -0400
+Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e]:34287)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai34N-00086V-Gt
+	for dev@caliopen.local; Mon, 21 Mar 2016 12:52:43 -0400
+Received: by mail-wm0-x22e.google.com with SMTP id p65so159438778wmp.1
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 09:52:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=bidWv+tP+OiVFteS+bMVgP8PBgRnewlXTxE9sh41Vck=;
+	b=t5IqC+AQ/rpEZKU8G7WUUXS2yqyn3wQDxtb3gGAALmBZo4wJTY0EYhWl+VayJW4A7O
+	pZm+mtggaOaMLOSK7ReuztxYOtLosFSSyCmIaq//RzMPipA7p9xre8GAQrXw+ymhS/NN
+	Oe/ODoTNiPa7ofRuDSidN30qxBfCNhhNQRVBrnDs+W50Qmj6RghPGsFv3El44XgwwOA6
+	QZceM8T0DA10iQyOPkwTNQ+8lh3YeJ74x+VAqtw1Uk7uxtF2a2+HdFCjv+O1/k3AnVib
+	Nfs3KBGrfLyuwXCLwdwCWmlJIRV+0lZiMTxuQQe9QYBLavG8HpwZkR9K2fesIc8H6tBR
+	y/+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=bidWv+tP+OiVFteS+bMVgP8PBgRnewlXTxE9sh41Vck=;
+	b=lK7a+17r44vOid146ZkYzzh6vXBVaN15SeD+v9rQ5qX97sko1ZdgALDZma9v+DvaK0
+	3p4VwqjjRU7oLqv2+lLirAQfCu3bIu+a9b9l1iJqeGyPITLsKZB3AhmXzZInYGeahxk7
+	iRw+oSrtKMlbSlPvHUiblJGqbscCSaJ9Zut0+nkgnfXPLNuuMoAczHDS5uxYHLPzpq3b
+	obg9hgHX0M8rv16/ZxGw4kZjJyLI+IJjNjOziXgHt2rqSEb5IsTnACUVRRQxvmaMkI2M
+	nnijVRzQdQ5+YLiScQ370xF8c2TeM7KRykMcTYhhZ52xYxPU313i8hilRXjmaD5dapEG
+	szlw==
+X-Gm-Message-State: AD7BkJIXMnpIanCcd2+jV7rpz/hv8QrzKtTU0psvfuEkL8EgulR4bBjb+T0q5BiJwps4jA==
+X-Received: by 10.194.84.2 with SMTP id u2mr31122543wjy.61.1458579162487;
+	Mon, 21 Mar 2016 09:52:42 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	w15sm13261240wmd.10.2016.03.21.09.52.41
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Mon, 21 Mar 2016 09:52:41 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Dmitry Gutov <dgutov@yandex.ru>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+	<328c7461-62c6-4228-f622-626349613a1d@yandex.ru>
+	<87fuvkf1gx.fsf@gmail.com>
+	<ae28a065-9500-0954-3c91-cd3a68bd2408@yandex.ru>
+	<87y49bewum.fsf@gmail.com>
+	<ea0d8779-3207-7a29-2c8b-3a047f1fcd46@yandex.ru>
+	<87lh5bevu9.fsf@gmail.com>
+	<83c0f91b-21ff-2514-d24a-5b6104ef012b@yandex.ru>
+Date: Mon, 21 Mar 2016 17:52:41 +0100
+In-Reply-To: <83c0f91b-21ff-2514-d24a-5b6104ef012b@yandex.ru> (Dmitry Gutov's
+	message of "Mon, 21 Mar 2016 16:56:05 +0200")
+Message-ID: <877fgvept2.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22e
+Cc: Alan Mackenzie <acm@muc.de>, Stefan Monnier <monnier@IRO.UMontreal.CA>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 16:52:50 -0000
+Content-Length: 1811
+Lines: 49
+
+
+Ok, so the alternative proposal is not to do anything. I like that. The only
+reason to have STRING-AFTER and STRING-BEFORE is potential mode specific
+optimization. If that's not a concern, no need for that.
+
+  Vitalie
+
+>> On Mon, Mar 21 2016 16:56, Dmitry Gutov wrote:
+
+> On 03/21/2016 04:42 PM, Vitalie Spinu wrote:
+
+>>> """
+>>> Instead, if you want to know what indentation an inner mode would return if
+>>> STRING-BEFORE was before it, insert that string into the buffer (while
+>>> inhibiting undo history). Call the indentation function, then remove the string.
+>>> """
+>>
+>> Inner mode might decide to operate on string directly, or put stuff in a temp
+>> buffer, work on last line only, or simply ignore it.
+
+> Yes, each major mode would have to make all of these choices.
+
+> Why burden them with that concern? Wouldn't that become a part of the same
+> problem that you yourself mentioned, "teaching modes about multi-modes"?
+
+>> Why to hard-wire the usage
+>> of STRING-BEFORE so badly?
+
+> What hard-wiring?
+
+> STRING-BEFORE is not a tangible part of my proposal. There's no API change tied
+> to it.
+
+>> My gut feeling is to avoid modifying buffer context in indentation engine at all
+>> costs.
+
+> Why? That's worked out okay for me.
+
+> Alternatively, you can create a temp buffer each time, compose pieces of inner
+> mode text in it, and call the indentation function. Again, in multi-mode code.
+
+>> In the future, if performance with temp buffers will be a real issue, we
+>> can add more low level functions for fast operation on string to do some common
+>> parsing tasks. We can even extend parse-ppss to deal with BEFORE-STRING.
+
+> Performance is a distant concern, complexity is the immediate one. If modifying
+> buffers turns out to be a problem, then we can do all the stuff you mention
+> above.
+

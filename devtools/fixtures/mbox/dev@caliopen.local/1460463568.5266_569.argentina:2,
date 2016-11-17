@@ -1,0 +1,134 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai3P1-0005vy-Es
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 13:14:03 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:46057)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1ai3Ou-0005va-6Q
+	for dev@caliopen.local; Mon, 21 Mar 2016 13:14:02 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1ai3Oq-00056i-1d
+	for dev@caliopen.local; Mon, 21 Mar 2016 13:13:56 -0400
+Received: from mout.kundenserver.de ([212.227.17.13]:52158)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <andreas.roehler@online.de>) id 1ai3Op-00056c-Nm
+	for dev@caliopen.local; Mon, 21 Mar 2016 13:13:51 -0400
+Received: from [192.168.178.35] ([77.6.149.198]) by mrelayeu.kundenserver.de
+	(mreue103) with ESMTPSA (Nemesis) id 0Lo2Ke-1a6nm222Aq-00fwZg for
+	<emacs-devel@gnu.org>; Mon, 21 Mar 2016 18:13:50 +0100
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+To: dev@caliopen.local
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+	<328c7461-62c6-4228-f622-626349613a1d@yandex.ru>
+	<87fuvkf1gx.fsf@gmail.com>
+	<jwv7fgwx7ln.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzewc0.fsf@gmail.com>
+	<jwv4mbzx4hf.fsf-monnier+gmane.emacs.devel@gnu.org>
+From: =?UTF-8?Q?Andreas_R=c3=b6hler?= <andreas.roehler@online.de>
+Message-ID: <56F02C31.9070908@online.de>
+Date: Mon, 21 Mar 2016 18:15:29 +0100
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:38.0) Gecko/20100101
+	Icedove/38.5.0
+MIME-Version: 1.0
+In-Reply-To: <jwv4mbzx4hf.fsf-monnier+gmane.emacs.devel@gnu.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K0:tbs06tZ0j+rKL6cpsq3JUW4tcXPgnKd5wooGpjVYjzTrAijHI0m
+	LYvfV9IYaUGOAvm/X1+ClLwSSr8ZvfYGNUiSb45ww1C5neKJQiKMPWj4b6fCt+a7TMOrwLz
+	hY2DKY5xBd+0CY8eDC3lIo0Z0nERo0ZD0Fe2eGuqcvIAKzrGdOTEYqd4I7VhZWqyi7Dt4/Y
+	o/OUODS/SQMM21lchIxsw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:vWP+w4Drozw=:OUpUhaQ7WNVfk4aou53Wz2
+	1IRpXwXiD6Tg0w7Bq5mS/cwdi0w4lan1XGToLHC7G6XZKET5PgYYohv/sXaWMQsagyZO/z5M8
+	YgnH+diU7KkFINkZ8E3sSKEeu56yD5BxDHa0D8Pc7vhe1q6OZEDbvNnsFzGx10Poo5cJ+4zO4
+	vvK1QlTgFFT6NXmPDLiA5X3hE3aKUz/a6HwHMc04fNWysYrXBJD5kJ1O81Mpcbt5600caS6iZ
+	X83yi2/uzDbJZRSMFMKa08oRx7djnvmfzhaPFhly0whaA4m83fr0rzp8zY+nhAEURnsDIHU0H
+	ksIyQYIlU2x+iwSjQeeCKDzGNYpYsFZGhG3gYb8XCfctJ5MuCE/6B8x9eAXB39Hy355N5iLUa
+	MVFs/mBeSUfnyS9NtvUY/vddKIPNtB3CvoDc2Ox4mIRMe/I2gfFufHgHaAV3Dsm57HtH8Dc4H
+	ew5lz4MBoq4vKLS8wHGTSrcsZRTFuhaNlfLKWnHn6+3LTJ/Cn/etgaCLNK8KFrItI3TXpuMZN
+	z0Lab1uiucHE9FzC1gUWGFxElQ8o0pw0sP5sNGFVi0qSNA974fGkZK5hAsbUYn9NCS4HRoTdE
+	Kt0L+KOId9Cl6UdB86JP8RfbIC8t/ewhoac+7po4o/HD/+Nsm8Pp5RAlbXi0JCHD5dK/ojrKv
+	xBoIHzd9rhbUTuj/Ry8rfpH99obS4CuJ15yvBOTncvAOQ+sbcxwyMjEt022BkzZstU/g788nD
+	7t+ItTwrfKwkmBAD
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.17.13
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 17:14:02 -0000
+Content-Length: 1926
+Lines: 54
+
+
+
+On 21.03.2016 16:06, Stefan Monnier wrote:
+>> I have elaborated on all these in my other long reply. I would just
+>> conclude here that because both calculate-indent-function and
+>> prog-indentation-context try to solve same problem, they are bound to
+>> have overlapping parts. It's just that calculate-indent-function is
+>> more general, easier to understand for prog authors and it solves
+>> three problems at once - replacement of indent-line-function, removing
+>> extra prog-indentation-context/prog-widen and not exposing
+>> multi-mode complexities.
+> STRING-BEFORE/STRING-AFTER/PREVIOUS-CHUNKS look like the main complexity
+> (from smie.el's point of view, they all seem pretty painful to support).
+
+Would expect that.
+
+
+>
+>> Note also that the intention of the `hard-widen-limit` is to make it
+>> work seamlessly for all existing code that use widen.  While
+>> prog-indentation-context requires to teach every mode out there to use
+>> prog-widen instead of widen. This doesn't sound right at all.
+> The reason is that your suggestion risks breaking code since it changes
+> the behavior of `widen'.
+>
+> Maybe the breakage would be extremely limited or even not exist at all,
+> in which case the tradeoff is probably worth it.  My gut feeling is that
+> it's too risky, but that's just my gut feeling.
+>
+> Note also that most modes don't bother using widen, and search&replace
+> is pretty easy to do.  But if my fear is unfounded, then indeed it's
+> better to just change `widen' directly.
+>
+>
+>          Stefan
+>
+>
+
+What about if going back and reflect from the starting point, if a well 
+defined result of narrowing would be the best - without changing code in 
+core at all?
+
+When it narrows from midst of a sexp, its beginning is missing, okay. 
+Where is the problem?
+If this wasn't wanted, the narrowing was wrong. No need to fix this from 
+Emacs side.
+
+Sorry, should I not have understood what's at stake...
+
+
+
+
+
+

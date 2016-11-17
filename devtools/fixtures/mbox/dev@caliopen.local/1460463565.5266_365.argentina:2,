@@ -1,0 +1,84 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai4Gz-0004Bn-8V
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 14:09:49 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:38049)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1ai4Gx-0004Bf-69
+	for dev@caliopen.local; Mon, 21 Mar 2016 14:09:47 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1ai4Gs-0004YH-83
+	for dev@caliopen.local; Mon, 21 Mar 2016 14:09:47 -0400
+Received: from zimbra.cs.ucla.edu ([131.179.128.68]:43686)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1ai4Gs-0004Xk-2I
+	for dev@caliopen.local; Mon, 21 Mar 2016 14:09:42 -0400
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTP id DFD9616120A;
+	Mon, 21 Mar 2016 11:09:40 -0700 (PDT)
+Received: from zimbra.cs.ucla.edu ([127.0.0.1])
+	by localhost (zimbra.cs.ucla.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id UnpEj-I4yQcF; Mon, 21 Mar 2016 11:09:40 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTP id 3935F161126;
+	Mon, 21 Mar 2016 11:09:40 -0700 (PDT)
+X-Virus-Scanned: amavisd-new at zimbra.cs.ucla.edu
+Received: from zimbra.cs.ucla.edu ([127.0.0.1])
+	by localhost (zimbra.cs.ucla.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id CFud-MiSlGD3; Mon, 21 Mar 2016 11:09:40 -0700 (PDT)
+Received: from [192.168.1.9] (pool-100-32-155-148.lsanca.fios.verizon.net
+	[100.32.155.148])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTPSA id 13128160175;
+	Mon, 21 Mar 2016 11:09:40 -0700 (PDT)
+Subject: Re: Checking in files with trailing white space
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>,
+	Stefan Monnier <monnier@iro.umontreal.ca>
+References: <m3fuvljolx.fsf@gnus.org>
+	<jwvshzkx9jc.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m337rkszhw.fsf@gnus.org>
+From: Paul Eggert <eggert@cs.ucla.edu>
+Organization: UCLA Computer Science Department
+Message-ID: <56F038E3.2080003@cs.ucla.edu>
+Date: Mon, 21 Mar 2016 11:09:39 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <m337rkszhw.fsf@gnus.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 131.179.128.68
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 18:09:48 -0000
+Content-Length: 751
+Lines: 19
+
+Lars Magne Ingebrigtsen wrote:
+> Having the test and result files be HTML and text files is much easier
+> to work with.
+
+Another possibility is to design your own escape convention for trailing white 
+space and remove it just before the test.  You could strip backslash just before 
+newline, say.  This will be more robust in the presence of tools that routinely 
+strip trailing white space.
+
+If you do keep trailing whitespace, please check that it survives editing the 
+file by an Emacs configured something like this:
+
+(setq whitespace-action '(auto-cleanup))
+(setq whitespace-style '(trailing empty))
+(global-whitespace-mode t)
+
+as this is how I edit Emacs source code. I assume you can do this by setting 
+local variables in the affected files.
+

@@ -1,0 +1,180 @@
+Return-Path: <bounce@client.mes-offre.com>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id D66EE209B2CF2
+	for <laurent@brasil.brainstorm.fr>; Sun, 10 Apr 2016 01:22:47 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id AA8073317704; Sun, 10 Apr 2016 01:22:47 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id 8E8CD3317708; Sun, 10 Apr 2016 01:22:47 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: *******
+X-Spam-Status: Yes, score=7.3 required=5.0 tests=AWL,BAYES_99,
+	DATE_IN_PAST_12_24,HTML_IMAGE_RATIO_02,HTML_MESSAGE,MPART_ALT_DIFF,
+	NORMAL_HTTP_TO_IP,RCVD_IN_CSS,RDNS_NONE,T_KHOP_FOREIGN_CLICK autolearn=spam
+	version=3.3.2
+X-Spam-Report: 
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  1.0 RCVD_IN_CSS RBL: Received via a relay in Spamhaus CSS
+	*      [63.251.255.135 listed in zen.spamhaus.org]
+	*  1.0 DATE_IN_PAST_12_24 Date: is 12 to 24 hours before Received: date
+	*  0.0 NORMAL_HTTP_TO_IP URI: Uses a dotted-decimal IP address in URL
+	*  0.4 HTML_IMAGE_RATIO_02 BODY: HTML has a low ratio of text to image area
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.8 MPART_ALT_DIFF BODY: HTML and text parts are different
+	*  0.0 T_KHOP_FOREIGN_CLICK T_KHOP_FOREIGN_CLICK
+	*  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+	* -0.3 AWL AWL: From: address is in the auto white-list
+X-Spam-DCC: : 
+Received: from server103.offerprivee.in (unknown [63.251.255.135])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id 75B9633181F9
+	for <dev@caliopen.local>; Sun, 10 Apr 2016 01:22:44 +0200 (CEST)
+To: dev@caliopen.local
+Subject: Votre 1er cours gratuit, apprenez facilement l'anglais
+Message-ID: <8586c48eefb41718ab8e08195cd0eb22@162.244.67.108>
+Date: Sat, 09 Apr 2016 06:07:22 -0500
+From: "ABA English" <noreply@client.mes-offre.com>
+Reply-To: noreply@client.mes-offre.com
+MIME-Version: 1.0
+X-Mailer-LID: 178,179,180
+List-Unsubscribe: <http://162.244.67.108/~client/unsubscribe.php?M=15236122&C=7fd31e1ab2cfdb56580e8bf68744d029&L=180&N=11229>
+X-Mailer-SID: 11229
+X-Mailer-Sent-By: 2
+Content-Type: multipart/alternative; charset="UTF-8"; boundary="b1_efabb3f6bd5ac9283f95ab5b992515dc"
+Content-Transfer-Encoding: 8bit
+X-Spam-Prev-Subject: Votre 1er cours gratuit, apprenez facilement l'anglais
+Content-Length: 4986
+Lines: 128
+
+--b1_efabb3f6bd5ac9283f95ab5b992515dc
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+Your email client cannot read this email.
+To view it online, please go here:
+http://162.244.67.108/~client/display.php?M=15236122&C=7fd31e1ab2cfdb56580e8bf68744d029&S=11229&L=180&N=3469
+
+
+To stop receiving these
+emails:http://162.244.67.108/~client/unsubscribe.php?M=15236122&C=7fd31e1ab2cfdb56580e8bf68744d029&L=180&N=11229
+
+--b1_efabb3f6bd5ac9283f95ab5b992515dc
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+<html><head></head><body><div>
+<title>Aba English</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style type="text/css"><!--
+body{background:#FFFFFF !important; min-height:1000px !important;}
+ .ExternalClass {width:100% !important;}
+span, strong{-webkit-text-size-adjust:none !important;}
+
+@media only screen and (max-width:480px){
+table[class=aba] { width: 300px !important; min-width:300px !important;
+text-align:center !important;}
+table[class=aba] td{ width: 300px !important; min-width:300px !important;
+float:left !important;}
+br[class=delete] {display:none !important;}
+td[class=delete] {display:none !important;}
+td[class=logo-aba] img{ width: 300px !important; height: 62px !important;
+float:left !important;}
+td[class=visuel-aba] img{ width: 300px !important; height: 196px
+!important; float:left !important;}
+td[class=btn-aba] img{ width: 300px !important; height: 83px !important;
+float:left !important;}
+
+table[class=sender] { width: 300px !important; min-width:300px
+!important;}
+td[class=header-sender] img{ width: 300px !important; height:60px
+!important }
+td[class=delete] { display:none !important;}
+td[class=text-sender] { width:123px !important; text-align:rigth
+!important; padding-top:5px !important;}
+td[class=deseado] { width:79px !important; padding-top:5px !important;}
+td[class=no-deseado] { width:98px !important;padding-top:5px !important;}
+td[class=text-sender] span{ font-size:11px !important;}
+td[class=footer-sender] { width: 300px !important; background:none
+!important;}
+}
+--></style>
+<table align="center">
+<tbody>
+<tr>
+<td>Pour visualiser correctement ce message, [<a target="_blank"
+href="http://162.244.67.108/~client/display.php?M=15236122&C=7fd31e1ab2cfdb56580e8bf68744d029&S=11229&L=180&N=3469">cliquez
+ici</a>]</td>
+</tr>
+<tr>
+</tr>
+</tbody>
+</table>
+<center>
+<table style="min-width: 600px; width: 600px;" border="0" cellpadding="0"
+cellspacing="0" class="aba">
+<tbody>
+<tr>
+<td style="min-width:600px;" class="logo-aba"><a
+href="http://162.244.67.108/~client/link.php?M=15236122&N=11229&L=11387&F=H">
+<img
+src="http://ad-lead.com/fr/abaenglish/m_minisite_20082015/public/emkt/acqui3/images/top.jpg"
+width="600" height="125" border="0" style="display:block;" alt="Aba
+English" /></a></td>
+</tr>
+<tr>
+<td style="min-width:600px;" class="visuel-aba"><a
+href="http://162.244.67.108/~client/link.php?M=15236122&N=11229&L=11387&F=H">
+<img
+src="http://ad-lead.com/fr/abaenglish/m_minisite_20082015/public/emkt/acqui3/images/mea.jpg"
+width="600" height="393" border="0" style="display:block;" alt="La
+meilleure solution a vos questions pour apprendre langlais" /></a></td>
+</tr>
+<tr>
+<td width="600" style="padding-bottom:30px; padding-top:30px;
+text-align:center;"><span style="font-family:Arial, sans-serif;
+color:#444444; font-size:16px;"> Profitez du <strong>premier cours ABA
+English GRATUIT </strong> <br class="delete" />et d&eacute;couvrez les
+cl&eacute;s de l'apprentissage d'une des langues         <br class="delete"
+/>les plus parl&eacute;es dans le monde. Allez, aujourd&rsquo;hui je me
+lance ! </span></td>
+</tr>
+<tr>
+<td width="600" style="text-align:center; min-width:600px;
+background:#FFFFFF" bgcolor="#FFFFFF" class="btn-aba"><a
+href="http://162.244.67.108/~client/link.php?M=15236122&N=11229&L=11387&F=H">
+<img
+src="http://ad-lead.com/fr/abaenglish/m_minisite_20082015/public/emkt/acqui3/images/btn.gif"
+width="300" height="83" border="0" style="display:inline;" alt="Jen
+profite" /></a></td>
+</tr>
+<tr>
+<td style="min-width:600px;" class="delete"><img
+src="http://ad-lead.com/fr/abaenglish/m_minisite_20082015/public/emkt/acqui3/images/bottom.jpg"
+width="600" height="35" border="0" style="display:block;" alt="Aba English"
+/></td>
+</tr>
+</tbody>
+</table>
+</center>
+<table align="center">
+<tbody>
+<tr>
+<td>Pour cesser de recevoir nos informations [<a target="_blank"
+href="http://162.244.67.108/~client/unsubscribe.php?M=15236122&C=7fd31e1ab2cfdb56580e8bf68744d029&L=180&N=11229">cliquez
+ici</a>]</td>
+</tr>
+</tbody>
+</table>
+<img
+src="http://adtrack.adleadevent.com/adtckom.php?idc=10716&amp;idctr=1&amp;idp=1715&amp;idm=1828&amp;email=dev@caliopen.local"
+width="0" height="0" /></div><img
+src="http://162.244.67.108/~client/open.php?M=15236122&L=180&N=11229&F=H&image=.jpg"
+height="1" width="10"></body></html>
+
+--b1_efabb3f6bd5ac9283f95ab5b992515dc--
+

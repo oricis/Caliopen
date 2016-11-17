@@ -1,0 +1,81 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahct9-00055e-EW
+	for mharc-dev@caliopen.local; Sun, 20 Mar 2016 08:55:23 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:50122)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ahct5-000532-Hz
+	for dev@caliopen.local; Sun, 20 Mar 2016 08:55:20 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ahct2-0003zE-AT
+	for dev@caliopen.local; Sun, 20 Mar 2016 08:55:19 -0400
+Received: from plane.gmane.org ([80.91.229.3]:54388)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ahct2-0003z9-4F
+	for dev@caliopen.local; Sun, 20 Mar 2016 08:55:16 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ahct0-0000Ly-Nn
+	for dev@caliopen.local; Sun, 20 Mar 2016 13:55:14 +0100
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Sun, 20 Mar 2016 13:55:14 +0100
+Received: from larsi by cm-84.215.1.64.getinternet.no with local (Gmexim 0.1
+	(Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Sun, 20 Mar 2016 13:55:14 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+Mail-Followup-To: dev@caliopen.local
+To: dev@caliopen.local
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: Checking in files with trailing white space
+Date: Sun, 20 Mar 2016 13:55:06 +0100
+Organization: Programmerer Ingebrigtsen
+Message-ID: <m3fuvljolx.fsf@gnus.org>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: cm-84.215.1.64.getinternet.no
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAGFBMVEXDuLcwLSvm390LBwaQ
+	hoUREA79/PxaVFLb1vaJAAACaElEQVQ4jW2TQWvjMBCFp0I056E2umqH4D8QfFeKFp2FEXstovgc
+	FZf5+/vkrNsGVmla6s/z3szzmNb9vF0vD6csdAf1/PJIDrDW6/JIDrCex/9XrP7RpXwB28pPMH95
+	2NN4uJRLmb8rPH2VzAXnAFOl1L4bm38AsWksP8B0mIjVhpaXw/wAa6WY2mU+5EgOsArImMdjjn+g
+	7iWx8b3peSaBVvVSJ/yOZJUPKdMBeZGpVmsoHj0TmT4DAVXxxlPa818AnlcRG4gmL2S8sfeSmfxU
+	jXiUCG4XfFK3n7tUFREw6RDfezIzRUPG+F5iI6QwTBuXGZEEg9s8PjGqvnpDtiFmADhbEE+6aQtk
+	oKXcYwfociHG5DTgHptURwDYGhFvT063W7DWRoDGAL158Sf9zHqjACGn+GG0K717fx2zKsWQGrsr
+	auDRRzDUlqwtblGZN/xJMBb/arz9XVxAuLheXNxSxABwpriN2SH1IaFVpxHAwCOl3HiDp2MHwC7a
+	no94zKANYGQeeBxZNVKP5GwCAomUGDM2uLiIx6DBRzHGdmdOmhI3HtIWCFWv75jrdkZHwTzpfjoI
+	MiEH/NMa3+z9etJAG7bB+MRQbqO7X0e3SHnqO3UCwHMA5U6GMJF5PmPnzkgIkXJGfvGaB1pprZM3
+	61tDCY+ctwQh/qjSlxrDTL8YUZecHabcAjQ6wBYEamirlAyrEgyWGS9OVYStDkrwAHHhWXbwNuBR
+	jn0BAHrbunX9Ku/Dn5flUvCmdiXHLQ99z4lOOS9L2V/VDEH+zDdkSJGesCxLv869oqttSJ2CfSq5
+	3M+Sd5M9w7/icQi5Rq3FnwAAAABJRU5ErkJggg==
+Mail-Copies-To: never
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:/UI2Yv251LaQGhlhLr6ayEtywIE=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 20 Mar 2016 12:55:20 -0000
+Content-Length: 370
+Lines: 9
+
+I'm adding test cases for the shr HTML rendering, and in some of the
+tests there should really be trailing white space in the result files.
+Is there a way to say that the test/data/shr directory should be allowed
+to have trailing spaces in our git/checkin thing?
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+
+
+

@@ -1,0 +1,74 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1apGnq-0002EM-88
+	for mharc-dev@caliopen.local; Sun, 10 Apr 2016 10:57:30 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:46876)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1apGnn-000292-EZ
+	for dev@caliopen.local; Sun, 10 Apr 2016 10:57:28 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1apGnk-0004ci-8k
+	for dev@caliopen.local; Sun, 10 Apr 2016 10:57:27 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:38927)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1apGnk-0004cd-5i; Sun, 10 Apr 2016 10:57:24 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:3468
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1apGnj-0005Qf-GH; Sun, 10 Apr 2016 10:57:23 -0400
+Date: Sun, 10 Apr 2016 17:56:49 +0300
+Message-Id: <83wpo5h5qm.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Thomas =?utf-8?Q?Fr=C3=B6ssman?= <thomasf@jossystem.se>
+CC: dev@caliopen.local
+In-reply-to: <CANDWisD_2-vtxm_p5z4T049=STnBgmjX674kEyO7vxCLqvifJA@mail.gmail.com>
+	(message from Thomas =?utf-8?Q?Fr=C3=B6ssman?= on Sun,
+	10 Apr 2016 11:47:44 +0200)
+Subject: Re: about bug#232: 25.0.92; cua-mode inhibits deactivate-region-hook
+Reply-to: Eli Zaretskii <eliz@gnu.org>
+References: <CANDWisD_2-vtxm_p5z4T049=STnBgmjX674kEyO7vxCLqvifJA@mail.gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 10 Apr 2016 14:57:28 -0000
+Content-Length: 1104
+Lines: 25
+
+> From: Thomas Frössman <thomasf@jossystem.se>
+> Date: Sun, 10 Apr 2016 11:47:44 +0200
+> 
+> First I'm not sure if you prefer me to post to the bug or the mailing list so please tell me if I should restrict
+> myself to the bugs list instead..
+
+To the bug list, using "M-x report-emacs-bug RET", please.
+
+> Anyway, I think that it's an actual bug with cua-mode or something because the deactivate-mark-hook isn't
+> fired when the region is removed, repeated pressing of C-g doesn't fire it either.
+> 
+> It's also a consistent behavior, when cua-mode is active the deactivate-mark hook is not fired
+> 
+> (by using git blame) I noticed that there was a change in September last year or something which modifies
+> some bits about how cua-mode handles the mark.
+> 
+> Please tell me if I'm wrong or if there is some additional digging I should do to further diagnose this issue.. 
+
+Could you perhaps include in your bug report the details about how it
+worked in previous versions of Emacs?  If it worked correctly in some
+older version, could you please tell in which one, and what was the
+behavior?
+
+Thanks.
+

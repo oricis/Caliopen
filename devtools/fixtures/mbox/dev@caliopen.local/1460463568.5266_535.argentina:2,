@@ -1,0 +1,127 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahSxn-0007PU-CV
+	for mharc-dev@caliopen.local; Sat, 19 Mar 2016 22:19:31 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:49015)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ahSxl-0007PN-Ga
+	for dev@caliopen.local; Sat, 19 Mar 2016 22:19:30 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ahSxg-0008UO-Fm
+	for dev@caliopen.local; Sat, 19 Mar 2016 22:19:29 -0400
+Received: from mail-wm0-x22b.google.com ([2a00:1450:400c:c09::22b]:35205)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ahSxg-0008UJ-8G
+	for dev@caliopen.local; Sat, 19 Mar 2016 22:19:24 -0400
+Received: by mail-wm0-x22b.google.com with SMTP id l68so70732951wml.0
+	for <dev@caliopen.local>; Sat, 19 Mar 2016 19:19:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=sender:subject:to:references:cc:from:message-id:date:user-agent
+	:mime-version:in-reply-to:content-transfer-encoding;
+	bh=lztDaGx4wqqVxWSxtsl5jQw6yKDvw/1rjFhVZri5fUo=;
+	b=rOZG0BNfaxRdyfgMI8neGGdVMEsFKSxHK+gWZx5vClPNJY/nkvwZfE7KuFD6SWHQwx
+	GZRx1sIuJZ0xPGoXDBYqRVX65Lni1oXdKY/LjRP0rF9r1DX1Gb0nnnMH2WdXuIoulZxp
+	NBYr1D2EI+JBeBZQT7Yvj6pvWAFxZicLBuILott4fV8vD/A1mn8KdziWCIm8NqY4DRzl
+	L640JLwQfKx6ah0OA3p2ydIjkm85kV55StC8I6RfOtbkFudFcxEGw+DBxMvx9lZJlIJ7
+	ZdA0UFIda1N1zjBNgzjFV33bhHnpIIYyPTYNm2GSXamdpBPNY2L3RCRZQ2UNyonu4BAC
+	66qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
+	:date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+	bh=lztDaGx4wqqVxWSxtsl5jQw6yKDvw/1rjFhVZri5fUo=;
+	b=lQYHPiN/I3qmqcnslJ6ph5nbw+8JsBdJv8f1NJfhJxP3Vej1w/R00NBn+F3TMK5MaO
+	OUJPhtej/UrDI2pOSm98ZJgxqq10Oi9iSOQRNh3hSX5tn6qcTgs1dNPgyMaaaOj0UKF/
+	Dq9YCHxs+r7EY3c1PZMiIOtJ5Ud/HS/MwU8OGmnDd+Nkywd7uT9t5AgUrwrtvqhlHbDp
+	T3eV5kIzOXW2OILZnNwEm3TjIoU7KvuQxlgsHZV5FQBZQDXO1fFf2Mnouuk7GDi7fYKZ
+	ne+1kc+eo7j+/6nkPAsCkNyZ5cfnc81g3M25NriwJS7rK9jz7ga7YlM+BWjhGioLwGvU
+	yd9w==
+X-Gm-Message-State: AD7BkJIeg7ye2OskTmcPtkIUivIMIhQyZ3PcrdOiifc71OsIpydZTGPYRDrPXe4hReenxA==
+X-Received: by 10.194.22.97 with SMTP id c1mr23084174wjf.19.1458440363413;
+	Sat, 19 Mar 2016 19:19:23 -0700 (PDT)
+Received: from [192.168.1.2] ([185.105.175.24])
+	by smtp.googlemail.com with ESMTPSA id
+	8sm5912818wmk.13.2016.03.19.19.19.21
+	(version=TLSv1/SSLv3 cipher=OTHER);
+	Sat, 19 Mar 2016 19:19:22 -0700 (PDT)
+Sender: DG <raaahh@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+To: Vitalie Spinu <spinuvit@gmail.com>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+From: Dmitry Gutov <dgutov@yandex.ru>
+Message-ID: <fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+Date: Sun, 20 Mar 2016 04:19:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+	Thunderbird/45.0
+MIME-Version: 1.0
+In-Reply-To: <874mc2dqtk.fsf@gmail.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22b
+Cc: Alan Mackenzie <acm@muc.de>, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 20 Mar 2016 02:19:30 -0000
+Content-Length: 1670
+Lines: 42
+
+On 03/20/2016 12:51 AM, Vitalie Spinu wrote:
+
+> You can simulate islands by marking inner spans as comments with comment classes
+> (11 and 12).
+
+Ooh, that's a solid idea. Should be more generic that my "propertize <> 
+as punctuation" approach.
+
+> I used those in polymode in the past, but not anymore. It's not
+> that useful. Most of the parsing that modes do is regex based.
+
+I'd say it's still useful. Without the above, I've had indentation 
+problems with sgml-mode.
+
+A good mode would use syntax-ppss to check that point is not inside a 
+string or comment. Maybe that's not often done in font-lock, but it's at 
+least common in syntax-propertize and indentation functions.
+
+Example: sgml-lexical-context. It performs a search at first, but in the 
+end uses parse-partial-sexp, and returns a value based on that status.
+
+> So if a mode
+> author decides to regexpf for a wiki link on a full buffer after widening it,
+> islands won't help.
+
+Where does widening happens in this case? First, we have 
+font-lock-dont-widen.
+
+For indentation, we've introduced prog-indentation-context recently. And 
+indentation functions in programming modes are supposed to call 
+prog-widen instead of widen now.
+
+syntax-propertize-function's aren't supposed to call widen at all, I think.
+
+> IMO the most useful direction for multi-modes is to add a hard narrowing that
+> Stephen mentioned in the other thread. `syntax-ppss-dont-widen` goes in that
+> direction, but it doesn't address the issue of distinguishing between user
+> narrowing and "hard narrowing" in multi modes.
+
+syntax-ppss-dont-widen and prog-indentation-context will be the 
+indicators of the "hard narrowing", I guess.
+

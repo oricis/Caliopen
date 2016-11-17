@@ -1,0 +1,72 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aYewA-0001rI-WC
+	for mharc-dev@caliopen.local; Wed, 24 Feb 2016 14:17:27 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:41565)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aYew5-0001qx-Mu
+	for dev@caliopen.local; Wed, 24 Feb 2016 14:17:25 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aYew1-0007Cr-Lj
+	for dev@caliopen.local; Wed, 24 Feb 2016 14:17:21 -0500
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:49172)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1aYew1-0007Cd-Ij; Wed, 24 Feb 2016 14:17:17 -0500
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:3879
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1aYew0-000814-SH; Wed, 24 Feb 2016 14:17:17 -0500
+Date: Wed, 24 Feb 2016 21:17:14 +0200
+Message-Id: <838u29hq9x.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Stefan Monnier <monnier@IRO.UMontreal.CA>
+In-reply-to: <jwv1t829byc.fsf-monnier+emacs@gnu.org> (message from Stefan
+	Monnier on Wed, 24 Feb 2016 13:55:42 -0500)
+Subject: Re: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+References: <56CA94A8.3000205@gmail.com>
+	<jwvziuq4vjq.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<83bn76hw1o.fsf@gnu.org> <jwv1t829byc.fsf-monnier+emacs@gnu.org>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 24 Feb 2016 19:17:25 -0000
+Content-Length: 1118
+Lines: 24
+
+> From: Stefan Monnier <monnier@IRO.UMontreal.CA>
+> Cc: dev@caliopen.local
+> Date: Wed, 24 Feb 2016 13:55:42 -0500
+> 
+> > Actually, in this particular case I think this is a bug in
+> > prettify-symbols-mode: it should define its own
+> > font-lock-ensure-function.  The default value doesn't cover the kind
+> > of stuff that this mode uses font-lock for.
+> 
+> Hmm... I don't see any reason why that should be the case.
+> IOW I think that if a change is needed it should be font-lock.el because
+> prettify-symbols-mode seems to be using font-lock in a "normal" way.
+
+I'm not sure about this (this machinery and its implications were
+never sufficiently documented, and what I think I know is the result
+of a desperate attempt to document it).  However, please explain why
+font-lock-ensure-function calls font-lock-DEFAULT-fontify-buffer.  If
+it's supposed to be good for any mode, why does it call the default
+fontification?
+
+As a matter of fact, if I replace the font-lock-default-fontify-buffer
+call with a call to font-lock-fontify-buffer, the problem described by
+the OP goes away.  That is why I said what I said.
+

@@ -1,0 +1,87 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anvrT-0007Qu-Bh
+	for mharc-dev@caliopen.local; Wed, 06 Apr 2016 18:23:43 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:56559)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1anvrR-0007NJ-9u
+	for dev@caliopen.local; Wed, 06 Apr 2016 18:23:42 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <rms@gnu.org>) id 1anvrQ-0002nd-Ek
+	for dev@caliopen.local; Wed, 06 Apr 2016 18:23:41 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:49885)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1anvrO-0002mM-Vb; Wed, 06 Apr 2016 18:23:39 -0400
+Received: from rms by fencepost.gnu.org with local (Exim 4.82)
+	(envelope-from <rms@gnu.org>)
+	id 1anvrO-0001S7-EV; Wed, 06 Apr 2016 18:23:38 -0400
+From: Richard Stallman <rms@gnu.org>
+To: =?utf-8?Q?Cl=C3=A9ment?= Pit--Claudel <clement.pit@gmail.com>
+In-reply-to: <5704AEAF.8050205@gmail.com> (message from =?utf-8?Q?Cl=C3=A9?=
+	=?utf-8?Q?ment?= Pit--Claudel on Wed, 6 Apr 2016 07:37:35 +0100)
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+References: <56F42269.10400@gmail.com>
+	<jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<E16BD3EC-F7ED-463C-804C-DCBA8E548B15@lunaryorn.com>
+	<jwvshzffwix.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<05663DCE-3E5B-41E2-8657-460B2D013B49@lunaryorn.com>
+	<m2pou6clua.fsf@newartisans.com> <E1an5SI-0007tk-5H@fencepost.gnu.org>
+	<570280D9.6030706@gmail.com> <E1anSM6-00051o-H9@fencepost.gnu.org>
+	<5703D7BA.4070507@gmail.com> <E1anapc-0006WG-Pg@fencepost.gnu.org>
+	<5704AEAF.8050205@gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Message-Id: <E1anvrO-0001S7-EV@fencepost.gnu.org>
+Date: Wed, 06 Apr 2016 18:23:38 -0400
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: rms@gnu.org
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 06 Apr 2016 22:23:42 -0000
+Content-Length: 1133
+Lines: 32
+
+[[[ To any NSA and FBI agents reading my email: please consider    ]]]
+[[[ whether defending the US Constitution against all enemies,     ]]]
+[[[ foreign or domestic, requires you to follow Snowden's example. ]]]
+
+  > Additionally, IceCat of course leaks the fact that you're using
+  > LibreJS, which probably goes a long way towards identifying
+  > IceCat.
+
+There is no help for that.  We have to block the nonfree software.
+
+   > I wonder if profiling the list of websites that SpyBlock is
+   > blocking would give further information.
+
+Who knows?  But, once again, we have to block these forms of surveillance.
+
+What is your purpose in mentioning these points?  What constructive
+question do they relate to?
+
+   > If that's not enough, differences in behaviour between successive
+   > versions of LibreJs can probably help in pinpointing a precise
+   > version.
+
+I doubt any surveillance companies want to go to so much trouble
+specifically about LibreJS.
+
+-- 
+Dr Richard Stallman
+President, Free Software Foundation (gnu.org, fsf.org)
+Internet Hall-of-Famer (internethalloffame.org)
+Skype: No way! See stallman.org/skype.html.
+
+

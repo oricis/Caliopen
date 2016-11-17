@@ -1,0 +1,209 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aj8yH-0004fq-85
+	for mharc-dev@caliopen.local; Thu, 24 Mar 2016 13:22:57 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:42774)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aj8yF-0004f5-1Y
+	for dev@caliopen.local; Thu, 24 Mar 2016 13:22:56 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aj8yB-0003VC-Rr
+	for dev@caliopen.local; Thu, 24 Mar 2016 13:22:54 -0400
+Received: from mout.kundenserver.de ([217.72.192.74]:60414)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aj8yB-0003V5-HR
+	for dev@caliopen.local; Thu, 24 Mar 2016 13:22:51 -0400
+Received: from [128.30.9.181] ([128.30.9.181]) by mrelayeu.kundenserver.de
+	(mreue102) with ESMTPSA (Nemesis) id 0LlnLU-1aA5Gc0uq8-00ZMQz for
+	<emacs-devel@gnu.org>; Thu, 24 Mar 2016 18:22:50 +0100
+To: Emacs developers <emacs-devel@gnu.org>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Subject: Should the default value of url-user-agent include a version number?
+	What about the specific case of package.el?
+Message-ID: <56F42269.10400@gmail.com>
+Date: Thu, 24 Mar 2016 13:22:49 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="MCBMng3QItdGiviN0WFBqTKIGjWPClOPn"
+X-Provags-ID: V03:K0:xEJ2vSBIchgQM+Pa2tuabPDrPn4MVqdCpm6RGXfIoYJNU3eeQyS
+	cGmc9bJlBbSFH66Kj5DGlSMR68psG3ifzp0Xcur6oWQ5TRFmZNKHl2pWNNhgbingoxJWoBY
+	vCRiBNe/znrDfmxMrzVFEnbXHTUKl/DPB3vs9FZsI5edQ2DgqVMSwEK2piMHxzxAaA0RPrJ
+	oJDwJFNmCKHUP5IK36P8w==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:V2h4FrDZ9qs=:t9Z6aGEU3M2Mh/UPg7ZT2K
+	jcKegadNEWVPjnYII8flWisYiZ/kF8axTCUMAxSGtPDdAlJPMOtocNyRLPYyhIvpGxsvmayyo
+	+qvaNPrG4iW8rg90XIMXfQtCl2wcHhB+Ytge61glOXBUxrEAM0P/yFSyRd5EkBbRE3rh8CiuJ
+	v9zjlRJ8hd/Y87LSya8xcnBNvBYKcqXWM/j3OYjgedfOVIg2iJWwlv+9neSKf0BUSab7vyb1z
+	S/XPqpWI7KQ525V4XkQhxKCcqSzfB0+svov//+n/1wU4fruL5kXYHypBINjMrwfe7VlJwGCLS
+	k50XMAXCpCg9mMo+YC4fOC/AIy8coIj0a85WXiGfkV9Vq/bP8NDt/K2wP3mlXCmV8tjbPe5ZJ
+	jCkfASWw6Dl5bGfZ5nFvKb/bDbHtAmpGoGhIOHN0o0yBNtnLIspeldtP2IATxbZ9mXTIsdb9f
+	ASERAI5Z64MMmD+ipxy0UyZzK5wIP9MZPM7qHC3YwwNuF0FM3EiIXRKQUnZ7lM/LIVsuSpV2B
+	kqjL7p0gEPM/9CC2K2ETmYT2QtuTX47HjNx7PkHplHYfubbZFj8R/kLLXMzr+3/befTKDj60K
+	TuV8nHQS2bF5jt/KSSoQxRrCDL6F+dmTmWaQo9/AdpOyUPSTtvpFjyx2xLNqFsdfx5rg4I28T
+	HlKYHNMUEjC9WAgK5YPHCNfAcf0fmjdm7Pw0a3sqB9jUWV1pGU8pMM7D1/ulI1zX2lEk=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 217.72.192.74
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 24 Mar 2016 17:22:56 -0000
+Content-Length: 6784
+Lines: 148
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--MCBMng3QItdGiviN0WFBqTKIGjWPClOPn
+Content-Type: multipart/mixed; boundary="vXbuBRHI2Sr0IuMTkhVRjLF9RriM2gBPU"
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+To: Emacs developers <emacs-devel@gnu.org>
+Message-ID: <56F42269.10400@gmail.com>
+Subject: Should the default value of url-user-agent include a version number?
+ What about the specific case of package.el?
+
+--vXbuBRHI2Sr0IuMTkhVRjLF9RriM2gBPU
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi emacs-devel,
+
+https://debbugs.gnu.org/cgi/bugreport.cgi?bug=3D18812 added a url-user-ag=
+ent setting to Emacs, but it only partly addressed feature request. The o=
+riginal suggestion was:
+
+> The url.el functions for making HTTP requests set the User-Agent header=
+
+> to "URL/Emacs" which is not very descriptive. It would be helpful to
+> include the Emacs version, at least.
+
+I'm bringing this up again, as I do think it would be useful to have a mo=
+re informative User-Agent string. The new system is very useful for custo=
+mization, but it does not address the original issue. The two main advant=
+ages that I see for a more informative User-Agent string are these:
+
+* Package archives could work around issues with old versions of package.=
+el (for example, 24.3 is somewhat dependent to the order in which depende=
+ncies are listed).
+* Package authors could get per-version and possibly per-platform statist=
+ics. Backwards compatibility is not always easy, so knowing which Emacs v=
+ersions your users are on would be very useful, in particular to know whe=
+n to drop support for an old version.
+
+These use cases were raised in https://github.com/melpa/melpa/issues/3493=
+, in particular. Interestingly, they don't necessarily suggest that we sh=
+ould change url-user-agent; instead, wouldn't it be best for different pa=
+rts of Emacs to use different user-agent strings? In particular, should e=
+ww and package.el really use the same User-Agent string? We could instead=
+ introduce separate a package-user-agent variable, and possibly an eww-us=
+er-agent variable; this would be in line with what other programs do: it'=
+s uncommon to advertise only the library used to access the web (in our c=
+ase, =E2=80=98URL=E2=80=99) in a User-Agent string, instead of the actual=
+ User-Agent.
+
+Generally speaking, I would be in favor of always advertising the current=
+ Emacs version, and the OS, instead of only advertising it for package.el=
+: this would be in conformance with RFC 7231 (see below), and with what m=
+any other browsers do (but fixing this issue by introducing a package-use=
+r-agent string would work as well, and might alleviate some concerns that=
+ were expressed in the original bug thread). Some expressed privacy conce=
+rns about this, but other parts of Emacs already advertise this informati=
+on fully (Stefan, for example, your emails are tagged with "Gnus/5.13 (Gn=
+us v5.13) Emacs/25.1.50 (gnu/linux)"). Has there been complaints about Gn=
+us doing that?
+
+Are there reasons to prefer a very generic User-Agent string? Do these re=
+asons also apply to a package.el-specific one?
+
+Cheers,
+Cl=C3=A9ment.
+
+> 5.5.3.  User-Agent
+>
+>    The "User-Agent" header field contains information about the user
+>    agent originating the request, which is often used by servers to hel=
+p
+>    identify the scope of reported interoperability problems, to work
+>    around or tailor responses to avoid particular user agent
+>    limitations, and for analytics regarding browser or operating system=
+
+>    use.  A user agent SHOULD send a User-Agent field in each request
+>    unless specifically configured not to do so.
+>
+>      User-Agent =3D product *( RWS ( product / comment ) )
+>
+>    The User-Agent field-value consists of one or more product
+>    identifiers, each followed by zero or more comments (Section 3.2 of
+>    [RFC7230]), which together identify the user agent software and its
+>    significant subproducts.  By convention, the product identifiers are=
+
+>    listed in decreasing order of their significance for identifying the=
+
+>    user agent software.  Each product identifier consists of a name and=
+
+>    optional version.
+>
+>      product         =3D token ["/" product-version]
+>      product-version =3D token
+>
+>    A sender SHOULD limit generated product identifiers to what is
+>    necessary to identify the product; a sender MUST NOT generate
+>    advertising or other nonessential information within the product
+>    identifier.  A sender SHOULD NOT generate information in
+>    product-version that is not a version identifier (i.e., successive
+>    versions of the same product name ought to differ only in the
+>    product-version portion of the product identifier).
+>
+>    Example:
+>
+>      User-Agent: CERN-LineMode/2.15 libwww/2.17b3
+>
+>    A user agent SHOULD NOT generate a User-Agent field containing
+>    needlessly fine-grained detail and SHOULD limit the addition of
+>    subproducts by third parties.  Overly long and detailed User-Agent
+>    field values increase request latency and the risk of a user being
+>    identified against their wishes ("fingerprinting").
+>
+>    Likewise, implementations are encouraged not to use the product
+>    tokens of other implementations in order to declare compatibility
+>    with them, as this circumvents the purpose of the field.  If a user
+>    agent masquerades as a different user agent, recipients can assume
+>    that the user intentionally desires to see responses tailored for
+>    that identified user agent, even if they might not work as well for
+>    the actual user agent being used.
+>
+
+
+--vXbuBRHI2Sr0IuMTkhVRjLF9RriM2gBPU--
+
+--MCBMng3QItdGiviN0WFBqTKIGjWPClOPn
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJW9CJpAAoJEPqg+cTm90wjtTcP/0v8Ncxz76sWJmCGp56CNwzw
+4Qi3pZpuES6FV66N5IBKsjtmabRtn6yqp8YHQn3psHUOGMhboP3dTaVM7XpGYYQP
+Viz1n48ZpZ44E5do8e6LGgkVnrhO7/aTxPnAcTlnhoOr3LJM28c1B/YYUn9QBeb/
+yhug5rfRoSXJPbmqEAITwbnZdINppZt9lEsh71CS0qFXGoL0snX7D2G+1IasbwIo
+UGuNRUJ9bScll+QbuVDMR/5KC0+URi4M+h7cOaX1aLw7veFoZzpw9l1lp+VVq8Nq
+JfRWBjuNT5wHMOgOnNHDLaeyHEt4hIYVUIDb/+I4fUxVjWCi4QMtTmyuwJTYws9H
+gGGIEKP7DcCZNCzpY3GRSa7rfXIFn0uLj4pVeyILMKsa72lSUPWTO6+dJMq4ETPu
+rTAftKYLAvw4fT6Zd+7MYxkQV8iUkHXBLrWMrTuOQIaNDRH25aqVhxnHOLa35GrD
+9KggzonWQYwT2Ep9kfqLwbWmLUcrJo4FSk0+2mJS+O4T94kHc7HjzenbS2v0wXRJ
+DLVwUiarLb2lasRXWAzE2iGeBLHtsy0xFat3PKDMOzNy1jqvpuJWbrByvaa5LJIR
++PcAh+FnI5dvCI4fFPnrHlctqcoFrlt2qRXy2iPI+fKsudT2Q/qdhTQYOJe7nD+R
+hrGEVfIyWiUHcN2oaOA2
+=KGhs
+-----END PGP SIGNATURE-----
+
+--MCBMng3QItdGiviN0WFBqTKIGjWPClOPn--
+

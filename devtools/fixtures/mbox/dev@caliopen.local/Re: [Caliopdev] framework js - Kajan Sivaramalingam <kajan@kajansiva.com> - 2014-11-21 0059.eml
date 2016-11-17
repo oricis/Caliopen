@@ -1,0 +1,321 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id F0EB6120AE8;
+	Fri, 21 Nov 2014 00:59:14 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 0.728
+X-Spam-Level: 
+X-Spam-Status: No, score=0.728 tagged_above=-999 required=5
+	tests=[BAYES_40=-0.185, FUZZY_AMBIEN=0.416, HTML_40_50=0.496,
+	HTML_MESSAGE=0.001]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id fvUzI3fvaxyk; Fri, 21 Nov 2014 00:59:12 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id B3FDC120AE0;
+	Fri, 21 Nov 2014 00:59:12 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 82D1069754149;
+	Fri, 21 Nov 2014 00:59:11 +0100 (CET)
+Authentication-Results: brassens.heberge.info; dkim=fail
+	reason="verification failed; insecure key"
+	header.d=gmail.com header.i=@gmail.com header.b=PM0PVcNl;
+	dkim-adsp=none (insecure policy); dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id CXpFds41f_q0; Fri, 21 Nov 2014 00:59:10 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 28DA669754142;
+	Fri, 21 Nov 2014 00:59:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id DD03769754146
+ for <caliopdev@caliop.net>; Fri, 21 Nov 2014 00:59:07 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id QhKWrSudH_cR for <caliopdev@caliop.net>;
+ Fri, 21 Nov 2014 00:59:06 +0100 (CET)
+Received: from mail-lb0-f181.google.com (mail-lb0-f181.google.com
+ [209.85.217.181])
+ (using TLSv1 with cipher ECDHE-RSA-RC4-SHA (128/128 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id 0DCDF69754142
+ for <caliopdev@caliop.net>; Fri, 21 Nov 2014 00:59:05 +0100 (CET)
+Received: by mail-lb0-f181.google.com with SMTP id l4so3252609lbv.12
+ for <caliopdev@caliop.net>; Thu, 20 Nov 2014 15:59:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+ h=mime-version:sender:in-reply-to:references:date:message-id:subject
+ :from:to:content-type;
+ bh=FLdFRoYuYOJLZU0a5aUW3DN8Bz20Qe3SvPu7wgRRFqM=;
+ b=PM0PVcNlZgJ1mh6eb1muEcO3iKyW5V4N58AzdT5CXzshsgaON8FkeA7J8wdhkYLWrf
+ 3nubEHHDPJNHK8qhb12o3uu5UvgkotOj/9+4l4FnIINhLCP5kiNvpucAaig4vvlUBrj/
+ 1DpYDnRjFvHVbo1UKxpp+gm8Kq6wuoeBX5NEv6HVWq0eu3CPHJiZ14J/K60cfE3YxY2W
+ NuiUipwzHtf2q0GAoJ2CRVZw7i62SadJHJb6LYvgyU/hgq+edKzbik8SUUorRCcv8UYd
+ K7vMD7QgprY5MrW9P96O78vYR0KyudAt1hCdVMMsgLKX664wuDMRzEVs4RetgjRtmP5o
+ sAWA==
+MIME-Version: 1.0
+X-Received: by 10.152.2.41 with SMTP id 9mr926179lar.47.1416527945081; Thu, 20
+ Nov 2014 15:59:05 -0800 (PST)
+Received: by 10.25.20.216 with HTTP; Thu, 20 Nov 2014 15:59:05 -0800 (PST)
+In-Reply-To: <546C6DFD.7000903@albancrommer.com>
+References: <5465E127.1090903@chamal.fr> <54664520.2060005@gandi.net>
+ <CA+tgzeiz84LuSB8CKcc_SOY==1NhODh_z_5Lrzn2wBuhsSGaRw@mail.gmail.com>
+ <546C6DFD.7000903@albancrommer.com>
+Date: Fri, 21 Nov 2014 00:59:05 +0100
+X-Google-Sender-Auth: erUR1-fD_sHGoGQEPDn1g0uEECY
+Message-ID: <CA+tgzejQAMG+8aULmaP_NU4Z25GBs8kRmw3zHC66kU0fsHeEdw@mail.gmail.com>
+From: Kajan Sivaramalingam <kajan@kajansiva.com>
+To: =?UTF-8?Q?Liste_de_d=C3=A9veloppement_Caliopen?= <caliopdev@caliop.net>
+Subject: Re: [Caliopdev] framework js
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============1102190903=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+--===============1102190903==
+Content-Type: multipart/alternative; boundary=089e013c6258fb2b1d0508531c90
+
+--089e013c6258fb2b1d0508531c90
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour,
+
+
+ Bonjour,
+>
+> Suite =C3=A0 discussion IRC w/ Chamal, vous pouvez consulter / participer=
+ =C3=A0
+>
+> *     https://pad.caliopen.org/p/TechnoFront
+> <https://pad.caliopen.org/p/TechnoFront> *
+>
+> Pour participer, il faudrait discuter et affiner les crit=C3=A8res, puis
+> proc=C3=A9der =C3=A0 la notation (j'ai mis un lien vers un ethersheet pou=
+r exemple /
+> test)
+>
+>
+> *L'id=C3=A9e d'une grille de notation*
+>
+> Faire une grille d'=C3=A9valuation des diff=C3=A9rents frameworks en se b=
+asant sur
+> les crit=C3=A8res d'exigence d=C3=A9finis pour Caliopen.
+>
+> Au final, une note par framework rationalise le choix.
+>
+> Sinon ? On reste dans le flou des impressions individuelles.
+>
+>
+Ok pour la grille de notation. Par contre quelques remarques :
+
+- SailsJS est un framework back-end bas=C3=A9 sur NodeJS, donc on peut d=C3=
+=A9j=C3=A0
+l'enlever de la liste
+- Angular v2 est seulement au stade projet. Il n'y a m=C3=AAme pas de versi=
+on
+alpha actuellement, donc =C3=A0 sortir =C3=A9galement de la liste
+
+Ensuite, par rapport =C3=A0 cette grille de notation, quel est le "planning=
+" ?
+- Combien de personnes impliqu=C3=A9es dans le projet sont cens=C3=A9s r=C3=
+=A9pondre =C3=A0
+cette grille de notation ?
+- Quelle sera la date de cl=C3=B4ture des r=C3=A9coltes d'avis ?
+
+
+>
+> *Port=C3=A9e du code JS dans caliopen*
+>
+> Parlant de flou, j'aimerai avoir plus de d=C3=A9tails :
+>
+> Si on veut des interfaces r=C3=A9actives comme le permettent les framewor=
+ks JS
+> modernes, il faut un minimum de base de donn=C3=A9es embarqu=C3=A9e et de=
+ gestion des
+> templates HTML c=C3=B4t=C3=A9 client (du Controller Model View , en somme=
+) avec du
+> websocket, le plus souvent g=C3=A9r=C3=A9 par une appli node.
+>
+> Or les contr=C3=B4leurs et le rendu HTML sont a priori fait c=C3=B4t=C3=
+=A9 Python qui
+> envoie du HTML ?
+>
+> En terme de rendu HTML et de base de donn=C3=A9es o=C3=B9 se situent les =
+fronti=C3=A8res
+> entre frontend / backend  ?
+>
+> En terme de de m=C3=A9thodes d'envoi / r=C3=A9ception des don, y a t'il u=
+n sch=C3=A9ma
+> d=C3=A9fini et pr=C3=A9cis ?
+>
+> Si on veut une interface frontend au niveau pour les 5 ans =C3=A0 venir, =
+il me
+> semble important d'=C3=AAtre clair l=C3=A0 dessus.
+>
+>
+> ::a
+>
+
+L'id=C3=A9e sera, quel que soit le framework front-end choisi, aura la
+disposition suivante :
+- un back-end qui fournit une API
+- un front-end qui sera compos=C3=A9 de fichiers "statiques" HTML / Javascr=
+ipt
+
+Le back-end g=C3=A9rera toute la logique lourde, comme n'importe quel servi=
+ce
+web.
+Et le front sera bas=C3=A9 sur le principe de "single page application" : o=
+n
+acc=C3=A9dera au site via un unique fichier html, qui chargera ensuite en
+fonction de ses besoins des vues partielles HTML, effectuera les appels
+vers l'API pour remplir ses vues etc...
+
+Ensuite, ce sch=C3=A9ma pourra =C3=AAtre complet par l'utilisation de webso=
+cket sur
+certaines parties qui ont besoin d'avoir des modifications "temps r=C3=A9el=
+s"
+etc...
+
+Vous pourrez trouver une pr=C3=A9sentation de ce concept ici :
+http://stackoverflow.com/questions/26196042/single-page-application-fronten=
+d-independent-of-backend
+
+
+A votre dispo, pour toutes demandes d'infos.
+
+--089e013c6258fb2b1d0508531c90
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail_extra"><div class=3D"gmail_quote">Bonj=
+our,</div><div class=3D"gmail_quote"><br></div><div class=3D"gmail_quote"><=
+br></div><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-color:rgb(20=
+4,204,204);border-left-style:solid;padding-left:1ex">
+ =20
+   =20
+ =20
+  <div bgcolor=3D"#FFFFFF" text=3D"#000000">
+    <div>Bonjour,<br>
+      <br>
+      Suite =C3=A0 discussion IRC w/ Chamal, vous pouvez consulter /
+      participer =C3=A0<br>
+      <br>
+      <b>=C2=A0=C2=A0=C2=A0=C2=A0 <a href=3D"https://pad.caliopen.org/p/Tec=
+hnoFront" target=3D"_blank">https://pad.caliopen.org/p/TechnoFront</a> </b>=
+<b><br>
+      </b><br>
+      Pour participer, il faudrait discuter et affiner les crit=C3=A8res,
+      puis proc=C3=A9der =C3=A0 la notation (j&#39;ai mis un lien vers un e=
+thersheet
+      pour exemple / test)<br>
+      <br>
+      <br>
+      <b>L&#39;id=C3=A9e d&#39;une grille de notation</b><br>
+      <br>
+      Faire une grille d&#39;=C3=A9valuation des diff=C3=A9rents frameworks=
+ en se
+      basant sur les crit=C3=A8res d&#39;exigence d=C3=A9finis pour Caliope=
+n. <br>
+      <br>
+      Au final, une note par framework rationalise le choix. <br>
+      <br>
+      Sinon ? On reste dans le flou des impressions individuelles.<br>
+      <br></div></div></blockquote><div><br></div><div>Ok pour la grille de=
+ notation. Par contre quelques remarques :</div><div><br></div><div>- Sails=
+JS est un framework back-end bas=C3=A9 sur NodeJS, donc on peut d=C3=A9j=C3=
+=A0 l&#39;enlever de la liste</div><div>- Angular v2 est seulement au stade=
+ projet. Il n&#39;y a m=C3=AAme pas de version alpha actuellement, donc =C3=
+=A0 sortir =C3=A9galement de la liste</div><div><br></div><div>Ensuite, par=
+ rapport =C3=A0 cette grille de notation, quel est le &quot;planning&quot; =
+?</div><div>- Combien de personnes impliqu=C3=A9es dans le projet sont cens=
+=C3=A9s r=C3=A9pondre =C3=A0 cette grille de notation ?</div><div>- Quelle =
+sera la date de cl=C3=B4ture des r=C3=A9coltes d&#39;avis ?</div><div>=C2=
+=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
+x;border-left-width:1px;border-left-color:rgb(204,204,204);border-left-styl=
+e:solid;padding-left:1ex"><div bgcolor=3D"#FFFFFF" text=3D"#000000"><div>
+      <br>
+      <b>Port=C3=A9e du code JS dans caliopen</b><br>
+      <br>
+      Parlant de flou, j&#39;aimerai avoir plus de d=C3=A9tails :<br>
+      <br>
+      Si on veut des interfaces r=C3=A9actives comme le permettent les
+      frameworks JS modernes, il faut un minimum de base de donn=C3=A9es
+      embarqu=C3=A9e et de gestion des templates HTML c=C3=B4t=C3=A9 client=
+ (du
+      Controller Model View , en somme) avec du websocket, le plus
+      souvent g=C3=A9r=C3=A9 par une appli node.<br>
+      <br>
+      Or les contr=C3=B4leurs et le rendu HTML sont a priori fait c=C3=B4t=
+=C3=A9 Python
+      qui envoie du HTML ?<br>
+      <b><br>
+      </b>En terme de rendu HTML et de base de donn=C3=A9es o=C3=B9 se situ=
+ent les
+      fronti=C3=A8res entre frontend / backend=C2=A0 ? <br>
+      <br>
+      En terme de de m=C3=A9thodes d&#39;envoi / r=C3=A9ception des don, y =
+a t&#39;il un
+      sch=C3=A9ma d=C3=A9fini et pr=C3=A9cis ? <br>
+      <br>
+      Si on veut une interface frontend au niveau pour les 5 ans =C3=A0
+      venir, il me semble important d&#39;=C3=AAtre clair l=C3=A0 dessus.<b=
+r>
+      <br>
+      <br>
+      ::a<br></div></div></blockquote></div><br></div><div class=3D"gmail_e=
+xtra">L&#39;id=C3=A9e sera, quel que soit le framework front-end choisi, au=
+ra la disposition suivante :</div><div class=3D"gmail_extra">- un back-end =
+qui fournit une API</div><div class=3D"gmail_extra">- un front-end qui sera=
+ compos=C3=A9 de fichiers &quot;statiques&quot; HTML / Javascript</div><div=
+ class=3D"gmail_extra"><br></div><div class=3D"gmail_extra">Le back-end g=
+=C3=A9rera toute la logique lourde, comme n&#39;importe quel service web.</=
+div><div class=3D"gmail_extra">Et le front sera bas=C3=A9 sur le principe d=
+e &quot;single page application&quot; : on acc=C3=A9dera au site via un uni=
+que fichier html, qui chargera ensuite en fonction de ses besoins des vues =
+partielles HTML, effectuera les appels vers l&#39;API pour remplir ses vues=
+ etc...</div><div class=3D"gmail_extra"><br></div><div class=3D"gmail_extra=
+">Ensuite, ce sch=C3=A9ma pourra =C3=AAtre complet par l&#39;utilisation de=
+ websocket sur certaines parties qui ont besoin d&#39;avoir des modificatio=
+ns &quot;temps r=C3=A9els&quot; etc...</div><div class=3D"gmail_extra"><br>=
+</div><div class=3D"gmail_extra">Vous pourrez trouver une pr=C3=A9sentation=
+ de ce concept ici :=C2=A0<a href=3D"http://stackoverflow.com/questions/261=
+96042/single-page-application-frontend-independent-of-backend">http://stack=
+overflow.com/questions/26196042/single-page-application-frontend-independen=
+t-of-backend</a></div><div class=3D"gmail_extra"><br></div><div class=3D"gm=
+ail_extra"><br></div><div class=3D"gmail_extra">A votre dispo, pour toutes =
+demandes d&#39;infos.</div></div>
+
+--089e013c6258fb2b1d0508531c90--
+
+--===============1102190903==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============1102190903==--

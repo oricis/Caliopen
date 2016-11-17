@@ -1,0 +1,147 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahyuo-0005vu-Ht
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 08:26:34 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39492)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ahyul-0005vR-FK
+	for dev@caliopen.local; Mon, 21 Mar 2016 08:26:32 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ahyui-0001M1-8p
+	for dev@caliopen.local; Mon, 21 Mar 2016 08:26:31 -0400
+Received: from ironport2-out.teksavvy.com ([206.248.154.181]:16584)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ahyui-0001Jt-21
+	for dev@caliopen.local; Mon, 21 Mar 2016 08:26:28 -0400
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: A0CXDQA731xV/3D5d0tcgxCEAshgBAICgTw8EQEBAQEBAQGBCkEFg10BAQMBViMFCws0EhQYDSSINwjPIwEBAQEGAQEBAR6KOIEChQUHhC0Fi0SEcIswgzMTkgGCFIFFI4FmVYFZIoJ4AQEB
+X-IPAS-Result: A0CXDQA731xV/3D5d0tcgxCEAshgBAICgTw8EQEBAQEBAQGBCkEFg10BAQMBViMFCws0EhQYDSSINwjPIwEBAQEGAQEBAR6KOIEChQUHhC0Fi0SEcIswgzMTkgGCFIFFI4FmVYFZIoJ4AQEB
+X-IronPort-AV: E=Sophos;i="5.13,465,1427774400"; d="scan'208";a="197394736"
+Received: from 75-119-249-112.dsl.teksavvy.com (HELO pastel.home)
+	([75.119.249.112])
+	by ironport2-out.teksavvy.com with ESMTP; 21 Mar 2016 08:26:25 -0400
+Received: by pastel.home (Postfix, from userid 20848)
+	id E0FFE605A0; Mon, 21 Mar 2016 08:26:25 -0400 (EDT)
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+To: Vitalie Spinu <spinuvit@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+Message-ID: <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com>
+Date: Mon, 21 Mar 2016 08:26:25 -0400
+In-Reply-To: <87twk0beuh.fsf@gmail.com> (Vitalie Spinu's message of "Mon, 21
+	Mar 2016 06:05:26 +0100")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 206.248.154.181
+Cc: Alan Mackenzie <acm@muc.de>, emacs-devel <dev@caliopen.local>,
+	Dmitry Gutov <dgutov@yandex.ru>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 12:26:32 -0000
+Content-Length: 3494
+Lines: 79
+
+>>> BTW, I parse-partial-sexp must abide hard-widen-limits as well.
+>> I don't understand what this means.  parse-partial-sexp is passed
+>> 2 locations and it works between them.  There's not much opportunity
+>> for widening.
+> parse-partial-sexp should work between hard limits (at least the lower
+> bound). It should operate as if hard-narrowed buffer is the real buffer.
+
+You mean it should ignore the current (user)narrowing?  Why?
+I'd think that if something needs to ignore the (user)narrowing it'd be
+parse-partial-sexp's *caller* but not parse-partial-sexp itself.
+
+> So ideally it should take (max FROM (car hard-widen-limits)) as the starting
+> position.
+
+You mean: as opposed to (max FROM (point-min))?
+
+I disagree.  Functions should usually not accept to talk about positions
+outside of the point-min/max range.
+
+Notice how syntax-ppss is different in this regard: since it doesn't
+receive FROM, that same rule doesn't prevent syntax-ppss from widening
+to (car hard-widen-limits).
+
+> This will give the desired consistency between parse-partial-sexp and
+> syntax-ppss with the price of slightly modifying the semantics of
+> parse-partial-sexp in a backward compatible way.
+
+I'd be curious to know in which circumstances (i.e. specific code in
+specific packages) this would make a difference.  As mentioned above,
+I think these cases would be better fixed by changing the calling code
+to perform widening before calling parse-partial-sexp.
+
+>>> A patch that would require hunting every single mode out there and
+>>> implementing multi-modes locally should have been more carefully
+>>> considered IMO.
+
+>   - Major mode authors won't need to know about multi-modes. That
+>     means not dealing with chunks/spans/headers etc.  These concepts are
+>     not even uniformly defined between existing multi-mode engines.
+
+I understand that's your claim, but I don't understand why/how this is
+different between the two proposals.
+
+>   - Major mode authors won't need to re-implement the indentation
+>   logic already there in multi-modes. The logic is likely to be too
+>   simplistic and major mode authors will have to re-do it anyways.
+>
+>   - Setup is more general. multi-mode engine decides where to call
+>   calculate-indent-function and with what parameters and with
+>   what narrowing.
+
+Same here.
+
+>   - Arguably calculate-indent-function is a simpler concept to grasp
+
+As mentioned, I fully agree with the need to replace
+indent-line-function with calculate-indent-function (tho I like to name
+it prog-indent-function).  So the difference is w.r.t your
+STRONG-BEFORE/AFTER: which code provides them, which code obeys them,
+and how that compares to the way prog-indentation-context is provided
+and obeyed.
+
+>> I think both suggestions require changes to every mode, and in both
+>> cases the changes can be reduced to a one-liner or close enough (for
+>> the simple case).  Admittedly, for it to be a one-liner, we'll need to
+>> provide a standard helper function.
+> Judging from python.el it might be quite hard to provide a generic one
+> liner to deal with all those 3 elements.  For calculate-indent-function
+> instead you can provide a straightforward one line assuming that
+> STRING-BEFORE/AFTER do not matter.
+
+My hunch is that if STRING-BEFORE/AFTER don't matter, then it should not
+be hard to come up with a generic function in prog.el which can be
+invoked with a one liner in the major mode (assuming the major mode
+sets (prog|calculate)-indent-function).
+
+
+        Stefan
+

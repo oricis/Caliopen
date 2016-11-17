@@ -1,0 +1,118 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akdY0-0002sj-WD
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 16:14:01 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:43329)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1akdXy-0002rZ-2u
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:13:58 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1akdXt-0005zg-13
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:13:58 -0400
+Received: from mout.kundenserver.de ([212.227.17.24]:57714)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1akdXs-0005zI-Od
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:13:52 -0400
+Received: from [192.168.1.82] ([109.24.225.43]) by mrelayeu.kundenserver.de
+	(mreue102) with ESMTPSA (Nemesis) id 0MLy2e-1af8IE47PI-007i1u for
+	<emacs-devel@gnu.org>; Mon, 28 Mar 2016 22:13:51 +0200
+Subject: Re: Thinking about changed buffers
+To: dev@caliopen.local
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<CY1PR0301MB165936869029245E623C8CDEF0860@CY1PR0301MB1659.namprd03.prod.outlook.com>
+	<jwv4mbq8luz.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m3egauif3f.fsf@gnus.org>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Message-ID: <56F9907D.6060102@gmail.com>
+Date: Mon, 28 Mar 2016 22:13:49 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <m3egauif3f.fsf@gnus.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="bUfP4KwXPKNRgwq1gbFuhFHoPTrkskXaa"
+X-Provags-ID: V03:K0:zgeoq5WfM2Z4w5+EpS7N4/w/XUpz/5yUsHYFF9ywR8H6ztI/p9i
+	ncm86zO1pEp467Lwjcm78qc+XNEHWM93pPPAuTMtPl49VAhD26iiivDb20Xt09Cf1JzXRMF
+	M+l05VtDnoe9DWHhY08cKvE7S56KnxHXR2/sw/5LFEPw09N4iMlD/d+iihwkcbbmaxQplVd
+	+3GkHZzmU4lhH8dfVNp5w==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:Kf8Lymv2FBE=:BehcgpW+S2J9Da1ixOq4IF
+	vAHHTNXHOsCtY5ZFY8faN4k0IttlISr7T8ST3RzyhcEK9ZI/NmKzeUO4pSi00c2F5e5y8A4SP
+	WWCLrmujYIgJ7soXGRVk4qsE32sVBXZcO3Zv2VeMA+8WkhzHCwmluksZNxG224e6DkpCKNlCp
+	JOikROn/DeeSHDskj/hek6T/3klnGocmZYOS+Esr0UV9A4w/awSRorpuClLuzBHjbArG7pNXj
+	mJB52igz8qIEU6CZsh6hUZn8NSPtZ/jxc/EL385EhCDyJf9lWST0I9CyrGlLTfK1vlcyro8kf
+	jwbPlK45buMIOSamshM5KbiWt/r2ldGvRC5J/qrkChpPokqfLI44D82qUKhctDZwya/SsBeIr
+	yWGTgv8Y2ERhONb42ntQd5rjNfPG5G2iPehL435tVSZg+kX2WzjEJE355VcCKcNu+8pWjK6v1
+	WVN3GYxIGRE2GmE0QpCSt4RUSEi4UXSFYy1IZ81aM8A/RNor135h2nFdL16NXSN2cF5iGLltq
+	u93cchdI5dlfgImR4oQmSATsthIpIn3XReSfyfH6VLHnngwfyUOvOi/9OULkamHxUkXxSB6nn
+	3yY/EsWqMACT6DytN3D94P1u6ZEHmipxGgzexXPINhck7XdBGCY5JSmB0U9ik+dCOBsMcroHp
+	2FVDJqcO1a656zaZql9cy1GWrS996FHp6Jl0VvvVBODDaafnEzRUafk2W7fZh6LJvv2o=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.17.24
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 20:13:59 -0000
+Content-Length: 2200
+Lines: 53
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--bUfP4KwXPKNRgwq1gbFuhFHoPTrkskXaa
+Content-Type: multipart/mixed; boundary="vPe12U3MW3RBuEMmvqDjs9R4TRUuO5ame"
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+To: dev@caliopen.local
+Message-ID: <56F9907D.6060102@gmail.com>
+Subject: Re: Thinking about changed buffers
+References: <m3bn5ya4ro.fsf@gnus.org>
+ <CY1PR0301MB165936869029245E623C8CDEF0860@CY1PR0301MB1659.namprd03.prod.outlook.com>
+ <jwv4mbq8luz.fsf-monnier+gmane.emacs.devel@gnu.org> <m3egauif3f.fsf@gnus.org>
+In-Reply-To: <m3egauif3f.fsf@gnus.org>
+
+--vPe12U3MW3RBuEMmvqDjs9R4TRUuO5ame
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+On 03/28/2016 09:20 PM, Lars Magne Ingebrigtsen wrote:
+> Does this perhaps mean that the interactive `C-x C-s' command should
+> always save the file, even if it's unchanged?  We've apparently all
+> taken to doing pointless modifications because we haven't found an easy=
+
+> way to make Emacs re-save the file...
+
+Indeed, I was going to suggest exactly that :)
+
+
+--vPe12U3MW3RBuEMmvqDjs9R4TRUuO5ame--
+
+--bUfP4KwXPKNRgwq1gbFuhFHoPTrkskXaa
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJW+ZB9AAoJEPqg+cTm90wjNRoQAJSqnjOq8nob6km0+nf8k2JG
+C49coMGkgCQTnxVGRZBxKSeBwXA+3DQ0JNSt2VkPgWQRcp7/S9UuJQKSHRi88hB6
++1VoxXeGceKy8JUc4WFzrOaTck5lLf5KF8TJTvvhy/w8KIpPhs1WQLWI6NB83AzZ
+4Z0YLDpcH+x3AgQg8vibbFNxX1vIGzvTkguWpc5Rh12sYS3Jnizd1YI+oowVKtu2
+Cgf9dhPoi0GGA5iCAmI+T4yaS8Ol7d+eIfOqLdEqCTZcPRdcgysKAdwVjG0i8od+
+7CCXF4XMRD1XsBECJD6dpAHN+FXhxtaMrzM31nh1tiOagFGimBf6jk9psXw4e2qj
+9gFyJlAOmi56ieW+iQS6V0AZoM+q+QauK5vVmZi7lKcuwupHqTmhyBB0wwHCFPLO
+GcmkEmd8t5o3vtJ115MuaM9sSpNgKhvw20JV4E+TdtmEP1o3qop5qxRtdEEhW375
+qpw6G35Z6C0mQUwlv3yP8REtcSXFRV422Bx6AbY77N9vPHYNSeoQBjzqea0gE16/
+LUx7Ba1avNoKEf5duA7MjhgP/cNZXnOVW7cDFjk5nDDti0wQVuCV0/TM2LzPnYje
+TVgXjbCi5fax8sRXMnDAkvmKwLyXORGNfH7PesbGXRQYh1JMNIXYh06S3k4blC6W
+A7UyHLIQyV12AvVB4Ivk
+=MbBe
+-----END PGP SIGNATURE-----
+
+--bUfP4KwXPKNRgwq1gbFuhFHoPTrkskXaa--
+

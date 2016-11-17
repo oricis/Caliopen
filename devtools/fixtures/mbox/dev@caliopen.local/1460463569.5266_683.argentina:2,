@@ -1,0 +1,63 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1al2Cr-0005Yd-L3
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 18:33:49 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:40198)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <angelo.graziosi@alice.it>) id 1al2Cp-0005XS-Aq
+	for dev@caliopen.local; Tue, 29 Mar 2016 18:33:48 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <angelo.graziosi@alice.it>) id 1al2Ck-0007bY-By
+	for dev@caliopen.local; Tue, 29 Mar 2016 18:33:47 -0400
+Received: from smtp203.alice.it ([82.57.200.99]:5146)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <angelo.graziosi@alice.it>) id 1al2Ck-0007bU-3s
+	for dev@caliopen.local; Tue, 29 Mar 2016 18:33:42 -0400
+Received: from [192.168.1.101] (79.47.237.141) by smtp203.alice.it
+	(8.6.060.43) (authenticated as angelo.graziosi@alice.it)
+	id 56FAA32500320B1B for dev@caliopen.local;
+	Wed, 30 Mar 2016 00:33:40 +0200
+To: Emacs developers <emacs-devel@gnu.org>
+From: Angelo Graziosi <angelo.graziosi@alice.it>
+Subject: About column numbers
+Message-ID: <56FB02BB.3090501@alice.it>
+Date: Wed, 30 Mar 2016 00:33:31 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+	Thunderbird/38.7.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 82.57.200.99
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 22:33:48 -0000
+Content-Length: 472
+Lines: 17
+
+When the option about column numbers is enabled, the column numbers 
+start from "0" (zero). In other words, when the cursor in in the 
+top-left corner of the buffer, the mode line displays
+
+   (1,0)
+
+line number   : 1
+column number : 0
+
+Why columns start from 0 (zero) and not 1 as for lines? Would it be 
+better (1,1)?
+
+Is there some settings to change this behavior? If not, I would suggest 
+to change this in Emacs.. or to add some settings to change this..
+
+  Angelo
+

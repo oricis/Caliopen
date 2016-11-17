@@ -1,0 +1,99 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai780-0003F2-FV
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 17:12:44 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59165)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ai77x-0003Eu-W0
+	for dev@caliopen.local; Mon, 21 Mar 2016 17:12:42 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ai77t-0000po-UU
+	for dev@caliopen.local; Mon, 21 Mar 2016 17:12:41 -0400
+Received: from mail-wm0-x231.google.com ([2a00:1450:400c:c09::231]:36605)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ai77t-0000ph-NP
+	for dev@caliopen.local; Mon, 21 Mar 2016 17:12:37 -0400
+Received: by mail-wm0-x231.google.com with SMTP id r129so67368363wmr.1
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 14:12:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=sender:subject:to:references:cc:from:message-id:date:user-agent
+	:mime-version:in-reply-to:content-transfer-encoding;
+	bh=cXGB2Psq6onN7vQ7/glUJ/ttch0S313SqeSYCP4A3xY=;
+	b=BrTj2ngqiA5cW3VBDc4d0nsM0hOFDk76Bm59ua1gS7nFuzzMaOHFfodZPM8UE8TMDs
+	I6cb2BKW1XYPssJFgd1d1GeiqMec7gc5sRb6/nuTviBzrNosZaCLajrvNwtFwugEr4bA
+	5rT05WbS5FwGCCyC3gwnYeOHlKh0ubUdAlfSPt/1UcqbPpsGs0188QmvOXSsynzH/ikW
+	bAD9RmM8pKvCgIn/GkMT4fNfkm55Bx5X5c78T33pwF9BJgGZI9n4Xp3HzoDrt8Wx5u2a
+	Y507/rbKyzhIHDMhEKdTmiqhkEXEavqHHTFlT6Bwnu0W49X7yfOkK7JKJwpjLX4nmx9K
+	FVsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
+	:date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+	bh=cXGB2Psq6onN7vQ7/glUJ/ttch0S313SqeSYCP4A3xY=;
+	b=OYfmigD2zaCW0wb+WVyS4LR2iSTxQLNyO4QKJYPEWNNAOp7avDnDrTHs5fRIA/FaL2
+	O8kIRKYPXko73dQAAvPK/DDoJj/PAgqAHvlx7HkwRqc9PQHBGnCgLjxC913jorg+9URR
+	Qhto0xsqAAJVxAJo6wXWpn6+KKymGWGxQZjyc9/ONeobJybBrn75ZQJCPR0MmaKqQ1lF
+	ob4gqoYPzz5u7vt8yhiTZ2yxZSqtqR1cBsJjUjAa79413u1y+fsFG3l/WwjDsGIXHsfB
+	sjTpTSowZoaE8QCqD4rIFW5WMRoH/1JatSJdgcY/+gVF3RUUyTW4NOXfahc4EaK4VxlY
+	+/mA==
+X-Gm-Message-State: AD7BkJJL0i3Axor9ApZJ2DTFN/O4v6hwjCGuLdjdHDvlzuzOK/W6933hprrKCffG1ahZ5A==
+X-Received: by 10.194.120.99 with SMTP id lb3mr37475026wjb.59.1458594757107;
+	Mon, 21 Mar 2016 14:12:37 -0700 (PDT)
+Received: from [192.168.1.2] ([185.105.175.24])
+	by smtp.googlemail.com with ESMTPSA id
+	v5sm14115310wmg.16.2016.03.21.14.12.35
+	(version=TLSv1/SSLv3 cipher=OTHER);
+	Mon, 21 Mar 2016 14:12:36 -0700 (PDT)
+Sender: DG <raaahh@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+To: Alan Mackenzie <acm@muc.de>, Vitalie Spinu <spinuvit@gmail.com>
+References: <fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87fuvjeq9g.fsf@gmail.com> <20160321203358.GB3641@acm.fritz.box>
+From: Dmitry Gutov <dgutov@yandex.ru>
+Message-ID: <fc61a7f8-7e62-fddb-d523-8cfd5e5aff2a@yandex.ru>
+Date: Mon, 21 Mar 2016 23:12:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+	Thunderbird/45.0
+MIME-Version: 1.0
+In-Reply-To: <20160321203358.GB3641@acm.fritz.box>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::231
+Cc: Stefan Monnier <monnier@iro.umontreal.ca>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 21:12:42 -0000
+Content-Length: 605
+Lines: 15
+
+Hi Alan,
+
+On 03/21/2016 10:33 PM, Alan Mackenzie wrote:
+
+>> MM engine narrows to span region for a lot of tasks, most importantly
+>> font-lock. If inner mode fortification functions misbehaves (ignoring
+>> font-lock-dont-widen for example) like c-mode does this leads to trouble.
+>
+> That's a misunderstanding of what `font-lock-dont-widen' is.  It's
+> purely a signal to font-lock.  Its doc string makes clear that it's
+> intended for use by major modes.
+
+It does not. The docstring gives examples of the modes where it can be 
+useful. It does not say that the variable can only be set by a major mode.
+

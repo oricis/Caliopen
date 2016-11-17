@@ -1,0 +1,74 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aktsW-0007WI-IT
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 09:40:16 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:60454)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aktsP-0007OR-5E
+	for dev@caliopen.local; Tue, 29 Mar 2016 09:40:12 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aktsK-0001TD-34
+	for dev@caliopen.local; Tue, 29 Mar 2016 09:40:09 -0400
+Received: from plane.gmane.org ([80.91.229.3]:53528)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aktsJ-0001T6-SM
+	for dev@caliopen.local; Tue, 29 Mar 2016 09:40:04 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aktsI-0000OQ-8L
+	for dev@caliopen.local; Tue, 29 Mar 2016 15:40:02 +0200
+Received: from 23-91-145-163.cpe.pppoe.ca ([23.91.145.163])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Tue, 29 Mar 2016 15:40:02 +0200
+Received: from monnier by 23-91-145-163.cpe.pppoe.ca with local (Gmexim 0.1
+	(Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Tue, 29 Mar 2016 15:40:02 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Thinking about changed buffers
+Date: Tue, 29 Mar 2016 09:39:54 -0400
+Message-ID: <jwvwpolbe3o.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<2d55f05e4ba00afeb3f7269953eb0e13.squirrel@cloud103.planethippo.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 23-91-145-163.cpe.pppoe.ca
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:0TEFoif4i8gf2khlnKafgA3qstY=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 13:40:14 -0000
+Content-Length: 754
+Lines: 16
+
+> The only solution I can see for fill-paragraph is to copy the paragraph to
+> a temp buffer, fill that, check whether it has changed, then if it has,
+> signal before-change, copy the changed paragraph back, signal after
+> change. If it has not changed, then fill-paragraph becomes a no-op.
+
+BTW, another solution for fill-paragraph is to reimplement it from
+scratch such that it doesn't "unfill+refill".  I.e. it could instead
+loop go to each LF in the paragraph, such if that LF is found to be "at
+the right spot", it moves on, if it's "too soon", then it removes it,
+and if it's "too far" then it adds another somewhere earlier.
+
+This would naturally lead to the result that the buffer would stay
+unmodified if there was no change.
+
+
+        Stefan
+
+

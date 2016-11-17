@@ -1,0 +1,118 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aonU9-0005Ps-Dm
+	for mharc-dev@caliopen.local; Sat, 09 Apr 2016 03:39:13 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:40181)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aonU6-0005Lv-DJ
+	for dev@caliopen.local; Sat, 09 Apr 2016 03:39:11 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1aonU3-0004el-66
+	for dev@caliopen.local; Sat, 09 Apr 2016 03:39:10 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:36691)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1aonU3-0004eh-2h; Sat, 09 Apr 2016 03:39:07 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:1124
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1aonU2-0002Mv-5t; Sat, 09 Apr 2016 03:39:06 -0400
+Date: Sat, 09 Apr 2016 10:38:28 +0300
+Message-Id: <83shyvi64r.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: joakim@verona.se
+CC: mituharu@math.s.chiba-u.ac.jp, dev@caliopen.local
+In-reply-to: <m38u0oazb8.fsf@exodia.verona.se> (joakim@verona.se)
+Subject: Re: About x_draw_xwidget_glyph_string
+Reply-to: Eli Zaretskii <eliz@gnu.org>
+References: <wlvb6il8dn.wl%mituharu@math.s.chiba-u.ac.jp>
+	<83oac93bnr.fsf@gnu.org> <m38u0oazb8.fsf@exodia.verona.se>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sat, 09 Apr 2016 07:39:11 -0000
+Content-Length: 2414
+Lines: 73
+
+> From: joakim@verona.se
+> Cc: YAMAMOTO Mitsuharu <mituharu@math.s.chiba-u.ac.jp>,  dev@caliopen.local
+> Date: Fri, 08 Apr 2016 17:35:23 +0200
+> 
+> Eli Zaretskii <eliz@gnu.org> writes:
+> 
+> >> Date: Mon, 25 Jan 2016 11:07:16 +0900
+> >> From: YAMAMOTO Mitsuharu <mituharu@math.s.chiba-u.ac.jp>
+> >> 
+> >> 2. Comment on clipping.
+> >> 
+> >>    578	  /* Calculate clipping, which is used for all manner of onscreen
+> >>    579	     xwidget views.  Each widget border can get clipped by other emacs
+> >>    580	     objects so there are four clipping variables.  */
+> >>    581	  clip_right =
+> >>    582	    min (xww->width,
+> >>    583	         WINDOW_RIGHT_EDGE_X (s->w) - x -
+> >>    584	         WINDOW_RIGHT_SCROLL_BAR_AREA_WIDTH (s->w) -
+> >>    585	         WINDOW_RIGHT_FRINGE_WIDTH (s->w));
+> >>    586	  clip_left =
+> >>    587	    max (0,
+> >>    588	         WINDOW_LEFT_EDGE_X (s->w) - x +
+> >>    589	         WINDOW_LEFT_SCROLL_BAR_AREA_WIDTH (s->w) +
+> >>    590	         WINDOW_LEFT_FRINGE_WIDTH (s->w));
+> >>    591	
+> >>    592	  clip_bottom =
+> >>    593	    min (xww->height,
+> >>    594	         WINDOW_BOTTOM_EDGE_Y (s->w) - WINDOW_MODE_LINE_HEIGHT (s->w) - y);
+> >>    595	  clip_top = max (0, WINDOW_TOP_EDGE_Y (s->w) - y);
+> >> 
+> >> I think the calculation of clipping should use the function window_box
+> >> rather than manual calculation with various window macros.  Otherwise,
+> >> xwidget views will cover horizontal scroll bars, for example.
+> >
+> > I agree.
+> >
+> > Thanks.
+> >
+> 
+> I tried to do this, but I'm doing something wrong. How is window_box
+> meant to be used?
+> 
+> This is my attempt to replace the code above:
+> 
+>   //JAVE work in progressing, suggested by YAMAMOTO Mitsuharu
+>   int text_area_x, text_area_y, text_area_width, text_area_height;
+>   
+>   window_box (s->w,
+>               ANY_AREA, //also tried TEXT_AREA
+
+You should use TEXT_AREA here.
+
+>               &text_area_x,
+>               &text_area_y,
+>               &text_area_width,
+>               &text_area_height);
+>   clip_right =
+>     min (xww->width,
+>          text_area_width);
+>   clip_left =
+>     max (0,
+>          text_area_x);
+> 
+>   clip_bottom =
+>     min (xww->height,
+>          text_area_y);
+>   clip_top = max (0, text_area_height);
+
+I think clip_top should use text_area_y and clip_bottom should use
+text_area_height.
+
+Other than those two issues, what other problems do you see?
+

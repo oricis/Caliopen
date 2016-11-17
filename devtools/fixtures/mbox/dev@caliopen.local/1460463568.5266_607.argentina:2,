@@ -1,0 +1,98 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aii6k-0005mi-PE
+	for mharc-dev@caliopen.local; Wed, 23 Mar 2016 08:41:54 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:56362)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aii6i-0005jZ-3V
+	for dev@caliopen.local; Wed, 23 Mar 2016 08:41:52 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aii6e-0005Y4-CN
+	for dev@caliopen.local; Wed, 23 Mar 2016 08:41:52 -0400
+Received: from mail-wm0-x22c.google.com ([2a00:1450:400c:c09::22c]:35319)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aii6e-0005Xy-3C
+	for dev@caliopen.local; Wed, 23 Mar 2016 08:41:48 -0400
+Received: by mail-wm0-x22c.google.com with SMTP id l68so193936946wml.0
+	for <dev@caliopen.local>; Wed, 23 Mar 2016 05:41:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=/jUZbCGOdmD3M2a0ZR85mTzoDdPGISqbIBP1PiZ7EGA=;
+	b=Npm2eT86r0aA7/1xsq7W21kz9QHoof6GWRxwrFkc6ow3m4TlK0aFmwN3XxEg+NE9lN
+	UdrtgtPmC3/YNMvyRgZ5fKd3yhAVIJKU25/VIPphpUUn9PwcP6BwOJ7ULERKCe0t/6u8
+	cy5/fJCXgF/3RdMqpxxoZO9RumvKJ3qr9asZsF0nr1t8X6jugbmQIiQZabAm7XfFeXmq
+	VstBiWcptC/WNdeQqlas3JYZw2bwHYsrNQLwzzcGpdF7QjXg4aUzq3mEx5N9FMjnyXYV
+	o1xQkodTX9pG8UWNdff899FXAglrLiLW2wkwrzaM2Zc/EwSl9IBD4S3BVCFVcQWFzi3A
+	iyLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=/jUZbCGOdmD3M2a0ZR85mTzoDdPGISqbIBP1PiZ7EGA=;
+	b=lLriWBCfNacWw6tVz6ZKqbkN/ATftKcqTeaFqyGm0r2ttBfh1+BKebnt2WZvb8kK1i
+	EP0V0shC5GWNgRWoSTYE4RkjFTlyR9y7ax8OZN0e4JLBoqTOApolQi9AfQZQO0nLbekS
+	A0kb9xbZWCMiiJgVHM2KkWy2ItveCUVKDVwQluoEZRAhhqAF6A0MgZUCZwyMc1uuDx0X
+	8HkHVIPP7rGjhrLoso/MWXjsHdO9MXnlV1d5g4tk5+6f3fw2oqp5SzTvA7vDRGLN3+in
+	U9HbqRWcZSyGEtBKKwDqI5Ffj0ZqjEEaiIM+zBfpgMjJHSCeZ4gtHo8PR1b4C2lj9l0A
+	oDsg==
+X-Gm-Message-State: AD7BkJI/Gu/yb1rUXvPNankxfb7xtGsWw7O5Xa+VCmkGmK+MVkUjVMBFqqewGQUpuREAMg==
+X-Received: by 10.194.90.100 with SMTP id bv4mr3254182wjb.4.1458736907384;
+	Wed, 23 Mar 2016 05:41:47 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	ka4sm2407556wjc.47.2016.03.23.05.41.46
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Wed, 23 Mar 2016 05:41:46 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+	<jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87pounew9e.fsf@gmail.com>
+	<jwva8lrx4ov.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzda4h.fsf@gmail.com> <jwvwpovwuip.fsf-monnier+Inbox@gnu.org>
+	<87lh5bd4ib.fsf@gmail.com> <87egb3ryjc.fsf@gmail.com>
+	<877fgusum3.fsf@gmail.com> <8737risu8d.fsf@gmail.com>
+	<jwvbn66viar.fsf-monnier+Inbox@gnu.org> <87mvpqqxy7.fsf@gmail.com>
+	<jwvzitqpj68.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<877fguqp8x.fsf@gmail.com> <jwvio0euejl.fsf-monnier+emacs@gnu.org>
+	<87bn65pgk2.fsf@gmail.com> <jwvvb4dtlve.fsf-monnier+emacs@gnu.org>
+Date: Wed, 23 Mar 2016 13:41:46 +0100
+In-Reply-To: <jwvvb4dtlve.fsf-monnier+emacs@gnu.org> (Stefan Monnier's message
+	of "Wed, 23 Mar 2016 08:34:02 -0400")
+Message-ID: <87y499nz79.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22c
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 23 Mar 2016 12:41:53 -0000
+Content-Length: 259
+Lines: 11
+
+
+
+>> On Wed, Mar 23 2016 08:34, Stefan Monnier wrote:
+
+> I wouldn't want to touch Z* and BEG*, indeed. I'm just suggesting to keep the
+> limits as markers rather than as integers.  It's a trivial change.
+
+Hm. That might work quite well actually.
+
+   Vitalie
+

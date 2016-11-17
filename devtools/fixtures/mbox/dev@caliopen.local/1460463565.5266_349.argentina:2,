@@ -1,0 +1,74 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anBMX-0006lJ-ID
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 16:44:41 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:37795)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1anBMU-0006k1-I6
+	for dev@caliopen.local; Mon, 04 Apr 2016 16:44:39 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1anBMT-0006NJ-On
+	for dev@caliopen.local; Mon, 04 Apr 2016 16:44:38 -0400
+Received: from userp1040.oracle.com ([156.151.31.81]:27178)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>)
+	id 1anBMP-0006Lv-Fz; Mon, 04 Apr 2016 16:44:33 -0400
+Received: from aserv0021.oracle.com (aserv0021.oracle.com [141.146.126.233])
+	by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with
+	ESMTP id u34KiUmo014049
+	(version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+	Mon, 4 Apr 2016 20:44:30 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+	by aserv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u34KiT9I020514
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+	Mon, 4 Apr 2016 20:44:29 GMT
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id u34KiRRf010340;
+	Mon, 4 Apr 2016 20:44:28 GMT
+MIME-Version: 1.0
+Message-ID: <2073eeed-302f-48b7-afe0-c291e7b4fbb3@default>
+Date: Mon, 4 Apr 2016 13:44:26 -0700 (PDT)
+From: Drew Adams <drew.adams@oracle.com>
+Sender: Drew Adams <drew.adams@oracle.com>
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>, Eli Zaretskii <eliz@gnu.org>
+Subject: RE: master 0695108 2/2: Revert "Add `r'/`l' grep command history
+	commands"
+References: <20160403224658.6944.52006@vcs.savannah.gnu.org>
+	<E1amqnL-0001p7-2f@vcs.savannah.gnu.org> <m3wpoe54yr.fsf@gnus.org>
+	<m2wpoe9cjg.fsf@newartisans.com> <83r3elo15s.fsf@gnu.org>
+	<m3bn5pnrrd.fsf@gnus.org> <83egalnmtw.fsf@gnu.org>
+	<m3shz1868o.fsf@gnus.org>
+In-Reply-To: <m3shz1868o.fsf@gnus.org>
+X-Priority: 3
+X-Mailer: Oracle Beehive Extensions for Outlook 2.0.1.9  (901082) [OL
+	12.0.6744.5000 (x86)]
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+X-Source-IP: aserv0021.oracle.com [141.146.126.233]
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.4.x-2.6.x [generic]
+X-Received-From: 156.151.31.81
+Cc: jwiegley@gmail.com, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 20:44:39 -0000
+Content-Length: 435
+Lines: 10
+
+> I agree that they aren't very mnemonic bindings, but those are the
+> bindings that all modes that I know of that has a history uses.  I don't
+> even know what they stand for.  "Return"?  "L..."  uhm...
+
+`l' stands for "last".  It was in use forever.  `r' was added later,
+to be symmetric.
+
+IIRC, I think the idea behind `r' was kind of "right", compared with
+"left" (`l').  I don't know of another mnemonic that was touted for `r'.
+

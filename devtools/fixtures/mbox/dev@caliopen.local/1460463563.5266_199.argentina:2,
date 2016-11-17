@@ -1,0 +1,46 @@
+Return-Path: <calderon71@ljrtrust.org>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id E705620A559A7
+	for <laurent@brasil.brainstorm.fr>; Sat,  9 Apr 2016 22:15:51 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id DC8153317708; Sat,  9 Apr 2016 22:15:51 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id CC0EE3317735; Sat,  9 Apr 2016 22:15:51 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: ******
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=BAYES_99,HTML_MESSAGE,
+	HTML_MIME_NO_HTML_TAG,MIME_HTML_ONLY,RCVD_IN_BRBL_LASTEXT,SPF_HELO_SOFTFAIL
+	autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 0.9993]
+	*  1.4 RCVD_IN_BRBL_LASTEXT RBL: RCVD_IN_BRBL_LASTEXT
+	*      [50.62.160.115 listed in bb.barracudacentral.org]
+	*  0.7 SPF_HELO_SOFTFAIL SPF: HELO does not match SPF record (softfail)
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.7 MIME_HTML_ONLY BODY: Message only has text/html MIME parts
+	*  0.4 HTML_MIME_NO_HTML_TAG HTML-only message, but there is no HTML tag
+X-Spam-DCC: : 
+Received: from ljrtrust.org (p3nwvpweb101.shr.prod.phx3.secureserver.net [50.62.160.115])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id C63613317708
+	for <dev@caliopen.local>; Sat,  9 Apr 2016 22:15:46 +0200 (CEST)
+Date: Sat, 9 Apr 2016 20:15:42 +0000
+From: calderon71@ljrtrust.org
+Reply-To: <kitty@dating2mail.com>
+Message-ID: <e843f07-4721e-c2@ljrtrust.org>
+To: dev@caliopen.local
+Subject: Welcome
+X-Priority: 3 (Normal)
+MIME-Version: 1.0
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-Spam-Prev-Subject:  Welcome
+Content-Length: 210
+Lines: 2
+
+
+<div>Welcome, I'm a lone pretty babe, looking real man friend to have a fun with :) <br> Where are you from, do you speak english? <br> <br> reply me if you would like to see my photos. See you later ;D</div>

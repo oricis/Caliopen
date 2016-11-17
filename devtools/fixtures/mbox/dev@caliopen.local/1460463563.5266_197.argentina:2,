@@ -1,0 +1,596 @@
+Return-Path: <news@e.fipe457.fr>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id 7FFEC20B89CB1
+	for <laurent@brasil.brainstorm.fr>; Sat,  9 Apr 2016 22:32:23 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 6CCC63317708; Sat,  9 Apr 2016 22:32:23 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id DF5183317735; Sat,  9 Apr 2016 22:32:22 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: *******
+X-Spam-Status: Yes, score=7.1 required=5.0 tests=AWL,BAYES_99,DKIM_SIGNED,
+	HTML_IMAGE_RATIO_02,HTML_MESSAGE,MIME_HTML_ONLY,MSGID_RANDY,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,T_DKIM_INVALID autolearn=spam version=3.3.2
+X-Spam-Report: 
+	* -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at http://www.dnswl.org/, no
+	*      trust
+	*      [37.59.69.56 listed in list.dnswl.org]
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	* -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+	*  0.4 HTML_IMAGE_RATIO_02 BODY: HTML has a low ratio of text to image area
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.7 MIME_HTML_ONLY BODY: Message only has text/html MIME parts
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	*  2.6 MSGID_RANDY Message-Id has pattern used in spam
+	*  0.0 T_DKIM_INVALID DKIM-Signature header exists but is not valid
+	* -0.2 AWL AWL: From: address is in the auto white-list
+X-Spam-DCC: : 
+Received: from e.fipe457.fr (a56.e.fipe457.fr [37.59.69.56])
+	by mexico.brainstorm.fr (Postfix) with SMTP id 7F11C3317708
+	for <dev@caliopen.local>; Sat,  9 Apr 2016 22:32:18 +0200 (CEST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=mail;d=e.fipe457.fr;
+  h=from:sender:to:date:message-id:subject:mime-version:content-type;
+  b=ulrRjXMzVMroLHjAcm6XOGZ9r8D9BsOT0y1aQHlb+fsQ9Cqzpc2+VpPUKssUrQQSEWXLl4ik
+    0iqnIMflfhPz8kE+uis8M/0tgZLcSAZstNxN9gdFZNMrFIQc9UjpWm4hFxiueYj8m6yJ1WFC
+    w66Lq36D0G6mi4Qz4LAIi4ZVxWU=
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed;
+  s=mail;d=e.fipe457.fr;
+  h=from:sender:to:date:message-id:subject:mime-version:content-type;
+  bh=mxQBDl63myF0UkH4XFOdBfGfljA=;
+  b=wGqlDBes/QEQ4kxzjcIrDlrk0tkTKTdZtmc5LNS7m2TkP6DsMsJzh7q5ymA9l9Quk29V0i1d
+    kXvRwsyQfmQSP0UownSgkj6Rzs4aeSMXCzzy9XDBqKJWwYn3Cxma20l3j+vlQvBbdkFwH8LB
+    /WCkwaTdyAqZStbqXN/yPO20/YQ=
+X-Customer-ID: 99
+X-Campaign-ID: 3231
+List-Unsubscribe: http://e.fipe457.fr/tr/1/438669846/3231/0940486/
+From: Nocibe / Offre du jour <news@e.fipe457.fr>
+Sender: Nocibe / Offre du jour <news@e.fipe457.fr>
+Reply-To: Nocibe / Offre du jour <news@e.fipe457.fr>
+To: dev@caliopen.local
+Date: Sat, 09 Apr 2016 20:32:46 GMT
+Organization: e.fipe457.fr
+Message-ID: <1-438669846-3231-0940486@e.fipe457.fr>
+Subject: Moins 25 PCT pour un look sublime
+MIME-Version: 1.0
+X-Mailer: PHPMailer
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Prev-Subject: Moins 25 PCT pour un look sublime
+Content-Length: 32090
+Lines: 528
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>Nocibe</title>
+<link rel="icon" type="image/x-icon" data-linkrefke="57037c417d897" href="http://wpm.ccmp.eu/wpm/560/Email_Oneshot/nocibe.ico">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+ExternalClass {
+	width:100%;
+}
+ExternalClass * {
+	line-height: 100%;
+}
+body {
+	margin:0;
+}
+ @media only screen and (max-width: 670px) {
+body {
+	-webkit-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	margin:0px;
+	padding:0px;
+}
+*[class=w320] {
+	width:320px !important;
+	border:0px !important;
+}
+*[class=w300] {
+	width:300px !important;
+	border:0px !important;
+}
+*[class=w290] {
+	width:290px !important;
+	font-size:11px !important;
+}
+*[class=w15] {
+	width:15px !important;
+}
+*[class=w10] {
+	width:10px !important;
+}
+*[class=gris] {
+	background-color:#E9E7E8 !important;
+	width:320px !important;
+	height:2px !important;
+}
+*[class=hide] {
+	display:none !important;
+	height:0px !important;
+	width:0px !important;
+}
+*[class=service] {
+	width: 320px !important;
+	height: 192px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/service_m.jpg') no-repeat center top !important;
+}
+*[class=w30] {
+	width:30px !important;
+	border:0px !important;
+}
+*[class=retrouvez] {
+	width: 320px !important;
+	height: 48px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/retrouvez_m.jpg') no-repeat center top !important;
+}
+*[class=logo_nocibe] {
+	width: 320px !important;
+	height: 80px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/logo_nocibe_m.jpg') no-repeat center top !important;
+}
+*[class=w320h60] {
+	width:320px !important;
+	height:60px !important;
+	border:0px !important;
+}
+*[class=esp] {
+	display:block !important;
+}
+*[class=loc] {
+	width: 320px !important;
+	height: 111px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/localisation_m.jpg') no-repeat center top !important;
+}
+*[class=mes_services] {
+	width: 320px !important;
+	height: 63px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/mes_services_m.jpg') no-repeat center top !important;
+}
+*[class=retours] {
+	width: 320px !important;
+	height: 41px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/retours_m.jpg') no-repeat center top !important;
+}
+*[class=echantillons_off] {
+	width: 320px !important;
+	height: 47px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/echantillons_off_m.jpg') no-repeat center top !important;
+}
+*[class=liv_offerte] {
+	width: 320px !important;
+	height: 42px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/liv_offerte_m.jpg') no-repeat center top !important;
+}
+*[class=f_sepa] {
+	width: 320px !important;
+	height: 25px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/f_sepa_m.jpg') no-repeat center top !important;
+}
+*[class=retrouvez_nous] {
+	width: 180px !important;
+	height: 36px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/retrouvez_nous_m.jpg') no-repeat center top !important;
+}
+*[class=facebook] {
+	width: 33px !important;
+	height: 36px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/facebook_m.jpg') no-repeat center top !important;
+}
+*[class=twitter] {
+	width: 33px !important;
+	height: 36px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/twitter_m.jpg') no-repeat center top !important;
+}
+*[class=youtube] {
+	width: 31px !important;
+	height: 36px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/youtube_m.jpg') no-repeat center top !important;
+}
+*[class=appli] {
+	width: 43px !important;
+	height: 36px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/appli_m.jpg') no-repeat center top !important;
+}
+*[class=loca] {
+	width: 320px !important;
+	height: 48px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/loca_m.jpg') no-repeat center top !important;
+}
+/* ******************************************************** */
+
+*[class=bientot_site] {
+	width: 320px !important;
+	height: 85px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/bientot_site_m.jpg') no-repeat center top !important;
+}
+*[class=bientot_parf] {
+	width: 320px !important;
+	height: 35px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/bientot_parf_m.jpg') no-repeat center top !important;
+}
+*[class=nav_femme] {
+	width: 163px !important;
+	height: 22px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/nav_femme.jpg') no-repeat center top !important;
+}
+*[class=nav_homme] {
+	width: 157px !important;
+	height: 22px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/nav_homme.jpg') no-repeat center top !important;
+}
+*[class=look_sublime] {
+	width: 320px !important;
+	height: 205px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/look_sublime_m.jpg') no-repeat center top !important;
+}
+*[class=promo_a] {
+	width: 163px !important;
+	height: 171px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/promo_a_m.jpg') no-repeat center top !important;
+}
+*[class=promo_b] {
+	width: 157px !important;
+	height: 171px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/promo_b_m.jpg') no-repeat center top !important;
+}
+*[class=profite] {
+	width: 320px !important;
+	height: 45px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/profite_m.jpg') no-repeat center top !important;
+}
+*[class=bonbon] {
+	width: 320px !important;
+	height: 466px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/bonbon_m.jpg') no-repeat center top !important;
+}
+*[class=givenchy] {
+	width: 320px !important;
+	height: 514px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/givenchy_m.jpg') no-repeat center top !important;
+}
+*[class=clarins] {
+	width: 320px !important;
+	height: 597px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/clarins_m.jpg') no-repeat center top !important;
+}
+*[class=lauder] {
+	width: 320px !important;
+	height: 472px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/lauder_m.jpg') no-repeat center top !important;
+}
+*[class=go_site] {
+	width: 320px !important;
+	height: 45px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/go_site_m.jpg') no-repeat center top !important;
+}
+*[class=creez_parfum] {
+	width: 320px !important;
+	height: 402px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/creez_parfum_m.jpg') no-repeat center top !important;
+}
+*[class=liberte] {
+	width: 320px !important;
+	height: 87px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/liberte_m.jpg') no-repeat center top !important;
+}
+*[class=parf_femme] {
+	width: 164px !important;
+	height: 35px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/parf_femme_m.jpg') no-repeat center top !important;
+}
+*[class=parf_homme] {
+	width: 156px !important;
+	height: 35px !important;
+	display:block !important;
+	background: url('http://bdcreatives.s3.amazonaws.com/272/bn/47034/parf_homme_m.jpg') no-repeat center top !important;
+}
+}
+table {
+	border-collapse: collapse;
+}
+</style>
+</head>
+<body bgcolor="#F3F3F3"><div align="center">
+<font color="#555555" style="font-size:10px;font-family:Verdana,Arial,Helvetica,sans-serif;">
+<b>Bonjour  , vous recevez ce mail car vous êtes abonné avec l'adresse dev@caliopen.local</b><br>
+Si vous souhaitez vous d&eacute;sincrire, <a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=134899c60&idc=09404866f48">suivez ce lien</a>
+        Pour visualiser correctement ce message, acc&eacute;dez &agrave; la <a  href="http://e.fipe457.fr/mr/?v=2&idi=4386698467041&idl=234898701&idm=3231b048&idc=09404866f48">version en ligne</a>
+        <br><br>
+
+    </font>
+</div>
+<table class="w320" align="center" bgcolor="#F3F3F3" border="0" cellpadding="0" cellspacing="0" width="650">
+  <tbody><tr>
+    <td style="font-family: Arial, Helvetica, sans-serif; font-size:14px; color:#c21a50" class="w320" height="45" align="center" width="650"><strong>Offre beauté Nocibé : jusqu’à -25% sur tout !</strong></td>
+  </tr>
+  <tr>
+    <td><table class="w320" align="center" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+      <tbody><tr>
+        <td class="hide"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=33489ab29&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/logo_nocibe.jpg" alt="" style="display:block;" height="80" border="0" width="268"></a></td>
+        <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="382">
+          <tbody><tr>
+            <td height="40" bgcolor="#FFFFFF" width="382"><span class="logo_nocibe"></span></td>
+          </tr>
+          <tr>
+            <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="382">
+              <tbody><tr>
+                <td bgcolor="#FFFFFF"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=434898a2c&idc=09404866f48" target="_blank"><span class="parf_femme"><img src="http://e.fipe457.fr/img/15805.160405.2053/parf_femme.jpg" alt="" style="display:block;" class="hide" height="23" border="0" width="109"></span></a></td>
+                <td bgcolor="#FFFFFF"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=53489f815&idc=09404866f48" target="_blank"><span class="parf_homme"><img src="http://e.fipe457.fr/img/15805.160405.2053/parf_homme.jpg" alt="" style="display:block;" class="hide" height="23" border="0" width="108"></span></a></td>
+                <td class="hide" bgcolor="#FFFFFF"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=63489e9e8&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/maq.jpg" alt="" style="display:block;" height="23" border="0" width="87"></a></td>
+                <td class="hide" bgcolor="#FFFFFF"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=734892e5f&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/coffrets.jpg" alt="" style="display:block;" height="23" border="0" width="78"></a></td>
+              </tr>
+            </tbody></table></td>
+          </tr>
+          <tr>
+            <td class="hide" height="17" bgcolor="#FFFFFF" width="382"></td>
+          </tr>
+        </tbody></table></td>
+      </tr>
+    </tbody></table></td>
+  </tr>
+  <tr>
+    <td class="hide" height="9" bgcolor="#ffffff" width="650"></td>
+  </tr>
+  <tr>
+    <td><table class="w320" align="center" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+        <tbody><tr>
+          <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+              <tbody><tr>
+                <td class="hide"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=8348977b9&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/look_sublime.jpg" alt="du 6 au 12 avril Offrez vous un look sublime" style="display:block;" height="376" border="0" width="430"></a></td>
+                <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="220">
+                    <tbody><tr>
+                      <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=934896553&idc=09404866f48" target="_blank"><span class="look_sublime"><img src="http://e.fipe457.fr/img/15805.160405.2053/promo_a.jpg" alt="-25% sur tous les parfums avec le code" style="display:block;" class="hide" height="145" border="0" width="220"></span></a></td>
+                    </tr>
+                    <tr>
+                      <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="220">
+                          <tbody><tr>
+                            <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=035896eaf&idc=09404866f48" target="_blank"><span class="promo_a"><img src="http://e.fipe457.fr/img/15805.160405.2053/promo_a_l.jpg" alt="" style="display:block;" class="hide" height="30" border="0" width="52"></span></a></td>
+                            <td class="hide" style="font-family:Arial, Helvetica, sans-serif; font-size:17px; color:#E21386; text-align:center" height="30" bgcolor="#FFFFFF" width="100"><strong><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=13589bb85&idc=09404866f48" target="_blank" style="color:#E21386; text-decoration:none;">NOCIBE25</a></strong></td>
+                            <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=23589bd9a&idc=09404866f48" target="_blank"><span class="promo_b"><img src="http://e.fipe457.fr/img/15805.160405.2053/promo_a_r.jpg" alt="" style="display:block;" class="hide" height="30" border="0" width="68"></span></a></td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                    <tr>
+                      <td class="hide"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=33589814d&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/promo_b.jpg" alt="-20% sur tout le maquillage avec le code" style="display:block;" height="130" border="0" width="220"></a></td>
+                    </tr>
+                    <tr>
+                      <td><table class="hide" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="220">
+                          <tbody><tr>
+                            <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=435895cf1&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/promo_b_l.jpg" alt="" style="display:block;" height="30" border="0" width="52"></a></td>
+                            <td style="font-family:Arial, Helvetica, sans-serif; font-size:17px; color:#E21386; text-align:center" height="30" bgcolor="#FFFFFF" width="100"><strong><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=53589c129&idc=09404866f48" target="_blank" style="color:#E21386; text-decoration:none;">NOCIBE20</a></strong></td>
+                            <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=63589566f&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/promo_b_r.jpg" alt="" style="display:block;" height="30" border="0" width="68"></a></td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                    <tr>
+                      <td class="hide"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=7358937e2&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/promo_b_bot.jpg" alt="" style="display:block;" height="41" border="0" width="220"></a></td>
+                    </tr>
+                  </tbody></table></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=83589823a&idc=09404866f48" target="_blank"><span class="profite"><img src="http://e.fipe457.fr/img/15805.160405.2053/profite.jpg" alt="J'en profite" style="display:block;" class="hide" height="45" border="0" width="650"></span></a></td>
+        </tr>
+        <tr>
+          <td><table class="hide" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+              <tbody><tr>
+                <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=9358994f4&idc=09404866f48"><img src="http://e.fipe457.fr/img/15805.160405.2053/selection_parfums.jpg" alt="Sélection parfums" style="display:block;" height="143" border="0" width="413"></a></td>
+                <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=0368970e7&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/givenchy_top.jpg" alt="" style="display:block;" height="143" border="0" width="237"></a></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+              <tbody><tr>
+                <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="341">
+                    <tbody><tr>
+                      <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=13689eccb&idc=09404866f48" target="_blank"><span class="bonbon"><img src="http://e.fipe457.fr/img/15805.160405.2053/bonbon.jpg" alt="Bonbon Eau de parfum 30ml 59€" style="display:block;" class="hide" height="381" border="0" width="341"></span></a></td>
+                    </tr>
+                    <tr>
+                      <td height="22" bgcolor="#FFFFFF" width="341"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=23689d902&idc=09404866f48" target="_blank"><span class="givenchy"></span></a></td>
+                    </tr>
+                  </tbody></table></td>
+                <td class="hide"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=336897293&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/givenchy.jpg" alt="live irressistible Eau de parfum 40ml 65€90" style="display:block;" height="403" border="0" width="309"></a></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td><table class="hide" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+              <tbody><tr>
+                <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=43689426d&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/clarins_top.jpg" alt="" style="display:block;" height="93" border="0" width="279"></a></td>
+                <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=53689f8e6&idc=09404866f48"><img src="http://e.fipe457.fr/img/15805.160405.2053/soins_selection.jpg" alt="Sélection soins" style="display:block;" height="93" border="0" width="371"></a></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+              <tbody><tr>
+                <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="323">
+                    <tbody><tr>
+                      <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=636899517&idc=09404866f48" target="_blank"><span class="clarins"><img src="http://e.fipe457.fr/img/15805.160405.2053/clarins.jpg" alt="Huile anti eau Flacon 100ml 52€90" style="display:block;" class="hide" height="440" border="0" width="323"></span></a></td>
+                    </tr>
+                    <tr>
+                      <td height="22" bgcolor="#FFFFFF" width="323"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=73689babc&idc=09404866f48" target="_blank"><span class="lauder"></span></a></td>
+                    </tr>
+                  </tbody></table></td>
+                <td class="hide"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=83689af3e&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/lauder.jpg" alt="Advanced Night Repair Flacon Pipette 30ml 82,50€" style="display:block;" height="462" border="0" width="327"></a></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=936894ecf&idc=09404866f48" target="_blank"><span class="go_site"><img src="http://e.fipe457.fr/img/15805.160405.2053/go_site.jpg" alt="Je vais sur nocibe.fr" style="display:block;" class="hide" height="45" border="0" width="650"></span></a></td>
+        </tr>
+        <tr>
+          <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+              <tbody><tr>
+                <td class="hide" height="210" bgcolor="#FFFFFF" width="56"></td>
+                <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="552">
+                    <tbody><tr>
+                      <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=037895b75&idc=09404866f48" target="_blank"><span class="creez_parfum"><img src="http://e.fipe457.fr/img/15805.160405.2053/creez_parfum.jpg" alt="Créez votre parfum sur mesure avec notre partenaire UNIQUE - J'EN VEUX UN !" style="display:block;" class="hide" height="191" border="0" width="552"></span></a></td>
+                    </tr>
+                    <tr>
+                      <td class="hide" height="19" bgcolor="#FFFFFF" width="552"></td>
+                    </tr>
+                  </tbody></table></td>
+                <td class="hide" height="210" bgcolor="#FFFFFF" width="42"></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+              <tbody><tr>
+                <td class="hide" height="78" bgcolor="#FFFFFF" width="56"></td>
+                <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=13789a79d&idc=09404866f48" target="_blank"><span class="liberte"><img src="http://e.fipe457.fr/img/15805.160405.2053/liberte.jpg" alt="LIBERTE N55 M'offrir de beaux produits a prix tout doux" style="display:block;" class="hide" height="78" border="0" width="540"></span></a></td>
+                <td class="hide" height="78" bgcolor="#FFFFFF" width="54"></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td class="hide" height="29" bgcolor="#FFFFFF" width="650"></td>
+        </tr>
+        <tr>
+          <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+              <tbody><tr>
+                <td class="hide" height="74" bgcolor="#FFFFFF" width="95"></td>
+                <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="159">
+                    <tbody><tr>
+                      <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=2378925c6&idc=09404866f48" target="_blank"><span class="bientot_site"><img src="http://e.fipe457.fr/img/15805.160405.2053/bientot_site.jpg" alt="A bientot sur nocibe.fr" style="display:block;" class="hide" height="58" border="0" width="159"></span></a></td>
+                    </tr>
+                    <tr>
+                      <td height="16" bgcolor="#FFFFFF" width="159"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=33789c178&idc=09404866f48" target="_blank"><span class="bientot_parf"></span></a></td>
+                    </tr>
+                  </tbody></table></td>
+                <td class="hide"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=43789588c&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/bientot_parf.jpg" alt="ou dans votre parfumerie nocibe" style="display:block;" height="74" border="0" width="286"></a></td>
+                <td class="hide" height="74" bgcolor="#FFFFFF" width="110"></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+      </tbody></table></td>
+  </tr>
+  <tr>
+    <td><table class="w320" align="center" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+        <tbody><tr>
+          <td class="hide" height="38" bgcolor="#FFFFFF" width="650"></td>
+        </tr>
+        <tr>
+          <td><span class="mes_services"><img src="http://e.fipe457.fr/img/15805.160405.2053/mes_services.jpg" alt="Mes services exclusifs" style="display:block;" class="hide" height="25" border="0" width="650"></span></td>
+        </tr>
+        <tr>
+          <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+              <tbody><tr>
+                <td><table align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="192">
+                    <tbody><tr>
+                      <td><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=5378992ae&idc=09404866f48" target="_blank"><span class="retours"><img src="http://e.fipe457.fr/img/15805.160405.2053/retours.jpg" alt="Retours faciles" style="display:block;" class="hide" height="57" border="0" width="192"></span></a></td>
+                    </tr>
+                    <tr>
+                      <td height="8" bgcolor="#FFFFFF" width="192"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=6378956b4&idc=09404866f48" target="_blank"><span class="echantillons_off"></span></a></td>
+                    </tr>
+                    <tr>
+                      <td height="7" bgcolor="#FFFFFF" width="192"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=737899ee0&idc=09404866f48" target="_blank"><span class="liv_offerte"></span></a></td>
+                    </tr>
+                  </tbody></table></td>
+                <td class="hide"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=83789c8ab&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/echantillons_off.jpg" alt="Echantillons offerts" style="display:block;" height="72" border="0" width="221"></a></td>
+                <td class="hide"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=937899387&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/liv_offerte.jpg" alt="Livraison offerte des 60€ d'achats" style="display:block;" height="72" border="0" width="237"></a></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td><span class="f_sepa"><img src="http://e.fipe457.fr/img/15805.160405.2053/f_sepa.jpg" alt="" style="display:block;" class="hide" height="9" border="0" width="650"></span></td>
+        </tr>
+        <tr>
+          <td><table class="w320" align="left" bgcolor="#f3f3f3" border="0" cellpadding="0" cellspacing="0" width="650">
+              <tbody><tr>
+                <td><span class="retrouvez_nous"><img src="http://e.fipe457.fr/img/15805.160405.2053/retrouvez_nous.jpg" alt="Retrouvez nous sur" style="display:block;" class="hide" height="42" border="0" width="192"></span></td>
+                <td><span class="facebook"><img src="http://e.fipe457.fr/img/15805.160405.2053/facebook.jpg" alt="" style="display:block;" class="hide" height="42" border="0" width="30"></span></td>
+                <td><span class="twitter"><img src="http://e.fipe457.fr/img/15805.160405.2053/twitter.jpg" alt="" style="display:block;" class="hide" height="42" border="0" width="29"></span></td>
+                <td><span class="youtube"><img src="http://e.fipe457.fr/img/15805.160405.2053/youtube.jpg" alt="" style="display:block;" class="hide" height="42" border="0" width="33"></span></td>
+                <td><span class="appli"><img src="http://e.fipe457.fr/img/15805.160405.2053/appli.jpg" alt="" style="display:block;" class="hide" height="42" border="0" width="26"></span></td>
+                <td class="hide" height="42" bgcolor="#FFFFFF" width="74"></td>
+                <td class="hide"><a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=0388993c5&idc=09404866f48" target="_blank"><img src="http://e.fipe457.fr/img/15805.160405.2053/loca.jpg" alt="Votre parfumerie en 2 clics" style="display:block;" class="hide" height="42" border="0" width="266"></a></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td class="w320" height="21" bgcolor="#FFFFFF" width="650"><span class="loca"></span></td>
+        </tr>
+      </tbody></table></td>
+  </tr>
+  <tr>
+    <td><table class="w320" align="left" bgcolor="#F3F3F3" border="0" cellpadding="0" cellspacing="0" width="650">
+        <tbody><tr>
+          <td class="w10" height="152" width="44"></td>
+          <td style="font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#383737;" class="w300" height="152" valign="top" width="576"><br>
+            *Offre non cumulable, valable 1 fois du 6 au 12 Avril 2016 
+sur présentation de cet email dans les parfumeries participantes et sur 
+nocibe.fr avec le code NOCIBE20 ou NOCIBE25 à saisir au panier. Ces 
+remises ne sont pas valables sur les cartes cadeaux, les cartes 
+institut, emballages payants, Parfum Unique, Petits prix, Points rouges,
+ Prix ronds, emballages payants, prix canon, promotions en cours et 
+soldes. Hors DOM-TOM et Monaco. Non cumulables avec d’autres offres 
+promotionnelles en cours. Offres valables uniquement sur présentation ou
+ pour toute souscription de la carte de fidélité Nocibé. Lille sous le 
+numéro 384 970 786.<br>
+            <br>
+           
+          </td><td class="w10" height="152" width="30"></td>
+        </tr>
+      </tbody></table></td>
+  </tr>
+</tbody></table>
+<img src="http://e.fipe457.fr/img/15805.160405.2053/a.gif" alt="" style="border:0px;" height="1" border="0" width="1">
+
+<div align="center">
+<font color="#555555" style="font-size:10px;font-family:Verdana,Arial,Helvetica,sans-serif;">
+<img border="0" hspace="0" vspace="0" width="1" height="1" src="http://p-eu.acxiom-online.com/pixel/ema?eml=45cb6dc134a75d2fb5ad157adc22ebfc&ha=md5&pid=6346&t=634601&sc=CVIP&ot=pixel" />
+<IMG HEIGHT=1 WIDTH=1 SRC="http://canalvip.biz/ert/?e=dev@caliopen.local&pf=X">
+<img src="http://dataanalyticsserver.com/p?f=gif&idp=53dd9f93b13a510f&xi.e.md5=45cb6dc134a75d2fb5ad157adc22ebfc&xi.e.sha1=&n.v.e=1" alt="" width="1" height="1" style="display: none;" />
+<img src="http://ext.adleadevent.com/adtckrtg.php?ids=35&hash=45cb6dc134a75d2fb5ad157adc22ebfc" /> 
+<b>Vous bénéficiez de cette offre car vous etes inscrit sur notre reseau partenaire</b><br>
+En tant que membre, vous bénéficiez d'offres spéciales, de bons plans, <br>
+de code promotion, d'enquetes rémunérées, d'annonces et plus<br>
+À tout moment, vous disposez d'un droit d'accès, de modification, de rectification et de suppression<br>
+ de vos données personnelles (art 34 de la loi Informatique et Libertés du 6 Janvier1978).
+<br>
+Pour cesser de recevoir nos informations sur l'adresse dev@caliopen.local, <a  href="http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idl=13889a401&idc=09404866f48">d&eacute;sabonnez-vous</a>
+</font>
+</div><img height='1' width='1' border='0' alt='' src='http://e.fipe457.fr/tr/?v=2&idi=4386698467041&idm=3231b048&idc=09404866f48'></body></html>

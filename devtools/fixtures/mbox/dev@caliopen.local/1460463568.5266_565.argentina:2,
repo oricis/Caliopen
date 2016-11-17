@@ -1,0 +1,140 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai0s5-0002oT-DS
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 10:31:53 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:44415)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai0s2-0002kR-9H
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:31:51 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai0ry-0005Fr-4r
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:31:50 -0400
+Received: from mail-wm0-x22b.google.com ([2a00:1450:400c:c09::22b]:35484)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ai0rx-0005Fl-Tl
+	for dev@caliopen.local; Mon, 21 Mar 2016 10:31:46 -0400
+Received: by mail-wm0-x22b.google.com with SMTP id l68so112612882wml.0
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 07:31:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=1z4/LBb88A/rXAAQw97jsGcJs8ue+Db0i/e+WY8f/XY=;
+	b=jgJch/SqmKVwWNXBObPYAVk7SrPt0rIH7MspSw5R+QgGC4Gl4Z4BJJeYBQ0CRYekHy
+	xmLiioJ40tCEPdWHVgVjmCdx8hn5QyTRlUtWhjttr5C7/AEKLk+NlSxoG6OI2Lcg9Ymg
+	naL89ivCYfkZNV6MuvWYbtwBsZXlzcl5gtfA4thrCBN24FJdoJYDuzdX+lYWoK7PROK2
+	Ol0fq6sR9bEuSFzI+XKUUwHTlskiTtXZ9khP17BeKi8qjADE/jsvOgVQnd3uFlWzFzi1
+	7Zwev8UnKVe0AHZz0Q68l5uNSfMmPni9eVVHZvZg5W2rcfoPFtecSJRASbJrMyYVRMnB
+	foBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=1z4/LBb88A/rXAAQw97jsGcJs8ue+Db0i/e+WY8f/XY=;
+	b=M7ZyQvmRVgHUfsjNJboIt0CTFl4o9gcYkyejFtKSjybwJTrf3aze1k8k0l67ocHW4K
+	VYB6/SJNaDy/rTMPzRrJcMqrlx/zGZoxm9psAT2xhgGc1SLtms+Cnxff1tIyq0TOFyzE
+	+zE92u6GpWIS42pZrdzkzQwDJvObl2MtGRlT8JACD0A/qJEmRmNkNgOGnagHFDmv+91G
+	xp9m5AvPkeYRnpsroP5AS/3ABJtlGj4Vuxz0VIZUZPgS+ZFX+7GGwOnG7SFstoDiEYrx
+	PltgYgd3MA2cXSPEzdk6o6iY6W9JEe6OMgw3krcGTrWWxzztWeRrdywHCw7yXLd5ftsU
+	Uy9A==
+X-Gm-Message-State: AD7BkJLnpN/tmQMc75/d2FeEPv6KlkTx5oUZ2KwqSV6/HVrVAqax3i+TEUpktQcu2cFT7Q==
+X-Received: by 10.28.9.19 with SMTP id 19mr14937865wmj.87.1458570705225;
+	Mon, 21 Mar 2016 07:31:45 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	ls5sm25579675wjb.33.2016.03.21.07.31.44
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Mon, 21 Mar 2016 07:31:44 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+	<328c7461-62c6-4228-f622-626349613a1d@yandex.ru>
+	<87fuvkf1gx.fsf@gmail.com>
+	<jwv7fgwx7ln.fsf-monnier+gmane.emacs.devel@gnu.org>
+Date: Mon, 21 Mar 2016 15:31:43 +0100
+In-Reply-To: <jwv7fgwx7ln.fsf-monnier+gmane.emacs.devel@gnu.org> (Stefan
+	Monnier's message of "Mon, 21 Mar 2016 10:02:12 -0400")
+Message-ID: <87twjzewc0.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22b
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 14:31:51 -0000
+Content-Length: 2313
+Lines: 51
+
+
+I have elaborated on all these in my other long reply. I would just conclude
+here that because both calculate-indent-function and prog-indentation-context
+try to solve same problem, they are bound to have overlapping parts. It's just
+that calculate-indent-function is more general, easier to understand for prog
+authors and it solves three problems at once - replacement of
+indent-line-function, removing extra prog-indentation-context/prog-widen and not
+exposing multi-mode complexities.
+
+Note also that the intention of the `hard-widen-limit` is to make it work
+seamlessly for all existing code that use widen. While prog-indentation-context
+requires to teach every mode out there to use prog-widen instead of widen. This
+doesn't sound right at all.
+
+  Vitalie
+
+
+>> On Mon, Mar 21 2016 10:02, Stefan Monnier wrote:
+
+>> Note that I don't mind FIRST-COLUMN functionality. I think it's harmless and
+>> probably useful. I mostly mind the last two arguments of
+>> prog-indentation-context.
+
+> OK, so you're OK with FIRST-COLUMN.  The last two args are:
+> - (START . END), which you actually do want, except you want to store it
+>   in hard-widen-limit.  I'm OK with storing it elsewhere.
+> - PREVIOUS-CHUNKS.  It can be a string, in which case it's just like your
+>   STRING-BEFORE.  So your main issues with it are either that you don't
+>   want to allow it to be a function, or that you want to store/pas it in
+>   a different way, right?
+
+>>> Almost all of them care whether the current line contains }, or `end', or
+>>> `else', and so on.
+>> Indeed. But this information is trivial to retrieve from STRING-AFTER.
+
+> In the case of SMIE, it would probably not be too difficult to adjust it
+> so it can work with STRING-AFTER, tho I definitely wouldn't call it
+> trivial to implement the case of "END END END aligns with the matching
+> outer BEGIN" which is currently supported (and was default until 24.5 or
+> so).
+
+> But I must say that I don't understand why you need this
+> STRING-AFTER thingy.  Isn't that text already right there in the buffer?
+
+> E.g. in prog-indentation-context, we do have something equivalent to
+> hard-widen-limit and to STRING-BEFORE but we have nothing like
+> STRING-AFTER: the indentation code is expected to get that info by
+> looking at the buffer after point.
+
+>         Stefan
+

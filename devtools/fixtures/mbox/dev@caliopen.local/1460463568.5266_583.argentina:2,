@@ -1,0 +1,95 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai4hI-0007DB-MC
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 14:37:00 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:46088)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai4hG-0007Ae-E4
+	for dev@caliopen.local; Mon, 21 Mar 2016 14:36:59 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai4hD-0003Pw-6T
+	for dev@caliopen.local; Mon, 21 Mar 2016 14:36:58 -0400
+Received: from chene.dit.umontreal.ca ([132.204.246.20]:36567)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <monnier@iro.umontreal.ca>) id 1ai4hD-0003Pq-1k
+	for dev@caliopen.local; Mon, 21 Mar 2016 14:36:55 -0400
+Received: from pastel.home (lechon.iro.umontreal.ca [132.204.27.242])
+	by chene.dit.umontreal.ca (8.14.1/8.14.1) with ESMTP id u2LIbNp0026843; 
+	Mon, 21 Mar 2016 14:37:23 -0400
+Received: by pastel.home (Postfix, from userid 20848)
+	id 418D26059C; Mon, 21 Mar 2016 14:36:53 -0400 (EDT)
+From: Stefan Monnier <monnier@IRO.UMontreal.CA>
+To: Vitalie Spinu <spinuvit@gmail.com>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+Message-ID: <jwvwpovwuip.fsf-monnier+Inbox@gnu.org>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+	<jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87pounew9e.fsf@gmail.com>
+	<jwva8lrx4ov.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzda4h.fsf@gmail.com>
+Date: Mon, 21 Mar 2016 14:36:53 -0400
+In-Reply-To: <87twjzda4h.fsf@gmail.com> (Vitalie Spinu's message of "Mon, 21
+	Mar 2016 18:16:46 +0100")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 5
+X-NAI-Spam-Score: 0
+X-NAI-Spam-Rules: 1 Rules triggered
+	RV5617=0
+X-NAI-Spam-Version: 2.3.0.9418 : core <5617> : inlines <4541> : streams
+	<1606622> : uri <2171520>
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 132.204.246.20
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 18:36:59 -0000
+Content-Length: 725
+Lines: 21
+
+>> That it sets narrowing and leaves it there.  So it can't use
+>> call-with-hard-narrowing for that.
+> Why would it need it for?
+
+Because an info file is made up of various nodes, and Emacs only shows
+one node at a time by narrowing.  This narrowing should be "hard"
+because font-lock and such should only operate on a node at a time.
+
+The same was true for Rmail which used to show the content of each email
+simply by narrowing the mailbox file to the specific email.  Not sure if
+it still does that (clearly it can't be so simple with MIME's base64
+and attachments).
+
+> This is outside of use cases that I have in mind.
+
+Indeed, it's a different case, but one where the narrowing should be
+hard as well.
+
+
+        Stefan
+

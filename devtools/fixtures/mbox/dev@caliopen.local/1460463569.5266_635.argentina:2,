@@ -1,0 +1,116 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aiR17-0000KU-BD
+	for mharc-dev@caliopen.local; Tue, 22 Mar 2016 14:26:57 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:46615)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiR13-0000BU-8q
+	for dev@caliopen.local; Tue, 22 Mar 2016 14:26:54 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiR10-0001Rs-2x
+	for dev@caliopen.local; Tue, 22 Mar 2016 14:26:53 -0400
+Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e]:37516)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1aiR0z-0001R1-LG
+	for dev@caliopen.local; Tue, 22 Mar 2016 14:26:49 -0400
+Received: by mail-wm0-x22e.google.com with SMTP id p65so175633085wmp.0
+	for <dev@caliopen.local>; Tue, 22 Mar 2016 11:26:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=9KT2kUqZENPYV6+qXKdZ1q65DBaKDLfZIug97o4IoDk=;
+	b=vyZWzPXyUp3T5vVkE5bRiMDiB/EphzVmaZnA5g5M1HENfJAe/TrdROIUuaiXUfuJBk
+	7g1A+SOgVcNWm1trFGoPta67GvDtlyL+Su1lrD4ji0uq/e7lUqpiRJ47c4FasPJIbfjD
+	h5a6hh/UZj6yYj53Hqdyoio3ZOIfnU5LH3ME0pqzbPtW9udN8plFE1BYiOfJmJ2J/oRW
+	INUVSbo38yWxcFthrHI2+kv7lxLoyDaFo4fnE5j6dzxLfm2zTJ1aAcZD8JG0VMLo19YA
+	1kb5XSoXJ6g60SFU2hv8xzCp5W2w5k3VWeCPbeezPLYVzSlBDacBBbNRTV9lpuQCJSQD
+	BJBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=9KT2kUqZENPYV6+qXKdZ1q65DBaKDLfZIug97o4IoDk=;
+	b=i9zhsB3fhpKcaMDpg4gqcMURdAwEsW9PNOgfPQXwJmllTMXUkpghfAFj0S6CJU5Jxz
+	/S5TWy60j7MdbXXzGVfQE490G070ISGMh3AuXhraL0BvOl2Bi+MNFjlIYtHGwbOEuNt5
+	rqevHDrouwJjbZFtZu2vQlz7Nj3JOsmwawqpU9g2kUdrneMXLcp+yTYJX7H91J6NgGo9
+	HWwaGbZzcEDySdkXjbms1xFIMb6+KT5cFe1BPg2C9/d+fBIvzYOcjAGb9x9lSGu0ROe9
+	h6HFwTP0Wns9NRR4WoRx3CWKecLR8zhZWznOGsr11/rhKt1IkJYA7KSuP88EZuW3iSMB
+	C0pA==
+X-Gm-Message-State: AD7BkJIiyKD5h9x3q2oVNbCfbd/VsMijg/VLXHM+RgEtbNpFjTVZR3jbyDhRFs5M2A1dWQ==
+X-Received: by 10.28.127.144 with SMTP id a138mr20411388wmd.25.1458671208896; 
+	Tue, 22 Mar 2016 11:26:48 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	y3sm18537843wmy.17.2016.03.22.11.26.47
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Tue, 22 Mar 2016 11:26:47 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <jwvmvpswowh.fsf-monnier+Inbox@gnu.org>
+	<87twk0beuh.fsf@gmail.com> <jwvd1qoyqv0.fsf-monnier+Inbox@gnu.org>
+	<877fgvgbr1.fsf@gmail.com> <jwvlh5bx6bc.fsf-monnier+Inbox@gnu.org>
+	<87bn67eq4t.fsf@gmail.com>
+	<jwvy49ar473.fsf-monnier+gmane.emacs.devel@gnu.org>
+Date: Tue, 22 Mar 2016 19:26:47 +0100
+In-Reply-To: <jwvy49ar473.fsf-monnier+gmane.emacs.devel@gnu.org> (Stefan
+	Monnier's message of "Tue, 22 Mar 2016 10:51:33 -0400")
+Message-ID: <87bn66qsgo.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 22 Mar 2016 18:26:54 -0000
+Content-Length: 1040
+Lines: 26
+
+
+
+>> On Tue, Mar 22 2016 10:51, Stefan Monnier wrote:
+
+> As for STRING-AFTER, the example is compelling, but I don't yet
+> understand really how it would all work out overall.
+
+How about passing signatures to indentation-funciton?
+
+Assume that there is a way to represent previous indentation context with a
+simple data structure, akin to parse-partial-sexp but for indentation. Then you
+can compute indentation context of a span by passing to the indentation-funciton
+the content of the previous location. 
+
+Of course the indentation context data structure should be mode specific and
+modes must be constructing it themselves. But some useful degree of uniformity
+is surely possible. For example FIRST-COLUMN is a very simple one dimensional
+signature.
+
+Besides being useful for incremental indentation within a mode, it can be
+directly leveraged by multi-modes. Just pick the context from previous chunk,
+modify usefully and pass to the next chunk. (Of course locations of previous
+chunks should not be part of the signature).
+
+ Vitalie
+

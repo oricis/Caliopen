@@ -1,0 +1,144 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amyw6-0006Fv-V2
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 03:28:34 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:49520)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <danieldmcclanahan@gmail.com>) id 1amyw0-0006Dy-QC
+	for dev@caliopen.local; Mon, 04 Apr 2016 03:28:33 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <danieldmcclanahan@gmail.com>) id 1amyvw-0007PW-1p
+	for dev@caliopen.local; Mon, 04 Apr 2016 03:28:28 -0400
+Received: from mail-yw0-x22a.google.com ([2607:f8b0:4002:c05::22a]:33847)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <danieldmcclanahan@gmail.com>) id 1amyvv-0007PM-Sk
+	for dev@caliopen.local; Mon, 04 Apr 2016 03:28:23 -0400
+Received: by mail-yw0-x22a.google.com with SMTP id d68so104089538ywe.1
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 00:28:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+	:cc; bh=VGWEu6jl3w9OBeTVgYSu+okdjbBHVHRlhHCry9JqFpg=;
+	b=REHWbvdmNFQWzwSoWS2Er/UzyDh/eGiOS6buwHCy42Fke7ifLrPkHQlgG3AsPoUOkR
+	YThJmJnXePH5/VgeR+PVIq92sunm6r9y3rHZjElLZrKYjd6zlroIL56lmK9Bgr9hKTeN
+	9ZH78cyMSg78gN9q4UNVv7FYs0CUeS55Lml8kMx9ZqV99l+3uVaASvCBU38Fi0v+qLKt
+	PsnHMurDOh2LWmRLqoIRMUo993vndwqwGpjYOrFZ6A9UIbJXM2Q4hKxwCqh+/ZnpmAyc
+	BdxLzX/nY7547PMosHUmQ/usHEl/8J7GHl04BI7K/ayMAOqceeDm9ik+6ryV8U70J/ir
+	15yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+	:message-id:subject:to:cc;
+	bh=VGWEu6jl3w9OBeTVgYSu+okdjbBHVHRlhHCry9JqFpg=;
+	b=glvXykrdxQZZrtr6YudminheyqhvKAkZLLbq+fKNDf/NQmX6CVmD8WLdd696mIdsYp
+	Wi7MsR85H7Cb269oSRH/inJDEFUkl/x6LpFoGC0mi64fCLXxQUgTRDtHeu7iPoku1tvO
+	ZyDZRtbtm84kwfNSZ4iU2QkKkfbEnzOSZsj9jKQEm5s/Go7dvusIIEMiN0grfBLB1HOb
+	T4C1DgPTve5dqwEIfwyXIbNpj/L328TJ7qE9MVzQoVftfCiR1rdJa96C1BO06CL/+yYv
+	Qid6nyrt+3gTvG5Rg5kH2/pLzUqgKWobt+EN0YTv/jKtCmowbjUsK5cPkrW6mir5hwvJ
+	Z4MA==
+X-Gm-Message-State: AD7BkJJBoQl+7OB7+jyIKdzwQhUTpUETevN1BPT0qiJHtTT6cbYz5yEwmnVBQMFQMyailMkdpBEDxHGQgujIBg==
+X-Received: by 10.13.220.197 with SMTP id f188mr4007302ywe.172.1459754903281; 
+	Mon, 04 Apr 2016 00:28:23 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.37.84.65 with HTTP; Mon, 4 Apr 2016 00:28:04 -0700 (PDT)
+In-Reply-To: <m3inzx6h2c.fsf@gnus.org>
+References: <m3oa9q53uq.fsf@gnus.org> <m3inzx6h2c.fsf@gnus.org>
+From: Daniel McClanahan <danieldmcclanahan@gmail.com>
+Date: Mon, 4 Apr 2016 02:28:04 -0500
+Message-ID: <CALuGEhL+HN2w8ZzV1erwDc6PJStm+d4CyrrA_Nhe66jx-fthDg@mail.gmail.com>
+Subject: Re: "Staying in the same place"
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Content-Type: text/plain; charset=UTF-8
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4002:c05::22a
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 07:28:33 -0000
+Content-Length: 3507
+Lines: 77
+
+I know for markdown-mode on MELPA, I added a "live-preview" feature which
+displays the rendered markdown file alongside in an eww (or other) buffer as the
+user edits, and I wanted to make any windows displaying that buffer have the
+idea of "not moving." I played around a bit with some ideas and thought of
+recording the scroll and window-point for all windows displaying the buffer, and
+the visual lines between the scroll and point, and then restored the scroll,
+window-point, and visual line difference for each window when the buffer was
+regenerated. I also had a special case for when the window-point was equal to
+point-min or point-max, in which case I just scrolled the buffer all the way
+down or up.
+
+This isn't likely to apply to a lot of other modes, but it's just a thought
+about what other information might be useful if you wanted to implement
+something like this.
+
+On Mon, Apr 4, 2016 at 1:09 AM, Lars Magne Ingebrigtsen <larsi@gnus.org> wrote:
+> Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+>
+>> I wonder if anybody has thought about the issue in a more general way --
+>> by providing a mechanism to save (perhaps a lot) of context, and then
+>> trying to go back to the same context again after regenerating the
+>> buffer, in a ... fuzzy way.
+>
+> Thinking about this a bit more, I think it's difficult to see a way to
+> do this generally without support from each mode.  However:
+>
+> In general, if the buffer reflects things that don't really change a
+> lot, just recording the current line (and the next and previous ten
+> lines, say), would DWIM.
+>
+> For buffers where there is a strong "identity" (say, file names in dired
+> and bug numbers in debbugs mode), the mode could provide a way to give
+> those identities to `revert-buffer' (and a way to restore point).
+>
+> Take compilation modes, for instance.  Let's say there's a variable
+> `revert-buffer-context-function'.  The mode would return a list of error
+> points...
+>
+> make -k
+>   CC       vm-limit.o
+>   CC       dispnew.o
+>   CC       frame.o
+> frame.c: In function 'x_set_frame_parameters':
+> frame.c:3296:25: warning: 'height' may be used uninitialized in this function [-Wmaybe-uninitialized]
+> frame.c:3296:25: warning: 'width' may be used uninitialized in this function [-Wmaybe-uninitialized]
+>   CC       scroll.o
+>   CC       xdisp.o
+> xdisp.c: In function 'move_it_in_display_line_to':
+> xdisp.c:8556:13: warning: 'closest_pos' may be used uninitialized in this function [-Wmaybe-uninitialized]
+> xdisp.c: In function 'display_line':
+> xdisp.c:20348:8: warning: 'max_bpos' may be used uninitialized in this function [-Wmaybe-uninitialized]
+>  ...
+>
+> The list would perhaps be '("^frame.c:3296:" "^xdisp.c:8556:" ...).
+> `revert-buffer' would then basically do
+>
+> (let ((context (funcall revert-buffer-context-function)))
+>   (funcall revert-buffer-function)
+>   (revert-buffer-restore-point context))
+>
+> which would use those regexps to put point somewhere DWIM-ey.  And there
+> could be a `revert-buffer-restore-point-function' variable, too, if the
+> mode needs a more specialised way to use the context.
+>
+> Of course, the this specific example, this wouldn't work, since
+> compilation is asynchronous, but the compilation mode could just use the
+> context itself from the filter.  Or the sentinel.  Or something.
+>
+> Hm...
+>
+> But I think this approach might work for many modes...  perhaps...
+>
+> --
+> (domestic pets only, the antidote for overdose, milk.)
+>    bloggy blog: http://lars.ingebrigtsen.no
+>
+

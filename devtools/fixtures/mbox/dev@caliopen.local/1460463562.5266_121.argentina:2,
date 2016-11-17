@@ -1,0 +1,124 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ajCDJ-0007Zb-Kt
+	for mharc-dev@caliopen.local; Thu, 24 Mar 2016 16:50:41 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:60091)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1ajCDG-0007Z0-Ft
+	for dev@caliopen.local; Thu, 24 Mar 2016 16:50:39 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1ajCDD-0001DL-3c
+	for dev@caliopen.local; Thu, 24 Mar 2016 16:50:38 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:56306)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1ajCD8-0001DC-PT
+	for dev@caliopen.local; Thu, 24 Mar 2016 16:50:35 -0400
+Received: from [128.30.9.181] ([128.30.9.181]) by mrelayeu.kundenserver.de
+	(mreue001) with ESMTPSA (Nemesis) id 0MDHlU-1aX7vd0j2C-00GXBL for
+	<emacs-devel@gnu.org>; Thu, 24 Mar 2016 21:50:29 +0100
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+To: dev@caliopen.local
+References: <56F42269.10400@gmail.com>
+	<jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Message-ID: <56F45314.3050802@gmail.com>
+Date: Thu, 24 Mar 2016 16:50:28 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="4fGUG5hSo4tJpC34G9Asvrdg6FsC11dEB"
+X-Provags-ID: V03:K0:PERAOuB8nnxIfqAIsWOV9VhT4tQwSl4stlUhVXwgmnT7Ym0W5Wo
+	IZXbeW8rLlLEoQNpDKwW+Kqhtwu1lGFryvEjPQuPPTM8bGP9XdVb4zjtdAyaA2Si8liA0PE
+	fXret2GxAOIIsBEU1414G+cxqUYqrBopbYBF7FWOnFkUHpXxP8WqVm46IXvhdLiMZhquEQ0
+	CCD1dj1ZJqNX/TgGuFFIg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:yRevFiS1JBk=:/uyaNjOljfi8oz6PAGcopL
+	31qTbxSdMafGonBz8Usu0EeQp4kNitj4hHD/YMDrrHv4bHbLvXLAGWFaUpIA5WyzKqOuA5w8K
+	gXoeLOTVcMfLhNkRa/o0k21seZLin3QespzKcv/uzMtIiPUHfDAn48ibWF5B9/nbBf7AJiDHT
+	GhCemVLoLdS6H0vvctiAmYqv2gBjNub1IVsXNDNissVFcpvo5yrFGDcVl9fala+55alhU+Qx/
+	gKYvq0Nrbuk2pSkhlWXrv+MecWtn5Un3gw9aGPD6E7xLgTu3eRpVMXHU/k0k9oMeyh89WZ90i
+	1uf53VcXy1kwAXf8IrkUijQZaXS7Znlb/zTSDEDg/zNy3DSeRwxEvEO2HH1e1rLUGi+pFjyp+
+	YxiWHrra90BbSmJAdE5rhem7O56p2+K12cjq+LrDxd8IbMcz8czq3s81gFdz2EjLnB2xeWY82
+	gni5qWeOlcfKY1aR92X8VgTdvjUdYSJZIPPdE4ydl4UiARSGmtddizTzsfv5YKuXfClpnn7aJ
+	7q+/iVuGhfvttGA9FIgR8mcUomDiO5BXhjTwEvWW2zLBjRJEunpa/Ht4Ka+BXVvsYVl7R/jki
+	NNX9J5LNW8SKtWOisuHWMLyRv764Bbv/tMdhePq3RGEh95fIjJcDsvI1Vud2mK+t7V67nVYUa
+	fMcqATe6FCE8gJ/EmEyzfnq4u4SB1MNpLIYZMaYrL8XHKJczFGZnn2SDggDIFRVNlNpY=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.126.134
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 24 Mar 2016 20:50:39 -0000
+Content-Length: 2618
+Lines: 60
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--4fGUG5hSo4tJpC34G9Asvrdg6FsC11dEB
+Content-Type: multipart/mixed; boundary="w1e5RbH3MJejuCabMBQAdqoTcvkvG1hWu"
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+To: dev@caliopen.local
+Message-ID: <56F45314.3050802@gmail.com>
+Subject: Re: Should the default value of url-user-agent include a version
+ number? What about the specific case of package.el?
+References: <56F42269.10400@gmail.com>
+ <jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+In-Reply-To: <jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+
+--w1e5RbH3MJejuCabMBQAdqoTcvkvG1hWu
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+On 03/24/2016 03:03 PM, Stefan Monnier wrote:
+> PS: I could go along with package.el sending the Emacs version in the
+> user-agent (tho I don't think the OS info belongs there and AFAIK most
+> ELPA packages don't care about the OS either).
+
+Thanks for your reply, Stefan :)
+
+OS info would be useful too, I think. I spent a very significant amount o=
+f time last January tracking down a bug affecting Flycheck (which, thanks=
+ to Eli's incredible efficiency, was solved in no time after I reported i=
+t; thanks Eli!). Having data on how many people were likely to be affecte=
+d by this bug would have been very useful in knowing whether the effort w=
+as worth it; especially as it prevented me from working on features that =
+would have benefited users of free operating systems.
+
+
+
+--w1e5RbH3MJejuCabMBQAdqoTcvkvG1hWu--
+
+--4fGUG5hSo4tJpC34G9Asvrdg6FsC11dEB
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJW9FMUAAoJEPqg+cTm90wjuFsQAJB2m2Jv/UvniUN5F5qxUBw/
+rLmC9x71Z8rU8c4TOqobhYAKrk6GnybxQ5W8BFxX/h9KN36mUfQ495XzKCP+W1lP
+VAWYxwLjtitOrMlMBC50OQD4qN9bduJJXKnOQQfudJ+3n1xcxFt/+xYCtrnIzfFh
+V2NSv6iS9YS4Bj22vEnLSdWCkPg8X/WvzQIspzEP3sFwppoYVrre1KvYTKCttHso
+hdfF02SX7mboI7FZCrXO7ebNyXcQ/uE1HhTjxaN/oy7zWGJR56vAT92YJhDbyA88
+sn9vwcoO/EL/X1XdJLXuZSxVUtLITuhakfmnp6lpvRyK/V0i3fc8JvLznAA8KJQn
+OLz+50puIe6UgmTxBw5oWAUbFDVQBJWd/ygUsyJ8OwsdY8AHuL5VcNN1XcdgJFlz
+BORvSmEl8v4g4V3BI3wkqCm4voGZcHCVnZVQQ6xmuyBGb6JGpQ8jm+rN/7HFHsn+
+zwZFK/75LiLvmPfvR7yOi4tB58PQVq0OoQp84L11N8wwHX6cmJNCiLVd6GJ95hBx
+mVcnpXKYLXQVOeuOGYMHs74z+dy7KSyW7upWgd92J2hDtRGbpUXQ/O5RRb6NScZ3
+XInsWaFMVaRusAZDKuH3IgasNGCJxz0EwYAnMEmYeIWtnQK5QmenXxVg3yqpKN+M
+Lgkdy0KjoYu/QEN+Ywpy
+=sWvi
+-----END PGP SIGNATURE-----
+
+--4fGUG5hSo4tJpC34G9Asvrdg6FsC11dEB--
+

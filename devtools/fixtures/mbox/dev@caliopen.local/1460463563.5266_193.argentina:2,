@@ -1,0 +1,350 @@
+Return-Path: <bounce@client.bonnesaffairesdujour.com>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id 791FB209A30C2
+	for <laurent@brasil.brainstorm.fr>; Sat,  9 Apr 2016 23:52:17 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 683403317704; Sat,  9 Apr 2016 23:52:17 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id 58F403317708; Sat,  9 Apr 2016 23:52:17 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: ********
+X-Spam-Status: Yes, score=8.1 required=5.0 tests=AWL,BAYES_99,
+	HTML_IMAGE_RATIO_02,HTML_MESSAGE,NORMAL_HTTP_TO_IP,RAZOR2_CF_RANGE_51_100,
+	RAZOR2_CF_RANGE_E8_51_100,RAZOR2_CHECK,RCVD_IN_CSS,T_KHOP_FOREIGN_CLICK
+	autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  1.0 RCVD_IN_CSS RBL: Received via a relay in Spamhaus CSS
+	*      [216.158.234.239 listed in zen.spamhaus.org]
+	*  0.0 NORMAL_HTTP_TO_IP URI: Uses a dotted-decimal IP address in URL
+	*  0.4 HTML_IMAGE_RATIO_02 BODY: HTML has a low ratio of text to image area
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.0 T_KHOP_FOREIGN_CLICK T_KHOP_FOREIGN_CLICK
+	*  0.9 RAZOR2_CHECK Listed in Razor2 (http://razor.sf.net/)
+	*  1.9 RAZOR2_CF_RANGE_E8_51_100 Razor2 gives engine 8 confidence level
+	*      above 50%
+	*      [cf:  75]
+	*  0.5 RAZOR2_CF_RANGE_51_100 Razor2 gives confidence level above 50%
+	*      [cf:  75]
+	* -0.2 AWL AWL: From: address is in the auto white-list
+X-Spam-DCC: : 
+Received: from server101.la-lettre-du-jour.com (server101.la-lettre-du-jour.com [216.158.234.239])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id E60AB33181F9
+	for <dev@caliopen.local>; Sat,  9 Apr 2016 23:52:14 +0200 (CEST)
+To: dev@caliopen.local
+Subject: =?UTF-8?B?T2ZmcmUgc3DDqWNpYWxlIDogYmlsbGV0IGZ1dMOpIMOgIDM24oKs?=
+Message-ID: <a0504e93f0b95d2598c1bdb75e26a154@68.168.108.111>
+Date: Sat, 09 Apr 2016 14:42:52 -0500
+From: "=?UTF-8?B?UGFyYyBBc3TDqXJpeA==?=" <emma@client.bonnesaffairesdujour.com>
+Reply-To: emma@client.bonnesaffairesdujour.com
+MIME-Version: 1.0
+X-Mailer-LID: 69,70,68
+List-Unsubscribe: <http://68.168.108.111/~client/unsubscribe.php?M=9434452&C=93d58a5715cb65846c9a27598497eb91&L=68&N=1549>
+X-Mailer-RecptId: 9434452
+X-Mailer-SID: 1549
+X-Mailer-Sent-By: 2
+Content-Type: multipart/alternative; charset="UTF-8"; boundary="b1_7d1e35f9965a83a71acffc97bdc72490"
+Content-Transfer-Encoding: 8bit
+X-Spam-Prev-Subject: =?UTF-8?B?T2ZmcmUgc3DDqWNpYWxlIDogYmlsbGV0IGZ1dMOpIMOgIDM24oKs?=
+Content-Length: 13280
+Lines: 294
+
+--b1_7d1e35f9965a83a71acffc97bdc72490
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+Votre client de messagerie ne peut pas lire cet email.
+Pour consulter en ligne, Veuillez allez ici:
+http://68.168.108.111/~client/display.php?M=9434452&C=93d58a5715cb65846c9a27598497eb91&S=1549&L=68&N=1728
+
+
+Pour ne plus recevoir ces
+emails:http://68.168.108.111/~client/unsubscribe.php?M=9434452&C=93d58a5715cb65846c9a27598497eb91&L=68&N=1549
+
+--b1_7d1e35f9965a83a71acffc97bdc72490
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+<html><head></head><body>
+<div>
+<div>
+<title>&nbsp;</title>
+<title></title>
+</div>
+</div>
+<style type="text/css"><!--
+         .ReadMsgBody {width: 100%;}
+         .ExternalClass {width: 100%;}
+         td { border-collapse: collapse; }
+--></style>
+<div>
+<table align="center">
+<tbody>
+<tr>
+<td>Pour visualiser correctement ce message, [<a target="_blank"
+href="http://68.168.108.111/~client/display.php?M=9434452&C=93d58a5715cb65846c9a27598497eb91&S=1549&L=68&N=1728">cliquez
+ici</a>]</td>
+</tr>
+<tr></tr>
+</tbody>
+</table>
+<center>
+<table border="0" cellpadding="0" cellspacing="0" style="width:
+694px;"></table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 694px;">
+<tbody>
+<tr>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 35px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img01"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-04-01/images/img01.jpg"
+width="694" height="182" border="0" alt="LA NOUVELLE ATTRACTION
+INCONTOURNAAAABLE ! &bull; DISCOBELIX" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 694px;">
+<tbody>
+<tr>
+<td bgcolor="#e02c1f" style="text-align: center; background-color:
+#e02c1f;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 30px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img02"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-04-01/images/img02.jpg"
+width="694" height="70" border="0" alt="JE DECOUVRE" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 694px;">
+<tbody>
+<tr>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img03"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-04-01/images/img03.jpg"
+width="230" height="39" border="0" /></a></td>
+<td width="230" height="39" bgcolor="#fff"
+background="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-04-01/images/img04.jpg"
+style="text-align: center;"><font face="Arial, sans-serif" color="#000000"
+style="font-size: 8px;"> En cliquant ici, j&rsquo;accepte de <br />
+recevoir les offres commerciales du Parc Ast&eacute;rix </font></td>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img05"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-04-01/images/img05.jpg"
+width="235" height="39" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 694px;">
+<tbody>
+<tr>
+<td bgcolor="#fff" style="text-align: center; background-color: #fff;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 40px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img06"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-04-01/images/img100.jpg"
+width="694" height="287" border="0" alt="L'irr&eacute;ductible Parc
+Ast&eacute;rix &bull; PARIS" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 694px;">
+<tbody>
+<tr>
+<td bgcolor="#fff" style="text-align: center; background-color: #fff;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img19"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img19.jpg"
+width="85" height="61" border="0" /></a></td>
+<td width="235" height="61" bgcolor="#ffffff" style="text-align: center;
+background-color: #ffffff;"><font face="Verdana, Arial, Helvetica,
+sans-serif" color="#1f1f1f" style="font-size: 20px;"> <strong>LE PARC
+AST&Eacute;RIX</strong><br /> <font face="Helvetica, Arial, Verdana,
+sans-serif" color="#1f1f1f" style="font-size: 17px;">c'est pour
+vous:</font> </font></td>
+<td bgcolor="#fff" style="text-align: center; background-color: #fff;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img21"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img21.jpg"
+width="73" height="61" border="0" /></a></td>
+<td width="194" height="61" bgcolor="#ffffff" style="text-align: center;
+background-color: #ffffff;"><font face="Verdana, Arial, Helvetica,
+sans-serif" color="#1f1f1f" style="font-size: 20px;"> <strong>&Agrave;
+D&Eacute;COUVRIR </strong><br /> <font face="Helvetica, Arial, Verdana,
+sans-serif" color="#1f1f1f" style="font-size: 17px;">d&egrave;s
+maintenant</font> </font></td>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img23"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img23.jpg"
+width="107" height="61" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 694px;">
+<tbody>
+<tr>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img24"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img24.jpg"
+width="694" height="123" border="0" alt="En t&eacute;l&eacute;chargeant
+l'application mobile." /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 694px;">
+<tbody>
+<tr>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img25"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img25.jpg"
+width="64" height="28" border="0" /></a></td>
+<td width="137" height="28" bgcolor="#ffffff" style="text-align: center;
+background-color: #ffffff;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="text-decoration: none;"> <font face="Verdana, Arial, Helvetica,
+sans-serif" color="#000" style="font-size: 14px;"> 39 ATTRACTIONS </font>
+</a></td>
+<td width="137" height="28" bgcolor="#ffffff" style="text-align: center;
+background-color: #ffffff;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="text-decoration: none;"> <font face="Verdana, Arial, Helvetica,
+sans-serif" color="#000" style="font-size: 14px;"> 5 SPECTACLES </font>
+</a></td>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img28"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img28.jpg"
+width="356" height="28" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 694px;">
+<tbody>
+<tr>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img29"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img29.jpg"
+width="694" height="28" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 694px;">
+<tbody>
+<tr>
+<td width="694" height="33" bgcolor="#4f4f4f" style="text-align: center;
+background-color: #4f4f4f;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="text-decoration: none;"> <font face="arial, verdana, sans-serif"
+color="#fff" style="font-size: 20px;"> <strong>RESTONS EN CONTACT</strong>
+</font> </a></td>
+</tr>
+</tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 694px;">
+<tbody>
+<tr>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img31"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img31.jpg"
+width="96" height="62" border="0" /></a></td>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img32"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img32.jpg"
+width="44" height="62" border="0" /></a></td>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img33"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img33.jpg"
+width="44" height="62" border="0" /></a></td>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img34"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img34.jpg"
+width="50" height="62" border="0" /></a></td>
+<td bgcolor="#4f4f4f" style="text-align: center; background-color:
+#4f4f4f;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img35"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img35.jpg"
+width="460" height="62" border="0" alt="Consultez les avis de nos
+visiteurs" /></a></td>
+</tr>
+</tbody>
+</table>
+&lt;td width="274" height="50" bgcolor="#fff" style="text-align: left;
+background-color: #fff;
+<table border="0" cellpadding="0" cellspacing="0" style="width: 694px;">
+<tbody>
+<tr>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img36"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img36.jpg"
+width="156" height="50" border="0" /></a></td>
+<td width="113" height="50" bgcolor="#fff" style="text-align: center;
+background-color: #fff;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="text-decoration: none;"> <font face="arial, verdana, sans-serif"
+color="#000" style="font-size: 14px;"> &Agrave; 30km de Paris </font>
+</a></td>
+<td bgcolor="#70a4d8" style="text-align: center; background-color:
+#70a4d8;"><a
+href="http://68.168.108.111/~client/link.php?M=9434452&N=1549&L=3889&F=H"
+style="font-family: Arial, sans-serif; font-size: 18px; color: #fff;
+text-decoration: none;"> <img style="display: block;" id="img38"
+src="http://assets.vftraining.net/LANDINGS/FR/asterix/2016-03-14/images/img38.jpg"
+width="151" height="50" border="0" /></a></td>
+</tr>
+</tbody>
+</table>
+</center></div>
+
+
+<img
+src="http://68.168.108.111/~client/open.php?M=9434452&L=68&N=1549&F=H&image=.jpg"
+height="1" width="10"></body></html>
+
+--b1_7d1e35f9965a83a71acffc97bdc72490--
+

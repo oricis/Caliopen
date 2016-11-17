@@ -1,0 +1,132 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aXuHY-0005Mg-0Z
+	for mharc-dev@caliopen.local; Mon, 22 Feb 2016 12:28:24 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:53772)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aXuHW-0005MW-5b
+	for dev@caliopen.local; Mon, 22 Feb 2016 12:28:23 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1aXuHR-0004gV-2V
+	for dev@caliopen.local; Mon, 22 Feb 2016 12:28:22 -0500
+Received: from mout.kundenserver.de ([212.227.17.10]:49704)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>)
+	id 1aXuHQ-0004gM-PN; Mon, 22 Feb 2016 12:28:16 -0500
+Received: from [18.189.69.235] ([18.189.69.235]) by mrelayeu.kundenserver.de
+	(mreue101) with ESMTPSA (Nemesis) id 0MLPDG-1aXMJZ3BKM-000Zhb;
+	Mon, 22 Feb 2016 18:28:16 +0100
+Subject: Re: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+To: Eli Zaretskii <eliz@gnu.org>
+References: <56CA94A8.3000205@gmail.com> <83si0klo3c.fsf@gnu.org>
+	<56CB3756.6000906@gmail.com> <83k2lwlmvf.fsf@gnu.org>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+X-Enigmail-Draft-Status: N1110
+Message-ID: <56CB452D.8090302@gmail.com>
+Date: Mon, 22 Feb 2016 12:28:13 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.5.1
+MIME-Version: 1.0
+In-Reply-To: <83k2lwlmvf.fsf@gnu.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="D4KiTTSvXhpaUE1obLMKS2CdoRxnwDJSP"
+X-Provags-ID: V03:K0:Gbb4vyp6+FEDXdgygAwqdEUcx9OhWrWm2D7kOKJcp9gGf7sL0BI
+	KkScjuc4whvqaGOBiogxbWeUyGdTk+T/SHbLnqb0WajmDMhbda1i9wY7Nkvz+N1Gb3IfXyw
+	wVIb5jyo1jgIzHGDPk+sMyfRP/wDTi4983owtbmXR2FXOsrSgBj+8akn+1T5Bqguxlje7vO
+	qesHXiPL7PJo6b1XP7B8A==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:8RJ1vFDqqMo=:SPV+hiA1xTcwh6VPin2gLT
+	oKPVLR7/VEWhp3CPZYBWF3WpRVNWzfOOme61gWj7hQi8Dj1Ow7mKjc/ARdAPQWlSXA3irHAHc
+	IeVNSLUcleCBHzLgEryOENMMoRiZOkMpn9VI9Jx67YcDdREZ5ZldFkOkfK59ry7m8fOhqZiwr
+	pAUOAL8jJnfoFLNXVPmzjj/s/hC69syD0tGiTFrMcGfdeky/yYLS5gEOq0oRkZPUJEyjrRCdL
+	5j15tUC1Duu3x+1GXTN4ZdVXD1SMVAIKRq32OfVFJAocHV66ZoafzGs9QJIVnyAszeH4DWARN
+	vRcEgWxeHWK8v61cnzy0RsNec+6Z3o3rVHXdP6qT/isrKo23ONIPsGDn0AGjk405SR3AMwqAE
+	FBl9e8ihIphMQOtNYoYbrgw0Yf1KSsbhcuba5qrHl5RyeWbtsq4u59cLauLKNHJmOG3vLA4b3
+	pvDqW/zcC+8ytE9y+ryhIrI9OQRechTX8+d/Snfuxl+UZ/W+5RbeKsozp/RSVoWOZjAyePkBD
+	7M4CNAwl9Ot74vIX3j0vJbhsh/WogGLnjNm8Y0IGSuuWyyBaofCQG0xdGPMERQJEC1vEiPeum
+	6tDf7jTJlY7ZBm3m35fs2j7HT1hsG3YB8jpnQA7BSD4qFuUy51u6+v2F0jsM6LK3FDZosyddi
+	ssANpEGNLTnX5xCfxKyA4BY0JXJMAJPTVSkugkp9KYULS0p8siHclLqDb4DFnM/62lvw=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.17.10
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 22 Feb 2016 17:28:23 -0000
+Content-Length: 2624
+Lines: 66
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--D4KiTTSvXhpaUE1obLMKS2CdoRxnwDJSP
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On 02/22/2016 11:40 AM, Eli Zaretskii wrote:
+>> Cc: dev@caliopen.local
+>> From: Cl=C3=A9ment Pit--Claudel <clement.pit@gmail.com>
+>> Date: Mon, 22 Feb 2016 11:29:10 -0500
+>>
+>>> I think what you describe _is_ the proper way.  Can you show a test
+>>> case which demonstrates how calling font-lock-flush followed by
+>>> font-lock-ensure fails to do the job?
+>>
+>> In any case where font-lock-fontified is nil
+>> font-lock-fontify-buffer will properly refontify the whole buffer,
+>> but font-lock-flush and font-lock ensure will not do anything.
+>=20
+> That's not what I see in the code, that's why I asked for a test
+> case.  I'm probably missing something.
+
+Here's a test case:
+
+(with-current-buffer (get-buffer-create "temp")
+  (erase-buffer)
+  (setq-default prettify-symbols-unprettify-at-point 'right-edge)
+  (emacs-lisp-mode)
+  (prettify-symbols-mode)
+  (insert "lambda\n\nlambda")
+  (pop-to-buffer (current-buffer)))
+
+Moving around in this buffer unprettifies and reprettifies =E2=80=98lambd=
+a=E2=80=99s into =E2=80=98=CE=BB=E2=80=99s as the point moves in and out =
+of them. Setting =E2=80=98font-lock-fontified=E2=80=99 to nil breaks that=
+ mechanism (the =E2=80=98=CE=BB=E2=80=99s are unprettified but no reprett=
+ified), and no series of =E2=80=98font-lock-flush=E2=80=99 and =E2=80=98f=
+ont-lock-ensure=E2=80=99 will reprettify them.
+
+Does this help?
+
+
+--D4KiTTSvXhpaUE1obLMKS2CdoRxnwDJSP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJWy0UtAAoJEPqg+cTm90wjm7AQAIBrl594Ri7j3edi5MfP7HQj
+2xVCnkZqEbzxu7C/0cQZKunJI/zghkWilQAbbvP7HLYs8Yp4OnpmxqYXrip9+mM+
+YDWmlIrebcGGZN3uGwK1DSTqrz4z4NKileWwKhGtGVG+KRWz9wgacuK6WWAdGR+8
+R1J3rO5tIqixyR8yv5zZTEj7pKUTPOrtpC4ZGiC3KF4HCMaoWjs9zDkLgPZtZI1/
+hL4SlTZmBU82jIodUqr3c3yz7FP2bQTXwP7K3kWiLgwKeHWHEDfryFapan7wkrZZ
+PIO1wnQjvx5XQ87uIlF0nMFf/2raa0zTjPUWgLyXprjx6lQqxspYvDUrzwIlxepU
+UCBSaGaDgX6+yMRJJYa9kfYLr62MahlJRBlS+d3cwux83P0tVjTAY/LZb0elaW40
+z1mOyHsxmP5LCozPzdIjGBgekwkrvizb3EUW0eUg42ODlTtbFOkRMDKPiseDyVPf
+jZjVa9uQ7O3slfkgJeLQknwzV0JMau2Q6FDiwSx3gDYtws0Y6/0Ur1PfJLk57hMN
+qbYNzGKg72PRJoIPRiUFFUvflmuaXRRkFGTX8/KP+QLWKg0jg4N5aJzTal7UxBwp
+WKyxQ7AiJU5Z8gS5zHKudXs5Gy+S1dKZhu9qGMipjB1aPwlOjWWfyTyhL89Guoyz
+O3mqZ0F4D+Eo1ots+IGL
+=Un9j
+-----END PGP SIGNATURE-----
+
+--D4KiTTSvXhpaUE1obLMKS2CdoRxnwDJSP--
+

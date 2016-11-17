@@ -1,0 +1,118 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anDpv-00006f-Bq
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 19:23:11 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:36503)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1anDpq-00005z-Ch
+	for dev@caliopen.local; Mon, 04 Apr 2016 19:23:10 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1anDpm-00064I-En
+	for dev@caliopen.local; Mon, 04 Apr 2016 19:23:06 -0400
+Received: from mail-ob0-x22e.google.com ([2607:f8b0:4003:c01::22e]:35030)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1anDpm-00063u-9o
+	for dev@caliopen.local; Mon, 04 Apr 2016 19:23:02 -0400
+Received: by mail-ob0-x22e.google.com with SMTP id fp4so107915225obb.2
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 16:23:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=6e2BE7fSaW05wQB8z9OuJAboYC/lYgBE20nCSqdo4YI=;
+	b=z6z4TRLMbN6aHfmpmTgD4mT1N8K+UFqicXZ8PeczLpqFF9mOI+1rimcvI5/aETkXRd
+	J/fFdh85i49dPvLo7jf/aInDdByK+iYT5IkIa6zHu/UqyB1bz7vcazC3Sr0iJvi14cYp
+	kpzbmMpKzn+X9KAROZR5rdiX7SoYVl/gBgw1Va3ZuP+DY9Zb90ZgbUST324iHmOhCwmk
+	fnEBNygOe8sEe1nbrSphflNDIWeLvFikPDcFxp8rcbbYLE/I54DO2tHODpXsSP9DNYP8
+	RxRoQZwAv3+KTXDy8G0G9aiWXYyYF1KrpjcpxN90wrK8T3Sbu24c5YyFYS/F1vgLZc4y
+	UhiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=6e2BE7fSaW05wQB8z9OuJAboYC/lYgBE20nCSqdo4YI=;
+	b=UwHyeO8dXCtpYONjPgOZ/Y9cTekXjngedGOCJfD7mtS5yiecbIWQ2wlrxRUFddiDek
+	aUdjKL3avci/72xDfihWzAnUlk9eypHbTttjQbLusXUVwEyt6/4ANRm/RnPRq998OWwz
+	/2qaNRBSN1PENWRBWmK4ErVOU5jByrFlQcftLITW3XWmg+fL+yrB6T+MfIArA65vktgA
+	XoSOX6KrrqUbNumRiAcWXeVK3T/sgrTmlNL3BkOXPzAJVxshyc5+FkrT+Kja7vv0ZfPm
+	pw1XLYbpmZsq/pwvGqvrAtIL0wui//0Q9ELj8qA1Uw8T0/01pVGJJMq4uwpa9z0bZt/v
+	LRww==
+X-Gm-Message-State: AD7BkJKiBfZUZPm5WgGAGYtNPjVqs2GY9uaiWaZ0Jr3fjiAyUdLND1VFlhMTRRZGfrYx2A==
+X-Received: by 10.182.126.198 with SMTP id na6mr7136733obb.3.1459812181886;
+	Mon, 04 Apr 2016 16:23:01 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79])
+	by smtp.gmail.com with ESMTPSA id q1sm9113189obi.20.2016.04.04.16.22.59
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Mon, 04 Apr 2016 16:22:59 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id 5254813DE0620; Mon,  4 Apr 2016 16:22:58 -0700 (PDT)
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: Re: "Staying in the same place"
+In-Reply-To: <m3egalkv7j.fsf@gnus.org> (Lars Magne Ingebrigtsen's message of
+	"Mon, 04 Apr 2016 21:52:32 +0200")
+Date: Mon, 04 Apr 2016 16:21:38 -0700
+Message-ID: <m2twjh6jul.fsf@newartisans.com>
+References: <m3oa9q53uq.fsf@gnus.org>
+	<jwv7fgd1r7w.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m3mvp9nsmp.fsf@gnus.org> <jwv8u0tql7y.fsf-monnier+Inbox@gnu.org>
+	<m37fgdnrks.fsf@gnus.org> <87h9fhrxb3.fsf@red-bean.com>
+	<m3twjhkvmw.fsf@gnus.org> <87d1q5rw72.fsf@red-bean.com>
+	<m3egalkv7j.fsf@gnus.org>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: Lars Magne Ingebrigtsen <larsi@gnus.org>, Karl Fogel
+	<kfogel@red-bean.com>, Stefan Monnier <monnier@IRO.UMontreal.CA>,
+	emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c01::22e
+Cc: Karl Fogel <kfogel@red-bean.com>, Stefan Monnier <monnier@IRO.UMontreal.CA>,
+	emacs-devel@gnu.org
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 23:23:10 -0000
+Content-Length: 1271
+Lines: 32
+
+>>>>> Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+
+> Karl Fogel <kfogel@red-bean.com> writes:
+>> Yes, absolutely.  A "fuzzily recorded position" should be a
+>> first-class object that can be passed around like any value.  There
+>> can be a macro that generates and consumes such objects entirely
+>> internally to the macro, but the objects can also be generated
+>> explicitly in code and consumed later.
+
+> This sounds great to me.  :-)
+
+I like this as well.  Basically, a "fuzzy position" is three things:
+
+    Some internal value, potentially unique to each mode
+    A method to return such a value based on point
+    A method to restore point based on such a value
+
+Seeing this as an abstract data type, the default would be:
+
+    #<marker>, point-marker, goto-char
+
+But each mode would have the opportunity to override with another
+implementation. Also, these objects might be persistable in some cases, such
+as with bookmarks (though maybe not always).
+
+We'd also need to either extend save-excursion to be aware of this, or define
+a new helper form to do the saving/restoring based on this fuzzy definition.
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+

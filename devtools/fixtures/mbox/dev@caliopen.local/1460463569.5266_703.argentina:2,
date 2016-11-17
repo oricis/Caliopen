@@ -1,0 +1,91 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alc3y-0001A0-4u
+	for mharc-dev@caliopen.local; Thu, 31 Mar 2016 08:51:02 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:53302)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1alc3s-00019g-Bz
+	for dev@caliopen.local; Thu, 31 Mar 2016 08:51:00 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1alc3p-0002lh-1g
+	for dev@caliopen.local; Thu, 31 Mar 2016 08:50:56 -0400
+Received: from plane.gmane.org ([80.91.229.3]:57173)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1alc3o-0002lX-Rf
+	for dev@caliopen.local; Thu, 31 Mar 2016 08:50:52 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1alc3k-0007Vd-I8
+	for dev@caliopen.local; Thu, 31 Mar 2016 14:50:48 +0200
+Received: from 45.72.141.202 ([45.72.141.202])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Thu, 31 Mar 2016 14:50:43 +0200
+Received: from monnier by 45.72.141.202 with local (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Thu, 31 Mar 2016 14:50:43 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: About column numbers
+Date: Thu, 31 Mar 2016 08:50:37 -0400
+Message-ID: <jwvbn5u6cnu.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <56FB02BB.3090501@alice.it> <83wpokuh3a.fsf@gnu.org>
+	<56FC0CDB.9090707@alice.it>
+	<CAP_d_8XDQmTR1M6=+a4yMAjkHFkDEnx4oFQiH57UUNLW2dzM4Q@mail.gmail.com>
+	<87poubvnhh.fsf@linux-m68k.org>
+	<CAP_d_8V=4W26O-r-DcOdfpFwwzpZKDtXnd71jOCwvhO0bL38og@mail.gmail.com>
+	<87lh4zvlp2.fsf@linux-m68k.org>
+	<CAP_d_8WSBJMZ2aLbnUwiRh1-ieG9mdcTyE-TnFo5AF+hE+_GyA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 45.72.141.202
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:nju2ErtW1JaQbqR+aL3HG78tGko=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 31 Mar 2016 12:51:00 -0000
+Content-Length: 1257
+Lines: 27
+
+> So it’s mostly useless in a 0-based character-counting editor, and
+
+Not exactly.  It just means that we can use the number without some
+extra massaging, such as taking into account compilation-first-column or
+compilation-error-screen-columns (AFAIK there is currently no
+corresponding support for distinguishing bytes/chars, even though it'd
+be clearly beneficial).
+
+But in any case this part of compile.el is a big mess, because every
+tool out there uses another convention in this regard and
+compilation-error-regexp-alist doesn't record which tool uses
+which convention.
+
+
+        Stefan
+
+
+PS: If you like to bikeshed about counting from 0-vs-1, I have another
+one for you: point-min should start at 0 rather than at 1.  And this one
+could mostly be done without breaking too much code out there (it would
+break some code, but most of it is already fundamentally broken because
+it should use `point-min` rather than hardcoding 1, so it's not *that*
+terrible).  This aid, if you try to set BEG to 0, you'll soon discover
+that Emacs's C code is not prepared for that.  Patches welcome ;-)
+BTW: Making such a change would slightly simplify the src/intervals.c code
+since text-properties are used both on strings (start at 0) and buffers
+(start at 1).
+
+

@@ -1,0 +1,82 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anAWk-0004bl-Se
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 15:51:11 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:52193)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1anAWi-0004aa-7l
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:51:09 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1anAWf-0001HW-0S
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:51:08 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:48341)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1anAWe-0001HS-QK
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:51:04 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>) id 1anAWc-0006ki-AC
+	for dev@caliopen.local; Mon, 04 Apr 2016 21:51:04 +0200
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: dev@caliopen.local
+Subject: Re: master 0695108 2/2: Revert "Add `r'/`l' grep command history
+	commands"
+References: <20160403224658.6944.52006@vcs.savannah.gnu.org>
+	<E1amqnL-0001p7-2f@vcs.savannah.gnu.org> <m3wpoe54yr.fsf@gnus.org>
+	<m2wpoe9cjg.fsf@newartisans.com>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAHlBMVEVQU3VUWXwxGREnDwcT
+	BwdaoeFNS2dIQFM6JiZAMz/eZavFAAACVUlEQVQ4jU2SsW7bMBRFn4Ca6EgCtdGsUgbNoj8giZnC
+	3WwgapBNBhoK/YCa4CpkkLYUKCrzb3sfSTsmLBF8h/e+S1rkrO0KqZTih6dVJ6xzjgDs4aN+UCtr
+	ewaWgZRM+EUKFed6R0drRSFlgd14SElsPGYrQR0RS0hKEskpAgKRBRVozMYfAKgTAqAQwnap7qjv
+	0QVWREVRrDpk7dHazdQ7KwQDSRwpt5hhBQGOqFgjwERy8hkgFcBBWjiBBJcVFh2wu6B4G1dWtkv3
+	RDlrjOs48GubhuiPHMm7wABkkcHOsdccQqA5gmV7lsRIPpwiOIoL2GEZAiQUZlac63vVOx94kJuZ
+	XOrU+wxmHObIYL/cIy+qLsTmgb0ODHKy5ygYk+J8DB4vAZnGEVo/u9+syOCGwTTCygfHCtW+mG+Y
+	f7HRyABdcAy1bM3GoA/2nzJwbomgiyeAx3bvYz0pwrJV6vWLMea+/cE+DCa2escJFp8iuJmuQPD4
+	i5ZRsfs8stMw0jhxrnfRt88AjzufBAPACMlp9m3705g7mVrXNY3jNPk5bP/hCPLtu4j766EEiIq/
+	d3zqryZcATTBFdzz4XdmGxuUZVLgmf7s8bWLtweUuZ6tEHH2J1zqYNJ+WNUpHiLEydRjGQfAcGY8
+	brex3JSE91V9uN1EUFUU51wt8TNltsJTg5RDXceCaapGs5Vu0o4671w/aA3GoNJlVZ6HXhtdoVQR
+	eINeud40ldloDAYwa7SOGSvoIdGV1gzSaEpdoQCvzQWsNcu5Q1wZfgNsDD4PXjRZy4vmP7Hmdb25
+	BpAlAAAAAElFTkSuQmCC
+Date: Mon, 04 Apr 2016 21:51:02 +0200
+In-Reply-To: <m2wpoe9cjg.fsf@newartisans.com> (John Wiegley's message of "Sun, 
+	03 Apr 2016 22:18:59 -0700")
+Message-ID: <m3inzxkva1.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 19:51:09 -0000
+Content-Length: 768
+Lines: 19
+
+John Wiegley <jwiegley@gmail.com> writes:
+
+> The master branch, while intended for Emacs 26, isn't open for new
+> features without some discussion beforehand.
+
+There's been a bit of back and forth on that issue, hasn't there?  I
+think the argument last time was that either is master open for
+development, or it's not.  Realistically, Emacs 26 isn't going to be
+released until late 2017 (and that's being kinda optimistic).
+
+I seem to recall that the conclusion to the last round of this debate
+(and there's been a few) was that master is open for development of new
+features.  Without doing coordination for every single bit of these
+small, non-invasive things.
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

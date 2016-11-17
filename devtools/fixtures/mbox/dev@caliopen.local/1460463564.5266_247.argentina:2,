@@ -1,0 +1,49 @@
+Return-Path: <>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id 8222520F2D0B1
+	for <laurent@brasil.brainstorm.fr>; Sat,  9 Apr 2016 03:40:47 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 7062BCF230C; Sat,  9 Apr 2016 03:40:47 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id 599E1D429FF; Sat,  9 Apr 2016 03:40:47 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: **************
+X-Spam-Status: Yes, score=14.7 required=5.0 tests=BAYES_60,FSL_HELO_BARE_IP_1,
+	HK_RANDOM_FROM,MISSING_DATE,MISSING_MID,RCVD_HELO_IP_MISMATCH,RCVD_IN_PBL,
+	RCVD_NUMERIC_HELO,RDNS_NONE,TO_NO_BRKTS_NORDNS,TVD_RCVD_IP,TVD_RCVD_IP4
+	autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  2.3 FSL_HELO_BARE_IP_1 FSL_HELO_BARE_IP_1
+	*  0.0 TVD_RCVD_IP4 TVD_RCVD_IP4
+	*  0.0 TVD_RCVD_IP TVD_RCVD_IP
+	*  1.3 HK_RANDOM_FROM From username looks random
+	*  2.4 RCVD_HELO_IP_MISMATCH Received: HELO and IP do not match, but should
+	*  1.2 RCVD_NUMERIC_HELO Received: contains an IP address used for HELO
+	*  3.3 RCVD_IN_PBL RBL: Received via a relay in Spamhaus PBL
+	*      [14.167.102.57 listed in zen.spamhaus.org]
+	*  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+	*      [score: 0.6211]
+	*  0.5 MISSING_MID Missing Message-Id: header
+	*  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+	*  1.4 MISSING_DATE Missing Date: header
+	*  0.0 TO_NO_BRKTS_NORDNS To: misformatted and no rDNS
+X-Spam-DCC: : 
+Received: from 14.185.128.200 (unknown [14.167.102.57])
+	by mexico.brainstorm.fr (Postfix) with SMTP id 2D005CF230C
+	for <dev@caliopen.local>; Sat,  9 Apr 2016 03:40:43 +0200 (CEST)
+Received: from unknown (HELO localhost) (q47dsh657ctncd6@smartbotpro.net@215.109.201.166)
+	by 14.185.128.200 with ESMTPA; Sat, 9 Apr 2016 08:45:14 +0700
+From: q47dsh657ctncd6@smartbotpro.net
+To: dev@caliopen.local
+Subject: Revolution health mixtures
+X-Spam-Prev-Subject: Revolution health mixtures
+Message-Id: <20160409014047.599E1D429FF@mexico.brainstorm.fr>
+Date: Sat,  9 Apr 2016 03:40:47 +0200 (CEST)
+Content-Length: 72
+Lines: 1
+
+http://neck.cihzaqra.work/ This could ensure your intimate life greatly

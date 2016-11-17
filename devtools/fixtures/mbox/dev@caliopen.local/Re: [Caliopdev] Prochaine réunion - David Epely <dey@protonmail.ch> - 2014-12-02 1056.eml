@@ -1,0 +1,131 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 3F841120A4B;
+	Tue,  2 Dec 2014 10:56:49 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 0.175
+X-Spam-Level: 
+X-Spam-Status: No, score=0.175 tagged_above=-999 required=5
+	tests=[BAYES_40=-0.185, FORGED_RCVD_HELO=0.135, HTML_MESSAGE=0.001,
+	MIME_BASE64_NO_NAME=0.224]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id 2jO8lELMcGpe; Tue,  2 Dec 2014 10:56:46 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id B3DA8120A24;
+	Tue,  2 Dec 2014 10:56:46 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id DEC0E6B61536E;
+	Tue,  2 Dec 2014 10:56:45 +0100 (CET)
+Authentication-Results: brassens.heberge.info; dkim=fail
+	reason="verification failed; insecure key"
+	header.d=protonmail.ch header.i=@protonmail.ch header.b=NZgHHkns;
+	dkim-adsp=discard (insecure policy); dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id EwY7WajdPO4z; Tue,  2 Dec 2014 10:56:42 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 924246B611F2F;
+	Tue,  2 Dec 2014 10:56:41 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 02F0A6B611F2F
+ for <caliopdev@caliop.net>; Tue,  2 Dec 2014 10:56:40 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 9aIJea8Q08iY for <caliopdev@caliop.net>;
+ Tue,  2 Dec 2014 10:56:37 +0100 (CET)
+Received: from mail.protonmail.ch (protonmail.ch [37.35.106.36])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id 323C66B612F00
+ for <caliopdev@caliop.net>; Tue,  2 Dec 2014 10:56:37 +0100 (CET)
+Received: by mail.protonmail.ch (Postfix, from userid 48)
+ id 8A3C1142527B9; Tue,  2 Dec 2014 09:56:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=protonmail.ch;
+ s=default; t=1417514196;
+ bh=jfJFcAjyANlOvsBVbbYmvqMFaBO8aRcVGxMce4CF2kg=;
+ h=To:Subject:Date:From:Reply-To;
+ b=NZgHHknsuvJXjWmUIEf4+Tfwcuaj7V/zr4oCQBp2rudu3Bbhs9W3wRtknJBDWErlK
+ NoIvfJ2RwqsCoWX60qlo6hpo4tClq1YG7yktc5cqx4lg6okLBCprEnxuU8LmFwZwRI
+ R9Laa+FE2FN7JBoLjWUnRVe/0Ggh9lNYyxmttEbQ=
+To: "caliopdev@caliop.net" <caliopdev@caliop.net>
+Date: Tue, 2 Dec 2014 04:56:36 -0500
+From: David Epely <dey@protonmail.ch>
+Message-ID: <06f0b2142e06880c954195ec9894b7e6@protonmail.ch>
+X-Priority: 3
+MIME-Version: 1.0
+Subject: Re: [Caliopdev] =?utf-8?q?Prochaine_r=C3=A9union?=
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: David Epely <dey@protonmail.ch>,
+ =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============1911819744=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+--===============1911819744==
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: base64
+
+RXQgcydpbCB5IGEgdG91dCBkZSBtw6ptZSB2aWTDqW8gY29uZsOpcmVuY2UsIGplIHBvdXJyYWkg
+w6p0cmUgbMOgIGF1c3NpLjxicj48YnI+PGJyPjxzcGFuPi0tLS0tLS0tIE9yaWdpbmFsIE1lc3Nh
+Z2UgLS0tLS0tLS08YnI+U3ViamVjdDogUmU6IFtDYWxpb3BkZXZdIFByb2NoYWluZSByw6l1bmlv
+bjxicj5UaW1lIChHTVQpOiBEZWMgMDIgMjAxNCAwOTozMDo0Nzxicj5Gcm9tOiBqdWxpZW4ubXVl
+dHRvbkBnYW5kaS5uZXQ8YnI+VG86IGNhbGlvcGRldkBjYWxpb3AubmV0PGJyPjxicj5IZWxsbzxi
+cj48YnI+DQpPbiAxMi8wMi8yMDE0IDA2OjEwIEFNLCBMYXVyZW50IENoZW1sYSB3cm90ZTo8YnI+
+DQomZ3Q7Jmd0OyBEw6lzb2zDqSBkZSBuZSBwYXMgYXZvaXIgcHUgcHLDqXZlbmlyIHBsdXMgdMO0
+dCBtYWlzIGNldHRlIHNlbWFpbmUgamUgbmU8YnI+DQomZ3Q7Jmd0OyBwb3VycmFpcyBwYXMgcGFz
+c2VyIMOgIGxhIHLDqXVuaW9uLCB1biBwZXUgZGUgZMOpYm9yZGVtZW50IGF1IGJvdWxvdC48YnI+
+DQomZ3Q7Jmd0Ozxicj4NCiZndDsmZ3Q7IFBhciBjb250cmUgZCdpY2kgbGEgcsOpdW5pb24gZXQg
+YXByw6hzIGplIHN1aXMgZGlzcG8gcG91ciB0cmF2YWlsbGVyIHN1ciBjZXM8YnI+DQomZ3Q7Jmd0
+OyBwb2ludHMuIEplIHNhaXMgcXVlIGonYWkgbidhaSBwYXMgw6l0w6kgdHLDqHMgYmF2YXJkIGNl
+cyBkZXJuaWVycyB0ZW1wcyBtYWlzPGJyPg0KJmd0OyZndDsgamUgc3VpcyBiaWVuIGzDoCA6LSk8
+YnI+DQomZ3Q7IEFoLCBldCBzaSBvbiBkw6ljYWxlIGQndW5lIHNlbWFpbmUgKDEyLzEyKSwgdHUg
+cG91cnJhcyBwYXNzZXIgPzxicj4NCkxlIDEyIGNhIHNlcmFpdCBwYXJmYWl0LCBqZSBzdWlzIMOg
+IFBhcmlzIMOpZ2FsZW1lbnQuPGJyPg0KJmd0Ozxicj4NCiZndDsgw4dhIHBldXQgYXJyYW5nZXIg
+bGVzIG1lY3MgZGUgUXdhbnQgKGZhdXQgcXVlIGplIHZvaWUgYXZlYyBldXgpLCBldDxicj4NCiZn
+dDsgw6dhIG1lIHBlcm1ldCBkJ2F2b2lyIHVuZSBzZW1haW5lIGRlIHLDqWN1cMOpcmF0aW9uIGF1
+IGNhbG1lIG5pbW9pcyw8YnI+DQomZ3Q7IGV0IMOnYSB0b21iZSBwYXMgbWFsIHB1aXNxdWUgbm9y
+bWFsZW1lbnQgamUgZG9pcyB2b2lyIHVuIGTDqXZlbG9wcGV1cjxicj4NCiZndDsgbG9jYWwgbGUg
+OS48YnI+DQomZ3Q7PGJyPg0KJmd0OyBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXzxicj4NCiZndDsgQ2FsaW9wZGV2IG1haWxpbmcgbGlzdDxicj4NCiZndDsg
+Q2FsaW9wZGV2QGNhbGlvcC5uZXQ8YnI+DQomZ3Q7IDxhIGhyZWY9Imh0dHA6Ly9icmFzc2Vucy5o
+ZWJlcmdlLmluZm8vY2dpLWJpbi9tYWlsbWFuL2xpc3RpbmZvL2NhbGlvcGRldiIgcmVsPSJub2Zv
+bGxvdyIgdGFyZ2V0PSJfYmxhbmsiPmh0dHA6Ly9icmFzc2Vucy5oZWJlcmdlLmluZm8vY2dpLWJp
+bi9tYWlsbWFuL2xpc3RpbmZvL2NhbGlvcGRldjwvYT48YnI+PGJyPg0KSnVsaWVuPGJyPjxicj4N
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fPGJyPg0KQ2Fs
+aW9wZGV2IG1haWxpbmcgbGlzdDxicj4NCkNhbGlvcGRldkBjYWxpb3AubmV0PGJyPg0KPGEgaHJl
+Zj0iaHR0cDovL2JyYXNzZW5zLmhlYmVyZ2UuaW5mby9jZ2ktYmluL21haWxtYW4vbGlzdGluZm8v
+Y2FsaW9wZGV2IiByZWw9Im5vZm9sbG93IiB0YXJnZXQ9Il9ibGFuayI+aHR0cDovL2JyYXNzZW5z
+LmhlYmVyZ2UuaW5mby9jZ2ktYmluL21haWxtYW4vbGlzdGluZm8vY2FsaW9wZGV2PC9hPjxicj48
+YnI+PC9zcGFuPg==
+
+
+--===============1911819744==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============1911819744==--

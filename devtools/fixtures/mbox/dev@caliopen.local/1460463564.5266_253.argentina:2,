@@ -1,0 +1,76 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an5nl-0004gy-6m
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 10:48:25 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59608)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <lode.leroy@gmail.com>) id 1an4uz-0004qq-Bl
+	for dev@caliopen.local; Mon, 04 Apr 2016 09:51:53 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <lode.leroy@gmail.com>) id 1an4ut-0001eT-PV
+	for dev@caliopen.local; Mon, 04 Apr 2016 09:51:49 -0400
+Received: from mail-ob0-x233.google.com ([2607:f8b0:4003:c01::233]:33504)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <lode.leroy@gmail.com>) id 1an4ut-0001eN-HF
+	for dev@caliopen.local; Mon, 04 Apr 2016 09:51:43 -0400
+Received: by mail-ob0-x233.google.com with SMTP id x3so171494346obt.0
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 06:51:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:date:message-id:subject:from:to;
+	bh=uE9GwKSPmuYi7VjvykCTK4hzyedlnBk9sDxCvOQw2T8=;
+	b=u7XogPG3IhdBt36u8JG3kc+NS69JxC7sXpNluKZBjfxrUrjq+Y7Wrpit2SVtmg+pHq
+	OjO8StCFKsFNwkUaDaqskOiOqxIT019TfrorFTN1936Ab7yGYT8tpAW6vPOXatYELv1u
+	i8wc0vCVg+xp+Diqm5vMgJ59dXn+Sg0r9uKjYbB9x5eX3P/zPVM4auFbyVfo103iGVDg
+	HLcATHzA40VsPM1duTmkjspY4SloMRBrdOFMmRACBGnvdUEL+Xk2v3LR2Ef0YMMo5VSf
+	9Xqld9M50zs4SJCrhpZFnYJDf7PH9cJf+O+6qrzpRGWEWxX+BiE8razIPZ2XYm8S9wxB
+	6h0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+	bh=uE9GwKSPmuYi7VjvykCTK4hzyedlnBk9sDxCvOQw2T8=;
+	b=fpwjeNKn1IFHt9XYwzfvI16rC3jng1Q2gikWD47NPs4E8ra9Bmj4M15U0Zhmp2r2Lv
+	GX6ZtqkCeiMyHR2wlbmS663I/eUyPjMK8gcOEy6GriyiXRRQbNZn23T+GSCUAW7WGrUY
+	J/Qvm2a5vdG1erBKRCPmR9+sOUpiHkyZwnvNP7knaAo+bFEs1JBB9WMUmbEJ9cKoAWwL
+	l2dOQW4TzpbV/kDADu/LKg6o44BBnxPwCVZwm3bOXqRcG9WEgtIpN70VUbgFIKeLvhOY
+	YQdtpPB8xiwznEBiXmsvL8YWgwLGxsh3TQ7w0fLRojaGHVrqXCWzAo47dOoIXET2axbs
+	VwUg==
+X-Gm-Message-State: AD7BkJK8zVjHR2C3P2Ve1/OwiYLO63R1eodHpeOEiymTJaDGyRfbY8DDoLqE2gt9koijol8RNQUvfoRuZ+kdAw==
+MIME-Version: 1.0
+X-Received: by 10.60.101.199 with SMTP id fi7mr10908426oeb.20.1459777902526;
+	Mon, 04 Apr 2016 06:51:42 -0700 (PDT)
+Received: by 10.202.71.144 with HTTP; Mon, 4 Apr 2016 06:51:42 -0700 (PDT)
+Date: Mon, 4 Apr 2016 15:51:42 +0200
+Message-ID: <CA+N9e5b+U7kkiHDG9+NRzwpHD1-y0cnnp8NsJv1Vsig88L-H5A@mail.gmail.com>
+Subject: pre-test windows binaries
+From: Lode Leroy <lode.leroy@gmail.com>
+To: dev@caliopen.local
+Content-Type: text/plain; charset=UTF-8
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c01::233
+X-Mailman-Approved-At: Mon, 04 Apr 2016 10:48:24 -0400
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 13:51:53 -0000
+Content-Length: 325
+Lines: 12
+
+I installed this version:
+http://www.russet.org.uk/scratch/emacs-25.0.92-x86_64-w64-mingw32.zip
+and when clicking the "Emacs Guided Tour" in the "About GNU Emacs"
+text, I get this error:
+    Contacting host: www.gnu.org:80
+    libxml2 library not found
+
+could libxml2.dll be added to the zip archive?
+
+Best regards,
+-- lode
+

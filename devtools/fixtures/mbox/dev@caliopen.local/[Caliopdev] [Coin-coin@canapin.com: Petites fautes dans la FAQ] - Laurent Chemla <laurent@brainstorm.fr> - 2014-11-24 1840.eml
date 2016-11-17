@@ -1,0 +1,81 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 13034120A77;
+	Mon, 24 Nov 2014 18:40:31 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -2.599
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.599 tagged_above=-999 required=5
+	tests=[BAYES_00=-2.599]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id aHLBGOHoWXjh; Mon, 24 Nov 2014 18:40:29 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 0CBFD120A64;
+	Mon, 24 Nov 2014 18:40:29 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id C2EAD69EA304A;
+	Mon, 24 Nov 2014 18:40:28 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ti-R5CFKPdKr; Mon, 24 Nov 2014 18:40:27 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 7602969EA3043;
+	Mon, 24 Nov 2014 18:40:27 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 822B469EA3048
+ for <caliopdev@caliop.net>; Mon, 24 Nov 2014 18:40:26 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id UQMBMCtmlZMt for <caliopdev@caliop.net>;
+ Mon, 24 Nov 2014 18:40:22 +0100 (CET)
+Received: from brasil.brainstorm.fr (brasil.brainstorm.fr [193.56.58.33])
+ by brassens.heberge.info (Postfix) with ESMTP id 81C5B69EA3043
+ for <caliopdev@caliop.net>; Mon, 24 Nov 2014 18:40:22 +0100 (CET)
+Received: by brasil.brainstorm.fr (Postfix, from userid 1000)
+ id 05B3B20CD883C; Mon, 24 Nov 2014 18:40:21 +0100 (CET)
+Date: Mon, 24 Nov 2014 18:40:21 +0100
+From: Laurent Chemla <laurent@brainstorm.fr>
+To: caliopdev@caliop.net
+Message-ID: <20141124174020.GK8770@brasil.brainstorm.fr>
+MIME-Version: 1.0
+Content-Disposition: inline
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Subject: [Caliopdev] [Coin-coin@canapin.com: Petites fautes dans la FAQ]
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+----- Forwarded message from Coin-coin le Canapin <Coin-coin@canapin.com> -=
+----
+
+Hello,
+=C0 propos de tous les "Pourrais-je" de la FAQ ; il me semble que c'est
+du futur, auquel cas on ne met pas de "s".
+
+----- End forwarded message -----
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev

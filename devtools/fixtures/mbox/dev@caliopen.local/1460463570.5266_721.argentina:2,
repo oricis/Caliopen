@@ -1,0 +1,75 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akw8D-0002uO-7w
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 12:04:37 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59995)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1akw85-0002gn-TK
+	for dev@caliopen.local; Tue, 29 Mar 2016 12:04:35 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1akw80-0006oi-Um
+	for dev@caliopen.local; Tue, 29 Mar 2016 12:04:29 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:33514)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1akw80-0006oe-SE; Tue, 29 Mar 2016 12:04:24 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:2118
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1akw80-0002fR-2E; Tue, 29 Mar 2016 12:04:24 -0400
+Date: Tue, 29 Mar 2016 19:04:08 +0300
+Message-Id: <83io05w9s7.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+In-reply-to: <m3poudb86o.fsf@gnus.org> (message from Lars Magne Ingebrigtsen
+	on Tue, 29 Mar 2016 17:44:15 +0200)
+Subject: Re: More convenient default rollback for users
+References: <m3poudb86o.fsf@gnus.org>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 16:04:35 -0000
+Content-Length: 965
+Lines: 30
+
+> From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+> Date: Tue, 29 Mar 2016 17:44:15 +0200
+> 
+> When we introduce behavioural changes in Emacs, we often include a way
+> to get back to the old behaviour, and we document this in NEWS etc.
+> 
+> But wouldn't it be nice if we had this in a more convenient,
+> cut-and-pastable format?
+> 
+> Imagine you're using Emacs 26 for the first time.  Suddenly you notice
+> that when you hit the `hyper z' key, Emacs doesn't florbnoze as it used
+> to, but forblizes instead!  You're furious!  So you hit the `C-h R' (for
+> rollback) keystroke, and you get a buffer that looks like:
+> 
+> -------------
+> ;; To roll back changes between Emacs 26 and Emacs 25.1:
+> 
+> ;; If you want the `hyper z' key still to florbnoze instead of
+> ;; forblizing:
+> (setq hyper-z-mode 'florbnoze)
+> 
+> ... more setqs here...
+> 
+> ;; To roll back changes between Emacs 25.1 and Emacs 24.3:
+> 
+> ...
+> -------------
+
+How do you do that with defcustoms?
+

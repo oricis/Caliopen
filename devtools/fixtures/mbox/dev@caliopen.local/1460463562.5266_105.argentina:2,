@@ -1,0 +1,82 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aoHbC-0003Sx-4g
+	for mharc-dev@caliopen.local; Thu, 07 Apr 2016 17:36:22 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:46549)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1aoHHQ-0000Vz-Kt
+	for dev@caliopen.local; Thu, 07 Apr 2016 17:15:57 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <rms@gnu.org>) id 1aoHHP-0001wd-SK
+	for dev@caliopen.local; Thu, 07 Apr 2016 17:15:56 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:42077)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1aoHHO-0001w4-EW; Thu, 07 Apr 2016 17:15:54 -0400
+Received: from rms by fencepost.gnu.org with local (Exim 4.82)
+	(envelope-from <rms@gnu.org>)
+	id 1aoHHN-0004Xa-Rm; Thu, 07 Apr 2016 17:15:53 -0400
+From: Richard Stallman <rms@gnu.org>
+To: =?utf-8?Q?Cl=C3=A9ment?= Pit--Claudel <clement.pit@gmail.com>
+CC: dev@caliopen.local
+In-reply-to: <5706179F.5040809@gmail.com> (message from =?utf-8?Q?Cl=C3=A9?=
+	=?utf-8?Q?ment?= Pit--Claudel on Thu, 7 Apr 2016 09:17:35 +0100)
+Subject: Re: Should the default value of url-user-agent include a version
+	number? What about the specific case of package.el?
+Reply-to: rms@gnu.org
+References: <56F42269.10400@gmail.com>
+	<jwv8u17hfbr.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<E16BD3EC-F7ED-463C-804C-DCBA8E548B15@lunaryorn.com>
+	<jwvshzffwix.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<05663DCE-3E5B-41E2-8657-460B2D013B49@lunaryorn.com>
+	<m2pou6clua.fsf@newartisans.com> <E1an5SI-0007tk-5H@fencepost.gnu.org>
+	<570280D9.6030706@gmail.com> <E1anSM6-00051o-H9@fencepost.gnu.org>
+	<5703D7BA.4070507@gmail.com> <E1anapc-0006WG-Pg@fencepost.gnu.org>
+	<5704AEAF.8050205@gmail.com> <E1anvrO-0001S7-EV@fencepost.gnu.org>
+	<5706179F.5040809@gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Message-Id: <E1aoHHN-0004Xa-Rm@fencepost.gnu.org>
+Date: Thu, 07 Apr 2016 17:15:53 -0400
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 07 Apr 2016 21:36:20 -0000
+Content-Length: 942
+Lines: 26
+
+[[[ To any NSA and FBI agents reading my email: please consider    ]]]
+[[[ whether defending the US Constitution against all enemies,     ]]]
+[[[ foreign or domestic, requires you to follow Snowden's example. ]]]
+
+  > Sorry if this didn't sound constructive. You wrote:
+
+  > > I think url should do what IceCat does: send a user-agent string that
+  > > is widely encountered on the net, to thwart identification of users.
+
+  > So I pointed out that IceCat is probably one of the most easily
+  > identifiable browsers out there.
+
+That was changing the subject.  If IceCat's necessary features provide
+a possible way to identify it, that is regretable, but it is a side
+issue.
+
+Emacs browsers should send user-agent strings that disguise them
+as commonly used browsers.
+
+-- 
+Dr Richard Stallman
+President, Free Software Foundation (gnu.org, fsf.org)
+Internet Hall-of-Famer (internethalloffame.org)
+Skype: No way! See stallman.org/skype.html.
+
+

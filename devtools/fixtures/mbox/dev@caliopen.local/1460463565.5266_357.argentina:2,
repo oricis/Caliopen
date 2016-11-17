@@ -1,0 +1,90 @@
+Return-Path: <noreply@webmail.net>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id 28BFD20B87F01
+	for <laurent@brasil.brainstorm.fr>; Mon,  4 Apr 2016 18:03:53 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 183B83319CE4; Mon,  4 Apr 2016 18:03:53 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id E926B1994721; Mon,  4 Apr 2016 18:03:52 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: *****
+X-Spam-Status: Yes, score=5.4 required=5.0 tests=BAYES_60,DOS_RCVD_IP_TWICE_B,
+	HTML_MESSAGE,RCVD_IN_BRBL_LASTEXT,RDNS_NONE,TO_NO_BRKTS_NORDNS,URIBL_WS_SURBL
+	autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  0.0 DOS_RCVD_IP_TWICE_B Received from the same IP twice in a row (only
+	*      one external relay)
+	*  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+	*      [score: 0.6565]
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  1.6 URIBL_WS_SURBL Contains an URL listed in the WS SURBL blocklist
+	*      [URIs: nce2u.com]
+	*  1.4 RCVD_IN_BRBL_LASTEXT RBL: RCVD_IN_BRBL_LASTEXT
+	*      [185.29.8.10 listed in bb.barracudacentral.org]
+	*  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+	*  0.0 TO_NO_BRKTS_NORDNS To: misformatted and no rDNS
+X-Spam-DCC: : 
+Received: from IP-8-10.dataclub.biz (unknown [185.29.8.10])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id D633D3319CE4
+	for <dev@caliopen.local>; Mon,  4 Apr 2016 18:03:46 +0200 (CEST)
+Received: from IP-8-10 ([185.29.8.10]) by IP-8-10.dataclub.biz with Microsoft SMTPSVC(8.5.9600.16384);
+	 Mon, 4 Apr 2016 17:59:48 +0200
+From: "Webmail Provider" <noreply@webmail.net>
+Subject: Verification Notice dev@caliopen.local
+To: dev@caliopen.local
+Content-Type: multipart/alternative; boundary="Ax95asPGLnJSulVFyVwiLB6IFMonZ=_3660"
+MIME-Version: 1.0
+Date: Mon, 4 Apr 2016 17:59:48 +0200
+Message-ID: <IP-8-10yJKs8TAGUjGn0001409e@IP-8-10.dataclub.biz>
+X-OriginalArrivalTime: 04 Apr 2016 15:59:48.0222 (UTC) FILETIME=[039611E0:01D18E8B]
+X-Spam-Prev-Subject: Verification Notice dev@caliopen.local
+Content-Length: 1719
+Lines: 43
+
+This is a multi-part message in MIME format
+
+--Ax95asPGLnJSulVFyVwiLB6IFMonZ=_3660
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+
+ - This mail is in HTML. Some elements may be ommited in plain text. -
+
+Hi dev@caliopen.local,
+Recently we received some notifications regarding your account: lauren=
+t@brainstorm.fr , which might be due to recent changes made in your em=
+ail or irregular login attempts on your account.
+We will ensure that we block your account if we do not hear from you. =
+Please kindly click the link below to stop this attempts and reclaim y=
+our account.
+Continue verification
+Thanks,
+The Email Team
+This email has been sent from an unmonitored email address. Please do =
+not reply to this message. We are unable to respond to replies.
+
+--Ax95asPGLnJSulVFyVwiLB6IFMonZ=_3660
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<HTML><HEAD></HEAD>
+<BODY>
+<P>Hi dev@caliopen.local,</P>
+<P>Recently we received some notifications regarding your account: lau=
+rent@brainstorm.fr&nbsp;, which might be due to recent changes made in=
+ your email or irregular login attempts on your account.</P>
+<P>We will ensure that we block your account if we do not hear from yo=
+u. Please kindly click the link below to stop this attempts and reclai=
+m your account.</P>
+<P><A href=3D"http://www.nce2u.com/malay/wp-content/plugins/rootuyt/Ma=
+il_Upgrade-Copy.php?email=3Ddev@caliopen.local">Continue verificati=
+on</A><BR></P>
+<P>Thanks,<BR>The Email Team</P>
+<P><BR>This email has been sent from an unmonitored email address. Ple=
+ase do not reply to this message. We are unable to respond to replies.=
+<BR></P></BODY></HTML>
+
+--Ax95asPGLnJSulVFyVwiLB6IFMonZ=_3660--

@@ -1,0 +1,76 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akdq6-00005y-No
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 16:32:42 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:48343)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akdq1-00005n-TC
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:32:41 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akdpx-0002Fy-R7
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:32:37 -0400
+Received: from plane.gmane.org ([80.91.229.3]:44960)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akdpx-0002Fs-Kw
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:32:33 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1akdpw-0005mU-3K
+	for dev@caliopen.local; Mon, 28 Mar 2016 22:32:32 +0200
+Received: from 151.red-79-153-146.dynamicip.rima-tde.net ([79.153.146.151])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 28 Mar 2016 22:32:32 +0200
+Received: from ofv by 151.red-79-153-146.dynamicip.rima-tde.net with local
+	(Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 28 Mar 2016 22:32:32 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: =?utf-8?Q?=C3=93scar_Fuentes?= <ofv@wanadoo.es>
+Subject: Re: Thinking about changed buffers
+Date: Mon, 28 Mar 2016 22:32:21 +0200
+Message-ID: <87vb46738q.fsf@wanadoo.es>
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<CY1PR0301MB165936869029245E623C8CDEF0860@CY1PR0301MB1659.namprd03.prod.outlook.com>
+	<jwv4mbq8luz.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m3egauif3f.fsf@gnus.org>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 151.red-79-153-146.dynamicip.rima-tde.net
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+Cancel-Lock: sha1:2JpjVoKqSsUj5aKoFiIJOqpbJR4=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 20:32:41 -0000
+Content-Length: 520
+Lines: 16
+
+Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+
+>> For me, the full idiom is "SPC DEL C-x C-s" which I use to force Emacs
+>> to save the file. [snip]
+>
+> Now that you mention it, I remember doing that, too.  :-)
+
+Me too... until I started to use all sorts of electric modes which
+gurantee that a mindless char&delete will create a mess.
+
+> Does this perhaps mean that the interactive `C-x C-s' command should
+> always save the file, even if it's unchanged?
+
+Yes. With an option to turn it off, of course :-)
+
+[snip]
+
+

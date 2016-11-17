@@ -1,0 +1,104 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai1Q9-0005Yq-BI
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 11:07:05 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:58196)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ai1Q2-0005Y1-FY
+	for dev@caliopen.local; Mon, 21 Mar 2016 11:07:03 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ai1Px-0005su-DW
+	for dev@caliopen.local; Mon, 21 Mar 2016 11:06:58 -0400
+Received: from plane.gmane.org ([80.91.229.3]:45345)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ai1Px-0005sR-6y
+	for dev@caliopen.local; Mon, 21 Mar 2016 11:06:53 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1ai1Pu-0003dH-72
+	for dev@caliopen.local; Mon, 21 Mar 2016 16:06:50 +0100
+Received: from 76-10-140-188.dsl.teksavvy.com ([76.10.140.188])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 16:06:50 +0100
+Received: from monnier by 76-10-140-188.dsl.teksavvy.com with local (Gmexim
+	0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 16:06:50 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+Date: Mon, 21 Mar 2016 11:06:36 -0400
+Message-ID: <jwv4mbzx4hf.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+	<328c7461-62c6-4228-f622-626349613a1d@yandex.ru>
+	<87fuvkf1gx.fsf@gmail.com>
+	<jwv7fgwx7ln.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzewc0.fsf@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 76-10-140-188.dsl.teksavvy.com
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:fzK0E/iQu9ABbJjNTk2Eqqj9QAk=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 15:07:03 -0000
+Content-Length: 1416
+Lines: 30
+
+> I have elaborated on all these in my other long reply. I would just
+> conclude here that because both calculate-indent-function and
+> prog-indentation-context try to solve same problem, they are bound to
+> have overlapping parts. It's just that calculate-indent-function is
+> more general, easier to understand for prog authors and it solves
+> three problems at once - replacement of indent-line-function, removing
+> extra prog-indentation-context/prog-widen and not exposing
+> multi-mode complexities.
+
+STRING-BEFORE/STRING-AFTER/PREVIOUS-CHUNKS look like the main complexity
+(from smie.el's point of view, they all seem pretty painful to support).
+
+> Note also that the intention of the `hard-widen-limit` is to make it
+> work seamlessly for all existing code that use widen.  While
+> prog-indentation-context requires to teach every mode out there to use
+> prog-widen instead of widen. This doesn't sound right at all.
+
+The reason is that your suggestion risks breaking code since it changes
+the behavior of `widen'.
+
+Maybe the breakage would be extremely limited or even not exist at all,
+in which case the tradeoff is probably worth it.  My gut feeling is that
+it's too risky, but that's just my gut feeling.
+
+Note also that most modes don't bother using widen, and search&replace
+is pretty easy to do.  But if my fear is unfounded, then indeed it's
+better to just change `widen' directly.
+
+
+        Stefan
+
+

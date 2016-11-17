@@ -1,0 +1,304 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 48ABE120FDE;
+	Fri, 12 Dec 2014 17:02:03 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -100.243
+X-Spam-Level: 
+X-Spam-Status: No, score=-100.243 tagged_above=-999 required=5
+	tests=[BAYES_20=-0.74, HTML_40_50=0.496, HTML_MESSAGE=0.001,
+	USER_IN_WHITELIST=-100]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id GEpSSRnNgRgV; Fri, 12 Dec 2014 17:02:01 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id EB65F120FDB;
+	Fri, 12 Dec 2014 17:02:00 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id D6BB66B649F59;
+	Fri, 12 Dec 2014 17:01:59 +0100 (CET)
+Received: from mail4.gandi.net (mail4.gandi.net [217.70.183.210])
+ by brassens.heberge.info (Postfix) with ESMTP id A4E566B649F59
+ for <caliopdev@caliop.net>; Fri, 12 Dec 2014 17:01:58 +0100 (CET)
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+ by mail4.gandi.net (Postfix) with ESMTP id 86451120FDE
+ for <caliopdev@caliop.net>; Fri, 12 Dec 2014 17:01:58 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+Received: from mail4.gandi.net ([217.70.183.210])
+ by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new,
+ port 10024) with ESMTP id gGMCS36COofX for <caliopdev@caliop.net>;
+ Fri, 12 Dec 2014 17:01:56 +0100 (CET)
+Received: from thomas.gandi.net (thomas.gandi.net [217.70.181.206])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mail4.gandi.net (Postfix) with ESMTPSA id 54DA4120FDB
+ for <caliopdev@caliop.net>; Fri, 12 Dec 2014 17:01:56 +0100 (CET)
+From: Thomas Laurent <thomas.laurent@gandi.net>
+Message-Id: <F5C23EB5-C5A9-4077-8C3E-3D3D70DD58FA@gandi.net>
+Date: Fri, 12 Dec 2014 17:01:56 +0100
+To: =?utf-8?Q?Liste_de_d=C3=A9veloppement_Caliopen?= <caliopdev@caliop.net>
+Mime-Version: 1.0 (Mac OS X Mail 8.1 \(1993\))
+X-Mailer: Apple Mail (2.1993)
+Subject: [Caliopdev] =?utf-8?q?CR_r=C3=A9union_du_12/12/2014?=
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============0996009318=="
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+
+--===============0996009318==
+Content-Type: multipart/alternative; boundary="Apple-Mail=_3323BF0E-B4F1-4B55-AADF-0D8B3FE63C08"
+
+
+--Apple-Mail=_3323BF0E-B4F1-4B55-AADF-0D8B3FE63C08
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+# R=C3=A9union CaliOpen, le 12 d=C3=A9cembre 2014
+
+
+## =C3=89taient pr=C3=A9sents :
+
+Alban
+Kajan
+Julien
+Vincent
+Benjamin
+Thomas
+Guillaume
+Steven
+Aymeric
+Laurent
+Sophie
+
+
+## Pr=C3=A9sentation du screencast
+
+Version fran=C3=A7aise pr=C3=A9sent=C3=A9e : tr=C3=A8s bons retours, =
+tout le monde est ok
+Publication sur le blog uniquement pour l'instant
+
+Sophie demande l'ajout des transcriptions sous les vid=C3=A9os
+
+Laurent : La mani=C3=A8re de cr=C3=A9er un compte est importante, cela =
+doit =C3=AAtre pris en compte dans l=E2=80=99alpha.
+C=E2=80=99est ce qui va faire la diff=C3=A9rence avec les principales =
+apps concurrentes d=C3=A8s le d=C3=A9but du process d=E2=80=99appropriatio=
+n de CaliOpen.
+Permet d=E2=80=99accrocher l=E2=80=99utilisateur via un process simple, =
+rapide.
+
+/!\ Attention : il n=E2=80=99est pas clair que l'interface soit un =
+mockup et simplement un mockup, cela peut frustrer les utilisateurs qui =
+s=E2=80=99attendent =C3=A0 tester l=E2=80=99interface apr=C3=A8s avoir =
+visionn=C3=A9 la vid=C3=A9o.
+Pour la bande son : tout faire au futur
+
+=3D> Action point : Il faut expliquer que c'est une futur interface
+
+
+## P=C3=A9rim=C3=A8tre de l'alpha
+
+Date pr=C3=A9vue : fin mai 2015
+
+### au minimum
+- cr=C3=A9ation de compte
+- gestion des contacts
+- gestion d'une, plusieurs boites mail
+- ajout de compte
+- instance pour tester pouvant =C3=AAtre reset r=C3=A9guli=C3=A8rement
+- RWD (voir ci-dessous)
+
+### hors-p=C3=A9rim=C3=A8tre
+
+- agenda
+- fichier attach=C3=A9s
+
+### =C3=A0 d=C3=A9finir
+
+- calcul du niveau de confidentialit=C3=A9
+   -> pleins de questions en suspens c=C3=B4t=C3=A9 cha=C3=AEne de =
+delivery
+
+- un bouton de report de bug simple / feedback
+
+- Crypto ?
+
+Communiquer clairement sur le fait que ce soit une version alpha.
+
+
+## Organisation des d=C3=A9veloppements
+
+- Qwant a d=C3=A9velopp=C3=A9 un outil pour faire du Kanban int=C3=A9gr=C3=
+=A9 sur les API de Github (couplage milestone par ex)
+
+- D=C3=A9finir un profil front pour recherche de ressources c=C3=B4t=C3=A9=
+ Qwant
+   -> Ember est le crit=C3=A8re principal
+   -> Domaines fonctionnels gestion de contacts, de messages
+
+- Travailler sur une version responsive web design (RWD) =C3=A0 minima =
+pour l'alpha
+   -> choix du framework css encore =C3=A0 faire, selon les contraintes
+   -> ne pas faire de responsive au d=C3=A9but rends difficile
+   d'int=C3=A9grer plus tard
+   -> faire du responsive sans vraiment s'en inqui=C3=A9ter ce n'est
+   pas bon, il faut g=C3=A9rer le responsive tout au long du projet
+   -> mettre quelqu=E2=80=99un responsable de ce point
+
+
+## Autres points
+
+- Faire une liste des choix technologiques
+
+- Ajout d'un CONTRIBUTING
+   -> Ouverture d=E2=80=99une page http://caliopen.github.io
+
+- Vinci pr=C3=A9sentera le projet au CCC
+
+
+## D=C3=A9finir une strat=C3=A9gie d'alpha
+
+- Sophie fera un verbatim d'une communication que l=E2=80=99on =
+adresserait aux contacts choisis pour l=E2=80=99alpha.
+- Commencer =C3=A0 constituer une liste d=E2=80=99alpha testeur =C3=A0 =
+partir de l=E2=80=99entourage de chacun, pour anticiper le nombre de =
+retours, etc.
+
+
+## Next steps
+
+- Pr=C3=A9voir des r=C3=A9unions plus th=C3=A9matiques par groupe de =
+travail
+   -> Backend, lead=C3=A9 par Aymeric
+   -> Front / UX-UI, lead=C3=A9 par Thomas
+   -> Dev JS (Ember), lead=C3=A9 par Julien
+
+
+
+--Apple-Mail=_3323BF0E-B4F1-4B55-AADF-0D8B3FE63C08
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html =
+charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space;" =
+class=3D""># R=C3=A9union CaliOpen, le 12 d=C3=A9cembre 2014<br =
+class=3D""><br class=3D""><br class=3D"">## =C3=89taient pr=C3=A9sents =
+:<br class=3D""><br class=3D"">Alban<br class=3D"">Kajan<br =
+class=3D"">Julien<br class=3D"">Vincent<br class=3D"">Benjamin<br =
+class=3D"">Thomas<br class=3D"">Guillaume<br class=3D"">Steven<br =
+class=3D"">Aymeric<br class=3D"">Laurent<br class=3D"">Sophie<br =
+class=3D""><br class=3D""><br class=3D"">## Pr=C3=A9sentation du =
+screencast<br class=3D""><br class=3D"">Version fran=C3=A7aise =
+pr=C3=A9sent=C3=A9e : tr=C3=A8s bons retours, tout le monde est ok<br =
+class=3D"">Publication sur le blog uniquement pour l'instant<br =
+class=3D""><br class=3D"">Sophie demande l'ajout des transcriptions sous =
+les vid=C3=A9os<br class=3D""><br class=3D"">Laurent : La mani=C3=A8re =
+de cr=C3=A9er un compte est importante, cela doit =C3=AAtre pris&nbsp;en =
+compte dans l=E2=80=99alpha.<br class=3D"">C=E2=80=99est ce qui va faire =
+la diff=C3=A9rence avec les principales apps concurrentes d=C3=A8s le =
+d=C3=A9but du process d=E2=80=99appropriation de CaliOpen.<div =
+class=3D"">Permet d=E2=80=99accrocher l=E2=80=99utilisateur via un =
+process simple, rapide.<br class=3D""><br class=3D""><u class=3D"">/!\</u>=
+ Attention : il n=E2=80=99est pas clair que l'interface soit un mockup =
+et simplement un mockup, cela peut frustrer les utilisateurs qui =
+s=E2=80=99attendent =C3=A0 tester l=E2=80=99interface apr=C3=A8s avoir =
+visionn=C3=A9 la vid=C3=A9o.</div><div class=3D"">Pour la bande son : =
+tout faire au futur<br class=3D""><br class=3D""><div class=3D"">=3D&gt; =
+Action point : Il faut expliquer que c'est une futur interface<br =
+class=3D""><br class=3D""><br class=3D"">## P=C3=A9rim=C3=A8tre de =
+l'alpha<br class=3D""><br class=3D"">Date pr=C3=A9vue : fin mai 2015<br =
+class=3D""><br class=3D"">### au minimum<br class=3D"">- cr=C3=A9ation =
+de compte<br class=3D"">- gestion des contacts<br class=3D"">- gestion =
+d'une, plusieurs boites mail<br class=3D"">- ajout de compte</div><div =
+class=3D"">- instance pour tester pouvant =C3=AAtre reset =
+r=C3=A9guli=C3=A8rement</div><div class=3D"">- RWD (voir ci-dessous)<br =
+class=3D""><br class=3D"">### hors-p=C3=A9rim=C3=A8tre<br class=3D""><br =
+class=3D"">- agenda<br class=3D"">- fichier attach=C3=A9s<br =
+class=3D""><br class=3D"">### =C3=A0 d=C3=A9finir<br class=3D""><br =
+class=3D"">- calcul du niveau de confidentialit=C3=A9<br =
+class=3D"">&nbsp;&nbsp;&nbsp;-&gt; pleins de questions en suspens c=C3=B4t=
+=C3=A9 cha=C3=AEne de delivery<br class=3D""><br class=3D"">- un bouton =
+de report de bug simple / feedback</div><div class=3D""><br =
+class=3D""></div><div class=3D"">- Crypto ?<br class=3D""><br =
+class=3D"">Communiquer clairement sur le fait que ce soit une version =
+alpha.<br class=3D""><br class=3D""><br class=3D"">## Organisation des =
+d=C3=A9veloppements<br class=3D""><br class=3D"">- Qwant a d=C3=A9velopp=C3=
+=A9 un outil pour faire du Kanban int=C3=A9gr=C3=A9&nbsp;sur les API de =
+Github (couplage milestone par ex)<br class=3D""><br class=3D"">- =
+D=C3=A9finir un profil front pour recherche de ressources c=C3=B4t=C3=A9 =
+Qwant<br class=3D"">&nbsp;&nbsp;&nbsp;-&gt; Ember est le crit=C3=A8re =
+principal<br class=3D"">&nbsp;&nbsp;&nbsp;-&gt; Domaines fonctionnels =
+gestion de contacts, de messages<br class=3D""><br class=3D"">- =
+Travailler sur une version responsive web design (RWD) =C3=A0 minima =
+pour l'alpha<br class=3D"">&nbsp;&nbsp;&nbsp;-&gt; choix du framework =
+css encore =C3=A0 faire, selon les contraintes<br =
+class=3D"">&nbsp;&nbsp;&nbsp;-&gt; ne pas faire de responsive au d=C3=A9bu=
+t rends difficile<br class=3D"">&nbsp;&nbsp;&nbsp;d'int=C3=A9grer plus =
+tard<br class=3D"">&nbsp;&nbsp;&nbsp;-&gt; faire du responsive sans =
+vraiment s'en inqui=C3=A9ter ce n'est<br class=3D"">&nbsp;&nbsp;&nbsp;pas =
+bon, il faut g=C3=A9rer le responsive tout au long du projet<br =
+class=3D"">&nbsp;&nbsp;&nbsp;-&gt; mettre quelqu=E2=80=99un responsable =
+de ce point<br class=3D""><br class=3D""><br class=3D"">## Autres =
+points<br class=3D""><br class=3D"">- Faire une liste des choix =
+technologiques</div><div class=3D""><br class=3D"">- Ajout d'un =
+CONTRIBUTING<br class=3D"">&nbsp; &nbsp;-&gt; Ouverture d=E2=80=99une =
+page <a href=3D"http://caliopen.github.io" =
+class=3D"">http://caliopen.github.io</a><br class=3D""><br class=3D"">- =
+Vinci pr=C3=A9sentera le projet au CCC</div><div class=3D""><br =
+class=3D""><br class=3D"">## D=C3=A9finir une strat=C3=A9gie d'alpha<br =
+class=3D""><br class=3D"">- Sophie fera un verbatim d'une communication =
+que l=E2=80=99on&nbsp;adresserait aux contacts choisis pour =
+l=E2=80=99alpha.</div><div class=3D"">- Commencer =C3=A0 constituer une =
+liste d=E2=80=99alpha testeur =C3=A0 partir de l=E2=80=99entourage de =
+chacun, pour anticiper le nombre de retours, etc.<br class=3D""><br =
+class=3D""><br class=3D"">## Next steps<br class=3D""><br class=3D"">- =
+Pr=C3=A9voir des r=C3=A9unions plus th=C3=A9matiques par groupe de =
+travail</div><div class=3D"">&nbsp; &nbsp;-&gt; Backend, lead=C3=A9 par =
+Aymeric</div><div class=3D"">&nbsp; &nbsp;-&gt; Front / UX-UI, lead=C3=A9 =
+par Thomas</div><div class=3D"">&nbsp; &nbsp;-&gt; Dev JS (Ember), =
+lead=C3=A9 par Julien<br class=3D""><div apple-content-edited=3D"true" =
+class=3D"">
+<div style=3D"color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+medium; font-style: normal; font-variant: normal; font-weight: normal; =
+letter-spacing: normal; line-height: normal; orphans: 2; text-align: =
+-webkit-auto; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto; =
+-webkit-text-stroke-width: 0px; " class=3D""><br =
+class=3D"Apple-interchange-newline"></div>
+</div>
+<br class=3D""></div></div></body></html>=
+
+--Apple-Mail=_3323BF0E-B4F1-4B55-AADF-0D8B3FE63C08--
+
+--===============0996009318==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev
+
+--===============0996009318==--

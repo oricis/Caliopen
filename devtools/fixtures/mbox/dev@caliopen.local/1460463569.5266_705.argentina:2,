@@ -1,0 +1,131 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alfiJ-0001dF-Qb
+	for mharc-dev@caliopen.local; Thu, 31 Mar 2016 12:44:55 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:60015)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1alfiH-0001ct-QJ
+	for dev@caliopen.local; Thu, 31 Mar 2016 12:44:54 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1alfiD-0002ys-Pn
+	for dev@caliopen.local; Thu, 31 Mar 2016 12:44:53 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:60753)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1alfiD-0002yl-Fo
+	for dev@caliopen.local; Thu, 31 Mar 2016 12:44:49 -0400
+Received: from [192.168.1.82] ([109.24.225.43]) by mrelayeu.kundenserver.de
+	(mreue002) with ESMTPSA (Nemesis) id 0M9j3f-1aZtDb1n5z-00Cz3o for
+	<emacs-devel@gnu.org>; Thu, 31 Mar 2016 18:44:48 +0200
+Subject: Re: About column numbers
+To: dev@caliopen.local
+References: <56FB02BB.3090501@alice.it> <83wpokuh3a.fsf@gnu.org>
+	<56FC0CDB.9090707@alice.it>
+	<CAP_d_8XDQmTR1M6=+a4yMAjkHFkDEnx4oFQiH57UUNLW2dzM4Q@mail.gmail.com>
+	<87poubvnhh.fsf@linux-m68k.org>
+	<CAP_d_8V=4W26O-r-DcOdfpFwwzpZKDtXnd71jOCwvhO0bL38og@mail.gmail.com>
+	<87lh4zvlp2.fsf@linux-m68k.org>
+	<CAP_d_8WSBJMZ2aLbnUwiRh1-ieG9mdcTyE-TnFo5AF+hE+_GyA@mail.gmail.com>
+	<jwvbn5u6cnu.fsf-monnier+gmane.emacs.devel@gnu.org>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Message-ID: <56FD53F6.5090805@gmail.com>
+Date: Thu, 31 Mar 2016 18:44:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <jwvbn5u6cnu.fsf-monnier+gmane.emacs.devel@gnu.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="x7qnObMbD1RMNWkeqmOCaGFNjViSPAPT8"
+X-Provags-ID: V03:K0:5TXDFtSzulvpkc8mT5xwIW+x9pkwcFe6VmbT5Wxg7RK8ArksL52
+	6PVfZ62P90zqDhbqG9+QaobTqPQu/Up/JXPS9iFlhXCQDNPvHHgBY9BdljkUhVziQpd3WR2
+	+FTzzZXdTKdgGoHC2tEjI+UyBFDqss5+4eidcMudqhXlcWa5XQ18LoaSaZ2i9SUP9oSUMKY
+	VbC7LMaJ1LQNjaDF0xHuw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:b6Y9ZWiMhGw=:p+rsDfczCImRlAZ6a6aOYk
+	GmECUl8WYg5AWKO5wvCQ9qAoeCVFZYCJlTWTTH01oaBMA+13QjgRps6k1x1sMOsIkWS2Q05qF
+	5jE6V8pdAOzouwasQG/LLUgu+BMgETH/W+lZyP4+QIjvJD/cl0F0WveyMqmu8Yghr2CSyTwFP
+	5/KpTBvbBD03C7chJaqmdccfmhKzxQfOMv/RxHHsP+FOb2ZKzz52q4RD9bhqVdlus93BjO9oX
+	kiy1P8/k9/kMC2kHN2ZUCcNnf8x4qGhXWZHTlr7v8KiLVMgdDWWMPbQypDwupzA7+tUNMLF1k
+	uht596gGBZv4VYAsFjS7qk3v5Z8/Ugj4nDR+OAdOW40+xas0VweihEGtKPueayl11kvgGc7cs
+	Rgk5GAsftqu1L0AUcRPS+Pf+GCgLZw0LtFKp4u7ArwCjSpx2GAWiPoMQ+WL1yf21nO4DnkZOZ
+	4xU0ouw0gV5skXeAijBvfaTuMdNeNAegqDcaITmZSmmoUw2DjL4CevTQv0tglXNAvzS4TylHn
+	1SPAzc/L4vxmWaFVtlrL7VA2/1So7kIXBqbJdn+XUjMy11MdJLZG0df4fl1cwLpvdFnTbzfGj
+	R9MW8jGL1g+yQ6e+KEO7w2ItO8omUK+PNz6HAo0f7tU+/f11rNcby1sW7XlJRRPVPQyzwyPLS
+	5WcZRcVvXxEJZ2m3AwuMauJ4XL+Cz0iX4ypHNVvkbDyrtoZ7M+h2oM+oaH3/j/yNC5/8=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.126.134
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 31 Mar 2016 16:44:54 -0000
+Content-Length: 2766
+Lines: 62
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--x7qnObMbD1RMNWkeqmOCaGFNjViSPAPT8
+Content-Type: multipart/mixed; boundary="eos5JO1MPSN4xoeiQaX5PvMtW9K3JBjre"
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+To: dev@caliopen.local
+Message-ID: <56FD53F6.5090805@gmail.com>
+Subject: Re: About column numbers
+References: <56FB02BB.3090501@alice.it> <83wpokuh3a.fsf@gnu.org>
+ <56FC0CDB.9090707@alice.it>
+ <CAP_d_8XDQmTR1M6=+a4yMAjkHFkDEnx4oFQiH57UUNLW2dzM4Q@mail.gmail.com>
+ <87poubvnhh.fsf@linux-m68k.org>
+ <CAP_d_8V=4W26O-r-DcOdfpFwwzpZKDtXnd71jOCwvhO0bL38og@mail.gmail.com>
+ <87lh4zvlp2.fsf@linux-m68k.org>
+ <CAP_d_8WSBJMZ2aLbnUwiRh1-ieG9mdcTyE-TnFo5AF+hE+_GyA@mail.gmail.com>
+ <jwvbn5u6cnu.fsf-monnier+gmane.emacs.devel@gnu.org>
+In-Reply-To: <jwvbn5u6cnu.fsf-monnier+gmane.emacs.devel@gnu.org>
+
+--eos5JO1MPSN4xoeiQaX5PvMtW9K3JBjre
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On 03/31/2016 02:50 PM, Stefan Monnier wrote:
+> (it would break some code, but most of it is already fundamentally
+> broken because it should use `point-min` rather than hardcoding 1, so
+> it's not *that* terrible).
+
+Amusingly, always using (point-min) also leads to interesting bugs. For e=
+xample, Proof General uses one large overlay to indicate which part of a =
+buffer has been processed. When updated, that overlay is set to cover (po=
+int-min) to (end of last processed statement). Of course, when narrowing =
+is in effect, this means that the overlay is made to start at the lowest =
+narrowed point; then when the buffer is widened, you realize that the bou=
+nds of the overlay are wrong.
+
+
+--eos5JO1MPSN4xoeiQaX5PvMtW9K3JBjre--
+
+--x7qnObMbD1RMNWkeqmOCaGFNjViSPAPT8
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJW/VP/AAoJEPqg+cTm90wjc0IP/3M53zWSTE2cbF0FAZTZZ48a
+j2vsrYOywGscmX7IiqlB7tma2zI3/91TbvoYvOroxMvXTFdbewCpcV1EdEiBoKnH
+d005n/sTcoLiuXdHqorA3LsqL/lG/rg5dFsF1ZYswLSAXIAbdhKRQ33GDh3B01hF
+414TdokCGX1e6CV/3tP6C1vMAY0Zw+vQy4JPnez7QDHoi8f8LLNqTvJw2FfSA2sb
+0tg8PNTIQnDRRKY/owZanUoJ7dA94uER2xfjPzULWp/P8yL/UiptyO7dkIGaQ3MZ
+6/1z7OFg2cz9QxnaXbgT0eFP18Srspq32ODfBNci2Epw5u3Ru2i43TPwDbVZ4JVN
+lOxhXviqFmrLfAd7OWdPOdKqnBzHE+U6pvOYoMkrCs4OCxEW3oiG9nDEtNU/kG4+
+bSNvOdGR7Khx+e0zFNuCD4qZD3au0WdPHHAM5RwDecaHK6GnHvSMv5YixwShE1EL
+bCmTOnFv0TtF/wvdmNEi4uhG2R90SS5WDcEheRZYs55C7Cvl6XzOYHWH5i1vfOZD
+hKd2+DKT1VU0ydPE5MGP769f6vvyHn2jKh33EZT56asjlezOv7wVZXKugoamdGaW
+Z85+YErreYTjryN96izlw0RXeztyVnt0itLaZOfidKlEGMyvCrXy4WiP2O/OpJ6C
+Lp7/ZE1np47Ny+JAMXwP
+=J+hS
+-----END PGP SIGNATURE-----
+
+--x7qnObMbD1RMNWkeqmOCaGFNjViSPAPT8--
+

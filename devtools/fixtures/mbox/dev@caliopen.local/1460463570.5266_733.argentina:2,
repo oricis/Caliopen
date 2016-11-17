@@ -1,0 +1,101 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alVoP-00056S-PC
+	for mharc-dev@caliopen.local; Thu, 31 Mar 2016 02:10:33 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:57703)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <netjune@163.com>) id 1alVoK-00055J-B3
+	for dev@caliopen.local; Thu, 31 Mar 2016 02:10:32 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <netjune@163.com>) id 1alVoG-0005RW-4J
+	for dev@caliopen.local; Thu, 31 Mar 2016 02:10:28 -0400
+Received: from m12-11.163.com ([220.181.12.11]:34046)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <netjune@163.com>) id 1alVoE-0005JC-8f
+	for dev@caliopen.local; Thu, 31 Mar 2016 02:10:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=Fu7lK
+	1pJLjhj92uNhSLXkmZjvDIvVn4hNWRSoo4uvU0=; b=Pkph/4Hf7D8Un26SHDjaM
+	YXX+I/dNS4N2qmgtn9rSGFsnZ8MIbZ00J7xKLebFgvKG3fLR2iY6NYd0jQqwKXEh
+	7VS/YflSOM2Uq3Nl+yqpRmhNTvt/LMiQHlTmK6aHizg98NjqzNU/Nk07e2se34TJ
+	5MQgG3cPRioo5LGpe0o2Pk=
+Received: from jun.debian8.linux (unknown [223.95.81.70])
+	by smtp7 (Coremail) with SMTP id C8CowAC3v28bv_xW17CrAA--.1092S2;
+	Thu, 31 Mar 2016 14:09:51 +0800 (CST)
+From: zhanghj <netjune@163.com>
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+Subject: Re: More convenient default rollback for users
+References: <m3poudb86o.fsf@gnus.org>
+Date: Thu, 31 Mar 2016 14:09:26 +0800
+In-Reply-To: <m3poudb86o.fsf@gnus.org> (Lars Magne Ingebrigtsen's message of
+	"Tue, 29 Mar 2016 17:44:15 +0200")
+Message-ID: <87bn5vkwkp.fsf@jun.debian8.linux>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-CM-TRANSID: C8CowAC3v28bv_xW17CrAA--.1092S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr17GF4fWrWkWFWruFWUXFb_yoW8Xr45pa
+	4fWFyayF4DtF93KanrXw1Skw1xu395JFWrZrZ8trn5ZFy5Cr1rZrZ2v3sYya47W3yI9r4j
+	vF48KasxGFZ7Zw7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j1uWLUUUUU=
+X-Originating-IP: [223.95.81.70]
+X-CM-SenderInfo: xqhwy3lqh6il2tof0z/xtbBZBE9YVQG3zSNjAABsQ
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 220.181.12.11
+Cc: netjune@qq.com, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 31 Mar 2016 06:10:32 -0000
+Content-Length: 1497
+Lines: 42
+
+Lars Magne Ingebrigtsen <larsi@gnus.org> writes:
+
+> When we introduce behavioural changes in Emacs, we often include a way
+> to get back to the old behaviour, and we document this in NEWS etc.
+>
+> But wouldn't it be nice if we had this in a more convenient,
+> cut-and-pastable format?
+>
+> Imagine you're using Emacs 26 for the first time.  Suddenly you notice
+> that when you hit the `hyper z' key, Emacs doesn't florbnoze as it used
+> to, but forblizes instead!  You're furious!  So you hit the `C-h R' (for
+> rollback) keystroke, and you get a buffer that looks like:
+>
+> -------------
+> ;; To roll back changes between Emacs 26 and Emacs 25.1:
+>
+> ;; If you want the `hyper z' key still to florbnoze instead of
+> ;; forblizing:
+> (setq hyper-z-mode 'florbnoze)
+>
+> ... more setqs here...
+>
+> ;; To roll back changes between Emacs 25.1 and Emacs 24.3:
+>
+> ...
+> -------------
+>
+> And then the anger dissipates.  No need to read documentation or
+> anything.  Just get back the old behaviour you enjoyed.
+>
+> (And this would also mean that we could introduce new behaviours more
+> often, because rollback would be so trivial for the users.)
+
+I think a UI page like "chrome://flags/" in google chrome is better for
+this function. In this page, we can show all compitable options for user
+to choose.
+
+For expert user, we can provide a file like emacs-24-compitable.el (with
+emacs 25 distribution). After loading the file, all behaviors are the
+same as emacs 24. This can also be used by packages.
+
+

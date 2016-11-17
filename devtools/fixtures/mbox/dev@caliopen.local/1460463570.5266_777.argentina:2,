@@ -1,0 +1,116 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amk94-0003xX-NQ
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 11:40:58 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:43454)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1amk90-0003s8-V1
+	for dev@caliopen.local; Sun, 03 Apr 2016 11:40:56 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1amk8z-0001oc-V2
+	for dev@caliopen.local; Sun, 03 Apr 2016 11:40:54 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:55228)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1amk8w-0001oH-3Z; Sun, 03 Apr 2016 11:40:50 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:3368
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1amk8v-0003WO-8X; Sun, 03 Apr 2016 11:40:49 -0400
+Date: Sun, 03 Apr 2016 18:40:21 +0300
+Message-Id: <8337r2r996.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Ingo Lohmar <i.lohmar@gmail.com>
+In-reply-to: <8760vyemy0.fsf@acer.localhost.com> (message from Ingo Lohmar on
+	Sun, 03 Apr 2016 17:23:03 +0200)
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<20160403111708.GA3537@acm.fritz.box>
+	<87lh4uex9h.fsf@acer.localhost.com>
+	<20160403121458.GC3537@acm.fritz.box>
+	<87bn5qeuxo.fsf@acer.localhost.com> <838u0urb1w.fsf@gnu.org>
+	<8760vyemy0.fsf@acer.localhost.com>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: acm@muc.de, kaushal.modi@gmail.com, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 15:40:56 -0000
+Content-Length: 2736
+Lines: 65
+
+> From: Ingo Lohmar <i.lohmar@gmail.com>
+> Cc: acm@muc.de, dev@caliopen.local, kaushal.modi@gmail.com
+> Date: Sun, 03 Apr 2016 17:23:03 +0200
+> 
+> On Sun, Apr 03 2016 18:01 (+0300), Eli Zaretskii wrote:
+> 
+> >> From: Ingo Lohmar <i.lohmar@gmail.com>
+> >> Date: Sun, 03 Apr 2016 14:30:27 +0200
+> >> Cc: Emacs developers <dev@caliopen.local>,
+> >> 	Kaushal Modi <kaushal.modi@gmail.com>
+> >> 
+> >> Single caveat: Do NOT start a merge when you have uncommited changes.
+> >> If you want, do 'git stash' first to recover them later.
+> >
+> > I disagree with this caveat.  There's no reason to frighten people
+> > like that, as doing such merges will work most of the time.
+> >
+> 
+> This is not about frightening people; to reiterate, this is a prominent
+> warning on the git merge man page --- I will not tell people it's ok
+> when the official documentation discourages it.
+
+I think your documentation might be outdated.  Here's what the "git
+pull" man page I have says:
+
+  In Git 1.7.0 or later, to cancel a conflicting merge, use git reset
+  --merge. Warning: In older versions of Git, running git pull with
+  uncommitted changes is discouraged: while possible, it leaves you in a
+  state that may be hard to back out of in the case of a conflict.
+
+  If any of the remote changes overlap with local uncommitted changes,
+  the merge will be automatically cancelled and the work tree
+  untouched. It is generally best to get any local changes in working
+  order before pulling or stash them away with git-stash(1).
+
+This is with Git 2.8.0.
+
+IOW, for a recent enough Git, they _recommend_ stashing, but no longer
+_warn_ about merging in this situation.  Which is exactly my
+experience.
+
+> Also, in my opinion it is conceptually a bad practice to start git
+> operations that affect the commit graph (such as merge) from an
+> unclean state.
+
+I agree that it's preferable to have a clean repo, but in practice it
+doesn't always work to have it.  Being able to pull when you have
+uncommitted changes is an important feature; a VCS that doesn't
+support it is IMO severely broken, because it will get in the way.
+
+> >> In this case, you have to learn about rebase, as in 'git rebase
+> >> origin/master'.
+> >
+> > "git rebase" is a bad idea when merging a long-lived feature branch,
+> > so please don't advise this to users who are evidently not Git
+> > experts.
+> 
+> It is my understanding (and I made it clear that it was partly
+> guesswork) that Alan asked precisely for that functionality.  I am not
+> sufficiently patronizing to tell intelligent people they are not ready
+> for something when they explicitly ask for it. :)
+
+You may wish re-reading some of Alan's past messages about his
+adventures with Git, to get a better idea about that.
+

@@ -1,0 +1,80 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akdc5-0004Af-5h
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 16:18:13 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:44529)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <mbork@mbork.pl>) id 1akdc3-0004AR-FG
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:18:12 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <mbork@mbork.pl>) id 1akdby-0006uW-Qq
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:18:11 -0400
+Received: from mail.mojserwer.eu ([2a01:5e00:2:52::8]:54941)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <mbork@mbork.pl>) id 1akdby-0006uQ-Jm
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:18:06 -0400
+Received: from localhost (localhost [127.0.0.1])
+	by mail.mojserwer.eu (Postfix) with ESMTP id E4226A63770;
+	Mon, 28 Mar 2016 22:18:04 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at mail.mojserwer.eu
+Received: from mail.mojserwer.eu ([127.0.0.1])
+	by localhost (mail.mojserwer.eu [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id hlmkM0XI739e; Mon, 28 Mar 2016 22:17:58 +0200 (CEST)
+Received: from localhost (98-171.echostar.pl [213.156.98.171])
+	by mail.mojserwer.eu (Postfix) with ESMTPSA id A9BB6A6376B;
+	Mon, 28 Mar 2016 22:17:58 +0200 (CEST)
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<CY1PR0301MB165936869029245E623C8CDEF0860@CY1PR0301MB1659.namprd03.prod.outlook.com>
+	<jwv4mbq8luz.fsf-monnier+gmane.emacs.devel@gnu.org>
+User-agent: mu4e 0.9.13; emacs 25.1.50.7
+From: Marcin Borkowski <mbork@mbork.pl>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Thinking about changed buffers
+In-reply-to: <jwv4mbq8luz.fsf-monnier+gmane.emacs.devel@gnu.org>
+Date: Mon, 28 Mar 2016 22:17:58 +0200
+Message-ID: <87y49273wp.fsf@mbork.pl>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.6.x
+X-Received-From: 2a01:5e00:2:52::8
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 20:18:12 -0000
+Content-Length: 601
+Lines: 26
+
+
+On 2016-03-28, at 21:13, Stefan Monnier <monnier@iro.umontreal.ca> wrote:
+
+>> Personally, I have relied on the a-then-delete behavior when I
+>> _want_ the file to be considered modified*.
+>
+> Same here (tho I use SPC DEL instead).
+
+And here.
+
+>> * that said, I don't necessarily have a compelling reason for wanting
+>> a modified buffer.
+>
+> For me, the full idiom is "SPC DEL C-x C-s" which I use to force Emacs
+> to save the file.  [...]
+
+Same here.
+
+Best,
+
+-- 
+Marcin Borkowski
+http://octd.wmi.amu.edu.pl/en/Marcin_Borkowski
+Faculty of Mathematics and Computer Science
+Adam Mickiewicz University
+

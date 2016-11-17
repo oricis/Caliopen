@@ -1,0 +1,107 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amgsy-00057f-QZ
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 08:12:08 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:41536)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <acm@muc.de>)
+	id 1amgsw-00056L-J4
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:12:07 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <acm@muc.de>) id 1amgst-0003gV-Cf
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:12:06 -0400
+Received: from mail.muc.de ([193.149.48.3]:36897)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <acm@muc.de>)
+	id 1amgst-0003gI-3L
+	for dev@caliopen.local; Sun, 03 Apr 2016 08:12:03 -0400
+Received: (qmail 9313 invoked by uid 3782); 3 Apr 2016 12:12:02 -0000
+Received: from acm.muc.de (p548A58C8.dip0.t-ipconnect.de [84.138.88.200]) by
+	colin.muc.de (tmda-ofmipd) with ESMTP;
+	Sun, 03 Apr 2016 14:12:00 +0200
+Received: (qmail 4769 invoked by uid 1000); 3 Apr 2016 12:14:58 -0000
+Date: Sun, 3 Apr 2016 12:14:58 +0000
+To: Ingo Lohmar <i.lohmar@gmail.com>
+Subject: Re: Understanding a recent commit in emacs-25 branch [ed19f2]
+Message-ID: <20160403121458.GC3537@acm.fritz.box>
+References: <CAFyQvY16kxTqhHrWCVSVU64FM9_VUiXbpnxDRVBmOE1Cj9SicA@mail.gmail.com>
+	<CAFyQvY1c1FvSOyNk_OxbSP5-prM-mXoMekFNRrbsUC0V=3xubA@mail.gmail.com>
+	<20160403111708.GA3537@acm.fritz.box>
+	<87lh4uex9h.fsf@acer.localhost.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87lh4uex9h.fsf@acer.localhost.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Delivery-Agent: TMDA/1.1.12 (Macallan)
+From: Alan Mackenzie <acm@muc.de>
+X-Primary-Address: acm@muc.de
+X-detected-operating-system: by eggs.gnu.org: FreeBSD 9.x
+X-Received-From: 193.149.48.3
+Cc: Emacs developers <dev@caliopen.local>,
+	Kaushal Modi <kaushal.modi@gmail.com>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 12:12:07 -0000
+Content-Length: 2395
+Lines: 53
+
+Hello, Ingo.
+
+On Sun, Apr 03, 2016 at 01:40:10PM +0200, Ingo Lohmar wrote:
+> Hi Alan,
+
+> On Sun, Apr 03 2016 11:17 (+0000), Alan Mackenzie wrote:
+
+> > That massive commit happened because of git.  I attempted a 'git pull'
+> > prior to making a (moderately small) commit.  There was a one-letter
+> > typo in one of my existing files (which I think had been committed).
+> > Because of that, git failed to merge in all the stuff which it had just
+> > fetched from savannah, instead prompting me to do a manual merge, which
+> > I then did.
+
+> I think 'git pull' has been discussed on this list before.  Others feel
+> differently about this issue, but I strongly advise anyone against using
+> 'git pull', and instead suggest you do 'git fetch' (maybe --all).
+
+> *After* seeing what has happened to the remote branches, you can decide
+> whether a merge or a rebase is in order.  Or you spot an unwanted
+> discrepancy, and can fix it, instead of git telling you to manually
+> merge (although admittedly I do not quite follow that part).
+
+Is there a way of asking "if I attempt git merge, will there be any
+conflicts?"?  It would be nice to find this out before one's working
+directory gets lots of uncommitted changes.
+
+Is there a way of recovering after doing git pull, when git has already
+written all the pulled changes to the working directory?  Is there some
+way of saying git undo-partial-pull, leaving the working directory as it
+was before the pull, and cancelling the merge which git has started?
+
+> > It would also be nice if such "pseudo merges" could be handled locally,
+> > rather than being pushed back to the remote repository, causing
+> > confusion.
+
+> Please note that *all* commits and merges happen locally.  The user can
+> only push changes back to the remote by an explicit action, with all
+> intended and unintended effects.
+
+Sorry, I wasn't very clear.  What I meant was, is there a way of
+finishing the merge locally, then pushing real changes without the
+confusing "pseudo-merge" escaping upstream with them?
+
+When I did git pull, there were, let's say, 20 commits.  19 of these
+could have been moved directly into my local repository; only one had a
+conflict.  It would be nice to be able to fix the local repo, so that
+the "pseudo-merge" of these 19 blameless commits remains a purely local
+affair, and doesn't get pushed upstream.
+
+-- 
+Alan Mackenzie (Nuremberg, Germany).
+

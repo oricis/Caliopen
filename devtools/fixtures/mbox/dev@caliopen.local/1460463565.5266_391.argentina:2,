@@ -1,0 +1,71 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an7d0-0000p8-OE
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 12:45:26 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:52138)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1an7cy-0000l2-FM
+	for dev@caliopen.local; Mon, 04 Apr 2016 12:45:25 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>) id 1an7cx-0003Cf-Nv
+	for dev@caliopen.local; Mon, 04 Apr 2016 12:45:24 -0400
+Received: from zimbra.cs.ucla.edu ([131.179.128.68]:56521)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eggert@cs.ucla.edu>)
+	id 1an7cs-0003Bd-8S; Mon, 04 Apr 2016 12:45:18 -0400
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTP id 43D35161249;
+	Mon,  4 Apr 2016 09:45:17 -0700 (PDT)
+Received: from zimbra.cs.ucla.edu ([127.0.0.1])
+	by localhost (zimbra.cs.ucla.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id HsSX5prQHfOu; Mon,  4 Apr 2016 09:45:16 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTP id 94B68161251;
+	Mon,  4 Apr 2016 09:45:16 -0700 (PDT)
+X-Virus-Scanned: amavisd-new at zimbra.cs.ucla.edu
+Received: from zimbra.cs.ucla.edu ([127.0.0.1])
+	by localhost (zimbra.cs.ucla.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id cTlQv0FOviMv; Mon,  4 Apr 2016 09:45:16 -0700 (PDT)
+Received: from penguin.cs.ucla.edu (Penguin.CS.UCLA.EDU [131.179.64.200])
+	by zimbra.cs.ucla.edu (Postfix) with ESMTPSA id 777A6161249;
+	Mon,  4 Apr 2016 09:45:16 -0700 (PDT)
+Subject: Re: [PATCH] src/print.c: Check for __GLIBC__ rather than GNU_LINUX
+To: Eli Zaretskii <eliz@gnu.org>
+References: <1459315328-3663-1-git-send-email-somasissounds@gmail.com>
+	<56FD8A8B.3040808@cs.ucla.edu> <83shz5u8vs.fsf@gnu.org>
+	<56FE276C.2050306@cs.ucla.edu> <83pou8s90i.fsf@gnu.org>
+From: Paul Eggert <eggert@cs.ucla.edu>
+Organization: UCLA Computer Science Department
+Message-ID: <57029A1C.4000609@cs.ucla.edu>
+Date: Mon, 4 Apr 2016 09:45:16 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.7.1
+MIME-Version: 1.0
+In-Reply-To: <83pou8s90i.fsf@gnu.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 131.179.128.68
+Cc: dev@caliopen.local, somasis@exherbo.org, somasissounds@gmail.com
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 16:45:25 -0000
+Content-Length: 277
+Lines: 8
+
+On 04/02/2016 01:35 AM, Eli Zaretskii wrote:
+> I preferred
+> to have less #ifdef's in mainline Emacs code, but if you think the
+> alternative is better, it's fine with me.
+
+No, I also like keeping the mainline code simpler. I installed the patch 
+with your additions; thanks.
+

@@ -1,0 +1,92 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amrhN-0002D7-VY
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 19:44:53 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:43550)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amrhL-0002Bj-3G
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:44:51 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amrhH-00089h-TI
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:44:51 -0400
+Received: from plane.gmane.org ([80.91.229.3]:48268)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amrhH-00089W-Mk
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:44:47 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1amrhF-0004tL-GF
+	for dev@caliopen.local; Mon, 04 Apr 2016 01:44:45 +0200
+Received: from 151.red-79-153-146.dynamicip.rima-tde.net ([79.153.146.151])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 01:44:45 +0200
+Received: from ofv by 151.red-79-153-146.dynamicip.rima-tde.net with local
+	(Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 01:44:45 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: =?utf-8?Q?=C3=93scar_Fuentes?= <ofv@wanadoo.es>
+Subject: Re: Thinking about changed buffers
+Date: Mon, 04 Apr 2016 01:44:38 +0200
+Message-ID: <87bn5q2r6h.fsf@wanadoo.es>
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<2d55f05e4ba00afeb3f7269953eb0e13.squirrel@cloud103.planethippo.com>
+	<jwvwpolbe3o.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m31t6tcneb.fsf@gnus.org> <m2mvpafg3c.fsf@newartisans.com>
+	<5701A74B.2050902@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 151.red-79-153-146.dynamicip.rima-tde.net
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+Cancel-Lock: sha1:JZtB6TfGDNCeztyTSm0xhnT3eMQ=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 23:44:52 -0000
+Content-Length: 878
+Lines: 30
+
+Clément Pit--Claudel <clement.pit@gmail.com> writes:
+
+>>> But one take away from this discussion is that Emacs needs a
+>>> convenient command to save an unchanged buffer. I think I'll file a
+>>> wishlist bug report for that.
+>> 
+>> C-x C-w RET will do that, and I use it often for that effect.
+>
+> You need two `RET's, actually, don't you?
+
+To be precise:
+
+C-x C-w RET y RET
+
+> And it shows a scary
+> overwrite message. Also, it doesn't work with ido-mode, unfortunately.
+
+For avoiding the scary overwrite confirmation you use the prefix
+argument:
+
+C-u C-x C-w RET
+
+Those of us who use ido-mode:
+
+C-u C-x C-w C-j
+
+IMO, those sequences are above of the threshold of what can be
+considered convenient (definitely not recommended if you are prone to
+suffering from RSI) and I expressed my preference for a new shorcut.
+However, others were quick at dismissing that possibility.
+
+

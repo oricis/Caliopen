@@ -1,0 +1,68 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aYez8-0003pC-At
+	for mharc-dev@caliopen.local; Wed, 24 Feb 2016 14:20:30 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:43749)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1aYez6-0003mh-2j
+	for dev@caliopen.local; Wed, 24 Feb 2016 14:20:28 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>) id 1aYez5-00006R-8Y
+	for dev@caliopen.local; Wed, 24 Feb 2016 14:20:28 -0500
+Received: from aserp1040.oracle.com ([141.146.126.69]:16667)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <drew.adams@oracle.com>)
+	id 1aYez0-000052-Lq; Wed, 24 Feb 2016 14:20:22 -0500
+Received: from aserv0021.oracle.com (aserv0021.oracle.com [141.146.126.233])
+	by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with
+	ESMTP id u1OJKKpv000818
+	(version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+	Wed, 24 Feb 2016 19:20:20 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+	by aserv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u1OJKKEC029820
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
+	Wed, 24 Feb 2016 19:20:20 GMT
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+	by aserv0121.oracle.com (8.13.8/8.13.8) with ESMTP id u1OJKKZl031787;
+	Wed, 24 Feb 2016 19:20:20 GMT
+MIME-Version: 1.0
+Message-ID: <b2cf3e4f-c346-4a3e-a679-e3df7f32ec86@default>
+Date: Wed, 24 Feb 2016 11:20:19 -0800 (PST)
+From: Drew Adams <drew.adams@oracle.com>
+Sender: Drew Adams <drew.adams@oracle.com>
+To: Eli Zaretskii <eliz@gnu.org>, Stefan Monnier <monnier@IRO.UMontreal.CA>
+Subject: RE: What to do when font-lock-flush + font-lock-ensure do less than
+	font-lock-fontify-buffer?
+References: <<56CA94A8.3000205@gmail.com>
+	<jwvziuq4vjq.fsf-monnier+gmane.emacs.devel@gnu.org>	<83bn76hw1o.fsf@gnu.org>>
+	<<jwv1t829byc.fsf-monnier+emacs@gnu.org>> <<838u29hq9x.fsf@gnu.org>>
+In-Reply-To: <<838u29hq9x.fsf@gnu.org>>
+X-Priority: 3
+X-Mailer: Oracle Beehive Extensions for Outlook 2.0.1.9  (901082) [OL
+	12.0.6691.5000 (x86)]
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+X-Source-IP: aserv0021.oracle.com [141.146.126.233]
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.4.x-2.6.x [generic]
+X-Received-From: 141.146.126.69
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 24 Feb 2016 19:20:29 -0000
+Content-Length: 203
+Lines: 6
+
+> I'm not sure about this (this machinery and its implications were
+> never sufficiently documented, and what I think I know is the result
+> of a desperate attempt to document it).
+
+File a doc bug. ;-)
+

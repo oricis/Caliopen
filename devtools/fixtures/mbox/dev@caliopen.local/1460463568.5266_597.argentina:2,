@@ -1,0 +1,108 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1aiPQF-0005FD-4z
+	for mharc-dev@caliopen.local; Tue, 22 Mar 2016 12:44:47 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:46780)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aiPQD-0005C8-Ea
+	for dev@caliopen.local; Tue, 22 Mar 2016 12:44:46 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aiPQ8-0008RQ-F7
+	for dev@caliopen.local; Tue, 22 Mar 2016 12:44:45 -0400
+Received: from plane.gmane.org ([80.91.229.3]:37443)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aiPQ8-0008Qw-8P
+	for dev@caliopen.local; Tue, 22 Mar 2016 12:44:40 -0400
+Received: from list by plane.gmane.org with local (Exim 4.69)
+	(envelope-from <ged-emacs-devel@m.gmane.org>) id 1aiPQ4-000382-8G
+	for dev@caliopen.local; Tue, 22 Mar 2016 17:44:36 +0100
+Received: from 69-196-182-150.dsl.teksavvy.com ([69.196.182.150])
+	by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+	id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Tue, 22 Mar 2016 17:44:36 +0100
+Received: from monnier by 69-196-182-150.dsl.teksavvy.com with local (Gmexim
+	0.1 (Debian)) id 1AlnuQ-0007hv-00
+	for <dev@caliopen.local>; Tue, 22 Mar 2016 17:44:36 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To: dev@caliopen.local
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+Date: Tue, 22 Mar 2016 12:44:27 -0400
+Message-ID: <jwvzitqpj68.fsf-monnier+gmane.emacs.devel@gnu.org>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+	<jwv1t74x716.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87pounew9e.fsf@gmail.com>
+	<jwva8lrx4ov.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<87twjzda4h.fsf@gmail.com> <jwvwpovwuip.fsf-monnier+Inbox@gnu.org>
+	<87lh5bd4ib.fsf@gmail.com> <87egb3ryjc.fsf@gmail.com>
+	<877fgusum3.fsf@gmail.com> <8737risu8d.fsf@gmail.com>
+	<jwvbn66viar.fsf-monnier+Inbox@gnu.org> <87mvpqqxy7.fsf@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: 69-196-182-150.dsl.teksavvy.com
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Cancel-Lock: sha1:VdoDwlpPQUO1P7sh9dQ3ECawHtA=
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+	recognized.
+X-Received-From: 80.91.229.3
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 22 Mar 2016 16:44:46 -0000
+Content-Length: 1401
+Lines: 35
+
+> Mixing hard limit into a common user level function is a bad marketing
+> strategy.
+
+`narrow-to-region' is not only a user-level command.
+It's also a low-level primitive.
+
+The narrow-to-region command can't set the optional argument unless we
+take extra steps to let it, so the "hard narrowing" would only be
+available from Elisp, not interactively.
+
+> If users and major modes decide to use hard limits we might end up in
+> the same situation as now when narrow/widen is not perceived as a good
+> tool for multi-modes.
+
+Could be.  Maybe there are more "kinds of narrowing" than just 2, indeed.
+
+But for me, the main consideration is whether the text before/after
+point-min can be taken into account as a kind of context, or whether the
+text between point-min/max should be treated (even if temporarily) as
+being the whole&sole truth.
+
+That's what "hard narrowing" means to me.  I don't think I'd be able to
+design something that can take into account finer distinctions of
+narrowings right now, for lack of understanding about what those finer
+distinctions could be and what kind of problems they lead to.
+
+> limits at the end. Problems will occur if major modes start using hard
+> limits in such contexts directly.
+
+I don't see any reason why problems *will* occur in that case (tho, of
+course, Murphy could be that reason).  So until such problems do show up,
+I wouldn't worry.
+
+
+        Stefan
+
+

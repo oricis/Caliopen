@@ -1,0 +1,93 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1an9Tl-0002bZ-T0
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 14:44:01 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59046)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <athird@googlemail.com>) id 1an9Tk-0002bG-3E
+	for dev@caliopen.local; Mon, 04 Apr 2016 14:44:00 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <athird@googlemail.com>) id 1an9Tg-0000FC-1v
+	for dev@caliopen.local; Mon, 04 Apr 2016 14:44:00 -0400
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229]:35934)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <athird@googlemail.com>) id 1an9Tf-0000F6-Pb
+	for dev@caliopen.local; Mon, 04 Apr 2016 14:43:55 -0400
+Received: by mail-lb0-x229.google.com with SMTP id qe11so174162777lbc.3
+	for <dev@caliopen.local>; Mon, 04 Apr 2016 11:43:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=googlemail.com; s=20120113;
+	h=sender:date:from:to:cc:subject:message-id:references:mime-version
+	:content-disposition:in-reply-to:user-agent;
+	bh=hF7/zppHm3lyvx8CTiv91/PHpvr4V3pCCtRFIHk0Z6o=;
+	b=bPdL3h7vBBsSrdO6tmSKzbrYxXwc6U9drIpkAH2hPrEaV+wBdvNiJhenTNkov5Ao+J
+	XEq6X71UM9UVH0dSLW2EDr5T5iSRYlFoLrg5s9aWzH69/AyB8SH4V7f0TWB/nO9hLGtE
+	AFr6ALiMnR2+sIejthb91sSW8U45qRskCas0Ar0bzwQH6Z+zl/v4tHJOltx22QIrSN+k
+	Y4UQlFqI6s4mOTekKP+t0otEhKx9b8I7GO3Ip3LbMuKRyfI7Abf728yOZ6izO2cH0Zss
+	Pz2yYLXp6hahwSsM3eJcuLuS1sGCY1CS8AFEy5bFBHf27UwQ1g2mG2e7QnRU2kH1BKo1
+	t7ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+	:references:mime-version:content-disposition:in-reply-to:user-agent;
+	bh=hF7/zppHm3lyvx8CTiv91/PHpvr4V3pCCtRFIHk0Z6o=;
+	b=km6CQZQDIiZVFJn11Y0U4QhS9IERyCIugweFXvCuDPDKGlBpYO+55g2V/Z6b+szUlL
+	axhc8E1ac43BBtMxbf6IOQfZTvnZinmjzVFzx38gTZP4sD2pGPs3My9wshcTF4u3CEqz
+	7fb3jJu15vCFpRuFgJsL+rpN6R4Anbg6E5uSJBa7JIW3gWFMBwTkEuvViKLAalLZDHh9
+	NkbRYU+jge2eFmYdSzWY/ANU34xX3zeAj5EwjLZBn85Xlh2vwtJHqyPcNAPKZBE8gqO0
+	afJwIsV7V3/B/uTerAGhALsQO8grVvoFUDFrI1zXlv59BcIrz8muxPwy+EkNlP4n9haH
+	xOMg==
+X-Gm-Message-State: AD7BkJLa8IchipCstSsSQLeJ1KsPTE5MaTMBz2g4RuzUU6uDvxV/e962IhtUeA4dF38zRA==
+X-Received: by 10.28.137.139 with SMTP id l133mr13898818wmd.1.1459795434523;
+	Mon, 04 Apr 2016 11:43:54 -0700 (PDT)
+Received: from breton.local ([2001:8b0:3f8:8129:b0b6:f36f:fd4e:bbbd])
+	by smtp.gmail.com with ESMTPSA id
+	73sm15315505wmy.22.2016.04.04.11.43.53
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Mon, 04 Apr 2016 11:43:53 -0700 (PDT)
+Sender: Alan Third <athird@googlemail.com>
+Date: Mon, 4 Apr 2016 19:43:51 +0100
+From: Alan Third <alan@idiocy.org>
+To: Lode Leroy <lode.leroy@gmail.com>
+Subject: Re: pre-test windows binaries
+Message-ID: <20160404184351.GA16912@breton.local>
+References: <CA+N9e5b+U7kkiHDG9+NRzwpHD1-y0cnnp8NsJv1Vsig88L-H5A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+N9e5b+U7kkiHDG9+NRzwpHD1-y0cnnp8NsJv1Vsig88L-H5A@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:4010:c04::229
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 18:44:01 -0000
+Content-Length: 491
+Lines: 17
+
+On Mon, Apr 04, 2016 at 03:51:42PM +0200, Lode Leroy wrote:
+> I installed this version:
+> http://www.russet.org.uk/scratch/emacs-25.0.92-x86_64-w64-mingw32.zip
+> and when clicking the "Emacs Guided Tour" in the "About GNU Emacs"
+> text, I get this error:
+>     Contacting host: www.gnu.org:80
+>     libxml2 library not found
+> 
+> could libxml2.dll be added to the zip archive?
+
+You should be able to grab lixml from here:
+
+https://sourceforge.net/projects/ezwinports/files/
+
+-- 
+Alan Third
+

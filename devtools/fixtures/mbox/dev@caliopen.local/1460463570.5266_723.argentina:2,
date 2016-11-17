@@ -1,0 +1,73 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akwYK-00020E-TX
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 12:31:36 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:40404)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1akwYE-0001vY-47
+	for dev@caliopen.local; Tue, 29 Mar 2016 12:31:35 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1akwY9-0007Cb-Qf
+	for dev@caliopen.local; Tue, 29 Mar 2016 12:31:30 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:60562)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>)
+	id 1akwY9-0007C7-K4; Tue, 29 Mar 2016 12:31:25 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>)
+	id 1akwXq-000845-Mz; Tue, 29 Mar 2016 18:31:23 +0200
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: Eli Zaretskii <eliz@gnu.org>
+Subject: Re: More convenient default rollback for users
+References: <m3poudb86o.fsf@gnus.org> <83io05w9s7.fsf@gnu.org>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAGFBMVEUYCg0RBgkbDxIsHhxn
+	TjgKAgPRt28VCAzWTtCKAAACR0lEQVQ4jW2UTXPjIAyGsXc6vpq0LtcE8nFNDcm5u1Cf4yRsz7th
+	2Ct4JuO/v0K222ZSnTx6eF9JRITQkPObEBKDUBrIFHhEjsBSlvNaiASKQFBgjJakalmHJyAeQIN5
+	IIS2jIiRABBD3hioUZJkPQcnWxyn/ADGYC2PUt0Dau01h3zjvbsBlbX2qFLe+xtgUxDjR8BebgBX
+	EygXN+B8+ASs/wJOu+Z7xfHPHcgQWLf+XtH6Z5/m0HfFfTMCtghfrX6PQJLZoKBEvKATAoMAFbQT
+	Csja//VN49IPxTJQBFJ2UpvV2Xs9AShetIEwLs3+AjbPycjIZMWKCtgPZZzz/rL3ThnNa+iK9SUj
+	5SldOE7daCNrBIFFUm6UNglcnqCArDleInu3XS01nnfaaS23HK1i1eawBJjfp5ZEByAyEq8UmlKu
+	geprEIgu54RGFnpaCfnq3KVxTXKqCz5Y9SQKpZ267F1qSaY9Ix2CTDwpB3O4xqjtBHoES+Pgnv41
+	WnGZtp7kGwAh48tHqAH+OzmrO1RswCoU/F1JrbSC7c44gpBqhAURDdSAGbSIA2BZAhmT6hdsrJLb
+	edEhSFfS99lMqjetl+f5blXOBgWCeKxf38TP02PYXNsSAaUAWDzKxUKt5CJr7SHyESTWCXgyNQw9
+	rw58AC1NIKRXud3yEFoyggpBn3NRw4XaeBie+6DoewqERxaraxj+CODlUQwYJjyURYSPCbR0imvq
+	vAfJHED1AfpiALCXSWE/QCBFOl+MNUBRTRI0CkNX/wGyse1Ht0Yu2gAAAABJRU5ErkJggg==
+Date: Tue, 29 Mar 2016 18:31:06 +0200
+In-Reply-To: <83io05w9s7.fsf@gnu.org> (Eli Zaretskii's message of "Tue, 29 Mar
+	2016 19:04:08 +0300")
+Message-ID: <m3bn5xb60l.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 16:31:35 -0000
+Content-Length: 323
+Lines: 13
+
+Eli Zaretskii <eliz@gnu.org> writes:
+
+> How do you do that with defcustoms?
+
+I don't know.  Does defcustom offer something like that?
+
+In any case, having the user go through the custom interface is way too
+much work.
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

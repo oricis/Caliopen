@@ -1,0 +1,88 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 850F3120AD3;
+	Wed, 26 Nov 2014 16:05:04 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 0.581
+X-Spam-Level: 
+X-Spam-Status: No, score=0.581 tagged_above=-999 required=5
+	tests=[BAYES_05=-1.11, RATWARE_GECKO_BUILD=1.691]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id PuLBrjOjZdol; Wed, 26 Nov 2014 16:05:02 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id C8885120ABE;
+	Wed, 26 Nov 2014 16:05:02 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 33FDE69DCFB43;
+	Wed, 26 Nov 2014 16:05:02 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id xSUT27hcVPDb; Wed, 26 Nov 2014 16:04:58 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 34F9369DCFB40;
+	Wed, 26 Nov 2014 16:04:58 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id 7859369DCFB40
+ for <caliopdev@caliop.net>; Wed, 26 Nov 2014 16:04:57 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id Qflc7y4nmksg for <caliopdev@caliop.net>;
+ Wed, 26 Nov 2014 16:04:53 +0100 (CET)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
+ [217.70.183.196])
+ (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by brassens.heberge.info (Postfix) with ESMTPS id 8787B69DCFB3F
+ for <caliopdev@caliop.net>; Wed, 26 Nov 2014 16:04:53 +0100 (CET)
+Received: from [IPv6:2001:4b98:beef:a:3d66:581c:b2c0:5404] (unknown
+ [IPv6:2001:4b98:beef:a:3d66:581c:b2c0:5404])
+ (Authenticated sender: mric@chamal.fr)
+ by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 5817C172055
+ for <caliopdev@caliop.net>; Wed, 26 Nov 2014 16:04:53 +0100 (CET)
+Message-ID: <5475EC1E.4010603@chamal.fr>
+Date: Wed, 26 Nov 2014 16:05:02 +0100
+From: Aymeric Barantal <mric@chamal.fr>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64;
+ rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To: caliopdev@caliop.net
+References: <547453AE.70408@chamal.fr> <547457A9.9070801@chamal.fr>
+In-Reply-To: <547457A9.9070801@chamal.fr>
+Subject: Re: [Caliopdev] Fwd: Re:  matrice de choix framework JS
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+[..]
+
+En attendant les reponses sur le remplissage de la matrice (ou
+la difficulte a la comprendre), voici un peu de lecture.
+
+http://www.slideshare.net/rmsguhan/react-meetup-mailonreact
+
+++ chamal
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev

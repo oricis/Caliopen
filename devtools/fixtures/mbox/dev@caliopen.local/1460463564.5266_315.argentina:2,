@@ -1,0 +1,97 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1anAPM-0000Gh-4O
+	for mharc-dev@caliopen.local; Mon, 04 Apr 2016 15:43:32 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:49718)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1anAPI-0000AC-7I
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:43:29 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1anAPF-0007xo-1j
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:43:28 -0400
+Received: from hermes.netfonds.no ([80.91.224.195]:48280)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <larsi@gnus.org>) id 1anAPE-0007xZ-S5
+	for dev@caliopen.local; Mon, 04 Apr 2016 15:43:24 -0400
+Received: from cm-84.215.1.64.getinternet.no ([84.215.1.64] helo=stories)
+	by hermes.netfonds.no with esmtpsa
+	(TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128) (Exim 4.84_2)
+	(envelope-from <larsi@gnus.org>)
+	id 1anAPA-0006bV-0v; Mon, 04 Apr 2016 21:43:22 +0200
+From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+To: Karl Fogel <kfogel@red-bean.com>
+Subject: Re: "Staying in the same place"
+References: <m3oa9q53uq.fsf@gnus.org>
+	<jwv7fgd1r7w.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m3mvp9nsmp.fsf@gnus.org> <jwv8u0tql7y.fsf-monnier+Inbox@gnu.org>
+	<m37fgdnrks.fsf@gnus.org> <87h9fhrxb3.fsf@red-bean.com>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAHlBMVEVQU3VUWXwxGREnDwcT
+	BwdaoeFNS2dIQFM6JiZAMz/eZavFAAACVUlEQVQ4jU2SsW7bMBRFn4Ca6EgCtdGsUgbNoj8giZnC
+	3WwgapBNBhoK/YCa4CpkkLYUKCrzb3sfSTsmLBF8h/e+S1rkrO0KqZTih6dVJ6xzjgDs4aN+UCtr
+	ewaWgZRM+EUKFed6R0drRSFlgd14SElsPGYrQR0RS0hKEskpAgKRBRVozMYfAKgTAqAQwnap7qjv
+	0QVWREVRrDpk7dHazdQ7KwQDSRwpt5hhBQGOqFgjwERy8hkgFcBBWjiBBJcVFh2wu6B4G1dWtkv3
+	RDlrjOs48GubhuiPHMm7wABkkcHOsdccQqA5gmV7lsRIPpwiOIoL2GEZAiQUZlac63vVOx94kJuZ
+	XOrU+wxmHObIYL/cIy+qLsTmgb0ODHKy5ygYk+J8DB4vAZnGEVo/u9+syOCGwTTCygfHCtW+mG+Y
+	f7HRyABdcAy1bM3GoA/2nzJwbomgiyeAx3bvYz0pwrJV6vWLMea+/cE+DCa2escJFp8iuJmuQPD4
+	i5ZRsfs8stMw0jhxrnfRt88AjzufBAPACMlp9m3705g7mVrXNY3jNPk5bP/hCPLtu4j766EEiIq/
+	d3zqryZcATTBFdzz4XdmGxuUZVLgmf7s8bWLtweUuZ6tEHH2J1zqYNJ+WNUpHiLEydRjGQfAcGY8
+	brex3JSE91V9uN1EUFUU51wt8TNltsJTg5RDXceCaapGs5Vu0o4671w/aA3GoNJlVZ6HXhtdoVQR
+	eINeud40ldloDAYwa7SOGSvoIdGV1gzSaEpdoQCvzQWsNcu5Q1wZfgNsDD4PXjRZy4vmP7Hmdb25
+	BpAlAAAAAElFTkSuQmCC
+Date: Mon, 04 Apr 2016 21:43:19 +0200
+In-Reply-To: <87h9fhrxb3.fsf@red-bean.com> (Karl Fogel's message of "Mon, 04
+	Apr 2016 14:25:20 -0500")
+Message-ID: <m3twjhkvmw.fsf@gnus.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 80.91.224.195
+Cc: Stefan Monnier <monnier@IRO.UMontreal.CA>, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 04 Apr 2016 19:43:29 -0000
+Content-Length: 1388
+Lines: 33
+
+Karl Fogel <kfogel@red-bean.com> writes:
+
+> And Stefan has pointed out that what you're proposing is essentially
+> what bookmark already does.  Maybe that idea of recording a position
+> fuzzily should be abstracted out, and then bookmark would use the new
+> abstraction too, or maybe this new function should just use bookmark's
+> existing code (which, in turn, already hooks into mode-specific code
+> in some cases, and could do more of that).
+
+Ah, I didn't know that about bookmarks.  Sounds like all the mechanisms
+we need are in place, so we just need to start using them throughout the
+various modes.  But perhaps provide easier-to-understand interfaces
+like:
+
+> In any case, though, should the new thing be defined as a macro?  That
+> seems like the more natural way, at least IMHO.  Something like:
+>
+> (defmacro fuzzy-save-excursion (&rest body)
+>    record-the-position-fuzzily-using-mode-specific-code
+>    run-the-body
+>    restore-the-fuzzily-recorded-position
+> )
+
+Yes, I think having a macro for this would be very handy and encourage
+usage of this stuff.  However, the restore-the-fuzzily-recorded-position
+thing should also be available in a handy fashion for when we're doing
+asynchronous fuzzy point restoration (with diff mode and compilation
+mode, for instance).
+
+-- 
+(domestic pets only, the antidote for overdose, milk.)
+   bloggy blog: http://lars.ingebrigtsen.no
+

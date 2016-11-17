@@ -1,0 +1,124 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahzMB-0006xt-9D
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 08:54:51 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:46500)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahzM8-0006sT-DV
+	for dev@caliopen.local; Mon, 21 Mar 2016 08:54:49 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahzM5-0007c3-6h
+	for dev@caliopen.local; Mon, 21 Mar 2016 08:54:48 -0400
+Received: from mail-wm0-x22a.google.com ([2a00:1450:400c:c09::22a]:32856)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahzM3-0007bi-Vq
+	for dev@caliopen.local; Mon, 21 Mar 2016 08:54:45 -0400
+Received: by mail-wm0-x22a.google.com with SMTP id l68so150368685wml.0
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 05:54:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=LiOZ5LSaaMsUvi3nJ2u87agPmaJsZ8tEzaf0P55zLaE=;
+	b=rBTvNcW67IS7WVbdGSYfAMiHvNRm4unXavFUBffdpxccnSv2iUG+V+zR0px+wrtNyN
+	2+jz7ZYANP3beUzucM3tBiP0aqWEMOUemXmqxWntCa6rDiXnzn22V2v86he8uEeAb+bL
+	bNNKnR2AlibF4SLedh8+ZbocayT2ia1lGlVEEBKhwDPbr6HO9LkC54lron2gO21k7iyg
+	uX3L/SIaF0I+U8bYsKIF6YCY0zWgionnM1qpYyA9cyWbQZuSVZDiWIRVsQfhAt0pREuo
+	Uqk+cUnNMMrEUSbAoGSrj6AlKioifMX5uaOd2Ilb74kl59epjA+lYhvvmz7m9HMmpZzr
+	sW3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=LiOZ5LSaaMsUvi3nJ2u87agPmaJsZ8tEzaf0P55zLaE=;
+	b=B5/ITjBAJS7E9a5nxWsN0goniqBFdxIg+Sp4PW4hLKHKUwZZUEQiOyMV8Goz63bZZY
+	V3miW/c066rO2ZcA7VE96teFLv7CZwy9DCDcAfyok8zvwCWcGGLDI+tkTZzTzzjJT04T
+	2X5mTlFvsYDpOQdWcJV81qO8NGziL9/8jj2sdXvWdXB6v4/++2F6ya7PSZIi3o8eKqsH
+	HOwf5eqWeFs6KvhyFwbkO9E6vPQ3ZMeB+CL06UBMVOSaqldfhXZcCEEl+jrpJjUfRrgG
+	eGcIurb5qJ4e322qUdqQ9W2rsATdL9fnry9kQN9v12H+Cxt3zEgxdsiuEvaUyHlwccpo
+	ZzTg==
+X-Gm-Message-State: AD7BkJLaRrsqHlw+GwSVcBVXJEXu6FP5BZRKaedoEd5zUOYUnYwkajZhN9IpCj0eMXXg+A==
+X-Received: by 10.28.189.70 with SMTP id n67mr12968233wmf.45.1458564883250;
+	Mon, 21 Mar 2016 05:54:43 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	y3sm12339811wmy.17.2016.03.21.05.54.42
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Mon, 21 Mar 2016 05:54:42 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: [Patch] hard-widen-limits [was Re: Syntax tables for multiple
+	modes [was: bug#22983: syntax-ppss returns wrong result.]]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com> <87mvpsbeok.fsf_-_@gmail.com>
+	<jwv37rkypwi.fsf-monnier+Inbox@gnu.org>
+Date: Mon, 21 Mar 2016 13:54:41 +0100
+In-Reply-To: <jwv37rkypwi.fsf-monnier+Inbox@gnu.org> (Stefan Monnier's message
+	of "Mon, 21 Mar 2016 08:39:28 -0400")
+Message-ID: <87bn68f0tq.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::22a
+Cc: Alan Mackenzie <acm@muc.de>, Dmitry Gutov <dgutov@yandex.ru>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 12:54:49 -0000
+Content-Length: 1381
+Lines: 36
+
+
+Sounds reasonable. But whatever is the internal implementation shouldn't
+hard-widen-limits be there anyways?
+
+Why to bother with call-with-hard-narrowing and not have all the logic in
+with-hard-narrowing directly? I looks to me that it's better to expose hard
+narrowing to elisp only. If possible it should be transparent to low level code.
+
+  Vitalie
+
+>> On Mon, Mar 21 2016 08:39, Stefan Monnier wrote:
+
+>> +  DEFVAR_LISP ("hard-widen-limits", Vhard_widen_limits,
+>> +	       doc: /* When non-nil `widen` will widen to these limits.
+>> +Must be a cons of the form (MIN . MAX) where MIN and MAX are integers or markers.  */);
+>> +  Vhard_widen_limits = Qnil;
+
+> Sorry to nitpick, but I'm not completely happy with this API.  As an
+> implementation it might be OK, but I can imagine wanting to change the
+> implementation in the future but being stuck by the exposed internals.
+
+> So I suggest we instead expose only a new primitive
+> "call-with-hard-narrowing" which could look like:
+
+>     (defun call-with-hard-narrowing (from to func)
+>       (make-local-variable 'internal--hard-widen-limits)
+>       (let ((internal--hard-widen-limits (cons from to)))
+>         (funcall func)))
+
+> which could be supplemented with a corresponding macro
+
+>     (defmacro with-hard-narrowing (from to &rest body)
+>       `(call-with-hard-narrowing ,from ,to (lambda () ,body)))
+
+> -- Stefan
+

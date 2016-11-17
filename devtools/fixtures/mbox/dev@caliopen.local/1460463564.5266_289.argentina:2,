@@ -1,0 +1,302 @@
+Return-Path: <qfzwjsy_0gz7chidgb.4g@trouver-presta.fr>
+X-Original-To: laurent@brasil.brainstorm.fr
+Delivered-To: laurent@brasil.brainstorm.fr
+Received: from mexico.brainstorm.fr (mexico.brainstorm.fr [193.56.58.35])
+	by brasil.brainstorm.fr (Postfix) with ESMTP id A0FD620A5737C
+	for <laurent@brasil.brainstorm.fr>; Tue,  5 Apr 2016 05:56:44 +0200 (CEST)
+Received: by mexico.brainstorm.fr (Postfix)
+	id 944AE3317701; Tue,  5 Apr 2016 05:56:44 +0200 (CEST)
+Delivered-To: dev@caliopen.local
+Received: by mexico.brainstorm.fr (Postfix, from userid 1004)
+	id 858A3331770E; Tue,  5 Apr 2016 05:56:44 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on mexico.octopuce.fr
+X-Spam-Flag: YES
+X-Spam-Level: **********
+X-Spam-Status: Yes, score=10.5 required=5.0 tests=BAYES_99,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HTML_IMAGE_RATIO_04,HTML_MESSAGE,
+	RAZOR2_CF_RANGE_51_100,RAZOR2_CF_RANGE_E8_51_100,RAZOR2_CHECK,
+	RCVD_IN_BRBL_LASTEXT,T_KHOP_FOREIGN_CLICK,T_REMOTE_IMAGE,URIBL_BLACK
+	autolearn=spam version=3.3.2
+X-Spam-Report: 
+	*  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  1.4 RCVD_IN_BRBL_LASTEXT RBL: RCVD_IN_BRBL_LASTEXT
+	*      [193.41.74.175 listed in bb.barracudacentral.org]
+	*  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
+	*      [URIs: trouver-presta.fr]
+	*  0.6 HTML_IMAGE_RATIO_04 BODY: HTML has a low ratio of text to image area
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.0 T_KHOP_FOREIGN_CLICK T_KHOP_FOREIGN_CLICK
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	*  0.9 RAZOR2_CHECK Listed in Razor2 (http://razor.sf.net/)
+	*  1.9 RAZOR2_CF_RANGE_E8_51_100 Razor2 gives engine 8 confidence level
+	*      above 50%
+	*      [cf: 100]
+	*  0.5 RAZOR2_CF_RANGE_51_100 Razor2 gives confidence level above 50%
+	*      [cf: 100]
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	*  0.0 T_REMOTE_IMAGE Message contains an external image
+X-Spam-DCC: : 
+Received: from esmtp-b46.trouver-presta.fr (esmtp-b46.trouver-presta.fr [193.41.74.175])
+	by mexico.brainstorm.fr (Postfix) with ESMTP id 76CBC3317701
+	for <dev@caliopen.local>; Tue,  5 Apr 2016 05:56:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=trouver-presta.fr; h=to
+	:subject:date:from:reply-to:list-unsubscribe:message-id
+	:mime-version:content-type; s=mailserverg; bh=mx6E6dEuv7tatbLeTn
+	dnQBkDAXabHJpaR9djkd0Hmqk=; b=KgtH5Tp6bLTklmU3JmVS3za9ww90E82tHG
+	iiuT+ul+mODudRXaQYHi9+xy2ui/KdtLTcUMKaqvDFR5M92NyxsxqNLhBEjkIqPw
+	u6bk8/nmkfsHiG2CdF7eV7NkStCnXMu2kmc2sWog6HBb2bK4pI6gYa08G1jWyl7H
+	tcK9OTRRo=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=trouver-presta.fr; h=to
+	:subject:date:from:reply-to:list-unsubscribe:message-id
+	:mime-version:content-type; q=dns; s=mailserverg; b=GxiYa07AgfT6
+	cq5kC2s3MkMELwol3djErIQKUq8HHeTCB0Ve3DgaIEjRZgWmNsVrSl95gCt3h7IJ
+	OOawSBAdU4uWSvq2TtnidnsqGnD4G0Hl3Ivt5KkiS8+TAp9YLEIIxnFPdMlKJmT5
+	SKM4KT/Z/kD/yoXIFI/k+ZfFvCG76kY=
+To: laurent <dev@caliopen.local>
+Subject: Avec ma nouvelle caisse enregistreuse l'encaissement est un jeu d'enfant !
+X-PHP-Originating-Script: 1002:class.phpmailer.php
+Date: Tue, 5 Apr 2016 05:56:40 +0200
+From: caisse enregistreuse <caisse@trouver-presta.fr>
+Reply-to: caisse enregistreuse <qfzwjsy_0gz7chidgb.4g@trouver-presta.fr>
+X-campaign_id: 9544767838567738696_8
+X-uid_id_m: bGF1cmVudEBicmFpbnN0b3JtLmZy=501
+List-Unsubscribe: <http://app.trouver-presta.fr/d/?camp=9544767838567738696_8&ms=bGF1cmVudEBicmFpbnN0b3JtLmZy>
+Message-ID: <7af37de14807c55ac99890f58e2d2aca@trouver-presta.fr>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="Part1_7af37de14807c55ac99890f58e2d2aca"
+X-Spam-Prev-Subject: Avec ma nouvelle caisse enregistreuse l'encaissement est un jeu d'enfant !
+Content-Length: 14164
+Lines: 227
+
+--Part1_7af37de14807c55ac99890f58e2d2aca
+Content-Type: text/plain; charset = "utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Pour visualiser et se d=C3=A9sabonner ce message,
+=20
+Veuillez, copier puis coller, l'adresse URL compl=C3=A8te ci-dessous dans=
+ la
+barre d'adresse de votre navigateur et appuyer sur la touche "Entr=C3=A9e=
+" de
+votre clavier.
+
+
+
+- - - - - - - - - - - - - - - - -=20
+
+http://app.trouver-presta.fr/v/?camp=3D9544767838567738696_8&ms=3DbGF1cmV=
+udEBicmFpbnN0b3JtLmZy
+
+- - - - - - - - - - - - - - - - -=20
+
+
+
+
+--Part1_7af37de14807c55ac99890f58e2d2aca
+Content-Type: text/html; charset = "utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://ww=
+w.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xml:lang=3D"fr" lang=3D"fr">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8" =
+/>
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D=
+1.0" />
+<title>Avec ma nouvelle caisse enregistreuse l\'encaissement est un jeu d=
+\'enfant !</title>
+</head><body leftmargin=3D"0" marginheight=3D"0" topmargin=3D"0" marginwi=
+dth=3D"0" style=3D"-webkit-text-size-adjust:none; text-size-adjust:none; =
+margin:0px; padding:0px; -ms-text-size-adjust:none; -moz-text-size-adjust=
+:none;">
+<center><p>
+<a href=3D"http://app.trouver-presta.fr/v/?camp=3D9544767838567738696_8&m=
+s=3DbGF1cmVudEBicmFpbnN0b3JtLmZy" target=3D"_blank" title=3D"Si cet e-mai=
+l ne s'affiche pas correctement, suivez ce lien." style=3D"color:#00F; fo=
+nt-family:'Arial'; font-size:12px; text-decoration:underline;">Si cet ema=
+il ne s&rsquo;affiche pas correctement, suivez ce lien.</a></p><table bor=
+der=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"600" align=3D"cent=
+er" bgcolor=3D"#FFFFFF">     <tbody>         <tr>             <td width=3D=
+"600" height=3D"40" align=3D"center" valign=3D"middle" bgcolor=3D"#4a4452=
+"><font style=3D" font-family:Arial, Helvetica, sans-serif; font-size:10p=
+x ; font-weight: normal; color:#ffffff;">Ma Nouvelle Caisse enregistreuse=
+ est un jeu d'enfant.<br>             Si ce message ne s'affiche pas corr=
+ectement, <a style=3D"color:#37c686;" href=3D"http://app.trouver-presta.f=
+r/r/?m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&c=3D9544767838567738696_8&rc=3DaHR0=
+cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL3IvY2xpYy0yNy0zNjItMzAxOC11cmwtYUhSMGNEb=
+3ZMMkp3Y204dV
+ puSXZNemN5TUY5Q1VETmZUbVZ2Y0Q5eFkzQTlNemN5TUY5Q1VETmZUbVZ2Y0NOMWRHMWZjMj=
+kxY21ObFBXNG1kWFJ0WDIxbFpHbDFiVDFsTFcxaGFXd21kWFJ0WDJOaGJYQmhhV2R1UFc1bGQ=
+zTmpKblYwYlY5dWIyOTJaWEp5YVdSbFBURT9yZ3JvdXA9cF8xMTM1MSZhbXA7dHJhY2thZmY9=
+JmFtcDtncm91cD0=3D" target=3D"_blank">cliquez ici.</a></font></td>       =
+  </tr>         <tr>             <td width=3D"600" height=3D"77" bgcolor=3D=
+"#4a4452" align=3D"center" style=3D"font-family:Arial, Helvetica, sans-se=
+rif; color:#FFFFFF; font-size:24px; text-transform: uppercase;"><img src=3D=
+"http://app.trouver-presta.fr/r/?rc=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS9=
+1cGxvYWRzL3Zpc3VlbHMvMTMvMjcva2l0cy9Mb2dvX0Jwcm8uanBn" alt=3D"BPRO" width=
+=3D"136" height=3D"77" border=3D"0"></td>         </tr>         <tr>     =
+        <td width=3D"600" height=3D"43" align=3D"center" valign=3D"middle=
+" bgcolor=3D"#4a4452"><a style=3D"text-decoration: none" href=3D"http://a=
+pp.trouver-presta.fr/r/?m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&c=3D954476783856=
+7738696_8&rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL3IvY2xpYy0yNy0zNjItMz=
+AxOC11cmwt
+ YUhSMGNEb3ZMMkp3Y204dVpuSXZNemN5TUY5Q1VETmZUbVZ2Y0Q5eFkzQTlNemN5TUY5Q1VE=
+TmZUbVZ2Y0NOMWRHMWZjMjkxY21ObFBXNG1kWFJ0WDIxbFpHbDFiVDFsTFcxaGFXd21kWFJ0W=
+DJOaGJYQmhhV2R1UFc1bGQzTmpKblYwYlY5dWIyOTJaWEp5YVdSbFBURT9yZ3JvdXA9cF8xMT=
+M1MSZhbXA7dHJhY2thZmY9JmFtcDtncm91cD0=3D" target=3D"_blank"><font style=3D=
+"font-family:Arial, Helvetica, sans-serif; text-transform:uppercase; font=
+-size:22px;; color:#37c686">Caisse enregistreuse</font></a></td>         =
+</tr>         <tr>             <td width=3D"600" height=3D"2" bgcolor=3D"=
+#37c686">&nbsp;</td>         </tr>         <tr>             <td>         =
+    <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"600"=
+>                 <tbody>                     <tr>                       =
+  <td width=3D"72" height=3D"15">&nbsp;</td>                         <td =
+width=3D"1" height=3D"15" bgcolor=3D"#c8c7cb">&nbsp;</td>                =
+         <td width=3D"66" height=3D"15">&nbsp;</td>                      =
+   <td width=3D"419" height=3D"15">&nbsp;</td>                         <t=
+d wid
+ th=3D"42" height=3D"15">&nbsp;</td>                     </tr>           =
+      </tbody>             </table>             </td>         </tr>      =
+   <tr>             <td>             <table border=3D"0" cellpadding=3D"0=
+" cellspacing=3D"0" width=3D"600">                 <tbody>               =
+      <tr>                         <td><a href=3D"http://app.trouver-pres=
+ta.fr/r/?m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&c=3D9544767838567738696_8&rc=3D=
+aHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL3IvY2xpYy0yNy0zNjItMzAxOC11cmwtYUhSM=
+GNEb3ZMMkp3Y204dVpuSXZNemN5TUY5Q1VETmZUbVZ2Y0Q5eFkzQTlNemN5TUY5Q1VETmZUbV=
+Z2Y0NOMWRHMWZjMjkxY21ObFBXNG1kWFJ0WDIxbFpHbDFiVDFsTFcxaGFXd21kWFJ0WDJOaGJ=
+YQmhhV2R1UFc1bGQzTmpKblYwYlY5dWIyOTJaWEp5YVdSbFBURT9yZ3JvdXA9cF8xMTM1MSZh=
+bXA7dHJhY2thZmY9JmFtcDtncm91cD0=3D" target=3D"_blank"><img src=3D"http://=
+app.trouver-presta.fr/r/?rc=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91cGxvYWR=
+zL3Zpc3VlbHMvMTMvMjcva2l0cy9QaWN0b19FcXVpcG10LmpwZw=3D=3D" width=3D"139" =
+height=3D"98" border=3D"0" alt=3D""></a></td>                         <td=
+>      =20
+                   <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
+" width=3D"419">                             <tbody>                     =
+            <tr>                                     <td width=3D"19">&nb=
+sp;</td>                                     <td width=3D"400" height=3D"=
+4">&nbsp;</td>                                 </tr>                     =
+            <tr>                                     <td width=3D"19" hei=
+ght=3D"60" bgcolor=3D"#37c686">&nbsp;</td>                               =
+      <td width=3D"400" align=3D"left" valign=3D"middle" bgcolor=3D"#37c6=
+86"><a style=3D"text-decoration: none" href=3D"http://app.trouver-presta.=
+fr/r/?m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&c=3D9544767838567738696_8&rc=3DaHR=
+0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL3IvY2xpYy0yNy0zNjItMzAxOC11cmwtYUhSMGNE=
+b3ZMMkp3Y204dVpuSXZNemN5TUY5Q1VETmZUbVZ2Y0Q5eFkzQTlNemN5TUY5Q1VETmZUbVZ2Y=
+0NOMWRHMWZjMjkxY21ObFBXNG1kWFJ0WDIxbFpHbDFiVDFsTFcxaGFXd21kWFJ0WDJOaGJYQm=
+hhV2R1UFc1bGQzTmpKblYwYlY5dWIyOTJaWEp5YVdSbFBURT9yZ3JvdXA9cF8xMTM1MSZhbXA=
+7dHJhY
+ 2thZmY9JmFtcDtncm91cD0=3D" target=3D"_blank"><font style=3D"font-family:=
+Arial, Helvetica, sans-serif; font-size:16px; color:#ffffff"><span style=3D=
+"font-size:16px; text-transform:uppercase; font-weight:bold;">Avec ma nou=
+velle caisse enregistreuse<br>                                     </span=
+>l'encaissement est un jeu d'enfant !                 </font></a></td>   =
+                              </tr>                                 <tr> =
+                                    <td width=3D"19">&nbsp;</td>         =
+                            <td width=3D"400" height=3D"4">&nbsp;</td>   =
+                              </tr>                             </tbody> =
+                        </table>                         </td>           =
+              <td width=3D"42" height=3D"98">&nbsp;</td>                 =
+    </tr>                 </tbody>             </table>             </td>=
+         </tr>         <tr>             <td>             <table border=3D=
+"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"600">          =20
+       <tbody>                     <tr>                         <td width=
+=3D"72" height=3D"53">&nbsp;</td>                         <td bgcolor=3D"=
+#c8c7cb" width=3D"1">&nbsp;</td>                         <td width=3D"66"=
+>&nbsp;</td>                         <td width=3D"419"><a style=3D"text-d=
+ecoration: none" href=3D"http://app.trouver-presta.fr/r/?m=3DbGF1cmVudEBi=
+cmFpbnN0b3JtLmZy&c=3D9544767838567738696_8&rc=3DaHR0cDovL25vZGVzLm5wdjE3c=
+WVqYmQuY29tL3IvY2xpYy0yNy0zNjItMzAxOC11cmwtYUhSMGNEb3ZMMkp3Y204dVpuSXZNem=
+N5TUY5Q1VETmZUbVZ2Y0Q5eFkzQTlNemN5TUY5Q1VETmZUbVZ2Y0NOMWRHMWZjMjkxY21ObFB=
+XNG1kWFJ0WDIxbFpHbDFiVDFsTFcxaGFXd21kWFJ0WDJOaGJYQmhhV2R1UFc1bGQzTmpKblYw=
+YlY5dWIyOTJaWEp5YVdSbFBURT9yZ3JvdXA9cF8xMTM1MSZhbXA7dHJhY2thZmY9JmFtcDtnc=
+m91cD0=3D" target=3D"_blank"><font style=3D"font-family:Arial, Helvetica,=
+ sans-serif; font-size:15px; color:#4a4452">                         <ul>=
+                             <li>Facile</li>                             =
+<li>Pratique</li>                             <li>Ergonomique</li>  =20
+                       </ul>                         </font></a></td>    =
+                     <td width=3D"42">&nbsp;</td>                     </t=
+r>                 </tbody>             </table>             </td>       =
+  </tr>         <tr>             <td>             <table border=3D"0" cel=
+lpadding=3D"0" cellspacing=3D"0" width=3D"600">                 <tbody>  =
+                   <tr>                         <td width=3D"72" height=3D=
+"16">&nbsp;</td>                         <td width=3D"1" height=3D"16" bg=
+color=3D"#c8c7cb">&nbsp;</td>                                            =
+      <td height=3D"16" width=3D"485">&nbsp;</td>                        =
+                          <td width=3D"42" height=3D"16">&nbsp;</td>     =
+                </tr>                 </tbody>             </table>      =
+       </td>         </tr>         <tr>             <td>             <tab=
+le border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"600">       =
+          <tbody>                     <tr>                         <td wi=
+dth
+ =3D"72" height=3D"178">&nbsp;</td>                         <td width=3D"=
+1" height=3D"178" bgcolor=3D"#c8c7cb">&nbsp;</td>                        =
+ <td><a href=3D"http://app.trouver-presta.fr/r/?m=3DbGF1cmVudEBicmFpbnN0b=
+3JtLmZy&c=3D9544767838567738696_8&rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY2=
+9tL3IvY2xpYy0yNy0zNjItMzAxOC11cmwtYUhSMGNEb3ZMMkp3Y204dVpuSXZNemN5TUY5Q1V=
+ETmZUbVZ2Y0Q5eFkzQTlNemN5TUY5Q1VETmZUbVZ2Y0NOMWRHMWZjMjkxY21ObFBXNG1kWFJ0=
+WDIxbFpHbDFiVDFsTFcxaGFXd21kWFJ0WDJOaGJYQmhhV2R1UFc1bGQzTmpKblYwYlY5dWIyO=
+TJaWEp5YVdSbFBURT9yZ3JvdXA9cF8xMTM1MSZhbXA7dHJhY2thZmY9JmFtcDtncm91cD0=3D=
+" style=3D"font-family:Arial, Helvetica, sans-serif; text-decoration:none=
+ ;" target=3D"_blank"><img src=3D"http://app.trouver-presta.fr/r/?rc=3DaH=
+R0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91cGxvYWRzL3Zpc3VlbHMvMTMvMjcva2l0cy9WaXN=
+1ZWwuanBn" width=3D"485" height=3D"178" border=3D"0" alt=3D""></a></td>  =
+                       <td width=3D"42" height=3D"178">&nbsp;</td>       =
+              </tr>                 </tbody>             </table>        =
+     </t
+ d>         </tr>         <tr>             <td>             <table border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"600">                =
+ <tbody>                     <tr>                         <td width=3D"72=
+" height=3D"33">&nbsp;</td>                         <td bgcolor=3D"#c8c7c=
+b" width=3D"1" height=3D"33">&nbsp;</td>                         <td widt=
+h=3D"527" height=3D"33">&nbsp;</td>                     </tr>            =
+     </tbody>             </table>             </td>         </tr>       =
+  <tr>             <td>             <table border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" width=3D"600">                 <tbody>                =
+     <tr>                         <td width=3D"72" height=3D"65">&nbsp;</=
+td>                         <td width=3D"1" height=3D"65" bgcolor=3D"#c8c=
+7cb">&nbsp;</td>                         <td width=3D"91" height=3D"65">&=
+nbsp;</td>                         <td bgcolor=3D"#37c686" align=3D"cente=
+r"><a style=3D"font-family:Arial, Helvetica, sans-serif; color:#FFFFFF; f=
+ont-size:26px; tex
+ t-transform: uppercase; font-weight:bold;" href=3D"http://app.trouver-pr=
+esta.fr/r/?m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&c=3D9544767838567738696_8&rc=3D=
+aHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL3IvY2xpYy0yNy0zNjItMzAxOC11cmwtYUhSM=
+GNEb3ZMMkp3Y204dVpuSXZNemN5TUY5Q1VETmZUbVZ2Y0Q5eFkzQTlNemN5TUY5Q1VETmZUbV=
+Z2Y0NOMWRHMWZjMjkxY21ObFBXNG1kWFJ0WDIxbFpHbDFiVDFsTFcxaGFXd21kWFJ0WDJOaGJ=
+YQmhhV2R1UFc1bGQzTmpKblYwYlY5dWIyOTJaWEp5YVdSbFBURT9yZ3JvdXA9cF8xMTM1MSZh=
+bXA7dHJhY2thZmY9JmFtcDtncm91cD0=3D" target=3D"_blank"><img src=3D"http://=
+app.trouver-presta.fr/r/?rc=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91cGxvYWR=
+zL3Zpc3VlbHMvMTMvMjcva2l0cy9CdG5fRXF1aXBtdC5qcGc=3D" alt=3D"en savoir plu=
+s" width=3D"272" height=3D"65" border=3D"0"></a></td>                    =
+     <td width=3D"164" height=3D"65">&nbsp;</td>                     </tr=
+>                 </tbody>             </table>             </td>        =
+ </tr>         <tr>             <td><img src=3D"http://app.trouver-presta=
+.fr/r/?rc=3DaHR0cHM6Ly9ub2Rlcy5uZW9wZXJmLmNvbS91cGxvYWRzL3Zpc3VlbHMvMTMvM
+ jcva2l0cy9Gb290ZXJfRXF1aXBtdC5qcGc=3D" width=3D"600" height=3D"33" borde=
+r=3D"0" alt=3D""></td>         </tr>         <tr>             <td width=3D=
+"600" height=3D"35" align=3D"center" bgcolor=3D"#4a4452">&nbsp;</td>     =
+    </tr>     </tbody> </table><img alt=3D"" src=3D"http://app.trouver-pr=
+esta.fr/r/?rc=3DaHR0cDovL25vZGVzLm5wdjE3cWVqYmQuY29tL21haWxpbmctMjctMzYyL=
+TMwMTg/cmdyb3VwPXBfMTEzNTEmYW1wO2dyb3VwPQ=3D=3D" border=3D"0" height=3D"1=
+" width=3D"1"><img src=3D"http://app.trouver-presta.fr/t/?i=3D95447678385=
+67738696_8&m=3DbGF1cmVudEBicmFpbnN0b3JtLmZy&url=3Dhttp://app.trouver-pres=
+ta.fr/images/blank.jpg" alt=3D"_pspacer5"  /><p>
+<a href=3D"http://app.trouver-presta.fr/d/?camp=3D9544767838567738696_8&m=
+s=3DbGF1cmVudEBicmFpbnN0b3JtLmZy" target=3D"_blank" title=3D"Ne plus rece=
+voir d'informations de notre part" style=3D"color:#00F; font-family:'Aria=
+l'; font-size:12px; text-decoration:underline;">Pour se d&eacute;sabonner=
+ : Suivez ce lien.</a><br />Si ce message vous a caus&eacute; un quelconq=
+ue d&eacute;rangement, nous vous prions de nous en excuser.
+</p><center>
+</body>
+</html>
+
+
+
+--Part1_7af37de14807c55ac99890f58e2d2aca--

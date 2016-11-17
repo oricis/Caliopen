@@ -1,0 +1,92 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1alLIQ-0000nl-HK
+	for mharc-dev@caliopen.local; Wed, 30 Mar 2016 14:56:50 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:51329)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1alLIO-0000n5-CZ
+	for dev@caliopen.local; Wed, 30 Mar 2016 14:56:49 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>) id 1alLIN-0000q5-MC
+	for dev@caliopen.local; Wed, 30 Mar 2016 14:56:48 -0400
+Received: from mail-out.m-online.net ([2001:a60:0:28:0:1:25:1]:41558)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <whitebox@nefkom.net>)
+	id 1alLIJ-0000n2-U8; Wed, 30 Mar 2016 14:56:44 -0400
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 3qZxhB2RzQz3hjqn;
+	Wed, 30 Mar 2016 20:56:42 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
+	by mail.m-online.net (Postfix) with ESMTP id 3qZxhB1Q7hzvhMc;
+	Wed, 30 Mar 2016 20:56:42 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+	by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavisd-new,
+	port 10024)
+	with ESMTP id 7wcSWMEHBqiU; Wed, 30 Mar 2016 20:56:41 +0200 (CEST)
+X-Auth-Info: Jj8lEIB/G4iuyRp2m3f+D+UIoMyDTCpbRmfgXLchkrmmJbZJFd9oMm7GtvGB2+9R
+Received: from igel.home (ppp-88-217-14-4.dynamic.mnet-online.de [88.217.14.4])
+	by mail.mnet-online.de (Postfix) with ESMTPA;
+	Wed, 30 Mar 2016 20:56:41 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id 2568C2C388B; Wed, 30 Mar 2016 20:56:41 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Yuri Khan <yuri.v.khan@gmail.com>
+Subject: Re: About column numbers
+References: <56FB02BB.3090501@alice.it> <83wpokuh3a.fsf@gnu.org>
+	<56FC0CDB.9090707@alice.it>
+	<CAP_d_8XDQmTR1M6=+a4yMAjkHFkDEnx4oFQiH57UUNLW2dzM4Q@mail.gmail.com>
+	<87poubvnhh.fsf@linux-m68k.org>
+	<CAP_d_8V=4W26O-r-DcOdfpFwwzpZKDtXnd71jOCwvhO0bL38og@mail.gmail.com>
+X-Yow: Yow!  I want to mail a bronzed artichoke to Nicaragua!
+Date: Wed, 30 Mar 2016 20:56:41 +0200
+In-Reply-To: <CAP_d_8V=4W26O-r-DcOdfpFwwzpZKDtXnd71jOCwvhO0bL38og@mail.gmail.com>
+	(Yuri Khan's message of "Thu, 31 Mar 2016 00:37:52 +0600")
+Message-ID: <87lh4zvlp2.fsf@linux-m68k.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 2001:a60:0:28:0:1:25:1
+Cc: Eli Zaretskii <eliz@gnu.org>, Emacs developers <dev@caliopen.local>,
+	Angelo Graziosi <angelo.graziosi@alice.it>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Wed, 30 Mar 2016 18:56:49 -0000
+Content-Length: 605
+Lines: 25
+
+Yuri Khan <yuri.v.khan@gmail.com> writes:
+
+> On Thu, Mar 31, 2016 at 12:18 AM, Andreas Schwab <schwab@linux-m68k.org=
+> wrote:
+>
+>>> Lines are a different beast =E2=80=94 you have to be compatible with =
+the
+>>> convention compilers use to report errors, and pretty much all of the=
+m
+>>> count lines from 1.
+>>
+>> They also count columns from 1.
+>
+> At least GCC doesn=E2=80=99t. It counts bytes.
+
+It does.  Starting from 1.
+
+Andreas.
+
+--=20
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint =3D 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED=
+5
+"And now for something completely different."
+

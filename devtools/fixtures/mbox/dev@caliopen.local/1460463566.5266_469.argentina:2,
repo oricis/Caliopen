@@ -1,0 +1,64 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akcM4-0006Un-BU
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 14:57:36 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:50229)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1akcM2-0006UO-Ad
+	for dev@caliopen.local; Mon, 28 Mar 2016 14:57:35 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1akcLx-0007Df-Ev
+	for dev@caliopen.local; Mon, 28 Mar 2016 14:57:34 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:60884)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1akcLx-0007DV-BM; Mon, 28 Mar 2016 14:57:29 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:4912
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1akcLw-0002us-9v; Mon, 28 Mar 2016 14:57:28 -0400
+Date: Mon, 28 Mar 2016 21:57:09 +0300
+Message-Id: <83zitiwhve.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: Lars Magne Ingebrigtsen <larsi@gnus.org>
+In-reply-to: <m3mvpiigcs.fsf@gnus.org> (message from Lars Magne Ingebrigtsen
+	on Mon, 28 Mar 2016 20:53:39 +0200)
+Subject: Re: Thinking about changed buffers
+References: <m3bn5ya4ro.fsf@gnus.org> <87fuvafpvd.fsf@linux-m68k.org>
+	<m34mbqjxdt.fsf@gnus.org> <87bn5yfp8l.fsf@linux-m68k.org>
+	<m3zitiihy6.fsf@gnus.org> <8337raxxnk.fsf@gnu.org>
+	<m3mvpiigcs.fsf@gnus.org>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: schwab@linux-m68k.org, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: Eli Zaretskii <eliz@gnu.org>
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 18:57:35 -0000
+Content-Length: 458
+Lines: 16
+
+> From: Lars Magne Ingebrigtsen <larsi@gnus.org>
+> Cc: schwab@linux-m68k.org,  dev@caliopen.local
+> Date: Mon, 28 Mar 2016 20:53:39 +0200
+> 
+> Eli Zaretskii <eliz@gnu.org> writes:
+> 
+> >> Ok, so `buffer-file-coding-system' is one more thing to include in the
+> >> hash.
+> >
+> > What about annotations?
+> 
+> I'm not sure what that means in this context?
+
+I'm not sure what you mean by "what that means".  Did you know about
+write-region-annotate-functions?
+

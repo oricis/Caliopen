@@ -1,0 +1,92 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1al26O-00031U-HJ
+	for mharc-dev@caliopen.local; Tue, 29 Mar 2016 18:27:08 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:38618)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <phillip.lord@russet.org.uk>) id 1al26M-00031N-3g
+	for dev@caliopen.local; Tue, 29 Mar 2016 18:27:06 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <phillip.lord@russet.org.uk>) id 1al26I-0006Fm-Um
+	for dev@caliopen.local; Tue, 29 Mar 2016 18:27:06 -0400
+Received: from cloud103.planethippo.com ([31.216.48.48]:44901)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <phillip.lord@russet.org.uk>) id 1al26I-0006FN-KP
+	for dev@caliopen.local; Tue, 29 Mar 2016 18:27:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=russet.org.uk; s=default; h=Content-Type:MIME-Version:Message-ID:
+	In-Reply-To:Date:References:Subject:Cc:To:From;
+	bh=KEmpGEWmeyvQ2q8dF8brqEzgKZC6C3G7R7J8UHv44os=;
+	b=CfwHigw03Yf0fMWibWBaqlgwmn
+	smlO4yLJcpEJwGNsiw4O/GP1U2JhHfGsMp4IY6w6koi1H3yu4J9gLobC+cjvQpcWTfmBD7XKWoFzS
+	2p+skRDECLkSx6f9/qQ8ce0AlH/AZqL0F1Ntjt975g8qSQ6fJua5OBAu1wjrc0rLWuuDd+YX/jybe
+	/VW9vy1F4bJGNOjIIk32QQlZlZKs07pTRp2o3t8qRs0OlqOKa2e1hW8acBZNS6KWQ2hkXzKKFm2DA
+	WgIm4WpOAGG5w5zGY1NSl5f/QIzWJpgKvmUmtvkBzx692EsEQ4U8XNCqmY97siyhIYbAOfGLldFza
+	yaYxTHtg==;
+Received: from host-89-241-183-78.as13285.net ([89.241.183.78]:60905
+	helo=russet.org.uk) by cloud103.planethippo.com with esmtpsa
+	(TLSv1.2:DHE-RSA-AES128-SHA:128) (Exim 4.86_1)
+	(envelope-from <phillip.lord@russet.org.uk>)
+	id 1al26G-0043IB-0F; Tue, 29 Mar 2016 23:27:00 +0100
+From: phillip.lord@russet.org.uk (Phillip Lord)
+To: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: Thinking about changed buffers
+References: <m3bn5ya4ro.fsf@gnus.org>
+	<2d55f05e4ba00afeb3f7269953eb0e13.squirrel@cloud103.planethippo.com>
+	<jwvwpolbe3o.fsf-monnier+gmane.emacs.devel@gnu.org>
+Date: Tue, 29 Mar 2016 23:26:19 +0100
+In-Reply-To: <jwvwpolbe3o.fsf-monnier+gmane.emacs.devel@gnu.org> (Stefan
+	Monnier's message of "Tue, 29 Mar 2016 09:39:54 -0400")
+Message-ID: <87k2kkq5tg.fsf@russet.org.uk>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-AntiAbuse: This header was added to track abuse,
+	please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cloud103.planethippo.com
+X-AntiAbuse: Original Domain - gnu.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - russet.org.uk
+X-Get-Message-Sender-Via: cloud103.planethippo.com: authenticated_id:
+	phillip.lord@russet.org.uk
+X-Authenticated-Sender: cloud103.planethippo.com: phillip.lord@russet.org.uk
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 3.x
+X-Received-From: 31.216.48.48
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Tue, 29 Mar 2016 22:27:07 -0000
+Content-Length: 1025
+Lines: 23
+
+Stefan Monnier <monnier@iro.umontreal.ca> writes:
+
+>> The only solution I can see for fill-paragraph is to copy the paragraph to
+>> a temp buffer, fill that, check whether it has changed, then if it has,
+>> signal before-change, copy the changed paragraph back, signal after
+>> change. If it has not changed, then fill-paragraph becomes a no-op.
+>
+> BTW, another solution for fill-paragraph is to reimplement it from
+> scratch such that it doesn't "unfill+refill".  I.e. it could instead
+> loop go to each LF in the paragraph, such if that LF is found to be "at
+> the right spot", it moves on, if it's "too soon", then it removes it,
+> and if it's "too far" then it adds another somewhere earlier.
+>
+> This would naturally lead to the result that the buffer would stay
+> unmodified if there was no change.
+
+
+Yes, that would seem a clean solution, as it would avoid changing a
+buffer which might not need to be changed. It would also mean that a
+fill-paragraph which doesn't change anything would leave no undo events.
+
+Phil
+

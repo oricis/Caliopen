@@ -1,0 +1,72 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amj2k-0000q1-R4
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 10:30:22 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:59657)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1amj2i-0000mY-60
+	for dev@caliopen.local; Sun, 03 Apr 2016 10:30:20 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <rms@gnu.org>) id 1amj2h-0003XT-Bz
+	for dev@caliopen.local; Sun, 03 Apr 2016 10:30:20 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:54403)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <rms@gnu.org>)
+	id 1amj2h-0003XL-8S
+	for dev@caliopen.local; Sun, 03 Apr 2016 10:30:19 -0400
+Received: from rms by fencepost.gnu.org with local (Exim 4.82)
+	(envelope-from <rms@gnu.org>)
+	id 1amj2g-0002lo-DZ; Sun, 03 Apr 2016 10:30:18 -0400
+Content-Type: text/plain; charset=Utf-8
+From: Richard Stallman <rms@gnu.org>
+To: Eli Zaretskii <eliz@gnu.org>
+In-reply-to: <83wpofrdq3.fsf@gnu.org> (message from Eli Zaretskii on Sat, 02
+	Apr 2016 22:51:32 +0300)
+Subject: Re: melpa.org doesn't work without nonfree software
+References: <E1am6ik-0000Kc-JJ@fencepost.gnu.org> <83vb40sdug.fsf@gnu.org>
+	<E1amQoi-0007Da-KE@fencepost.gnu.org> <83wpofrdq3.fsf@gnu.org>
+Message-Id: <E1amj2g-0002lo-DZ@fencepost.gnu.org>
+Date: Sun, 03 Apr 2016 10:30:18 -0400
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: rms@gnu.org
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 14:30:21 -0000
+Content-Length: 867
+Lines: 26
+
+[[[ To any NSA and FBI agents reading my email: please consider    ]]]
+[[[ whether defending the US Constitution against all enemies,     ]]]
+[[[ foreign or domestic, requires you to follow Snowden's example. ]]]
+
+  > >   > > Is there anything in the Emacs sources mentioning melpa.org?
+  > > 
+  > >   > It's mentioned in the FAQ.
+  > > 
+  > > Would you please delete it, for now?  We should not recommend
+  > > sites that are useless when visited with LibreJS.
+
+  > Don't you want to wait for their response first?
+
+I expect it to take time to fix the problem, and we should not
+keep on referring to the site while waiting.
+
+When they fix it, restoring the reference will be quick and easy.
+
+
+-- 
+Dr Richard Stallman
+President, Free Software Foundation (gnu.org, fsf.org)
+Internet Hall-of-Famer (internethalloffame.org)
+Skype: No way! See stallman.org/skype.html.
+
+

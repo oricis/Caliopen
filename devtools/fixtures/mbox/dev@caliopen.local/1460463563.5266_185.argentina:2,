@@ -1,0 +1,525 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1apG16-0002M3-AQ
+	for mharc-dev@caliopen.local; Sun, 10 Apr 2016 10:07:08 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:35535)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <matthew@mattleach.net>) id 1apG12-0002IV-Ey
+	for dev@caliopen.local; Sun, 10 Apr 2016 10:07:06 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <matthew@mattleach.net>) id 1apG10-0001db-7e
+	for dev@caliopen.local; Sun, 10 Apr 2016 10:07:04 -0400
+Received: from mx0.mattleach.net ([176.58.118.143]:60096)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <matthew@mattleach.net>)
+	id 1apG0w-0001d7-3e; Sun, 10 Apr 2016 10:06:58 -0400
+Received: by mx0.mattleach.net (Postfix, from userid 99)
+	id B2A846222E; Sun, 10 Apr 2016 15:06:57 +0100 (BST)
+Received: from spline.mattleach.net
+	(host86-170-66-130.range86-170.btcentralplus.com [86.170.66.130])
+	by mx0.mattleach.net (Postfix) with ESMTPSA id ED51962229;
+	Sun, 10 Apr 2016 15:06:51 +0100 (BST)
+From: Matthew Leach <matthew@mattleach.net>
+To: emacs-devel <emacs-devel@gnu.org>
+Cc: Eli Zaretskii <eliz@gnu.org>, Stefan Monnier <monnier@IRO.UMontreal.CA>
+Subject: [PATCH v5] Add systemd socket launching support
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1.50 (gnu/linux)
+Date: Sun, 10 Apr 2016 15:06:54 +0100
+Message-ID: <871t6do8w1.fsf@mattleach.net>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="=-=-="
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 176.58.118.143
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 10 Apr 2016 14:07:07 -0000
+Content-Length: 17192
+Lines: 479
+
+--=-=-=
+Content-Type: text/plain
+
+Hi all,
+
+Here is a new version of the systemd integration & socket-launching
+patches.  The main change in this series is providing an interface for
+other socket-launching applications to be integrated, namely
+`set_external_socket_descriptor' in process.c.
+
+Feedback & comments welcome!
+
+Thanks,
+-- 
+Matt
+
+--=-=-=
+Content-Type: text/x-diff
+Content-Disposition: inline;
+ filename=0001-Allow-network-processes-to-be-created-with-a-pre-all.patch
+
+>From 2da9ce85d995487846a8fd32c8e4f4237aa3372b Mon Sep 17 00:00:00 2001
+From: Matthew Leach <matthew@mattleach.net>
+Date: Sat, 26 Mar 2016 19:37:10 +0000
+Subject: [PATCH 1/4] Allow network processes to be created with a
+ pre-allocated fd.
+
+* src/process.c (connect_network_socket): Allow a pre-allocated socket
+  descriptor to be used if passed to Emacs, avoiding the call to
+  socket() and bind().
+  (Fmake_network_process): Allow users to pass :use-external-socket on
+  the parameter plist to use any sockets that have been passed to Emacs.
+  (wait_reading_process_output): Call socket() & bind() every time.
+  (syms_of_process): New symbol ':use-external-socket'.
+  (set_external_socket_descriptor): New.
+  (external_sock_fd): New.
+* src/lisp.h: (set_external_socket_descriptor): New declaration.
+* doc/lispref/processes.texi (Network Processes): Document new
+  `make-network-process' option ':use-external-socket'.
+---
+ doc/lispref/processes.texi |  6 ++++++
+ src/lisp.h                 |  1 +
+ src/process.c              | 52 +++++++++++++++++++++++++++++++++++++++-------
+ 3 files changed, 52 insertions(+), 7 deletions(-)
+
+diff --git a/doc/lispref/processes.texi b/doc/lispref/processes.texi
+index 8d3df55..02698db 100644
+--- a/doc/lispref/processes.texi
++++ b/doc/lispref/processes.texi
+@@ -2367,6 +2367,12 @@ automatically for the given @var{host} and @var{service}.
+ ignored.  @code{ipv4} and @code{ipv6} specify to use IPv4 and IPv6,
+ respectively.
+ 
++@item :use-external-socket @var{use-external-socket}
++If @var{use-external-socket} is non-@code{nil} use any sockets passed
++to Emacs on invocation instead of allocating one.  This is used by the
++Emacs server code to allow on-demand socket activation.  If Emacs
++wasn't passed a socket, this option is silently ignored.
++
+ @item :local @var{local-address}
+ For a server process, @var{local-address} is the address to listen on.
+ It overrides @var{family}, @var{host} and @var{service}, so you
+diff --git a/src/lisp.h b/src/lisp.h
+index 7c8b452..99cdbe7 100644
+--- a/src/lisp.h
++++ b/src/lisp.h
+@@ -4180,6 +4180,7 @@ extern void delete_gpm_wait_descriptor (int);
+ extern void init_process_emacs (void);
+ extern void syms_of_process (void);
+ extern void setup_process_coding_systems (Lisp_Object);
++extern void set_external_socket_descriptor (int);
+ 
+ /* Defined in callproc.c.  */
+ #ifndef DOS_NT
+diff --git a/src/process.c b/src/process.c
+index 198e7de..6bfdc03 100644
+--- a/src/process.c
++++ b/src/process.c
+@@ -267,6 +267,9 @@ static int max_process_desc;
+ /* The largest descriptor currently in use for input; -1 if none.  */
+ static int max_input_desc;
+ 
++/* The descriptor  of any sockets passed to Emacs; -1 if none. */
++static int external_sock_fd = -1;
++
+ /* Indexed by descriptor, gives the process (if any) for that descriptor.  */
+ static Lisp_Object chan_process[FD_SETSIZE];
+ static void wait_for_socket_fds (Lisp_Object, char const *);
+@@ -3075,7 +3078,8 @@ finish_after_tls_connection (Lisp_Object proc)
+ #endif
+ 
+ static void
+-connect_network_socket (Lisp_Object proc, Lisp_Object ip_addresses)
++connect_network_socket (Lisp_Object proc, Lisp_Object ip_addresses,
++                        Lisp_Object use_external_socket_p)
+ {
+   ptrdiff_t count = SPECPDL_INDEX ();
+   ptrdiff_t count1;
+@@ -3089,6 +3093,16 @@ connect_network_socket (Lisp_Object proc, Lisp_Object ip_addresses)
+   struct Lisp_Process *p = XPROCESS (proc);
+   Lisp_Object contact = p->childp;
+   int optbits = 0;
++  int socket_to_use = -1;
++
++  if (!NILP (use_external_socket_p))
++    {
++      socket_to_use = external_sock_fd;
++
++      /* Ensure we don't consume the external socket twice. */
++      external_sock_fd = -1;
++    }
++
+ 
+   /* Do this in case we never enter the while-loop below.  */
+   count1 = SPECPDL_INDEX ();
+@@ -3109,7 +3123,11 @@ connect_network_socket (Lisp_Object proc, Lisp_Object ip_addresses)
+       sa = xmalloc (addrlen);
+       conv_lisp_to_sockaddr (family, ip_address, sa, addrlen);
+ 
+-      s = socket (family, p->socktype | SOCK_CLOEXEC, p->ai_protocol);
++      if (socket_to_use != -1)
++          s = socket_to_use;
++      else
++          s = socket (family, p->socktype | SOCK_CLOEXEC, p->ai_protocol);
++
+       if (s < 0)
+ 	{
+ 	  xerrno = errno;
+@@ -3168,8 +3186,11 @@ connect_network_socket (Lisp_Object proc, Lisp_Object ip_addresses)
+ 		  report_file_error ("Cannot set reuse option on server socket", Qnil);
+ 	      }
+ 
+-	  if (bind (s, sa, addrlen))
+-	    report_file_error ("Cannot bind server socket", Qnil);
++          /* If we are passed a socket descriptor, it should be
++             already bound. */
++	  if (socket_to_use == -1)
++	    if (bind (s, sa, addrlen))
++	      report_file_error ("Cannot bind server socket", Qnil);
+ 
+ #ifdef HAVE_GETSOCKNAME
+ 	  if (p->port == 0)
+@@ -3534,6 +3555,11 @@ The following network options can be specified for this connection:
+                       (this is allowed by default for a server process).
+ :bindtodevice NAME -- bind to interface NAME.  Using this may require
+                       special privileges on some systems.
++:use-external-socket BOOL -- Use any pre-allocated sockets that have
++                             been passed to Emacs.  If Emacs wasn't
++                             passed a socket, this option is silently
++                             ignored.
++
+ 
+ Consult the relevant system programmer's manual pages for more
+ information on using these options.
+@@ -3578,7 +3604,7 @@ usage: (make-network-process &rest ARGS)  */)
+   EMACS_INT port = 0;
+   Lisp_Object tem;
+   Lisp_Object name, buffer, host, service, address;
+-  Lisp_Object filter, sentinel;
++  Lisp_Object filter, sentinel, use_external_socket_p;
+   Lisp_Object ip_addresses = Qnil;
+   int socktype;
+   int family = -1;
+@@ -3618,6 +3644,7 @@ usage: (make-network-process &rest ARGS)  */)
+   buffer = Fplist_get (contact, QCbuffer);
+   filter = Fplist_get (contact, QCfilter);
+   sentinel = Fplist_get (contact, QCsentinel);
++  use_external_socket_p = Fplist_get (contact, QCuse_external_socket);
+ 
+   CHECK_STRING (name);
+ 
+@@ -3914,7 +3941,7 @@ usage: (make-network-process &rest ARGS)  */)
+     }
+ #endif
+ 
+-  connect_network_socket (proc, ip_addresses);
++  connect_network_socket (proc, ip_addresses, use_external_socket_p);
+   return proc;
+ }
+ 
+@@ -4848,7 +4875,7 @@ wait_reading_process_output (intmax_t time_limit, int nsecs, int read_kbd,
+ 		  {
+ 		    Lisp_Object ip_addresses = check_for_dns (aproc);
+ 		    if (!NILP (ip_addresses) && !EQ (ip_addresses, Qt))
+-		      connect_network_socket (aproc, ip_addresses);
++		      connect_network_socket (aproc, ip_addresses, Qnil);
+ 		    else
+ 		      retry_for_async = true;
+ 		  }
+@@ -7709,6 +7736,16 @@ catch_child_signal (void)
+ }
+ #endif	/* subprocesses */
+ 
++/* Set the external socket descriptor for Emacs to use when
++   `make-network-process' is called with a non-nil
++   `:use-external-socket' option.  The fd should have been checked to
++   ensure it is a valid socket and is already bound.  */
++void
++set_external_socket_descriptor(int fd)
++{
++    external_sock_fd = fd;
++}
++
+ 
+ /* This is not called "init_process" because that is the name of a
+    Mach system call, so it would cause problems on Darwin systems.  */
+@@ -7837,6 +7874,7 @@ syms_of_process (void)
+   DEFSYM (QCserver, ":server");
+   DEFSYM (QCnowait, ":nowait");
+   DEFSYM (QCsentinel, ":sentinel");
++  DEFSYM (QCuse_external_socket, ":use-external-socket");
+   DEFSYM (QCtls_parameters, ":tls-parameters");
+   DEFSYM (Qnsm_verify_connection, "nsm-verify-connection");
+   DEFSYM (QClog, ":log");
+-- 
+2.8.0
+
+
+--=-=-=
+Content-Type: text/x-diff
+Content-Disposition: inline;
+ filename=0002-Check-for-libsystemd-when-building-Emacs.patch
+
+>From b435584609d623939ced0854479d27e1ed075438 Mon Sep 17 00:00:00 2001
+From: Matthew Leach <matthew@mattleach.net>
+Date: Sat, 26 Mar 2016 16:41:17 +0000
+Subject: [PATCH 2/4] Check for libsystemd when building Emacs.
+
+* configure.ac: Add new default-on option systemd and check for
+  libsystemd at configure time.
+* src/Makefile.in: Add libsystemd library and C flags to the Emacs
+  compilation options.
+---
+ configure.ac    | 13 +++++++++++++
+ src/Makefile.in |  6 +++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index f3846f4..f53c670 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -330,6 +330,7 @@ OPTION_DEFAULT_ON([tiff],[don't compile with TIFF image support])
+ OPTION_DEFAULT_ON([gif],[don't compile with GIF image support])
+ OPTION_DEFAULT_ON([png],[don't compile with PNG image support])
+ OPTION_DEFAULT_ON([rsvg],[don't compile with SVG image support])
++OPTION_DEFAULT_ON([libsystemd],[don't compile with libsystemd support])
+ OPTION_DEFAULT_OFF([cairo],[compile with Cairo drawing (experimental)])
+ OPTION_DEFAULT_ON([xml2],[don't compile with XML parsing support])
+ OPTION_DEFAULT_ON([imagemagick],[don't compile with ImageMagick image support])
+@@ -2716,6 +2717,18 @@ fi
+ AC_SUBST(LIBGNUTLS_LIBS)
+ AC_SUBST(LIBGNUTLS_CFLAGS)
+ 
++HAVE_LIBSYSTEMD=no
++if test "${with_libsystemd}" = "yes" ; then
++  EMACS_CHECK_MODULES([LIBSYSTEMD], [libsystemd >= 226],
++    [HAVE_LIBSYSTEMD=yes], [HAVE_LIBSYSTEMD=no])
++  if test "${HAVE_LIBSYSTEMD}" = "yes"; then
++    AC_DEFINE(HAVE_LIBSYSTEMD, 1, [Define if using libsystemd.])
++  fi
++fi
++
++AC_SUBST(LIBSYSTEMD_LIBS)
++AC_SUBST(LIBSYSTEMD_CFLAGS)
++
+ NOTIFY_OBJ=
+ NOTIFY_SUMMARY=no
+ 
+diff --git a/src/Makefile.in b/src/Makefile.in
+index c290a60..fc9360a 100644
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -307,6 +307,9 @@ LIBSELINUX_LIBS = @LIBSELINUX_LIBS@
+ LIBGNUTLS_LIBS = @LIBGNUTLS_LIBS@
+ LIBGNUTLS_CFLAGS = @LIBGNUTLS_CFLAGS@
+ 
++LIBSYSTEMD_LIBS = @LIBSYSTEMD_LIBS@
++LIBSYSTEMD_CFLAGS = @LIBSYSTEMD_CFLAGS@
++
+ INTERVALS_H = dispextern.h intervals.h composite.h
+ 
+ GETLOADAVG_LIBS = @GETLOADAVG_LIBS@
+@@ -372,6 +375,7 @@ ALL_CFLAGS=-Demacs $(MYCPPFLAGS) -I. -I$(srcdir) \
+   $(WEBKIT_CFLAGS) \
+   $(SETTINGS_CFLAGS) $(FREETYPE_CFLAGS) $(FONTCONFIG_CFLAGS) \
+   $(LIBOTF_CFLAGS) $(M17N_FLT_CFLAGS) $(DEPFLAGS) \
++  $(LIBSYSTEMD_CFLAGS) \
+   $(LIBGNUTLS_CFLAGS) $(NOTIFY_CFLAGS) $(CAIRO_CFLAGS) \
+   $(WARN_CFLAGS) $(WERROR_CFLAGS) $(CFLAGS)
+ ALL_OBJC_CFLAGS=$(ALL_CFLAGS) $(GNU_OBJC_CFLAGS)
+@@ -489,7 +493,7 @@ LIBES = $(LIBS) $(W32_LIBS) $(LIBS_GNUSTEP) $(LIBX_BASE) $(LIBIMAGE) \
+    $(LIBS_TERMCAP) $(GETLOADAVG_LIBS) $(SETTINGS_LIBS) $(LIBSELINUX_LIBS) \
+    $(FREETYPE_LIBS) $(FONTCONFIG_LIBS) $(LIBOTF_LIBS) $(M17N_FLT_LIBS) \
+    $(LIBGNUTLS_LIBS) $(LIB_PTHREAD) $(GETADDRINFO_A_LIBS) \
+-   $(NOTIFY_LIBS) $(LIB_MATH) $(LIBZ) $(LIBMODULES)
++   $(NOTIFY_LIBS) $(LIB_MATH) $(LIBZ) $(LIBMODULES) $(LIBSYSTEMD_LIBS)
+ 
+ $(leimdir)/leim-list.el: bootstrap-emacs$(EXEEXT)
+ 	$(MAKE) -C ../leim leim-list.el EMACS="$(bootstrap_exe)"
+-- 
+2.8.0
+
+
+--=-=-=
+Content-Type: text/x-diff
+Content-Disposition: inline;
+ filename=0003-Read-the-number-of-sockets-passed-by-systemd.patch
+
+>From da80bd7ebd0e9ba1b948be7ba0a0f9cafe6dd4c3 Mon Sep 17 00:00:00 2001
+From: Matthew Leach <matthew@mattleach.net>
+Date: Sat, 26 Mar 2016 18:50:14 +0000
+Subject: [PATCH 3/4] Read the number of sockets passed by systemd.
+
+* src/emacs.c (main): Call sd_listen_fds to read the number of sockets
+  passed and call `set_external_socket_descriptor' to set the external
+  socket.
+---
+ src/emacs.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/src/emacs.c b/src/emacs.c
+index 95d1905..6a77293 100644
+--- a/src/emacs.c
++++ b/src/emacs.c
+@@ -56,6 +56,11 @@ along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.  */
+ #include <binary-io.h>
+ #endif
+ 
++#ifdef HAVE_LIBSYSTEMD
++#include <systemd/sd-daemon.h>
++#include <sys/socket.h>
++#endif /* HAVE_LIBSYSTEMD */
++
+ #ifdef HAVE_WINDOW_SYSTEM
+ #include TERM_HEADER
+ #endif /* HAVE_WINDOW_SYSTEM */
+@@ -676,6 +681,9 @@ main (int argc, char **argv)
+   char dname_arg2[80];
+ #endif
+   char *ch_to_dir = 0;
++#ifdef HAVE_LIBSYSTEMD
++  int systemd_socket;
++#endif
+ 
+   /* If we use --chdir, this records the original directory.  */
+   char *original_pwd = 0;
+@@ -997,6 +1005,20 @@ main (int argc, char **argv)
+ 	  exit (1);
+ 	}
+ 
++#ifdef HAVE_LIBSYSTEMD
++      /* Read the number of sockets passed through by systemd. */
++      systemd_socket = sd_listen_fds(1);
++
++      if (systemd_socket > 1)
++        fprintf (stderr, "\nWarning: systemd has passed more than one socket to the Emacs process.\n\
++Try adding 'Accept=false' in the Emacs socket unit file.\n");
++
++      else if (systemd_socket == 1 &&
++               sd_is_socket (SD_LISTEN_FDS_START,
++                             AF_UNSPEC, SOCK_STREAM, 1) >= 0)
++        set_external_socket_descriptor (SD_LISTEN_FDS_START);
++#endif /* HAVE_LIBSYSTEMD */
++
+ #ifndef DAEMON_MUST_EXEC
+ #ifdef USE_GTK
+       fprintf (stderr, "\nWarning: due to a long standing Gtk+ bug\nhttp://bugzilla.gnome.org/show_bug.cgi?id=85715\n\
+-- 
+2.8.0
+
+
+--=-=-=
+Content-Type: text/x-diff
+Content-Disposition: inline;
+ filename=0004-When-Emacs-is-passed-a-socket-descriptor-make-the-se.patch
+
+>From 56fc0aef450e199bc93ea75b15dff778713de81f Mon Sep 17 00:00:00 2001
+From: Matthew Leach <matthew@mattleach.net>
+Date: Sat, 26 Mar 2016 20:43:26 +0000
+Subject: [PATCH 4/4] When Emacs is passed a socket descriptor, make the server
+ listen on it.
+
+* lisp/server.el (server-start): Set :use-external-socket to `t' when
+  calling `make-network-process'.
+* etc/NEWS: Document new socket-passing functionality and the configure
+  option to disable systemd interaction.
+* doc/emacs/misc.texi (Emacs Server): Document systemd socket passing
+  functionality and provide systemd unit examples.
+---
+ doc/emacs/misc.texi | 38 ++++++++++++++++++++++++++++++++++++++
+ etc/NEWS            |  7 +++++++
+ lisp/server.el      |  1 +
+ 3 files changed, 46 insertions(+)
+
+diff --git a/doc/emacs/misc.texi b/doc/emacs/misc.texi
+index b5a2150..775cda9 100644
+--- a/doc/emacs/misc.texi
++++ b/doc/emacs/misc.texi
+@@ -1580,6 +1580,44 @@ option.  @xref{Initial Options}.  When Emacs is started this way, it
+ calls @code{server-start} after initialization, and returns control to
+ the calling terminal instead of opening an initial frame; it then
+ waits in the background, listening for edit requests.
++
++@cindex socket activation, systemd, Emacs
++@item
++An external process can invoke the Emacs server when a connection
++event occurs upon a specified socket and pass the socket to the new
++Emacs server process.  An instance of this is @command{systemd}'s
++socket functionaly: the @command{systemd} service creates a socket and
++listens for connections on it; when @command{emacsclient} connects to
++it for the first time, @command{systemd} can launch the Emacs server
++and hand over the socket to it for servicing @command{emacsclient}
++connections.  A setup to use this functionality could be:
++
++@file{~/.config/systemd/user/emacs.service}:
++@example
++[Unit]
++Description=Emacs
++
++[Service]
++Type=forking
++ExecStart=/path/to/emacs --daemon
++ExecStop=/path/to/emacsclient --eval "(kill-emacs)"
++Restart=always
++
++[Install]
++WantedBy=default.target
++@end example
++
++@file{~/.config/systemd/user/emacs.socket}:
++@example
++[Socket]
++ListenStream=/path/to/.emacs.socket
++
++[Install]
++WantedBy=sockets.target
++@end example
++
++The @code{ListenStream} path will be the path that Emacs listens for
++connections from @command{emacsclient}; this is a file of your choice.
+ @end itemize
+ 
+ @cindex @env{TEXEDIT} environment variable
+diff --git a/etc/NEWS b/etc/NEWS
+index 66777e9..f395d45 100644
+--- a/etc/NEWS
++++ b/etc/NEWS
+@@ -26,6 +26,13 @@ otherwise leave it unmarked.
+ * Installation Changes in Emacs 25.2
+ 
+ +++
++** Emacs server now has socket-launching support.  This allows socket
++based activation, where an external process can invoke the Emacs
++server process upon a socket connection event and hand over the socket
++to Emacs.  Emacs will use this socket for servicing emacsclient
++commands.  systemd can make use of this new functionally but can be
++disabled with the configure option '--disable-libsystemd'.
++
+ ** New configure option '--disable-build-details' attempts to build an
+ Emacs that is more likely to be reproducible; that is, if you build
+ and install Emacs twice, the second Emacs is a copy of the first.
+diff --git a/lisp/server.el b/lisp/server.el
+index 5243820..2a9729e 100644
+--- a/lisp/server.el
++++ b/lisp/server.el
+@@ -655,6 +655,7 @@ server or call `\\[server-force-delete]' to forcibly disconnect it."))
+ 		       :noquery t
+ 		       :sentinel #'server-sentinel
+ 		       :filter #'server-process-filter
++		       :use-external-socket t
+ 		       ;; We must receive file names without being decoded.
+ 		       ;; Those are decoded by server-process-filter according
+ 		       ;; to file-name-coding-system.  Also don't get
+-- 
+2.8.0
+
+
+--=-=-=--
+

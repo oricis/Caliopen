@@ -1,0 +1,130 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1akdaa-0003fP-Mr
+	for mharc-dev@caliopen.local; Mon, 28 Mar 2016 16:16:40 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:44026)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1akdaX-0003e3-CB
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:16:38 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1akdaS-0006U9-8B
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:16:37 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:52988)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <clement.pit@gmail.com>) id 1akdaR-0006U2-UM
+	for dev@caliopen.local; Mon, 28 Mar 2016 16:16:32 -0400
+Received: from [192.168.1.82] ([109.24.225.43]) by mrelayeu.kundenserver.de
+	(mreue005) with ESMTPSA (Nemesis) id 0LckK3-1a3uzB3Bpv-00k728 for
+	<emacs-devel@gnu.org>; Mon, 28 Mar 2016 22:16:30 +0200
+Subject: Re: Thinking about changed buffers
+To: dev@caliopen.local
+References: <m3bn5ya4ro.fsf@gnus.org> <m3r3euigfp.fsf@gnus.org>
+	<jwvy49276pc.fsf-monnier+gmane.emacs.devel@gnu.org>
+	<m34mbqiesf.fsf@gnus.org>
+	<c7bc13b9-e578-a5b0-d7a7-74172196ed22@yandex.ru>
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+Message-ID: <56F9911D.8040809@gmail.com>
+Date: Mon, 28 Mar 2016 22:16:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+	Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <c7bc13b9-e578-a5b0-d7a7-74172196ed22@yandex.ru>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="kEsIdr6SKprF6TIV9IdvgNcjxqRXk4s1l"
+X-Provags-ID: V03:K0:ogb6RzlyGFTwTZ5RpBKy5O4WJybJRK9PFFgPlWfslK/Zb3cAwdX
+	+hWPtXWCS+ApbmEgYU5Z/Rg1ziANAMTVHAFTppEOmOnXHVOukZbASACQS+OhOPyAQP+3tmL
+	CnswHaewOkvBe2gkffu9uW94pRR1K0aKSgz9x219NYSD3zzbyNc8FLLy+ip9MrdMDRFhKvT
+	+qnp84mzSM1WckGuLUQ5Q==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:oXlDrsvps38=:WrRJhi68jMG2weIez5QhYL
+	cCRPMZx+mvC6R2NDzArLpYggmS6E8nLaKD0uj/m5LTWUAzMGHli29DD6H0VDbILr6qk0nxmO3
+	RB4G/eoBZLQkNUcOUMehlb++tbRmUcokcefrkS1/cnLD0JHk60HCWqGm+gicARsdBQ912jl7j
+	+YGcb6pvgAm+T442/jCA44kPRzGnbSYWgYyQgn8pxd782oPTjuRCN3LrFXsabcc19U+BNXHxL
+	I4EE7qTSLCswfpQjIc+2cn6hAkCj8WZpKwP6ug+d2RInE3lqm5NpQXplkmiJH57q8Jg4ctC67
+	l/pQRn57ZAP8yl7CJlK1lEYAs8t68gyrP12p6IWN+PPDlC3lxXQS93Bw5rZOZEIzbf/uLwDe+
+	19xZ1O3YgvxRacEwJXhrTQ+k+4HuQgvOXMC6/wMI8pvFF9GoecZJ3QLxWHCpAp82LdAilBS0V
+	lI3wnJx1KwIpeLdWpwmTIu5BIr0pVpkKFV9xuWopLK3Io0cYxqBaIJOsCV4AjIYg4Y0DfpXGL
+	3s6/n54bUzkDwcCJ5IPZLQdou7FqYNzkCUTo9xy0cACUSGlbcTWhJmiIH30uaukZOZbvFvmf5
+	XQeLYiV8RNRkNfZr1QwjnbqwiXO/O+iS1UH+tyLkxWEcYDgZfEQlBsrA5LqEnnevByyLUUQ9o
+	fTinpfT09PQnkKrfrJwm8zm3oukjcd8og7uNnaBoFH0i0sx8n1n8JCvn7aAw0qvfBH2A=
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 212.227.126.134
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 28 Mar 2016 20:16:38 -0000
+Content-Length: 2614
+Lines: 65
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--kEsIdr6SKprF6TIV9IdvgNcjxqRXk4s1l
+Content-Type: multipart/mixed; boundary="wHeQseqH1makcuGA1Kq1GCNdxXTOX2xUn"
+From: =?UTF-8?Q?Cl=c3=a9ment_Pit--Claudel?= <clement.pit@gmail.com>
+To: dev@caliopen.local
+Message-ID: <56F9911D.8040809@gmail.com>
+Subject: Re: Thinking about changed buffers
+References: <m3bn5ya4ro.fsf@gnus.org> <m3r3euigfp.fsf@gnus.org>
+ <jwvy49276pc.fsf-monnier+gmane.emacs.devel@gnu.org> <m34mbqiesf.fsf@gnus.org>
+ <c7bc13b9-e578-a5b0-d7a7-74172196ed22@yandex.ru>
+In-Reply-To: <c7bc13b9-e578-a5b0-d7a7-74172196ed22@yandex.ru>
+
+--wHeQseqH1makcuGA1Kq1GCNdxXTOX2xUn
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+
+
+On 03/28/2016 09:32 PM, Dmitry Gutov wrote:
+> On 03/28/2016 10:27 PM, Lars Magne Ingebrigtsen wrote:
+>=20
+>>> Still seems problematic if your 5 year old takes 2.7s to compute it o=
+n
+>>> a 1GB file.  You don't want to freeze for 2s in the normal course of
+>>> editing just because you happen to cross the "original size" threshol=
+d.
+>>
+>> Yeah, I don't see any way around that.
+>=20
+> Don't use hashing. Use e.g. buffer-undo-list. We save enough data to re=
+turn the buffer contents to the previous state, right? It should be possi=
+ble to detect whether a given sequence of undo-s is a no-op.
+
+Alternatively, introduce a threshold above which that hash-based check do=
+es not happen, and instead fall back to the old, less complex behaviour i=
+n that case.
+
+
+--wHeQseqH1makcuGA1Kq1GCNdxXTOX2xUn--
+
+--kEsIdr6SKprF6TIV9IdvgNcjxqRXk4s1l
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJW+ZEdAAoJEPqg+cTm90wjeLAQAKVCEyp8AagnISBdGOsRcumu
+UYxQ1jXM5tIm0j0IdbjPfQmMoOF9KH8Z/4d3g/lwgk3VY14Z2C8CFkuAlhOyUf3R
+AcjSEPG1wClgYo1aFqQa22cigT4ypmnD1d0qRrNzkseFkBSY+M8aQVbiY2+WqSDw
+baJGBKLSaFgNvwVe0DCRDcJc8+0M076n4KB/gmRrg08c+580YiUC7AYXwRDkoZb3
+oks5R1yrYhRmrvK0mtG1hKRUMAfvAAAWz382eju4/mNiddQrs3V1ChI4JZZZXAOQ
+jHFGCO3x5wK4Kq12EnHAwDH+COrl27FjYOzygJQ9FKBd/48/ah7FB4GC5AnDC327
+2VMhzW0ST3Xp08HZOObyWqayOXr5SwMvReqXAa1OPsuCVf2edX7qq9zjI6n8bff0
+/cUi6NbQTdBWH9DBwQZj7qBgPsymCxNj0otXOAr8b4gbFC1LaAH6UucHjb73aBJx
+IHc//dQLOgM7R5pKby6DIGeF2I5sl1iI+6xIvAT/lH5yPp/IPBasW2DiV51X0SA7
+yum8dV5KeP0ejBCCEYjDF6h9OZozs7f5zKq2JNT1kW7zMPMXTv8dUyZLpmnjb8l5
+dlvOtZWeiAAa/qy3VBFwwlD6CJNRR/f1ZIPPfQxMTKsSN9EXnEFsQQhxXatAgIkP
+aq9H8jY3VRFk0XXOKlLU
+=MJC7
+-----END PGP SIGNATURE-----
+
+--kEsIdr6SKprF6TIV9IdvgNcjxqRXk4s1l--
+

@@ -1,0 +1,111 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ai7Ow-0000M9-IV
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 17:30:14 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:38440)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ai7Ov-0000M3-7c
+	for dev@caliopen.local; Mon, 21 Mar 2016 17:30:13 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ai7Os-0005zw-0Z
+	for dev@caliopen.local; Mon, 21 Mar 2016 17:30:13 -0400
+Received: from mail-wm0-x235.google.com ([2a00:1450:400c:c09::235]:34506)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <raaahh@gmail.com>) id 1ai7Or-0005zi-Qg
+	for dev@caliopen.local; Mon, 21 Mar 2016 17:30:09 -0400
+Received: by mail-wm0-x235.google.com with SMTP id p65so168170913wmp.1
+	for <dev@caliopen.local>; Mon, 21 Mar 2016 14:30:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=sender:subject:to:references:cc:from:message-id:date:user-agent
+	:mime-version:in-reply-to:content-transfer-encoding;
+	bh=m7PnvgfvvbOHMM9Df7oMZUdGD0U5UhDrEU2sTgTf72s=;
+	b=WEKTuT/sMg8qNVo9C2+1wz3vvjI0lio5GsHqbCfVCJKk4JGXl3h6e8SPmaezMNQkXB
+	c91cPpO0yyqwXxz5pP/IeX6QpWIfkKGb5qQVAKPkg2M2iRLYWHbXnlZij4/ZJRu0T3qN
+	wBM1JW98ZUyjrDkBrdyxVju4kaw3JFRxYlOVyiUfDZ8qEyTxD66SM2YaZqQJ40Y2/3w6
+	4NrHI8U5CwFOL0Jetz5x+IsKmhUTnbOk1Xa37PlNqoMIthFZibbegTb9nev+Omg5xlvh
+	ISvAw3wKtuHCXMeA4vfPO6e1xR8IL5NKHLkZ60G9jHuGjbLNc85e0eTETRDuTm7DOcFy
+	oWtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
+	:date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+	bh=m7PnvgfvvbOHMM9Df7oMZUdGD0U5UhDrEU2sTgTf72s=;
+	b=UYfn34FKu/dAAhq2NffqMqm/diK8JJLnXoxow0Ey/eSX25op4Qei9MQvCvPXE+qlBm
+	3JnTFB7wBqfvnKPkwB0Ip3HbdfdMhXfjuqFct/88buU5qVUjhfoX8AxcvcAFIRWNZ2QS
+	XCIjms9ZWCsQjg2KFunM0MUL0mbBlTx26dokAMkRQoOYlrxjnh9WXGH6sJ4mZd98jdOD
+	07qEr0r2rd1sgWPQ2mmyU3++vpT9UGkWU7NsZ2CQMuI4M2SOLhplpRUwc800U8zzswOf
+	1Geu08sDxlBgHg2hXaCM5UmAe0OlKh80fKV240vS83ReTI5OEae1rZQcTNNmvci7y1s+
+	3DEw==
+X-Gm-Message-State: AD7BkJKDP6aUwexINGOtu4DFRNZSQtlT/wKz1XRPcmPJUq1C//fEnzvUVyirfuzXlURR4g==
+X-Received: by 10.28.227.130 with SMTP id a124mr14041801wmh.2.1458595809069;
+	Mon, 21 Mar 2016 14:30:09 -0700 (PDT)
+Received: from [192.168.1.2] ([185.105.175.24])
+	by smtp.googlemail.com with ESMTPSA id
+	k125sm14185272wmb.14.2016.03.21.14.30.07
+	(version=TLSv1/SSLv3 cipher=OTHER);
+	Mon, 21 Mar 2016 14:30:08 -0700 (PDT)
+Sender: DG <raaahh@gmail.com>
+Subject: Re: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+To: Vitalie Spinu <spinuvit@gmail.com>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+	<328c7461-62c6-4228-f622-626349613a1d@yandex.ru>
+	<87fuvkf1gx.fsf@gmail.com>
+	<ae28a065-9500-0954-3c91-cd3a68bd2408@yandex.ru>
+	<87y49bewum.fsf@gmail.com>
+	<ea0d8779-3207-7a29-2c8b-3a047f1fcd46@yandex.ru>
+	<87lh5bevu9.fsf@gmail.com>
+	<83c0f91b-21ff-2514-d24a-5b6104ef012b@yandex.ru>
+	<877fgvept2.fsf@gmail.com>
+From: Dmitry Gutov <dgutov@yandex.ru>
+Message-ID: <7c941e57-756c-0081-9e78-fd31db305d7c@yandex.ru>
+Date: Mon, 21 Mar 2016 23:30:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+	Thunderbird/45.0
+MIME-Version: 1.0
+In-Reply-To: <877fgvept2.fsf@gmail.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::235
+Cc: Alan Mackenzie <acm@muc.de>, Stefan Monnier <monnier@IRO.UMontreal.CA>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 21:30:14 -0000
+Content-Length: 477
+Lines: 13
+
+On 03/21/2016 06:52 PM, Vitalie Spinu wrote:
+>
+> Ok, so the alternative proposal is not to do anything. I like that.
+
+Rather, wait and see, instead of hurrying to put those into the API.
+
+> The only
+> reason to have STRING-AFTER and STRING-BEFORE is potential mode specific
+> optimization. If that's not a concern, no need for that.
+
+Performance may be a concern, but we don't know that yet. As long as 
+they're not required for correctness, let's not get ahead of ourselves.
+

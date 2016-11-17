@@ -1,0 +1,96 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id C1046120AAA;
+	Tue,  2 Dec 2014 11:58:20 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: -2.599
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.599 tagged_above=-999 required=5
+	tests=[BAYES_00=-2.599]
+Received: from mail4.gandi.net ([217.70.183.210])
+	by localhost (mfiltercorp1-d.gandi.net [217.70.183.155]) (amavisd-new, port 10024)
+	with ESMTP id fYVRKyXFO225; Tue,  2 Dec 2014 11:58:18 +0100 (CET)
+Received: from brassens.heberge.info (brassens.heberge.info [91.194.60.2])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail4.gandi.net (Postfix) with ESMTPS id 655BC120A73;
+	Tue,  2 Dec 2014 11:58:18 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id 138676B5C903F;
+	Tue,  2 Dec 2014 11:58:18 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+	by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 7vRgPyxvJYhC; Tue,  2 Dec 2014 11:58:14 +0100 (CET)
+Received: from brassens.heberge.info (localhost [127.0.0.1])
+	by brassens.heberge.info (Postfix) with ESMTP id B54486B5C9041;
+	Tue,  2 Dec 2014 11:58:13 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by brassens.heberge.info (Postfix) with ESMTP id B8F9D6B5C9040
+ for <caliopdev@caliop.net>; Tue,  2 Dec 2014 11:58:12 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at brassens.heberge.info
+Received: from brassens.heberge.info ([91.194.60.2])
+ by localhost (brassens.heberge.info [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id Twl_BUWM5GX1 for <caliopdev@caliop.net>;
+ Tue,  2 Dec 2014 11:58:12 +0100 (CET)
+Received: from brasil.brainstorm.fr (brasil.brainstorm.fr [193.56.58.33])
+ by brassens.heberge.info (Postfix) with ESMTP id D98966B5C903F
+ for <caliopdev@caliop.net>; Tue,  2 Dec 2014 11:58:11 +0100 (CET)
+Received: by brasil.brainstorm.fr (Postfix, from userid 1000)
+ id B7181209B0B3D; Tue,  2 Dec 2014 11:58:11 +0100 (CET)
+Date: Tue, 2 Dec 2014 11:58:11 +0100
+From: Laurent Chemla <laurent@brainstorm.fr>
+To: Liste de =?iso-8859-1?Q?d=E9veloppement?= Caliopen <caliopdev@caliop.net>
+Message-ID: <20141202105810.GG7323@brasil.brainstorm.fr>
+References: <5478A041.8020105@chamal.fr>
+ <20141130162431.GF14633@brasil.brainstorm.fr>
+ <BC28FFD7-1F1D-4854-96B2-723CCB0DC6F7@gandi.net>
+ <20141201111410.GI14633@brasil.brainstorm.fr>
+ <20141201204235.GC7323@brasil.brainstorm.fr>
+ <CA+tgzejOJX4KWOM1eQdrn1XDh+Y_BSeKOAdf8dY+FWTthAL=7g@mail.gmail.com>
+ <20141202051032.GD7323@brasil.brainstorm.fr>
+ <547D86F1.9020801@gandi.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <547D86F1.9020801@gandi.net>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Subject: Re: [Caliopdev] =?iso-8859-1?q?Prochaine_r=E9union?=
+X-BeenThere: caliopdev@caliop.net
+X-Mailman-Version: 2.1.15
+Precedence: list
+Reply-To: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev@caliop.net>
+List-Id: =?iso-8859-1?q?Liste_de_d=E9veloppement_Caliopen?=
+ <caliopdev.caliop.net>
+List-Unsubscribe: <http://brassens.heberge.info/cgi-bin/mailman/options/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=unsubscribe>
+List-Archive: <http://brassens.heberge.info/cgi-bin/mailman/private/caliopdev/>
+List-Post: <mailto:caliopdev@caliop.net>
+List-Help: <mailto:caliopdev-request@caliop.net?subject=help>
+List-Subscribe: <http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev>, 
+ <mailto:caliopdev-request@caliop.net?subject=subscribe>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Errors-To: caliopdev-bounces@caliop.net
+Sender: "Caliopdev" <caliopdev-bounces@caliop.net>
+
+
+> >Ah, et si on d=E9cale d'une semaine (12/12), tu pourras passer ?
+> Le 12 ca serait parfait, je suis =E0 Paris =E9galement.
+
+Bon, c=F4t=E9 Qwant le 12 est impossible, par contre Eric L=E9andri sera
+pr=E9sent. Donc on maintient le 5 pour une r=E9union avec Qwant, et on
+r=E9it=E8re le 12 avant une coupure jusqu'=E0 fin d=E9cembre/d=E9but janvie=
+r.
+
+Le 5 on aura Julien en visioconf' malgr=E9 tout.
+
+C'est pas plus mal vous pourrez juger du mec mieux que ce que j'ai
+pu faire en 20mn chez moi.
+
+L.
+_______________________________________________
+Caliopdev mailing list
+Caliopdev@caliop.net
+http://brassens.heberge.info/cgi-bin/mailman/listinfo/caliopdev

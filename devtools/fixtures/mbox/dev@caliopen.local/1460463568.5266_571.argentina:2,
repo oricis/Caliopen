@@ -1,0 +1,171 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ahs5X-0008Di-Ny
+	for mharc-dev@caliopen.local; Mon, 21 Mar 2016 01:09:11 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:60266)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahs5V-0008D6-99
+	for dev@caliopen.local; Mon, 21 Mar 2016 01:09:10 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahs5N-0003ie-Op
+	for dev@caliopen.local; Mon, 21 Mar 2016 01:09:04 -0400
+Received: from mail-wm0-x234.google.com ([2a00:1450:400c:c09::234]:34558)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <spinuvit@gmail.com>) id 1ahs5N-0003iX-Ec
+	for dev@caliopen.local; Mon, 21 Mar 2016 01:09:01 -0400
+Received: by mail-wm0-x234.google.com with SMTP id p65so137523831wmp.1
+	for <dev@caliopen.local>; Sun, 20 Mar 2016 22:09:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:references:date:in-reply-to:message-id
+	:user-agent:mime-version;
+	bh=H8ax2I4DJSSd0bJliegWg+BqVq89NUCVpAJ8O3jP5tU=;
+	b=hhgHSvRl5EuUxmkKXVdQKF5fOhkRTRH/lFgHUJSx9kip1c0MDDfcGHd6jiRvm5OSMj
+	A9Qkz0BnbLWeoXaY8fxcNQBOHeESg4KL1iiDW5NUTl9JXMZTVjLre1dmD0rq6or1MHjE
+	j+axKgq0QlPibuRcJu/Cg5Six/KiyUSKwA7TiQ5NQ4GWhSvxs1xFOwSpp9+Zk4ASyAuT
+	GvekLh1/7U00/HKEIBH2OFVYFqWBPVLBidnkCasZFQt/MCDC8pUGDYnyT/A4eokgwVEI
+	Ak0+Byjg0QEkRvSIKV/bV0fRz9wvCgZIVyChb0pAmzSXoiKTFf+aznQVjVsmY+wcML0o
+	VQlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+	:message-id:user-agent:mime-version;
+	bh=H8ax2I4DJSSd0bJliegWg+BqVq89NUCVpAJ8O3jP5tU=;
+	b=Jm4sfCEnuLyPSVbK0ylpy4uqpBxBKam5Myq28puMswmxg4ZyX5kpH8WsC+TR+ANExS
+	Cpijs62aa0+G4n72nIfsylrbZO2RzwoNP4EbVTNUPiGyYjpNX8OV7RSFjbfawFfjoCba
+	GXbRpfraBiHYHqliM5DpKh9WWs6n8WB1c7CpxBvkobNYRzokKmmAOZwAf7uhmO+fVdki
+	W/oX4A9FMZ85SVZFHUD6Vehwn+3Hb0MLxF6p9hVeqFTXOGKGcG1g2qvt14JIDH6ib2T8
+	bRH8MeJ7UgLKFXo7LQqh7ezi8uZGrPBG2cbBofiYEzxwFsE90qwwgAh1PwxvDcancC9M
+	qfoQ==
+X-Gm-Message-State: AD7BkJJAYelkA0jkk0O1ZmrxLyMpqIF1z5jmJTUtU1oVwWVQHipARb6rynkvhs5LmF9OOQ==
+X-Received: by 10.28.55.74 with SMTP id e71mr12301089wma.26.1458536940928;
+	Sun, 20 Mar 2016 22:09:00 -0700 (PDT)
+Received: from localhost ([143.176.214.220]) by smtp.gmail.com with ESMTPSA id
+	e19sm10676512wmd.1.2016.03.20.22.09.00
+	(version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+	Sun, 20 Mar 2016 22:09:00 -0700 (PDT)
+From: Vitalie Spinu <spinuvit@gmail.com>
+To: Dmitry Gutov <dgutov@yandex.ru>
+Subject: [Patch] hard-widen-limits [was Re: Syntax tables for multiple modes
+	[was: bug#22983: syntax-ppss returns wrong result.]]
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+	<20160314151621.GF1894@acm.fritz.box>
+	<e069c6fc-c458-cb30-64a1-c636f86b5d6b@yandex.ru>
+	<874mc2dqtk.fsf@gmail.com>
+	<fbb84dbe-6f99-9770-17cc-e541ab708803@yandex.ru>
+	<87egb5cpmg.fsf@gmail.com>
+	<aba8e203-f2c7-851b-39ff-9ebd2147f55f@yandex.ru>
+	<87a8lsd4j3.fsf@gmail.com>
+Date: Mon, 21 Mar 2016 06:08:59 +0100
+In-Reply-To: <87a8lsd4j3.fsf@gmail.com> (Vitalie Spinu's message of "Mon, 21
+	Mar 2016 02:05:20 +0100")
+Message-ID: <87mvpsbeok.fsf_-_@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="=-=-="
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2a00:1450:400c:c09::234
+Cc: Alan Mackenzie <acm@muc.de>, Stefan Monnier <monnier@IRO.UMontreal.CA>,
+	emacs-devel <emacs-devel@gnu.org>
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 21 Mar 2016 05:09:10 -0000
+Content-Length: 2545
+Lines: 84
+
+--=-=-=
+Content-Type: text/plain
+
+
+>> On Mon, Mar 21 2016 02:05, Vitalie Spinu wrote:
+
+>> Are you interested in working on a patch? Also Cc'ing Stefan.
+
+> My knowledge of emacs C internals is close to 0. Elisp side (and probably C
+> side) of this is trivial. I will look into it but I don't think I am the best
+> person for that.
+
+The widen part turned to be easy.  Will look at parse-partial-sexp tomorrow.
+
+ Vitalie
+
+
+--=-=-=
+Content-Type: text/x-diff
+Content-Disposition: inline
+
+>From eafcff9e72499e3bb6dc462d406dd33a885e3d49 Mon Sep 17 00:00:00 2001
+From: Vitalie Spinu <spinuvit@gmail.com>
+Date: Mon, 21 Mar 2016 05:41:55 +0100
+Subject: [PATCH] Implement hard-narrowing
+
+ `widen` now respects restrictions imposed by new variable `hard-widen-limits`
+---
+ src/buffer.c  |  5 +++++
+ src/editfns.c | 14 +++++++++++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/src/buffer.c b/src/buffer.c
+index f06d7e0..5232c49 100644
+--- a/src/buffer.c
++++ b/src/buffer.c
+@@ -6219,6 +6219,11 @@ and disregard a `read-only' text property if the property value
+ is a member of the list.  */);
+   Vinhibit_read_only = Qnil;
+ 
++  DEFVAR_LISP ("hard-widen-limits", Vhard_widen_limits,
++	       doc: /* When non-nil `widen` will widen to these limits.
++Must be a cons of the form (MIN . MAX) where MIN and MAX are integers or markers.  */);
++  Vhard_widen_limits = Qnil;
++
+   DEFVAR_PER_BUFFER ("cursor-type", &BVAR (current_buffer, cursor_type), Qnil,
+ 		     doc: /* Cursor to use when this buffer is in the selected window.
+ Values are interpreted as follows:
+diff --git a/src/editfns.c b/src/editfns.c
+index 2ac0537..fb1f652 100644
+--- a/src/editfns.c
++++ b/src/editfns.c
+@@ -3480,12 +3480,24 @@ DEFUN ("delete-and-extract-region", Fdelete_and_extract_region,
+     return empty_unibyte_string;
+   return del_range_1 (XINT (start), XINT (end), 1, 1);
+ }
++
+ 
+ DEFUN ("widen", Fwiden, Swiden, 0, 0, "",
+        doc: /* Remove restrictions (narrowing) from current buffer.
+-This allows the buffer's full text to be seen and edited.  */)
++This allows the buffer's full text to be seen and edited.
++If `hard-widen-limits` is non-nil, widen only to those limits.  */)
+   (void)
+ {
++
++  if (! NILP (Vhard_widen_limits))
++    {
++      CHECK_CONS(Vhard_widen_limits);
++      Lisp_Object hbeg = XCAR(Vhard_widen_limits);
++      Lisp_Object hend = XCDR(Vhard_widen_limits);
++      Fnarrow_to_region(hbeg, hend);
++      return Qnil;
++    }
++
+   if (BEG != BEGV || Z != ZV)
+     current_buffer->clip_changed = 1;
+   BEGV = BEG;
+-- 
+2.5.0
+
+
+--=-=-=--
+

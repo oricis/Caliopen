@@ -1,0 +1,89 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1afUBv-0000Vj-9B
+	for mharc-dev@caliopen.local; Mon, 14 Mar 2016 11:13:55 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:39305)
+	by lists.gnu.org with esmtp (Exim 4.71) (envelope-from <acm@muc.de>)
+	id 1afUBn-0000N8-3l
+	for dev@caliopen.local; Mon, 14 Mar 2016 11:13:53 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <acm@muc.de>) id 1afUBi-0002ui-VU
+	for dev@caliopen.local; Mon, 14 Mar 2016 11:13:47 -0400
+Received: from mail.muc.de ([193.149.48.3]:34515)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <acm@muc.de>)
+	id 1afUBi-0002uV-Lz
+	for dev@caliopen.local; Mon, 14 Mar 2016 11:13:42 -0400
+Received: (qmail 18794 invoked by uid 3782); 14 Mar 2016 15:13:40 -0000
+Received: from acm.muc.de (p579E8DE5.dip0.t-ipconnect.de [87.158.141.229]) by
+	colin.muc.de (tmda-ofmipd) with ESMTP;
+	Mon, 14 Mar 2016 16:13:39 +0100
+Received: (qmail 3723 invoked by uid 1000); 14 Mar 2016 15:16:21 -0000
+Date: Mon, 14 Mar 2016 15:16:21 +0000
+To: Dmitry Gutov <dgutov@yandex.ru>
+Subject: Syntax tables for multiple modes [was: bug#22983: syntax-ppss
+	returns wrong result.]
+Message-ID: <20160314151621.GF1894@acm.fritz.box>
+References: <20160311151512.GD2888@acm.fritz.box>
+	<b158555f-e014-ed7b-23eb-d80d2d77a6f4@yandex.ru>
+	<20160311212410.GG2888@acm.fritz.box>
+	<73903215-f94b-e194-7bfe-0d6350c95769@yandex.ru>
+	<20160311221540.GH2888@acm.fritz.box>
+	<2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2c301ec9-041d-9172-d628-479062314b23@yandex.ru>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Delivery-Agent: TMDA/1.1.12 (Macallan)
+From: Alan Mackenzie <acm@muc.de>
+X-Primary-Address: acm@muc.de
+X-detected-operating-system: by eggs.gnu.org: FreeBSD 9.x
+X-Received-From: 193.149.48.3
+Cc: dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Mon, 14 Mar 2016 15:13:53 -0000
+Content-Length: 1406
+Lines: 33
+
+Hello, Dmitry.
+
+On Sat, Mar 12, 2016 at 12:38:49AM +0200, Dmitry Gutov wrote:
+> On 03/12/2016 12:15 AM, Alan Mackenzie wrote:
+
+> >> Except the multiple-major-mode case, which we'd ideally try to
+> >> accommodate, too.
+
+> > How does this code handle the changeover of syntax tables at a mode
+> > boundary?
+
+> The "inner" regions start with an "empty", top-level state. This is 
+> actually fine, because these are usually small enough not to benefit 
+> from the syntax-ppss cache too much (and syntax-ppss-last still helps).
+
+> The parts of the outer region following a subregion with different 
+> syntax table... rely on a few hacks, and a manual application of a 
+> `syntax-table' property when necessary. We need a better solution there, 
+> but it's probably out of scope for this discussion.
+
+How about an extension to the parse-partial-sexp (etc.) code?  For
+example, a feature I would call an "island", where a character could be
+marked with the "island start" syntax-table property, and another
+character lower down could be marked with the "island end" character.
+parse-partial-sexp, on encountering an island start syntax would somehow
+stack the current parse state and start a new one with a different syntax
+table.  The parse state, instead of consisting of the 10 elements
+currently, would in general have 10n elements, where n is the depth of
+nesting.
+
+-- 
+Alan Mackenzie (Nuremberg, Germany).
+

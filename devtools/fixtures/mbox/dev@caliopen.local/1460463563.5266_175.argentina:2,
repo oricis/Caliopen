@@ -1,0 +1,86 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1ap5Nd-0000qn-DU
+	for mharc-dev@caliopen.local; Sat, 09 Apr 2016 22:45:41 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:50374)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1ap5Na-0000iJ-5e
+	for dev@caliopen.local; Sat, 09 Apr 2016 22:45:39 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <eliz@gnu.org>) id 1ap5NW-000402-U8
+	for dev@caliopen.local; Sat, 09 Apr 2016 22:45:38 -0400
+Received: from fencepost.gnu.org ([2001:4830:134:3::e]:53918)
+	by eggs.gnu.org with esmtp (Exim 4.71) (envelope-from <eliz@gnu.org>)
+	id 1ap5NW-0003zy-Q6; Sat, 09 Apr 2016 22:45:34 -0400
+Received: from 84.94.185.246.cable.012.net.il ([84.94.185.246]:2671
+	helo=home-c4e4a596f7)
+	by fencepost.gnu.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82) (envelope-from <eliz@gnu.org>)
+	id 1ap5NW-0001ok-6C; Sat, 09 Apr 2016 22:45:34 -0400
+Date: Sun, 10 Apr 2016 05:44:58 +0300
+Message-Id: <83y48mgp1x.fsf@gnu.org>
+From: Eli Zaretskii <eliz@gnu.org>
+To: =?utf-8?Q?Cl=C3=A9ment?= Pit--Claudel <clement.pit@gmail.com>
+CC: dev@caliopen.local
+In-reply-to: <57095F97.4060305@gmail.com> (message from =?utf-8?Q?Cl=C3=A9?=
+	=?utf-8?Q?ment?= Pit--Claudel on Sat, 9 Apr 2016 16:01:27 -0400)
+Subject: Re: How do I set up font fallback in a robust way?
+Reply-to: Eli Zaretskii <eliz@gnu.org>
+References: <570954AA.7070604@gmail.com> <834mbain03.fsf@gnu.org>
+	<57095F97.4060305@gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:4830:134:3::e
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel/>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 10 Apr 2016 02:45:39 -0000
+Content-Length: 1735
+Lines: 37
+
+> Cc: dev@caliopen.local
+> From: Clément Pit--Claudel <clement.pit@gmail.com>
+> Date: Sat, 9 Apr 2016 16:01:27 -0400
+> 
+> On 04/09/2016 03:46 PM, Eli Zaretskii wrote:
+> > The default fontset already defines specific blocks to be handled by
+> > these fonts, see fontset.el.  What problems, specifically, do you have
+> > with the default setup and the current emacs-25 branch?
+> 
+> I get relatively inconsistent results in terms of which font is chosen to display a given symbol.
+
+I don't think I understand well enough what that means.  This issue
+must be dealt with by presenting specific examples.
+
+> The pair of fonts that I mentioned (Ubuntu Mono and Symbola) was just an example; my question is about configuring fallbacks for any given pair of fonts: it could be Source Code Pro and Asana Math instead of Ubuntu Mono and Symbola, for example.
+
+I answered the general question already.  You can find examples of
+that in fontset.el.
+
+> >> What's the proper way to configure font fallback?
+> > 
+> > In general: find the characters you want to change and augment the
+> > default fontset to use the font you want for them.
+> 
+> Is it enough to augment the default fontset? Changing the :height of the 'default font creates a new fontset, which doesn't respect the fallbacks that I configure.
+
+Again, please provide specific examples, because I don't think I
+understand how changing height could get in the way.
+
+> >> *Note*: for testing purposes, here are a few math characters: `ℕ𝓟⧺×≠≥≤±¬∨∧∃∀λ⟿⟹⊥⊤⊢`
+> > 
+> > Which, if any, of those give you trouble with the default fontset?
+> 
+> 𝓟 is displayed using `Latin Modern Math' in emacs -Q, it seems.
+
+Is that not okay for some reason?  If so, why?
+

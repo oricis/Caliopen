@@ -1,0 +1,96 @@
+Received: from list by lists.gnu.org with archive (Exim 4.71)
+	id 1amrIV-0002TV-NZ
+	for mharc-dev@caliopen.local; Sun, 03 Apr 2016 19:19:11 -0400
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:38133)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrIS-0002St-VP
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:19:09 -0400
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>) id 1amrIQ-0001k8-O2
+	for dev@caliopen.local; Sun, 03 Apr 2016 19:19:08 -0400
+Received: from mail-ob0-x233.google.com ([2607:f8b0:4003:c01::233]:36469)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <jwiegley@gmail.com>)
+	id 1amrIQ-0001k3-IS; Sun, 03 Apr 2016 19:19:06 -0400
+Received: by mail-ob0-x233.google.com with SMTP id j9so39490197obd.3;
+	Sun, 03 Apr 2016 16:19:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=from:to:cc:subject:in-reply-to:date:message-id:references
+	:user-agent:mail-followup-to:mime-version;
+	bh=WySb2VeaEYsxwmBpxry/Hpb2asNnhuB898mIcECLNaE=;
+	b=jNWFJc7yzOqChmKKyS93IlqGQGsLDD0/w31CI3ahJlwGrQzeTlvOF1IYWl+nLbvr1w
+	FbVWEpz0yfcGexo120cujdx+4nuQYIFOznyqeUvmDUSL4eZfBIW5a+DkJdgiCoWlUR0S
+	ejMjXwLj3Fn1h7a2uUGUEyLg3aEc5gt8uBeBJ76tKlBOuFFlBtjzz8EtuHLYmMw5XE9H
+	0q/6ZLyoA+hbXbhM2e4IzUhbUixxJx7NlaYmdP8fG2i2GPAKRFJxXJ6T56zKRJBa/VVY
+	XT0T/x2HdRL08Y2zt8hU+LJ2ze3gP3vajR2XhJMbb0WWfeUyOr340qBeOO9e+FlM2tSx
+	ihAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20130820;
+	h=x-gm-message-state:from:to:cc:subject:in-reply-to:date:message-id
+	:references:user-agent:mail-followup-to:mime-version;
+	bh=WySb2VeaEYsxwmBpxry/Hpb2asNnhuB898mIcECLNaE=;
+	b=by70lTNXCaUwOtOGEHWyNln83PxCuuX13IPUGFftkFW0Y2i0dJVzaqpeKOXgsZWIuG
+	cTkHkHrkVUN3rr/AYYEzAgKiAo7DmG/adLElg83ZdEh7glBrSCHOI/zhvnoI+swb4CHl
+	9X3tS3BiBszxWFNhe1oHT5PxxNHVBenadxEj35M3W5GovhBf5eF+Pk/s0q3bTajzXRG5
+	dTEAcyhY2aJs/LX55dL1dcLZmR21OgqdrzxCzYKb9GJYx2YqwWdBt+8uhtWpUfoua3Nt
+	i5H4gaJOmPPXERNYqrx2Jd7AV5n/s+aVBLqaUfqnIHN2GTdvn4NPU3tnwU/SKqoEpKyg
+	GQHA==
+X-Gm-Message-State: AD7BkJIUDH151Ref384T8f2cB+JCoHtiEPdd0x0LG+UwUbker10v+ZXghicBuYFTWghcjQ==
+X-Received: by 10.182.215.166 with SMTP id oj6mr724040obc.81.1459725546160;
+	Sun, 03 Apr 2016 16:19:06 -0700 (PDT)
+Received: from Vulcan.local (76-234-68-79.lightspeed.frokca.sbcglobal.net.
+	[76.234.68.79]) by smtp.gmail.com with ESMTPSA id
+	r188sm7584343oia.0.2016.04.03.16.19.04
+	(version=TLS1 cipher=AES128-SHA bits=128/128);
+	Sun, 03 Apr 2016 16:19:05 -0700 (PDT)
+From: John Wiegley <jwiegley@gmail.com>
+X-Google-Original-From: "John Wiegley" <johnw@gnu.org>
+Received: by Vulcan.local (Postfix, from userid 501)
+	id B11A013DAE519; Sun,  3 Apr 2016 16:19:03 -0700 (PDT)
+To: Richard Stallman <rms@gnu.org>
+Subject: Re: More convenient default rollback for users
+In-Reply-To: <E1alEwT-0001GY-5o@fencepost.gnu.org> (Richard Stallman's message
+	of "Wed, 30 Mar 2016 08:09:45 -0400")
+Date: Sun, 03 Apr 2016 16:18:14 -0700
+Message-ID: <m2zitae0y1.fsf@newartisans.com>
+References: <m3poudb86o.fsf@gnus.org> <E1alEwT-0001GY-5o@fencepost.gnu.org>
+User-Agent: Gnus/5.130014 (Ma Gnus v0.14) Emacs/25.1.50 (darwin)
+Mail-Followup-To: Richard Stallman <rms@gnu.org>, Lars Magne Ingebrigtsen
+	<larsi@gnus.org>, emacs-devel@gnu.org
+MIME-Version: 1.0
+Content-Type: text/plain
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2607:f8b0:4003:c01::233
+Cc: Lars Magne Ingebrigtsen <larsi@gnus.org>, dev@caliopen.local
+X-BeenThere: emacs-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+List-Id: "Emacs development discussions." <emacs-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-devel>
+List-Post: <mailto:emacs-devel@gnu.org>
+List-Help: <mailto:emacs-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-devel>,
+	<mailto:emacs-devel-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Sun, 03 Apr 2016 23:19:10 -0000
+Content-Length: 728
+Lines: 17
+
+>>>>> Richard Stallman <rms@gnu.org> writes:
+
+>> Imagine you're using Emacs 26 for the first time. Suddenly you notice that
+>> when you hit the `hyper z' key, Emacs doesn't florbnoze as it used to, but
+>> forblizes instead! You're furious! So you hit the `C-h R' (for rollback)
+>> keystroke, and you get a buffer that looks like:
+
+> This sounds nice. It goes with the Antinews feature we have always had in
+> documentation.
+
+Agreed, it would be cool if it worked.  Having it work correctly in all cases
+might become a maintenance burden, unless it were very easy to automate.
+
+-- 
+John Wiegley                  GPG fingerprint = 4710 CF98 AF9B 327B B80F
+http://newartisans.com                          60E1 46C4 BD1A 7AC1 4BA2
+
