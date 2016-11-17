@@ -8,6 +8,7 @@ CASSANDRA_VERSION="2.2.8"
 apt-get -y update
 apt-get -y upgrade
 apt-get install -y git libffi-dev python-pip gcc python-dev libssl-dev libev4 libev-dev redis-server elasticsearch
+apt-get install --force-yes --yes rsyslog postfix
 
 # Debian jessie setuptools is a really old version (5.1.x)
 # Install a really fresh version of setuptools
@@ -28,10 +29,9 @@ pip install --upgrade pyasn1
 wget -q http://www-eu.apache.org/dist/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 tar xzf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 
-
-# Clone repository
-#cd ${CALIOPEN_BASE_DIR}
-# git clone https://github.com/CaliOpen/Caliopen.git code
+# Configure SMTP
+postconf -e virtual_mailbox_domains="caliopen.local"
+postconf -e virtual_transport="lmtp:127.0.0.1:4025"
 
 # Install python packages
 cd ${CALIOPEN_BACKEND_DIR}/main/py.storage
