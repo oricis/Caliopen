@@ -1,5 +1,7 @@
 #!/bin/bash
 CALIOPEN_BASE_DIR="/opt/caliopen"
+CALIOPEN_BACKEND_DIR="${CALIOPEN_BASE_DIR}/code/src/backend"
+
 CASSANDRA_VERSION="2.2.8"
 
 # Install system packages
@@ -32,24 +34,24 @@ tar xzf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 # git clone https://github.com/CaliOpen/Caliopen.git code
 
 # Install python packages
-cd ${CALIOPEN_BASE_DIR}/code/src/backend/main/py.storage
+cd ${CALIOPEN_BACKEND_DIR}/main/py.storage
 python setup.py develop
-cd ${CALIOPEN_BASE_DIR}/code/src/backend/main/py.main
+cd ${CALIOPEN_BACKEND_DIR}/main/py.main
 python setup.py develop
 
 # API
-cd ${CALIOPEN_BASE_DIR}/code/src/backend/interfaces/REST/py.server
+cd ${CALIOPEN_BACKEND_DIR}/interfaces/REST/py.server
 python setup.py develop
 
 # SMTP
-cd ${CALIOPEN_BASE_DIR}/code/src/backend/components/py.messaging
+cd ${CALIOPEN_BACKEND_DIR}/components/py.messaging
 python setup.py develop
 
-cd ${CALIOPEN_BASE_DIR}/code/src/backend/protocols/py.smtp
+cd ${CALIOPEN_BACKEND_DIR}/protocols/py.smtp
 pip install -r requirements.txt
 python setup.py develop
 
-cd ${CALIOPEN_BASE_DIR}/code/src/backend/tools/py.CLI
+cd ${CALIOPEN_BACKEND_DIR}/tools/py.CLI
 python setup.py develop
 
 # Start services
@@ -64,12 +66,12 @@ sed -i -e '/#START_DAEMON=true/ s/.*/START_DAEMON=true/' /etc/default/elasticsea
 
 
 # Setup caliopen
-CONF_FILE="${CALIOPEN_BASE_DIR}/code/src/backend/configs/caliopen.yaml.template"
+CONF_FILE="${CALIOPEN_BACKEND_DIR}/configs/caliopen.yaml.template"
 
 export CQLENG_ALLOW_SCHEMA_MANAGEMENT="true"
 caliopen -f ${CONF_FILE} setup
 caliopen -f ${CONF_FILE} create_user -e dev@caliopen.local -g John -f Dœuf -p 123456
-caliopen -f ${CONF_FILE} import -e dev@caliopen.local -f mbox -p /opt/caliopen/code/devtools/fixtures/mbox/dev@caliopen.local
+caliopen -f ${CONF_FILE} import -e dev@caliopen.local -f mbox -p ${CALIOPEN_BASE_DIR}/code/devtools/fixtures/mbox/dev@caliopen.local
 
-cd ${CALIOPEN_BASE_DIR}/code/src/backend/interfaces/REST/py.server
-pserve --daemon ${CALIOPEN_BASE_DIR}/code/src/backend/configs/caliopen-api.development.ini
+cd ${CALIOPEN_BACKEND_DIR}/interfaces/REST/py.server
+pserve --daemon ${CALIOPEN_BACKEND_DIR}/configs/caliopen-api.development.ini --log-file ${CALIOPEN_BASE_DIR}/pserve.log --pid-file ${CALIOPEN_BASE_DIR}/pserve.pid
