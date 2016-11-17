@@ -18,18 +18,18 @@ pip install --upgrade pyasn1
 
 
 # Create CaliOpen work directory
-mkdir ${CALIOPEN_BASE_DIR}
+[[ ! -d ${CALIOPEN_BASE_DIR}} ]] && mkdir ${CALIOPEN_BASE_DIR}
 
 # Install storage engines
-mkdir ${CALIOPEN_BASE_DIR}/ext && cd $_
+[[ ! -d "${CALIOPEN_BASE_DIR}}/ext" ]] && mkdir ${CALIOPEN_BASE_DIR}/ext && cd $_
 
 wget -q http://www-eu.apache.org/dist/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 tar xzf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 
 
 # Clone repository
-cd ${CALIOPEN_BASE_DIR}
-git clone https://github.com/CaliOpen/Caliopen.git code
+#cd ${CALIOPEN_BASE_DIR}
+# git clone https://github.com/CaliOpen/Caliopen.git code
 
 # Install python packages
 cd ${CALIOPEN_BASE_DIR}/code/src/backend/main/py.storage
@@ -62,5 +62,14 @@ sed -i -e '/#START_DAEMON=true/ s/.*/START_DAEMON=true/' /etc/default/elasticsea
 /etc/init.d/elasticsearch stop
 /etc/init.d/elasticsearch start
 
+
+# Setup caliopen
+CONF_FILE="${CALIOPEN_BASE_DIR}/code/src/backend/configs/caliopen.yaml.template"
+
+export CQLENG_ALLOW_SCHEMA_MANAGEMENT="true"
+caliopen -f ${CONF_FILE} setup
+caliopen -f ${CONF_FILE} create_user -e dev@caliopen.local -g John -f Dœuf -p 123456
+caliopen -f ${CONF_FILE} import -e dev@caliopen.local -f mbox -p /opt/caliopen/code/devtools/fixtures/mbox/dev@caliopen.local
+
 cd ${CALIOPEN_BASE_DIR}/code/src/backend/interfaces/REST/py.server
-pserve --daemon development.ini
+pserve --daemon ${CALIOPEN_BASE_DIR}/code/src/backend/configs/caliopen-api.development.ini
