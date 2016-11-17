@@ -2,12 +2,12 @@ delivery_agent:
     direct: True
 
 elasticsearch:
-    url: http://es.dev.caliopen.org:9200
+    url: http://localhost:9200
 
 cassandra:
     keyspace: caliopen
     hosts:
-        - 'cassandra.dev.caliopen.org'
+        - 'localhost'
     consistency_level: 1
 
 system:
