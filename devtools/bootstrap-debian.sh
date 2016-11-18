@@ -20,18 +20,14 @@ pip install --upgrade pyasn1
 
 
 # Create CaliOpen work directory
-[[ ! -d ${CALIOPEN_BASE_DIR}} ]] && mkdir ${CALIOPEN_BASE_DIR}
+[[ -d ${CALIOPEN_BASE_DIR}} ]] || mkdir ${CALIOPEN_BASE_DIR}
 
 # Install storage engines
-[[ ! -d "${CALIOPEN_BASE_DIR}}/ext" ]] && mkdir ${CALIOPEN_BASE_DIR}/ext && cd $_
+[[ -d "${CALIOPEN_BASE_DIR}}/ext" ]] || mkdir ${CALIOPEN_BASE_DIR}/ext
 
+cd ${CALIOPEN_BASE_DIR}/ext
 wget -q http://www-eu.apache.org/dist/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 tar xzf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
-
-
-# Clone repository
-#cd ${CALIOPEN_BASE_DIR}
-# git clone https://github.com/CaliOpen/Caliopen.git code
 
 # Install python packages
 cd ${CALIOPEN_BACKEND_DIR}/main/py.storage
@@ -54,7 +50,7 @@ python setup.py develop
 cd ${CALIOPEN_BACKEND_DIR}/tools/py.CLI
 python setup.py develop
 
-# Start services
+# Start store services
 cd ${CALIOPEN_BASE_DIR}/ext/apache-cassandra-${CASSANDRA_VERSION}
 sed -i -e '/#MAX_HEAP_SIZE=/ s/.*/MAX_HEAP_SIZE="1G"/' conf/cassandra-env.sh
 sed -i -e '/#HEAP_NEWSIZE=/ s/.*/HEAP_NEWSIZE="512M"/' conf/cassandra-env.sh
@@ -64,6 +60,8 @@ sed -i -e '/#START_DAEMON=true/ s/.*/START_DAEMON=true/' /etc/default/elasticsea
 /etc/init.d/elasticsearch stop
 /etc/init.d/elasticsearch start
 
+# Wait for storage up (cassandra)
+sleep 10
 
 # Setup caliopen
 CONF_FILE="${CALIOPEN_BACKEND_DIR}/configs/caliopen.yaml.template"
@@ -73,5 +71,10 @@ caliopen -f ${CONF_FILE} setup
 caliopen -f ${CONF_FILE} create_user -e dev@caliopen.local -g John -f Dœuf -p 123456
 caliopen -f ${CONF_FILE} import -e dev@caliopen.local -f mbox -p ${CALIOPEN_BASE_DIR}/code/devtools/fixtures/mbox/dev@caliopen.local
 
+# start caliopen API
 cd ${CALIOPEN_BACKEND_DIR}/interfaces/REST/py.server
-pserve --daemon ${CALIOPEN_BACKEND_DIR}/configs/caliopen-api.development.ini --log-file ${CALIOPEN_BASE_DIR}/pserve.log --pid-file ${CALIOPEN_BASE_DIR}/pserve.pid
+pserve --daemon ${CALIOPEN_BACKEND_DIR}/configs/caliopen-api.development.ini --log-file api.log --pid-file ${CALIOPEN_BASE_DIR}/pserve.pid
+
+# Start lmtp service
+cd ${CALIOPEN_BACKEND_DIR}/protocols/py.smtp/caliopen_smtp/bin
+./lmtpd.py -f ${CONF_FILE}  > lmtp.log 2>&1 &

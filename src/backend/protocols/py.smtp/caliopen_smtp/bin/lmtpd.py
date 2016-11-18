@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
@@ -12,7 +11,6 @@ from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage
 
 log = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
 
 
 class LmtpServer(LMTPServer):
@@ -45,7 +43,7 @@ if __name__ == '__main__':
 
     bind_address = Configuration('global').get('lmtp.bind_address',
                                                '0.0.0.0')
-    port = Configuration('global').get('lmtp.port', 4000)
+    port = Configuration('global').get('lmtp.port', 4025)
     log.info('Starting LMTP server on {}:{}'.format(bind_address, port))
     s = LmtpServer((bind_address, port))
     s.serve_forever()
