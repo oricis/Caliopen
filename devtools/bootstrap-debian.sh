@@ -40,9 +40,6 @@ cd ${CALIOPEN_BACKEND_DIR}/interfaces/REST/py.server
 python setup.py develop
 
 # SMTP
-cd ${CALIOPEN_BACKEND_DIR}/components/py.messaging
-python setup.py develop
-
 cd ${CALIOPEN_BACKEND_DIR}/protocols/py.smtp
 pip install -r requirements.txt
 python setup.py develop
