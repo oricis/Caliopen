@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
     bind_address = Configuration('global').get('lmtp.bind_address',
                                                '0.0.0.0')
-    port = Configuration('global').get('lmtp.port', 4000)
+    port = Configuration('global').get('lmtp.port', 4025)
     log.info('Starting LMTP server on {}:{}'.format(bind_address, port))
     s = LmtpServer((bind_address, port))
     s.serve_forever()
