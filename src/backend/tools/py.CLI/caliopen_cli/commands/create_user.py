@@ -1,6 +1,4 @@
-"""
-Create a user with a password in a Calipen instance
-"""
+"""Create a user with a password in a Calipen instance."""
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
@@ -8,7 +6,7 @@ log = logging.getLogger(__name__)
 
 
 def create_user(**kwargs):
-
+    """Create user in Caliopen instance."""
     from caliopen_main.user.core import User
     from caliopen_main.user.parameters import NewUser
     from caliopen_main.user.parameters import NewContact
