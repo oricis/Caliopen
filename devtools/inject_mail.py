@@ -35,7 +35,8 @@ if __name__ == '__main__':
     parser.add_argument('-f', dest='from_')
     parser.add_argument('-t', dest='to')
     parser.add_argument('-m', dest='mail')
-    parser.add_argument('-h', dest='host', default='localhost')
+    parser.add_argument('-s', dest='host', default='localhost')
     parser.add_argument('-p', dest='port', default=4025)
     opts = parser.parse_args(args[1:])
-    send_fake_mail(opts.from_, [opts.to], opts.mail)
+    send_fake_mail(opts.from_, [opts.to], opts.mail,
+                   opts.host, opts.port)

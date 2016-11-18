@@ -24,7 +24,7 @@ class DeliveryAgent(object):
         # XXX : logic here, for user rules etc
         qmsg = {'user_id': user.user_id, 'message_id': message_id}
         log.debug('Will publish %r' % qmsg)
-        self.process(user, message_id)
+        self.deliver.process(user, message_id)
 
     def resolve_users(self, rpcts):
         users = []
