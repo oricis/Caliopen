@@ -40,7 +40,9 @@ class AuthenticatedUser(object):
 
         user_id, token = auth.split(':')
         infos = self.request.cache.get(user_id)
-        if infos is None or infos.get('access_token') != token:
+        if not infos:
+            raise AuthenticationError
+        if infos.get('access_token') != token:
             raise AuthenticationError
 
         self.user_id = user_id
