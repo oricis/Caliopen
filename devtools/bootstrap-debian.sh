@@ -8,7 +8,6 @@ CASSANDRA_VERSION="2.2.8"
 apt-get -y update
 apt-get -y upgrade
 apt-get install -y git libffi-dev python-pip gcc python-dev libssl-dev libev4 libev-dev redis-server elasticsearch
-apt-get install --force-yes --yes rsyslog postfix
 
 # Debian jessie setuptools is a really old version (5.1.x)
 # Install a really fresh version of setuptools
@@ -28,10 +27,6 @@ pip install --upgrade pyasn1
 
 wget -q http://www-eu.apache.org/dist/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 tar xzf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
-
-# Configure SMTP
-postconf -e virtual_mailbox_domains="caliopen.local"
-postconf -e virtual_transport="lmtp:127.0.0.1:4025"
 
 # Install python packages
 cd ${CALIOPEN_BACKEND_DIR}/main/py.storage
@@ -54,7 +49,7 @@ python setup.py develop
 cd ${CALIOPEN_BACKEND_DIR}/tools/py.CLI
 python setup.py develop
 
-# Start services
+# Start store services
 cd ${CALIOPEN_BASE_DIR}/ext/apache-cassandra-${CASSANDRA_VERSION}
 sed -i -e '/#MAX_HEAP_SIZE=/ s/.*/MAX_HEAP_SIZE="1G"/' conf/cassandra-env.sh
 sed -i -e '/#HEAP_NEWSIZE=/ s/.*/HEAP_NEWSIZE="512M"/' conf/cassandra-env.sh
@@ -73,5 +68,11 @@ caliopen -f ${CONF_FILE} setup
 caliopen -f ${CONF_FILE} create_user -e dev@caliopen.local -g John -f Dœuf -p 123456
 caliopen -f ${CONF_FILE} import -e dev@caliopen.local -f mbox -p ${CALIOPEN_BASE_DIR}/code/devtools/fixtures/mbox/dev@caliopen.local
 
+# start caliopen API
 cd ${CALIOPEN_BACKEND_DIR}/interfaces/REST/py.server
 pserve --daemon ${CALIOPEN_BACKEND_DIR}/configs/caliopen-api.development.ini --log-file ${CALIOPEN_BASE_DIR}/pserve.log --pid-file ${CALIOPEN_BASE_DIR}/pserve.pid
+
+
+# Start lmtp service
+cd ${CALIOPEN_BACKEND_DIR}/protocols/py.smtp/caliopen_smtp/bin
+./lmtpd.py -f ${CONF_FILE} &
