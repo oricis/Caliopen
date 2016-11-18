@@ -20,11 +20,12 @@ pip install --upgrade pyasn1
 
 
 # Create CaliOpen work directory
-[[ ! -d ${CALIOPEN_BASE_DIR}} ]] && mkdir ${CALIOPEN_BASE_DIR}
+[[ -d ${CALIOPEN_BASE_DIR}} ]] || mkdir ${CALIOPEN_BASE_DIR}
 
 # Install storage engines
-[[ ! -d "${CALIOPEN_BASE_DIR}}/ext" ]] && mkdir ${CALIOPEN_BASE_DIR}/ext && cd $_
+[[ -d "${CALIOPEN_BASE_DIR}}/ext" ]] || mkdir ${CALIOPEN_BASE_DIR}/ext
 
+cd ${CALIOPEN_BASE_DIR}/ext
 wget -q http://www-eu.apache.org/dist/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 tar xzf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 
