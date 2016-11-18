@@ -12,7 +12,6 @@ from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage
 
 log = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
 
 
 class LmtpServer(LMTPServer):

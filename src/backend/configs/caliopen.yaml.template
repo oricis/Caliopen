@@ -10,6 +10,10 @@ cassandra:
         - 'localhost'
     consistency_level: 1
 
+lmtp:
+    port: 4025
+    bind_address: 0.0.0.0
+
 system:
     default_tags:
         -

@@ -72,9 +72,8 @@ caliopen -f ${CONF_FILE} import -e dev@caliopen.local -f mbox -p ${CALIOPEN_BASE
 
 # start caliopen API
 cd ${CALIOPEN_BACKEND_DIR}/interfaces/REST/py.server
-pserve --daemon ${CALIOPEN_BACKEND_DIR}/configs/caliopen-api.development.ini --log-file ${CALIOPEN_BASE_DIR}/pserve.log --pid-file ${CALIOPEN_BASE_DIR}/pserve.pid
-
+pserve --daemon ${CALIOPEN_BACKEND_DIR}/configs/caliopen-api.development.ini --log-file api.log --pid-file ${CALIOPEN_BASE_DIR}/pserve.pid
 
 # Start lmtp service
 cd ${CALIOPEN_BACKEND_DIR}/protocols/py.smtp/caliopen_smtp/bin
-./lmtpd.py -f ${CONF_FILE} &
+./lmtpd.py -f ${CONF_FILE}  > lmtp.log 2>&1 &
