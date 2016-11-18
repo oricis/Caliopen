@@ -1,6 +1,7 @@
 #!/bin/bash
 CALIOPEN_BASE_DIR="/opt/caliopen"
 CALIOPEN_BACKEND_DIR="${CALIOPEN_BASE_DIR}/code/src/backend"
+CONF_FILE="${CALIOPEN_BACKEND_DIR}/configs/caliopen.yaml.template"
 
 CASSANDRA_VERSION="2.2.8"
 
@@ -40,9 +41,6 @@ cd ${CALIOPEN_BACKEND_DIR}/interfaces/REST/py.server
 python setup.py develop
 
 # SMTP
-cd ${CALIOPEN_BACKEND_DIR}/components/py.messaging
-python setup.py develop
-
 cd ${CALIOPEN_BACKEND_DIR}/protocols/py.smtp
 pip install -r requirements.txt
 python setup.py develop
@@ -64,8 +62,6 @@ sed -i -e '/#START_DAEMON=true/ s/.*/START_DAEMON=true/' /etc/default/elasticsea
 sleep 10
 
 # Setup caliopen
-CONF_FILE="${CALIOPEN_BACKEND_DIR}/configs/caliopen.yaml.template"
-
 export CQLENG_ALLOW_SCHEMA_MANAGEMENT="true"
 caliopen -f ${CONF_FILE} setup
 caliopen -f ${CONF_FILE} create_user -e dev@caliopen.local -g John -f Dœuf -p 123456

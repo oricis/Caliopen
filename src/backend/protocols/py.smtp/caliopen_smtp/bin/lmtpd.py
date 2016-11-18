@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
@@ -11,6 +12,7 @@ from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage
 
 log = logging.getLogger(__name__)
+logging.basicConfig()
 
 
 class LmtpServer(LMTPServer):
