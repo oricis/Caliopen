@@ -59,6 +59,8 @@ sed -i -e '/#START_DAEMON=true/ s/.*/START_DAEMON=true/' /etc/default/elasticsea
 /etc/init.d/elasticsearch stop
 /etc/init.d/elasticsearch start
 
+# Wait for storage up (cassandra)
+sleep 10
 
 # Setup caliopen
 CONF_FILE="${CALIOPEN_BACKEND_DIR}/configs/caliopen.yaml.template"
