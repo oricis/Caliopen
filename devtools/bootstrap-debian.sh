@@ -27,10 +27,10 @@ pip install --upgrade pyasn1
 
 
 # Create CaliOpen work directory
-[[ -d ${CALIOPEN_BASE_DIR}} ]] || mkdir ${CALIOPEN_BASE_DIR}
+[[ -d ${CALIOPEN_BASE_DIR} ]] || mkdir ${CALIOPEN_BASE_DIR}
 
 # Install storage engines
-[[ -d "${CALIOPEN_BASE_DIR}}/ext" ]] || mkdir ${CALIOPEN_BASE_DIR}/ext
+[[ -d "${CALIOPEN_BASE_DIR}/ext" ]] || mkdir ${CALIOPEN_BASE_DIR}/ext
 
 cd ${CALIOPEN_BASE_DIR}/ext
 wget -q http://www-eu.apache.org/dist/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
@@ -62,6 +62,7 @@ npm install
 cd ${CALIOPEN_BASE_DIR}/ext/apache-cassandra-${CASSANDRA_VERSION}
 sed -i -e '/#MAX_HEAP_SIZE=/ s/.*/MAX_HEAP_SIZE="1G"/' conf/cassandra-env.sh
 sed -i -e '/#HEAP_NEWSIZE=/ s/.*/HEAP_NEWSIZE="512M"/' conf/cassandra-env.sh
+
 ./bin/cassandra
 
 sed -i -e '/#START_DAEMON=true/ s/.*/START_DAEMON=true/' /etc/default/elasticsearch
