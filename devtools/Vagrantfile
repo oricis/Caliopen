@@ -14,13 +14,6 @@ Vagrant.configure("2") do |config|
   # LMTP port
   config.vm.network "forwarded_port", guest: 4025, host: 4025
 
-  # cassandra port
-  config.vm.network "forwarded_port", guest: 9042, host: 9042
-  # elasticsearch port
-  config.vm.network "forwarded_port", guest: 9200, host: 9200
-  # redis port
-  config.vm.network "forwarded_port", guest: 6379, host: 6379
-
 
 
   # config.vm.network "private_network", ip: "192.168.33.10"
