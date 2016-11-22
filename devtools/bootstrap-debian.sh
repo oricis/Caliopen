@@ -1,6 +1,7 @@
 #!/bin/bash
 CALIOPEN_BASE_DIR="/opt/caliopen"
 CALIOPEN_BACKEND_DIR="${CALIOPEN_BASE_DIR}/code/src/backend"
+CALIOPEN_FRONTEND_DIR="${CALIOPEN_BASE_DIR}/code/src/frontend/web_application"
 CONF_FILE="${CALIOPEN_BACKEND_DIR}/configs/caliopen.yaml.template"
 
 CASSANDRA_VERSION="2.2.8"
@@ -9,6 +10,11 @@ CASSANDRA_VERSION="2.2.8"
 apt-get -y update
 apt-get -y upgrade
 apt-get install -y git libffi-dev python-pip gcc python-dev libssl-dev libev4 libev-dev redis-server elasticsearch
+
+# setup nodejs and npm with correct version (node 6, npm 3)
+wget -q https://deb.nodesource.com/setup_6.x -O -|bash
+apt-get install -y nodejs
+
 
 # Debian jessie setuptools is a really old version (5.1.x)
 # Install a really fresh version of setuptools
@@ -48,6 +54,10 @@ python setup.py develop
 cd ${CALIOPEN_BACKEND_DIR}/tools/py.CLI
 python setup.py develop
 
+# Install front client
+cd ${CALIOPEN_FRONTEND_DIR}
+npm install
+
 # Start store services
 cd ${CALIOPEN_BASE_DIR}/ext/apache-cassandra-${CASSANDRA_VERSION}
 sed -i -e '/#MAX_HEAP_SIZE=/ s/.*/MAX_HEAP_SIZE="1G"/' conf/cassandra-env.sh
@@ -74,3 +84,7 @@ pserve --daemon ${CALIOPEN_BACKEND_DIR}/configs/caliopen-api.development.ini --l
 # Start lmtp service
 cd ${CALIOPEN_BACKEND_DIR}/protocols/py.smtp/caliopen_smtp/bin
 ./lmtpd.py -f ${CONF_FILE}  > lmtp.log 2>&1 &
+
+# Start client
+# cd ${CALIOPEN_FRONTEND_DIR}
+# npm run start:prod
