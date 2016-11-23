@@ -54,6 +54,9 @@ python setup.py develop
 cd ${CALIOPEN_BACKEND_DIR}/tools/py.CLI
 python setup.py develop
 
+cd ${CALIOPEN_BASE_DIR}/code/doc/py.doc
+python setup.py develop
+
 # Install front client
 cd ${CALIOPEN_FRONTEND_DIR}
 npm install
