@@ -34,7 +34,7 @@ class UserAuthenticationParameter(colander.MappingSchema):
           collection_path='/authentications',
           name='Authentication',
           schema=UserAuthenticationParameter,
-          factory=DefaultContext,
+          factory=DefaultContext
           )
 class AuthenticationAPI(Api):
 
