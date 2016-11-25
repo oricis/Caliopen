@@ -9,6 +9,13 @@ caliopen.api
 
 caliopen_api package is a simple Pyramid container to include CaliOpen Rest API services.
 
+
+Documentation
+-------------
+
+The complete documentation of the API is available at `/doc/api/swagger.json` (it follows swagger/openAPI specs).
+Developers can browse and test the API at `http://localhost:6543/api-ui/`
+
 Local Installation
 ------------------
 
