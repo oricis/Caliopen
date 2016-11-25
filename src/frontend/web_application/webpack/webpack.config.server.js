@@ -5,7 +5,7 @@ const isDev = process.env.NODE_ENV === 'development';
 
 const config = Object.assign(baseConfig.getBase('server'), {
   target: 'node',
-  entry: [path.join(__dirname, '../server/index.jsx')],
+  entry: [path.join(__dirname, '../server/index.js')],
   output: {
     path: path.join(__dirname, '../dist/server/'),
     filename: 'index.js',
