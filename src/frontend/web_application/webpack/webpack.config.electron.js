@@ -3,9 +3,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const baseConfig = require('./config.js');
 
-let config = Object.assign(baseConfig.getBase('electron'), {
+const config = Object.assign(baseConfig.getBase('electron'), {
   target: 'electron',
-  entry: [path.join(__dirname, '../src/index.js')],
+  entry: [
+    'expose-loader?$!expose-loader?jQuery!jquery',
+    'script-loader!foundation-sites',
+    path.join(__dirname, '../src/index.jsx'),
+  ],
   output: {
     path: path.join(__dirname, '..', 'dist/electron/'),
     filename: 'bundle.js',

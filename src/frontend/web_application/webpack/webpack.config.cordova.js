@@ -6,6 +6,8 @@ const baseConfig = require('./config.js');
 const config = Object.assign(baseConfig.getBase('cordova'), {
   entry: [
     'babel-polyfill',
+    'expose-loader?$!expose-loader?jQuery!jquery',
+    'script-loader!foundation-sites',
     path.join(__dirname, '../src/index.jsx'),
   ],
   output: {
