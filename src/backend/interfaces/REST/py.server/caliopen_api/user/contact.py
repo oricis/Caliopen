@@ -75,9 +75,10 @@ class Contact(Api):
         except Exception as exc:
             raise ValidationError(exc)
         contact = CoreContact.create(self.user, contact_param)
-        out_contact = ReturnContact.build(contact).serialize()
+        contact_url = self.request.route_path('contact', contact_id=contact.contact_id)
+        self.request.response.location = contact_url.encode('utf-8')
         # XXX return a Location to get contact not send it direct
-        return Response(status=201, body={'contacts': out_contact})
+        return {'location': contact_url}
 
 
 class BaseSubContactApi(Api):
