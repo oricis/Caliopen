@@ -1,0 +1,32 @@
+# Caliopen configuration file to run REST API server in a docker container
+# 
+# Storage services must be accessible using FQDN:
+#  - cassandra.dev.caliopen.org
+#  - es.dev.caliopen.org
+#  - redis.dev.caliopen.org (see pyramid configuration file)
+#
+# Make your /etc/hosts lie or user docker containers from docker-compose.yml in /devtools
+
+elasticsearch:
+    url: http://es.dev.caliopen.org:9200
+
+cassandra:
+    keyspace: caliopen
+    hosts:
+        - 'cassandra.dev.caliopen.org'
+    consistency_level: 1
+
+system:
+    default_tags:
+        -
+            label: INBOX
+            background: '#000000'
+            color: black
+        -
+            label: SPAM
+            background: '#AAAAAA'
+            color: white
+        -
+            label: IMPORTANT
+            background: '#FF0000'
+            color: white
