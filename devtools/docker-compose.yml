@@ -1,3 +1,13 @@
+# Note that all path are relative to fig file
+api:
+    build: ../src/backend/interfaces/REST/py.server
+    links:
+        - redis:redis.dev.caliopen.org
+        - cassandra:cassandra.dev.caliopen.org
+        - elasticsearch:es.dev.caliopen.org
+    ports:
+        - "6543:6543"
+
 # ### Redis Database
 #
 # Used to store sessions.
