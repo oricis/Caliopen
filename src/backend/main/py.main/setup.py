@@ -14,8 +14,6 @@ with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file
 
 requires = [
     'phonenumbers',
-    'dnsknife',
-    'PGpy',
     'caliopen_storage'
     ]
 
