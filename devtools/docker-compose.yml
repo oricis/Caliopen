@@ -1,4 +1,4 @@
-# Note that all path are relative to fig file
+# Caliopen API server
 api:
     build: ../src/backend/interfaces/REST/py.server
     links:
@@ -37,3 +37,10 @@ elasticsearch:
         - "9200:9200"
     volumes:
         - .data/elasticsearch/data:/usr/share/elasticsearch/data
+
+# Caliopen cli tool
+cli:
+    build: ../src/backend/tools/py.CLI
+    links:
+        - cassandra:cassandra.dev.caliopen.org
+        - elasticsearch:es.dev.caliopen.org
