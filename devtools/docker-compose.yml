@@ -32,7 +32,7 @@ cassandra:
 #
 # Used to index mail content and ensure great research performances.
 elasticsearch:
-    image: elasticsearch
+    image: elasticsearch:2
     ports:
         - "9200:9200"
     volumes:
