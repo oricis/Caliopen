@@ -36,3 +36,8 @@ RUN python setup.py develop
 # Install Caliopen CLI
 WORKDIR /srv/caliopen/code/src/backend/tools/py.CLI
 RUN python setup.py develop
+
+# Copy configuration file
+RUN cp /srv/caliopen/code/src/backend/configs/caliopen-docker.yaml /etc/caliopen.yaml
+
+ENTRYPOINT ["caliopen", "-f", "/etc/caliopen.yaml"]
