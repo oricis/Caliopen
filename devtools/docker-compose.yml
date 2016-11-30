@@ -1,47 +1,48 @@
 # Caliopen API server
 version: '2'
-api:
-    build: ../src/backend/interfaces/REST/py.server
-    links:
-        - redis:redis.dev.caliopen.org
-        - cassandra:cassandra.dev.caliopen.org
-        - elasticsearch:es.dev.caliopen.org
-    ports:
-        - "6543:6543"
+services:
+  api:
+      build: ../src/backend/interfaces/REST/py.server
+      links:
+          - redis:redis.dev.caliopen.org
+          - cassandra:cassandra.dev.caliopen.org
+          - elasticsearch:es.dev.caliopen.org
+      ports:
+          - "6543:6543"
 
-# ### Redis Database
-#
-# Used to store sessions.
-redis:
-    image: redis
-    ports:
-        - "6379:6379"
+  # ### Redis Database
+  #
+  # Used to store sessions.
+  redis:
+      image: redis
+      ports:
+          - "6379:6379"
 
-# ### Cassandra
-#
-# Cassandra is used as the reference storage for business data
-cassandra:
-    image: cassandra
-    ports:
-        - "9042:9042"
-        - "9160:9160"
-        - "7000:7000"
-    volumes:
-        - .data/cassandra:/var/lib/cassandra
+  # ### Cassandra
+  #
+  # Cassandra is used as the reference storage for business data
+  cassandra:
+      image: cassandra
+      ports:
+          - "9042:9042"
+          - "9160:9160"
+          - "7000:7000"
+      volumes:
+          - .data/cassandra:/var/lib/cassandra
 
-# ### Elasticsearch
-#
-# Used to index mail content and ensure great research performances.
-elasticsearch:
-    image: elasticsearch:2
-    ports:
-        - "9200:9200"
-    volumes:
-        - .data/elasticsearch/data:/usr/share/elasticsearch/data
+  # ### Elasticsearch
+  #
+  # Used to index mail content and ensure great research performances.
+  elasticsearch:
+      image: elasticsearch:2
+      ports:
+          - "9200:9200"
+      volumes:
+          - .data/elasticsearch/data:/usr/share/elasticsearch/data
 
-# Caliopen cli tool
-cli:
-    build: ../src/backend/tools/py.CLI
-    links:
-        - cassandra:cassandra.dev.caliopen.org
-        - elasticsearch:es.dev.caliopen.org
+  # Caliopen cli tool
+  cli:
+      build: ../src/backend/tools/py.CLI
+      links:
+          - cassandra:cassandra.dev.caliopen.org
+          - elasticsearch:es.dev.caliopen.org
