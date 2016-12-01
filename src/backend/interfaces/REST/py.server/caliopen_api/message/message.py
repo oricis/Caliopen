@@ -14,8 +14,8 @@ from ..base import Api
 log = logging.getLogger(__name__)
 
 
-@resource(collection_path='/threads/{thread_id}/messages',
-          path='/threads/{thread_id}/messages/{message_id}')
+@resource(collection_path='/discussions/{discussion_id}/messages',
+          path='/discussions/{discussion_id}/messages/{message_id}')
 class Message(Api):
 
     def __init__(self, request):
@@ -35,9 +35,9 @@ class Message(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
-        thread_id = self.request.matchdict.get('thread_id')
+        discussion_id = self.request.matchdict.get('discussion_id')
         pi_range = self.request.authenticated_userid.pi_range
-        messages = CoreMessage.by_thread_id(self.user, thread_id,
+        messages = CoreMessage.by_discussion_id(self.user, discussion_id,
                                             min_pi=pi_range[0],
                                             max_pi=pi_range[1],
                                             limit=self.get_limit(),
@@ -49,16 +49,16 @@ class Message(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
-        thread_id = self.request.matchdict.get('thread_id')
+        discussion_id = self.request.matchdict.get('discussion_id')
         reply_to = self.request.json.get('reply_to')
         if reply_to:
             parent = CoreMessage.get(self.user, reply_to)
             parent_message_id = parent.external_id
-            thread_id = parent.thread_id
+            discussion_id = parent.discussion_id
             pi_value = parent.privacy_index
         else:
             parent_message_id = None
-            thread_id = None
+            discussion_id = None
             # XXX : how to compute ?
             pi_value = 0
         recipients = self.extract_recipients()
@@ -71,7 +71,7 @@ class Message(Api):
                              text=text, tags=tags,
                              date=datetime.utcnow(),
                              privacy_index=pi_value,
-                             thread_id=thread_id,
+                             thread_id=discussion_id,
                              parent_message_id=parent_message_id)
         msg = CoreMessage.create(self.user, new_msg)
         idx_msg = CoreMessage.get(self.user, msg.message_id)

@@ -190,7 +190,7 @@ class Thread(BaseUserCore):
                 res.append(th)
             else:
                 log.debug('Thread do not fit PI range {}'.format(th.thread_id))
-        return {'threads': res, 'total': len(res)}
+        return {'discussions': res, 'total': len(res)}
 
 
 class ReturnThread(ReturnCoreObject):
