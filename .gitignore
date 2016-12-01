@@ -148,3 +148,6 @@ ENV/
 
 # vagrant directory
 .vagrant
+
+# Docker data
+.data
