@@ -12,6 +12,7 @@ const typeAssoc = {
   users: 'fa fa-users',
   plus: 'fa fa-plus',
   reply: 'fa fa-reply',
+  paperclip: 'fa fa-paperclip',
 };
 
 
