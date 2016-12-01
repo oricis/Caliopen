@@ -492,11 +492,11 @@
                 }
             }
         },
-        "/threads": {
+        "/discussions": {
             "get": {
-                "description": "Returns conversations belonging to current user according to given parameters",
+                "description": "Returns discussions belonging to current user according to given parameters",
                 "tags": [
-                    "threads"
+                    "discussions"
                 ],
                 "security": [
                     {
@@ -532,7 +532,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Conversations returned",
+                        "description": "Discussions returned",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -541,10 +541,10 @@
                                     "format": "int32",
                                     "description": "number of conversations found for current user for the given parameters"
                                 },
-                                "threads": {
+                                "discussions": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/definitions/Thread"
+                                        "$ref": "#/definitions/Discussion"
                                     }
                                 }
                             }
@@ -553,9 +553,9 @@
                 }
             },
             "post": {
-                "description": "Not Yet Implemented. Should start a new conversation",
+                "description": "Not Yet Implemented. Should start a new discussion",
                 "tags": [
-                    "threads"
+                    "discussions"
                 ],
                 "security": [
                     {
@@ -569,11 +569,11 @@
                 }
             }
         },
-        "/threads/{thread_id}": {
+        "/discussions/{discussion_id}": {
             "get": {
-                "description": "Returns a conversation",
+                "description": "Returns a discussion",
                 "tags": [
-                    "threads"
+                    "discussions"
                 ],
                 "security": [
                     {
@@ -582,7 +582,7 @@
                 ],
                 "parameters": [
                     {
-                        "name": "thread_id",
+                        "name": "discussion_id",
                         "in": "path",
                         "required": true,
                         "type": "string"
@@ -593,9 +593,9 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Thread found",
+                        "description": "Discussion found",
                         "schema": {
-                            "$ref": "#/definitions/Thread"
+                            "$ref": "#/definitions/Discussion"
                         }
                     },
                     "401": {
@@ -605,7 +605,7 @@
                         }
                     },
                     "404": {
-                        "description": "Thread not found",
+                        "description": "Discussion not found",
                         "schema": {
                             "$ref": "#/definitions/Error_response"
                         }
@@ -613,11 +613,11 @@
                 }
             }
         },
-        "/threads/{thread_id}/messages": {
+        "/discussions/{discussion_id}/messages": {
             "get": {
-                "description": "Returns messages belonging to a conversation according to given parameters",
+                "description": "Returns messages belonging to a discussion according to given parameters",
                 "tags": [
-                    "threads",
+                    "discussions",
                     "messages"
                 ],
                 "security": [
@@ -627,7 +627,7 @@
                 ],
                 "parameters": [
                     {
-                        "name": "thread_id",
+                        "name": "discussion_id",
                         "in": "path",
                         "required": true,
                         "type": "string"
@@ -695,7 +695,7 @@
             "post": {
                 "description": "##TO BE COMPLETED - not working## Add a new message to the conversation",
                 "tags": [
-                    "threads",
+                    "discussions",
                     "messages"
                 ],
                 "security": [
@@ -708,7 +708,7 @@
                 ],
                 "parameters": [
                     {
-                        "name": "thread_id",
+                        "name": "discussion_id",
                         "in": "path",
                         "required": true,
                         "type": "string"
@@ -987,7 +987,7 @@
                 }
             }
         },
-        "Thread": {
+        "Discussion": {
             "type": "object",
             "properties": {
                 "attachment_count": {
@@ -1023,7 +1023,7 @@
                 "text": {
                     "type": "string"
                 },
-                "thread_id": {
+                "discussion_id": {
                     "type": "string"
                 },
                 "total_count": {

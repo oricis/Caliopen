@@ -71,10 +71,10 @@ class Message(BaseUserCore):
         return super(Message, cls).create(user, **attrs)
 
     @classmethod
-    def by_thread_id(cls, user, thread_id, min_pi, max_pi,
+    def by_discussion_id(cls, user, discussion_id, min_pi, max_pi,
                      order=None, limit=None, offset=0):
-        """Get messages for a given thread from index."""
-        res = cls._model_class.search(user, thread_id=thread_id,
+        """Get messages for a given discussion from index."""
+        res = cls._model_class.search(user, thread_id=discussion_id,
                                       min_pi=min_pi, max_pi=max_pi,
                                       limit=limit,
                                       offset=offset)
