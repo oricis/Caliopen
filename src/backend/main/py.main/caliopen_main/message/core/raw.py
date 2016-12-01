@@ -32,10 +32,9 @@ class RawMessage(BaseUserCore):
 
     @classmethod
     def get(cls, user, message_id):
-        """Get raw message by message_id."""
-        key = hashlib.sha256(message_id).hexdigest()
+        """Get raw message by raw_message_id."""
         try:
-            return super(RawMessage, cls).get(user, key)
+            return super(RawMessage, cls).get(user, message_id)
         except NotFound:
             return None
 

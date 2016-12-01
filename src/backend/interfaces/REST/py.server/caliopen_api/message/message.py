@@ -81,9 +81,9 @@ class Message(Api):
         return idx_msg
 
 
-@resource(path='/raws/{ext_message_id}')
+@resource(path='/raws/{ext_msg_id_sum256}')
 class Raw(Api):
-    """returns a raw message from the given the external_message_id"""
+    """returns a raw message from the given sum256 of the external_message_id"""
     def __init__(self, request):
         self.request = request
         self.user = request.authenticated_userid
@@ -91,7 +91,7 @@ class Raw(Api):
     @view(renderer='text_plain', permission='authenticated')
     def get(self):
         # XXX how to check privacy_index ?
-        raw_id = self.request.matchdict.get('ext_message_id')
+        raw_id = self.request.matchdict.get('ext_msg_id_sum256')
         raw = RawMessage.get(self.user, raw_id)
         if raw:
             return raw.data
