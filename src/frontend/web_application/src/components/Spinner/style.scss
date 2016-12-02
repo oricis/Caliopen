@@ -1,0 +1,25 @@
+@import '../../styles/common';
+
+@keyframes m-loading__spin {
+  from { transform: scale(1) rotate(0deg);}
+  to { transform: scale(1) rotate(360deg);}
+}
+
+.m-spinner {
+  display: inline-block;
+  padding: ($co-margin / 2);
+
+  // color: $co-color__fg__text--higher;
+  // font-size: 1rem;
+
+  &__icon {
+    display: inline-block;
+    font-size: 1rem;
+
+    animation: m-loading__spin .5s infinite linear;
+
+    svg path {
+      fill: $co-color__fg__text--higher;
+    }
+  }
+}

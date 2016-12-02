@@ -1,0 +1,36 @@
+@import '../../styles/common';
+
+.m-block-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  border-top: 1px solid $co-color__bg__back;
+
+  &__item {
+    padding: 0;
+  }
+
+  &__item-content {
+    padding: $co-component__spacing 0;
+
+    border-bottom: 1px solid $co-color__bg__back;
+    background-color: $co-color__fg__back;
+    color: $co-color__fg__text;
+  }
+
+  &__item-content--link {
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $co-color__fg__back--high;
+      color: $co-color__fg__text--high;
+    }
+
+    &:active {
+      background-color: $co-color__fg__back--low;
+      color: $co-color__fg__text--low;
+    }
+  }
+}

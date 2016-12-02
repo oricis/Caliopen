@@ -1,0 +1,11 @@
+.m-text-block {
+  display: block;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &--inline {
+    display: inline-block;
+  }
+}
