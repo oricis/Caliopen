@@ -517,7 +517,7 @@
                         "in": "query",
                         "required": false,
                         "type": "integer",
-                        "description": "number of conversations to return per page"
+                        "description": "number of discussions to return per page"
                     },
                     {
                         "name": "offset",
@@ -539,7 +539,7 @@
                                 "total": {
                                     "type": "integer",
                                     "format": "int32",
-                                    "description": "number of conversations found for current user for the given parameters"
+                                    "description": "number of discussions found for current user for the given parameters"
                                 },
                                 "discussions": {
                                     "type": "array",
@@ -645,7 +645,7 @@
                         "in": "query",
                         "required": false,
                         "type": "integer",
-                        "description": "number of conversations to return per page"
+                        "description": "number of discussions to return per page"
                     },
                     {
                         "name": "offset",
@@ -667,7 +667,7 @@
                                 "total": {
                                     "type": "integer",
                                     "format": "int32",
-                                    "description": "number of messages found for the thread for the given parameters"
+                                    "description": "number of messages found for the discussion for the given parameters"
                                 },
                                 "messages": {
                                     "type": "array",
@@ -685,7 +685,7 @@
                         }
                     },
                     "404": {
-                        "description": "Thread not found",
+                        "description": "Discussion not found",
                         "schema": {
                             "$ref": "#/definitions/Error_response"
                         }
@@ -693,7 +693,7 @@
                 }
             },
             "post": {
-                "description": "##TO BE COMPLETED - not working## Add a new message to the conversation",
+                "description": "##TO BE COMPLETED - not working## Add a new message to the discussion",
                 "tags": [
                     "discussions",
                     "messages"
@@ -735,9 +735,9 @@
                 }
             }
         },
-        "/raws/{raw_id}": {
+        "/raws/{ext_msg_id_sum256}": {
             "get": {
-                "description": "##TO BE CONTINUED## NOT WORKING Returns a raw message",
+                "description": "Returns a raw message for the given sha256 sum derived from the external message id",
                 "tags": [
                     "messages"
                 ],
@@ -748,14 +748,14 @@
                 ],
                 "parameters": [
                     {
-                        "name": "raw_id",
+                        "name": "ext_msg_id_sum256",
                         "in": "path",
                         "required": true,
                         "type": "string"
                     }
                 ],
                 "produces": [
-                    "application/json; charset=UTF-8"
+                    "text/plain; charset=UTF-8"
                 ],
                 "responses": {
                     "200": {
