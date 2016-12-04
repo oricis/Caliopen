@@ -1,6 +1,8 @@
 """Caliopen mixins related to store."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
+import datetime
+import uuid
 
 from cassandra.cqlengine import columns
 
@@ -11,37 +13,49 @@ class IndexedModelMixin(object):
 
     """Mixin to transform model into indexed documents."""
 
-    def __process_udt(self, column, attr, idx_udt):
+    def __process_udt(self, column, idx):
         """Process a cassandra UDT column to translate into nested index."""
-        attr_udt = getattr(attr, column.column_name)
-        for col_name, col_value in attr_udt.items():
-            if col_value is not None:
-                setattr(idx_udt, col_name, col_value)
 
-    def _process_column(self, column, attr, idx, is_list=False):
+        def map_udt_attributes(item):
+            ret = {}
+            for col_name, col_value in item.items():
+                if col_value is not None:
+                    if isinstance(col_value, (columns.UUID, uuid.UUID)):
+                        value = str(col_value)
+                    else:
+                        value = col_value
+                    ret[col_name] = value
+            return ret
+
+        attr_udt = getattr(self, column.column_name)
+        if isinstance(attr_udt, list):
+            udts = []
+            for item in attr_udt:
+                udts.append(map_udt_attributes(item))
+            setattr(idx, column.column_name, udts)
+        else:
+            setattr(idx, column.column_name, map_udt_attributes(attr_udt))
+
+    def _process_column(self, column, idx):
         """Process a core column and translate into index document."""
         col_name = column.column_name
+        col_value = getattr(self, col_name)
         try:
-            idx_attr = getattr(idx, col_name)
+            getattr(idx, col_name)
         except AttributeError:
-            # print('  not indexed column {}'.format(col_name))
+            log.debug('No such column in index mapping {}'.
+                      format(column.column_name))
             return
-
-        if isinstance(attr, list):
+        if isinstance(column, columns.List):
             is_udt = isinstance(column.sub_types[0], columns.UserDefinedType)
-            for new_attr in attr:
-                if is_udt:
-                    self._process_udt(column, new_attr, idx_attr)
-                else:
-                    self._process_column(column, new_attr, idx, is_list=True)
-        elif isinstance(column, columns.UserDefinedType):
-            self._process_udt(column, attr, idx_attr)
-        else:
-            col_value = getattr(attr, col_name)
-            if is_list:
-                idx_attr.append(col_value)
+            if is_udt:
+                self.__process_udt(column, idx)
             else:
                 setattr(idx, col_name, col_value)
+        elif isinstance(column, columns.UserDefinedType):
+            self.__process_udt(column, idx)
+        else:
+            setattr(idx, col_name, col_value)
 
     def create_index(self, **extras):
         """Translate a model object into an indexed document."""
@@ -55,7 +69,7 @@ class IndexedModelMixin(object):
                 if name != 'user_id':
                     idx.meta.id = getattr(self, name)
             else:
-                self._process_column(desc, self, idx)
+                self._process_column(desc, idx)
         for k, v in extras.items():
             setattr(idx, k, v)
         idx.save(using=idx.client())

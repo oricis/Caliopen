@@ -2,8 +2,12 @@
 """Caliopen contact index classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
+import logging
+
 import elasticsearch_dsl as dsl
 from caliopen_storage.store.model import BaseIndexDocument
+
+log = logging.getLogger(__name__)
 
 
 class IndexedOrganization(dsl.InnerObjectWrapper):
@@ -70,7 +74,7 @@ class IndexedContact(BaseIndexDocument):
 
     """Indexed contact model."""
 
-    doc_type = 'contacts'
+    doc_type = 'indexed_contacts'
 
     title = dsl.String()
     given_name = dsl.String()
@@ -78,6 +82,7 @@ class IndexedContact(BaseIndexDocument):
     family_name = dsl.String()
     name_suffix = dsl.String()
     name_prefix = dsl.String()
+    date_insert = dsl.Date()
     privacy_index = dsl.Integer()
 
     organizations = dsl.Nested(doc_class=IndexedOrganization)
@@ -91,3 +96,19 @@ class IndexedContact(BaseIndexDocument):
     def contact_id(self):
         """The compound primary key for a contact is contact_id."""
         return self.meta.id
+
+    @classmethod
+    def create_mapping(cls, user_id):
+        """Create elasticsearch indexed_contacts mapping object for an user."""
+        m = dsl.Mapping(cls.doc_type)
+        m.meta('_all', enabled=True)
+        m.field('title', dsl.String())
+        m.field('given_name', dsl.String(index='not_analyzed'))
+        m.field('additional_name', dsl.String(index='not_analyzed'))
+        m.field('family_name', dsl.String(index='not_analyzed'))
+        m.field('name_suffix', dsl.String(index='not_analyzed'))
+        m.field('name_prefix', dsl.String(index='not_analyzed'))
+        m.field('date_insert', 'date')
+        m.field('privacy_index', 'short')
+        m.save(using=cls.client(), index=user_id)
+        return m
