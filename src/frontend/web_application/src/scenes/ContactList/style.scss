@@ -1,0 +1,27 @@
+@import '../../styles/vendor/foundation-sites';
+
+.s-contact-list {
+  &__contact {
+    @include flex-grid-row;
+    align-items: baseline;
+    max-width: none;
+  }
+
+  &__col-avatar {
+    @include flex-grid-column(shrink);
+  }
+
+  &__col-name {
+    @include flex-grid-column;
+  }
+
+  &__load-more {
+    padding-top: $co-margin;
+    text-align: center;
+  }
+
+  @include breakpoint(medium) {
+    &__col-name { @include flex-grid-size(5); }
+    &__col-datas { display: block; }
+  }
+}
