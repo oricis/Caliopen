@@ -1,3 +1,5 @@
+@import '../../styles/vendor/foundation-sites';
+
 .s-contact-list {
   &__contact {
     @include flex-grid-row;
@@ -11,11 +13,6 @@
 
   &__col-name {
     @include flex-grid-column;
-  }
-
-  &__col-datas {
-    @include flex-grid-column;
-    display: none;
   }
 
   &__load-more {
