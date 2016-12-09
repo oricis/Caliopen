@@ -1,5 +1,7 @@
 # Caliopen Messaging Platform
 
+[![Build Status](https://travis-ci.org/CaliOpen/Caliopen.svg)](https://travis-ci.org/CaliOpen/Caliopen)
+
 > The best way to discuss with your contacts, while preserving your privacy.
 
 ![Actual POC](doc/assets/play_with_poc.png)
