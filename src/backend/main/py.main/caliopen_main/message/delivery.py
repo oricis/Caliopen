@@ -2,7 +2,6 @@
 """Caliopen user message delivery logic."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
-import hashlib
 
 from caliopen_storage.exception import NotFound
 from ..user.core import ContactLookup
@@ -96,21 +95,21 @@ class UserMessageDelivery(object):
             if prop[0] == 'list':
                 return
 
-    def process(self, user, message_id):
+    def process(self, user, raw_msg_id):
         """Process a message for an user."""
-        key = hashlib.sha256(message_id).hexdigest()
-        msg = RawMessage.get(user, key)
+        msg = RawMessage.get(user, raw_msg_id)
         if not msg:
             log.error('Raw message <{}> not found for user {}'.
-                      format(message_id, user.user_id))
+                      format(raw_msg_id, user.user_id))
             raise NotFound
-        log.debug('Retrieved raw message {} for message_id {}'.
-                  format(msg.raw_id, message_id))
+        log.debug('Retrieved raw message {}'.
+                  format(raw_msg_id))
 
         # XXX should use raw message type to use correct message formatter
         mail = MailMessage(msg.data)
 
         message = mail.to_parameter()
+        message.raw_msg_id = msg.raw_msg_id
         message.recipients = self._get_recipients(user, mail)
         addresses = [x.address for x in message.recipients]
         log.debug('Resolved recipients {}'.format(addresses))

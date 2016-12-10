@@ -9,13 +9,15 @@ from caliopen_storage.store.mixin import IndexedModelMixin
 
 from .message_index import IndexedMessage
 
+import uuid
+
 
 class RawMessage(BaseModel):
 
     """Raw message model."""
 
-    user_id = columns.UUID(primary_key=True)
-    raw_id = columns.Text(primary_key=True)
+    user_id = columns.UUID(primary_key=True, default=uuid.uuid4)
+    raw_msg_id = columns.UUID(primary_key=True, default=uuid.uuid4)
     data = columns.Bytes()
 
 
@@ -50,6 +52,7 @@ class Message(BaseModel, IndexedModelMixin):
     external_message_id = columns.Text()
     external_parent_id = columns.Text()
     external_thread_id = columns.Text()
+    raw_msg_id = columns.UUID()
     tags = columns.List(columns.Text)
     flags = columns.List(columns.Text)  # Seen, Recent, Deleted, ... IMAP?
     offset = columns.Integer()

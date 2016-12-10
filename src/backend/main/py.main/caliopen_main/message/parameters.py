@@ -88,6 +88,7 @@ class Message(NewMessage):
 
     user_id = UUIDType(serialize_when_none=False)
     message_id = UUIDType(required=True)
+    raw_msg_id = UUIDType(required=True)
     date_insert = DateTimeType(required=True)
     text = StringType(serialize_when_none=False)
     # All states allowed
