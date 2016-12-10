@@ -1,9 +1,16 @@
 #!/bin/bash
 set -ev
 
-BACKEND_CHANGE=`git diff-tree --no-commit-id --name-only -r HEAD..master src/backend`
-FRONTEND_CHANGE=`git diff-tree --no-commit-id --name-only -r HEAD..master src/frontend`
+CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 
+if [[ "${CURRENT_BRANCH}" == "master" ]]; then
+    # IF something happen on master, test everything
+    BACKEND_CHANGE="yes"
+    FRONTEND_CHANGE="yes"
+else
+    BACKEND_CHANGE=`git diff-tree --no-commit-id --name-only -r HEAD..master src/backend`
+    FRONTEND_CHANGE=`git diff-tree --no-commit-id --name-only -r HEAD..master src/frontend`
+fi
 
 function do_backend_tests {
     # Huge testing for the moment waiting for a real backend test strategy
