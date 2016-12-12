@@ -16,7 +16,7 @@ RawButton.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const Button = ({ children, className, modifiers = {}, ...props }) => {
+const Button = ({ children, className, modifiers = {}, active = false, ...props }) => {
   const buttonProps = {
     ...props,
     className: classnames(
@@ -26,6 +26,7 @@ const Button = ({ children, className, modifiers = {}, ...props }) => {
         'm-button--expanded': modifiers.expanded,
         'm-button--plain': modifiers.plain,
         'm-button--hollow': modifiers.hollow,
+        'm-button--active': active,
       }
     ),
   };
@@ -36,6 +37,7 @@ const Button = ({ children, className, modifiers = {}, ...props }) => {
 Button.propTypes = {
   className: PropTypes.string,
   modifiers: PropTypes.shape({ plain: PropTypes.bool, hollow: PropTypes.bool }),
+  active: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };
 

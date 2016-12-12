@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { withTranslator } from '@gandi/react-translate';
-import classnames from 'classnames';
 import Link from '../../../Link';
 import Icon from '../../../Icon';
 import VerticalMenu, { VerticalMenuItem } from '../../../VerticalMenu';
@@ -27,7 +26,7 @@ const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
             <Link
               to={application.route}
               modifiers={{ button: true, expanded: true }}
-              className={classnames({ 'is-active': currentApplication === application })}
+              active={currentApplication === application}
             >
               <Icon type={application.icon} /> {__(`header.menu.${application.name}`)}
             </Link>
