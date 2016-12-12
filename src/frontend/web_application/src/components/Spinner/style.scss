@@ -18,8 +18,10 @@
 
     animation: m-loading__spin .5s infinite linear;
 
-    svg path {
-      fill: $co-color__fg__text--higher;
+    svg {
+      path {
+        fill: $co-color__fg__text--higher;
+      }
     }
   }
 }
