@@ -8,4 +8,9 @@
   &--expanded { @include o-clickable--expanded; }
   &--plain { @include o-clickable--plain; }
   &--hollow { @include o-clickable--hollow; }
+
+  &--active {
+    @include o-clickable--active-text;
+    @include o-clickable--active-button;
+  }
 }
