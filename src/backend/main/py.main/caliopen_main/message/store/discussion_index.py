@@ -12,6 +12,7 @@ import logging
 
 import elasticsearch_dsl as dsl
 from caliopen_storage.store.model import BaseIndexDocument
+from caliopen_main.message.store import IndexedMessage
 
 log = logging.getLogger(__name__)
 
@@ -27,9 +28,8 @@ class DiscussionIndexManager(object):
     def _prepare_search(self, min_pi, max_pi):
         """Prepare a dsl.Search object on current index."""
 
-        search = dsl.Search(using=self.proxy,
-                            index=self.index,
-                            doc_type='indexed_message')
+        search = IndexedMessage.search(using=self.proxy,
+                                    index=self.index)
         search = search.filter('range', **{'privacy_index': {'gte': min_pi}})
         search = search.filter('range', **{'privacy_index': {'lte': max_pi}})
         return search
