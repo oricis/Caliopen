@@ -12,10 +12,12 @@
       }
     },
     "date_insert": {
-      "type": "string"
+      "type": "string",
+      "format": "date"
     },
     "date_update": {
-      "type": "string"
+      "type": "string",
+      "format": "date"
     },
     "importance_level": {
       "type": "integer",

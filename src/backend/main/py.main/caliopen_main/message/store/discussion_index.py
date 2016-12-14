@@ -68,8 +68,8 @@ class DiscussionIndexManager(object):
         ids, total = self.__search_ids(limit, offset, min_pi, max_pi)
         discussions = []
         for id, count in ids.items():
-            discuss = self._get_last_message(id, min_pi, max_pi)
-            discussions.append(discuss)
+            message = self._get_last_message(id, min_pi, max_pi)
+            discussions.append(message)
         # XXX total do not work completly, hack a bit
         return discussions, total + len(discussions)
 

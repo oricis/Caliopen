@@ -1,7 +1,7 @@
 {
-  "raws_{ext_msg_id_sum256}": {
+  "raws_{raw_msg_id}": {
     "get": {
-      "description": "Returns a raw message for the given sha256 sum derived from the external message id",
+      "description": "Returns a raw message",
       "tags": [
         "messages"
       ],
@@ -12,7 +12,7 @@
       ],
       "parameters": [
         {
-          "name": "ext_msg_id_sum256",
+          "name": "raw_msg_id",
           "in": "path",
           "required": true,
           "type": "string"
@@ -23,7 +23,10 @@
       ],
       "responses": {
         "200": {
-          "description": "the raw message"
+          "description": "the raw message",
+          "schema": {
+            "type": "string"
+          }
         }
       }
     }

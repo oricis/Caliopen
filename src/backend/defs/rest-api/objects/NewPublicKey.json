@@ -2,7 +2,8 @@
   "type": "object",
   "properties": {
     "expire_date": {
-      "type": "string"
+      "type": "string",
+      "format": "date"
     },
     "fingerprint": {
       "type": "string"
