@@ -62,6 +62,7 @@ class Message(BaseUserCore):
                  'subject': message.subject,
                  'external_message_id': message.external_message_id,
                  'external_parent_id': parent_id,
+                 'raw_msg_id': message.raw_msg_id,
                  'tags': message.tags,
                  'flags': ['Recent'],
                  'lookup': lookup,
@@ -88,7 +89,7 @@ class Message(BaseUserCore):
     def raw(self):
         """Return raw text from message."""
         # XXX do not use RawMessage lookup
-        raw = RawMessage.get(self.user, str(self.external_message_id))
+        raw = RawMessage.get(self.user, self.raw_msg_id)
         msg = raw.parse()
         return msg.text
 

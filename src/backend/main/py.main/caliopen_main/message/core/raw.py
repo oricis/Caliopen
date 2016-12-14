@@ -2,7 +2,7 @@
 """Caliopen core raw message class."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-import hashlib
+import uuid
 import logging
 
 from caliopen_storage.core import BaseUserCore
@@ -13,6 +13,7 @@ from ..format import MailMessage
 
 log = logging.getLogger(__name__)
 
+
 class RawMessage(BaseUserCore):
 
     """
@@ -22,19 +23,19 @@ class RawMessage(BaseUserCore):
     """
 
     _model_class = ModelRaw
-    _pkey_name = 'raw_id'
+    _pkey_name = 'raw_msg_id'
 
     @classmethod
-    def create(cls, user, message_id, raw):
+    def create(cls, user, raw):
         """Create raw message."""
-        key = hashlib.sha256(message_id).hexdigest()
-        return super(RawMessage, cls).create(user, raw_id=key, data=raw)
+        key = uuid.uuid4()
+        return super(RawMessage, cls).create(user, raw_msg_id=key, data=raw)
 
     @classmethod
-    def get(cls, user, message_id):
-        """Get raw message by raw_message_id."""
+    def get(cls, user, raw_msg_id):
+        """Get raw message by raw_msg_id."""
         try:
-            return super(RawMessage, cls).get(user, message_id)
+            return super(RawMessage, cls).get(user, raw_msg_id)
         except NotFound:
             return None
 

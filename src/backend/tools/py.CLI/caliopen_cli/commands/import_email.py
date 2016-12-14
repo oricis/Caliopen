@@ -63,9 +63,6 @@ def import_email(email, import_path, format, **kwargs):
     msgs = sorted(msgs, key=lambda msg: msg.date)
 
     for msg in msgs:
-        if not msg.external_message_id:
-            log.info('Ignoring a message without a Message-Id header')
-            continue
         for type, addresses in msg.recipients.iteritems():
             if not addresses:
                 continue

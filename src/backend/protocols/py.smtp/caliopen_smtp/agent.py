@@ -20,11 +20,11 @@ class DeliveryAgent(object):
         self.direct = True
         self.deliver = UserMessageDelivery()
 
-    def process_user_mail(self, user, message_id):
+    def process_user_mail(self, user, raw_msg_id):
         # XXX : logic here, for user rules etc
-        qmsg = {'user_id': user.user_id, 'message_id': message_id}
+        qmsg = {'user_id': user.user_id, 'raw_msg_id': raw_msg_id}
         log.debug('Will publish %r' % qmsg)
-        self.deliver.process(user, message_id)
+        self.deliver.process(user, raw_msg_id)
 
     def resolve_users(self, rpcts):
         users = []
@@ -50,17 +50,13 @@ class DeliveryAgent(object):
         """
         users = self.resolve_users(rcpts)
         if users:
-            mail = self.parse_mail(buf)
-            message_id = mail.get('Message-ID')
-            if not message_id:
-                raise Exception('No Message-ID found')
             for user in users:
                 # Create raw message
-                log.debug('Will create raw for message-id %s and user %r' %
-                          (message_id, user.user_id))
-                raw = RawMessage.create(user, message_id, buf)
-                log.debug('Created raw message %r' % raw.raw_id)
-                self.process_user_mail(user, message_id)
-            return raw.raw_id
+                log.debug('Will create raw for user %r' %
+                          user.user_id)
+                raw = RawMessage.create(user, buf)
+                log.debug('Created raw message %r' % raw.raw_msg_id)
+                self.process_user_mail(user, raw.raw_msg_id)
+            return raw.raw_msg_id
         else:
             log.warn('No user for mail')
