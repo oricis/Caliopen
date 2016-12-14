@@ -10,8 +10,6 @@ from caliopen_storage.exception import NotFound
 from caliopen_storage.core import BaseUserCore
 from caliopen_storage.parameters import ReturnCoreObject
 
-from ...user.core import Contact
-
 from ..store import  \
     (ThreadExternalLookup as ModelExternalLookup,
      ThreadRecipientLookup as ModelRecipientLookup,
@@ -20,7 +18,6 @@ from ..store import  \
      ThreadCounter as ModelCounter,
      DiscussionIndexManager as DIM)
 from ..parameters import Thread as ThreadParam, Recipient
-
 
 log = logging.getLogger(__name__)
 
@@ -82,7 +79,10 @@ def build_discussion(thread, index_message):
     discussion.user_id = thread.user_id
     discussion.thread_id = index_message.thread_id
     discussion.date_insert = thread.date_insert
-    discussion.date_update = index_message.date_insert
+
+    # index_message.date_insert is returned as an ISO string, but we need a datetime
+    discussion.date_update = datetime.strptime(index_message.date_insert, "%Y-%m-%dT%H:%M:%S.%f")
+
     discussion.text = index_message.text[:100]
     # XXX imperfect values
     discussion.privacy_index = index_message.privacy_index

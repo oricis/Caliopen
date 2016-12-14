@@ -5,7 +5,8 @@
       "$ref": "Contact.json"
     },
     "date_insert": {
-      "type": "string"
+      "type": "string",
+      "format": "date"
     },
     "family_name": {
       "type": "string"

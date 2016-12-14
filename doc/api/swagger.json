@@ -181,10 +181,12 @@
                       "type": "string"
                     },
                     "date_insert": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date"
                     },
                     "date_update": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date"
                     },
                     "deleted": {
                       "type": "boolean"
@@ -428,7 +430,8 @@
                             "type": "object",
                             "properties": {
                               "expire_date": {
-                                "type": "string"
+                                "type": "string",
+                                "format": "date"
                               },
                               "fingerprint": {
                                 "type": "string"
@@ -454,10 +457,12 @@
                             "type": "object",
                             "properties": {
                               "date_insert": {
-                                "type": "string"
+                                "type": "string",
+                                "format": "date"
                               },
                               "date_update": {
-                                "type": "string"
+                                "type": "string",
+                                "format": "date"
                               }
                             },
                             "required": [
@@ -488,7 +493,8 @@
                   "additionalProperties": false
                 },
                 "date_insert": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "date"
                 },
                 "family_name": {
                   "type": "string"
@@ -650,10 +656,12 @@
                       "type": "string"
                     },
                     "date_insert": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date"
                     },
                     "date_update": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date"
                     },
                     "deleted": {
                       "type": "boolean"
@@ -897,7 +905,8 @@
                             "type": "object",
                             "properties": {
                               "expire_date": {
-                                "type": "string"
+                                "type": "string",
+                                "format": "date"
                               },
                               "fingerprint": {
                                 "type": "string"
@@ -923,10 +932,12 @@
                             "type": "object",
                             "properties": {
                               "date_insert": {
-                                "type": "string"
+                                "type": "string",
+                                "format": "date"
                               },
                               "date_update": {
-                                "type": "string"
+                                "type": "string",
+                                "format": "date"
                               }
                             },
                             "required": [
@@ -957,7 +968,8 @@
                   "additionalProperties": false
                 },
                 "date_insert": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "date"
                 },
                 "family_name": {
                   "type": "string"
@@ -1190,10 +1202,12 @@
                         "type": "string"
                       },
                       "date_insert": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date"
                       },
                       "date_update": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date"
                       },
                       "deleted": {
                         "type": "boolean"
@@ -1437,7 +1451,8 @@
                               "type": "object",
                               "properties": {
                                 "expire_date": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "format": "date"
                                 },
                                 "fingerprint": {
                                   "type": "string"
@@ -1463,10 +1478,12 @@
                               "type": "object",
                               "properties": {
                                 "date_insert": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "format": "date"
                                 },
                                 "date_update": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "format": "date"
                                 }
                               },
                               "required": [
@@ -1672,10 +1689,12 @@
                   "type": "string"
                 },
                 "date_insert": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "date"
                 },
                 "date_update": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "date"
                 },
                 "deleted": {
                   "type": "boolean"
@@ -1919,7 +1938,8 @@
                         "type": "object",
                         "properties": {
                           "expire_date": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "date"
                           },
                           "fingerprint": {
                             "type": "string"
@@ -1945,10 +1965,12 @@
                         "type": "object",
                         "properties": {
                           "date_insert": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "date"
                           },
                           "date_update": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "date"
                           }
                         },
                         "required": [
@@ -2213,10 +2235,12 @@
                               "type": "string"
                             },
                             "date_insert": {
-                              "type": "string"
+                              "type": "string",
+                              "format": "date"
                             },
                             "date_update": {
-                              "type": "string"
+                              "type": "string",
+                              "format": "date"
                             },
                             "deleted": {
                               "type": "boolean"
@@ -2460,7 +2484,8 @@
                                     "type": "object",
                                     "properties": {
                                       "expire_date": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "date"
                                       },
                                       "fingerprint": {
                                         "type": "string"
@@ -2486,10 +2511,12 @@
                                     "type": "object",
                                     "properties": {
                                       "date_insert": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "date"
                                       },
                                       "date_update": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "date"
                                       }
                                     },
                                     "required": [
@@ -2521,10 +2548,12 @@
                         }
                       },
                       "date_insert": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date"
                       },
                       "date_update": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date"
                       },
                       "importance_level": {
                         "type": "integer",
@@ -2666,10 +2695,12 @@
                         "type": "string"
                       },
                       "date_insert": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date"
                       },
                       "date_update": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date"
                       },
                       "deleted": {
                         "type": "boolean"
@@ -2913,7 +2944,8 @@
                               "type": "object",
                               "properties": {
                                 "expire_date": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "format": "date"
                                 },
                                 "fingerprint": {
                                   "type": "string"
@@ -2939,10 +2971,12 @@
                               "type": "object",
                               "properties": {
                                 "date_insert": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "format": "date"
                                 },
                                 "date_update": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "format": "date"
                                 }
                               },
                               "required": [
@@ -2974,10 +3008,12 @@
                   }
                 },
                 "date_insert": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "date"
                 },
                 "date_update": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "date"
                 },
                 "importance_level": {
                   "type": "integer",
@@ -3496,9 +3532,9 @@
         }
       }
     },
-    "/raws/{ext_msg_id_sum256}": {
+    "/raws/{raw_msg_id}": {
       "get": {
-        "description": "Returns a raw message for the given sha256 sum derived from the external message id",
+        "description": "Returns a raw message",
         "tags": [
           "messages"
         ],
@@ -3509,7 +3545,7 @@
         ],
         "parameters": [
           {
-            "name": "ext_msg_id_sum256",
+            "name": "raw_msg_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -3520,7 +3556,10 @@
         ],
         "responses": {
           "200": {
-            "description": "the raw message"
+            "description": "the raw message",
+            "schema": {
+              "type": "string"
+            }
           }
         }
       }

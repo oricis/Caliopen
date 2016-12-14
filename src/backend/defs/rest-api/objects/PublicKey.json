@@ -6,10 +6,12 @@
       "type": "object",
       "properties": {
         "date_insert": {
-          "type": "string"
+          "type": "string",
+          "format": "date"
         },
         "date_update": {
-          "type": "string"
+          "type": "string",
+          "format": "date"
         }
       },
       "required": [
