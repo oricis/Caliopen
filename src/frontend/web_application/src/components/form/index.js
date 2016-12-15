@@ -2,7 +2,7 @@
 import FieldErrors from './FieldErrors';
 import InputText from './InputText';
 // import RadioFieldGroup from './';
-// import SelectFieldGroup from './';
+import SelectFieldGroup from './SelectFieldGroup';
 import Switch from './Switch';
 import TextFieldGroup from './TextFieldGroup';
 // import TextareaFieldGroup from './';
@@ -12,7 +12,7 @@ export {
   FieldErrors,
   InputText,
   // RadioFieldGroup,
-  // SelectFieldGroup,
+  SelectFieldGroup,
   Switch,
   TextFieldGroup,
   // TextareaFieldGroup,
