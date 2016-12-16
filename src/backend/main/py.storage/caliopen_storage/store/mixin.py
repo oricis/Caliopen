@@ -1,7 +1,6 @@
 """Caliopen mixins related to store."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
-import datetime
 import uuid
 
 from cassandra.cqlengine import columns

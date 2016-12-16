@@ -15,6 +15,8 @@ from ..store.contact import (Contact as ModelContact,
 from caliopen_storage.core import BaseCore, BaseUserCore
 from caliopen_storage.core.mixin import MixinCoreRelation
 
+import caliopen_main.errors as MainErrors
+
 log = logging.getLogger(__name__)
 
 
@@ -244,6 +246,19 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
             return cls.get(user, lookup.contact_id)
         # XXX something else to do ?
         return None
+
+    @classmethod
+    def update(cls, user, contact, patch):
+        """
+        update a contact with rfc7396 Merge patch specifications
+
+        :param user: user_id
+        :param contact: contact_id
+        :param patch: dict describing the patch to apply to contact
+        :return: Exception or None
+        """
+
+        return MainErrors.PatchError()
 
     def delete(self):
         if self.user.contact_id == self.contact_id:
