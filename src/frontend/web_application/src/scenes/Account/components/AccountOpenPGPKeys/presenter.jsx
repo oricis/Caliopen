@@ -4,6 +4,7 @@ import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
 import Subtitle from '../../../../components/Subtitle';
 import OpenPGPKey from '../../../../components/OpenPGPKey';
+import AccountOpenPGPKeyForm from './components/AccountOpenPGPKeyForm';
 import './style.scss';
 
 @withTranslator()
@@ -97,7 +98,7 @@ class AccountOpenPGPKeys extends Component {
         }
         {
           this.state.editMode && (
-            <account-openpgp-key-form
+            <AccountOpenPGPKeyForm
               className="m-account-openpgp__form"
               emails={user.contact.emails}
               onImport={onImportKey}
@@ -106,7 +107,7 @@ class AccountOpenPGPKeys extends Component {
               isLoading={isLoading}
             >
               <Icon type="key" />
-            </account-openpgp-key-form>
+            </AccountOpenPGPKeyForm>
         )}
       </div>
     );

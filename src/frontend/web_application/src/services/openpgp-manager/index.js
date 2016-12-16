@@ -4,9 +4,9 @@ const GENERATE_KEY_OPTIONS = {
   numBits: 4096,
 };
 
-export const ERROR_UNABLE_READ_PUBLIC_KEY = 'unable-read-public-key'; // __('openpgp.feedback.unable-read-public-key')
-export const ERROR_UNABLE_READ_PRIVATE_KEY = 'unable-read-private-key'; // __('openpgp.feedback.unable-read-private-key')
-export const ERROR_FINGERPRINTS_NOT_MATCH = 'fingerprints-not-match'; // __('openpgp.feedback.fingerprints-not-match')
+export const ERROR_UNABLE_READ_PUBLIC_KEY = 'unable-read-public-key';
+export const ERROR_UNABLE_READ_PRIVATE_KEY = 'unable-read-private-key';
+export const ERROR_FINGERPRINTS_NOT_MATCH = 'fingerprints-not-match';
 
 // http://monsur.hossa.in/2012/07/20/utf-8-in-javascript.html
 function encodeUTF8(str) {
@@ -79,23 +79,22 @@ export function validateKeyChainPair(publicKeyArmored, privateKeyArmored) {
     const publicKey = getKeyFromASCII(publicKeyArmored);
     const privateKey = getKeyFromASCII(privateKeyArmored);
 
-    const errors = [];
-
+    let errors;
     if (!publicKey) {
-      errors.push(ERROR_UNABLE_READ_PUBLIC_KEY);
+      errors = { ...errors, publicKeyArmored: [ERROR_UNABLE_READ_PUBLIC_KEY] };
     }
 
     if (!privateKey) {
-      errors.push(ERROR_UNABLE_READ_PRIVATE_KEY);
+      errors = { ...errors, privateKeyArmored: [ERROR_UNABLE_READ_PRIVATE_KEY] };
     }
 
     if (publicKey && privateKey &&
       publicKey.primaryKey.fingerprint !== privateKey.primaryKey.fingerprint
     ) {
-      errors.push(ERROR_FINGERPRINTS_NOT_MATCH);
+      errors = { ...errors, global: [ERROR_FINGERPRINTS_NOT_MATCH] };
     }
 
-    if (errors.length) {
+    if (errors) {
       return reject(errors);
     }
 

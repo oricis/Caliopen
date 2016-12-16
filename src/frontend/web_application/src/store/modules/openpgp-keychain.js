@@ -103,15 +103,15 @@ export function deleteKey(fingerprint) {
   };
 }
 
+const initialImportFormState = {
+  errors: {},
+};
+
 const initialState = {
   isLoading: false,
   keychainByFingerprint: {},
   privateKeys: [],
-  importForm: {},
-};
-
-const initialImportFormState = {
-  errors: {},
+  importForm: initialImportFormState,
 };
 
 function importFormReducer(state = initialImportFormState, action) {

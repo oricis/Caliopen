@@ -40,6 +40,7 @@ class OpenPGPKey extends Component {
     };
 
     this.toggleDetails = this.toggleDetails.bind(this);
+    this.handleDeleteKey = this.handleDeleteKey.bind(this);
     this.keyStatus = enums.keyStatus;
   }
 
@@ -53,7 +54,7 @@ class OpenPGPKey extends Component {
   }
 
   handleDeleteKey() {
-    this.props.onDeleteKey(this.viewValues.fingerprint);
+    this.props.onDeleteKey({ fingerprint: this.viewValues.fingerprint });
   }
 
   toggleDetails() {

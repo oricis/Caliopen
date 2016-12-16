@@ -5,7 +5,7 @@ import InputText from './InputText';
 import SelectFieldGroup from './SelectFieldGroup';
 import Switch from './Switch';
 import TextFieldGroup from './TextFieldGroup';
-// import TextareaFieldGroup from './';
+import TextareaFieldGroup from './TextareaFieldGroup';
 
 export {
   // CheckboxField,
@@ -15,5 +15,5 @@ export {
   SelectFieldGroup,
   Switch,
   TextFieldGroup,
-  // TextareaFieldGroup,
+  TextareaFieldGroup,
 };
