@@ -31,7 +31,7 @@ class User(NewUser):
     """Existing user."""
 
     contact = ModelType(Contact)
-    date_insert = DateTimeType(serialize_when_none=True)
+    date_insert = DateTimeType(serialize_when_none=True, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
     family_name = StringType(serialize_when_none=False)
     given_name = StringType(serialize_when_none=False)
     password = StringType(serialize_when_none=False)     # not outpout by default, not required

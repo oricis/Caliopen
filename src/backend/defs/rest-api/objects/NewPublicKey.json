@@ -3,7 +3,7 @@
   "properties": {
     "expire_date": {
       "type": "string",
-      "format": "date"
+      "format": "date-time"
     },
     "fingerprint": {
       "type": "string"

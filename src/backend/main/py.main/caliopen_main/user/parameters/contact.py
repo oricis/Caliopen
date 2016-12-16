@@ -183,7 +183,7 @@ class NewPublicKey(Model):
 
     """Input structure for a new public key."""
 
-    expire_date = DateTimeType(serialize_when_none=False)
+    expire_date = DateTimeType(serialize_when_none=False, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
     fingerprint = StringType(serialize_when_none=False)
     key = StringType(required=True)
     name = StringType(required=True)
@@ -196,8 +196,8 @@ class PublicKey(NewPublicKey):
     """Existing public key."""
 
     contact_id = UUIDType(serialize_when_none=False)
-    date_insert = DateTimeType(required=True)
-    date_update = DateTimeType(serialize_when_none=False)
+    date_insert = DateTimeType(required=True, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    date_update = DateTimeType(serialize_when_none=False, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
     user_id = UUIDType(serialize_when_none=False)
 
     class Options:
@@ -233,8 +233,8 @@ class Contact(NewContact):
     addresses = ListType(ModelType(PostalAddress), default=lambda: [], serialize_when_none=False)
     avatar = StringType(default='avatar.png', serialize_when_none=False)
     contact_id = UUIDType(required=True)
-    date_insert = DateTimeType(serialize_when_none=False)
-    date_update = DateTimeType(serialize_when_none=False)
+    date_insert = DateTimeType(serialize_when_none=False, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    date_update = DateTimeType(serialize_when_none=False, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
     deleted = BooleanType(serialize_when_none=False)
     emails = ListType(ModelType(Email), default=lambda: [], serialize_when_none=False)
     identities = ListType(ModelType(SocialIdentity), default=lambda: [], serialize_when_none=False)
