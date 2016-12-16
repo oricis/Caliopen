@@ -3,7 +3,9 @@
 // import discussions from '../index.js';
 //
 describe('component Discussions ContactsIcon', () => {
-  it('needs to be implemented', () => { });
+  it('needs to be implemented', () => {
+    console.warn('TODO');
+  });
 
 //   let $componentController;
 //
