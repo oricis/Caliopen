@@ -7,11 +7,11 @@
       "properties": {
         "date_insert": {
           "type": "string",
-          "format": "date"
+          "format": "date-time"
         },
         "date_update": {
           "type": "string",
-          "format": "date"
+          "format": "date-time"
         }
       },
       "required": [

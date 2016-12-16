@@ -30,8 +30,8 @@ class Thread(Model):
 
     user_id = UUIDType(serialize_when_none=False)
     thread_id = UUIDType(required=True)
-    date_insert = DateTimeType(serialize_when_none=False)
-    date_update = DateTimeType(serialize_when_none=False)
+    date_insert = DateTimeType(serialize_when_none=False, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    date_update = DateTimeType(serialize_when_none=False, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
     text = StringType(required=True)
     privacy_index = IntType(required=True, default=0)
     importance_level = IntType(required=True, default=0)
@@ -67,7 +67,7 @@ class NewMessage(Model):
     text = StringType(required=True)
     privacy_index = IntType(default=0, serialize_when_none=False)
     importance_level = IntType(default=0, serialize_when_none=False)
-    date = DateTimeType(required=True)
+    date = DateTimeType(required=True, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
     tags = ListType(StringType, serialize_when_none=False)
     # XXX define a part parameter
     parts = ListType(ModelType(Part), default=lambda: [], serialize_when_none=False)
@@ -89,7 +89,7 @@ class Message(NewMessage):
     user_id = UUIDType(serialize_when_none=False)
     message_id = UUIDType(required=True)
     raw_msg_id = UUIDType(required=True)
-    date_insert = DateTimeType(required=True)
+    date_insert = DateTimeType(required=True, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
     text = StringType(serialize_when_none=False)
     # All states allowed
     state = StringType(required=True, choices=MESSAGE_STATES)

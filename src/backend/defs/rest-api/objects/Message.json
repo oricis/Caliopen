@@ -2,10 +2,12 @@
   "type": "object",
   "properties": {
     "date": {
-      "type": "string"
+      "type": "string",
+      "format": "date-time"
     },
     "date_insert": {
-      "type": "string"
+      "type": "string",
+      "format": "date-time"
     },
     "external_message_id": {
       "type": "string"
