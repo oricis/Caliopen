@@ -5,14 +5,13 @@ import FieldErrors from '../FieldErrors';
 import './style.scss';
 
 const SelectFieldGroup = ({
-  label, expanded = true, bottomSpace = true, options, errors = [], onChange, className, ...props
+  label, expanded = true, options, errors = [], onChange, className, ...props
 }) => {
   const id = uuidV1();
   const selectClassName = classnames(
     'm-select-field-group__select',
     {
-      'm-select-field-group__select--expanded': expanded,
-      'm-select-field-group__select--bottom-space': bottomSpace,
+      'm-select-field-group--expanded__select': expanded,
     }
   );
 
@@ -43,7 +42,6 @@ const propTypeOption = PropTypes.oneOfType([React.PropTypes.string, React.PropTy
 SelectFieldGroup.propTypes = {
   label: PropTypes.string,
   expanded: PropTypes.bool,
-  bottomSpace: PropTypes.bool,
   options: PropTypes.arrayOf(PropTypes.shape({ label: propTypeOption, value: propTypeOption })),
   errors: PropTypes.arrayOf(PropTypes.string),
   onChange: PropTypes.func,
