@@ -163,14 +163,14 @@ class AccountOpenPGPKeyForm extends Component {
             <Button
               onClick={this.handleSwitchFormType}
               name={FORM_TYPE_GENERATE}
-              modifiers={{ hollow: this.state.formType === FORM_TYPE_GENERATE }}
+              hollow={this.state.formType === FORM_TYPE_GENERATE}
             >
               {__('account.openpgp.action.switch-generate-key')}
             </Button>
             <Button
               onClick={this.handleSwitchFormType}
               name={FORM_TYPE_RAW}
-              modifiers={{ hollow: this.state.formType === FORM_TYPE_RAW }}
+              hollow={this.state.formType === FORM_TYPE_RAW}
             >
               {__('account.openpgp.action.switch-import-raw-key')}
             </Button>
@@ -217,7 +217,7 @@ class AccountOpenPGPKeyForm extends Component {
               </div>
             )}
             <div className="m-account-openpgp-form__field-group">
-              <Button type="submit" modifiers={{ plain: true }}>
+              <Button type="submit" plain>
                 <Spinner isLoading={isLoading} />
                 {' '}
                 {__('account.openpgp.action.create')}
@@ -260,7 +260,7 @@ class AccountOpenPGPKeyForm extends Component {
             <Button
               className="m-account-openpgp-form__field-group"
               type="submit"
-              modifiers={{ plain: true }}
+              plain
             >
               <Spinner isLoading={isLoading} />
               {__('account.openpgp.action.add')}
