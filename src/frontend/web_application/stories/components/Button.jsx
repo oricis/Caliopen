@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import Button from '../src/components/Button';
+import Button from '../../src/components/Button';
 
 const styles = {
   component: {
