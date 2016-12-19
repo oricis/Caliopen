@@ -17,7 +17,8 @@
     "protractor": true
   },
   "rules": {
-    "newline-before-return": "error"
+    "newline-before-return": "error",
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.spec.js", "**/*.spec.jsx"]}]
   },
   "globals": {
     "inject": true,
