@@ -34,50 +34,60 @@ class Recipient(Model):
     """Store a contact reference and one of it's address used in a message."""
 
     address = StringType(required=True)
-    contact_id = UUIDType(serialize_when_none=False)
+    contact_id = UUIDType()
     type = StringType(required=True, choices=RECIPIENT_TYPES)
+
+    class Options:
+        serialize_when_none = False
 
 
 class NewOrganization(Model):
 
     """Input structure for a new organization."""
 
-    department = StringType(serialize_when_none=False)
-    is_primary = BooleanType(default=False, serialize_when_none=False)
-    job_description = StringType(serialize_when_none=False)
+    department = StringType()
+    is_primary = BooleanType(default=False)
+    job_description = StringType()
     label = StringType(required=True)
     name = StringType(required=True)
-    title = StringType(serialize_when_none=False)
+    title = StringType()
     # XXX Add enumerated list
-    type = StringType(choices=ORG_TYPES, serialize_when_none=False)
+    type = StringType(choices=ORG_TYPES)
+
+    class Options:
+        serialize_when_none = False
 
 
 class Organization(NewOrganization):
 
     """Existing organization."""
 
-    contact_id = UUIDType(serialize_when_none=False)
-    deleted = BooleanType(default=False, serialize_when_none=False)
+    contact_id = UUIDType()
+    deleted = BooleanType(default=False)
     organization_id = UUIDType(required=True)
-    user_id = UUIDType(serialize_when_none=False)
+    user_id = UUIDType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
+        serialize_when_none = False
 
 
 class NewPostalAddress(Model):
 
     """Input structure for a new postal address."""
 
-    address_id = StringType(serialize_when_none=False)
+    address_id = StringType()
     city = StringType(required=True)
-    country = StringType(serialize_when_none=False)
-    is_primary = BooleanType(default=False, serialize_when_none=False)
-    label = StringType(serialize_when_none=False)
-    postal_code = StringType(serialize_when_none=False)
-    region = StringType(serialize_when_none=False)
-    street = StringType(serialize_when_none=False)
-    type = StringType(choices=ADDRESS_TYPES, serialize_when_none=False)
+    country = StringType()
+    is_primary = BooleanType(default=False)
+    label = StringType()
+    postal_code = StringType()
+    region = StringType()
+    street = StringType()
+    type = StringType(choices=ADDRESS_TYPES)
+
+    class Options:
+        serialize_when_none = False
 
 
 class PostalAddress(NewPostalAddress):
@@ -85,32 +95,37 @@ class PostalAddress(NewPostalAddress):
     """Existing postal address."""
 
     address_id = UUIDType(required=True)
-    contact_id = UUIDType(serialize_when_none=False)
-    user_id = UUIDType(serialize_when_none=False)
+    contact_id = UUIDType()
+    user_id = UUIDType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
+        serialize_when_none = False
 
 
 class NewEmail(Model):
 
     """Input structure for a new email."""
     address = InternetAddressType(required=True)
-    is_primary = BooleanType(default=False, serialize_when_none=False)
-    label = StringType(serialize_when_none=False)
-    type = StringType(choices=EMAIL_TYPES, default='other', serialize_when_none=False)
+    is_primary = BooleanType(default=False)
+    label = StringType()
+    type = StringType(choices=EMAIL_TYPES, default='other')
+
+    class Options:
+        serialize_when_none = False
 
 
 class Email(NewEmail):
 
     """Existing email."""
 
-    contact_id = UUIDType(serialize_when_none=False)
+    contact_id = UUIDType()
     email_id = UUIDType(required=True)
-    user_id = UUIDType(serialize_when_none=False)
+    user_id = UUIDType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
+        serialize_when_none = False
 
 
 class NewIM(Model):
@@ -118,141 +133,164 @@ class NewIM(Model):
     """Input structure for a new IM."""
 
     address = InternetAddressType(required=True)
-    is_primary = BooleanType(default=False, serialize_when_none=False)
-    label = StringType(serialize_when_none=False)
-    protocol = StringType(serialize_when_none=False)
-    type = StringType(choices=IM_TYPES, default='other', serialize_when_none=False)
+    is_primary = BooleanType(default=False)
+    label = StringType()
+    protocol = StringType()
+    type = StringType(choices=IM_TYPES, default='other')
+
+    class Options:
+        serialize_when_none=False
 
 
 class IM(NewIM):
 
     """Existing IM."""
 
-    contact_id = UUIDType(serialize_when_none=False)
+    contact_id = UUIDType()
     im_id = UUIDType(required=True)
-    user_id = UUIDType(serialize_when_none=False)
+    user_id = UUIDType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
+        serialize_when_none = False
 
 
 class NewPhone(Model):
 
     """Input structure for a new phone."""
 
-    is_primary = BooleanType(default=False, serialize_when_none=False)
+    is_primary = BooleanType(default=False)
     number = PhoneNumberType(required=True)
-    type = StringType(choices=PHONE_TYPES, default='other', serialize_when_none=False)
-    uri = URLType(serialize_when_none=False)
+    type = StringType(choices=PHONE_TYPES, default='other')
+    uri = URLType()
 
+    class Options:
+        serialize_when_none = False
 
 class Phone(NewPhone):
 
     """Existing phone."""
 
-    contact_id = UUIDType(serialize_when_none=False)
+    contact_id = UUIDType()
     phone_id = UUIDType(required=True)
-    user_id = UUIDType(serialize_when_none=False)
+    user_id = UUIDType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
+        serialize_when_none = False
 
 
 class NewSocialIdentity(Model):
 
     """Input structure for a new social identity."""
 
-    infos = DictType(StringType, default=lambda: {}, serialize_when_none=False)
+    infos = DictType(StringType, default=lambda: {})
     name = StringType(required=True)
-    type = StringType(choices=SOCIAL_TYPES, serialize_when_none=False)
+    type = StringType(choices=SOCIAL_TYPES)
+
+    class Options:
+        serialize_when_none = False
 
 
 class SocialIdentity(NewSocialIdentity):
 
     """Existing social identity."""
 
-    contact_id = UUIDType(serialize_when_none=False)
+    contact_id = UUIDType()
     identity_id = UUIDType(required=True)
-    user_id = UUIDType(serialize_when_none=False)
+    user_id = UUIDType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
+        serialize_when_none = False
 
 
 class NewPublicKey(Model):
 
     """Input structure for a new public key."""
 
-    expire_date = DateTimeType(serialize_when_none=False, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
-    fingerprint = StringType(serialize_when_none=False)
+    expire_date = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    fingerprint = StringType()
     key = StringType(required=True)
     name = StringType(required=True)
-    size = IntType(serialize_when_none=False)
-    type = StringType(choices=KEY_CHOICES, serialize_when_none=False)
+    size = IntType()
+    type = StringType(choices=KEY_CHOICES)
+
+    class Options:
+        serialize_when_none = False
 
 
 class PublicKey(NewPublicKey):
 
     """Existing public key."""
 
-    contact_id = UUIDType(serialize_when_none=False)
+    contact_id = UUIDType()
     date_insert = DateTimeType(required=True, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
-    date_update = DateTimeType(serialize_when_none=False, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
-    user_id = UUIDType(serialize_when_none=False)
+    date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    user_id = UUIDType()
 
     class Options:
         roles = {'default': blacklist('user_id', 'contact_id')}
+        serialize_when_none = False
 
 
 class NewContact(Model):
 
     """Input structure for a new contact."""
 
-    additional_name = StringType(serialize_when_none=False)
-    addresses = ListType(ModelType(NewPostalAddress), default=lambda: [], serialize_when_none=False)
-    emails = ListType(ModelType(NewEmail), default=lambda: [], serialize_when_none=False)
-    family_name = StringType(serialize_when_none=False)
-    given_name = StringType(serialize_when_none=False)
-    groups = ListType(StringType, serialize_when_none=False)
-    identities = ListType(ModelType(NewSocialIdentity), default=lambda: [], serialize_when_none=False)
-    ims = ListType(ModelType(NewIM), default=lambda: [], serialize_when_none=False)
-    infos = DictType(StringType, serialize_when_none=False)
-    name_prefix = StringType(serialize_when_none=False)
-    name_suffix = StringType(serialize_when_none=False)
-    organizations = ListType(ModelType(NewOrganization), default=lambda: [], serialize_when_none=False)
-    phones = ListType(ModelType(NewPhone), default=lambda: [], serialize_when_none=False)
-    privacy_features = DictType(StringType, default=lambda: {}, serialize_when_none=False)
-    privacy_index = IntType(default=0, serialize_when_none=False)
-    public_keys = ListType(ModelType(NewPublicKey), default=lambda: [], serialize_when_none=False)
-    tags = ListType(StringType, serialize_when_none=False)
+    additional_name = StringType()
+    addresses = ListType(ModelType(NewPostalAddress), default=lambda: [])
+    emails = ListType(ModelType(NewEmail), default=lambda: [])
+    family_name = StringType()
+    given_name = StringType()
+    groups = ListType(StringType)
+    identities = ListType(ModelType(NewSocialIdentity), default=lambda: [])
+    ims = ListType(ModelType(NewIM), default=lambda: [], )
+    infos = DictType(StringType)
+    name_prefix = StringType()
+    name_suffix = StringType()
+    organizations = ListType(ModelType(NewOrganization), default=lambda: [])
+    phones = ListType(ModelType(NewPhone), default=lambda: [])
+    privacy_features = DictType(StringType, default=lambda: {})
+    privacy_index = IntType(default=0)
+    public_keys = ListType(ModelType(NewPublicKey), default=lambda: [])
+    tags = ListType(StringType)
+
+    class Options:
+        serialize_when_none = False
 
 
 class Contact(NewContact):
 
     """Existing contact."""
-    addresses = ListType(ModelType(PostalAddress), default=lambda: [], serialize_when_none=False)
-    avatar = StringType(default='avatar.png', serialize_when_none=False)
+    addresses = ListType(ModelType(PostalAddress), default=lambda: [])
+    avatar = StringType(default='avatar.png')
     contact_id = UUIDType(required=True)
-    date_insert = DateTimeType(serialize_when_none=False, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
-    date_update = DateTimeType(serialize_when_none=False, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
-    deleted = BooleanType(serialize_when_none=False)
-    emails = ListType(ModelType(Email), default=lambda: [], serialize_when_none=False)
-    identities = ListType(ModelType(SocialIdentity), default=lambda: [], serialize_when_none=False)
-    ims = ListType(ModelType(IM), default=lambda: [], serialize_when_none=False)
-    organizations = ListType(ModelType(Organization), default=lambda: [], serialize_when_none=False)
-    phones = ListType(ModelType(Phone), default=lambda: [], serialize_when_none=False)
-    public_keys = ListType(ModelType(PublicKey), default=lambda: [], serialize_when_none=False)
+    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    deleted = BooleanType()
+    emails = ListType(ModelType(Email), default=lambda: [])
+    identities = ListType(ModelType(SocialIdentity), default=lambda: [])
+    ims = ListType(ModelType(IM), default=lambda: [])
+    organizations = ListType(ModelType(Organization), default=lambda: [])
+    phones = ListType(ModelType(Phone), default=lambda: [])
+    public_keys = ListType(ModelType(PublicKey), default=lambda: [])
     # XXX not such default here
-    title = StringType(serialize_when_none=False)
+    title = StringType()
     user_id = UUIDType(required=True)
 
+    class Options:
+        serialize_when_none = False
 
 class ShortContact(Model):
 
     """Input structure for contact in short form."""
 
     contact_id = UUIDType(required=True)
-    family_name = StringType(serialize_when_none=False)
-    given_name = StringType(serialize_when_none=False)
-    tags = ListType(StringType, serialize_when_none=False)
-    title = StringType(serialize_when_none=False)
+    family_name = StringType()
+    given_name = StringType()
+    tags = ListType(StringType, )
+    title = StringType()
+
+    class Options:
+        serialize_when_none = False
