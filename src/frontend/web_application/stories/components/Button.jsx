@@ -42,8 +42,6 @@ class Buttons extends Component {
   }
 
   render() {
-    console.log(this.state.props);
-
     return (
       <div>
         <div style={styles.component}>
