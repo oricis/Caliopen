@@ -20,10 +20,13 @@ class NewUser(Model):
     """
 
     contact = ModelType(NewContact)
-    main_user_id = UUIDType(serialize_when_none=False)
+    main_user_id = UUIDType()
     name = StringType(required=True)
-    params = DictType(StringType(serialize_when_none=False))
+    params = DictType(StringType())
     password = StringType(required=True)
+
+    class Options:
+        serialize_when_none = False
 
 
 class User(NewUser):
@@ -31,29 +34,31 @@ class User(NewUser):
     """Existing user."""
 
     contact = ModelType(Contact)
-    date_insert = DateTimeType(serialize_when_none=True, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
-    family_name = StringType(serialize_when_none=False)
-    given_name = StringType(serialize_when_none=False)
-    password = StringType(serialize_when_none=False)     # not outpout by default, not required
-    privacy_features = DictType(StringType, default=lambda: {}, serialize_when_none=False)
-    privacy_index = IntType(default=0, serialize_when_none=False)
+    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    family_name = StringType()
+    given_name = StringType()
+    password = StringType()     # not outpout by default, not required
+    privacy_features = DictType(StringType, default=lambda: {}, )
+    privacy_index = IntType(default=0, )
     user_id = UUIDType(required=True)
 
     class Options:
         roles = {'default': blacklist('password')}
+        serialize_when_none = False
 
 
 class Tag(Model):
 
     """Existing user tag."""
 
-    user_id = UUIDType(serialize_when_none=False)
-    label = StringType(serialize_when_none=False)
-    background = StringType(serialize_when_none=False)
-    color = StringType(serialize_when_none=False)
+    user_id = UUIDType()
+    label = StringType()
+    background = StringType()
+    color = StringType()
 
     class Option:
         roles = {'default': blacklist('user_id')}
+        serialize_when_none = False
 
 
 class NewRule(Model):
@@ -62,6 +67,9 @@ class NewRule(Model):
 
     name = StringType(required=True)
     expr = StringType(required=True)
-    position = IntType(serialize_when_none=False)
-    stop_condition = BooleanType(default=False, serialize_when_none=False)
-    tags = ListType(StringType, serialize_when_none=False)
+    position = IntType()
+    stop_condition = BooleanType(default=False)
+    tags = ListType(StringType)
+
+    class Options:
+        serialize_when_none = False
