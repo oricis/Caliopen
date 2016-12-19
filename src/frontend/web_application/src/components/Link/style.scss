@@ -4,13 +4,14 @@
 .m-link {
   @include o-clickable;
 
-  &--expanded {
-    @include o-clickable--expanded;
-    height: 100%;
-  }
   &--text { @include o-clickable--text; }
   &--button { @include o-clickable--button; }
   &--plain { @include o-clickable--plain; }
   &--hollow { @include o-clickable--hollow; }
   &--active { @include o-clickable--active-text; }
+
+  &--expanded {
+    @include o-clickable--expanded;
+    height: 100%;
+  }
 }

@@ -62,7 +62,7 @@ class Presenter extends Component {
               this.props.applications.filter(app => app !== this.props.currentApplication)
                 .map((application, key) => (
                   <VerticalMenuItem key={key}>
-                    <BaseLink to={application.route} modifiers={{ button: true, expanded: true }}>
+                    <BaseLink to={application.route} button expanded>
                       <Icon type={application.icon} />
                       {' '}
                       {applicationLabels[application.name]}
