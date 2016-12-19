@@ -64,7 +64,6 @@ class MethodNotAllowed(HTTPClientError):
 
 class MergePatchError(HTTPClientError):
     def __init__(self, error=None):
-        log.info("Error type : {}".format(error))
         if isinstance(error, NotFound):
             self.code = 404
             self.title = "Not Found"

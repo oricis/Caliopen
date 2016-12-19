@@ -4,6 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import uuid
+
 from datetime import datetime
 
 from ..store.contact import (Contact as ModelContact,
@@ -14,6 +15,9 @@ from ..store.contact import (Contact as ModelContact,
 
 from caliopen_storage.core import BaseCore, BaseUserCore
 from caliopen_storage.core.mixin import MixinCoreRelation
+from caliopen_storage.exception import NotFound
+
+import caliopen_main.user.parameters.contact as ContactParams
 
 import caliopen_main.errors as MainErrors
 
@@ -179,20 +183,23 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
                         self._create_lookup(obj['type'], lookup_value)
 
     @classmethod
+    def create_nested(cls, values, kls):
+        """Create nested objects in store format."""
+        nested = []
+        for param in values:
+            param.validate()
+            attrs = param.to_primitive()
+            # XXX default value not correctly handled
+            pkey = getattr(kls, '_pkey')
+            attrs[pkey] = uuid.uuid4()
+            nested.append(kls(**attrs))
+        return nested
+
+    @classmethod
     def create(cls, user, contact, **related):
         # XXX do sanity check about only one primary for related objects
         # XXX check no extra arguments in related than relations
-        def create_nested(values, kls):
-            """Create nested objects in store format."""
-            nested = []
-            for param in values:
-                param.validate()
-                attrs = param.to_primitive()
-                # XXX default value not correctly handled
-                pkey = getattr(kls, '_pkey')
-                attrs[pkey] = uuid.uuid4()
-                nested.append(kls(**attrs))
-            return nested
+
         contact.validate()
         for k, v in related.iteritems():
             if k in cls._relations:
@@ -214,14 +221,14 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
                  'suffix_name': contact.name_suffix,
                  'title': title,
                  'privacy_index': contact.privacy_index,
-                 'emails': create_nested(contact.emails, Email),
-                 'ims': create_nested(contact.ims, IM),
-                 'phones': create_nested(contact.phones, Phone),
-                 'addresses': create_nested(contact.addresses,
+                 'emails': cls.create_nested(contact.emails, Email),
+                 'ims': cls.create_nested(contact.ims, IM),
+                 'phones': cls.create_nested(contact.phones, Phone),
+                 'addresses': cls.create_nested(contact.addresses,
                                             PostalAddress),
-                 'social_identities': create_nested(contact.identities,
+                 'social_identities': cls.create_nested(contact.identities,
                                                     SocialIdentity),
-                 'organizations': create_nested(contact.organizations,
+                 'organizations': cls.create_nested(contact.organizations,
                                                 Organization)}
 
         core = super(Contact, cls).create(user, **attrs)
@@ -248,7 +255,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
         return None
 
     @classmethod
-    def update(cls, user, contact, patch):
+    def update(cls, user=None, contact=None, patch=None):
         """
         update a contact with rfc7396 Merge patch specifications
 
@@ -257,8 +264,33 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
         :param patch: dict describing the patch to apply to contact
         :return: Exception or None
         """
+        if user is None or contact is None or patch is None:
+            return MainErrors.PatchUnprocessable()
 
-        return MainErrors.PatchError()
+        try:
+            contact = cls.get(user, contact).model  # returns a main.user.core.contact.Contact
+        except NotFound as exc:
+            return exc
+
+        # populate patch to a contactParams instance to validate fields against model
+        try:
+            contact_model = ContactParams.Contact(patch)
+            contact_model.validate(partial=True)
+        except Exception as exc:
+            return MainErrors.PatchUnprocessable(exc)
+
+        for key in patch:
+            if key in cls._nested:
+                setattr(contact, key, cls.create_nested(getattr(contact_model, key), cls._nested[key]))
+            else:
+                setattr(contact, key, getattr(contact_model, key))
+
+        try:
+            log.info("updated : {}".format(contact.save()))
+        except Exception as exc:
+            return MainErrors.PatchError(exc)
+
+        return None
 
     def delete(self):
         if self.user.contact_id == self.contact_id:

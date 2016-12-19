@@ -2074,7 +2074,7 @@
         }
       },
       "put": {
-        "description": "Not Yet Implemented",
+        "description": "Not Implemented",
         "tags": [
           "contacts"
         ],
@@ -2093,12 +2093,12 @@
         ],
         "responses": {
           "default": {
-            "description": "route not implemented, should raise an error"
+            "description": "verb not implemented, should raise an error"
           }
         }
       },
       "patch": {
-        "description": "Not Yet Implemented",
+        "description": "update a contact with rfc5789 and rfc7396 specifications",
         "tags": [
           "contacts"
         ],
@@ -2113,11 +2113,142 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "patch",
+            "in": "body",
+            "required": true,
+            "description": "the patch to apply",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "additional_name": {
+                  "type": "string"
+                },
+                "emails": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "family_name": {
+                  "type": "string"
+                },
+                "given_name": {
+                  "type": "string"
+                },
+                "groups": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "ims": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "infos": {
+                  "type": "object"
+                },
+                "name_prefix": {
+                  "type": "string"
+                },
+                "name_suffix": {
+                  "type": "string"
+                },
+                "organizations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         ],
+        "consumes": [
+          "application/json"
+        ],
         "responses": {
-          "default": {
-            "description": "route not implemented, should raise an error"
+          "204": {
+            "description": "Update successful. Nothing is returned."
+          },
+          "400": {
+            "description": "json payload malformed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "contact not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "patch json was malformed or unprocessable",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

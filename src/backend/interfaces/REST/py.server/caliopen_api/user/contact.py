@@ -66,6 +66,7 @@ class Contact(Api):
             raise ResourceNotFound('No such contact')
         if pi_range[0] > contact.privacy_index < pi_range[1]:
             raise HTTPExpectationFailed('Invalid privacy index')
+
         return ReturnContact.build(contact).serialize()
 
     @view(renderer='json', permission='authenticated')
@@ -98,7 +99,7 @@ class Contact(Api):
 
         try:
             # basic json validation to ensure patch doc is well formed
-            patch = json.loads(self.request.json)
+            patch = self.request.json
         except Exception as exc:
                 raise ValidationError(exc)
 
