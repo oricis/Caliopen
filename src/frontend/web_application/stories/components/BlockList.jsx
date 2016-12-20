@@ -13,8 +13,8 @@ class BlockLists extends Component {
             {[
               <ItemContent>Foo</ItemContent>,
               <ItemContent>Bar</ItemContent>,
-              <ItemContent isLink><Link raw>A link</Link></ItemContent>,
-              <ItemContent isLink><Link raw>An other link</Link></ItemContent>,
+              <ItemContent isLink><Link noDecoration>A link</Link></ItemContent>,
+              <ItemContent isLink><Link noDecoration>An other link</Link></ItemContent>,
               'Bar',
             ]}
           </BlockList>
@@ -27,8 +27,8 @@ export default () => (
     {[
       <ItemContent>Foo</ItemContent>,
       <ItemContent>Bar</ItemContent>,
-      <ItemContent isLink><Link raw>A link</Link></ItemContent>,
-      <ItemContent isLink><Link raw>An other link</Link></ItemContent>,
+      <ItemContent isLink><Link noDecoration>A link</Link></ItemContent>,
+      <ItemContent isLink><Link noDecoration>An other link</Link></ItemContent>,
       'Bar',
     ]}
   </BlockList>
