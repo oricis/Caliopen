@@ -6,13 +6,25 @@ const style = {
     border: '1px solid blue',
     height: '5rem',
   },
+  componentTall: {
+    height: '15rem',
+  },
 };
 
-const ComponentWrapper = ({ children }) => (
-  <div style={style.component}>{children}</div>
-);
+const ComponentWrapper = ({ tall, children }) => {
+  let componentStyle = { ...style.component };
+
+  if (tall) {
+    componentStyle = { ...componentStyle, ...style.componentTall };
+  }
+
+  return (
+    <div style={componentStyle}>{children}</div>
+  );
+};
 
 ComponentWrapper.propTypes = {
+  tall: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };
 

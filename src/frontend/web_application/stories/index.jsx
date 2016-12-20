@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook'; // eslint-disable-line
 import Badge from './components/Badge';
+import BlockList from './components/BlockList';
 import Button from './components/Button';
 import Link from './components/Link';
 import Welcome from './Welcome';
@@ -14,6 +15,11 @@ storiesOf('Welcome', module)
 storiesOf('Badge', module)
   .add('Badge', () => (
     <Badge />
+  ));
+
+storiesOf('BlockList', module)
+  .add('BlockList & ItemContent', () => (
+    <BlockList />
   ));
 
 storiesOf('Buttons & Links', module)

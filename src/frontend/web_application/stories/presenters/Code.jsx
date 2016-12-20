@@ -9,7 +9,7 @@ const style = {
 };
 
 const Code = ({ children }) => (
-  <code style={style.code}>{children}</code>
+  <code><pre style={style.code}>{children}</pre></code>
 );
 
 Code.propTypes = {
