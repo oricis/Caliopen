@@ -35,9 +35,6 @@ class Buttons extends Component {
         <ComponentWrapper>
           <Button {...this.state.props} onClick={action('clicked')}>Click Me</Button>
         </ComponentWrapper>
-        <Code>
-          {'<Button plain expanded hollow active alert />'}
-        </Code>
         <ul>
           <li><label><input type="checkbox" name="plain" checked={this.state.props.plain} onChange={this.handlePropsChanges} /> Plain</label></li>
           <li><label><input type="checkbox" name="expanded" checked={this.state.props.expanded} onChange={this.handlePropsChanges} /> Expanded</label></li>
@@ -45,6 +42,12 @@ class Buttons extends Component {
           <li><label><input type="checkbox" name="active" checked={this.state.props.active} onChange={this.handlePropsChanges} /> Active</label></li>
           <li><label><input type="checkbox" name="alert" checked={this.state.props.alert} onChange={this.handlePropsChanges} /> Alert</label></li>
         </ul>
+        <Code>
+          {`
+import Button from './src/components/Button';
+export default () => (<Button plain expanded hollow active alert />);
+          `}
+        </Code>
       </div>
     );
   }

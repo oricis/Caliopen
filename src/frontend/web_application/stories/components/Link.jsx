@@ -35,15 +35,18 @@ class Links extends Component {
         <ComponentWrapper>
           <Link {...this.state.props}>Click Me</Link>
         </ComponentWrapper>
-        <Code>
-          {'<Link noDecoration button expanded active />'}
-        </Code>
         <ul>
           <li><label><input type="checkbox" onChange={this.handlePropsChanges} name="noDecoration" checked={this.state.props.noDecoration} />No decorations</label></li>
           <li><label><input type="checkbox" onChange={this.handlePropsChanges} name="button" checked={this.state.props.button} />Button</label></li>
           <li><label><input type="checkbox" onChange={this.handlePropsChanges} name="expanded" checked={this.state.props.expanded} />Expanded</label></li>
           <li><label><input type="checkbox" onChange={this.handlePropsChanges} name="active" checked={this.state.props.active} />Active</label></li>
         </ul>
+        <Code>
+          {`
+import Link from './src/components/Link';
+export default () => (<Link noDecoration button expanded active />);
+          `}
+        </Code>
       </div>
     );
   }

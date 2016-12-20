@@ -32,7 +32,13 @@ class Badges extends Component {
         <ComponentWrapper>
           <Badge {...this.state.props}>142</Badge>
         </ComponentWrapper>
-        <Code>{'<Badge low large />'}</Code>
+        <Code>
+          {`
+import Badge from './src/components/Badge';
+
+export default () => (<Badge low large>142</Badge>);
+          `}
+        </Code>
         <ul>
           <li><label><input type="checkbox" name="low" checked={this.state.props.low} onChange={this.handlePropsChanges} />Low</label></li>
           <li><label><input type="checkbox" name="large" checked={this.state.props.large} onChange={this.handlePropsChanges} />Large</label></li>
