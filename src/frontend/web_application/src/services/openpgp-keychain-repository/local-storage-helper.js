@@ -1,3 +1,7 @@
+if (!window || !window.localStorage) {
+  console.error('No window nor LocalStorage is availble. Is this built for a browser?');
+}
+
 export function findAll(namespace) {
   return Object.keys(window.localStorage)
     .filter(name => name.indexOf(namespace) === 0)
