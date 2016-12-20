@@ -9,19 +9,27 @@ import { TextareaFieldGroup } from '../form';
 import { getKeyFromASCII } from '../../services/openpgp-manager';
 import './style.scss';
 
-function getViewValues(publicKey, keyStatuses) {
+const { keyStatus: keyStatuses } = enums;
+
+function generateStateFromProps(props) {
+  const publicKey = getKeyFromASCII(props.publicKeyArmored);
+  const { primaryKey: { fingerprint, created, algorithm } } = publicKey;
+
   return {
-    fingerprint: publicKey.primaryKey.fingerprint,
-    userId: publicKey.getPrimaryUser().user.userId.userid,
-    createdAt: publicKey.primaryKey.created,
-    expirationTime: publicKey.getExpirationTime(),
-    algorithm: publicKey.primaryKey.algorithm,
-    bitSize: publicKey.primaryKey.getBitSize(),
-    userIds: publicKey.users.map(user => user.userId.userid),
-    keyStatus: Object.keys(keyStatuses)
-      .find(statusLiteral => keyStatuses[statusLiteral] === publicKey.verifyPrimaryKey()),
+    openpgpKey: {
+      fingerprint,
+      created,
+      algorithm,
+      userId: publicKey.getPrimaryUser().user.userId.userid,
+      expirationTime: publicKey.getExpirationTime(),
+      bitSize: publicKey.primaryKey.getBitSize(),
+      userIds: publicKey.users.map(user => user.userId.userid),
+      keyStatus: Object.keys(keyStatuses)
+        .find(statusLiteral => keyStatuses[statusLiteral] === publicKey.verifyPrimaryKey()),
+    },
   };
 }
+
 
 // XXX: @themouette recommand to give a __ props on not routed component instead of this decorator
 @withTranslator()
@@ -43,20 +51,18 @@ class OpenPGPKey extends Component {
 
     this.toggleDetails = this.toggleDetails.bind(this);
     this.handleDeleteKey = this.handleDeleteKey.bind(this);
-    this.keyStatus = enums.keyStatus;
   }
 
   componentWillMount() {
-    this.initViewValues();
+    this.setState(generateStateFromProps(this.props));
   }
 
-  initViewValues() {
-    const publicKey = getKeyFromASCII(this.props.publicKeyArmored);
-    this.viewValues = getViewValues(publicKey, this.keyStatus);
+  componentWillReceiveProps(newProps) {
+    this.setState(generateStateFromProps(newProps));
   }
 
   handleDeleteKey() {
-    this.props.onDeleteKey({ fingerprint: this.viewValues.fingerprint });
+    this.props.onDeleteKey({ fingerprint: this.state.openpgpKey.fingerprint });
   }
 
   toggleDetails() {
@@ -79,11 +85,11 @@ class OpenPGPKey extends Component {
       <div className="m-openpgp-key">
         <div className="m-openpgp-key__main">
           <div className="m-openpgp-key__icon">{children}</div>
-          <div className="m-openpgp-key__fingerprint">{this.viewValues.fingerprint}</div>
+          <div className="m-openpgp-key__fingerprint">{this.state.openpgpKey.fingerprint}</div>
 
           <div className="m-openpgp-key__actions">
             <Button
-              className={classnames({ 'm-openpgp-key__toggle-info--warning': this.viewValues.keyStatus !== 'valid' })}
+              className={classnames({ 'm-openpgp-key__toggle-info--warning': this.state.openpgpKey.keyStatus !== 'valid' })}
               onClick={this.toggleDetails}
             >
               <Icon type="info-circle" />
@@ -103,30 +109,33 @@ class OpenPGPKey extends Component {
 
         {!this.state.showDetails && (
           <div className="m-openpgp-key__summary">
-            <span>{this.viewValues.userId}</span>
-            {this.viewValues.createdAt && (
-              <DateTime format="ll">{this.viewValues.createdAt}</DateTime>
+            <span>{this.state.openpgpKey.userId}</span>
+            {this.state.openpgpKey.created && (
+              <DateTime format="ll">{this.state.openpgpKey.created}</DateTime>
             )}
             {' '}
-            {this.viewValues.expirationTime && this.viewValues.expirationTime.length && (
-              <span>
-                / <DateTime format="ll">{this.viewValues.expirationTime}</DateTime>
-              </span>
-            )}
+            {this.state.openpgpKey.expirationTime
+                && this.state.openpgpKey.expirationTime.length
+                && (
+                  <span>
+                    / <DateTime format="ll">{this.state.openpgpKey.expirationTime}</DateTime>
+                  </span>
+                )
+            }
             {' '}
-            {this.viewValues.keyStatus && openpgpStatuses[this.viewValues.keyStatus]}
+            {this.state.openpgpKey.keyStatus && openpgpStatuses[this.state.openpgpKey.keyStatus]}
           </div>
         )}
 
         {this.state.showDetails && (
           <div className="m-openpgp-key__details">
             <DefList className="m-openpgp-key__detail">{[
-              { title: __('openpgp.details.identities'), descriptions: this.viewValues.userIds },
-              { title: __('openpgp.details.algorithm'), descriptions: [this.viewValues.algorithm] },
-              { title: __('openpgp.details.key-size'), descriptions: [this.viewValues.bitSize] },
-              { title: __('openpgp.details.status'), descriptions: [openpgpStatuses[this.viewValues.keyStatus]] },
-              { title: __('openpgp.details.creation'), descriptions: this.viewValues.createdAt ? [<DateTime format="ll">{this.viewValues.createdAt}</DateTime>] : [] },
-              { title: __('openpgp.details.expiration'), descriptions: this.viewValues.expirationTime ? [<DateTime format="ll">{this.viewValues.expirationTime}</DateTime>] : [] },
+              { title: __('openpgp.details.identities'), descriptions: this.state.openpgpKey.userIds },
+              { title: __('openpgp.details.algorithm'), descriptions: [this.state.openpgpKey.algorithm] },
+              { title: __('openpgp.details.key-size'), descriptions: [this.state.openpgpKey.bitSize] },
+              { title: __('openpgp.details.status'), descriptions: [openpgpStatuses[this.state.openpgpKey.keyStatus]] },
+              { title: __('openpgp.details.creation'), descriptions: this.state.openpgpKey.created ? [<DateTime format="ll">{this.state.openpgpKey.created}</DateTime>] : [] },
+              { title: __('openpgp.details.expiration'), descriptions: this.state.openpgpKey.expirationTime ? [<DateTime format="ll">{this.state.openpgpKey.expirationTime}</DateTime>] : [] },
             ]}</DefList>
 
             <TextareaFieldGroup
