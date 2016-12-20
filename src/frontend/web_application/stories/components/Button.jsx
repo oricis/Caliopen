@@ -1,19 +1,7 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
 import Button from '../../src/components/Button';
-
-const styles = {
-  component: {
-    margin: '1rem',
-    border: '1px solid blue',
-    height: '5rem',
-  },
-  code: {
-    margin: '1rem',
-    padding: '1rem',
-    backgroundColor: '#333',
-  },
-};
+import { Code, ComponentWrapper } from '../presenters';
 
 class Buttons extends Component {
   constructor(props) {
@@ -44,14 +32,12 @@ class Buttons extends Component {
   render() {
     return (
       <div>
-        <div style={styles.component}>
+        <ComponentWrapper>
           <Button {...this.state.props} onClick={action('clicked')}>Click Me</Button>
-        </div>
-        <p>
-          <code style={styles.code}>
-            {'<Button plain expanded hollow active alert />'}
-          </code>
-        </p>
+        </ComponentWrapper>
+        <Code>
+          {'<Button plain expanded hollow active alert />'}
+        </Code>
         <ul>
           <li><label><input type="checkbox" name="plain" checked={this.state.props.plain} onChange={this.handlePropsChanges} /> Plain</label></li>
           <li><label><input type="checkbox" name="expanded" checked={this.state.props.expanded} onChange={this.handlePropsChanges} /> Expanded</label></li>

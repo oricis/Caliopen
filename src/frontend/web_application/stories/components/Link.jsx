@@ -1,19 +1,7 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
 import Link from '../../src/components/Link';
-
-const styles = {
-  component: {
-    margin: '1rem',
-    border: '1px solid blue',
-    height: '5rem',
-  },
-  code: {
-    margin: '1rem',
-    padding: '1rem',
-    backgroundColor: '#333',
-  },
-};
+import { Code, ComponentWrapper } from '../presenters';
 
 class Links extends Component {
   constructor(props) {
@@ -44,14 +32,12 @@ class Links extends Component {
   render() {
     return (
       <div>
-        <div style={styles.component}>
+        <ComponentWrapper>
           <Link {...this.state.props}>Click Me</Link>
-        </div>
-        <p>
-          <code style={styles.code}>
-            {'<Link noDecoration button expanded active />'}
-          </code>
-        </p>
+        </ComponentWrapper>
+        <Code>
+          {'<Link noDecoration button expanded active />'}
+        </Code>
         <ul>
           <li><label><input type="checkbox" onChange={this.handlePropsChanges} name="noDecoration" checked={this.state.props.noDecoration} />No decorations</label></li>
           <li><label><input type="checkbox" onChange={this.handlePropsChanges} name="button" checked={this.state.props.button} />Button</label></li>
