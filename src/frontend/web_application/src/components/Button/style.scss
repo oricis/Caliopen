@@ -5,7 +5,11 @@
   @include o-clickable;
   @include o-clickable--button;
 
-  &--expanded { @include o-clickable--expanded; }
+  &--expanded {
+    @include o-clickable--expanded;
+    width: 100%;
+    height: 100%;
+  }
   &--plain { @include o-clickable--plain; }
   &--hollow { @include o-clickable--hollow; }
 

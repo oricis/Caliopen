@@ -75,8 +75,8 @@ class Discussions extends Component {
           ))}
         </BlockList>
         {this.state.hasMore && (
-          <div className="s-discussion-list__load-more m-block-list__item">
-            <Button modifiers={{ hollow: true }}>{__('general.action.load_more')}</Button>
+          <div className="s-discussion-list__load-more">
+            <Button hollow>{__('general.action.load_more')}</Button>
           </div>
         )}
       </div>

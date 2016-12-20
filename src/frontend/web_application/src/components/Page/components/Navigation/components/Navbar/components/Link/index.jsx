@@ -10,7 +10,7 @@ const Link = ({ className, ...props }) => {
   };
 
   return (
-    <BaseLink raw {...linkProps} />
+    <BaseLink noDecoration {...linkProps} />
   );
 };
 

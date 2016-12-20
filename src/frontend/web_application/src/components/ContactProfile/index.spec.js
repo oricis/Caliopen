@@ -1,7 +1,9 @@
 // import contactModule from '../index.js';
 
 describe('component contact-card-summary', () => {
-  it('needs to be implemented', () => {});
+  it('needs to be implemented', () => {
+    console.warn('TODO');
+  });
   // let $componentController;
   //
   // beforeEach(() => {
