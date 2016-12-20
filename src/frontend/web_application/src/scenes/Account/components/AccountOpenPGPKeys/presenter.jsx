@@ -27,6 +27,7 @@ class AccountOpenPGPKeys extends Component {
       editMode: false,
     };
     this.handleClickEditMode = this.handleClickEditMode.bind(this);
+    this.renderPrivateKey = this.renderPrivateKey.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +42,23 @@ class AccountOpenPGPKeys extends Component {
     }));
   }
 
+  renderPrivateKey(keyPair, key) {
+    const { onDeleteKey } = this.props;
+
+    return (
+      <OpenPGPKey
+        key={key}
+        className="m-account-openpgp__keys"
+        publicKeyArmored={keyPair.publicKeyArmored}
+        privateKeyArmored={keyPair.privateKeyArmored}
+        editMode={this.state.editMode}
+        onDeleteKey={onDeleteKey}
+      >
+        <Icon type="key" />
+      </OpenPGPKey>
+    );
+  }
+
   render() {
     const {
       __,
@@ -48,7 +66,6 @@ class AccountOpenPGPKeys extends Component {
       importForm,
       privateKeys,
       user,
-      onDeleteKey,
       onImportKey,
       onGenerateKey,
     } = this.props;
@@ -82,20 +99,7 @@ class AccountOpenPGPKeys extends Component {
             may takes time to become available.
           </p>
         </div>
-        {
-          privateKeys.map((keyPair, key) => (
-            <OpenPGPKey
-              key={key}
-              className="m-account-openpgp__keys"
-              publicKeyArmored={keyPair.publicKeyArmored}
-              privateKeyArmored={keyPair.privateKeyArmored}
-              editMode={this.state.editMode}
-              onDeleteKey={onDeleteKey}
-            >
-              <Icon type="key" />
-            </OpenPGPKey>
-          ))
-        }
+        {privateKeys.map(this.renderPrivateKey)}
         {
           this.state.editMode && (
             <AccountOpenPGPKeyForm

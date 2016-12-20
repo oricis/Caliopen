@@ -24,6 +24,8 @@ const mapStateToProps = state => ({
   isLoading: isLoadingSelector(state),
 });
 
+// XXX: @ziir recommand to use bindActionCreator from redux to reduce code boilerplate and
+// consistency in signatures
 const mapDispatchToProps = dispatch => ({
   onDeleteKey: ({ fingerprint }) => {
     dispatch(openPGPKeychain.deleteKey(fingerprint));
