@@ -17,9 +17,9 @@ from caliopen_storage.core import BaseCore, BaseUserCore
 from caliopen_storage.core.mixin import MixinCoreRelation
 from caliopen_storage.exception import NotFound
 
-import caliopen_main.user.parameters.contact as ContactParams
+import caliopen_main.user.parameters.contact as params_contact
 
-import caliopen_main.errors as MainErrors
+import caliopen_main.errors as main_errors
 
 log = logging.getLogger(__name__)
 
@@ -255,7 +255,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
         return None
 
     @classmethod
-    def update(cls, user=None, contact=None, patch=None):
+    def update(cls, user=None, contact_id=None, patch=None):
         """
         update a contact with rfc7396 Merge patch specifications
 
@@ -264,31 +264,36 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
         :param patch: dict describing the patch to apply to contact
         :return: Exception or None
         """
-        if user is None or contact is None or patch is None:
-            return MainErrors.PatchUnprocessable()
+        if user is None or contact_id is None or patch is None:
+            return main_errors.PatchUnprocessable()
 
         try:
-            contact = cls.get(user, contact).model  # returns a main.user.core.contact.Contact
+            contact = cls.get(user, contact_id)  # returns a main.user.core.contact.Contact
         except NotFound as exc:
             return exc
-
+        contact_store = contact.model
         # populate patch to a contactParams instance to validate fields against model
         try:
-            contact_model = ContactParams.Contact(patch)
+            contact_model = params_contact.Contact(patch)
             contact_model.validate(partial=True)
-        except Exception as exc:
-            return MainErrors.PatchUnprocessable(exc)
+        except Exception:
+            return main_errors.PatchUnprocessable(message="Patch does not validate against model")
 
         for key in patch:
+            attr = getattr(contact_model, key)
             if key in cls._nested:
-                setattr(contact, key, cls.create_nested(getattr(contact_model, key), cls._nested[key]))
+                setattr(contact_store, key, cls.create_nested(attr, cls._nested[key]))
             else:
-                setattr(contact, key, getattr(contact_model, key))
+                setattr(contact_store, key, attr)
+
+        changed_columns = contact_store.get_changed_columns()
 
         try:
-            log.info("updated : {}".format(contact.save()))
-        except Exception as exc:
-            return MainErrors.PatchError(exc)
+            contact_store.save()
+        except Exception:
+            return main_errors.PatchError(message="Error when saving document")
+
+        contact_store.update_index(contact_id, changed_columns)
 
         return None
 

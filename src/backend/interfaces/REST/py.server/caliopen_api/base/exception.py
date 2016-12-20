@@ -68,11 +68,14 @@ class MergePatchError(HTTPClientError):
             self.code = 404
             self.title = "Not Found"
             self.explanation = "The resource could not be found to apply PATCH"
+            self.message = error.message
         if isinstance(error, PatchUnprocessable):
             self.code = 422
             self.title = "Patch Unprocessable"
             self.explanation = "PATCH payload was malformed or unprocessable"
+            self.message = error.message
         if isinstance(error, PatchError):
             self.code = 422
             self.title = "Patch Error"
             self.explanation = "Application encountered an error when applying patch"
+            self.message = error.message

@@ -1,10 +1,14 @@
-class PatchUnprocessable(Exception):
 
+class PatchUnprocessable(Exception):
     """Exception when patch dict is malformed or unprocessable."""
-    pass
+
+    def __init__(self, message=None, **kw):
+        Exception.__init__(self, message, **kw)
 
 
 class PatchError(Exception):
 
     """Exception when processing patch was unsuccessfull"""
-    pass
+
+    def __init__(self, message=None, **kw):
+        Exception.__init__(self, message, **kw)
