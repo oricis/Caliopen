@@ -3,12 +3,17 @@ import classnames from 'classnames';
 import ContactIconLetter from '../ContactIconLetter';
 import './style.scss';
 
+export const SIZE_SMALL = 'small';
+export const SIZE_MEDIUM = 'medium';
+export const SIZE_LARGE = 'large';
+export const SIZE_XLARGE = 'xlarge';
+
 const ContactAvatarLetter = ({ contact, size }) => {
   const classNameModifiers = {
-    small: 'm-avatar--small',
-    medium: 'm-avatar--medium',
-    large: 'm-avatar--large',
-    xlarge: 'm-avatar--xlarge',
+    [SIZE_SMALL]: 'm-avatar--small',
+    [SIZE_MEDIUM]: 'm-avatar--medium',
+    [SIZE_LARGE]: 'm-avatar--large',
+    [SIZE_XLARGE]: 'm-avatar--xlarge',
   };
   const classNameSize = Object.keys(classNameModifiers).reduce((prev, key) => {
     if (!prev && key === size) {

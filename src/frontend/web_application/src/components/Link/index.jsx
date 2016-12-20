@@ -3,16 +3,16 @@ import { Link as BaseLink } from 'react-router';
 import classnames from 'classnames';
 import './style.scss';
 
-const Link = ({ raw, className, modifiers = {}, active = false, ...props }) => {
+const Link = ({ noDecoration, className, button, expanded, active = false, ...props }) => {
   const linkProps = {
     ...props,
     className: classnames(
       className,
       'm-link',
       {
-        'm-link--button': modifiers.button,
-        'm-link--expanded': modifiers.expanded,
-        'm-link--text': !modifiers.button && !raw,
+        'm-link--button': button,
+        'm-link--expanded': expanded,
+        'm-link--text': !button && !noDecoration,
         'm-link--active': active,
       }
     ),
@@ -22,9 +22,10 @@ const Link = ({ raw, className, modifiers = {}, active = false, ...props }) => {
 };
 
 Link.propTypes = {
-  raw: PropTypes.bool,
+  noDecoration: PropTypes.bool,
   className: PropTypes.string,
-  modifiers: PropTypes.shape({ button: PropTypes.bool, expanded: PropTypes.bool }),
+  button: PropTypes.bool,
+  expanded: PropTypes.bool,
   active: PropTypes.bool,
 };
 
