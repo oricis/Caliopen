@@ -43,6 +43,8 @@
     "openpgp.feedback.fingerprints-not-match": "openpgp.feedback.fingerprints-not-match",
     "openpgp.feedback.unable-read-private-key": "openpgp.feedback.unable-read-private-key",
     "openpgp.feedback.unable-read-public-key": "openpgp.feedback.unable-read-public-key",
+    "openpgp.private-key": "openpgp.private-key",
+    "openpgp.public-key": "openpgp.public-key",
     "openpgp.status.expired": "openpgp.status.expired",
     "openpgp.status.invalid": "openpgp.status.invalid",
     "openpgp.status.no_self_cert": "openpgp.status.no_self_cert",

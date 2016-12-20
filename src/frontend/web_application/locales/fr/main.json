@@ -43,6 +43,8 @@
     "openpgp.feedback.fingerprints-not-match": "Les empreintes ne correspondent pas",
     "openpgp.feedback.unable-read-private-key": "Impossible de lire la clé privée",
     "openpgp.feedback.unable-read-public-key": "Impossible de lire la clé publique",
+    "openpgp.private-key": "Clé privée",
+    "openpgp.public-key": "Clé publique",
     "openpgp.status.expired": "Expirée",
     "openpgp.status.invalid": "Invalide",
     "openpgp.status.no_self_cert": "No self cert",

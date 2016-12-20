@@ -5,6 +5,7 @@ import { DateTime, withTranslator } from '@gandi/react-translate';
 import Button from '../Button';
 import Icon from '../Icon';
 import DefList from '../DefList';
+import { TextareaFieldGroup } from '../form';
 import { getKeyFromASCII } from '../../services/openpgp-manager';
 import './style.scss';
 
@@ -22,6 +23,7 @@ function getViewValues(publicKey, keyStatuses) {
   };
 }
 
+// XXX: @themouette recommand to give a __ props on not routed component instead of this decorator
 @withTranslator()
 class OpenPGPKey extends Component {
   static propTypes = {
@@ -127,19 +129,20 @@ class OpenPGPKey extends Component {
               { title: __('openpgp.details.expiration'), descriptions: this.viewValues.expirationTime ? [<DateTime format="ll">{this.viewValues.expirationTime}</DateTime>] : [] },
             ]}</DefList>
 
-            <div className="m-openpgp-key__detail">
-              <textarea-field-group
-                label="'openpgp.public-key'|translate"
-                model={publicKeyArmored}
+            <TextareaFieldGroup
+              className="m-openpgp-key__detail"
+              label={__('openpgp.public-key')}
+              readOnly
+              value={publicKeyArmored}
+            />
+            {privateKeyArmored && (
+              <TextareaFieldGroup
+                className="m-openpgp-key__detail"
+                label={__('openpgp.private-key')}
+                readOnly
+                value={privateKeyArmored}
               />
-            </div>
-            <div className="m-openpgp-key__detail">
-              <textarea-field-group
-                ng-if="!!$ctrl.privateKeyArmored"
-                label="'openpgp.private-key'|translate"
-                model={privateKeyArmored}
-              />
-            </div>
+            )}
           </div>
         )}
       </div>
