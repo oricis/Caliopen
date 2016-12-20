@@ -3,7 +3,9 @@
 // // const moduleName = 'caliopenApp';
 //
 describe('component DiscussionList', () => {
-  it('needs to be implemented', () => {});
+  it('needs to be implemented', () => {
+    console.warn('TODO');
+  });
 //   // let $componentController;
 //
 //   beforeEach(() => {

@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 import './style.scss';
 
-const FieldErrors = ({ errors }) => (
-  <ul className="m-field-errors">
+const FieldErrors = ({ errors = [], className }) => (
+  <ul className={classnames('m-field-errors', className)}>
     { errors.map((error, key) => (
       <li key={key}>{error}</li>
     ))}
@@ -11,6 +12,7 @@ const FieldErrors = ({ errors }) => (
 
 FieldErrors.propTypes = {
   errors: PropTypes.arrayOf(PropTypes.string),
+  className: PropTypes.string,
 };
 
 export default FieldErrors;

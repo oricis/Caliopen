@@ -1,0 +1,14 @@
+@import '../../../../styles/common';
+@import '../../../../styles/object/o-callout';
+
+.m-account-openpgp {
+  &__info {
+    @include o-callout-base;
+    @include o-callout--color($co-color__info);
+  }
+
+  &__keys,
+  &__form {
+    margin-top: $co-margin;
+  }
+}

@@ -26,7 +26,7 @@ class ContactList extends Component {
     super(props);
     this.state = {
       contacts: [],
-      isFetching: true,
+      isFetching: false,
       hasMore: true,
     };
   }

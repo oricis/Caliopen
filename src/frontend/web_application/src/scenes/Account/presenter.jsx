@@ -5,6 +5,7 @@ import Icon from '../../components/Icon';
 import ContactProfile from '../../components/ContactProfile';
 import TextBlock from '../../components/TextBlock';
 import { Switch } from '../../components/form';
+import AccountOpenPGPKeys from './components/AccountOpenPGPKeys';
 import './style.scss';
 
 @withTranslator()
@@ -115,8 +116,7 @@ class Account extends Component {
               </TextBlock>
 
               <div className="s-account__openpgp">
-                {/* {XXX: openpgp, contactDetails ...} */}
-                <account-openpgp-keys user="this.state.user" />
+                <AccountOpenPGPKeys user={this.state.user} />
               </div>
 
             </div>
