@@ -213,9 +213,18 @@
           "name": "patch",
           "in": "body",
           "required": true,
-          "description": "the patch to apply",
+          "description": "the patch to apply. See 'Caliopen Patch RFC' within /doc directory.",
           "schema": {
-            "$ref": "../objects/NewContact.json"
+            "type": "object",
+            "properties": {
+              "$ref": "../objects/Contact.json#/properties",
+              "current_state": {
+                "type": "object",
+                "properties": {
+                  "$ref": "../objects/Contact.json#/properties"
+                }
+              }
+            }
           }
         }
       ],
@@ -224,7 +233,7 @@
       ],
       "responses": {
         "204": {
-          "description": "Update successful. Nothing is returned."
+          "description": "Update successful. No body is returned."
         },
         "400": {
           "description": "json payload malformed",
