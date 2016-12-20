@@ -30,7 +30,7 @@
     "lint:sass": "sass-lint 'src/**/*.scss'",
     "i18n": "react-translate-scripts",
     "storybook": "start-storybook -p 6006 --dont-track",
-    "storybook:build": "build-storybook"
+    "storybook:build": "build-storybook -o dist/storybook"
   },
   "author": "CaliOpen <contact@caliopen.org> (https://caliopen.org/)",
   "license": "MIT",
