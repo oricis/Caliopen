@@ -16,6 +16,9 @@ const typeAssoc = {
   at: 'fa fa-at',
   edit: 'fa fa-edit',
   check: 'fa fa-check',
+  key: 'fa fa-key',
+  'info-circle': 'fa fa-info-circle',
+  remove: 'fa fa-remove',
 };
 
 

@@ -31,7 +31,7 @@ class Presenter extends Component {
         <DropdownController
           toggle="co-user-menu"
           className="float-right"
-          modifiers={{ expanded: true }}
+          expanded
         >
           <Icon type="user" />&nbsp;
           <span className="show-for-small-only">{user.name}</span>&nbsp;
@@ -42,10 +42,10 @@ class Presenter extends Component {
             <VerticalMenuTextItem>{user.name}</VerticalMenuTextItem>
             <Separator />
             <VerticalMenuItem>
-              <Link to="/account" modifiers={{ button: true, expanded: true }}>{__('header.menu.account')}</Link>
+              <Link to="/account" expanded button>{__('header.menu.account')}</Link>
             </VerticalMenuItem>
             <VerticalMenuItem>
-              <Link to="/auth/logout" modifiers={{ button: true, expanded: true }}>{__('header.menu.signout')}</Link>
+              <Link to="/auth/logout" button expanded>{__('header.menu.signout')}</Link>
             </VerticalMenuItem>
           </VerticalMenu>
         </Dropdown>

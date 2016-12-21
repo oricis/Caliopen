@@ -1,0 +1,18 @@
+@import '../../styles/vendor/foundation-sites';
+
+.m-def-list {
+  @include clearfix;
+
+  &__title {
+    float: left;
+    font-weight: bold;
+
+    &::before {
+      clear: both;
+    }
+  }
+
+  &__def {
+    margin-left: 25%;
+  }
+}

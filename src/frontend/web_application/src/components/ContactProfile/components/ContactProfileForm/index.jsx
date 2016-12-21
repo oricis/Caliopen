@@ -58,7 +58,7 @@ class ContactProfileForm extends Component {
         />
         <div className="m-contact-profile-form__save-button">
           <div className="m-contact-profile-form__save-button-wrapper">
-            <Button type="submit" modifiers={{ expanded: true, plain: true }}>
+            <Button type="submit" expanded plain>
               <Icon type="check" /> {__('contact_profile.action.save')}
             </Button>
           </div>

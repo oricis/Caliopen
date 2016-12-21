@@ -12,7 +12,7 @@ const ActionButton = ({ action, ...props }) => {
 
   return (
     <Tappable {...tappableProps}>
-      <Button {...props} modifiers={{ plain: true }} />
+      <Button {...props} plain />
     </Tappable>
   );
 };

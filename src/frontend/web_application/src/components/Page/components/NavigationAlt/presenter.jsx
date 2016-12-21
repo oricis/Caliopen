@@ -25,7 +25,8 @@ const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
           <VerticalMenuItem key={key}>
             <Link
               to={application.route}
-              modifiers={{ button: true, expanded: true }}
+              button
+              expanded
               active={currentApplication === application}
             >
               <Icon type={application.icon} /> {__(`header.menu.${application.name}`)}
@@ -37,7 +38,7 @@ const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
     <tab-list-alt />
     <VerticalMenu className="l-nav-alt__menu">
       <VerticalMenuItem>
-        <Link to="/auth/logout" modifiers={{ button: true, expanded: true }}>
+        <Link to="/auth/logout" button expanded>
           {__('header.menu.signout')}
         </Link>
       </VerticalMenuItem>
