@@ -3,7 +3,8 @@
 from __future__ import absolute_import, print_function, unicode_literals
 from pyramid.httpexceptions import HTTPClientError
 from caliopen_storage.exception import NotFound
-from caliopen_main.errors import PatchUnprocessable, PatchError
+from caliopen_main.errors import (PatchUnprocessable, PatchError,
+                                  PatchConflict)
 
 import logging
 log = logging.getLogger(__name__)
@@ -78,4 +79,9 @@ class MergePatchError(HTTPClientError):
             self.code = 422
             self.title = "Patch Error"
             self.explanation = "Application encountered an error when applying patch"
+            self.message = error.message
+        if isinstance(error, PatchConflict):
+            self.code = 409
+            self.title = "Patch Conflict"
+            self.explanation = "The request cannot be applied given the state of the resource"
             self.message = error.message

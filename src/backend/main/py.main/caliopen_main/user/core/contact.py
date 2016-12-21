@@ -294,9 +294,9 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
                     # means key is added by the patch.
                     # db_state for this key should be None or empty object or empty list
                     if contact_db[k] not in ([], {}, None):
-                        return main_errors.PatchUnprocessable(message="Patch current_state not consistent with db")
+                        return main_errors.PatchConflict(message="Patch current_state not consistent with db")
                 elif patch_current_state[k] != contact_db_state[k]:
-                    return main_errors.PatchUnprocessable(message="Patch current_state not consistent with db")
+                    return main_errors.PatchConflict(message="Patch current_state not consistent with db")
             else:
                 return main_errors.PatchUnprocessable(message="Invalid key within current_state patch object")
 
