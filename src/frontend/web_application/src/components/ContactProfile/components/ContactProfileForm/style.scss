@@ -1,5 +1,5 @@
 @import '../../../../styles/common';
-@import '../../../../styles/vendor/foundation-sites';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-contact-profile-form {
   &__save-button {
@@ -10,7 +10,7 @@
     &,
     // XXX: mode to remote ident form
     &__remote-identity-form-row {
-      @include flex-grid-row($width: none);
+      @include flex-grid-row($size: expand);
     }
 
     &__save-button,

@@ -6,7 +6,7 @@ import Button from './components/Button';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
 import Link from './components/Link';
 import Welcome from './Welcome';
-import '../src/styles/vendor/foundation-sites.scss';
+import '../src/styles/vendor/bootstrap_foundation-sites.scss';
 
 storiesOf('Welcome', module)
   .add('to Storybook', () => (

@@ -1,10 +1,9 @@
-@import '../../styles/vendor/foundation-sites';
+@import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-contact-list {
   &__contact {
-    @include flex-grid-row;
+    @include flex-grid-row($size: expand);
     align-items: baseline;
-    max-width: none;
   }
 
   &__col-avatar {
