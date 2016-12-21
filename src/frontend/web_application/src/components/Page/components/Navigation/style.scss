@@ -1,11 +1,11 @@
 @import '../../../../styles/common';
-@import '../../../../styles/vendor/foundation-sites';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .l-navigation {
   min-height: $co-component__height;
 
   &__wrapper {
-    @include flex-grid-row($width: none);
+    @include flex-grid-row($size: expand);
     position: fixed;
     z-index: $l-z-index__navbar;
     width: 100%;
@@ -36,7 +36,7 @@
   }
 
   &__tab-list {
-    @include flex-grid-column($gutter: 0);
+    @include flex-grid-column($gutters: 0);
   }
 
   &__sliders-toggle {

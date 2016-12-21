@@ -1,8 +1,8 @@
 @import '../../styles/common';
-@import '../../styles/vendor/foundation-sites';
+@import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-account {
-  @include flex-grid-row($width: none);
+  @include flex-grid-row($size: expand);
   background-color: $co-color__fg__back--low;
 
   &__col-datas-irl {

@@ -1,11 +1,10 @@
 @import '../../styles/common';
-@import '../../styles/vendor/foundation-sites';
+@import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-discussion-list {
   &__thread {
-    @include flex-grid-row;
+    @include flex-grid-row($size: expand);
     align-items: center;
-    max-width: none;
 
     &--unread {
       position: relative;

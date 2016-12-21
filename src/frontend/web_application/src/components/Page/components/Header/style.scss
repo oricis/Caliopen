@@ -1,5 +1,5 @@
 @import '../../../../styles/common';
-@import '../../../../styles/vendor/foundation-sites';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 $l-header__height: 50px !default;
 $l-header__margin: ($co-margin / 2) !default;
@@ -9,7 +9,7 @@ $l-header__margin: ($co-margin / 2) !default;
   margin-bottom: $l-header__margin;
 
   &__wrapper {
-    @include flex-grid-row($width: none);
+    @include flex-grid-row($size: expand);
     position: fixed;
     z-index: 1000;
 

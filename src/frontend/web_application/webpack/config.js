@@ -68,7 +68,9 @@ module.exports = {
       sassLoader: {
         includePaths: [
           path.resolve(__dirname, '../src'),
-          path.resolve(__dirname, '../node_modules'),
+          path.resolve(__dirname, '../node_modules/foundation-sites/scss'),
+          path.resolve(__dirname, '../node_modules/font-awesome/scss'),
+          path.resolve(__dirname, '../node_modules/react-redux-notify/src'),
         ],
       },
       sasslint: {
