@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
+import './style.scss';
 
-const typeAssoc = {
+export const typeAssoc = {
   search: 'fa fa-search',
   user: 'fa fa-user',
   'caret-up': 'fa fa-caret-up',

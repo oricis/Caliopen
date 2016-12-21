@@ -3,7 +3,9 @@ import { storiesOf, action, linkTo } from '@kadira/storybook'; // eslint-disable
 import Badge from './components/Badge';
 import BlockList from './components/BlockList';
 import Button from './components/Button';
+import Subtitle from './components/Subtitle';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
+import Icon from './components/Icon';
 import Link from './components/Link';
 import Welcome from './Welcome';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
@@ -34,4 +36,12 @@ storiesOf('Buttons & Links', module)
 storiesOf('Icons & Avatars', module)
   .add('ContactAvatarLetter', () => (
     <ContactAvatarLetter />
+  ))
+  .add('Icon', () => (
+    <Icon />
+  ));
+
+storiesOf('Titles', module)
+  .add('Subtitle', () => (
+    <Subtitle />
   ));
