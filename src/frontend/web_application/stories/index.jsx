@@ -7,6 +7,7 @@ import Subtitle from './components/Subtitle';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
 import Icon from './components/Icon';
 import Link from './components/Link';
+import Spinner from './components/Spinner';
 import Welcome from './Welcome';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
 
@@ -39,6 +40,9 @@ storiesOf('Icons & Avatars', module)
   ))
   .add('Icon', () => (
     <Icon />
+  ))
+  .add('Spinner', () => (
+    <Spinner />
   ));
 
 storiesOf('Titles', module)

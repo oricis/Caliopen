@@ -21,7 +21,6 @@ Spinner.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   height: PropTypes.number,
   width: PropTypes.number,
-  color: PropTypes.string,
 };
 
 export default Spinner;
