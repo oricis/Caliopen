@@ -1,1 +1,9 @@
+@import '../../styles/common';
 @import '../../styles/vendor/bootstrap_font-awesome';
+
+.m-icon {
+  &--spaced {
+    margin-right: $co-margin / 4;
+    margin-left: $co-margin / 4;
+  }
+}

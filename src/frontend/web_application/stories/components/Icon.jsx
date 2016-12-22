@@ -13,6 +13,7 @@ class Presenter extends Component {
       },
     };
     this.handlePropsChanges = this.handlePropsChanges.bind(this);
+    this.handlePropsChangesBool = this.handlePropsChangesBool.bind(this);
   }
 
   handlePropsChanges(event) {
@@ -26,12 +27,23 @@ class Presenter extends Component {
     }));
   }
 
+  handlePropsChangesBool(event) {
+    const { name, checked } = event.target;
+
+    this.setState(prevState => ({
+      props: {
+        ...prevState.props,
+        [name]: checked,
+      },
+    }));
+  }
+
   render() {
     const types = Object.keys(typeAssoc);
 
     return (
       <div>
-        <ComponentWrapper>
+        <ComponentWrapper inline>
           <Icon {...this.state.props} />
         </ComponentWrapper>
         <ul>
@@ -41,12 +53,13 @@ class Presenter extends Component {
               <select name="type" onChange={this.handlePropsChanges}>{types.map(key => (<option key={key} value={key}>{key}</option>))}</select>
             </label>
           </li>
+          <li><label><input type="checkbox" onChange={this.handlePropsChangesBool} name="spaced" checked={this.state.props.spaced} />Spaced</label></li>
         </ul>
         <Code>
           {`
 import Icon from './src/components/Icon';
 
-export default () => (<Icon type="edit"/>);
+export default () => (<Icon type="edit" spaced />);
           `}
         </Code>
       </div>
