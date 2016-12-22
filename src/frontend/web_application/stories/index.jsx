@@ -8,6 +8,7 @@ import ContactAvatarLetter from './components/ContactAvatarLetter';
 import Icon from './components/Icon';
 import Link from './components/Link';
 import Spinner from './components/Spinner';
+import TextList from './components/TextList';
 import Welcome from './Welcome';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
 
@@ -21,9 +22,12 @@ storiesOf('Badge', module)
     <Badge />
   ));
 
-storiesOf('BlockList', module)
+storiesOf('Lists', module)
   .add('BlockList & ItemContent', () => (
     <BlockList />
+  ))
+  .add('TextList & ItemContent', () => (
+    <TextList />
   ));
 
 storiesOf('Buttons & Links', module)
