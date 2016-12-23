@@ -9,13 +9,21 @@ const style = {
   componentTall: {
     height: '15rem',
   },
+  componentInline: {
+    display: 'inline-block',
+    height: 'auto',
+  },
 };
 
-const ComponentWrapper = ({ tall, children }) => {
+const ComponentWrapper = ({ tall, inline, children }) => {
   let componentStyle = { ...style.component };
 
   if (tall) {
     componentStyle = { ...componentStyle, ...style.componentTall };
+  }
+
+  if (inline) {
+    componentStyle = { ...componentStyle, ...style.componentInline };
   }
 
   return (
@@ -25,6 +33,7 @@ const ComponentWrapper = ({ tall, children }) => {
 
 ComponentWrapper.propTypes = {
   tall: PropTypes.bool,
+  inline: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };
 

@@ -41,7 +41,7 @@ export default class Welcome extends React.Component {
       <div style={styles.main}>
         <h1>STORYBOOK for Caliopen</h1>
         <p>
-          This is the UI component dev environment for CaliOpen.
+          This is the UI component dev environment for <a target="_top" href="https://caliopen.github.io">CaliOpen</a>.
         </p>
       </div>
     );

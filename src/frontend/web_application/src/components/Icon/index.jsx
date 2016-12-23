@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
+import './style.scss';
 
-const typeAssoc = {
+export const typeAssoc = {
   search: 'fa fa-search',
   user: 'fa fa-user',
   'caret-up': 'fa fa-caret-up',
@@ -22,14 +23,15 @@ const typeAssoc = {
 };
 
 
-const Icon = ({ className, type, ...props }) => {
+const Icon = ({ className, type, spaced, ...props }) => {
   // eslint-disable-next-line no-console
   const typeClassName = typeAssoc[type] || console.error(`The type "${type}" is not a valid Icon component type`);
   const iconProps = {
     ...props,
     className: classnames(
       className,
-      typeClassName
+      typeClassName,
+      { 'm-icon--spaced': spaced }
     ),
   };
 
@@ -39,6 +41,7 @@ const Icon = ({ className, type, ...props }) => {
 Icon.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string,
+  spaced: PropTypes.bool,
 };
 
 export default Icon;
