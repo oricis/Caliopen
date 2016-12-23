@@ -1,0 +1,11 @@
+@import '../../../../styles/common';
+
+.m-address-details {
+  &__postal-address {
+    display: inline-block;
+  }
+
+  &__icon {
+    margin-right: $co-margin / 4;
+  }
+}

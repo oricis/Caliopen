@@ -121,6 +121,7 @@ class Account extends Component {
 
             </div>
             <div className="s-contact__col-datas-online">
+
               <contact-details
                 contact="this.state.user.contact"
                 props={contactDetailsProps}

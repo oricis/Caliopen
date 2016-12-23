@@ -17,7 +17,6 @@ class Presenter extends Component {
 
   handlePropsChanges(event) {
     const { name, value } = event.target;
-    console.log('handlePropsChanges', name, value);
 
     this.setState(prevState => ({
       props: {

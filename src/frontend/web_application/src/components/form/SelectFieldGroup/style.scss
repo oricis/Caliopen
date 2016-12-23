@@ -7,18 +7,21 @@
     margin-bottom: map-get($co-form__spacing, 'small');
   }
 
-  &__errors {
-    margin-top: map-get($co-form__spacing, 'medium');
-  }
-
   &__select {
     @include o-form-element;
+    margin-bottom: map-get($co-form__spacing, 'medium');
   }
 
   &,
   &--dark {
     &__select { @include o-form-element--dark; }
   }
-  &--light { &__select { @include o-form-element--light; } }
-  &--expanded { &__select { width: 100%; } }
+
+  &--light {
+    &__select { @include o-form-element--light; }
+  }
+
+  &--expanded {
+    &__select { width: 100%; }
+  }
 }

@@ -5,12 +5,14 @@ import BlockList from './components/BlockList';
 import Button from './components/Button';
 import Subtitle from './components/Subtitle';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
+import ContactDetails from './components/ContactDetails';
 import Icon from './components/Icon';
 import Link from './components/Link';
 import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
 import RadioFieldGroup from './components/RadioFieldGroup';
 import Spinner from './components/Spinner';
+import Switch from './components/Switch';
 import TextList from './components/TextList';
 import Welcome from './Welcome';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
@@ -64,6 +66,14 @@ storiesOf('Form', module)
   .add('FormGrid', () => (
     <FormGrid />
   ))
+  .add('Switch', () => (
+    <Switch />
+  ))
   .add('RadioFieldGroup', () => (
     <RadioFieldGroup />
+  ));
+
+storiesOf('Contact', module)
+  .add('ContactDetails', () => (
+    <ContactDetails />
   ));
