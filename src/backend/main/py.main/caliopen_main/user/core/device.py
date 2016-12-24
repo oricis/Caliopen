@@ -5,6 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from ..store import (Device as ModelDevice,
+                     DevicePublicKey as ModelDevicePublicKey,
                      DeviceLocation as ModelDeviceLocation,
                      DeviceConnectionLog as ModelDeviceConnectionLog)
 
@@ -13,6 +14,13 @@ from caliopen_storage.core.mixin import MixinCoreRelation
 
 
 log = logging.getLogger(__name__)
+
+
+class DevicePublicKey(BaseUserCore):
+
+    """Public cryptographic key belong to a device."""
+
+    _model_class = ModelDevicePublicKey
 
 
 class DeviceLocation(BaseUserCore):
@@ -34,4 +42,5 @@ class Device(BaseUserCore, MixinCoreRelation):
 
     _relations = {
         'locations': DeviceLocation,
+        'keys': DevicePublicKey,
     }

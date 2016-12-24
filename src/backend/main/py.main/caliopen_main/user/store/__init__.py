@@ -19,4 +19,5 @@ __all__ = [
     'Email', 'IM', 'Phone', 'SocialIdentity', 'PublicKey',
     'ResourceTag', 'IndexedResourceTag',
     'Device', 'DeviceLocation', 'DeviceConnectionLog',
+    'Device', 'DevicePublicKey', 'DeviceLocation', 'DeviceConnectionLog',
 ]

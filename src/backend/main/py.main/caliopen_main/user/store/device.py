@@ -19,12 +19,26 @@ class Device(BaseModel):
     """User device."""
     user_id = columns.UUID(primary_key=True)
     device_id = columns.UUID(primary_key=True, default=uuid.uuid4)
+
     name = columns.Text()
     date_insert = columns.DateTime(required=True, default=datetime.utcnow)
     type = columns.Text(required=True)
-    public_key = columns.Text()
     status = columns.Text()
+    fingerprint = columns.Text()
     privacy_features = columns.Map(columns.Text, columns.Text)
+
+
+class DevicePublicKey(BaseModel):
+
+    """Device public key."""
+
+    user_id = columns.UUID(primary_key=True)
+    device_id = columns.UUID(primary_key=True, default=uuid.uuid4)
+    fingerprint = columns.Text(primary_key=True)
+
+    date_insert = columns.DateTime(required=True, default=datetime.utcnow)
+    is_current = columns.Boolean(default=False)
+    public_key = columns.Text()
 
 
 class DeviceLocation(BaseModel):
