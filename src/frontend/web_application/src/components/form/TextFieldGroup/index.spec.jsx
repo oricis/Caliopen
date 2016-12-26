@@ -20,7 +20,7 @@ describe('component textFieldGroup', () => {
   //   const label = 'Foo';
   //   const model = 'D.';
   //
-  //   const onChange = jasmine.createSpy('onChange');
+  //   const onChange = jest.fn();
   //   const ctrl = $componentController('textFieldGroup', null, { props, label, model, onChange });
   //
   //   expect(ctrl).toBeDefined();

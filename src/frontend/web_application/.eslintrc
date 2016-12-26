@@ -13,7 +13,7 @@
   "env": {
     "browser": true,
     "es6": true,
-    "jasmine": true,
+    "jest": true,
     "protractor": true
   },
   "rules": {
@@ -24,7 +24,6 @@
     "inject": true,
     "Foundation": true,
     "jQuery": true,
-    "jest": true,
     "BUILD_TARGET": true,
     "CALIOPEN_ENV": true
   }
