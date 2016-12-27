@@ -145,42 +145,16 @@ class ObjectStorable(ObjectJsonDictifiable):
                            (self.__class__.name, obj_id, user_id))
 
     def save_db(self, **options):
-        pass
+        raise NotImplementedError
 
     def create_db(self, **options):
-        pass
+        raise NotImplementedError
 
     def delete_db(self, **options):
-        pass
+        raise NotImplementedError
 
     def update_db(self, **options):
         """push updated model into db"""
-
-        # copy current self_db values in a sibling
-        # db_state = self.__class__()
-        # db_state._db = self._model_class(**self.marshall_dict())
-        # db_state._db.validate()
-        #
-        # log.info("self : {}".format(vars(self)))
-        # log.info("db_state : {}".format(vars(db_state)))
-        # log.info("_db keys : {}".format(self._db.keys()))
-        # self_keys = self._attrs.keys()
-        # for att in self._db.keys():
-        #     if not att.startswith("_") and att in self_keys:
-        #         db_state_att = getattr(db_state, att)
-        #         if db_state_att != getattr(self, att):
-        #             # if type(self._attrs[att]) is ListType:
-        #             #     dbatt = getattr(self._db, att)
-        #             #     for elem in getattr(self, att):
-        #             #         if elem not in db_state_att:
-        #             #             dbatt.append(elem)
-        #             #     for elem in db_state_att:
-        #             #         if elem not in getattr(self, att):
-        #             #             dbatt.remove(elem)
-        #             #     setattr(self._db, att, dbatt)
-        #             # else:
-        #             setattr(self._db, att, getattr(self, att))
-        # log.info("after self : {}".format(vars(self)))
 
         try:
             self._db.update()
@@ -193,12 +167,16 @@ class ObjectStorable(ObjectJsonDictifiable):
     def marshall_db(self, **options):
         """squash self._db with self 'public' attributes"""
 
+        if not isinstance(self._db, self._model_class):
+            self._db = self._model_class()
+
         self_keys = self._attrs.keys()
 
         for att in self._db.keys():
             if not att.startswith("_") and att in self_keys:
                 if type(self._attrs[att]) is ListType:
                     # TODO : manage change within list to only elem changed
+                    # (use builtin set() collection ?)
                     if issubclass(self._attrs[att][0], CaliopenObject):
                         setattr(self._db, att,
                                 [self._attrs[att][0]._model_class(**x.marshall_dict())
@@ -306,7 +284,9 @@ class ObjectStorable(ObjectJsonDictifiable):
         if "index" in options and options["index"] is True:
             # silently update index. Should we raise an error if it fails ?
             log.info("we'll update index")
-            # self.marshall_index()
+            # TODO : index related func
+            self.marshall_index()
+            log.info(vars(self._index))
             # self.update_index()
 
         return None
@@ -317,3 +297,32 @@ class ObjectIndexable(ObjectJsonDictifiable):
 
     _index_class = None  # dsl model for object
     _index = None  # dsl model instance
+
+    def marshall_index(self, **options):
+        """squash self._index with self 'public' attributes"""
+
+        if not isinstance(self._index, self._index_class):
+            self._index = self._index_class()
+            self._index.meta = self.user_id
+
+        log.info(self._index)
+        self_keys = self._attrs.keys()
+
+        # TODO : finish job below !
+        for att in self._index_class.__dict__.keys():
+            if not att.startswith("_") and att in self_keys and att != "contact_id":
+                log.info("att : {}".format(att))
+                if type(self._attrs[att]) is ListType:
+                    # TODO : manage change within list to only elem changed
+                    if issubclass(self._attrs[att][0], CaliopenObject):
+                        setattr(self._index, att,
+                                [self._attrs[att][0]._index_class(**x.marshall_dict())
+                                 for x in getattr(self, att)])
+                    else:
+                        setattr(self._index, att, getattr(self, att))
+                else:
+                    setattr(self._index, att, getattr(self, att))
+
+    def unmarshall_index(self, document, **options):
+        """squash self.attrs with index representation"""
+        raise NotImplementedError

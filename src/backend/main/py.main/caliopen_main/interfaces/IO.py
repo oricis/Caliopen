@@ -13,38 +13,38 @@ class JsonDictIO(zope.interface.Interface):
     """
 
     def marshall_json_dict(**options):
-        pass
+        raise NotImplementedError
 
     def unmarshall_json_dict(**options):
-        pass
+        raise NotImplementedError
 
 
 class ProtobufIO(zope.interface.Interface):
     """IO between caliopen's objects and protobuf objects"""
 
     def marshall_protobuf(**options):
-        pass
+        raise NotImplementedError
 
     def unmarshall_protobuf(message, **options):
-        pass
+        raise NotImplementedError
 
 
 class DictIO(zope.interface.Interface):
     def marshall_dict(**options):
-        pass
+        raise NotImplementedError
 
     def unmarshall_dict(document, **options):
-        pass
+        raise NotImplementedError
 
 
 class JsonIO(zope.interface.Interface):
     """json is an array of bytes"""
 
     def marshall_json(**options):
-        pass
+        raise NotImplementedError
 
     def unmarshall_json(document, **options):
-        pass
+        raise NotImplementedError
 
 
 

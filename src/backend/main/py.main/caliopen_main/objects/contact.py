@@ -86,6 +86,7 @@ class Contact(ObjectStorable, ObjectIndexable):
 
     #  operations related to elasticsearch
     _index_class = IndexedContact
+    _index = None
 
     def __init__(self):
         super(CaliopenObject, self).__init__()

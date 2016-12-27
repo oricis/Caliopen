@@ -35,13 +35,13 @@ class AuthenticationError(HTTPClientError):
     """
     code = 401
     title = 'Authentication error'
-    explanation = ('Wrong credentials (e.g., bad password or username)')
+    explanation = 'Wrong credentials (e.g., bad password or username)'
 
 
 class AuthorizationError(HTTPClientError):
     code = 403
     title = 'Forbidden'
-    explanation = ('Access was denied to this resource.')
+    explanation = 'Access was denied to this resource.'
 
     def __init__(self, detail=None, headers=None, comment=None,
                  body_template=None, result=None, **kw):
@@ -54,13 +54,13 @@ class AuthorizationError(HTTPClientError):
 class ResourceNotFound(HTTPClientError):
     code = 404
     title = 'Not Found'
-    explanation = ('The resource could not be found.')
+    explanation = 'The resource could not be found.'
 
 
 class MethodNotAllowed(HTTPClientError):
     code = 405
     title = 'Method not allowed'
-    explanation = ('The method is not allowed or not yet implemented')
+    explanation = 'The method is not allowed or not yet implemented'
 
 
 class MergePatchError(HTTPClientError):
@@ -78,10 +78,12 @@ class MergePatchError(HTTPClientError):
         if isinstance(error, PatchError):
             self.code = 422
             self.title = "Patch Error"
-            self.explanation = "Application encountered an error when applying patch"
+            self.explanation = "Application encountered an error when " \
+                               "applying patch"
             self.message = error.message
         if isinstance(error, PatchConflict):
             self.code = 409
             self.title = "Patch Conflict"
-            self.explanation = "The request cannot be applied given the state of the resource"
+            self.explanation = "The request cannot be applied given " \
+                               "the state of the resource"
             self.message = error.message
