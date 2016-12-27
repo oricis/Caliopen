@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Caliopen cassandra models related to user."""
+"""Caliopen cassandra objects related to user."""
 
 from __future__ import absolute_import, print_function, unicode_literals
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Caliopen models related to contact definition."""
+"""Caliopen objects related to contact definition."""
 from __future__ import absolute_import, print_function, unicode_literals
 from datetime import datetime
 import uuid
@@ -97,10 +97,8 @@ class SocialIdentity(BaseUserType):
 
 
 class Contact(BaseModel, IndexedModelMixin):
-
-    _index_class = IndexedContact
-
     """Contact model."""
+
     user_id = columns.UUID(primary_key=True)
     contact_id = columns.UUID(primary_key=True)     # clustering key
     date_insert = columns.DateTime(default=datetime.utcnow())
