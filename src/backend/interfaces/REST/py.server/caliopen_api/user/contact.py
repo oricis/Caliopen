@@ -60,8 +60,8 @@ class Contact(Api):
     def get(self):
         pi_range = self.request.authenticated_userid.pi_range
         contact_id = self.request.swagger_data["contact_id"]
-        contact = ContactOject()
-        contact.get_db(self.user.user_id, contact_id)
+        contact = ContactOject(user_id=self.user.user_id)
+        contact.get_db(contact_id)
         contact.unmarshall_db()
         if pi_range[0] > contact.privacy_index < pi_range[1]:
             raise HTTPExpectationFailed('Invalid privacy index')
@@ -98,9 +98,8 @@ class Contact(Api):
         contact_id = self.request.swagger_data["contact_id"]
         patch = self.request.json
 
-        contact = ContactOject()
-        error = contact.apply_patch(self.user.user_id, contact_id,
-                                    patch, db=True, index=True)
+        contact = ContactOject(user_id=self.user.user_id)
+        error = contact.apply_patch(contact_id, patch, db=True, index=True)
         if error is not None:
             raise MergePatchError(error)
 

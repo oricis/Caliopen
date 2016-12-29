@@ -37,7 +37,7 @@ class PublicKey(ObjectStorable):
         self._pkey_name = 'name'
 
 
-class Contact(ObjectStorable, ObjectIndexable):
+class Contact(ObjectUser, ObjectStorable, ObjectIndexable):
 
     # TODO : manage attrs that should not be modifiable directly by users
     _attrs = {
@@ -88,5 +88,5 @@ class Contact(ObjectStorable, ObjectIndexable):
     _index_class = IndexedContact
     _index = None
 
-    def __init__(self):
-        super(CaliopenObject, self).__init__()
+    def __init__(self, **params):
+        super(Contact, self).__init__(**params)

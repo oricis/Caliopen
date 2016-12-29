@@ -8,9 +8,6 @@ from caliopen_storage.exception import NotFound
 import caliopen_main.errors as main_errors
 import caliopen_main.interfaces as interface
 
-from caliopen_main.user.store.contact import Email
-from cassandra.cqlengine.models import ColumnDescriptor
-
 import logging
 log = logging.getLogger(__name__)
 
@@ -120,7 +117,7 @@ class ObjectJsonDictifiable(ObjectDictifiable):
         return self._json_model(d).serialize()
 
     def unmarshall_json_dict(self, document, **options):
-        """TODO: handle conversion of basic json type into obj. types"""
+        """ TODO: handle conversion of basic json type into obj. types"""
         self.unmarshall_dict(document, **options)
 
 
@@ -135,14 +132,14 @@ class ObjectStorable(ObjectJsonDictifiable):
     _lookup_class = None  #
     _lookup_values = None  # tables keys, values for lookups
 
-    def get_db(self, user_id, obj_id, **options):
+    def get_db(self, obj_id, **options):
         """Get a core object from database and put it in self._db attribute"""
 
         param = {self._pkey_name: obj_id}
-        self._db = self._model_class.get(user_id=user_id, **param)
+        self._db = self._model_class.get(**param)
         if self._db is None:
-            raise NotFound('%s #%s not found for user %s' %
-                           (self.__class__.name, obj_id, user_id))
+            raise NotFound('%s #%s not found.' %
+                           (self.__class__.name, obj_id))
 
     def save_db(self, **options):
         raise NotImplementedError
@@ -192,7 +189,28 @@ class ObjectStorable(ObjectJsonDictifiable):
         if isinstance(self._db, self._model_class):
             self.unmarshall_dict(dict(self._db))
 
-    def apply_patch(self, user_id, object_id, patch, **options):
+
+class ObjectUser(ObjectStorable):
+    """Objects that MUST belong to a user to survive in Caliopen's world..."""
+
+    user_id = None
+
+    def __init__(self, user_id=None):
+        if user_id is None:
+            raise main_errors.ObjectInitFailed(
+                message="ObjectUser must be initialized with an user_id")
+        self.user_id = user_id
+
+    def get_db(self, obj_id, **options):
+        """Get an object belonging to an user and put it in self._db attrs"""
+
+        param = {self._pkey_name: obj_id}
+        self._db = self._model_class.get(user_id=self.user_id, **param)
+        if self._db is None:
+            raise NotFound('%s #%s not found for user %s' %
+                           (self.__class__.name, obj_id, self.user_id))
+
+    def apply_patch(self, object_id, patch, **options):
         """
         update self attributes with patch rfc7396 and Caliopen's specifications
         if, and only if, patch is consistent with current obj db instance
@@ -204,19 +222,18 @@ class ObjectStorable(ObjectJsonDictifiable):
         :return: Exception or None
         """
 
-        if user_id is None or object_id is None or patch is None \
-                or "current_state" not in patch:
+        if object_id is None or patch is None or "current_state" not in patch:
             return main_errors.PatchUnprocessable()
 
         # check patch and patch_current have the same keys
         patch_current = patch.pop("current_state")
         if patch.keys() != patch_current.keys():
             return main_errors.PatchUnprocessable(message=
-                               "patch and patch.current_state are inconsistent")
+                                                  "patch and patch.current_state are inconsistent")
 
         # build 3 objects : 2 from patch and last one from db
-        obj_patch_new = self.__class__()
-        obj_patch_old = self.__class__()
+        obj_patch_new = self.__class__(user_id=self.user_id)
+        obj_patch_old = self.__class__(user_id=self.user_id)
         try:
             obj_patch_new.unmarshall_json_dict(patch)
         except Exception as exc:
@@ -230,7 +247,7 @@ class ObjectStorable(ObjectJsonDictifiable):
             return main_errors.PatchUnprocessable(message="unable to unmarshall"
                                                           " patch into object")
         try:
-            self.get_db(user_id, object_id)
+            self.get_db(object_id)
         except NotFound as exc:
             return exc
 
@@ -240,13 +257,13 @@ class ObjectStorable(ObjectJsonDictifiable):
         for key in patch.keys():
             if type(self._attrs[key]) is ListType:
                 if getattr(obj_patch_old, key) == [] and \
-                   getattr(self, key) != []:
+                                getattr(self, key) != []:
                     return main_errors.PatchConflict(message=
-                                "Patch current_state not consistent with db")
+                                                     "Patch current_state not consistent with db")
                 if getattr(self, key) == [] and \
-                   getattr(obj_patch_old, key) != []:
+                                getattr(obj_patch_old, key) != []:
                     return main_errors.PatchConflict(message=
-                                "Patch current_state not consistent with db")
+                                                     "Patch current_state not consistent with db")
                 for old in getattr(obj_patch_old, key):
                     found = False
                     for elem in getattr(self, key):
@@ -260,15 +277,15 @@ class ObjectStorable(ObjectJsonDictifiable):
                                 break
                     if not found:
                         return main_errors.PatchConflict(message=
-                            "Patch current_state not consistent with db")
+                                                         "Patch current_state not consistent with db")
             elif type(self._attrs[key]) is DictType:
                 if cmp(getattr(obj_patch_old, key), getattr(self, key)) != 0:
                     return main_errors.PatchConflict(message=
-                            "Patch current_state not consistent with db")
+                                                     "Patch current_state not consistent with db")
             else:
                 if getattr(obj_patch_old, key) != getattr(self, key):
                     return main_errors.PatchConflict(message=
-                            "Patch current_state not consistent with db")
+                                                     "Patch current_state not consistent with db")
 
             setattr(self, key, getattr(obj_patch_new, key))
 
