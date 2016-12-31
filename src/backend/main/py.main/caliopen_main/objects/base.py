@@ -1,12 +1,15 @@
 import zope.interface
 
 from types import *
+from uuid import UUID
 import datetime
-from uuid import UUID, uuid4
+import pytz
 
 from caliopen_storage.exception import NotFound
 import caliopen_main.errors as main_errors
 import caliopen_main.interfaces as interface
+from elasticsearch import exceptions as ESexceptions
+from elasticsearch_dsl.utils import AttrList, AttrDict
 
 import logging
 log = logging.getLogger(__name__)
@@ -19,11 +22,12 @@ class CaliopenObject(object):
     """
     _attrs = {}
 
-    def __init__(self):
+    def __init__(self, **kwargs):
 
-        # for k, v in kwargs.items():
-        #     if k in self._attrs:
-        #         setattr(self, k, v)
+        # TODO: type check and kwargs consistency check
+        for k, v in kwargs.items():
+            if k in self._attrs:
+                setattr(self, k, v)
 
         for attr, attrtype in self._attrs.items():
             if not hasattr(self, attr):
@@ -34,6 +38,10 @@ class CaliopenObject(object):
                 else:
                     setattr(self, attr, None)
 
+    def keys(self):
+        """returns a list of current attributes"""
+
+        return [k for k in self.__dict__ if not k.startswith("_")]
     def update_with(self, sibling):
         """update self attributes with those from sibling
 
@@ -86,6 +94,13 @@ class ObjectDictifiable(CaliopenObject):
                     setattr(self, attr, lst)
                 elif issubclass(attrtype, UUID):
                     setattr(self, attr, UUID(str(document[attr])))
+                elif issubclass(attrtype, datetime.datetime):
+                    if document[attr] is not None \
+                            and document[attr].tzinfo is None:
+                        setattr(self, attr, document[attr].replace(tzinfo=
+                                                                   pytz.utc))
+                    else:
+                        setattr(self, attr, document[attr])
                 else:
                     setattr(self, attr, document[attr])
             else:
@@ -132,14 +147,16 @@ class ObjectStorable(ObjectJsonDictifiable):
     _lookup_class = None  #
     _lookup_values = None  # tables keys, values for lookups
 
-    def get_db(self, obj_id, **options):
+    def get_db(self, **options):
         """Get a core object from database and put it in self._db attribute"""
 
-        param = {self._pkey_name: obj_id}
+        param = {
+            self._pkey_name: getattr(self, self._pkey_name)
+        }
         self._db = self._model_class.get(**param)
         if self._db is None:
             raise NotFound('%s #%s not found.' %
-                           (self.__class__.name, obj_id))
+                    (self.__class__.__name__, getattr(self, self._pkey_name)))
 
     def save_db(self, **options):
         raise NotImplementedError
@@ -162,15 +179,20 @@ class ObjectStorable(ObjectJsonDictifiable):
         return None
 
     def marshall_db(self, **options):
-        """squash self._db with self 'public' attributes"""
+        """squash self._db with self 'public' attributes
+
+        self._db being a cqlengine Model, we can (re)set attributes one
+        by one, cqlengine will do the job of changes logging to later make a
+        smart update into the db
+        """
 
         if not isinstance(self._db, self._model_class):
             self._db = self._model_class()
 
         self_keys = self._attrs.keys()
-
         for att in self._db.keys():
             if not att.startswith("_") and att in self_keys:
+                # TODO : manage protected attrs (ie attributes that user should not be able to change directly)
                 if type(self._attrs[att]) is ListType:
                     # TODO : manage change within list to only elem changed
                     # (use builtin set() collection ?)
@@ -181,7 +203,13 @@ class ObjectStorable(ObjectJsonDictifiable):
                     else:
                         setattr(self._db, att, getattr(self, att))
                 else:
-                    setattr(self._db, att, getattr(self, att))
+                    if issubclass(self._attrs[att], datetime.datetime) and \
+                                    getattr(self, att) is not None:
+                        # datetime in cqlengine are 'naive', ours are 'aware'
+                        setattr(self._db, att,
+                                getattr(self, att).replace(tzinfo=None))
+                    else:
+                        setattr(self._db, att, getattr(self, att))
 
     def unmarshall_db(self, **options):
         """squash self.attrs with db representation"""
@@ -190,39 +218,43 @@ class ObjectStorable(ObjectJsonDictifiable):
             self.unmarshall_dict(dict(self._db))
 
 
+
 class ObjectUser(ObjectStorable):
     """Objects that MUST belong to a user to survive in Caliopen's world..."""
 
     user_id = None
 
-    def __init__(self, user_id=None):
+    def __init__(self, user_id=None, **params):
         if user_id is None:
             raise main_errors.ObjectInitFailed(
                 message="ObjectUser must be initialized with an user_id")
         self.user_id = user_id
+        super(ObjectUser, self).__init__(**params)
 
-    def get_db(self, obj_id, **options):
+    def get_db(self, **options):
         """Get an object belonging to an user and put it in self._db attrs"""
 
-        param = {self._pkey_name: obj_id}
+        param = {
+            self._pkey_name: getattr(self, self._pkey_name)
+        }
         self._db = self._model_class.get(user_id=self.user_id, **param)
         if self._db is None:
             raise NotFound('%s #%s not found for user %s' %
-                           (self.__class__.name, obj_id, self.user_id))
+                           (self.__class__.__name__,
+                            getattr(self, self._pkey_name), self.user_id))
 
-    def apply_patch(self, object_id, patch, **options):
+    def apply_patch(self, patch, **options):
         """
         update self attributes with patch rfc7396 and Caliopen's specifications
         if, and only if, patch is consistent with current obj db instance
 
         :param user_id: user_id as str
-        :param object_id: object_id in db, as str
         :param patch: json-dict object describing the patch to apply
                 with a "current_state" key. see caliopen rfc for explanation
         :return: Exception or None
         """
 
-        if object_id is None or patch is None or "current_state" not in patch:
+        if patch is None or "current_state" not in patch:
             return main_errors.PatchUnprocessable()
 
         # check patch and patch_current have the same keys
@@ -231,7 +263,7 @@ class ObjectUser(ObjectStorable):
             return main_errors.PatchUnprocessable(message=
                                                   "patch and patch.current_state are inconsistent")
 
-        # build 3 objects : 2 from patch and last one from db
+        # build 3 siblings : 2 from patch and last one from db
         obj_patch_new = self.__class__(user_id=self.user_id)
         obj_patch_old = self.__class__(user_id=self.user_id)
         try:
@@ -247,7 +279,7 @@ class ObjectUser(ObjectStorable):
             return main_errors.PatchUnprocessable(message="unable to unmarshall"
                                                           " patch into object")
         try:
-            self.get_db(object_id)
+            self.get_db()
         except NotFound as exc:
             return exc
 
@@ -290,6 +322,7 @@ class ObjectUser(ObjectStorable):
             setattr(self, key, getattr(obj_patch_new, key))
 
         if "db" in options and options["db"] is True:
+            log.info("will update db")
             # apply changes to db model and update db
             self.marshall_db()
             try:
@@ -300,46 +333,115 @@ class ObjectUser(ObjectStorable):
 
         if "index" in options and options["index"] is True:
             # silently update index. Should we raise an error if it fails ?
-            log.info("we'll update index")
-            # TODO : index related func
-            self.marshall_index()
-            log.info(vars(self._index))
-            # self.update_index()
+            try:
+                self.update_index()
+            except Exception as exc:
+                return exc
 
         return None
 
 
-class ObjectIndexable(ObjectJsonDictifiable):
+class ObjectIndexable(ObjectUser):
+
     zope.interface.implements(interface.IndexIO)
 
     _index_class = None  # dsl model for object
     _index = None  # dsl model instance
 
+    def get_index(self, **options):
+        """Get a doc from ES within user's index and put it at self._index"""
+
+        obj_id = getattr(self, self._pkey_name)
+        try:
+            self._index = self._index_class.get(index=self.user_id,
+                                                id=obj_id, using=self._index_class.client())
+        except Exception as exc:
+            if isinstance(exc, ESexceptions.NotFoundError):
+                log.info("indexed doc not found")
+                self._index = None
+                raise NotFound('%s #%s not found for user %s' %
+                               (self.__class__.__name__, obj_id, self.user_id))
+            else:
+                raise exc
+
+    def save_index(self, **options):
+        self._index.save(using=self._index_class.client())
+
+    def create_index(self, **options):
+        """Create indexed document from current self._index state"""
+
+        self.marshall_index()
+        self.save_index()
+
+    def delete_index(self, **options):
+        raise NotImplementedError
+
+    def update_index(self, **options):
+        """get indexed doc from elastic and update it with self attrs
+
+        if indexed doc doesn't exist, create it
+        else update changed fields only
+        """
+        self.get_index()
+        if self._index is not None:
+            update_dict = self.marshall_index(update=True)
+            self._index.update(using=self._index_class.client(), **update_dict)
+        else:
+            # for some reasons, index doc not found... create one from scratch
+            self.create_index()
+
     def marshall_index(self, **options):
-        """squash self._index with self 'public' attributes"""
+        """squash self._index with self 'public' attributes
+
+        options:
+            update=True : only changed values will be replace in self._index
+                          and a dict with changed applied will be returned
+        """
+
+        # TODO : manage protected attrs (ie attributes that user should not be able to change directly)
+
+        update = False
+        if "update" in options and options["update"] is True:
+            update = True
+            # index_sibling is instanciated with self._index values to perform
+            # object comparaison
+            index_sibling = self.__class__(user_id=self.user_id)
+            index_sibling._index = self._index
+            index_sibling.unmarshall_index()
 
         if not isinstance(self._index, self._index_class):
             self._index = self._index_class()
-            self._index.meta = self.user_id
+            self._index.meta.index = self.user_id
+            self._index.meta.using = self._index.client()
 
-        log.info(self._index)
-        self_keys = self._attrs.keys()
+        # update_sibling is an empty sibling that will be filled
+        # with attributes from self
+        update_sibling = self.__class__(user_id=self.user_id)
 
-        # TODO : finish job below !
-        for att in self._index_class.__dict__.keys():
-            if not att.startswith("_") and att in self_keys and att != "contact_id":
-                log.info("att : {}".format(att))
-                if type(self._attrs[att]) is ListType:
-                    # TODO : manage change within list to only elem changed
-                    if issubclass(self._attrs[att][0], CaliopenObject):
-                        setattr(self._index, att,
-                                [self._attrs[att][0]._index_class(**x.marshall_dict())
-                                 for x in getattr(self, att)])
-                    else:
-                        setattr(self._index, att, getattr(self, att))
+        m = self._index._doc_type.mapping.to_dict()
+        for att in m[self._index._doc_type.name]["properties"]:
+            if not att.startswith("_") and att in index_sibling.keys():
+                if update:
+                    if getattr(self, att) != getattr(index_sibling, att):
+                        setattr(update_sibling, att, getattr(self, att))
                 else:
-                    setattr(self._index, att, getattr(self, att))
+                    setattr(update_sibling, att, getattr(self, att))
 
-    def unmarshall_index(self, document, **options):
+        update_dict = update_sibling.marshall_dict()
+
+        for k, v in update_dict.iteritems():
+            if k in self._index_class.__dict__:
+                # do not try to set a property directly
+                if not isinstance(getattr(self._index_class, k), property):
+                    setattr(self._index, k, v)
+            else:
+                setattr(self._index, k, v)
+        if update:
+            delattr(update_sibling, "user_id")
+            return update_sibling.marshall_json_dict()
+
+    def unmarshall_index(self, **options):
         """squash self.attrs with index representation"""
-        raise NotImplementedError
+
+        if isinstance(self._index, self._index_class):
+            self.unmarshall_dict(self._index.to_dict())

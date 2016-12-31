@@ -60,8 +60,9 @@ class Contact(Api):
     def get(self):
         pi_range = self.request.authenticated_userid.pi_range
         contact_id = self.request.swagger_data["contact_id"]
-        contact = ContactOject(user_id=self.user.user_id)
-        contact.get_db(contact_id)
+        contact = ContactOject(user_id=self.user.user_id,
+                               **{"contact_id": contact_id})
+        contact.get_db()
         contact.unmarshall_db()
         if pi_range[0] > contact.privacy_index < pi_range[1]:
             raise HTTPExpectationFailed('Invalid privacy index')
@@ -77,7 +78,8 @@ class Contact(Api):
         except Exception as exc:
             raise ValidationError(exc)
         contact = CoreContact.create(self.user, contact_param)
-        contact_url = self.request.route_path('contact', contact_id=contact.contact_id)
+        contact_url = self.request.route_path('contact',
+                                              contact_id=contact.contact_id)
         self.request.response.location = contact_url.encode('utf-8')
         # XXX return a Location to get contact not send it direct
         return {'location': contact_url}
@@ -98,8 +100,9 @@ class Contact(Api):
         contact_id = self.request.swagger_data["contact_id"]
         patch = self.request.json
 
-        contact = ContactOject(user_id=self.user.user_id)
-        error = contact.apply_patch(contact_id, patch, db=True, index=True)
+        contact = ContactOject(user_id=self.user.user_id,
+                               **{"contact_id": contact_id})
+        error = contact.apply_patch(patch, db=True, index=True)
         if error is not None:
             raise MergePatchError(error)
 

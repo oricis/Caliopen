@@ -9,7 +9,7 @@ from caliopen_main.user.returns.contact import SocialIdentityParam
 from caliopen_main.user.store.contact_index import IndexedSocialIdentity
 
 
-class SocialIdentity(ObjectStorable, ObjectIndexable):
+class SocialIdentity(ObjectIndexable):
 
     _attrs = {
         "contact_id":       UUID,

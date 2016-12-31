@@ -4,6 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from .base import *
 from uuid import UUID
+import datetime
 from caliopen_main.user.store.contact import (Contact as ModelContact,
                              Lookup as ModelContactLookup,
                              PublicKey as ModelPublicKey)
@@ -37,7 +38,7 @@ class PublicKey(ObjectStorable):
         self._pkey_name = 'name'
 
 
-class Contact(ObjectUser, ObjectStorable, ObjectIndexable):
+class Contact(ObjectIndexable):
 
     # TODO : manage attrs that should not be modifiable directly by users
     _attrs = {

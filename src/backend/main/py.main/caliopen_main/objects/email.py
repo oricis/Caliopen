@@ -10,7 +10,7 @@ from caliopen_main.user.returns.contact import EmailParam
 from caliopen_main.user.store.contact_index import IndexedInternetAddress
 
 
-class Email(ObjectStorable, ObjectIndexable):
+class Email(ObjectIndexable):
 
     _attrs = {
         "address":              InternetAddressType,

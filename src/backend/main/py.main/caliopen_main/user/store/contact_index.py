@@ -74,7 +74,7 @@ class IndexedContact(BaseIndexDocument):
 
     """Indexed contact model."""
 
-    doc_type = 'indexed_contacts'
+    doc_type = 'indexed_contact'
 
     title = dsl.String()
     given_name = dsl.String()

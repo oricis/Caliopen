@@ -10,7 +10,7 @@ from caliopen_main.user.returns.contact import IMParam
 from caliopen_main.user.store.contact_index import IndexedInternetAddress
 
 
-class IM(ObjectStorable, ObjectIndexable):
+class IM(ObjectIndexable):
 
     _attrs = {
         "address":              InternetAddressType,

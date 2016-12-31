@@ -9,7 +9,7 @@ from caliopen_main.user.returns.contact import PostalAddressParam
 from caliopen_main.user.store.contact_index import IndexedPostalAddress
 
 
-class PostalAddress(ObjectStorable, ObjectIndexable):
+class PostalAddress(ObjectIndexable):
 
     _attrs = {
         "address_id":               UUID,

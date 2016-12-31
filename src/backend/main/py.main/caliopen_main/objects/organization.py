@@ -9,7 +9,7 @@ from caliopen_main.user.returns.contact import OrganizationParam
 from caliopen_main.user.store.contact_index import IndexedOrganization
 
 
-class Organization(ObjectStorable, ObjectIndexable):
+class Organization(ObjectIndexable):
 
     _attrs = {
         "department":               StringType,

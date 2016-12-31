@@ -10,7 +10,7 @@ from caliopen_main.user.returns.contact import PhoneParam
 from caliopen_main.user.store.contact_index import IndexedPhone
 
 
-class Phone(ObjectStorable, ObjectIndexable):
+class Phone(ObjectIndexable):
 
     _attrs = {
         "contact_id":               UUID,
