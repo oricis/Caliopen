@@ -29,3 +29,4 @@ _(People involved in the project)_
 * [@ncoden](https://github.com/ncoden)
 * [@sapiens-sapide](https://github.com/sapiens-sapide)
 * [@yanndinendal](https://github.com/yanndinendal)
+* [@pascalduez](https://github.com/pascalduez)
