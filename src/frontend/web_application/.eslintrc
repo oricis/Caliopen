@@ -1,18 +1,10 @@
 {
   "extends": "airbnb",
   "parser": "babel-eslint",
-  "ecmaFeatures": {
-    "modules": true
-  },
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
-    }
-  },
+  "root": true,
   "env": {
     "browser": true,
-    "es6": true,
+    "jest": true,
     "jasmine": true,
     "protractor": true
   },
