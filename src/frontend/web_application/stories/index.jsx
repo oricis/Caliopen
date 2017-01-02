@@ -7,6 +7,7 @@ import Subtitle from './components/Subtitle';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
 import Icon from './components/Icon';
 import Link from './components/Link';
+import RadioFieldGroup from './components/RadioFieldGroup';
 import Spinner from './components/Spinner';
 import TextList from './components/TextList';
 import Welcome from './Welcome';
@@ -52,4 +53,9 @@ storiesOf('Icons & Avatars', module)
 storiesOf('Titles', module)
   .add('Subtitle', () => (
     <Subtitle />
+  ));
+
+storiesOf('Form', module)
+  .add('RadioFieldGroup', () => (
+    <RadioFieldGroup />
   ));

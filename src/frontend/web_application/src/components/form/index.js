@@ -1,7 +1,7 @@
 // import CheckboxField from './';
 import FieldErrors from './FieldErrors';
 import InputText from './InputText';
-// import RadioFieldGroup from './';
+import RadioFieldGroup from './RadioFieldGroup';
 import SelectFieldGroup from './SelectFieldGroup';
 import Switch from './Switch';
 import TextFieldGroup from './TextFieldGroup';
@@ -11,7 +11,7 @@ export {
   // CheckboxField,
   FieldErrors,
   InputText,
-  // RadioFieldGroup,
+  RadioFieldGroup,
   SelectFieldGroup,
   Switch,
   TextFieldGroup,
