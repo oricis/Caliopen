@@ -4,8 +4,8 @@
   "root": true,
   "env": {
     "browser": true,
+    "es6": true,
     "jest": true,
-    "jasmine": true,
     "protractor": true
   },
   "rules": {
@@ -16,7 +16,6 @@
     "inject": true,
     "Foundation": true,
     "jQuery": true,
-    "jest": true,
     "BUILD_TARGET": true,
     "CALIOPEN_ENV": true
   }

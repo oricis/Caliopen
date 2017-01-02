@@ -3,10 +3,10 @@ import { shallow } from 'enzyme';
 import TextareaFieldGroup from './';
 
 describe('component TextareaFieldGroup', () => {
-  it('render', () => {
+  it('should render', () => {
     const props = {
       label: 'Foo',
-      onChange: jasmine.createSpy('onChange'),
+      onChange: jest.fn(),
     };
 
     const comp = shallow(

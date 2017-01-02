@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 import Button from './';
 
 describe('component Button', () => {
-  it('render', () => {
-    const handleClick = jasmine.createSpy('handleClick');
+  it('should render', () => {
+    const handleClick = jest.fn();
 
     const comp = shallow(
       <Button onClick={handleClick}>Foo</Button>

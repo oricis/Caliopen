@@ -3,11 +3,11 @@ import { shallow } from 'enzyme';
 import SelectFieldGroup from './';
 
 describe('component SelectFieldGroup', () => {
-  it('render', () => {
+  it('should render', () => {
     const props = {
       label: 'Foo',
       options: [{ label: 'a', value: 1 }, { label: 'b', value: 3 }],
-      onChange: jasmine.createSpy('onChange'),
+      onChange: jest.fn(),
     };
 
     const comp = shallow(

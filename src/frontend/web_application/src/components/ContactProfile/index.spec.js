@@ -23,7 +23,7 @@ describe('component contact-card-summary', () => {
   //   };
   //   const updatedContact = { ...contact, given_name: 'John' };
   //
-  //   const onChange = jasmine.createSpy('onChange');
+  //   const onChange = jest.fn();
   //   const ctrl = $componentController('contactCardSummary', null, { contact, onChange });
   //
   //   ctrl.handleChanges('given_name', { model: updatedContact.given_name });
