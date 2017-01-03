@@ -1,5 +1,6 @@
 // import CheckboxField from './';
 import FieldErrors from './FieldErrors';
+import Fieldset, { Legend } from './Fieldset';
 import InputText from './InputText';
 import RadioFieldGroup from './RadioFieldGroup';
 import SelectFieldGroup from './SelectFieldGroup';
@@ -10,6 +11,8 @@ import TextareaFieldGroup from './TextareaFieldGroup';
 export {
   // CheckboxField,
   FieldErrors,
+  Fieldset,
+  Legend,
   InputText,
   RadioFieldGroup,
   SelectFieldGroup,

@@ -7,6 +7,7 @@ import Subtitle from './components/Subtitle';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
 import Icon from './components/Icon';
 import Link from './components/Link';
+import Fieldset from './components/Fieldset';
 import RadioFieldGroup from './components/RadioFieldGroup';
 import Spinner from './components/Spinner';
 import TextList from './components/TextList';
@@ -56,6 +57,9 @@ storiesOf('Titles', module)
   ));
 
 storiesOf('Form', module)
+  .add('Fieldset', () => (
+    <Fieldset />
+  ))
   .add('RadioFieldGroup', () => (
     <RadioFieldGroup />
   ));
