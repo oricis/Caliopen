@@ -2,7 +2,8 @@
 """Caliopen contact parameters classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .base import *
+import types
+from caliopen_main.objects import base
 from uuid import UUID
 from caliopen_main.user.parameters.types import InternetAddressType
 from caliopen_main.user.store.contact import Email
@@ -10,15 +11,15 @@ from caliopen_main.user.returns.contact import EmailParam
 from caliopen_main.user.store.contact_index import IndexedInternetAddress
 
 
-class Email(ObjectIndexable):
+class Email(base.ObjectIndexable):
 
     _attrs = {
         "address":              InternetAddressType,
         "contact_id":           UUID,
         "email_id":             UUID,
-        "is_primary":           BooleanType,
-        "label":                StringType,
-        "type":                 StringType,
+        "is_primary":           types.BooleanType,
+        "label":                types.StringType,
+        "type":                 types.StringType,
         "user_id":              UUID
     }
 
@@ -27,4 +28,4 @@ class Email(ObjectIndexable):
     _index_class = IndexedInternetAddress
 
     def __init__(self):
-        super(CaliopenObject, self).__init__()
+        super(base.CaliopenObject, self).__init__()

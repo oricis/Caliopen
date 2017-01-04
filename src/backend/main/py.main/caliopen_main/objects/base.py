@@ -1,15 +1,14 @@
 import zope.interface
 
-from types import *
+import types
 from uuid import UUID
 import datetime
 import pytz
 
 from caliopen_storage.exception import NotFound
 import caliopen_main.errors as main_errors
-import caliopen_main.interfaces as interface
+from caliopen_main.interfaces import (IO, storage)
 from elasticsearch import exceptions as ESexceptions
-from elasticsearch_dsl.utils import AttrList, AttrDict
 
 import logging
 log = logging.getLogger(__name__)
@@ -31,9 +30,9 @@ class CaliopenObject(object):
 
         for attr, attrtype in self._attrs.items():
             if not hasattr(self, attr):
-                if type(attrtype) == ListType:
+                if type(attrtype) == types.ListType:
                     setattr(self, attr, [])
-                elif type(attrtype) == DictType:
+                elif type(attrtype) == types.DictType:
                     setattr(self, attr, {})
                 else:
                     setattr(self, attr, None)
@@ -53,7 +52,7 @@ class CaliopenObject(object):
 
 class ObjectDictifiable(CaliopenObject):
     """Object that can marshall/unmarshall to/from python dict"""
-    zope.interface.implements(interface.DictIO)
+    zope.interface.implements(IO.DictIO)
 
     def marshall_dict(self, **options):
         """output a dict representation of self 'public' attributes"""
@@ -61,7 +60,7 @@ class ObjectDictifiable(CaliopenObject):
         self_dict = {}
         for att, val in vars(self).items():
             if not att.startswith("_"):
-                if type(self._attrs[att]) is ListType:
+                if type(self._attrs[att]) is types.ListType:
                     lst = []
                     if issubclass(self._attrs[att][0], ObjectDictifiable):
                         for item in val:
@@ -82,7 +81,7 @@ class ObjectDictifiable(CaliopenObject):
 
         for attr, attrtype in self._attrs.items():
             if attr in document:
-                if type(attrtype) is ListType:
+                if type(attrtype) is types.ListType:
                     lst = []
                     if issubclass(attrtype[0], ObjectDictifiable):
                         for item in document[attr]:
@@ -104,9 +103,9 @@ class ObjectDictifiable(CaliopenObject):
                 else:
                     setattr(self, attr, document[attr])
             else:
-                if type(attrtype) is ListType:
+                if type(attrtype) is types.ListType:
                     setattr(self, attr, [])
-                elif type(attrtype) is DictType:
+                elif type(attrtype) is types.DictType:
                     setattr(self, attr, {})
                 else:
                     setattr(self, attr, None)
@@ -123,7 +122,7 @@ class ObjectJsonDictifiable(ObjectDictifiable):
     We rely on schematics to do the job from our object's 'public' attributes
     """
 
-    zope.interface.implements(interface.JsonDictIO)
+    zope.interface.implements(IO.JsonDictIO)
 
     _json_model = None
 
@@ -138,7 +137,7 @@ class ObjectJsonDictifiable(ObjectDictifiable):
 
 class ObjectStorable(ObjectJsonDictifiable):
 
-    zope.interface.implements(interface.DbIO)
+    zope.interface.implements(storage.DbIO)
 
     _model_class = None  # cql model for object
     _db = None  # cql model instance
@@ -193,7 +192,7 @@ class ObjectStorable(ObjectJsonDictifiable):
         for att in self._db.keys():
             if not att.startswith("_") and att in self_keys:
                 # TODO : manage protected attrs (ie attributes that user should not be able to change directly)
-                if type(self._attrs[att]) is ListType:
+                if type(self._attrs[att]) is types.ListType:
                     # TODO : manage change within list to only elem changed
                     # (use builtin set() collection ?)
                     if issubclass(self._attrs[att][0], CaliopenObject):
@@ -241,19 +240,18 @@ class ObjectUser(ObjectStorable):
         if self._db is None:
             raise NotFound('%s #%s not found for user %s' %
                            (self.__class__.__name__,
-                            getattr(self, self._pkey_name), self.user_id))
+                            param[self._pkey_name], self.user_id))
 
-    def apply_patch(self, patch, **options):
+    def apply_patch(self, patch, options):
         """
         update self attributes with patch rfc7396 and Caliopen's specifications
         if, and only if, patch is consistent with current obj db instance
 
-        :param user_id: user_id as str
         :param patch: json-dict object describing the patch to apply
                 with a "current_state" key. see caliopen rfc for explanation
+        :param options: whether patch should be propagated to db and/or index
         :return: Exception or None
         """
-
         if patch is None or "current_state" not in patch:
             return main_errors.PatchUnprocessable()
 
@@ -287,7 +285,7 @@ class ObjectUser(ObjectStorable):
         # if it is, squash self attributes
         self.unmarshall_db()
         for key in patch.keys():
-            if type(self._attrs[key]) is ListType:
+            if type(self._attrs[key]) is types.ListType:
                 if getattr(obj_patch_old, key) == [] and \
                                 getattr(self, key) != []:
                     return main_errors.PatchConflict(message=
@@ -310,7 +308,7 @@ class ObjectUser(ObjectStorable):
                     if not found:
                         return main_errors.PatchConflict(message=
                                                          "Patch current_state not consistent with db")
-            elif type(self._attrs[key]) is DictType:
+            elif type(self._attrs[key]) is types.DictType:
                 if cmp(getattr(obj_patch_old, key), getattr(self, key)) != 0:
                     return main_errors.PatchConflict(message=
                                                      "Patch current_state not consistent with db")
@@ -322,7 +320,6 @@ class ObjectUser(ObjectStorable):
             setattr(self, key, getattr(obj_patch_new, key))
 
         if "db" in options and options["db"] is True:
-            log.info("will update db")
             # apply changes to db model and update db
             self.marshall_db()
             try:
@@ -331,19 +328,14 @@ class ObjectUser(ObjectStorable):
                 log.info(exc)
                 return main_errors.PatchError(message="Error when updating db")
 
-        if "index" in options and options["index"] is True:
-            # silently update index. Should we raise an error if it fails ?
-            try:
-                self.update_index()
-            except Exception as exc:
-                return exc
+
 
         return None
 
 
 class ObjectIndexable(ObjectUser):
 
-    zope.interface.implements(interface.IndexIO)
+    zope.interface.implements(storage.IndexIO)
 
     _index_class = None  # dsl model for object
     _index = None  # dsl model instance
@@ -445,3 +437,16 @@ class ObjectIndexable(ObjectUser):
 
         if isinstance(self._index, self._index_class):
             self.unmarshall_dict(self._index.to_dict())
+
+    def apply_patch(self, patch, **options):
+        error = super(ObjectIndexable, self).apply_patch(patch, options)
+
+        if error is not None:
+            return error
+
+        if "index" in options and options["index"] is True:
+            # silently update index. Should we raise an error if it fails ?
+            try:
+                self.update_index()
+            except Exception as exc:
+                return exc

@@ -2,21 +2,22 @@
 """Caliopen contact parameters classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .base import *
+import types
+from caliopen_main.objects import base
 from uuid import UUID
 from caliopen_main.user.store.contact import SocialIdentity
 from caliopen_main.user.returns.contact import SocialIdentityParam
 from caliopen_main.user.store.contact_index import IndexedSocialIdentity
 
 
-class SocialIdentity(ObjectIndexable):
+class SocialIdentity(base.ObjectIndexable):
 
     _attrs = {
         "contact_id":       UUID,
         "identity_id":      UUID,
         "infos":            {},
-        "name":             StringType,
-        "type":             StringType,
+        "name":             types.StringType,
+        "type":             types.StringType,
         "user_id":          UUID
     }
 
@@ -25,4 +26,4 @@ class SocialIdentity(ObjectIndexable):
     _index_class = IndexedSocialIdentity
 
     def __init__(self):
-        super(CaliopenObject, self).__init__()
+        super(base.CaliopenObject, self).__init__()

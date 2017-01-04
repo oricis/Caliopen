@@ -1,3 +1,3 @@
-from .IO import *
-from .storage import *
+import IO
+import storage
 

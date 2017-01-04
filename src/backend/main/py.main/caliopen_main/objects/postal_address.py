@@ -2,26 +2,27 @@
 """Caliopen contact parameters classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .base import *
+import types
+from caliopen_main.objects import base
 from uuid import UUID
 from caliopen_main.user.store.contact import PostalAddress
 from caliopen_main.user.returns.contact import PostalAddressParam
 from caliopen_main.user.store.contact_index import IndexedPostalAddress
 
 
-class PostalAddress(ObjectIndexable):
+class PostalAddress(base.ObjectIndexable):
 
     _attrs = {
         "address_id":               UUID,
-        "city":                     StringType,
+        "city":                     types.StringType,
         "contact_id":               UUID,
-        "country":                  StringType,
-        "is_primary":               BooleanType,
-        "label":                    StringType,
-        "postal_code":              StringType,
-        "region":                   StringType,
-        "street":                   StringType,
-        "type":                     StringType,
+        "country":                  types.StringType,
+        "is_primary":               types.BooleanType,
+        "label":                    types.StringType,
+        "postal_code":              types.StringType,
+        "region":                   types.StringType,
+        "street":                   types.StringType,
+        "type":                     types.StringType,
         "user_id":                  UUID
     }
 
@@ -30,4 +31,4 @@ class PostalAddress(ObjectIndexable):
     _index_class = IndexedPostalAddress
 
     def __init__(self):
-        super(CaliopenObject, self).__init__()
+        super(base.CaliopenObject, self).__init__()

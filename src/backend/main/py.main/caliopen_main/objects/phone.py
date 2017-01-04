@@ -2,7 +2,8 @@
 """Caliopen contact parameters classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .base import *
+import types
+from caliopen_main.objects import base
 from caliopen_main.user.parameters.types import PhoneNumberType
 from uuid import UUID
 from caliopen_main.user.store.contact import Phone
@@ -10,15 +11,15 @@ from caliopen_main.user.returns.contact import PhoneParam
 from caliopen_main.user.store.contact_index import IndexedPhone
 
 
-class Phone(ObjectIndexable):
+class Phone(base.ObjectIndexable):
 
     _attrs = {
         "contact_id":               UUID,
-        "is_primary":               BooleanType,
+        "is_primary":               types.BooleanType,
         "number":                   PhoneNumberType,
         "phone_id":                 UUID,
-        "type":                     StringType,
-        "uri":                      StringType,
+        "type":                     types.StringType,
+        "uri":                      types.StringType,
         "user_id":                  UUID
     }
 
@@ -27,4 +28,4 @@ class Phone(ObjectIndexable):
     _index_class = IndexedPhone
 
     def __init__(self):
-        super(CaliopenObject, self).__init__()
+        super(base.CaliopenObject, self).__init__()

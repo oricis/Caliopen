@@ -2,25 +2,26 @@
 """Caliopen contact parameters classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .base import *
+import types
+from caliopen_main.objects import base
 from uuid import UUID
 from caliopen_main.user.store.contact import Organization
 from caliopen_main.user.returns.contact import OrganizationParam
 from caliopen_main.user.store.contact_index import IndexedOrganization
 
 
-class Organization(ObjectIndexable):
+class Organization(base.ObjectIndexable):
 
     _attrs = {
-        "department":               StringType,
-        "is_primary":               BooleanType,
-        "job_description":          StringType,
-        "label":                    StringType,
-        "name":                     StringType,
-        "title":                    StringType,
-        "type":                     StringType,
+        "department":               types.StringType,
+        "is_primary":               types.BooleanType,
+        "job_description":          types.StringType,
+        "label":                    types.StringType,
+        "name":                     types.StringType,
+        "title":                    types.StringType,
+        "type":                     types.StringType,
         "contact_id":               UUID,
-        "deleted":                  BooleanType,
+        "deleted":                  types.BooleanType,
         "organization_id":          UUID,
         "user_id":                  UUID
     }
@@ -30,4 +31,4 @@ class Organization(ObjectIndexable):
     _index_class = IndexedOrganization
 
     def __init__(self):
-        super(CaliopenObject, self).__init__()
+        super(base.CaliopenObject, self).__init__()
