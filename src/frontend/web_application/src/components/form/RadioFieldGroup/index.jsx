@@ -11,12 +11,7 @@ class RadioFieldGroup extends Component {
     name: PropTypes.string.isRequired,
     value: alphaNumPropType,
     onChange: PropTypes.func,
-    options: PropTypes.arrayOf(
-      PropTypes.shape({
-        value: alphaNumPropType,
-        label: alphaNumPropType,
-      })
-    ),
+    options: PropTypes.arrayOf(PropTypes.shape({})),
     errors: PropTypes.arrayOf(PropTypes.string),
     className: PropTypes.string,
   };
