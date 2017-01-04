@@ -11,8 +11,10 @@ import Link from './components/Link';
 import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
 import RadioFieldGroup from './components/RadioFieldGroup';
+import SelectFieldGroup from './components/SelectFieldGroup';
 import Spinner from './components/Spinner';
 import Switch from './components/Switch';
+import TextFieldGroup from './components/TextFieldGroup';
 import TextList from './components/TextList';
 import Welcome from './Welcome';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
@@ -66,12 +68,19 @@ storiesOf('Form', module)
   .add('FormGrid', () => (
     <FormGrid />
   ))
-  .add('Switch', () => (
-    <Switch />
+  .add('TextFieldGroup', () => (
+    <TextFieldGroup />
+  ))
+  .add('SelectFieldGroup', () => (
+    <SelectFieldGroup />
   ))
   .add('RadioFieldGroup', () => (
     <RadioFieldGroup />
-  ));
+  ))
+  .add('Switch', () => (
+    <Switch />
+  ))
+  ;
 
 storiesOf('Contact', module)
   .add('ContactDetails', () => (
