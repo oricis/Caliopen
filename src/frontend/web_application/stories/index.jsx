@@ -8,6 +8,7 @@ import ContactAvatarLetter from './components/ContactAvatarLetter';
 import Icon from './components/Icon';
 import Link from './components/Link';
 import Fieldset from './components/Fieldset';
+import FormGrid from './components/FormGrid';
 import RadioFieldGroup from './components/RadioFieldGroup';
 import Spinner from './components/Spinner';
 import TextList from './components/TextList';
@@ -59,6 +60,9 @@ storiesOf('Titles', module)
 storiesOf('Form', module)
   .add('Fieldset', () => (
     <Fieldset />
+  ))
+  .add('FormGrid', () => (
+    <FormGrid />
   ))
   .add('RadioFieldGroup', () => (
     <RadioFieldGroup />

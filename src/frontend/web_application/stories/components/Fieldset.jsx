@@ -7,7 +7,7 @@ class Presenter extends Component {
   render() {
     return (
       <div>
-        <ComponentWrapper tall>
+        <ComponentWrapper size="tall">
           <Fieldset>
             <Legend>Foobar</Legend>
             <TextFieldGroup label="Foo" />

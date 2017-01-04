@@ -42,7 +42,7 @@ class Presenter extends Component {
 
     return (
       <div>
-        <ComponentWrapper tall>
+        <ComponentWrapper size="tall">
           <ContactAvatarLetter {...this.state.props} contact={contact} />
         </ComponentWrapper>
         <ul>
