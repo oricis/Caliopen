@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { withTranslator } from '@gandi/react-translate';
 import Spinner from '../../components/Spinner';
 import Icon from '../../components/Icon';
+import ContactDetails from '../../components/ContactDetails';
 import ContactProfile from '../../components/ContactProfile';
 import TextBlock from '../../components/TextBlock';
 import { Switch } from '../../components/form';
@@ -22,6 +23,10 @@ class Account extends Component {
       editMode: false,
       isFetching: true,
     };
+    this.handleAddContactdetail = this.handleAddContactdetail.bind(this);
+    this.handleDeleteContactDetail = this.handleDeleteContactDetail.bind(this);
+    this.handleConnectRemoteIdentity = this.handleConnectRemoteIdentity.bind(this);
+    this.handleDisonnectRemoteIdentity = this.handleDisonnectRemoteIdentity.bind(this);
   }
 
   componentDidMount() {
@@ -39,54 +44,45 @@ class Account extends Component {
           "emails": [{"email_id": "93f03145-4398-4bd4-9bd5-00000100", "is_primary": 0, "date_update": null, "label": null, "address": "contact@john.doe", "date_insert": "2016-05-09T15:01:43.116000", "type": "other"}],
           "family_name": "Doe", "name_suffix": null, "avatar": "avatar.png", "public_keys": []
         },
+        "remoteIdentities": [],
         "params": {}, "given_name": null}
       /* eslint-enable */
     });
     this.setState({ isFetching: false });
   }
 
-  // addContactDetail() {
-  //   // TODO: manage redux dispatch here
-  //   this.$ngRedux.dispatch(this.UserActions.invalidate());
-  // }
+  /* eslint-disable class-methods-use-this */
+  handleAddContactdetail() {
+    // console.log(ev);
+    // TODO: manage redux dispatch here
+    // this.$ngRedux.dispatch(this.UserActions.invalidate());
+  }
   //
-  // deleteContactDetail({ type, entity }) {
-  //   const contactId = this.user.contact.contact_id;
-  //   this.$ngRedux.dispatch(dispatch => {
-  //     dispatch(this.ContactsActions.deleteContactDetail(type, contactId, entity));
-  //     dispatch(this.UserActions.invalidate());
-  //   });
-  // }
+  handleDeleteContactDetail() {
+    // const contactId = this.user.contact.contact_id;
+    // this.$ngRedux.dispatch(dispatch => {
+    //   dispatch(this.ContactsActions.deleteContactDetail(type, contactId, entity));
+    //   dispatch(this.UserActions.invalidate());
+    // });
+  }
   //
-  // connectRemoteIdentity({ remoteIdentity }) {
-  //   this.$ngRedux.dispatch((dispatch) => {
-  //     if (!remoteIdentity.remote_identity_id) {
-  //       dispatch(this.RemoteIdentityActions.addRemoteIdentity(remoteIdentity));
-  //     } else {
-  //       dispatch(this.RemoteIdentityActions.updateRemoteIdentityParams(remoteIdentity));
-  //       dispatch(this.RemoteIdentityActions.connect(remoteIdentity));
-  //     }
-  //   });
-  // }
-  //
-  // disconnectRemoteIdentity({ remoteIdentity }) {
-  //   this.$ngRedux.dispatch(this.RemoteIdentityActions.disconnect(remoteIdentity));
-  // }
-  //
+  handleConnectRemoteIdentity() {
+    // this.$ngRedux.dispatch((dispatch) => {
+    //   if (!remoteIdentity.remote_identity_id) {
+    //     dispatch(this.RemoteIdentityActions.addRemoteIdentity(remoteIdentity));
+    //   } else {
+    //     dispatch(this.RemoteIdentityActions.updateRemoteIdentityParams(remoteIdentity));
+    //     dispatch(this.RemoteIdentityActions.connect(remoteIdentity));
+    //   }
+    // });
+  }
+
+  handleDisonnectRemoteIdentity() {
+    // this.$ngRedux.dispatch(this.RemoteIdentityActions.disconnect(remoteIdentity));
+  }
+
 
   render() {
-    const contactDetailsProps = {
-      remoteIdentity: {
-        stylesheets: {
-          formRow: 's-account__remote-identity-form-row',
-          fieldGroup: 's-account__field-group--medium',
-          buttons: 's-account__remote-identity-buttons',
-          fetchingPanel: 's-account__remote-identity-fetching-panel',
-          fetchingPanelContent: 's-account__remote-identity-fetching-panel-content',
-        },
-      },
-    };
-
     const { onContactProfileChange, setMainAddress, __ } = this.props;
 
     return (
@@ -120,19 +116,18 @@ class Account extends Component {
               </div>
 
             </div>
-            <div className="s-contact__col-datas-online">
-
-              <contact-details
-                contact="this.state.user.contact"
-                props={contactDetailsProps}
-                on-add-contact-detail="$ctrl.addContactDetail($event)"
-                on-delete-contact-detail="$ctrl.deleteContactDetail($event)"
-                allow-connect-remote-entity="true"
-                on-connect-remote-identity="$ctrl.connectRemoteIdentity($event)"
-                on-disconnect-remote-identity="$ctrl.disconnectRemoteIdentity($event)"
-                remote-identities="$ctrl.remoteIdentities"
+            <div className="s-account__col-datas-online">
+              <ContactDetails
+                contact={this.state.user.contact}
+                remoteIdentities={this.state.user.remoteIdentities}
+                onConnectRemoteIdentity={this.handleConnectRemoteIdentity}
+                onDisconnectRemoteIdentity={this.handleDisonnectRemoteIdentity}
+                onAddContactDetail={this.handleAddContactdetail}
+                onDeleteContactDetail={this.handleDeleteContactDetail}
+                allowConnectRemoteEntity
+                __={__}
               />
-              <div className="s-contact__m-subtitle m-subtitle m-subtitle--hr">
+              <div className="s-account__m-subtitle m-subtitle m-subtitle--hr">
                 <h3 className="m-subtitle__text">
                   {__('contact.accounts')}
                 </h3>

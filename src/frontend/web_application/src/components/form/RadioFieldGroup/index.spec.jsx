@@ -5,6 +5,7 @@ import RadioFieldGroup from './';
 describe('component RadioFieldGroup', () => {
   it('render', () => {
     const props = {
+      name: 'my_radio',
       options: [{ label: 'a', value: 1 }, { label: 'b', value: 3 }],
       value: 3,
       onChange: jest.fn(),

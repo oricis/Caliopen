@@ -151,7 +151,8 @@ class ContactDetails extends Component {
       return this.renderEmail(detail, detailKey);
     }));
     if (this.state.editMode) {
-      contactDetails = contactDetails.concat(<EmailForm onSubmit={onAddContactDetail} __={__} />);
+      detailKey++;
+      contactDetails = contactDetails.concat(<EmailForm key={detailKey} onSubmit={onAddContactDetail} __={__} />);
     }
     contactDetails = contactDetails
       .concat(contact.phones.map(detail => {
@@ -165,7 +166,8 @@ class ContactDetails extends Component {
         return this.renderIm(detail, detailKey);
       }));
     if (this.state.editMode) {
-      contactDetails = contactDetails.concat(<ImForm onSubmit={onAddContactDetail} __={__} />);
+      detailKey++;
+      contactDetails = contactDetails.concat(<ImForm key={detailKey} onSubmit={onAddContactDetail} __={__} />);
     }
     contactDetails = contactDetails.concat(contact.addresses.map(detail => {
         detailKey++;
@@ -174,7 +176,8 @@ class ContactDetails extends Component {
       }));
 
     if (this.state.editMode) {
-      contactDetails = contactDetails.concat(<AddressForm onSubmit={onAddContactDetail} __={__} />);
+      detailKey++;
+      contactDetails = contactDetails.concat(<AddressForm key={detailKey} onSubmit={onAddContactDetail} __={__} />);
     }
 
 

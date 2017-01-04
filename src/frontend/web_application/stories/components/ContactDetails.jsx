@@ -69,7 +69,19 @@ class Presenter extends Component {
         <Code>
           {`
 import ContactDetails, { SIZE_SMALL } from './src/components/ContactDetails';
-export default () => (<ContactDetails size={SIZE_SMALL} contact={contact} />);
+
+export default () => (
+  <ContactDetails
+    contact={contact}
+    remoteIdentities={remoteIdentities}
+    onConnectRemoteIdentity={action('connect remote identity')}
+    onDisconnectRemoteIdentity={action('disconnect remote identity')}
+    onAddContactDetail={action('add contact detail')}
+    onDeleteContactDetail={action('delete contact detail')}
+    allowConnectRemoteEntity
+    __={translate}
+  />
+);
           `}
         </Code>
       </div>
