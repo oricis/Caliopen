@@ -21,10 +21,12 @@ class Device(BaseModel):
     device_id = columns.UUID(primary_key=True, default=uuid.uuid4)
 
     name = columns.Text()
+    signature_key = columns.Text()          # secret key for device validation
     date_insert = columns.DateTime(required=True, default=datetime.utcnow)
-    type = columns.Text(required=True)
+    type = columns.Text(required=True)      # laptop, desktop, smartphone, etc
     status = columns.Text()
     fingerprint = columns.Text()
+    last_seen = columns.DateTime()
     privacy_features = columns.Map(columns.Text, columns.Text)
 
 
@@ -48,6 +50,7 @@ class DeviceLocation(BaseModel):
     user_id = columns.UUID(primary_key=True)
     device_id = columns.UUID(primary_key=True)
     location_ip = columns.Text(primary_key=True)    # IP address with CIDR
+    location_type = columns.Text()                  # home/work/etc
     country = columns.Text()
     last_connection = columns.DateTime()
     privacy_features = columns.Map(columns.Text, columns.Text)
