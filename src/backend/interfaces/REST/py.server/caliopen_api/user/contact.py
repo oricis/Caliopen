@@ -12,6 +12,8 @@ from pyramid.httpexceptions import HTTPBadRequest, HTTPExpectationFailed
 from caliopen_main.user.core import (Contact as CoreContact,
                                      PublicKey as CorePublicKey)
 
+from caliopen_main.objects.contact import Contact as ContactObject
+
 from caliopen_main.user.returns import (ReturnContact,
                                         ReturnAddress, ReturnEmail,
                                         ReturnIM, ReturnPhone,
@@ -20,12 +22,13 @@ from caliopen_main.user.returns import (ReturnContact,
                                         ReturnPublicKey)
 
 from caliopen_main.user.parameters import (NewContact as NewContactParam,
-                                           Contact as ContactParam,
                                            NewPostalAddress, NewEmail, NewIM)
 
 from ..base import Api
-from caliopen_storage.exception import NotFound
-from ..base.exception import ResourceNotFound, ValidationError
+from ..base.exception import (ResourceNotFound,
+                              ValidationError,
+                              MethodNotAllowed,
+                              MergePatchError)
 
 log = logging.getLogger(__name__)
 
@@ -56,14 +59,14 @@ class Contact(Api):
     @view(renderer='json', permission='authenticated')
     def get(self):
         pi_range = self.request.authenticated_userid.pi_range
-        contact_id = self.request.matchdict.get('contact_id')
-        try:
-            contact = CoreContact.get(self.user, contact_id)
-        except NotFound:
-            raise ResourceNotFound('No such contact')
+        contact_id = self.request.swagger_data["contact_id"]
+        contact = ContactObject(user_id=self.user.user_id,
+                               **{"contact_id": contact_id})
+        contact.get_db()
+        contact.unmarshall_db()
         if pi_range[0] > contact.privacy_index < pi_range[1]:
             raise HTTPExpectationFailed('Invalid privacy index')
-        return ReturnContact.build(contact).serialize()
+        return contact.marshall_json_dict()
 
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
@@ -75,10 +78,35 @@ class Contact(Api):
         except Exception as exc:
             raise ValidationError(exc)
         contact = CoreContact.create(self.user, contact_param)
-        contact_url = self.request.route_path('contact', contact_id=contact.contact_id)
+        contact_url = self.request.route_path('contact',
+                                              contact_id=contact.contact_id)
         self.request.response.location = contact_url.encode('utf-8')
         # XXX return a Location to get contact not send it direct
         return {'location': contact_url}
+
+    @view(renderer='json', permission='authenticated')
+    def patch(self):
+        """Update a contact with payload.
+
+        method follows the rfc5789 PATCH and rfc7396 Merge patch specifications,
+        + 'current_state' caliopen's specs.
+        stored messages are modified according to the fields within the payload,
+        ie payload fields squash existing db fields, no other modification done.
+        If message doesn't existing, response is 404.
+        If payload fields are not conform to the message db schema, response is
+        422 (Unprocessable Entity).
+        Successful response is 204, without a body.
+        """
+        contact_id = self.request.swagger_data["contact_id"]
+        patch = self.request.json
+
+        contact = ContactObject(user_id=self.user.user_id,
+                               **{"contact_id": contact_id})
+        error = contact.apply_patch(patch, db=True, index=True)
+        if error is not None:
+            raise MergePatchError(error)
+
+        return Response(None, 204)
 
 
 class BaseSubContactApi(Api):

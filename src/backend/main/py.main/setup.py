@@ -14,7 +14,8 @@ with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file
 
 requires = [
     'phonenumbers',
-    'caliopen_storage'
+    'caliopen_storage',
+    'pytz'
     ]
 
 extras_require = {
