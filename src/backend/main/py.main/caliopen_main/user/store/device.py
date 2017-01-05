@@ -52,7 +52,6 @@ class DeviceLocation(BaseModel):
     location_ip = columns.Text(primary_key=True)    # IP address with CIDR
     location_type = columns.Text()                  # home/work/etc
     country = columns.Text()
-    last_connection = columns.DateTime()
     privacy_features = columns.Map(columns.Text, columns.Text)
 
 
