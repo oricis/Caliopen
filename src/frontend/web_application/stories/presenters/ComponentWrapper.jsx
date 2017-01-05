@@ -4,6 +4,8 @@ const style = {
   component: {
     margin: '1rem',
     border: '1px solid blue',
+  },
+  componentSmall: {
     height: '5rem',
   },
   componentTall: {
@@ -15,10 +17,14 @@ const style = {
   },
 };
 
-const ComponentWrapper = ({ tall, inline, children }) => {
+const ComponentWrapper = ({ size, inline, children }) => {
   let componentStyle = { ...style.component };
 
-  if (tall) {
+  if (size === 'tall') {
+    componentStyle = { ...componentStyle, ...style.componentTall };
+  }
+
+  if (size === 'small') {
     componentStyle = { ...componentStyle, ...style.componentTall };
   }
 
@@ -32,7 +38,7 @@ const ComponentWrapper = ({ tall, inline, children }) => {
 };
 
 ComponentWrapper.propTypes = {
-  tall: PropTypes.bool,
+  size: PropTypes.oneOf(['small', 'tall']),
   inline: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };

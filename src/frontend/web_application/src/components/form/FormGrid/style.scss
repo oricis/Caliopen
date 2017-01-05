@@ -1,0 +1,38 @@
+@import '../../../styles/common';
+@import '../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-form-grid {
+  &__row {
+    @include flex-grid-row;
+  }
+
+  &__column {
+    @include flex-grid-size(12);
+    display: block;
+
+    &--fluid {
+      @include flex-grid-size;
+    }
+
+    @include breakpoint(medium) {
+
+      padding-right: map_get($co-form__spacing, 'medium');
+
+      &--small {
+        @include flex-grid-size(4);
+      }
+
+      &--medium {
+        @include flex-grid-size(6);
+      }
+
+      &--large {
+        @include flex-grid-size(8);
+      }
+
+      &--shrink {
+        @include flex-grid-size(shrink);
+      }
+    }
+  }
+}

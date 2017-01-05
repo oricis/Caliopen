@@ -7,7 +7,7 @@ class Presenter extends Component {
   render() {
     return (
       <div>
-        <ComponentWrapper tall>
+        <ComponentWrapper size="tall">
           <TextList>
             {[
               'Standard string',

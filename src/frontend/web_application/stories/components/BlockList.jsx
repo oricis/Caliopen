@@ -8,7 +8,7 @@ class BlockLists extends Component {
   render() {
     return (
       <div>
-        <ComponentWrapper tall>
+        <ComponentWrapper size="tall">
           <BlockList>
             {[
               <ItemContent>Foo</ItemContent>,

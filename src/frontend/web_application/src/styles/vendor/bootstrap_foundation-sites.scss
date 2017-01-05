@@ -41,3 +41,6 @@
 @include foundation-visibility-classes;
 @include foundation-float-classes;
 // @include foundation-flex-classes;
+
+// --- Reset zf-normalizer
+@import '../base/reset';
