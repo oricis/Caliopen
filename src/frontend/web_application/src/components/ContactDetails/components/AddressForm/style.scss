@@ -1,0 +1,11 @@
+@import '../../../../styles/common';
+
+.m-address-form {
+  &__icon {
+    margin-right: $co-margin / 4;
+  }
+
+  &__action {
+    line-height: $co-component__height;
+  }
+}

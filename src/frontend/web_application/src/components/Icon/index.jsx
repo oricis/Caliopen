@@ -8,6 +8,7 @@ export const typeAssoc = {
   'caret-up': 'fa fa-caret-up',
   'caret-down': 'fa fa-caret-down',
   envelope: 'fa fa-envelope',
+  comment: 'fa fa-comment',
   comments: 'fa fa-comments',
   'comments-o': 'fa fa-comments-o',
   users: 'fa fa-users',
@@ -20,6 +21,9 @@ export const typeAssoc = {
   key: 'fa fa-key',
   'info-circle': 'fa fa-info-circle',
   remove: 'fa fa-remove',
+  plug: 'fa fa-plug',
+  phone: 'fa fa-phone',
+  'map-marker': 'fa fa-map-marker',
 };
 
 

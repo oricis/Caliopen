@@ -5,13 +5,16 @@ import { InputText, FieldErrors } from '..';
 import './style.scss';
 
 const TextFieldGroup = ({
-  label, errors = [], expanded = true, className, ...inputProps
+  label, errors = [], expanded = true, className, showLabelforSr = false, ...inputProps
 }) => {
   const id = uuidV1();
+  const labelClassName = classnames('m-text-field-group__label', {
+    'show-for-sr': showLabelforSr,
+  });
 
   return (
     <div className={classnames('m-text-field-group', className)}>
-      <label htmlFor={id} className="m-text-field-group__label">{label}</label>
+      <label htmlFor={id} className={labelClassName}>{label}</label>
       <InputText
         id={id} expanded={expanded} {...inputProps}
       />
@@ -24,6 +27,7 @@ const TextFieldGroup = ({
 
 TextFieldGroup.propTypes = {
   label: PropTypes.string.isRequired,
+  showLabelforSr: PropTypes.bool,
   errors: PropTypes.arrayOf(PropTypes.string),
   expanded: PropTypes.bool,
   className: PropTypes.string,

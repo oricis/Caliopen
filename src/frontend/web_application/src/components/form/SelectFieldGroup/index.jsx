@@ -5,7 +5,7 @@ import FieldErrors from '../FieldErrors';
 import './style.scss';
 
 const SelectFieldGroup = ({
-  label, expanded = true, options, errors = [], onChange, className, ...props
+  label, showLabelforSr, expanded = true, options, errors = [], onChange, className, ...props
 }) => {
   const id = uuidV1();
   const selectClassName = classnames(
@@ -14,10 +14,13 @@ const SelectFieldGroup = ({
       'm-select-field-group--expanded__select': expanded,
     }
   );
+  const labelClassName = classnames('m-select-field-group__label', {
+    'show-for-sr': showLabelforSr,
+  });
 
   return (
     <div className={classnames('m-select-field-group', className)}>
-      <label htmlFor={id} className="m-text-field-group__label">{label}</label>
+      <label htmlFor={id} className={labelClassName}>{label}</label>
       <select
         onChange={onChange}
         className={selectClassName}
@@ -39,8 +42,12 @@ const SelectFieldGroup = ({
 
 const propTypeOption = PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]);
 
+const alphaNumPropType = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
+
 SelectFieldGroup.propTypes = {
   label: PropTypes.string,
+  showLabelforSr: PropTypes.bool,
+  value: alphaNumPropType,
   expanded: PropTypes.bool,
   options: PropTypes.arrayOf(PropTypes.shape({ label: propTypeOption, value: propTypeOption })),
   errors: PropTypes.arrayOf(PropTypes.string),
