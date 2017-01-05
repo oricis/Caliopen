@@ -328,8 +328,6 @@ class ObjectUser(ObjectStorable):
                 log.info(exc)
                 return main_errors.PatchError(message="Error when updating db")
 
-
-
         return None
 
 

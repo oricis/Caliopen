@@ -12,7 +12,7 @@ from pyramid.httpexceptions import HTTPBadRequest, HTTPExpectationFailed
 from caliopen_main.user.core import (Contact as CoreContact,
                                      PublicKey as CorePublicKey)
 
-from caliopen_main.objects.contact import Contact as ContactOject
+from caliopen_main.objects.contact import Contact as ContactObject
 
 from caliopen_main.user.returns import (ReturnContact,
                                         ReturnAddress, ReturnEmail,
@@ -60,7 +60,7 @@ class Contact(Api):
     def get(self):
         pi_range = self.request.authenticated_userid.pi_range
         contact_id = self.request.swagger_data["contact_id"]
-        contact = ContactOject(user_id=self.user.user_id,
+        contact = ContactObject(user_id=self.user.user_id,
                                **{"contact_id": contact_id})
         contact.get_db()
         contact.unmarshall_db()
@@ -100,22 +100,13 @@ class Contact(Api):
         contact_id = self.request.swagger_data["contact_id"]
         patch = self.request.json
 
-        contact = ContactOject(user_id=self.user.user_id,
+        contact = ContactObject(user_id=self.user.user_id,
                                **{"contact_id": contact_id})
         error = contact.apply_patch(patch, db=True, index=True)
         if error is not None:
             raise MergePatchError(error)
 
         return Response(None, 204)
-
-    @view(renderer='json', permission='authenticated')
-    def put(self):
-        """Squash a contact with payload
-
-        payload must be the full contact card as this method will squash the existing contact card
-        with the payload's one
-        """
-        raise MethodNotAllowed
 
 
 class BaseSubContactApi(Api):
