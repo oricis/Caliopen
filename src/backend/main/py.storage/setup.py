@@ -29,7 +29,6 @@ extras_require = {
 
 
 setup(name=name,
-      namespace_packages=[name],
       version=version,
       description='Caliopen base package for storage routines.',
       long_description=README + '\n\n' + CHANGES,

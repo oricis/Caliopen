@@ -29,7 +29,6 @@ extras_require = {
 }
 
 setup(name=name,
-      namespace_packages=[name],
       version=version,
       description='Caliopen main package. Entry point for whole application',
       long_description=README + '\n\n' + CHANGES,

@@ -22,7 +22,6 @@ extras_require = {
 }
 
 setup(name=name,
-      namespace_packages=[name],
       version=version,
       description='API documentation package. It relies on caliopen_api to serve documentation on localhost.',
       long_description=README + '\n\n' + CHANGES,

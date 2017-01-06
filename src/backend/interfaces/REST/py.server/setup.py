@@ -44,7 +44,6 @@ extras_require = {
 }
 
 setup(name=name,
-      namespace_packages=[name],
       version=version,
       description='Caliopen REST API Server',
       long_description=README + '\n\n' + CHANGES,
