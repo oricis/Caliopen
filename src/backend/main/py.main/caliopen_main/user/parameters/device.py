@@ -9,7 +9,7 @@ from schematics.types.compound import ListType, ModelType
 
 
 DEVICE_TYPES = ['unknow', 'desktop', 'laptop', 'smartphone', 'tablet']
-LOCATION_TYPES = ['public', 'work', 'home']
+LOCATION_TYPES = ['public', 'work', 'home', 'other']
 
 
 class DeviceLocation(Model):
@@ -18,8 +18,17 @@ class DeviceLocation(Model):
 
     name = StringType(required=True)
     ip_address = StringType(required=True)  # With CIDR notation
-    privacy_level = StringType(required=True, choices=LOCATION_TYPES,
-                               default='public')
+    location_type = StringType(required=True, choices=LOCATION_TYPES,
+                               default='other')
+
+
+class DeviceInformation(Model):
+
+    """Device important information when creating a new one."""
+
+    os_version = StringType()
+    hardware_info = StringType()
+    browser_info = StringType()
 
 
 class NewDevice(Model):
@@ -28,9 +37,6 @@ class NewDevice(Model):
 
     name = StringType(required=True)
     type = StringType(required=True, choices=DEVICE_TYPES, default='unknow')
-    os_version = StringType()
-    hardware_info = StringType()
-    browser_info = StringType()
-    fingerprint = StringType()
 
     locations = ListType(ModelType(DeviceLocation), default=lambda: [])
+    informations = ModelType(DeviceInformation)
