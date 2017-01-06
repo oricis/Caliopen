@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block head %}{% endblock %}
+
+{% block body %}
+  <div class="l-layout">
+    <header class="l-header">
+      <div class="l-header__wrapper">
+        <span class="l-header__brand">
+          <a href="/">
+            {% if body.brandImage %}
+              <img class="l-header__brand-icon" src="{{ '/app/' + body.brandImage }}" alt="CaliOpen">
+            {% else %}
+              CaliOpen
+            {% endif %}
+          </a>
+        </span>
+      </div>
+    </header>
+    {% block content %}
+    {% endblock %}
+  </div>
+{% endblock %}
