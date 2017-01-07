@@ -23,11 +23,6 @@ type user struct {
 	Name			string
 }
 
-type rawMessage struct {
-	Raw_msg_id		[]byte
-	Data			string
-}
-
 type rawMessageModel struct {
 	Raw_msg_id		gocql.UUID	`cql:"raw_msg_id"`
 	Data			string		`cql:"data"`
@@ -68,7 +63,7 @@ func (cb *CassandraBackend) Initialize(config map[string]interface{}) error {
 }
 
 // return a list of users' emails found in user_name table for the given recipients list
-func (cb *CassandraBackend) GetRecipients(rcpts []string) (users_emails []string, err error) {
+func (cb *CassandraBackend) GetRecipients(rcpts []string) (user_ids []string, err error) {
 	userTable := cb.keyspace.MapTable("user_name", "name", &user{})
 	consistency := gocql.Consistency(cb.config.ConsistencyLevel)
 	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
@@ -84,7 +79,11 @@ func (cb *CassandraBackend) GetRecipients(rcpts []string) (users_emails []string
 			log.WithError(err).Infoln("error on userTable query")
 			return
 		}
-		users_emails = append(users_emails, rcpt)
+		uuid, err := gocql.UUIDFromBytes(result.User_id)
+		if err != nil {
+			return []string{}, err
+		}
+		user_ids = append(user_ids, uuid.String())
 	}
 	return
 }
