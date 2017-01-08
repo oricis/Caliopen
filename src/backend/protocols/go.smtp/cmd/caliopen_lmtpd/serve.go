@@ -16,7 +16,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp/broker"
+	"github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp"
 	"github.com/flashmob/go-guerrilla"
 )
 
@@ -43,7 +43,7 @@ func init() {
 	rootCmd.AddCommand(serveCmd)
 }
 
-func sigHandler(app guerrilla.Guerrilla, broker *broker.CaliopenBroker) {
+func sigHandler(app guerrilla.Guerrilla, lda *lda.CaliopenLDA) {
 	// handle SIGHUP for reloading the configuration while running
 	signal.Notify(signalChannel, syscall.SIGHUP, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGKILL)
 
@@ -59,7 +59,7 @@ func sigHandler(app guerrilla.Guerrilla, broker *broker.CaliopenBroker) {
 			// TODO: reinitialize
 		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT {
 			log.Infof("Shutdown signal caught")
-			broker.Shutdown()
+			lda.Shutdown()
 			app.Shutdown()
 			log.Infof("Shutdown completd, exiting.")
 			os.Exit(0)
@@ -104,10 +104,10 @@ func serve(cmd *cobra.Command, args []string) {
 			log.WithError(err).Fatalf("Error while creating pidFile (%s)", pidFile)
 		}
 	}
-	broker := broker.CaliopenBroker{}
-	broker.Initialize(cmdConfig.BrokerConfig)
+	lda := lda.CaliopenLDA{}
+	lda.Initialize(cmdConfig.LDAConfig)
 	var b guerrilla.Backend
-	b = guerrilla.Backend(&broker)
+	b = guerrilla.Backend(&lda)
 	app := guerrilla.New(&cmdConfig.AppConfig, &b)
 	go func(){
 		err := app.Start()
@@ -116,14 +116,14 @@ func serve(cmd *cobra.Command, args []string) {
 		}
 	}()
 
-	sigHandler(app, &broker)
+	sigHandler(app, &lda)
 }
 
 // Superset of `guerrilla.AppConfig` containing options specific
 // the the command line interface.
 type CmdConfig struct {
 	guerrilla.AppConfig
-	broker.BrokerConfig
+	lda.LDAConfig
 }
 
 // ReadConfig which should be called at startup, or when a SIG_HUP is caught

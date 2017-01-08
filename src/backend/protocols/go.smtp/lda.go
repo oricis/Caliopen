@@ -1,4 +1,7 @@
-package broker
+package lda
+
+// Local Delivery Agent
+// store the raw email and give it to email lda via NATS topic « inboundSMTPEmail »
 
 import (
 	"github.com/flashmob/go-guerrilla"
@@ -10,6 +13,8 @@ import (
 	"crypto/md5"
 	"strings"
 	"io"
+	"github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp/backends"
+	"github.com/hashicorp/go-multierror"
 )
 
 type CaliopenBackend interface {
@@ -18,48 +23,47 @@ type CaliopenBackend interface {
 	Initialize(config map[string]interface{}) error
 }
 
-type CaliopenBroker struct {
+type CaliopenLDA struct {
 	Backend			*CaliopenBackend
-	config       		BrokerConfig
+	config       		LDAConfig
 	deliveryMsgChan 	chan *messageDelivery
 	natsConn		*nats.Conn
 	wg          	 	sync.WaitGroup
 }
 
-type BrokerConfig struct {
+type LDAConfig struct {
 	BackendName   		string                 	`json:"backend_name"`
 	BackendConfig 		map[string]interface{} 	`json:"backend_config"`
 	LogReceivedMails	bool			`json:"log_received_mails"`
-	NumberOfWorkers    	int  			`json:"broker_workers_size"`
+	NumberOfWorkers    	int  			`json:"lda_workers_size"`
 }
 
-func (broker *CaliopenBroker) Initialize(config BrokerConfig) error {
-	broker.config = config
-	switch broker.config.BackendName {
+func (lda *CaliopenLDA) Initialize(config LDAConfig) error {
+	lda.config = config
+	switch lda.config.BackendName {
 	case "cassandra":
-		b := &CassandraBackend{}
+		b := &backends.CassandraBackend{}
 		cb := CaliopenBackend(b)
-		broker.Backend = &cb
+		lda.Backend = &cb
 	case "BOBcassandra":
 	// NotImplemented… yet ! ;-)
 	default:
-		log.Fatalf("Unknown backend: %s", broker.config.BackendName)
+		log.Fatalf("Unknown backend: %s", lda.config.BackendName)
 	}
 
-	err := (*broker.Backend).Initialize(config.BackendConfig)
+	err := (*lda.Backend).Initialize(config.BackendConfig)
 	if err != nil {
-		log.WithError(err).Errorf("Initalization of %s backend failed", broker.config.BackendName)
-		return err
+		log.WithError(err).Fatalf("Initalization of %s backend failed", lda.config.BackendName)
 	}
 
 	// start some delivery workers
-	broker.deliveryMsgChan = make(chan *messageDelivery, broker.config.NumberOfWorkers)
-	broker.wg.Add(broker.config.NumberOfWorkers)
-	for i := 0; i < broker.config.NumberOfWorkers; i++ {
-		go broker.deliverWorker()
+	lda.deliveryMsgChan = make(chan *messageDelivery, lda.config.NumberOfWorkers)
+	lda.wg.Add(lda.config.NumberOfWorkers)
+	for i := 0; i < lda.config.NumberOfWorkers; i++ {
+		go lda.deliverWorker()
 	}
 
-	broker.natsConn, err = nats.Connect(nats.DefaultURL)
+	lda.natsConn, err = nats.Connect(nats.DefaultURL)
 
 	if err != nil {
 		log.WithError(err).Errorf("Connection to messages system failed")
@@ -69,14 +73,14 @@ func (broker *CaliopenBroker) Initialize(config BrokerConfig) error {
 	return nil
 }
 
-func (broker *CaliopenBroker) Shutdown() error {
-	close(broker.deliveryMsgChan) // workers will stop
-	broker.wg.Wait()
-	log.Info("Shutdown broker")
+func (lda *CaliopenLDA) Shutdown() error {
+	close(lda.deliveryMsgChan) // workers will stop
+	lda.wg.Wait()
+	log.Info("Shutdown lda")
 	return nil
 }
 
-func (broker *CaliopenBroker) Process(mail *guerrilla.Envelope) guerrilla.BackendResult {
+func (lda *CaliopenLDA) Process(mail *guerrilla.Envelope) guerrilla.BackendResult {
 
 	//step 1 : recipients lookup
 	//         we need at least one valid recipient before processing further
@@ -85,7 +89,7 @@ func (broker *CaliopenBroker) Process(mail *guerrilla.Envelope) guerrilla.Backen
 		return guerrilla.NewBackendResult("554 Error: no recipient")
 	}
 
-	if broker.config.LogReceivedMails {
+	if lda.config.LogReceivedMails {
 		log.Infof("processing envelope From: %s -> To: %v", mail.MailFrom, to)
 	}
 
@@ -93,7 +97,7 @@ func (broker *CaliopenBroker) Process(mail *guerrilla.Envelope) guerrilla.Backen
 	for _, emailAddress := range to {
 		emails = append(emails, emailAddress.String())
 	}
-	localRcpts, err := (*broker.Backend).GetRecipients(emails)
+	localRcpts, err := (*lda.Backend).GetRecipients(emails)
 
 	if err != nil {
 		log.WithError(err).Info("recipients lookup failed")
@@ -105,7 +109,7 @@ func (broker *CaliopenBroker) Process(mail *guerrilla.Envelope) guerrilla.Backen
 	}
 
 	//step 2 : store raw email and get its raw_id
-	raw_email_id, err := (*broker.Backend).StoreRaw(mail.Data)
+	raw_email_id, err := (*lda.Backend).StoreRaw(mail.Data)
 
 	if err != nil {
 		log.WithError(err).Info("storing raw email failed")
@@ -113,27 +117,40 @@ func (broker *CaliopenBroker) Process(mail *guerrilla.Envelope) guerrilla.Backen
 	}
 
 	//step 3 : feed delivery workers for each recipient
-	//TODO: put this logic into another autonomous component ?
-
+	deliveryWG := sync.WaitGroup{}
+	deliveryWG.Add(len(localRcpts))
+	var errs error
+	deliveries := 0
 	for _, localRcpt := range localRcpts {
+		go func() {
+			defer deliveryWG.Done()
+			deliveryNotify := make(chan *deliveryStatus)
+			lda.deliveryMsgChan <- &messageDelivery{localRcpt, raw_email_id, deliveryNotify}
 
-		deliveryNotify := make(chan *deliveryStatus)
-		broker.deliveryMsgChan <- &messageDelivery{localRcpt, raw_email_id, deliveryNotify}
-
-		//wait for the delivery to complete or timeout after 30sec
-		select {
-		case status := <- deliveryNotify:
-			if status.err != nil {
-				return guerrilla.NewBackendResult("554 Error: " + status.err.Error())
+			//wait for the delivery to complete or timeout after 30sec
+			select {
+			case status := <-deliveryNotify:
+				if status.err != nil {
+					errs = multierror.Append(errs, err)
+					return
+				}
+				deliveries++
+				return
+			case <-time.After(time.Second * 30):
+				errs = multierror.Append(errs, err)
+				return
 			}
-			return guerrilla.NewBackendResult(fmt.Sprintf("250 OK : queued as %s", status.hash))
-		case <-time.After(time.Second * 30):
-			log.Info("timeout")
-			return guerrilla.NewBackendResult("554 Error: delivery timeout")
-		}
+		}()
+	}
+	deliveryWG.Wait()
+
+	// we assume the previous MTA did the rcpts lookup, so all rcpts should be OK
+	// consequently, we discard the whole delivery if there is at least one error
+	if errs != nil {
+		return guerrilla.NewBackendResult(fmt.Sprint("554 Error : " + errs.Error()))
 	}
 
-	return guerrilla.NewBackendResult(fmt.Sprintf("250 OK "))
+	return guerrilla.NewBackendResult(fmt.Sprintf("250 OK: %d message(s) delivered.", deliveries))
 }
 
 type messageDelivery struct {
@@ -147,22 +164,19 @@ type deliveryStatus struct {
 	hash	string
 }
 
-func (broker *CaliopenBroker) deliverWorker() {
-
-	//TODO
-	//  receives values from the channel repeatedly until it is closed.
-	for delivery := range broker.deliveryMsgChan {
+func (lda *CaliopenLDA) deliverWorker() {
+	//  receives values from the channel repeatedly until shutdown msg
+	for delivery := range lda.deliveryMsgChan {
 		if delivery == nil {
 			log.Debug("Delivery payload is empty")
 			return
 		}
 		natsMessage := fmt.Sprintf("{'user_id': '%s', 'raw_email_id': '%s'}", delivery.recipient, delivery.raw_email_id)
-		err := broker.natsConn.Publish("inboundSMTPEmail", []byte(natsMessage))
+		err := lda.natsConn.Publish("inboundSMTPEmail", []byte(natsMessage))
 		hash := MD5Hex(natsMessage)
 		delivery.deliveryNotify <- &deliveryStatus{err, hash}
 	}
-
-	broker.wg.Done()
+	lda.wg.Done()
 }
 
 // returns an md5 hash as string of hex characters

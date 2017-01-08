@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/cobra"
 
 	guerrilla "github.com/flashmob/go-guerrilla"
-	caliopen_smtp "github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp"
+	lda "github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp"
 )
 
 var versionCmd = &cobra.Command{
@@ -22,7 +22,7 @@ func init() {
 }
 
 func logVersion() {
-	log.Infof("caliopen_lmtpd %s (guerrilla version %s)", caliopen_smtp.Version, guerrilla.Version)
+	log.Infof("caliopen_lmtpd %s (guerrilla version %s)", lda.Version, guerrilla.Version)
 	log.Debugf("Build Time: %s", guerrilla.BuildTime)
 	log.Debugf("Commit:     %s", guerrilla.Commit)
 }

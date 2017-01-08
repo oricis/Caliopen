@@ -42,6 +42,7 @@ func sendMail(i int, wg *sync.WaitGroup) {
 
 	from := "stan@mailden.net"
 	to := "dev@caliopen.local"
+	to2 := ""
 
 	if err = c.Mail(from); err != nil {
 		lastWords("Mail ", err)
@@ -49,6 +50,12 @@ func sendMail(i int, wg *sync.WaitGroup) {
 
 	if err = c.Rcpt(to); err != nil {
 		lastWords("Rcpt ", err)
+	}
+
+	if to2 != "" {
+		if err = c.Rcpt(to2); err != nil {
+			lastWords("Rcpt ", err)
+		}
 	}
 
 	wr, err := c.Data()

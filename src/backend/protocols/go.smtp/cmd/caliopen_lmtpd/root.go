@@ -7,8 +7,8 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "caliopen_lmtpd",
-	Short: "LMTP server",
-	Long: `LMTP server for the purpose of receiving/sending emails from/to a public MTA (postfix for example).`,
+	Short: "LMTP daemon",
+	Long: `LMTP daemon for the purpose of bridging the public MTA (postfix for ex.) to our local delivery agent.`,
 	Run: nil,
 }
 
