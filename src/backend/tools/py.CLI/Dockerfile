@@ -21,7 +21,8 @@ RUN pip install --upgrade pyasn1
 
 # Clone into /srv/caliopen/code
 WORKDIR /srv/caliopen
-RUN git clone https://github.com/CaliOpen/Caliopen.git code
+ADD https://github.com/CaliOpen/Caliopen/archive/master.tar.gz ./
+RUN tar -xzf master.tar.gz && mv Caliopen-master code && rm master.tar.gz
 
 # Install python backend packages in develop mode
 WORKDIR /srv/caliopen/code/src/backend/main/py.storage
@@ -40,4 +41,5 @@ RUN python setup.py develop
 # Copy configuration file
 RUN cp /srv/caliopen/code/src/backend/configs/caliopen-docker.yaml /etc/caliopen.yaml
 
+WORKDIR /srv/caliopen/code
 ENTRYPOINT ["caliopen", "-f", "/etc/caliopen.yaml"]

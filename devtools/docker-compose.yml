@@ -1,6 +1,6 @@
-# Caliopen API server
 version: '2'
 services:
+  # Caliopen API server
   api:
       build: ../src/backend/interfaces/REST/py.server
       links:
