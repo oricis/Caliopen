@@ -111,7 +111,12 @@ class UserMessageDelivery(object):
         message = mail.to_parameter()
         message.raw_msg_id = msg.raw_msg_id
 
-        user = User.get(user_id=user_id)
+        user = User.get(user_id)
+        if not user:
+            log.error('user <{}> not found'.
+                      format(user_id))
+            raise NotFound
+
         message.recipients = self._get_recipients(user, mail)
         addresses = [x.address for x in message.recipients]
         log.debug('Resolved recipients {}'.format(addresses))
