@@ -10,6 +10,9 @@
           "basicAuth": []
         }
       ],
+      "produces": [
+        "application/json"
+      ],
       "responses": {
         "200": {
           "description": "Tags returned",
