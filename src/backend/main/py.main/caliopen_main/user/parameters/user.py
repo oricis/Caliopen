@@ -34,7 +34,8 @@ class User(NewUser):
     """Existing user."""
 
     contact = ModelType(Contact)
-    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               tzd=u'utc')
     family_name = StringType()
     given_name = StringType()
     password = StringType()     # not outpout by default, not required
@@ -47,18 +48,24 @@ class User(NewUser):
         serialize_when_none = False
 
 
-class Tag(Model):
+class NewTag(Model):
 
-    """Existing user tag."""
+    """Create a new user tag."""
 
     user_id = UUIDType()
-    label = StringType()
-    background = StringType()
-    color = StringType()
+    name = StringType()
 
     class Option:
         roles = {'default': blacklist('user_id')}
         serialize_when_none = False
+
+
+class Tag(NewTag):
+
+    """Existing tag (user or system)."""
+    type = StringType()
+    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               tzd=u'utc')
 
 
 class NewRule(Model):
