@@ -38,7 +38,7 @@ class AuthenticationAPI(Api):
         Store generated tokens in a cache entry related to user_id
         and return a structure with this tokens for client usage.
         """
-        params = self.request.swagger_data
+        params = self.request.json
         try:
             user = User.authenticate(params['username'], params['password'])
             log.info('Authenticate user {username}'.format(username=user.name))
