@@ -21,6 +21,14 @@ class RawMessage(BaseModel):
     data = columns.Bytes()
 
 
+class RawInboundMessage(BaseModel):
+
+    """Raw Inbound message model."""
+
+    raw_msg_id = columns.UUID(primary_key=True, default=uuid.uuid4)
+    data = columns.Bytes()
+
+
 class MessageRecipient(BaseUserType):
 
     """Recipient involved in a message."""

@@ -1,4 +1,4 @@
-from .raw import RawMessage
+from .raw import RawMessage, RawInboundMessage
 from .message import Message, ReturnMessage
 from .thread import ThreadExternalLookup, ThreadRecipientLookup
 from .thread import ThreadMessageLookup, Thread
