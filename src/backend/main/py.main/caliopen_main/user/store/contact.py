@@ -99,6 +99,8 @@ class SocialIdentity(BaseUserType):
 class Contact(BaseModel, IndexedModelMixin):
     """Contact model."""
 
+    _index_class = IndexedContact
+
     user_id = columns.UUID(primary_key=True)
     contact_id = columns.UUID(primary_key=True)     # clustering key
     date_insert = columns.DateTime(default=datetime.utcnow())
