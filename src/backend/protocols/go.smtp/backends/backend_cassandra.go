@@ -94,7 +94,7 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 
 	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
 	rawMsgTable = rawMsgTable.WithOptions(gocassa.Options{
-		TableName: "raw_inbound_msg",
+		TableName: "raw_inbound_message",
 		Consistency: &consistency,
 	})
 

@@ -171,7 +171,7 @@ func (lda *CaliopenLDA) deliverWorker() {
 			log.Debug("Delivery payload is empty")
 			return
 		}
-		natsMessage := fmt.Sprintf("{'user_id': '%s', 'raw_email_id': '%s'}", delivery.recipient, delivery.raw_email_id)
+		natsMessage := fmt.Sprintf("{\"user_id\": \"%s\", \"raw_email_id\": \"%s\"}", delivery.recipient, delivery.raw_email_id)
 		err := lda.natsConn.Publish("inboundSMTP", []byte(natsMessage))
 		hash := MD5Hex(natsMessage)
 		delivery.deliveryNotify <- &deliveryStatus{err, hash}

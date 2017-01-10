@@ -22,7 +22,7 @@ func lastWords(message string, err error) {
 func main() {
 	log.WithFields(log.Fields{"time": time.Now().Format(time.RFC3339Nano)}).Info("start sending mails")
 	wg := sync.WaitGroup{}
-	count := 100
+	count := 10
 	wg.Add(count)
 	for i := 0; i < count; i++ {
 		go sendMail(i, &wg)
