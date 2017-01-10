@@ -6,7 +6,7 @@ const applyConfig = require('./config');
 
 const app = express();
 
-app.set('port', 4000);
+app.set('port', (process.env.PORT || 4000));
 
 //-------
 applyConfig(app);

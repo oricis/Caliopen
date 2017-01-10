@@ -2,6 +2,7 @@ module.exports = (env) => {
   const config = {
     env,
     version: '0.1.0',
+    publicPath: 'dist/server/public/',
     frontend: {
       rootPath: '/app/',
       path: '/srv/caliopen/web-client-ng',
