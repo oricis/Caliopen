@@ -1,0 +1,137 @@
+{
+  "tags": {
+    "get": {
+      "description": "Returns tags visible to current user according to given parameters",
+      "tags": [
+        "tags"
+      ],
+      "security": [
+        {
+          "basicAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Tags returned",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "format": "int32",
+                "description": "number of tags found for user for the given parameters"
+              },
+              "contacts": {
+                "type": "array",
+                "items": {
+                  "$ref": "../objects/Tag.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "post": {
+      "description": "Create a new Tag for an user",
+      "tags": [
+        "tags"
+      ],
+      "security": [
+        {
+          "basicAuth": []
+        }
+      ],
+      "consumes": [
+        "application/x-www-form-urlencoded"
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "in": "formData",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "User tag creation completed",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "url to retrieve new tag's infos at /tags/{name}"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "users_{name}": {
+    "get": {
+      "description": "Retrieve tag infos",
+      "tags": [
+        "tags"
+      ],
+      "security": [
+        {
+          "basicAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "Successful response with json object",
+          "schema": {
+            "$ref": "../objects/Tag.json"
+          }
+        },
+        "401": {
+          "description": "Unauthorized access",
+          "schema": {
+            "$ref": "../objects/Error.json"
+          }
+        }
+      }
+    },
+    "delete": {
+      "description": "Not Yet Implemented",
+      "tags": [
+        "tags"
+      ],
+      "security": [
+        {
+          "basicAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "default": {
+          "description": "route not implemented, should raise an error"
+        }
+      }
+    }
+  }
+}

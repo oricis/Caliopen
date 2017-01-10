@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "$ref": "NewTag.json#/properties",
+    "type": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "type"
+  ],
+  "additionalProperties": false
+}

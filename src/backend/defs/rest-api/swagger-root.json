@@ -15,6 +15,7 @@
     "/users": {"$ref": "paths/users.json#/users"},
     "/users/{user_id}": {"$ref": "paths/users.json#/users_{user_id}"},
     "/contacts": {"$ref": "paths/contacts.json#/contacts"},
+    "/tags": {"$ref": "paths/tags.json#/tags"},
     "/contacts/{contact_id}": {"$ref": "paths/contacts.json#/contacts_{contact_id}"},
     "/discussions": {"$ref": "paths/discussions.json#/discussions"},
     "/discussions/{discussion_id}": {"$ref": "paths/discussions.json#/discussions_{discussion_id}"},
