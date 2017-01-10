@@ -89,7 +89,8 @@ def build_discussion(thread, index_message):
         recipient.address = rec['address']
         recipient.label = rec['label']
         recipient.type = rec['type']
-        recipient.contact_id = rec['contact_id']
+        if 'contact_id' in rec:  # 'recipient' of type 'from' may not be Contact
+            recipient.contact_id = rec['contact_id']
         recipient.protocol = rec['protocol']
         discussion.contacts.append(recipient)
     # XXX Missing values (at least other in parameter to fill)
