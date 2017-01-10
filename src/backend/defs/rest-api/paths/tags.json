@@ -72,7 +72,7 @@
       }
     }
   },
-  "users_{name}": {
+  "tags_{name}": {
     "get": {
       "description": "Retrieve tag infos",
       "tags": [
@@ -110,7 +110,7 @@
       }
     },
     "delete": {
-      "description": "Not Yet Implemented",
+      "description": "Delete a tag belonging to an user",
       "tags": [
         "tags"
       ],
@@ -128,8 +128,14 @@
         }
       ],
       "responses": {
-        "default": {
-          "description": "route not implemented, should raise an error"
+        "200": {
+          "description": "Successful deletion"
+        },
+        "401": {
+          "description": "Unauthorized access",
+          "schema": {
+            "$ref": "../objects/Error.json"
+          }
         }
       }
     }

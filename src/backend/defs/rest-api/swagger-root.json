@@ -15,12 +15,13 @@
     "/users": {"$ref": "paths/users.json#/users"},
     "/users/{user_id}": {"$ref": "paths/users.json#/users_{user_id}"},
     "/contacts": {"$ref": "paths/contacts.json#/contacts"},
-    "/tags": {"$ref": "paths/tags.json#/tags"},
     "/contacts/{contact_id}": {"$ref": "paths/contacts.json#/contacts_{contact_id}"},
     "/discussions": {"$ref": "paths/discussions.json#/discussions"},
     "/discussions/{discussion_id}": {"$ref": "paths/discussions.json#/discussions_{discussion_id}"},
     "/discussions/{discussion_id}/messages": {"$ref": "paths/discussions.json#/discussions_{discussion_id}_messages"},
-    "/raws/{raw_msg_id}": {"$ref": "paths/raws.json#/raws_{raw_msg_id}"}
+    "/raws/{raw_msg_id}": {"$ref": "paths/raws.json#/raws_{raw_msg_id}"},
+    "/tags": {"$ref": "paths/tags.json#/tags"},
+    "/tags/{name}": {"$ref": "paths/tags.json#/tags_{name}"}
   },
   "securityDefinitions": {
     "basicAuth": {
