@@ -4,6 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from cornice.resource import resource, view
+from pyramid.httpexceptions import HTTPConflict
 
 from ..base.context import DefaultContext
 
@@ -11,8 +12,6 @@ from caliopen_storage.config import Configuration
 from caliopen_main.user.core import Tag as CoreTag, User as CoreUser
 from ..base import Api
 
-from caliopen_main.user.parameters import NewTag
-from caliopen_storage.exception import NotFound
 
 log = logging.getLogger(__name__)
 
@@ -34,10 +33,14 @@ class TagAPI(Api):
     def collection_post(self):
         """Create a new tag for an user."""
         params = self.request.swagger_data
-        tag = CoreTag.create(self.user, params)
-        tag_url = self.request.route_path('tag', name=tag.name)
+        user = CoreUser.get(self.user.user_id)
+        user_tags = user.tags
+        if params['name'] in [x.name for x in user_tags]:
+            raise HTTPConflict('Tag {} already exit'.format(params['name']))
+        tag = CoreTag.create(self.user, name=params['name'])
+        tag_url = self.request.route_path('Tag', name=tag.name)
         self.request.response.location = tag_url.encode('utf-8')
-        # XXX return a Location to get contact not send it direct
+        # XXX return a Location to get tag not send it direct
         return {'location': tag_url}
 
     @view(renderer='json', permission='authenticated')
