@@ -172,7 +172,7 @@ func (lda *CaliopenLDA) deliverWorker() {
 			return
 		}
 		natsMessage := fmt.Sprintf("{'user_id': '%s', 'raw_email_id': '%s'}", delivery.recipient, delivery.raw_email_id)
-		err := lda.natsConn.Publish("inboundSMTPEmail", []byte(natsMessage))
+		err := lda.natsConn.Publish("inboundSMTP", []byte(natsMessage))
 		hash := MD5Hex(natsMessage)
 		delivery.deliveryNotify <- &deliveryStatus{err, hash}
 	}
