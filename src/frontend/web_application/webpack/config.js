@@ -50,6 +50,9 @@ module.exports = {
       new webpack.DefinePlugin({
         BUILD_TARGET: JSON.stringify(buildTarget),
         CALIOPEN_ENV: JSON.stringify(process.env.NODE_ENV),
+        'process.env': {
+          NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        },
       }),
     ];
     if (DASHBOARD) {
