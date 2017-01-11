@@ -223,10 +223,7 @@ class ObjectUser(ObjectStorable):
 
     user_id = None
 
-    def __init__(self, user_id=None, **params):
-        if user_id is None:
-            raise main_errors.ObjectInitFailed(
-                message="ObjectUser must be initialized with an user_id")
+    def __init__(self, user_id, **params):
         self.user_id = user_id
         super(ObjectUser, self).__init__(**params)
 

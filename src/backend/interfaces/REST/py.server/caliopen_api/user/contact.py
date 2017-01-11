@@ -60,8 +60,7 @@ class Contact(Api):
     def get(self):
         pi_range = self.request.authenticated_userid.pi_range
         contact_id = self.request.swagger_data["contact_id"]
-        contact = ContactObject(user_id=self.user.user_id,
-                               **{"contact_id": contact_id})
+        contact = ContactObject(self.user.user_id, contact_id=contact_id)
         contact.get_db()
         contact.unmarshall_db()
         if pi_range[0] > contact.privacy_index < pi_range[1]:
@@ -100,8 +99,7 @@ class Contact(Api):
         contact_id = self.request.swagger_data["contact_id"]
         patch = self.request.json
 
-        contact = ContactObject(user_id=self.user.user_id,
-                               **{"contact_id": contact_id})
+        contact = ContactObject(self.user.user_id, contact_id=contact_id)
         error = contact.apply_patch(patch, db=True, index=True)
         if error is not None:
             raise MergePatchError(error)

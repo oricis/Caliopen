@@ -90,5 +90,3 @@ class Contact(base.ObjectIndexable):
     _index_class = IndexedContact
     _index = None
 
-    def __init__(self, **params):
-        super(Contact, self).__init__(**params)
