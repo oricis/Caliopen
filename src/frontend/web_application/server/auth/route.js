@@ -1,7 +1,9 @@
-const router = require('express').Router();
+const { Router } = require('express');
 
 const seal = require('./lib/seal');
 const Auth = require('./lib/Auth');
+
+const router = new Router();
 
 router.get('/login', (req, res) => {
   if (req.tokens) {
@@ -61,6 +63,8 @@ router.post('/login', (req, res, next) => {
         (err, sealed) => {
           if (err || !seal) {
             next(err || new Error('Unexpected Error'));
+
+            return;
           }
           res.cookie(req.config.cookie.name, sealed, req.config.cookie.options);
           res.redirect(req.config.frontend.rootPath);

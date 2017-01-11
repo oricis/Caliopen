@@ -4,7 +4,7 @@ module.exports = (env) => {
     version: '0.1.0',
     publicPath: 'dist/server/public/',
     frontend: {
-      rootPath: '/app/',
+      rootPath: '/',
       path: '/srv/caliopen/web-client-ng',
       cssFiles: ['css/main.css'],
       brandImage: 'images/brand.png',
@@ -12,7 +12,7 @@ module.exports = (env) => {
     api: {
       prefix: '/api',
       version: 'v1',
-      hostname: 'api.dev.caliopen.org',
+      hostname: env === 'development' ? 'localhost' : 'api.dev.caliopen.org',
       port: 6543,
       auth: 'authentications',
       user: 'user',
@@ -24,12 +24,11 @@ module.exports = (env) => {
       secret: '_4+%J;_F&?#!+mR&IsYq:Xg4A*wvse',
     },
     seal: {
-      secret: 'D}(2$5q)#_#yKX90,+0d5?4**a6w',
+      secret: 'D}(2$5q)#_#yKX90,+0d5?4**a6ws8e`', // at least 32 chars
     },
   };
 
   let instanceInfo = {};
-
 
   switch (env) {
     default:

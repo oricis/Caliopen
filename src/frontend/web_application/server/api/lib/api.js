@@ -6,10 +6,12 @@ var debug = require('debug')('caliopen.web:app:api-query');
 
 function query(params) {
   var options = ObjectAssign({}, this.defaults || {}, params);
+  let postData;
 
   if (options.body) {
-    options.body = JSON.stringify(options.body);
-    options.headers['Content-Length'] = Buffer.byteLength(options.body);
+    postData = JSON.stringify(options.body);
+    delete options.body;
+    options.headers['Content-Length'] = Buffer.byteLength(postData);
   }
 
   debug('\n','Preparing API query:', '\n', options);
@@ -56,8 +58,8 @@ function query(params) {
   }).on('response', options.response)
     .on('error', options.error);
 
-  if (options.body) {
-    req.write(options.body);
+  if (postData) {
+    req.write(postData);
   }
 
   debug('\n','Outgoing API query:', '\n', req);
