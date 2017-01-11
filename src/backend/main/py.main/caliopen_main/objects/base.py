@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 class CaliopenObject(object):
     """empty class to identify Caliopen objects/types
 
-    all custom classes should inherite from that
+    all custom classes should inherit from that
     """
     _attrs = {}
 
@@ -30,9 +30,9 @@ class CaliopenObject(object):
 
         for attr, attrtype in self._attrs.items():
             if not hasattr(self, attr):
-                if type(attrtype) == types.ListType:
+                if isinstance(attrtype, types.ListType):
                     setattr(self, attr, [])
-                elif type(attrtype) == types.DictType:
+                elif isinstance(attrtype, types.DictType):
                     setattr(self, attr, {})
                 else:
                     setattr(self, attr, None)
@@ -40,7 +40,8 @@ class CaliopenObject(object):
     def keys(self):
         """returns a list of current attributes"""
 
-        return [k for k in self.__dict__ if not k.startswith("_")]
+        return [k for k in self._attrs if hasattr(self, k)]
+
     def update_with(self, sibling):
         """update self attributes with those from sibling
 
@@ -60,7 +61,7 @@ class ObjectDictifiable(CaliopenObject):
         self_dict = {}
         for att, val in vars(self).items():
             if not att.startswith("_"):
-                if type(self._attrs[att]) is types.ListType:
+                if isinstance(self._attrs[att], types.ListType):
                     lst = []
                     if issubclass(self._attrs[att][0], ObjectDictifiable):
                         for item in val:
@@ -81,7 +82,7 @@ class ObjectDictifiable(CaliopenObject):
 
         for attr, attrtype in self._attrs.items():
             if attr in document:
-                if type(attrtype) is types.ListType:
+                if isinstance(attrtype, types.ListType):
                     lst = []
                     if issubclass(attrtype[0], ObjectDictifiable):
                         for item in document[attr]:
@@ -103,9 +104,9 @@ class ObjectDictifiable(CaliopenObject):
                 else:
                     setattr(self, attr, document[attr])
             else:
-                if type(attrtype) is types.ListType:
+                if isinstance(attrtype, types.ListType):
                     setattr(self, attr, [])
-                elif type(attrtype) is types.DictType:
+                elif isinstance(attrtype, types.DictType):
                     setattr(self, attr, {})
                 else:
                     setattr(self, attr, None)
@@ -192,7 +193,7 @@ class ObjectStorable(ObjectJsonDictifiable):
         for att in self._db.keys():
             if not att.startswith("_") and att in self_keys:
                 # TODO : manage protected attrs (ie attributes that user should not be able to change directly)
-                if type(self._attrs[att]) is types.ListType:
+                if isinstance(self._attrs[att], types.ListType):
                     # TODO : manage change within list to only elem changed
                     # (use builtin set() collection ?)
                     if issubclass(self._attrs[att][0], CaliopenObject):
@@ -215,7 +216,6 @@ class ObjectStorable(ObjectJsonDictifiable):
 
         if isinstance(self._db, self._model_class):
             self.unmarshall_dict(dict(self._db))
-
 
 
 class ObjectUser(ObjectStorable):
@@ -285,7 +285,7 @@ class ObjectUser(ObjectStorable):
         # if it is, squash self attributes
         self.unmarshall_db()
         for key in patch.keys():
-            if type(self._attrs[key]) is types.ListType:
+            if isinstance(self._attrs[key], types.ListType):
                 if getattr(obj_patch_old, key) == [] and \
                                 getattr(self, key) != []:
                     return main_errors.PatchConflict(message=
@@ -308,7 +308,7 @@ class ObjectUser(ObjectStorable):
                     if not found:
                         return main_errors.PatchConflict(message=
                                                          "Patch current_state not consistent with db")
-            elif type(self._attrs[key]) is types.DictType:
+            elif isinstance(self._attrs[key], types.DictType):
                 if cmp(getattr(obj_patch_old, key), getattr(self, key)) != 0:
                     return main_errors.PatchConflict(message=
                                                      "Patch current_state not consistent with db")
