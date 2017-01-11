@@ -1,21 +1,17 @@
-const path = require('path');
 const express = require('express');
-const locale = require('locale');
-const cookieParser = require('cookie-parser');
-
-const supportedLocales = ['en', 'fr'];
+const applySSR = require('./ssr');
+const applyAssets = require('./assets');
+const applyAuth = require('./auth');
+const applyConfig = require('./config');
 
 const app = express();
 
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 4000));
 
 //-------
-// assets & eventual bundle.js
-app.use(express.static(path.join(__dirname, '..', 'public')));
-
-//-------
-app.use(locale(supportedLocales));
-app.use(cookieParser());
-app.get('*', require('./middleware/ssr.js'));
+applyConfig(app);
+applyAssets(app);
+applyAuth(app);
+applySSR(app);
 
 module.exports = app;

@@ -10,8 +10,8 @@ const configureStore = require('../../src/store/configure-store').default;
 const isDev = process.env.NODE_ENV === 'development';
 
 const config = {
-  styles: ['/build/style.css'],
-  scripts: isDev ? ['/build/bundle.js'] : ['/bundle.js'],
+  styles: isDev ? ['/build/style.css'] : ['/public/style.css'],
+  scripts: isDev ? ['/build/bundle.js'] : ['/public/bundle.js'],
 };
 
 /**

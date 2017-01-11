@@ -9,8 +9,20 @@ const config = Object.assign(baseConfig.getBase('server'), {
   output: {
     path: path.join(__dirname, '../dist/server/'),
     filename: 'index.js',
+    publicPath: '/public/',
   },
 });
+
+config.module.loaders.push(
+  {
+    test: /\.css$/,
+    loader: 'null',
+  },
+  {
+    test: /\.scss$/,
+    loader: 'null',
+  }
+);
 
 if (isDev) {
   config.output = {

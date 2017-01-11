@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+    
+{% block content %}
+  <center>
+    <h2>
+    {{ status }} : {{ message }}
+    </h2>
+  </center>
+
+  {% if stack %}
+  <pre>
+    {{ stack }}
+  </pre>
+  {% endif %}
+{% endblock %}

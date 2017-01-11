@@ -48,3 +48,11 @@ services:
           - elasticsearch:es.dev.caliopen.org
       environment:
           CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
+
+  # Caliopen frontend
+  frontend:
+      build: ../src/frontend/web_application
+      links:
+          - api:api.dev.caliopen.org
+      ports:
+        - "4000:4000"

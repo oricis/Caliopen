@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const baseConfig = require('./config.js');
 
-const config = Object.assign(baseConfig.getBase('electron'), {
+let config = Object.assign(baseConfig.getBase('electron'), {
   target: 'electron',
   entry: [
     'expose-loader?$!expose-loader?jQuery!jquery',
@@ -16,6 +16,7 @@ const config = Object.assign(baseConfig.getBase('electron'), {
   },
 });
 
+config = baseConfig.configureStylesheet(config);
 config.module.loaders.push({ test: /\.json$/, loader: 'json-loader' });
 
 config.plugins.push(
