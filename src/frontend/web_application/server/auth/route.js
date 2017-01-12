@@ -17,7 +17,7 @@ router.get('/login', (req, res) => {
     password: req.config.instanceInfo.password,
   };
 
-  return res.render('login', devInfos);
+  return res.render('login.component', { form: { action: '/auth/login', method: 'POST' }, devInfos });
 });
 
 router.post('/login', (req, res, next) => {

@@ -21,6 +21,11 @@ config.module.loaders.push(
   {
     test: /\.scss$/,
     loader: 'null',
+  },
+  {
+    test: /\.jsx?$/,
+    include: path.join(__dirname, '../server/'),
+    loaders: ['babel-loader'],
   }
 );
 
