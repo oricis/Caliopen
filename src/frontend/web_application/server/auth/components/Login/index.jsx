@@ -2,15 +2,16 @@ import React, { PropTypes } from 'react';
 import LoginForm from '../../../../src/components/LoginForm';
 import AuthPage from '../../../../src/layouts/AuthPage';
 
-const Login = ({ form, login = {}, devInfos = {} }) => (
+const Login = ({ form, errors = {}, formValues = {}, devInfos = {} }) => (
   <AuthPage {...devInfos}>
-    <LoginForm form={form} {...login} />
+    <LoginForm form={form} errors={errors} formValues={formValues} />
   </AuthPage>
 );
 
 Login.propTypes = {
   form: PropTypes.shape({}),
-  login: PropTypes.shape({}),
+  formValues: PropTypes.shape({}),
+  errors: PropTypes.shape({}),
   devInfos: PropTypes.shape({}),
 };
 

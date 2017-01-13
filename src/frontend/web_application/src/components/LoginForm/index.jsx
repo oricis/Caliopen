@@ -2,10 +2,17 @@ import React, { Component, PropTypes } from 'react';
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../form';
 import Button from '../Button';
 
+function generateStateFromProps(props) {
+  return {
+    ...props.formValues,
+  };
+}
+
 class LoginForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
+    formValues: PropTypes.shape({}),
   };
 
   constructor(props) {
@@ -14,6 +21,14 @@ class LoginForm extends Component {
       username: '',
       password: '',
     };
+  }
+
+  componentWillMount() {
+    this.setState(generateStateFromProps(this.props));
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState(generateStateFromProps(newProps));
   }
 
   render() {
@@ -29,10 +44,10 @@ class LoginForm extends Component {
         <FormRow>
           <FormColumn>
             <TextFieldGroup
-              label="Login"
-              name="login"
+              label="Username"
+              name="username"
               value={this.state.username}
-              errors={errors.login}
+              errors={errors.username}
             />
           </FormColumn>
           <FormColumn>

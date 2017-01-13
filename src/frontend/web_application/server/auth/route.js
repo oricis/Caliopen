@@ -4,23 +4,26 @@ const seal = require('./lib/seal');
 const Auth = require('./lib/Auth');
 
 const router = new Router();
+const FORM_PROPS = { action: '/auth/login', method: 'POST' };
+
+const getDevInfos = config => ({
+  hasInstanceInfo: Object.keys(config.instanceInfo).length > 0,
+  version: config.version,
+  login: config.instanceInfo.login,
+  password: config.instanceInfo.password,
+});
 
 router.get('/login', (req, res) => {
   if (req.tokens) {
     return res.redirect(req.config.frontend.rootPath);
   }
 
-  const devInfos = {
-    hasInstanceInfo: Object.keys(req.config.instanceInfo).length > 0,
-    version: req.config.version,
-    login: req.config.instanceInfo.login,
-    password: req.config.instanceInfo.password,
-  };
-
-  return res.render('login.component', { form: { action: '/auth/login', method: 'POST' }, devInfos });
+  return res.render('login.component', { form: FORM_PROPS, devInfos: getDevInfos(req.config) });
 });
 
 router.post('/login', (req, res, next) => {
+  let hasError = false;
+  const errors = {};
   const auth = new Auth(req.config);
 
   if (!req.body || !Object.keys(req.body).length) {
@@ -35,8 +38,18 @@ router.post('/login', (req, res, next) => {
     password: req.body.password,
   };
 
-  if (!values.username || !values.password) {
-    res.render('login', { error: 'Username or password invalid' });
+  if (!values.username) {
+    hasError = true;
+    errors.username = ['Username is required'];
+  }
+
+  if (!values.password) {
+    hasError = true;
+    errors.password = ['Password is required'];
+  }
+
+  if (hasError) {
+    res.render('login.component', { form: FORM_PROPS, errors, formValues: values, devInfos: getDevInfos(req.config) });
 
     return;
   }
@@ -75,7 +88,8 @@ router.post('/login', (req, res, next) => {
       error = error || new Error('Bad gateway');
       if (error.status && error.status >= 400 && error.status < 500) {
         res.status(error.status);
-        res.render('login', { error: 'Username or password invalid' });
+        errors.global = ['Username or password is invalid'];
+        res.render('login.component', { form: FORM_PROPS, errors, formValues: values, devInfos: getDevInfos(req.config) });
 
         return;
       }
