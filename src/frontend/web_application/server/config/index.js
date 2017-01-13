@@ -1,5 +1,6 @@
 const { View, createEngine } = require('../express-react');
 const { default: Login } = require('../auth/components/Login');
+const { default: Error } = require('../error/components/Error');
 const makeConfig = require('../cfg');
 
 module.exports = (app) => {
@@ -10,6 +11,7 @@ module.exports = (app) => {
   app.set('view engine', 'component');
   app.engine('component', createEngine({
     'login.component': Login,
+    'error.component': Error,
   }));
 
   app.use((req, res, next) => {

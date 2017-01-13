@@ -13,12 +13,22 @@ const getDevInfos = config => ({
   password: config.instanceInfo.password,
 });
 
+const getFormParam = (req) => {
+  const form = Object.assign({}, FORM_PROPS);
+
+  if (req.originalUrl.indexOf('?') !== -1) {
+    form.action += `?${req.originalUrl.split('?')[1]}`;
+  }
+
+  return form;
+};
+
 router.get('/login', (req, res) => {
   if (req.tokens) {
     return res.redirect(req.config.frontend.rootPath);
   }
 
-  return res.render('login.component', { form: FORM_PROPS, devInfos: getDevInfos(req.config) });
+  return res.render('login.component', { form: getFormParam(req), devInfos: getDevInfos(req.config) });
 });
 
 router.post('/login', (req, res, next) => {
@@ -49,7 +59,7 @@ router.post('/login', (req, res, next) => {
   }
 
   if (hasError) {
-    res.render('login.component', { form: FORM_PROPS, errors, formValues: values, devInfos: getDevInfos(req.config) });
+    res.render('login.component', { form: getFormParam(req), errors, formValues: values, devInfos: getDevInfos(req.config) });
 
     return;
   }
@@ -80,7 +90,9 @@ router.post('/login', (req, res, next) => {
             return;
           }
           res.cookie(req.config.cookie.name, sealed, req.config.cookie.options);
-          res.redirect(req.config.frontend.rootPath);
+          const redirect = req.query.redirect || '/';
+          const url = `${req.config.frontend.rootPath.replace(/\/$/, '')}${redirect}`;
+          res.redirect(url);
         }
       );
     },
@@ -89,7 +101,7 @@ router.post('/login', (req, res, next) => {
       if (error.status && error.status >= 400 && error.status < 500) {
         res.status(error.status);
         errors.global = ['Username or password is invalid'];
-        res.render('login.component', { form: FORM_PROPS, errors, formValues: values, devInfos: getDevInfos(req.config) });
+        res.render('login.component', { form: getFormParam(req), errors, formValues: values, devInfos: getDevInfos(req.config) });
 
         return;
       }
