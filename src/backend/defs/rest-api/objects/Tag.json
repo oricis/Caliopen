@@ -3,7 +3,11 @@
   "properties": {
     "$ref": "NewTag.json#/properties",
     "type": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "user",
+        "system"
+      ]
     },
     "label": {
       "type": "string"
