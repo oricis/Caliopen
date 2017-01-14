@@ -4,9 +4,9 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from caliopen_storage.exception import NotFound
-from ..user.core import ContactLookup
+from ..user.core import ContactLookup, User
 
-from ..message.core import Message, RawMessage
+from ..message.core import Message, RawInboundMessage
 
 from ..message.core import (Thread, ThreadMessageLookup,
                             ThreadRecipientLookup,
@@ -95,12 +95,12 @@ class UserMessageDelivery(object):
             if prop[0] == 'list':
                 return
 
-    def process(self, user, raw_msg_id):
+    def process(self, user_id, raw_msg_id):
         """Process a message for an user."""
-        msg = RawMessage.get(user, raw_msg_id)
+        msg = RawInboundMessage.get(raw_msg_id)
         if not msg:
-            log.error('Raw message <{}> not found for user {}'.
-                      format(raw_msg_id, user.user_id))
+            log.error('Raw message <{}> not found'.
+                      format(raw_msg_id))
             raise NotFound
         log.debug('Retrieved raw message {}'.
                   format(raw_msg_id))
@@ -110,6 +110,13 @@ class UserMessageDelivery(object):
 
         message = mail.to_parameter()
         message.raw_msg_id = msg.raw_msg_id
+
+        user = User.get(user_id)
+        if not user:
+            log.error('user <{}> not found'.
+                      format(user_id))
+            raise NotFound
+
         message.recipients = self._get_recipients(user, mail)
         addresses = [x.address for x in message.recipients]
         log.debug('Resolved recipients {}'.format(addresses))
