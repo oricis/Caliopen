@@ -8,24 +8,24 @@ import (
 )
 
 type CassandraBackend struct {
-	config       		cassandraConfig
-	keyspace		gocassa.KeySpace
+	config   cassandraConfig
+	keyspace gocassa.KeySpace
 }
 
 type cassandraConfig struct {
-	Hosts			[]string	`json:"hosts"`
-	Keyspace		string		`json:"keyspace"`
-	ConsistencyLevel	int		`json:"consistency_level"`
+	Hosts            []string `json:"hosts"`
+	Keyspace         string   `json:"keyspace"`
+	ConsistencyLevel int      `json:"consistency_level"`
 }
 
 type user struct {
-	User_id			[]byte
-	Name			string
+	User_id []byte
+	Name    string
 }
 
 type rawMessageModel struct {
-	Raw_msg_id		gocql.UUID	`cql:"raw_msg_id"`
-	Data			string		`cql:"data"`
+	Raw_msg_id gocql.UUID `cql:"raw_msg_id"`
+	Data       string     `cql:"data"`
 }
 
 func (cb *CassandraBackend) Initialize(config map[string]interface{}) error {
@@ -50,15 +50,15 @@ func (cb *CassandraBackend) Initialize(config map[string]interface{}) error {
 
 	//we could also do something like that :
 	/*
-	    cluster := gocql.NewCluster("127.0.0.1")
-    	    cluster.Consistency = gocql.One
-            cluster.ProtoVersion = 4
-            session, err := cluster.CreateSession()
-            connection := gocassa.NewConnection(gocassa.GoCQLSessionToQueryExecutor(session))
+			    cluster := gocql.NewCluster("127.0.0.1")
+		    	    cluster.Consistency = gocql.One
+		            cluster.ProtoVersion = 4
+		            session, err := cluster.CreateSession()
+		            connection := gocassa.NewConnection(gocassa.GoCQLSessionToQueryExecutor(session))
 
-    	    keyspace := connection.KeySpace(KeyspaceName)
+		    	    keyspace := connection.KeySpace(KeyspaceName)
 
-	 */
+	*/
 	return nil
 }
 
@@ -68,7 +68,7 @@ func (cb *CassandraBackend) GetRecipients(rcpts []string) (user_ids []string, er
 	consistency := gocql.Consistency(cb.config.ConsistencyLevel)
 	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
 	userTable = userTable.WithOptions(gocassa.Options{
-		TableName: "user_name",
+		TableName:   "user_name",
 		Consistency: &consistency,
 	})
 
@@ -94,14 +94,14 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 
 	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
 	rawMsgTable = rawMsgTable.WithOptions(gocassa.Options{
-		TableName: "raw_inbound_message",
+		TableName:   "raw_inbound_message",
 		Consistency: &consistency,
 	})
 
 	raw_uuid, err := gocql.RandomUUID()
 	m := rawMessageModel{
 		Raw_msg_id: raw_uuid,
-		Data: raw_email,
+		Data:       raw_email,
 	}
 	err = rawMsgTable.Set(m).Run()
 

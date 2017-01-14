@@ -109,7 +109,7 @@ func serve(cmd *cobra.Command, args []string) {
 	var b guerrilla.Backend
 	b = guerrilla.Backend(&lda)
 	app := guerrilla.New(&cmdConfig.AppConfig, &b)
-	go func(){
+	go func() {
 		err := app.Start()
 		if len(err) != 0 {
 			log.Infof("Error(s) at startup : ", err)

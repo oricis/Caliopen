@@ -4,8 +4,8 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	guerrilla "github.com/flashmob/go-guerrilla"
 	lda "github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp"
+	guerrilla "github.com/flashmob/go-guerrilla"
 )
 
 var versionCmd = &cobra.Command{

@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"net/smtp"
-	"time"
 	log "github.com/Sirupsen/logrus"
+	"net/smtp"
 	"sync"
+	"time"
 )
 
 const (
@@ -22,7 +22,7 @@ func lastWords(message string, err error) {
 func main() {
 	log.WithFields(log.Fields{"time": time.Now().Format(time.RFC3339Nano)}).Info("start sending mails")
 	wg := sync.WaitGroup{}
-	count := 10
+	count := 100
 	wg.Add(count)
 	for i := 0; i < count; i++ {
 		go sendMail(i, &wg)

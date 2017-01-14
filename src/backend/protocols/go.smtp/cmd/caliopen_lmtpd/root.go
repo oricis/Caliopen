@@ -8,8 +8,8 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "caliopen_lmtpd",
 	Short: "LMTP daemon",
-	Long: `LMTP daemon for the purpose of bridging the public MTA (postfix for ex.) to our local delivery agent.`,
-	Run: nil,
+	Long:  `LMTP daemon for the purpose of bridging the public MTA (postfix for ex.) to our local delivery agent.`,
+	Run:   nil,
 }
 
 var (

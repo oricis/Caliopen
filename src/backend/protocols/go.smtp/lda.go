@@ -4,17 +4,17 @@ package lda
 // store the raw email and give it to email lda via NATS topic « inboundSMTPEmail »
 
 import (
-	"github.com/flashmob/go-guerrilla"
-	"fmt"
-	"sync"
-	log "github.com/Sirupsen/logrus"
-	"time"
-	"github.com/nats-io/go-nats"
 	"crypto/md5"
-	"strings"
-	"io"
+	"fmt"
 	"github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp/backends"
+	log "github.com/Sirupsen/logrus"
+	"github.com/flashmob/go-guerrilla"
 	"github.com/hashicorp/go-multierror"
+	"github.com/nats-io/go-nats"
+	"io"
+	"strings"
+	"sync"
+	"time"
 )
 
 type CaliopenBackend interface {
@@ -24,18 +24,18 @@ type CaliopenBackend interface {
 }
 
 type CaliopenLDA struct {
-	Backend			*CaliopenBackend
-	config       		LDAConfig
-	deliveryMsgChan 	chan *messageDelivery
-	natsConn		*nats.Conn
-	wg          	 	sync.WaitGroup
+	Backend         *CaliopenBackend
+	config          LDAConfig
+	deliveryMsgChan chan *messageDelivery
+	natsConn        *nats.Conn
+	wg              sync.WaitGroup
 }
 
 type LDAConfig struct {
-	BackendName   		string                 	`json:"backend_name"`
-	BackendConfig 		map[string]interface{} 	`json:"backend_config"`
-	LogReceivedMails	bool			`json:"log_received_mails"`
-	NumberOfWorkers    	int  			`json:"lda_workers_size"`
+	BackendName      string                 `json:"backend_name"`
+	BackendConfig    map[string]interface{} `json:"backend_config"`
+	LogReceivedMails bool                   `json:"log_received_mails"`
+	NumberOfWorkers  int                    `json:"lda_workers_size"`
 }
 
 func (lda *CaliopenLDA) Initialize(config LDAConfig) error {
@@ -154,14 +154,14 @@ func (lda *CaliopenLDA) Process(mail *guerrilla.Envelope) guerrilla.BackendResul
 }
 
 type messageDelivery struct {
-	recipient		string
-	raw_email_id		string
-	deliveryNotify		chan *deliveryStatus
+	recipient      string
+	raw_email_id   string
+	deliveryNotify chan *deliveryStatus
 }
 
 type deliveryStatus struct {
-	err	error
-	hash	string
+	err  error
+	hash string
 }
 
 func (lda *CaliopenLDA) deliverWorker() {
