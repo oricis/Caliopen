@@ -24,7 +24,7 @@
                 "format": "int32",
                 "description": "number of tags found for user for the given parameters"
               },
-              "contacts": {
+              "tags": {
                 "type": "array",
                 "items": {
                   "$ref": "../objects/Tag.json"
@@ -46,14 +46,16 @@
         }
       ],
       "consumes": [
-        "application/x-www-form-urlencoded"
+        "application/json"
       ],
       "parameters": [
         {
-          "name": "name",
-          "in": "formData",
-          "type": "string",
-          "required": true
+          "name": "tag",
+          "in": "body",
+          "required": true,
+          "schema": {
+            "$ref": "../objects/NewTag.json"
+          }
         }
       ],
       "produces": [
