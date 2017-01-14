@@ -122,7 +122,7 @@ func (lda *CaliopenLDA) Process(mail *guerrilla.Envelope) guerrilla.BackendResul
 	var errs error
 	deliveries := 0
 	for _, localRcpt := range localRcpts {
-		go func() {
+		go func(localRcpt string) {
 			defer deliveryWG.Done()
 			deliveryNotify := make(chan *deliveryStatus)
 			lda.deliveryMsgChan <- &messageDelivery{localRcpt, raw_email_id, deliveryNotify}
@@ -140,7 +140,7 @@ func (lda *CaliopenLDA) Process(mail *guerrilla.Envelope) guerrilla.BackendResul
 				errs = multierror.Append(errs, err)
 				return
 			}
-		}()
+		}(localRcpt)
 	}
 	deliveryWG.Wait()
 
