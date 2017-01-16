@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Link from '../Link';
 import Button from '../Button';
 import Brand from '../Brand';
 import Title from '../Title';
@@ -11,7 +10,7 @@ class SignupForm extends Component {
     super(props);
     this.state = {
       props: {
-        passwordStrenght: '',
+        passwordStrenght: 'moderate',
       },
       errors: [],
     };
@@ -30,13 +29,13 @@ class SignupForm extends Component {
             </FormRow>
             {this.state.errors.length !== 0 && (
               <FormRow>
-                <FormColumn size="expand">
+                <FormColumn size="fluid">
                   <FieldErrors className="m-signup-form__errors" errors={this.state.errors} />
                 </FormColumn>
               </FormRow>
             )}
             <FormRow>
-              <FormColumn size="expand">
+              <FormColumn>
                 <TextFieldGroup
                   name="username"
                   placeholder="username"
@@ -56,13 +55,13 @@ class SignupForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn size="expand" className="m-signup-form__terms">
+              <FormColumn size="expand" className="m-signup-form__terms m-im-form__action">
                 <Switch label="I agree Terms and conditions" duplicateLabel />
               </FormColumn>
             </FormRow>
-            <FormRow className="m-signup-form__submit">
+            <FormRow>
               <FormColumn size="expand" className="m-im-form__action">
-                <Button type="submit" expanded plain> Submit</Button>
+                <Button type="submit" expanded plain>Create</Button>
               </FormColumn>
             </FormRow>
           </Fieldset>

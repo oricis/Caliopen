@@ -6,32 +6,36 @@ $switch_height: 2rem;
 
 .s-signup {
   @include flex-grid-row;
-  max-width: 380px;
-}
+  max-width: map_get($co-form__width, 'xlarge');
 
-.m-logo {
-  @include flex-grid-column(12);
-}
 
-.m-signup-form {
-  @include flex-grid-column(12);
-  padding: 30px;
-  background-color: $co-color__fg__back;
-
-  &__submit {
+  .m-logo {
+    @include flex-grid-column(12);
     text-align: center;
 
-    .m-link {
-      font-size: $co-font__size--small;
+    path {
+      fill: $co-color__fg__text--higher;
     }
   }
+}
+
+
+
+.m-signup-form {
+  @include flex-grid-column;
+  padding: $co-grid__gutter--small;
+  background-color: $co-color__fg__back;
 
   &__terms {
     @include flex-grid-row(collapse);
     margin: $co-margin 0;
+  }
 
-    .m-switch {
-      @include flex-grid-column(shrink);
-    }
+  .m-switch {
+    @include flex-grid-column(shrink);
+  }
+
+  @include breakpoint(medium) {
+    padding-right: 0;
   }
 }

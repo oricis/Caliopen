@@ -3,37 +3,72 @@
 @import '../../../styles/vendor/bootstrap_foundation-sites';
 
 
+$color-weak: map_get($caliopen-palette, 'alert');
+$color-moderate: map_get($caliopen-palette, 'warning');
+$color-strong: map_get($caliopen-palette, 'success');
+
 .m-passw-strenght {
-  @include flex-grid-row($size: expand);
 
-  &--weak {
-    color: $co-color__alert;
+  @include flex-grid-row;
 
-    .passwGuide {
-        @include flex-grid-column(1);
-        background-color: $co-color__alert;
-    }
+  &__row {
+    @include flex-grid-column(12);
   }
 
-  &--moderate {
-    color: $co-color__warning;
-
-    .passwGuide {
-        @include flex-grid-column(5);
-        background-color: $co-color__warning;
-    }
+  &__text {
+    padding-left: 20px;
+    font-size: $co-font__size--small;
+    font-weight: bold;
+    text-shadow: 0 0 1px $co-color__shadow;
+    text-transform: uppercase;
   }
 
-  &--strong {
-    color: $co-color__success;
-    .passwGuide {
-        @include flex-grid-column(expand);
-        background-color: $co-color__success;
-    }
+  &__graph {
+    @include flex-grid-row;
+    padding-left: 0!important;
   }
 
   i {
     @include flex-grid-column(shrink);
   }
 
+  &__guide {
+    @include flex-grid-column;
+    height: 3px;
+    margin-top: 5px;
+    padding-right: 0!important;
+    padding-left: 0!important;
+    background-color: $co-color__fg__back--lower;
+  }
+
+  &__bar {
+    height: 100%;
+  }
+
+  &--weak {
+    color: $color-weak;
+
+    .m-passw-strenght__bar {
+      width: 15%;
+      background-color: $color-weak;
+    }
+  }
+
+  &--moderate {
+    color: $color-moderate;
+
+    .m-passw-strenght__bar {
+      width: 50%;
+      background-color: $color-moderate;
+    }
+  }
+
+  &--strong {
+    color: $color-strong;
+
+    .m-passw-strenght__bar {
+      width: 100%;
+      background-color: $color-strong;
+    }
+  }
 }

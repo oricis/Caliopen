@@ -16,8 +16,15 @@ const PasswStrenght = ({ strenght, className }) => {
 
   return (
     <div className={passwordStrenghtClassName}>
-      <Icon type="lock" />
-      <div className="passwGuide" />
+      <div className="m-passw-strenght__row m-passw-strenght__graph">
+        <Icon type="lock" />
+        <div className="m-passw-strenght__guide">
+          <div className="m-passw-strenght__bar" />
+        </div>
+      </div>
+      <div className="m-passw-strenght__row">
+        <span className="m-passw-strenght__text">Password strengh is { strenght }</span>
+      </div>
     </div>
   );
 };

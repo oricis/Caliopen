@@ -1,8 +1,11 @@
 @import '../../styles/common';
 
 .m-logo {
-  max-width: 100%;
+  svg {
+    width: map-get($co-form__width, 'medium');
+  }
+
   path {
-    fill: $co-color__bg__text;
+    fill: $co-color__fg__text;
   }
 }

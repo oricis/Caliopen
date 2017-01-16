@@ -11,7 +11,8 @@ $co-component__spacing: .5rem;
 $co-form__width: (
   small:  10rem,  // 160 px
   medium: 13rem,  // 208 px
-  large:  16rem   // 256 px
+  large:  16rem,   // 256 px
+  xlarge: 320px,
 );
 
 $co-form__height: (
@@ -23,7 +24,8 @@ $co-form__height: (
 $co-form__spacing: (
   small: .625rem, // 10 px
   medium: .9375rem, // 15 px
-  large:  1.5625rem // 25 px
+  large:  1.5625rem, // 25 px
+  xlarge:  3.2rem, // 50 px
 );
 
 $co-grid__gutter: 30px;
