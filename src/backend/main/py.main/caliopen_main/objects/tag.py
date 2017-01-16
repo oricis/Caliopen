@@ -11,7 +11,9 @@ import logging
 log = logging.getLogger(__name__)
 
 
-class Tag(base.ObjectUser):
+class UserTag(base.ObjectUser):
+
+    """Tag related to an user."""
 
     _attrs = {
         'name': types.StringType,

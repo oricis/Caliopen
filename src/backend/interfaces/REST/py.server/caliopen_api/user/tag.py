@@ -12,7 +12,7 @@ from ..base.context import DefaultContext
 from caliopen_storage.config import Configuration
 from caliopen_storage.exception import NotFound
 from caliopen_main.user.core import Tag as CoreTag, User as CoreUser
-from caliopen_main.objects.tag import Tag as TagObject
+from caliopen_main.objects.tag import UserTag as UserTagObject
 from ..base import Api
 
 
@@ -63,7 +63,7 @@ class TagAPI(Api):
     def get(self):
         """Get a simgle user tag."""
         name = self.request.swagger_data["name"]
-        tag = TagObject(self.user.user_id, name=name)
+        tag = UserTagObject(self.user.user_id, name=name)
         tag.get_db()
         tag.unmarshall_db()
         return tag.marshall_json_dict()
@@ -72,7 +72,7 @@ class TagAPI(Api):
     def delete(self):
         """Delete an user tag."""
         name = self.request.swagger_data["name"]
-        tag = TagObject(self.user.user_id, name=name)
+        tag = UserTagObject(self.user.user_id, name=name)
         try:
             tag.get_db()
         except NotFound:
