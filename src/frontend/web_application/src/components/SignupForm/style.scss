@@ -2,16 +2,21 @@
 @import '../../styles/config/config';
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
-$switch_height : 2rem;
+$switch_height: 2rem;
 
-.m-account-creation-form {
+.s-signup {
+  @include flex-grid-row;
+  max-width: 380px;
+}
+
+.m-logo {
+  @include flex-grid-column(12);
+}
+
+.m-signup-form {
+  @include flex-grid-column(12);
+  padding: 30px;
   background-color: $co-color__fg__back;
-  max-width: map_get($co-form__width, 'large')*1.5;
-
-  &__brand {
-    margin: auto;
-    max-width: 13rem;
-  }
 
   &__submit {
     text-align: center;
@@ -27,10 +32,6 @@ $switch_height : 2rem;
 
     .m-switch {
       @include flex-grid-column(shrink);
-
-      &__duplicateLabel {
-        color: $co-color__bg__text;
-      }
     }
   }
 }
