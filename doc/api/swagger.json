@@ -4348,6 +4348,235 @@
           }
         }
       }
+    },
+    "/tags": {
+      "get": {
+        "description": "Returns tags visible to current user according to given parameters",
+        "tags": [
+          "tags"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Tags returned",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "number of tags found for user for the given parameters"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "user",
+                          "system"
+                        ]
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new Tag for an user",
+        "tags": [
+          "tags"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "tag",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "additionalProperties": false
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "User tag creation completed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "url to retrieve new tag's infos at /tags/{name}"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tags/{name}": {
+      "get": {
+        "description": "Retrieve tag infos",
+        "tags": [
+          "tags"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with json object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "user",
+                    "system"
+                  ]
+                },
+                "label": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a tag belonging to an user",
+        "tags": [
+          "tags"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful deletion"
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {
