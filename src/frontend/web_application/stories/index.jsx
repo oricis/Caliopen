@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook'; // eslint-disable-line
 import Badge from './components/Badge';
+import Brand from './components/Brand';
 import BlockList from './components/BlockList';
 import Button from './components/Button';
 import Subtitle from './components/Subtitle';
@@ -9,14 +10,17 @@ import ContactDetails from './components/ContactDetails';
 import Icon from './components/Icon';
 import Link from './components/Link';
 import AuthPage from './layouts/AuthPage';
+import SignupForm from './layouts/SignupForm';
 import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
 import RadioFieldGroup from './components/RadioFieldGroup';
 import SelectFieldGroup from './components/SelectFieldGroup';
+import PasswordStrenght from './components/PasswordStrenght';
 import Spinner from './components/Spinner';
 import Switch from './components/Switch';
 import TextFieldGroup from './components/TextFieldGroup';
 import TextList from './components/TextList';
+import Title from './components/Title';
 import Welcome from './Welcome';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
 
@@ -47,6 +51,9 @@ storiesOf('Buttons & Links', module)
   ));
 
 storiesOf('Icons & Avatars', module)
+.add('Brand', () => (
+  <Brand />
+))
   .add('ContactAvatarLetter', () => (
     <ContactAvatarLetter />
   ))
@@ -58,6 +65,9 @@ storiesOf('Icons & Avatars', module)
   ));
 
 storiesOf('Titles', module)
+  .add('Title', () => (
+    <Title />
+  ))
   .add('Subtitle', () => (
     <Subtitle />
   ));
@@ -72,6 +82,9 @@ storiesOf('Form', module)
   .add('TextFieldGroup', () => (
     <TextFieldGroup />
   ))
+  .add('PasswordStrenght', () => (
+    <PasswordStrenght />
+  ))
   .add('SelectFieldGroup', () => (
     <SelectFieldGroup />
   ))
@@ -80,8 +93,7 @@ storiesOf('Form', module)
   ))
   .add('Switch', () => (
     <Switch />
-  ))
-  ;
+  ));
 
 storiesOf('Contact', module)
   .add('ContactDetails', () => (
@@ -89,6 +101,9 @@ storiesOf('Contact', module)
   ));
 
 storiesOf('Auth', module)
+  .add('SignupForm', () => (
+    <SignupForm />
+  ))
   .add('AuthPage', () => (
     <AuthPage />
   ));

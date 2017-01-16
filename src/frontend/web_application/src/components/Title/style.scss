@@ -1,0 +1,27 @@
+@import '../../styles/common';
+
+$m-subtitle__height: $co-component__height !default;
+
+.m-title {
+  display: block;
+  margin-bottom: 1rem;
+  padding: 0 $co-margin;
+  line-height: $m-subtitle__height;
+  text-align: center;
+
+  &__text {
+    display: inline;
+    color: $co-color__fg__text--lower;
+    font-size: 1.2rem;
+    font-weight: normal;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  &--hr {
+    border-width: 1px 0;
+    border-style: solid;
+    border-color: $co-color__fg__border--lower;
+    background-color: lighten($co-color__bg__back--higher, 10%);
+  }
+}

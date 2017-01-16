@@ -1,0 +1,36 @@
+@import '../../styles/common';
+@import '../../styles/config/config';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+$switch_height : 2rem;
+
+.m-account-creation-form {
+  background-color: $co-color__fg__back;
+  max-width: map_get($co-form__width, 'large')*1.5;
+
+  &__brand {
+    margin: auto;
+    max-width: 13rem;
+  }
+
+  &__submit {
+    text-align: center;
+
+    .m-link {
+      font-size: $co-font__size--small;
+    }
+  }
+
+  &__terms {
+    @include flex-grid-row(collapse);
+    margin: $co-margin 0;
+
+    .m-switch {
+      @include flex-grid-column(shrink);
+
+      &__duplicateLabel {
+        color: $co-color__bg__text;
+      }
+    }
+  }
+}

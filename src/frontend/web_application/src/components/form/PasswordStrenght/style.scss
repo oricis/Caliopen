@@ -1,0 +1,39 @@
+@import '../../../styles/common';
+@import '../../../styles/config/config';
+@import '../../../styles/vendor/bootstrap_foundation-sites';
+
+
+.m-passw-strenght {
+  @include flex-grid-row($size: expand);
+
+  &--weak {
+    color: $co-color__alert;
+
+    .passwGuide {
+        @include flex-grid-column(1);
+        background-color: $co-color__alert;
+    }
+  }
+
+  &--moderate {
+    color: $co-color__warning;
+
+    .passwGuide {
+        @include flex-grid-column(5);
+        background-color: $co-color__warning;
+    }
+  }
+
+  &--strong {
+    color: $co-color__success;
+    .passwGuide {
+        @include flex-grid-column(expand);
+        background-color: $co-color__success;
+    }
+  }
+
+  i {
+    @include flex-grid-column(shrink);
+  }
+
+}
