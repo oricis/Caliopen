@@ -54,7 +54,7 @@ class TagAPI(Api):
         user_tags = user.tags
         tags = []
         for tag in sys_tags:
-            tags.append({'name': tag['label'], 'type': 'system'})
+            tags.append({'name': tag['name'], 'type': 'system'})
         for tag in user_tags:
             tags.append({'name': tag.name, 'type': 'user'})
         return {'tags': tags, 'count': len(tags)}
