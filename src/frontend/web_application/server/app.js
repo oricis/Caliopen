@@ -3,6 +3,7 @@ const applySSR = require('./ssr');
 const applyAssets = require('./assets');
 const applyAuth = require('./auth');
 const applyConfig = require('./config');
+const applyError = require('./error');
 
 const app = express();
 
@@ -13,5 +14,6 @@ applyConfig(app);
 applyAssets(app);
 applyAuth(app);
 applySSR(app);
+applyError(app);
 
 module.exports = app;

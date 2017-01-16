@@ -1,7 +1,6 @@
 const path = require('path');
-const baseConfig = require('../webpack/config.js');
 
-const config = Object.assign(baseConfig.getBase('browser'), {
+const config = Object.assign({}, {
   module: {
     loaders: [
       {

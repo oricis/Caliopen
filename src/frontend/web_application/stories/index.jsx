@@ -8,6 +8,7 @@ import ContactAvatarLetter from './components/ContactAvatarLetter';
 import ContactDetails from './components/ContactDetails';
 import Icon from './components/Icon';
 import Link from './components/Link';
+import AuthPage from './layouts/AuthPage';
 import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
 import RadioFieldGroup from './components/RadioFieldGroup';
@@ -85,4 +86,9 @@ storiesOf('Form', module)
 storiesOf('Contact', module)
   .add('ContactDetails', () => (
     <ContactDetails />
+  ));
+
+storiesOf('Auth', module)
+  .add('AuthPage', () => (
+    <AuthPage />
   ));
