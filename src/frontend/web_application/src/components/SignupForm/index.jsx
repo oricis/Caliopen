@@ -10,7 +10,7 @@ class SignupForm extends Component {
     super(props);
     this.state = {
       props: {
-        passwordStrenght: 'moderate',
+        passwordStrenght: '',
       },
       errors: [],
     };

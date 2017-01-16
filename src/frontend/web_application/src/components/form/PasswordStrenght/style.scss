@@ -10,6 +10,7 @@ $color-strong: map_get($caliopen-palette, 'success');
 .m-passw-strenght {
 
   @include flex-grid-row;
+  margin: 0 0 map-get($co-form__spacing, 'medium');
 
   &__row {
     @include flex-grid-column(12);

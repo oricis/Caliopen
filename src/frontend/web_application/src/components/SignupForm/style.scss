@@ -20,25 +20,13 @@ $switch_height: 2rem;
 
 }
 
-
-
 .m-signup-form {
   @include flex-grid-column;
   padding: $co-grid__gutter--small;
   background-color: $co-color__fg__back;
 
   &__terms {
-    margin: $co-margin 0;
-
-  }
-
-  .m-switch {
-
-    &__label {
-
-    }
-
-
+    margin: 0 0 map-get($co-form__spacing, 'medium');
   }
 
   @include breakpoint(medium) {
