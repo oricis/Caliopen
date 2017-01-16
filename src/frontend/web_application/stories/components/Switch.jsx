@@ -8,14 +8,13 @@ class Presenter extends Component {
     return (
       <div>
         <ComponentWrapper size="tall">
-          <Switch label="Foobar (displayed for SR)" />
+          <Switch label="Foobar (displayed for SR)" duplicateLabel />
         </ComponentWrapper>
         <Code>
           {`
 import { Switch } from './src/components/form';
-
 export default () => (
-  <Switch label="Foobar (displayed for SR)" />
+  <Switch label="Foobar (displayed for SR)" duplicateLabel />
 );
           `}
         </Code>

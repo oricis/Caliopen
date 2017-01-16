@@ -18,7 +18,7 @@ const Switch = ({ label, duplicateLabel, ...inputProps }) => {
           <span className="show-for-sr">{label}</span>
         </label>
       </div>
-      { duplicateLabel && <label htmlFor={id} className="m-switch__duplicateLabel">{label}</label> }
+      { duplicateLabel && <label htmlFor={id} className="m-switch__label">{label}</label> }
     </div>
   );
 };

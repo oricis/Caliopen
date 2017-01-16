@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import './style.scss';
 
-const Brand = ({ className,  }) => (
+const Brand = ({ className }) => (
 
   <div className={classnames('m-logo', className)}>
     <svg viewBox="0 0 841.89 595.28">
