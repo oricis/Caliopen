@@ -1,5 +1,4 @@
 @import '../../styles/common';
-@import '../../styles/config/config';
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 $switch_height: 2rem;
@@ -7,7 +6,6 @@ $switch_height: 2rem;
 .s-signup {
   @include flex-grid-row;
   max-width: map_get($co-form__width, 'xlarge');
-
 
   .m-logo {
     @include flex-grid-column(12);

@@ -23,7 +23,7 @@ const PasswStrenght = ({ strenght, className }) => {
         </div>
       </div>
       <div className="m-passw-strenght__row">
-        <span className="m-passw-strenght__text">Password strengh is { strenght }</span>
+        <span className="m-passw-strenght__text">This password is { strenght }</span>
       </div>
     </div>
   );

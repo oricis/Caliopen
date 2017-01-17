@@ -1,6 +1,6 @@
 @mixin o-form-element {
   display: inline-block;
-  padding: ($co-margin / 2) ($co-margin / 2);
+  padding: ($co-margin / 2);
   border: 0;
 
   @if has-value($co-animation__box-transition) {
@@ -20,16 +20,16 @@
 
   // ::placeholder
   &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: $co-color__fg__text--lower;
+    color: rgba($co-color__fg__text--lower, 0.8);
   }
   &::-moz-placeholder { /* Firefox 19+ */
-    color: $co-color__fg__text--lower;
+    color: rgba($co-color__fg__text--lower, 0.8);
   }
   &:-ms-input-placeholder { /* IE 10+ */
-    color: $co-color__fg__text--lower;
+    color: rgba($co-color__fg__text--lower, 0.8);
   }
   &:-moz-placeholder { /* Firefox 18- */
-    color: $co-color__fg__text--lower;
+    color: rgba($co-color__fg__text--lower, 0.8);
   }
 
 }

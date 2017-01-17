@@ -23,13 +23,13 @@ class SignupForm extends Component {
         <FormGrid className="m-signup-form" name="ac_form">
           <Fieldset>
             <FormRow>
-              <FormColumn size="expand">
+              <FormColumn>
                 <Title>Create your account</Title>
               </FormColumn>
             </FormRow>
             {this.state.errors.length !== 0 && (
               <FormRow>
-                <FormColumn size="fluid">
+                <FormColumn>
                   <FieldErrors className="m-signup-form__errors" errors={this.state.errors} />
                 </FormColumn>
               </FormRow>
@@ -38,15 +38,19 @@ class SignupForm extends Component {
               <FormColumn>
                 <TextFieldGroup
                   name="username"
+                  label="Username"
                   placeholder="username"
+                  showLabelforSr
                 />
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn size="expand">
+              <FormColumn>
                 <TextFieldGroup
                   name="password"
+                  label="password"
                   placeholder="password"
+                  showLabelforSr
                   type="password"
                 />
                 {this.state.props.passwordStrenght.length !== 0 && (
@@ -55,12 +59,12 @@ class SignupForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn size="expand" className="m-signup-form__terms m-im-form__action">
+              <FormColumn className="m-signup-form__terms m-im-form__action">
                 <Switch label="I agree Terms and conditions" duplicateLabel />
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn size="expand" className="m-im-form__action">
+              <FormColumn className="m-im-form__action">
                 <Button type="submit" expanded plain>Create</Button>
               </FormColumn>
             </FormRow>

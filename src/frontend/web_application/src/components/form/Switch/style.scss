@@ -22,5 +22,6 @@ $switch-height: 2rem !default;
   &__label {
     padding-left: $co-grid__gutter--small;
     font-size: .9rem;
+    font-weight: 600;
   }
 }
