@@ -19,7 +19,7 @@ class SignupForm extends Component {
   render() {
     return (
       <div className="s-signup">
-        <Brand />
+        <Brand className="s-signup__brand" />
         <FormGrid className="m-signup-form" name="ac_form">
           <Fieldset>
             <FormRow>

@@ -7,13 +7,9 @@ $switch_height: 2rem;
   @include flex-grid-row;
   max-width: map_get($co-form__width, 'xlarge');
 
-  .m-logo {
-    @include flex-grid-column(12);
+  &__brand {
+    @include flex-grid-column;
     text-align: center;
-
-    path {
-      fill: $co-color__fg__text--higher;
-    }
   }
 
 }

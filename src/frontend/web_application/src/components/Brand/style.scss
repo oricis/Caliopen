@@ -1,11 +1,23 @@
 @import '../../styles/common';
 
-.m-logo {
+.m-brand {
   svg {
-    width: map-get($co-form__width, 'medium');
+    width: $co-brand-width;
   }
 
   path {
     fill: $co-color__fg__text;
+  }
+
+  &--high {
+    path {
+      fill: $co-color__fg__text--high;
+    }
+  }
+
+  &--low {
+    path {
+      fill: $co-color__fg__text--lower;
+    }
   }
 }
