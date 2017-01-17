@@ -4,26 +4,30 @@
 $switch_height: 2rem;
 
 .s-signup {
-  @include flex-grid-row;
   max-width: map_get($co-form__width, 'xlarge');
 
   &__brand {
-    @include flex-grid-column;
     text-align: center;
   }
 
-}
+  &__form {
+    padding: map-get($co-form__spacing, 'large') map-get($co-form__spacing, 'medium');
+    background-color: $co-color__fg__back;
 
-.m-signup-form {
-  @include flex-grid-column;
-  padding: $co-grid__gutter--small;
-  background-color: $co-color__fg__back;
+    @include breakpoint(medium) {
+      padding-right: 0;
+    }
+
+  }
+
+  &__title {
+    margin-bottom: map-get($co-form__spacing, 'medium');
+    text-align: center;
+  }
 
   &__terms {
-    margin: 0 0 map-get($co-form__spacing, 'medium');
+    margin-bottom: map-get($co-form__spacing, 'medium');
   }
 
-  @include breakpoint(medium) {
-    padding-right: 0;
-  }
+
 }

@@ -4,10 +4,7 @@ $m-title__height: $co-component__height !default;
 
 .m-title {
   display: block;
-  margin-bottom: 1rem;
-  padding: 0;
   line-height: $m-title__height;
-  text-align: center;
 
   &__text {
     display: inline;
