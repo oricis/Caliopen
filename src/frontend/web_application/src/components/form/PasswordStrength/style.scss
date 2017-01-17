@@ -2,55 +2,45 @@
 @import '../../../styles/config/config';
 @import '../../../styles/vendor/bootstrap_foundation-sites';
 
+// Graph presets
+$bar-width-weak: 15%;
+$bar-width-moderate: 50%;
+$bar-width-strong: 100%;
+
+$bar-height: 3px;
+$bar-margin: 7px;
 
 $color-weak: map_get($caliopen-palette, 'alert');
 $color-moderate: map_get($caliopen-palette, 'warning');
 $color-strong: map_get($caliopen-palette, 'success');
 
-.m-passw-strenght {
 
-  @include flex-grid-row;
-  margin: 0 0 map-get($co-form__spacing, 'medium');
-
-  &__row {
-    @include flex-grid-column(12);
-  }
-
-  &__text {
-    padding-left: 30px;
-    font-size: $co-font__size--small;
-    font-weight: 700;
-    text-shadow: 0 0 1px $co-color__shadow;
-    text-transform: uppercase;
-  }
+.m-password-strength {
 
   &__graph {
     @include flex-grid-row;
-    padding-left: 0 !important;
   }
 
-  i {
+  &__icon {
     @include flex-grid-column(shrink);
   }
 
   &__guide {
-    @include flex-grid-column;
-    height: 3px;
-    margin-top: 5px;
-    padding-right: 0 !important;
-    padding-left: 0 !important;
+    @include flex-grid-size;
+    height: $bar-height;
+    margin-top: $bar-margin;
     background-color: $co-color__fg__back--lower;
   }
 
   &__bar {
-    height: 100%;
+    height: $bar-height;
   }
 
   &--weak {
     color: $color-weak;
 
-    .m-passw-strenght__bar {
-      width: 15%;
+    .m-password-strength__bar {
+      width: $bar-width-weak;
       background-color: $color-weak;
     }
   }
@@ -58,8 +48,8 @@ $color-strong: map_get($caliopen-palette, 'success');
   &--moderate {
     color: $color-moderate;
 
-    .m-passw-strenght__bar {
-      width: 50%;
+    .m-password-strength__bar {
+      width: $bar-width-moderate;
       background-color: $color-moderate;
     }
   }
@@ -67,9 +57,18 @@ $color-strong: map_get($caliopen-palette, 'success');
   &--strong {
     color: $color-strong;
 
-    .m-passw-strenght__bar {
-      width: 100%;
+    .m-password-strength__bar {
+      width: $bar-width-strong;
       background-color: $color-strong;
     }
   }
+
+  &__text {
+    padding-left: map-get($co-form__spacing, 'xlarge');;
+    font-size: $co-font__size--small;
+    font-weight: 700;
+    text-shadow: 0 0 1px $co-color__shadow;
+    text-transform: uppercase;
+  }
+
 }

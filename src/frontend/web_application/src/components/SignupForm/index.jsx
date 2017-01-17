@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Button from '../Button';
 import Brand from '../Brand';
 import Title from '../Title';
-import { Fieldset, TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrenght, Switch, FieldErrors } from '../form';
+import { Fieldset, TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, Switch, FieldErrors } from '../form';
 import './style.scss';
 
 class SignupForm extends Component {
@@ -10,7 +10,7 @@ class SignupForm extends Component {
     super(props);
     this.state = {
       props: {
-        passwordStrenght: '',
+        passwordStrength: '',
       },
       errors: [],
     };
@@ -53,8 +53,8 @@ class SignupForm extends Component {
                   showLabelforSr
                   type="password"
                 />
-                {this.state.props.passwordStrenght.length !== 0 && (
-                  <PasswordStrenght strenght={this.state.props.passwordStrenght} />
+                {this.state.props.passwordStrength.length !== 0 && (
+                  <PasswordStrength strength={this.state.props.passwordStrength} />
                 )}
               </FormColumn>
             </FormRow>

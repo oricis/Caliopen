@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import { PasswordStrenght } from '../../src/components/form';
+import { PasswordStrength } from '../../src/components/form';
 import { Code, ComponentWrapper } from '../presenters';
 
 class Presenter extends Component {
@@ -8,7 +8,7 @@ class Presenter extends Component {
     super(props);
     this.state = {
       props: {},
-      passwordStrenght: 'strong',
+      passwordStrength: 'strong',
     };
     this.handlePropsChanges = this.handlePropsChanges.bind(this);
   }
@@ -27,19 +27,19 @@ class Presenter extends Component {
   render() {
     const handleInputChange = (event) => {
       this.setState({
-        passwordStrenght: event.target.value,
+        passwordStrength: event.target.value,
       });
     };
 
     return (
       <div>
         <ComponentWrapper>
-          <PasswordStrenght strenght={this.state.passwordStrenght} />
+          <PasswordStrength strength={this.state.passwordStrength} />
         </ComponentWrapper>
         <ul>
           <li>
-            <label>Password Strenght</label>
-            <select name="passwordStrenght" onChange={handleInputChange}>
+            <label>Password Strength</label>
+            <select name="passwordStrength" onChange={handleInputChange}>
               <option value="strong">Strong</option>
               <option value="moderate">Moderate</option>
               <option value="weak">Weak</option>
@@ -48,8 +48,8 @@ class Presenter extends Component {
         </ul>
         <Code>
           {`
-import PasswordStrenght from './src/components/PasswordStrenght';
-export default () => (<PasswordStrenght strenght={ strenght } />);
+import PasswordStrength from './src/components/PasswordStrength';
+export default () => (<PasswordStrength strength={ strength } />);
           `}
         </Code>
       </div>

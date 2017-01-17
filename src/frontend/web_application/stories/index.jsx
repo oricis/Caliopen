@@ -15,7 +15,7 @@ import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
 import RadioFieldGroup from './components/RadioFieldGroup';
 import SelectFieldGroup from './components/SelectFieldGroup';
-import PasswordStrenght from './components/PasswordStrenght';
+import PasswordStrength from './components/PasswordStrength';
 import Spinner from './components/Spinner';
 import Switch from './components/Switch';
 import TextFieldGroup from './components/TextFieldGroup';
@@ -82,8 +82,8 @@ storiesOf('Form', module)
   .add('TextFieldGroup', () => (
     <TextFieldGroup />
   ))
-  .add('PasswordStrenght', () => (
-    <PasswordStrenght />
+  .add('PasswordStrength', () => (
+    <PasswordStrength />
   ))
   .add('SelectFieldGroup', () => (
     <SelectFieldGroup />

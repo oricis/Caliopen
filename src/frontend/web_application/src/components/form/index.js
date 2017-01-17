@@ -3,7 +3,7 @@ import FieldErrors from './FieldErrors';
 import Fieldset, { Legend } from './Fieldset';
 import FormGrid, { FormRow, FormColumn } from './FormGrid';
 import InputText from './InputText';
-import PasswordStrenght from './PasswordStrenght';
+import PasswordStrength from './PasswordStrength';
 import RadioFieldGroup from './RadioFieldGroup';
 import SelectFieldGroup from './SelectFieldGroup';
 import Switch from './Switch';
@@ -20,7 +20,7 @@ export {
   FormColumn,
   InputText,
   RadioFieldGroup,
-  PasswordStrenght,
+  PasswordStrength,
   SelectFieldGroup,
   Switch,
   TextFieldGroup,
