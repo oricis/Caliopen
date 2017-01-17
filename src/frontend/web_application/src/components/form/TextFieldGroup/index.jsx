@@ -13,19 +13,18 @@ const TextFieldGroup = ({
   ...inputProps
 }) => {
   const id = uuidV1();
-  let errorClass = false;
+
+  const hasError = errors.length > 0;
+
   const labelClassName = classnames('m-text-field-group__label', {
     'show-for-sr': showLabelforSr,
   });
 
-  if (errors.length > 0) { errorClass = true; }
-
   return (
     <div className={classnames('m-text-field-group', className)}>
-
       <label htmlFor={id} className={labelClassName}>{label}</label>
       <InputText
-        id={id} expanded={expanded} errorClass={errorClass}
+        id={id} expanded={expanded} hasError={hasError}
         {...inputProps}
       />
       { errors.length > 0 && (

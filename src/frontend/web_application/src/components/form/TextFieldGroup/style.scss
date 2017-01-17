@@ -8,17 +8,6 @@
   }
 
   &__errors {
-    position: relative;
     margin-top: -(map-get($co-form__spacing, 'medium'));
   }
-}
-
-.m-field-errors {
-  background: none;
-  border: 0;
-  color:  map-get($caliopen-palette, 'alert');
-  text-transform: uppercase;
-  font-weight: 700;
-  line-height: 1;
-  padding-left: 0;
 }

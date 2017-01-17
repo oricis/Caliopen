@@ -57,7 +57,7 @@ class Presenter extends Component {
         </ComponentWrapper>
         <ul>
           <li><label><input type="checkbox" name="showLabelforSr" checked={this.state.props.showLabelforSr} onChange={this.handlePropsChanges} /> Show Label for SR</label></li>
-          <li><label><input type="checkbox" name="error" checked={this.state.props.error} onChange={this.handleHasError} /> Show errors</label></li>
+          <li><label><input type="checkbox" name="error" checked={this.state.props.error} onChange={this.handleHasError} /> hasError</label></li>
         </ul>
         <Code>
           {`
