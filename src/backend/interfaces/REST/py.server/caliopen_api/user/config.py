@@ -17,3 +17,6 @@ def includeme(config):
 
     log.debug('Loading contact API')
     config.scan('caliopen_api.user.contact')
+
+    log.debug('Loading tag API')
+    config.scan('caliopen_api.user.tag')

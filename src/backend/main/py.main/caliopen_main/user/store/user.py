@@ -63,9 +63,8 @@ class Tag(BaseModel):
     """User tags model."""
 
     user_id = columns.UUID(primary_key=True)
-    label = columns.Text(primary_key=True)
-    background = columns.Text()
-    color = columns.Text()
+    name = columns.Text(primary_key=True)
+    date_insert = columns.DateTime()
 
 
 class FilterRule(BaseModel):

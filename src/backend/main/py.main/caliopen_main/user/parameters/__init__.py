@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .user import NewUser, User, Tag, NewRule
+from .user import NewUser, User, NewTag, Tag, NewRule
 
 from .types import InternetAddressType, PhoneNumberType
 
@@ -13,7 +13,7 @@ from .contact import NewContact, Contact, ShortContact
 
 __all__ = [
     'InternetAddressType', 'PhoneNumberType',
-    'NewUser', 'User', 'Tag', 'NewRule',
+    'NewUser', 'User', 'NewTag', 'Tag', 'NewRule',
     'Recipient', 'NewOrganization', 'Organization',
     'NewPostalAddress', 'PostalAddress',
     'NewEmail', 'Email', 'NewIM', 'IM', 'NewPhone', 'Phone',

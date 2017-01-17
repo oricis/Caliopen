@@ -41,7 +41,7 @@ class Tag(BaseUserCore):
     """Tag core object."""
 
     _model_class = ModelTag
-    _pkey_name = 'label'
+    _pkey_name = 'name'
 
 
 class FilterRule(BaseUserCore):
@@ -150,10 +150,6 @@ class User(BaseCore):
             core.save()
         # Create counters
         Counter.create(user_id=core.user_id)
-        # Create default tags
-        default_tags = Configuration('global').get('system.default_tags')
-        for tag in default_tags:
-            Tag.create(core, **tag)
         return core
 
     @classmethod
@@ -229,7 +225,7 @@ class User(BaseCore):
 
     @property
     def tags(self):
-        """Tag objects realted to an user"""
+        """Tag objects related to an user"""
         objs = Tag._model_class.filter(user_id=self.user_id)
         return [Tag(x) for x in objs]
 
