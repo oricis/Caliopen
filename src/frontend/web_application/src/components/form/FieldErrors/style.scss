@@ -1,8 +1,8 @@
 @import '../../../styles/common';
 
 .m-field-errors {
-  padding-top: map-get($co-form__spacing, 'xsmall');
   list-style: none;
+  padding-top: map-get($co-form__spacing, 'xsmall');
   color:  map-get($caliopen-palette, 'alert');
   font-size: $co-font__size--small;
   font-weight: 700;
