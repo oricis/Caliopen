@@ -18,10 +18,4 @@ $switch-height: 2rem !default;
     @include switch-paddle;
     background-color: $co-color__fg__back--lower;
   }
-
-  &__label {
-    padding-left: $co-grid__gutter--small;
-    font-size: .9rem;
-    font-weight: 600;
-  }
 }

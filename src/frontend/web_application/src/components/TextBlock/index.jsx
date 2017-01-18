@@ -21,9 +21,8 @@ const TextBlock = ({ inline, size, weight, className, ...props }) => {
 TextBlock.propTypes = {
   inline: PropTypes.bool,
   className: PropTypes.string,
-  size: PropTypes.string,
-  weight: PropTypes.string,
-
+  size: PropTypes.oneOf(['small']),
+  weight: PropTypes.oneOf(['strong']),
 };
 
 export default TextBlock;
