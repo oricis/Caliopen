@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Caliopen contact parameters classes."""
+"""Caliopen User tag parameters classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
 import types
-import datetime
 from caliopen_main.objects import base
 from caliopen_main.user.store.user import Tag as ModelTag
 
@@ -16,12 +15,12 @@ class UserTag(base.ObjectUser):
     """Tag related to an user."""
 
     _attrs = {
+        'tag_id': types.StringType,
         'name': types.StringType,
-        'type': types.StringType,
-        'date_insert': datetime.datetime}
+        'type': types.StringType}
 
     _model_class = ModelTag
-    _pkey_name = 'name'
+    _pkey_name = 'tag_id'
 
     def delete_db(self):
         """Delete a tag in store."""

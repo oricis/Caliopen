@@ -63,7 +63,9 @@ class Tag(BaseModel):
     """User tags model."""
 
     user_id = columns.UUID(primary_key=True)
-    name = columns.Text(primary_key=True)
+    tag_id = columns.UUID(primary_key=True, default=uuid.uuid4)
+    name = columns.Text()
+    type = columns.Text()
     date_insert = columns.DateTime()
 
 
