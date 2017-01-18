@@ -37,7 +37,7 @@ class SignupForm extends Component {
                 name="username"
                 label="Username"
                 placeholder="username"
-                errors={['lol']}
+                // errors={['lol']}
                 showLabelforSr
               />
             </FormColumn>
