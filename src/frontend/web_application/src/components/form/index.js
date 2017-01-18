@@ -7,6 +7,7 @@ import PasswordStrength from './PasswordStrength';
 import RadioFieldGroup from './RadioFieldGroup';
 import SelectFieldGroup from './SelectFieldGroup';
 import Switch from './Switch';
+import SwitchFieldGroup from './SwitchFieldGroup';
 import TextFieldGroup from './TextFieldGroup';
 import TextareaFieldGroup from './TextareaFieldGroup';
 
@@ -22,6 +23,7 @@ export {
   RadioFieldGroup,
   PasswordStrength,
   SelectFieldGroup,
+  SwitchFieldGroup,
   Switch,
   TextFieldGroup,
   TextareaFieldGroup,

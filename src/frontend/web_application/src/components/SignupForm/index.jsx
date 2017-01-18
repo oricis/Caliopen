@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Button from '../Button';
 import Brand from '../Brand';
 import Title from '../Title';
-import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, Switch, FieldErrors } from '../form';
+import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, SwitchFieldGroup, FieldErrors } from '../form';
 import './style.scss';
 
 class SignupForm extends Component {
@@ -26,7 +26,7 @@ class SignupForm extends Component {
           </FormRow>
           {this.state.errors.length !== 0 && (
           <FormRow>
-            <FormColumn fluid >
+            <FormColumn fluid>
               <FieldErrors className="s-signup__global-errors" errors={this.state.errors} />
             </FormColumn>
           </FormRow>
@@ -37,7 +37,6 @@ class SignupForm extends Component {
                 name="username"
                 label="Username"
                 placeholder="username"
-                errors={['test']}
                 showLabelforSr
               />
             </FormColumn>
@@ -58,7 +57,7 @@ class SignupForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn className="s-signup__terms m-im-form__action">
-              <Switch label="I agree Terms and conditions" duplicateLabel />
+              <SwitchFieldGroup label="I agree Terms and conditions" />
             </FormColumn>
           </FormRow>
           <FormRow>
