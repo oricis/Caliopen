@@ -2,9 +2,10 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import './style.scss';
 
-export const FormColumn = ({ className, size, fluid = false, ...props }) => {
+export const FormColumn = ({ className, bottomSpace, size, fluid = false, ...props }) => {
   const colClassName = classnames('m-form-grid__column', {
     'm-form-grid__column--fluid': fluid,
+    'm-form-grid__column--bottom-space': bottomSpace,
     'm-form-grid__column--shrink': size === 'shrink',
     'm-form-grid__column--small': size === 'small',
     'm-form-grid__column--medium': size === 'medium',
@@ -20,6 +21,7 @@ FormColumn.propTypes = {
   className: PropTypes.string,
   size: PropTypes.oneOf(['shrink', 'small', 'medium', 'large']),
   fluid: PropTypes.bool,
+  bottomSpace: PropTypes.bool,
 };
 
 export const FormRow = ({ className, ...props }) => (

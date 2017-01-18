@@ -20,29 +20,30 @@ class SignupForm extends Component {
         <Brand className="s-signup__brand" />
         <FormGrid className="s-signup__form" name="ac_form">
           <FormRow>
-            <FormColumn className="s-signup__title" fluid>
+            <FormColumn className="s-signup__title" bottomSpace>
               <Title>Create your account</Title>
             </FormColumn>
           </FormRow>
           {this.state.errors.length !== 0 && (
           <FormRow>
-            <FormColumn fluid>
+            <FormColumn bottomSpace>
               <FieldErrors className="s-signup__global-errors" errors={this.state.errors} />
             </FormColumn>
           </FormRow>
           )}
           <FormRow>
-            <FormColumn fluid >
+            <FormColumn bottomSpace >
               <TextFieldGroup
                 name="username"
                 label="Username"
                 placeholder="username"
+                errors={['prout']}
                 showLabelforSr
               />
             </FormColumn>
           </FormRow>
           <FormRow>
-            <FormColumn>
+            <FormColumn bottomSpace>
               <TextFieldGroup
                 name="password"
                 label="password"
@@ -56,7 +57,7 @@ class SignupForm extends Component {
             </FormColumn>
           </FormRow>
           <FormRow>
-            <FormColumn className="s-signup__terms m-im-form__action">
+            <FormColumn bottomSpace>
               <SwitchFieldGroup label="I agree Terms and conditions" showTextLabel />
             </FormColumn>
           </FormRow>
