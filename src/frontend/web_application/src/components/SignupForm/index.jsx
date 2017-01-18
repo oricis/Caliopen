@@ -57,7 +57,7 @@ class SignupForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn className="s-signup__terms m-im-form__action">
-              <SwitchFieldGroup label="I agree Terms and conditions" />
+              <SwitchFieldGroup label="I agree Terms and conditions" showTextLabel />
             </FormColumn>
           </FormRow>
           <FormRow>

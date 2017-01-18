@@ -1,6 +1,7 @@
+@import '../../styles/common';
+
 .m-text-block {
   display: block;
-
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -8,4 +9,14 @@
   &--inline {
     display: inline-block;
   }
+
+  &--small {
+    font-size: $co-font__size--small;
+    line-height: $co-font__size--small;
+  }
+
+  &--strong {
+    font-weight: 700;
+  }
+
 }
