@@ -7,7 +7,6 @@ const router = new Router();
 const FORM_PROPS = { action: '/auth/login', method: 'POST' };
 
 const getDevInfos = config => ({
-  hasInstanceInfo: Object.keys(config.instanceInfo).length > 0,
   version: config.version,
   login: config.instanceInfo.login,
   password: config.instanceInfo.password,

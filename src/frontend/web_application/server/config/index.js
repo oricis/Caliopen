@@ -12,7 +12,7 @@ module.exports = (app) => {
   app.engine('component', createEngine({
     'login.component': Login,
     'error.component': Error,
-  }));
+  }, config));
 
   app.use((req, res, next) => {
     req.config = config;

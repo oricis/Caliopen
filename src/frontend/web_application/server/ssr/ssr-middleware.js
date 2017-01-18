@@ -4,14 +4,14 @@ const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 const ReactRouter = require('react-router');
 const Provider = require('react-redux').Provider;
-const getRoutes = require('../../src/routes').default;
+const getRoutes = require('./components/routes').default;
 const configureStore = require('../../src/store/configure-store').default;
 
 const isDev = process.env.NODE_ENV === 'development';
 
 const config = {
-  styles: isDev ? ['/build/style.css'] : ['/public/style.css'],
-  scripts: isDev ? ['/build/bundle.js'] : ['/public/bundle.js'],
+  styles: isDev ? ['/build/client.css'] : ['/assets/client.css'],
+  scripts: isDev ? ['/build/bundle.js'] : ['/bundle.js'],
 };
 
 /**
