@@ -17,17 +17,10 @@ $switch_height: 2rem;
     @include breakpoint(medium) {
       padding-right: 0;
     }
-
   }
 
   &__title {
-    margin-bottom: map-get($co-form__spacing, 'medium');
     text-align: center;
   }
-
-  &__terms {
-    margin-bottom: map-get($co-form__spacing, 'medium');
-  }
-
 
 }

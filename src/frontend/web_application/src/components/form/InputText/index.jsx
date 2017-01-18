@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import './style.scss';
 
-const InputText = ({ expanded, theme, bottomSpace = true, className, hasError, ...props }) => {
+const InputText = ({ expanded, theme, bottomSpace, className, hasError, ...props }) => {
   const inputTextClassName = classnames(
     'm-input-text',
     {
