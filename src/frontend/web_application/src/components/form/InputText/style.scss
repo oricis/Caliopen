@@ -11,6 +11,16 @@
 
   &--light { @include o-form-element--light; }
   &--expanded { width: 100%; }
+
+  &--error {
+    background: $co-color__alert;
+    color: $co-color__fg__text;
+
+    &:focus {
+      background-color: $co-color__alert;
+      color: $co-color__fg__text;
+    }
+  }
   &--bottom-space { margin: 0 0 map-get($co-form__spacing, 'medium'); }
 }
 

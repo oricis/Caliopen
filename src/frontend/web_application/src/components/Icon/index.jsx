@@ -19,6 +19,7 @@ export const typeAssoc = {
   edit: 'fa fa-edit',
   check: 'fa fa-check',
   key: 'fa fa-key',
+  lock: 'fa fa-lock',
   'info-circle': 'fa fa-info-circle',
   remove: 'fa fa-remove',
   plug: 'fa fa-plug',

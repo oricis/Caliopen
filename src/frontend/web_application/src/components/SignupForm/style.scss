@@ -1,0 +1,33 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+$switch_height: 2rem;
+
+.s-signup {
+  max-width: map_get($co-form__width, 'xlarge');
+
+  &__brand {
+    text-align: center;
+  }
+
+  &__form {
+    padding: map-get($co-form__spacing, 'large') map-get($co-form__spacing, 'medium');
+    background-color: $co-color__fg__back;
+
+    @include breakpoint(medium) {
+      padding-right: 0;
+    }
+
+  }
+
+  &__title {
+    margin-bottom: map-get($co-form__spacing, 'medium');
+    text-align: center;
+  }
+
+  &__terms {
+    margin-bottom: map-get($co-form__spacing, 'medium');
+  }
+
+
+}

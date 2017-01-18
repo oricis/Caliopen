@@ -13,7 +13,7 @@ $co-color__secondary--high:           lighten($co-color__secondary, 10%);
 $co-color__secondary--higher:         lighten($co-color__secondary, 15%);
 
 // semantic
-$co-color__success:                   #3adb76;
+$co-color__success:                   #4bbc07;
 $co-color__success--low:              darken($co-color__success, 10%);
 $co-color__success--high:             lighten($co-color__success, 10%);
 
@@ -21,11 +21,11 @@ $co-color__info:                      #39badb;
 $co-color__info--low:                 darken($co-color__info, 10%);
 $co-color__info--high:                lighten($co-color__info, 10%);
 
-$co-color__warning:                   #ffae00;
+$co-color__warning:                   #eba000;
 $co-color__warning--low:              darken($co-color__warning, 10%);
 $co-color__warning--high:             lighten($co-color__warning, 10%);
 
-$co-color__alert:                     #ec5840;
+$co-color__alert:                     #9d3535;
 $co-color__alert--low:                darken($co-color__alert, 10%);
 $co-color__alert--high:               lighten($co-color__alert, 10%);
 
@@ -65,7 +65,7 @@ $co-color__fg__border--high:          lighten($co-color__fg__border, 10%);
 $co-color__fg__border--higher:        lighten($co-color__fg__border, 20%);
 
 $co-color__fg__text:                  #e8e8e8;
-$co-color__fg__text--lower:           darken($co-color__fg__text, 30%);
+$co-color__fg__text--lower:           #909090;
 $co-color__fg__text--low:             darken($co-color__fg__text, 15%);
 $co-color__fg__text--high:            lighten($co-color__fg__text, 10%);
 $co-color__fg__text--higher:          lighten($co-color__fg__text, 20%);
@@ -92,6 +92,7 @@ $co-color__bg__text--higher:          lighten($co-color__bg__text, 20%);
 
 // --- Shadows ---
 $co-color__shadow:                    rgba(0, 0, 0, .3);
+$co-color__shadow:                    rgba(0, 0, 0, .3);
 
 $co-shadow--low:                      0 1px .25rem $co-color__shadow;
 $co-shadow:                           0 1px .5rem $co-color__shadow;
@@ -103,5 +104,5 @@ $caliopen-palette: (
   secondary: $co-color__secondary,
   success: #3adb76,
   warning: #ffae00,
-  alert: #ec5840,
+  alert: #e43737,
 );

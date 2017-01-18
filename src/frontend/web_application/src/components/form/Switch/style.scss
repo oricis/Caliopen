@@ -16,5 +16,6 @@ $switch-height: 2rem !default;
 
   &__paddle {
     @include switch-paddle;
+    background-color: $co-color__fg__back--lower;
   }
 }
