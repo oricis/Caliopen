@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2017-01-19]
+
 ### Added
 
   - Icons & &Avatars - Brand
