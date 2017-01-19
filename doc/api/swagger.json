@@ -485,7 +485,7 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "string"
+                        "type": "object"
                       }
                     },
                     "title": {
@@ -960,7 +960,7 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "string"
+                        "type": "object"
                       }
                     },
                     "title": {
@@ -1482,7 +1482,7 @@
                       "tags": {
                         "type": "array",
                         "items": {
-                          "type": "string"
+                          "type": "object"
                         }
                       },
                       "title": {
@@ -1969,7 +1969,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "object"
                   }
                 },
                 "title": {
@@ -2455,7 +2455,7 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "string"
+                        "type": "object"
                       }
                     },
                     "title": {
@@ -2811,7 +2811,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "object"
                   }
                 },
                 "title": {
@@ -3311,7 +3311,7 @@
                             "tags": {
                               "type": "array",
                               "items": {
-                                "type": "string"
+                                "type": "object"
                               }
                             },
                             "title": {
@@ -3771,7 +3771,7 @@
                       "tags": {
                         "type": "array",
                         "items": {
-                          "type": "string"
+                          "type": "object"
                         }
                       },
                       "title": {
