@@ -2,6 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const baseConfig = require('./config.js');
 
+const KOTATSU_PUBLIC_PATH = '/build/';
+const KOTATSU_ASSETS_PUBLIC_PATH = '';
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -14,11 +16,12 @@ let config = Object.assign(baseConfig.getBase('browser'), {
   output: {
     path: path.join(__dirname, '..', 'dist/server/public/'),
     filename: 'bundle.js',
-    publicPath: isDev ? '/build/' : '/public/',
+    publicPath: isDev ? KOTATSU_PUBLIC_PATH : '/assets/',
   },
 });
 
-config = baseConfig.configureStylesheet(config);
+config = baseConfig.configureStylesheet(config, 'client.css', isDev ? KOTATSU_ASSETS_PUBLIC_PATH : '/assets/');
+config = baseConfig.configureAssets(config, isDev ? KOTATSU_ASSETS_PUBLIC_PATH : '/assets/');
 
 if (isDev) {
   config.entry.unshift(

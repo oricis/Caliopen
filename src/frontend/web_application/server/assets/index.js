@@ -1,6 +1,10 @@
 const express = require('express');
 
 module.exports = (app) => {
-  const { publicPath } = app.get('coConfig');
-  app.use('/public', express.static(publicPath));
+  const { publicPaths } = app.get('coConfig');
+  Object.keys(publicPaths).forEach((target) => {
+    publicPaths[target].forEach((path) => {
+      app.use(target, express.static(path));
+    });
+  });
 };

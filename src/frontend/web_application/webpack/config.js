@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
 
 const DASHBOARD = process.env.DASHBOARD ? JSON.parse(process.env.DASHBOARD) : true;
@@ -9,12 +10,13 @@ const initialConfig = {
   entry: [],
   plugins: [],
   module: {
+    preLoaders: [],
     loaders: [],
   },
 };
 
-const configureStylesheet = (config) => {
-  const extractTextPlugin = new ExtractTextPlugin('style.css');
+const configureStylesheet = (config, filename = 'client.css', outputPath = 'assets/') => {
+  const extractTextPlugin = new ExtractTextPlugin(outputPath + filename);
   const cfg = Object.assign({}, config, {
     sassLoader: {
       includePaths: [
@@ -28,23 +30,54 @@ const configureStylesheet = (config) => {
       configFile: path.resolve(__dirname, '../.sass-lint.yml'),
     },
   });
-  cfg.plugins.push(extractTextPlugin);
+  cfg.plugins.push(
+    extractTextPlugin,
+    new OptimizeCssAssetsPlugin({
+      canPrint: false,
+    })
+  );
   cfg.module.loaders.push(
     {
       test: /\.css$/,
-      loader: extractTextPlugin.extract('style-loader', 'css-loader'),
+      loader: extractTextPlugin.extract('style-loader', 'css-loader?sourceMap'),
     },
     {
       test: /\.scss$/,
-      loader: extractTextPlugin.extract('style-loader', 'css-loader!sass-loader'),
+      loader: extractTextPlugin.extract('style-loader', 'css-loader?sourceMap!sass-loader'),
     }
   );
+
+  cfg.module.preLoaders.push({
+    test: /\.scss$/,
+    include: path.join(__dirname, '../src/'),
+    loader: 'sasslint',
+  });
 
   return cfg;
 };
 
+const configureAssets = (config, outputPath = 'assets/') => {
+  config.module.loaders.push(
+    {
+      test: /\.(jpe?g|png|gif)$/i,
+      loaders: [
+        `file-loader?hash=sha512&digest=hex&name=[name].[ext]&outputPath=${outputPath}`,
+        'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false',
+      ],
+    },
+    { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: `file-loader?mimetype=image/svg+xml&name=[name].[ext]&outputPath=${outputPath}` },
+    { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: `file-loader?mimetype=application/font-woff&name=[name].[ext]&outputPath=${outputPath}` },
+    { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: `file-loader?mimetype=application/font-woff&name=[name].[ext]&outputPath=${outputPath}` },
+    { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: `file-loader?mimetype=application/octet-stream&name=[name].[ext]&outputPath=${outputPath}` },
+    { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: `file-loader?name=[name].[ext]&outputPath=${outputPath}` }
+  );
+
+  return config;
+};
+
 module.exports = {
   configureStylesheet,
+  configureAssets,
   getBase: (buildTarget) => {
     const plugins = [
       new webpack.DefinePlugin({
@@ -59,34 +92,15 @@ module.exports = {
 
     return Object.assign(initialConfig, {
       plugins,
-      module: {
+      module: Object.assign(initialConfig.module, {
         loaders: [
           {
             test: /\.jsx?$/,
             include: path.join(__dirname, '../src/'),
             loaders: ['babel-loader', 'eslint-loader'],
           },
-          {
-            test: /\.(jpe?g|png|gif|svg)$/i,
-            loaders: [
-              'file?hash=sha512&digest=hex&name=[hash].[ext]',
-              'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false',
-            ],
-          },
-          { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader?mimetype=image/svg+xml' },
-          { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader?mimetype=application/font-woff' },
-          { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader?mimetype=application/font-woff' },
-          { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader?mimetype=application/octet-stream' },
-          { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
         ],
-        preLoaders: [
-          {
-            test: /\.scss$/,
-            include: path.join(__dirname, '../src/'),
-            loader: 'sasslint',
-          },
-        ],
-      },
+      }),
       resolve: {
         extensions: ['', '.js', '.jsx'],
       },

@@ -2,12 +2,12 @@ module.exports = (env) => {
   const config = {
     env,
     version: '0.1.0',
-    publicPath: 'dist/server/public/',
+    publicPaths: {
+      '/': ['dist/server/public/', 'public/'],
+    },
     frontend: {
       rootPath: '/',
-      path: '/srv/caliopen/web-client-ng',
-      cssFiles: ['css/main.css'],
-      brandImage: 'images/brand.png',
+      cssFiles: ['/assets/style.css'],
     },
     api: {
       prefix: '/api',
@@ -43,6 +43,8 @@ module.exports = (env) => {
         login: 'dev@caliopen.local',
         password: '123456',
       };
+      config.publicPaths['/build/'] = ['dist/kotatsu/build/'];
+      config.frontend.cssFiles = ['/build/style.css'];
       break;
   }
 

@@ -4,15 +4,16 @@ const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 const ReactRouter = require('react-router');
 const Provider = require('react-redux').Provider;
-const getRoutes = require('../../src/routes').default;
+const getRoutes = require('./components/routes').default;
 const configureStore = require('../../src/store/configure-store').default;
 
 const isDev = process.env.NODE_ENV === 'development';
 
 const config = {
-  styles: isDev ? ['/build/style.css'] : ['/public/style.css'],
-  scripts: isDev ? ['/build/bundle.js'] : ['/public/bundle.js'],
+  styles: isDev ? ['/build/client.css'] : ['/assets/client.css'],
+  scripts: isDev ? ['/build/bundle.js'] : ['/bundle.js'],
 };
+const template = fs.readFileSync(path.join(process.cwd(), 'template', 'index.html'), 'utf8');
 
 /**
  * base html template
@@ -22,13 +23,12 @@ function getMarkup(reactElement, store, assets) {
   const initialState = store.getState();
   const scripts = assets.scripts.reduce((str, url) => `${str}<script src="${url}"></script>\n`, '');
   const stylesheets = assets.styles.reduce((str, url) => `${str}<link rel="stylesheet" href="${url}"></link>\n`, '');
-  const tpl = fs.readFileSync(path.join(process.cwd(), 'template', 'index.html'), 'utf8');
 
   return [
     { key: '%HEAD%', value: `<script>window.__STORE__ = ${JSON.stringify(initialState)};</script>\n${stylesheets}` },
     { key: '%MARKUP%', value: markup },
     { key: '%BODY_SCRIPT%', value: scripts },
-  ].reduce((str, current) => str.replace(current.key, current.value), tpl);
+  ].reduce((str, current) => str.replace(current.key, current.value), template);
 }
 
 function applyUserLocaleToGlobal(req) {
