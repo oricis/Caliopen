@@ -25,11 +25,7 @@ const CheckboxFieldGroup = ({ label, showTextLabel, displaySwitch, ...inputProps
   return (
     <div>
       <div className="m-switch-field-group">
-        {displaySwitch ?
-          renderSwitch(id, label, showTextLabel, ...inputProps)
-          :
-          renderCheckbox(id, label, ...inputProps)
-        }
+        {displaySwitch ? renderSwitch() : renderCheckbox()}
       </div>
     </div>
   );
