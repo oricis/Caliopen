@@ -1,0 +1,26 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+
+.s-login {
+  max-width: map_get($co-form__width, 'xlarge');
+  margin: auto;
+
+  &__brand {
+    text-align: center;
+  }
+
+  &__form {
+    padding: map-get($co-form__spacing, 'large') map-get($co-form__spacing, 'medium');
+    background-color: $co-color__fg__back;
+
+    @include breakpoint(medium) {
+      padding-right: 0;
+    }
+  }
+
+  &__title {
+    text-align: center;
+  }
+
+}

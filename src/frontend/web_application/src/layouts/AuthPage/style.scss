@@ -1,0 +1,14 @@
+@import '../../styles/common';
+
+.l-auth-page {
+  &__header {
+    font-size: .9rem;
+    text-align: center;
+  }
+
+  &__footer {
+    padding: $co-margin 0;
+    font-size: .9rem;
+    text-align: center;
+  }
+}
