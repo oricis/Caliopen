@@ -40,7 +40,7 @@ class TagAPI(Api):
         user_tags = user.tags
         if params['name'] in [x.name for x in user_tags]:
             raise HTTPConflict('Tag {} already exit'.format(params['name']))
-        tag = CoreTag.create(self.user, name=params['name'])
+        tag = CoreTag.create(self.user, name=params['name'], type='user')
         tag_url = self.request.route_path('Tag', tag_id=tag.tag_id)
         self.request.response.location = tag_url.encode('utf-8')
         # XXX return a Location to get tag not send it direct
