@@ -8,7 +8,7 @@ class Presenter extends Component {
     super(props);
     this.state = {
       props: {},
-      display: '',
+      displaySwitch: false,
     };
     this.handlePropsChanges = this.handlePropsChanges.bind(this);
   }
@@ -26,24 +26,24 @@ class Presenter extends Component {
   render() {
     const handleInputChange = (event) => {
       this.setState({
-        display: event.target.value,
+        displaySwitch: event.target.value,
       });
     };
 
     return (
       <div>
         <ComponentWrapper>
-          <CheckboxFieldGroup label="FooBar" display={this.state.display} {...this.state.props} />
+          <CheckboxFieldGroup label="FooBar" displaySwitch={this.state.displaySwitch} {...this.state.props} />
         </ComponentWrapper>
         <ul>
           <li>
-            <label htmlFor="display">display</label>
-            <select name="display" onChange={handleInputChange}>
+            <label htmlFor="displaySwitch">display</label>
+            <select name="displaySwitch" onChange={handleInputChange}>
               <option value="">Default</option>
-              <option value="switch">Switch</option>
+              <option value="true">Switch</option>
             </select>
           </li>
-          {this.state.display === 'switch' &&
+          {this.state.displaySwitch &&
           <li><label htmlFor="showTextLabel"><input type="checkbox" name="showTextLabel" checked={this.state.props.showTextLabel} onChange={this.handlePropsChanges} /> Show Label</label></li>
           }
         </ul>

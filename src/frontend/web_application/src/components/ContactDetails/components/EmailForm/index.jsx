@@ -106,7 +106,7 @@ class EmailForm extends Component {
                 value={this.state.contactDetail.is_primary}
                 onChange={this.handleSwitchChange}
                 label={__('contact.email_form.is_primary.label')}
-                display="switch"
+                displaySwitch
                 showTextLabel
               />
               {' '}
