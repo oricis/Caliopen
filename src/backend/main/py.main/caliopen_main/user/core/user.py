@@ -10,13 +10,13 @@ from elasticsearch import Elasticsearch
 
 from caliopen_storage.config import Configuration
 from caliopen_storage.exception import NotFound, CredentialException
-from ..store.user import (User as ModelUser,
-                          UserName as ModelUserName,
-                          IndexUser,
-                          Counter as ModelCounter,
-                          UserTag as ModelUserTag,
-                          FilterRule as ModelFilterRule,
-                          ReservedName as ModelReservedName)
+from ..store import (User as ModelUser,
+                     UserName as ModelUserName,
+                     IndexUser,
+                     Counter as ModelCounter,
+                     UserTag as ModelUserTag,
+                     FilterRule as ModelFilterRule,
+                     ReservedName as ModelReservedName)
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
 from .contact import Contact

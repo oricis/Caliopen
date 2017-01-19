@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .user import User, UserName, Counter, UserTag, FilterRule, ReservedName
+from .user import User, UserName, Counter, FilterRule, ReservedName
 from .user import RemoteIdentity, IndexUser
 from .contact import Contact, IndexedContact, Lookup
 from .contact import Organization, PostalAddress
 from .contact import Email, IM, Phone, SocialIdentity, PublicKey
+from .tag import UserTag, ResourceTag
 
 
 __all__ = [
@@ -13,5 +14,5 @@ __all__ = [
     'RemoteIdentity', 'IndexUser',
     'Contact', 'Lookup', 'IndexedContact',
     'Organization', 'PostalAddress',
-    'Email', 'IM', 'Phone', 'SocialIdentity', 'PublicKey',
+    'Email', 'IM', 'Phone', 'SocialIdentity', 'PublicKey', 'ResourceTag',
 ]

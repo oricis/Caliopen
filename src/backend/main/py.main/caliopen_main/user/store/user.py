@@ -58,17 +58,6 @@ class Counter(BaseModel):
     rule_id = columns.Counter()
 
 
-class UserTag(BaseModel):
-
-    """User tags model."""
-
-    user_id = columns.UUID(primary_key=True)
-    tag_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    name = columns.Text()
-    type = columns.Text()
-    date_insert = columns.DateTime()
-
-
 class FilterRule(BaseModel):
 
     """User filter rules model."""
