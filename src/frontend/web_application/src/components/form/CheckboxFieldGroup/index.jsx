@@ -16,19 +16,16 @@ DisplayCheckbox.propTypes = {
   id: PropTypes.string,
 };
 
-const DisplaySwitch = ({ id, label, showTextLabel, ...inputProps }) => {
-  return (
-    <div>
-      <Switch id={id} label={label} {...inputProps} />
-      {showTextLabel &&
-        <label htmlFor={id} className="m-switch-field-group__label">
-          <TextBlock inline>{label}</TextBlock>
-        </label>
-      }
-    </div>
-  );
-};
-
+const DisplaySwitch = ({ id, label, showTextLabel, ...inputProps }) => (
+  <div>
+    <Switch id={id} label={label} {...inputProps} />
+    {showTextLabel &&
+      <label htmlFor={id} className="m-switch-field-group__label">
+        <TextBlock inline>{label}</TextBlock>
+      </label>
+    }
+  </div>
+);
 
 DisplaySwitch.propTypes = {
   label: PropTypes.string.isRequired,
