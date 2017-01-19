@@ -58,7 +58,7 @@ class SignupForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn bottomSpace>
-              <SwitchFieldGroup label="I agree Terms and conditions" showTextLabel />
+              <SwitchFieldGroup label="I agree Terms and conditions" display="switch" showTextLabel />
             </FormColumn>
           </FormRow>
           <FormRow>
