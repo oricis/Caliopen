@@ -69,7 +69,6 @@ class FilterRule(BaseModel):
     filter_expr = columns.Text()
     position = columns.Integer()
     stop_condition = columns.Boolean()
-    tags = columns.List(columns.Text)
 
 
 class RemoteIdentity(BaseModel):
