@@ -77,7 +77,7 @@
       }
     }
   },
-  "tags_{name}": {
+  "tags_{tag_id}": {
     "get": {
       "description": "Retrieve tag infos",
       "tags": [
@@ -90,7 +90,7 @@
       ],
       "parameters": [
         {
-          "name": "name",
+          "name": "tag_id",
           "in": "path",
           "required": true,
           "type": "string"
@@ -126,7 +126,7 @@
       ],
       "parameters": [
         {
-          "name": "name",
+          "name": "tag_id",
           "in": "path",
           "required": true,
           "type": "string"
