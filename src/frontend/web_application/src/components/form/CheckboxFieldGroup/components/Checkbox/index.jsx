@@ -5,6 +5,7 @@ const Checkbox = ({ label, id, ...inputProps }) => (
   <div className="m-checkbox">
     <input
       type="checkbox"
+      className="m-checkbox__input"
       id={id}
       {...inputProps}
     />

@@ -1,8 +1,40 @@
 @import '../../../../../styles/common';
 
 .m-checkbox {
+  line-height: 20px;
 
   &__label {
-    padding-left: map-get($co-form__spacing, 'small');
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+
+    &::before {
+      display: inline-block;
+      content: '✓';
+      width: 20px;
+      height: 20px;
+
+      margin-right: map-get($co-form__spacing, 'small');
+
+      background-color: $co-color__fg__back--lower;
+
+      color: rgba($co-color__fg__text--high, 0);
+      font-size: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
   }
-}
+
+  &__input {
+    display: none;
+
+    &:checked + label::before {
+      content: '✓';
+      color: $co-color__fg__text--high;
+    }
+
+    &:checked + label {
+      color: $co-color__fg__text;
+      }
+    }
+  }
