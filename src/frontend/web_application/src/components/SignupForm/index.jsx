@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Button from '../Button';
 import Brand from '../Brand';
 import Title from '../Title';
-import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, SwitchFieldGroup, FieldErrors } from '../form';
+import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../form';
 import './style.scss';
 
 class SignupForm extends Component {
@@ -36,8 +36,8 @@ class SignupForm extends Component {
               <TextFieldGroup
                 name="username"
                 label="Username"
-                placeholder="username"
-                // errors={['lol']}
+                placeholder="Username"
+                // errors={['Something\'s buggy here']}
                 showLabelforSr
               />
             </FormColumn>
@@ -46,19 +46,21 @@ class SignupForm extends Component {
             <FormColumn bottomSpace>
               <TextFieldGroup
                 name="password"
-                label="password"
-                placeholder="password"
+                label="Password"
+                placeholder="Password"
                 showLabelforSr
                 type="password"
               />
-              {this.state.passwordStrength.length !== 0 && (
-              <PasswordStrength strength={this.state.passwordStrength} />
-              )}
             </FormColumn>
+            {this.state.passwordStrength.length !== 0 && (
+            <FormColumn bottomSpace>
+              <PasswordStrength strength={this.state.passwordStrength} />
+            </FormColumn>
+            )}
           </FormRow>
           <FormRow>
             <FormColumn bottomSpace>
-              <SwitchFieldGroup label="I agree Terms and conditions" />
+              <CheckboxFieldGroup label="I agree Terms and conditions" />
             </FormColumn>
           </FormRow>
           <FormRow>

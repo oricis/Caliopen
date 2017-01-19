@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import { SwitchFieldGroup } from '../../src/components/form';
+import { CheckboxFieldGroup } from '../../src/components/form';
 import { Code, ComponentWrapper } from '../presenters';
 
 class Presenter extends Component {
@@ -33,7 +33,7 @@ class Presenter extends Component {
     return (
       <div>
         <ComponentWrapper>
-          <SwitchFieldGroup label="FooBar" display={this.state.display} {...this.state.props} />
+          <CheckboxFieldGroup label="FooBar" display={this.state.display} {...this.state.props} />
         </ComponentWrapper>
         <ul>
           <li>

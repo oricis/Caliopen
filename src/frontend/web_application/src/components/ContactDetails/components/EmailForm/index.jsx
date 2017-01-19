@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Icon from '../../../Icon';
 import Button from '../../../Button';
-import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, FormGrid, FormRow, FormColumn, SwitchFieldGroup } from '../../../form';
+import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, FormGrid, FormRow, FormColumn, CheckboxFieldGroup } from '../../../form';
 import './style.scss';
 
 const EMAIL_TYPES = ['work', 'home', 'other'];
@@ -101,7 +101,7 @@ class EmailForm extends Component {
               />
             </FormColumn>
             <FormColumn size="shrink" className="s-contact-detail-form__checkbox-label">
-              <SwitchFieldGroup
+              <CheckboxFieldGroup
                 name="is_primary"
                 value={this.state.contactDetail.is_primary}
                 onChange={this.handleSwitchChange}

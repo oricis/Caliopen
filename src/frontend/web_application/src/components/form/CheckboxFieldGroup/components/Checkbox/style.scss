@@ -1,0 +1,8 @@
+@import '../../../../../styles/common';
+
+.m-checkbox {
+
+  &__label {
+    padding-left: map-get($co-form__spacing, 'small');
+  }
+}

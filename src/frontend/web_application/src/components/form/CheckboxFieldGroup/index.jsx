@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { v1 as uuidV1 } from 'uuid';
-import { Switch, Checkbox } from '..';
+import Checkbox from './components/Checkbox';
+import Switch from './components/Switch';
 import TextBlock from '../../TextBlock';
 
 import './style.scss';
