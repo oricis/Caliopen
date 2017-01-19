@@ -9,7 +9,10 @@
         "system"
       ]
     },
-    "label": {
+    "name": {
+      "type": "string"
+    },
+    "tag_id": {
       "type": "string"
     }
   },

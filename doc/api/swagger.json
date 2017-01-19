@@ -1570,7 +1570,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "object"
                   }
                 }
               }
@@ -4386,10 +4386,10 @@
                           "system"
                         ]
                       },
-                      "label": {
+                      "name": {
                         "type": "string"
                       },
-                      "name": {
+                      "tag_id": {
                         "type": "string"
                       }
                     },
@@ -4491,10 +4491,10 @@
                     "system"
                   ]
                 },
-                "label": {
+                "name": {
                   "type": "string"
                 },
-                "name": {
+                "tag_id": {
                   "type": "string"
                 }
               },
