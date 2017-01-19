@@ -14,7 +14,7 @@ from ..store.user import (User as ModelUser,
                           UserName as ModelUserName,
                           IndexUser,
                           Counter as ModelCounter,
-                          Tag as ModelTag,
+                          UserTag as ModelUserTag,
                           FilterRule as ModelFilterRule,
                           ReservedName as ModelReservedName)
 
@@ -40,7 +40,7 @@ class Tag(BaseUserCore):
 
     """Tag core object."""
 
-    _model_class = ModelTag
+    _model_class = ModelUserTag
     _pkey_name = 'tag_id'
 
 

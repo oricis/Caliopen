@@ -58,7 +58,7 @@ class Counter(BaseModel):
     rule_id = columns.Counter()
 
 
-class Tag(BaseModel):
+class UserTag(BaseModel):
 
     """User tags model."""
 
