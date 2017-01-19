@@ -1,7 +1,9 @@
 @import '../../../../../styles/common';
 
+$co-checkbox-size: 20px;
+
 .m-checkbox {
-  line-height: 20px;
+  line-height: $co-checkbox-size;
 
   &__label {
     display: inline-block;
@@ -11,15 +13,15 @@
     &::before {
       display: inline-block;
       content: '✓';
-      width: 20px;
-      height: 20px;
+      width: $co-checkbox-size;
+      height: $co-checkbox-size;
 
       margin-right: map-get($co-form__spacing, 'small');
 
       background-color: $co-color__fg__back--lower;
 
       color: rgba($co-color__fg__text--high, 0);
-      font-size: 20px;
+      font-size: $co-checkbox-size;
       text-align: center;
       cursor: pointer;
     }
@@ -28,13 +30,14 @@
   &__input {
     display: none;
 
-    &:checked + label::before {
-      content: '✓';
-      color: $co-color__fg__text--high;
-    }
+    &:checked {
+      + label {
+        color: $co-color__fg__text;
 
-    &:checked + label {
-      color: $co-color__fg__text;
+        &::before {
+          color: $co-color__fg__text--high;
+        }
       }
     }
   }
+}
