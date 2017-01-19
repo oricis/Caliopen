@@ -22,11 +22,15 @@ import TextFieldGroup from './components/TextFieldGroup';
 import TextList from './components/TextList';
 import Title from './components/Title';
 import Welcome from './Welcome';
+import Changelog from './Changelog';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
 
 storiesOf('Welcome', module)
   .add('to Storybook', () => (
     <Welcome />
+  ))
+  .add('Changelog', () => (
+    <Changelog />
   ));
 
 storiesOf('Badge', module)
