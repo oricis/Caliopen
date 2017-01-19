@@ -1,22 +1,29 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Button from '../Button';
 import Title from '../Title';
 import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../form';
 import './style.scss';
 
 class SignupForm extends Component {
+  static propTypes = {
+    errors: PropTypes.shape({}),
+    form: PropTypes.shape({}),
+    formValues: PropTypes.shape({}),
+  };
+
   constructor(props) {
     super(props);
     this.state = {
       passwordStrength: '',
-      errors: [],
     };
   }
 
   render() {
+    const { form, errors } = this.props;
+
     return (
       <div className="s-signup">
-        <FormGrid className="s-signup__form" name="ac_form">
+        <FormGrid className="s-signup__form" name="ac_form" {...form}>
           <FormRow>
             <FormColumn className="s-signup__title" bottomSpace>
               <Title>Create your account</Title>
@@ -25,7 +32,7 @@ class SignupForm extends Component {
           {this.state.errors.length !== 0 && (
           <FormRow>
             <FormColumn bottomSpace>
-              <FieldErrors className="s-signup__global-errors" errors={this.state.errors} />
+              <FieldErrors className="s-signup__global-errors" errors={errors.global} />
             </FormColumn>
           </FormRow>
           )}
@@ -35,7 +42,7 @@ class SignupForm extends Component {
                 name="username"
                 label="Username"
                 placeholder="Username"
-                // errors={['Something\'s buggy here']}
+                errors={errors.username}
                 showLabelforSr
               />
             </FormColumn>
@@ -48,6 +55,7 @@ class SignupForm extends Component {
                 placeholder="Password"
                 showLabelforSr
                 type="password"
+                errors={errors.password}
               />
             </FormColumn>
             {this.state.passwordStrength.length !== 0 && (
