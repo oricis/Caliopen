@@ -7,11 +7,12 @@ import uuid
 
 from datetime import datetime
 
-from ..store.contact import (Contact as ModelContact,
-                             Lookup as ModelContactLookup,
-                             PublicKey as ModelPublicKey,
-                             Organization, Email, IM, PostalAddress,
-                             Phone, SocialIdentity)
+from ..store import (Contact as ModelContact,
+                     Lookup as ModelContactLookup,
+                     PublicKey as ModelPublicKey,
+                     Organization, Email, IM, PostalAddress,
+                     Phone, SocialIdentity,
+                     ResourceTag)
 
 from caliopen_storage.core import BaseCore, BaseUserCore
 from caliopen_storage.core.mixin import MixinCoreRelation
@@ -130,6 +131,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
         'social_identities': SocialIdentity,
         'addresses': PostalAddress,
         'organizations': Organization,
+        'tags': ResourceTag,
     }
 
     # Any of these nested objects,can be a lookup value
@@ -206,7 +208,6 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
         contact_id = uuid.uuid4()
         attrs = {'contact_id': contact_id,
                  'info': contact.infos,
-                 'tags': contact.tags,
                  'groups': contact.groups,
                  'date_insert': datetime.utcnow(),
                  'given_name': contact.given_name,
@@ -220,11 +221,12 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
                  'ims': cls.create_nested(contact.ims, IM),
                  'phones': cls.create_nested(contact.phones, Phone),
                  'addresses': cls.create_nested(contact.addresses,
-                                            PostalAddress),
+                                                PostalAddress),
                  'social_identities': cls.create_nested(contact.identities,
-                                                    SocialIdentity),
+                                                        SocialIdentity),
                  'organizations': cls.create_nested(contact.organizations,
-                                                Organization)}
+                                                    Organization),
+                 'tags': cls.create_nested(contact.tags, ResourceTag)}
 
         core = super(Contact, cls).create(user, **attrs)
         log.debug('Created contact %s' % core.contact_id)

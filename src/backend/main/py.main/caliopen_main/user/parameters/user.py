@@ -48,26 +48,6 @@ class User(NewUser):
         serialize_when_none = False
 
 
-class NewTag(Model):
-
-    """Create a new user tag."""
-
-    user_id = UUIDType()
-    name = StringType()
-
-    class Option:
-        roles = {'default': blacklist('user_id')}
-        serialize_when_none = False
-
-
-class Tag(NewTag):
-
-    """Existing tag (user or system)."""
-    type = StringType()
-    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
-                               tzd=u'utc')
-
-
 class NewRule(Model):
 
     """New filter rule."""

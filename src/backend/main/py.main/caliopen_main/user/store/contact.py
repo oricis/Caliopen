@@ -10,6 +10,7 @@ from caliopen_storage.store.mixin import IndexedModelMixin
 from caliopen_storage.store import BaseModel, BaseUserType
 
 from .contact_index import IndexedContact
+from .tag import ResourceTag
 
 
 class Organization(BaseUserType):
@@ -114,7 +115,6 @@ class Contact(BaseModel, IndexedModelMixin):
     family_name = columns.Text()
     name_prefix = columns.Text()
     name_suffix = columns.Text()
-    tags = columns.List(columns.Text)
     groups = columns.List(columns.Text)
     privacy_index = columns.Integer()
     privacy_features = columns.Map(columns.Text(), columns.Text())
@@ -126,6 +126,7 @@ class Contact(BaseModel, IndexedModelMixin):
     ims = columns.List(columns.UserDefinedType(IM))
     phones = columns.List(columns.UserDefinedType(Phone))
     identities = columns.List(columns.UserDefinedType(SocialIdentity))
+    tags = columns.List(columns.UserDefinedType(ResourceTag))
 
     # everything else in a map
     infos = columns.Map(columns.Text, columns.Text)
