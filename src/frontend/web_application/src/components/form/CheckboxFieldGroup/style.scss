@@ -1,9 +1,7 @@
 @import '../../../styles/common';
-@import '../../../styles/vendor/bootstrap_foundation-sites';
-
-$switch-height: 2rem !default;
 
 .m-switch-field-group {
+
   &__label {
     padding-left: map-get($co-form__spacing, 'small');
   }

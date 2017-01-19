@@ -18,7 +18,6 @@ const Switch = ({ label, id, ...inputProps }) => (
 Switch.propTypes = {
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-
 };
 
 export default Switch;

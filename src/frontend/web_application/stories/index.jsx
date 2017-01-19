@@ -15,7 +15,7 @@ import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
 import RadioFieldGroup from './components/RadioFieldGroup';
 import SelectFieldGroup from './components/SelectFieldGroup';
-import SwitchFieldGroup from './components/SwitchFieldGroup';
+import CheckboxFieldGroup from './components/CheckboxFieldGroup';
 import PasswordStrength from './components/PasswordStrength';
 import Spinner from './components/Spinner';
 import TextFieldGroup from './components/TextFieldGroup';
@@ -91,8 +91,8 @@ storiesOf('Form', module)
   .add('RadioFieldGroup', () => (
     <RadioFieldGroup />
   ))
-  .add('SwitchFieldGroup', () => (
-    <SwitchFieldGroup />
+  .add('CheckboxFieldGroup', () => (
+    <CheckboxFieldGroup />
   ));
 
 storiesOf('Contact', module)

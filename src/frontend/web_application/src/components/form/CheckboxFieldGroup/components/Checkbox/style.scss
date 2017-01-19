@@ -1,0 +1,43 @@
+@import '../../../../../styles/common';
+
+$co-checkbox-size: 20px;
+
+.m-checkbox {
+  line-height: $co-checkbox-size;
+
+  &__label {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+
+    &::before {
+      display: inline-block;
+      content: '✓';
+      width: $co-checkbox-size;
+      height: $co-checkbox-size;
+
+      margin-right: map-get($co-form__spacing, 'small');
+
+      background-color: $co-color__fg__back--lower;
+
+      color: rgba($co-color__fg__text--high, 0);
+      font-size: $co-checkbox-size;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+
+  &__input {
+    display: none;
+
+    &:checked {
+      + label {
+        color: $co-color__fg__text;
+
+        &::before {
+          color: $co-color__fg__text--high;
+        }
+      }
+    }
+  }
+}
