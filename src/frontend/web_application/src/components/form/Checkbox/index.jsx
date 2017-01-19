@@ -8,7 +8,7 @@ const Checkbox = ({ label, id, ...inputProps }) => (
       id={id}
       {...inputProps}
     />
-    <label htmlFor={id}>{label}</label>
+    <label className="m-checkbox__label" htmlFor={id}>{label}</label>
   </div>
 );
 

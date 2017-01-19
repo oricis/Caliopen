@@ -12,7 +12,7 @@ const DisplayCheckbox = ({ id, label, ...inputProps }) => (
 
 DisplayCheckbox.propTypes = {
   label: PropTypes.string.isRequired,
-  id: PropTypes.number,
+  id: PropTypes.string,
 };
 
 const DisplaySwitch = ({ id, label, showTextLabel, ...inputProps }) => {
@@ -21,7 +21,7 @@ const DisplaySwitch = ({ id, label, showTextLabel, ...inputProps }) => {
       <Switch id={id} label={label} {...inputProps} />
       {showTextLabel &&
         <label htmlFor={id} className="m-switch-field-group__label">
-          <TextBlock inline size="small">{label}</TextBlock>
+          <TextBlock inline>{label}</TextBlock>
         </label>
       }
     </div>
@@ -31,7 +31,7 @@ const DisplaySwitch = ({ id, label, showTextLabel, ...inputProps }) => {
 
 DisplaySwitch.propTypes = {
   label: PropTypes.string.isRequired,
-  id: PropTypes.number,
+  id: PropTypes.string,
   showTextLabel: PropTypes.bool,
 };
 
@@ -46,7 +46,6 @@ const SwitchFieldGroup = ({ label, showTextLabel, display, ...inputProps }) => {
           :
           <DisplayCheckbox id={id} label={label} {...inputProps} />
         }
-
       </div>
     </div>
   );
@@ -55,7 +54,7 @@ const SwitchFieldGroup = ({ label, showTextLabel, display, ...inputProps }) => {
 SwitchFieldGroup.propTypes = {
   label: PropTypes.string.isRequired,
   showTextLabel: PropTypes.bool,
-  display: PropTypes.oneOf.switch,
+  display: PropTypes.string,
 };
 
 export default SwitchFieldGroup;
