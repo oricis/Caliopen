@@ -9,7 +9,7 @@ const AuthPage = ({ version, login, password, children }) => (
         <div>Demo instance credentials: {login} / {password}</div>
       )}
     </header>
-    <section>{children}</section>
+    <section className="l-auth-page__form">{children}</section>
     <footer className="l-auth-page__footer">Be good</footer>
   </div>
 );
