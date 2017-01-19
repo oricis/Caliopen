@@ -7,6 +7,7 @@ from .contact import Contact, IndexedContact, Lookup
 from .contact import Organization, PostalAddress
 from .contact import Email, IM, Phone, SocialIdentity, PublicKey
 from .tag import UserTag, ResourceTag
+from .tag_index import IndexedResourceTag
 
 
 __all__ = [
@@ -14,5 +15,6 @@ __all__ = [
     'RemoteIdentity', 'IndexUser',
     'Contact', 'Lookup', 'IndexedContact',
     'Organization', 'PostalAddress',
-    'Email', 'IM', 'Phone', 'SocialIdentity', 'PublicKey', 'ResourceTag',
+    'Email', 'IM', 'Phone', 'SocialIdentity', 'PublicKey',
+    'ResourceTag', 'IndexedResourceTag',
 ]
