@@ -1,0 +1,19 @@
+@import '../../styles/common';
+
+.l-auth-page {
+  &__header {
+    font-size: .9rem;
+    text-align: center;
+  }
+
+  &__form {
+    width: map_get($co-form__width, 'xlarge');
+    margin: auto;
+  }
+
+  &__footer {
+    padding: $co-margin 0;
+    font-size: .9rem;
+    text-align: center;
+  }
+}

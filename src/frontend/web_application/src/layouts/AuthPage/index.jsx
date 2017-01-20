@@ -1,15 +1,16 @@
 import React, { PropTypes } from 'react';
+import './style.scss';
 
 const AuthPage = ({ version, login, password, children }) => (
-  <div>
-    <header>
+  <div className="l-auth-page">
+    <header className="l-auth-page__header">
       {version && (<div>Current version: {version}</div>)}
       {(login || password) && (
         <div>Demo instance credentials: {login} / {password}</div>
       )}
     </header>
-    <section>{children}</section>
-    <footer>Be good</footer>
+    <section className="l-auth-page__form">{children}</section>
+    <footer className="l-auth-page__footer">Be good</footer>
   </div>
 );
 

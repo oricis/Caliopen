@@ -1,6 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../form';
+import Brand from '../Brand';
 import Button from '../Button';
+import Title from '../Title';
+
+import './style.scss';
 
 function generateStateFromProps(props) {
   return {
@@ -35,34 +39,48 @@ class LoginForm extends Component {
     const { errors = {}, form } = this.props;
 
     return (
-      <FormGrid {...form}>
-        { errors.global && (
+      <div className="s-login">
+        <Brand className="s-login__brand" />
+        <FormGrid className="s-login__form" {...form}>
+          { errors.global && (
+            <FormColumn bottomSpace>
+              <FormRow>
+                <FieldErrors errors={errors.global} />
+              </FormRow>
+            </FormColumn>
+          )}
           <FormRow>
-            <FieldErrors errors={errors.global} />
+            <FormColumn className="s-login__title" bottomSpace>
+              <Title>Please Log In</Title>
+            </FormColumn>
+            <FormColumn bottomSpace>
+              <TextFieldGroup
+                label="Username"
+                placeholder="Username"
+                name="username"
+                value={this.state.username}
+                errors={errors.username}
+                showLabelforSr
+              />
+            </FormColumn>
+            <FormColumn bottomSpace>
+              <TextFieldGroup
+                label="Password"
+                placeholder="Password"
+                name="password"
+                type="password"
+                value={this.state.password} errors={errors.password}
+                showLabelforSr
+              />
+            </FormColumn>
           </FormRow>
-        )}
-        <FormRow>
-          <FormColumn>
-            <TextFieldGroup
-              label="Username"
-              name="username"
-              value={this.state.username}
-              errors={errors.username}
-            />
-          </FormColumn>
-          <FormColumn>
-            <TextFieldGroup
-              label="Password"
-              name="password"
-              type="password"
-              value={this.state.password} errors={errors.password}
-            />
-          </FormColumn>
-        </FormRow>
-        <FormRow>
-          <Button type="submit" plain>Login</Button>
-        </FormRow>
-      </FormGrid>
+          <FormRow>
+            <FormColumn className="m-im-form__action">
+              <Button type="submit" expanded plain>Login</Button>
+            </FormColumn>
+          </FormRow>
+        </FormGrid>
+      </div>
     );
   }
 }
