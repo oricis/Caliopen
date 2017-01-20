@@ -122,8 +122,6 @@ def internal_server_error(exc, request):
     return response
 
 
-
-
 @view_config(context=HTTPUnprocessableEntity)
 @view_config(context=HTTPBadRequest)
 def http_unprocessable_entity(exc, request):

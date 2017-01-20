@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """Caliopen User tag parameters classes."""
 from __future__ import absolute_import, print_function, unicode_literals
-
 import types
+import uuid
+
 from caliopen_main.objects import base
 from caliopen_main.user.store import UserTag as ModelUSerTag
 from caliopen_main.user.store import ResourceTag as ModelResourceTag
@@ -17,7 +18,7 @@ class UserTag(base.ObjectUser):
     """Tag related to an user."""
 
     _attrs = {
-        'tag_id': types.StringType,
+        'tag_id': uuid.UUID,
         'name': types.StringType,
         'type': types.StringType}
 
@@ -35,7 +36,7 @@ class ResourceTag(base.ObjectStorable):
     """Tag nested in resources."""
 
     _attrs = {
-        'tag_id': types.StringType,
+        'tag_id': uuid.UUID,
         'name': types.StringType,
         'type': types.StringType,
     }
