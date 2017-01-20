@@ -4,6 +4,12 @@ import Title from '../Title';
 import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../form';
 import './style.scss';
 
+function generateStateFromProps(props) {
+  return {
+    ...props.formValues,
+  };
+}
+
 class SignupForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
@@ -14,12 +20,23 @@ class SignupForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      username: '',
+      password: '',
+      tos: false,
       passwordStrength: '',
     };
   }
 
+  componentWillMount() {
+    this.setState(generateStateFromProps(this.props));
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState(generateStateFromProps(newProps));
+  }
+
   render() {
-    const { form, errors } = this.props;
+    const { form, errors = {} } = this.props;
 
     return (
       <div className="s-signup">
@@ -29,7 +46,7 @@ class SignupForm extends Component {
               <Title>Create your account</Title>
             </FormColumn>
           </FormRow>
-          {this.state.errors.length !== 0 && (
+          {errors.global && errors.global.length !== 0 && (
           <FormRow>
             <FormColumn bottomSpace>
               <FieldErrors className="s-signup__global-errors" errors={errors.global} />
@@ -42,6 +59,7 @@ class SignupForm extends Component {
                 name="username"
                 label="Username"
                 placeholder="Username"
+                value={this.state.username}
                 errors={errors.username}
                 showLabelforSr
               />
@@ -55,6 +73,7 @@ class SignupForm extends Component {
                 placeholder="Password"
                 showLabelforSr
                 type="password"
+                value={this.state.password}
                 errors={errors.password}
               />
             </FormColumn>
@@ -66,7 +85,12 @@ class SignupForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn bottomSpace>
-              <CheckboxFieldGroup label="I agree Terms and conditions" />
+              <CheckboxFieldGroup
+                label="I agree Terms and conditions"
+                name="tos"
+                checked={this.state.tos}
+                errors={errors.tos}
+              />
             </FormColumn>
           </FormRow>
           <FormRow>

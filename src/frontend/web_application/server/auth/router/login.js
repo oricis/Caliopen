@@ -20,13 +20,9 @@ const getFormParam = (req) => {
 };
 
 const createLoginRouting = (router) => {
-  router.get('/login', (req, res) => {
-    if (req.tokens) {
-      return res.redirect(req.config.frontend.rootPath);
-    }
-
-    return res.render('login.component', { form: getFormParam(req), devInfos: getDevInfos(req.config) });
-  });
+  router.get('/login', (req, res) =>
+    res.render('login.component', { form: getFormParam(req), devInfos: getDevInfos(req.config) })
+  );
 
   router.post('/login', (req, res, next) => {
     let hasError = false;
