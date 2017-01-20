@@ -14,24 +14,14 @@
     "given_name": {
       "type": "string"
     },
-    "main_user_id": {
+    "name": {
       "type": "string"
     },
-    "name": {
+    "password": {
       "type": "string"
     },
     "params": {
       "type": "object"
-    },
-    "privacy_features": {
-      "$ref": "Privacy_features.json"
-    },
-    "privacy_index": {
-      "type": "integer",
-      "format": "int32"
-    },
-    "user_id": {
-      "type": "string"
     }
   },
   "additionalProperties": false

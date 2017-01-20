@@ -511,24 +511,14 @@
                 "given_name": {
                   "type": "string"
                 },
-                "main_user_id": {
+                "name": {
                   "type": "string"
                 },
-                "name": {
+                "password": {
                   "type": "string"
                 },
                 "params": {
                   "type": "object"
-                },
-                "privacy_features": {
-                  "type": "object"
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "user_id": {
-                  "type": "string"
                 }
               },
               "additionalProperties": false
@@ -933,24 +923,14 @@
                 "given_name": {
                   "type": "string"
                 },
-                "main_user_id": {
+                "name": {
                   "type": "string"
                 },
-                "name": {
+                "password": {
                   "type": "string"
                 },
                 "params": {
                   "type": "object"
-                },
-                "privacy_features": {
-                  "type": "object"
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "user_id": {
-                  "type": "string"
                 }
               },
               "additionalProperties": false
@@ -1378,24 +1358,14 @@
                 "given_name": {
                   "type": "string"
                 },
-                "main_user_id": {
+                "name": {
                   "type": "string"
                 },
-                "name": {
+                "password": {
                   "type": "string"
                 },
                 "params": {
                   "type": "object"
-                },
-                "privacy_features": {
-                  "type": "object"
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "user_id": {
-                  "type": "string"
                 }
               },
               "additionalProperties": false
