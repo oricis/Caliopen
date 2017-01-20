@@ -485,7 +485,27 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "object"
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "user",
+                              "system"
+                            ]
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "tag_id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "type"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "title": {
@@ -960,7 +980,27 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "object"
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "user",
+                              "system"
+                            ]
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "tag_id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "type"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "title": {
@@ -1482,7 +1522,27 @@
                       "tags": {
                         "type": "array",
                         "items": {
-                          "type": "object"
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "user",
+                                "system"
+                              ]
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "tag_id": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "type"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "title": {
@@ -1969,7 +2029,27 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "object"
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "user",
+                          "system"
+                        ]
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "tag_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "type"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "title": {
@@ -2455,7 +2535,27 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "object"
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "user",
+                              "system"
+                            ]
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "tag_id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "type"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "title": {
@@ -2811,7 +2911,27 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "object"
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "user",
+                          "system"
+                        ]
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "tag_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "type"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "title": {
@@ -3311,7 +3431,27 @@
                             "tags": {
                               "type": "array",
                               "items": {
-                                "type": "object"
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "user",
+                                      "system"
+                                    ]
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "tag_id": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "name",
+                                  "type"
+                                ],
+                                "additionalProperties": false
                               }
                             },
                             "title": {
@@ -3771,7 +3911,27 @@
                       "tags": {
                         "type": "array",
                         "items": {
-                          "type": "object"
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "user",
+                                "system"
+                              ]
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "tag_id": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "type"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "title": {

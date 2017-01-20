@@ -94,7 +94,7 @@
     "tags": {
       "type": "array",
       "items": {
-        "type": "object"
+        "$ref": "Tag.json"
       }
     },
     "title": {
