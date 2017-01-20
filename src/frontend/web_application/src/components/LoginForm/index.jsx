@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../form';
-import Brand from '../Brand';
 import Button from '../Button';
 import Title from '../Title';
 
@@ -40,7 +39,6 @@ class LoginForm extends Component {
 
     return (
       <div className="s-login">
-        <Brand className="s-login__brand" />
         <FormGrid className="s-login__form" {...form}>
           { errors.global && (
             <FormColumn bottomSpace>

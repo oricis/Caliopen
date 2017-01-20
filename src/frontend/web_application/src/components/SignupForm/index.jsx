@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Button from '../Button';
-import Brand from '../Brand';
 import Title from '../Title';
 import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../form';
 import './style.scss';
@@ -17,7 +16,6 @@ class SignupForm extends Component {
   render() {
     return (
       <div className="s-signup">
-        <Brand className="s-signup__brand" />
         <FormGrid className="s-signup__form" name="ac_form">
           <FormRow>
             <FormColumn className="s-signup__title" bottomSpace>

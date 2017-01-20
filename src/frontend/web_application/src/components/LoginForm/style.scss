@@ -10,10 +10,6 @@
     max-width: map-get($co-form__width, 'xlarge');
   }
 
-  &__brand {
-    text-align: center;
-  }
-
   &__form {
     padding: map-get($co-form__spacing, 'large') map-get($co-form__spacing, 'medium');
     background-color: $co-color__fg__back;
