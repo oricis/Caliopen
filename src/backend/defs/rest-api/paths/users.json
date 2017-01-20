@@ -15,16 +15,12 @@
       ],
       "parameters": [
         {
-          "name": "username",
-          "in": "formData",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "password",
-          "in": "formData",
-          "type": "string",
-          "required": true
+          "name": "user",
+          "in": "body",
+          "required": true,
+          "schema": {
+            "$ref": "../objects/User.json"
+          }
         }
       ],
       "produces": [
