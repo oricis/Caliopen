@@ -10,7 +10,7 @@ import ContactDetails from './components/ContactDetails';
 import Icon from './components/Icon';
 import Link from './components/Link';
 import AuthPage from './layouts/AuthPage';
-import SignupForm from './layouts/SignupForm';
+import SignupPage from './layouts/SignupPage';
 import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
 import RadioFieldGroup from './components/RadioFieldGroup';
@@ -105,8 +105,8 @@ storiesOf('Contact', module)
   ));
 
 storiesOf('Auth', module)
-  .add('SignupForm', () => (
-    <SignupForm />
+  .add('SignupPage', () => (
+    <SignupPage />
   ))
   .add('AuthPage', () => (
     <AuthPage />

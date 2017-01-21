@@ -1,14 +1,15 @@
 @import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
 
 .l-auth-page {
+
   &__header {
-    font-size: .9rem;
     text-align: center;
   }
 
   &__form {
-    width: map_get($co-form__width, 'xlarge');
-    margin: auto;
+    @include flex-grid-row;
+    justify-content: center;
   }
 
   &__footer {

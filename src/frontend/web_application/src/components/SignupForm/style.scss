@@ -4,10 +4,11 @@
 $switch_height: 2rem;
 
 .s-signup {
-  max-width: map_get($co-form__width, 'xlarge');
+  @include flex-grid-size(12);
 
-  &__brand {
-    text-align: center;
+  @include breakpoint(medium) {
+    @include flex-grid-size(4);
+    max-width: map-get($co-form__width, 'xlarge');
   }
 
   &__form {
