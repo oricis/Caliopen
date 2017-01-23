@@ -1,0 +1,14 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-settings {
+
+  &__nav {
+    background: $co-color__fg__back;
+  }
+
+  &__pannel {
+    padding: map-get($co-form__spacing, 'large');
+  }
+
+}
