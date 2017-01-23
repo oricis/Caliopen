@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DevicesManagment from './components/DevicesManagment';
+import DevicesManagement from './components/DevicesManagement';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import { FormGrid, FormRow, FormColumn } from '../../components/form';
@@ -38,7 +38,7 @@ class Settings extends Component {
           </FormRow>
         </FormGrid>
         <div className="s-settings__pannel">
-          <DevicesManagment />
+          <DevicesManagement />
         </div>
       </div>
     );

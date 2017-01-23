@@ -21,7 +21,7 @@ import Spinner from './components/Spinner';
 import TextFieldGroup from './components/TextFieldGroup';
 import TextList from './components/TextList';
 import Title from './components/Title';
-import DevicesManagment from './layouts/DevicesManagment'
+import DevicesManagement from './layouts/DevicesManagement'
 import Welcome from './Welcome';
 import Changelog from './Changelog';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
@@ -114,6 +114,6 @@ storiesOf('Auth', module)
   ));
 
 storiesOf('Settings', module)
-  .add('DevicesManagment', () => (
-    <DevicesManagment />
+  .add('DevicesManagement', () => (
+    <DevicesManagement />
   ));
