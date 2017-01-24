@@ -62,6 +62,12 @@
     "header.menu.signout": "Déconnexion",
     "header.menu.toggle-navigation": "Afficher/Masquer la navigation",
     "header.menu.toggle-search-form": "Afficher/Masquer le champ de recherche",
+    "login.action.login": "Connexion",
+    "login.form.password.label": "Mot de passe :",
+    "login.form.password.placeholder": "Mot de passe",
+    "login.form.username.label": "Nom d'utilisateur :",
+    "login.form.username.placeholder": "Nom d'utilisateur",
+    "login.title": "Vous pouvez vous authentifier",
     "openpgp.action.remove-key": "Supprimer",
     "openpgp.action.toggle-details": "Afficher les détails",
     "openpgp.details.algorithm": "Algorithme",
@@ -93,5 +99,12 @@
     "remote_identity.form.password.label": "Mot de passe :",
     "remote_identity.form.port.label": "Port :",
     "remote_identity.form.protocol.label": "Protocol :",
-    "remote_identity.form_legend": "Connecter un serveur d'email"
+    "remote_identity.form_legend": "Connecter un serveur d'email",
+    "signup.action.create": "Créer",
+    "signup.form.password.label": "Mot de passe",
+    "signup.form.password.placeholder": "mot de passe",
+    "signup.form.tos.label": "J'accepte les conditions générales d'utilisation",
+    "signup.form.username.label": "Nom d'utilisateur",
+    "signup.form.username.placeholder": "nom d'utilisateur",
+    "signup.title": "Créer votre compte"
 }

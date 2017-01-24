@@ -16,6 +16,7 @@ class LoginForm extends Component {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
     formValues: PropTypes.shape({}),
+    __: PropTypes.func,
   };
 
   constructor(props) {
@@ -35,7 +36,7 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { errors = {}, form } = this.props;
+    const { errors = {}, form, __ } = this.props;
 
     return (
       <div className="s-login">
@@ -49,12 +50,12 @@ class LoginForm extends Component {
           )}
           <FormRow>
             <FormColumn className="s-login__title" bottomSpace>
-              <Title>Please Log In</Title>
+              <Title>{__('login.title')}</Title>
             </FormColumn>
             <FormColumn bottomSpace>
               <TextFieldGroup
-                label="Username"
-                placeholder="Username"
+                label={__('login.form.username.label')}
+                placeholder={__('login.form.username.placeholder')}
                 name="username"
                 value={this.state.username}
                 errors={errors.username}
@@ -63,8 +64,8 @@ class LoginForm extends Component {
             </FormColumn>
             <FormColumn bottomSpace>
               <TextFieldGroup
-                label="Password"
-                placeholder="Password"
+                label={__('login.form.password.label')}
+                placeholder={__('login.form.password.placeholder')}
                 name="password"
                 type="password"
                 value={this.state.password} errors={errors.password}
@@ -74,7 +75,7 @@ class LoginForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn className="m-im-form__action">
-              <Button type="submit" expanded plain>Login</Button>
+              <Button type="submit" expanded plain>{__('login.action.login')}</Button>
             </FormColumn>
           </FormRow>
         </FormGrid>

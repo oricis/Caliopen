@@ -15,6 +15,7 @@ class SignupForm extends Component {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
     formValues: PropTypes.shape({}),
+    __: PropTypes.func,
   };
 
   constructor(props) {
@@ -36,14 +37,14 @@ class SignupForm extends Component {
   }
 
   render() {
-    const { form, errors = {} } = this.props;
+    const { form, errors = {}, __ } = this.props;
 
     return (
       <div className="s-signup">
         <FormGrid className="s-signup__form" name="ac_form" {...form}>
           <FormRow>
             <FormColumn className="s-signup__title" bottomSpace>
-              <Title>Create your account</Title>
+              <Title>{__('signup.title')}</Title>
             </FormColumn>
           </FormRow>
           {errors.global && errors.global.length !== 0 && (
@@ -57,8 +58,8 @@ class SignupForm extends Component {
             <FormColumn bottomSpace >
               <TextFieldGroup
                 name="username"
-                label="Username"
-                placeholder="Username"
+                label={__('signup.form.username.label')}
+                placeholder={__('signup.form.username.placeholder')}
                 value={this.state.username}
                 errors={errors.username}
                 showLabelforSr
@@ -69,8 +70,8 @@ class SignupForm extends Component {
             <FormColumn bottomSpace>
               <TextFieldGroup
                 name="password"
-                label="Password"
-                placeholder="Password"
+                label={__('signup.form.password.label')}
+                placeholder={__('signup.form.password.placeholder')}
                 showLabelforSr
                 type="password"
                 value={this.state.password}
@@ -86,7 +87,7 @@ class SignupForm extends Component {
           <FormRow>
             <FormColumn bottomSpace>
               <CheckboxFieldGroup
-                label="I agree Terms and conditions"
+                label={__('signup.form.tos.label')}
                 name="tos"
                 checked={this.state.tos}
                 errors={errors.tos}
@@ -95,7 +96,7 @@ class SignupForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn className="m-im-form__action">
-              <Button type="submit" expanded plain>Create</Button>
+              <Button type="submit" expanded plain>{__('signup.action.create')}</Button>
             </FormColumn>
           </FormRow>
         </FormGrid>
