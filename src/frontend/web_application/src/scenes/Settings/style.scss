@@ -2,13 +2,14 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-settings {
-
+  @include flex-grid-row;
   &__nav {
-    background: $co-color__fg__back;
+    @include flex-grid-column(shrink);
+    padding: map-get($co-form__spacing, 'medium');
   }
-
-  &__pannel {
-    padding: map-get($co-form__spacing, 'large');
+  &__panel {
+    @include flex-grid-column;
+    background: $co-color__fg__back;
   }
 
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import DevicesManagment from '../../src/scenes/Settings';
+import DevicesManagement from '../../src/scenes/Settings';
 import { Code, ComponentWrapper } from '../presenters';
 
 class Presenter extends Component {
@@ -8,7 +8,7 @@ class Presenter extends Component {
     return (
       <div>
         <ComponentWrapper>
-          <DevicesManagment />
+          <DevicesManagement />
         </ComponentWrapper>
         <Code>
           {`

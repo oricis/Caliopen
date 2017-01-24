@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import DevicesManagement from './components/DevicesManagement';
-import Button from '../../components/Button';
-import Icon from '../../components/Icon';
-import { FormGrid, FormRow, FormColumn } from '../../components/form';
+import SettingsNavigation from './components/SettingsNavigation';
 
 import './style.scss';
 
@@ -27,17 +25,11 @@ class Settings extends Component {
   render() {
     return (
       <div className="s-settings">
-        <FormGrid className="s-settings__nav">
-          <FormRow>
-            {navigationLinks.map(nav =>
-              <FormColumn size="shrink">
-                <Button active={nav.link.active} className="s-settings__nav-item"><Icon type={nav.link.icon} spaced /> {nav.link.title}</Button>
-              </FormColumn>
-            )
-            }
-          </FormRow>
-        </FormGrid>
-        <div className="s-settings__pannel">
+        <SettingsNavigation
+          links={navigationLinks}
+          className="s-settings__nav"
+        />
+        <div className="s-settings__panel">
           <DevicesManagement />
         </div>
       </div>
