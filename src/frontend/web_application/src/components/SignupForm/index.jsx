@@ -1,31 +1,55 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Button from '../Button';
 import Title from '../Title';
 import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../form';
 import './style.scss';
 
+function generateStateFromProps(props) {
+  return {
+    ...props.formValues,
+  };
+}
+
 class SignupForm extends Component {
+  static propTypes = {
+    errors: PropTypes.shape({}),
+    form: PropTypes.shape({}),
+    formValues: PropTypes.shape({}),
+  };
+
   constructor(props) {
     super(props);
     this.state = {
+      username: '',
+      password: '',
+      tos: false,
       passwordStrength: '',
-      errors: [],
     };
   }
 
+  componentWillMount() {
+    this.setState(generateStateFromProps(this.props));
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState(generateStateFromProps(newProps));
+  }
+
   render() {
+    const { form, errors = {} } = this.props;
+
     return (
       <div className="s-signup">
-        <FormGrid className="s-signup__form" name="ac_form">
+        <FormGrid className="s-signup__form" name="ac_form" {...form}>
           <FormRow>
             <FormColumn className="s-signup__title" bottomSpace>
               <Title>Create your account</Title>
             </FormColumn>
           </FormRow>
-          {this.state.errors.length !== 0 && (
+          {errors.global && errors.global.length !== 0 && (
           <FormRow>
             <FormColumn bottomSpace>
-              <FieldErrors className="s-signup__global-errors" errors={this.state.errors} />
+              <FieldErrors className="s-signup__global-errors" errors={errors.global} />
             </FormColumn>
           </FormRow>
           )}
@@ -35,7 +59,8 @@ class SignupForm extends Component {
                 name="username"
                 label="Username"
                 placeholder="Username"
-                // errors={['Something\'s buggy here']}
+                value={this.state.username}
+                errors={errors.username}
                 showLabelforSr
               />
             </FormColumn>
@@ -48,6 +73,8 @@ class SignupForm extends Component {
                 placeholder="Password"
                 showLabelforSr
                 type="password"
+                value={this.state.password}
+                errors={errors.password}
               />
             </FormColumn>
             {this.state.passwordStrength.length !== 0 && (
@@ -58,7 +85,12 @@ class SignupForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn bottomSpace>
-              <CheckboxFieldGroup label="I agree Terms and conditions" />
+              <CheckboxFieldGroup
+                label="I agree Terms and conditions"
+                name="tos"
+                checked={this.state.tos}
+                errors={errors.tos}
+              />
             </FormColumn>
           </FormRow>
           <FormRow>

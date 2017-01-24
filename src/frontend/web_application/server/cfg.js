@@ -15,7 +15,7 @@ module.exports = (env) => {
       hostname: env === 'development' ? 'localhost' : 'api.dev.caliopen.org',
       port: 6543,
       auth: 'authentications',
-      user: 'user',
+      user: 'users',
     },
     cookie: {
       name: 'caliopen.web',
