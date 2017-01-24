@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { withTranslator } from '@gandi/react-translate';
 import ContactAvatarLetter from '../../../ContactAvatarLetter';
 import Link from '../../../Link';
 import Icon from '../../../Icon';
@@ -55,4 +54,4 @@ NavigationAlt.propTypes = {
   __: PropTypes.func.isRequired,
 };
 
-export default withTranslator()(NavigationAlt);
+export default NavigationAlt;

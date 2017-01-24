@@ -1,11 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { withTranslator } from '@gandi/react-translate';
 import Link from '../../../../../Link';
 import Icon from '../../../../../Icon';
 import VerticalMenu, { VerticalMenuTextItem, VerticalMenuItem, Separator } from '../../../../../VerticalMenu';
 import Dropdown, { DropdownController } from '../../../../../Dropdown';
 
-@withTranslator()
 class Presenter extends Component {
   static propTypes = {
     user: PropTypes.shape({}).isRequired,
