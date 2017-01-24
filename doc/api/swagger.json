@@ -4987,7 +4987,15 @@
                         "type": "string"
                       },
                       "type": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "unknow",
+                        "enum": [
+                          "unknow",
+                          "desktop",
+                          "laptop",
+                          "smartphone",
+                          "tablet"
+                        ]
                       },
                       "fingerprint": {
                         "type": "string"
@@ -5033,7 +5041,15 @@
                   "type": "string"
                 },
                 "type": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "unknow",
+                  "enum": [
+                    "unknow",
+                    "desktop",
+                    "laptop",
+                    "smartphone",
+                    "tablet"
+                  ]
                 },
                 "fingerprint": {
                   "type": "string"
@@ -5115,7 +5131,15 @@
                   "type": "string"
                 },
                 "type": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "unknow",
+                  "enum": [
+                    "unknow",
+                    "desktop",
+                    "laptop",
+                    "smartphone",
+                    "tablet"
+                  ]
                 },
                 "fingerprint": {
                   "type": "string"
@@ -5203,30 +5227,6 @@
           }
         }
       },
-      "put": {
-        "description": "Not Implemented",
-        "tags": [
-          "devices"
-        ],
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "device_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "verb not implemented, should raise an error"
-          }
-        }
-      },
       "patch": {
         "description": "update a device with rfc5789 and rfc7396 specifications",
         "tags": [
@@ -5276,7 +5276,15 @@
                       "type": "string"
                     },
                     "type": {
-                      "type": "string"
+                      "type": "string",
+                      "default": "unknow",
+                      "enum": [
+                        "unknow",
+                        "desktop",
+                        "laptop",
+                        "smartphone",
+                        "tablet"
+                      ]
                     },
                     "fingerprint": {
                       "type": "string"
@@ -5304,7 +5312,15 @@
                   "type": "string"
                 },
                 "type": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "unknow",
+                  "enum": [
+                    "unknow",
+                    "desktop",
+                    "laptop",
+                    "smartphone",
+                    "tablet"
+                  ]
                 },
                 "fingerprint": {
                   "type": "string"

@@ -5,7 +5,15 @@
       "type": "string"
     },
     "type": {
-      "type": "string"
+      "type": "string",
+      "default": "unknow",
+      "enum": [
+        "unknow",
+        "desktop",
+        "laptop",
+        "smartphone",
+        "tablet"
+      ]
     },
     "fingerprint": {
       "type": "string"
