@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { withTranslator } from '@gandi/react-translate';
+import ContactAvatarLetter from '../../../ContactAvatarLetter';
 import Link from '../../../Link';
 import Icon from '../../../Icon';
 import VerticalMenu, { VerticalMenuItem } from '../../../VerticalMenu';
@@ -9,14 +9,15 @@ const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
   <div className="l-nav-alt">
     <div className="l-nav-alt__user">
       <div className="l-nav-alt__avatar">
-        <avatar-letter contact={user.contact} modifiers={{ size: 'small' }} />
+        {user && <ContactAvatarLetter contact={user.contact} modifiers={{ size: 'small' }} />}
       </div>
       <div className="l-nav-alt__user-name">
-        <div>{user.contact.title}</div>
-        {
-          // FIXME: use contact address https://github.com/CaliOpen/Caliopen/issues/26
-          <div>{user.name}</div>
-        }
+        { user && (
+          <div>
+            <div>{user.contact.title}</div>
+            <div>{user.contact.emails[0] && user.contact.emails[0].address}</div>
+          </div>
+        )}
       </div>
     </div>
     <VerticalMenu className="l-nav-alt__menu">
@@ -47,10 +48,10 @@ const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
 );
 
 NavigationAlt.propTypes = {
-  user: PropTypes.shape({}).isRequired,
+  user: PropTypes.shape({}),
   applications: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   currentApplication: PropTypes.shape({}).isRequired,
   __: PropTypes.func.isRequired,
 };
 
-export default withTranslator()(NavigationAlt);
+export default NavigationAlt;

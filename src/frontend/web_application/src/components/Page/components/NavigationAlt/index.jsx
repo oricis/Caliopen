@@ -1,21 +1,11 @@
 import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { withTranslator } from '@gandi/react-translate';
 import * as ApplicationManager from '../../../../services/application-manager';
 import Presenter from './presenter';
 
-const userSelector = (state) => {
-  if (state.user.user) {
-    // eslint-disable-next-line no-console
-    console.error('remove mock user', state.user);
-  }
-
-  return {
-    name: 'Foo',
-    contact: {
-      title: 'Foobar',
-    },
-  };
-};
+const userSelector = state => state.user.user;
 const applicationListSelector = () => ApplicationManager.getApplications();
 const applicationSelector = state =>
   ApplicationManager.getInfosFromName(state.application.applicationName);
@@ -25,4 +15,7 @@ const mapStateToProps = createSelector(
   (user, currentApplication, applications) => ({ user, currentApplication, applications })
 );
 
-export default connect(mapStateToProps)(Presenter);
+export default compose(
+  connect(mapStateToProps),
+  withTranslator()
+)(Presenter);

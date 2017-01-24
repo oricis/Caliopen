@@ -1,11 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { withTranslator } from '@gandi/react-translate';
 import Link from '../../../../../Link';
 import Icon from '../../../../../Icon';
 import VerticalMenu, { VerticalMenuTextItem, VerticalMenuItem, Separator } from '../../../../../VerticalMenu';
 import Dropdown, { DropdownController } from '../../../../../Dropdown';
 
-@withTranslator()
 class Presenter extends Component {
   static propTypes = {
     user: PropTypes.shape({}).isRequired,
@@ -17,13 +15,14 @@ class Presenter extends Component {
     this.state = {
       isDropdownOpen: false,
     };
+    this.handleDropdownToggle = this.handleDropdownToggle.bind(this);
   }
 
-  render() {
-    const onDropdownToggle = () => {
-      this.setState({ isDropdownOpen: !this.state.isDropdownOpen });
-    };
+  handleDropdownToggle = () => {
+    this.setState(prevState => ({ isDropdownOpen: !prevState.isDropdownOpen }));
+  };
 
+  renderDropdown() {
     const { user, __ } = this.props;
 
     return (
@@ -37,9 +36,21 @@ class Presenter extends Component {
           <span className="show-for-small-only">{user.name}</span>&nbsp;
           <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
         </DropdownController>
-        <Dropdown id="co-user-menu" position="bottom" closeOnClick onToggle={onDropdownToggle}>
+        <Dropdown
+          id="co-user-menu"
+          position="bottom"
+          closeOnClick
+          onToggle={this.handleDropdownToggle}
+        >
           <VerticalMenu>
-            <VerticalMenuTextItem>{user.name}</VerticalMenuTextItem>
+            <VerticalMenuTextItem>
+              { user && (
+                <div>
+                  <div>{user.contact.title}</div>
+                  <div>{user.contact.emails[0] && user.contact.emails[0].address}</div>
+                </div>
+              )}
+            </VerticalMenuTextItem>
             <Separator />
             <VerticalMenuItem>
               <Link to="/account" expanded button>{__('header.menu.account')}</Link>
@@ -51,6 +62,14 @@ class Presenter extends Component {
         </Dropdown>
       </div>
     );
+  }
+
+  render() {
+    if (this.props.user) {
+      return this.renderDropdown();
+    }
+
+    return null;
   }
 }
 

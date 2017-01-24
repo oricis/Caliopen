@@ -19,6 +19,7 @@ router.use(function proxyRouting(req, res) {
   // include root path in proxied request
   req.url = path.join(req.config.api.prefix, req.url);
   var options = { target: 'http://' + req.config.api.hostname + ':' + req.config.api.port };
+
   proxy.web(req, res, options);
 });
 
