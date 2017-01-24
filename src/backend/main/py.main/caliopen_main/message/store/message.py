@@ -12,23 +12,6 @@ from .message_index import IndexedMessage
 import uuid
 
 
-class RawMessage(BaseModel):
-
-    """Raw message model."""
-
-    user_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    raw_msg_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    data = columns.Bytes()
-
-
-class RawInboundMessage(BaseModel):
-
-    """Raw Inbound message model."""
-
-    raw_msg_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    data = columns.Bytes()
-
-
 class MessageRecipient(BaseUserType):
 
     """Recipient involved in a message."""
@@ -47,7 +30,7 @@ class Message(BaseModel, IndexedModelMixin):
     _index_class = IndexedMessage
 
     user_id = columns.UUID(primary_key=True)
-    message_id = columns.UUID(primary_key=True)
+    message_id = columns.UUID(primary_key=True, default=uuid.uuid4)
     thread_id = columns.UUID()
     type = columns.Text()
     from_ = columns.Text()

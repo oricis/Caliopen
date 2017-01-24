@@ -7,6 +7,9 @@ import logging
 import elasticsearch_dsl as dsl
 from caliopen_storage.store.model import BaseIndexDocument
 
+from .tag_index import IndexedResourceTag
+
+
 log = logging.getLogger(__name__)
 
 
@@ -91,6 +94,7 @@ class IndexedContact(BaseIndexDocument):
     ims = dsl.Nested(doc_class=IndexedInternetAddress)
     phones = dsl.Nested(doc_class=IndexedPhone)
     social_identities = dsl.Nested(doc_class=IndexedSocialIdentity)
+    tags = dsl.Nested(doc_class=IndexedResourceTag)
 
     @property
     def contact_id(self):

@@ -485,7 +485,27 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "string"
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "user",
+                              "system"
+                            ]
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "tag_id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "type"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "title": {
@@ -1332,7 +1352,27 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "string"
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "user",
+                              "system"
+                            ]
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "tag_id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "type"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "title": {
@@ -1844,7 +1884,27 @@
                       "tags": {
                         "type": "array",
                         "items": {
-                          "type": "string"
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "user",
+                                "system"
+                              ]
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "tag_id": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "type"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "title": {
@@ -1932,7 +1992,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "object"
                   }
                 }
               }
@@ -2331,7 +2391,27 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "user",
+                          "system"
+                        ]
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "tag_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "type"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "title": {
@@ -2817,7 +2897,27 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "string"
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "user",
+                              "system"
+                            ]
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "tag_id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "type"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "title": {
@@ -3173,7 +3273,27 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "user",
+                          "system"
+                        ]
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "tag_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "type"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "title": {
@@ -3673,7 +3793,27 @@
                             "tags": {
                               "type": "array",
                               "items": {
-                                "type": "string"
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "user",
+                                      "system"
+                                    ]
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "tag_id": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "name",
+                                  "type"
+                                ],
+                                "additionalProperties": false
                               }
                             },
                             "title": {
@@ -4133,7 +4273,27 @@
                       "tags": {
                         "type": "array",
                         "items": {
-                          "type": "string"
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "user",
+                                "system"
+                              ]
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "tag_id": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "type"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "title": {
@@ -4748,10 +4908,10 @@
                           "system"
                         ]
                       },
-                      "label": {
+                      "name": {
                         "type": "string"
                       },
-                      "name": {
+                      "tag_id": {
                         "type": "string"
                       }
                     },
@@ -4818,7 +4978,7 @@
         }
       }
     },
-    "/tags/{name}": {
+    "/tags/{tag_id}": {
       "get": {
         "description": "Retrieve tag infos",
         "tags": [
@@ -4831,7 +4991,7 @@
         ],
         "parameters": [
           {
-            "name": "name",
+            "name": "tag_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -4853,10 +5013,10 @@
                     "system"
                   ]
                 },
-                "label": {
+                "name": {
                   "type": "string"
                 },
-                "name": {
+                "tag_id": {
                   "type": "string"
                 }
               },
@@ -4904,7 +5064,7 @@
         ],
         "parameters": [
           {
-            "name": "name",
+            "name": "tag_id",
             "in": "path",
             "required": true,
             "type": "string"

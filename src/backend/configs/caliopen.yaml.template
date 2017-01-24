@@ -17,14 +17,14 @@ lmtp:
 system:
     default_tags:
         -
-            label: INBOX
+            name: INBOX
             background: '#000000'
             color: black
         -
-            label: SPAM
+            name: SPAM
             background: '#AAAAAA'
             color: white
         -
-            label: IMPORTANT
+            name: IMPORTANT
             background: '#FF0000'
             color: white

@@ -9,6 +9,7 @@ from schematics.types.compound import ListType, ModelType, DictType
 from schematics.transforms import blacklist
 
 from .types import InternetAddressType, PhoneNumberType
+from .tag import ResourceTag
 
 ORG_TYPES = ['work', 'home']
 ADDRESS_TYPES = ['work', 'home', 'other']
@@ -139,7 +140,7 @@ class NewIM(Model):
     type = StringType(choices=IM_TYPES, default='other')
 
     class Options:
-        serialize_when_none=False
+        serialize_when_none = False
 
 
 class IM(NewIM):
@@ -166,6 +167,7 @@ class NewPhone(Model):
 
     class Options:
         serialize_when_none = False
+
 
 class Phone(NewPhone):
 
@@ -209,7 +211,8 @@ class NewPublicKey(Model):
 
     """Input structure for a new public key."""
 
-    expire_date = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    expire_date = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               tzd=u'utc')
     fingerprint = StringType()
     key = StringType(required=True)
     name = StringType(required=True)
@@ -225,8 +228,11 @@ class PublicKey(NewPublicKey):
     """Existing public key."""
 
     contact_id = UUIDType()
-    date_insert = DateTimeType(required=True, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
-    date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    date_insert = DateTimeType(required=True,
+                               serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               tzd=u'utc')
+    date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               tzd=u'utc')
     user_id = UUIDType()
 
     class Options:
@@ -254,7 +260,7 @@ class NewContact(Model):
     privacy_features = DictType(StringType, default=lambda: {})
     privacy_index = IntType(default=0)
     public_keys = ListType(ModelType(NewPublicKey), default=lambda: [])
-    tags = ListType(StringType)
+    tags = ListType(ModelType(ResourceTag), default=lambda: [])
 
     class Options:
         serialize_when_none = False
@@ -263,11 +269,14 @@ class NewContact(Model):
 class Contact(NewContact):
 
     """Existing contact."""
+
     addresses = ListType(ModelType(PostalAddress), default=lambda: [])
     avatar = StringType(default='avatar.png')
     contact_id = UUIDType(required=True)
-    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
-    date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               tzd=u'utc')
+    date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               tzd=u'utc')
     deleted = BooleanType()
     emails = ListType(ModelType(Email), default=lambda: [])
     identities = ListType(ModelType(SocialIdentity), default=lambda: [])
@@ -282,6 +291,7 @@ class Contact(NewContact):
     class Options:
         serialize_when_none = False
 
+
 class ShortContact(Model):
 
     """Input structure for contact in short form."""
@@ -289,7 +299,7 @@ class ShortContact(Model):
     contact_id = UUIDType(required=True)
     family_name = StringType()
     given_name = StringType()
-    tags = ListType(StringType, )
+    tags = ListType(ModelType(ResourceTag), default=lambda: [])
     title = StringType()
 
     class Options:

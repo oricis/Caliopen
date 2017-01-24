@@ -10,13 +10,13 @@ from elasticsearch import Elasticsearch
 
 from caliopen_storage.config import Configuration
 from caliopen_storage.exception import NotFound, CredentialException
-from ..store.user import (User as ModelUser,
-                                      UserName as ModelUserName,
-                                      IndexUser,
-                                      Counter as ModelCounter,
-                                      Tag as ModelTag,
-                                      FilterRule as ModelFilterRule,
-                                      ReservedName as ModelReservedName)
+from ..store import (User as ModelUser,
+                     UserName as ModelUserName,
+                     IndexUser,
+                     Counter as ModelCounter,
+                     UserTag as ModelUserTag,
+                     FilterRule as ModelFilterRule,
+                     ReservedName as ModelReservedName)
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
 from .contact import Contact
@@ -40,8 +40,8 @@ class Tag(BaseUserCore):
 
     """Tag core object."""
 
-    _model_class = ModelTag
-    _pkey_name = 'name'
+    _model_class = ModelUserTag
+    _pkey_name = 'tag_id'
 
 
 class FilterRule(BaseUserCore):
@@ -148,8 +148,10 @@ class User(BaseCore):
             # XXX should use core proxy, not directly model attribute
             core.model.contact_id = contact.contact_id
             core.save()
+
         # Create counters
         Counter.create(user_id=core.user_id)
+        core.setup_system_tags()
         return core
 
     @classmethod
@@ -190,6 +192,14 @@ class User(BaseCore):
                     log.info('Create index {} mapping for doc_type {}'.
                              format(self.user_id, idx_kls.doc_type))
                     idx_kls.create_mapping(self.user_id)
+
+    def setup_system_tags(self):
+        # Create system tags
+        default_tags = Configuration('global').get('system.default_tags')
+        for tag in default_tags:
+            tag['type'] = 'system'
+            tag['date_insert'] = datetime.utcnow()
+            Tag.create(self, **tag)
 
     def new_message_id(self):
         """Create a new message_id from ``Counter``."""

@@ -18,6 +18,7 @@ from .im import IM
 from .organization import Organization
 from .phone import Phone
 from .postal_address import PostalAddress
+from .tag import ResourceTag
 
 
 import logging
@@ -64,7 +65,7 @@ class Contact(base.ObjectIndexable):
         'privacy_features':    types.DictType,
         'privacy_index':       types.IntType,
         'public_keys':         [PublicKey],
-        'tags':                [types.StringType],
+        'tags':                [ResourceTag],
         'title':               types.StringType,
         'user_id':             UUID
     }
@@ -89,4 +90,3 @@ class Contact(base.ObjectIndexable):
     #  operations related to elasticsearch
     _index_class = IndexedContact
     _index = None
-

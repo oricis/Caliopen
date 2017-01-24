@@ -21,7 +21,7 @@
     "/discussions/{discussion_id}/messages": {"$ref": "paths/discussions.json#/discussions_{discussion_id}_messages"},
     "/raws/{raw_msg_id}": {"$ref": "paths/raws.json#/raws_{raw_msg_id}"},
     "/tags": {"$ref": "paths/tags.json#/tags"},
-    "/tags/{name}": {"$ref": "paths/tags.json#/tags_{name}"}
+    "/tags/{tag_id}": {"$ref": "paths/tags.json#/tags_{tag_id}"}
   },
   "securityDefinitions": {
     "basicAuth": {

@@ -9,7 +9,8 @@ from caliopen_storage.core import BaseUserCore, BaseCore
 from caliopen_storage.exception import NotFound
 
 from ..store import (RawMessage as ModelRaw,
-                     RawInboundMessage as ModelRawInbound)
+                     RawInboundMessage as ModelRawInbound,
+                     UserRawInboundMessage as ModelUserRawInboundMessage)
 from ..format import MailMessage
 
 log = logging.getLogger(__name__)
@@ -45,6 +46,14 @@ class RawMessage(BaseUserCore):
         return MailMessage(self.data)
 
 
+class UserRawInboundMessage(BaseUserCore):
+
+    """User raw message affectation."""
+
+    _model_class = ModelUserRawInboundMessage
+    _pkey_name = 'raw_msg_id'
+
+
 class RawInboundMessage(BaseCore):
 
     """
@@ -57,10 +66,13 @@ class RawInboundMessage(BaseCore):
     _pkey_name = 'raw_msg_id'
 
     @classmethod
-    def create(cls, raw):
+    def create(cls, users, raw):
         """Create raw message."""
-        key = uuid.uuid4()
-        return super(RawInboundMessage, cls).create(raw_msg_id=key, data=raw)
+        raw = super(RawInboundMessage, cls).create(data=raw)
+        for user in users:
+            UserRawInboundMessage.create(user=user,
+                                         raw_msg_id=raw.raw_msg_id)
+        return raw
 
     @classmethod
     def get(cls, raw_msg_id):
