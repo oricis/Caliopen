@@ -36,6 +36,7 @@
   "license": "MIT",
   "dependencies": {
     "@gandi/react-translate": "^1.0.1",
+    "axios": "^0.15.3",
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.5",
@@ -67,6 +68,7 @@
     "react-router-redux": "^4.0.6",
     "react-tappable": "^0.8.4",
     "redux": "^3.6.0",
+    "redux-axios-middleware": "^3.0.0",
     "reselect": "^2.5.4",
     "sass-loader": "^4.0.2",
     "script-loader": "^0.7.0",

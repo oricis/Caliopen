@@ -1,4 +1,5 @@
 const express = require('express');
+const applyAPI = require('./api');
 const applySSR = require('./ssr');
 const applyAssets = require('./assets');
 const applyAuth = require('./auth');
@@ -13,6 +14,7 @@ app.set('port', (process.env.PORT || 4000));
 applyConfig(app);
 applyAssets(app);
 applyAuth(app);
+applyAPI(app);
 applySSR(app);
 applyError(app);
 

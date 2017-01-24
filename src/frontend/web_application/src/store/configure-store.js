@@ -1,10 +1,19 @@
 import { createStore, applyMiddleware } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import { browserHistory } from 'react-router';
+import axios from 'axios';
+import axiosMiddleware from 'redux-axios-middleware';
 import rootReducer from './reducer';
+import config from '../services/config';
+
+const client = axios.create({
+  baseURL: config.getAPIBaseUrl(),
+  responseType: 'json',
+});
 
 const middlewares = [
   routerMiddleware(browserHistory),
+  axiosMiddleware(client),
 ];
 
 if (CALIOPEN_ENV === 'development' || CALIOPEN_ENV === 'staging') {

@@ -1,26 +1,16 @@
-export const REQUEST_USER = 'REQUEST_USER';
-export const RECEIVE_USER = 'RECEIVE_USER';
-export const INVALIDATE_USER = 'INVALIDATE_USER';
+export const REQUEST_USER = 'co/application/REQUEST_USER';
+export const REQUEST_USER_SUCCESS = 'co/application/REQUEST_USER_SUCCESS';
+export const REQUEST_USER_FAIL = 'co/application/REQUEST_USER_FAIL';
+export const INVALIDATE_USER = 'co/application/INVALIDATE_USER';
 
 export function requestUser() {
   return {
     type: REQUEST_USER,
-    payload: {},
-  };
-}
-
-export function fetchUser() {
-  return (dispatch) => {
-    dispatch(this.requestUser());
-
-    return this.UserRepository.getUser().then(user => dispatch(this.receiveUser(user)));
-  };
-}
-
-export function receiveUser(user) {
-  return {
-    type: RECEIVE_USER,
-    payload: { user },
+    payload: {
+      request: {
+        url: '/v1/me',
+      },
+    },
   };
 }
 
@@ -47,12 +37,13 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     case REQUEST_USER:
       return { ...state, isFetching: true };
-    case RECEIVE_USER:
+    case REQUEST_USER_SUCCESS:
+
       return {
         ...state,
         isFetching: false,
         didInvalidate: false,
-        user: action.payload.user,
+        user: action.payload.data,
       };
     case INVALIDATE_USER:
       return { ...state, didInvalidate: true };
