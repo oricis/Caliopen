@@ -5,6 +5,7 @@ import { InputText, FieldErrors } from '..';
 import './style.scss';
 
 const TextFieldGroup = ({
+  id = uuidV1(),
   label,
   errors = [],
   expanded = true,
@@ -12,8 +13,6 @@ const TextFieldGroup = ({
   showLabelforSr = false,
   ...inputProps
 }) => {
-  const id = uuidV1();
-
   const hasError = errors.length > 0;
 
   const labelClassName = classnames('m-text-field-group__label', {
@@ -35,6 +34,7 @@ const TextFieldGroup = ({
 };
 
 TextFieldGroup.propTypes = {
+  id: PropTypes.string,
   label: PropTypes.string.isRequired,
   showLabelforSr: PropTypes.bool,
   errors: PropTypes.arrayOf(PropTypes.string),

@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 const config = Object.assign({}, {
   module: {
@@ -22,6 +23,12 @@ const config = Object.assign({}, {
       { test: /\.md$/, loader: 'raw-loader' },
     ],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      CALIOPEN_ENV: JSON.stringify(process.env.NODE_ENV),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
+  ],
   sassLoader: {
     includePaths: [
       path.resolve(__dirname, '../src'),

@@ -7,10 +7,8 @@ import { FieldErrors } from '..';
 import './style.scss';
 
 const CheckboxFieldGroup = ({
-  label, showTextLabel, displaySwitch, errors = [], ...inputProps
+  id = uuidV1(), label, showTextLabel, displaySwitch, errors = [], ...inputProps
 }) => {
-  const id = uuidV1();
-
   const renderCheckbox = () => (
     <Checkbox id={id} label={label} {...inputProps} />
   );
@@ -38,6 +36,7 @@ const CheckboxFieldGroup = ({
 };
 
 CheckboxFieldGroup.propTypes = {
+  id: PropTypes.string,
   label: PropTypes.string.isRequired,
   showTextLabel: PropTypes.bool,
   displaySwitch: PropTypes.bool,

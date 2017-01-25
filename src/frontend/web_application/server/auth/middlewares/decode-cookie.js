@@ -3,6 +3,12 @@ const cyphered = require('../lib/seal');
 const decodeCookie = (req, res, next) => {
   const seal = req.seal;
 
+  if (!seal && req.security === false) {
+    next();
+
+    return;
+  }
+
   cyphered.decode(seal, req.config.seal.secret, (err, obj) => {
     if (err || !obj) {
       const error = new Error('Unexpected Server Error');

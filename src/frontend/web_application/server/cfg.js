@@ -28,25 +28,10 @@ module.exports = (env) => {
     },
   };
 
-  let instanceInfo = {};
-
-  switch (env) {
-    default:
-    case 'staging':
-      instanceInfo = {
-        login: 'john@mail.caliopen.me',
-        password: '123456',
-      };
-      break;
-    case 'development':
-      instanceInfo = {
-        login: 'dev@caliopen.local',
-        password: '123456',
-      };
-      config.publicPaths['/build/'] = ['dist/kotatsu/build/'];
-      config.frontend.cssFiles = ['/build/style.css'];
-      break;
+  if (env === 'development') {
+    config.publicPaths['/build/'] = ['dist/kotatsu/build/'];
+    config.frontend.cssFiles = ['/build/style.css'];
   }
 
-  return Object.assign({}, config, { instanceInfo });
+  return config;
 };

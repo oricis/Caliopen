@@ -43,7 +43,7 @@ class Header extends Component {
         )}
         searchAsDropdown={this.state.searchAsDropdown}
         search={<SearchField />}
-        user={this.isAuthenticated ? <UserMenu /> : <CoLink to="/auth/login" modifiers={{ button: true }}>{__('header.menu.signin')}</CoLink>}
+        user={this.isAuthenticated ? <UserMenu /> : <CoLink to="/auth/signin" modifiers={{ button: true }}>{__('header.menu.signin')}</CoLink>}
       />
     );
   }

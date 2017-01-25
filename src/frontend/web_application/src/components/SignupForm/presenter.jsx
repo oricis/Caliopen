@@ -15,17 +15,24 @@ class SignupForm extends Component {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
     formValues: PropTypes.shape({}),
+    onSubmit: PropTypes.func,
     __: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
-      tos: false,
+      formValues: {
+        username: '',
+        password: '',
+        tos: false,
+      },
       passwordStrength: '',
     };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -34,6 +41,32 @@ class SignupForm extends Component {
 
   componentWillReceiveProps(newProps) {
     this.setState(generateStateFromProps(newProps));
+  }
+
+  handleInputChange(event) {
+    const { name, value } = event.target;
+    this.setState(prevState => ({
+      formValues: {
+        ...prevState.formValues,
+        [name]: value,
+      },
+    }));
+  }
+
+  handleCheckboxChange(event) {
+    const { name, checked } = event.target;
+    this.setState(prevState => ({
+      formValues: {
+        ...prevState.formValues,
+        [name]: checked,
+      },
+    }));
+  }
+
+  handleSubmit(ev) {
+    ev.preventDefault();
+    const { formValues } = this.state;
+    this.props.onSubmit({ formValues });
   }
 
   render() {
@@ -57,11 +90,13 @@ class SignupForm extends Component {
           <FormRow>
             <FormColumn bottomSpace >
               <TextFieldGroup
+                id="signup_username"
                 name="username"
                 label={__('signup.form.username.label')}
                 placeholder={__('signup.form.username.placeholder')}
-                value={this.state.username}
+                value={this.state.formValues.username}
                 errors={errors.username}
+                onChange={this.handleInputChange}
                 showLabelforSr
               />
             </FormColumn>
@@ -69,13 +104,15 @@ class SignupForm extends Component {
           <FormRow>
             <FormColumn bottomSpace>
               <TextFieldGroup
+                id="signup_password"
                 name="password"
                 label={__('signup.form.password.label')}
                 placeholder={__('signup.form.password.placeholder')}
                 showLabelforSr
                 type="password"
-                value={this.state.password}
+                value={this.state.formValues.password}
                 errors={errors.password}
+                onChange={this.handleInputChange}
               />
             </FormColumn>
             {this.state.passwordStrength.length !== 0 && (
@@ -87,16 +124,23 @@ class SignupForm extends Component {
           <FormRow>
             <FormColumn bottomSpace>
               <CheckboxFieldGroup
+                id="signup_tos"
                 label={__('signup.form.tos.label')}
                 name="tos"
-                checked={this.state.tos}
+                checked={this.state.formValues.tos}
                 errors={errors.tos}
+                onChange={this.handleCheckboxChange}
               />
             </FormColumn>
           </FormRow>
           <FormRow>
             <FormColumn className="m-im-form__action">
-              <Button type="submit" expanded plain>{__('signup.action.create')}</Button>
+              <Button
+                type="submit"
+                onClick={this.handleSubmit}
+                expanded
+                plain
+              >{__('signup.action.create')}</Button>
             </FormColumn>
           </FormRow>
         </FormGrid>

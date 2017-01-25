@@ -11,8 +11,8 @@ class Presenter extends Component {
     return (
       <div>
         <ComponentWrapper>
-          <AuthPage version="0.1">
-            <SignupForm __={noop} />
+          <AuthPage>
+            <SignupForm __={noop} onSubmit={action('submited')} />
           </AuthPage>
         </ComponentWrapper>
         <Code>
