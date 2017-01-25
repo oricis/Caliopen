@@ -78,9 +78,8 @@ const createLoginRouting = (router) => {
       error: (error) => {
         error = error || new Error('Bad gateway');
         if (error.status && error.status >= 400 && error.status < 500) {
-          res.status(error.status);
           errors.global = [ERR_INVALID];
-          res.status(400).send({ errors });
+          res.status(error.status).send({ errors });
 
           return;
         }

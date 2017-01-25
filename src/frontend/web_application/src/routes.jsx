@@ -6,7 +6,7 @@ import DiscussionList from './scenes/DiscussionList';
 import ContactList from './scenes/ContactList';
 import Account from './scenes/Account';
 import Signin from './scenes/Signin';
-// import Signup from './scenes/Signup';
+import Signup from './scenes/Signup';
 import enableI18n from './services/i18n';
 
 const getRoutes = () => [(
@@ -18,7 +18,7 @@ const getRoutes = () => [(
 ), (
   <Route name="auth" path="/auth/" component={enableI18n(AuthPage)} >
     <Route path="signin" component={Signin} />
-    {/* <Route path="signup" component={Signup} /> */}
+    <Route path="signup" component={Signup} />
   </Route>
 )];
 

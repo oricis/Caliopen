@@ -8,9 +8,9 @@ describe('scene - Signin', () => {
 
   it('render', () => {
     const comp = shallow(
-      <Presenter __={translator} onSigninSuccess={noop} />
+      <Presenter __={translator} onSignupSuccess={noop} />
     );
 
-    expect(comp.text()).toContain('SigninForm');
+    expect(comp.text()).toContain('SignupForm');
   });
 });
