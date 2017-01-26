@@ -11,14 +11,23 @@ function generateStateFromProps(props) {
   };
 }
 
+const noop = () => {};
+
 class SignupForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
     formValues: PropTypes.shape({}),
     onSubmit: PropTypes.func,
+    onUsernameChange: PropTypes.func,
+    onUsernameBlur: PropTypes.func,
     __: PropTypes.func,
   };
+
+  static defaultProps = {
+    onUsernameChange: noop,
+    onUsernameBlur: noop,
+  }
 
   constructor(props) {
     super(props);
@@ -32,7 +41,8 @@ class SignupForm extends Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleOnPasswordChange = this.handleOnPasswordChange.bind(this);
+    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -45,7 +55,13 @@ class SignupForm extends Component {
     this.setState(generateStateFromProps(newProps));
   }
 
-  handleOnPasswordChange(event) {
+  handleUsernameChange(event) {
+    this.handleInputChange(event);
+
+    this.props.onUsernameChange(event);
+  }
+
+  handlePasswordChange(event) {
     this.handleInputChange(event);
 
     this.setState((prevState) => {
@@ -113,7 +129,8 @@ class SignupForm extends Component {
                 placeholder={__('signup.form.username.placeholder')}
                 value={this.state.formValues.username}
                 errors={errors.username}
-                onChange={this.handleInputChange}
+                onChange={this.handleUsernameChange}
+                onBlur={this.props.onUsernameBlur}
                 showLabelforSr
               />
             </FormColumn>
@@ -129,7 +146,7 @@ class SignupForm extends Component {
                 type="password"
                 value={this.state.formValues.password}
                 errors={errors.password}
-                onChange={this.handleOnPasswordChange}
+                onChange={this.handlePasswordChange}
               />
             </FormColumn>
             {this.state.passwordStrength.length !== 0 && (

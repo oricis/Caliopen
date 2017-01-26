@@ -2,7 +2,7 @@ const securityMiddleware = (req, res, next) => {
   const security = {
     firewalls: {
       auth: {
-        paths: ['/auth/signin', '/auth/signup'],
+        paths: ['/auth/signin', '/auth/signup', '/api/v2/username/isAvailable'],
         security: false,
       },
       default: {
