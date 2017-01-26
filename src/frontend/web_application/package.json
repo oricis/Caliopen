@@ -75,7 +75,8 @@
     "style-loader": "^0.13.1",
     "uuid": "^3.0.1",
     "webpack": "^1.13.2",
-    "webpack-dashboard": "^0.2.0"
+    "webpack-dashboard": "^0.2.0",
+    "zxcvbn": "^4.4.1"
   },
   "devDependencies": {
     "@kadira/storybook": "^2.21.0",
