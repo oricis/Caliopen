@@ -39,7 +39,7 @@ const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
     <tab-list-alt />
     <VerticalMenu className="l-nav-alt__menu">
       <VerticalMenuItem>
-        <Link to="/auth/logout" button expanded>
+        <Link to="/auth/signout" button expanded>
           {__('header.menu.signout')}
         </Link>
       </VerticalMenuItem>

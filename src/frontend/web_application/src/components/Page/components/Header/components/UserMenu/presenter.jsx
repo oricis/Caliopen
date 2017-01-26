@@ -6,7 +6,7 @@ import Dropdown, { DropdownController } from '../../../../../Dropdown';
 
 class Presenter extends Component {
   static propTypes = {
-    user: PropTypes.shape({}).isRequired,
+    user: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
   };
 
@@ -44,19 +44,15 @@ class Presenter extends Component {
         >
           <VerticalMenu>
             <VerticalMenuTextItem>
-              { user && (
-                <div>
-                  <div>{user.contact.title}</div>
-                  <div>{user.contact.emails[0] && user.contact.emails[0].address}</div>
-                </div>
-              )}
+              <div>{user.contact.title}</div>
+              <div>{user.contact.emails[0] && user.contact.emails[0].address}</div>
             </VerticalMenuTextItem>
             <Separator />
             <VerticalMenuItem>
               <Link to="/account" expanded button>{__('header.menu.account')}</Link>
             </VerticalMenuItem>
             <VerticalMenuItem>
-              <Link to="/auth/logout" button expanded>{__('header.menu.signout')}</Link>
+              <Link to="/auth/signout" button expanded>{__('header.menu.signout')}</Link>
             </VerticalMenuItem>
           </VerticalMenu>
         </Dropdown>

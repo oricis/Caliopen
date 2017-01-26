@@ -2,6 +2,8 @@ const seal = require('../lib/seal');
 const Auth = require('../lib/Auth');
 
 const FORM_PROPS = { action: '/auth/signup', method: 'POST' };
+const ERR_REQUIRED = 'ERR_REQUIRED';
+const ERR_INVALID = 'ERR_INVALID';
 
 const getDevInfos = config => ({
   version: config.version,
@@ -69,10 +71,6 @@ const authenticateAfterSignup = (req, res, next) => {
 };
 
 const createSignupRouting = (router) => {
-  router.get('/signup', (req, res) =>
-    res.render('signup.component', { form: getFormParam(req), devInfos: getDevInfos(req.config) })
-  );
-
   router.post('/signup', (req, res, next) => {
     let hasError = false;
     const errors = {};
@@ -92,21 +90,21 @@ const createSignupRouting = (router) => {
 
     if (!values.username) {
       hasError = true;
-      errors.username = ['Username is required'];
+      errors.username = [ERR_REQUIRED];
     }
 
     if (!values.password) {
       hasError = true;
-      errors.password = ['Password is required'];
+      errors.password = [ERR_REQUIRED];
     }
 
     if (!values.tos) {
       hasError = true;
-      errors.tos = ['We need your terms and conditions agreement'];
+      errors.tos = [ERR_REQUIRED];
     }
 
     if (hasError) {
-      res.render('signup.component', { form: getFormParam(req), errors, formValues: values, devInfos: getDevInfos(req.config) });
+      res.status(400).send({ errors });
 
       return;
     }
@@ -125,9 +123,8 @@ const createSignupRouting = (router) => {
       error: (error) => {
         error = error || new Error('Bad gateway');
         if (error.status && error.status >= 400 && error.status < 500) {
-          res.status(error.status);
-          errors.global = ['Username or password is invalid'];
-          res.render('signup.component', { form: getFormParam(req), errors, formValues: values, devInfos: getDevInfos(req.config) });
+          errors.global = [ERR_INVALID];
+          res.status(error.status).send({ errors });
 
           return;
         }

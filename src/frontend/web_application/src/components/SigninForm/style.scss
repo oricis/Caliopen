@@ -2,7 +2,7 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 
-.s-login {
+.s-signin {
   @include flex-grid-size(12);
 
   @include breakpoint(medium) {

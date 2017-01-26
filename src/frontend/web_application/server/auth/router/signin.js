@@ -1,30 +1,11 @@
 const seal = require('../lib/seal');
 const Auth = require('../lib/Auth');
 
-const FORM_PROPS = { action: '/auth/login', method: 'POST' };
-
-const getDevInfos = config => ({
-  version: config.version,
-  login: config.instanceInfo.login,
-  password: config.instanceInfo.password,
-});
-
-const getFormParam = (req) => {
-  const form = Object.assign({}, FORM_PROPS);
-
-  if (req.originalUrl.indexOf('?') !== -1) {
-    form.action += `?${req.originalUrl.split('?')[1]}`;
-  }
-
-  return form;
-};
+const ERR_REQUIRED = 'ERR_REQUIRED';
+const ERR_INVALID = 'ERR_INVALID';
 
 const createLoginRouting = (router) => {
-  router.get('/login', (req, res) =>
-    res.render('login.component', { form: getFormParam(req), devInfos: getDevInfos(req.config) })
-  );
-
-  router.post('/login', (req, res, next) => {
+  router.post('/signin', (req, res, next) => {
     let hasError = false;
     const errors = {};
     const auth = new Auth(req.config);
@@ -43,16 +24,16 @@ const createLoginRouting = (router) => {
 
     if (!values.username) {
       hasError = true;
-      errors.username = ['Username is required'];
+      errors.username = [ERR_REQUIRED];
     }
 
     if (!values.password) {
       hasError = true;
-      errors.password = ['Password is required'];
+      errors.password = [ERR_REQUIRED];
     }
 
     if (hasError) {
-      res.render('login.component', { form: getFormParam(req), errors, formValues: values, devInfos: getDevInfos(req.config) });
+      res.status(400).send({ errors });
 
       return;
     }
@@ -83,18 +64,22 @@ const createLoginRouting = (router) => {
               return;
             }
             res.cookie(req.config.cookie.name, sealed, req.config.cookie.options);
-            const redirect = req.query.redirect || '/';
-            const url = `${req.config.frontend.rootPath.replace(/\/$/, '')}${redirect}`;
-            res.redirect(url);
+
+            if (!req.xhr) {
+              const redirect = req.query.redirect || '/';
+              const url = `${req.config.frontend.rootPath.replace(/\/$/, '')}${redirect}`;
+              res.redirect(url);
+            } else {
+              res.send({ success: 'success' });
+            }
           }
         );
       },
       error: (error) => {
         error = error || new Error('Bad gateway');
         if (error.status && error.status >= 400 && error.status < 500) {
-          res.status(error.status);
-          errors.global = ['Username or password is invalid'];
-          res.render('login.component', { form: getFormParam(req), errors, formValues: values, devInfos: getDevInfos(req.config) });
+          errors.global = [ERR_INVALID];
+          res.status(error.status).send({ errors });
 
           return;
         }
@@ -105,10 +90,10 @@ const createLoginRouting = (router) => {
     });
   });
 
-  router.get('/logout', (req, res) => {
+  router.get('/signout', (req, res) => {
     res.clearCookie(req.config.cookie.name);
     // XXX: render a temporary confirmation on next rendering
-    res.redirect('login');
+    res.redirect('signin');
   });
 };
 

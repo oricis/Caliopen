@@ -1,4 +1,8 @@
 const checkToken = (req, res, next) => {
+  if (!req.user && req.security === false) {
+    return next();
+  }
+
   const user = req.user;
   const tokens = user.tokens;
 

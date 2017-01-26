@@ -11,19 +11,26 @@ function generateStateFromProps(props) {
   };
 }
 
-class LoginForm extends Component {
+class SigninForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
     formValues: PropTypes.shape({}),
+    onSubmit: PropTypes.func,
+    __: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
+      formValues: {
+        username: '',
+        password: '',
+      },
     };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -34,12 +41,28 @@ class LoginForm extends Component {
     this.setState(generateStateFromProps(newProps));
   }
 
+  handleInputChange(event) {
+    const { name, value } = event.target;
+    this.setState(prevState => ({
+      formValues: {
+        ...prevState.formValues,
+        [name]: value,
+      },
+    }));
+  }
+
+  handleSubmit(ev) {
+    ev.preventDefault();
+    const { formValues } = this.state;
+    this.props.onSubmit({ formValues });
+  }
+
   render() {
-    const { errors = {}, form } = this.props;
+    const { errors = {}, form, __ } = this.props;
 
     return (
-      <div className="s-login">
-        <FormGrid className="s-login__form" {...form}>
+      <div className="s-signin">
+        <FormGrid className="s-signin__form" {...form}>
           { errors.global && (
             <FormColumn bottomSpace>
               <FormRow>
@@ -48,33 +71,43 @@ class LoginForm extends Component {
             </FormColumn>
           )}
           <FormRow>
-            <FormColumn className="s-login__title" bottomSpace>
-              <Title>Please Log In</Title>
+            <FormColumn className="s-signin__title" bottomSpace>
+              <Title>{__('signin.title')}</Title>
             </FormColumn>
             <FormColumn bottomSpace>
               <TextFieldGroup
-                label="Username"
-                placeholder="Username"
+                id="signin_username"
+                label={__('signin.form.username.label')}
+                placeholder={__('signin.form.username.placeholder')}
                 name="username"
                 value={this.state.username}
                 errors={errors.username}
+                onChange={this.handleInputChange}
                 showLabelforSr
               />
             </FormColumn>
             <FormColumn bottomSpace>
               <TextFieldGroup
-                label="Password"
-                placeholder="Password"
+                id="signin_password"
+                label={__('signin.form.password.label')}
+                placeholder={__('signin.form.password.placeholder')}
                 name="password"
                 type="password"
-                value={this.state.password} errors={errors.password}
+                value={this.state.password}
+                errors={errors.password}
+                onChange={this.handleInputChange}
                 showLabelforSr
               />
             </FormColumn>
           </FormRow>
           <FormRow>
             <FormColumn className="m-im-form__action">
-              <Button type="submit" expanded plain>Login</Button>
+              <Button
+                type="submit"
+                onClick={this.handleSubmit}
+                expanded
+                plain
+              >{__('signin.action.login')}</Button>
             </FormColumn>
           </FormRow>
         </FormGrid>
@@ -83,4 +116,4 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+export default SigninForm;

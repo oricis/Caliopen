@@ -9,7 +9,7 @@ import ContactAvatarLetter from './components/ContactAvatarLetter';
 import ContactDetails from './components/ContactDetails';
 import Icon from './components/Icon';
 import Link from './components/Link';
-import AuthPage from './layouts/AuthPage';
+import SigninPage from './layouts/SigninPage';
 import SignupPage from './layouts/SignupPage';
 import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
@@ -108,6 +108,6 @@ storiesOf('Auth', module)
   .add('SignupPage', () => (
     <SignupPage />
   ))
-  .add('AuthPage', () => (
-    <AuthPage />
+  .add('SigninPage', () => (
+    <SigninPage />
   ));

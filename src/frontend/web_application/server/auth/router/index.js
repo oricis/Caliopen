@@ -1,9 +1,9 @@
 const { Router: createRouter } = require('express');
-const createLoginRouting = require('./login');
+const createSigninRouting = require('./signin');
 const createSignupRouting = require('./signup');
 
 const router = createRouter();
-createLoginRouting(router);
+createSigninRouting(router);
 createSignupRouting(router);
 
 module.exports = router;
