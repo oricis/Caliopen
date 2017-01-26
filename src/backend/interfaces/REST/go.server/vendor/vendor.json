@@ -5,49 +5,49 @@
 		{
 			"checksumSHA1": "0iNetMV0c01Z4l/+f1CQvye6bEc=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects",
-			"revision": "b5f648de4160e07e7e7d4e4fd77d0d9984dd20fe",
+			"revision": "8b75fbac165664e60897f871b3fcdc67f40bf13e",
 			"revisionTime": "2017-01-19T14:01:59Z"
 		},
 		{
 			"checksumSHA1": "yS/ThYA1UHnLvJK4VsVZR9mp5kU=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server",
-			"revision": "b5f648de4160e07e7e7d4e4fd77d0d9984dd20fe",
+			"revision": "8b75fbac165664e60897f871b3fcdc67f40bf13e",
 			"revisionTime": "2017-01-19T14:01:59Z"
 		},
 		{
 			"checksumSHA1": "xSIgHXoYkenXaoLCf0okGKZCQ4Q=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest",
-			"revision": "b5f648de4160e07e7e7d4e4fd77d0d9984dd20fe",
+			"revision": "8b75fbac165664e60897f871b3fcdc67f40bf13e",
 			"revisionTime": "2017-01-19T14:01:59Z"
 		},
 		{
 			"checksumSHA1": "5qu9zRTpn/mfGgE0tnEAGMSAXrQ=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest/cli_cmds",
-			"revision": "b5f648de4160e07e7e7d4e4fd77d0d9984dd20fe",
+			"revision": "8b75fbac165664e60897f871b3fcdc67f40bf13e",
 			"revisionTime": "2017-01-19T14:01:59Z"
 		},
 		{
 			"checksumSHA1": "Bxd0gBd09WOBrV84juS7FJVxCtc=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/operations/users",
-			"revision": "b5f648de4160e07e7e7d4e4fd77d0d9984dd20fe",
+			"revision": "8b75fbac165664e60897f871b3fcdc67f40bf13e",
 			"revisionTime": "2017-01-19T14:01:59Z"
 		},
 		{
 			"checksumSHA1": "qaYhsb4181Vklp9956GyHyitNxQ=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/main/go.backends",
-			"revision": "b5f648de4160e07e7e7d4e4fd77d0d9984dd20fe",
+			"revision": "8b75fbac165664e60897f871b3fcdc67f40bf13e",
 			"revisionTime": "2017-01-19T14:01:59Z"
 		},
 		{
 			"checksumSHA1": "/GpXasbjYx1YOxUKmpUqs3JSuXo=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/main/go.backends/store/cassandra",
-			"revision": "b5f648de4160e07e7e7d4e4fd77d0d9984dd20fe",
+			"revision": "8b75fbac165664e60897f871b3fcdc67f40bf13e",
 			"revisionTime": "2017-01-19T14:01:59Z"
 		},
 		{
 			"checksumSHA1": "0kFVJq5VBoh6NqFFZuzlWdhpyq0=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/main/go.main/helpers",
-			"revision": "b5f648de4160e07e7e7d4e4fd77d0d9984dd20fe",
+			"revision": "8b75fbac165664e60897f871b3fcdc67f40bf13e",
 			"revisionTime": "2017-01-19T14:01:59Z"
 		},
 		{
