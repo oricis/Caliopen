@@ -1,54 +1,54 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import { PasswordStrength } from '../../src/components/form';
+import PasswordStrength from '../../src/components/form/PasswordStrength/presenter';
 import { Code, ComponentWrapper } from '../presenters';
 
 class Presenter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      props: {},
-      passwordStrength: 'strong',
+      props: {
+        passwordStrength: 0,
+      },
     };
-    this.handlePropsChanges = this.handlePropsChanges.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  handlePropsChanges(event) {
-    const { name, checked } = event.target;
+  handleInputChange(event) {
+    const { name, value } = event.target;
 
     this.setState(prevState => ({
       props: {
         ...prevState.props,
-        [name]: checked,
+        [name]: value,
       },
     }));
   }
 
   render() {
-    const handleInputChange = (event) => {
-      this.setState({
-        passwordStrength: event.target.value,
-      });
-    };
+    const noop = str => str;
 
     return (
       <div>
         <ComponentWrapper>
-          <PasswordStrength strength={this.state.passwordStrength} />
+          <PasswordStrength strength={this.state.props.passwordStrength} __={noop} />
         </ComponentWrapper>
         <ul>
           <li>
-            <label>Password Strength</label>
-            <select name="passwordStrength" onChange={handleInputChange}>
-              <option value="strong">Strong</option>
-              <option value="moderate">Moderate</option>
-              <option value="weak">Weak</option>
-            </select>
+            <label>Password Strength: {this.state.props.passwordStrength}</label>
+            {' '}
+            <input
+              type="range" min="0" max="4" step="1" name="passwordStrength"
+              onChange={this.handleInputChange}
+              value={this.state.props.passwordStrength}
+            />
           </li>
         </ul>
         <Code>
           {`
 import PasswordStrength from './src/components/PasswordStrength';
+
+// strength is a number between 0 & 4 usually, the score of https://github.com/dropbox/zxcvbn
 export default () => (<PasswordStrength strength={ strength } />);
           `}
         </Code>

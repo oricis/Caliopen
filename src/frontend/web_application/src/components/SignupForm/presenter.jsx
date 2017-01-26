@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import zxcvbn from 'zxcvbn';
 import Button from '../Button';
 import Title from '../Title';
 import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../form';
@@ -31,6 +32,7 @@ class SignupForm extends Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleOnPasswordChange = this.handleOnPasswordChange.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -42,6 +44,21 @@ class SignupForm extends Component {
   componentWillReceiveProps(newProps) {
     this.setState(generateStateFromProps(newProps));
   }
+
+  handleOnPasswordChange(event) {
+    this.handleInputChange(event);
+
+    this.setState((prevState) => {
+      const { password } = prevState.formValues;
+      const passwordStrength = !password.length ? '' : zxcvbn(password).score;
+
+      return {
+        ...prevState,
+        passwordStrength,
+      };
+    });
+  }
+
 
   handleInputChange(event) {
     const { name, value } = event.target;
@@ -112,7 +129,7 @@ class SignupForm extends Component {
                 type="password"
                 value={this.state.formValues.password}
                 errors={errors.password}
-                onChange={this.handleInputChange}
+                onChange={this.handleOnPasswordChange}
               />
             </FormColumn>
             {this.state.passwordStrength.length !== 0 && (
