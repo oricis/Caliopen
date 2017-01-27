@@ -1,0 +1,31 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.s-devices-management {
+  @include flex-grid-row;
+
+  &__devices {
+    @include flex-grid-size(shrink);
+    padding: map-get($co-form__spacing, 'large');
+
+    li {
+      margin-bottom: map-get($co-form__spacing, 'xsmall');
+
+      a {
+        color: $co-color__fg__text--lower;
+      }
+    }
+
+    .m-text-list__item {
+      .m-link--active {
+        color: $co-color__fg__text--higher;
+      }
+    }
+  }
+
+  &__device {
+    @include flex-grid-size;
+    padding-bottom: map-get($co-form__spacing, 'xlarge');
+    background: $co-color__fg__back;
+  }
+}

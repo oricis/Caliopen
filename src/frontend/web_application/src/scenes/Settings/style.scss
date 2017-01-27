@@ -1,0 +1,14 @@
+@import '../../styles/common';
+@import '../../styles/object/o-form-element';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-settings {
+  &__nav {
+    @include flex-grid-row;
+    background: $co-color__fg__back;
+  }
+
+  &__item {
+    @include o-form-element;
+  }
+}
