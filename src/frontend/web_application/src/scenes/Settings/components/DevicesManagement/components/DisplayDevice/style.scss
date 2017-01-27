@@ -12,7 +12,8 @@
   }
 
   &__title {
-    padding: map-get($co-form__spacing, 'large') 0;
+    padding-top: map-get($co-form__spacing, 'large');
+    padding-bottom: map-get($co-form__spacing, 'large');
     text-align: center;
   }
 
