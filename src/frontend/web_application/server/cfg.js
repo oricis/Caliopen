@@ -5,6 +5,7 @@ module.exports = (env) => {
     publicPaths: {
       '/': ['dist/server/public/', 'public/'],
     },
+    faviconPath: 'public/favicon.ico',
     frontend: {
       rootPath: '/',
       cssFiles: ['/assets/style.css'],
