@@ -1,14 +1,17 @@
 @import '../../styles/common';
+@import '../../styles/object/o-form-element';
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-settings {
-  @include flex-grid-row;
   &__nav {
-    @include flex-grid-column(shrink);
-    padding: map-get($co-form__spacing, 'medium');
+    @include flex-grid-row;
+    background: $co-color__fg__back;
+  }
+
+  &__item {
+    @include o-form-element;
   }
   &__panel {
-    @include flex-grid-column;
     background: $co-color__fg__back;
   }
 

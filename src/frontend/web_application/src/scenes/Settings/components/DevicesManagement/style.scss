@@ -1,10 +1,9 @@
 @import '../../../../styles/common';
-@import '../../../../styles/object/o-clickable';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .s-devices-management {
   &__panel {
-    padding: map-get($co-form__spacing, 'medium');
+    padding: map-get($co-form__spacing, 'large');
 
   }
 }
@@ -12,14 +11,5 @@
 .m-devices {
   border: 1px solid $co-color__bg__back;
   padding: map-get($co-form__spacing, 'medium');
-}
 
-.m-devices-list {
-  @include flex-grid-size(shrink);
-
-  &__item {
-    padding-left: map-get($co-form__spacing, 'small');
-    padding-right: map-get($co-form__spacing, 'small');
-    cursor: pointer;
-  }
 }

@@ -3,7 +3,7 @@ import Link from '../../../../components/Link';
 import TextList, { ItemContent } from '../../../../components/TextList';
 
 const NavigationItem = ({ active, title }) => (
-  <ItemContent><Link active={active} className="s-settings__nav-item">{title}</Link></ItemContent>
+  <ItemContent><Link active={active} className="s-settings__item" noDecoration>{title}</Link></ItemContent>
 );
 
 NavigationItem.propTypes = {
@@ -19,6 +19,7 @@ class SettingsNavigation extends Component {
           <NavigationItem
             active={nav.link.active}
             title={nav.link.title}
+            key={nav.link.title}
           />
         )}
       </TextList>
