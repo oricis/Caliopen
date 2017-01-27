@@ -6,6 +6,10 @@ CALIOPEN_BASE_DIR="/opt/caliopen"
 CALIOPEN_BACKEND_DIR="${CALIOPEN_BASE_DIR}/code/src/backend"
 CALIOPEN_FRONTEND_DIR="${CALIOPEN_BASE_DIR}/code/src/frontend/web_application"
 CONF_FILE="${CALIOPEN_BACKEND_DIR}/configs/caliopen.yaml.template"
+GOPATH="/opt/go"
+GO_PKG="go1.7.4.linux-amd64.tar.gz"
+CALIOPEN_GO_DIR="${GOPATH}/src/github.com/CaliOpen"
+
 
 CASSANDRA_VERSION="2.2.8"
 
@@ -17,6 +21,17 @@ apt-get install -y git libffi-dev python-pip gcc python-dev libssl-dev libev4 li
 # setup nodejs and npm with correct version (node 6, npm 3)
 wget -q https://deb.nodesource.com/setup_6.x -O -|bash
 apt-get install -y nodejs
+
+# Setup a decent version of go (> 1.3)
+# Setup GO environment for build
+[[ -d ${GOPATH} ]] || mkdir ${GOPATH}
+export GOPATH
+
+cd ${GOPATH}
+wget -q https://storage.googleapis.com/golang/${GO_PKG}
+tar -C /usr/local -xzf ${GO_PKG}
+
+export PATH=${PATH}:/usr/local/go/bin:${GOPATH}/bin
 
 
 # Debian jessie setuptools is a really old version (5.1.x)
@@ -84,7 +99,7 @@ caliopen -f ${CONF_FILE} setup
 caliopen -f ${CONF_FILE} create_user -e dev@caliopen.local -g John -f Dœuf -p 123456
 caliopen -f ${CONF_FILE} import -e dev@caliopen.local -f mbox -p ${CALIOPEN_BASE_DIR}/code/devtools/fixtures/mbox/dev@caliopen.local
 
-# start caliopen API
+# start caliopen APIv1
 cd ${CALIOPEN_BACKEND_DIR}/interfaces/REST/py.server
 pserve --daemon ${CALIOPEN_BACKEND_DIR}/configs/caliopen-api.development.ini --log-file api.log --pid-file ${CALIOPEN_BASE_DIR}/pserve.pid
 
@@ -98,3 +113,19 @@ npm install
 npm run start:dev > kotatsu.log 2>&1 &
 
 set +ev
+
+
+# Install dependencies
+go get -u github.com/kardianos/govendor
+go install github.com/kardianos/govendor
+
+go get github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server
+
+cd ${CALIOPEN_GO_DIR}/CaliOpen/src/backend/interfaces/REST/go.server
+govendor sync
+
+# build 
+go build github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest
+
+# start caliopen APIv2
+cd ${CALIOPEN_BACKEND_DIR}/interfaces/REST/go.server
