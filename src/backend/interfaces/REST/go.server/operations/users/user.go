@@ -7,12 +7,12 @@ import (
 )
 
 // POST …/users/
-func Create(caliop *caliopen.CaliopenFacilities, ctx *gin.Context) {
+func Create(caliop caliopen.RESTservices, ctx *gin.Context) {
 	ctx.AbortWithStatus(http.StatusNotImplemented)
 	return
 }
 
-func Get(caliop *caliopen.CaliopenFacilities, ctx *gin.Context) {
+func Get(caliop caliopen.RESTservices, ctx *gin.Context) {
 	ctx.AbortWithStatus(http.StatusNotImplemented)
 	return
 }

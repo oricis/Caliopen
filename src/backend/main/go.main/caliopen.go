@@ -21,10 +21,7 @@ type (
 	CaliopenFacilities struct {
 		config obj.CaliopenConfig
 
-		// REST API facility
-		RESTstore    *backends.APIStorage
-		RESTservices RESTservices
-		//RESTindex *backends.APIindex
+		RESTfacility *facility
 
 		// NATS facility
 		nats *nats.Conn
@@ -33,10 +30,16 @@ type (
 		LDAstore *backends.LDABackend
 	}
 
-	RESTservices interface {
-                UsernameIsAvailable (string) (bool, error)
-	}
+        facility struct {
+                store    *backends.APIStorage
+                //RESTindex *backends.APIindex
+        }
+
 )
+
+type RESTservices interface {
+        UsernameIsAvailable (string) (bool, error)
+}
 
 func Initialize(config obj.CaliopenConfig) error {
 	Facilities = new(CaliopenFacilities)
@@ -46,7 +49,8 @@ func Initialize(config obj.CaliopenConfig) error {
 func (facilities *CaliopenFacilities) initialize(config obj.CaliopenConfig) error {
 	facilities.config = config
 
-	//REST store initialization
+	//REST facility initialization
+        facilities.RESTfacility = new(facility)
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":
 		backend := &store.CassandraBackend{}
@@ -60,15 +64,12 @@ func (facilities *CaliopenFacilities) initialize(config obj.CaliopenConfig) erro
 			log.WithError(err).Fatalf("Initalization of %s backend failed", config.RESTstoreConfig.BackendName)
 		}
 		b := backends.APIStorage(backend)
-		facilities.RESTstore = &b
+		facilities.RESTfacility.store = &b
 	case "BOBcassandra":
 	// NotImplemented… yet ! ;-)
 	default:
 		log.Fatalf("Unknown backend: %s", config.RESTstoreConfig.BackendName)
 	}
-
-        //REST services registration
-        facilities.RESTservices = facilities
 
 	return nil
 }

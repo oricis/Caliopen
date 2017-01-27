@@ -6,7 +6,6 @@
 package caliopen
 
 
-func (caliopen *CaliopenFacilities) UsernameIsAvailable(username string) (bool, error) {
-
-        return (*caliopen.RESTstore).IsAvailable(username)
+func (f *facility) UsernameIsAvailable(username string) (bool, error) {
+        return (*f.store).IsAvailable(username)
 }

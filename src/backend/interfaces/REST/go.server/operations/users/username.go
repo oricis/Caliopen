@@ -8,7 +8,7 @@ import (
 )
 
 // GET …/users/isAvailable
-func IsAvailable(caliop *caliopen.CaliopenFacilities, ctx *gin.Context) {
+func IsAvailable(caliop caliopen.RESTservices, ctx *gin.Context) {
 	username := ctx.Query("username")
 	if username == "" {
 		//TODO: validate against swagger
@@ -16,7 +16,7 @@ func IsAvailable(caliop *caliopen.CaliopenFacilities, ctx *gin.Context) {
 		return
 	}
 
-	available, err := caliop.RESTservices.UsernameIsAvailable(username)
+	available, err := caliop.UsernameIsAvailable(username)
 
 	if available && err == nil {
 		//TODO: validate against swagger
