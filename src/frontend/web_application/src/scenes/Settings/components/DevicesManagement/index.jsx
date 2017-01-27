@@ -31,6 +31,8 @@ class DevicesManagment extends Component {
         if (item.device.device_id === deviceId) {
           thisDevice = item.device;
         }
+
+        return false;
       });
 
       this.setState({

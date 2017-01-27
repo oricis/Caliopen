@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import Link from '../../../../components/Link';
 import TextList, { ItemContent } from '../../../../components/TextList';
 
@@ -11,21 +11,17 @@ NavigationItem.propTypes = {
   title: PropTypes.string,
 };
 
-class SettingsNavigation extends Component {
-  render() {
-    return (
-      <TextList className={this.props.className}>
-        {this.props.links.map(nav =>
-          <NavigationItem
-            active={nav.link.active}
-            title={nav.link.title}
-            key={nav.link.title}
-          />
-        )}
-      </TextList>
-    );
-  }
-}
+const SettingsNavigation = ({ links, className }) => (
+  <TextList className={className}>
+    {links.map(nav =>
+      <NavigationItem
+        active={nav.link.active}
+        title={nav.link.title}
+        key={nav.link.title}
+      />
+    )}
+  </TextList>
+);
 
 SettingsNavigation.propTypes = {
   links: PropTypes.node,

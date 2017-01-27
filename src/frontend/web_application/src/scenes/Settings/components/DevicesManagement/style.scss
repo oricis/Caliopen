@@ -16,10 +16,11 @@
       }
     }
 
-    .m-text-list__item .m-link--active {
-      color: $co-color__fg__text--higher;
+    .m-text-list__item {
+      .m-link--active {
+        color: $co-color__fg__text--higher;
+      }
     }
-
   }
 
   &__device {
