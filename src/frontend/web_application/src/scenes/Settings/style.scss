@@ -11,8 +11,4 @@
   &__item {
     @include o-form-element;
   }
-  &__panel {
-    background: $co-color__fg__back;
-  }
-
 }

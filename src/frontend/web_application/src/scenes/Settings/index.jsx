@@ -6,12 +6,12 @@ import './style.scss';
 
 const navigationLinks = [
   /* eslint-disable */
-  {'link': {'title': 'User Interface', 'href': '#', icon: 'window-maximize', active: false}},
-  {'link': {'title': 'View', 'href': '#', icon: 'th-large', active: false}},
-  {'link': {'title': 'Contacts', 'href': '#', icon: 'users', active: false}},
-  {'link': {'title': 'Calendar', 'href': '#', icon: 'calendar', active: false}},
-  {'link': {'title': 'Server', 'href': '#', icon: 'server', active: false}},
-  {'link': {'title': 'Devices', 'href': '#', icon: 'laptop', active: true}},
+  {'link': {'title': 'User Interface', 'href': '#', active: false}},
+  {'link': {'title': 'View', 'href': '#', active: false}},
+  {'link': {'title': 'Contacts', 'href': '#', active: false}},
+  {'link': {'title': 'Calendar', 'href': '#', active: false}},
+  {'link': {'title': 'Server', 'href': '#', active: false}},
+  {'link': {'title': 'Devices', 'href': '#', active: true}},
 ];
   /* eslint-enable */
 
