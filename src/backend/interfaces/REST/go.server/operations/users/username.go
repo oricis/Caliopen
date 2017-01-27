@@ -8,22 +8,21 @@ import (
 )
 
 // GET …/users/isAvailable
-func IsAvailable(c *gin.Context) {
-	username := c.Query("username")
+func IsAvailable(caliop *caliopen.CaliopenFacilities, ctx *gin.Context) {
+	username := ctx.Query("username")
 	if username == "" {
 		//TODO: validate against swagger
-		c.JSON(http.StatusBadRequest, obj.Availability{false, username})
+		ctx.JSON(http.StatusBadRequest, obj.Availability{false, username})
 		return
 	}
 
-	caliopen := c.MustGet("caliopen").(*caliopen.CaliopenFacilities)
-	available, err := caliopen.RESTservices.UsernameIsAvailable(username)
+	available, err := caliop.RESTservices.UsernameIsAvailable(username)
 
 	if available && err == nil {
 		//TODO: validate against swagger
-		c.JSON(http.StatusOK, obj.Availability{true, username})
+		ctx.JSON(http.StatusOK, obj.Availability{true, username})
 		return
 	}
 	//TODO: validate against swagger
-	c.JSON(http.StatusOK, obj.Availability{false, username})
+	ctx.JSON(http.StatusOK, obj.Availability{false, username})
 }

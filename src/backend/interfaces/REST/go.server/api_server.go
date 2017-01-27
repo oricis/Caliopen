@@ -10,11 +10,12 @@ import (
 
 var (
 	server *REST_API
+	caliop *caliopen.CaliopenFacilities
 )
 
 type (
 	REST_API struct {
-		config             APIConfig
+		config APIConfig
 	}
 
 	APIConfig struct {
@@ -29,9 +30,9 @@ type (
 	}
 
 	BackendSettings struct {
-		Hosts       []string          `mapstructure:"hosts"`
-		Keyspace    string            `mapstructure:"keyspace"`
-		Consistency uint16 `mapstructure:"consistency_level"`
+		Hosts       []string `mapstructure:"hosts"`
+		Keyspace    string   `mapstructure:"keyspace"`
+		Consistency uint16   `mapstructure:"consistency_level"`
 	}
 )
 
@@ -59,6 +60,8 @@ func (server *REST_API) initialize(config APIConfig) error {
 		log.WithError(err).Fatal("Caliopen facilities initialization failed")
 	}
 
+	caliop = caliopen.Facilities
+
 	return nil
 }
 
@@ -72,7 +75,6 @@ func (server *REST_API) start() error {
 	router := gin.Default()
 	// adds our middlewares
 	router.Use(SwaggerInboundValidation())
-	router.Use(BindFacilities())
 
 	// adds our routes and handlers
 	api := router.Group("/api/v2")
@@ -87,20 +89,19 @@ func (server *REST_API) start() error {
 	return err
 }
 
-func BindFacilities() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Set("caliopen", caliopen.Facilities)
-		c.Next()
-	}
-}
-
 func AddHandlers(api *gin.RouterGroup) {
 
 	//users API
-	usrs := api.Group("/users")
-	usrs.POST("/", users.Create)
-	usrs.GET("/:user_id", users.Get)
+	u := api.Group("/users")
+	u.POST("/", func(ctx *gin.Context) {
+		users.Create(caliop, ctx)
+	})
+	u.GET("/:user_id", func(ctx *gin.Context) {
+		users.Get(caliop, ctx)
+	})
 
 	//username API
-	api.GET("/username/isAvailable", users.IsAvailable)
+	api.GET("/username/isAvailable", func(ctx *gin.Context) {
+		users.IsAvailable(caliop, ctx)
+	})
 }
