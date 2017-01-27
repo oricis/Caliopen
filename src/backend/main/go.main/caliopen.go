@@ -7,7 +7,6 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
-        "github.com/CaliOpen/CaliOpen/src/backend/main/go.main/routines"
 )
 
 var (
@@ -31,7 +30,7 @@ type (
 	}
 
 	RESTservices interface {
-		UsernameIsAvailable (string) (bool, error)
+                UsernameIsAvailable (string) (bool, error)
 	}
 )
 
@@ -65,7 +64,7 @@ func (facilities *CaliopenFacilities) initialize(config obj.CaliopenConfig) erro
 	}
 
         //REST services registration
-        facilities.RESTservices = &routines.RESTservices{}
+        facilities.RESTservices = facilities
 
 	return nil
 }
