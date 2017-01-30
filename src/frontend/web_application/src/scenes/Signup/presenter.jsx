@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
 import SignupForm from '../../components/SignupForm';
-import usernameValidity from '../../services/username-utils/username-validity';
+import usernameValidity, { ERR_MIN_MAX, ERR_INVALID_CHARACTER, ERR_DOTS, ERR_DOUBLE_DOTS } from '../../services/username-utils/username-validity';
 
 class Signup extends Component {
   static propTypes = {
@@ -26,7 +26,10 @@ class Signup extends Component {
     const { __ } = this.props;
     this.localizedErrors = {
       ERR_REQUIRED_USERNAME: __('signup.feedback.required_username'),
-      ERR_INVALID_USERNAME: __('signup.feedback.invalid_username'),
+      [ERR_MIN_MAX]: __('signup.feedback.username_length'),
+      [ERR_INVALID_CHARACTER]: __('signup.feedback.username_invalid_characters'),
+      [ERR_DOTS]: __('signup.feedback.username_starting_ending_dot'),
+      [ERR_DOUBLE_DOTS]: __('signup.feedback.username_double_dots'),
       ERR_UNAVAILABLE_USERNAME: __('signup.feedback.unavailable_username'),
       ERR_REQUIRED_PASSWORD: __('signup.feedback.required_password'),
       ERR_REQUIRED_TOS: __('signup.feedback.required_tos'),
@@ -61,6 +64,7 @@ class Signup extends Component {
     }));
   }
 
+
   handleUsernameChange(ev) {
     const { value: username } = ev.target;
     if (username.length === 0) {
@@ -68,7 +72,11 @@ class Signup extends Component {
     }
 
     if (username.length >= 3) {
-      this.updateErrorsState('username', 'ERR_INVALID_USERNAME', usernameValidity.isValid(ev.target.value));
+      usernameValidity.isValid(username).then(
+        () => this.resetErrorsState('username'),
+        validatorErrors => validatorErrors.fields.username.map(err => err.message)
+          .forEach(type => this.updateErrorsState('username', type, false))
+      );
     }
   }
 
@@ -80,25 +88,42 @@ class Signup extends Component {
       return;
     }
 
-    if (!usernameValidity.isValid(username)) {
-      this.updateErrorsState('username', 'ERR_INVALID_USERNAME', false);
-
-      return;
-    }
-
-    axios.get('/api/v2/username/isAvailable', { params: { username } }, {
+    const checkAvailability = () => axios.get('/api/v2/username/isAvailable', {
+      params: { username },
+    }, {
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
     }).then((response) => {
       this.updateErrorsState('username', 'ERR_UNAVAILABLE_USERNAME', response.data.available);
     });
+    const manageValidationErrors = validatorErrors => validatorErrors.fields.username
+      .map(err => err.message)
+      .forEach(type => this.updateErrorsState('username', type, false));
+
+    usernameValidity.isValid(username).then(checkAvailability, manageValidationErrors);
+  }
+
+  checkRequiredFields(formValues) {
+    this.updateErrorsState('username', 'ERR_REQUIRED_USERNAME', formValues.username.length !== 0);
+    this.updateErrorsState('password', 'ERR_REQUIRED_PASSWORD', formValues.password.length !== 0);
+    this.updateErrorsState('tos', 'ERR_REQUIRED_TOS', formValues.tos === true);
+  }
+
+  isFormValid() {
+    return Object.keys(this.state.errors)
+      .map(fieldname => this.state.errors[fieldname].length)
+      .filter(len => len !== 0)
+      .length === 0;
   }
 
   handleSignup(ev) {
-    axios.post('/auth/signup', {
-      ...ev.formValues,
-    }, {
-      headers: { 'X-Requested-With': 'XMLHttpRequest' },
-    }).then(this.handleSignupSuccess, this.handleSignupError);
+    this.checkRequiredFields(ev.formValues);
+    if (this.isFormValid()) {
+      axios.post('/auth/signup', {
+        ...ev.formValues,
+      }, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      }).then(this.handleSignupSuccess, this.handleSignupError);
+    }
   }
 
   handleSignupSuccess() {
