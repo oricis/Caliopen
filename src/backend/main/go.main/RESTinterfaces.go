@@ -4,7 +4,6 @@
 
 package caliopen
 
-
-func (f *facility) UsernameIsAvailable(username string) (bool, error) {
-        return f.store.UsernameIsAvailable(username)
+type RESTservices interface {
+	UsernameIsAvailable(string) (bool, error)
 }

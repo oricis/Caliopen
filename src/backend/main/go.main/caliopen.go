@@ -27,19 +27,15 @@ type (
 		nats *nats.Conn
 
 		// LDA facility
-		LDAstore *backends.LDABackend
+		LDAstore backends.LDABackend
 	}
 
         facility struct {
-                store    *backends.APIStorage
+                store    backends.APIStorage
                 //RESTindex *backends.APIindex
         }
 
 )
-
-type RESTservices interface {
-        UsernameIsAvailable (string) (bool, error)
-}
 
 func Initialize(config obj.CaliopenConfig) error {
 	Facilities = new(CaliopenFacilities)
@@ -63,8 +59,7 @@ func (facilities *CaliopenFacilities) initialize(config obj.CaliopenConfig) erro
 		if err != nil {
 			log.WithError(err).Fatalf("Initalization of %s backend failed", config.RESTstoreConfig.BackendName)
 		}
-		b := backends.APIStorage(backend)
-		facilities.RESTfacility.store = &b
+		facilities.RESTfacility.store = backends.APIStorage(backend)
 	case "BOBcassandra":
 	// NotImplemented… yet ! ;-)
 	default:

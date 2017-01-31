@@ -14,7 +14,7 @@ import (
 )
 
 // UserNameStorage interface implementation for cassandra
-func (cb *CassandraBackend) IsAvailable(username string) (resp bool, err error) {
+func (cb *CassandraBackend) UsernameIsAvailable(username string) (resp bool, err error) {
 	resp = false
 	err = nil
 	lookup := helpers.EscapeUsername(username)
