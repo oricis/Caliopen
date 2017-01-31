@@ -6,6 +6,7 @@ import './style.scss';
 
 const PiBar = ({ level, className }) => {
   const classNameModifiers = {
+    null: '',
     ugly: 'm-pi-bar--ugly',
     bad: 'm-pi-bar--bad',
     good: 'm-pi-bar--good',
@@ -15,16 +16,19 @@ const PiBar = ({ level, className }) => {
   let key;
   switch (true) {
     default:
+    case level == null:
+      key = 'null';
+      break;
     case level <= 20:
       key = 'ugly';
       break;
     case level > 20 && level <= 50:
       key = 'bad';
       break;
-    case level > 50 && level <= 75:
+    case level > 50 && level <= 80:
       key = 'good';
       break;
-    case level > 75:
+    case level > 80:
       key = 'super';
       break;
   }

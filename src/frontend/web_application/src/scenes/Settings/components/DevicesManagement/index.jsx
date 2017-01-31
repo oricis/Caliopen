@@ -7,10 +7,10 @@ import './style.scss';
 
 const devices = [
   /* eslint-disable */
-  {'device': {'device_id': '4537-es79-8tez','name': 'Laptop work', 'type': 'laptop', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 85, 'icon': '', 'ips': ['10.9.52.65'], 'os': 'Linux', 'os_version': 'arch'}},
-  {'device': {'device_id': '3237-es79-8tez','name': 'Desktop', 'type': 'desktop', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 53, 'icon': '', 'ips': ['10.9.52.65', '192.168.1.1'], 'os': 'Linux', 'os_version': 'arch'}},
-  {'device': {'device_id': '4556-es79-8tez','name': 'Smartphone', 'type': 'smartphone', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 22, 'icon': '', 'ips': ['192.168.1.1'], 'os': 'Linux', 'os_version': 'arch'}},
-  {'device': {'device_id': '4997-es79-8tez','name': 'my smart fridge', 'type': 'tablet', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 5, 'icon': '', 'ips': ['10.9.52.65'], 'os': 'Linux', 'os_version': 'arch'}},
+  {'device': {'device_id': '4537-es79-8tez','name': 'Laptop work', 'type': 'laptop', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 99, 'icon': '', 'ips': ['10.9.52.65'], 'os': 'Linux', 'os_version': 'arch'}},
+  {'device': {'device_id': '3237-es79-8tez','name': 'Desktop', 'type': 'desktop', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 75, 'icon': '', 'ips': ['10.9.52.65', '192.168.1.1'], 'os': 'Linux', 'os_version': 'arch'}},
+  {'device': {'device_id': '4556-es79-8tez','name': 'Smartphone', 'type': 'smartphone', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 39, 'icon': '', 'ips': ['192.168.1.1'], 'os': 'Linux', 'os_version': 'arch'}},
+  {'device': {'device_id': '4997-es79-8tez','name': 'my smart fridge', 'type': 'tablet', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 18, 'icon': '', 'ips': ['10.9.52.65'], 'os': 'Linux', 'os_version': 'arch'}},
 ];
 /* eslint-enable */
 

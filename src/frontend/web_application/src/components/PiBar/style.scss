@@ -3,16 +3,13 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 // Graph presets
-$bar-width-weak: 15%;
-$bar-width-moderate: 50%;
-$bar-width-strong: 100%;
-
 $bar-height: 3px;
 $bar-margin: 7px;
 
-$color-weak: map_get($caliopen-palette, 'alert');
-$color-moderate: map_get($caliopen-palette, 'warning');
-$color-strong: map_get($caliopen-palette, 'success');
+$color-ugly: map_get($privacy-palette, 'ugly');
+$color-bad: map_get($privacy-palette, 'bad');
+$color-good: map_get($privacy-palette, 'good');
+$color-super: map_get($privacy-palette, 'super');
 
 
 .m-pi-bar {
@@ -42,38 +39,38 @@ $color-strong: map_get($caliopen-palette, 'success');
 
   &__bar {
     height: $bar-height;
-
+    background-color: $co-color__fg__text--lower;
   }
 
   &--ugly {
-    color: $color-weak;
+    color: $color-ugly;
 
     .m-pi-bar__bar {
-      background-color: $color-weak;
+      background: -webkit-gradient(linear, left top, right top, from($color-ugly) , color-stop(0.8, $color-ugly), to($color-bad));
     }
   }
 
   &--bad {
-    color: $color-moderate;
+    color: $color-bad;
 
     .m-pi-bar__bar {
-      background-color: $color-moderate;
+      background: -webkit-gradient(linear, left top, right top, from($color-bad) , color-stop(0.8, $color-bad), to($color-good));
     }
   }
 
   &--good {
-    color: $color-moderate;
+    color: $color-good;
 
     .m-pi-bar__bar {
-      background-color: $color-moderate;
+      background: -webkit-gradient(linear, left top, right top, from($color-good) , color-stop(0.95, $color-good), to($color-super));
     }
   }
 
   &--super {
-    color: $color-strong;
+    color: $color-super;
 
     .m-pi-bar__bar {
-      background-color: $color-strong;
+      background: $color-super;
     }
   }
 }
