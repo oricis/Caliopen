@@ -24,6 +24,9 @@ WORKDIR /srv/caliopen
 ADD https://github.com/CaliOpen/Caliopen/archive/master.tar.gz ./
 RUN tar -xzf master.tar.gz && mv Caliopen-master code && rm master.tar.gz
 
+# Install regex using pip as it fail using setup.py mechanisms
+RUN pip install regex
+
 # Install python backend packages in develop mode
 WORKDIR /srv/caliopen/code/src/backend/main/py.storage
 RUN python setup.py develop
@@ -35,7 +38,10 @@ WORKDIR /srv/caliopen/code/src/backend/protocols/py.smtp
 RUN python setup.py develop
 
 # Install Caliopen CLI
-WORKDIR /srv/caliopen/code/src/backend/tools/py.CLI
+
+# Add local code to other base directory, local changes are seen
+ADD . /srv/caliopen/py.CLI
+WORKDIR /srv/caliopen/py.CLI
 RUN python setup.py develop
 
 # Copy configuration file

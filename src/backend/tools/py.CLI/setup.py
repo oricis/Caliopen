@@ -16,7 +16,6 @@ requires = [
     'caliopen_main',
     'caliopen_storage',
     'caliopen_smtp',
-    'ipython==4.0.0',
 ]
 
 setup(name=name,
