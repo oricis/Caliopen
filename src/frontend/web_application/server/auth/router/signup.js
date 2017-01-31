@@ -110,14 +110,15 @@ const createSignupRouting = (router) => {
     }
 
     const auth = new Auth(req.config);
-    const { username, password } = values;
+    const { username, password, recovery_email } = values;
 
     auth.signup({
       body: {
         username,
         password,
+        recovery_email,
       },
-      success: function successCallback(location) {
+      success: () => {
         authenticateAfterSignup(req, res, next);
       },
       error: (error) => {
