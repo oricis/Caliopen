@@ -1,0 +1,79 @@
+@import '../../styles/common';
+@import '../../styles/config/config';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+// Graph presets
+$bar-width-weak: 15%;
+$bar-width-moderate: 50%;
+$bar-width-strong: 100%;
+
+$bar-height: 3px;
+$bar-margin: 7px;
+
+$color-weak: map_get($caliopen-palette, 'alert');
+$color-moderate: map_get($caliopen-palette, 'warning');
+$color-strong: map_get($caliopen-palette, 'success');
+
+
+.m-pi-bar {
+
+  &__graph {
+    @include flex-grid-row;
+  }
+
+  &__icon {
+    @include flex-grid-size(shrink);
+    margin-right: map-get($co-form__spacing, 'medium');
+  }
+
+  &__level {
+    @include flex-grid-size(shrink);
+    margin-left: map-get($co-form__spacing, 'medium');
+    font-weight: 700;
+    font-size: $co-font__size--small;
+  }
+
+  &__guide {
+    @include flex-grid-size;
+    height: $bar-height;
+    margin-top: $bar-margin;
+    background-color: $co-color__fg__back--lower;
+  }
+
+  &__bar {
+    height: $bar-height;
+
+  }
+
+  &--ugly {
+    color: $color-weak;
+
+    .m-pi-bar__bar {
+      background-color: $color-weak;
+    }
+  }
+
+  &--bad {
+    color: $color-moderate;
+
+    .m-pi-bar__bar {
+      background-color: $color-moderate;
+    }
+  }
+
+  &--good {
+    color: $color-moderate;
+
+    .m-pi-bar__bar {
+      background-color: $color-moderate;
+    }
+  }
+
+  &--super {
+    color: $color-strong;
+
+    .m-pi-bar__bar {
+      background-color: $color-strong;
+    }
+  }
+}

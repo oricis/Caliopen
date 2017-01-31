@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Title from '../../../../../../components/Title';
 import Button from '../../../../../../components/Button';
+import PiBar from '../../../../../../components/PiBar';
 import TextList, { ItemContent } from '../../../../../../components/TextList';
 
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, SelectFieldGroup } from '../../../../../../components/form';
@@ -14,7 +15,7 @@ const DisplayDevice = ({ device }) => {
   return (
     <FormGrid className="m-device">
       <FormRow className="m-device__row">
-        PI {thisDevice.pi}
+        <PiBar level={thisDevice.pi} className="m-device__pi" />
       </FormRow>
       <FormRow className="m-device__row m-device__row--separated m-device__title">
         <FormColumn bottomSpace size="expanded">

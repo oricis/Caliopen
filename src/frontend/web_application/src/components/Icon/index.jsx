@@ -26,6 +26,7 @@ export const typeAssoc = {
   reply: 'fa fa-reply',
   search: 'fa fa-search',
   server: 'fa fa-server',
+  shield: 'fa fa-shield',
   user: 'fa fa-user',
   users: 'fa fa-users',
   'th-large': 'fa fa-th-large',
