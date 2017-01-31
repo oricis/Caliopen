@@ -165,8 +165,8 @@ class MixinCoreNested(object):
         for param in values:
             param.validate()
             attrs = param.to_primitive()
-            # XXX default value not correctly handled
-            pkey = getattr(kls, '_pkey')
-            attrs[pkey] = uuid.uuid4()
+            if hasattr(kls, '_pkey'):
+                # XXX default value not correctly handled
+                attrs[getattr(kls, '_pkey')] = uuid.uuid4()
             nested.append(kls(**attrs))
         return nested
