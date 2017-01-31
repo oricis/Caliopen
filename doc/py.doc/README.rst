@@ -1,11 +1,6 @@
-Entry point
-===========
+Caliopen swagger automatic API plugin package
+=============================================
 
-This repository is part of CaliOpen platform. For documentation, installation and
-contribution instructions, please refer to https://caliopen.github.io
+This package permit to include in a caliopen development platform, the swagger-ui tool for documentation and also interaction with the ReST API.
 
-
-Caliopen documentation package
-=============
-
-This package relies on caliopen_api to serve documentation on localhost.
+When installed and configured into your pyramid.includes section as `caliopen_api_doc`, if you are using a different configuration file for pyramid than the provided one for development or docker environment, you then can use it under localhost:6543/api-ui/#
