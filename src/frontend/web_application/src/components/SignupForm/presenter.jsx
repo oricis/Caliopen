@@ -156,6 +156,20 @@ class SignupForm extends Component {
             )}
           </FormRow>
           <FormRow>
+            <FormColumn bottomSpace >
+              <TextFieldGroup
+                id="signup_recovery_email"
+                name="recovery_email"
+                label={__('signup.form.recovery_email.label')}
+                placeholder={__('signup.form.recovery_email.placeholder')}
+                value={this.state.formValues.recovery_email}
+                errors={errors.recovery_email}
+                onChange={this.handleInputChange}
+                showLabelforSr
+              />
+            </FormColumn>
+          </FormRow>
+          <FormRow>
             <FormColumn bottomSpace>
               <CheckboxFieldGroup
                 id="signup_tos"
