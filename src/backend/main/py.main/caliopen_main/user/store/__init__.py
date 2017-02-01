@@ -8,7 +8,7 @@ from .contact import Organization, PostalAddress
 from .contact import Email, IM, Phone, SocialIdentity, PublicKey
 from .tag import UserTag, ResourceTag
 from .tag_index import IndexedResourceTag
-from .device import Device, DeviceLocation, DeviceConnectionLog
+from .device import Device, DeviceLocation, DeviceConnectionLog, DevicePublicKey
 
 
 __all__ = [
@@ -20,4 +20,5 @@ __all__ = [
     'ResourceTag', 'IndexedResourceTag',
     'Device', 'DeviceLocation', 'DeviceConnectionLog',
     'Device', 'DevicePublicKey', 'DeviceLocation', 'DeviceConnectionLog',
+    'DevicePublicKey',
 ]
