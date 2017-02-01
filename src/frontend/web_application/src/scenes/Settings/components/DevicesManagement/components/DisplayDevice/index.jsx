@@ -33,7 +33,10 @@ const DisplayDevice = ({ device }) => {
 
         <Fieldset className="m-device__row">
           <Legend>Device name</Legend>
-          <FormRow>
+          <FormRow reverse>
+            <FormColumn bottomSpace size="medium" className="m-device__infotext">
+              <label htmlFor="device-name">This is the name which allows you to identify your device everywhere.</label>
+            </FormColumn>
             <FormColumn bottomSpace size="medium">
               <TextFieldGroup
                 label="Name"
@@ -45,15 +48,15 @@ const DisplayDevice = ({ device }) => {
                 defaultValue={thisDevice.name}
               />
             </FormColumn>
-            <FormColumn bottomSpace size="medium" className="m-device__infotext">
-              <label htmlFor="device-name">This is the name which allows you to identify your device everywhere.</label>
-            </FormColumn>
           </FormRow>
         </Fieldset>
 
         <Fieldset className="m-device__row">
           <Legend>Device Type</Legend>
-          <FormRow>
+          <FormRow reverse>
+            <FormColumn size="medium" className="m-device__infotext">
+              <label htmlFor="device-type">Select a type of device: Desktop, Laptop, Smartphone or Tablet.</label>
+            </FormColumn>
             <FormColumn size="medium">
               <SelectFieldGroup
                 className="m-device__type"
@@ -65,15 +68,15 @@ const DisplayDevice = ({ device }) => {
                 options={deviceTypes}
               />
             </FormColumn>
-            <FormColumn size="medium" className="m-device__infotext">
-              <label htmlFor="device-type">Select a type of device: Desktop, Laptop, Smartphone or Tablet.</label>
-            </FormColumn>
           </FormRow>
         </Fieldset>
 
         <Fieldset className="m-device__row m-device__ips" >
-          <Legend>IPs</Legend>
-          <FormRow>
+          <Legend>Authorized IPs</Legend>
+          <FormRow reverse>
+            <FormColumn bottomSpace className="m-device__infotext" size="medium">
+              <label htmlFor="device-ips">Restrict the access of your account to certain IP adresses for this device.<br />e.g., <strong>192.168.1.11</strong> or <strong>192.168.1.1/24</strong> or <strong>192.168.1.1-20</strong></label>
+            </FormColumn>
             <FormColumn bottomSpace size="medium">
               {thisDeviceIPs.map(ip =>
                 <div className="m-device__ip" key={ip}>
@@ -98,9 +101,6 @@ const DisplayDevice = ({ device }) => {
                 />
                 <Button plain className="m-device__ip-button"><Icon type="plus" /></Button>
               </div>
-            </FormColumn>
-            <FormColumn bottomSpace className="m-device__infotext" size="medium">
-              <label htmlFor="device-ips">Restrict the access of your account to certain IP adresses for this device.<br />e.g., <strong>192.168.1.11</strong> or <strong>192.168.1.1/24</strong> or <strong>192.168.1.1-20</strong></label>
             </FormColumn>
           </FormRow>
         </Fieldset>

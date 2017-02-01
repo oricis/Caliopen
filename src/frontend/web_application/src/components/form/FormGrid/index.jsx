@@ -24,12 +24,19 @@ FormColumn.propTypes = {
   bottomSpace: PropTypes.bool,
 };
 
-export const FormRow = ({ className, ...props }) => (
-  <div className={classnames('m-form-grid__row', className)} {...props} />
-);
+export const FormRow = ({ className, reverse, ...props }) => {
+  const rowClassName = classnames('m-form-grid__row', {
+    'm-form-grid__row--reverse': reverse,
+  }, className);
+
+  return (
+    <div className={rowClassName} {...props} />
+  );
+};
 
 FormRow.propTypes = {
   className: PropTypes.string,
+  reverse: PropTypes.bool,
 };
 
 const Form = ({ className, ...props }) => (

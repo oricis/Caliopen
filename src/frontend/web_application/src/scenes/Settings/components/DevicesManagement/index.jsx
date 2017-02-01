@@ -8,7 +8,7 @@ import './style.scss';
 const devices = [
   /* eslint-disable */
   {'device': {'device_id': '4537-es79-0001','name': 'Laptop work', 'type': 'laptop', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': 'master', 'pi': 99, 'ips': ['10.9.52.65', '192.168.1.1'], 'os': 'Linux', 'os_version': 'arch'}},
-  {'device': {'device_id': '3237-es79-0002','name': 'Desktop', 'type': 'desktop', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 75, 'ips': ['10.9.52.65'], 'os': 'Linux', 'os_version': 'arch'}},
+  {'device': {'device_id': '3237-es79-0002','name': 'Desktop', 'type': 'desktop', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 75, 'ips': [], 'os': 'Linux', 'os_version': 'arch'}},
   {'device': {'device_id': '4556-es79-0003','name': 'Smartphone', 'type': 'smartphone', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 39, 'ips': ['192.168.1.1'], 'os': 'Linux', 'os_version': 'arch'}},
   {'device': {'device_id': '4997-es79-0004','name': 'my smart fridge', 'type': 'tablet', signature_key:'', 'date_insert': "2016-05-09T15:01:42.381000", 'last_seen': '2016-05-09T15:01:42.381000', 'status': '', 'pi': 18, 'ips': ['10.9.52.65'], 'os': 'Linux', 'os_version': 'arch'}},
 ];
