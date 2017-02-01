@@ -14,7 +14,7 @@ import (
 
 var (
 	server *REST_API
-	caliop *caliopen.CaliopenFacilities
+	caliop caliopen.RESTservices
 )
 
 type (
@@ -64,7 +64,7 @@ func (server *REST_API) initialize(config APIConfig) error {
 		log.WithError(err).Fatal("Caliopen facilities initialization failed")
 	}
 
-	caliop = caliopen.Facilities
+	caliop = caliopen.Facilities.RESTfacility
 
 	return nil
 }
@@ -78,7 +78,7 @@ func (server *REST_API) start() error {
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
 	// adds our middlewares
-	router.Use(SwaggerInboundValidation())
+	//router.Use(SwaggerInboundValidation())
 
 	// adds our routes and handlers
 	api := router.Group("/api/v2")

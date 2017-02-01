@@ -15,11 +15,12 @@ import (
         "github.com/go-openapi/runtime/middleware"
         "github.com/go-openapi/runtime/middleware/untyped"
         "encoding/json"
+        "net/http"
 )
 
 var (
 	server *REST_API
-	caliop *caliopen.CaliopenFacilities
+	caliop caliopen.RESTservices
 )
 
 type (
@@ -69,7 +70,7 @@ func (server *REST_API) initialize(config APIConfig) error {
 		log.WithError(err).Fatal("Caliopen facilities initialization failed")
 	}
 
-	caliop = caliopen.Facilities
+	caliop = caliopen.Facilities.RESTfacility
 
 	return nil
 }
@@ -84,18 +85,26 @@ func (server *REST_API) start() error {
 	router := gin.Default()
 	// adds our middlewares
 
-        //configure swagger
+        //configures swagger
         spec, err := loads.Analyzed(json.RawMessage([]byte(swaggerJSON)), "")
         if err != nil {
                 return nil
         }
         swag_api := untyped.NewAPI(spec)
-
         swag_api.RegisterOperation("get", "/v2/username/isAvailable", server)
-        swag_http_handler := middleware.Serve(spec, swag_api) // http handler interface = ServeHTTP(w http.ResponseWriter, req *http.Request)
-
+        //swag_handler := middleware.Serve(spec, swag_api) // http handler interface = ServeHTTP(w http.ResponseWriter, req *http.Request)
+        swag_builder := middleware.Builder(func(h http.Handler) http.Handler {
+                log.Info("in builder")
+                return h
+        })
+        swag_handler := middleware.ServeWithBuilder(spec, swag_api, swag_builder)
         router.Use(func(ctx *gin.Context){
-                swag_http_handler.ServeHTTP(ctx.Writer, ctx.Request )
+                //r := middleware.NewRouter(s, router)
+                //route, _ := (*s).LookupRoute(ctx.Request)
+                //log.Infof("%+v", route)
+                swag_handler.ServeHTTP(ctx.Writer, ctx.Request)
+
+                ctx.Next()
         })
 	// adds our routes and handlers
 
@@ -129,8 +138,9 @@ func AddHandlers(api *gin.RouterGroup) {
 	})
 }
 
-func (server *REST_API) Handle(interface{}) (interface{}, error){
-        return struct{}{}, nil
+func (server *REST_API) Handle(i interface{}) (interface{}, error){
+        log.Infof("handle func called: %+v", i)
+        return nil, nil
 }
 
 var swaggerJSON = `
