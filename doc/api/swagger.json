@@ -10,7 +10,7 @@
   "host": "localhost:3141",
   "basePath": "/api",
   "paths": {
-    "/v1/authentications": {
+    "/authentications": {
       "post": {
         "description": "Returns an auth token to build basicAuth for the provided credentials",
         "tags": [
@@ -108,7 +108,7 @@
         }
       }
     },
-    "/v1/me": {
+    "/me": {
       "get": {
         "description": "Gets `user + contact` objects for current logged-in user\n",
         "tags": [
@@ -561,7 +561,7 @@
         }
       }
     },
-    "/v1/users": {
+    "/users": {
       "post": {
         "description": "Create a new User with provided credentials",
         "tags": [
@@ -693,7 +693,7 @@
         }
       }
     },
-    "/v1/users/{user_id}": {
+    "/users/{user_id}": {
       "get": {
         "description": "Retrieve contact infos",
         "tags": [
@@ -1215,67 +1215,7 @@
         }
       }
     },
-    "/v2/username/isAvailable": {
-      "get": {
-        "description": "Check if an username is available for creation within Caliopen instance",
-        "tags": [
-          "users",
-          "username"
-        ],
-        "security": [],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "availability state for requested username",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "type": "string"
-                },
-                "available": {
-                  "type": "boolean"
-                }
-              },
-              "required": [
-                "username",
-                "available"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "400": {
-            "description": "malform request (probably missing 'username' query param)",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "type": "string"
-                },
-                "available": {
-                  "type": "boolean"
-                }
-              },
-              "required": [
-                "username",
-                "available"
-              ]
-            }
-          }
-        }
-      }
-    },
-    "/v1/contacts": {
+    "/contacts": {
       "get": {
         "description": "Returns contacts belonging to current user according to given parameters",
         "tags": [
@@ -1827,7 +1767,7 @@
         }
       }
     },
-    "/v1/contacts/{contact_id}": {
+    "/contacts/{contact_id}": {
       "get": {
         "description": "Returns a contact",
         "tags": [
@@ -3197,7 +3137,7 @@
         }
       }
     },
-    "/v1/discussions": {
+    "/discussions": {
       "get": {
         "description": "Returns discussions belonging to current user according to given parameters",
         "tags": [
@@ -3703,7 +3643,7 @@
         }
       }
     },
-    "/v1/discussions/{discussion_id}": {
+    "/discussions/{discussion_id}": {
       "get": {
         "description": "Returns a discussion",
         "tags": [
@@ -4210,7 +4150,7 @@
         }
       }
     },
-    "/v1/discussions/{discussion_id}/messages": {
+    "/discussions/{discussion_id}/messages": {
       "get": {
         "description": "Returns messages belonging to a discussion according to given parameters",
         "tags": [
@@ -4651,7 +4591,7 @@
         }
       }
     },
-    "/v1/raws/{raw_msg_id}": {
+    "/raws/{raw_msg_id}": {
       "get": {
         "description": "Returns a raw message",
         "tags": [
@@ -4683,7 +4623,7 @@
         }
       }
     },
-    "/v1/tags": {
+    "/tags": {
       "get": {
         "description": "Returns tags visible to current user according to given parameters",
         "tags": [
@@ -4790,7 +4730,7 @@
         }
       }
     },
-    "/v1/tags/{tag_id}": {
+    "/tags/{tag_id}": {
       "get": {
         "description": "Retrieve tag infos",
         "tags": [

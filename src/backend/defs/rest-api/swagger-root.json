@@ -20,6 +20,8 @@
     "/discussions/{discussion_id}": {"$ref": "paths/discussions.json#/discussions_{discussion_id}"},
     "/discussions/{discussion_id}/messages": {"$ref": "paths/discussions.json#/discussions_{discussion_id}_messages"},
     "/raws/{raw_msg_id}": {"$ref": "paths/raws.json#/raws_{raw_msg_id}"},
+    "/tags": {"$ref": "paths/tags.json#/tags"},
+    "/tags/{tag_id}": {"$ref": "paths/tags.json#/tags_{tag_id}"},
     "/devices": {"$ref": "paths/devices.json#/devices"},
     "/devices/{device_id}": {"$ref": "paths/devices.json#/devices_{device_id}"}
   },
