@@ -33,11 +33,16 @@ RUN python setup.py develop
 WORKDIR /srv/caliopen/code/src/backend/main/py.main
 RUN python setup.py develop
 
-# Install API and doc
-WORKDIR /srv/caliopen/code/src/backend/interfaces/REST/py.server
+# Install API
+# Use local code to detect changes in container
+ADD . /srv/caliopen/py.server
+WORKDIR /srv/caliopen/py.server
 RUN python setup.py develop
+
+# Install API doc
 WORKDIR /srv/caliopen/code/doc/py.doc
 RUN python setup.py develop
+
 
 EXPOSE 6543
 
