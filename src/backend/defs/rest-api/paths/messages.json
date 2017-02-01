@@ -1,0 +1,148 @@
+{
+  "messages": {
+    "get": {
+      "description": "Returns messages visible to current user according to given parameters",
+      "messages": [
+        "messages"
+      ],
+      "security": [
+        {
+          "basicAuth": []
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "Messages returned",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "format": "int32",
+                "description": "number of messages found for user for the given parameters"
+              },
+              "messages": {
+                "type": "array",
+                "items": {
+                  "$ref": "../objects/Message.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "post": {
+      "description": "Not Yet Implemented: Create a new Message for an user",
+      "messages": [
+        "messages"
+      ],
+      "security": [
+        {
+          "basicAuth": []
+        }
+      ],
+      "consumes": [
+        "application/json"
+      ],
+      "parameters": [
+        {
+          "name": "message",
+          "in": "body",
+          "required": true,
+          "schema": {
+            "$ref": "../objects/NewMessage.json"
+          }
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "User message creation completed",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "url to retrieve new message's infos at /messages/{name}"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "messages_{message_id}": {
+    "patch": {
+      "description": "update a message with rfc5789 and rfc7396 specifications",
+      "tags": [
+        "messages"
+      ],
+      "security": [
+        {
+          "basicAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "name": "message_id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "patch",
+          "in": "body",
+          "required": true,
+          "description": "the patch to apply. See 'Caliopen Patch RFC' within /doc directory.",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "$ref": "../objects/Message.json#/properties",
+              "current_state": {
+                "type": "object",
+                "properties": {
+                  "$ref": "../objects/Message.json#/properties"
+                }
+              }
+            },
+            "required": [
+              "current_state"
+            ]
+          }
+        }
+      ],
+      "consumes": [
+        "application/json"
+      ],
+      "responses": {
+        "204": {
+          "description": "Update successful. No body is returned."
+        },
+        "400": {
+          "description": "json payload malformed",
+          "schema": {
+            "$ref": "../objects/Error.json"
+          }
+        },
+        "404": {
+          "description": "message not found",
+          "schema": {
+            "$ref": "../objects/Error.json"
+          }
+        },
+        "422": {
+          "description": "patch json was malformed or unprocessable",
+          "schema": {
+            "$ref": "../objects/Error.json"
+          }
+        }
+      }
+    }
+  }
+}
