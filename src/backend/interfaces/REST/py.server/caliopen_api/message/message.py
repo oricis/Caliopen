@@ -9,8 +9,15 @@ from cornice.resource import resource, view
 from caliopen_main.message.core import (RawMessage, ReturnMessage,
                                         Message as CoreMessage)
 from caliopen_main.message.parameters import NewMessage
+from caliopen_main.objects.message import Message as MessageObject
+
 from ..base import Api
 from ..base.exception import ResourceNotFound
+
+from ..base.exception import (ResourceNotFound,
+                              ValidationError,
+                              MethodNotAllowed,
+                              MergePatchError)
 
 log = logging.getLogger(__name__)
 
@@ -79,6 +86,29 @@ class Message(Api):
         log.info('Post new message %r' % msg.message_id)
         # XXX return redirect to newly created message ?
         return idx_msg
+
+    @view(renderer='json', permission='authenticated')
+    def patch(self):
+        """Update a message with payload.
+
+        method follows the rfc5789 PATCH and rfc7396 Merge patch specifications,
+        + 'current_state' caliopen's specs.
+        stored messages are modified according to the fields within the payload,
+        ie payload fields squash existing db fields, no other modification done.
+        If message doesn't existing, response is 404.
+        If payload fields are not conform to the message db schema, response is
+        422 (Unprocessable Entity).
+        Successful response is 204, without a body.
+        """
+        message_id = self.request.swagger_data["message_id"]
+        patch = self.request.json
+
+        message = MessageObject(self.user.user_id, message_id=message_id)
+        error = message.apply_patch(patch, db=True, index=True)
+        if error is not None:
+            raise MergePatchError(error)
+
+        return Response(None, 204)
 
 
 @resource(path='/raws/{raw_msg_id}')

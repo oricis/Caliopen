@@ -8,8 +8,8 @@ from caliopen_main.objects import base
 from uuid import UUID
 import datetime
 from caliopen_main.message.store import Message as ModelMessage
-from caliopen_main.user.store.message_index import IndexedMessage
-
+from caliopen_main.message.store import IndexedMessage
+from caliopen_main.message.parameters import Message as ParamMessage
 from .tag import ResourceTag
 
 

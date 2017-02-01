@@ -20,6 +20,7 @@
     "/v1/discussions": {"$ref": "paths/discussions.json#/discussions"},
     "/v1/discussions/{discussion_id}": {"$ref": "paths/discussions.json#/discussions_{discussion_id}"},
     "/v1/discussions/{discussion_id}/messages": {"$ref": "paths/discussions.json#/discussions_{discussion_id}_messages"},
+    "/v1/discussions/{discussion_id}/messages/{message_id}": {"$ref": "paths/discussions.json#/discussions_{discussion_id}_messages_{message_id}"},
     "/v1/raws/{raw_msg_id}": {"$ref": "paths/raws.json#/raws_{raw_msg_id}"},
     "/v1/tags": {"$ref": "paths/tags.json#/tags"},
     "/v1/tags/{tag_id}": {"$ref": "paths/tags.json#/tags_{tag_id}"},
