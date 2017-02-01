@@ -4,7 +4,7 @@ import Icon from '../../../../../../components/Icon';
 import Button from '../../../../../../components/Button';
 import PiBar from '../../../../../../components/PiBar';
 
-import { FormGrid, FormRow, FormColumn, TextFieldGroup, SelectFieldGroup } from '../../../../../../components/form';
+import { FormGrid, FormRow, FormColumn, Fieldset, Legend, TextFieldGroup, SelectFieldGroup } from '../../../../../../components/form';
 
 import './style.scss';
 
@@ -30,52 +30,51 @@ const DisplayDevice = ({ device }) => {
             <Title>Manage your device</Title>
           </FormColumn>
         </FormRow>
-        <FormRow className="m-device__row">
-          <FormColumn bottomSpace size="medium">
-            <TextFieldGroup
-              label="Name"
-              placeholder="Name"
-              name="device-name"
-              id="device-name"
-              showLabelforSr
-              key={thisDevice.name}
-              defaultValue={thisDevice.name}
-            />
-          </FormColumn>
-          <FormColumn bottomSpace size="medium" className="m-device__infotext">
-            <label htmlFor="device-name">This is the name which allows you to identify your device everywhere.</label>
-          </FormColumn>
-        </FormRow>
-        <FormRow className="m-device__row">
-          <FormColumn size="medium">
-            <SelectFieldGroup
-              className="m-device__type"
-              label="Type"
-              name="device-type"
-              id="device-type"
-              showLabelforSr
-              value={thisDevice.type}
-              options={deviceTypes}
-            />
-          </FormColumn>
-          <FormColumn size="medium" className="m-device__infotext">
-            <label htmlFor="device-type">Select a type of device: Desktop, Laptop, Smartphone or Tablet.</label>
-          </FormColumn>
-        </FormRow>
-        <FormRow className="m-device__row">
-          <FormColumn bottomSpace size="medium">
-            <div className="m-device__ips">
-              <div className="m-device__ip">
-                <TextFieldGroup
-                  label="Add an IP"
-                  placeholder="Add an IP"
-                  name="device-ips"
-                  defaultValue=""
-                  className="m-device__ip-input"
-                  showLabelforSr
-                />
-                <Button plain className="m-device__ip-button"><Icon type="plus" /></Button>
-              </div>
+
+        <Fieldset className="m-device__row">
+          <Legend>Device name</Legend>
+          <FormRow>
+            <FormColumn bottomSpace size="medium">
+              <TextFieldGroup
+                label="Name"
+                placeholder="Name"
+                name="device-name"
+                id="device-name"
+                showLabelforSr
+                key={thisDevice.name}
+                defaultValue={thisDevice.name}
+              />
+            </FormColumn>
+            <FormColumn bottomSpace size="medium" className="m-device__infotext">
+              <label htmlFor="device-name">This is the name which allows you to identify your device everywhere.</label>
+            </FormColumn>
+          </FormRow>
+        </Fieldset>
+
+        <Fieldset className="m-device__row">
+          <Legend>Device Type</Legend>
+          <FormRow>
+            <FormColumn size="medium">
+              <SelectFieldGroup
+                className="m-device__type"
+                label="Type"
+                name="device-type"
+                id="device-type"
+                showLabelforSr
+                value={thisDevice.type}
+                options={deviceTypes}
+              />
+            </FormColumn>
+            <FormColumn size="medium" className="m-device__infotext">
+              <label htmlFor="device-type">Select a type of device: Desktop, Laptop, Smartphone or Tablet.</label>
+            </FormColumn>
+          </FormRow>
+        </Fieldset>
+
+        <Fieldset className="m-device__row m-device__ips" >
+          <Legend>IPs</Legend>
+          <FormRow>
+            <FormColumn bottomSpace size="medium">
               {thisDeviceIPs.map(ip =>
                 <div className="m-device__ip" key={ip}>
                   <TextFieldGroup
@@ -88,36 +87,49 @@ const DisplayDevice = ({ device }) => {
                   <Button plain className="m-device__ip-button"><Icon type="remove" /></Button>
                 </div>
               )}
-            </div>
-          </FormColumn>
-          <FormColumn bottomSpace size="medium" className="m-device__infotext">
-            <label htmlFor="device-ips">Restrict the access of your account to certain IP adresses for this device.<br />e.g., <strong>192.168.1.11</strong> or <strong>192.168.1.1/24</strong> or <strong>192.168.1.1-20</strong></label>
-          </FormColumn>
-        </FormRow>
-        <FormRow className="m-device__row">
+              <div className="m-device__ip">
+                <TextFieldGroup
+                  label="Add an IP"
+                  placeholder="Add an IP"
+                  name="device-ips"
+                  defaultValue=""
+                  className="m-device__ip-input"
+                  showLabelforSr
+                />
+                <Button plain className="m-device__ip-button"><Icon type="plus" /></Button>
+              </div>
+            </FormColumn>
+            <FormColumn bottomSpace className="m-device__infotext" size="medium">
+              <label htmlFor="device-ips">Restrict the access of your account to certain IP adresses for this device.<br />e.g., <strong>192.168.1.11</strong> or <strong>192.168.1.1/24</strong> or <strong>192.168.1.1-20</strong></label>
+            </FormColumn>
+          </FormRow>
+        </Fieldset>
+
+
+        <FormRow>
           <FormColumn bottomSpace size="medium" className="m-device__submit">
             <Button plain>Save device parameters</Button>
           </FormColumn>
         </FormRow>
-        <FormRow className="m-device__row m-device__row--separated m-device__title">
-          <FormColumn>
-            <Title>Device info</Title>
-          </FormColumn>
-        </FormRow>
-        <FormRow className="m-device__row">
-          <FormColumn size="medium">
-            Last connexion: {thisDevice.last_seen}
-          </FormColumn>
-        </FormRow>
-        <FormRow className="m-device__row">
-          <FormColumn size="medium">
-            OS: {thisDevice.os}
-          </FormColumn>
-          <FormColumn size="medium">
-            Version: {thisDevice.os_version}
-          </FormColumn>
-        </FormRow>
+
+        <Fieldset className="m-device__row m-device__row--separated" >
+          <FormRow className=" m-device__title">
+            <FormColumn>
+              <Title>Device info</Title>
+            </FormColumn>
+          </FormRow>
+          <FormRow>
+            <FormColumn>
+              Last connexion: {thisDevice.last_seen}
+            </FormColumn>
+            <FormColumn size="medium">
+              OS: {thisDevice.os}<br />
+              Version: {thisDevice.os_version}
+            </FormColumn>
+          </FormRow>
+        </Fieldset>
       </FormGrid>
+
       <FormGrid className="m-device__form">
         <FormRow className="m-device__row m-device__row--separated m-device__title">
           <FormColumn>
