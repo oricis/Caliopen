@@ -11,14 +11,15 @@ Documentation definitions are splits in [objects definitions](https://github.com
 To generate a single swagger.json file from theses definition, you need to install [swagger-cli](https://www.npmjs.com/package/swagger-cli) tool
 
 ```
-# In a npm able environment (having a ./package.json)
-npm install swagger-cli
-alias swagger="node `pwd`/node_modules/swagger-cli/swagger.json"
-
-# basedir of repository
+# Go where objects and paths for API are defined
 cd src/backend/defs/rest-api
 
-# Generate local swagger.json to copy if successful
-swagger bundle -r swagger-root.json -o swagger.json
+# Install npm swagger-cli
+npm install swagger-cli
+alias swagger="node `pwd`/node_modules/swagger-cli/bin/swagger.js"
+
+
+# Generate swagger.json
+swagger bundle -r swagger-root.json -o ../../../../doc/api/swagger.json
 
 ```

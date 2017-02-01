@@ -298,7 +298,7 @@ class ObjectUser(ObjectStorable):
         except Exception as exc:
             log.info(exc)
             return main_errors.PatchUnprocessable(message="unable to unmarshall"
-                                                          " patch into objecct")
+                                                          " patch into object")
         try:
             obj_patch_old.unmarshall_json_dict(patch_current)
         except Exception as exc:
