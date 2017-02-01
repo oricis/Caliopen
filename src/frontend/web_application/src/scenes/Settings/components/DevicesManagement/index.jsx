@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import Link from '../../../../components/Link';
+import Button from '../../../../components/Button';
 import TextList, { ItemContent } from '../../../../components/TextList';
 import DisplayDevice from './components/DisplayDevice';
 
@@ -64,14 +64,13 @@ class DevicesManagment extends Component {
         <TextList className="s-devices-management__devices">
           {this.state.devices.map(list =>
             <ItemContent key={list.device.name}>
-              <Link
-                noDecoration
+              <Button
                 id={list.device.device_id}
                 active={list.device === this.state.device && true}
                 onClick={handleOnClick}
               >
                 {list.device.name}
-              </Link>
+              </Button>
             </ItemContent>
           )}
         </TextList>
@@ -86,7 +85,7 @@ class DevicesManagment extends Component {
 }
 
 DevicesManagment.propTypes = {
-  device: PropTypes.node,
+  device: PropTypes.shape(),
 };
 
 export default DevicesManagment;

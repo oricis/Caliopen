@@ -23,7 +23,7 @@ const DisplayDevice = ({ device }) => {
     <div className="m-device">
       <FormGrid className="m-device__form">
         <FormRow className="m-device__row">
-          <PiBar level={thisDevice.pi} className="m-device__pi" />
+          <PiBar level={thisDevice.pi ? thisDevice.pi : 0} className="m-device__pi" />
         </FormRow>
         <FormRow className="m-device__row m-device__row--separated m-device__title">
           <FormColumn>
@@ -77,7 +77,7 @@ const DisplayDevice = ({ device }) => {
                 <Button plain className="m-device__ip-button"><Icon type="plus" /></Button>
               </div>
               {thisDeviceIPs.map(ip =>
-                <div className="m-device__ip">
+                <div className="m-device__ip" key={ip}>
                   <TextFieldGroup
                     label="Authorized IP"
                     name={ip}
@@ -141,7 +141,7 @@ const DisplayDevice = ({ device }) => {
 
 
 DisplayDevice.propTypes = {
-  device: PropTypes.node,
+  device: PropTypes.shape({}),
 };
 
 export default DisplayDevice;
