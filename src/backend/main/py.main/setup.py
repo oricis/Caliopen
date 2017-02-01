@@ -16,7 +16,7 @@ requires = [
     'phonenumbers',
     'caliopen_storage',
     'pytz',
-    'zxcvbn',
+    'zxcvbn_python',
     'validate_email',
     'uuid',
     'regex'
