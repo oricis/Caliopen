@@ -176,7 +176,7 @@ class User(BaseCore):
             privacy_features = {"password_strength": str(password_strength["score"])}
             new_user.password = bcrypt.hashpw(new_user.password.encode('utf-8'), bcrypt.gensalt())
         except Exception as exc:
-            log.info(exc)
+            log.exception(exc)
             rollback_username_storage(new_user.name)
             raise exc
 
