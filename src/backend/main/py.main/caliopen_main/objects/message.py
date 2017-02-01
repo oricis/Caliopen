@@ -23,7 +23,7 @@ class Message(base.ObjectIndexable):
     _attrs = {
         'user_id': UUID,
         'message_id': UUID,
-        'thread_id': UUID,
+        # 'discussion_id': UUID,
         'type': types.StringType,
         'from_': types.StringType,
         'date': datetime.datetime,

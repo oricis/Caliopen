@@ -5,6 +5,8 @@ from datetime import datetime
 import logging
 
 from cornice.resource import resource, view
+from pyramid.response import Response
+
 
 from caliopen_main.message.core import (RawMessage, ReturnMessage,
                                         Message as CoreMessage)
