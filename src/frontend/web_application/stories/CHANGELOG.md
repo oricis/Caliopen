@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+  - Settings - DevicesManagement
+
 ## [2017-01-19]
 
 ### Added
