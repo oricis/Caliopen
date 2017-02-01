@@ -16,7 +16,6 @@ class Email(base.ObjectStorable):
         "address":              InternetAddressType,
         "email_id":             UUID,
         "is_primary":           types.BooleanType,
-        "is_backup":            types.BooleanType,
         "label":                types.StringType,
         "type":                 types.StringType,
     }

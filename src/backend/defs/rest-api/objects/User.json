@@ -39,7 +39,4 @@
     }
   },
   "additionalProperties": false,
-  "required":[
-    "username", "password", "recovery_email"
-  ]
 }
