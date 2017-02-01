@@ -26,11 +26,12 @@ const Button = ({
       'm-button',
       {
         'm-button--alert': alert,
+        'm-button--alert-plain': alert && plain,
         'm-button--success': success,
         'm-button--secondary': secondary,
         'm-button--secondary-plain': secondary && plain,
         'm-button--expanded': expanded,
-        'm-button--plain': plain && !secondary,
+        'm-button--plain': plain && !secondary && !alert,
         'm-button--hollow': hollow,
         'm-button--active': active,
       }
