@@ -1,16 +1,23 @@
 import React, { PropTypes } from 'react';
 import Title from '../../../../../../components/Title';
+import Icon from '../../../../../../components/Icon';
 import Button from '../../../../../../components/Button';
 import PiBar from '../../../../../../components/PiBar';
-import TextList, { ItemContent } from '../../../../../../components/TextList';
 
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, SelectFieldGroup } from '../../../../../../components/form';
 
 import './style.scss';
 
+const deviceTypes = [
+  { value: 'desktop', label: 'Desktop' },
+  { value: 'laptop', label: 'Laptop' },
+  { value: 'smartphone', label: 'Smartphone' },
+  { value: 'tablet', label: 'Tablet' },
+];
+
 const DisplayDevice = ({ device }) => {
   const thisDevice = device;
-  const deviceIps = device.ips;
+  const thisDeviceIPs = Array.from(new Set(thisDevice.ips));
 
   return (
     <div className="m-device">
@@ -42,12 +49,13 @@ const DisplayDevice = ({ device }) => {
         <FormRow className="m-device__row">
           <FormColumn size="medium">
             <SelectFieldGroup
+              className="m-device__type"
               label="Type"
-              name="device-name"
+              name="device-type"
               id="device-type"
               showLabelforSr
               value={thisDevice.type}
-              options={[{ value: 'desktop', label: 'Desktop' }, { value: 'laptop', label: 'Laptop' }, { value: 'smartphone', label: 'Smartphone' }, { value: 'tablet', label: 'Tablet' }]}
+              options={deviceTypes}
             />
           </FormColumn>
           <FormColumn size="medium" className="m-device__infotext">
@@ -56,27 +64,39 @@ const DisplayDevice = ({ device }) => {
         </FormRow>
         <FormRow className="m-device__row">
           <FormColumn bottomSpace size="medium">
-            <TextFieldGroup
-              label="Add an IP"
-              placeholder="Add an IP"
-              name="device-ips"
-              defaultValue=""
-              showLabelforSr
-            />
-            {thisDevice.ips !== null && thisDevice.ips !== '' &&
-              <TextList className="m-device__ip-list">
-                Authorized IPs:
-                <ItemContent className="m-device__ip">{deviceIps}</ItemContent> {/* this should be list */}
-              </TextList>
-            }
+            <div className="m-device__ips">
+              <div className="m-device__ip">
+                <TextFieldGroup
+                  label="Add an IP"
+                  placeholder="Add an IP"
+                  name="device-ips"
+                  defaultValue=""
+                  className="m-device__ip-input"
+                  showLabelforSr
+                />
+                <Button plain className="m-device__ip-button"><Icon type="plus" /></Button>
+              </div>
+              {thisDeviceIPs.map(ip =>
+                <div className="m-device__ip">
+                  <TextFieldGroup
+                    label="Authorized IP"
+                    name={ip}
+                    defaultValue={ip}
+                    className="m-device__ip-input"
+                    showLabelforSr
+                  />
+                  <Button plain className="m-device__ip-button"><Icon type="remove" /></Button>
+                </div>
+              )}
+            </div>
           </FormColumn>
           <FormColumn bottomSpace size="medium" className="m-device__infotext">
-            <label htmlFor="device-ips">e.g., 192.168.1.11 or 192.168.1.1/24 or 192.168.1.1-20</label>
+            <label htmlFor="device-ips">Restrict the access of your account to certain IP adresses for this device.<br />e.g., <strong>192.168.1.11</strong> or <strong>192.168.1.1/24</strong> or <strong>192.168.1.1-20</strong></label>
           </FormColumn>
         </FormRow>
         <FormRow className="m-device__row">
-          <FormColumn bottomSpace size="medium">
-            <Button plain className="m-device__submit">Save device parameters</Button>
+          <FormColumn bottomSpace size="medium" className="m-device__submit">
+            <Button plain>Save device parameters</Button>
           </FormColumn>
         </FormRow>
         <FormRow className="m-device__row m-device__row--separated m-device__title">
