@@ -1,0 +1,53 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.m-nav {
+  display: block;
+}
+
+.m-nav-list {
+  @include flex-grid-row;
+  list-style: none;
+  margin: 0;
+  margin-bottom: $co-margin;
+  padding: 0;
+
+  &__item {
+    @include flex-grid-column(shrink);
+    line-height: $co-font__line-height;
+
+    a,
+    button {
+      background: none;
+      color: $co-color__fg__text--lower;
+      text-align: left;
+
+      &:hover,
+      &:focus {
+        background: none;
+      }
+    }
+
+    &--large {
+      line-height: $co-component__height;
+    }
+
+    &--active {
+      background-color: $co-color__bg__back;
+      font-weight: 700;
+
+      a,
+      button {
+        color: $co-color__fg__text--high;
+      }
+    }
+  }
+
+  &--vertical {
+    flex-direction: column;
+
+    .m-nav-list__item {
+      margin-bottom: map-get($co-form__spacing, 'xsmall');
+    }
+  }
+}

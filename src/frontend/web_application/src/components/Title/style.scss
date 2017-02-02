@@ -4,6 +4,7 @@ $m-title__height: $co-component__height !default;
 
 .m-title {
   display: block;
+  width: 100%;
   line-height: $m-title__height;
 
   &__text {
@@ -13,6 +14,14 @@ $m-title__height: $co-component__height !default;
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
+  }
+
+  &--align-right {
+    text-align: right;
+  }
+
+  &--align-center {
+    text-align: center;
   }
 
   &--hr {

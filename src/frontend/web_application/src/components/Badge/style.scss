@@ -18,6 +18,10 @@ $m-badge--large__font-size: $co-font__size !default;
   line-height: $m-badge__height;
   white-space: nowrap;
 
+  &--no-radius {
+    border-radius: 0;
+  }
+
   &--low {
     background: $co-color__fg__back--lower;
     color: $co-color__fg__text--lower;

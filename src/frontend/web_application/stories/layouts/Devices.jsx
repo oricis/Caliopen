@@ -1,14 +1,29 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import DevicesManagement from '../../src/scenes/Settings';
+import Settings from '../../src/layouts/Settings/presenter';
+import Devices from '../../src/scenes/Devices/presenter';
+
 import { Code, ComponentWrapper } from '../presenters';
 
 class Presenter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      props: {
+        hr: false,
+      },
+    };
+  }
+
   render() {
+    const noop = str => str;
+
     return (
       <div>
         <ComponentWrapper>
-          <DevicesManagement />
+          <Settings>
+            <Devices __={noop} />
+          </Settings>
         </ComponentWrapper>
         <Code>
           {`

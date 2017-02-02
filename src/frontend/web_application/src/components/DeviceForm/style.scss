@@ -1,0 +1,46 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.m-device {
+  background: $co-color__fg__back;
+
+  &__section {
+    padding: map-get($co-form__spacing, 'large');
+    border-bottom: 1px solid $co-color__bg__back;
+  }
+
+  &__title {
+    margin-bottom: map-get($co-form__spacing, 'small');
+  }
+
+  &__intro {
+    display: block;
+    padding-bottom: map-get($co-form__spacing, 'small');
+    text-align: center;
+  }
+
+  fieldset {
+    margin-bottom: map-get($co-form__spacing, 'large');
+  }
+
+  &__pi {
+    width: 100%;
+    padding: map-get($co-form__spacing, 'small') map-get($co-form__spacing, 'large');;
+  }
+
+  &__ip {
+    @include flex-grid-row;
+    margin-bottom: map-get($co-form__spacing, 'small');
+
+    &-input {
+      @include flex-grid-size;
+    }
+
+    &-button {
+      @include flex-grid-size(shrink);
+      margin-left: 1px;
+      background: $co-color__fg__back--lower;
+      font-size: $co-font__size--small;
+    }
+  }
+}

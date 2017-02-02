@@ -10,11 +10,13 @@
     }
   }
 
-
-
   &__column {
     @include flex-grid-size(12);
     display: block;
+
+    &--align-center {
+      text-align: center;
+    }
 
     &--fluid {
       @include flex-grid-size;
@@ -27,6 +29,10 @@
     @include breakpoint(medium) {
 
       padding-right: map_get($co-form__spacing, 'medium');
+
+      &--align-right {
+        text-align: right;
+      }
 
       &--small {
         @include flex-grid-size(4);

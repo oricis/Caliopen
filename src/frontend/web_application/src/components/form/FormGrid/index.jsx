@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import './style.scss';
 
-export const FormColumn = ({ className, bottomSpace, size, fluid = false, ...props }) => {
+export const FormColumn = ({ align, className, bottomSpace, size, fluid = false, ...props }) => {
   const colClassName = classnames('m-form-grid__column', {
     'm-form-grid__column--fluid': fluid,
     'm-form-grid__column--bottom-space': bottomSpace,
@@ -10,6 +10,8 @@ export const FormColumn = ({ className, bottomSpace, size, fluid = false, ...pro
     'm-form-grid__column--small': size === 'small',
     'm-form-grid__column--medium': size === 'medium',
     'm-form-grid__column--large': size === 'large',
+    'm-form-grid__column--align-right': align === 'right',
+    'm-form-grid__column--align-center': align === 'center',
   }, className);
 
   return (
@@ -20,6 +22,7 @@ export const FormColumn = ({ className, bottomSpace, size, fluid = false, ...pro
 FormColumn.propTypes = {
   className: PropTypes.string,
   size: PropTypes.oneOf(['shrink', 'small', 'medium', 'large']),
+  align: PropTypes.oneOf(['right', 'center', 'left']),
   fluid: PropTypes.bool,
   bottomSpace: PropTypes.bool,
 };

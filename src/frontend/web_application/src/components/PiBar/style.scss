@@ -6,13 +6,8 @@
 $bar-height: 3px;
 $bar-margin: 7px;
 
-$color-ugly: map_get($privacy-palette, 'ugly');
-$color-bad: map_get($privacy-palette, 'bad');
-$color-good: map_get($privacy-palette, 'good');
-$color-super: map_get($privacy-palette, 'super');
-
-
 .m-pi-bar {
+  width: 100%;
 
   &__graph {
     @include flex-grid-row;
@@ -26,8 +21,8 @@ $color-super: map_get($privacy-palette, 'super');
   &__level {
     @include flex-grid-size(shrink);
     margin-left: map-get($co-form__spacing, 'medium');
-    font-weight: 700;
     font-size: $co-font__size--small;
+    font-weight: 700;
   }
 
   &__guide {
@@ -42,35 +37,14 @@ $color-super: map_get($privacy-palette, 'super');
     background-color: $co-color__fg__text--lower;
   }
 
-  &--ugly {
-    color: $color-ugly;
 
-    .m-pi-bar__bar {
-      background: -webkit-gradient(linear, left top, right top, from($color-ugly) , color-stop(0.8, $color-ugly), to($color-bad));
-    }
-  }
+  @each $level, $color in $privacy-palette {
+    &--#{$level} {
+      color: $color;
 
-  &--bad {
-    color: $color-bad;
-
-    .m-pi-bar__bar {
-      background: -webkit-gradient(linear, left top, right top, from($color-bad) , color-stop(0.8, $color-bad), to($color-good));
-    }
-  }
-
-  &--good {
-    color: $color-good;
-
-    .m-pi-bar__bar {
-      background: -webkit-gradient(linear, left top, right top, from($color-good) , color-stop(0.95, $color-good), to($color-super));
-    }
-  }
-
-  &--super {
-    color: $color-super;
-
-    .m-pi-bar__bar {
-      background: $color-super;
+      .m-pi-bar__bar {
+        background-color: $color;
+      }
     }
   }
 }
