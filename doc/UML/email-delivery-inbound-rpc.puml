@@ -1,0 +1,96 @@
+@startuml
+hide footbox
+title Inbound Email delivery
+box "Brokers"
+participant "Email broker" as eb
+endbox
+database db
+database index
+box "gRPC"
+entity "RPC server" as rpc
+endbox
+box "Caliopen main"
+control "email delivery process" as main
+endbox
+box "Caliopen components"
+participant "Message qualifier" as mq
+participant "PI calculator" as pi
+participant "ALICE builder" as alice
+endbox
+
+[-> eb: smtp email
+activate eb
+eb -> eb: unmarshall email
+eb -> eb: validation/conformation
+eb -> eb: process recipients
+eb --\ db: users lookups
+db --/ eb
+|||
+eb -\o db: store raw email once
+db --// eb: email ID
+eb -> eb: marshall "message" into db model
+eb -> eb: marshall  "message" into protobuf
+== Repetition ==
+eb -\o db: store "message" model\nfor each recipient (type email)
+db --// eb: message IDs
+|||
+eb -> rpc:call «process inbound message»\nfor each recipient\n(with message payload)
+deactivate eb
+activate main
+rpc -[#0000FF]> main: protobuf msg\n"process message"\n(with message payload)
+autonumber
+main -> rpc: call "qualify message"\n(with message payload)
+main -> rpc: call "calculate PI"\n(with message payload)
+autonumber stop
+rpc -[#0000FF]> pi: protobuf msg\n"calculate PI"\n(with message payload)
+activate pi
+rpc -[#0000FF]> mq: protobuf msg\n"qualify message"\n(with message payload)
+activate mq
+mq -> mq: unmarshall message
+mq -> mq: associate contact IDs with recipients
+mq -> mq: associate message to a discussion
+mq -> mq: calculate importance level
+mq -> mq: etc…
+mq -> mq: update lookup tables
+mq ->o db: store lookup info in lookup tables
+mq -> mq: marshall message to protobuf
+mq ->> rpc: call «qualification done»\n(with message payload)
+deactivate mq
+rpc -[#0000FF]> main: protobuf msg\n"qualification done"\n(with message payload)
+
+pi -> pi: unmarshall message
+pi -> pi: PI calculation
+pi -> pi: marshall message to protobuf
+pi ->> rpc: call «PI calculation done»\n(with message payload)
+deactivate pi
+rpc -[#0000FF]> main: protobuf msg\n"PI done"\n(with message payload)
+main -> main: marshall "message" into db model
+autonumber resume
+main ->o db: update "message" model
+autonumber stop
+
+main -> main: build ALICE
+main -> main: marshall ALICE into index model
+autonumber resume
+main -> rpc: call "build ALICE"\n(with message payload)
+autonumber stop
+rpc -[#0000FF]> alice: protobuf msg\n"build ALICE"\n(with message payload)
+activate alice
+alice -> alice: unmarshall message
+create entity "lucene engine"
+alice -> "lucene engine": "scan body"
+create entity "qwant engine"
+alice -> "qwant engine": "build semantics"
+"lucene engine" -> alice: "here is the lexicon"
+"qwant engine" -> alice: "here are the keywords"
+alice -> alice: compute ALICE
+alice -> alice: marshall ALICE
+alice -> rpc: call "index ALICE"\n(with ALICE payload)
+deactivate alice
+rpc -[#0000FF]> main: protobuf msg\n"index ALICE"\n(with ALICE payload)
+autonumber resume
+main ->o index: send ALICE to index
+autonumber stop
+
+deactivate main
+@enduml

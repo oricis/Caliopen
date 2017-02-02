@@ -1,0 +1,147 @@
+@startuml
+skinparam activity {
+  BackgroundColor<< object >> Olive
+  BackgroundColor<< message >> Green
+  BackgroundColor<< msg_core >> #5555FF
+}
+(*) --> ===B1===
+partition lmtpd {
+===B1=== --> "agent.process(mailfrom, rcpttos, data)" as ap
+}
+partition agent {
+ap -> self.resolve_users(rcpts)
+If "if user" then
+-->[yes] ===repeat===
+note left: repeat for each user
+
+
+===repeat=== --> "RawMessage.create(user, buf)"
+--> "self.process_user_mail(user, raw_msg_id)"
+note left: logic here for user rules, etc
+"self.process_user_mail(user, raw_msg_id)" --> "deliver.process(user, raw_msg.id)"
+}
+
+"RawMessage.create(user, buf)" --> "db store"
+
+partition main.message.delivery.py {
+"deliver.process(user, raw_msg.id)" --> "RawMessage.get(user, raw_msg_id)"
+"db store" --> "RawMessage.get(user, raw_msg_id)"
+"RawMessage.get(user, raw_msg_id)" -right-> RawMessage <<object>>
+message -[#Green]-> msg.raw_msg_id
+RawMessage --> msg.raw_msg_id
+msg.raw_msg_id -[#Green]-> message_step_2 <<message>>
+mail --> "self._get_recipients(user, mail)"
+message_step_2 -[#Green]-> "self._get_recipients(user, mail)"
+"self._get_recipients(user, mail)" -[#Green]-> message_step_3 <<message>>
+message_step_3 --> "[x in message.recipients]"
+"[x in message.recipients]" --> addresses
+message_step_3 -[#Green]-> "self.get_tags(user, mail)"
+"self.get_tags(user, mail)" -[#Green]-> message_step_4 <<message>>
+mail --> self.get_tags(user, mail)
+lookup_sequence -[#333333]-> "self.lookup(user, lookup_sequence)"
+"self.lookup(user, lookup_sequence)" -[#333333]-> lookup
+msg_core -[#0000FF]-> "ThreadMessageLookup.create(user, **params)"
+msg_core -[#0000FF]-> "self.__init_lookup(user, lookup_sequence, msg)"
+message_step_4 -[#Green]-> "create()"
+lookup -[#333333]-> "create()"
+thread_id --> "create()"
+}
+"self.__init_lookup(user, lookup_sequence, msg)" --> (*)
+"ThreadMessageLookup.create(user, **params)" --> (*)
+
+partition main.message.parameters {
+mail --> "mail.to_parameter()"
+note bottom: output a schematics
+"mail.to_parameter()" --> message <<message>>
+}
+
+partition main.message.format.mail.py {
+RawMessage --> "MailMessage(RawMessage.data)"
+note bottom: output a MailMessage object
+"MailMessage(RawMessage.data)" --> mail <<object>>
+mail --> "mail.lookup_sequence()"
+"mail.lookup_sequence()" -[#333333]-> lookup_sequence
+}
+
+partition main.message.core.thread.py {
+lookup -[#333333]->[yes] "Thread.get(user, lookup.thread_id)"
+"Thread.get(user, lookup.thread_id)" --> thread
+lookup-[#333333]->[yes] "ThreadMessageLookup.create(user, **params)"
+message --> "Thread.create_from_message(user, message)"
+lookup -[#333333]->[no] "Thread.create_from_message(user, message)"
+"Thread.create_from_message(user, message)" --> thread
+lookup -[#333333]->[no] "self.__init_lookup(user, lookup_sequence, msg)"
+thread --> thread_id
+}
+
+partition main.message.core.message.py {
+
+
+"create()" -[#0000FF]-> "message.validate()"
+"message.validate()" -[#0000FF]-> "create_nested()"
+"create_nested()" -[#0000FF]-> "Message_model.create()"
+"Message_model.create()" -[#0000FF]-> "db store"
+"Message_model.create()"  -[#0000FF]-> msg_core<<msg_core>>
+"Message_model.create()" --> "create_index()"
+}
+ "create_index()" --> "index store"
+@enduml
+
+@startuml
+hide footbox
+box "caliopen_smtp"
+participant agent.py
+endbox
+database db
+database index
+box "main.message"
+participant deliver.py
+participant format.mail.py
+participant parameters.py
+participant core.thread.py
+participant core.message.py
+endbox
+
+
+[-> agent.py: smtp email
+activate agent.py
+agent.py -> agent.py: resolve_users
+== Repeat for each user==
+agent.py ->o db: store raw message
+db --/ agent.py: raw_msg_id
+agent.py ->> agent.py: process user rules\n(empty for now)
+agent.py ->> deliver.py: process(user, raw_msg_id)
+deactivate agent.py
+activate deliver.py
+deliver.py ->> db: get raw message
+db ->o deliver.py: RawMessage object
+deliver.py ->> format.mail.py: MailMessage(RawMessage.data)
+format.mail.py ->o deliver.py: MailMessage object
+deliver.py ->> parameters.py: to_parameter()
+parameters.py ->o deliver.py: ParamMessage object
+deliver.py -> deliver.py: process message
+activate deliver.py
+deliver.py -> deliver.py: get raw_msg_id
+deliver.py -> deliver.py: get recipients
+deliver.py -> deliver.py: get tags
+deactivate deliver.py
+deliver.py -> format.mail.py: mail.lookup_sequence()
+activate format.mail.py
+format.mail.py -> deliver.py: lookup
+deactivate format.mail.py
+deliver.py -> core.thread.py: get/create thread()
+activate core.thread.py
+core.thread.py ->o deliver.py: thread_id
+deactivate core.thread.py
+deliver.py -> core.message.py: Message.create()
+activate core.message.py
+core.message.py -> core.message.py: validate()
+core.message.py -> core.message.py: create_nested()
+core.message.py ->o db: create()
+core.message.py ->o index: create.index()
+core.message.py -> deliver.py: core_message
+deactivate core.message.py
+deliver.py -> core.thread.py: thread lookup operations
+[<- deliver.py: return core_message obj
+deactivate deliver.py
+@enduml

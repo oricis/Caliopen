@@ -1,0 +1,96 @@
+@startuml
+hide footbox
+title Inbound Email delivery
+box "Brokers"
+participant "Email broker" as eb
+endbox
+database db
+database index
+box "messages platform"
+entity "messages server" as msg
+endbox
+box "Caliopen main"
+control "email delivery process" as main
+endbox
+box "Caliopen components"
+participant "Message qualifier" as mq
+participant "PI calculator" as pi
+participant "ALICE builder" as alice
+endbox
+
+[-> eb: smtp email
+activate eb
+eb -> eb: unmarshall email
+eb -> eb: validation/conformation
+eb -> eb: process recipients
+eb --\ db: users lookups
+db --/ eb
+|||
+eb -\o db: store raw email once
+db --// eb: email ID
+eb -> eb: marshall "message" into db model
+eb -> eb: marshall  "message" into protobuf
+== Repetition ==
+eb -\o db: store "message" model\nfor each recipient (type email)
+db --// eb: message IDs
+|||
+eb -> msg:send msg «process inbound message»\nfor each recipient
+deactivate eb
+activate main
+main x[#0000FF]-> msg: subscribe to \n"process inbound message"
+autonumber
+main -> msg: send msg "qualify message"
+main -> msg: send msg "calculate PI"
+autonumber stop
+pi x-[#0000FF]> msg: subscribe to msg\n"calculate PI"
+activate pi
+mq x-[#0000FF]> msg: subscribe to msg\n"qualify message"
+activate mq
+mq -> mq: unmarshall message
+mq -> mq: associate contact IDs with recipients
+mq -> mq: associate message to a discussion
+mq -> mq: calculate importance level
+mq -> mq: etc…
+mq -> mq: update lookup tables
+mq ->o db: store lookup info in lookup tables
+mq -> mq: marshall message to protobuf
+mq ->> msg: send msg «qualification done»
+deactivate mq
+main x-[#0000FF]> msg: subscribe to msg\n"qualification done"
+
+pi -> pi: unmarshall message
+pi -> pi: PI calculation
+pi -> pi: marshall message to protobuf
+pi ->> msg: send msg «PI calculation done»
+deactivate pi
+main x-[#0000FF]> msg: subscribe to msg\n"PI done"
+main -> main: marshall "message" into db model
+autonumber resume
+main ->o db: update "message" model
+autonumber stop
+
+main -> main: build ALICE
+main -> main: marshall ALICE into index model
+autonumber resume
+main -> msg: send msg "build ALICE"
+autonumber stop
+alice x-[#0000FF]> msg: subscribe to msg\n"build ALICE"
+activate alice
+alice -> alice: unmarshall message
+create entity "lucene engine"
+alice -> "lucene engine": "scan body"
+create entity "qwant engine"
+alice -> "qwant engine": "build semantics"
+"lucene engine" -> alice: "here is the lexicon"
+"qwant engine" -> alice: "here are the keywords"
+alice -> alice: compute ALICE
+alice -> alice: marshall ALICE
+alice -> msg: send msg "index ALICE"
+deactivate alice
+main x-[#0000FF]> msg: subscribe to msg\n"index ALICE"
+autonumber resume
+main ->o index: send ALICE to index
+autonumber stop
+
+deactivate main
+@enduml
