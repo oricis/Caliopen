@@ -4,11 +4,13 @@
 .l-auth-page {
 
   &__header {
+    padding-top: map-get($co-form__spacing, 'large');
     text-align: center;
+
   }
 
   &__brand {
-    margin: map-get($co-form__spacing, 'xlarge') 0;
+    margin: map-get($co-form__spacing, 'large') 0;
   }
 
   &__form {
