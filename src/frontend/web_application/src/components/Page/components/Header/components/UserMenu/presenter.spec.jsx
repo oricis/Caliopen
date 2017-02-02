@@ -20,6 +20,6 @@ describe('component UserMenu', () => {
     );
 
     expect(comp.find('VerticalMenuTextItem').length).toEqual(1);
-    expect(comp.find('VerticalMenuTextItem').first().render().text()).toContain(user.contact.title);
+    expect(comp.find('VerticalMenuTextItem').first().render().text()).toContain(user.name);
   });
 });

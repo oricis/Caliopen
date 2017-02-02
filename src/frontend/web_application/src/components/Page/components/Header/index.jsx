@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { withTranslator } from '@gandi/react-translate';
 import { Link } from 'react-router';
-import CoLink from '../../../Link';
 import Button from '../../../Button';
 import Icon from '../../../Icon';
 import Presenter from './presenter';
@@ -20,7 +19,6 @@ class Header extends Component {
       searchAsDropdown: false,
     };
     this.handleClickToggleSearchAsDropdown = this.handleClickToggleSearchAsDropdown.bind(this);
-    this.isAuthenticated = true;
   }
 
   handleClickToggleSearchAsDropdown() {
@@ -43,7 +41,7 @@ class Header extends Component {
         )}
         searchAsDropdown={this.state.searchAsDropdown}
         search={<SearchField />}
-        user={this.isAuthenticated ? <UserMenu /> : <CoLink to="/auth/signin" modifiers={{ button: true }}>{__('header.menu.signin')}</CoLink>}
+        user={<UserMenu />}
       />
     );
   }

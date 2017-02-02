@@ -28,6 +28,6 @@ describe('component NavigationAlt', () => {
     );
 
     expect(comp.find('ContactAvatarLetter').length).toEqual(1);
-    expect(comp.find('.l-nav-alt__user-name').text()).toContain(user.contact.title);
+    expect(comp.find('.l-nav-alt__user-name').text()).toContain(user.name);
   });
 });
