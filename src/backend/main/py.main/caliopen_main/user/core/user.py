@@ -319,7 +319,12 @@ class User(BaseCore):
     @property
     def contact(self):
         """User is a contact."""
-        return CoreContact.get(self, self.contact_id)
+        if self.contact_id is None:
+            return None
+        try:
+            return CoreContact.get(self, self.contact_id)
+        except NotFound:
+            return None
 
     @property
     def tags(self):
