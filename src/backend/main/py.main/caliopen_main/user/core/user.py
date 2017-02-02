@@ -324,6 +324,7 @@ class User(BaseCore):
         try:
             return CoreContact.get(self, self.contact_id)
         except NotFound:
+            log.warn("contact {} not found for user {}".format(self.contact_id, self.user_id))
             return None
 
     @property
