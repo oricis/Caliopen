@@ -19,7 +19,8 @@ requires = [
     'zxcvbn_python',
     'validate_email',
     'uuid',
-    'regex'
+    'regex',
+    'zope.interface',
     ]
 
 extras_require = {
