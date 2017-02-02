@@ -79,15 +79,23 @@ You can start daemon services using these commands:
 ```
 cd devtools
 docker-compose build
-docker-compose up redis cassandra elasticsearch api
+docker-compose up -d redis cassandra elasticsearch
 ```
 
 Then you can setup storage, create an user and import email using caliopen cli tool:
 ```
 cd devtools
 docker-compose run cli setup
-docker-compose run cli create_user -e dev@caliopen.local -p 123456
-docker-compose run cli import -e dev@caliopen.local -f mbox -p devtools/fixtures/mbox/dev@caliopen.local
+docker-compose run cli create_user -e dev -p 123456
+docker-compose run cli import -e dev -f mbox -p devtools/fixtures/mbox/dev@caliopen.local
+```
+
+Finally start the api and the frontend:
+
+```
+cd devtools
+docker-compose up -d api
+docker-compose up -d frontend
 ```
 
 You will have a CaliOpen instance filled with data, accessible using API on port 6543
