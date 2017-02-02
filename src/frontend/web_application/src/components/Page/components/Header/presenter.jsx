@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { withTranslator } from '@gandi/react-translate';
 import classnames from 'classnames';
+import Brand from '../../../../components/Brand';
 import './style.scss';
-import brandImgPath from './images/brand.png';
 
 const Presenter = ({ brand, searchAsDropdownToggler, searchAsDropdown, search, user, __ }) => {
   const searchClassName = classnames(
@@ -23,7 +23,7 @@ const Presenter = ({ brand, searchAsDropdownToggler, searchAsDropdown, search, u
             />
           </span>
           {brand(
-            <img alt="CaliOpen" src={brandImgPath} className="l-header__brand-icon" />
+            <Brand className="l-header__brand-icon" />
           )}
         </div>
         <div className="l-header__search-toggler show-for-small-only">
