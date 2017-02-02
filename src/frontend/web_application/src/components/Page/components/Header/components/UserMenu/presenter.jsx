@@ -33,7 +33,7 @@ class Presenter extends Component {
           expanded
         >
           <Icon type="user" />&nbsp;
-          <span className="show-for-small-only">{user.name}</span>&nbsp;
+          <span className="show-for-small-only">{user && user.name}</span>&nbsp;
           <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
         </DropdownController>
         <Dropdown
@@ -44,15 +44,22 @@ class Presenter extends Component {
         >
           <VerticalMenu>
             <VerticalMenuTextItem>
-              <div>{user.contact.title}</div>
-              <div>{user.contact.emails[0] && user.contact.emails[0].address}</div>
+              <div>{user.name}</div>
+              {user && user.contact && (
+                <div>{user.contact.emails[0] && user.contact.emails[0].address}</div>
+              )}
             </VerticalMenuTextItem>
             <Separator />
             <VerticalMenuItem>
               <Link to="/account" expanded button>{__('header.menu.account')}</Link>
             </VerticalMenuItem>
             <VerticalMenuItem>
-              <Link to="/auth/signout" button expanded>{__('header.menu.signout')}</Link>
+              {user && (
+                <Link href="/auth/signout" button expanded>{__('header.menu.signout')}</Link>
+              )}
+              {!user && (
+                <Link href="/auth/signin" button expanded>{__('header.menu.signin')}</Link>
+              )}
             </VerticalMenuItem>
           </VerticalMenu>
         </Dropdown>

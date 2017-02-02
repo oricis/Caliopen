@@ -9,14 +9,12 @@ const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
   <div className="l-nav-alt">
     <div className="l-nav-alt__user">
       <div className="l-nav-alt__avatar">
-        {user && <ContactAvatarLetter contact={user.contact} modifiers={{ size: 'small' }} />}
+        {user && user.contact && <ContactAvatarLetter contact={user.contact} modifiers={{ size: 'small' }} />}
       </div>
       <div className="l-nav-alt__user-name">
-        { user && (
-          <div>
-            <div>{user.contact.title}</div>
-            <div>{user.contact.emails[0] && user.contact.emails[0].address}</div>
-          </div>
+        <div>{user && user.name}</div>
+        { user && user.contact && (
+        <div>{user.contact.emails[0] && user.contact.emails[0].address}</div>
         )}
       </div>
     </div>
