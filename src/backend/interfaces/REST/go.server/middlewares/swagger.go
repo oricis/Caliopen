@@ -1,9 +1,30 @@
-package rest_api
+// Copyleft (ɔ) 2017 The Caliopen contributors.
+// Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
+// license (AGPL) that can be found in the LICENSE file.
+
+package http_middleware
 
 import (
         "gopkg.in/gin-gonic/gin.v1"
         "reflect"
+
 )
+
+var (
+        swaggerJSON map[string]interface{}
+)
+
+
+
+
+
+func InitSwaggerMiddleware(swaggerFile string) error {
+
+        swaggerJSON = map[string]interface{}{
+
+        }
+        return nil
+}
 
 func SwaggerInboundValidation() gin.HandlerFunc {
         return func(c *gin.Context){
@@ -12,6 +33,8 @@ func SwaggerInboundValidation() gin.HandlerFunc {
         }
 }
 
+
+// checks that inputs and/or outputs conform to the swagger specs for the route
 func SwaggerValidator(obj interface{}) gin.HandlerFunc {
         //TODO
         return func(ctx *gin.Context) {
