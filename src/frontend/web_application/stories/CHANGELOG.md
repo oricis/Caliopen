@@ -6,6 +6,10 @@
 
   - Settings - DevicesManagement
 
+### Changed
+
+  - Form - Field with error: no more uppercase for the message & replace background color by a red border (inset)
+
 ## [2017-01-19]
 
 ### Added
