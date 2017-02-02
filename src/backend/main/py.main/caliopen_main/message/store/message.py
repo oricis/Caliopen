@@ -6,6 +6,7 @@ from cassandra.cqlengine import columns
 
 from caliopen_storage.store.model import BaseModel, BaseUserType
 from caliopen_storage.store.mixin import IndexedModelMixin
+from caliopen_main.user.store.tag import ResourceTag
 
 from .message_index import IndexedMessage
 
@@ -50,3 +51,4 @@ class Message(BaseModel, IndexedModelMixin):
     state = columns.Text(default='draft')
     recipients = columns.List(columns.UserDefinedType(MessageRecipient))
     text = columns.Text()
+    tags = columns.List(columns.UserDefinedType(ResourceTag))

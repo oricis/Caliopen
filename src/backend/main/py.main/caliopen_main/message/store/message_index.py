@@ -4,6 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import elasticsearch_dsl as dsl
 from caliopen_storage.store.model import BaseIndexDocument
+from caliopen_main.user.store.tag_index import IndexedResourceTag
 
 
 class IndexedMessage(BaseIndexDocument):
@@ -33,6 +34,8 @@ class IndexedMessage(BaseIndexDocument):
     headers = dsl.Nested()
     recipients = dsl.Nested()
     text = dsl.String()
+
+    tags = dsl.Nested(doc_class=IndexedResourceTag)
 
     @property
     def message_id(self):

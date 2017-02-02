@@ -314,19 +314,19 @@ class ObjectUser(ObjectStorable):
         # if it is, squash self attributes
         self.unmarshall_db()
         for key in patch.keys():
-            if isinstance(self._attrs[key], types.ListType):
-                if getattr(obj_patch_old, key) == [] and \
-                                getattr(self, key) != []:
-                    return main_errors.PatchConflict(message=
-                                                     "Patch current_state not consistent with db")
-                if getattr(self, key) == [] and \
-                                getattr(obj_patch_old, key) != []:
-                    return main_errors.PatchConflict(message=
-                                                     "Patch current_state not consistent with db")
-                for old in getattr(obj_patch_old, key):
+            current_attr = self._attrs[key]
+            old_val = getattr(obj_patch_old, key)
+            cur_val = getattr(self, key)
+            msg = "Patch current_state not consistent with db, step {} key {}"
+            if isinstance(current_attr, types.ListType):
+                if old_val == [] and cur_val != []:
+                    return main_errors.PatchConflict(message=msg.format(1, key))
+                if cur_val == [] and old_val != []:
+                    return main_errors.PatchConflict(message=msg.format(2, key))
+                for old in old_val:
                     found = False
-                    for elem in getattr(self, key):
-                        if issubclass(self._attrs[key][0], CaliopenObject):
+                    for elem in cur_val:
+                        if issubclass(current_attr[0], CaliopenObject):
                             if elem.__dict__ == old.__dict__:
                                 found = True
                                 break
@@ -335,16 +335,13 @@ class ObjectUser(ObjectStorable):
                                 found = True
                                 break
                     if not found:
-                        return main_errors.PatchConflict(message=
-                                                         "Patch current_state not consistent with db")
+                        return main_errors.PatchConflict(message=msg.format(3, key))
             elif isinstance(self._attrs[key], types.DictType):
-                if cmp(getattr(obj_patch_old, key), getattr(self, key)) != 0:
-                    return main_errors.PatchConflict(message=
-                                                     "Patch current_state not consistent with db")
+                if cmp(old_val, cur_val) != 0:
+                    return main_errors.PatchConflict(message=msg.format(4, key))
             else:
-                if getattr(obj_patch_old, key) != getattr(self, key):
-                    return main_errors.PatchConflict(message=
-                                                     "Patch current_state not consistent with db")
+                if old_val != cur_val:
+                    return main_errors.PatchConflict(message=msg.format(5, key))
 
             setattr(self, key, getattr(obj_patch_new, key))
 

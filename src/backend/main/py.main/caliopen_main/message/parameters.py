@@ -6,6 +6,8 @@ from schematics.types import (StringType, DateTimeType,
                               IntType, UUIDType, BooleanType)
 from schematics.types.compound import ListType, ModelType, DictType
 from schematics.transforms import blacklist
+from caliopen_main.user.parameters import ResourceTag
+
 
 RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc']
 MESSAGE_TYPES = ['email']
@@ -38,7 +40,6 @@ class Thread(Model):
     text = StringType(required=True)
     privacy_index = IntType(required=True, default=0)
     importance_level = IntType(required=True, default=0)
-    tags = ListType(StringType(), default=lambda: [])
     contacts = ListType(ModelType(Recipient), default=lambda: [])
     total_count = IntType(required=True, default=0)
     unread_count = IntType(required=True, default=0)
@@ -75,7 +76,7 @@ class NewMessage(Model):
     privacy_index = IntType(default=0)
     importance_level = IntType(default=0)
     date = DateTimeType(required=True, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
-    tags = ListType(StringType)
+    tags = ListType(ModelType(ResourceTag), default=lambda: [])
     # XXX define a part parameter
     parts = ListType(ModelType(Part), default=lambda: [])
     headers = DictType(ListType(StringType), default=lambda: {})

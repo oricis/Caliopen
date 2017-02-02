@@ -8,7 +8,10 @@ from datetime import datetime
 
 
 from caliopen_storage.core import BaseUserCore
+from caliopen_storage.core.mixin import MixinCoreNested
 from caliopen_storage.parameters import ReturnCoreObject
+
+from caliopen_main.user.store import ResourceTag
 
 from ..store import (Message as ModelMessage,
                      MessageRecipient, RawMessage)
@@ -18,39 +21,31 @@ from ..parameters import Message as ParamMessage
 log = logging.getLogger(__name__)
 
 
-class Message(BaseUserCore):
+class Message(BaseUserCore, MixinCoreNested):
 
     """Message core object."""
 
     _model_class = ModelMessage
     _pkey_name = 'message_id'
 
+    _nested = {
+        'emails': ResourceTag,
+        'recipients': MessageRecipient,
+    }
+
     @classmethod
     def create(cls, user, message, thread_id=None, lookup=None):
         """Create a new message for a given user."""
         message.validate()
 
-        def create_nested(values, kls):
-            """Create nested objects in store format."""
-            nested = []
-            for param in values:
-                param.validate()
-                attrs = param.to_primitive()
-                nested.append(kls(**attrs))
-            return nested
-
         parent_id = message.external_parent_id
-        message_id = uuid.uuid4()
         answer_to = lookup.message_id if lookup else None
-
-        recipients = create_nested(message.recipients, MessageRecipient)
 
         # TODO : index parts information
         extras = {'headers': message.headers,
                   'text': message.text,
                   'answer_to': answer_to}
-        attrs = {'message_id': message_id,
-                 'thread_id': thread_id,
+        attrs = {'thread_id': thread_id,
                  'type': message.type,
                  'state': message.state,
                  'from_': message.from_,
@@ -63,10 +58,10 @@ class Message(BaseUserCore):
                  'external_message_id': message.external_message_id,
                  'external_parent_id': parent_id,
                  'raw_msg_id': message.raw_msg_id,
-                 'tags': message.tags,
+                 'tags': cls.create_nested(message.tags, ResourceTag),
                  'flags': ['Recent'],
                  'lookup': lookup,
-                 'recipients': recipients,
+                 'recipients': cls.create_nested(message.recipients, MessageRecipient),
                  'text': message.text,
                  '_indexed_extra': extras}
         return super(Message, cls).create(user, **attrs)

@@ -15,7 +15,7 @@ from ..store import (Contact as ModelContact,
                      ResourceTag)
 
 from caliopen_storage.core import BaseCore, BaseUserCore
-from caliopen_storage.core.mixin import MixinCoreRelation
+from caliopen_storage.core.mixin import MixinCoreRelation, MixinCoreNested
 
 log = logging.getLogger(__name__)
 
@@ -71,51 +71,7 @@ class PublicKey(BaseContactSubCore):
     _pkey_name = 'name'
 
 
-class MixinContactNested(object):
-
-    """Mixin class for contact nested objects management."""
-
-    def _add_nested(self, column, nested):
-        """Add a nested object to a list."""
-        nested.validate()
-        kls = self._nested.get(column)
-        if not kls:
-            raise Exception('No nested class for {}'.format(column))
-        column = getattr(self.model, column)
-        # Ensure unicity
-        if hasattr(kls, 'uniq_name'):
-            for value in column:
-                uniq = getattr(value, kls.uniq_name)
-                if uniq == getattr(nested, kls.uniq_name):
-                    raise Exception('Unicity conflict for {}'.format(uniq))
-        if hasattr(nested, 'is_primary') and nested.is_primary:
-            for old_primary in column:
-                column.is_primary = False
-        value = nested.to_primitive()
-        pkey = getattr(kls, '_pkey')
-        value[pkey] = uuid.uuid4()
-        log.debug('Will insert nested {} : {}'.format(column, value))
-        column.append(kls(**value))
-        return value
-
-    def _delete_nested(self, column, nested_id):
-        """Delete a nested object with its id from a list."""
-        attr = getattr(self, column)
-        log.debug('Will delete {} with id {}'.format(column, nested_id))
-        found = -1
-        for pos in xrange(0, len(attr)):
-            nested = attr[pos]
-            current_id = str(getattr(nested, nested._pkey))
-            if current_id == nested_id:
-                found = pos
-        if found == -1:
-            log.warn('Nested object {}#{} not found for deletion'.
-                     format(column, nested_id))
-            return None
-        return attr.pop(found)
-
-
-class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
+class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
 
     _model_class = ModelContact
     _pkey_name = 'contact_id'
@@ -178,19 +134,6 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinContactNested):
                     lookup_value = attr[obj['value']]
                     if lookup_value:
                         self._create_lookup(obj['type'], lookup_value)
-
-    @classmethod
-    def create_nested(cls, values, kls):
-        """Create nested objects in store format."""
-        nested = []
-        for param in values:
-            param.validate()
-            attrs = param.to_primitive()
-            # XXX default value not correctly handled
-            pkey = getattr(kls, '_pkey')
-            attrs[pkey] = uuid.uuid4()
-            nested.append(kls(**attrs))
-        return nested
 
     @classmethod
     def create(cls, user, contact, **related):
