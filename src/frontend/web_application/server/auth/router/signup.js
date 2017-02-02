@@ -85,7 +85,7 @@ const createSignupRouting = (router) => {
     const values = {
       username: req.body.username,
       password: req.body.password,
-      tos: req.body.tos,
+      recovery_email: req.body.recovery_email,
     };
 
     if (!values.username) {
@@ -98,7 +98,7 @@ const createSignupRouting = (router) => {
       errors.password = [ERR_REQUIRED];
     }
 
-    if (!values.tos) {
+    if (!req.body.tos) {
       hasError = true;
       errors.tos = [ERR_REQUIRED];
     }
@@ -110,14 +110,9 @@ const createSignupRouting = (router) => {
     }
 
     const auth = new Auth(req.config);
-    const { username, password, recovery_email } = values;
 
     auth.signup({
-      body: {
-        username,
-        password,
-        recovery_email,
-      },
+      body: values,
       success: () => {
         authenticateAfterSignup(req, res, next);
       },
