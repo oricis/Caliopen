@@ -21,8 +21,8 @@ $l-header__margin: ($co-margin / 2) !default;
 
   &__brand {
     @include flex-grid-column;
+    height: $l-header__height;
     padding: 0 $co-margin;
-    line-height: $l-header__height;
   }
 
   &__menu-icon {
