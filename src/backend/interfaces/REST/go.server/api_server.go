@@ -88,7 +88,7 @@ func (server *REST_API) start() error {
 	addr := server.config.Host + ":" + server.config.Port
 	err := router.Run(addr)
 	if err != nil {
-		log.WithError(err).Info("unable to start gin server")
+		log.WithError(err).Warn("unable to start gin server")
 	}
 	return err
 }
