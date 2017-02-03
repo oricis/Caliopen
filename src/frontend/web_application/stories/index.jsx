@@ -4,6 +4,7 @@ import Badge from './components/Badge';
 import Brand from './components/Brand';
 import BlockList from './components/BlockList';
 import Button from './components/Button';
+import Dropdown from './components/Dropdown';
 import Subtitle from './components/Subtitle';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
 import ContactDetails from './components/ContactDetails';
@@ -21,7 +22,7 @@ import Spinner from './components/Spinner';
 import TextFieldGroup from './components/TextFieldGroup';
 import TextList from './components/TextList';
 import Title from './components/Title';
-import DevicesManagement from './layouts/DevicesManagement'
+import DevicesManagement from './layouts/DevicesManagement';
 import Welcome from './Welcome';
 import Changelog from './Changelog';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
@@ -53,6 +54,10 @@ storiesOf('Buttons & Links', module)
   ))
   .add('Links', () => (
     <Link />
+  ));
+storiesOf('Dropdown', module)
+  .add('Dropdown', () => (
+    <Dropdown />
   ));
 
 storiesOf('Icons & Avatars', module)
