@@ -36,6 +36,7 @@ class SignupForm extends Component {
         username: '',
         password: '',
         tos: false,
+        recovery_email: '',
       },
       passwordStrength: '',
     };
