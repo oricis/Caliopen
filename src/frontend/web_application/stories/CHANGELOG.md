@@ -5,6 +5,7 @@
 ### Added
 
   - Settings - DevicesManagement
+  - Dropdown
 
 ### Changed
 
