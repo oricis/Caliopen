@@ -4,6 +4,7 @@ const baseConfig = require('./config.js');
 
 const KOTATSU_PUBLIC_PATH = '/build/';
 const KOTATSU_ASSETS_PUBLIC_PATH = '';
+const isTest = process.env.NODE_ENV === 'test';
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -14,11 +15,19 @@ let config = Object.assign(baseConfig.getBase('browser'), {
     path.join(__dirname, '../src/index.jsx'),
   ],
   output: {
-    path: path.join(__dirname, '..', 'dist/server/public/'),
+    path: isTest ? path.join(__dirname, '..', 'dist/browser/') : path.join(__dirname, '..', 'dist/server/public/'),
     filename: 'bundle.js',
     publicPath: isDev ? KOTATSU_PUBLIC_PATH : '/assets/',
   },
 });
+
+if (isTest) {
+  config.entry.push(path.join(__dirname, '../template/index.test.html'));
+  config.module.loaders.push({
+    test: /\.html$/,
+    loader: 'file-loader?name=index.html&outputPath=/',
+  });
+}
 
 config = baseConfig.configureStylesheet(config, 'client.css', isDev ? KOTATSU_ASSETS_PUBLIC_PATH : '/assets/');
 config = baseConfig.configureAssets(config, isDev ? KOTATSU_ASSETS_PUBLIC_PATH : '/assets/');

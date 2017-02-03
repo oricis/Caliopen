@@ -1,28 +1,27 @@
 sudo: required
 services:
-  - docker
-
+- docker
 env:
   COMPOSE_VERSION: 1.9.0
-
 language: node_js
-
 node_js:
- - "6"
-
+- '6'
 git:
- depth: 10
-
+  depth: 10
 before_install:
- - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
- - chmod +x docker-compose
- - sudo mv docker-compose /usr/local/bin
-
+- curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin
 script:
-  - devtools/run-tests.sh
-
+- devtools/run-tests.sh
+addons:
+  sauce_connect:
+    username: AllTheDey
+  jwt:
+    secure: fX5zvs8u5Khn9xTdoNDF+qIyfjXdNZelIZvwNgUvfRiLOSMR/y8gEjX+eQqjNSqjJUfeQdTBK2D5truzpoKjI5TdZdaHGe6Xe3IZHX3BJ3Qsq4xMdHVpZZ9erNWxdRZUppbZNP7QxiwkOMIxQSic1Uom9MoWpunGM8nq3Z9fQsg8d67PdwoPbgPq0+0o0CgElPdm2oa3gQ091x9la+ila9c2fkw+8w4he+93gV9hx6jg/u6fIV1v9epnQHtFbg42QYjatoRn102+LiymCpqvRVqG/iZkHi32mlJOI2s1UWs5eUKlaf1ngWe5frXP7DUCFMPgTxXOdBjKB1Wm9JIIaxQ9DtN32s2Bq7bNAp+BNIPIEiaYUg3DBBDigOi6/D/TQCNlaYLF+pW2zz5q4sNOpHny0r8sZN0GyB7H1j3/TJ3zeB2xxxU3A7u9chKU4rDEZu4y5Tj/o8pyqx3DlRE7NJ2pvJewZuv+AH0pAWw9P4A3hVFsLXgx3g6irA88APhMYRD0O1VS0+8j3DWy7gOVBjh7wnsGDn4ZMoXhz3ZDB/dmRA1rQkRY7UwGiXSOtLOcVGiEL/fLeRHqtkxiKNWj0LZThVunOYYA8Bo7isYd2nneyrJyLnRLcF+yxQzIWB0drtsqRHSEimofQUExipUOB90gUnCY7erZzFxE5plBYh4=
 notifications:
-  irc: 
+  irc:
     channels:
-      - "chat.freenode.net#caliopdev"
+    - chat.freenode.net#caliopdev
     use_notice: true
