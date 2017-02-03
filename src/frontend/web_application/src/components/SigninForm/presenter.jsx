@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../form';
 import Button from '../Button';
+import Link from '../Link';
 import Title from '../Title';
 
 import './style.scss';
@@ -101,13 +102,18 @@ class SigninForm extends Component {
             </FormColumn>
           </FormRow>
           <FormRow>
-            <FormColumn className="m-im-form__action">
+            <FormColumn className="m-im-form__action" bottomSpace>
               <Button
                 type="submit"
                 onClick={this.handleSubmit}
                 expanded
                 plain
               >{__('signin.action.login')}</Button>
+            </FormColumn>
+          </FormRow>
+          <FormRow>
+            <FormColumn>
+              <Link to="/auth/signup">{__('signin.create_an_account')}</Link>
             </FormColumn>
           </FormRow>
         </FormGrid>

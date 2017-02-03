@@ -98,6 +98,7 @@
     "remote_identity.form.protocol.label": "Protocol :",
     "remote_identity.form_legend": "Connecter un serveur d'email",
     "signin.action.login": "Connexion",
+    "signin.create_an_account": "Créer un compte",
     "signin.feedback.invalid": "Les identifiants ne sont pas valides",
     "signin.feedback.required_password": "Un mot de passe est requis",
     "signin.feedback.required_username": "Un nom d'utilisateur est requis",
@@ -125,5 +126,6 @@
     "signup.form.tos.label": "J'accepte les conditions générales d'utilisation",
     "signup.form.username.label": "Nom d'utilisateur",
     "signup.form.username.placeholder": "nom d'utilisateur",
+    "signup.go_signin": "J'ai déjà un compte",
     "signup.title": "Créer votre compte"
 }
