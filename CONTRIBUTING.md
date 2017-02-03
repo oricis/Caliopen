@@ -30,3 +30,4 @@ _(People involved in the project)_
 * [@sapiens-sapide](https://github.com/sapiens-sapide)
 * [@yanndinendal](https://github.com/yanndinendal)
 * [@pascalduez](https://github.com/pascalduez)
+* [@myleneb](https://github.com/myleneb)
