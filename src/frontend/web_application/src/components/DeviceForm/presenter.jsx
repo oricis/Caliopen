@@ -9,10 +9,9 @@ import { FormGrid, FormRow, FormColumn, Fieldset, Legend, TextFieldGroup, Select
 import './style.scss';
 
 const DeviceForm = ({ device, __ }) => {
-  const thisDevice = device;
-  const thisDeviceIPs = Array.from(new Set(thisDevice.ips));
-  const lastSeenDate = new Date(thisDevice.last_seen).toLocaleDateString();
-  const insertDate = new Date(thisDevice.date_insert).toLocaleDateString();
+  const deviceIPs = Array.from(new Set(device.ips));
+  const lastSeenDate = new Date(device.last_seen).toLocaleDateString();
+  const insertDate = new Date(device.date_insert).toLocaleDateString();
   const deviceTypes = [
     { value: 'desktop', label: __('device.type.desktop') },
     { value: 'laptop', label: __('device.type.laptop') },
@@ -24,7 +23,7 @@ const DeviceForm = ({ device, __ }) => {
     <div className="m-device">
 
       <div className="m-device__section m-device__pi">
-        <PiBar level={thisDevice.pi ? thisDevice.pi : 0} />
+        <PiBar level={device.pi ? device.pi : 0} />
       </div>
 
       <FormGrid className="m-device__section m-device__form">
@@ -42,8 +41,8 @@ const DeviceForm = ({ device, __ }) => {
                 name="device-name"
                 id="device-name"
                 showLabelforSr
-                key={thisDevice.name}
-                defaultValue={thisDevice.name}
+                key={device.name}
+                defaultValue={device.name}
               />
             </FormColumn>
           </FormRow>
@@ -61,7 +60,7 @@ const DeviceForm = ({ device, __ }) => {
                 name="device-type"
                 id="device-type"
                 showLabelforSr
-                value={thisDevice.type}
+                value={device.type}
                 options={deviceTypes}
               />
             </FormColumn>
@@ -85,7 +84,7 @@ const DeviceForm = ({ device, __ }) => {
                 />
                 <Button plain className="m-device__ip-button"><Icon type="plus" /></Button>
               </div>
-              {thisDeviceIPs.map(ip =>
+              {deviceIPs.map(ip =>
                 <div className="m-device__ip" key={ip}>
                   <TextFieldGroup
                     label={__('device.form.ips.label')}
@@ -115,9 +114,9 @@ const DeviceForm = ({ device, __ }) => {
           <FormColumn size="medium" align="right">{('device.info.last_seen')}</FormColumn>
           <FormColumn size="medium" bottomSpace><Badge noRadius>{lastSeenDate}</Badge></FormColumn>
           <FormColumn size="medium" align="right">{__('device.info.os')}</FormColumn>
-          <FormColumn size="medium" bottomSpace><Badge noRadius>{thisDevice.os}</Badge></FormColumn>
+          <FormColumn size="medium" bottomSpace><Badge noRadius>{device.os}</Badge></FormColumn>
           <FormColumn size="medium" align="right">{__('device.info.os-version')}</FormColumn>
-          <FormColumn size="medium" bottomSpace><Badge noRadius>{thisDevice.os_version}</Badge></FormColumn>
+          <FormColumn size="medium" bottomSpace><Badge noRadius>{device.os_version}</Badge></FormColumn>
         </FormRow>
       </section>
 
