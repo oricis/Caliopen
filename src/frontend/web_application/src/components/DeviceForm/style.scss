@@ -2,21 +2,9 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .m-device {
-  background: $co-color__fg__back;
-
-  &__section {
-    padding: map-get($co-form__spacing, 'large');
-    border-bottom: 1px solid $co-color__bg__back;
-  }
 
   &__title {
-    margin-bottom: map-get($co-form__spacing, 'small');
-  }
 
-  &__intro {
-    display: block;
-    padding-bottom: map-get($co-form__spacing, 'small');
-    text-align: center;
   }
 
   fieldset {
@@ -24,8 +12,8 @@
   }
 
   &__pi {
-    width: 100%;
-    padding: map-get($co-form__spacing, 'small') map-get($co-form__spacing, 'large');;
+    padding-top: map-get($co-form__spacing, 'small');
+    padding-bottom: map-get($co-form__spacing, 'small');
   }
 
   &__ip {
@@ -39,7 +27,7 @@
     &-button {
       @include flex-grid-size(shrink);
       margin-left: 1px;
-      background: $co-color__fg__back--lower;
+      background: $co-color__fg__back--high;
       font-size: $co-font__size--small;
     }
   }
