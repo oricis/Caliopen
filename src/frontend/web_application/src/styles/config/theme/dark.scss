@@ -35,9 +35,9 @@ $co-color__importance:                #d2bc00;
 
 $privacy-palette: (
   super: $co-color__privacy,
-  good: $co-color__importance,
-  bad: #ffae00,
-  ugly: #f25c0c,
+  good: $co-color__privacy,
+  bad: $co-color__privacy,
+  ugly: $co-color__privacy,
 );
 
 // contrasted foreground
