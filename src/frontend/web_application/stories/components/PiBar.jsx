@@ -49,7 +49,7 @@ class Presenter extends Component {
           {`
 import PiBar from './src/components/PiBar';
 
-// level is a number between 0 & 100 usually
+// level: number between 0 and 100
 export default () => (<PiBar level={ level } />);
           `}
         </Code>
