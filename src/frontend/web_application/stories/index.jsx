@@ -59,6 +59,11 @@ storiesOf('Buttons & Links', module)
     <Link />
   ));
 
+storiesOf('Contact', module)
+  .add('ContactDetails', () => (
+    <ContactDetails />
+  ));
+
 storiesOf('Dropdown', module)
   .add('Dropdown', () => (
     <Dropdown />
