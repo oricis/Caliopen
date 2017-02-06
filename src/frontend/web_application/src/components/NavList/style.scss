@@ -19,7 +19,6 @@
     a,
     button {
       background: none;
-      color: $co-color__fg__text--lower;
       text-align: left;
 
       &:hover,
@@ -34,11 +33,12 @@
 
     &--active {
       background-color: $co-color__bg__back;
-      font-weight: 700;
+
 
       a,
       button {
         color: $co-color__fg__text--high;
+        font-weight: 700;
       }
     }
   }
@@ -47,7 +47,7 @@
     flex-direction: column;
 
     .m-nav-list__item {
-      margin-bottom: map-get($co-form__spacing, 'xsmall');
+      margin-bottom: map-get($co-form__spacing, 'small');
     }
   }
 }

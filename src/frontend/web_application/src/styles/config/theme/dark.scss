@@ -29,9 +29,10 @@ $co-color__alert:                     #9d3535;
 $co-color__alert--low:                darken($co-color__alert, 10%);
 $co-color__alert--high:               lighten($co-color__alert, 10%);
 
+$co-color__importance:                #d2bc00;
+
 // Privacy
 $co-color__privacy:                   #97b707;
-$co-color__importance:                #d2bc00;
 
 $privacy-palette: (
   super: $co-color__privacy,

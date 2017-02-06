@@ -95,7 +95,7 @@ const DeviceForm = ({ device, __ }) => {
                       className="m-device__ip-input"
                       showLabelforSr
                     />
-                    <Button plain className="m-device__ip-button"><Icon type="remove" /></Button>
+                    <Button plain alert className="m-device__ip-button"><Icon type="remove" /></Button>
                   </div>
                 )}
               </FormColumn>

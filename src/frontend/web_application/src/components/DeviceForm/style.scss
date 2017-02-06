@@ -3,10 +3,6 @@
 
 .m-device {
 
-  &__title {
-
-  }
-
   fieldset {
     margin-bottom: map-get($co-form__spacing, 'large');
   }
@@ -27,7 +23,7 @@
     &-button {
       @include flex-grid-size(shrink);
       margin-left: 1px;
-      background: $co-color__fg__back--high;
+      background: $co-color__fg__back--lower;
       font-size: $co-font__size--small;
     }
   }

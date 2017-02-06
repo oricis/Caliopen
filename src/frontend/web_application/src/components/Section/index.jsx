@@ -4,28 +4,24 @@ import Title from '../../components/Title';
 
 import './style.scss';
 
-const Section = ({ className, title, descr, children }) => {
+const Section = ({ className, title, descr, children }) => (
+  <section className={classnames('m-section', className)}>
+    {(title || descr) &&
+      <header className="m-section__header">
+        <Title className="m-section__title">{title}</Title>
+        <p className="m-section__descr">{descr}</p>
+      </header>
+    }
 
-
-  return (
-    <section className={classnames('m-section', className)}>
-      {(title || descr) &&
-        <header className="m-section__header">
-          <Title className="m-section__title">{title}</Title>
-          <p className="m-section__descr">{descr}</p>
-        </header>
-      }
-
-      {children}
-    </section>
-  );
-};
+    {children}
+  </section>
+);
 
 Section.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
   descr: PropTypes.string,
-  children: PropTypes.arrayOf(PropTypes.shape({})),
+  children: PropTypes.node,
 };
 
 export default Section;
