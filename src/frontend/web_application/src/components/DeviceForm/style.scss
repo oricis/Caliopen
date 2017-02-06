@@ -46,4 +46,12 @@
   &__revoke-button {
     margin: auto;
   }
+
+  &__verify {
+    text-align: center;
+
+    &-button {
+      margin-bottom: map-get($co-form__spacing, 'small');
+    }
+  }
 }

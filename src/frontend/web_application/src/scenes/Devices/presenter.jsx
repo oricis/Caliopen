@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import NavList, { ItemContent } from '../../components/NavList';
-import TextBlock from '../../components/TextBlock';
 import DeviceForm from '../../components/DeviceForm/presenter';
 
 import './style.scss';
