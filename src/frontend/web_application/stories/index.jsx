@@ -2,10 +2,11 @@ import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook'; // eslint-disable-line
 import Badge from './components/Badge';
 import Brand from './components/Brand';
+import PiBar from './components/PiBar';
 import BlockList from './components/BlockList';
 import Button from './components/Button';
+import DefList from './components/DefList';
 import Dropdown from './components/Dropdown';
-import Subtitle from './components/Subtitle';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
 import ContactDetails from './components/ContactDetails';
 import Icon from './components/Icon';
@@ -14,8 +15,10 @@ import SigninPage from './layouts/SigninPage';
 import SignupPage from './layouts/SignupPage';
 import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
+import Section from './components/Section';
 import RadioFieldGroup from './components/RadioFieldGroup';
 import SelectFieldGroup from './components/SelectFieldGroup';
+import Subtitle from './components/Subtitle';
 import CheckboxFieldGroup from './components/CheckboxFieldGroup';
 import PasswordStrength from './components/PasswordStrength';
 import Spinner from './components/Spinner';
@@ -46,6 +49,9 @@ storiesOf('Lists', module)
   ))
   .add('TextList & ItemContent', () => (
     <TextList />
+  ))
+  .add('DefList', () => (
+    <DefList />
   ));
 
 storiesOf('Buttons & Links', module)
@@ -72,6 +78,16 @@ storiesOf('Icons & Avatars', module)
   ))
   .add('Spinner', () => (
     <Spinner />
+  ));
+
+storiesOf('Pi', module)
+  .add('PiBar', () => (
+    <PiBar />
+  ));
+
+storiesOf('Layout', module)
+  .add('Section', () => (
+    <Section />
   ));
 
 storiesOf('Titles', module)
@@ -119,6 +135,6 @@ storiesOf('Auth', module)
   ));
 
 storiesOf('Settings', module)
-  .add('Devices', () => (
-    <Devices />
-  ));
+    .add('Devices', () => (
+      <Devices />
+    ));
