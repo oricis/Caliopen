@@ -30,15 +30,15 @@ const DeviceForm = ({ device, __ }) => {
           descr={__('device.verify.descr')}
         >
           <DefList>{[
-            { title: __('device.info.date_insert'), descriptions: [<TextBlock className="m-device__infos">{insertDate}</TextBlock>] },
-            { title: __('device.info.last_seen'), descriptions: [<TextBlock className="m-device__infos">{lastSeenDate}</TextBlock>] },
-            { title: __('device.info.os'), descriptions: [<TextBlock className="m-device__infos">{device.os}</TextBlock>] },
-            { title: __('device.info.os-version'), descriptions: [<TextBlock className="m-device__infos">{device.os_version}</TextBlock>] },
+            { title: __('device.info.date_insert'), descriptions: [<TextBlock className="m-device__info">{insertDate}</TextBlock>] },
+            { title: __('device.info.last_seen'), descriptions: [<TextBlock className="m-device__info">{lastSeenDate}</TextBlock>] },
+            { title: __('device.info.os'), descriptions: [<TextBlock className="m-device__info">{device.os}</TextBlock>] },
+            { title: __('device.info.os-version'), descriptions: [<TextBlock className="m-device__info">{device.os_version}</TextBlock>] },
           ]}
           </DefList>
           <form className="m-device__verify">
             <Button plain className="m-device__verify-button">{__('device.action.verify')}</Button><br />
-            {__('device.delete.infotext')} <Link>{__('device.action.delete')}</Link>
+            {__('device.verify.not-you')} <Link>{__('device.action.delete')}</Link>
           </form>
         </Section>
       </div>
@@ -133,10 +133,10 @@ const DeviceForm = ({ device, __ }) => {
 
         <Section title={__('device.info.title')}>
           <DefList>{[
-            { title: __('device.info.date_insert'), descriptions: [<TextBlock className="m-device__infos">{insertDate}</TextBlock>] },
-            { title: __('device.info.last_seen'), descriptions: [<TextBlock className="m-device__infos">{lastSeenDate}</TextBlock>] },
-            { title: __('device.info.os'), descriptions: [<TextBlock className="m-device__infos">{device.os}</TextBlock>] },
-            { title: __('device.info.os-version'), descriptions: [<TextBlock className="m-device__infos">{device.os_version}</TextBlock>] },
+            { title: __('device.info.date_insert'), descriptions: [<TextBlock className="m-device__info">{insertDate}</TextBlock>] },
+            { title: __('device.info.last_seen'), descriptions: [<TextBlock className="m-device__info">{lastSeenDate}</TextBlock>] },
+            { title: __('device.info.os'), descriptions: [<TextBlock className="m-device__info">{device.os}</TextBlock>] },
+            { title: __('device.info.os-version'), descriptions: [<TextBlock className="m-device__info">{device.os_version}</TextBlock>] },
           ]}
           </DefList>
         </Section>
@@ -145,11 +145,9 @@ const DeviceForm = ({ device, __ }) => {
           title={__('device.revoke.title')}
           descr={__('device.revoke.descr')}
         >
-          <FormGrid>
-            <FormRow>
-              <Button plain alert className="m-device__revoke-button">{__('device.action.revoke')}</Button>
-            </FormRow>
-          </FormGrid>
+          <form className="m-device__revoke">
+            <Button plain alert className="m-device__revoke-button">{__('device.action.revoke')}</Button>
+          </form>
         </Section>
       </div>
   );

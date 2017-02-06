@@ -36,18 +36,15 @@
     margin-left: 0;
   }
 
-  &__infos {
+  &__info {
     display: block;
     padding: map-get($co-form__spacing, 'xsmall') map-get($co-form__spacing, 'small');
     border: 1px solid $co-color__fg__border--lower;
     color: $co-color__fg__text;
   }
 
-  &__revoke-button {
-    margin: auto;
-  }
-
-  &__verify {
+  &__verify,
+  &__revoke {
     text-align: center;
 
     &-button {
