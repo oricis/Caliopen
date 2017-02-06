@@ -12,6 +12,7 @@
   }
   &--plain { @include o-clickable--plain; }
   &--hollow { @include o-clickable--hollow; }
+  &--inline { @include o-clickable--inline; }
 
   &--active {
     @include o-clickable--active-text;

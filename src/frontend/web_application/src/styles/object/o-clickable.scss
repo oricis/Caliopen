@@ -1,9 +1,9 @@
 @mixin o-clickable {
-  color: $co-color__fg__text--low;
+  transition: $co-animation__clickable-transition;
   border-color: $co-color__primary;
+  color: $co-color__fg__text--low;
   text-decoration: none;
   cursor: pointer;
-  transition: $co-animation__clickable-transition;
 
   &:hover {
     color: $co-color__fg__text--high;
@@ -67,6 +67,12 @@
 
 @mixin o-clickable--plain {
   background-color: $co-color__primary;
+}
+
+@mixin o-clickable--inline {
+  margin-left: 1px;
+  background: $co-color__fg__back--lower;
+  font-size: $co-font__size--small;
 }
 
 @mixin o-clickable--active-text {

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
+import TextBlock from '../../components/TextBlock';
 import DefList from '../../components/DefList';
 import Section from '../../components/Section';
 import PiBar from '../../components/PiBar/presenter';
@@ -31,7 +32,7 @@ const DeviceForm = ({ device, __ }) => {
         descr={__('device.manage.descr')}
       >
         <FormGrid className="m-device__form">
-          <Fieldset>
+          <Fieldset className="m-device__fieldset">
             <Legend>{__('device.manage_form.name.label')}</Legend>
             <FormRow reverse>
               <FormColumn bottomSpace size="medium" className="m-device__infotext">
@@ -49,7 +50,7 @@ const DeviceForm = ({ device, __ }) => {
               </FormColumn>
             </FormRow>
           </Fieldset>
-          <Fieldset>
+          <Fieldset className="m-device__fieldset">
             <Legend>{__('device.manage_form.type.label')}</Legend>
             <FormRow reverse>
               <FormColumn bottomSpace size="medium" className="m-device__infotext">
@@ -68,7 +69,7 @@ const DeviceForm = ({ device, __ }) => {
               </FormColumn>
             </FormRow>
           </Fieldset>
-          <Fieldset>
+          <Fieldset className="m-device__fieldset">
             <Legend>{__('device.manage_form.ips.label')}</Legend>
             <FormRow reverse>
               <FormColumn bottomSpace className="m-device__infotext" size="medium">
@@ -77,14 +78,14 @@ const DeviceForm = ({ device, __ }) => {
               <FormColumn bottomSpace size="medium">
                 <div className="m-device__ip">
                   <TextFieldGroup
-                    label={__('device.action.add-ip')}
-                    placeholder={__('device.action.add_ip')}
+                    label={__('device.manage_form.add-ip.label')}
+                    placeholder={__('device.manage_form.add-ip.label')}
                     name="device-ips"
                     defaultValue=""
                     className="m-device__ip-input"
                     showLabelforSr
                   />
-                  <Button plain className="m-device__ip-button"><Icon type="plus" /></Button>
+                  <Button plain inline className="m-device__ip-button"><Icon type="plus" /></Button>
                 </div>
                 {deviceIPs.map(ip =>
                   <div className="m-device__ip" key={ip}>
@@ -95,14 +96,14 @@ const DeviceForm = ({ device, __ }) => {
                       className="m-device__ip-input"
                       showLabelforSr
                     />
-                    <Button plain alert className="m-device__ip-button"><Icon type="remove" /></Button>
+                    <Button plain inline className="m-device__ip-button"><Icon type="remove" /></Button>
                   </div>
                 )}
               </FormColumn>
             </FormRow>
           </Fieldset>
           <FormRow>
-            <FormColumn align="center" size="medium">
+            <FormColumn size="medium">
               <Button plain>{__('device.action.save_changes')}</Button>
             </FormColumn>
           </FormRow>
@@ -111,10 +112,10 @@ const DeviceForm = ({ device, __ }) => {
 
       <Section title={__('device.info.title')}>
         <DefList>{[
-          { title: __('device.info.date_insert'), descriptions: [insertDate] },
-          { title: __('device.info.last_seen'), descriptions: [lastSeenDate] },
-          { title: __('device.info.os'), descriptions: [device.os] },
-          { title: __('device.info.os-version'), descriptions: [device.os_version] },
+          { title: __('device.info.date_insert'), descriptions: [<TextBlock className="m-device__infos">{insertDate}</TextBlock>] },
+          { title: __('device.info.last_seen'), descriptions: [<TextBlock className="m-device__infos">{lastSeenDate}</TextBlock>] },
+          { title: __('device.info.os'), descriptions: [<TextBlock className="m-device__infos">{device.os}</TextBlock>] },
+          { title: __('device.info.os-version'), descriptions: [<TextBlock className="m-device__infos">{device.os_version}</TextBlock>] },
         ]}
         </DefList>
       </Section>
@@ -125,7 +126,7 @@ const DeviceForm = ({ device, __ }) => {
       >
         <FormGrid>
           <FormRow>
-            <Button plain alert>{__('device.action.revoke')}</Button>
+            <Button plain alert className="m-device__revoke-button">{__('device.action.revoke')}</Button>
           </FormRow>
         </FormGrid>
       </Section>
