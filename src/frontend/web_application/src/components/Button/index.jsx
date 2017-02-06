@@ -17,7 +17,8 @@ RawButton.propTypes = {
 };
 
 const Button = ({
-  children, className, expanded, plain, hollow, inline, active = false, alert, success, secondary, ...props
+  children, className, expanded, plain, hollow, inline,
+  active = false, alert, success, secondary, ...props
 }) => {
   const buttonProps = {
     ...props,
