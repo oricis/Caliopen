@@ -1,0 +1,49 @@
+@import '../../styles/common';
+@import '../../styles/config/config';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+// Graph presets
+$bar-height: 3px;
+$bar-margin: 7px;
+
+.m-pi-bar {
+
+  &__graph {
+    @include flex-grid-row;
+  }
+
+  &__icon {
+    @include flex-grid-size(shrink);
+    margin-right: map-get($co-form__spacing, 'medium');
+  }
+
+  &__level {
+    @include flex-grid-size(shrink);
+    margin-left: map-get($co-form__spacing, 'medium');
+    font-size: $co-font__size--small;
+    font-weight: 700;
+  }
+
+  &__guide {
+    @include flex-grid-size;
+    height: $bar-height;
+    margin-top: $bar-margin;
+    background-color: $co-color__fg__back--lower;
+  }
+
+  &__bar {
+    height: $bar-height;
+    background-color: $co-color__fg__text--lower;
+  }
+
+
+  @each $level, $color in $privacy-palette {
+    &--#{$level} {
+      color: $color;
+
+      .m-pi-bar__bar {
+        background-color: $color;
+      }
+    }
+  }
+}

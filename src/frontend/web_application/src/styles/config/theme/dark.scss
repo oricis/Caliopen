@@ -30,7 +30,16 @@ $co-color__alert--low:                darken($co-color__alert, 10%);
 $co-color__alert--high:               lighten($co-color__alert, 10%);
 
 $co-color__importance:                #d2bc00;
+
+// Privacy
 $co-color__privacy:                   #97b707;
+
+$privacy-palette: (
+  super: $co-color__privacy,
+  good: $co-color__privacy,
+  bad: $co-color__privacy,
+  ugly: $co-color__privacy,
+);
 
 // contrasted foreground
 $co-color__contrast__back:            #fff;
@@ -65,7 +74,7 @@ $co-color__fg__border--high:          lighten($co-color__fg__border, 10%);
 $co-color__fg__border--higher:        lighten($co-color__fg__border, 20%);
 
 $co-color__fg__text:                  #e8e8e8;
-$co-color__fg__text--lower:           #909090;
+$co-color__fg__text--lower:           darken($co-color__fg__text, 35%);
 $co-color__fg__text--low:             darken($co-color__fg__text, 15%);
 $co-color__fg__text--high:            lighten($co-color__fg__text, 10%);
 $co-color__fg__text--higher:          lighten($co-color__fg__text, 20%);
