@@ -54,6 +54,9 @@ class Presenter extends Component {
               <Link to="/account" expanded button>{__('header.menu.account')}</Link>
             </VerticalMenuItem>
             <VerticalMenuItem>
+              <Link to="/devices" expanded button>{__('header.menu.settings')}</Link>
+            </VerticalMenuItem>
+            <VerticalMenuItem>
               {user && (
                 <Link href="/auth/signout" button expanded>{__('header.menu.signout')}</Link>
               )}

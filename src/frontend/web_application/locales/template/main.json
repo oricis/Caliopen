@@ -84,6 +84,7 @@
     "header.menu.contacts": "header.menu.contacts",
     "header.menu.discussions": "header.menu.discussions",
     "header.menu.search": "header.menu.search",
+    "header.menu.settings": "header.menu.settings",
     "header.menu.signin": "header.menu.signin",
     "header.menu.signout": "header.menu.signout",
     "header.menu.toggle-navigation": "header.menu.toggle-navigation",
