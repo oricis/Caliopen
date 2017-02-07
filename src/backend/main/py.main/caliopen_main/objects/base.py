@@ -250,6 +250,9 @@ class ObjectStorable(ObjectJsonDictifiable):
 
         if isinstance(self._db, self._model_class):
             self.unmarshall_dict(dict(self._db))
+        else:
+            log.warn('Invalid model class, expect {}, have {}'.
+                     format(self._db.__class__, self._model_class.__class__))
 
 
 class ObjectUser(ObjectStorable):
@@ -258,6 +261,18 @@ class ObjectUser(ObjectStorable):
     def __init__(self, user_id=None, **params):
         self.user_id = user_id
         super(ObjectUser, self).__init__(**params)
+
+    @classmethod
+    def list_db(cls, user_id):
+        """List all objects that belong to an user."""
+        models = cls._model_class.filter(user_id=user_id)
+        objects = []
+        for model in models:
+            obj = cls(user_id)
+            obj._db = model
+            obj.unmarshall_db()
+            objects.append(obj)
+        return objects
 
     def get_db(self, **options):
         """Get an object belonging to an user and put it in self._db attrs"""

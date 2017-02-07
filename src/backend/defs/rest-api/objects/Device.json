@@ -18,6 +18,9 @@
     "last_seen": {
       "type": "string",
       "format": "date-time"
+    },
+    "user_id": {
+      "type": "string"
     }
   },
   "required": [

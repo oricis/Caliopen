@@ -8,8 +8,9 @@ import uuid
 
 from datetime import datetime
 
-from cassandra.cqlengine import columns
 from caliopen_storage.store.model import BaseModel
+
+from cassandra.cqlengine import columns
 
 log = logging.getLogger(__name__)
 
@@ -24,9 +25,9 @@ class Device(BaseModel):
     signature_key = columns.Text()          # secret key for device validation
     date_insert = columns.DateTime(required=True, default=datetime.utcnow)
     type = columns.Text(required=True)      # laptop, desktop, smartphone, etc
-    status = columns.Text()
+    status = columns.Text(default='unknown')
     fingerprint = columns.Text()
-    last_seen = columns.DateTime()
+    last_seen = columns.DateTime(default=datetime.utcnow)
     privacy_features = columns.Map(columns.Text, columns.Text)
 
 

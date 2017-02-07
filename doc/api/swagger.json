@@ -5386,6 +5386,9 @@
                         "type": "string",
                         "format": "date-time"
                       },
+                      "user_id": {
+                        "type": "string"
+                      },
                       "name": {
                         "type": "string"
                       },
@@ -5529,6 +5532,9 @@
                 "last_seen": {
                   "type": "string",
                   "format": "date-time"
+                },
+                "user_id": {
+                  "type": "string"
                 },
                 "name": {
                   "type": "string"
@@ -5675,6 +5681,9 @@
                       "type": "string",
                       "format": "date-time"
                     },
+                    "user_id": {
+                      "type": "string"
+                    },
                     "name": {
                       "type": "string"
                     },
@@ -5710,6 +5719,9 @@
                 "last_seen": {
                   "type": "string",
                   "format": "date-time"
+                },
+                "user_id": {
+                  "type": "string"
                 },
                 "name": {
                   "type": "string"
