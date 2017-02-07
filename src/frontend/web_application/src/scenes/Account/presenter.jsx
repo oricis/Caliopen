@@ -5,7 +5,7 @@ import Icon from '../../components/Icon';
 import ContactDetails from '../../components/ContactDetails';
 import ContactProfile from '../../components/ContactProfile';
 import TextBlock from '../../components/TextBlock';
-import { Switch } from '../../components/form';
+import { CheckboxFieldGroup } from '../../components/form';
 import AccountOpenPGPKeys from './components/AccountOpenPGPKeys';
 import './style.scss';
 
@@ -92,18 +92,22 @@ class Account extends Component {
           this.state.user && (
           <div className="s-account">
             <div className="s-account__col-datas-irl">
-              <ContactProfile
-                className="s-account__contact-profile"
-                contact={this.state.user.contact}
-                onChange={onContactProfileChange}
-              />
+              {this.state.user.contact && (
+                <ContactProfile
+                  className="s-account__contact-profile"
+                  contact={this.state.user.contact}
+                  onChange={onContactProfileChange}
+                />
+              )}
 
               <TextBlock>
                 <Icon type="envelope" /> {this.state.user.name}
                 <span className="pull-right">
                   {__('account.primary_email_label')}
                   {' '}
-                  <Switch
+                  <CheckboxFieldGroup
+                    displaySwitch
+                    showTextLabel={false}
                     label={__('account.action.is_primary')}
                     value={this.state.mainAddress}
                     onChange={setMainAddress}
