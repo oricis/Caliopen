@@ -15,6 +15,7 @@ class Buttons extends Component {
         alert: false,
         success: false,
         secondary: false,
+        inline: false,
       },
     };
     this.handlePropsChanges = this.handlePropsChanges.bind(this);
@@ -45,6 +46,7 @@ class Buttons extends Component {
           <li><label><input type="checkbox" name="alert" checked={this.state.props.alert} onChange={this.handlePropsChanges} /> Alert</label></li>
           <li><label><input type="checkbox" name="success" checked={this.state.props.success} onChange={this.handlePropsChanges} /> Success</label></li>
           <li><label><input type="checkbox" name="secondary" checked={this.state.props.secondary} onChange={this.handlePropsChanges} /> Secondary</label></li>
+          <li><label><input type="checkbox" name="inline" checked={this.state.props.inline} onChange={this.handlePropsChanges} /> Inline</label></li>
         </ul>
         <Code>
           {`
