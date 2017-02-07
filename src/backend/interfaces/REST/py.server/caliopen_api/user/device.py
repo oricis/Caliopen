@@ -49,3 +49,12 @@ class DeviceAPI(Api):
         devices = [x.marshall_dict() for x in objects]
         log.debug('Devices are : {}'.format(devices))
         return {'devices': devices, 'count': len(devices)}
+
+    @view(renderer='json', permission='authenticated')
+    def get(self):
+        device_id = self.request.swagger_data["device_id"]
+        device = ObjectDevice(self.user.user_id, device_id=device_id)
+        device.get_db()
+        device.unmarshall_db()
+        log.info('Found device {}'.format(device))
+        return device.marshall_json_dict()

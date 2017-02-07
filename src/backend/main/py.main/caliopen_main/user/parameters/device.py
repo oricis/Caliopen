@@ -4,7 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from schematics.models import Model
 from schematics.transforms import blacklist
-from schematics.types import StringType, UUIDType
+from schematics.types import DateTimeType, StringType, UUIDType
 from schematics.types.compound import ListType, ModelType
 
 
@@ -44,8 +44,14 @@ class NewDevice(Model):
 
 class Device(NewDevice):
 
-    device_id = StringType(required=True)
+    device_id = UUIDType(required=True)
     user_id = UUIDType(required=True)
+    date_insert = DateTimeType(required=True,
+                               serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               tzd=u'utc')
+    last_seen = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                             tzd=u'utc')
+    status = StringType(required=True)
 
     class Options:
         serialize_when_none = False
