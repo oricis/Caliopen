@@ -18,6 +18,7 @@ function generateStateFromProps(props) {
 class DeviceForm extends Component {
   static propTypes = {
     device: PropTypes.shape({}),
+    onChange: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
   };
 
@@ -30,6 +31,7 @@ class DeviceForm extends Component {
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleClickNewIP = this.handleClickNewIP.bind(this);
     this.handleNewIPChange = this.handleNewIPChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -67,6 +69,11 @@ class DeviceForm extends Component {
     }
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+    this.props.onChange({ device: this.state.device });
+  }
+
   render() {
     const { __ } = this.props;
     const deviceTypes = [
@@ -77,7 +84,7 @@ class DeviceForm extends Component {
     ];
 
     return (
-      <FormGrid className="m-device-form">
+      <FormGrid className="m-device-form" onSubmit={this.handleSubmit}>
         <Fieldset className="m-device-form__fieldset">
           <Legend>{__('device.manage_form.name.label')}</Legend>
           <FormRow reverse>
@@ -153,7 +160,7 @@ class DeviceForm extends Component {
         </Fieldset>
         <FormRow>
           <FormColumn size="medium">
-            <Button plain>{__('device.action.save_changes')}</Button>
+            <Button plain type="submit">{__('device.action.save_changes')}</Button>
           </FormColumn>
         </FormRow>
       </FormGrid>

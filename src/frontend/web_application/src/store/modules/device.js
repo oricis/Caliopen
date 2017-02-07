@@ -48,8 +48,8 @@ export function verifyDevice({ device }) {
   console.log('verif', device);
 }
 
-export function updateDevice() {
-
+export function updateDevice({ device }) {
+  console.log('upd', device);
 }
 
 const initialState = {
