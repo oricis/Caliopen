@@ -2,12 +2,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Presenter from './presenter';
 
-describe('component Device VerifyDevice', () => {
+describe('component Device RevokeDevice', () => {
   it('render', () => {
     const props = {
       device: {},
-      onDelete: jest.fn(),
-      onVerify: jest.fn(),
+      onRevokeDevice: jest.fn(),
       __: str => str,
     };
 
@@ -15,6 +14,6 @@ describe('component Device VerifyDevice', () => {
       <Presenter {...props} />
     );
 
-    expect(comp.find('Button').prop('type')).toEqual('submit');
+    expect(comp.find('Button').length).toEqual(1);
   });
 });
