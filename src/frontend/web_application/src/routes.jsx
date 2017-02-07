@@ -7,7 +7,7 @@ import ContactList from './scenes/ContactList';
 import Account from './scenes/Account';
 import Signin from './scenes/Signin';
 import Signup from './scenes/Signup';
-import Devices from './scenes/Devices';
+import Devices, { Device } from './scenes/Devices';
 import enableI18n from './services/i18n';
 
 const getRoutes = () => [(
@@ -15,7 +15,9 @@ const getRoutes = () => [(
     <IndexRoute component={DiscussionList} />
     <Route path="contacts" component={ContactList} />
     <Route path="account" component={Account} />
-    <Route path="devices" component={Devices} />
+    <Route path="devices" component={Devices}>
+      <Route path=":deviceId" component={Device} />
+    </Route>
   </Route>
 ), (
   <Route name="auth" path="/auth/" component={enableI18n(AuthPage)} >
