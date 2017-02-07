@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import zxcvbn from 'zxcvbn';
 import Button from '../Button';
+import Link from '../Link';
 import Title from '../Title';
 import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../form';
 import './style.scss';
@@ -183,13 +184,18 @@ class SignupForm extends Component {
             </FormColumn>
           </FormRow>
           <FormRow>
-            <FormColumn className="m-im-form__action">
+            <FormColumn className="m-im-form__action" bottomSpace>
               <Button
                 type="submit"
                 onClick={this.handleSubmit}
                 expanded
                 plain
               >{__('signup.action.create')}</Button>
+            </FormColumn>
+          </FormRow>
+          <FormRow>
+            <FormColumn>
+              <Link to="/auth/signin">{__('signup.go_signin')}</Link>
             </FormColumn>
           </FormRow>
         </FormGrid>

@@ -98,6 +98,7 @@
     "remote_identity.form.protocol.label": "Protocol:",
     "remote_identity.form_legend": "Connect an email server",
     "signin.action.login": "Login",
+    "signin.create_an_account": "Create an account",
     "signin.feedback.invalid": "Credentials are invalid",
     "signin.feedback.required_password": "A password is required",
     "signin.feedback.required_username": "A username is required",
@@ -125,5 +126,6 @@
     "signup.form.tos.label": "I agree Terms and conditions",
     "signup.form.username.label": "Username:",
     "signup.form.username.placeholder": "username",
+    "signup.go_signin": "I already have an account",
     "signup.title": "Create your account"
 }

@@ -124,6 +124,7 @@
     "remote_identity.form.protocol.label": "remote_identity.form.protocol.label",
     "remote_identity.form_legend": "remote_identity.form_legend",
     "signin.action.login": "signin.action.login",
+    "signin.create_an_account": "signin.create_an_account",
     "signin.feedback.invalid": "signin.feedback.invalid",
     "signin.feedback.required_password": "signin.feedback.required_password",
     "signin.feedback.required_username": "signin.feedback.required_username",
@@ -151,5 +152,6 @@
     "signup.form.tos.label": "signup.form.tos.label",
     "signup.form.username.label": "signup.form.username.label",
     "signup.form.username.placeholder": "signup.form.username.placeholder",
+    "signup.go_signin": "signup.go_signin",
     "signup.title": "signup.title"
 }
