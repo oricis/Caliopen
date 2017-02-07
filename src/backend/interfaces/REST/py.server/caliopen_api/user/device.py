@@ -3,16 +3,14 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
-from cornice.resource import resource, view
-from pyramid.httpexceptions import (HTTPConflict, HTTPOk, HTTPNotFound,
-                                    HTTPInternalServerError)
 
-from ..base.context import DefaultContext
-
-from caliopen_storage.config import Configuration
-from caliopen_storage.exception import NotFound
+from caliopen_main.objects.device import Device as ObjectDevice
 from caliopen_main.user.core import Device as CoreDevice
+
+from cornice.resource import resource, view
+
 from ..base import Api
+from ..base.context import DefaultContext
 
 
 log = logging.getLogger(__name__)
@@ -36,8 +34,18 @@ class DeviceAPI(Api):
         """Create a new device for an user."""
         params = self.request.swagger_data['device']
 
-        device = CoreDevice.create(self.user, name=params['name'], type=params['type'])
-        device_url = self.request.route_path('Device', device_id=device.device_id)
+        device = CoreDevice.create(self.user, name=params['name'],
+                                   type=params['type'])
+        device_url = self.request.route_path('Device',
+                                             device_id=device.device_id)
         self.request.response.location = device_url.encode('utf-8')
         # XXX return a Location to get device not send it direct
         return {'location': device_url}
+
+    @view(renderer='json', permission='authenticated')
+    def collection_get(self):
+        """Return list of user devices."""
+        objects = ObjectDevice.list_db(self.user.user_id)
+        devices = [x.marshall_dict() for x in objects]
+        log.debug('Devices are : {}'.format(devices))
+        return {'devices': devices, 'count': len(devices)}
