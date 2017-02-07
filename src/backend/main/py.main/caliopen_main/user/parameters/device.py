@@ -3,8 +3,8 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from schematics.models import Model
-from schematics.types import (StringType,
-                              UUIDType, DateTimeType, BooleanType)
+from schematics.transforms import blacklist
+from schematics.types import StringType, UUIDType
 from schematics.types.compound import ListType, ModelType
 
 
@@ -40,3 +40,13 @@ class NewDevice(Model):
 
     locations = ListType(ModelType(DeviceLocation), default=lambda: [])
     informations = ModelType(DeviceInformation)
+
+
+class Device(NewDevice):
+
+    device_id = StringType(required=True)
+    user_id = UUIDType(required=True)
+
+    class Options:
+        serialize_when_none = False
+        roles = {'default': blacklist('user_id')}
