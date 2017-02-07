@@ -25,7 +25,7 @@ class Devices extends Component {
     return (
       <ItemContent key={device.device_id} active={device.device_id === deviceId}>
         <Link
-          to={`/devices/${device.device_id}`}
+          to={`/settings/devices/${device.device_id}`}
           className={classnames('s-devices__nav-item', { 's-devices__nav-item--verify': !isVerified })}
           active={device.device_id === deviceId}
           expanded

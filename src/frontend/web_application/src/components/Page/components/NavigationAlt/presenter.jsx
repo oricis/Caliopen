@@ -37,12 +37,12 @@ const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
     <tab-list-alt />
     <VerticalMenu className="l-nav-alt__menu">
       <VerticalMenuItem>
-        <Link to="/account" button expanded>
+        <Link to="/settings/account" button expanded>
           {__('header.menu.account')}
         </Link>
       </VerticalMenuItem>
       <VerticalMenuItem>
-        <Link to="/devices" button expanded>
+        <Link to="/settings/devices" button expanded>
           {__('header.menu.settings')}
         </Link>
       </VerticalMenuItem>

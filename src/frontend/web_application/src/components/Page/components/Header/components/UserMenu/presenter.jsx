@@ -51,10 +51,10 @@ class Presenter extends Component {
             </VerticalMenuTextItem>
             <Separator />
             <VerticalMenuItem>
-              <Link to="/account" expanded button>{__('header.menu.account')}</Link>
+              <Link to="/settings/account" expanded button>{__('header.menu.account')}</Link>
             </VerticalMenuItem>
             <VerticalMenuItem>
-              <Link to="/devices" expanded button>{__('header.menu.settings')}</Link>
+              <Link to="/settings/devices" expanded button>{__('header.menu.settings')}</Link>
             </VerticalMenuItem>
             <VerticalMenuItem>
               {user && (
