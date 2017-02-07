@@ -1,8 +1,10 @@
 export const REQUEST_DEVICES = 'co/device/REQUEST_DEVICES';
-export const REQUEST_DEVICE = 'co/device/REQUEST_DEVICE';
 export const REQUEST_DEVICES_SUCCESS = 'co/device/REQUEST_DEVICES_SUCCESS';
 export const REQUEST_DEVICES_FAIL = 'co/device/REQUEST_DEVICES_FAIL';
 export const INVALIDATE_DEVICES = 'co/device/INVALIDATE_DEVICES';
+export const REQUEST_DEVICE = 'co/device/REQUEST_DEVICE';
+export const UPDATE_DEVICE = 'co/device/UPDATE_DEVICE';
+export const REMOVE_DEVICE = 'co/device/REMOVE_DEVICE';
 
 export function requestDevices() {
   return {
@@ -33,23 +35,30 @@ export function invalidate() {
   };
 }
 
-export function addDevice() {
-  // return (dispatch) => {
-  //   dispatch(this.ContactsActions.updateContact(contact));
-  //   dispatch(invalidate());
-  // };
-}
-
 export function removeDevice({ device }) {
-  console.log('rm', device);
+  return {
+    type: REMOVE_DEVICE,
+    payload: {
+      request: {
+        method: 'delete',
+        url: `/v1/devices/${device.device_id}`,
+      },
+    },
+  };
 }
 
 export function verifyDevice({ device }) {
-  console.log('verif', device);
+  return {
+    type: UPDATE_DEVICE,
+    payload: { device },
+  };
 }
 
 export function updateDevice({ device }) {
-  console.log('upd', device);
+  return {
+    type: UPDATE_DEVICE,
+    payload: { device },
+  };
 }
 
 const initialState = {
