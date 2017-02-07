@@ -11,7 +11,7 @@ import './style.scss';
 const renderForm = (device, __) => (
   <div>
     <Section className="m-device__pi">
-      <PiBar level={device.pi ? device.pi : 0} />
+      <PiBar level={device.pi} />
     </Section>
 
     <Section

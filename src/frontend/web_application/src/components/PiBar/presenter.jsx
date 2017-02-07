@@ -6,18 +6,19 @@ import './style.scss';
 
 const PiBar = ({ level, className }) => {
   const classNameModifiers = {
-    null: '',
+    disabled: 'm-pi-bar--disabled',
     ugly: 'm-pi-bar--ugly',
     bad: 'm-pi-bar--bad',
     good: 'm-pi-bar--good',
     super: 'm-pi-bar--super',
   };
+  const disabledLevel = 50;
 
   let key;
   switch (true) {
     default:
-    case level == null:
-      key = 'null';
+    case !level && level !== 0:
+      key = 'disabled';
       break;
     case level <= 20:
       key = 'ugly';
@@ -34,7 +35,7 @@ const PiBar = ({ level, className }) => {
   }
 
   const barStyle = {
-    width: `${level}%`,
+    width: `${!level && level !== 0 ? disabledLevel : level}%`,
   };
 
   const piBarClassName = classnames(
@@ -57,7 +58,7 @@ const PiBar = ({ level, className }) => {
 };
 
 PiBar.propTypes = {
-  level: PropTypes.number.isRequired,
+  level: PropTypes.number,
   className: PropTypes.string,
 };
 
