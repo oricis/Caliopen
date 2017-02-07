@@ -1,0 +1,21 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-device-form {
+  &__fieldset {
+    margin-bottom: map-get($co-form__spacing, 'large');
+  }
+
+  &__ip {
+    @include flex-grid-row;
+    margin-bottom: map-get($co-form__spacing, 'small');
+  }
+
+  &__ip-input {
+    @include flex-grid-size;
+  }
+
+  &__ip-button {
+    @include flex-grid-size(shrink);
+  }
+}

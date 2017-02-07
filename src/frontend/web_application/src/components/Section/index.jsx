@@ -1,11 +1,10 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import Title from '../../components/Title';
-
 import './style.scss';
 
-const Section = ({ className, title, descr, children }) => (
-  <section className={classnames('m-section', className)}>
+const Section = ({ className, title, descr, hasSeparator = true, children }) => (
+  <section className={classnames('m-section', { 'm-section--separator': hasSeparator }, className)}>
     {(title || descr) &&
       <header className="m-section__header">
         <Title className="m-section__title">{title}</Title>
@@ -21,6 +20,7 @@ Section.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
   descr: PropTypes.string,
+  hasSeparator: PropTypes.bool,
   children: PropTypes.node,
 };
 

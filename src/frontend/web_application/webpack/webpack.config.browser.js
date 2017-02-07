@@ -32,17 +32,18 @@ if (isTest) {
 config = baseConfig.configureStylesheet(config, 'client.css', isDev ? KOTATSU_ASSETS_PUBLIC_PATH : '/assets/');
 config = baseConfig.configureAssets(config, isDev ? KOTATSU_ASSETS_PUBLIC_PATH : '/assets/');
 
-if (isDev) {
-  config.entry.unshift(
-    'react-hot-loader/patch',
-    'webpack-hot-middleware/client',
-    'webpack/hot/only-dev-server'
-  );
-
-  config.plugins.push(
-    new webpack.HotModuleReplacementPlugin()
-  );
-}
+// let kotatsu manage HMR
+// if (isDev) {
+  // config.entry.unshift(
+  //   'react-hot-loader/patch',
+  //   'webpack-hot-middleware/client',
+  //   'webpack/hot/only-dev-server'
+  // );
+  //
+  // config.plugins.push(
+  //   new webpack.HotModuleReplacementPlugin()
+  // );
+// }
 
 let uglifyJSOptions = {};
 

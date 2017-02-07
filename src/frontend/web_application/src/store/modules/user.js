@@ -1,7 +1,7 @@
-export const REQUEST_USER = 'co/application/REQUEST_USER';
-export const REQUEST_USER_SUCCESS = 'co/application/REQUEST_USER_SUCCESS';
-export const REQUEST_USER_FAIL = 'co/application/REQUEST_USER_FAIL';
-export const INVALIDATE_USER = 'co/application/INVALIDATE_USER';
+export const REQUEST_USER = 'co/user/REQUEST_USER';
+export const REQUEST_USER_SUCCESS = 'co/user/REQUEST_USER_SUCCESS';
+export const REQUEST_USER_FAIL = 'co/user/REQUEST_USER_FAIL';
+export const INVALIDATE_USER = 'co/user/INVALIDATE_USER';
 
 export function requestUser() {
   return {

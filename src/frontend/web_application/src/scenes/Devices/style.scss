@@ -6,21 +6,19 @@
 
   &__nav {
     @include flex-grid-size;
+  }
 
-    &-item {
-
-      &--verify {
-        color: map-get($caliopen-palette, 'warning');
-      }
+  &__nav-item {
+    &--verify {
+      color: map-get($caliopen-palette, 'warning');
     }
-}
+  }
 
   &__device {
     @include flex-grid-size;
   }
 
   @include breakpoint(medium) {
-
     &__nav {
       @include flex-grid-size(3);
     }

@@ -8,7 +8,7 @@ import CheckboxFieldGroup from './components/CheckboxFieldGroup';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
 import ContactDetails from './components/ContactDetails';
 import DefList from './components/DefList';
-import Devices from './layouts/Devices';
+// import Devices from './layouts/Devices';
 import Dropdown from './components/Dropdown';
 import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
@@ -127,10 +127,11 @@ storiesOf('Pi', module)
     <PiBar />
   ));
 
-storiesOf('Settings', module)
-  .add('Devices', () => (
-    <Devices />
-  ));
+// XXX: unable to simply add Devices and Settings due to HOC & translator
+// storiesOf('Settings', module)
+//   .add('Devices', () => (
+//     <Devices />
+//   ));
 
 storiesOf('Titles', module)
   .add('Title', () => (

@@ -35,6 +35,7 @@ $co-color__importance:                #d2bc00;
 $co-color__privacy:                   #97b707;
 
 $privacy-palette: (
+  disabled: #c2c2c2,
   super: $co-color__privacy,
   good: $co-color__privacy,
   bad: $co-color__privacy,

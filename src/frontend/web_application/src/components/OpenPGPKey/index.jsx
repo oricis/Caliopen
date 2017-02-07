@@ -129,14 +129,17 @@ class OpenPGPKey extends Component {
 
         {this.state.showDetails && (
           <div className="m-openpgp-key__details">
-            <DefList className="m-openpgp-key__detail">{[
-              { title: __('openpgp.details.identities'), descriptions: this.state.openpgpKey.userIds },
-              { title: __('openpgp.details.algorithm'), descriptions: [this.state.openpgpKey.algorithm] },
-              { title: __('openpgp.details.key-size'), descriptions: [this.state.openpgpKey.bitSize] },
-              { title: __('openpgp.details.status'), descriptions: [openpgpStatuses[this.state.openpgpKey.keyStatus]] },
-              { title: __('openpgp.details.creation'), descriptions: this.state.openpgpKey.created ? [<DateTime format="ll">{this.state.openpgpKey.created}</DateTime>] : [] },
-              { title: __('openpgp.details.expiration'), descriptions: this.state.openpgpKey.expirationTime ? [<DateTime format="ll">{this.state.openpgpKey.expirationTime}</DateTime>] : [] },
-            ]}</DefList>
+            <DefList
+              className="m-openpgp-key__detail"
+              definitions={[
+                { title: __('openpgp.details.identities'), descriptions: this.state.openpgpKey.userIds },
+                { title: __('openpgp.details.algorithm'), descriptions: [this.state.openpgpKey.algorithm] },
+                { title: __('openpgp.details.key-size'), descriptions: [this.state.openpgpKey.bitSize] },
+                { title: __('openpgp.details.status'), descriptions: [openpgpStatuses[this.state.openpgpKey.keyStatus]] },
+                { title: __('openpgp.details.creation'), descriptions: this.state.openpgpKey.created ? [<DateTime format="ll">{this.state.openpgpKey.created}</DateTime>] : [] },
+                { title: __('openpgp.details.expiration'), descriptions: this.state.openpgpKey.expirationTime ? [<DateTime format="ll">{this.state.openpgpKey.expirationTime}</DateTime>] : [] },
+              ]}
+            />
 
             <TextareaFieldGroup
               className="m-openpgp-key__detail"
