@@ -18,28 +18,35 @@ class Devices extends Component {
     this.props.requestDevices();
   }
 
+  renderDevice(device) {
+    const { params: { deviceId = null } } = this.props;
+    const isVerified = device.signature_key && true;
+
+    return (
+      <ItemContent key={device.device_id} active={device.device_id === deviceId}>
+        <Link
+          to={`/devices/${device.device_id}`}
+          className={classnames('s-devices__nav-item', { 's-devices__nav-item--verify': !isVerified })}
+          active={device.device_id === deviceId}
+          expanded
+        >
+          {!isVerified ?
+            <Icon type="exclamation-triangle" spaced /> :
+            <Icon type="check" spaced />
+          }
+          {device.name}
+        </Link>
+      </ItemContent>
+    );
+  }
+
   render() {
-    const { devices, children, params: { deviceId = null }, __ } = this.props;
+    const { devices, children, __ } = this.props;
 
     return (
       <div className="s-devices">
         <NavList className="s-devices__nav" dir="vertical">
-          {devices.map(device => (
-            <ItemContent key={device.device_id} active={device.device_id === deviceId}>
-              <Link
-                to={`/devices/${device.device_id}`}
-                className={classnames('s-devices__nav-item', { 's-devices__nav-item--verify': device.signature_key === null })}
-                active={device.device_id === deviceId}
-                expanded
-              >
-                {!device.signature_key ?
-                  <Icon type="exclamation-triangle" spaced /> :
-                  <Icon type="check" spaced />
-                }
-                {device.name}
-              </Link>
-            </ItemContent>
-          ))}
+          {devices.map(device => this.renderDevice(device))}
         </NavList>
         <section className="s-devices__device">
           {!children ? __('device.no-selected-device') : children}

@@ -28,6 +28,7 @@ const renderForm = (device, __) => (
     <Section
       title={__('device.revoke.title')}
       descr={__('device.revoke.descr')}
+      hasSeparator={false}
     >
       <RevokeDevice device={device} />
     </Section>
@@ -38,6 +39,7 @@ const renderVerifyDevice = (device, __) => (
   <Section
     title={__('device.verify.title')}
     descr={__('device.verify.descr')}
+    hasSeparator={false}
   >
     <DeviceInformation device={device} />
     <VerifyDevice device={device} />

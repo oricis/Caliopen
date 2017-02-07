@@ -10,10 +10,10 @@ const VerifyDevice = ({ device, onVerifyDevice, onDeleteDevice, __ }) => {
   };
 
   return (
-    <div className="m-device__verify">
+    <div className="m-device-verify">
       <Button
         plain
-        className="m-device__verify-button"
+        className="m-device-verify__button"
         onClick={handleVerify}
       >{__('device.action.verify')}</Button>
       <br />

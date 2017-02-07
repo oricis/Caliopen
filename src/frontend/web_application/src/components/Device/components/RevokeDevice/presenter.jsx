@@ -7,9 +7,9 @@ const RevokeDevice = ({ device, onRevokeDevice, __ }) => {
   };
 
   return (
-    <div className="m-device__revoke">
+    <div className="m-device-revoke">
       <Button
-        className="m-device__revoke-button"
+        className="m-device-revoke__button"
         plain
         alert
         onClick={handleRevoke}
