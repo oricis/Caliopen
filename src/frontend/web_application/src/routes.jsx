@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import Page from './components/Page';
+import Page from './layouts/Page';
 import AuthPage from './layouts/AuthPage';
 import Settings from './layouts/Settings';
 import DiscussionList from './scenes/DiscussionList';
