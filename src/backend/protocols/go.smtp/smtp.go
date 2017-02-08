@@ -60,7 +60,7 @@ func (server *SMTPServer) start() error {
 	}
 
 	var b guerrilla.Backend
-	b = guerrilla.Backend(server.lda) // type convertion. guerrilla.Backend is an interface.
+	b = guerrilla.Backend(server.lda) // type conversion. guerrilla.Backend is an interface.
 	gConfig := guerrilla.AppConfig{
 		AllowedHosts: server.config.AppConfig.AllowedHosts,
 	}
@@ -84,7 +84,7 @@ func (server *SMTPServer) start() error {
 	}
 	app := guerrilla.New(&gConfig, &b)
 
-	// launch listener
+	// launch SMTP inbound listener
 	go func() {
 		err := app.Start()
 		if len(err) != 0 {
@@ -94,6 +94,13 @@ func (server *SMTPServer) start() error {
 
 		log.Infof("Caliopen smtp serving on %v", addrs)
 	}()
+
+	// launch NATS outbound listener
+	err = server.InitializeOutAgent(server.config.OutConfig)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -106,13 +113,15 @@ func (server *SMTPServer) shutdown() error {
 }
 
 type SMTPServer struct {
-	config SMTPConfig
-	lda    *CaliopenLDA
+	config   SMTPConfig
+	lda      *CaliopenLDA
+	OutAgent *OutAgent
 }
 
 type SMTPConfig struct {
 	AppConfig
 	LDAConfig
+	OutConfig
 }
 
 // AppConfig is a clone of guerrilla AppConfig with relevant tagstrings
