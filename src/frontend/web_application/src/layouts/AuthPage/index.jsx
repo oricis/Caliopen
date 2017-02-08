@@ -4,12 +4,12 @@ import './style.scss';
 
 const DEV_INFOS = {
   version: '0.1.0',
-  login: 'john@mail.caliopen.me',
+  login: 'john',
   password: '123456',
 };
 
 if (CALIOPEN_ENV === 'development') {
-  DEV_INFOS.login = 'dev@caliopen.local';
+  DEV_INFOS.login = 'dev';
 }
 
 const AuthPage = ({ children }) => (
