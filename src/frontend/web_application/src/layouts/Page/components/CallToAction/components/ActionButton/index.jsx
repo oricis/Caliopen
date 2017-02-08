@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Tappable from 'react-tappable/lib/Tappable';
-import Button from '../../../../../Button';
+import Button from '../../../../../../components/Button';
 
 const ActionButton = ({ action, ...props }) => {
   const tappableProps = {

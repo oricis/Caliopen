@@ -1,3 +1,5 @@
+import { withTranslator } from '@gandi/react-translate';
+import { compose } from 'redux';
 import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
 import Presenter from './presenter';
@@ -15,4 +17,7 @@ const mapStateToProps = createSelector(
   }
 );
 
-export default connect(mapStateToProps)(Presenter);
+export default compose(
+  connect(mapStateToProps),
+  withTranslator()
+)(Presenter);

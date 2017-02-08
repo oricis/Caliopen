@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import Link from '../../../../../Link';
-import Icon from '../../../../../Icon';
-import VerticalMenu, { VerticalMenuTextItem, VerticalMenuItem, Separator } from '../../../../../VerticalMenu';
-import Dropdown, { DropdownController } from '../../../../../Dropdown';
+import Link from '../../../../../../components/Link';
+import Icon from '../../../../../../components/Icon';
+import VerticalMenu, { VerticalMenuTextItem, VerticalMenuItem, Separator } from '../../../../../../components/VerticalMenu';
+import Dropdown, { DropdownController } from '../../../../../../components/Dropdown';
 
 class Presenter extends Component {
   static propTypes = {

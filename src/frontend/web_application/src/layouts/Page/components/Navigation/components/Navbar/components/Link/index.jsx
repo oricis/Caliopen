@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
-import BaseLink from '../../../../../../../Link';
+import BaseLink from '../../../../../../../../components/Link';
 import './style.scss';
 
 const Link = ({ className, ...props }) => {

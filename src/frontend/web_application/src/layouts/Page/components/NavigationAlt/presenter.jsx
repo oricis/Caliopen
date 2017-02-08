@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
-import ContactAvatarLetter from '../../../ContactAvatarLetter';
-import Link from '../../../Link';
-import Icon from '../../../Icon';
-import VerticalMenu, { VerticalMenuItem } from '../../../VerticalMenu';
+import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
+import Link from '../../../../components/Link';
+import Icon from '../../../../components/Icon';
+import VerticalMenu, { VerticalMenuItem } from '../../../../components/VerticalMenu';
 import './style.scss';
 
 const NavigationAlt = ({ user, currentApplication, applications, __ }) => (

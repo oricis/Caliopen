@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { withTranslator } from '@gandi/react-translate';
 import './style.scss';
-import { InputText } from '../../../../../form';
-import Icon from '../../../../../Icon';
-import { RawButton } from '../../../../../Button';
+import { InputText } from '../../../../../../components/form';
+import Icon from '../../../../../../components/Icon';
+import { RawButton } from '../../../../../../components/Button';
 
 const SearchField = ({ __ }) => (
   <div className="m-search-field">

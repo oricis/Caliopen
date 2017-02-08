@@ -1,15 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-import { withTranslator } from '@gandi/react-translate';
 import { Link } from '../Navbar';
-import BaseLink from '../../../../../Link';
-import Icon from '../../../../../Icon';
-import Dropdown, { DropdownController } from '../../../../../Dropdown';
-import VerticalMenu, { VerticalMenuItem } from '../../../../../VerticalMenu';
+import BaseLink from '../../../../../../components/Link';
+import Icon from '../../../../../../components/Icon';
+import Dropdown, { DropdownController } from '../../../../../../components/Dropdown';
+import VerticalMenu, { VerticalMenuItem } from '../../../../../../components/VerticalMenu';
 import { getLabels } from '../../../../../../services/application-manager';
 import './style.scss';
 
-@withTranslator()
-class Presenter extends Component {
+class ApplicationSwitcher extends Component {
   static propTypes = {
     applications: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     currentApplication: PropTypes.shape({
@@ -77,4 +75,4 @@ class Presenter extends Component {
   }
 }
 
-export default Presenter;
+export default ApplicationSwitcher;

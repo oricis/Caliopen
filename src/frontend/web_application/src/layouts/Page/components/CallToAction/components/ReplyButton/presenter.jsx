@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { withTranslator } from '@gandi/react-translate';import ActionButton from '../ActionButton';
-import Icon from '../../../../../Icon';
+import Icon from '../../../../../../components/Icon';
 
 const Presenter = ({ translator: { __ }, ...props }) => (
   <ActionButton {...props}>
