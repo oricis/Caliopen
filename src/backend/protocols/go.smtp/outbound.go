@@ -8,13 +8,17 @@
 - for each incoming NATS message
 	retrieve message from db
 	build email
-	store raw_email
 	forward email to MTA (postfix) via outboundDaemon(s)
+	store the sent raw_email
 */
 package caliopen_smtp
 
 import (
+	"encoding/json"
+	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends"
 	log "github.com/Sirupsen/logrus"
+	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
 	"gopkg.in/gomail.v2"
 	"sync"
@@ -34,22 +38,34 @@ type (
 	}
 	OutAgent struct {
 		natsConn        []*nats.Conn
-		emailChan       chan *gomail.Message
+		emailChan       chan *Email
+		deliveryAckChan chan deliveryAck
 		workersCountMux sync.Mutex
 		runningWorkers  int
 		config          OutConfig
+		Backend         backends.LDABackend
+	}
+	natsOrder struct {
+		Order     string `json:"order"`
+		MessageId string `json:"message_id"`
+	}
+	deliveryAck struct {
+		email *Email
+		err  error
 	}
 )
 
 func (server *SMTPServer) InitializeOutAgent(config OutConfig) error {
 	server.OutAgent = new(OutAgent)
 	server.OutAgent.config = config
-	return server.OutAgent.initialize()
+	return server.OutAgent.initialize(server.lda.Backend) // for now we use the lda backend, we could change this with config.
 }
 
-func (outA *OutAgent) initialize() error {
+func (outA *OutAgent) initialize(b backends.LDABackend) error {
 
-	outA.emailChan = make(chan *gomail.Message)
+	outA.Backend = b
+	outA.emailChan = make(chan *Email, outA.config.NumberOfWorkers)
+	outA.deliveryAckChan = make(chan deliveryAck, outA.config.NatsListeners)
 	//nats listener(s)
 	server.OutAgent.natsConn = make([]*nats.Conn, outA.config.NatsListeners)
 	for i := 0; i < outA.config.NatsListeners; i++ {
@@ -62,11 +78,7 @@ func (outA *OutAgent) initialize() error {
 		outA.natsConn[i] = nc
 
 		nc.Subscribe(topic, func(msg *nats.Msg) {
-			resp, err := natsMsgHandler(outA, msg)
-			if err != nil {
-				//handle error
-			}
-			nc.Publish(msg.Reply, []byte(resp))
+			outA.natsMsgHandler(msg, i)
 		})
 		nc.Flush()
 	}
@@ -75,23 +87,50 @@ func (outA *OutAgent) initialize() error {
 	return nil
 }
 
-func natsMsgHandler(agent *OutAgent, msg *nats.Msg) (resp string, err error) {
-	//process message
-	agent.workersCountMux.Lock()
-	if agent.runningWorkers < agent.config.NumberOfWorkers {
-		go agent.OutboundWorker()
-		agent.runningWorkers++
-	}
-	agent.workersCountMux.Unlock()
-	m := gomail.NewMessage()
-	m.SetHeader("From", "alex@example.com")
-	m.SetHeader("To", "bob@example.com", "cora@example.com")
-	m.SetAddressHeader("Cc", "dan@example.com", "Dan")
-	m.SetHeader("Subject", "Hello!")
-	m.SetBody("text/html", "Hello <b>Bob</b> and <i>Cora</i>!")
+// retrieves a caliopen message from db, build an email from it
+// sends the email to recipient(s) and stores the raw email sent in db
+func (agent *OutAgent) natsMsgHandler(msg *nats.Msg, natsConnID int) (resp string, err error) {
+	var order natsOrder
+	json.Unmarshal(msg.Data, &order)
+	if order.Order == "deliver" {
+		//retrieve message from db
+		m, err := agent.getCaliopenMessage(order.MessageId)
+		if err != nil {
+			//TODO
+		}
 
-	agent.emailChan <- m
-	log.Info("email sent into chan")
+		e, err := MarshalEmail(&m, server.config.Version)
+		if err != nil {
+			//TODO
+		}
+
+		//process email
+		agent.workersCountMux.Lock()
+		if agent.runningWorkers < agent.config.NumberOfWorkers {
+			go agent.OutboundWorker()
+			agent.runningWorkers++
+		}
+		agent.workersCountMux.Unlock()
+
+		agent.emailChan <- e
+		// non-blocking wait for delivery ack
+		go func() {
+			select {
+			case e, ok := <-agent.deliveryAckChan:
+				if e.err != nil || !ok {
+					//TODO
+					log.WithError(err).Warn("outbound: delivery error from MTA")
+				} else {
+					err = agent.SaveSentEmail(e)
+					if err != nil {
+						//TODO
+					}
+				}
+			}
+			return
+		}()
+
+	}
 	return resp, err
 }
 
@@ -102,7 +141,6 @@ func natsMsgHandler(agent *OutAgent, msg *nats.Msg) (resp string, err error) {
 func (agent *OutAgent) OutboundWorker() {
 	c := agent.config
 	d := gomail.NewDialer(c.SubmitAddress, c.SubmitPort, c.SubmitUser, c.SubmitPassword)
-	//d := gomail.NewDialer("localhost", 2500, "", "")
 	defer func() {
 		agent.workersCountMux.Lock()
 		agent.runningWorkers--
@@ -114,18 +152,21 @@ func (agent *OutAgent) OutboundWorker() {
 	open := false
 	for {
 		select {
-		case m, ok := <-agent.emailChan:
+		case e, ok := <-agent.emailChan:
 			if !ok {
 				return
 			}
 			if !open {
 				if s, err = d.Dial(); err != nil {
-					panic(err)
+					log.WithError(err).Warn("outbound: unable to connect to MTA")
+					return
 				}
 				open = true
 			}
-			if err := gomail.Send(s, m); err != nil {
-				log.Print(err)
+			err := gomail.Send(s, e.mail)
+			agent.deliveryAckChan <- deliveryAck{
+				e,
+				err,
 			}
 		// Close the connection to the SMTP server and this worker
 		// if no email was sent in the last 30 seconds.
@@ -133,7 +174,7 @@ func (agent *OutAgent) OutboundWorker() {
 			log.Info("closing connexion to mta")
 			if open {
 				if err := s.Close(); err != nil {
-					panic(err)
+					log.WithError(err).Warn("outbound: unable to close connection to MTA")
 				}
 				open = false
 			}
@@ -142,22 +183,25 @@ func (agent *OutAgent) OutboundWorker() {
 	}
 }
 
-func SendEmail() (err error) {
-	m := gomail.NewMessage()
-	m.SetHeader("From", "alex@example.com")
-	m.SetHeader("To", "bob@example.com", "cora@example.com")
-	m.SetAddressHeader("Cc", "dan@example.com", "Dan")
-	m.SetHeader("Subject", "Hello!")
-	m.SetBody("text/html", "Hello <b>Bob</b> and <i>Cora</i>!")
-
-	//add X-Mailer header
-	//add Message-ID header ? (or let postfix add it ?)
-
-	d := gomail.NewDialer("localhost", 2500, "", "")
-
-	// Send the email to Bob, Cora and Dan.
-	if err := d.DialAndSend(m); err != nil {
-		panic(err)
+func (agent *OutAgent) getCaliopenMessage(msg_id string) (message obj.MessageModel, err error) {
+	message = obj.MessageModel{
+		From: "stan@caliopen.org",
+		Recipients: []obj.RecipientModel{
+			{Address: "bob@example.com", RecipientType: "to"},
+			{Address: "cora@example.com", RecipientType: "to"},
+			{Address: "dan@example.com", RecipientType: "cc"},
+		},
+		Subject:    "Hello from a fake message",
+		Body:       "This a very simple body of a message",
+		Message_id: gocql.TimeUUID(),
 	}
 	return
+}
+
+// bespoke implementation of the json.Unmarshaler interface
+func (msg *natsOrder) UnmarshalJSON(data []byte) error {
+	msg.Order = string(data[10:17])
+	msg.MessageId = string(data[34:70])
+	//TODO: error handling
+	return nil
 }

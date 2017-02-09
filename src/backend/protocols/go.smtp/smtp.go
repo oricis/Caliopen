@@ -95,7 +95,7 @@ func (server *SMTPServer) start() error {
 		log.Infof("Caliopen smtp serving on %v", addrs)
 	}()
 
-	// launch NATS outbound listener
+	// launch outbound delivery agent
 	err = server.InitializeOutAgent(server.config.OutConfig)
 	if err != nil {
 		return err
@@ -126,6 +126,7 @@ type SMTPConfig struct {
 
 // AppConfig is a clone of guerrilla AppConfig with relevant tagstrings
 type AppConfig struct {
+	Version      string         `mastructure:"version"`
 	Servers      []ServerConfig `mapstructure:"servers"`
 	AllowedHosts []string       `mapstructure:"allowed_hosts"`
 }

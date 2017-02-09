@@ -137,7 +137,7 @@ func (lda *CaliopenLDA) Process(mail *guerrilla.Envelope) guerrilla.BackendResul
 	}
 
 	if lda.config.LogReceivedMails {
-		log.Infof("processing envelope From: %s -> To: %v", mail.MailFrom, to)
+		log.Infof("inbound: processing envelope From: %s -> To: %v", mail.MailFrom, to)
 	}
 
 	emails := []string{}
@@ -147,7 +147,7 @@ func (lda *CaliopenLDA) Process(mail *guerrilla.Envelope) guerrilla.BackendResul
 	localRcpts, err := lda.Backend.GetRecipients(emails)
 
 	if err != nil {
-		log.WithError(err).Info("recipients lookup failed")
+		log.WithError(err).Warn("inbound: recipients lookup failed")
 		return guerrilla.NewBackendResult("554 Error: recipients lookup failed")
 	}
 
@@ -157,9 +157,8 @@ func (lda *CaliopenLDA) Process(mail *guerrilla.Envelope) guerrilla.BackendResul
 
 	//step 2 : store raw email and get its raw_id
 	raw_email_id, err := lda.Backend.StoreRaw(mail.Data)
-
 	if err != nil {
-		log.WithError(err).Info("storing raw email failed")
+		log.WithError(err).Warn("inbound: storing raw email failed")
 		return guerrilla.NewBackendResult("554 Error: storing raw email failed")
 	}
 
@@ -183,10 +182,10 @@ func (lda *CaliopenLDA) Process(mail *guerrilla.Envelope) guerrilla.BackendResul
 					}
 					deliveries++
 				case <-time.After(time.Second * 30):
-					errs = multierror.Append(errs, errors.New("timeout waiting delivery completion"))
+					errs = multierror.Append(errs, errors.New("inbound: timeout waiting delivery completion"))
 				}
 			case <-time.After(time.Second * 5):
-				errs = multierror.Append(errs, errors.New("timeout trying to send delivery"))
+				errs = multierror.Append(errs, errors.New("inbound: timeout trying to send delivery"))
 			}
 		}(localRcpt)
 	}
