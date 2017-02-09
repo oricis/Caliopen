@@ -1,16 +1,21 @@
 @import '../../styles/common';
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
+$l-auth-page__brand-height: 32px !default;
+$l-auth-page__header-space: (
+  top: 86px,
+  bottom: 36px,
+);
+
 .l-auth-page {
-
   &__header {
-    padding-top: map-get($co-form__spacing, 'large');
+    padding-top: map-get($l-auth-page__header-space, top);
+    padding-bottom: map-get($l-auth-page__header-space, bottom);
     text-align: center;
-
   }
 
   &__brand {
-    margin: map-get($co-form__spacing, 'large') 0;
+    height: $l-auth-page__brand-height;
   }
 
   &__form {
