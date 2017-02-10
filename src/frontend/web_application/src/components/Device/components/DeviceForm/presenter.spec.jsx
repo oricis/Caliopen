@@ -6,6 +6,7 @@ describe('component Device DeviceForm', () => {
   it('render', () => {
     const props = {
       device: {},
+      onChange: () => {},
       __: str => str,
     };
 

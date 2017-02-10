@@ -1,7 +1,8 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
-$l-header__height: 50px !default;
+$l-header__height: 52px !default;
+$l-header__brand-icon-height: 32px !default;
 $l-header__margin: ($co-margin / 2) !default;
 
 .l-header {
@@ -23,6 +24,7 @@ $l-header__margin: ($co-margin / 2) !default;
     @include flex-grid-column;
     height: $l-header__height;
     padding: 0 $co-margin;
+    line-height: $l-header__height;
   }
 
   &__menu-icon {
@@ -33,7 +35,8 @@ $l-header__margin: ($co-margin / 2) !default;
   }
 
   &__brand-icon {
-    height: $co-font__line-height;
+    vertical-align: middle;
+    height: $l-header__brand-icon-height;
   }
 
   &__search,
