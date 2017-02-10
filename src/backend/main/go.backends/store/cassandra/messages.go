@@ -2,73 +2,37 @@
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
-
-//low level implementation for now
 package store
 
 import (
 	"github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
-)
-
-const (
-	getMessageQuery = `
-	SELECT
-	user_id,
-	message_id,
-	thread_id,
-	type,
-	from_,
-	date,
-	date_insert,
-	size,
-	privacy_index,
-	importance_level,
-	subject,
-	external_message_id,
-	external_parent_id,
-	external_thread_id,
-	raw_msg_id,
-	tags,
-	flags,
-	offset,
-	state,
-	recipients,
-	text
-	FROM message WHERE user_id = ? and message_id = ?
-	`
+	"github.com/gocassa/gocassa"
 )
 
 func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *objects.MessageModel, err error) {
 
 	var m objects.MessageModel
+	messageT := cb.IKeyspace.Table("message", &objects.MessageModel{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "message_id"},
+	}).WithOptions(gocassa.Options{TableName: "message"}) // need to overwrite default gocassa table naming convention
 
-	err = cb.Session.Query(getMessageQuery, user_id, msg_id).Scan(
-		&m.User_id,
-		&m.Message_id,
-		&m.Discussion_id,
-		&m.MsgType,
-		&m.From,
-		&m.Date,
-		&m.Date_insert,
-		&m.Size,
-		&m.Privacy_index,
-		&m.Importance_level,
-		&m.Subject,
-		&m.External_msg_id,
-		&m.External_parent_id,
-		&m.External_discussion_id,
-		&m.Raw_msg_id,
-		&m.Tags,
-		&m.Flags,
-		&m.Offset,
-		&m.State,
-		&m.Recipients,
-		&m.Body,
-	)
-	if err != nil {
-		return nil, err
-	}
+	err = messageT.
+		Where(gocassa.Eq("user_id", user_id), gocassa.Eq("message_id", msg_id)).
+		ReadOne(&m).
+		Run()
 
-	msg = &m
-	return
+	return &m, err
+}
+
+func (cb *CassandraBackend) UpdateMessage(msg *objects.MessageModel, fields map[string]interface{}) error {
+
+	messageT := cb.IKeyspace.Table("message", &objects.MessageModel{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "message_id"},
+	}).WithOptions(gocassa.Options{TableName: "message"}) // need to overwrite default gocassa table naming convention
+
+	err := messageT.
+		Where(gocassa.Eq("user_id", msg.User_id), gocassa.Eq("message_id", msg.Message_id)).
+		Update(fields).
+		Run()
+	return err
 }

@@ -5,19 +5,18 @@
 package objects
 
 import (
-	"github.com/gocql/gocql"
 	"time"
 )
 
 type RawMessageModel struct {
-	Raw_msg_id gocql.UUID `cql:"raw_msg_id"`
-	Data       string     `cql:"data"`
+	Raw_msg_id []byte `cql:"raw_msg_id"`
+	Data       string `cql:"data"`
 }
 
 type MessageModel struct {
-	User_id                gocql.UUID       `cql:"user_id"`
-	Message_id             gocql.UUID       `cql:"message_id"`
-	Discussion_id          gocql.UUID       `cql:"thread_id"`
+	User_id                []byte           `cql:"user_id"`
+	Message_id             []byte           `cql:"message_id"`
+	Discussion_id          []byte           `cql:"thread_id"`
 	MsgType                string           `cql:"type"`
 	From                   string           `cql:"from_"`
 	Date                   time.Time        `cql:"date"`
@@ -29,7 +28,7 @@ type MessageModel struct {
 	External_msg_id        string           `cql:"external_message_id"`
 	External_parent_id     string           `cql:"external_parent_id"`
 	External_discussion_id string           `cql:"external_thread_id"`
-	Raw_msg_id             gocql.UUID       `cql:"raw_msg_id"`
+	Raw_msg_id             []byte           `cql:"raw_msg_id"`
 	Tags                   []string         `cql:"tags"`
 	Flags                  []string         `cql:"flags"`
 	Offset                 int              `cql:"offset"`
@@ -39,9 +38,9 @@ type MessageModel struct {
 }
 
 type RecipientModel struct {
-	RecipientType string     `cql:"type"`
-	Protocol      string     `cql:"protocol"`
-	Address       string     `cql:"address"`
-	Contact_id    gocql.UUID `cql:"contact_id"`
-	Label         string     `cql:"label"`
+	RecipientType string `cql:"type"`
+	Protocol      string `cql:"protocol"`
+	Address       string `cql:"address"`
+	Contact_id    []byte `cql:"contact_id"`
+	Label         string `cql:"label"`
 }

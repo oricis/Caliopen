@@ -15,10 +15,8 @@ package caliopen_smtp
 
 import (
 	"encoding/json"
-	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends"
 	log "github.com/Sirupsen/logrus"
-	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
 	"gopkg.in/gomail.v2"
 	"sync"
@@ -122,11 +120,12 @@ func (agent *OutAgent) natsMsgHandler(msg *nats.Msg, natsConnID int) (resp strin
 			select {
 			case e, ok := <-agent.deliveryAckChan:
 				if e.err != nil || !ok {
-					//TODO
 					log.WithError(err).Warn("outbound: delivery error from MTA")
+					//TODO
 				} else {
 					err = agent.SaveSentEmail(e)
 					if err != nil {
+						log.WithError(err).Warn("outbound: error when saving back sent email")
 						//TODO
 					}
 				}
@@ -185,21 +184,6 @@ func (agent *OutAgent) OutboundWorker() {
 			return
 		}
 	}
-}
-
-func (agent *OutAgent) getCaliopenMessage(msg_id string) (message obj.MessageModel, err error) {
-	message = obj.MessageModel{
-		From: "stan@caliopen.org",
-		Recipients: []obj.RecipientModel{
-			{Address: "bob@example.com", RecipientType: "to"},
-			{Address: "cora@example.com", RecipientType: "to"},
-			{Address: "dan@example.com", RecipientType: "cc"},
-		},
-		Subject:    "Hello from a fake message",
-		Body:       "This a very simple body of a message",
-		Message_id: gocql.TimeUUID(),
-	}
-	return
 }
 
 // bespoke implementation of the json.Unmarshaler interface

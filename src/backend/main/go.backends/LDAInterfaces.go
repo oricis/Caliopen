@@ -10,5 +10,5 @@ type LDABackend interface {
 	GetRecipients([]string) ([]string, error)
 	StoreRaw(data string) (raw_id string, err error)
 	GetMessage(user_id, msg_id string) (msg *objects.MessageModel, err error)
-	//UpdateMessage(msg *objects.MessageModel) error
+	UpdateMessage(msg *objects.MessageModel, fields map[string]interface{}) error
 }

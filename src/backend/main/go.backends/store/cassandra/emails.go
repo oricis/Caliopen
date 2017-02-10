@@ -23,7 +23,7 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 
 	raw_uuid, err := gocql.RandomUUID()
 	m := obj.RawMessageModel{
-		Raw_msg_id: raw_uuid,
+		Raw_msg_id: raw_uuid.Bytes(),
 		Data:       raw_email,
 	}
 	err = rawMsgTable.Set(m).Run()

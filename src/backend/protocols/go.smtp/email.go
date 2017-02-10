@@ -31,7 +31,7 @@ func MarshalEmail(msg *obj.MessageModel, version string) (e *Email, err error) {
 		message: msg,
 	}
 
-
+	//TODO: handle the display name when it will be available.
 	e.mail.SetHeader("From", msg.From)
 
 	to, cc, bcc := []string{}, []string{}, []string{}
@@ -55,10 +55,11 @@ func MarshalEmail(msg *obj.MessageModel, version string) (e *Email, err error) {
 		e.mail.SetHeader("Bcc", bcc...)
 	}
 
-	e.mail.SetHeader("Date", time.Now().Format(time.RFC822Z))
+	e.mail.SetHeader("Date", time.Now().Format(time.RFC1123Z))
 
-	id, err := uuid.FromBytes(msg.Message_id.Bytes())
+	id, err := uuid.FromBytes(msg.Message_id)
 	if err != nil {
+		log.Warn(err)
 		//TODO
 	}
 	messageId := "<" + id.String() + "@" + strings.Split(msg.From, "@")[1] + ">"
@@ -68,7 +69,7 @@ func MarshalEmail(msg *obj.MessageModel, version string) (e *Email, err error) {
 
 	//TODO: In-Reply-To header
 	e.mail.SetHeader("Subject", msg.Subject)
-	e.mail.SetBody("text/html", msg.Body)
+	e.mail.SetBody("text/plain", msg.Body)
 	//TODO: errors handling
 
 	return
@@ -86,11 +87,19 @@ func (agent *OutAgent) SaveSentEmail(ack deliveryAck) error {
 		return err
 	}
 	// save raw email in db
-	/*raw_email_id*/_, err = agent.Backend.StoreRaw(raw_email.String())
+	raw_email_id, err := agent.Backend.StoreRaw(raw_email.String())
 	if err != nil {
 		log.WithError(err).Warn("outbound: storing raw email failed")
 		return err
 	}
 	// update caliopen message status
-	return nil
+	fields := make(map[string]interface{})
+	fields["raw_msg_id"] = raw_email_id
+	fields["state"] = "sent"
+	fields["date"], _ = time.Parse(time.RFC1123Z, ack.email.mail.GetHeader("Date")[0])
+	err = agent.Backend.UpdateMessage(ack.email.message, fields)
+	if err != nil {
+		log.Warn(err)
+	}
+	return err
 }
