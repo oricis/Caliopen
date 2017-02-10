@@ -6,6 +6,7 @@ import Brand from './components/Brand';
 import Button from './components/Button';
 import CheckboxFieldGroup from './components/CheckboxFieldGroup';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
+import ContactBook from './layouts/ContactBook';
 import ContactDetails from './components/ContactDetails';
 import DefList from './components/DefList';
 // import Devices from './layouts/Devices';
@@ -62,8 +63,10 @@ storiesOf('Buttons & Links', module)
 storiesOf('Contact', module)
   .add('ContactDetails', () => (
     <ContactDetails />
+  ))
+  .add('ContactBook', () => (
+    <ContactBook />
   ));
-
 storiesOf('Dropdown', module)
   .add('Dropdown', () => (
     <Dropdown />

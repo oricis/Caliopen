@@ -1,0 +1,21 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.l-contact-book {
+  @include flex-grid-row($size: expanded);
+  background: $co-color__bg__back;
+
+
+  &__filters {
+    @include flex-grid-size(12);
+  }
+
+  &__tags {
+    @include flex-grid-size(shrink);
+    padding: map_get($co-form__spacing, 'large');
+  }
+
+  &__contacts {
+    @include flex-grid-size;
+  }
+}
