@@ -28,3 +28,5 @@ system:
             name: IMPORTANT
             background: '#FF0000'
             color: white
+
+default_domain: caliopen.local

@@ -19,19 +19,26 @@ from ..store import (User as ModelUser,
                      Counter as ModelCounter,
                      UserTag as ModelUserTag,
                      FilterRule as ModelFilterRule,
-                     ReservedName as ModelReservedName
+                     ReservedName as ModelReservedName,
+                     LocalIdentity as ModelLocalIdentity
                      )
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
 from .contact import Contact as CoreContact
-from caliopen_main.objects.contact import Contact, Email
+from caliopen_main.objects.contact import Contact
 from caliopen_main.user.helpers import validators
 
 log = logging.getLogger(__name__)
 
 
-class Counter(BaseCore):
+class LocalIdentity(BaseCore):
+    """User local identity core class."""
 
+    _model_class = ModelLocalIdentity
+    _pkey_name = 'address'
+
+
+class Counter(BaseCore):
     """
     Counter core object.
 
@@ -43,7 +50,6 @@ class Counter(BaseCore):
 
 
 class Tag(BaseUserCore):
-
     """Tag core object."""
 
     _model_class = ModelUserTag
@@ -51,7 +57,6 @@ class Tag(BaseUserCore):
 
 
 class FilterRule(BaseUserCore):
-
     """Filter rule core class."""
 
     _model_class = ModelFilterRule
@@ -101,7 +106,6 @@ class FilterRule(BaseUserCore):
 
 
 class ReservedName(BaseCore):
-
     """Reserved name core object."""
 
     _model_class = ModelReservedName
@@ -109,7 +113,6 @@ class ReservedName(BaseCore):
 
 
 class UserName(BaseCore):
-
     """User name core object."""
 
     _model_class = ModelUserName
@@ -117,7 +120,6 @@ class UserName(BaseCore):
 
 
 class User(BaseCore):
-
     """User core object."""
 
     _model_class = ModelUser
@@ -130,14 +132,15 @@ class User(BaseCore):
 
         # 1.check username regex
         # 2.check username is not in reserved_name table
-        # 3.check recovery email validity (TODO : check if email is not within the current Caliopen's instance)
+        # 3.check recovery email validity (TODO : check if email is not within
+        #   the current Caliopen's instance)
         # 4.check username availability
-        # 5.add username to user cassa user_name table (to block the availability)
+        # 5.add username to user cassa user_name table (to block the
+        #   availability)
         # 6.check password strength (and regex?)
         # then
         #      create user and linked contact
         """
-
         def rollback_username_storage(username):
             UserName.get(username).delete()
 
@@ -165,16 +168,22 @@ class User(BaseCore):
         if User.is_username_available(new_user.name.lower()):
             # save username immediately to prevent concurrent creation
             UserName.create(name=new_user.name.lower(), user_id=user_id)
-            # NB : need to rollback this username creation if the below User creation failed for any reason
+            # NB : need to rollback this username creation if the below
+            #      User creation failed for any reason
         else:
             raise ValueError("Username already exist")
 
         # 6.
         try:
-            user_inputs = [new_user.name.encode("utf-8"), new_user.recovery_email.encode("utf-8")]
-            password_strength = zxcvbn(new_user.password, user_inputs=user_inputs)  # TODO: add contact inputs if any
-            privacy_features = {"password_strength": str(password_strength["score"])}
-            new_user.password = bcrypt.hashpw(new_user.password.encode('utf-8'), bcrypt.gensalt())
+            user_inputs = [new_user.name.encode("utf-8"),
+                           new_user.recovery_email.encode("utf-8")]
+            # TODO: add contact inputs if any
+            password_strength = zxcvbn(new_user.password,
+                                       user_inputs=user_inputs)
+            privacy_features = {"password_strength":
+                                str(password_strength["score"])}
+            passwd = new_user.password.encode('utf-8')
+            new_user.password = bcrypt.hashpw(passwd, bcrypt.gensalt())
         except Exception as exc:
             log.exception(exc)
             rollback_username_storage(new_user.name)
@@ -188,10 +197,11 @@ class User(BaseCore):
             raise ValueError("new user malformed")
 
         try:
+            recovery = new_user.recovery_email
             core = super(User, cls).create(user_id=user_id,
                                            name=new_user.name,
                                            password=new_user.password,
-                                           recovery_email=new_user.recovery_email,
+                                           recovery_email=recovery,
                                            params=new_user.params,
                                            date_insert=datetime.utcnow(),
                                            privacy_features=privacy_features
@@ -231,6 +241,13 @@ class User(BaseCore):
 
         core.save()
 
+        # Add a default local identity on a default configured domain
+        default_domain = Configuration('global').get('default_domain')
+        default_local_id = '{}@{}'.format(core.name, default_domain)
+        if not core.add_local_identity(default_local_id):
+            log.warn('Impossible to create default local identity {}'.
+                     format(default_local_id))
+
         return core
 
     @classmethod
@@ -241,12 +258,18 @@ class User(BaseCore):
 
     @classmethod
     def is_username_available(cls, username):
-        """ returns true or false if username has been found in store's user_name table"""
+        """Return True if username is available."""
         try:
             UserName.get(username.lower())
             return False
         except NotFound:
             return True
+
+    @classmethod
+    def by_local_identity(cls, address):
+        """Get a user by one of its local identity."""
+        identity = LocalIdentity.get(address.lower())
+        return cls.get(identity.user_id)
 
     @classmethod
     def authenticate(cls, user_name, password):
@@ -282,7 +305,7 @@ class User(BaseCore):
                     idx_kls.create_mapping(self.user_id)
 
     def setup_system_tags(self):
-        # Create system tags
+        """Create system tags."""
         default_tags = Configuration('global').get('system.default_tags')
         for tag in default_tags:
             tag['type'] = 'system'
@@ -313,7 +336,7 @@ class User(BaseCore):
         return counter.rule_id
 
     def get_thread_id(self, external_id):
-        # XXX : lookup external thread_id to internal one
+        """Get a new thread_id counter value."""
         return self.new_thread_id()
 
     @property
@@ -324,12 +347,13 @@ class User(BaseCore):
         try:
             return CoreContact.get(self, self.contact_id)
         except NotFound:
-            log.warn("contact {} not found for user {}".format(self.contact_id, self.user_id))
+            log.warn("contact {} not found for user {}".
+                     format(self.contact_id, self.user_id))
             return None
 
     @property
     def tags(self):
-        """Tag objects related to an user"""
+        """Tag objects related to an user."""
         objs = Tag._model_class.filter(user_id=self.user_id)
         return [Tag(x) for x in objs]
 
@@ -339,3 +363,28 @@ class User(BaseCore):
         objs = FilterRule._model_class.filter(user_id=self.user_id)
         cores = [FilterRule(x) for x in objs]
         return sorted(cores, key=lambda x: x.position)
+
+    def add_local_identity(self, address):
+        """
+        Add a local identity to an user.
+
+        return: True if success, False otherwise
+        rtype: bool
+        """
+        formatted = address.lower()
+        try:
+            identity = LocalIdentity.get(formatted)
+            if identity.user_id == self.user_id:
+                if identity.address in self.local_identities:
+                    # Already in local identities
+                    return True
+            raise Exception('Inconsistent local identity {}'.format(address))
+        except NotFound:
+            identity = LocalIdentity.create(address=formatted,
+                                            user_id=self.user_id,
+                                            type=['email'],
+                                            status='active')
+            self.local_identities.append(formatted)
+        except Exception as exc:
+            log.error('Unexpected exception {}'.format(exc))
+        return False

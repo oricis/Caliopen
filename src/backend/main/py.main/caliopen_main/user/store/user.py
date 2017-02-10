@@ -17,7 +17,6 @@ log = logging.getLogger(__name__)
 
 
 class UserName(BaseModel):
-
     """Maintain unicity of user name and permit lookup to user_id."""
 
     name = columns.Text(primary_key=True)
@@ -25,14 +24,12 @@ class UserName(BaseModel):
 
 
 class ReservedName(BaseModel):
-
     """List of reserved user names."""
 
     name = columns.Text(primary_key=True)
 
 
 class User(BaseModel):
-
     """User main model."""
 
     user_id = columns.UUID(primary_key=True, default=uuid.uuid4)
@@ -47,9 +44,10 @@ class User(BaseModel):
     privacy_index = columns.Integer()
     privacy_features = columns.Map(columns.Text(), columns.Text())
     recovery_email = columns.Text(required=True)
+    local_identities = columns.List(columns.Text())
+
 
 class Counter(BaseModel):
-
     """User counters model."""
 
     user_id = columns.UUID(primary_key=True)
@@ -59,7 +57,6 @@ class Counter(BaseModel):
 
 
 class FilterRule(BaseModel):
-
     """User filter rules model."""
 
     user_id = columns.UUID(primary_key=True)
@@ -72,7 +69,6 @@ class FilterRule(BaseModel):
 
 
 class RemoteIdentity(BaseModel):
-
     """User remote identities model."""
 
     user_id = columns.UUID(primary_key=True)
@@ -83,8 +79,16 @@ class RemoteIdentity(BaseModel):
     last_check = columns.DateTime()
 
 
-class IndexUser(object):
+class LocalIdentity(BaseModel):
+    """User local identity, where message are received."""
 
+    address = columns.Text(primary_key=True)
+    user_id = columns.UUID(primary_key=True)
+    type = columns.List(columns.Text())
+    status = columns.Text()
+
+
+class IndexUser(object):
     """User index management class."""
 
     __url__ = Configuration('global').get('elasticsearch.url')
