@@ -197,10 +197,11 @@ class User(BaseCore):
             raise ValueError("new user malformed")
 
         try:
+            recovery = new_user.recovery_email
             core = super(User, cls).create(user_id=user_id,
                                            name=new_user.name,
                                            password=new_user.password,
-                                           recovery_email=new_user.recovery_email,
+                                           recovery_email=recovery,
                                            params=new_user.params,
                                            date_insert=datetime.utcnow(),
                                            privacy_features=privacy_features
@@ -381,7 +382,7 @@ class User(BaseCore):
         except NotFound:
             identity = LocalIdentity.create(address=formatted,
                                             user_id=self.user_id,
-                                            type='local',
+                                            type=['email'],
                                             status='active')
             self.local_identities.append(formatted)
         except Exception as exc:

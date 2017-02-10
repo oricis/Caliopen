@@ -84,7 +84,7 @@ class LocalIdentity(BaseModel):
 
     address = columns.Text(primary_key=True)
     user_id = columns.UUID(primary_key=True)
-    type = columns.Text()
+    type = columns.List(columns.Text())
     status = columns.Text()
 
 
