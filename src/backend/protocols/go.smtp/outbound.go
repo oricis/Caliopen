@@ -48,6 +48,7 @@ type (
 	natsOrder struct {
 		Order     string `json:"order"`
 		MessageId string `json:"message_id"`
+		UserId    string `json:"user_id"`
 	}
 	deliveryAck struct {
 		email *Email
@@ -92,15 +93,18 @@ func (outA *OutAgent) initialize(b backends.LDABackend) error {
 func (agent *OutAgent) natsMsgHandler(msg *nats.Msg, natsConnID int) (resp string, err error) {
 	var order natsOrder
 	json.Unmarshal(msg.Data, &order)
+
 	if order.Order == "deliver" {
 		//retrieve message from db
-		m, err := agent.getCaliopenMessage(order.MessageId)
+		m, err := agent.Backend.GetMessage(order.UserId, order.MessageId)
 		if err != nil {
+			log.Warn(err)
 			//TODO
 		}
 
-		e, err := MarshalEmail(&m, server.config.Version)
+		e, err := MarshalEmail(m, server.config.Version)
 		if err != nil {
+			log.Warn(err)
 			//TODO
 		}
 
@@ -199,9 +203,11 @@ func (agent *OutAgent) getCaliopenMessage(msg_id string) (message obj.MessageMod
 }
 
 // bespoke implementation of the json.Unmarshaler interface
+// assuming well formatted message
 func (msg *natsOrder) UnmarshalJSON(data []byte) error {
 	msg.Order = string(data[10:17])
 	msg.MessageId = string(data[34:70])
+	msg.UserId = string(data[84:120])
 	//TODO: error handling
 	return nil
 }

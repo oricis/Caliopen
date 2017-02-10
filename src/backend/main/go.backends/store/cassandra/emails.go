@@ -31,3 +31,4 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 	uuid = raw_uuid.String()
 	return
 }
+

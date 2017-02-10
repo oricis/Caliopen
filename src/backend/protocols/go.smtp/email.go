@@ -86,7 +86,7 @@ func (agent *OutAgent) SaveSentEmail(ack deliveryAck) error {
 		return err
 	}
 	// save raw email in db
-	raw_email_id, err := agent.Backend.StoreRaw(raw_email.String())
+	/*raw_email_id*/_, err = agent.Backend.StoreRaw(raw_email.String())
 	if err != nil {
 		log.WithError(err).Warn("outbound: storing raw email failed")
 		return err
