@@ -42,12 +42,11 @@ const ContactList = ({ contacts, sortView }) => {
   return (
     <div className="m-contact-list">
       {letters.map(letter =>
-        <div>
+        <div key={uuidV1()}>
           <ContactListLetter
             letter={letter}
-            key={letter}
           />
-          <BlockList key={uuidV1()}>
+          <BlockList>
             {contacts.map(c =>
               getFirstLetter(c.contact[sortView]) === letter &&
                 <ContactItem
@@ -64,7 +63,7 @@ const ContactList = ({ contacts, sortView }) => {
 };
 
 ContactList.propTypes = {
-  contacts: PropTypes.node,
+  contacts: PropTypes.arrayOf(PropTypes.shape({})),
   sortView: PropTypes.string,
 };
 

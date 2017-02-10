@@ -34,7 +34,7 @@ const ContactItem = ({ contact, sortView }) => {
 
 
 ContactItem.propTypes = {
-  contact: PropTypes.node,
+  contact: PropTypes.shape({}),
   sortView: PropTypes.string,
 };
 
