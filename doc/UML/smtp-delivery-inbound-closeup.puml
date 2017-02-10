@@ -1,0 +1,49 @@
+@startuml
+hide footbox
+title Inbound SMTP closeup
+box "SMTPd"
+participant "smtpd"
+endbox
+database cassandra
+database redis
+box "message platform"
+participant "NATS server" as nats
+endbox
+box "Caliopen Main"
+control "go.main" as gomain
+endbox
+box "Caliopen Main"
+control "py.main" as pymain
+endbox
+box
+[-> smtpd: smtp email
+activate smtpd
+smtpd --\ cassandra: recipients lookup
+cassandra --/ smtpd
+smtpd ->o cassandra: store raw email once
+cassandra --// smtpd: raw email ID
+smtpd ->o redis: cache raw email
+== Repetition ==
+smtpd -> nats: send message to\n"inboundSMTP" topic\nwith msg_id & rcp_id
+[<- smtpd: "250 OK"
+deactivate smtpd
+gomain x[#0000FF]-> nats: subscribe to \n"inboundSMTP" topic
+activate gomain
+group broker component (may subscribe to many topics)
+redis --> gomain: get raw email
+gomain -> gomain: unmarshall email\ninto a Caliopen message object
+gomain -> gomain: basic validation/conformation
+gomain ->o cassandra: store message object\n(type email)
+cassandra --// gomain: message ID
+gomain ->o redis: cache serialized message
+gomain -> nats: send message to\n"InboundUserMessage" topic
+deactivate gomain
+end
+pymain x[#0000FF]-> nats: subscribe to\n"InboundUserMessage" topic
+activate pymain
+redis --> pymain: get serialized message object
+pymain -> pymain: discussion lookup
+pymain -> pymain: importance qualifier
+pymain -> nats: send message to"calculate PI" topic
+... other inbound message operations ...
+@enduml
