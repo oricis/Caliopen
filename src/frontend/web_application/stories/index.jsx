@@ -23,6 +23,7 @@ import SigninPage from './layouts/SigninPage';
 import SignupPage from './layouts/SignupPage';
 import Spinner from './components/Spinner';
 import Subtitle from './components/Subtitle';
+import TagsForm from './components/TagsForm';
 import TextFieldGroup from './components/TextFieldGroup';
 import TextList from './components/TextList';
 import Title from './components/Title';
@@ -132,6 +133,11 @@ storiesOf('Pi', module)
 //   .add('Devices', () => (
 //     <Devices />
 //   ));
+
+storiesOf('Tags', module)
+  .add('TagsForm', () => (
+    <TagsForm />
+  ));
 
 storiesOf('Titles', module)
   .add('Title', () => (
