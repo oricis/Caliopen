@@ -71,7 +71,7 @@ class DeviceForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.onChange({ device: this.state.device });
+    this.props.onChange({ device: this.state.device, original: this.props.device });
   }
 
   render() {
