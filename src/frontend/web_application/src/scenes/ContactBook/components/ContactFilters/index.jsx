@@ -9,7 +9,7 @@ const ContactFilters = ({ onSortDirChange, onSortViewChange, sortDir, sortView }
       <FormColumn size="shrink">
         <SelectFieldGroup
           name="format-view"
-          className="m-contact-filters__col"
+          className="m-contact-filters__select"
           label="Name format view"
           value={sortView}
           options={[{ value: 'given_name', label: 'Firstname, Name' }, { value: 'family_name', label: 'Name, Firstname' }]}
@@ -18,7 +18,7 @@ const ContactFilters = ({ onSortDirChange, onSortViewChange, sortDir, sortView }
       </FormColumn>
       <FormColumn size="shrink">
         <SelectFieldGroup
-          className="m-contact-filters__col"
+          className="m-contact-filters__select"
           name="order-by"
           label="Order by"
           value={sortDir}

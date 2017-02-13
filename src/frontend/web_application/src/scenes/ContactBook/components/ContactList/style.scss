@@ -8,7 +8,7 @@
   }
 
   &__contact {
-    @include flex-grid-row;
+    @include flex-grid-row($size: expanded);
     align-items: baseline;
     height: map_get($co-form__height, 'large');
     padding-left: map_get($co-form__spacing, 'small');
@@ -23,36 +23,7 @@
     @include flex-grid-size;
   }
 
-  &__transition-group {
-    &-appear {
-      opacity: 0;
-
-      &-active {
-        transition: opacity .2s ease-out;
-        opacity: 1;
-      }
-    }
-
-    &-enter {
-      opacity: 0;
-
-      &-active {
-        transition: opacity .2s ease-out;
-        opacity: 1;
-      }
-    }
-
-    &-leave {
-      transition: opacity .2s ease-out;
-      opacity: 1;
-
-      &-active {
-        opacity: 0;
-      }
-    }
-  }
-
   @include breakpoint(medium) {
-    &__col-name { @include flex-grid-size(9); }
+    &__col-name { @include flex-grid-size(5); }
   }
 }

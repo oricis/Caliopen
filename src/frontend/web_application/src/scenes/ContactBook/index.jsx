@@ -124,25 +124,27 @@ class ContactBook extends Component {
             sortView={this.state.sortView}
           />
         </div>
-        <div className="l-contact-book__tags">
-          <TagList
-            tags={this.state.tags}
-            activeTag={this.state.activeTag}
-            onTagClick={handleTagClick}
-            nbContactsAll={contacts.length}
-          />
-        </div>
         <div className="l-contact-book__contacts">
-          <Spinner isLoading={this.state.isFetching} />
-          <ContactList
-            contacts={
-              getOrderedContacts(
-                getFilteredContacts(this.state.contactList, this.state.activeTag),
-                this.state.sortView,
-                this.state.sortDir
-            )}
-            sortView={this.state.sortView}
-          />
+          <div className="l-contact-book__tags">
+            <TagList
+              tags={this.state.tags}
+              activeTag={this.state.activeTag}
+              onTagClick={handleTagClick}
+              nbContactsAll={contacts.length}
+            />
+          </div>
+          <div className="l-contact-book__contact-list">
+            <Spinner isLoading={this.state.isFetching} />
+            <ContactList
+              contacts={
+                getOrderedContacts(
+                  getFilteredContacts(this.state.contactList, this.state.activeTag),
+                  this.state.sortView,
+                  this.state.sortDir
+              )}
+              sortView={this.state.sortView}
+            />
+          </div>
         </div>
       </div>
     );
