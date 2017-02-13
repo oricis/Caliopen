@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import ContactBook from '../../src/scenes/ContactBook';
+import ContactBook from '../../src/scenes/ContactBook/presenter';
 import { Code, ComponentWrapper } from '../presenters';
 
 class Presenter extends Component {
@@ -27,10 +27,12 @@ class Presenter extends Component {
 
 
   render() {
+    const noop = str => str;
+
     return (
       <div>
         <ComponentWrapper>
-          <ContactBook />
+          <ContactBook __={noop} />
         </ComponentWrapper>
 
 
