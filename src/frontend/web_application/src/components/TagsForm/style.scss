@@ -12,20 +12,24 @@
     }
   }
 
-  &__search { margin-bottom: map-get($co-form__spacing, 'large'); }
+  &__form { margin-bottom: map-get($co-form__spacing, 'large');}
+  &__search {@include flex-grid-row($size: expanded);}
   &__search-input { @include flex-grid-size; }
 
   &__list { margin-bottom: map-get($co-form__spacing, 'large');}
 
   &__item {
     @include flex-grid-row($size: expanded);
-    width: 100%;
     height: $co-component__height;
     margin-bottom: map-get($co-form__spacing, 'small');
-    background: $co-color__fg__back--high;
     line-height: $co-component__height;
 
-    &:hover { background: $co-color__fg__back--higher;  }
+    &--button {
+      background: $co-color__fg__back--high;
+      &:hover { background: $co-color__fg__back--higher;  }
+    }
+
+
   }
 
   &__text { @include flex-grid-size(shrink); }

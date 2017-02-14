@@ -7,11 +7,11 @@ import TagInput from './components/TagInput';
 
 import './style.scss';
 
-const tags = ['work', 'bank', 'friends', 'france', 'tag'];
 const noop = str => str;
 
 class TagsForm extends Component {
   static propTypes = {
+    tags: PropTypes.arrayOf(PropTypes.string),
     form: PropTypes.shape({}),
     formValues: PropTypes.shape({}),
     onSubmit: PropTypes.func,
@@ -21,11 +21,7 @@ class TagsForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      formValues: {
-        tag: '',
-      },
-    };
+    this.state = {};
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,18 +46,20 @@ class TagsForm extends Component {
 
   render() {
     const { form, __ } = this.props;
+    const tagNb = this.props.tags.length;
     const title = [
       __('tags.header.title'),
-      <span key={tags} className="m-tags__header-count">({__('tags.count')}: x)</span>,
+      <span key={this.props.tags} className="m-tags__header-count">({__('tags.header.count')}: {tagNb})</span>,
     ];
+
 
     return (
       <Modal className="m-tags" title={title}>
-        <FormGrid className="m-tags__form" name="tags_form" {...form}>
-          <FormRow className="m-tags__search">
+        <FormGrid className="m-tags__form" name="tags-form" {...form}>
+          <div className="m-tags__search">
             <TextFieldGroup
               id="tags-search"
-              name="search"
+              name="tags-search"
               className="m-tags__search-input"
               label={__('tags.form.search.label')}
               placeholder={__('tags.form.search.placeholder')}
@@ -69,15 +67,10 @@ class TagsForm extends Component {
               showLabelforSr
             />
             <Button inline onClick={this.handleSubmit}><Icon type="search" spaced /></Button>
-          </FormRow>
+          </div>
         </FormGrid>
         <div className="m-tags__list">
-          {tags.map(tag =>
-            <TagInput
-              tag={tag}
-              key={tag}
-              __={noop}
-            />)}
+          {this.props.tags.map(tag => <TagInput tag={tag} key={tag} __={noop} />)}
         </div>
         <FormGrid>
           <FormRow className="m-tags__action" >

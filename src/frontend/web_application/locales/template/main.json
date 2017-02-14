@@ -161,5 +161,11 @@
     "signup.form.username.label": "signup.form.username.label",
     "signup.form.username.placeholder": "signup.form.username.placeholder",
     "signup.go_signin": "signup.go_signin",
-    "signup.title": "signup.title"
+    "signup.title": "signup.title",
+    "tags.header.title": "tags.header.title",
+    "tags.header.count" : "tags.header.count",
+    "tags.form.search.label" : "ags.form.search.label",
+    "tags.form.search.placeholder" : "ags.form.search.placeholder",
+    "tags.form.search.placeholder" : "ags.form.search.placeholder",
+    "tags.action.create" : "tags.actio.create"
 }
