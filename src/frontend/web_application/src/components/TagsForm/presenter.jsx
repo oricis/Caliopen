@@ -73,13 +73,12 @@ class TagsForm extends Component {
           {this.props.tags.map(tag => <TagInput tag={tag} key={tag} __={noop} />)}
         </div>
         <FormGrid>
-          <FormRow className="m-tags__action" >
-            <Button
-              type="submit"
-              onClick={this.handleSubmit}
-              plain
-            >{__('tags.action.create')}</Button>
-          </FormRow>
+          <Button
+            className="m-tags__action"
+            type="submit"
+            onClick={this.handleSubmit}
+            plain
+          >{__('tags.action.create')}</Button>
         </FormGrid>
       </Modal>
     );

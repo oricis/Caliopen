@@ -3,7 +3,7 @@ import { action } from '@kadira/storybook'; // eslint-disable-line
 import TagsForm from '../../src/components/TagsForm/presenter';
 import { Code, ComponentWrapper } from '../presenters';
 
-const tags = ['Humans', 'Planet Express', 'Genius', 'Head', 'blah', 'blahblah', 'pfffffffffffffff'];
+const tags = ['Humans', 'Planet Express', 'Head'];
 
 
 const Presenter = () => {
