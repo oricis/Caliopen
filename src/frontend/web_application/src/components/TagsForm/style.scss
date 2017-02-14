@@ -3,74 +3,38 @@
 
 .m-tags {
 
-  max-width: 500px;
-
   &__header {
-    @include flex-grid-row;
-    padding-top: 0;
-    padding-bottom: 0;
+
+    &-count {
+      padding-left: map-get($co-form__spacing, 'small');
+      color: $co-color__fg__text--lower;
+      font-weight: 400;
+    }
+  }
+
+  &__search { margin-bottom: map-get($co-form__spacing, 'large'); }
+  &__search-input { @include flex-grid-size; }
+
+  &__list { margin-bottom: map-get($co-form__spacing, 'large');}
+
+  &__item {
+    @include flex-grid-row($size: expanded);
+    width: 100%;
+    height: $co-component__height;
+    margin-bottom: map-get($co-form__spacing, 'small');
+    background: $co-color__fg__back--high;
     line-height: $co-component__height;
 
-    &-title {
-      @include flex-grid-size(11);
-      margin-top: 0;
-      margin-bottom: 0;
-      color: $co-color__fg__text--high;
-      font-size: 1rem;
-
-      span {
-        color: $co-color__fg__text--lower;
-        font-weight: 400;
-      }
-    }
-
-    &-close {
-      @include flex-grid-size(shrink);
-      margin-left: auto; // flew way to align right
-      padding-right: 0;
-      padding-left: 0;
-
-      &:hover {
-        background: none;
-      }
-    }
+    &:hover { background: $co-color__fg__back--higher;  }
   }
 
+  &__text { @include flex-grid-size(shrink); }
 
-  .m-tags-form {
-
-    &__search {
-      margin-bottom: map-get($co-form__spacing, 'small');
-    }
-
-    &__search-input {
-      @include flex-grid-size;
-    }
-
-    &__search-button {
-      @include flex-grid-size(shrink);
-    }
+  &__icon {
+    @include flex-grid-size(shrink);
+    margin-left: auto;
+    line-height: $co-component__height;
   }
 
-  .m-tags-list {
-
-    &__item {
-      @include flex-grid-row(12);
-      margin-bottom: map-get($co-form__spacing, 'xsmall');
-      height: $co-component__height;
-      width: 100%;
-    }
-
-    &__text {
-      @include flex-grid-column(11);
-      line-height: $co-component__height;
-    }
-
-    &__icon {
-      @include flex-grid-column(1);
-      line-height: $co-component__height;
-      margin-left: auto;
-    }
-  }
-
+  &__item-input { @include flex-grid-size; }
 }

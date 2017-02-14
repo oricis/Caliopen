@@ -14,6 +14,7 @@ import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
 import Icon from './components/Icon';
 import Link from './components/Link';
+import Modal from './components/Modal';
 import PiBar from './components/PiBar';
 import PasswordStrength from './components/PasswordStrength';
 import RadioFieldGroup from './components/RadioFieldGroup';
@@ -110,8 +111,10 @@ storiesOf('Icons & Avatars', module)
 storiesOf('Layout', module)
   .add('Section', () => (
     <Section />
+  ))
+  .add('Modal', () => (
+    <Modal />
   ));
-
 storiesOf('Lists', module)
   .add('BlockList & ItemContent', () => (
     <BlockList />

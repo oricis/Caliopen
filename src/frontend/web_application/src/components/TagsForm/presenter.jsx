@@ -1,22 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import Button from '../Button';
-import Badge from '../Badge';
 import Icon from '../Icon';
-import Section from '../Section';
-import { TextFieldGroup, FormGrid, FormRow, FormColumn } from '../form';
+import Modal from '../Modal';
+import { TextFieldGroup, FormGrid, FormRow } from '../form';
+import TagInput from './components/TagInput';
+
 import './style.scss';
 
-const tags = ['work', 'bank', 'tag3'];
-
-const TagInput = ({ tag }) => (
-  <Badge className="m-tags-list__item">
-    <span className="m-tags-list__text">{tag}</span>
-    <Icon type="edit" className="m-tags-list__icon" />
-  </Badge>
-);
-TagInput.propTypes = {
-  tag: PropTypes.string,
-};
+const tags = ['work', 'bank', 'friends', 'france', 'tag'];
+const noop = str => str;
 
 class TagsForm extends Component {
   static propTypes = {
@@ -55,48 +47,48 @@ class TagsForm extends Component {
     this.props.onSubmit({ formValues });
   }
 
+
   render() {
     const { form, __ } = this.props;
+    const title = [
+      __('tags.header.title'),
+      <span key={tags} className="m-tags__header-count">({__('tags.count')}: x)</span>,
+    ];
 
     return (
-      <div className="m-tags">
-        <Section className="m-tags__header">
-          <h3 className="m-tags__header-title">{__('tags.header.title')} <span>({__('tags.count')}: x)</span></h3>
-          <Button className="m-tags__header-close"><Icon type="remove" /></Button>
-        </Section>
-        <Section className="m-tags__form">
-          <FormGrid className="m-tags-form" name="tags_form" {...form}>
-            <FormRow className="m-tags-form__search">
-              <TextFieldGroup
-                id="tags-search"
-                name="search"
-                className="m-tags-form__search-input"
-                label={__('tags.form.search.label')}
-                placeholder={__('tags.form.search.placeholder')}
-                defaultValue={this.state.formValues.tag}
-                onChange={this.handleInputChange}
-                showLabelforSr
-              />
-              <Button plain className="m-tags-form__search-button" onClick={this.handleSubmitTagsSearch}>
-                <Icon type="search" />
-              </Button>
-            </FormRow>
-          </FormGrid>
-          <div className="m-tags-list">
-            {tags.map(tag => <TagInput tag={tag} />)}
-          </div>
-          <FormGrid>
-
-            <FormRow className="m-tags-form__action" >
-              <Button
-                type="submit"
-                onClick={this.handleSubmit}
-                plain
-              >{__('tags.action.create')}</Button>
-            </FormRow>
-          </FormGrid>
-        </Section>
-      </div>
+      <Modal className="m-tags" title={title}>
+        <FormGrid className="m-tags__form" name="tags_form" {...form}>
+          <FormRow className="m-tags__search">
+            <TextFieldGroup
+              id="tags-search"
+              name="search"
+              className="m-tags__search-input"
+              label={__('tags.form.search.label')}
+              placeholder={__('tags.form.search.placeholder')}
+              onChange={this.handleInputChange}
+              showLabelforSr
+            />
+            <Button inline onClick={this.handleSubmit}><Icon type="search" spaced /></Button>
+          </FormRow>
+        </FormGrid>
+        <div className="m-tags__list">
+          {tags.map(tag =>
+            <TagInput
+              tag={tag}
+              key={tag}
+              __={noop}
+            />)}
+        </div>
+        <FormGrid>
+          <FormRow className="m-tags__action" >
+            <Button
+              type="submit"
+              onClick={this.handleSubmit}
+              plain
+            >{__('tags.action.create')}</Button>
+          </FormRow>
+        </FormGrid>
+      </Modal>
     );
   }
 }
