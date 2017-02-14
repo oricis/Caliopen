@@ -3,6 +3,7 @@ import Button from '../../../Button';
 import Icon from '../../../Icon';
 import { TextFieldGroup } from '../../../form';
 
+import './style.scss';
 
 class TagInput extends Component {
   static propTypes = {
@@ -30,28 +31,32 @@ class TagInput extends Component {
     let displayTag = '';
     if (this.state.edit) {
       displayTag = (
-        <div className="m-tags__item">
+        <div className="m-tag">
           <TextFieldGroup
             id={this.props.tag}
             name={this.props.tag}
-            className="m-tags__item-input"
+            className="m-tag__input"
+            label={this.props.tag}
             placeholder={this.props.tag}
             defaultValue={this.props.tag}
+            showLabelforSr
             autoFocus
           />
-          <Button inline onClick={this.handleClick}><Icon type="check" spaced /></Button>
+          <Button className="m-tag__button" inline onClick={this.handleClick}><Icon className="m-tag__icon" type="check" /></Button>
         </div>
       );
     } else {
       displayTag = (
-        <Button
-          className="m-tags__item m-tags__item--button"
-          onClick={this.handleClick}
-          expanded
-        >
-          <span className="m-tags__text">{this.props.tag}</span>
-          <Icon className="m-tags__icon" type="edit" spaced />
-        </Button>
+        <div className="m-tag m-tag--button">
+          <Button
+            className="m-tag__button"
+            onClick={this.handleClick}
+            expanded
+          >
+            <span className="m-tag__text">{this.props.tag}</span>
+            <Icon className="m-tag__icon" type="edit" />
+          </Button>
+        </div>
       );
     }
 

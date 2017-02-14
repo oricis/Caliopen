@@ -66,7 +66,7 @@ class TagsForm extends Component {
               onChange={this.handleInputChange}
               showLabelforSr
             />
-            <Button inline onClick={this.handleSubmit}><Icon type="search" spaced /></Button>
+            <Button inline onClick={this.handleSubmit}><Icon type="search" /></Button>
           </div>
         </FormGrid>
         <div className="m-tags__list">
