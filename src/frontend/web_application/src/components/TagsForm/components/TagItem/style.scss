@@ -7,13 +7,11 @@
   margin-bottom: map-get($co-form__spacing, 'small');
   line-height: $co-component__height;
 
-  &--button {
-    .m-tag__button {
-      @include flex-grid-row($size: expanded);
-      background: $co-color__fg__back--high;
-      &:hover { background: $co-color__fg__back--higher;  }
+  &__button {
+    @include flex-grid-row($size: expanded);
+    background: $co-color__fg__back--high;
+    &:hover { background: $co-color__fg__back--higher;  }
     }
-  }
 
   &__text { @include flex-grid-size(shrink);}
 

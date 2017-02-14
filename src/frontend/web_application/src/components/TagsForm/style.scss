@@ -3,21 +3,13 @@
 
 .m-tags {
 
-  &__header {
-
-    &-count {
-      padding-left: map-get($co-form__spacing, 'small');
-      color: $co-color__fg__text--lower;
-      font-weight: 400;
-    }
+  &__count {
+    padding-left: map-get($co-form__spacing, 'small');
+    color: $co-color__fg__text--lower;
+    font-weight: 400;
   }
 
-  &__form { margin-bottom: map-get($co-form__spacing, 'large');}
-  &__search {@include flex-grid-row($size: expanded);}
-  &__search-input { @include flex-grid-size; }
-
-  &__list { margin-bottom: map-get($co-form__spacing, 'large');}
-
-  &__action { width: 100%;}
-
+  &__section {
+    margin-bottom: map-get($co-form__spacing, 'large');
+  }
 }
