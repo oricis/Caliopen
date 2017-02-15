@@ -16,6 +16,7 @@
     &::after {
       display: block;
       content: ' ';
+      z-index: $l-z-index__navbar-shadow;
       width: 100%;
       height: 10px;
       transition: $co-animation__box-transition;
