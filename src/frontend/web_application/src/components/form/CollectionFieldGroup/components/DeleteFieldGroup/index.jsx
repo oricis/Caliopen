@@ -31,9 +31,9 @@ const DeleteFieldGroup = ({ label, item, onDelete, className }) => {
 };
 
 DeleteFieldGroup.propTypes = {
-  label: PropTypes.string,
-  item: PropTypes.string,
-  onDelete: PropTypes.func,
+  label: PropTypes.string.isRequired,
+  item: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
   className: PropTypes.string,
 };
 

@@ -62,6 +62,7 @@
     "device.action.revoke": "Revoke this device",
     "device.action.save_changes": "Save modifications",
     "device.action.verify": "Verify this device",
+    "device.feedback.invalid_ip": "IP or subnet address is invalid.",
     "device.form.ips.label": "IP or subnet address:",
     "device.info.date_insert": "Insert date",
     "device.info.last_seen": "Last connection",

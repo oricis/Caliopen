@@ -62,6 +62,7 @@
     "device.action.revoke": "Révoquer",
     "device.action.save_changes": "Enregistrer les modifications",
     "device.action.verify": "Vérifier",
+    "device.feedback.invalid_ip": "Adresse IP ou de sous-réseaux invalide.",
     "device.form.ips.label": "IP ou adresse de sous-réseaux",
     "device.info.date_insert": "Date de création",
     "device.info.last_seen": "Dernière connexion",

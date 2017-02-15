@@ -62,6 +62,7 @@
     "device.action.revoke": "device.action.revoke",
     "device.action.save_changes": "device.action.save_changes",
     "device.action.verify": "device.action.verify",
+    "device.feedback.invalid_ip": "device.feedback.invalid_ip",
     "device.form.ips.label": "device.form.ips.label",
     "device.info.date_insert": "device.info.date_insert",
     "device.info.last_seen": "device.info.last_seen",

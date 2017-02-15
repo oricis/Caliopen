@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
-import { FormGrid, FormRow, FormColumn, Fieldset, Legend, TextFieldGroup, SelectFieldGroup } from '../../../../components/form';
+import { FormGrid, FormRow, FormColumn, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, CollectionFieldGroup } from '../../../../components/form';
 import './style.scss';
 
 function generateStateFromProps(props) {
@@ -26,11 +25,10 @@ class DeviceForm extends Component {
     super(props);
     this.state = {
       ...generateStateFromProps(this.props),
-      newIP: '',
     };
     this.handleFieldChange = this.handleFieldChange.bind(this);
-    this.handleClickNewIP = this.handleClickNewIP.bind(this);
-    this.handleNewIPChange = this.handleNewIPChange.bind(this);
+    this.validateIP = this.validateIP.bind(this);
+    this.handleIPsChange = this.handleIPsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -52,21 +50,23 @@ class DeviceForm extends Component {
     }));
   }
 
-  handleNewIPChange(ev) {
-    const { value: newIP } = ev.target;
-    this.setState({ newIP });
+  handleIPsChange(ips) {
+    this.setState(prevState => ({
+      device: {
+        ...prevState.device,
+        ips,
+      },
+    }));
   }
 
-  handleClickNewIP() {
-    if (this.state.newIP) {
-      this.setState(prevState => ({
-        device: {
-          ...prevState.device,
-          ips: [prevState.newIP, ...prevState.device.ips],
-        },
-        newIP: '',
-      }));
+  validateIP(ip) {
+    if (/^[0-9]{1,3}(\.[/0-9]*){1,3}$/.test(ip)) {
+      return { isValid: true };
     }
+
+    const { __ } = this.props;
+
+    return { isValid: false, errors: [__('device.feedback.invalid_ip')] };
   }
 
   handleSubmit(event) {
@@ -130,31 +130,13 @@ class DeviceForm extends Component {
               <label htmlFor="device-ips">{__('device.manage_form.ips.infotext')}</label>
             </FormColumn>
             <FormColumn bottomSpace size="medium">
-              <div className="m-device-form__ip">
-                <TextFieldGroup
-                  label={__('device.manage_form.add-ip.label')}
-                  placeholder={__('device.manage_form.add-ip.label')}
-                  name="newIP"
-                  value={this.state.newIP}
-                  onChange={this.handleNewIPChange}
-                  className="m-device-form__ip-input"
-                  showLabelforSr
-                />
-                <Button plain inline className="m-device-form__ip-button" onClick={this.handleClickNewIP}><Icon type="plus" /></Button>
-              </div>
-              {this.state.device.ips.map(ip =>
-                <div className="m-device-form__ip" key={ip}>
-                  <TextFieldGroup
-                    label={__('device.form.ips.label')}
-                    name={ip}
-                    defaultValue={ip}
-                    className="m-device-form__ip-input"
-                    showLabelforSr
-                    readOnly
-                  />
-                  <Button plain inline className="m-device-form__ip-button"><Icon type="remove" /></Button>
-                </div>
-              )}
+              <CollectionFieldGroup
+                collection={this.state.device.ips}
+                addLabel={__('device.manage_form.add-ip.label')}
+                itemLabel={__('device.form.ips.label')}
+                validate={this.validateIP}
+                onChange={this.handleIPsChange}
+              />
             </FormColumn>
           </FormRow>
         </Fieldset>

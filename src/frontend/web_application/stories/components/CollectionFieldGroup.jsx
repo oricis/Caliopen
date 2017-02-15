@@ -36,6 +36,12 @@ class Presenter extends Component {
       'bazzz',
     ];
 
+    const validate = (item) => {
+      action('validate')(item);
+
+      return { isValid: true };
+    };
+
     const noop = str => str;
 
     return (
@@ -46,6 +52,7 @@ class Presenter extends Component {
             addLabel="Add an item"
             itemLabel="An item"
             onChange={action('change')}
+            validate={validate}
             __={noop}
             {...this.state.props}
           />
@@ -59,11 +66,21 @@ const handleChange = (updatedColl) => {
   // do the things with updated collection
 };
 
+// validation is optionnal
+const validate = (item) => {
+  // do the thing
+  const isValid = <bool>;
+  const errors = [<string>, ...];
+
+  return { isValid, errors };
+};
+
 <CollectionFieldGroup
   collection={collection}
   addLabel="Add an item"
   itemLabel="An item"
   onChange={handleChange}
+  validate={validate}
 />
           `}
         </Code>
