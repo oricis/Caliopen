@@ -9,6 +9,7 @@
   - Pi - PiBar
   - Layout - Section
   - Lists - DefList
+  - form - CollectionFieldGroup
 
 ### Changed
 

@@ -18,6 +18,7 @@
     "call-to-action.action.compose_contact": "call-to-action.action.compose_contact",
     "call-to-action.action.create_contact": "call-to-action.action.create_contact",
     "call-to-action.action.reply": "call-to-action.action.reply",
+    "collection-field-group.action.add": "collection-field-group.action.add",
     "contact.accounts": "contact.accounts",
     "contact.action.add_contact_detail": "contact.action.add_contact_detail",
     "contact.action.delete_contact_detail": "contact.action.delete_contact_detail",
