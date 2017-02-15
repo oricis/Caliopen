@@ -1,5 +1,6 @@
 ## SMTP config ##
 AppConfig:
+  version: 0.1.0 #to be moved into a general version file
   allowed_hosts:
   - localhost
   - caliopen.local
@@ -19,8 +20,7 @@ AppConfig:
 LDAConfig:
   lda_workers_size: 2
   log_received_mails: true
-  # backend to save raw emails to, before delivering to nats
-  backend_name: cassandra
+  backend_name: cassandra # backend to save raw emails to (inbound & outbound)
   backend_settings:
     hosts:
     - 127.0.0.1
@@ -29,3 +29,14 @@ LDAConfig:
   # nats config
   nats_url: nats://localhost:4222
   nats_topic: inboundSMTP
+
+## Outbound Agent config ##
+OutConfig:
+  submit_address: 127.0.0.1
+  submit_port: 2500
+  submit_user:
+  submit_password:
+  nats_url: nats://localhost:4222
+  nats_topic: outboundSMTP
+  nats_listeners: 1 # number of concurrent nats listeners
+  mta_workers: 2  # number of concurrent mta connexions

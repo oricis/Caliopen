@@ -1,0 +1,4 @@
+# publish a cassandra message's id to subject 'outboundSMTP' will trigger the operations of building and sending email to MTA
+order: deliver
+message_id: 1aae81ea-2f21-483e-8e68-b4fcf664df5a
+user_id: 1aae81ea-2f21-483e-8e68-b4fcf664df5a
