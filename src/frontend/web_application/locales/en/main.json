@@ -18,6 +18,7 @@
     "call-to-action.action.compose_contact": "Compose to this contact",
     "call-to-action.action.create_contact": "Create a contact",
     "call-to-action.action.reply": "Reply",
+    "collection-field-group.action.add": "Add",
     "contact.accounts": "Accounts",
     "contact.action.add_contact_detail": "Add",
     "contact.action.delete_contact_detail": "Delete",

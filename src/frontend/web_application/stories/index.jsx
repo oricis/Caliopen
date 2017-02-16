@@ -5,6 +5,7 @@ import BlockList from './components/BlockList';
 import Brand from './components/Brand';
 import Button from './components/Button';
 import CheckboxFieldGroup from './components/CheckboxFieldGroup';
+import CollectionFieldGroup from './components/CollectionFieldGroup';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
 import ContactDetails from './components/ContactDetails';
 import DefList from './components/DefList';
@@ -90,6 +91,9 @@ storiesOf('Form', module)
   ))
   .add('CheckboxFieldGroup', () => (
     <CheckboxFieldGroup />
+  ))
+  .add('CollectionFieldGroup', () => (
+    <CollectionFieldGroup />
   ));
 
 storiesOf('Icons & Avatars', module)
