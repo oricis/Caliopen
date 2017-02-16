@@ -5,17 +5,18 @@ import NavList, { ItemContent } from '../../../../components/NavList';
 
 import './style.scss';
 
-function nbContactsTag(all, tag) {
-  let count = 0;
-  let i = 0;
-  /* eslint-disable */
-  while ((i = all.indexOf(tag, i)) !== -1) {
-    count += 1;
-    i += 1;
-  }
-  /* eslint-enable */
+function nbContactsbyTag(list, tag) {
+  /**
+ * Count the number of time `tag` appears in `list` (array of all tags from all contacts)
+ * (= number of contacts tagged with `tag`)
+ * @param Array(<string>) list
+ * @param <string> tag
+ * @return <number>
+ **/
+  const count = [];
+  list.map(item => item === tag && count.push(item));
 
-  return count;
+  return count.length;
 }
 
 const TagItem = ({ title, link, onTagClick, nbContacts, active, className }) => (
@@ -62,7 +63,7 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
           <TagItem
             title={tag}
             link={tag}
-            nbContacts={nbContactsTag(list, tag)}
+            nbContacts={nbContactsbyTag(list, tag)}
             key={uuidV1()}
             onTagClick={onTagClick}
             active={tag === activeTag && true}
