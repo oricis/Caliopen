@@ -140,6 +140,8 @@ class UserMessageDelivery(object):
         thread_id = thread.thread_id if thread else None
 
         # XXX missing thread management
+
+        # create and index the message
         msg = Message.create(user, message, thread_id=thread_id, lookup=lookup)
         # XXX Init lookup
         if not lookup:

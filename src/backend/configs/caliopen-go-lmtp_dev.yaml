@@ -6,37 +6,42 @@ AppConfig:
   - caliopen.local
   - caliopen.org
   primary_mail_host: caliopen.org
-  servers:
+  inbound_servers:
   - is_enabled: true
     host_name: localhost
-    max_size: 20971520
+    max_size: 20971520 # max authorized size for emails in bytes
     timeout: 180
     listen_interface: 127.0.0.1:2525
     start_tls_on: false
     tls_always_on: false
     max_clients: 1000
-
-## LDA config ##
-LDAConfig:
-  lda_workers_size: 2
-  log_received_mails: true
-  backend_name: cassandra # backend to save raw emails to (inbound & outbound)
-  backend_settings:
-    hosts:
-    - 127.0.0.1
-    keyspace: caliopen
-    consistency_level: 1
-  # nats config
-  nats_url: nats://localhost:4222
-  nats_topic: inboundSMTP
-
-## Outbound Agent config ##
-OutConfig:
+  #submit is the MTA to connect to for final delivery (postfix for example)
   submit_address: 127.0.0.1
   submit_port: 2500
   submit_user:
   submit_password:
+  submit_workers: 2  # number of concurrent connexions to submit MTA
+
+## LDA (Email broker) config ##
+LDAConfig:
+  broker_type: smtp # types are : smtp, imap, mailboxe, etc.
   nats_url: nats://localhost:4222
-  nats_topic: outboundSMTP
+  store_name: cassandra # backend to store raw emails and messages (inbound & outbound)
+  store_settings:
+    hosts:
+    - 127.0.0.1
+    keyspace: caliopen
+    consistency_level: 1
+  index_name: elasticsearch # backend to index messages (inbound & outbound)
+  index_settings:
+    urls:
+    - http://localhost:9200
+
+  #inbound
+  in_topic: inboundSMTP
+  lda_workers_size: 2
+  log_received_mails: true
+
+  # outbound
+  out_topic: outboundSMTP
   nats_listeners: 1 # number of concurrent nats listeners
-  mta_workers: 2  # number of concurrent mta connexions

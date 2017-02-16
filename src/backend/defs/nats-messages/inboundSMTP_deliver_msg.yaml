@@ -1,3 +1,5 @@
-# trigger incoming email processing
+# this is the model of the payload that must be sent to 'inboundSMTP' subject on NATS
+# to trigger incoming email processing for an user, after the raw email has been accepted and stored in cassandra
+order: process
 user_id: 1aae81ea-2f21-483e-8e68-b4fcf664df5a
 raw_email_id: 1aae81ea-2f21-483e-8e68-b4fcf664df5a

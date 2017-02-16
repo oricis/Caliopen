@@ -32,7 +32,7 @@ func (cb *CassandraBackend) UsernameIsAvailable(username string) (resp bool, err
 }
 
 // part of LDABackend interface implementation
-// return a list of users' emails found in user_name table for the given recipients list
+// return a list of users' ids found in user_name table for the given recipients list
 // TODO : modify this lookup as user_name table should be replaced by an 'aliases' table
 func (cb *CassandraBackend) GetRecipients(rcpts []string) (user_ids []string, err error) {
 	userTable := cb.IKeyspace.MapTable("user_name", "name", &obj.UserName{})

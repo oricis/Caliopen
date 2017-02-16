@@ -6,8 +6,8 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest/cli_cmds"
+	"os"
 )
 
 func main() {
