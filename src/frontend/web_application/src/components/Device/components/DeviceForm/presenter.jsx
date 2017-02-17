@@ -60,7 +60,7 @@ class DeviceForm extends Component {
   }
 
   validateIP(ip) {
-    if (/^[0-9]{1,3}(\.[/0-9]*){1,3}$/.test(ip)) {
+    if (/^[0-9]{1,3}(\.[-/0-9]*){1,3}$/.test(ip)) {
       return { isValid: true };
     }
 
