@@ -64,7 +64,7 @@ func (server *SMTPServer) start() (err error) {
 	go func() {
 		server.runSubmitterAgent()
 	}()
-	log.Infof("Caliopen outbound smtp started")
+	log.Infof("Caliopen smtp started")
 
 	// launch SMTP inbound listener
 	var b guerrilla.Backend

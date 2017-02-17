@@ -21,18 +21,25 @@ func (b *emailBroker) startIncomingSmtpAgent() error {
 	for i := 0; i < b.Config.InWorkers; i++ {
 		go b.incomingSmtpWorker()
 	}
+	//TODO: error handling
 	return nil
 }
 
 func (b *emailBroker) incomingSmtpWorker() {
 	//  receives values from the channel repeatedly until channel is closed
 	for in := range b.Connectors.IncomingSmtp {
-		if in.Email == nil {
+		if in.EmailMessage == nil {
 			log.Warn("broker error : incomingSmtpWorker received an empty payload")
-			in.Response <- &DeliveryAck{
-				EmailMessage: &EmailMessage{Email: &Email{Envelope: in.Email}},
+			ack := &DeliveryAck{
+				EmailMessage: in.EmailMessage,
 				Err:          errors.New("empty payload"),
 				Response:     "",
+			}
+			select {
+			case in.Response <- ack:
+			//write was OK
+			default:
+				//unable to write, don't block
 			}
 		}
 		go b.processInbound(in)
@@ -41,9 +48,9 @@ func (b *emailBroker) incomingSmtpWorker() {
 
 // for now, ProcessInbound only store raw email and sends an order on NATS topic for py.delivery to process it
 // in future, this broker should process the whole delivery, including the email marshalling into a Caliopen's message format
-func (b *emailBroker) processInbound(in *IncomingSmtpEmail) {
+func (b *emailBroker) processInbound(in *SmtpEmail) {
 	resp := &DeliveryAck{
-		EmailMessage: &EmailMessage{Email: &Email{Envelope: in.Email}},
+		EmailMessage: in.EmailMessage,
 		Err:          nil,
 		Response:     "",
 	}
@@ -53,21 +60,17 @@ func (b *emailBroker) processInbound(in *IncomingSmtpEmail) {
 
 	//step 1 : recipients lookup
 	//         we need at least one valid recipient before processing further
-	to := in.Email.RcptTo
-	if len(to) == 0 {
+
+	if len(in.EmailMessage.Email.SmtpRcpTo) == 0 {
 		resp.Err = errors.New("no recipient")
 		return
 	}
 
 	if b.Config.LogReceivedMails {
-		log.Infof("inbound: processing envelope From: %s -> To: %v", in.Email.MailFrom, to)
+		log.Infof("inbound: processing envelope From: %s -> To: %v", in.EmailMessage.Email.SmtpMailFrom, in.EmailMessage.Email.SmtpRcpTo)
 	}
 
-	emails := []string{}
-	for _, emailAddress := range to {
-		emails = append(emails, emailAddress.String())
-	}
-	rcptsIds, err := b.Store.GetRecipients(emails)
+	rcptsIds, err := b.Store.GetRecipients(in.EmailMessage.Email.SmtpRcpTo)
 
 	if err != nil {
 		log.WithError(err).Warn("inbound: recipients lookup failed")
@@ -81,7 +84,7 @@ func (b *emailBroker) processInbound(in *IncomingSmtpEmail) {
 	}
 
 	//step 2 : store raw email and get its raw_id
-	raw_email_id, err := b.Store.StoreRaw(in.Email.Data)
+	raw_email_id, err := b.Store.StoreRaw(in.EmailMessage.Email.Raw.String())
 	if err != nil {
 		log.WithError(err).Warn("inbound: storing raw email failed")
 		resp.Err = errors.New("storing raw email failed")

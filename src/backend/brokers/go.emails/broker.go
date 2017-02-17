@@ -10,9 +10,9 @@ import (
 	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends/store/cassandra"
 	log "github.com/Sirupsen/logrus"
-	"github.com/flashmob/go-guerrilla"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
+	"github.com/pkg/errors"
 )
 
 type (
@@ -25,16 +25,11 @@ type (
 	}
 
 	EmailBrokerConnectors struct {
-		IncomingSmtp  chan *IncomingSmtpEmail
-		OutcomingSmtp chan *OutcomingSmtpEmail
+		IncomingSmtp  chan *SmtpEmail
+		OutcomingSmtp chan *SmtpEmail
 	}
 
-	IncomingSmtpEmail struct {
-		Email    *guerrilla.Envelope
-		Response chan *DeliveryAck
-	}
-
-	OutcomingSmtpEmail struct {
+	SmtpEmail struct {
 		EmailMessage *EmailMessage
 		Response     chan *DeliveryAck
 	}
@@ -57,6 +52,7 @@ var (
 )
 
 func Initialize(conf LDAConfig) (connectors EmailBrokerConnectors, err error) {
+	var e error
 	broker = &emailBroker{}
 	broker.Config = conf
 	switch conf.StoreName {
@@ -66,17 +62,20 @@ func Initialize(conf LDAConfig) (connectors EmailBrokerConnectors, err error) {
 			Keyspace:    conf.StoreConfig.Keyspace,
 			Consistency: gocql.Consistency(conf.StoreConfig.Consistency),
 		}
-		b, err := store.InitializeCassandraBackend(c)
-		if err != nil {
-			log.WithError(err).Warnf("EmailBroker : Initalization of %s backend failed", conf.StoreName)
-			return connectors, err
+		b, e := store.InitializeCassandraBackend(c)
+		if e != nil {
+			err = e
+			log.WithError(err).Warnf("EmailBroker : initalization of %s backend failed", conf.StoreName)
+			return
 		}
 
 		broker.Store = backends.LDAStore(b) // type conversion to LDA interface
 	case "BOBcassandra":
 	// NotImplemented… yet ! ;-)
 	default:
-		log.Fatalf("Unknown store backend: %s", conf.StoreName)
+		log.Warn("EmailBroker : unknown store backend: %s", conf.StoreName)
+		err = errors.New("EmailBroker : unknown store backend")
+		return
 	}
 
 	switch conf.IndexName {
@@ -84,29 +83,43 @@ func Initialize(conf LDAConfig) (connectors EmailBrokerConnectors, err error) {
 		c := index.ElasticSearchConfig{
 			Urls: conf.IndexConfig.Urls,
 		}
-		i, err := index.InitializeElasticSearchIndex(c)
-		if err != nil {
-			log.WithError(err).Warnf("Initalization of %s backend failed", conf.IndexName)
-			return connectors, err
+		i, e := index.InitializeElasticSearchIndex(c)
+		if e != nil {
+			err = e
+			log.WithError(err).Warnf("EmailBroker : initalization of %s backend failed", conf.IndexName)
+			return
 		}
 
 		broker.Index = backends.LDAIndex(i) // type conversion to LDA interface
 	}
 
-	broker.NatsConn, err = nats.Connect(conf.NatsURL)
-	if err != nil {
-		log.WithError(err).Warn("Initalization of NATS connexion failed")
-		return connectors, err
+	broker.NatsConn, e = nats.Connect(conf.NatsURL)
+	if e != nil {
+		err = e
+		log.WithError(err).Warn("EmailBroker : initalization of NATS connexion failed")
+		return
 	}
 	if conf.BrokerType == "smtp" {
-		broker.Connectors.IncomingSmtp = make(chan *IncomingSmtpEmail)
-		broker.Connectors.OutcomingSmtp = make(chan *OutcomingSmtpEmail)
+		broker.Connectors.IncomingSmtp = make(chan *SmtpEmail)
+		broker.Connectors.OutcomingSmtp = make(chan *SmtpEmail)
+
+		e = broker.startIncomingSmtpAgent()
+		if e != nil {
+			err = e
+			log.WithError(err).Warn("EmailBroker : failed to start incoming smtp agent")
+			return
+		}
+
+		e = broker.startOutcomingSmtpAgent()
+		if e != nil {
+			err = e
+			log.WithError(err).Warn("EmailBroker : failed to start outcoming smtp agent")
+			return
+		}
+
 		connectors = broker.Connectors
-
-		broker.startIncomingSmtpAgent()
-
-		broker.startOutcomingSmtpAgent()
 	}
 
+	log.Infof("EmailBroker started for %s.", conf.BrokerType)
 	return
 }

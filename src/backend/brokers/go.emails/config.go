@@ -5,15 +5,6 @@
 package email_broker
 
 type (
-	StoreConfig struct {
-		Hosts       []string `mapstructure:"hosts"`
-		Keyspace    string   `mapstructure:"keyspace"`
-		Consistency uint16   `mapstructure:"consistency_level"`
-	}
-	IndexConfig struct {
-		Urls []string `mapstructure:"urls"`
-	}
-
 	LDAConfig struct {
 		BrokerType       string      `mapstructure:"broker_type"`
 		NatsURL          string      `mapstructure:"nats_url"`
@@ -27,5 +18,14 @@ type (
 		OutTopic         string      `mapstructure:"out_topic"`
 		NatsListeners    int         `mapstructure:"nats_listeners"`
 		AppVersion       string
+	}
+
+	StoreConfig struct {
+		Hosts       []string `mapstructure:"hosts"`
+		Keyspace    string   `mapstructure:"keyspace"`
+		Consistency uint16   `mapstructure:"consistency_level"`
+	}
+	IndexConfig struct {
+		Urls []string `mapstructure:"urls"`
 	}
 )

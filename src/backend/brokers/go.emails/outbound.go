@@ -25,7 +25,6 @@ import (
 func (b *emailBroker) startOutcomingSmtpAgent() error {
 
 	b.NatsConn.Subscribe(b.Config.OutTopic, func(msg *nats.Msg) {
-		log.Info("got nats order")
 		b.natsMsgHandler(msg)
 	})
 	b.NatsConn.Flush()
@@ -48,20 +47,20 @@ func (b *emailBroker) natsMsgHandler(msg *nats.Msg) (resp string, err error) {
 			//TODO
 		}
 
-		e, err := MarshalEmail(m, b.Config.AppVersion)
+		em, err := MarshalEmail(m, b.Config.AppVersion)
 		if err != nil {
 			log.Warn(err)
 			//TODO
 		}
 
-		out := OutcomingSmtpEmail{
-			EmailMessage: e,
+		out := SmtpEmail{
+			EmailMessage: em,
 			Response:     make(chan *DeliveryAck),
 		}
 
 		b.Connectors.OutcomingSmtp <- &out
 		// non-blocking wait for delivery ack
-		go func(out *OutcomingSmtpEmail) {
+		go func(out *SmtpEmail) {
 			select {
 			case resp, ok := <-out.Response:
 				if resp.Err != nil || !ok || resp == nil {

@@ -5,6 +5,7 @@
 package caliopen_smtp
 
 import (
+	"bytes"
 	"fmt"
 	broker "github.com/CaliOpen/CaliOpen/src/backend/brokers/go.emails"
 	"github.com/flashmob/go-guerrilla"
@@ -24,10 +25,24 @@ type InboundSMTPResponse interface {
 // guerrilla backend interface implementation
 // Process is called within a goroutine. Must be concurrent safe.
 func (server *SMTPServer) Process(ev *guerrilla.Envelope) guerrilla.BackendResult {
+	var raw_email bytes.Buffer
+	raw_email.WriteString(ev.Data)
+	var to []string
+	for _, email_add := range ev.RcptTo {
+		to = append(to, email_add.String())
+	}
 
-	incoming := &broker.IncomingSmtpEmail{
-		Email:    ev,
-		Response: make(chan *broker.DeliveryAck),
+	emailMessage := broker.EmailMessage{
+		Email: &broker.Email{
+			SmtpMailFrom: ev.MailFrom.String(),
+			SmtpRcpTo:    to,
+			Raw:          raw_email,
+		},
+		Message: nil,
+	}
+	incoming := &broker.SmtpEmail{
+		EmailMessage: &emailMessage,
+		Response:     make(chan *broker.DeliveryAck),
 	}
 	defer close(incoming.Response)
 

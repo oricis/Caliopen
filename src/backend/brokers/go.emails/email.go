@@ -7,79 +7,26 @@ package email_broker
 
 import (
 	"bytes"
-	"fmt"
 	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
-	"github.com/flashmob/go-guerrilla"
 	"github.com/satori/go.uuid"
 	"gopkg.in/gomail.v2"
-	"io"
-	"mime"
 	"strings"
 	"time"
-)
-
-const (
-	// QuotedPrintable represents the quoted-printable encoding as defined in
-	// RFC 2045.
-	QuotedPrintable encoding = "quoted-printable"
-	// Base64 represents the base64 encoding as defined in RFC 2045.
-	Base64 encoding = "base64"
-	// Unencoded can be used to avoid encoding the body of an email. The headers
-	// will still be encoded using quoted-printable encoding.
-	Unencoded encoding = "8bit"
 )
 
 type (
 	// EmailMessage is a wrapper to handle the relationship
 	// between an email representation and its Caliopen message counterpart
 	EmailMessage struct {
-		Message *obj.MessageModel
 		Email   *Email
+		Message *obj.MessageModel
 	}
 
 	Email struct {
-		Components *gomail.Message
-		Envelope   *guerrilla.Envelope
-	}
-
-	smtpEnvelope struct {
-		// Remote IP address
-		RemoteAddress string
-		// Message sent in EHLO command
-		Helo string
-		// Sender
-		MailFrom *emailAddress
-		// Recipients
-		RcptTo []emailAddress
-		TLS    bool
-	}
-
-	// EmailAddress encodes an email address of the form `<user@host>`
-	emailAddress struct {
-		User string
-		Host string
-	}
-
-	header map[string][]string
-
-	part struct {
-		contentType string
-		copier      func(io.Writer) error
-		encoding    encoding
-	}
-
-	file struct {
-		Name     string
-		Header   map[string][]string
-		CopyFunc func(w io.Writer) error
-	}
-
-	// Encoding represents a MIME encoding scheme like quoted-printable or base64.
-	encoding string
-
-	mimeEncoder struct {
-		mime.WordEncoder
+		SmtpMailFrom string       // from or for the smtp agent
+		SmtpRcpTo    []string     // from or for the smtp agent
+		Raw          bytes.Buffer // raw email (without the Bcc header)
 	}
 )
 
@@ -87,12 +34,18 @@ type (
 // conforms to
 // RFC822 / RFC2822 (internet message format)
 // RFC2045 / RFC2046 / RFC2047 / RFC2048 / RFC2049 (MIME) => TODO
-func MarshalEmail(msg *obj.MessageModel, version string) (e *EmailMessage, err error) {
+func MarshalEmail(msg *obj.MessageModel, version string) (em *EmailMessage, err error) {
 
+	em = &EmailMessage{
+		Email: &Email{
+			SmtpMailFrom: msg.From,
+		},
+		Message: msg,
+	}
+
+	//make use of gomail library to build the raw email
 	m := gomail.NewMessage()
-
 	m.SetHeader("From", msg.From) //TODO: handle the display name when it will be available.
-
 	to, cc, bcc := []string{}, []string{}, []string{}
 	for _, rcpt := range msg.Recipients {
 		switch rcpt.RecipientType {
@@ -104,6 +57,9 @@ func MarshalEmail(msg *obj.MessageModel, version string) (e *EmailMessage, err e
 			bcc = append(bcc, rcpt.Address)
 		}
 	}
+	em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, to...)
+	em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, cc...)
+	em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, bcc...)
 	if len(to) > 0 {
 		m.SetHeader("To", to...)
 	}
@@ -114,7 +70,8 @@ func MarshalEmail(msg *obj.MessageModel, version string) (e *EmailMessage, err e
 		m.SetHeader("Bcc", bcc...)
 	}
 
-	m.SetHeader("Date", time.Now().Format(time.RFC1123Z))
+	em.Message.Date = time.Now()
+	m.SetHeader("Date", em.Message.Date.Format(time.RFC1123Z))
 
 	id, err := uuid.FromBytes(msg.Message_id)
 	if err != nil {
@@ -131,12 +88,7 @@ func MarshalEmail(msg *obj.MessageModel, version string) (e *EmailMessage, err e
 	m.SetBody("text/plain", msg.Body)
 	//TODO: errors handling
 
-	e = &EmailMessage{
-		Message: msg,
-		Email: &Email{
-			Components: m,
-		},
-	}
+	m.WriteTo(&em.Email.Raw)
 	return
 }
 
@@ -144,14 +96,9 @@ func MarshalEmail(msg *obj.MessageModel, version string) (e *EmailMessage, err e
 // it flags the caliopen message to 'sent' in cassandra (TODO and elastic ?)
 // and stores the raw email
 func (b *emailBroker) SaveSentEmail(ack *DeliveryAck) error {
-	var raw_email bytes.Buffer
-	_, err := ack.EmailMessage.Email.Components.WriteTo(&raw_email)
-	if err != nil {
-		log.WithError(err).Warn("outbound: storing raw email failed")
-		return err
-	}
+
 	// save raw email in db
-	raw_email_id, err := b.Store.StoreRaw(raw_email.String())
+	raw_email_id, err := b.Store.StoreRaw(ack.EmailMessage.Email.Raw.String())
 	if err != nil {
 		log.WithError(err).Warn("outbound: storing raw email failed")
 		return err
@@ -160,7 +107,7 @@ func (b *emailBroker) SaveSentEmail(ack *DeliveryAck) error {
 	fields := make(map[string]interface{})
 	fields["raw_msg_id"] = raw_email_id
 	fields["state"] = "sent"
-	fields["date"], _ = time.Parse(time.RFC1123Z, ack.EmailMessage.Email.Components.GetHeader("Date")[0])
+	fields["date"] = ack.EmailMessage.Message.Date
 	err = b.Store.UpdateMessage(ack.EmailMessage.Message, fields)
 	if err != nil {
 		log.Warn(err)
@@ -171,12 +118,4 @@ func (b *emailBroker) SaveSentEmail(ack *DeliveryAck) error {
 func (b *emailBroker) IndexSentEmail(ack DeliveryAck) error {
 
 	return nil
-}
-
-func (ep *emailAddress) String() string {
-	return fmt.Sprintf("%s@%s", ep.User, ep.Host)
-}
-
-func (ep *emailAddress) isEmpty() bool {
-	return ep.User == "" && ep.Host == ""
 }
