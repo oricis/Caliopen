@@ -67,9 +67,9 @@ func (b *emailBroker) natsMsgHandler(msg *nats.Msg) (resp string, err error) {
 					log.WithError(err).Warn("outbound: delivery error from MTA")
 					//TODO
 				} else {
-					err = b.SaveSentEmail(resp)
+					err = b.SaveIndexSentEmail(resp)
 					if err != nil {
-						log.WithError(err).Warn("outbound: error when saving back sent email")
+						log.Warn("outbound: error when saving back sent email")
 						//TODO
 					}
 				}

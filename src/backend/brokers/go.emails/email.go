@@ -32,7 +32,7 @@ type (
 
 // build a 'ready to send' email from a Caliopen message model
 // conforms to
-// RFC822 / RFC2822 (internet message format)
+// RFC822 / RFC2822 / RFC5322 (internet message format)
 // RFC2045 / RFC2046 / RFC2047 / RFC2048 / RFC2049 (MIME) => TODO
 func MarshalEmail(msg *obj.MessageModel, version string) (em *EmailMessage, err error) {
 
@@ -95,7 +95,7 @@ func MarshalEmail(msg *obj.MessageModel, version string) (em *EmailMessage, err 
 // this func is executed by natsMsgHandler after an email has been passed to the MTA without error
 // it flags the caliopen message to 'sent' in cassandra (TODO and elastic ?)
 // and stores the raw email
-func (b *emailBroker) SaveSentEmail(ack *DeliveryAck) error {
+func (b *emailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 
 	// save raw email in db
 	raw_email_id, err := b.Store.StoreRaw(ack.EmailMessage.Email.Raw.String())
@@ -110,12 +110,11 @@ func (b *emailBroker) SaveSentEmail(ack *DeliveryAck) error {
 	fields["date"] = ack.EmailMessage.Message.Date
 	err = b.Store.UpdateMessage(ack.EmailMessage.Message, fields)
 	if err != nil {
-		log.Warn(err)
+		log.Warn("Store.UpdateMessage operation failed")
+	}
+	err = b.Index.UpdateMessage(ack.EmailMessage.Message, fields)
+	if err != nil {
+		log.Warn("Index.UpdateMessage operation failed")
 	}
 	return err
-}
-
-func (b *emailBroker) IndexSentEmail(ack DeliveryAck) error {
-
-	return nil
 }
