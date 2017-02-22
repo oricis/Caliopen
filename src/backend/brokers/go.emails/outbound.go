@@ -84,7 +84,8 @@ func (b *emailBroker) natsMsgHandler(msg *nats.Msg) (resp string, err error) {
 }
 
 // bespoke implementation of the json.Unmarshaler interface
-// assuming well formatted NATS message
+// assuming well formatted NATS JSON message
+// hydrates the natsOrder with provided data
 func (msg *natsOrder) UnmarshalJSON(data []byte) error {
 	msg.Order = string(data[10:17])
 	msg.MessageId = string(data[34:70])

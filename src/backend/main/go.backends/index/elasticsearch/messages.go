@@ -8,14 +8,13 @@ import (
 	"github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"context"
-	"github.com/CaliOpen/CaliOpen/.cache/govendor/github.com/satori/go.uuid"
+	"github.com/satori/go.uuid"
 )
 
 func (es *ElasticSearchBackend) UpdateMessage(msg *objects.MessageModel, fields map[string]interface{}) error {
 
 	msg_id, _ := uuid.FromBytes(msg.Message_id)
 	user_id, _ := uuid.FromBytes(msg.User_id)
-
 
 	update, err := es.Client.Update().Index(user_id.String()).Type("indexed_message").Id(msg_id.String()).
 		Doc(fields).
