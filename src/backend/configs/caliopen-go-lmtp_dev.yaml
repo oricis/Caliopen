@@ -6,7 +6,7 @@ AppConfig:
   - caliopen.local
   - caliopen.org
   primary_mail_host: caliopen.org
-  inbound_servers:
+  inbound_servers: # many allowed
   - is_enabled: true
     host_name: localhost
     max_size: 20971520 # max authorized size for emails in bytes
@@ -26,23 +26,23 @@ AppConfig:
 LDAConfig:
   broker_type: smtp # types are : smtp, imap, mailboxe, etc.
   nats_url: nats://localhost:4222
-  nats_queue: SMTPqueue
+  nats_queue: SMTPqueue # NATS group queue for nats subscribers to share jobs
   store_name: cassandra # backend to store raw emails and messages (inbound & outbound)
   store_settings:
-    hosts:
+    hosts: # many allowed
     - 127.0.0.1
     keyspace: caliopen
     consistency_level: 1
   index_name: elasticsearch # backend to index messages (inbound & outbound)
   index_settings:
-    urls:
+    urls: # many allowed
     - http://localhost:9200
 
   #inbound
-  in_topic: inboundSMTP
-  lda_workers_size: 2
+  in_topic: inboundSMTP # NATS topic to listen to
+  lda_workers_size: 2 # number of concurrent workers
   log_received_mails: true
 
   # outbound
-  out_topic: outboundSMTP
+  out_topic: outboundSMTP # NATS topic to listen to
   nats_listeners: 2 # number of concurrent nats listeners

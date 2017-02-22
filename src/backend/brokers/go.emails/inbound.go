@@ -15,6 +15,8 @@ import (
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/hashicorp/go-multierror"
+	"time"
+	"sync"
 )
 
 func (b *EmailBroker) startIncomingSmtpAgent() error {
@@ -39,7 +41,7 @@ func (b *EmailBroker) incomingSmtpWorker() {
 			case in.Response <- ack:
 			//write was OK
 			default:
-				//unable to write, don't block
+			//unable to write, don't block
 			}
 		}
 		go b.processInbound(in)
@@ -93,15 +95,29 @@ func (b *EmailBroker) processInbound(in *SmtpEmail) {
 
 	//step 3 : send deliver order fo each recipient
 	var errs error
+	wg := new(sync.WaitGroup)
+	wg.Add(len(rcptsIds))
 	for _, rcptId := range rcptsIds {
-
-		natsMessage := fmt.Sprintf("{\"user_id\": \"%s\", \"raw_email_id\": \"%s\"}", rcptId, raw_email_id)
-		err := b.NatsConn.Publish(b.Config.InTopic, []byte(natsMessage))
-		if err != nil {
-			errs = multierror.Append(errs, err)
-		}
+		go func(rcptId string) {
+			defer wg.Done()
+			natsMessage := fmt.Sprintf("{\"user_id\": \"%s\", \"raw_email_id\": \"%s\"}", rcptId, raw_email_id)
+			resp, err := b.NatsConn.Request(b.Config.InTopic, []byte(natsMessage), 10 * time.Second)
+			if err != nil {
+				if b.NatsConn.LastError() != nil {
+					log.WithError(b.NatsConn.LastError()).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId)
+					errs = multierror.Append(errs, err)
+				} else {
+					log.WithError(err).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId)
+					errs = multierror.Append(errs, err)
+				}
+			} else {
+				if b.Config.LogReceivedMails {
+					log.Infof("EmailBroker : NATS inbound request successfully handled for user %s : %s", rcptId, resp.Data)
+				}
+			}
+		}(rcptId)
 	}
-
+	wg.Wait()
 	// we assume the previous MTA did the rcpts lookup, so all rcpts should be OK
 	// consequently, we discard the whole delivery if there is at least one error
 	if errs != nil {
