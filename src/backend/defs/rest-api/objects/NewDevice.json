@@ -17,6 +17,12 @@
     },
     "fingerprint": {
       "type": "string"
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "$ref": "DeviceLocation.json"
+      }
     }
   },
   "required": [

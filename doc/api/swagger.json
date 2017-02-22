@@ -5405,6 +5405,21 @@
                       },
                       "fingerprint": {
                         "type": "string"
+                      },
+                      "locations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "location_ip": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "location_ip"
+                          ],
+                          "additionalProperties": false
+                        }
                       }
                     },
                     "required": [
@@ -5459,6 +5474,21 @@
                 },
                 "fingerprint": {
                   "type": "string"
+                },
+                "locations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "location_ip": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "location_ip"
+                    ],
+                    "additionalProperties": false
+                  }
                 }
               },
               "required": [
@@ -5552,6 +5582,21 @@
                 },
                 "fingerprint": {
                   "type": "string"
+                },
+                "locations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "location_ip": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "location_ip"
+                    ],
+                    "additionalProperties": false
+                  }
                 }
               },
               "required": [
@@ -5700,6 +5745,21 @@
                     },
                     "fingerprint": {
                       "type": "string"
+                    },
+                    "locations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "location_ip": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "location_ip"
+                        ],
+                        "additionalProperties": false
+                      }
                     }
                   }
                 },
@@ -5739,6 +5799,21 @@
                 },
                 "fingerprint": {
                   "type": "string"
+                },
+                "locations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "location_ip": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "location_ip"
+                    ],
+                    "additionalProperties": false
+                  }
                 }
               }
             }

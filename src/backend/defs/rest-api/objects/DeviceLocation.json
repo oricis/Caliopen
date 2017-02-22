@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "location_ip": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "location_ip"
+  ],
+  "additionalProperties": false
+}
