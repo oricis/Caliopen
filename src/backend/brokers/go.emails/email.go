@@ -95,7 +95,7 @@ func MarshalEmail(msg *obj.MessageModel, version string) (em *EmailMessage, err 
 // this func is executed by natsMsgHandler after an email has been passed to the MTA without error
 // it flags the caliopen message to 'sent' in cassandra (TODO and elastic ?)
 // and stores the raw email
-func (b *emailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
+func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 
 	// save raw email in db
 	raw_email_id, err := b.Store.StoreRaw(ack.EmailMessage.Email.Raw.String())

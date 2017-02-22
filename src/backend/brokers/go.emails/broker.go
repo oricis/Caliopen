@@ -16,12 +16,13 @@ import (
 )
 
 type (
-	emailBroker struct {
+	EmailBroker struct {
 		Store      backends.LDAStore
 		Index      backends.LDAIndex
 		NatsConn   *nats.Conn
 		Connectors EmailBrokerConnectors
 		Config     LDAConfig
+		natsSubscriptions []*nats.Subscription
 	}
 
 	EmailBrokerConnectors struct {
@@ -48,12 +49,12 @@ type (
 )
 
 var (
-	broker *emailBroker
+	broker *EmailBroker
 )
 
-func Initialize(conf LDAConfig) (connectors EmailBrokerConnectors, err error) {
+func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConnectors, err error) {
 	var e error
-	broker = &emailBroker{}
+	broker = &EmailBroker{}
 	broker.Config = conf
 	switch conf.StoreName {
 	case "cassandra":
@@ -109,17 +110,30 @@ func Initialize(conf LDAConfig) (connectors EmailBrokerConnectors, err error) {
 			log.WithError(err).Warn("EmailBroker : failed to start incoming smtp agent")
 			return
 		}
-
-		e = broker.startOutcomingSmtpAgent()
-		if e != nil {
-			err = e
-			log.WithError(err).Warn("EmailBroker : failed to start outcoming smtp agent")
-			return
+		for i := 0; i < conf.NatsListeners; i++ {
+			e = broker.startOutcomingSmtpAgent()
+			if e != nil {
+				err = e
+				log.WithError(err).Warn("EmailBroker : failed to start outcoming smtp agent")
+				return
+			}
 		}
 
 		connectors = broker.Connectors
 	}
 
-	log.Infof("EmailBroker started for %s.", conf.BrokerType)
+	log.WithField("EmailBroker", conf.BrokerType).Info("EmailBroker started.")
 	return
+}
+
+func (broker *EmailBroker) ShutDown() {
+	for _, sub := range broker.natsSubscriptions {
+		sub.Unsubscribe()
+	}
+	broker.NatsConn.Close()
+	log.WithField("EmailBroker", "Nats subscriptions & connexion closed").Info()
+	broker.Store.Close()
+	log.WithField("EmailBroker", "Store client closed").Info()
+	broker.Index.Close()
+	log.WithField("EmailBroker", "Index client closed").Info()
 }

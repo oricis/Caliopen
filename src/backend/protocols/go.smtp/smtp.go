@@ -21,6 +21,7 @@ var (
 
 type SMTPServer struct {
 	Config           SMTPConfig
+	broker           *broker.EmailBroker
 	brokerConnectors broker.EmailBrokerConnectors
 	inboundListener  guerrilla.Guerrilla
 	outboundListener *submitter
@@ -33,7 +34,7 @@ func InitializeServer(config SMTPConfig) error {
 
 func (server *SMTPServer) initialize(config SMTPConfig) (err error) {
 	server.Config = config
-	server.brokerConnectors, err = broker.Initialize(config.LDAConfig)
+	server.broker, server.brokerConnectors, err = broker.Initialize(config.LDAConfig)
 	return err
 }
 
@@ -56,7 +57,7 @@ func (server *SMTPServer) start() (err error) {
 		}
 	}
 
-	// launch outbound listener
+	// launch outbound chan listener
 	server.outboundListener, err = server.newSubmitter()
 	if err != nil {
 		log.WithError(err).Warn("SMTP submitter initialization failed")
@@ -100,6 +101,7 @@ func ShutdownServer() error {
 }
 
 func (server *SMTPServer) Shutdown() error {
+	server.broker.ShutDown()
 	return nil
 }
 

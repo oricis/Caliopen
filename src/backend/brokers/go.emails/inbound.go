@@ -17,7 +17,7 @@ import (
 	"github.com/hashicorp/go-multierror"
 )
 
-func (b *emailBroker) startIncomingSmtpAgent() error {
+func (b *EmailBroker) startIncomingSmtpAgent() error {
 	for i := 0; i < b.Config.InWorkers; i++ {
 		go b.incomingSmtpWorker()
 	}
@@ -25,7 +25,7 @@ func (b *emailBroker) startIncomingSmtpAgent() error {
 	return nil
 }
 
-func (b *emailBroker) incomingSmtpWorker() {
+func (b *EmailBroker) incomingSmtpWorker() {
 	//  receives values from the channel repeatedly until channel is closed
 	for in := range b.Connectors.IncomingSmtp {
 		if in.EmailMessage == nil {
@@ -48,7 +48,7 @@ func (b *emailBroker) incomingSmtpWorker() {
 
 // for now, ProcessInbound only store raw email and sends an order on NATS topic for py.delivery to process it
 // in future, this broker should process the whole delivery, including the email marshalling into a Caliopen's message format
-func (b *emailBroker) processInbound(in *SmtpEmail) {
+func (b *EmailBroker) processInbound(in *SmtpEmail) {
 	resp := &DeliveryAck{
 		EmailMessage: in.EmailMessage,
 		Err:          nil,
@@ -113,4 +113,4 @@ func (b *emailBroker) processInbound(in *SmtpEmail) {
 
 // deliverMsgToUser marshal an incoming email to the Caliopen message format
 // TODO
-func (b *emailBroker) deliverMsgToUser() {}
+func (b *EmailBroker) deliverMsgToUser() {}

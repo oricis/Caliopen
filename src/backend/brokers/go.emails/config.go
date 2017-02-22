@@ -8,6 +8,7 @@ type (
 	LDAConfig struct {
 		BrokerType       string      `mapstructure:"broker_type"`
 		NatsURL          string      `mapstructure:"nats_url"`
+		NatsQueue        string      `mapstructure:"nats_queue"`
 		StoreName        string      `mapstructure:"store_name"`
 		StoreConfig      StoreConfig `mapstructure:"store_settings"`
 		IndexName        string      `mapstructure:"index_name"`

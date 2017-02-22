@@ -120,10 +120,6 @@ func (server *SMTPServer) OutboundWorker() {
 	}
 }
 
-func (sub *submitter) shutdown() {
-
-}
-
 func (c *smtpSender) Send(from string, to []string, msg io.WriterTo) error {
 	if err := c.Mail(from); err != nil {
 		if err == io.EOF {

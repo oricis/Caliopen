@@ -26,6 +26,7 @@ AppConfig:
 LDAConfig:
   broker_type: smtp # types are : smtp, imap, mailboxe, etc.
   nats_url: nats://localhost:4222
+  nats_queue: SMTPqueue
   store_name: cassandra # backend to store raw emails and messages (inbound & outbound)
   store_settings:
     hosts:
@@ -44,4 +45,4 @@ LDAConfig:
 
   # outbound
   out_topic: outboundSMTP
-  nats_listeners: 1 # number of concurrent nats listeners
+  nats_listeners: 2 # number of concurrent nats listeners

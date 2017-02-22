@@ -47,3 +47,7 @@ func (cb *CassandraBackend) initialize(config CassandraConfig) (err error) {
 
 	return
 }
+
+func (cb *CassandraBackend) Close() {
+	cb.Session.Close()
+}

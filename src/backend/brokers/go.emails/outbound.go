@@ -24,16 +24,21 @@ import (
 	"time"
 )
 
-func (b *emailBroker) startOutcomingSmtpAgent() error {
+func (b *EmailBroker) startOutcomingSmtpAgent() error {
 
-	b.NatsConn.Subscribe(b.Config.OutTopic, func(msg *nats.Msg) {
+	sub, err := b.NatsConn.QueueSubscribe(b.Config.OutTopic, b.Config.NatsQueue, func(msg *nats.Msg) {
 		_, err := b.natsMsgHandler(msg)
 		if err != nil {
 			log.WithError(err).Warn("broker outbound : nats msg handler failed to process incoming msg")
 		}
 
 	})
+	if err != nil {
+		return err
+	}
+	b.natsSubscriptions = append(b.natsSubscriptions, sub)
 	b.NatsConn.Flush()
+
 
 	//TODO: error handling
 	return nil
@@ -41,7 +46,7 @@ func (b *emailBroker) startOutcomingSmtpAgent() error {
 
 // retrieves a caliopen message from db, build an email from it
 // sends the email to recipient(s) and stores the raw email sent in db
-func (b *emailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
+func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 	var order natsOrder
 	json.Unmarshal(msg.Data, &order)
 

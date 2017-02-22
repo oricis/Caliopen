@@ -38,3 +38,7 @@ func (es *ElasticSearchBackend) initialize(config ElasticSearchConfig) (err erro
 
 	return
 }
+
+func (es *ElasticSearchBackend) Close() {
+	es.Client.Stop()
+}

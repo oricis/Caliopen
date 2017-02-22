@@ -11,8 +11,10 @@ type LDAStore interface {
 	StoreRaw(data string) (raw_id string, err error)
 	GetMessage(user_id, msg_id string) (msg *objects.MessageModel, err error)
 	UpdateMessage(msg *objects.MessageModel, fields map[string]interface{}) error
+	Close()
 }
 
 type LDAIndex interface {
 	UpdateMessage(msg *objects.MessageModel, fields map[string]interface{}) error
+	Close()
 }
