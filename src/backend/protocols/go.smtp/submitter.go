@@ -100,6 +100,7 @@ func (server *SMTPServer) OutboundWorker() {
 			from := outcoming.EmailMessage.Email.SmtpMailFrom
 			to := outcoming.EmailMessage.Email.SmtpRcpTo
 			smtp_sender.Send(from, to, &outcoming.EmailMessage.Email.Raw)
+
 			outcoming.Response <- &broker.DeliveryAck{
 				EmailMessage: outcoming.EmailMessage,
 				Err:          err,

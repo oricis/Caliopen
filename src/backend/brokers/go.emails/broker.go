@@ -41,9 +41,9 @@ type (
 	}
 
 	DeliveryAck struct {
-		EmailMessage *EmailMessage
-		Err          error
-		Response     string
+		EmailMessage *EmailMessage `json:"-"`
+		Err          error         `json:"error,omitempty"`
+		Response     string        `json:"message,omitempty"`
 	}
 )
 

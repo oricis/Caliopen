@@ -5,9 +5,9 @@
 package index
 
 import (
+	"context"
 	"github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
-	"context"
 	"github.com/satori/go.uuid"
 )
 

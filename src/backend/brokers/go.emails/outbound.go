@@ -17,15 +17,21 @@ package email_broker
 
 import (
 	"encoding/json"
+	"github.com/satori/go.uuid"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
+	"github.com/pkg/errors"
 	"time"
 )
 
 func (b *emailBroker) startOutcomingSmtpAgent() error {
 
 	b.NatsConn.Subscribe(b.Config.OutTopic, func(msg *nats.Msg) {
-		b.natsMsgHandler(msg)
+		_, err := b.natsMsgHandler(msg)
+		if err != nil {
+			log.WithError(err).Warn("broker outbound : nats msg handler failed to process incoming msg")
+		}
+
 	})
 	b.NatsConn.Flush()
 
@@ -35,7 +41,7 @@ func (b *emailBroker) startOutcomingSmtpAgent() error {
 
 // retrieves a caliopen message from db, build an email from it
 // sends the email to recipient(s) and stores the raw email sent in db
-func (b *emailBroker) natsMsgHandler(msg *nats.Msg) (resp string, err error) {
+func (b *emailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 	var order natsOrder
 	json.Unmarshal(msg.Data, &order)
 
@@ -60,7 +66,7 @@ func (b *emailBroker) natsMsgHandler(msg *nats.Msg) (resp string, err error) {
 
 		b.Connectors.OutcomingSmtp <- &out
 		// non-blocking wait for delivery ack
-		go func(out *SmtpEmail) {
+		go func(out *SmtpEmail, natsMsg *nats.Msg) {
 			select {
 			case resp, ok := <-out.Response:
 				if resp.Err != nil || !ok || resp == nil {
@@ -70,16 +76,31 @@ func (b *emailBroker) natsMsgHandler(msg *nats.Msg) (resp string, err error) {
 					err = b.SaveIndexSentEmail(resp)
 					if err != nil {
 						log.Warn("outbound: error when saving back sent email")
-						//TODO
+						resp.Err = err
 					}
 				}
+				msg_id, _ := uuid.FromBytes(resp.EmailMessage.Message.Message_id)
+				resp.Response = "message " + msg_id.String() + " has been sent."
+				json_resp, _ := json.Marshal(resp)
+				b.NatsConn.Publish(msg.Reply, json_resp)
 			case <-time.After(time.Second * 30):
 				log.Warn("email broker : outbound timeout waiting smtp response")
+
+				var order natsOrder
+				json.Unmarshal(msg.Data, &order)
+				ack := DeliveryAck{
+					Err:      errors.New("timeout waiting smtp response"),
+					Response: "failed to sent message " + order.MessageId,
+				}
+
+				json_resp, _ := json.Marshal(ack)
+				b.NatsConn.Publish(msg.Reply, json_resp)
 			}
 			return
-		}(&out)
+		}(&out, msg)
 
 	}
+
 	return resp, err
 }
 
