@@ -8,14 +8,14 @@ const catchError = (err, req, res, next) => {
     stack: isDev ? err.stack : '',
   };
 
-  if (req.accepts('html')) {
-    res.render('error.component', publicError);
+  if (req.accepts('json')) {
+    res.status(err.status).json(publicError);
 
     return;
   }
 
-  if (req.accepts('json')) {
-    res.json(publicError);
+  if (req.accepts('html')) {
+    res.status(err.status).render('error.component', publicError);
 
     return;
   }
