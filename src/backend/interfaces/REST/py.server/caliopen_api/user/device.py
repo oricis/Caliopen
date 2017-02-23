@@ -7,7 +7,7 @@ import logging
 from pyramid.response import Response
 from caliopen_main.objects.device import Device as ObjectDevice
 from caliopen_main.user.core import Device as CoreDevice
-
+from caliopen_main.user.parameters import NewDevice
 from cornice.resource import resource, view
 
 from ..base import Api
@@ -34,10 +34,10 @@ class DeviceAPI(Api):
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
         """Create a new device for an user."""
-        params = self.request.swagger_data['device']
+        data = self.request.json
+        device_param = NewDevice(data)
 
-        device = CoreDevice.create(self.user, name=params['name'],
-                                   type=params['type'])
+        device = CoreDevice.create(self.user, device_param)
         device_url = self.request.route_path('Device',
                                              device_id=device.device_id)
         self.request.response.location = device_url.encode('utf-8')
