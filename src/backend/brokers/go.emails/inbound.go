@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/go-multierror"
 	"time"
 	"sync"
+	"encoding/json"
 )
 
 func (b *EmailBroker) startIncomingSmtpAgent() error {
@@ -93,7 +94,7 @@ func (b *EmailBroker) processInbound(in *SmtpEmail) {
 		return
 	}
 
-	//step 3 : send deliver order fo each recipient
+	//step 3 : send 'deliver' order fo each recipient
 	var errs error
 	wg := new(sync.WaitGroup)
 	wg.Add(len(rcptsIds))
@@ -111,8 +112,20 @@ func (b *EmailBroker) processInbound(in *SmtpEmail) {
 					errs = multierror.Append(errs, err)
 				}
 			} else {
+				nats_ack := new(map[string]interface{})
+				err := json.Unmarshal(resp.Data, &nats_ack)
+				if err != nil {
+					log.WithError(err).Warnf("EmailBroker failed to parse inbound ack on NATS for user %s", rcptId)
+					errs = multierror.Append(err)
+					return
+				}
+				if err, ok := (*nats_ack)["error"]; ok {
+					log.WithField("error", err.(string)).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId)
+					errs = multierror.Append(errors.New(err.(string)))
+					return
+				}
 				if b.Config.LogReceivedMails {
-					log.Infof("EmailBroker : NATS inbound request successfully handled for user %s : %s", rcptId, resp.Data)
+					log.Infof("EmailBroker : NATS inbound request successfully handled for user %s : %s", rcptId, (*nats_ack)["message"])
 				}
 			}
 		}(rcptId)

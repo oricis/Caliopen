@@ -1,0 +1,3 @@
+# this is the model of the json payload that must be sent to 'SMTPqueue' on NATS to acknowledge a request
+error: "error message" # omit this field if there is no error
+message: "response message"

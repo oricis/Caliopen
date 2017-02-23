@@ -15,6 +15,10 @@ class InboundEmail(object):
         try:
             self.deliver.process(payload["user_id"], payload["raw_email_id"])
         except Exception as exc:
-            self.natsConn.publish(msg.reply, exc)
+            print(exc)
+            self.natsConn.publish(msg.reply, '{"error":' +
+                                  json.dumps(exc.message) + ',"message":'
+                                  '"inbound email process failed"}')
             return exc
-        self.natsConn.publish(msg.reply, "OK : message processed")
+        self.natsConn.publish(msg.reply, '{"message":'
+                                         '"OK : inbound email proceeded"')

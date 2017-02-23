@@ -41,6 +41,11 @@ type (
 		UserId    string `json:"user_id"`
 	}
 
+	natsAck struct {
+		Error string `json:"error,omitempty"`
+		Message string `json:"message"`
+	}
+
 	DeliveryAck struct {
 		EmailMessage *EmailMessage `json:"-"`
 		Err          error         `json:"error,omitempty"`
