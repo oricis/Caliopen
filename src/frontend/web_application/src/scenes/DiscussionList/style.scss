@@ -2,9 +2,23 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-discussion-list {
+  background-color: $co-color__fg__back;
+
   &__thread {
     @include flex-grid-row($size: expand);
     align-items: center;
+    padding-top: $co-component__spacing;
+    padding-bottom: $co-component__spacing;
+
+    &:hover {
+      background-color: $co-color__fg__back--high;
+      color: $co-color__fg__text--high;
+    }
+
+    &:active {
+      background-color: $co-color__fg__back--low;
+      color: $co-color__fg__text--low;
+    }
 
     &--unread {
       position: relative;

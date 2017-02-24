@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
-import ItemContent from './components/ItemContent';
+import classnames from 'classnames';
 import './style.scss';
 
-const BlockList = ({ children }) => (
-  <ul className="m-block-list">
+const BlockList = ({ className, children, ...props }) => (
+  <ul className={classnames('m-block-list', className)} {...props}>
     {
       children.map((comp, key) => (
         <li className="m-block-list__item" key={key}>{comp}</li>
@@ -13,8 +13,8 @@ const BlockList = ({ children }) => (
 );
 
 BlockList.propTypes = {
+  className: PropTypes.string,
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
 };
 
-export { ItemContent };
 export default BlockList;

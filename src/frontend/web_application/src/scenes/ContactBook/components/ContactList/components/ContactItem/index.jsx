@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import Link from '../../../../../../components/Link';
-import { ItemContent } from '../../../../../../components/BlockList';
 import ContactAvatarLetter, { SIZE_SMALL } from '../../../../../../components/ContactAvatarLetter';
 import TextBlock from '../../../../../../components/TextBlock';
 
@@ -19,16 +18,14 @@ const ContactItem = ({ contact, sortView }) => {
   }
 
   return (
-    <ItemContent isLink>
-      <Link noDecoration expanded className="m-contact-list__contact" to={`/contacts/${contact.contact_id}`} key={contact.contact_id}>
-        <div className="m-contact-list__col-avatar">
-          <ContactAvatarLetter isRound contact={contact} size={SIZE_SMALL} />
-        </div>
-        <TextBlock className="m-contact-list__col-name">
-          {formatView}
-        </TextBlock>
-      </Link>
-    </ItemContent>
+    <Link noDecoration className="m-contact-list__contact" to={`/contacts/${contact.contact_id}`} key={contact.contact_id}>
+      <div className="m-contact-list__col-avatar">
+        <ContactAvatarLetter isRound contact={contact} size={SIZE_SMALL} />
+      </div>
+      <TextBlock className="m-contact-list__col-name">
+        {formatView}
+      </TextBlock>
+    </Link>
   );
 };
 

@@ -46,7 +46,7 @@ const ContactList = ({ contacts, sortView }) => {
           <ContactListLetter
             letter={letter}
           />
-          <BlockList>
+          <BlockList className="m-contact-list__group">
             {contacts.map(c =>
               getFirstLetter(c.contact[sortView]) === letter &&
                 <ContactItem
