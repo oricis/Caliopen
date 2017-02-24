@@ -14,7 +14,8 @@ DEVICE_TYPES = ['unknow', 'desktop', 'laptop', 'smartphone', 'tablet']
 class DeviceLocation(Model):
     """Location structure for a device."""
 
-    location_ip = StringType(required=True)  # With CIDR notation
+    address = StringType(required=True)  # With CIDR notation
+    type = StringType()
 
 
 class DeviceInformation(Model):

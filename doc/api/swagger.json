@@ -5411,12 +5411,15 @@
                         "items": {
                           "type": "object",
                           "properties": {
-                            "location_ip": {
+                            "address": {
+                              "type": "string"
+                            },
+                            "type": {
                               "type": "string"
                             }
                           },
                           "required": [
-                            "location_ip"
+                            "address"
                           ],
                           "additionalProperties": false
                         }
@@ -5480,12 +5483,15 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "location_ip": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "type": {
                         "type": "string"
                       }
                     },
                     "required": [
-                      "location_ip"
+                      "address"
                     ],
                     "additionalProperties": false
                   }
@@ -5588,12 +5594,15 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "location_ip": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "type": {
                         "type": "string"
                       }
                     },
                     "required": [
-                      "location_ip"
+                      "address"
                     ],
                     "additionalProperties": false
                   }
@@ -5751,12 +5760,15 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "location_ip": {
+                          "address": {
+                            "type": "string"
+                          },
+                          "type": {
                             "type": "string"
                           }
                         },
                         "required": [
-                          "location_ip"
+                          "address"
                         ],
                         "additionalProperties": false
                       }
@@ -5805,12 +5817,15 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "location_ip": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "type": {
                         "type": "string"
                       }
                     },
                     "required": [
-                      "location_ip"
+                      "address"
                     ],
                     "additionalProperties": false
                   }

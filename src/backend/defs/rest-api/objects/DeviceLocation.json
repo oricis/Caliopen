@@ -1,12 +1,22 @@
 {
   "type": "object",
   "properties": {
-    "location_ip": {
+    "address": {
       "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "default": "unknow",
+      "enum": [
+        "unknow",
+        "home",
+        "work",
+        "public"
+      ]
     }
   },
   "required": [
-    "location_ip"
+    "address"
   ],
   "additionalProperties": false
 }

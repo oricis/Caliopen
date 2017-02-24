@@ -18,8 +18,8 @@ log = logging.getLogger(__name__)
 class DeviceLocation(BaseUserType):
     """Device known location, base on IP."""
 
-    location_ip = columns.Text(primary_key=True)    # IP address with CIDR
-    location_type = columns.Text()                  # home/work/etc
+    address = columns.Text(primary_key=True)    # IP address with CIDR
+    type = columns.Text()                       # home/work/etc
     country = columns.Text()
     privacy_features = columns.Map(columns.Text, columns.Text)
 

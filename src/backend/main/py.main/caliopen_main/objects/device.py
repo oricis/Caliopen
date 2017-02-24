@@ -20,11 +20,12 @@ class DeviceLocation(base.ObjectStorable):
     """A known location related to a device."""
 
     _attrs = {
-        'location_ip': types.StringType,
+        'address': types.StringType,
+        'type': types.StringType,
     }
 
     _model_class = ModelDeviceLocation
-    _pkey_name = 'location_ip'
+    _pkey_name = 'address'
 
 
 class Device(base.ObjectUser):
