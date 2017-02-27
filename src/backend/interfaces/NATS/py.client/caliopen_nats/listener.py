@@ -3,7 +3,7 @@ import sys
 
 import tornado.ioloop
 import tornado.gen
-from nats.io.client import Client as NATS
+from nats.io import Client as NATS
 
 from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage

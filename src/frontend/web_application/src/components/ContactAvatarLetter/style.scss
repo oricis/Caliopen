@@ -45,4 +45,7 @@ $m-avatar__size: (
   &--medium { @include m-avatar--size(medium); }
   &--large  { @include m-avatar--size(large);  }
   &--xlarge { @include m-avatar--size(xlarge); }
+
+  &--round  { border-radius: 50%}
+
 }

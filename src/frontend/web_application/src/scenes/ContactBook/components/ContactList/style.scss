@@ -1,0 +1,45 @@
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+$m-contact-list__contact-spacing: 1.25rem;
+
+.m-contact-list {
+
+  &__alpha-title {
+    padding-left: map_get($co-form__spacing, 'large');
+    color: $co-color__fg__text--high;
+  }
+
+  &__group {
+    background-color: $co-color__fg__back;
+  }
+
+  &__contact {
+    @include flex-grid-row($size: expanded);
+    align-items: baseline;
+    padding-top: $m-contact-list__contact-spacing;
+    padding-bottom: $m-contact-list__contact-spacing;
+    padding-left: map_get($co-form__spacing, 'small');
+
+    &:hover {
+      background-color: $co-color__fg__back--high;
+      color: $co-color__fg__text--high;
+    }
+
+    &:active {
+      background-color: $co-color__fg__back--low;
+      color: $co-color__fg__text--low;
+    }
+  }
+
+  &__col-avatar {
+    @include flex-grid-column(shrink);
+  }
+
+  &__col-name {
+    @include flex-grid-size;
+  }
+
+  @include breakpoint(medium) {
+    &__col-name { @include flex-grid-size(5); }
+  }
+}

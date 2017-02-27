@@ -18,6 +18,7 @@
     "call-to-action.action.compose_contact": "Écrire à ce contact",
     "call-to-action.action.create_contact": "Créer un contact",
     "call-to-action.action.reply": "Répondre",
+    "collection-field-group.action.add": "Ajouter",
     "contact.accounts": "Comptes",
     "contact.action.add_contact_detail": "Ajouter",
     "contact.action.delete_contact_detail": "Supprimer",

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import BlockList, { ItemContent } from '../../src/components/BlockList';
+import BlockList from '../../src/components/BlockList';
 import Link from '../../src/components/Link';
 import { Code, ComponentWrapper } from '../presenters';
 
@@ -9,26 +9,24 @@ class BlockLists extends Component {
     return (
       <div>
         <ComponentWrapper size="tall">
-          <BlockList>
+          <BlockList style={{ backgroundColor: '#333' }}>
             {[
-              <ItemContent>Foo</ItemContent>,
-              <ItemContent>Bar</ItemContent>,
-              <ItemContent isLink><Link noDecoration>A link</Link></ItemContent>,
-              <ItemContent isLink><Link noDecoration>An other link</Link></ItemContent>,
+              <Link noDecoration>A link</Link>,
+              <Link noDecoration>An other link</Link>,
+              'Foo',
               'Bar',
             ]}
           </BlockList>
         </ComponentWrapper>
         <Code>{`
-import BlockList, { ItemContent } from './src/components/BlockList';
+import BlockList from './src/components/BlockList';
 
 export default () => (
-  <BlockList>
+  <BlockList style={{ backgroundColor: '#333' }}>
     {[
-      <ItemContent>Foo</ItemContent>,
-      <ItemContent>Bar</ItemContent>,
-      <ItemContent isLink><Link noDecoration>A link</Link></ItemContent>,
-      <ItemContent isLink><Link noDecoration>An other link</Link></ItemContent>,
+      <Link noDecoration>A link</Link>,
+      <Link noDecoration>An other link</Link>,
+      'Foo',
       'Bar',
     ]}
   </BlockList>

@@ -22,7 +22,7 @@ class Presenter extends Component {
     this.setState(prevState => ({ isDropdownOpen: !prevState.isDropdownOpen }));
   };
 
-  renderDropdown() {
+  render() {
     const { user, __ } = this.props;
 
     return (
@@ -44,7 +44,7 @@ class Presenter extends Component {
         >
           <VerticalMenu>
             <VerticalMenuTextItem>
-              <div>{user.name}</div>
+              <div>{user && user.name}</div>
               {user && user.contact && (
                 <div>{user.contact.emails[0] && user.contact.emails[0].address}</div>
               )}
@@ -68,14 +68,6 @@ class Presenter extends Component {
         </Dropdown>
       </div>
     );
-  }
-
-  render() {
-    if (this.props.user) {
-      return this.renderDropdown();
-    }
-
-    return null;
   }
 }
 

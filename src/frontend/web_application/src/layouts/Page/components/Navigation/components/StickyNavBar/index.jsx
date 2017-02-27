@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
+import throttle from 'lodash.throttle';
 
 class StickyNavbarClass extends Component {
   static propTypes = {
@@ -12,21 +13,22 @@ class StickyNavbarClass extends Component {
     this.state = {
       isSticky: false,
     };
-    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentDidMount() {
+    this.handleScroll = throttle(() => {
+      const scrollSize = window.scrollY || document.documentElement.scrollTop;
+      const isSticky = scrollSize > 10;
+
+      if (this.state.isSticky !== isSticky) {
+        this.setState({ isSticky });
+      }
+    }, 100, { leading: true, trailing: true });
     window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
-  }
-
-  handleScroll(ev) {
-    const scrollSize = ev.srcElement.documentElement.scrollTop || window.scrollY;
-
-    this.setState({ isSticky: scrollSize > 10 });
   }
 
   render() {

@@ -25,39 +25,41 @@ import (
 	"time"
 )
 
-type CaliopenLDA struct {
-	Backend         *backends.LDABackend
-	config          LDAConfig
-	deliveryMsgChan chan *messageDelivery
-	natsConn        *nats.Conn
-	wg              sync.WaitGroup
-}
+type (
+	CaliopenLDA struct {
+		Backend         backends.LDABackend
+		config          LDAConfig
+		deliveryMsgChan chan *messageDelivery
+		natsConn        *nats.Conn
+		wg              sync.WaitGroup
+	}
 
-type LDAConfig struct {
-	BackendName      string        `mapstructure:"backend_name"`
-	BackendConfig    BackendConfig `mapstructure:"backend_settings"`
-	NumberOfWorkers  int           `mapstructure:"lda_workers_size"`
-	LogReceivedMails bool          `mapstructure:"log_received_mails"`
-	NatsURL          string        `mapstructure:"nats_url"`
-	NatsTopic        string        `mapstructure:"nats_topic"`
-}
+	LDAConfig struct {
+		BackendName      string        `mapstructure:"backend_name"`
+		BackendConfig    BackendConfig `mapstructure:"backend_settings"`
+		NumberOfWorkers  int           `mapstructure:"lda_workers_size"`
+		LogReceivedMails bool          `mapstructure:"log_received_mails"`
+		NatsURL          string        `mapstructure:"nats_url"`
+		NatsTopic        string        `mapstructure:"nats_topic"`
+	}
 
-type messageDelivery struct {
-	recipient      string
-	raw_email_id   string
-	deliveryNotify chan *deliveryStatus
-}
+	messageDelivery struct {
+		recipient      string
+		raw_email_id   string
+		deliveryNotify chan *deliveryStatus
+	}
 
-type deliveryStatus struct {
-	err  error
-	hash string
-}
+	deliveryStatus struct {
+		err  error
+		hash string
+	}
 
-type BackendConfig struct {
-	Hosts       []string          `mapstructure:"hosts"`
-	Keyspace    string            `mapstructure:"keyspace"`
-	Consistency gocql.Consistency `mapstructure:"consistency_level"`
-}
+	BackendConfig struct {
+		Hosts       []string          `mapstructure:"hosts"`
+		Keyspace    string            `mapstructure:"keyspace"`
+		Consistency gocql.Consistency `mapstructure:"consistency_level"`
+	}
+)
 
 func (server *SMTPServer) InitializeLda(config LDAConfig) error {
 	server.lda = new(CaliopenLDA)
@@ -87,8 +89,7 @@ func (lda *CaliopenLDA) initialize(config LDAConfig) error {
 			log.WithError(err).Fatalf("Initalization of %s backend failed", lda.config.BackendName)
 		}
 
-		cb := backends.LDABackend(b) // type conversion to LDA interface
-		lda.Backend = &cb
+		lda.Backend = backends.LDABackend(b) // type conversion to LDA interface
 	case "BOBcassandra":
 	// NotImplemented… yet ! ;-)
 	default:
@@ -136,17 +137,17 @@ func (lda *CaliopenLDA) Process(mail *guerrilla.Envelope) guerrilla.BackendResul
 	}
 
 	if lda.config.LogReceivedMails {
-		log.Infof("processing envelope From: %s -> To: %v", mail.MailFrom, to)
+		log.Infof("inbound: processing envelope From: %s -> To: %v", mail.MailFrom, to)
 	}
 
 	emails := []string{}
 	for _, emailAddress := range to {
 		emails = append(emails, emailAddress.String())
 	}
-	localRcpts, err := (*lda.Backend).GetRecipients(emails)
+	localRcpts, err := lda.Backend.GetRecipients(emails)
 
 	if err != nil {
-		log.WithError(err).Info("recipients lookup failed")
+		log.WithError(err).Warn("inbound: recipients lookup failed")
 		return guerrilla.NewBackendResult("554 Error: recipients lookup failed")
 	}
 
@@ -155,10 +156,9 @@ func (lda *CaliopenLDA) Process(mail *guerrilla.Envelope) guerrilla.BackendResul
 	}
 
 	//step 2 : store raw email and get its raw_id
-	raw_email_id, err := (*lda.Backend).StoreRaw(mail.Data)
-
+	raw_email_id, err := lda.Backend.StoreRaw(mail.Data)
 	if err != nil {
-		log.WithError(err).Info("storing raw email failed")
+		log.WithError(err).Warn("inbound: storing raw email failed")
 		return guerrilla.NewBackendResult("554 Error: storing raw email failed")
 	}
 
@@ -182,10 +182,10 @@ func (lda *CaliopenLDA) Process(mail *guerrilla.Envelope) guerrilla.BackendResul
 					}
 					deliveries++
 				case <-time.After(time.Second * 30):
-					errs = multierror.Append(errs, errors.New("timeout waiting delivery completion"))
+					errs = multierror.Append(errs, errors.New("inbound: timeout waiting delivery completion"))
 				}
 			case <-time.After(time.Second * 5):
-				errs = multierror.Append(errs, errors.New("timeout trying to send delivery"))
+				errs = multierror.Append(errs, errors.New("inbound: timeout trying to send delivery"))
 			}
 		}(localRcpt)
 	}

@@ -5,7 +5,9 @@ import BlockList from './components/BlockList';
 import Brand from './components/Brand';
 import Button from './components/Button';
 import CheckboxFieldGroup from './components/CheckboxFieldGroup';
+import CollectionFieldGroup from './components/CollectionFieldGroup';
 import ContactAvatarLetter from './components/ContactAvatarLetter';
+import ContactBook from './layouts/ContactBook';
 import ContactDetails from './components/ContactDetails';
 import DefList from './components/DefList';
 // import Devices from './layouts/Devices';
@@ -64,8 +66,10 @@ storiesOf('Buttons & Links', module)
 storiesOf('Contact', module)
   .add('ContactDetails', () => (
     <ContactDetails />
+  ))
+  .add('ContactBook', () => (
+    <ContactBook />
   ));
-
 storiesOf('Dropdown', module)
   .add('Dropdown', () => (
     <Dropdown />
@@ -92,6 +96,9 @@ storiesOf('Form', module)
   ))
   .add('CheckboxFieldGroup', () => (
     <CheckboxFieldGroup />
+  ))
+  .add('CollectionFieldGroup', () => (
+    <CollectionFieldGroup />
   ));
 
 storiesOf('Icons & Avatars', module)
@@ -116,7 +123,7 @@ storiesOf('Layout', module)
     <Modal />
   ));
 storiesOf('Lists', module)
-  .add('BlockList & ItemContent', () => (
+  .add('BlockList', () => (
     <BlockList />
   ))
   .add('TextList & ItemContent', () => (

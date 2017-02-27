@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 PY3 = sys.version_info[0] == 3
 
-name = "nats_client"
+name = "caliopen_nats"
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
