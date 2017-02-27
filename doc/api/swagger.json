@@ -5405,6 +5405,24 @@
                       },
                       "fingerprint": {
                         "type": "string"
+                      },
+                      "locations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "address": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "address"
+                          ],
+                          "additionalProperties": false
+                        }
                       }
                     },
                     "required": [
@@ -5459,6 +5477,24 @@
                 },
                 "fingerprint": {
                   "type": "string"
+                },
+                "locations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "address"
+                    ],
+                    "additionalProperties": false
+                  }
                 }
               },
               "required": [
@@ -5552,6 +5588,24 @@
                 },
                 "fingerprint": {
                   "type": "string"
+                },
+                "locations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "address"
+                    ],
+                    "additionalProperties": false
+                  }
                 }
               },
               "required": [
@@ -5700,6 +5754,24 @@
                     },
                     "fingerprint": {
                       "type": "string"
+                    },
+                    "locations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "address": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "address"
+                        ],
+                        "additionalProperties": false
+                      }
                     }
                   }
                 },
@@ -5739,6 +5811,24 @@
                 },
                 "fingerprint": {
                   "type": "string"
+                },
+                "locations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "address"
+                    ],
+                    "additionalProperties": false
+                  }
                 }
               }
             }

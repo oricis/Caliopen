@@ -8,16 +8,25 @@ import uuid
 
 from datetime import datetime
 
-from caliopen_storage.store.model import BaseModel
+from caliopen_storage.store.model import BaseModel, BaseUserType
 
 from cassandra.cqlengine import columns
 
 log = logging.getLogger(__name__)
 
 
-class Device(BaseModel):
+class DeviceLocation(BaseUserType):
+    """Device known location, base on IP."""
 
+    address = columns.Text(primary_key=True)    # IP address with CIDR
+    type = columns.Text()                       # home/work/etc
+    country = columns.Text()
+    privacy_features = columns.Map(columns.Text, columns.Text)
+
+
+class Device(BaseModel):
     """User device."""
+
     user_id = columns.UUID(primary_key=True)
     device_id = columns.UUID(primary_key=True, default=uuid.uuid4)
 
@@ -29,10 +38,10 @@ class Device(BaseModel):
     fingerprint = columns.Text()
     last_seen = columns.DateTime(default=datetime.utcnow)
     privacy_features = columns.Map(columns.Text, columns.Text)
+    locations = columns.List(columns.UserDefinedType(DeviceLocation))
 
 
 class DevicePublicKey(BaseModel):
-
     """Device public key."""
 
     user_id = columns.UUID(primary_key=True)
@@ -44,20 +53,7 @@ class DevicePublicKey(BaseModel):
     public_key = columns.Text()
 
 
-class DeviceLocation(BaseModel):
-
-    """Device known location, base on IP."""
-
-    user_id = columns.UUID(primary_key=True)
-    device_id = columns.UUID(primary_key=True)
-    location_ip = columns.Text(primary_key=True)    # IP address with CIDR
-    location_type = columns.Text()                  # home/work/etc
-    country = columns.Text()
-    privacy_features = columns.Map(columns.Text, columns.Text)
-
-
 class DeviceConnectionLog(BaseModel):
-
     """Log a device connection."""
 
     user_id = columns.UUID(primary_key=True)

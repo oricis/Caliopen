@@ -9,21 +9,16 @@ from schematics.types.compound import ListType, ModelType
 
 
 DEVICE_TYPES = ['unknow', 'desktop', 'laptop', 'smartphone', 'tablet']
-LOCATION_TYPES = ['public', 'work', 'home', 'other']
 
 
 class DeviceLocation(Model):
-
     """Location structure for a device."""
 
-    name = StringType(required=True)
-    ip_address = StringType(required=True)  # With CIDR notation
-    location_type = StringType(required=True, choices=LOCATION_TYPES,
-                               default='other')
+    address = StringType(required=True)  # With CIDR notation
+    type = StringType()
 
 
 class DeviceInformation(Model):
-
     """Device important information when creating a new one."""
 
     os_version = StringType()
@@ -32,7 +27,6 @@ class DeviceInformation(Model):
 
 
 class NewDevice(Model):
-
     """Structure to create a new user device."""
 
     name = StringType(required=True)
@@ -43,6 +37,7 @@ class NewDevice(Model):
 
 
 class Device(NewDevice):
+    """Parameter for an existing device."""
 
     device_id = UUIDType(required=True)
     user_id = UUIDType(required=True)

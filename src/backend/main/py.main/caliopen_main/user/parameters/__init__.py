@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .user import NewUser, User,NewRule
+from .user import NewUser, User, NewRule
 
 from .types import InternetAddressType, PhoneNumberType
 
@@ -11,6 +11,7 @@ from .contact import NewEmail, Email, NewIM, IM, NewPhone, Phone
 from .contact import NewSocialIdentity, SocialIdentity, NewPublicKey, PublicKey
 from .contact import NewContact, Contact, ShortContact
 from .tag import ResourceTag, NewUserTag, UserTag
+from .device import NewDevice, Device
 
 __all__ = [
     'InternetAddressType', 'PhoneNumberType',
@@ -21,4 +22,5 @@ __all__ = [
     'NewSocialIdentity', 'SocialIdentity', 'NewPublicKey', 'PublicKey',
     'NewContact', 'Contact', 'ShortContact',
     'NewUserTag', 'UserTag', 'ResourceTag',
+    'NewDevice', 'Device',
 ]
