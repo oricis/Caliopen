@@ -119,7 +119,7 @@ storiesOf('Layout', module)
   ));
 
 storiesOf('Lists', module)
-  .add('BlockList & ItemContent', () => (
+  .add('BlockList', () => (
     <BlockList />
   ))
   .add('TextList & ItemContent', () => (

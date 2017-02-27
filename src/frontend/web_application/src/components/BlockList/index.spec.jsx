@@ -1,19 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import BlockList, { ItemContent } from './';
+import BlockList from './';
 
 describe('component BlockList', () => {
   it('render', () => {
     const comp = shallow(
       <BlockList>
         {[
-          <ItemContent key="0">Foo</ItemContent>,
-          <ItemContent key="1">Bar</ItemContent>,
+          'Foo',
+          'Bar',
         ]}
       </BlockList>
     );
 
-    expect(comp.find('ItemContent').length).toEqual(2);
-    expect(comp.find('ItemContent').first().dive().text()).toEqual('Foo');
+    expect(comp.find('li').length).toEqual(2);
+    expect(comp.find('li').first().text()).toEqual('Foo');
   });
 });

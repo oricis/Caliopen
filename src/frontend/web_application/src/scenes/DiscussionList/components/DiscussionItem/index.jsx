@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
 import { withTranslator } from '@gandi/react-translate';
 import classnames from 'classnames';
 import ContactsIcon from '../ContactsIcon';
+import Link from '../../../../components/Link';
 import Icon from '../../../../components/Icon';
 import TextBlock from '../../../../components/TextBlock';
 import Badge from '../../../../components/Badge';
@@ -25,7 +25,8 @@ const DiscussionItem = ({ discussion, formatDate }) => {
   return (
     <Link
       to={`/discussions/${discussion.thread_id}`}
-      className={classnames('s-discussion-list__thread', 'm-block-list__item-content', 'm-block-list__item-content--link', { 's-thread-list__thread--unread': hasUnread })}
+      className={classnames('s-discussion-list__thread', { 's-thread-list__thread--unread': hasUnread })}
+      noDecoration
     >
       <div className="s-discussion-list__col-avatars">
         <ContactsIcon discussion={discussion} />

@@ -1,5 +1,7 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
+$m-contact-list__contact-spacing: 1.25rem;
+
 .m-contact-list {
 
   &__alpha-title {
@@ -7,12 +9,26 @@
     color: $co-color__fg__text--high;
   }
 
+  &__group {
+    background-color: $co-color__fg__back;
+  }
+
   &__contact {
     @include flex-grid-row($size: expanded);
     align-items: baseline;
-    height: map_get($co-form__height, 'large');
+    padding-top: $m-contact-list__contact-spacing;
+    padding-bottom: $m-contact-list__contact-spacing;
     padding-left: map_get($co-form__spacing, 'small');
-    line-height: map_get($co-form__height, 'large');
+
+    &:hover {
+      background-color: $co-color__fg__back--high;
+      color: $co-color__fg__text--high;
+    }
+
+    &:active {
+      background-color: $co-color__fg__back--low;
+      color: $co-color__fg__text--low;
+    }
   }
 
   &__col-avatar {
