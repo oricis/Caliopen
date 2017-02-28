@@ -50,20 +50,22 @@ class TagsForm extends Component {
           __={__}
         />
 
-        <div className="m-tags__section">
-          {this.props.tags.map(tag =>
-            <TagItem tag={tag} key={tag} __={noop} />
+        <div className="m-tags-form__section">
+          {this.props.tags.map((tag, key) =>
+            <TagItem tag={tag} key={key} __={__} />
           )}
         </div>
 
         <FormGrid>
           <Button
-            className="m-tags__action"
+            className="m-tags-form__action"
             type="submit"
             onSubmit={this.handleSearchSubmit}
             plain
           >
-            <Icon type="plus" spaced /> {__('tags.action.create')}
+            <Icon type="plus" spaced />
+            {' '}
+            {__('tags.action.create')}
           </Button>
         </FormGrid>
       </div>
