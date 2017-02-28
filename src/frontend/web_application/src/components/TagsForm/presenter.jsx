@@ -7,11 +7,9 @@ import TagSearch from './components/TagSearch';
 
 import './style.scss';
 
-const noop = str => str;
-
 class TagsForm extends Component {
   static propTypes = {
-    tags: PropTypes.arrayOf(PropTypes.string),
+    tags: PropTypes.arrayOf(PropTypes.shape({})),
     onSubmit: PropTypes.func,
     onChange: PropTypes.func,
     __: PropTypes.func,

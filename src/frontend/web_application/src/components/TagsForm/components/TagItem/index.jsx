@@ -7,7 +7,7 @@ import './style.scss';
 
 class TagItem extends Component {
   static propTypes = {
-    tag: PropTypes.string,
+    tag: PropTypes.shape().isRequired,
   };
 
   constructor(props) {
@@ -29,12 +29,11 @@ class TagItem extends Component {
     return (
       <FormGrid className="m-tag">
         <TextFieldGroup
-          id={tag}
-          name={tag}
+          name={tag.tag_id}
           className="m-tag__input"
-          label={tag}
-          placeholder={tag}
-          defaultValue={tag}
+          label={tag.name}
+          placeholder={tag.name}
+          defaultValue={tag.name}
           showLabelforSr
           autoFocus
         />
@@ -51,7 +50,7 @@ class TagItem extends Component {
           onClick={this.handleClick}
           expanded
         >
-          <span className="m-tag__text">{tag}</span>
+          <span className="m-tag__text">{tag.name}</span>
           <Icon className="m-tag__icon" type="edit" />
         </Button>
       </FormGrid>
