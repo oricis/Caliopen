@@ -66,7 +66,7 @@ export function updateDiscussion({ discussion, original }) {
 function discussionsByIdReducer(state = {}, action = {}) {
   return action.payload.data.discussions.reduce((previousState, discussion) => ({
     ...previousState,
-    [discussion.discussion_id]: discussion,
+    [discussion.thread_id]: discussion,
   }), state);
 }
 
@@ -76,7 +76,7 @@ function discussionIdsReducer(state = [], action = {}) {
   }
 
   return [...state]
-    .concat(action.payload.data.discussions.map(discussion => discussion.discussion_id))
+    .concat(action.payload.data.discussions.map(discussion => discussion.thread_id))
     .reduce((prev, curr) => {
       if (prev.indexOf(curr) === -1) {
         prev.push(curr);
@@ -112,7 +112,7 @@ export default function reducer(state = initialState, action) {
         isFetching: false,
         didInvalidate: false,
         discussions: discussionIdsReducer(
-          state.didInvalidate === true ? [] : state.discussionss,
+          state.didInvalidate === true ? [] : state.discussions,
           action
         ),
         discussionsById: discussionsByIdReducer(

@@ -81,9 +81,10 @@ class DiscussionItemActionsContainer extends Component {
 
   renderTagsModal() {
     const { discussion, __ } = this.props;
+    const count = discussion.tags ? discussion.tags.length : 0;
     const title = [
       __('tags.header.title'),
-      (<span key="1" className="m-tags-form__count">{__('tags.header.count', { count: discussion.tags.length }) }</span>),
+      (<span key="1" className="m-tags-form__count">{__('tags.header.count', { count }) }</span>),
     ];
 
     return (

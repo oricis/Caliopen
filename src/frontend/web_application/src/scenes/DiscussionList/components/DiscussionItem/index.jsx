@@ -18,7 +18,7 @@ import recipients from '../../services/recipients';
 //   user => ({ user })
 // );
 
-const renderTags = discussion => discussion.tags.map((tag, key) => (
+const renderTags = discussion => discussion.tags && discussion.tags.map((tag, key) => (
   <span key={key}>
     {' '}
     <Badge>{tag.name}</Badge>
