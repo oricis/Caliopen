@@ -56,7 +56,6 @@ func sigHandler() {
 			// TODO: reinitialize
 		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT {
 			log.Infof("Shutdown signal caught")
-			csmtp.ShutdownLda()
 			csmtp.ShutdownServer()
 			log.Infof("Shutdown completed, exiting.")
 			os.Exit(0)
@@ -117,9 +116,10 @@ func readConfig(config *CmdConfig) error {
 		return err
 	}
 
-	if len(config.AllowedHosts) == 0 {
+	if len(config.AppConfig.AllowedHosts) == 0 {
 		return errors.New("Empty `allowed_hosts` is not allowed")
 	}
-
+	config.LDAConfig.AppVersion = config.AppConfig.AppVersion
+	config.LDAConfig.PrimaryMailHost = config.AppConfig.PrimaryMailHost
 	return nil
 }

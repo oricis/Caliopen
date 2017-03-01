@@ -103,6 +103,8 @@ eb -> db : get raw_message
 db -> eb : raw_message
 eb -> eb : marshal email, etc.
 eb ->] : send message
+eb -> db : update status (sent)
+eb -> index : update status (sent)
 eb -> out: "deliver" response
 deactivate eb
 main x-> out: response

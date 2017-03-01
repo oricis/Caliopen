@@ -1,4 +1,5 @@
-# publish a cassandra message's id to subject 'outboundSMTP' will trigger the operations of building and sending email to MTA
+# this is the model of the payload that must be sent to 'outboundSMTP' subject on NATS
+# to trigger the operations of building a new email from a Caliopen draft message and sending it to the MTA
 order: deliver
 message_id: 1aae81ea-2f21-483e-8e68-b4fcf664df5a
 user_id: 1aae81ea-2f21-483e-8e68-b4fcf664df5a

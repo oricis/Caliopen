@@ -13,22 +13,13 @@ class RawMessage(BaseModel):
 
     """Raw message model."""
 
-    user_id = columns.UUID(primary_key=True, default=uuid.uuid4)
     raw_msg_id = columns.UUID(primary_key=True, default=uuid.uuid4)
     data = columns.Bytes()
+    size = columns.Integer() # number of bytes in 'data' column
 
+class UserRawLookup(BaseModel):
 
-class RawInboundMessage(BaseModel):
-
-    """Raw Inbound message model."""
-
-    raw_msg_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    data = columns.Bytes()
-
-
-class UserRawInboundMessage(BaseModel):
-
-    """User raw message pointer."""
+    """User's raw message pointer."""
 
     user_id = columns.UUID(primary_key=True)
     raw_msg_id = columns.UUID(primary_key=True)

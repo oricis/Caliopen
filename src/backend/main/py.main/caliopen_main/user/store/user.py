@@ -82,10 +82,10 @@ class RemoteIdentity(BaseModel):
 class LocalIdentity(BaseModel):
     """User local identity, where message are received."""
 
-    address = columns.Text(primary_key=True)
-    user_id = columns.UUID(primary_key=True)
-    type = columns.List(columns.Text())
-    status = columns.Text()
+    address = columns.Text(primary_key=True)  # for now,the address of a mailbox
+    user_id = columns.UUID(index=True)
+    type = columns.List(columns.Text())  # email, IM, etc.
+    status = columns.Text()  # active, inactive, etc.
 
 
 class IndexUser(object):

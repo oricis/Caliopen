@@ -7,6 +7,10 @@
 package objects
 
 type (
-	User struct {
+	LocalIdentity struct {
+		Address string   `json:"address"`
+		Status  string   `json:"status"`
+		Type    []string `json:"type"`
+		UserId  []byte   `json:"user_id" cql:"user_id"`
 	}
 )

@@ -7,6 +7,7 @@
 package caliopen_smtp
 
 import (
+	broker "github.com/CaliOpen/CaliOpen/src/backend/brokers/go.emails"
 	log "github.com/Sirupsen/logrus"
 	"github.com/flashmob/go-guerrilla"
 	"os/exec"
@@ -18,28 +19,36 @@ var (
 	server *SMTPServer
 )
 
+type SMTPServer struct {
+	Config           SMTPConfig
+	broker           *broker.EmailBroker
+	brokerConnectors broker.EmailBrokerConnectors
+	inboundListener  guerrilla.Guerrilla
+	outboundListener *submitter
+}
+
 func InitializeServer(config SMTPConfig) error {
 	server = new(SMTPServer)
 	return server.initialize(config)
 }
 
-func (server *SMTPServer) initialize(config SMTPConfig) error {
-	server.config = config
-	return nil
+func (server *SMTPServer) initialize(config SMTPConfig) (err error) {
+	server.Config = config
+	server.broker, server.brokerConnectors, err = broker.Initialize(config.LDAConfig)
+	return err
 }
 
 func StartServer() error {
 	return server.start()
 }
 
-func (server *SMTPServer) start() error {
+func (server *SMTPServer) start() (err error) {
 
 	// Check that max clients is not greater than system open file limit.
 	fileLimit := getFileLimit()
-
 	if fileLimit > 0 {
 		maxClients := 0
-		for _, s := range server.config.Servers {
+		for _, s := range server.Config.AppConfig.Servers {
 			maxClients += s.MaxClients
 		}
 		if maxClients > fileLimit {
@@ -48,102 +57,52 @@ func (server *SMTPServer) start() error {
 		}
 	}
 
-	// launch & register LDA service
-	err := server.InitializeLda(server.config.LDAConfig)
+	// launch outbound chan listener
+	server.outboundListener, err = server.newSubmitter()
 	if err != nil {
-		log.WithError(err).Fatal("failed to initialize LDA")
+		log.WithError(err).Warn("SMTP submitter initialization failed")
 	}
-
-	err = server.lda.start()
-	if err != nil {
-		log.WithError(err).Fatal("failed to start LDA")
-	}
-
-	var b guerrilla.Backend
-	b = guerrilla.Backend(server.lda) // type conversion. guerrilla.Backend is an interface.
-	gConfig := guerrilla.AppConfig{
-		AllowedHosts: server.config.AppConfig.AllowedHosts,
-	}
-	addrs := []string{}
-	for _, server := range server.config.AppConfig.Servers {
-		gServer := guerrilla.ServerConfig{
-			IsEnabled:       server.IsEnabled,
-			Hostname:        server.Hostname,
-			AllowedHosts:    server.AllowedHosts,
-			MaxSize:         server.MaxSize,
-			PrivateKeyFile:  server.PrivateKeyFile,
-			PublicKeyFile:   server.PublicKeyFile,
-			Timeout:         server.Timeout,
-			ListenInterface: server.ListenInterface,
-			StartTLSOn:      server.StartTLSOn,
-			TLSAlwaysOn:     server.TLSAlwaysOn,
-			MaxClients:      server.MaxClients,
-		}
-		gConfig.Servers = append(gConfig.Servers, gServer)
-		addrs = append(addrs, server.ListenInterface)
-	}
-	app := guerrilla.New(&gConfig, &b)
+	go func() {
+		server.runSubmitterAgent()
+	}()
+	log.Infof("Caliopen smtp started")
 
 	// launch SMTP inbound listener
-	go func() {
-		err := app.Start()
-		if len(err) != 0 {
-			log.Infof("Error(s) at smtp startup : ", err)
-			return
-		}
-
-		log.Infof("Caliopen smtp serving on %v", addrs)
-	}()
-
-	// launch outbound delivery agent
-	err = server.InitializeOutAgent(server.config.OutConfig)
-	if err != nil {
-		return err
+	var b guerrilla.Backend
+	b = guerrilla.Backend(server) // type conversion. guerrilla.Backend is an interface.
+	gConfig := guerrilla.AppConfig{
+		AllowedHosts: server.Config.AppConfig.AllowedHosts,
 	}
 
-	return nil
+	for _, serv := range server.Config.AppConfig.Servers {
+		gServer := guerrilla.ServerConfig{
+			IsEnabled:       serv.IsEnabled,
+			Hostname:        serv.Hostname,
+			AllowedHosts:    server.Config.AppConfig.AllowedHosts[:],
+			MaxSize:         serv.MaxSize,
+			PrivateKeyFile:  serv.PrivateKeyFile,
+			PublicKeyFile:   serv.PublicKeyFile,
+			Timeout:         serv.Timeout,
+			ListenInterface: serv.ListenInterface,
+			StartTLSOn:      serv.StartTLSOn,
+			TLSAlwaysOn:     serv.TLSAlwaysOn,
+			MaxClients:      serv.MaxClients,
+		}
+		gConfig.Servers = append(gConfig.Servers, gServer)
+	}
+	server.inboundListener = guerrilla.New(&gConfig, &b)
+	server.inboundListener.Start()
+
+	return err
 }
 
 func ShutdownServer() error {
-	return server.shutdown()
+	return server.Shutdown()
 }
 
-func (server *SMTPServer) shutdown() error {
+func (server *SMTPServer) Shutdown() error {
+	server.broker.ShutDown()
 	return nil
-}
-
-type SMTPServer struct {
-	config   SMTPConfig
-	lda      *CaliopenLDA
-	OutAgent *OutAgent
-}
-
-type SMTPConfig struct {
-	AppConfig
-	LDAConfig
-	OutConfig
-}
-
-// AppConfig is a clone of guerrilla AppConfig with relevant tagstrings
-type AppConfig struct {
-	Version      string         `mastructure:"version"`
-	Servers      []ServerConfig `mapstructure:"servers"`
-	AllowedHosts []string       `mapstructure:"allowed_hosts"`
-}
-
-// ServerConfig specifies config options for a single server
-type ServerConfig struct {
-	IsEnabled       bool     `mapstructure:"is_enabled"`
-	Hostname        string   `mapstructure:"host_name"`
-	AllowedHosts    []string `mapstructure:"allowed_hosts"`
-	MaxSize         int64    `mapstructure:"max_size"`
-	PrivateKeyFile  string   `mapstructure:"private_key_file"`
-	PublicKeyFile   string   `mapstructure:"public_key_file"`
-	Timeout         int      `mapstructure:"timeout"`
-	ListenInterface string   `mapstructure:"listen_interface"`
-	StartTLSOn      bool     `mapstructure:"start_tls_on,omitempty"`
-	TLSAlwaysOn     bool     `mapstructure:"tls_always_on,omitempty"`
-	MaxClients      int      `mapstructure:"max_clients"`
 }
 
 func getFileLimit() int {
