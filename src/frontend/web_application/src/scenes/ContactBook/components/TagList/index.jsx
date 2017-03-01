@@ -35,12 +35,17 @@ const TagItem = ({ title, link, onTagClick, nbContacts, active, className }) => 
 );
 
 TagItem.propTypes = {
-  title: PropTypes.string,
-  link: PropTypes.string,
-  nbContacts: PropTypes.number,
-  onTagClick: PropTypes.func,
+  title: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+  nbContacts: PropTypes.number.isRequired,
+  onTagClick: PropTypes.func.isRequired,
   active: PropTypes.bool,
   className: PropTypes.string,
+};
+
+TagItem.defaultProps = {
+  active: false,
+  className: '',
 };
 
 const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
@@ -76,9 +81,9 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
 };
 
 TagList.propTypes = {
-  tags: PropTypes.node,
-  onTagClick: PropTypes.func,
-  activeTag: PropTypes.string,
-  nbContactsAll: PropTypes.number,
+  tags: PropTypes.node.isRequired,
+  onTagClick: PropTypes.func.isRequired,
+  activeTag: PropTypes.string.isRequired,
+  nbContactsAll: PropTypes.number.isRequired,
 };
 export default TagList;

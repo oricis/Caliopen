@@ -3,7 +3,7 @@ import { withTranslator } from '@gandi/react-translate';
 import classnames from 'classnames';
 import Button from '../../../../../../components/Button';
 import Spinner from '../../../../../../components/Spinner';
-import { Switch, SelectFieldGroup, TextFieldGroup, FieldErrors, TextareaFieldGroup } from '../../../../../../components/form';
+import { CheckboxFieldGroup, SelectFieldGroup, TextFieldGroup, FieldErrors, TextareaFieldGroup } from '../../../../../../components/form';
 import {
   ERROR_UNABLE_READ_PUBLIC_KEY,
   ERROR_UNABLE_READ_PRIVATE_KEY,
@@ -199,7 +199,8 @@ class AccountOpenPGPKeyForm extends Component {
             <div className="m-account-openpgp-form__field-group">
               {__('account.openpgp.has-passphrase')}
               {' '}
-              <Switch
+              <CheckboxFieldGroup
+                displaySwitch
                 label={__('account.openpgp.has-passphrase')}
                 value={this.state.hasPassphrase}
                 onChange={this.handleToggleHasPassprase}

@@ -9,6 +9,11 @@ class Device extends Component {
     __: PropTypes.func.isRequired,
   };
 
+  static defaultProps = {
+    device: null,
+    isFetching: false,
+  };
+
   render() {
     const { device, isFetching, __ } = this.props;
 
