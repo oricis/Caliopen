@@ -3,6 +3,7 @@ import { routerReducer } from 'react-router-redux';
 import notifyReducer from 'react-redux-notify';
 import applicationReducer from './modules/application';
 import deviceReducer from './modules/device';
+import discussionReducer from './modules/discussion';
 import openPGPKeychainReducer from './modules/openpgp-keychain';
 import tagReducer from './modules/tag';
 import userReducer from './modules/user';
@@ -12,6 +13,7 @@ const reducer = combineReducers({
   notifications: notifyReducer,
   application: applicationReducer,
   device: deviceReducer,
+  discussion: discussionReducer,
   openPGPKeychain: openPGPKeychainReducer,
   tag: tagReducer,
   user: userReducer,
