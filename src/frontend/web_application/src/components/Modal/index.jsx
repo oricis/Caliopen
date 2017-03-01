@@ -5,16 +5,15 @@ import Icon from '../../components/Icon';
 import Button from '../../components/Button';
 import './style.scss';
 
-const Modal = ({ className, contentLabel, children, onClose, ...props }) => (
+const Modal = ({ className, title, children, onClose, ...props }) => (
   <ReactModal
     className={classnames('m-modal', className)}
     overlayClassName="m-modal__overlay"
-    contentLabel={contentLabel}
     {...props}
   >
     <header className="m-modal__header">
-      {contentLabel && (
-        <div className="m-modal__title">{contentLabel}</div>
+      {title && (
+        <div className="m-modal__title">{title}</div>
       )}
       <Button inline className="m-modal__close" onClick={onClose}><Icon type="remove" /></Button>
     </header>
@@ -26,7 +25,7 @@ const Modal = ({ className, contentLabel, children, onClose, ...props }) => (
 
 Modal.propTypes = {
   className: PropTypes.string,
-  contentLabel: PropTypes.node,
+  title: PropTypes.node,
   children: PropTypes.node,
   onClose: PropTypes.func,
 };

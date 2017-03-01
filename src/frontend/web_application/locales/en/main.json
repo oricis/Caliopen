@@ -170,7 +170,7 @@
     "signup.title": "Create your account",
     "tags.action.create": "Create",
     "tags.form.search.label": "Search",
-    "tags.form.search.placeholder": "Search or create a tag",
-    "tags.header.count": "number",
-    "tags.header.title": "Edit the tags"
+    "tags.form.search.placeholder": "Search a tag ...",
+    "tags.header.count": "(Total: %(count)s)",
+    "tags.header.title": "Tags"
 }

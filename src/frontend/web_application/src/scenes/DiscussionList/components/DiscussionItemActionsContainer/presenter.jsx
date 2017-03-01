@@ -83,7 +83,7 @@ class DiscussionItemActionsContainer extends Component {
     const { discussion, __ } = this.props;
     const title = [
       __('tags.header.title'),
-      <span className="m-tags-form__count">({__('tags.header.count')}: {discussion.tags.length})</span>,
+      (<span key="1" className="m-tags-form__count">{__('tags.header.count', { count: discussion.tags.length }) }</span>),
     ];
 
     return (
