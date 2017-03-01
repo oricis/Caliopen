@@ -6,6 +6,8 @@ env:
 language: node_js
 node_js:
 - '6'
+cache:
+  - yarn
 git:
   depth: 10
 before_install:

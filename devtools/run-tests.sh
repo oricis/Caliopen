@@ -24,7 +24,7 @@ function do_backend_tests {
 }
 
 function do_frontend_tests {
-    (cd $PROJECT_DIRECTORY/src/frontend/web_application && npm i && npm test)
+    (cd $PROJECT_DIRECTORY/src/frontend/web_application && yarn && yarn test)
 }
 
 
