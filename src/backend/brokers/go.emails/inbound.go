@@ -50,7 +50,7 @@ func (b *EmailBroker) incomingSmtpWorker() {
 }
 
 // for now, ProcessInbound only store raw email and sends an order on NATS topic for py.delivery to process it
-// in future, this broker should process the whole delivery, including the email marshalling into a Caliopen's message format
+// in future, this broker should process the whole delivery, including the email unmarshaling into a Caliopen's message format
 func (b *EmailBroker) processInbound(in *SmtpEmail) {
 	resp := &DeliveryAck{
 		EmailMessage: in.EmailMessage,
@@ -124,6 +124,8 @@ func (b *EmailBroker) processInbound(in *SmtpEmail) {
 					errs = multierror.Append(errors.New(err.(string)))
 					return
 				}
+
+				//nats delivery OK
 				if b.Config.LogReceivedMails {
 					log.Infof("EmailBroker : NATS inbound request successfully handled for user %s : %s", rcptId, (*nats_ack)["message"])
 				}

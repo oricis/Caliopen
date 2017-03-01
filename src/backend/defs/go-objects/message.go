@@ -15,6 +15,7 @@ import (
 type RawMessageModel struct {
 	Raw_msg_id []byte `cql:"raw_msg_id"`
 	Data       string `cql:"data"`
+	Size       int    `cql:"size"`
 }
 
 type MessageModel struct {

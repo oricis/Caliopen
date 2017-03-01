@@ -10,7 +10,6 @@ class InboundEmail(object):
         self.natsConn = natsConn
 
     def handler(self, msg):
-        print("[Received: {0}] {1}".format(msg.subject, msg.data))
         payload = json.loads(msg.data)
         try:
             self.deliver.process(payload["user_id"], payload["raw_email_id"])
@@ -20,5 +19,5 @@ class InboundEmail(object):
                                   json.dumps(exc.message) + ',"message":'
                                   '"inbound email process failed"}')
             return exc
-        self.natsConn.publish(msg.reply, '{"message":'
-                                         '"OK : inbound email proceeded"')
+        self.natsConn.publish(msg.reply, '{"message":' +
+                                         '"OK : inbound email proceeded"}')

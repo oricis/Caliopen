@@ -72,7 +72,7 @@ class BaseIndexDocument(DocType):
 
 class BaseUserType(UserType):
 
-    """Base class for UsermDefined Type in store layer."""
+    """Base class for UserDefined Type in store layer."""
 
     def to_dict(self):
         return {k: v for k, v in self.items()}

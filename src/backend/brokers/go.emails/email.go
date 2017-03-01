@@ -11,7 +11,6 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
 	"gopkg.in/gomail.v2"
-	"strings"
 	"time"
 )
 
