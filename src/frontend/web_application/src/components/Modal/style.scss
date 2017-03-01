@@ -1,7 +1,16 @@
 @import '../../styles/common';
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
+$m-modal__overlay-background: rgba(0, 0, 0, .75);
+
 .m-modal {
+  position: absolute;
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
   background: $co-color__fg__back;
 
   &__content {
@@ -29,5 +38,15 @@
     background: none;
 
     &:hover { background: none; }
+  }
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $l-z-index__modal-overlay;
+    background-color: $m-modal__overlay-background;
   }
 }
