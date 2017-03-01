@@ -34,7 +34,7 @@ type (
 // conforms to
 // RFC822 / RFC2822 / RFC5322 (internet message format)
 // RFC2045 / RFC2046 / RFC2047 / RFC2048 / RFC2049 (MIME) => TODO
-func MarshalEmail(msg *obj.MessageModel, version string) (em *EmailMessage, err error) {
+func MarshalEmail(msg *obj.MessageModel, version string, mailhost string) (em *EmailMessage, err error) {
 
 	em = &EmailMessage{
 		Email: &Email{
@@ -78,7 +78,7 @@ func MarshalEmail(msg *obj.MessageModel, version string) (em *EmailMessage, err 
 		log.Warn(err)
 		//TODO
 	}
-	messageId := "<" + id.String() + "@" + strings.Split(msg.From, "@")[1] + ">"
+	messageId := "<" + id.String() + "@" + mailhost + ">" // should be the default domain in case there are multiple 'from' addresses
 
 	m.SetHeader("Message-ID", messageId)
 	m.SetHeader("X-Mailer", "Caliopen-"+version)

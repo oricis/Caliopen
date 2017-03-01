@@ -58,7 +58,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 			//TODO
 		}
 
-		em, err := MarshalEmail(m, b.Config.AppVersion)
+		em, err := MarshalEmail(m, b.Config.AppVersion, b.Config.PrimaryMailHost)
 		if err != nil {
 			log.Warn(err)
 			//TODO

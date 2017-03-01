@@ -120,5 +120,6 @@ func readConfig(config *CmdConfig) error {
 		return errors.New("Empty `allowed_hosts` is not allowed")
 	}
 	config.LDAConfig.AppVersion = config.AppConfig.AppVersion
+	config.LDAConfig.PrimaryMailHost = config.AppConfig.PrimaryMailHost
 	return nil
 }

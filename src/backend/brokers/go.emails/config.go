@@ -18,7 +18,8 @@ type (
 		LogReceivedMails bool        `mapstructure:"log_received_mails"`
 		OutTopic         string      `mapstructure:"out_topic"`
 		NatsListeners    int         `mapstructure:"nats_listeners"`
-		AppVersion       string
+		PrimaryMailHost  string      `mapstructure:"primary_mail_host"`
+		AppVersion       string      `mapstructure:"version"`
 	}
 
 	StoreConfig struct {
