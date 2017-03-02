@@ -15,9 +15,6 @@
         "tablet"
       ]
     },
-    "fingerprint": {
-      "type": "string"
-    },
     "locations": {
       "type": "array",
       "items": {

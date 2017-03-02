@@ -5403,9 +5403,6 @@
                           "tablet"
                         ]
                       },
-                      "fingerprint": {
-                        "type": "string"
-                      },
                       "locations": {
                         "type": "array",
                         "items": {
@@ -5415,7 +5412,14 @@
                               "type": "string"
                             },
                             "type": {
-                              "type": "string"
+                              "type": "string",
+                              "default": "unknow",
+                              "enum": [
+                                "unknow",
+                                "home",
+                                "work",
+                                "public"
+                              ]
                             }
                           },
                           "required": [
@@ -5475,9 +5479,6 @@
                     "tablet"
                   ]
                 },
-                "fingerprint": {
-                  "type": "string"
-                },
                 "locations": {
                   "type": "array",
                   "items": {
@@ -5487,7 +5488,14 @@
                         "type": "string"
                       },
                       "type": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "unknow",
+                        "enum": [
+                          "unknow",
+                          "home",
+                          "work",
+                          "public"
+                        ]
                       }
                     },
                     "required": [
@@ -5586,9 +5594,6 @@
                     "tablet"
                   ]
                 },
-                "fingerprint": {
-                  "type": "string"
-                },
                 "locations": {
                   "type": "array",
                   "items": {
@@ -5598,7 +5603,14 @@
                         "type": "string"
                       },
                       "type": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "unknow",
+                        "enum": [
+                          "unknow",
+                          "home",
+                          "work",
+                          "public"
+                        ]
                       }
                     },
                     "required": [
@@ -5752,9 +5764,6 @@
                         "tablet"
                       ]
                     },
-                    "fingerprint": {
-                      "type": "string"
-                    },
                     "locations": {
                       "type": "array",
                       "items": {
@@ -5764,7 +5773,14 @@
                             "type": "string"
                           },
                           "type": {
-                            "type": "string"
+                            "type": "string",
+                            "default": "unknow",
+                            "enum": [
+                              "unknow",
+                              "home",
+                              "work",
+                              "public"
+                            ]
                           }
                         },
                         "required": [
@@ -5809,9 +5825,6 @@
                     "tablet"
                   ]
                 },
-                "fingerprint": {
-                  "type": "string"
-                },
                 "locations": {
                   "type": "array",
                   "items": {
@@ -5821,7 +5834,14 @@
                         "type": "string"
                       },
                       "type": {
-                        "type": "string"
+                        "type": "string",
+                        "default": "unknow",
+                        "enum": [
+                          "unknow",
+                          "home",
+                          "work",
+                          "public"
+                        ]
                       }
                     },
                     "required": [
