@@ -10,30 +10,31 @@ _For complete documentation, see the [doc/for-developers](../doc/for-developers)
 
 ## Client development
 
-You will need a running API server where you can consume data, so we have a
-[vagrant](https://vagrantup.com) box for you or a [docker compose](https://docs.docker.com/compose/)
-stack.
+**Requirements:**
 
-You can develop using the box, the code will be immediatly updated. The first compilation is a bit
-long, up to 1 min. You can use tail to see when it's ready :
+* You need the API running under vagrant/docker/manual install, cf. Environment setup. Obviously, you don't need to run frontend service.
+* You need [node](https://nodejs.org/en/) v6 or later
+* You need [yarn](https://yarnpkg.com/en/docs/install) to manage dependencies.
+
+Then develop locally using your normal practices:
+
+```
+cd src/frontend/web_application
+yarn install
+npm start
+```
+
+It's a bit long to compile. Notice that running client on both vagrant and locally will not work
+since it uses the same port.
+
+> You can develop using the box, the code will be immediatly updated. The first compilation is still
+> long, up to 1 min. You can use tail to see when it's ready:
 
 ```
 tail -f src/frontend/web_application/kotatsu.log
 ```
 
 > [kotatsu] Serving your app on port 4000... //<- ready
-
-Also you can develop locally using your normal practices:
-
-```
-cd src/frontend/web_application
-npm install
-npm start
-```
-
-Same as above, it's a bit long to compile. Running client on both vagrant locally will not work
-since it uses the same port.
-
 
 ## Api development
 
@@ -53,7 +54,7 @@ environment for such development, at the moment.
 
 ## Setup vagrant box
 
-You need to have virtualbox and vagrant installed on your machine.
+You need to have [virtualbox](https://www.virtualbox.org/) and [vagrant](https://vagrantup.com) installed on your machine.
 
 Just run inside this directory a ``vagrant up`` command, and you will have a debian
 VM running these services visible on your guest machine:
@@ -64,7 +65,7 @@ VM running these services visible on your guest machine:
 
 ## Setup docker compose stack
 
-you need to have docker and docker compose installed on your machine.
+you need to have [docker](https://docs.docker.com/engine/installation/) and [docker compose](https://docs.docker.com/compose/) installed on your machine.
 
 Services available in the docker compose stack are:
 

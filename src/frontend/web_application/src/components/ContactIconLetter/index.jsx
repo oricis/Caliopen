@@ -12,4 +12,8 @@ ContactIconLetter.propTypes = {
   className: PropTypes.string,
 };
 
+ContactIconLetter.defaultProps = {
+  className: null,
+};
+
 export default ContactIconLetter;

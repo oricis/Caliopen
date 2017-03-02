@@ -10,7 +10,11 @@
   },
   "rules": {
     "newline-before-return": "error",
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.spec.js", "**/*.spec.jsx"]}]
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.spec.js", "**/*.spec.jsx"]}],
+    "comma-dangle": ["error", "always-multiline"],
+    "react/require-default-props": 1,
+    "react/no-unused-prop-types": 1,
+    "react/no-array-index-key": 1
   },
   "globals": {
     "inject": true,

@@ -27,14 +27,13 @@ type (
 		nats *nats.Conn
 
 		// LDA facility
-		LDAstore backends.LDABackend
+		LDAstore backends.LDAStore
 	}
 
-        facility struct {
-                store    backends.APIStorage
-                //RESTindex *backends.APIindex
-        }
-
+	facility struct {
+		store backends.APIStorage
+		//RESTindex *backends.APIindex
+	}
 )
 
 func Initialize(config obj.CaliopenConfig) error {
@@ -46,16 +45,15 @@ func (facilities *CaliopenFacilities) initialize(config obj.CaliopenConfig) erro
 	facilities.config = config
 
 	//REST facility initialization
-        facilities.RESTfacility = new(facility)
+	facilities.RESTfacility = new(facility)
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":
-		backend := &store.CassandraBackend{}
 		cassaConfig := store.CassandraConfig{
 			Hosts:       config.RESTstoreConfig.Hosts,
 			Keyspace:    config.RESTstoreConfig.Keyspace,
 			Consistency: gocql.Consistency(config.RESTstoreConfig.Consistency),
 		}
-		err := backend.Initialize(cassaConfig)
+		backend, err := store.InitializeCassandraBackend(cassaConfig)
 		if err != nil {
 			log.WithError(err).Fatalf("Initalization of %s backend failed", config.RESTstoreConfig.BackendName)
 		}

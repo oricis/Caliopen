@@ -34,7 +34,7 @@ class Message(BaseModel, IndexedModelMixin):
     message_id = columns.UUID(primary_key=True, default=uuid.uuid4)
     thread_id = columns.UUID()
     type = columns.Text()
-    from_ = columns.Text()
+    from_ = columns.Text(db_field="from")  # 'from' is reserved word in python
     date = columns.DateTime()
     date_insert = columns.DateTime()
     size = columns.Integer()

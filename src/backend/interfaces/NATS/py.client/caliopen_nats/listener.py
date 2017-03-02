@@ -28,8 +28,8 @@ def main():
     yield nc.connect(**opts)
 
     # create and register subscriber(s)
-    inbound_email_sub = subscribers.InboundEmail()
-    future = nc.subscribe("inboundSMTP", "",
+    inbound_email_sub = subscribers.InboundEmail(nc)
+    future = nc.subscribe("inboundSMTP", "SMTPqueue",
                           inbound_email_sub.handler)
     sid = future.result()
 

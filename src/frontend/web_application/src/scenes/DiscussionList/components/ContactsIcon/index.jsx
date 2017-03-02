@@ -12,9 +12,9 @@ const ContactsIcon = ({ discussion }) => {
   return (
     <div className="m-contacts-icon">
       {
-        contacts.map((contact, key) => (
+        contacts.map(contact => (
           <ContactIconLetter
-            key={key}
+            key={contact.contact_id}
             className={classnames('m-contacts-icon__letter', iconClass)}
             contact={contact}
           />
@@ -28,7 +28,7 @@ const ContactsIcon = ({ discussion }) => {
 };
 
 ContactsIcon.propTypes = {
-  discussion: PropTypes.shape({}),
+  discussion: PropTypes.shape({}).isRequired,
 };
 
 export default ContactsIcon;

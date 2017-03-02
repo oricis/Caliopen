@@ -286,9 +286,9 @@ class ObjectUser(ObjectStorable):
                            (self.__class__.__name__,
                             param[self._pkey_name], self.user_id))
 
-    def apply_patch(self, patch, options):
+    def apply_patch(self, patch, **options):
         """
-        update self attributes with patch rfc7396 and Caliopen's specifications
+        Update self attributes with patch rfc7396 and Caliopen's specifications
         if, and only if, patch is consistent with current obj db instance
 
         :param patch: json-dict object describing the patch to apply

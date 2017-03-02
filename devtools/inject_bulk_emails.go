@@ -40,7 +40,7 @@ func sendMail(i int, wg *sync.WaitGroup) {
 	}
 	defer c.Close()
 
-	from := "jonn@han.net"
+	from := "jon@han.net"
 	to := "dev@caliopen.local"
 	to2 := ""
 

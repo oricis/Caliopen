@@ -70,8 +70,8 @@ class Discussions extends Component {
           className="s-discussion-list"
           infinite-scroll="$ctrl.loadMore()"
         >
-          {this.state.discussions.map((item, key) => (
-            <DiscussionItem key={key} discussion={item.thread} />
+          {this.state.discussions.map(item => (
+            <DiscussionItem key={item.thread.thread_id} discussion={item.thread} />
           ))}
         </BlockList>
         {this.state.hasMore && (

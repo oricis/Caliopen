@@ -10,10 +10,6 @@ import (
 	"github.com/gocql/gocql"
 )
 
-var (
-	cassa *CassandraBackend
-)
-
 type (
 	CassandraBackend struct {
 		CassandraConfig
@@ -28,12 +24,13 @@ type (
 	}
 )
 
-func Initialize(config CassandraConfig) error {
-	cassa = new(CassandraBackend)
-	return cassa.Initialize(config)
+func InitializeCassandraBackend(config CassandraConfig) (cb *CassandraBackend, err error) {
+	cb = new(CassandraBackend)
+	err = cb.initialize(config)
+	return
 }
 
-func (cb *CassandraBackend) Initialize(config CassandraConfig) (err error) {
+func (cb *CassandraBackend) initialize(config CassandraConfig) (err error) {
 
 	cb.CassandraConfig = config
 	// connect to the cluster
@@ -42,11 +39,15 @@ func (cb *CassandraBackend) Initialize(config CassandraConfig) (err error) {
 	cluster.Consistency = cb.Consistency
 	cb.Session, err = cluster.CreateSession()
 	if err != nil {
-		log.WithError(err).Println("GO REST API unable to create a session to cassandra")
+		log.WithError(err).Warn("package store : unable to create a session to cassandra")
 		return err
 	}
 	connection := gocassa.NewConnection(gocassa.GoCQLSessionToQueryExecutor(cb.Session))
 	cb.IKeyspace = connection.KeySpace(cb.Keyspace)
 
 	return
+}
+
+func (cb *CassandraBackend) Close() {
+	cb.Session.Close()
 }

@@ -130,6 +130,7 @@ class User(BaseCore):
     def create(cls, new_user):
         """Create a new user.
 
+        @param: new_user is a parameters/user.py.NewUser object
         # 1.check username regex
         # 2.check username is not in reserved_name table
         # 3.check recovery email validity (TODO : check if email is not within
@@ -385,6 +386,7 @@ class User(BaseCore):
                                             type=['email'],
                                             status='active')
             self.local_identities.append(formatted)
+            return True
         except Exception as exc:
             log.error('Unexpected exception {}'.format(exc))
         return False

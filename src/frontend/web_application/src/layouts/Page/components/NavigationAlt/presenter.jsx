@@ -20,8 +20,8 @@ const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
     </div>
     <VerticalMenu className="l-nav-alt__menu">
       {
-        applications.map((application, key) => (
-          <VerticalMenuItem key={key}>
+        applications.map(application => (
+          <VerticalMenuItem key={application.name}>
             <Link
               to={application.route}
               button

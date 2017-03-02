@@ -35,7 +35,7 @@ class Message(BaseUserCore, MixinCoreNested):
 
     @classmethod
     def create(cls, user, message, thread_id=None, lookup=None):
-        """Create a new message for a given user."""
+        """Create a new message for a given user, store it in db, and index it"""
         message.validate()
 
         parent_id = message.external_parent_id

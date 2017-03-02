@@ -6,7 +6,7 @@ import logging
 from caliopen_storage.exception import NotFound
 from ..user.core import ContactLookup, User
 
-from ..message.core import Message, RawInboundMessage
+from ..message.core import Message, RawMessage, UserRawLookup
 
 from ..message.core import (Thread, ThreadMessageLookup,
                             ThreadRecipientLookup,
@@ -96,8 +96,13 @@ class UserMessageDelivery(object):
                 return
 
     def process(self, user_id, raw_msg_id):
-        """Process a message for an user."""
-        msg = RawInboundMessage.get(raw_msg_id)
+        """
+        Process a raw inbound email for an user.
+
+
+        the raw email must have been previously stored into db
+        """
+        msg = RawMessage.get(raw_msg_id)
         if not msg:
             log.error('Raw message <{}> not found'.
                       format(raw_msg_id))
@@ -140,6 +145,8 @@ class UserMessageDelivery(object):
         thread_id = thread.thread_id if thread else None
 
         # XXX missing thread management
+
+        # create and index the message
         msg = Message.create(user, message, thread_id=thread_id, lookup=lookup)
         # XXX Init lookup
         if not lookup:
@@ -153,4 +160,24 @@ class UserMessageDelivery(object):
                 }
                 new_lookup = ThreadMessageLookup.create(user, **params)
                 log.debug('Created message lookup %r' % new_lookup)
+
+        # user_id<->raw_msg_id lookup
+        UserRawLookup.create(user, raw_msg_id=raw_msg_id)
+
         return msg
+
+    def process_message(self, user_id, msg_id):
+        """
+        Process (ie 'qualify') a new inbound message for an user
+
+
+        the raw message & its Message model counterpart
+        have been previously unmarshaled into db by the email broker
+        TODO (when email broker will do all that mandatory preprocessing jobs)
+        """
+        message = Message.get(user_id, msg_id)
+        if not message:
+            log.error('Message <{}> not found'.
+                      format(msg_id))
+            raise NotFound
+
