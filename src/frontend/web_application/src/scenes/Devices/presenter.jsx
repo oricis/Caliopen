@@ -9,9 +9,14 @@ class Devices extends Component {
   static propTypes = {
     devices: PropTypes.arrayOf(PropTypes.shape({})),
     requestDevices: PropTypes.func.isRequired,
-    children: PropTypes.node,
+    children: PropTypes.node.isRequired,
     params: PropTypes.shape({ }),
     __: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    devices: [],
+    params: { params: { deviceId: null } },
   };
 
   componentDidMount() {
@@ -19,7 +24,7 @@ class Devices extends Component {
   }
 
   renderDevice(device) {
-    const { params: { deviceId = null } } = this.props;
+    const { params: { deviceId } } = this.props;
     const isVerified = device.signature_key && true;
 
     return (

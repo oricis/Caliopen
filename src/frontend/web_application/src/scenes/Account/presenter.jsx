@@ -137,8 +137,8 @@ class Account extends Component {
                 </h3>
               </div>
               <ul className="m-text-list">
-                { this.state.user.contact.identities.map((identity, key) => (
-                  <li key={key} className="m-text-list__item m-text-list__item--large">
+                { this.state.user.contact.identities.map(identity => (
+                  <li key={identity} className="m-text-list__item m-text-list__item--large">
                     <span className="m-text-line">
                       <Icon className="m-text-list__icon" type="at" />
                       {identity}

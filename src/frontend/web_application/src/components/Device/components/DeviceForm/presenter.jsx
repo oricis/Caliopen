@@ -142,8 +142,8 @@ class DeviceForm extends Component {
                 />
                 <Button plain inline className="m-device-form__ip-button" onClick={this.handleClickNewIP}><Icon type="plus" /></Button>
               </div>
-              {this.state.device.ips.map((ip, key) =>
-                <div className="m-device-form__ip" key={key}>
+              {this.state.device.ips.map(ip =>
+                <div className="m-device-form__ip" key={ip}>
                   <TextFieldGroup
                     label={__('device.form.ips.label')}
                     name={ip}
