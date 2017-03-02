@@ -18,7 +18,7 @@ function generateStateFromProps(props, prevState) {
 
 class RemoteIdentityEmail extends Component {
   static propTypes = {
-    remoteIdentity: PropTypes.shape({}),
+    remoteIdentity: PropTypes.shape({}).isRequired,
     onConnect: PropTypes.func.isRequired,
     onDisconnect: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,

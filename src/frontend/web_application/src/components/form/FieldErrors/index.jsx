@@ -4,8 +4,8 @@ import './style.scss';
 
 const FieldErrors = ({ errors = [], className }) => (
   <ul className={classnames('m-field-errors', className)}>
-    { errors.map((error, key) => (
-      <li key={key}>{error}</li>
+    { errors.map(error => (
+      <li key={error}>{error}</li>
     ))}
   </ul>
 );

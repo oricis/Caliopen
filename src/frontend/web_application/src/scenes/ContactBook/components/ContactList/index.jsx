@@ -23,7 +23,7 @@ const ContactListLetter = ({ letter }) => (
 );
 
 ContactListLetter.propTypes = {
-  letter: PropTypes.string,
+  letter: PropTypes.string.isRequired,
 };
 const ContactList = ({ contacts, sortView }) => {
   const letters = [];
@@ -63,8 +63,11 @@ const ContactList = ({ contacts, sortView }) => {
 };
 
 ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.shape({})),
+  contacts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   sortView: PropTypes.string,
+};
+ContactList.defaultProps = {
+  sortView: 'given_name',
 };
 
 

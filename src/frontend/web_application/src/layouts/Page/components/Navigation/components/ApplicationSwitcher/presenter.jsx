@@ -58,8 +58,8 @@ class ApplicationSwitcher extends Component {
           <VerticalMenu>
             {
               this.props.applications.filter(app => app !== this.props.currentApplication)
-                .map((application, key) => (
-                  <VerticalMenuItem key={key}>
+                .map(application => (
+                  <VerticalMenuItem key={application.route}>
                     <BaseLink to={application.route} button expanded>
                       <Icon type={application.icon} />
                       {' '}

@@ -15,9 +15,9 @@ const CollectionFieldGroup = ({ collection, addLabel, itemLabel, onChange, __ })
   return (
     <div className="m-collection-field-group">
       <AddFieldGroup label={addLabel} onAdd={handleAdd} __={__} />
-      {collection.map((item, key) => (
+      {collection.map(item => (
         <DeleteFieldGroup
-          key={key}
+          key={itemLabel}
           item={item}
           label={itemLabel}
           onDelete={handleDelete}
