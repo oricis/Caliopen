@@ -137,6 +137,7 @@
     "settings.application": "Application",
     "settings.devices": "Devices",
     "settings.signatures": "Signatures",
+    "settings.tags": "Tags",
     "signin.action.login": "Login",
     "signin.create_an_account": "Create an account",
     "signin.feedback.invalid": "Credentials are invalid",

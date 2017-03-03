@@ -10,37 +10,57 @@ import './style.scss';
 class TagsForm extends Component {
   static propTypes = {
     tags: PropTypes.arrayOf(PropTypes.shape({})),
-    onSubmit: PropTypes.func,
-    onChange: PropTypes.func,
-    __: PropTypes.func,
+    onSearch: PropTypes.func,
+    onSearchSubmit: PropTypes.func,
+    onCreate: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    __: PropTypes.func.isRequired,
   };
 
+  static defaultProps = {
+    tags: [],
+    onSearch: null,
+    onSearchSubmit: null,
+  };
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      searchTerms: '',
+    };
 
-    this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
   }
 
-  handleSearchChange(e) {
-    this.props.onChange(e);
+  handleSearchChange({ terms }) {
+    this.setState({
+      searchTerms: terms,
+    });
+
+    if (this.props.onSearch) {
+      this.props.onSearch({ terms });
+    }
   }
 
   handleSearchSubmit(ev) {
     ev.preventDefault();
-    this.props.onSubmit(ev);
+    if (this.props.onSearchSubmit) {
+      this.props.onSearchSubmit(ev);
+    }
   }
 
   handleCreate(ev) {
     ev.preventDefault();
-    this.props.onSubmit(ev);
+
+    if (this.state.searchTerms.length > 0) {
+      this.props.onCreate({ tagName: this.state.searchTerms });
+    }
   }
 
   render() {
-    const { __ } = this.props;
+    const { __, onUpdate } = this.props;
 
     return (
       <div className="m-tags-form">
@@ -51,16 +71,15 @@ class TagsForm extends Component {
         />
 
         <div className="m-tags-form__section">
-          {this.props.tags.map((tag, key) =>
-            <TagItem tag={tag} key={key} __={__} />
+          {this.props.tags.map(tag =>
+            <TagItem tag={tag} key={tag.tag_id} onUpdate={onUpdate} __={__} />
           )}
         </div>
 
         <FormGrid>
           <Button
             className="m-tags-form__action"
-            type="submit"
-            onSubmit={this.handleSearchSubmit}
+            onClick={this.handleCreate}
             plain
           >
             <Icon type="plus" spaced />
