@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 import logging
 from mailbox import Message as Rfc2822
 
-from caliopen_main.message.core import RawInboundMessage
+from caliopen_main.message.core import RawMessage
 from caliopen_main.user.core import User
 from caliopen_main.message.delivery import UserMessageDelivery
 
@@ -52,7 +52,7 @@ class DeliveryAgent(object):
         if users:
             log.debug('Will create raw for users %r' %
                       [x.user_id for x in users])
-            raw = RawInboundMessage.create(users, buf)
+            raw = RawMessage.create(buf)
             log.debug('Created raw message %r' % raw.raw_msg_id)
             for user in users:
                 self.process_user_mail(user, raw.raw_msg_id)
