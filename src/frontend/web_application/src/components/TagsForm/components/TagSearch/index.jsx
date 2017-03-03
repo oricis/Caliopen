@@ -6,10 +6,20 @@ import { TextFieldGroup } from '../../../form';
 import './style.scss';
 
 class TagSearch extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
+    __: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    onChange: null,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      tagSearch: '',
+      terms: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -17,21 +27,23 @@ class TagSearch extends Component {
   }
 
   handleChange(ev) {
-    this.setState({
-      tagsSearch: ev.target.value,
-    });
+    const terms = ev.target.value;
+    this.setState({ terms });
+    if (this.props.onChange) {
+      this.props.onChange({ terms });
+    }
   }
 
   handleSubmit() {
-    if (this.state.tagSearch.length === 0) {
+    if (this.state.terms.length === 0) {
       return;
     }
 
     this.setState((prevState) => {
-      this.props.onSubmit({ tag: prevState.tagSearch });
+      this.props.onSubmit({ tag: prevState.terms });
 
       return {
-        tagSearch: '',
+        terms: '',
       };
     });
   }
@@ -43,8 +55,8 @@ class TagSearch extends Component {
       <div className="m-tags-search">
         <TextFieldGroup
           id="tags-search"
-          name="tagsSearch"
-          value={this.state.tagsSearch}
+          name="terms"
+          value={this.state.terms}
           className="m-tags-search__input"
           label={__('tags.form.search.label')}
           placeholder={__('tags.form.search.placeholder')}
@@ -56,10 +68,5 @@ class TagSearch extends Component {
     );
   }
 }
-
-TagSearch.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  __: PropTypes.func,
-};
 
 export default TagSearch;

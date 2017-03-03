@@ -137,6 +137,7 @@
     "settings.application": "Application",
     "settings.devices": "Appareils",
     "settings.signatures": "Signatures",
+    "settings.tags": "Tags",
     "signin.action.login": "Connexion",
     "signin.create_an_account": "Créer un compte",
     "signin.feedback.invalid": "Les identifiants ne sont pas valides",
