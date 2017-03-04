@@ -47,7 +47,7 @@ def import_email(email, import_path, format, **kwargs):
             mode = 'mbox'
             emails = mbox(import_path)
 
-    user = User.by_name(email)
+    user = User.by_local_identity(email)
 
     agent = DeliveryAgent()
     mailfrom = ''
