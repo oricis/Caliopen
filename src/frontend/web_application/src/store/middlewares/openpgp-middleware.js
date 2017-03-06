@@ -7,7 +7,9 @@ export default store => next => (action) => {
 
   if (action.type === module.FETCH_ALL) {
     store.dispatch(
-      module.receiveAll(openPGPKeychainRepository.getPrimaryKeysByFingerprint())
+      module.receiveAll({
+        keychainByFingerprint: openPGPKeychainRepository.getPrimaryKeysByFingerprint(),
+      })
     );
   }
 
@@ -18,7 +20,7 @@ export default store => next => (action) => {
         const fingerprint = generated.key.primaryKey.fingerprint;
         const { publicKeyArmored, privateKeyArmored } = generated;
         store.dispatch(
-          module.generationSucceed(fingerprint, publicKeyArmored, privateKeyArmored)
+          module.generationSucceed({ fingerprint, publicKeyArmored, privateKeyArmored })
         );
       });
   }
@@ -27,12 +29,12 @@ export default store => next => (action) => {
     const { publicKeyArmored } = action.payload;
     openPGPManager.validatePublicKeyChain(publicKeyArmored).then(({ key }) => {
       const { fingerprint } = key.primaryKey;
-      store.dispatch(module.importKeyChainSucceed(
+      store.dispatch(module.importKeyChainSucceed({
         fingerprint,
-        publicKeyArmored
-      ));
+        publicKeyArmored,
+      }));
     }).catch((errors) => {
-      store.dispatch(module.importKeyChainFailed(errors));
+      store.dispatch(module.importKeyChainFailed({ errors }));
     });
   }
 
@@ -41,11 +43,11 @@ export default store => next => (action) => {
 
     openPGPManager.validateKeyChainPair(publicKeyArmored, privateKeyArmored).then(({ key }) => {
       const { fingerprint } = key.primaryKey;
-      store.dispatch(module.importKeyChainSucceed(
+      store.dispatch(module.importKeyChainSucceed({
         fingerprint,
         publicKeyArmored,
-        privateKeyArmored
-      ));
+        privateKeyArmored,
+      }));
     }).catch((errors) => {
       store.dispatch(module.importKeyChainFailed(errors));
     });
@@ -54,7 +56,7 @@ export default store => next => (action) => {
   const actionsRequireSave = [module.GENERATION_SUCCEED, module.IMPORT_SUCCEED];
   if (actionsRequireSave.indexOf(action.type) !== -1) {
     const { fingerprint, publicKeyArmored, privateKeyArmored } = action.payload;
-    store.dispatch(module.save(fingerprint, publicKeyArmored, privateKeyArmored));
+    store.dispatch(module.save({ fingerprint, publicKeyArmored, privateKeyArmored }));
   }
 
   if (action.type === module.SAVE) {
