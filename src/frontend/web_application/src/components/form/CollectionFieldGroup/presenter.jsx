@@ -3,23 +3,34 @@ import DeleteFieldGroup from './components/DeleteFieldGroup';
 import AddFieldGroup from './components/AddFieldGroup';
 import './style.scss';
 
-const CollectionFieldGroup = ({ collection, addLabel, itemLabel, onChange, validate, __ }) => {
-  const handleAdd = (item) => {
+const CollectionFieldGroup = ({
+  collection, addTemplate, editTemplate, onChange, __,
+}) => {
+  const handleAdd = ({ item }) => {
     onChange([item, ...collection]);
   };
 
-  const handleDelete = (deletedItem) => {
+  const handleChangeItem = ({ item, position }) => {
+    const newCollection = [...collection];
+    newCollection[position] = item;
+
+    onChange(newCollection);
+  };
+
+  const handleDelete = ({ item: deletedItem }) => {
     onChange(collection.filter(item => item !== deletedItem));
   };
 
   return (
     <div className="m-collection-field-group">
-      <AddFieldGroup label={addLabel} onAdd={handleAdd} validate={validate} __={__} />
+      <AddFieldGroup template={addTemplate} onAdd={handleAdd} __={__} />
       {collection.map((item, key) => (
         <DeleteFieldGroup
           key={key}
+          position={key}
           item={item}
-          label={itemLabel}
+          template={editTemplate}
+          onChange={handleChangeItem}
           onDelete={handleDelete}
           __={__}
           className="m-collection-field-group__delete-group"
@@ -31,10 +42,9 @@ const CollectionFieldGroup = ({ collection, addLabel, itemLabel, onChange, valid
 
 CollectionFieldGroup.propTypes = {
   collection: PropTypes.arrayOf(PropTypes.string).isRequired,
-  addLabel: PropTypes.string.isRequired,
-  itemLabel: PropTypes.string.isRequired,
+  addTemplate: PropTypes.element.isRequired,
+  editTemplate: PropTypes.element.isRequired,
   onChange: PropTypes.func.isRequired,
-  validate: PropTypes.func,
   __: PropTypes.func.isRequired,
 };
 

@@ -1,25 +1,21 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
-import { TextFieldGroup } from '../../../';
 import Button from '../../../../Button';
 import Icon from '../../../../Icon';
 import './style.scss';
 
-const DeleteFieldGroup = ({ label, item, onDelete, className }) => {
+const DeleteFieldGroup = ({ template, item, position, onDelete, onChange, className }) => {
   const handleDelete = () => {
-    onDelete(item);
+    onDelete({ item });
+  };
+
+  const handleChange = ({ item: updated }) => {
+    onChange({ item: updated, position });
   };
 
   return (
     <div className={classnames('m-delete-field-group', className)}>
-      <TextFieldGroup
-        label={label}
-        name={item}
-        value={item}
-        className="m-delete-field-group__input"
-        showLabelforSr
-        readOnly
-      />
+      {template({ item, onChange: handleChange, className: 'm-delete-field-group__input' })}
       <Button
         onClick={handleDelete}
         plain
@@ -31,10 +27,15 @@ const DeleteFieldGroup = ({ label, item, onDelete, className }) => {
 };
 
 DeleteFieldGroup.propTypes = {
-  label: PropTypes.string.isRequired,
+  template: PropTypes.func.isRequired,
   item: PropTypes.string.isRequired,
+  position: PropTypes.oneOf([PropTypes.string, PropTypes.number]).isRequired,
   onDelete: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   className: PropTypes.string,
+};
+DeleteFieldGroup.defaultProps = {
+  className: null,
 };
 
 export default DeleteFieldGroup;

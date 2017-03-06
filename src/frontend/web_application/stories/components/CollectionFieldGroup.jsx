@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
 import CollectionFieldGroup from '../../src/components/form/CollectionFieldGroup/presenter';
+import { TextFieldGroup } from '../../src/components/form';
 import { Code, ComponentWrapper } from '../presenters';
 
 class Presenter extends Component {
@@ -24,35 +25,38 @@ class Presenter extends Component {
     }));
   }
   render() {
-    const handleInputChange = (event) => {
-      this.setState({
-        displaySwitch: event.target.value,
-      });
-    };
-
     const collection = [
       'foo',
       'bar',
       'bazzz',
     ];
 
-    const validate = (item) => {
-      action('validate')(item);
+    const noop = str => str;
 
-      return { isValid: true };
+    const addTemplate = ({ item, onChange, ...props }) => {
+      const handleChange = ev => onChange({ item: ev.target.value });
+
+      return (
+        <TextFieldGroup label="Add an item" showLabelforSr value={item} onChange={handleChange} {...props} />
+      );
     };
 
-    const noop = str => str;
+    const editTemplate = ({ item, onChange, ...props }) => {
+      const handleChange = ev => onChange({ item: ev.target.value });
+
+      return (
+        <TextFieldGroup label="An item" showLabelforSr value={item} onChange={handleChange} {...props} />
+      );
+    };
 
     return (
       <div>
-        <ComponentWrapper>
+        <ComponentWrapper inline >
           <CollectionFieldGroup
             collection={collection}
-            addLabel="Add an item"
-            itemLabel="An item"
-            onChange={action('change')}
-            validate={validate}
+            onChange={action('changed')}
+            addTemplate={addTemplate}
+            editTemplate={editTemplate}
             __={noop}
             {...this.state.props}
           />
@@ -66,21 +70,27 @@ const handleChange = (updatedColl) => {
   // do the things with updated collection
 };
 
-// validation is optionnal
-const validate = (item) => {
-  // do the thing
-  const isValid = <bool>;
-  const errors = [<string>, ...];
+const addTemplate = ({ item, onChange, ...props }) => {
+  const handleChange = ev => onChange({ item: ev.target.value });
 
-  return { isValid, errors };
+  return (
+    <TextFieldGroup label="Add an item" showLabelforSr value={item} onChange={handleChange} {...props} />
+  );
+};
+
+const editTemplate = ({ item, onChange, ...props }) => {
+  const handleChange = ev => onChange({ item: ev.target.value });
+
+  return (
+    <TextFieldGroup label="An item" showLabelforSr value={item} onChange={handleChange} {...props} />
+  );
 };
 
 <CollectionFieldGroup
   collection={collection}
-  addLabel="Add an item"
-  itemLabel="An item"
-  onChange={handleChange}
-  validate={validate}
+  onChange={action('changed')}
+  addTemplate={addTemplate}
+  editTemplate={editTemplate}
 />
           `}
         </Code>

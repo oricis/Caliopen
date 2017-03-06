@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { TextFieldGroup } from '../../../';
 import Button from '../../../../Button';
 import Icon from '../../../../Icon';
 import './style.scss';
 
 class AddFieldGroup extends Component {
   static propTypes = {
-    label: PropTypes.string.isRequired,
+    template: PropTypes.element.isRequired,
     onAdd: PropTypes.func.isRequired,
     validate: PropTypes.func,
     __: PropTypes.func.isRequired,
@@ -26,17 +25,15 @@ class AddFieldGroup extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(ev) {
-    this.setState({
-      item: ev.target.value,
-    });
+  handleChange({ item }) {
+    this.setState({ item });
   }
 
   handleAdd() {
     const validation = this.props.validate(this.state.item);
 
     if (validation.isValid) {
-      this.props.onAdd(this.state.item);
+      this.props.onAdd({ item: this.state.item });
       this.setState({
         item: '',
         errors: [],
@@ -49,20 +46,16 @@ class AddFieldGroup extends Component {
   }
 
   render() {
-    const { label, __ } = this.props;
+    const { template, __ } = this.props;
 
     return (
       <div className="m-add-field-group">
-        <TextFieldGroup
-          label={label}
-          placeholder={label}
-          name="item"
-          value={this.state.item}
-          onChange={this.handleChange}
-          className="m-add-field-group__input"
-          errors={this.state.errors}
-          showLabelforSr
-        />
+        {template({
+          item: this.state.item,
+          onChange: this.handleChange,
+          className: 'm-add-field-group__input',
+          errors: this.state.errors,
+        })}
         <Button
           plain
           inline

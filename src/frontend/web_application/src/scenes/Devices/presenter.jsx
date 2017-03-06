@@ -9,7 +9,7 @@ class Devices extends Component {
   static propTypes = {
     devices: PropTypes.arrayOf(PropTypes.shape({})),
     requestDevices: PropTypes.func.isRequired,
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
     params: PropTypes.shape({ }),
     __: PropTypes.func.isRequired,
   };
@@ -17,6 +17,7 @@ class Devices extends Component {
   static defaultProps = {
     devices: [],
     params: { params: { deviceId: null } },
+    children: null,
   };
 
   componentDidMount() {
