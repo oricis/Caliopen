@@ -14,12 +14,18 @@ class AccountOpenPGPKeys extends Component {
     privateKeys: PropTypes.arrayOf(PropTypes.shape({})),
     importForm: PropTypes.shape({}),
     isLoading: PropTypes.bool,
-    onDeleteKey: PropTypes.func,
-    onImportKey: PropTypes.func,
-    onGenerateKey: PropTypes.func,
-    prefetch: PropTypes.func,
+    onDeleteKey: PropTypes.func.isRequired,
+    onImportKey: PropTypes.func.isRequired,
+    onGenerateKey: PropTypes.func.isRequired,
+    prefetch: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
   };
+
+  static defaultProps = {
+    privateKeys: null,
+    importForm: null,
+    isLoading: false,
+  }
 
   constructor(props) {
     super(props);

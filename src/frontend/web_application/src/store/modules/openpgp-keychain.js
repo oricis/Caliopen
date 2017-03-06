@@ -10,7 +10,7 @@ export const FETCH_ALL = 'co/openpgp-keychain/FETCH_ALL';
 export const RECEIVE_ALL = 'co/openpgp-keychain/RECEIVE_ALL';
 export const DELETE = 'co/openpgp-keychain/DELETE';
 
-export function generate(name, email, passphrase) {
+export function generate({ name, email, passphrase }) {
   return {
     type: GENERATE,
     payload: {
@@ -21,7 +21,7 @@ export function generate(name, email, passphrase) {
   };
 }
 
-export function generationSucceed(fingerprint, publicKeyArmored, privateKeyArmored) {
+export function generationSucceed({ fingerprint, publicKeyArmored, privateKeyArmored }) {
   return {
     type: GENERATION_SUCCEED,
     payload: {
@@ -32,28 +32,28 @@ export function generationSucceed(fingerprint, publicKeyArmored, privateKeyArmor
   };
 }
 
-export function importPublicKeyChain(publicKeyArmored) {
+export function importPublicKeyChain({ publicKeyArmored }) {
   return {
     type: IMPORT_PUBLIC_KEY,
     payload: { publicKeyArmored },
   };
 }
 
-export function importKeyPairChains(publicKeyArmored, privateKeyArmored) {
+export function importKeyPairChains({ publicKeyArmored, privateKeyArmored }) {
   return {
     type: IMPORT_KEY_PAIR,
     payload: { publicKeyArmored, privateKeyArmored },
   };
 }
 
-export function importKeyChainSucceed(fingerprint, publicKeyArmored, privateKeyArmored) {
+export function importKeyChainSucceed({ fingerprint, publicKeyArmored, privateKeyArmored }) {
   return {
     type: IMPORT_SUCCEED,
     payload: { fingerprint, publicKeyArmored, privateKeyArmored },
   };
 }
 
-export function importKeyChainFailed(errors) {
+export function importKeyChainFailed({ errors }) {
   return {
     type: IMPORT_FAILED,
     payload: { errors },
@@ -67,7 +67,7 @@ export function importKeyChainCancel() {
   };
 }
 
-export function save(fingerprint, publicKeyArmored, privateKeyArmored) {
+export function save({ fingerprint, publicKeyArmored, privateKeyArmored }) {
   return {
     type: SAVE,
     payload: {
@@ -85,7 +85,7 @@ export function fetchAll() {
   };
 }
 
-export function receiveAll(keychainByFingerprint) {
+export function receiveAll({ keychainByFingerprint }) {
   return {
     type: RECEIVE_ALL,
     payload: {
@@ -94,7 +94,7 @@ export function receiveAll(keychainByFingerprint) {
   };
 }
 
-export function deleteKey(fingerprint) {
+export function deleteKey({ fingerprint }) {
   return {
     type: DELETE,
     payload: {
