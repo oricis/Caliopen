@@ -25,7 +25,7 @@ const VerifyDevice = ({ device, onVerifyDevice, onDeleteDevice, __ }) => {
 };
 
 VerifyDevice.propTypes = {
-  device: PropTypes.shape({}),
+  device: PropTypes.shape({}).isRequired,
   onDeleteDevice: PropTypes.func.isRequired,
   onVerifyDevice: PropTypes.func.isRequired,
   __: PropTypes.func.isRequired,
