@@ -14,4 +14,15 @@ describe('Service calcObjectForPatch', () => {
       });
     });
   });
+
+  describe('update sub-object', () => {
+    it('does not update sub-object clone', () => {
+      const previous = { foo: { value: 'bar' } };
+      const updated = { ...previous, foo: { ...previous.foo } };
+
+      expect(calcObjectForPatch(updated, previous)).toEqual({
+        current_state: {},
+      });
+    });
+  });
 });

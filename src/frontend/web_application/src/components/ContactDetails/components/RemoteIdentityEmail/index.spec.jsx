@@ -5,6 +5,7 @@ import RemoteIdentityEmail from './';
 describe('component RemoteIdentityEmail', () => {
   it('init form', () => {
     const props = {
+      remoteIdentity: {},
       onConnect: jest.fn(),
       onDisconnect: jest.fn(),
       __: str => str,

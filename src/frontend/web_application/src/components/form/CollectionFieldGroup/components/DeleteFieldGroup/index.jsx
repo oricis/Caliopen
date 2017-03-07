@@ -28,8 +28,8 @@ const DeleteFieldGroup = ({ template, item, position, onDelete, onChange, classN
 
 DeleteFieldGroup.propTypes = {
   template: PropTypes.func.isRequired,
-  item: PropTypes.string.isRequired,
-  position: PropTypes.oneOf([PropTypes.string, PropTypes.number]).isRequired,
+  item: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]).isRequired,
+  position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onDelete: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   className: PropTypes.string,

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import classnames from 'classnames';
 import Button from '../../../../components/Button';
 import { FormGrid, FormRow, FormColumn, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, CollectionFieldGroup } from '../../../../components/form';
 import './style.scss';
@@ -8,7 +9,7 @@ function generateStateFromProps(props) {
     device: {
       name: '',
       type: '',
-      ips: [],
+      locations: [],
       ...props.device,
     },
   };
@@ -28,7 +29,7 @@ class DeviceForm extends Component {
     };
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.validateIP = this.validateIP.bind(this);
-    this.handleIPsChange = this.handleIPsChange.bind(this);
+    this.handleLocationsChange = this.handleLocationsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -50,11 +51,11 @@ class DeviceForm extends Component {
     }));
   }
 
-  handleIPsChange(ips) {
+  handleLocationsChange(locations) {
     this.setState(prevState => ({
       device: {
         ...prevState.device,
-        ips,
+        locations,
       },
     }));
   }
@@ -82,6 +83,47 @@ class DeviceForm extends Component {
       { value: 'smartphone', label: __('device.type.smartphone') },
       { value: 'tablet', label: __('device.type.tablet') },
     ];
+    const locationTypes = [
+      { label: __('device.location.type.unknown'), value: 'unknown' },
+      { label: __('device.location.type.home'), value: 'home' },
+      { label: __('device.location.type.work'), value: 'work' },
+      { label: __('device.location.type.public'), value: 'public' },
+    ];
+    const defaultLocation = { address: '', type: locationTypes[0].value };
+
+    const locationTemplate = ({ item: location, onChange, className }) => {
+      const handleChange = (ev) => {
+        const { name, value } = ev.target;
+        onChange({
+          item: {
+            ...location,
+            [name]: value,
+          },
+        });
+      };
+
+      return (
+        <div className={classnames('m-device-form__location-group', className)}>
+          <TextFieldGroup
+            showLabelforSr
+            name="address"
+            label={__('device.form.locations.address.label')}
+            value={location.address}
+            onChange={handleChange}
+            className="m-device-form__location-address"
+          />
+          <SelectFieldGroup
+            showLabelforSr
+            name="type"
+            label={__('device.form.locations.type.label')}
+            value={location.type}
+            options={locationTypes}
+            onChange={handleChange}
+            className="m-device-form__location-type"
+          />
+        </div>
+      );
+    };
 
     return (
       <FormGrid className="m-device-form" onSubmit={this.handleSubmit}>
@@ -131,11 +173,11 @@ class DeviceForm extends Component {
             </FormColumn>
             <FormColumn bottomSpace size="medium">
               <CollectionFieldGroup
-                collection={this.state.device.ips}
-                addLabel={__('device.manage_form.add-ip.label')}
-                itemLabel={__('device.form.ips.label')}
-                validate={this.validateIP}
-                onChange={this.handleIPsChange}
+                defaultValue={defaultLocation}
+                collection={this.state.device.locations}
+                addTemplate={locationTemplate}
+                editTemplate={locationTemplate}
+                onChange={this.handleLocationsChange}
               />
             </FormColumn>
           </FormRow>

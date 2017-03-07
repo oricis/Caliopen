@@ -3,14 +3,22 @@ import Button from '../../../../Button';
 import Icon from '../../../../Icon';
 import './style.scss';
 
+function generateStateFromProps(props) {
+  const item = typeof props.defaultValue === 'string' ? props.defaultValue : { ...props.defaultValue };
+
+  return { item };
+}
+
 class AddFieldGroup extends Component {
   static propTypes = {
-    template: PropTypes.element.isRequired,
+    template: PropTypes.func.isRequired,
+    defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]),
     onAdd: PropTypes.func.isRequired,
     validate: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
+    defaultValue: '',
     validate: () => ({
       isValid: true,
     }),
@@ -18,11 +26,18 @@ class AddFieldGroup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      item: '',
       errors: [],
     };
     this.handleAdd = this.handleAdd.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState(generateStateFromProps(this.props));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(generateStateFromProps(nextProps));
   }
 
   handleChange({ item }) {

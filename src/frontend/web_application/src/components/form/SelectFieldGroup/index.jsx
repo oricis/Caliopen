@@ -28,7 +28,7 @@ const SelectFieldGroup = ({
         {...props}
       >
         {options.map(selectOption => (
-          <option key={selectOption.label} value={selectOption.value}>{}</option>
+          <option key={selectOption.label} value={selectOption.value}>{selectOption.label}</option>
         ))}
       </select>
       { errors.length !== 0 && (
