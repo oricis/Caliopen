@@ -6,16 +6,17 @@
     margin-bottom: map-get($co-form__spacing, 'large');
   }
 
-  &__ip {
-    @include flex-grid-row;
-    margin-bottom: map-get($co-form__spacing, 'small');
+  &__location-group {
+    display: flex;
+    flex-flow: row wrap;
   }
 
-  &__ip-input {
+  &__location-address {
     @include flex-grid-size;
+    margin-right: map-get($co-form__spacing, 'small');
   }
 
-  &__ip-button {
+  &__location-type {
     @include flex-grid-size(shrink);
   }
 }

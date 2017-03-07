@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import Icon from '../../../../components/Icon';
+import classnames from 'classnames';
 import Button from '../../../../components/Button';
-import { FormGrid, FormRow, FormColumn, Fieldset, Legend, TextFieldGroup, SelectFieldGroup } from '../../../../components/form';
+import { FormGrid, FormRow, FormColumn, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, CollectionFieldGroup } from '../../../../components/form';
 import './style.scss';
 
 function generateStateFromProps(props) {
@@ -9,7 +9,7 @@ function generateStateFromProps(props) {
     device: {
       name: '',
       type: '',
-      ips: [],
+      locations: [],
       ...props.device,
     },
   };
@@ -26,11 +26,10 @@ class DeviceForm extends Component {
     super(props);
     this.state = {
       ...generateStateFromProps(this.props),
-      newIP: '',
     };
     this.handleFieldChange = this.handleFieldChange.bind(this);
-    this.handleClickNewIP = this.handleClickNewIP.bind(this);
-    this.handleNewIPChange = this.handleNewIPChange.bind(this);
+    this.validateIP = this.validateIP.bind(this);
+    this.handleLocationsChange = this.handleLocationsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -52,26 +51,28 @@ class DeviceForm extends Component {
     }));
   }
 
-  handleNewIPChange(ev) {
-    const { value: newIP } = ev.target;
-    this.setState({ newIP });
+  handleLocationsChange(locations) {
+    this.setState(prevState => ({
+      device: {
+        ...prevState.device,
+        locations,
+      },
+    }));
   }
 
-  handleClickNewIP() {
-    if (this.state.newIP) {
-      this.setState(prevState => ({
-        device: {
-          ...prevState.device,
-          ips: [prevState.newIP, ...prevState.device.ips],
-        },
-        newIP: '',
-      }));
+  validateIP(ip) {
+    if (/^[0-9]{1,3}(\.[-/0-9]*){1,3}$/.test(ip)) {
+      return { isValid: true };
     }
+
+    const { __ } = this.props;
+
+    return { isValid: false, errors: [__('device.feedback.invalid_ip')] };
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.onChange({ device: this.state.device });
+    this.props.onChange({ device: this.state.device, original: this.props.device });
   }
 
   render() {
@@ -82,6 +83,47 @@ class DeviceForm extends Component {
       { value: 'smartphone', label: __('device.type.smartphone') },
       { value: 'tablet', label: __('device.type.tablet') },
     ];
+    const locationTypes = [
+      { label: __('device.location.type.unknown'), value: 'unknown' },
+      { label: __('device.location.type.home'), value: 'home' },
+      { label: __('device.location.type.work'), value: 'work' },
+      { label: __('device.location.type.public'), value: 'public' },
+    ];
+    const defaultLocation = { address: '', type: locationTypes[0].value };
+
+    const locationTemplate = ({ item: location, onChange, className }) => {
+      const handleChange = (ev) => {
+        const { name, value } = ev.target;
+        onChange({
+          item: {
+            ...location,
+            [name]: value,
+          },
+        });
+      };
+
+      return (
+        <div className={classnames('m-device-form__location-group', className)}>
+          <TextFieldGroup
+            showLabelforSr
+            name="address"
+            label={__('device.form.locations.address.label')}
+            value={location.address}
+            onChange={handleChange}
+            className="m-device-form__location-address"
+          />
+          <SelectFieldGroup
+            showLabelforSr
+            name="type"
+            label={__('device.form.locations.type.label')}
+            value={location.type}
+            options={locationTypes}
+            onChange={handleChange}
+            className="m-device-form__location-type"
+          />
+        </div>
+      );
+    };
 
     return (
       <FormGrid className="m-device-form" onSubmit={this.handleSubmit}>
@@ -130,31 +172,13 @@ class DeviceForm extends Component {
               <label htmlFor="device-ips">{__('device.manage_form.ips.infotext')}</label>
             </FormColumn>
             <FormColumn bottomSpace size="medium">
-              <div className="m-device-form__ip">
-                <TextFieldGroup
-                  label={__('device.manage_form.add-ip.label')}
-                  placeholder={__('device.manage_form.add-ip.label')}
-                  name="newIP"
-                  value={this.state.newIP}
-                  onChange={this.handleNewIPChange}
-                  className="m-device-form__ip-input"
-                  showLabelforSr
-                />
-                <Button plain inline className="m-device-form__ip-button" onClick={this.handleClickNewIP}><Icon type="plus" /></Button>
-              </div>
-              {this.state.device.ips.map(ip =>
-                <div className="m-device-form__ip" key={ip}>
-                  <TextFieldGroup
-                    label={__('device.form.ips.label')}
-                    name={ip}
-                    defaultValue={ip}
-                    className="m-device-form__ip-input"
-                    showLabelforSr
-                    readOnly
-                  />
-                  <Button plain inline className="m-device-form__ip-button"><Icon type="remove" /></Button>
-                </div>
-              )}
+              <CollectionFieldGroup
+                defaultValue={defaultLocation}
+                collection={this.state.device.locations}
+                addTemplate={locationTemplate}
+                editTemplate={locationTemplate}
+                onChange={this.handleLocationsChange}
+              />
             </FormColumn>
           </FormRow>
         </Fieldset>

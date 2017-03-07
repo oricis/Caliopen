@@ -9,7 +9,6 @@
 
   &__select {
     @include o-form-element;
-    margin-bottom: map-get($co-form__spacing, 'medium');
   }
 
   &,

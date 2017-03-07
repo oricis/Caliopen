@@ -8,7 +8,7 @@ import Device from './components/Device';
 
 export { Device };
 
-const devicesSelector = state => state.device.devices;
+const devicesSelector = state => state.device.devices.map(id => state.device.devicesById[id]);
 const mapStateToProps = createSelector(
   [devicesSelector],
   devices => ({ devices })

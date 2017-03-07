@@ -3,6 +3,7 @@ import { routerMiddleware } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import rootReducer from './reducer';
 import axiosMiddleware from './middlewares/axios-middleware';
+import deviceMiddleware from './middlewares/device-middleware';
 import discussionMiddleware from './middlewares/discussions-middleware';
 import promiseMiddleware from './middlewares/promise-middleware';
 import tagsMiddleware from './middlewares/tags-middleware';
@@ -11,6 +12,7 @@ import thunkMiddleware from './middlewares/thunk-middleware';
 const middlewares = [
   routerMiddleware(browserHistory),
   axiosMiddleware,
+  deviceMiddleware,
   discussionMiddleware,
   promiseMiddleware,
   tagsMiddleware,

@@ -1,51 +1,76 @@
 import React, { Component, PropTypes } from 'react';
-import { TextFieldGroup } from '../../../';
 import Button from '../../../../Button';
 import Icon from '../../../../Icon';
 import './style.scss';
 
+function generateStateFromProps(props) {
+  const item = typeof props.defaultValue === 'string' ? props.defaultValue : { ...props.defaultValue };
+
+  return { item };
+}
+
 class AddFieldGroup extends Component {
   static propTypes = {
-    label: PropTypes.string,
-    onAdd: PropTypes.func,
-    __: PropTypes.func,
+    template: PropTypes.func.isRequired,
+    defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]),
+    onAdd: PropTypes.func.isRequired,
+    validate: PropTypes.func,
+    __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    defaultValue: '',
+    validate: () => ({
+      isValid: true,
+    }),
   };
   constructor(props) {
     super(props);
     this.state = {
-      item: '',
+      errors: [],
     };
     this.handleAdd = this.handleAdd.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(ev) {
-    this.setState({
-      item: ev.target.value,
-    });
+  componentWillMount() {
+    this.setState(generateStateFromProps(this.props));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(generateStateFromProps(nextProps));
+  }
+
+  handleChange({ item }) {
+    this.setState({ item });
   }
 
   handleAdd() {
-    this.props.onAdd(this.state.item);
-    this.setState({
-      item: '',
-    });
+    const validation = this.props.validate(this.state.item);
+
+    if (validation.isValid) {
+      this.props.onAdd({ item: this.state.item });
+      this.setState({
+        item: '',
+        errors: [],
+      });
+    } else {
+      this.setState({
+        errors: validation.errors,
+      });
+    }
   }
 
   render() {
-    const { label, __ } = this.props;
+    const { template, __ } = this.props;
 
     return (
       <div className="m-add-field-group">
-        <TextFieldGroup
-          label={label}
-          placeholder={label}
-          name="item"
-          value={this.state.item}
-          onChange={this.handleChange}
-          className="m-add-field-group__input"
-          showLabelforSr
-        />
+        {template({
+          item: this.state.item,
+          onChange: this.handleChange,
+          className: 'm-add-field-group__input',
+          errors: this.state.errors,
+        })}
         <Button
           plain
           inline
