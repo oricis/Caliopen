@@ -13,4 +13,4 @@ RUN go build github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/
 
 ENTRYPOINT /go/src/github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/caliopen_rest serve -c caliopen-api.docker
 
-EXPOSE 3141
+EXPOSE 31415
