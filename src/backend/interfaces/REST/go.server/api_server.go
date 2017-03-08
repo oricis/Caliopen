@@ -6,10 +6,12 @@ package rest_api
 
 import (
 	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/operations/users"
 	"github.com/CaliOpen/CaliOpen/src/backend/main/go.main"
 	log "github.com/Sirupsen/logrus"
 	"gopkg.in/gin-gonic/gin.v1"
+	"gopkg.in/redis.v5"
 )
 
 var (
@@ -20,12 +22,14 @@ var (
 type (
 	REST_API struct {
 		config APIConfig
+		cache  *redis.Client
 	}
 
 	APIConfig struct {
 		Host          string `mapstructure:"host"`
 		Port          string `mapstructure:"port"`
 		BackendConfig `mapstructure:"BackendConfig"`
+		CacheSettings `mapstructure:"CacheConfig"`
 	}
 
 	BackendConfig struct {
@@ -37,6 +41,12 @@ type (
 		Hosts       []string `mapstructure:"hosts"`
 		Keyspace    string   `mapstructure:"keyspace"`
 		Consistency uint16   `mapstructure:"consistency_level"`
+	}
+
+	CacheSettings struct {
+		Host     string `mapstructure:"host"`
+		Password string `mapstructure:"password"`
+		Db       int    `mapstructure:"db"`
 	}
 )
 
@@ -66,6 +76,17 @@ func (server *REST_API) initialize(config APIConfig) error {
 
 	caliop = caliopen.Facilities.RESTfacility
 
+	//TODO : manage credentials & connection with config & backends interface
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+	_, err = client.Ping().Result()
+	if err != nil {
+		return err
+	}
+	server.cache = client
 	return nil
 }
 
@@ -82,7 +103,7 @@ func (server *REST_API) start() error {
 
 	// adds our routes and handlers
 	api := router.Group("/api/v2")
-	AddHandlers(api)
+	server.AddHandlers(api)
 
 	// listens
 	addr := server.config.Host + ":" + server.config.Port
@@ -93,11 +114,11 @@ func (server *REST_API) start() error {
 	return err
 }
 
-func AddHandlers(api *gin.RouterGroup) {
+func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 
 	//users API
 	u := api.Group("/users")
-	u.POST("/", func(ctx *gin.Context) {
+	u.POST("", func(ctx *gin.Context) {
 		users.Create(caliop, ctx)
 	})
 	u.GET("/:user_id", func(ctx *gin.Context) {
@@ -107,5 +128,19 @@ func AddHandlers(api *gin.RouterGroup) {
 	//username API
 	api.GET("/username/isAvailable", func(ctx *gin.Context) {
 		users.IsAvailable(caliop, ctx)
+	})
+
+	//messages API
+	//messages := api.Group("/messages", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
+	draft := api.Group("/draft", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
+	draft.GET("", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"access": "authorized",
+		})
+	})
+	draft.GET("/test", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"access": "authorized",
+		})
 	})
 }
