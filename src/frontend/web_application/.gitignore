@@ -19,3 +19,6 @@ cordova/*.log
 cordova/platforms
 cordova/plugins
 .kotatsu
+
+# yarn lockfile
+yarn.lock

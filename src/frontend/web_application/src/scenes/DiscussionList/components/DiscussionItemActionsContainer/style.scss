@@ -4,11 +4,53 @@
   position: relative;
 
   &__action {
+    height: 2 * $co-component__height;
     border-right: 1px solid $co-color__fg__border;
+    line-height: 2 * $co-component__height;
+  }
+
+  &__menu {
+
+    &-container {
+      border-color: transparent;
+      background: none;
+      box-shadow: none;
+
+      &::before { // triangle
+        display: block;
+        content: '';
+        position: absolute;
+        right: 1rem;
+        bottom: 100%;
+        width: 0;
+        height: 0;
+        border-right: 1rem solid transparent;
+        border-bottom: 1rem solid $co-color__primary--lower;
+        border-left: 1rem solid transparent;
+      }
+    }
+
+    &-content {
+      position: relative;
+      top: -3px; // to avoid blank before block
+      padding-top: map-get($co-form__spacing, 'small');
+      padding-bottom: map-get($co-form__spacing, 'small');
+      background: $co-color__primary--lower;
+
+      button {
+        min-height: $co-component__height;
+      }
+    }
   }
 
   &--active {
     background-color: $co-color__primary--lower;
+
+    .s-discussion-list__tag {
+      background: $co-color__primary--low;
+      color: $co-color__fg__text--higher;
+    }
+
 
     &__actions {
       position: absolute;

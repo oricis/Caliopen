@@ -66,8 +66,13 @@ class DiscussionItemActionsContainer extends Component {
         >
           {__('discussion-item-actions.action.more')}
         </DropdownController>
-        <Dropdown id={this.dropdownId} position="bottom" closeOnClick>
-          <VerticalMenu>
+        <Dropdown
+          id={this.dropdownId}
+          position="bottom"
+          closeOnClick
+          className="m-discussion-item-actions-container__menu-container"
+        >
+          <VerticalMenu className="m-discussion-item-actions-container__menu-content">
             <VerticalMenuItem><Button expanded>Archive</Button></VerticalMenuItem>
             <VerticalMenuItem><Button expanded>Enable tracking</Button></VerticalMenuItem>
             <VerticalMenuItem>

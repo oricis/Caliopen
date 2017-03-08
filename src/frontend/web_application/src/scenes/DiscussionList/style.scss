@@ -7,15 +7,15 @@
   &__thread {
     @include flex-grid-row($size: expand);
     align-items: center;
-    padding-top: $co-component__spacing;
-    padding-bottom: $co-component__spacing;
+    height: 2 * $co-component__height;
+
 
     &:hover {
-      color: $co-color__fg__text--high;
+      color: $co-color__primary__text;
     }
 
     &:active {
-      color: $co-color__fg__text--low;
+      color: $co-color__primary__text;
     }
 
     &--unread {
@@ -44,6 +44,8 @@
   &__col-title {
     @include flex-grid-column;
     min-width: 0; // https://github.com/zurb/foundation-sites/pull/8511
+    padding-top: $co-component__height / 2;
+    padding-bottom: $co-component__height / 2;
   }
 
   &__col-file {
@@ -53,6 +55,10 @@
   &__col-dates {
     @include flex-grid-column(2);
     display: none;
+
+    time {
+      font-weight: bold;
+    }
   }
 
   &__col-count {
