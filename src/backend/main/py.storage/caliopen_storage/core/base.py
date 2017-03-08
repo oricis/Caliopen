@@ -152,7 +152,7 @@ class BaseUserCore(BaseCore):
         return cls(obj)
 
     @classmethod
-    def object_belongs_to_user(cls, user_id, object_id):
+    def belongs_to_user(cls, user_id, object_id):
         param = {cls._pkey_name: object_id}
         obj = cls._model_class.get(user_id=user_id, **param)
         if obj:

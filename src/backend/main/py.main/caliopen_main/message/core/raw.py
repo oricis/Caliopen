@@ -44,7 +44,7 @@ class RawMessage(BaseCore):
         @param: raw_msg_id is a string
         """
 
-        if not UserRawLookup.message_belongs_to_user(user_id, raw_msg_id):
+        if not UserRawLookup.belongs_to_user(user_id, raw_msg_id):
             return None
         try:
             return super(RawMessage, cls).get(raw_msg_id)
@@ -63,6 +63,3 @@ class UserRawLookup(BaseUserCore):
     _model_class = ModelUserRawLookup
     _pkey_name = 'raw_msg_id'
 
-    @classmethod
-    def message_belongs_to_user(cls, user_id, raw_msg_id):
-        return super(UserRawLookup, cls).object_belongs_to_user(user_id, raw_msg_id)
