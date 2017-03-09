@@ -88,7 +88,7 @@ Then you can setup storage, create an user and import email using caliopen cli t
 cd devtools
 docker-compose run cli setup
 docker-compose run cli create_user -e dev -p 123456
-docker-compose run cli import -e dev -f mbox -p devtools/fixtures/mbox/dev@caliopen.local
+docker-compose run cli import -e dev@caliopen.local -f mbox -p devtools/fixtures/mbox/dev@caliopen.local
 ```
 
 Finally start the api and the frontend:

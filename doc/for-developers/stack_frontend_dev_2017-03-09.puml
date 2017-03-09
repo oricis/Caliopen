@@ -1,0 +1,34 @@
+@startuml
+center header Frontend development architecture - march 2017
+cloud {
+  () Browser
+}
+node {
+  () "/src" as code
+  () "/server" as code_server
+}
+package "kotatsu client" {
+  [kotatsu server proxy]
+  () HMR as HMRc
+  code --> wpc
+  () "webpack client" as wpc
+  HMRc <-- wpc
+  [kotatsu client server] <- wpc
+  [kotatsu client server] --> () Browser
+  [kotatsu server proxy] --> [kotatsu client server]
+}
+package "kotatsu server" {
+  () HMR as HMRs
+  () "webpack server" as wps
+  code_server -> wps
+  wps -> HMRs
+  wps --> [express server]
+  () "SSR middleware" as SSR
+  [express server] <- SSR
+  code --> SSR
+  [express server] <- () "assets middleware"
+  [express server] <- () "API middleware"
+  [express server] <- () "Auth middleware"
+  [express server] --> [kotatsu server proxy]
+}
+@enduml
