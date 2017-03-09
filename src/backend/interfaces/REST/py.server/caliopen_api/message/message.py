@@ -124,7 +124,7 @@ class Raw(Api):
     def get(self):
         # XXX how to check privacy_index ?
         raw_msg_id = self.request.matchdict.get('raw_msg_id')
-        raw = RawMessage.get(self.user, raw_msg_id)
+        raw = RawMessage.get_for_user(self.user.user_id, raw_msg_id)
         if raw:
             return raw.data
         raise ResourceNotFound('No such message')

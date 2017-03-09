@@ -150,3 +150,11 @@ class BaseUserCore(BaseCore):
         """Create a core object belong to an user."""
         obj = cls._model_class.create(user_id=user.user_id, **attrs)
         return cls(obj)
+
+    @classmethod
+    def belongs_to_user(cls, user_id, object_id):
+        param = {cls._pkey_name: object_id}
+        obj = cls._model_class.get(user_id=user_id, **param)
+        if obj:
+            return True
+        return False

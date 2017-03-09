@@ -36,8 +36,16 @@ class RawMessage(BaseCore):
                                              data=raw, size=size)
 
     @classmethod
-    def get(cls, raw_msg_id):
-        """Get raw message by raw_msg_id."""
+    def get_for_user(cls, user_id, raw_msg_id):
+        """
+        Get raw message by raw_msg_id, if message belongs to user
+
+        @param: user_id is a string
+        @param: raw_msg_id is a string
+        """
+
+        if not UserRawLookup.belongs_to_user(user_id, raw_msg_id):
+            return None
         try:
             return super(RawMessage, cls).get(raw_msg_id)
         except NotFound:
@@ -54,3 +62,4 @@ class UserRawLookup(BaseUserCore):
 
     _model_class = ModelUserRawLookup
     _pkey_name = 'raw_msg_id'
+
