@@ -84,3 +84,17 @@ services:
           - internal_handler:internal_handler.dev.caliopen.org
       ports:
           - "4222:4222"
+  # Internal Message Handler
+  internal_handler:
+      build: ../src/backend/interfaces/NATS/py.client
+      links:
+          - cassandra:cassandra.dev.caliopen.org
+          - elasticsearch:es.dev.caliopen.org
+  # NGINX
+  nginx:
+      build: ../src/frontend/web_front
+      ports:
+          - "80:80"
+          - "443:443"
+      links:
+          - frontend:frontend.dev.caliopen.org
