@@ -65,3 +65,22 @@ services:
           - api:api.dev.caliopen.org
       ports:
         - "4000:4000"
+  # Broker
+  broker:
+      build: ../src/backend/protocols/go.smtp
+      links: 
+          - apiv1:apiv1.dev.caliopen.org
+          - cassandra:cassandra.dev.caliopen.org
+          - elasticsearch:es.dev.caliopen.org
+      ports:
+        - "2525:2525"
+        - "9042"
+  # NATS
+  nats:
+      build: ../src/backend/interfaces/NATS
+      links:
+          - apiv1:apiv1.dev.caliopen.org
+          - api:api.dev.caliopen.org
+          - internal_handler:internal_handler.dev.caliopen.org
+      ports:
+          - "4222:4222"
