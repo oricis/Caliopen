@@ -90,6 +90,7 @@ services:
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
+          - broker:broker.dev.caliopen.org
   # NGINX
   nginx:
       build: ../src/frontend/web_front
