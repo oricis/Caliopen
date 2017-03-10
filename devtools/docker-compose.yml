@@ -72,6 +72,7 @@ services:
           - apiv1:apiv1.dev.caliopen.org
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
+          
       ports:
         - "2525:2525"
         - "9042"
