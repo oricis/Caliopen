@@ -1,6 +1,5 @@
 const express = require('express');
-const applyAPI = require('./api');
-const applySSR = require('./ssr');
+const path = require('path');
 const applySecurity = require('./security');
 const applyAssets = require('./assets');
 const applyAuth = require('./auth');
@@ -16,8 +15,26 @@ applyConfig(app);
 applySecurity(app);
 applyAssets(app);
 applyAuth(app);
-applyAPI(app);
-applySSR(app);
+
+if (SERVER_API === 'mock') {
+  // eslint-disable-next-line global-require
+  const applyAPIMock = require('./mock');
+  applyAPIMock(app);
+} else {
+  // eslint-disable-next-line global-require
+  const applyAPI = require('./api');
+  applyAPI(app);
+}
+
+if (HAS_SSR) {
+  // eslint-disable-next-line global-require
+  const applySSR = require('./ssr');
+  applySSR(app);
+} else {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../template/index.kotatsu-serve.html'));
+  });
+}
 applyError(app);
 
 module.exports = app;
