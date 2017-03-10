@@ -20,6 +20,7 @@ import Modal from './components/Modal';
 import PiBar from './components/PiBar';
 import PasswordStrength from './components/PasswordStrength';
 import RadioFieldGroup from './components/RadioFieldGroup';
+import Reply from './components/Reply';
 import Section from './components/Section';
 import SelectFieldGroup from './components/SelectFieldGroup';
 import SigninPage from './layouts/SigninPage';
@@ -155,4 +156,9 @@ storiesOf('Titles', module)
   ))
   .add('Subtitle', () => (
     <Subtitle />
+  ));
+
+storiesOf('Compose & Reply', module)
+  .add('Reply', () => (
+    <Reply />
   ));
