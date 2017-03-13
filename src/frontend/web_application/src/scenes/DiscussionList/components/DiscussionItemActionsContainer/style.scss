@@ -1,47 +1,36 @@
 @import '../../../../styles/common';
+@import '../../../../styles/object/o-triangle';
 
 .m-discussion-item-actions-container {
   position: relative;
 
   &__action {
     height: 2 * $co-component__height;
-    border-right: 1px solid $co-color__fg__border;
+    border-left: 1px solid $co-color__primary--lower;
     line-height: 2 * $co-component__height;
+
+    &:first-child {
+      border-left: 0;
+    }
   }
 
   &__menu {
+    margin-top: -1px; // to avoid blank before block (because of Foundation 'Dropdown' JS)
+    padding-top: 2 * $co-component__spacing;
+    padding-bottom: 2 * $co-component__spacing;
+    background: $co-color__primary--lower;
 
-    &-container {
-      border-color: transparent;
-      background: none;
-      box-shadow: none;
-
-      &::before { // triangle
-        display: block;
-        content: '';
-        position: absolute;
-        right: 1rem;
-        bottom: 100%;
-        width: 0;
-        height: 0;
-        border-right: 1rem solid transparent;
-        border-bottom: 1rem solid $co-color__primary--lower;
-        border-left: 1rem solid transparent;
-      }
+    &::before {
+      @include o-triangle('top', 1rem, $co-color__primary--lower);
+      right: 1rem;
     }
 
-    &-content {
-      position: relative;
-      top: -3px; // to avoid blank before block
-      padding-top: map-get($co-form__spacing, 'small');
-      padding-bottom: map-get($co-form__spacing, 'small');
-      background: $co-color__primary--lower;
-
-      button {
-        min-height: $co-component__height;
-      }
+    button {
+      min-height: $co-component__height;
+      text-align: left;
     }
   }
+
 
   &--active {
     background-color: $co-color__primary--lower;
@@ -51,6 +40,14 @@
       color: $co-color__fg__text--higher;
     }
 
+    .s-discussion-list__thread {
+      color: $co-color__primary__text;
+
+      &:hover,
+      &:active {
+        color: $co-color__primary__text;
+      }
+    }
 
     &__actions {
       position: absolute;
