@@ -11,6 +11,8 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
 	"gopkg.in/gomail.v2"
+	"io/ioutil"
+	"net/mail"
 	"time"
 )
 
@@ -72,12 +74,7 @@ func MarshalEmail(msg *obj.MessageModel, version string, mailhost string) (em *E
 	em.Message.Date = time.Now()
 	m.SetHeader("Date", em.Message.Date.Format(time.RFC1123Z))
 
-	id, err := uuid.FromBytes(msg.Message_id)
-	if err != nil {
-		log.Warn(err)
-		//TODO
-	}
-	messageId := "<" + id.String() + "@" + mailhost + ">" // should be the default domain in case there are multiple 'from' addresses
+	messageId := "<" + msg.Message_id.String() + "@" + mailhost + ">" // should be the default domain in case there are multiple 'from' addresses
 
 	m.SetHeader("Message-ID", messageId)
 	m.SetHeader("X-Mailer", "Caliopen-"+version)
@@ -91,9 +88,9 @@ func MarshalEmail(msg *obj.MessageModel, version string, mailhost string) (em *E
 	return
 }
 
-// this func is executed by natsMsgHandler after an email has been passed to the MTA without error
-// it flags the caliopen message to 'sent' in cassandra (TODO and elastic ?)
-// and stores the raw email
+// executed by natsMsgHandler after an outgoing email has been transmitted to the MTA without error
+// it flags the caliopen message to 'sent' in cassandra
+// and stores the raw outbound email
 func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 
 	// save raw email in db
@@ -105,7 +102,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	// update caliopen message status
 	fields := make(map[string]interface{})
 	fields["raw_msg_id"] = raw_email_id
-	fields["state"] = "sent"
+	fields["state"] = obj.EmailStateSent
 	fields["date"] = ack.EmailMessage.Message.Date
 	err = b.Store.UpdateMessage(ack.EmailMessage.Message, fields)
 	if err != nil {
@@ -116,4 +113,79 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 		log.Warn("Index.UpdateMessage operation failed")
 	}
 	return err
+}
+
+// gets a raw email and transforms into a Caliopen 'message' object
+// belonging to an user
+func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id obj.CaliopenUUID) (msg *obj.MessageModel, err error) {
+
+	parsed_mail, err := mail.ReadMessage(&em.Email.Raw)
+	if err != nil {
+		log.Warn("unable to parse email with raw_id : %s", em.Message.Raw_msg_id)
+		return nil, err
+	}
+
+	mail_date, err := parsed_mail.Header.Date()
+	if err != nil {
+		log.WithError(err).Warn("unable to parse email's date")
+	}
+
+	var mail_rcpts []obj.RecipientModel
+	mail_from, _ := b.unmarshalRecipients(parsed_mail.Header, "from", user_id)
+	mail_to, _ := b.unmarshalRecipients(parsed_mail.Header, "to", user_id)
+	mail_cc, _ := b.unmarshalRecipients(parsed_mail.Header, "cc", user_id)
+	mail_rcpts = append(mail_rcpts, mail_from...)
+	mail_rcpts = append(mail_rcpts, mail_to...)
+	mail_rcpts = append(mail_rcpts, mail_cc...)
+
+	mail_body, err := ioutil.ReadAll(parsed_mail.Body)
+	if err != nil {
+		log.WithError(err).Warn("unable to parse email's body")
+	}
+
+	var m_id obj.CaliopenUUID
+	m_id.UnmarshalBinary(uuid.NewV4().Bytes())
+	msg = &obj.MessageModel{
+		User_id:     user_id,
+		Message_id:  m_id,
+		MsgType:     obj.EmailProtocol,
+		From:        parsed_mail.Header.Get("from"),
+		Date:        mail_date,
+		Date_insert: time.Now(),
+		Subject:     parsed_mail.Header.Get("subject"),
+		Recipients:  mail_rcpts,
+		Body:        string(mail_body),
+		Raw_msg_id:  em.Message.Raw_msg_id,
+	}
+
+	return
+}
+
+// if an user_id is provided, the func will try to find a matching contact for each recipient within user's contactbook in db
+// otherwise, contact_id will be nil for recipient
+func (b *EmailBroker) unmarshalRecipients(h mail.Header, address_type string, user_id ...obj.CaliopenUUID) (recipients []obj.RecipientModel, err error) {
+	recipients = []obj.RecipientModel{}
+	addresses, err := h.AddressList(address_type)
+	if err != nil {
+		return recipients, err
+	}
+	for _, a := range addresses {
+		rcpt := obj.RecipientModel{
+			RecipientType: address_type,
+			Protocol:      obj.EmailProtocol,
+			Address:       a.Address,
+			Label:         a.Name,
+			Contact_id:    obj.CaliopenUUID{},
+		}
+		if len(user_id) == 1 {
+			contact_id, err := b.Store.LookupContactByIdentifier(user_id[0].String(), a.Address)
+			if err == nil {
+				uuid, _ := uuid.FromString(contact_id)
+				rcpt.Contact_id.UnmarshalBinary(uuid.Bytes())
+			}
+		}
+		recipients = append(recipients, rcpt)
+	}
+
+	return
 }

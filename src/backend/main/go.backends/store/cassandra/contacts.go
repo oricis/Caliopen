@@ -22,3 +22,11 @@ func (cb *CassandraBackend) GetContact(user_id, contact_id string) (contact *obj
 	contact = &c
 	return
 }
+
+func (cb *CassandraBackend) LookupContactByIdentifier(user_id, address string) (contact_id string, err error) {
+	err = cb.Session.Query(`SELECT contact_id FROM lookup WHERE user_id = ? and value = ?`, user_id, address).Scan(&contact_id)
+	if err != nil {
+		return "", err
+	}
+	return
+}

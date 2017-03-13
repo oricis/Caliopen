@@ -5,34 +5,52 @@
 package store
 
 import (
-	"github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	"github.com/gocassa/gocassa"
+	"github.com/relops/cqlr"
 )
 
-func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *objects.MessageModel, err error) {
+func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *obj.MessageModel, err error) {
 
-	var m objects.MessageModel
-	messageT := cb.IKeyspace.Table("message", &objects.MessageModel{}, gocassa.Keys{
-		PartitionKeys: []string{"user_id", "message_id"},
-	}).WithOptions(gocassa.Options{TableName: "message"}) // need to overwrite default gocassa table naming convention
+	msg = &obj.MessageModel{}
+	q := cb.Session.Query(`SELECT * FROM message WHERE user_id = ? and message_id = ?`, user_id, msg_id)
+	b := cqlr.BindQuery(q)
+	b.Scan(msg)
+	return msg, err
 
-	err = messageT.
-		Where(gocassa.Eq("user_id", user_id), gocassa.Eq("message_id", msg_id)).
-		ReadOne(&m).
-		Run()
-
-	return &m, err
 }
 
-func (cb *CassandraBackend) UpdateMessage(msg *objects.MessageModel, fields map[string]interface{}) error {
+func (cb *CassandraBackend) UpdateMessage(msg *obj.MessageModel, fields map[string]interface{}) error {
 
-	messageT := cb.IKeyspace.Table("message", &objects.MessageModel{}, gocassa.Keys{
+	messageT := cb.IKeyspace.Table("message", &obj.MessageModel{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "message_id"},
 	}).WithOptions(gocassa.Options{TableName: "message"}) // need to overwrite default gocassa table naming convention
 
 	err := messageT.
-		Where(gocassa.Eq("user_id", msg.User_id), gocassa.Eq("message_id", msg.Message_id)).
+		Where(gocassa.Eq("user_id", msg.User_id.String()), gocassa.Eq("message_id", msg.Message_id.String())).
 		Update(fields).
 		Run()
+	return err
+}
+
+func (cb *CassandraBackend) StoreMessage(msg *obj.MessageModel) error {
+
+	messageT := cb.IKeyspace.Table("message", &obj.MessageModel{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "message_id"},
+	}).WithOptions(gocassa.Options{TableName: "message"}) // need to overwrite default gocassa table naming convention
+
+	err := messageT.Set(msg).Run()
+	if err != nil {
+		return err
+	}
+
+	rawLookupT := cb.IKeyspace.Table("user_raw_lookup", &obj.MessageModel{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "raw_msg_id"},
+	}).WithOptions(gocassa.Options{TableName: "user_raw_lookup"}) // need to overwrite default gocassa table naming convention
+
+	err = rawLookupT.Set(struct {
+		User_id    string
+		Raw_msg_id string
+	}{msg.User_id.String(), msg.Raw_msg_id.String()}).Run()
 	return err
 }

@@ -166,18 +166,66 @@ class UserMessageDelivery(object):
 
         return msg
 
-    def process_message(self, user_id, msg_id):
+    def process_inbound_message(self, user_id, msg_id):
         """
-        Process (ie 'qualify') a new inbound message for an user
+        Process a new inbound message for an user
 
 
-        the raw message & its Message model counterpart
+        The raw message (ie email…) & its 'Message' model counterpart
         have been previously unmarshaled into db by the email broker
-        TODO (when email broker will do all that mandatory preprocessing jobs)
+        This is the beginning of the message's enrichment process.
         """
-        message = Message.get(user_id, msg_id)
+        try:
+            message = Message.get_by_user_id(user_id, msg_id)
+        except Exception as exc:
+            raise exc
         if not message:
-            log.error('Message <{}> not found'.
-                      format(msg_id))
+            log.error('Message <{}> not found'.format(msg_id))
             raise NotFound
 
+        raw_email = RawMessage.get(message.raw_msg_id)
+        mail = MailMessage(raw_email.data)
+        user = User.get(user_id)
+        #######################################
+        # compute tags
+
+        message.model.tags = self._get_tags(user, mail)
+        log.debug('Resolved tags {}'.format(message.tags))
+
+        # lookup by external references
+        lookup_sequence = mail.lookup_sequence()
+        lookup = self.lookup(user, lookup_sequence)
+
+        # Create or update existing thread thread
+        if lookup:
+            log.debug('Found thread %r' % lookup.thread_id)
+            thread = Thread.get(user, lookup.thread_id)
+            thread.update_from_message(message)
+        else:
+            log.debug('Creating new thread')
+            thread = Thread.create_from_message(user, message)
+        thread_id = thread.thread_id if thread else None
+
+        # XXX missing thread management
+
+        # XXX Init lookup
+        if not lookup:
+            self.__init_lookups(user, lookup_sequence, message)
+        else:
+            if message.external_message_id:
+                params = {
+                    'external_message_id': message.external_message_id,
+                    'thread_id': message.thread_id,
+                    'message_id': message.message_id,
+                }
+                new_lookup = ThreadMessageLookup.create(user, **params)
+                log.debug('Created message lookup %r' % new_lookup)
+
+
+        # update and index the message
+        message.model.thread_id = thread_id
+        message.model.lookup = lookup
+
+        message.save()
+        message.model.update_index(msg_id, ["thread_id", "tags"])
+        return message

@@ -6,9 +6,9 @@ package store
 
 import (
 	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
-	log "github.com/Sirupsen/logrus"
 )
 
 // part of LDABackend interface
@@ -26,7 +26,7 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 	m := obj.RawMessageModel{
 		Raw_msg_id: raw_uuid.Bytes(),
 		Data:       raw_email,
-		Size: len(raw_email),
+		Size:       len(raw_email),
 	}
 	err = rawMsgTable.Set(m).Run()
 
@@ -36,8 +36,7 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 
 // part of LDABackend interface implementation
 // return a list of users' ids found in user_name table for the given email addresses list
-// TODO : modify this lookup as user_name table should be replaced by an 'aliases' table
-func (cb *CassandraBackend) GetRecipients(rcpts []string) (user_ids []string, err error) {
+func (cb *CassandraBackend) GetUsersForRecipients(rcpts []string) (user_ids []obj.CaliopenUUID, err error) {
 	userTable := cb.IKeyspace.MapTable("local_identity", "address", &obj.LocalIdentity{})
 	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
 
@@ -54,11 +53,12 @@ func (cb *CassandraBackend) GetRecipients(rcpts []string) (user_ids []string, er
 			log.WithError(err).Infoln("error on userTable query")
 			return
 		}
-		uuid, err := gocql.UUIDFromBytes(result.User_id)
+		var uuid obj.CaliopenUUID
+		err := uuid.UnmarshalBinary(result.User_id)
 		if err != nil {
-			return []string{}, err
+			return []obj.CaliopenUUID{}, err
 		}
-		user_ids = append(user_ids, uuid.String())
+		user_ids = append(user_ids, uuid)
 	}
 	return
 }
