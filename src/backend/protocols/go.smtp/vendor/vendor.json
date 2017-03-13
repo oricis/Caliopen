@@ -256,6 +256,12 @@
 			"revisionTime": "2016-10-29T09:36:37Z"
 		},
 		{
+			"checksumSHA1": "dqFgXcozzHRVYzVutM7t7TV8QH8=",
+			"path": "github.com/relops/cqlr",
+			"revision": "0ac35893ea3f1e4ee717ba838972b70a0943f7d7",
+			"revisionTime": "2014-11-11T20:40:17Z"
+		},
+		{
 			"checksumSHA1": "zmC8/3V4ls53DJlNTKDZwPSC/dA=",
 			"path": "github.com/satori/go.uuid",
 			"revision": "b061729afc07e77a8aa4fad0a2fd840958f1942a",
