@@ -154,3 +154,6 @@ ENV/
 
 # Golang
 *vendor/*/
+
+# Prism bin
+prism_linux_amd64
