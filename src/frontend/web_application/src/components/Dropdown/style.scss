@@ -4,7 +4,13 @@
 .m-dropdown {
   @include dropdown-container;
   width: auto;
-
   background-color: $co-color__fg__back;
   box-shadow: $co-shadow;
+
+  &--flat {
+    border: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
 }

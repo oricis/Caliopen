@@ -1,14 +1,53 @@
 @import '../../../../styles/common';
+@import '../../../../styles/object/o-triangle';
 
 .m-discussion-item-actions-container {
   position: relative;
 
   &__action {
-    border-right: 1px solid $co-color__fg__border;
+    height: 2 * $co-component__height;
+    border-left: 1px solid $co-color__primary--lower;
+    line-height: 2 * $co-component__height;
+
+    &:first-child {
+      border-left: 0;
+    }
   }
+
+  &__menu {
+    margin-top: -1px; // to avoid blank before block (because of Foundation 'Dropdown' JS)
+    padding-top: 2 * $co-component__spacing;
+    padding-bottom: 2 * $co-component__spacing;
+    background: $co-color__primary--lower;
+
+    &::before {
+      @include o-triangle('top', 1rem, $co-color__primary--lower);
+      right: 1rem;
+    }
+
+    button {
+      min-height: $co-component__height;
+      text-align: left;
+    }
+  }
+
 
   &--active {
     background-color: $co-color__primary--lower;
+
+    .s-discussion-list__tag {
+      background: $co-color__primary--low;
+      color: $co-color__fg__text--higher;
+    }
+
+    .s-discussion-list__thread {
+      color: $co-color__primary__text;
+
+      &:hover,
+      &:active {
+        color: $co-color__primary__text;
+      }
+    }
 
     &__actions {
       position: absolute;

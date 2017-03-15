@@ -11,10 +11,19 @@ Raw.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const Presenter = ({ className, ...props }) => {
+
+const Presenter = ({ className, flat, ...props }) => {
+  const DropdownClassName = classnames(
+    'm-dropdown',
+    {
+      'm-dropdown--flat': flat,
+    },
+    className
+  );
+
   const presenterProps = {
     ...props,
-    className: classnames('m-dropdown', className),
+    className: classnames('m-dropdown', DropdownClassName),
   };
 
   return (
@@ -24,6 +33,7 @@ const Presenter = ({ className, ...props }) => {
 
 Presenter.propTypes = {
   className: PropTypes.string,
+  flat: PropTypes.bool,
 };
 
 export default Presenter;

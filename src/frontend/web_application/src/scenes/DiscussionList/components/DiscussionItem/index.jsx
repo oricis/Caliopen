@@ -21,7 +21,7 @@ import recipients from '../../services/recipients';
 const renderTags = discussion => discussion.tags && discussion.tags.map((tag, key) => (
   <span key={key}>
     {' '}
-    <Badge>{tag.name}</Badge>
+    <Badge className="s-discussion-list__tag">{tag.name}</Badge>
   </span>
 ));
 
