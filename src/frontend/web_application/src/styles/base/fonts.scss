@@ -1,13 +1,40 @@
 $co-font-path: '../../fonts' !default;
 
+@mixin fontdef($FontPath, $FontPrefix, $FontVersion, $FontType) {
+  src:  url('#{$FontPath}/#{$FontType}/#{$FontPrefix}-#{$FontType}.eot?v=#{$FontVersion}');
+  src:  url('#{$FontPath}/#{$FontType}/#{$FontPrefix}-#{$FontType}.eot?#iefix&v=#{$FontVersion}') format('embedded-opentype'),
+        url('#{$FontPath}/#{$FontType}/#{$FontPrefix}-#{$FontType}.woff2?v=#{$FontVersion}') format('woff2'),
+        url('#{$FontPath}/#{$FontType}/#{$FontPrefix}-#{$FontType}.woff?v=#{$FontVersion}') format('woff'),
+        url('#{$FontPath}/#{$FontType}/#{$FontPrefix}-#{$FontType}.ttf?v=#{$FontVersion}') format('truetype'),
+        url('#{$FontPath}/#{$FontType}/#{$FontPrefix}-#{$FontType}.svg?v=#{$FontVersion}##{$FontType}') format('svg');
+}
+
+// Open Sans
+$OpenSansTitle: 'Open Sans';
+$OpenSansPrefix: 'OpenSans';
+$OpenSansPath: '#{$co-font-path}/#{$OpenSansPrefix}';
+$OpenSansVersion: '1.1.0' !default;
+
+// Open Sans Regular
 @font-face {
-  font-family: 'open_sansregular';
+  @include fontdef($OpenSansPath, $OpenSansPrefix, $OpenSansVersion, 'Regular');
+  font-family: $OpenSansTitle;
   font-style: normal;
   font-weight: normal;
-  src: url('#{$co-font-path}/Open_Sans/opensans-regular-webfont.eot');
-  src: url('#{$co-font-path}/Open_Sans/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
-       url('#{$co-font-path}/Open_Sans/opensans-regular-webfont.woff2') format('woff2'),
-       url('#{$co-font-path}/Open_Sans/opensans-regular-webfont.woff') format('woff'),
-       url('#{$co-font-path}/Open_Sans/opensans-regular-webfont.ttf') format('truetype'),
-       url('#{$co-font-path}/Open_Sans/opensans-regular-webfont.svg#open_sansregular') format('svg');
+}
+
+// Open Sans Semibold
+@font-face {
+  @include fontdef($OpenSansPath, $OpenSansPrefix, $OpenSansVersion, 'Semibold');
+  font-family: $OpenSansTitle;
+  font-style: normal;
+  font-weight: 600;
+}
+
+// Open Sans Bold
+@font-face {
+  @include fontdef($OpenSansPath, $OpenSansPrefix, $OpenSansVersion, 'Bold');
+  font-family: $OpenSansTitle;
+  font-style: normal;
+  font-weight: bold;
 }
