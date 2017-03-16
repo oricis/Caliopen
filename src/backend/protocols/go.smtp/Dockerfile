@@ -9,6 +9,6 @@ WORKDIR /go/src/github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp
 RUN govendor sync
 RUN go build github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp/cmd/caliopen_lmtpd
 
-#ENTRYPOINT /go/src/github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp/caliopen_lmtpd serve
+ENTRYPOINT /go/src/github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp/caliopen_lmtpd serve
 
 EXPOSE 2525
