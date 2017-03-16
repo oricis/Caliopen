@@ -37,4 +37,6 @@ RUN python setup.py develop
 WORKDIR /srv/caliopen/code/src/backend/interfaces/NATS/py.client
 RUN python setup.py develop
 
-CMD ["python", "/srv/caliopen/code/src/backend/interfaces/NATS/py.client/caliopen_nats/listener.py", "-f", "/srv/caliopen/code/src/backend/configs/caliopen.yaml.template"]
+WORKDIR /srv/caliopen/code/src/backend/interfaces/NATS/py.client/caliopen_nats
+
+CMD ["python", "listener.py", "-f", "../caliopen.yaml.template"]
