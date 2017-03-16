@@ -19,7 +19,8 @@
   },
   "required": [
     "address",
-    "type"
+    "type",
+    "protocol"
   ],
   "additionalProperties": false
 }

@@ -9,7 +9,7 @@
     * ou `POST (ou PATCH?) /messages/{message_id}/action`, avec un json en payload qui décrit l'action à accomplir : send pour le draft, read/unread, etc. pour les autres messages. Cette solution présente l'avantage d'avoin une seule route pour toutes les actions permises sur les messages. Exemple de payload possible : `{"action":"send"}`
 
 
-[Il faudra ultérieurement prévoir des routes pour la gestion des pièces jointes : upload, delete]
+[Il faudra ultérieurement prévoir des routes pour la gestion des pièces jointes : upload, delete, attach, detach…]
 
 ##### Routes messages/discussions :
 
@@ -36,3 +36,6 @@ Règles de filtrage envisageables :
     et aussi : [unread, date_before, date_after…]
 ```
 
+##### Route nécessaire pour la création d'un draft : `/identities/locals`
+pour permettre à l'appli front de récupérer les identities du user.  
+Pour l'instant, la route ne fera que retourner l'unique local identity créee par défaut.

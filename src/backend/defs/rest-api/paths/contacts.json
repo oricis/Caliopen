@@ -168,30 +168,6 @@
         }
       }
     },
-    "put": {
-      "description": "Not Implemented",
-      "tags": [
-        "contacts"
-      ],
-      "security": [
-        {
-          "basicAuth": []
-        }
-      ],
-      "parameters": [
-        {
-          "name": "contact_id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        }
-      ],
-      "responses": {
-        "default": {
-          "description": "verb not implemented, should raise an error"
-        }
-      }
-    },
     "patch": {
       "description": "update a contact with rfc5789 and rfc7396 specifications",
       "tags": [
@@ -244,6 +220,18 @@
             "$ref": "../objects/Error.json"
           }
         },
+        "401": {
+          "description": "Unauthorized access",
+          "schema": {
+            "$ref": "../objects/Error.json"
+          }
+        },
+        "403": {
+          "description": "Forbidden patch. Server is refusing to apply the given patch's properties to this ressource",
+          "schema": {
+            "$ref": "../objects/Error.json"
+          }
+        },
         "404": {
           "description": "contact not found",
           "schema": {
@@ -251,7 +239,7 @@
           }
         },
         "422": {
-          "description": "patch json was malformed or unprocessable",
+          "description": "json is valid but patch was semantically malformed or unprocessable",
           "schema": {
             "$ref": "../objects/Error.json"
           }

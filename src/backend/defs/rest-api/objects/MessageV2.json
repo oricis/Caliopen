@@ -61,10 +61,10 @@
     "raw_msg_id": {
       "type": "string"
     },
-    "recipients": {
+    "participants": {
       "type": "array",
       "items": {
-        "$ref": "Recipient.json"
+        "$ref": "Participant.json"
       }
     },
     "subject": {

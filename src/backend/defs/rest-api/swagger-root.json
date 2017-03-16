@@ -1,13 +1,13 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "0.0.2",
+    "version": "0.1.0",
     "title": "Caliopen HTTP/REST API"
   },
   "schemes": [
     "http"
   ],
-  "host": "localhost:3141",
+  "host": "localhost:31415",
   "basePath": "/api",
   "paths": {
     "/v1/authentications": {"$ref": "paths/authentications.json#/authentications"},
@@ -19,13 +19,15 @@
     "/v1/contacts/{contact_id}": {"$ref": "paths/contacts.json#/contacts_{contact_id}"},
     "/v1/discussions": {"$ref": "paths/discussions.json#/discussions"},
     "/v1/discussions/{discussion_id}": {"$ref": "paths/discussions.json#/discussions_{discussion_id}"},
-    "/v1/discussions/{discussion_id}/messages": {"$ref": "paths/discussions.json#/discussions_{discussion_id}_messages"},
-    "/v1/discussions/{discussion_id}/messages/{message_id}": {"$ref": "paths/discussions.json#/discussions_{discussion_id}_messages_{message_id}"},
+    "/v2/messages": {"$ref": "paths/messages.json#/messages"},
+    "/v2/messages/{messages_id}": {"$ref": "paths/messages.json#/messages_{messages_id}"},
+    "/v2/messages/{messages_id}/actions": {"$ref": "paths/messages.json#/messages_{messages_id}_actions"},
     "/v1/raws/{raw_msg_id}": {"$ref": "paths/raws.json#/raws_{raw_msg_id}"},
     "/v1/tags": {"$ref": "paths/tags.json#/tags"},
     "/v1/tags/{tag_id}": {"$ref": "paths/tags.json#/tags_{tag_id}"},
     "/v1/devices": {"$ref": "paths/devices.json#/devices"},
-    "/v1/devices/{device_id}": {"$ref": "paths/devices.json#/devices_{device_id}"}
+    "/v1/devices/{device_id}": {"$ref": "paths/devices.json#/devices_{device_id}"},
+    "/v2/identities/locals": {"$ref": "paths/identities.json#/locals"}
   },
   "securityDefinitions": {
     "basicAuth": {

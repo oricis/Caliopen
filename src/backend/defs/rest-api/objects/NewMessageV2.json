@@ -10,24 +10,8 @@
     "body": {
       "type": "string"
     },
-    "date": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "date_delete": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "date_insert": {
-      "type": "string",
-      "format": "date-time"
-    },
     "discussion_id": {
       "type": "string"
-    },
-    "external_references": {
-      "type": "object",
-      "$ref": "ExternalReferences.json"
     },
     "identities": {
       "type": "array",
@@ -35,27 +19,13 @@
         "$ref": "LocalIdentity.json"
       }
     },
-    "importance_level": {
-      "type": "integer",
-      "format": "int32"
-    },
     "parent_id": {
       "type": "string"
     },
-    "is_draft": {
-      "type": "boolean"
-    },
-    "privacy_features": {
-      "type": "object",
-      "$ref": "PrivacyFeatures.json"
-    },
-    "raw_msg_id": {
-      "type": "string"
-    },
-    "recipients": {
+    "participants": {
       "type": "array",
       "items": {
-        "$ref": "Recipient.json"
+        "$ref": "Participant.json"
       }
     },
     "subject": {
@@ -66,12 +36,7 @@
       "items": {
         "$ref": "Tag.json"
       }
-    },
-    "type": {
-      "type": "string"
-    },
-    "user_id": {
-      "type": "string"
     }
-  }
+  },
+  "additionalProperties": false
 }

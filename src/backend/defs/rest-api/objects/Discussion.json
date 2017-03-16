@@ -5,10 +5,10 @@
       "type": "integer",
       "format": "int32"
     },
-    "contacts": {
+    "participants": {
       "type": "array",
       "items": {
-        "$ref": "Contact.json"
+        "$ref": "Participant.json"
       }
     },
     "date_insert": {
