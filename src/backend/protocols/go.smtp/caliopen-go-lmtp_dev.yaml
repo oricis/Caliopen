@@ -30,7 +30,7 @@ LDAConfig:
   store_name: cassandra # backend to store raw emails and messages (inbound & outbound)
   store_settings:
     hosts: # many allowed
-    - cassandra:7000
+    - cassandra
     keyspace: caliopen
     consistency_level: 1
   index_name: elasticsearch # backend to index messages (inbound & outbound)
