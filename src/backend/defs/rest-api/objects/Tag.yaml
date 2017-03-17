@@ -7,8 +7,6 @@ properties:
     enum:
     - user
     - system
-  name:
-    type: string
   tag_id:
     type: string
 required:

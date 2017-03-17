@@ -16,47 +16,34 @@ const (
 	EmailStateSent string = "sent"
 )
 
-type RawMessageModel struct {
-	Raw_msg_id []byte `cql:"raw_msg_id"`
-	Data       string `cql:"data"`
-	Size       int    `cql:"size"`
-}
 
-type MessageModel struct {
-	User_id                CaliopenUUID     `cql:"user_id"             json:"user_id"               elastic:"omit"          formatter:"rfc4122"`
-	Message_id             CaliopenUUID     `cql:"message_id"          json:"message_id"                                    formatter:"rfc4122"`
-	Discussion_id          CaliopenUUID     `cql:"thread_id"           json:"thread_id"                                     formatter:"rfc4122"`
-	MsgType                string           `cql:"type"                json:"type"`
-	From                   string           `cql:"from_"               json:"from"`
-	Date                   time.Time        `cql:"date"                json:"date"                                          formatter:"RFC3339Nano"`
-	Date_insert            time.Time        `cql:"date_insert"         json:"date_insert"                                   formatter:"RFC3339Nano"`
-	Size                   int              `cql:"size"                json:"size"`
-	Privacy_index          int              `cql:"privacy_index"       json:"privacy_index"`
-	Importance_level       int              `cql:"importance_level"    json:"importance_level"`
-	Subject                string           `cql:"subject"             json:"subject"`
-	External_msg_id        string           `cql:"external_message_id" json:"external_message_id"`
-	External_parent_id     string           `cql:"external_parent_id"  json:"external_parent_id"`
-	External_discussion_id string           `cql:"external_thread_id"  json:"external_thread_id"`
-	Raw_msg_id             CaliopenUUID     `cql:"raw_msg_id"          json:"raw_msg_id"                                    formatter:"rfc4122"`
-	Tags                   []string         `cql:"tags"                json:"tags"`
-	Flags                  []string         `cql:"flags"               json:"flags"`
-	Offset                 int              `cql:"offset"              json:"offset"`
-	State                  string           `cql:"state"               json:"state"`
-	Recipients             []RecipientModel `cql:"recipients"          json:"recipients"`
-	Body                   string           `cql:"text"                json:"text"`
-}
-
-type RecipientModel struct {
-	RecipientType string       `cql:"type"        json:"recipient_type"`
-	Protocol      string       `cql:"protocol"    json:"protocol"`
-	Address       string       `cql:"address"     json:"address"`
-	Contact_id    CaliopenUUID `cql:"contact_id"  json:"contact_id"       formatter:"rfc4122"`
-	Label         string       `cql:"label"       json:"label"`
+type Message struct {
+	Attachments         []Attachment       `cql:"attachments"              json:"attachment"       `
+	Body                string             `cql:"body"                     json:"body"             `
+	Date                time.Time          `cql:"date"                     json:"date"                                         formatter:"RFC3339Nano"`
+	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete"                                  formatter:"RFC3339Nano"`
+	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"RFC3339Nano"`
+	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id"                                formatter:"rfc4122"`
+	External_references ExternalReferences `cql:"external_references"      json:"external_references"   `
+	Identities          []LocalIdentity    `cql:"identities"               json:"identities"       `
+	Importance_level    int32              `cql:"importance_level"         json:"importance_level"`
+	Is_answered         bool               `cql:"is_answered"              json:"is_answered"      `
+	Is_draft            bool               `cql:"is_draft"                 json:"is_draft"         `
+	Is_unread           bool               `cql:"is_unread"                json:"is_unread"        `
+	Message_id          UUID               `cql:"message_id"               json:"message_id"                                   formatter:"rfc4122"`
+	Parent_id           UUID               `cql:"parent_id"                json:"parent_id"                                    formatter:"rfc4122"`
+	Participants        Participant        `cql:"participants"             json:"participants"     `
+	Privacy_features    PrivacyFeatures    `cql:"privacy_features"         json:"privacy_features" `
+	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
+	Subject             string             `cql:"subjects"                 json:"subject"          `
+	Tags                []Tag              `cql:"tags"                     json:"tags"             `
+	Type                string             `cql:"type"                     json:"type"             `
+	User_id             UUID               `cql:"user_id"                  json:"user_id"                  elastic:"omit"      formatter:"rfc4122"`
 }
 
 // bespoke implementation of the json.Marshaler interface
 // outputs a JSON representation of an object
-// that takes account of custom tags for given 'context'
+// this marshaler takes account of custom tags for given 'context'
 func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 	var jsonBuf bytes.Buffer
 	enc := json.NewEncoder(&jsonBuf)
@@ -86,7 +73,7 @@ func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 				switch j_formatter {
 				case "rfc4122":
 					if err == nil {
-						jsonBuf.WriteString("\"" + field_value.(CaliopenUUID).String() + "\"")
+						jsonBuf.WriteString("\"" + field_value.(UUID).String() + "\"")
 					} else {
 						jsonBuf.Write([]byte{'"', '"'})
 					}
@@ -108,14 +95,11 @@ func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 	return jsonBuf.Bytes(), nil
 }
 
-func (msg *MessageModel) MarshalJSON() ([]byte, error) {
+func (msg *Message) MarshalJSON() ([]byte, error) {
 	return customJSONMarshaler(msg, "json")
 }
 
-func (rcpt *RecipientModel) MarshalJSON() ([]byte, error) {
-	return customJSONMarshaler(rcpt, "json")
-}
 
-func (msg *MessageModel) MarshalES() ([]byte, error) {
+func (msg *Message) MarshalES() ([]byte, error) {
 	return customJSONMarshaler(msg, "elastic")
 }

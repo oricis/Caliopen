@@ -6,16 +6,16 @@ import (
 	"github.com/gocql/gocql"
 )
 
-type CaliopenUUID [16]byte
+type UUID [16]byte
 
 // Used in string method conversion
 const dash byte = '-'
 
-func (id CaliopenUUID) MarshalCQL(info gocql.TypeInfo) ([]byte, error) {
+func (id UUID) MarshalCQL(info gocql.TypeInfo) ([]byte, error) {
 	return id[:], nil
 }
 
-func (id *CaliopenUUID) UnmarshalCQL(info gocql.TypeInfo, data []byte) error {
+func (id *UUID) UnmarshalCQL(info gocql.TypeInfo, data []byte) error {
 	if len(data) != 16 {
 		return fmt.Errorf("uuid: UUID must be exactly 16 bytes long, got %d bytes", len(data))
 	}
@@ -24,7 +24,7 @@ func (id *CaliopenUUID) UnmarshalCQL(info gocql.TypeInfo, data []byte) error {
 
 // UnmarshalBinary implements the encoding.BinaryUnmarshaler interface.
 // It will return error if the slice isn't 16 bytes long.
-func (id *CaliopenUUID) UnmarshalBinary(data []byte) (err error) {
+func (id *UUID) UnmarshalBinary(data []byte) (err error) {
 	if len(data) != 16 {
 		err = fmt.Errorf("uuid: UUID must be exactly 16 bytes long, got %d bytes", len(data))
 		return
@@ -36,7 +36,7 @@ func (id *CaliopenUUID) UnmarshalBinary(data []byte) (err error) {
 
 // Returns canonical string representation of UUID:
 // xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.
-func (id CaliopenUUID) String() string {
+func (id UUID) String() string {
 	buf := make([]byte, 36)
 
 	hex.Encode(buf[0:8], id[0:4])
@@ -52,6 +52,6 @@ func (id CaliopenUUID) String() string {
 	return string(buf)
 }
 
-func (id CaliopenUUID) MarshalJSON() ([]byte, error) {
+func (id UUID) MarshalJSON() ([]byte, error) {
 	return []byte(id.String()), nil
 }
