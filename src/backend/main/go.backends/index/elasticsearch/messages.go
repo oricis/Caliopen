@@ -8,15 +8,11 @@ import (
 	"context"
 	"github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
-	"github.com/satori/go.uuid"
 )
 
 func (es *ElasticSearchBackend) UpdateMessage(msg *objects.MessageModel, fields map[string]interface{}) error {
 
-	msg_id, _ := uuid.FromBytes(msg.Message_id)
-	user_id, _ := uuid.FromBytes(msg.User_id)
-
-	update, err := es.Client.Update().Index(user_id.String()).Type("indexed_message").Id(msg_id.String()).
+	update, err := es.Client.Update().Index(msg.User_id.String()).Type("indexed_message").Id(msg.Message_id.String()).
 		Doc(fields).
 		Do(context.TODO())
 	if err != nil {
@@ -25,4 +21,24 @@ func (es *ElasticSearchBackend) UpdateMessage(msg *objects.MessageModel, fields 
 	}
 	log.Infof("New version of indexed msg %s is now %d", update.Id, update.Version)
 	return nil
+}
+
+func (es *ElasticSearchBackend) IndexMessage(msg *objects.MessageModel) error {
+
+	es_msg, err := msg.MarshalES()
+	if err != nil {
+		return err
+	}
+
+	resp, err := es.Client.Index().Index(msg.User_id.String()).Type("indexed_message").Id(msg.Message_id.String()).
+		BodyString(string(es_msg)).
+		Refresh("true").
+		Do(context.TODO())
+	if err != nil {
+		log.WithError(err).Warn("backend Index: IndexMessage operation failed")
+		return err
+	}
+	log.Infof("New msg indexed with id %s", resp.Id)
+	return nil
+
 }

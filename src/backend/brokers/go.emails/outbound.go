@@ -17,7 +17,6 @@ package email_broker
 
 import (
 	"encoding/json"
-	"github.com/satori/go.uuid"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
 	"github.com/pkg/errors"
@@ -38,7 +37,6 @@ func (b *EmailBroker) startOutcomingSmtpAgent() error {
 	}
 	b.natsSubscriptions = append(b.natsSubscriptions, sub)
 	b.NatsConn.Flush()
-
 
 	//TODO: error handling
 	return nil
@@ -84,8 +82,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 						resp.Err = err
 					}
 				}
-				msg_id, _ := uuid.FromBytes(resp.EmailMessage.Message.Message_id)
-				resp.Response = "message " + msg_id.String() + " has been sent."
+				resp.Response = "message " + resp.EmailMessage.Message.Message_id.String() + " has been sent."
 				json_resp, _ := json.Marshal(resp)
 				b.NatsConn.Publish(msg.Reply, json_resp)
 			case <-time.After(time.Second * 30):

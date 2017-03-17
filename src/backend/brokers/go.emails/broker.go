@@ -17,11 +17,11 @@ import (
 
 type (
 	EmailBroker struct {
-		Store      backends.LDAStore
-		Index      backends.LDAIndex
-		NatsConn   *nats.Conn
-		Connectors EmailBrokerConnectors
-		Config     LDAConfig
+		Store             backends.LDAStore
+		Index             backends.LDAIndex
+		NatsConn          *nats.Conn
+		Connectors        EmailBrokerConnectors
+		Config            LDAConfig
 		natsSubscriptions []*nats.Subscription
 	}
 
@@ -42,7 +42,7 @@ type (
 	}
 
 	natsAck struct {
-		Error string `json:"error,omitempty"`
+		Error   string `json:"error,omitempty"`
 		Message string `json:"message"`
 	}
 

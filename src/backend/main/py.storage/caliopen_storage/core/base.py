@@ -122,6 +122,16 @@ class BaseUserCore(BaseCore):
                        (cls.__class__.name, obj_id, user.user_id))
 
     @classmethod
+    def get_by_user_id(cls, user_id, obj_id):
+        """Get a core object belong to user, with model related id."""
+        param = {cls._pkey_name: obj_id}
+        obj = cls._model_class.get(user_id=user_id, **param)
+        if obj:
+            return cls(obj)
+        raise NotFound('%s #%s not found for user %s' %
+                       (cls.__class__.name, obj_id, user_id))
+
+    @classmethod
     def find(cls, user, filters=None, limit=None, offset=0, count=False):
         """
         Find core objects that belong to an user.
