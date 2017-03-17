@@ -4,7 +4,7 @@ properties:
   attachments:
     type: array
     items:
-      "$ref": Attachment.json
+      "$ref": Attachment.yaml
   body:
     type: string
   discussion_id:
@@ -12,17 +12,19 @@ properties:
   identities: # to which user's local identities the message is linked to
     type: array
     items:
-      "$ref": LocalIdentity.json
+      "$ref": LocalIdentity.yaml
   parent_id: # The id of the Message this message is a reply to. This is primarily for drafts, but the server may support this for received messages as well by looking up the [@!RFC5322] Message-Id referenced in the In-Reply-To header and searching for this message in the user’s mail.
     type: string
   participants:
     type: array
     items:
-      "$ref": Participant.json
+      "$ref": Participant.yaml
   subject:
     type: string
   tags:
     type: array
     items:
-      "$ref": Tag.json
+      "$ref": Tag.yaml
+required:
+  - participants
 additionalProperties: false

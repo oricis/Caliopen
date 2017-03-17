@@ -4,7 +4,7 @@ properties:
   attachments:
     type: array
     items:
-      "$ref": Attachment.json
+      "$ref": Attachment.yaml
   body: # in future, could be only a preview of body, limited to xxx chars
     type: string
   date:
@@ -20,16 +20,14 @@ properties:
     type: string
   external_references:
     type: object
-    "$ref": ExternalReferences.json
+    "$ref": ExternalReferences.yaml
   identities: # to which user's local identities the message is linked to
     type: array
     items:
-      "$ref": LocalIdentity.json
+      "$ref": LocalIdentity.yaml
   importance_level:
     type: integer
     format: int32
-  parent_id: # The id of the Message this message is a reply to. This is primarily for drafts, but the server may support this for received messages as well by looking up the [@!RFC5322] Message-Id referenced in the In-Reply-To header and searching for this message in the user’s mail.
-    type: string
   is_answered:
     type: boolean
   is_draft:
@@ -38,22 +36,38 @@ properties:
     type: boolean
   message_id:
     type: string
-  privacy_features:
-    type: object
-    "$ref": PrivacyFeatures.json
-  raw_msg_id:
+  parent_id: # The id of the Message this message is a reply to. This is primarily for drafts, but the server may support this for received messages as well by looking up the [@!RFC5322] Message-Id referenced in the In-Reply-To header and searching for this message in the user’s mail.
     type: string
   participants:
     type: array
     items:
-      "$ref": Participant.json
+      "$ref": Participant.yaml
+  privacy_features:
+    type: object
+    "$ref": PrivacyFeatures.yaml
+  raw_msg_id:
+    type: string
   subject:
     type: string
   tags:
     type: array
     items:
-      "$ref": Tag.json
+      "$ref": Tag.yaml
   type:
     type: string
   user_id:
     type: string
+required:
+  - date
+  - date_insert
+  - discussion_id
+  - identities
+  - is_answered
+  - is_draft
+  - is_inread
+  - message_id
+  - raw_msg_id
+  - participants
+  - type
+  - user_id
+additionalProperties: false
