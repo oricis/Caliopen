@@ -36,7 +36,7 @@ type Message struct {
 	Privacy_features    PrivacyFeatures    `cql:"privacy_features"         json:"privacy_features" `
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
 	Subject             string             `cql:"subjects"                 json:"subject"          `
-	Tags                []Tag              `cql:"tags"                     json:"tags"             `
+	Tags                []string           `cql:"tags"                     json:"tags"             `
 	Type                string             `cql:"type"                     json:"type"             `
 	User_id             UUID               `cql:"user_id"                  json:"user_id"                  elastic:"omit"      formatter:"rfc4122"`
 }

@@ -4,19 +4,21 @@ properties:
   attachment_count:
     type: integer
     format: int32
-  participants:
-    type: array
-    items:
-      "$ref": Participant.yaml
   date_insert:
     type: string
     format: date-time
   date_update:
     type: string
     format: date-time
+  discussion_id:
+    type: string
   importance_level:
     type: integer
     format: int32
+  participants:
+    type: array
+    items:
+      "$ref": Participant.yaml
   privacy_index:
     type: integer
     format: int32
@@ -25,8 +27,6 @@ properties:
     items:
       type: string
   text:
-    type: string
-  discussion_id:
     type: string
   total_count:
     type: integer
