@@ -29,6 +29,11 @@ RUN pip install regex
 RUN pip install tornado==4.2
 RUN pip install nats-client
 
+# Copy caliopen-docker.yaml
+
+WORKDIR /srv/caliopen/code/src/backend/configs
+RUN cp caliopen-docker.yaml ../../backend/interfaces/NATS/py.client/
+
 # Install python backend packages in develop mode
 WORKDIR /srv/caliopen/code/src/backend/main/py.storage
 RUN python setup.py develop
@@ -38,5 +43,4 @@ WORKDIR /srv/caliopen/code/src/backend/interfaces/NATS/py.client
 RUN python setup.py develop
 
 WORKDIR /srv/caliopen/code/src/backend/interfaces/NATS/py.client/caliopen_nats
-
-CMD ["python", "listener.py", "-f", "../caliopen.yaml.template"]
+CMD ["python", "listener.py", "-f", "../caliopen-docker.yaml"]

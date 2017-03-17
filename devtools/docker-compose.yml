@@ -69,26 +69,23 @@ services:
   broker:
       build: ../src/backend/protocols/go.smtp
       links: 
-          - apiv1:apiv1.dev.caliopen.org
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
+          - nats:nats.dev.caliopen.org
           
       ports:
         - "2525:2525"
         - "9042"
   # NATS
   nats:
-      build: ../src/backend/interfaces/NATS
-      links:
-          - apiv1:apiv1.dev.caliopen.org
-          - api:api.dev.caliopen.org
-          - internal_handler:internal_handler.dev.caliopen.org
+      image: nats:0.9.6
       ports:
           - "4222:4222"
-  # Internal Message Handler
-  internal_handler:
+
+  # Message Handler
+  message_handler:
       build: ../src/backend/interfaces/NATS/py.client
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
-          - broker:broker.dev.caliopen.org
+          - nats:nats.dev.caliopen.org
