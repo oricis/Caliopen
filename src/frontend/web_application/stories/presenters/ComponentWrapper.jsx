@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import enableI18n from '../../src/services/i18n';
 
 const style = {
   component: {
@@ -43,4 +44,4 @@ ComponentWrapper.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default ComponentWrapper;
+export default enableI18n(ComponentWrapper);

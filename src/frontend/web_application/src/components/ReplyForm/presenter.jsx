@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Button from '../Button';
+import ContactAvatarLetter from '../ContactAvatarLetter';
 import DiscussionDraft, { TopRow, BodyRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
 
@@ -14,13 +15,17 @@ function generateStateFromProps(props, prevState) {
 
 class ReplyForm extends Component {
   static propTypes = {
+    draftMessage: PropTypes.shape({}),
     onSave: PropTypes.func.isRequired,
     onSend: PropTypes.func.isRequired,
     onChange: PropTypes.func,
+    user: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
+    draftMessage: {},
     onChange: () => {},
+    user: { contact: {} },
   };
   constructor(props) {
     super(props);
@@ -60,7 +65,7 @@ class ReplyForm extends Component {
   }
 
   render() {
-    const { __ } = this.props;
+    const { user, __ } = this.props;
 
     return (
       <DiscussionDraft className="m-reply">
@@ -71,11 +76,14 @@ class ReplyForm extends Component {
             <Button onClick={this.handleSave}>{__('messages.compose.action.save')}</Button>
           </TopRow>
           <BodyRow>
-            <DiscussionTextarea
-              body={this.state.draftMessage.body}
-              onChange={this.handleChange}
-              __={__}
-            />
+            <div className="m-reply__avatar"><ContactAvatarLetter contact={user.contact} /></div>
+            <div className="m-reply__body">
+              <DiscussionTextarea
+                body={this.state.draftMessage.body}
+                onChange={this.handleChange}
+                __={__}
+              />
+            </div>
           </BodyRow>
         </form>
       </DiscussionDraft>

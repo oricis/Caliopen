@@ -25,6 +25,7 @@ module.exports = function configure(storybookBaseConfig) {
   storybookBaseConfig.plugins.push(
     new webpack.DefinePlugin({
       CALIOPEN_ENV: JSON.stringify(process.env.NODE_ENV),
+      BUILD_TARGET: JSON.stringify('browser'),
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     })
   );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import SigninForm from '../../src/components/SigninForm/presenter';
+import SigninForm from '../../src/components/SigninForm';
 import AuthPage from '../../src/layouts/AuthPage';
 import { Code, ComponentWrapper } from '../presenters';
 
