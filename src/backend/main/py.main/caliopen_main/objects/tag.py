@@ -3,6 +3,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 import types
 import uuid
+import datetime
 
 from caliopen_main.objects import base
 from caliopen_main.user.store import UserTag as ModelUSerTag
@@ -18,8 +19,11 @@ class UserTag(base.ObjectUser):
     """Tag related to an user."""
 
     _attrs = {
-        'tag_id': uuid.UUID,
+        'date_insert': datetime.datetime,
+        'importance_level': types.IntType,
+        'label': types.StringType,
         'name': types.StringType,
+        'tag_id': uuid.UUID,
         'type': types.StringType}
 
     _model_class = ModelUSerTag
@@ -36,8 +40,11 @@ class ResourceTag(base.ObjectStorable):
     """Tag nested in resources."""
 
     _attrs = {
-        'tag_id': uuid.UUID,
+        'date_insert': datetime.datetime,
+        'importance_level': types.IntType,
+        'label': types.StringType,
         'name': types.StringType,
+        'tag_id': uuid.UUID,
         'type': types.StringType,
     }
 

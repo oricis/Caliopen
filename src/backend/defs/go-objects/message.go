@@ -31,12 +31,12 @@ type Message struct {
 	Is_draft            bool               `cql:"is_draft"                 json:"is_draft"         `
 	Is_unread           bool               `cql:"is_unread"                json:"is_unread"        `
 	Message_id          UUID               `cql:"message_id"               json:"message_id"                                   formatter:"rfc4122"`
-	Parent_id           UUID               `cql:"parent_id"                json:"parent_id"                                    formatter:"rfc4122"`
+	Parent_id           string             `cql:"parent_id"                json:"parent_id"        `
 	Participants        Participant        `cql:"participants"             json:"participants"     `
 	Privacy_features    PrivacyFeatures    `cql:"privacy_features"         json:"privacy_features" `
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
 	Subject             string             `cql:"subjects"                 json:"subject"          `
-	Tags                []string           `cql:"tags"                     json:"tags"             `
+	Tags                []Tag              `cql:"tags"                     json:"tags"             `
 	Type                string             `cql:"type"                     json:"type"             `
 	User_id             UUID               `cql:"user_id"                  json:"user_id"                  elastic:"omit"      formatter:"rfc4122"`
 }

@@ -10,6 +10,6 @@ type (
 		Identifier   string   `cql:"identifier"              json:"identifier"`
 		Status       string   `cql:"status"                  json:"status"`
 		Type         []string `cql:"type"                    json:"type"`
-		UserId       UUID     `cql:"user_id"                 json:"user_id"           formatter:"rfc4122"`
+		User_id      UUID     `cql:"user_id"                 json:"user_id"           formatter:"rfc4122"`
 	}
 )

@@ -6,6 +6,6 @@ package objects
 
 type ExternalReferences struct {
 	Discussion_id string `cql:"discussion_id"            json:"discussion_id"`
-	Messages_id   string `cql:"message_id"               json:"message_id"`
+	Message_id    string `cql:"message_id"               json:"message_id"`
 	Parent_id     string `cql:"parent_id"                json:"parent_id"`
 }

@@ -15,7 +15,7 @@ type Discussion struct {
 	Participants     []Participant `cql:"participants"             json:"participants"`
 	Privacy_index    int32         `cql:"privacy_index"            json:"privacy_index"`
 	Tags             []string      `cql:"tags"                     json:"tags"`
-	Text             string        `cql:"text"                     json:"text"`
+	Excerpt          string        `cql:"excerpt"                  json:"excerpt"`
 	Total_count      int32         `cql:"total_count"              json:"total_count"`
 	Unread_count     int32         `cql:"unread_count"             json:"unread_count"`
 }

@@ -9,13 +9,12 @@ import elasticsearch_dsl as dsl
 log = logging.getLogger(__name__)
 
 
-class IndexedResourceTag(dsl.InnerObjectWrapper):
+class IndexedParticipant(dsl.InnerObjectWrapper):
 
-    """Nest tag indexed model."""
+    """Nest participant indexed model."""
 
-    date_insert = dsl.Date()
-    importance_level = dsl.Integer()
+    address = dsl.String()
+    contact_id = dsl.String()
     label = dsl.String()
-    name = dsl.String()
-    tag_id = dsl.String(index='not_analyzed')
-    type = dsl.Boolean()
+    protocol = dsl.String()
+    type = dsl.String()

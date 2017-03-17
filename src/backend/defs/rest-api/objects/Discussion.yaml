@@ -26,7 +26,7 @@ properties:
     type: array
     items:
       type: string
-  text:
+  excerpt:
     type: string
   total_count:
     type: integer

@@ -12,11 +12,13 @@ class UserTag(BaseModel):
 
     """User tags model."""
 
-    user_id = columns.UUID(primary_key=True)
-    tag_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    name = columns.Text()
-    type = columns.Text()
     date_insert = columns.DateTime()
+    importance_level = columns.Integer()
+    label = columns.Text()
+    name = columns.Text()
+    tag_id = columns.UUID(primary_key=True, default=uuid.uuid4)
+    type = columns.Text()
+    user_id = columns.UUID(primary_key=True)
 
 
 class ResourceTag(BaseUserType):
@@ -24,6 +26,8 @@ class ResourceTag(BaseUserType):
     """Tag nested in resource model."""
     _pkey = 'tag_id'
 
-    tag_id = columns.UUID()
+    importance_level = columns.Integer()
+    label = columns.Text()
     name = columns.Text()
+    tag_id = columns.UUID()
     type = columns.Text()

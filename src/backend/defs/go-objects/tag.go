@@ -4,11 +4,16 @@
 
 package objects
 
+import "time"
+
 type Tag struct {
-	Name    string  `cql:"name"        json:"name"`
-	Type    TagType `cql:"type"        json:"type"`
-	Tag_id  UUID    `cql:"tag_id"      json:"tag_id"        formatter:"rfc4122"`
-	User_id UUID    `cql:"user_id"     json:"user_id"       formatter:"rfc4122"`
+	Date_insert      time.Time `cql:"date_insert"            json:"date_insert"`
+	Importance_level int32     `cql:"importance_level"        json:"importance_level"`
+	Label            string    `cql:"label"                   json:"label"`
+	Name             string    `cql:"name"                    json:"name"`
+	Tag_id           UUID      `cql:"tag_id"                  json:"tag_id"        formatter:"rfc4122"`
+	Type             TagType   `cql:"type"                    json:"type"`
+	User_id          UUID      `cql:"user_id"                 json:"user_id"       formatter:"rfc4122"`
 }
 
 type TagType string

@@ -11,7 +11,11 @@ from caliopen_main.message.store import Message as ModelMessage
 from caliopen_main.message.store import IndexedMessage
 from caliopen_main.message.parameters import Message as ParamMessage
 from .tag import ResourceTag
-
+from .attachment import MessageAttachment
+from .external_references import ExternalReferences
+from .local_identity import LocalIdentity
+from .participant import Participant
+from .privacy_features import PrivacyFeatures
 
 import logging
 log = logging.getLogger(__name__)
@@ -19,17 +23,29 @@ log = logging.getLogger(__name__)
 
 class Message(base.ObjectIndexable):
 
-    # TODO : manage attrs that should not be modifiable directly by users
+    # TODO : manage attrs that should not be editable directly by users
     _attrs = {
-        'user_id': UUID,
-        'message_id': UUID,
-        # 'discussion_id': UUID,
-        'type': types.StringType,
-        'from_': types.StringType,
+        'attachments': [MessageAttachment],
+        'body': types.StringType,
         'date': datetime.datetime,
-        'size': types.IntType,
+        'date_delete': datetime.datetime,
+        'date_insert': datetime.datetime,
+        'discussion_id': UUID,
+        'external_references': ExternalReferences,
+        'identities': [LocalIdentity],
+        'importance_level': types.IntType,
+        'is_answered': types.BooleanType,
+        'is_draft': types.BooleanType,
+        'is_unread': types.BooleanType,
+        'message_id': UUID,
+        'parent_id': types.StringType,
+        'participants': [Participant],
+        'privacy_features': PrivacyFeatures,
+        'raw_msg_id': UUID,
         'subject': types.StringType,
         'tags': [ResourceTag],
+        'type': types.StringType,
+        'user_id': UUID,
     }
 
     _json_model = ParamMessage
