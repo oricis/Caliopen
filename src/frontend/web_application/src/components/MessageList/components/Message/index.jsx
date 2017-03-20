@@ -5,6 +5,8 @@ import ContactAvatarLetter from '../../../ContactAvatarLetter';
 import Icon from '../../../Icon';
 import MessageActionsContainer from '../MessageActionsContainer';
 
+import './style.scss';
+
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,

@@ -5,6 +5,8 @@ import DayMessageList from './components/DayMessageList';
 import Message from './components/Message';
 import groupMessages from './services/groupMessages';
 
+import './style.scss';
+
 const renderDayGroups = (messages, __) => {
   const messagesGroupedByday = groupMessages(messages);
 
