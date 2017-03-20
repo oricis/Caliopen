@@ -10,7 +10,7 @@ ApiConfig:
       consistency_level: 1
 ProxyConfig:
   host: 0.0.0.0
-  port: 3141
+  port: 31415
   routes:
   - /api/v2/: 127.0.0.1:6544
   - /: apiv1.dev.caliopen.org:6543         # route "/" catch all other requests
