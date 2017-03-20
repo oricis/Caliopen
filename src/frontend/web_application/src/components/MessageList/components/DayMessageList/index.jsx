@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import { DateTime, FromNow } from '@gandi/react-translate';
 
+import './style.scss';
+
 const renderDate = (date) => {
   const dateAfter = new Date(date);
   dateAfter.setDate(dateAfter.getDate() + 3);

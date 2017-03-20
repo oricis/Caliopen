@@ -35,6 +35,10 @@ class Message extends Component {
       'm-message__content',
       { 'm-message__content--active': this.state.isActive }
     );
+    const topBarClassName = classnames(
+      'm-message__top-bar',
+      { 'm-message__top-bar--active': this.state.isActive }
+    );
 
     return (
       <div
@@ -42,7 +46,7 @@ class Message extends Component {
         onMouseEnter={this.handleHover}
         onMouseLeave={this.handleBlur}
       >
-        <MessageActionsContainer className="m-message__top-bar" isActive={this.state.isActive} __={__}>
+        <MessageActionsContainer className={topBarClassName} isActive={this.state.isActive} __={__}>
           <div className="m-message__date">
             <DateTime format="LT">{message.date_received}</DateTime>
           </div>

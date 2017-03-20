@@ -1,5 +1,9 @@
 import React, { PropTypes } from 'react';
 import Button from '../../../Button';
+import Icon from '../../../Icon';
+
+
+import './style.scss';
 
 const MessageActions = ({ __, isActive, ...props }) => {
   if (!isActive) {
@@ -8,10 +12,12 @@ const MessageActions = ({ __, isActive, ...props }) => {
 
   return (
     <div {...props}>
-      <Button plain className="m-message-item-actions-container__action">{__('Reply')}</Button>
-      <Button plain className="m-message-item-actions-container__action">{__('Copy To')}</Button>
-      <Button plain className="m-message-item-actions-container__action">{__('Tags')}</Button>
-      <Button plain className="m-message-item-actions-container__action">{__('Delete')}</Button>
+      <div className="m-message-item-actions-container__actions">
+        <Button plain className="m-message-item-actions-container__action"><Icon type="reply" spaced />{__('Reply')}</Button>
+        <Button plain className="m-message-item-actions-container__action"><Icon type="share" spaced />{__('Copy To')}</Button>
+        <Button plain className="m-message-item-actions-container__action"><Icon type="tags" spaced />{__('Tags')}</Button>
+        <Button plain className="m-message-item-actions-container__action"><Icon type="trash" spaced />{__('Delete')}</Button>
+      </div>
     </div>
   );
 };
