@@ -1,0 +1,38 @@
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.m-reply {
+  &__action-bar {
+    padding: $co-component__spacing;
+    border-bottom: 1px solid $co-color__bg__back;
+    background: $co-color__fg__back;
+  }
+
+  &__action-button {
+    margin: $co-component__spacing;
+    background: $co-color__fg__back--high;
+  }
+
+  &__content {
+    @include flex-grid-row($size: expand);
+    padding-top: 2 * $co-component__spacing;
+    padding-bottom: 2 * $co-component__spacing;
+    background: $co-color__fg__back;
+  }
+
+  &__avatar {
+    @include flex-grid-column(shrink);
+    text-align: right;
+  }
+
+  &__body {
+    @include flex-grid-column;
+  }
+
+  @include breakpoint(medium) {
+
+    &__avatar {
+      @include flex-grid-column(2);
+    }
+  }
+
+}

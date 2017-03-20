@@ -3,13 +3,13 @@
 .m-message-list {
 
   &__actions {
-    padding: 2 * $co-component__spacing;
+    padding: $co-component__spacing;
     border-bottom: 1px solid $co-color__bg__back;
     background: $co-color__fg__back;
   }
 
   &__action {
-    margin-right: 2 * $co-component__spacing;
+    margin: $co-component__spacing;
     background: $co-color__fg__back--high;
   }
 

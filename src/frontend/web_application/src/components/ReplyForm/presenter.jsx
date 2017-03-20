@@ -3,6 +3,7 @@ import Button from '../Button';
 import ContactAvatarLetter from '../ContactAvatarLetter';
 import DiscussionDraft, { TopRow, BodyRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
+import './style.scss';
 
 function generateStateFromProps(props, prevState) {
   return {
@@ -71,11 +72,11 @@ class ReplyForm extends Component {
       <DiscussionDraft className="m-reply">
         <form method="POST">
           <TopRow className="m-reply__action-bar">
-            <Button onClick={this.handleSend}>{__('messages.compose.action.send')}</Button>
+            <Button className="m-reply__action-button" onClick={this.handleSend}>{__('messages.compose.action.send')}</Button>
             {' '}
-            <Button onClick={this.handleSave}>{__('messages.compose.action.save')}</Button>
+            <Button className="m-reply__action-button" onClick={this.handleSave}>{__('messages.compose.action.save')}</Button>
           </TopRow>
-          <BodyRow>
+          <BodyRow className="m-reply__content">
             <div className="m-reply__avatar"><ContactAvatarLetter contact={user.contact} /></div>
             <div className="m-reply__body">
               <DiscussionTextarea
