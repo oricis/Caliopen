@@ -7,20 +7,9 @@
     padding-bottom: $co-component__spacing;
     border-bottom: 1px solid $co-color__bg__back;
     font-weight: 600;
-    text-align: center;
 
     time {
       @include flex-grid-column;
-    }
-  }
-
-  @include breakpoint(medium) {
-    &__day {
-      text-align: right;
-
-      time {
-        @include flex-grid-column(2);
-      }
     }
   }
 }

@@ -1,7 +1,6 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-message-item-actions-container {
-
   @include breakpoint(medium) {
     &__actions {
       @include grid-col-pos(2);

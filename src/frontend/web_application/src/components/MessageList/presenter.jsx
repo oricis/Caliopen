@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Button from '../Button';
+import Icon from '../Icon';
 import ReplyForm from '../ReplyForm';
 import DayMessageList from './components/DayMessageList';
 import Message from './components/Message';
@@ -28,9 +29,9 @@ const renderDayGroups = (messages, __) => {
 const MessageList = ({ onReply, onForward, onDelete, messages, __ }) => (
   <div className="m-message-list">
     <div className="m-message-list__actions">
-      <Button onClick={onReply}>{__('Reply')}</Button>
-      <Button onClick={onForward}>{__('Copy to')}</Button>
-      <Button onClick={onDelete}>{__('Delete')}</Button>
+      <Button className="m-message-list__action" onClick={onReply}><Icon type="reply" spaced />{__('Reply')}</Button>
+      <Button className="m-message-list__action" onClick={onForward}><Icon type="share" spaced />{__('Copy to')}</Button>
+      <Button className="m-message-list__action" onClick={onDelete}><Icon type="trash" spaced />{__('Delete')}</Button>
     </div>
     <div className="m-message-list__list">
       {renderDayGroups(messages, __)}
