@@ -1,23 +1,25 @@
 #!/bin/bash
 
-# Generate swagger sepcification from JSON schema definitions
+# Generate swagger specifications from JSON schema definitions
 
-CALIOPEN_BASEDIR=$(pwd)/..
+set -e
+PROJECT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
-DEST_DIR=${CALIOPEN_BASEDIR}/doc/api
-SRC_DIR=${CALIOPEN_BASEDIR}/src/backend/defs/rest-api
-
-SWAGGER_JS="${DEST_DIR}/node_modules/swagger-cli/bin/swagger.js"
-CMD="node ${SWAGGER_JS} bundle"
+DEST_DIR=${PROJECT_DIRECTORY}/doc/api
+SRC_DIR=${PROJECT_DIRECTORY}/src/backend/defs/rest-api
+SWAGGER_CLI_DIR=${PROJECT_DIRECTORY}/devtools/swagger-cli
+SWAGGER_JS=${SWAGGER_CLI_DIR}/node_modules/.bin/swagger
+CMD="yarn start -- bundle -r ${SRC_DIR}/swagger-root.json -o ${DEST_DIR}/swagger.json"
 
 
 if [[ ! -f "${SWAGGER_JS}" ]]; then
-	echo "You must install nodejs module swagger"
+	echo "You should have nodejs > 6 and yarn"
 	echo "Run npm install swagger in ${DEST_DIR} directory"
-	exit 1
+
+	(cd $SWAGGER_CLI_DIR && yarn install)
 fi
 
 
-cd ${SRC_DIR}
+(cd $SWAGGER_CLI_DIR && ${CMD})
 
-${CMD} -r swagger-root.json -o ${DEST_DIR}/swagger.json
+set +e
