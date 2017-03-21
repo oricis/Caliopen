@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+### Added
+
+  - DropdownMenu
+
+### Changed
+
+  - Separate presentation from logic of Dropdown by adding DropdownMenu
+  - remove styles from foundation's dropdown & use own styles
+
+### Removed
+
+  - DropdownController from Dropdown wich has been replaced by withDropdownControl HoC
+
 ## [2017-02-27]
 
 ### Added

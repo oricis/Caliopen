@@ -1,16 +1,12 @@
 @import '../../styles/common';
-@import '../../styles/vendor/bootstrap_foundation-sites';
 
 .m-dropdown {
-  @include dropdown-container;
-  width: auto;
-  background-color: $co-color__fg__back;
-  box-shadow: $co-shadow;
+  display: block;
+  position: absolute;
+  z-index: $l-z-index__dropdown;
+  visibility: hidden;
 
-  &--flat {
-    border: 0;
-    background-color: transparent;
-    box-shadow: none;
+  &.is-open {
+    visibility: visible;
   }
-
 }

@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import Link from '../../../../../../components/Link';
+import Button from '../../../../../../components/Button';
 import Icon from '../../../../../../components/Icon';
 import VerticalMenu, { VerticalMenuTextItem, VerticalMenuItem, Separator } from '../../../../../../components/VerticalMenu';
-import Dropdown, { DropdownController } from '../../../../../../components/Dropdown';
+import DropdownMenu, { withDropdownControl } from '../../../../../../components/DropdownMenu';
+
+const DropdownControl = withDropdownControl(Button);
 
 class Presenter extends Component {
   static propTypes = {
@@ -27,7 +30,7 @@ class Presenter extends Component {
 
     return (
       <div>
-        <DropdownController
+        <DropdownControl
           toggle="co-user-menu"
           className="float-right"
           expanded
@@ -35,8 +38,8 @@ class Presenter extends Component {
           <Icon type="user" />&nbsp;
           <span className="show-for-small-only">{user && user.name}</span>&nbsp;
           <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
-        </DropdownController>
-        <Dropdown
+        </DropdownControl>
+        <DropdownMenu
           id="co-user-menu"
           position="bottom"
           closeOnClick
@@ -65,7 +68,7 @@ class Presenter extends Component {
               )}
             </VerticalMenuItem>
           </VerticalMenu>
-        </Dropdown>
+        </DropdownMenu>
       </div>
     );
   }
