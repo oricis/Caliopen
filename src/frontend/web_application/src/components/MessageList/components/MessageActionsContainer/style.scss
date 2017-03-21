@@ -1,9 +1,12 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-message-item-actions-container {
-  @include breakpoint(medium) {
-    &__actions {
-      @include grid-col-pos(2);
-    }
+
+  @include flex-grid-row;
+
+  &__actions {
+    @include flex-grid-column;
+    @include breakpoint(medium) { @include grid-col-pos(2); }
+    @include breakpoint(large) { @include grid-col-pos(1); }
   }
 }

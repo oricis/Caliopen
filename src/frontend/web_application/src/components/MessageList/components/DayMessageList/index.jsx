@@ -7,15 +7,16 @@ import './style.scss';
 const renderDate = (date) => {
   const dateAfter = new Date(date);
   dateAfter.setDate(dateAfter.getDate() + 3);
+  const dateClassName = 'm-day-message-list__date';
 
   return dateAfter.getTime() >= Date.now() ?
-    (<FromNow from={Date.now()}>{date}</FromNow>) :
-    (<DateTime format="LL">{date}</DateTime>);
+    (<FromNow className={dateClassName} from={Date.now()}>{date}</FromNow>) :
+    (<DateTime className={dateClassName} format="LL">{date}</DateTime>);
 };
 
 const DayMessageList = ({ date, className, ...props }) => (
   <div className="m-day-message-list">
-    <div className="m-day-message-list__day">{renderDate(date)}</div>
+    {renderDate(date)}
     <div className={classnames('m-day-message-list__messages', className)} {...props} />
   </div>
 );

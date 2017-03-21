@@ -15,15 +15,14 @@
     }
   }
 
-  &__date {
-    @include flex-grid-column(shrink);
-    font-weight: 600;
-    text-align: right;
-  }
-
+  &__date,
   &__type {
     @include flex-grid-column(shrink);
     font-weight: 600;
+  }
+
+  &__date {
+    text-align: right;
   }
 
   &__content {
@@ -52,12 +51,16 @@
       height: $co-component__height;
     }
 
-    &__date {
-      @include flex-grid-column(2);
-    }
-
+    &__date,
     &__avatar {
       @include flex-grid-column(2);
+    }
+  }
+
+  @include breakpoint(large) {
+    &__date,
+    &__avatar {
+      @include flex-grid-column(1);
     }
   }
 }
