@@ -12,6 +12,7 @@ import ContactDetails from './components/ContactDetails';
 import DefList from './components/DefList';
 // import Devices from './layouts/Devices';
 import Dropdown from './components/Dropdown';
+import DropdownMenu from './components/DropdownMenu';
 import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
 import Icon from './components/Icon';
@@ -74,6 +75,9 @@ storiesOf('Contact', module)
 storiesOf('Dropdown', module)
   .add('Dropdown', () => (
     <Dropdown />
+  ))
+  .add('DropdownMenu', () => (
+    <DropdownMenu />
   ));
 
 storiesOf('Form', module)
