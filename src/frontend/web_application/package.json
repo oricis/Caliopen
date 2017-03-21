@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dashboard -- npm-run-all --parallel --race start:dev:server start:dev:assets",
-    "start:dev": "DASHBOARD=false HAS_SSR=false SERVER_API=mock npm-run-all --parallel --race start:dev:server start:dev:assets",
+    "start:dev": "DASHBOARD=false HAS_SSR=false npm-run-all --parallel --race start:dev:server start:dev:assets",
     "start:dev:server": "NODE_ENV=development PORT=4001 kotatsu start --source-maps false -o dist/kotatsu -c webpack/webpack.config.server.js",
     "start:dev:assets": "NODE_ENV=development kotatsu serve -o dist/kotatsu -c webpack/webpack.config.browser.js -p 4000 --proxy / http://localhost:4001",
     "start:dev:browser": "NODE_ENV=development DASHBOARD=false kotatsu serve -o dist/kotatsu --public public --config webpack/webpack.config.browser.js --port 4000 --index ./template/index.kotatsu-serve.html",
@@ -127,7 +127,6 @@
     "react-test-renderer": "^15.3.2",
     "sass-lint": "^1.9.1",
     "sasslint-loader": "0.0.1",
-    "swagger-express-middleware": "^1.0.0-alpha.12",
     "webpack-dev-middleware": "^1.8.3",
     "webpack-hot-middleware": "^2.12.2",
     "webpack-target-electron-renderer": "^0.4.0"
