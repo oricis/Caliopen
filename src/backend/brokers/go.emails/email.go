@@ -21,54 +21,71 @@ type (
 	// between an email representation and its Caliopen message counterpart
 	EmailMessage struct {
 		Email   *Email
-		Message *obj.MessageModel
+		Message *obj.Message
 	}
 
 	Email struct {
-		SmtpMailFrom string       // from or for the smtp agent
+		SmtpMailFrom []string     // from or for the smtp agent
 		SmtpRcpTo    []string     // from or for the smtp agent
 		Raw          bytes.Buffer // raw email (without the Bcc header)
+		//TODO: add more infos from mta and rename 'email' to 'mailEnvelope'
 	}
 )
+
+func newAddressesFields() (af map[string][]string) {
+	af = map[string][]string{
+		"From":     []string{},
+		"Sender":   []string{},
+		"Reply-To": []string{},
+		"To":       []string{},
+		"Cc":       []string{},
+		"Bcc":      []string{},
+	}
+	return
+}
 
 // build a 'ready to send' email from a Caliopen message model
 // conforms to
 // RFC822 / RFC2822 / RFC5322 (internet message format)
 // RFC2045 / RFC2046 / RFC2047 / RFC2048 / RFC2049 (MIME) => TODO
-func MarshalEmail(msg *obj.MessageModel, version string, mailhost string) (em *EmailMessage, err error) {
+func MarshalEmail(msg *obj.Message, version string, mailhost string) (em *EmailMessage, err error) {
 
 	em = &EmailMessage{
 		Email: &Email{
-			SmtpMailFrom: msg.From,
+			SmtpMailFrom: "",
+			SmtpRcpTo:    []string{},
 		},
 		Message: msg,
 	}
 
 	//make use of gomail library to build the raw email
 	m := gomail.NewMessage()
-	m.SetHeader("From", msg.From) //TODO: handle the display name when it will be available.
-	to, cc, bcc := []string{}, []string{}, []string{}
-	for _, rcpt := range msg.Recipients {
-		switch rcpt.RecipientType {
-		case "to":
-			to = append(to, rcpt.Address)
-		case "cc":
-			cc = append(cc, rcpt.Address)
-		case "bcc":
-			bcc = append(bcc, rcpt.Address)
+	addr_fields := newAddressesFields()
+	for _, participant := range msg.Participants {
+		switch participant.Type {
+		case "From":
+			addr_fields["From"] = append(addr_fields["From"], m.FormatAddress(participant.Address, participant.Label))
+			em.Email.SmtpMailFrom = append(em.Email.SmtpMailFrom, participant.Address) //TODO: handle multisender to conform to RFC5322#3.6.2 (coupled with sender field)
+		case "Reply-To":
+			addr_fields["Reply-To"] = append(addr_fields["Reply-To"], m.FormatAddress(participant.Address, participant.Label))
+		case "To":
+			addr_fields["To"] = append(addr_fields["To"], m.FormatAddress(participant.Address, participant.Label))
+			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
+		case "Cc":
+			addr_fields["Cc"] = append(addr_fields["Cc"], m.FormatAddress(participant.Address, participant.Label))
+			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
+		case "Bcc":
+			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
+		case "Sender":
+			addr_fields["Sender"] = append(addr_fields["Sender"], m.FormatAddress(participant.Address, participant.Label))
+			em.Email.SmtpMailFrom = append(em.Email.SmtpMailFrom, participant.Address) //TODO: handle multisender to conform to RFC5322#3.6.2 (coupled with sender field)
 		}
 	}
-	em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, to...)
-	em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, cc...)
-	em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, bcc...)
-	if len(to) > 0 {
-		m.SetHeader("To", to...)
-	}
-	if len(cc) > 0 {
-		m.SetHeader("Cc", cc...)
-	}
-	if len(bcc) > 0 {
-		m.SetHeader("Bcc", bcc...)
+
+	for field, addrs := range addr_fields {
+		if len(addrs) > 0 {
+			m.SetHeader(field, addrs...)
+		}
 	}
 
 	em.Message.Date = time.Now()
@@ -102,7 +119,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	// update caliopen message status
 	fields := make(map[string]interface{})
 	fields["raw_msg_id"] = raw_email_id
-	fields["state"] = obj.EmailStateSent
+	fields["is_draft"] = false
 	fields["date"] = ack.EmailMessage.Message.Date
 	err = b.Store.UpdateMessage(ack.EmailMessage.Message, fields)
 	if err != nil {
@@ -117,7 +134,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 
 // gets a raw email and transforms into a Caliopen 'message' object
 // belonging to an user
-func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id obj.CaliopenUUID) (msg *obj.MessageModel, err error) {
+func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id obj.UUID) (msg *obj.Message, err error) {
 
 	parsed_mail, err := mail.ReadMessage(&em.Email.Raw)
 	if err != nil {
@@ -125,37 +142,37 @@ func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id obj.CaliopenUUID)
 		return nil, err
 	}
 
+	var m_id obj.UUID
+	m_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	mail_date, err := parsed_mail.Header.Date()
 	if err != nil {
 		log.WithError(err).Warn("unable to parse email's date")
 	}
 
-	var mail_rcpts []obj.RecipientModel
-	mail_from, _ := b.unmarshalRecipients(parsed_mail.Header, "from", user_id)
-	mail_to, _ := b.unmarshalRecipients(parsed_mail.Header, "to", user_id)
-	mail_cc, _ := b.unmarshalRecipients(parsed_mail.Header, "cc", user_id)
-	mail_rcpts = append(mail_rcpts, mail_from...)
-	mail_rcpts = append(mail_rcpts, mail_to...)
-	mail_rcpts = append(mail_rcpts, mail_cc...)
-
 	mail_body, err := ioutil.ReadAll(parsed_mail.Body)
 	if err != nil {
 		log.WithError(err).Warn("unable to parse email's body")
 	}
+	//TODO: Attachments, Externals_references, identities, parent_id
+	msg = &obj.Message{
+		Body:             string(mail_body),
+		Date:             mail_date,
+		Date_insert:      time.Now(),
+		Is_unread:        true,
+		Message_id:       m_id,
+		Participants:     []obj.Participant{},
+		Privacy_features: obj.PrivacyFeatures{},
+		Raw_msg_id:       em.Message.Raw_msg_id,
+		Subject:          parsed_mail.Header.Get("subject"),
+		Type:             obj.EmailProtocol,
+		User_id:          user_id,
+	}
 
-	var m_id obj.CaliopenUUID
-	m_id.UnmarshalBinary(uuid.NewV4().Bytes())
-	msg = &obj.MessageModel{
-		User_id:     user_id,
-		Message_id:  m_id,
-		MsgType:     obj.EmailProtocol,
-		From:        parsed_mail.Header.Get("from"),
-		Date:        mail_date,
-		Date_insert: time.Now(),
-		Subject:     parsed_mail.Header.Get("subject"),
-		Recipients:  mail_rcpts,
-		Body:        string(mail_body),
-		Raw_msg_id:  em.Message.Raw_msg_id,
+	for field, _ := range newAddressesFields() {
+		p, err := b.unmarshalParticipants(parsed_mail.Header, field, user_id)
+		if err == nil {
+			msg.Participants = append(msg.Participants, p...)
+		}
 	}
 
 	return
@@ -163,19 +180,19 @@ func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id obj.CaliopenUUID)
 
 // if an user_id is provided, the func will try to find a matching contact for each recipient within user's contactbook in db
 // otherwise, contact_id will be nil for recipient
-func (b *EmailBroker) unmarshalRecipients(h mail.Header, address_type string, user_id ...obj.CaliopenUUID) (recipients []obj.RecipientModel, err error) {
-	recipients = []obj.RecipientModel{}
+func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, user_id ...obj.UUID) (participants []obj.Participant, err error) {
+	participants = []obj.Participant{}
 	addresses, err := h.AddressList(address_type)
 	if err != nil {
-		return recipients, err
+		return participants, err
 	}
 	for _, a := range addresses {
-		rcpt := obj.RecipientModel{
-			RecipientType: address_type,
-			Protocol:      obj.EmailProtocol,
-			Address:       a.Address,
-			Label:         a.Name,
-			Contact_id:    obj.CaliopenUUID{},
+		rcpt := obj.Participant{
+			Type:       address_type,
+			Protocol:   obj.EmailProtocol,
+			Address:    a.Address,
+			Label:      a.Name,
+			Contact_id: obj.UUID{},
 		}
 		if len(user_id) == 1 {
 			contact_id, err := b.Store.LookupContactByIdentifier(user_id[0].String(), a.Address)
@@ -184,7 +201,7 @@ func (b *EmailBroker) unmarshalRecipients(h mail.Header, address_type string, us
 				rcpt.Contact_id.UnmarshalBinary(uuid.Bytes())
 			}
 		}
-		recipients = append(recipients, rcpt)
+		participants = append(participants, rcpt)
 	}
 
 	return

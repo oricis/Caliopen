@@ -12,7 +12,6 @@ type Participant struct {
 	Type       string `cql:"type"             json:"type"`
 }
 
-
 func (rcpt *Participant) MarshalJSON() ([]byte, error) {
 	return customJSONMarshaler(rcpt, "json")
 }

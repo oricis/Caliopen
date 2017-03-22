@@ -5,5 +5,4 @@
 package objects
 
 type PrivacyFeatures struct {
-
 }

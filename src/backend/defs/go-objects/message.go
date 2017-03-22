@@ -16,7 +16,6 @@ const (
 	EmailStateSent string = "sent"
 )
 
-
 type Message struct {
 	Attachments         []Attachment       `cql:"attachments"              json:"attachment"       `
 	Body                string             `cql:"body"                     json:"body"             `
@@ -32,7 +31,7 @@ type Message struct {
 	Is_unread           bool               `cql:"is_unread"                json:"is_unread"        `
 	Message_id          UUID               `cql:"message_id"               json:"message_id"                                   formatter:"rfc4122"`
 	Parent_id           string             `cql:"parent_id"                json:"parent_id"        `
-	Participants        Participant        `cql:"participants"             json:"participants"     `
+	Participants        []Participant      `cql:"participants"             json:"participants"     `
 	Privacy_features    PrivacyFeatures    `cql:"privacy_features"         json:"privacy_features" `
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
 	Subject             string             `cql:"subjects"                 json:"subject"          `
@@ -98,7 +97,6 @@ func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 func (msg *Message) MarshalJSON() ([]byte, error) {
 	return customJSONMarshaler(msg, "json")
 }
-
 
 func (msg *Message) MarshalES() ([]byte, error) {
 	return customJSONMarshaler(msg, "elastic")

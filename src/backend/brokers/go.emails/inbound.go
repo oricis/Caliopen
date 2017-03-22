@@ -88,6 +88,7 @@ func (b *EmailBroker) processInbound(in *SmtpEmail) {
 		return
 	}
 
+	//TODO: json representation of raw email
 	//step 2 : store raw email and get its raw_id
 	raw_email_id, err := b.Store.StoreRaw(in.EmailMessage.Email.Raw.String())
 	if err != nil {
@@ -118,7 +119,7 @@ func (b *EmailBroker) processInbound(in *SmtpEmail) {
 			log.WithError(err).Warn("inbound: indexing message failed")
 		}
 		//step 4 : send 'process' order to nats
-		go func(rcptId objects.CaliopenUUID) {
+		go func(rcptId objects.UUID) {
 			defer wg.Done()
 			natsMessage := fmt.Sprintf("{\"order\":\"process_email_message\",\"user_id\": \"%s\", \"message_id\": \"%s\"}", rcptId.String(), msg.Message_id.String())
 			resp, err := b.NatsConn.Request(b.Config.InTopic, []byte(natsMessage), 10*time.Second)
