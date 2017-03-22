@@ -4,10 +4,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import types
 from caliopen_main.objects import base
-from caliopen_main.user.store import ModelMessageAttachment
-from caliopen_main.user.store import IndexedMessageAttachment
 
-class MessageAttachment(base.ObjectStorable):
+class MessageAttachment(base.ObjectJsonDictifiable):
 
     """attachment's attributes, nested within message object"""
 
@@ -17,6 +15,3 @@ class MessageAttachment(base.ObjectStorable):
         'name': types.StringType,
         'size': types.IntType
     }
-
-    _model_class = ModelMessageAttachment
-    _index_class = IndexedMessageAttachment

@@ -13,7 +13,7 @@ from caliopen_main.user.store.contact_index import IndexedContact
 from caliopen_main.user.parameters.contact import Contact as ParamContact
 
 from .email import Email
-from .social_identity import SocialIdentity
+from .identities import SocialIdentity
 from .im import IM
 from .organization import Organization
 from .phone import Phone

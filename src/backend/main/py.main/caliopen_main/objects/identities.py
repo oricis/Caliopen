@@ -1,13 +1,33 @@
 # -*- coding: utf-8 -*-
-"""Caliopen contact parameters classes."""
+"""Caliopen message object classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
 import types
 from caliopen_main.objects import base
+from caliopen_main.user.store import LocalIdentity as ModelLocalIdentity
+from caliopen_main.user.store import IndexedLocalIdentity
 from uuid import UUID
 from caliopen_main.user.store.contact import SocialIdentity as ModelSocialIdentity
 from caliopen_main.user.returns.contact import SocialIdentityParam
 from caliopen_main.user.store.contact_index import IndexedSocialIdentity
+
+class LocalIdentity(base.ObjectIndexable):
+
+    """Local identity related to an user."""
+
+    _attrs = {
+        'display_name': types.StringType,
+        'identifier': types.StringType,
+        'status': types.StringType,
+        'type': types.StringType,
+    }
+
+    _model_class = ModelLocalIdentity
+    _pkey_name = 'identifier'
+    _db = None  # model instance with datas from db
+
+    _index_class = IndexedLocalIdentity
+    _index = None
 
 
 class SocialIdentity(base.ObjectIndexable):

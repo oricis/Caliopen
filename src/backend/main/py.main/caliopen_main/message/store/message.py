@@ -4,51 +4,45 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from cassandra.cqlengine import columns
 
-from caliopen_storage.store.model import BaseModel, BaseUserType
+from caliopen_storage.store.model import BaseModel
 from caliopen_storage.store.mixin import IndexedModelMixin
 from caliopen_main.user.store.tag import ResourceTag
+from caliopen_main.user.store.privacy_features import ModelPrivacyFeatures
+from caliopen_main.user.store.local_identity import ModelIdentity
 
+from .attachment import ModelMessageAttachment
+from .external_references import ModelExternalReferences
+from .participant import ModelParticipant
 from .message_index import IndexedMessage
+
 
 import uuid
 
 
-class MessageRecipient(BaseUserType):
-
-    """Recipient involved in a message."""
-
-    type = columns.Text()
-    protocol = columns.Text()
-    address = columns.Text()
-    contact_id = columns.UUID()
-    label = columns.Text()
-
-
 class Message(BaseModel, IndexedModelMixin):
-
     """Message model."""
 
     _index_class = IndexedMessage
 
-    user_id = columns.UUID(primary_key=True)
-    message_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    thread_id = columns.UUID()
-    type = columns.Text()
-    from_ = columns.Text()  # 'from' is reserved word in python
+    attachments = columns.List(columns.UserDefinedType(ModelMessageAttachment))
+    body = columns.Text()
     date = columns.DateTime()
+    date_delete = columns.DateTime()
     date_insert = columns.DateTime()
-    size = columns.Integer()
-    privacy_index = columns.Integer()
+    discussion_id = columns.UUID()
+    external_references = columns.List(
+        columns.UserDefinedType(ModelExternalReferences))
+    identities = columns.List(columns.UserDefinedType(ModelIdentity))
     importance_level = columns.Integer()
-    subject = columns.Text()  # Subject of email, the message for short
-    external_message_id = columns.Text()
-    external_parent_id = columns.Text()
-    external_thread_id = columns.Text()
+    is_answered = columns.Boolean()
+    is_draft = columns.Boolean()
+    is_unread = columns.Boolean()
+    message_id = columns.UUID(primary_key=True, default=uuid.uuid4)
+    parent_id = columns.Text()
+    participants = columns.List(columns.UserDefinedType(ModelParticipant))
+    privacy_features = columns.UserDefinedType(ModelPrivacyFeatures)
     raw_msg_id = columns.UUID()
-    tags = columns.List(columns.Text)
-    flags = columns.List(columns.Text)  # Seen, Recent, Deleted, ... IMAP?
-    offset = columns.Integer()
-    state = columns.Text(default='draft')
-    recipients = columns.List(columns.UserDefinedType(MessageRecipient))
-    text = columns.Text()
+    subject = columns.Text()  # Subject of email, the message for short
     tags = columns.List(columns.UserDefinedType(ResourceTag))
+    type = columns.Text()
+    user_id = columns.UUID(primary_key=True)

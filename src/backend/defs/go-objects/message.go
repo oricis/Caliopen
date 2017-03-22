@@ -25,7 +25,7 @@ type Message struct {
 	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"RFC3339Nano"`
 	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id"                                formatter:"rfc4122"`
 	External_references ExternalReferences `cql:"external_references"      json:"external_references"   `
-	Identities          []LocalIdentity    `cql:"identities"               json:"identities"       `
+	Identities          []Identity         `cql:"identities"               json:"identities"       `
 	Importance_level    int32              `cql:"importance_level"         json:"importance_level"`
 	Is_answered         bool               `cql:"is_answered"              json:"is_answered"      `
 	Is_draft            bool               `cql:"is_draft"                 json:"is_draft"         `

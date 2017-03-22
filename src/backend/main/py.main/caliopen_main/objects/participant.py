@@ -6,11 +6,9 @@ import types
 
 from uuid import UUID
 from caliopen_main.objects import base
-from caliopen_main.user.store import ModelParticipant
-from caliopen_main.user.store import IndexedParticipant
 
-class Participant(base.ObjectStorable):
 
+class Participant(base.ObjectJsonDictifiable):
     """attachment's attributes, nested within message object"""
 
     _attrs = {
@@ -20,6 +18,3 @@ class Participant(base.ObjectStorable):
         'protocol': types.StringType,
         'type': types.StringType
     }
-
-    _model_class = ModelParticipant
-    _index_class = IndexedParticipant

@@ -11,5 +11,7 @@ class ModelPrivacyFeatures(BaseUserType):
 
     """Privacy features nested in message."""
 
+    empty_is_boring = columns.Boolean()
+
 
 

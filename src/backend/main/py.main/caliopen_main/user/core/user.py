@@ -20,7 +20,7 @@ from ..store import (User as ModelUser,
                      UserTag as ModelUserTag,
                      FilterRule as ModelFilterRule,
                      ReservedName as ModelReservedName,
-                     LocalIdentity as ModelLocalIdentity
+                     LocalIdentity  as ModelLocalIdentity
                      )
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry

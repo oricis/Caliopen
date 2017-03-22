@@ -13,7 +13,7 @@ from caliopen_main.message.parameters import Message as ParamMessage
 from .tag import ResourceTag
 from .attachment import MessageAttachment
 from .external_references import ExternalReferences
-from .local_identity import LocalIdentity
+from .identities import LocalIdentity
 from .participant import Participant
 from .privacy_features import PrivacyFeatures
 

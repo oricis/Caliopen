@@ -24,7 +24,7 @@ properties:
   identities: # to which user's local identities the message is linked to
     type: array
     items:
-      "$ref": LocalIdentity.yaml
+      "$ref": Identity.yaml
   importance_level:
     type: integer
     format: int32

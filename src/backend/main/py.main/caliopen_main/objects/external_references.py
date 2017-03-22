@@ -4,11 +4,9 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import types
 from caliopen_main.objects import base
-from caliopen_main.user.store import ModelExternalReferences
-from caliopen_main.user.store import IndexedExternalReferences
 
-class ExternalReferences(base.ObjectStorable):
 
+class ExternalReferences(base.ObjectJsonDictifiable):
     """attachment's attributes, nested within message object"""
 
     _attrs = {
@@ -16,6 +14,3 @@ class ExternalReferences(base.ObjectStorable):
         'message_id': types.StringType,
         'parent_id': types.StringType
     }
-
-    _model_class = ModelExternalReferences
-    _index_class = IndexedExternalReferences

@@ -4,11 +4,14 @@ import types
 from uuid import UUID
 import datetime
 import pytz
+from six import add_metaclass
 
 from caliopen_storage.exception import NotFound
 import caliopen_main.errors as main_errors
 from caliopen_main.interfaces import (IO, storage)
 from elasticsearch import exceptions as ESexceptions
+
+from caliopen_storage.core.base import CoreMetaClass
 
 import logging
 log = logging.getLogger(__name__)
@@ -151,7 +154,7 @@ class ObjectJsonDictifiable(ObjectDictifiable):
         """ TODO: handle conversion of basic json type into obj. types"""
         self.unmarshall_dict(document, **options)
 
-
+@add_metaclass(CoreMetaClass)
 class ObjectStorable(ObjectJsonDictifiable):
 
     zope.interface.implements(storage.DbIO)

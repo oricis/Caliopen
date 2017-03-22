@@ -1,0 +1,7 @@
+--- # Identity is a reference embedded in a message
+type: object
+properties:
+  identifier: # the 'I' like in URI, ie : the email address for email ; the user's real name for IRC
+    type: string
+  type:      # local, remote, etc.
+    type: string
