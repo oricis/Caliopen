@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import Button from '../Button';
+import ContactAvatarLetter from '../ContactAvatarLetter';
 import DiscussionDraft, { TopRow, BodyRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
+import './style.scss';
 
 function generateStateFromProps(props, prevState) {
   return {
@@ -14,13 +16,17 @@ function generateStateFromProps(props, prevState) {
 
 class ReplyForm extends Component {
   static propTypes = {
+    draftMessage: PropTypes.shape({}),
     onSave: PropTypes.func.isRequired,
     onSend: PropTypes.func.isRequired,
     onChange: PropTypes.func,
+    user: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
+    draftMessage: {},
     onChange: () => {},
+    user: { contact: {} },
   };
   constructor(props) {
     super(props);
@@ -60,22 +66,25 @@ class ReplyForm extends Component {
   }
 
   render() {
-    const { __ } = this.props;
+    const { user, __ } = this.props;
 
     return (
       <DiscussionDraft className="m-reply">
         <form method="POST">
           <TopRow className="m-reply__action-bar">
-            <Button onClick={this.handleSend}>{__('messages.compose.action.send')}</Button>
+            <Button className="m-reply__action-button" onClick={this.handleSend}>{__('messages.compose.action.send')}</Button>
             {' '}
-            <Button onClick={this.handleSave}>{__('messages.compose.action.save')}</Button>
+            <Button className="m-reply__action-button" onClick={this.handleSave}>{__('messages.compose.action.save')}</Button>
           </TopRow>
-          <BodyRow>
-            <DiscussionTextarea
-              body={this.state.draftMessage.body}
-              onChange={this.handleChange}
-              __={__}
-            />
+          <BodyRow className="m-reply__content">
+            <div className="m-reply__avatar"><ContactAvatarLetter contact={user.contact} /></div>
+            <div className="m-reply__body">
+              <DiscussionTextarea
+                body={this.state.draftMessage.body}
+                onChange={this.handleChange}
+                __={__}
+              />
+            </div>
           </BodyRow>
         </form>
       </DiscussionDraft>

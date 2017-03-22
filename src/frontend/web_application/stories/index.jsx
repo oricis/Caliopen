@@ -17,6 +17,7 @@ import Fieldset from './components/Fieldset';
 import FormGrid from './components/FormGrid';
 import Icon from './components/Icon';
 import Link from './components/Link';
+import MessageList from './components/MessageList';
 import Modal from './components/Modal';
 import PiBar from './components/PiBar';
 import PasswordStrength from './components/PasswordStrength';
@@ -165,4 +166,9 @@ storiesOf('Titles', module)
 storiesOf('Compose & Reply', module)
   .add('Reply', () => (
     <Reply />
+  ));
+
+storiesOf('Discussions & Messages', module)
+  .add('MessageList', () => (
+    <MessageList />
   ));

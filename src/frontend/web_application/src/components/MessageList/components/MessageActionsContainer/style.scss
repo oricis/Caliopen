@@ -1,0 +1,18 @@
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-message-item-actions-container {
+  @include flex-grid-row;
+
+  &__actions {
+    @include flex-grid-column(12);
+
+    @include breakpoint(medium) {
+      @include flex-grid-column(10);
+      @include grid-col-pos(2);
+    }
+    @include breakpoint(large) {
+      @include flex-grid-column(11);
+      @include grid-col-pos(1);
+    }
+  }
+}

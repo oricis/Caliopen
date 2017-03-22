@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
 import AuthPage from '../../src/layouts/AuthPage';
-import SignupForm from '../../src/components/SignupForm/presenter';
+import SignupForm from '../../src/components/SignupForm';
 import { Code, ComponentWrapper } from '../presenters';
 
 class Presenter extends Component {

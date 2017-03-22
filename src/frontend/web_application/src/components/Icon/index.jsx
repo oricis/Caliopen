@@ -13,6 +13,7 @@ export const typeAssoc = {
   'comments-o': 'fa fa-comments-o',
   edit: 'fa fa-edit',
   envelope: 'fa fa-envelope',
+  email: 'fa fa-envelope',
   'exclamation-triangle': 'fa fa-exclamation-triangle',
   'info-circle': 'fa fa-info-circle',
   key: 'fa fa-key',
@@ -27,10 +28,13 @@ export const typeAssoc = {
   reply: 'fa fa-reply',
   search: 'fa fa-search',
   server: 'fa fa-server',
+  share: 'fa fa-share',
   shield: 'fa fa-shield',
   user: 'fa fa-user',
   users: 'fa fa-users',
+  tags: 'fa fa-tags',
   'th-large': 'fa fa-th-large',
+  trash: 'fa fa-trash',
   'window-maximize': 'fa fa-window-maximize',
 };
 

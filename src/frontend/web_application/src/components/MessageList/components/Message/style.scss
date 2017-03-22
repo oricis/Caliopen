@@ -1,0 +1,66 @@
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-message {
+  border-bottom: 1px solid $co-color__bg__back;
+
+  &__top-bar {
+    @include flex-grid-row($size: expand);
+    align-items: center;
+    height: 2 * $co-component__height;
+    background: $co-color__fg__back--high;
+    color: $co-color__fg__text--high;
+
+    &--active {
+      background: $co-color__primary;
+    }
+  }
+
+  &__date,
+  &__type {
+    @include flex-grid-column(shrink);
+    font-weight: 600;
+  }
+
+  &__date {
+    text-align: right;
+  }
+
+  &__content {
+    @include flex-grid-row($size: expand);
+    padding-top: 2 * $co-component__spacing;
+    padding-bottom: 2 * $co-component__spacing;
+    border-top: 1px solid $co-color__bg__back;
+
+    &--active {
+      background: $co-color__primary--lower;
+      color: $co-color__primary__text;
+    }
+  }
+
+  &__avatar {
+    @include flex-grid-column(shrink);
+    text-align: right;
+  }
+
+  &__body {
+    @include flex-grid-column;
+  }
+
+  @include breakpoint(medium) {
+    &__top-bar {
+      height: $co-component__height;
+    }
+
+    &__date,
+    &__avatar {
+      @include flex-grid-column(2);
+    }
+  }
+
+  @include breakpoint(large) {
+    &__date,
+    &__avatar {
+      @include flex-grid-column(1);
+    }
+  }
+}
