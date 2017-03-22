@@ -29,12 +29,12 @@ class Recipient(Model):
         serialize_when_none = False
 
 
-class Thread(Model):
+class Discussion(Model):
 
-    """Existing thread."""
+    """Existing discussion."""
 
     user_id = UUIDType()
-    thread_id = UUIDType(required=True)
+    discussion_id = UUIDType(required=True)
     date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
     date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
     text = StringType(required=True)

@@ -11,13 +11,13 @@ from caliopen_storage.core import BaseUserCore
 from caliopen_storage.parameters import ReturnCoreObject
 
 from ..store import  \
-    (ThreadExternalLookup as ModelExternalLookup,
-     ThreadRecipientLookup as ModelRecipientLookup,
-     ThreadMessageLookup as ModelMessageLookup,
-     Thread as ModelThread,
-     ThreadCounter as ModelCounter,
+    (DiscussionExternalLookup as ModelExternalLookup,
+     DiscussionRecipientLookup as ModelRecipientLookup,
+     DiscussionMessageLookup as ModelMessageLookup,
+     Discussion as ModelDiscussion,
+     DiscussionCounter as ModelCounter,
      DiscussionIndexManager as DIM)
-from ..parameters import Thread as ThreadParam, Recipient
+from ..parameters import Discussion as DiscussionParam, Recipient
 
 log = logging.getLogger(__name__)
 
@@ -32,7 +32,7 @@ def count_attachment(message):
     return cpt
 
 
-class ThreadExternalLookup(BaseUserCore):
+class DiscussionExternalLookup(BaseUserCore):
 
     """Lookup thread by external id (facebook, gmail, ...)."""
 
@@ -40,7 +40,7 @@ class ThreadExternalLookup(BaseUserCore):
     _pkey_name = 'external_id'
 
 
-class ThreadRecipientLookup(BaseUserCore):
+class DiscussionRecipientLookup(BaseUserCore):
 
     """Lookup thread for a recipient, only one."""
 
@@ -48,7 +48,7 @@ class ThreadRecipientLookup(BaseUserCore):
     _pkey_name = 'recipient_name'
 
 
-class ThreadMessageLookup(BaseUserCore):
+class DiscussionMessageLookup(BaseUserCore):
 
     """Lookup thread by external message_id."""
 
@@ -74,8 +74,8 @@ class Counter(BaseUserCore):
 
 
 def build_discussion(thread, index_message):
-    """Temporary build of output Thread return parameter."""
-    discussion = ThreadParam()
+    """Temporary build of output Discussion return parameter."""
+    discussion = DiscussionParam()
     discussion.user_id = thread.user_id
     discussion.thread_id = index_message.thread_id
     discussion.date_insert = thread.date_insert
@@ -107,7 +107,7 @@ class MainView(object):
     def build_responses(self, user, messages):
         """Build list of responses using core and related index message."""
         for message in messages:
-            thread = Thread.get(user, message.thread_id)
+            thread = Discussion.get(user, message.thread_id)
             yield build_discussion(thread, message)
 
     def get(self, user, min_pi, max_pi, limit, offset):
@@ -120,11 +120,11 @@ class MainView(object):
         return {'discussions': list(discussions), 'total': total}
 
 
-class Thread(BaseUserCore):
+class Discussion(BaseUserCore):
 
-    """Thread core object."""
+    """Discussion core object."""
 
-    _model_class = ModelThread
+    _model_class = ModelDiscussion
 
     _pkey_name = 'thread_id'
     _counter = None
@@ -168,7 +168,7 @@ class Thread(BaseUserCore):
     @classmethod
     def by_external_id(cls, user, external_thread_id):
         try:
-            lookup = ThreadExternalLookup.get(user, external_thread_id)
+            lookup = DiscussionExternalLookup.get(user, external_thread_id)
         except NotFound:
             return None
         return cls.get(user, lookup.thread_id)
@@ -176,7 +176,7 @@ class Thread(BaseUserCore):
     @classmethod
     def by_recipient_name(cls, user, recipient_name):
         try:
-            lookup = ThreadRecipientLookup.get(user, recipient_name)
+            lookup = DiscussionRecipientLookup.get(user, recipient_name)
         except NotFound:
             return None
         return cls.get(user, lookup.thread_id)
@@ -205,7 +205,7 @@ class Thread(BaseUserCore):
         return self.counters.attachment_count
 
 
-class ReturnThread(ReturnCoreObject):
+class ReturnDiscussion(ReturnCoreObject):
 
-    _core_class = Thread
-    _return_class = ThreadParam
+    _core_class = Discussion
+    _return_class = DiscussionParam
