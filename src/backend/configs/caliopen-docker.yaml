@@ -7,6 +7,9 @@
 #
 # Make your /etc/hosts lie or user docker containers from docker-compose.yml in /devtools
 
+delivery_agent:
+    direct: True
+
 elasticsearch:
     url: http://es.dev.caliopen.org:9200
 
@@ -15,6 +18,10 @@ cassandra:
     hosts:
         - 'cassandra.dev.caliopen.org'
     consistency_level: 1
+
+lmtp:
+    port: 4025
+    bind_address: 0.0.0.0
 
 system:
     default_tags:
