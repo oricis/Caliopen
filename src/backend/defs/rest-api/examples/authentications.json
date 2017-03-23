@@ -1,0 +1,18 @@
+{
+  "authentications": {
+    "post": {
+      "200": {
+        "application/json": {
+          "username": "john",
+          "tokens": {
+            "access_token": "de85ce575fe7f6262e0cd11582ff33ee848f1027",
+            "expires_in": 99999999999,
+            "expires_at": "2017-03-07T13:37:39.280870",
+            "refresh_token": "f8576a2b8e1e6967b5a58a195b32e860fa8076ca34768d6b6e7a957ae95fff6214167af26f67455e"
+          },
+          "user_id": "d46d717a-57f5-4b11-b086-11caeac05261"
+        }
+      }
+    }
+  }
+}

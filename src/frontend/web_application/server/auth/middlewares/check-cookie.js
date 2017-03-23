@@ -3,18 +3,22 @@ const checkCookie = (req, res, next) => {
 
   if (!cookie) {
     if (req.security === false) {
-      return next();
+      next();
+
+      return;
     }
 
     const error = new Error('Unauthorized');
     error.status = 401;
 
-    return next(error);
+    next(error);
+
+    return;
   }
 
   req.seal = cookie;
 
-  return next();
+  next();
 };
 
 module.exports = checkCookie;

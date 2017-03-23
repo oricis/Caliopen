@@ -1,0 +1,12 @@
+{
+  "users_isAvailable": {
+    "get": {
+      "200": {
+        "application/json": {
+          "available": true,
+          "username": "john"
+        }
+      }
+    }
+  }
+}

@@ -56,6 +56,9 @@
               }
             },
             "additionalProperties": false
+          },
+          "examples": {
+            "$ref": "../examples/authentications.json#/authentications/post/200"
           }
         },
         "401": {

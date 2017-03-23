@@ -1,6 +1,8 @@
 const checkToken = (req, res, next) => {
   if (!req.user && req.security === false) {
-    return next();
+    next();
+
+    return;
   }
 
   const user = req.user;
@@ -11,7 +13,9 @@ const checkToken = (req, res, next) => {
   if (
     !tokens.access_token || !tokens.refresh_token || !tokens.expires_at
   ) {
-    return next(new Error('Invalid tokens'));
+    next(new Error('Invalid tokens'));
+
+    return;
   }
 
   // FIXME: tokenShouldRefresh()
@@ -23,14 +27,16 @@ const checkToken = (req, res, next) => {
     const error = new Error('Expired token');
     error.status = 401;
 
-    return next(error);
+    next(error);
+
+    return;
     // Refresh the token
   }
 
   // We can definitely work with these tokens
   req.tokens = tokens;
 
-  return next();
+  next();
 };
 
 module.exports = checkToken;

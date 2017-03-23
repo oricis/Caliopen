@@ -3611,6 +3611,13 @@ expose-loader@^0.7.1:
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/expose-loader/-/expose-loader-0.7.3.tgz#35fbd3659789e4faa81f59de8b7e9fc39e466d51"
 
+express-http-proxy@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/express-http-proxy/-/express-http-proxy-0.11.0.tgz#f2e6ba2e9e8677b1ba335375c3cae670d5a1bb0a"
+  dependencies:
+    es6-promise "^3.2.1"
+    raw-body "^2.1.7"
+
 express@^4.13.3, express@^4.14.0:
   version "4.14.1"
   resolved "https://registry.yarnpkg.com/express/-/express-4.14.1.tgz#646c237f766f148c2120aff073817b9e4d7e0d33"

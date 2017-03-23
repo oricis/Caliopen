@@ -165,6 +165,9 @@
               "available"
             ],
             "additionalProperties": false
+          },
+          "examples": {
+            "$ref": "../examples/users.json#/users_isAvailable/get/200"
           }
         },
         "400": {

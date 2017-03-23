@@ -1,0 +1,15 @@
+{
+  "tags": {
+    "get": {
+      "200": {
+        "application/json": {
+          "total": 2,
+          "tags": [
+            { "type": "system", "name": "FOO", "id": "1" },
+            { "type": "user", "name": "foobar", "id": "2" }
+          ]
+        }
+      }
+    }
+  }
+}
