@@ -5,13 +5,15 @@
 package objects
 
 type Participant struct {
-	Address    string `cql:"address"          json:"address"`
-	Contact_id UUID   `cql:"contact_id"       json:"contact_id"             formatter:"rfc4122"`
-	Label      string `cql:"label"            json:"label"`
-	Protocol   string `cql:"protocol"         json:"protocol"`
-	Type       string `cql:"type"             json:"type"`
+	Address     string `cql:"address"          json:"address"`
+	Contact_ids []UUID `cql:"contact_ids"      json:"contact_ids"             formatter:"rfc4122"`
+	Label       string `cql:"label"            json:"label"`
+	Protocol    string `cql:"protocol"         json:"protocol"`
+	Type        string `cql:"type"             json:"type"`
 }
 
+/*
 func (rcpt *Participant) MarshalJSON() ([]byte, error) {
 	return customJSONMarshaler(rcpt, "json")
 }
+*/

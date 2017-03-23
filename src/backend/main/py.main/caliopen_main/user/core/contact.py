@@ -8,7 +8,7 @@ import uuid
 from datetime import datetime
 
 from ..store import (Contact as ModelContact,
-                     Lookup as ModelContactLookup,
+                     ContactLookup as ModelContactLookup,
                      PublicKey as ModelPublicKey,
                      Organization, Email, IM, PostalAddress,
                      Phone, SocialIdentity,

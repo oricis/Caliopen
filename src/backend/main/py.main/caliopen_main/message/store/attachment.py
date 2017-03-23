@@ -7,7 +7,7 @@ from cassandra.cqlengine import columns
 from caliopen_storage.store import BaseUserType
 
 
-class ModelMessageAttachment(BaseUserType):
+class MessageAttachment(BaseUserType):
 
     """Attachment nested in message."""
 

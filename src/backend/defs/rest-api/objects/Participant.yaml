@@ -3,8 +3,10 @@ type: object
 properties:
   address:
     type: string
-  contact_id:         # may be empty if participant could not be linked to a user's contact
-    type: string
+  contact_ids:         # may be empty if participant could not be linked to an user's contact
+    type: array
+    items:
+      type: string
   label:              # 'display-name' for email ; 'real name' for IRC
     type: string
   protocol:           # email, IRC…

@@ -35,11 +35,11 @@ func (server *SMTPServer) Process(ev *guerrilla.Envelope) guerrilla.BackendResul
 
 	emailMessage := broker.EmailMessage{
 		Email: &broker.Email{
-			SmtpMailFrom: ev.MailFrom.String(),
+			SmtpMailFrom: []string{ev.MailFrom.String()},
 			SmtpRcpTo:    to,
 			Raw:          raw_email,
 		},
-		Message: &objects.MessageModel{},
+		Message: &objects.Message{},
 	}
 	incoming := &broker.SmtpEmail{
 		EmailMessage: &emailMessage,

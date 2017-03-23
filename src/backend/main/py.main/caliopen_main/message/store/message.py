@@ -7,12 +7,12 @@ from cassandra.cqlengine import columns
 from caliopen_storage.store.model import BaseModel
 from caliopen_storage.store.mixin import IndexedModelMixin
 from caliopen_main.user.store.tag import ResourceTag
-from caliopen_main.user.store.privacy_features import ModelPrivacyFeatures
-from caliopen_main.user.store.local_identity import ModelIdentity
+from caliopen_main.user.store.privacy_features import PrivacyFeatures
+from caliopen_main.user.store.local_identity import Identity
 
-from .attachment import ModelMessageAttachment
-from .external_references import ModelExternalReferences
-from .participant import ModelParticipant
+from .attachment import MessageAttachment
+from .external_references import ExternalReferences
+from .participant import Participant
 from .message_index import IndexedMessage
 
 
@@ -24,23 +24,22 @@ class Message(BaseModel, IndexedModelMixin):
 
     _index_class = IndexedMessage
 
-    attachments = columns.List(columns.UserDefinedType(ModelMessageAttachment))
+    attachments = columns.List(columns.UserDefinedType(MessageAttachment))
     body = columns.Text()
     date = columns.DateTime()
     date_delete = columns.DateTime()
     date_insert = columns.DateTime()
     discussion_id = columns.UUID()
-    external_references = columns.List(
-        columns.UserDefinedType(ModelExternalReferences))
-    identities = columns.List(columns.UserDefinedType(ModelIdentity))
+    external_references = columns.UserDefinedType(ExternalReferences)
+    identities = columns.List(columns.UserDefinedType(Identity))
     importance_level = columns.Integer()
     is_answered = columns.Boolean()
     is_draft = columns.Boolean()
     is_unread = columns.Boolean()
     message_id = columns.UUID(primary_key=True, default=uuid.uuid4)
     parent_id = columns.Text()
-    participants = columns.List(columns.UserDefinedType(ModelParticipant))
-    privacy_features = columns.UserDefinedType(ModelPrivacyFeatures)
+    participants = columns.List(columns.UserDefinedType(Participant))
+    privacy_features = columns.UserDefinedType(PrivacyFeatures)
     raw_msg_id = columns.UUID()
     subject = columns.Text()  # Subject of email, the message for short
     tags = columns.List(columns.UserDefinedType(ResourceTag))

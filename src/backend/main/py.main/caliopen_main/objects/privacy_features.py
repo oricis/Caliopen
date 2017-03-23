@@ -4,7 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import types
 from caliopen_main.objects import base
-from caliopen_main.user.store import ModelPrivacyFeatures
+from caliopen_main.user.store import PrivacyFeatures
 from caliopen_main.user.store import IndexedPrivacyFeatures
 
 class PrivacyFeatures(base.ObjectStorable):
@@ -15,5 +15,5 @@ class PrivacyFeatures(base.ObjectStorable):
 
     }
 
-    _model_class = ModelPrivacyFeatures
+    _model_class = PrivacyFeatures
     _index_class = IndexedPrivacyFeatures

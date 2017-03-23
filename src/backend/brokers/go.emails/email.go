@@ -52,7 +52,7 @@ func MarshalEmail(msg *obj.Message, version string, mailhost string) (em *EmailM
 
 	em = &EmailMessage{
 		Email: &Email{
-			SmtpMailFrom: "",
+			SmtpMailFrom: []string{},
 			SmtpRcpTo:    []string{},
 		},
 		Message: msg,
@@ -188,17 +188,21 @@ func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, 
 	}
 	for _, a := range addresses {
 		rcpt := obj.Participant{
-			Type:       address_type,
-			Protocol:   obj.EmailProtocol,
-			Address:    a.Address,
-			Label:      a.Name,
-			Contact_id: obj.UUID{},
+			Type:        address_type,
+			Protocol:    obj.EmailProtocol,
+			Address:     a.Address,
+			Label:       a.Name,
+			Contact_ids: []obj.UUID{},
 		}
 		if len(user_id) == 1 {
-			contact_id, err := b.Store.LookupContactByIdentifier(user_id[0].String(), a.Address)
+			contact_ids, err := b.Store.LookupContactsByIdentifier(user_id[0].String(), a.Address)
 			if err == nil {
-				uuid, _ := uuid.FromString(contact_id)
-				rcpt.Contact_id.UnmarshalBinary(uuid.Bytes())
+				for _, id := range contact_ids {
+					var contact_id obj.UUID
+					uuid, _ := uuid.FromString(id)
+					contact_id.UnmarshalBinary(uuid.Bytes())
+					rcpt.Contact_ids = append(rcpt.Contact_ids, contact_id)
+				}
 			}
 		}
 		participants = append(participants, rcpt)

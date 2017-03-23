@@ -10,9 +10,9 @@ import (
 	"github.com/relops/cqlr"
 )
 
-func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *obj.MessageModel, err error) {
+func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *obj.Message, err error) {
 
-	msg = &obj.MessageModel{}
+	msg = &obj.Message{}
 	q := cb.Session.Query(`SELECT * FROM message WHERE user_id = ? and message_id = ?`, user_id, msg_id)
 	b := cqlr.BindQuery(q)
 	b.Scan(msg)
@@ -20,9 +20,9 @@ func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *obj.Message
 
 }
 
-func (cb *CassandraBackend) UpdateMessage(msg *obj.MessageModel, fields map[string]interface{}) error {
+func (cb *CassandraBackend) UpdateMessage(msg *obj.Message, fields map[string]interface{}) error {
 
-	messageT := cb.IKeyspace.Table("message", &obj.MessageModel{}, gocassa.Keys{
+	messageT := cb.IKeyspace.Table("message", &obj.Message{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "message_id"},
 	}).WithOptions(gocassa.Options{TableName: "message"}) // need to overwrite default gocassa table naming convention
 
@@ -33,9 +33,9 @@ func (cb *CassandraBackend) UpdateMessage(msg *obj.MessageModel, fields map[stri
 	return err
 }
 
-func (cb *CassandraBackend) StoreMessage(msg *obj.MessageModel) error {
+func (cb *CassandraBackend) StoreMessage(msg *obj.Message) error {
 
-	messageT := cb.IKeyspace.Table("message", &obj.MessageModel{}, gocassa.Keys{
+	messageT := cb.IKeyspace.Table("message", &obj.Message{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "message_id"},
 	}).WithOptions(gocassa.Options{TableName: "message"}) // need to overwrite default gocassa table naming convention
 
@@ -44,7 +44,7 @@ func (cb *CassandraBackend) StoreMessage(msg *obj.MessageModel) error {
 		return err
 	}
 
-	rawLookupT := cb.IKeyspace.Table("user_raw_lookup", &obj.MessageModel{}, gocassa.Keys{
+	rawLookupT := cb.IKeyspace.Table("user_raw_lookup", &obj.Message{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "raw_msg_id"},
 	}).WithOptions(gocassa.Options{TableName: "user_raw_lookup"}) // need to overwrite default gocassa table naming convention
 

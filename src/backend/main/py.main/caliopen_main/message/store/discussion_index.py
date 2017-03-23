@@ -12,7 +12,7 @@ import logging
 
 import elasticsearch_dsl as dsl
 from caliopen_storage.store.model import BaseIndexDocument
-from caliopen_main.message.store import IndexedMessage
+from caliopen_main.message.store.message_index import IndexedMessage
 
 log = logging.getLogger(__name__)
 

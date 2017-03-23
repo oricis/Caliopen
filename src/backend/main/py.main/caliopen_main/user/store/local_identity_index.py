@@ -21,3 +21,9 @@ class IndexedLocalIdentity(BaseIndexDocument):
     status = dsl.String()
     type = dsl.String()
 
+
+class IndexedIdentity(dsl.InnerObjectWrapper):
+    """nested identity within a message"""
+
+    identifier = dsl.String()
+    type = dsl.String()

@@ -7,12 +7,12 @@ from cassandra.cqlengine import columns
 from caliopen_storage.store import BaseUserType
 
 
-class ModelParticipant(BaseUserType):
+class Participant(BaseUserType):
 
     """participant nested in message."""
 
     address = columns.Text()
-    contact_id = columns.UUID()
+    contact_ids = columns.List(columns.UUID())
     label = columns.Text()
     protocol = columns.Text()
     type = columns.Text()

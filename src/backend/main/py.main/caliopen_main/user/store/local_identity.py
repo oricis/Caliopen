@@ -20,7 +20,8 @@ class LocalIdentity(BaseModel):
     type =columns.Text()  # email, IM, etc.
     user_id = columns.UUID(index=True)
 
-class ModelIdentity(BaseUserType):
+
+class Identity(BaseUserType):
     """Reference to an identity embedded in a messaqe"""
 
     identifier = columns.Text()

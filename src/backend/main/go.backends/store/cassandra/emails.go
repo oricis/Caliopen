@@ -12,8 +12,8 @@ import (
 )
 
 // part of LDABackend interface
-func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) {
-	rawMsgTable := cb.IKeyspace.MapTable("raw_message", "raw_msg_id", &obj.RawMessageModel{})
+func (cb *CassandraBackend) StoreRaw(raw_email string, json_rep ...string) (uuid string, err error) {
+	rawMsgTable := cb.IKeyspace.MapTable("raw_message", "raw_msg_id", &obj.RawMessage{})
 	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
 
 	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
@@ -23,10 +23,12 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 	})
 
 	raw_uuid, err := gocql.RandomUUID()
-	m := obj.RawMessageModel{
-		Raw_msg_id: raw_uuid.Bytes(),
-		Data:       raw_email,
-		Size:       len(raw_email),
+	var msg_id obj.UUID
+	msg_id.UnmarshalBinary(raw_uuid.Bytes())
+	m := obj.RawMessage{
+		Raw_msg_id: msg_id,
+		Raw_data:   raw_email,
+		Raw_Size:   len(raw_email),
 	}
 	err = rawMsgTable.Set(m).Run()
 
@@ -36,8 +38,8 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 
 // part of LDABackend interface implementation
 // return a list of users' ids found in user_name table for the given email addresses list
-func (cb *CassandraBackend) GetUsersForRecipients(rcpts []string) (user_ids []obj.CaliopenUUID, err error) {
-	userTable := cb.IKeyspace.MapTable("local_identity", "address", &obj.LocalIdentity{})
+func (cb *CassandraBackend) GetUsersForRecipients(rcpts []string) (user_ids []obj.UUID, err error) {
+	userTable := cb.IKeyspace.MapTable("local_identity", "identifier", &obj.LocalIdentity{})
 	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
 
 	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
@@ -53,10 +55,10 @@ func (cb *CassandraBackend) GetUsersForRecipients(rcpts []string) (user_ids []ob
 			log.WithError(err).Infoln("error on userTable query")
 			return
 		}
-		var uuid obj.CaliopenUUID
+		var uuid obj.UUID
 		err := uuid.UnmarshalBinary(result.User_id)
 		if err != nil {
-			return []obj.CaliopenUUID{}, err
+			return []obj.UUID{}, err
 		}
 		user_ids = append(user_ids, uuid)
 	}

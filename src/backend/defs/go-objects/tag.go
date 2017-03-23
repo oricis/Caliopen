@@ -7,7 +7,7 @@ package objects
 import "time"
 
 type Tag struct {
-	Date_insert      time.Time `cql:"date_insert"            json:"date_insert"`
+	Date_insert      time.Time `cql:"date_insert"             json:"date_insert"   formatter:"rfc3339nano"`
 	Importance_level int32     `cql:"importance_level"        json:"importance_level"`
 	Label            string    `cql:"label"                   json:"label"`
 	Name             string    `cql:"name"                    json:"name"`

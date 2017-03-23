@@ -13,7 +13,7 @@ from caliopen_main.message.parameters import Message as ParamMessage
 from .tag import ResourceTag
 from .attachment import MessageAttachment
 from .external_references import ExternalReferences
-from .identities import LocalIdentity
+from .identities import Identity
 from .participant import Participant
 from .privacy_features import PrivacyFeatures
 
@@ -32,7 +32,7 @@ class Message(base.ObjectIndexable):
         'date_insert': datetime.datetime,
         'discussion_id': UUID,
         'external_references': ExternalReferences,
-        'identities': [LocalIdentity],
+        'identities': [Identity],
         'importance_level': types.IntType,
         'is_answered': types.BooleanType,
         'is_draft': types.BooleanType,

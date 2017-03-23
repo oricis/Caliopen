@@ -5,4 +5,5 @@
 package objects
 
 type PrivacyFeatures struct {
+	Empty_is_boring bool
 }

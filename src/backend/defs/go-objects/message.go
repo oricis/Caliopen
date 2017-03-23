@@ -17,7 +17,7 @@ const (
 )
 
 type Message struct {
-	Attachments         []Attachment       `cql:"attachments"              json:"attachment"       `
+	Attachments         []Attachment       `cql:"attachments"              json:"attachments"       `
 	Body                string             `cql:"body"                     json:"body"             `
 	Date                time.Time          `cql:"date"                     json:"date"                                         formatter:"RFC3339Nano"`
 	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete"                                  formatter:"RFC3339Nano"`
@@ -34,7 +34,7 @@ type Message struct {
 	Participants        []Participant      `cql:"participants"             json:"participants"     `
 	Privacy_features    PrivacyFeatures    `cql:"privacy_features"         json:"privacy_features" `
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
-	Subject             string             `cql:"subjects"                 json:"subject"          `
+	Subject             string             `cql:"subject"                  json:"subject"          `
 	Tags                []Tag              `cql:"tags"                     json:"tags"             `
 	Type                string             `cql:"type"                     json:"type"             `
 	User_id             UUID               `cql:"user_id"                  json:"user_id"                  elastic:"omit"      formatter:"rfc4122"`
@@ -71,11 +71,7 @@ func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 			if err == nil {
 				switch j_formatter {
 				case "rfc4122":
-					if err == nil {
-						jsonBuf.WriteString("\"" + field_value.(UUID).String() + "\"")
-					} else {
-						jsonBuf.Write([]byte{'"', '"'})
-					}
+					enc.Encode(field_value)
 				case "RFC3339Nano":
 					jsonBuf.WriteString("\"" + field_value.(time.Time).Format(time.RFC3339Nano) + "\"")
 				default:
@@ -84,7 +80,7 @@ func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 			} else {
 				jsonBuf.Write([]byte{'"', '"'})
 			}
-			if index < len(fields)-1 {
+			if index < (len(fields) - 2) {
 				jsonBuf.WriteByte(',')
 			}
 		}

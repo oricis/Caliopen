@@ -10,7 +10,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-func (es *ElasticSearchBackend) UpdateMessage(msg *objects.MessageModel, fields map[string]interface{}) error {
+func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[string]interface{}) error {
 
 	update, err := es.Client.Update().Index(msg.User_id.String()).Type("indexed_message").Id(msg.Message_id.String()).
 		Doc(fields).
@@ -23,7 +23,7 @@ func (es *ElasticSearchBackend) UpdateMessage(msg *objects.MessageModel, fields 
 	return nil
 }
 
-func (es *ElasticSearchBackend) IndexMessage(msg *objects.MessageModel) error {
+func (es *ElasticSearchBackend) IndexMessage(msg *objects.Message) error {
 
 	es_msg, err := msg.MarshalES()
 	if err != nil {

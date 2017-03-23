@@ -7,7 +7,7 @@ from cassandra.cqlengine import columns
 from caliopen_storage.store import BaseUserType
 
 
-class ModelPrivacyFeatures(BaseUserType):
+class PrivacyFeatures(BaseUserType):
 
     """Privacy features nested in message."""
 

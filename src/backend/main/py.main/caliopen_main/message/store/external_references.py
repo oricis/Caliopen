@@ -7,7 +7,7 @@ from cassandra.cqlengine import columns
 from caliopen_storage.store import BaseUserType
 
 
-class ModelExternalReferences(BaseUserType):
+class ExternalReferences(BaseUserType):
 
     """External references nested in message."""
 

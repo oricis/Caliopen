@@ -44,3 +44,12 @@ class SocialIdentity(base.ObjectIndexable):
     _json_model = SocialIdentityParam
     _model_class = ModelSocialIdentity
     _index_class = IndexedSocialIdentity
+
+
+class Identity(base.ObjectJsonDictifiable):
+    """"Reference to an identity embedded in a message """
+
+    _attrs = {
+        "identifier": types.StringType,
+        "type": types.StringType
+    }

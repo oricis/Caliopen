@@ -13,7 +13,7 @@ class Participant(base.ObjectJsonDictifiable):
 
     _attrs = {
         'address': types.StringType,
-        'contact_id': UUID,
+        'contact_ids': [UUID],
         'label': types.StringType,
         'protocol': types.StringType,
         'type': types.StringType

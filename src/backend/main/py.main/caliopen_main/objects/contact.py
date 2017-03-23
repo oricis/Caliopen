@@ -7,8 +7,8 @@ from caliopen_main.objects import base
 from uuid import UUID
 import datetime
 from caliopen_main.user.store.contact import (Contact as ModelContact,
-                             Lookup as ModelContactLookup,
-                             PublicKey as ModelPublicKey)
+                                              ContactLookup as ModelContactLookup,
+                                              PublicKey as ModelPublicKey)
 from caliopen_main.user.store.contact_index import IndexedContact
 from caliopen_main.user.parameters.contact import Contact as ParamContact
 

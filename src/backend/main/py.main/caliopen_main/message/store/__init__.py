@@ -1,23 +1,27 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .attachment import ModelMessageAttachment
+from .attachment import MessageAttachment
 from .attachment_index import IndexedMessageAttachment
-from .message import Message
-from .message_index import IndexedMessage
-from .discussion_index import DiscussionIndexManager
-from .raw import RawMessage, UserRawLookup
-from .participant import ModelParticipant
 from .discussion import (Discussion, DiscussionCounter,
                          DiscussionExternalLookup, DiscussionMessageLookup,
                          DiscussionRecipientLookup)
+from .discussion_index import DiscussionIndexManager
+from .external_references import ExternalReferences
+from .external_references_index import IndexedExternalReferences
+from .message import Message
+from .message_index import IndexedMessage
+from .participant import Participant
+from .participant_index import IndexedParticipant
+from .raw import RawMessage, UserRawLookup
 
-
-__all__ = [
-    'RawMessage', 'UserRawLookup',
-    'Message', 'MessageRecipient', 'IndexedMessage',
-    'Discussion', 'DiscussionCounter', 'DiscussionMessageLookup',
-    'DiscussionRecipientLookup', 'DiscussionExternalLookup',
-    'DiscussionIndexManager', 'Message',
-    'ModelParticipant'
-]
+__all__ = ['MessageAttachment', 'IndexedMessageAttachment',
+           'RawMessage', 'UserRawLookup',
+           'Message', 'IndexedMessage',
+           'DiscussionIndexManager'
+           'Discussion', 'DiscussionCounter', 'DiscussionMessageLookup',
+           'DiscussionRecipientLookup', 'DiscussionExternalLookup',
+           'DiscussionIndexManager',
+           'ExternalReferences', 'IndexedExternalReferences',
+           'Participant', 'IndexedParticipant'
+           ]
