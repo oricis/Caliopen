@@ -7,9 +7,7 @@ import logging
 from cornice.resource import resource, view
 from pyramid.response import Response
 
-
-from caliopen_main.message.core import (RawMessage, ReturnMessage,
-                                        Message as CoreMessage)
+from caliopen_main.objects.message import Message
 from caliopen_main.message.parameters import NewMessage
 from caliopen_main.objects.message import Message as MessageObject
 

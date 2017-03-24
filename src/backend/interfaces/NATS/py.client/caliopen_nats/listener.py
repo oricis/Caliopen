@@ -31,6 +31,7 @@ def main():
     inbound_email_sub = subscribers.InboundEmail(nc)
     future = nc.subscribe("inboundSMTP", "SMTPqueue",
                           inbound_email_sub.handler)
+    print("nats subscription started")
     sid = future.result()
 
 if __name__ == '__main__':
@@ -46,4 +47,5 @@ if __name__ == '__main__':
 
     connect_storage()
     main()
-    tornado.ioloop.IOLoop.instance().start()
+    loop_instance = tornado.ioloop.IOLoop.instance()
+    loop_instance.start()

@@ -10,6 +10,7 @@ import datetime
 from caliopen_main.message.store import Message as ModelMessage
 from caliopen_main.message.store import IndexedMessage
 from caliopen_main.message.parameters import Message as ParamMessage
+from caliopen_main.message.core import RawMessage
 from .tag import ResourceTag
 from .attachment import MessageAttachment
 from .external_references import ExternalReferences
@@ -58,3 +59,15 @@ class Message(base.ObjectIndexable):
     #  operations related to elasticsearch
     _index_class = IndexedMessage
     _index = None
+
+    @property
+    def raw(self):
+        """Return raw text from pristine raw message."""
+        msg = RawMessage.get_for_user(self.user_id, self.raw_msg_id)
+        return msg.raw_data
+
+    @property
+    def raw_json(self):
+        """Return json representation of pristine raw message."""
+        msg = RawMessage.get_for_user(self.user_id, self.raw_msg_id)
+        return msg.json_rep

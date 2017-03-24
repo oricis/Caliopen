@@ -10,6 +10,8 @@ from uuid import UUID
 from caliopen_main.user.store.contact import SocialIdentity as ModelSocialIdentity
 from caliopen_main.user.returns.contact import SocialIdentityParam
 from caliopen_main.user.store.contact_index import IndexedSocialIdentity
+from caliopen_main.user.store.local_identity import Identity as ModelIdentity
+from caliopen_main.user.store.local_identity_index import IndexedIdentity
 
 class LocalIdentity(base.ObjectIndexable):
 
@@ -53,3 +55,6 @@ class Identity(base.ObjectJsonDictifiable):
         "identifier": types.StringType,
         "type": types.StringType
     }
+
+    _model_class = ModelIdentity
+    _index_class = IndexedIdentity

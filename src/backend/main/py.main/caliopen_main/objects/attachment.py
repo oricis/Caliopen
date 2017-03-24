@@ -4,6 +4,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import types
 from caliopen_main.objects import base
+from caliopen_main.message.store.attachment import \
+    MessageAttachment as ModelMessageAttachment
+from caliopen_main.message.store.attachment_index import \
+    IndexedMessageAttachment
 
 class MessageAttachment(base.ObjectJsonDictifiable):
 
@@ -15,3 +19,6 @@ class MessageAttachment(base.ObjectJsonDictifiable):
         'name': types.StringType,
         'size': types.IntType
     }
+
+    _model_class = ModelMessageAttachment
+    _index_class = IndexedMessageAttachment

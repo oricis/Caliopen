@@ -14,6 +14,7 @@ from elasticsearch import exceptions as ESexceptions
 from caliopen_storage.core.base import CoreMetaClass
 
 import logging
+
 log = logging.getLogger(__name__)
 
 
@@ -82,12 +83,15 @@ class ObjectDictifiable(CaliopenObject):
             if not att.startswith("_"):
                 if isinstance(self._attrs[att], types.ListType):
                     lst = []
-                    if issubclass(self._attrs[att][0], ObjectDictifiable):
-                        for item in val:
-                            lst.append(item.marshall_dict())
+                    if len(att) > 0:
+                        if issubclass(self._attrs[att][0], ObjectDictifiable):
+                            for item in val:
+                                lst.append(item.marshall_dict())
+                        else:
+                            lst = val
+                        self_dict[att] = lst
                     else:
-                        lst = val
-                    self_dict[att] = lst
+                        self_dict[att] = lst
                 else:
                     self_dict[att] = val
 
@@ -98,7 +102,7 @@ class ObjectDictifiable(CaliopenObject):
 
         all self.attrs are reset if not in document
         """
-
+        print("unmarshall_dict")
         for attr, attrtype in self._attrs.items():
             if attr in document:
                 if isinstance(attrtype, list):
@@ -154,9 +158,9 @@ class ObjectJsonDictifiable(ObjectDictifiable):
         """ TODO: handle conversion of basic json type into obj. types"""
         self.unmarshall_dict(document, **options)
 
+
 @add_metaclass(CoreMetaClass)
 class ObjectStorable(ObjectJsonDictifiable):
-
     zope.interface.implements(storage.DbIO)
 
     _model_class = None  # cql model for object
@@ -175,7 +179,8 @@ class ObjectStorable(ObjectJsonDictifiable):
         self._db = self._model_class.get(**param)
         if self._db is None:
             raise NotFound('%s #%s not found.' %
-                    (self.__class__.__name__, getattr(self, self._pkey_name)))
+                           (self.__class__.__name__,
+                            getattr(self, self._pkey_name)))
 
     def save_db(self, **options):
         try:
@@ -235,8 +240,9 @@ class ObjectStorable(ObjectJsonDictifiable):
                     # (use builtin set() collection ?)
                     if issubclass(self._attrs[att][0], CaliopenObject):
                         setattr(self._db, att,
-                                [self._attrs[att][0]._model_class(**x.marshall_dict())
-                                                for x in getattr(self, att)])
+                                [self._attrs[att][0]._model_class(
+                                    **x.marshall_dict())
+                                    for x in getattr(self, att)])
                     else:
                         setattr(self._db, att, getattr(self, att))
                 else:
@@ -353,7 +359,8 @@ class ObjectUser(ObjectStorable):
                                 found = True
                                 break
                     if not found:
-                        return main_errors.PatchConflict(message=msg.format(3, key))
+                        return main_errors.PatchConflict(
+                            message=msg.format(3, key))
             elif isinstance(self._attrs[key], types.DictType):
                 if cmp(old_val, cur_val) != 0:
                     return main_errors.PatchConflict(message=msg.format(4, key))
@@ -376,7 +383,6 @@ class ObjectUser(ObjectStorable):
 
 
 class ObjectIndexable(ObjectUser):
-
     zope.interface.implements(storage.IndexIO)
 
     _index_class = None  # dsl model for object
@@ -388,7 +394,8 @@ class ObjectIndexable(ObjectUser):
         obj_id = getattr(self, self._pkey_name)
         try:
             self._index = self._index_class.get(index=self.user_id,
-                                                id=obj_id, using=self._index_class.client())
+                                                id=obj_id,
+                                                using=self._index_class.client())
         except Exception as exc:
             if isinstance(exc, ESexceptions.NotFoundError):
                 log.info("indexed doc not found")
@@ -418,7 +425,9 @@ class ObjectIndexable(ObjectUser):
         """
         self.get_index()
         if self._index is not None:
+            print("before update/marshall")
             update_dict = self.marshall_index(update=True)
+            print("after update/marshall")
             self._index.update(using=self._index_class.client(), **update_dict)
         else:
             # for some reasons, index doc not found... create one from scratch
@@ -478,8 +487,8 @@ class ObjectIndexable(ObjectUser):
 
     def unmarshall_index(self, **options):
         """squash self.attrs with index representation"""
-
         if isinstance(self._index, self._index_class):
+            print("unmarshalling index with : {}".format(vars(self._index)))
             self.unmarshall_dict(self._index.to_dict())
 
     def apply_patch(self, patch, **options):

@@ -50,7 +50,9 @@ func (cb *CassandraBackend) initialize(config CassandraConfig) (err error) {
 			break
 		}
 	}
-
+	if err != nil {
+		return
+	}
 	connection := gocassa.NewConnection(gocassa.GoCQLSessionToQueryExecutor(cb.Session))
 	cb.IKeyspace = connection.KeySpace(cb.Keyspace)
 

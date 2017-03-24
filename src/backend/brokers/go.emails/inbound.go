@@ -22,6 +22,8 @@ import (
 	"time"
 )
 
+const nats_message_tmpl = "{\"order\":\"%s\",\"user_id\": \"%s\", \"message_id\": \"%s\"}"
+
 func (b *EmailBroker) startIncomingSmtpAgent() error {
 	for i := 0; i < b.Config.InWorkers; i++ {
 		go b.incomingSmtpWorker()
@@ -121,7 +123,8 @@ func (b *EmailBroker) processInbound(in *SmtpEmail) {
 		//step 4 : send 'process' order to nats
 		go func(rcptId objects.UUID) {
 			defer wg.Done()
-			natsMessage := fmt.Sprintf("{\"order\":\"process_email_message\",\"user_id\": \"%s\", \"message_id\": \"%s\"}", rcptId.String(), msg.Message_id.String())
+			const nats_order = "process_message"
+			natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, rcptId.String(), msg.Message_id.String())
 			resp, err := b.NatsConn.Request(b.Config.InTopic, []byte(natsMessage), 10*time.Second)
 			if err != nil {
 				if b.NatsConn.LastError() != nil {

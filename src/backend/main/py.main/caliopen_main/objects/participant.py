@@ -6,6 +6,9 @@ import types
 
 from uuid import UUID
 from caliopen_main.objects import base
+from caliopen_main.message.store.participant import \
+    Participant as ModelParticipant
+from caliopen_main.message.store.participant_index import IndexedParticipant
 
 
 class Participant(base.ObjectJsonDictifiable):
@@ -18,3 +21,6 @@ class Participant(base.ObjectJsonDictifiable):
         'protocol': types.StringType,
         'type': types.StringType
     }
+
+    _model_class = ModelParticipant
+    _index_class = IndexedParticipant

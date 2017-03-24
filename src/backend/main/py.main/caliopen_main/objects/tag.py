@@ -35,7 +35,7 @@ class UserTag(base.ObjectUser):
         return True
 
 
-class ResourceTag(base.ObjectStorable):
+class ResourceTag(base.ObjectJsonDictifiable):
 
     """Tag nested in resources."""
 
