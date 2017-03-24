@@ -1,0 +1,12 @@
+{
+  "me": {
+    "get": {
+      "200": {
+        "application/json": {
+          "name": "john",
+          "given_name": "John Dœuf"
+        }
+      }
+    }
+  }
+}

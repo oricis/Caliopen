@@ -529,8 +529,7 @@
                     }
                   },
                   "required": [
-                    "contact_id",
-                    "user_id"
+                    "contact_id"
                   ],
                   "additionalProperties": false
                 },
@@ -568,6 +567,12 @@
                 }
               },
               "additionalProperties": false
+            },
+            "examples": {
+              "application/json": {
+                "name": "john",
+                "given_name": "John Dœuf"
+              }
             }
           }
         }
@@ -1112,8 +1117,7 @@
                     }
                   },
                   "required": [
-                    "contact_id",
-                    "user_id"
+                    "contact_id"
                   ],
                   "additionalProperties": false
                 },
@@ -1723,8 +1727,7 @@
                       }
                     },
                     "required": [
-                      "contact_id",
-                      "user_id"
+                      "contact_id"
                     ],
                     "additionalProperties": false
                   }
@@ -2249,8 +2252,7 @@
                 }
               },
               "required": [
-                "contact_id",
-                "user_id"
+                "contact_id"
               ],
               "additionalProperties": false
             }
@@ -3654,8 +3656,7 @@
                             }
                           },
                           "required": [
-                            "contact_id",
-                            "user_id"
+                            "contact_id"
                           ],
                           "additionalProperties": false
                         }
@@ -3679,7 +3680,27 @@
                       "tags": {
                         "type": "array",
                         "items": {
-                          "type": "string"
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "user",
+                                "system"
+                              ]
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "tag_id": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "type"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "text": {
@@ -3699,6 +3720,81 @@
                     }
                   }
                 }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "total": 2,
+                "discussion": [
+                  {
+                    "tags": [
+                      {
+                        "tag_id": "foo-bar-1",
+                        "name": "robot",
+                        "type": "user"
+                      },
+                      {
+                        "tag_id": "foo-bar-2",
+                        "name": "work",
+                        "type": "system"
+                      }
+                    ],
+                    "text": "<p>It's okay, Bender. I like cooking too. You, minion. Lift my arm. AFTER H=\r\nIM! I don't know what you did, Fry, but once again, you screwed up! Now all\r\nthe planets are gonna start cracking wise abo",
+                    "privacy_index": 1,
+                    "contacts": [
+                      {
+                        "type": "to",
+                        "contact_id": "1039cdcc-1f6f-4b5d-9c8a-5d7c711f357f",
+                        "address": "test@caliopen.local"
+                      },
+                      {
+                        "type": "from",
+                        "contact_id": "0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0",
+                        "address": "zoidberg@caliopen.local"
+                      }
+                    ],
+                    "date_insert": "2017-03-21T10:55:00.153000+00:00",
+                    "discussion_id": "cd53e13a-267d-4d9c-97ee-d0fc59c64200",
+                    "total_count": 1,
+                    "attachment_count": 0,
+                    "importance_level": 0,
+                    "unread_count": 1
+                  },
+                  {
+                    "tags": [
+                      {
+                        "tag_id": "foo-bar-3",
+                        "name": "best quotes",
+                        "type": "user"
+                      },
+                      {
+                        "tag_id": "foo-bar-4",
+                        "name": "lolilol",
+                        "type": "user"
+                      }
+                    ],
+                    "text": "Shut up and take my money! Leela, are you alright? You got wanged on the he=\r\nad. Bender, you risked your life to save me! Spare me your space age techno=\r\nbabble, Attila the Hun! Now that the, uh, ga",
+                    "privacy_index": 25,
+                    "contacts": [
+                      {
+                        "type": "to",
+                        "contact_id": "1039cdcc-1f6f-4b5d-9c8a-5d7c711f357f",
+                        "address": "test@caliopen.local"
+                      },
+                      {
+                        "type": "from",
+                        "contact_id": "0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0",
+                        "address": "zoidberg@caliopen.local"
+                      }
+                    ],
+                    "date_insert": "2017-03-21T10:55:00.153000+00:00",
+                    "discussion_id": "46d30c27-6cd8-407b-8536-fda4196c20ca",
+                    "total_count": 2,
+                    "attachment_count": 0,
+                    "importance_level": 0,
+                    "unread_count": 2
+                  }
+                ]
               }
             }
           }
@@ -4134,8 +4230,7 @@
                       }
                     },
                     "required": [
-                      "contact_id",
-                      "user_id"
+                      "contact_id"
                     ],
                     "additionalProperties": false
                   }
@@ -4159,7 +4254,27 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "user",
+                          "system"
+                        ]
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "tag_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "type"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "text": {

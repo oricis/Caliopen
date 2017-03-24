@@ -28,6 +28,9 @@
           "description": "Successful response with json object",
           "schema": {
             "$ref": "../objects/User.json"
+          },
+          "examples": {
+            "$ref": "../examples/me.json#/me/get/200"
           }
         }
       }

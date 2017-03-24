@@ -1,5 +1,5 @@
 #!/bin/bash
-PRISM_VERSION=v0.6.18
+PRISM_VERSION=v0.6.20
 PROJECT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 API_PORT=31415
 SWAGGER_FILE=$PROJECT_DIRECTORY/doc/api/swagger.json
