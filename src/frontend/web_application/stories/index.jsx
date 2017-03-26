@@ -1,5 +1,6 @@
 import React from 'react';
-import { storiesOf, action, linkTo } from '@kadira/storybook'; // eslint-disable-line
+import { storiesOf, action, linkTo, addDecorator } from '@kadira/storybook'; // eslint-disable-line
+import { withKnobs } from '@kadira/storybook-addon-knobs';
 import Badge from './components/Badge';
 import BlockList from './components/BlockList';
 import Brand from './components/Brand';
@@ -36,6 +37,8 @@ import Title from './components/Title';
 import Welcome from './Welcome';
 import Changelog from './Changelog';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
+
+addDecorator(withKnobs);
 
 storiesOf('Welcome', module)
   .add('to Storybook', () => (
@@ -107,10 +110,10 @@ storiesOf('Form', module)
     <CollectionFieldGroup />
   ));
 
-storiesOf('Icons & Avatars', module)
-.add('Brand', () => (
-  <Brand />
-))
+storiesOf('Logo, Icons & Avatars', module)
+  .add('Brand', () => (
+    <Brand />
+  ))
   .add('ContactAvatarLetter', () => (
     <ContactAvatarLetter />
   ))

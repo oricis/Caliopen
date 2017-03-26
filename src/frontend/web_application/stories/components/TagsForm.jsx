@@ -1,21 +1,18 @@
 import React from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import TagsForm from '../../src/components/TagsForm/presenter';
+import { object } from '@kadira/storybook-addon-knobs';
+import TagsForm from '../../src/components/TagsForm';
 import { Code, ComponentWrapper } from '../presenters';
 
-const tags = ['Humans', 'Planet Express', 'Head'];
-
-
 const Presenter = () => {
-  const noop = str => str;
+  const props = {
+    tags: object('tags', [{ name: 'Humans', tag_id: 1 }, { name: 'Planet Express', tag_id: 2 }, { name: 'Head', tag_id: 3 }]),
+  };
 
   return (
     <div>
       <ComponentWrapper>
-        <TagsForm
-          tags={tags}
-          __={noop}
-        />
+        <TagsForm {...props} />
       </ComponentWrapper>
       <Code>
         {`

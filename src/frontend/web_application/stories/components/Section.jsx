@@ -1,20 +1,20 @@
 import React from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
+import { text, boolean } from '@kadira/storybook-addon-knobs';
 import Section from '../../src/components/Section';
 import { Code, ComponentWrapper } from '../presenters';
 
 const Presenter = () => {
-  const noop = str => str;
+  const props = {
+    title: text('title', 'Title'),
+    descr: text('descr', 'Description'),
+    hasSeparator: boolean('hasSeparator', false),
+  };
 
   return (
     <div>
       <ComponentWrapper>
-        <Section
-          title="section.title"
-          descr="section.descr"
-          __={noop}
-        />
-      </ComponentWrapper>
+        <Section {...props}>{text('section children', 'Foobar')}</Section> </ComponentWrapper>
       <Code>
         {`
 import Section from './src/components/Section';

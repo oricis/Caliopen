@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
+import { text, boolean } from '@kadira/storybook-addon-knobs';
 import { TextFieldGroup } from '../../src/components/form';
 import { Code, ComponentWrapper } from '../presenters';
 
@@ -43,22 +44,21 @@ class Presenter extends Component {
       });
     };
 
+    const props = {
+      label: text('label', 'Foobar'),
+      showLabelforSr: boolean('showLabelforSr', false),
+    };
+
     return (
       <div>
         <ComponentWrapper inline>
           <TextFieldGroup
-            label="Foobar"
             name="my-text"
-            showLabelforSr={this.state.showLabelforSr}
             value={this.state.textValue}
             onChange={handleInputChange}
-            {...this.state.props}
+            {...props}
           />
         </ComponentWrapper>
-        <ul>
-          <li><label><input type="checkbox" name="showLabelforSr" checked={this.state.props.showLabelforSr} onChange={this.handlePropsChanges} /> Show Label for SR</label></li>
-          <li><label><input type="checkbox" name="error" checked={this.state.props.error} onChange={this.handleHasError} /> hasError</label></li>
-        </ul>
         <Code>
           {`
 import TextFieldGroup from './src/components/TextFieldGroup';
