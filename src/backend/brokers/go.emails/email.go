@@ -58,7 +58,6 @@ func MarshalEmail(msg *obj.Message, version string, mailhost string) (em *EmailM
 		Message: msg,
 	}
 
-	//make use of gomail library to build the raw email
 	m := gomail.NewMessage()
 	addr_fields := newAddressesFields()
 	for _, participant := range msg.Participants {
@@ -86,6 +85,11 @@ func MarshalEmail(msg *obj.Message, version string, mailhost string) (em *EmailM
 		if len(addrs) > 0 {
 			m.SetHeader(field, addrs...)
 		}
+	}
+
+	if msg.Parent_id != "" {
+		m.SetHeader("In-Reply-To", msg.Parent_id)
+		//TODO: handle "References" header (RFC5322#3.6.4)
 	}
 
 	em.Message.Date = time.Now()

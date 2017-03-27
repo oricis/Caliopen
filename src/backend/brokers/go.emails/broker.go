@@ -12,7 +12,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
-	"github.com/pkg/errors"
+	"errors"
 )
 
 type (

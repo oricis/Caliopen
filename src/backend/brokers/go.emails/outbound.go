@@ -19,7 +19,7 @@ import (
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
-	"github.com/pkg/errors"
+	"errors"
 	"time"
 )
 
