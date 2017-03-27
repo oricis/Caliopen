@@ -15,19 +15,29 @@ And be nice.
 
 _(This code of conduct may evolve)_.
 
-## Contributors
-
-_(People involved in the project)_
+## Core Team
 
 * [@LaurentChemla](https://github.com/LaurentChemla)
 * [@Lauth0](https://github.com/Lauth0)
 * [@gdchamal](https://github.com/gdchamal)
+* [@iamdey](https://github.com/iamdey)
+* [@sapiens-sapide](https://github.com/sapiens-sapide)
+* [@myleneb](https://github.com/myleneb)
+* [@ptran32](https://github.com/ptran32)
+
+## Contributors
+
+_(People involved in the project)_
+
+* [@cr0cK](https://github.com/cr0cK)
 * [@steventlucek](https://github.com/steventlucek)
 * [@themouette](https://github.com/themouette)
 * [@ziir](https://github.com/ziir)
-* [@iamdey](https://github.com/iamdey)
 * [@ncoden](https://github.com/ncoden)
-* [@sapiens-sapide](https://github.com/sapiens-sapide)
 * [@yanndinendal](https://github.com/yanndinendal)
 * [@pascalduez](https://github.com/pascalduez)
-* [@myleneb](https://github.com/myleneb)
+* [@dgramop](https://github.com/dgramop)
+* alban
+* vinci
+* [@Zeriuno](https://github.com/Zeriuno)
+* The NSA (to make it happen)
