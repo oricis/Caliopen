@@ -1,44 +1,69 @@
 import React from 'react';
 import { storiesOf, action, linkTo, addDecorator } from '@kadira/storybook'; // eslint-disable-line
-import { withKnobs } from '@kadira/storybook-addon-knobs';
-import Badge from './components/Badge';
-import BlockList from './components/BlockList';
-import Brand from './components/Brand';
-import Button from './components/Button';
-import CheckboxFieldGroup from './components/CheckboxFieldGroup';
-import CollectionFieldGroup from './components/CollectionFieldGroup';
-import ContactAvatarLetter from './components/ContactAvatarLetter';
+import { withKnobs, text, select, boolean, array, object, number } from '@kadira/storybook-addon-knobs';
+import { host } from 'storybook-host';
+import backgrounds from 'react-storybook-addon-backgrounds';
+import Badge from '../src/components/Badge';
+import BlockList from '../src/components/BlockList';
+import BlockListPresenter from './components/BlockList';
+import Brand from '../src/components/Brand';
+import Button from '../src/components/Button';
+import {
+  CheckboxFieldGroup,
+  CollectionFieldGroup,
+  Fieldset,
+  Legend,
+  FormGrid,
+  FormRow,
+  FormColumn,
+  PasswordStrength,
+  RadioFieldGroup,
+  SelectFieldGroup,
+  TextFieldGroup,
+} from '../src/components/form';
+import FormGridPresenter from './components/FormGrid';
+import PasswordStrengthPresenter from './components/PasswordStrength';
+import CollectionFieldGroupPresenter from './components/CollectionFieldGroup';
+import ContactAvatarLetter, { SIZE_SMALL, SIZE_MEDIUM, SIZE_LARGE, SIZE_XLARGE } from '../src/components/ContactAvatarLetter';
 import ContactBook from './layouts/ContactBook';
 import ContactDetails from './components/ContactDetails';
-import DefList from './components/DefList';
-// import Devices from './layouts/Devices';
-import Dropdown from './components/Dropdown';
-import DropdownMenu from './components/DropdownMenu';
-import Fieldset from './components/Fieldset';
-import FormGrid from './components/FormGrid';
-import Icon from './components/Icon';
-import Link from './components/Link';
+import DefList from '../src/components/DefList';
+import Devices from './layouts/Devices';
+import Dropdown, { withDropdownControl } from '../src/components/Dropdown';
+import DropdownMenu from '../src/components/DropdownMenu';
+import Icon, { typeAssoc } from '../src/components/Icon';
+import Link from '../src/components/Link';
 import MessageList from './components/MessageList';
-import Modal from './components/Modal';
-import PiBar from './components/PiBar';
-import PasswordStrength from './components/PasswordStrength';
-import RadioFieldGroup from './components/RadioFieldGroup';
+import Modal from '../src/components/Modal';
+import PiBar from '../src/components/PiBar';
 import Reply from './components/Reply';
-import Section from './components/Section';
-import SelectFieldGroup from './components/SelectFieldGroup';
+import Section from '../src/components/Section';
 import SigninPage from './layouts/SigninPage';
 import SignupPage from './layouts/SignupPage';
-import Spinner from './components/Spinner';
-import Subtitle from './components/Subtitle';
-import TagsForm from './components/TagsForm';
-import TextFieldGroup from './components/TextFieldGroup';
-import TextList from './components/TextList';
-import Title from './components/Title';
+import Spinner from '../src/components/Spinner';
+import Subtitle from '../src/components/Subtitle';
+import TagsFormPresenter from './components/TagsForm';
+import TextList, { ItemContent } from '../src/components/TextList';
+import Title from '../src/components/Title';
 import Welcome from './Welcome';
 import Changelog from './Changelog';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
 
 addDecorator(withKnobs);
+addDecorator(backgrounds([
+  { name: '$co-color__fg__back', value: '#333', default: true },
+  { name: '$co-color__bg__back', value: '#1d1d1d' },
+  { name: '$co-color__contrast__back', value: '#fff' },
+]));
+
+const hostDecorator = host({
+  mobXDevTools: false,
+  background: 'transparent',
+  backdrop: 'transparent',
+  width: '100%',
+  height: '100%',
+  border: false,
+});
 
 storiesOf('Welcome', module)
   .add('to Storybook', () => (
@@ -57,17 +82,47 @@ storiesOf('Auth', module)
   ));
 
 storiesOf('Badge', module)
-  .add('Badge', () => (
-    <Badge />
-  ));
+  .addDecorator(hostDecorator)
+  .addWithInfo(
+    'Badge',
+    () => {
+      const props = {
+        low: boolean('low', false),
+        large: boolean('large', false),
+        children: text('children', '142'),
+      };
+
+      return <Badge {...props} />;
+    },
+  );
 
 storiesOf('Buttons & Links', module)
-  .add('Buttons', () => (
-    <Button />
-  ))
-  .add('Links', () => (
-    <Link />
-  ));
+  .addDecorator(hostDecorator)
+  .addWithInfo('Button', () => {
+    const props = {
+      plain: boolean('plain', false),
+      expanded: boolean('expanded', false),
+      hollow: boolean('hollow', false),
+      active: boolean('active', false),
+      alert: boolean('alert', false),
+      success: boolean('success', false),
+      secondary: boolean('secondary', false),
+      inline: boolean('inline', false),
+      children: text('children', 'Click Me'),
+    };
+
+    return (<Button {...props} onClick={action('clicked')} />);
+  })
+  .addWithInfo('Link', () => {
+    const props = {
+      noDecoration: boolean('noDecoration', false),
+      button: boolean('button', false),
+      expanded: boolean('expanded', false),
+      active: boolean('active', false),
+    };
+
+    return (<Link {...props}>{text('Link children', 'Click Me')}</Link>);
+  });
 
 storiesOf('Contact', module)
   .add('ContactDetails', () => (
@@ -76,95 +131,250 @@ storiesOf('Contact', module)
   .add('ContactBook', () => (
     <ContactBook />
   ));
+
+const DropdownControl = withDropdownControl(Button);
 storiesOf('Dropdown', module)
-  .add('Dropdown', () => (
-    <Dropdown />
-  ))
-  .add('DropdownMenu', () => (
-    <DropdownMenu />
-  ));
+  .addDecorator(hostDecorator)
+  .addWithInfo('Dropdown', () => {
+    const dropdownProps = {
+      position: select('position', { '': '', bottom: 'bottom' }, ''),
+      closeOnClick: boolean('closeOnClick', false),
+    };
+
+    return (
+      <div>
+        <DropdownControl
+          toggle="story-dropdown"
+          className="float-right"
+        >{text('control children', 'Click me')}</DropdownControl>
+        <Dropdown
+          id="story-dropdown"
+          {...dropdownProps}
+        >{text('dropdown children', 'Hey hey I am a dropdown')}</Dropdown>
+      </div>
+    );
+  }, { propTables: [DropdownControl, Dropdown] })
+  .addWithInfo('DropdownMenu', () => {
+    const dropdownProps = {
+      position: select('position', { '': '', bottom: 'bottom' }, ''),
+      closeOnClick: boolean('closeOnClick', false),
+    };
+
+    return (
+      <div>
+        <DropdownControl toggle="story-dropdown-menu" className="float-right">
+          {text('control children', 'Click me')}
+        </DropdownControl>
+        <DropdownMenu
+          id="story-dropdown-menu"
+          {...dropdownProps}
+        >{text('dropdown children', 'Hey hey I am a dropdown')}</DropdownMenu>
+      </div>
+    );
+  }, { propTables: [DropdownControl, DropdownMenu] });
 
 storiesOf('Form', module)
-  .add('Fieldset', () => (
-    <Fieldset />
+  .addDecorator(hostDecorator)
+  .addWithInfo('Fieldset', () => (
+    <Fieldset>
+      <Legend>{text('Legend label', 'Foobar')}</Legend>
+      {text('fieldset children', 'I\'m the content of the fieldset')}
+    </Fieldset>
   ))
-  .add('FormGrid', () => (
-    <FormGrid />
-  ))
-  .add('TextFieldGroup', () => (
-    <TextFieldGroup />
-  ))
-  .add('PasswordStrength', () => (
-    <PasswordStrength />
-  ))
-  .add('SelectFieldGroup', () => (
-    <SelectFieldGroup />
-  ))
-  .add('RadioFieldGroup', () => (
-    <RadioFieldGroup />
-  ))
-  .add('CheckboxFieldGroup', () => (
-    <CheckboxFieldGroup />
-  ))
-  .add('CollectionFieldGroup', () => (
-    <CollectionFieldGroup />
-  ));
+  .addWithInfo('FormGrid', () => (
+    <FormGridPresenter />
+  ), { source: false, propTables: [FormGrid, FormRow, FormColumn] })
+  .addWithInfo('TextFieldGroup', () => {
+    const props = {
+      label: text('label', 'Foobar'),
+      placeholder: text('placeholder', 'Foobar'),
+      showLabelforSr: boolean('showLabelforSr', false),
+      errors: array('errors', []),
+    };
+
+    return (
+      <TextFieldGroup
+        name="my-text"
+        onChange={action('onChange')}
+        {...props}
+      />
+    );
+  })
+  .addWithInfo('PasswordStrength', () => (
+    <PasswordStrengthPresenter />
+  ), { propTables: [PasswordStrength] })
+  .addWithInfo('SelectFieldGroup', () => {
+    const props = {
+      label: text('label', 'Foobar'),
+      showLabelforSr: boolean('showLabelforSr', false),
+      options: object('options', [{ value: '', label: '' }, { value: 'foo', label: 'Foo' }, { value: 'bar', label: 'Bar' }]),
+      errors: array('errors', []),
+    };
+
+    return (
+      <SelectFieldGroup
+        name="my-select"
+        {...props}
+      />
+    );
+  })
+  .addWithInfo('RadioFieldGroup', () => {
+    const props = {
+      label: text('label', 'Foobar'),
+      options: object('options', [{ value: 'foo', label: 'Foo' }, { value: 'bar', label: 'Bar' }]),
+      errors: array('errors', []),
+    };
+
+    return (
+      <RadioFieldGroup
+        name="my-radio"
+        {...props}
+      />
+    );
+  })
+  .addWithInfo('CheckboxFieldGroup', () => {
+    const props = {
+      label: text('label', 'FooBar'),
+      displaySwitch: boolean('displaySwitch', false),
+      showTextLabel: boolean('showTextLabel (switch only)', false),
+    };
+
+    return (
+      <CheckboxFieldGroup {...props} />
+    );
+  })
+  .addWithInfo('CollectionFieldGroup', () => (
+    <CollectionFieldGroupPresenter />
+  ), { propTables: [CollectionFieldGroup] });
 
 storiesOf('Logo, Icons & Avatars', module)
-  .add('Brand', () => (
-    <Brand />
-  ))
-  .add('ContactAvatarLetter', () => (
-    <ContactAvatarLetter />
-  ))
-  .add('Icon', () => (
-    <Icon />
-  ))
-  .add('Spinner', () => (
-    <Spinner />
-  ));
+  .addDecorator(hostDecorator)
+  .addWithInfo('Brand', () => {
+    const props = {
+      theme: select('theme', { '': '', low: 'low', high: 'high' }, ''),
+    };
+
+    return (
+      <Brand {...props} />
+    );
+  })
+  .addWithInfo('ContactAvatarLetter', () => {
+    const sizes = [SIZE_SMALL, SIZE_MEDIUM, SIZE_LARGE, SIZE_XLARGE]
+      .reduce((acc, size) => ({ ...acc, [size]: size }), { '': '' });
+    const props = {
+      contact: object('contact', { title: 'Foobar' }),
+      size: select('size', sizes, ''),
+    };
+
+    return (<ContactAvatarLetter {...props} />);
+  })
+  .addWithInfo('Icon', () => {
+    const props = {
+      type: select('type', typeAssoc),
+      spaced: boolean('spaced', true),
+    };
+
+    return (<Icon {...props} />);
+  })
+  .addWithInfo('Spinner', () => {
+    const props = {
+      isLoading: boolean('isLoading', true),
+    };
+
+    return (<Spinner {...props} />);
+  });
 
 storiesOf('Layout', module)
-  .add('Section', () => (
-    <Section />
-  ))
-  .add('Modal', () => (
-    <Modal />
-  ));
+  .addDecorator(hostDecorator)
+  .addWithInfo('Section', () => {
+    const props = {
+      title: text('title', 'Title'),
+      descr: text('descr', 'Description'),
+      hasSeparator: boolean('hasSeparator', false),
+    };
+
+    return (<Section {...props}>{text('section children', 'Foobar')}</Section>);
+  })
+  .addWithInfo('Modal', () => {
+    const props = {
+      isOpen: boolean('isOpen', true),
+      onAfterOpen: action('onAfterOpen'),
+      onRequestClose: action('onRequestClose'),
+      closeTimeoutMS: number('closeTimeoutMS', 0),
+      contentLabel: text('contentLabel', ''),
+    };
+
+    return (
+      <Modal title={text('title', 'modal.title')} {...props}>
+        <p>{text('modal text', 'Quibus occurrere bene pertinax miles explicatis ordinibus parans hastisque feriens scuta qui habitus iram pugnantium concitat et dolorem proximos iam gestu terrebat sed eum in certamen alacriter consurgentem revocavere ductores rati intempestivum anceps subire certamen cum haut longe muri distarent, quorum tutela securitas poterat in solido locari cunctorum.')}</p>
+      </Modal>
+    );
+  });
+
 storiesOf('Lists', module)
-  .add('BlockList', () => (
-    <BlockList />
+  .addDecorator(hostDecorator)
+  .addWithInfo('BlockList', () => (
+    <BlockListPresenter />
+  ), { propTables: [BlockList] })
+  .addWithInfo('TextList & ItemContent', () => (
+    <TextList>
+      {[
+        'Standard string',
+        <ItemContent>Foo, Simple ItemContent</ItemContent>,
+        <ItemContent>Bar, Simple ItemContent</ItemContent>,
+        <ItemContent large>Foo, Large ItemContent</ItemContent>,
+        <ItemContent large>Bar, Large ItemContent</ItemContent>,
+      ]}
+    </TextList>
   ))
-  .add('TextList & ItemContent', () => (
-    <TextList />
-  ))
-  .add('DefList', () => (
-    <DefList />
+  .addWithInfo('DefList', () => (
+    <DefList
+      definitions={object('definitions', [
+        { title: 'Bar', descriptions: ['Bar description'] },
+        { title: 'Foo', descriptions: ['Foo description'] },
+      ])}
+    />
   ));
 
 storiesOf('Pi', module)
-  .add('PiBar', () => (
-    <PiBar />
+  .addDecorator(hostDecorator)
+  .addWithInfo('PiBar', () => {
+    const props = {
+      level: number('level', 50),
+    };
+
+    return (<PiBar {...props} />);
+  });
+
+storiesOf('Settings', module)
+  .add('Devices', () => (
+    <Devices />
   ));
 
-// XXX: unable to simply add Devices and Settings due to HOC & translator
-// storiesOf('Settings', module)
-//   .add('Devices', () => (
-//     <Devices />
-//   ));
-
 storiesOf('Tags', module)
+  .addDecorator(hostDecorator)
   .add('TagsForm', () => (
-    <TagsForm />
+    <TagsFormPresenter />
   ));
 
 storiesOf('Titles', module)
-  .add('Title', () => (
-    <Title />
-  ))
-  .add('Subtitle', () => (
-    <Subtitle />
-  ));
+  .addDecorator(hostDecorator)
+  .addWithInfo('Title', () => {
+    const props = {
+      hr: boolean('hr', false),
+      actions: (<span className="pull-right">{text('actions', 'Foo')}</span>),
+    };
+
+    return (<Title {...props}>{text('Title children', 'Hello world')}</Title>);
+  })
+  .addWithInfo('Subtitle', () => {
+    const props = {
+      hr: boolean('hr', false),
+      actions: (<span className="pull-right">{text('actions', 'Foo')}</span>),
+    };
+
+    return (<Subtitle {...props}>{text('Title children', 'Hello world')}</Subtitle>);
+  });
 
 storiesOf('Compose & Reply', module)
   .add('Reply', () => (
