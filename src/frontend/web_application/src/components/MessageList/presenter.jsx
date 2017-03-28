@@ -13,7 +13,7 @@ const renderDayGroups = (messages, __) => {
 
   return Object.keys(messagesGroupedByday)
     .map(date => (
-      <DayMessageList key={date} date={date} className="m-message-list__day">
+      <DayMessageList key={date} date={date}>
         {messagesGroupedByday[date].map(message => (
           <Message
             key={message.message_id}

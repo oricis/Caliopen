@@ -2,10 +2,10 @@
 
 .m-day-message-list {
   &__date {
-    @include flex-grid-row($size: expand);
-    padding: $co-component__spacing;
-    border-bottom: 1px solid $co-color__bg__back;
-    font-weight: 600;
-
+    display: block;
+    margin: $co-grid__gutter 0;
+    padding: 0 2 * $co-component__spacing;
+    background: $co-color__fg__back;
+    line-height: $co-component__height;
   }
 }

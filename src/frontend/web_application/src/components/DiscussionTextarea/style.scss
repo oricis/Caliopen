@@ -1,12 +1,13 @@
+@import '../../styles/object/o-form-element';
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .m-discussion-textarea {
-  &__body {
-    width: 100%;
-    min-height: $co-component__height;
-    border: 0;
-    background: transparent;
-    color: $co-color__fg__text--high;
-  }
+  padding: $co-component__spacing;
 
+  &__body {
+    @include o-form-element;
+    width: 100%;
+    min-height: 5 * $co-component__height;
+    background: transparent;
+  }
 }

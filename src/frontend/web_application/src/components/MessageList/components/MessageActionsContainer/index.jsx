@@ -1,34 +1,25 @@
 import React, { PropTypes } from 'react';
 import Button from '../../../Button';
 import Icon from '../../../Icon';
-
-
 import './style.scss';
 
-const MessageActions = ({ __, isActive, ...props }) => {
-  if (!isActive) {
-    return (<div {...props} />);
-  }
-
-  return (
-    <div {...props}>
-      <div className="m-message-item-actions-container__actions">
-        <Button plain className="m-message-item-actions-container__action"><Icon type="reply" spaced />{__('Reply')}</Button>
-        <Button plain className="m-message-item-actions-container__action"><Icon type="share" spaced />{__('Copy To')}</Button>
-        <Button plain className="m-message-item-actions-container__action"><Icon type="tags" spaced />{__('Tags')}</Button>
-        <Button plain className="m-message-item-actions-container__action"><Icon type="trash" spaced />{__('Delete')}</Button>
-      </div>
-    </div>
-  );
-};
+const MessageActions = ({ __, onClick, className, ...props }) => (
+  <div {...props} className={className}>
+    <Button className="m-message-item-actions-container__action" onClick={onClick}><Icon type="reply" spaced /><span>{__('Reply')}</span></Button>
+    <Button className="m-message-item-actions-container__action" onClick={onClick}><Icon type="share" spaced /><span>{__('Copy To')}</span></Button>
+    <Button className="m-message-item-actions-container__action" onClick={onClick}><Icon type="tags" spaced /><span>{__('Tags')}</span></Button>
+    <Button className="m-message-item-actions-container__action" onClick={onClick}><Icon type="trash" spaced /><span>{__('Delete')}</span></Button>
+  </div>
+);
 
 MessageActions.propTypes = {
-  isActive: PropTypes.bool,
+  className: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
   __: PropTypes.func.isRequired,
 };
 
 MessageActions.defaultProps = {
-  isActive: false,
+  className: '',
 };
 
 export default MessageActions;

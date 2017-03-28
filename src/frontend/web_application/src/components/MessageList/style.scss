@@ -10,10 +10,7 @@
 
   &__action {
     margin: $co-component__spacing;
-    background: $co-color__fg__back--high;
+    background: $co-color__fg__back--higher; // need a modifier for Button
   }
 
-  &__list {
-    background: $co-color__fg__back;
-  }
 }
