@@ -397,7 +397,7 @@ class User(BaseCore):
                     return True
             raise Exception('Inconsistent local identity {}'.format(address))
         except NotFound:
-            display_name = self.given_name + " " + self.family_name
+            display_name = "{} {}".format(self.given_name, self.family_name)
             identity = LocalIdentity.create(identifier=formatted,
                                             user_id=self.user_id,
                                             type='email',

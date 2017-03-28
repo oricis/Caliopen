@@ -33,7 +33,7 @@ class MailPart(object):
         self.content_type = part.get_content_type()
         self.filename = part.get_filename()
         text = part.get_payload()
-        self.size = len(text)
+        self.size = len(text) if text else 0
         self.can_index = False
         if 'text' in part.get_content_type():
             self.can_index = True
@@ -86,7 +86,7 @@ class MailMessage(object):
             self.date = datetime.utcnow()
         self.external_message_id = self.mail.get('Message-Id')
         self.external_parent_id = self.mail.get('In-Reply-To')
-        self.size = len(raw)
+        self.size = len(raw) if raw else 0
         log.debug('Parsed mail {} with size {}'.
                   format(self.external_message_id, self.size))
 
@@ -94,7 +94,8 @@ class MailMessage(object):
     def text(self):
         """Message all text."""
         # XXX : more complexity ?
-        return "\n".join([x.data for x in self.parts if x.can_index])
+        return "\n".join([x.data for x in self.parts
+                          if x.can_index and x.data])
 
     def _extract_recipients(self):
         recip = {}

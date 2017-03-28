@@ -24,7 +24,7 @@ class DeliveryAgent(object):
         # XXX : logic here, for user rules etc
         qmsg = {'user_id': user.user_id, 'raw_msg_id': raw_msg_id}
         log.debug('Will publish %r' % qmsg)
-        self.deliver.process(user.user_id, raw_msg_id)
+        self.deliver.process_email_raw(user.user_id, raw_msg_id)
 
     def resolve_users(self, rpcts):
         users = []
