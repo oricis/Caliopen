@@ -49,13 +49,13 @@ func (b *EmailBroker) incomingSmtpWorker() {
 				//unable to write, don't block
 			}
 		}
-		go b.processInbound(in)
+		go b.processInbound(in, false)
 	}
 }
 
-// for now, ProcessInbound only store raw email and sends an order on NATS topic for py.delivery to process it
-// in future, this broker should process the whole delivery, including the email unmarshaling into a Caliopen's message format
-func (b *EmailBroker) processInbound(in *SmtpEmail) {
+// stores raw email + json + message and sends an order on NATS topic for next composant to process it
+// if raw_only is true, only stores the raw email with its json representation but doen't unmarshal to our message model
+func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 	resp := &DeliveryAck{
 		EmailMessage: in.EmailMessage,
 		Err:          nil,
@@ -92,7 +92,12 @@ func (b *EmailBroker) processInbound(in *SmtpEmail) {
 
 	//TODO: json representation of raw email
 	//step 2 : store raw email and get its raw_id
-	raw_email_id, err := b.Store.StoreRaw(in.EmailMessage.Email.Raw.String())
+	var j_mail []byte
+	json_mail, err := emailToJsonRep(&in.EmailMessage.Email.Raw)
+	if err == nil {
+		j_mail, err = json.Marshal(json_mail)
+	}
+	raw_email_id, err := b.Store.StoreRaw(in.EmailMessage.Email.Raw.String(), string(j_mail))
 	if err != nil {
 		log.WithError(err).Warn("inbound: storing raw email failed")
 		resp.Err = errors.New("storing raw email failed")

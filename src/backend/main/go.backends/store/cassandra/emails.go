@@ -30,6 +30,11 @@ func (cb *CassandraBackend) StoreRaw(raw_email string, json_rep ...string) (uuid
 		Raw_data:   raw_email,
 		Raw_Size:   len(raw_email),
 	}
+
+	if len(json_rep) == 1 {
+		m.Json_rep = json_rep[0]
+	}
+
 	err = rawMsgTable.Set(m).Run()
 
 	uuid = raw_uuid.String()

@@ -6,13 +6,14 @@
 package email_broker
 
 import (
+	"errors"
+	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends"
 	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends/store/cassandra"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
-	"errors"
 )
 
 type (
@@ -31,7 +32,7 @@ type (
 	}
 
 	SmtpEmail struct {
-		EmailMessage *EmailMessage
+		EmailMessage *obj.EmailMessage
 		Response     chan *DeliveryAck
 	}
 
@@ -47,9 +48,9 @@ type (
 	}
 
 	DeliveryAck struct {
-		EmailMessage *EmailMessage `json:"-"`
-		Err          error         `json:"error,omitempty"`
-		Response     string        `json:"message,omitempty"`
+		EmailMessage *obj.EmailMessage `json:"-"`
+		Err          error             `json:"error,omitempty"`
+		Response     string            `json:"message,omitempty"`
 	}
 )
 
