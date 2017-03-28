@@ -1,31 +1,10 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
+import { object, boolean } from '@kadira/storybook-addon-knobs';
 import ContactDetails from '../../src/components/ContactDetails';
 import { Code, ComponentWrapper } from '../presenters';
 
-class Presenter extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      props: {
-        allowConnectRemoteEntity: false,
-      },
-    };
-    this.handlePropsChangesBool = this.handlePropsChangesBool.bind(this);
-  }
-
-  handlePropsChangesBool(event) {
-    const { name, checked } = event.target;
-
-    this.setState(prevState => ({
-      props: {
-        ...prevState.props,
-        [name]: checked,
-      },
-    }));
-  }
-
-  render() {
+const Presenter = () => {
     const contact = {
       title: 'Foobar',
       emails: [
@@ -48,24 +27,24 @@ class Presenter extends Component {
     ];
 
     const translate = str => str;
+    const props = {
+      allowConnectRemoteEntity: boolean('allowConnectRemoteEntity', false),
+    };
 
     return (
       <div>
         <ComponentWrapper>
           <ContactDetails
-            contact={contact}
-            remoteIdentities={remoteIdentities}
+            contact={object('contact', contact)}
+            remoteIdentities={object('remoteIdentities', remoteIdentities)}
             onConnectRemoteIdentity={action('connect remote identity')}
             onDisconnectRemoteIdentity={action('disconnect remote identity')}
             onAddContactDetail={action('add contact detail')}
             onDeleteContactDetail={action('delete contact detail')}
             __={translate}
-            {...this.state.props}
+            {...props}
           />
         </ComponentWrapper>
-        <ul>
-          <li><label><input type="checkbox" onChange={this.handlePropsChangesBool} name="allowConnectRemoteEntity" checked={this.state.props.allowConnectRemoteEntity} />Allow connect remote identity</label></li>
-        </ul>
         <Code>
           {`
 import ContactDetails, { SIZE_SMALL } from './src/components/ContactDetails';
@@ -86,7 +65,6 @@ export default () => (
         </Code>
       </div>
     );
-  }
-}
+};
 
 export default Presenter;
