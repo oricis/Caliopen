@@ -102,7 +102,6 @@ class ObjectDictifiable(CaliopenObject):
 
         all self.attrs are reset if not in document
         """
-        print("unmarshall_dict")
         for attr, attrtype in self._attrs.items():
             if attr in document:
                 if isinstance(attrtype, list):
@@ -425,9 +424,7 @@ class ObjectIndexable(ObjectUser):
         """
         self.get_index()
         if self._index is not None:
-            print("before update/marshall")
             update_dict = self.marshall_index(update=True)
-            print("after update/marshall")
             self._index.update(using=self._index_class.client(), **update_dict)
         else:
             # for some reasons, index doc not found... create one from scratch
@@ -450,6 +447,7 @@ class ObjectIndexable(ObjectUser):
         # object comparaison
         index_sibling = self.__class__(user_id=self.user_id)
         index_sibling._index = self._index
+
         index_sibling.unmarshall_index()
 
         if not isinstance(self._index, self._index_class):
@@ -488,7 +486,6 @@ class ObjectIndexable(ObjectUser):
     def unmarshall_index(self, **options):
         """squash self.attrs with index representation"""
         if isinstance(self._index, self._index_class):
-            print("unmarshalling index with : {}".format(vars(self._index)))
             self.unmarshall_dict(self._index.to_dict())
 
     def apply_patch(self, patch, **options):

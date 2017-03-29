@@ -113,16 +113,16 @@ class UserMessageDelivery(object):
         This process is triggered by a "process_email_message" order on nats
         """
         try:
-            message_qualifier = UserMessageQualifier(user_id=user_id,
-                                                     message_id=msg_id)
-            message_qualifier.get_db()
-            message_qualifier.unmarshall_db()
+            message = Message(user_id=user_id, message_id=msg_id)
+            message.get_db()
+            message.unmarshall_db()
         except Exception as exc:
             print(exc)
             log.error('Error fetching message'.format(exc))
             raise NotFound
 
         try:
-            message_qualifier.process_inbound()
+            message_qualifier = UserMessageQualifier()
+            message_qualifier.process_inbound(message)
         except Exception as exc:
             raise exc

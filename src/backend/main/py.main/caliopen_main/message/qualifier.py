@@ -20,7 +20,7 @@ from ..message.format import MailMessage
 log = logging.getLogger(__name__)
 
 
-class UserMessageQualifier(Message):
+class UserMessageQualifier(object):
     """
     Process a message to enhance it with :
         - tags
@@ -29,6 +29,7 @@ class UserMessageQualifier(Message):
         - etc.
     
     """
+
     _lookups = {
         'parent': DiscussionMessageLookup,
         'list': DiscussionRecipientLookup,
@@ -77,18 +78,18 @@ class UserMessageQualifier(Message):
             if prop[0] == 'list':
                 return
 
-    def process_inbound(self):
+    def process_inbound(self, message):
 
         print("starting processing")
-        user = User.get(self.user_id)
-        raw_email = MailMessage(self.raw)
+        user = User.get(message.user_id)
+        raw_email = MailMessage(message.raw)
 
         # compute tags
-        self.tags = self._get_tags(user, raw_email)
-        log.debug('Resolved tags {}'.format(self.tags))
+        message.tags = self._get_tags(user, raw_email)
+        log.debug('Resolved tags {}'.format(message.tags))
 
         # fill external references
-        externals = self.external_references
+        externals = message.external_references
         externals.message_id = raw_email.external_message_id
         externals.parent_id = raw_email.external_parent_id
 
@@ -100,13 +101,13 @@ class UserMessageQualifier(Message):
         if lookup:
             log.debug('Found discussion %r' % lookup.discussion_id)
             discussion = Discussion.get(user, lookup.discussion_id)
-            discussion.update_from_message(self)
+            discussion.update_from_message(message)
         else:
             log.debug('Creating new discussion')
-            discussion = Discussion.create_from_message(user, self)
+            discussion = Discussion.create_from_message(user, message)
 
         discussion_id = discussion.discussion_id if discussion else None
-        self.discussion_id = UUID(discussion_id)
+        message.discussion_id = UUID(discussion_id)
         # XXX missing discussion management
 
         # XXX Init lookup
@@ -125,8 +126,11 @@ class UserMessageQualifier(Message):
         # update and index the message
         # message.model.lookup = lookup
 
-        self.marshall_db()
-        self.update_db()
-        self.marshall_index()
-        self.save_index()
+        message.marshall_db()
+        message.update_db()
+        message.marshall_index()
+        message.save_index()
+        # TODO: fix "'NoneType' object has no attribute 'to_dict'" error
         # self.update_index()
+
+        return message
