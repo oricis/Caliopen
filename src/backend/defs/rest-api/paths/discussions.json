@@ -55,9 +55,6 @@
                 }
               }
             }
-          },
-          "examples": {
-            "$ref": "../examples/discussions.json#/discussions/get/200"
           }
         }
       }

@@ -157,6 +157,3 @@ ENV/
 
 # Node
 node_modules
-
-# Prism bin
-prism_linux_amd64

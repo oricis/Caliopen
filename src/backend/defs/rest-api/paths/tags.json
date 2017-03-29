@@ -31,9 +31,6 @@
                 }
               }
             }
-          },
-          "examples": {
-            "$ref": "../examples/tags.json#/tags/get/200"
           }
         }
       }
