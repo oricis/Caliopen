@@ -7,6 +7,7 @@ package store
 import (
 	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	"github.com/gocassa/gocassa"
+	"github.com/pkg/errors"
 	"github.com/relops/cqlr"
 )
 
@@ -15,8 +16,11 @@ func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *obj.Message
 	msg = &obj.Message{}
 	q := cb.Session.Query(`SELECT * FROM message WHERE user_id = ? and message_id = ?`, user_id, msg_id)
 	b := cqlr.BindQuery(q)
-	b.Scan(msg)
-	return msg, err
+	ok := b.Scan(msg)
+	if !ok {
+		return nil, errors.New("message not found")
+	}
+	return msg, nil
 
 }
 

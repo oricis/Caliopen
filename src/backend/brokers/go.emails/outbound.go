@@ -17,9 +17,9 @@ package email_broker
 
 import (
 	"encoding/json"
+	"errors"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
-	"errors"
 	"time"
 )
 
@@ -53,13 +53,19 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 		m, err := b.Store.GetMessage(order.UserId, order.MessageId)
 		if err != nil {
 			log.Warn(err)
-			//TODO
+			b.natsReplyError(msg, err)
+			return resp, err
+		}
+		if m == nil {
+			b.natsReplyError(msg, errors.New("message from db is empty"))
+			return resp, err
 		}
 
 		em, err := MarshalEmail(m, b.Config.AppVersion, b.Config.PrimaryMailHost)
 		if err != nil {
 			log.Warn(err)
-			//TODO
+			b.natsReplyError(msg, err)
+			return resp, err
 		}
 
 		out := SmtpEmail{
@@ -74,7 +80,8 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 			case resp, ok := <-out.Response:
 				if resp.Err != nil || !ok || resp == nil {
 					log.WithError(err).Warn("outbound: delivery error from MTA")
-					//TODO
+					b.natsReplyError(msg, errors.New("outbound: delivery error from MTA"))
+					return
 				} else {
 					err = b.SaveIndexSentEmail(resp)
 					if err != nil {
@@ -86,23 +93,11 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 				json_resp, _ := json.Marshal(resp)
 				b.NatsConn.Publish(msg.Reply, json_resp)
 			case <-time.After(time.Second * 30):
-				log.Warn("email broker : outbound timeout waiting smtp response")
-
-				var order natsOrder
-				json.Unmarshal(msg.Data, &order)
-				ack := DeliveryAck{
-					Err:      errors.New("timeout waiting smtp response"),
-					Response: "failed to sent message " + order.MessageId,
-				}
-
-				json_resp, _ := json.Marshal(ack)
-				b.NatsConn.Publish(msg.Reply, json_resp)
+				b.natsReplyError(msg, errors.New("SMTP server response timeout"))
 			}
 			return
 		}(&out, msg)
-
 	}
-
 	return resp, err
 }
 
@@ -115,4 +110,18 @@ func (msg *natsOrder) UnmarshalJSON(data []byte) error {
 	msg.UserId = string(data[84:120])
 	//TODO: error handling
 	return nil
+}
+
+func (b *EmailBroker) natsReplyError(msg *nats.Msg, err error) {
+	log.Warn("email broker [outbound] : error when processing incoming nats message")
+
+	var order natsOrder
+	json.Unmarshal(msg.Data, &order)
+	ack := DeliveryAck{
+		Err:      err,
+		Response: "failed to sent message " + order.MessageId,
+	}
+
+	json_resp, _ := json.Marshal(ack)
+	b.NatsConn.Publish(msg.Reply, json_resp)
 }
