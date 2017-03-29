@@ -13,7 +13,7 @@ module.exports = (env) => {
     api: {
       prefix: '/api',
       version: 'v1',
-      hostname: env === 'development' ? 'localhost' : 'api.dev.caliopen.org',
+      hostname: ['development', 'test'].indexOf(env) !== -1 ? 'localhost' : 'api.dev.caliopen.org',
       port: 31415,
       auth: 'authentications',
       user: 'users',

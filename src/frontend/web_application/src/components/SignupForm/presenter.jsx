@@ -108,7 +108,7 @@ class SignupForm extends Component {
 
     return (
       <div className="s-signup">
-        <FormGrid className="s-signup__form" name="ac_form" {...form}>
+        <FormGrid method="post" className="s-signup__form" name="ac_form" {...form}>
           <FormRow>
             <FormColumn className="s-signup__title" bottomSpace>
               <Title>{__('signup.title')}</Title>

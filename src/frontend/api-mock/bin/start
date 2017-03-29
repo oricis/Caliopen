@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Generate swagger specifications from JSON schema definitions
+
+set -e
+PROJECT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+SCRIPT_PATH=${PROJECT_DIRECTORY}/node_modules/.bin/bouchon
+CMD="yarn start"
+
+
+if [[ ! -f "${SCRIPT_PATH}" ]]; then
+	echo "You should have nodejs > 6 and yarn"
+
+	(cd $PROJECT_DIRECTORY && yarn install)
+fi
+
+
+(cd $PROJECT_DIRECTORY && ${CMD})
+
+set +e
