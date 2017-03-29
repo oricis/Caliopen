@@ -80,7 +80,6 @@ class UserMessageQualifier(object):
 
     def process_inbound(self, message):
 
-        print("starting processing")
         user = User.get(message.user_id)
         raw_email = MailMessage(message.raw)
 
@@ -95,12 +94,12 @@ class UserMessageQualifier(object):
 
         # lookup by external references
         lookup_sequence = raw_email.lookup_sequence()
-        lookup = self.lookup(user, lookup_sequence)
+        lkp = self.lookup(user, lookup_sequence)
 
         # Create or update existing discussion
-        if lookup:
-            log.debug('Found discussion %r' % lookup.discussion_id)
-            discussion = Discussion.get(user, lookup.discussion_id)
+        if lkp:
+            log.debug('Found discussion %r' % lkp.discussion_id)
+            discussion = Discussion.get(user, lkp.discussion_id)
             discussion.update_from_message(message)
         else:
             log.debug('Creating new discussion')
@@ -111,14 +110,14 @@ class UserMessageQualifier(object):
         # XXX missing discussion management
 
         # XXX Init lookup
-        if not lookup:
-            self.__init_lookups(user, lookup_sequence, self)
+        if not lkp:
+            self.__init_lookups(user, lookup_sequence, message)
         else:
             if externals.message_id:
                 params = {
                     'external_message_id': externals.message_id,
                     'discussion_id': discussion_id,
-                    'message_id': externals.message_id,
+                    'message_id': message.message_id,
                 }
                 new_lookup = DiscussionMessageLookup.create(user, **params)
                 log.debug('Created message lookup %r' % new_lookup)
