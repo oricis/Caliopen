@@ -29,7 +29,6 @@
         background: $co-color__fg__back--high;
       }
     }
-
   }
 
   &__top-bar {
@@ -60,7 +59,7 @@
 
       &::after {
         display: inline;
-        content: '[...]';
+        content: ' [...]';
       }
 
       &--expanded {

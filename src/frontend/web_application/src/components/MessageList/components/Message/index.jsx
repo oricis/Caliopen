@@ -65,25 +65,21 @@ class Message extends Component {
   }
 
   handleActiveClick() {
-    this.setState({
-      isActive: !this.state.isActive,
-    });
+    this.setState(prevState => ({
+      isActive: !prevState.isActive,
+    }));
   }
 
   handleExpandClick() {
     const message = this.props.message;
-    const body = message.body;
+    let body = message.body;
     if (this.state.isExpanded) {
-      this.setState({
-        isExpanded: false,
-        body: body.substring(0, 140),
-      });
-    } else {
-      this.setState({
-        isExpanded: true,
-        body,
-      });
+      body = body.substring(0, 140);
     }
+    this.setState(prevState => ({
+      isExpanded: !prevState.isExpanded,
+      body,
+    }));
   }
 
   render() {
@@ -129,7 +125,9 @@ class Message extends Component {
           </div>
 
           <div className="m-message__body">
-            <div className="m-message__body__subject">{subject}</div>
+            {subject &&
+              <div className="m-message__body__subject">{subject}</div>
+            }
             <div className={bodyClassName}>
               {this.state.body}
             </div>
