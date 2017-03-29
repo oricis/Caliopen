@@ -18,13 +18,13 @@ describe('Home', () => {
       browser.get('/');
       browser.wait(EC.presenceOf($('.m-title__text')), 1000);
 
-      expect(element(by.css('.m-title__text')).getText()).toContain('VOUS POUVEZ VOUS AUTHENTIFIER');
+      expect(element(by.css('.m-title__text')).getText()).toContain('PLEASE LOG IN');
     });
 
     it('Log out', () => {
       userUtil.signin();
       userUtil.signout();
-      expect(element(by.css('.m-title__text')).getText()).toContain('VOUS POUVEZ VOUS AUTHENTIFIER');
+      expect(element(by.css('.m-title__text')).getText()).toContain('PLEASE LOG IN');
     });
   });
 });
