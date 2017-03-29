@@ -3,12 +3,14 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import types
+from uuid import UUID
+
 from caliopen_main.objects import base
 from caliopen_main.user.store import LocalIdentity as ModelLocalIdentity
 from caliopen_main.user.store import IndexedLocalIdentity
-from uuid import UUID
 from caliopen_main.user.store.contact import SocialIdentity as ModelSocialIdentity
-from caliopen_main.user.returns.contact import SocialIdentityParam
+from caliopen_main.user.parameters.contact import \
+    SocialIdentity as SocialIdentityParam
 from caliopen_main.user.store.contact_index import IndexedSocialIdentity
 from caliopen_main.user.store.local_identity import Identity as ModelIdentity
 from caliopen_main.user.store.local_identity_index import IndexedIdentity

@@ -3,8 +3,8 @@ import logging
 from cornice.resource import resource, view
 from pyramid.httpexceptions import HTTPExpectationFailed
 
-from caliopen_main.message.core import (MainView, Thread as UserDiscussion,
-                                        ReturnThread as ReturnDiscussion)
+from caliopen_main.message.core import (MainView, Discussion as UserDiscussion,
+                                        ReturnDiscussion)
 from ..base import Api
 from caliopen_storage.exception import NotFound
 from ..base.exception import ResourceNotFound

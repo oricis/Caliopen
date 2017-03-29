@@ -4,19 +4,36 @@
 from schematics.models import Model
 from schematics.types import (StringType, DateTimeType,
                               IntType, UUIDType, BooleanType)
-from schematics.types.compound import ListType, ModelType, DictType
+from schematics.types.compound import ListType, ModelType
 from schematics.transforms import blacklist
 from caliopen_main.user.parameters import ResourceTag
 
-
-RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc']
+RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc', 'reply-to', 'sender']
 MESSAGE_TYPES = ['email']
 MESSAGE_STATES = ['draft', 'sending', 'sent', 'cancel',
                   'unread', 'read', 'deleted']
 
 
-class Recipient(Model):
+class Attachment(Model):
+    content_type = StringType()
 
+
+class ExternalReferences(Model):
+    todo = StringType()
+
+
+class Identity(Model):
+    todo = StringType()
+
+
+class Participant(Model):
+    todo = StringType()
+
+
+class PrivacyFeatures(Model):
+    todo = StringType()
+
+class Recipient(Model):
     """Store a contact reference and one of it's address used in a message."""
 
     address = StringType(required=True)
@@ -30,13 +47,14 @@ class Recipient(Model):
 
 
 class Discussion(Model):
-
     """Existing discussion."""
 
     user_id = UUIDType()
     discussion_id = UUIDType(required=True)
-    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
-    date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               tzd=u'utc')
+    date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               tzd=u'utc')
     text = StringType(required=True)
     privacy_index = IntType(required=True, default=0)
     importance_level = IntType(required=True, default=0)
@@ -51,7 +69,6 @@ class Discussion(Model):
 
 
 class Part(Model):
-
     """Message part."""
 
     content_type = StringType(required=True)
@@ -65,45 +82,41 @@ class Part(Model):
 
 
 class NewMessage(Model):
-
     """New message parameter."""
 
-    recipients = ListType(ModelType(Recipient),
-                          default=lambda: [])
-    from_ = StringType(required=True)
-    subject = StringType()
-    text = StringType(required=True)
-    privacy_index = IntType(default=0)
+    attachments = ListType(ModelType(Attachment), default=lambda: [])
+    body = StringType(required=True)
+    date = DateTimeType(required=True,
+                        serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                        tzd=u'utc')
+    discussion_id = UUIDType()
+    external_references = ModelType(ExternalReferences)
+    identities = ListType(ModelType(Identity), default=lambda: [])
     importance_level = IntType(default=0)
-    date = DateTimeType(required=True, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
+    is_answered = BooleanType()
+    is_draft = BooleanType()
+    is_unread = BooleanType()
+    parent_id = StringType()
+    participants = ListType(ModelType(Participant),
+                          default=lambda: [])
+    privacy_features = ModelType(PrivacyFeatures)
+    subject = StringType()
     tags = ListType(ModelType(ResourceTag), default=lambda: [])
-    # XXX define a part parameter
-    parts = ListType(ModelType(Part), default=lambda: [])
-    headers = DictType(ListType(StringType), default=lambda: {})
-    external_parent_id = StringType()
-    external_message_id = StringType()
-    external_thread_id = StringType()
-    # XXX compute ?
-    size = IntType()
     type = StringType(required=True, choices=MESSAGE_TYPES)
-    # Only initial state allowed and can bypass unread to read directly
-    state = StringType(required=True, choices=['unread', 'draft', 'read'])
 
     class Options:
         serialize_when_none = False
 
 
 class Message(NewMessage):
-
     """Existing message parameter."""
 
     user_id = UUIDType()
     message_id = UUIDType(required=True)
     raw_msg_id = UUIDType(required=True)
-    date_insert = DateTimeType(required=True, serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00", tzd=u'utc')
-    text = StringType()
-    # All states allowed
-    state = StringType(required=True, choices=MESSAGE_STATES)
+    date_insert = DateTimeType(required=True,
+                               serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               tzd=u'utc')
 
     class Options:
         roles = {'default': blacklist('user_id')}

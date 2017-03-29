@@ -9,7 +9,6 @@ from pyramid.response import Response
 
 from caliopen_main.objects.message import Message
 from caliopen_main.message.parameters import NewMessage
-from caliopen_main.objects.message import Message as MessageObject
 
 from ..base import Api
 from ..base.exception import ResourceNotFound
@@ -45,14 +44,14 @@ class Message(Api):
     def collection_get(self):
         discussion_id = self.request.matchdict.get('discussion_id')
         pi_range = self.request.authenticated_userid.pi_range
-        messages = CoreMessage.by_discussion_id(self.user, discussion_id,
+        messages = Message.by_discussion_id(self.user, discussion_id,
                                             min_pi=pi_range[0],
                                             max_pi=pi_range[1],
                                             limit=self.get_limit(),
                                             offset=self.get_offset())
         results = []
         for msg in messages['hits']:
-            results.append(ReturnMessage.build(msg).serialize())
+            results.append(msg.marshall_json_dict())
         return {'messages': results, 'total': messages['total']}
 
     @view(renderer='json', permission='authenticated')
@@ -60,7 +59,7 @@ class Message(Api):
         discussion_id = self.request.matchdict.get('discussion_id')
         reply_to = self.request.json.get('reply_to')
         if reply_to:
-            parent = CoreMessage.get(self.user, reply_to)
+            parent = Message.get(self.user, reply_to)
             parent_message_id = parent.external_id
             discussion_id = parent.discussion_id
             pi_value = parent.privacy_index
@@ -81,8 +80,8 @@ class Message(Api):
                              privacy_index=pi_value,
                              thread_id=discussion_id,
                              parent_message_id=parent_message_id)
-        msg = CoreMessage.create(self.user, new_msg)
-        idx_msg = CoreMessage.get(self.user, msg.message_id)
+        msg = Message.create(self.user, new_msg)
+        idx_msg = Message.get(self.user, msg.message_id)
         log.info('Post new message %r' % msg.message_id)
         # XXX return redirect to newly created message ?
         return idx_msg
@@ -103,7 +102,7 @@ class Message(Api):
         message_id = self.request.swagger_data["message_id"]
         patch = self.request.json
 
-        message = MessageObject(self.user.user_id, message_id=message_id)
+        message = Message(self.user.user_id, message_id=message_id)
         error = message.apply_patch(patch, db=True, index=True)
         if error is not None:
             raise MergePatchError(error)
@@ -122,7 +121,7 @@ class Raw(Api):
     def get(self):
         # XXX how to check privacy_index ?
         raw_msg_id = self.request.matchdict.get('raw_msg_id')
-        raw = RawMessage.get_for_user(self.user.user_id, raw_msg_id)
+        raw = Message.get_for_user(self.user.user_id, raw_msg_id)
         if raw:
             return raw.data
         raise ResourceNotFound('No such message')
