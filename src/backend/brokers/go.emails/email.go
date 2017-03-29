@@ -6,12 +6,12 @@
 package email_broker
 
 import (
+	"bytes"
 	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/jhillyerd/go.enmime"
 	"github.com/satori/go.uuid"
 	"gopkg.in/gomail.v2"
-	"io"
 	"io/ioutil"
 	"mime"
 	"net/mail"
@@ -204,8 +204,9 @@ func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, 
 
 // returns an EmailJson object which is an object ready to
 // output our json representation of the raw email
-func emailToJsonRep(email io.Reader) (json_email obj.EmailJson, err error) {
-	msg, err := mail.ReadMessage(email)    // Read email using Go's net/mail
+func emailToJsonRep(email string) (json_email obj.EmailJson, err error) {
+	reader := bytes.NewReader([]byte(email))
+	msg, err := mail.ReadMessage(reader)   // Read email using Go's net/mail
 	mime, err := enmime.ParseMIMEBody(msg) // Parse message body with enmime
 	if err != nil {
 		return

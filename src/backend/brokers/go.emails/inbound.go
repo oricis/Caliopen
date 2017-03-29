@@ -92,12 +92,16 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 
 	//TODO: json representation of raw email
 	//step 2 : store raw email and get its raw_id
-	var j_mail []byte
-	json_mail, err := emailToJsonRep(&in.EmailMessage.Email.Raw)
+	var mail_str string
+	var json_str []byte
+	mail_str = string(in.EmailMessage.Email.Raw.Bytes())
+	json_mail, err := emailToJsonRep(mail_str)
 	if err == nil {
-		j_mail, err = json.Marshal(json_mail)
+		json_mail.Envelope.From = in.EmailMessage.Email.SmtpMailFrom
+		json_mail.Envelope.To = in.EmailMessage.Email.SmtpRcpTo
+		json_str, err = json.Marshal(json_mail)
 	}
-	raw_email_id, err := b.Store.StoreRaw(in.EmailMessage.Email.Raw.String(), string(j_mail))
+	raw_email_id, err := b.Store.StoreRaw(in.EmailMessage.Email.Raw.String(), string(json_str))
 	if err != nil {
 		log.WithError(err).Warn("inbound: storing raw email failed")
 		resp.Err = errors.New("storing raw email failed")

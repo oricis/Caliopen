@@ -41,9 +41,9 @@ type (
 	}
 
 	Envelope struct {
-		To          string   // the email addres the server is sending to.
+		To          []string // the email addresses the server is sending to.
 		Recipients  []string // the full list of recipients that the remote server is attempting to send to.
-		From        string   // the email address that the server was sending from.
+		From        []string // the email addresses that the server was sending from.
 		Helo_domain string   // the domaine reported by the sending server
 		Remote_ip   string   // the remote IP address of the sending server
 		Spf         string   // the SPF result for the given IP address and domain
