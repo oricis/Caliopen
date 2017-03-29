@@ -13,6 +13,7 @@ export const typeAssoc = {
   'comments-o': 'fa fa-comments-o',
   edit: 'fa fa-edit',
   envelope: 'fa fa-envelope',
+  'ellipsis-v': 'fa fa-ellipsis-v',
   email: 'fa fa-envelope',
   'exclamation-triangle': 'fa fa-exclamation-triangle',
   'info-circle': 'fa fa-info-circle',

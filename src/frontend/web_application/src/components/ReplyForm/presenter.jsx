@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import Button from '../Button';
+import Icon from '../Icon';
 import ContactAvatarLetter from '../ContactAvatarLetter';
-import DiscussionDraft, { TopRow, BodyRow } from '../DiscussionDraft';
+import DiscussionDraft, { TopRow, BodyRow, BottomRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
 import './style.scss';
 
@@ -70,22 +71,33 @@ class ReplyForm extends Component {
 
     return (
       <DiscussionDraft className="m-reply">
-        <form method="POST">
-          <TopRow className="m-reply__action-bar">
+        <div className="m-reply__avatar"><ContactAvatarLetter contact={user.contact} /></div>
+        <form method="POST" className="m-reply__form">
+          <TopRow className="m-reply__top-bar">
+            <div className="m-reply__author">{__('me')}</div>
+            <div className="m-reply__type">
+              {__('by email')} <Icon type="email" className="m-reply__type-ico" spaced />
+            </div>
+            <div className="m-reply__top-actions-switcher">
+              <Button
+                title={__('more actions')}
+              >
+                <Icon type="ellipsis-v" />
+              </Button>
+            </div>
+          </TopRow>
+          <BodyRow className="m-reply__body">
+            <DiscussionTextarea
+              body={this.state.draftMessage.body}
+              onChange={this.handleChange}
+              __={__}
+            />
+          </BodyRow>
+          <BottomRow className="m-reply__bottom-bar">
             <Button className="m-reply__action-button" onClick={this.handleSend}>{__('messages.compose.action.send')}</Button>
             {' '}
             <Button className="m-reply__action-button" onClick={this.handleSave}>{__('messages.compose.action.save')}</Button>
-          </TopRow>
-          <BodyRow className="m-reply__content">
-            <div className="m-reply__avatar"><ContactAvatarLetter contact={user.contact} /></div>
-            <div className="m-reply__body">
-              <DiscussionTextarea
-                body={this.state.draftMessage.body}
-                onChange={this.handleChange}
-                __={__}
-              />
-            </div>
-          </BodyRow>
+          </BottomRow>
         </form>
       </DiscussionDraft>
     );

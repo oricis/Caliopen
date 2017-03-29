@@ -13,6 +13,18 @@ TopRow.defaultProps = {
   className: null,
 };
 
+export const BottomRow = ({ className, ...props }) => (
+  <div className={classnames('m-discussion-draft__top-row', className)} {...props} />
+);
+
+BottomRow.propTypes = {
+  className: PropTypes.string,
+};
+
+BottomRow.defaultProps = {
+  className: null,
+};
+
 export const BodyRow = ({ className, ...props }) => (
   <div className={classnames('m-discussion-draft__body-row', className)} {...props} />
 );

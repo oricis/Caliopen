@@ -1,38 +1,53 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .m-reply {
-  &__action-bar {
-    padding: $co-component__spacing;
+  @include flex-grid-row($size: expand);
+
+  &__avatar {
+    @include flex-grid-column(shrink);
+  }
+
+  &__form {
+    @include flex-grid-size;
+  }
+
+  &__top-bar {
+    @include flex-grid-row;
+    align-items: center;
     border-bottom: 1px solid $co-color__bg__back;
+    background: $co-color__fg__back--high;
+  }
+
+  &__top-actions-switcher {
+    @include flex-grid-size(shrink);
+    margin-left: auto; //flex-ish way to right-align column
+  }
+
+  &__author,
+  &__type {
+    @include flex-grid-column(shrink);
+  }
+
+  &__author {
+    color: $co-color__fg__text;
+    font-weight: 600;
+  }
+
+  &__type-ico {color: $co-color__fg__text}
+
+  &__body {
+    padding: $co-component__spacing;
     background: $co-color__fg__back;
+  }
+
+  &__bottom-bar {
+    padding: $co-component__spacing;
+    border-top: 1px solid $co-color__bg__back;
+    background: $co-color__fg__back--high;
   }
 
   &__action-button {
     margin: $co-component__spacing;
-    background: $co-color__fg__back--high;
+    background: $co-color__fg__back--higher;
   }
-
-  &__content {
-    @include flex-grid-row($size: expand);
-    padding-top: 2 * $co-component__spacing;
-    padding-bottom: 2 * $co-component__spacing;
-    background: $co-color__fg__back;
-  }
-
-  &__avatar {
-    @include flex-grid-column(shrink);
-    text-align: right;
-  }
-
-  &__body {
-    @include flex-grid-column;
-  }
-
-  @include breakpoint(medium) {
-
-    &__avatar {
-      @include flex-grid-column(2);
-    }
-  }
-
 }
