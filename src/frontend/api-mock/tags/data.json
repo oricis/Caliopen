@@ -1,0 +1,12 @@
+[
+  {
+    "tag_id": "1",
+    "name": "FOO",
+    "type": "system"
+  },
+  {
+    "tag_id": "2",
+    "name": "foobar",
+    "type": "user"
+  }
+]

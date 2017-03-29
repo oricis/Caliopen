@@ -14,8 +14,8 @@ app.set('port', (process.env.PORT || 4000));
 //-------
 applyConfig(app);
 applySecurity(app);
-applyAssets(app);
 applyAuth(app);
+applyAssets(app);
 applyAPI(app);
 
 if (HAS_SSR) {

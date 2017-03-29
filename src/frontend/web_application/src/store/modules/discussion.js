@@ -66,7 +66,7 @@ export function updateDiscussion({ discussion, original }) {
 function discussionsByIdReducer(state = {}, action = {}) {
   return action.payload.data.discussions.reduce((previousState, discussion) => ({
     ...previousState,
-    [discussion.thread_id]: discussion,
+    [discussion.discussion_id]: discussion,
   }), state);
 }
 
@@ -76,7 +76,7 @@ function discussionIdsReducer(state = [], action = {}) {
   }
 
   return [...state]
-    .concat(action.payload.data.discussions.map(discussion => discussion.thread_id))
+    .concat(action.payload.data.discussions.map(discussion => discussion.discussion_id))
     .reduce((prev, curr) => {
       if (prev.indexOf(curr) === -1) {
         prev.push(curr);
