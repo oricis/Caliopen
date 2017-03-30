@@ -47,6 +47,7 @@ import TextList, { ItemContent } from '../src/components/TextList';
 import Title from '../src/components/Title';
 import Welcome from './Welcome';
 import Changelog from './Changelog';
+import Guideline from './Guideline';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
 
 addDecorator(withKnobs);
@@ -71,6 +72,11 @@ storiesOf('Welcome', module)
   ))
   .add('Changelog', () => (
     <Changelog />
+  ));
+
+storiesOf('Guideline', module)
+  .add('Guideline', () => (
+    <Guideline />
   ));
 
 storiesOf('Auth', module)
