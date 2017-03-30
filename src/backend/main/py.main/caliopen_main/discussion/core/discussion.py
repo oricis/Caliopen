@@ -79,21 +79,21 @@ def build_discussion(discussion, index_message):
     discussion.discussion_id = index_message.discussion_id
     discussion.date_insert = discussion.date_insert
     discussion.date_update = index_message.date_insert
-    discussion.text = index_message.text[:100]
+    discussion.excerpt = index_message.body[:100]
     # TODO
     # discussion.privacy_index = index_message.privacy_index
     # XXX Only last message recipient at this time
 
     ###TODO : [WIP] change recipients to participants
-    for rec in index_message.recipients:
-        recipient = Participant()
-        recipient.address = rec['address']
-        recipient.label = rec['label']
-        recipient.type = rec['type']
-        if 'contact_id' in rec:  # 'recipient' of type 'from' may not be Contact
-            recipient.contact_id = rec['contact_id']
-        recipient.protocol = rec['protocol']
-        discussion.contacts.append(recipient)
+    for part in index_message.participants:
+        participant = Participant()
+        participant.address = part['address']
+        participant.label = part['label']
+        participant.type = part['type']
+        if 'contact_id' in part:  # 'recipient' of type 'from' may not be Contact
+            participant.contact_id = part['contact_id']
+        participant.protocol = part['protocol']
+        discussion.contacts.append(participant)
     # XXX Missing values (at least other in parameter to fill)
     discussion.total_count = discussion.total_count
     discussion.unread_count = discussion.unread_count
@@ -107,8 +107,12 @@ class MainView(object):
     def build_responses(self, user, messages):
         """Build list of responses using core and related index message."""
         for message in messages:
-            discussion = Discussion.get(user, message.discussion_id)
-            yield build_discussion(discussion, message)
+            try:
+                discussion = Discussion.get(user, message['discussion_id'])
+            except NotFound:
+                continue
+            if discussion:
+                yield build_discussion(discussion, message)
 
     def get(self, user, min_pi, max_pi, limit, offset):
         """Build the main view results."""

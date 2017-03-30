@@ -14,9 +14,9 @@ class Discussion(BaseModel):
     user_id = columns.UUID(primary_key=True)
     discussion_id = columns.UUID(primary_key=True)
     date_insert = columns.DateTime()
-    privacy_index = columns.Integer()
+    # privacy_index = columns.Integer()
     importance_level = columns.Integer()
-    text = columns.Text()
+    excerpt = columns.Text()
 
 
 class DiscussionCounter(BaseModel):

@@ -76,3 +76,16 @@ class Part(Model):
 
     class Options:
         serialize_when_none = False
+
+
+class Recipient(Model):
+    """Store a contact reference and one of it's address used in a message."""
+
+    address = StringType(required=True)
+    label = StringType(required=True)
+    type = StringType(required=True, choices=RECIPIENT_TYPES)
+    protocol = StringType(choices=MESSAGE_TYPES)
+    contact_id = UUIDType()
+
+    class Options:
+        serialize_when_none = False

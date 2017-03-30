@@ -30,15 +30,19 @@ class DiscussionIndexManager(object):
 
         search = IndexedMessage.search(using=self.proxy,
                                     index=self.index)
-        search = search.filter('range', **{'privacy_index': {'gte': min_pi}})
-        search = search.filter('range', **{'privacy_index': {'lte': max_pi}})
+        # TODO : pi management
+        # search = search.filter('range', **{'privacy_index': {'gte': min_pi}})
+        # search = search.filter('range', **{'privacy_index': {'lte': max_pi}})
         return search
 
     def __search_ids(self, limit, offset, min_pi, max_pi):
         """Search discussions ids as a bucket aggregation."""
+
+        ###TODO offset management
+
         search = self._prepare_search(min_pi, max_pi)
         # Do bucket term aggregation
-        agg = dsl.A('terms', field='thread_id', size=limit)
+        agg = dsl.A('terms', field='discussion_id', size=limit)
         search.aggs.bucket('discussions', agg)
         # XXX add sorting on message date_insert
         log.debug('Search is {}'.format(search.to_dict()))
@@ -54,7 +58,7 @@ class DiscussionIndexManager(object):
     def _get_last_message(self, discussion_id, min_pi, max_pi):
         """Get last message of a given discussion."""
         search = self._prepare_search(min_pi, max_pi)
-        search = search.filter('match', **{'thread_id': discussion_id})
+        search = search.filter('match', **{'discussion_id': discussion_id})
         search = search.sort('-date_insert')
         search = search[0:1]
         result = search.execute()

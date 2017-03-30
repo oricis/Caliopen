@@ -10,9 +10,10 @@ from ..user.core import User
 from caliopen_main.objects.message import Message
 from caliopen_main.objects.tag import ResourceTag
 
-from ..message.core import (Discussion, DiscussionMessageLookup,
-                            DiscussionRecipientLookup,
-                            DiscussionExternalLookup)
+from caliopen_main.discussion.core.discussion import (Discussion,
+                                                      DiscussionMessageLookup,
+                                                      DiscussionRecipientLookup,
+                                                      DiscussionExternalLookup)
 
 # XXX use a message formatter registry not directly mail format
 from ..message.format import MailMessage

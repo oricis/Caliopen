@@ -11,7 +11,7 @@ def setup_storage(settings=None):
     from caliopen_storage.core import core_registry
     # Make discovery happen
     from caliopen_main.user.core import User, Device
-    from caliopen_main.message.core.discussion import Discussion
+    from caliopen_main.discussion.core.discussion import Discussion
     from caliopen_main.objects.contact import (Contact, ContactLookup,
                                                PublicKey)
     from caliopen_main.objects.device import Device, DeviceLocation

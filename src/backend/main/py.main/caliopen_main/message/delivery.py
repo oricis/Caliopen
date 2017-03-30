@@ -9,13 +9,14 @@ from ..user.core import ContactLookup, User
 from caliopen_main.objects.message import Message
 from caliopen_main.message.core import RawMessage, UserRawLookup
 
-from ..message.core import (Discussion, DiscussionMessageLookup,
-                            DiscussionRecipientLookup,
-                            DiscussionExternalLookup)
+from caliopen_main.discussion.core.discussion import (Discussion,
+                                                      DiscussionMessageLookup,
+                                                      DiscussionRecipientLookup,
+                                                      DiscussionExternalLookup)
 
 from caliopen_main.message.qualifier import UserMessageQualifier
 
-from ..message.parameters import Recipient
+from ..message.parameters.message import Recipient
 # XXX use a message formatter registry not directly mail format
 from ..message.format import MailMessage
 
@@ -23,7 +24,6 @@ log = logging.getLogger(__name__)
 
 
 class UserMessageDelivery(object):
-
     """User message delivery processing."""
 
     _lookups = {
