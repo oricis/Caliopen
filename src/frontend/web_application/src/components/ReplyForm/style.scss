@@ -2,7 +2,7 @@
 
 .m-reply {
   @include flex-grid-row($size: expand);
-  font-size: .9rem;
+  font-size: $co-font__size--small;
 
   &__avatar {
     @include flex-grid-column(shrink);
