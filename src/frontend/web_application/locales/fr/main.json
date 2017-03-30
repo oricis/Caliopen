@@ -104,7 +104,7 @@
     "header.menu.toggle-navigation": "Afficher/Masquer la navigation",
     "header.menu.toggle-search-form": "Afficher/Masquer le champ de recherche",
     "messages.compose.action.send": "Envoyer",
-    "messages.compose.action.save": "Sauvergarder",
+    "messages.compose.action.save": "Sauvegarder",
     "messages.compose.form.body.label": "Message...",
     "messages.compose.form.body.placeholder": "Message...",
     "openpgp.action.remove-key": "Supprimer",

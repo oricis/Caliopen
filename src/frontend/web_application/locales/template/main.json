@@ -103,6 +103,7 @@
     "header.menu.signout": "header.menu.signout",
     "header.menu.toggle-navigation": "header.menu.toggle-navigation",
     "header.menu.toggle-search-form": "header.menu.toggle-search-form",
+    "messages.compose.action.copy": "messages.compose.action.copy",
     "messages.compose.action.send": "messages.compose.action.send",
     "messages.compose.action.save": "messages.compose.action.save",
     "messages.compose.form.body.label": "messages.compose.form.body.label",

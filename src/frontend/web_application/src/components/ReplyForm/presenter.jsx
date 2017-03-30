@@ -33,6 +33,7 @@ class ReplyForm extends Component {
     super(props);
     this.state = {
       draftMessage: {},
+      isActive: true,
       protocol: 'email',
     };
     this.handleSend = this.handleSend.bind(this);
@@ -67,6 +68,12 @@ class ReplyForm extends Component {
     });
   }
 
+  handleActiveClick() {
+    this.setState(prevState => ({
+      isActive: !prevState.isActive,
+    }));
+  }
+
   render() {
     const { user, __ } = this.props;
 
@@ -75,17 +82,15 @@ class ReplyForm extends Component {
         <div className="m-reply__avatar"><ContactAvatarLetter contact={user.contact} /></div>
         <form method="POST" className="m-reply__form">
           <TopRow className="m-reply__top-bar">
-            <div className="m-reply__author">{__('You')}</div>
-            <div className="m-reply__type">
-              <Button
-                className="m-reply__type-selector"
-                disabled
-              >
+            <div className="m-reply__top-bar-info">
+              <span className="m-reply__author">{__('You')}</span>
+              <Button className="m-reply__type-selector" disabled>
                 {__('by')} {__(this.state.protocol)} <Icon type="angle-down" spaced />
               </Button>
             </div>
+
             <div className="m-reply__top-actions-switcher">
-              <Button>
+              <Button onClick={this.handleActiveClick}>
                 <Icon type="ellipsis-v" />
               </Button>
             </div>
@@ -99,12 +104,13 @@ class ReplyForm extends Component {
           </BodyRow>
           <BottomRow className="m-reply__bottom-bar">
             <div className="m-reply__actions">
-              <Button className="m-reply__action-button" onClick={this.handleSend}>{__('messages.compose.action.send')}</Button>
-              <Button className="m-reply__action-button" onClick={this.handleSave}>{__('messages.compose.action.save')}</Button>
+              <Button className="m-reply__action-button" onClick={this.handleSend}><Icon type="send" spaced /> {__('messages.compose.action.send')}</Button>
+              <Button className="m-reply__action-button" onClick={this.handleSave}><Icon type="save" spaced /> {__('messages.compose.action.save')}</Button>
+              <Button className="m-reply__action-button"><Icon type="share-alt" spaced /> {__('messages.compose.action.copy')}</Button>
             </div>
 
             <div className="m-reply__editor">
-              <Button className="m-reply__action-button" onClick={this.handleSave}><Icon type="editor" spaced /></Button>
+              <Button className="m-reply__action-button" onClick={this.handleSave}><Icon type="editor" /></Button>
             </div>
           </BottomRow>
         </form>
