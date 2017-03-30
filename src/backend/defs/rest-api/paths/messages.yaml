@@ -211,6 +211,10 @@ messages_{message_id}_actions:
     consumes:
     - application/json
     parameters:
+    - name: message_id
+      in: path
+      type: string
+      required: true
     - name: actions
       in: body
       required: true

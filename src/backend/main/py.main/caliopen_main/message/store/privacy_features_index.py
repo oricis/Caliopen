@@ -13,3 +13,4 @@ class IndexedPrivacyFeatures(dsl.InnerObjectWrapper):
 
     """privacy features indexed model."""
 
+    empty_is_boring = dsl.Boolean()

@@ -3,8 +3,9 @@ import logging
 from cornice.resource import resource, view
 from pyramid.httpexceptions import HTTPExpectationFailed
 
-from caliopen_main.message.core import (MainView, Discussion as UserDiscussion,
-                                        ReturnDiscussion)
+from caliopen_main.discussion.core.discussion import (MainView,
+                                                      Discussion as UserDiscussion,
+                                                      ReturnDiscussion)
 from ..base import Api
 from caliopen_storage.exception import NotFound
 from ..base.exception import ResourceNotFound
@@ -15,7 +16,6 @@ log = logging.getLogger(__name__)
 @resource(collection_path='/discussions',
           path='/discussions/{discussion_id}')
 class Discussion(Api):
-
     def __init__(self, request):
         self.request = request
         self.user = request.authenticated_userid

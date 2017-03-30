@@ -97,9 +97,7 @@ class UserMessageDelivery(object):
         ####should have :
         #
         # message = Message.unmarshall_raw_email(user, message)
-        # message.create_db()
-        # message.create_index()
-        # UserMessageQualifier(message).process_inbound()
+        # self.process_message(message.user_id, message.message_id)
 
     def process_message(self, user_id, msg_id):
         """

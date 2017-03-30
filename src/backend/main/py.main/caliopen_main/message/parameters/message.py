@@ -7,78 +7,18 @@ from schematics.types import (StringType, DateTimeType,
 from schematics.types.compound import ListType, ModelType
 from schematics.transforms import blacklist
 from caliopen_main.user.parameters import ResourceTag
+from caliopen_main.message.parameters.attachment import Attachment
+from caliopen_main.message.parameters.external_references import \
+    ExternalReferences
+from caliopen_main.message.parameters.participant import Participant
+from caliopen_main.message.parameters.privacy_features import PrivacyFeatures
+
+from caliopen_main.user.parameters.identity import Identity
 
 RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc', 'reply-to', 'sender']
 MESSAGE_TYPES = ['email']
 MESSAGE_STATES = ['draft', 'sending', 'sent', 'cancel',
                   'unread', 'read', 'deleted']
-
-
-class Attachment(Model):
-    content_type = StringType()
-
-
-class ExternalReferences(Model):
-    todo = StringType()
-
-
-class Identity(Model):
-    todo = StringType()
-
-
-class Participant(Model):
-    todo = StringType()
-
-
-class PrivacyFeatures(Model):
-    todo = StringType()
-
-class Recipient(Model):
-    """Store a contact reference and one of it's address used in a message."""
-
-    address = StringType(required=True)
-    label = StringType(required=True)
-    type = StringType(required=True, choices=RECIPIENT_TYPES)
-    protocol = StringType(choices=MESSAGE_TYPES)
-    contact_id = UUIDType()
-
-    class Options:
-        serialize_when_none = False
-
-
-class Discussion(Model):
-    """Existing discussion."""
-
-    user_id = UUIDType()
-    discussion_id = UUIDType(required=True)
-    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
-                               tzd=u'utc')
-    date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
-                               tzd=u'utc')
-    text = StringType(required=True)
-    privacy_index = IntType(required=True, default=0)
-    importance_level = IntType(required=True, default=0)
-    contacts = ListType(ModelType(Recipient), default=lambda: [])
-    total_count = IntType(required=True, default=0)
-    unread_count = IntType(required=True, default=0)
-    attachment_count = IntType(default=0)
-
-    class Options:
-        roles = {'default': blacklist('user_id')}
-        serialize_when_none = False
-
-
-class Part(Model):
-    """Message part."""
-
-    content_type = StringType(required=True)
-    filename = StringType()
-    data = StringType()
-    size = IntType()
-    can_index = BooleanType()
-
-    class Options:
-        serialize_when_none = False
 
 
 class NewMessage(Model):
@@ -98,7 +38,7 @@ class NewMessage(Model):
     is_unread = BooleanType()
     parent_id = StringType()
     participants = ListType(ModelType(Participant),
-                          default=lambda: [])
+                            default=lambda: [])
     privacy_features = ModelType(PrivacyFeatures)
     subject = StringType()
     tags = ListType(ModelType(ResourceTag), default=lambda: [])
@@ -120,4 +60,17 @@ class Message(NewMessage):
 
     class Options:
         roles = {'default': blacklist('user_id')}
+        serialize_when_none = False
+
+
+class Part(Model):
+    """Message part."""
+
+    content_type = StringType(required=True)
+    filename = StringType()
+    data = StringType()
+    size = IntType()
+    can_index = BooleanType()
+
+    class Options:
         serialize_when_none = False

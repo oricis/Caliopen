@@ -10,14 +10,17 @@ from caliopen_storage.exception import NotFound
 from caliopen_storage.core import BaseUserCore
 from caliopen_storage.parameters import ReturnCoreObject
 
-from ..store import  \
+from caliopen_main.discussion.store.discussion import \
     (DiscussionExternalLookup as ModelExternalLookup,
      DiscussionRecipientLookup as ModelRecipientLookup,
      DiscussionMessageLookup as ModelMessageLookup,
      Discussion as ModelDiscussion,
-     DiscussionCounter as ModelCounter,
-     DiscussionIndexManager as DIM)
-from ..parameters import Discussion as DiscussionParam, Recipient
+     DiscussionCounter as ModelCounter)
+from caliopen_main.discussion.store.discussion_index import \
+    DiscussionIndexManager as DIM
+
+from caliopen_main.discussion.parameters import Discussion as DiscussionParam
+from caliopen_main.message.parameters.participant import Participant
 
 log = logging.getLogger(__name__)
 
@@ -80,8 +83,10 @@ def build_discussion(discussion, index_message):
     # TODO
     # discussion.privacy_index = index_message.privacy_index
     # XXX Only last message recipient at this time
+
+    ###TODO : [WIP] change recipients to participants
     for rec in index_message.recipients:
-        recipient = Recipient()
+        recipient = Participant()
         recipient.address = rec['address']
         recipient.label = rec['label']
         recipient.type = rec['type']
@@ -97,7 +102,6 @@ def build_discussion(discussion, index_message):
 
 
 class MainView(object):
-
     """Build main view return structure from index messages."""
 
     def build_responses(self, user, messages):
@@ -117,7 +121,6 @@ class MainView(object):
 
 
 class Discussion(BaseUserCore):
-
     """Discussion core object."""
 
     _model_class = ModelDiscussion
@@ -130,7 +133,7 @@ class Discussion(BaseUserCore):
         new_id = uuid.uuid4()
         kwargs = {'discussion_id': new_id,
                   'date_insert': datetime.utcnow(),
-                  #'privacy_index': message.privacy_index,
+                  # 'privacy_index': message.privacy_index,
                   'importance_level': message.importance_level,
                   'excerpt': message.body[:200],
                   }
@@ -202,6 +205,5 @@ class Discussion(BaseUserCore):
 
 
 class ReturnDiscussion(ReturnCoreObject):
-
     _core_class = Discussion
     _return_class = DiscussionParam

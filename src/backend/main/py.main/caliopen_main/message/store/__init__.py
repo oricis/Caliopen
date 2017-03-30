@@ -3,10 +3,13 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from .attachment import MessageAttachment
 from .attachment_index import IndexedMessageAttachment
-from .discussion import (Discussion, DiscussionCounter,
-                         DiscussionExternalLookup, DiscussionMessageLookup,
-                         DiscussionRecipientLookup)
-from .discussion_index import DiscussionIndexManager
+from caliopen_main.discussion.store.discussion import (Discussion,
+                                                       DiscussionCounter,
+                                                       DiscussionExternalLookup,
+                                                       DiscussionMessageLookup,
+                                                       DiscussionRecipientLookup)
+from caliopen_main.discussion.store.discussion_index import \
+    DiscussionIndexManager
 from .external_references import ExternalReferences
 from .external_references_index import IndexedExternalReferences
 from .message import Message

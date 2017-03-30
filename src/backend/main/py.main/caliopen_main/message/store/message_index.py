@@ -11,7 +11,7 @@ from caliopen_main.message.store.external_references_index import \
     IndexedExternalReferences
 from caliopen_main.user.store.local_identity_index import IndexedIdentity
 from caliopen_main.message.store.participant_index import IndexedParticipant
-from caliopen_main.user.store.privacy_features_index import \
+from caliopen_main.message.store.privacy_features_index import \
     IndexedPrivacyFeatures
 
 

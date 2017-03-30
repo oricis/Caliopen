@@ -7,7 +7,7 @@ from cassandra.cqlengine import columns
 from caliopen_storage.store.model import BaseModel
 from caliopen_storage.store.mixin import IndexedModelMixin
 from caliopen_main.user.store.tag import ResourceTag
-from caliopen_main.user.store.privacy_features import PrivacyFeatures
+from caliopen_main.message.store.privacy_features import PrivacyFeatures
 from caliopen_main.user.store.local_identity import Identity
 
 from .attachment import MessageAttachment

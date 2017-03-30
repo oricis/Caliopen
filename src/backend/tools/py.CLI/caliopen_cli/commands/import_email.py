@@ -59,8 +59,9 @@ def import_email(email, import_path, format, **kwargs):
         msgs.append(MailMessage(mail))
 
     msgs = sorted(msgs, key=lambda msg: msg.date)
-    for msg in msgs:
-        log.info('Processing mail %s' % key)
+    total_msgs = len(msgs)
+    for i, msg in enumerate(msgs, 1):
+        log.info('Processing mail {}/{}'.format(i, total_msgs))
         for type, addresses in msg.recipients.iteritems():
             if not addresses:
                 continue
@@ -78,8 +79,9 @@ def import_email(email, import_path, format, **kwargs):
                         contact.emails = [e_mail]
                     contact.privacy_index = random.randint(0, 100)
                     Contact.create(user, contact)
-    for msg in msg:  # injection is made here to test smtp delivery speed
-        log.info('Injecting mail %s' % key)
+    for i, msg in enumerate(msgs,
+                            1):  # injection is made here to test smtp delivery speed
+        log.info('Injecting mail {}/{}'.format(i, total_msgs))
         smtp = smtplib.SMTP(host="localhost", port=2525)
         smtp.sendmail("maibox_importer@py.caliopen.cli", rcpts,
                       msg.mail.as_string())

@@ -11,8 +11,9 @@ from .tag_index import IndexedResourceTag
 from .device import Device, DeviceLocation, DeviceConnectionLog, DevicePublicKey
 from .local_identity_index import IndexedLocalIdentity
 from .local_identity import LocalIdentity
-from .privacy_features import PrivacyFeatures
-from .privacy_features_index import IndexedPrivacyFeatures
+from caliopen_main.message.store.privacy_features import PrivacyFeatures
+from caliopen_main.message.store.privacy_features_index import \
+    IndexedPrivacyFeatures
 
 __all__ = [
     'User', 'UserName', 'Counter', 'UserTag', 'FilterRule', 'ReservedName',

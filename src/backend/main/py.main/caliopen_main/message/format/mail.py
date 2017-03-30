@@ -17,7 +17,7 @@ from mailbox import Message
 from datetime import datetime
 from email.utils import parsedate_tz, mktime_tz
 
-from ..parameters import NewMessage, Part
+from caliopen_main.message.parameters.message import NewMessage, Part
 from caliopen_main.user.helpers.normalize import clean_email_address
 
 

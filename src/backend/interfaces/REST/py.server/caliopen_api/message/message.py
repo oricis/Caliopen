@@ -7,11 +7,11 @@ import logging
 from cornice.resource import resource, view
 from pyramid.response import Response
 
-from caliopen_main.objects.message import Message
-from caliopen_main.message.parameters import NewMessage
+from caliopen_main.objects.message import Message as ObjectMessage
+from caliopen_main.message.parameters.message import NewMessage
+from caliopen_main.message.core.raw import RawMessage
 
 from ..base import Api
-from ..base.exception import ResourceNotFound
 
 from ..base.exception import (ResourceNotFound,
                               ValidationError,
@@ -21,8 +21,8 @@ from ..base.exception import (ResourceNotFound,
 log = logging.getLogger(__name__)
 
 
-@resource(collection_path='/discussions/{discussion_id}/messages',
-          path='/discussions/{discussion_id}/messages/{message_id}')
+@resource(collection_path='/messages',
+          path='/messages/{message_id}')
 class Message(Api):
 
     def __init__(self, request):
@@ -87,6 +87,15 @@ class Message(Api):
         return idx_msg
 
     @view(renderer='json', permission='authenticated')
+    def get(self):
+        # pi_range = self.request.authenticated_userid.pi_range
+        message_id = self.request.swagger_data["message_id"]
+        message = ObjectMessage(self.user.user_id, message_id=message_id)
+        message.get_db()
+        message.unmarshall_db()
+        return message.marshall_json_dict()
+
+    @view(renderer='json', permission='authenticated')
     def patch(self):
         """Update a message with payload.
 
@@ -109,6 +118,20 @@ class Message(Api):
 
         return Response(None, 204)
 
+    @view(renderer='json', permission='authenticated')
+    def delete(self):
+        raise MethodNotAllowed  # TODO
+
+
+@resource(path='/messages/{message_id}/actions')
+class MessageActions(Api):
+    def __init__(self, request):
+        self.request = request
+        self.user = request.authenticated_userid
+
+    @view(renderer='json', permission='authenticated')
+    def post(self):
+        raise MethodNotAllowed  #TODO
 
 @resource(path='/raws/{raw_msg_id}')
 class Raw(Api):
@@ -121,7 +144,7 @@ class Raw(Api):
     def get(self):
         # XXX how to check privacy_index ?
         raw_msg_id = self.request.matchdict.get('raw_msg_id')
-        raw = Message.get_for_user(self.user.user_id, raw_msg_id)
+        raw = RawMessage.get_for_user(self.user.user_id, raw_msg_id)
         if raw:
-            return raw.data
+            return raw.raw_data
         raise ResourceNotFound('No such message')

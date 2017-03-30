@@ -1,7 +1,7 @@
 ---
 swagger: '2.0'
 info:
-  version: 0.1.0
+  version: 0.2.0
   title: Caliopen HTTP/REST API
 schemes:
 - http
@@ -26,11 +26,11 @@ paths:
     "$ref": paths/discussions.yaml#/discussions
   "/v1/discussions/{discussion_id}":
     "$ref": paths/discussions.yaml#/discussions_{discussion_id}
-  "/v2/messages":
+  "/v1/messages":
     "$ref": paths/messages.yaml#/messages
-  "/v2/messages/{message_id}":
+  "/v1/messages/{message_id}":
     "$ref": paths/messages.yaml#/messages_{message_id}
-  "/v2/messages/{message_id}/actions":
+  "/v1/messages/{message_id}/actions":
     "$ref": paths/messages.yaml#/messages_{message_id}_actions
   "/v1/raws/{raw_msg_id}":
     "$ref": paths/raws.yaml#/raws_{raw_msg_id}
