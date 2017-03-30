@@ -4,11 +4,7 @@ import Icon from '../Icon';
 import ContactAvatarLetter from '../ContactAvatarLetter';
 import DiscussionDraft, { TopRow, BodyRow, BottomRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
-import Dropdown, { withDropdownControl } from '../DropdownMenu';
-import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
 import './style.scss';
-
-const DropdownControl = withDropdownControl(Button);
 
 function generateStateFromProps(props, prevState) {
   return {
@@ -37,6 +33,7 @@ class ReplyForm extends Component {
     super(props);
     this.state = {
       draftMessage: {},
+      protocol: 'email',
     };
     this.handleSend = this.handleSend.bind(this);
     this.handleSave = this.handleSave.bind(this);
@@ -78,40 +75,17 @@ class ReplyForm extends Component {
         <div className="m-reply__avatar"><ContactAvatarLetter contact={user.contact} /></div>
         <form method="POST" className="m-reply__form">
           <TopRow className="m-reply__top-bar">
-            <div className="m-reply__author">{__('me')}</div>
+            <div className="m-reply__author">{__('You')}</div>
             <div className="m-reply__type">
-              <DropdownControl
-                toggle="this"
-                className=""
-                plain
+              <Button
+                className="m-reply__type-selector"
+                disabled
               >
-                {__('discussion-item-actions.action.more')} <Icon type="angle-down" className="m-reply__type-ico" spaced />
-              </DropdownControl>
-              <Dropdown
-                id="this"
-                position="bottom"
-                closeOnClick
-              >
-
-                    <Button
-                      className="m-discussion-item-actions-container__menu-button"
-                      expanded
-                    >{__('by email')} <Icon type="email" className="m-reply__type-ico" spaced /></Button>
-
-
-                    <Button
-                      className="m-discussion-item-actions-container__menu-button"
-                      expanded
-                    >{__('by other protocol')} <Icon type="email" className="m-reply__type-ico" spaced /></Button>
-
-
-              </Dropdown>
-
+                {__('by')} {__(this.state.protocol)} <Icon type="angle-down" spaced />
+              </Button>
             </div>
             <div className="m-reply__top-actions-switcher">
-              <Button
-                title={__('more actions')}
-              >
+              <Button>
                 <Icon type="ellipsis-v" />
               </Button>
             </div>
@@ -124,9 +98,14 @@ class ReplyForm extends Component {
             />
           </BodyRow>
           <BottomRow className="m-reply__bottom-bar">
-            <Button className="m-reply__action-button" onClick={this.handleSend}>{__('messages.compose.action.send')}</Button>
-            {' '}
-            <Button className="m-reply__action-button" onClick={this.handleSave}>{__('messages.compose.action.save')}</Button>
+            <div className="m-reply__actions">
+              <Button className="m-reply__action-button" onClick={this.handleSend}>{__('messages.compose.action.send')}</Button>
+              <Button className="m-reply__action-button" onClick={this.handleSave}>{__('messages.compose.action.save')}</Button>
+            </div>
+
+            <div className="m-reply__editor">
+              <Button className="m-reply__action-button" onClick={this.handleSave}><Icon type="editor" spaced /></Button>
+            </div>
           </BottomRow>
         </form>
       </DiscussionDraft>

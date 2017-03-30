@@ -2,6 +2,7 @@
 
 .m-reply {
   @include flex-grid-row($size: expand);
+  font-size: .9rem;
 
   &__avatar {
     @include flex-grid-column(shrink);
@@ -12,7 +13,7 @@
   }
 
   &__top-bar {
-    @include flex-grid-row;
+    @include flex-grid-row($size: expand);
     align-items: center;
     border-bottom: 1px solid $co-color__bg__back;
     background: $co-color__fg__back--high;
@@ -20,20 +21,19 @@
 
   &__top-actions-switcher {
     @include flex-grid-size(shrink);
-    margin-left: auto; //flex-ish way to right-align column
+    margin-left: auto;
+    border-left: 1px solid $co-color__bg__back;
   }
 
-  &__author,
   &__type {
-    @include flex-grid-column(shrink);
+    @include flex-grid-size(shrink);
   }
 
   &__author {
+    @include flex-grid-column(shrink);
     color: $co-color__fg__text;
     font-weight: 600;
   }
-
-  &__type-ico {color: $co-color__fg__text}
 
   &__body {
     padding: $co-component__spacing;
@@ -41,13 +41,20 @@
   }
 
   &__bottom-bar {
+    @include flex-grid-row($size: expand);
+    justify-content: space-between;
     padding: $co-component__spacing;
     border-top: 1px solid $co-color__bg__back;
-    background: $co-color__fg__back--high;
+    background: $co-color__fg__back;
+  }
+
+  &__actions,
+  &__editor {
+    @include flex-grid-size(shrink);
   }
 
   &__action-button {
     margin: $co-component__spacing;
-    background: $co-color__fg__back--higher;
+    background: $co-color__fg__back--high;
   }
 }

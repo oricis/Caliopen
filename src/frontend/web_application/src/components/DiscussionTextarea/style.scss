@@ -1,12 +1,11 @@
-@import '../../styles/vendor/bootstrap_foundation-sites';
+@import '../../styles/common';
 
 .m-discussion-textarea {
   &__body {
     width: 100%;
-    min-height: $co-component__height;
+    min-height: 3 * $co-component__height;
     border: 0;
     background: transparent;
     color: $co-color__fg__text--high;
   }
-
 }
