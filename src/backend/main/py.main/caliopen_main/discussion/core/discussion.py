@@ -74,17 +74,16 @@ class Counter(BaseUserCore):
 
 def build_discussion(discussion, index_message):
     """Temporary build of output Discussion return parameter."""
-    discussion = DiscussionParam()
-    discussion.user_id = discussion.user_id
-    discussion.discussion_id = index_message.discussion_id
-    discussion.date_insert = discussion.date_insert
-    discussion.date_update = index_message.date_insert
-    discussion.excerpt = index_message.body[:100]
+    discuss = DiscussionParam()
+    discuss.user_id = discussion.user_id
+    discuss.discussion_id = index_message.discussion_id
+    discuss.date_insert = discussion.date_insert
+    discuss.date_update = index_message.date_insert
+    discuss.excerpt = index_message.body[:100]
     # TODO
     # discussion.privacy_index = index_message.privacy_index
     # XXX Only last message recipient at this time
 
-    ###TODO : [WIP] change recipients to participants
     for part in index_message.participants:
         participant = Participant()
         participant.address = part['address']
@@ -93,12 +92,12 @@ def build_discussion(discussion, index_message):
         if 'contact_id' in part:  # 'recipient' of type 'from' may not be Contact
             participant.contact_id = part['contact_id']
         participant.protocol = part['protocol']
-        discussion.contacts.append(participant)
+        discuss.contacts.append(participant)
     # XXX Missing values (at least other in parameter to fill)
-    discussion.total_count = discussion.total_count
-    discussion.unread_count = discussion.unread_count
-    discussion.attachment_count = discussion.attachment_count
-    return discussion.serialize()
+    discuss.total_count = discussion.total_count
+    discuss.unread_count = discussion.unread_count
+    discuss.attachment_count = discussion.attachment_count
+    return discuss.serialize()
 
 
 class MainView(object):
