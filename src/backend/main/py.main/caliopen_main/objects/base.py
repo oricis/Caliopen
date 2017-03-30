@@ -80,7 +80,7 @@ class ObjectDictifiable(CaliopenObject):
 
         self_dict = {}
         for att, val in vars(self).items():
-            if not att.startswith("_"):
+            if not att.startswith("_") and val is not None:
                 if isinstance(self._attrs[att], types.ListType):
                     lst = []
                     if len(att) > 0:
@@ -105,7 +105,7 @@ class ObjectDictifiable(CaliopenObject):
         all self.attrs are reset if not in document
         """
         for attr, attrtype in self._attrs.items():
-            if attr in document:
+            if attr in document and document[attr] is not None:
                 if isinstance(attrtype, list):
                     lst = []
                     if issubclass(attrtype[0], ObjectDictifiable):
@@ -196,14 +196,14 @@ class ObjectStorable(ObjectJsonDictifiable):
 
         return None
 
-    def create_db(self, **options):
-        try:
-            self._db.create()
-        except Exception as exc:
-            log.info(exc)
-            return exc
-
-        return None
+    # def create_db(self, **options):
+    #     try:
+    #         self._db.create()
+    #     except Exception as exc:
+    #         log.info(exc)
+    #         return exc
+    #
+    #     return None
 
     def delete_db(self, **options):
         try:

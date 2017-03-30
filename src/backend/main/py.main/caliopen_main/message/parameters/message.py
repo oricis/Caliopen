@@ -16,7 +16,7 @@ from caliopen_main.message.parameters.privacy_features import PrivacyFeatures
 
 from caliopen_main.user.parameters.identity import Identity
 
-RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc', 'reply-to', 'sender']
+RECIPIENT_TYPES = ['To', 'From', 'Cc', 'Bcc', 'Reply-To', 'Sender']
 MESSAGE_TYPES = ['email']
 MESSAGE_STATES = ['draft', 'sending', 'sent', 'cancel',
                   'unread', 'read', 'deleted']
@@ -26,9 +26,8 @@ class NewMessage(Model):
     """New message parameter."""
 
     attachments = ListType(ModelType(Attachment), default=lambda: [])
-    body = StringType(required=True)
-    date = DateTimeType(required=True,
-                        serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+    body = StringType()
+    date = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
                         tzd=u'utc')
     discussion_id = UUIDType()
     external_references = ModelType(ParamExternalReferences)
@@ -39,11 +38,11 @@ class NewMessage(Model):
     is_unread = BooleanType()
     parent_id = StringType()
     participants = ListType(ModelType(Participant),
-                            default=lambda: [])
+                            default=lambda: [], required=True)
     privacy_features = ModelType(PrivacyFeatures)
     subject = StringType()
     tags = ListType(ModelType(ResourceTag), default=lambda: [])
-    type = StringType(required=True, choices=MESSAGE_TYPES)
+    type = StringType(choices=MESSAGE_TYPES)
 
     class Options:
         serialize_when_none = False

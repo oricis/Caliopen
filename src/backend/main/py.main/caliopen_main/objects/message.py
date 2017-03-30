@@ -5,11 +5,13 @@ from __future__ import absolute_import, print_function, unicode_literals
 import types
 from caliopen_main.objects import base
 
+import uuid
 from uuid import UUID
 import datetime
 from caliopen_main.message.store import Message as ModelMessage
 from caliopen_main.message.store import IndexedMessage
-from caliopen_main.message.parameters.message import Message as ParamMessage
+from caliopen_main.message.parameters.message import (Message as ParamMessage,
+                                                      NewMessage)
 from caliopen_main.message.core import RawMessage
 from .tag import ResourceTag
 from .attachment import MessageAttachment
@@ -19,11 +21,11 @@ from .participant import Participant
 from .privacy_features import PrivacyFeatures
 
 import logging
+
 log = logging.getLogger(__name__)
 
 
 class Message(base.ObjectIndexable):
-
     # TODO : manage attrs that should not be editable directly by users
     _attrs = {
         'attachments': [MessageAttachment],
@@ -71,3 +73,28 @@ class Message(base.ObjectIndexable):
         """Return json representation of pristine raw message."""
         msg = RawMessage.get_for_user(self.user_id, self.raw_msg_id)
         return msg.json_rep
+
+    @classmethod
+    def create_draft(cls, user_id=None, **params):
+        """create and save a new message (draft) for an user
+        
+        :params: a NewMessage dict
+        """
+        if user_id is None or user_id is "":
+            raise ValueError
+
+        try:
+            message_param = NewMessage(params)
+            message_param.validate()
+        except Exception as exc:
+            raise exc
+        message = Message()
+        message.unmarshall_json_dict(params)
+        message.user_id = UUID(user_id)
+        message.message_id = uuid.uuid4()
+        message.is_draft = True
+
+        message.marshall_db()
+        print(vars(message))
+        message.save_db()
+        return message

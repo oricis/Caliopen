@@ -17,6 +17,7 @@ from ..base.exception import (ResourceNotFound,
                               ValidationError,
                               MethodNotAllowed,
                               MergePatchError)
+from pyramid.httpexceptions import HTTPServerError
 
 log = logging.getLogger(__name__)
 
@@ -56,34 +57,55 @@ class Message(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
-        discussion_id = self.request.matchdict.get('discussion_id')
-        reply_to = self.request.json.get('reply_to')
-        if reply_to:
-            parent = Message.get(self.user, reply_to)
-            parent_message_id = parent.external_id
-            discussion_id = parent.discussion_id
-            pi_value = parent.privacy_index
-        else:
-            parent_message_id = None
-            discussion_id = None
-            # XXX : how to compute ?
-            pi_value = 0
-        recipients = self.extract_recipients()
-        # XXX : make recipient for UserMessage using Recipient class
-        subject = self.request.json.get('subject')
-        text = self.request.json.get('text')
-        tags = self.request.json.get('tags', [])
-        new_msg = NewMessage(recipients,
-                             subject=subject,
-                             text=text, tags=tags,
-                             date=datetime.utcnow(),
-                             privacy_index=pi_value,
-                             thread_id=discussion_id,
-                             parent_message_id=parent_message_id)
-        msg = Message.create(self.user, new_msg)
-        idx_msg = Message.get(self.user, msg.message_id)
-        log.info('Post new message %r' % msg.message_id)
-        # XXX return redirect to newly created message ?
+        data = self.request.json
+        message_param = NewMessage(data)
+        try:
+            message_param.validate()
+        except Exception as exc:
+            raise ValidationError(exc)
+        try:
+            message = ObjectMessage().create_draft(user_id=self.user.user_id,
+                                                   **message_param)
+            print(message)
+        except Exception as exc:
+            log.warn(exc)
+            raise HTTPServerError
+
+        message_url = self.request.route_path('message',
+                                              message_id=str(
+                                                  message.message_id))
+
+        self.request.response.location = message_url.encode('utf-8')
+        return {'location': message_url}
+
+        # discussion_id = self.request.matchdict.get('discussion_id')
+        # reply_to = self.request.json.get('reply_to')
+        # if reply_to:
+        #     parent = Message.get(self.user, reply_to)
+        #     parent_message_id = parent.external_id
+        #     discussion_id = parent.discussion_id
+        #     pi_value = parent.privacy_index
+        # else:
+        #     parent_message_id = None
+        #     discussion_id = None
+        #     # XXX : how to compute ?
+        #     pi_value = 0
+        # recipients = self.extract_recipients()
+        # # XXX : make recipient for UserMessage using Recipient class
+        # subject = self.request.json.get('subject')
+        # text = self.request.json.get('text')
+        # tags = self.request.json.get('tags', [])
+        # new_msg = NewMessage(recipients,
+        #                      subject=subject,
+        #                      text=text, tags=tags,
+        #                      date=datetime.utcnow(),
+        #                      privacy_index=pi_value,
+        #                      thread_id=discussion_id,
+        #                      parent_message_id=parent_message_id)
+        # msg = Message.create(self.user, new_msg)
+        # idx_msg = Message.get(self.user, msg.message_id)
+        # log.info('Post new message %r' % msg.message_id)
+        # # XXX return redirect to newly created message ?
         return idx_msg
 
     @view(renderer='json', permission='authenticated')
