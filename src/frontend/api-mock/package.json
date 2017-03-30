@@ -1,0 +1,23 @@
+{
+  "name": "api-mock",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "babel-core": "^6.24.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "bouchon": "^0.4.0",
+    "uuid": "^3.0.1"
+  },
+  "scripts": {
+    "start": "bouchon -d . -p 31415"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-2"
+    ]
+  }
+}

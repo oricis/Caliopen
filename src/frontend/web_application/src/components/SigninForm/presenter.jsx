@@ -62,7 +62,7 @@ class SigninForm extends Component {
 
     return (
       <div className="s-signin">
-        <FormGrid className="s-signin__form" {...form}>
+        <FormGrid method="post" className="s-signin__form" {...form}>
           { errors.global && (
             <FormColumn bottomSpace>
               <FormRow>

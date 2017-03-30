@@ -1,66 +1,122 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-message {
-  border-bottom: 1px solid $co-color__bg__back;
-
-  &__top-bar {
-    @include flex-grid-row($size: expand);
-    align-items: center;
-    height: 2 * $co-component__height;
-    background: $co-color__fg__back--high;
-    color: $co-color__fg__text--high;
-
-    &--active {
-      background: $co-color__primary;
-    }
-  }
-
-  &__date,
-  &__type {
-    @include flex-grid-column(shrink);
-    font-weight: 600;
-  }
-
-  &__date {
-    text-align: right;
-  }
-
-  &__content {
-    @include flex-grid-row($size: expand);
-    padding-top: 2 * $co-component__spacing;
-    padding-bottom: 2 * $co-component__spacing;
-    border-top: 1px solid $co-color__bg__back;
-
-    &--active {
-      background: $co-color__primary--lower;
-      color: $co-color__primary__text;
-    }
-  }
+  @include flex-grid-row($size: expand);
+  margin-bottom: $co-grid__gutter;
+  font-size: .9rem;
 
   &__avatar {
     @include flex-grid-column(shrink);
-    text-align: right;
+    padding-top: $co-component__spacing;
+    text-align: center;
+  }
+
+  &__content { @include flex-grid-size; }
+
+  &__header {
+    @include flex-grid-row($size: expand);
+    align-items: stretch;
+    border-bottom: 1px solid $co-color__fg__back--lower;
+    background: $co-color__fg__back--higher;
+
+    &--active {
+      .m-message__actions-container {
+        right: 0;
+        transition: right .15s ease-out;
+      }
+
+      .m-message__actions-switcher {
+        background: $co-color__fg__back--high;
+      }
+    }
+  }
+
+  &__top-bar {
+    @include flex-grid-column;
+    @include flex-grid-row($size: expand);
+    position: relative;
+    overflow: hidden;
+  }
+
+  &__actions-switcher {
+    @include flex-grid-size(shrink);
+    border-left: 1px solid $co-color__fg__back--lower;
+    background: $co-color__fg__back--higher;
+
+    &:hover { background: $co-color__fg__back--higher; }
   }
 
   &__body {
-    @include flex-grid-column;
-  }
+    @include flex-grid-column(12);
+    padding-top: $co-component__spacing;
+    padding-bottom: $co-component__spacing;
+    background: $co-color__fg__back;
+    overflow: hidden;
 
-  @include breakpoint(medium) {
-    &__top-bar {
-      height: $co-component__height;
+    &__content {
+      padding: $co-component__spacing 0;
+      color: $co-color__fg__text--low;
+
+      &::after {
+        display: inline;
+        content: ' [...]';
+      }
+
+      &--expanded {
+        &::after {  display: none; }
+      }
     }
 
-    &__date,
-    &__avatar {
-      @include flex-grid-column(2);
+    &__subject {
+      color: $co-color__fg__text--lower;
+    }
+
+  }
+
+  &__expand {
+    @include flex-grid-size(12);
+    border-top: 1px solid $co-color__fg__back--lower;
+    background: $co-color__fg__back--high;
+    color: $co-color__fg__text--lower;
+    text-align: center;
+
+  }
+
+  &__actions-container {
+    @include flex-grid-size;
+    position: absolute;
+    right: -100%;
+    z-index: $l-z-index__actions-container;
+    transition: right .15s ease-out;
+    background: $co-color__fg__back--high;
+  }
+
+  &__infos-container {
+    @include flex-grid-size;
+    transition: .5s width;
+
+    &::after {
+      display: table-cell;
+      content: '';
+      clear: both;
     }
   }
 
-  @include breakpoint(large) {
-    &__date,
-    &__avatar {
-      @include flex-grid-column(1);
-    }
+  &__author,
+  &__type,
+  &__date {
+    display: inline-block;
+    padding: 0 $co-component__spacing 0 0;
+    line-height: $co-component__height;
   }
+
+  &__author {
+    color: $co-color__fg__text--high;
+    font-weight: 600;
+  }
+
+  &__date { float: right; }
+
+  &__type-ico {color: $co-color__fg__text}
+
 }

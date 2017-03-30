@@ -1,6 +1,10 @@
 const securityMiddleware = (req, res, next) => {
   const security = {
     firewalls: {
+      assets: {
+        paths: [/^\/assets\/.*$/, '/bundle.js'],
+        security: false,
+      },
       auth: {
         paths: ['/auth/signin', '/auth/signup', '/api/v2/username/isAvailable'],
         security: false,
@@ -10,8 +14,20 @@ const securityMiddleware = (req, res, next) => {
       },
     },
   };
+  const isRegexp = val => typeof val.test === 'function';
+  const hasRequestPath = (paths) => {
+    if (paths.indexOf(req.path) !== -1) {
+      return true;
+    }
 
-  const hasRequestPath = paths => paths.indexOf(req.path) !== -1;
+    return paths.filter(isRegexp).reduce((acc, path) => {
+      if (acc) {
+        return acc;
+      }
+
+      return path.test(req.path);
+    }, false);
+  };
 
   const isSecure = Object.keys(security.firewalls)
     .filter(key => key !== 'default')

@@ -106,8 +106,7 @@
     }
   },
   "required": [
-    "contact_id",
-    "user_id"
+    "contact_id"
   ],
   "additionalProperties": false
 }

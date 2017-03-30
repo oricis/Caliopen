@@ -1,11 +1,14 @@
 @import '../../styles/common';
 
+
 .m-discussion-textarea {
+  padding: $co-component__spacing;
+
   &__body {
+    @include o-form-element;
     width: 100%;
     min-height: 3 * $co-component__height;
     border: 0;
     background: transparent;
-    color: $co-color__fg__text--high;
   }
 }
