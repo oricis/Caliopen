@@ -16,7 +16,7 @@
     "start:desktop:electron": "NODE_ENV=development electron ./electron/",
     "start:smartphone": "npm-run-all --parallel --race build:smartphone:dev start:smartphone:android",
     "start:smartphone:android": "cd cordova && nodemon --watch www --exec 'cordova emulate android --debug'",
-    "start:mock-api": "../api-mock/bin/start",
+    "start:mock-api": "../../../devtools/api-mock/bin/start",
     "build:browser:test": "NODE_ENV=test DASHBOARD=false kotatsu build client --config webpack/webpack.config.browser.js",
     "build:server:test": "NODE_ENV=test DASHBOARD=false HAS_SSR=true HAS_HMR=false SERVER_API=mock kotatsu build server --source-maps false --config webpack/webpack.config.server.js",
     "build:desktop:dev": "NODE_ENV=development webpack-dashboard -- webpack --watch --config webpack/webpack.config.electron.js",
