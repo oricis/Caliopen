@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-"""Caliopen tag objects."""
 from __future__ import absolute_import, print_function, unicode_literals
 
 from cassandra.cqlengine import columns

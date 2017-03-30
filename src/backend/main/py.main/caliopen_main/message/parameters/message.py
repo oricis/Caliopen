@@ -6,10 +6,11 @@ from schematics.types import (StringType, DateTimeType,
                               IntType, UUIDType, BooleanType)
 from schematics.types.compound import ListType, ModelType
 from schematics.transforms import blacklist
+
 from caliopen_main.user.parameters import ResourceTag
 from caliopen_main.message.parameters.attachment import Attachment
 from caliopen_main.message.parameters.external_references import \
-    ExternalReferences
+    ExternalReferences as ParamExternalReferences
 from caliopen_main.message.parameters.participant import Participant
 from caliopen_main.message.parameters.privacy_features import PrivacyFeatures
 
@@ -30,7 +31,7 @@ class NewMessage(Model):
                         serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
                         tzd=u'utc')
     discussion_id = UUIDType()
-    external_references = ModelType(ExternalReferences)
+    external_references = ModelType(ParamExternalReferences)
     identities = ListType(ModelType(Identity), default=lambda: [])
     importance_level = IntType(default=0)
     is_answered = BooleanType()
@@ -57,9 +58,10 @@ class Message(NewMessage):
     date_insert = DateTimeType(required=True,
                                serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
                                tzd=u'utc')
+    date_delete = DateTimeType()
 
     class Options:
-        roles = {'default': blacklist('user_id')}
+        roles = {'default': blacklist('user_id', 'date_delete')}
         serialize_when_none = False
 
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-"""Caliopen index classes for nested tag."""
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging

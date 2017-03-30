@@ -3862,20 +3862,6 @@
                         "type": "string"
                       }
                     },
-                    "required": [
-                      "date",
-                      "date_insert",
-                      "discussion_id",
-                      "identities",
-                      "is_answered",
-                      "is_draft",
-                      "is_inread",
-                      "message_id",
-                      "raw_msg_id",
-                      "participants",
-                      "type",
-                      "user_id"
-                    ],
                     "additionalProperties": false
                   }
                 }
@@ -4373,20 +4359,6 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "date",
-                "date_insert",
-                "discussion_id",
-                "identities",
-                "is_answered",
-                "is_draft",
-                "is_inread",
-                "message_id",
-                "raw_msg_id",
-                "participants",
-                "type",
-                "user_id"
-              ],
               "additionalProperties": false
             }
           },
@@ -5273,20 +5245,6 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "date",
-                "date_insert",
-                "discussion_id",
-                "identities",
-                "is_answered",
-                "is_draft",
-                "is_inread",
-                "message_id",
-                "raw_msg_id",
-                "participants",
-                "type",
-                "user_id"
-              ],
               "additionalProperties": false
             }
           },

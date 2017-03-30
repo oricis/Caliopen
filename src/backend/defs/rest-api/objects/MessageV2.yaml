@@ -57,17 +57,16 @@ properties:
     type: string
   user_id:
     type: string
-required:
-  - date
-  - date_insert
-  - discussion_id
-  - identities
-  - is_answered
-  - is_draft
-  - is_inread
-  - message_id
-  - raw_msg_id
-  - participants
-  - type
-  - user_id
+#required:
+  #- date
+  #- date_insert
+  #- discussion_id
+  #- is_answered
+  #- is_draft
+  #- is_unread
+  #- message_id
+  #- raw_msg_id
+  #- participants
+  #- type
+  #- user_id
 additionalProperties: false
