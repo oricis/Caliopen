@@ -14,6 +14,7 @@ export const typeAssoc = {
   edit: 'fa fa-edit',
   envelope: 'fa fa-envelope',
   email: 'fa fa-envelope',
+  'ellipsis-v': 'fa fa-ellipsis-v',
   'exclamation-triangle': 'fa fa-exclamation-triangle',
   'info-circle': 'fa fa-info-circle',
   key: 'fa fa-key',
