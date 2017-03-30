@@ -4,6 +4,7 @@ import './style.scss';
 
 export const typeAssoc = {
   at: 'fa fa-at',
+  'angle-down': 'fa fa-angle-down',
   calendar: 'fa fa-calendar',
   'caret-up': 'fa fa-caret-up',
   'caret-down': 'fa fa-caret-down',
