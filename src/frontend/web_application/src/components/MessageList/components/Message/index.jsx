@@ -12,11 +12,14 @@ import './style.scss';
 const MessageInfosContainer = ({ __, message, author }) => (
   <div className="m-message__infos-container">
     <div className="m-message__author">
-      {author.address}</div>
+      {author.address}
+    </div>
     <div className="m-message__type">
-      {__('by')} {message.type} <Icon type={message.type} className="m-message__type-ico" spaced /></div>
+      {__('by')} {message.type} <Icon type={message.type} className="m-message__type-ico" spaced />
+    </div>
     <DateTime className="m-message__date" format="LT">
-      {message.date_received}</DateTime>
+      {message.date}
+    </DateTime>
   </div>
 );
 
@@ -29,7 +32,12 @@ MessageInfosContainer.propTypes = {
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
+    onView: PropTypes.func,
     __: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    onView: null,
   };
 
   constructor(props) {
@@ -46,6 +54,14 @@ class Message extends Component {
 
   componentDidMount() {
     this.setBodyHeight();
+  }
+
+  componentDidUpdate() {
+    const { message, onView } = this.props;
+
+    if (onView && message.is_unread !== false) {
+      onView({ message });
+    }
   }
 
   setBodyHeight() {

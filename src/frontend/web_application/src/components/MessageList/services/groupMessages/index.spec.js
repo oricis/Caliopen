@@ -6,15 +6,18 @@ describe('service MessageList groupMessages', () => {
   });
 
   it('give an object with 2 groups', () => {
+    const now = new Date();
     const messages = [
-      { date_received: (new Date()).toJSON() },
-      { date_received: '2017-01-01' },
-      { date_received: '2017-01-01' },
+      { date: now.toJSON() },
+      { date: '2017-01-01' },
+      { date: '2017-01-01' },
     ];
 
     expect(groupMessages(messages)).toEqual({
-      [(new Date(messages[1].date_received)).toDateString()]: [messages[1], messages[2]],
-      [(new Date(messages[0].date_received)).toDateString()]: [messages[0]],
+      [(new Date(Date.UTC(2017, 0, 1))).toISOString()]: [messages[1], messages[2]],
+      [(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()))).toISOString()]: [
+        messages[0],
+      ],
     });
   });
 });

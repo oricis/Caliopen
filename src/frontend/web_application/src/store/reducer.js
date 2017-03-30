@@ -4,6 +4,7 @@ import notifyReducer from 'react-redux-notify';
 import applicationReducer from './modules/application';
 import deviceReducer from './modules/device';
 import discussionReducer from './modules/discussion';
+import messageReducer from './modules/message';
 import openPGPKeychainReducer from './modules/openpgp-keychain';
 import tagReducer from './modules/tag';
 import userReducer from './modules/user';
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   application: applicationReducer,
   device: deviceReducer,
   discussion: discussionReducer,
+  message: messageReducer,
   openPGPKeychain: openPGPKeychainReducer,
   tag: tagReducer,
   user: userReducer,

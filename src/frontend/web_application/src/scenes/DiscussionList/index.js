@@ -6,12 +6,16 @@ import { requestDiscussions, loadMoreDiscussions, hasMore } from '../../store/mo
 import Presenter from './presenter';
 
 const discussionSelector = state => state.discussion;
+const userSelector = state => state.user.user;
 const mapStateToProps = createSelector(
-  [discussionSelector],
-  state => ({
-    discussions: state.discussions.map(discussionId => state.discussionsById[discussionId]),
-    isFetching: state.isFetching,
-    hasMore: hasMore(state),
+  [discussionSelector, userSelector],
+  (discussionState, user) => ({
+    user,
+    discussions: discussionState.discussions.map(
+      discussionId => discussionState.discussionsById[discussionId]
+    ),
+    isFetching: discussionState.isFetching,
+    hasMore: hasMore(discussionState),
   })
 );
 const mapDispatchToProps = dispatch => bindActionCreators({

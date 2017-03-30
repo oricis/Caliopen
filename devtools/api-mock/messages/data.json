@@ -1,0 +1,134 @@
+[{
+	"attachments": [],
+	"body": "<p>It's okay, Bender. I like cooking too. You, minion. Lift my arm. AFTER H=\r\nIM! I don't know what you did, Fry, but once again, you screwed up! Now all\r\nthe planets are gonna start cracking wise abo",
+	"date": "2017-03-21T10:55:00.153000+00:00",
+	"date_insert": "2017-03-21T10:55:00.153000+00:00",
+	"discussion_id": "cd53e13a-267d-4d9c-97ee-d0fc59c64200",
+	"identities": [{
+		"display_name": "Jaune",
+		"identifier": "john@caliopen.local"
+	}],
+	"importance_level": 0,
+	"is_answered": false,
+	"is_draft": false,
+	"message_id": "11111111-267d-4d9c-97ee-d0fc59c64201",
+	"participants": [{
+		"address": "test@caliopen.local",
+		"contact_id": "1039cdcc-1f6f-4b5d-9c8a-5d7c711f357f",
+		"label": "foo",
+		"protocol": "email",
+		"type": "to"
+	}, {
+		"address": "john@caliopen.local",
+		"contact_id": "1039cdcc-1f6f-4b5d-9c8a-5d7c711f357f",
+		"label": "Jaune john",
+		"protocol": "email",
+		"type": "cc"
+	}, {
+		"address": "zoidberg@caliopen.local",
+		"contact_id": "0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0",
+		"label": "zoidberg",
+		"protocol": "email",
+		"type": "from"
+	}],
+	"privacy_features": {},
+	"raw_msg_id": "aaaaaaaa-267d-4d9c-97ee-d0fc59c64201",
+	"subject": "It's okay, Bender. I like cooking too",
+	"tags": [{
+		"tag_id": "foo-bar-1",
+		"name": "robot",
+		"type": "user"
+	}, {
+		"tag_id": "foo-bar-2",
+		"name": "work",
+		"type": "system"
+	}],
+	"type": "email",
+	"user_id": ""
+}, {
+	"attachments": [],
+	"body": "Fry! Stay back! He's too powerful! Can I use the gun? I barely knew Philip, but as a clergyman I have no problem telling his most intimate friends all about him. What are you hacking off? Is it my torso?! 'It is!' My precious torso!",
+	"date": "2017-03-21T12:55:00.153000+00:00",
+	"date_insert": "2017-03-21T12:55:00.153000+00:00",
+	"discussion_id": "cd53e13a-267d-4d9c-97ee-d0fc59c64200",
+	"identities": [{
+		"display_name": "Jaune",
+		"identifier": "john@caliopen.local"
+	}],
+	"importance_level": 0,
+	"is_answered": false,
+	"is_draft": false,
+	"message_id": "11111111-267d-4d9c-97ee-d0fc59c64202",
+	"participants": [{
+		"address": "test@caliopen.local",
+		"contact_id": "1039cdcc-1f6f-4b5d-9c8a-5d7c711f357f",
+		"label": "foo",
+		"protocol": "email",
+		"type": "cc"
+	}, {
+		"address": "john@caliopen.local",
+		"contact_id": "1039cdcc-1f6f-4b5d-9c8a-5d7c711f357f",
+		"label": "Jaune john",
+		"protocol": "email",
+		"type": "from"
+	}, {
+		"address": "zoidberg@caliopen.local",
+		"contact_id": "0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0",
+		"label": "zoidberg",
+		"protocol": "email",
+		"type": "to"
+	}],
+	"privacy_features": {},
+	"raw_msg_id": "aaaaaaaa-267d-4d9c-97ee-d0fc59c64202",
+	"tags": [{
+		"tag_id": "foo-bar-1",
+		"name": "robot",
+		"type": "user"
+	}, {
+		"tag_id": "foo-bar-2",
+		"name": "work",
+		"type": "system"
+	}],
+	"type": "email",
+	"user_id": ""
+}, {
+	"attachments": [],
+	"body": "Shut up and take my money! Leela, are you alright? You got wanged on the he=\r\nad. Bender, you risked your life to save me! Spare me your space age techno=\r\nbabble, Attila the Hun! Now that the, uh, ga",
+	"date": "2017-03-21T10:55:00.153000+00:00",
+	"date_insert": "2017-03-21T10:55:00.153000+00:00",
+	"discussion_id": "46d30c27-6cd8-407b-8536-fda4196c20ca",
+	"identities": [{
+		"display_name": "jaune",
+		"identifier": "john@caliopen.local"
+	}],
+	"importance_level": 0,
+	"is_answered": false,
+	"is_draft": false,
+	"message_id": "2222222-267d-4d9c-97ee-d0fc59c64201",
+	"participants": [{
+		"address": "john@caliopen.local",
+		"contact_id": "1039cdcc-1f6f-4b5d-9c8a-5d7c711f357f",
+		"label": "foo",
+		"protocol": "email",
+		"type": "to"
+	}, {
+		"address": "zoidberg@caliopen.local",
+		"contact_id": "0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0",
+		"label": "zoidberg",
+		"protocol": "email",
+		"type": "from"
+	}],
+	"privacy_features": {},
+	"raw_msg_id": "bbbbbbbbb-267d-4d9c-97ee-d0fc59c64201",
+	"subject": "Shut up and take my money",
+	"tags": [{
+		"tag_id": "foo-bar-3",
+		"name": "best quotes",
+		"type": "user"
+	}, {
+		"tag_id": "foo-bar-4",
+		"name": "lolilol",
+		"type": "user"
+	}],
+	"type": "email"
+}]
