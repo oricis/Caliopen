@@ -92,6 +92,8 @@ class ObjectDictifiable(CaliopenObject):
                         self_dict[att] = lst
                     else:
                         self_dict[att] = lst
+                elif issubclass(self._attrs[att], ObjectDictifiable):
+                    self_dict[att] = val.marshall_dict()
                 else:
                     self_dict[att] = val
 
@@ -114,6 +116,10 @@ class ObjectDictifiable(CaliopenObject):
                     else:
                         lst = document[attr]
                     setattr(self, attr, lst)
+                elif issubclass(attrtype, ObjectDictifiable):
+                    sub_obj = attrtype()
+                    sub_obj.unmarshall_dict(document[attr])
+                    setattr(self, attr, sub_obj)
                 elif issubclass(attrtype, UUID):
                     setattr(self, attr, UUID(str(document[attr])))
                 elif issubclass(attrtype, datetime.datetime):
