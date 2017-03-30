@@ -72,13 +72,10 @@ class Message extends Component {
 
   handleExpandClick() {
     const message = this.props.message;
-    let body = message.body;
-    if (this.state.isExpanded) {
-      body = body.substring(0, 140);
-    }
+    const body = message.body;
     this.setState(prevState => ({
       isExpanded: !prevState.isExpanded,
-      body,
+      body: prevState.isExpanded ? body.substring(0, 140) : body,
     }));
   }
 
