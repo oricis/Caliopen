@@ -95,6 +95,6 @@ class Message(base.ObjectIndexable):
         message.is_draft = True
 
         message.marshall_db()
-        print(vars(message))
         message.save_db()
+        # should we index draft ?
         return message

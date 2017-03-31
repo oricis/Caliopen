@@ -25,7 +25,6 @@ log = logging.getLogger(__name__)
 @resource(collection_path='/messages',
           path='/messages/{message_id}')
 class Message(Api):
-
     def __init__(self, request):
         self.request = request
         self.user = request.authenticated_userid
@@ -58,14 +57,10 @@ class Message(Api):
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
         data = self.request.json
-        message_param = NewMessage(data)
-        try:
-            message_param.validate()
-        except Exception as exc:
-            raise ValidationError(exc)
+        # ^ json payload has been validated by swagger module
         try:
             message = ObjectMessage().create_draft(user_id=self.user.user_id,
-                                                   **message_param)
+                                                   **data)
             print(message)
         except Exception as exc:
             log.warn(exc)
@@ -77,36 +72,6 @@ class Message(Api):
 
         self.request.response.location = message_url.encode('utf-8')
         return {'location': message_url}
-
-        # discussion_id = self.request.matchdict.get('discussion_id')
-        # reply_to = self.request.json.get('reply_to')
-        # if reply_to:
-        #     parent = Message.get(self.user, reply_to)
-        #     parent_message_id = parent.external_id
-        #     discussion_id = parent.discussion_id
-        #     pi_value = parent.privacy_index
-        # else:
-        #     parent_message_id = None
-        #     discussion_id = None
-        #     # XXX : how to compute ?
-        #     pi_value = 0
-        # recipients = self.extract_recipients()
-        # # XXX : make recipient for UserMessage using Recipient class
-        # subject = self.request.json.get('subject')
-        # text = self.request.json.get('text')
-        # tags = self.request.json.get('tags', [])
-        # new_msg = NewMessage(recipients,
-        #                      subject=subject,
-        #                      text=text, tags=tags,
-        #                      date=datetime.utcnow(),
-        #                      privacy_index=pi_value,
-        #                      thread_id=discussion_id,
-        #                      parent_message_id=parent_message_id)
-        # msg = Message.create(self.user, new_msg)
-        # idx_msg = Message.get(self.user, msg.message_id)
-        # log.info('Post new message %r' % msg.message_id)
-        # # XXX return redirect to newly created message ?
-        return idx_msg
 
     @view(renderer='json', permission='authenticated')
     def get(self):
@@ -133,8 +98,9 @@ class Message(Api):
         message_id = self.request.swagger_data["message_id"]
         patch = self.request.json
 
-        message = Message(self.user.user_id, message_id=message_id)
-        error = message.apply_patch(patch, db=True, index=True)
+        message = ObjectMessage(self.user.user_id, message_id=message_id)
+        error = message.apply_patch(patch, db=True,
+                                    index=False)  # drafts not indexed for now
         if error is not None:
             raise MergePatchError(error)
 
@@ -153,11 +119,13 @@ class MessageActions(Api):
 
     @view(renderer='json', permission='authenticated')
     def post(self):
-        raise MethodNotAllowed  #TODO
+        raise MethodNotAllowed  # TODO
+
 
 @resource(path='/raws/{raw_msg_id}')
 class Raw(Api):
     """returns a raw message"""
+
     def __init__(self, request):
         self.request = request
         self.user = request.authenticated_userid

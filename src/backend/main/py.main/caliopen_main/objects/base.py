@@ -313,11 +313,7 @@ class ObjectUser(ObjectStorable):
         if patch is None or "current_state" not in patch:
             return main_errors.PatchUnprocessable()
 
-        # check patch and patch_current have the same keys
         patch_current = patch.pop("current_state")
-        if patch.keys() != patch_current.keys():
-            return main_errors.PatchUnprocessable(message=
-                                                  "patch and patch.current_state are inconsistent")
 
         # build 3 siblings : 2 from patch and last one from db
         obj_patch_new = self.__class__(user_id=self.user_id)
@@ -339,41 +335,56 @@ class ObjectUser(ObjectStorable):
         except NotFound as exc:
             return exc
 
+        # TODO : manage protected attributes, to prevent patch on them
         # check if patch is consistent with db current state
         # if it is, squash self attributes
         self.unmarshall_db()
         for key in patch.keys():
+            if key not in self._attrs.keys():
+                return main_errors.PatchUnprocessable(
+                    message="unknown key in patch")
             current_attr = self._attrs[key]
             old_val = getattr(obj_patch_old, key)
             cur_val = getattr(self, key)
             msg = "Patch current_state not consistent with db, step {} key {}"
-            if isinstance(current_attr, types.ListType):
-                if old_val == [] and cur_val != []:
-                    return main_errors.PatchConflict(message=msg.format(1, key))
-                if cur_val == [] and old_val != []:
-                    return main_errors.PatchConflict(message=msg.format(2, key))
-                for old in old_val:
-                    found = False
-                    for elem in cur_val:
-                        if issubclass(current_attr[0], CaliopenObject):
-                            if elem.__dict__ == old.__dict__:
-                                found = True
-                                break
-                        else:
-                            if elem == old:
-                                found = True
-                                break
-                    if not found:
-                        return main_errors.PatchConflict(
-                            message=msg.format(3, key))
-            elif isinstance(self._attrs[key], types.DictType):
-                if cmp(old_val, cur_val) != 0:
-                    return main_errors.PatchConflict(message=msg.format(4, key))
+            if key not in patch_current.keys():
+                # means patch wants to add the key. Value in db should be null
+                if cur_val != None:
+                    return main_errors.PatchConflict(
+                        message=msg.format(0, key))
+                setattr(self, key, getattr(obj_patch_new, key))
             else:
-                if old_val != cur_val:
-                    return main_errors.PatchConflict(message=msg.format(5, key))
+                if isinstance(current_attr, types.ListType):
+                    if old_val == [] and cur_val != []:
+                        return main_errors.PatchConflict(
+                            message=msg.format(1, key))
+                    if cur_val == [] and old_val != []:
+                        return main_errors.PatchConflict(
+                            message=msg.format(2, key))
+                    for old in old_val:
+                        found = False
+                        for elem in cur_val:
+                            if issubclass(current_attr[0], CaliopenObject):
+                                if elem.__dict__ == old.__dict__:
+                                    found = True
+                                    break
+                            else:
+                                if elem == old:
+                                    found = True
+                                    break
+                        if not found:
+                            return main_errors.PatchConflict(
+                                message=msg.format(3, key))
+                elif isinstance(self._attrs[key], types.DictType):
+                    if cmp(old_val, cur_val) != 0:
+                        return main_errors.PatchConflict(
+                            message=msg.format(4, key))
+                else:
+                    if old_val != cur_val:
+                        return main_errors.PatchConflict(
+                            message=msg.format(5, key))
 
-            setattr(self, key, getattr(obj_patch_new, key))
+                setattr(self, key, getattr(obj_patch_new, key))
 
         if "db" in options and options["db"] is True:
             # apply changes to db model and update db
@@ -495,7 +506,7 @@ class ObjectIndexable(ObjectUser):
             self.unmarshall_dict(self._index.to_dict())
 
     def apply_patch(self, patch, **options):
-        error = super(ObjectIndexable, self).apply_patch(patch, options)
+        error = super(ObjectIndexable, self).apply_patch(patch, **options)
 
         if error is not None:
             return error
