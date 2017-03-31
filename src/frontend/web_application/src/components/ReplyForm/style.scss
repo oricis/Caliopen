@@ -10,6 +10,7 @@
 
   &__form {
     @include flex-grid-size;
+    position: relative;
   }
 
   &__top-bar {
@@ -23,7 +24,7 @@
     @include flex-grid-column(shrink);
   }
 
-  &__top-actions-switcher {
+  &__top-bar-switcher {
     @include flex-grid-size(shrink);
     margin-left: auto;
     border-left: 1px solid $co-color__bg__back;
@@ -48,7 +49,7 @@
     background: $co-color__fg__back;
   }
 
-  &__actions,
+  &__bottom-bar-actions,
   &__editor {
     @include flex-grid-size(shrink);
   }
@@ -56,5 +57,9 @@
   &__action-button {
     margin: $co-component__spacing;
     background: $co-color__fg__back--high;
+
   }
+
+
+
 }

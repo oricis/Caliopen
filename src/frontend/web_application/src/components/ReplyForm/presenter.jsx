@@ -84,16 +84,12 @@ class ReplyForm extends Component {
           <TopRow className="m-reply__top-bar">
             <div className="m-reply__top-bar-info">
               <span className="m-reply__author">{__('You')}</span>
-              <Button className="m-reply__type-selector" disabled>
-                {__('by')} {__(this.state.protocol)} <Icon type="angle-down" spaced />
-              </Button>
+              <span className="m-reply__type">{__('by')} {__(this.state.protocol)} <Icon type={__(this.state.protocol)} spaced /> <Icon type="angle-down" spaced /></span>
             </div>
 
-            <div className="m-reply__top-actions-switcher">
-              <Button onClick={this.handleActiveClick}>
-                <Icon type="ellipsis-v" />
-              </Button>
-            </div>
+            <Button onClick={this.handleActiveClick} className="m-reply__top-bar-switcher">
+              <Icon type="ellipsis-v" />
+            </Button>
           </TopRow>
           <BodyRow className="m-reply__body">
             <DiscussionTextarea
@@ -103,7 +99,7 @@ class ReplyForm extends Component {
             />
           </BodyRow>
           <BottomRow className="m-reply__bottom-bar">
-            <div className="m-reply__actions">
+            <div className="m-reply__bottom-bar-actions">
               <Button className="m-reply__action-button" onClick={this.handleSend}><Icon type="send" spaced /> {__('messages.compose.action.send')}</Button>
               <Button className="m-reply__action-button" onClick={this.handleSave}><Icon type="save" spaced /> {__('messages.compose.action.save')}</Button>
               <Button className="m-reply__action-button"><Icon type="share-alt" spaced /> {__('messages.compose.action.copy')}</Button>
