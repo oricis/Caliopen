@@ -1,21 +1,22 @@
 import React, { PropTypes, Component } from 'react';
+import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import { DateTime } from '@gandi/react-translate';
 import ContactAvatarLetter from '../../../ContactAvatarLetter';
+import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
 import Button from '../../../Button';
 import Icon from '../../../Icon';
 import MessageActionsContainer from '../MessageActionsContainer';
 
 import './style.scss';
 
+const DropdownControl = withDropdownControl(Button);
 
 const MessageInfosContainer = ({ __, message, author }) => (
   <div className="m-message__infos-container">
-    <div className="m-message__author">
-      {author.address}
-    </div>
+    <div className="m-message__author">{author.address}</div>
     <div className="m-message__type">
-      {__('by')} {message.type} <Icon type={message.type} className="m-message__type-ico" spaced />
+      <span className="m-message__type__label">{__('by')} {message.type}</span> <Icon type={message.type} className="m-message__type__icon" spaced />
     </div>
     <DateTime className="m-message__date" format="LT">
       {message.date}
@@ -99,15 +100,16 @@ class Message extends Component {
     const { message, __ } = this.props;
     const author = message.participants.find(participant => participant.type === 'from');
     const subject = message.subject;
-    const headerClassName = classnames(
-      'm-message__header',
-      { 'm-message__header--active': this.state.isActive }
+    const topBarClassName = classnames(
+      'm-message__top-bar',
+      { 'm-message__top-bar--active': this.state.isActive }
     );
     const bodyClassName = classnames(
       'm-message__body__content',
       { 'm-message__body__content--expanded': this.state.isExpanded }
     );
 
+    const dropdownId = uuidV1();
 
     return (
       <div className="m-message">
@@ -118,28 +120,30 @@ class Message extends Component {
           />
         </div>
         <div className="m-message__content">
-          <div className={headerClassName}>
-            <div className="m-message__top-bar">
-              <MessageInfosContainer
-                message={message}
-                author={author}
-                __={__}
-              />
+
+          <div className={topBarClassName}>
+            <MessageInfosContainer
+              message={message}
+              author={author}
+              __={__}
+            />
+
+            <DropdownControl toggle={dropdownId} className="m-message__actions-switcher">
+              <Icon type="ellipsis-v" />
+            </DropdownControl>
+
+            <Dropdown
+              id={dropdownId}
+              className="m-message__actions-menu"
+              position="left"
+              closeOnClick
+            >
               <MessageActionsContainer
                 className="m-message__actions-container"
-                onClick={this.handleActiveClick}
                 __={__}
               />
-            </div>
+            </Dropdown>
 
-            <Button
-              className="m-message__actions-switcher"
-              onClick={this.handleActiveClick}
-              value={this.state.isActive}
-              title={__('more actions')}
-            >
-              {this.state.isActive ? <Icon type="ellipsis-v" /> : <Icon type="ellipsis-v" />}
-            </Button>
           </div>
 
           <div className="m-message__body">
@@ -152,7 +156,7 @@ class Message extends Component {
           </div>
 
           {this.state.isTooLong &&
-            <div className="m-message__expand">
+            <div className="m-message__expand-button">
               <Button
                 onClick={this.handleExpandClick}
                 value={this.state.isExpanded}
