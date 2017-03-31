@@ -15,7 +15,7 @@ let config = Object.assign(baseConfig.getBase('browser'), {
     path.join(__dirname, '../src/index.jsx'),
   ],
   output: {
-    path: isTest ? path.join(__dirname, '..', 'dist/browser/') : path.join(__dirname, '..', 'dist/server/public/'),
+    path: path.join(__dirname, '..', 'dist/server/public/'),
     filename: 'bundle.js',
     publicPath: isDev ? KOTATSU_PUBLIC_PATH : '/assets/',
   },

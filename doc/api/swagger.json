@@ -7,7 +7,7 @@
   "schemes": [
     "http"
   ],
-  "host": "localhost:3141",
+  "host": "localhost:31415",
   "basePath": "/api",
   "paths": {
     "/v1/authentications": {
@@ -517,8 +517,7 @@
                     }
                   },
                   "required": [
-                    "contact_id",
-                    "user_id"
+                    "contact_id"
                   ],
                   "additionalProperties": false
                 },
@@ -1100,8 +1099,7 @@
                     }
                   },
                   "required": [
-                    "contact_id",
-                    "user_id"
+                    "contact_id"
                   ],
                   "additionalProperties": false
                 },
@@ -1705,8 +1703,7 @@
                       }
                     },
                     "required": [
-                      "contact_id",
-                      "user_id"
+                      "contact_id"
                     ],
                     "additionalProperties": false
                   }
@@ -2231,8 +2228,7 @@
                 }
               },
               "required": [
-                "contact_id",
-                "user_id"
+                "contact_id"
               ],
               "additionalProperties": false
             }
@@ -3636,8 +3632,7 @@
                             }
                           },
                           "required": [
-                            "contact_id",
-                            "user_id"
+                            "contact_id"
                           ],
                           "additionalProperties": false
                         }
@@ -3661,7 +3656,27 @@
                       "tags": {
                         "type": "array",
                         "items": {
-                          "type": "string"
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "user",
+                                "system"
+                              ]
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "tag_id": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "type"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "text": {
@@ -4116,8 +4131,7 @@
                       }
                     },
                     "required": [
-                      "contact_id",
-                      "user_id"
+                      "contact_id"
                     ],
                     "additionalProperties": false
                   }
@@ -4141,7 +4155,27 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "user",
+                          "system"
+                        ]
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "tag_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "type"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "text": {

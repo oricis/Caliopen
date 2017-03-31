@@ -82,6 +82,8 @@ module.exports = {
     const plugins = [
       new webpack.DefinePlugin({
         BUILD_TARGET: JSON.stringify(buildTarget),
+        HAS_HMR: process.env.HAS_HMR || true,
+        HAS_SSR: process.env.HAS_SSR || true,
         CALIOPEN_ENV: JSON.stringify(process.env.NODE_ENV),
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       }),

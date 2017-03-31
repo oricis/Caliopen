@@ -7,7 +7,7 @@
   "schemes": [
     "http"
   ],
-  "host": "localhost:3141",
+  "host": "localhost:31415",
   "basePath": "/api",
   "paths": {
     "/v1/authentications": {"$ref": "paths/authentications.json#/authentications"},

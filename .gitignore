@@ -154,3 +154,6 @@ ENV/
 
 # Golang
 *vendor/*/
+
+# Node
+node_modules

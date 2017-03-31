@@ -45,7 +45,7 @@ class DiscussionList extends Component {
           infinite-scroll={this.loadMore}
         >
           {discussions.map(item => (
-            <DiscussionItem key={item.thread_id} discussion={item} />
+            <DiscussionItem key={item.discussion_id} discussion={item} />
           ))}
         </BlockList>
         {hasMore && (

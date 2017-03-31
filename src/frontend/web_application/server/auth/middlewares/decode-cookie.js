@@ -15,12 +15,14 @@ const decodeCookie = (req, res, next) => {
       error.status = 500;
       error.err = err;
 
-      return next(error);
+      next(error);
+
+      return;
     }
 
     req.user = obj;
 
-    return next();
+    next();
   });
 };
 

@@ -20,4 +20,24 @@ describe('security middleware', () => {
 
     expect(req.security).toEqual(true);
   });
+
+  it('has an unsecure file path', () => {
+    const req = {
+      path: '/bundle.js',
+    };
+
+    security(req, {}, () => {});
+
+    expect(req.security).toEqual(false);
+  });
+
+  it('has an unsecure public path', () => {
+    const req = {
+      path: '/assets/whatever.css',
+    };
+
+    security(req, {}, () => {});
+
+    expect(req.security).toEqual(false);
+  });
 });
