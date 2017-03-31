@@ -51,8 +51,8 @@ import '../src/styles/vendor/bootstrap_foundation-sites.scss';
 
 addDecorator(withKnobs);
 addDecorator(backgrounds([
-  { name: '$co-color__fg__back', value: '#333', default: true },
-  { name: '$co-color__bg__back', value: '#1d1d1d' },
+  { name: '$co-color__fg__back', value: '#333' },
+  { name: '$co-color__bg__back', value: '#1d1d1d', default: true},
   { name: '$co-color__contrast__back', value: '#fff' },
 ]));
 

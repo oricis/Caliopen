@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import Button from '../Button';
+import Icon from '../Icon';
 import ContactAvatarLetter from '../ContactAvatarLetter';
-import DiscussionDraft, { TopRow, BodyRow } from '../DiscussionDraft';
+import DiscussionDraft, { TopRow, BodyRow, BottomRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
 import './style.scss';
 
@@ -32,6 +33,8 @@ class ReplyForm extends Component {
     super(props);
     this.state = {
       draftMessage: {},
+      isActive: true,
+      protocol: 'email',
     };
     this.handleSend = this.handleSend.bind(this);
     this.handleSave = this.handleSave.bind(this);
@@ -65,27 +68,47 @@ class ReplyForm extends Component {
     });
   }
 
+  handleActiveClick() {
+    this.setState(prevState => ({
+      isActive: !prevState.isActive,
+    }));
+  }
+
   render() {
     const { user, __ } = this.props;
 
     return (
       <DiscussionDraft className="m-reply">
-        <form method="POST">
-          <TopRow className="m-reply__action-bar">
-            <Button className="m-reply__action-button" onClick={this.handleSend}>{__('messages.compose.action.send')}</Button>
-            {' '}
-            <Button className="m-reply__action-button" onClick={this.handleSave}>{__('messages.compose.action.save')}</Button>
-          </TopRow>
-          <BodyRow className="m-reply__content">
-            <div className="m-reply__avatar"><ContactAvatarLetter contact={user.contact} /></div>
-            <div className="m-reply__body">
-              <DiscussionTextarea
-                body={this.state.draftMessage.body}
-                onChange={this.handleChange}
-                __={__}
-              />
+        <div className="m-reply__avatar"><ContactAvatarLetter contact={user.contact} /></div>
+        <form method="POST" className="m-reply__form">
+          <TopRow className="m-reply__top-bar">
+            <div className="m-reply__top-bar-info">
+              <span className="m-reply__author">{__('You')}</span>
+              <span className="m-reply__type">{__('by')} {__(this.state.protocol)} <Icon type={__(this.state.protocol)} spaced /> <Icon type="angle-down" spaced /></span>
             </div>
+
+            <Button onClick={this.handleActiveClick} className="m-reply__top-bar-switcher">
+              <Icon type="ellipsis-v" />
+            </Button>
+          </TopRow>
+          <BodyRow className="m-reply__body">
+            <DiscussionTextarea
+              body={this.state.draftMessage.body}
+              onChange={this.handleChange}
+              __={__}
+            />
           </BodyRow>
+          <BottomRow className="m-reply__bottom-bar">
+            <div className="m-reply__bottom-bar-actions">
+              <Button className="m-reply__action-button" onClick={this.handleSend}><Icon type="send" spaced /> {__('messages.compose.action.send')}</Button>
+              <Button className="m-reply__action-button" onClick={this.handleSave}><Icon type="save" spaced /> {__('messages.compose.action.save')}</Button>
+              <Button className="m-reply__action-button"><Icon type="share-alt" spaced /> {__('messages.compose.action.copy')}</Button>
+            </div>
+
+            <div className="m-reply__editor">
+              <Button className="m-reply__action-button" onClick={this.handleSave}><Icon type="editor" /></Button>
+            </div>
+          </BottomRow>
         </form>
       </DiscussionDraft>
     );

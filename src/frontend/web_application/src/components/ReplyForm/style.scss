@@ -1,38 +1,66 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .m-reply {
-  &__action-bar {
-    padding: $co-component__spacing;
+  @include flex-grid-row($size: expand);
+  font-size: $co-font__size--small;
+
+  &__avatar {
+    @include flex-grid-column(shrink);
+  }
+
+  &__form {
+    @include flex-grid-size;
+    position: relative;
+  }
+
+  &__top-bar {
+    @include flex-grid-row($size: expand);
+    align-items: center;
     border-bottom: 1px solid $co-color__bg__back;
+    background: $co-color__fg__back--high;
+  }
+
+  &__top-bar-info {
+    @include flex-grid-column(shrink);
+  }
+
+  &__top-bar-switcher {
+    @include flex-grid-size(shrink);
+    margin-left: auto;
+    border-left: 1px solid $co-color__bg__back;
+  }
+
+  &__author {
+    margin-right: $co-component__spacing;
+    color: $co-color__fg__text;
+    font-weight: 600;
+  }
+
+  &__body {
+    padding: $co-component__spacing;
     background: $co-color__fg__back;
+    color: $co-color__fg__text;
+  }
+
+  &__bottom-bar {
+    @include flex-grid-row($size: expand);
+    justify-content: space-between;
+    padding: $co-component__spacing;
+    border-top: 1px solid $co-color__bg__back;
+    background: $co-color__fg__back;
+  }
+
+  &__bottom-bar-actions,
+  &__editor {
+    @include flex-grid-size(shrink);
   }
 
   &__action-button {
     margin: $co-component__spacing;
     background: $co-color__fg__back--high;
+
   }
 
-  &__content {
-    @include flex-grid-row($size: expand);
-    padding-top: 2 * $co-component__spacing;
-    padding-bottom: 2 * $co-component__spacing;
-    background: $co-color__fg__back;
-  }
 
-  &__avatar {
-    @include flex-grid-column(shrink);
-    text-align: right;
-  }
-
-  &__body {
-    @include flex-grid-column;
-  }
-
-  @include breakpoint(medium) {
-
-    &__avatar {
-      @include flex-grid-column(2);
-    }
-  }
 
 }

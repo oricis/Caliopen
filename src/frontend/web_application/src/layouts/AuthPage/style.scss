@@ -25,7 +25,7 @@ $l-auth-page__header-space: (
 
   &__footer {
     padding: $co-margin 0;
-    font-size: .9rem;
+    font-size: $co-font__size--small;
     text-align: center;
   }
 }

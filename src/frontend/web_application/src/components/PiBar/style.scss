@@ -20,7 +20,7 @@ $bar-margin: 7px;
   &__level {
     @include flex-grid-size(shrink);
     margin-left: map-get($co-form__spacing, 'medium');
-    font-size: $co-font__size--small;
+    font-size: $co-font__size--xsmall;
     font-weight: 700;
   }
 
