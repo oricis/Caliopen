@@ -17,7 +17,7 @@
    }
 
   &__avatar {
-    //@include breakpoint(small) {@include m-avatar--size(hidden);}
+    @include breakpoint(small) {@include m-avatar--size(hidden);}
     @include breakpoint(medium) {@include m-avatar--size(medium);}
   }
 
