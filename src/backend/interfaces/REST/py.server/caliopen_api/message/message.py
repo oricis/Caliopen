@@ -8,8 +8,8 @@ from cornice.resource import resource, view
 from pyramid.response import Response
 
 from caliopen_main.objects.message import Message as ObjectMessage
-from caliopen_main.message.parameters.message import NewMessage
 from caliopen_main.message.core.raw import RawMessage
+from caliopen_storage.exception import NotFound
 
 from ..base import Api
 
@@ -57,11 +57,10 @@ class Message(Api):
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
         data = self.request.json
-        # ^ json payload has been validated by swagger module
+        # ^ json payload should have been validated by swagger module
         try:
             message = ObjectMessage().create_draft(user_id=self.user.user_id,
                                                    **data)
-            print(message)
         except Exception as exc:
             log.warn(exc)
             raise HTTPServerError
@@ -78,7 +77,11 @@ class Message(Api):
         # pi_range = self.request.authenticated_userid.pi_range
         message_id = self.request.swagger_data["message_id"]
         message = ObjectMessage(self.user.user_id, message_id=message_id)
-        message.get_db()
+        try:
+            message.get_db()
+        except NotFound:
+            raise ResourceNotFound
+
         message.unmarshall_db()
         return message.marshall_json_dict()
 
@@ -108,8 +111,25 @@ class Message(Api):
 
     @view(renderer='json', permission='authenticated')
     def delete(self):
-        raise MethodNotAllowed  # TODO
+        message_id = self.request.swagger_data["message_id"]
+        message = ObjectMessage(self.user.user_id, message_id=message_id)
 
+        try:
+            message.get_db()
+        except NotFound:
+            raise ResourceNotFound
+
+        message.unmarshall_db()
+        if not message.is_draft:
+            message.get_index()
+            message.delete_index()
+
+        try:
+            message.delete_db()
+        except Exception as exc:
+            raise HTTPServerError(exc)
+
+        return Response(None, 204)
 
 @resource(path='/messages/{message_id}/actions')
 class MessageActions(Api):

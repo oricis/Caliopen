@@ -197,11 +197,19 @@ class ObjectStorable(ObjectJsonDictifiable):
         return None
 
     # def create_db(self, **options):
+    #     """ Create an instance of this model in the database
+    #
+    #         from current object's attributes
+    #     """
+    #
+    #     params = self.marshall_dict()
+    #     p_key = params.pop(self._pkey_name)
+    #     #primary key must be set as first argument for create
     #     try:
-    #         self._db.create()
+    #         self._db.create(p_key, params)
     #     except Exception as exc:
     #         log.info(exc)
-    #         return exc
+    #         raise exc
     #
     #     return None
 

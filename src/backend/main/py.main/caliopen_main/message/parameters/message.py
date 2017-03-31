@@ -32,7 +32,7 @@ class NewMessage(Model):
     discussion_id = UUIDType()
     external_references = ModelType(ParamExternalReferences)
     identities = ListType(ModelType(Identity), default=lambda: [])
-    importance_level = IntType(default=0)
+    importance_level = IntType()
     is_answered = BooleanType()
     is_draft = BooleanType()
     is_unread = BooleanType()

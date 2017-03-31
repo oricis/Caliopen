@@ -94,7 +94,11 @@ class Message(base.ObjectIndexable):
         message.message_id = uuid.uuid4()
         message.is_draft = True
 
-        message.marshall_db()
-        message.save_db()
+        try:
+            message.marshall_db()
+            message.save_db()
+        except Exception as exc:
+            log.warn(exc)
+            raise exc
         # should we index draft ?
         return message
