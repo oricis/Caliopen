@@ -34,7 +34,7 @@
     "test:e2e": "protractor ./test/functional/protractor.conf.js",
     "test:e2e:init": "webdriver-manager update",
     "lint": "npm-run-all lint:js lint:sass",
-    "lint:js": "eslint --ext .js --ext .jsx src/",
+    "lint:js": "eslint --ext .js --ext .jsx --ignore-pattern *.spec.js --ignore-pattern *.spec.jsx src/",
     "lint:sass": "sass-lint 'src/**/*.scss'",
     "i18n": "react-translate-scripts",
     "storybook": "start-storybook -p 6006 --dont-track",

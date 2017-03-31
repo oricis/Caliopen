@@ -4,6 +4,7 @@ import Page from './layouts/Page';
 import AuthPage from './layouts/AuthPage';
 import Settings from './layouts/Settings';
 import DiscussionList from './scenes/DiscussionList';
+import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
 import Account from './scenes/Account';
 import Signin from './scenes/Signin';
@@ -15,6 +16,7 @@ import enableI18n from './services/i18n';
 const getRoutes = () => [(
   <Route name="app" path="/" component={enableI18n(Page)} >
     <IndexRoute component={DiscussionList} />
+    <Route path="discussions/:discussionId" component={MessageList} />
     <Route path="contacts" component={ContactBook} />
     <Route path="settings/" component={Settings}>
       <Route path="account" component={Account} />

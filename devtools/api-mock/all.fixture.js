@@ -6,6 +6,7 @@ module.exports = {
     require('./authentications').default,
     require('./me').default,
     require('./discussions').default,
+    require('./messages').default,
     require('./tags').default,
   ],
 };
