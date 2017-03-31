@@ -1,14 +1,20 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
+@import '../../styles/object/o-avatar';
+
 
 .m-reply {
   @include flex-grid-row($size: expand);
   font-size: $co-font__size--small;
 
-  &__avatar {
+  &__avatar-col {
     @include flex-grid-column(shrink);
-  }
+   }
 
-  &__form {
+   &__avatar {
+     @include m-avatar--size(small);
+    }
+
+  &__form-col {
     @include flex-grid-size;
     position: relative;
   }

@@ -79,8 +79,13 @@ class ReplyForm extends Component {
 
     return (
       <DiscussionDraft className="m-reply">
-        <div className="m-reply__avatar"><ContactAvatarLetter contact={user.contact} /></div>
-        <form method="POST" className="m-reply__form">
+        <div className="m-reply__avatar-col">
+          <ContactAvatarLetter
+            contact={user.contact}
+            className="m-reply__avatar"
+          />
+        </div>
+        <form method="POST" className="m-reply__form-col">
           <TopRow className="m-reply__top-bar">
             <div className="m-reply__top-bar-info">
               <span className="m-reply__author">{__('You')}</span>
