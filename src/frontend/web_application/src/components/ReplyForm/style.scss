@@ -7,12 +7,19 @@
   font-size: $co-font__size--small;
 
   &__avatar-col {
-    @include flex-grid-column(shrink);
+    @include breakpoint(small) {
+      flex: none;
+    }
+    @include breakpoint(medium) {
+      @include flex-grid-column(shrink);
+      padding-top: $co-component__spacing;
+    }
    }
 
-   &__avatar {
-     @include m-avatar--size(small);
-    }
+  &__avatar {
+    //@include breakpoint(small) {@include m-avatar--size(hidden);}
+    @include breakpoint(medium) {@include m-avatar--size(medium);}
+  }
 
   &__form-col {
     @include flex-grid-size;

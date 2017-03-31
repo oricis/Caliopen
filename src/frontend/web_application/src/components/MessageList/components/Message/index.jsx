@@ -111,7 +111,12 @@ class Message extends Component {
 
     return (
       <div className="m-message">
-        <div className="m-message__avatar"><ContactAvatarLetter contact={author} /></div>
+        <div className="m-message__avatar-col">
+          <ContactAvatarLetter
+            contact={author}
+            className="m-message__avatar"
+          />
+        </div>
         <div className="m-message__content">
           <div className={headerClassName}>
             <div className="m-message__top-bar">

@@ -29,10 +29,12 @@ const ContactAvatarLetter = ({ contact, className, size, isRound }) => {
 
   const letterClassNameSize = classNameSize ? `${classNameSize}__letter` : null;
 
+  const letterClassName = className ? `${className}__letter` : null;
+
   return (
     <div className={classnames('m-avatar', className, classNameSize, ClassNameShape)}>
       <ContactIconLetter
-        className={classnames('m-avatar__letter', letterClassNameSize)}
+        className={classnames('m-avatar__letter', letterClassName, letterClassNameSize)}
         contact={contact}
       />
     </div>

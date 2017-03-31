@@ -1,14 +1,20 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
+@import '../../../../styles/object/o-avatar';
 
 .m-message {
   @include flex-grid-row($size: expand);
   margin-bottom: $co-grid__gutter;
   font-size: .9rem;
 
-  &__avatar {
+  &__avatar-col {
     @include flex-grid-column(shrink);
     padding-top: $co-component__spacing;
     text-align: center;
+  }
+
+  &__avatar {
+    @include breakpoint(small) {@include m-avatar--size(small);}
+    @include breakpoint(medium) {@include m-avatar--size(medium);}
   }
 
   &__content { @include flex-grid-size; }
