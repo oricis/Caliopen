@@ -12,7 +12,6 @@ from caliopen_main.interfaces import (IO, storage)
 from elasticsearch import exceptions as ESexceptions
 
 from caliopen_storage.core.base import CoreMetaClass
-
 import logging
 
 log = logging.getLogger(__name__)
@@ -439,7 +438,13 @@ class ObjectIndexable(ObjectUser):
         self.save_index()
 
     def delete_index(self, **options):
-        raise NotImplementedError
+        try:
+            self._index.delete(using=self._index_class.client())
+        except Exception as exc:
+            log.info(exc)
+            return exc
+
+        return None
 
     def update_index(self, **options):
         """get indexed doc from elastic and update it with self attrs

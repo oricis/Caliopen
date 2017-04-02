@@ -8,6 +8,8 @@ from caliopen_main.objects import base
 import uuid
 from uuid import UUID
 import datetime
+import json
+
 from caliopen_main.message.store import Message as ModelMessage
 from caliopen_main.message.store import IndexedMessage
 from caliopen_main.message.parameters.message import (Message as ParamMessage,
@@ -19,6 +21,8 @@ from .external_references import ExternalReferences
 from .identities import Identity
 from .participant import Participant
 from .privacy_features import PrivacyFeatures
+
+from caliopen_main.errors import ForbiddenAction
 
 import logging
 
@@ -72,7 +76,7 @@ class Message(base.ObjectIndexable):
     def raw_json(self):
         """Return json representation of pristine raw message."""
         msg = RawMessage.get_for_user(self.user_id, self.raw_msg_id)
-        return msg.json_rep
+        return json.loads(msg.json_rep)
 
     @classmethod
     def create_draft(cls, user_id=None, **params):
@@ -100,5 +104,11 @@ class Message(base.ObjectIndexable):
         except Exception as exc:
             log.warn(exc)
             raise exc
-        # should we index draft ?
+        try:
+            message.marshall_index()
+            message.save_index()
+        except Exception as exc:
+            log.warn(exc)
+            raise exc
         return message
+

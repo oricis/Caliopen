@@ -116,31 +116,17 @@ class Message(Api):
 
         try:
             message.get_db()
+            message.get_index()
         except NotFound:
             raise ResourceNotFound
 
-        message.unmarshall_db()
-        if not message.is_draft:
-            message.get_index()
-            message.delete_index()
-
         try:
             message.delete_db()
+            message.delete_index()
         except Exception as exc:
             raise HTTPServerError(exc)
 
         return Response(None, 204)
-
-@resource(path='/messages/{message_id}/actions')
-class MessageActions(Api):
-    def __init__(self, request):
-        self.request = request
-        self.user = request.authenticated_userid
-
-    @view(renderer='json', permission='authenticated')
-    def post(self):
-        raise MethodNotAllowed  # TODO
-
 
 @resource(path='/raws/{raw_msg_id}')
 class Raw(Api):

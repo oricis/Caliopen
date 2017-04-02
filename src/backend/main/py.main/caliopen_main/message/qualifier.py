@@ -7,9 +7,6 @@ from uuid import UUID
 from caliopen_storage.exception import NotFound
 from ..user.core import User
 
-from caliopen_main.objects.message import Message
-from caliopen_main.objects.tag import ResourceTag
-
 from caliopen_main.discussion.core.discussion import (Discussion,
                                                       DiscussionMessageLookup,
                                                       DiscussionRecipientLookup,
@@ -82,6 +79,7 @@ class UserMessageQualifier(object):
     def process_inbound(self, message):
 
         user = User.get(message.user_id)
+        # TODO: make use of json raw message (already stored in db)
         raw_email = MailMessage(message.raw)
 
         # compute tags

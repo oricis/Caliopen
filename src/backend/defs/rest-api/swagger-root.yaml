@@ -30,7 +30,7 @@ paths:
     "$ref": paths/messages.yaml#/messages
   "/v1/messages/{message_id}":
     "$ref": paths/messages.yaml#/messages_{message_id}
-  "/v1/messages/{message_id}/actions":
+  "/v2/messages/{message_id}/actions":
     "$ref": paths/messages.yaml#/messages_{message_id}_actions
   "/v1/raws/{raw_msg_id}":
     "$ref": paths/raws.yaml#/raws_{raw_msg_id}
