@@ -40,6 +40,9 @@ func BasicAuthFromCache(cache *redis.Client, realm string) gin.HandlerFunc {
 		if err != nil || cache.Access_token != access_token || time.Since(cache.Expires_at) > 0 {
 			kickUnauthorizedRequest(c, realm)
 		}
+
+		//save user_id in context for future retreival
+		c.Set("user_id", user_id)
 	}
 }
 

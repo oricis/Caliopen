@@ -8,6 +8,10 @@ ApiConfig:
       - 127.0.0.1
       keyspace: caliopen
       consistency_level: 1
+  NatsConfig:
+    url: nats://localhost:4222
+    outSMTP_topic: outboundSMTP # topic's name to post "send" draft order
+  swaggerSpec: ../../../../../../../doc/api/swagger.json #absolute path or relative path to go.server bin
 ProxyConfig:
   host: 127.0.0.1
   port: 31415

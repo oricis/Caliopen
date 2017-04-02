@@ -4,7 +4,7 @@ type (
 	CaliopenConfig struct {
 		RESTstoreConfig RESTstoreConfig
 		//RESTindexConfig RESTindexConfig
-		//NatsConfig      NatsConfig
+		NatsConfig NatsConfig
 		//LDAstoreConfig  LDAstoreConfig
 	}
 
@@ -22,11 +22,10 @@ type (
 		}
 	*/
 	// NATS
-	/*
-		NatsConfig struct {
-
-		}
-	*/
+	NatsConfig struct {
+		Url           string `mapstructure:"url"`
+		OutSMTP_topic string `mapstructure:"outSMTP_topic"`
+	}
 	// LDA
 	/*
 			LDAConfig struct {

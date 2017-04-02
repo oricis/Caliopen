@@ -60,6 +60,10 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 			b.natsReplyError(msg, errors.New("message from db is empty"))
 			return resp, err
 		}
+		if !m.Is_draft {
+			b.natsReplyError(msg, errors.New("message is not a draft"))
+			return resp, err
+		}
 
 		em, err := MarshalEmail(m, b.Config.AppVersion, b.Config.PrimaryMailHost)
 		if err != nil {

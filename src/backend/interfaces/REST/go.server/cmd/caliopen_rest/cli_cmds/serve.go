@@ -95,7 +95,7 @@ func API(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	go rest_api.StartServer()
+	go rest_api.StartServer(cmdConfig.SwaggerFile)
 
 	sigHandler()
 }

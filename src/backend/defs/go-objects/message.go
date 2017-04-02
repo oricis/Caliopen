@@ -7,13 +7,13 @@ package objects
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/gocql/gocql"
 	"gopkg.in/oleiade/reflections.v1"
 	"time"
 )
 
 const (
-	EmailProtocol  string = "email"
-	EmailStateSent string = "sent"
+	EmailProtocol string = "email"
 )
 
 type Message struct {
@@ -80,13 +80,12 @@ func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 			} else {
 				jsonBuf.Write([]byte{'"', '"'})
 			}
-			if index < (len(fields) - 2) {
+			if index < (len(fields) - 1) {
 				jsonBuf.WriteByte(',')
 			}
 		}
 	}
 	jsonBuf.WriteByte('}')
-
 	return jsonBuf.Bytes(), nil
 }
 
@@ -96,4 +95,45 @@ func (msg *Message) MarshalJSON() ([]byte, error) {
 
 func (msg *Message) MarshalES() ([]byte, error) {
 	return customJSONMarshaler(msg, "elastic")
+}
+
+// unmarshal a map[string]interface{} that must owns all Message fields
+func (msg *Message) UnmarshalMap(input map[string]interface{}) {
+	//TODO: attachments
+	msg.Body, _ = input["body"].(string)
+	msg.Date, _ = input["date"].(time.Time)
+	msg.Date_delete, _ = input["date_delete"].(time.Time)
+	msg.Date_insert, _ = input["date_insert"].(time.Time)
+	msg.Discussion_id.UnmarshalBinary(input["discussion_id"].(gocql.UUID).Bytes())
+
+	ex_ref, _ := input["external_references"].(map[string]interface{})
+	msg.External_references = ExternalReferences{}
+	msg.External_references.Discussion_id, _ = ex_ref["discussion_id"].(string)
+	msg.External_references.Message_id, _ = ex_ref["message_id"].(string)
+	msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
+	msg.External_references.References, _ = ex_ref["references"].([]string)
+
+	//TODO: Identities
+	msg.Importance_level = int32(input["importance_level"].(int))
+	msg.Is_answered, _ = input["is_answered"].(bool)
+	msg.Is_draft, _ = input["is_draft"].(bool)
+	msg.Is_unread, _ = input["is_unread"].(bool)
+	msg.Message_id.UnmarshalBinary(input["message_id"].(gocql.UUID).Bytes())
+	msg.Parent_id, _ = input["parent_id"].(string)
+	msg.Participants = []Participant{}
+	for _, participant := range input["participants"].([]map[string]interface{}) {
+		p := Participant{}
+		p.Address, _ = participant["address"].(string)
+		//TODO: contact_ids
+		p.Label, _ = participant["labebl"].(string)
+		p.Protocol, _ = participant["protocol"].(string)
+		p.Type, _ = participant["type"].(string)
+		msg.Participants = append(msg.Participants, p)
+	}
+	//TODO: privacy_features
+	msg.Raw_msg_id.UnmarshalBinary(input["raw_msg_id"].(gocql.UUID).Bytes())
+	msg.Subject, _ = input["subject"].(string)
+	//TODO: tags
+	msg.Type, _ = input["type"].(string)
+	msg.User_id.UnmarshalBinary(input["user_id"].(gocql.UUID).Bytes())
 }

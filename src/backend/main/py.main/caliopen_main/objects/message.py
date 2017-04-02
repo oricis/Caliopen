@@ -97,6 +97,8 @@ class Message(base.ObjectIndexable):
         message.user_id = UUID(user_id)
         message.message_id = uuid.uuid4()
         message.is_draft = True
+        message.type = "email"  # TODO: type handling infered from participants
+        message.date_insert = datetime.datetime.utcnow()
 
         try:
             message.marshall_db()
@@ -111,4 +113,3 @@ class Message(base.ObjectIndexable):
             log.warn(exc)
             raise exc
         return message
-
