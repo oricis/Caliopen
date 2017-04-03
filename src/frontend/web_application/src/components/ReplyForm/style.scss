@@ -18,8 +18,13 @@
   }
 
   &__avatar {
-    @include breakpoint(small) {@include m-avatar--size(hidden);}
-    @include breakpoint(medium) {@include m-avatar--size(medium);}
+    @include breakpoint(small) {
+      display: none;
+    }
+    @include breakpoint(medium) {
+      @include m-avatar--size(medium);
+      display: block;
+    }
   }
 
   &__form-col { @include flex-grid-size; }
@@ -43,14 +48,14 @@
 
   &__type {
     @include flex-grid-size(shrink);
-
-    &__label {
-      @include breakpoint(small) {display: none}
-      @include breakpoint(medium) {display: inline;}
-    }
-
-    &__icon { color: $co-color__fg__text; }
   }
+
+  &__type-label {
+    @include breakpoint(small) {display: none}
+    @include breakpoint(medium) {display: inline;}
+  }
+
+  &__type-icon { color: $co-color__fg__text; }
 
   &__author {
     @include flex-grid-column(shrink);
@@ -70,7 +75,6 @@
   }
 
   &__body {
-    padding: $co-component__spacing;
     border-top: 1px solid $co-color__bg__back;
     border-bottom: 1px solid $co-color__bg__back;
     background: $co-color__fg__back;

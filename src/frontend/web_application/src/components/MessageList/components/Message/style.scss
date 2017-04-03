@@ -20,8 +20,11 @@
   }
 
   &__avatar {
-    @include breakpoint(small) {@include m-avatar--size(hidden);}
-    @include breakpoint(medium-small) {@include m-avatar--size(small);}
+    @include breakpoint(small) {display: none}
+    @include breakpoint(medium-small) {
+      @include m-avatar--size(small);
+      display: block;
+    }
     @include breakpoint(medium) {@include m-avatar--size(medium);}
   }
 
@@ -87,15 +90,15 @@
 
   &__type {
     @include flex-grid-size(shrink);
+  }
 
-    &__label {
-      @include breakpoint(small) {display: none}
-      @include breakpoint(medium) {display: inline;}
-    }
+  &__type-label {
+    @include breakpoint(small) {display: none}
+    @include breakpoint(medium) {display: inline;}
+  }
 
-    &__icon {
-      color: $co-color__fg__text;
-    }
+  &__type-icon {
+    color: $co-color__fg__text;
   }
 
   &__author {
@@ -108,5 +111,4 @@
     @include flex-grid-column(shrink);
     margin-left: auto;
   }
-
 }

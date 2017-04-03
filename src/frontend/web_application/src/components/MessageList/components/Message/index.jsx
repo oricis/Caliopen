@@ -16,7 +16,9 @@ const MessageInfosContainer = ({ __, message, author }) => (
   <div className="m-message__infos-container">
     <div className="m-message__author">{author.address}</div>
     <div className="m-message__type">
-      <span className="m-message__type__label">{__('by')} {message.type}</span> <Icon type={message.type} className="m-message__type__icon" spaced />
+      <span className="m-message__type-label">{__('by')} {message.type}</span>
+      {' '}
+      <Icon type={message.type} className="m-message__type-icon" spaced />
     </div>
     <DateTime className="m-message__date" format="LT">
       {message.date}

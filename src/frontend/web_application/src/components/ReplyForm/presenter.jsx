@@ -95,7 +95,9 @@ class ReplyForm extends Component {
             <div className="m-reply__top-bar-info">
               <div className="m-reply__author">{__('You')}</div>
               <div className="m-reply__type">
-                <span className="m-reply__type__label">{__('by')} {__(this.state.protocol)}</span> <Icon className="m-reply__type__icon" type={__(this.state.protocol)} spaced /> <Icon type="angle-down" spaced /></div>
+                <span className="m-reply__type-label">{__('by')} {__(this.state.protocol)}</span>
+                {' '}
+                <Icon className="m-reply__type-icon" type={__(this.state.protocol)} spaced /> <Icon type="angle-down" spaced /></div>
               <div className="m-reply__date">{__('Now')}</div>
             </div>
 

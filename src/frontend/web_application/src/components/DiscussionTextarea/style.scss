@@ -6,9 +6,6 @@
     @include o-form-element;
     width: 100%;
     min-height: 3 * $co-component__height;
-    padding: 0;
-    border: 0;
-    background: transparent;
     color: $co-color__fg__text;
   }
 }
