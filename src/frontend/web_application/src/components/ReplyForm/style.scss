@@ -1,33 +1,44 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
+@import '../../styles/object/o-avatar';
 
 .m-reply {
   @include flex-grid-row($size: expand);
   font-size: $co-font__size--small;
 
-  &__avatar {
-    @include flex-grid-column(shrink);
-  }
-
-  &__form {
-    @include flex-grid-size;
-    position: relative;
-  }
+  &__form-col { @include flex-grid-size; }
 
   &__top-bar {
     @include flex-grid-row($size: expand);
     align-items: center;
-    border-bottom: 1px solid $co-color__bg__back;
-    background: $co-color__fg__back--high;
+    background: $co-color__fg__back--higher;
   }
 
   &__top-bar-info {
-    @include flex-grid-column(shrink);
+    @include flex-grid-row($size: expand);
+    flex: 1;
   }
 
-  &__top-bar-switcher {
+  &__top-actions-switcher {
     @include flex-grid-size(shrink);
     margin-left: auto;
     border-left: 1px solid $co-color__bg__back;
+  }
+
+  &__type {
+    @include flex-grid-size(shrink);
+  }
+
+  &__type-icon { color: $co-color__fg__text; }
+
+  &__author {
+    @include flex-grid-column(shrink);
+    color: $co-color__fg__text--high;
+    font-weight: 600;
+  }
+
+  &__date {
+    @include flex-grid-column(shrink);
+    margin-left: auto;
   }
 
   &__author {
@@ -37,30 +48,54 @@
   }
 
   &__body {
-    padding: $co-component__spacing;
+    border-top: 1px solid $co-color__bg__back;
+    border-bottom: 1px solid $co-color__bg__back;
     background: $co-color__fg__back;
     color: $co-color__fg__text;
   }
 
   &__bottom-bar {
-    @include flex-grid-row($size: expand);
-    justify-content: space-between;
-    padding: $co-component__spacing;
-    border-top: 1px solid $co-color__bg__back;
-    background: $co-color__fg__back;
-  }
-
-  &__bottom-bar-actions,
-  &__editor {
-    @include flex-grid-size(shrink);
-  }
-
-  &__action-button {
-    margin: $co-component__spacing;
+    padding: 2 * $co-component__spacing $co-component__spacing;
     background: $co-color__fg__back--high;
-
   }
 
+  &__bottom-actions {
+    @include flex-grid-row($size: expand);
+  }
 
+  &__bottom-action {
+    @include flex-grid-size(shrink);
+    margin-left: $co-component__spacing;
+    background: $co-color__fg__back--higher; // waiting for Button refacto
 
+    &--editor { margin-left: auto; }
+  }
+
+  @include breakpoint(small) {
+    &__avatar-col { flex: none; }
+
+    &__avatar { display: none; }
+
+    &__type-label { display: none; }
+
+    &__bottom-bar { display: none; } // to be replace with responsive bottom bar
+  }
+
+  @include breakpoint(medium-small) {
+    &__bottom-bar { display: block; } // to be replace with responsive bottom bar
+  }
+
+  @include breakpoint(medium) {
+    &__avatar-col {
+      @include flex-grid-column(shrink);
+      padding-top: $co-component__spacing;
+    }
+
+    &__avatar {
+      @include m-avatar--size(medium);
+      display: block;
+    }
+
+    &__type-label { display: inline; }
+  }
 }

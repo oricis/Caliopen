@@ -1,50 +1,25 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
+@import '../../../../styles/object/o-avatar';
 
 .m-message {
   @include flex-grid-row($size: expand);
-  margin-bottom: $co-grid__gutter;
-  font-size: .9rem;
-
-  &__avatar {
-    @include flex-grid-column(shrink);
-    padding-top: $co-component__spacing;
-    text-align: center;
-  }
+  font-size: $co-font__size--small;
 
   &__content { @include flex-grid-size; }
 
-  &__header {
+  &__top-bar {
     @include flex-grid-row($size: expand);
-    align-items: stretch;
+    justify-content: center;
     border-bottom: 1px solid $co-color__fg__back--lower;
     background: $co-color__fg__back--higher;
-
-    &--active {
-      .m-message__actions-container {
-        right: 0;
-        transition: right .15s ease-out;
-      }
-
-      .m-message__actions-switcher {
-        background: $co-color__fg__back--high;
-      }
-    }
-  }
-
-  &__top-bar {
-    @include flex-grid-column;
-    @include flex-grid-row($size: expand);
-    position: relative;
-    overflow: hidden;
   }
 
   &__actions-switcher {
     @include flex-grid-size(shrink);
     border-left: 1px solid $co-color__fg__back--lower;
-    background: $co-color__fg__back--higher;
-
-    &:hover { background: $co-color__fg__back--higher; }
   }
+
+  &__actions-menu { background: $co-color__fg__back--higher; }
 
   &__body {
     @include flex-grid-column(12);
@@ -67,13 +42,10 @@
       }
     }
 
-    &__subject {
-      color: $co-color__fg__text--lower;
-    }
-
+    &__subject { color: $co-color__fg__text--lower; }
   }
 
-  &__expand {
+  &__expand-button {
     @include flex-grid-size(12);
     border-top: 1px solid $co-color__fg__back--lower;
     background: $co-color__fg__back--high;
@@ -82,41 +54,49 @@
 
   }
 
-  &__actions-container {
-    @include flex-grid-size;
-    position: absolute;
-    right: -100%;
-    z-index: $l-z-index__actions-container;
-    transition: right .15s ease-out;
-    background: $co-color__fg__back--high;
-  }
-
   &__infos-container {
-    @include flex-grid-size;
-    transition: .5s width;
-
-    &::after {
-      display: table-cell;
-      content: '';
-      clear: both;
-    }
+    @include flex-grid-row;
+    flex: 1;
+    align-items: center;
   }
 
-  &__author,
-  &__type,
-  &__date {
-    display: inline-block;
-    padding: 0 $co-component__spacing 0 0;
-    line-height: $co-component__height;
-  }
+  &__type {  @include flex-grid-size(shrink); }
+
+  &__type-icon { color: $co-color__fg__text; }
 
   &__author {
+    @include flex-grid-column(shrink);
     color: $co-color__fg__text--high;
     font-weight: 600;
   }
 
-  &__date { float: right; }
+  &__date {
+    @include flex-grid-column(shrink);
+    margin-left: auto;
+  }
 
-  &__type-ico {color: $co-color__fg__text}
+  @include breakpoint(small) {
+    margin-bottom: $co-grid__gutter--small;
+    &__avatar-col {  flex: none;  }
+    &__avatar { display: none; }
+    &__type-label { display: none; }
+  }
 
+  @include breakpoint(medium-small) {
+    &__avatar-col {
+      @include flex-grid-column(shrink);
+      padding-top: $co-component__spacing;
+    }
+
+    &__avatar {
+      @include m-avatar--size(small);
+      display: block;
+    }
+  }
+
+  @include breakpoint(medium) {
+    margin-bottom: $co-grid__gutter;
+    &__avatar {  @include m-avatar--size(medium); }
+    &__type-label { display: inline; }
+  }
 }

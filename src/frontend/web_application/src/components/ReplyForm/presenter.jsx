@@ -1,10 +1,14 @@
 import React, { Component, PropTypes } from 'react';
+import { v1 as uuidV1 } from 'uuid';
 import Button from '../Button';
 import Icon from '../Icon';
 import ContactAvatarLetter from '../ContactAvatarLetter';
+import Dropdown, { withDropdownControl } from '../Dropdown';
 import DiscussionDraft, { TopRow, BodyRow, BottomRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
 import './style.scss';
+
+const DropdownControl = withDropdownControl(Button);
 
 function generateStateFromProps(props, prevState) {
   return {
@@ -76,20 +80,37 @@ class ReplyForm extends Component {
 
   render() {
     const { user, __ } = this.props;
+    const dropdownId = uuidV1();
 
     return (
       <DiscussionDraft className="m-reply">
-        <div className="m-reply__avatar"><ContactAvatarLetter contact={user.contact} /></div>
-        <form method="POST" className="m-reply__form">
+        <div className="m-reply__avatar-col">
+          <ContactAvatarLetter
+            contact={user.contact}
+            className="m-reply__avatar"
+          />
+        </div>
+        <form method="POST" className="m-reply__form-col">
           <TopRow className="m-reply__top-bar">
             <div className="m-reply__top-bar-info">
-              <span className="m-reply__author">{__('You')}</span>
-              <span className="m-reply__type">{__('by')} {__(this.state.protocol)} <Icon type={__(this.state.protocol)} spaced /> <Icon type="angle-down" spaced /></span>
+              <div className="m-reply__author">{__('You')}</div>
+              <div className="m-reply__type">
+                <span className="m-reply__type-label">{__('by')} {__(this.state.protocol)}</span>
+                {' '}
+                <Icon className="m-reply__type-icon" type={__(this.state.protocol)} spaced /> <Icon type="angle-down" spaced /></div>
+              <div className="m-reply__date">{__('Now')}</div>
             </div>
 
-            <Button onClick={this.handleActiveClick} className="m-reply__top-bar-switcher">
+            <DropdownControl toggle={dropdownId} className="m-reply__top-actions-switcher">
               <Icon type="ellipsis-v" />
-            </Button>
+            </DropdownControl>
+
+            <Dropdown
+              id={dropdownId}
+              className="m-reply__top-actions-menu"
+              position="left"
+              closeOnClick
+            />
           </TopRow>
           <BodyRow className="m-reply__body">
             <DiscussionTextarea
@@ -99,14 +120,28 @@ class ReplyForm extends Component {
             />
           </BodyRow>
           <BottomRow className="m-reply__bottom-bar">
-            <div className="m-reply__bottom-bar-actions">
-              <Button className="m-reply__action-button" onClick={this.handleSend}><Icon type="send" spaced /> {__('messages.compose.action.send')}</Button>
-              <Button className="m-reply__action-button" onClick={this.handleSave}><Icon type="save" spaced /> {__('messages.compose.action.save')}</Button>
-              <Button className="m-reply__action-button"><Icon type="share-alt" spaced /> {__('messages.compose.action.copy')}</Button>
-            </div>
-
-            <div className="m-reply__editor">
-              <Button className="m-reply__action-button" onClick={this.handleSave}><Icon type="editor" /></Button>
+            <div className="m-reply__bottom-actions">
+              <div className="m-reply__bottom-action">
+                <Button plain onClick={this.handleSend}>
+                  <Icon type="send" spaced />
+                  <span>{__('messages.compose.action.send')}</span>
+                </Button>
+              </div>
+              <div className="m-reply__bottom-action">
+                <Button onClick={this.handleSave}>
+                  <Icon type="save" spaced />
+                  <span>{__('messages.compose.action.save')}</span>
+                </Button>
+              </div>
+              <div className="m-reply__bottom-action">
+                <Button onClick={this.handleSave}>
+                  <Icon type="share-alt" spaced />
+                  <span>{__('messages.compose.action.copy')}</span>
+                </Button>
+              </div>
+              <div className="m-reply__bottom-action m-reply__bottom-action--editor">
+                <Button><Icon type="editor" spaced /></Button>
+              </div>
             </div>
           </BottomRow>
         </form>
