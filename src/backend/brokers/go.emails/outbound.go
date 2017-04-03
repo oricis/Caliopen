@@ -60,6 +60,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 			b.natsReplyError(msg, errors.New("message from db is empty"))
 			return resp, err
 		}
+		//checks if message is draft
 		if !m.Is_draft {
 			b.natsReplyError(msg, errors.New("message is not a draft"))
 			return resp, err
@@ -69,6 +70,12 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 		if err != nil {
 			log.Warn(err)
 			b.natsReplyError(msg, err)
+			return resp, err
+		}
+
+		//checks that we have at least one sender and one recipient
+		if len(em.Email.SmtpRcpTo) == 0 || len(em.Email.SmtpMailFrom) == 0 {
+			b.natsReplyError(msg, errors.New("missing sender and/or recipient"))
 			return resp, err
 		}
 

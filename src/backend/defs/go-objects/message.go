@@ -52,7 +52,8 @@ func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 		return jsonBuf.Bytes(), err
 	}
 	jsonBuf.WriteByte('{')
-	for index, field := range fields {
+	first := true
+	for _, field := range fields {
 		j_field, err := reflections.GetFieldTag(obj, field, "json")
 		if err == nil && j_field != "" && j_field != "-" {
 			if context == "elastic" {
@@ -63,6 +64,11 @@ func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 						continue
 					}
 				}
+			}
+			if first {
+				first = false
+			} else {
+				jsonBuf.WriteByte(',')
 			}
 			jsonBuf.WriteString("\"" + j_field + "\":")
 			field_value, err := reflections.GetField(obj, field)
@@ -79,9 +85,6 @@ func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 				}
 			} else {
 				jsonBuf.Write([]byte{'"', '"'})
-			}
-			if index < (len(fields) - 1) {
-				jsonBuf.WriteByte(',')
 			}
 		}
 	}
