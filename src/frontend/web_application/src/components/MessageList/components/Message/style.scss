@@ -5,29 +5,6 @@
   @include flex-grid-row($size: expand);
   font-size: $co-font__size--small;
 
-  @include breakpoint(small) { margin-bottom: $co-grid__gutter--small; }
-  @include breakpoint(medium) { margin-bottom: $co-grid__gutter; }
-
-  &__avatar-col {
-    @include breakpoint(small) {
-      flex: none;
-    }
-
-    @include breakpoint(medium-small) {
-      @include flex-grid-column(shrink);
-      padding-top: $co-component__spacing;
-    }
-  }
-
-  &__avatar {
-    @include breakpoint(small) {display: none}
-    @include breakpoint(medium-small) {
-      @include m-avatar--size(small);
-      display: block;
-    }
-    @include breakpoint(medium) {@include m-avatar--size(medium);}
-  }
-
   &__content { @include flex-grid-size; }
 
   &__top-bar {
@@ -42,9 +19,7 @@
     border-left: 1px solid $co-color__fg__back--lower;
   }
 
-  &__actions-menu {
-    background: $co-color__fg__back--higher;
-  }
+  &__actions-menu { background: $co-color__fg__back--higher; }
 
   &__body {
     @include flex-grid-column(12);
@@ -67,10 +42,7 @@
       }
     }
 
-    &__subject {
-      color: $co-color__fg__text--lower;
-    }
-
+    &__subject { color: $co-color__fg__text--lower; }
   }
 
   &__expand-button {
@@ -88,18 +60,9 @@
     align-items: center;
   }
 
-  &__type {
-    @include flex-grid-size(shrink);
-  }
+  &__type {  @include flex-grid-size(shrink); }
 
-  &__type-label {
-    @include breakpoint(small) {display: none}
-    @include breakpoint(medium) {display: inline;}
-  }
-
-  &__type-icon {
-    color: $co-color__fg__text;
-  }
+  &__type-icon { color: $co-color__fg__text; }
 
   &__author {
     @include flex-grid-column(shrink);
@@ -110,5 +73,30 @@
   &__date {
     @include flex-grid-column(shrink);
     margin-left: auto;
+  }
+
+  @include breakpoint(small) {
+    margin-bottom: $co-grid__gutter--small;
+    &__avatar-col {  flex: none;  }
+    &__avatar { display: none; }
+    &__type-label { display: none; }
+  }
+
+  @include breakpoint(medium-small) {
+    &__avatar-col {
+      @include flex-grid-column(shrink);
+      padding-top: $co-component__spacing;
+    }
+
+    &__avatar {
+      @include m-avatar--size(small);
+      display: block;
+    }
+  }
+
+  @include breakpoint(medium) {
+    margin-bottom: $co-grid__gutter;
+    &__avatar {  @include m-avatar--size(medium); }
+    &__type-label { display: inline; }
   }
 }
