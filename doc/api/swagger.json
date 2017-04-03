@@ -5017,7 +5017,7 @@
         }
       }
     },
-    "/v1/messages/{message_id}/actions": {
+    "/v2/messages/{message_id}/actions": {
       "post": {
         "description": "send an order to execute one (or many) action(s) for the given message : send, etc. A successful execution of the action will probably modify one or more message's attribute(s)",
         "tags": [
