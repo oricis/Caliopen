@@ -1,31 +1,9 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 @import '../../styles/object/o-avatar';
 
-
 .m-reply {
   @include flex-grid-row($size: expand);
   font-size: $co-font__size--small;
-
-  &__avatar-col {
-    @include breakpoint(small) {
-      flex: none;
-    }
-
-    @include breakpoint(medium) {
-      @include flex-grid-column(shrink);
-      padding-top: $co-component__spacing;
-    }
-  }
-
-  &__avatar {
-    @include breakpoint(small) {
-      display: none;
-    }
-    @include breakpoint(medium) {
-      @include m-avatar--size(medium);
-      display: block;
-    }
-  }
 
   &__form-col { @include flex-grid-size; }
 
@@ -48,11 +26,6 @@
 
   &__type {
     @include flex-grid-size(shrink);
-  }
-
-  &__type-label {
-    @include breakpoint(small) {display: none}
-    @include breakpoint(medium) {display: inline;}
   }
 
   &__type-icon { color: $co-color__fg__text; }
@@ -84,12 +57,6 @@
   &__bottom-bar {
     padding: 2 * $co-component__spacing $co-component__spacing;
     background: $co-color__fg__back--high;
-    @include breakpoint(small) {
-      display: none; // to be replace with responsive bottom bar
-    }
-    @include breakpoint(medium-small) {
-      display: block; // to be replace with responsive bottom bar
-    }
   }
 
   &__bottom-actions {
@@ -102,5 +69,33 @@
     background: $co-color__fg__back--higher; // waiting for Button refacto
 
     &--editor { margin-left: auto; }
+  }
+
+  @include breakpoint(small) {
+    &__avatar-col { flex: none; }
+
+    &__avatar { display: none; }
+
+    &__type-label { display: none; }
+
+    &__bottom-bar { display: none; } // to be replace with responsive bottom bar
+  }
+
+  @include breakpoint(medium-small) {
+    &__bottom-bar { display: block; } // to be replace with responsive bottom bar
+  }
+
+  @include breakpoint(medium) {
+    &__avatar-col {
+      @include flex-grid-column(shrink);
+      padding-top: $co-component__spacing;
+    }
+
+    &__avatar {
+      @include m-avatar--size(medium);
+      display: block;
+    }
+
+    &__type-label { display: inline; }
   }
 }
