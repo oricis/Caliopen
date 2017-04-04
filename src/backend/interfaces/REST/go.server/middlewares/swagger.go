@@ -29,7 +29,15 @@ func SwaggerInboundValidation() gin.HandlerFunc {
 // checks that inputs and/or outputs conform to the swagger specs for the route
 func SwaggerValidator(obj interface{}) gin.HandlerFunc {
 	//TODO
+
+	/* should look something like :
+	SwaggerInboundValidation()
+	next()
+	SwaggerOutboundValidation()
+	*/
+
 	return func(ctx *gin.Context) {
+
 		//var errors Errors
 		v := reflect.ValueOf(obj)
 		k := v.Kind()

@@ -5,6 +5,7 @@
 package caliopen_smtp
 
 import (
+	"bytes"
 	"crypto/tls"
 	broker "github.com/CaliOpen/CaliOpen/src/backend/brokers/go.emails"
 	log "github.com/Sirupsen/logrus"
@@ -97,9 +98,14 @@ func (server *SMTPServer) OutboundWorker() {
 				open = true
 			}
 
-			from := outcoming.EmailMessage.Email.SmtpMailFrom
+			from := outcoming.EmailMessage.Email.SmtpMailFrom[0] //TODO: manage multiple senders
 			to := outcoming.EmailMessage.Email.SmtpRcpTo
-			smtp_sender.Send(from, to, &outcoming.EmailMessage.Email.Raw)
+			var raw bytes.Buffer
+			raw.WriteString((&outcoming.EmailMessage.Email.Raw).String())
+			err = smtp_sender.Send(from, to, &raw)
+			if err != nil {
+				log.WithError(err).Warn("outbound: unable to send to MTA")
+			}
 
 			outcoming.Response <- &broker.DeliveryAck{
 				EmailMessage: outcoming.EmailMessage,

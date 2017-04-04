@@ -10,6 +10,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 import random
 import logging
+import smtplib
+
 from email import message_from_file
 from mailbox import mbox, Maildir
 
@@ -25,7 +27,6 @@ def import_email(email, import_path, format, **kwargs):
     from caliopen_main.user.core import Contact, ContactLookup
     from caliopen_main.message.format.mail import MailMessage
     from caliopen_main.user.parameters import NewContact, NewEmail
-    from caliopen_smtp.agent import DeliveryAgent
 
     if format == 'maildir':
         emails = Maildir(import_path, factory=message_from_file)
@@ -49,20 +50,18 @@ def import_email(email, import_path, format, **kwargs):
 
     user = User.by_local_identity(email)
 
-    agent = DeliveryAgent()
-    mailfrom = ''
     rcpts = [email]
 
     log.info("Processing mode %s" % mode)
     msgs = []
     for key, mail in emails.iteritems():
         # Create contact for user
-        log.info('Processing mail %s' % key)
         msgs.append(MailMessage(mail))
 
     msgs = sorted(msgs, key=lambda msg: msg.date)
-
-    for msg in msgs:
+    total_msgs = len(msgs)
+    for i, msg in enumerate(msgs, 1):
+        log.info('Processing mail {}/{}'.format(i, total_msgs))
         for type, addresses in msg.recipients.iteritems():
             if not addresses:
                 continue
@@ -75,10 +74,14 @@ def import_email(email, import_path, format, **kwargs):
                     contact = NewContact()
                     contact.family_name = name
                     if alias:
-                        email = NewEmail()
-                        email.address = alias
-                        contact.emails = [email]
+                        e_mail = NewEmail()
+                        e_mail.address = alias
+                        contact.emails = [e_mail]
                     contact.privacy_index = random.randint(0, 100)
                     Contact.create(user, contact)
-        res = agent.process(mailfrom, rcpts, msg.mail.as_string())
-        log.info('Process result %r' % res)
+    for i, msg in enumerate(msgs,
+                            1):  # injection is made here to test smtp delivery speed
+        log.info('Injecting mail {}/{}'.format(i, total_msgs))
+        smtp = smtplib.SMTP(host="localhost", port=2525)
+        smtp.sendmail("maibox_importer@py.caliopen.cli", rcpts,
+                      msg.mail.as_string())

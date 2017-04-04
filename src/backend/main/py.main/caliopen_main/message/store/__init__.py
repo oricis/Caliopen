@@ -1,16 +1,30 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .message import Message, MessageRecipient
+from .attachment import MessageAttachment
+from .attachment_index import IndexedMessageAttachment
+from caliopen_main.discussion.store.discussion import (Discussion,
+                                                       DiscussionCounter,
+                                                       DiscussionExternalLookup,
+                                                       DiscussionMessageLookup,
+                                                       DiscussionRecipientLookup)
+from caliopen_main.discussion.store.discussion_index import \
+    DiscussionIndexManager
+from .external_references import ExternalReferences
+from .external_references_index import IndexedExternalReferences
+from .message import Message
 from .message_index import IndexedMessage
-from .thread import (Thread, ThreadCounter, ThreadRecipientLookup,
-                     ThreadExternalLookup, ThreadMessageLookup)
-from .discussion_index import DiscussionIndexManager
+from .participant import Participant
+from .participant_index import IndexedParticipant
 from .raw import RawMessage, UserRawLookup
 
-
-__all__ = ['RawMessage', 'UserRawLookup',
-           'Message', 'MessageRecipient', 'IndexedMessage',
-           'Thread', 'ThreadCounter', 'ThreadMessageLookup',
-           'ThreadRecipientLookup', 'ThreadExternalLookup',
-           'DiscussionIndexManager']
+__all__ = ['MessageAttachment', 'IndexedMessageAttachment',
+           'RawMessage', 'UserRawLookup',
+           'Message', 'IndexedMessage',
+           'DiscussionIndexManager'
+           'Discussion', 'DiscussionCounter', 'DiscussionMessageLookup',
+           'DiscussionRecipientLookup', 'DiscussionExternalLookup',
+           'DiscussionIndexManager',
+           'ExternalReferences', 'IndexedExternalReferences',
+           'Participant', 'IndexedParticipant'
+           ]

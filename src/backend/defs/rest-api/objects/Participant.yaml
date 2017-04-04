@@ -1,0 +1,27 @@
+---
+type: object
+properties:
+  address:
+    type: string
+  contact_ids:         # may be empty if participant could not be linked to an user's contact
+    type: array
+    items:
+      type: string
+  label:              # 'display-name' for email ; 'real name' for IRC
+    type: string
+  protocol:           # email, IRC…
+    type: string
+  type:               # for now, enum is RFC5322's field types for emails.
+    type: string
+    enum:
+    - To
+    - Cc
+    - Bcc
+    - From
+    - Reply-To
+    - Sender
+required:
+- address
+- type
+- protocol
+additionalProperties: false

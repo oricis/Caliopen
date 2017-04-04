@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"fmt"
 	broker "github.com/CaliOpen/CaliOpen/src/backend/brokers/go.emails"
+	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	"github.com/flashmob/go-guerrilla"
 	"strconv"
 	"strings"
@@ -32,13 +33,13 @@ func (server *SMTPServer) Process(ev *guerrilla.Envelope) guerrilla.BackendResul
 		to = append(to, email_add.String())
 	}
 
-	emailMessage := broker.EmailMessage{
-		Email: &broker.Email{
-			SmtpMailFrom: ev.MailFrom.String(),
+	emailMessage := obj.EmailMessage{
+		Email: &obj.Email{
+			SmtpMailFrom: []string{ev.MailFrom.String()},
 			SmtpRcpTo:    to,
 			Raw:          raw_email,
 		},
-		Message: nil,
+		Message: &obj.Message{},
 	}
 	incoming := &broker.SmtpEmail{
 		EmailMessage: &emailMessage,

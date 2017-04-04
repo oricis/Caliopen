@@ -8,6 +8,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
+	"time"
 )
 
 type (
@@ -37,10 +38,20 @@ func (cb *CassandraBackend) initialize(config CassandraConfig) (err error) {
 	cluster := gocql.NewCluster(cb.CassandraConfig.Hosts...)
 	cluster.Keyspace = cb.Keyspace
 	cluster.Consistency = cb.Consistency
-	cb.Session, err = cluster.CreateSession()
+
+	//try to get a Session
+	const maxAttempts = 10
+	for i := 0; i < maxAttempts; i++ {
+		cb.Session, err = cluster.CreateSession()
+		if err != nil {
+			log.WithError(err).Warn("package store : unable to create a session to cassandra. Retrying in 3 sec…")
+			time.Sleep(3 * time.Second)
+		} else {
+			break
+		}
+	}
 	if err != nil {
-		log.WithError(err).Warn("package store : unable to create a session to cassandra")
-		return err
+		return
 	}
 	connection := gocassa.NewConnection(gocassa.GoCQLSessionToQueryExecutor(cb.Session))
 	cb.IKeyspace = connection.KeySpace(cb.Keyspace)

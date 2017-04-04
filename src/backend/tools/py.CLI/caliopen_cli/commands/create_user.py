@@ -13,7 +13,7 @@ def create_user(**kwargs):
     from caliopen_main.user.parameters import NewEmail
 
     # Fill core registry
-    from caliopen_main.message.core import Message
+    from caliopen_main.objects.message import Message
 
     param = NewUser()
     param.name = kwargs['email']

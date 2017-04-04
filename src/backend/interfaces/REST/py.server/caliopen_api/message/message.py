@@ -7,27 +7,24 @@ import logging
 from cornice.resource import resource, view
 from pyramid.response import Response
 
-
-from caliopen_main.message.core import (RawMessage, ReturnMessage,
-                                        Message as CoreMessage)
-from caliopen_main.message.parameters import NewMessage
-from caliopen_main.objects.message import Message as MessageObject
+from caliopen_main.objects.message import Message as ObjectMessage
+from caliopen_main.message.core.raw import RawMessage
+from caliopen_storage.exception import NotFound
 
 from ..base import Api
-from ..base.exception import ResourceNotFound
 
 from ..base.exception import (ResourceNotFound,
                               ValidationError,
                               MethodNotAllowed,
                               MergePatchError)
+from pyramid.httpexceptions import HTTPServerError
 
 log = logging.getLogger(__name__)
 
 
-@resource(collection_path='/discussions/{discussion_id}/messages',
-          path='/discussions/{discussion_id}/messages/{message_id}')
+@resource(collection_path='/messages',
+          path='/messages/{message_id}')
 class Message(Api):
-
     def __init__(self, request):
         self.request = request
         self.user = request.authenticated_userid
@@ -47,47 +44,46 @@ class Message(Api):
     def collection_get(self):
         discussion_id = self.request.matchdict.get('discussion_id')
         pi_range = self.request.authenticated_userid.pi_range
-        messages = CoreMessage.by_discussion_id(self.user, discussion_id,
+        messages = Message.by_discussion_id(self.user, discussion_id,
                                             min_pi=pi_range[0],
                                             max_pi=pi_range[1],
                                             limit=self.get_limit(),
                                             offset=self.get_offset())
         results = []
         for msg in messages['hits']:
-            results.append(ReturnMessage.build(msg).serialize())
+            results.append(msg.marshall_json_dict())
         return {'messages': results, 'total': messages['total']}
 
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
-        discussion_id = self.request.matchdict.get('discussion_id')
-        reply_to = self.request.json.get('reply_to')
-        if reply_to:
-            parent = CoreMessage.get(self.user, reply_to)
-            parent_message_id = parent.external_id
-            discussion_id = parent.discussion_id
-            pi_value = parent.privacy_index
-        else:
-            parent_message_id = None
-            discussion_id = None
-            # XXX : how to compute ?
-            pi_value = 0
-        recipients = self.extract_recipients()
-        # XXX : make recipient for UserMessage using Recipient class
-        subject = self.request.json.get('subject')
-        text = self.request.json.get('text')
-        tags = self.request.json.get('tags', [])
-        new_msg = NewMessage(recipients,
-                             subject=subject,
-                             text=text, tags=tags,
-                             date=datetime.utcnow(),
-                             privacy_index=pi_value,
-                             thread_id=discussion_id,
-                             parent_message_id=parent_message_id)
-        msg = CoreMessage.create(self.user, new_msg)
-        idx_msg = CoreMessage.get(self.user, msg.message_id)
-        log.info('Post new message %r' % msg.message_id)
-        # XXX return redirect to newly created message ?
-        return idx_msg
+        data = self.request.json
+        # ^ json payload should have been validated by swagger module
+        try:
+            message = ObjectMessage().create_draft(user_id=self.user.user_id,
+                                                   **data)
+        except Exception as exc:
+            log.warn(exc)
+            raise HTTPServerError
+
+        message_url = self.request.route_path('message',
+                                              message_id=str(
+                                                  message.message_id))
+
+        self.request.response.location = message_url.encode('utf-8')
+        return {'location': message_url}
+
+    @view(renderer='json', permission='authenticated')
+    def get(self):
+        # pi_range = self.request.authenticated_userid.pi_range
+        message_id = self.request.swagger_data["message_id"]
+        message = ObjectMessage(self.user.user_id, message_id=message_id)
+        try:
+            message.get_db()
+        except NotFound:
+            raise ResourceNotFound
+
+        message.unmarshall_db()
+        return message.marshall_json_dict()
 
     @view(renderer='json', permission='authenticated')
     def patch(self):
@@ -105,17 +101,37 @@ class Message(Api):
         message_id = self.request.swagger_data["message_id"]
         patch = self.request.json
 
-        message = MessageObject(self.user.user_id, message_id=message_id)
-        error = message.apply_patch(patch, db=True, index=True)
+        message = ObjectMessage(self.user.user_id, message_id=message_id)
+        error = message.apply_patch(patch, db=True,
+                                    index=False)  # drafts not indexed for now
         if error is not None:
             raise MergePatchError(error)
 
         return Response(None, 204)
 
+    @view(renderer='json', permission='authenticated')
+    def delete(self):
+        message_id = self.request.swagger_data["message_id"]
+        message = ObjectMessage(self.user.user_id, message_id=message_id)
+
+        try:
+            message.get_db()
+            message.get_index()
+        except NotFound:
+            raise ResourceNotFound
+
+        try:
+            message.delete_db()
+            message.delete_index()
+        except Exception as exc:
+            raise HTTPServerError(exc)
+
+        return Response(None, 204)
 
 @resource(path='/raws/{raw_msg_id}')
 class Raw(Api):
     """returns a raw message"""
+
     def __init__(self, request):
         self.request = request
         self.user = request.authenticated_userid
@@ -126,5 +142,5 @@ class Raw(Api):
         raw_msg_id = self.request.matchdict.get('raw_msg_id')
         raw = RawMessage.get_for_user(self.user.user_id, raw_msg_id)
         if raw:
-            return raw.data
+            return raw.raw_data
         raise ResourceNotFound('No such message')

@@ -10,15 +10,15 @@ from caliopen_storage.store.model import BaseModel
 
 
 class RawMessage(BaseModel):
-
     """Raw message model."""
 
+    json_rep = columns.Text()  # json repres. of raw msg with its envelope
     raw_msg_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    data = columns.Bytes()
-    size = columns.Integer() # number of bytes in 'data' column
+    raw_data = columns.Bytes()
+    raw_size = columns.Integer()  # number of bytes in 'data' column
+
 
 class UserRawLookup(BaseModel):
-
     """User's raw message pointer."""
 
     user_id = columns.UUID(primary_key=True)

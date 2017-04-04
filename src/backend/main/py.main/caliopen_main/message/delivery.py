@@ -6,13 +6,17 @@ import logging
 from caliopen_storage.exception import NotFound
 from ..user.core import ContactLookup, User
 
-from ..message.core import Message, RawMessage, UserRawLookup
+from caliopen_main.objects.message import Message
+from caliopen_main.message.core import RawMessage, UserRawLookup
 
-from ..message.core import (Thread, ThreadMessageLookup,
-                            ThreadRecipientLookup,
-                            ThreadExternalLookup)
+from caliopen_main.discussion.core.discussion import (Discussion,
+                                                      DiscussionMessageLookup,
+                                                      DiscussionRecipientLookup,
+                                                      DiscussionExternalLookup)
 
-from ..message.parameters import Recipient
+from caliopen_main.message.qualifier import UserMessageQualifier
+
+from ..message.parameters.message import Recipient
 # XXX use a message formatter registry not directly mail format
 from ..message.format import MailMessage
 
@@ -20,15 +24,14 @@ log = logging.getLogger(__name__)
 
 
 class UserMessageDelivery(object):
-
     """User message delivery processing."""
 
     _lookups = {
-        'parent': ThreadMessageLookup,
-        'list': ThreadRecipientLookup,
-        'recipient': ThreadRecipientLookup,
-        'external_thread': ThreadExternalLookup,
-        'from': ThreadRecipientLookup,
+        'parent': DiscussionMessageLookup,
+        'list': DiscussionRecipientLookup,
+        'recipient': DiscussionRecipientLookup,
+        'external_thread': DiscussionExternalLookup,
+        'from': DiscussionRecipientLookup,
     }
 
     def _get_recipients(self, user, msg):
@@ -56,51 +59,16 @@ class UserMessageDelivery(object):
                     recipients.append(recipient)
         return recipients
 
-    def _get_tags(self, user, mail):
-        """Evaluate user rules to get all tags for a mail."""
-        tags = []
-        for rule in user.rules:
-            res, stop = rule.eval(mail)
-            if res:
-                tags.extend(res)
-            if stop:
-                break
-        return tags
-
-    def lookup(self, user, sequence):
-        """Process lookup sequence to find thread to associate."""
-        log.debug('Lookup sequence %r' % sequence)
-        for prop in sequence:
-            try:
-                kls = self._lookups[prop[0]]
-                log.debug('Will lookup %s with value %s' %
-                          (prop[0], prop[1]))
-                return kls.get(user, prop[1])
-            except NotFound:
-                log.debug('Lookup type %s with value %s failed' %
-                          (prop[0], prop[1]))
-        return None
-
-    def __init_lookups(self, user, sequence, message):
-        for prop in sequence:
-            kls = self._lookups[prop[0]]
-            params = {
-                kls._pkey_name: prop[1],
-                'thread_id': message.thread_id
-            }
-            if 'message_id' in kls._model_class._columns.keys():
-                params.update({'message_id': message.message_id})
-            lookup = kls.create(user, **params)
-            log.debug('Create lookup %r' % lookup)
-            if prop[0] == 'list':
-                return
-
-    def process(self, user_id, raw_msg_id):
+    def process_email_raw(self, user_id, raw_msg_id):
         """
-        Process a raw inbound email for an user.
+        Process a raw inbound email for an user, ie makes it a rich 'message'
 
 
         the raw email must have been previously stored into db
+        This process is triggered by a "process_email_raw" order on nats
+        
+        #### TODO : finish refactoring if we still need this func
+                    as it is replaced by process_email_message below
         """
         msg = RawMessage.get(raw_msg_id)
         if not msg:
@@ -126,58 +94,33 @@ class UserMessageDelivery(object):
         addresses = [x.address for x in message.recipients]
         log.debug('Resolved recipients {}'.format(addresses))
 
-        # compute tags
-        message.tags = self._get_tags(user, mail)
-        log.debug('Resolved tags {}'.format(message.tags))
-
-        # lookup by external references
-        lookup_sequence = mail.lookup_sequence()
-        lookup = self.lookup(user, lookup_sequence)
-
-        # Create or update existing thread thread
-        if lookup:
-            log.debug('Found thread %r' % lookup.thread_id)
-            thread = Thread.get(user, lookup.thread_id)
-            thread.update_from_message(message)
-        else:
-            log.debug('Creating new thread')
-            thread = Thread.create_from_message(user, message)
-        thread_id = thread.thread_id if thread else None
-
-        # XXX missing thread management
-
-        # create and index the message
-        msg = Message.create(user, message, thread_id=thread_id, lookup=lookup)
-        # XXX Init lookup
-        if not lookup:
-            self.__init_lookups(user, lookup_sequence, msg)
-        else:
-            if msg.external_message_id:
-                params = {
-                    'external_message_id': msg.external_message_id,
-                    'thread_id': msg.thread_id,
-                    'message_id': msg.message_id,
-                }
-                new_lookup = ThreadMessageLookup.create(user, **params)
-                log.debug('Created message lookup %r' % new_lookup)
-
-        # user_id<->raw_msg_id lookup
-        UserRawLookup.create(user, raw_msg_id=raw_msg_id)
-
-        return msg
+        ####should have :
+        #
+        # message = Message.unmarshall_raw_email(user, message)
+        # self.process_message(message.user_id, message.message_id)
 
     def process_message(self, user_id, msg_id):
         """
-        Process (ie 'qualify') a new inbound message for an user
+        Process a new inbound message for an user
 
 
-        the raw message & its Message model counterpart
+        The raw message (ie email…) & its 'Message' model counterpart
         have been previously unmarshaled into db by the email broker
-        TODO (when email broker will do all that mandatory preprocessing jobs)
+        This is the beginning of the message's enrichment process.
+
+        This process is triggered by a "process_email_message" order on nats
         """
-        message = Message.get(user_id, msg_id)
-        if not message:
-            log.error('Message <{}> not found'.
-                      format(msg_id))
+        try:
+            message = Message(user_id=user_id, message_id=msg_id)
+            message.get_db()
+            message.unmarshall_db()
+        except Exception as exc:
+            print(exc)
+            log.error('Error fetching message'.format(exc))
             raise NotFound
 
+        try:
+            message_qualifier = UserMessageQualifier()
+            message_qualifier.process_inbound(message)
+        except Exception as exc:
+            raise exc

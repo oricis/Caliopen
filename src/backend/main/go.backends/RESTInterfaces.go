@@ -4,6 +4,11 @@
 
 package backends
 
+import (
+	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+)
+
 type APIStorage interface {
 	UserNameStorage
+	GetMessage(user_id, msg_id string) (msg *obj.Message, err error)
 }

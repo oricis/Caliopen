@@ -6,8 +6,8 @@ import types
 from caliopen_main.objects import base
 from uuid import UUID
 from caliopen_main.user.parameters.types import InternetAddressType
+from caliopen_main.user.parameters.contact import Email as EmailParam
 from caliopen_main.user.store.contact import Email as ModelEmail
-from caliopen_main.user.returns.contact import EmailParam
 
 
 class Email(base.ObjectStorable):
