@@ -1,38 +1,60 @@
 @import '../../styles/common';
-@import '../../styles/config/config';
 @import '../../styles/vendor/bootstrap_foundation-sites';
+
+$gridColor: $co-color__fg__back--higher;
 
 .m-multidimensional-pi {
   max-width: 320px;
-  transform: rotate(180deg);
+  font-size: $co-font__size--small;
   pointer-events: none;
 
   &__grid-line {
-    stroke: $co-color__fg__back--low;
+    stroke: $gridColor;
     stroke-width: .7;
+    pointer-events: none;
     fill: none;
   }
 
   &__grid-polygon {
     fill: transparent;
-    stroke: $co-color__fg__back--low;
+    stroke: $gridColor;
     stroke-width: .7;
   }
 
   &__polygon {
-    fill: rgba($co-color__privacy--alt, .2);
-    stroke: $co-color__privacy--alt;
-    stroke-width: 1;
+    fill: $co-color__privacy;
+    stroke: none;
   }
 
-  &__point {
-    z-index: 10;
-    cursor: pointer;
-    fill: $co-color__privacy--alt;
-    stroke: none;
-    pointer-events: fill;
-    &:hover {
-      fill: lighten($co-color__privacy--alt, 10%);
-    }
+  &__rating {
+    @include flex-grid-row;
+    align-items: center;
+    margin-bottom: $co-component__spacing;
   }
+
+  &__rating-name-col {
+    @include flex-grid-size(4);
+    text-align: right;
+  }
+
+  &__rating-level-col {
+    @include flex-grid-size;
+    border: 1px solid $gridColor;
+    text-align: right;
+  }
+
+  &__rating-level {
+    height: $co-component__height / 2;
+    background: $co-color__privacy;
+    color: $co-color__bg__back;
+    line-height: $co-component__height / 2;
+    transition: .2s width;
+  }
+
+  &__rating-level-label,
+  &__rating-name-label {
+    padding: $co-component__spacing;
+    text-transform: uppercase;
+  }
+
 }

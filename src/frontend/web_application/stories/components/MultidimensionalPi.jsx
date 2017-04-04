@@ -9,9 +9,9 @@ const Presenter = () => {
   const props = {
     piMax: number('piMax', 100),
     points: object('points', [
-      { name: 'behavioral', pi: 30 },
-      { name: 'contextual', pi: 60 },
-      { name: 'technical', pi: 55 },
+      { name: 'behavioral', level: 50 },
+      { name: 'contextual', level: 50 },
+      { name: 'technical', level: 50 },
     ]),
   };
 
@@ -24,8 +24,13 @@ const Presenter = () => {
         {`
 import MultidimensionalPi from './src/components/MultidimensionalPi';
 
-// level: number between 0 and 100
-export default () => (<MultidimensionalPi level={ level } />);
+// piMax: max value for Pi level (number)
+// points: [
+//  { name: 'behavioral', level: 50 },
+//  { name: 'contextual', level: 50 },
+//  { name: 'technical', level: 50 },
+]
+export default () => (<MultidimensionalPi piMax={ piMax } points={ points } />);
         `}
       </Code>
     </div>

@@ -356,9 +356,9 @@ storiesOf('Pi', module)
     const props = {
       piMax: number('piMax', 100),
       points: object('points', [
-        { name: 'behavioral', pi: 30 },
-        { name: 'contextual', pi: 60 },
-        { name: 'technical', pi: 55 },
+        { name: 'behavioral', level: 20 },
+        { name: 'contextual', level: 90 },
+        { name: 'technical', level: 55 },
       ]),
     };
 
