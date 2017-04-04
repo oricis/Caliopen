@@ -15,8 +15,10 @@ func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *obj.Message
 	m := map[string]interface{}{}
 	q := cb.Session.Query(`SELECT * FROM message WHERE user_id = ? and message_id = ?`, user_id, msg_id)
 	err = q.MapScan(m)
+	if err != nil {
+		return nil, err
+	}
 	msg.UnmarshalMap(m)
-
 	return msg, err
 
 }
