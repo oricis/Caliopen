@@ -92,7 +92,7 @@ def build_discussion(discussion, index_message):
         if 'contact_id' in part:  # 'recipient' of type 'from' may not be Contact
             participant.contact_id = part['contact_id']
         participant.protocol = part['protocol']
-        discuss.contacts.append(participant)
+        discuss.participants.append(participant)
     # XXX Missing values (at least other in parameter to fill)
     discuss.total_count = discussion.total_count
     discuss.unread_count = discussion.unread_count

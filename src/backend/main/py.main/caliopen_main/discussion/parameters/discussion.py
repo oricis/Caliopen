@@ -22,7 +22,7 @@ class Discussion(Model):
     excerpt = StringType(required=True)
     # privacy_index = IntType(required=True, default=0)
     importance_level = IntType(required=True, default=0)
-    contacts = ListType(ModelType(Participant), default=lambda: [])
+    participants = ListType(ModelType(Participant), default=lambda: [])
     total_count = IntType(required=True, default=0)
     unread_count = IntType(required=True, default=0)
     attachment_count = IntType(default=0)
