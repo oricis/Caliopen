@@ -35,6 +35,7 @@ import Icon, { typeAssoc } from '../src/components/Icon';
 import Link from '../src/components/Link';
 import MessageList from './components/MessageList';
 import Modal from '../src/components/Modal';
+import MultidimensionalPi from '../src/components/MultidimensionalPi';
 import PiBar from '../src/components/PiBar';
 import Reply from './components/Reply';
 import Section from '../src/components/Section';
@@ -53,7 +54,7 @@ import '../src/styles/vendor/bootstrap_foundation-sites.scss';
 addDecorator(withKnobs);
 addDecorator(backgrounds([
   { name: '$co-color__fg__back', value: '#333' },
-  { name: '$co-color__bg__back', value: '#1d1d1d', default: true},
+  { name: '$co-color__bg__back', value: '#1d1d1d', default: true },
   { name: '$co-color__contrast__back', value: '#fff' },
 ]));
 
@@ -350,6 +351,18 @@ storiesOf('Pi', module)
     };
 
     return (<PiBar {...props} />);
+  })
+  .addWithInfo('MultidimensionalPi', () => {
+    const props = {
+      piMax: number('piMax', 100),
+      points: object('points', [
+        { name: 'behavioral', pi: 30 },
+        { name: 'contextual', pi: 60 },
+        { name: 'technical', pi: 55 },
+      ]),
+    };
+
+    return (<MultidimensionalPi {...props} />);
   });
 
 storiesOf('Settings', module)

@@ -1,0 +1,38 @@
+@import '../../styles/common';
+@import '../../styles/config/config';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.m-multidimensional-pi {
+  max-width: 320px;
+  transform: rotate(180deg);
+  pointer-events: none;
+
+  &__grid-line {
+    stroke: $co-color__fg__back--low;
+    stroke-width: .7;
+    fill: none;
+  }
+
+  &__grid-polygon {
+    fill: transparent;
+    stroke: $co-color__fg__back--low;
+    stroke-width: .7;
+  }
+
+  &__polygon {
+    fill: rgba($co-color__privacy--alt, .2);
+    stroke: $co-color__privacy--alt;
+    stroke-width: 1;
+  }
+
+  &__point {
+    z-index: 10;
+    cursor: pointer;
+    fill: $co-color__privacy--alt;
+    stroke: none;
+    pointer-events: fill;
+    &:hover {
+      fill: lighten($co-color__privacy--alt, 10%);
+    }
+  }
+}
