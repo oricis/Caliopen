@@ -73,4 +73,9 @@ Brand.propTypes = {
   theme: PropTypes.string,
 };
 
+Brand.defaultProps = {
+  className: null,
+  theme: null,
+};
+
 export default Brand;

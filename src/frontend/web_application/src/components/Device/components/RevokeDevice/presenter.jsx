@@ -19,7 +19,7 @@ const RevokeDevice = ({ device, onRevokeDevice, __ }) => {
 };
 
 RevokeDevice.propTypes = {
-  device: PropTypes.shape({}),
+  device: PropTypes.shape({}).isRequired,
   onRevokeDevice: PropTypes.func.isRequired,
   __: PropTypes.func.isRequired,
 };

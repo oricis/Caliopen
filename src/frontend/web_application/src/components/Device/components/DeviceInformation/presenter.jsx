@@ -14,7 +14,7 @@ const DeviceInformation = ({ device, __ }) => (
 );
 
 DeviceInformation.propTypes = {
-  device: PropTypes.shape({}),
+  device: PropTypes.shape({}).isRequired,
   __: PropTypes.func.isRequired,
 };
 
