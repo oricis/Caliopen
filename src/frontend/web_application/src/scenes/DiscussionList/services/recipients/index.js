@@ -1,16 +1,18 @@
 const Recipients = ({ discussion, user }) => {
-  let contacts = discussion.contacts
-    .filter(contact => contact.contact_id !== user.contact_id)
-    .map(contact => contact.address)
+  let participants = discussion.participants
+    .filter(participant =>
+      !participant.contact_ids || participant.contact_ids.indexOf(user.contact_id) === -1
+    )
+    .map(participant => participant.address)
     ;
 
-  if (contacts.length > 4) {
-    const rest = `+ ${contacts.length - 3}`;
-    contacts = contacts.slice(0, 3);
-    contacts.push(rest);
+  if (participants.length > 4) {
+    const rest = `+ ${participants.length - 3}`;
+    participants = participants.slice(0, 3);
+    participants.push(rest);
   }
 
-  return contacts.join(', ');
+  return participants.join(', ');
 };
 
 export default Recipients;

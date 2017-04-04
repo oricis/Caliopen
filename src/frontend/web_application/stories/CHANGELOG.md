@@ -5,6 +5,7 @@
 ### Added
 
   - DropdownMenu
+  - IconLetter simple refactor of ContactIconLetter
 
 ### Changed
 

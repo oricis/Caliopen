@@ -100,7 +100,7 @@ class Message extends Component {
 
   render() {
     const { message, __ } = this.props;
-    const author = message.participants.find(participant => participant.type === 'from');
+    const author = message.participants.find(participant => participant.type === 'From');
     const subject = message.subject;
     const topBarClassName = classnames(
       'm-message__top-bar',

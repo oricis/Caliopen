@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { withTranslator } from '@gandi/react-translate';
 import classnames from 'classnames';
-import ContactsIcon from '../ContactsIcon';
+import ParticipantsIcon from '../ParticipantsIcon';
 import Link from '../../../../components/Link';
 import DiscussionItemActionsContainer from '../DiscussionItemActionsContainer';
 import Icon from '../../../../components/Icon';
@@ -28,7 +28,7 @@ const DiscussionItem = ({ user, discussion, formatDate, __ }) => {
         noDecoration
       >
         <div className="s-discussion-list__col-avatars">
-          <ContactsIcon discussion={discussion} />
+          <ParticipantsIcon discussion={discussion} />
         </div>
         <div className="s-discussion-list__col-title">
           <TextBlock>
