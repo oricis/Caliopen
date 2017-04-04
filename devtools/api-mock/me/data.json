@@ -1,5 +1,17 @@
 {
+	"user_id": "u-john-01",
 	"name": "john",
 	"given_name": "John Dœuf",
-	"contact_id": "foobar112"
+	"contact_id": "foobar112",
+	"contact": {
+		"contact_id": "c-john-01",
+		"emails": [
+			{
+				"email_id": "11111",
+				"address": "john@calipoen.local",
+				"is_primary": true,
+				"type": "home"
+			}
+		]
+	}
 }
