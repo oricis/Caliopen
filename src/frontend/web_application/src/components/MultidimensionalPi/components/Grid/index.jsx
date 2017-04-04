@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 
-const Grid = ({ points, angle, gridWidth }) => {
+const Grid = ({ pi, angle, gridWidth }) => {
   const axeLength = gridWidth / 2;
   const axeCoordinates = [];
   const polygonPoints = [];
   let count = 0;
 
-  points.map((point) => {
-    const axeName = point.name;
+  pi.map((p) => {
+    const axeName = p.name;
     const axeX = axeLength + (-axeLength * Math.sin((count * Math.PI) / 180));
     const axeY = axeLength + (-axeLength * Math.cos((count * Math.PI) / 180));
     axeCoordinates.push({ axeName, x: axeX, y: axeY });
@@ -36,7 +36,7 @@ const Grid = ({ points, angle, gridWidth }) => {
 };
 
 Grid.propTypes = {
-  points: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  pi: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   angle: PropTypes.number.isRequired,
   gridWidth: PropTypes.number.isRequired,
 };

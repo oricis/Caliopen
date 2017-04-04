@@ -4,14 +4,12 @@
 $gridColor: $co-color__fg__back--higher;
 
 .m-multidimensional-pi {
-  max-width: 320px;
-  font-size: $co-font__size--small;
+  max-width: $co-pi-width;
   pointer-events: none;
 
   &__grid-line {
     stroke: $gridColor;
     stroke-width: .7;
-    pointer-events: none;
     fill: none;
   }
 
@@ -45,16 +43,21 @@ $gridColor: $co-color__fg__back--higher;
 
   &__rating-level {
     height: $co-component__height / 2;
+    transition: .5s width;
     background: $co-color__privacy;
-    color: $co-color__bg__back;
     line-height: $co-component__height / 2;
-    transition: .2s width;
   }
 
-  &__rating-level-label,
   &__rating-name-label {
     padding: $co-component__spacing;
+    font-size: $co-font__size--small;
     text-transform: uppercase;
+  }
+
+  &__rating-level-label {
+    padding: $co-component__spacing;
+    font-size: $co-font__size--xsmall;
+    font-weight: 600;
   }
 
 }

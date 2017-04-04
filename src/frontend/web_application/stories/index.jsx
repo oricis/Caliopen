@@ -355,7 +355,7 @@ storiesOf('Pi', module)
   .addWithInfo('MultidimensionalPi', () => {
     const props = {
       piMax: number('piMax', 100),
-      points: object('points', [
+      pi: object('points', [
         { name: 'behavioral', level: 20 },
         { name: 'contextual', level: 90 },
         { name: 'technical', level: 55 },

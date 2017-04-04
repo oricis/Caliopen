@@ -1,16 +1,16 @@
 import React, { PropTypes } from 'react';
 
-const Polygon = ({ points, angle, gridWidth }) => {
+const Polygon = ({ pi, angle, gridWidth }) => {
   const axeLength = gridWidth / 2;
   const pointCoordinates = [];
   const polygonPoints = [];
   let count = 0;
-  points.map((point) => {
-    const pointName = point.name;
-    const pointPi = point.level;
-    const pointX = axeLength + (-pointPi * Math.sin((count * Math.PI) / 180));
-    const pointY = axeLength + (-pointPi * Math.cos((count * Math.PI) / 180));
-    pointCoordinates.push({ name: pointName, level: pointPi, x: pointX, y: pointY });
+  pi.map((p) => {
+    const piName = p.name;
+    const piLevel = p.level;
+    const pointX = axeLength + (-piLevel * Math.sin((count * Math.PI) / 180));
+    const pointY = axeLength + (-piLevel * Math.cos((count * Math.PI) / 180));
+    pointCoordinates.push({ name: piName, level: piLevel, x: pointX, y: pointY });
     polygonPoints.push(pointX, pointY);
     count -= angle;
   });
@@ -21,7 +21,7 @@ const Polygon = ({ points, angle, gridWidth }) => {
 };
 
 Polygon.propTypes = {
-  points: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  pi: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   angle: PropTypes.number.isRequired,
   gridWidth: PropTypes.number.isRequired,
 };

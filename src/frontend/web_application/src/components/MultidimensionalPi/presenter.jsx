@@ -4,9 +4,10 @@ import Polygon from './components/Polygon';
 
 import './style.scss';
 
-const Rating = ({ name, level }) => {
+const Rating = ({ name, level, piMax }) => {
+  const width = (level / piMax) * 100;
   const style = {
-    width: `${level}%`,
+    width: `${width}%`,
   };
 
   return (
@@ -15,9 +16,7 @@ const Rating = ({ name, level }) => {
         <span className="m-multidimensional-pi__rating-name-label">{name}</span>
       </div>
       <div className="m-multidimensional-pi__rating-level-col">
-        <div className="m-multidimensional-pi__rating-level" style={style}>
-          <span className="m-multidimensional-pi__rating-level-label">{level}</span>
-        </div>
+        <div className="m-multidimensional-pi__rating-level" style={style} />
       </div>
     </div>
   );
@@ -26,60 +25,45 @@ const Rating = ({ name, level }) => {
 Rating.propTypes = {
   name: PropTypes.string.isRequired,
   level: PropTypes.number.isRequired,
+  piMax: PropTypes.number.isRequired,
 };
 
 class MultidimensionalPi extends React.Component {
   static propTypes = {
-    points: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    pi: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     piMax: PropTypes.number.isRequired, // max value for Pi
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      activePi: 'null',
-    };
-    this.handlePiClick = this.handlePiClick.bind(this);
-  }
-
-  handlePiClick(e) {
-    const name = e.target.id;
-    this.setState(prevState => ({
-      ...prevState.props,
-      activePi: name,
-    }));
-  }
-
 
   render() {
-    const { points, piMax } = this.props;
+    const { pi, piMax } = this.props;
     const gridWidth = piMax * 2;
-    const angle = (360 / points.length);
+    const angle = (360 / pi.length);
     const viewBox = [0, 0, gridWidth, gridWidth];
 
     return (
       <div className="m-multidimensional-pi">
         <svg
           id="pi"
-
+          className="m-multidimensional-pi__pi"
           viewBox={viewBox}
           xmlns="http://www.w3.org/2000/svg"
         >
-
           <Polygon
-            points={points}
+            pi={pi}
             angle={angle}
             gridWidth={gridWidth}
             piClick={this.handlePiClick}
+            className="m-multidimensional-pi__pi"
           />
           <Grid
-            points={points}
+            pi={pi}
             angle={angle}
             gridWidth={gridWidth}
           />
         </svg>
         <div className="m-multidimensional-pi__ratings">
-          {points.map(p =>
-            <Rating name={p.name} level={p.level} key={p.name} />
+          {pi.map(p =>
+            <Rating name={p.name} level={p.level} key={p.name} piMax={piMax} />
           )}
         </div>
       </div>

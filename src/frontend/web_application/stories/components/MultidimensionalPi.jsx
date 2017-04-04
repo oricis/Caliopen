@@ -8,7 +8,7 @@ import { Code, ComponentWrapper } from '../presenters';
 const Presenter = () => {
   const props = {
     piMax: number('piMax', 100),
-    points: object('points', [
+    pi: object('points', [
       { name: 'behavioral', level: 50 },
       { name: 'contextual', level: 50 },
       { name: 'technical', level: 50 },
@@ -25,12 +25,12 @@ const Presenter = () => {
 import MultidimensionalPi from './src/components/MultidimensionalPi';
 
 // piMax: max value for Pi level (number)
-// points: [
+// pi: [
 //  { name: 'behavioral', level: 50 },
 //  { name: 'contextual', level: 50 },
 //  { name: 'technical', level: 50 },
 ]
-export default () => (<MultidimensionalPi piMax={ piMax } points={ points } />);
+export default () => (<MultidimensionalPi piMax={ piMax } pi={ points } />);
         `}
       </Code>
     </div>
