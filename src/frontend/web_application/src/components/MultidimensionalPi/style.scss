@@ -35,6 +35,13 @@ $gridColor: $co-color__fg__back--higher;
     text-align: right;
   }
 
+  &__rating-level-label {
+    @include flex-grid-column(shrink);
+    padding: $co-component__spacing;
+    font-size: $co-font__size--xsmall;
+    font-weight: 600;
+  }
+
   &__rating-level-col {
     @include flex-grid-size;
     border: 1px solid $gridColor;
@@ -54,10 +61,6 @@ $gridColor: $co-color__fg__back--higher;
     text-transform: uppercase;
   }
 
-  &__rating-level-label {
-    padding: $co-component__spacing;
-    font-size: $co-font__size--xsmall;
-    font-weight: 600;
-  }
+
 
 }

@@ -18,6 +18,7 @@ const Rating = ({ name, level, piMax }) => {
       <div className="m-multidimensional-pi__rating-level-col">
         <div className="m-multidimensional-pi__rating-level" style={style} />
       </div>
+      <div className="m-multidimensional-pi__rating-level-label">{level}/{piMax}</div>
     </div>
   );
 };
