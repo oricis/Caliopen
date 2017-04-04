@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { v1 as uuidv1 } from 'uuid';
+import './style.scss';
 
 const DiscussionDraft = ({ body, onChange, __ }) => {
   const id = uuidv1();

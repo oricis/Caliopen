@@ -28,4 +28,4 @@ You can also take a look to [caliopen.github.io]([https://caliopen.github.io/).
 
 Unfortunately Caliopen is not yet ready for production.
 
-Please refer to [developer tools README](devtools/README.md) for developemtn platform instructions.
+Please refer to [developer tools README](devtools/README.md) for development platform instructions.

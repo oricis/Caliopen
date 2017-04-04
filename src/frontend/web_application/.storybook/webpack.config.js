@@ -4,7 +4,11 @@ const webpack = require('webpack');
 module.exports = function configure(storybookBaseConfig) {
   storybookBaseConfig.module.loaders.push(
     {
-      test: /.scss$/,
+      test: /\.css$/,
+      loaders: ['style', 'css'],
+    },
+    {
+      test: /\.scss$/,
       loaders: ['style', 'css', 'sass'],
     },
     {
@@ -25,6 +29,7 @@ module.exports = function configure(storybookBaseConfig) {
   storybookBaseConfig.plugins.push(
     new webpack.DefinePlugin({
       CALIOPEN_ENV: JSON.stringify(process.env.NODE_ENV),
+      BUILD_TARGET: JSON.stringify('browser'),
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     })
   );

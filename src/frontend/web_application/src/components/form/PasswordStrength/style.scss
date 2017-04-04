@@ -65,7 +65,7 @@ $color-strong: map_get($caliopen-palette, 'success');
 
   &__text {
     padding-left: map-get($co-form__spacing, 'xlarge');;
-    font-size: $co-font__size--small;
+    font-size: $co-font__size--xsmall;
     font-weight: 700;
     text-shadow: 0 0 1px $co-color__shadow;
     text-transform: uppercase;

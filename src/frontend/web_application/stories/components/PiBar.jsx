@@ -1,61 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import PiBar from '../../src/components/PiBar/presenter';
+import { number } from '@kadira/storybook-addon-knobs';
+import PiBar from '../../src/components/PiBar';
 import { Code, ComponentWrapper } from '../presenters';
 
-class Presenter extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      props: {
-        level: 50,
-      },
-    };
-    this.handleInputChange = this.handleInputChange.bind(this);
-  }
+const Presenter = () => {
+  const props = {
+    level: number('level', 50),
+  };
 
-  handleInputChange(event) {
-    const { name, value } = event.target;
-
-    this.setState(prevState => ({
-      props: {
-        ...prevState.props,
-        [name]: value,
-      },
-    }));
-  }
-
-  render() {
-    const noop = str => str;
-
-    return (
-      <div>
-        <ComponentWrapper>
-          <PiBar level={this.state.props.level} __={noop} />
-        </ComponentWrapper>
-        <ul>
-          <li>
-            <label>Level: {this.state.props.level}</label>
-            {' '}
-            <input
-              type="range" min="0" max="100" step="1"
-              name="level"
-              onChange={this.handleInputChange}
-              value={this.state.props.level}
-            />
-          </li>
-        </ul>
-        <Code>
-          {`
+  return (
+    <div>
+      <ComponentWrapper>
+        <PiBar {...props} />
+      </ComponentWrapper>
+      <Code>
+        {`
 import PiBar from './src/components/PiBar';
 
 // level: number between 0 and 100
 export default () => (<PiBar level={ level } />);
-          `}
-        </Code>
-      </div>
-    );
-  }
-}
+        `}
+      </Code>
+    </div>
+  );
+};
 
 export default Presenter;

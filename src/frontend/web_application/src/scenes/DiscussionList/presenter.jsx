@@ -7,6 +7,7 @@ import './style.scss';
 
 class DiscussionList extends Component {
   static propTypes = {
+    user: PropTypes.shape({}),
     requestDiscussions: PropTypes.func.isRequired,
     loadMoreDiscussions: PropTypes.func.isRequired,
     discussions: PropTypes.arrayOf(PropTypes.shape({})),
@@ -16,6 +17,7 @@ class DiscussionList extends Component {
   };
 
   static defaultProps = {
+    user: null,
     discussions: [],
     isFetching: false,
     hasMore: false,
@@ -35,19 +37,21 @@ class DiscussionList extends Component {
   }
 
   render() {
-    const { discussions, isFetching, hasMore, __ } = this.props;
+    const { user, discussions, isFetching, hasMore, __ } = this.props;
 
     return (
       <div>
         <Spinner isLoading={isFetching} />
-        <BlockList
-          className="s-discussion-list"
-          infinite-scroll={this.loadMore}
-        >
-          {discussions.map(item => (
-            <DiscussionItem key={item.thread_id} discussion={item} />
-          ))}
-        </BlockList>
+        {user && (
+          <BlockList
+            className="s-discussion-list"
+            infinite-scroll={this.loadMore}
+          >
+            {discussions.map(item => (
+              <DiscussionItem key={item.discussion_id} user={user} discussion={item} />
+            ))}
+          </BlockList>
+        )}
         {hasMore && (
           <div className="s-discussion-list__load-more">
             <Button hollow onClick={this.loadMore}>{__('general.action.load_more')}</Button>

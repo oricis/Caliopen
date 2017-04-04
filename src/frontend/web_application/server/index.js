@@ -7,7 +7,7 @@ server.listen(app.get('port'), () => {
   console.log(`Server started: http://localhost:${app.get('port')}/`);
 });
 
-if (module.hot) {
+if (HAS_HMR && module.hot) {
   // This will handle HMR and reload the server
   module.hot.accept('./app.js', () => {
     server.removeListener('request', app);

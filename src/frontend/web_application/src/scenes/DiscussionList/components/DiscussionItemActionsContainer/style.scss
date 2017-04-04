@@ -1,5 +1,4 @@
 @import '../../../../styles/common';
-@import '../../../../styles/object/o-triangle';
 
 .m-discussion-item-actions-container {
   position: relative;
@@ -15,20 +14,13 @@
   }
 
   &__menu {
-    margin-top: -1px; // to avoid blank before block (because of Foundation 'Dropdown' JS)
     padding-top: 2 * $co-component__spacing;
     padding-bottom: 2 * $co-component__spacing;
-    background: $co-color__primary--lower;
+  }
 
-    &::before {
-      @include o-triangle('top', 1rem, $co-color__primary--lower);
-      right: 1rem;
-    }
-
-    button {
-      min-height: $co-component__height;
-      text-align: left;
-    }
+  &__menu-button {
+    min-height: $co-component__height;
+    text-align: left;
   }
 
 

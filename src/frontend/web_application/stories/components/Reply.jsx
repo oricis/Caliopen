@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { action } from '@kadira/storybook'; // eslint-disable-line
-import ReplyForm from '../../src/components/ReplyForm/presenter';
+import { object } from '@kadira/storybook-addon-knobs';
+import ReplyForm from '../../src/components/ReplyForm';
 import { Code, ComponentWrapper } from '../presenters';
 
 class Presenter extends Component {
@@ -26,7 +27,6 @@ class Presenter extends Component {
   }
 
   render() {
-    const noop = str => str;
     const draftMessage = {
       body: 'Fooo',
     };
@@ -34,7 +34,7 @@ class Presenter extends Component {
     return (
       <div>
         <ComponentWrapper>
-          <ReplyForm draftMessage={draftMessage} __={noop} onSave={action('save')} onSend={action('send')} onChange={action('change')} />
+          <ReplyForm draftMessage={object('draftMessage', draftMessage)} onSave={action('save')} onSend={action('send')} onChange={action('change')} />
         </ComponentWrapper>
         <Code>
           {`

@@ -2,6 +2,7 @@
   display: inline-block;
   padding: ($co-margin / 2);
   border: 0;
+  background-color: transparent;
 
   @if has-value($co-animation__box-transition) {
     transition: $co-animation__box-transition;

@@ -1,0 +1,12 @@
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-day-message-list {
+  &__date {
+    display: block;
+    padding: 0 2 * $co-component__spacing;
+    background: $co-color__fg__back;
+    line-height: $co-component__height;
+    @include breakpoint(small) { margin: $co-grid__gutter--small 0; }
+    @include breakpoint(medium) { margin: $co-grid__gutter 0; }
+  }
+}

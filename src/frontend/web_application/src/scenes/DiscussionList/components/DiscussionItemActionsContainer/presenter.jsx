@@ -2,11 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import { v1 as uuidV1 } from 'uuid';
 import Button from '../../../../components/Button';
-import Dropdown, { DropdownController } from '../../../../components/Dropdown';
+import DropdownMenu, { withDropdownControl } from '../../../../components/DropdownMenu';
 import VerticalMenu, { VerticalMenuItem } from '../../../../components/VerticalMenu';
 import Modal from '../../../../components/Modal';
 import ManageTags from '../ManageTags';
 import './style.scss';
+
+const DropdownControl = withDropdownControl(Button);
 
 class DiscussionItemActionsContainer extends Component {
   static propTypes = {
@@ -56,30 +58,43 @@ class DiscussionItemActionsContainer extends Component {
       <div
         className={classnames('m-discussion-item-actions-container__actions', { 'm-discussion-item-actions-container--active__actions': this.state.isActive })}
       >
-        <Button plain className="m-discussion-item-actions-container__action">Delete</Button>
-        <Button plain className="m-discussion-item-actions-container__action">Reply</Button>
-        <Button plain className="m-discussion-item-actions-container__action">Forward</Button>
-        <DropdownController
+        <Button plain className="m-discussion-item-actions-container__action">{__('Delete')}</Button>
+        <Button plain className="m-discussion-item-actions-container__action">{__('Reply')}</Button>
+        <Button plain className="m-discussion-item-actions-container__action">{__('Forward')}</Button>
+        <DropdownControl
           toggle={this.dropdownId}
           className="m-discussion-item-actions-container__action float-right"
           plain
         >
           {__('discussion-item-actions.action.more')}
-        </DropdownController>
-        <Dropdown
+        </DropdownControl>
+        <DropdownMenu
           id={this.dropdownId}
           position="bottom"
-          flat
           closeOnClick
         >
           <VerticalMenu className="m-discussion-item-actions-container__menu">
-            <VerticalMenuItem><Button expanded>Archive</Button></VerticalMenuItem>
-            <VerticalMenuItem><Button expanded>Enable tracking</Button></VerticalMenuItem>
             <VerticalMenuItem>
-              <Button expanded onClick={this.handleClickTags}>Manage tags</Button>
+              <Button
+                className="m-discussion-item-actions-container__menu-button"
+                expanded
+              >{__('Archive')}</Button>
+            </VerticalMenuItem>
+            <VerticalMenuItem>
+              <Button
+                className="m-discussion-item-actions-container__menu-button"
+                expanded
+              >{__('Enable tracking')}</Button>
+            </VerticalMenuItem>
+            <VerticalMenuItem>
+              <Button
+                className="m-discussion-item-actions-container__menu-button"
+                expanded
+                onClick={this.handleClickTags}
+              >{__('Manage tags')}</Button>
             </VerticalMenuItem>
           </VerticalMenu>
-        </Dropdown>
+        </DropdownMenu>
       </div>
     );
   }

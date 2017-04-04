@@ -9,15 +9,6 @@ import TextBlock from '../../../../components/TextBlock';
 import Badge from '../../../../components/Badge';
 import recipients from '../../services/recipients';
 
-// XXX: load data from store
-
-// import { createSelector } from 'reselect';
-//
-// const userSelector = createSelector(
-//   state => state.userReducer.user,
-//   user => ({ user })
-// );
-
 const renderTags = discussion => discussion.tags && discussion.tags.map((tag, key) => (
   <span key={key}>
     {' '}
@@ -25,15 +16,14 @@ const renderTags = discussion => discussion.tags && discussion.tags.map((tag, ke
   </span>
 ));
 
-const DiscussionItem = ({ discussion, formatDate, __ }) => {
+const DiscussionItem = ({ user, discussion, formatDate, __ }) => {
   const hasUnread = !!discussion.unread_count && discussion.unread_count > 0;
   const fakeDate = new Date();
-  const user = { contact_id: 'foobar' };
 
   return (
     <DiscussionItemActionsContainer discussion={discussion} __={__}>
       <Link
-        to={`/discussions/${discussion.thread_id}`}
+        to={`/discussions/${discussion.discussion_id}`}
         className={classnames('s-discussion-list__thread', { 's-thread-list__thread--unread': hasUnread })}
         noDecoration
       >
@@ -70,6 +60,7 @@ const DiscussionItem = ({ discussion, formatDate, __ }) => {
 };
 
 DiscussionItem.propTypes = {
+  user: PropTypes.shape({}).isRequired,
   discussion: PropTypes.shape({}).isRequired,
   formatDate: PropTypes.func.isRequired,
   __: PropTypes.func.isRequired,

@@ -1,27 +1,5 @@
 @import '../../styles/common';
-
-$m-avatar__size: (
-  small:  2rem,
-  medium: 3rem,
-  large:  4rem,
-  xlarge: 6rem
-);
-
-@mixin m-avatar--size($size) {
-  @if type-of($size) == string {
-    $size: map-get($m-avatar__size, $size);
-  }
-
-  width: $size;
-  height: $size;
-
-  &__letter {
-    &::before {
-      font-size: $size * .75;
-      line-height: $size;
-    }
-  }
-}
+@import '../../styles/object/o-avatar';
 
 .m-avatar {
   display: inline-block;

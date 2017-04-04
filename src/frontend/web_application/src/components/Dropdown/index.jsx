@@ -1,31 +1,30 @@
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
-import Presenter, { Raw } from './presenter';
-import Button, { RawButton } from '../Button';
 import './style.scss';
 
-export const DropdownController = ({ className, toggle, raw, alignement, ...props }) => {
-  const dropdownProps = {
-    ...props,
-    className: classnames(className, {
+export const withDropdownControl = (WrappedComponent) => {
+  const WithDropdownControl = ({ className, alignement, toggle, ...props }) => {
+    const dropdownClassName = classnames(className, {
       'dropdown-float-right': alignement === 'right',
-    }),
-    'data-toggle': toggle,
+    });
+
+    return (
+      <WrappedComponent data-toggle={toggle} className={dropdownClassName} {...props} />
+    );
   };
 
-  if (raw) {
-    return <RawButton {...dropdownProps} />;
-  }
+  WithDropdownControl.propTypes = {
+    className: PropTypes.string,
+    alignement: PropTypes.oneOf(['right']),
+    toggle: PropTypes.string.isRequired,
+  };
+  WithDropdownControl.defaultProps = {
+    className: null,
+    alignement: null,
+  };
+  WithDropdownControl.displayName = `WithDropdownControl(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
-  return <Button {...dropdownProps} />;
-};
-
-DropdownController.propTypes = {
-  className: PropTypes.string,
-  toggle: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-  raw: PropTypes.bool,
-  alignement: PropTypes.oneOf(['right']),
+  return WithDropdownControl;
 };
 
 class Dropdown extends Component {
@@ -34,6 +33,7 @@ class Dropdown extends Component {
     // eslint-disable-next-line no-new
     new Foundation.Dropdown($dropdown, {
       hOffset: 0,
+      vOffset: 0,
     });
     // `positionClass` option (eg. 'right bottom') is always overriden
     // use css classes instead (cf. alignement and position)
@@ -50,21 +50,17 @@ class Dropdown extends Component {
   }
 
   render() {
-    const { id, closeOnClick, className, raw, position, onToggle, ...props } = this.props;
+    const { id, closeOnClick, className, position, onToggle, ...props } = this.props;
     this.onToggle = onToggle;
 
     const dropdownProps = {
       ...props,
       id,
       'data-close-on-click': closeOnClick,
-      className: classnames(className, position),
+      className: classnames('m-dropdown', className, position),
     };
 
-    if (raw) {
-      return <Raw {...dropdownProps} />;
-    }
-
-    return <Presenter {...dropdownProps} />;
+    return <div {...dropdownProps} />;
   }
 }
 
@@ -73,8 +69,14 @@ Dropdown.propTypes = {
   className: PropTypes.string,
   position: PropTypes.oneOf(['bottom']),
   closeOnClick: PropTypes.bool,
-  raw: PropTypes.bool,
   onToggle: PropTypes.func,
+};
+
+Dropdown.defaultProps = {
+  className: null,
+  position: null,
+  closeOnClick: false,
+  onToggle: null,
 };
 
 export default Dropdown;

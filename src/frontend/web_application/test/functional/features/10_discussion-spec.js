@@ -1,5 +1,11 @@
+const userUtil = require('../utils/user-util');
+
 describe('Discussions', () => {
   const EC = protractor.ExpectedConditions;
+
+  beforeEach(() => {
+    userUtil.signin();
+  });
 
   it('list', () => {
     browser.get('/');
@@ -10,8 +16,8 @@ describe('Discussions', () => {
     expect(element.all(by.css('.s-discussion-list__thread')).first().getText())
       .toContain('test@caliopen.local, zoidberg@caliopen.local');
     expect(element.all(by.css('.s-discussion-list__thread')).count()).toEqual(2);
-    // expect(element(by.cssContainingText('.s-discussion-list__load-more', 'Load more')).isPresent())
-    //   .toBe(false);
+    expect(element(by.cssContainingText('.s-discussion-list__load-more', 'Load more')).isPresent())
+      .toBe(false);
   });
 
   describe('thread', () => {

@@ -1,32 +1,30 @@
+const userUtil = require('../utils/user-util');
+
 describe('Home', () => {
-  // disabled since API is mocked
-  xdescribe('Authentication', () => {
+  const EC = protractor.ExpectedConditions;
+
+  describe('Authentication', () => {
     afterEach(() => {
-      browser.restart();
+      userUtil.signout();
     });
 
     it('Log In', () => {
-      // userUtil.login();
+      userUtil.signin();
       browser.get('/');
-      expect(element(by.css('tab-list')).getText()).toContain('Discussions');
+      expect(element(by.css('.m-application-switcher .m-navbar-link')).getText()).toContain('Discussions');
     });
 
     it('Requires authentication', () => {
-      browser.ignoreSynchronization = true;
-      browser.get('http://localhost:4000');
-      expect(element(by.css('.cor-login')).getText()).toContain('Sign In');
       browser.get('/');
-      expect(element(by.css('.cor-login')).getText()).toContain('Sign In');
-      browser.ignoreSynchronization = false;
+      browser.wait(EC.presenceOf($('.m-title__text')), 1000);
+
+      expect(element(by.css('.m-title__text')).getText()).toContain('PLEASE LOG IN');
     });
 
     it('Log out', () => {
-      // userUtil.login();
-      expect(element(by.xpath('//tab-list')).getText()).toContain('Discussions');
-      browser.ignoreSynchronization = true;
-      element(by.xpath('//co-layout-user-menu//a[@aria-label="Account"]')).click();
-      element(by.xpath('//co-layout-user-menu//a[contains(string(), "Log Out")]')).click();
-      expect(element(by.css('.cor-login')).getText()).toContain('Sign In');
+      userUtil.signin();
+      userUtil.signout();
+      expect(element(by.css('.m-title__text')).getText()).toContain('PLEASE LOG IN');
     });
   });
 });

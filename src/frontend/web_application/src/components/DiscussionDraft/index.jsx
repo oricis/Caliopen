@@ -1,14 +1,52 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 
-export const TopRow = props => (
-  <div className="m-discussion-draft__top-row" {...props} />
+export const TopRow = ({ className, ...props }) => (
+  <div className={classnames('m-discussion-draft__top-row', className)} {...props} />
 );
 
-export const BodyRow = props => (
-  <div className="m-discussion-draft__body-row" {...props} />
+TopRow.propTypes = {
+  className: PropTypes.string,
+};
+
+TopRow.defaultProps = {
+  className: null,
+};
+
+export const BottomRow = ({ className, ...props }) => (
+  <div className={classnames('m-discussion-draft__bottom-row', className)} {...props} />
 );
 
-const DiscussionDraft = props => (
-  <div className="m-discussion-draft" {...props} />
+BottomRow.propTypes = {
+  className: PropTypes.string,
+};
+
+BottomRow.defaultProps = {
+  className: null,
+};
+
+export const BodyRow = ({ className, ...props }) => (
+  <div className={classnames('m-discussion-draft__body-row', className)} {...props} />
 );
+
+BodyRow.propTypes = {
+  className: PropTypes.string,
+};
+
+BodyRow.defaultProps = {
+  className: null,
+};
+
+const DiscussionDraft = ({ className, ...props }) => (
+  <div className={classnames('m-discussion-draft', className)} {...props} />
+);
+
+DiscussionDraft.propTypes = {
+  className: PropTypes.string,
+};
+
+DiscussionDraft.defaultProps = {
+  className: null,
+};
+
 export default DiscussionDraft;

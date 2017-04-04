@@ -4,6 +4,7 @@ import './style.scss';
 
 export const typeAssoc = {
   at: 'fa fa-at',
+  'angle-down': 'fa fa-angle-down',
   calendar: 'fa fa-calendar',
   'caret-up': 'fa fa-caret-up',
   'caret-down': 'fa fa-caret-down',
@@ -13,6 +14,9 @@ export const typeAssoc = {
   'comments-o': 'fa fa-comments-o',
   edit: 'fa fa-edit',
   envelope: 'fa fa-envelope',
+  'ellipsis-v': 'fa fa-ellipsis-v',
+  email: 'fa fa-envelope',
+  editor: 'fa fa-font',
   'exclamation-triangle': 'fa fa-exclamation-triangle',
   'info-circle': 'fa fa-info-circle',
   key: 'fa fa-key',
@@ -25,12 +29,18 @@ export const typeAssoc = {
   phone: 'fa fa-phone',
   remove: 'fa fa-remove',
   reply: 'fa fa-reply',
+  save: 'fa fa-floppy-o',
+  send: 'fa fa-paper-plane',
   search: 'fa fa-search',
   server: 'fa fa-server',
+  share: 'fa fa-share',
+  'share-alt': 'fa fa-share-alt',
   shield: 'fa fa-shield',
   user: 'fa fa-user',
   users: 'fa fa-users',
+  tags: 'fa fa-tags',
   'th-large': 'fa fa-th-large',
+  trash: 'fa fa-trash',
   'window-maximize': 'fa fa-window-maximize',
 };
 

@@ -1,0 +1,41 @@
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.m-message-list {
+  position: relative;
+
+  button { // ugly hack, to simulate "icon only" Button, waiting for Button refacto
+    span {
+      @include breakpoint(small) { display: none; }
+      @include breakpoint(medium) {
+        display: inline;
+        padding-left: $co-component__spacing;
+      }
+    }
+  }
+
+  &__actions {
+    padding: $co-component__spacing;
+    border-bottom: 1px solid $co-color__bg__back;
+    background: $co-color__fg__back;
+  }
+
+  &__action {
+    margin: $co-component__spacing;
+    background: $co-color__fg__back--higher; // need a modifier for Button
+  }
+
+  &__reply {
+    @include breakpoint(small) {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      box-shadow: $co-shadow--higher;
+    }
+    @include breakpoint(medium) {
+      position: static;
+      box-shadow: none;
+    }
+  }
+
+}

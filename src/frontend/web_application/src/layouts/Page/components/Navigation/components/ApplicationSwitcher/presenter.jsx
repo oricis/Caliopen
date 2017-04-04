@@ -2,10 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from '../Navbar';
 import BaseLink from '../../../../../../components/Link';
 import Icon from '../../../../../../components/Icon';
-import Dropdown, { DropdownController } from '../../../../../../components/Dropdown';
+import Button from '../../../../../../components/Button';
+import Dropdown, { withDropdownControl } from '../../../../../../components/Dropdown';
 import VerticalMenu, { VerticalMenuItem } from '../../../../../../components/VerticalMenu';
 import { getLabels } from '../../../../../../services/application-manager';
 import './style.scss';
+
+const DropdownControl = withDropdownControl(Button);
 
 class ApplicationSwitcher extends Component {
   static propTypes = {
@@ -40,17 +43,16 @@ class ApplicationSwitcher extends Component {
           {' '}
           {applicationLabels[this.props.currentApplication.name]}
         </Link>
-        <DropdownController
+        <DropdownControl
           toggle="co-application-switcher"
           className="dropdown-float-right m-application-switcher__toggler"
         >
           <span className="show-for-sr">{__('application_switcher.action.choose')}</span>
           <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
-        </DropdownController>
+        </DropdownControl>
         <Dropdown
           id="co-application-switcher"
           closeOnClick
-          raw
           position="bottom"
           className="m-application-switcher__dropdown"
           onToggle={onDropdownToggle}
