@@ -139,11 +139,10 @@ func (server *REST_API) start(swaggerFile string) error {
 func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 
 	//users API
-	/*
-		u := api.Group("/users")
-		u.POST("", users.Create)
-		u.GET("/:user_id", users.Get)
-	*/
+	//u := api.Group("/users")
+	identities := api.Group("/identities", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
+	identities.GET("/locals", users.GetLocalsIdentities)
+	identities.GET("/locals/:identity_id", users.GetLocalIdentity)
 
 	//username API
 	api.GET("/username/isAvailable", users.IsAvailable)

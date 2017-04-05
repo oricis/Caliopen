@@ -19,6 +19,7 @@ type (
 	RESTservices interface {
 		UsernameIsAvailable(string) (bool, error)
 		SendDraft(user_id, msg_id string) (msg *obj.Message, err error)
+		LocalsIdentities(user_id string) (identities []obj.LocalIdentity, err error)
 	}
 	RESTfacility struct {
 		store              backends.APIStorage
@@ -70,4 +71,8 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *obj.Message, e
 	log.Infof("nats reply : %s", reply)
 
 	return rest.store.GetMessage(user_id, msg_id)
+}
+
+func (rest *RESTfacility) LocalsIdentities(user_id string) (identities []obj.LocalIdentity, err error) {
+	return rest.store.GetLocalsIdentities(user_id)
 }

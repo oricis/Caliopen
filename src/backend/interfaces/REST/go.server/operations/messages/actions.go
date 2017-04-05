@@ -25,14 +25,9 @@ func Actions(ctx *gin.Context) {
 				ctx.AbortWithError(http.StatusInternalServerError, err)
 				//TODO: returns error conforming to swagger def.
 			}
-			/*
-				j, err := json.Marshal(updated_msg)
-				if err != nil {
-					ctx.AbortWithError(http.StatusInternalServerError, err)
-					//TODO: returns error conforming to swagger def.
-				}
-			*/
 			ctx.JSON(http.StatusOK, updated_msg)
+		} else {
+			ctx.AbortWithStatus(http.StatusNotImplemented)
 		}
 	}
 
