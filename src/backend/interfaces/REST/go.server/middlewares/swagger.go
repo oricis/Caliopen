@@ -5,9 +5,10 @@
 package http_middleware
 
 import (
-	"bufio"
+	"encoding/json"
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-openapi/analysis"
+	swgErr "github.com/go-openapi/errors"
 	"github.com/go-openapi/loads"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
@@ -15,8 +16,6 @@ import (
 	"github.com/go-openapi/spec"
 	"github.com/go-openapi/strfmt"
 	"gopkg.in/gin-gonic/gin.v1"
-	"io"
-	"net"
 	"net/http"
 	"strings"
 	"sync"
@@ -41,14 +40,20 @@ type routableUntypedAPI struct {
 	defaultProduces string
 }
 
-type swaggerHandler interface {
+type jsonError struct {
+	Code    int32  `json:"code"`
+	Message string `json:"message"`
+	Name    string `json:"name"`
 }
+
+type jsonErrors []jsonError
 
 func InitSwaggerMiddleware(swaggerFile string) (err error) {
 	log.Infoln("Loading swagger specifications…")
 	swaggerSpec, err = loads.JSONSpec(swaggerFile)
 	swagAPI := untyped.NewAPI(swaggerSpec)
 	swagAPI.WithJSONDefaults()
+	swagAPI.ServeError = ServeError
 
 	swagCtx := middleware.NewContext(swaggerSpec, swagAPI, nil)
 	if swagCtx == nil {
@@ -66,7 +71,7 @@ func InitSwaggerMiddleware(swaggerFile string) (err error) {
 		log.Warn("no swagContext")
 	}
 
-	middleware.NewRouter(swaggerContext, nil) //workaround to set the router within swaggerContex
+	middleware.NewRouter(swaggerContext, nil) //workaround to set the router within swaggerContext
 	if err != nil {
 		return err
 	}
@@ -76,7 +81,7 @@ func InitSwaggerMiddleware(swaggerFile string) (err error) {
 
 // checks that inputs and/or outputs conform to the swagger specs for the route
 // this middleware should be registred as the first middleware to ensure that it checks
-// requests before any handling and it checks responses at last.
+// requests before next handlers
 func SwaggerValidator() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
@@ -88,34 +93,15 @@ func SwaggerValidator() gin.HandlerFunc {
 
 func SwaggerInboundValidation(ctx *gin.Context) {
 	route, ok := swaggerContext.RouteInfo(ctx.Request)
-	log.Infof("matched route : %v, ok : %t", route, ok)
 	if route != nil && ok {
-		bound, validation := swaggerContext.BindAndValidate(ctx.Request, route)
-		if validation != nil {
-			//context.Respond(w, r, route.Produces, route, validation)
+		_, err := swaggerContext.BindAndValidate(ctx.Request, route)
+		if err != nil {
+			swaggerContext.Respond(ctx.Writer, ctx.Request, route.Produces, route, err)
 			log.Warn("validation failed")
+			ctx.Abort()
 			return
 		}
-
-		// actually handle the request
-		//result, err := oh.Handle(bound)
-		log.Info(bound)
-		/*
-			if err != nil {
-				// respond with failure
-				context.Respond(w, r, route.Produces, route, err)
-				return
-			}
-		*/
-
-		// respond with success
-		//context.Respond(w, r, route.Produces, route, result)
 	}
-
-}
-
-func SwaggerOutboundValidation(ctx *gin.Context) {
-
 }
 
 func newRoutableUntypedAPI(spec *loads.Document, api *untyped.API, context *middleware.Context) *routableUntypedAPI {
@@ -129,46 +115,18 @@ func newRoutableUntypedAPI(spec *loads.Document, api *untyped.API, context *midd
 		for path, op := range hls {
 			schemes := analyzer.SecurityDefinitionsFor(op)
 
-			//if oh, ok := api.OperationHandlerFor(method, path); ok {
 			if handlers == nil {
 				handlers = make(map[string]map[string]http.Handler)
 			}
 			if b, ok := handlers[um]; !ok || b == nil {
 				handlers[um] = make(map[string]http.Handler)
 			}
-
-			var handler http.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				// lookup route info in the context
-				route, _ := context.RouteInfo(r)
-
-				// bind and validate the request using reflection
-				bound, validation := context.BindAndValidate(r, route)
-				if validation != nil {
-					//context.Respond(w, r, route.Produces, route, validation)
-					log.Warn("validation failed")
-					return
-				}
-
-				// actually handle the request
-				//result, err := oh.Handle(bound)
-				log.Info(bound)
-				/*
-					if err != nil {
-						// respond with failure
-						context.Respond(w, r, route.Produces, route, err)
-						return
-					}
-				*/
-
-				// respond with success
-				//context.Respond(w, r, route.Produces, route, result)
-			})
+			var handler http.Handler //fake handler as we won't use it
 
 			if len(schemes) > 0 {
-				handler = newSecureAPI(context, handler)
+				handler = newSecureAPI(context, nil)
 			}
 			handlers[um][path] = handler
-			//}
 		}
 	}
 
@@ -230,74 +188,81 @@ func newSecureAPI(ctx *middleware.Context, next http.Handler) http.Handler {
 	})
 }
 
-type SwaggerWriter struct {
-	http.ResponseWriter
-	size   int
-	status int
-}
-
-func (sw *SwaggerWriter) reset(writer http.ResponseWriter) {
-	sw.ResponseWriter = writer
-	sw.size = noWritten
-	sw.status = defaultStatus
-}
-
-func (sw *SwaggerWriter) WriteHeader(code int) {
-	if code > 0 && sw.status != code {
-		if sw.Written() {
-			log.Warnf("[WARNING] Headers were already written. Wanted to override status code %d with %d", sw.status, code)
+// ServeError the error handler interface implementation
+// returns an error json as defined within swagger.json, if any
+func ServeError(rw http.ResponseWriter, r *http.Request, err error) {
+	switch e := err.(type) {
+	case *swgErr.CompositeError:
+		er := flattenComposite(e)
+		rw.WriteHeader(asHTTPCode(int(er.Code()))) //returns the first error code only
+		if r == nil || r.Method != "HEAD" {
+			rw.Write(errorAsJSON(er))
 		}
-		sw.status = code
+	case *swgErr.MethodNotAllowedError:
+		rw.Header().Add("Allow", strings.Join(err.(*swgErr.MethodNotAllowedError).Allowed, ","))
+		rw.WriteHeader(asHTTPCode(int(e.Code())))
+		if r == nil || r.Method != "HEAD" {
+			rw.Write(errorAsJSON(e))
+		}
+	case swgErr.Error:
+		if e == nil {
+			rw.WriteHeader(http.StatusInternalServerError)
+			rw.Write(errorAsJSON(swgErr.New(http.StatusInternalServerError, "Unknown error")))
+			return
+		}
+		rw.WriteHeader(asHTTPCode(int(e.Code())))
+		if r == nil || r.Method != "HEAD" {
+			rw.Write(errorAsJSON(e))
+		}
+	default:
+		rw.WriteHeader(http.StatusInternalServerError)
+		if r == nil || r.Method != "HEAD" {
+			rw.Write(errorAsJSON(swgErr.New(http.StatusInternalServerError, err.Error())))
+		}
 	}
 }
 
-func (sw *SwaggerWriter) WriteHeaderNow() {
-	if !sw.Written() {
-		sw.size = 0
-		sw.ResponseWriter.WriteHeader(sw.status)
+func errorAsJSON(err swgErr.Error) []byte {
+	errors := struct {
+		Errors jsonErrors `json:"errors"`
+	}{}
+	switch er := err.(type) {
+	case *swgErr.CompositeError:
+		for _, e := range er.Errors {
+			errors.Errors = append(errors.Errors, jsonError{err.Code(), e.Error(), ""})
+		}
+		b, _ := json.Marshal(errors)
+		return b
+	default:
+		errors.Errors = append(errors.Errors, jsonError{err.Code(), err.Error(), ""})
+		b, _ := json.Marshal(errors)
+		return b
 	}
 }
 
-func (sw *SwaggerWriter) Write(data []byte) (n int, err error) {
-	sw.WriteHeaderNow()
-	n, err = sw.ResponseWriter.Write(data)
-	sw.size += n
-	return
-}
-
-func (sw *SwaggerWriter) WriteString(s string) (n int, err error) {
-	sw.WriteHeaderNow()
-	n, err = io.WriteString(sw.ResponseWriter, s)
-	sw.size += n
-	return
-}
-
-func (sw *SwaggerWriter) Status() int {
-	return sw.status
-}
-
-func (sw *SwaggerWriter) Size() int {
-	return sw.size
-}
-
-func (sw *SwaggerWriter) Written() bool {
-	return sw.size != noWritten
-}
-
-// Implements the http.Hijacker interface
-func (sw *SwaggerWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
-	if sw.size < 0 {
-		sw.size = 0
+func flattenComposite(errs *swgErr.CompositeError) *swgErr.CompositeError {
+	var res []error
+	for _, er := range errs.Errors {
+		switch e := er.(type) {
+		case *swgErr.CompositeError:
+			if len(e.Errors) > 0 {
+				flat := flattenComposite(e)
+				if len(flat.Errors) > 0 {
+					res = append(res, flat.Errors...)
+				}
+			}
+		default:
+			if e != nil {
+				res = append(res, e)
+			}
+		}
 	}
-	return sw.ResponseWriter.(http.Hijacker).Hijack()
+	return swgErr.CompositeValidationError(res...)
 }
 
-// Implements the http.CloseNotify interface
-func (sw *SwaggerWriter) CloseNotify() <-chan bool {
-	return sw.ResponseWriter.(http.CloseNotifier).CloseNotify()
-}
-
-// Implements the http.Flush interface
-func (sw *SwaggerWriter) Flush() {
-	sw.ResponseWriter.(http.Flusher).Flush()
+func asHTTPCode(input int) int {
+	if input >= 600 {
+		return 422
+	}
+	return input
 }
