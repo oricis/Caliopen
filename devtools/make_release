@@ -39,7 +39,8 @@ PY_VERSION_STR = "__version__ = "
 JS_BUILD_CMD = 'yarn {}'
 JS_UPDATE_VERSION_CMD = 'npm version "{version}" --no-git-tag-version'
 
-GO_BUILD_CMD = 'go build'
+GO_BUILD_CMD = 'govendor sync; govendor update +vendor; ' \
+               'go build -o {out} {target}'
 
 # Files updated to consider for commit or rollback
 UPDATE_FILES = []
@@ -116,7 +117,11 @@ def make_javascript_package(package, directory, version, output_directory):
 
 def make_go_distribution(package, directory, version, output_directory):
     """Build go binaries for a given package and version."""
-    return True
+    outfile = '{}/{}'.format(output_directory, package['name'])
+    build_cmd = GO_BUILD_CMD.format(out=outfile,
+                                    target=package['build_target'])
+    cmd = 'cd {}; {}'.format(directory, build_cmd)
+    return do_package_command(package, cmd)
 
 
 def update_python_version(package, package_dir, version):

@@ -49,6 +49,7 @@ packages:
   golang:
       -
           name: caliopen_apiv2
+          build_target: github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest
           path: src/backend/interfaces/REST/go.server
           description: Caliopen ReST API server
           dependencies:
