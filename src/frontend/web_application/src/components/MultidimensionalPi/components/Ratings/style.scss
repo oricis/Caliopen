@@ -1,0 +1,43 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+$gridColor: $co-color__fg__back--higher;
+
+.m-pi-ratings {
+  font-size: $co-font__size--xsmall;
+  font-weight: 600;
+
+  &__item {
+    @include flex-grid-row;
+    align-items: center;
+    margin-bottom: $co-component__spacing / 2;
+  }
+
+  &__item-name {
+    @include flex-grid-size(4);
+    text-align: right;
+  }
+
+  &__item-level-label {
+    @include flex-grid-size(shrink);
+    padding: $co-component__spacing;
+  }
+
+  &__item-level {
+    @include flex-grid-size;
+    background: $co-color__fg__back--low;
+    text-align: right;
+  }
+
+  &__item-level-bar {
+    height: $co-component__height / 2;
+    transition: .5s width;
+    background: $co-color__privacy;
+    line-height: $co-component__height / 2;
+  }
+
+  &__item-name-label {
+    padding: $co-component__spacing;
+    text-transform: uppercase;
+  }
+}

@@ -1,0 +1,25 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+$gridColor: $co-color__fg__back--higher;
+
+.m-pi-graph {
+  pointer-events: none;
+
+  &__line {
+    stroke: $gridColor;
+    stroke-width: .7;
+    fill: none;
+  }
+
+  &__outline {
+    fill: transparent;
+    stroke: $gridColor;
+    stroke-width: .7;
+  }
+
+  &__shape {
+    fill: $co-color__privacy;
+    stroke: none;
+  }
+}

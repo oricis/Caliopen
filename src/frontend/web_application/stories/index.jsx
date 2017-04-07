@@ -357,7 +357,7 @@ storiesOf('Pi', module)
       piMax: number('piMax', 100),
       pi: object('points', [
         { name: 'behavioral', level: 20 },
-        { name: 'contextual', level: 90 },
+        { name: 'contextual', level: 95 },
         { name: 'technical', level: 55 },
       ]),
     };
