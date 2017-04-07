@@ -5,6 +5,7 @@ packages:
   javascript:
       -
           name: server
+          build_target: release:web:server
           description: proxy api, provides html & assets (js)
           path: src/frontend/web_application
           dependencies:
