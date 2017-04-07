@@ -36,7 +36,7 @@ COMMIT_MESSAGE = 'Release {version}'
 PY_BUILD_CMD = 'python setup.py bdist_wheel --universal --dist-dir {}'
 PY_VERSION_STR = "__version__ = "
 
-JS_BUILD_CMD = 'yarn {}'
+JS_BUILD_CMD = 'yarn {target}'
 JS_UPDATE_VERSION_CMD = 'npm version "{version}" --no-git-tag-version'
 
 GO_BUILD_CMD = 'govendor sync; govendor update +vendor; ' \
@@ -100,8 +100,8 @@ def make_javascript_package(package, directory, version, output_directory):
         raise Exception('No such package directory {}'.format(directory))
 
     # Should fail if using package name
-    build_target = package.get('build_target', package['name'])
-    cmd = 'cd {}; {}'.format(directory, JS_BUILD_CMD.format(build_target))
+    build_cmd = JS_BUILD_CMD.format(target=package['build_target'])
+    cmd = 'cd {}; {}'.format(directory, build_cmd)
     res = do_package_command(package, cmd)
     if not res:
         return False
