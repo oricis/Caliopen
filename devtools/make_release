@@ -110,7 +110,7 @@ def make_javascript_package(package, directory, version, output_directory):
 
 def make_go_distribution(package, directory, version, output_directory):
     """Build go binaries for a given package and version."""
-    pass
+    return True
 
 
 def update_python_version(package, package_dir, version):
@@ -146,10 +146,7 @@ def update_python_version(package, package_dir, version):
 def make_python_package(package, directory, version, output_directory):
     """Make a python wheel package for a given package and version."""
     if not os.path.isdir(directory):
-        raise Exception('No such package directory {}'.format(directory))
-    if not update_python_version(package, directory, version):
-        log.warn('Update python package version failed')
-        return False
+        raise Exception('No such package directory: {}'.format(directory))
 
     build_cmd = PY_BUILD_CMD.format(output_directory)
     cmd = 'cd {}; {}'.format(directory, build_cmd)
@@ -179,7 +176,10 @@ def make_packages(config, version, languages):
         for package in packages:
             log.info('Building package {}'.format(package['name']))
             package_dir = '{}/{}'.format(basedir, package['path'])
-            fn(package, package_dir, version, output_directory)
+            res = fn(package, package_dir, version, output_directory)
+            if not res:
+                log.error('Build package {} failed'.format(package['name']))
+                sys.exit(1)
 
 
 def get_repository_directory(config):
