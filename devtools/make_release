@@ -12,6 +12,7 @@ Usage:
 import os
 import sys
 import subprocess as sp
+import shutil
 import argparse
 import re
 
@@ -42,6 +43,11 @@ GO_BUILD_CMD = 'go build'
 
 # Files updated to consider for commit or rollback
 UPDATE_FILES = []
+
+
+def do_command(cmd):
+    """Execute a shell command when can't use a python library."""
+    return sp.call(cmd, shell=True)
 
 
 def do_package_command(package, cmd):
@@ -212,8 +218,9 @@ def prepare_release(config, version, languages):
     """Prepare a new release in a given version."""
     basedir = get_repository_directory(config)
     repo = get_repository(basedir)
-    # assert not repo.is_dirty(), 'Current head is dirty'
-    # assert repo.active_branch.name == 'master', 'Not on master branch'
+    assert not repo.is_dirty(), 'Current head is dirty'
+    assert repo.active_branch.name == 'master', 'Not on master branch'
+
     tag_name = 'release-{}'.format(version)
     assert tag_name not in repo.tags, 'Tag {} exists'.format(version)
 
@@ -267,6 +274,36 @@ def prepare_release(config, version, languages):
     return True
 
 
+def clean_release(config, version):
+    """Clean release."""
+    basedir = get_repository_directory(config)
+    repo = get_repository(basedir)
+    # assert not repo.is_dirty(), 'Current head is dirty'
+    # assert repo.active_branch.name == 'master', 'Not on master branch'
+    tag_name = 'release-{}'.format(version)
+    assert tag_name in repo.tags, 'Tag {} does not exists'.format(tag_name)
+
+    # XXX check if tag exists on origin and raise if so
+
+    local_commit = repo.head.commit
+    commit_msg = COMMIT_MESSAGE.format(version=version)
+
+    assert local_commit.message == commit_msg, 'Last commit does not match'
+
+    log.info('Reset HEAD~1 to discard commit {}'.format(local_commit.hexsha))
+    repo.head.reset('HEAD~1')
+
+    log.info('Delete tag {}'.format(tag_name))
+    if do_command('git tag -d {}'.format(tag_name)):
+        raise Exception('Delete of tag {} failed'.format(tag_name))
+
+    output_directory = '{}/dist/{}'.format(basedir, version)
+    if os.path.isdir(output_directory):
+        log.info('Delete dist directory {}'.format(output_directory))
+        shutil.rmtree(output_directory)
+    return True
+
+
 # Methods factories
 update_package_methods = {
     'python': update_python_version,
@@ -286,6 +323,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--conf', dest='conffile', default='package.yaml')
     parser.add_argument('--version', dest='version')
+    parser.add_argument('--clean', dest='do_clean', action='store_true',
+                        default=False)
     parser.add_argument('--prepare', dest='do_prepare', action='store_true',
                         default=False)
     parser.add_argument('--build', dest='do_build', action='store_true',
@@ -298,6 +337,8 @@ if __name__ == '__main__':
 
     languages = opts.languages.split(',')
 
+    if opts.do_clean:
+        clean_release(config, opts.version)
     if opts.do_prepare:
         prepare_release(config, opts.version, languages)
     if opts.do_build:
