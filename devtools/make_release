@@ -219,6 +219,30 @@ def commit_release(repo, version):
     return index.write_tree()
 
 
+def prepare_packages(config, version, languages, basedir):
+    """Prepare packages for release."""
+    all_packages = config.get('packages', {})
+    for language, packages in all_packages.items():
+        if 'all' not in languages and language not in languages:
+            log.info('Skipping language {}'.format(language))
+            continue
+
+        if language in update_package_methods:
+            fn = update_package_methods[language]
+            if not fn:
+                log.warn('Update package not implemented for language {}'.
+                         format(language))
+                continue
+        else:
+            log.error('Invalid language {}'.format(language))
+            sys.exit(1)
+        for package in packages:
+            log.info('Updating package {} to version {}'.
+                     format(package['name'], version))
+            package_dir = '{}/{}'.format(basedir, package['path'])
+            fn(package, package_dir, version)
+
+
 def prepare_release(config, version, languages):
     """Prepare a new release in a given version."""
     basedir = get_repository_directory(config)
@@ -248,26 +272,8 @@ def prepare_release(config, version, languages):
         log.info('Creating output directory {}'.format(output_directory))
         os.mkdir(output_directory)
 
-    all_packages = config.get('packages', {})
-    for language, packages in all_packages.items():
-        if 'all' not in languages and language not in languages:
-            log.info('Skipping language {}'.format(language))
-            continue
+    # prepare_packages(config, version, languages, basedir)
 
-        if language in update_package_methods:
-            fn = update_package_methods[language]
-            if not fn:
-                log.warn('Update package not implemented for language {}'.
-                         format(language))
-                continue
-        else:
-            log.error('Invalid language {}'.format(language))
-            sys.exit(1)
-        for package in packages:
-            log.info('Updating package {} to version {}'.
-                     format(package['name'], version))
-            package_dir = '{}/{}'.format(basedir, package['path'])
-            fn(package, package_dir, version)
     # XXX Update CHANGES.md
     # XXX Consider changelog
 
