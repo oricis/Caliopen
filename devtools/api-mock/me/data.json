@@ -8,7 +8,7 @@
 		"emails": [
 			{
 				"email_id": "11111",
-				"address": "john@calipoen.local",
+				"address": "john@caliopen.local",
 				"is_primary": true,
 				"type": "home"
 			}

@@ -21,7 +21,7 @@
 		"address": "john@caliopen.local",
 		"protocol": "email"
 	}, {
-		"type": "from",
+		"type": "From",
 		"address": "zoidberg@planet-express.tld",
 		"protocol": "email"
 	}],

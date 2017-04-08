@@ -8,6 +8,10 @@ const actions = {
 
 const selectors = {
   all: () => state => state.discussions,
+  byId: ({ discussion_id }) => createSelector(
+    selectors.all(),
+    discussions => discussions.find(discussion => discussion.discussion_id === discussion_id)
+  ),
 };
 
 const reducer = {
@@ -20,6 +24,11 @@ const routes = {
     selector: selectors.all,
     status: 200,
     middlewares: [createCollectionMiddleware('discussions')],
+  },
+  'GET /:discussion_id': {
+    action: actions.get,
+    selector: selectors.byId,
+    status: 200,
   },
 };
 

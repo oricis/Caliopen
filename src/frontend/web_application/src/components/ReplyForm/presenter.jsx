@@ -12,16 +12,16 @@ const DropdownControl = withDropdownControl(Button);
 
 function generateStateFromProps(props, prevState) {
   return {
-    draftMessage: {
-      ...prevState.draftMessage,
-      ...props.draftMessage,
+    draft: {
+      ...prevState.draft,
+      ...props.draft,
     },
   };
 }
 
 class ReplyForm extends Component {
   static propTypes = {
-    draftMessage: PropTypes.shape({}),
+    draft: PropTypes.shape({}),
     onSave: PropTypes.func.isRequired,
     onSend: PropTypes.func.isRequired,
     onChange: PropTypes.func,
@@ -29,14 +29,19 @@ class ReplyForm extends Component {
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
-    draftMessage: {},
+    draft: {},
     onChange: () => {},
     user: { contact: {} },
   };
   constructor(props) {
     super(props);
     this.state = {
-      draftMessage: {},
+      draft: {
+        body: '',
+        type: 'email',
+        participants: [],
+        discussion_id: '',
+      },
       isActive: true,
       protocol: 'email',
     };
@@ -54,21 +59,21 @@ class ReplyForm extends Component {
   }
 
   handleSave() {
-    this.props.onSave(this.state.draftMessage);
+    this.props.onSave(this.state.draft);
   }
 
   handleSend() {
-    this.props.onSend(this.state.draftMessage);
+    this.props.onSend(this.state.draft);
   }
 
   handleChange(ev) {
     const { name, value } = ev.target;
 
     this.setState((prevState) => {
-      const draftMessage = { ...prevState.draftMessage, [name]: value };
-      this.props.onChange({ draftMessage });
+      const draft = { ...prevState.draft, [name]: value };
+      this.props.onChange({ draft });
 
-      return { draftMessage };
+      return { draft };
     });
   }
 
@@ -122,7 +127,7 @@ class ReplyForm extends Component {
           </TopRow>
           <BodyRow className="m-reply__body">
             <DiscussionTextarea
-              body={this.state.draftMessage.body}
+              body={this.state.draft.body}
               onChange={this.handleChange}
               __={__}
             />

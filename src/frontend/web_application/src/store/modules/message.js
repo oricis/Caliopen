@@ -7,7 +7,13 @@ export const INVALIDATE_MESSAGES = 'co/message/INVALIDATE_MESSAGES';
 export const LOAD_MORE_MESSAGES = 'co/message/LOAD_MORE_MESSAGES';
 export const REQUEST_MESSAGE = 'co/message/REQUEST_MESSAGE';
 export const UPDATE_MESSAGE = 'co/message/UPDATE_MESSAGE';
+export const UPDATE_MESSAGE_SUCCESS = 'co/message/UPDATE_MESSAGE_SUCCESS';
 export const REMOVE_MESSAGE = 'co/message/REMOVE_MESSAGE';
+export const CREATE_MESSAGE = 'co/message/CREATE_MESSAGE';
+export const CREATE_MESSAGE_SUCCESS = 'co/message/CREATE_MESSAGE_SUCCESS';
+export const EDIT_MESSAGE = 'co/message/EDIT_MESSAGE';
+export const SYNC_MESSAGE = 'co/message/SYNC_MESSAGE';
+
 
 export function requestMessages(parameters = {}) {
   const { offset = 0, limit = 20, discussionId } = parameters;
@@ -41,6 +47,26 @@ export function invalidate() {
   };
 }
 
+export function createMessage({ message }) {
+  return {
+    type: CREATE_MESSAGE,
+    payload: {
+      request: {
+        url: '/v1/messages',
+        method: 'post',
+        data: { ...message },
+      },
+    },
+  };
+}
+
+export function editMessage({ message }) {
+  return {
+    type: EDIT_MESSAGE,
+    payload: { message },
+  };
+}
+
 export function updateMessage({ message, original }) {
   const data = calcObjectForPatch(message, original);
 
@@ -56,11 +82,40 @@ export function updateMessage({ message, original }) {
   };
 }
 
+export function syncMessage({ message }) {
+  return {
+    type: SYNC_MESSAGE,
+    payload: { message },
+  };
+}
+
+export function sendMessage({ message }) {
+  console.log('send plz', message);
+}
+
+export function getNextOffset(state) {
+  return state.messages.length;
+}
+
+export function hasMore(state) {
+  return state.total > state.messages.length;
+}
+
 function messagesByIdReducer(state = {}, action = {}) {
-  return action.payload.data.messages.reduce((previousState, message) => ({
-    ...previousState,
-    [message.message_id]: message,
-  }), state);
+  switch (action.type) {
+    case REQUEST_MESSAGES_SUCCESS:
+      return action.payload.data.messages.reduce((previousState, message) => ({
+        ...previousState,
+        [message.message_id]: message,
+      }), state);
+    case SYNC_MESSAGE:
+      return {
+        ...state,
+        [action.payload.message.message_id]: action.payload.message,
+      };
+    default:
+      return state;
+  }
 }
 
 function messageIdsReducer(state = [], action = {}) {
@@ -79,14 +134,6 @@ function messageIdsReducer(state = [], action = {}) {
     }, []);
 }
 
-export function getNextOffset(state) {
-  return state.messages.length;
-}
-
-export function hasMore(state) {
-  return state.total > state.messages.length;
-}
-
 const initialState = {
   isFetching: false,
   didInvalidate: false,
@@ -98,6 +145,8 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case REQUEST_MESSAGES:
+    case CREATE_MESSAGE:
+    case UPDATE_MESSAGE:
       return { ...state, isFetching: true };
     case REQUEST_MESSAGES_SUCCESS:
       return {
@@ -116,6 +165,11 @@ export default function reducer(state = initialState, action) {
       };
     case INVALIDATE_MESSAGES:
       return { ...state, didInvalidate: true };
+    case SYNC_MESSAGE:
+      return {
+        ...state,
+        messagesById: messagesByIdReducer(state.messagesById, action),
+      };
     default:
       return state;
   }
