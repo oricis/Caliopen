@@ -161,6 +161,7 @@ def make_packages(config, version, languages):
         release = {'version': version, 'date': datetime.utcnow().isoformat(),
                    'packages': RELEASE_PACKAGES}
         f.write(json.dumps(release, indent=4))
+    return True
 
 
 def get_repository_directory(config):
@@ -193,8 +194,8 @@ def prepare_release(config, version, languages):
     """Prepare a new release in a given version."""
     basedir = get_repository_directory(config)
     repo = get_repository(basedir)
-    assert not repo.is_dirty(), 'Current head is dirty'
-    assert repo.active_branch.name == 'master', 'Not on master branch'
+    # assert not repo.is_dirty(), 'Current head is dirty'
+    # assert repo.active_branch.name == 'master', 'Not on master branch'
 
     tag_name = 'release-{}'.format(version)
     assert tag_name not in repo.tags, 'Tag {} exists'.format(version)
