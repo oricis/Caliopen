@@ -54,3 +54,10 @@ packages:
           description: Caliopen ReST API server
           dependencies:
             go: "^1.7"
+      -
+          name: caliopen_lmtpd
+          build_target: github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp/cmd/caliopen_lmtpd
+          path: src/backend/protocols/go.smtp/
+          description: Caliopen LMTP daemon
+          dependencies:
+            go: "^1.7"
