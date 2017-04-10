@@ -20,11 +20,12 @@ const NavList = ({ className, dir, ...props }) => {
 
 NavList.propTypes = {
   className: PropTypes.string,
-  dir: PropTypes.oneOf(['vertical']).isRequired,
+  dir: PropTypes.oneOf(['vertical']),
 };
 
 NavList.defaultProps = {
   className: null,
+  dir: null,
 };
 
 export { ItemContent };
