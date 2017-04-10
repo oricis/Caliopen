@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { editDraft, requestDraft } from '../../../../store/modules/draft-message';
-import { createMessage, updateMessage, sendMessage } from '../../../../store/modules/message';
+import { editDraft, requestDraft, saveDraft } from '../../../../store/modules/draft-message';
+import { sendMessage } from '../../../../store/modules/message';
 import Presenter from './presenter';
 
 const messageDraftSelector = state => state.draftMessage.draftsByDiscussionId;
@@ -28,8 +28,7 @@ const mapStateToProps = createSelector(
 const mapDispatchToProps = dispatch => bindActionCreators({
   editDraft,
   requestDraft,
-  createMessage,
-  updateMessage,
+  saveDraft,
   sendMessage,
 }, dispatch);
 

@@ -2,11 +2,19 @@ export const REQUEST_DRAFT = 'co/draft-message/REQUEST_DRAFT';
 export const REQUEST_DRAFT_SUCCESS = 'co/draft-message/REQUEST_DRAFT_SUCCESS';
 export const CREATE_DRAFT_SUCCESS = 'co/draft-message/CREATE_DRAFT_SUCCESS';
 export const EDIT_DRAFT = 'co/draft-message/EDIT_DRAFT';
+export const SAVE_DRAFT = 'co/draft-message/SAVE_DRAFT';
 export const SEND_DRAFT = 'co/draft-message/SEND_DRAFT';
 
 export function editDraft({ discussionId, draft, message }) {
   return {
     type: EDIT_DRAFT,
+    payload: { discussionId, draft, original: message },
+  };
+}
+
+export function saveDraft({ discussionId, draft, message }) {
+  return {
+    type: SAVE_DRAFT,
     payload: { discussionId, draft, original: message },
   };
 }
@@ -32,7 +40,7 @@ export function requestDraftSuccess({ draft }) {
   };
 }
 
-export function sendMessage({ discussionId, draft }) {
+export function sendDraft({ discussionId, draft }) {
   return {
     type: SEND_DRAFT,
     payload: { discussionId, draft },

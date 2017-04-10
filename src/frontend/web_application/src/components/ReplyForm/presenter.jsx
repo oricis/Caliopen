@@ -59,7 +59,8 @@ class ReplyForm extends Component {
   }
 
   handleSave() {
-    this.props.onSave(this.state.draft);
+    const { draft } = this.state;
+    this.props.onSave({ draft });
   }
 
   handleSend() {

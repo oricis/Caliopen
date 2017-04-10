@@ -8,7 +8,7 @@ class ReplyForm extends Component {
     draft: PropTypes.shape({ }),
     requestDraft: PropTypes.func.isRequired,
     editDraft: PropTypes.func.isRequired,
-    updateMessage: PropTypes.func.isRequired,
+    saveDraft: PropTypes.func.isRequired,
     sendMessage: PropTypes.func.isRequired,
   };
 
@@ -39,11 +39,10 @@ class ReplyForm extends Component {
   }
 
   handleSave({ draft }) {
-    const { updateMessage, discussionId } = this.props;
-    const message = draft;
-    const params = { message, discussionId };
+    const { saveDraft, discussionId, message } = this.props;
+    const params = { draft, discussionId, message };
 
-    return updateMessage(params);
+    return saveDraft(params);
   }
 
   handleSend({ message }) {

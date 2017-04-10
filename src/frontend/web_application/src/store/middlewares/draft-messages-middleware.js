@@ -1,6 +1,6 @@
 import throttle from 'lodash.throttle';
-import { EDIT_DRAFT, REQUEST_DRAFT, requestDraftSuccess, draftCreated } from '../modules/draft-message';
-import { CREATE_MESSAGE_SUCCESS, createMessage, updateMessage, syncMessage } from '../modules/message';
+import { EDIT_DRAFT, REQUEST_DRAFT, SAVE_DRAFT, requestDraftSuccess, draftCreated } from '../modules/draft-message';
+import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, createMessage, updateMessage, syncMessage } from '../modules/message';
 import fetchLocation from '../../services/api-location';
 
 const UPDATE_WAIT_TIME = 5 * 1000;
@@ -30,14 +30,8 @@ const normalizeDraft = ({ draft, user, discussion }) => {
   };
 };
 
-let throttled;
-const createThrottle = ({ store, action }) => throttle(() => {
-  const { draft, original } = action.payload;
-  throttled = undefined;
-
+const createOrUpdateDraft = ({ draft, discussionId, store, original }) => {
   if (!draft.message_id) {
-    const { discussionId } = action.payload;
-
     const {
       user: { user },
       discussion: {
@@ -54,6 +48,14 @@ const createThrottle = ({ store, action }) => throttle(() => {
   }
 
   return store.dispatch(updateMessage({ message: draft, original }));
+};
+
+let throttled;
+const createThrottle = ({ store, action }) => throttle(() => {
+  throttled = undefined;
+  const { draft, original, discussionId } = action.payload;
+
+  return createOrUpdateDraft({ draft, discussionId, store, original });
 }, UPDATE_WAIT_TIME, { leading: false });
 
 function createDraft(discussion) {
@@ -86,7 +88,7 @@ export default store => next => (action) => {
     }
   }
 
-  if (action.type === CREATE_MESSAGE_SUCCESS && throttled) {
+  if ([CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS].indexOf(action.type) !== -1 && throttled) {
     throttled.cancel();
     throttled = undefined;
   }
@@ -98,6 +100,12 @@ export default store => next => (action) => {
     throttled();
   }
 
+  if (action.type === SAVE_DRAFT) {
+    const { draft, discussionId, original } = action.payload;
+
+    return createOrUpdateDraft({ draft, discussionId, store, original });
+  }
+
   if (action.type === REQUEST_DRAFT) {
     manageRequestDraft({ store, action });
   }
@@ -106,6 +114,13 @@ export default store => next => (action) => {
     const { location } = action.payload.data;
     fetchLocation(location).then((payload) => {
       store.dispatch(draftCreated({ draft: payload.data }));
+      store.dispatch(syncMessage({ message: payload.data }));
+    });
+  }
+
+  if (action.type === UPDATE_MESSAGE_SUCCESS) {
+    const location = action.meta.previousAction.payload.request.url;
+    fetchLocation(location).then((payload) => {
       store.dispatch(syncMessage({ message: payload.data }));
     });
   }
