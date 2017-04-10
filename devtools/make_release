@@ -28,19 +28,12 @@ logging.basicConfig()
 log.setLevel(logging.DEBUG)
 
 # Some declarations
-# XXX well perl from python I know, don't find simplest way than this one
-UPDATE_VERSION_CMD = "perl -pi -e \"s/{version_str}{old_version}/" \
-                     "{version_str}'{new_version}'/\" {file}"
 
 COMMIT_MESSAGE = 'Release {version}'
 
 PY_BUILD_CMD = 'python setup.py bdist_wheel --universal --dist-dir {}'
-PY_VERSION_STR = "__version__ = "
-
 JS_BUILD_CMD = 'yarn {target}'
-JS_UPDATE_VERSION_CMD = 'npm version "{version}" --no-git-tag-version'
-
-GO_BUILD_CMD = 'govendor sync; govendor update +vendor; ' \
+GO_BUILD_CMD = 'govendor sync; ' \
                'go build -o {out} {target}'
 
 # Files updated to consider for commit or rollback
@@ -238,8 +231,9 @@ def prepare_release(config, version, languages):
     return True
 
 
-def clean_release(config, version):
+def clean_release(config, opts):
     """Clean release."""
+    version = opts.version
     basedir = get_repository_directory(config)
     repo = get_repository(basedir)
     # assert not repo.is_dirty(), 'Current head is dirty'
@@ -275,28 +269,37 @@ make_dist_methods = {
 }
 
 
+def build_release(config, opts):
+    """Entry point to build a Caliopen release."""
+    languages = opts.languages.split(',')
+    if not prepare_release(config, opts.version, languages):
+        log.warn('Prepare release {} failed'.format(opts.version))
+        return False
+
+    if not make_packages(config, opts.version, languages):
+        log.warn('Build packages for release {} failed'.format(opts.version))
+        return False
+
+    return True
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--conf', dest='conffile', default='package.yaml')
+    parser.add_argument('--conf', dest='conffile', default='packages.yaml')
     parser.add_argument('--version', dest='version')
-    parser.add_argument('--clean', dest='do_clean', action='store_true',
-                        default=False)
-    parser.add_argument('--prepare', dest='do_prepare', action='store_true',
-                        default=False)
-    parser.add_argument('--build', dest='do_build', action='store_true',
-                        default=False)
-    parser.add_argument('--languages', dest='languages', default='all')
+
+    subparsers = parser.add_subparsers(title="action")
+
+    sp_build = subparsers.add_parser('build', help='Build a Caliopen release')
+    sp_build.set_defaults(func=build_release)
+    sp_build.add_argument('--languages', dest='languages', default='all')
+
+    sp_clean = subparsers.add_parser('clean', help='Clean a release build')
+    sp_clean.set_defaults(func=clean_release)
+
     opts = parser.parse_args(sys.argv[1:])
 
     with open(opts.conffile) as f:
         config = yaml.load(f.read())
 
-    languages = opts.languages.split(',')
-
-    if opts.do_clean:
-        clean_release(config, opts.version)
-    if opts.do_prepare:
-        prepare_release(config, opts.version, languages)
-    if opts.do_build:
-        make_packages(config, opts.version, languages)
+    opts.func(config, opts)
