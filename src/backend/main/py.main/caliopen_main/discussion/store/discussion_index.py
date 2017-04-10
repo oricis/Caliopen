@@ -37,19 +37,18 @@ class DiscussionIndexManager(object):
 
     def __search_ids(self, limit, offset, min_pi, max_pi):
         """Search discussions ids as a bucket aggregation."""
-
-        ###TODO offset management
-
         search = self._prepare_search(min_pi, max_pi)
         # Do bucket term aggregation
-        agg = dsl.A('terms', field='discussion_id', size=limit)
+        agg = dsl.A('terms', field='discussion_id', size=200)
         search.aggs.bucket('discussions', agg)
         # XXX add sorting on message date_insert
-        log.debug('Search is {}'.format(search.to_dict()))
+        log.warn('Search is {}'.format(search.to_dict()))
         result = search.execute()
         if hasattr(result, 'aggregations'):
             # Something found
             buckets = result.aggregations.discussions.buckets
+            # XXX Ugly but don't find a way to paginate on bucket aggregation
+            buckets = buckets[offset:offset + limit]
             total = result.aggregations.discussions.sum_other_doc_count
             return dict((x['key'], x['doc_count']) for x in buckets), total
         log.debug('No result found on index {}'.format(self.index))
