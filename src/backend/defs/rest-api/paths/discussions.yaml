@@ -23,7 +23,7 @@ discussions:
       in: query
       type: integer
       required: false
-      description: number of pages to skip from the response
+      description: number of discussions to skip for pagination
     produces:
     - application/json
     responses:
