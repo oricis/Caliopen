@@ -190,12 +190,13 @@ def commit_release(repo, version):
     return index.write_tree()
 
 
-def prepare_release(config, version, languages):
+def prepare_release(config, version, languages, nocheck=False):
     """Prepare a new release in a given version."""
     basedir = get_repository_directory(config)
     repo = get_repository(basedir)
-    # assert not repo.is_dirty(), 'Current head is dirty'
-    # assert repo.active_branch.name == 'master', 'Not on master branch'
+    if not nocheck:
+        assert not repo.is_dirty(), 'Current head is dirty'
+        assert repo.active_branch.name == 'master', 'Not on master branch'
 
     tag_name = 'release-{}'.format(version)
     assert tag_name not in repo.tags, 'Tag {} exists'.format(version)
@@ -273,7 +274,7 @@ make_dist_methods = {
 def build_release(config, opts):
     """Entry point to build a Caliopen release."""
     languages = opts.languages.split(',')
-    if not prepare_release(config, opts.version, languages):
+    if not prepare_release(config, opts.version, languages, opts.no_check):
         log.warn('Prepare release {} failed'.format(opts.version))
         return False
 
@@ -294,6 +295,7 @@ if __name__ == '__main__':
     sp_build = subparsers.add_parser('build', help='Build a Caliopen release')
     sp_build.set_defaults(func=build_release)
     sp_build.add_argument('--languages', dest='languages', default='all')
+    sp_build.add_argument('--nocheck', dest='no_check', action='store_true')
 
     sp_clean = subparsers.add_parser('clean', help='Clean a release build')
     sp_clean.set_defaults(func=clean_release)
