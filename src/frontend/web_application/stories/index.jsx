@@ -1,8 +1,8 @@
 import React from 'react';
 import { storiesOf, action, linkTo, addDecorator } from '@kadira/storybook'; // eslint-disable-line
-import { withKnobs, text, select, boolean, array, object, number } from '@kadira/storybook-addon-knobs';
-import { host } from 'storybook-host';
-import backgrounds from 'react-storybook-addon-backgrounds';
+import { withKnobs, text, select, boolean, array, object, number } from '@kadira/storybook-addon-knobs'; // eslint-disable-line
+import { host } from 'storybook-host'; // eslint-disable-line
+import backgrounds from 'react-storybook-addon-backgrounds';// eslint-disable-line
 import Badge from '../src/components/Badge';
 import BlockList from '../src/components/BlockList';
 import BlockListPresenter from './components/BlockList';
@@ -354,12 +354,12 @@ storiesOf('Pi', module)
   })
   .addWithInfo('MultidimensionalPi', () => {
     const props = {
-      piMax: number('piMax', 100),
-      pi: object('points', [
+      pi: object('PIs', [
         { name: 'behavioral', level: 20 },
         { name: 'contextual', level: 95 },
         { name: 'technical', level: 55 },
       ]),
+      displayAveragePi: boolean('display Average PI', false),
     };
 
     return (<MultidimensionalPi {...props} />);

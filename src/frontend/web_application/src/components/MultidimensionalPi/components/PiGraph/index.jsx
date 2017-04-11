@@ -1,23 +1,33 @@
 import React, { PropTypes } from 'react';
 import './style.scss';
 
+
+function calcXpoint(level, tilt, axeLength) {
+  return Math.round(axeLength - (level * Math.sin((tilt * Math.PI) / 180)));
+}
+function calcYpoint(level, tilt, axeLength) {
+  return Math.round(axeLength - (level * Math.cos((tilt * Math.PI) / 180)));
+}
+
 const Grid = ({ pi, angle, axeLength }) => {
   const axeCoordinates = [];
-  const polygonPoints = [];
-  let count = 0;
-
-  pi.map((p) => {
+  const outlinePoints = [];
+  let tilt = 0;
+  pi.forEach((p) => {
     const axeName = p.name;
-    const axeX = axeLength - (axeLength * Math.sin((count * Math.PI) / 180));
-    const axeY = axeLength - (axeLength * Math.cos((count * Math.PI) / 180));
-    axeCoordinates.push({ axeName, x: axeX, y: axeY });
-    polygonPoints.push(axeX, axeY);
-    count -= angle;
+    const pointX = calcXpoint(axeLength, tilt, axeLength);
+    const pointY = calcYpoint(axeLength, tilt, axeLength);
+    outlinePoints.push(pointX, pointY);
+    axeCoordinates.push({ axeName, x: pointX, y: pointY });
+    tilt -= angle;
   });
 
   return (
     <g className="m-pi-graph__grid">
-      <polygon className="m-pi-graph__outline" points={polygonPoints.join(' ')} />
+      <polygon
+        className="m-pi-graph__outline"
+        points={outlinePoints.join(' ')}
+      />
       {axeCoordinates.map(p =>
         <line
           key={p.axeName}
@@ -41,13 +51,14 @@ Grid.propTypes = {
 
 const Polygon = ({ pi, angle, axeLength }) => {
   const polygonPoints = [];
-  let count = 0;
-  pi.map((p) => {
+  let tilt = 0;
+  pi.forEach((p) => {
     const piLevel = p.level;
-    const pointX = axeLength - (piLevel * Math.sin((count * Math.PI) / 180));
-    const pointY = axeLength - (piLevel * Math.cos((count * Math.PI) / 180));
-    polygonPoints.push(pointX, pointY);
-    count -= angle;
+    polygonPoints.push(
+      calcXpoint(piLevel, tilt, axeLength),
+      calcYpoint(piLevel, tilt, axeLength)
+    );
+    tilt -= angle;
   });
 
   return (

@@ -10,7 +10,10 @@ $gridColor: $co-color__fg__back--higher;
   &__item {
     @include flex-grid-row;
     align-items: center;
-    margin-bottom: $co-component__spacing / 2;
+
+    &--average {
+      margin-bottom: $co-margin;
+    }
   }
 
   &__item-name {
