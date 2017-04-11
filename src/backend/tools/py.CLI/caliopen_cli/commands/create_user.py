@@ -2,6 +2,9 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
+
+from caliopen_storage.config import Configuration
+
 log = logging.getLogger(__name__)
 
 
@@ -17,6 +20,12 @@ def create_user(**kwargs):
 
     param = NewUser()
     param.name = kwargs['email']
+    if '@' in param.name:
+        username, domain = param.name.split('@')
+        param.name = username
+        # Monkey patch configuration local_domain with provided value
+        conf = Configuration('global').configuration
+        conf['default_domain'] = domain
     param.password = kwargs['password']
     param.recovery_email = u'{}@caliopen.local'.format(param.name)
 
