@@ -1,0 +1,308 @@
+#!/bin/env python
+"""
+Caliopen tool for release management.
+
+Permit to prepare a release, build and submit it on github.
+
+Usage:
+    make_release --conf <package.yaml> --version <X.Y.Z> --prepare --build
+
+"""
+
+import os
+import sys
+import subprocess as sp
+import shutil
+import argparse
+import re
+
+import logging
+import yaml
+import json
+
+from datetime import datetime
+from git import Repo
+
+log = logging.getLogger(__name__)
+logging.basicConfig()
+log.setLevel(logging.DEBUG)
+
+# Some declarations
+
+COMMIT_MESSAGE = 'Release {version}'
+
+PY_BUILD_CMD = 'python setup.py bdist_wheel --universal --dist-dir {}'
+JS_BUILD_CMD = 'yarn {target}'
+GO_BUILD_CMD = 'govendor sync; ' \
+               'go build -o {out} {target}'
+
+# Files updated to consider for commit or rollback
+UPDATE_FILES = []
+
+# Package and their informations for a release
+RELEASE_PACKAGES = {}
+
+
+def do_command(cmd):
+    """Execute a shell command when can't use a python library."""
+    return sp.call(cmd, shell=True)
+
+
+def do_package_command(package, cmd):
+    """Execute a shell command for a package."""
+    log.debug(' will execute command : {}'.format(cmd))
+    errno = sp.call(cmd, shell=True)
+    if errno == 0:
+        log.info('Build package {} OK'.format(package['name']))
+        return True
+    msg = 'Build package {} failed: {}'.format(package['name'], errno)
+    raise Exception(msg)
+
+
+def check_versions(current, new):
+    """Compare current and new version, raise if new is not superior."""
+    t_new = tuple(int(x) for x in new.split('.'))
+    t_cur = tuple(int(x) for x in current.split('.'))
+    if t_new <= t_cur:
+        raise Exception('Current version {} and new expected one {} mismatch'.
+                        format(current, new))
+
+
+def get_javascript_version(package, basedir):
+    """Return version for a javascript package."""
+    pkg_file = '{}/package.json'.format(basedir)
+    if not os.path.isfile(pkg_file):
+        raise Exception('File {} for package version not found'.
+                        format(pkg_file))
+    with open(pkg_file) as v_file:
+        return json.loads(v_file.read()).get('version')
+
+
+def make_javascript_package(package, directory, version, output_directory):
+    """Build javascript distribution."""
+    pkg_version = get_javascript_version(package, directory)
+    RELEASE_PACKAGES[package['name']] = {'version': pkg_version}
+    # Should fail if using package name
+    build_cmd = JS_BUILD_CMD.format(target=package['build_target'])
+    cmd = 'cd {}; {}'.format(directory, build_cmd)
+    res = do_package_command(package, cmd)
+    if not res:
+        return False
+    # Move build distribution
+    distdir = '{}/dist/{}'.format(directory, package['name'])
+    if not os.path.isdir(distdir):
+        log.error('No dist directory after build')
+        sys.exit(1)
+    destdir = '{}/{}'.format(output_directory, package['name'])
+    os.rename(distdir, destdir)
+    return True
+
+
+def make_go_distribution(package, directory, version, output_directory):
+    """Build go binaries for a given package and version."""
+    outfile = '{}/{}'.format(output_directory, package['name'])
+    build_cmd = GO_BUILD_CMD.format(out=outfile,
+                                    target=package['build_target'])
+    cmd = 'cd {}; {}'.format(directory, build_cmd)
+    return do_package_command(package, cmd)
+
+
+def get_python_version(package, basedir):
+    """Return python package version."""
+    pkg_file = '{}/{}/__init__.py'.format(basedir, package['name'])
+    if not os.path.isfile(pkg_file):
+        raise Exception('File {} for package version not found'.
+                        format(pkg_file))
+    """Update the __version__ value for a python package."""
+    with open(pkg_file) as v_file:
+        return re.compile(r".*__version__ = '(.*?)'",
+                          re.S).match(v_file.read()).group(1)
+
+
+def make_python_package(package, directory, version, output_directory):
+    """Make a python wheel package for a given package and version."""
+    pkg_version = get_python_version(package, directory)
+    RELEASE_PACKAGES[package['name']] = {'version': pkg_version}
+
+    build_cmd = PY_BUILD_CMD.format(output_directory)
+    cmd = 'cd {}; {}'.format(directory, build_cmd)
+    return do_package_command(package, cmd)
+
+
+def make_packages(config, version, languages):
+    """Given a packages dict and a version, build all."""
+    all_packages = config.get('packages', {})
+    basedir = get_repository_directory(config)
+
+    output_directory = '{}/dist/{}'.format(basedir, version)
+    if not os.path.isdir(output_directory):
+        raise Exception('No valid output directory for release {}'.
+                        format(version))
+
+    for language, packages in all_packages.items():
+        if 'all' not in languages and language not in languages:
+            log.info('Skipping language {}'.format(language))
+            continue
+        if language in make_dist_methods:
+            fn = make_dist_methods[language]
+        else:
+            log.error('Invalid language {}'.format(language))
+            sys.exit(1)
+
+        for package in packages:
+            log.info('Building package {}'.format(package['name']))
+            package_dir = '{}/{}'.format(basedir, package['path'])
+            res = fn(package, package_dir, version, output_directory)
+            if not res:
+                log.error('Build package {} failed'.format(package['name']))
+                sys.exit(1)
+    release_file = '{}/release.json'.format(output_directory)
+    with open(release_file, 'w') as f:
+        release = {'version': version, 'date': datetime.utcnow().isoformat(),
+                   'packages': RELEASE_PACKAGES}
+        f.write(json.dumps(release, indent=4))
+    return True
+
+
+def get_repository_directory(config):
+    """Return absolute repository directory."""
+    repo = config.get('repository', {})
+    basedir = repo.get('base_directory')
+    assert os.path.isdir(basedir)
+    return os.path.abspath(basedir)
+
+
+def get_repository(basedir):
+    """Return a ``Repo`` instance."""
+    repo = Repo(basedir)
+    assert not repo.bare, 'Repository is bare git, not valid'
+    return repo
+
+
+def commit_release(repo, version):
+    """Commit a a release."""
+    index = repo.index
+    log.debug('Updated files to add : {}'.format(UPDATE_FILES))
+    index.add(UPDATE_FILES)
+    commit_msg = COMMIT_MESSAGE.format(version=version)
+    index.commit(commit_msg)
+    log.info('Update git index after commit: {}'.format(commit_msg))
+    return index.write_tree()
+
+
+def prepare_release(config, version, languages, nocheck=False):
+    """Prepare a new release in a given version."""
+    basedir = get_repository_directory(config)
+    repo = get_repository(basedir)
+    if not nocheck:
+        assert not repo.is_dirty(), 'Current head is dirty'
+        assert repo.active_branch.name == 'master', 'Not on master branch'
+
+    tag_name = 'release-{}'.format(version)
+    assert tag_name not in repo.tags, 'Tag {} exists'.format(version)
+
+    # XXX Check uptodate with origin
+    origin = repo.remote()
+    assert origin.name == 'origin', 'Invalid remote origin'
+
+    log.debug('Fetching origin')
+    origin.fetch()
+
+    orig_commit = origin.refs.master.commit.hexsha
+    local_commit = repo.refs.master.commit.hexsha
+    if local_commit != orig_commit:
+        log.error('Out of sync with origin, local commit {}, expected {}'.
+                  format(local_commit, orig_commit))
+        sys.exit(1)
+
+    output_directory = '{}/dist/{}'.format(basedir, version)
+    if not os.path.isdir(output_directory):
+        log.info('Creating output directory {}'.format(output_directory))
+        os.mkdir(output_directory)
+
+    # prepare_packages(config, version, languages, basedir)
+
+    # XXX Update CHANGES.md
+    # XXX Consider changelog
+
+    # XXX Commit changes
+    commit_release(repo, version)
+    # XXX Make a release tag
+    repo.create_tag(tag_name)
+    log.info('Prepare of release {} done'.format(version))
+    return True
+
+
+def clean_release(config, opts):
+    """Clean release."""
+    version = opts.version
+    basedir = get_repository_directory(config)
+    repo = get_repository(basedir)
+    # assert not repo.is_dirty(), 'Current head is dirty'
+    # assert repo.active_branch.name == 'master', 'Not on master branch'
+    tag_name = 'release-{}'.format(version)
+    assert tag_name in repo.tags, 'Tag {} does not exists'.format(tag_name)
+
+    # XXX check if tag exists on origin and raise if so
+
+    local_commit = repo.head.commit
+    commit_msg = COMMIT_MESSAGE.format(version=version)
+
+    assert local_commit.message == commit_msg, 'Last commit does not match'
+
+    log.info('Reset HEAD~1 to discard commit {}'.format(local_commit.hexsha))
+    repo.head.reset('HEAD~1')
+
+    log.info('Delete tag {}'.format(tag_name))
+    if do_command('git tag -d {}'.format(tag_name)):
+        raise Exception('Delete of tag {} failed'.format(tag_name))
+
+    output_directory = '{}/dist/{}'.format(basedir, version)
+    if os.path.isdir(output_directory):
+        log.info('Delete dist directory {}'.format(output_directory))
+        shutil.rmtree(output_directory)
+    return True
+
+
+make_dist_methods = {
+    'python': make_python_package,
+    'javascript': make_javascript_package,
+    'golang': make_go_distribution
+}
+
+
+def build_release(config, opts):
+    """Entry point to build a Caliopen release."""
+    languages = opts.languages.split(',')
+    if not prepare_release(config, opts.version, languages, opts.no_check):
+        log.warn('Prepare release {} failed'.format(opts.version))
+        return False
+
+    if not make_packages(config, opts.version, languages):
+        log.warn('Build packages for release {} failed'.format(opts.version))
+        return False
+
+    return True
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--conf', dest='conffile', default='packages.yaml')
+    parser.add_argument('--version', dest='version')
+
+    subparsers = parser.add_subparsers(title="action")
+
+    sp_build = subparsers.add_parser('build', help='Build a Caliopen release')
+    sp_build.set_defaults(func=build_release)
+    sp_build.add_argument('--languages', dest='languages', default='all')
+    sp_build.add_argument('--nocheck', dest='no_check', action='store_true')
+
+    sp_clean = subparsers.add_parser('clean', help='Clean a release build')
+    sp_clean.set_defaults(func=clean_release)
+
+    opts = parser.parse_args(sys.argv[1:])
+
+    with open(opts.conffile) as f:
+        config = yaml.load(f.read())
+
+    opts.func(config, opts)
