@@ -18,7 +18,6 @@ log = logging.getLogger(__name__)
 
 
 class DiscussionIndexManager(object):
-
     """Manager for building discussions from index storage layer."""
 
     def __init__(self, user_id):
@@ -27,9 +26,8 @@ class DiscussionIndexManager(object):
 
     def _prepare_search(self, min_pi, max_pi):
         """Prepare a dsl.Search object on current index."""
-
         search = IndexedMessage.search(using=self.proxy,
-                                    index=self.index)
+                                       index=self.index)
         # TODO : pi management
         # search = search.filter('range', **{'privacy_index': {'gte': min_pi}})
         # search = search.filter('range', **{'privacy_index': {'lte': max_pi}})
@@ -39,7 +37,7 @@ class DiscussionIndexManager(object):
         """Search discussions ids as a bucket aggregation."""
         search = self._prepare_search(min_pi, max_pi)
         # Do bucket term aggregation
-        agg = dsl.A('terms', field='discussion_id', size=200)
+        agg = dsl.A('terms', field='discussion_id', size=0, shard_size=0)
         search.aggs.bucket('discussions', agg)
         # XXX add sorting on message date_insert
         log.warn('Search is {}'.format(search.to_dict()))
