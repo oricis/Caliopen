@@ -5,7 +5,6 @@ import (
 	"fmt"
 	csmtp "github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp"
 	log "github.com/Sirupsen/logrus"
-	"github.com/flashmob/go-guerrilla"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -51,7 +50,7 @@ func sigHandler() {
 			if err != nil {
 				log.WithError(err).Error("Error while ReadConfig (reload)")
 			} else {
-				log.Infof("Configuration is reloaded at %s", guerrilla.ConfigLoadTime)
+				log.Info("Configuration is reloaded")
 			}
 			// TODO: reinitialize
 		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT {
@@ -89,6 +88,7 @@ func serve(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.WithError(err).Fatal("Failed to init LMTP server")
 	}
+
 	go csmtp.StartServer()
 
 	sigHandler()

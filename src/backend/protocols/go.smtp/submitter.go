@@ -40,28 +40,28 @@ type smtpClient interface {
 	Close() error
 }
 
-func (server *SMTPServer) newSubmitter() (submit *submitter, err error) {
+func (lda *Lda) newSubmitter() (submit *submitter, err error) {
 
 	submit = &submitter{}
-	submit.config = server.Config.LDAConfig
+	submit.config = lda.Config.LDAConfig
 	submit.submitChan = make(chan *broker.SmtpEmail)
 
 	return
 }
 
-func (server *SMTPServer) runSubmitterAgent() {
+func (lda *Lda) runSubmitterAgent() {
 
-	for email := range server.brokerConnectors.OutcomingSmtp {
+	for email := range lda.brokerConnectors.OutcomingSmtp {
 		go func(email *broker.SmtpEmail) {
-			server.outboundListener.workersCountMux.Lock()
-			if server.outboundListener.runningWorkers < server.Config.AppConfig.OutWorkers {
-				go server.OutboundWorker()
-				server.outboundListener.runningWorkers++
+			lda.outboundListener.workersCountMux.Lock()
+			if lda.outboundListener.runningWorkers < lda.Config.AppConfig.OutWorkers {
+				go lda.OutboundWorker()
+				lda.outboundListener.runningWorkers++
 			}
-			server.outboundListener.workersCountMux.Unlock()
+			lda.outboundListener.workersCountMux.Unlock()
 
 			//submit email
-			server.outboundListener.submitChan <- email
+			lda.outboundListener.submitChan <- email
 		}(email)
 	}
 
@@ -71,13 +71,13 @@ func (server *SMTPServer) runSubmitterAgent() {
 then close the connection if no email comes in for 30 sec.
 should be launched in a goroutine
 */
-func (server *SMTPServer) OutboundWorker() {
-	c := server.Config.AppConfig
+func (lda *Lda) OutboundWorker() {
+	c := lda.Config.AppConfig
 	d := gomail.NewDialer(c.SubmitAddress, c.SubmitPort, c.SubmitUser, c.SubmitPassword)
 	defer func() {
-		server.outboundListener.workersCountMux.Lock()
-		server.outboundListener.runningWorkers--
-		server.outboundListener.workersCountMux.Unlock()
+		lda.outboundListener.workersCountMux.Lock()
+		lda.outboundListener.runningWorkers--
+		lda.outboundListener.workersCountMux.Unlock()
 	}()
 
 	var smtp_sender gomail.SendCloser
@@ -85,7 +85,7 @@ func (server *SMTPServer) OutboundWorker() {
 	open := false
 	for {
 		select {
-		case outcoming, ok := <-server.outboundListener.submitChan:
+		case outcoming, ok := <-lda.outboundListener.submitChan:
 			if !ok {
 				//TODO
 				return
