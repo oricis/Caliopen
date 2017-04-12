@@ -21,7 +21,7 @@ var (
 
 	serveCmd = &cobra.Command{
 		Use:   "serve",
-		Short: "start the caliopen LMTP server",
+		Short: "Start the caliopen LMTP server",
 		Run:   serve,
 	}
 )
