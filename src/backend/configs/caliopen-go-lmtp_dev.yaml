@@ -1,6 +1,5 @@
 ## SMTP config ##
 AppConfig:
-  version: 0.1.0 #to be moved into a general version file
   allowed_hosts:
   - localhost
   - caliopen.local

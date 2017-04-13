@@ -1,17 +1,16 @@
 ## SMTP config ##
 AppConfig:
-  version: 0.1.0 #to be moved into a general version file
   allowed_hosts:
   - localhost
   - caliopen.local
   - caliopen.org
   primary_mail_host: caliopen.org
-  inbound_servers: # many allowed
+  inbound_servers: # only one allowed for now
   - is_enabled: true
     host_name: localhost
     max_size: 20971520 # max authorized size for emails in bytes
     timeout: 180
-    listen_interface: 0.0.0.0:2525
+    listen_interface: 127.0.0.1:2525
     start_tls_on: false
     tls_always_on: false
     max_clients: 1000

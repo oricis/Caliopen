@@ -6,37 +6,22 @@ package caliopen_smtp
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	broker "github.com/CaliOpen/CaliOpen/src/backend/brokers/go.emails"
 	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
-	"github.com/flashmob/go-guerrilla"
-	"strconv"
-	"strings"
 	"time"
 )
 
-// BackendResult represents a response to an SMTP client after receiving DATA.
-// It's a clone of guerrilla BackendResult interface
-type InboundSMTPResponse interface {
-	fmt.Stringer
-	// Code should return the SMTP code associated with this response, ie. `250`
-	Code() int
-}
-
-// guerrilla backend interface implementation
-// Process is called within a goroutine. Must be concurrent safe.
-func (server *SMTPServer) Process(ev *guerrilla.Envelope) guerrilla.BackendResult {
+// handler is called by smtpd for each incoming email
+func (lda *Lda) handler(peer Peer, ev Envelope) error {
 	var raw_email bytes.Buffer
-	raw_email.WriteString(ev.Data)
-	var to []string
-	for _, email_add := range ev.RcptTo {
-		to = append(to, email_add.String())
-	}
+	raw_email.WriteString(string(ev.Data))
 
 	emailMessage := obj.EmailMessage{
 		Email: &obj.Email{
-			SmtpMailFrom: []string{ev.MailFrom.String()},
-			SmtpRcpTo:    to,
+			SmtpMailFrom: []string{ev.Sender}, //TODO: handle multiple senders
+			SmtpRcpTo:    ev.Recipients,
 			Raw:          raw_email,
 		},
 		Message: &obj.Message{},
@@ -47,41 +32,16 @@ func (server *SMTPServer) Process(ev *guerrilla.Envelope) guerrilla.BackendResul
 	}
 	defer close(incoming.Response)
 
-	server.brokerConnectors.IncomingSmtp <- incoming
+	lda.brokerConnectors.IncomingSmtp <- incoming
 
 	select {
 	case response := <-incoming.Response:
 		if response.Err != nil {
-			return NewInboundResponse(fmt.Sprintf("554 Error : " + response.Err.Error()))
+			return errors.New(fmt.Sprintf("554 Error : " + response.Err.Error()))
 		} else {
-			return NewInboundResponse("250 OK: message(s) delivered.")
+			return errors.New("250 OK: message(s) delivered.")
 		}
 	case <-time.After(30 * time.Second):
-		return NewInboundResponse("554 Error: LDA timeout")
+		return errors.New("554 Error: LDA timeout")
 	}
-}
-
-func NewInboundResponse(message string) InboundSMTPResponse {
-	return inboundResponse(message)
-}
-
-// Internal implementation of guerrilla BackendResult.
-type inboundResponse string
-
-func (res inboundResponse) String() string {
-	return string(res)
-}
-
-// Parses the SMTP code from the first 3 characters of the SMTP message.
-// Returns 554 if code cannot be parsed.
-func (res inboundResponse) Code() int {
-	trimmed := strings.TrimSpace(string(res))
-	if len(trimmed) < 3 {
-		return 554
-	}
-	code, err := strconv.Atoi(trimmed[:3])
-	if err != nil {
-		return 554
-	}
-	return code
 }
