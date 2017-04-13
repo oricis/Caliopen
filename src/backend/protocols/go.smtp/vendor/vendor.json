@@ -5,56 +5,56 @@
 		{
 			"checksumSHA1": "AO3tLiXIgypRIw5sL7pZtUo0xIg=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/brokers/go.emails",
-			"revision": "2a3dd63be825e922c550e8a0779b42a6fb5e6521",
-			"revisionTime": "2017-04-11T12:14:47Z"
+			"revision": "036e83bcc2fef94566f74b14b887bbd08b2dd5a9",
+			"revisionTime": "2017-04-13T10:53:11Z"
 		},
 		{
 			"checksumSHA1": "RNwnAXqU9LLnVMtkeOwx0WJcJsM=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects",
-			"revision": "2a3dd63be825e922c550e8a0779b42a6fb5e6521",
-			"revisionTime": "2017-04-11T12:14:47Z"
+			"revision": "036e83bcc2fef94566f74b14b887bbd08b2dd5a9",
+			"revisionTime": "2017-04-13T10:53:11Z"
 		},
 		{
-			"checksumSHA1": "wAmcKCfWeVb/2zHyV8rKBWkjWvM=",
+			"checksumSHA1": "HYWO5yhdApMWHiCaqvoMSAMQ3mc=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/main/go.backends",
-			"revision": "2a3dd63be825e922c550e8a0779b42a6fb5e6521",
-			"revisionTime": "2017-04-11T12:14:47Z"
+			"revision": "036e83bcc2fef94566f74b14b887bbd08b2dd5a9",
+			"revisionTime": "2017-04-13T10:53:11Z"
 		},
 		{
 			"checksumSHA1": "JSy6zJpp5r2jcuiWf0dg+LBHECw=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/main/go.backends/index/elasticsearch",
-			"revision": "2a3dd63be825e922c550e8a0779b42a6fb5e6521",
-			"revisionTime": "2017-04-11T12:14:47Z"
+			"revision": "036e83bcc2fef94566f74b14b887bbd08b2dd5a9",
+			"revisionTime": "2017-04-13T10:53:11Z"
 		},
 		{
-			"checksumSHA1": "HisTZ2VYFLoh+8GNXM0LCiMZqUQ=",
+			"checksumSHA1": "C2iYrBL4ibBNanOXHsFsED6tSu8=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/main/go.backends/store/cassandra",
-			"revision": "2a3dd63be825e922c550e8a0779b42a6fb5e6521",
-			"revisionTime": "2017-04-11T12:14:47Z"
+			"revision": "036e83bcc2fef94566f74b14b887bbd08b2dd5a9",
+			"revisionTime": "2017-04-13T10:53:11Z"
 		},
 		{
 			"checksumSHA1": "0kFVJq5VBoh6NqFFZuzlWdhpyq0=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/main/go.main/helpers",
-			"revision": "2a3dd63be825e922c550e8a0779b42a6fb5e6521",
-			"revisionTime": "2017-04-11T12:14:47Z"
+			"revision": "036e83bcc2fef94566f74b14b887bbd08b2dd5a9",
+			"revisionTime": "2017-04-13T10:53:11Z"
 		},
 		{
-			"checksumSHA1": "DD583biwu8/CGRsSWHDF2mL4Euk=",
+			"checksumSHA1": "pfqphMZ57BzYXNksL4kbnDKeXm8=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp",
-			"revision": "2a3dd63be825e922c550e8a0779b42a6fb5e6521",
-			"revisionTime": "2017-04-11T12:14:47Z"
+			"revision": "036e83bcc2fef94566f74b14b887bbd08b2dd5a9",
+			"revisionTime": "2017-04-13T10:53:11Z"
 		},
 		{
 			"checksumSHA1": "NKFKFT0okf553kfb5I92NC1kqbA=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp/cmd/caliopen_lmtpd",
-			"revision": "2a3dd63be825e922c550e8a0779b42a6fb5e6521",
-			"revisionTime": "2017-04-11T12:14:47Z"
+			"revision": "036e83bcc2fef94566f74b14b887bbd08b2dd5a9",
+			"revisionTime": "2017-04-13T10:53:11Z"
 		},
 		{
-			"checksumSHA1": "/tvll9Z14X3MNnnwdKppsWsySD4=",
+			"checksumSHA1": "zWanAlkqT4prOIo/l4CguCQO3zM=",
 			"path": "github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp/cmd/caliopen_lmtpd/cli-cmds",
-			"revision": "2a3dd63be825e922c550e8a0779b42a6fb5e6521",
-			"revisionTime": "2017-04-11T12:14:47Z"
+			"revision": "036e83bcc2fef94566f74b14b887bbd08b2dd5a9",
+			"revisionTime": "2017-04-13T10:53:11Z"
 		},
 		{
 			"checksumSHA1": "dGXnnR7ZhsrZNnEqFimk6q7YCqs=",
