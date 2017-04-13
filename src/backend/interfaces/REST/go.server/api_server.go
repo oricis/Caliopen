@@ -32,7 +32,7 @@ type (
 		Port          string `mapstructure:"port"`
 		SwaggerFile   string `mapstructure:"swaggerSpec"`
 		BackendConfig `mapstructure:"BackendConfig"`
-		CacheSettings `mapstructure:"CacheConfig"`
+		CacheSettings `mapstructure:"RedisConfig"`
 		NatsConfig    `mapstructure:"NatsConfig"`
 	}
 
@@ -88,9 +88,9 @@ func (server *REST_API) initialize(config APIConfig) error {
 
 	//TODO : manage credentials & connection with config & backends interface
 	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Addr:     config.CacheSettings.Host,
+		Password: config.CacheSettings.Password,
+		DB:       config.CacheSettings.Db,
 	})
 	_, err = client.Ping().Result()
 	if err != nil {
