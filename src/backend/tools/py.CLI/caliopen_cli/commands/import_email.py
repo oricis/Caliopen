@@ -21,9 +21,10 @@ log = logging.getLogger(__name__)
 
 
 def import_email(email, import_path, format, **kwargs):
+    """Import emails for an user."""
     from caliopen_main.user.core import User
     from caliopen_main.user.core import Contact, ContactLookup
-    from caliopen_main.message.format.mail import MailMessage
+    from caliopen_main.parsers import MailMessage
     from caliopen_main.user.parameters import NewContact, NewEmail
 
     if format == 'maildir':
@@ -77,8 +78,8 @@ def import_email(email, import_path, format, **kwargs):
                         contact.emails = [e_mail]
                     contact.privacy_index = random.randint(0, 100)
                     Contact.create(user, contact)
-    for i, msg in enumerate(msgs,
-                            1):  # injection is made here to test smtp delivery speed
+    for i, msg in enumerate(msgs, 1):
+        # injection is made here to test smtp delivery speed
         log.info('Injecting mail {}/{}'.format(i, total_msgs))
         smtp = smtplib.SMTP(host="localhost", port=2525)
         try:

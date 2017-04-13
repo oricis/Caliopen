@@ -13,19 +13,20 @@ from caliopen_main.discussion.core.discussion import (Discussion,
                                                       DiscussionExternalLookup)
 
 # XXX use a message formatter registry not directly mail format
-from ..message.format import MailMessage
+from caliopen_main.parsers import MailMessage
 
 log = logging.getLogger(__name__)
 
 
 class UserMessageQualifier(object):
     """
-    Process a message to enhance it with :
+    Process a message to enhance it with.
+
         - tags
         - pi
         - discussion reference
         - etc.
-    
+
     """
 
     _lookups = {
@@ -77,7 +78,7 @@ class UserMessageQualifier(object):
                 return
 
     def process_inbound(self, message):
-
+        """Process inbound message."""
         user = User.get(message.user_id)
         # TODO: make use of json raw message (already stored in db)
         raw_email = MailMessage(message.raw)
