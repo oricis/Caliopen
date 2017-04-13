@@ -6,6 +6,7 @@ const actions = {
   get: createAction('Get messages'),
   post: createAction('Post message'),
   patch: createAction('Patch message'),
+  actions: createAction('Actions message'),
 };
 
 const selectors = {
@@ -29,7 +30,7 @@ const reducer = {
   [actions.get]: state => state,
   [actions.post]: (state, params) => ([
     ...state,
-    { ...params.body, message_id: uuidv1(), is_draft: true, is_unread: false, type: 'email' },
+    { ...params.body, message_id: uuidv1(), is_draft: true, is_unread: false, type: 'email', date: Date.now(), date_insert: Date.now() },
   ]),
   [actions.patch]: (state, { params, body }) => {
     const nextState = [...state];
@@ -46,6 +47,24 @@ const reducer = {
 
     return nextState;
   },
+  [actions.actions]: (state, { params, body }) => {
+    const original = state.find(message => message.message_id === params.message_id);
+    if (!original) {
+      throw `message w/ id ${params.message_id} not found`;
+    }
+    const index = state.indexOf(original);
+
+    return body.actions.reduce((acc, action) => {
+      switch (action) {
+        case 'send':
+          acc[index] = { ...acc[index], is_draft: false, date: Date.now() };
+
+          return acc;
+        default:
+          throw new Error(`Unexpected action "${action}"`);
+      }
+    }, [...state]);
+  },
 };
 
 const routes = {
@@ -57,6 +76,11 @@ const routes = {
   },
   'GET /:message_id': {
     action: actions.get,
+    selector: selectors.byId,
+    status: 200,
+  },
+  'POST /:message_id/actions': {
+    action: actions.actions,
     selector: selectors.byId,
     status: 200,
   },

@@ -11,8 +11,9 @@ export const UPDATE_MESSAGE_SUCCESS = 'co/message/UPDATE_MESSAGE_SUCCESS';
 export const REMOVE_MESSAGE = 'co/message/REMOVE_MESSAGE';
 export const CREATE_MESSAGE = 'co/message/CREATE_MESSAGE';
 export const CREATE_MESSAGE_SUCCESS = 'co/message/CREATE_MESSAGE_SUCCESS';
-export const EDIT_MESSAGE = 'co/message/EDIT_MESSAGE';
 export const SYNC_MESSAGE = 'co/message/SYNC_MESSAGE';
+export const POST_ACTIONS = 'co/message/POST_ACTIONS';
+export const POST_ACTIONS_SUCCESS = 'co/message/POST_ACTIONS_SUCCESS';
 
 
 export function requestMessages(parameters = {}) {
@@ -60,13 +61,6 @@ export function createMessage({ message }) {
   };
 }
 
-export function editMessage({ message }) {
-  return {
-    type: EDIT_MESSAGE,
-    payload: { message },
-  };
-}
-
 export function updateMessage({ message, original }) {
   const data = calcObjectForPatch(message, original);
 
@@ -89,8 +83,19 @@ export function syncMessage({ message }) {
   };
 }
 
-export function sendMessage({ message }) {
-  console.log('send plz', message);
+export function postActions({ message, actions }) {
+  return {
+    type: POST_ACTIONS,
+    payload: {
+      request: {
+        method: 'post',
+        url: `/v1/messages/${message.message_id}/actions`,
+        data: {
+          actions,
+        },
+      },
+    },
+  };
 }
 
 export function getNextOffset(state) {
@@ -118,27 +123,35 @@ function messagesByIdReducer(state = {}, action = {}) {
   }
 }
 
-function messageIdsReducer(state = [], action = {}) {
+function messageIdsByDiscussionIdReducer(state = {}, action = {}) {
   if (action.type !== REQUEST_MESSAGES_SUCCESS) {
     return state;
   }
 
-  return [...state]
-    .concat(action.payload.data.messages.map(message => message.message_id))
-    .reduce((prev, curr) => {
-      if (prev.indexOf(curr) === -1) {
-        prev.push(curr);
-      }
+  const applyMessageId = (messagesState = [], message) => {
+    const nextState = [...messagesState];
+    if (nextState.indexOf(message.message_id) === -1) {
+      nextState.push(message.message_id);
+    }
 
-      return prev;
-    }, []);
+    return nextState;
+  };
+
+  return action.payload.data.messages.reduce((acc, message) => {
+    const { discussion_id: discussionId } = message;
+
+    return {
+      ...acc,
+      [discussionId]: applyMessageId(acc[discussionId], message),
+    };
+  }, { ...state });
 }
 
 const initialState = {
   isFetching: false,
   didInvalidate: false,
   messagesById: {},
-  messages: [],
+  messagesByDiscussionId: {},
   total: 0,
 };
 
@@ -153,7 +166,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         isFetching: false,
         didInvalidate: false,
-        messages: messageIdsReducer(
+        messagesByDiscussionId: messageIdsByDiscussionIdReducer(
           state.didInvalidate === true ? [] : state.messages,
           action
         ),

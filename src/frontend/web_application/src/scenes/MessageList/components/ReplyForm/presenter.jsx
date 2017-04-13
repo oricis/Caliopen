@@ -9,7 +9,7 @@ class ReplyForm extends Component {
     requestDraft: PropTypes.func.isRequired,
     editDraft: PropTypes.func.isRequired,
     saveDraft: PropTypes.func.isRequired,
-    sendMessage: PropTypes.func.isRequired,
+    sendDraft: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -22,6 +22,13 @@ class ReplyForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleSend = this.handleSend.bind(this);
+  }
+
+  componentWillMount() {
+    const { discussionId, draft } = this.props;
+    if (!draft && discussionId) {
+      this.props.requestDraft({ discussionId });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,15 +52,19 @@ class ReplyForm extends Component {
     return saveDraft(params);
   }
 
-  handleSend({ message }) {
-    const { sendMessage, discussionId } = this.props;
-    const params = { message, discussionId };
+  handleSend({ draft }) {
+    const { sendDraft, discussionId, message } = this.props;
+    const params = { draft, message, discussionId };
 
-    return sendMessage(params);
+    return sendDraft(params);
   }
 
   render() {
     const { draft } = this.props;
+
+    if (!draft) {
+      return (<div />);
+    }
 
     return (
       <ReplyFormBase

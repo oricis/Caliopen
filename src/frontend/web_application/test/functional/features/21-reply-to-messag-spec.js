@@ -1,7 +1,7 @@
 const userUtil = require('../utils/user-util');
 const { switch: switchApp } = require('../utils/switch-application.js');
 
-describe('Save draft and send', () => {
+describe('Save a draft and send', () => {
   const EC = protractor.ExpectedConditions;
 
   beforeEach(() => {
@@ -85,7 +85,13 @@ describe('Save draft and send', () => {
       .then(() => {
         const draftBodyElement2 = element(by.css('.m-discussion-textarea__body'));
         expect(draftBodyElement2.getText()).toEqual(text3);
-      });
+      })
+      // FIXME: restore state between tests
+      .then(() => element(by.cssContainingText('button', 'Send')).click())
+      .then(() => switchApp('discussions'))
+      .then(() => element(discussion1Selector).click())
+      .then(() => element(by.cssContainingText('button', 'Send')).click())
+    ;
   });
 
   it('force saves a draft', () => {
@@ -100,8 +106,8 @@ describe('Save draft and send', () => {
       .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
       .then(() => {
         console.info('write msg');
-        const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
-        draftBodyElement1.sendKeys(protractor.Key.CONTROL, 'a', protractor.Key.NULL, text1);
+        const draftBodyElement1 = element(by.css('.m-discussion-textarea textarea'));
+        draftBodyElement1.sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), text1);
 
         return element(by.cssContainingText('button', 'Save')).click();
       })
@@ -111,8 +117,35 @@ describe('Save draft and send', () => {
       .then(() => {
         const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
         expect(draftBodyElement1.getText()).toEqual(text1);
+      })
+      // FIXME: restore state between tests
+      .then(() => element(by.cssContainingText('button', 'Send')).click())
+    ;
+  });
 
-        return draftBodyElement1;
+  it('sends a draft', () => {
+    const discussion1Selector = by.cssContainingText(
+      '.s-discussion-list__thread',
+      'test@caliopen.local, john@caliopen.local, zoidberg@planet-express.tld'
+    );
+    const text1 = 'yes I am!';
+    browser.get('/')
+      .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000))
+      .then(() => element(discussion1Selector).click())
+      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
+      .then(() => {
+        console.info('write msg');
+        const draftBodyElement1 = element(by.css('.m-discussion-textarea textarea'));
+        draftBodyElement1.sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), text1);
+
+        return element(by.cssContainingText('button', 'Send')).click();
+      })
+      .then(() => browser.sleep(1 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000))
+      .then(() => {
+        const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
+        expect(draftBodyElement1.getText()).toEqual('');
+        expect(element(by.cssContainingText('.m-message__body__content', text1)).isPresent()).toEqual(true);
       });
   });
 });

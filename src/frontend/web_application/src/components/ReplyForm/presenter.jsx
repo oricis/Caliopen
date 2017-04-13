@@ -10,18 +10,15 @@ import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
 
-function generateStateFromProps(props, prevState) {
-  return {
-    draft: {
-      ...prevState.draft,
-      ...props.draft,
-    },
-  };
+function generateStateFromProps(props) {
+  const { draft } = props;
+
+  return { draft };
 }
 
 class ReplyForm extends Component {
   static propTypes = {
-    draft: PropTypes.shape({}),
+    draft: PropTypes.shape({}).isRequired,
     onSave: PropTypes.func.isRequired,
     onSend: PropTypes.func.isRequired,
     onChange: PropTypes.func,
@@ -29,19 +26,12 @@ class ReplyForm extends Component {
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
-    draft: {},
     onChange: () => {},
     user: { contact: {} },
   };
   constructor(props) {
     super(props);
     this.state = {
-      draft: {
-        body: '',
-        type: 'email',
-        participants: [],
-        discussion_id: '',
-      },
       isActive: true,
       protocol: 'email',
     };
@@ -64,7 +54,8 @@ class ReplyForm extends Component {
   }
 
   handleSend() {
-    this.props.onSend(this.state.draft);
+    const { draft } = this.state;
+    this.props.onSend({ draft });
   }
 
   handleChange(ev) {

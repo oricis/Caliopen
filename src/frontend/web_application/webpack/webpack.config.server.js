@@ -6,7 +6,7 @@ const KOTATSU_PUBLIC_PATH = '/build/';
 
 const config = Object.assign(baseConfig.getBase('server'), {
   target: 'node',
-  entry: [path.join(__dirname, '../server/index.js')],
+  entry: ['babel-polyfill', path.join(__dirname, '../server/index.js')],
   output: {
     path: path.join(__dirname, '../dist/server/'),
     filename: 'index.js',

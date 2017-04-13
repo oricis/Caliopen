@@ -1,6 +1,7 @@
 import throttle from 'lodash.throttle';
-import { EDIT_DRAFT, REQUEST_DRAFT, SAVE_DRAFT, requestDraftSuccess, draftCreated } from '../modules/draft-message';
-import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, createMessage, updateMessage, syncMessage } from '../modules/message';
+import isEqual from 'lodash.isequal';
+import { EDIT_DRAFT, REQUEST_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestDraftSuccess, draftCreated, clearDraft } from '../modules/draft-message';
+import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, POST_ACTIONS_SUCCESS, requestMessages, createMessage, updateMessage, syncMessage, postActions } from '../modules/message';
 import fetchLocation from '../../services/api-location';
 
 const UPDATE_WAIT_TIME = 5 * 1000;
@@ -30,8 +31,34 @@ const normalizeDraft = ({ draft, user, discussion }) => {
   };
 };
 
-const createOrUpdateDraft = ({ draft, discussionId, store, original }) => {
-  if (!draft.message_id) {
+const manageCreateOrUpdateResult = async ({ result: action, store }) => {
+  if (action.type === CREATE_MESSAGE_SUCCESS) {
+    const { location } = action.payload.data;
+    const { data: message } = await fetchLocation(location);
+    await store.dispatch(draftCreated({ draft: message }));
+    await store.dispatch(syncMessage({ message }));
+
+    return message;
+  }
+
+  if (action.type === UPDATE_MESSAGE_SUCCESS) {
+    const location = action.meta.previousAction.payload.request.url;
+    const { data: message } = await fetchLocation(location);
+    await store.dispatch(syncMessage({ message }));
+
+    return message;
+  }
+
+  throw new Error(`Uknkown type ${action.type} in manageCreateOrUpdateResult`);
+};
+
+const createOrUpdateDraft = async ({ draft, discussionId, store, original }) => {
+  let result;
+  if (draft.message_id) {
+    result = await store.dispatch(updateMessage({
+      message: draft, original,
+    }));
+  } else {
     const {
       user: { user },
       discussion: {
@@ -41,13 +68,13 @@ const createOrUpdateDraft = ({ draft, discussionId, store, original }) => {
       },
     } = store.getState();
 
-    return store.dispatch(createMessage({
+    result = await store.dispatch(createMessage({
       message: normalizeDraft({ draft, user, discussion }),
       original,
     }));
   }
 
-  return store.dispatch(updateMessage({ message: draft, original }));
+  return manageCreateOrUpdateResult({ result, store });
 };
 
 let throttled;
@@ -58,17 +85,19 @@ const createThrottle = ({ store, action }) => throttle(() => {
   return createOrUpdateDraft({ draft, discussionId, store, original });
 }, UPDATE_WAIT_TIME, { leading: false });
 
-function createDraft(discussion) {
-  const { discussion_id } = discussion;
-
+function getNewDraft(discussionId) {
   return {
-    discussion_id,
+    discussion_id: discussionId,
+    type: 'email',
     body: '',
+    participants: [],
   };
 }
 
-function manageRequestDraft({ store, action }) {
+async function manageRequestDraft({ store, action }) {
   const { discussionId } = action.payload;
+  await store.dispatch(requestMessages({ discussionId }));
+
   const {
     message: { messagesById },
   } = store.getState();
@@ -76,9 +105,9 @@ function manageRequestDraft({ store, action }) {
   const message = Object.keys(messagesById)
     .map(messageId => messagesById[messageId])
     .find(item => item.discussion_id === discussionId && item.is_draft)
-    || createDraft(action.payload.discussionId);
+    || getNewDraft(action.payload.discussionId);
 
-  store.dispatch(requestDraftSuccess({ draft: message }));
+  return store.dispatch(requestDraftSuccess({ draft: message }));
 }
 
 export default store => next => (action) => {
@@ -110,19 +139,27 @@ export default store => next => (action) => {
     manageRequestDraft({ store, action });
   }
 
-  if (action.type === CREATE_MESSAGE_SUCCESS) {
-    const { location } = action.payload.data;
-    fetchLocation(location).then((payload) => {
-      store.dispatch(draftCreated({ draft: payload.data }));
-      store.dispatch(syncMessage({ message: payload.data }));
-    });
-  }
+  if (action.type === SEND_DRAFT) {
+    const { draft, discussionId, original } = action.payload;
+    const getMessage = async () => {
+      if (isEqual(draft, original)) {
+        return draft;
+      }
 
-  if (action.type === UPDATE_MESSAGE_SUCCESS) {
-    const location = action.meta.previousAction.payload.request.url;
-    fetchLocation(location).then((payload) => {
-      store.dispatch(syncMessage({ message: payload.data }));
-    });
+      return createOrUpdateDraft({ draft, discussionId, store, original });
+    };
+
+    getMessage()
+      .then(message => store.dispatch(postActions({ message, actions: ['send'] })))
+      .then((postActionsAction) => {
+        if (postActionsAction.type === POST_ACTIONS_SUCCESS) {
+          const { payload: { data: message } } = postActionsAction;
+
+          return store.dispatch(clearDraft({ discussionId: message.discussion_id }));
+        }
+
+        throw new Error('Fail to send');
+      });
   }
 
   return result;

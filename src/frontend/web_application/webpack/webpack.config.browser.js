@@ -10,6 +10,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 let config = Object.assign(baseConfig.getBase('browser'), {
   entry: [
+    'babel-polyfill',
     'script-loader!jquery',
     'script-loader!foundation-sites',
     path.join(__dirname, '../src/index.jsx'),
