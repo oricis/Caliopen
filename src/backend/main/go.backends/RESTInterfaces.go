@@ -11,4 +11,5 @@ import (
 type APIStorage interface {
 	UserNameStorage
 	GetMessage(user_id, msg_id string) (msg *obj.Message, err error)
+	GetLocalsIdentities(user_id string) (identities []obj.LocalIdentity, err error)
 }
