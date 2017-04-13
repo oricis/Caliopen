@@ -38,9 +38,8 @@ func (lda *Lda) handler(peer Peer, ev Envelope) error {
 	case response := <-incoming.Response:
 		if response.Err != nil {
 			return errors.New(fmt.Sprintf("554 Error : " + response.Err.Error()))
-		} else {
-			return errors.New("250 OK: message(s) delivered.")
 		}
+		return nil
 	case <-time.After(30 * time.Second):
 		return errors.New("554 Error: LDA timeout")
 	}

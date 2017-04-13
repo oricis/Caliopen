@@ -17,12 +17,10 @@ from mailbox import mbox, Maildir
 
 from caliopen_storage.exception import NotFound
 
-
 log = logging.getLogger(__name__)
 
 
 def import_email(email, import_path, format, **kwargs):
-
     from caliopen_main.user.core import User
     from caliopen_main.user.core import Contact, ContactLookup
     from caliopen_main.message.format.mail import MailMessage
@@ -83,5 +81,8 @@ def import_email(email, import_path, format, **kwargs):
                             1):  # injection is made here to test smtp delivery speed
         log.info('Injecting mail {}/{}'.format(i, total_msgs))
         smtp = smtplib.SMTP(host="localhost", port=2525)
-        smtp.sendmail("maibox_importer@py.caliopen.cli", rcpts,
-                      msg.mail.as_string())
+        try:
+            smtp.sendmail("maibox_importer@py.caliopen.cli", rcpts,
+                          msg.mail.as_string())
+        except Exception as exc:
+            log.warn(exc)
