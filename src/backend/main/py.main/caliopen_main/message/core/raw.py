@@ -11,13 +11,12 @@ from caliopen_storage.exception import NotFound
 
 from ..store import (RawMessage as ModelRaw,
                      UserRawLookup as ModelUserRawLookup)
-from ..format import MailMessage
+from caliopen_main.parsers import MailMessage
 
 log = logging.getLogger(__name__)
 
 
 class RawMessage(BaseCore):
-
     """
     Raw message core.
 
@@ -38,12 +37,11 @@ class RawMessage(BaseCore):
     @classmethod
     def get_for_user(cls, user_id, raw_msg_id):
         """
-        Get raw message by raw_msg_id, if message belongs to user
+        Get raw message by raw_msg_id, if message belongs to user.
 
         @param: user_id is a string
         @param: raw_msg_id is a string
         """
-
         if not UserRawLookup.belongs_to_user(user_id, raw_msg_id):
             return None
         try:
@@ -57,9 +55,7 @@ class RawMessage(BaseCore):
 
 
 class UserRawLookup(BaseUserCore):
-
     """User raw message affectation."""
 
     _model_class = ModelUserRawLookup
     _pkey_name = 'raw_msg_id'
-

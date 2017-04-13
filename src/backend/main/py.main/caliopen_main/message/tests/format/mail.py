@@ -4,7 +4,7 @@ import unittest
 import os
 from datetime import datetime
 
-from caliopen_main.message.format.mail import MailMessage
+from caliopen_main.parsers import MailMessage
 
 
 def load_mail(user, filename):
@@ -22,7 +22,6 @@ def load_mail(user, filename):
 
 
 class TestMailFormat(unittest.TestCase):
-
     """Test formatting of a mail objet (rfc2822)."""
 
     def test_01(self):
