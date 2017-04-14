@@ -8,6 +8,7 @@ export const LOAD_MORE_MESSAGES = 'co/message/LOAD_MORE_MESSAGES';
 export const REQUEST_MESSAGE = 'co/message/REQUEST_MESSAGE';
 export const UPDATE_MESSAGE = 'co/message/UPDATE_MESSAGE';
 export const UPDATE_MESSAGE_SUCCESS = 'co/message/UPDATE_MESSAGE_SUCCESS';
+export const UPDATE_MESSAGE_FAIL = 'co/message/UPDATE_MESSAGE_FAIL';
 export const REMOVE_MESSAGE = 'co/message/REMOVE_MESSAGE';
 export const CREATE_MESSAGE = 'co/message/CREATE_MESSAGE';
 export const CREATE_MESSAGE_SUCCESS = 'co/message/CREATE_MESSAGE_SUCCESS';

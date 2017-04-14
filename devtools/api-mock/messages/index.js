@@ -30,7 +30,20 @@ const reducer = {
   [actions.get]: state => state,
   [actions.post]: (state, params) => ([
     ...state,
-    { ...params.body, message_id: uuidv1(), is_draft: true, is_unread: false, type: 'email', date: Date.now(), date_insert: Date.now() },
+    {
+      ...params.body,
+      message_id: uuidv1(),
+      'participants': [
+        { 'type': 'Cc', 'contact_ids': ['1039cdcc-1f6f-4b5d-9c8a-5d7c711f357f'], 'address': 'test@caliopen.local', 'protocol': 'email' },
+        { 'type': 'From', 'contact_ids': ['c-john-01'], 'address': 'john@caliopen.local', 'protocol': 'email' },
+        { 'type': 'To', 'address': 'zoidberg@planet-express.tld', 'protocol': 'email' },
+      ],
+      is_draft: true,
+      is_unread: false,
+      type: 'email',
+      date: Date.now(),
+      date_insert: Date.now(),
+    },
   ]),
   [actions.patch]: (state, { params, body }) => {
     const nextState = [...state];

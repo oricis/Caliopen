@@ -1,35 +1,11 @@
 import throttle from 'lodash.throttle';
 import isEqual from 'lodash.isequal';
 import { EDIT_DRAFT, REQUEST_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestDraftSuccess, draftCreated, clearDraft } from '../modules/draft-message';
-import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, POST_ACTIONS_SUCCESS, requestMessages, createMessage, updateMessage, syncMessage, postActions } from '../modules/message';
+import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, requestMessages, createMessage, updateMessage, syncMessage, postActions } from '../modules/message';
+import { requestLocalIdentities } from '../modules/local-identity';
 import fetchLocation from '../../services/api-location';
 
 const UPDATE_WAIT_TIME = 5 * 1000;
-
-const forceAuthor = ({ addresses, participants }) => [...participants].map((participant) => {
-  let type = participant.type === 'From' ? 'To' : participant.type;
-  if (addresses.indexOf(participant.address) !== -1) {
-    type = 'From';
-  }
-
-  return {
-    ...participant,
-    type,
-  };
-});
-
-const normalizeDraft = ({ draft, user, discussion }) => {
-  const { discussion_id } = discussion;
-  const { contact: { emails } } = user;
-  const addresses = emails.map(email => email.address);
-  const participants = forceAuthor({ addresses, participants: discussion.participants });
-
-  return {
-    ...draft,
-    discussion_id,
-    participants,
-  };
-};
 
 const manageCreateOrUpdateResult = async ({ result: action, store }) => {
   if (action.type === CREATE_MESSAGE_SUCCESS) {
@@ -49,27 +25,23 @@ const manageCreateOrUpdateResult = async ({ result: action, store }) => {
     return message;
   }
 
+  if (action.type === UPDATE_MESSAGE_FAIL) {
+    // FIXME use global notification
+    throw new Error('Unable to update, may be the message has been modified somewhere else');
+  }
+
   throw new Error(`Uknkown type ${action.type} in manageCreateOrUpdateResult`);
 };
 
-const createOrUpdateDraft = async ({ draft, discussionId, store, original }) => {
+const createOrUpdateDraft = async ({ draft, store, original }) => {
   let result;
   if (draft.message_id) {
     result = await store.dispatch(updateMessage({
       message: draft, original,
     }));
   } else {
-    const {
-      user: { user },
-      discussion: {
-        discussionsById: {
-          [discussionId]: discussion,
-        },
-      },
-    } = store.getState();
-
     result = await store.dispatch(createMessage({
-      message: normalizeDraft({ draft, user, discussion }),
+      message: draft,
       original,
     }));
   }
@@ -85,12 +57,29 @@ const createThrottle = ({ store, action }) => throttle(() => {
   return createOrUpdateDraft({ draft, discussionId, store, original });
 }, UPDATE_WAIT_TIME, { leading: false });
 
-function getNewDraft(discussionId) {
+function getDefaultIdentities({ protocols, identities }) {
+  return identities.reduce((acc, identity) => {
+    if (
+      protocols.indexOf(identity.type) !== -1 &&
+      acc.filter(ident => ident.type === identity.type).length === 0
+    ) {
+      acc.push(identity);
+    }
+
+    return acc;
+  }, []);
+}
+
+async function getNewDraft({ discussionId, store }) {
+  await store.dispatch(requestLocalIdentities());
+  const { localIdentities } = store.getState().localIdentity;
+
   return {
     discussion_id: discussionId,
     type: 'email',
     body: '',
     participants: [],
+    identities: getDefaultIdentities({ protocols: ['email'], identities: localIdentities }),
   };
 }
 
@@ -105,7 +94,7 @@ async function manageRequestDraft({ store, action }) {
   const message = Object.keys(messagesById)
     .map(messageId => messagesById[messageId])
     .find(item => item.discussion_id === discussionId && item.is_draft)
-    || getNewDraft(action.payload.discussionId);
+    || await getNewDraft({ discussionId, store });
 
   return store.dispatch(requestDraftSuccess({ draft: message }));
 }
