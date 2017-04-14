@@ -18,7 +18,7 @@ from caliopen_main.message.qualifier import UserMessageQualifier
 
 from ..message.parameters.message import Recipient
 # XXX use a message formatter registry not directly mail format
-from .caliopen_main.parsers import MailMessage
+from caliopen_main.parsers import MailMessage
 
 log = logging.getLogger(__name__)
 
@@ -115,7 +115,6 @@ class UserMessageDelivery(object):
             message.get_db()
             message.unmarshall_db()
         except Exception as exc:
-            print(exc)
             log.error('Error fetching message'.format(exc))
             raise NotFound
 
