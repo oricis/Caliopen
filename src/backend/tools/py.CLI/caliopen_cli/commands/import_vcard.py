@@ -27,15 +27,21 @@ def import_vcard(username, directory, file_vcard, **kwargs):
         for f in files:
             ext = f.split('.')[-1]
             if ext == 'vcard' or ext == 'vcf':
-                vcard = vobject.readOne(open(
-                                '{directory}/{file}'.format(directory=directory, file=f),'r'))
+                with open('{directory}/{file}'.
+                          format(directory=directory, file=f), 'r') as fh:
+                    vcards_tmp = vobject.readComponents(fh)
 
-                vcards.append(vcard)
+                    for v in vcards_tmp:
+                        vcards.append(v)
+
     if file_vcard:
         ext = file_vcard.split('.')[-1]
         if ext == 'vcard' or ext == 'vcf':
-            vcard = vobject.readOne(open(file_vcard,'r'))
-            vcards.append(vcard)
+            with open('{}'.format(file_vcard), 'r') as fh:
+                vcards_tmp = vobject.readComponents(fh)
+
+                for v in vcards_tmp:
+                    vcards.append(v)
 
     user = CoreUser.by_name(username)
 
