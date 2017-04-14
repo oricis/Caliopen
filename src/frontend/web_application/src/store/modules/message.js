@@ -130,10 +130,12 @@ function messageIdsByDiscussionIdReducer(state = {}, action = {}) {
   }
 
   const applyMessageId = (messagesState = [], message) => {
-    const nextState = [...messagesState];
-    if (nextState.indexOf(message.message_id) === -1) {
-      nextState.push(message.message_id);
+    if (messagesState.indexOf(message.message_id) !== -1) {
+      return messagesState;
     }
+
+    const nextState = [...messagesState];
+    nextState.push(message.message_id);
 
     return nextState;
   };
@@ -145,7 +147,7 @@ function messageIdsByDiscussionIdReducer(state = {}, action = {}) {
       ...acc,
       [discussionId]: applyMessageId(acc[discussionId], message),
     };
-  }, { ...state });
+  }, state);
 }
 
 const initialState = {
