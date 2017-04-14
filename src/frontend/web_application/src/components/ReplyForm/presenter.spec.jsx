@@ -8,6 +8,13 @@ describe('component DiscussionDraft', () => {
       __: str => str,
       onSave: jest.fn(),
       onSend: jest.fn(),
+      draft: {
+        discussion_id: undefined,
+        type: 'email',
+        body: '',
+        participants: [],
+        identities: [],
+      },
     };
     const comp = shallow(
       <Presenter {...props} />
