@@ -104,8 +104,6 @@ class UserMessageQualifier(object):
         else:
             log.debug('Creating new discussion')
             discussion = Discussion.create_from_message(user, message)
-        else:
-            discussion = Discussion.get(user, lkp.discussion_id)
 
         discussion_id = discussion.discussion_id if discussion else None
         message.discussion_id = UUID(discussion_id)
