@@ -10,18 +10,15 @@ import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
 
-function generateStateFromProps(props, prevState) {
-  return {
-    draftMessage: {
-      ...prevState.draftMessage,
-      ...props.draftMessage,
-    },
-  };
+function generateStateFromProps(props) {
+  const { draft } = props;
+
+  return { draft };
 }
 
 class ReplyForm extends Component {
   static propTypes = {
-    draftMessage: PropTypes.shape({}),
+    draft: PropTypes.shape({}).isRequired,
     onSave: PropTypes.func.isRequired,
     onSend: PropTypes.func.isRequired,
     onChange: PropTypes.func,
@@ -29,14 +26,12 @@ class ReplyForm extends Component {
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
-    draftMessage: {},
     onChange: () => {},
     user: { contact: {} },
   };
   constructor(props) {
     super(props);
     this.state = {
-      draftMessage: {},
       isActive: true,
       protocol: 'email',
     };
@@ -54,21 +49,24 @@ class ReplyForm extends Component {
   }
 
   handleSave() {
-    this.props.onSave(this.state.draftMessage);
+    const { draft } = this.state;
+    this.props.onSave({ draft });
   }
 
   handleSend() {
-    this.props.onSend(this.state.draftMessage);
+    const { draft } = this.state;
+    this.props.onSend({ draft });
   }
 
   handleChange(ev) {
     const { name, value } = ev.target;
 
     this.setState((prevState) => {
-      const draftMessage = { ...prevState.draftMessage, [name]: value };
-      this.props.onChange({ draftMessage });
+      const draft = { ...prevState.draft, [name]: value };
 
-      return { draftMessage };
+      return { draft };
+    }, () => {
+      this.props.onChange({ draft: this.state.draft });
     });
   }
 
@@ -81,6 +79,9 @@ class ReplyForm extends Component {
   render() {
     const { user, __ } = this.props;
     const dropdownId = uuidV1();
+    const typeTranslations = {
+      email: __('reply-form.protocol.email'),
+    };
 
     return (
       <DiscussionDraft className="m-reply">
@@ -93,12 +94,17 @@ class ReplyForm extends Component {
         <form method="POST" className="m-reply__form-col">
           <TopRow className="m-reply__top-bar">
             <div className="m-reply__top-bar-info">
-              <div className="m-reply__author">{__('You')}</div>
+              <div className="m-reply__author">{__('reply-form.you')}</div>
               <div className="m-reply__type">
-                <span className="m-reply__type-label">{__('by')} {__(this.state.protocol)}</span>
+                <span className="m-reply__type-label">
+                  {__('reply-form.by', { type: typeTranslations[this.state.draft.type] })}
+                </span>
                 {' '}
-                <Icon className="m-reply__type-icon" type={__(this.state.protocol)} spaced /> <Icon type="angle-down" spaced /></div>
-              <div className="m-reply__date">{__('Now')}</div>
+                <Icon className="m-reply__type-icon" type={this.state.draft.type} spaced />
+                {' '}
+                <Icon type="angle-down" spaced />
+              </div>
+              <div className="m-reply__date">{__('reply-form.now')}</div>
             </div>
 
             <DropdownControl toggle={dropdownId} className="m-reply__top-actions-switcher">
@@ -114,7 +120,7 @@ class ReplyForm extends Component {
           </TopRow>
           <BodyRow className="m-reply__body">
             <DiscussionTextarea
-              body={this.state.draftMessage.body}
+              body={this.state.draft.body}
               onChange={this.handleChange}
               __={__}
             />

@@ -1,19 +1,17 @@
 import React, { PropTypes } from 'react';
-import classnames from 'classnames';
-import { getContactStylesheetClass } from './services/stylesheet-helper';
+import IconLetter from '../IconLetter';
 import './style.scss';
 
-const ContactIconLetter = ({ contact, className }) => (
-  <span className={classnames(className, getContactStylesheetClass(contact))} />
+function getContactTitle(contact) {
+  return contact.title || contact.address;
+}
+
+const ContactIconLetter = ({ contact, ...props }) => (
+  <IconLetter word={getContactTitle(contact)} {...props} />
 );
 
 ContactIconLetter.propTypes = {
   contact: PropTypes.shape({}).isRequired,
-  className: PropTypes.string,
-};
-
-ContactIconLetter.defaultProps = {
-  className: null,
 };
 
 export default ContactIconLetter;

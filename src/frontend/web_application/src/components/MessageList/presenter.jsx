@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import Button from '../Button';
 import Icon from '../Icon';
-import ReplyForm from '../ReplyForm';
 import DayMessageList from './components/DayMessageList';
 import Message from './components/Message';
 import groupMessages from './services/groupMessages';
@@ -27,18 +26,18 @@ const renderDayGroups = (messages, onMessageView, __) => {
     ));
 };
 
-const MessageList = ({ onMessageView, onReply, onForward, onDelete, messages, __ }) => (
+const MessageList = ({ onMessageView, onReply, onForward, onDelete, messages, replyForm, __ }) => (
   <div className="m-message-list">
     <div className="m-message-list__actions">
-      <Button className="m-message-list__action" onClick={onReply}><Icon type="reply" spaced /><span>{__('Reply')}</span></Button>
-      <Button className="m-message-list__action" onClick={onForward}><Icon type="share" spaced /><span>{__('Copy to')}</span></Button>
-      <Button className="m-message-list__action" onClick={onDelete}><Icon type="trash" spaced /><span>{__('Delete')}</span></Button>
+      <Button className="m-message-list__action" onClick={onReply}><Icon type="reply" spaced /><span>{__('message-list.action.reply')}</span></Button>
+      <Button className="m-message-list__action" onClick={onForward}><Icon type="share" spaced /><span>{__('message-list.action.copy-to')}</span></Button>
+      <Button className="m-message-list__action" onClick={onDelete}><Icon type="trash" spaced /><span>{__('message-list.action.delete')}</span></Button>
     </div>
     <div className="m-message-list__list">
       {renderDayGroups(messages, onMessageView, __)}
     </div>
     <div className="m-message-list__reply">
-      <ReplyForm __={__} />
+      {replyForm}
     </div>
   </div>
 );
@@ -49,6 +48,7 @@ MessageList.propTypes = {
   onForward: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  replyForm: PropTypes.node.isRequired,
   __: PropTypes.func.isRequired,
 };
 

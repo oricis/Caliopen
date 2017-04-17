@@ -5,6 +5,7 @@ export const REQUEST_DISCUSSIONS_FAIL = 'co/discussion/REQUEST_DISCUSSIONS_FAIL'
 export const INVALIDATE_DISCUSSIONS = 'co/discussion/INVALIDATE_DISCUSSIONS';
 export const LOAD_MORE_DISCUSSIONS = 'co/discussion/LOAD_MORE_DISCUSSIONS';
 export const REQUEST_DISCUSSION = 'co/discussion/REQUEST_DISCUSSION';
+export const REQUEST_DISCUSSION_SUCCESS = 'co/discussion/REQUEST_DISCUSSION_SUCCESS';
 export const UPDATE_DISCUSSION = 'co/discussion/UPDATE_DISCUSSION';
 export const REMOVE_DISCUSSION = 'co/discussion/REMOVE_DISCUSSION';
 
@@ -104,8 +105,18 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case REQUEST_DISCUSSION:
     case REQUEST_DISCUSSIONS:
       return { ...state, isFetching: true };
+    case REQUEST_DISCUSSION_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        discussionsById: {
+          ...state.discussionsById,
+          [action.payload.data.discussion_id]: action.payload.data,
+        },
+      };
     case REQUEST_DISCUSSIONS_SUCCESS:
       return {
         ...state,
