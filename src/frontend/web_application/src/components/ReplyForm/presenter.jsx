@@ -63,9 +63,10 @@ class ReplyForm extends Component {
 
     this.setState((prevState) => {
       const draft = { ...prevState.draft, [name]: value };
-      this.props.onChange({ draft });
 
       return { draft };
+    }, () => {
+      this.props.onChange({ draft: this.state.draft });
     });
   }
 
