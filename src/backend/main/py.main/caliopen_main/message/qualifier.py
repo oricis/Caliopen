@@ -7,10 +7,10 @@ from uuid import UUID
 from caliopen_storage.exception import NotFound
 from ..user.core import User
 
-from caliopen_main.discussion.core.discussion import (Discussion,
-                                                      DiscussionMessageLookup,
-                                                      DiscussionRecipientLookup,
-                                                      DiscussionExternalLookup)
+from caliopen_main.discussion.core import (Discussion,
+                                           DiscussionMessageLookup,
+                                           DiscussionRecipientLookup,
+                                           DiscussionExternalLookup)
 
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.parsers import MailMessage
@@ -97,13 +97,11 @@ class UserMessageQualifier(object):
         lkp = self.lookup(user, lookup_sequence)
 
         # Create or update existing discussion
-        if lkp:
-            log.debug('Found discussion %r' % lkp.discussion_id)
-            discussion = Discussion.get(user, lkp.discussion_id)
-            discussion.update_from_message(message)
-        else:
+        if not lkp:
             log.debug('Creating new discussion')
             discussion = Discussion.create_from_message(user, message)
+        else:
+            discussion = Discussion.get(user, lkp.discussion_id)
 
         discussion_id = discussion.discussion_id if discussion else None
         message.discussion_id = UUID(discussion_id)

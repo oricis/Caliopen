@@ -17,6 +17,18 @@ from caliopen_main.message.store.message_index import IndexedMessage
 log = logging.getLogger(__name__)
 
 
+class DiscussionIndex(object):
+    """Informations from index about a discussion."""
+
+    total_count = 0
+    unread_count = 0
+    attachment_count = 0
+    last_message = None
+
+    def __init__(self, id):
+        self.discussion_id = id
+
+
 class DiscussionIndexManager(object):
     """Manager for building discussions from index storage layer."""
 
@@ -40,7 +52,7 @@ class DiscussionIndexManager(object):
         agg = dsl.A('terms', field='discussion_id', size=0, shard_size=0)
         search.aggs.bucket('discussions', agg)
         # XXX add sorting on message date_insert
-        log.warn('Search is {}'.format(search.to_dict()))
+        log.debug('Search is {}'.format(search.to_dict()))
         result = search.execute()
         if hasattr(result, 'aggregations'):
             # Something found
@@ -70,7 +82,11 @@ class DiscussionIndexManager(object):
         discussions = []
         for id, count in ids.items():
             message = self._get_last_message(id, min_pi, max_pi)
-            discussions.append(message)
+            discussion = DiscussionIndex(id)
+            discussion.total_count = count
+            discussion.last_message = message
+            # XXX build others values from index
+            discussions.append(discussion)
         # XXX total do not work completly, hack a bit
         return discussions, total + len(discussions)
 
