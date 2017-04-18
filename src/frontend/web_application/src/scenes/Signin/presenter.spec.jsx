@@ -4,11 +4,10 @@ import Presenter from './presenter';
 
 describe('scene - Signin', () => {
   const translator = str => str;
-  const noop = () => {};
 
   it('render', () => {
     const comp = shallow(
-      <Presenter __={translator} onSigninSuccess={noop} />
+      <Presenter __={translator} location={{ search: '' }} />
     );
 
     expect(comp.text()).toContain('SigninForm');

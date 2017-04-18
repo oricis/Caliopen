@@ -7,10 +7,10 @@ import './style.scss';
 const Settings = ({ __, children }) => {
   const navLinks = [
     { title: __('settings.account'), to: '/settings/account', active: false },
-    { title: __('settings.application'), href: '/settings/appplication', active: false },
+    { title: __('settings.application'), to: '/settings/appplication', active: false },
     { title: __('settings.tags'), to: '/settings/tags', active: false },
     { title: __('settings.devices'), to: '/settings/devices', active: false },
-    { title: __('settings.signatures'), href: '/settings/signatures', active: false },
+    { title: __('settings.signatures'), to: '/settings/signatures', active: false },
   ];
 
   return (

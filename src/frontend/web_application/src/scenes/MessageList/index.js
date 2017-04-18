@@ -7,7 +7,7 @@ import { requestDiscussion } from '../../store/modules/discussion';
 import Presenter from './presenter';
 
 const messageByIdSelector = state => state.message.messagesById;
-const discussionIdSelector = (state, ownProps) => ownProps.params.discussionId;
+const discussionIdSelector = (state, ownProps) => ownProps.match.params.discussionId;
 
 const mapStateToProps = createSelector(
   [messageByIdSelector, discussionIdSelector],

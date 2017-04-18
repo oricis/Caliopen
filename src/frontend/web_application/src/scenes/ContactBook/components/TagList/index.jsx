@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { v1 as uuidV1 } from 'uuid';
-import Link from '../../../../components/Link';
+import Button from '../../../../components/Button';
 import NavList, { ItemContent } from '../../../../components/NavList';
 
 import './style.scss';
@@ -21,7 +21,7 @@ function nbContactsbyTag(list, tag) {
 
 const TagItem = ({ title, link, onTagClick, nbContacts, active, className }) => (
   <ItemContent className="m-tag-list__item">
-    <Link
+    <Button
       noDecoration
       expanded
       onClick={onTagClick}
@@ -30,7 +30,7 @@ const TagItem = ({ title, link, onTagClick, nbContacts, active, className }) => 
       active={active}
     >
       {title} ({nbContacts})
-    </Link>
+    </Button>
   </ItemContent>
 );
 
