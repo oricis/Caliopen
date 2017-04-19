@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
 import Link from '../../../../components/Link';
 import Icon from '../../../../components/Icon';

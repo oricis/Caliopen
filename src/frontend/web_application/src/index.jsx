@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { AppContainer } from 'react-hot-loader';
 import App from './App';
 import configureStore from './store/configure-store';
@@ -15,7 +16,9 @@ const store = configureStore({}, devTools);
 const rootEl = document.getElementById('root');
 ReactDOM.render(
   <AppContainer>
-    <App store={store} />
+    <BrowserRouter>
+      <App store={store} />
+    </BrowserRouter>
   </AppContainer>,
   rootEl
 );
@@ -28,7 +31,9 @@ if (module.hot) {
     const NextApp = require('./App').default;
     ReactDOM.render(
       <AppContainer>
-        <NextApp store={store} />
+        <BrowserRouter>
+          <NextApp store={store} />
+        </BrowserRouter>
       </AppContainer>,
       rootEl
     );

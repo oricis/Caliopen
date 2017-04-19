@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import NavList, { ItemContent } from '../../components/NavList';
 import Link from '../../components/Link';
 
@@ -7,10 +8,10 @@ import './style.scss';
 const Settings = ({ __, children }) => {
   const navLinks = [
     { title: __('settings.account'), to: '/settings/account', active: false },
-    { title: __('settings.application'), href: '/settings/appplication', active: false },
+    { title: __('settings.application'), to: '/settings/appplication', active: false },
     { title: __('settings.tags'), to: '/settings/tags', active: false },
     { title: __('settings.devices'), to: '/settings/devices', active: false },
-    { title: __('settings.signatures'), href: '/settings/signatures', active: false },
+    { title: __('settings.signatures'), to: '/settings/signatures', active: false },
   ];
 
   return (

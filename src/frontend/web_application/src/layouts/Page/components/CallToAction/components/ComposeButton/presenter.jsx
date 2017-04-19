@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { withTranslator } from '@gandi/react-translate';
 import ActionButton from '../ActionButton';
 import Icon from '../../../../../../components/Icon';

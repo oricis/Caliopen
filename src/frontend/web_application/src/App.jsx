@@ -1,36 +1,17 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { Router, browserHistory, hashHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-import getRoutes from './routes';
+import Routes from './routes';
 
-let history;
+const App = (props) => {
+  const { store } = props;
 
-switch (BUILD_TARGET) {
-  case 'electron':
-  case 'cordova':
-    history = hashHistory;
-    break;
-  default:
-    history = browserHistory;
-    break;
-}
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.history = syncHistoryWithStore(history, this.props.store);
-  }
-  render() {
-    const routes = getRoutes();
-
-    return (
-      <Provider store={this.props.store}>
-        <Router history={this.history} routes={routes} />
-      </Provider>
-    );
-  }
-}
+  return (
+    <Provider store={store}>
+      <Routes />
+    </Provider>
+  );
+};
 
 App.propTypes = {
   store: PropTypes.shape({}).isRequired,

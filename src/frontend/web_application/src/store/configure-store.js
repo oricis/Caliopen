@@ -1,6 +1,4 @@
 import { createStore, applyMiddleware } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
-import { browserHistory } from 'react-router';
 import rootReducer from './reducer';
 import axiosMiddleware from './middlewares/axios-middleware';
 import deviceMiddleware from './middlewares/device-middleware';
@@ -12,7 +10,6 @@ import tagsMiddleware from './middlewares/tags-middleware';
 import thunkMiddleware from './middlewares/thunk-middleware';
 
 const middlewares = [
-  routerMiddleware(browserHistory),
   axiosMiddleware,
   deviceMiddleware,
   discussionMiddleware,

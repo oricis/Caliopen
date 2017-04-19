@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import './style.scss';
 
 const Spinner = ({ isLoading, height = 14, width = 14 }) => isLoading && (

@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import Button from '../../../../components/Button';
 import Icon from '../../../../components/Icon';
 import Brand from '../../../../components/Brand';
