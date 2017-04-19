@@ -103,15 +103,12 @@ func MarshalEmail(msg *obj.Message, version string, mailhost string) (em *obj.Em
 func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 
 	// save raw email in db
-	var json_str []byte
 	json_mail, err := emailToJsonRep(ack.EmailMessage.Email.Raw.String())
 	if err == nil {
 		json_mail.Envelope.From = ack.EmailMessage.Email.SmtpMailFrom
 		json_mail.Envelope.To = ack.EmailMessage.Email.SmtpRcpTo
-
-		json_str, err = json.Marshal(json_mail)
 	}
-	raw_email_id, err := b.Store.StoreRaw(ack.EmailMessage.Email.Raw.String(), string(json_str))
+	raw_email_id, err := b.Store.StoreRaw(ack.EmailMessage.Email.Raw.String())
 	if err != nil {
 		log.WithError(err).Warn("outbound: storing raw email failed")
 		return err

@@ -13,8 +13,8 @@ type LDAStore interface {
 	GetUsersForRecipients([]string) ([]objects.UUID, error) // returns a list of user Ids for each recipients. No deduplicate.
 	StoreMessage(msg *objects.Message) error
 
-	//store raw email along with its json representation if available
-	StoreRaw(data string, json_rep ...string) (raw_id string, err error)
+	//store raw email
+	StoreRaw(data string) (raw_id string, err error)
 
 	UpdateMessage(msg *objects.Message, fields map[string]interface{}) error
 	LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error)
