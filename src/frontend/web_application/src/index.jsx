@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { ConnectedRouter } from 'react-router-redux';
 import { AppContainer } from 'react-hot-loader';
 import App from './App';
 import configureStore from './store/configure-store';
+import getRouterHistory from './services/router-history';
 
 let devTools;
 
@@ -12,13 +13,14 @@ if (CALIOPEN_ENV === 'development') {
 }
 
 const store = configureStore({}, devTools);
+const history = getRouterHistory();
 
 const rootEl = document.getElementById('root');
 ReactDOM.render(
   <AppContainer>
-    <BrowserRouter>
+    <ConnectedRouter store={store} history={history}>
       <App store={store} />
-    </BrowserRouter>
+    </ConnectedRouter>
   </AppContainer>,
   rootEl
 );
@@ -31,9 +33,9 @@ if (module.hot) {
     const NextApp = require('./App').default;
     ReactDOM.render(
       <AppContainer>
-        <BrowserRouter>
+        <ConnectedRouter history={history}>
           <NextApp store={store} />
-        </BrowserRouter>
+        </ConnectedRouter>
       </AppContainer>,
       rootEl
     );
