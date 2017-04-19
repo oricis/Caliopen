@@ -1,5 +1,5 @@
 # Caliopen configuration file to run REST API server in a docker container
-# 
+#
 # Storage services must be accessible using FQDN:
 #  - cassandra.dev.caliopen.org
 #  - es.dev.caliopen.org
@@ -22,6 +22,10 @@ cassandra:
 lmtp:
     port: 4025
     bind_address: 0.0.0.0
+
+broker:
+    port: 2525
+    host: broker.dev.caliopen.org
 
 system:
     default_tags:
