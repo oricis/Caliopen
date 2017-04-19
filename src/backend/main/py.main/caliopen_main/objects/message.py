@@ -15,6 +15,7 @@ from caliopen_main.message.store import IndexedMessage
 from caliopen_main.message.parameters.message import Message as ParamMessage
 from caliopen_main.message.parameters.draft import Draft
 from caliopen_main.message.core import RawMessage
+from caliopen_storage.exception import NotFound
 from .tag import ResourceTag
 from .attachment import MessageAttachment
 from .external_references import ExternalReferences
@@ -153,4 +154,6 @@ class Message(base.ObjectIndexable):
                 obj.get_db()
                 obj.unmarshall_db()
                 messages.append(obj)
-        return {'hits': messages, 'total': res.hits.total}
+            return {'hits': messages, 'total': res.hits.total}
+        else:
+            raise NotFound

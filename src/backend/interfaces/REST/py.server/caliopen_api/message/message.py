@@ -44,13 +44,17 @@ class Message(Api):
     def collection_get(self):
         discussion_id = self.request.swagger_data['discussion_id']
         pi_range = self.request.authenticated_userid.pi_range
-        messages = ObjectMessage.by_discussion_id(self.user, discussion_id,
-                                                  min_pi=pi_range[0],
-                                                  max_pi=pi_range[1],
-                                                  limit=self.get_limit(),
-                                                  offset=self.get_offset())
-        results = []
-        log.warn('Got result {}'.format(messages))
+        try:
+            messages = ObjectMessage.by_discussion_id(self.user, discussion_id,
+                                                      min_pi=pi_range[0],
+                                                      max_pi=pi_range[1],
+                                                      limit=self.get_limit(),
+                                                      offset=self.get_offset())
+            results = []
+            log.warn('Got result {}'.format(messages))
+        except NotFound:
+            raise ResourceNotFound
+
         for msg in messages['hits']:
             results.append(msg.marshall_json_dict())
         return {'messages': results, 'total': messages['total']}
