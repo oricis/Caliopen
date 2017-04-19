@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import NavList, { ItemContent } from '../../components/NavList';
 import Link from '../../components/Link';
 

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { FormGrid, FormRow, FormColumn, SelectFieldGroup } from '../../../../components/form';
 
 import './style.scss';

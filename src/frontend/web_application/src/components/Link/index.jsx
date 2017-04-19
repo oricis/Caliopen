@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Link as BaseLink } from 'react-router-dom';
 import classnames from 'classnames';
 import './style.scss';

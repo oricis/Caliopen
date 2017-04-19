@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import OffCanvas from './components/OffCanvas';
 import Header from './components/Header';
 import Navigation from './components/Navigation';

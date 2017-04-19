@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import zxcvbn from 'zxcvbn';
 import Button from '../Button';
 import Link from '../Link';
