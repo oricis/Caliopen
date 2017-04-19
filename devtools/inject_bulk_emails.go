@@ -41,7 +41,7 @@ func sendMail(i int, wg *sync.WaitGroup) {
 	defer c.Close()
 
 	from := "st@nisl.as"
-	to := "jon@a.nn"
+	to := "stan@caliopen.local"
 	to2 := ""
 
 	if err = c.Mail(from); err != nil {

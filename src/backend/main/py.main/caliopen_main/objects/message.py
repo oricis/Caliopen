@@ -150,10 +150,13 @@ class Message(base.ObjectIndexable):
         messages = []
         if res.hits:
             for x in res.hits:
-                obj = cls(user.user_id, message_id=x.meta.id)
-                obj.get_db()
-                obj.unmarshall_db()
-                messages.append(obj)
+                try:
+                    obj = cls(user.user_id, message_id=x.meta.id)
+                    obj.get_db()
+                    obj.unmarshall_db()
+                    messages.append(obj)
+                except Exception as exc:
+                    log.warn(exc)
             return {'hits': messages, 'total': res.hits.total}
         else:
             raise NotFound
