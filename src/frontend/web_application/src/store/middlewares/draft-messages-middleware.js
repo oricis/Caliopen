@@ -76,7 +76,6 @@ async function getNewDraft({ discussionId, store }) {
 
   return {
     discussion_id: discussionId,
-    type: 'email',
     body: '',
     participants: [],
     identities: getDefaultIdentities({ protocols: ['email'], identities: localIdentities }),
