@@ -5,11 +5,9 @@ import re
 import uuid
 
 from .message import NewMessage
-#
 from caliopen_main.objects.identities import LocalIdentity
 from caliopen_main.user.core import User
 from caliopen_main.objects.participant import Participant
-from caliopen_main.message.store.message_index import IndexedMessage
 from caliopen_storage.exception import NotFound
 from caliopen_main.discussion.store.discussion_index import \
     DiscussionIndexManager as DIM
