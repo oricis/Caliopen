@@ -61,6 +61,7 @@ services:
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
+          - broker:broker.dev.caliopen.org
       environment:
           CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
 
@@ -74,11 +75,11 @@ services:
   # Broker
   broker:
       build: ../src/backend/protocols/go.smtp
-      links: 
+      links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
           - nats:nats.dev.caliopen.org
-          
+
       ports:
         - "2525:2525"
   # NATS
