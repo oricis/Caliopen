@@ -8,6 +8,7 @@ import draftMessageMiddleware from './middlewares/draft-messages-middleware';
 import messageMiddleware from './middlewares/messages-middleware';
 import promiseMiddleware from './middlewares/promise-middleware';
 import reactRouterMiddleware from './middlewares/react-router-redux-middleware';
+import tabsMiddleware from './middlewares/tabs-middleware';
 import tagsMiddleware from './middlewares/tags-middleware';
 import thunkMiddleware from './middlewares/thunk-middleware';
 
@@ -20,6 +21,7 @@ const middlewares = [
   messageMiddleware,
   promiseMiddleware,
   reactRouterMiddleware,
+  tabsMiddleware,
   tagsMiddleware,
   thunkMiddleware,
 ];
