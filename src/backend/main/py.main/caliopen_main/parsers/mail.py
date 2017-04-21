@@ -208,7 +208,7 @@ class MailMessage(BaseRawParser):
             seq.append(('list', listname))
         # last try to lookup from sender address
         if self.from_:
-            seq.append(('from', self.from_))
+            seq.append(('from', self.from_.address))
         return seq
 
     def parse(self):

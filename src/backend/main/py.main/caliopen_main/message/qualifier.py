@@ -92,7 +92,9 @@ class UserMessageQualifier(object):
 
         # lookup by external references
         lookup_sequence = raw_email.lookup_sequence()
-        lkp = None
+        lkp = self.lookup(lookup_sequence)
+        log.debug('Lookup with sequence {} give {}'.
+                  format(lookup_sequence, lkp))
 
         # Create or update existing discussion
         if not lkp:
