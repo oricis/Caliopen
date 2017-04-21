@@ -27,13 +27,13 @@ func Actions(ctx *gin.Context) {
 			}
 			ctx.JSON(http.StatusOK, updated_msg)
 		case "set_read":
-			err := caliopen.Facilities.RESTfacility.SetMessageUnreadStatus(user_id, msg_id, false)
+			err := caliopen.Facilities.RESTfacility.SetMessageUnread(user_id, msg_id, false)
 			if err != nil {
 				ctx.AbortWithError(http.StatusFailedDependency, err)
 			}
 			ctx.Status(http.StatusNoContent)
 		case "set_unread":
-			err := caliopen.Facilities.RESTfacility.SetMessageUnreadStatus(user_id, msg_id, true)
+			err := caliopen.Facilities.RESTfacility.SetMessageUnread(user_id, msg_id, true)
 			if err != nil {
 				ctx.AbortWithError(http.StatusFailedDependency, err)
 			}

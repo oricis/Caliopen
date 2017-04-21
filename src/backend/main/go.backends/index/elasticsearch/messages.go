@@ -43,7 +43,7 @@ func (es *ElasticSearchBackend) IndexMessage(msg *objects.Message) error {
 
 }
 
-func (es *ElasticSearchBackend) SetMessageUnreadStatus(user_id, message_id string, status bool) (err error) {
+func (es *ElasticSearchBackend) SetMessageUnread(user_id, message_id string, status bool) (err error) {
 	payload := struct {
 		Is_unread bool `json:"is_unread"`
 	}{status}

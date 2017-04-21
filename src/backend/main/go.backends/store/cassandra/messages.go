@@ -56,7 +56,7 @@ func (cb *CassandraBackend) StoreMessage(msg *obj.Message) error {
 	return err
 }
 
-func (cb *CassandraBackend) SetMessageUnreadStatus(user_id, message_id string, status bool) (err error) {
+func (cb *CassandraBackend) SetMessageUnread(user_id, message_id string, status bool) (err error) {
 	q := cb.Session.Query(`UPDATE message SET is_unread= ? WHERE message_id = ? AND user_id = ?`, status, message_id, user_id)
 	return q.Exec()
 }
