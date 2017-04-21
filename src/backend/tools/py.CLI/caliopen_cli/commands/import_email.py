@@ -1,5 +1,5 @@
 """
-This script parse for a user email (first arg) a mbox file (second arg)
+This script parse for a user email (first arg) a mbox file (second arg).
 and import mails. Contacts (recipients) involved will be lookup
 
 User must be created before import
@@ -10,13 +10,11 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 import random
 import logging
-import smtplib
 
 from email import message_from_file
 from mailbox import mbox, Maildir
 
 from caliopen_storage.exception import NotFound
-from caliopen_storage.config import Configuration
 
 log = logging.getLogger(__name__)
 
@@ -27,6 +25,8 @@ def import_email(email, import_path, format, **kwargs):
     from caliopen_main.user.core import Contact, ContactLookup
     from caliopen_main.parsers import MailMessage
     from caliopen_main.user.parameters import NewContact, NewEmail
+    from caliopen_main.message.qualifier import UserMessageQualifier
+    from caliopen_main.message.core import RawMessage
 
     if format == 'maildir':
         emails = Maildir(import_path, factory=message_from_file)
@@ -50,8 +50,6 @@ def import_email(email, import_path, format, **kwargs):
 
     user = User.by_local_identity(email)
 
-    rcpts = [email]
-
     log.info("Processing mode %s" % mode)
     msgs = []
     for key, mail in emails.iteritems():
@@ -62,30 +60,21 @@ def import_email(email, import_path, format, **kwargs):
     total_msgs = len(msgs)
     for i, msg in enumerate(msgs, 1):
         log.info('Processing mail {}/{}'.format(i, total_msgs))
-        for type, addresses in msg.recipients.iteritems():
-            if not addresses:
-                continue
-            for alias, _address in addresses:
-                try:
-                    ContactLookup.get(user, alias)
-                except NotFound:
-                    log.info('Creating contact %s' % alias)
-                    name, domain = alias.split('@')
-                    contact = NewContact()
-                    contact.family_name = name
-                    if alias:
-                        e_mail = NewEmail()
-                        e_mail.address = alias
-                        contact.emails = [e_mail]
-                    contact.privacy_index = random.randint(0, 100)
-                    Contact.create(user, contact)
-    conf = Configuration('global').configuration
-    for i, msg in enumerate(msgs, 1):
-        # injection is made here to test smtp delivery speed
-        log.info('Injecting mail {}/{}'.format(i, total_msgs))
-        smtp = smtplib.SMTP(host=conf['broker']['host'], port=conf['broker']['port'])
-        try:
-            smtp.sendmail("maibox_importer@py.caliopen.cli", rcpts,
-                          msg.mail.as_string())
-        except Exception as exc:
-            log.warn(exc)
+        for participant in msg.participants:
+            try:
+                ContactLookup.get(user, participant.address)
+            except NotFound:
+                log.info('Creating contact %s' % participant.address)
+                name, domain = participant.address.split('@')
+                contact = NewContact()
+                contact.family_name = name
+                if participant.address:
+                    e_mail = NewEmail()
+                    e_mail.address = participant.address
+                    contact.emails = [e_mail]
+                contact.privacy_index = random.randint(0, 100)
+                Contact.create(user, contact)
+        raw = RawMessage.create(msg.raw)
+        qualifier = UserMessageQualifier(user)
+        message = qualifier.process_inbound(raw.data)
+        log.info('Created message {}'.format(message.message_id))
