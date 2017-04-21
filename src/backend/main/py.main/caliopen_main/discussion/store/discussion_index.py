@@ -16,6 +16,7 @@ from caliopen_main.message.store.message_index import IndexedMessage
 
 log = logging.getLogger(__name__)
 
+
 class DiscussionIndex(object):
     """Informations from index about a discussion."""
 
@@ -48,8 +49,9 @@ class DiscussionIndexManager(object):
         """Search discussions ids as a bucket aggregation."""
         search = self._prepare_search(min_pi, max_pi)
         # Do bucket term aggregation, sorted by last_message date
+        size = offset + (limit * 2)
         agg = dsl.A('terms', field='discussion_id',
-                    order={'last_message': 'desc'}, size=limit, shard_size=0)
+                    order={'last_message': 'desc'}, size=size, shard_size=size)
         search.aggs.bucket('discussions', agg).metric('last_message', 'max',
                                                       field='date')
         # XXX add sorting on message date_insert
