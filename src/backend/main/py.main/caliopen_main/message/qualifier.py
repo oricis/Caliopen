@@ -4,8 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import uuid
 from caliopen_storage.exception import NotFound
-from ..user.core import User
-
+from caliopen_main.objects.message import Message
 from caliopen_main.discussion.core import (Discussion,
                                            DiscussionMessageLookup,
                                            DiscussionRecipientLookup,
@@ -36,7 +35,11 @@ class UserMessageQualifier(object):
         'from': DiscussionRecipientLookup,
     }
 
-    def _get_tags(self, user, mail):
+    def __init__(self, user):
+        """Create a new instance of an user message qualifier."""
+        self.user = user
+
+    def _get_tags(self, mail):
         """Evaluate user rules to get all tags for a mail."""
         tags = []
         # TODO: implement with current tag model
@@ -48,7 +51,7 @@ class UserMessageQualifier(object):
         #         break
         return tags
 
-    def lookup(self, user, sequence):
+    def lookup(self, sequence):
         """Process lookup sequence to find discussion to associate."""
         log.debug('Lookup sequence %r' % sequence)
         for prop in sequence:
@@ -56,13 +59,14 @@ class UserMessageQualifier(object):
                 kls = self._lookups[prop[0]]
                 log.debug('Will lookup %s with value %s' %
                           (prop[0], prop[1]))
-                return kls.get(user, prop[1])
+                return kls.get(self.user, prop[1])
             except NotFound:
                 log.debug('Lookup type %s with value %s failed' %
                           (prop[0], prop[1]))
         return None
 
-    def __init_lookups(self, user, sequence, message):
+    def __init_lookups(self, sequence, message):
+        """Initialize lookup classes for the related sequence."""
         for prop in sequence:
             kls = self._lookups[prop[0]]
             params = {
@@ -71,60 +75,44 @@ class UserMessageQualifier(object):
             }
             if 'message_id' in kls._model_class._columns.keys():
                 params.update({'message_id': message.message_id})
-            lookup = kls.create(user, **params)
+            lookup = kls.create(self.user, **params)
             log.debug('Create lookup %r' % lookup)
             if prop[0] == 'list':
                 return
 
-    def process_inbound(self, message):
+    def process_inbound(self, raw):
         """Process inbound message."""
-        user = User.get(message.user_id)
         # TODO: make use of json raw message (already stored in db)
-        raw_email = MailMessage(message.raw)
+        raw_email = MailMessage(raw)
+        new_message = raw_email.parse()
 
         # compute tags
-        message.tags = self._get_tags(user, raw_email)
-        log.debug('Resolved tags {}'.format(message.tags))
-
-        # fill external references
-        externals = message.external_references
-        externals.message_id = raw_email.external_message_id
-        externals.parent_id = raw_email.external_parent_id
+        new_message.tags = self._get_tags(raw_email)
+        log.debug('Resolved tags {}'.format(new_message.tags))
 
         # lookup by external references
         lookup_sequence = raw_email.lookup_sequence()
-        lkp = self.lookup(user, lookup_sequence)
+        lkp = None
 
         # Create or update existing discussion
         if not lkp:
             log.debug('Creating new discussion')
-            discussion = Discussion.create_from_message(user, message)
+            discussion = Discussion.create_from_message(self.user, new_message)
         else:
-            discussion = Discussion.get(user, lkp.discussion_id)
+            discussion = Discussion.get(self.user, lkp.discussion_id)
 
         discussion_id = discussion.discussion_id if discussion else None
-        message.discussion_id = uuid.UUID(discussion_id)
+        new_message.discussion_id = uuid.UUID(discussion_id)
+        new_message.validate()
         # XXX missing discussion management
 
-        # XXX Init lookup
-        if not lkp:
-            self.__init_lookups(user, lookup_sequence, message)
-        else:
-            if externals.message_id:
-                params = {
-                    'external_message_id': externals.message_id,
-                    'discussion_id': discussion_id,
-                    'message_id': message.message_id,
-                }
-                new_lookup = DiscussionMessageLookup.create(user, **params)
-                log.debug('Created message lookup %r' % new_lookup)
-
         # update and index the message
-        # message.model.lookup = lookup
+        message = Message(self.user)
+        message.unmarshall_dict(new_message.to_native())
+        message.user_id = uuid.UUID(self.user.user_id)
+        message.message_id = uuid.uuid4()
         message.marshall_db()
-        message.update_db()
+        message.save_db()
         message.marshall_index()
         message.save_index()
-        # message.update_index() # TODO: use update_index
-
         return message
