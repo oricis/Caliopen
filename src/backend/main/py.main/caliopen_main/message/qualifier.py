@@ -65,7 +65,7 @@ class UserMessageQualifier(object):
                           (prop[0], prop[1]))
         return None
 
-    def __init_lookups(self, sequence, message):
+    def create_lookups(self, sequence, message):
         """Initialize lookup classes for the related sequence."""
         for prop in sequence:
             kls = self._lookups[prop[0]]
@@ -117,4 +117,6 @@ class UserMessageQualifier(object):
         message.save_db()
         message.marshall_index()
         message.save_index()
+        if not lkp:
+            self.create_lookups(lookup_sequence, message)
         return message
