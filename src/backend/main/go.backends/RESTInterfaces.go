@@ -12,11 +12,9 @@ type APIStorage interface {
 	UserNameStorage
 	GetMessage(user_id, msg_id string) (msg *obj.Message, err error)
 	GetLocalsIdentities(user_id string) (identities []obj.LocalIdentity, err error)
-	SetMessageToReadStatus(user_id, message_id string) error
-	SetMessageToUnreadStatus(user_id, message_id string) error
+	SetMessageUnreadStatus(user_id, message_id string, status bool) error
 }
 
 type APIIndex interface {
-	SetMessageToReadStatus(user_id, message_id string) error
-	SetMessageToUnreadStatus(user_id, message_id string) error
+	SetMessageUnreadStatus(user_id, message_id string, status bool) error
 }

@@ -56,12 +56,7 @@ func (cb *CassandraBackend) StoreMessage(msg *obj.Message) error {
 	return err
 }
 
-func (cb *CassandraBackend) SetMessageToReadStatus(user_id, message_id string) (err error) {
-	q := cb.Session.Query(`UPDATE message SET is_unread=False WHERE message_id = ? AND user_id = ?`, message_id, user_id)
-	return q.Exec()
-}
-
-func (cb *CassandraBackend) SetMessageToUnreadStatus(user_id, message_id string) (err error) {
-	q := cb.Session.Query(`UPDATE message SET is_unread=True WHERE message_id = ? AND user_id = ?`, message_id, user_id)
+func (cb *CassandraBackend) SetMessageUnreadStatus(user_id, message_id string, status bool) (err error) {
+	q := cb.Session.Query(`UPDATE message SET is_unread= ? WHERE message_id = ? AND user_id = ?`, status, message_id, user_id)
 	return q.Exec()
 }

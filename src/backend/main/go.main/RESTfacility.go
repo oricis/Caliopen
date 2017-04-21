@@ -21,8 +21,7 @@ type (
 		UsernameIsAvailable(string) (bool, error)
 		SendDraft(user_id, msg_id string) (msg *obj.Message, err error)
 		LocalsIdentities(user_id string) (identities []obj.LocalIdentity, err error)
-		SetMessageToReadStatus(user_id, message_id string) error
-		SetMessageToUnreadStatus(user_id, message_id string) error
+		SetMessageUnreadStatus(user_id, message_id string, status bool) error
 	}
 	RESTfacility struct {
 		store              backends.APIStorage
@@ -95,25 +94,14 @@ func (rest *RESTfacility) LocalsIdentities(user_id string) (identities []obj.Loc
 	return rest.store.GetLocalsIdentities(user_id)
 }
 
-func (rest *RESTfacility) SetMessageToReadStatus(user_id, message_id string) (err error) {
+func (rest *RESTfacility) SetMessageUnreadStatus(user_id, message_id string, status bool) (err error) {
 
-	err = rest.store.SetMessageToReadStatus(user_id, message_id)
+	err = rest.store.SetMessageUnreadStatus(user_id, message_id, status)
 	if err != nil {
 		return err
 	}
 
-	err = rest.index.SetMessageToReadStatus(user_id, message_id)
-	return err
-}
-
-func (rest *RESTfacility) SetMessageToUnreadStatus(user_id, message_id string) (err error) {
-
-	err = rest.store.SetMessageToUnreadStatus(user_id, message_id)
-	if err != nil {
-		return err
-	}
-
-	err = rest.index.SetMessageToUnreadStatus(user_id, message_id)
+	err = rest.index.SetMessageUnreadStatus(user_id, message_id, status)
 	return err
 	return nil
 }
