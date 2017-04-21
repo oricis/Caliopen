@@ -127,5 +127,6 @@ func readConfig(readAll bool) error {
 
 type CmdConfig struct {
 	rest_api.APIConfig
+	rest_api.IndexConfig
 	rest_api.ProxyConfig
 }

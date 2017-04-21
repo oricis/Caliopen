@@ -18,15 +18,27 @@ func Actions(ctx *gin.Context) {
 	var actions REST_order
 
 	if ctx.BindJSON(&actions) == nil {
-		//for now, only "send" action is handled
-		if actions.Actions[0] == "send" {
+		switch actions.Actions[0] {
+		case "send":
 			updated_msg, err := caliopen.Facilities.RESTfacility.SendDraft(user_id, msg_id)
 			if err != nil {
 				ctx.AbortWithError(http.StatusInternalServerError, err)
 				//TODO: returns error conforming to swagger def.
 			}
 			ctx.JSON(http.StatusOK, updated_msg)
-		} else {
+		case "set_read":
+			err := caliopen.Facilities.RESTfacility.SetMessageUnread(user_id, msg_id, false)
+			if err != nil {
+				ctx.AbortWithError(http.StatusFailedDependency, err)
+			}
+			ctx.Status(http.StatusNoContent)
+		case "set_unread":
+			err := caliopen.Facilities.RESTfacility.SetMessageUnread(user_id, msg_id, true)
+			if err != nil {
+				ctx.AbortWithError(http.StatusFailedDependency, err)
+			}
+			ctx.Status(http.StatusNoContent)
+		default:
 			ctx.AbortWithStatus(http.StatusNotImplemented)
 		}
 	}

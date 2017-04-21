@@ -228,6 +228,10 @@ messages_{message_id}_actions:
           modified attributes (if any)
         schema:
           "$ref": "../objects/MessageV2.yaml"
+      '204':
+        description: action(s) successfully executed. Nothing returned.
+        schema:
+          "$ref": "../objects/MessageV2.yaml"
       '400':
         description: json payload malformed
         schema:
@@ -249,4 +253,7 @@ messages_{message_id}_actions:
         description: json is valid but action was semantically malformed or unprocessable
         schema:
           "$ref": "../objects/Error.yaml"
-
+      '424':
+        description: execution of action failed.
+        schema:
+          "$ref": "../objects/Error.yaml"

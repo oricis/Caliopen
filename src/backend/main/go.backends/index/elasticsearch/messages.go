@@ -42,3 +42,14 @@ func (es *ElasticSearchBackend) IndexMessage(msg *objects.Message) error {
 	return nil
 
 }
+
+func (es *ElasticSearchBackend) SetMessageUnread(user_id, message_id string, status bool) (err error) {
+	payload := struct {
+		Is_unread bool `json:"is_unread"`
+	}{status}
+
+	update := es.Client.Update().Index(user_id).Type("indexed_message").Id(message_id)
+	_, err = update.Doc(payload).Refresh("true").Do(context.TODO())
+
+	return
+}
