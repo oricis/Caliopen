@@ -16,7 +16,6 @@ from caliopen_main.message.store.message_index import IndexedMessage
 
 log = logging.getLogger(__name__)
 
-
 class DiscussionIndex(object):
     """Informations from index about a discussion."""
 
@@ -48,9 +47,11 @@ class DiscussionIndexManager(object):
     def __search_ids(self, limit, offset, min_pi, max_pi):
         """Search discussions ids as a bucket aggregation."""
         search = self._prepare_search(min_pi, max_pi)
-        # Do bucket term aggregation
-        agg = dsl.A('terms', field='discussion_id', size=0, shard_size=0)
-        search.aggs.bucket('discussions', agg)
+        # Do bucket term aggregation, sorted by last_message date
+        agg = dsl.A('terms', field='discussion_id',
+                    order={'last_message': 'desc'}, size=limit, shard_size=0)
+        search.aggs.bucket('discussions', agg).metric('last_message', 'max',
+                                                      field='date')
         # XXX add sorting on message date_insert
         log.debug('Search is {}'.format(search.to_dict()))
         result = search.execute()
@@ -60,7 +61,10 @@ class DiscussionIndexManager(object):
             # XXX Ugly but don't find a way to paginate on bucket aggregation
             buckets = buckets[offset:offset + limit]
             total = result.aggregations.discussions.sum_other_doc_count
-            return dict((x['key'], x['doc_count']) for x in buckets), total
+            # remove last_message for now as it doesn't have relevant attrs
+            for discussion in buckets:
+                del discussion["last_message"]
+            return buckets, total
         log.debug('No result found on index {}'.format(self.index))
         return {}, 0
 
@@ -78,12 +82,12 @@ class DiscussionIndexManager(object):
 
     def list_discussions(self, limit=10, offset=0, min_pi=0, max_pi=0):
         """Build a list of limited number of discussions."""
-        ids, total = self.__search_ids(limit, offset, min_pi, max_pi)
+        list, total = self.__search_ids(limit, offset, min_pi, max_pi)
         discussions = []
-        for id, count in ids.items():
-            message = self.get_last_message(id, min_pi, max_pi)
-            discussion = DiscussionIndex(id)
-            discussion.total_count = count
+        for discus in list:
+            message = self.get_last_message(discus['key'], min_pi, max_pi)
+            discussion = DiscussionIndex(discus['key'])
+            discussion.total_count = discus['doc_count']
             discussion.last_message = message
             # XXX build others values from index
             discussions.append(discussion)
