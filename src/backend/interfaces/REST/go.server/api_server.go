@@ -32,6 +32,7 @@ type (
 		Port          string `mapstructure:"port"`
 		SwaggerFile   string `mapstructure:"swaggerSpec"`
 		BackendConfig `mapstructure:"BackendConfig"`
+		IndexConfig   `mapstructure:"IndexConfig"`
 		CacheSettings `mapstructure:"RedisConfig"`
 		NatsConfig    `mapstructure:"NatsConfig"`
 	}
@@ -45,6 +46,15 @@ type (
 		Hosts       []string `mapstructure:"hosts"`
 		Keyspace    string   `mapstructure:"keyspace"`
 		Consistency uint16   `mapstructure:"consistency_level"`
+	}
+
+	IndexConfig struct {
+		IndexName string        `mapstructure:"index_name"`
+		Settings  IndexSettings `mapstructure:"index_settings"`
+	}
+
+	IndexSettings struct {
+		Hosts []string `mapstructure:"hosts"`
 	}
 
 	CacheSettings struct {
@@ -73,6 +83,10 @@ func (server *REST_API) initialize(config APIConfig) error {
 			Hosts:       config.BackendConfig.Settings.Hosts,
 			Keyspace:    config.BackendConfig.Settings.Keyspace,
 			Consistency: config.BackendConfig.Settings.Consistency,
+		},
+		RESTindexConfig: obj.RESTIndexConfig{
+			IndexName: config.IndexConfig.IndexName,
+			Hosts:     config.IndexConfig.Settings.Hosts,
 		},
 		NatsConfig: obj.NatsConfig{
 			Url:           config.NatsConfig.Url,

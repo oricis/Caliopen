@@ -5,6 +5,10 @@ properties:
     type: array
     items:
       type: string
+      enum:
+        - send
+        - set_read
+        - set_unread
 additionalProperties: false
 required:
   - actions

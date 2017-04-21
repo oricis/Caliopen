@@ -42,3 +42,13 @@ func (es *ElasticSearchBackend) IndexMessage(msg *objects.Message) error {
 	return nil
 
 }
+
+func (es *ElasticSearchBackend) SetMessageToReadStatus(user_id, message_id string) (err error) {
+	//TODO
+	return nil
+}
+
+func (es *ElasticSearchBackend) SetMessageToUnreadStatus(user_id, message_id string) (err error) {
+	//TODO
+	return nil
+}

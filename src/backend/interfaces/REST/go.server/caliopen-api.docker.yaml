@@ -8,6 +8,11 @@ ApiConfig:
       - cassandra.dev.caliopen.org
       keyspace: caliopen
       consistency_level: 1
+  IndexConfig:
+    index_name: elasticsearch
+    index_settings:
+      hosts:
+      - http://es.dev.caliopen.org:9200
   NatsConfig:
     url: nats://nats.dev.caliopen.org:4222
     outSMTP_topic: outboundSMTP # topic's name to post "send" draft order

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends"
+	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends/store/cassandra"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
@@ -20,10 +21,12 @@ type (
 		UsernameIsAvailable(string) (bool, error)
 		SendDraft(user_id, msg_id string) (msg *obj.Message, err error)
 		LocalsIdentities(user_id string) (identities []obj.LocalIdentity, err error)
+		SetMessageToReadStatus(user_id, message_id string) error
+		SetMessageToUnreadStatus(user_id, message_id string) error
 	}
 	RESTfacility struct {
 		store              backends.APIStorage
-		index              backends.LDAIndex
+		index              backends.APIIndex
 		nats_conn          *nats.Conn
 		nats_outSMTP_topic string
 	}
@@ -46,10 +49,25 @@ func newRESTfacility(config obj.CaliopenConfig, nats_conn *nats.Conn) (rest_faci
 		if err != nil {
 			log.WithError(err).Fatalf("Initalization of %s backend failed", config.RESTstoreConfig.BackendName)
 		}
-		rest_facility.store = backends.APIStorage(backend)
+		rest_facility.store = backends.APIStorage(backend) // type conversion
 	default:
 		log.Fatalf("Unknown backend: %s", config.RESTstoreConfig.BackendName)
 	}
+
+	switch config.RESTindexConfig.IndexName {
+	case "elasticsearch":
+		esConfig := index.ElasticSearchConfig{
+			Urls: config.RESTindexConfig.Hosts,
+		}
+		index, err := index.InitializeElasticSearchIndex(esConfig)
+		if err != nil {
+			log.WithError(err).Fatalf("Initalization of %s index failed", config.RESTindexConfig.IndexName)
+		}
+		rest_facility.index = backends.APIIndex(index) // type conversion
+	default:
+		log.Fatalf("Unknown index: %s", config.RESTindexConfig.IndexName)
+	}
+
 	return rest_facility
 }
 
@@ -75,4 +93,27 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *obj.Message, e
 
 func (rest *RESTfacility) LocalsIdentities(user_id string) (identities []obj.LocalIdentity, err error) {
 	return rest.store.GetLocalsIdentities(user_id)
+}
+
+func (rest *RESTfacility) SetMessageToReadStatus(user_id, message_id string) (err error) {
+
+	err = rest.store.SetMessageToReadStatus(user_id, message_id)
+	if err != nil {
+		return err
+	}
+
+	err = rest.index.SetMessageToReadStatus(user_id, message_id)
+	return err
+}
+
+func (rest *RESTfacility) SetMessageToUnreadStatus(user_id, message_id string) (err error) {
+
+	err = rest.store.SetMessageToUnreadStatus(user_id, message_id)
+	if err != nil {
+		return err
+	}
+
+	err = rest.index.SetMessageToUnreadStatus(user_id, message_id)
+	return err
+	return nil
 }
