@@ -17,15 +17,16 @@ from mailbox import Message
 from datetime import datetime
 from email.utils import parsedate_tz, mktime_tz
 
-from caliopen_main.message.parameters.message import NewMessage, Part
+from caliopen_main.message.parameters import Participant, NewMessage
+from caliopen_main.message.parameters import Attachment, ExternalReferences
 from caliopen_main.user.helpers.normalize import clean_email_address
+from .base import BaseRawParser
 
 
 log = logging.getLogger(__name__)
 
 
 class MailPart(object):
-
     """Mail part structure."""
 
     def __init__(self, part):
@@ -51,8 +52,7 @@ class MailPart(object):
         self.data = text
 
 
-class MailMessage(object):
-
+class MailMessage(BaseRawParser):
     """
     Mail message structure.
 
@@ -61,10 +61,11 @@ class MailMessage(object):
     """
 
     recipient_headers = ['From', 'To', 'Cc', 'Bcc']
-    message_type = 'mail'
+    message_type = 'email'
 
     def __init__(self, raw):
         """Initialize structure from a raw mail."""
+        super(MailMessage, self).__init__(raw)
         try:
             self.mail = Message(raw)
         except Exception as exc:
@@ -73,9 +74,9 @@ class MailMessage(object):
         if self.mail.defects:
             # XXX what to do ?
             log.warn('Defects on parsed mail %r' % self.mail.defects)
-        self.recipients = self._extract_recipients()
-        self.parts = self._extract_parts()
-        self.headers = self._extract_headers()
+        self.participants = self._get_participants()
+        self.parts = self._get_parts()
+        self.headers = self._get_headers()
         self.subject = self.mail.get('Subject')
         mail_date = self.mail.get('Date')
         if mail_date:
@@ -97,21 +98,35 @@ class MailMessage(object):
         return "\n".join([x.data for x in self.parts
                           if x.can_index and x.data])
 
-    def _extract_recipients(self):
-        recip = {}
+    def _get_participants(self):
+        participants = []
         for header in self.recipient_headers:
             addrs = []
-            recipient_type = header.lower()
+            participant_type = header.lower()
             if self.mail.get(header):
                 if ',' in self.mail.get(header):
                     addrs.extend(self.mail.get(header).split(','))
                 else:
                     addrs.append(self.mail.get(header))
             addrs = [clean_email_address(x) for x in addrs]
-            recip[recipient_type] = addrs
-        return recip
+            for addr in addrs:
+                participant = Participant()
+                participant.address = addr[0]
+                participant.type = participant_type
+                participant.protocol = self.message_type
+                participant.label = addr[1]
+                participants.append(participant)
+        return participants
 
-    def _extract_headers(self):
+    def _get_parts(self):
+        """Multipart message, extract parts."""
+        parts = []
+        for p in self.mail.walk():
+            if not p.is_multipart():
+                parts.append(self.__process_part(p))
+        return parts
+
+    def _get_headers(self):
         """
         Extract all headers into list.
 
@@ -128,15 +143,7 @@ class MailMessage(object):
             headers[k] = [x[1] for x in g]
         return headers
 
-    def _extract_parts(self):
-        """Multipart message, extract parts."""
-        parts = []
-        for p in self.mail.walk():
-            if not p.is_multipart():
-                parts.append(self._process_part(p))
-        return parts
-
-    def _process_part(self, part):
+    def __process_part(self, part):
         return MailPart(part)
 
     @property
@@ -184,11 +191,10 @@ class MailMessage(object):
 
     @property
     def from_(self):
-        """Get from recipient."""
-        from_ = self.recipients.get('from')
-        if from_:
-            # XXX should do better
-            return from_[0][1]
+        """Return the sender participant."""
+        for part in self.participants:
+            if part.type == 'from':
+                return part
         return None
 
     def lookup_sequence(self):
@@ -205,30 +211,30 @@ class MailMessage(object):
             seq.append(('from', self.from_))
         return seq
 
-    def to_parameter(self):
+    def parse(self):
         """Transform mail to a NewMessage parameter."""
         msg = NewMessage()
-        msg.type = 'email'
-        msg.state = 'unread'
+        msg.type = self.message_type
         msg.subject = self.subject
-        msg.from_ = self.from_
+        msg.date = self.date
+        msg.body = self.text
+        msg.is_unread = True
+        msg.is_draft = False
+        msg.is_answered = False
+        msg.participants = self.participants
+
         # XXX need transform to part parameter
         for part in self.parts:
-            param = Part()
+            param = Attachment()
             param.content_type = part.content_type
             param.data = part.data
             param.size = part.size
             param.filename = part.filename
             param.can_index = part.can_index
-            msg.parts.append(param)
-        msg.headers = self.headers
-        msg.date = self.date
-        msg.size = self.size
-        msg.text = self.text
-        msg.external_parent_id = self.external_parent_id
-        msg.external_message_id = self.external_message_id
-        # XXX well ....
-        msg.privacy_index = int(self.transport_privacy_index +
-                                self.content_privacy_index) / 2
+            msg.attachments.append(param)
+        ext_ref = ExternalReferences()
+        ext_ref.parent_id = self.external_parent_id
+        ext_ref.message_id = self.external_message_id
+        msg.external_references = ext_ref
         msg.importance_level = self.importance_level
         return msg
