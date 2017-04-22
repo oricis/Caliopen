@@ -99,31 +99,16 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 	}
 	raw_uuid, _ := uuid.FromString(raw_email_id)
 
-	//step 3 : unmarshal email into message(s) object(s),
-	// store & index message(s) for related user(s)
+	//step 3 : send process order to nats for each rcpt
 	var errs error
 	wg := new(sync.WaitGroup)
 	wg.Add(len(rcptsIds))
 	for _, rcptId := range rcptsIds {
-		msg, err := b.UnmarshalEmail(in.EmailMessage, rcptId)
-		msg.Raw_msg_id.UnmarshalBinary(raw_uuid.Bytes())
-		if err != nil {
-			log.WithError(err).Warn("inbound: unmarshaling raw email failed")
-			//TODO
-		}
-		err = b.Store.StoreMessage(msg)
-		if err != nil {
-			log.WithError(err).Warn("inbound: storing message failed")
-		}
-		err = b.Index.IndexMessage(msg)
-		if err != nil {
-			log.WithError(err).Warn("inbound: indexing message failed")
-		}
-		//step 4 : send 'process' order to nats
 		go func(rcptId objects.UUID) {
 			defer wg.Done()
-			const nats_order = "process_message"
-			natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, rcptId.String(), msg.Message_id.String())
+			const nats_order = "process_raw"
+			natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, rcptId.String(), raw_email_id)
+			// XXX manage timeout correctly
 			resp, err := b.NatsConn.Request(b.Config.InTopic, []byte(natsMessage), 10*time.Second)
 			if err != nil {
 				if b.NatsConn.LastError() != nil {
