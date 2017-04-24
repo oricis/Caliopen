@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { PropTypes } from 'react';
 import { v1 as uuidV1 } from 'uuid';
+import classnames from 'classnames';
 import Button from '../../../../components/Button';
 import NavList, { ItemContent } from '../../../../components/NavList';
 
@@ -20,22 +20,33 @@ function nbContactsbyTag(list, tag) {
   return count.length;
 }
 
-const TagItem = ({ title, link, onTagClick, nbContacts, active, className }) => (
-  <ItemContent className="m-tag-list__item">
-    <Button
-      noDecoration
-      expanded
-      onClick={onTagClick}
-      id={link}
-      className={className}
-      active={active}
-    >
-      {title} ({nbContacts})
-    </Button>
-  </ItemContent>
-);
+const TagItem = ({ title, link, onTagClick, nbContacts, active, all, className }) => {
+  const tagClassName = classnames(
+    className,
+    'm-tag-list__tag',
+    {
+      'm-tag-list__tag--active': active,
+      'm-tag-list__tag--all': all,
+    }
+  );
+
+  return (
+    <ItemContent className="m-tag-list__item">
+      <Button
+        expanded
+        onClick={onTagClick}
+        value={link}
+        className={tagClassName}
+        active={active}
+      >
+        {title} ({nbContacts})
+      </Button>
+    </ItemContent>
+  );
+};
 
 TagItem.propTypes = {
+  all: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   nbContacts: PropTypes.number.isRequired,
@@ -63,7 +74,7 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
           key={uuidV1()}
           onTagClick={onTagClick}
           active={activeTag === '' && true}
-          className="m-tag-list__link m-tag-list__link--all"
+          all
         />
         {tagList.map(tag =>
           <TagItem
@@ -73,7 +84,7 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
             key={uuidV1()}
             onTagClick={onTagClick}
             active={tag === activeTag && true}
-            className="m-tag-list__link"
+            all={false}
           />
         )}
       </NavList>
@@ -82,7 +93,7 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
 };
 
 TagList.propTypes = {
-  tags: PropTypes.node.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   onTagClick: PropTypes.func.isRequired,
   activeTag: PropTypes.string.isRequired,
   nbContactsAll: PropTypes.number.isRequired,
