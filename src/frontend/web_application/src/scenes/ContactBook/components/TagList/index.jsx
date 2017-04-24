@@ -81,7 +81,6 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
             key={uuidV1()}
             onTagClick={onTagClick}
             active={tag === activeTag && true}
-            all={false}
           />
         )}
       </NavList>
