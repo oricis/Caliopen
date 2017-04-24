@@ -6,12 +6,13 @@
 
 
   &__filters {
-    @include flex-grid-row($size: expanded);
+    @include flex-grid-row($size: expand);
+    padding-bottom: map-get($co-form__spacing, 'small');
     background-color: $co-color__fg__back;
   }
 
   &__contacts {
-    @include flex-grid-row($size: expanded);
+    @include flex-grid-row($size: expand);
 
   }
 
@@ -22,5 +23,11 @@
 
   &__contact-list {
     @include flex-grid-size;
+  }
+
+  &__load-more {
+    padding-top: $co-margin;
+    padding-bottom: $co-margin;
+    text-align: center;
   }
 }
