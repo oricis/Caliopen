@@ -20,13 +20,12 @@ function nbContactsbyTag(list, tag) {
   return count.length;
 }
 
-const TagItem = ({ title, link, onTagClick, nbContacts, active, all, className }) => {
+const TagItem = ({ title, link, onTagClick, nbContacts, active, className }) => {
   const tagClassName = classnames(
     className,
     'm-tag-list__tag',
     {
       'm-tag-list__tag--active': active,
-      'm-tag-list__tag--all': all,
     }
   );
 
@@ -46,7 +45,6 @@ const TagItem = ({ title, link, onTagClick, nbContacts, active, all, className }
 };
 
 TagItem.propTypes = {
-  all: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   nbContacts: PropTypes.number.isRequired,
@@ -74,7 +72,6 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
           key={uuidV1()}
           onTagClick={onTagClick}
           active={activeTag === '' && true}
-          all
         />
         {tagList.map(tag =>
           <TagItem

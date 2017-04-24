@@ -63,16 +63,17 @@ class ContactBook extends Component {
 
   componentDidMount() {
     this.props.requestContacts();
-    setTimeout(() => {
-      this.loadTags();
-    }, 200);
+  }
+
+  componentWillReceiveProps() {
+    this.initializeTags();
   }
 
   loadMore() {
     this.props.loadMoreContacts();
   }
 
-  loadTags() {
+  initializeTags() {
     const tags = [];
     this.props.contacts.map(contact => contact.tags.map(tag => tags.push(tag)));
     this.setState({

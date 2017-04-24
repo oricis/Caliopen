@@ -8,7 +8,7 @@ export const REQUEST_CONTACT = 'co/contact/REQUEST_CONTACT';
 export const REMOVE_CONTACT = 'co/contact/REMOVE_CONTACT';
 
 export function requestContacts(params = {}) {
-  const { offset = 0, limit = 20 } = params;
+  const { offset = 0, limit = 1000 } = params;
 
   return {
     type: REQUEST_CONTACTS,
