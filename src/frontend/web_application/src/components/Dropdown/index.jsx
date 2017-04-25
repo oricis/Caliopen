@@ -68,7 +68,7 @@ class Dropdown extends Component {
 Dropdown.propTypes = {
   id: PropTypes.string.isRequired,
   className: PropTypes.string,
-  position: PropTypes.oneOf(['bottom']),
+  position: PropTypes.oneOf(['bottom', 'left']),
   closeOnClick: PropTypes.bool,
   onToggle: PropTypes.func,
 };
