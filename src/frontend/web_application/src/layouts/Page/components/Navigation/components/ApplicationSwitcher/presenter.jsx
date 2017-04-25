@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '../Navbar';
-import BaseLink from '../../../../../../components/Link';
+import { ItemLink, NavbarItem } from '../Navbar';
+import Link from '../../../../../../components/Link';
 import Icon from '../../../../../../components/Icon';
 import Button from '../../../../../../components/Button';
 import Dropdown, { withDropdownControl } from '../../../../../../components/Dropdown';
@@ -19,6 +19,7 @@ class ApplicationSwitcher extends Component {
       icon: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }).isRequired,
+    isactive: PropTypes.bool.isRequired,
     __: PropTypes.func.isRequired,
   };
 
@@ -34,23 +35,30 @@ class ApplicationSwitcher extends Component {
       this.setState({ isDropdownOpen: !this.state.isDropdownOpen });
     };
 
-    const { __ } = this.props;
+    const { __, isactive } = this.props;
     const applicationLabels = getLabels(__);
 
     return (
-      <div className="m-application-switcher">
-        <Link to={this.props.currentApplication.route}>
-          <Icon type={this.props.currentApplication.icon} />
-          {' '}
-          {applicationLabels[this.props.currentApplication.name]}
-        </Link>
-        <DropdownControl
-          toggle="co-application-switcher"
-          className="dropdown-float-right m-application-switcher__toggler"
-        >
-          <span className="show-for-sr">{__('application_switcher.action.choose')}</span>
-          <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
-        </DropdownControl>
+      <NavbarItem
+        className="m-application-switcher"
+        active={isactive}
+        contentChildren={(
+          <ItemLink to={this.props.currentApplication.route}>
+            <Icon type={this.props.currentApplication.icon} />
+            {' '}
+            {applicationLabels[this.props.currentApplication.name]}
+          </ItemLink>
+        )}
+        actionChildren={(
+          <DropdownControl
+            toggle="co-application-switcher"
+            className="dropdown-float-right m-application-switcher__toggler"
+          >
+            <span className="show-for-sr">{__('application_switcher.action.choose')}</span>
+            <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
+          </DropdownControl>
+        )}
+      >
         <Dropdown
           id="co-application-switcher"
           closeOnClick
@@ -61,19 +69,22 @@ class ApplicationSwitcher extends Component {
           <VerticalMenu>
             {
               this.props.applications.filter(app => app !== this.props.currentApplication)
-                .map(application => (
-                  <VerticalMenuItem key={application.route}>
-                    <BaseLink to={application.route} button expanded>
-                      <Icon type={application.icon} />
-                      {' '}
-                      {applicationLabels[application.name]}
-                    </BaseLink>
-                  </VerticalMenuItem>
-                ))
+              .map(application => (
+                <VerticalMenuItem
+                  key={application.route}
+                  className="m-application-switcher__dropdown-item"
+                >
+                  <Link to={application.route} button expanded>
+                    <Icon type={application.icon} />
+                    {' '}
+                    {applicationLabels[application.name]}
+                  </Link>
+                </VerticalMenuItem>
+              ))
             }
           </VerticalMenu>
         </Dropdown>
-      </div>
+      </NavbarItem>
     );
   }
 }

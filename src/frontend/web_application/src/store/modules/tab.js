@@ -45,7 +45,7 @@ export default function reducer(state = initialState, action = {}) {
     case REMOVE_TAB:
       return {
         ...state,
-        tabs: state.filter(currentTab => currentTab !== action.payload.tab),
+        tabs: state.tabs.filter(tab => tab !== action.payload.tab),
       };
     default:
       return state;

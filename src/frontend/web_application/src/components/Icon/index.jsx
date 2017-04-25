@@ -6,6 +6,8 @@ import './style.scss';
 export const typeAssoc = {
   at: 'fa fa-at',
   'angle-down': 'fa fa-angle-down',
+  'arrow-right': 'fa fa-arrow-right',
+  'arrow-left': 'fa fa-arrow-left',
   calendar: 'fa fa-calendar',
   'caret-up': 'fa fa-caret-up',
   'caret-down': 'fa fa-caret-down',

@@ -1,21 +1,19 @@
 import React from 'react';
 import ApplicationSwitcher from './components/ApplicationSwitcher';
-import Navbar, { Tab } from './components/Navbar';
+import Navbar, { NavbarItem } from './components/Navbar';
 import StickyNavbar from './components/StickyNavBar';
+import TabList from './components/TabList';
 import './style.scss';
 
 const Navigation = () => (
-  <Navbar className="l-navigation hide-for-small-only">
-    <StickyNavbar className="l-navigation__wrapper" stickyClassName="l-navigation__wrapper--sticky">
-      <Tab className="l-navigation__application-switcher" active>
-        <ApplicationSwitcher />
-      </Tab>
-      <div className="l-navigation__tab-list">
-        <tab-list />
-      </div>
-      <div className="l-navigation__sliders-toggle">
-        <Tab last><sliders-container /></Tab>
-      </div>
+  <Navbar className="l-navigation">
+    <StickyNavbar
+      className="l-navigation__wrapper hide-for-small-only"
+      stickyClassName="l-navigation__wrapper--sticky"
+    >
+      <ApplicationSwitcher className="l-navigation__application-switcher" />
+      <TabList className="l-navigation__tab-list" />
+      <NavbarItem className="l-navigation__sliders-toggle" last><sliders-container /></NavbarItem>
     </StickyNavbar>
   </Navbar>
 );
