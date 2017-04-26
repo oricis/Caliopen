@@ -10,6 +10,7 @@ services:
           - redis:redis.dev.caliopen.org
           - cassandra:cassandra.dev.caliopen.org
           - nats:nats.dev.caliopen.org
+          - elasticsearch:es.dev.caliopen.org
       ports:
           - "31415:31415"
 
