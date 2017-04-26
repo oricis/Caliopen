@@ -1,0 +1,33 @@
+@import '../../../../../../../../styles/common';
+
+$m-navbar-item__content--max-width: 12rem !default;
+$m-navbar-item--border-bottom-size: .25rem !default;
+$m-navbar-item--height: $co-component__height + $m-navbar-item--border-bottom-size !default;
+
+.m-navbar-item {
+  display: flex;
+  height: $m-navbar-item--height;
+  margin-right: .25rem;
+  border-bottom: $m-navbar-item--border-bottom-size solid  $co-color__bg__back;
+  background-color: $co-color__fg__back;
+  color: $co-color__fg__text--low;
+
+  &--is-active {
+    border-bottom-color: transparent;
+    color: $co-color__fg__text--higher;
+  }
+
+  &--last {
+    margin-right: 0;
+  }
+
+  &__content {
+    max-width: $m-navbar-item__content--max-width;
+    padding-right: $co-margin / 4;
+    padding-left: $co-margin / 2;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

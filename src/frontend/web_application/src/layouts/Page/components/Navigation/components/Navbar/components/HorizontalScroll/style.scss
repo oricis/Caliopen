@@ -1,0 +1,36 @@
+@import '../../../../../../../../styles/common';
+@import '../../../../../../../../styles/vendor/bootstrap_foundation-sites';
+@import '../NavbarItem/style';
+
+.m-horizontal-scroll {
+  display: flex;
+  height: $m-navbar-item--height;
+  background-color: $co-color__bg__back;
+
+  &__anchor,
+  &__visible-zone {
+    display: inline-block;
+  }
+
+  &__anchor {
+    flex: 0;
+  }
+
+  &__visible-zone {
+    position: relative;
+    flex: 1;
+    margin-right: $m-navbar-item--border-bottom-size;
+    overflow: hidden;
+  }
+
+  &__container {
+    display: inline-flex;
+    position: absolute;
+    left: 0;
+    transition: left .5s ease;
+  }
+
+  &__item {
+    flex: shrink;
+  }
+}
