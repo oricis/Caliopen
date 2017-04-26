@@ -28,7 +28,8 @@ class InboundEmail(object):
             'message': 'OK : inbound email message proceeded'
         }
         payload = json.loads(msg.data)
-        if payload[u'order'] == "process_raw":
+        log.info('Get payload order {}'.format(payload['order']))
+        if payload['order'] == "process_raw":
             try:
                 self.deliver.process_raw(payload[u'user_id'],
                                          payload[u'message_id'])
