@@ -7,7 +7,6 @@ package email_broker
 
 import (
 	"bytes"
-	"encoding/json"
 	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/jhillyerd/go.enmime"

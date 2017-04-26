@@ -17,7 +17,6 @@ import (
 	"github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/hashicorp/go-multierror"
-	"github.com/satori/go.uuid"
 	"sync"
 	"time"
 )
@@ -97,7 +96,6 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 		resp.Err = errors.New("storing raw email failed")
 		return
 	}
-	raw_uuid, _ := uuid.FromString(raw_email_id)
 
 	//step 3 : send process order to nats for each rcpt
 	var errs error
