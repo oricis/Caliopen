@@ -75,6 +75,7 @@ def import_email(email, import_path, format, **kwargs):
                 contact.privacy_index = random.randint(0, 100)
                 Contact.create(user, contact)
         raw = RawMessage.create(msg.raw)
+        log.debug('Created raw message {}'.format(raw.raw_msg_id))
         qualifier = UserMessageQualifier(user)
-        message = qualifier.process_inbound(raw.data)
+        message = qualifier.process_inbound(msg.raw)
         log.info('Created message {}'.format(message.message_id))
