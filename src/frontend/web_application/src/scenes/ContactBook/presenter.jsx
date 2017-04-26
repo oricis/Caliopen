@@ -11,6 +11,15 @@ import './style.scss';
 const defaultSortDir = 'ASC';
 const defaultSortView = 'title';
 
+function generateStateFromProps(props) {
+  const { contacts } = props;
+  const tags = [];
+  contacts.map(contact => contact.tags.map(tag => tags.push(tag)));
+
+  return { tags };
+}
+
+
 function getOrderedContacts(contactList, sortView, sortDir) {
   const sortContacts = contactList.filter(contact => contact[sortView] !== null);
   const sortNullContacts = contactList.filter(contact => contact[sortView] == null);
@@ -61,24 +70,19 @@ class ContactBook extends Component {
     this.loadMore = this.loadMore.bind(this);
   }
 
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
   componentDidMount() {
     this.props.requestContacts();
   }
 
-  componentWillReceiveProps() {
-    this.initializeTags();
+  componentWillReceiveProps(newProps) {
+    this.setState(prevState => generateStateFromProps(newProps, prevState));
   }
 
   loadMore() {
     this.props.loadMoreContacts();
-  }
-
-  initializeTags() {
-    const tags = [];
-    this.props.contacts.map(contact => contact.tags.map(tag => tags.push(tag)));
-    this.setState({
-      tags,
-    });
   }
 
   render() {
