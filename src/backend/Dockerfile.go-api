@@ -1,16 +1,15 @@
 FROM golang
- 
 
 RUN go get -u github.com/kardianos/govendor
 RUN go install github.com/kardianos/govendor
 
-ADD . /go/src/github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server
-WORKDIR /go/src/github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server
+ADD . /go/src/github.com/CaliOpen/CaliOpen/src/backend
+WORKDIR /go/src/github.com/CaliOpen/CaliOpen/src/backend
 
-RUN govendor sync
+RUN govendor sync -v
 RUN go build github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest
 
-
-ENTRYPOINT /go/src/github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/caliopen_rest serve -c caliopen-api.docker
+WORKDIR /go/src/github.com/CaliOpen/CaliOpen/src/backend/configs
+ENTRYPOINT ../caliopen_rest serve -c caliopen-api.docker
 
 EXPOSE 31415

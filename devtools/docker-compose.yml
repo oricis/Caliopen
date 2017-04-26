@@ -2,7 +2,9 @@ version: '2'
 services:
   # Caliopen APIv2
   api:
-      build: ../src/backend/interfaces/REST/go.server
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.go-api
       links:
           - apiv1:apiv1.dev.caliopen.org
           - redis:redis.dev.caliopen.org
@@ -74,7 +76,9 @@ services:
         - "4000:4000"
   # Broker
   broker:
-      build: ../src/backend/protocols/go.smtp
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.go-lmtp
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
