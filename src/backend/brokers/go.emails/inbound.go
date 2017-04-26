@@ -17,7 +17,6 @@ import (
 	"github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/hashicorp/go-multierror"
-	"github.com/satori/go.uuid"
 	"sync"
 	"time"
 )
@@ -90,49 +89,24 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 		return
 	}
 
-	//TODO: json representation of raw email
 	//step 2 : store raw email and get its raw_id
-	var json_str []byte
-	json_mail, err := emailToJsonRep(in.EmailMessage.Email.Raw.String())
-	if err == nil {
-		json_mail.Envelope.From = in.EmailMessage.Email.SmtpMailFrom
-		json_mail.Envelope.To = in.EmailMessage.Email.SmtpRcpTo
-
-		json_str, err = json.Marshal(json_mail)
-	}
-	raw_email_id, err := b.Store.StoreRaw(in.EmailMessage.Email.Raw.String(), string(json_str))
+	raw_email_id, err := b.Store.StoreRaw(in.EmailMessage.Email.Raw.String())
 	if err != nil {
 		log.WithError(err).Warn("inbound: storing raw email failed")
 		resp.Err = errors.New("storing raw email failed")
 		return
 	}
-	raw_uuid, _ := uuid.FromString(raw_email_id)
 
-	//step 3 : unmarshal email into message(s) object(s),
-	// store & index message(s) for related user(s)
+	//step 3 : send process order to nats for each rcpt
 	var errs error
 	wg := new(sync.WaitGroup)
 	wg.Add(len(rcptsIds))
 	for _, rcptId := range rcptsIds {
-		msg, err := b.UnmarshalEmail(in.EmailMessage, rcptId)
-		msg.Raw_msg_id.UnmarshalBinary(raw_uuid.Bytes())
-		if err != nil {
-			log.WithError(err).Warn("inbound: unmarshaling raw email failed")
-			//TODO
-		}
-		err = b.Store.StoreMessage(msg)
-		if err != nil {
-			log.WithError(err).Warn("inbound: storing message failed")
-		}
-		err = b.Index.IndexMessage(msg)
-		if err != nil {
-			log.WithError(err).Warn("inbound: indexing message failed")
-		}
-		//step 4 : send 'process' order to nats
 		go func(rcptId objects.UUID) {
 			defer wg.Done()
-			const nats_order = "process_message"
-			natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, rcptId.String(), msg.Message_id.String())
+			const nats_order = "process_raw"
+			natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, rcptId.String(), raw_email_id)
+			// XXX manage timeout correctly
 			resp, err := b.NatsConn.Request(b.Config.InTopic, []byte(natsMessage), 10*time.Second)
 			if err != nil {
 				if b.NatsConn.LastError() != nil {

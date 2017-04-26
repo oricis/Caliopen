@@ -12,7 +12,7 @@ import (
 )
 
 // part of LDABackend interface
-func (cb *CassandraBackend) StoreRaw(raw_email string, json_rep ...string) (uuid string, err error) {
+func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) {
 	rawMsgTable := cb.IKeyspace.MapTable("raw_message", "raw_msg_id", &obj.RawMessage{})
 	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
 
@@ -29,10 +29,6 @@ func (cb *CassandraBackend) StoreRaw(raw_email string, json_rep ...string) (uuid
 		Raw_msg_id: msg_id,
 		Raw_data:   raw_email,
 		Raw_Size:   len(raw_email),
-	}
-
-	if len(json_rep) == 1 {
-		m.Json_rep = json_rep[0]
 	}
 
 	err = rawMsgTable.Set(m).Run()
