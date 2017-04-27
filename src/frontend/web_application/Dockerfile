@@ -6,16 +6,11 @@
 FROM node:6
 MAINTAINER Caliopen
 
-# Clone into /srv/caliopen/code
-WORKDIR /srv/caliopen
-ADD https://github.com/CaliOpen/Caliopen/archive/master.tar.gz ./
-RUN tar -xzf master.tar.gz && mv Caliopen-master code && rm master.tar.gz
-
-WORKDIR /srv/caliopen/code/src/frontend/web_application
+ADD . /srv/caliopen/frontend/
+WORKDIR /srv/caliopen/frontend/
 RUN yarn install
 RUN yarn run release
 
-VOLUME /srv/caliopen/code/src/frontend/web_application
 EXPOSE 4000
 
 CMD ["yarn", "run", "start:prod"]
