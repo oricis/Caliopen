@@ -70,7 +70,8 @@ services:
 
   # Caliopen frontend
   frontend:
-      build: ../src/frontend/web_application
+      build:
+        context: ../src/frontend/
       links:
           - api:api.dev.caliopen.org
       ports:
