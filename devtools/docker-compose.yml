@@ -2,12 +2,15 @@ version: '2'
 services:
   # Caliopen APIv2
   api:
-      build: ../src/backend/interfaces/REST/go.server
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.go-api
       links:
           - apiv1:apiv1.dev.caliopen.org
           - redis:redis.dev.caliopen.org
           - cassandra:cassandra.dev.caliopen.org
           - nats:nats.dev.caliopen.org
+          - elasticsearch:es.dev.caliopen.org
       ports:
           - "31415:31415"
 
@@ -67,14 +70,17 @@ services:
 
   # Caliopen frontend
   frontend:
-      build: ../src/frontend/web_application
+      build:
+        context: ../src/frontend/
       links:
           - api:api.dev.caliopen.org
       ports:
         - "4000:4000"
   # Broker
   broker:
-      build: ../src/backend/protocols/go.smtp
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.go-lmtp
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
