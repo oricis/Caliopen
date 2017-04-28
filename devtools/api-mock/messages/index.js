@@ -81,28 +81,28 @@ const reducer = {
 };
 
 const routes = {
-  'GET /': {
+  'GET /v1/messages/': {
     action: actions.get,
     selector: selectors.byDiscussionId,
     status: 200,
     middlewares: [createCollectionMiddleware('messages')],
   },
-  'GET /:message_id': {
+  'GET /v1/messages/:message_id': {
     action: actions.get,
     selector: selectors.byId,
     status: 200,
   },
-  'POST /:message_id/actions': {
+  'POST /v2/messages/:message_id/actions': {
     action: actions.actions,
     selector: selectors.byId,
     status: 200,
   },
-  'POST /': {
+  'POST /v1/messages/': {
     action: actions.post,
     selector: selectors.lastLocation,
     status: 200,
   },
-  'PATCH /:message_id': {
+  'PATCH /v1/messages/:message_id': {
     action: actions.patch,
     status: 204,
   },
@@ -112,6 +112,6 @@ export default {
   name: 'messages',
   data: require('./data.json'),
   reducer: reducer,
-  endpoint: '/api/v1/messages',
+  endpoint: '/api',
   routes: routes,
 };

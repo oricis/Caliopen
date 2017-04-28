@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslator } from '@gandi/react-translate';
-import { requestMessages, updateMessage } from '../../store/modules/message';
+import { requestMessages, postActions } from '../../store/modules/message';
 import { requestDiscussion } from '../../store/modules/discussion';
 import Presenter from './presenter';
 
@@ -22,7 +22,11 @@ const mapStateToProps = createSelector(
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestDiscussion,
   requestMessages,
-  updateMessage,
+  setMessageRead: ({ message, isRead = true }) => {
+    const action = isRead ? 'set_read' : 'set_unread';
+
+    return postActions({ message, actions: [action] });
+  },
 }, dispatch);
 
 export default compose(

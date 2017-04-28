@@ -9,7 +9,7 @@ class MessageList extends Component {
     requestDiscussion: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
-    updateMessage: PropTypes.func.isRequired,
+    setMessageRead: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -29,7 +29,7 @@ class MessageList extends Component {
   }
 
   handleMessageViewed({ message }) {
-    this.props.updateMessage({ message: { ...message, is_unread: false }, original: message });
+    this.props.setMessageRead({ message, isRead: true });
   }
 
   render() {

@@ -90,7 +90,7 @@ export function postActions({ message, actions }) {
     payload: {
       request: {
         method: 'post',
-        url: `/v1/messages/${message.message_id}/actions`,
+        url: `/v2/messages/${message.message_id}/actions`,
         data: {
           actions,
         },
