@@ -19,7 +19,6 @@ const renderTags = discussion => discussion.tags && discussion.tags.map((tag, ke
 
 const DiscussionItem = ({ user, discussion, formatDate, __ }) => {
   const hasUnread = !!discussion.unread_count && discussion.unread_count > 0;
-  const fakeDate = new Date();
 
   return (
     <DiscussionItemActionsContainer discussion={discussion} __={__}>
@@ -42,10 +41,13 @@ const DiscussionItem = ({ user, discussion, formatDate, __ }) => {
           { discussion.attachment_count > 0 && <Icon type="paperclip" /> }
         </div>
         <div className="s-discussion-list__col-dates">
-          <time title={formatDate(fakeDate, 'LLL')} dateTime={formatDate(fakeDate, '')}>
+          <time
+            title={formatDate(discussion.date_update, 'LLL')}
+            dateTime={formatDate(discussion.date_update, '')}
+          >
             <TextBlock inline>
-              {formatDate(fakeDate, 'll')}
-            </TextBlock> <TextBlock inline>{formatDate(fakeDate, 'LT')}</TextBlock>
+              {formatDate(discussion.date_update, 'll')}
+            </TextBlock> <TextBlock inline>{formatDate(discussion.date_update, 'LT')}</TextBlock>
           </time>
         </div>
         <div className="s-discussion-list__col-count">
