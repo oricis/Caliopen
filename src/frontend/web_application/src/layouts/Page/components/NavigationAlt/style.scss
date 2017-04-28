@@ -2,6 +2,7 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .l-nav-alt {
+  min-height: 100%;
   background-color: $co-color__fg__back;
 
   &__user {

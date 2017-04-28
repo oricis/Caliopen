@@ -7,7 +7,6 @@ $l-header__margin: ($co-margin / 2) !default;
 
 .l-header {
   height: $l-header__height;
-  margin-bottom: $l-header__margin;
 
   &__wrapper {
     @include flex-grid-row($size: expand);
@@ -64,7 +63,6 @@ $l-header__margin: ($co-margin / 2) !default;
   }
 
   @include breakpoint(medium) {
-    margin-bottom: 0;
     &__wrapper { box-shadow: none; }
     &__brand { @include flex-grid-column(shrink); }
     &__search { @include flex-grid-column; }
