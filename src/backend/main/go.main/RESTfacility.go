@@ -6,7 +6,7 @@ package caliopen
 
 import (
 	"fmt"
-	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
@@ -19,8 +19,8 @@ import (
 type (
 	RESTservices interface {
 		UsernameIsAvailable(string) (bool, error)
-		SendDraft(user_id, msg_id string) (msg *obj.Message, err error)
-		LocalsIdentities(user_id string) (identities []obj.LocalIdentity, err error)
+		SendDraft(user_id, msg_id string) (msg *Message, err error)
+		LocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 		SetMessageUnread(user_id, message_id string, status bool) error
 	}
 	RESTfacility struct {
@@ -33,7 +33,7 @@ type (
 
 const nats_message_tmpl = "{\"order\":\"%s\", \"message_id\":\"%s\", \"user_id\":\"%s\"}"
 
-func newRESTfacility(config obj.CaliopenConfig, nats_conn *nats.Conn) (rest_facility *RESTfacility) {
+func newRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility *RESTfacility) {
 	rest_facility = new(RESTfacility)
 	rest_facility.nats_conn = nats_conn
 	rest_facility.nats_outSMTP_topic = config.NatsConfig.OutSMTP_topic
@@ -74,7 +74,7 @@ func (rest *RESTfacility) UsernameIsAvailable(username string) (bool, error) {
 	return rest.store.UsernameIsAvailable(username)
 }
 
-func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *obj.Message, err error) {
+func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err error) {
 	const nats_order = "deliver"
 	natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, msg_id, user_id)
 	reply, err := rest.nats_conn.Request(rest.nats_outSMTP_topic, []byte(natsMessage), 10*time.Second)
@@ -90,7 +90,7 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *obj.Message, e
 	return rest.store.GetMessage(user_id, msg_id)
 }
 
-func (rest *RESTfacility) LocalsIdentities(user_id string) (identities []obj.LocalIdentity, err error) {
+func (rest *RESTfacility) LocalsIdentities(user_id string) ([]LocalIdentity, error) {
 	return rest.store.GetLocalsIdentities(user_id)
 }
 
