@@ -102,7 +102,7 @@ class MailMessage(BaseRawParser):
         participants = []
         for header in self.recipient_headers:
             addrs = []
-            participant_type = header.lower()
+            participant_type = header.capitalize()
             if self.mail.get(header):
                 if ',' in self.mail.get(header):
                     addrs.extend(self.mail.get(header).split(','))
@@ -193,7 +193,7 @@ class MailMessage(BaseRawParser):
     def from_(self):
         """Return the sender participant."""
         for part in self.participants:
-            if part.type == 'from':
+            if part.type == 'From':
                 return part
         return None
 

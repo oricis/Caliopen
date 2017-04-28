@@ -80,10 +80,12 @@ class UserMessageQualifier(object):
             if prop[0] == 'list':
                 return
 
-    def process_inbound(self, raw):
-        """Process inbound message."""
-        # TODO: make use of json raw message (already stored in db)
-        raw_email = MailMessage(raw)
+    def process_inbound(self, raw_email):
+        """Process inbound message.
+        
+        @param raw_email: a MailMessage object 
+        """
+
         new_message = raw_email.parse()
 
         # compute tags
