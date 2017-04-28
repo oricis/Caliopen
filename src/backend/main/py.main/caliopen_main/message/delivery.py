@@ -40,5 +40,5 @@ class UserMessageDelivery(object):
         msg = MailMessage(raw.raw_data)
 
         qualifier = UserMessageQualifier(user)
-        message = qualifier.process_inbound(msg.raw)
+        message = qualifier.process_inbound(msg)
         return message
