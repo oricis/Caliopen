@@ -193,7 +193,7 @@ class MailMessage(BaseRawParser):
     def from_(self):
         """Return the sender participant."""
         for part in self.participants:
-            if part.type == 'from':
+            if part.type == 'From':
                 return part
         return None
 
