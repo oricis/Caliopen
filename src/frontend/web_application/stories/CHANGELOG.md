@@ -5,6 +5,7 @@
 ### Added
 
   - DropdownMenu
+  - MultidimensionalPi
   - IconLetter simple refactor of ContactIconLetter
 
 ### Changed

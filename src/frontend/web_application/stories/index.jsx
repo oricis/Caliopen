@@ -1,8 +1,8 @@
 import React from 'react';
 import { storiesOf, action, linkTo, addDecorator } from '@kadira/storybook'; // eslint-disable-line
-import { withKnobs, text, select, boolean, array, object, number } from '@kadira/storybook-addon-knobs';
-import { host } from 'storybook-host';
-import backgrounds from 'react-storybook-addon-backgrounds';
+import { withKnobs, text, select, boolean, array, object, number } from '@kadira/storybook-addon-knobs'; // eslint-disable-line
+import { host } from 'storybook-host'; // eslint-disable-line
+import backgrounds from 'react-storybook-addon-backgrounds';// eslint-disable-line
 import Badge from '../src/components/Badge';
 import BlockList from '../src/components/BlockList';
 import BlockListPresenter from './components/BlockList';
@@ -36,6 +36,7 @@ import IconLetter from '../src/components/IconLetter';
 import Link from '../src/components/Link';
 import MessageList from './components/MessageList';
 import Modal from '../src/components/Modal';
+import MultidimensionalPi from '../src/components/MultidimensionalPi';
 import PiBar from '../src/components/PiBar';
 import Reply from './components/Reply';
 import Section from '../src/components/Section';
@@ -54,7 +55,7 @@ import '../src/styles/vendor/bootstrap_foundation-sites.scss';
 addDecorator(withKnobs);
 addDecorator(backgrounds([
   { name: '$co-color__fg__back', value: '#333' },
-  { name: '$co-color__bg__back', value: '#1d1d1d', default: true},
+  { name: '$co-color__bg__back', value: '#1d1d1d', default: true },
   { name: '$co-color__contrast__back', value: '#fff' },
 ]));
 
@@ -358,6 +359,18 @@ storiesOf('Pi', module)
     };
 
     return (<PiBar {...props} />);
+  })
+  .addWithInfo('MultidimensionalPi', () => {
+    const props = {
+      pi: object('PIs', [
+        { name: 'behavioral', level: 20 },
+        { name: 'contextual', level: 95 },
+        { name: 'technical', level: 55 },
+      ]),
+      displayAveragePi: boolean('display Average PI', false),
+    };
+
+    return (<MultidimensionalPi {...props} />);
   });
 
 storiesOf('Settings', module)
