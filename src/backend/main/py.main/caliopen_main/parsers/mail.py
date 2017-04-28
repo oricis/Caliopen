@@ -102,7 +102,7 @@ class MailMessage(BaseRawParser):
         participants = []
         for header in self.recipient_headers:
             addrs = []
-            participant_type = header.lower()
+            participant_type = header.capitalize()
             if self.mail.get(header):
                 if ',' in self.mail.get(header):
                     addrs.extend(self.mail.get(header).split(','))

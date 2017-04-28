@@ -7,6 +7,7 @@ from caliopen_storage.exception import NotFound
 from ..user.core import User
 from ..message.core import RawMessage
 from .qualifier import UserMessageQualifier
+from caliopen_main.parsers import MailMessage
 
 
 log = logging.getLogger(__name__)
@@ -36,6 +37,8 @@ class UserMessageDelivery(object):
             log.error('user <{}> not found'.format(user_id))
             raise NotFound
 
+        msg = MailMessage(raw.raw_data)
+
         qualifier = UserMessageQualifier(user)
-        message = qualifier.process_inbound(raw.data)
+        message = qualifier.process_inbound(msg.raw)
         return message

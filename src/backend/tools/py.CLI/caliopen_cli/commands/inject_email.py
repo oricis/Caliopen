@@ -55,4 +55,4 @@ def inject_email(email, import_path, format, host, **kwargs):
     for i, mail in enumerate(mails, 1):
         # Create contact for user
         log.info('Injecting mail {}/{}'.format(i, total_msgs))
-        smtp.sendmail("maibox_importer@py.caliopen.cli", [email], str(mail))
+        smtp.sendmail("mailbox_importer@py.caliopen.cli", [email], str(mail))
