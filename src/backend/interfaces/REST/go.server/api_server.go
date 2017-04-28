@@ -5,11 +5,11 @@
 package rest_api
 
 import (
-	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/middlewares"
-	"github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/operations/messages"
-	"github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/operations/users"
-	"github.com/CaliOpen/CaliOpen/src/backend/main/go.main"
+	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/messages"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/users"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-openapi/loads"
 	"gopkg.in/gin-gonic/gin.v1"

@@ -5,7 +5,7 @@
 package backends
 
 import (
-	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 type APIStorage interface {

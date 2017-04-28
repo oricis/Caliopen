@@ -6,7 +6,7 @@ package index
 
 import (
 	"context"
-	"github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 )
 

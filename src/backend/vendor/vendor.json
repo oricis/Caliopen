@@ -1,6 +1,6 @@
 {
   "comment": "",
-  "ignore": "github.com/CaliOpen/CaliOpen/...",
+  "ignore": "github.com/CaliOpen/Caliopen/...",
   "package": [
     {
       "path": "appengine/cloudsql",

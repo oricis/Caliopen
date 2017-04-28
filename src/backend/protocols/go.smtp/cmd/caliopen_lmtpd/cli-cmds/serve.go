@@ -3,7 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	csmtp "github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp"
+	csmtp "github.com/CaliOpen/Caliopen/src/backend/protocols/go.smtp"
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

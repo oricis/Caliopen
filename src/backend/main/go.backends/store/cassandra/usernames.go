@@ -6,7 +6,7 @@
 package store
 
 import (
-	"github.com/CaliOpen/CaliOpen/src/backend/main/go.main/helpers"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	log "github.com/Sirupsen/logrus"
 )
 

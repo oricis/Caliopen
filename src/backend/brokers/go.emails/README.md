@@ -2,7 +2,7 @@
 
 ##### Usage
 * import the package  
-`import broker "github.com/CaliOpen/CaliOpen/src/backend/brokers/go.emails"`
+`import broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"`
 * initialize the broker with the relevant config struct  
 `brokerConnectors, err = broker.Initialize(config)`
 
@@ -76,7 +76,7 @@ which is made of :
 * Inject an email into Caliopen from the smtp agent : (errors handling and config retreiving skipped for brevity)
 
 ```
-import broker "github.com/CaliOpen/CaliOpen/src/backend/brokers/go.emails"
+import broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 
 func main() {
     var brokerConnectors broker.EmailBrokerConnectors
