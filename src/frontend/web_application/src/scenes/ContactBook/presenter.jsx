@@ -33,12 +33,6 @@ function getFilteredContacts(contactList, activeTag) {
   return filteredContacts;
 }
 
-function generateStateFromProps(props) {
-  const { contacts } = props;
-  const tags = [].concat(...contacts.map(contact => contact.tags));
-
-  return { tags };
-}
 
 class ContactBook extends Component {
   static propTypes = {
@@ -59,7 +53,6 @@ class ContactBook extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tags: [].concat(generateStateFromProps.bind(props)),
       activeTag: '',
       sortDir: DEFAULT_SORT_DIR,
       sortView: DEFAULT_SORT_VIEW,
@@ -69,10 +62,6 @@ class ContactBook extends Component {
 
   componentDidMount() {
     this.props.requestContacts();
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.setState(prevState => generateStateFromProps(newProps, prevState));
   }
 
   loadMore() {
@@ -100,6 +89,8 @@ class ContactBook extends Component {
 
     const { contacts, isFetching, hasMore, __ } = this.props;
 
+    const tags = [].concat(...contacts.map(contact => contact.tags));
+
     return (
       <div className="l-contact-book">
         <div className="l-contact-book__filters">
@@ -114,7 +105,7 @@ class ContactBook extends Component {
         <div className="l-contact-book__contacts">
           <div className="l-contact-book__tags">
             <TagList
-              tags={this.state.tags}
+              tags={tags}
               activeTag={this.state.activeTag}
               onTagClick={handleTagClick}
               nbContactsAll={contacts.length}
