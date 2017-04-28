@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
-import BlockList from '../../../../components/BlockList';
 import Title from '../../../../components/Title';
 import ContactItem from './components/ContactItem';
 import './style.scss';
@@ -27,11 +26,13 @@ ContactListLetter.propTypes = {
   letter: PropTypes.string.isRequired,
 };
 const ContactList = ({ contacts, sortView }) => {
+  const altSortView = 'title';
   const letters = [];
   let firstLetter = null;
   contacts.map((contact) => {
-    const contactTitle = getFirstLetter(contact[sortView]);
-    if (contactTitle !== firstLetter) {
+    // assuming contact.title is NEVER empty or null
+    const contactTitle = contact[sortView] === null || contact[sortView] === '' ? contact[altSortView] : contact[sortView];
+    if (getFirstLetter(contactTitle) !== firstLetter) {
       letters.push(getFirstLetter(contactTitle));
     }
 
@@ -43,20 +44,26 @@ const ContactList = ({ contacts, sortView }) => {
   return (
     <div className="m-contact-list">
       {letters.map(letter =>
-        <div key={uuidV1()}>
+        <div key={uuidV1()} className="m-contact-list__group">
           <ContactListLetter
             letter={letter}
           />
-          <BlockList className="m-contact-list__group">
-            {contacts.map(contact =>
+          {contacts.map(contact => (
+            contact[sortView] === null || contact[sortView] === '' ?
+            getFirstLetter(contact[altSortView]) === letter &&
+              <ContactItem
+                contact={contact}
+                key={contact.contact_id}
+                sortView={sortView}
+              />
+              :
               getFirstLetter(contact[sortView]) === letter &&
                 <ContactItem
                   contact={contact}
                   key={contact.contact_id}
                   sortView={sortView}
                 />
-            )}
-          </BlockList>
+            ))}
         </div>
     )}
     </div>
@@ -65,10 +72,10 @@ const ContactList = ({ contacts, sortView }) => {
 
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  sortView: PropTypes.string,
+  sortView: PropTypes.oneOf(['given_name', 'family_name']),
 };
 ContactList.defaultProps = {
-  sortView: 'title',
+  sortView: 'given_name',
 };
 
 

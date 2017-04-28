@@ -7,7 +7,6 @@
 
   &__filters {
     @include flex-grid-row($size: expand);
-    padding-bottom: map-get($co-form__spacing, 'small');
     background-color: $co-color__fg__back;
   }
 
@@ -17,8 +16,8 @@
   }
 
   &__tags {
-    @include flex-grid-size(shrink);
-    padding: map_get($co-form__spacing, 'large');
+    @include flex-grid-column(12);
+    padding-top: map_get($co-form__spacing, 'large');
   }
 
   &__contact-list {
@@ -29,5 +28,11 @@
     padding-top: $co-margin;
     padding-bottom: $co-margin;
     text-align: center;
+  }
+
+  @include breakpoint(medium) {
+    &__tags {
+      @include flex-grid-size(shrink);
+    }
   }
 }

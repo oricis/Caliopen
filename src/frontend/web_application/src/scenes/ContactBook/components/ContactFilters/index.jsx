@@ -4,25 +4,22 @@ import { FormGrid, FormRow, FormColumn, SelectFieldGroup } from '../../../../com
 
 import './style.scss';
 
-const ContactFilters = ({ onSortDirChange, /* onSortViewChange, */ sortDir, __ }) => (
+const ContactFilters = ({ onSortDirChange, onSortViewChange, sortView, sortDir, __ }) => (
   <FormGrid className="m-contacts-filters">
     <FormRow>
-      { /*
       <FormColumn size="shrink">
         <SelectFieldGroup
           name="format-view"
           className="m-contacts-filters__select"
           label={__('contacts-filters.format-view.label')}
           value={sortView}
-          options={[{
-            value: 'given_name',
-            label: __('contacts-filters.format-view.firstname') },
-            { value: 'family_name', label: __('contacts-filters.format-view.name')
-          }]}
+          options={[
+            { value: 'given_name', label: __('contacts-filters.format-view.firstname') },
+            { value: 'family_name', label: __('contacts-filters.format-view.name') },
+          ]}
           onChange={onSortViewChange}
         />
       </FormColumn>
-      */ }
       <FormColumn size="shrink">
         <SelectFieldGroup
           className="m-contacts-filters__select"
@@ -39,9 +36,10 @@ const ContactFilters = ({ onSortDirChange, /* onSortViewChange, */ sortDir, __ }
 
 ContactFilters.propTypes = {
   onSortDirChange: PropTypes.func.isRequired,
-  // onSortViewChange: PropTypes.func.isRequired,
+  onSortViewChange: PropTypes.func.isRequired,
   __: PropTypes.func.isRequired,
-  sortDir: PropTypes.string.isRequired,
+  sortDir: PropTypes.oneOf('ASC', 'DESC').isRequired,
+  sortView: PropTypes.oneOf('given_name', 'family_name').isRequired,
 };
 
 export default ContactFilters;
