@@ -3,42 +3,42 @@ import PropTypes from 'prop-types';
 import Link from '../../../../../../components/Link';
 import ContactAvatarLetter, { SIZE_SMALL } from '../../../../../../components/ContactAvatarLetter';
 import TextBlock from '../../../../../../components/TextBlock';
-import { SORT_VIEW_FAMILY_NAME, SORT_VIEW_GIVEN_NAME } from './';
 
+import { SORT_VIEW_FAMILY_NAME, SORT_VIEW_GIVEN_NAME, SORT_VIEW_TITLE } from '../../../../../ContactBook/presenter';
 
 function getTitleView(contact, sortView) {
-  if (!contact.family_name && !contact.given_name) { return contact.title; }
+  const familyName = contact[SORT_VIEW_FAMILY_NAME];
+  const givenName = contact[SORT_VIEW_GIVEN_NAME];
+  const title = contact[SORT_VIEW_TITLE];
+
+  if (!familyName && givenName) { return title; }
 
   switch (sortView) {
-    case 'family_name':
-      return `${contact.family_name}${contact.family_name && contact.given_name && ', '}${contact.given_name}`;
+    case SORT_VIEW_FAMILY_NAME:
+      return `${familyName}${familyName && givenName && ', '}${givenName}`;
     default:
-    case 'given_name':
-      return `${contact.given_name}${contact.family_name && contact.given_name && ' '}${contact.family_name}`;
+    case SORT_VIEW_GIVEN_NAME:
+      return `${givenName}${familyName && givenName && ' '}${familyName}`;
   }
 }
 
-const ContactItem = ({ contact, sortView }) => {
-  const contactName = getTitleView(contact, sortView);
-
-  return (
-    <Link noDecoration className="m-contact-list__contact" to={`/contacts/${contact.contact_id}`}>
-      <div className="m-contact-list__contact-avatar">
-        <ContactAvatarLetter isRound contact={contact} size={SIZE_SMALL} />
-      </div>
-      <TextBlock className="m-contact-list__contact-info">
-        {contact.name_prefix && <span className="m-contact-list__contact-prefix">{contact.name_prefix}</span>}
-        <span className="m-contact-list__contact-title">{contactName}</span>
-        {contact.name_suffix && <span className="m-contact-list__contact-suffix">, {contact.name_suffix}</span>}
-      </TextBlock>
-    </Link>
-  );
-};
+const ContactItem = ({ contact, sortView }) => (
+  <Link noDecoration className="m-contact-list__contact" to={`/contacts/${contact.contact_id}`}>
+    <div className="m-contact-list__contact-avatar">
+      <ContactAvatarLetter isRound contact={contact} size={SIZE_SMALL} />
+    </div>
+    <TextBlock className="m-contact-list__contact-info">
+      {contact.name_prefix && <span className="m-contact-list__contact-prefix">{contact.name_prefix}</span>}
+      <span className="m-contact-list__contact-title">{getTitleView(contact, sortView)}</span>
+      {contact.name_suffix && <span className="m-contact-list__contact-suffix">, {contact.name_suffix}</span>}
+    </TextBlock>
+  </Link>
+);
 
 
 ContactItem.propTypes = {
   contact: PropTypes.shape({}).isRequired,
-  sortView: PropTypes.oneOf([SORT_VIEW_GIVEN_NAME, SORT_VIEW_FAMILY_NAME]).isRequired,
+  sortView: PropTypes.oneOf([SORT_VIEW_FAMILY_NAME, SORT_VIEW_GIVEN_NAME]).isRequired,
 };
 
 export default ContactItem;

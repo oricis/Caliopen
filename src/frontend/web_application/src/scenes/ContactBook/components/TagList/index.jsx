@@ -68,7 +68,6 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag, __ }) => {
         title={__('tag_list.all_contacts')}
         link=""
         nbContacts={nbContactsAll}
-        key={uuidV1()}
         onTagClick={onTagClick}
         active={activeTag === ''}
       />

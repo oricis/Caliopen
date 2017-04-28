@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormGrid, FormRow, FormColumn, SelectFieldGroup } from '../../../../components/form';
-import { SORT_VIEW_FAMILY_NAME, SORT_VIEW_GIVEN_NAME } from './';
 import './style.scss';
+
+import { SORT_VIEW_FAMILY_NAME, SORT_VIEW_GIVEN_NAME } from '../../../ContactBook/presenter';
 
 const ContactFilters = ({ onSortDirChange, onSortViewChange, sortView, sortDir, __ }) => (
   <FormGrid className="m-contacts-filters">

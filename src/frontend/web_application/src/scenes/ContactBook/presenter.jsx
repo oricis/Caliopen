@@ -10,20 +10,21 @@ import './style.scss';
 
 export const SORT_VIEW_GIVEN_NAME = 'given_name';
 export const SORT_VIEW_FAMILY_NAME = 'family_name';
+export const SORT_VIEW_TITLE = 'title';
+export const DEFAULT_SORT_VIEW = SORT_VIEW_GIVEN_NAME;
 
-const DEFAULT_SORT_VIEW = SORT_VIEW_GIVEN_NAME;
 const DEFAULT_SORT_DIR = 'ASC';
 
 function getOrderedContacts(contactList, sortView, sortDir) {
-  const altSortView = 'title';
+  const altSortView = SORT_VIEW_TITLE;
   const sortedContacts = contactList.sort((a, b) => {
     const first = a[sortView] ? a[sortView] : a[altSortView];
     const second = b[sortView] ? b[sortView] : b[altSortView];
 
     switch (sortDir) {
+      default:
       case 'ASC':
         return first.localeCompare(second);
-      default:
       case 'DESC':
         return second.localeCompare(first);
     }
