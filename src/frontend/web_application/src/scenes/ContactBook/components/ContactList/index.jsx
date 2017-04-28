@@ -31,7 +31,7 @@ const ContactList = ({ contacts, sortView }) => {
   let firstLetter = null;
   contacts.map((contact) => {
     // assuming contact.title is NEVER empty or null
-    const contactTitle = contact[sortView] === null || contact[sortView] === '' ? contact[altSortView] : contact[sortView];
+    const contactTitle = contact[sortView] ? contact[sortView] : contact[altSortView];
     if (getFirstLetter(contactTitle) !== firstLetter) {
       letters.push(getFirstLetter(contactTitle));
     }
@@ -49,15 +49,15 @@ const ContactList = ({ contacts, sortView }) => {
             letter={letter}
           />
           {contacts.map(contact => (
-            contact[sortView] === null || contact[sortView] === '' ?
-            getFirstLetter(contact[altSortView]) === letter &&
+            contact[sortView] ?
+            getFirstLetter(contact[sortView]) === letter &&
               <ContactItem
                 contact={contact}
                 key={contact.contact_id}
                 sortView={sortView}
               />
               :
-              getFirstLetter(contact[sortView]) === letter &&
+              getFirstLetter(contact[altSortView]) === letter &&
                 <ContactItem
                   contact={contact}
                   key={contact.contact_id}
