@@ -2,10 +2,15 @@ version: '2'
 services:
   # Caliopen APIv2
   api:
-      build: ../src/backend/interfaces/REST/go.server
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.go-api
       links:
           - apiv1:apiv1.dev.caliopen.org
+          - redis:redis.dev.caliopen.org
           - cassandra:cassandra.dev.caliopen.org
+          - nats:nats.dev.caliopen.org
+          - elasticsearch:es.dev.caliopen.org
       ports:
           - "31415:31415"
 
@@ -31,13 +36,17 @@ services:
   #
   # Cassandra is used as the reference storage for business data
   cassandra:
-      image: cassandra:3.0
+      image: scylladb/scylla
       ports:
           - "9042:9042"
           - "9160:9160"
           - "7000:7000"
       volumes:
-          - .data/cassandra:/var/lib/cassandra
+          - .data/scylla:/var/lib/scylla
+      entrypoint:
+          - /docker-entrypoint.py
+          - --memory
+          - 512M
 
   # ### Elasticsearch
   #
@@ -55,27 +64,30 @@ services:
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
+          - broker:broker.dev.caliopen.org
       environment:
           CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
 
   # Caliopen frontend
   frontend:
-      build: ../src/frontend/web_application
+      build:
+        context: ../src/frontend/
       links:
           - api:api.dev.caliopen.org
       ports:
         - "4000:4000"
   # Broker
   broker:
-      build: ../src/backend/protocols/go.smtp
-      links: 
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.go-lmtp
+      links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
           - nats:nats.dev.caliopen.org
-          
+
       ports:
         - "2525:2525"
-        - "9042"
   # NATS
   nats:
       image: nats:0.9.6

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import FieldErrors from '../FieldErrors';
@@ -40,7 +41,7 @@ const SelectFieldGroup = ({
   );
 };
 
-const propTypeOption = PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]);
+const propTypeOption = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
 
 const alphaNumPropType = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
 

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import DeleteFieldGroup from './components/DeleteFieldGroup';
 import AddFieldGroup from './components/AddFieldGroup';
 import './style.scss';

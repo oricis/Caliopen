@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Button from '../../../Button';
 import Icon from '../../../Icon';
@@ -12,10 +13,22 @@ const MessageActionsContainer = ({ __, className, ...props }) => {
 
   return (
     <div {...props} className={messageActionsContainerClassName}>
-      <Button className="m-message-actions-container__action"><Icon type="reply" spaced /><span>{__('Reply')}</span></Button>
-      <Button className="m-message-actions-container__action"><Icon type="share" spaced /><span>{__('Copy To')}</span></Button>
-      <Button className="m-message-actions-container__action"><Icon type="tags" spaced /><span>{__('Tags')}</span></Button>
-      <Button className="m-message-actions-container__action"><Icon type="trash" spaced /><span>{__('Delete')}</span></Button>
+      <Button className="m-message-actions-container__action">
+        <Icon type="reply" spaced />
+        <span>{__('message-list.message.action.reply')}</span>
+      </Button>
+      <Button className="m-message-actions-container__action">
+        <Icon type="share" spaced />
+        <span>{__('message-list.message.action.copy-to')}</span>
+      </Button>
+      <Button className="m-message-actions-container__action">
+        <Icon type="tags" spaced /><span>
+          {__('message-list.message.action.tags')}</span>
+      </Button>
+      <Button className="m-message-actions-container__action">
+        <Icon type="trash" spaced /><span>
+          {__('message-list.message.action.delete')}</span>
+      </Button>
     </div>
   );
 };

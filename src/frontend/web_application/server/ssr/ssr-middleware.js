@@ -2,9 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
-const ReactRouter = require('react-router');
-const Provider = require('react-redux').Provider;
-const getRoutes = require('./components/routes').default;
+const Bootstrap = require('./components/Bootstrap').default;
 const configureStore = require('../../src/store/configure-store').default;
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -18,8 +16,12 @@ const template = fs.readFileSync(path.join(process.cwd(), 'template', 'index.htm
 /**
  * base html template
  */
-function getMarkup(reactElement, store, assets) {
-  const markup = ReactDOMServer.renderToString(reactElement);
+function getMarkup({ store, assets, context, location }) {
+  const markup = ReactDOMServer.renderToString(
+    React.createElement(Bootstrap, {
+      context, location, store,
+    }));
+
   const initialState = store.getState();
   const scripts = assets.scripts.reduce((str, url) => `${str}<script src="${url}"></script>\n`, '');
   const stylesheets = assets.styles.reduce((str, url) => `${str}<link rel="stylesheet" href="${url}"></link>\n`, '');
@@ -37,26 +39,22 @@ function applyUserLocaleToGlobal(req) {
 
 module.exports = (req, res) => {
   applyUserLocaleToGlobal(req);
-  const match = ReactRouter.match;
-  const routerContext = React.createFactory(ReactRouter.RouterContext);
-  const provider = React.createFactory(Provider);
-  const routes = getRoutes();
 
   // XXX: prefetch
   const initialState = {
   };
 
   const store = configureStore(initialState);
+  const context = {};
+  const html = getMarkup({ store, assets: config, location: req.url, context });
 
-  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
-    if (error) {
-      res.status(500).send(error.message);
-    } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-      res.send(getMarkup(provider({ store }, routerContext(renderProps)), store, config));
-    } else {
-      res.status(404).send('Not found');
-    }
-  });
+  if (context.url) {
+    res.writeHead(301, {
+      Location: context.url,
+    });
+    res.end();
+  } else {
+    res.write(html);
+    res.end();
+  }
 };

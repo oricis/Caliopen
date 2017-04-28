@@ -4,13 +4,16 @@ import types
 from uuid import UUID
 import datetime
 import pytz
+from six import add_metaclass
 
 from caliopen_storage.exception import NotFound
 import caliopen_main.errors as main_errors
 from caliopen_main.interfaces import (IO, storage)
 from elasticsearch import exceptions as ESexceptions
 
+from caliopen_storage.core.base import CoreMetaClass
 import logging
+
 log = logging.getLogger(__name__)
 
 
@@ -76,15 +79,20 @@ class ObjectDictifiable(CaliopenObject):
 
         self_dict = {}
         for att, val in vars(self).items():
-            if not att.startswith("_"):
+            if not att.startswith("_") and val is not None:
                 if isinstance(self._attrs[att], types.ListType):
                     lst = []
-                    if issubclass(self._attrs[att][0], ObjectDictifiable):
-                        for item in val:
-                            lst.append(item.marshall_dict())
+                    if len(att) > 0:
+                        if issubclass(self._attrs[att][0], ObjectDictifiable):
+                            for item in val:
+                                lst.append(item.marshall_dict())
+                        else:
+                            lst = val
+                        self_dict[att] = lst
                     else:
-                        lst = val
-                    self_dict[att] = lst
+                        self_dict[att] = lst
+                elif issubclass(self._attrs[att], ObjectDictifiable):
+                    self_dict[att] = val.marshall_dict()
                 else:
                     self_dict[att] = val
 
@@ -95,9 +103,8 @@ class ObjectDictifiable(CaliopenObject):
 
         all self.attrs are reset if not in document
         """
-
         for attr, attrtype in self._attrs.items():
-            if attr in document:
+            if attr in document and document[attr] is not None:
                 if isinstance(attrtype, list):
                     lst = []
                     if issubclass(attrtype[0], ObjectDictifiable):
@@ -108,6 +115,10 @@ class ObjectDictifiable(CaliopenObject):
                     else:
                         lst = document[attr]
                     setattr(self, attr, lst)
+                elif issubclass(attrtype, ObjectDictifiable):
+                    sub_obj = attrtype()
+                    sub_obj.unmarshall_dict(document[attr])
+                    setattr(self, attr, sub_obj)
                 elif issubclass(attrtype, UUID):
                     setattr(self, attr, UUID(str(document[attr])))
                 elif issubclass(attrtype, datetime.datetime):
@@ -152,8 +163,8 @@ class ObjectJsonDictifiable(ObjectDictifiable):
         self.unmarshall_dict(document, **options)
 
 
+@add_metaclass(CoreMetaClass)
 class ObjectStorable(ObjectJsonDictifiable):
-
     zope.interface.implements(storage.DbIO)
 
     _model_class = None  # cql model for object
@@ -172,7 +183,8 @@ class ObjectStorable(ObjectJsonDictifiable):
         self._db = self._model_class.get(**param)
         if self._db is None:
             raise NotFound('%s #%s not found.' %
-                    (self.__class__.__name__, getattr(self, self._pkey_name)))
+                           (self.__class__.__name__,
+                            getattr(self, self._pkey_name)))
 
     def save_db(self, **options):
         try:
@@ -183,14 +195,22 @@ class ObjectStorable(ObjectJsonDictifiable):
 
         return None
 
-    def create_db(self, **options):
-        try:
-            self._db.create()
-        except Exception as exc:
-            log.info(exc)
-            return exc
-
-        return None
+    # def create_db(self, **options):
+    #     """ Create an instance of this model in the database
+    #
+    #         from current object's attributes
+    #     """
+    #
+    #     params = self.marshall_dict()
+    #     p_key = params.pop(self._pkey_name)
+    #     #primary key must be set as first argument for create
+    #     try:
+    #         self._db.create(p_key, params)
+    #     except Exception as exc:
+    #         log.info(exc)
+    #         raise exc
+    #
+    #     return None
 
     def delete_db(self, **options):
         try:
@@ -226,14 +246,16 @@ class ObjectStorable(ObjectJsonDictifiable):
         self_keys = self._attrs.keys()
         for att in self._db.keys():
             if not att.startswith("_") and att in self_keys:
-                # TODO : manage protected attrs (ie attributes that user should not be able to change directly)
+                # TODO : manage protected attrs
+                # (ie attributes that user should not be able to change)
                 if isinstance(self._attrs[att], list):
                     # TODO : manage change within list to only elem changed
                     # (use builtin set() collection ?)
                     if issubclass(self._attrs[att][0], CaliopenObject):
                         setattr(self._db, att,
-                                [self._attrs[att][0]._model_class(**x.marshall_dict())
-                                                for x in getattr(self, att)])
+                                [self._attrs[att][0]._model_class(
+                                    **x.marshall_dict())
+                                    for x in getattr(self, att)])
                     else:
                         setattr(self._db, att, getattr(self, att))
                 else:
@@ -243,7 +265,14 @@ class ObjectStorable(ObjectJsonDictifiable):
                         setattr(self._db, att,
                                 getattr(self, att).replace(tzinfo=None))
                     else:
-                        setattr(self._db, att, getattr(self, att))
+                        self_att = self._attrs[att]
+                        get_att = getattr(self, att)
+                        if issubclass(self_att, CaliopenObject):
+                            if get_att is not None:
+                                setattr(self._db, att, self_att._model_class(
+                                    **get_att.marshall_dict()))
+                        else:
+                            setattr(self._db, att, get_att)
 
     def unmarshall_db(self, **options):
         """squash self.attrs with db representation"""
@@ -299,11 +328,7 @@ class ObjectUser(ObjectStorable):
         if patch is None or "current_state" not in patch:
             return main_errors.PatchUnprocessable()
 
-        # check patch and patch_current have the same keys
         patch_current = patch.pop("current_state")
-        if patch.keys() != patch_current.keys():
-            return main_errors.PatchUnprocessable(message=
-                                                  "patch and patch.current_state are inconsistent")
 
         # build 3 siblings : 2 from patch and last one from db
         obj_patch_new = self.__class__(user_id=self.user_id)
@@ -325,40 +350,56 @@ class ObjectUser(ObjectStorable):
         except NotFound as exc:
             return exc
 
+        # TODO : manage protected attributes, to prevent patch on them
         # check if patch is consistent with db current state
         # if it is, squash self attributes
         self.unmarshall_db()
         for key in patch.keys():
+            if key not in self._attrs.keys():
+                return main_errors.PatchUnprocessable(
+                    message="unknown key in patch")
             current_attr = self._attrs[key]
             old_val = getattr(obj_patch_old, key)
             cur_val = getattr(self, key)
             msg = "Patch current_state not consistent with db, step {} key {}"
-            if isinstance(current_attr, types.ListType):
-                if old_val == [] and cur_val != []:
-                    return main_errors.PatchConflict(message=msg.format(1, key))
-                if cur_val == [] and old_val != []:
-                    return main_errors.PatchConflict(message=msg.format(2, key))
-                for old in old_val:
-                    found = False
-                    for elem in cur_val:
-                        if issubclass(current_attr[0], CaliopenObject):
-                            if elem.__dict__ == old.__dict__:
-                                found = True
-                                break
-                        else:
-                            if elem == old:
-                                found = True
-                                break
-                    if not found:
-                        return main_errors.PatchConflict(message=msg.format(3, key))
-            elif isinstance(self._attrs[key], types.DictType):
-                if cmp(old_val, cur_val) != 0:
-                    return main_errors.PatchConflict(message=msg.format(4, key))
+            if key not in patch_current.keys():
+                # means patch wants to add the key. Value in db should be null
+                if cur_val != None:
+                    return main_errors.PatchConflict(
+                        message=msg.format(0, key))
+                setattr(self, key, getattr(obj_patch_new, key))
             else:
-                if old_val != cur_val:
-                    return main_errors.PatchConflict(message=msg.format(5, key))
+                if isinstance(current_attr, types.ListType):
+                    if old_val == [] and cur_val != []:
+                        return main_errors.PatchConflict(
+                            message=msg.format(1, key))
+                    if cur_val == [] and old_val != []:
+                        return main_errors.PatchConflict(
+                            message=msg.format(2, key))
+                    for old in old_val:
+                        found = False
+                        for elem in cur_val:
+                            if issubclass(current_attr[0], CaliopenObject):
+                                if elem.__dict__ == old.__dict__:
+                                    found = True
+                                    break
+                            else:
+                                if elem == old:
+                                    found = True
+                                    break
+                        if not found:
+                            return main_errors.PatchConflict(
+                                message=msg.format(3, key))
+                elif isinstance(self._attrs[key], types.DictType):
+                    if cmp(old_val, cur_val) != 0:
+                        return main_errors.PatchConflict(
+                            message=msg.format(4, key))
+                else:
+                    if old_val != cur_val:
+                        return main_errors.PatchConflict(
+                            message=msg.format(5, key))
 
-            setattr(self, key, getattr(obj_patch_new, key))
+                setattr(self, key, getattr(obj_patch_new, key))
 
         if "db" in options and options["db"] is True:
             # apply changes to db model and update db
@@ -373,7 +414,6 @@ class ObjectUser(ObjectStorable):
 
 
 class ObjectIndexable(ObjectUser):
-
     zope.interface.implements(storage.IndexIO)
 
     _index_class = None  # dsl model for object
@@ -385,7 +425,8 @@ class ObjectIndexable(ObjectUser):
         obj_id = getattr(self, self._pkey_name)
         try:
             self._index = self._index_class.get(index=self.user_id,
-                                                id=obj_id, using=self._index_class.client())
+                                                id=obj_id,
+                                                using=self._index_class.client())
         except Exception as exc:
             if isinstance(exc, ESexceptions.NotFoundError):
                 log.info("indexed doc not found")
@@ -405,7 +446,13 @@ class ObjectIndexable(ObjectUser):
         self.save_index()
 
     def delete_index(self, **options):
-        raise NotImplementedError
+        try:
+            self._index.delete(using=self._index_class.client())
+        except Exception as exc:
+            log.info(exc)
+            return exc
+
+        return None
 
     def update_index(self, **options):
         """get indexed doc from elastic and update it with self attrs
@@ -438,6 +485,7 @@ class ObjectIndexable(ObjectUser):
         # object comparaison
         index_sibling = self.__class__(user_id=self.user_id)
         index_sibling._index = self._index
+
         index_sibling.unmarshall_index()
 
         if not isinstance(self._index, self._index_class):
@@ -475,12 +523,11 @@ class ObjectIndexable(ObjectUser):
 
     def unmarshall_index(self, **options):
         """squash self.attrs with index representation"""
-
         if isinstance(self._index, self._index_class):
             self.unmarshall_dict(self._index.to_dict())
 
     def apply_patch(self, patch, **options):
-        error = super(ObjectIndexable, self).apply_patch(patch, options)
+        error = super(ObjectIndexable, self).apply_patch(patch, **options)
 
         if error is not None:
             return error

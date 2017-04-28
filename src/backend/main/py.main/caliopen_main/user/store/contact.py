@@ -149,12 +149,12 @@ class PublicKey(BaseModel):
     fingerprint = columns.Text()
 
 
-class Lookup(BaseModel):
+class ContactLookup(BaseModel):
 
     """Lookup any information needed to recognize a user contact."""
 
     user_id = columns.UUID(primary_key=True)
-    value = columns.Text(primary_key=True)
-    type = columns.Text(primary_key=True)
-    contact_id = columns.UUID()
-    lookup_id = columns.Text()
+    value = columns.Text(
+        primary_key=True)  # address or 'identifier' in identity
+    type = columns.Text(primary_key=True)  # email, IM, etc.
+    contact_ids = columns.List(columns.UUID())  # many contacts is allowed

@@ -1,16 +1,14 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
-.m-tag {
+.m-tag-list {
 
-  &-list {
+  &__tag {
+    color: $co-color__fg__text--lower;
+    font-weight: 400;
 
-    &__link {
-      color: $co-color__fg__text--lower;
-    }
-
-    .m-link--active {
+    &--active {
       color: $co-color__fg__text--higher;
-      font-weight: 700;
+      font-weight: 600;
     }
   }
 }

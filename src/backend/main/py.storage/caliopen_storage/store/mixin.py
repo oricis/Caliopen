@@ -110,10 +110,10 @@ class IndexedModelMixin(object):
         for k, v in params.items():
             term = {k: v}
             search = search.filter('match', **term)
-        search = search.filter('range', **{'privacy_index': {'gte': min_pi}})
-        search = search.filter('range', **{'privacy_index': {'lte': max_pi}})
+        # search = search.filter('range', **{'privacy_index': {'gte': min_pi}})
+        # search = search.filter('range', **{'privacy_index': {'lte': max_pi}})
         if limit:
-            search = search[offset:offset+limit]
+            search = search[offset:offset + limit]
         else:
             log.warn('Pagination not set for search query,'
                      ' using default storage one')

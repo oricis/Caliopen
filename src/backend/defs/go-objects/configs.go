@@ -3,8 +3,8 @@ package objects
 type (
 	CaliopenConfig struct {
 		RESTstoreConfig RESTstoreConfig
-		//RESTindexConfig RESTindexConfig
-		//NatsConfig      NatsConfig
+		RESTindexConfig RESTIndexConfig
+		NatsConfig      NatsConfig
 		//LDAstoreConfig  LDAstoreConfig
 	}
 
@@ -16,17 +16,16 @@ type (
 		Consistency uint16   `mapstructure:"consistency_level"`
 	}
 
-	/*
-		RESTindexConfig struct {
+	RESTIndexConfig struct {
+		IndexName string   `mapstructure:"index_name"`
+		Hosts     []string `mapstructure:"hosts"`
+	}
 
-		}
-	*/
 	// NATS
-	/*
-		NatsConfig struct {
-
-		}
-	*/
+	NatsConfig struct {
+		Url           string `mapstructure:"url"`
+		OutSMTP_topic string `mapstructure:"outSMTP_topic"`
+	}
 	// LDA
 	/*
 			LDAConfig struct {

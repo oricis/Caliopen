@@ -95,7 +95,7 @@ func API(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	go rest_api.StartServer()
+	go rest_api.StartServer(cmdConfig.SwaggerFile)
 
 	sigHandler()
 }
@@ -127,5 +127,6 @@ func readConfig(readAll bool) error {
 
 type CmdConfig struct {
 	rest_api.APIConfig
+	rest_api.IndexConfig
 	rest_api.ProxyConfig
 }

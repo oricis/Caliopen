@@ -5,37 +5,41 @@ from __future__ import absolute_import, print_function, unicode_literals
 import elasticsearch_dsl as dsl
 from caliopen_storage.store.model import BaseIndexDocument
 from caliopen_main.user.store.tag_index import IndexedResourceTag
+from caliopen_main.message.store.attachment_index import \
+    IndexedMessageAttachment
+from caliopen_main.message.store.external_references_index import \
+    IndexedExternalReferences
+from caliopen_main.user.store.local_identity_index import IndexedIdentity
+from caliopen_main.message.store.participant_index import IndexedParticipant
+from caliopen_main.message.store.privacy_features_index import \
+    IndexedPrivacyFeatures
 
 
 class IndexedMessage(BaseIndexDocument):
-
     """Contact indexed message model."""
 
     doc_type = 'indexed_message'
 
-    message_id = dsl.String()
-    thread_id = dsl.String()
-    type = dsl.String()
-    from_ = dsl.String()
+    attachments = dsl.Nested(doc_class=IndexedMessageAttachment)
+    body = dsl.String()
     date = dsl.Date()
+    date_delete = dsl.Date()
     date_insert = dsl.Date()
-    privacy_index = dsl.Integer()
+    discussion_id = dsl.String()
+    external_references = dsl.Nested(doc_class=IndexedExternalReferences)
+    identities = dsl.Nested(doc_class=IndexedIdentity)
     importance_level = dsl.Integer()
-    subject = dsl.String()
-    external_message_id = dsl.String()
-    external_parent_id = dsl.String()
-    external_thread_id = dsl.String()
+    is_answered = dsl.Boolean()
+    is_draft = dsl.Boolean()
+    is_unread = dsl.Boolean()
+    message_id = dsl.String()
+    parent_id = dsl.String()
+    participants = dsl.Nested(doc_class=IndexedParticipant)
+    privacy_features = dsl.Nested(IndexedPrivacyFeatures)
     raw_msg_id = dsl.String()
-    flags = dsl.String()
-    offset = dsl.Integer()
-    size = dsl.Integer()
-
-    # XXX better nested definition
-    headers = dsl.Nested()
-    recipients = dsl.Nested()
-    text = dsl.String()
-
+    subject = dsl.String()
     tags = dsl.Nested(doc_class=IndexedResourceTag)
+    type = dsl.String()
 
     @property
     def message_id(self):
@@ -47,25 +51,32 @@ class IndexedMessage(BaseIndexDocument):
         """Create elasticsearch mapping object for an user."""
         m = dsl.Mapping(cls.doc_type)
         m.meta('_all', enabled=False)
-        m.field('message_id', dsl.String(index='not_analyzed'))
-        m.field('thread_id', dsl.String(index='not_analyzed'))
-        m.field('type', dsl.String(index='not_analyzed'))
-        m.field('from_', dsl.String(index='not_analyzed'))
+        m.field('attachments', dsl.Nested(doc_class=IndexedMessageAttachment,
+                                          include_in_all=True))
+        m.field('body', 'string')
         m.field('date', 'date')
+        m.field('date_delete', 'date')
         m.field('date_insert', 'date')
-        m.field('privacy_index', 'short')
+        m.field('discussion_id', dsl.String(index='not_analyzed'))
+        m.field('external_references',
+                dsl.Nested(doc_class=IndexedExternalReferences,
+                           include_in_all=True))
+        m.field('identities',
+                dsl.Nested(doc_class=IndexedIdentity, include_in_all=True))
         m.field('importance_level', 'short')
-        m.field('subject', 'string')
-        m.field('external_message_id', 'string')
-        m.field('external_parent_id', 'string')
-        m.field('external_thread_id', 'string')
+        m.field('is_answered', 'boolean')
+        m.field('is_draft', 'boolean')
+        m.field('is_unread', 'boolean')
+        m.field('message_id', dsl.String(index='not_analyzed'))
+        m.field('parent_id', dsl.String(index='not_analyzed'))
+        m.field('participants',
+                dsl.Nested(doc_class=IndexedParticipant, include_in_all=True))
+        m.field('privacy_features', dsl.Nested(doc_class=IndexedPrivacyFeatures,
+                                               include_in_all=True))
         m.field('raw_msg_id', dsl.String(index='not_analyzed'))
-        m.field('flags', 'string')
-        m.field('offset', 'integer')
-        m.field('size', 'integer')
-        m.field('text', 'string')
-        # Nested
-        m.field('recipients', dsl.Nested(include_in_all=True))
-        m.field('headers', dsl.Nested(include_in_all=True))
+        m.field('subject', 'string')
+        m.field('tags',
+                dsl.Nested(doc_class=IndexedResourceTag, include_in_all=True))
+        m.field('type', dsl.String(index='not_analyzed'))
         m.save(using=cls.client(), index=user_id)
         return m

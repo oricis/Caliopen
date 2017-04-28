@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import BlockList from '../../../../components/BlockList';
 import Title from '../../../../components/Title';
@@ -28,8 +29,8 @@ ContactListLetter.propTypes = {
 const ContactList = ({ contacts, sortView }) => {
   const letters = [];
   let firstLetter = null;
-  contacts.map((c) => {
-    const contactTitle = getFirstLetter(c.contact[sortView]);
+  contacts.map((contact) => {
+    const contactTitle = getFirstLetter(contact[sortView]);
     if (contactTitle !== firstLetter) {
       letters.push(getFirstLetter(contactTitle));
     }
@@ -47,11 +48,11 @@ const ContactList = ({ contacts, sortView }) => {
             letter={letter}
           />
           <BlockList className="m-contact-list__group">
-            {contacts.map(c =>
-              getFirstLetter(c.contact[sortView]) === letter &&
+            {contacts.map(contact =>
+              getFirstLetter(contact[sortView]) === letter &&
                 <ContactItem
-                  contact={c.contact}
-                  key={c.contact.contact_id}
+                  contact={contact}
+                  key={contact.contact_id}
                   sortView={sortView}
                 />
             )}
@@ -67,7 +68,7 @@ ContactList.propTypes = {
   sortView: PropTypes.string,
 };
 ContactList.defaultProps = {
-  sortView: 'given_name',
+  sortView: 'title',
 };
 
 

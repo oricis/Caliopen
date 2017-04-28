@@ -1,6 +1,6 @@
 import React from 'react';
 import { createSelector } from 'reselect';
-import { withRouter } from 'react-router';
+import { withRouter, matchPath } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Presenter from './presenter';
 import { ComposeButton, CreateContactButton, ComposeContactButton, ReplyButton } from './components';
@@ -11,12 +11,12 @@ const defaultActionsSelector = createSelector(
   state => state,
   () => ([
     {
-      route: 'contact-list',
+      route: '/contacts',
       application: 'contacts',
       children: props => (<CreateContactButton {...props} />),
     },
     {
-      route: 'contact',
+      route: '/contacts/:contactId',
       disabled: true,
       children: props => (<ComposeContactButton {...props} />),
     },
@@ -26,7 +26,7 @@ const defaultActionsSelector = createSelector(
       children: props => (<ComposeButton {...props} />),
     },
     {
-      route: 'thread',
+      route: '/discussions/:discussionId',
       disabled: true,
       children: props => (<ReplyButton {...props} />),
     },
@@ -34,10 +34,10 @@ const defaultActionsSelector = createSelector(
 );
 
 export const principalActionSelector = createSelector(
-  [defaultActionsSelector, applicationSelector, (state, props) => props.router],
-  (actions, applicationName, router) => actions.reduce(
+  [defaultActionsSelector, applicationSelector, (state, props) => props.location],
+  (actions, applicationName, location) => actions.reduce(
     (prev, action) => {
-      if (router.isActive(action.route)) {
+      if (matchPath(location.pathname, { path: action.route })) {
         return action;
       }
 
@@ -54,10 +54,11 @@ export const availableActionsSelector = createSelector(
   [
     defaultActionsSelector,
     principalActionSelector,
-    (state, props) => props.router,
+    (state, props) => props.location,
   ],
-  (actions, principalAction, router) => actions.filter(
-    action => !router.isActive(action.route) && !!action.application && action !== principalAction
+  (actions, principalAction, location) => actions.filter(
+    action => !matchPath(location.pathname, { path: action.route }) &&
+      action.application && action !== principalAction
   )
 );
 

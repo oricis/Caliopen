@@ -11,14 +11,17 @@ then orders email processing via NATS topic « inboundSMTPEmail »
 */
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/hashicorp/go-multierror"
-	"time"
 	"sync"
-	"encoding/json"
+	"time"
 )
+
+const nats_message_tmpl = "{\"order\":\"%s\",\"user_id\": \"%s\", \"message_id\": \"%s\"}"
 
 func (b *EmailBroker) startIncomingSmtpAgent() error {
 	for i := 0; i < b.Config.InWorkers; i++ {
@@ -42,16 +45,16 @@ func (b *EmailBroker) incomingSmtpWorker() {
 			case in.Response <- ack:
 			//write was OK
 			default:
-			//unable to write, don't block
+				//unable to write, don't block
 			}
 		}
-		go b.processInbound(in)
+		go b.processInbound(in, false)
 	}
 }
 
-// for now, ProcessInbound only store raw email and sends an order on NATS topic for py.delivery to process it
-// in future, this broker should process the whole delivery, including the email unmarshaling into a Caliopen's message format
-func (b *EmailBroker) processInbound(in *SmtpEmail) {
+// stores raw email + json + message and sends an order on NATS topic for next composant to process it
+// if raw_only is true, only stores the raw email with its json representation but doen't unmarshal to our message model
+func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 	resp := &DeliveryAck{
 		EmailMessage: in.EmailMessage,
 		Err:          nil,
@@ -73,7 +76,7 @@ func (b *EmailBroker) processInbound(in *SmtpEmail) {
 		log.Infof("inbound: processing envelope From: %s -> To: %v", in.EmailMessage.Email.SmtpMailFrom, in.EmailMessage.Email.SmtpRcpTo)
 	}
 
-	rcptsIds, err := b.Store.GetRecipients(in.EmailMessage.Email.SmtpRcpTo)
+	rcptsIds, err := b.Store.GetUsersForRecipients(in.EmailMessage.Email.SmtpRcpTo)
 
 	if err != nil {
 		log.WithError(err).Warn("inbound: recipients lookup failed")
@@ -82,7 +85,7 @@ func (b *EmailBroker) processInbound(in *SmtpEmail) {
 	}
 
 	if len(rcptsIds) == 0 {
-		resp.Err = errors.New("no recipient found in Caliopen keyspace")
+		resp.Err = errors.New("no recipient found in Caliopen domain")
 		return
 	}
 
@@ -94,40 +97,42 @@ func (b *EmailBroker) processInbound(in *SmtpEmail) {
 		return
 	}
 
-	//step 3 : send 'deliver' order fo each recipient
+	//step 3 : send process order to nats for each rcpt
 	var errs error
 	wg := new(sync.WaitGroup)
 	wg.Add(len(rcptsIds))
 	for _, rcptId := range rcptsIds {
-		go func(rcptId string) {
+		go func(rcptId objects.UUID) {
 			defer wg.Done()
-			natsMessage := fmt.Sprintf("{\"user_id\": \"%s\", \"raw_email_id\": \"%s\"}", rcptId, raw_email_id)
-			resp, err := b.NatsConn.Request(b.Config.InTopic, []byte(natsMessage), 10 * time.Second)
+			const nats_order = "process_raw"
+			natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, rcptId.String(), raw_email_id)
+			// XXX manage timeout correctly
+			resp, err := b.NatsConn.Request(b.Config.InTopic, []byte(natsMessage), 10*time.Second)
 			if err != nil {
 				if b.NatsConn.LastError() != nil {
-					log.WithError(b.NatsConn.LastError()).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId)
+					log.WithError(b.NatsConn.LastError()).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId.String())
 					errs = multierror.Append(errs, err)
 				} else {
-					log.WithError(err).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId)
+					log.WithError(err).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId.String())
 					errs = multierror.Append(errs, err)
 				}
 			} else {
 				nats_ack := new(map[string]interface{})
 				err := json.Unmarshal(resp.Data, &nats_ack)
 				if err != nil {
-					log.WithError(err).Warnf("EmailBroker failed to parse inbound ack on NATS for user %s", rcptId)
+					log.WithError(err).Warnf("EmailBroker failed to parse inbound ack on NATS for user %s", rcptId.String())
 					errs = multierror.Append(err)
 					return
 				}
 				if err, ok := (*nats_ack)["error"]; ok {
-					log.WithField("error", err.(string)).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId)
+					log.WithField("error", err.(string)).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId.String())
 					errs = multierror.Append(errors.New(err.(string)))
 					return
 				}
 
 				//nats delivery OK
 				if b.Config.LogReceivedMails {
-					log.Infof("EmailBroker : NATS inbound request successfully handled for user %s : %s", rcptId, (*nats_ack)["message"])
+					log.Infof("EmailBroker : NATS inbound request successfully handled for user %s : %s", rcptId.String(), (*nats_ack)["message"])
 				}
 			}
 		}(rcptId)

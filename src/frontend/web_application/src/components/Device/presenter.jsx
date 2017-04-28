@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Section from '../../components/Section';
 import PiBar from '../../components/PiBar/presenter';
 import DeviceForm from './components/DeviceForm';

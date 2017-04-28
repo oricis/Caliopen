@@ -1,10 +1,13 @@
 package http_middleware
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"gopkg.in/gin-gonic/gin.v1"
 	"gopkg.in/redis.v5"
+	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -25,9 +28,14 @@ func BasicAuthFromCache(cache *redis.Client, realm string) gin.HandlerFunc {
 		// Get provided auth headers
 		var user_id, access_token string
 		var ok bool
-		if user_id, access_token, ok = c.Request.BasicAuth(); !ok {
-			kickUnauthorizedRequest(c, realm)
+
+		//Try auth-scheme 'Bearer' then 'Basic'
+		if user_id, access_token, ok = BearerAuth(c.Request); !ok {
+			if user_id, access_token, ok = c.Request.BasicAuth(); !ok {
+				kickUnauthorizedRequest(c, realm)
+			}
 		}
+
 		// Search user in redis cache of allowed credentials
 		var cache_str string
 		var err error
@@ -40,6 +48,9 @@ func BasicAuthFromCache(cache *redis.Client, realm string) gin.HandlerFunc {
 		if err != nil || cache.Access_token != access_token || time.Since(cache.Expires_at) > 0 {
 			kickUnauthorizedRequest(c, realm)
 		}
+
+		//save user_id in context for future retreival
+		c.Set("user_id", user_id)
 	}
 }
 
@@ -69,4 +80,29 @@ func (ac *auth_cache) UnmarshalJSON(b []byte) error {
 	ac.Expires_at = expire
 	ac.Refresh_token = temp.Refresh_token
 	return nil
+}
+
+func BearerAuth(r *http.Request) (username, password string, ok bool) {
+	auth := r.Header.Get("Authorization")
+	if auth == "" {
+		return
+	}
+	return parseBearerAuth(auth)
+}
+
+func parseBearerAuth(auth string) (username, password string, ok bool) {
+	const prefix = "Bearer "
+	if !strings.HasPrefix(auth, prefix) {
+		return
+	}
+	c, err := base64.StdEncoding.DecodeString(auth[len(prefix):])
+	if err != nil {
+		return
+	}
+	cs := string(c)
+	s := strings.IndexByte(cs, ':')
+	if s < 0 {
+		return
+	}
+	return cs[:s], cs[s+1:], true
 }

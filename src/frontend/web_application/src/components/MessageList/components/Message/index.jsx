@@ -12,19 +12,27 @@ import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
 
-const MessageInfosContainer = ({ __, message, author }) => (
-  <div className="m-message__infos-container">
-    <div className="m-message__author">{author.address}</div>
-    <div className="m-message__type">
-      <span className="m-message__type-label">{__('by')} {message.type}</span>
-      {' '}
-      <Icon type={message.type} className="m-message__type-icon" spaced />
+const MessageInfosContainer = ({ __, message, author }) => {
+  const typeTranslations = {
+    email: __('message-list.message.protocol.email'),
+  };
+
+  return (
+    <div className="m-message__infos-container">
+      <div className="m-message__author">{author.address}</div>
+      <div className="m-message__type">
+        <span className="m-message__type-label">
+          {__('message-list.message.by', { type: typeTranslations[message.type] })}
+        </span>
+        {' '}
+        <Icon type={message.type} className="m-message__type-icon" spaced />
+      </div>
+      <DateTime className="m-message__date" format="LT">
+        {message.date}
+      </DateTime>
     </div>
-    <DateTime className="m-message__date" format="LT">
-      {message.date}
-    </DateTime>
-  </div>
-);
+  );
+};
 
 MessageInfosContainer.propTypes = {
   author: PropTypes.shape({}).isRequired,
@@ -100,7 +108,7 @@ class Message extends Component {
 
   render() {
     const { message, __ } = this.props;
-    const author = message.participants.find(participant => participant.type === 'from');
+    const author = message.participants.find(participant => participant.type === 'From');
     const subject = message.subject;
     const topBarClassName = classnames(
       'm-message__top-bar',
@@ -162,9 +170,9 @@ class Message extends Component {
               <Button
                 onClick={this.handleExpandClick}
                 value={this.state.isExpanded}
-                title={this.state.isExpanded ? __('Collaspse') : __('Expand')}
+                title={this.state.isExpanded ? __('message-list.message.action.collapse') : __('message-list.message.action.expand')}
               >
-                {this.state.isExpanded ? __('Collaspse') : __('Expand')}
+                {this.state.isExpanded ? __('message-list.message.action.collapse') : __('message-list.message.action.expand')}
               </Button>
             </div>
           }

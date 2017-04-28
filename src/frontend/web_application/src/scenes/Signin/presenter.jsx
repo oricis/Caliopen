@@ -1,22 +1,26 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import SigninForm from '../../components/SigninForm';
 
+function getRedirect(queryString) {
+  const paramRedirect = queryString.split(/[?|&]/).find(str => /^redirect/.test(str));
+
+  return paramRedirect ? paramRedirect.split('=')[1] : undefined;
+}
+
 class Signin extends Component {
   static propTypes = {
-    onSigninSuccess: PropTypes.func.isRequired,
-    redirect: PropTypes.string,
+    location: PropTypes.shape({}).isRequired,
     __: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    redirect: '/',
   };
 
   constructor(props) {
     super(props);
     this.state = {
       errors: {},
+      isAuthenticated: false,
     };
     this.handleSignin = this.handleSignin.bind(this);
     this.handleSigninSuccess = this.handleSigninSuccess.bind(this);
@@ -42,8 +46,7 @@ class Signin extends Component {
   }
 
   handleSigninSuccess() {
-    const { redirect, onSigninSuccess } = this.props;
-    onSigninSuccess(redirect);
+    this.setState({ isAuthenticated: true });
   }
 
   handleSigninError(err) {
@@ -66,6 +69,13 @@ class Signin extends Component {
   }
 
   render() {
+    const { location: { search } } = this.props;
+    const redirect = getRedirect(search) || '/';
+
+    if (this.state.isAuthenticated) {
+      return <Redirect push to={redirect} />;
+    }
+
     return (
       <SigninForm onSubmit={this.handleSignin} errors={this.state.errors} />
     );

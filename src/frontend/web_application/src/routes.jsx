@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Page from './layouts/Page';
 import AuthPage from './layouts/AuthPage';
 import Settings from './layouts/Settings';
@@ -13,24 +13,39 @@ import Tags from './scenes/Tags';
 import Devices, { Device } from './scenes/Devices';
 import enableI18n from './services/i18n';
 
-const getRoutes = () => [(
-  <Route name="app" path="/" component={enableI18n(Page)} >
-    <IndexRoute component={DiscussionList} />
-    <Route path="discussions/:discussionId" component={MessageList} />
-    <Route path="contacts" component={ContactBook} />
-    <Route path="settings/" component={Settings}>
-      <Route path="account" component={Account} />
-      <Route path="tags" component={Tags} />
-      <Route path="devices" component={Devices}>
-        <Route path=":deviceId" component={Device} />
-      </Route>
-    </Route>
-  </Route>
-), (
-  <Route name="auth" path="/auth/" component={enableI18n(AuthPage)} >
-    <Route path="signin" component={Signin} />
-    <Route path="signup" component={Signup} />
-  </Route>
-)];
+const I18nAuthPage = enableI18n(AuthPage);
+const I18nPage = enableI18n(Page);
 
-export default getRoutes;
+const Routes = () => (
+  <Switch>
+    <Route path="/auth">
+      <I18nAuthPage>
+        <Switch>
+          <Route exact path="/auth/"><Redirect to="signin" /></Route>
+          <Route path="/auth/signin" component={Signin} />
+          <Route path="/auth/signup" component={Signup} />
+        </Switch>
+      </I18nAuthPage>
+    </Route>
+    <Route path="/">
+      <I18nPage>
+        <Switch>
+          <Route exact path="/" component={DiscussionList} />
+          <Route path="/discussions/:discussionId" component={MessageList} />
+          <Route path="/contacts" component={ContactBook} />
+          <Route path="/settings/">
+            <Settings>
+              <Route path="/settings/account" component={Account} />
+              <Route path="/settings/tags" component={Tags} />
+              <Route path="/settings/devices" component={Devices}>
+                <Route path="/settings/devices/:deviceId" component={Device} />
+              </Route>
+            </Settings>
+          </Route>
+        </Switch>
+      </I18nPage>
+    </Route>
+  </Switch>
+);
+
+export default Routes;

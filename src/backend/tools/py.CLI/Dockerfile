@@ -33,10 +33,6 @@ RUN python setup.py develop
 WORKDIR /srv/caliopen/code/src/backend/main/py.main
 RUN python setup.py develop
 
-# Install Caliopen SMTP protocol, needed for CLI import command
-WORKDIR /srv/caliopen/code/src/backend/protocols/py.smtp
-RUN python setup.py develop
-
 # Install Caliopen CLI
 
 # Add local code to other base directory, local changes are seen

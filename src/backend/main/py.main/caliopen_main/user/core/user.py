@@ -16,11 +16,11 @@ from caliopen_storage.exception import NotFound, CredentialException
 from ..store import (User as ModelUser,
                      UserName as ModelUserName,
                      IndexUser,
-                     Counter as ModelCounter,
                      UserTag as ModelUserTag,
                      FilterRule as ModelFilterRule,
                      ReservedName as ModelReservedName,
-                     LocalIdentity as ModelLocalIdentity
+                     LocalIdentity  as ModelLocalIdentity,
+                     ContactLookup
                      )
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
@@ -35,18 +35,7 @@ class LocalIdentity(BaseCore):
     """User local identity core class."""
 
     _model_class = ModelLocalIdentity
-    _pkey_name = 'address'
-
-
-class Counter(BaseCore):
-    """
-    Counter core object.
-
-    Store all counters related to an user
-    """
-
-    _model_class = ModelCounter
-    _pkey_name = 'user_id'
+    _pkey_name = 'identifier'
 
 
 class Tag(BaseUserCore):
@@ -142,6 +131,7 @@ class User(BaseCore):
         # then
         #      create user and linked contact
         """
+
         def rollback_username_storage(username):
             UserName.get(username).delete()
 
@@ -182,7 +172,7 @@ class User(BaseCore):
             password_strength = zxcvbn(new_user.password,
                                        user_inputs=user_inputs)
             privacy_features = {"password_strength":
-                                str(password_strength["score"])}
+                                    str(password_strength["score"])}
             passwd = new_user.password.encode('utf-8')
             new_user.password = bcrypt.hashpw(passwd, bcrypt.gensalt())
         except Exception as exc:
@@ -199,13 +189,21 @@ class User(BaseCore):
 
         try:
             recovery = new_user.recovery_email
+            if hasattr(new_user, "contact"):
+                family_name = new_user.contact.family_name
+                given_name = new_user.contact.given_name
+            else:
+                family_name = ""
+                given_name = ""
             core = super(User, cls).create(user_id=user_id,
                                            name=new_user.name,
                                            password=new_user.password,
                                            recovery_email=recovery,
                                            params=new_user.params,
                                            date_insert=datetime.utcnow(),
-                                           privacy_features=privacy_features
+                                           privacy_features=privacy_features,
+                                           family_name=family_name,
+                                           given_name=given_name
                                            )
         except Exception as exc:
             log.info(exc)
@@ -216,12 +214,17 @@ class User(BaseCore):
         # Setup index
         core._setup_user_index()
 
-        # Create counters
-        Counter.create(user_id=core.user_id)
         core.setup_system_tags()
 
+        # Add a default local identity on a default configured domain
+        default_domain = Configuration('global').get('default_domain')
+        default_local_id = '{}@{}'.format(core.name, default_domain)
+        if not core.add_local_identity(default_local_id):
+            log.warn('Impossible to create default local identity {}'.
+                     format(default_local_id))
+
         # save and index linked contact
-        if new_user.contact:
+        if hasattr(new_user, "contact"):
             contact = Contact(user_id=user_id, **new_user.contact.serialize())
             contact.contact_id = uuid.uuid4()
 
@@ -240,14 +243,13 @@ class User(BaseCore):
             # XXX should use core proxy, not directly model attribute
             core.model.contact_id = contact.contact_id
 
-        core.save()
+            # fill contact_lookup table
+            log.info("contact id : {}".format(contact.contact_id))
+            ContactLookup.create(user_id=core.user_id,
+                                 value=default_local_id, type='email',
+                                 contact_ids=[contact.contact_id])
 
-        # Add a default local identity on a default configured domain
-        default_domain = Configuration('global').get('default_domain')
-        default_local_id = '{}@{}'.format(core.name, default_domain)
-        if not core.add_local_identity(default_local_id):
-            log.warn('Impossible to create default local identity {}'.
-                     format(default_local_id))
+        core.save()
 
         return core
 
@@ -296,9 +298,9 @@ class User(BaseCore):
             log.warn('Index already exist {}'.format(self.user_id))
 
         for name, kls in core_registry.items():
-            if kls._model_class._index_class and \
-               hasattr(kls._model_class, 'user_id'):
-                idx_kls = kls._model_class._index_class()
+            if hasattr(kls, "_index_class") and \
+                    hasattr(kls._model_class, 'user_id'):
+                idx_kls = kls._index_class()
                 log.debug('Init index for {}'.format(idx_kls))
                 if hasattr(idx_kls, 'create_mapping'):
                     log.info('Create index {} mapping for doc_type {}'.
@@ -312,33 +314,6 @@ class User(BaseCore):
             tag['type'] = 'system'
             tag['date_insert'] = datetime.utcnow()
             Tag.create(self, **tag)
-
-    def new_message_id(self):
-        """Create a new message_id from ``Counter``."""
-        counter = Counter.get(self.user_id)
-        # XXX : MUST be handled by core object correctly
-        counter.model.message_id += 1
-        counter.save()
-        return counter.message_id
-
-    def new_thread_id(self):
-        """Create a new thread_id from ``Counter``."""
-        counter = Counter.get(self.user_id)
-        # XXX : MUST be handled by core object correctly
-        counter.model.thread_id += 1
-        counter.save()
-        return counter.thread_id
-
-    def new_rule_id(self):
-        """Create a new rule_id from ``counter``."""
-        counter = Counter.get(self.user_id)
-        counter.model.rule_id += 1
-        counter.save()
-        return counter.rule_id
-
-    def get_thread_id(self, external_id):
-        """Get a new thread_id counter value."""
-        return self.new_thread_id()
 
     @property
     def contact(self):
@@ -376,15 +351,17 @@ class User(BaseCore):
         try:
             identity = LocalIdentity.get(formatted)
             if identity.user_id == self.user_id:
-                if identity.address in self.local_identities:
+                if identity.identifier in self.local_identities:
                     # Already in local identities
                     return True
             raise Exception('Inconsistent local identity {}'.format(address))
         except NotFound:
-            identity = LocalIdentity.create(address=formatted,
+            display_name = "{} {}".format(self.given_name, self.family_name)
+            identity = LocalIdentity.create(identifier=formatted,
                                             user_id=self.user_id,
-                                            type=['email'],
-                                            status='active')
+                                            type='email',
+                                            status='active',
+                                            display_name=display_name)
             self.local_identities.append(formatted)
             return True
         except Exception as exc:

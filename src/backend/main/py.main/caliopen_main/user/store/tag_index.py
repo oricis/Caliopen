@@ -13,6 +13,9 @@ class IndexedResourceTag(dsl.InnerObjectWrapper):
 
     """Nest tag indexed model."""
 
-    tag_id = dsl.String(index='not_analyzed')
+    date_insert = dsl.Date()
+    importance_level = dsl.Integer()
+    label = dsl.String()
     name = dsl.String()
+    tag_id = dsl.String(index='not_analyzed')
     type = dsl.Boolean()

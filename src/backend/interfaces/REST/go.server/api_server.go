@@ -7,29 +7,34 @@ package rest_api
 import (
 	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/operations/messages"
 	"github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/operations/users"
 	"github.com/CaliOpen/CaliOpen/src/backend/main/go.main"
 	log "github.com/Sirupsen/logrus"
+	"github.com/go-openapi/loads"
 	"gopkg.in/gin-gonic/gin.v1"
 	"gopkg.in/redis.v5"
 )
 
 var (
 	server *REST_API
-	caliop caliopen.RESTservices
 )
 
 type (
 	REST_API struct {
-		config APIConfig
-		cache  *redis.Client
+		config   APIConfig
+		cache    *redis.Client
+		swagSpec *loads.Document
 	}
 
 	APIConfig struct {
 		Host          string `mapstructure:"host"`
 		Port          string `mapstructure:"port"`
+		SwaggerFile   string `mapstructure:"swaggerSpec"`
 		BackendConfig `mapstructure:"BackendConfig"`
-		CacheSettings `mapstructure:"CacheConfig"`
+		IndexConfig   `mapstructure:"IndexConfig"`
+		CacheSettings `mapstructure:"RedisConfig"`
+		NatsConfig    `mapstructure:"NatsConfig"`
 	}
 
 	BackendConfig struct {
@@ -43,10 +48,23 @@ type (
 		Consistency uint16   `mapstructure:"consistency_level"`
 	}
 
+	IndexConfig struct {
+		IndexName string        `mapstructure:"index_name"`
+		Settings  IndexSettings `mapstructure:"index_settings"`
+	}
+
+	IndexSettings struct {
+		Hosts []string `mapstructure:"hosts"`
+	}
+
 	CacheSettings struct {
 		Host     string `mapstructure:"host"`
 		Password string `mapstructure:"password"`
 		Db       int    `mapstructure:"db"`
+	}
+	NatsConfig struct {
+		Url           string `mapstructure:"url"`
+		OutSMTP_topic string `mapstructure:"outSMTP_topic"`
 	}
 )
 
@@ -66,6 +84,14 @@ func (server *REST_API) initialize(config APIConfig) error {
 			Keyspace:    config.BackendConfig.Settings.Keyspace,
 			Consistency: config.BackendConfig.Settings.Consistency,
 		},
+		RESTindexConfig: obj.RESTIndexConfig{
+			IndexName: config.IndexConfig.IndexName,
+			Hosts:     config.IndexConfig.Settings.Hosts,
+		},
+		NatsConfig: obj.NatsConfig{
+			Url:           config.NatsConfig.Url,
+			OutSMTP_topic: config.NatsConfig.OutSMTP_topic,
+		},
 	}
 
 	err := caliopen.Initialize(caliopenConfig)
@@ -74,13 +100,11 @@ func (server *REST_API) initialize(config APIConfig) error {
 		log.WithError(err).Fatal("Caliopen facilities initialization failed")
 	}
 
-	caliop = caliopen.Facilities.RESTfacility
-
 	//TODO : manage credentials & connection with config & backends interface
 	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Addr:     config.CacheSettings.Host,
+		Password: config.CacheSettings.Password,
+		DB:       config.CacheSettings.Db,
 	})
 	_, err = client.Ping().Result()
 	if err != nil {
@@ -90,16 +114,28 @@ func (server *REST_API) initialize(config APIConfig) error {
 	return nil
 }
 
-func StartServer() error {
-	return server.start()
+func StartServer(swaggerFile string) error {
+	return server.start(swaggerFile)
 }
 
-func (server *REST_API) start() error {
+func (server *REST_API) start(swaggerFile string) error {
 	// Creates a gin router with default middleware:
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
 	// adds our middlewares
-	//router.Use(SwaggerInboundValidation())
+	if swaggerFile != "" {
+		//TODO: debug swagger validation as it takes too long for now to read & validate the swagger.json
+		/*
+			var err error
+			server.swagSpec, err = http_middleware.InitSwaggerMiddleware(swaggerFile)
+			if err != nil {
+				log.WithError(err).Warningln("unable to load swagger spec.")
+			}
+			if server.swagSpec != nil {
+				router.Use(http_middleware.SwaggerValidator(server.swagSpec))
+			}
+		*/
+	}
 
 	// adds our routes and handlers
 	api := router.Group("/api/v2")
@@ -117,30 +153,16 @@ func (server *REST_API) start() error {
 func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 
 	//users API
-	u := api.Group("/users")
-	u.POST("", func(ctx *gin.Context) {
-		users.Create(caliop, ctx)
-	})
-	u.GET("/:user_id", func(ctx *gin.Context) {
-		users.Get(caliop, ctx)
-	})
+	//u := api.Group("/users")
+	identities := api.Group("/identities", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
+	identities.GET("/locals", users.GetLocalsIdentities)
+	identities.GET("/locals/:identity_id", users.GetLocalIdentity)
 
 	//username API
-	api.GET("/username/isAvailable", func(ctx *gin.Context) {
-		users.IsAvailable(caliop, ctx)
-	})
+	api.GET("/username/isAvailable", users.IsAvailable)
 
 	//messages API
-	//messages := api.Group("/messages", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
-	draft := api.Group("/draft", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
-	draft.GET("", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"access": "authorized",
-		})
-	})
-	draft.GET("/test", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"access": "authorized",
-		})
-	})
+	msg := api.Group("/messages", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
+	msg.POST("/:message_id/actions", messages.Actions)
+
 }

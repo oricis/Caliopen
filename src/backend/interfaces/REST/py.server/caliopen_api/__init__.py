@@ -9,7 +9,6 @@ from caliopen_storage.config import Configuration
 
 log = logging.getLogger(__name__)
 
-
 def main(global_config, **settings):
     """Caliopen entry point for WSGI application.
 

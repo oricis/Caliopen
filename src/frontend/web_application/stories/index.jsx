@@ -32,6 +32,7 @@ import Devices from './layouts/Devices';
 import Dropdown, { withDropdownControl } from '../src/components/Dropdown';
 import DropdownMenu from '../src/components/DropdownMenu';
 import Icon, { typeAssoc } from '../src/components/Icon';
+import IconLetter from '../src/components/IconLetter';
 import Link from '../src/components/Link';
 import MessageList from './components/MessageList';
 import Modal from '../src/components/Modal';
@@ -282,6 +283,13 @@ storiesOf('Logo, Icons & Avatars', module)
     };
 
     return (<Icon {...props} />);
+  })
+  .addWithInfo('IconLetter', () => {
+    const props = {
+      word: text('word', 'Foo'),
+    };
+
+    return (<IconLetter {...props} />);
   })
   .addWithInfo('Spinner', () => {
     const props = {

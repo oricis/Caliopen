@@ -6,6 +6,7 @@ const baseConfig = require('./config.js');
 let config = Object.assign(baseConfig.getBase('electron'), {
   target: 'electron',
   entry: [
+    'babel-polyfill',
     'expose-loader?$!expose-loader?jQuery!jquery',
     'script-loader!foundation-sites',
     path.join(__dirname, '../src/index.jsx'),

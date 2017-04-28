@@ -28,3 +28,14 @@ class ObjectInitFailed(Exception):
 
     def __init__(self, message=None, **kw):
         Exception.__init__(self, message, **kw)
+
+
+class ForbiddenAction(Exception):
+    """ Exception when an user tries to do something forbidden
+    
+        because of insufficient rights
+        or because action is not allowed on a specific object or attribute
+    """
+
+    def __init__(self, message=None, **kw):
+        Exception.__init__(self, message, **kw)

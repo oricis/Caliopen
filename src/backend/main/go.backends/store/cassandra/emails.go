@@ -6,14 +6,14 @@ package store
 
 import (
 	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
-	log "github.com/Sirupsen/logrus"
 )
 
 // part of LDABackend interface
 func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) {
-	rawMsgTable := cb.IKeyspace.MapTable("raw_message", "raw_msg_id", &obj.RawMessageModel{})
+	rawMsgTable := cb.IKeyspace.MapTable("raw_message", "raw_msg_id", &obj.RawMessage{})
 	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
 
 	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
@@ -23,11 +23,14 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 	})
 
 	raw_uuid, err := gocql.RandomUUID()
-	m := obj.RawMessageModel{
-		Raw_msg_id: raw_uuid.Bytes(),
-		Data:       raw_email,
-		Size: len(raw_email),
+	var msg_id obj.UUID
+	msg_id.UnmarshalBinary(raw_uuid.Bytes())
+	m := obj.RawMessage{
+		Raw_msg_id: msg_id,
+		Raw_data:   raw_email,
+		Raw_Size:   len(raw_email),
 	}
+
 	err = rawMsgTable.Set(m).Run()
 
 	uuid = raw_uuid.String()
@@ -36,9 +39,8 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 
 // part of LDABackend interface implementation
 // return a list of users' ids found in user_name table for the given email addresses list
-// TODO : modify this lookup as user_name table should be replaced by an 'aliases' table
-func (cb *CassandraBackend) GetRecipients(rcpts []string) (user_ids []string, err error) {
-	userTable := cb.IKeyspace.MapTable("local_identity", "address", &obj.LocalIdentity{})
+func (cb *CassandraBackend) GetUsersForRecipients(rcpts []string) (user_ids []obj.UUID, err error) {
+	userTable := cb.IKeyspace.MapTable("local_identity", "identifier", &obj.LocalIdentity{})
 	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
 
 	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
@@ -54,11 +56,12 @@ func (cb *CassandraBackend) GetRecipients(rcpts []string) (user_ids []string, er
 			log.WithError(err).Infoln("error on userTable query")
 			return
 		}
-		uuid, err := gocql.UUIDFromBytes(result.User_id)
+		var uuid obj.UUID
+		err := uuid.UnmarshalBinary(result.User_id)
 		if err != nil {
-			return []string{}, err
+			return []obj.UUID{}, err
 		}
-		user_ids = append(user_ids, uuid.String())
+		user_ids = append(user_ids, uuid)
 	}
 	return
 }
