@@ -15,7 +15,6 @@ with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file
 requires = [
     'caliopen_main',
     'caliopen_storage',
-    'caliopen_smtp',
 ]
 
 setup(name=name,
