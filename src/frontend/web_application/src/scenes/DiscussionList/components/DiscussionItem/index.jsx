@@ -36,7 +36,7 @@ const DiscussionItem = ({ user, discussion, formatDate, __ }) => {
             {recipients({ discussion, user })}
             {renderTags(discussion)}
           </TextBlock>
-          <TextBlock>{discussion.text}</TextBlock>
+          <TextBlock>{discussion.excerpt}</TextBlock>
         </div>
         <div className="s-discussion-list__col-file">
           { discussion.file_attached && <Icon type="paperclip" /> }
