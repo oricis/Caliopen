@@ -58,19 +58,19 @@ TagItem.defaultProps = {
   className: '',
 };
 
-const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
+const TagList = ({ tags, onTagClick, nbContactsAll, activeTag, __ }) => {
   const list = tags.sort((a, b) => a.localeCompare(b));
   const tagList = Array.from(new Set(list));
 
   return (
     <NavList className="m-tag-list" dir="vertical">
       <TagItem
-        title="All contacts"
+        title={__('tag_list.all_contacts')}
         link=""
         nbContacts={nbContactsAll}
         key={uuidV1()}
         onTagClick={onTagClick}
-        active={activeTag === '' && true}
+        active={activeTag === ''}
       />
       {tagList.map(tag =>
         <TagItem
@@ -79,7 +79,7 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
           nbContacts={nbContactsbyTag(list, tag)}
           key={uuidV1()}
           onTagClick={onTagClick}
-          active={tag === activeTag && true}
+          active={tag === activeTag}
         />
       )}
     </NavList>
@@ -91,5 +91,6 @@ TagList.propTypes = {
   onTagClick: PropTypes.func.isRequired,
   activeTag: PropTypes.string.isRequired,
   nbContactsAll: PropTypes.number.isRequired,
+  __: PropTypes.func.isRequired,
 };
 export default TagList;

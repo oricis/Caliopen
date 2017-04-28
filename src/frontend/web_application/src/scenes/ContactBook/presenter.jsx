@@ -8,7 +8,10 @@ import Button from '../../components/Button';
 
 import './style.scss';
 
-const DEFAULT_SORT_VIEW = 'given_name';
+export const SORT_VIEW_GIVEN_NAME = 'given_name';
+export const SORT_VIEW_FAMILY_NAME = 'family_name';
+
+const DEFAULT_SORT_VIEW = SORT_VIEW_GIVEN_NAME;
 const DEFAULT_SORT_DIR = 'ASC';
 
 function getOrderedContacts(contactList, sortView, sortDir) {
@@ -17,10 +20,13 @@ function getOrderedContacts(contactList, sortView, sortDir) {
     const first = a[sortView] ? a[sortView] : a[altSortView];
     const second = b[sortView] ? b[sortView] : b[altSortView];
 
-    if (sortDir === 'ASC') { return first.localeCompare(second); }
-    if (sortDir === 'DESC') { return second.localeCompare(first); }
-
-    return false;
+    switch (sortDir) {
+      case 'ASC':
+        return first.localeCompare(second);
+      default:
+      case 'DESC':
+        return second.localeCompare(first);
+    }
   });
 
   return sortedContacts;
@@ -109,6 +115,7 @@ class ContactBook extends Component {
               activeTag={this.state.activeTag}
               onTagClick={handleTagClick}
               nbContactsAll={contacts.length}
+              __={__}
             />
           </div>
           <div className="l-contact-book__contact-list">

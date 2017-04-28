@@ -3,26 +3,26 @@ import PropTypes from 'prop-types';
 import Link from '../../../../../../components/Link';
 import ContactAvatarLetter, { SIZE_SMALL } from '../../../../../../components/ContactAvatarLetter';
 import TextBlock from '../../../../../../components/TextBlock';
+import { SORT_VIEW_FAMILY_NAME, SORT_VIEW_GIVEN_NAME } from './';
+
 
 function getTitleView(contact, sortView) {
-  let title = null;
-  if (sortView === 'family_name') {
-    title = `${contact.family_name}${contact.family_name && contact.given_name && ', '}${contact.given_name}`;
-  }
+  if (!contact.family_name && !contact.given_name) { return contact.title; }
 
-  if (sortView === 'given_name') {
-    title = `${contact.given_name}${contact.family_name && contact.given_name && ' '}${contact.family_name}`;
+  switch (sortView) {
+    case 'family_name':
+      return `${contact.family_name}${contact.family_name && contact.given_name && ', '}${contact.given_name}`;
+    default:
+    case 'given_name':
+      return `${contact.given_name}${contact.family_name && contact.given_name && ' '}${contact.family_name}`;
   }
-
-  return title;
 }
 
 const ContactItem = ({ contact, sortView }) => {
-  const contactName = !contact.family_name && !contact.given_name ?
-    contact.title : getTitleView(contact, sortView);
+  const contactName = getTitleView(contact, sortView);
 
   return (
-    <Link noDecoration className="m-contact-list__contact" to={`/contacts/${contact.contact_id}`} key={contact.contact_id}>
+    <Link noDecoration className="m-contact-list__contact" to={`/contacts/${contact.contact_id}`}>
       <div className="m-contact-list__contact-avatar">
         <ContactAvatarLetter isRound contact={contact} size={SIZE_SMALL} />
       </div>
@@ -38,7 +38,7 @@ const ContactItem = ({ contact, sortView }) => {
 
 ContactItem.propTypes = {
   contact: PropTypes.shape({}).isRequired,
-  sortView: PropTypes.oneOf(['given_name', 'family_name']).isRequired,
+  sortView: PropTypes.oneOf([SORT_VIEW_GIVEN_NAME, SORT_VIEW_FAMILY_NAME]).isRequired,
 };
 
 export default ContactItem;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormGrid, FormRow, FormColumn, SelectFieldGroup } from '../../../../components/form';
-
+import { SORT_VIEW_FAMILY_NAME, SORT_VIEW_GIVEN_NAME } from './';
 import './style.scss';
 
 const ContactFilters = ({ onSortDirChange, onSortViewChange, sortView, sortDir, __ }) => (
@@ -14,8 +14,8 @@ const ContactFilters = ({ onSortDirChange, onSortViewChange, sortView, sortDir, 
           label={__('contacts-filters.format-view.label')}
           value={sortView}
           options={[
-            { value: 'given_name', label: __('contacts-filters.format-view.firstname') },
-            { value: 'family_name', label: __('contacts-filters.format-view.name') },
+            { value: SORT_VIEW_GIVEN_NAME, label: __('contacts-filters.format-view.firstname') },
+            { value: SORT_VIEW_FAMILY_NAME, label: __('contacts-filters.format-view.name') },
           ]}
           onChange={onSortViewChange}
         />
@@ -39,7 +39,7 @@ ContactFilters.propTypes = {
   onSortViewChange: PropTypes.func.isRequired,
   __: PropTypes.func.isRequired,
   sortDir: PropTypes.oneOf(['ASC', 'DESC']).isRequired,
-  sortView: PropTypes.oneOf(['given_name', 'family_name']).isRequired,
+  sortView: PropTypes.oneOf([SORT_VIEW_GIVEN_NAME, SORT_VIEW_FAMILY_NAME]).isRequired,
 };
 
 export default ContactFilters;
