@@ -15,11 +15,11 @@ const ContactItem = ({ contact, sortView }) => {
   let contactTitle = null;
 
   if (sortView === 'family_name') {
-    contactTitle = `${familyName}${familyName && givenName && ', '}${givenName}`;
+    contactTitle = `${!familyName && !givenName ? contact.title : familyName}${familyName && givenName && ', '}${givenName}`;
   }
 
   if (sortView === 'given_name') {
-    contactTitle = `${givenName} ${familyName}`;
+    contactTitle = `${!familyName && !givenName ? contact.title : givenName} ${familyName}`;
   }
 
   return (
