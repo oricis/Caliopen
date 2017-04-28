@@ -12,9 +12,10 @@ const DEFAULT_SORT_VIEW = 'given_name';
 const DEFAULT_SORT_DIR = 'ASC';
 
 function getOrderedContacts(contactList, sortView, sortDir) {
+  const altSortView = 'title';
   const sortedContacts = contactList.sort((a, b) => {
-    const first = a[sortView] ? a[sortView] : a.title;
-    const second = b[sortView] ? b[sortView] : b.title;
+    const first = a[sortView] ? a[sortView] : a[altSortView];
+    const second = b[sortView] ? b[sortView] : b[altSortView];
 
     if (sortDir === 'ASC') { return first.localeCompare(second); }
     if (sortDir === 'DESC') { return second.localeCompare(first); }
