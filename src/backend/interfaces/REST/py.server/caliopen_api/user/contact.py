@@ -32,7 +32,6 @@ from ..base.exception import (ResourceNotFound,
 
 log = logging.getLogger(__name__)
 
-
 @resource(collection_path='/contacts',
           path='/contacts/{contact_id}')
 class Contact(Api):
