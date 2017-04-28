@@ -8,7 +8,7 @@
 		"name": "work",
 		"type": "system"
 	}],
-	"text": "<p>It's okay, Bender. I like cooking too. You, minion. Lift my arm. AFTER H=\r\nIM! I don't know what you did, Fry, but once again, you screwed up! Now all\r\nthe planets are gonna start cracking wise abo",
+	"excerpt": "<p>It's okay, Bender. I like cooking too. You, minion. Lift my arm. AFTER H=\r\nIM! I don't know what you did, Fry, but once again, you screwed up! Now all\r\nthe planets are gonna start cracking wise abo",
 	"privacy_index": 1,
 	"participants": [{
 		"type": "Cc",
@@ -41,7 +41,7 @@
 		"name": "lolilol",
 		"type": "user"
 	}],
-	"text": "Shut up and take my money! Leela, are you alright? You got wanged on the he=\r\nad. Bender, you risked your life To save me! Spare me your space age techno=\r\nbabble, Attila the Hun! Now that the, uh, ga",
+	"excerpt": "Shut up and take my money! Leela, are you alright? You got wanged on the he=\r\nad. Bender, you risked your life To save me! Spare me your space age techno=\r\nbabble, Attila the Hun! Now that the, uh, ga",
 	"privacy_index": 25,
 	"participants": [{
 		"type": "From",
@@ -57,7 +57,7 @@
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "46d30c27-6cd8-407b-8536-fda4196c20ca",
 	"total_count": 2,
-	"attachment_count": 0,
+	"attachment_count": 2,
 	"importance_level": 0,
 	"unread_count": 2
 }]
