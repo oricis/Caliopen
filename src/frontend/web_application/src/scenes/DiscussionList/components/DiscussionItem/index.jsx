@@ -39,7 +39,7 @@ const DiscussionItem = ({ user, discussion, formatDate, __ }) => {
           <TextBlock>{discussion.excerpt}</TextBlock>
         </div>
         <div className="s-discussion-list__col-file">
-          { discussion.file_attached && <Icon type="paperclip" /> }
+          { discussion.attachment_count > 0 && <Icon type="paperclip" /> }
         </div>
         <div className="s-discussion-list__col-dates">
           <time title={formatDate(fakeDate, 'LLL')} dateTime={formatDate(fakeDate, '')}>
