@@ -197,6 +197,7 @@
     "tags.action.create": "tags.action.create",
     "tags.form.search.label": "tags.form.search.label",
     "tags.form.search.placeholder": "tags.form.search.placeholder",
+    "tag_list.all_contacts": "tag_list.all_contacts",
     "tags.header.count": "tags.header.count",
     "tags.header.title": "tags.header.title"
 }
