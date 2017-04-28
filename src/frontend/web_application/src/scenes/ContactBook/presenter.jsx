@@ -8,32 +8,29 @@ import Button from '../../components/Button';
 
 import './style.scss';
 
-const defaultSortDir = 'ASC';
-const defaultSortView = 'title';
+export const SORT_VIEW_GIVEN_NAME = 'given_name';
+export const SORT_VIEW_FAMILY_NAME = 'family_name';
+export const SORT_VIEW_TITLE = 'title';
+export const DEFAULT_SORT_VIEW = SORT_VIEW_GIVEN_NAME;
 
-function generateStateFromProps(props) {
-  const { contacts } = props;
-  const tags = [];
-  contacts.map(contact => contact.tags.map(tag => tags.push(tag)));
-
-  return { tags };
-}
-
+const DEFAULT_SORT_DIR = 'ASC';
 
 function getOrderedContacts(contactList, sortView, sortDir) {
-  const sortContacts = contactList.filter(contact => contact[sortView] !== null);
-  const sortNullContacts = contactList.filter(contact => contact[sortView] == null);
+  const altSortView = SORT_VIEW_TITLE;
+  const sortedContacts = contactList.sort((a, b) => {
+    const first = a[sortView] ? a[sortView] : a[altSortView];
+    const second = b[sortView] ? b[sortView] : b[altSortView];
 
-  if (sortDir === 'ASC') {
-    sortContacts.sort((a, b) =>
-      a[sortView].localeCompare(b[sortView]));
-  }
-  if (sortDir === 'DESC') {
-    sortContacts.sort((a, b) =>
-      b[sortView].localeCompare(a[sortView]));
-  }
+    switch (sortDir) {
+      default:
+      case 'ASC':
+        return first.localeCompare(second);
+      case 'DESC':
+        return second.localeCompare(first);
+    }
+  });
 
-  return sortNullContacts.concat(sortContacts);
+  return sortedContacts;
 }
 
 function getFilteredContacts(contactList, activeTag) {
@@ -42,6 +39,7 @@ function getFilteredContacts(contactList, activeTag) {
 
   return filteredContacts;
 }
+
 
 class ContactBook extends Component {
   static propTypes = {
@@ -62,23 +60,15 @@ class ContactBook extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tags: [],
       activeTag: '',
-      sortDir: defaultSortDir,
-      sortView: defaultSortView,
+      sortDir: DEFAULT_SORT_DIR,
+      sortView: DEFAULT_SORT_VIEW,
     };
     this.loadMore = this.loadMore.bind(this);
   }
 
-  componentWillMount() {
-    this.setState(prevState => generateStateFromProps(this.props, prevState));
-  }
   componentDidMount() {
     this.props.requestContacts();
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.setState(prevState => generateStateFromProps(newProps, prevState));
   }
 
   loadMore() {
@@ -98,20 +88,22 @@ class ContactBook extends Component {
       });
     };
 
-    /* const handleSortViewChange = (event) => {
+    const handleSortViewChange = (event) => {
       this.setState({
         sortView: event.target.value,
       });
-    };*/
+    };
 
     const { contacts, isFetching, hasMore, __ } = this.props;
+
+    const tags = [].concat(...contacts.map(contact => contact.tags));
 
     return (
       <div className="l-contact-book">
         <div className="l-contact-book__filters">
           <ContactFilters
             onSortDirChange={handleSortDirChange}
-            // onSortViewChange={handleSortViewChange}
+            onSortViewChange={handleSortViewChange}
             sortDir={this.state.sortDir}
             sortView={this.state.sortView}
             __={__}
@@ -120,10 +112,11 @@ class ContactBook extends Component {
         <div className="l-contact-book__contacts">
           <div className="l-contact-book__tags">
             <TagList
-              tags={this.state.tags}
+              tags={tags}
               activeTag={this.state.activeTag}
               onTagClick={handleTagClick}
               nbContactsAll={contacts.length}
+              __={__}
             />
           </div>
           <div className="l-contact-book__contact-list">

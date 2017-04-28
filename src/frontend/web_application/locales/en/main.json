@@ -197,6 +197,7 @@
     "tags.action.create": "Create",
     "tags.form.search.label": "Search",
     "tags.form.search.placeholder": "Search a tag ...",
+    "tag_list.all_contacts": "All contacts",
     "tags.header.count": "(Total: %(count)s)",
     "tags.header.title": "Tags"
 }

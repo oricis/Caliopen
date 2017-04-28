@@ -58,33 +58,30 @@ TagItem.defaultProps = {
   className: '',
 };
 
-const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
+const TagList = ({ tags, onTagClick, nbContactsAll, activeTag, __ }) => {
   const list = tags.sort((a, b) => a.localeCompare(b));
   const tagList = Array.from(new Set(list));
 
   return (
-    <div>
-      <NavList className="m-tag-list" dir="vertical">
+    <NavList className="m-tag-list" dir="vertical">
+      <TagItem
+        title={__('tag_list.all_contacts')}
+        link=""
+        nbContacts={nbContactsAll}
+        onTagClick={onTagClick}
+        active={activeTag === ''}
+      />
+      {tagList.map(tag =>
         <TagItem
-          title="All contacts"
-          link=""
-          nbContacts={nbContactsAll}
+          title={tag}
+          link={tag}
+          nbContacts={nbContactsbyTag(list, tag)}
           key={uuidV1()}
           onTagClick={onTagClick}
-          active={activeTag === '' && true}
+          active={tag === activeTag}
         />
-        {tagList.map(tag =>
-          <TagItem
-            title={tag}
-            link={tag}
-            nbContacts={nbContactsbyTag(list, tag)}
-            key={uuidV1()}
-            onTagClick={onTagClick}
-            active={tag === activeTag && true}
-          />
-        )}
-      </NavList>
-    </div>
+      )}
+    </NavList>
   );
 };
 
@@ -93,5 +90,6 @@ TagList.propTypes = {
   onTagClick: PropTypes.func.isRequired,
   activeTag: PropTypes.string.isRequired,
   nbContactsAll: PropTypes.number.isRequired,
+  __: PropTypes.func.isRequired,
 };
 export default TagList;

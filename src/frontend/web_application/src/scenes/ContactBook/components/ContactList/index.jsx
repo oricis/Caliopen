@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
-import BlockList from '../../../../components/BlockList';
 import Title from '../../../../components/Title';
 import ContactItem from './components/ContactItem';
+import { SORT_VIEW_TITLE } from '../../../ContactBook/presenter';
+
 import './style.scss';
 
 function getFirstLetter(string, defaultLetter = '?') {
@@ -27,11 +28,12 @@ ContactListLetter.propTypes = {
   letter: PropTypes.string.isRequired,
 };
 const ContactList = ({ contacts, sortView }) => {
+  const altSortView = SORT_VIEW_TITLE;
   const letters = [];
   let firstLetter = null;
   contacts.map((contact) => {
-    const contactTitle = getFirstLetter(contact[sortView]);
-    if (contactTitle !== firstLetter) {
+    const contactTitle = contact[sortView] ? contact[sortView] : contact[altSortView];
+    if (getFirstLetter(contactTitle) !== firstLetter) {
       letters.push(getFirstLetter(contactTitle));
     }
 
@@ -43,33 +45,36 @@ const ContactList = ({ contacts, sortView }) => {
   return (
     <div className="m-contact-list">
       {letters.map(letter =>
-        <div key={uuidV1()}>
+        <div key={uuidV1()} className="m-contact-list__group">
           <ContactListLetter
             letter={letter}
           />
-          <BlockList className="m-contact-list__group">
-            {contacts.map(contact =>
-              getFirstLetter(contact[sortView]) === letter &&
+          {contacts.map(contact => (
+            contact[sortView] ?
+            getFirstLetter(contact[sortView]) === letter &&
+              <ContactItem
+                contact={contact}
+                key={contact.contact_id}
+                sortView={sortView}
+              />
+              :
+              getFirstLetter(contact[altSortView]) === letter &&
                 <ContactItem
                   contact={contact}
                   key={contact.contact_id}
                   sortView={sortView}
                 />
-            )}
-          </BlockList>
+            ))}
         </div>
     )}
     </div>
   );
 };
 
+
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  sortView: PropTypes.string,
+  sortView: PropTypes.string.isRequired,
 };
-ContactList.defaultProps = {
-  sortView: 'title',
-};
-
 
 export default ContactList;
