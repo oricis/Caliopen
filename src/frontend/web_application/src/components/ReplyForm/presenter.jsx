@@ -77,12 +77,28 @@ class ReplyForm extends Component {
     }));
   }
 
-  render() {
-    const { user, __ } = this.props;
-    const dropdownId = uuidV1();
+  renderDraftType() {
+    const { __ } = this.props;
     const typeTranslations = {
       email: __('reply-form.protocol.email'),
     };
+
+    return (
+      <div className="m-reply__type">
+        <span className="m-reply__type-label">
+          {__('reply-form.by', { type: typeTranslations[this.state.draft.type] })}
+        </span>
+        {' '}
+        <Icon className="m-reply__type-icon" type={this.state.draft.type} spaced />
+        {' '}
+        <Icon type="angle-down" spaced />
+      </div>
+    );
+  }
+
+  render() {
+    const { user, __ } = this.props;
+    const dropdownId = uuidV1();
 
     return (
       <DiscussionDraft className="m-reply">
@@ -96,15 +112,7 @@ class ReplyForm extends Component {
           <TopRow className="m-reply__top-bar">
             <div className="m-reply__top-bar-info">
               <div className="m-reply__author">{__('reply-form.you')}</div>
-              <div className="m-reply__type">
-                <span className="m-reply__type-label">
-                  {__('reply-form.by', { type: typeTranslations[this.state.draft.type] })}
-                </span>
-                {' '}
-                <Icon className="m-reply__type-icon" type={this.state.draft.type} spaced />
-                {' '}
-                <Icon type="angle-down" spaced />
-              </div>
+              {this.state.draft.type && this.renderDraftType()}
               <div className="m-reply__date">{__('reply-form.now')}</div>
             </div>
 
