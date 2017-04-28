@@ -1,26 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { v1 as uuidV1 } from 'uuid';
 import Link from '../../../../../../components/Link';
 import ContactAvatarLetter, { SIZE_SMALL } from '../../../../../../components/ContactAvatarLetter';
-import Badge from '../../../../../../components/Badge';
 import TextBlock from '../../../../../../components/TextBlock';
 
-
-const ContactItem = ({ contact, sortView }) => {
-  const namePrefix = contact.name_prefix ? `${contact.name_prefix} ` : '';
-  const familyName = contact.family_name ? contact.family_name : '';
-  const givenName = contact.given_name ? contact.given_name : '';
-  const nameSuffix = contact.name_suffix ? `, ${contact.name_suffix}` : '';
-  let contactTitle = null;
-
+function getTitleView(contact, sortView) {
+  let title = null;
   if (sortView === 'family_name') {
-    contactTitle = `${!familyName && !givenName ? contact.title : familyName}${familyName && givenName && ', '}${givenName}`;
+    title = `${contact.family_name}${contact.family_name && contact.given_name && ', '}${contact.given_name}`;
   }
 
   if (sortView === 'given_name') {
-    contactTitle = `${!familyName && !givenName ? contact.title : givenName} ${familyName}`;
+    title = `${contact.given_name} ${contact.family_name}`;
   }
+
+  return title;
+}
+
+const ContactItem = ({ contact, sortView }) => {
+  const contactName = !contact.family_name && !contact.given_name ?
+    contact.title : getTitleView(contact, sortView);
 
   return (
     <Link noDecoration className="m-contact-list__contact" to={`/contacts/${contact.contact_id}`} key={contact.contact_id}>
@@ -28,10 +27,9 @@ const ContactItem = ({ contact, sortView }) => {
         <ContactAvatarLetter isRound contact={contact} size={SIZE_SMALL} />
       </div>
       <TextBlock className="m-contact-list__contact-info">
-        <span className="m-contact-list__contact-title">{namePrefix} {contactTitle} {nameSuffix}</span>
-        {contact.tags && contact.tags.map(tag => (
-          <Badge key={uuidV1()} className="m-contact-list__contact-tag">{tag}</Badge>
-        ))}
+        {contact.name_prefix && <span className="m-contact-list__contact-prefix">{contact.name_prefix}</span>}
+        <span className="m-contact-list__contact-title">{contactName}</span>
+        {contact.name_suffix && <span className="m-contact-list__contact-suffix">, {contact.name_suffix}</span>}
       </TextBlock>
     </Link>
   );

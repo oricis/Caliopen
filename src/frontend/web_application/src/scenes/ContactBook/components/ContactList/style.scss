@@ -9,10 +9,6 @@ $m-contact-list__contact-spacing: 1.25rem;
     color: $co-color__fg__text--high;
   }
 
-  &__group {
-
-  }
-
   &__contact {
     @include flex-grid-row($size: expanded);
     align-items: baseline;
@@ -41,14 +37,14 @@ $m-contact-list__contact-spacing: 1.25rem;
     @include flex-grid-size;
   }
 
-  &__contact-name {
-    margin-right: $co-component__spacing;
+  &__contact-title {
     margin-left: $co-component__spacing;
-    color: $co-color__fg__text--lower;
   }
 
-  &__contact-tag {
+  &__contact-prefix,
+  &__contact-suffix {
     margin-left: $co-component__spacing;
+    color: $co-color__fg__text--lower;
   }
 
   @include breakpoint(medium) {

@@ -63,28 +63,26 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag }) => {
   const tagList = Array.from(new Set(list));
 
   return (
-    <div>
-      <NavList className="m-tag-list" dir="vertical">
+    <NavList className="m-tag-list" dir="vertical">
+      <TagItem
+        title="All contacts"
+        link=""
+        nbContacts={nbContactsAll}
+        key={uuidV1()}
+        onTagClick={onTagClick}
+        active={activeTag === '' && true}
+      />
+      {tagList.map(tag =>
         <TagItem
-          title="All contacts"
-          link=""
-          nbContacts={nbContactsAll}
+          title={tag}
+          link={tag}
+          nbContacts={nbContactsbyTag(list, tag)}
           key={uuidV1()}
           onTagClick={onTagClick}
-          active={activeTag === '' && true}
+          active={tag === activeTag && true}
         />
-        {tagList.map(tag =>
-          <TagItem
-            title={tag}
-            link={tag}
-            nbContacts={nbContactsbyTag(list, tag)}
-            key={uuidV1()}
-            onTagClick={onTagClick}
-            active={tag === activeTag && true}
-          />
-        )}
-      </NavList>
-    </div>
+      )}
+    </NavList>
   );
 };
 
