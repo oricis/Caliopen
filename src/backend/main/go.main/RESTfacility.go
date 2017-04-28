@@ -6,10 +6,10 @@ package caliopen
 
 import (
 	"fmt"
-	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends"
-	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends/index/elasticsearch"
-	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends/store/cassandra"
+	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"

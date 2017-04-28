@@ -7,7 +7,7 @@
 package caliopen_smtp
 
 import (
-	broker "github.com/CaliOpen/CaliOpen/src/backend/brokers/go.emails"
+	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	log "github.com/Sirupsen/logrus"
 	"os/exec"
 	"strconv"

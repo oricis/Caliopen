@@ -7,7 +7,7 @@ package caliopen_smtp
 import (
 	"bytes"
 	"crypto/tls"
-	broker "github.com/CaliOpen/CaliOpen/src/backend/brokers/go.emails"
+	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	log "github.com/Sirupsen/logrus"
 	"gopkg.in/gomail.v2"
 	"io"

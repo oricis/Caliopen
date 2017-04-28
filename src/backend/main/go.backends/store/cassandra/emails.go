@@ -5,7 +5,7 @@
 package store
 
 import (
-	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"

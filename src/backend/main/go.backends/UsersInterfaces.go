@@ -4,7 +4,7 @@
 
 package backends
 
-import "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+import "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 
 type (
 	UserStorage interface {

@@ -5,8 +5,8 @@
 package caliopen
 
 import (
-	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/CaliOpen/src/backend/main/go.backends"
+	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
 )

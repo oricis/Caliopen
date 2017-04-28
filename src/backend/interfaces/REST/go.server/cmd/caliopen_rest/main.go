@@ -6,7 +6,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest/cli_cmds"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest/cli_cmds"
 	"os"
 )
 

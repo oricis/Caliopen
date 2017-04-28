@@ -5,8 +5,8 @@
 package users
 
 import (
-	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/CaliOpen/src/backend/main/go.main"
+	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 )

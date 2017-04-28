@@ -7,7 +7,7 @@
 package store
 
 import (
-	"github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 func (cb *CassandraBackend) GetContact(user_id, contact_id string) (contact *objects.ContactModel, err error) {

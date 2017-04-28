@@ -5,7 +5,7 @@ By default, a proxy server runs in front of the http server to route requests to
 ##### Installation
 A list of required dependencies is in `vendor/vendor.json`.  
 To install go dependencies, run `govendor sync` from within `src/backend/interfaces/REST/go.server` directory.  
-To compile the binary run `go build github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest`
+To compile the binary run `go build github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest`
 
 ##### Usage
 Configuration files are in `src/backend/configs`.  

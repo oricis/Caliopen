@@ -7,7 +7,7 @@
 package cmd
 
 import (
-	"github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server"
 	log "github.com/Sirupsen/logrus"
 	"github.com/flashmob/go-guerrilla"
 	"github.com/spf13/cobra"

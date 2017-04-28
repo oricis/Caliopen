@@ -8,8 +8,8 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	broker "github.com/CaliOpen/CaliOpen/src/backend/brokers/go.emails"
-	obj "github.com/CaliOpen/CaliOpen/src/backend/defs/go-objects"
+	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
+	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"time"
 )
 
