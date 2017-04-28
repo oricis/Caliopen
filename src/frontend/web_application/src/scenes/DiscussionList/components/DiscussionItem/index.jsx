@@ -50,7 +50,7 @@ const DiscussionItem = ({ user, discussion, formatDate, __ }) => {
         </div>
         <div className="s-discussion-list__col-count">
           {
-            discussion.unread_count && (
+            discussion.unread_count !== 0 && (
               <Badge low radiusType="rounded">{discussion.unread_count}</Badge>
             )
           }
