@@ -6,6 +6,7 @@ export const REQUEST_MESSAGES_FAIL = 'co/message/REQUEST_MESSAGES_FAIL';
 export const INVALIDATE_MESSAGES = 'co/message/INVALIDATE_MESSAGES';
 export const LOAD_MORE_MESSAGES = 'co/message/LOAD_MORE_MESSAGES';
 export const REQUEST_MESSAGE = 'co/message/REQUEST_MESSAGE';
+export const REQUEST_MESSAGE_SUCCESS = 'co/message/REQUEST_MESSAGE_SUCCESS';
 export const UPDATE_MESSAGE = 'co/message/UPDATE_MESSAGE';
 export const UPDATE_MESSAGE_SUCCESS = 'co/message/UPDATE_MESSAGE_SUCCESS';
 export const UPDATE_MESSAGE_FAIL = 'co/message/UPDATE_MESSAGE_FAIL';
@@ -62,6 +63,17 @@ export function createMessage({ message }) {
   };
 }
 
+export function requestMessage({ messageId }) {
+  return {
+    type: REQUEST_MESSAGE,
+    payload: {
+      request: {
+        url: `/v1/messages/${messageId}`,
+      },
+    },
+  };
+}
+
 export function updateMessage({ message, original }) {
   const data = calcObjectForPatch(message, original);
 
@@ -110,6 +122,11 @@ export function hasMore(state) {
 
 function messagesByIdReducer(state = {}, action = {}) {
   switch (action.type) {
+    case REQUEST_MESSAGE_SUCCESS:
+      return {
+        ...state,
+        [action.payload.data.message_id]: action.payload.data,
+      };
     case REQUEST_MESSAGES_SUCCESS:
       return action.payload.data.messages.reduce((previousState, message) => ({
         ...previousState,
@@ -164,7 +181,17 @@ export default function reducer(state = initialState, action) {
     case REQUEST_MESSAGES:
     case CREATE_MESSAGE:
     case UPDATE_MESSAGE:
+    case REQUEST_MESSAGE:
       return { ...state, isFetching: true };
+    case REQUEST_MESSAGE_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        messagesById: messagesByIdReducer(
+          state.messagesById,
+          action
+        ),
+      };
     case REQUEST_MESSAGES_SUCCESS:
       return {
         ...state,
