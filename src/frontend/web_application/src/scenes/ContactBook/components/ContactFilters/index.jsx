@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormGrid, FormRow, FormColumn, SelectFieldGroup } from '../../../../components/form';
-import './style.scss';
-
 import { SORT_VIEW_FAMILY_NAME, SORT_VIEW_GIVEN_NAME } from '../../../ContactBook/presenter';
+
+import './style.scss';
 
 const ContactFilters = ({ onSortDirChange, onSortViewChange, sortView, sortDir, __ }) => (
   <FormGrid className="m-contacts-filters">
@@ -40,7 +40,7 @@ ContactFilters.propTypes = {
   onSortViewChange: PropTypes.func.isRequired,
   __: PropTypes.func.isRequired,
   sortDir: PropTypes.oneOf(['ASC', 'DESC']).isRequired,
-  sortView: PropTypes.oneOf([SORT_VIEW_GIVEN_NAME, SORT_VIEW_FAMILY_NAME]).isRequired,
+  sortView: PropTypes.string.isRequired,
 };
 
 export default ContactFilters;

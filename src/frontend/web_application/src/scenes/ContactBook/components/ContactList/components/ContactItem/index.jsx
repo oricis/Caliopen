@@ -38,7 +38,7 @@ const ContactItem = ({ contact, sortView }) => (
 
 ContactItem.propTypes = {
   contact: PropTypes.shape({}).isRequired,
-  sortView: PropTypes.oneOf([SORT_VIEW_FAMILY_NAME, SORT_VIEW_GIVEN_NAME]).isRequired,
+  sortView: PropTypes.string.isRequired,
 };
 
 export default ContactItem;

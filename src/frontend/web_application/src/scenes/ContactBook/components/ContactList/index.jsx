@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import Title from '../../../../components/Title';
 import ContactItem from './components/ContactItem';
+import { SORT_VIEW_TITLE } from '../../../ContactBook/presenter';
 
 import './style.scss';
-
-import { SORT_VIEW_FAMILY_NAME, SORT_VIEW_GIVEN_NAME, SORT_VIEW_TITLE, DEFAULT_SORT_VIEW } from '../../../ContactBook/presenter';
-
 
 function getFirstLetter(string, defaultLetter = '?') {
   let firstLetter = defaultLetter;
@@ -34,7 +32,6 @@ const ContactList = ({ contacts, sortView }) => {
   const letters = [];
   let firstLetter = null;
   contacts.map((contact) => {
-    // assuming contact.title is NEVER empty or null
     const contactTitle = contact[sortView] ? contact[sortView] : contact[altSortView];
     if (getFirstLetter(contactTitle) !== firstLetter) {
       letters.push(getFirstLetter(contactTitle));
@@ -74,13 +71,10 @@ const ContactList = ({ contacts, sortView }) => {
   );
 };
 
+
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  sortView: PropTypes.oneOf([SORT_VIEW_GIVEN_NAME, SORT_VIEW_FAMILY_NAME]).isRequired,
+  sortView: PropTypes.string.isRequired,
 };
-ContactList.defaultProps = {
-  sortView: DEFAULT_SORT_VIEW,
-};
-
 
 export default ContactList;
