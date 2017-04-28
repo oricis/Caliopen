@@ -88,6 +88,7 @@ export function postActions({ message, actions }) {
   return {
     type: POST_ACTIONS,
     payload: {
+      message,
       request: {
         method: 'post',
         url: `/v2/messages/${message.message_id}/actions`,

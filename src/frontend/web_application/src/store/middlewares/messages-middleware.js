@@ -8,7 +8,7 @@ export default store => next => (action) => {
   }
 
   if (action.type === POST_ACTIONS_SUCCESS) {
-    const { payload: { data: message } } = action;
+    const { meta: { previousAction: { payload: message } } } = action;
     store.dispatch(syncMessage({ message }));
   }
 
