@@ -38,8 +38,8 @@ ContactFilters.propTypes = {
   onSortDirChange: PropTypes.func.isRequired,
   onSortViewChange: PropTypes.func.isRequired,
   __: PropTypes.func.isRequired,
-  sortDir: PropTypes.oneOf('ASC', 'DESC').isRequired,
-  sortView: PropTypes.oneOf('given_name', 'family_name').isRequired,
+  sortDir: PropTypes.oneOf(['ASC', 'DESC']).isRequired,
+  sortView: PropTypes.oneOf(['given_name', 'family_name']).isRequired,
 };
 
 export default ContactFilters;

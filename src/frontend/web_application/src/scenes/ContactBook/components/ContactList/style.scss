@@ -38,12 +38,12 @@ $m-contact-list__contact-spacing: 1.25rem;
   }
 
   &__contact-title {
-    margin-left: $co-component__spacing;
+    margin-right: $co-component__spacing;
   }
 
   &__contact-prefix,
   &__contact-suffix {
-    margin-left: $co-component__spacing;
+    margin-right: $co-component__spacing;
     color: $co-color__fg__text--lower;
   }
 

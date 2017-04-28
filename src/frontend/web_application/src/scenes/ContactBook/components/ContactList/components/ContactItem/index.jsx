@@ -11,7 +11,7 @@ function getTitleView(contact, sortView) {
   }
 
   if (sortView === 'given_name') {
-    title = `${contact.given_name} ${contact.family_name}`;
+    title = `${contact.given_name}${contact.family_name && contact.given_name && ' '}${contact.family_name}`;
   }
 
   return title;
