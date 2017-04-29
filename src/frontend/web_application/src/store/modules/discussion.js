@@ -114,7 +114,8 @@ export default function reducer(state = initialState, action) {
         isFetching: false,
         discussionsById: {
           ...state.discussionsById,
-          [action.payload.data.discussion_id]: action.payload.data,
+          // FIXME: cf. #278: the api response is invalid
+          [action.payload.data.discussion.discussion_id]: action.payload.data.discussion,
         },
       };
     case REQUEST_DISCUSSIONS_SUCCESS:
