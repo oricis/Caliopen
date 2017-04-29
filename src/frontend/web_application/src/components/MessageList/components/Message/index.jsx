@@ -20,13 +20,15 @@ const MessageInfosContainer = ({ __, message, author }) => {
   return (
     <div className="m-message__infos-container">
       <div className="m-message__author">{author.address}</div>
-      <div className="m-message__type">
-        <span className="m-message__type-label">
-          {__('message-list.message.by', { type: typeTranslations[message.type] })}
-        </span>
-        {' '}
-        <Icon type={message.type} className="m-message__type-icon" spaced />
-      </div>
+      {message.type &&
+        (<div className="m-message__type">
+          <span className="m-message__type-label">
+            {__('message-list.message.by', { type: typeTranslations[message.type] })}
+          </span>
+          {' '}
+          <Icon type={message.type} className="m-message__type-icon" spaced />
+        </div>
+      )}
       <DateTime className="m-message__date" format="LT">
         {message.date}
       </DateTime>
