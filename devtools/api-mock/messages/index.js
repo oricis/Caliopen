@@ -67,6 +67,14 @@ const reducer = {
           acc[index] = { ...acc[index], is_draft: false, date: Date.now() };
 
           return acc;
+        case 'set_read':
+          acc[index] = { ...acc[index], is_unread: false };
+
+          return acc;
+        case 'set_unread':
+          acc[index] = { ...acc[index], is_unread: true };
+
+          return acc;
         default:
           throw new Error(`Unexpected action "${action}"`);
       }
