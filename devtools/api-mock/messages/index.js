@@ -33,14 +33,8 @@ const reducer = {
     {
       ...params.body,
       message_id: uuidv1(),
-      'participants': [
-        { 'type': 'Cc', 'contact_ids': ['1039cdcc-1f6f-4b5d-9c8a-5d7c711f357f'], 'address': 'test@caliopen.local', 'protocol': 'email' },
-        { 'type': 'From', 'contact_ids': ['c-john-01'], 'address': 'john@caliopen.local', 'protocol': 'email' },
-        { 'type': 'To', 'address': 'zoidberg@planet-express.tld', 'protocol': 'email' },
-      ],
       is_draft: true,
       is_unread: false,
-      type: 'email',
       date: Date.now(),
       date_insert: Date.now(),
     },
@@ -71,6 +65,14 @@ const reducer = {
       switch (action) {
         case 'send':
           acc[index] = { ...acc[index], is_draft: false, date: Date.now() };
+
+          return acc;
+        case 'set_read':
+          acc[index] = { ...acc[index], is_unread: false };
+
+          return acc;
+        case 'set_unread':
+          acc[index] = { ...acc[index], is_unread: true };
 
           return acc;
         default:

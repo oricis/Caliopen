@@ -7,6 +7,31 @@ import fetchLocation from '../../services/api-location';
 
 const UPDATE_WAIT_TIME = 5 * 1000;
 
+const forceAuthor = ({ addresses, participants }) => [...participants].map((participant) => {
+  let type = participant.type === 'From' ? 'To' : participant.type;
+  if (addresses.indexOf(participant.address) !== -1) {
+    type = 'From';
+  }
+
+  return {
+    ...participant,
+    type,
+  };
+});
+
+const normalizeDraft = ({ draft, user, discussion }) => {
+  const { discussion_id } = discussion;
+  const { contact: { emails } } = user;
+  const addresses = emails.map(email => email.address);
+  const participants = forceAuthor({ addresses, participants: discussion.participants });
+
+  return {
+    ...draft,
+    discussion_id,
+    participants,
+  };
+};
+
 const manageCreateOrUpdateResult = async ({ result: action, store }) => {
   if (action.type === CREATE_MESSAGE_SUCCESS) {
     const { location } = action.payload.data;
@@ -33,15 +58,24 @@ const manageCreateOrUpdateResult = async ({ result: action, store }) => {
   throw new Error(`Uknkown type ${action.type} in manageCreateOrUpdateResult`);
 };
 
-const createOrUpdateDraft = async ({ draft, store, original }) => {
+const createOrUpdateDraft = async ({ draft, discussionId, store, original }) => {
   let result;
   if (draft.message_id) {
     result = await store.dispatch(updateMessage({
       message: draft, original,
     }));
   } else {
+    const {
+      user: { user },
+      discussion: {
+        discussionsById: {
+          [discussionId]: discussion,
+        },
+      },
+    } = store.getState();
+
     result = await store.dispatch(createMessage({
-      message: draft,
+      message: normalizeDraft({ draft, user, discussion }),
       original,
     }));
   }
