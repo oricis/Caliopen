@@ -13,6 +13,16 @@ const VELOCITY_RIGHT = -1;
 const VELOCITY_LEFT = 1;
 
 class HorizontalScroll extends Component {
+  static propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node.isRequired,
+    subscribedState: PropTypes.oneOf([PropTypes.shape({}), PropTypes.array]).isRequired,
+  };
+
+  static defaultProps = {
+    className: undefined,
+  };
+
   constructor(props) {
     super(props);
     this.handleLeftTrigger = this.handleLeftTrigger.bind(this);
@@ -137,15 +147,5 @@ class HorizontalScroll extends Component {
     );
   }
 }
-
-HorizontalScroll.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node.isRequired,
-  subscribedState: PropTypes.shape({}).isRequired,
-};
-
-HorizontalScroll.defaultProps = {
-  className: undefined,
-};
 
 export default HorizontalScroll;
