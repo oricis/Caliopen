@@ -1,51 +1,95 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import Page from './layouts/Page';
-import AuthPage from './layouts/AuthPage';
-import Settings from './layouts/Settings';
+import { Route } from 'react-router-dom';
+import Auth from './scenes/Auth';
 import DiscussionList from './scenes/DiscussionList';
+import AppRoute from './scenes/AppRoute';
+import SettingsRoute from './scenes/SettingsRoute';
+import DevicesRoute from './scenes/DevicesRoute';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
 import Account from './scenes/Account';
-import Signin from './scenes/Signin';
-import Signup from './scenes/Signup';
 import Tags from './scenes/Tags';
-import Devices, { Device } from './scenes/Devices';
-import enableI18n from './services/i18n';
+import { Device } from './scenes/Devices';
 
-const I18nAuthPage = enableI18n(AuthPage);
-const I18nPage = enableI18n(Page);
+export const getRouteconfig = () => [
+  {
+    path: '/auth',
+    component: Auth,
+    app: 'auth',
+  },
+  {
+    path: '/',
+    component: AppRoute,
+    routes: [
+      {
+        path: '/',
+        exact: true,
+        component: DiscussionList,
+        app: 'discussion',
+      },
+      {
+        path: '/discussions/:discussionId',
+        component: MessageList,
+        app: 'discussion',
+      },
+      {
+        path: '/contacts',
+        component: ContactBook,
+        app: 'contact',
+      },
+      {
+        path: '/settings',
+        component: SettingsRoute,
+        app: 'settings',
+        routes: [
+          {
+            path: '/settings/account',
+            component: Account,
+          },
+          {
+            path: '/settings/tags',
+            component: Tags,
+          },
+          {
+            path: '/settings/devices',
+            component: DevicesRoute,
+            routes: [
+              {
+                path: '/settings/devices/:deviceId',
+                component: Device,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+
+export const flattenRouteConfig = routes => routes.reduce((acc, route) => {
+  const { routes: subRoutes, ...routeConfig } = route;
+  let flattened = [...acc, routeConfig];
+  if (subRoutes) {
+    flattened = [...flattened, ...flattenRouteConfig(subRoutes)];
+  }
+
+  return flattened;
+}, []);
+
+export const RouteWithSubRoutes = route => (
+  <Route
+    path={route.path} render={props => (
+      <route.component {...props} routes={route.routes} />
+    )}
+  />
+);
 
 const Routes = () => (
-  <Switch>
-    <Route path="/auth">
-      <I18nAuthPage>
-        <Switch>
-          <Route exact path="/auth/"><Redirect to="signin" /></Route>
-          <Route path="/auth/signin" component={Signin} />
-          <Route path="/auth/signup" component={Signup} />
-        </Switch>
-      </I18nAuthPage>
-    </Route>
-    <Route path="/">
-      <I18nPage>
-        <Switch>
-          <Route exact path="/" component={DiscussionList} />
-          <Route path="/discussions/:discussionId" component={MessageList} />
-          <Route path="/contacts" component={ContactBook} />
-          <Route path="/settings/">
-            <Settings>
-              <Route path="/settings/account" component={Account} />
-              <Route path="/settings/tags" component={Tags} />
-              <Route path="/settings/devices" component={Devices}>
-                <Route path="/settings/devices/:deviceId" component={Device} />
-              </Route>
-            </Settings>
-          </Route>
-        </Switch>
-      </I18nPage>
-    </Route>
-  </Switch>
+  <div>
+    {getRouteconfig().map((route, i) => (
+      <RouteWithSubRoutes key={i} {...route} />
+    ))}
+  </div>
 );
 
 export default Routes;

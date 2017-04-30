@@ -102,6 +102,8 @@ class HorizontalScroll extends Component {
   render() {
     const { className, children } = this.props;
 
+    // FIXME, setState in render/constructor is an anti-pattern
+    // but we have to wait for the dom to handleZoneSizesChange
     if (this.state.triggerRecalc) {
       this.setState({
         triggerRecalc: false,

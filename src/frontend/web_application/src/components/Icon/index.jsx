@@ -15,6 +15,7 @@ export const typeAssoc = {
   comment: 'fa fa-comment',
   comments: 'fa fa-comments',
   'comments-o': 'fa fa-comments-o',
+  'dot-circle-o': 'fa-dot-circle-o',
   edit: 'fa fa-edit',
   envelope: 'fa fa-envelope',
   'ellipsis-v': 'fa fa-ellipsis-v',

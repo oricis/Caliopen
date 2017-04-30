@@ -34,7 +34,13 @@ class Tab extends Component {
       <NavbarItem
         className={className}
         active={isActive}
-        contentChildren={<ItemLink to={tab.pathname}>{tab.pathname}</ItemLink>}
+        contentChildren={(
+          <ItemLink to={tab.pathname}>
+            <Icon type={tab.icon || 'dot-circle-o'} />
+            {' '}
+            {tab.label}
+          </ItemLink>
+        )}
         actionChildren={<ItemButton onClick={this.handleRemove}><Icon type="remove" /></ItemButton>}
         last={last}
       />
