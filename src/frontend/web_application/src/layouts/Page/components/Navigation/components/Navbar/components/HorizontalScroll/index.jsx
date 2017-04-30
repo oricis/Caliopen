@@ -16,7 +16,7 @@ class HorizontalScroll extends Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node.isRequired,
-    subscribedState: PropTypes.oneOf([PropTypes.shape({}), PropTypes.array]).isRequired,
+    subscribedState: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.array]).isRequired,
   };
 
   static defaultProps = {

@@ -13,6 +13,7 @@ const Auth = () => (
       <Route exact path="/auth/"><Redirect to="signin" /></Route>
       <Route path="/auth/signin" component={Signin} />
       <Route path="/auth/signup" component={Signup} />
+      <Route path="/auth/signout"><Redirect to="signin" /></Route>
     </Switch>
   </I18nAuthPage>
 );
