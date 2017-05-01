@@ -43,4 +43,4 @@ class Discussion(Api):
         #     raise HTTPExpectationFailed('Invalid pi range')
         resp = ReturnDiscussion.build(discussion).serialize()
 
-        return {'discussion': resp}
+        return resp
