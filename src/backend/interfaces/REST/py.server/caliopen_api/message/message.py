@@ -29,17 +29,6 @@ class Message(Api):
         self.request = request
         self.user = request.authenticated_userid
 
-    def extract_recipients(self):
-        """Get recipients from request"""
-        recipients = {}
-        for rec_type in ['to_recipients', 'cc_recipients', 'bcc_recipients']:
-            addrs = []
-            for rec in self.request.json.get(rec_type, []):
-                addrs.append((rec['contact'], rec['address']))
-            recipients[rec_type] = addrs
-        recipients['from'] = [(self.user.user_id, self.user.user_id)]
-        return recipients
-
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
         discussion_id = self.request.swagger_data['discussion_id']
@@ -52,7 +41,8 @@ class Message(Api):
                                                       offset=self.get_offset())
             results = []
             log.warn('Got result {}'.format(messages))
-        except NotFound:
+        except Exception as exc:
+            log.warn(exc)
             raise ResourceNotFound
 
         for msg in messages['hits']:
@@ -84,7 +74,8 @@ class Message(Api):
         message = ObjectMessage(self.user.user_id, message_id=message_id)
         try:
             message.get_db()
-        except NotFound:
+        except Exception as exc:
+            log.warn(exc)
             raise ResourceNotFound
 
         message.unmarshall_db()
