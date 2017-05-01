@@ -107,3 +107,18 @@ class DiscussionIndexManager(object):
         if not result.hits:
             return None
         return result.hits[0]
+
+    def get_by_id(self, discussion_id):
+        """Return a single discussion by discussion_id"""
+
+        search = self._prepare_search(0, 100)
+        search = search.query("term", discussion_id=discussion_id)
+        result = search.execute()
+        if not result.hits:
+            return None
+
+        message = self.get_last_message(discussion_id, 0, 100)
+        discussion = DiscussionIndex(discussion_id)
+        discussion.total_count = result.hits.total
+        discussion.last_message = message
+        return discussion

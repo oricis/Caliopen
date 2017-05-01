@@ -1,12 +1,13 @@
 import logging
 
 from cornice.resource import resource, view
-from pyramid.httpexceptions import HTTPExpectationFailed
 
 from caliopen_main.discussion.core.discussion import (MainView,
                                                       Discussion as UserDiscussion,
-                                                      ReturnDiscussion)
+                                                      build_discussion)
 from ..base import Api
+from caliopen_main.discussion.store.discussion_index import \
+    DiscussionIndexManager as DIM
 from caliopen_storage.exception import NotFound
 from ..base.exception import ResourceNotFound
 
@@ -41,6 +42,9 @@ class Discussion(Api):
             raise ResourceNotFound('No such discussion %r' % discussion_id)
         # if pi_range[0] > discussion.privacy_index < pi_range[1]:
         #     raise HTTPExpectationFailed('Invalid pi range')
-        resp = ReturnDiscussion.build(discussion).serialize()
+
+        dim = DIM(self.user.id)
+        indexed_discussion = dim.get_by_id(discussion_id)
+        resp = build_discussion(discussion, indexed_discussion)
 
         return resp
