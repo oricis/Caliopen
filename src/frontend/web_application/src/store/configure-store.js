@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducer';
+import applicationMiddleware from './middlewares/application-middleware';
 import axiosMiddleware from './middlewares/axios-middleware';
 import contactMiddleware from './middlewares/contacts-middleware';
 import deviceMiddleware from './middlewares/device-middleware';
@@ -13,6 +14,7 @@ import tagsMiddleware from './middlewares/tags-middleware';
 import thunkMiddleware from './middlewares/thunk-middleware';
 
 const middlewares = [
+  applicationMiddleware,
   axiosMiddleware,
   contactMiddleware,
   deviceMiddleware,
