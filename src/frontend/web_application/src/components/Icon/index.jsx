@@ -6,6 +6,8 @@ import './style.scss';
 export const typeAssoc = {
   at: 'fa fa-at',
   'angle-down': 'fa fa-angle-down',
+  'arrow-right': 'fa fa-arrow-right',
+  'arrow-left': 'fa fa-arrow-left',
   calendar: 'fa fa-calendar',
   'caret-up': 'fa fa-caret-up',
   'caret-down': 'fa fa-caret-down',
@@ -13,6 +15,7 @@ export const typeAssoc = {
   comment: 'fa fa-comment',
   comments: 'fa fa-comments',
   'comments-o': 'fa fa-comments-o',
+  'dot-circle-o': 'fa-dot-circle-o',
   edit: 'fa fa-edit',
   envelope: 'fa fa-envelope',
   'ellipsis-v': 'fa fa-ellipsis-v',

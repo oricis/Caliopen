@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducer';
+import applicationMiddleware from './middlewares/application-middleware';
 import axiosMiddleware from './middlewares/axios-middleware';
 import contactMiddleware from './middlewares/contacts-middleware';
 import deviceMiddleware from './middlewares/device-middleware';
@@ -7,10 +8,13 @@ import discussionMiddleware from './middlewares/discussions-middleware';
 import draftMessageMiddleware from './middlewares/draft-messages-middleware';
 import messageMiddleware from './middlewares/messages-middleware';
 import promiseMiddleware from './middlewares/promise-middleware';
+import reactRouterMiddleware from './middlewares/react-router-redux-middleware';
+import tabsMiddleware from './middlewares/tabs-middleware';
 import tagsMiddleware from './middlewares/tags-middleware';
 import thunkMiddleware from './middlewares/thunk-middleware';
 
 const middlewares = [
+  applicationMiddleware,
   axiosMiddleware,
   contactMiddleware,
   deviceMiddleware,
@@ -18,6 +22,8 @@ const middlewares = [
   draftMessageMiddleware,
   messageMiddleware,
   promiseMiddleware,
+  reactRouterMiddleware,
+  tabsMiddleware,
   tagsMiddleware,
   thunkMiddleware,
 ];

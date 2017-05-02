@@ -1,8 +1,10 @@
 import React from 'react';
 import { storiesOf, action, linkTo, addDecorator } from '@kadira/storybook'; // eslint-disable-line
-import { withKnobs, text, select, boolean, array, object, number } from '@kadira/storybook-addon-knobs'; // eslint-disable-line
-import { host } from 'storybook-host'; // eslint-disable-line
-import backgrounds from 'react-storybook-addon-backgrounds';// eslint-disable-line
+import { withKnobs, text, select, boolean, array, object, number } from '@kadira/storybook-addon-knobs';
+import { host } from 'storybook-host';
+import backgrounds from 'react-storybook-addon-backgrounds';
+import { StaticRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import Badge from '../src/components/Badge';
 import BlockList from '../src/components/BlockList';
 import BlockListPresenter from './components/BlockList';
@@ -50,6 +52,7 @@ import Title from '../src/components/Title';
 import Welcome from './Welcome';
 import Changelog from './Changelog';
 import Guideline from './Guideline';
+import TabList from '../src/layouts/Page/components/Navigation/components/TabList/presenter';
 import '../src/styles/vendor/bootstrap_foundation-sites.scss';
 
 addDecorator(withKnobs);
@@ -323,6 +326,18 @@ storiesOf('Layout', module)
       <Modal title={text('title', 'modal.title')} {...props}>
         <p>{text('modal text', 'Quibus occurrere bene pertinax miles explicatis ordinibus parans hastisque feriens scuta qui habitus iram pugnantium concitat et dolorem proximos iam gestu terrebat sed eum in certamen alacriter consurgentem revocavere ductores rati intempestivum anceps subire certamen cum haut longe muri distarent, quorum tutela securitas poterat in solido locari cunctorum.')}</p>
       </Modal>
+    );
+  })
+  .addWithInfo('NavBar - TabList', () => {
+    const props = {
+      application: select('current application', { discussion: 'discussion', contact: 'contact' }, 'discussion'),
+      tabs: object('tabs', [{ pathname: '/foo' }, { pathname: '/bar' }]),
+      requestTabs: action('requestTabs'),
+      removeTab: action('removeTab'),
+    };
+
+    return (
+      <Provider store={{ subscribe: () => {}, getState: () => ({ router: { location: { pathname: '/' } } }) }}><StaticRouter context={{}}><TabList {...props} /></StaticRouter></Provider>
     );
   });
 

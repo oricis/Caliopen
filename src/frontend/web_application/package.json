@@ -62,6 +62,7 @@
     "file-loader": "^0.10.1",
     "font-awesome": "^4.6.3",
     "foundation-sites": "^6.3.0",
+    "history": "^4.6.1",
     "image-webpack-loader": "^3.3.0",
     "iron": "^4.0.4",
     "jquery": "^3.2.1",
@@ -79,6 +80,7 @@
     "react-redux": "^5.0.4",
     "react-redux-notify": "^1.0.8",
     "react-router-dom": "^4.1.1",
+    "react-router-redux": "next",
     "react-tappable": "^0.8.4",
     "redux": "^3.6.0",
     "redux-axios-middleware": "^4.0.0",
@@ -152,6 +154,10 @@
     "moduleNameMapper": {
       "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "^.+\\.(css|less|scss)$": "<rootDir>/__mocks__/styleMock.js"
+    },
+    "globals": {
+      "CALIOPEN_ENV": "test",
+      "BUILD_TARGET": "none"
     }
   }
 }

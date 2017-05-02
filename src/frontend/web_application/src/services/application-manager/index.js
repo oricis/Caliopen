@@ -1,11 +1,11 @@
 const APPLICATIONS = {
   discussions: {
-    route: 'discussions',
+    route: '/',
     icon: 'comments',
     label: 'header.menu.discussions',
   },
   contacts: {
-    route: 'contacts',
+    route: '/contacts',
     icon: 'users',
     label: 'header.menu.contacts',
   },

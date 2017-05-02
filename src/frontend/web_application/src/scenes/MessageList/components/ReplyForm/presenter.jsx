@@ -25,7 +25,7 @@ class ReplyForm extends Component {
     this.handleSend = this.handleSend.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { discussionId, draft } = this.props;
     if (!draft && discussionId) {
       this.props.requestDraft({ discussionId });

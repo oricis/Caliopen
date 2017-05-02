@@ -6,14 +6,16 @@ import Presenter from './presenter';
 import { getApplications } from '../../../../../../services/application-manager/';
 
 const applicationSelector = state => state.application.applicationName;
+const locationSelector = state => state.router.location;
 
 const mapStateToProps = createSelector(
-  [applicationSelector, getApplications],
-  (currentApplicationName, applications) => {
+  [applicationSelector, getApplications, locationSelector],
+  (currentApplicationName, applications, location) => {
     const currentApplication = applications
       .find(application => application.name === currentApplicationName);
+    const isactive = location && location.pathname === currentApplication.route;
 
-    return { currentApplication, applications };
+    return { currentApplication, applications, isactive };
   }
 );
 

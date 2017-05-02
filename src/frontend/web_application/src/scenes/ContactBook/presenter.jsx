@@ -24,9 +24,9 @@ function getOrderedContacts(contactList, sortView, sortDir) {
     switch (sortDir) {
       default:
       case 'ASC':
-        return first.localeCompare(second);
+        return (first || '').localeCompare(second);
       case 'DESC':
-        return second.localeCompare(first);
+        return (second || '').localeCompare(first);
     }
   });
 
@@ -34,10 +34,11 @@ function getOrderedContacts(contactList, sortView, sortDir) {
 }
 
 function getFilteredContacts(contactList, activeTag) {
-  let filteredContacts = contactList.filter(contact => contact.tags.includes(activeTag));
-  if (activeTag === '') { filteredContacts = contactList; }
+  if (activeTag === '') {
+    return contactList;
+  }
 
-  return filteredContacts;
+  return contactList.filter(contact => contact.tags && contact.tags.includes(activeTag));
 }
 
 

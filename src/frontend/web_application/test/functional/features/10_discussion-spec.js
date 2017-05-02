@@ -11,7 +11,7 @@ describe('Discussions', () => {
     browser.get('/')
       .then(() => {
         const appSwitcher = element(by.css('.m-application-switcher'));
-        expect(appSwitcher.element(by.cssContainingText('.m-navbar-link', 'Discussions')).isPresent())
+        expect(appSwitcher.element(by.cssContainingText('.m-navbar-item__content', 'Discussions')).isPresent())
         .toBe(true);
       })
       .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000))

@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Link from './components/Link';
+import ItemLink from './components/ItemLink';
+import ItemButton from './components/ItemButton';
 import Tab from './components/Tab';
-import './style.scss';
+import NavbarItem from './components/NavbarItem';
+import HorizontalScroll from './components/HorizontalScroll';
 
 const Navbar = ({ className, ...props }) => {
   const navbarProps = {
     ...props,
-    className: classnames('m-navbar', className),
+    className: classnames(className),
   };
 
   return (
@@ -19,6 +21,9 @@ const Navbar = ({ className, ...props }) => {
 Navbar.propTypes = {
   className: PropTypes.string,
 };
+Navbar.defaultProps = {
+  className: undefined,
+};
 
 export default Navbar;
-export { Link, Tab };
+export { ItemLink, ItemButton, Tab, NavbarItem, HorizontalScroll };

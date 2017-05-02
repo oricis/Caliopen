@@ -4,6 +4,7 @@ import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
 import Link from '../../../../components/Link';
 import Icon from '../../../../components/Icon';
 import VerticalMenu, { VerticalMenuItem } from '../../../../components/VerticalMenu';
+import TabList from './components/TabList';
 import './style.scss';
 
 const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
@@ -35,7 +36,7 @@ const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
         ))
       }
     </VerticalMenu>
-    <tab-list-alt />
+    <TabList />
     <VerticalMenu className="l-nav-alt__menu">
       <VerticalMenuItem>
         <Link to="/settings/account" button expanded>
@@ -61,6 +62,9 @@ NavigationAlt.propTypes = {
   applications: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   currentApplication: PropTypes.shape({}).isRequired,
   __: PropTypes.func.isRequired,
+};
+NavigationAlt.defaultProps = {
+  user: undefined,
 };
 
 export default NavigationAlt;

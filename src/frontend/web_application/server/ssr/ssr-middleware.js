@@ -46,7 +46,7 @@ module.exports = (req, res) => {
 
   const store = configureStore(initialState);
   const context = {};
-  const html = getMarkup({ store, assets: config, location: req.url, context });
+  const html = getMarkup({ store, assets: config, location: { pathname: req.url }, context });
 
   if (context.url) {
     res.writeHead(301, {
