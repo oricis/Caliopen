@@ -29,8 +29,6 @@ const routes = {
     action: actions.get,
     selector: selectors.byId,
     status: 200,
-    // FIXME: cf. #278 the api response is invalid
-    middlewares: [createCollectionMiddleware('discussion')],
   },
 };
 
