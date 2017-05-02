@@ -28,7 +28,7 @@ const selectTabByPathname = ({ store, pathname }) =>
   store.getState().tab.tabs.find(tab => isEqual(pathname, tab.pathname));
 
 const createDiscussionTab = async ({ pathname, discussionId, store }) => {
-  const { payload: { data: { discussion: { excerpt: label } } } }
+  const { payload: { data: { excerpt: label } } }
     = await store.dispatch(requestDiscussion({ discussionId }));
 
   return {
@@ -39,7 +39,8 @@ const createDiscussionTab = async ({ pathname, discussionId, store }) => {
 };
 
 const createContactTab = async ({ pathname, contactId, store }) => {
-  const { title: label } = await store.dispatch(requestContact({ contactId }));
+  const { payload: { data: { title: label } } }
+    = await store.dispatch(requestContact({ contactId }));
 
   return {
     pathname,
