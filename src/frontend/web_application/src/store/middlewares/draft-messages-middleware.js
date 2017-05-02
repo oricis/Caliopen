@@ -104,7 +104,7 @@ function getDefaultIdentities({ protocols, identities }) {
   }, []);
 }
 
-async function getNewDraft({ discussionId, store }) {
+async function getNewDraft({ discussionId, store, messageToAnswer }) {
   await store.dispatch(requestLocalIdentities());
   const { localIdentities } = store.getState().localIdentity;
 
@@ -113,6 +113,7 @@ async function getNewDraft({ discussionId, store }) {
     body: '',
     participants: [],
     identities: getDefaultIdentities({ protocols: ['email'], identities: localIdentities }),
+    subject: messageToAnswer && messageToAnswer.subject,
   };
 }
 
@@ -124,10 +125,12 @@ async function manageRequestDraft({ store, action }) {
     message: { messagesById },
   } = store.getState();
 
-  const message = Object.keys(messagesById)
+  const messages = Object.keys(messagesById)
     .map(messageId => messagesById[messageId])
-    .find(item => item.discussion_id === discussionId && item.is_draft)
-    || await getNewDraft({ discussionId, store });
+    .filter(item => item.discussion_id === discussionId);
+
+  const message = messages.find(item => item.is_draft)
+    || await getNewDraft({ discussionId, store, messageToAnswer: messages[0] });
 
   return store.dispatch(requestDraftSuccess({ draft: message }));
 }
