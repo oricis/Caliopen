@@ -11,7 +11,7 @@ describe('Home', () => {
     it('Log In', () => {
       userUtil.signin();
       browser.get('/');
-      expect(element(by.css('.m-application-switcher .m-navbar-link')).getText()).toContain('Discussions');
+      expect(element(by.css('.m-application-switcher .m-navbar-item__content')).getText()).toContain('Discussions');
     });
 
     it('Requires authentication', () => {
