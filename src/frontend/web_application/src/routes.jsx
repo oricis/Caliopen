@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Auth from './scenes/Auth';
 import DiscussionList from './scenes/DiscussionList';
 import AppRoute from './scenes/AppRoute';
@@ -85,11 +85,11 @@ export const RouteWithSubRoutes = route => (
 );
 
 const Routes = () => (
-  <div>
+  <Switch>
     {getRouteconfig().map((route, i) => (
       <RouteWithSubRoutes key={i} {...route} />
     ))}
-  </div>
+  </Switch>
 );
 
 export default Routes;
