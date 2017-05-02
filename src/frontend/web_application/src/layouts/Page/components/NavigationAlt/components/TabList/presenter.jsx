@@ -39,7 +39,7 @@ class TabList extends Component {
     const isLast = tab => tabs.indexOf(tab) === (tabs.length - 1);
 
     return (
-      <ul className={className} subscribedState={tabs}>
+      <ul className={className}>
         {tabs.map(tab => (
           <li key={tab.pathname}><Tab tab={tab} onRemove={removeTab} last={isLast(tab)} /></li>
         ))}
