@@ -23,12 +23,13 @@ _(This code of conduct may evolve)_.
 * [@iamdey](https://github.com/iamdey)
 * [@sapiens-sapide](https://github.com/sapiens-sapide)
 * [@myleneb](https://github.com/myleneb)
-* [@ptran32](https://github.com/ptran32)
+* [@lisonferez](https://github.com/lisonferez)
 
 ## Contributors
 
 _(People involved in the project)_
 
+* [@mardiros](https://github.com/mardiros)
 * [@cr0cK](https://github.com/cr0cK)
 * [@steventlucek](https://github.com/steventlucek)
 * [@themouette](https://github.com/themouette)
@@ -41,3 +42,4 @@ _(People involved in the project)_
 * vinci
 * [@Zeriuno](https://github.com/Zeriuno)
 * The NSA (to make it happen)
+* [@ptran32](https://github.com/ptran32)
