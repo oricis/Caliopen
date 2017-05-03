@@ -161,6 +161,10 @@
     "settings.account": "settings.account",
     "settings.application": "settings.application",
     "settings.devices": "settings.devices",
+    "settings.route.label.account": "settings.route.label.account",
+    "settings.route.label.default": "settings.route.label.default",
+    "settings.route.label.devices": "settings.route.label.devices",
+    "settings.route.label.tags": "settings.route.label.tags",
     "settings.signatures": "settings.signatures",
     "settings.tags": "settings.tags",
     "signin.action.login": "signin.action.login",
@@ -194,10 +198,10 @@
     "signup.form.username.placeholder": "signup.form.username.placeholder",
     "signup.go_signin": "signup.go_signin",
     "signup.title": "signup.title",
+    "tag_list.all_contacts": "tag_list.all_contacts",
     "tags.action.create": "tags.action.create",
     "tags.form.search.label": "tags.form.search.label",
     "tags.form.search.placeholder": "tags.form.search.placeholder",
-    "tag_list.all_contacts": "tag_list.all_contacts",
     "tags.header.count": "tags.header.count",
     "tags.header.title": "tags.header.title"
 }
