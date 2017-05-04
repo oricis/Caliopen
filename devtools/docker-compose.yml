@@ -62,7 +62,9 @@ services:
 
   # Caliopen cli tool
   cli:
-      build: ../src/backend/tools/py.CLI
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.cli
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
