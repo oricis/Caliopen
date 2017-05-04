@@ -41,7 +41,7 @@ func sendMail(i int, wg *sync.WaitGroup) {
 	defer c.Close()
 
 	from := "st@nisl.as"
-	to := "stan@caliopen.local"
+	to := "dev@caliopen.local"
 	to2 := ""
 
 	if err = c.Mail(from); err != nil {
@@ -68,7 +68,7 @@ func sendMail(i int, wg *sync.WaitGroup) {
 	}
 	defer wr.Close()
 
-	msg := fmt.Sprint("Subject: something\n")
+	msg := fmt.Sprint("Subject: something import to tell to you\n")
 	msg += "From: " + from + "\n"
 	msg += "To: " + to + "\n"
 	msg += "Date: " + time.Now().Format(time.RFC1123Z)

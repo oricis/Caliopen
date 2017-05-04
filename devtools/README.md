@@ -70,18 +70,20 @@ you need to have [docker](https://docs.docker.com/engine/installation/) and [doc
 Services available in the docker compose stack are:
 
 - redis
-- elasticsearch (v2.x)
+- elasticsearch
 - cassandra
-- caliopen ReST API
-- caliopen cli
+- caliopen's api (api)
+- caliopen's frontend (frontend)
+- caliopen's lmtp service (broker)
 
-You can start daemon services using these commands:
+You can start storage services using these commands:
 
 ```
 cd devtools
 docker-compose build
 docker-compose up -d redis cassandra elasticsearch
 ```
+(wait few seconds for cassandra to warm-up)
 
 Then you can setup storage, create an user and import email using caliopen cli tool:
 ```
@@ -99,18 +101,13 @@ docker-compose up -d api
 docker-compose up -d frontend
 ```
 
-You will have a CaliOpen instance filled with data, accessible using API on port 6543
+If you want to send/receive emails, start email broker:
+```
+cd devtools
+docker-compose up -d broker
+```
+**NB** : for now, outgoing emails are caught by a local smtp server for testing purpose.
 
-## Setup local storage services
+You will have a CaliOpen instance filled with data, accessible from your browser on localhost:4000.  
+You could check outgoing emails by pointing your browser at localhost:9000.  
 
-You need to have installed locally:
-- cassandra (2.x series for the moment)
-- elasticsearch (< 5.0)
-- redis (any version)
-
-Installation method depend on your habits, but elasticsearch and cassandra are just
-java .jar files to launch. If your OS distribution doesn't support them, don't panic
-if you have a jvm >= 7.x available.
-
-We experiment many problems with cassandra and docker container (with persistent
-data accros container restart), so we don't encourage it for running storage services.

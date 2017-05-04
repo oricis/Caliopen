@@ -85,7 +85,8 @@ services:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
           - nats:nats.dev.caliopen.org
-
+          - message_handler:mc.dev.caliopen.org
+          - inbucket:smtp.dev.caliopen.org
       ports:
         - "2525:2525"
   # NATS
@@ -94,10 +95,21 @@ services:
       ports:
           - "4222:4222"
 
-  # Message Handler
+  # NATS Message Handler
   message_handler:
       build: ../src/backend/interfaces/NATS/py.client
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
           - nats:nats.dev.caliopen.org
+
+  # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
+  # point your browser at localhost:9000
+  inbucket:
+      image: jhillyerd/inbucket
+      ports:
+          - "9000:10080"
+          - "2500:10025"
+
+  # Postfix : a complete smpt server that act as the Caliopen's MTA
+  # TODO
