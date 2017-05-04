@@ -18,4 +18,8 @@ BlockList.propTypes = {
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
 };
 
+BlockList.defaultProps = {
+  className: undefined,
+};
+
 export default BlockList;

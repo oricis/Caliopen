@@ -7,14 +7,21 @@ import './style.scss';
 
 class EmailDetails extends Component {
   static propTypes = {
-    email: PropTypes.shape({}),
+    email: PropTypes.shape({}).isRequired,
     remoteIdentity: PropTypes.shape({}),
     editMode: PropTypes.bool,
-    onDelete: PropTypes.func,
+    onDelete: PropTypes.func.isRequired,
     allowConnectRemoteEntity: PropTypes.bool,
     onConnectRemoteIdentity: PropTypes.func,
     onDisconnectRemoteIdentity: PropTypes.func,
     __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    remoteIdentity: undefined,
+    editMode: false,
+    allowConnectRemoteEntity: undefined,
+    onConnectRemoteIdentity: undefined,
+    onDisconnectRemoteIdentity: undefined,
   };
 
   constructor(props) {

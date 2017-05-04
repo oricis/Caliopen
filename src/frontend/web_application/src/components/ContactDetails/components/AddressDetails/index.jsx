@@ -6,10 +6,13 @@ import './style.scss';
 
 class AddressDetails extends Component {
   static propTypes = {
-    address: PropTypes.shape({}),
+    address: PropTypes.shape({}).isRequired,
     editMode: PropTypes.bool,
-    onDelete: PropTypes.func,
+    onDelete: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    editMode: false,
   };
 
   constructor(props) {
