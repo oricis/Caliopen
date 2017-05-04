@@ -31,7 +31,6 @@ class HorizontalScroll extends Component {
     this.visibleZone = null;
     this.state = {
       hasNavigationSliders: false,
-      triggerRecalc: false,
     };
   }
 
@@ -52,12 +51,13 @@ class HorizontalScroll extends Component {
     window.addEventListener('resize', this.handleZoneSizesChange);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.subscribedState !== nextProps.subscribedState) {
-      this.setState({
-        triggerRecalc: true,
-      });
-    }
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.subscribedState !== nextProps.subscribedState ||
+      this.state.hasNavigationSliders !== nextState.hasNavigationSliders;
+  }
+
+  componentDidUpdate() {
+    this.handleZoneSizesChange();
   }
 
   componentWillUnmount() {
@@ -111,16 +111,6 @@ class HorizontalScroll extends Component {
 
   render() {
     const { className, children } = this.props;
-
-    // FIXME, setState in render/constructor is an anti-pattern
-    // but we have to wait for the dom to handleZoneSizesChange
-    if (this.state.triggerRecalc) {
-      this.setState({
-        triggerRecalc: false,
-      }, () => {
-        this.handleZoneSizesChange();
-      });
-    }
 
     return (
       <div className={classnames(className, 'm-horizontal-scroll')}>
