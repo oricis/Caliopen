@@ -14,7 +14,7 @@ from caliopen_main.user.core import User
 from ..base import Api
 from ..base.exception import AuthenticationError
 
-from caliopen_main.user.parameters import NewUser
+from caliopen_main.user.parameters import NewUser, NewContact
 from caliopen_main.user.returns.user import ReturnUser
 
 log = logging.getLogger(__name__)
@@ -26,7 +26,6 @@ log = logging.getLogger(__name__)
           factory=DefaultContext
           )
 class AuthenticationAPI(Api):
-
     """User authentication API."""
 
     @view(renderer='json', permission=NO_PERMISSION_REQUIRED)
@@ -76,7 +75,6 @@ def no_such_user(request):
           name='User',
           factory=DefaultContext)
 class UserAPI(Api):
-
     """User API."""
 
     @view(renderer='json',
@@ -96,10 +94,17 @@ class UserAPI(Api):
         """Create a new user."""
 
         param = NewUser({'name': self.request.swagger_data['user']['username'],
-                         'password': self.request.swagger_data['user']['password'],
-                         'recovery_email': self.request.swagger_data['user']['recovery_email'],
+                         'password': self.request.swagger_data['user'][
+                             'password'],
+                         'recovery_email': self.request.swagger_data['user'][
+                             'recovery_email'],
                          'contact': self.request.swagger_data['user']['contact']
                          })
+
+        if self.request.swagger_data['user']['contact'] is not None:
+            param.contact = self.request.swagger_data['user']['contact']
+        else:
+            param.contact = NewContact()
 
         try:
             user = User.create(param)
@@ -117,7 +122,6 @@ class UserAPI(Api):
           name='MeUser',
           factory=DefaultContext)
 class MeUserAPI(Api):
-
     """Me API."""
 
     @view(renderer='json',

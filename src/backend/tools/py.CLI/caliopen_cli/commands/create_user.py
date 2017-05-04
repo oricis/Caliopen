@@ -37,5 +37,4 @@ def create_user(**kwargs):
     contact.emails = [email]
     param.contact = contact
     user = User.create(param)
-    user.save()
-    log.info('User %s (%s) created' % (user.user_id, user.user_name))
+    log.info('User %s (%s) created' % (user.user_id, user.name))
