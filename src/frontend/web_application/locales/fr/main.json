@@ -97,6 +97,7 @@
     "header.menu.account": "Compte",
     "header.menu.contacts": "Contacts",
     "header.menu.discussions": "Discussions",
+    "header.menu.no_primary_email": "Email principale non-définie",
     "header.menu.search": "Recherche",
     "header.menu.settings": "Paramètres",
     "header.menu.signin": "Connexion",
@@ -194,10 +195,10 @@
     "signup.form.username.placeholder": "nom d'utilisateur",
     "signup.go_signin": "J'ai déjà un compte",
     "signup.title": "Créer votre compte",
+    "tag_list.all_contacts": "Tous les contacts",
     "tags.action.create": "Créer",
     "tags.form.search.label": "Rechercher",
     "tags.form.search.placeholder": "Rechercher un tag ...",
-    "tag_list.all_contacts": "Tous les contacts",
     "tags.header.count": "(Total : %(count)s)",
     "tags.header.title": "Tags"
 }

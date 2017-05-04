@@ -14,6 +14,10 @@ class AddressForm extends Component {
     __: PropTypes.func.isRequired,
   };
 
+  static defaultProps = {
+    errors: [],
+  };
+
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
