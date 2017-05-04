@@ -52,7 +52,7 @@ services:
   #
   # Used to index mail content and ensure great research performances.
   elasticsearch:
-      image: elasticsearch:2
+      image: elasticsearch:2.4.4
       ports:
           - "9200:9200"
       volumes:
