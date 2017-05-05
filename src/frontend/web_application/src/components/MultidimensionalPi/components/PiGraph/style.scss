@@ -3,6 +3,10 @@
 $gridColor: $co-color__fg__back--higher;
 
 .m-pi-graph {
+  display: block;
+  max-width: $co-pi-width;
+  margin-right: auto;
+  margin-left: auto;
   pointer-events: none;
 
   &__line {
