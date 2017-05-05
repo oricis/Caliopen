@@ -8,7 +8,7 @@
     position: fixed;
     z-index: $l-z-index__navbar;
     width: 100%;
-    height: $co-component__height;
+    min-height: $co-component__height;
     padding-top: .75rem;
     transition: $co-animation__margin-transition;
     background-color: $co-color__bg__back;
