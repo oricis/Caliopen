@@ -15,8 +15,8 @@ AppConfig:
     tls_always_on: false
     max_clients: 1000
   #submit is the MTA to connect to for final delivery (postfix for example)
-  submit_address: 127.0.0.1
-  submit_port: 2500
+  submit_address: smtp.dev.caliopen.org
+  submit_port: 10025
   submit_user:
   submit_password:
   submit_workers: 2  # number of concurrent connexions to submit MTA
