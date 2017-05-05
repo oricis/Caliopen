@@ -51,14 +51,14 @@ packages:
   golang:
       -
           name: caliopen_apiv2
-          build_target: github.com/CaliOpen/CaliOpen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest
+          build_target: github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest
           path: src/backend/interfaces/REST/go.server
           description: Caliopen ReST API server
           dependencies:
             go: "^1.7"
       -
           name: caliopen_lmtpd
-          build_target: github.com/CaliOpen/CaliOpen/src/backend/protocols/go.smtp/cmd/caliopen_lmtpd
+          build_target: github.com/CaliOpen/Caliopen/src/backend/protocols/go.smtp/cmd/caliopen_lmtpd
           path: src/backend/protocols/go.smtp/
           description: Caliopen LMTP daemon
           dependencies:
