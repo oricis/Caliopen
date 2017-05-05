@@ -1,25 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
 import Link from '../../../../components/Link';
 import Icon from '../../../../components/Icon';
 import VerticalMenu, { VerticalMenuItem } from '../../../../components/VerticalMenu';
 import TabList from './components/TabList';
+import UserInfo from '../UserInfo';
 import './style.scss';
 
-const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
+const NavigationAlt = ({ currentApplication, applications, __ }) => (
   <div className="l-nav-alt">
-    <div className="l-nav-alt__user">
-      <div className="l-nav-alt__avatar">
-        {user && user.contact && <ContactAvatarLetter contact={user.contact} modifiers={{ size: 'small' }} />}
-      </div>
-      <div className="l-nav-alt__user-name">
-        <div>{user && user.name}</div>
-        { user && user.contact && (
-        <div>{user.contact.emails[0] && user.contact.emails[0].address}</div>
-        )}
-      </div>
-    </div>
+    <UserInfo className="l-nav-alt__user" />
     <VerticalMenu className="l-nav-alt__menu">
       {
         applications.map(application => (
@@ -58,13 +48,9 @@ const NavigationAlt = ({ user, currentApplication, applications, __ }) => (
 );
 
 NavigationAlt.propTypes = {
-  user: PropTypes.shape({}),
   applications: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   currentApplication: PropTypes.shape({}).isRequired,
   __: PropTypes.func.isRequired,
-};
-NavigationAlt.defaultProps = {
-  user: undefined,
 };
 
 export default NavigationAlt;

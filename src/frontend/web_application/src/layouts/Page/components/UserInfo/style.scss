@@ -1,0 +1,16 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-user-info {
+  @include flex-grid-row;
+
+  &__avatar {
+    @include flex-grid-column(shrink);
+  }
+
+  &__username {
+    @include flex-grid-column;
+    overflow: hidden;
+    font-weight: bold;
+  }
+}

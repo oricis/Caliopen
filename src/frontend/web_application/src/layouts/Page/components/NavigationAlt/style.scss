@@ -6,20 +6,7 @@
   background-color: $co-color__fg__back;
 
   &__user {
-    @include clearfix;
-    padding: 1rem;
-  }
-
-  &__avatar {
-    float: left;
-    padding-right: 1rem;
-  }
-
-  &__user-name {
-    float: left;
-    width: rem-calc(250px) - (2 * 1rem) - 3rem; //legacy off-canvas size - padding - avatar-size
-    overflow: hidden;
-    font-weight: bold;
+    padding-top: $co-component__spacing;
   }
 
   &__menu {

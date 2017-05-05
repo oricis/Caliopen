@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import UserInfo from '../../../UserInfo';
 import Link from '../../../../../../components/Link';
 import Button from '../../../../../../components/Button';
 import Icon from '../../../../../../components/Icon';
-import VerticalMenu, { VerticalMenuTextItem, VerticalMenuItem, Separator } from '../../../../../../components/VerticalMenu';
+import VerticalMenu, { VerticalMenuItem, Separator } from '../../../../../../components/VerticalMenu';
 import DropdownMenu, { withDropdownControl } from '../../../../../../components/DropdownMenu';
+import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
 
@@ -30,7 +32,7 @@ class Presenter extends Component {
     const { user, __ } = this.props;
 
     return (
-      <div>
+      <div className="m-user-menu">
         <DropdownControl
           toggle="co-user-menu"
           className="float-right"
@@ -47,12 +49,9 @@ class Presenter extends Component {
           onToggle={this.handleDropdownToggle}
         >
           <VerticalMenu>
-            <VerticalMenuTextItem>
-              <div>{user && user.name}</div>
-              {user && user.contact && (
-                <div>{user.contact.emails[0] && user.contact.emails[0].address}</div>
-              )}
-            </VerticalMenuTextItem>
+            <VerticalMenuItem>
+              <UserInfo className="m-user-menu__user-info" />
+            </VerticalMenuItem>
             <Separator />
             <VerticalMenuItem>
               <Link to="/settings/account" expanded button>{__('header.menu.account')}</Link>

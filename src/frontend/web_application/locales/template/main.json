@@ -97,6 +97,7 @@
     "header.menu.account": "header.menu.account",
     "header.menu.contacts": "header.menu.contacts",
     "header.menu.discussions": "header.menu.discussions",
+    "header.menu.no_primary_email": "header.menu.no_primary_email",
     "header.menu.search": "header.menu.search",
     "header.menu.settings": "header.menu.settings",
     "header.menu.signin": "header.menu.signin",
@@ -194,10 +195,10 @@
     "signup.form.username.placeholder": "signup.form.username.placeholder",
     "signup.go_signin": "signup.go_signin",
     "signup.title": "signup.title",
+    "tag_list.all_contacts": "tag_list.all_contacts",
     "tags.action.create": "tags.action.create",
     "tags.form.search.label": "tags.form.search.label",
     "tags.form.search.placeholder": "tags.form.search.placeholder",
-    "tag_list.all_contacts": "tag_list.all_contacts",
     "tags.header.count": "tags.header.count",
     "tags.header.title": "tags.header.title"
 }
