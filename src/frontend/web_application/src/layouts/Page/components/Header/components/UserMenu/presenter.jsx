@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import UserInfo from '../../../UserInfo';
 import Link from '../../../../../../components/Link';
 import Button from '../../../../../../components/Button';
 import Icon from '../../../../../../components/Icon';
-import VerticalMenu, { VerticalMenuTextItem, VerticalMenuItem, Separator } from '../../../../../../components/VerticalMenu';
+import VerticalMenu, { VerticalMenuItem, Separator } from '../../../../../../components/VerticalMenu';
 import DropdownMenu, { withDropdownControl } from '../../../../../../components/DropdownMenu';
 import './style.scss';
 
@@ -30,9 +31,6 @@ class Presenter extends Component {
   render() {
     const { user, __ } = this.props;
 
-    const emailAddress = user && user.contact && user.contact.emails &&
-      user.contact.emails.find(email => email.is_primary);
-
     return (
       <div className="m-user-menu">
         <DropdownControl
@@ -51,13 +49,9 @@ class Presenter extends Component {
           onToggle={this.handleDropdownToggle}
         >
           <VerticalMenu>
-            <VerticalMenuTextItem>
-              <div>{user && user.name}</div>
-              {
-                (emailAddress !== undefined && (<div>{emailAddress}</div>)) ||
-                (<div className="m-user-menu__no-primary-email">{__('header.menu.no_primary_email')}</div>)
-              }
-            </VerticalMenuTextItem>
+            <VerticalMenuItem>
+              <UserInfo className="m-user-menu__user-info" />
+            </VerticalMenuItem>
             <Separator />
             <VerticalMenuItem>
               <Link to="/settings/account" expanded button>{__('header.menu.account')}</Link>
