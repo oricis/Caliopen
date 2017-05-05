@@ -25,6 +25,8 @@ services:
           - elasticsearch:es.dev.caliopen.org
       ports:
           - "6543:6543"
+      volumes:
+          - ../src/backend:/srv/caliopen/src/backend
 
   # ### Redis Database
   #
