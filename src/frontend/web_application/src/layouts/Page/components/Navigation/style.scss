@@ -2,7 +2,6 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .l-navigation {
-  min-height: $co-component__height;
 
   &__wrapper {
     @include flex-grid-row($size: expand);

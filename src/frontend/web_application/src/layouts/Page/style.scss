@@ -13,8 +13,11 @@ $co-font-path: '../../fonts';
   &__content {
     // XXX: need a better fix for call-to-action override on mobile
     margin-bottom: 160px;
-    padding-top: 45px;
+  }
 
-    background-color: $co-color__fg__back;
+  @include breakpoint(medium) {
+    &__content {
+      padding-top: 67px;
+    }
   }
 }

@@ -2,10 +2,10 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-contacts-filters {
+  padding-bottom: map-get($co-form__spacing, 'small');
 
   &__select {
     @include flex-grid-row;
-    margin-bottom: map-get($co-form__spacing, 'small');
 
     label {
       @include flex-grid-column(shrink);

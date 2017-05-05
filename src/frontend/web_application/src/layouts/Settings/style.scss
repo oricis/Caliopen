@@ -4,7 +4,12 @@
 
 .l-settings {
   &__nav {
-    padding-top: map-get($co-form__spacing, 'small');
+    padding-bottom: map-get($co-form__spacing, 'small');
     background: $co-color__fg__back;
+  }
+
+  &__panel {
+    padding-top: $co-margin;
+
   }
 }
