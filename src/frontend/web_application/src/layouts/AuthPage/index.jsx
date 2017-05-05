@@ -9,7 +9,8 @@ const DEV_INFOS = {
   password: '123456',
 };
 
-if (CALIOPEN_ENV === 'development') {
+// XXX: use dev username for now. We should use poc_fixtures next time
+if (CALIOPEN_ENV === 'development' || true) {
   DEV_INFOS.login = 'dev';
 }
 
