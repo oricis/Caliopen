@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './style.scss';
 
-export const RawButton = ({ children, type = 'button', ...props }) => {
+export const RawButton = ({ children, type, ...props }) => {
   const buttonProps = {
     ...props,
     type,
@@ -15,6 +15,10 @@ export const RawButton = ({ children, type = 'button', ...props }) => {
 RawButton.propTypes = {
   type: PropTypes.oneOf(['button', 'submit']),
   children: PropTypes.node.isRequired,
+};
+
+RawButton.defaultProps = {
+  type: 'button',
 };
 
 const Button = ({
@@ -55,6 +59,18 @@ Button.propTypes = {
   success: PropTypes.bool,
   secondary: PropTypes.bool,
   children: PropTypes.node.isRequired,
+};
+
+Button.defaultProps = {
+  className: undefined,
+  plain: false,
+  hollow: false,
+  expanded: false,
+  active: false,
+  alert: false,
+  inline: false,
+  success: false,
+  secondary: false,
 };
 
 export default Button;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './style.scss';
 
-const Badge = ({ low, large, className, radiusType = 'normal', ...props }) => {
+const Badge = ({ low, large, className, radiusType, ...props }) => {
   const badgeClassName = classnames('m-badge', {
     'm-badge--low': low,
     'm-badge--large': large,
@@ -22,6 +22,13 @@ Badge.propTypes = {
   large: PropTypes.bool,
   radiusType: PropTypes.oneOf(['no', 'normal', 'rounded']),
   className: PropTypes.string,
+};
+
+Badge.defaultProps = {
+  low: false,
+  large: false,
+  radiusType: 'normal',
+  className: undefined,
 };
 
 export default Badge;

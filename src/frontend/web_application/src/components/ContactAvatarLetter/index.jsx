@@ -20,14 +20,7 @@ const ContactAvatarLetter = ({ contact, className, size, isRound }) => {
     [SIZE_LARGE]: 'm-avatar--large',
     [SIZE_XLARGE]: 'm-avatar--xlarge',
   };
-  const classNameSize = Object.keys(classNameModifiers).reduce((prev, key) => {
-    if (!prev && key === size) {
-      return classNameModifiers[key];
-    }
-
-    return prev;
-  }, undefined);
-
+  const classNameSize = classNameModifiers[size];
   const letterClassNameSize = classNameSize ? `${classNameSize}__letter` : null;
 
   return (
@@ -42,9 +35,15 @@ const ContactAvatarLetter = ({ contact, className, size, isRound }) => {
 
 ContactAvatarLetter.propTypes = {
   contact: PropTypes.shape({}),
-  size: PropTypes.string,
+  size: PropTypes.oneOf([SIZE_SMALL, SIZE_MEDIUM, SIZE_LARGE, SIZE_XLARGE]),
   isRound: PropTypes.bool,
   className: PropTypes.string,
+};
+ContactAvatarLetter.defaultProps = {
+  contact: undefined,
+  size: undefined,
+  isRound: false,
+  className: undefined,
 };
 
 export default ContactAvatarLetter;
