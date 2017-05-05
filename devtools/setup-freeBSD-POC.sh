@@ -1,19 +1,16 @@
 #!/bin/csh
 #boostrap a freebsd with a POC and a postfix
-set -ev
 
-CASSANDRA_VERSION="2.2.9"
-ELASTICSEARCH_VERSION="2.4.4"
-GO_VERSION="1.8.1"
+set CASSANDRA_VERSION="2.2.9"
+set ELASTICSEARCH_VERSION="2.4.4"
 
-CALIOPEN_BASE_DIR="/home/caliopen"
-GOPATH="/usr/local/goland"
-GO_PKG="go${GO_VERSION}.free-bsd.tar.gz"
-CALIOPEN_REPO_DIR="${GOPATH}/src/github.com/CaliOpen"
-CALIOPEN_BACKEND_DIR="${CALIOPEN_REPO_DIR}/Caliopen/src/backend"
-CALIOPEN_FRONTEND_DIR="${CALIOPEN_REPO_DIR}/Caliopen/src/frontend/web_application"
-CONF_DIR="${CALIOPEN_BACKEND_DIR}/configs"
-CONF_FILE="${CONF_DIR}/caliopen.yaml.template"
+set CALIOPEN_BASE_DIR="/usr/local/caliopen"
+set GOPATH="/usr/local/goland"
+set CALIOPEN_REPO_DIR="${GOPATH}/src/github.com/CaliOpen"
+set CALIOPEN_BACKEND_DIR="${CALIOPEN_REPO_DIR}/Caliopen/src/backend"
+set CALIOPEN_FRONTEND_DIR="${CALIOPEN_REPO_DIR}/Caliopen/src/frontend/web_application"
+set CONF_DIR="${CALIOPEN_BACKEND_DIR}/configs"
+set CONF_FILE="${CONF_DIR}/caliopen.yaml.template"
 
 # System setup
 touch /etc/rc.conf
@@ -22,6 +19,8 @@ echo "hostname" >> /etc/rc.conf
 pkg update
 pkg upgrade -y
 
+# Get utils
+pkg install -y git
 
 # Install GOlang environment
 pkg install -y lang/go
@@ -30,8 +29,8 @@ setenv GOPATH ${GOPATH}
 echo 'setenv GOPATH ${GOPATH}' >> ~/.cshrc
 cd ${GOPATH}
 mkdir bin pkg src
-setenv PATH "$PATH:/usr/local/go/bin:${GOPATH}/bin"
-echo 'export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"' >> ~/.bashrc
+setenv PATH "${PATH}:/usr/local/go/bin:${GOPATH}/bin"
+echo 'setenv PATH "${PATH}:/usr/local/go/bin:${GOPATH}/bin"' >> ~/.cshrc
 # Install go vendoring manager
 go get -u github.com/kardianos/govendor
 
