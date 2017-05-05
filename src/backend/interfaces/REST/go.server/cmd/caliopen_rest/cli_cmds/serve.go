@@ -9,7 +9,6 @@ package cmd
 import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server"
 	log "github.com/Sirupsen/logrus"
-	"github.com/flashmob/go-guerrilla"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -64,7 +63,7 @@ func sigHandler() {
 			if err != nil {
 				log.WithError(err).Error("Error while ReadConfig (reload)")
 			} else {
-				log.Infof("Configuration is reloaded at %s", guerrilla.ConfigLoadTime)
+				log.Infof("Configuration is reloaded")
 			}
 			// TODO: reinitialize
 		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT {
