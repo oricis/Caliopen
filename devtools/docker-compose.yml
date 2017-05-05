@@ -73,6 +73,8 @@ services:
           - broker:broker.dev.caliopen.org
       environment:
           CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
+      volumes:
+        - .:/srv/caliopen/src/backend/devtools
 
   # Caliopen frontend
   frontend:
