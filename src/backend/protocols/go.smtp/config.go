@@ -14,7 +14,6 @@ type (
 		LDAConfig broker.LDAConfig
 	}
 
-	// AppConfig is a clone of guerrilla AppConfig with relevant tagstrings
 	AppConfig struct {
 		AppVersion      string         `mapstructure:"version"`
 		Servers         []ServerConfig `mapstructure:"inbound_servers"`
