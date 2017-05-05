@@ -17,7 +17,7 @@ const UserInfo = ({ user, className }) => (
 
 UserInfo.propTypes = {
   user: PropTypes.shape(),
-  className: PropTypes.text,
+  className: PropTypes.string,
 };
 UserInfo.defaultProps = {
   user: {},
