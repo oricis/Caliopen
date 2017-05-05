@@ -21,7 +21,7 @@ fi
 # Force installation of regex using pip
 pip install regex
 
-COMPONENTS="main/py.storage main/py.main interfaces/REST/py.server protocols/py.smtp tools/py.CLI components/py.pgp"
+COMPONENTS="main/py.storage main/py.main interfaces/REST/py.server protocols/py.smtp tools/py.CLI components/py.pgp tools/py.doc"
 
 for comp in ${COMPONENTS}:
 do
@@ -37,10 +37,6 @@ do
     fi
 
 done
-
-# Doc
-cd ${CALIOPEN_BASE_DIR}/doc/py.doc
-python setup.py develop
 
 # Extra packages for development
 pip install ipdb

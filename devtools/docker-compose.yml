@@ -16,13 +16,17 @@ services:
 
   # Caliopen APIv1
   apiv1:
-      build: ../src/backend/interfaces/REST/py.server
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.py-api
       links:
           - redis:redis.dev.caliopen.org
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
       ports:
           - "6543:6543"
+      volumes:
+          - ../src/backend:/srv/caliopen/src/backend
 
   # ### Redis Database
   #
@@ -60,7 +64,9 @@ services:
 
   # Caliopen cli tool
   cli:
-      build: ../src/backend/tools/py.CLI
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.cli
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
@@ -96,7 +102,9 @@ services:
 
   # Message Handler
   message_handler:
-      build: ../src/backend/interfaces/NATS/py.client
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.message_handler
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
