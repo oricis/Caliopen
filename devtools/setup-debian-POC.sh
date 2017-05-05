@@ -1,7 +1,5 @@
 #!/bin/bash
 #boostrap a debian with a POC and a postfix
-#no service is running, but all components should be correctly installed, configured and ready to start.
-
 set -ev
 
 CASSANDRA_VERSION="2.2.9"
@@ -25,14 +23,14 @@ apt-get install -y apt-transport-https
 apt-get install -y wget curl git unzip
 
 # Install GOlang environment
-[[ -d ${GOPATH} ]] || mkdir ${GOPATH}
+[[ -d ${GOPATH} ]] || mkdir -p ${GOPATH}
 export GOPATH=${GOPATH}
 echo 'export GOPATH="${GOPATH}"' >> ~/.bashrc
 cd ${GOPATH}
 wget -q https://storage.googleapis.com/golang/${GO_PKG}
 tar -C /usr/local -xzf ${GO_PKG}
 mkdir bin pkg src
-export PATH=${PATH}:/usr/local/go/bin:${GOPATH}/bin
+export PATH="$PATH:/usr/local/go/bin:${GOPATH}/bin"
 echo 'export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"' >> ~/.bashrc
 # Install go vendoring manager
 go get -u github.com/kardianos/govendor
