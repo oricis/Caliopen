@@ -9,12 +9,20 @@ $co-font-path: '../../fonts';
 
 @import '../../styles/common';
 
+$navigation__height: $co-component__height;
+$navigation__padding: .75rem;
+$navigation-after__height: $co-component__spacing;
+
+
 .l-body {
   &__content {
     // XXX: need a better fix for call-to-action override on mobile
     margin-bottom: 160px;
-    padding-top: 45px;
+  }
 
-    background-color: $co-color__fg__back;
+  @include breakpoint(medium) {
+    &__content {
+      padding-top: ($navigation__height + $navigation__padding + $navigation-after__height);
+    }
   }
 }

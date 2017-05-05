@@ -4,7 +4,18 @@
 
 .l-settings {
   &__nav {
-    padding-top: map-get($co-form__spacing, 'small');
+    padding-top: $co-component__spacing;
+    padding-bottom: $co-component__spacing;
     background: $co-color__fg__back;
+  }
+
+  &__panel {
+    padding-top: $co-margin;
+  }
+
+  @include breakpoint(medium) {
+    &__nav {
+      padding-top: 0;
+    }
   }
 }

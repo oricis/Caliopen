@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { RouteWithSubRoutes } from '../../routes';
-import Devices from '../Devices';
+import Settings from '../../layouts/Settings';
 
 
-const DevicesRoute = ({ routes }) => (
-  <Devices>
+const SettingsRoute = ({ routes }) => (
+  <Settings>
     {routes.map((route, i) => (
       <RouteWithSubRoutes key={i} {...route} />
     ))}
-  </Devices>
+  </Settings>
 );
 
-DevicesRoute.propTypes = {
+SettingsRoute.propTypes = {
   routes: PropTypes.arrayOf({}).isRequired,
 };
 
-export default DevicesRoute;
+export default SettingsRoute;

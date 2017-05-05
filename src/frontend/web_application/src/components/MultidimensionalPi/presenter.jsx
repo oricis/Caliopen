@@ -3,8 +3,6 @@ import classnames from 'classnames';
 import PiGraph from './components/PiGraph';
 import Ratings from './components/Ratings';
 
-import './style.scss';
-
 const PI_MAX = 100; // max value for PI levels
 
 const MultidimensionalPi = ({ pi, displayAveragePi, className }) => {

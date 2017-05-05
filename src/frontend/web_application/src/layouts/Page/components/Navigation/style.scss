@@ -2,13 +2,13 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .l-navigation {
-  min-height: $co-component__height;
 
   &__wrapper {
     @include flex-grid-row($size: expand);
     position: fixed;
     z-index: $l-z-index__navbar;
     width: 100%;
+    height: $co-component__height;
     padding-top: .75rem;
     transition: $co-animation__margin-transition;
     background-color: $co-color__bg__back;
@@ -18,7 +18,7 @@
       content: ' ';
       z-index: $l-z-index__navbar-shadow;
       width: 100%;
-      height: 10px;
+      height: $co-component__spacing;
       transition: $co-animation__box-transition;
       background-color: $co-color__fg__back;
     }

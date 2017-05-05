@@ -5,6 +5,7 @@ import Spinner from '../../components/Spinner';
 import Icon from '../../components/Icon';
 import ContactDetails from '../../components/ContactDetails';
 import ContactProfile from '../../components/ContactProfile';
+import MultidimensionalPi from '../../components/MultidimensionalPi';
 import TextBlock from '../../components/TextBlock';
 import { CheckboxFieldGroup } from '../../components/form';
 import AccountOpenPGPKeys from './components/AccountOpenPGPKeys';
@@ -39,7 +40,11 @@ class Account extends Component {
   loadUser() {
     this.setState({
       /* eslint-disable */
-      user: {"family_name": null, "user_id": "344489c3-fc63-4e41-b490-5f4dd317aa50", "name": "test@caliopen.local", "privacy_features": {}, "main_user_id": null, "privacy_index": 0, "date_insert": "2016-05-09T15:01:39.924000",
+      user: {"family_name": null, "user_id": "344489c3-fc63-4e41-b490-5f4dd317aa50", "name": "test@caliopen.local", "privacy_features": {}, "main_user_id": null, "privacy_index": [
+        { name: 'behavioral', level: 20 },
+        { name: 'contextual', level: 95 },
+        { name: 'technical', level: 55 },
+      ], "date_insert": "2016-05-09T15:01:39.924000",
         "contact": {
           "addresses": [], "privacy_features": {}, "phones": [], "contact_id": "19c3ce42-e3ba-46e7-984f-4c3e8de11c05", "date_insert": "2016-05-09T15:01:40.034000", "identities": [], "user_id": "344489c3-fc63-4e41-b490-5f4dd317aa50", "title": "John Doe", "additional_name": null, "date_update": null, "organizations": [], "ims": [], "given_name": "John", "name_prefix": null, "tags": [], "deleted": 0, "privacy_index": 0, "groups": [], "infos": {},
           "emails": [{"email_id": "93f03145-4398-4bd4-9bd5-00000100", "is_primary": 0, "date_update": null, "label": null, "address": "contact@john.doe", "date_insert": "2016-05-09T15:01:43.116000", "type": "other"}],
@@ -100,6 +105,8 @@ class Account extends Component {
                   onChange={onContactProfileChange}
                 />
               )}
+
+              <MultidimensionalPi className="s-account__pi" pi={this.state.user.privacy_index} />
 
               <TextBlock>
                 <Icon type="envelope" /> {this.state.user.name}
