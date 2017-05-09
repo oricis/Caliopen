@@ -1,0 +1,174 @@
+#!/bin/env python
+"""
+Caliopen tool for package management.
+
+This tool permit to do package management tasks based on Caliopen
+package definition.
+
+Usage:
+    manage_package --conf <package.yaml> create_version <package> <version>
+
+"""
+import os
+import sys
+import re
+import subprocess as sp
+import argparse
+import logging
+
+import yaml
+import json
+from git import Repo
+
+
+log = logging.getLogger(__name__)
+logging.basicConfig()
+log.setLevel(logging.DEBUG)
+
+PY_UPDATE_CMD = """perl -pi -e "s/__version__ = '.*/__version__ = '{version}'/" {file}"""
+GO_UPDATE_CMD = """perl -pi -e "s/__version__ = \".*/__version__ = \"{version}\"/" {file}"""
+
+
+#
+# Method duplicated with make_release ones ...
+#
+
+def get_repository(basedir):
+    """Return a ``Repo`` instance."""
+    repo = Repo(basedir)
+    assert not repo.bare, 'Repository is bare git, not valid'
+    return repo
+
+
+def get_repository_directory(config):
+    """Return absolute repository directory."""
+    repo = config.get('repository', {})
+    basedir = repo.get('base_directory')
+    assert os.path.isdir(basedir)
+    return os.path.abspath(basedir)
+
+
+def get_javascript_version(package, basedir):
+    """Return version for a javascript package."""
+    pkg_file = '{}/package.json'.format(basedir)
+    if not os.path.isfile(pkg_file):
+        raise Exception('File {} for package version not found'.
+                        format(pkg_file))
+    with open(pkg_file) as v_file:
+        return json.loads(v_file.read()).get('version')
+
+
+def get_python_version(package, basedir):
+    """Return python package version."""
+    pkg_file = '{}/{}/__init__.py'.format(basedir, package['name'])
+    if not os.path.isfile(pkg_file):
+        raise Exception('File {} for package version not found'.
+                        format(pkg_file))
+    with open(pkg_file) as v_file:
+        return re.compile(r".*__version__ = '(.*?)'",
+                          re.S).match(v_file.read()).group(1)
+
+
+def get_golang_version(package, basedir):
+    """Return golang package version."""
+    pkg_file = '{}/{}/cli_cmds/root.go'.format(basedir, package['name'])
+    if not os.path.isfile(pkg_file):
+        raise Exception('File {} for package version not found'.
+                        format(pkg_file))
+    with open(pkg_file) as v_file:
+        return re.compile(r".*__version__ = '(.*?)'",
+                          re.S).match(v_file.read()).group(1)
+
+
+def check_versions(current, new):
+    """Compare current and new version, raise if new is not superior."""
+    t_new = tuple(int(x) for x in new.split('.'))
+    t_cur = tuple(int(x) for x in current.split('.'))
+    if t_new <= t_cur:
+        raise Exception('Current version {} and new expected one {} mismatch'.
+                        format(current, new))
+
+
+#
+# Methods for package management
+#
+
+def update_python_version(dir, package, version):
+    """Update a python package to a new version."""
+    pkg_file = '{}/{}/__init__.py'.format(dir, package['name'])
+    cmd = PY_UPDATE_CMD.format(version=version, file=pkg_file)
+    log.debug('Will execute {}'.format(cmd))
+    res = sp.call(cmd, shell=True)
+    return res
+
+
+def update_golang_version(dir, package, version):
+    """Update a golang package to a new version."""
+    pkg_file = '{}/{}/cli_cmds/root.go'.format(dir, package['name'])
+    cmd = GO_UPDATE_CMD.format(version=version, file=pkg_file)
+    res = sp.call(cmd, shell=True)
+    return res
+
+
+def find_package(config, name):
+    """Find the related caliopen package and return its language."""
+    all_packages = config.get('packages', {})
+    for language, packages in all_packages.items():
+        for package in packages:
+            if package['name'] == opts.package:
+                log.info('Will process package {} in language {}'.
+                         format(package, language))
+                return language, package
+    return None, None
+
+
+def create_package_version(config, opts):
+    """Update a package to a new version."""
+    basedir = get_repository_directory(config)
+    repo = get_repository(basedir)
+
+    lang, package = find_package(config, opts.package)
+    tag_name = '{}-{}'.format(package['name'], opts.version)
+    pkg_dir = '{}/{}'.format(basedir, package['path'])
+
+    if not opts.no_check:
+        assert not repo.is_dirty(), 'Current head is dirty'
+        assert repo.active_branch.name == 'master', 'Not on master branch'
+        assert tag_name not in repo.tags, 'Tag {} exists'.format(opts.version)
+
+    if lang == 'python':
+        current = get_python_version(package, pkg_dir)
+        check_versions(current, opts.version)
+        update = update_python_version(pkg_dir, package, opts.version)
+    elif lang == 'golang':
+        current = get_golang_version(package, pkg_dir)
+        check_versions(current, opts.version)
+        update = update_golang_version(pkg_dir, package, opts.version)
+    else:
+        raise Exception('Language {} not managed'.format(lang))
+    if update == 0:
+        log.info('Creating tag {}'.format(tag_name))
+        repo.create_tag(tag_name)
+    else:
+        raise Exception('Invalid return value when updating package version')
+
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--conf', dest='conffile', default='packages.yaml')
+    subparsers = parser.add_subparsers(title="action")
+
+    sp_create = subparsers.add_parser('create_version',
+                                      help='Create a package version')
+    sp_create.add_argument('package')
+    sp_create.add_argument('version')
+    sp_create.add_argument('--nocheck', dest='no_check', action='store_true')
+    sp_create.set_defaults(func=create_package_version)
+
+    opts = parser.parse_args(sys.argv[1:])
+
+    with open(opts.conffile) as f:
+        config = yaml.load(f.read())
+
+    res = opts.func(config, opts)
