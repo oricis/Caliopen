@@ -99,20 +99,23 @@ def update_python_version(dir, package, version):
     pkg_file = '{}/{}/__init__.py'.format(dir, package['name'])
     cmd = PY_UPDATE_CMD.format(version=version, file=pkg_file)
     log.debug('Will execute {}'.format(cmd))
-    return sp.call(cmd, shell=True)
+    return sp.call(cmd, shell=True), pkg_file
 
 
 def update_golang_version(dir, package, version):
     """Update a golang package to a new version."""
     pkg_file = '{}/{}/cli_cmds/root.go'.format(dir, package['name'])
     cmd = GO_UPDATE_CMD.format(version=version, file=pkg_file)
-    return sp.call(cmd, shell=True)
+    return sp.call(cmd, shell=True), pkg_file
 
 
 def update_javascript_version(dir, package, version):
     """Update a javascript package to a new version."""
+    pkg_file = '{}/package.json'.format(dir)
+    if not os.path.isfile(pkg_file):
+        raise Exception('No package.json file in {}'.format(dir))
     cmd = JS_UPDATE_CMD.format(dir=dir, version=version)
-    return sp.call(cmd, shell=True)
+    return sp.call(cmd, shell=True), pkg_file
 
 
 def find_package(config, name):
@@ -143,21 +146,27 @@ def create_package_version(config, opts):
     if lang == 'python':
         current = get_python_version(package, pkg_dir)
         check_versions(current, opts.version)
-        update = update_python_version(pkg_dir, package, opts.version)
+        update, file = update_python_version(pkg_dir, package, opts.version)
     elif lang == 'golang':
         current = get_golang_version(package, pkg_dir)
         check_versions(current, opts.version)
-        update = update_golang_version(pkg_dir, package, opts.version)
+        update, file = update_golang_version(pkg_dir, package, opts.version)
     elif lang == 'javascript':
         current = get_javascript_version(package, pkg_dir)
         check_versions(current, opts.version)
-        update = update_javascript_version(pkg_dir, package, opts.version)
+        update, file = update_javascript_version(pkg_dir, package,
+                                                 opts.version)
     else:
         raise Exception('Language {} not managed'.format(lang))
 
     if update == 0:
         log.info('Creating tag {}'.format(tag_name))
         repo.create_tag(tag_name)
+        index = repo.index
+        index.add([file])
+        index.commit('Version {} for package {}'.
+                     format(opts.version, package['name']))
+        index.write_tree()
     else:
         raise Exception('Invalid return value when updating package version')
 
