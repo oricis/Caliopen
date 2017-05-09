@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
-import { DateTime } from '@gandi/react-translate';
+import Moment from 'react-moment';
 import ContactAvatarLetter from '../../../ContactAvatarLetter';
 import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
 import Button from '../../../Button';
@@ -12,7 +12,7 @@ import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
 
-const MessageInfosContainer = ({ __, message, author }) => {
+const MessageInfosContainer = ({ __, message, author, locale }) => {
   const typeTranslations = {
     email: __('message-list.message.protocol.email'),
   };
@@ -29,9 +29,9 @@ const MessageInfosContainer = ({ __, message, author }) => {
           <Icon type={message.type} className="m-message__type-icon" spaced />
         </div>
       )}
-      <DateTime className="m-message__date" format="LT">
+      <Moment className="m-message__date" format="LT" locale={locale}>
         {message.date}
-      </DateTime>
+      </Moment>
     </div>
   );
 };
@@ -39,18 +39,24 @@ const MessageInfosContainer = ({ __, message, author }) => {
 MessageInfosContainer.propTypes = {
   author: PropTypes.shape({}).isRequired,
   message: PropTypes.shape({}).isRequired,
+  locale: PropTypes.string,
   __: PropTypes.func.isRequired,
+};
+MessageInfosContainer.defaultProps = {
+  locale: undefined,
 };
 
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     onView: PropTypes.func,
+    locale: PropTypes.string,
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     onView: null,
+    locale: undefined,
   };
 
   constructor(props) {
@@ -109,7 +115,7 @@ class Message extends Component {
   }
 
   render() {
-    const { message, __ } = this.props;
+    const { message, locale, __ } = this.props;
     const author = message.participants.find(participant => participant.type === 'From');
     const subject = message.subject;
     const topBarClassName = classnames(
@@ -137,6 +143,7 @@ class Message extends Component {
             <MessageInfosContainer
               message={message}
               author={author}
+              locale={locale}
               __={__}
             />
 

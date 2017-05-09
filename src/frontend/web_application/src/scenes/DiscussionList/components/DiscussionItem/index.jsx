@@ -19,6 +19,7 @@ const renderTags = discussion => discussion.tags && discussion.tags.map((tag, ke
 
 const DiscussionItem = ({ user, discussion, formatDate, __ }) => {
   const hasUnread = !!discussion.unread_count && discussion.unread_count > 0;
+  const discussionDate = discussion.date_update || discussion.date_insert;
 
   return (
     <DiscussionItemActionsContainer discussion={discussion} __={__}>
@@ -42,12 +43,12 @@ const DiscussionItem = ({ user, discussion, formatDate, __ }) => {
         </div>
         <div className="s-discussion-list__col-dates">
           <time
-            title={formatDate(discussion.date_update, 'LLL')}
-            dateTime={formatDate(discussion.date_update, '')}
+            title={formatDate(discussionDate, 'LLL')}
+            dateTime={formatDate(discussionDate, '')}
           >
             <TextBlock inline>
-              {formatDate(discussion.date_update, 'll')}
-            </TextBlock> <TextBlock inline>{formatDate(discussion.date_update, 'LT')}</TextBlock>
+              {formatDate(discussionDate, 'll')}
+            </TextBlock> <TextBlock inline>{formatDate(discussionDate, 'LT')}</TextBlock>
           </time>
         </div>
         <div className="s-discussion-list__col-count">

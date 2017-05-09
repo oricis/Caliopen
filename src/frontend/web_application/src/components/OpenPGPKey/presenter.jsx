@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { enums } from 'openpgp';
 import classnames from 'classnames';
-import { DateTime, withTranslator } from '@gandi/react-translate';
+import { withTranslator } from '@gandi/react-translate';
+import Moment from 'react-moment';
 import Button from '../Button';
 import Icon from '../Icon';
 import DefList from '../DefList';
@@ -37,11 +38,16 @@ function generateStateFromProps(props) {
 class OpenPGPKey extends Component {
   static propTypes = {
     __: PropTypes.func,
+    locale: PropTypes.string,
     children: PropTypes.node,
     publicKeyArmored: PropTypes.string.isRequired,
     privateKeyArmored: PropTypes.string,
     editMode: PropTypes.bool,
     onDeleteKey: PropTypes.func,
+  };
+
+  static defaultProps = {
+    locale: undefined,
   };
 
   constructor(props) {
@@ -73,7 +79,7 @@ class OpenPGPKey extends Component {
   }
 
   render() {
-    const { __, children, publicKeyArmored, privateKeyArmored, editMode } = this.props;
+    const { __, locale, children, publicKeyArmored, privateKeyArmored, editMode } = this.props;
     const openpgpStatuses = {
       invalid: __('openpgp.status.invalid'),
       expired: __('openpgp.status.expired'),
@@ -112,14 +118,14 @@ class OpenPGPKey extends Component {
           <div className="m-openpgp-key__summary">
             <span>{this.state.openpgpKey.userId}</span>
             {this.state.openpgpKey.created && (
-              <DateTime format="ll">{this.state.openpgpKey.created}</DateTime>
+              <Moment format="ll" locale={locale}>{this.state.openpgpKey.created}</Moment>
             )}
             {' '}
             {this.state.openpgpKey.expirationTime
                 && this.state.openpgpKey.expirationTime.length
                 && (
                   <span>
-                    / <DateTime format="ll">{this.state.openpgpKey.expirationTime}</DateTime>
+                    / <Moment format="ll" locale={locale}>{this.state.openpgpKey.expirationTime}</Moment>
                   </span>
                 )
             }
@@ -137,8 +143,8 @@ class OpenPGPKey extends Component {
                 { title: __('openpgp.details.algorithm'), descriptions: [this.state.openpgpKey.algorithm] },
                 { title: __('openpgp.details.key-size'), descriptions: [this.state.openpgpKey.bitSize] },
                 { title: __('openpgp.details.status'), descriptions: [openpgpStatuses[this.state.openpgpKey.keyStatus]] },
-                { title: __('openpgp.details.creation'), descriptions: this.state.openpgpKey.created ? [<DateTime format="ll">{this.state.openpgpKey.created}</DateTime>] : [] },
-                { title: __('openpgp.details.expiration'), descriptions: this.state.openpgpKey.expirationTime ? [<DateTime format="ll">{this.state.openpgpKey.expirationTime}</DateTime>] : [] },
+                { title: __('openpgp.details.creation'), descriptions: this.state.openpgpKey.created ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.created}</Moment>] : [] },
+                { title: __('openpgp.details.expiration'), descriptions: this.state.openpgpKey.expirationTime ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.expirationTime}</Moment>] : [] },
               ]}
             />
 
