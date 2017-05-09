@@ -5,6 +5,7 @@ import { AppContainer } from 'react-hot-loader';
 import App from './App';
 import configureStore from './store/configure-store';
 import getRouterHistory from './services/router-history';
+import { getLocale } from './services/i18n';
 
 let devTools;
 
@@ -12,7 +13,12 @@ if (CALIOPEN_ENV === 'development') {
   devTools = window.devToolsExtension && window.devToolsExtension();
 }
 
-const store = configureStore({}, devTools);
+const locale = getLocale();
+const store = configureStore({
+  i18n: {
+    locale,
+  },
+}, devTools);
 const history = getRouterHistory();
 
 const rootEl = document.getElementById('root');

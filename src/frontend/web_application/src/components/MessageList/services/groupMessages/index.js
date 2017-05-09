@@ -2,14 +2,22 @@ const groupMessages = messages => [...messages]
   .sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
   .reduce((acc, message) => {
     const datetime = new Date(message.date);
-    const date = (new Date(Date.UTC(
+    const oneDayAgo = new Date();
+    oneDayAgo.setHours(oneDayAgo.getHours() - 24);
+    let date = new Date(Date.UTC(
       datetime.getFullYear(), datetime.getMonth(), datetime.getDate()
-    ))).toISOString();
-    const accMessages = acc[date] || [];
+    ));
+    if (oneDayAgo < datetime) {
+      date = Object.keys(acc)
+        .map(dt => new Date(dt))
+        .find(dt => new Date(dt) < datetime)
+        || datetime;
+    }
+    const accMessages = acc[date.toISOString()] || [];
 
     return {
       ...acc,
-      [date]: [
+      [date.toISOString()]: [
         ...accMessages,
         message,
       ],
