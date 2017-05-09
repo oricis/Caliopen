@@ -1,0 +1,27 @@
+@startuml
+
+title User add contact information that can be used to find additionnal informations, including a PGP key
+
+User -> Frontend: add an email to a contact
+Frontend -> API: PATCH /contacts/<contact_id> {new_email}
+API -> Storage: patch_contact(contact_id, new_email)
+Storage -> nats: contact_add_email(contact_id, new_email)
+
+Storage -> API: True
+API -> Frontend: 200 OK
+Frontend -> User: updated contact
+
+
+alt asyncronous identity handler for contact information update
+	nats -> identity_handler: contact_add_email(contact_id, email)
+	identity_handler -> DNS: find pgp key
+	DNS -> identity_handler: nothing
+	identity_handler -> HKP: find pgp key by email
+	HKP -> identity_handler: nothing found
+	identity_handler -> keybase: find contact on keybase by email
+	keybase -> identity_handler: 200 OK {contact with key and other social identities}
+	identity_handler -> nats: updated_contact(contact_id, new_informations)
+
+end
+
+@enduml
