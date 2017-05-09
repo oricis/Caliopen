@@ -1,10 +1,11 @@
-import isEqual from 'lodash.isequal';
 import { matchPath } from 'react-router-dom';
 import { push } from 'react-router-redux';
 import { getInfosFromName } from '../../services/application-manager';
-import { SELECT_OR_ADD_TAB, REMOVE_TAB, addTab, selectOrAdd } from '../modules/tab';
+import { getTranslator } from '../../services/i18n';
+import { SELECT_OR_ADD_TAB, REMOVE_TAB, addTab, selectOrAdd, updateTab } from '../modules/tab';
 import { requestDiscussion } from '../modules/discussion';
 import { requestContact } from '../modules/contact';
+import { getRouteConfig, flattenRouteConfig } from '../../routes';
 
 const registeredRoutes = [
   '/discussions/:discussionId',
@@ -20,12 +21,12 @@ const routeActionHandler = ({ store, action }) => {
   const { pathname } = action.payload;
 
   if (registeredRoutes.find(route => matchPath(pathname, { path: route }))) {
-    store.dispatch(selectOrAdd(pathname));
+    store.dispatch(selectOrAdd({ pathname }));
   }
 };
 
 const selectTabByPathname = ({ store, pathname }) =>
-  store.getState().tab.tabs.find(tab => isEqual(pathname, tab.pathname));
+  store.getState().tab.tabs.find(tab => pathname === tab.pathname);
 
 const createDiscussionTab = async ({ pathname, discussionId, store }) => {
   const { payload: { data: { excerpt: label } } }
@@ -81,15 +82,39 @@ const selectOrAddTabContact = async ({ store, pathname }) => {
   return store.dispatch(addTab(tab));
 };
 
-// TODO: implement tab for settings
-// eslint-disable-next-line
+const getSettingTab = ({ pathname }) => {
+  const { translate: __ } = getTranslator();
+
+  const routeConfig = flattenRouteConfig(getRouteConfig({ __ }))
+    .filter(route => route.path.indexOf('/settings/') !== -1)
+    .find(route => matchPath(pathname, { path: route.path }));
+
+  return {
+    pathname,
+    label: (routeConfig && routeConfig.label) || __('settings.route.label.default'),
+    icon: 'cog',
+  };
+};
+
 const selectOrAddTabSetting = ({ store, pathname }) => {
-  if (matchPath(pathname, { path: '/settings/:subpath' })) {
-    console.log('selectOrAddTabSetting is not yet implemented');
+  if (!matchPath(pathname, { path: '/settings/:subpath' })) {
+    return null;
   }
+
+  const original = store.getState().tab.tabs
+    .find(tab => matchPath(tab.pathname, { path: '/settings' }));
+
+  const tab = getSettingTab({ pathname });
+  if (original) {
+    return store.dispatch(updateTab({ original, tab }));
+  }
+
+  return store.dispatch(addTab(tab));
 };
 
 export default store => next => (action) => {
+  routeActionHandler({ store, action });
+
   const result = next(action);
 
   if (action.type === SELECT_OR_ADD_TAB) {
@@ -106,8 +131,6 @@ export default store => next => (action) => {
       store.dispatch(push(getInfosFromName(applicationName).route));
     }
   }
-
-  routeActionHandler({ store, action });
 
   return result;
 };

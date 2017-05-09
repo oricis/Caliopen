@@ -12,6 +12,7 @@ export const typeAssoc = {
   'caret-up': 'fa fa-caret-up',
   'caret-down': 'fa fa-caret-down',
   check: 'fa fa-check',
+  cog: 'fa fa-cog',
   comment: 'fa fa-comment',
   comments: 'fa fa-comments',
   'comments-o': 'fa fa-comments-o',

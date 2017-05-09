@@ -1,6 +1,7 @@
 export const REQUEST_TABS = 'co/tab/REQUEST_TABS';
 export const ADD_TAB = 'co/tab/ADD_TAB';
 export const REMOVE_TAB = 'co/tab/REMOVE_TAB';
+export const UPDATE_TAB = 'co/tab/UPDATE_TAB';
 export const SELECT_OR_ADD_TAB = 'co/tab/SELECT_OR_ADD_TAB';
 
 export function requestTabs() {
@@ -17,10 +18,17 @@ export function addTab(tab) {
   };
 }
 
-export function selectOrAdd(pathname) {
+export function selectOrAdd({ pathname }) {
   return {
     type: SELECT_OR_ADD_TAB,
     payload: { pathname },
+  };
+}
+
+export function updateTab({ tab, original }) {
+  return {
+    type: UPDATE_TAB,
+    payload: { tab, original },
   };
 }
 
@@ -29,6 +37,14 @@ export function removeTab(tab) {
     type: REMOVE_TAB,
     payload: { tab },
   };
+}
+
+function updateTabReducer(state = [], action) {
+  const i = state.indexOf(action.payload.original);
+  const nextState = [...state];
+  nextState[i] = action.payload.tab;
+
+  return nextState;
 }
 
 const initialState = {
@@ -46,6 +62,11 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         tabs: state.tabs.filter(tab => tab !== action.payload.tab),
+      };
+    case UPDATE_TAB:
+      return {
+        ...state,
+        tabs: updateTabReducer(state.tabs, action),
       };
     default:
       return state;

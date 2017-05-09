@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
+import { withTranslator } from '@gandi/react-translate';
 import Auth from './scenes/Auth';
 import DiscussionList from './scenes/DiscussionList';
 import AppRoute from './scenes/AppRoute';
@@ -11,7 +13,7 @@ import Account from './scenes/Account';
 import Tags from './scenes/Tags';
 import { Device } from './scenes/Devices';
 
-export const getRouteconfig = () => [
+export const getRouteConfig = ({ __ }) => [
   {
     path: '/auth',
     component: Auth,
@@ -41,18 +43,22 @@ export const getRouteconfig = () => [
         path: '/settings',
         component: SettingsRoute,
         app: 'settings',
+        label: __('settings.route.label.default'),
         routes: [
           {
             path: '/settings/account',
             component: Account,
+            label: __('settings.route.label.account'),
           },
           {
             path: '/settings/tags',
             component: Tags,
+            label: __('settings.route.label.tags'),
           },
           {
             path: '/settings/devices',
             component: DevicesRoute,
+            label: __('settings.route.label.devices'),
             routes: [
               {
                 path: '/settings/devices/:deviceId',
@@ -84,12 +90,15 @@ export const RouteWithSubRoutes = route => (
   />
 );
 
-const Routes = () => (
+const Routes = ({ __ }) => (
   <Switch>
-    {getRouteconfig().map((route, i) => (
+    {getRouteConfig({ __ }).map((route, i) => (
       <RouteWithSubRoutes key={i} {...route} />
     ))}
   </Switch>
 );
+Routes.propTypes = {
+  __: PropTypes.func.isRequired,
+};
 
-export default Routes;
+export default withTranslator()(Routes);

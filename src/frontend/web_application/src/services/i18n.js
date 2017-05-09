@@ -13,7 +13,7 @@ export function changeLocale(translator, locale) {
   translator.setLocale(locale);
 }
 
-export function getLocale() {
+export const getLocale = () => {
   let preferedUserLocales = [];
 
   if (BUILD_TARGET === 'browser') {
@@ -34,40 +34,45 @@ export function getLocale() {
   }
 
   return negociateLocale(preferedUserLocales, Object.keys(availableTranslations), defaultLocale);
-}
+};
 
-function getLocaleAsync() {
-  const promise = new Promise((resolve, reject) => {
-    if (BUILD_TARGET === 'cordova') {
-      navigator.globalization.getLocaleName((locale) => {
-        resolve(negociateLocale([locale.value], Object.keys(availableTranslations), defaultLocale));
-      }, (err) => {
-        reject(err);
-      });
-    } else {
-      resolve(getLocale());
-    }
-  });
-
-  return promise;
-}
-
-export default function enableI18n(Component) {
-  const locale = getLocale();
-  const translatorParams = {
-    locale,
-    translations: availableTranslations[locale],
-    defaultLocale: locale,
-    logMissing: true,
-  };
-
-  const translator = createTranslator(translatorParams);
-
+const getLocaleAsync = () => new Promise((resolve, reject) => {
   if (BUILD_TARGET === 'cordova') {
-    getLocaleAsync().then((localeUpdated) => {
-      changeLocale(translator, localeUpdated);
+    navigator.globalization.getLocaleName((locale) => {
+      resolve(negociateLocale([locale.value], Object.keys(availableTranslations), defaultLocale));
+    }, (err) => {
+      reject(err);
     });
   }
 
-  return provideTranslate(translator)(Component);
+  resolve(getLocale());
+});
+
+
+let translator;
+export const getTranslator = () => {
+  if (!translator) {
+    const locale = getLocale();
+    const translatorParams = {
+      locale,
+      translations: availableTranslations[locale],
+      defaultLocale: locale,
+      logMissing: true,
+    };
+    translator = createTranslator(translatorParams);
+  }
+
+  return translator;
+};
+
+export default function enableI18n(Component) {
+  const currentTranslator = getTranslator();
+
+  if (BUILD_TARGET === 'cordova') {
+    getLocaleAsync().then((localeUpdated) => {
+      changeLocale(currentTranslator, localeUpdated);
+    });
+  }
+
+  return provideTranslate(currentTranslator)(Component);
 }
