@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Button';
 import Icon from '../Icon';
+import MenuBar from '../MenuBar';
 import DayMessageList from './components/DayMessageList';
 import Message from './components/Message';
 import groupMessages from './services/groupMessages';
@@ -29,11 +30,11 @@ const renderDayGroups = (messages, onMessageView, __) => {
 
 const MessageList = ({ onMessageView, onReply, onForward, onDelete, messages, replyForm, __ }) => (
   <div className="m-message-list">
-    <div className="m-message-list__actions">
+    <MenuBar>
       <Button className="m-message-list__action" onClick={onReply}><Icon type="reply" spaced /><span>{__('message-list.action.reply')}</span></Button>
       <Button className="m-message-list__action" onClick={onForward}><Icon type="share" spaced /><span>{__('message-list.action.copy-to')}</span></Button>
       <Button className="m-message-list__action" onClick={onDelete}><Icon type="trash" spaced /><span>{__('message-list.action.delete')}</span></Button>
-    </div>
+    </MenuBar>
     <div className="m-message-list__list">
       {renderDayGroups(messages, onMessageView, __)}
     </div>

@@ -6,7 +6,7 @@ import { SORT_VIEW_FAMILY_NAME, SORT_VIEW_GIVEN_NAME } from '../../../ContactBoo
 import './style.scss';
 
 const ContactFilters = ({ onSortDirChange, onSortViewChange, sortView, sortDir, __ }) => (
-  <FormGrid className="m-contacts-filters">
+  <FormGrid>
     <FormRow>
       <FormColumn size="shrink">
         <SelectFieldGroup

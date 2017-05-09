@@ -4,15 +4,8 @@
 .l-contact-book {
   background: $co-color__bg__back;
 
-
-  &__filters {
-    @include flex-grid-row($size: expand);
-    background-color: $co-color__fg__back;
-  }
-
   &__contacts {
     @include flex-grid-row($size: expand);
-
   }
 
   &__tags {
