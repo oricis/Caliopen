@@ -4,7 +4,7 @@ import { Link as BaseLink } from 'react-router-dom';
 import classnames from 'classnames';
 import './style.scss';
 
-const Link = ({ noDecoration, className, button, expanded, active = false, ...props }) => {
+const Link = ({ children, href, noDecoration, className, button, expanded, active, ...props }) => {
   const linkProps = {
     ...props,
     className: classnames(
@@ -19,15 +19,30 @@ const Link = ({ noDecoration, className, button, expanded, active = false, ...pr
     ),
   };
 
-  return <BaseLink {...linkProps} />;
+  if (href) {
+    return <a href={href} {...linkProps}>{children}</a>;
+  }
+
+  return <BaseLink {...linkProps}>{children}</BaseLink>;
 };
 
 Link.propTypes = {
+  children: PropTypes.node.isRequired,
+  href: PropTypes.bool,
   noDecoration: PropTypes.bool,
   className: PropTypes.string,
   button: PropTypes.bool,
   expanded: PropTypes.bool,
   active: PropTypes.bool,
+};
+
+Link.defaultProps = {
+  href: undefined,
+  noDecoration: false,
+  className: undefined,
+  button: false,
+  expanded: false,
+  active: false,
 };
 
 export default Link;
