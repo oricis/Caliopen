@@ -27,6 +27,7 @@ log.setLevel(logging.DEBUG)
 
 PY_UPDATE_CMD = """perl -pi -e "s/__version__ = '.*/__version__ = '{version}'/" {file}"""
 GO_UPDATE_CMD = """perl -pi -e "s/__version__ = \".*/__version__ = \"{version}\"/" {file}"""
+JS_UPDATE_CMD = "cd {dir}; npm version {version}"
 
 
 #
@@ -98,16 +99,20 @@ def update_python_version(dir, package, version):
     pkg_file = '{}/{}/__init__.py'.format(dir, package['name'])
     cmd = PY_UPDATE_CMD.format(version=version, file=pkg_file)
     log.debug('Will execute {}'.format(cmd))
-    res = sp.call(cmd, shell=True)
-    return res
+    return sp.call(cmd, shell=True)
 
 
 def update_golang_version(dir, package, version):
     """Update a golang package to a new version."""
     pkg_file = '{}/{}/cli_cmds/root.go'.format(dir, package['name'])
     cmd = GO_UPDATE_CMD.format(version=version, file=pkg_file)
-    res = sp.call(cmd, shell=True)
-    return res
+    return sp.call(cmd, shell=True)
+
+
+def update_javascript_version(dir, package, version):
+    """Update a javascript package to a new version."""
+    cmd = JS_UPDATE_CMD.format(dir=dir, version=version)
+    return sp.call(cmd, shell=True)
 
 
 def find_package(config, name):
@@ -133,7 +138,6 @@ def create_package_version(config, opts):
 
     if not opts.no_check:
         assert not repo.is_dirty(), 'Current head is dirty'
-        assert repo.active_branch.name == 'master', 'Not on master branch'
         assert tag_name not in repo.tags, 'Tag {} exists'.format(opts.version)
 
     if lang == 'python':
@@ -144,8 +148,13 @@ def create_package_version(config, opts):
         current = get_golang_version(package, pkg_dir)
         check_versions(current, opts.version)
         update = update_golang_version(pkg_dir, package, opts.version)
+    elif lang == 'javascript':
+        current = get_javascript_version(package, pkg_dir)
+        check_versions(current, opts.version)
+        update = update_javascript_version(pkg_dir, package, opts.version)
     else:
         raise Exception('Language {} not managed'.format(lang))
+
     if update == 0:
         log.info('Creating tag {}'.format(tag_name))
         repo.create_tag(tag_name)
@@ -157,8 +166,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--conf', dest='conffile', default='packages.yaml')
-    subparsers = parser.add_subparsers(title="action")
 
+    subparsers = parser.add_subparsers(title="action")
     sp_create = subparsers.add_parser('create_version',
                                       help='Create a package version')
     sp_create.add_argument('package')
