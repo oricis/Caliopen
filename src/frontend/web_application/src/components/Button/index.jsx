@@ -23,7 +23,7 @@ RawButton.defaultProps = {
   type: 'button',
 };
 
-const Button = ({ children, className, icon, display, color, shape, ...props }) => {
+const Button = ({ children, className, icon, display, color, shape, responsive, ...props }) => {
   const buttonProps = {
     ...props,
     className: classnames(
@@ -43,32 +43,44 @@ const Button = ({ children, className, icon, display, color, shape, ...props }) 
         'm-button--hollow': shape === 'hollow',
 
         'm-button--icon': icon,
+
+        'm-button--icon-only': responsive === 'icon-only',
+        'm-button--text-only': responsive === 'text-only',
       }
     ),
   };
 
-  if (icon) return <RawButton {...buttonProps}><Icon className="m-button__icon" type={icon} /><span className="m-button__text">{children}</span></RawButton>;
+  if (icon) {
+    return (
+      <RawButton {...buttonProps}><Icon className="m-button__icon" type={icon} />
+        {children && <span className="m-button__text">{children}</span>}
+      </RawButton>
+    );
+  }
 
   return <RawButton {...buttonProps}>{children}</RawButton>;
 };
 
 Button.propTypes = {
   className: PropTypes.string,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   shape: PropTypes.oneOf(['plain', 'hollow']),
   icon: PropTypes.string,
   display: PropTypes.oneOf(['inline', 'expanded']),
   color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active', 'disabled']),
-  accesskey: PropTypes.string,
+  responsive: PropTypes.oneOf(['icon-only', 'text-only']),
+  accessKey: PropTypes.string,
 };
 
 Button.defaultProps = {
   className: undefined,
+  children: null,
   shape: null,
   icon: null,
   display: null,
   color: null,
-  accesskey: null,
+  responsive: null,
+  accessKey: null,
 };
 
 export default Button;

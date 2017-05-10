@@ -54,6 +54,25 @@
   }
 
   @include breakpoint(small only) {
+    &--icon-only,
+    &--text-only {
+      &.m-button--icon {
+        padding-top: 0;
+        padding-bottom: 0;
+        line-height: $co-component__height;
+      }
+      .m-button__text { display: none; }
+    }
+
+    &--icon-only {
+      .m-button__text { display: none; }
+    }
+
+    &--text-only {
+      .m-button__icon { display: none; }
+    }
+
+
     &--icon {
       padding-top: $co-component__spacing;
       padding-bottom: $co-component__spacing;
