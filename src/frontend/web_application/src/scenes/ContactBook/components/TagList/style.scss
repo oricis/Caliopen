@@ -5,6 +5,7 @@
   &__tag {
     color: $co-color__fg__text--lower;
     font-weight: 400;
+    line-height: $co-font__line-height;
 
     &--active {
       color: $co-color__fg__text--higher;

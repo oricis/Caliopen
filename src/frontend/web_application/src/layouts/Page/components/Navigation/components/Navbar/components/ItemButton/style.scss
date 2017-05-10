@@ -5,6 +5,9 @@
   color: $co-color__primary--low;
   line-height: $co-component__height;
 
-  &:hover   { color: $co-color__primary--high; }
+  &:hover   {
+    background: none;
+    color: $co-color__primary--high;
+  }
   &:active  { color: $co-color__primary--lower; }
 }

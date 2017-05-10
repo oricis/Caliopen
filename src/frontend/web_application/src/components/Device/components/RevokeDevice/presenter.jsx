@@ -11,8 +11,8 @@ const RevokeDevice = ({ device, onRevokeDevice, __ }) => {
     <div className="m-device-revoke">
       <Button
         className="m-device-revoke__button"
-        plain
-        alert
+        shape="plain"
+        color="alert"
         onClick={handleRevoke}
       >{__('device.action.revoke')}</Button>
     </div>

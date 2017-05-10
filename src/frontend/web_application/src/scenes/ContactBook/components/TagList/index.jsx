@@ -32,11 +32,11 @@ const TagItem = ({ title, link, onTagClick, nbContacts, active, className }) => 
   return (
     <ItemContent className="m-tag-list__item">
       <Button
-        expanded
+        dispay="expanded"
         onClick={onTagClick}
         value={link}
         className={tagClassName}
-        active={active}
+        color={active}
       >
         {title} ({nbContacts})
       </Button>

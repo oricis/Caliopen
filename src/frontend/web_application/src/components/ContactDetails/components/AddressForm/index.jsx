@@ -128,9 +128,7 @@ class AddressForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn size="shrink" className="m-address-form__action">
-              <Button type="submit" expanded plain>
-                <Icon type="plus" />
-                {' '}
+              <Button type="submit" display="expanded" shape="plain" icon="plus">
                 {__('contact.action.add_contact_detail')}
               </Button>
             </FormColumn>

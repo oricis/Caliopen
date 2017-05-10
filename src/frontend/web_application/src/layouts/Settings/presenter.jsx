@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import NavList, { ItemContent } from '../../components/NavList';
+import MenuBar from '../../components/MenuBar';
 import Link from '../../components/Link';
 
 import './style.scss';
@@ -16,13 +17,15 @@ const Settings = ({ __, children }) => {
 
   return (
     <div className="l-settings">
-      <NavList className="l-settings__nav">
-        {navLinks.map(link => (
-          <ItemContent active={link.active} large key={link.title}>
-            <Link noDecoration {...link}>{link.title}</Link>
-          </ItemContent>
-        ))}
-      </NavList>
+      <MenuBar>
+        <NavList>
+          {navLinks.map(link => (
+            <ItemContent active={link.active} large key={link.title}>
+              <Link noDecoration {...link}>{link.title}</Link>
+            </ItemContent>
+          ))}
+        </NavList>
+      </MenuBar>
       <div className="l-settings__panel">{children}</div>
     </div>
   );

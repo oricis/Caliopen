@@ -55,13 +55,14 @@ class EmailDetails extends Component {
 
   renderConnectIdentityToggleButton() {
     const { remoteIdentity, __ } = this.props;
+    const successButtonProp = (remoteIdentity && remoteIdentity.connected) && { color: 'success' };
 
     return (
       <Button
+        icon="plug"
         onClick={this.handleToggleConnectIdentityForm}
-        success={remoteIdentity && remoteIdentity.connected}
+        {...successButtonProp}
       >
-        <Icon type="plug" />
         {' '}
         <Icon type={this.state.connectIdentityEditMode ? 'caret-up' : 'caret-down'} />
         <span className="show-for-sr">{__('account.action.connect_identity')}</span>
@@ -73,7 +74,7 @@ class EmailDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <Button onClick={this.handleDelete} alert>
+      <Button onClick={this.handleDelete} color="alert">
         <Icon type="remove" />
         <span className="show-for-sr">{__('contact.action.delete_contact_detail')}</span>
       </Button>

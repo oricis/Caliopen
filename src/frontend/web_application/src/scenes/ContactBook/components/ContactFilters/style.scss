@@ -2,12 +2,6 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-contacts-filters {
-  padding-top: $co-component__spacing;
-  padding-bottom: $co-component__spacing;
-
-  @include breakpoint(medium) {
-    padding-top: 0;
-  }
 
   &__select {
     @include flex-grid-row;

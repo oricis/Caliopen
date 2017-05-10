@@ -110,16 +110,13 @@ storiesOf('Badge', module)
 storiesOf('Buttons & Links', module)
   .addDecorator(hostDecorator)
   .addWithInfo('Button', () => {
+    const iconType = Object.assign({ '': '' }, typeAssoc);
     const props = {
-      plain: boolean('plain', false),
-      expanded: boolean('expanded', false),
-      hollow: boolean('hollow', false),
-      active: boolean('active', false),
-      alert: boolean('alert', false),
-      success: boolean('success', false),
-      secondary: boolean('secondary', false),
-      inline: boolean('inline', false),
+      icon: select('icon', iconType, ''),
       children: text('children', 'Click Me'),
+      shape: select('shape', { '': '', plain: 'plain', hollow: 'hollow' }, ''),
+      display: select('display', { '': '', expanded: 'expanded', inline: 'inline' }, ''),
+      color: select('color', { '': '', active: 'active', alert: 'alert', success: 'success', secondary: 'secondary', disabled: 'disabled' }, ''),
     };
 
     return (<Button {...props} onClick={action('clicked')} />);

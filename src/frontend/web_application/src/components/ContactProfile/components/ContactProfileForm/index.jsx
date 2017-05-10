@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import { withTranslator } from '@gandi/react-translate';
-import Icon from '../../../Icon';
 import Button from '../../../Button';
 import { TextFieldGroup } from '../../../form';
 import './style.scss';
@@ -58,9 +57,7 @@ class ContactProfileForm extends Component {
         />
         <div className="m-contact-profile-form__save-button">
           <div className="m-contact-profile-form__save-button-wrapper">
-            <Button type="submit" expanded plain>
-              <Icon type="check" /> {__('contact_profile.action.save')}
-            </Button>
+            <Button type="submit" display="expanded" shape="plain" icon="check">{__('contact_profile.action.save')}</Button>
           </div>
         </div>
       </form>

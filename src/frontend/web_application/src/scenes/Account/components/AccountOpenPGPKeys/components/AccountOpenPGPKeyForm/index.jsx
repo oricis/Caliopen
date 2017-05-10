@@ -154,6 +154,8 @@ class AccountOpenPGPKeyForm extends Component {
     // XXX: note on importForm, errors comes from props and form items from this.state since form is
     // not real time saved in redux store
     const { __, isLoading, className, importForm, children } = this.props;
+    const generateHollowProp = this.state.formType === FORM_TYPE_GENERATE ? { display: 'hollow' } : {};
+    const rawHollowProp = this.state.formType === FORM_TYPE_RAW ? { display: 'hollow' } : {};
 
     return (
       <div className={classnames('m-account-openpgp-form', className)}>
@@ -164,14 +166,14 @@ class AccountOpenPGPKeyForm extends Component {
             <Button
               onClick={this.handleSwitchFormType}
               name={FORM_TYPE_GENERATE}
-              hollow={this.state.formType === FORM_TYPE_GENERATE}
+              {...generateHollowProp}
             >
               {__('account.openpgp.action.switch-generate-key')}
             </Button>
             <Button
               onClick={this.handleSwitchFormType}
               name={FORM_TYPE_RAW}
-              hollow={this.state.formType === FORM_TYPE_RAW}
+              {...rawHollowProp}
             >
               {__('account.openpgp.action.switch-import-raw-key')}
             </Button>
@@ -219,7 +221,7 @@ class AccountOpenPGPKeyForm extends Component {
               </div>
             )}
             <div className="m-account-openpgp-form__field-group">
-              <Button type="submit" plain>
+              <Button type="submit" shape="plain">
                 <Spinner isLoading={isLoading} />
                 {' '}
                 {__('account.openpgp.action.create')}
@@ -262,7 +264,7 @@ class AccountOpenPGPKeyForm extends Component {
             <Button
               className="m-account-openpgp-form__field-group"
               type="submit"
-              plain
+              shape="plain"
             >
               <Spinner isLoading={isLoading} />
               {__('account.openpgp.action.add')}

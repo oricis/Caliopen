@@ -55,7 +55,7 @@ class DiscussionList extends Component {
         )}
         {hasMore && (
           <div className="s-discussion-list__load-more">
-            <Button hollow onClick={this.loadMore}>{__('general.action.load_more')}</Button>
+            <Button shape="hollow" onClick={this.loadMore}>{__('general.action.load_more')}</Button>
           </div>
         )}
       </div>

@@ -13,7 +13,7 @@ const ActionButton = ({ action, ...props }) => {
 
   return (
     <Tappable {...tappableProps}>
-      <Button {...props} plain />
+      <Button {...props} shape="plain" responsive="icon-only" />
     </Tappable>
   );
 };

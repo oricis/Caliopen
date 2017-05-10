@@ -4,7 +4,7 @@
   @include flex-grid-row;
 
   &__action {
-    @include flex-grid-column;
+    @include flex-grid-column(shrink);
     border-left: 1px solid $co-color__fg__back--lower;
   }
 }

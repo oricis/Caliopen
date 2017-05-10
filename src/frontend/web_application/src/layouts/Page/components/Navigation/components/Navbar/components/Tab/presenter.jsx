@@ -41,7 +41,7 @@ class Tab extends Component {
             {tab.label}
           </ItemLink>
         )}
-        actionChildren={<ItemButton onClick={this.handleRemove}><Icon type="remove" /></ItemButton>}
+        actionChildren={<ItemButton onClick={this.handleRemove} icon="remove" />}
         last={last}
       />
     );

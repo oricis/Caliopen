@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ContactList from './components/ContactList';
 import ContactFilters from './components/ContactFilters';
+import MenuBar from '../../components/MenuBar';
 import TagList from './components/TagList';
 import Spinner from '../../components/Spinner';
 import Button from '../../components/Button';
@@ -101,7 +102,7 @@ class ContactBook extends Component {
 
     return (
       <div className="l-contact-book">
-        <div className="l-contact-book__filters">
+        <MenuBar>
           <ContactFilters
             onSortDirChange={handleSortDirChange}
             onSortViewChange={handleSortViewChange}
@@ -109,7 +110,7 @@ class ContactBook extends Component {
             sortView={this.state.sortView}
             __={__}
           />
-        </div>
+        </MenuBar>
         <div className="l-contact-book__contacts">
           <div className="l-contact-book__tags">
             <TagList
@@ -134,7 +135,7 @@ class ContactBook extends Component {
             />
             {hasMore && (
               <div className="l-contact-book-list__load-more">
-                <Button hollow onClick={this.loadMore}>{__('general.action.load_more')}</Button>
+                <Button shape="hollow" onClick={this.loadMore}>{__('general.action.load_more')}</Button>
               </div>
             )}
           </div>

@@ -36,8 +36,7 @@ class ImDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <Button onClick={this.handleDelete} alert>
-        <Icon type="remove" />
+      <Button onClick={this.handleDelete} color="alert" icon="remove">
         <span className="show-for-sr">{__('contact.action.delete_contact_detail')}</span>
       </Button>
     );

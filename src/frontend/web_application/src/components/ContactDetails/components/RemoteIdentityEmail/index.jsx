@@ -178,7 +178,7 @@ class RemoteIdentityEmail extends Component {
         <Button
           disabled="$ctrl.remoteIdentity.cancel_fetch_required"
           onClick={this.handleDisconnect}
-          alert
+          color="alert"
         >
           {__('remote_identity.action.cancel')}
         </Button>
@@ -290,23 +290,23 @@ class RemoteIdentityEmail extends Component {
             <Button
               disabled={this.state.remoteIdentity.cancel_fetch_required}
               onClick={this.handleDisconnect}
-              alert
+              color="alert"
             >
               {__('remote_identity.action.disconnect')}
             </Button>
           )}
           {this.state.phase > 1 && (
-            <Button onClick={this.handleClickPrevious} hollow>
+            <Button onClick={this.handleClickPrevious} shape="hollow">
               {__('remote_identity.action.back')}
             </Button>
           )}
           {this.state.phase < MAX_PHASE && (
-            <Button plain onClick={this.handleClickNext}>
+            <Button shape="plain" onClick={this.handleClickNext}>
               {__('remote_identity.action.next')}
             </Button>
           )}
           {this.state.phase === MAX_PHASE && (
-            <Button onClick={this.handleClickFinish} plain secondary>
+            <Button onClick={this.handleClickFinish} shape="plain" color="secondary">
               {__('remote_identity.action.finish')}
             </Button>
           )}
