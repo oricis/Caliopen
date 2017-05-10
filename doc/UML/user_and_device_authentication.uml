@@ -1,0 +1,34 @@
+@startuml
+
+title A known device login on a Caliopen instance
+
+== Authentication ==
+User -> Device: give username and password
+Device -> Device: get device_id
+
+Device -> API: POST /v1/authentications (username, password, device_id)
+API -> Backend: check_credentials
+Backend -> API: authentication and device informations
+API -> Device: {access_token, device.need_reset, device.reset_code}
+
+group device does not need reset
+
+	Device -> Device: private_key = AES.decrypt(crypted_key, password)
+
+else device need reset
+	Device -> Device: generate an ECDSA keypair
+	Device -> Device: crypt_key = AES.crypt(private_key, password)
+	Device -> Device: store device_id, crypted_key
+
+	Device -> API: POST /v1/devices/{device_id}/publickeys {public_key, device.reset_code}
+	API -> Device: 201 OK
+end
+
+
+== Call API ==
+Device -> API: GET /v1/discussions with headers Authorization, X-Device-ID X-Device-Signature
+API -> Backend: check token and device signature (access_token, device_id, device_signature)
+Backend -> API: ok
+API -> Device: 200 [discussions]
+
+@enduml

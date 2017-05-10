@@ -1,0 +1,22 @@
+@startuml
+
+title Create a new user and a default device
+
+User -> Device: create a new account (choose username and a password)
+Device -> API: GET /v2/username/isAvailable
+API -> Device: 200 OK
+
+Device -> Device: generate an ECDSA keypair
+Device -> Device: crypt_key = AES.crypt(private_key, password)
+
+Device -> API: POST /v1/users {username, password, public_key}
+API -> Backend: create_user(username, password)
+Backend -> API: user_id
+API -> Backend: create_device('default', ecdsa public key)
+Backend-> API: device_id
+API -> Device: 200 {user_id, device_id}
+
+Device -> Device: store device_id, crypted_key
+Device -> User: first page
+
+@enduml
