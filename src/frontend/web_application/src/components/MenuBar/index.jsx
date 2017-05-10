@@ -15,7 +15,7 @@ const MenuBar = ({ className, children }) => {
 
 MenuBar.propTypes = {
   className: PropTypes.string,
-  children: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 MenuBar.defaultProps = {

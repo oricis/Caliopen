@@ -1,5 +1,6 @@
 @import '../../styles/common';
 @import '../../styles/object/o-clickable';
+@import '../../styles/vendor/bootstrap_foundation-sites';
 
 .m-button {
   @include o-clickable;
@@ -8,14 +9,67 @@
   &--expanded {
     @include o-clickable--expanded;
     width: 100%;
-    height: 100%;
   }
-  &--plain { @include o-clickable--plain; }
-  &--hollow { @include o-clickable--hollow; }
+
+  &__text { margin-left: $co-margin / 4; }
+
+  &--plain {
+    @include o-clickable--plain;
+    @each $name, $color in $caliopen-palette {
+      &.m-button--#{$name} {
+        $color-hover: scale-color($color, $lightness: -50%);
+        border-color: transparent;
+        background-color: $color;
+        color: $co-color__fg__text--low;
+
+        &:hover,
+        &:focus {
+          background-color: $color-hover;
+          color: $co-color__fg__text--high;
+        }
+      }
+    }
+  }
+
+  &--hollow {
+    @include o-clickable--hollow;
+    @each $name, $color in $caliopen-palette {
+      &.m-button--#{$name} {
+        $color-hover: scale-color($color, $lightness: -50%);
+
+        &:hover,
+        &:focus {
+          background-color: transparent;
+          color: $co-color__fg__text--high;
+        }
+      }
+    }
+
+  }
   &--inline { @include o-clickable--inline; }
 
   &--active {
     @include o-clickable--active-text;
     @include o-clickable--active-button;
   }
+
+  @include breakpoint(small only) {
+    &--icon {
+      padding-top: $co-component__spacing;
+      padding-bottom: $co-component__spacing;
+      line-height: $co-font__line-height;
+      text-align: center;
+    }
+
+    &__text {
+      display: block;
+      max-width: 1.5 * $co-component__height;
+      margin-left: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: $co-font__size--xsmall;
+      white-space: nowrap;
+    }
+  }
+
 }
