@@ -52,7 +52,7 @@ apt-get install yarn
 # Create CaliOpen work directory
 [[ -d "${CALIOPEN_BASE_DIR}/ext" ]] || mkdir -p ${CALIOPEN_BASE_DIR}/ext
 
-# Install storage engine
+# Install storage engines
 #cassandra
 cd ${CALIOPEN_BASE_DIR}/ext
 wget -q http://www-eu.apache.org/dist/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
