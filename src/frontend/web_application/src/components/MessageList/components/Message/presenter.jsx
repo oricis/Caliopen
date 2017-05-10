@@ -147,7 +147,9 @@ class Message extends Component {
               __={__}
             />
 
-            <DropdownControl toggle={dropdownId} className="m-message__actions-switcher" icon="ellipsis-v" />
+            <DropdownControl toggle={dropdownId} className="m-message__actions-switcher">
+              <Icon type="ellipsis-v" />
+            </DropdownControl>
 
             <Dropdown
               id={dropdownId}
@@ -175,7 +177,6 @@ class Message extends Component {
           {this.state.isTooLong &&
             <div className="m-message__expand-button">
               <Button
-                display="expanded"
                 onClick={this.handleExpandClick}
                 value={this.state.isExpanded}
                 title={this.state.isExpanded ? __('message-list.message.action.collapse') : __('message-list.message.action.expand')}
