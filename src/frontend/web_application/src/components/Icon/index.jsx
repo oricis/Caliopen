@@ -23,6 +23,7 @@ export const typeAssoc = {
   email: 'fa fa-envelope',
   editor: 'fa fa-font',
   'exclamation-triangle': 'fa fa-exclamation-triangle',
+  'folder-open': 'fa fa-folder-open',
   'info-circle': 'fa fa-info-circle',
   key: 'fa fa-key',
   laptop: 'fa fa-laptop',

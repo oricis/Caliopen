@@ -35,6 +35,7 @@ import Dropdown, { withDropdownControl } from '../src/components/Dropdown';
 import DropdownMenu from '../src/components/DropdownMenu';
 import Icon, { typeAssoc } from '../src/components/Icon';
 import IconLetter from '../src/components/IconLetter';
+import ImportContactForm from '../src/components/ImportContactForm';
 import Link from '../src/components/Link';
 import MessageList from './components/MessageList';
 import Modal from '../src/components/Modal';
@@ -135,6 +136,9 @@ storiesOf('Buttons & Links', module)
 storiesOf('Contact', module)
   .add('ContactDetails', () => (
     <ContactDetails />
+  ))
+  .add('ImportContactForm', () => (
+    <ImportContactForm />
   ))
   .add('ContactBook', () => (
     <ContactBook />
