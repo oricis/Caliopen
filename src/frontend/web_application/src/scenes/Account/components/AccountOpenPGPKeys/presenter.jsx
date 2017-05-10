@@ -77,7 +77,7 @@ class AccountOpenPGPKeys extends Component {
       onGenerateKey,
     } = this.props;
 
-    const activeButtonProp = this.state.editMode && { color: 'active' };
+    const activeButtonProp = this.state.editMode ? { color: 'active' } : {};
 
     return (
       <div className="m-account-openpgp">

@@ -71,13 +71,15 @@ class ContactDetails extends Component {
 
   renderSubtitleActions() {
     const { __ } = this.props;
-    const activeButtonProp = this.state.editMode && { color: 'active' };
+    const activeButtonProp = this.state.editMode ? { color: 'active' } : {};
 
     return (
       <Button
         className="pull-right"
         {...activeButtonProp}
-        onClick={this.handleSwitchEditMode} icon="edit">
+        onClick={this.handleSwitchEditMode}
+        icon="edit"
+      >
         <span className="show-for-sr">{__('contact.action.edit_contact_details')}</span>
       </Button>
     );

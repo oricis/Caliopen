@@ -9,6 +9,7 @@
   &--expanded {
     @include o-clickable--expanded;
     width: 100%;
+    height: 100%;
   }
 
   &__text { margin-left: $co-margin / 4; }

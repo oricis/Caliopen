@@ -154,8 +154,8 @@ class AccountOpenPGPKeyForm extends Component {
     // XXX: note on importForm, errors comes from props and form items from this.state since form is
     // not real time saved in redux store
     const { __, isLoading, className, importForm, children } = this.props;
-    const generateHollowProp = this.state.formType === FORM_TYPE_GENERATE && { display: 'hollow' };
-    const rawHollowProp = this.state.formType === FORM_TYPE_RAW && { display: 'hollow' };
+    const generateHollowProp = this.state.formType === FORM_TYPE_GENERATE ? { display: 'hollow' } : {};
+    const rawHollowProp = this.state.formType === FORM_TYPE_RAW ? { display: 'hollow' } : {};
 
     return (
       <div className={classnames('m-account-openpgp-form', className)}>

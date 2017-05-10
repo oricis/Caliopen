@@ -57,7 +57,7 @@
 
 @mixin o-clickable--expanded {
   display: block;
-  // line-height: inherit;
+  height: inherit;
 }
 
 @mixin o-clickable--hollow {

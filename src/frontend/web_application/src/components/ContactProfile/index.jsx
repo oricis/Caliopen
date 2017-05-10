@@ -30,7 +30,7 @@ class ContactProfile extends Component {
 
   render() {
     const { contact, className, onChange, __ } = this.props;
-    const activeButtonProp = this.state.editMode && { color: 'active' };
+    const activeButtonProp = this.state.editMode ? { color: 'active' } : {};
 
     return (
       <div className={classnames('m-contact-profile', className)}>
