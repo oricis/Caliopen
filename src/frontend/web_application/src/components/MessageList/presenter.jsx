@@ -30,9 +30,9 @@ const renderDayGroups = (messages, onMessageView, __) => {
 const MessageList = ({ onMessageView, onReply, onForward, onDelete, messages, replyForm, __ }) => (
   <div className="m-message-list">
     <MenuBar>
-      <Button className="m-message-list__action" onClick={onReply} icon="reply">{__('message-list.action.reply')}</Button>
-      <Button className="m-message-list__action" onClick={onForward} icon="share">{__('message-list.action.copy-to')}</Button>
-      <Button className="m-message-list__action" onClick={onDelete} icon="trash">{__('message-list.action.delete')}</Button>
+      <Button className="m-message-list__action" onClick={onReply} icon="reply" responsive="icon-only" >{__('message-list.action.reply')}</Button>
+      <Button className="m-message-list__action" onClick={onForward} icon="share" responsive="icon-only" >{__('message-list.action.copy-to')}</Button>
+      <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >{__('message-list.action.delete')}</Button>
     </MenuBar>
     <div className="m-message-list__list">
       {renderDayGroups(messages, onMessageView, __)}

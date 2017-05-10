@@ -52,7 +52,8 @@ const Button = ({ children, className, icon, display, color, shape, responsive, 
 
   if (icon) {
     return (
-      <RawButton {...buttonProps}><Icon className="m-button__icon" type={icon} />
+      <RawButton {...buttonProps}>
+        <Icon className="m-button__icon" type={icon} />
         {children && <span className="m-button__text">{children}</span>}
       </RawButton>
     );
