@@ -59,13 +59,13 @@ class DiscussionItemActionsContainer extends Component {
       <div
         className={classnames('m-discussion-item-actions-container__actions', { 'm-discussion-item-actions-container--active__actions': this.state.isActive })}
       >
-        <Button plain className="m-discussion-item-actions-container__action">{__('Delete')}</Button>
-        <Button plain className="m-discussion-item-actions-container__action">{__('Reply')}</Button>
-        <Button plain className="m-discussion-item-actions-container__action">{__('Forward')}</Button>
+        <Button shape="plain" className="m-discussion-item-actions-container__action">{__('Delete')}</Button>
+        <Button shape="plain" className="m-discussion-item-actions-container__action">{__('Reply')}</Button>
+        <Button shape="plain" className="m-discussion-item-actions-container__action">{__('Forward')}</Button>
         <DropdownControl
           toggle={this.dropdownId}
           className="m-discussion-item-actions-container__action float-right"
-          plain
+          shape="plain"
         >
           {__('discussion-item-actions.action.more')}
         </DropdownControl>
@@ -78,19 +78,19 @@ class DiscussionItemActionsContainer extends Component {
             <VerticalMenuItem>
               <Button
                 className="m-discussion-item-actions-container__menu-button"
-                expanded
+                display="expanded"
               >{__('Archive')}</Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
                 className="m-discussion-item-actions-container__menu-button"
-                expanded
+                display="expanded"
               >{__('Enable tracking')}</Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
                 className="m-discussion-item-actions-container__menu-button"
-                expanded
+                display="expanded"
                 onClick={this.handleClickTags}
               >{__('Manage tags')}</Button>
             </VerticalMenuItem>

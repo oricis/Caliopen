@@ -2,12 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslator } from '@gandi/react-translate';
 import ActionButton from '../ActionButton';
-import Icon from '../../../../../../components/Icon';
 
 const Presenter = ({ translator: { __ }, ...props }) => (
-  <ActionButton {...props}>
-    <Icon type="comment-o" /> {__('call-to-action.action.compose_contact')}
-  </ActionButton>
+  <ActionButton {...props} icon="comment-o">{__('call-to-action.action.compose_contact')}</ActionButton>
 );
 
 Presenter.propTypes = {

@@ -116,9 +116,7 @@ class ReplyForm extends Component {
               <div className="m-reply__date">{__('reply-form.now')}</div>
             </div>
 
-            <DropdownControl toggle={dropdownId} className="m-reply__top-actions-switcher">
-              <Icon type="ellipsis-v" />
-            </DropdownControl>
+            <DropdownControl toggle={dropdownId} className="m-reply__top-actions-switcher" icon="ellipsis-v" />
 
             <Dropdown
               id={dropdownId}
@@ -137,25 +135,22 @@ class ReplyForm extends Component {
           <BottomRow className="m-reply__bottom-bar">
             <div className="m-reply__bottom-actions">
               <div className="m-reply__bottom-action">
-                <Button plain onClick={this.handleSend}>
-                  <Icon type="send" spaced />
-                  <span>{__('messages.compose.action.send')}</span>
+                <Button shape="plain" onClick={this.handleSend} icon="send">
+                  {__('messages.compose.action.send')}
                 </Button>
               </div>
               <div className="m-reply__bottom-action">
-                <Button onClick={this.handleSave}>
-                  <Icon type="save" spaced />
-                  <span>{__('messages.compose.action.save')}</span>
+                <Button onClick={this.handleSave} icon="save">
+                  {__('messages.compose.action.save')}
                 </Button>
               </div>
               <div className="m-reply__bottom-action">
-                <Button onClick={this.handleSave}>
-                  <Icon type="share-alt" spaced />
-                  <span>{__('messages.compose.action.copy')}</span>
+                <Button onClick={this.handleSave} icon="share-alt">
+                  {__('messages.compose.action.copy')}
                 </Button>
               </div>
               <div className="m-reply__bottom-action m-reply__bottom-action--editor">
-                <Button><Icon type="editor" spaced /></Button>
+                <Button icon="editor" />
               </div>
             </div>
           </BottomRow>

@@ -3,16 +3,6 @@
 .m-message-list {
   position: relative;
 
-  button { // ugly hack, to simulate "icon only" Button, waiting for Button refacto
-    span {
-      @include breakpoint(small) { display: none; }
-      @include breakpoint(medium) {
-        display: inline;
-        padding-left: $co-component__spacing;
-      }
-    }
-  }
-
   &__action { margin-right: $co-component__spacing; }
 
   &__reply {

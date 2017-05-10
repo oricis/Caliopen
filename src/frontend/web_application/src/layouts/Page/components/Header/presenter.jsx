@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import Button from '../../../../components/Button';
-import Icon from '../../../../components/Icon';
 import Brand from '../../../../components/Brand';
 import SearchField from './components/SearchField';
 import UserMenu from './components/UserMenu';
@@ -55,7 +54,8 @@ class Header extends Component {
             <Button
               aria-label={__('header.menu.toggle-search-form')}
               onClick={this.handleClickToggleSearchAsDropdown}
-            ><Icon type="search" /></Button>
+              icon="search"
+            />
           </div>
           <div className={searchClassName}>
             <div className="l-header__m-search-field"><SearchField /></div>
