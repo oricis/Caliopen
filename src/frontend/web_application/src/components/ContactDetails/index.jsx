@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Subtitle from '../Subtitle';
 import Button from '../Button';
-import Icon from '../Icon';
 import TextList, { ItemContent } from '../TextList';
 import AddressDetails from './components/AddressDetails';
 import EmailDetails from './components/EmailDetails';
@@ -72,13 +71,13 @@ class ContactDetails extends Component {
 
   renderSubtitleActions() {
     const { __ } = this.props;
+    const activeButtonProp = this.state.editMode && { color: 'active' };
+
     return (
       <Button
         className="pull-right"
-        active={this.state.editMode}
-        onClick={this.handleSwitchEditMode}
-      >
-        <Icon type="edit" />
+        {...activeButtonProp}
+        onClick={this.handleSwitchEditMode} icon="edit">
         <span className="show-for-sr">{__('contact.action.edit_contact_details')}</span>
       </Button>
     );

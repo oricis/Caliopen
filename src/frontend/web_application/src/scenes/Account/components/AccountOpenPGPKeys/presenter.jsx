@@ -77,6 +77,8 @@ class AccountOpenPGPKeys extends Component {
       onGenerateKey,
     } = this.props;
 
+    const activeButtonProp = this.state.editMode && { color: 'active' };
+
     return (
       <div className="m-account-openpgp">
         <Subtitle
@@ -84,7 +86,7 @@ class AccountOpenPGPKeys extends Component {
           actions={(
             <Button
               className="pull-right"
-              active={this.state.editMode}
+              {...activeButtonProp}
               onClick={this.handleClickEditMode}
             >
               <Icon type="edit" />

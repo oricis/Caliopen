@@ -188,8 +188,8 @@ class SignupForm extends Component {
               <Button
                 type="submit"
                 onClick={this.handleSubmit}
-                expanded
-                plain
+                display="expanded"
+                shape="plain"
               >{__('signup.action.create')}</Button>
             </FormColumn>
           </FormRow>

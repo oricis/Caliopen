@@ -135,7 +135,7 @@ class ContactBook extends Component {
             />
             {hasMore && (
               <div className="l-contact-book-list__load-more">
-                <Button hollow onClick={this.loadMore}>{__('general.action.load_more')}</Button>
+                <Button shape="hollow" onClick={this.loadMore}>{__('general.action.load_more')}</Button>
               </div>
             )}
           </div>

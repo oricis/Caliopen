@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import classnames from 'classnames';
 import { withTranslator } from '@gandi/react-translate';
 import Button from '../Button';
-import Icon from '../Icon';
 import ContactAvatarLetter from '../ContactAvatarLetter';
 import ContactProfileForm from './components/ContactProfileForm';
 import './style.scss';
@@ -31,12 +30,16 @@ class ContactProfile extends Component {
 
   render() {
     const { contact, className, onChange, __ } = this.props;
+    const activeButtonProp = this.state.editMode && { color: 'active' };
 
     return (
       <div className={classnames('m-contact-profile', className)}>
         <div className="m-contact-profile__edit-button">
-          <Button active={this.state.editMode} onClick={this.toggleEditMode}>
-            <Icon type="edit" />
+          <Button
+            icon="edit"
+            {...activeButtonProp}
+            onClick={this.toggleEditMode}
+          >
             <span className="show-for-sr">
               {__('contact_profile.action.edit_contact')}
             </span>

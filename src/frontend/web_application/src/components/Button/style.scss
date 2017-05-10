@@ -54,30 +54,13 @@
   }
 
   @include breakpoint(small only) {
-    &--icon {
-      padding-top: $co-component__spacing;
-      padding-bottom: $co-component__spacing;
-      line-height: $co-font__line-height;
-      text-align: center;
-    }
 
     &__text {
-      display: block;
       max-width: 1.5 * $co-component__height;
-      margin-left: 0;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: $co-font__size--xsmall;
+      font-size: $co-font__size--small;
       white-space: nowrap;
-    }
-
-    &--icon-only,
-    &--text-only {
-      &.m-button--icon {
-        padding-top: 0;
-        padding-bottom: 0;
-        line-height: $co-component__height;
-      }
     }
 
     &--icon-only {

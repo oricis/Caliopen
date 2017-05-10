@@ -89,7 +89,7 @@ class TagItem extends Component {
         <Button
           className="m-tag__button"
           onClick={this.handleClickTag}
-          expanded
+          display="expanded"
         >
           <span className="m-tag__text">{tag.name}</span>
           <Icon className="m-tag__icon" type="edit" />

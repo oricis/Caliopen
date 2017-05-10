@@ -67,7 +67,7 @@ Button.propTypes = {
   shape: PropTypes.oneOf(['plain', 'hollow']),
   icon: PropTypes.string,
   display: PropTypes.oneOf(['inline', 'expanded']),
-  color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active', 'disabled']),
+  color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active']),
   responsive: PropTypes.oneOf(['icon-only', 'text-only']),
   accessKey: PropTypes.string,
 };

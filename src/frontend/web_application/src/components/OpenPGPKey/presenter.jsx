@@ -106,8 +106,7 @@ class OpenPGPKey extends Component {
               <span className="show-for-sr">{__('openpgp.action.toggle-details')}</span>
             </Button>
             {editMode && (
-              <Button alert onClick={this.handleDeleteKey}>
-                <Icon type="remove" />
+              <Button color="alert" onClick={this.handleDeleteKey} icon="remove">
                 <span className="show-for-sr">{__('openpgp.action.remove-key')}</span>
               </Button>
             )}
