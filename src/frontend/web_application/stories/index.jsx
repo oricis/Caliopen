@@ -117,7 +117,7 @@ storiesOf('Buttons & Links', module)
       children: text('children', 'Click Me'),
       shape: select('shape', { '': '', plain: 'plain', hollow: 'hollow' }, ''),
       display: select('display', { '': '', expanded: 'expanded', inline: 'inline' }, ''),
-      color: select('color', { '': '', active: 'active', alert: 'alert', success: 'success', secondary: 'secondary', disabled: 'disabled' }, ''),
+      color: select('color', { '': '', active: 'active', alert: 'alert', success: 'success', secondary: 'secondary' }, ''),
     };
 
     return (<Button {...props} onClick={action('clicked')} />);

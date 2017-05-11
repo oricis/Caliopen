@@ -54,6 +54,7 @@
     "contact_profile.form.birthday.label": "Anniversaire :",
     "contact_profile.form.firstname.label": "Prénom :",
     "contact_profile.form.lastname.label": "Nom :",
+    "contacts.action.import_contacts": "Importer des contacts",
     "contacts-filters.format-view.firstname": "Prénom Nom",
     "contacts-filters.format-view.label": "Format",
     "contacts-filters.format-view.name": "Nom, Prénom",

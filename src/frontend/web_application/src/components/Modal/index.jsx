@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import classnames from 'classnames';
-import Icon from '../../components/Icon';
 import Button from '../../components/Button';
 import './style.scss';
 
@@ -16,7 +15,7 @@ const Modal = ({ className, title, children, onClose, ...props }) => (
       {title && (
         <div className="m-modal__title">{title}</div>
       )}
-      <Button inline className="m-modal__close" onClick={onClose}><Icon type="remove" /></Button>
+      <Button display="inline" className="m-modal__close" onClick={onClose} icon="remove" />
     </header>
     <div className="m-modal__content">
       {children}

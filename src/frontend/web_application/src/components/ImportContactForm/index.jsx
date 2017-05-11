@@ -1,35 +1,66 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Button';
-import Modal from '../Modal';
+
 import './style.scss';
 
-const ImportContactForm = () => (
-  <Modal
-    className="m-import-contact-form__modal"
-    title="Import Contacts"
-    isOpen
-  >
-    <form>
-      <p>Select a file to import</p>
-      <input type="file" />
-      <Button type="submit" icon="submit" shape="plain">Submit</Button>
-    </form>
-  </Modal>
-);
+class ImportContactForm extends Component {
+  static propTypes = {
+    __: PropTypes.func.isRequired,
+  };
 
-ImportContactForm.propTypes = {
-  onMessageView: PropTypes.func,
-  onReply: PropTypes.func.isRequired,
-  onForward: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  replyForm: PropTypes.node.isRequired,
-  __: PropTypes.func.isRequired,
-};
+  constructor(props) {
+    super(props);
+    this.state = {
+      file: null,
+    };
 
-ImportContactForm.defaultProps = {
-  onMessageView: null,
-};
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+  }
+
+  onFormSubmit(ev) {
+    const file = ev.target.file;
+    this.setState({
+      file,
+    });
+  }
+
+  onInputChange(ev) {
+    const file = ev.target.value;
+    this.setState({
+      file,
+    });
+  }
+
+  render() {
+    const { __ } = this.props;
+
+    return (
+      <div className="m-import-contact-form">
+        <p>{__('You can import one one *.vcf from your hard drive.')}</p>
+        <form>
+          <div className="m-import-contact-form__files">
+            <input
+              type="file"
+              name="file"
+              className="m-import-contact-form__input"
+              onChange={this.onInputChange}
+            />
+          </div><br />
+          {this.state.file}
+          <Button
+            className="m-import-contact-form__submit"
+            type="submit"
+            icon="download"
+            shape="plain"
+            disabled={this.state.file === null}
+          >{__('contacts.action.import_contacts')}</Button>
+        </form>
+
+      </div>
+    );
+  }
+}
 
 export default ImportContactForm;
