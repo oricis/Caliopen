@@ -10,11 +10,11 @@
 
   &__tags {
     @include flex-grid-column(12);
-    padding-top: 2 * $co-component__spacing;
+    padding-top: $co-margin;
   }
 
   &__import {
-    margin-top: 2 * $co-component__spacing;
+    margin-top: $co-margin;
   }
 
   &__contact-list {
@@ -30,6 +30,7 @@
   @include breakpoint(medium) {
     &__tags {
       @include flex-grid-size(shrink);
+      padding-right: $co-margin;
     }
   }
 }

@@ -103,7 +103,7 @@ class ContactBook extends Component {
         isOpen={this.state.isImportModalOpen}
         contentLabel={__('Import contacts')}
         title={__('Import contacts')}
-        onClose={this.handleCloseTagsModal}
+        onClose={this.handleCloseImportModal}
       >
         <ImportContactForm __={__} />
       </Modal>
@@ -155,7 +155,6 @@ class ContactBook extends Component {
             />
             <Button
               icon="plus"
-              shape="hollow"
               className="l-contact-book__import"
               onClick={this.handleOpenImportModal}
             >

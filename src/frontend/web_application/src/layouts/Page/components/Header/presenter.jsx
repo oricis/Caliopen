@@ -46,7 +46,7 @@ class Header extends Component {
                 className="l-header__menu-icon menu-icon"
               />
             </span>
-            <Link to="/" href >
+            <Link to="/">
               <Brand className="l-header__brand-icon" />
             </Link>
           </div>
