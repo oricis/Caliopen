@@ -10,7 +10,11 @@
 
   &__tags {
     @include flex-grid-column(12);
-    padding-top: map_get($co-form__spacing, 'large');
+    padding-top: 2 * $co-component__spacing;
+  }
+
+  &__import {
+    margin-top: 2 * $co-component__spacing;
   }
 
   &__contact-list {

@@ -1,9 +1,16 @@
 @mixin o-clickable {
   transition: $co-animation__clickable-transition;
   border-color: $co-color__primary;
-  color: $co-color__fg__text--low;
+  color: $co-color__fg__text;
   text-decoration: none;
   cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+    &:hover {
+      color: $co-color__fg__text;
+    }
+  }
 
   &:hover {
     color: $co-color__fg__text--high;
@@ -76,7 +83,7 @@
 }
 
 @mixin o-clickable--active-text {
-  color: $co-color__fg__text;
+  color: $co-color__fg__text--high;
   cursor: default;
 }
 
