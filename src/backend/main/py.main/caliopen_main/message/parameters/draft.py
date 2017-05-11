@@ -95,6 +95,7 @@ class Draft(NewMessage):
         from_participant.type = "From"
         from_participant.contact_ids = [user.contact.contact_id]
         self.participants.append(from_participant.marshall_dict())
+        return from_participant
 
     def _check_discussion_consistency(self, user_id):
         from caliopen_main.objects.message import Message
@@ -145,9 +146,7 @@ class Draft(NewMessage):
                             message="list of participants "
                                     "is not consistent for this discussion")
             else:
-                # TODO: handle empty participants list within a reply
-                raise err.PatchError(
-                    message="No participants provided for this reply")
+                self.build_participants_for_reply(user_id)
 
             # check parent_id consistency
             if 'parent_id' in self and self['parent_id'] != "" \
@@ -161,3 +160,31 @@ class Draft(NewMessage):
             last_message = None
 
         return last_message
+
+    def build_participants_for_reply(self, user_id):
+        """
+        build participants list from last message in discussion.
+        - former 'From' recipients are replaced by 'To' recipients
+        - provided identity is used to fill the new 'From' participant
+        - new sender is removed from former recipients
+        """
+
+        dim = DIM(user_id)
+        d_id = self.discussion_id
+        last_message = dim.get_last_message(d_id, 0, 100, False)
+        for i, participant in enumerate(last_message.participants):
+            if re.match("[Ff][Rr][Oo][Mm]", participant['type']):
+                participant.type = "To"
+                self.participants.append(participant)
+            else:
+                self.participants.append(participant)
+
+        # add sender
+        # and remove it from previous recipients
+        sender = self._add_from_participant(user_id)
+        for i, participant in enumerate(self.participants):
+            if participant['address'] == sender.address:
+                if re.match("[Tt][Oo]", participant['type']) or \
+                        re.match("[Cc][Cc]", participant['type']) or \
+                        re.match("[Bb][Cc][Cc]", participant['type']):
+                    self.participants.pop(i)
