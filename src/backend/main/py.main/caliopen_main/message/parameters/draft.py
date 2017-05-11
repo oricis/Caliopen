@@ -11,6 +11,7 @@ from caliopen_main.objects.participant import Participant
 from caliopen_storage.exception import NotFound
 from caliopen_main.discussion.store.discussion_index import \
     DiscussionIndexManager as DIM
+from caliopen_main.discussion.core import Discussion
 import caliopen_main.errors as err
 
 import logging
@@ -32,14 +33,13 @@ class Draft(NewMessage):
         Returns a validated draft or error.
         """
 
-        # remove 'from' participant
         try:
             self.validate()
         except Exception as exc:
             log.warn(exc)
             raise exc
 
-        if is_new:
+        if is_new and self.discussion_id is None:
             if hasattr(self, 'participants') and len(self.participants) > 0:
                 for i, participant in enumerate(self.participants):
                     if re.match("[Ff][Rr][Oo][Mm]", participant.type):
@@ -49,20 +49,21 @@ class Draft(NewMessage):
         # check discussion consistency and get last message from discussion
         last_message = self._check_discussion_consistency(user_id)
 
-        # check subject consistency
-        # TODO: handle encoded subject lines & international suffix
-        # (https://www.wikiwand.com/en/List_of_email_subject_abbreviations)
-        # for now, we use standard prefix «Re: » (RFC5322#section-3.6.5)
-        if hasattr(self, 'subject') and self.subject is not None:
-            if self.subject != "Re: " + last_message.subject:
-                raise err.PatchConflict(message="subject has been changed")
-        else:
-            # no subject property provided :
-            # add subject from context with a "Re: " prefix
-            self.subject = "Re: " + last_message.subject
+        if last_message is not None:
+            # check subject consistency
+            # TODO: handle encoded subject lines & international suffix
+            # (https://www.wikiwand.com/en/List_of_email_subject_abbreviations)
+            # for now, we use standard prefix «Re: » (RFC5322#section-3.6.5)
+            if hasattr(self, 'subject') and self.subject is not None:
+                if self.subject != "Re: " + last_message.subject:
+                    raise err.PatchConflict(message="subject has been changed")
+            else:
+                # no subject property provided :
+                # add subject from context with a "Re: " prefix
+                self.subject = "Re: " + last_message.subject
 
             # TODO: prevent modification of protected attributes
-            # below attributes should be protected by Message class
+                # below attributes should be protected by Message class
 
     def _add_from_participant(self, user_id):
 
@@ -113,7 +114,9 @@ class Draft(NewMessage):
                     raise err.PatchError(message="parent message not found")
                 self.discussion_id = parent_msg.discussion_id
             else:
-                self.discussion_id = uuid.uuid4()
+                user = User.get(user_id)
+                discussion = Discussion.create_from_message(user, self)
+                self.discussion_id = discussion.discussion_id
                 new_discussion = True
 
         if not new_discussion:
@@ -155,6 +158,6 @@ class Draft(NewMessage):
                                                     "parent_id does not belong"
                                                     "to this discussion")
         else:
-            last_message = self
+            last_message = None
 
         return last_message

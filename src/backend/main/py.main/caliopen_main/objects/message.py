@@ -138,17 +138,21 @@ class Message(base.ObjectIndexable):
             log.warn(exc)
             return err.PatchError(message=exc.message)
 
-        # add missing params to be able check consistency
+        # add missing params to be able to check consistency
         self_dict = self.marshall_dict()
         if not hasattr(params, "message_id") and self.message_id is not None:
             draft_param.message_id = UUIDType().to_native(self.message_id)
+
         if not hasattr(params,
                        "discussion_id") and self.discussion_id is not None:
             draft_param.discussion_id = UUIDType().to_native(self.discussion_id)
+
         if not hasattr(params, "parent_id") and self.parent_id is not None:
             draft_param.parent_id = UUIDType().to_native(self.parent_id)
+
         if not hasattr(params, "subject"):
             draft_param.subject = self.subject
+
         if not hasattr(params,
                        "participants") and self.participants is not None:
             for participant in self_dict['participants']:
