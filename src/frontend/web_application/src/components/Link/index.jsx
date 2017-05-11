@@ -28,7 +28,7 @@ const Link = ({ children, href, noDecoration, className, button, expanded, activ
 
 Link.propTypes = {
   children: PropTypes.node.isRequired,
-  href: PropTypes.bool,
+  href: PropTypes.string,
   noDecoration: PropTypes.bool,
   className: PropTypes.string,
   button: PropTypes.bool,
