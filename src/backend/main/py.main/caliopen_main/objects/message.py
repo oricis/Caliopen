@@ -22,6 +22,9 @@ from .external_references import ExternalReferences
 from .identities import Identity
 from .participant import Participant
 from .privacy_features import PrivacyFeatures
+from schematics.types import UUIDType
+from caliopen_main.message.parameters.participant import \
+    Participant as IndexedParticipant
 import caliopen_main.errors as err
 
 import logging
@@ -127,17 +130,37 @@ class Message(base.ObjectIndexable):
         self.unmarshall_db()
         if not self.is_draft:
             return err.PatchUnprocessable(message="this message is not a draft")
-
         try:
             params = dict(patch)
             params.pop("current_state")
             draft_param = Draft(params)
-            draft_param.validate_consistency(self.user_id, False)
         except Exception as exc:
             log.warn(exc)
             return err.PatchError(message=exc.message)
 
-        self.apply_patch(patch, **options)
+        # add missing params to be able check consistency
+        self_dict = self.marshall_dict()
+        if not hasattr(params, "message_id") and self.message_id is not None:
+            draft_param.message_id = UUIDType().to_native(self.message_id)
+        if not hasattr(params,
+                       "discussion_id") and self.discussion_id is not None:
+            draft_param.discussion_id = UUIDType().to_native(self.discussion_id)
+        if not hasattr(params, "parent_id") and self.parent_id is not None:
+            draft_param.parent_id = UUIDType().to_native(self.parent_id)
+        if not hasattr(params, "subject"):
+            draft_param.subject = self.subject
+        if not hasattr(params,
+                       "participants") and self.participants is not None:
+            for participant in self_dict['participants']:
+                draft_param.participants.append(IndexedParticipant(participant))
+
+        try:
+            draft_param.validate_consistency(str(self.user_id), False)
+        except Exception as exc:
+            log.warn(exc)
+            return err.PatchError(message=exc.message)
+
+        return self.apply_patch(patch, **options)
 
     @classmethod
     def by_discussion_id(cls, user, discussion_id, min_pi, max_pi,
@@ -146,7 +169,8 @@ class Message(base.ObjectIndexable):
         res = cls._model_class.search(user, discussion_id=discussion_id,
                                       min_pi=min_pi, max_pi=max_pi,
                                       limit=limit,
-                                      offset=offset)
+                                      offset=offset,
+                                      sort="-date_insert")
         messages = []
         if res.hits:
             for x in res.hits:
