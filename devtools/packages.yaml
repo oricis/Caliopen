@@ -50,7 +50,7 @@ packages:
             python: "^2.7"
   golang:
       -
-          name: caliopen_apiv2
+          name: caliopen_rest
           build_target: github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/cmd/caliopen_rest
           path: src/backend/interfaces/REST/go.server
           description: Caliopen ReST API server
@@ -59,7 +59,7 @@ packages:
       -
           name: caliopen_lmtpd
           build_target: github.com/CaliOpen/Caliopen/src/backend/protocols/go.smtp/cmd/caliopen_lmtpd
-          path: src/backend/protocols/go.smtp/
+          path: src/backend/protocols/go.smtp
           description: Caliopen LMTP daemon
           dependencies:
             go: "^1.7"

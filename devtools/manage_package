@@ -26,7 +26,7 @@ logging.basicConfig()
 log.setLevel(logging.DEBUG)
 
 PY_UPDATE_CMD = """perl -pi -e "s/__version__ = '.*/__version__ = '{version}'/" {file}"""
-GO_UPDATE_CMD = """perl -pi -e "s/__version__ = \".*/__version__ = \"{version}\"/" {file}"""
+GO_UPDATE_CMD = """perl -pi -e "s/__version__ = \\".*/__version__ = \\"{version}\\"/" {file}"""
 JS_UPDATE_CMD = "cd {dir}; npm version {version}"
 
 
@@ -72,12 +72,12 @@ def get_python_version(package, basedir):
 
 def get_golang_version(package, basedir):
     """Return golang package version."""
-    pkg_file = '{}/{}/cli_cmds/root.go'.format(basedir, package['name'])
+    pkg_file = '{}/cmd/{}/cli_cmds/root.go'.format(basedir, package['name'])
     if not os.path.isfile(pkg_file):
         raise Exception('File {} for package version not found'.
                         format(pkg_file))
     with open(pkg_file) as v_file:
-        return re.compile(r".*__version__ = '(.*?)'",
+        return re.compile(r".*__version__ = \"(.*?)\"",
                           re.S).match(v_file.read()).group(1)
 
 
@@ -104,8 +104,9 @@ def update_python_version(dir, package, version):
 
 def update_golang_version(dir, package, version):
     """Update a golang package to a new version."""
-    pkg_file = '{}/{}/cli_cmds/root.go'.format(dir, package['name'])
+    pkg_file = '{}/cmd/{}/cli_cmds/root.go'.format(dir, package['name'])
     cmd = GO_UPDATE_CMD.format(version=version, file=pkg_file)
+    log.debug('Will execute {}'.format(cmd))
     return sp.call(cmd, shell=True), pkg_file
 
 
