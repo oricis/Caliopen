@@ -46,6 +46,12 @@ paths:
     "$ref": paths/devices.yaml#/devices_{device_id}
   "/v2/identities/locals":
     "$ref": paths/identities.yaml#/locals
+  "/v2/files":
+    "$ref$": paths/files.yaml#/files
+  "/v2/files/{file_id}":
+    "$ref$": paths/files.yaml#/files_{file_id}
+  "/v2/files/{file_id}/download":
+    "$ref$": paths/files.yaml#/files_{file_id}_download
 securityDefinitions:
   basicAuth:
     type: basic

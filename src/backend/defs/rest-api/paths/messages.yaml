@@ -257,3 +257,49 @@ messages_{message_id}_actions:
         description: execution of action failed.
         schema:
           "$ref": "../objects/Error.yaml"
+messages_{message_id}_attachments:
+  post:
+    description: Upload a file to server
+    tags:
+    - attachments
+    security:
+    - basicAuth: []
+    consumes:
+    - multipart/form-data
+    parameters:
+    - name: file
+      in: form
+      required: true
+messages_{message_id}_attachments_{attachment_index}:
+  get:
+    description: Download file from server
+    tags:
+    - attachments
+    security:
+    - basicAuth: []
+    parameters:
+    - name: attachment_index
+      in: path
+      required: true
+      type: string
+    produces: [] # permissive because a large set of file types could be returned.
+    responses:
+      '200':
+        description: the raw message
+        schema:
+          type: string
+
+
+    responses:
+      '201':
+        description: file uploaded sucessfully
+      '400':
+        description: bad request
+      '401':
+        description: Unauthorized
+      '404':
+        description: Not Found
+      '413':
+        description: Request entity too large
+      '415':
+        description: Unsupported media type
