@@ -2,7 +2,6 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import re
-import uuid
 
 from .message import NewMessage
 from caliopen_main.objects.identities import LocalIdentity
@@ -51,18 +50,21 @@ class Draft(NewMessage):
 
         if last_message is not None:
             # check subject consistency
-            # TODO: handle encoded subject lines & international suffix
             # (https://www.wikiwand.com/en/List_of_email_subject_abbreviations)
             # for now, we use standard prefix «Re: » (RFC5322#section-3.6.5)
+            p = re.compile(
+                '([\[\(] *)?(RE?S?|FYI|RIF|I|FS|VB|RV|ENC|ODP|PD|YNT|ILT|SV|VS|VL|AW|WG|ΑΠ|ΣΧΕΤ|ΠΡΘ|תגובה|הועבר|主题|转发|FWD?) *([-:;)\]][ :;\])-]*|$)|\]+ *$',
+                re.IGNORECASE)
             if hasattr(self, 'subject') and self.subject is not None:
-                if self.subject != "Re: " + last_message.subject:
+                if p.sub('', self.subject).strip() != p.sub('',
+                                                            last_message.subject).strip():
                     raise err.PatchConflict(message="subject has been changed")
             else:
                 # no subject property provided :
-                # add subject from context with a "Re: " prefix
-                self.subject = "Re: " + last_message.subject
+                # add subject from context with only one "Re: " prefix
+                self.subject = "Re: " + p.sub('', last_message.subject).strip()
 
-            # TODO: prevent modification of protected attributes
+                # TODO: prevent modification of protected attributes
                 # below attributes should be protected by Message class
 
     def _add_from_participant(self, user_id):
