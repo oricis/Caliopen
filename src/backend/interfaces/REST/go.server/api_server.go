@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/loads"
 	"gopkg.in/gin-gonic/gin.v1"
 	"gopkg.in/redis.v5"
+	"os"
 )
 
 var (
@@ -100,7 +101,6 @@ func (server *REST_API) initialize(config APIConfig) error {
 		log.WithError(err).Fatal("Caliopen facilities initialization failed")
 	}
 
-	//TODO : manage credentials & connection with config & backends interface
 	client := redis.NewClient(&redis.Options{
 		Addr:     config.CacheSettings.Host,
 		Password: config.CacheSettings.Password,
@@ -111,20 +111,27 @@ func (server *REST_API) initialize(config APIConfig) error {
 		return err
 	}
 	server.cache = client
+
+	//checks that with could open the swagger specs file
+	_, err = os.Stat(server.config.SwaggerFile)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func StartServer(swaggerFile string) error {
-	return server.start(swaggerFile)
+func StartServer() error {
+	return server.start()
 }
 
-func (server *REST_API) start(swaggerFile string) error {
+func (server *REST_API) start() error {
 	// Creates a gin router with default middleware:
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
 	// adds our middlewares
 
-	err := http_middleware.InitSwaggerMiddleware(swaggerFile)
+	err := http_middleware.InitSwaggerMiddleware(server.config.SwaggerFile)
 	if err != nil {
 		log.WithError(err).Warn("init swagger middleware failed")
 	}
