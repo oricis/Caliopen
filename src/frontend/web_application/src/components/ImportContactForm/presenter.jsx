@@ -27,7 +27,7 @@ class ImportContactForm extends Component {
     };
 
     this.onInputChange = this.onInputChange.bind(this);
-    // this.onRemoveFile = this.onRemoveFile.bind(this);
+    this.onResetForm = this.onResetForm.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
   }
 
@@ -48,13 +48,12 @@ class ImportContactForm extends Component {
     });
   }
 
-  /*
-  onRemoveFile() {
+  onResetForm() {
+    document.getElementById('import-contact-form').reset();
     this.setState({
       files: [],
     });
   }
-  */
 
   renderButtons() {
     const { __, uploadFile, onCancel } = this.props;
@@ -85,22 +84,10 @@ class ImportContactForm extends Component {
 
     return (
       <div className="m-import-contact-form">
-        <form>
-          <p>{__('You can import .vcf or .vcard files.')}</p>
-          <label htmlFor="files[]" className="m-import-contact-form__label">
-            <span className="m-import-contact-form__add-button"><Icon type="plus" /></span>
-            <span className="m-import-contact-form__add-label">Add a file</span>
-            <span className="m-import-contact-form__add-icon"><Icon type="folder" /></span>
-            <input
-              id="files"
-              type="file"
-              name="files[]"
-              className="m-import-contact-form__input"
-              onChange={this.onInputChange}
-            />
-          </label>
-          <div className="m-import-contact-form__files">
-            {this.state.files.length > 0 ? this.state.files.map(file =>
+        <form id="import-contact-form">
+          <p>{__('You can import one .vcf or .vcard file.')}</p>
+          {this.state.files.length > 0 ? this.state.files.map(file =>
+            <div className="m-import-contact-form__files">
               <div className="m-import-contact-form__file" key={uuidV1()}>
                 <span className="m-import-contact-form__file-name">{file && file.name} </span>
                 <span className="m-import-contact-form__file-size">{file && file.size} o</span>
@@ -110,14 +97,29 @@ class ImportContactForm extends Component {
                     display="inline"
                     icon="remove"
                     value={file}
-                    // onClick={this.onRemoveFile}
+                    onClick={this.onResetForm}
                   />
                 }
               </div>
+            </div>
+            ) : (
+              <div>
+                <label htmlFor="files[]" className="m-import-contact-form__label">
+                  <span className="m-import-contact-form__add-button"><Icon type="plus" /></span>
+                  <span className="m-import-contact-form__add-label">Add a file</span>
+                  <span className="m-import-contact-form__add-icon"><Icon type="folder" /></span>
+                  <input
+                    id="files"
+                    type="file"
+                    name="files[]"
+                    className="m-import-contact-form__input"
+                    onChange={this.onInputChange}
+                  />
+                </label>
+                <p>{__('No file chosen.')}</p>
+              </div>
             )
-            :
-            <p>{__('No file chosen.')}</p>}
-          </div>
+          }
           {this.renderButtons()}
         </form>
       </div>
