@@ -7,35 +7,17 @@ import Icon from '../Icon';
 
 import './style.scss';
 
-const File = ({ file }) => (
-  <div className="m-import-contact-form__file">
-    <span className="m-import-contact-form__file-name">{file && file.name} </span>
-    <span className="m-import-contact-form__file-size">{file && file.size} o</span>
-    {file &&
-      <Button
-        className="m-import-contact-form__remove-button"
-        display="inline"
-        icon="remove"
-      />
-    }
-  </div>
-);
-
-File.propTypes = {
-  file: PropTypes.shape({}),
-};
-File.defaultProps = {
-  file: null,
-};
 
 class ImportContactForm extends Component {
   static propTypes = {
     uploadFile: PropTypes.func,
+    onCancel: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     uploadFile: null,
+    onCancel: null,
   }
 
   constructor(props) {
@@ -45,7 +27,7 @@ class ImportContactForm extends Component {
     };
 
     this.onInputChange = this.onInputChange.bind(this);
-    this.onFormSubmit = this.onFormSubmit.bind(this);
+    // this.onRemoveFile = this.onRemoveFile.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
   }
 
@@ -61,23 +43,28 @@ class ImportContactForm extends Component {
       /* eslint-enable */
     }
 
-    this.setState(prevState => ({
-      files: prevState.files.concat(output),
-    }));
+    this.setState({
+      files: output,
+    });
   }
 
-  onFormSubmit() {
-    this.props.uploadFile();
+  /*
+  onRemoveFile() {
+    this.setState({
+      files: [],
+    });
   }
+  */
 
   renderButtons() {
-    const { __ } = this.props;
+    const { __, uploadFile, onCancel } = this.props;
 
     return (
       <div className="m-import-contact-form__buttons">
         <Button
           className="m-import-contact-form__cancel"
           shape="hollow"
+          onClick={onCancel}
         >{__('Cancel')}</Button>
 
         {this.state.files.length > 0 &&
@@ -86,6 +73,7 @@ class ImportContactForm extends Component {
             type="submit"
             shape="plain"
             icon="download"
+            onClick={uploadFile}
           >{__('Import')}</Button>
         }
       </div>
@@ -98,6 +86,7 @@ class ImportContactForm extends Component {
     return (
       <div className="m-import-contact-form">
         <form>
+          <p>{__('You can import .vcf or .vcard files.')}</p>
           <label htmlFor="files[]" className="m-import-contact-form__label">
             <span className="m-import-contact-form__add-button"><Icon type="plus" /></span>
             <span className="m-import-contact-form__add-label">Add a file</span>
@@ -108,14 +97,26 @@ class ImportContactForm extends Component {
               name="files[]"
               className="m-import-contact-form__input"
               onChange={this.onInputChange}
-              multiple
             />
           </label>
-          <p>{__('You can import .vcf file(s).')}</p>
           <div className="m-import-contact-form__files">
-            {this.state.files.length > 0 && this.state.files.map(file =>
-              <File file={file} key={uuidV1()} />
-            )}
+            {this.state.files.length > 0 ? this.state.files.map(file =>
+              <div className="m-import-contact-form__file" key={uuidV1()}>
+                <span className="m-import-contact-form__file-name">{file && file.name} </span>
+                <span className="m-import-contact-form__file-size">{file && file.size} o</span>
+                {file &&
+                  <Button
+                    className="m-import-contact-form__remove-button"
+                    display="inline"
+                    icon="remove"
+                    value={file}
+                    // onClick={this.onRemoveFile}
+                  />
+                }
+              </div>
+            )
+            :
+            <p>{__('No file chosen.')}</p>}
           </div>
           {this.renderButtons()}
         </form>

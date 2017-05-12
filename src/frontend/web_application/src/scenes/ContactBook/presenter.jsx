@@ -102,10 +102,10 @@ class ContactBook extends Component {
       <Modal
         isOpen={this.state.isImportModalOpen}
         contentLabel={__('Import contacts')}
-        title={__('Import contacts')}
+        title={__('Import VCards')}
         onClose={this.handleCloseImportModal}
       >
-        <ImportContactForm __={__} />
+        <ImportContactForm __={__} onCancel={this.handleCloseImportModal} />
       </Modal>
     );
   }
