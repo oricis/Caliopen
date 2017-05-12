@@ -134,9 +134,9 @@ func (server *REST_API) start() error {
 	err := http_middleware.InitSwaggerMiddleware(server.config.SwaggerFile)
 	if err != nil {
 		log.WithError(err).Warn("init swagger middleware failed")
+	} else {
+		router.Use(http_middleware.SwaggerValidator())
 	}
-
-	router.Use(http_middleware.SwaggerValidator())
 	// adds our routes and handlers
 	api := router.Group("/api/v2")
 	server.AddHandlers(api)

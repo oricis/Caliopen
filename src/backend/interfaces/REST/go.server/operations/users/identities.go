@@ -6,7 +6,9 @@ package users
 
 import (
 	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	swgErr "github.com/go-openapi/errors"
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 )
@@ -14,6 +16,9 @@ import (
 //GET …/identities/{identity_id}
 func GetLocalIdentity(ctx *gin.Context) {
 	ctx.AbortWithStatus(http.StatusNotImplemented)
+	e := swgErr.New(http.StatusNotImplemented, "not implemented")
+	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+	ctx.Abort()
 }
 
 //GET …/identities/locals
@@ -21,8 +26,9 @@ func GetLocalsIdentities(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	identities, err := caliopen.Facilities.RESTfacility.LocalsIdentities(user_id)
 	if err != nil {
-		ctx.AbortWithError(http.StatusInternalServerError, err)
-		//TODO: returns error conforming to swagger def.
+		e := swgErr.New(http.StatusInternalServerError, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
 	}
 	ret := struct {
 		Total            int                     `json:"total"`

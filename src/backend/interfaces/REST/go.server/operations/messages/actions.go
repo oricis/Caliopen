@@ -1,14 +1,17 @@
 package messages
 
 import (
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	log "github.com/Sirupsen/logrus"
+	swgErr "github.com/go-openapi/errors"
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 )
 
 // json payload on routes …/actions
 type REST_order struct {
-	Actions []string
+	Actions []string `json:"actions"`
 }
 
 // POST …/:message_id/actions
@@ -16,31 +19,39 @@ func Actions(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	msg_id := ctx.Param("message_id")
 	var actions REST_order
-
-	if ctx.BindJSON(&actions) == nil {
+	if err := ctx.BindJSON(&actions); err == nil {
 		switch actions.Actions[0] {
 		case "send":
 			updated_msg, err := caliopen.Facilities.RESTfacility.SendDraft(user_id, msg_id)
 			if err != nil {
-				ctx.AbortWithError(http.StatusInternalServerError, err)
-				//TODO: returns error conforming to swagger def.
+				e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+				ctx.Abort()
+			} else {
+				ctx.JSON(http.StatusOK, updated_msg)
 			}
-			ctx.JSON(http.StatusOK, updated_msg)
 		case "set_read":
 			err := caliopen.Facilities.RESTfacility.SetMessageUnread(user_id, msg_id, false)
 			if err != nil {
-				ctx.AbortWithError(http.StatusFailedDependency, err)
+				e := swgErr.New(http.StatusFailedDependency, err.Error())
+				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+				ctx.Abort()
 			}
 			ctx.Status(http.StatusNoContent)
 		case "set_unread":
 			err := caliopen.Facilities.RESTfacility.SetMessageUnread(user_id, msg_id, true)
 			if err != nil {
-				ctx.AbortWithError(http.StatusFailedDependency, err)
+				e := swgErr.New(http.StatusFailedDependency, err.Error())
+				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+				ctx.Abort()
 			}
 			ctx.Status(http.StatusNoContent)
 		default:
-			ctx.AbortWithStatus(http.StatusNotImplemented)
+			e := swgErr.New(http.StatusNotImplemented, err.Error())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
 		}
+	} else {
+		log.Warn(err)
 	}
-
 }

@@ -18,6 +18,7 @@ package email_broker
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
 	"time"
@@ -89,7 +90,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 		go func(out *SmtpEmail, natsMsg *nats.Msg) {
 			select {
 			case resp, ok := <-out.Response:
-				if resp.Err != nil || !ok || resp == nil {
+				if resp.Err || !ok || resp == nil {
 					log.WithError(err).Warn("outbound: delivery error from MTA")
 					b.natsReplyError(msg, errors.New("outbound: delivery error from MTA"))
 					return
@@ -97,10 +98,13 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 					err = b.SaveIndexSentEmail(resp)
 					if err != nil {
 						log.Warn("outbound: error when saving back sent email")
-						resp.Err = err
+						resp.Response = err.Error()
+						resp.Err = true
+					} else {
+						resp.Err = false
+						resp.Response = "message " + resp.EmailMessage.Message.Message_id.String() + " has been sent."
 					}
 				}
-				resp.Response = "message " + resp.EmailMessage.Message.Message_id.String() + " has been sent."
 				json_resp, _ := json.Marshal(resp)
 				b.NatsConn.Publish(msg.Reply, json_resp)
 			case <-time.After(time.Second * 30):
@@ -129,8 +133,8 @@ func (b *EmailBroker) natsReplyError(msg *nats.Msg, err error) {
 	var order natsOrder
 	json.Unmarshal(msg.Data, &order)
 	ack := DeliveryAck{
-		Err:      err,
-		Response: "failed to sent message " + order.MessageId,
+		Err:      true,
+		Response: fmt.Sprintf("failed to send message %s with error « %s » ", order.MessageId, err.Error()),
 	}
 
 	json_resp, _ := json.Marshal(ack)

@@ -5,6 +5,7 @@
 package http_middleware
 
 import (
+	"bytes"
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-openapi/analysis"
@@ -16,6 +17,8 @@ import (
 	"github.com/go-openapi/spec"
 	"github.com/go-openapi/strfmt"
 	"gopkg.in/gin-gonic/gin.v1"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"sync"
@@ -53,7 +56,7 @@ func InitSwaggerMiddleware(swaggerFile string) (err error) {
 	swaggerSpec, err = loads.JSONSpec(swaggerFile)
 	swagAPI := untyped.NewAPI(swaggerSpec)
 	swagAPI.WithJSONDefaults()
-	swagAPI.ServeError = ServeError
+	//swagAPI.ServeError = ServeError
 
 	swagCtx := middleware.NewContext(swaggerSpec, swagAPI, nil)
 	if swagCtx == nil {
@@ -83,7 +86,6 @@ func InitSwaggerMiddleware(swaggerFile string) (err error) {
 // this middleware should be registred as the first middleware to ensure that it checks
 // requests before next handlers
 func SwaggerValidator() gin.HandlerFunc {
-
 	return func(ctx *gin.Context) {
 		SwaggerInboundValidation(ctx)
 		ctx.Next()
@@ -92,16 +94,28 @@ func SwaggerValidator() gin.HandlerFunc {
 }
 
 func SwaggerInboundValidation(ctx *gin.Context) {
+	// make a copy of request to be able to drain body twice :
+	// one for swagger validation, other to ctx.next handlers
+	body1, body2, err := drainBody(ctx.Request.Body)
+	req_copy := new(http.Request)
+	*req_copy = *ctx.Request
+	ctx.Request.Body = body1
+	req_copy.Body = body2
+	if err != nil {
+		ctx.Abort()
+		return
+	}
+
 	route, ok := swaggerContext.RouteInfo(ctx.Request)
 	if route != nil && ok {
-		_, err := swaggerContext.BindAndValidate(ctx.Request, route)
+		_, err := swaggerContext.BindAndValidate(req_copy, route)
 		if err != nil {
-			swaggerContext.Respond(ctx.Writer, ctx.Request, route.Produces, route, err)
-			log.Warn("validation failed")
+			ServeError(ctx.Writer, ctx.Request, err)
 			ctx.Abort()
 			return
 		}
 	}
+	ctx.Set("swgCtx", swaggerContext)
 }
 
 func newRoutableUntypedAPI(spec *loads.Document, api *untyped.API, context *middleware.Context) *routableUntypedAPI {
@@ -190,7 +204,11 @@ func newSecureAPI(ctx *middleware.Context, next http.Handler) http.Handler {
 
 // ServeError the error handler interface implementation
 // returns an error json as defined within swagger.json, if any
-func ServeError(rw http.ResponseWriter, r *http.Request, err error) {
+func ServeError(rw gin.ResponseWriter, r *http.Request, err error) {
+	header := rw.Header()
+	if val := header["Content-Type"]; len(val) == 0 {
+		header["Content-Type"] = []string{"application/json"}
+	}
 	switch e := err.(type) {
 	case *swgErr.CompositeError:
 		er := flattenComposite(e)
@@ -220,6 +238,9 @@ func ServeError(rw http.ResponseWriter, r *http.Request, err error) {
 			rw.Write(errorAsJSON(swgErr.New(http.StatusInternalServerError, err.Error())))
 		}
 	}
+	rw.Flush()
+	conn, _, _ := rw.Hijack()
+	conn.Close()
 }
 
 func errorAsJSON(err swgErr.Error) []byte {
@@ -265,4 +286,24 @@ func asHTTPCode(input int) int {
 		return 422
 	}
 	return input
+}
+
+// drainBody reads all of b to memory and then returns two equivalent
+// ReadClosers yielding the same bytes.
+//
+// It returns an error if the initial slurp of all bytes fails. It does not attempt
+// to make the returned ReadClosers have identical error-matching behavior.
+func drainBody(b io.ReadCloser) (r1, r2 io.ReadCloser, err error) {
+	if b == http.NoBody {
+		// No copying needed. Preserve the magic sentinel meaning of NoBody.
+		return http.NoBody, http.NoBody, nil
+	}
+	var buf bytes.Buffer
+	if _, err = buf.ReadFrom(b); err != nil {
+		return nil, b, err
+	}
+	if err = b.Close(); err != nil {
+		return nil, b, err
+	}
+	return ioutil.NopCloser(&buf), ioutil.NopCloser(bytes.NewReader(buf.Bytes())), nil
 }
