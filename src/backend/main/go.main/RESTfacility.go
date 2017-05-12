@@ -80,13 +80,12 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 	reply, err := rest.nats_conn.Request(rest.nats_outSMTP_topic, []byte(natsMessage), 10*time.Second)
 	if err != nil {
 		if rest.nats_conn.LastError() != nil {
-			//TODO
+			return nil, err
 		}
-		//TODO
+		return nil, err
 	}
 
 	log.Infof("nats reply : %s", reply)
-
 	return rest.store.GetMessage(user_id, msg_id)
 }
 
