@@ -1,5 +1,5 @@
 import * as module from '../modules/openpgp-keychain';
-import * as openPGPManager from '../../services/openpgp-manager';
+import getPGPManager from '../../services/openpgp-manager';
 import * as openPGPKeychainRepository from '../../services/openpgp-keychain-repository';
 
 export default store => next => (action) => {
@@ -15,7 +15,7 @@ export default store => next => (action) => {
 
   if (action.type === module.GENERATE) {
     const { name, email, passphrase } = action.payload;
-    openPGPManager.generateKey(name, email, passphrase)
+    getPGPManager().then(({ generateKey }) => generateKey(name, email, passphrase))
       .then((generated) => {
         const fingerprint = generated.key.primaryKey.fingerprint;
         const { publicKeyArmored, privateKeyArmored } = generated;
@@ -27,30 +27,33 @@ export default store => next => (action) => {
 
   if (action.type === module.IMPORT_PUBLIC_KEY) {
     const { publicKeyArmored } = action.payload;
-    openPGPManager.validatePublicKeyChain(publicKeyArmored).then(({ key }) => {
-      const { fingerprint } = key.primaryKey;
-      store.dispatch(module.importKeyChainSucceed({
-        fingerprint,
-        publicKeyArmored,
-      }));
-    }).catch((errors) => {
-      store.dispatch(module.importKeyChainFailed({ errors }));
-    });
+    getPGPManager().then(({ validatePublicKeyChain }) => validatePublicKeyChain(publicKeyArmored))
+      .then(({ key }) => {
+        const { fingerprint } = key.primaryKey;
+        store.dispatch(module.importKeyChainSucceed({
+          fingerprint,
+          publicKeyArmored,
+        }));
+      }).catch((errors) => {
+        store.dispatch(module.importKeyChainFailed({ errors }));
+      });
   }
 
   if (action.type === module.IMPORT_KEY_PAIR) {
     const { publicKeyArmored, privateKeyArmored } = action.payload;
 
-    openPGPManager.validateKeyChainPair(publicKeyArmored, privateKeyArmored).then(({ key }) => {
-      const { fingerprint } = key.primaryKey;
-      store.dispatch(module.importKeyChainSucceed({
-        fingerprint,
-        publicKeyArmored,
-        privateKeyArmored,
-      }));
-    }).catch((errors) => {
-      store.dispatch(module.importKeyChainFailed(errors));
-    });
+    getPGPManager()
+      .then(({ validateKeyChainPair }) => validateKeyChainPair(publicKeyArmored, privateKeyArmored))
+      .then(({ key }) => {
+        const { fingerprint } = key.primaryKey;
+        store.dispatch(module.importKeyChainSucceed({
+          fingerprint,
+          publicKeyArmored,
+          privateKeyArmored,
+        }));
+      }).catch((errors) => {
+        store.dispatch(module.importKeyChainFailed(errors));
+      });
   }
 
   const actionsRequireSave = [module.GENERATION_SUCCEED, module.IMPORT_SUCCEED];

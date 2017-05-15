@@ -24,7 +24,7 @@ if (HAS_SSR) {
   applySSR(app);
 } else {
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../template/index.kotatsu-serve.html'));
+    res.sendFile(path.join(__dirname, '../dist/server/template.html'));
   });
 }
 applyError(app);

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import { withTranslator } from '@gandi/react-translate';
+import Account from './scenes/Account';
 import Auth from './scenes/Auth';
 import DiscussionList from './scenes/DiscussionList';
 import AppRoute from './scenes/AppRoute';
@@ -9,7 +10,6 @@ import SettingsRoute from './scenes/SettingsRoute';
 import DevicesRoute from './scenes/DevicesRoute';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
-import Account from './scenes/Account';
 import Tags from './scenes/Tags';
 import { Device } from './scenes/Devices';
 
