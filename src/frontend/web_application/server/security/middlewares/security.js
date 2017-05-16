@@ -2,7 +2,7 @@ const securityMiddleware = (req, res, next) => {
   const security = {
     firewalls: {
       assets: {
-        paths: [/^\/assets\/.*$/, '/bundle.js'],
+        paths: [/^\/assets\/.*$/],
         security: false,
       },
       auth: {

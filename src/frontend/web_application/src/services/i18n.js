@@ -36,7 +36,7 @@ export const getLocale = () => {
   return negociateLocale(preferedUserLocales, Object.keys(availableTranslations), defaultLocale);
 };
 
-const getLocaleAsync = () => new Promise((resolve, reject) => {
+export const getLocaleAsync = () => new Promise((resolve, reject) => {
   if (BUILD_TARGET === 'cordova') {
     navigator.globalization.getLocaleName((locale) => {
       resolve(negociateLocale([locale.value], Object.keys(availableTranslations), defaultLocale));

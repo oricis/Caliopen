@@ -10,7 +10,7 @@ const config = Object.assign(baseConfig.getBase('server'), {
   output: {
     path: path.join(__dirname, '../dist/server/'),
     filename: 'index.js',
-    publicPath: isDev ? KOTATSU_PUBLIC_PATH : '/assets/',
+    publicPath: isDev ? KOTATSU_PUBLIC_PATH : '/',
   },
 });
 
@@ -23,7 +23,8 @@ config.module.loaders.push(
     test: /\.jsx?$/,
     include: path.join(__dirname, '../server/'),
     loaders: ['babel-loader'],
-  }
+  },
+  { test: /\.html$/, loader: 'raw-loader' }
 );
 
 if (isDev) {

@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { enums } from 'openpgp';
 import classnames from 'classnames';
 import { withTranslator } from '@gandi/react-translate';
 import Moment from 'react-moment';
 import Button from '../Button';
+import Spinner from '../Spinner';
 import Icon from '../Icon';
 import DefList from '../DefList';
 import { TextareaFieldGroup } from '../form';
-import { getKeyFromASCII } from '../../services/openpgp-manager';
+import getPGPManager from '../../services/openpgp-manager';
 import './style.scss';
 
-const { keyStatus: keyStatuses } = enums;
-
-function generateStateFromProps(props) {
+function generateStateFromProps({ props, getKeyFromASCII, keyStatuses }) {
   const publicKey = getKeyFromASCII(props.publicKeyArmored);
   const { primaryKey: { fingerprint, created, algorithm } } = publicKey;
 
   return {
+    isLoading: false,
     openpgpKey: {
       fingerprint,
       created,
@@ -48,24 +47,33 @@ class OpenPGPKey extends Component {
 
   static defaultProps = {
     locale: undefined,
+    children: undefined,
+    privateKeyArmored: undefined,
+    editMode: false,
+    onDeleteKey: () => {},
   };
 
   constructor(props) {
     super(props);
     this.state = {
       showDetails: false,
+      isLoading: true,
+      openpgpKey: {
+      },
     };
 
     this.toggleDetails = this.toggleDetails.bind(this);
     this.handleDeleteKey = this.handleDeleteKey.bind(this);
   }
 
-  componentWillMount() {
-    this.setState(generateStateFromProps(this.props));
+  componentDidMount() {
+    getPGPManager().then(({ getKeyFromASCII, module: { enums: { keyStatus: keyStatuses } } }) =>
+      this.setState(generateStateFromProps({ props: this.props, getKeyFromASCII, keyStatuses })));
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState(generateStateFromProps(newProps));
+    getPGPManager().then(({ getKeyFromASCII, module: { enums: { keyStatus: keyStatuses } } }) =>
+      this.setState(generateStateFromProps({ props: newProps, getKeyFromASCII, keyStatuses })));
   }
 
   handleDeleteKey() {
@@ -91,6 +99,7 @@ class OpenPGPKey extends Component {
     return (
       <div className="m-openpgp-key">
         <div className="m-openpgp-key__main">
+          <Spinner isLoading={this.state.isLoading} />
           <div className="m-openpgp-key__icon">{children}</div>
           <div className="m-openpgp-key__fingerprint">{this.state.openpgpKey.fingerprint}</div>
 
