@@ -147,35 +147,6 @@ class MailMessage(BaseRawParser):
         return MailPart(part)
 
     @property
-    def transport_privacy_index(self):
-        """Evaluate transport privacy index."""
-        # XXX : TODO
-        return random.randint(0, 50)
-
-    @property
-    def content_privacy_index(self):
-        """Evaluate content privacy index."""
-        # XXX: real evaluation needed ;)
-        if 'PGP' in [x.content_type for x in self.parts]:
-            return random.randint(50, 100)
-        else:
-            return 0.0
-
-    @property
-    def spam_level(self):
-        """Report spam level."""
-        try:
-            score = self.headers.get('X-Spam-Score')
-            score = float(score[0])
-        except:
-            score = 0.0
-        if score < 5.0:
-            return 0.0
-        if score >= 5.0 and score < 15.0:
-            return min(score * 10, 100.0)
-        return 100.0
-
-    @property
     def importance_level(self):
         """Return percent estimated importance level of this message."""
         # XXX. real compute needed
@@ -238,4 +209,10 @@ class MailMessage(BaseRawParser):
         ext_ref.message_id = self.external_message_id
         msg.external_references = ext_ref
         msg.importance_level = self.importance_level
+        msg.privacy_features = self._get_privacy_features()
         return msg
+
+    def _get_privacy_features(self):
+        """Get privacy features from a mail message."""
+        features = {}
+        return features

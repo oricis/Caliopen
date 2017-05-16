@@ -32,3 +32,7 @@ class BaseRawParser(object):
     def _get_parts(self):
         """Get list of ``Part`` in a message."""
         raise NotImplementedError
+
+    def _get_privacy_features(self):
+        """Get available privacy features from a message."""
+        raise NotImplementedError
