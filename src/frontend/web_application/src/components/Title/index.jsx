@@ -17,10 +17,15 @@ const Title = ({ children, actions, hr, className, ...props }) => {
 };
 
 Title.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
   actions: PropTypes.node,
   hr: PropTypes.bool,
   className: PropTypes.string,
+};
+Title.defaultProps = {
+  actions: undefined,
+  hr: false,
+  className: undefined,
 };
 
 export default Title;

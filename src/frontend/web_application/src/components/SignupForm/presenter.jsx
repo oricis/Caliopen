@@ -19,13 +19,15 @@ class SignupForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
-    onSubmit: PropTypes.func,
+    onSubmit: PropTypes.func.isRequired,
     onUsernameChange: PropTypes.func,
     onUsernameBlur: PropTypes.func,
-    __: PropTypes.func,
+    __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    errors: {},
+    form: {},
     onUsernameChange: noop,
     onUsernameBlur: noop,
   }

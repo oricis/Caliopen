@@ -11,10 +11,15 @@ const Subtitle = ({ children, actions, hr, className, ...props }) => (
 );
 
 Subtitle.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
   actions: PropTypes.node,
   hr: PropTypes.bool,
   className: PropTypes.string,
+};
+Subtitle.defaultProps = {
+  actions: undefined,
+  hr: false,
+  className: undefined,
 };
 
 export default Subtitle;

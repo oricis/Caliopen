@@ -13,7 +13,7 @@ const SettingsRoute = ({ routes }) => (
 );
 
 SettingsRoute.propTypes = {
-  routes: PropTypes.arrayOf({}).isRequired,
+  routes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default SettingsRoute;

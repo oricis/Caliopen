@@ -22,6 +22,9 @@ VerticalMenuItem.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
 };
+VerticalMenuItem.defaultProps = {
+  className: undefined,
+};
 
 export const VerticalMenuTextItem = props => (
   <VerticalMenuItem {...props} className="m-vertical-menu__item-content" />
@@ -34,6 +37,9 @@ const VerticalMenu = ({ children, className }) => (
 VerticalMenu.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
+};
+VerticalMenu.defaultProps = {
+  className: undefined,
 };
 
 

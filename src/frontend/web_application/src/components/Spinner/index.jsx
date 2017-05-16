@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
 
-const Spinner = ({ isLoading, height = 14, width = 14 }) => isLoading && (
+const Spinner = ({ isLoading, height, width }) => isLoading && (
   <div className="m-spinner">
     <span className="m-spinner__icon">
       <svg
@@ -22,6 +22,10 @@ Spinner.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   height: PropTypes.number,
   width: PropTypes.number,
+};
+Spinner.defaultProps = {
+  height: 14,
+  width: 14,
 };
 
 export default Spinner;

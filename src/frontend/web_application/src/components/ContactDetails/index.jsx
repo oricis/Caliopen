@@ -15,14 +15,19 @@ import './style.scss';
 
 class ContactDetails extends Component {
   static propTypes = {
-    contact: PropTypes.shape({}),
+    contact: PropTypes.shape({}).isRequired,
     onAddContactDetail: PropTypes.func.isRequired,
     onDeleteContactDetail: PropTypes.func.isRequired,
     allowConnectRemoteEntity: PropTypes.bool,
     onConnectRemoteIdentity: PropTypes.func,
     onDisconnectRemoteIdentity: PropTypes.func,
     remoteIdentities: PropTypes.arrayOf(PropTypes.shape({})),
-    __: PropTypes.func,
+    __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    allowConnectRemoteEntity: () => {},
+    onDisconnectRemoteIdentity: () => {},
+    remoteIdentities: [],
   };
 
   constructor(props) {

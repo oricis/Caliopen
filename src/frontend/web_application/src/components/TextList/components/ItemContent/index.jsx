@@ -20,5 +20,9 @@ ItemContent.propTypes = {
   large: PropTypes.bool,
   className: PropTypes.string,
 };
+ItemContent.defaultProps = {
+  large: false,
+  className: undefined,
+};
 
 export default ItemContent;

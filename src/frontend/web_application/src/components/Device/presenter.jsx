@@ -57,8 +57,8 @@ const Device = ({ device, __ }) => (
 );
 
 Device.propTypes = {
-  device: PropTypes.shape({}),
-  __: PropTypes.func,
+  device: PropTypes.shape({}).isRequired,
+  __: PropTypes.func.isRequired,
 };
 
 export default Device;

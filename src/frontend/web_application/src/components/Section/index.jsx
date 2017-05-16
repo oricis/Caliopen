@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Title from '../../components/Title';
 import './style.scss';
 
-const Section = ({ className, title, descr, hasSeparator = true, children }) => (
+const Section = ({ className, title, descr, hasSeparator, children }) => (
   <section className={classnames('m-section', { 'm-section--separator': hasSeparator }, className)}>
     {(title || descr) &&
       <header className="m-section__header">
@@ -23,6 +23,13 @@ Section.propTypes = {
   descr: PropTypes.string,
   hasSeparator: PropTypes.bool,
   children: PropTypes.node,
+};
+Section.defaultProps = {
+  className: undefined,
+  title: undefined,
+  descr: undefined,
+  hasSeparator: true,
+  children: undefined,
 };
 
 export default Section;

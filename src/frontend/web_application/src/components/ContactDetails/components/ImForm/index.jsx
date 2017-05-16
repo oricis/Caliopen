@@ -13,6 +13,9 @@ class EmailForm extends Component {
     onSubmit: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
   };
+  static defaultProps = {
+    errors: [],
+  };
 
   constructor(props) {
     super(props);

@@ -37,7 +37,7 @@ function generateStateFromProps(props) {
 @withTranslator()
 class OpenPGPKey extends Component {
   static propTypes = {
-    __: PropTypes.func,
+    __: PropTypes.func.isRequired,
     locale: PropTypes.string,
     children: PropTypes.node,
     publicKeyArmored: PropTypes.string.isRequired,

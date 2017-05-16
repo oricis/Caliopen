@@ -70,5 +70,10 @@ Icon.propTypes = {
   type: PropTypes.string,
   spaced: PropTypes.bool,
 };
+Icon.defaultProps = {
+  className: undefined,
+  type: false,
+  spaced: false,
+};
 
 export default Icon;
