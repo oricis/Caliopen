@@ -18,7 +18,7 @@ function generateStateFromProps(props) {
 
 class DeviceForm extends Component {
   static propTypes = {
-    device: PropTypes.shape({}),
+    device: PropTypes.shape({}).isRequired,
     onChange: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
   };

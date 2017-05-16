@@ -17,8 +17,13 @@ class SigninForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
-    onSubmit: PropTypes.func,
-    __: PropTypes.func,
+    onSubmit: PropTypes.func.isRequired,
+    __: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    errors: {},
+    form: {},
   };
 
   constructor(props) {

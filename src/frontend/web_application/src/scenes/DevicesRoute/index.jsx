@@ -13,7 +13,7 @@ const DevicesRoute = ({ routes }) => (
 );
 
 DevicesRoute.propTypes = {
-  routes: PropTypes.arrayOf({}).isRequired,
+  routes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default DevicesRoute;

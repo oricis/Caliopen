@@ -31,4 +31,11 @@ Modal.propTypes = {
   onClose: PropTypes.func,
 };
 
+Modal.defaultProps = {
+  className: undefined,
+  title: undefined,
+  children: undefined,
+  onClose: () => {},
+};
+
 export default Modal;

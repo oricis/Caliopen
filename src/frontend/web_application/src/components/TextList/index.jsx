@@ -11,6 +11,9 @@ const TextList = ({ className, ...props }) => (
 TextList.propTypes = {
   className: PropTypes.string,
 };
+TextList.defaultProps = {
+  className: undefined,
+};
 
 export { ItemContent };
 

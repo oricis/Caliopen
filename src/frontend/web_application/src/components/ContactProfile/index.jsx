@@ -9,10 +9,13 @@ import './style.scss';
 @withTranslator()
 class ContactProfile extends Component {
   static propTypes = {
-    contact: PropTypes.shape({}),
+    contact: PropTypes.shape({}).isRequired,
     className: PropTypes.string,
-    onChange: PropTypes.func,
-    __: PropTypes.func,
+    onChange: PropTypes.func.isRequired,
+    __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    className: undefined,
   };
 
   constructor(props) {

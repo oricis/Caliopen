@@ -25,5 +25,11 @@ TextBlock.propTypes = {
   size: PropTypes.oneOf(['small']),
   weight: PropTypes.oneOf(['strong']),
 };
+TextBlock.defaultProps = {
+  inline: false,
+  className: undefined,
+  size: null,
+  weight: null,
+};
 
 export default TextBlock;

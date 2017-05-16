@@ -6,10 +6,14 @@ import './style.scss';
 
 class PhoneDetails extends Component {
   static propTypes = {
-    phone: PropTypes.shape({}),
+    phone: PropTypes.shape({}).isRequired,
     editMode: PropTypes.bool,
     onDelete: PropTypes.func,
     __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    editMode: false,
+    onDelete: () => {},
   };
 
   constructor(props) {

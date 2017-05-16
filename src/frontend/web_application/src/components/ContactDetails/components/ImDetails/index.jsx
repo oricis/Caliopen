@@ -6,10 +6,14 @@ import './style.scss';
 
 class ImDetails extends Component {
   static propTypes = {
-    im: PropTypes.shape({}),
+    im: PropTypes.shape({}).isRequired,
     editMode: PropTypes.bool,
     onDelete: PropTypes.func,
     __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    editMode: false,
+    onDelete: () => {},
   };
 
   constructor(props) {

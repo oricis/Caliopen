@@ -62,5 +62,9 @@ PiBar.propTypes = {
   level: PropTypes.number,
   className: PropTypes.string,
 };
+PiBar.defaultProps = {
+  level: undefined,
+  className: undefined,
+};
 
 export default PiBar;
