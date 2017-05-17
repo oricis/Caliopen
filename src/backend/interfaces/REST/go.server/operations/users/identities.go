@@ -15,7 +15,6 @@ import (
 
 //GET …/identities/{identity_id}
 func GetLocalIdentity(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNotImplemented)
 	e := swgErr.New(http.StatusNotImplemented, "not implemented")
 	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 	ctx.Abort()
