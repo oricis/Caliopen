@@ -153,7 +153,6 @@ func newRoutableUntypedAPI(spec *loads.Document, api *untyped.API, context *midd
 	}
 }
 
-
 // ServeError the error handler interface implementation
 // returns an error json as defined within swagger.json, if any
 func ServeError(rw gin.ResponseWriter, r *http.Request, err error) {
@@ -260,10 +259,28 @@ func drainBody(b io.ReadCloser) (r1, r2 io.ReadCloser, err error) {
 	return ioutil.NopCloser(&buf), ioutil.NopCloser(bytes.NewReader(buf.Bytes())), nil
 }
 
-// func below are copied from openapi sources to facilitate our first swagger implementation
-// they allow us to satisfy the openapi "RoutableAPI" interface
-// our current implementation do not call them directly at anytime.
-// they should be replaced in future
+// Func copied from go-openapi
+func newSecureAPI(ctx *middleware.Context, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		route, _ := ctx.RouteInfo(r)
+		if route != nil && len(route.Authenticators) == 0 {
+			next.ServeHTTP(rw, r)
+			return
+		}
+
+		if _, err := ctx.Authorize(r, route); err != nil {
+			ctx.Respond(rw, r, route.Produces, route, err)
+			return
+		}
+
+		next.ServeHTTP(rw, r)
+	})
+}
+
+// Funcs below are copied from openapi sources to facilitate the swagger validation.
+// They allow us to satisfy the openapi "RoutableAPI" interface.
+// Our current implementation do not call them directly at anytime.
+// They should be removed in future.
 func (r *routableUntypedAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	r.hlock.Lock()
 	paths, ok := r.handlers[strings.ToUpper(method)]
@@ -296,19 +313,4 @@ func (r *routableUntypedAPI) DefaultProduces() string {
 func (r *routableUntypedAPI) DefaultConsumes() string {
 	return r.defaultConsumes
 }
-func newSecureAPI(ctx *middleware.Context, next http.Handler) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		route, _ := ctx.RouteInfo(r)
-		if route != nil && len(route.Authenticators) == 0 {
-			next.ServeHTTP(rw, r)
-			return
-		}
 
-		if _, err := ctx.Authorize(r, route); err != nil {
-			ctx.Respond(rw, r, route.Produces, route, err)
-			return
-		}
-
-		next.ServeHTTP(rw, r)
-	})
-}
