@@ -153,54 +153,6 @@ func newRoutableUntypedAPI(spec *loads.Document, api *untyped.API, context *midd
 	}
 }
 
-func (r *routableUntypedAPI) HandlerFor(method, path string) (http.Handler, bool) {
-	r.hlock.Lock()
-	paths, ok := r.handlers[strings.ToUpper(method)]
-	if !ok {
-		r.hlock.Unlock()
-		return nil, false
-	}
-	handler, ok := paths[path]
-	r.hlock.Unlock()
-	return handler, ok
-}
-func (r *routableUntypedAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
-	return r.api.ServeError
-}
-func (r *routableUntypedAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
-	return r.api.ConsumersFor(mediaTypes)
-}
-func (r *routableUntypedAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
-	return r.api.ProducersFor(mediaTypes)
-}
-func (r *routableUntypedAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
-	return r.api.AuthenticatorsFor(schemes)
-}
-func (r *routableUntypedAPI) Formats() strfmt.Registry {
-	return r.api.Formats()
-}
-func (r *routableUntypedAPI) DefaultProduces() string {
-	return r.defaultProduces
-}
-func (r *routableUntypedAPI) DefaultConsumes() string {
-	return r.defaultConsumes
-}
-func newSecureAPI(ctx *middleware.Context, next http.Handler) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		route, _ := ctx.RouteInfo(r)
-		if route != nil && len(route.Authenticators) == 0 {
-			next.ServeHTTP(rw, r)
-			return
-		}
-
-		if _, err := ctx.Authorize(r, route); err != nil {
-			ctx.Respond(rw, r, route.Produces, route, err)
-			return
-		}
-
-		next.ServeHTTP(rw, r)
-	})
-}
 
 // ServeError the error handler interface implementation
 // returns an error json as defined within swagger.json, if any
@@ -306,4 +258,57 @@ func drainBody(b io.ReadCloser) (r1, r2 io.ReadCloser, err error) {
 		return nil, b, err
 	}
 	return ioutil.NopCloser(&buf), ioutil.NopCloser(bytes.NewReader(buf.Bytes())), nil
+}
+
+// func below are copied from openapi sources to facilitate our first swagger implementation
+// they allow us to satisfy the openapi "RoutableAPI" interface
+// our current implementation do not call them directly at anytime.
+// they should be replaced in future
+func (r *routableUntypedAPI) HandlerFor(method, path string) (http.Handler, bool) {
+	r.hlock.Lock()
+	paths, ok := r.handlers[strings.ToUpper(method)]
+	if !ok {
+		r.hlock.Unlock()
+		return nil, false
+	}
+	handler, ok := paths[path]
+	r.hlock.Unlock()
+	return handler, ok
+}
+func (r *routableUntypedAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+	return r.api.ServeError
+}
+func (r *routableUntypedAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+	return r.api.ConsumersFor(mediaTypes)
+}
+func (r *routableUntypedAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+	return r.api.ProducersFor(mediaTypes)
+}
+func (r *routableUntypedAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+	return r.api.AuthenticatorsFor(schemes)
+}
+func (r *routableUntypedAPI) Formats() strfmt.Registry {
+	return r.api.Formats()
+}
+func (r *routableUntypedAPI) DefaultProduces() string {
+	return r.defaultProduces
+}
+func (r *routableUntypedAPI) DefaultConsumes() string {
+	return r.defaultConsumes
+}
+func newSecureAPI(ctx *middleware.Context, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		route, _ := ctx.RouteInfo(r)
+		if route != nil && len(route.Authenticators) == 0 {
+			next.ServeHTTP(rw, r)
+			return
+		}
+
+		if _, err := ctx.Authorize(r, route); err != nil {
+			ctx.Respond(rw, r, route.Produces, route, err)
+			return
+		}
+
+		next.ServeHTTP(rw, r)
+	})
 }
