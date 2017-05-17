@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
 import Spinner from '../../components/Spinner';
 import Button from '../../components/Button';
 import BlockList from '../../components/BlockList';
+import InfiniteScroll from '../../components/InfiniteScroll';
 import DiscussionItem from './components/DiscussionItem';
 import './style.scss';
+
+const LOAD_MORE_THROTTLE = 1000;
 
 class DiscussionList extends Component {
   static propTypes = {
@@ -31,10 +35,18 @@ class DiscussionList extends Component {
 
   componentDidMount() {
     this.props.requestDiscussions();
+
+    this.throttledLoadMore = throttle(
+      () => this.props.loadMoreDiscussions(),
+      LOAD_MORE_THROTTLE,
+      { trailing: false }
+    );
   }
 
   loadMore() {
-    this.props.loadMoreDiscussions();
+    if (this.props.hasMore) {
+      this.throttledLoadMore();
+    }
   }
 
   render() {
@@ -44,14 +56,13 @@ class DiscussionList extends Component {
       <div>
         <Spinner isLoading={isFetching} />
         {user && (
-          <BlockList
-            className="s-discussion-list"
-            infinite-scroll={this.loadMore}
-          >
-            {discussions.map(item => (
-              <DiscussionItem key={item.discussion_id} user={user} discussion={item} />
-            ))}
-          </BlockList>
+          <InfiniteScroll onReachBottom={this.loadMore}>
+            <BlockList className="s-discussion-list">
+              {discussions.map(item => (
+                <DiscussionItem key={item.discussion_id} user={user} discussion={item} />
+              ))}
+            </BlockList>
+          </InfiniteScroll>
         )}
         {hasMore && (
           <div className="s-discussion-list__load-more">
