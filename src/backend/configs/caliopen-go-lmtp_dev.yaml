@@ -32,6 +32,13 @@ LDAConfig:
     - cassandra.dev.caliopen.org
     keyspace: caliopen
     consistency_level: 1
+    raw_size_limit: 1024 # max size for objects in store. Use S3 interface if larger.
+  s3_service: minio
+  s3_settings:
+    endpoint:
+    - minio.dev.caliopen.org:9000
+    access_key: ANI9OAI9EAEA09IA
+    secret_key: AINERS98OUI555AA
   index_name: elasticsearch # backend to index messages (inbound & outbound)
   index_settings:
     urls: # many allowed

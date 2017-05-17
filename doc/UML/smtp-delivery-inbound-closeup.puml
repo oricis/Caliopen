@@ -4,6 +4,7 @@ title Inbound SMTP closeup
 box "SMTPd"
 participant "go.smtpd" as smtpd
 endbox
+entity S3
 database cassandra
 database elasticsearch
 box "message platform"
@@ -21,6 +22,7 @@ activate smtpd
 smtpd --\ cassandra: recipients lookup
 cassandra --/ smtpd
 smtpd ->o cassandra: store raw email once
+smtpd ->o S3: [(if needed) store large email]
 cassandra --// smtpd: raw email ID
 == Repetition ==
 smtpd -[#0000FF]> nats: send order "process_raw"\n to "inboundSMTP" topic\nwith msg_id & rcp_id
@@ -30,6 +32,7 @@ pynats -> pymain: UserMessageDelivery()
 activate pymain
 cassandra --> pymain: get raw email
 activate pymain
+S3 --> pymain:[(if needed) get large raw email]
 note over pymain: delivery.py
 cassandra --> pymain: get user
 pymain -> pymain: unmarshall into a\n"MailMessage" intermediary representation
