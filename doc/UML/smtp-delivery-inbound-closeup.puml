@@ -2,15 +2,15 @@
 hide footbox
 title Inbound SMTP closeup
 box "SMTPd"
-participant "smtpd"
+participant "go.smtpd" as smtpd
 endbox
 database cassandra
-database redis
+database elasticsearch
 box "message platform"
 participant "NATS server" as nats
 endbox
-box "Caliopen Main"
-control "go.main" as gomain
+box "interface NATS"
+control "py.nats" as pynats
 endbox
 box "Caliopen Main"
 control "py.main" as pymain
@@ -22,28 +22,35 @@ smtpd --\ cassandra: recipients lookup
 cassandra --/ smtpd
 smtpd ->o cassandra: store raw email once
 cassandra --// smtpd: raw email ID
-smtpd ->o redis: cache raw email
 == Repetition ==
-smtpd -> nats: send message to\n"inboundSMTP" topic\nwith msg_id & rcp_id
+smtpd -[#0000FF]> nats: send order "process_raw"\n to "inboundSMTP" topic\nwith msg_id & rcp_id
+pynats x[#0000FF]-> nats: subscribe to "process_raw"\n on "inboundSMTP" topic
+group broker operations
+pynats -> pymain: UserMessageDelivery()
+activate pymain
+cassandra --> pymain: get raw email
+activate pymain
+note over pymain: delivery.py
+cassandra --> pymain: get user
+pymain -> pymain: unmarshall into a\n"MailMessage" intermediary representation
+pymain -> pymain: "process_inbound()
+deactivate pymain
+group qualifier operations
+note over pymain: qualifier.py
+pymain -> pymain: unmarshall into a\n"NewMessage" intermediary representation
+activate pymain
+pymain -> pymain: basic validation/conformation
+pymain -> pymain: message qualification/enrichment
+end
+pymain -> pymain: build a Caliopen Message
+pymain ->o cassandra: store message object\n(type email)
+pymain ->o elasticsearch: index message object\n(type email)
+deactivate pymain
+pymain -> pynats: return Message or Exception
+deactivate pymain
+end
+pynats -[#0000FF]-> nats: reply "OK"
+nats -[#0000FF]-> smtpd: reply "OK"
 [<- smtpd: "250 OK"
 deactivate smtpd
-gomain x[#0000FF]-> nats: subscribe to \n"inboundSMTP" topic
-activate gomain
-group broker component (may subscribe to many topics)
-redis --> gomain: get raw email
-gomain -> gomain: unmarshall email\ninto a Caliopen message object
-gomain -> gomain: basic validation/conformation
-gomain ->o cassandra: store message object\n(type email)
-cassandra --// gomain: message ID
-gomain ->o redis: cache serialized message
-gomain -> nats: send message to\n"InboundUserMessage" topic
-deactivate gomain
-end
-pymain x[#0000FF]-> nats: subscribe to\n"InboundUserMessage" topic
-activate pymain
-redis --> pymain: get serialized message object
-pymain -> pymain: discussion lookup
-pymain -> pymain: importance qualifier
-pymain -> nats: send message to"calculate PI" topic
-... other inbound message operations ...
 @enduml
