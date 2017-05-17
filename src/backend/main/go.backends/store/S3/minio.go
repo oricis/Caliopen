@@ -6,10 +6,11 @@ package S3
 
 import (
 	"github.com/minio/minio-go"
+	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 type (
-	S3Backend struct {
+	MinioBackend struct {
 		S3Config
 		Client *minio.Client
 	}
@@ -19,14 +20,19 @@ type (
 		AccessKey string `mapstructure:"access_key"`
 		SecretKey string `mapstructure:"sercret_key"`
 	}
+
+	S3Backend interface {
+		PutRawEmail(email_uuid obj.UUID, raw_email string) (uri string, err error)
+	}
 )
 
 func InitializeS3Backend(config S3Config) (s3 S3Backend, err error) {
-	s3.S3Config = config
-	s3.Client, err = minio.New(config.Endpoint, config.AccessKey, config.SecretKey, false)
+	mb := new(MinioBackend)
+	mb.S3Config = config
+	mb.Client, err = minio.New(config.Endpoint, config.AccessKey, config.SecretKey, false)
 	if err != nil {
-		s3.Client = nil
+		mb.Client = nil
 		return
 	}
-	return s3, err
+	return mb, err
 }

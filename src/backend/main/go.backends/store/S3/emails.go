@@ -9,7 +9,8 @@ import (
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
-func (s3 *S3Backend) PutRawEmail(email_uuid obj.UUID, raw_email string) (uri string, err error) {
+func (mb *MinioBackend) PutRawEmail(email_uuid obj.UUID, raw_email string) (uri string, err error) {
 	// fake storage
-	return fmt.Sprintf("fake:uri:%s", email_uuid.String()), nil
+	const uriTemplate = "%s:%s:%s"
+	return fmt.Sprintf(uriTemplate, "fake", "uri", email_uuid.String()), nil
 }
