@@ -14,6 +14,8 @@ type (
 		Hosts       []string `mapstructure:"hosts"`
 		Keyspace    string   `mapstructure:"keyspace"`
 		Consistency uint16   `mapstructure:"consistency_level"`
+		SizeLimit   uint64   `mapstructure:"raw_size_limit"` // max size to store (in bytes)
+		S3Config    `mapstructure:"s3_settings"`
 	}
 
 	RESTIndexConfig struct {
@@ -27,6 +29,11 @@ type (
 		OutSMTP_topic string `mapstructure:"outSMTP_topic"`
 	}
 	// LDA
+	S3Config struct {
+		Endpoint  string `mapstructure:"endpoint"`
+		AccessKey string `mapstructure:"access_key"`
+		SecretKey string `mapstructure:"sercret_key"`
+	}
 	/*
 			LDAConfig struct {
 				BackendConfig    LDAstoreConfig `mapstructure:"backend_settings"`

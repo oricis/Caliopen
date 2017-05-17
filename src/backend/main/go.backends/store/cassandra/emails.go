@@ -5,6 +5,7 @@
 package store
 
 import (
+	"errors"
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
@@ -27,12 +28,29 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 	msg_id.UnmarshalBinary(raw_uuid.Bytes())
 	m := obj.RawMessage{
 		Raw_msg_id: msg_id,
-		Raw_data:   raw_email,
-		Raw_Size:   len(raw_email),
+		Raw_Size:   uint64(len(raw_email)),
 	}
 
-	err = rawMsgTable.Set(m).Run()
+	// handle emails too large to fit into cassandra
+	if m.Raw_Size > cb.CassandraConfig.SizeLimit {
+		if cb.CassandraConfig.WithS3 {
+			uri, err := cb.S3Backend.PutRawEmail(msg_id, raw_email)
+			if err != nil {
+				return "", err
+			}
+			m.URI = uri
+			m.Raw_data = ""
+		} else {
+			return "", errors.New("Object too large to fit into cassandra")
+		}
+	} else {
+		m.Raw_data = raw_email
+		m.URI = ""
+	}
 
+	if err = rawMsgTable.Set(m).Run(); err != nil {
+		return "", err
+	}
 	uuid = raw_uuid.String()
 	return
 }

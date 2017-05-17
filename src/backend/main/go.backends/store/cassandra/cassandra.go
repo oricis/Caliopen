@@ -5,6 +5,7 @@
 package store
 
 import (
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/S3"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
@@ -16,12 +17,16 @@ type (
 		CassandraConfig
 		Session   *gocql.Session
 		IKeyspace gocassa.KeySpace //gocassa keyspace interface
+		S3Backend S3.S3Backend
 	}
 
 	CassandraConfig struct {
 		Hosts       []string          `mapstructure:"hosts"`
 		Keyspace    string            `mapstructure:"keyspace"`
 		Consistency gocql.Consistency `mapstructure:"consistency_level"`
+		SizeLimit   uint64            `mapstructure:"raw_size_limit"` // max size to store (in bytes)
+		WithS3      bool              // whether to use a S3 compatible storage engine for objects above SizeLimit
+		S3.S3Config
 	}
 )
 
@@ -56,6 +61,12 @@ func (cb *CassandraBackend) initialize(config CassandraConfig) (err error) {
 	connection := gocassa.NewConnection(gocassa.GoCQLSessionToQueryExecutor(cb.Session))
 	cb.IKeyspace = connection.KeySpace(cb.Keyspace)
 
+	if config.WithS3 {
+		cb.S3Backend, err = S3.InitializeS3Backend(config.S3Config)
+		if err != nil {
+			return err
+		}
+	}
 	return
 }
 

@@ -13,8 +13,9 @@ class RawMessage(BaseModel):
     """Raw message model."""
 
     raw_msg_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    raw_data = columns.Bytes()
+    raw_data = columns.Bytes()  # may be empty if data is too large to fit into cassandra
     raw_size = columns.Integer()  # number of bytes in 'data' column
+    uri = columns.Text()  # where object is stored if it was too large to fit into raw_data column
 
 
 class UserRawLookup(BaseModel):
