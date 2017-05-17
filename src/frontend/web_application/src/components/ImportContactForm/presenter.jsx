@@ -7,6 +7,8 @@ import Icon from '../Icon';
 
 import './style.scss';
 
+const VALID_EXT = ['vcf', 'vcard'];
+
 class ImportContactForm extends Component {
   static propTypes = {
     uploadFile: PropTypes.func,
@@ -32,8 +34,11 @@ class ImportContactForm extends Component {
   }
 
   onInputChange(ev) {
-    const file = ev.target.files[0];
-    this.validate(file);
+    const files = ev.target.files;
+    if (files.length > 0) {
+      const file = ev.target.files[0];
+      this.validate(file);
+    }
   }
 
   onResetForm() {
@@ -45,8 +50,11 @@ class ImportContactForm extends Component {
   }
 
   validate(file) {
-    const ext = file.name.split('.').pop();
-    if (ext === 'vcf' || ext === 'vcard') {
+    const { __ } = this.props;
+    const error = __('Only .vcf or .vcard file.');
+    const ext = file.name ? file.name.split('.').pop() : null;
+
+    if (ext !== null && VALID_EXT.includes(ext)) {
       this.setState({
         files: [{ file, name: file.name, size: file.size }],
         errors: [],
@@ -54,7 +62,7 @@ class ImportContactForm extends Component {
     } else {
       this.setState({
         file: [],
-        errors: ['Only .vcf or .vcard files'],
+        errors: [error],
       });
     }
   }
@@ -115,10 +123,11 @@ class ImportContactForm extends Component {
                     name="files[]"
                     className="m-import-contact-form__input"
                     onChange={this.onInputChange}
+                    accept="text/vcard,text/vcf,text/x-vcard"
                   />
                 </label>
                 { this.state.errors.length > 0 && (
-                  <FieldErrors className="m-text-field-group__errors" errors={this.state.errors} />
+                  <FieldErrors className="m-import-contact-form__errors" errors={this.state.errors} />
                 )}
               </div>
             )
