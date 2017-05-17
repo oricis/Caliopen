@@ -7,7 +7,7 @@ import './style.scss';
 
 const ContactFilters = ({ onSortDirChange, onSortViewChange, sortView, sortDir, __ }) => (
   <FormGrid>
-    <FormRow>
+    <FormRow className="m-contacts-filters">
       <FormColumn size="shrink">
         <SelectFieldGroup
           name="format-view"

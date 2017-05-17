@@ -144,6 +144,7 @@ class ContactBook extends Component {
             __={__}
           />
         </MenuBar>
+
         <div className="l-contact-book__contacts">
           <div className="l-contact-book__tags">
             <TagList
@@ -153,15 +154,16 @@ class ContactBook extends Component {
               nbContactsAll={contacts.length}
               __={__}
             />
-            <Button
-              icon="plus"
-              className="l-contact-book__import"
-              onClick={this.handleOpenImportModal}
-            >
-              {__('contacts.action.import_contacts')}
-            </Button>
-            {this.renderImportModal()}
+            <div className="l-contact-book__import">
+              <Button
+                icon="plus"
+                shape="hollow"
+                onClick={this.handleOpenImportModal}
+              >{__('contacts.action.import_contacts')}</Button>
+              {this.renderImportModal()}
+            </div>
           </div>
+
           <div className="l-contact-book__contact-list">
             {isFetching &&
               <Spinner isLoading={isFetching} />

@@ -9,8 +9,8 @@
   }
 
   &__tags {
-    @include flex-grid-column(12);
-    padding-top: $co-margin;
+    @include flex-grid-size;
+    margin-top: $co-margin;
   }
 
   &__import {
@@ -29,7 +29,7 @@
 
   @include breakpoint(medium) {
     &__tags {
-      @include flex-grid-size(shrink);
+      @include flex-grid-column(shrink);
       padding-right: $co-margin;
     }
   }

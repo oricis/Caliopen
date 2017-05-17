@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
-
+import { FieldErrors } from '../form';
 import Button from '../Button';
 import Icon from '../Icon';
 
 import './style.scss';
-
 
 class ImportContactForm extends Component {
   static propTypes = {
@@ -24,6 +23,7 @@ class ImportContactForm extends Component {
     super(props);
     this.state = {
       files: [],
+      errors: [],
     };
 
     this.onInputChange = this.onInputChange.bind(this);
@@ -32,29 +32,32 @@ class ImportContactForm extends Component {
   }
 
   onInputChange(ev) {
-    const files = ev.target.files;
-    const output = [];
-
-    if (files.length > 0) {
-      /* eslint-disable */
-      for (let i = 0, file; file = files[i]; i++) {
-        output.push({ file, name: file.name, size: file.size })
-      };
-      /* eslint-enable */
-    }
-
-    this.setState({
-      files: output,
-    });
+    const file = ev.target.files[0];
+    this.validate(file);
   }
 
   onResetForm() {
     document.getElementById('import-contact-form').reset();
     this.setState({
       files: [],
+      errors: [],
     });
   }
 
+  validate(file) {
+    const ext = file.name.split('.').pop();
+    if (ext === 'vcf' || ext === 'vcard') {
+      this.setState({
+        files: [{ file, name: file.name, size: file.size }],
+        errors: [],
+      });
+    } else {
+      this.setState({
+        file: [],
+        errors: ['Only .vcf or .vcard files'],
+      });
+    }
+  }
   renderButtons() {
     const { __, uploadFile, onCancel } = this.props;
 
@@ -87,26 +90,24 @@ class ImportContactForm extends Component {
         <form id="import-contact-form">
           <p>{__('You can import one .vcf or .vcard file.')}</p>
           {this.state.files.length > 0 ? this.state.files.map(file =>
-            <div className="m-import-contact-form__files">
-              <div className="m-import-contact-form__file" key={uuidV1()}>
-                <span className="m-import-contact-form__file-name">{file && file.name} </span>
-                <span className="m-import-contact-form__file-size">{file && file.size} o</span>
-                {file &&
-                  <Button
-                    className="m-import-contact-form__remove-button"
-                    display="inline"
-                    icon="remove"
-                    value={file}
-                    onClick={this.onResetForm}
-                  />
-                }
+            <div className="m-import-contact-form__files" key={uuidV1()}>
+              <div className="m-import-contact-form__file">
+                <span className="m-import-contact-form__file-name">{file.name} </span>
+                <span className="m-import-contact-form__file-size">{file.size} o</span>
+                <Button
+                  className="m-import-contact-form__remove-button"
+                  display="inline"
+                  icon="remove"
+                  value={file}
+                  onClick={this.onResetForm}
+                />
               </div>
             </div>
             ) : (
               <div>
                 <label htmlFor="files[]" className="m-import-contact-form__label">
                   <span className="m-import-contact-form__add-button"><Icon type="plus" /></span>
-                  <span className="m-import-contact-form__add-label">Add a file</span>
+                  <span className="m-import-contact-form__add-label">{__('Add a file')}</span>
                   <span className="m-import-contact-form__add-icon"><Icon type="folder" /></span>
                   <input
                     id="files"
@@ -116,7 +117,9 @@ class ImportContactForm extends Component {
                     onChange={this.onInputChange}
                   />
                 </label>
-                <p>{__('No file chosen.')}</p>
+                { this.state.errors.length > 0 && (
+                  <FieldErrors className="m-text-field-group__errors" errors={this.state.errors} />
+                )}
               </div>
             )
           }

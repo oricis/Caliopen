@@ -12,7 +12,6 @@
   &__file {
     @include flex-grid-row;
     min-height: $co-component__height;
-    margin-top: $co-component__spacing;
     background: $co-color__fg__back--low;
     line-height: $co-component__height;
   }
