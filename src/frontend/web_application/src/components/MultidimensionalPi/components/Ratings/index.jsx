@@ -34,35 +34,45 @@ Rating.defaultProps = {
   className: '',
 };
 
-const Ratings = ({ pi, piMax, averagePi, displayAveragePi }) => (
-  <div className="m-pi-ratings">
-    {displayAveragePi &&
-      <Rating
-        className="m-pi-ratings__item--average"
-        name="Average PI"
-        level={Math.round(averagePi)}
-        piMax={piMax}
-      />
-    }
-    {pi.map(p =>
-      <Rating
-        name={p.name}
-        level={p.level <= piMax ? p.level : piMax}
-        key={p.name}
-        piMax={piMax}
-      />
-    )}
-  </div>
-);
+const Ratings = ({ pi, piMax, averagePi, displayAveragePi, mini }) => {
+  const ratingsClassName = classnames(
+    'm-pi-ratings',
+    { 'm-pi-ratings--mini': mini },
+  );
+
+  return (
+    <div className={ratingsClassName}>
+      {displayAveragePi &&
+        <Rating
+          className="m-pi-ratings__item--average"
+          name="Average PI"
+          level={Math.round(averagePi)}
+          piMax={piMax}
+        />
+      }
+      {pi.map(p =>
+        <Rating
+          name={p.name}
+          level={p.level <= piMax ? p.level : piMax}
+          key={p.name}
+          piMax={piMax}
+        />
+      )}
+    </div>
+  );
+};
 
 Ratings.defaultProps = {
   displayAveragePi: false,
+  mini: false,
+  averagePi: null,
 };
 Ratings.propTypes = {
   pi: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   piMax: PropTypes.number.isRequired,
   displayAveragePi: PropTypes.bool,
-  averagePi: PropTypes.number.isRequired,
+  mini: PropTypes.bool,
+  averagePi: PropTypes.number,
 };
 
 

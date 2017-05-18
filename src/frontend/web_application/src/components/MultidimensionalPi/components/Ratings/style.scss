@@ -4,16 +4,15 @@
 $gridColor: $co-color__fg__back--higher;
 
 .m-pi-ratings {
+  max-width: $co-pi-width;
+  margin-right: auto;
+  margin-left: auto;
   font-size: $co-font__size--xsmall;
   font-weight: 600;
 
   &__item {
     @include flex-grid-row;
     align-items: center;
-
-    &--average {
-      margin-bottom: $co-margin;
-    }
   }
 
   &__item-name {
@@ -42,5 +41,22 @@ $gridColor: $co-color__fg__back--higher;
   &__item-name-label {
     padding-right: $co-component__spacing;
     text-transform: uppercase;
+  }
+
+  &--mini {
+    .m-pi-ratings__item-level {
+      width: $co-component__height;
+      margin: 2px 0;
+    }
+
+    .m-pi-ratings__item-level-bar {
+      height: 4px;
+      line-height: 4px;
+    }
+
+    .m-pi-ratings__item-level-label,
+    .m-pi-ratings__item-name-label {
+      display: none;
+    }
   }
 }
