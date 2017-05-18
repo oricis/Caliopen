@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import Button from '../../../../components/Button';
@@ -29,14 +30,13 @@ const TagItem = ({ title, link, onTagClick, nbContacts, active, className }) => 
     }
   );
 
+
   return (
     <ItemContent className="m-tag-list__item">
       <Button
-        dispay="expanded"
         onClick={onTagClick}
         value={link}
         className={tagClassName}
-        color={active}
       >
         {title} ({nbContacts})
       </Button>

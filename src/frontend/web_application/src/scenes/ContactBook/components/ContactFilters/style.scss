@@ -2,6 +2,7 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-contacts-filters {
+  @include flex-grid-row($size: expand)
 
   &__select {
     @include flex-grid-row;

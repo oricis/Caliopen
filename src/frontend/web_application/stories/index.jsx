@@ -35,6 +35,7 @@ import Dropdown, { withDropdownControl } from '../src/components/Dropdown';
 import DropdownMenu from '../src/components/DropdownMenu';
 import Icon, { typeAssoc } from '../src/components/Icon';
 import IconLetter from '../src/components/IconLetter';
+import ImportContactForm from '../src/components/ImportContactForm';
 import Link from '../src/components/Link';
 import MessageList from './components/MessageList';
 import Modal from '../src/components/Modal';
@@ -116,7 +117,7 @@ storiesOf('Buttons & Links', module)
       children: text('children', 'Click Me'),
       shape: select('shape', { '': '', plain: 'plain', hollow: 'hollow' }, ''),
       display: select('display', { '': '', expanded: 'expanded', inline: 'inline' }, ''),
-      color: select('color', { '': '', active: 'active', alert: 'alert', success: 'success', secondary: 'secondary', disabled: 'disabled' }, ''),
+      color: select('color', { '': '', active: 'active', alert: 'alert', success: 'success', secondary: 'secondary' }, ''),
     };
 
     return (<Button {...props} onClick={action('clicked')} />);
@@ -135,6 +136,9 @@ storiesOf('Buttons & Links', module)
 storiesOf('Contact', module)
   .add('ContactDetails', () => (
     <ContactDetails />
+  ))
+  .add('ImportContactForm', () => (
+    <ImportContactForm />
   ))
   .add('ContactBook', () => (
     <ContactBook />

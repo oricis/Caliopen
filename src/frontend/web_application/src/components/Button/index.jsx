@@ -32,7 +32,6 @@ const Button = ({ children, className, icon, display, color, shape, responsive, 
       {
         'm-button--active': color === 'active',
         'm-button--alert': color === 'alert',
-        'm-button--disabled': color === 'disabled',
         'm-button--secondary': color === 'secondary',
         'm-button--success': color === 'success',
 
@@ -71,6 +70,7 @@ Button.propTypes = {
   color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active']),
   responsive: PropTypes.oneOf(['icon-only', 'text-only']),
   accessKey: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -82,6 +82,7 @@ Button.defaultProps = {
   color: null,
   responsive: null,
   accessKey: null,
+  disabled: false,
 };
 
 export default Button;

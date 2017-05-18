@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ContactList from './components/ContactList';
 import ContactFilters from './components/ContactFilters';
+import ImportContactForm from '../../components/ImportContactForm';
+import Modal from '../../components/Modal';
 import MenuBar from '../../components/MenuBar';
 import TagList from './components/TagList';
 import Spinner from '../../components/Spinner';
@@ -65,8 +67,12 @@ class ContactBook extends Component {
       activeTag: '',
       sortDir: DEFAULT_SORT_DIR,
       sortView: DEFAULT_SORT_VIEW,
+      isImportModalOpen: false,
     };
     this.loadMore = this.loadMore.bind(this);
+    this.handleOpenImportModal = this.handleOpenImportModal.bind(this);
+    this.handleCloseImportModal = this.handleCloseImportModal.bind(this);
+    this.renderImportModal = this.renderImportModal.bind(this);
   }
 
   componentDidMount() {
@@ -75,6 +81,33 @@ class ContactBook extends Component {
 
   loadMore() {
     this.props.loadMoreContacts();
+  }
+
+  handleOpenImportModal() {
+    this.setState({
+      isImportModalOpen: true,
+    });
+  }
+
+  handleCloseImportModal() {
+    this.setState({
+      isImportModalOpen: false,
+    });
+  }
+
+  renderImportModal() {
+    const { __ } = this.props;
+
+    return (
+      <Modal
+        isOpen={this.state.isImportModalOpen}
+        contentLabel={__('Import contacts')}
+        title={__('Import VCards')}
+        onClose={this.handleCloseImportModal}
+      >
+        <ImportContactForm __={__} onCancel={this.handleCloseImportModal} />
+      </Modal>
+    );
   }
 
   render() {
@@ -111,6 +144,7 @@ class ContactBook extends Component {
             __={__}
           />
         </MenuBar>
+
         <div className="l-contact-book__contacts">
           <div className="l-contact-book__tags">
             <TagList
@@ -120,7 +154,16 @@ class ContactBook extends Component {
               nbContactsAll={contacts.length}
               __={__}
             />
+            <div className="l-contact-book__import">
+              <Button
+                icon="plus"
+                shape="hollow"
+                onClick={this.handleOpenImportModal}
+              >{__('contacts.action.import_contacts')}</Button>
+              {this.renderImportModal()}
+            </div>
           </div>
+
           <div className="l-contact-book__contact-list">
             {isFetching &&
               <Spinner isLoading={isFetching} />

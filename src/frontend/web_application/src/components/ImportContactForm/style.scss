@@ -1,0 +1,93 @@
+@import '../../styles/common';
+@import '../../styles/object/o-clickable';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.m-import-contact-form {
+  width: map-get($co-form__width, 'xlarge');
+
+  &__files {
+    margin-top: $co-margin;
+  }
+
+  &__file {
+    @include flex-grid-row;
+    min-height: $co-component__height;
+    background: $co-color__fg__back--low;
+    line-height: $co-component__height;
+  }
+
+  &__file-name {
+    @include flex-grid-column(shrink);
+    color: $co-color__fg__text;
+    font-weight: 600;
+  }
+
+  &__file-size {
+    @include flex-grid-column;
+    text-align: right;
+  }
+
+  &__remove-button {
+    @include flex-grid-size(shrink);
+    margin-left: auto;
+  }
+
+  &__label {
+    @include flex-grid-row;
+    position: relative;
+    margin-top: $co-component__spacing;
+    background: $co-color__fg__back--low;
+    overflow: hidden;
+    line-height: $co-component__height;
+    cursor: pointer;
+
+    &:hover {
+      color: $co-color__fg__text--high;
+    }
+  }
+
+  &__add-button {
+    @include flex-grid-size(shrink);
+    @include o-clickable;
+    @include o-clickable--button;
+    @include o-clickable--plain;
+  }
+
+  &__add-label {
+    @include flex-grid-column;
+  }
+
+  &__add-icon {
+    @include flex-grid-column(shrink);
+    margin-left: auto;
+  }
+
+  &__input {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 999px;
+    text-align: right;
+    cursor: inherit;
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+
+  &__buttons {
+    @include flex-grid-row;
+    margin-top: $co-margin;
+  }
+
+  &__cancel,
+  &__submit {
+    @include flex-grid-column(shrink);
+    line-height: $co-component__height;
+  }
+
+  &__submit {
+    margin-left: auto;
+  }
+}
