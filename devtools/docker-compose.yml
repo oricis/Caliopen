@@ -54,7 +54,7 @@ services:
   #
   # Used to index mail content and ensure great research performances.
   elasticsearch:
-      image: elasticsearch:2.4.4
+      image: elasticsearch:2
       ports:
           - "9200:9200"
       volumes:
@@ -90,6 +90,7 @@ services:
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
+          - S3:minio.dev.caliopen.org
           - nats:nats.dev.caliopen.org
           - message_handler:mc.dev.caliopen.org
           - inbucket:smtp.dev.caliopen.org
@@ -111,12 +112,22 @@ services:
           - elasticsearch:es.dev.caliopen.org
           - nats:nats.dev.caliopen.org
 
+  # object storage
+  S3:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    volumes:
+        - ../src/backend/configs:/configs
+    command:
+      server -C /configs/minio /export
+
   # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
-  # point your browser at localhost:9000
+  # point your browser at localhost:9090
   inbucket:
       image: jhillyerd/inbucket
       ports:
-          - "9000:10080"
+          - "9090:10080"
           - "2500:10025"
 
   # Postfix : a complete smpt server that act as the Caliopen's MTA

@@ -19,4 +19,3 @@ func (mb *MinioBackend) PutRawEmail(email_uuid obj.UUID, raw_email string) (uri 
 
 	return fmt.Sprintf(uriTemplate, mb.RawMsgBucket, email_id_str), nil
 }
-
