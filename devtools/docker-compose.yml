@@ -90,7 +90,7 @@ services:
       links:
           - cassandra:cassandra.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
-          - S3:minio.dev.caliopen.org
+          - object_store:minio.dev.caliopen.org
           - nats:nats.dev.caliopen.org
           - message_handler:mc.dev.caliopen.org
           - inbucket:smtp.dev.caliopen.org
@@ -113,7 +113,7 @@ services:
           - nats:nats.dev.caliopen.org
 
   # object storage
-  S3:
+  object_store:
     image: minio/minio
     ports:
       - "9000:9000"
