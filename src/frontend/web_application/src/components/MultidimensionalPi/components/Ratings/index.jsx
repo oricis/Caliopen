@@ -41,7 +41,7 @@ const Ratings = ({ pi, piMax, averagePi, displayAveragePi, mini }) => {
   );
 
   return (
-    <div className={ratingsClassName}>
+    <div className={ratingsClassName} title={pi.map(p => ` ${p.name}: ${p.level}`)}>
       {displayAveragePi &&
         <Rating
           className="m-pi-ratings__item--average"

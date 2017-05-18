@@ -64,6 +64,11 @@
 
   &__type-icon { color: $co-color__fg__text; }
 
+  &__pi {
+    @include flex-grid-size(shrink);
+    padding-left: $co-component__spacing;
+  }
+
   &__author {
     @include flex-grid-column(shrink);
     color: $co-color__fg__text--high;

@@ -2,6 +2,9 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 $gridColor: $co-color__fg__back--higher;
+$mini-pi__width: 2rem;
+$mini-pi-bar__height:  .35rem;
+$mini-pi-bar__margin: .25rem;
 
 .m-pi-ratings {
   max-width: $co-pi-width;
@@ -44,18 +47,24 @@ $gridColor: $co-color__fg__back--higher;
   }
 
   &--mini {
+    max-width: $mini-pi__width;
+    cursor: help;
+
+    .m-pi-ratings__item {
+      display: block;
+      margin: $mini-pi-bar__margin 0;
+    }
+
     .m-pi-ratings__item-level {
-      width: $co-component__height;
-      margin: 2px 0;
+      width: $mini-pi__width;
     }
 
     .m-pi-ratings__item-level-bar {
-      height: 4px;
-      line-height: 4px;
+      height: $mini-pi-bar__height;
     }
 
     .m-pi-ratings__item-level-label,
-    .m-pi-ratings__item-name-label {
+    .m-pi-ratings__item-name {
       display: none;
     }
   }
