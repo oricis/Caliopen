@@ -30,9 +30,11 @@ type (
 	}
 	// LDA
 	S3Config struct {
-		Endpoint  string `mapstructure:"endpoint"`
-		AccessKey string `mapstructure:"access_key"`
-		SecretKey string `mapstructure:"sercret_key"`
+		Endpoint       string `mapstructure:"endpoint"`
+		AccessKey      string `mapstructure:"access_key"`
+		SecretKey      string `mapstructure:"sercret_key"`
+		RawMsgLocation string `mapstructure:"raw_msg_location"`
+		RawMsgBucket   string `mapstructure:"raw_msg_bucket"`
 	}
 	/*
 			LDAConfig struct {

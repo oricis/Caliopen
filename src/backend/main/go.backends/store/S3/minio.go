@@ -5,8 +5,8 @@
 package S3
 
 import (
-	"github.com/minio/minio-go"
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/minio/minio-go"
 )
 
 type (
@@ -16,9 +16,11 @@ type (
 	}
 
 	S3Config struct {
-		Endpoint  string `mapstructure:"endpoint"`
-		AccessKey string `mapstructure:"access_key"`
-		SecretKey string `mapstructure:"sercret_key"`
+		Endpoint       string `mapstructure:"endpoint"`
+		AccessKey      string `mapstructure:"access_key"`
+		SecretKey      string `mapstructure:"sercret_key"`
+		RawMsgLocation string `mapstructure:"raw_msg_location"`
+		RawMsgBucket   string `mapstructure:"raw_msg_bucket"`
 	}
 
 	S3Backend interface {
@@ -29,10 +31,25 @@ type (
 func InitializeS3Backend(config S3Config) (s3 S3Backend, err error) {
 	mb := new(MinioBackend)
 	mb.S3Config = config
-	mb.Client, err = minio.New(config.Endpoint, config.AccessKey, config.SecretKey, false)
+
+	// Initialize minio client object.
+	mb.Client, err = minio.NewWithRegion(config.Endpoint, config.AccessKey, config.SecretKey, false, config.RawMsgLocation)
+	// or NewWithCredentials to avoid putting credentials directly into conf. file ?
 	if err != nil {
 		mb.Client = nil
 		return
 	}
+
+	// Check to see if we already own this bucket (which happens if bucket already created by this client)
+	exists, err := mb.Client.BucketExists(config.RawMsgBucket)
+	if err != nil || !exists {
+		// Create a new bucket for raw messages
+		err = mb.Client.MakeBucket(config.RawMsgBucket, config.RawMsgLocation)
+		if err != nil {
+			mb.Client = nil
+			return
+		}
+	}
+
 	return mb, err
 }

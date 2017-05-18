@@ -7,10 +7,16 @@ package S3
 import (
 	"fmt"
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"strings"
 )
 
 func (mb *MinioBackend) PutRawEmail(email_uuid obj.UUID, raw_email string) (uri string, err error) {
 	// fake storage
 	const uriTemplate = "%s:%s:%s"
-	return fmt.Sprintf(uriTemplate, "fake", "uri", email_uuid.String()), nil
+
+	email_reader := strings.NewReader(raw_email)
+	email_id_str := email_uuid.String()
+
+	mb.Client.PutObject(mb.RawMsgBucket, email_id_str, email_reader, "application/octet-stream")
+	return fmt.Sprintf(uriTemplate, "minio", mb.RawMsgBucket, email_id_str), nil
 }

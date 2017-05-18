@@ -75,6 +75,8 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 			c.Endpoint = conf.S3Config.Endpoint
 			c.AccessKey = conf.S3Config.AccessKey
 			c.SecretKey = conf.S3Config.SecretKey
+			c.RawMsgBucket = conf.S3Config.RawMsgBucket
+			c.RawMsgLocation = conf.S3Config.RawMsgLocation
 		}
 		b, e := store.InitializeCassandraBackend(c)
 		if e != nil {
