@@ -11,12 +11,12 @@ import (
 )
 
 func (mb *MinioBackend) PutRawEmail(email_uuid obj.UUID, raw_email string) (uri string, err error) {
-	// fake storage
-	const uriTemplate = "%s:%s:%s"
-
+	const uriTemplate = "s3://%s/%s"
 	email_reader := strings.NewReader(raw_email)
 	email_id_str := email_uuid.String()
 
 	mb.Client.PutObject(mb.RawMsgBucket, email_id_str, email_reader, "application/octet-stream")
-	return fmt.Sprintf(uriTemplate, "minio", mb.RawMsgBucket, email_id_str), nil
+
+	return fmt.Sprintf(uriTemplate, mb.RawMsgBucket, email_id_str), nil
 }
+
