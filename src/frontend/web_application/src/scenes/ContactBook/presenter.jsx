@@ -101,8 +101,8 @@ class ContactBook extends Component {
     return (
       <Modal
         isOpen={this.state.isImportModalOpen}
-        contentLabel={__('Import contacts')}
-        title={__('Import VCards')}
+        contentLabel={__('import-contact.action.import_contacts')}
+        title={__('import-contact.action.import_contacts')}
         onClose={this.handleCloseImportModal}
       >
         <ImportContactForm __={__} onCancel={this.handleCloseImportModal} />
@@ -159,7 +159,7 @@ class ContactBook extends Component {
                 icon="plus"
                 shape="hollow"
                 onClick={this.handleOpenImportModal}
-              >{__('contacts.action.import_contacts')}</Button>
+              >{__('import-contact.action.import_contacts')}</Button>
               {this.renderImportModal()}
             </div>
           </div>

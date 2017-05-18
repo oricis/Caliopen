@@ -1,0 +1,13 @@
+@mixin o-hidden-element--input-file {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 999px;
+  text-align: right;
+  cursor: inherit;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
