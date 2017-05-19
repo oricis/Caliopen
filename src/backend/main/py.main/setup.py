@@ -22,6 +22,7 @@ requires = [
     'regex',
     'zope.interface',
     'vobject',
+    'minio'
     ]
 
 extras_require = {

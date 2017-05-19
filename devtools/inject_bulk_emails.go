@@ -6,6 +6,7 @@ import (
 	"net/smtp"
 	"sync"
 	"time"
+	"gopkg.in/gomail.v2"
 )
 
 const (
@@ -68,14 +69,15 @@ func sendMail(i int, wg *sync.WaitGroup) {
 	}
 	defer wr.Close()
 
-	msg := fmt.Sprint("Subject: something import to tell to you\n")
-	msg += "From: " + from + "\n"
-	msg += "To: " + to + "\n"
-	msg += "Date: " + time.Now().Format(time.RFC1123Z)
-	msg += "\n\n"
-	msg += "hello\n"
+	m := gomail.NewMessage()
+	m.SetAddressHeader("From", "st@nisl.as", "Stan")
+	m.SetAddressHeader("To", "dev@caliopen.local", "")
+	m.SetDateHeader("Date", time.Now())
+	m.SetHeader("Subject", "Subject line for testing")
+	m.SetBody("text/plain", "Body hello from Stan.\n")
+	//m.Attach("/Users/stan/Downloads/LE-GOUT-DES-MATHS.pdf")
 
-	_, err = fmt.Fprint(wr, msg)
+	_, err = m.WriteTo(wr)
 	if err != nil {
 		lastWords("Send ", err)
 		return
