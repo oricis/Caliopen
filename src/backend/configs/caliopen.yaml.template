@@ -25,7 +25,6 @@ object_store:
     access_key: CALIOPEN_ACCESS_KEY_
     secret_key: CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
     raw_msg_location: eu-fr-localhost
-    raw_msg_bucket: caliopen-raw-messages
 
 system:
     default_tags:

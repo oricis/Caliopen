@@ -7,6 +7,7 @@ import logging
 
 from minio import Minio
 from minio.error import ResponseError
+import urlparse
 
 from caliopen_storage.core import BaseUserCore, BaseCore
 from caliopen_storage.exception import NotFound
@@ -49,29 +50,34 @@ class RawMessage(BaseCore):
         try:
             raw_msg = super(RawMessage, cls).get(raw_msg_id)
         except NotFound:
-            return NotFound
+            raise NotFound
 
         if raw_msg.raw_data == "" and raw_msg.uri != "":
             # means raw message data have been stored in object store
             # need to retrieve raw_data from it
-            minioConf = Configuration("global").get("object_store")
-            minioClient = Minio(minioConf["endpoint"],
-                                access_key=minioConf["access_key"],
-                                secret_key=minioConf["secret_key"],
-                                secure=False,
-                                region=minioConf["raw_msg_location"])
-            try:
-                resp = minioClient.get_object(minioConf["raw_msg_bucket"],
-                                              raw_msg_id)
-            except ResponseError as exc:
-                log.warn(exc)
-                return NotFound
-            # resp is a urllib3.response.HTTPResponse class
-            try:
-                raw_msg.raw_data = resp.data
-            except Exception as exc:
-                log.warn(exc)
-                return NotFound
+            url = urlparse.urlsplit(raw_msg.uri)
+            path = url.path.strip("/")
+            if url.scheme == 's3':
+                minioConf = Configuration("global").get("object_store")
+                minioClient = Minio(minioConf["endpoint"],
+                                    access_key=minioConf["access_key"],
+                                    secret_key=minioConf["secret_key"],
+                                    secure=False,
+                                    region=minioConf["raw_msg_location"])
+                try:
+                    resp = minioClient.get_object(url.netloc, path)
+                except ResponseError as exc:
+                    log.warn(exc)
+                    raise NotFound
+                # resp is a urllib3.response.HTTPResponse class
+                try:
+                    raw_msg.raw_data = resp.data
+                except Exception as exc:
+                    log.warn(exc)
+                    raise NotFound
+            else:
+                log.warn("raw message uri scheme not implemented")
+                raise NotFound
 
         return raw_msg
 
