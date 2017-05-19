@@ -57,21 +57,23 @@ InputFile.propTypes = {
 
 class ImportContactForm extends Component {
   static propTypes = {
-    importContacts: PropTypes.func,
+    onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
+    errors: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    importContacts: null,
     onCancel: null,
+    errors: {},
   }
 
   constructor(props) {
     super(props);
     this.state = {
       file: null,
-      error: null,
+      error: [],
+      formData: null,
     };
 
     this.onInputChange = this.onInputChange.bind(this);
@@ -89,7 +91,8 @@ class ImportContactForm extends Component {
     document.getElementById('import-contact-form').reset();
     this.setState({
       file: null,
-      error: null,
+      error: [],
+      formData: null,
     });
   }
 
@@ -97,21 +100,24 @@ class ImportContactForm extends Component {
     const { __ } = this.props;
     const error = __('import-contact.form.error.no_valid_ext');
     const ext = file.name ? file.name.split('.').pop() : null;
+    const formData = new FormData();
 
     if (ext && VALID_EXT.includes(ext)) {
       this.setState({
         file: { file, name: file.name, size: file.size },
-        error: null,
+        error: [],
+        formData: formData.append('data', file),
       });
     } else {
       this.setState({
         file: null,
-        error,
+        error: [error],
+        formData: null,
       });
     }
   }
   renderButtons() {
-    const { __, importContacts, onCancel } = this.props;
+    const { __, onSubmit, onCancel } = this.props;
 
     return (
       <div className="m-import-contact-form__buttons">
@@ -127,7 +133,7 @@ class ImportContactForm extends Component {
             type="submit"
             shape="plain"
             icon="download"
-            onClick={importContacts}
+            onClick={onSubmit(this.state.formData)}
           >{__('import-contact.action.import')}</Button>
         }
       </div>
@@ -135,7 +141,7 @@ class ImportContactForm extends Component {
   }
 
   render() {
-    const { __ } = this.props;
+    const { __, errors } = this.props;
     const { file, error } = this.state;
 
     return (
@@ -145,7 +151,7 @@ class ImportContactForm extends Component {
           {file ?
             <File file={file} onClick={this.resetForm} />
           :
-            <InputFile onChange={this.onInputChange} errors={[error]} __={__} />
+            <InputFile onChange={this.onInputChange} errors={errors.concat(error)} __={__} />
           }
           {this.renderButtons()}
         </form>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ContactList from './components/ContactList';
 import ContactFilters from './components/ContactFilters';
-import ImportContactForm from '../../components/ImportContactForm';
+import ImportContact from './components/ImportContact';
 import Modal from '../../components/Modal';
 import MenuBar from '../../components/MenuBar';
 import TagList from './components/TagList';
@@ -105,7 +105,7 @@ class ContactBook extends Component {
         title={__('import-contact.action.import_contacts')}
         onClose={this.handleCloseImportModal}
       >
-        <ImportContactForm __={__} onCancel={this.handleCloseImportModal} />
+        <ImportContact __={__} onCancel={this.handleCloseImportModal} />
       </Modal>
     );
   }
