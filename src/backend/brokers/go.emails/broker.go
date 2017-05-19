@@ -49,7 +49,7 @@ type (
 
 	DeliveryAck struct {
 		EmailMessage *obj.EmailMessage `json:"-"`
-		Err          error             `json:"error,omitempty"`
+		Err          bool              `json:"error"`
 		Response     string            `json:"message,omitempty"`
 	}
 )

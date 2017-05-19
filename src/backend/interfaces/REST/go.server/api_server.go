@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/loads"
 	"gopkg.in/gin-gonic/gin.v1"
 	"gopkg.in/redis.v5"
+	"os"
 )
 
 var (
@@ -100,7 +101,6 @@ func (server *REST_API) initialize(config APIConfig) error {
 		log.WithError(err).Fatal("Caliopen facilities initialization failed")
 	}
 
-	//TODO : manage credentials & connection with config & backends interface
 	client := redis.NewClient(&redis.Options{
 		Addr:     config.CacheSettings.Host,
 		Password: config.CacheSettings.Password,
@@ -111,39 +111,39 @@ func (server *REST_API) initialize(config APIConfig) error {
 		return err
 	}
 	server.cache = client
+
+	//checks that with could open the swagger specs file
+	_, err = os.Stat(server.config.SwaggerFile)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func StartServer(swaggerFile string) error {
-	return server.start(swaggerFile)
+func StartServer() error {
+	return server.start()
 }
 
-func (server *REST_API) start(swaggerFile string) error {
+func (server *REST_API) start() error {
 	// Creates a gin router with default middleware:
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
 	// adds our middlewares
-	if swaggerFile != "" {
-		//TODO: debug swagger validation as it takes too long for now to read & validate the swagger.json
-		/*
-			var err error
-			server.swagSpec, err = http_middleware.InitSwaggerMiddleware(swaggerFile)
-			if err != nil {
-				log.WithError(err).Warningln("unable to load swagger spec.")
-			}
-			if server.swagSpec != nil {
-				router.Use(http_middleware.SwaggerValidator(server.swagSpec))
-			}
-		*/
-	}
 
+	err := http_middleware.InitSwaggerMiddleware(server.config.SwaggerFile)
+	if err != nil {
+		log.WithError(err).Warn("init swagger middleware failed")
+	} else {
+		router.Use(http_middleware.SwaggerValidator())
+	}
 	// adds our routes and handlers
 	api := router.Group("/api/v2")
 	server.AddHandlers(api)
 
 	// listens
 	addr := server.config.Host + ":" + server.config.Port
-	err := router.Run(addr)
+	err = router.Run(addr)
 	if err != nil {
 		log.WithError(err).Warn("unable to start gin server")
 	}

@@ -38,8 +38,8 @@ func (b *EmailBroker) incomingSmtpWorker() {
 			log.Warn("broker error : incomingSmtpWorker received an empty payload")
 			ack := &DeliveryAck{
 				EmailMessage: in.EmailMessage,
-				Err:          errors.New("empty payload"),
-				Response:     "",
+				Err:          true,
+				Response:     "empty payload",
 			}
 			select {
 			case in.Response <- ack:
@@ -57,7 +57,7 @@ func (b *EmailBroker) incomingSmtpWorker() {
 func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 	resp := &DeliveryAck{
 		EmailMessage: in.EmailMessage,
-		Err:          nil,
+		Err:          false,
 		Response:     "",
 	}
 	defer func(r *DeliveryAck) {
@@ -68,7 +68,8 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 	//         we need at least one valid recipient before processing further
 
 	if len(in.EmailMessage.Email.SmtpRcpTo) == 0 {
-		resp.Err = errors.New("no recipient")
+		resp.Response = "no recipient"
+		resp.Err = true
 		return
 	}
 
@@ -80,12 +81,14 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 
 	if err != nil {
 		log.WithError(err).Warn("inbound: recipients lookup failed")
-		resp.Err = errors.New("recipients store lookup failed")
+		resp.Response = "recipients store lookup failed"
+		resp.Err = true
 		return
 	}
 
 	if len(rcptsIds) == 0 {
-		resp.Err = errors.New("no recipient found in Caliopen domain")
+		resp.Response = "no recipient found in Caliopen domain"
+		resp.Err = true
 		return
 	}
 
@@ -93,7 +96,8 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 	raw_email_id, err := b.Store.StoreRaw(in.EmailMessage.Email.Raw.String())
 	if err != nil {
 		log.WithError(err).Warn("inbound: storing raw email failed")
-		resp.Err = errors.New("storing raw email failed")
+		resp.Response = "storing raw email failed"
+		resp.Err = true
 		return
 	}
 
@@ -141,7 +145,8 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 	// we assume the previous MTA did the rcpts lookup, so all rcpts should be OK
 	// consequently, we discard the whole delivery if there is at least one error
 	if errs != nil {
-		resp.Err = errors.New(fmt.Sprint(errs.Error()))
+		resp.Response = fmt.Sprint(errs.Error())
+		resp.Err = true
 		return
 	}
 

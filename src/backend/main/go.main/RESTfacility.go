@@ -5,7 +5,10 @@
 package caliopen
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
@@ -77,16 +80,22 @@ func (rest *RESTfacility) UsernameIsAvailable(username string) (bool, error) {
 func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err error) {
 	const nats_order = "deliver"
 	natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, msg_id, user_id)
-	reply, err := rest.nats_conn.Request(rest.nats_outSMTP_topic, []byte(natsMessage), 10*time.Second)
+	rep, err := rest.nats_conn.Request(rest.nats_outSMTP_topic, []byte(natsMessage), 10*time.Second)
 	if err != nil {
 		if rest.nats_conn.LastError() != nil {
-			//TODO
+			return nil, err
 		}
-		//TODO
+		return nil, err
 	}
-
+	var reply email_broker.DeliveryAck
+	err = json.Unmarshal(rep.Data, &reply)
+	if err != nil {
+		return nil, err
+	}
+	if reply.Err {
+		return nil, errors.New(reply.Response)
+	}
 	log.Infof("nats reply : %s", reply)
-
 	return rest.store.GetMessage(user_id, msg_id)
 }
 

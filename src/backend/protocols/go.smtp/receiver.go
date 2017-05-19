@@ -36,8 +36,8 @@ func (lda *Lda) handler(peer Peer, ev Envelope) error {
 
 	select {
 	case response := <-incoming.Response:
-		if response.Err != nil {
-			return errors.New(fmt.Sprintf("554 Error : " + response.Err.Error()))
+		if response.Err {
+			return errors.New(fmt.Sprintf("554 Error : " + response.Response))
 		}
 		return nil
 	case <-time.After(30 * time.Second):

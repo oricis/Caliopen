@@ -103,15 +103,17 @@ func (lda *Lda) OutboundWorker() {
 			var raw bytes.Buffer
 			raw.WriteString((&outcoming.EmailMessage.Email.Raw).String())
 			err = smtp_sender.Send(from, to, &raw)
+			var ack broker.DeliveryAck
 			if err != nil {
 				log.WithError(err).Warn("outbound: unable to send to MTA")
+				ack.Err = true
+				ack.Response = err.Error()
+			} else {
+				ack.Err = false
+				ack.Response = ""
 			}
-
-			outcoming.Response <- &broker.DeliveryAck{
-				EmailMessage: outcoming.EmailMessage,
-				Err:          err,
-				Response:     "",
-			}
+			ack.EmailMessage = outcoming.EmailMessage
+			outcoming.Response <- &ack
 		// Close the connection to the SMTP server and this worker
 		// if no email was sent in the last 30 seconds.
 		case <-time.After(30 * time.Second):
