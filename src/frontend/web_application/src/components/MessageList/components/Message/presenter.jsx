@@ -27,7 +27,6 @@ const MessageInfosContainer = ({ __, message, author, locale }) => {
 
   return (
     <div className="m-message__infos-container">
-      <MultidimensionalPi pi={PI} className="m-message__pi" mini />
       <div className="m-message__author">{author.address}</div>
       {message.type &&
         (<div className="m-message__type">
@@ -147,8 +146,9 @@ class Message extends Component {
           />
         </div>
         <div className="m-message__content">
-
           <div className={topBarClassName}>
+            <MultidimensionalPi pi={PI} className="m-message__pi" mini />
+
             <MessageInfosContainer
               message={message}
               author={author}

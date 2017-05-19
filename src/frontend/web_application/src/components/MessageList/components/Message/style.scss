@@ -58,6 +58,7 @@
     @include flex-grid-row($size: expand);
     flex: 1;
     align-items: center;
+    justify-content: center;
   }
 
   &__type {  @include flex-grid-size(shrink); }
@@ -66,7 +67,6 @@
 
   &__pi {
     @include flex-grid-size(shrink);
-    padding-left: $co-component__spacing;
   }
 
   &__author {

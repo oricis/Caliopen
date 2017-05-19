@@ -2,29 +2,33 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import './style.scss';
 
-const Rating = ({ name, level, piMax, className }) => {
+function classFor(element, mini) {
+  const classNames = [`m-pi-ratings__${element}`];
+  if (mini) { classNames.push(`m-pi-ratings--mini__${element}`); }
+
+  return classNames;
+}
+
+const Rating = ({ name, level, piMax, className, mini }) => {
   const width = (level / piMax) * 100;
   const style = { width: `${width}%` };
-  const ratingClassName = classnames(
-    'm-pi-ratings__item',
-    className,
-  );
 
   return (
-    <div className={ratingClassName}>
-      <div className="m-pi-ratings__item-name">
-        <span className="m-pi-ratings__item-name-label">{name}</span>
+    <div className={classnames(classFor('item', mini), className)}>
+      <div className={classnames(classFor('item-name', mini))}>
+        <span className={classnames(classFor('item-name-label', mini))}>{name}</span>
       </div>
-      <div className="m-pi-ratings__item-level">
-        <div className="m-pi-ratings__item-level-bar" style={style} />
+      <div className={classnames(classFor('item-level', mini))}>
+        <div className={classnames(classFor('item-level-bar', mini))} style={style} />
       </div>
-      <div className="m-pi-ratings__item-level-label">{level}</div>
+      <div className={classnames(classFor('item-level-label', mini))}>{level}</div>
     </div>
   );
 };
 
 Rating.propTypes = {
   name: PropTypes.string.isRequired,
+  mini: PropTypes.bool,
   className: PropTypes.string,
   level: PropTypes.number.isRequired,
   piMax: PropTypes.number.isRequired,
@@ -32,6 +36,7 @@ Rating.propTypes = {
 
 Rating.defaultProps = {
   className: '',
+  mini: false,
 };
 
 const Ratings = ({ pi, piMax, averagePi, displayAveragePi, mini }) => {
@@ -48,6 +53,7 @@ const Ratings = ({ pi, piMax, averagePi, displayAveragePi, mini }) => {
           name="Average PI"
           level={Math.round(averagePi)}
           piMax={piMax}
+          mini={mini}
         />
       }
       {pi.map(p =>
@@ -56,6 +62,7 @@ const Ratings = ({ pi, piMax, averagePi, displayAveragePi, mini }) => {
           level={p.level <= piMax ? p.level : piMax}
           key={p.name}
           piMax={piMax}
+          mini={mini}
         />
       )}
     </div>
