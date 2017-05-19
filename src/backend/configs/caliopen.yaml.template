@@ -19,6 +19,7 @@ broker:
     host: localhost
 
 object_store:
+    db_size_limit: 1048576
     service: minio
     endpoint: minio.dev.caliopen.org:9000
     access_key: CALIOPEN_ACCESS_KEY_

@@ -25,6 +25,9 @@ def import_email(email, import_path, format, **kwargs):
     from caliopen_main.user.parameters import NewContact, NewEmail
     from caliopen_main.message.qualifier import UserMessageQualifier
     from caliopen_main.message.core import RawMessage
+    from caliopen_storage.config import Configuration
+
+    max_size = int(Configuration("global").get("object_store.db_size_limit"))
 
     if format == 'maildir':
         emails = Maildir(import_path, factory=message_from_file)
@@ -51,6 +54,13 @@ def import_email(email, import_path, format, **kwargs):
     log.info("Processing mode %s" % mode)
 
     for key, data in emails.iteritems():
+        # Prevent creating message too large to fit in db.
+        # (should use inject cmd for large messages)
+        size = len(data.as_string())
+        if size > max_size:
+            log.warn("Message {} too large to fit into db. \
+            Please, use 'inject' cmd for importing large emails.".format(i))
+            continue
 
         raw = RawMessage.create(data.as_string())
         log.debug('Created raw message {}'.format(raw.raw_msg_id))
