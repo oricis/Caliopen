@@ -2,7 +2,6 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import re
-import uuid
 
 from .message import NewMessage
 from caliopen_main.objects.identities import LocalIdentity
@@ -11,6 +10,7 @@ from caliopen_main.objects.participant import Participant
 from caliopen_storage.exception import NotFound
 from caliopen_main.discussion.store.discussion_index import \
     DiscussionIndexManager as DIM
+from caliopen_main.discussion.core import Discussion
 import caliopen_main.errors as err
 
 import logging
@@ -31,7 +31,6 @@ class Draft(NewMessage):
         If needed, draft is modified to conform.
         Returns a validated draft or error.
         """
-        # remove 'from' participant
 
         try:
             self.validate()
@@ -39,27 +38,34 @@ class Draft(NewMessage):
             log.warn(exc)
             raise exc
 
-        if 'participants' in self and len(self['participants']) > 0:
-            participants = self['participants']
-            for i, participant in enumerate(participants):
-                if re.match("[Ff][Rr][Oo][Mm]", participant['type']):
-                    participants.pop(i)
-
-        if is_new:
+        if is_new and self.discussion_id is None:
+            if hasattr(self, 'participants') and len(self.participants) > 0:
+                for i, participant in enumerate(self.participants):
+                    if re.match("[Ff][Rr][Oo][Mm]", participant.type):
+                        self.participants.pop(i)
             self._add_from_participant(user_id)
 
         # check discussion consistency and get last message from discussion
         last_message = self._check_discussion_consistency(user_id)
 
-        # check subject consistency
-        if 'subject' in self:
-            if self['subject'] != last_message['subject']:
-                raise err.PatchConflict(message="subject has been changed")
-        else:
-            self['subject'] = last_message['subject']
+        if last_message is not None:
+            # check subject consistency
+            # (https://www.wikiwand.com/en/List_of_email_subject_abbreviations)
+            # for now, we use standard prefix «Re: » (RFC5322#section-3.6.5)
+            p = re.compile(
+                '([\[\(] *)?(RE?S?|FYI|RIF|I|FS|VB|RV|ENC|ODP|PD|YNT|ILT|SV|VS|VL|AW|WG|ΑΠ|ΣΧΕΤ|ΠΡΘ|תגובה|הועבר|主题|转发|FWD?) *([-:;)\]][ :;\])-]*|$)|\]+ *$',
+                re.IGNORECASE)
+            if hasattr(self, 'subject') and self.subject is not None:
+                if p.sub('', self.subject).strip() != p.sub('',
+                                                            last_message.subject).strip():
+                    raise err.PatchConflict(message="subject has been changed")
+            else:
+                # no subject property provided :
+                # add subject from context with only one "Re: " prefix
+                self.subject = "Re: " + p.sub('', last_message.subject).strip()
 
-            # prevent modification of protected attributes
-            # TODO: below attributes should be protected by Message class
+                # TODO: prevent modification of protected attributes
+                # below attributes should be protected by Message class
 
     def _add_from_participant(self, user_id):
 
@@ -82,66 +88,67 @@ class Draft(NewMessage):
 
         # add 'from' participant with local identity's identifier
         user = User.get(user_id)
-        if 'participants' not in self:
-            self['participants'] = []
-        participants = self['participants']
+        if not hasattr(self, 'participants'):
+            self.participants = []
         from_participant = Participant()
         from_participant.address = local_identity.identifier
         from_participant.label = local_identity.display_name
         from_participant.protocol = "email"
         from_participant.type = "From"
         from_participant.contact_ids = [user.contact.contact_id]
-        participants.append(from_participant.marshall_dict())
+        self.participants.append(from_participant.marshall_dict())
+        return from_participant
 
     def _check_discussion_consistency(self, user_id):
         from caliopen_main.objects.message import Message
         new_discussion = False
 
-        if 'discussion_id' not in self or self['discussion_id'] == "" \
-                or self['discussion_id'] is None:
+        if not hasattr(self, 'discussion_id') or self.discussion_id == "" \
+                or self.discussion_id is None:
             # no discussion_id provided. Try to find one with draft's parent_id
             # or create new discussion
-            if 'parent_id' in self and self['parent_id'] != "" \
-                    and self['parent_id'] is not None:
-                parent_msg = Message(user_id, message_id=self['parent_id'])
+            if hasattr(self, 'parent_id') and self.parent_id != "" \
+                    and self.parent_id is not None:
+                parent_msg = Message(user_id, message_id=self.parent_id)
                 try:
                     parent_msg.get_db()
                     parent_msg.unmarshall_db()
                 except NotFound:
                     raise err.PatchError(message="parent message not found")
-                self['discussion_id'] = parent_msg.discussion_id
+                self.discussion_id = parent_msg.discussion_id
             else:
-                self['discussion_id'] = uuid.uuid4()
+                user = User.get(user_id)
+                discussion = Discussion.create_from_message(user, self)
+                self.discussion_id = discussion.discussion_id
                 new_discussion = True
 
         if not new_discussion:
             dim = DIM(user_id)
-            d_id = self['discussion_id']
-            last_message = dim.get_last_message(d_id, 0, 100)
+            d_id = self.discussion_id
+            last_message = dim.get_last_message(d_id, 0, 100, False)
             if last_message == {}:
                 raise err.PatchError(
                     message='No such discussion {}'.format(d_id))
 
             # check participants consistency
-            if 'participants' in self and len(self['participants']) > 0:
-                participants = [p['address'] for p in self['participants']]
+            if hasattr(self, "participants") and len(self.participants) > 0:
+                participants = [p['address'] for p in self.participants]
                 last_msg_participants = [p['address'] for p in
-                                         last_message['participants']]
+                                         last_message.participants]
                 if len(participants) != len(last_msg_participants):
                     raise err.PatchError(
                         message="list of participants "
                                 "is not consistent for this discussion")
                 participants.sort()
                 last_msg_participants.sort()
+
                 for i, participant in enumerate(participants):
                     if participant != last_msg_participants[i]:
                         raise err.PatchConflict(
                             message="list of participants "
                                     "is not consistent for this discussion")
             else:
-                # no participant provided : should not happen within a reply
-                raise err.PatchError(
-                    message="No participants provided for this reply")
+                self.build_participants_for_reply(user_id)
 
             # check parent_id consistency
             if 'parent_id' in self and self['parent_id'] != "" \
@@ -152,6 +159,34 @@ class Draft(NewMessage):
                                                     "parent_id does not belong"
                                                     "to this discussion")
         else:
-            last_message = self
+            last_message = None
 
         return last_message
+
+    def build_participants_for_reply(self, user_id):
+        """
+        build participants list from last message in discussion.
+        - former 'From' recipients are replaced by 'To' recipients
+        - provided identity is used to fill the new 'From' participant
+        - new sender is removed from former recipients
+        """
+
+        dim = DIM(user_id)
+        d_id = self.discussion_id
+        last_message = dim.get_last_message(d_id, 0, 100, False)
+        for i, participant in enumerate(last_message.participants):
+            if re.match("[Ff][Rr][Oo][Mm]", participant['type']):
+                participant.type = "To"
+                self.participants.append(participant)
+            else:
+                self.participants.append(participant)
+
+        # add sender
+        # and remove it from previous recipients
+        sender = self._add_from_participant(user_id)
+        for i, participant in enumerate(self.participants):
+            if participant['address'] == sender.address:
+                if re.match("[Tt][Oo]", participant['type']) or \
+                        re.match("[Cc][Cc]", participant['type']) or \
+                        re.match("[Bb][Cc][Cc]", participant['type']):
+                    self.participants.pop(i)

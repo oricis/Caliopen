@@ -9,7 +9,6 @@ log = logging.getLogger(__name__)
 
 
 class IndexedModelMixin(object):
-
     """Mixin to transform model into indexed documents."""
 
     def __process_udt(self, column, idx):
@@ -100,10 +99,9 @@ class IndexedModelMixin(object):
 
         idx.update(using=idx.client(), **out)
 
-
     @classmethod
     def search(cls, user, limit=None, offset=0,
-               min_pi=0, max_pi=0, **params):
+               min_pi=0, max_pi=0, sort=None, **params):
         """Search in index using a dict parameter."""
         search = cls._index_class.search(using=cls._index_class.client(),
                                          index=user.user_id)
@@ -117,6 +115,8 @@ class IndexedModelMixin(object):
         else:
             log.warn('Pagination not set for search query,'
                      ' using default storage one')
+        if sort:
+            search = search.sort(sort)
         log.debug('Search is {}'.format(search.to_dict()))
         resp = search.execute()
         log.debug('Search result {}'.format(resp))

@@ -70,13 +70,16 @@ class DiscussionIndexManager(object):
         log.debug('No result found on index {}'.format(self.index))
         return {}, 0
 
-    def get_last_message(self, discussion_id, min_pi, max_pi):
+    def get_last_message(self, discussion_id, min_pi, max_pi, include_draft):
         """Get last message of a given discussion."""
-        search = self._prepare_search(min_pi, max_pi)
-        search = search.filter('match', **{'discussion_id': discussion_id})
-        search = search.sort('-date_insert')
-        search = search[0:1]
-        result = search.execute()
+
+        search = self._prepare_search(min_pi, max_pi) \
+            .filter("match", discussion_id=discussion_id)
+
+        if not include_draft:
+            search = search.filter("match", is_draft=False)
+
+        result = search.sort('-date_insert').execute()
         if not result.hits:
             # XXX what to do better if not found ?
             return {}
@@ -87,7 +90,7 @@ class DiscussionIndexManager(object):
         list, total = self.__search_ids(limit, offset, min_pi, max_pi)
         discussions = []
         for discus in list:
-            message = self.get_last_message(discus['key'], min_pi, max_pi)
+            message = self.get_last_message(discus['key'], min_pi, max_pi, True)
             discussion = DiscussionIndex(discus['key'])
             discussion.total_count = discus['doc_count']
             discussion.last_message = message
@@ -99,11 +102,10 @@ class DiscussionIndexManager(object):
     def get_message_id(self, discussion_id, message_id):
         """Search a message_id within a discussion"""
 
-        search = self._prepare_search(0, 100)
-        search.body = {"query": {"match_all":
-                                     {"discussion_id": discussion_id,
-                                      "message_id": message_id}}}
-        result = search.execute()
+        result = self._prepare_search(0, 100) \
+            .filter("match", discussion_id=discussion_id) \
+            .filter("match", message_id=message_id) \
+            .execute()
         if not result.hits:
             return None
         return result.hits[0]
@@ -111,13 +113,13 @@ class DiscussionIndexManager(object):
     def get_by_id(self, discussion_id):
         """Return a single discussion by discussion_id"""
 
-        search = self._prepare_search(0, 100)
-        search = search.query("term", discussion_id=discussion_id)
-        result = search.execute()
+        result = self._prepare_search(0, 100) \
+            .filter("match", discussion_id=discussion_id) \
+            .execute()
         if not result.hits:
             return None
 
-        message = self.get_last_message(discussion_id, 0, 100)
+        message = self.get_last_message(discussion_id, 0, 100, True)
         discussion = DiscussionIndex(discussion_id)
         discussion.total_count = result.hits.total
         discussion.last_message = message
