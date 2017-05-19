@@ -2,26 +2,19 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import './style.scss';
 
-function classFor(element, mini) {
-  const classNames = [`m-pi-ratings__${element}`];
-  if (mini) { classNames.push(`m-pi-ratings--mini__${element}`); }
-
-  return classNames;
-}
-
 const Rating = ({ name, level, piMax, className, mini }) => {
   const width = (level / piMax) * 100;
   const style = { width: `${width}%` };
 
   return (
-    <div className={classnames(classFor('item', mini), className)}>
-      <div className={classnames(classFor('item-name', mini))}>
-        <span className={classnames(classFor('item-name-label', mini))}>{name}</span>
+    <div className={classnames('m-pi-ratings__item', { 'm-pi-ratings--mini__item': mini }, className)}>
+      <div className={classnames('m-pi-ratings__item-name', { 'm-pi-ratings--mini__item-name': mini })}>
+        <span className={classnames('m-pi-ratings__item-name-label', { 'm-pi-ratings--mini__item-name-label': mini })}>{name}</span>
       </div>
-      <div className={classnames(classFor('item-level', mini))}>
-        <div className={classnames(classFor('item-level-bar', mini))} style={style} />
+      <div className={classnames('m-pi-ratings__item-level', { 'm-pi-ratings--mini__item-level': mini })}>
+        <div className={classnames('m-pi-ratings__item-level-bar', { 'm-pi-ratings--mini__item-level-bar': mini })} style={style} />
       </div>
-      <div className={classnames(classFor('item-level-label', mini))}>{level}</div>
+      <div className={classnames('m-pi-ratings__item-level-label', { 'm-pi-ratings--mini__item-level-label': mini })}>{level}</div>
     </div>
   );
 };
