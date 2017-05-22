@@ -50,7 +50,7 @@ class RawMessage(BaseCore):
 
     def parse(self):
         """Parse raw message to get a formatted object."""
-        return MailMessage(self.data)
+        return MailMessage(self)
 
 
 class UserRawLookup(BaseUserCore):
