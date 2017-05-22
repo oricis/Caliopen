@@ -61,42 +61,51 @@ class ImportContactForm extends Component {
     onCancel: PropTypes.func,
     errors: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
+    hasImported: PropTypes.bool,
   };
 
   static defaultProps = {
     onCancel: null,
     errors: {},
+    hasImported: false,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       file: null,
-      error: [],
+      fieldError: [],
       formData: null,
     };
 
-    this.onInputChange = this.onInputChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmitForm = this.handleSubmitForm.bind(this);
     this.resetForm = this.resetForm.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
-    this.validate = this.validate.bind(this);
+    this.validateField = this.validateField.bind(this);
   }
 
-  onInputChange(ev) {
+  handleInputChange(ev) {
     const files = ev.target.files.length > 0 ? ev.target.files : null;
-    if (files) { this.validate(files[0]); }
+    if (files) { this.validateField(files[0]); }
+  }
+
+  handleSubmitForm(ev) {
+    ev.preventDefault();
+    const { formData } = this.state;
+    this.props.onSubmit({ formData });
   }
 
   resetForm() {
     document.getElementById('import-contact-form').reset();
     this.setState({
       file: null,
-      error: [],
-      formData: null,
+      fieldError: [],
+      formData: {},
     });
   }
 
-  validate(file) {
+  validateField(file) {
     const { __ } = this.props;
     const error = __('import-contact.form.error.no_valid_ext');
     const ext = file.name ? file.name.split('.').pop() : null;
@@ -105,56 +114,73 @@ class ImportContactForm extends Component {
     if (ext && VALID_EXT.includes(ext)) {
       this.setState({
         file: { file, name: file.name, size: file.size },
-        error: [],
+        fieldError: [],
         formData: formData.append('data', file),
       });
     } else {
       this.setState({
         file: null,
-        error: [error],
-        formData: null,
+        fieldError: [error],
+        formData: {},
       });
     }
   }
   renderButtons() {
-    const { __, onSubmit, onCancel } = this.props;
+    const { __, onCancel } = this.props;
 
     return (
       <div className="m-import-contact-form__buttons">
-        <Button
-          className="m-import-contact-form__cancel"
-          shape="hollow"
-          onClick={onCancel}
-        >{__('general.action.cancel')}</Button>
+        {!this.props.hasImported &&
+          <Button
+            className="m-import-contact-form__cancel"
+            shape="hollow"
+            onClick={onCancel}
+          >{__('general.action.cancel')}</Button>
+        }
 
-        {this.state.file &&
+        {this.state.file && !this.props.hasImported &&
           <Button
             className="m-import-contact-form__submit"
             type="submit"
             shape="plain"
             icon="download"
-            onClick={onSubmit(this.state.formData)}
           >{__('import-contact.action.import')}</Button>
+        }
+
+        {this.props.hasImported &&
+          <Button
+            className="m-import-contact-form__submit"
+            shape="plain"
+            icon="check"
+            onClick={onCancel}
+          >{__('ok')}</Button>
         }
       </div>
     );
   }
 
   render() {
-    const { __, errors } = this.props;
-    const { file, error } = this.state;
+    const { __, hasImported } = this.props;
+    const { file, fieldError } = this.state;
 
     return (
       <div className="m-import-contact-form">
-        <form id="import-contact-form">
-          <p>{__('import-contact.form.descr')}</p>
-          {file ?
-            <File file={file} onClick={this.resetForm} />
+        {!hasImported ?
+          <form id="import-contact-form" onSubmit={this.handleSubmitForm}>
+            <p>{__('import-contact.form.descr')}</p>
+            {file ?
+              <File file={file} onClick={this.resetForm} />
+            :
+              <InputFile onChange={this.handleInputChange} errors={fieldError} __={__} />
+            }
+            {this.renderButtons()}
+          </form>
           :
-            <InputFile onChange={this.onInputChange} errors={errors.concat(error)} __={__} />
-          }
-          {this.renderButtons()}
-        </form>
+          <form id="import-contact-form">
+            <p>{__('Successfuly imported!')}</p>
+            {this.renderButtons()}
+          </form>
+        }
       </div>
     );
   }

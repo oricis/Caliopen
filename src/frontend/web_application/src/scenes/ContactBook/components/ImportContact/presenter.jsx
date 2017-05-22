@@ -6,7 +6,12 @@ import ImportContactForm from '../../../../components/ImportContactForm';
 class ImportContact extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
   };
+
+  static defaultProps = {
+    onCancel: null,
+  }
 
   constructor(props) {
     super(props);
@@ -28,9 +33,9 @@ class ImportContact extends Component {
     };
   }
 
-  handleImportContact(formData) {
+  handleImportContact(ev) {
     axios.post('/v1/imports', {
-      ...formData,
+      ...ev.formValues,
     }, {
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
     }).then(this.handleImportContactSuccess, this.handleImportContactError);
@@ -60,26 +65,15 @@ class ImportContact extends Component {
   }
 
   render() {
-    const { __ } = this.props;
-
-    if (this.state.hasImported) {
-      return (
-        <ImportContactForm
-          __={__}
-          onCancel={this.handleCloseImportModal}
-          onSubmit={this.handleImportContact}
-          errors={this.state.errors}
-          hasImported
-        />
-      );
-    }
+    const { __, onCancel } = this.props;
 
     return (
       <ImportContactForm
         __={__}
-        onCancel={this.handleCloseImportModal}
+        onCancel={onCancel}
         onSubmit={this.handleImportContact}
         errors={this.state.errors}
+        hasImported={this.state.hasImported}
       />
     );
   }
