@@ -75,7 +75,7 @@ class ImportContactForm extends Component {
     this.state = {
       file: null,
       fieldError: [],
-      formData: null,
+      formData: {},
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -160,14 +160,16 @@ class ImportContactForm extends Component {
   }
 
   render() {
-    const { __, hasImported } = this.props;
+    const { __, hasImported, errors } = this.props;
     const { file, fieldError } = this.state;
+    const allErrors = Object.keys(errors).map(key => errors[key]);
 
     return (
       <div className="m-import-contact-form">
         {!hasImported ?
           <form id="import-contact-form" onSubmit={this.handleSubmitForm}>
             <p>{__('import-contact.form.descr')}</p>
+            {errors.length > 0 && <FieldErrors errors={allErrors} /> }
             {file ?
               <File file={file} onClick={this.resetForm} />
             :
