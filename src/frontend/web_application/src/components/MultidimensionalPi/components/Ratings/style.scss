@@ -2,28 +2,30 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 $gridColor: $co-color__fg__back--higher;
+$mini-pi__width: 2rem;
+$mini-pi-bar__height:  .35rem;
+$mini-pi-bar__margin: .25rem;
 
 .m-pi-ratings {
+  max-width: $co-pi-width;
+  margin-right: auto;
+  margin-left: auto;
   font-size: $co-font__size--xsmall;
   font-weight: 600;
 
   &__item {
     @include flex-grid-row;
     align-items: center;
-
-    &--average {
-      margin-bottom: $co-margin;
-    }
   }
 
   &__item-name {
-    @include flex-grid-size(4);
+    @include flex-grid-size(5);
     text-align: right;
   }
 
   &__item-level-label {
     @include flex-grid-size(shrink);
-    padding: $co-component__spacing;
+    padding: $co-component__spacing 0 0 $co-component__spacing;
   }
 
   &__item-level {
@@ -33,14 +35,37 @@ $gridColor: $co-color__fg__back--higher;
   }
 
   &__item-level-bar {
-    height: $co-component__height / 2;
+    height: $co-component__height / 3;
     transition: .5s width;
     background: $co-color__privacy;
-    line-height: $co-component__height / 2;
+    line-height: $co-component__height / 3;
   }
 
   &__item-name-label {
     padding-right: $co-component__spacing;
     text-transform: uppercase;
+  }
+
+  &--mini {
+    max-width: $mini-pi__width;
+    cursor: help;
+
+    &__item {
+      display: block;
+      margin: $mini-pi-bar__margin 0;
+    }
+
+    &__item-level {
+      width: $mini-pi__width;
+    }
+
+    &__item-level-bar {
+      height: $mini-pi-bar__height;
+    }
+
+    &__item-level-label,
+    &__item-name {
+      display: none;
+    }
   }
 }

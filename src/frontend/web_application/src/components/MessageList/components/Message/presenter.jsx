@@ -6,11 +6,19 @@ import ContactAvatarLetter from '../../../ContactAvatarLetter';
 import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
 import Button from '../../../Button';
 import Icon from '../../../Icon';
+import MultidimensionalPi from '../../../MultidimensionalPi';
+
 import MessageActionsContainer from '../MessageActionsContainer';
 
 import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
+
+const PI = [
+  { name: 'behavioral', level: 40 },
+  { name: 'contextual', level: 15 },
+  { name: 'technical', level: 90 },
+];
 
 const MessageInfosContainer = ({ __, message, author, locale }) => {
   const typeTranslations = {
@@ -138,8 +146,9 @@ class Message extends Component {
           />
         </div>
         <div className="m-message__content">
-
           <div className={topBarClassName}>
+            <MultidimensionalPi pi={PI} className="m-message__pi" mini />
+
             <MessageInfosContainer
               message={message}
               author={author}

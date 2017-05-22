@@ -384,6 +384,7 @@ storiesOf('Pi', module)
         { name: 'technical', level: 55 },
       ]),
       displayAveragePi: boolean('display Average PI', false),
+      mini: boolean('mini', false),
     };
 
     return (<MultidimensionalPi {...props} />);

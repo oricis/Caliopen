@@ -58,11 +58,16 @@
     @include flex-grid-row($size: expand);
     flex: 1;
     align-items: center;
+    justify-content: center;
   }
 
   &__type {  @include flex-grid-size(shrink); }
 
   &__type-icon { color: $co-color__fg__text; }
+
+  &__pi {
+    @include flex-grid-size(shrink);
+  }
 
   &__author {
     @include flex-grid-column(shrink);
