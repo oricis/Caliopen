@@ -4,7 +4,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import uuid
 import logging
-import sys
 
 from caliopen_storage.core import BaseUserCore, BaseCore
 from caliopen_storage.exception import NotFound
@@ -30,7 +29,7 @@ class RawMessage(BaseCore):
     def create(cls, raw):
         """Create raw message."""
         key = uuid.uuid4()
-        size = sys.getsizeof(raw)
+        size = len(raw.as_string())
         return super(RawMessage, cls).create(raw_msg_id=key,
                                              data=raw, size=size)
 
@@ -51,7 +50,7 @@ class RawMessage(BaseCore):
 
     def parse(self):
         """Parse raw message to get a formatted object."""
-        return MailMessage(self.data)
+        return MailMessage(self)
 
 
 class UserRawLookup(BaseUserCore):

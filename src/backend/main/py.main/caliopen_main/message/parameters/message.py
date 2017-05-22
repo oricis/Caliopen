@@ -37,6 +37,7 @@ class NewMessage(Model):
     is_draft = BooleanType()
     is_unread = BooleanType()
     parent_id = StringType()
+    raw_msg_id = UUIDType()
     participants = ListType(ModelType(Participant),
                             default=lambda: [], required=True)
     privacy_features = ModelType(PrivacyFeatures)

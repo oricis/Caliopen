@@ -67,7 +67,7 @@ class MailMessage(BaseRawParser):
         """Initialize structure from a raw mail."""
         super(MailMessage, self).__init__(raw)
         try:
-            self.mail = Message(raw)
+            self.mail = Message(raw.raw_data)
         except Exception as exc:
             log.error('Parse message failed %s' % exc)
             raise
@@ -87,7 +87,7 @@ class MailMessage(BaseRawParser):
             self.date = datetime.utcnow()
         self.external_message_id = self.mail.get('Message-Id')
         self.external_parent_id = self.mail.get('In-Reply-To')
-        self.size = len(raw) if raw else 0
+        self.size = len(raw.raw_data) if raw.raw_data else 0
         log.debug('Parsed mail {} with size {}'.
                   format(self.external_message_id, self.size))
 
@@ -222,6 +222,7 @@ class MailMessage(BaseRawParser):
         msg.is_draft = False
         msg.is_answered = False
         msg.participants = self.participants
+        msg.raw_msg_id = self.raw.raw_msg_id
 
         # XXX need transform to part parameter
         for part in self.parts:
