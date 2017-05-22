@@ -2,6 +2,8 @@
 """Caliopen storage model for messages."""
 from __future__ import absolute_import, print_function, unicode_literals
 
+from datetime import datetime
+
 from cassandra.cqlengine import columns
 
 from caliopen_storage.store.model import BaseModel
@@ -28,7 +30,7 @@ class Message(BaseModel, IndexedModelMixin):
     body = columns.Text()
     date = columns.DateTime()
     date_delete = columns.DateTime()
-    date_insert = columns.DateTime()
+    date_insert = columns.DateTime(default=datetime.utcnow)
     discussion_id = columns.UUID()
     external_references = columns.UserDefinedType(ExternalReferences)
     identities = columns.List(columns.UserDefinedType(Identity))
