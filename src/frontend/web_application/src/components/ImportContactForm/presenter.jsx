@@ -132,7 +132,7 @@ class ImportContactForm extends Component {
       <div className="m-import-contact-form__buttons">
         {!this.props.hasImported &&
           <Button
-            className="m-import-contact-form__cancel"
+            className="m-import-contact-form__button"
             shape="hollow"
             onClick={onCancel}
           >{__('general.action.cancel')}</Button>
@@ -140,7 +140,7 @@ class ImportContactForm extends Component {
 
         {this.state.file && !this.props.hasImported &&
           <Button
-            className="m-import-contact-form__submit"
+            className="m-import-contact-form__button m-import-contact-form__button--right"
             type="submit"
             shape="plain"
             icon="download"
@@ -149,7 +149,7 @@ class ImportContactForm extends Component {
 
         {this.props.hasImported &&
           <Button
-            className="m-import-contact-form__submit"
+            className="m-import-contact-form__button m-import-contact-form__button--right"
             shape="plain"
             icon="check"
             onClick={onCancel}

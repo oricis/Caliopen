@@ -1,5 +1,6 @@
 @import '../../styles/common';
 @import '../../styles/object/o-clickable';
+@import '../../styles/object/o-form-element';
 @import '../../styles/object/o-hidden-element';
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
@@ -8,20 +9,19 @@
 
   &__file {
     @include flex-grid-row;
-    min-height: $co-component__height;
+    @include o-form-element--dark;
     margin-top: $co-margin;
-    background: $co-color__fg__back--low;
     line-height: $co-component__height;
   }
 
   &__file-name {
     @include flex-grid-column(shrink);
-    color: $co-color__fg__text;
     font-weight: 600;
   }
 
   &__file-size {
     @include flex-grid-column;
+    color: $co-color__fg__text--low;
     text-align: right;
   }
 
@@ -32,16 +32,12 @@
 
   &__label {
     @include flex-grid-row;
+    @include o-form-element--dark;
     position: relative;
-    margin-top: $co-component__spacing;
-    background: $co-color__fg__back--low;
+    margin-top: $co-margin;
     overflow: hidden;
     line-height: $co-component__height;
     cursor: pointer;
-
-    &:hover {
-      color: $co-color__fg__text--high;
-    }
   }
 
   &__label-button {
@@ -69,13 +65,9 @@
     margin-top: $co-margin;
   }
 
-  &__cancel,
-  &__submit {
+  &__button {
     @include flex-grid-column(shrink);
-    line-height: $co-component__height;
-  }
 
-  &__submit {
-    margin-left: auto;
+    &--right { margin-left: auto; }
   }
 }
