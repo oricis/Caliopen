@@ -1,139 +1,195 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { v1 as uuidV1 } from 'uuid';
+import classnames from 'classnames';
 import { FieldErrors } from '../form';
 import Button from '../Button';
 import Icon from '../Icon';
 
 import './style.scss';
 
-const VALID_EXT = ['vcf', 'vcard'];
+const VALID_EXT = ['vcf', 'vcard']; // Valid file extensions for input#file
+
+const File = ({ file, onRemove, __ }) => (
+  <div className="m-import-contact-form__file">
+    <span className="m-import-contact-form__file-name">{file.name}</span>
+    <span className="m-import-contact-form__file-size">{ __('import-contact.file.size', { size: file.size / 1000 }) }</span>
+    <Button
+      className="m-import-contact-form__remove-button"
+      display="inline"
+      icon="remove"
+      value={file}
+      onClick={onRemove}
+    />
+  </div>
+);
+
+File.propTypes = {
+  onRemove: PropTypes.func.isRequired,
+  file: PropTypes.shape({}).isRequired,
+  __: PropTypes.func.isRequired,
+};
+
+const InputFile = ({ hideInput, onChange, errors, __ }) => {
+  const validExt = VALID_EXT.map(ext => `.${ext}`);
+
+  return (
+    <div className={classnames({ 'm-import-contact-form__input-group--hidden': hideInput })}>
+      <label htmlFor="files" className="m-import-contact-form__label">
+        <span className="m-import-contact-form__label-button"><Icon type="plus" /></span>
+        <span className="m-import-contact-form__label-text">{__('import-contact.form.add_a_file.label')}</span>
+        <span className="m-import-contact-form__label-icon"><Icon type="folder" /></span>
+        <input
+          id="files"
+          type="file"
+          name="files"
+          value=""
+          className="m-import-contact-form__input"
+          onChange={onChange}
+          accept={validExt}
+        />
+      </label>
+      { errors &&
+        <FieldErrors errors={errors} />
+      }
+    </div>
+  );
+};
+
+InputFile.propTypes = {
+  __: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  errors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  hideInput: PropTypes.bool.isRequired,
+};
+
 
 class ImportContactForm extends Component {
   static propTypes = {
-    uploadFile: PropTypes.func,
+    onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
+    errors: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
+    hasImported: PropTypes.bool,
   };
 
   static defaultProps = {
-    uploadFile: null,
     onCancel: null,
+    errors: {},
+    hasImported: false,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      files: [],
-      errors: [],
+      file: null,
+      fieldError: [],
     };
 
-    this.onInputChange = this.onInputChange.bind(this);
-    this.onResetForm = this.onResetForm.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmitForm = this.handleSubmitForm.bind(this);
+    this.resetForm = this.resetForm.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
+    this.validateField = this.validateField.bind(this);
   }
 
-  onInputChange(ev) {
-    const files = ev.target.files;
-    if (files.length > 0) {
-      const file = ev.target.files[0];
-      this.validate(file);
-    }
+  handleInputChange(ev) {
+    const files = ev.target.files.length > 0 ? ev.target.files : null;
+    if (files) { this.validateField(files[0]); }
   }
 
-  onResetForm() {
-    document.getElementById('import-contact-form').reset();
+  handleSubmitForm(ev) {
+    ev.preventDefault();
+    const file = ev.target.files[0];
+    this.props.onSubmit({ file });
+  }
+
+  resetForm() {
     this.setState({
-      files: [],
-      errors: [],
+      file: null,
+      fieldError: [],
     });
   }
 
-  validate(file) {
+  validateField(file) {
     const { __ } = this.props;
-    const error = __('Only .vcf or .vcard file.');
+    const error = __('import-contact.form.error.no_valid_ext');
     const ext = file.name ? file.name.split('.').pop() : null;
 
-    if (ext !== null && VALID_EXT.includes(ext)) {
+    if (ext && VALID_EXT.includes(ext)) {
       this.setState({
-        files: [{ file, name: file.name, size: file.size }],
-        errors: [],
+        file,
+        fieldError: [],
       });
     } else {
       this.setState({
-        file: [],
-        errors: [error],
+        file: null,
+        fieldError: [error],
       });
     }
   }
   renderButtons() {
-    const { __, uploadFile, onCancel } = this.props;
+    const { __, onCancel } = this.props;
 
     return (
       <div className="m-import-contact-form__buttons">
-        <Button
-          className="m-import-contact-form__cancel"
-          shape="hollow"
-          onClick={onCancel}
-        >{__('Cancel')}</Button>
-
-        {this.state.files.length > 0 &&
+        {!this.props.hasImported &&
           <Button
-            className="m-import-contact-form__submit"
+            className="m-import-contact-form__button"
+            shape="hollow"
+            onClick={onCancel}
+          >{__('general.action.cancel')}</Button>
+        }
+
+        {this.state.file && !this.props.hasImported &&
+          <Button
+            className="m-import-contact-form__button m-import-contact-form__button--right"
             type="submit"
             shape="plain"
             icon="download"
-            onClick={uploadFile}
-          >{__('Import')}</Button>
+          >{__('import-contact.action.import')}</Button>
+        }
+
+        {this.props.hasImported &&
+          <Button
+            className="m-import-contact-form__button m-import-contact-form__button--right"
+            shape="plain"
+            icon="check"
+            onClick={onCancel}
+          >{__('ok')}</Button>
         }
       </div>
     );
   }
 
   render() {
-    const { __ } = this.props;
+    const { __, hasImported, errors } = this.props;
+    const { file, fieldError } = this.state;
+    const allErrors = Object.keys(errors).map(key => errors[key]);
+    const hideInput = file !== null && true;
 
     return (
       <div className="m-import-contact-form">
-        <form id="import-contact-form">
-          <p>{__('You can import one .vcf or .vcard file.')}</p>
-          {this.state.files.length > 0 ? this.state.files.map(file =>
-            <div className="m-import-contact-form__files" key={uuidV1()}>
-              <div className="m-import-contact-form__file">
-                <span className="m-import-contact-form__file-name">{file.name} </span>
-                <span className="m-import-contact-form__file-size">{file.size} o</span>
-                <Button
-                  className="m-import-contact-form__remove-button"
-                  display="inline"
-                  icon="remove"
-                  value={file}
-                  onClick={this.onResetForm}
-                />
-              </div>
-            </div>
-            ) : (
-              <div>
-                <label htmlFor="files[]" className="m-import-contact-form__label">
-                  <span className="m-import-contact-form__add-button"><Icon type="plus" /></span>
-                  <span className="m-import-contact-form__add-label">{__('Add a file')}</span>
-                  <span className="m-import-contact-form__add-icon"><Icon type="folder" /></span>
-                  <input
-                    id="files"
-                    type="file"
-                    name="files[]"
-                    className="m-import-contact-form__input"
-                    onChange={this.onInputChange}
-                    accept="text/vcard,text/vcf,text/x-vcard"
-                  />
-                </label>
-                { this.state.errors.length > 0 && (
-                  <FieldErrors className="m-import-contact-form__errors" errors={this.state.errors} />
-                )}
-              </div>
-            )
-          }
-          {this.renderButtons()}
-        </form>
+        {!hasImported ?
+          <form
+            id="import-contact-form"
+            onSubmit={this.handleSubmitForm}
+          >
+            <p>{__('import-contact.form.descr')}</p>
+            {errors.length > 0 && <FieldErrors errors={allErrors} /> }
+            {file && <File file={file} onRemove={this.resetForm} __={__} /> }
+            <InputFile
+              hideInput={hideInput}
+              onChange={this.handleInputChange}
+              errors={fieldError} __={__}
+            />
+            {this.renderButtons()}
+          </form>
+          :
+          <form id="import-contact-form">
+            <p>{__('Successfuly imported!')}</p>
+            {this.renderButtons()}
+          </form>
+        }
       </div>
     );
   }

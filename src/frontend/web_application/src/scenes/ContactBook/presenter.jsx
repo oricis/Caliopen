@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ContactList from './components/ContactList';
 import ContactFilters from './components/ContactFilters';
-import ImportContactForm from '../../components/ImportContactForm';
+import ImportContact from './components/ImportContact';
 import Modal from '../../components/Modal';
 import MenuBar from '../../components/MenuBar';
 import TagList from './components/TagList';
@@ -101,11 +101,11 @@ class ContactBook extends Component {
     return (
       <Modal
         isOpen={this.state.isImportModalOpen}
-        contentLabel={__('Import contacts')}
-        title={__('Import VCards')}
+        contentLabel={__('import-contact.action.import_contacts')}
+        title={__('import-contact.action.import_contacts')}
         onClose={this.handleCloseImportModal}
       >
-        <ImportContactForm __={__} onCancel={this.handleCloseImportModal} />
+        <ImportContact __={__} onCancel={this.handleCloseImportModal} />
       </Modal>
     );
   }
@@ -159,7 +159,7 @@ class ContactBook extends Component {
                 icon="plus"
                 shape="hollow"
                 onClick={this.handleOpenImportModal}
-              >{__('contacts.action.import_contacts')}</Button>
+              >{__('import-contact.action.import_contacts')}</Button>
               {this.renderImportModal()}
             </div>
           </div>
