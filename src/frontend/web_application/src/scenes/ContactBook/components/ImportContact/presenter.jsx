@@ -24,11 +24,13 @@ class ImportContact extends Component {
     this.handleImportContactError = this.handleImportContactError.bind(this);
   }
 
-  handleImportContact(ev) {
-    axios.post('/v1/imports', {
-      ...ev.data,
+  handleImportContact(file) {
+    axios.post('/v1/imports/', {
+      ...file,
     }, {
-      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
     }).then(this.handleImportContactSuccess, this.handleImportContactError);
   }
 

@@ -108,6 +108,7 @@
     "header.menu.toggle-search-form": "Toggle search form",
     "import-contact.action.import": "Import",
     "import-contact.action.import_contacts": "Import contacts",
+    "import-contact.file.size": "%(size)s kB",
     "import-contact.form.add_a_file.label": "Add a file",
     "import-contact.form.descr": "You can import one .vcf or .vcard file.",
     "import-contact.form.error.no_valid_ext": "Only .vcf or .vcard file.",

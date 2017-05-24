@@ -7,6 +7,12 @@
 .m-import-contact-form {
   width: map-get($co-form__width, 'xlarge');
 
+  &__input-group {
+    &--hidden {
+      display: none;
+    }
+  }
+
   &__file {
     @include flex-grid-row;
     @include o-form-element--dark;

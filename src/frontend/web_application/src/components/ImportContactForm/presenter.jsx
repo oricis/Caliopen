@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { FieldErrors } from '../form';
 import Button from '../Button';
 import Icon from '../Icon';
@@ -8,50 +9,57 @@ import './style.scss';
 
 const VALID_EXT = ['vcf', 'vcard']; // Valid file extensions for input#file
 
-const File = ({ file, onClick }) => (
+const File = ({ file, onRemove, __ }) => (
   <div className="m-import-contact-form__file">
     <span className="m-import-contact-form__file-name">{file.name}</span>
-    <span className="m-import-contact-form__file-size">{file.size / 1000} ko</span>
+    <span className="m-import-contact-form__file-size">{ __('import-contact.file.size', { size: file.size / 1000 }) }</span>
     <Button
       className="m-import-contact-form__remove-button"
       display="inline"
       icon="remove"
       value={file}
-      onClick={onClick}
+      onClick={onRemove}
     />
   </div>
 );
 
 File.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired,
   file: PropTypes.shape({}).isRequired,
+  __: PropTypes.func.isRequired,
 };
 
-const InputFile = ({ onChange, errors, __ }) => (
-  <div>
-    <label htmlFor="files[]" className="m-import-contact-form__label">
-      <span className="m-import-contact-form__label-button"><Icon type="plus" /></span>
-      <span className="m-import-contact-form__label-text">{__('import-contact.form.add_a_file.label')}</span>
-      <span className="m-import-contact-form__label-icon"><Icon type="folder" /></span>
-      <input
-        id="files"
-        type="file"
-        name="files[]"
-        className="m-import-contact-form__input"
-        onChange={onChange}
-        accept=".vcf, .vcard"
-      />
-    </label>
-    { errors &&
-      <FieldErrors errors={errors} />
-    }
-  </div>
-);
+const InputFile = ({ hideInput, onChange, errors, __ }) => {
+  const validExt = VALID_EXT.map(ext => `.${ext}`);
+
+  return (
+    <div className={classnames({ 'm-import-contact-form__input-group--hidden': hideInput })}>
+      <label htmlFor="files" className="m-import-contact-form__label">
+        <span className="m-import-contact-form__label-button"><Icon type="plus" /></span>
+        <span className="m-import-contact-form__label-text">{__('import-contact.form.add_a_file.label')}</span>
+        <span className="m-import-contact-form__label-icon"><Icon type="folder" /></span>
+        <input
+          id="files"
+          type="file"
+          name="files"
+          value=""
+          className="m-import-contact-form__input"
+          onChange={onChange}
+          accept={validExt}
+        />
+      </label>
+      { errors &&
+        <FieldErrors errors={errors} />
+      }
+    </div>
+  );
+};
 
 InputFile.propTypes = {
   __: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   errors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  hideInput: PropTypes.bool.isRequired,
 };
 
 
@@ -75,7 +83,6 @@ class ImportContactForm extends Component {
     this.state = {
       file: null,
       fieldError: [],
-      formData: {},
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -92,16 +99,14 @@ class ImportContactForm extends Component {
 
   handleSubmitForm(ev) {
     ev.preventDefault();
-    const { formData } = this.state;
-    this.props.onSubmit({ formData });
+    const file = ev.target.files[0];
+    this.props.onSubmit({ file });
   }
 
   resetForm() {
-    document.getElementById('import-contact-form').reset();
     this.setState({
       file: null,
       fieldError: [],
-      formData: {},
     });
   }
 
@@ -109,19 +114,16 @@ class ImportContactForm extends Component {
     const { __ } = this.props;
     const error = __('import-contact.form.error.no_valid_ext');
     const ext = file.name ? file.name.split('.').pop() : null;
-    const formData = new FormData();
 
     if (ext && VALID_EXT.includes(ext)) {
       this.setState({
-        file: { file, name: file.name, size: file.size },
+        file,
         fieldError: [],
-        formData: formData.append('data', file),
       });
     } else {
       this.setState({
         file: null,
         fieldError: [error],
-        formData: {},
       });
     }
   }
@@ -163,18 +165,23 @@ class ImportContactForm extends Component {
     const { __, hasImported, errors } = this.props;
     const { file, fieldError } = this.state;
     const allErrors = Object.keys(errors).map(key => errors[key]);
+    const hideInput = file !== null && true;
 
     return (
       <div className="m-import-contact-form">
         {!hasImported ?
-          <form id="import-contact-form" onSubmit={this.handleSubmitForm}>
+          <form
+            id="import-contact-form"
+            onSubmit={this.handleSubmitForm}
+          >
             <p>{__('import-contact.form.descr')}</p>
             {errors.length > 0 && <FieldErrors errors={allErrors} /> }
-            {file ?
-              <File file={file} onClick={this.resetForm} />
-            :
-              <InputFile onChange={this.handleInputChange} errors={fieldError} __={__} />
-            }
+            {file && <File file={file} onRemove={this.resetForm} __={__} /> }
+            <InputFile
+              hideInput={hideInput}
+              onChange={this.handleInputChange}
+              errors={fieldError} __={__}
+            />
             {this.renderButtons()}
           </form>
           :
