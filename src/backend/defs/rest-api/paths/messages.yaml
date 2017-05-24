@@ -259,7 +259,7 @@ messages_{message_id}_actions:
           "$ref": "../objects/Error.yaml"
 messages_{message_id}_attachments:
   post:
-    description: Upload a file to server
+    description: (for draft only) : upload a file to server and add attachment reference to the draft.
     tags:
     - attachments
     security:
@@ -270,6 +270,24 @@ messages_{message_id}_attachments:
     - name: file
       in: form
       required: true
+    produces:
+    - application/json
+    responses:
+      '201':
+        description: File uploaded sucessfully. Backend sends back the message with updated 'attachments' array.
+        schema:
+          "$ref": "../objects/MessageV2.yaml"
+      '400':
+        description: bad request
+      '401':
+        description: Unauthorized
+      '404':
+        description: Not Found
+      '413':
+        description: Request entity too large
+      '415':
+        description: Unsupported media type
+
 messages_{message_id}_attachments_{attachment_index}:
   get:
     description: Download file from server
@@ -279,13 +297,14 @@ messages_{message_id}_attachments_{attachment_index}:
     - basicAuth: []
     parameters:
     - name: attachment_index
+      description: attachment's position within message (ie the mime part)
       in: path
       required: true
       type: string
     produces: [] # permissive because a large set of file types could be returned.
     responses:
       '200':
-        description: the raw message
+        description: the raw mime part, in the 'content-transfer-encoding' format of the part.
         schema:
           type: string
 
@@ -303,3 +322,5 @@ messages_{message_id}_attachments_{attachment_index}:
         description: Request entity too large
       '415':
         description: Unsupported media type
+  delete:
+    description: (for drafts only) : delete temporary file and remove attachment reference from the draft.
