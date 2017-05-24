@@ -6,6 +6,7 @@ import Account from './scenes/Account';
 import Auth from './scenes/Auth';
 import DiscussionList from './scenes/DiscussionList';
 import AppRoute from './scenes/AppRoute';
+import NewDraft from './scenes/NewDraft';
 import SettingsRoute from './scenes/SettingsRoute';
 import DevicesRoute from './scenes/DevicesRoute';
 import MessageList from './scenes/MessageList';
@@ -32,6 +33,11 @@ export const getRouteConfig = ({ __ }) => [
       {
         path: '/discussions/:discussionId',
         component: MessageList,
+        app: 'discussion',
+      },
+      {
+        path: '/compose',
+        component: NewDraft,
         app: 'discussion',
       },
       {

@@ -49,6 +49,15 @@ const createContactTab = async ({ pathname, contactId, store }) => {
     icon: 'user',
   };
 };
+const createComposeTab = ({ pathname }) => {
+  const { translate: __ } = getTranslator();
+
+  return {
+    pathname,
+    label: __('compose.route.label'),
+    icon: 'pencil',
+  };
+};
 
 const selectOrAddTabDiscussion = async ({ store, pathname }) => {
   const match = matchPath(pathname, { path: '/discussions/:discussionId' });
@@ -112,6 +121,21 @@ const selectOrAddTabSetting = ({ store, pathname }) => {
   return store.dispatch(addTab(tab));
 };
 
+const selectOrAddTabCompose = ({ store, pathname }) => {
+  const match = matchPath(pathname, { path: '/compose' });
+  if (!match) {
+    return null;
+  }
+  const foundTab = selectTabByPathname({ store, pathname });
+  if (foundTab) {
+    return foundTab;
+  }
+
+  const tab = createComposeTab({ pathname, store });
+
+  return store.dispatch(addTab(tab));
+};
+
 export default store => next => (action) => {
   routeActionHandler({ store, action });
 
@@ -119,7 +143,7 @@ export default store => next => (action) => {
 
   if (action.type === SELECT_OR_ADD_TAB) {
     const { payload: { pathname } } = action;
-    [selectOrAddTabDiscussion, selectOrAddTabContact, selectOrAddTabSetting]
+    [selectOrAddTabDiscussion, selectOrAddTabContact, selectOrAddTabSetting, selectOrAddTabCompose]
       .forEach(fn => fn({ store, pathname }));
   }
 

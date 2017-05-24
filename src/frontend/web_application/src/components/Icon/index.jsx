@@ -32,6 +32,7 @@ export const typeAssoc = {
   'map-marker': 'fa fa-map-marker',
   paperclip: 'fa fa-paperclip',
   plug: 'fa fa-plug',
+  pencil: 'fa fa-pencil',
   plus: 'fa fa-plus',
   phone: 'fa fa-phone',
   remove: 'fa fa-remove',

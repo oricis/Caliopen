@@ -1,14 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTranslator } from '@gandi/react-translate';
 import ActionButton from '../ActionButton';
 
-const Presenter = ({ translator: { __ }, ...props }) => (
-  <ActionButton {...props} icon="plus">{__('call-to-action.action.compose')}</ActionButton>
+const Presenter = ({ __, action, className }) => (
+  <ActionButton action={action} className={className} icon="plus">{__('call-to-action.action.compose')}</ActionButton>
 );
 
 Presenter.propTypes = {
-  translator: PropTypes.shape({ __: PropTypes.func.isRequired }),
+  __: PropTypes.func.isRequired,
+  action: PropTypes.func,
+  className: PropTypes.string,
+};
+Presenter.defaultProps = {
+  action: undefined,
+  className: undefined,
 };
 
-export default withTranslator({ propsNamespace: 'translator' })(Presenter);
+export default Presenter;
