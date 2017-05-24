@@ -52,7 +52,7 @@ def import_email(email, import_path, format, **kwargs):
 
     for key, data in emails.iteritems():
 
-        raw = RawMessage.create(data)
+        raw = RawMessage.create(data.as_string())
         log.debug('Created raw message {}'.format(raw.raw_msg_id))
         mail = MailMessage(raw)
         message = mail.parse()
