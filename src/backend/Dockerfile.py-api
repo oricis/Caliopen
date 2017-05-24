@@ -37,6 +37,9 @@ RUN python setup.py develop
 
 ## Container specific installation part
 
+WORKDIR /srv/caliopen/src/backend/components/py.pgp
+RUN python setup.py develop
+
 # Install python API packages
 WORKDIR /srv/caliopen/src/backend/interfaces/REST/py.server
 RUN python setup.py develop
