@@ -29,9 +29,10 @@ class RawMessage(BaseCore):
     def create(cls, raw):
         """Create raw message."""
         key = uuid.uuid4()
-        size = len(raw.as_string())
+        size = len(raw)
         return super(RawMessage, cls).create(raw_msg_id=key,
-                                             data=raw, size=size)
+                                             raw_data=raw,
+                                             raw_size=size)
 
     @classmethod
     def get_for_user(cls, user_id, raw_msg_id):
