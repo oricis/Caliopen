@@ -1,0 +1,42 @@
+Message-ID: <1492765618.4984.1.camel@gandi.net>
+Subject: signed content
+From: Aymeric Barantal <mric@gandi.net>
+To: Caliopen <contact@caliopen.org>
+Date: Fri, 21 Apr 2017 11:06:58 +0200
+In-Reply-To: <5B952AE1-6C33-42C5-B25C-AF4F7AD903D4@toto.net>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-pqHfzN3tdfFfcK4qJTZs"
+X-Mailer: Evolution 3.22.6 
+Mime-Version: 1.0
+X-Evolution-Identity: 1485870052.1665.0@tao
+X-Evolution-Fcc: folder://1485870052.1665.2%40tao/Sent
+X-Evolution-Transport: 1485870052.1665.10@tao
+X-Evolution-Source-Folder: folder://1485870052.1665.2%40tao/INBOX
+X-Evolution-Source-Message: 2188502
+X-Evolution-Source-Flags: ANSWERED ANSWERED_ALL SEEN 
+X-Evolution-Source: 
+
+
+--=-pqHfzN3tdfFfcK4qJTZs
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Some clear text
+--=-pqHfzN3tdfFfcK4qJTZs
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEOhFyGH73QG/Lzs+mDmjE+F0E2PwFAlj5y7IACgkQDmjE+F0E
+2PycuggAjVQBUkJ1LzZyhKTyRilv/Wa14hYTg0eFlCRbeuo7WRWPB3/1EIo9CcF5
+vL2r78Uwg4YUiXimjW02lfEqzPqBYWMm91dOwlN1PeDD6wuY0aWawJwXl8ow8z7S
+GP4N2GltfL+SXqPK6zOIvC2HDhyVVh+aIMuRpqt8S8senTWLTonsef0vUmzgjbVY
+z+cxKrcLCX1/rrygnj9J8j5gFkKeiB13/wAvqtsvN+HTkr2Uo0zsAQEjI+33VMCn
+V6HvalZobX1IuMJX+c6UVI0ZoC9Xy9isD6aMOg6ZGQbCkc+0KkFapkSnBxBtVHpq
+lBfSJH5YveSpj8ZmmeBirfGcnHhBaA==
+=/Kr9
+-----END PGP SIGNATURE-----
+
+--=-pqHfzN3tdfFfcK4qJTZs--
