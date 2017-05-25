@@ -20,6 +20,7 @@ import zope.interface
 
 from caliopen_main.user.helpers.normalize import clean_email_address
 from .interface import IAttachmentParser, IMessageParser, IParticipantParser
+from .mail_feature import MailPrivacyFeatureProcessor
 
 
 log = logging.getLogger(__name__)
@@ -186,4 +187,5 @@ class MailMessage(object):
     @property
     def privacy_features(self):
         """Mail message privacy features."""
-        return {}
+        extractor = MailPrivacyFeatureProcessor(self)
+        return extractor.process()
