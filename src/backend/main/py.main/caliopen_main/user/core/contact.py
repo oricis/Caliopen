@@ -189,7 +189,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
     @classmethod
     def lookup(cls, user, value):
         lookup = ContactLookup.get(user, value)
-        if lookup:
+        if lookup and lookup.contact_id:
             return cls.get(user, lookup.contact_id)
         # XXX something else to do ?
         return None
