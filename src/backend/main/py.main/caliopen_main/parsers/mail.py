@@ -189,3 +189,18 @@ class MailMessage(object):
         """Mail message privacy features."""
         extractor = MailPrivacyFeatureProcessor(self)
         return extractor.process()
+
+    def lookup_discussion_sequence(self):
+        """Return list of lookup type, value from a mail message."""
+        seq = []
+        # first from parent
+        if self.external_references['parent_id']:
+            seq.append(('parent', self.external_references['parent_id']))
+        # then list lookup
+        for listname in self.extra_parameters.get('lists', []):
+            seq.append(('list', listname))
+        # last try to lookup from sender address
+        for p in self.participants:
+            if p.type == 'from' and len(self.participants) == 2:
+                seq.append(('from', p.address))
+        return seq

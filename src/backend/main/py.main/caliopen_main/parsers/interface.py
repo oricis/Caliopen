@@ -42,3 +42,6 @@ class IMessageParser(zope.interface.Interface):
     extra_parameters = zope.interface.Attribute('Extra parameters')
     privacy_features = zope.interface.Attribute('Privacy features')
     headers = zope.interface.Attribute('Headers, protocol specific')
+
+    def lookup_discussion_sequence(self):
+        """Return list of (lookup_type, lookup_value) for discussion match."""
