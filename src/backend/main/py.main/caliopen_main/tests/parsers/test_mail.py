@@ -2,10 +2,12 @@
 
 import unittest
 from datetime import datetime
+from zope.interface.verify import verifyObject
 
 from caliopen_storage.config import Configuration
 Configuration.load('../../../../../configs/caliopen.yaml.template', 'global')
 
+from caliopen_main.parsers.interface import IMessageParser
 from caliopen_main.parsers import MailMessage
 
 
@@ -26,6 +28,7 @@ class TestMailFormat(unittest.TestCase):
         """Test parsing of a pgp signed mail."""
         data = load_mail('pgp_signed_1.eml')
         mail = MailMessage(data)
+        self.assertTrue(verifyObject(IMessageParser, mail))
         self.assertTrue(len(mail.participants) > 1)
         self.assertEqual(len(mail.attachments), 2)
         self.assertEqual(mail.subject, 'signed content')
