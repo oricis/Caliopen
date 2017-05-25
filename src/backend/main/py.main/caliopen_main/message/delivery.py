@@ -7,7 +7,6 @@ from caliopen_storage.exception import NotFound
 from ..user.core import User
 from ..message.core import RawMessage
 from .qualifier import UserMessageQualifier
-from caliopen_main.parsers import MailMessage
 
 
 log = logging.getLogger(__name__)
@@ -26,20 +25,18 @@ class UserMessageDelivery(object):
         #### TODO : finish refactoring if we still need this func
                     as it is replaced by process_email_message below
         """
-        try:
-            raw = RawMessage.get(raw_msg_id)
-        except NotFound:
-            log.error('Raw message <{}> not found'.format(raw_msg_id))
-            raise NotFound
 
-        log.debug('Retrieved raw message {}'.format(raw_msg_id))
         user = User.get(user_id)
         if not user:
             log.error('user <{}> not found'.format(user_id))
             raise NotFound
 
-        msg = MailMessage(raw)
+        raw = RawMessage.get(raw_msg_id)
+        if not raw:
+            log.error('Raw message <{}> not found'.format(raw_msg_id))
+            raise NotFound
+        log.debug('Retrieved raw message {}'.format(raw_msg_id))
 
         qualifier = UserMessageQualifier(user)
-        message = qualifier.process_inbound(msg)
+        message = qualifier.process_inbound(raw)
         return message

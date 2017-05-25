@@ -64,8 +64,7 @@ def import_email(email, import_path, format, **kwargs):
 
         raw = RawMessage.create(data.as_string())
         log.debug('Created raw message {}'.format(raw.raw_msg_id))
-        mail = MailMessage(raw)
-        message = mail.parse()
+        message = MailMessage(data.as_string())
         for participant in message.participants:
             # XXX development mode associate to participant to a contact
             try:
@@ -82,5 +81,5 @@ def import_email(email, import_path, format, **kwargs):
                 Contact.create(user, contact_param)
 
         qualifier = UserMessageQualifier(user)
-        obj_message = qualifier.process_inbound(mail)
+        obj_message = qualifier.process_inbound(raw)
         log.info('Created message {}'.format(obj_message.message_id))
