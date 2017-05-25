@@ -19,7 +19,8 @@ from email.utils import parsedate_tz, mktime_tz
 import zope.interface
 
 from caliopen_main.user.helpers.normalize import clean_email_address
-from .interface import IAttachmentParser, IMessageParser, IParticipantParser
+from caliopen_main.interfaces import (IAttachmentParser, IMessageParser,
+                                      IParticipantParser)
 from .mail_feature import MailPrivacyFeatureProcessor
 
 

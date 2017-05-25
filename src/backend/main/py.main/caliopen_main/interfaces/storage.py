@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+"""Caliopen storage interfaces definitions."""
+from __future__ import absolute_import, print_function, unicode_literals
+
 import zope.interface
 
 
