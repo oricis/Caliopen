@@ -2,14 +2,11 @@
 """Caliopen user message qualification logic."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
-import uuid
 from .parameters import NewMessage, Participant, Attachment, PrivacyFeature
 
 from caliopen_storage.exception import NotFound
-from caliopen_main.objects.message import Message
 from caliopen_main.user.core import Contact
-from caliopen_main.discussion.core import (Discussion,
-                                           DiscussionMessageLookup,
+from caliopen_main.discussion.core import (DiscussionMessageLookup,
                                            DiscussionRecipientLookup,
                                            DiscussionExternalLookup)
 # XXX use a message formatter registry not directly mail format
@@ -137,27 +134,8 @@ class UserMessageQualifier(object):
         log.debug('Lookup with sequence {} give {}'.
                   format(lookup_sequence, lkp))
 
-        # Create or update existing discussion
-        if not lkp:
-            log.debug('Creating new discussion')
-            discussion = Discussion.create_from_message(self.user, new_message)
-        else:
-            discussion = Discussion.get(self.user, lkp.discussion_id)
-
-        discussion_id = discussion.discussion_id if discussion else None
-        new_message.discussion_id = uuid.UUID(discussion_id)
+        if lkp:
+            new_message.discussion_id = lkp.discussion_id
         new_message.validate()
-        # XXX missing discussion management
-
-        # update and index the message
-        obj = Message(self.user)
-        obj.unmarshall_dict(new_message.to_native())
-        obj.user_id = uuid.UUID(self.user.user_id)
-        obj.message_id = uuid.uuid4()
-        obj.marshall_db()
-        obj.save_db()
-        obj.marshall_index()
-        obj.save_index()
-        if not lkp:
-            self.create_lookups(lookup_sequence, obj)
-        return obj
+        return new_message
+        # XXX create lookup

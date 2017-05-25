@@ -23,7 +23,7 @@ def import_email(email, import_path, format, **kwargs):
     from caliopen_main.user.core import Contact, ContactLookup
     from caliopen_main.parsers import MailMessage
     from caliopen_main.user.parameters import NewContact, NewEmail
-    from caliopen_main.message.qualifier import UserMessageQualifier
+    from caliopen_main.message.delivery import UserMessageDelivery
     from caliopen_main.message.core import RawMessage
     from caliopen_storage.config import Configuration
 
@@ -80,6 +80,6 @@ def import_email(email, import_path, format, **kwargs):
                     contact_param.emails = [e_mail]
                 Contact.create(user, contact_param)
 
-        qualifier = UserMessageQualifier(user)
-        obj_message = qualifier.process_inbound(raw)
+        processor = UserMessageDelivery(user)
+        obj_message = processor.process_raw(raw.raw_msg_id)
         log.info('Created message {}'.format(obj_message.message_id))
