@@ -20,13 +20,13 @@ from email.utils import parsedate_tz, mktime_tz
 from caliopen_main.message.parameters import Participant, NewMessage
 from caliopen_main.message.parameters import Attachment, ExternalReferences
 from caliopen_main.user.helpers.normalize import clean_email_address
-from .base import BaseRawParser
+from .base import BaseRawParser, BaseAttachment
 
 
 log = logging.getLogger(__name__)
 
 
-class MailPart(object):
+class MailPart(BaseAttachment):
     """Mail part structure."""
 
     def __init__(self, part):
@@ -63,40 +63,51 @@ class MailMessage(BaseRawParser):
     recipient_headers = ['From', 'To', 'Cc', 'Bcc']
     message_type = 'email'
 
-    def __init__(self, raw):
+    def __init__(self, raw_data):
         """Initialize structure from a raw mail."""
-        super(MailMessage, self).__init__(raw)
+        super(MailMessage, self).__init__(raw_data)
         try:
-            self.mail = Message(raw.raw_data)
+            self.mail = Message(raw_data)
         except Exception as exc:
             log.error('Parse message failed %s' % exc)
             raise
         if self.mail.defects:
             # XXX what to do ?
             log.warn('Defects on parsed mail %r' % self.mail.defects)
+            self.warning = self.mail.defects
         self.participants = self._get_participants()
-        self.parts = self._get_parts()
+        self.attachments = self._get_attachments()
         self.headers = self._get_headers()
-        self.subject = self.mail.get('Subject')
+        self.extra_parameters = self._get_extra_parameters()
+        self.date = self._get_date()
+        self.references = self._get_references()
+        self.size = self._get_size()
+        log.debug('Parsed mail {} with size {}'.
+                  format(self.reference['message_id'], self.size))
+
+    def _get_size(self):
+        """Get mail size in octet."""
+        return len(self.mail.as_string())
+
+    def _get_references(self):
+        """Return mail references to be used as ExternalReferences."""
+        ext_id = self.mail.get('Message-Id')
+        parent_id = self.mail.get('In-Reply-To')
+        return {'message_id': ext_id,
+                'parent_id': parent_id}
+
+    def _get_date(self):
+        """Get date from a mail message."""
         mail_date = self.mail.get('Date')
         if mail_date:
             tmp_date = parsedate_tz(mail_date)
-            self.date = datetime.fromtimestamp(mktime_tz(tmp_date))
-        else:
-            log.debug('No date on mail using now (UTC)')
-            self.date = datetime.utcnow()
-        self.external_message_id = self.mail.get('Message-Id')
-        self.external_parent_id = self.mail.get('In-Reply-To')
-        self.size = len(raw.raw_data) if raw.raw_data else 0
-        log.debug('Parsed mail {} with size {}'.
-                  format(self.external_message_id, self.size))
+            return datetime.fromtimestamp(mktime_tz(tmp_date))
+        log.debug('No date on mail using now (UTC)')
+        return datetime.utcnow()
 
-    @property
-    def text(self):
-        """Message all text."""
-        # XXX : more complexity ?
-        return "\n".join([x.data for x in self.parts
-                          if x.can_index and x.data])
+    def _get_extra_parameters(self):
+        """Return mail extra parameters informations."""
+        return {'subject': self.mail.get('Subject')}
 
     def _get_participants(self):
         participants = []
@@ -118,7 +129,7 @@ class MailMessage(BaseRawParser):
                 participants.append(participant)
         return participants
 
-    def _get_parts(self):
+    def _get_attachments(self):
         """Multipart message, extract parts."""
         parts = []
         for p in self.mail.walk():
@@ -196,7 +207,7 @@ class MailMessage(BaseRawParser):
         msg.raw_msg_id = self.raw.raw_msg_id
 
         # XXX need transform to part parameter
-        for part in self.parts:
+        for part in self.attachments:
             param = Attachment()
             param.content_type = part.content_type
             param.data = part.data
