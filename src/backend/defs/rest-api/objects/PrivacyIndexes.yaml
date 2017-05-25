@@ -2,9 +2,9 @@
 type: object
 properties:
   technical:
-    type: int
+    type: integer
   contextual:
-    type: int
+    type: integer
   behavioral:
-    type: int
+    type: integer
 additionalProperties: false
