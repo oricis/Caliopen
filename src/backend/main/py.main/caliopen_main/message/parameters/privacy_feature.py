@@ -2,11 +2,14 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from schematics.models import Model
-from schematics.types import BooleanType
+from schematics.types import StringType
 
 
-class PrivacyFeatures(Model):
-    empty_is_boring = BooleanType()
+class PrivacyFeature(Model):
+
+    name = StringType()
+    value = StringType()
+    type = StringType()
 
     class Options:
         serialize_when_none = False
