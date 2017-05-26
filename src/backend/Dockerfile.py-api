@@ -27,7 +27,6 @@ RUN pip install regex
 
 # Add local backend source directory in container filesystem
 ADD . /srv/caliopen/src/backend
-WORKDIR /srv/caliopen/src/backend
 
 # Install Caliopen base packages
 WORKDIR /srv/caliopen/src/backend/main/py.storage

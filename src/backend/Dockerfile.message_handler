@@ -27,7 +27,6 @@ RUN pip install regex
 
 # Add local backend source directory in container filesystem
 ADD . /srv/caliopen/src/backend
-WORKDIR /srv/caliopen/src/backend
 
 # Install Caliopen base packages
 WORKDIR /srv/caliopen/src/backend/main/py.storage
@@ -44,4 +43,4 @@ WORKDIR /srv/caliopen/src/backend/interfaces/NATS/py.client
 RUN python setup.py develop
 
 WORKDIR /srv/caliopen/src/backend/interfaces/NATS/py.client/caliopen_nats
-CMD ["python", "listener.py", "-f", "/srv/caliopen/src/backend/config/caliopen-docker.yaml"]
+CMD ["python", "listener.py", "-f", "/srv/caliopen/src/backend/configs/caliopen-docker.yaml"]
