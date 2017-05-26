@@ -16,7 +16,7 @@ ApiConfig:
   NatsConfig:
     url: nats://nats.dev.caliopen.org:4222
     outSMTP_topic: outboundSMTP # topic's name to post "send" draft order
-  swaggerSpec: doc/api/swagger.json #absolute path or relative path to go.server bin
+  swaggerSpec: ../doc/api/swagger.json #absolute path or relative path to go.server bin
   RedisConfig:
     host: redis.dev.caliopen.org:6379
     password: ""      #no password set
