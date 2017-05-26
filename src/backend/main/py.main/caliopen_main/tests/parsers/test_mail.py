@@ -42,6 +42,23 @@ class TestMailFormat(unittest.TestCase):
         for key, expected in expected_features.items():
             self.assertEqual(mail.privacy_features[key], expected)
 
+    def test_encrypted_mail(self):
+        """Test parsing of a pgp encrypted mail."""
+        data = load_mail('pgp_crypted_1.eml')
+        mail = MailMessage(data)
+        self.assertTrue(verifyObject(IMessageParser, mail))
+        self.assertTrue(len(mail.participants) > 1)
+        self.assertEqual(len(mail.attachments), 2)
+        self.assertEqual(mail.subject, 'crypted content')
+        self.assertTrue(isinstance(mail.date, datetime))
+        expected_date = datetime.strptime("20170421 10:01:05",
+                                          "%Y%m%d %H:%M:%S")
+        self.assertEqual(mail.date, expected_date)
+        expected_features = {'message_crypted': True,
+                             'message_encryption_infos': None,
+                             'message_signed': False}
+        for key, expected in expected_features.items():
+            self.assertEqual(mail.privacy_features[key], expected)
 
 if __name__ == '__main__':
     unittest.main()
