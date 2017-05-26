@@ -15,7 +15,7 @@ fi
 
 function do_backend_tests {
     # Test build of go containers
-    docker-compose build apiv1 broker
+    docker-compose build api broker
     # Python unittests
     export CALIOPEN_BASEDIR=${PROJECT_DIRECTORY}
     nosetests -sxv ../src/backend/main/py.main/caliopen_main/tests
