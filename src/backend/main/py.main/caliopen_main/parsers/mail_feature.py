@@ -29,18 +29,17 @@ class MailPrivacyFeatureProcessor(object):
             return headers[0]
         return None
 
-    def _blacklist_mx(self):
+    def _blacklist_mx(self, mx):
         blacklisted = Configuration('global').get('blacklistes.mx')
         if not blacklisted:
             return False
-        message_mx = self._get_message_mx()
-        if message_mx in blacklisted:
+        if mx in blacklisted:
             return True
         return False
 
-    def emitter_reputation(self):
+    def emitter_reputation(self, mx):
         """Return features about emitter."""
-        if self._blacklist_mx():
+        if self._blacklist_mx(mx):
             return 'blacklisted'
         else:
             return 'normal'
@@ -58,7 +57,7 @@ class MailPrivacyFeatureProcessor(object):
     def process(self):
         """Process the message for privacy features extraction."""
         mx = self._get_message_mx()
-        reputation = None if not mx else self.emitter_reputation()
+        reputation = None if not mx else self.emitter_reputation(mx)
         self._features['mail_emitter_mx_reputation'] = reputation
         self._features['mail_emitter_certificate'] = self.emitter_certificate()
         is_signed = [x for x in self.message.attachments
