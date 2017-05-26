@@ -38,7 +38,7 @@ class UserMessageDelivery(object):
             log.error('user <{}> not found'.format(user_id))
             raise NotFound
 
-        msg = MailMessage(raw.raw_data)
+        msg = MailMessage(raw)
 
         qualifier = UserMessageQualifier(user)
         message = qualifier.process_inbound(msg)
