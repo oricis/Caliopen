@@ -54,4 +54,11 @@ class MailPrivacyFeatureProcessor(object):
         reputation = None if not mx else self.emitter_reputation()
         self._features['mail_emitter_mx_reputation'] = reputation
         self._features['mail_emitter_certificate'] = self.emitter_certificate()
+        is_signed = [x for x in self.message.attachments
+                     if 'pgp-sign' in x.content_type]
+        is_crypted = [x for x in self.message.attachments
+                      if 'pgp-encrypt' in x.content_type]
+        self._features.update({'message_signed': True if is_signed else False,
+                               'message_crypted': True if is_crypted else False
+                               })
         return self._features
