@@ -15,10 +15,12 @@ fi
 
 function do_backend_tests {
     # Test build of go containers
+    cd ${PROJECT_DIRECTORY}/devtools
     docker-compose build api broker
     # Python unittests
     export CALIOPEN_BASEDIR=${PROJECT_DIRECTORY}
-    nosetests -sxv ../src/backend/main/py.main/caliopen_main/tests
+    cd ${PROJECT_DIRECTORY}
+    nosetests -sv src/backend/main/py.main/caliopen_main/tests
     # docker-compose run cli setup
     # docker-compose run cli create_user -e dev@caliopen.local -g John -f Doe -p blablabla
     # docker-compose run cli import -e dev@caliopen.local -f mbox -p /srv/caliopen/code/devtools/fixtures/mbox/dev@caliopen.local
