@@ -24,7 +24,7 @@ object_store:
     endpoint: minio.dev.caliopen.org:9000
     access_key: CALIOPEN_ACCESS_KEY_
     secret_key: CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
-    raw_msg_location: eu-fr-localhost
+    location: eu-fr-localhost
 
 system:
     default_tags:
