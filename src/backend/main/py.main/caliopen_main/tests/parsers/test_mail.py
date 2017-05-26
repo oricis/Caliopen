@@ -43,9 +43,6 @@ class TestMailFormat(unittest.TestCase):
         self.assertEqual(len(mail.attachments), 2)
         self.assertEqual(mail.subject, 'signed content')
         self.assertTrue(isinstance(mail.date, datetime))
-        expected_date = datetime.strptime("20170421 11:06:58",
-                                          "%Y%m%d %H:%M:%S")
-        self.assertEqual(mail.date, expected_date)
         expected_features = {'message_crypted': False,
                              'message_encryption_infos': None,
                              'message_signed': True}
@@ -61,9 +58,6 @@ class TestMailFormat(unittest.TestCase):
         self.assertEqual(len(mail.attachments), 2)
         self.assertEqual(mail.subject, 'crypted content')
         self.assertTrue(isinstance(mail.date, datetime))
-        expected_date = datetime.strptime("20170421 10:01:05",
-                                          "%Y%m%d %H:%M:%S")
-        self.assertEqual(mail.date, expected_date)
         expected_features = {'message_crypted': True,
                              'message_encryption_infos': None,
                              'message_signed': False}
