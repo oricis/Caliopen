@@ -13,7 +13,7 @@ type (
 		StoreConfig      StoreConfig `mapstructure:"store_settings"`
 		IndexName        string      `mapstructure:"index_name"`
 		IndexConfig      IndexConfig `mapstructure:"index_settings"`
-		S3Service        string      `mapstructure:"s3_service"`
+		ObjectStore      string      `mapstructure:"object_store"`
 		S3Config         S3Config    `mapstructure:"s3_settings"`
 		InTopic          string      `mapstructure:"in_topic"`
 		InWorkers        int         `mapstructure:"lda_workers_size"`

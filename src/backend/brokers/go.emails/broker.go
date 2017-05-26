@@ -70,7 +70,7 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 			Consistency: gocql.Consistency(conf.StoreConfig.Consistency),
 			SizeLimit:   conf.StoreConfig.SizeLimit,
 		}
-		if conf.S3Service == "minio" {
+		if conf.ObjectStore == "s3" {
 			c.WithS3 = true
 			c.Endpoint = conf.S3Config.Endpoint
 			c.AccessKey = conf.S3Config.AccessKey

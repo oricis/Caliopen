@@ -20,7 +20,7 @@ broker:
 
 object_store:
     db_size_limit: 1048576
-    service: minio
+    service: s3
     endpoint: minio.dev.caliopen.org:9000
     access_key: CALIOPEN_ACCESS_KEY_
     secret_key: CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD

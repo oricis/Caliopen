@@ -49,7 +49,8 @@ class RawMessage(BaseCore):
         """
         try:
             raw_msg = super(RawMessage, cls).get(raw_msg_id)
-        except NotFound:
+        except Exception as exc:
+            log.warn(exc)
             raise NotFound
 
         if raw_msg.raw_data == "" and raw_msg.uri != "":
@@ -66,7 +67,7 @@ class RawMessage(BaseCore):
                                     region=minioConf["raw_msg_location"])
                 try:
                     resp = minioClient.get_object(url.netloc, path)
-                except ResponseError as exc:
+                except Exception as exc:
                     log.warn(exc)
                     raise NotFound
                 # resp is a urllib3.response.HTTPResponse class

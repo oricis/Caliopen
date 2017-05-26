@@ -33,7 +33,7 @@ LDAConfig:
     keyspace: caliopen
     consistency_level: 1
     raw_size_limit: 1048576                              # max size in bytes for objects in db. Use S3 interface if larger.
-  s3_service: minio
+  object_store: s3
   s3_settings:
     endpoint: minio.dev.caliopen.org:9000
     access_key: CALIOPEN_ACCESS_KEY_                     # Access key of 5 to 20 characters in length
