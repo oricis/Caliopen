@@ -1,5 +1,5 @@
 @startuml
-title Message creation & sending
+title Attachment handling
 box "User frontend"
 actor "authenticated user" as user
 participant "new message UI" as compose
@@ -14,100 +14,30 @@ participant go.main
 endbox
 database db
 database index
+database objects_store as os
 box "NATS"
 entity "outboundSMTP channel" as out
 endbox
 box "Brokers"
 participant "Email broker" as eb
 endbox
-group could be offline
-user o-> compose : hit 'compose' or 'reply'
+user o-> compose : hit 'add attachment'
 activate compose
-end
-hnote over compose : online
-compose -[#00FF00]> py.api : [POST api/v1/messages]
-py.api -> py.main: "create_draft"
-activate py.main
-py.main -> py.main : draft validation
-py.main -> db : store message (draft status)
-py.main -> index : index message (draft status)
-py.main -> py.api : response
-deactivate py.main
-py.api -[#00FF00]-> compose : message url
-loop every 10 sec.
-compose -[#00FF00]> py.api: auto save draft\n[PATCH /messages/{message_id}]
-py.api -> py.main : "patch_draft"
-activate py.main
-py.main x-> db : get_db
-py.main -> py.main : patch validation
-py.main -> db : store draft
-py.main -> index : index draft
-py.main -> py.api : response
-deactivate py.main
-py.api -[#00FF00]-> compose : error or 204 OK
-end
+compose -[#00FF00]> go.api : [POST …messages/{message_id}/attachments]
+activate go.api
+go.api -> os : store temporary file
+go.api -> go.api : update message draft\nwith attachment attributes\nand temporary file uri
+go.api -> db : update draft
+go.api -> index : update draft
+go.api -[#00FF00]-> compose: attachment's url
+deactivate go.api
 deactivate compose
-user o-> compose : hit 'save'
-activate compose
-compose -[#00FF00]> py.api: save draft\n[PATCH /messages/{message_id}]
-py.api -> py.main : "patch_draft"
-activate py.main
-py.main x-> db : get_db
-py.main -> py.main : patch validation
-py.main -> db : store draft
-py.main -> index : index draft
-py.main -> py.api : response
-deactivate py.main
-py.api -[#00FF00]-> compose : error or 204 OK
-deactivate compose
-alt edit draft
-user o-> compose : hit 'edit draft'
-activate compose
-compose -[#00FF00]> py.api : edit draft\n[GET /messages/{message_id}]
-py.api -> py.main : get_message
-py.main x-> db : get_db
-py.main -> py.api : message
-py.api -[#00FF00]> compose : message
-loop every 5 sec.
-compose -[#00FF00]> py.api : auto save draft\n[PATCH /messages/{message_id}]
-py.api -> py.main : "patch_draft"
-activate py.main
-py.main x-> db : get_db
-py.main -> py.main : patch validation
-py.main -> db : store draft
-py.main -> index : index draft
-py.main -> py.api : response
-deactivate py.main
-py.api -[#00FF00]-> compose : error or 204 OK
-end
-deactivate compose
-user o-> compose : hit 'save'
-activate compose
-compose -[#00FF00]> py.api : save draft\n[PATCH /messages/{message_id}]
-py.api -> py.main : "patch_draft"
-activate py.main
-py.main x-> db : get_db
-py.main -> py.main : patch validation
-py.main -> db : store draft
-py.main -> index : index draft
-py.main -> py.api : response
-deactivate py.main
-py.api -[#00FF00]-> compose : error or 204 OK
-deactivate compose
-end
+
+
 alt send draft
 user o-> compose : hit 'send message'
 activate compose
-compose -[#00FF00]> py.api : save draft\n[PATCH /messages/{message_id}]
-py.api -> py.main : "patch_draft"
-activate py.main
-py.main x-> db : get_db
-py.main -> py.main : patch validation
-py.main -> db : store draft
-py.main -> index : index draft
-py.main -> py.api : response
-deactivate py.main
-py.api -[#00FF00]-> compose : error or 204 OK
+
 compose -[#00FF00]> go.api : send message\n[POST /messages/{message_id}/actions]
 go.api -> go.main : "SendDraft"
 activate go.main
@@ -119,8 +49,10 @@ eb x-> db : get raw_message
 eb -> eb : marshal email, etc.
 eb -> mta : send message
 mta -> eb : OK
-eb -> db : update store (sent)
-eb -> index : update index (sent)
+eb -> db : store raw_message
+eb -> os : delete temporary files
+eb -> db : update message store (sent)
+eb -> index : update message index (sent)
 eb -[#0000FF]> out: "deliver" response
 deactivate eb
 go.main x-[#0000FF]> out : async "deliver" response
@@ -132,9 +64,9 @@ deactivate compose
 end
 deactivate compose
 alt delete draft
-user o-> compose: hit 'delete draft'
+user o-> compose: hit 'delete attachment'
 activate compose
-compose -[#00FF00]> py.api : delete draft\n[DELETE /messages/{message_id}]
+compose -[#00FF00]> py.api : delete draft\n[DELETE …messages/{message_id}/{attachments/{attachment_id}]
 py.api -> py.main: "delete_message"
 activate py.main
 py.main -> py.main: delete procedure

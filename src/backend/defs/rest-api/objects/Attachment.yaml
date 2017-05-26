@@ -12,5 +12,5 @@ properties:
   size: # size calculated during parsing, for future reference
     type: integer
     format: int64
-  uri: # ObjectStore url for temporary file (draft) or mime part when embedded in email.
+  uri: # ObjectStore url for temporary file (draft)
     type: string

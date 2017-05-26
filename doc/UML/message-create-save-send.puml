@@ -115,12 +115,13 @@ go.main -[#0000FF]> out : "deliver" order with message_id
 eb x-[#0000FF]> out : subscribe "deliver"
 activate eb
 note right: email delivery process
-eb x-> db : get raw_message
+eb x-> db : get message
 eb -> eb : marshal email, etc.
 eb -> mta : send message
 mta -> eb : OK
-eb -> db : update store (sent)
-eb -> index : update index (sent)
+eb -> db : store raw_message
+eb -> db : update message store (sent)
+eb -> index : update message index (sent)
 eb -[#0000FF]> out: "deliver" response
 deactivate eb
 go.main x-[#0000FF]> out : async "deliver" response
