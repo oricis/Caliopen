@@ -15,6 +15,7 @@ class MailPrivacyFeatureProcessor(object):
         'message_signed': False,
         'message_crypted': False,
         'message_encryption_infos': None,
+        'mail_agent': None,
     }
 
     def __init__(self, message):
@@ -48,6 +49,12 @@ class MailPrivacyFeatureProcessor(object):
         """Get the certificate from emitter."""
         return None
 
+    @property
+    def mail_agent(self):
+        """Get the mailer used for this message."""
+        # XXX normalize better and more ?
+        return self.message.mail.get('X-Mailer', '').lower()
+
     def process(self):
         """Process the message for privacy features extraction."""
         mx = self._get_message_mx()
@@ -61,4 +68,5 @@ class MailPrivacyFeatureProcessor(object):
         self._features.update({'message_signed': True if is_signed else False,
                                'message_crypted': True if is_crypted else False
                                })
+        self._features['mail_agent'] = self.mail_agent
         return self._features
