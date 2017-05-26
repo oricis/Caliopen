@@ -1,11 +1,20 @@
 """Test mail message format processing."""
 
 import unittest
+import os
+
 from datetime import datetime
 from zope.interface.verify import verifyObject
 
 from caliopen_storage.config import Configuration
-Configuration.load('../../../../../configs/caliopen.yaml.template', 'global')
+
+if 'CALIOPEN_BASEDIR' in os.environ:
+    conf_file = '{}/src/backend/configs/caliopen.yaml.template'. \
+                format(os.environ['CALIOPEN_BASEDIR'])
+else:
+    conf_file = '../../../../../configs/caliopen.yaml.template'
+
+Configuration.load(conf_file, 'global')
 
 from caliopen_main.interfaces import IMessageParser
 from caliopen_main.parsers import MailMessage
@@ -15,7 +24,8 @@ def load_mail(filename):
     """Read email from fixtures of an user."""
     # XXX tofix: set fixtures in a more convenient way to not
     # have dirty hacking on relative path
-    path = '../fixtures/mail'
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    path = '{}/../fixtures/mail'.format(dir_path)
     with open('{}/{}'.format(path, filename)) as f:
         data = f.read()
     return data
