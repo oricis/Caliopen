@@ -191,7 +191,7 @@ class MailMessage(object):
         extractor = MailPrivacyFeatureProcessor(self)
         return extractor.process()
 
-    def lookup_discussion_sequence(self):
+    def lookup_discussion_sequence(self, *args, **kwargs):
         """Return list of lookup type, value from a mail message."""
         seq = []
         # first from parent

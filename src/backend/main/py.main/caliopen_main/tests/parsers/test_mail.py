@@ -7,7 +7,7 @@ from zope.interface.verify import verifyObject
 from caliopen_storage.config import Configuration
 Configuration.load('../../../../../configs/caliopen.yaml.template', 'global')
 
-from caliopen_main.parsers.interface import IMessageParser
+from caliopen_main.interfaces import IMessageParser
 from caliopen_main.parsers import MailMessage
 
 
@@ -36,14 +36,11 @@ class TestMailFormat(unittest.TestCase):
         expected_date = datetime.strptime("20170421 11:06:58",
                                           "%Y%m%d %H:%M:%S")
         self.assertEqual(mail.date, expected_date)
-        expected_features = {'mail_emitter_certificate': None,
-                             'mail_emitter_mx_reputation': None,
-                             'mail_transport_signed': False,
-                             'message_crypted': False,
+        expected_features = {'message_crypted': False,
                              'message_encryption_infos': None,
-                             'message_signed': False}
-
-        self.assertEqual(mail.privacy_features, expected_features)
+                             'message_signed': True}
+        for key, expected in expected_features.items():
+            self.assertEqual(mail.privacy_features[key], expected)
 
 
 if __name__ == '__main__':
