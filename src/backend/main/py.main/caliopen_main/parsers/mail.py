@@ -160,24 +160,6 @@ class MailMessage(object):
         return parts
 
     @property
-    def headers(self):
-        """
-        Extract all headers into list.
-
-        Duplicate on headers exists, group them by name
-        with a related list of values
-        """
-        def keyfunc(item):
-            return item[0]
-
-        # Group multiple value for same headers into a dict of list
-        headers = {}
-        data = sorted(self.mail.items(), key=keyfunc)
-        for k, g in groupby(data, key=keyfunc):
-            headers[k] = [x[1] for x in g]
-        return headers
-
-    @property
     def extra_parameters(self):
         """Mail message extra parameters."""
         lists = []
@@ -205,3 +187,22 @@ class MailMessage(object):
             if p.type == 'from' and len(self.participants) == 2:
                 seq.append(('from', p.address))
         return seq
+
+    # Others parameters specific for mail message
+    @property
+    def headers(self):
+        """
+        Extract all headers into list.
+
+        Duplicate on headers exists, group them by name
+        with a related list of values
+        """
+        def keyfunc(item):
+            return item[0]
+
+        # Group multiple value for same headers into a dict of list
+        headers = {}
+        data = sorted(self.mail.items(), key=keyfunc)
+        for k, g in groupby(data, key=keyfunc):
+            headers[k] = [x[1] for x in g]
+        return headers
