@@ -17,6 +17,7 @@ class MailPrivacyFeatureProcessor(object):
         'message_crypted': False,
         'message_encryption_infos': None,
         'mail_agent': None,
+        'spam_score': 0,
     }
 
     def __init__(self, message):
@@ -59,6 +60,11 @@ class MailPrivacyFeatureProcessor(object):
         """Get the transport signature if any."""
         return self.message.mail.get('DKIM-Signature')
 
+    @property
+    def spam_informations(self):
+        """Compute features around spam information in mail headers."""
+        return {'spam_score': self.message.mail.get('X-Spam-Score')}
+
     def process(self):
         """Process the message for privacy features extraction."""
         mx = self._get_message_mx()
@@ -75,6 +81,9 @@ class MailPrivacyFeatureProcessor(object):
         self._features['mail_agent'] = self.mail_agent
         signature = self.transport_signature
         if signature:
-            self._features.update({'transport_siged': True,
+            self._features.update({'transport_signed': True,
                                    'transport_signature': signature})
+        spam = self.spam_informations
+        if spam:
+            self._features.update(spam)
         return self._features
