@@ -11,7 +11,8 @@ class MailPrivacyFeatureProcessor(object):
     _features = {
         'mail_emitter_mx_reputation': None,
         'mail_emitter_certificate': None,
-        'mail_transport_signed': False,
+        'transport_signed': False,
+        'transport_signature': None,
         'message_signed': False,
         'message_crypted': False,
         'message_encryption_infos': None,
@@ -41,8 +42,7 @@ class MailPrivacyFeatureProcessor(object):
         """Return features about emitter."""
         if self._blacklist_mx(mx):
             return 'blacklisted'
-        else:
-            return 'normal'
+        return None
 
     def emitter_certificate(self):
         """Get the certificate from emitter."""
@@ -53,6 +53,11 @@ class MailPrivacyFeatureProcessor(object):
         """Get the mailer used for this message."""
         # XXX normalize better and more ?
         return self.message.mail.get('X-Mailer', '').lower()
+
+    @property
+    def transport_signature(self):
+        """Get the transport signature if any."""
+        return self.message.mail.get('DKIM-Signature')
 
     def process(self):
         """Process the message for privacy features extraction."""
@@ -68,4 +73,8 @@ class MailPrivacyFeatureProcessor(object):
                                'message_crypted': True if is_crypted else False
                                })
         self._features['mail_agent'] = self.mail_agent
+        signature = self.transport_signature
+        if signature:
+            self._features.update({'transport_siged': True,
+                                   'transport_signature': signature})
         return self._features

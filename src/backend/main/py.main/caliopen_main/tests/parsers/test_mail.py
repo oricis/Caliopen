@@ -45,7 +45,9 @@ class TestMailFormat(unittest.TestCase):
         self.assertTrue(isinstance(mail.date, datetime))
         expected_features = {'message_crypted': False,
                              'message_encryption_infos': None,
-                             'message_signed': True}
+                             'message_signed': True,
+                             'transport_signed': False,
+                             'transport_signature': None}
         for key, expected in expected_features.items():
             self.assertEqual(mail.privacy_features[key], expected)
 
@@ -60,7 +62,9 @@ class TestMailFormat(unittest.TestCase):
         self.assertTrue(isinstance(mail.date, datetime))
         expected_features = {'message_crypted': True,
                              'message_encryption_infos': None,
-                             'message_signed': False}
+                             'message_signed': False,
+                             'transport_signed': False,
+                             'transport_signature': None}
         for key, expected in expected_features.items():
             self.assertEqual(mail.privacy_features[key], expected)
 
