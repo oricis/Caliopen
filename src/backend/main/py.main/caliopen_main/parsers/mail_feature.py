@@ -63,7 +63,12 @@ class MailPrivacyFeatureProcessor(object):
     @property
     def spam_informations(self):
         """Compute features around spam information in mail headers."""
-        return {'spam_score': self.message.mail.get('X-Spam-Score')}
+        score = self.message.mail.get('X-Spam-Score', 0)
+        try:
+            score = float(score)
+        except TypeError:
+            score = 0.0
+        return {'spam_score': score}
 
     def process(self):
         """Process the message for privacy features extraction."""
