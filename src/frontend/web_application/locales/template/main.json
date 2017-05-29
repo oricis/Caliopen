@@ -114,6 +114,7 @@
     "import-contact.form.button.close": "import-contact.form.button.close",
     "import-contact.form.descr": "import-contact.form.descr",
     "import-contact.form.error.no_valid_ext": "import-contact.form.error.no_valid_ext",
+    "import-contact.form.descr": "import-contact.form.descr",
     "message-list.action.copy-to": "message-list.action.copy-to",
     "message-list.action.delete": "message-list.action.delete",
     "message-list.action.reply": "message-list.action.reply",

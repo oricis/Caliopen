@@ -53,7 +53,7 @@ class ImportContactForm extends Component {
           <Button
             className="m-import-contact-form__button"
             shape="hollow"
-            onClick={!onCancel ? this.resetForm : onCancel}
+            onClick={onCancel}
           >{__('general.action.cancel')}</Button>
         }
 
@@ -95,7 +95,7 @@ class ImportContactForm extends Component {
             __={__}
           />
         :
-          <p>{__('Successfuly imported!')}</p>
+          <p>{__('import-contact.form.success')}</p>
       }
         {this.renderButtons()}
       </form>

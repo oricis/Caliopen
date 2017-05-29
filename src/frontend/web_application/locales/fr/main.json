@@ -114,6 +114,7 @@
     "import-contact.form.button.close": "Fermer",
     "import-contact.form.descr": "Importer un fichier .vcf ou .vcard.",
     "import-contact.form.error.no_valid_ext": "Seulement des fichiers .vcf ou .vcard",
+    "import-contact.form.descr": "Fichier importé !",
     "message-list.action.copy-to": "Copier à",
     "message-list.action.delete": "Supprimer",
     "message-list.action.reply": "Répondre",
