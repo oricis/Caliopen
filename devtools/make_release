@@ -5,7 +5,7 @@ Caliopen tool for release management.
 Permit to prepare a release, build and submit it on github.
 
 Usage:
-    make_release --conf <package.yaml> --version <X.Y.Z> --prepare --build
+    make_release --conf <package.yaml> --version <X.Y.Z> build|clean
 
 """
 
