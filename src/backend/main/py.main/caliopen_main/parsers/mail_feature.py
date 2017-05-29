@@ -5,7 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 from caliopen_storage.config import Configuration
 
 
-class MailPrivacyFeatureProcessor(object):
+class MailPrivacyFeature(object):
     """Process a parsed mail message and extract available privacy features."""
 
     _features = {
