@@ -8,6 +8,11 @@ _For complete documentation, see the [doc/for-developers](../doc/for-developers)
 
 # Development scenarios
 
+## Golang development
+
+Please refer to [this documentation](https://github.com/CaliOpen/Caliopen/doc/goland-dev.md)
+for specific informations related to golang development.
+
 ## Client development
 
 **Requirements:**
