@@ -1,0 +1,71 @@
+@import '../../../styles/common';
+@import '../../../styles/object/o-clickable';
+@import '../../../styles/object/o-form-element';
+@import '../../../styles/object/o-hidden-element';
+@import '../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-input-file-group {
+
+  &__input {
+    @include o-hidden-element--input-file;
+  }
+
+  &__label {
+    @include flex-grid-row;
+    @include o-form-element--dark;
+    @include o-hidden-element--label;
+    margin-top: $co-margin;
+    overflow: hidden;
+    line-height: $co-component__height;
+    cursor: pointer;
+
+    &__button {
+      @include flex-grid-size(shrink);
+    }
+
+    &__text {
+      @include flex-grid-column;
+      height: $co-component__height;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &__icon {
+      @include flex-grid-column(shrink);
+      margin-left: auto;
+    }
+  }
+
+  &__file {
+    @include flex-grid-row;
+    @include o-form-element--dark;
+    margin-top: $co-margin;
+    line-height: $co-component__height;
+
+    &__name {
+      @include flex-grid-column(5);
+      height: $co-component__height;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    &__size {
+      @include flex-grid-column(5);
+      height: $co-component__height;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: $co-color__fg__text--low;
+      text-align: right;
+    }
+
+    &__remove {
+      @include flex-grid-size(shrink);
+    }
+  }
+
+
+
+}
