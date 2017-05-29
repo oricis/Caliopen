@@ -43,3 +43,10 @@ system:
             color: white
 
 default_domain: caliopen.local
+
+internal_domains:
+    - caliopen.local
+
+blacklistes:
+    mx:
+        - mx.bad.guy
