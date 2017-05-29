@@ -2,7 +2,13 @@
 """Caliopen mail message privacy features extraction methods."""
 from __future__ import absolute_import, print_function, unicode_literals
 
+import re
+import logging
+
 from caliopen_storage.config import Configuration
+
+
+log = logging.getLogger(__name__)
 
 
 class MailPrivacyFeature(object):
@@ -18,6 +24,10 @@ class MailPrivacyFeature(object):
         'message_encryption_infos': None,
         'mail_agent': None,
         'spam_score': 0,
+        'ingress_socket_version': None,
+        'ingress_cipher': None,
+        'ingress_server': None,
+        'nb_external_hops': 0,
     }
 
     def __init__(self, message):
@@ -38,6 +48,12 @@ class MailPrivacyFeature(object):
         if mx in blacklisted:
             return True
         return False
+
+    @property
+    def internal_domains(self):
+        """Get internal hosts from configuration."""
+        domains = Configuration('global').get('internal_domains')
+        return domains if domains else []
 
     def emitter_reputation(self, mx):
         """Return features about emitter."""
@@ -70,6 +86,66 @@ class MailPrivacyFeature(object):
             score = 0.0
         return {'spam_score': score}
 
+    def get_ingress_features(self):
+        """Try to find information about ingress server that send this mail."""
+        def get_host(line):
+            parts = line.split(' ')
+            return parts[0]
+
+        def parse_ingress(header):
+            header = header.replace('\n', '')
+            search = re.compile(r'.*using (\S+) with cipher ([\S-]+)',
+                                re.MULTILINE)
+            match = search.match(header)
+            if match:
+                return match.groups()
+            return None
+
+        found_features = {}
+        search = re.compile(r'^from (.*) by (.*)', re.MULTILINE + re.DOTALL)
+        received = self.message.headers['Received']
+        if not received:
+            return {}
+
+        paths = []
+        for r in received:
+            r = r.replace('\n', '')
+            match = search.match(r)
+            if match:
+                groups = match.groups()
+                paths.append((get_host(groups[0]),
+                              get_host(groups[1]),
+                              groups))
+            else:
+                if r.startswith('by'):
+                    pass
+                else:
+                    log.debug('Received header, do not match format {}'.
+                              format(r))
+
+        ingress = None
+        internal_hops = 0
+        for path in paths:
+            is_internal = False
+            for internal in self.internal_domains:
+                if internal in path[0]:
+                    is_internal = True
+                else:
+                    if internal in path[1] and internal not in path[0]:
+                        ingress = path
+                        break
+            if not is_internal:
+                internal_hops += 1
+        if ingress:
+            cnx_info = parse_ingress(ingress[2][0])
+            if cnx_info and len(cnx_info) > 1:
+                found_features.update({'ingress_socket_version': cnx_info[0],
+                                       'ingress_cipher': cnx_info[1]})
+            found_features.update({'ingress_server': ingress[0]})
+        external_hops = len(paths) - internal_hops
+        found_features.update({'nb_external_hops': external_hops})
+        return found_features
+
     def process(self):
         """Process the message for privacy features extraction."""
         mx = self._get_message_mx()
@@ -91,4 +167,5 @@ class MailPrivacyFeature(object):
         spam = self.spam_informations
         if spam:
             self._features.update(spam)
+        self._features.update(self.get_ingress_features())
         return self._features
