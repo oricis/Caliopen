@@ -34,18 +34,21 @@ class MailPrivacyFeature(object):
         """Get a ``MailMessage`` instance and extract privacy features."""
         self.message = message
 
-    def _get_message_mx(self):
-        headers = self.message.headers.get('Received', [])
-        # XXX parse headers better to get the valuable emitter
-        if headers:
-            return headers[0]
-        return None
-
-    def _blacklist_mx(self, mx):
+    def is_blacklist_mx(self, mx):
+        """MX is blacklisted."""
         blacklisted = Configuration('global').get('blacklistes.mx')
         if not blacklisted:
             return False
         if mx in blacklisted:
+            return True
+        return False
+
+    def is_whitelist_mx(self, mx):
+        """MX is whitelisted."""
+        whitelistes = Configuration('global').get('whitelistes.mx')
+        if not whitelistes:
+            return False
+        if mx in whitelistes:
             return True
         return False
 
@@ -57,9 +60,11 @@ class MailPrivacyFeature(object):
 
     def emitter_reputation(self, mx):
         """Return features about emitter."""
-        if self._blacklist_mx(mx):
+        if self.is_blacklist_mx(mx):
             return 'blacklisted'
-        return None
+        if self.is_whitelist_mx(mx):
+            return 'whitelisted'
+        return 'unknown'
 
     def emitter_certificate(self):
         """Get the certificate from emitter."""
@@ -161,7 +166,8 @@ class MailPrivacyFeature(object):
 
     def process(self):
         """Process the message for privacy features extraction."""
-        mx = self._get_message_mx()
+        self._features.update(self.get_ingress_features())
+        mx = self._features.get('ingress_server')
         reputation = None if not mx else self.emitter_reputation(mx)
         self._features['mail_emitter_mx_reputation'] = reputation
         self._features['mail_emitter_certificate'] = self.emitter_certificate()
@@ -180,5 +186,4 @@ class MailPrivacyFeature(object):
         spam = self.spam_informations
         if spam:
             self._features.update(spam)
-        self._features.update(self.get_ingress_features())
         return self._features
