@@ -5,6 +5,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 import re
 import logging
 
+import pgpy
+
 from caliopen_storage.config import Configuration
 
 
@@ -20,7 +22,9 @@ class MailPrivacyFeature(object):
         'transport_signed': False,
         'transport_signature': None,
         'message_signed': False,
-        'message_crypted': False,
+        'message_signature_type': None,
+        'message_signer': None,
+        'message_encrypted': False,
         'message_encryption_infos': None,
         'mail_agent': None,
         'spam_score': 0,
@@ -90,6 +94,29 @@ class MailPrivacyFeature(object):
         except TypeError:
             score = 0.0
         return {'spam_score': score}
+
+    def get_signature_informations(self):
+        """Get message signature features."""
+        signed_parts = [x for x in self.message.attachments
+                        if 'pgp-sign' in x.content_type]
+        if not signed_parts:
+            return {}
+        sign = pgpy.PGPSignature()
+        features = {'message_signed': True,
+                    'message_signature_type': 'PGP'}
+        try:
+            sign.parse(signed_parts[0].data)
+            features.update({'message_signer': sign.signer})
+        except Exception as exc:
+            log.error('Unable to parse pgp signature {}'.format(exc))
+        return features
+
+    def get_encryption_informations(self):
+        """Get message encryption features."""
+        encrypted_parts = [x for x in self.message.attachments
+                           if 'pgp-encrypt' in x.content_type]
+        is_encrypted = True if encrypted_parts else False
+        return {'message_encrypted': is_encrypted}
 
     def get_ingress_features(self):
         """Try to find information about ingress server that send this mail."""
@@ -171,14 +198,9 @@ class MailPrivacyFeature(object):
         reputation = None if not mx else self.emitter_reputation(mx)
         self._features['mail_emitter_mx_reputation'] = reputation
         self._features['mail_emitter_certificate'] = self.emitter_certificate()
-        is_signed = [x for x in self.message.attachments
-                     if 'pgp-sign' in x.content_type]
-        is_crypted = [x for x in self.message.attachments
-                      if 'pgp-encrypt' in x.content_type]
-        self._features.update({'message_signed': True if is_signed else False,
-                               'message_crypted': True if is_crypted else False
-                               })
         self._features['mail_agent'] = self.mail_agent
+        self._features.update(self.get_signature_informations())
+        self._features.update(self.get_encryption_informations())
         signature = self.transport_signature
         if signature:
             self._features.update({'transport_signed': True,
