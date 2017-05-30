@@ -89,6 +89,8 @@ class MailPrivacyFeature(object):
     def get_ingress_features(self):
         """Try to find information about ingress server that send this mail."""
         def get_host(line):
+            if ' ' not in line:
+                return None
             parts = line.split(' ')
             return parts[0]
 
@@ -102,27 +104,34 @@ class MailPrivacyFeature(object):
             return None
 
         found_features = {}
-        search = re.compile(r'^from (.*) by (.*)', re.MULTILINE + re.DOTALL)
-        received = self.message.headers['Received']
+        received = self.message.headers.get('Received')
         if not received:
             return {}
 
+        # First step Search for 'paths' (from / by) information
+        search = re.compile(r'^from (.*) by (.*)', re.MULTILINE + re.DOTALL)
         paths = []
         for r in received:
             r = r.replace('\n', '')
             match = search.match(r)
             if match:
                 groups = match.groups()
-                paths.append((get_host(groups[0]),
-                              get_host(groups[1]),
-                              groups))
+                from_ = get_host(groups[0])
+                by = get_host(groups[1])
+                if from_ and by:
+                    paths.append((from_, by, groups))
+                else:
+                    log.warn('Invalid from {} or by {} path in {}'.
+                             format(from_, by, r))
             else:
                 if r.startswith('by'):
+                    # XXX first hop, to consider ?
                     pass
                 else:
-                    log.debug('Received header, do not match format {}'.
-                              format(r))
+                    log.warn('Received header, does not match format {}'.
+                             format(r))
 
+        # Second step: qualify path if internal and try to find the ingress one
         ingress = None
         internal_hops = 0
         for path in paths:
@@ -136,12 +145,16 @@ class MailPrivacyFeature(object):
                         break
             if not is_internal:
                 internal_hops += 1
+
+        # Qualify ingress connection
         if ingress:
             cnx_info = parse_ingress(ingress[2][0])
             if cnx_info and len(cnx_info) > 1:
                 found_features.update({'ingress_socket_version': cnx_info[0],
                                        'ingress_cipher': cnx_info[1]})
             found_features.update({'ingress_server': ingress[0]})
+
+        # Try to count external hops
         external_hops = len(paths) - internal_hops
         found_features.update({'nb_external_hops': external_hops})
         return found_features
