@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { FieldErrors } from '../';
+import { InputFile, FieldErrors } from '../';
 import Button from '../../Button';
-import Icon from '../../Icon';
 
 import './style.scss';
 
@@ -25,39 +24,6 @@ File.propTypes = {
   onRemove: PropTypes.func.isRequired,
   file: PropTypes.shape({}).isRequired,
   __: PropTypes.func.isRequired,
-};
-
-const InputFile = ({ onInputChange, errors, fileTypes, __ }) => (
-  <div>
-    <label htmlFor="files" className="m-input-file-group__label">
-      <Button className="m-input-file-group__label__button" icon="plus" shape="plain" />
-      <span className="m-input-file-group__label__text">{__('input-file-group.add_a_file.label')}</span>
-      <span className="m-input-file-group__label__icon"><Icon type="folder" /></span>
-      <input
-        id="files"
-        type="file"
-        name="files"
-        value=""
-        className="m-input-file-group__input"
-        onChange={onInputChange}
-        accept={fileTypes}
-        // multiple={multiple}
-      />
-    </label>
-    { errors.length > 0 && <FieldErrors errors={errors} /> }
-  </div>
-);
-
-InputFile.propTypes = {
-  __: PropTypes.func.isRequired,
-  onInputChange: PropTypes.func.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // multiple: PropTypes.bool, multiple is disabled
-  fileTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
-
-InputFile.defaultProps = {
-  // multiple: false,
 };
 
 class InputFileGroup extends Component {
@@ -126,7 +92,7 @@ class InputFileGroup extends Component {
   render() {
     const { __, errors, descr, className, fileTypes } = this.props;
     const { fieldError, file } = this.state;
-    const allErrors = Object.keys(errors).map(key => errors[key]);
+    const allErrors = errors ? Object.keys(errors).map(key => errors[key]) : null;
 
     return (
       <div className={classnames('m-input-file-group', className)}>
@@ -138,8 +104,8 @@ class InputFileGroup extends Component {
           <File file={file} onRemove={this.resetForm} __={__} />
           :
           <InputFile
-            fileTypes={fileTypes}
-            onInputChange={this.handleInputChange}
+            accept={fileTypes}
+            onChange={this.handleInputChange}
             errors={fieldError}
             __={__}
             // multiple={multiple}
