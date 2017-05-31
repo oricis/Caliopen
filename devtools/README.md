@@ -77,6 +77,7 @@ Services available in the docker compose stack are:
 - redis
 - elasticsearch
 - cassandra
+- object store (minio for now)
 - caliopen's api (api)
 - caliopen's frontend (frontend)
 - caliopen's lmtp service (broker)

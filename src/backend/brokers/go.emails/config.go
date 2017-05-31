@@ -13,6 +13,8 @@ type (
 		StoreConfig      StoreConfig `mapstructure:"store_settings"`
 		IndexName        string      `mapstructure:"index_name"`
 		IndexConfig      IndexConfig `mapstructure:"index_settings"`
+		ObjectStore      string      `mapstructure:"object_store"`
+		S3Config         S3Config    `mapstructure:"s3_settings"`
 		InTopic          string      `mapstructure:"in_topic"`
 		InWorkers        int         `mapstructure:"lda_workers_size"`
 		LogReceivedMails bool        `mapstructure:"log_received_mails"`
@@ -26,8 +28,18 @@ type (
 		Hosts       []string `mapstructure:"hosts"`
 		Keyspace    string   `mapstructure:"keyspace"`
 		Consistency uint16   `mapstructure:"consistency_level"`
+		SizeLimit   uint64   `mapstructure:"raw_size_limit"` // max size to store (in bytes)
 	}
+
 	IndexConfig struct {
 		Urls []string `mapstructure:"urls"`
+	}
+
+	S3Config struct {
+		Endpoint  string            `mapstructure:"endpoint"`
+		AccessKey string            `mapstructure:"access_key"`
+		SecretKey string            `mapstructure:"secret_key"`
+		Location  string            `mapstructure:"location"`
+		Buckets   map[string]string `mapstructure:"buckets"`
 	}
 )

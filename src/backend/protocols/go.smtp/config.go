@@ -31,7 +31,7 @@ type (
 		IsEnabled       bool   `mapstructure:"is_enabled"`
 		Hostname        string `mapstructure:"host_name"`
 		AllowedHosts    []string
-		MaxSize         int64  `mapstructure:"max_size"`
+		MaxSize         uint64 `mapstructure:"max_size"` //max size for emails
 		PrivateKeyFile  string `mapstructure:"private_key_file"`
 		PublicKeyFile   string `mapstructure:"public_key_file"`
 		Timeout         int    `mapstructure:"timeout"`
