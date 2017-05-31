@@ -28,6 +28,7 @@ func GetLocalsIdentities(ctx *gin.Context) {
 		e := swgErr.New(http.StatusInternalServerError, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
+		return
 	}
 	ret := struct {
 		Total            int                     `json:"total"`

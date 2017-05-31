@@ -7,6 +7,7 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 	"strconv"
+	log "github.com/Sirupsen/logrus"
 )
 
 // POST …/:message_id/attachments
@@ -18,15 +19,18 @@ func UploadAttachment(ctx *gin.Context) {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
+		return
 	}
 	var attchmtBytes []byte
 	file.Read(attchmtBytes)
 	filename := header.Filename
+	log.Infof("filename: %s, size: %d", filename, len(attchmtBytes))
 	attchmtUrl, err := caliopen.Facilities.RESTfacility.AddAttachment(user_id, msg_id, filename, attchmtBytes)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
+		return
 	}
 	resp := struct {
 		location string
@@ -43,12 +47,14 @@ func DeleteAttachment(ctx *gin.Context) {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
+		return
 	}
 	err = caliopen.Facilities.RESTfacility.DeleteAttachment(user_id, msg_id, attch_id)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
+		return
 	}
 	ctx.AbortWithStatus(http.StatusOK)
 }
