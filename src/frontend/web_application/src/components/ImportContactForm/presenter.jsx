@@ -82,7 +82,6 @@ class ImportContactForm extends Component {
 
     return (
       <form
-        id="import-contact-form"
         className="m-import-contact-form"
         onSubmit={this.handleSubmitForm}
       >

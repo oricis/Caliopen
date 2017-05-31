@@ -8,6 +8,7 @@
   - MultidimensionalPi
   - IconLetter simple refactor of ContactIconLetter
   - Layout - TabList Presenter
+  - ImportContactForm 
 
 ### Changed
 
