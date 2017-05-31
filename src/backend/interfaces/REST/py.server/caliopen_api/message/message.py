@@ -40,7 +40,6 @@ class Message(Api):
                                                       limit=self.get_limit(),
                                                       offset=self.get_offset())
             results = []
-            log.warn('Got result {}'.format(messages))
         except Exception as exc:
             log.warn(exc)
             raise ResourceNotFound

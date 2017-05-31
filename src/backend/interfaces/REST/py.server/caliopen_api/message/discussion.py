@@ -44,7 +44,12 @@ class Discussion(Api):
         #     raise HTTPExpectationFailed('Invalid pi range')
 
         dim = DIM(self.user.id)
+
         indexed_discussion = dim.get_by_id(discussion_id)
-        resp = build_discussion(discussion, indexed_discussion)
+        if indexed_discussion:
+            resp = build_discussion(discussion, indexed_discussion)
+        else:
+            raise ResourceNotFound(
+                'Discussion {} not found in index'.format(discussion_id))
 
         return resp
