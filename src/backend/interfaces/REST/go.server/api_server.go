@@ -166,5 +166,5 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	msg.POST("/:message_id/actions", messages.Actions)
 	//draft attachments
 	msg.POST("/:message_id/attachments", messages.UploadAttachment)
-	msg.DELETE("/:message_id/attachments/:attachement_id", messages.DeleteAttachment)
+	msg.DELETE("/:message_id/attachments/:attachment_id", messages.DeleteAttachment)
 }

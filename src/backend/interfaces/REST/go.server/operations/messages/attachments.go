@@ -7,7 +7,6 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 	"strconv"
-	log "github.com/Sirupsen/logrus"
 )
 
 // POST …/:message_id/attachments
@@ -21,11 +20,9 @@ func UploadAttachment(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	var attchmtBytes []byte
-	file.Read(attchmtBytes)
+
 	filename := header.Filename
-	log.Infof("filename: %s, size: %d", filename, len(attchmtBytes))
-	attchmtUrl, err := caliopen.Facilities.RESTfacility.AddAttachment(user_id, msg_id, filename, attchmtBytes)
+	attchmtUrl, err := caliopen.Facilities.RESTfacility.AddAttachment(user_id, msg_id, filename, file)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
