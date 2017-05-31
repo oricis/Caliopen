@@ -7,73 +7,13 @@
 .m-import-contact-form {
   width: map-get($co-form__width, 'xlarge');
 
-  &__input-group {
-    &--hidden {
-      display: none;
-    }
-  }
-
-  &__file {
-    @include flex-grid-row;
-    @include o-form-element--dark;
-    margin-top: $co-margin;
-    line-height: $co-component__height;
-  }
-
-  &__file-name {
-    @include flex-grid-column(shrink);
-    font-weight: 600;
-  }
-
-  &__file-size {
-    @include flex-grid-column;
-    color: $co-color__fg__text--low;
-    text-align: right;
-  }
-
-  &__remove-button {
-    @include flex-grid-size(shrink);
-    margin-left: auto;
-  }
-
-  &__label {
-    @include flex-grid-row;
-    @include o-form-element--dark;
-    position: relative;
-    margin-top: $co-margin;
-    overflow: hidden;
-    line-height: $co-component__height;
-    cursor: pointer;
-  }
-
-  &__label-button {
-    @include flex-grid-size(shrink);
-    @include o-clickable;
-    @include o-clickable--button;
-    @include o-clickable--plain;
-  }
-
-  &__label-text {
-    @include flex-grid-column;
-  }
-
-  &__label-icon {
-    @include flex-grid-column(shrink);
-    margin-left: auto;
-  }
-
-  &__input {
-    @include o-hidden-element--input-file;
-  }
-
   &__buttons {
     @include flex-grid-row;
+    justify-content: space-between;
     margin-top: $co-margin;
   }
 
   &__button {
     @include flex-grid-column(shrink);
-
-    &--right { margin-left: auto; }
   }
 }
