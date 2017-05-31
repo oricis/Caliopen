@@ -24,16 +24,16 @@ endbox
 user o-> compose : hit 'add attachment'
 activate compose
 compose -[#00FF00]> go.api : [POST …messages/{message_id}/attachments]
-activate go.api
-go.api -> os : store temporary file
-go.api -> go.api : update message draft\nwith attachment attributes\nand temporary file uri
-go.api -> db : update draft
-go.api -> index : update draft
+go.api -> go.main : "AddAttachment"
+activate go.main
+go.main -> os : store temporary file
+go.main -> go.main : update message draft\nwith attachment attributes\nand temporary file uri
+go.main -> db : update draft in db
+go.main -> index : update draft in index
+go.main -> go.api : attachment's url
+deactivate go.main
 go.api -[#00FF00]-> compose: attachment's url
-deactivate go.api
 deactivate compose
-
-
 alt send draft
 user o-> compose : hit 'send message'
 activate compose
@@ -45,7 +45,8 @@ go.main -[#0000FF]> out : "deliver" order with message_id
 eb x-[#0000FF]> out : subscribe "deliver"
 activate eb
 note right: email delivery process
-eb x-> db : get raw_message
+eb x-> db : get message
+eb x-> os : get temporary files
 eb -> eb : marshal email, etc.
 eb -> mta : send message
 mta -> eb : OK
@@ -63,18 +64,19 @@ go.api -[#00FF00]> compose : updated message
 deactivate compose
 end
 deactivate compose
-alt delete draft
+alt delete attachment
 user o-> compose: hit 'delete attachment'
 activate compose
-compose -[#00FF00]> py.api : delete draft\n[DELETE …messages/{message_id}/{attachments/{attachment_id}]
-py.api -> py.main: "delete_message"
-activate py.main
-py.main -> py.main: delete procedure
-py.main -> db: write delete state
-py.main -> index: write delete state
-py.main -> py.api: ack or error
-deactivate py.main
-py.api -[#00FF00]-> compose : error or 204 OK
+compose -[#00FF00]> go.api : [DELETE …messages/{message_id}/{attachments/{attachment_id}]
+go.api -> go.main: "delete_attachment"
+activate go.main
+go.main -> go.main: update message draft\nwith attachment attributes
+go.main -> os : delete temporary files
+go.main -> db: update draft in db
+go.main -> index: update draft in index
+go.main -> go.api: ack or error
+deactivate go.main
+go.api -[#00FF00]-> compose : error or 204 OK
 deactivate compose
 end
 @enduml
