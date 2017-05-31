@@ -2,13 +2,9 @@
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
-package caliopen
+package REST
 
 import (
-	"encoding/json"
-	"errors"
-	"fmt"
-	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
@@ -16,7 +12,6 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
-	"time"
 )
 
 type (
@@ -25,7 +20,7 @@ type (
 		SendDraft(user_id, msg_id string) (msg *Message, err error)
 		LocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 		SetMessageUnread(user_id, message_id string, status bool) error
-		UploadAttachment(user_id, message_id string, attachment []byte) (attachmentURL string, err error)
+		AddAttachment(user_id, message_id string, attachment []byte) (attachmentURL string, err error)
 		DeleteAttachment(user_id, message_id string, attchmtIndex int) error
 	}
 	RESTfacility struct {
@@ -38,7 +33,7 @@ type (
 
 const nats_message_tmpl = "{\"order\":\"%s\", \"message_id\":\"%s\", \"user_id\":\"%s\"}"
 
-func newRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility *RESTfacility) {
+func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility *RESTfacility) {
 	rest_facility = new(RESTfacility)
 	rest_facility.nats_conn = nats_conn
 	rest_facility.nats_outSMTP_topic = config.NatsConfig.OutSMTP_topic
@@ -73,45 +68,4 @@ func newRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 	}
 
 	return rest_facility
-}
-
-func (rest *RESTfacility) UsernameIsAvailable(username string) (bool, error) {
-	return rest.store.UsernameIsAvailable(username)
-}
-
-func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err error) {
-	const nats_order = "deliver"
-	natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, msg_id, user_id)
-	rep, err := rest.nats_conn.Request(rest.nats_outSMTP_topic, []byte(natsMessage), 10*time.Second)
-	if err != nil {
-		if rest.nats_conn.LastError() != nil {
-			return nil, err
-		}
-		return nil, err
-	}
-	var reply email_broker.DeliveryAck
-	err = json.Unmarshal(rep.Data, &reply)
-	if err != nil {
-		return nil, err
-	}
-	if reply.Err {
-		return nil, errors.New(reply.Response)
-	}
-	log.Infof("nats reply : %s", reply)
-	return rest.store.GetMessage(user_id, msg_id)
-}
-
-func (rest *RESTfacility) LocalsIdentities(user_id string) ([]LocalIdentity, error) {
-	return rest.store.GetLocalsIdentities(user_id)
-}
-
-func (rest *RESTfacility) SetMessageUnread(user_id, message_id string, status bool) (err error) {
-
-	err = rest.store.SetMessageUnread(user_id, message_id, status)
-	if err != nil {
-		return err
-	}
-
-	err = rest.index.SetMessageUnread(user_id, message_id, status)
-	return err
 }

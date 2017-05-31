@@ -1,0 +1,37 @@
+// Copyleft (ɔ) 2017 The Caliopen contributors.
+// Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
+// license (AGPL) that can be found in the LICENSE file.
+
+package REST
+
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
+	"time"
+)
+
+func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err error) {
+	const nats_order = "deliver"
+	natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, msg_id, user_id)
+	rep, err := rest.nats_conn.Request(rest.nats_outSMTP_topic, []byte(natsMessage), 10*time.Second)
+	if err != nil {
+		if rest.nats_conn.LastError() != nil {
+			return nil, err
+		}
+		return nil, err
+	}
+	var reply email_broker.DeliveryAck
+	err = json.Unmarshal(rep.Data, &reply)
+	if err != nil {
+		return nil, err
+	}
+	if reply.Err {
+		return nil, errors.New(reply.Response)
+	}
+	log.Infof("nats reply : %s", reply)
+	return rest.store.GetMessage(user_id, msg_id)
+}
