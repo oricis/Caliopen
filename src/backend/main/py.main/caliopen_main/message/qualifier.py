@@ -79,8 +79,8 @@ class UserMessageQualifier(object):
         p.label = participant.label
         p.protocol = message.message_type
         try:
-            log.info('Will lookup contact {} for user {}'.
-                     format(participant.address, self.user.user_id))
+            log.debug('Will lookup contact {} for user {}'.
+                      format(participant.address, self.user.user_id))
             c = Contact.lookup(self.user, participant.address)
             if c:
                 p.contact_id = c.contact_id

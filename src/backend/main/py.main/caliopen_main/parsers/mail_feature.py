@@ -20,7 +20,6 @@ class MailPrivacyFeature(object):
         'mail_emitter_mx_reputation': None,
         'mail_emitter_certificate': None,
         'transport_signed': False,
-        'transport_signature': None,
         'message_signed': False,
         'message_signature_type': None,
         'message_signer': None,
@@ -193,19 +192,17 @@ class MailPrivacyFeature(object):
 
     def process(self):
         """Process the message for privacy features extraction."""
-        self._features.update(self.get_ingress_features())
-        mx = self._features.get('ingress_server')
+        features = self._features.copy()
+        features.update(self.get_ingress_features())
+        mx = features.get('ingress_server')
         reputation = None if not mx else self.emitter_reputation(mx)
-        self._features['mail_emitter_mx_reputation'] = reputation
-        self._features['mail_emitter_certificate'] = self.emitter_certificate()
-        self._features['mail_agent'] = self.mail_agent
-        self._features.update(self.get_signature_informations())
-        self._features.update(self.get_encryption_informations())
-        signature = self.transport_signature
-        if signature:
-            self._features.update({'transport_signed': True,
-                                   'transport_signature': signature})
-        spam = self.spam_informations
-        if spam:
-            self._features.update(spam)
-        return self._features
+        features['mail_emitter_mx_reputation'] = reputation
+        features['mail_emitter_certificate'] = self.emitter_certificate()
+        features['mail_agent'] = self.mail_agent
+        features.update(self.get_signature_informations())
+        features.update(self.get_encryption_informations())
+        features.update(self.spam_informations)
+
+        if self.transport_signature:
+            features.update({'transport_signed': True})
+        return features
