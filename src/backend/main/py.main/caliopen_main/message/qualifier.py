@@ -107,8 +107,10 @@ class UserMessageQualifier(object):
         new_message.is_answered = False
         new_message.importance_level = 0    # XXX tofix on parser
 
-        # XXX update later features with full user context
-        new_message.privacy_features = message.privacy_features
+        for k, v in message.privacy_features.items():
+            if v is not None:
+                # XXX hard typing
+                new_message.privacy_features[k] = str(v)
 
         for p in message.participants:
             new_message.participants.append(self.get_participant(message, p))

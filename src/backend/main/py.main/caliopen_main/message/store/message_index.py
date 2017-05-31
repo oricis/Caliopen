@@ -8,7 +8,7 @@ from caliopen_main.user.store.tag_index import IndexedResourceTag
 
 from .attachment_index import IndexedMessageAttachment
 from .external_references_index import IndexedExternalReferences
-from .local_identity_index import IndexedIdentity
+from caliopen_main.user.store.local_identity_index import IndexedIdentity
 from .participant_index import IndexedParticipant
 
 
