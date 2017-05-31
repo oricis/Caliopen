@@ -6,7 +6,7 @@ package REST
 
 import "github.com/pkg/errors"
 
-func (rest *RESTfacility) AddAttachment(user_id, message_id string, attachment []byte) (attachmentURL string, err error) {
+func (rest *RESTfacility) AddAttachment(user_id, message_id, filename string, file []byte) (attachmentURL string, err error) {
 
 	return "", errors.New("not implemented")
 }

@@ -152,17 +152,19 @@ func (server *REST_API) start() error {
 
 func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 
-	//users API
+	/** users API **/
 	//u := api.Group("/users")
 	identities := api.Group("/identities", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
 	identities.GET("/locals", users.GetLocalsIdentities)
 	identities.GET("/locals/:identity_id", users.GetLocalIdentity)
 
-	//username API
+	/** username API **/
 	api.GET("/username/isAvailable", users.IsAvailable)
 
-	//messages API
+	/** messages API **/
 	msg := api.Group("/messages", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
 	msg.POST("/:message_id/actions", messages.Actions)
-
+	//draft attachments
+	msg.POST("/:message_id/attachments", messages.UploadAttachment)
+	msg.DELETE("/:message_id/attachments/:attachement_id", messages.DeleteAttachment)
 }

@@ -20,7 +20,7 @@ type (
 		SendDraft(user_id, msg_id string) (msg *Message, err error)
 		LocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 		SetMessageUnread(user_id, message_id string, status bool) error
-		AddAttachment(user_id, message_id string, attachment []byte) (attachmentURL string, err error)
+		AddAttachment(user_id, message_id, filename string, file []byte) (attachmentURL string, err error)
 		DeleteAttachment(user_id, message_id string, attchmtIndex int) error
 	}
 	RESTfacility struct {
