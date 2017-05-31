@@ -16,11 +16,11 @@ type (
 	}
 
 	S3Config struct {
-		Endpoint       string `mapstructure:"endpoint"`
-		AccessKey      string `mapstructure:"access_key"`
-		SecretKey      string `mapstructure:"sercret_key"`
-		RawMsgLocation string `mapstructure:"raw_msg_location"`
-		RawMsgBucket   string `mapstructure:"raw_msg_bucket"`
+		Endpoint       string
+		AccessKey      string
+		SecretKey      string
+		RawMsgLocation string
+		RawMsgBucket   string
 	}
 
 	S3Backend interface {

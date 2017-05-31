@@ -64,7 +64,7 @@ class RawMessage(BaseCore):
                                     access_key=minioConf["access_key"],
                                     secret_key=minioConf["secret_key"],
                                     secure=False,
-                                    region=minioConf["raw_msg_location"])
+                                    region=minioConf["location"])
                 try:
                     resp = minioClient.get_object(url.netloc, path)
                 except Exception as exc:
