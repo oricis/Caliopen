@@ -9,7 +9,6 @@ from cassandra.cqlengine import columns
 from caliopen_storage.store.model import BaseModel
 from caliopen_storage.store.mixin import IndexedModelMixin
 from caliopen_main.user.store.tag import ResourceTag
-from caliopen_main.message.store.privacy_features import PrivacyFeatures
 from caliopen_main.user.store.local_identity import Identity
 
 from .attachment import MessageAttachment
@@ -41,7 +40,7 @@ class Message(BaseModel, IndexedModelMixin):
     message_id = columns.UUID(primary_key=True, default=uuid.uuid4)
     parent_id = columns.Text()
     participants = columns.List(columns.UserDefinedType(Participant))
-    privacy_features = columns.UserDefinedType(PrivacyFeatures)
+    privacy_features = columns.Map(columns.Text(), columns.Text())
     raw_msg_id = columns.UUID()
     subject = columns.Text()  # Subject of email, the message for short
     tags = columns.List(columns.UserDefinedType(ResourceTag))

@@ -2,7 +2,7 @@
 """Caliopen user message qualification logic."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
-from .parameters import NewMessage, Participant, Attachment, PrivacyFeature
+from .parameters import NewMessage, Participant, Attachment
 
 from caliopen_storage.exception import NotFound
 from caliopen_main.user.core import Contact
@@ -107,6 +107,9 @@ class UserMessageQualifier(object):
         new_message.is_answered = False
         new_message.importance_level = 0    # XXX tofix on parser
 
+        # XXX update later features with full user context
+        new_message.privacy_features = message.privacy_features
+
         for p in message.participants:
             new_message.participants.append(self.get_participant(message, p))
 
@@ -117,13 +120,6 @@ class UserMessageQualifier(object):
             attachment.size = a.size
             new_message.attachments.append(attachment)
 
-        for feature, value in message.privacy_features.items():
-            pf = PrivacyFeature()
-            pf.name = feature
-            pf.value = str(value)
-            # XXX define type mapping
-            pf.type = 'string'
-            new_message.privacy_features.append(pf)
         # compute tags
         new_message.tags = self._get_tags(message)
         log.debug('Resolved tags {}'.format(new_message.tags))

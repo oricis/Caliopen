@@ -5,10 +5,9 @@ from __future__ import absolute_import, print_function, unicode_literals
 from schematics.models import Model
 from schematics.types import (StringType, DateTimeType,
                               IntType, UUIDType, BooleanType)
-from schematics.types.compound import ListType, ModelType
+from schematics.types.compound import ListType, ModelType, DictType
 from schematics.transforms import blacklist
 
-from .privacy_feature import PrivacyFeature
 from .participant import Participant
 from .attachment import Attachment
 from .external_references import ExternalReferences
@@ -40,7 +39,7 @@ class NewMessage(Model):
     raw_msg_id = UUIDType()
     participants = ListType(ModelType(Participant),
                             default=lambda: [], required=True)
-    privacy_features = ListType(ModelType(PrivacyFeature), default=lambda: [])
+    privacy_features = DictType(StringType, default=lambda: {})
     subject = StringType()
     tags = ListType(ModelType(ResourceTag), default=lambda: [])
     type = StringType(choices=MESSAGE_TYPES)
