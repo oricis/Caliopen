@@ -7,9 +7,9 @@ package caliopen
 import (
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/services/REST"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/services/REST"
 )
 
 var (
