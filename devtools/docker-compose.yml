@@ -116,12 +116,12 @@ services:
   object_store:
     image: minio/minio
     ports:
-      - "9000:9000"
+      - "9090:9090"
     volumes:
         - ../src/backend/configs:/configs
         - .data/minio:/export
     command:
-      server -C /configs/minio /export
+      server --address :9090 -C /configs/minio /export
 
   # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
   # point your browser at localhost:9090
