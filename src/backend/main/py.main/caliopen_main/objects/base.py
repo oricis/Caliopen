@@ -112,6 +112,10 @@ class ObjectDictifiable(CaliopenObject):
                             sub_obj = attrtype[0]()
                             sub_obj.unmarshall_dict(item)
                             lst.append(sub_obj)
+                    elif issubclass(attrtype[0], UUID):
+                        for item in document[attr]:
+                            sub_obj = UUID(str(item))
+                            lst.append(sub_obj)
                     else:
                         lst = document[attr]
                     setattr(self, attr, lst)
@@ -354,6 +358,7 @@ class ObjectUser(ObjectStorable):
         # check if patch is consistent with db current state
         # if it is, squash self attributes
         self.unmarshall_db()
+
         for key in patch.keys():
             if key not in self._attrs.keys():
                 return main_errors.PatchUnprocessable(

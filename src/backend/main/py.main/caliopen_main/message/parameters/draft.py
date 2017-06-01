@@ -125,39 +125,40 @@ class Draft(NewMessage):
         if not new_discussion:
             dim = DIM(user_id)
             d_id = self.discussion_id
-            last_message = dim.get_last_message(d_id, 0, 100, False)
+            last_message = dim.get_last_message(d_id, 0, 100, True)
             if last_message == {}:
                 raise err.PatchError(
                     message='No such discussion {}'.format(d_id))
-
-            # check participants consistency
-            if hasattr(self, "participants") and len(self.participants) > 0:
-                participants = [p['address'] for p in self.participants]
-                last_msg_participants = [p['address'] for p in
-                                         last_message.participants]
-                if len(participants) != len(last_msg_participants):
-                    raise err.PatchError(
-                        message="list of participants "
-                                "is not consistent for this discussion")
-                participants.sort()
-                last_msg_participants.sort()
-
-                for i, participant in enumerate(participants):
-                    if participant != last_msg_participants[i]:
-                        raise err.PatchConflict(
+            is_a_reply = (str(last_message.message_id) != str(self.message_id))
+            if is_a_reply:
+                # check participants consistency
+                if hasattr(self, "participants") and len(self.participants) > 0:
+                    participants = [p['address'] for p in self.participants]
+                    last_msg_participants = [p['address'] for p in
+                                             last_message.participants]
+                    if len(participants) != len(last_msg_participants):
+                        raise err.PatchError(
                             message="list of participants "
                                     "is not consistent for this discussion")
-            else:
-                self.build_participants_for_reply(user_id)
+                    participants.sort()
+                    last_msg_participants.sort()
 
-            # check parent_id consistency
-            if 'parent_id' in self and self['parent_id'] != "" \
-                    and self['parent_id'] is not None:
-                if not dim.get_message_id(self['discussion_id'],
-                                          self['parent_id']):
-                    raise err.PatchConflict(message="provided message "
-                                                    "parent_id does not belong"
-                                                    "to this discussion")
+                    for i, participant in enumerate(participants):
+                        if participant != last_msg_participants[i]:
+                            raise err.PatchConflict(
+                                message="list of participants "
+                                        "is not consistent for this discussion")
+                else:
+                    self.build_participants_for_reply(user_id)
+
+                # check parent_id consistency
+                if 'parent_id' in self and self['parent_id'] != "" \
+                        and self['parent_id'] is not None:
+                    if not dim.get_message_id(self['discussion_id'],
+                                              self['parent_id']):
+                        raise err.PatchConflict(message="provided message "
+                                                        "parent_id does not belong"
+                                                        "to this discussion")
         else:
             last_message = None
 
