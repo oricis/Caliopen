@@ -22,7 +22,8 @@ func UploadAttachment(ctx *gin.Context) {
 	}
 
 	filename := header.Filename
-	attchmtUrl, err := caliopen.Facilities.RESTfacility.AddAttachment(user_id, msg_id, filename, file)
+	content_type := header.Header["Content-Type"][0]
+	attchmtUrl, err := caliopen.Facilities.RESTfacility.AddAttachment(user_id, msg_id, filename, content_type, file)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
