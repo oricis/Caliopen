@@ -34,6 +34,7 @@ class UserMessageDelivery(object):
             discussion = Discussion.create_from_message(self.user, message)
             log.debug('Created discussion {}'.format(discussion.discussion_id))
             # xxx create lookup ?
+            message.discussion_id = discussion.discussion_id
 
         # store and index message
         obj = Message(self.user)
