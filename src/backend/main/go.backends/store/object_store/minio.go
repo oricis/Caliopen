@@ -44,11 +44,22 @@ func InitializeObjectsStore(config OSSConfig) (oss ObjectsStore, err error) {
 		return
 	}
 
-	// Check to see if we already own this bucket (which happens if bucket already created by this client)
+	// Check to see if we already own RawMsgBucket (which happens if bucket already created by this client)
 	exists, err := mb.Client.BucketExists(config.RawMsgBucket)
 	if err != nil || !exists {
 		// Create a new bucket for raw messages
 		err = mb.Client.MakeBucket(config.RawMsgBucket, config.Location)
+		if err != nil {
+			mb.Client = nil
+			return
+		}
+	}
+
+	// Check to see if we already own AttachmentBucket (which happens if bucket already created by this client)
+	exists, err = mb.Client.BucketExists(config.AttachmentBucket)
+	if err != nil || !exists {
+		// Create a new bucket for raw messages
+		err = mb.Client.MakeBucket(config.AttachmentBucket, config.Location)
 		if err != nil {
 			mb.Client = nil
 			return

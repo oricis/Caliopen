@@ -44,6 +44,16 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 			Hosts:       config.RESTstoreConfig.Hosts,
 			Keyspace:    config.RESTstoreConfig.Keyspace,
 			Consistency: gocql.Consistency(config.RESTstoreConfig.Consistency),
+
+		}
+		if config.RESTstoreConfig.ObjStoreType == "s3" {
+			cassaConfig.WithObjStore = true
+			cassaConfig.OSSConfig.Endpoint = config.RESTstoreConfig.OSSConfig.Endpoint
+			cassaConfig.OSSConfig.AccessKey = config.RESTstoreConfig.OSSConfig.AccessKey
+			cassaConfig.OSSConfig.SecretKey = config.RESTstoreConfig.OSSConfig.SecretKey
+			cassaConfig.OSSConfig.Location = config.RESTstoreConfig.OSSConfig.Location
+			cassaConfig.OSSConfig.RawMsgBucket = config.RESTstoreConfig.OSSConfig.Buckets["raw_messages"]
+			cassaConfig.OSSConfig.AttachmentBucket = config.RESTstoreConfig.OSSConfig.Buckets["temporary_attachments"]
 		}
 		backend, err := store.InitializeCassandraBackend(cassaConfig)
 		if err != nil {
