@@ -31,7 +31,7 @@ func UploadAttachment(ctx *gin.Context) {
 		return
 	}
 	resp := struct {
-		location string
+		Location string
 	}{attchmtUrl}
 	ctx.JSON(http.StatusOK, resp)
 }
@@ -54,5 +54,5 @@ func DeleteAttachment(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	ctx.AbortWithStatus(http.StatusOK)
+	ctx.Status(http.StatusOK)
 }
