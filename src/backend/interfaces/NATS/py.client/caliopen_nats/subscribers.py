@@ -6,6 +6,7 @@ import logging
 import json
 
 from caliopen_main.message.delivery import UserMessageDelivery
+from caliopen_main.user.core import User
 
 log = logging.getLogger(__name__)
 
@@ -15,7 +16,6 @@ class InboundEmail(object):
 
     def __init__(self, nats_cnx):
         """Create a new inbound messsage handler from a nats connection."""
-        self.deliver = UserMessageDelivery()
         self.natsConn = nats_cnx
 
     def handler(self, msg):
@@ -30,9 +30,10 @@ class InboundEmail(object):
         payload = json.loads(msg.data)
         log.info('Get payload order {}'.format(payload['order']))
         if payload['order'] == "process_raw":
+            user = User.get(payload['user_id'])
+            deliver = UserMessageDelivery(user)
             try:
-                self.deliver.process_raw(payload[u'user_id'],
-                                         payload[u'message_id'])
+                deliver.process_raw(payload['message_id'])
             except Exception as exc:
                 print("deliver process failed : {}".format(exc))
                 nats_error['error'] = str(exc.message)

@@ -1,0 +1,51 @@
+---
+files:
+  post:
+    description: Upload a file to server
+    tags:
+    - files
+    security:
+    - basicAuth: []
+    consumes:
+    - multipart/form-data
+    parameters:
+    - name: file
+      in: form
+      required: true
+files_{file_id}:
+  get:
+    description: Get file's metadata
+    tags:
+    - files
+    security:
+    - basicAuth: []
+    parameters:
+    - name: file_id
+      in: path
+      required: true
+      type: string
+    produces:
+    - application/json
+    responses:
+      '200':
+        description: the raw message
+        schema:
+          type: string
+files_{file_id}_download:
+  get:
+    description: Download file from server
+    tags:
+    - files
+    security:
+    - basicAuth: []
+    parameters:
+    - name: file_id
+      in: path
+      required: true
+      type: string
+    produces: [] # permissive because a large set of file types could be returned.
+    responses:
+      '200':
+        description: the raw message
+        schema:
+          type: string

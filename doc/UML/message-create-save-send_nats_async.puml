@@ -1,0 +1,117 @@
+@startuml
+hide footbox
+title Message creation & sending
+box "User frontend"
+actor "authenticated user" as user
+participant "new message UI" as compose
+endbox
+box "ReST interface"
+control api
+endbox
+box "NATS"
+entity "draft channel" as draft
+entity "message channel" as message
+entity "outboundSMTP channel" as out
+endbox
+box "Caliopen main"
+control "py/go.main" as main
+endbox
+database db
+database index
+box "Brokers"
+participant "Email broker" as eb
+endbox
+group could be offline
+user o-> compose : hit 'compose message'
+activate compose
+end
+hnote over compose : online
+compose -> api : [POST api/v1/messages]
+api -> draft: request\n"create"
+main x-[#0000FF]> draft: subscribe "create"
+activate main
+main -> db: store message (draft status)
+main -> draft: "create" response
+deactivate main
+api x-> draft: response
+api --> compose : creation ack
+activate compose
+loop every 10 sec.
+compose ->> api: auto save draft\n[PATCH /messages/{message_id}]
+api -> draft: send "patch"
+main x-[#0000FF]> draft: subscribe "patch"
+activate main
+main -> db: update message (draft status)
+deactivate main
+end
+deactivate compose
+user o-> compose : hit 'save' or 'close'
+activate compose
+compose -> api : save draft\n[POST /messages/{message_id}/action]
+api -> draft: request "save"
+main x-[#0000FF]> draft: subscribe "save"
+activate main
+main -> db: store message (draft status)
+main -> draft: "save" response
+deactivate main
+api x-> draft: response
+api --> compose : save ack
+deactivate compose
+alt
+user o-> compose: hit 'edit draft'
+activate compose
+compose -> api : edit draft\n[GET /messages/{message_id}]
+api -> draft: request "get"
+main x-[#0000FF]> draft: subscribe "get"
+activate main
+main -> db: get message (draft status)
+db -> main: raw_message
+main -> draft: "get" response
+deactivate main
+api x-> draft: response
+api -> compose : raw_message
+end
+alt
+user o-> compose: hit 'delete draft'
+activate compose
+compose -> api : delete draft\n[DELETE /messages/{message_id}]
+api -> draft: request "delete"
+main x-[#0000FF]> draft: subscribe "delete"
+activate main
+main -> db: delete message
+main -> draft: "delete" response
+deactivate main
+api x-> draft: response
+api --> compose : delete ack
+end
+deactivate compose
+alt
+user o-> compose : hit 'send message'
+activate compose
+compose -> api: save & send message\n[POST /messages/{message_id}/action]
+api -> message: request "send"
+main x-[#0000FF]> message: subscribe "save"
+activate main
+main -> db: store message (unsent status)
+main -> index: index message (unsent status)
+main -> out: request "deliver" (with msg_id only)
+eb x-[#0000FF]> out: subscribe "deliver"
+activate eb
+note right: email delivery process
+eb -> db : get raw_message
+db -> eb : raw_message
+eb -> eb : marshal email, etc.
+eb ->] : send message
+eb -> db : update status (sent)
+eb -> index : update status (sent)
+eb -> out: "deliver" response
+deactivate eb
+main x-> out: response
+main -> message: "save" response
+deactivate main
+api x-> message: response
+api --> compose : feedback
+deactivate compose
+end
+deactivate compose
+@enduml

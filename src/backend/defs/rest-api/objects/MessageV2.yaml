@@ -45,6 +45,9 @@ properties:
   privacy_features:
     type: object
     "$ref": PrivacyFeatures.yaml
+  privacy_indexes:
+    type: object
+    "$ref": PrivacyIndexes.yaml
   raw_msg_id:
     type: string
   subject:

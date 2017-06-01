@@ -5,14 +5,11 @@ from __future__ import absolute_import, print_function, unicode_literals
 import elasticsearch_dsl as dsl
 from caliopen_storage.store.model import BaseIndexDocument
 from caliopen_main.user.store.tag_index import IndexedResourceTag
-from caliopen_main.message.store.attachment_index import \
-    IndexedMessageAttachment
-from caliopen_main.message.store.external_references_index import \
-    IndexedExternalReferences
+
+from .attachment_index import IndexedMessageAttachment
+from .external_references_index import IndexedExternalReferences
 from caliopen_main.user.store.local_identity_index import IndexedIdentity
-from caliopen_main.message.store.participant_index import IndexedParticipant
-from caliopen_main.message.store.privacy_features_index import \
-    IndexedPrivacyFeatures
+from .participant_index import IndexedParticipant
 
 
 class IndexedMessage(BaseIndexDocument):
@@ -35,7 +32,7 @@ class IndexedMessage(BaseIndexDocument):
     message_id = dsl.String()
     parent_id = dsl.String()
     participants = dsl.Nested(doc_class=IndexedParticipant)
-    privacy_features = dsl.Nested(IndexedPrivacyFeatures)
+    privacy_features = dsl.Nested()
     raw_msg_id = dsl.String()
     subject = dsl.String()
     tags = dsl.Nested(doc_class=IndexedResourceTag)
@@ -71,8 +68,7 @@ class IndexedMessage(BaseIndexDocument):
         m.field('parent_id', dsl.String(index='not_analyzed'))
         m.field('participants',
                 dsl.Nested(doc_class=IndexedParticipant, include_in_all=True))
-        m.field('privacy_features', dsl.Nested(doc_class=IndexedPrivacyFeatures,
-                                               include_in_all=True))
+        m.field('privacy_features', dsl.Nested(include_in_all=True))
         m.field('raw_msg_id', dsl.String(index='not_analyzed'))
         m.field('subject', 'string')
         m.field('tags',

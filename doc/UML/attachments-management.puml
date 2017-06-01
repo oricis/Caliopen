@@ -1,0 +1,82 @@
+@startuml
+title Attachment handling
+box "User frontend"
+actor "authenticated user" as user
+participant "new message UI" as compose
+endbox
+box "python application"
+control py.api
+participant py.main
+endbox
+box "go application"
+control go.api
+participant go.main
+endbox
+database db
+database index
+database objects_store as os
+box "NATS"
+entity "outboundSMTP channel" as out
+endbox
+box "Brokers"
+participant "Email broker" as eb
+endbox
+user o-> compose : hit 'add attachment'
+activate compose
+compose -[#00FF00]> go.api : [POST …messages/{message_id}/attachments]
+go.api -> go.main : "AddAttachment"
+activate go.main
+go.main -> os : store temporary file
+go.main -> go.main : update message draft\nwith attachment attributes\nand temporary file uri
+go.main -> db : update draft in db
+go.main -> index : update draft in index
+go.main -> go.api : attachment's url
+deactivate go.main
+go.api -[#00FF00]-> compose: attachment's url
+deactivate compose
+alt send draft
+user o-> compose : hit 'send message'
+activate compose
+
+compose -[#00FF00]> go.api : send message\n[POST /messages/{message_id}/actions]
+go.api -> go.main : "SendDraft"
+activate go.main
+go.main -[#0000FF]> out : "deliver" order with message_id
+eb x-[#0000FF]> out : subscribe "deliver"
+activate eb
+note right: email delivery process
+eb x-> db : get message
+eb x-> os : get temporary files
+eb -> eb : marshal email, etc.
+eb -> mta : send message
+mta -> eb : OK
+eb -> db : store raw_message
+eb -> os : delete temporary files
+eb -> db : update message store (sent)
+eb -> index : update message index (sent)
+eb -[#0000FF]> out: "deliver" response
+deactivate eb
+go.main x-[#0000FF]> out : async "deliver" response
+go.main x-> db : get_message
+go.main -> go.api : send back updated message
+deactivate go.main
+go.api -[#00FF00]> compose : updated message
+deactivate compose
+end
+deactivate compose
+alt delete attachment
+user o-> compose: hit 'delete attachment'
+activate compose
+compose -[#00FF00]> go.api : [DELETE …messages/{message_id}/{attachments/{attachment_id}]
+go.api -> go.main: "delete_attachment"
+activate go.main
+go.main -> go.main: update message draft\nwith attachment attributes
+go.main -> os : delete temporary files
+go.main -> db: update draft in db
+go.main -> index: update draft in index
+go.main -> go.api: ack or error
+deactivate go.main
+go.api -[#00FF00]-> compose : error or 204 OK
+deactivate compose
+end
+@enduml

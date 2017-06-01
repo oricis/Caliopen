@@ -1,19 +1,23 @@
-from caliopen_main.user.parameters.contact import (NewContact, NewEmail,
-                                        NewPostalAddress, NewPublicKey, NewPhone,
-                                        NewOrganization, NewIM, Contact, PHONE_TYPES,
-                                        ADDRESS_TYPES, EMAIL_TYPES, KEY_CHOICES, ORG_TYPES,
-                                        IM_TYPES)
+# -*- coding: utf-8 -*-
+"""Caliopen vcard parsing."""
+from __future__ import absolute_import, print_function, unicode_literals
 
-from schematics.types import UUIDType
+from ..user.parameters.contact import (NewContact, NewEmail,
+                                       NewPostalAddress,
+                                       NewPhone, NewOrganization, NewIM,
+                                       ADDRESS_TYPES, EMAIL_TYPES, IM_TYPES)
 
 from caliopen_main.user.parameters.types import PhoneNumberType
 from caliopen_main.user.parameters.types import InternetAddressType
 
-from caliopen_main.user.core.contact import Contact as CoreContact
-from caliopen_main.user.core.user import User as CoreUser
+
+def validate_email(val):
+    """Validate email value."""
+    return InternetAddressType.validate_email(InternetAddressType(), val)
+
 
 def parse_vcard(vcard):
-
+    """Parse a vcard input and produce a ``NewContact``."""
     new_contact = NewContact()
 
     n = False
@@ -29,7 +33,8 @@ def parse_vcard(vcard):
         if vcard.contents['n'][0].value.additional:
             for a in vcard.contents['n'][0].value.additional:
                 if len(a) == 1:
-                    new_contact.additional_name = vcard.contents['n'][0].value.additional
+                    additional = vcard.contents['n'][0].value.additional
+                    new_contact.additional_name = additional
                 else:
                     liste = vcard.contents['n'][0].value.additional
                     new_contact.additional_name = liste[0]
@@ -39,7 +44,8 @@ def parse_vcard(vcard):
         if vcard.contents['n'][0].value.suffix:
             for a in vcard.contents['n'][0].value.suffix:
                 if len(a) == 1:
-                    new_contact.additional_name = vcard.contents['n'][0].value.suffix
+                    suffix = vcard.contents['n'][0].value.suffix
+                    new_contact.additional_name = suffix
                 else:
                     liste = vcard.contents['n'][0].value.suffix
                     new_contact.name_suffix = liste[0]
@@ -105,7 +111,7 @@ def parse_vcard(vcard):
         elif v == 'email':
             for mail in vcard.contents['email']:
                 email_tmp = NewEmail()
-                ad = InternetAddressType.validate_email(InternetAddressType(),mail.value)
+                ad = validate_email(mail.value)
                 email_tmp.address = ad
                 email_tmp.is_primary = False
                 if mail.params:
@@ -118,7 +124,7 @@ def parse_vcard(vcard):
         elif v == 'impp':
             for i in vcard.contents['impp']:
                 impp = NewIM()
-                impp_tmp = InternetAddressType.validate_email(InternetAddressType(),i.value)
+                impp_tmp = validate_email(i.value)
                 impp.address = impp_tmp
                 impp.is_primary = False
                 if i.params:
@@ -140,13 +146,15 @@ def parse_vcard(vcard):
             for tel in vcard.contents['tel']:
                 phone = NewPhone()
                 phone.is_primary = False
-                number = PhoneNumberType.validate_phone(PhoneNumberType(),tel.value)
+                number = PhoneNumberType.validate_phone(PhoneNumberType(),
+                                                        tel.value)
                 phone.number = number
                 new_contact.phones.append(phone)
 
     return new_contact
 
-def parse_vcards(vcards):
 
+def parse_vcards(vcards):
+    """Parse a list of vcard, return an iterator of parsed entries."""
     for v in vcards:
         yield parse_vcard(v)

@@ -14,13 +14,17 @@ else
 fi
 
 function do_backend_tests {
-    # Huge testing for the moment waiting for a real backend test strategy
-    # docker-compose up -d cassandra elasticsearch redis
-    # docker-compose build
-    # docker-compose run cli setup
-    # docker-compose run cli create_user -e dev@caliopen.local -g John -f Doe -p blablabla
-    # docker-compose run cli import -e dev@caliopen.local -f mbox -p /srv/caliopen/code/devtools/fixtures/mbox/dev@caliopen.local
-    echo "No backend testing, take too long for travis"
+    # Test build of go containers
+    cd ${PROJECT_DIRECTORY}/devtools
+    docker-compose build api broker
+    # Python unittests
+    ./setup-virtualenv.sh
+
+    cd ${PROJECT_DIRECTORY}
+    source .venv/bin/activate
+
+    export CALIOPEN_BASEDIR=${PROJECT_DIRECTORY}
+    nosetests -sv src/backend/main/py.main/caliopen_main/tests
 }
 
 function do_frontend_tests {
