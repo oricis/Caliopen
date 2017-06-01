@@ -33,7 +33,7 @@ type (
 	OSSConfig struct {
 		Endpoint  string            `mapstructure:"endpoint"`
 		AccessKey string            `mapstructure:"access_key"`
-		SecretKey string            `mapstructure:"sercret_key"`
+		SecretKey string            `mapstructure:"secret_key"`
 		Location  string            `mapstructure:"location"`
 		Buckets   map[string]string `mapstructure:"buckets"`
 	}

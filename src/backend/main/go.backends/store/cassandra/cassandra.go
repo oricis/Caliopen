@@ -64,6 +64,7 @@ func (cb *CassandraBackend) initialize(config CassandraConfig) (err error) {
 	if config.WithObjStore {
 		cb.ObjectsStore, err = object_store.InitializeObjectsStore(config.OSSConfig)
 		if err != nil {
+			log.Warn("Object store initialization failed.")
 			return err
 		}
 	}
