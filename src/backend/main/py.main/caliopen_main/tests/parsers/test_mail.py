@@ -48,8 +48,7 @@ class TestMailFormat(unittest.TestCase):
                              'message_signed': True,
                              'message_signature_type': 'PGP',
                              'message_signer': '0E68C4F85D04D8FC',
-                             'transport_signed': False,
-                             'transport_signature': None}
+                             'transport_signed': False}
         for key, expected in expected_features.items():
             self.assertEqual(mail.privacy_features[key], expected)
 
@@ -65,8 +64,7 @@ class TestMailFormat(unittest.TestCase):
         expected_features = {'message_encrypted': True,
                              'message_encryption_infos': None,
                              'message_signed': False,
-                             'transport_signed': False,
-                             'transport_signature': None}
+                             'transport_signed': False}
         for key, expected in expected_features.items():
             self.assertEqual(mail.privacy_features[key], expected)
 
