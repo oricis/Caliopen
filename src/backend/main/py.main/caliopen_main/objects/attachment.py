@@ -15,9 +15,10 @@ class MessageAttachment(base.ObjectJsonDictifiable):
 
     _attrs = {
         'content_type': types.StringType,
+        'file_name': types.SliceType,
         'is_inline': types.BooleanType,
-        'name': types.StringType,
-        'size': types.IntType
+        'size': types.IntType,
+        'uri': types.StringType  # objectsStore uri for temporary file (draft)
     }
 
     _model_class = ModelMessageAttachment
