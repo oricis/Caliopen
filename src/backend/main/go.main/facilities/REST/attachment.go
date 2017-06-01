@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
 	"io"
 )
@@ -24,7 +23,6 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 	}
 
 	//store temporary file in objectStore facility
-
 	tmpAttachmentID := uuid.NewV4()
 	uri, size, err := rest.store.StoreAttachment(tmpAttachmentID.String(), file)
 	if err != nil {
@@ -65,7 +63,38 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 }
 
 func (rest *RESTfacility) DeleteAttachment(user_id, message_id string, attchmtIndex int) error {
+	//check if message_id belongs to user and is a draft and index is consistent
+	msg, err := rest.store.GetMessage(user_id, message_id)
+	if err != nil {
+		return err
+	}
 
-	log.Infof("delete %d in %s for %s", attchmtIndex, message_id, user_id)
-	return errors.New("not implemented")
+	if !msg.Is_draft {
+		return errors.New("message " + message_id + " is not a draft.")
+	}
+	if attchmtIndex < 0 || attchmtIndex > (len(msg.Attachments)-1) {
+		return errors.New(fmt.Sprintf("index %d for message %s is not consistent.", attchmtIndex, message_id))
+	}
+
+	//remove attachment's reference from draft
+	attachment_uri := msg.Attachments[attchmtIndex].URI
+	msg.Attachments = append(msg.Attachments[:attchmtIndex], msg.Attachments[attchmtIndex+1:]...)
+
+	//update store
+	fields := make(map[string]interface{})
+	fields["attachments"] = msg.Attachments
+	rest.store.UpdateMessage(msg, fields)
+	if err != nil {
+		return err
+	}
+	//update index
+	err = rest.index.UpdateMessage(msg, fields)
+
+	//remove temporary file from object store
+	err = rest.store.DeleteAttachment(attachment_uri)
+	if err != nil {
+		return errors.New(fmt.Sprintf("failed to remove temp attachment at uri '%s' with error <%s>", attachment_uri, err.Error()))
+	}
+
+	return nil
 }
