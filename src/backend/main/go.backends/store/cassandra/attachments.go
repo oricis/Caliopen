@@ -7,7 +7,8 @@ package store
 import "io"
 
 func (cb *CassandraBackend) StoreAttachment(attachment_id string, file io.Reader) (uri string, size int, err error) {
-	return cb.ObjectsStore.PutAttachment(attachment_id, file)
+	uri, s, err := cb.ObjectsStore.PutAttachment(attachment_id, file)
+	return uri, int(s), err
 }
 
 func (cb *CassandraBackend) DeleteAttachment(uri string) error {
