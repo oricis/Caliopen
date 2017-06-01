@@ -27,7 +27,7 @@ type (
 
 	ObjectsStore interface {
 		PutRawEmail(email_uuid obj.UUID, raw_email string) (uri string, err error)
-		PutAttachment(attchId string, attch io.Reader) (uri string, err error)
+		PutAttachment(attchId string, attch io.Reader) (uri string, size int, err error)
 		RemoveAttachment(attchId string) error
 	}
 )
