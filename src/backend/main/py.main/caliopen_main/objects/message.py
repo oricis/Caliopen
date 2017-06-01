@@ -21,7 +21,6 @@ from .attachment import MessageAttachment
 from .external_references import ExternalReferences
 from .identities import Identity
 from .participant import Participant
-from .privacy_features import PrivacyFeatures
 from schematics.types import UUIDType
 from caliopen_main.message.parameters.participant import \
     Participant as IndexedParticipant
@@ -52,7 +51,7 @@ class Message(base.ObjectIndexable):
         'message_id': UUID,
         'parent_id': types.StringType,
         'participants': [Participant],
-        'privacy_features': PrivacyFeatures,
+        'privacy_features': types.DictType,
         'raw_msg_id': UUID,
         'subject': types.StringType,
         'tags': [ResourceTag],

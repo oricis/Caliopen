@@ -27,6 +27,14 @@ broker:
     port: 2525
     host: broker.dev.caliopen.org
 
+object_store:
+    db_size_limit: 1048576
+    service: s3
+    endpoint: minio.dev.caliopen.org:9090
+    access_key: CALIOPEN_ACCESS_KEY_
+    secret_key: CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
+    location: eu-fr-localhost
+
 system:
     default_tags:
         -
@@ -43,3 +51,10 @@ system:
             color: white
 
 default_domain: caliopen.local
+
+internal_domains:
+    - caliopen.local
+
+blacklistes:
+    mx:
+        - mx.bad.guy

@@ -11,30 +11,33 @@ must be defined outside of this one.
 
 import logging
 import base64
-import random
 from itertools import groupby
 from mailbox import Message
 from datetime import datetime
 from email.utils import parsedate_tz, mktime_tz
 
-from caliopen_main.message.parameters import Participant, NewMessage
-from caliopen_main.message.parameters import Attachment, ExternalReferences
+import zope.interface
+
 from caliopen_main.user.helpers.normalize import clean_email_address
-from .base import BaseRawParser
+from caliopen_main.interfaces import (IAttachmentParser, IMessageParser,
+                                      IParticipantParser)
+from .mail_feature import MailPrivacyFeature
 
 
 log = logging.getLogger(__name__)
 
 
-class MailPart(object):
+class MailAttachment(object):
     """Mail part structure."""
 
+    zope.interface.implements(IAttachmentParser)
+
     def __init__(self, part):
-        """Initialize part structure."""
+        """Extract attachment attributes from a mail part."""
         self.content_type = part.get_content_type()
         self.filename = part.get_filename()
-        text = part.get_payload()
-        self.size = len(text) if text else 0
+        data = part.get_payload()
+        self.size = len(data) if data else 0
         self.can_index = False
         if 'text' in part.get_content_type():
             self.can_index = True
@@ -45,14 +48,27 @@ class MailPart(object):
             self.charset = charsets[0]
             if 'Content-Transfer-Encoding' in part.keys():
                 if part.get('Content-Transfer-Encoding') == 'base64':
-                    text = base64.b64decode(text)
+                    data = base64.b64decode(data)
             if self.charset:
-                text = text.decode(self.charset, 'replace'). \
+                data = data.decode(self.charset, 'replace'). \
                     encode('utf-8')
-        self.data = text
+        self.data = data
 
 
-class MailMessage(BaseRawParser):
+class MailParticipant(object):
+    """Mail participant parser."""
+
+    zope.interface.implements(IParticipantParser)
+
+    def __init__(self, type, addr):
+        """Parse an email address and create a participant."""
+        self.type = type
+        parts = clean_email_address(addr)
+        self.address = parts[0]
+        self.label = parts[1]
+
+
+class MailMessage(object):
     """
     Mail message structure.
 
@@ -60,45 +76,64 @@ class MailMessage(BaseRawParser):
     resolve all recipients emails, parts and group headers
     """
 
+    zope.interface.implements(IMessageParser)
+
     recipient_headers = ['From', 'To', 'Cc', 'Bcc']
     message_type = 'email'
+    warnings = []
 
-    def __init__(self, raw):
-        """Initialize structure from a raw mail."""
-        super(MailMessage, self).__init__(raw)
+    def __init__(self, raw_data):
+        """Parse an RFC2822,5322 mail message."""
+        self.raw = raw_data
         try:
-            self.mail = Message(raw.raw_data)
+            self.mail = Message(raw_data)
         except Exception as exc:
             log.error('Parse message failed %s' % exc)
-            raise
+            raise exc
         if self.mail.defects:
             # XXX what to do ?
             log.warn('Defects on parsed mail %r' % self.mail.defects)
-        self.participants = self._get_participants()
-        self.parts = self._get_parts()
-        self.headers = self._get_headers()
-        self.subject = self.mail.get('Subject')
+            self.warning = self.mail.defects
+
+    @property
+    def subject(self):
+        """Mail subject."""
+        return self.mail.get('Subject')
+
+    @property
+    def body(self):
+        """Mail body."""
+        # XXX define the extraction logic for multipart and co.
+        if not self.mail.is_multipart():
+            return self.mail.get_payload()
+        return ''
+
+    @property
+    def size(self):
+        """Get mail size in bytes."""
+        return len(self.mail.as_string())
+
+    @property
+    def external_references(self):
+        """Return mail references to be used as ExternalReferences."""
+        ext_id = self.mail.get('Message-Id')
+        parent_id = self.mail.get('In-Reply-To')
+        return {'message_id': ext_id,
+                'parent_id': parent_id}
+
+    @property
+    def date(self):
+        """Get date from a mail message."""
         mail_date = self.mail.get('Date')
         if mail_date:
             tmp_date = parsedate_tz(mail_date)
-            self.date = datetime.fromtimestamp(mktime_tz(tmp_date))
-        else:
-            log.debug('No date on mail using now (UTC)')
-            self.date = datetime.utcnow()
-        self.external_message_id = self.mail.get('Message-Id')
-        self.external_parent_id = self.mail.get('In-Reply-To')
-        self.size = len(raw.raw_data) if raw.raw_data else 0
-        log.debug('Parsed mail {} with size {}'.
-                  format(self.external_message_id, self.size))
+            return datetime.fromtimestamp(mktime_tz(tmp_date))
+        log.debug('No date on mail using now (UTC)')
+        return datetime.utcnow()
 
     @property
-    def text(self):
-        """Message all text."""
-        # XXX : more complexity ?
-        return "\n".join([x.data for x in self.parts
-                          if x.can_index and x.data])
-
-    def _get_participants(self):
+    def participants(self):
+        """Mail participants."""
         participants = []
         for header in self.recipient_headers:
             addrs = []
@@ -108,25 +143,54 @@ class MailMessage(BaseRawParser):
                     addrs.extend(self.mail.get(header).split(','))
                 else:
                     addrs.append(self.mail.get(header))
-            addrs = [clean_email_address(x) for x in addrs]
             for addr in addrs:
-                participant = Participant()
-                participant.address = addr[0]
-                participant.type = participant_type
-                participant.protocol = self.message_type
-                participant.label = addr[1]
+                participant = MailParticipant(participant_type, addr)
                 participants.append(participant)
         return participants
 
-    def _get_parts(self):
-        """Multipart message, extract parts."""
+    @property
+    def attachments(self):
+        """Multipart mail message, extract parts into attachments."""
+        if not self.mail.is_multipart():
+            return []
         parts = []
         for p in self.mail.walk():
             if not p.is_multipart():
-                parts.append(self.__process_part(p))
+                parts.append(MailAttachment(p))
         return parts
 
-    def _get_headers(self):
+    @property
+    def extra_parameters(self):
+        """Mail message extra parameters."""
+        lists = []
+        for list_name in self.headers.get('List-ID', []):
+            lists.append(list_name)
+        return {'lists': lists}
+
+    @property
+    def privacy_features(self):
+        """Mail message privacy features."""
+        extractor = MailPrivacyFeature(self)
+        return extractor.process()
+
+    def lookup_discussion_sequence(self, *args, **kwargs):
+        """Return list of lookup type, value from a mail message."""
+        seq = []
+        # first from parent
+        if self.external_references['parent_id']:
+            seq.append(('parent', self.external_references['parent_id']))
+        # then list lookup
+        for listname in self.extra_parameters.get('lists', []):
+            seq.append(('list', listname))
+        # last try to lookup from sender address
+        for p in self.participants:
+            if p.type == 'from' and len(self.participants) == 2:
+                seq.append(('from', p.address))
+        return seq
+
+    # Others parameters specific for mail message
+    @property
+    def headers(self):
         """
         Extract all headers into list.
 
@@ -142,100 +206,3 @@ class MailMessage(BaseRawParser):
         for k, g in groupby(data, key=keyfunc):
             headers[k] = [x[1] for x in g]
         return headers
-
-    def __process_part(self, part):
-        return MailPart(part)
-
-    @property
-    def transport_privacy_index(self):
-        """Evaluate transport privacy index."""
-        # XXX : TODO
-        return random.randint(0, 50)
-
-    @property
-    def content_privacy_index(self):
-        """Evaluate content privacy index."""
-        # XXX: real evaluation needed ;)
-        if 'PGP' in [x.content_type for x in self.parts]:
-            return random.randint(50, 100)
-        else:
-            return 0.0
-
-    @property
-    def spam_level(self):
-        """Report spam level."""
-        try:
-            score = self.headers.get('X-Spam-Score')
-            score = float(score[0])
-        except:
-            score = 0.0
-        if score < 5.0:
-            return 0.0
-        if score >= 5.0 and score < 15.0:
-            return min(score * 10, 100.0)
-        return 100.0
-
-    @property
-    def importance_level(self):
-        """Return percent estimated importance level of this message."""
-        # XXX. real compute needed
-        return 0 if self.spam_level else random.randint(50, 100)
-
-    @property
-    def lists(self):
-        """List related to message."""
-        lists = []
-        for list_name in self.headers.get('List-ID', []):
-            lists.append(list_name)
-        return lists
-
-    @property
-    def from_(self):
-        """Return the sender participant."""
-        for part in self.participants:
-            if part.type == 'From':
-                return part
-        return None
-
-    def lookup_sequence(self):
-        """Build parameter sequence for lookups."""
-        seq = []
-        # first from parent
-        if self.external_parent_id:
-            seq.append(('parent', self.external_parent_id))
-        # then list lookup
-        for listname in self.lists:
-            seq.append(('list', listname))
-        # last try to lookup from sender address
-        if self.from_:
-            seq.append(('from', self.from_.address))
-        return seq
-
-    def parse(self):
-        """Transform mail to a NewMessage parameter."""
-        msg = NewMessage()
-        msg.type = self.message_type
-        msg.subject = self.subject
-        msg.date = self.date
-        msg.body = self.text
-        msg.is_unread = True
-        msg.is_draft = False
-        msg.is_answered = False
-        msg.participants = self.participants
-        msg.raw_msg_id = self.raw.raw_msg_id
-
-        # XXX need transform to part parameter
-        for part in self.parts:
-            param = Attachment()
-            param.content_type = part.content_type
-            param.data = part.data
-            param.size = part.size
-            param.filename = part.filename
-            param.can_index = part.can_index
-            msg.attachments.append(param)
-        ext_ref = ExternalReferences()
-        ext_ref.parent_id = self.external_parent_id
-        ext_ref.message_id = self.external_message_id
-        msg.external_references = ext_ref
-        msg.importance_level = self.importance_level
-        return msg
