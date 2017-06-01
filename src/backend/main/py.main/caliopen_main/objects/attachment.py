@@ -9,6 +9,7 @@ from caliopen_main.message.store.attachment import \
 from caliopen_main.message.store.attachment_index import \
     IndexedMessageAttachment
 
+
 class MessageAttachment(base.ObjectJsonDictifiable):
 
     """attachment's attributes, nested within message object"""
