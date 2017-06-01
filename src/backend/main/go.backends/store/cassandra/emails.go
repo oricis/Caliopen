@@ -33,8 +33,8 @@ func (cb *CassandraBackend) StoreRaw(raw_email string) (uuid string, err error) 
 
 	// handle emails too large to fit into cassandra
 	if m.Raw_Size > cb.CassandraConfig.SizeLimit {
-		if cb.CassandraConfig.WithS3 {
-			uri, err := cb.S3Backend.PutRawEmail(msg_id, raw_email)
+		if cb.CassandraConfig.WithObjStore {
+			uri, err := cb.ObjectsStore.PutRawEmail(msg_id, raw_email)
 			if err != nil {
 				return "", err
 			}

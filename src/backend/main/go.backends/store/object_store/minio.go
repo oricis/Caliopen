@@ -7,33 +7,37 @@ package object_store
 import (
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/minio/minio-go"
+	"io"
 )
 
 type (
 	MinioBackend struct {
-		S3Config
+		OSSConfig
 		Client *minio.Client
 	}
 
-	S3Config struct {
-		Endpoint       string
-		AccessKey      string
-		SecretKey      string
-		RawMsgLocation string
-		RawMsgBucket   string
+	OSSConfig struct {
+		Endpoint         string
+		AccessKey        string
+		SecretKey        string
+		Location         string
+		RawMsgBucket     string
+		AttachmentBucket string
 	}
 
-	S3Backend interface {
+	ObjectsStore interface {
 		PutRawEmail(email_uuid obj.UUID, raw_email string) (uri string, err error)
+		PutAttachment(attchId string, attch io.Reader) (uri string, err error)
+		RemoveAttachment(attchId string) error
 	}
 )
 
-func InitializeS3Backend(config S3Config) (s3 S3Backend, err error) {
+func InitializeObjectsStore(config OSSConfig) (oss ObjectsStore, err error) {
 	mb := new(MinioBackend)
-	mb.S3Config = config
+	mb.OSSConfig = config
 
 	// Initialize minio client object.
-	mb.Client, err = minio.NewWithRegion(config.Endpoint, config.AccessKey, config.SecretKey, false, config.RawMsgLocation)
+	mb.Client, err = minio.NewWithRegion(config.Endpoint, config.AccessKey, config.SecretKey, false, config.Location)
 	// or NewWithCredentials to avoid putting credentials directly into conf. file ?
 	if err != nil {
 		mb.Client = nil
@@ -44,7 +48,7 @@ func InitializeS3Backend(config S3Config) (s3 S3Backend, err error) {
 	exists, err := mb.Client.BucketExists(config.RawMsgBucket)
 	if err != nil || !exists {
 		// Create a new bucket for raw messages
-		err = mb.Client.MakeBucket(config.RawMsgBucket, config.RawMsgLocation)
+		err = mb.Client.MakeBucket(config.RawMsgBucket, config.Location)
 		if err != nil {
 			mb.Client = nil
 			return

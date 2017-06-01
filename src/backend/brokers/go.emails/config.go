@@ -14,7 +14,7 @@ type (
 		IndexName        string      `mapstructure:"index_name"`
 		IndexConfig      IndexConfig `mapstructure:"index_settings"`
 		ObjectStore      string      `mapstructure:"object_store"`
-		S3Config         S3Config    `mapstructure:"s3_settings"`
+		OSSConfig        OSSConfig   `mapstructure:"object_store_settings"`
 		InTopic          string      `mapstructure:"in_topic"`
 		InWorkers        int         `mapstructure:"lda_workers_size"`
 		LogReceivedMails bool        `mapstructure:"log_received_mails"`
@@ -35,7 +35,7 @@ type (
 		Urls []string `mapstructure:"urls"`
 	}
 
-	S3Config struct {
+	OSSConfig struct {
 		Endpoint  string            `mapstructure:"endpoint"`
 		AccessKey string            `mapstructure:"access_key"`
 		SecretKey string            `mapstructure:"secret_key"`

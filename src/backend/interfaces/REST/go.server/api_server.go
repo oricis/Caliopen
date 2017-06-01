@@ -44,9 +44,12 @@ type (
 	}
 
 	BackendSettings struct {
-		Hosts       []string `mapstructure:"hosts"`
-		Keyspace    string   `mapstructure:"keyspace"`
-		Consistency uint16   `mapstructure:"consistency_level"`
+		Hosts            []string      `mapstructure:"hosts"`
+		Keyspace         string        `mapstructure:"keyspace"`
+		Consistency      uint16        `mapstructure:"consistency_level"`
+		SizeLimit        uint64        `mapstructure:"raw_size_limit"` // max size for db (in bytes)
+		ObjStoreType     string        `mapstructure:"object_store"`
+		ObjStoreSettings obj.OSSConfig `mapstructure:"obj_store_settings"`
 	}
 
 	IndexConfig struct {
@@ -80,10 +83,13 @@ func (server *REST_API) initialize(config APIConfig) error {
 	//init Caliopen facility
 	caliopenConfig := obj.CaliopenConfig{
 		RESTstoreConfig: obj.RESTstoreConfig{
-			BackendName: config.BackendName,
-			Hosts:       config.BackendConfig.Settings.Hosts,
-			Keyspace:    config.BackendConfig.Settings.Keyspace,
-			Consistency: config.BackendConfig.Settings.Consistency,
+			BackendName:  config.BackendName,
+			Hosts:        config.BackendConfig.Settings.Hosts,
+			Keyspace:     config.BackendConfig.Settings.Keyspace,
+			Consistency:  config.BackendConfig.Settings.Consistency,
+			SizeLimit:    config.BackendConfig.Settings.SizeLimit,
+			ObjStoreType: config.BackendConfig.Settings.ObjStoreType,
+			OSSConfig:    config.BackendConfig.Settings.ObjStoreSettings,
 		},
 		RESTindexConfig: obj.RESTIndexConfig{
 			IndexName: config.IndexConfig.IndexName,
