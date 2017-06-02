@@ -17,9 +17,11 @@ import (
 func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err error) {
 	const nats_order = "deliver"
 	natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, msg_id, user_id)
-	rep, err := rest.nats_conn.Request(rest.nats_outSMTP_topic, []byte(natsMessage), 10*time.Second)
+	rep, err := rest.nats_conn.Request(rest.nats_outSMTP_topic, []byte(natsMessage), 30*time.Second)
 	if err != nil {
+		log.WithError(err).Warn("[RESTfacility]: SendDraft error")
 		if rest.nats_conn.LastError() != nil {
+			log.WithError(rest.nats_conn.LastError()).Warn("[RESTfacility]: SendDraft error")
 			return nil, err
 		}
 		return nil, err
@@ -27,11 +29,12 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 	var reply email_broker.DeliveryAck
 	err = json.Unmarshal(rep.Data, &reply)
 	if err != nil {
+		log.WithError(err).Warn("[RESTfacility]: SendDraft error")
 		return nil, err
 	}
 	if reply.Err {
+		log.Warn("[RESTfacility]: SendDraft error")
 		return nil, errors.New(reply.Response)
 	}
-	log.Infof("nats reply : %s", reply)
 	return rest.store.GetMessage(user_id, msg_id)
 }

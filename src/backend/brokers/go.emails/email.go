@@ -12,6 +12,7 @@ import (
 	"github.com/jhillyerd/go.enmime"
 	"github.com/satori/go.uuid"
 	"gopkg.in/gomail.v2"
+	"io"
 	"io/ioutil"
 	"mime"
 	"net/mail"
@@ -35,7 +36,7 @@ func newAddressesFields() (af map[string][]string) {
 // conforms to
 // RFC822 / RFC2822 / RFC5322 (internet message format)
 // RFC2045 / RFC2046 / RFC2047 / RFC2048 / RFC2049 (MIME) => TODO
-func MarshalEmail(msg *obj.Message, version string, mailhost string) (em *obj.EmailMessage, err error) {
+func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err error) {
 
 	em = &obj.EmailMessage{
 		Email: &obj.Email{
@@ -82,14 +83,33 @@ func MarshalEmail(msg *obj.Message, version string, mailhost string) (em *obj.Em
 	em.Message.Date = time.Now()
 	m.SetHeader("Date", em.Message.Date.Format(time.RFC1123Z))
 
-	messageId := "<" + msg.Message_id.String() + "@" + mailhost + ">" // should be the default domain in case there are multiple 'from' addresses
+	messageId := "<" + msg.Message_id.String() + "@" + b.Config.PrimaryMailHost + ">" // should be the default domain in case there are multiple 'from' addresses
 
 	m.SetHeader("Message-ID", messageId)
-	m.SetHeader("X-Mailer", "Caliopen-"+version)
+	m.SetHeader("X-Mailer", "Caliopen-"+b.Config.AppVersion)
 
 	//TODO: In-Reply-To header
 	m.SetHeader("Subject", msg.Subject)
 	m.SetBody("text/plain", msg.Body)
+
+	for _, attachment := range msg.Attachments {
+		//check if file is available in object storage
+		if b.Store.AttachmentExists(attachment.URI) {
+			//give method to retrieve file from broker storage interface (instead of default filesystem)
+			m.Attach(attachment.File_name, gomail.SetCopyFunc(func(w io.Writer) error {
+				file, err := b.Store.GetAttachment(attachment.URI)
+				if err != nil {
+					return err
+				}
+				_, err = io.Copy(w, file)
+				if err != nil {
+					return err
+				}
+				return nil
+			}))
+		}
+	}
+
 	//TODO: errors handling
 
 	m.WriteTo(&em.Email.Raw)
@@ -107,7 +127,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 		json_mail.Envelope.From = ack.EmailMessage.Email.SmtpMailFrom
 		json_mail.Envelope.To = ack.EmailMessage.Email.SmtpRcpTo
 	}
-	raw_email_id, err := b.Store.StoreRaw(ack.EmailMessage.Email.Raw.String())
+	raw_email_id, err := b.Store.StoreRawMessage(ack.EmailMessage.Email.Raw.String())
 	if err != nil {
 		log.WithError(err).Warn("outbound: storing raw email failed")
 		return err
@@ -269,7 +289,7 @@ func emailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 	return json_email, nil
 }
 
-// build part objects recursively
+// Build part objects recursively
 func addChildPart(parent []obj.Part, part enmime.MIMEPart) []obj.Part {
 
 	child := obj.Part{
@@ -305,7 +325,7 @@ func addChildPart(parent []obj.Part, part enmime.MIMEPart) []obj.Part {
 	return append(parent, child)
 }
 
-// returns the boundary string from a part header
+// Returns the boundary string from a part header
 func boundary(s string) (boundary string, err error) {
 	mediatype, params, err := mime.ParseMediaType(s)
 	if err != nil {
@@ -319,3 +339,4 @@ func boundary(s string) (boundary string, err error) {
 	}
 	return boundary, nil
 }
+
