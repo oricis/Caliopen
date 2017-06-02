@@ -70,13 +70,14 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 			Consistency: gocql.Consistency(conf.StoreConfig.Consistency),
 			SizeLimit:   conf.StoreConfig.SizeLimit,
 		}
-		if conf.ObjectStore == "s3" {
+		if conf.StoreConfig.ObjectStore == "s3" {
 			c.WithObjStore = true
-			c.Endpoint = conf.OSSConfig.Endpoint
-			c.AccessKey = conf.OSSConfig.AccessKey
-			c.SecretKey = conf.OSSConfig.SecretKey
-			c.RawMsgBucket = conf.OSSConfig.Buckets["raw_messages"]
-			c.Location = conf.OSSConfig.Location
+			c.Endpoint = conf.StoreConfig.OSSConfig.Endpoint
+			c.AccessKey = conf.StoreConfig.OSSConfig.AccessKey
+			c.SecretKey = conf.StoreConfig.OSSConfig.SecretKey
+			c.RawMsgBucket = conf.StoreConfig.OSSConfig.Buckets["raw_messages"]
+			c.AttachmentBucket = conf.StoreConfig.OSSConfig.Buckets["temporary_attachments"]
+			c.Location = conf.StoreConfig.OSSConfig.Location
 		}
 		b, e := store.InitializeCassandraBackend(c)
 		if e != nil {

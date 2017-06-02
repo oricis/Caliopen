@@ -49,7 +49,7 @@ type (
 		Consistency      uint16        `mapstructure:"consistency_level"`
 		SizeLimit        uint64        `mapstructure:"raw_size_limit"` // max size for db (in bytes)
 		ObjStoreType     string        `mapstructure:"object_store"`
-		ObjStoreSettings obj.OSSConfig `mapstructure:"obj_store_settings"`
+		ObjStoreSettings obj.OSSConfig `mapstructure:"object_store_settings"`
 	}
 
 	IndexConfig struct {

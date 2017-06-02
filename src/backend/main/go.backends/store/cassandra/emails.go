@@ -11,8 +11,6 @@ import (
 	"github.com/gocql/gocql"
 )
 
-
-
 // part of LDABackend interface implementation
 // return a list of users' ids found in user_name table for the given email addresses list
 func (cb *CassandraBackend) GetUsersForRecipients(rcpts []string) (user_ids []obj.UUID, err error) {
