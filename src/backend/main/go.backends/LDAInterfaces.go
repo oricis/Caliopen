@@ -4,7 +4,10 @@
 
 package backends
 
-import "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+import (
+	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"io"
+)
 
 //LDA only deals with email
 type LDAStore interface {
@@ -13,11 +16,14 @@ type LDAStore interface {
 	GetUsersForRecipients([]string) ([]objects.UUID, error) // returns a list of user Ids for each recipients. No deduplicate.
 	StoreMessage(msg *objects.Message) error
 
-	//store raw email
-	StoreRaw(data string) (raw_id string, err error)
+	StoreRawMessage(data string) (raw_id string, err error)
 
 	UpdateMessage(msg *objects.Message, fields map[string]interface{}) error
 	LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error)
+
+	GetAttachment(uri string) (file io.Reader, err error)
+	DeleteAttachment(uri string) error
+	AttachmentExists(uri string) bool
 }
 
 type LDAIndex interface {

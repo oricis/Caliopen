@@ -12,5 +12,17 @@ func (cb *CassandraBackend) StoreAttachment(attachment_id string, file io.Reader
 }
 
 func (cb *CassandraBackend) DeleteAttachment(uri string) error {
-	return cb.ObjectsStore.RemoveAttachment(uri)
+	return cb.ObjectsStore.RemoveObject(uri)
+}
+
+func (cb *CassandraBackend) GetAttachment(uri string) (file io.Reader, err error) {
+	return cb.ObjectsStore.GetObject(uri)
+}
+
+func (cb *CassandraBackend) AttachmentExists(uri string) bool {
+	info, err := cb.ObjectsStore.StatObject(uri)
+	if err == nil && info.Err == nil {
+		return true
+	}
+	return false
 }

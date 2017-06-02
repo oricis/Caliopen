@@ -26,9 +26,11 @@ type (
 	}
 
 	ObjectsStore interface {
-		PutRawEmail(email_uuid obj.UUID, raw_email string) (uri string, err error)
+		PutRawMessage(message_uuid obj.UUID, raw_message string) (uri string, err error)
 		PutAttachment(attchId string, attch io.Reader) (uri string, size int64, err error)
-		RemoveAttachment(attchId string) error
+		RemoveObject(uri string) error
+		GetObject(uri string) (file io.Reader, err error)
+		StatObject(uri string) (info minio.ObjectInfo, err error)
 	}
 )
 
