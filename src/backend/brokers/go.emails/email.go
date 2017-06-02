@@ -118,6 +118,7 @@ func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err 
 
 // executed by natsMsgHandler after an outgoing email has been transmitted to the MTA without error
 // it flags the caliopen message to 'sent' in cassandra and elastic
+// cleans-up temporary attachment files if any
 // and stores the raw outbound email
 func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 
@@ -132,11 +133,18 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 		log.WithError(err).Warn("outbound: storing raw email failed")
 		return err
 	}
+	// clean-up attachments' temporary files
+	for i := range ack.EmailMessage.Message.Attachments {
+		b.Store.DeleteAttachment(ack.EmailMessage.Message.Attachments[i].URI)
+		ack.EmailMessage.Message.Attachments[i].URI = ""
+	}
+
 	// update caliopen message status
 	fields := make(map[string]interface{})
 	fields["raw_msg_id"] = raw_email_id
 	fields["is_draft"] = false
 	fields["date"] = ack.EmailMessage.Message.Date
+	fields["attachments"] = ack.EmailMessage.Message.Attachments
 	err = b.Store.UpdateMessage(ack.EmailMessage.Message, fields)
 	if err != nil {
 		log.Warn("Store.UpdateMessage operation failed")
@@ -339,4 +347,3 @@ func boundary(s string) (boundary string, err error) {
 	}
 	return boundary, nil
 }
-

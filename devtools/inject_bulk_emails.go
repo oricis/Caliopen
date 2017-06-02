@@ -75,7 +75,7 @@ func sendMail(i int, wg *sync.WaitGroup) {
 	m.SetDateHeader("Date", time.Now())
 	m.SetHeader("Subject", "Subject line for testing")
 	m.SetBody("text/plain", "Body hello from Stan.\n")
-	//m.Attach("/Users/stan/Downloads/LE-GOUT-DES-MATHS.pdf")
+	m.Attach("/Users/stan/Downloads/LE-GOUT-DES-MATHS.pdf")
 
 	_, err = m.WriteTo(wr)
 	if err != nil {
