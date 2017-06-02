@@ -7,6 +7,7 @@ package http_middleware
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-openapi/analysis"
 	swgErr "github.com/go-openapi/errors"
@@ -54,8 +55,13 @@ type jsonErrors []jsonError
 func InitSwaggerMiddleware(swaggerFile string) (err error) {
 	log.Infoln("Loading swagger specifications…")
 	swaggerSpec, err = loads.JSONSpec(swaggerFile)
+	if err != nil {
+		return err
+	}
 	swagAPI := untyped.NewAPI(swaggerSpec)
 	swagAPI.WithJSONDefaults()
+	swagAPI.RegisterConsumer("multipart/form-data", runtime.TextConsumer())
+	//TODO: write our consumers to be less tighted to open-api
 	//swagAPI.ServeError = ServeError
 
 	swagCtx := middleware.NewContext(swaggerSpec, swagAPI, nil)
@@ -75,9 +81,6 @@ func InitSwaggerMiddleware(swaggerFile string) (err error) {
 	}
 
 	middleware.NewRouter(swaggerContext, nil) //workaround to set the router within swaggerContext
-	if err != nil {
-		return err
-	}
 
 	return
 }
@@ -114,6 +117,10 @@ func SwaggerInboundValidation(ctx *gin.Context) {
 			ctx.Abort()
 			return
 		}
+	} else {
+		ServeError(ctx.Writer, ctx.Request, errors.New("Route <"+ctx.Request.Method+" "+ctx.Request.RequestURI+"> not found in swagger specs."))
+		ctx.Abort()
+		return
 	}
 	ctx.Set("swgCtx", swaggerContext)
 }
@@ -313,4 +320,3 @@ func (r *routableUntypedAPI) DefaultProduces() string {
 func (r *routableUntypedAPI) DefaultConsumes() string {
 	return r.defaultConsumes
 }
-
