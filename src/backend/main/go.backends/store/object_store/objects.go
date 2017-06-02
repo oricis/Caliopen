@@ -24,7 +24,7 @@ func (mb *MinioBackend) PutObject(name, bucket string, object io.Reader) (uri st
 
 func (mb *MinioBackend) RemoveObject(objURI string) error {
 	uri, err := url.Parse(objURI)
-	if err != nil {
+	if err != nil || len(uri.Host) < 1 || len(uri.Path) < 2 {
 		return err
 	}
 	return mb.Client.RemoveObject(uri.Host, uri.Path[1:])
@@ -32,7 +32,7 @@ func (mb *MinioBackend) RemoveObject(objURI string) error {
 
 func (mb *MinioBackend) GetObject(objURI string) (file io.Reader, err error) {
 	uri, err := url.Parse(objURI)
-	if err != nil {
+	if err != nil || len(uri.Host) < 1 || len(uri.Path) < 2 {
 		return nil, err
 	}
 	return mb.Client.GetObject(uri.Host, uri.Path[1:])
@@ -40,7 +40,7 @@ func (mb *MinioBackend) GetObject(objURI string) (file io.Reader, err error) {
 
 func (mb *MinioBackend) StatObject(objURI string) (info minio.ObjectInfo, err error) {
 	uri, err := url.Parse(objURI)
-	if err != nil {
+	if err != nil || len(uri.Host) < 1 || len(uri.Path) < 2 {
 		return
 	}
 	return mb.Client.StatObject(uri.Host, uri.Path[1:])
