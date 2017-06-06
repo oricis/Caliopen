@@ -7,6 +7,7 @@ import ContactAvatarLetter from '../ContactAvatarLetter';
 import Dropdown, { withDropdownControl } from '../Dropdown';
 import DiscussionDraft, { TopRow, BodyRow, BottomRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
+import RecipientsList from '../RecipientsList';
 import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
@@ -126,6 +127,7 @@ class NewDraftForm extends Component {
             />
           </TopRow>
           <BodyRow className="m-new-draft__body">
+            <RecipientsList />
             <DiscussionTextarea
               body={this.state.draft.body}
               onChange={this.handleChange}

@@ -1,16 +1,14 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
-import { createSelector } from 'reselect';
-
-const contactsSelector = createSelector(
-  state => state.contactReducer,
-  payload => ({ contacts: payload.contacts.map(contactId => payload.contactsById[contactId]) })
-);
-
-const protocolsSelector = createSelector(
-  (state, contact) => state.contactReducer.protocolsById[contact.contact_id],
-  (state) => state.contactReducer.isFetching,
-  (protocols, isContactFetching) => ({ protocols, isContactFetching })
-);
+import classnames from 'classnames';
+import DropdownMenu, { withDropdownControl } from '../DropdownMenu';
+import Button from '../Button';
+import Icon from '../Icon';
+import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
+import filterContact from '../../services/filter-contacts';
+import protocolsConfig from '../../services/protocols-config';
+import './style.scss';
 
 const MAX_CONTACT_RESULTS = 5;
 
@@ -23,255 +21,292 @@ export const KEY = {
   DOWN: 40,
 };
 
-export class RecipientListController {
-  constructor($scope, $ngRedux, ContactsActions, $filter, protocolsConfig) {
-    'ngInject';
-    this.$scope = $scope;
-    this.$ngRedux = $ngRedux;
-    this.ContactsActions = ContactsActions;
-    this.$filter = $filter;
-    this.protocolsConfig = protocolsConfig;
+const Input = withDropdownControl(props => (<input type="text" {...props} />));
+
+const getStateFromProps = props => ({
+  participantsAndSearchTerms: props.recipients.map(participant => ({ participant })),
+});
+
+class RecipientList extends Component {
+  static propTypes = {
+    contacts: PropTypes.arrayOf(PropTypes.shape()),
+    recipients: PropTypes.arrayOf(PropTypes.shape()),
+    onRecipientsChange: PropTypes.func,
+    requestContacts: PropTypes.func,
+    __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    contacts: [],
+    recipients: [],
+    onRecipientsChange: () => {},
+    requestContacts: () => {},
+  };
+  constructor(props) {
+    super(props);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleSearchKeydown = this.handleSearchKeydown.bind(this);
+    this.handleClickRecipientList = this.handleClickRecipientList.bind(this);
+    this.state = {
+      participantsAndSearchTerms: [],
+      searchTerms: '',
+      searchResults: [],
+      activeSearchResultIndex: 0,
+    };
   }
 
-  $onInit() {
-    this.$scope.$on('$destroy', this.$ngRedux.connect(contactsSelector)(this));
-    this.$ngRedux.dispatch(this.ContactsActions.fetchContacts(undefined, undefined, 'mock'));
-    this.searchTerms = '';
-    this.searchResults = [];
-    this.activeSearchResultIndex = 0;
-    this.searchOpened = false;
-    this.id = uuidV1();
-    this.searchInputElementsSelectors = [
-      `#${this.id}`,
-      `#${this.id} .m-recipient-list__search-input`,
-    ];
+  componentWillMount() {
+    this.setState(getStateFromProps(this.props));
   }
 
-  addRecipient(recipient) {
-    this.recipients.push(recipient);
-    this.initSearch();
-    this.onRecipientsChange({ recipients: this.recipients });
+  componentDidMount() {
+    this.props.requestContacts();
   }
 
-  addKnownRecipient(contact, searchTerms) {
-    this.$ngRedux.dispatch(this.ContactsActions.fetchProtocols(contact.contact_id, 'mock'));
+  handleRemoveRecipient(recipient) {
+    this.removeRecipient(recipient);
+  }
 
-    const unsubscribe = this.$ngRedux.subscribe(() => {
-      const { protocols, isContactFetching } = protocolsSelector(this.$ngRedux.getState(), contact);
+  handleSearchChange(ev) {
+    this.setState({
+      searchTerms: ev.target.value,
+    }, () => this.search(this.state.searchTerms));
+  }
 
-      if (!isContactFetching && !!protocols) {
-        unsubscribe();
-        const protocol = protocols[0];
+  handleClickRecipientList(ev) {
+    if (ev.target === ev.currentTarget) {
+      this.focusSearch();
+    }
+  }
 
-        this.addRecipient({
-          recipient_id: uuidV1(),
-          name: contact.title,
-          protocol,
-          searchTerms,
-          contact_id: contact.contact_id,
-        });
-      }
+  // eslint-disable-next-line
+  focusSearch(ev) {
+    // XXX
+    this.$scope.$broadcast('recipient-list.search.focus');
+  }
 
-      this.isContactFetching = isContactFetching;
+  search(searchTerms) {
+    if (this.state.searchTerms.length) {
+      const { contacts } = this.props;
+      this.setState({
+        searchResults: filterContact({ contacts, searchTerms }).slice(0, MAX_CONTACT_RESULTS),
+      });
+    } else {
+      this.resetSearch();
+    }
+  }
+
+  handleSearchKeydown(ev) {
+    const { which: keyCode } = ev;
+
+    if ([KEY.ENTER, KEY.UP, KEY.DOWN].indexOf(keyCode) !== -1) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+
+    if (keyCode === KEY.UP &&
+      this.state.searchResults.length > 0 &&
+      this.state.activeSearchResultIndex > 0) {
+      this.setState(prevState => ({
+        activeSearchResultIndex: prevState.activeSearchResultIndex - 1,
+      }));
+    }
+
+    if (keyCode === KEY.DOWN &&
+      this.state.searchResults.length > 0 &&
+      this.state.activeSearchResultIndex < this.state.searchResults.length - 1) {
+      this.setState(prevState => ({
+        activeSearchResultIndex: prevState.activeSearchResultIndex + 1,
+      }));
+    }
+
+    if (keyCode === KEY.BACKSPACE) {
+      this.eventuallyEditRecipient();
+    }
+
+    if (keyCode === KEY.ENTER && this.state.searchResults.length > 0) {
+      this.makeAddKnownParticipant(
+        this.state.searchResults[this.state.activeSearchResultIndex],
+        this.state.searchTerms
+      )();
+      this.resetSearch();
+    } else if (keyCode === KEY.ENTER && this.state.searchTerms.length > 0) {
+      this.addUnknownParticipant(this.state.searchTerms);
+      this.resetSearch();
+    }
+  }
+
+  addParticipant({ participant, searchTerms }) {
+    this.setState(prevState => ({
+      participantsAndSearchTerms: [
+        ...prevState.participantsAndSearchTerms,
+        { participant, searchTerms },
+      ],
+    }), () => {
+      this.resetSearch();
+      this.props.onRecipientsChange({
+        recipients: this.state.participantsAndSearchTerms.map(({ participant: part }) => part),
+      });
     });
-
-    this.searchOpened = false;
   }
 
-  addUnknownRecipient(identifier) {
-    const protocolType = Object.keys(this.protocolsConfig).reduce((previous, current) => {
-      if (!previous && !!this.protocolsConfig[current].default) {
+  makeAddKnownParticipant(contact, searchTerms) {
+    return () => {
+      // FIXME email should not be hardcoded
+      const { address } = contact.emails[0];
+      this.addParticipant({
+        participant: {
+          address,
+          protocol: 'email',
+          label: address,
+          contact_ids: [contact.contact_id],
+        },
+        searchTerms,
+      });
+
+      // TODO
+      this.setState({ searchOpened: false });
+    };
+  }
+
+  addUnknownParticipant(address) {
+    const protocol = Object.keys(protocolsConfig).reduce((previous, current) => {
+      if (!previous && protocolsConfig[current].default) {
         return current;
       }
 
-      const regexp = this.protocolsConfig[current].regexp;
+      const { regexp } = protocolsConfig[current];
 
-      if (!!this.protocolsConfig[previous].default && !!regexp && regexp.test(identifier)) {
+      if (protocolsConfig[previous].default && regexp && regexp.test(address)) {
         return current;
       }
 
       return previous;
     });
 
-    this.addRecipient({
-      recipient_id: uuidV1(),
-      protocol: {
-        type: protocolType,
-        identifier,
-        privacy_index: 0,
+    this.addParticipant({
+      participant: {
+        address,
+        protocol,
+        label: address,
       },
-      searchTerms: identifier,
+      searchTerms: address,
     });
   }
 
-  removeRecipient(recipient) {
-    this.recipients = this.recipients.filter(current => current !== recipient);
-    this.onRecipientsChange({ recipients: this.recipients });
+  eventuallyEditRecipient() {
+    if (this.state.searchTerms.length === 0 && this.state.participantsAndSearchTerms.length) {
+      this.editRecipient(
+        this.state.participantsAndSearchTerms[this.state.participantsAndSearchTerms.length - 1]
+      );
+    }
   }
 
   editRecipient(recipient) {
     this.removeRecipient(recipient);
-    this.searchTerms = recipient.searchTerms;
-    this.searchOpened = true;
-  }
-
-  eventuallyEditRecipient() {
-    if (this.searchTerms.length === 0 && this.recipients.length) {
-      this.editRecipient(this.recipients[this.recipients.length - 1]);
-    }
-  }
-
-  focusSearch($event) {
-    if ($event.target === $event.currentTarget) {
-      this.$scope.$broadcast('recipient-list.search.focus');
-    }
-  }
-
-  search(searchTerms) {
-    if (!!this.searchTerms.length) {
-      this.searchResults = this.$filter('filter')(this.contacts, searchTerms)
-        .slice(0, MAX_CONTACT_RESULTS);
-    } else {
-      this.initSearch();
-    }
-  }
-
-  onSearchKeydown($event) {
-    const keyCode = $event.which;
-
-    if ([KEY.ENTER, KEY.UP, KEY.DOWN].indexOf(keyCode) !== -1) {
-      $event.preventDefault();
-      $event.stopPropagation();
-    }
-
-    if (keyCode === KEY.UP && this.searchResults.length > 0 && this.activeSearchResultIndex > 0) {
-      this.activeSearchResultIndex--;
-    }
-
-    if (keyCode === KEY.DOWN &&
-      this.searchResults.length > 0 &&
-      this.activeSearchResultIndex < this.searchResults.length - 1) {
-      this.activeSearchResultIndex++;
-    }
-
-    if (keyCode === KEY.BACKSPACE) {
-      this.eventuallyEditRecipient();
-    }
-  }
-
-  onSearchKeyup($event) {
-    const keyCode = $event.which;
-
-    if (keyCode === KEY.ENTER && this.searchResults.length > 0) {
-      this.addKnownRecipient(this.searchResults[this.activeSearchResultIndex], this.searchTerms);
-      this.initSearch();
-    }
-
-    if (keyCode === KEY.ENTER && this.searchTerms.length > 0) {
-      this.addUnknownRecipient(this.searchTerms, this.searchTerms);
-      this.initSearch();
-    }
-  }
-
-  initSearch() {
-    this.searchResults = [];
-    this.searchTerms = '';
-    this.activeSearchResultIndex = 0;
-  }
-
-  recipientHasChanged(recipient) {
-    this.recipients = this.recipients.map((rcpt) => {
-      if (rcpt.recipient_id === recipient.recipient_id) {
-        return recipient;
-      }
-
-      return rcpt;
+    this.setState({
+      searchTerms: recipient.searchTerms,
     });
-
-    this.onRecipientsChange({ recipients: this.recipients });
-  }
-
-  handleSearchInputFocus() {
     this.searchOpened = true;
   }
 
-  dropdownClosed() {
-    this.searchOpened = false;
+  handleRecipientChange(recipient) {
+    this.setState(prevState => ({
+      participantsAndSearchTerms: prevState.participantsAndSearchTerms.map((rcpt) => {
+        // FIXME
+        if (rcpt.recipient_id === recipient.recipient_id) {
+          return recipient;
+        }
+
+        return rcpt;
+      }),
+    }), () => {
+      this.props.onRecipientsChange({
+        recipients: this.state.participantsAndSearchTerms.map(({ participant }) => participant),
+      });
+    });
   }
-}
 
-const RecipientListComponent = {
-  bindings: {
-    recipients: '<',
-    onRecipientsChange: '&',
-  },
-  controller: RecipientListController,
-  /* eslint-disable max-len */
-  template: `
-    <div id="{{ $ctrl.id }}" class="m-recipient-list" ng-click="$ctrl.focusSearch($event)">
-      <label ng-if="!$ctrl.recipients.length" class="m-recipient-list__placeholder">
-        {{ 'messages.compose.form.to.label'|translate }}
-      </label>
-      <div ng-repeat="recipient in $ctrl.recipients" class="m-recipient-list__recipient">
-        <recipient recipient="recipient"
-                      on-change-recipient="$ctrl.recipientHasChanged(recipient)"
-                      on-remove-recipient="$ctrl.removeRecipient(recipient)"
-                      on-edit-recipient="$ctrl.editRecipient(recipient)"></recipient>
-      </div>
-      <div class="m-recipient-list__search">
-        <input type="text"
-               class="m-recipient-list__search-input"
-               ng-model="$ctrl.searchTerms"
-               ng-change="$ctrl.search($ctrl.searchTerms)"
-               ng-keydown="$ctrl.onSearchKeydown($event)"
-               ng-keyup="$ctrl.onSearchKeyup($event)"
-               ng-focus="$ctrl.handleSearchInputFocus()"
-               get-focus="recipient-list.search.focus" />
+  resetSearch() {
+    this.setState({
+      searchResults: [],
+      searchTerms: '',
+      activeSearchResultIndex: 0,
+    });
+  }
 
-        <dropdown
-          is-visible="!!$ctrl.searchResults.length && $ctrl.searchOpened"
-          ignore-click-selectors="$ctrl.searchInputElementsSelectors"
-          on-close="$ctrl.dropdownClosed()"
-        >
-          <ul class="m-menu m-menu--vertical">
-            <li ng-repeat="contact in $ctrl.searchResults"
-                class="m-menu__item m-menu--vertical__item"
-            >
-              <a ng-click="$ctrl.addKnownRecipient(contact, $ctrl.searchTerms)"
-                 class="m-menu__item-content m-link m-recipient-list__search-result"
-                 ng-class="{'is-active': $index === $ctrl.activeSearchResultIndex}"
-              >
-                <span class="m-recipient-list__search-result-title">{{ contact.title }}</span>
-                <span class="m-recipient-list__search-result-info">
-                  <protocol-icon protocol="{ type: 'email' }"></protocol-icon>
-                  <i>{{ contact.emails[0].address }}</i>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </dropdown>
-      </div>
-    </div>
-  `,
-  /* eslint-enable max-len */
-};
-
-export default RecipientListComponent;
-
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
-class RecipientList extends Component {
-  static propTypes = {
-  };
-  static defaultProps = {
-  };
-  constructor(props) {
-    super(props);
+  removeRecipient(recipient) {
+    this.setState(
+      prevState => ({
+        participantsAndSearchTerms: prevState.participantsAndSearchTerms
+          .filter(curr => curr.participant !== recipient.participant),
+      }),
+      () => {
+        this.props.onRecipientsChange({
+          recipients: this.state.participantsAndSearchTerms.map(({ participant }) => participant),
+        });
+      }
+    );
   }
 
   render() {
-    return ();
+    const dropdownId = uuidV1();
+    const { __ } = this.props;
+
+    return (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div onClick={this.handleClickRecipientList} role="presentation" className="m-recipient-list">
+        { !this.state.participantsAndSearchTerms.length && (
+          <span className="m-recipient-list__placeholder">
+            {__('messages.compose.form.to.label')}
+          </span>
+        )}
+        {this.state.participantsAndSearchTerms.map(({ participant, searchTerms }) => (
+          <recipient
+            className="m-recipient-list__recipient"
+            participant={participant}
+            searchTerms={searchTerms}
+            onChange={this.handleRecipientChange}
+            onEdit={this.editRecipient}
+            onRemove={this.handleRemoveRecipient}
+          >{participant.label}</recipient>
+        ))}
+        <div className="m-recipient-list__search">
+          <Input
+            toggle={dropdownId}
+            className="m-recipient-list__search-input"
+            onChange={this.handleSearchChange}
+            value={this.state.searchTerms}
+            onKeyDown={this.handleSearchKeydown}
+            onFocus={this.handleSearchInputFocus}
+            get-focus="recipient-list.search.focus"
+          />
+
+          <DropdownMenu
+            id={dropdownId}
+            is-visible="!!$ctrl.searchResults.length && $ctrl.searchOpened"
+            ignore-click-selectors="$ctrl.searchInputElementsSelectors"
+            on-close="$ctrl.dropdownClosed()"
+          >
+            <VerticalMenu>
+              {this.state.searchResults.map((contact, index) => (
+                <VerticalMenuItem key={contact.contact_id}>
+                  <Button
+                    onClick={this.makeAddKnownParticipant(contact, this.state.searchTerms)}
+                    className={classnames('m-recipient-list__search-result', { 'is-active': index === this.state.activeSearchResultIndex })}
+                  >
+                    <span className="m-recipient-list__search-result-title">{contact.title}</span>
+                    <span className="m-recipient-list__search-result-info">
+                      <Icon type="email" />
+                      <i>{contact.emails[0].address}</i>
+                    </span>
+                  </Button>
+                </VerticalMenuItem>
+              ))}
+            </VerticalMenu>
+          </DropdownMenu>
+        </div>
+      </div>
+    );
   }
 }
 
