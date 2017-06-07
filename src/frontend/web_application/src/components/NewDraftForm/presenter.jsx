@@ -40,6 +40,7 @@ class NewDraftForm extends Component {
     this.handleSend = this.handleSend.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleRecipientsChange = this.handleRecipientsChange.bind(this);
   }
 
   componentWillMount() {
@@ -68,6 +69,18 @@ class NewDraftForm extends Component {
 
       return { draft };
     }, () => {
+      this.props.onChange({ draft: this.state.draft });
+    });
+  }
+
+  handleRecipientsChange(recipients) {
+    this.setState(prevState => ({
+      draft: {
+        ...prevState.draft,
+        // no need to merge author, backend does it
+        participants: recipients,
+      },
+    }), () => {
       this.props.onChange({ draft: this.state.draft });
     });
   }
@@ -127,7 +140,10 @@ class NewDraftForm extends Component {
             />
           </TopRow>
           <BodyRow className="m-new-draft__body">
-            <RecipientsList />
+            <RecipientsList
+              recipients={this.state.draft.participants}
+              onRecipientsChange={this.handleRecipientsChange}
+            />
             <DiscussionTextarea
               body={this.state.draft.body}
               onChange={this.handleChange}

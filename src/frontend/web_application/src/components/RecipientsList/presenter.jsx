@@ -8,6 +8,7 @@ import Icon from '../Icon';
 import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
 import filterContact from '../../services/filter-contacts';
 import protocolsConfig from '../../services/protocols-config';
+import Recipient from './components/Recipient';
 import './style.scss';
 
 const MAX_CONTACT_RESULTS = 5;
@@ -20,6 +21,20 @@ export const KEY = {
   UP: 38,
   DOWN: 40,
 };
+
+const makeParticipant = ({
+  address,
+  protocol = 'email',
+  label,
+  contact_ids,
+  type = 'To',
+}) => ({
+  address,
+  protocol,
+  label,
+  contact_ids,
+  type,
+});
 
 const Input = withDropdownControl(props => (<input type="text" {...props} />));
 
@@ -143,9 +158,9 @@ class RecipientList extends Component {
       ],
     }), () => {
       this.resetSearch();
-      this.props.onRecipientsChange({
-        recipients: this.state.participantsAndSearchTerms.map(({ participant: part }) => part),
-      });
+      this.props.onRecipientsChange(
+        this.state.participantsAndSearchTerms.map(({ participant: part }) => part),
+      );
     });
   }
 
@@ -154,12 +169,11 @@ class RecipientList extends Component {
       // FIXME email should not be hardcoded
       const { address } = contact.emails[0];
       this.addParticipant({
-        participant: {
+        participant: makeParticipant({
           address,
-          protocol: 'email',
           label: address,
           contact_ids: [contact.contact_id],
-        },
+        }),
         searchTerms,
       });
 
@@ -184,11 +198,11 @@ class RecipientList extends Component {
     });
 
     this.addParticipant({
-      participant: {
+      participant: makeParticipant({
         address,
         protocol,
         label: address,
-      },
+      }),
       searchTerms: address,
     });
   }
@@ -204,7 +218,7 @@ class RecipientList extends Component {
   editRecipient(recipient) {
     this.removeRecipient(recipient);
     this.setState({
-      searchTerms: recipient.searchTerms,
+      searchTerms: recipient.participant.address,
     });
     this.searchOpened = true;
   }
@@ -212,7 +226,7 @@ class RecipientList extends Component {
   handleRecipientChange(recipient) {
     this.setState(prevState => ({
       participantsAndSearchTerms: prevState.participantsAndSearchTerms.map((rcpt) => {
-        // FIXME
+        // FIXME: there's no recipient_id
         if (rcpt.recipient_id === recipient.recipient_id) {
           return recipient;
         }
@@ -220,9 +234,9 @@ class RecipientList extends Component {
         return rcpt;
       }),
     }), () => {
-      this.props.onRecipientsChange({
-        recipients: this.state.participantsAndSearchTerms.map(({ participant }) => participant),
-      });
+      this.props.onRecipientsChange(
+        this.state.participantsAndSearchTerms.map(({ participant }) => participant),
+      );
     });
   }
 
@@ -241,9 +255,9 @@ class RecipientList extends Component {
           .filter(curr => curr.participant !== recipient.participant),
       }),
       () => {
-        this.props.onRecipientsChange({
-          recipients: this.state.participantsAndSearchTerms.map(({ participant }) => participant),
-        });
+        this.props.onRecipientsChange(
+          this.state.participantsAndSearchTerms.map(({ participant }) => participant),
+        );
       }
     );
   }
@@ -261,14 +275,15 @@ class RecipientList extends Component {
           </span>
         )}
         {this.state.participantsAndSearchTerms.map(({ participant, searchTerms }) => (
-          <recipient
+          <Recipient
+            key={participant.address}
             className="m-recipient-list__recipient"
             participant={participant}
             searchTerms={searchTerms}
             onChange={this.handleRecipientChange}
             onEdit={this.editRecipient}
             onRemove={this.handleRemoveRecipient}
-          >{participant.label}</recipient>
+          />
         ))}
         <div className="m-recipient-list__search">
           <Input

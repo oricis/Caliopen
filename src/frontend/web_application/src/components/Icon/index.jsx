@@ -75,7 +75,7 @@ Icon.propTypes = {
 };
 Icon.defaultProps = {
   className: undefined,
-  type: false,
+  type: undefined,
   spaced: false,
 };
 
