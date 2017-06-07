@@ -428,6 +428,21 @@
                       "type": "object",
                       "properties": {}
                     },
+                    "privacy_indexes": {
+                      "type": "object",
+                      "properties": {
+                        "technical": {
+                          "type": "integer"
+                        },
+                        "contextual": {
+                          "type": "integer"
+                        },
+                        "behavioral": {
+                          "type": "integer"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
                     "privacy_index": {
                       "type": "integer",
                       "format": "int32"
@@ -1020,6 +1035,21 @@
                     "privacy_features": {
                       "type": "object",
                       "properties": {}
+                    },
+                    "privacy_indexes": {
+                      "type": "object",
+                      "properties": {
+                        "technical": {
+                          "type": "integer"
+                        },
+                        "contextual": {
+                          "type": "integer"
+                        },
+                        "behavioral": {
+                          "type": "integer"
+                        }
+                      },
+                      "additionalProperties": false
                     },
                     "privacy_index": {
                       "type": "integer",
@@ -1636,6 +1666,21 @@
                         "type": "object",
                         "properties": {}
                       },
+                      "privacy_indexes": {
+                        "type": "object",
+                        "properties": {
+                          "technical": {
+                            "type": "integer"
+                          },
+                          "contextual": {
+                            "type": "integer"
+                          },
+                          "behavioral": {
+                            "type": "integer"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
                       "privacy_index": {
                         "type": "integer",
                         "format": "int32"
@@ -2171,6 +2216,21 @@
                   "type": "object",
                   "properties": {}
                 },
+                "privacy_indexes": {
+                  "type": "object",
+                  "properties": {
+                    "technical": {
+                      "type": "integer"
+                    },
+                    "contextual": {
+                      "type": "integer"
+                    },
+                    "behavioral": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
+                },
                 "privacy_index": {
                   "type": "integer",
                   "format": "int32"
@@ -2662,6 +2722,21 @@
                       "type": "object",
                       "properties": {}
                     },
+                    "privacy_indexes": {
+                      "type": "object",
+                      "properties": {
+                        "technical": {
+                          "type": "integer"
+                        },
+                        "contextual": {
+                          "type": "integer"
+                        },
+                        "behavioral": {
+                          "type": "integer"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
                     "privacy_index": {
                       "type": "integer",
                       "format": "int32"
@@ -3046,6 +3121,21 @@
                 "privacy_features": {
                   "type": "object",
                   "properties": {}
+                },
+                "privacy_indexes": {
+                  "type": "object",
+                  "properties": {
+                    "technical": {
+                      "type": "integer"
+                    },
+                    "contextual": {
+                      "type": "integer"
+                    },
+                    "behavioral": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
                 },
                 "privacy_index": {
                   "type": "integer",
@@ -3889,6 +3979,21 @@
                         "type": "object",
                         "properties": {}
                       },
+                      "privacy_indexes": {
+                        "type": "object",
+                        "properties": {
+                          "technical": {
+                            "type": "integer"
+                          },
+                          "contextual": {
+                            "type": "integer"
+                          },
+                          "behavioral": {
+                            "type": "integer"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
                       "raw_msg_id": {
                         "type": "string"
                       },
@@ -4407,6 +4512,21 @@
                   "type": "object",
                   "properties": {}
                 },
+                "privacy_indexes": {
+                  "type": "object",
+                  "properties": {
+                    "technical": {
+                      "type": "integer"
+                    },
+                    "contextual": {
+                      "type": "integer"
+                    },
+                    "behavioral": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
+                },
                 "raw_msg_id": {
                   "type": "string"
                 },
@@ -4669,6 +4789,21 @@
                       "type": "object",
                       "properties": {}
                     },
+                    "privacy_indexes": {
+                      "type": "object",
+                      "properties": {
+                        "technical": {
+                          "type": "integer"
+                        },
+                        "contextual": {
+                          "type": "integer"
+                        },
+                        "behavioral": {
+                          "type": "integer"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
                     "raw_msg_id": {
                       "type": "string"
                     },
@@ -4852,6 +4987,21 @@
                 "privacy_features": {
                   "type": "object",
                   "properties": {}
+                },
+                "privacy_indexes": {
+                  "type": "object",
+                  "properties": {
+                    "technical": {
+                      "type": "integer"
+                    },
+                    "contextual": {
+                      "type": "integer"
+                    },
+                    "behavioral": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
                 },
                 "raw_msg_id": {
                   "type": "string"
@@ -5316,6 +5466,21 @@
                   "type": "object",
                   "properties": {}
                 },
+                "privacy_indexes": {
+                  "type": "object",
+                  "properties": {
+                    "technical": {
+                      "type": "integer"
+                    },
+                    "contextual": {
+                      "type": "integer"
+                    },
+                    "behavioral": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
+                },
                 "raw_msg_id": {
                   "type": "string"
                 },
@@ -5506,6 +5671,21 @@
                 "privacy_features": {
                   "type": "object",
                   "properties": {}
+                },
+                "privacy_indexes": {
+                  "type": "object",
+                  "properties": {
+                    "technical": {
+                      "type": "integer"
+                    },
+                    "contextual": {
+                      "type": "integer"
+                    },
+                    "behavioral": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
                 },
                 "raw_msg_id": {
                   "type": "string"

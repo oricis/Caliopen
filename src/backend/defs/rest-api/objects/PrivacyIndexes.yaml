@@ -1,0 +1,10 @@
+---
+type: object
+properties:
+  technical:
+    type: integer
+  contextual:
+    type: integer
+  behavioral:
+    type: integer
+additionalProperties: false

@@ -2,13 +2,13 @@
 """Caliopen user message delivery logic."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
+import uuid
 
 from caliopen_storage.exception import NotFound
-from ..user.core import User
 from ..message.core import RawMessage
 from .qualifier import UserMessageQualifier
-from caliopen_main.parsers import MailMessage
-
+from ..discussion.core import Discussion
+from ..objects.message import Message
 
 log = logging.getLogger(__name__)
 
@@ -16,30 +16,33 @@ log = logging.getLogger(__name__)
 class UserMessageDelivery(object):
     """User message delivery processing."""
 
-    def process_raw(self, user_id, raw_msg_id):
-        """
-        Process a raw message for an user, ie makes it a rich 'message'.
+    def __init__(self, user):
+        """Create a new UserMessageDelivery belong to an user."""
+        self.user = user
 
-        the raw message must have been previously stored into db
-        This process is triggered by a "process_raw_message" order on nats
-
-        #### TODO : finish refactoring if we still need this func
-                    as it is replaced by process_email_message below
-        """
-        try:
-            raw = RawMessage.get(raw_msg_id)
-        except NotFound:
+    def process_raw(self, raw_msg_id):
+        """Process a raw message for an user, ie makes it a rich 'message'."""
+        raw = RawMessage.get(raw_msg_id)
+        if not raw:
             log.error('Raw message <{}> not found'.format(raw_msg_id))
             raise NotFound
-
         log.debug('Retrieved raw message {}'.format(raw_msg_id))
-        user = User.get(user_id)
-        if not user:
-            log.error('user <{}> not found'.format(user_id))
-            raise NotFound
 
-        msg = MailMessage(raw)
+        qualifier = UserMessageQualifier(self.user)
+        message = qualifier.process_inbound(raw)
+        if not message.discussion_id:
+            discussion = Discussion.create_from_message(self.user, message)
+            log.debug('Created discussion {}'.format(discussion.discussion_id))
+            # xxx create lookup ?
+            message.discussion_id = discussion.discussion_id
 
-        qualifier = UserMessageQualifier(user)
-        message = qualifier.process_inbound(msg)
-        return message
+        # store and index message
+        obj = Message(self.user)
+        obj.unmarshall_dict(message.to_native())
+        obj.user_id = uuid.UUID(self.user.user_id)
+        obj.message_id = uuid.uuid4()
+        obj.marshall_db()
+        obj.save_db()
+        obj.marshall_index()
+        obj.save_index()
+        return obj

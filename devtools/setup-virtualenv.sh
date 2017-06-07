@@ -42,6 +42,7 @@ done
 pip install ipdb
 pip install docker-compose
 pip install gitpython
+pip install nose
 
 echo "All done, your virtual environment contain these packages :"
 pip freeze

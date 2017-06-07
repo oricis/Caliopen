@@ -22,8 +22,9 @@ requires = [
     'regex',
     'zope.interface',
     'vobject',
-    'minio'
-    ]
+    'minio',
+    'pgpy',
+]
 
 extras_require = {
     'dev': [],
