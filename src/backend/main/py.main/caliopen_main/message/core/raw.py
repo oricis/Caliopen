@@ -106,10 +106,11 @@ class RawMessage(BaseCore):
                                 access_key=minioConf["access_key"],
                                 secret_key=minioConf["secret_key"],
                                 secure=False,
-                                region=minioConf["raw_msg_location"])
+                                region=minioConf["location"])
             try:
-                resp = minioClient.get_object(minioConf["raw_msg_bucket"],
-                                              raw_msg_id)
+                resp = minioClient.get_object(
+                    minioConf["buckets"]["raw_messages"],
+                    raw_msg_id)
             except ResponseError as exc:
                 log.warn(exc)
                 return NotFound

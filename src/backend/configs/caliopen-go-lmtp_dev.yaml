@@ -40,8 +40,8 @@ LDAConfig:
       secret_key: CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD # Secret key of 8 to 40 characters in length
       location: eu-fr-localhost                            # S3 region.
       buckets:
-      - raw_messages: caliopen-raw-messages                # bucket name to put raw messages to
-      - temporary_attachments: caliopen-tmp-attachments    # bucket name to store draft attachments
+        raw_messages: caliopen-raw-messages                # bucket name to put raw messages to
+        temporary_attachments: caliopen-tmp-attachments    # bucket name to store draft attachments
   index_name: elasticsearch                              # backend to index messages (inbound & outbound)
   index_settings:
     urls: # many allowed
