@@ -5,16 +5,21 @@
 package backends
 
 import (
-	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"io"
 )
 
 type APIStorage interface {
 	UserNameStorage
-	GetMessage(user_id, msg_id string) (msg *obj.Message, err error)
-	GetLocalsIdentities(user_id string) (identities []obj.LocalIdentity, err error)
+	GetMessage(user_id, msg_id string) (msg *Message, err error)
+	UpdateMessage(msg *Message, fields map[string]interface{}) error
+	GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 	SetMessageUnread(user_id, message_id string, status bool) error
+	StoreAttachment(attachment_id string, file io.Reader) (uri string, size int, err error)
+	DeleteAttachment(uri string) error
 }
 
 type APIIndex interface {
 	SetMessageUnread(user_id, message_id string, status bool) error
+	UpdateMessage(msg *Message, fields map[string]interface{}) error
 }

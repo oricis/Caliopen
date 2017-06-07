@@ -102,12 +102,21 @@ func (msg *Message) MarshalES() ([]byte, error) {
 
 // unmarshal a map[string]interface{} that must owns all Message fields
 func (msg *Message) UnmarshalMap(input map[string]interface{}) {
-	//TODO: attachments
+	for _, attachment := range input["attachments"].([]map[string]interface{}) {
+		a := Attachment{}
+		a.Content_type, _ = attachment["content_type"].(string)
+		a.File_name, _ = attachment["file_name"].(string)
+		a.Is_inline, _ = attachment["is_inline"].(bool)
+		a.Size, _ = attachment["size"].(int)
+		a.URI, _ = attachment["uri"].(string)
+		msg.Attachments = append(msg.Attachments, a)
+	}
 	msg.Body, _ = input["body"].(string)
 	msg.Date, _ = input["date"].(time.Time)
 	msg.Date_delete, _ = input["date_delete"].(time.Time)
 	msg.Date_insert, _ = input["date_insert"].(time.Time)
-	msg.Discussion_id.UnmarshalBinary(input["discussion_id"].(gocql.UUID).Bytes())
+	discussion_id, _ := input["discussion_id"].(gocql.UUID)
+	msg.Discussion_id.UnmarshalBinary(discussion_id.Bytes())
 
 	ex_ref, _ := input["external_references"].(map[string]interface{})
 	msg.External_references = ExternalReferences{}
@@ -116,27 +125,43 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) {
 	msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
 	msg.External_references.References, _ = ex_ref["references"].([]string)
 
-	//TODO: Identities
-	msg.Importance_level = int32(input["importance_level"].(int))
+	for _, identity := range input["identities"].([]map[string]interface{}) {
+		i := Identity{}
+		i.Identifier, _ = identity["identifier"].(string)
+		i.Type, _ = identity["type"].(string)
+
+		msg.Identities = append(msg.Identities, i)
+	}
+	importance_level, _ := input["importance_level"].(int)
+	msg.Importance_level = int32(importance_level)
 	msg.Is_answered, _ = input["is_answered"].(bool)
 	msg.Is_draft, _ = input["is_draft"].(bool)
 	msg.Is_unread, _ = input["is_unread"].(bool)
-	msg.Message_id.UnmarshalBinary(input["message_id"].(gocql.UUID).Bytes())
+	message_id, _ := input["message_id"].(gocql.UUID)
+	msg.Message_id.UnmarshalBinary(message_id.Bytes())
 	msg.Parent_id, _ = input["parent_id"].(string)
 	msg.Participants = []Participant{}
 	for _, participant := range input["participants"].([]map[string]interface{}) {
 		p := Participant{}
 		p.Address, _ = participant["address"].(string)
-		//TODO: contact_ids
 		p.Label, _ = participant["labebl"].(string)
 		p.Protocol, _ = participant["protocol"].(string)
 		p.Type, _ = participant["type"].(string)
+		p.Contact_ids = []UUID{}
+		for _, id := range participant["contact_ids"].([]gocql.UUID) {
+			var uuid UUID
+			uuid.UnmarshalBinary(id.Bytes())
+			p.Contact_ids = append(p.Contact_ids, uuid)
+		}
+
 		msg.Participants = append(msg.Participants, p)
 	}
 	//TODO: privacy_features
-	msg.Raw_msg_id.UnmarshalBinary(input["raw_msg_id"].(gocql.UUID).Bytes())
+	raw_msg_id, _ := input["raw_msg_id"].(gocql.UUID)
+	msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
 	msg.Subject, _ = input["subject"].(string)
 	//TODO: tags
 	msg.Type, _ = input["type"].(string)
-	msg.User_id.UnmarshalBinary(input["user_id"].(gocql.UUID).Bytes())
+	user_id, _ := input["user_id"].(gocql.UUID)
+	msg.User_id.UnmarshalBinary(user_id.Bytes())
 }

@@ -8,9 +8,10 @@ from schematics.types import (StringType,
 
 class Attachment(Model):
     content_type = StringType()
+    file_name = StringType()
     is_inline = BooleanType()
-    name = StringType()
     size = IntType()
+    uri = StringType()
 
     class Options:
         serialize_when_none = False

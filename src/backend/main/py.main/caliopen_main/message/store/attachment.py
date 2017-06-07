@@ -11,7 +11,7 @@ class MessageAttachment(BaseUserType):
     """Attachment nested in message."""
 
     content_type = columns.Text()
+    file_name = columns.Text()
     is_inline = columns.Boolean()
-    name = columns.Text()
     size = columns.Integer()
-
+    uri = columns.Text()  # objectsStore uri for temporary file (draft)

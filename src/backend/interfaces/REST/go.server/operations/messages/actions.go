@@ -36,16 +36,18 @@ func Actions(ctx *gin.Context) {
 				e := swgErr.New(http.StatusFailedDependency, err.Error())
 				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 				ctx.Abort()
+			} else {
+				ctx.Status(http.StatusNoContent)
 			}
-			ctx.Status(http.StatusNoContent)
 		case "set_unread":
 			err := caliopen.Facilities.RESTfacility.SetMessageUnread(user_id, msg_id, true)
 			if err != nil {
 				e := swgErr.New(http.StatusFailedDependency, err.Error())
 				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 				ctx.Abort()
+			} else {
+				ctx.Status(http.StatusNoContent)
 			}
-			ctx.Status(http.StatusNoContent)
 		default:
 			e := swgErr.New(http.StatusNotImplemented, err.Error())
 			http_middleware.ServeError(ctx.Writer, ctx.Request, e)

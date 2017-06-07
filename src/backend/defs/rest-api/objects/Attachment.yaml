@@ -7,10 +7,10 @@ properties:
     type: string
   is_inline:
     type: boolean
-  filename: # the name of the related original file, if any, given by the MIME field 'filename='
+  filename:         # the name of the related original file, if any, given by the MIME field 'filename='
     type: string
-  size: # size calculated during parsing, for future reference
+  size:             # size calculated during parsing, for future reference
     type: integer
     format: int64
-  uri: # ObjectStore url for temporary file (draft)
+  uri:              # ObjectStore url for temporary file (draft)
     type: string

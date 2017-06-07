@@ -23,6 +23,7 @@ func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *obj.Message
 
 }
 
+// update given fields for a message in db
 func (cb *CassandraBackend) UpdateMessage(msg *obj.Message, fields map[string]interface{}) error {
 
 	messageT := cb.IKeyspace.Table("message", &obj.Message{}, gocassa.Keys{

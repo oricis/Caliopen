@@ -13,6 +13,7 @@ class IndexedMessageAttachment(dsl.InnerObjectWrapper):
     """Nest attachment indexed model."""
 
     content_type = dsl.String()
+    file_name = dsl.String()
     is_inline = dsl.Boolean()
-    name = dsl.String()
     size = dsl.Integer()
+    uri = dsl.String()  # objectsStore uri for temporary file (draft)

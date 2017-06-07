@@ -93,7 +93,7 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 	}
 
 	//step 2 : store raw email and get its raw_id
-	raw_email_id, err := b.Store.StoreRaw(in.EmailMessage.Email.Raw.String())
+	raw_email_id, err := b.Store.StoreRawMessage(in.EmailMessage.Email.Raw.String())
 	if err != nil {
 		log.WithError(err).Warn("inbound: storing raw email failed")
 		resp.Response = "storing raw email failed"

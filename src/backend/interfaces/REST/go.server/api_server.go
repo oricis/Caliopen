@@ -44,9 +44,12 @@ type (
 	}
 
 	BackendSettings struct {
-		Hosts       []string `mapstructure:"hosts"`
-		Keyspace    string   `mapstructure:"keyspace"`
-		Consistency uint16   `mapstructure:"consistency_level"`
+		Hosts            []string      `mapstructure:"hosts"`
+		Keyspace         string        `mapstructure:"keyspace"`
+		Consistency      uint16        `mapstructure:"consistency_level"`
+		SizeLimit        uint64        `mapstructure:"raw_size_limit"` // max size for db (in bytes)
+		ObjStoreType     string        `mapstructure:"object_store"`
+		ObjStoreSettings obj.OSSConfig `mapstructure:"object_store_settings"`
 	}
 
 	IndexConfig struct {
@@ -80,10 +83,13 @@ func (server *REST_API) initialize(config APIConfig) error {
 	//init Caliopen facility
 	caliopenConfig := obj.CaliopenConfig{
 		RESTstoreConfig: obj.RESTstoreConfig{
-			BackendName: config.BackendName,
-			Hosts:       config.BackendConfig.Settings.Hosts,
-			Keyspace:    config.BackendConfig.Settings.Keyspace,
-			Consistency: config.BackendConfig.Settings.Consistency,
+			BackendName:  config.BackendName,
+			Hosts:        config.BackendConfig.Settings.Hosts,
+			Keyspace:     config.BackendConfig.Settings.Keyspace,
+			Consistency:  config.BackendConfig.Settings.Consistency,
+			SizeLimit:    config.BackendConfig.Settings.SizeLimit,
+			ObjStoreType: config.BackendConfig.Settings.ObjStoreType,
+			OSSConfig:    config.BackendConfig.Settings.ObjStoreSettings,
 		},
 		RESTindexConfig: obj.RESTIndexConfig{
 			IndexName: config.IndexConfig.IndexName,
@@ -152,17 +158,19 @@ func (server *REST_API) start() error {
 
 func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 
-	//users API
+	/** users API **/
 	//u := api.Group("/users")
 	identities := api.Group("/identities", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
 	identities.GET("/locals", users.GetLocalsIdentities)
 	identities.GET("/locals/:identity_id", users.GetLocalIdentity)
 
-	//username API
+	/** username API **/
 	api.GET("/username/isAvailable", users.IsAvailable)
 
-	//messages API
+	/** messages API **/
 	msg := api.Group("/messages", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
 	msg.POST("/:message_id/actions", messages.Actions)
-
+	//draft attachments
+	msg.POST("/:message_id/attachments", messages.UploadAttachment)
+	msg.DELETE("/:message_id/attachments/:attachment_id", messages.DeleteAttachment)
 }

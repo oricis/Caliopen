@@ -7,6 +7,7 @@ package caliopen
 import (
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/REST"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
 )
@@ -19,7 +20,7 @@ type (
 	CaliopenFacilities struct {
 		config obj.CaliopenConfig
 
-		RESTfacility RESTservices
+		RESTfacility REST.RESTservices
 
 		// NATS facility
 		nats *nats.Conn
@@ -44,7 +45,7 @@ func (facilities *CaliopenFacilities) initialize(config obj.CaliopenConfig) (err
 	}
 
 	//REST facility initialization
-	facilities.RESTfacility = newRESTfacility(config, facilities.nats)
+	facilities.RESTfacility = REST.NewRESTfacility(config, facilities.nats)
 
 	return
 }

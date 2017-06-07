@@ -8,7 +8,6 @@ type Attachment struct {
 	Content_type string `cql:"content_type"     json:"content_type"`
 	File_name    string `cql:"file_name"        json:"file_name"`
 	Is_inline    bool   `cql:"is_inline"        json:"is_inline"`
-	Size         int64  `cql:"size"             json:"size"`
+	Size         int    `cql:"size"             json:"size"`
 	URI          string `cql:"uri"              json:"uri"` // ObjectStore url for temporary file (draft)
 }
-

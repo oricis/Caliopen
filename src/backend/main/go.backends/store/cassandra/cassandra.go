@@ -15,18 +15,18 @@ import (
 type (
 	CassandraBackend struct {
 		CassandraConfig
-		Session   *gocql.Session
-		IKeyspace gocassa.KeySpace //gocassa keyspace interface
-		S3Backend object_store.S3Backend
+		Session      *gocql.Session
+		IKeyspace    gocassa.KeySpace //gocassa keyspace interface
+		ObjectsStore object_store.ObjectsStore
 	}
 
 	CassandraConfig struct {
-		Hosts       []string          `mapstructure:"hosts"`
-		Keyspace    string            `mapstructure:"keyspace"`
-		Consistency gocql.Consistency `mapstructure:"consistency_level"`
-		SizeLimit   uint64            `mapstructure:"raw_size_limit"` // max size to store (in bytes)
-		WithS3      bool              // whether to use a S3 compatible storage engine for objects above SizeLimit
-		object_store.S3Config
+		Hosts        []string          `mapstructure:"hosts"`
+		Keyspace     string            `mapstructure:"keyspace"`
+		Consistency  gocql.Consistency `mapstructure:"consistency_level"`
+		SizeLimit    uint64            `mapstructure:"raw_size_limit"` // max size to store (in bytes)
+		WithObjStore bool                                              // whether to use an objects store service for objects above SizeLimit
+		object_store.OSSConfig
 	}
 )
 
@@ -61,9 +61,10 @@ func (cb *CassandraBackend) initialize(config CassandraConfig) (err error) {
 	connection := gocassa.NewConnection(gocassa.GoCQLSessionToQueryExecutor(cb.Session))
 	cb.IKeyspace = connection.KeySpace(cb.Keyspace)
 
-	if config.WithS3 {
-		cb.S3Backend, err = object_store.InitializeS3Backend(config.S3Config)
+	if config.WithObjStore {
+		cb.ObjectsStore, err = object_store.InitializeObjectsStore(config.OSSConfig)
 		if err != nil {
+			log.Warn("Object store initialization failed.")
 			return err
 		}
 	}
