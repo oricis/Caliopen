@@ -124,11 +124,11 @@ services:
       server --address :9090 -C /configs/minio /export
 
   # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
-  # point your browser at localhost:9090
+  # point your browser at localhost:8888
   inbucket:
       image: jhillyerd/inbucket
       ports:
-          - "9090:10080"
+          - "8888:10080"
           - "2500:10025"
 
   # Postfix : a complete smpt server that act as the Caliopen's MTA
