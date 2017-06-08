@@ -11,6 +11,7 @@ services:
           - cassandra:cassandra.dev.caliopen.org
           - nats:nats.dev.caliopen.org
           - elasticsearch:es.dev.caliopen.org
+          - object_store:minio.dev.caliopen.org
       ports:
           - "31415:31415"
 
@@ -116,12 +117,12 @@ services:
   object_store:
     image: minio/minio
     ports:
-      - "9090:9090"
+      - "9090:9000"
     volumes:
         - ../src/backend/configs:/configs
         - .data/minio:/export
     command:
-      server --address :9090 -C /configs/minio /export
+      server -C /configs/minio /export
 
   # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
   # point your browser at localhost:8888
