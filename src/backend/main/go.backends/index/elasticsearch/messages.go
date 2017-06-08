@@ -5,6 +5,7 @@
 package index
 
 import (
+	"context"
 	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 )
@@ -13,7 +14,7 @@ func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[s
 
 	update, err := es.Client.Update().Index(msg.User_id.String()).Type("indexed_message").Id(msg.Message_id.String()).
 		Doc(fields).
-		Do()
+		Do(context.TODO())
 	if err != nil {
 		log.WithError(err).Warn("backend Index: updateMessage operation failed")
 		return err
@@ -31,8 +32,8 @@ func (es *ElasticSearchBackend) IndexMessage(msg *objects.Message) error {
 
 	resp, err := es.Client.Index().Index(msg.User_id.String()).Type("indexed_message").Id(msg.Message_id.String()).
 		BodyString(string(es_msg)).
-		Refresh(true).
-		Do()
+		Refresh("true").
+		Do(context.TODO())
 	if err != nil {
 		log.WithError(err).Warn("backend Index: IndexMessage operation failed")
 		return err
@@ -48,7 +49,7 @@ func (es *ElasticSearchBackend) SetMessageUnread(user_id, message_id string, sta
 	}{status}
 
 	update := es.Client.Update().Index(user_id).Type("indexed_message").Id(message_id)
-	_, err = update.Doc(payload).Refresh(true).Do()
+	_, err = update.Doc(payload).Refresh("true").Do(context.TODO())
 
 	return
 }
