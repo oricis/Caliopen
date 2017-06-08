@@ -63,7 +63,6 @@ services:
           - xpack.monitoring.enabled=false
       volumes:
           - .data/elasticsearch/data:/usr/share/elasticsearch/data
-          - ../src/configs/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
 
   # Caliopen cli tool
   cli:
