@@ -71,7 +71,10 @@ def build_discussion(core, index):
     for part in index.last_message.participants:
         participant = Participant()
         participant.address = part['address']
-        participant.label = part['label']
+        try:
+            participant.label = part['label']
+        except:
+            participant.label = part['address']
         participant.type = part['type']
         if 'contact_id' in part:
             participant.contact_id = part['contact_id']
