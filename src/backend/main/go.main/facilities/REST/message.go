@@ -25,3 +25,8 @@ func (rest *RESTfacility) OpenRawMessage(user_id, message_id string) (content io
 	content = io.NewSectionReader(r, 0, int64(len(rawMessage)))
 	return
 }
+
+func (rest *RESTfacility) GetRawMessage(user_id, message_id string) (content io.ReadSeeker, err error) {
+
+	return
+}

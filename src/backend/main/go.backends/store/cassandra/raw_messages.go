@@ -53,3 +53,8 @@ func (cb *CassandraBackend) StoreRawMessage(raw_message string) (uuid string, er
 	uuid = raw_uuid.String()
 	return
 }
+
+func (cb *CassandraBackend) GetRawMessage(user_id, message_id string) (message string, err error) {
+
+	return
+}

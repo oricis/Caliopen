@@ -10,7 +10,6 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/satori/go.uuid"
 	"io"
-	"os"
 )
 
 func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_type string, file io.Reader) (attachmentPath string, err error) {
@@ -114,6 +113,7 @@ func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtInde
 	// create a ReadSeeker
 	// either from object store (draft context)
 	// or from raw message's mime part (non-draft context)
+	/*
 	if msg.Is_draft {
 		attachment, err := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URI)
 		if err != nil {
@@ -127,4 +127,6 @@ func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtInde
 			return "", nil, err
 		}
 	}
+	*/
+	return
 }
