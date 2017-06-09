@@ -10,6 +10,7 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/satori/go.uuid"
 	"io"
+	"os"
 )
 
 func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_type string, file io.Reader) (attachmentPath string, err error) {
@@ -97,4 +98,33 @@ func (rest *RESTfacility) DeleteAttachment(user_id, message_id string, attchmtIn
 	}
 
 	return nil
+}
+
+func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, content io.ReadSeeker, err error) {
+	//check if message_id belongs to user and index is consistent
+	msg, err := rest.store.GetMessage(user_id, message_id)
+	if err != nil {
+		return "", nil, err
+	}
+	if attchmtIndex < 0 || attchmtIndex > (len(msg.Attachments)-1) {
+		return "", nil, errors.New(fmt.Sprintf("index %d for message %s is not consistent.", attchmtIndex, message_id))
+	}
+	contentType = msg.Attachments[attchmtIndex].Content_type
+
+	// create a ReadSeeker
+	// either from object store (draft context)
+	// or from raw message's mime part (non-draft context)
+	if msg.Is_draft {
+		attachment, err := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URI)
+		if err != nil {
+			return "", nil, err
+		}
+		io.NewSectionReader(attachment, 0, int64(msg.Attachments[attchmtIndex].Size))
+
+	} else {
+		rawMsg, err := rest.store.GetRawMessage(user_id, message_id)
+		if err != nil {
+			return "", nil, err
+		}
+	}
 }
