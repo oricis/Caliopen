@@ -30,9 +30,9 @@ export const withDropdownControl = (WrappedComponent) => {
 
 class Dropdown extends Component {
   componentDidMount() {
-    const $dropdown = jQuery(`#${this.props.id}`);
+    this.$dropdown = jQuery(`#${this.props.id}`);
     // eslint-disable-next-line no-new
-    new Foundation.Dropdown($dropdown, {
+    new Foundation.Dropdown(this.$dropdown, {
       hOffset: 0,
       vOffset: 0,
     });
@@ -41,13 +41,29 @@ class Dropdown extends Component {
     // see https://github.com/zurb/foundation-sites/pull/9019
 
     if (this.onToggle) {
-      $dropdown.on('show.zf.dropdown', () => {
+      this.$dropdown.on('show.zf.dropdown', () => {
         this.onToggle(true);
       });
-      $dropdown.on('hide.zf.dropdown', () => {
+      this.$dropdown.on('hide.zf.dropdown', () => {
         this.onToggle(false);
       });
     }
+
+    this.show(this.props.show);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.show !== nextProps.show) {
+      this.show(nextProps.show);
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.children !== this.props.children;
+  }
+
+  show(isVisible) {
+    return isVisible ? this.$dropdown.foundation('open') : this.$dropdown.foundation('close');
   }
 
   render() {
@@ -70,6 +86,8 @@ Dropdown.propTypes = {
   className: PropTypes.string,
   position: PropTypes.oneOf(['bottom', 'left']),
   closeOnClick: PropTypes.bool,
+  show: PropTypes.bool,
+  children: PropTypes.node.isRequired,
   onToggle: PropTypes.func,
 };
 
@@ -78,6 +96,7 @@ Dropdown.defaultProps = {
   position: null,
   closeOnClick: false,
   onToggle: null,
+  show: false,
 };
 
 export default Dropdown;

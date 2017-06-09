@@ -6,18 +6,21 @@ import Icon from '../../../Icon';
 
 const ASSOC_PROTOCOL_ICON = {
   email: 'envelope',
+  unknown: 'question-circle',
 };
 
-const getIconType = protocol => ASSOC_PROTOCOL_ICON[protocol];
+const getIconType = protocol => ASSOC_PROTOCOL_ICON[protocol] || ASSOC_PROTOCOL_ICON.unknown;
 
 class Recipient extends Component {
   static propTypes = {
     participant: PropTypes.shape({}).isRequired,
     onRemove: PropTypes.func,
     __: PropTypes.func.isRequired,
+    className: PropTypes.string,
   };
   static defaultProps = {
     onRemove: () => {},
+    className: undefined,
   };
 
   constructor(props) {
@@ -30,10 +33,10 @@ class Recipient extends Component {
   }
 
   render() {
-    const { participant, __ } = this.props;
+    const { participant, className, __ } = this.props;
 
     return (
-      <Badge large>
+      <Badge large className={className}>
         <span>
           <Icon type={getIconType(participant.protocol)} spaced />
           <span>{participant.address}</span>

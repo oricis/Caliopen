@@ -36,10 +36,11 @@ const makeParticipant = ({
   type,
 });
 
-const Input = withDropdownControl(props => (<input type="text" {...props} />));
+// DropdownController is useless but required by the lib, we just add an empty/invisible element
+const DropdownController = withDropdownControl(props => (<span {...props} />));
 
 const getStateFromProps = props => ({
-  participantsAndSearchTerms: props.recipients.map(participant => ({ participant })),
+  recipients: props.recipients,
 });
 
 class RecipientList extends Component {
@@ -61,11 +62,15 @@ class RecipientList extends Component {
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSearchKeydown = this.handleSearchKeydown.bind(this);
     this.handleClickRecipientList = this.handleClickRecipientList.bind(this);
+    this.handleRemoveRecipient = this.handleRemoveRecipient.bind(this);
+    this.handleSearchInputFocus = this.handleSearchInputFocus.bind(this);
+    this.handleSearchInputBlur = this.handleSearchInputBlur.bind(this);
     this.state = {
-      participantsAndSearchTerms: [],
+      recipients: [],
       searchTerms: '',
       searchResults: [],
       activeSearchResultIndex: 0,
+      searchOpened: false,
     };
   }
 
@@ -77,8 +82,8 @@ class RecipientList extends Component {
     this.props.requestContacts();
   }
 
-  handleRemoveRecipient(recipient) {
-    this.removeRecipient(recipient);
+  handleRemoveRecipient(participant) {
+    this.removeRecipient(participant);
   }
 
   handleSearchChange(ev) {
@@ -93,10 +98,16 @@ class RecipientList extends Component {
     }
   }
 
-  // eslint-disable-next-line
-  focusSearch(ev) {
-    // XXX
-    this.$scope.$broadcast('recipient-list.search.focus');
+  handleSearchInputFocus() {
+    this.setState({ searchOpened: true });
+  }
+
+  handleSearchInputBlur() {
+    this.setState({ searchOpened: false });
+  }
+
+  focusSearch() {
+    this.searchInputRef.focus();
   }
 
   search(searchTerms) {
@@ -150,35 +161,27 @@ class RecipientList extends Component {
     }
   }
 
-  addParticipant({ participant, searchTerms }) {
+  addParticipant(participant) {
     this.setState(prevState => ({
-      participantsAndSearchTerms: [
-        ...prevState.participantsAndSearchTerms,
-        { participant, searchTerms },
+      recipients: [
+        ...prevState.recipients,
+        participant,
       ],
     }), () => {
       this.resetSearch();
-      this.props.onRecipientsChange(
-        this.state.participantsAndSearchTerms.map(({ participant: part }) => part),
-      );
+      this.props.onRecipientsChange(this.state.recipients);
     });
   }
 
-  makeAddKnownParticipant(contact, searchTerms) {
+  makeAddKnownParticipant(contact) {
     return () => {
       // FIXME email should not be hardcoded
       const { address } = contact.emails[0];
-      this.addParticipant({
-        participant: makeParticipant({
-          address,
-          label: address,
-          contact_ids: [contact.contact_id],
-        }),
-        searchTerms,
-      });
-
-      // TODO
-      this.setState({ searchOpened: false });
+      this.addParticipant(makeParticipant({
+        address,
+        label: address,
+        contact_ids: [contact.contact_id],
+      }));
     };
   }
 
@@ -197,46 +200,25 @@ class RecipientList extends Component {
       return previous;
     });
 
-    this.addParticipant({
-      participant: makeParticipant({
-        address,
-        protocol,
-        label: address,
-      }),
-      searchTerms: address,
-    });
+    this.addParticipant(makeParticipant({
+      address,
+      protocol,
+      label: address,
+    }));
   }
 
   eventuallyEditRecipient() {
-    if (this.state.searchTerms.length === 0 && this.state.participantsAndSearchTerms.length) {
+    if (this.state.searchTerms.length === 0 && this.state.recipients.length) {
       this.editRecipient(
-        this.state.participantsAndSearchTerms[this.state.participantsAndSearchTerms.length - 1]
+        this.state.recipients[this.state.recipients.length - 1]
       );
     }
   }
 
-  editRecipient(recipient) {
-    this.removeRecipient(recipient);
+  editRecipient(participant) {
+    this.removeRecipient(participant);
     this.setState({
-      searchTerms: recipient.participant.address,
-    });
-    this.searchOpened = true;
-  }
-
-  handleRecipientChange(recipient) {
-    this.setState(prevState => ({
-      participantsAndSearchTerms: prevState.participantsAndSearchTerms.map((rcpt) => {
-        // FIXME: there's no recipient_id
-        if (rcpt.recipient_id === recipient.recipient_id) {
-          return recipient;
-        }
-
-        return rcpt;
-      }),
-    }), () => {
-      this.props.onRecipientsChange(
-        this.state.participantsAndSearchTerms.map(({ participant }) => participant),
-      );
+      searchTerms: participant.address,
     });
   }
 
@@ -248,16 +230,13 @@ class RecipientList extends Component {
     });
   }
 
-  removeRecipient(recipient) {
+  removeRecipient(participant) {
     this.setState(
       prevState => ({
-        participantsAndSearchTerms: prevState.participantsAndSearchTerms
-          .filter(curr => curr.participant !== recipient.participant),
+        recipients: prevState.recipients.filter(curr => curr !== participant),
       }),
       () => {
-        this.props.onRecipientsChange(
-          this.state.participantsAndSearchTerms.map(({ participant }) => participant),
-        );
+        this.props.onRecipientsChange(this.state.recipients);
       }
     );
   }
@@ -269,38 +248,34 @@ class RecipientList extends Component {
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div onClick={this.handleClickRecipientList} role="presentation" className="m-recipient-list">
-        { !this.state.participantsAndSearchTerms.length && (
+        { !this.state.recipients.length && (
           <span className="m-recipient-list__placeholder">
             {__('messages.compose.form.to.label')}
           </span>
         )}
-        {this.state.participantsAndSearchTerms.map(({ participant, searchTerms }) => (
+        {this.state.recipients.map(participant => (
           <Recipient
             key={participant.address}
             className="m-recipient-list__recipient"
             participant={participant}
-            searchTerms={searchTerms}
-            onChange={this.handleRecipientChange}
-            onEdit={this.editRecipient}
             onRemove={this.handleRemoveRecipient}
           />
         ))}
         <div className="m-recipient-list__search">
-          <Input
-            toggle={dropdownId}
+          <input
+            ref={(el) => { this.searchInputRef = el; }}
             className="m-recipient-list__search-input"
             onChange={this.handleSearchChange}
             value={this.state.searchTerms}
             onKeyDown={this.handleSearchKeydown}
             onFocus={this.handleSearchInputFocus}
-            get-focus="recipient-list.search.focus"
+            onBlur={this.handleSearchInputBlur}
           />
 
           <DropdownMenu
             id={dropdownId}
-            is-visible="!!$ctrl.searchResults.length && $ctrl.searchOpened"
+            show={this.state.searchResults.length && this.state.searchOpened}
             ignore-click-selectors="$ctrl.searchInputElementsSelectors"
-            on-close="$ctrl.dropdownClosed()"
           >
             <VerticalMenu>
               {this.state.searchResults.map((contact, index) => (
@@ -319,6 +294,7 @@ class RecipientList extends Component {
               ))}
             </VerticalMenu>
           </DropdownMenu>
+          <DropdownController toggle={dropdownId} />
         </div>
       </div>
     );

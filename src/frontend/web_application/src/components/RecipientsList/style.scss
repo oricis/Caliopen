@@ -33,11 +33,13 @@
     min-width: 6rem;
     border: 0;
     background: transparent;
+    color: $co-color__fg__text;
     line-height: $co-component__height;
   }
 
   &__search-result {
     line-height: $co-font__line-height;
+    text-align: left; // within a button : force align left
   }
 
   &__search-result-title {

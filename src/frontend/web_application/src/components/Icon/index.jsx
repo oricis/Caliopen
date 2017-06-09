@@ -35,6 +35,7 @@ export const typeAssoc = {
   pencil: 'fa fa-pencil',
   plus: 'fa fa-plus',
   phone: 'fa fa-phone',
+  'question-circle': 'fa fa-question-circle',
   remove: 'fa fa-remove',
   reply: 'fa fa-reply',
   save: 'fa fa-floppy-o',
