@@ -95,6 +95,7 @@ class Message(base.ObjectIndexable):
 
         try:
             draft_param = Draft(params)
+            draft_param.message_id = uuid.uuid4()
             draft_param.validate_consistency(user_id, True)
         except Exception as exc:
             log.warn(exc)
@@ -103,7 +104,6 @@ class Message(base.ObjectIndexable):
         message = Message()
         message.unmarshall_json_dict(draft_param)
         message.user_id = UUID(user_id)
-        message.message_id = uuid.uuid4()
         message.is_draft = True
         message.type = "email"  # TODO: type handling inferred from participants
         message.date_insert = datetime.datetime.utcnow()

@@ -14,7 +14,6 @@ from .external_references import ExternalReferences
 from caliopen_main.user.parameters import ResourceTag
 from caliopen_main.user.parameters import LocalIdentity
 
-
 RECIPIENT_TYPES = ['To', 'From', 'Cc', 'Bcc', 'Reply-To', 'Sender']
 MESSAGE_TYPES = ['email']
 MESSAGE_STATES = ['draft', 'sending', 'sent', 'cancel',
@@ -35,11 +34,12 @@ class NewMessage(Model):
     is_answered = BooleanType()
     is_draft = BooleanType()
     is_unread = BooleanType()
+    message_id = UUIDType()
     parent_id = StringType()
-    raw_msg_id = UUIDType()
-    participants = ListType(ModelType(Participant),
-                            default=lambda: [], required=True)
+    participants = ListType(ModelType(Participant), default=lambda: [],
+                            required=True)
     privacy_features = DictType(StringType, default=lambda: {})
+    raw_msg_id = UUIDType()
     subject = StringType()
     tags = ListType(ModelType(ResourceTag), default=lambda: [])
     type = StringType(choices=MESSAGE_TYPES)
