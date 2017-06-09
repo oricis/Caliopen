@@ -106,6 +106,7 @@ class UserMessageQualifier(object):
         new_message.is_draft = False
         new_message.is_answered = False
         new_message.importance_level = 0    # XXX tofix on parser
+        new_message.external_references = message.external_references
 
         for k, v in message.privacy_features.items():
             if v is not None:
