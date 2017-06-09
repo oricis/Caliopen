@@ -7,6 +7,7 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 // POST …/:message_id/attachments
@@ -55,4 +56,22 @@ func DeleteAttachment(ctx *gin.Context) {
 		return
 	}
 	ctx.Status(http.StatusOK)
+}
+
+// GET …/:message_id/attachments/:attachment_index
+// sends attachment as a file to client
+func DownloadAttachment(ctx *gin.Context) {
+	user_id := ctx.MustGet("user_id").(string)
+	msg_id := ctx.Param("message_id")
+	attch_id, err := strconv.Atoi(ctx.Param("attachment_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	contentType, content, err := caliopen.Facilities.RESTfacility.OpenAttachment(user_id, msg_id, attch_id)
+
+	ctx.Header("Content-Type", contentType)
+	http.ServeContent(ctx.Writer, ctx.Request, "", time.Time{}, content)
 }
