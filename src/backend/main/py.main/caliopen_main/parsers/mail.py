@@ -23,7 +23,6 @@ from caliopen_main.interfaces import (IAttachmentParser, IMessageParser,
                                       IParticipantParser)
 from .mail_feature import MailPrivacyFeature
 
-
 log = logging.getLogger(__name__)
 
 
@@ -36,6 +35,10 @@ class MailAttachment(object):
         """Extract attachment attributes from a mail part."""
         self.content_type = part.get_content_type()
         self.filename = part.get_filename()
+        content_disposition = part.get("Content-Disposition")
+        if content_disposition:
+            dispositions = content_disposition.strip().split(";")
+            self.is_inline = bool(dispositions[0].lower() == "inline")
         data = part.get_payload()
         self.size = len(data) if data else 0
         self.can_index = False
@@ -197,6 +200,7 @@ class MailMessage(object):
         Duplicate on headers exists, group them by name
         with a related list of values
         """
+
         def keyfunc(item):
             return item[0]
 

@@ -119,8 +119,10 @@ class UserMessageQualifier(object):
         for a in message.attachments:
             attachment = Attachment()
             attachment.content_type = a.content_type
-            attachment.filename = a.filename
+            attachment.file_name = a.filename
             attachment.size = a.size
+            if hasattr(a, "is_inline"):
+                attachment.is_inline = a.is_inline
             new_message.attachments.append(attachment)
 
         # compute tags
