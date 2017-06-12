@@ -17,7 +17,7 @@ describe('Compose new message', () => {
         .then(() => element(writeButtonSelector).click())
         .then(() => browser.wait(EC.presenceOf($('.m-new-draft')), 1000))
         .then(() =>
-          expect(element(by.cssContainingText('.m-navbar-item', 'compose.route.label')).isPresent())
+          expect(element(by.cssContainingText('.m-navbar-item', 'Compose')).isPresent())
             .toEqual(true)
         )
         .then(() => {
@@ -28,7 +28,7 @@ describe('Compose new message', () => {
         .then(() => element(by.cssContainingText('button', 'Save')).click())
         .then(() => browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 3 * 1000))
         .then(() =>
-          expect(element(by.cssContainingText('.m-navbar-item', 'compose.route.label')).isPresent())
+          expect(element(by.cssContainingText('.m-navbar-item', 'Compose')).isPresent())
             .toBe(false)
         )
         .then(() => expect(element(by.cssContainingText('.m-navbar-item', text1)).isPresent())
@@ -149,7 +149,7 @@ describe('Compose new message', () => {
         .then(() => expect(element(dropdownSelector).isDisplayed()).toEqual(true))
         .then(() => element(by.css('.m-recipient-list__search-input')).click())
         .then(() => expect(element(dropdownSelector).isDisplayed()).toEqual(true))
-        .then(() => element(by.cssContainingText('.l-navigation__tab-list .m-navbar-item__content', 'compose.route.label')).click())
+        .then(() => element(by.cssContainingText('.l-navigation__tab-list .m-navbar-item__content', 'Compose')).click())
         .then(() => expect(element(dropdownSelector).isDisplayed()).toEqual(false))
         .then(() => element(by.css('.m-recipient-list__search-input')).click())
         .then(() => expect(element(dropdownSelector).isDisplayed()).toEqual(true))
