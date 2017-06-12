@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
+import { createSelector } from 'reselect';
 import DropdownMenu, { withDropdownControl } from '../DropdownMenu';
 import Button from '../Button';
 import Icon from '../Icon';
@@ -36,6 +37,28 @@ const makeParticipant = ({
   type,
 });
 
+const getIdentities = ({ contacts, identitiesToIgnore }) => contacts
+  .reduce((acc, contact) => [
+    ...acc,
+    ...contact.emails.map(email => ({
+      protocol: 'email',
+      address: email.address,
+      contact_id: contact.contact_id,
+    })),
+  ], [])
+  .filter(identity => !identitiesToIgnore
+    .find(toIgnore =>
+      toIgnore.address === identity.address && toIgnore.protocol === identity.protocol));
+
+const assocProtocolIcon = {
+  email: 'envelope',
+};
+
+const contactSelector = createSelector(
+  (contacts, contactId) => ({ contacts, contactId }),
+  ({ contacts, contactId }) => contacts.find(contact => contact.contact_id === contactId)
+);
+
 // DropdownController is useless but required by the lib, we just add an empty/invisible element
 const DropdownController = withDropdownControl(props => (<span {...props} />));
 
@@ -64,7 +87,7 @@ class RecipientList extends Component {
     this.handleClickRecipientList = this.handleClickRecipientList.bind(this);
     this.handleRemoveRecipient = this.handleRemoveRecipient.bind(this);
     this.handleSearchInputFocus = this.handleSearchInputFocus.bind(this);
-    this.handleSearchInputBlur = this.handleSearchInputBlur.bind(this);
+    this.handleToggleDropdown = this.handleToggleDropdown.bind(this);
     this.state = {
       recipients: [],
       searchTerms: '',
@@ -102,8 +125,8 @@ class RecipientList extends Component {
     this.setState({ searchOpened: true });
   }
 
-  handleSearchInputBlur() {
-    this.setState({ searchOpened: false });
+  handleToggleDropdown(searchOpened) {
+    this.setState({ searchOpened });
   }
 
   focusSearch() {
@@ -113,9 +136,16 @@ class RecipientList extends Component {
   search(searchTerms) {
     if (this.state.searchTerms.length) {
       const { contacts } = this.props;
-      this.setState({
-        searchResults: filterContact({ contacts, searchTerms }).slice(0, MAX_CONTACT_RESULTS),
-      });
+      this.setState(prevState => ({
+        searchResults: getIdentities({
+          contacts: filterContact({
+            contacts,
+            searchTerms,
+          }),
+          identitiesToIgnore: prevState.recipients,
+        }).slice(0, MAX_CONTACT_RESULTS),
+        searchOpened: true,
+      }));
     } else {
       this.resetSearch();
     }
@@ -150,10 +180,7 @@ class RecipientList extends Component {
     }
 
     if (keyCode === KEY.ENTER && this.state.searchResults.length > 0) {
-      this.makeAddKnownParticipant(
-        this.state.searchResults[this.state.activeSearchResultIndex],
-        this.state.searchTerms
-      )();
+      this.makeAddKnownParticipant(this.state.searchResults[this.state.activeSearchResultIndex])();
       this.resetSearch();
     } else if (keyCode === KEY.ENTER && this.state.searchTerms.length > 0) {
       this.addUnknownParticipant(this.state.searchTerms);
@@ -173,14 +200,13 @@ class RecipientList extends Component {
     });
   }
 
-  makeAddKnownParticipant(contact) {
+  makeAddKnownParticipant(identity) {
     return () => {
-      // FIXME email should not be hardcoded
-      const { address } = contact.emails[0];
+      const { address } = identity;
       this.addParticipant(makeParticipant({
         address,
         label: address,
-        contact_ids: [contact.contact_id],
+        contact_ids: [identity.contact_id],
       }));
     };
   }
@@ -219,6 +245,7 @@ class RecipientList extends Component {
     this.removeRecipient(participant);
     this.setState({
       searchTerms: participant.address,
+      searchOpened: true,
     });
   }
 
@@ -227,6 +254,7 @@ class RecipientList extends Component {
       searchResults: [],
       searchTerms: '',
       activeSearchResultIndex: 0,
+      searchOpened: false,
     });
   }
 
@@ -242,12 +270,13 @@ class RecipientList extends Component {
   }
 
   render() {
+    const componentId = uuidV1();
     const dropdownId = uuidV1();
-    const { __ } = this.props;
+    const { __, contacts } = this.props;
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div onClick={this.handleClickRecipientList} role="presentation" className="m-recipient-list">
+      <div id={componentId} onClick={this.handleClickRecipientList} role="presentation" className="m-recipient-list">
         { !this.state.recipients.length && (
           <span className="m-recipient-list__placeholder">
             {__('messages.compose.form.to.label')}
@@ -269,25 +298,30 @@ class RecipientList extends Component {
             value={this.state.searchTerms}
             onKeyDown={this.handleSearchKeydown}
             onFocus={this.handleSearchInputFocus}
-            onBlur={this.handleSearchInputBlur}
           />
-
           <DropdownMenu
             id={dropdownId}
-            show={this.state.searchResults.length && this.state.searchOpened}
-            ignore-click-selectors="$ctrl.searchInputElementsSelectors"
+            onToggle={this.handleToggleDropdown}
+            show={this.state.searchResults.length > 0 && this.state.searchOpened}
+            closeOnClickExceptSelectors={['.m-recipient-list', '.m-recipient-list .m-recipient-list__search-input']}
           >
             <VerticalMenu>
-              {this.state.searchResults.map((contact, index) => (
-                <VerticalMenuItem key={contact.contact_id}>
+              {this.state.searchResults.map((identity, index) => (
+                <VerticalMenuItem key={identity.address + identity.protocol}>
                   <Button
-                    onClick={this.makeAddKnownParticipant(contact, this.state.searchTerms)}
-                    className={classnames('m-recipient-list__search-result', { 'is-active': index === this.state.activeSearchResultIndex })}
+                    onClick={this.makeAddKnownParticipant(identity)}
+                    className={classnames('m-recipient-list__search-result')}
+                    color={index === this.state.activeSearchResultIndex ? 'active' : null}
                   >
-                    <span className="m-recipient-list__search-result-title">{contact.title}</span>
+                    <span className="m-recipient-list__search-result-title">
+                      {contactSelector(contacts, identity.contact_id).title}
+                    </span>
                     <span className="m-recipient-list__search-result-info">
-                      <Icon type="email" />
-                      <i>{contact.emails[0].address}</i>
+                      <Icon
+                        type={assocProtocolIcon[identity.protocol]}
+                        aria-label={identity.protocol}
+                      />
+                      <i>{identity.address}</i>
                     </span>
                   </Button>
                 </VerticalMenuItem>

@@ -113,6 +113,8 @@ class NewDraftForm extends Component {
   render() {
     const { user, __ } = this.props;
     const dropdownId = uuidV1();
+    const recipients = this.state.draft.participants && this.state.draft.participants
+      .filter(participant => participant.type.toLowerCase() !== 'from');
 
     return (
       <DiscussionDraft className="m-new-draft">
@@ -141,7 +143,7 @@ class NewDraftForm extends Component {
           </TopRow>
           <BodyRow className="m-new-draft__body">
             <RecipientsList
-              recipients={this.state.draft.participants}
+              recipients={recipients}
               onRecipientsChange={this.handleRecipientsChange}
             />
             <DiscussionTextarea

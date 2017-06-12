@@ -49,6 +49,32 @@ class Dropdown extends Component {
       });
     }
 
+    if (this.props.closeOnClickExceptSelectors) {
+      this.handleDocumentClick = (ev) => {
+        if (!this.props.show) {
+          return;
+        }
+
+        const target = ev.target;
+
+        if (this.$dropdown.is(target) || this.$dropdown.find(target).length) {
+          return;
+        }
+
+
+        const targetToIgnore = this.props.closeOnClickExceptSelectors
+          .find(selector => $(selector).is(target));
+
+        if (targetToIgnore) {
+          return;
+        }
+
+        this.show(false);
+      };
+
+      document.addEventListener('click', this.handleDocumentClick);
+    }
+
     this.show(this.props.show);
   }
 
@@ -60,6 +86,12 @@ class Dropdown extends Component {
 
   shouldComponentUpdate(nextProps) {
     return nextProps.children !== this.props.children;
+  }
+
+  componentWillUnMount() {
+    if (this.handleDocumentClick) {
+      document.removeEventListener('click', this.handleDocumentClick);
+    }
   }
 
   show(isVisible) {
@@ -86,8 +118,9 @@ Dropdown.propTypes = {
   className: PropTypes.string,
   position: PropTypes.oneOf(['bottom', 'left']),
   closeOnClick: PropTypes.bool,
+  closeOnClickExceptSelectors: PropTypes.arrayOf(PropTypes.string),
   show: PropTypes.bool,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   onToggle: PropTypes.func,
 };
 
@@ -95,8 +128,10 @@ Dropdown.defaultProps = {
   className: null,
   position: null,
   closeOnClick: false,
-  onToggle: null,
+  closeOnClickExceptSelectors: null,
   show: false,
+  children: undefined,
+  onToggle: null,
 };
 
 export default Dropdown;
