@@ -33,7 +33,7 @@ describe('component RecipientList', () => {
       );
       const inst = comp.instance();
 
-      inst.removeRecipient({ participant: recipients[1] });
+      inst.removeRecipient(recipients[1]);
       expect(props.onRecipientsChange).toHaveBeenCalledWith([recipients[0], recipients[2]]);
     });
 
