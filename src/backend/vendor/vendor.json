@@ -423,12 +423,6 @@
 			"revisionTime": "2017-05-04T04:03:14Z"
 		},
 		{
-          "checksumSHA1": "+alGamFQmcGTgPK66CpSfF4lYbk=",
-          "path": "github.com/pkg/errors",
-          "revision": "c605e284fe17294bda444b34710735b29d1a9d90",
-          "revisionTime": "2017-05-05T04:36:39Z"
-        },
-      {
 			"checksumSHA1": "zmC8/3V4ls53DJlNTKDZwPSC/dA=",
 			"path": "github.com/satori/go.uuid",
 			"revision": "5bf94b69c6b68ee1b541973bb8e1144db23a194b",
@@ -657,18 +651,24 @@
 			"revisionTime": "2016-08-17T06:38:38Z"
 		},
 		{
-          "checksumSHA1": "Ko5F2Kk9TIXHFjkriNT+CMPjIcI=",
-          "path": "gopkg.in/olivere/elastic.v5",
-          "revision": "f1fd7305d0b6270192b27010fe1193568b18e4b6",
-          "revisionTime": "2017-05-29T12:23:53Z"
-        },
-      {
-        "checksumSHA1": "pCApZfp2CeDnWbNVsyzNO62ZUXA=",
-        "path": "gopkg.in/olivere/elastic.v5/uritemplates",
-        "revision": "f1fd7305d0b6270192b27010fe1193568b18e4b6",
-        "revisionTime": "2017-05-29T12:23:53Z"
-      },
-      {
+			"checksumSHA1": "YaYXHmoUOYfWXu5TMM4k8ChZ8vY=",
+			"path": "gopkg.in/olivere/elastic.v2",
+			"revision": "54283cb278d855e562a3d20f6c5afdbe1decf25b",
+			"revisionTime": "2017-03-29T06:52:08Z"
+		},
+		{
+			"checksumSHA1": "TYefriikhzyFZ9ynNHgYUjeoHgw=",
+			"path": "gopkg.in/olivere/elastic.v2/backoff",
+			"revision": "54283cb278d855e562a3d20f6c5afdbe1decf25b",
+			"revisionTime": "2017-03-29T06:52:08Z"
+		},
+		{
+			"checksumSHA1": "O5dZe+m70S7vbkgePsMLrUc86DA=",
+			"path": "gopkg.in/olivere/elastic.v2/uritemplates",
+			"revision": "54283cb278d855e562a3d20f6c5afdbe1decf25b",
+			"revisionTime": "2017-03-29T06:52:08Z"
+		},
+		{
 			"checksumSHA1": "5cJY0lLgDCgPeui7ImDgvsBs3VM=",
 			"path": "gopkg.in/redis.v5",
 			"revision": "a16aeec10ff407b1e7be6dd35797ccf5426ef0f0",
