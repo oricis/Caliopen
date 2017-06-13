@@ -55,12 +55,9 @@ services:
   #
   # Used to index mail content and ensure great research performances.
   elasticsearch:
-      image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
+      image: elasticsearch:2
       ports:
           - "9200:9200"
-      environment:
-          - xpack.security.enabled=false
-          - xpack.monitoring.enabled=false
       volumes:
           - .data/elasticsearch/data:/usr/share/elasticsearch/data
 
