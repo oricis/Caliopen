@@ -62,26 +62,26 @@ class IdentityForm extends Component {
           </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="large">
+            <FormColumn size="shrink">
               <SelectFieldGroup
                 name="type"
                 value={this.state.identityDetails.type}
                 onChange={this.handleInputChange}
-                label={__('contact.identity_form.type.label')}
+                label={__('contact.identity_form.service.label')}
                 options={identityTypeOptions}
+                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="large">
+            <FormColumn size="medium">
               <TextFieldGroup
                 name="value"
                 type="text"
                 value={this.state.identityDetails.department}
                 onChange={this.handleInputChange}
-                label={__('contact.identity_form.value.label')}
+                label={__('contact.identity_form.identity.label')}
+                showLabelforSr
               />
             </FormColumn>
-          </FormRow>
-          <FormRow>
             <FormColumn size="shrink" className="m-identity-form__action">
               <Button type="submit" display="expanded" shape="plain" icon="plus">
                 {__('contact.action.add_identity_detail')}

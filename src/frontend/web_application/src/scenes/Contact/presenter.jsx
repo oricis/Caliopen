@@ -30,13 +30,14 @@ class Contact extends Component {
       contact: {
         "addresses": [{
           "address_id": '327707a-eefc-6724-bv28-85f1c9d197b',
-          "city": '',
+          "city": 'Amphibios City',
           "country": 'Amphibios 9',
           "is_primary": false,
           "label": '',
           "postal_code": '',
           "region": '',
           "street": '',
+          "type": 'home',
         }],
         "privacy_features": {},
         "phones": [{

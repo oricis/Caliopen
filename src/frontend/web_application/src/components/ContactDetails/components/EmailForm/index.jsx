@@ -15,7 +15,7 @@ class EmailForm extends Component {
   };
 
   static defaultProps = {
-    errors: null,
+    errors: [],
   };
 
   constructor(props) {

@@ -102,6 +102,7 @@ class ContactDetails extends Component {
       onConnectRemoteIdentity,
       onDisconnectRemoteIdentity,
     } = this.props;
+
     const remoteIdentity = allowConnectRemoteEntity ?
       this.getRemoteIdentity('email', email.email_id) :
       undefined;

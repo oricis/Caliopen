@@ -58,7 +58,7 @@ class OrgaForm extends Component {
           </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="large">
+            <FormColumn>
               <TextFieldGroup
                 name="name"
                 type="text"
@@ -68,7 +68,7 @@ class OrgaForm extends Component {
                 required
               />
             </FormColumn>
-            <FormColumn size="large">
+            <FormColumn size="medium">
               <TextFieldGroup
                 name="department"
                 type="text"
@@ -77,7 +77,7 @@ class OrgaForm extends Component {
                 label={__('contact.orga_form.department.label')}
               />
             </FormColumn>
-            <FormColumn size="large">
+            <FormColumn size="medium">
               <TextFieldGroup
                 name="job_description"
                 type="text"
