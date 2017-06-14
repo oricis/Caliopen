@@ -9,5 +9,5 @@ type Attachment struct {
 	File_name    string `cql:"file_name"        json:"file_name"`
 	Is_inline    bool   `cql:"is_inline"        json:"is_inline"`
 	Size         int    `cql:"size"             json:"size"`
-	URI          string `cql:"uri"              json:"uri"` // ObjectStore url for temporary file (draft)
+	URI          string `cql:"uri"              json:"uri"` // ObjectStore url for temporary file (draft) or boundary reference for mime-part attachment
 }
