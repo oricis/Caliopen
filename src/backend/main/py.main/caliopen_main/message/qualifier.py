@@ -88,6 +88,54 @@ class UserMessageQualifier(object):
             pass
         return p
 
+    def _compute_pi(self, message):
+        """Compute Privacy Indexes for a message."""
+        feat = message.privacy_features
+        pi_cx = 0   # Contextual privacy index
+        pi_co = 0   # Comportemental privacy index
+        pi_t = 0   # Technical privacy index
+        reput = feat.get('mail_emitter_mx_reputation')
+        if reput == 'whitelisted':
+            pi_cx += 20
+        elif reput == 'unknown':
+            pi_cx += 10
+        known_contacts = []
+        known_public_key = 0
+        for part in message.participants:
+            if part.contact_id:
+                contact = Contact.get(self.user, part.contact_id)
+                known_contacts.append(contact)
+                if contact.public_key:
+                    known_public_key += 1
+        if len(message.participants) == len(known_contacts):
+            # XXX
+            # - Si tous les contacts sont déjà connus le PIᶜˣ
+            # augmente de la valeur du PIᶜᵒ le plus bas des PIᶜᵒ des contacts.
+            if known_public_key == len(known_contacts):
+                pi_co += 20
+        ext_hops = feat.get('nb_external_hops', 0)
+        if ext_hops <= 1:
+            tls = feat.get('ingress_socket_version')
+            if tls:
+                tls = tls.replace('_', '.').lower()
+                if tls == 'tlsv1/sslv3':
+                    pi_t += 2
+                elif tls in ('tls1', 'tlsv1'):
+                    pi_t += 7
+                elif tls == 'tls1.2':
+                    pi_t += 10
+                else:
+                    log.warn('Unknown TLS version {}'.format(tls))
+        if feat.get('mail_emitter_certificate'):
+            pi_t += 10
+        if feat.get('transport_signed'):
+            pi_t += 10
+        if feat.get('message_encrypted'):
+            pi_t += 30
+        return {'technical': pi_t,
+                'contextual': pi_cx,
+                'comportemental': pi_co}
+
     def process_inbound(self, raw):
         """Process inbound message.
 
@@ -135,6 +183,7 @@ class UserMessageQualifier(object):
 
         if lkp:
             new_message.discussion_id = lkp.discussion_id
+        new_message.privacy_indexes = self._compute_pi(new_message)
         new_message.validate()
         return new_message
         # XXX create lookup
