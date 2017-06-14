@@ -8,6 +8,8 @@ export const typeAssoc = {
   'angle-down': 'fa fa-angle-down',
   'arrow-right': 'fa fa-arrow-right',
   'arrow-left': 'fa fa-arrow-left',
+  briefcase: 'fa fa-briefcase',
+  building: 'fa fa-building',
   calendar: 'fa fa-calendar',
   'caret-up': 'fa fa-caret-up',
   'caret-down': 'fa fa-caret-down',
@@ -24,6 +26,7 @@ export const typeAssoc = {
   email: 'fa fa-envelope',
   editor: 'fa fa-font',
   'exclamation-triangle': 'fa fa-exclamation-triangle',
+  facebook: 'fa fa-facebook',
   folder: 'fa fa-folder-open',
   'info-circle': 'fa fa-info-circle',
   key: 'fa fa-key',
@@ -32,10 +35,8 @@ export const typeAssoc = {
   'map-marker': 'fa fa-map-marker',
   paperclip: 'fa fa-paperclip',
   plug: 'fa fa-plug',
-  pencil: 'fa fa-pencil',
   plus: 'fa fa-plus',
   phone: 'fa fa-phone',
-  'question-circle': 'fa fa-question-circle',
   remove: 'fa fa-remove',
   reply: 'fa fa-reply',
   save: 'fa fa-floppy-o',
@@ -48,6 +49,7 @@ export const typeAssoc = {
   user: 'fa fa-user',
   users: 'fa fa-users',
   tags: 'fa fa-tags',
+  twitter: 'fa fa-twitter',
   'th-large': 'fa fa-th-large',
   trash: 'fa fa-trash',
   'window-maximize': 'fa fa-window-maximize',
@@ -76,7 +78,7 @@ Icon.propTypes = {
 };
 Icon.defaultProps = {
   className: undefined,
-  type: undefined,
+  type: false,
   spaced: false,
 };
 

@@ -19,7 +19,7 @@ class EmailDetails extends Component {
   static defaultProps = {
     remoteIdentity: undefined,
     editMode: false,
-    allowConnectRemoteEntity: undefined,
+    allowConnectRemoteEntity: false,
     onConnectRemoteIdentity: undefined,
     onDisconnectRemoteIdentity: undefined,
   };

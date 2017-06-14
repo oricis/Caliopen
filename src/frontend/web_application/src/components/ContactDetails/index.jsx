@@ -7,11 +7,16 @@ import TextList, { ItemContent } from '../TextList';
 import AddressDetails from './components/AddressDetails';
 import EmailDetails from './components/EmailDetails';
 import PhoneDetails from './components/PhoneDetails';
+import OrgaDetails from './components/OrgaDetails';
+import OrgaForm from './components/OrgaForm';
+import IdentityDetails from './components/IdentityDetails';
 import ImDetails from './components/ImDetails';
 import AddressForm from './components/AddressForm';
 import EmailForm from './components/EmailForm';
 import ImForm from './components/ImForm';
+import IdentityForm from './components/IdentityForm';
 import './style.scss';
+
 
 class ContactDetails extends Component {
   static propTypes = {
@@ -25,7 +30,7 @@ class ContactDetails extends Component {
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
-    allowConnectRemoteEntity: () => {},
+    allowConnectRemoteEntity: false,
     onDisconnectRemoteIdentity: () => {},
     remoteIdentities: [],
   };
@@ -89,7 +94,6 @@ class ContactDetails extends Component {
       </Button>
     );
   }
-
   renderEmail(email, key) {
     const {
       __,
@@ -149,7 +153,7 @@ class ContactDetails extends Component {
   }
 
   render() {
-    const { __, contact, onAddContactDetail } = this.props;
+    const { __, contact, onAddContactDetail, onDeleteContactDetail } = this.props;
     let detailKey = 0;
     let contactDetails = [];
     const emails = contact.emails.sort((a, b) => a.address.localeCompare(b.address));
@@ -187,16 +191,56 @@ class ContactDetails extends Component {
       contactDetails = contactDetails.concat(<AddressForm key={detailKey} onSubmit={onAddContactDetail} __={__} />);
     }
 
-
     return (
       <div className="m-contact-details">
-        <Subtitle hr actions={this.renderSubtitleActions()}>
-          {__('contact.contact_details')}
-        </Subtitle>
-
-        <div className="m-contact-details__list">
-          <TextList>{contactDetails}</TextList>
+        <div className="m-contact-details__pannel">
+          <Subtitle hr actions={this.renderSubtitleActions()}>
+            {__('contact.contact_details')}
+          </Subtitle>
+          <div className="m-contact-details__list">
+            <TextList>{contactDetails}</TextList>
+          </div>
         </div>
+        {contact.organizations !== {} &&
+          <div className="m-contact-details__pannel">
+            <Subtitle hr actions={this.renderSubtitleActions()}>
+              {__('contact.contact_organizations')}
+            </Subtitle>
+              <div className="m-contact-details__list">
+                <TextList>
+                {contact.organizations.map(organization =>
+                    <OrgaDetails
+                      key={organization.organization_id}
+                      organization={organization}
+                      editMode={this.state.editMode}
+                      onDelete={onDeleteContactDetail}
+                      __={__} />
+                  )}
+                  </TextList>
+                {this.state.editMode && <OrgaForm onSubmit={onAddContactDetail} __={__}/>}
+              </div>
+          </div>
+        }
+        {contact.identities !== [] &&
+          <div className="m-contact-details__pannel">
+            <Subtitle hr actions={this.renderSubtitleActions()}>
+              {__('contact.contact_identities')}
+            </Subtitle>
+              <div className="m-contact-details__list">
+                <TextList>
+                  {contact.identities.map(identity =>
+                    <IdentityDetails
+                      key={identity.value}
+                      identity={identity}
+                      editMode={this.state.editMode}
+                      onDelete={onDeleteContactDetail}
+                      __={__} />
+                    )}
+                </TextList>
+                {this.state.editMode && <IdentityForm onSubmit={onAddContactDetail} __={__}/>}
+              </div>
+          </div>
+        }
       </div>
     );
   }

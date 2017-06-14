@@ -5,6 +5,15 @@ import { TextFieldGroup } from '../../../form';
 import './style.scss';
 
 class ContactProfileForm extends Component {
+  static propTypes = {
+    contact: PropTypes.shape({}),
+    onChange: PropTypes.func.isRequired,
+    __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    contact: {},
+  };
+
   constructor(props) {
     super(props);
 
@@ -27,6 +36,7 @@ class ContactProfileForm extends Component {
 
   render() {
     const { __ } = this.props;
+    const contact = this.state.contact;
 
     return (
       <form
@@ -34,26 +44,46 @@ class ContactProfileForm extends Component {
         onSubmit={this.handleSubmit}
       >
         <TextFieldGroup
+          className="m-contact-profile-form__title"
+          value={contact.title}
+          label={__('contact_profile.form.title.label')}
+          name="title"
+          onChange={this.handleChanges}
+        />
+        <TextFieldGroup
+          className="m-contact-profile-form__name-prefix"
+          value={contact.name_prefix ? contact.name_prefix : ''}
+          label={__('contact_profile.form.name-prefix.label')}
+          name="name_prefix"
+          onChange={this.handleChanges}
+        />
+        <TextFieldGroup
           className="m-contact-profile-form__firstname"
-          value={this.state.contact.given_name}
+          value={contact.given_name}
           label={__('contact_profile.form.firstname.label')}
           name="given_name"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
           className="m-contact-profile-form__lastname"
-          value={this.state.contact.family_name}
+          value={contact.family_name}
           label={__('contact_profile.form.lastname.label')}
           name="family_name"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
-          className="m-contact-profile-form__birthday"
-          value={this.state.contact.birthday}
-          label={__('contact_profile.form.birthday.label')}
-          name="birthday"
+          className="m-contact-profile-form__name-suffix"
+          value={contact.name_suffix ? contact.name_suffix : ''}
+          label={__('contact_profile.form.name-suffix.label')}
+          name="name_suffix"
           onChange={this.handleChanges}
-          expanded={false}
+        />
+        <TextFieldGroup
+          className="m-contact-profile-form__birthday"
+          value={contact.infos.birthday ? contact.infos.birthday : ''}
+          label={__('contact_profile.form.birthday.label')}
+          name="name_suffix"
+          onChange={this.handleChanges}
         />
         <div className="m-contact-profile-form__save-button">
           <div className="m-contact-profile-form__save-button-wrapper">
@@ -65,10 +95,5 @@ class ContactProfileForm extends Component {
   }
 }
 
-ContactProfileForm.propTypes = {
-  contact: PropTypes.shape({}),
-  onChange: PropTypes.func,
-  __: PropTypes.func.isRequired,
-};
 
 export default withTranslator()(ContactProfileForm);

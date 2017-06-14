@@ -14,6 +14,10 @@ class EmailForm extends Component {
     __: PropTypes.func.isRequired,
   };
 
+  static defaultProps = {
+    errors: null,
+  };
+
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -110,8 +114,6 @@ class EmailForm extends Component {
                 displaySwitch
                 showTextLabel
               />
-              {' '}
-              {__('contact.email_form.is_primary.label')}
             </FormColumn>
           </FormRow>
           <FormRow>

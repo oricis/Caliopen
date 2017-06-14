@@ -23,6 +23,7 @@
   &--medium { @include m-avatar--size(medium); }
   &--large  { @include m-avatar--size(large);  }
   &--xlarge { @include m-avatar--size(xlarge); }
+  &--xxlarge { @include m-avatar--size(xxlarge); }
 
   &--round  { border-radius: 50%}
 

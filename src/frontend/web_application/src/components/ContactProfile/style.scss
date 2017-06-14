@@ -24,10 +24,29 @@
     line-height: $co-component__height;
   }
 
-  &__title {
+  &__name {
     @include clearfix;
     display: block;
+  }
+
+  &__title {
     color: $co-color__fg__text--high;
+  }
+
+  &__subtitle {
+    margin-top: 0;
+    color: $co-color__fg__text--low;
+    font-size: $co-font__size--small;
+    font-weight: 400;
+  }
+
+  &__tag {
+    margin: 0 $co-component__spacing;
+  }
+
+  &__pi {
+    margin-top: $co-margin;
+    margin-bottom: $co-margin;
   }
 
   @include m-contact-profile--horizontal;
@@ -35,8 +54,9 @@
   @include breakpoint(medium) {
     @include m-contact-profile--vertical;
 
-    &__title,
-    &__avatar {
+    &__name,
+    &__avatar,
+    &__tags {
       text-align: center;
     }
   }

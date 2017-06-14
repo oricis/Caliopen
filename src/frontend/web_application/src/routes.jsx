@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import { withTranslator } from '@gandi/react-translate';
-import Account from './scenes/Account';
+import Account from './scenes/Contact';
 import Auth from './scenes/Auth';
 import DiscussionList from './scenes/DiscussionList';
 import AppRoute from './scenes/AppRoute';
-import NewDraft from './scenes/NewDraft';
 import SettingsRoute from './scenes/SettingsRoute';
 import DevicesRoute from './scenes/DevicesRoute';
 import MessageList from './scenes/MessageList';
@@ -33,11 +32,6 @@ export const getRouteConfig = ({ __ }) => [
       {
         path: '/discussions/:discussionId',
         component: MessageList,
-        app: 'discussion',
-      },
-      {
-        path: '/compose',
-        component: NewDraft,
         app: 'discussion',
       },
       {

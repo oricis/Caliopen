@@ -2,7 +2,8 @@ $m-avatar__size: (
   small:  2rem,
   medium: 3rem,
   large:  4rem,
-  xlarge: 6rem
+  xlarge: 6rem,
+  xxlarge: 8rem
 );
 
 @mixin m-avatar--size($size) {

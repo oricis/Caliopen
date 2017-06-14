@@ -104,8 +104,6 @@ class EmailForm extends Component {
                 options={addressTypeOptions}
               />
             </FormColumn>
-          </FormRow>
-          <FormRow>
             <FormColumn size="shrink" className="m-im-form__action">
               <Button type="submit" display="expanded" shape="plain" icon="plus">
                 {__('contact.action.add_contact_detail')}
