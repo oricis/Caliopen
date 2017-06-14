@@ -11,7 +11,7 @@ function getTitleView(contact, sortView) {
   const givenName = contact[SORT_VIEW_GIVEN_NAME] || '';
   const title = contact[SORT_VIEW_TITLE] || '';
 
-  if (!familyName && givenName) { return title; }
+  if (!familyName && !givenName) { return title; }
 
   switch (sortView) {
     case SORT_VIEW_FAMILY_NAME:
