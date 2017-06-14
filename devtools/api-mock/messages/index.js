@@ -1,6 +1,7 @@
 import { createAction, createSelector } from 'bouchon';
 import { v1 as uuidv1 } from 'uuid';
 import createCollectionMiddleware from '../collection-middleware';
+import { actions as discussionActions } from '../discussions';
 
 const actions = {
   get: createAction('Get messages'),
@@ -28,10 +29,11 @@ const selectors = {
 
 const reducer = {
   [actions.get]: state => state,
-  [actions.post]: (state, params) => ([
+  [actions.post]: (state, { body, req: { discussionId } }) => ([
     ...state,
     {
-      ...params.body,
+      discussion_id: discussionId,
+      ...body,
       message_id: uuidv1(),
       is_draft: true,
       is_unread: false,
@@ -100,7 +102,7 @@ const routes = {
     status: 200,
   },
   'POST /v1/messages/': {
-    action: actions.post,
+    action: [discussionActions.create, actions.post],
     selector: selectors.lastLocation,
     status: 200,
   },

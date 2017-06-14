@@ -30,9 +30,9 @@ export const withDropdownControl = (WrappedComponent) => {
 
 class Dropdown extends Component {
   componentDidMount() {
-    const $dropdown = jQuery(`#${this.props.id}`);
+    this.$dropdown = jQuery(`#${this.props.id}`);
     // eslint-disable-next-line no-new
-    new Foundation.Dropdown($dropdown, {
+    new Foundation.Dropdown(this.$dropdown, {
       hOffset: 0,
       vOffset: 0,
     });
@@ -41,13 +41,61 @@ class Dropdown extends Component {
     // see https://github.com/zurb/foundation-sites/pull/9019
 
     if (this.onToggle) {
-      $dropdown.on('show.zf.dropdown', () => {
+      this.$dropdown.on('show.zf.dropdown', () => {
         this.onToggle(true);
       });
-      $dropdown.on('hide.zf.dropdown', () => {
+      this.$dropdown.on('hide.zf.dropdown', () => {
         this.onToggle(false);
       });
     }
+
+    if (this.props.closeOnClickExceptSelectors) {
+      this.handleDocumentClick = (ev) => {
+        if (!this.props.show) {
+          return;
+        }
+
+        const target = ev.target;
+
+        if (this.$dropdown.is(target) || this.$dropdown.find(target).length) {
+          return;
+        }
+
+
+        const targetToIgnore = this.props.closeOnClickExceptSelectors
+          .find(selector => $(selector).is(target));
+
+        if (targetToIgnore) {
+          return;
+        }
+
+        this.show(false);
+      };
+
+      document.addEventListener('click', this.handleDocumentClick);
+    }
+
+    this.show(this.props.show);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.show !== nextProps.show) {
+      this.show(nextProps.show);
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.children !== this.props.children;
+  }
+
+  componentWillUnMount() {
+    if (this.handleDocumentClick) {
+      document.removeEventListener('click', this.handleDocumentClick);
+    }
+  }
+
+  show(isVisible) {
+    return isVisible ? this.$dropdown.foundation('open') : this.$dropdown.foundation('close');
   }
 
   render() {
@@ -70,6 +118,9 @@ Dropdown.propTypes = {
   className: PropTypes.string,
   position: PropTypes.oneOf(['bottom', 'left']),
   closeOnClick: PropTypes.bool,
+  closeOnClickExceptSelectors: PropTypes.arrayOf(PropTypes.string),
+  show: PropTypes.bool,
+  children: PropTypes.node,
   onToggle: PropTypes.func,
 };
 
@@ -77,6 +128,9 @@ Dropdown.defaultProps = {
   className: null,
   position: null,
   closeOnClick: false,
+  closeOnClickExceptSelectors: null,
+  show: false,
+  children: undefined,
   onToggle: null,
 };
 

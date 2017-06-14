@@ -7,19 +7,23 @@ import Presenter from './presenter';
 const messageDraftSelector = state => state.draftMessage.draftsByDiscussionId;
 const discussionIdSelector = (state, ownProps) => ownProps.discussionId;
 const messageSelector = state => state.message.messagesById;
+const userSelector = state => state.user.user;
 
 const mapStateToProps = createSelector(
-  [messageDraftSelector, discussionIdSelector, messageSelector],
-  (drafts, discussionId, messages) => {
+  [messageDraftSelector, discussionIdSelector, messageSelector, userSelector],
+  (drafts, discussionId, messages, user) => {
     const draft = drafts[discussionId];
-    const message = Object.keys(messages)
+    const discussionMessages = Object.keys(messages)
       .map(messageId => messages[messageId])
-      .find(item => (item.discussion_id === discussionId && item.is_draft === true));
+      .filter(item => item.discussion_id === discussionId);
+    const message = discussionMessages.find(item => item.is_draft === true);
 
     return {
+      allowEditRecipients: discussionMessages.length === 1 && message,
       message,
       draft,
       discussionId,
+      user,
     };
   }
 );

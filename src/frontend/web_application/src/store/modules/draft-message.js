@@ -1,5 +1,9 @@
 export const REQUEST_DRAFT = 'co/draft-message/REQUEST_DRAFT';
 export const REQUEST_DRAFT_SUCCESS = 'co/draft-message/REQUEST_DRAFT_SUCCESS';
+export const REQUEST_SIMPLE_DRAFT = 'co/draft-message/REQUEST_SIMPLE_DRAFT';
+export const REQUEST_SIMPLE_DRAFT_SUCCESS = 'co/draft-message/REQUEST_SIMPLE_DRAFT_SUCCESS';
+export const EDIT_SIMPLE_DRAFT = 'co/draft-message/EDIT_SIMPLE_DRAFT';
+export const CLEAR_SIMPLE_DRAFT = 'co/draft-message/CLEAR_SIMPLE_DRAFT';
 export const CREATE_DRAFT_SUCCESS = 'co/draft-message/CREATE_DRAFT_SUCCESS';
 export const EDIT_DRAFT = 'co/draft-message/EDIT_DRAFT';
 export const SAVE_DRAFT = 'co/draft-message/SAVE_DRAFT';
@@ -42,6 +46,34 @@ export function requestDraftSuccess({ draft }) {
   };
 }
 
+export function requestSimpleDraft() {
+  return {
+    type: REQUEST_SIMPLE_DRAFT,
+    payload: { },
+  };
+}
+
+export function requestSimpleDraftSuccess({ draft }) {
+  return {
+    type: REQUEST_SIMPLE_DRAFT_SUCCESS,
+    payload: { draft },
+  };
+}
+
+export function editSimpleDraft({ draft }) {
+  return {
+    type: EDIT_SIMPLE_DRAFT,
+    payload: { draft },
+  };
+}
+
+export function clearSimpleDraft() {
+  return {
+    type: CLEAR_SIMPLE_DRAFT,
+    payload: {},
+  };
+}
+
 export function sendDraft({ discussionId, draft, message }) {
   return {
     type: SEND_DRAFT,
@@ -56,29 +88,16 @@ export function clearDraft({ discussionId }) {
   };
 }
 
-function participantsReducer(state, action) {
-  switch (action.type) {
-    case CREATE_DRAFT_SUCCESS:
-      return action.payload.draft.participants;
-    default:
-      return state;
-  }
-}
-
 function draftReducer(state = { participants: [] }, action) {
   switch (action.type) {
+    case REQUEST_SIMPLE_DRAFT_SUCCESS:
     case REQUEST_DRAFT_SUCCESS:
     case EDIT_DRAFT:
+    case EDIT_SIMPLE_DRAFT:
+    case CREATE_DRAFT_SUCCESS:
       return {
         ...state,
         ...action.payload.draft,
-      };
-    case CREATE_DRAFT_SUCCESS:
-      return {
-        ...state,
-        message_id: action.payload.draft.message_id,
-        discussion_id: action.payload.draft.discussion_id,
-        participants: participantsReducer(state.participants, action),
       };
     case SEND_DRAFT_SUCCESS:
       throw new Error('TODO reducer SEND_DRAFT_SUCCESS');
@@ -116,6 +135,7 @@ const initialState = {
   isFetching: false,
   didInvalidate: false,
   draftsByDiscussionId: {},
+  simpleDraft: undefined,
 };
 
 export default function reducer(state = initialState, action) {
@@ -128,6 +148,17 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         draftsByDiscussionId: dratfsByDiscussionIdReducer(state.draftsByDiscussionId, action),
+      };
+    case EDIT_SIMPLE_DRAFT:
+    case REQUEST_SIMPLE_DRAFT_SUCCESS:
+      return {
+        ...state,
+        simpleDraft: draftReducer(state.simpleDraft, action),
+      };
+    case CLEAR_SIMPLE_DRAFT:
+      return {
+        ...state,
+        simpleDraft: undefined,
       };
     default:
       return state;

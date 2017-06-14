@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReplyFormBase from '../../../../components/ReplyForm';
+import NewDraftForm from '../../../../components/NewDraftForm';
 
-class ReplyForm extends Component {
+class DraftForm extends Component {
   static propTypes = {
     discussionId: PropTypes.string.isRequired,
+    allowEditRecipients: PropTypes.bool,
     message: PropTypes.shape({ }),
     draft: PropTypes.shape({ }),
     requestDraft: PropTypes.func.isRequired,
     editDraft: PropTypes.func.isRequired,
     saveDraft: PropTypes.func.isRequired,
     sendDraft: PropTypes.func.isRequired,
+    user: PropTypes.shape({}),
   };
 
   static defaultProps = {
+    allowEditRecipients: false,
     message: {},
     draft: null,
+    user: undefined,
   };
 
   constructor(props) {
@@ -61,10 +66,20 @@ class ReplyForm extends Component {
   }
 
   render() {
-    const { draft } = this.props;
+    const { draft, allowEditRecipients, user } = this.props;
 
     if (!draft) {
       return (<div />);
+    }
+
+    if (allowEditRecipients) {
+      return (<NewDraftForm
+        draft={draft}
+        onChange={this.handleChange}
+        onSave={this.handleSave}
+        onSend={this.handleSend}
+        user={user}
+      />);
     }
 
     return (
@@ -73,9 +88,10 @@ class ReplyForm extends Component {
         onChange={this.handleChange}
         onSave={this.handleSave}
         onSend={this.handleSend}
+        user={user}
       />
     );
   }
 }
 
-export default ReplyForm;
+export default DraftForm;
