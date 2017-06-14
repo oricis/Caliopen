@@ -114,19 +114,19 @@ func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtInde
 	// either from object store (draft context)
 	// or from raw message's mime part (non-draft context)
 	/*
-	if msg.Is_draft {
-		attachment, err := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URI)
-		if err != nil {
-			return "", nil, err
-		}
-		io.NewSectionReader(attachment, 0, int64(msg.Attachments[attchmtIndex].Size))
+		if msg.Is_draft {
+			attachment, err := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URI)
+			if err != nil {
+				return "", nil, err
+			}
+			io.NewSectionReader(attachment, 0, int64(msg.Attachments[attchmtIndex].Size))
 
-	} else {
-		rawMsg, err := rest.store.GetRawMessage(user_id, message_id)
-		if err != nil {
-			return "", nil, err
+		} else {
+			rawMsg, err := rest.store.GetRawMessage(user_id, message_id)
+			if err != nil {
+				return "", nil, err
+			}
 		}
-	}
 	*/
 	return
 }
