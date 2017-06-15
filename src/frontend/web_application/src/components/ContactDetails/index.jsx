@@ -43,7 +43,11 @@ class ContactDetails extends Component {
     this.renderPhone = this.renderPhone.bind(this);
     this.renderIm = this.renderIm.bind(this);
     this.state = {
-      editMode: false,
+      editMode: {
+        details: false,
+        organizations: false,
+        identities: false,
+      },
     };
 
     this.initDetailsTranslations();
@@ -66,9 +70,13 @@ class ContactDetails extends Component {
     };
   }
 
-  handleSwitchEditMode() {
+  handleSwitchEditMode(ev) {
+    const panel = ev.target.value;
+
     this.setState(prevState => ({
-      editMode: !prevState.editMode,
+      editMode: {
+        [panel]: !prevState.editMode[panel],
+      }
     }));
   }
 
@@ -79,14 +87,15 @@ class ContactDetails extends Component {
           && remoteIdentity.identity_id === identityId);
   }
 
-  renderSubtitleActions() {
+  renderSubtitleActions(panel) {
     const { __ } = this.props;
-    const activeButtonProp = this.state.editMode ? { color: 'active' } : {};
+    const activeButtonProp = this.state.editMode[panel] ? { color: 'active' } : {};
 
     return (
       <Button
         className="pull-right"
         {...activeButtonProp}
+        value={panel}
         onClick={this.handleSwitchEditMode}
         icon="edit"
       >
@@ -103,6 +112,8 @@ class ContactDetails extends Component {
       onDisconnectRemoteIdentity,
     } = this.props;
 
+    const editMode = this.state.editMode;
+
     const remoteIdentity = allowConnectRemoteEntity ?
       this.getRemoteIdentity('email', email.email_id) :
       undefined;
@@ -113,7 +124,7 @@ class ContactDetails extends Component {
           email={email}
           allowConnectRemoteEntity={allowConnectRemoteEntity}
           remoteIdentity={remoteIdentity}
-          editMode={this.state.editMode}
+          editMode={editMode.details}
           onDelete={onDeleteContactDetail}
           onConnectRemoteIdentity={onConnectRemoteIdentity}
           onDisconnectRemoteIdentity={onDisconnectRemoteIdentity}
@@ -125,36 +136,41 @@ class ContactDetails extends Component {
 
   renderPhone(phone, key) {
     const { __, onDeleteContactDetail } = this.props;
+    const editMode = this.state.editMode;
 
     return (
       <ItemContent key={key} large>
-        <PhoneDetails phone={phone} editMode={this.state.editMode} onDelete={onDeleteContactDetail} __={__} />
+        <PhoneDetails phone={phone} editMode={editMode.details} onDelete={onDeleteContactDetail} __={__} />
       </ItemContent>
     )
   }
 
   renderIm(im, key) {
     const { __, onDeleteContactDetail } = this.props;
+    const editMode = this.state.editMode;
 
     return (
       <ItemContent key={key} large>
-        <ImDetails im={im} editMode={this.state.editMode} onDelete={onDeleteContactDetail} __={__} />
+        <ImDetails im={im} editMode={editMode.details} onDelete={onDeleteContactDetail} __={__} />
       </ItemContent>
     )
   }
 
   renderAddress(address, key) {
     const { __, onDeleteContactDetail } = this.props;
+    const editMode = this.state.editMode;
 
     return (
       <ItemContent key={key} large>
-        <AddressDetails address={address} editMode={this.state.editMode} onDelete={onDeleteContactDetail} __={__} />
+        <AddressDetails address={address} editMode={editMode.details} onDelete={onDeleteContactDetail} __={__} />
       </ItemContent>
     )
   }
 
   render() {
     const { __, contact, onAddContactDetail, onDeleteContactDetail } = this.props;
+    const editMode = this.state.editMode;
+
     let detailKey = 0;
     let contactDetails = [];
     const emails = contact.emails.sort((a, b) => a.address.localeCompare(b.address));
@@ -162,7 +178,7 @@ class ContactDetails extends Component {
       detailKey++;
       return this.renderEmail(detail, detailKey);
     }));
-    if (this.state.editMode) {
+    if (editMode.details) {
       detailKey++;
       contactDetails = contactDetails.concat(<EmailForm key={detailKey} onSubmit={onAddContactDetail} __={__} />);
     }
@@ -177,7 +193,7 @@ class ContactDetails extends Component {
 
         return this.renderIm(detail, detailKey);
       }));
-    if (this.state.editMode) {
+    if (editMode.details) {
       detailKey++;
       contactDetails = contactDetails.concat(<ImForm key={detailKey} onSubmit={onAddContactDetail} __={__} />);
     }
@@ -187,15 +203,16 @@ class ContactDetails extends Component {
         return this.renderAddress(detail, detailKey);
       }));
 
-    if (this.state.editMode) {
+    if (editMode.details) {
       detailKey++;
       contactDetails = contactDetails.concat(<AddressForm key={detailKey} onSubmit={onAddContactDetail} __={__} />);
     }
 
     return (
+
       <div className="m-contact-details">
-        <div className="m-contact-details__pannel">
-          <Subtitle hr actions={this.renderSubtitleActions()}>
+        <div className="m-contact-details__panel">
+          <Subtitle hr actions={this.renderSubtitleActions('details')}>
             {__('contact.contact_details')}
           </Subtitle>
           <div className="m-contact-details__list">
@@ -203,8 +220,8 @@ class ContactDetails extends Component {
           </div>
         </div>
         {contact.organizations !== {} &&
-          <div className="m-contact-details__pannel">
-            <Subtitle hr actions={this.renderSubtitleActions()}>
+          <div className="m-contact-details__panel">
+            <Subtitle hr actions={this.renderSubtitleActions('organizations')}>
               {__('contact.contact_organizations')}
             </Subtitle>
               <div className="m-contact-details__list">
@@ -213,18 +230,18 @@ class ContactDetails extends Component {
                     <OrgaDetails
                       key={organization.organization_id}
                       organization={organization}
-                      editMode={this.state.editMode}
+                      editMode={editMode.organizations}
                       onDelete={onDeleteContactDetail}
                       __={__} />
                   )}
                   </TextList>
-                {this.state.editMode && <OrgaForm onSubmit={onAddContactDetail} __={__}/>}
+                {editMode.organizations && <OrgaForm onSubmit={onAddContactDetail} __={__}/>}
               </div>
           </div>
         }
         {contact.identities !== [] &&
-          <div className="m-contact-details__pannel">
-            <Subtitle hr actions={this.renderSubtitleActions()}>
+          <div className="m-contact-details__panel">
+            <Subtitle hr actions={this.renderSubtitleActions('identities')}>
               {__('contact.contact_identities')}
             </Subtitle>
               <div className="m-contact-details__list">
@@ -233,12 +250,12 @@ class ContactDetails extends Component {
                     <IdentityDetails
                       key={identity.value}
                       identity={identity}
-                      editMode={this.state.editMode}
+                      editMode={editMode.identities}
                       onDelete={onDeleteContactDetail}
                       __={__} />
                     )}
                 </TextList>
-                {this.state.editMode && <IdentityForm onSubmit={onAddContactDetail} __={__}/>}
+                {editMode.identities && <IdentityForm onSubmit={onAddContactDetail} __={__}/>}
               </div>
           </div>
         }

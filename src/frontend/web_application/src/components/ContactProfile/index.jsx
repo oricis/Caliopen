@@ -39,29 +39,33 @@ class ContactProfile extends Component {
 
     return (
       <div className={classnames('m-contact-profile', className)}>
-        <div className="m-contact-profile__edit-button">
-          <Button
-            icon="edit"
-            {...activeButtonProp}
-            onClick={this.toggleEditMode}
-          >
-            <span className="show-for-sr">
-              {__('contact_profile.action.edit_contact')}
-            </span>
-          </Button>
-        </div>
-        <div className="m-contact-profile__avatar">
-          <ContactAvatarLetter contact={contact} size="xxlarge" />
-        </div>
+        <div className="m-contact-profile__header">
+          <div className="m-contact-profile__avatar-wrapper">
+            <ContactAvatarLetter contact={contact} className="m-contact-profile__avatar" />
+          </div>
 
-        <div className="m-contact-profile__name">
-          <h3 className="m-contact-profile__title">{contact.title}</h3>
-          <h4 className="m-contact-profile__subtitle">
-            {contact.name_prefix}{contact.name_prefix && ' '}
-            {contact.given_name}{contact.given_name && ' '}
-            {contact.family_name}{contact.name_suffix && ' '}
-            {contact.name_suffix}
-          </h4>
+          <div className="m-contact-profile__name">
+            <h3 className="m-contact-profile__title">{contact.title}</h3>
+            <h4 className="m-contact-profile__subtitle">
+              {contact.name_prefix}{contact.name_prefix && ' '}
+              {contact.given_name}{contact.given_name && ' '}
+              {contact.family_name}{contact.name_suffix && ' '}
+              {contact.name_suffix}
+            </h4>
+          </div>
+
+          <div className="m-contact-profile__edit-button">
+            <Button
+              icon="edit"
+              {...activeButtonProp}
+              onClick={this.toggleEditMode}
+            >
+              <span className="show-for-sr">
+                {__('contact_profile.action.edit_contact')}
+              </span>
+            </Button>
+          </div>
+
         </div>
 
 

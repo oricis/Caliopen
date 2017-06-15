@@ -149,21 +149,6 @@ class Account extends Component {
                 allowConnectRemoteEntity
                 __={__}
               />
-              <div className="s-account__m-subtitle m-subtitle m-subtitle--hr">
-                <h3 className="m-subtitle__text">
-                  {__('contact.accounts')}
-                </h3>
-              </div>
-              <ul className="m-text-list">
-                { this.state.user.contact.identities.map(identity => (
-                  <li key={identity} className="m-text-list__item m-text-list__item--large">
-                    <span className="m-text-line">
-                      <Icon className="m-text-list__icon" type="at" />
-                      {identity}
-                    </span>
-                  </li>
-                ))}
-              </ul>
             </div>
           </div>
           )

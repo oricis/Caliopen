@@ -1,43 +1,65 @@
 @import '../../styles/common';
 @import '../../styles/vendor/bootstrap_foundation-sites';
+@import '../../styles/object/o-avatar';
+
 
 @mixin m-contact-profile--horizontal {
+  &__avatar-wrapper {
+    @include flex-grid-size(shrink);
+  }
+
   &__avatar {
-    float: left;
-    margin-right: $co-margin;
+    @include m-avatar--size(large);
+    margin-bottom: $co-margin / 2;
+  }
+
+  &__name {
+    @include flex-grid-column(shrink);
   }
 }
+
 @mixin m-contact-profile--vertical {
+  &__avatar-wrapper {
+    @include flex-grid-size(12);
+  }
+
   &__avatar {
-    float: none;
-    margin-right: 0;
+    @include m-avatar--size(xxlarge);
+  }
+
+  &__name {
+    @include flex-grid-column(12);
   }
 }
 
 .m-contact-profile {
-  position: relative;
+
+
+  &__header {
+    @include flex-grid-row;
+    position: relative;
+  }
 
   &__edit-button {
     position: absolute;
     top: 0;
     right: 0;
-    line-height: $co-component__height;
-  }
-
-  &__name {
-    @include clearfix;
-    display: block;
   }
 
   &__title {
+    margin: 0;
     color: $co-color__fg__text--high;
   }
 
   &__subtitle {
-    margin-top: 0;
+    margin: 0;
     color: $co-color__fg__text--low;
     font-size: $co-font__size--small;
     font-weight: 400;
+  }
+
+  &__tags {
+    margin-top: $co-margin / 2;
   }
 
   &__tag {
@@ -55,9 +77,10 @@
     @include m-contact-profile--vertical;
 
     &__name,
-    &__avatar,
+    &__avatar-wrapper,
     &__tags {
       text-align: center;
     }
+
   }
 }
