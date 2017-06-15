@@ -54,7 +54,7 @@ func (cb *CassandraBackend) StoreRawMessage(raw_message string) (uuid string, er
 	return
 }
 
-func (cb *CassandraBackend) GetRawMessage(user_id, message_id string) (message string, err error) {
+func (cb *CassandraBackend) GetRawMessage(raw_message_id string) (message string, err error) {
 
 	return
 }

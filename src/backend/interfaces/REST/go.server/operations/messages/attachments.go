@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"bytes"
 )
 
 // POST …/:message_id/attachments
@@ -70,8 +71,13 @@ func DownloadAttachment(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	contentType, content, err := caliopen.Facilities.RESTfacility.OpenAttachment(user_id, msg_id, attch_id)
+	contentType, size, content, err := caliopen.Facilities.RESTfacility.OpenAttachment(user_id, msg_id, attch_id)
+
+	// create a ReaderSeeker from the io.Reader returned by OpenAttachment
+	attch_bytes := make([]byte, size)
+	content.Read(attch_bytes)
+	rs := bytes.NewReader(attch_bytes)
 
 	ctx.Header("Content-Type", contentType)
-	http.ServeContent(ctx.Writer, ctx.Request, "", time.Time{}, content)
+	http.ServeContent(ctx.Writer, ctx.Request, "", time.Time{}, rs)
 }
