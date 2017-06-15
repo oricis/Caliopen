@@ -1,4 +1,5 @@
-import vobject
+import logging
+import os.path
 
 from caliopen_main.user.core import Contact as CoreContact
 
@@ -6,11 +7,15 @@ from cornice.resource import resource, view
 from pyramid.response import Response
 
 from caliopen_main.parsers.vcard import parse_vcards
+from caliopen_main.parsers.vcard import read_file
 
 from ..base.exception import (ValidationError,
                               Unprocessable)
 
 from ..base import Api
+
+log = logging.getLogger(__name__)
+
 
 @resource(collection_path='/imports', path='')
 class ContactImport(Api):
@@ -22,8 +27,8 @@ class ContactImport(Api):
     @view(permission='authenticated')
     def collection_post(self):
 
-        data = self.request.body
-        vcards = vobject.readComponents(data)
+        data = self.request.POST['file'].file
+        vcards = read_file(data, False)
         try:
             new_contacts = parse_vcards(vcards)
         except Exception as exc:
