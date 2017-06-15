@@ -4,6 +4,8 @@ import zxcvbn from 'zxcvbn';
 import Button from '../Button';
 import Link from '../Link';
 import Title from '../Title';
+import Modal from '../Modal';
+
 import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../form';
 import './style.scss';
 
@@ -35,20 +37,25 @@ class SignupForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isModalOpen: false,
       formValues: {
         username: '',
         password: '',
         tos: false,
+        privacy: false,
         recovery_email: '',
       },
       passwordStrength: '',
     };
 
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.renderModal = this.renderModal.bind(this);
   }
 
   componentWillMount() {
@@ -57,6 +64,19 @@ class SignupForm extends Component {
 
   componentWillReceiveProps(newProps) {
     this.setState(generateStateFromProps(newProps));
+  }
+
+  handleOpenModal() {
+    this.setState(prevState => ({
+      ...prevState,
+      isModalOpen: true,
+    }));
+  }
+  handleCloseModal() {
+    this.setState(prevState => ({
+      ...prevState,
+      isModalOpen: false,
+    }));
   }
 
   handleUsernameChange(event) {
@@ -106,8 +126,37 @@ class SignupForm extends Component {
     this.props.onSubmit({ formValues });
   }
 
+  renderModal() {
+    const { __ } = this.props;
+
+    return (
+      <Modal
+        className="s-signup__modal"
+        isOpen={this.state.isModalOpen}
+        contentLabel={__('signup.privacy.modal.label')}
+        title={__('signup.privacy.modal.label')}
+        onClose={this.handleCloseModal}
+      >
+        <p>{__('signup.privacy.modal.text')}</p>
+        <Button
+          shape="plain"
+          onClick={this.handleCloseModal}
+        >
+          {__('signup.privacy.modal.close')}
+        </Button>
+      </Modal>
+    );
+  }
+
   render() {
     const { form, errors = {}, __ } = this.props;
+    const PrivacyLink = ({ label, ...props }) => (
+      <span
+        {...props}
+      >
+        {label}
+      </span>
+    );
 
     return (
       <div className="s-signup">
@@ -177,12 +226,38 @@ class SignupForm extends Component {
             <FormColumn bottomSpace>
               <CheckboxFieldGroup
                 id="signup_tos"
+                className="s-signup__tos-checkbox"
                 label={__('signup.form.tos.label')}
                 name="tos"
                 checked={this.state.formValues.tos}
                 errors={errors.tos}
                 onChange={this.handleCheckboxChange}
               />
+            </FormColumn>
+          </FormRow>
+          <FormRow>
+            <FormColumn bottomSpace>
+              <div className="s-signup__privacy">
+                <h4>{__('signup.form.privacy.title')}</h4>
+                <p className="s-signup__privacy__text">
+                  {__('signup.form.privacy.intro')}
+                  <PrivacyLink
+                    className="s-signup__privacy__link"
+                    label={__('signup.form.privacy.more_info')}
+                    onClick={this.handleOpenModal}
+                  />
+                </p>
+                {this.renderModal()}
+                <CheckboxFieldGroup
+                  id="signup_privacy"
+                  className="s-signup__privacy-checkbox"
+                  label={__('signup.form.privacy.checkbox.label')}
+                  name="privacy"
+                  checked={this.state.formValues.privacy}
+                  errors={errors.privacy}
+                  onChange={this.handleCheckboxChange}
+                />
+              </div>
             </FormColumn>
           </FormRow>
           <FormRow>
