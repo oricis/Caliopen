@@ -9,6 +9,9 @@ from pyramid.response import Response
 from caliopen_main.parsers.vcard import parse_vcards
 from caliopen_main.parsers.vcard import read_file
 
+import logging
+log = logging.getLogger(__name__)
+
 from ..base.exception import (ValidationError,
                               Unprocessable)
 
