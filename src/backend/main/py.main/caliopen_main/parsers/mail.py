@@ -83,8 +83,10 @@ class MailAttachment(object):
         content_disposition = part.get("Content-Disposition")
         if content_disposition:
             dispositions = content_disposition.strip().split(";")
-            if bool(dispositions[0].lower() == "attachment"):
+            if bool(dispositions[0].lower() == "attachment") or \
+                    bool(dispositions[0].lower() == "inline"):
                 return True
+
         attachment_types = (
             "application", "image", "video", "audio", "message", "font")
         if part.get_content_maintype() in attachment_types:

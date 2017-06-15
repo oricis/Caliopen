@@ -59,11 +59,12 @@ type (
 
 	Part struct {
 		Boundary      string
-		ChildParts    []Part
+		Charset       string
 		Content       []byte
+		ContentType   string
+		Headers       map[string][]string
 		Is_attachment bool
 		Is_inline     bool
-		MediaType     string
-		Params        map[string]string
+		Parts         []Part
 	}
 )

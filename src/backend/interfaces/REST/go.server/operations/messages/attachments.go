@@ -1,6 +1,7 @@
 package messages
 
 import (
+	"bytes"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	swgErr "github.com/go-openapi/errors"
@@ -8,7 +9,6 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-	"bytes"
 )
 
 // POST …/:message_id/attachments
