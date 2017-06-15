@@ -7,15 +7,17 @@ package email_broker
 
 import (
 	"bytes"
-	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/jhillyerd/go.enmime"
+	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
 	"gopkg.in/gomail.v2"
 	"io"
 	"io/ioutil"
 	"mime"
 	"net/mail"
+	"net/textproto"
 	"strings"
 	"time"
 )
@@ -36,10 +38,10 @@ func newAddressesFields() (af map[string][]string) {
 // conforms to
 // RFC822 / RFC2822 / RFC5322 (internet message format)
 // RFC2045 / RFC2046 / RFC2047 / RFC2048 / RFC2049 (MIME) => TODO
-func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
+func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err error) {
 
-	em = &EmailMessage{
-		Email: &Email{
+	em = &obj.EmailMessage{
+		Email: &obj.Email{
 			SmtpMailFrom: []string{},
 			SmtpRcpTo:    []string{},
 		},
@@ -124,11 +126,11 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 
 	// save raw email in db
 	/*
-	json_mail, err := EmailToJsonRep(ack.EmailMessage.Email.Raw.String())
-	if err == nil {
-		json_mail.Envelope.From = ack.EmailMessage.Email.SmtpMailFrom
-		json_mail.Envelope.To = ack.EmailMessage.Email.SmtpRcpTo
-	}
+		json_mail, err := EmailToJsonRep(ack.EmailMessage.Email.Raw.String())
+		if err == nil {
+			json_mail.Envelope.From = ack.EmailMessage.Email.SmtpMailFrom
+			json_mail.Envelope.To = ack.EmailMessage.Email.SmtpRcpTo
+		}
 	*/
 	raw_email_id, err := b.Store.StoreRawMessage(ack.EmailMessage.Email.Raw.String())
 	if err != nil {
@@ -160,7 +162,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 
 // gets a raw email and transforms into a Caliopen 'message' object
 // belonging to an user
-func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id UUID) (msg *Message, err error) {
+func (b *EmailBroker) UnmarshalEmail(em *obj.EmailMessage, user_id obj.UUID) (msg *obj.Message, err error) {
 
 	parsed_mail, err := mail.ReadMessage(&em.Email.Raw)
 	if err != nil {
@@ -168,7 +170,7 @@ func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id UUID) (msg *Messa
 		return nil, err
 	}
 
-	var m_id UUID
+	var m_id obj.UUID
 	m_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	mail_date, err := parsed_mail.Header.Date()
 	if err != nil {
@@ -180,17 +182,17 @@ func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id UUID) (msg *Messa
 		log.WithError(err).Warn("unable to parse email's body")
 	}
 	//TODO: Attachments, Externals_references, identities, parent_id
-	msg = &Message{
+	msg = &obj.Message{
 		Body:             string(mail_body),
 		Date:             mail_date,
 		Date_insert:      time.Now(),
 		Is_unread:        true,
 		Message_id:       m_id,
-		Participants:     []Participant{},
-		Privacy_features: PrivacyFeatures{},
+		Participants:     []obj.Participant{},
+		Privacy_features: obj.PrivacyFeatures{},
 		Raw_msg_id:       em.Message.Raw_msg_id,
 		Subject:          parsed_mail.Header.Get("subject"),
-		Type:             EmailProtocol,
+		Type:             obj.EmailProtocol,
 		User_id:          user_id,
 	}
 
@@ -206,25 +208,25 @@ func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id UUID) (msg *Messa
 
 // if an user_id is provided, the func will try to find a matching contact for each recipient within user's contactbook in db
 // otherwise, contact_id will be nil for recipient
-func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, user_id ...UUID) (participants []Participant, err error) {
-	participants = []Participant{}
+func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, user_id ...obj.UUID) (participants []obj.Participant, err error) {
+	participants = []obj.Participant{}
 	addresses, err := h.AddressList(address_type)
 	if err != nil {
 		return participants, err
 	}
 	for _, a := range addresses {
-		rcpt := Participant{
+		rcpt := obj.Participant{
 			Type:        address_type,
-			Protocol:    EmailProtocol,
+			Protocol:    obj.EmailProtocol,
 			Address:     a.Address,
 			Label:       a.Name,
-			Contact_ids: []UUID{},
+			Contact_ids: []obj.UUID{},
 		}
 		if len(user_id) == 1 {
 			contact_ids, err := b.Store.LookupContactsByIdentifier(user_id[0].String(), a.Address)
 			if err == nil {
 				for _, id := range contact_ids {
-					var contact_id UUID
+					var contact_id obj.UUID
 					uuid, _ := uuid.FromString(id)
 					contact_id.UnmarshalBinary(uuid.Bytes())
 					rcpt.Contact_ids = append(rcpt.Contact_ids, contact_id)
@@ -239,16 +241,19 @@ func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, 
 
 // returns an EmailJson object which is an object ready to
 // output our json representation of the raw email
-func EmailToJsonRep(email string) (json_email EmailJson, err error) {
+func EmailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 	reader := bytes.NewReader([]byte(email))
-	msg, err := mail.ReadMessage(reader)   // Read email using Go's net/mail
+	msg, err := mail.ReadMessage(reader) // Read email using Go's net/mail
+	if err != nil {
+		return
+	}
 	mime, err := enmime.ParseMIMEBody(msg) // Parse message body with enmime
 	if err != nil {
 		return
 	}
 
-	json_email = EmailJson{
-		Addresses: []EmailAddress{},
+	json_email = obj.EmailJson{
+		Addresses: []obj.EmailAddress{},
 		Headers:   map[string][]string{},
 	}
 
@@ -257,9 +262,9 @@ func EmailToJsonRep(email string) (json_email EmailJson, err error) {
 		case "from", "to", "cc", "bcc", "reply-to", "sender":
 			addr_ptrs, err := msg.Header.AddressList(k)
 			if err == nil {
-				var addr []EmailAddress
+				var addr []obj.EmailAddress
 				for _, addr_ptr := range addr_ptrs {
-					addr = append(addr, EmailAddress{
+					addr = append(addr, obj.EmailAddress{
 						*addr_ptr,
 						k,
 					})
@@ -270,9 +275,8 @@ func EmailToJsonRep(email string) (json_email EmailJson, err error) {
 			json_email.Date = v[0] //TODO : manage multiple date fields
 		case "subject":
 			json_email.Subject = v[0] //TODO : manage multiple subject fields
-		default:
-			json_email.Headers[k] = v
 		}
+		json_email.Headers[k] = v
 	}
 
 	json_email.Html = mime.HTML
@@ -281,19 +285,21 @@ func EmailToJsonRep(email string) (json_email EmailJson, err error) {
 
 	if mime.Root != nil {
 		//message was MIME encoded, build the mime tree
-
-		root_boundary, _ := boundary(mime.GetHeader("Content-Type"))
-		json_email.MimeRoot = MimeRoot{
+		root_part_content_type := mime.GetHeader("Content-Type")
+		root_boundary, _ := GetBoundary(root_part_content_type)
+		json_email.MimeRoot = obj.MimeRoot{
 			Attachments_count: len(mime.Attachments),
 			Root_boundary:     root_boundary,
 			Inline_count:      len(mime.Inlines),
-			Parts:             []Part{},
+			Parts:             []obj.Part{},
 		}
-
+		mime.Root.SetHeader(textproto.MIMEHeader{
+			"Content-Type": []string{root_part_content_type},
+		})
 		child := mime.Root.FirstChild()
 		if child != nil {
 			json_email.MimeRoot.Parts = addChildPart(json_email.MimeRoot.Parts, child)
-			for sibling := child.NextSibling(); sibling != nil; sibling = child.NextSibling() {
+			for sibling := child.NextSibling(); sibling != nil; sibling = sibling.NextSibling() {
 				json_email.MimeRoot.Parts = addChildPart(json_email.MimeRoot.Parts, sibling)
 			}
 		}
@@ -304,13 +310,18 @@ func EmailToJsonRep(email string) (json_email EmailJson, err error) {
 
 // Build part tree recursively
 // and compute properties for each part
-func addChildPart(parent []Part, part enmime.MIMEPart) []Part {
+func addChildPart(parent []obj.Part, part enmime.MIMEPart) []obj.Part {
 
-	child := Part{
-		Parts: []Part{},
+	child := obj.Part{
+		Parts: []obj.Part{},
 	}
-	content_type := part.Header().Get("Content-Type")
-	child.Boundary, _ = boundary(content_type)
+	if content_type, ok := part.Parent().Header()["Content-Type"]; ok {
+		var e error
+		child.Boundary, e = GetBoundary(content_type[0])
+		if e != nil {
+			child.Boundary = ""
+		}
+	}
 	child.Charset = part.Charset()
 	child.Content = part.Content()
 	child.ContentType = part.ContentType()
@@ -342,7 +353,7 @@ func addChildPart(parent []Part, part enmime.MIMEPart) []Part {
 	sub_child := part.FirstChild()
 	if sub_child != nil {
 		child.Parts = addChildPart(child.Parts, sub_child)
-		for sibling := sub_child.NextSibling(); sibling != nil; sibling = sub_child.NextSibling() {
+		for sibling := sub_child.NextSibling(); sibling != nil; sibling = sibling.NextSibling() {
 			child.Parts = addChildPart(child.Parts, sub_child)
 		}
 	}
@@ -351,16 +362,18 @@ func addChildPart(parent []Part, part enmime.MIMEPart) []Part {
 }
 
 // Returns the boundary string from a part header
-func boundary(s string) (boundary string, err error) {
+func GetBoundary(s string) (boundary string, err error) {
 	mediatype, params, err := mime.ParseMediaType(s)
 	if err != nil {
 		return "", err
 	}
-	if strings.HasPrefix(mediatype, "multipart/") {
+	if strings.HasPrefix(mediatype, "multipart") {
 		boundary = params["boundary"]
 		if err != nil {
 			return "", err
 		}
+		return boundary, nil
+	} else {
+		return "", errors.New("no boundary")
 	}
-	return boundary, nil
 }
