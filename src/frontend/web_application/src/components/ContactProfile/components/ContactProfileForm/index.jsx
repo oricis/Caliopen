@@ -52,7 +52,7 @@ class ContactProfileForm extends Component {
         />
         <TextFieldGroup
           className="m-contact-profile-form__name-prefix"
-          value={contact.name_prefix ? contact.name_prefix : ''}
+          value={contact.name_prefix}
           label={__('contact_profile.form.name-prefix.label')}
           name="name_prefix"
           onChange={this.handleChanges}
@@ -73,16 +73,16 @@ class ContactProfileForm extends Component {
         />
         <TextFieldGroup
           className="m-contact-profile-form__name-suffix"
-          value={contact.name_suffix ? contact.name_suffix : ''}
+          value={contact.name_suffix}
           label={__('contact_profile.form.name-suffix.label')}
           name="name_suffix"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
           className="m-contact-profile-form__birthday"
-          value={contact.infos.birthday ? contact.infos.birthday : ''}
+          value={contact.infos.birthday}
           label={__('contact_profile.form.birthday.label')}
-          name="name_suffix"
+          name="birthday"
           onChange={this.handleChanges}
         />
         <div className="m-contact-profile-form__save-button">
