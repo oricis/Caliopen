@@ -30,14 +30,14 @@
     @include o-callout--color($co-color__info);
 
     &__checkbox {
-      margin-top: $co-margin / 2;
+      margin-top: $co-margin;
     }
 
     &__link {
       @include o-clickable;
       @include o-clickable--text;
-      display: inline;
-      padding-left: $co-component__spacing;
+      display: block;
+      margin-top: $co-margin / 2;
       color: $co-color__fg__text--high;
       font-weight: 600;
     }

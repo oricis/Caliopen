@@ -151,11 +151,7 @@ class SignupForm extends Component {
   render() {
     const { form, errors = {}, __ } = this.props;
     const PrivacyLink = ({ label, ...props }) => (
-      <span
-        {...props}
-      >
-        {label}
-      </span>
+      <button {...props}>{label}</button>
     );
 
     return (
@@ -250,7 +246,7 @@ class SignupForm extends Component {
                 {this.renderModal()}
                 <CheckboxFieldGroup
                   id="signup_privacy"
-                  className="s-signup__privacy-checkbox"
+                  className="s-signup__privacy__checkbox"
                   label={__('signup.form.privacy.checkbox.label')}
                   name="privacy"
                   checked={this.state.formValues.privacy}
