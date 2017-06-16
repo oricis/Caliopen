@@ -18,7 +18,7 @@ type APIStorage interface {
 	StoreAttachment(attachment_id string, file io.Reader) (uri string, size int, err error)
 	GetAttachment(uri string) (file io.Reader, err error)
 	DeleteAttachment(uri string) error
-	GetRawMessage(raw_message_id string) (message string, err error)
+	GetRawMessage(raw_message_id string) (raw_message RawMessage, err error)
 }
 
 type APIIndex interface {

@@ -239,8 +239,9 @@ func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, 
 	return
 }
 
-// returns an EmailJson object which is an object ready to
-// output our json representation of the raw email
+// returns an EmailJson object which is our json representation of the raw email
+// in particular, attachments are qualified following Caliopen's rules
+// (see addChildPart() func for attachment qualification algorithm)
 func EmailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 	reader := bytes.NewReader([]byte(email))
 	msg, err := mail.ReadMessage(reader) // Read email using Go's net/mail

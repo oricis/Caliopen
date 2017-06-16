@@ -11,7 +11,6 @@ import (
 	"github.com/gocql/gocql"
 )
 
-// part of LDABackend interface
 func (cb *CassandraBackend) StoreRawMessage(raw_message string) (uuid string, err error) {
 	rawMsgTable := cb.IKeyspace.MapTable("raw_message", "raw_msg_id", &obj.RawMessage{})
 	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
@@ -54,7 +53,34 @@ func (cb *CassandraBackend) StoreRawMessage(raw_message string) (uuid string, er
 	return
 }
 
-func (cb *CassandraBackend) GetRawMessage(raw_message_id string) (message string, err error) {
+// returns a RawMessage object, with 'raw_data' property always filled
+// (even if raw_data was stored outside of cassandra)
+func (cb *CassandraBackend) GetRawMessage(raw_message_id string) (message obj.RawMessage, err error) {
+	rawMsgTable := cb.IKeyspace.MapTable("raw_message", "raw_msg_id", &obj.RawMessage{})
+	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
 
+	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
+	rawMsgTable = rawMsgTable.WithOptions(gocassa.Options{
+		TableName:   "raw_message",
+		Consistency: &consistency,
+	})
+	err = rawMsgTable.Read(raw_message_id, &message).Run()
+	if err != nil {
+		return obj.RawMessage{}, err
+	}
+
+	// check if raw_data is filled or if we need to get it from object store
+	if message.URI != "" && len(message.Raw_data) == 0 {
+		reader, err := cb.ObjectsStore.GetObject(message.URI)
+		if err != nil {
+			return obj.RawMessage{}, err
+		}
+		raw_data := make([]byte, message.Raw_Size)
+		s, err := reader.Read(raw_data)
+		if uint64(s) != message.Raw_Size || err != nil {
+			return obj.RawMessage{}, err
+		}
+		message.Raw_data = string(raw_data)
+	}
 	return
 }
