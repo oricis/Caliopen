@@ -19,7 +19,7 @@ from .organization import Organization
 from .phone import Phone
 from .postal_address import PostalAddress
 from .tag import ResourceTag
-
+from .pi import PIObject
 
 import logging
 log = logging.getLogger(__name__)
@@ -63,7 +63,7 @@ class Contact(base.ObjectIndexable):
         'organizations':       [Organization],
         'phones':              [Phone],
         'privacy_features':    types.DictType,
-        'privacy_index':       types.IntType,
+        'pi':                  PIObject,
         'public_keys':         [PublicKey],
         'tags':                [ResourceTag],
         'title':               types.StringType,

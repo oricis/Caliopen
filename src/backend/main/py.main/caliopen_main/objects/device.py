@@ -7,16 +7,18 @@ import logging
 import types
 import uuid
 
-from caliopen_main.objects import base
 from caliopen_main.user.parameters.device import Device as DeviceParam
 
 from caliopen_main.user.store import (Device as ModelDevice,
                                       DeviceLocation as ModelDeviceLocation)
 
+from .base import ObjectStorable, ObjectUser
+from .pi import PIObject
+
 log = logging.getLogger(__name__)
 
 
-class DeviceLocation(base.ObjectStorable):
+class DeviceLocation(ObjectStorable):
     """A known location related to a device."""
 
     _attrs = {
@@ -28,7 +30,7 @@ class DeviceLocation(base.ObjectStorable):
     _pkey_name = 'address'
 
 
-class Device(base.ObjectUser):
+class Device(ObjectUser):
     """Device related to an user."""
 
     _attrs = {
@@ -39,6 +41,8 @@ class Device(base.ObjectUser):
         'status': types.StringType,
         'last_seen': datetime.datetime,
         'date_insert': datetime.datetime,
+        'privacy_features': types.DictType,
+        'pi': PIObject,
         'locations': [DeviceLocation]
     }
 
