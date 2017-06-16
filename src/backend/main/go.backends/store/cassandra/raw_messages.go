@@ -7,8 +7,10 @@ package store
 import (
 	"errors"
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
+	"io"
 )
 
 func (cb *CassandraBackend) StoreRawMessage(raw_message string) (uuid string, err error) {
@@ -67,14 +69,17 @@ func (cb *CassandraBackend) GetRawMessage(raw_message_id string) (message obj.Ra
 
 	// check if raw_data is filled or if we need to get it from object store
 	if message.URI != "" && len(message.Raw_data) == 0 {
-		reader, err := cb.ObjectsStore.GetObject(message.URI)
-		if err != nil {
-			return obj.RawMessage{}, err
+		reader, e := cb.ObjectsStore.GetObject(message.URI)
+		if e != nil {
+			return obj.RawMessage{}, e
 		}
 		raw_data := make([]byte, message.Raw_Size)
-		s, err := reader.Read(raw_data)
-		if uint64(s) != message.Raw_Size || err != nil {
-			return obj.RawMessage{}, err
+		s, e := reader.Read(raw_data)
+		if s == 0 || e != io.EOF {
+			return obj.RawMessage{}, e
+		}
+		if uint64(s) != message.Raw_Size {
+			log.Warnf("[cassandra.GetRawMessage] : Read %d bytes from Object Store, expected %d.", s, message.Raw_Size)
 		}
 		message.Raw_data = string(raw_data)
 	}
