@@ -47,15 +47,6 @@ class User(BaseModel):
     local_identities = columns.List(columns.Text())
 
 
-class Counter(BaseModel):
-    """User counters model."""
-
-    user_id = columns.UUID(primary_key=True)
-    message_id = columns.Counter()
-    thread_id = columns.Counter()
-    rule_id = columns.Counter()
-
-
 class FilterRule(BaseModel):
     """User filter rules model."""
 
