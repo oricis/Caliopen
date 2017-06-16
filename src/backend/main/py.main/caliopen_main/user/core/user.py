@@ -20,8 +20,8 @@ from ..store import (User as ModelUser,
                      FilterRule as ModelFilterRule,
                      ReservedName as ModelReservedName,
                      LocalIdentity as ModelLocalIdentity,
-                     ContactLookup
-                     )
+                     RemoteIdentity as ModelRemoteIdentity,
+                     ContactLookup)
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
 from .contact import Contact as CoreContact
@@ -37,6 +37,13 @@ class LocalIdentity(BaseCore):
 
     _model_class = ModelLocalIdentity
     _pkey_name = 'identifier'
+
+
+class RemoteIdentity(BaseCore):
+    """User remote identity core class."""
+
+    _model_class = ModelRemoteIdentity
+    _pkey_name = 'identity_id'
 
 
 class Tag(BaseUserCore):
@@ -132,7 +139,6 @@ class User(BaseCore):
         # then
         #      create user and linked contact
         """
-
         def rollback_username_storage(username):
             UserName.get(username).delete()
 

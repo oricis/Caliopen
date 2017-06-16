@@ -74,11 +74,12 @@ class RemoteIdentity(BaseModel):
     """User remote identities model."""
 
     user_id = columns.UUID(primary_key=True)
-    identity_id = columns.Text(primary_key=True)
+    identifier = columns.Text(primary_key=True)
+    display_name = columns.Text()
     type = columns.Text()
     status = columns.Text()
-    credentials = columns.List(columns.Text)
     last_check = columns.DateTime()
+    infos = columns.Map(columns.Text, columns.Text)
 
 
 class IndexUser(object):
