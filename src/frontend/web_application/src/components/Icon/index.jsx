@@ -34,9 +34,11 @@ export const typeAssoc = {
   lock: 'fa fa-lock',
   'map-marker': 'fa fa-map-marker',
   paperclip: 'fa fa-paperclip',
+  pencil: 'fa fa-pencil',
   plug: 'fa fa-plug',
   plus: 'fa fa-plus',
   phone: 'fa fa-phone',
+  'question-circle': 'fa fa-question-circle',
   remove: 'fa fa-remove',
   reply: 'fa fa-reply',
   save: 'fa fa-floppy-o',
@@ -78,7 +80,7 @@ Icon.propTypes = {
 };
 Icon.defaultProps = {
   className: undefined,
-  type: false,
+  type: undefined,
   spaced: false,
 };
 

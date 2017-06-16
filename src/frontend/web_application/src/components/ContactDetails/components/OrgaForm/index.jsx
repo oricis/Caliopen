@@ -22,7 +22,7 @@ class OrgaForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.state = {
-      orgaDetails: {
+      organization: {
         name: '',
         department: '',
         job_description: '',
@@ -32,15 +32,15 @@ class OrgaForm extends Component {
 
   handleSubmit(ev) {
     ev.preventDefault();
-    const { orgaDetails } = this.state;
-    this.props.onSubmit({ organization: orgaDetails });
+    const { organization } = this.state;
+    this.props.onSubmit({ organization });
   }
 
   handleInputChange(event) {
     const { name, value } = event.target;
     this.setState(prevState => ({
-      orgaDetails: {
-        ...prevState.orgaDetails,
+      organization: {
+        ...prevState.organization,
         [name]: value,
       },
     }));
@@ -61,8 +61,7 @@ class OrgaForm extends Component {
             <FormColumn>
               <TextFieldGroup
                 name="name"
-                type="text"
-                value={this.state.orgaDetails.name}
+                value={this.state.organization.name}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.name.label')}
                 required
@@ -71,8 +70,7 @@ class OrgaForm extends Component {
             <FormColumn size="medium">
               <TextFieldGroup
                 name="department"
-                type="text"
-                value={this.state.orgaDetails.department}
+                value={this.state.organization.department}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.department.label')}
               />
@@ -80,8 +78,7 @@ class OrgaForm extends Component {
             <FormColumn size="medium">
               <TextFieldGroup
                 name="job_description"
-                type="text"
-                value={this.state.orgaDetails.job_description}
+                value={this.state.organization.job_description}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.job_description.label')}
               />
