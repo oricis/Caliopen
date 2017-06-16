@@ -11,9 +11,20 @@ from uuid import UUID
 
 from cassandra.cqlengine import columns
 import elasticsearch_dsl as dsl
+from schematics.models import Model
+from schematics.types import IntType
 
 from caliopen_storage.store import BaseUserType
 from .base import ObjectIndexable
+
+
+class PIParameter(Model):
+    """The privacy indexes schematics parameter definition."""
+
+    technical = IntType()
+    comportment = IntType()
+    context = IntType()
+    version = IntType()
 
 
 class PIModel(BaseUserType):
