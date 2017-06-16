@@ -5,6 +5,7 @@ import logging
 from .parameters import NewMessage, Participant, Attachment
 
 from caliopen_storage.exception import NotFound
+from caliopen_main.objects.pi import PIParameter
 from caliopen_main.user.core import Contact
 from caliopen_main.discussion.core import (DiscussionMessageLookup,
                                            DiscussionRecipientLookup,
@@ -102,11 +103,12 @@ class UserMessageQualifier(object):
         known_contacts = []
         known_public_key = 0
         for part in message.participants:
-            if part.contact_id:
-                contact = Contact.get(self.user, part.contact_id)
-                known_contacts.append(contact)
-                if contact.public_key:
-                    known_public_key += 1
+            if part.contact_ids:
+                for cid in part.contact_ids:
+                    contact = Contact.get(self.user, cid)
+                    known_contacts.append(contact)
+                    if contact.public_key:
+                        known_public_key += 1
         if len(message.participants) == len(known_contacts):
             # XXX
             # - Si tous les contacts sont déjà connus le PIᶜˣ
@@ -132,9 +134,10 @@ class UserMessageQualifier(object):
             pi_t += 10
         if feat.get('message_encrypted'):
             pi_t += 30
-        return {'technical': pi_t,
-                'contextual': pi_cx,
-                'comportemental': pi_co}
+        return PIParameter({'technical': pi_t,
+                            'context': pi_cx,
+                            'comportment': pi_co,
+                            'version': 0})
 
     def process_inbound(self, raw):
         """Process inbound message.
@@ -170,6 +173,9 @@ class UserMessageQualifier(object):
             attachment.filename = a.filename
             attachment.size = a.size
             new_message.attachments.append(attachment)
+
+        # Compute PI !!
+        new_message.pi = self._compute_pi(new_message)
 
         # compute tags
         new_message.tags = self._get_tags(message)
