@@ -56,18 +56,14 @@ func (cb *CassandraBackend) StoreRawMessage(raw_message string) (uuid string, er
 // returns a RawMessage object, with 'raw_data' property always filled
 // (even if raw_data was stored outside of cassandra)
 func (cb *CassandraBackend) GetRawMessage(raw_message_id string) (message obj.RawMessage, err error) {
-	rawMsgTable := cb.IKeyspace.MapTable("raw_message", "raw_msg_id", &obj.RawMessage{})
-	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
 
-	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
-	rawMsgTable = rawMsgTable.WithOptions(gocassa.Options{
-		TableName:   "raw_message",
-		Consistency: &consistency,
-	})
-	err = rawMsgTable.Read(raw_message_id, &message).Run()
+	m := map[string]interface{}{}
+	q := cb.Session.Query(`SELECT * FROM raw_message WHERE raw_msg_id = ?`, raw_message_id)
+	err = q.MapScan(m)
 	if err != nil {
 		return obj.RawMessage{}, err
 	}
+	message.UnmarshalMap(m)
 
 	// check if raw_data is filled or if we need to get it from object store
 	if message.URI != "" && len(message.Raw_data) == 0 {
