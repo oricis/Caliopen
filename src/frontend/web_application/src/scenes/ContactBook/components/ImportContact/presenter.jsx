@@ -7,10 +7,19 @@ class ImportContact extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
+    onUploadSuccess: PropTypes.func,
+    notifySuccess: PropTypes.func,
+    notifyError: PropTypes.func,
+    requestContacts: PropTypes.func,
   };
 
   static defaultProps = {
     onCancel: null,
+    onUploadError: (err) => { throw err; },
+    onUploadSuccess: () => {},
+    notifySuccess: () => {},
+    notifyError: () => {},
+    requestContacts: () => {},
   }
 
   constructor(props) {
@@ -24,24 +33,33 @@ class ImportContact extends Component {
     this.handleImportContactError = this.handleImportContactError.bind(this);
   }
 
-  handleImportContact(file) {
-    axios.post('/v1/imports/', {
-      ...file,
-    }, {
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-    }).then(this.handleImportContactSuccess, this.handleImportContactError);
+  handleImportContact({ file }) {
+    const data = new FormData();
+    data.append('file', file);
+    axios.post('/api/v1/imports', data)
+      .then(this.handleImportContactSuccess, this.handleImportContactError);
   }
 
   handleImportContactSuccess() {
-    this.setState({ hasImported: true });
+    this.setState({ hasImported: true }, () => {
+      const { onUploadSuccess, notifySuccess, __ } = this.props;
+      notifySuccess(__('import-contact.feedback.successfull'));
+      onUploadSuccess();
+    });
   }
 
-  handleImportContactError() {
-    this.setState({
-      errors: { bla: 'bla' },
-    });
+  handleImportContactError({ response }) {
+    const { notifyError, __ } = this.props;
+
+    if (response.status === 400) {
+      return notifyError(__('import-contact.feedback.error-file'));
+    }
+
+    if (response.status === 422) {
+      return notifyError(__('import-contact.feedback.error-contact'));
+    }
+
+    return notifyError(__('import-contact.feedback.unexpected-error'));
   }
 
   render() {
@@ -54,6 +72,7 @@ class ImportContact extends Component {
         onSubmit={this.handleImportContact}
         errors={this.state.errors}
         hasImported={this.state.hasImported}
+        formAction="/api/v1/imports"
       />
     );
   }

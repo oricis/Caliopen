@@ -73,6 +73,7 @@ class ContactBook extends Component {
     this.handleOpenImportModal = this.handleOpenImportModal.bind(this);
     this.handleCloseImportModal = this.handleCloseImportModal.bind(this);
     this.renderImportModal = this.renderImportModal.bind(this);
+    this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
   }
 
   componentDidMount() {
@@ -95,6 +96,10 @@ class ContactBook extends Component {
     });
   }
 
+  handleUploadSuccess() {
+    this.props.requestContacts();
+  }
+
   renderImportModal() {
     const { __ } = this.props;
 
@@ -105,7 +110,10 @@ class ContactBook extends Component {
         title={__('import-contact.action.import_contacts')}
         onClose={this.handleCloseImportModal}
       >
-        <ImportContact __={__} onCancel={this.handleCloseImportModal} />
+        <ImportContact
+          onCancel={this.handleCloseImportModal}
+          onUploadSuccess={this.handleUploadSuccess}
+        />
       </Modal>
     );
   }

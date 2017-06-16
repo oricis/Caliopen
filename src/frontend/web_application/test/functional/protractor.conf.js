@@ -31,6 +31,7 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
   cfg.multiCapabilities = [
     {
       browserName: 'firefox',
+      platform: 'Linux',
       'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
       build: process.env.TRAVIS_JOB_NUMBER,
       name: `CaliOpen e2e - ${branch}`,
