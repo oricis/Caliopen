@@ -65,14 +65,19 @@ func DownloadAttachment(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	msg_id := ctx.Param("message_id")
 	attch_id, err := strconv.Atoi(ctx.Param("attachment_id"))
-	if err != nil {
+	if err != nil || msg_id == "" {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
 	contentType, size, content, err := caliopen.Facilities.RESTfacility.OpenAttachment(user_id, msg_id, attch_id)
-
+	if err != nil {
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	// create a ReaderSeeker from the io.Reader returned by OpenAttachment
 	attch_bytes := make([]byte, size)
 	content.Read(attch_bytes)
