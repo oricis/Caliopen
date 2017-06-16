@@ -383,3 +383,21 @@ class User(BaseCore):
         except Exception as exc:
             log.error('Unexpected exception {}'.format(exc))
         return False
+
+    def add_remote_identity(self, remote):
+        """Add a remote identity to an user.
+
+        return: the RemoteIdentity created instance.
+        rtype: RemoteIdentity
+        """
+        # XXX check for duplicate before insert
+        identifier = remote.identifier.lower()
+        name = remote.display_name if remote.display_name else identifier
+        identity = RemoteIdentity.create(user_id=self.user_id,
+                                         identifier=identifier,
+                                         display_name=name,
+                                         type=remote.type,
+                                         status=remote.status,
+                                         last_check=None,
+                                         infos=remote.infos)
+        return identity
