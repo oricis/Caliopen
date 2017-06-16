@@ -1,4 +1,11 @@
 version: '2'
+volumes:
+  index:
+    driver: local
+  db:
+    driver: local
+  store:
+    driver: local
 services:
   # Caliopen APIv2
   api:
@@ -45,7 +52,7 @@ services:
           - "9160:9160"
           - "7000:7000"
       volumes:
-          - .data/scylla:/var/lib/scylla
+          - db:/var/lib/scylla
       entrypoint:
           - /docker-entrypoint.py
           - --memory
@@ -59,7 +66,7 @@ services:
       ports:
           - "9200:9200"
       volumes:
-          - .data/elasticsearch/data:/usr/share/elasticsearch/data
+          - index:/usr/share/elasticsearch/data
 
   # Caliopen cli tool
   cli:
@@ -120,7 +127,7 @@ services:
       - "9090:9090"
     volumes:
         - ../src/backend/configs:/configs
-        - .data/minio:/export
+        - store:/export
     command:
       server --address :9090 -C /configs/minio /export
 
