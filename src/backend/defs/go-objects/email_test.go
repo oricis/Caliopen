@@ -2,128 +2,133 @@
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
-package email_broker
+package objects
 
 import (
+	"net/textproto"
 	"testing"
 )
 
-func TestEmailToJsonRep(t *testing.T) {
-	parsed_email, err := EmailToJsonRep(email_with_parts_and_attachment)
+func TestParts_Walk(t *testing.T) {
+	contents := [][]byte{
+		[]byte("fake 3"),
+		[]byte(""),
+		[]byte("fake 1"),
+		[]byte("fake 2"),
+		[]byte("fake 4"),
+		[]byte("fake 5"),
+	}
+	i := 0
+	for part := range parts.Walk() {
+		if string(part.Content) != string(contents[i]) {
+			t.Errorf("Content part %d is not equal to what expected: got <%s>, instead of <%s>", i, part.Content, contents[i])
+		}
+		i++
+	}
 
+}
+
+func TestEmailJson_ExtractAttachments(t *testing.T) {
+	attachments, err := email_json.ExtractAttachments()
 	if err != nil {
 		t.Error(err)
 	}
-	if len(parsed_email.Headers) != headers_len {
-		t.Errorf("Expected headers map len to be %d, got %d instead", headers_len, len(parsed_email.Headers))
+	if len(attachments) != 3 {
+		t.Errorf("Expected to have 3 attachments, got %d instead", len(attachments))
 	}
-	if len(parsed_email.Headers["Received"]) != received_headers_len {
-		t.Errorf("Expected received headers len to be %d, got %d instead", received_headers_len, len(parsed_email.Headers))
+	if string(attachments[0]) != "fake 3" {
+		t.Errorf("Expected to have <fake 3> for attachment[0], got <%s> instead", string(attachments[0]))
 	}
-	if len(parsed_email.MimeRoot.Parts) < 1 {
-		t.Error("MimeRoot has no parts")
+	attachment_3, err := email_json.ExtractAttachments(2)
+	if err != nil {
+		t.Error(err)
 	}
-	if parsed_email.Subject != subject {
-		t.Errorf("Expected subject to be <%s>, got %s instead", subject, parsed_email.Subject)
+	if string(attachment_3[0]) != "fake 5" {
+		t.Errorf("Expected to have <fake 5> for attachment_3, got <%s> instead", string(attachment_3[0]))
 	}
-	if parsed_email.Date != date {
-		t.Errorf("Expected date to be <%s>, got %s instead", date, parsed_email.Date)
-	}
-	if len(parsed_email.MimeRoot.Parts) != level_0_parts_len {
-		t.Errorf("Expected to have %d parts at root level, got %d instead", level_0_parts_len, len(parsed_email.MimeRoot.Parts))
-	}
-	if parsed_email.MimeRoot.Attachments_count != raw_attachments_count {
-		t.Errorf("Expected to have %d raw attachments, got %d instead", raw_attachments_count, parsed_email.MimeRoot.Attachments_count)
-	}
-	if parsed_email.MimeRoot.Inline_count != raw_inline_count {
-		t.Errorf("Expected to have %d raw inlines, got %d instead", raw_inline_count, parsed_email.MimeRoot.Inline_count)
-	}
-	if parsed_email.MimeRoot.Parts[1].Boundary != level_0_parts_boundary {
-		t.Errorf("Expected to have <%s> as level 0 boundary, got %s instead", level_0_parts_boundary, parsed_email.MimeRoot.Parts[0].Boundary)
-	}
-	if len(parsed_email.MimeRoot.Parts[0].Parts) != level_1_parts_len {
-		t.Errorf("Expected to have %d parts at level 1, got %d instead", level_1_parts_len, len(parsed_email.MimeRoot.Parts[0].Parts))
-	}
-	if parsed_email.MimeRoot.Parts[0].Parts[0].Boundary != level_1_parts_boundary {
-		t.Errorf("Expected to have <%s> as level 1 boundary, get %s instead", level_1_parts_boundary, parsed_email.MimeRoot.Parts[0].Parts[0].Boundary)
-	}
-	attachments_count, inline_count := 0, 0
-	for _, part := range parsed_email.MimeRoot.Parts {
-		if part.Is_attachment {
-			attachments_count++
-		}
-		if part.Is_inline {
-			inline_count++
-		}
-	}
-	if attachments_count != caliopen_attachments_count {
-		t.Errorf("Expected to have %d caliopen attachments, got %d instead", caliopen_attachments_count, attachments_count)
-	}
-	if inline_count != caliopen_inline_count {
-		t.Errorf("Expected to have %d caliopen inline, got %d instead", caliopen_inline_count, inline_count)
-	}
-	from, to := []string{}, []string{}
-	for _, address := range parsed_email.Addresses {
-		switch address.Field {
-		case "From":
-			from = append(from, address.Addr.Address)
-		case "To":
-			to = append(to, address.Addr.Address)
-		}
-	}
-	if len(from) != From_len {
-		t.Errorf("Expected to have %d from, got %d instead", From_len, len(from))
-	}
-	if from[0] != From_address {
-		t.Errorf("Expected to have from=%s, got %s instead", From_address, from[0])
-	}
-	if len(to) != To_len {
-		t.Errorf("Expected to have %d to, got %s instead", To_len, len(to))
-	}
-	if to[0] != To_address {
-		t.Errorf("Expected to have to=%s, got %s instead", To_address, to[0])
-	}
-	if parsed_email.IsTextFromHTML {
-		t.Error("Expected to have IsTextFromHTML set to false, got true instead")
-	}
-	if len(parsed_email.Plain) < 1 {
-		t.Errorf("Expected to have parsed_email.Plain property filled, but is empty")
-	}
-	if len(parsed_email.Html) < 1 {
-		t.Errorf("Expected to have parsed_email.HTML property filled, but is empty")
-	}
-	if parsed_email.MimeRoot.Parts[0].Is_attachment {
-		t.Error("Expected first part not to be is_attachment, got true instead")
-	}
-	if !parsed_email.MimeRoot.Parts[4].Is_attachment {
-		t.Errorf("Expected last part to be is_attachment, got false instead")
-	}
-	if parsed_email.MimeRoot.Parts[0].Parts[1].Is_attachment {
-		t.Errorf("Expected last sub-part of first part not to be is_attachment, got true instead")
-	}
-	if parsed_email.MimeRoot.Parts[0].Parts[0].Charset != "utf-8" {
-		t.Errorf("Expected first sub-part of first part to have charset = utf-8, got %s instead", parsed_email.MimeRoot.Parts[0].Parts[0].Charset)
-	}
-	t.Logf("%+v", parsed_email.MimeRoot.Parts)
+}
+
+var email_json = EmailJson{
+	MimeRoot: MimeRoot{
+		Parts: parts,
+	},
+}
+
+var parts = Parts{
+	Part{
+		Boundary:    "_007_AM5PR0202MB267498F8AB17A954A50F2684AACE0AM5PR0202MB2674_",
+		Content:     []byte("fake 3"),
+		ContentType: "image/png",
+		Headers: textproto.MIMEHeader{
+			"Content-Type":              []string{`image/png; name="image001.png"`},
+			"Content-Description":       []string{`image001.png`},
+			"Content-Disposition":       []string{`inline; filename="image001.png"; size=10874; creation-date="Fri, 09 Jun 2017 15:08:52 GMT"; modification-date="Fri, 09 Jun 2017 15:08:52 GMT"`},
+			"Content-Id":                []string{`<image001.png@01D2E143.113462F0>`},
+			"Content-Transfer-Encoding": []string{"base64"},
+		},
+		Is_attachment: true,
+		Is_inline:     true,
+	},
+	Part{
+		Boundary:    "_007_AM5PR0202MB267498F8AB17A954A50F2684AACE0AM5PR0202MB2674_",
+		ContentType: "multipart/alternative ",
+		Headers: textproto.MIMEHeader{
+			"Content-Type": []string{`multipart/alternative; boundary="_000_AM5PR0202MB267498F8AB17A954A50F2684AACE0AM5PR0202MB2674_"`},
+		},
+		Parts: Parts{
+			Part{
+				Boundary:    "_000_AM5PR0202MB267498F8AB17A954A50F2684AACE0AM5PR0202MB2674_",
+				Charset:     "utf-8",
+				Content:     []byte("fake 1"),
+				ContentType: "text/plain",
+				Headers: textproto.MIMEHeader{
+					"Content-Type":              []string{`text/plain; charset="utf-8"`},
+					"Content-Transfer-Encoding": []string{"base64"},
+				},
+			},
+			Part{
+				Boundary:    "_000_AM5PR0202MB267498F8AB17A954A50F2684AACE0AM5PR0202MB2674_",
+				Charset:     "utf-8",
+				Content:     []byte("fake 2"),
+				ContentType: "text/plain",
+				Headers: textproto.MIMEHeader{
+					"Content-Type":              []string{`text/html; charset="utf-8"`},
+					"Content-Transfer-Encoding": []string{"base64"},
+				},
+			},
+		},
+	},
+	Part{
+		Boundary:    "_007_AM5PR0202MB267498F8AB17A954A50F2684AACE0AM5PR0202MB2674_",
+		Content:     []byte("fake 4"),
+		ContentType: "image/jpeg",
+		Headers: textproto.MIMEHeader{
+			"Content-Type":              []string{`image/jpeg; name="image002.jpg`},
+			"Content-Description":       []string{`image002.jpg`},
+			"Content-Disposition":       []string{`nline; filename="image002.jpg"; size=1310; creation-date="Fri, 09 Jun 2017 15:08:52 GMT"; modification-date="Fri, 09 Jun 2017 15:08:52 GMT"`},
+			"Content-Id":                []string{`<image002.jpg@01D2E143.113462F0>`},
+			"Content-Transfer-Encoding": []string{"base64"},
+		},
+		Is_attachment: true,
+		Is_inline:     true,
+	},
+	Part{
+		Boundary:    "_007_AM5PR0202MB267498F8AB17A954A50F2684AACE0AM5PR0202MB2674_",
+		Content:     []byte("fake 5"),
+		ContentType: "image/png",
+		Headers: textproto.MIMEHeader{
+			"Content-Type":              []string{`image/png; name="image004.png"`},
+			"Content-Description":       []string{`image004.png`},
+			"Content-Disposition":       []string{`attachment; filename="image004.png"; size=924; creation-date="Fri, 09 Jun 2017 15:08:53 GMT"; modification-date="Fri, 09 Jun 2017 15:08:53 GMT`},
+			"Content-Id":                []string{`<image004.png@01D2E143.113462F0>`},
+			"Content-Transfer-Encoding": []string{"base64"},
+		},
+		Is_attachment: true,
+		Is_inline:     false,
+	},
 }
 
 const (
-	headers_len                     = 47
-	received_headers_len            = 5
-	subject                         = "RE: Candidature Stage du 04/09/17 au 27/10/17"
-	date                            = "Fri, 9 Jun 2017 15:08:53 +0000"
-	level_0_parts_len               = 5
-	level_0_parts_boundary          = "_007_AM5PR0202MB267498F8AB17A954A50F2684AACE0AM5PR0202MB2674_"
-	level_1_parts_len               = 2
-	level_1_parts_boundary          = "_000_AM5PR0202MB267498F8AB17A954A50F2684AACE0AM5PR0202MB2674_"
-	raw_attachments_count           = 1
-	raw_inline_count                = 3
-	caliopen_attachments_count      = 4
-	caliopen_inline_count           = 3
-	From_len                        = 1
-	To_len                          = 1
-	From_address                    = "as.sabatier@lea-avocats.com"
-	To_address                      = "stan@mailden.net"
 	email_with_parts_and_attachment = `Return-Path: <as.sabatier@lea-avocats.com>
 Delivered-To: stan@mailden.net
 Received: from post.mailden.net ([9.6.71.30])
