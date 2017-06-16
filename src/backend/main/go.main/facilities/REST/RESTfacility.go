@@ -24,7 +24,7 @@ type (
 		AddAttachment(user_id, message_id, filename, content_type string, file io.Reader) (attachmentURL string, err error)
 		DeleteAttachment(user_id, message_id string, attchmtIndex int) error
 		OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error)
-		GetRawMessage(user_id, message_id string) (content io.ReadSeeker, err error)
+		GetRawMessage(raw_message_id string) (message []byte, err error)
 	}
 	RESTfacility struct {
 		store              backends.APIStorage

@@ -1,9 +1,8 @@
-package REST
+// Copyleft (ɔ) 2017 The Caliopen contributors.
+// Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
+// license (AGPL) that can be found in the LICENSE file.
 
-import (
-	"io"
-	"strings"
-)
+package REST
 
 func (rest *RESTfacility) SetMessageUnread(user_id, message_id string, status bool) (err error) {
 
@@ -16,17 +15,10 @@ func (rest *RESTfacility) SetMessageUnread(user_id, message_id string, status bo
 	return err
 }
 
-func (rest *RESTfacility) OpenRawMessage(user_id, message_id string) (content io.ReadSeeker, err error) {
-	rawMessage, err := rest.store.GetRawMessage(user_id, message_id)
+func (rest *RESTfacility) GetRawMessage(raw_message_id string) (raw_message []byte, err error) {
+	raw_msg, err := rest.store.GetRawMessage(raw_message_id)
 	if err != nil {
-		return nil, err
+		return
 	}
-	r := strings.NewReader(rawMessage)
-	content = io.NewSectionReader(r, 0, int64(len(rawMessage)))
-	return
-}
-
-func (rest *RESTfacility) GetRawMessage(user_id, message_id string) (content io.ReadSeeker, err error) {
-
-	return
+	return []byte(raw_msg.Raw_data), nil
 }

@@ -5,8 +5,10 @@
 package REST
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/satori/go.uuid"
 	"io"
@@ -99,34 +101,44 @@ func (rest *RESTfacility) DeleteAttachment(user_id, message_id string, attchmtIn
 	return nil
 }
 
-func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, content io.ReadSeeker, err error) {
+// returns an io.Reader and metadata to conveniently read the attachment
+func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error) {
 	//check if message_id belongs to user and index is consistent
 	msg, err := rest.store.GetMessage(user_id, message_id)
 	if err != nil {
-		return "", nil, err
+		return "", 0, nil, err
 	}
 	if attchmtIndex < 0 || attchmtIndex > (len(msg.Attachments)-1) {
-		return "", nil, errors.New(fmt.Sprintf("index %d for message %s is not consistent.", attchmtIndex, message_id))
+		return "", 0, nil, errors.New(fmt.Sprintf("index %d for message %s is not consistent.", attchmtIndex, message_id))
 	}
 	contentType = msg.Attachments[attchmtIndex].Content_type
+	size = msg.Attachments[attchmtIndex].Size
 
-	// create a ReadSeeker
+	// create a Reader
 	// either from object store (draft context)
 	// or from raw message's mime part (non-draft context)
-	/*
-		if msg.Is_draft {
-			attachment, err := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URI)
-			if err != nil {
-				return "", nil, err
-			}
-			io.NewSectionReader(attachment, 0, int64(msg.Attachments[attchmtIndex].Size))
-
-		} else {
-			rawMsg, err := rest.store.GetRawMessage(user_id, message_id)
-			if err != nil {
-				return "", nil, err
-			}
+	if msg.Is_draft {
+		attachment, e := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URI)
+		if e != nil {
+			return "", 0, nil, e
 		}
-	*/
-	return
+		content = attachment
+		return
+
+	} else {
+		rawMsg, e := rest.store.GetRawMessage(msg.Raw_msg_id.String())
+		if e != nil {
+			return "", 0, nil, e
+		}
+		json_email, e := email_broker.EmailToJsonRep(rawMsg.Raw_data)
+		if e != nil {
+			return "", 0, nil, e
+		}
+		attachments, e := json_email.ExtractAttachments(attchmtIndex)
+		if e != nil {
+			return "", 0, nil, e
+		}
+		content = bytes.NewReader(attachments[0])
+		return
+	}
 }
