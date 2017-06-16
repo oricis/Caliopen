@@ -32,7 +32,8 @@ class IndexedModelMixin(object):
                 udts.append(map_udt_attributes(item))
             setattr(idx, column.column_name, udts)
         else:
-            setattr(idx, column.column_name, map_udt_attributes(attr_udt))
+            if attr_udt:
+                setattr(idx, column.column_name, map_udt_attributes(attr_udt))
 
     def _process_column(self, column, idx):
         """Process a core column and translate into index document."""
