@@ -48,8 +48,10 @@ paths:
     "$ref": paths/devices.yaml#/devices
   "/v1/devices/{device_id}":
     "$ref": paths/devices.yaml#/devices_{device_id}
+  "/v2/identities":
+    "$ref": paths/identities.yaml#/identities
   "/v2/identities/locals":
-    "$ref": paths/identities.yaml#/locals
+    "$ref": paths/identities.yaml#/identities_locals
   "/v1/remotes":
     "$ref": paths/identities.yaml#/remotes
 

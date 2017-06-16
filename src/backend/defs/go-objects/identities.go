@@ -19,4 +19,13 @@ type (
 		Identifier string `cql:"identifier"     json:"identifier"`
 		Type       string `cql:"type"           json:"type"`
 	}
+
+	//struct returned to user by suggestion engine when performing a string query search
+	IdentitySuggestion struct {
+		Address  string
+		Id       UUID
+		Label    string
+		Protocol string
+		Type     string
+	}
 )

@@ -1,5 +1,36 @@
 ---
-locals:
+identities:
+  get:
+    description: Returns a list of IDs suggestions according to given parameters/filter. Search is performed within current user's indexes (messages & contacts).
+    tags:
+    - identities
+    security:
+    - basicAuth: []
+    parameters:
+    - name: q
+      in: query
+      description: a string (3 chars at least) from which to perform the suggestion search
+      required: true
+      type: string
+    produces:
+    - application/json
+    responses:
+      '200':
+        description: a list of suggestions for user to pick-up an identity
+        schema:
+          type: array
+          items:
+            "$ref": "../objects/IdentitySuggests.yaml"
+      '400':
+        description: malform request
+        schema:
+          type: object
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+identities_locals:
   get:
     description: returns the list of user's local identities
     tags:

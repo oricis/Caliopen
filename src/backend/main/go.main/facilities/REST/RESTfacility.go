@@ -25,6 +25,7 @@ type (
 		DeleteAttachment(user_id, message_id string, attchmtIndex int) error
 		OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error)
 		GetRawMessage(raw_message_id string) (message []byte, err error)
+		SuggestIdentities(user_id, query_string string) (suggests []IdentitySuggestion, err error)
 	}
 	RESTfacility struct {
 		store              backends.APIStorage
