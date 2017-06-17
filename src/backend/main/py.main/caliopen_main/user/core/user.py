@@ -19,13 +19,14 @@ from ..store import (User as ModelUser,
                      UserTag as ModelUserTag,
                      FilterRule as ModelFilterRule,
                      ReservedName as ModelReservedName,
-                     LocalIdentity  as ModelLocalIdentity,
+                     LocalIdentity as ModelLocalIdentity,
                      ContactLookup
                      )
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
 from .contact import Contact as CoreContact
 from caliopen_main.objects.contact import Contact
+from caliopen_main.objects.pi import PIModel
 from caliopen_main.user.helpers import validators
 
 log = logging.getLogger(__name__)
@@ -172,7 +173,7 @@ class User(BaseCore):
             password_strength = zxcvbn(new_user.password,
                                        user_inputs=user_inputs)
             privacy_features = {"password_strength":
-                                    str(password_strength["score"])}
+                                str(password_strength["score"])}
             passwd = new_user.password.encode('utf-8')
             new_user.password = bcrypt.hashpw(passwd, bcrypt.gensalt())
         except Exception as exc:
@@ -195,6 +196,14 @@ class User(BaseCore):
             else:
                 family_name = ""
                 given_name = ""
+
+            # XXX PI compute
+            pi = PIModel()
+            pi.technic = 0
+            pi.comportment = 0
+            pi.context = 0
+            pi.version = 0
+
             core = super(User, cls).create(user_id=user_id,
                                            name=new_user.name,
                                            password=new_user.password,
@@ -202,6 +211,7 @@ class User(BaseCore):
                                            params=new_user.params,
                                            date_insert=datetime.utcnow(),
                                            privacy_features=privacy_features,
+                                           pi=pi,
                                            family_name=family_name,
                                            given_name=given_name
                                            )
