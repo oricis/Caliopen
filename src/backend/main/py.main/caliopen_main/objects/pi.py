@@ -21,7 +21,7 @@ from .base import ObjectIndexable
 class PIParameter(Model):
     """The privacy indexes schematics parameter definition."""
 
-    technical = IntType()
+    technic = IntType()
     comportment = IntType()
     context = IntType()
     version = IntType()
@@ -30,7 +30,7 @@ class PIParameter(Model):
 class PIModel(BaseUserType):
     """The privacy indexes model definition."""
 
-    technical = columns.Integer(default=0)
+    technic = columns.Integer(default=0)
     comportment = columns.Integer(default=0)
     context = columns.Integer(default=0)
     version = columns.Integer(default=0)
@@ -40,7 +40,7 @@ class PIModel(BaseUserType):
 class PIIndexModel(dsl.InnerObjectWrapper):
     """The privacy indexes model definition for index part."""
 
-    technical = dsl.Integer()
+    technic = dsl.Integer()
     comportment = dsl.Integer()
     context = dsl.Integer()
 
@@ -49,7 +49,7 @@ class PIObject(ObjectIndexable):
     """The caliopen object definition of privacy indexes."""
 
     _attrs = {
-        "technical": types.IntType,
+        "technic": types.IntType,
         "comportment": types.IntType,
         "context": types.IntType,
         "version": types.IntType,

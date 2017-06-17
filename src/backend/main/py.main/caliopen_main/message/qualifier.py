@@ -134,7 +134,7 @@ class UserMessageQualifier(object):
             pi_t += 10
         if feat.get('message_encrypted'):
             pi_t += 30
-        return PIParameter({'technical': pi_t,
+        return PIParameter({'technic': pi_t,
                             'context': pi_cx,
                             'comportment': pi_co,
                             'version': 0})

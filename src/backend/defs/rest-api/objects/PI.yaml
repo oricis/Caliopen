@@ -1,7 +1,7 @@
 ---
 type: object
 properties:
-  technical:
+  technic:
     type: integer
   context:
     type: integer

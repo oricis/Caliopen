@@ -431,7 +431,7 @@
                     "pi": {
                       "type": "object",
                       "properties": {
-                        "technical": {
+                        "technic": {
                           "type": "integer"
                         },
                         "context": {
@@ -492,7 +492,7 @@
                               "pi": {
                                 "type": "object",
                                 "properties": {
-                                  "technical": {
+                                  "technic": {
                                     "type": "integer"
                                   },
                                   "context": {
@@ -597,7 +597,7 @@
                 "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
                     "context": {
@@ -1082,7 +1082,7 @@
                     "pi": {
                       "type": "object",
                       "properties": {
-                        "technical": {
+                        "technic": {
                           "type": "integer"
                         },
                         "context": {
@@ -1143,7 +1143,7 @@
                               "pi": {
                                 "type": "object",
                                 "properties": {
-                                  "technical": {
+                                  "technic": {
                                     "type": "integer"
                                   },
                                   "context": {
@@ -1248,7 +1248,7 @@
                 "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
                     "context": {
@@ -1755,7 +1755,7 @@
                       "pi": {
                         "type": "object",
                         "properties": {
-                          "technical": {
+                          "technic": {
                             "type": "integer"
                           },
                           "context": {
@@ -1816,7 +1816,7 @@
                                 "pi": {
                                   "type": "object",
                                   "properties": {
-                                    "technical": {
+                                    "technic": {
                                       "type": "integer"
                                     },
                                     "context": {
@@ -2330,7 +2330,7 @@
                 "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
                     "context": {
@@ -2391,7 +2391,7 @@
                           "pi": {
                             "type": "object",
                             "properties": {
-                              "technical": {
+                              "technic": {
                                 "type": "integer"
                               },
                               "context": {
@@ -2861,7 +2861,7 @@
                     "pi": {
                       "type": "object",
                       "properties": {
-                        "technical": {
+                        "technic": {
                           "type": "integer"
                         },
                         "context": {
@@ -2922,7 +2922,7 @@
                               "pi": {
                                 "type": "object",
                                 "properties": {
-                                  "technical": {
+                                  "technic": {
                                     "type": "integer"
                                   },
                                   "context": {
@@ -3286,7 +3286,7 @@
                 "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
                     "context": {
@@ -3347,7 +3347,7 @@
                           "pi": {
                             "type": "object",
                             "properties": {
-                              "technical": {
+                              "technic": {
                                 "type": "integer"
                               },
                               "context": {
@@ -4168,7 +4168,7 @@
                       "pi": {
                         "type": "object",
                         "properties": {
-                          "technical": {
+                          "technic": {
                             "type": "integer"
                           },
                           "context": {
@@ -4704,7 +4704,7 @@
                 "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
                     "context": {
@@ -4984,7 +4984,7 @@
                     "pi": {
                       "type": "object",
                       "properties": {
-                        "technical": {
+                        "technic": {
                           "type": "integer"
                         },
                         "context": {
@@ -5186,7 +5186,7 @@
                 "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
                     "context": {
@@ -5667,7 +5667,7 @@
                 "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
                     "context": {
@@ -5876,7 +5876,7 @@
                 "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
                     "context": {
@@ -6665,7 +6665,7 @@
                       "pi": {
                         "type": "object",
                         "properties": {
-                          "technical": {
+                          "technic": {
                             "type": "integer"
                           },
                           "context": {
@@ -6878,7 +6878,7 @@
                 "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
                     "context": {
@@ -7070,7 +7070,7 @@
                     "pi": {
                       "type": "object",
                       "properties": {
-                        "technical": {
+                        "technic": {
                           "type": "integer"
                         },
                         "context": {
@@ -7153,7 +7153,7 @@
                 "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
                     "context": {
