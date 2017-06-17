@@ -446,10 +446,6 @@
                       },
                       "additionalProperties": false
                     },
-                    "privacy_index": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
                     "public_keys": {
                       "type": "array",
                       "items": {
@@ -614,10 +610,6 @@
                 },
                 "user_id": {
                   "type": "string"
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
                 },
                 "recovery_email": {
                   "type": "string"
@@ -1097,10 +1089,6 @@
                       },
                       "additionalProperties": false
                     },
-                    "privacy_index": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
                     "public_keys": {
                       "type": "array",
                       "items": {
@@ -1265,10 +1253,6 @@
                 },
                 "user_id": {
                   "type": "string"
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
                 },
                 "recovery_email": {
                   "type": "string"
@@ -1769,10 +1753,6 @@
                           }
                         },
                         "additionalProperties": false
-                      },
-                      "privacy_index": {
-                        "type": "integer",
-                        "format": "int32"
                       },
                       "public_keys": {
                         "type": "array",
@@ -2345,10 +2325,6 @@
                   },
                   "additionalProperties": false
                 },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
-                },
                 "public_keys": {
                   "type": "array",
                   "items": {
@@ -2876,10 +2852,6 @@
                       },
                       "additionalProperties": false
                     },
-                    "privacy_index": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
                     "public_keys": {
                       "type": "array",
                       "items": {
@@ -3300,10 +3272,6 @@
                     }
                   },
                   "additionalProperties": false
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
                 },
                 "public_keys": {
                   "type": "array",
@@ -3732,10 +3700,6 @@
                           "additionalProperties": false
                         }
                       },
-                      "privacy_index": {
-                        "type": "integer",
-                        "format": "int32"
-                      },
                       "tags": {
                         "type": "array",
                         "items": {
@@ -3894,10 +3858,6 @@
                     ],
                     "additionalProperties": false
                   }
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
                 },
                 "tags": {
                   "type": "array",

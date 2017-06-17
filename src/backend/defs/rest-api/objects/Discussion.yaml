@@ -19,9 +19,6 @@ properties:
     type: array
     items:
       "$ref": Participant.yaml
-  privacy_index:
-    type: integer
-    format: int32
   tags:
     type: array
     items:

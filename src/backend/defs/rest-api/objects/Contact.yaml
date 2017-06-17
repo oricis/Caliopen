@@ -59,9 +59,6 @@ properties:
   pi:
     type: object
     "$ref": PI.yaml
-  privacy_index:
-    type: integer
-    format: int32
   public_keys:
     type: array
     items:

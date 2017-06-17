@@ -35,13 +35,10 @@ class Discussion(Api):
     @view(renderer='json', permission='authenticated')
     def get(self):
         discussion_id = self.request.swagger_data['discussion_id']
-        pi_range = self.request.authenticated_userid.pi_range
         try:
             discussion = UserDiscussion.get(self.user, discussion_id)
         except NotFound:
             raise ResourceNotFound('No such discussion %r' % discussion_id)
-        # if pi_range[0] > discussion.privacy_index < pi_range[1]:
-        #     raise HTTPExpectationFailed('Invalid pi range')
 
         dim = DIM(self.user.id)
 
