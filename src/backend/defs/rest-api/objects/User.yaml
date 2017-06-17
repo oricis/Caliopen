@@ -19,6 +19,9 @@ properties:
   privacy_features:
     type: object
     "$ref": PrivacyFeatures.yaml
+  pi:
+    type: object
+    "$ref": PI.yaml
   user_id:
     type: string
   privacy_index:

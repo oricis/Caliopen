@@ -8,6 +8,12 @@ properties:
     type: string
   status:
     type: string
+  privacy_features:
+    type: object
+    "$ref": PrivacyFeatures.yaml
+  pi:
+    type: object
+    "$ref": PI.yaml
   date_insert:
     type: string
     format: date-time

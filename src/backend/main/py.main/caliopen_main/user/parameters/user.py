@@ -9,9 +9,10 @@ from schematics.transforms import blacklist
 
 from .contact import NewContact, Contact
 
+from caliopen_main.objects.pi import PIParameter
+
 
 class NewUser(Model):
-
     """
     Parameter to create a new user.
 
@@ -31,7 +32,6 @@ class NewUser(Model):
 
 
 class User(NewUser):
-
     """Existing user."""
 
     contact = ModelType(Contact)
@@ -41,7 +41,7 @@ class User(NewUser):
     given_name = StringType()
     password = StringType()     # not outpout by default, not required
     privacy_features = DictType(StringType, default=lambda: {}, )
-    privacy_index = IntType(default=0, )
+    pi = ModelType(PIParameter)
     user_id = UUIDType(required=True)
 
     class Options:
@@ -50,7 +50,6 @@ class User(NewUser):
 
 
 class NewRule(Model):
-
     """New filter rule."""
 
     name = StringType(required=True)

@@ -56,9 +56,9 @@ properties:
   privacy_features:
     type: object
     "$ref": PrivacyFeatures.yaml
-  privacy_indexes:
+  pi:
     type: object
-    "$ref": PrivacyIndexes.yaml
+    "$ref": PI.yaml
   privacy_index:
     type: integer
     format: int32

@@ -428,16 +428,19 @@
                       "type": "object",
                       "properties": {}
                     },
-                    "privacy_indexes": {
+                    "pi": {
                       "type": "object",
                       "properties": {
                         "technical": {
                           "type": "integer"
                         },
-                        "contextual": {
+                        "context": {
                           "type": "integer"
                         },
-                        "behavioral": {
+                        "comportment": {
+                          "type": "integer"
+                        },
+                        "version": {
                           "type": "integer"
                         }
                       },
@@ -482,6 +485,28 @@
                           {
                             "type": "object",
                             "properties": {
+                              "privacy_features": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "pi": {
+                                "type": "object",
+                                "properties": {
+                                  "technical": {
+                                    "type": "integer"
+                                  },
+                                  "context": {
+                                    "type": "integer"
+                                  },
+                                  "comportment": {
+                                    "type": "integer"
+                                  },
+                                  "version": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
                               "date_insert": {
                                 "type": "string",
                                 "format": "date-time"
@@ -568,6 +593,24 @@
                 "privacy_features": {
                   "type": "object",
                   "properties": {}
+                },
+                "pi": {
+                  "type": "object",
+                  "properties": {
+                    "technical": {
+                      "type": "integer"
+                    },
+                    "context": {
+                      "type": "integer"
+                    },
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
                 },
                 "user_id": {
                   "type": "string"
@@ -1036,16 +1079,19 @@
                       "type": "object",
                       "properties": {}
                     },
-                    "privacy_indexes": {
+                    "pi": {
                       "type": "object",
                       "properties": {
                         "technical": {
                           "type": "integer"
                         },
-                        "contextual": {
+                        "context": {
                           "type": "integer"
                         },
-                        "behavioral": {
+                        "comportment": {
+                          "type": "integer"
+                        },
+                        "version": {
                           "type": "integer"
                         }
                       },
@@ -1090,6 +1136,28 @@
                           {
                             "type": "object",
                             "properties": {
+                              "privacy_features": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "pi": {
+                                "type": "object",
+                                "properties": {
+                                  "technical": {
+                                    "type": "integer"
+                                  },
+                                  "context": {
+                                    "type": "integer"
+                                  },
+                                  "comportment": {
+                                    "type": "integer"
+                                  },
+                                  "version": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
                               "date_insert": {
                                 "type": "string",
                                 "format": "date-time"
@@ -1176,6 +1244,24 @@
                 "privacy_features": {
                   "type": "object",
                   "properties": {}
+                },
+                "pi": {
+                  "type": "object",
+                  "properties": {
+                    "technical": {
+                      "type": "integer"
+                    },
+                    "context": {
+                      "type": "integer"
+                    },
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
                 },
                 "user_id": {
                   "type": "string"
@@ -1666,16 +1752,19 @@
                         "type": "object",
                         "properties": {}
                       },
-                      "privacy_indexes": {
+                      "pi": {
                         "type": "object",
                         "properties": {
                           "technical": {
                             "type": "integer"
                           },
-                          "contextual": {
+                          "context": {
                             "type": "integer"
                           },
-                          "behavioral": {
+                          "comportment": {
+                            "type": "integer"
+                          },
+                          "version": {
                             "type": "integer"
                           }
                         },
@@ -1720,6 +1809,28 @@
                             {
                               "type": "object",
                               "properties": {
+                                "privacy_features": {
+                                  "type": "object",
+                                  "properties": {}
+                                },
+                                "pi": {
+                                  "type": "object",
+                                  "properties": {
+                                    "technical": {
+                                      "type": "integer"
+                                    },
+                                    "context": {
+                                      "type": "integer"
+                                    },
+                                    "comportment": {
+                                      "type": "integer"
+                                    },
+                                    "version": {
+                                      "type": "integer"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
                                 "date_insert": {
                                   "type": "string",
                                   "format": "date-time"
@@ -2216,16 +2327,19 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
                     "technical": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
@@ -2270,6 +2384,28 @@
                       {
                         "type": "object",
                         "properties": {
+                          "privacy_features": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "pi": {
+                            "type": "object",
+                            "properties": {
+                              "technical": {
+                                "type": "integer"
+                              },
+                              "context": {
+                                "type": "integer"
+                              },
+                              "comportment": {
+                                "type": "integer"
+                              },
+                              "version": {
+                                "type": "integer"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
                           "date_insert": {
                             "type": "string",
                             "format": "date-time"
@@ -2722,16 +2858,19 @@
                       "type": "object",
                       "properties": {}
                     },
-                    "privacy_indexes": {
+                    "pi": {
                       "type": "object",
                       "properties": {
                         "technical": {
                           "type": "integer"
                         },
-                        "contextual": {
+                        "context": {
                           "type": "integer"
                         },
-                        "behavioral": {
+                        "comportment": {
+                          "type": "integer"
+                        },
+                        "version": {
                           "type": "integer"
                         }
                       },
@@ -2776,6 +2915,28 @@
                           {
                             "type": "object",
                             "properties": {
+                              "privacy_features": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "pi": {
+                                "type": "object",
+                                "properties": {
+                                  "technical": {
+                                    "type": "integer"
+                                  },
+                                  "context": {
+                                    "type": "integer"
+                                  },
+                                  "comportment": {
+                                    "type": "integer"
+                                  },
+                                  "version": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
                               "date_insert": {
                                 "type": "string",
                                 "format": "date-time"
@@ -3122,16 +3283,19 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
                     "technical": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
@@ -3176,6 +3340,28 @@
                       {
                         "type": "object",
                         "properties": {
+                          "privacy_features": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "pi": {
+                            "type": "object",
+                            "properties": {
+                              "technical": {
+                                "type": "integer"
+                              },
+                              "context": {
+                                "type": "integer"
+                              },
+                              "comportment": {
+                                "type": "integer"
+                              },
+                              "version": {
+                                "type": "integer"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
                           "date_insert": {
                             "type": "string",
                             "format": "date-time"
@@ -3979,16 +4165,19 @@
                         "type": "object",
                         "properties": {}
                       },
-                      "privacy_indexes": {
+                      "pi": {
                         "type": "object",
                         "properties": {
                           "technical": {
                             "type": "integer"
                           },
-                          "contextual": {
+                          "context": {
                             "type": "integer"
                           },
-                          "behavioral": {
+                          "comportment": {
+                            "type": "integer"
+                          },
+                          "version": {
                             "type": "integer"
                           }
                         },
@@ -4512,16 +4701,19 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
                     "technical": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
@@ -4789,16 +4981,19 @@
                       "type": "object",
                       "properties": {}
                     },
-                    "privacy_indexes": {
+                    "pi": {
                       "type": "object",
                       "properties": {
                         "technical": {
                           "type": "integer"
                         },
-                        "contextual": {
+                        "context": {
                           "type": "integer"
                         },
-                        "behavioral": {
+                        "comportment": {
+                          "type": "integer"
+                        },
+                        "version": {
                           "type": "integer"
                         }
                       },
@@ -4988,16 +5183,19 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
                     "technical": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
@@ -5466,16 +5664,19 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
                     "technical": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
@@ -5672,16 +5873,19 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
                     "technical": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
@@ -6454,6 +6658,28 @@
                       "status": {
                         "type": "string"
                       },
+                      "privacy_features": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "pi": {
+                        "type": "object",
+                        "properties": {
+                          "technical": {
+                            "type": "integer"
+                          },
+                          "context": {
+                            "type": "integer"
+                          },
+                          "comportment": {
+                            "type": "integer"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
                       "date_insert": {
                         "type": "string",
                         "format": "date-time"
@@ -6645,6 +6871,28 @@
                 "status": {
                   "type": "string"
                 },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "pi": {
+                  "type": "object",
+                  "properties": {
+                    "technical": {
+                      "type": "integer"
+                    },
+                    "context": {
+                      "type": "integer"
+                    },
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
+                },
                 "date_insert": {
                   "type": "string",
                   "format": "date-time"
@@ -6815,6 +7063,28 @@
                     "status": {
                       "type": "string"
                     },
+                    "privacy_features": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "pi": {
+                      "type": "object",
+                      "properties": {
+                        "technical": {
+                          "type": "integer"
+                        },
+                        "context": {
+                          "type": "integer"
+                        },
+                        "comportment": {
+                          "type": "integer"
+                        },
+                        "version": {
+                          "type": "integer"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
                     "date_insert": {
                       "type": "string",
                       "format": "date-time"
@@ -6875,6 +7145,28 @@
                 },
                 "status": {
                   "type": "string"
+                },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "pi": {
+                  "type": "object",
+                  "properties": {
+                    "technical": {
+                      "type": "integer"
+                    },
+                    "context": {
+                      "type": "integer"
+                    },
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
                 },
                 "date_insert": {
                   "type": "string",
