@@ -92,14 +92,14 @@ class UserMessageQualifier(object):
     def _compute_pi(self, message):
         """Compute Privacy Indexes for a message."""
         feat = message.privacy_features
-        pi_cx = 0   # Contextual privacy index
-        pi_co = 0   # Comportemental privacy index
-        pi_t = 0   # Technical privacy index
+        pi_cx = {}   # Contextual privacy index
+        pi_co = {}   # Comportemental privacy index
+        pi_t = {}   # Technical privacy index
         reput = feat.get('mail_emitter_mx_reputation')
         if reput == 'whitelisted':
-            pi_cx += 20
+            pi_cx['reputation_whitelist'] = 20
         elif reput == 'unknown':
-            pi_cx += 10
+            pi_cx['reputation_unknow'] = 10
         known_contacts = []
         known_public_key = 0
         for part in message.participants:
@@ -114,29 +114,30 @@ class UserMessageQualifier(object):
             # - Si tous les contacts sont déjà connus le PIᶜˣ
             # augmente de la valeur du PIᶜᵒ le plus bas des PIᶜᵒ des contacts.
             if known_public_key == len(known_contacts):
-                pi_co += 20
+                pi_co['contact_pubkey'] = 20
         ext_hops = feat.get('nb_external_hops', 0)
         if ext_hops <= 1:
             tls = feat.get('ingress_socket_version')
             if tls:
                 tls = tls.replace('_', '.').lower()
                 if tls == 'tlsv1/sslv3':
-                    pi_t += 2
+                    pi_t['tls10'] = 2
                 elif tls in ('tls1', 'tlsv1'):
-                    pi_t += 7
+                    pi_t['tls11'] = 7
                 elif tls == 'tls1.2':
-                    pi_t += 10
+                    pi_t['tls12'] = 10
                 else:
                     log.warn('Unknown TLS version {}'.format(tls))
         if feat.get('mail_emitter_certificate'):
-            pi_t += 10
+            pi_t['emitter_certificate'] = 10
         if feat.get('transport_signed'):
-            pi_t += 10
+            pi_t['transport_signed'] = 10
         if feat.get('message_encrypted'):
-            pi_t += 30
-        return PIParameter({'technic': pi_t,
-                            'context': pi_cx,
-                            'comportment': pi_co,
+            pi_t['encrypted'] = 30
+        log.info('PI compute t:{} cx:{} co:{}'.format(pi_t, pi_cx, pi_co))
+        return PIParameter({'technic': sum(pi_t.values()),
+                            'context': sum(pi_cx.values()),
+                            'comportment': sum(pi_co.values()),
                             'version': 0})
 
     def process_inbound(self, raw):
@@ -189,7 +190,6 @@ class UserMessageQualifier(object):
 
         if lkp:
             new_message.discussion_id = lkp.discussion_id
-        new_message.privacy_indexes = self._compute_pi(new_message)
         new_message.validate()
         return new_message
         # XXX create lookup
