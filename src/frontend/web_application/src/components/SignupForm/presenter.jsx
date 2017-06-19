@@ -67,16 +67,14 @@ class SignupForm extends Component {
   }
 
   handleOpenModal() {
-    this.setState(prevState => ({
-      ...prevState,
+    this.setState({
       isModalOpen: true,
-    }));
+    });
   }
   handleCloseModal() {
-    this.setState(prevState => ({
-      ...prevState,
+    this.setState({
       isModalOpen: false,
-    }));
+    });
   }
 
   handleUsernameChange(event) {
@@ -150,9 +148,6 @@ class SignupForm extends Component {
 
   render() {
     const { form, errors = {}, __ } = this.props;
-    const PrivacyLink = ({ label, ...props }) => (
-      <button {...props}>{label}</button>
-    );
 
     return (
       <div className="s-signup">
@@ -232,28 +227,26 @@ class SignupForm extends Component {
             </FormColumn>
           </FormRow>
           <FormRow>
-            <FormColumn bottomSpace>
-              <div className="s-signup__privacy">
-                <h4>{__('signup.form.privacy.title')}</h4>
-                <p className="s-signup__privacy__text">
-                  {__('signup.form.privacy.intro')}
-                  <PrivacyLink
-                    className="s-signup__privacy__link"
-                    label={__('signup.form.privacy.more_info')}
-                    onClick={this.handleOpenModal}
-                  />
-                </p>
-                {this.renderModal()}
-                <CheckboxFieldGroup
-                  id="signup_privacy"
-                  className="s-signup__privacy__checkbox"
-                  label={__('signup.form.privacy.checkbox.label')}
-                  name="privacy"
-                  checked={this.state.formValues.privacy}
-                  errors={errors.privacy}
-                  onChange={this.handleCheckboxChange}
-                />
-              </div>
+            <FormColumn className="s-signup__privacy" bottomSpace>
+              <h4>{__('signup.form.privacy.title')}</h4>
+              <p className="s-signup__privacy__text">
+                {__('signup.form.privacy.intro')}
+              </p>
+              <Button
+                className="s-signup__privacy__link"
+                onClick={this.handleOpenModal}
+                icon="question-circle"
+              >{__('signup.form.privacy.more_info')}</Button>
+              {this.renderModal()}
+              <CheckboxFieldGroup
+                id="signup_privacy"
+                className="s-signup__privacy__checkbox"
+                label={__('signup.form.privacy.checkbox.label')}
+                name="privacy"
+                checked={this.state.formValues.privacy}
+                errors={errors.privacy}
+                onChange={this.handleCheckboxChange}
+              />
             </FormColumn>
           </FormRow>
           <FormRow>

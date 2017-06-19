@@ -211,7 +211,7 @@
     "signup.feedback.username_starting_ending_dot": "The username cannot start or end with a dot (.)",
     "signup.form.password.label": "Password:",
     "signup.form.password.placeholder": "password",
-    "signup.form.privacy.intro": "Durant toute la phase de développement, nous receuillons des données dutilisation (mais pas plus que la NSA).",
+    "signup.form.privacy.intro": "Throughout the development phase, we collect some data (but no more than the NSA).",
     "signup.form.privacy.checkbox.label": "I understand and agree",
     "signup.form.privacy.more_info": "More info",
     "signup.form.privacy.title": "Privacy policy",

@@ -34,9 +34,6 @@
     }
 
     &__link {
-      @include o-clickable;
-      @include o-clickable--text;
-      display: block;
       margin-top: $co-margin / 2;
       color: $co-color__fg__text--high;
       font-weight: 600;
