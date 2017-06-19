@@ -8,14 +8,15 @@ from cassandra.cqlengine import columns
 
 from caliopen_storage.store.mixin import IndexedModelMixin
 from caliopen_storage.store import BaseModel, BaseUserType
+from caliopen_main.objects.pi import PIModel
 
 from .contact_index import IndexedContact
 from .tag import ResourceTag
 
 
 class Organization(BaseUserType):
-
     """Contact organizations model."""
+
     _pkey = 'organization_id'
 
     organization_id = columns.UUID(default=uuid.uuid4)
@@ -30,8 +31,8 @@ class Organization(BaseUserType):
 
 
 class PostalAddress(BaseUserType):
-
     """Contact postal addresses model."""
+
     _pkey = 'address_id'
 
     address_id = columns.UUID(default=uuid.uuid4)
@@ -46,8 +47,8 @@ class PostalAddress(BaseUserType):
 
 
 class Email(BaseUserType):
-
     """Contact emails model."""
+
     _pkey = 'email_id'
     uniq_name = 'address'
 
@@ -59,8 +60,8 @@ class Email(BaseUserType):
 
 
 class IM(BaseUserType):
-
     """Contact instant messaging adresses model."""
+
     _pkey = 'im_id'
     uniq_name = 'address'
 
@@ -73,8 +74,8 @@ class IM(BaseUserType):
 
 
 class Phone(BaseUserType):
-
     """Contact phones model."""
+
     _pkey = 'phone_id'
     uniq_name = 'number'
 
@@ -86,8 +87,8 @@ class Phone(BaseUserType):
 
 
 class SocialIdentity(BaseUserType):
-
     """Any contact social identity (facebook, twitter, linkedin, etc)."""
+
     _pkey = 'social_id'
 
     social_id = columns.UUID(default=uuid.uuid4)
@@ -116,8 +117,8 @@ class Contact(BaseModel, IndexedModelMixin):
     name_prefix = columns.Text()
     name_suffix = columns.Text()
     groups = columns.List(columns.Text)
-    privacy_index = columns.Integer()
     privacy_features = columns.Map(columns.Text(), columns.Text())
+    pi = columns.UserDefinedType(PIModel)
 
     # UDT
     organizations = columns.List(columns.UserDefinedType(Organization))
@@ -133,7 +134,6 @@ class Contact(BaseModel, IndexedModelMixin):
 
 
 class PublicKey(BaseModel):
-
     """Contact public cryptographic keys model."""
 
     user_id = columns.UUID(primary_key=True)
@@ -148,9 +148,11 @@ class PublicKey(BaseModel):
     expire_date = columns.DateTime()
     fingerprint = columns.Text()
 
+    privacy_features = columns.Map(columns.Text(), columns.Text())
+    pi = PIModel
+
 
 class ContactLookup(BaseModel):
-
     """Lookup any information needed to recognize a user contact."""
 
     user_id = columns.UUID(primary_key=True)

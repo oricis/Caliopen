@@ -40,9 +40,6 @@ class DiscussionIndexManager(object):
         """Prepare a dsl.Search object on current index."""
         search = IndexedMessage.search(using=self.proxy,
                                        index=self.index)
-        # TODO : pi management
-        # search = search.filter('range', **{'privacy_index': {'gte': min_pi}})
-        # search = search.filter('range', **{'privacy_index': {'lte': max_pi}})
         return search
 
     def __search_ids(self, limit, offset, min_pi, max_pi):

@@ -1,10 +1,12 @@
 ---
 type: object
 properties:
-  technical:
+  technic:
     type: integer
-  contextual:
+  context:
     type: integer
-  behavioral:
+  comportment:
+    type: integer
+  version:
     type: integer
 additionalProperties: false

@@ -20,7 +20,6 @@ class Discussion(Model):
     date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
                                tzd=u'utc')
     excerpt = StringType(required=True)
-    # privacy_index = IntType(required=True, default=0)
     importance_level = IntType(required=True, default=0)
     participants = ListType(ModelType(Participant), default=lambda: [])
     total_count = IntType(required=True, default=0)

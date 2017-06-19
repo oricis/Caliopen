@@ -11,6 +11,7 @@ from schematics.transforms import blacklist
 from .participant import Participant
 from .attachment import Attachment
 from .external_references import ExternalReferences
+from caliopen_main.objects.pi import PIParameter
 from caliopen_main.user.parameters import ResourceTag
 from caliopen_main.user.parameters import LocalIdentity
 
@@ -39,6 +40,7 @@ class NewMessage(Model):
     participants = ListType(ModelType(Participant), default=lambda: [],
                             required=True)
     privacy_features = DictType(StringType, default=lambda: {})
+    pi = ModelType(PIParameter)
     raw_msg_id = UUIDType()
     subject = StringType()
     tags = ListType(ModelType(ResourceTag), default=lambda: [])

@@ -428,24 +428,23 @@
                       "type": "object",
                       "properties": {}
                     },
-                    "privacy_indexes": {
+                    "pi": {
                       "type": "object",
                       "properties": {
-                        "technical": {
+                        "technic": {
                           "type": "integer"
                         },
-                        "contextual": {
+                        "context": {
                           "type": "integer"
                         },
-                        "behavioral": {
+                        "comportment": {
+                          "type": "integer"
+                        },
+                        "version": {
                           "type": "integer"
                         }
                       },
                       "additionalProperties": false
-                    },
-                    "privacy_index": {
-                      "type": "integer",
-                      "format": "int32"
                     },
                     "public_keys": {
                       "type": "array",
@@ -482,6 +481,28 @@
                           {
                             "type": "object",
                             "properties": {
+                              "privacy_features": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "pi": {
+                                "type": "object",
+                                "properties": {
+                                  "technic": {
+                                    "type": "integer"
+                                  },
+                                  "context": {
+                                    "type": "integer"
+                                  },
+                                  "comportment": {
+                                    "type": "integer"
+                                  },
+                                  "version": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
                               "date_insert": {
                                 "type": "string",
                                 "format": "date-time"
@@ -569,12 +590,26 @@
                   "type": "object",
                   "properties": {}
                 },
+                "pi": {
+                  "type": "object",
+                  "properties": {
+                    "technic": {
+                      "type": "integer"
+                    },
+                    "context": {
+                      "type": "integer"
+                    },
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
+                },
                 "user_id": {
                   "type": "string"
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
                 },
                 "recovery_email": {
                   "type": "string"
@@ -1036,24 +1071,23 @@
                       "type": "object",
                       "properties": {}
                     },
-                    "privacy_indexes": {
+                    "pi": {
                       "type": "object",
                       "properties": {
-                        "technical": {
+                        "technic": {
                           "type": "integer"
                         },
-                        "contextual": {
+                        "context": {
                           "type": "integer"
                         },
-                        "behavioral": {
+                        "comportment": {
+                          "type": "integer"
+                        },
+                        "version": {
                           "type": "integer"
                         }
                       },
                       "additionalProperties": false
-                    },
-                    "privacy_index": {
-                      "type": "integer",
-                      "format": "int32"
                     },
                     "public_keys": {
                       "type": "array",
@@ -1090,6 +1124,28 @@
                           {
                             "type": "object",
                             "properties": {
+                              "privacy_features": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "pi": {
+                                "type": "object",
+                                "properties": {
+                                  "technic": {
+                                    "type": "integer"
+                                  },
+                                  "context": {
+                                    "type": "integer"
+                                  },
+                                  "comportment": {
+                                    "type": "integer"
+                                  },
+                                  "version": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
                               "date_insert": {
                                 "type": "string",
                                 "format": "date-time"
@@ -1177,12 +1233,26 @@
                   "type": "object",
                   "properties": {}
                 },
+                "pi": {
+                  "type": "object",
+                  "properties": {
+                    "technic": {
+                      "type": "integer"
+                    },
+                    "context": {
+                      "type": "integer"
+                    },
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
+                },
                 "user_id": {
                   "type": "string"
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
                 },
                 "recovery_email": {
                   "type": "string"
@@ -1666,24 +1736,23 @@
                         "type": "object",
                         "properties": {}
                       },
-                      "privacy_indexes": {
+                      "pi": {
                         "type": "object",
                         "properties": {
-                          "technical": {
+                          "technic": {
                             "type": "integer"
                           },
-                          "contextual": {
+                          "context": {
                             "type": "integer"
                           },
-                          "behavioral": {
+                          "comportment": {
+                            "type": "integer"
+                          },
+                          "version": {
                             "type": "integer"
                           }
                         },
                         "additionalProperties": false
-                      },
-                      "privacy_index": {
-                        "type": "integer",
-                        "format": "int32"
                       },
                       "public_keys": {
                         "type": "array",
@@ -1720,6 +1789,28 @@
                             {
                               "type": "object",
                               "properties": {
+                                "privacy_features": {
+                                  "type": "object",
+                                  "properties": {}
+                                },
+                                "pi": {
+                                  "type": "object",
+                                  "properties": {
+                                    "technic": {
+                                      "type": "integer"
+                                    },
+                                    "context": {
+                                      "type": "integer"
+                                    },
+                                    "comportment": {
+                                      "type": "integer"
+                                    },
+                                    "version": {
+                                      "type": "integer"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
                                 "date_insert": {
                                   "type": "string",
                                   "format": "date-time"
@@ -2216,24 +2307,23 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
                   "additionalProperties": false
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
                 },
                 "public_keys": {
                   "type": "array",
@@ -2270,6 +2360,28 @@
                       {
                         "type": "object",
                         "properties": {
+                          "privacy_features": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "pi": {
+                            "type": "object",
+                            "properties": {
+                              "technic": {
+                                "type": "integer"
+                              },
+                              "context": {
+                                "type": "integer"
+                              },
+                              "comportment": {
+                                "type": "integer"
+                              },
+                              "version": {
+                                "type": "integer"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
                           "date_insert": {
                             "type": "string",
                             "format": "date-time"
@@ -2722,24 +2834,23 @@
                       "type": "object",
                       "properties": {}
                     },
-                    "privacy_indexes": {
+                    "pi": {
                       "type": "object",
                       "properties": {
-                        "technical": {
+                        "technic": {
                           "type": "integer"
                         },
-                        "contextual": {
+                        "context": {
                           "type": "integer"
                         },
-                        "behavioral": {
+                        "comportment": {
+                          "type": "integer"
+                        },
+                        "version": {
                           "type": "integer"
                         }
                       },
                       "additionalProperties": false
-                    },
-                    "privacy_index": {
-                      "type": "integer",
-                      "format": "int32"
                     },
                     "public_keys": {
                       "type": "array",
@@ -2776,6 +2887,28 @@
                           {
                             "type": "object",
                             "properties": {
+                              "privacy_features": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "pi": {
+                                "type": "object",
+                                "properties": {
+                                  "technic": {
+                                    "type": "integer"
+                                  },
+                                  "context": {
+                                    "type": "integer"
+                                  },
+                                  "comportment": {
+                                    "type": "integer"
+                                  },
+                                  "version": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
                               "date_insert": {
                                 "type": "string",
                                 "format": "date-time"
@@ -3122,24 +3255,23 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
                   "additionalProperties": false
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
                 },
                 "public_keys": {
                   "type": "array",
@@ -3176,6 +3308,28 @@
                       {
                         "type": "object",
                         "properties": {
+                          "privacy_features": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "pi": {
+                            "type": "object",
+                            "properties": {
+                              "technic": {
+                                "type": "integer"
+                              },
+                              "context": {
+                                "type": "integer"
+                              },
+                              "comportment": {
+                                "type": "integer"
+                              },
+                              "version": {
+                                "type": "integer"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
                           "date_insert": {
                             "type": "string",
                             "format": "date-time"
@@ -3546,10 +3700,6 @@
                           "additionalProperties": false
                         }
                       },
-                      "privacy_index": {
-                        "type": "integer",
-                        "format": "int32"
-                      },
                       "tags": {
                         "type": "array",
                         "items": {
@@ -3708,10 +3858,6 @@
                     ],
                     "additionalProperties": false
                   }
-                },
-                "privacy_index": {
-                  "type": "integer",
-                  "format": "int32"
                 },
                 "tags": {
                   "type": "array",
@@ -3979,16 +4125,19 @@
                         "type": "object",
                         "properties": {}
                       },
-                      "privacy_indexes": {
+                      "pi": {
                         "type": "object",
                         "properties": {
-                          "technical": {
+                          "technic": {
                             "type": "integer"
                           },
-                          "contextual": {
+                          "context": {
                             "type": "integer"
                           },
-                          "behavioral": {
+                          "comportment": {
+                            "type": "integer"
+                          },
+                          "version": {
                             "type": "integer"
                           }
                         },
@@ -4512,16 +4661,19 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
@@ -4789,16 +4941,19 @@
                       "type": "object",
                       "properties": {}
                     },
-                    "privacy_indexes": {
+                    "pi": {
                       "type": "object",
                       "properties": {
-                        "technical": {
+                        "technic": {
                           "type": "integer"
                         },
-                        "contextual": {
+                        "context": {
                           "type": "integer"
                         },
-                        "behavioral": {
+                        "comportment": {
+                          "type": "integer"
+                        },
+                        "version": {
                           "type": "integer"
                         }
                       },
@@ -4988,16 +5143,19 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
@@ -5466,16 +5624,19 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
@@ -5672,16 +5833,19 @@
                   "type": "object",
                   "properties": {}
                 },
-                "privacy_indexes": {
+                "pi": {
                   "type": "object",
                   "properties": {
-                    "technical": {
+                    "technic": {
                       "type": "integer"
                     },
-                    "contextual": {
+                    "context": {
                       "type": "integer"
                     },
-                    "behavioral": {
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
                       "type": "integer"
                     }
                   },
@@ -6454,6 +6618,28 @@
                       "status": {
                         "type": "string"
                       },
+                      "privacy_features": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "pi": {
+                        "type": "object",
+                        "properties": {
+                          "technic": {
+                            "type": "integer"
+                          },
+                          "context": {
+                            "type": "integer"
+                          },
+                          "comportment": {
+                            "type": "integer"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
                       "date_insert": {
                         "type": "string",
                         "format": "date-time"
@@ -6645,6 +6831,28 @@
                 "status": {
                   "type": "string"
                 },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "pi": {
+                  "type": "object",
+                  "properties": {
+                    "technic": {
+                      "type": "integer"
+                    },
+                    "context": {
+                      "type": "integer"
+                    },
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
+                },
                 "date_insert": {
                   "type": "string",
                   "format": "date-time"
@@ -6815,6 +7023,28 @@
                     "status": {
                       "type": "string"
                     },
+                    "privacy_features": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "pi": {
+                      "type": "object",
+                      "properties": {
+                        "technic": {
+                          "type": "integer"
+                        },
+                        "context": {
+                          "type": "integer"
+                        },
+                        "comportment": {
+                          "type": "integer"
+                        },
+                        "version": {
+                          "type": "integer"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
                     "date_insert": {
                       "type": "string",
                       "format": "date-time"
@@ -6875,6 +7105,28 @@
                 },
                 "status": {
                   "type": "string"
+                },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "pi": {
+                  "type": "object",
+                  "properties": {
+                    "technic": {
+                      "type": "integer"
+                    },
+                    "context": {
+                      "type": "integer"
+                    },
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
                 },
                 "date_insert": {
                   "type": "string",
