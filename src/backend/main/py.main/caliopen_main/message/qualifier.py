@@ -89,13 +89,13 @@ class UserMessageQualifier(object):
             pass
         return p
 
-    def _compute_pi(self, message):
+    def _compute_pi(self, message, features):
         """Compute Privacy Indexes for a message."""
-        feat = message.privacy_features
+        log.info('PI features {}'.format(features))
         pi_cx = {}   # Contextual privacy index
         pi_co = {}   # Comportemental privacy index
         pi_t = {}   # Technical privacy index
-        reput = feat.get('mail_emitter_mx_reputation')
+        reput = features.get('mail_emitter_mx_reputation')
         if reput == 'whitelisted':
             pi_cx['reputation_whitelist'] = 20
         elif reput == 'unknown':
@@ -115,9 +115,9 @@ class UserMessageQualifier(object):
             # augmente de la valeur du PIᶜᵒ le plus bas des PIᶜᵒ des contacts.
             if known_public_key == len(known_contacts):
                 pi_co['contact_pubkey'] = 20
-        ext_hops = feat.get('nb_external_hops', 0)
+        ext_hops = features.get('nb_external_hops', 0)
         if ext_hops <= 1:
-            tls = feat.get('ingress_socket_version')
+            tls = features.get('ingress_socket_version')
             if tls:
                 tls = tls.replace('_', '.').lower()
                 if tls == 'tlsv1/sslv3':
@@ -128,11 +128,11 @@ class UserMessageQualifier(object):
                     pi_t['tls12'] = 10
                 else:
                     log.warn('Unknown TLS version {}'.format(tls))
-        if feat.get('mail_emitter_certificate'):
+        if features.get('mail_emitter_certificate'):
             pi_t['emitter_certificate'] = 10
-        if feat.get('transport_signed'):
+        if features.get('transport_signed'):
             pi_t['transport_signed'] = 10
-        if feat.get('message_encrypted'):
+        if features.get('message_encrypted'):
             pi_t['encrypted'] = 30
         log.info('PI compute t:{} cx:{} co:{}'.format(pi_t, pi_cx, pi_co))
         return PIParameter({'technic': sum(pi_t.values()),
@@ -160,11 +160,6 @@ class UserMessageQualifier(object):
         new_message.importance_level = 0    # XXX tofix on parser
         new_message.external_references = message.external_references
 
-        for k, v in message.privacy_features.items():
-            if v is not None:
-                # XXX hard typing
-                new_message.privacy_features[k] = str(v)
-
         for p in message.participants:
             new_message.participants.append(self.get_participant(message, p))
 
@@ -176,7 +171,13 @@ class UserMessageQualifier(object):
             new_message.attachments.append(attachment)
 
         # Compute PI !!
-        new_message.pi = self._compute_pi(new_message)
+        new_message.pi = self._compute_pi(new_message,
+                                          message.privacy_features)
+
+        # XXX hard type privacy_features for the moment
+        for k, v in message.privacy_features.items():
+            if v is not None:
+                new_message.privacy_features[k] = str(v)
 
         # compute tags
         new_message.tags = self._get_tags(message)
