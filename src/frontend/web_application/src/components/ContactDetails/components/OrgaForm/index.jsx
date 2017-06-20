@@ -6,7 +6,6 @@ import { FieldErrors, Fieldset, Legend, TextFieldGroup, FormGrid, FormRow, FormC
 
 import './style.scss';
 
-
 class OrgaForm extends Component {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),

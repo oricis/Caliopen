@@ -37,7 +37,7 @@ class ContactDetails extends Component {
 
   constructor(props) {
     super(props);
-    this.handleSwitchEditMode = this.handleSwitchEditMode.bind(this);
+    this.makeHandleSwitchEditMode = this.makeHandleSwitchEditMode.bind(this);
     this.renderAddress = this.renderAddress.bind(this);
     this.renderEmail = this.renderEmail.bind(this);
     this.renderPhone = this.renderPhone.bind(this);
@@ -70,14 +70,15 @@ class ContactDetails extends Component {
     };
   }
 
-  handleSwitchEditMode(ev) {
-    const panel = ev.target.value;
-
-    this.setState(prevState => ({
-      editMode: {
-        [panel]: !prevState.editMode[panel],
-      }
-    }));
+  makeHandleSwitchEditMode(panel) {
+    return () => {
+      this.setState(prevState => ({
+        editMode: {
+          ...prevState.editMode,
+          [panel]: !prevState.editMode[panel],
+        }
+      }));
+    }
   }
 
   getRemoteIdentity(identityType, identityId) {
@@ -95,8 +96,7 @@ class ContactDetails extends Component {
       <Button
         className="pull-right"
         {...activeButtonProp}
-        value={panel}
-        onClick={this.handleSwitchEditMode}
+        onClick={this.makeHandleSwitchEditMode(panel)}
         icon="edit"
       >
         <span className="show-for-sr">{__('contact.action.edit_contact_details')}</span>
@@ -229,7 +229,11 @@ class ContactDetails extends Component {
                       __={__} />
                   )}
                   </TextList>
-                {this.state.editMode.organizations && <OrgaForm onSubmit={onAddContactDetail} __={__}/>}
+                {this.state.editMode.organizations &&
+                  <OrgaForm
+                    onSubmit={onAddContactDetail} __={__}
+                  />
+                }
               </div>
           </div>
         }
