@@ -165,6 +165,7 @@
     "openpgp.status.no_self_cert": "openpgp.status.no_self_cert",
     "openpgp.status.revoked": "openpgp.status.revoked",
     "openpgp.status.valid": "openpgp.status.valid",
+    "orga-details.job.desc-full": "orga-details.job.desc-full",
     "password_strength.feedback.moderate": "password_strength.feedback.moderate",
     "password_strength.feedback.strong": "password_strength.feedback.strong",
     "password_strength.feedback.weak": "password_strength.feedback.weak",

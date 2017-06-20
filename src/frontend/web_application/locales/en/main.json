@@ -167,6 +167,7 @@
     "openpgp.status.no_self_cert": "No self cert",
     "openpgp.status.revoked": "Revoked",
     "openpgp.status.valid": "Valid",
+    "orga-details.job.desc-full": "%(jobDesc)s at %(orgaName)s%(department)s",
     "password_strength.feedback.moderate": "The password strength is moderate",
     "password_strength.feedback.strong": "The password strength is strong",
     "password_strength.feedback.weak": "The password strength is weak",

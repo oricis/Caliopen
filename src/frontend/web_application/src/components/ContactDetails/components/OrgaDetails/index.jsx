@@ -38,15 +38,23 @@ class OrgaDetails extends Component {
     );
   }
 
+  renderJobTitle() {
+    const { organization, __ } = this.props;
+    const department = organization.department ? ` (${organization.department})` : '';
+    if (organization.job_description && organization.name) {
+      return __('orga-details.job.desc-full', { jobDesc: organization.job_description, orgaName: organization.name, department });
+    }
+
+    return (organization.job_description || organization.name) && department;
+  }
+
   render() {
     const { organization, editMode } = this.props;
 
     return (
       <ItemContent large key={organization.organization_id}>
         <Icon type="briefcase" className="m-orga-details__icon" />
-        {organization.job_description}
-        {organization.job_description && organization.name && ' at '}{organization.name}
-        {organization.department && ` (${organization.department})`}
+        {this.renderJobTitle()}
         { ' ' }
         {editMode && this.renderDeleteButton()}
       </ItemContent>
