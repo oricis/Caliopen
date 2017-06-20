@@ -1,13 +1,14 @@
 @import '../../styles/common';
 @import '../../styles/vendor/bootstrap_foundation-sites';
+@import '../../styles/object/o-callout';
+@import '../../styles/object/o-clickable';
 
-$switch_height: 2rem;
 
 .s-signup {
   @include flex-grid-size(12);
+  max-width: map-get($co-form__width, 'xlarge');
 
-  @include breakpoint(medium) {
-    @include flex-grid-size(4);
+  &__modal {
     max-width: map-get($co-form__width, 'xlarge');
   }
 
@@ -24,4 +25,18 @@ $switch_height: 2rem;
     text-align: center;
   }
 
+  &__privacy {
+    @include o-callout-base;
+    @include o-callout--color($co-color__info);
+
+    &__checkbox {
+      margin-top: $co-margin;
+    }
+
+    &__link {
+      margin-top: $co-margin / 2;
+      color: $co-color__fg__text--high;
+      font-weight: 600;
+    }
+  }
 }
