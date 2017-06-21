@@ -73,6 +73,7 @@
     "node-sass": "^4.5.2",
     "npm-run-all": "^4.0.2",
     "openpgp": "^2.5.4",
+    "piwik-react-router": "^0.8.2",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
