@@ -1,0 +1,95 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Section from '../../components/Section';
+import Button from '../../components/Button';
+import Notification, { isSupported, PERMISSION_DENIED, PERMISSION_GRANTED } from '../../services/browser-notification';
+
+class SettingsView extends Component {
+  static propTypes = {
+    __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasBrowserNotificationSupport: false,
+      hasBrowserNotificationEnabled: false,
+    };
+    this.handleRequestBrowserNotification = this.handleRequestBrowserNotification.bind(this);
+    this.handleClickTestBrowser = this.handleClickTestBrowser.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState({
+      hasBrowserNotificationSupport: isSupported,
+      hasBrowserNotificationPermission: isSupported && Notification.permission,
+    });
+  }
+
+  handleRequestBrowserNotification() {
+    Notification.requestPermission(permission => this.setState({
+      hasBrowserNotificationPermission: permission,
+    }));
+  }
+
+  handleClickTestBrowser() {
+    const { __ } = this.props;
+
+    return new Notification(__('settings-view.feedback.desktop-notification-enabled'));
+  }
+
+  renderNoSupport() {
+    const { __ } = this.props;
+
+    return (
+      <div>
+        {__('settings-view.no-desktop-notification-support')}
+      </div>
+    );
+  }
+
+  renderNotification() {
+    const { __ } = this.props;
+    if (this.state.hasBrowserNotificationPermission === PERMISSION_GRANTED) {
+      return (
+        <div>
+          {__('settings-view.desktop-notifications-enabled')}{' '}
+          <Button
+            onClick={this.handleClickTestBrowser}
+          >
+            {__('settings-view.action.test-desktop-notification')}
+          </Button>
+        </div>
+      );
+    }
+
+    if (this.state.hasBrowserNotificationPermission === PERMISSION_DENIED) {
+      return (<div>{__('settings-view.desktop-notifications-disabled')}</div>);
+    }
+
+    return (
+      <div>
+        <Button onClick={this.handleRequestBrowserNotification}>
+          {__('settings-view.action.request-desktop-notification-permission')}
+        </Button>
+      </div>
+    );
+  }
+
+  render() {
+    const { __ } = this.props;
+
+    return (
+      <div className="s-settings-view">
+        <Section title={__('settings-view.notifications.title')}>
+          {isSupported ?
+            this.renderNotification() :
+            this.renderNoSupport()}
+        </Section>
+      </div>
+    );
+  }
+}
+
+export default SettingsView;
