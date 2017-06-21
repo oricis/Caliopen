@@ -11,7 +11,7 @@ import { getLocale } from './services/i18n';
 
 const piwik = PiwikReactRouter({
   url: 'https://piwik.caliopen.org/anaytics',
-  siteId: 1,
+  siteId: 6,
   userId: uuidv1(), //userId can be username, email adress or uuid
 });
 
