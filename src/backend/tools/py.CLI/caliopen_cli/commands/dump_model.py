@@ -10,7 +10,7 @@ def dump_model(model, output_path, **kwargs):
         'contact': ['Contact', 'Organization', 'PostalAddress', 'Email', 'IM',
                     'Ohone', 'PublicKey', 'SocialIdentity'],
         'message': ['Message', 'Thread'],
-        'user':    ['User', 'Counter', 'UserTag', 'FilterRule'],
+        'user':    ['User', 'UserTag', 'FilterRule'],
     }
     for obj in _exports[model]:
         kls = core_registry.get(obj)
