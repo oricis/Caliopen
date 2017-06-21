@@ -14,7 +14,8 @@ from caliopen_main.user.core import User
 from ..base import Api
 from ..base.exception import AuthenticationError
 
-from caliopen_main.user.parameters import NewUser, NewContact
+from caliopen_main.user.parameters import (NewUser, NewContact,
+                                           NewRemoteIdentity)
 from caliopen_main.user.returns.user import ReturnUser
 
 log = logging.getLogger(__name__)
@@ -131,3 +132,29 @@ class MeUserAPI(Api):
         user_id = self.request.authenticated_userid.user_id
         user = User.get(user_id)
         return ReturnUser.build(user).serialize()
+
+
+@resource(path='/remotes/{identifier}',
+          collection_path='/remotes',
+          name='RemoteIdentities',
+          factory=DefaultContext)
+class RemoteIdentityAPI(Api):
+    """User remote identities dead simple API."""
+
+    @view(renderer='json',
+          permission='authenticated')
+    def collection_post(self):
+        """Get information about logged user."""
+        user_id = self.request.authenticated_userid.user_id
+        user = User.get(user_id)
+        data = self.request.swagger_data['identity']
+        print('######## {}'.format(data))
+        param = NewRemoteIdentity({'display_name': data['display_name'],
+                                   'identifier': data['identifier'],
+                                   'type': data['type'],
+                                   'status': data.get('status', 'active'),
+                                   'infos': data['infos']
+                                   })
+        param.validate()
+        identity = user.add_remote_identity(param)
+        return identity

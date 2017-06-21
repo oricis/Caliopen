@@ -7338,6 +7338,63 @@
           }
         }
       }
+    },
+    "/v1/remotes": {
+      "post": {
+        "description": "create a new remote identity for an user",
+        "tags": [
+          "identities"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "identity",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "display_name": {
+                  "type": "string"
+                },
+                "identifier": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "infos": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remote identity created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "url to retrieve new remote identity's infos at /remotes/{identifier}"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {
