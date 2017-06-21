@@ -17,7 +17,6 @@ const CheckboxFieldGroup = ({
     <Checkbox id={checkboxId} label={label} {...inputProps} />
   );
 
-
   const renderSwitch = () => (
     <div>
       <Switch id={checkboxId} label={label} {...inputProps} />
@@ -28,13 +27,11 @@ const CheckboxFieldGroup = ({
   );
 
   return (
-    <div>
-      <div className={classnames('m-switch-field-group', className)}>
-        {displaySwitch ? renderSwitch() : renderCheckbox()}
-        { errors.length > 0 && (
-          <FieldErrors className="m-text-field-group__errors" errors={errors} />
-        )}
-      </div>
+    <div className={classnames('m-switch-field-group', className)}>
+      {displaySwitch ? renderSwitch() : renderCheckbox()}
+      {errors.length > 0 && (
+        <FieldErrors className="m-text-field-group__errors" errors={errors} />
+      )}
     </div>
   );
 };

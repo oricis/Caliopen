@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './style.scss';
 
-export const FormColumn = ({ className, bottomSpace, size, fluid = false, ...props }) => {
+export const FormColumn = ({ className, bottomSpace, size, fluid, ...props }) => {
   const colClassName = classnames('m-form-grid__column', {
     'm-form-grid__column--fluid': fluid,
     'm-form-grid__column--bottom-space': bottomSpace,
@@ -24,6 +24,12 @@ FormColumn.propTypes = {
   fluid: PropTypes.bool,
   bottomSpace: PropTypes.bool,
 };
+FormColumn.defaultProps = {
+  className: undefined,
+  size: undefined,
+  fluid: false,
+  bottomSpace: false,
+};
 
 export const FormRow = ({ className, reverse, ...props }) => {
   const rowClassName = classnames('m-form-grid__row', {
@@ -39,6 +45,10 @@ FormRow.propTypes = {
   className: PropTypes.string,
   reverse: PropTypes.bool,
 };
+FormRow.defaultProps = {
+  className: undefined,
+  reverse: false,
+};
 
 const Form = ({ className, ...props }) => (
   <form className={classnames('m-form-grid', className)} {...props} />
@@ -46,6 +56,9 @@ const Form = ({ className, ...props }) => (
 
 Form.propTypes = {
   className: PropTypes.string,
+};
+Form.defaultProps = {
+  className: undefined,
 };
 
 export default Form;
