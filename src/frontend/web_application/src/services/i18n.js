@@ -17,11 +17,12 @@ export const getLocale = () => {
   let preferedUserLocales = [];
 
   if (BUILD_TARGET === 'browser') {
+    const languages = window.navigator.languages || [];
     preferedUserLocales = [
       document.cookie.locale,
-      ...window.navigator.languages,
+      ...languages,
       (window.navigator.language || window.navigator.userLanguage),
-    ].filter(rawLocale => rawLocale);
+    ].filter(rawLocale => rawLocale && true);
   }
 
   if (BUILD_TARGET === 'server') {

@@ -11,6 +11,8 @@ from schematics.transforms import blacklist
 from .types import InternetAddressType, PhoneNumberType
 from .tag import ResourceTag
 
+from caliopen_main.objects.pi import PIParameter
+
 ORG_TYPES = ['work', 'home']
 ADDRESS_TYPES = ['work', 'home', 'other']
 EMAIL_TYPES = ['work', 'home', 'other']
@@ -256,7 +258,7 @@ class NewContact(Model):
     organizations = ListType(ModelType(NewOrganization), default=lambda: [])
     phones = ListType(ModelType(NewPhone), default=lambda: [])
     privacy_features = DictType(StringType, default=lambda: {})
-    privacy_index = IntType(default=0)
+
     public_keys = ListType(ModelType(NewPublicKey), default=lambda: [])
     tags = ListType(ModelType(ResourceTag), default=lambda: [])
 
@@ -282,6 +284,7 @@ class Contact(NewContact):
     organizations = ListType(ModelType(Organization), default=lambda: [])
     phones = ListType(ModelType(Phone), default=lambda: [])
     public_keys = ListType(ModelType(PublicKey), default=lambda: [])
+    pi = ModelType(PIParameter)
     # XXX not such default here
     title = StringType()
     user_id = UUIDType(required=True)
@@ -299,6 +302,7 @@ class ShortContact(Model):
     given_name = StringType()
     tags = ListType(ModelType(ResourceTag), default=lambda: [])
     title = StringType()
+    pi = ModelType(PIParameter)
 
     class Options:
         serialize_when_none = False

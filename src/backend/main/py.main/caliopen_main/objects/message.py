@@ -16,6 +16,7 @@ from caliopen_main.message.parameters.message import Message as ParamMessage
 from caliopen_main.message.parameters.draft import Draft
 from caliopen_main.message.core import RawMessage
 from caliopen_storage.exception import NotFound
+from .pi import PIObject
 from .tag import ResourceTag
 from .attachment import MessageAttachment
 from .external_references import ExternalReferences
@@ -52,6 +53,7 @@ class Message(base.ObjectIndexable):
         'parent_id': types.StringType,
         'participants': [Participant],
         'privacy_features': types.DictType,
+        'pi': PIObject,
         'raw_msg_id': UUID,
         'subject': types.StringType,
         'tags': [ResourceTag],
@@ -89,7 +91,6 @@ class Message(base.ObjectIndexable):
 
         :params: a NewMessage dict
         """
-
         if user_id is None or user_id is "":
             raise ValueError
 
@@ -123,8 +124,7 @@ class Message(base.ObjectIndexable):
         return message
 
     def patch_draft(self, patch, **options):
-        """operations specific to draft, before applying generic patch method"""
-
+        """Operation specific to draft, before applying generic patch."""
         self.get_db()
         self.unmarshall_db()
         if not self.is_draft:

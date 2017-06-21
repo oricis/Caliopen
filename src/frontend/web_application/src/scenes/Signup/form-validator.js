@@ -3,6 +3,7 @@ import usernameDescriptor, { ERR_MIN_MAX, ERR_INVALID_CHARACTER, ERR_DOTS, ERR_D
 import usernameAvailability from '../../services/username-utils/username-availability';
 
 const ERR_REQUIRED_TOS = 'ERR_REQUIRED_TOS';
+const ERR_REQUIRED_PRIVACY = 'ERR_REQUIRED_PRIVACY';
 const ERR_INVALID_GLOBAL = 'ERR_INVALID_GLOBAL';
 const ERR_REQUIRED_USERNAME = 'ERR_REQUIRED_USERNAME';
 const ERR_REQUIRED_PASSWORD = 'ERR_REQUIRED_PASSWORD';
@@ -14,6 +15,7 @@ export const getLocalizedErrors = __ => ({
   [ERR_DOTS]: __('signup.feedback.username_starting_ending_dot'),
   [ERR_MIN_MAX]: __('signup.feedback.username_length'),
   [ERR_DOUBLE_DOTS]: __('signup.feedback.username_double_dots'),
+  [ERR_REQUIRED_PRIVACY]: __('signup.feedback.required_privacy'),
   [ERR_REQUIRED_TOS]: __('signup.feedback.required_tos'),
   [ERR_INVALID_GLOBAL]: __('signup.feedback.invalid'),
   [ERR_REQUIRED_USERNAME]: __('signup.feedback.required_username'),
@@ -35,6 +37,15 @@ const descriptor = {
     (rule, value, callback) => {
       if (value !== true) {
         return callback({ message: ERR_REQUIRED_TOS });
+      }
+
+      return callback();
+    },
+  ],
+  privacy: [
+    (rule, value, callback) => {
+      if (value !== true) {
+        return callback({ message: ERR_REQUIRED_PRIVACY });
       }
 
       return callback();

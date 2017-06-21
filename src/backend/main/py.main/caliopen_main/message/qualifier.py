@@ -5,6 +5,7 @@ import logging
 from .parameters import NewMessage, Participant, Attachment
 
 from caliopen_storage.exception import NotFound
+from caliopen_main.objects.pi import PIParameter
 from caliopen_main.user.core import Contact
 from caliopen_main.discussion.core import (DiscussionMessageLookup,
                                            DiscussionRecipientLookup,
@@ -88,6 +89,57 @@ class UserMessageQualifier(object):
             pass
         return p
 
+    def _compute_pi(self, message, features):
+        """Compute Privacy Indexes for a message."""
+        log.info('PI features {}'.format(features))
+        pi_cx = {}   # Contextual privacy index
+        pi_co = {}   # Comportemental privacy index
+        pi_t = {}   # Technical privacy index
+        reput = features.get('mail_emitter_mx_reputation')
+        if reput == 'whitelisted':
+            pi_cx['reputation_whitelist'] = 20
+        elif reput == 'unknown':
+            pi_cx['reputation_unknow'] = 10
+        known_contacts = []
+        known_public_key = 0
+        for part in message.participants:
+            if part.contact_ids:
+                for cid in part.contact_ids:
+                    contact = Contact.get(self.user, cid)
+                    known_contacts.append(contact)
+                    if contact.public_key:
+                        known_public_key += 1
+        if len(message.participants) == len(known_contacts):
+            # XXX
+            # - Si tous les contacts sont déjà connus le PIᶜˣ
+            # augmente de la valeur du PIᶜᵒ le plus bas des PIᶜᵒ des contacts.
+            if known_public_key == len(known_contacts):
+                pi_co['contact_pubkey'] = 20
+        ext_hops = features.get('nb_external_hops', 0)
+        if ext_hops <= 1:
+            tls = features.get('ingress_socket_version')
+            if tls:
+                tls = tls.replace('_', '.').lower()
+                if tls == 'tlsv1/sslv3':
+                    pi_t['tls10'] = 2
+                elif tls in ('tls1', 'tlsv1'):
+                    pi_t['tls11'] = 7
+                elif tls == 'tls1.2':
+                    pi_t['tls12'] = 10
+                else:
+                    log.warn('Unknown TLS version {}'.format(tls))
+        if features.get('mail_emitter_certificate'):
+            pi_t['emitter_certificate'] = 10
+        if features.get('transport_signed'):
+            pi_t['transport_signed'] = 10
+        if features.get('message_encrypted'):
+            pi_t['encrypted'] = 30
+        log.info('PI compute t:{} cx:{} co:{}'.format(pi_t, pi_cx, pi_co))
+        return PIParameter({'technic': sum(pi_t.values()),
+                            'context': sum(pi_cx.values()),
+                            'comportment': sum(pi_co.values()),
+                            'version': 0})
+
     def process_inbound(self, raw):
         """Process inbound message.
 
@@ -108,11 +160,6 @@ class UserMessageQualifier(object):
         new_message.importance_level = 0    # XXX tofix on parser
         new_message.external_references = message.external_references
 
-        for k, v in message.privacy_features.items():
-            if v is not None:
-                # XXX hard typing
-                new_message.privacy_features[k] = str(v)
-
         for p in message.participants:
             new_message.participants.append(self.get_participant(message, p))
 
@@ -122,6 +169,15 @@ class UserMessageQualifier(object):
             attachment.filename = a.filename
             attachment.size = a.size
             new_message.attachments.append(attachment)
+
+        # Compute PI !!
+        new_message.pi = self._compute_pi(new_message,
+                                          message.privacy_features)
+
+        # XXX hard type privacy_features for the moment
+        for k, v in message.privacy_features.items():
+            if v is not None:
+                new_message.privacy_features[k] = str(v)
 
         # compute tags
         new_message.tags = self._get_tags(message)

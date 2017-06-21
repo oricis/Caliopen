@@ -8,6 +8,7 @@ from cassandra.cqlengine import columns
 
 from caliopen_storage.store.model import BaseModel
 from caliopen_storage.store.mixin import IndexedModelMixin
+from caliopen_main.objects.pi import PIModel
 from caliopen_main.user.store.tag import ResourceTag
 from caliopen_main.user.store.local_identity import Identity
 
@@ -41,6 +42,7 @@ class Message(BaseModel, IndexedModelMixin):
     parent_id = columns.Text()
     participants = columns.List(columns.UserDefinedType(Participant))
     privacy_features = columns.Map(columns.Text(), columns.Text())
+    pi = columns.UserDefinedType(PIModel)
     raw_msg_id = columns.UUID()
     subject = columns.Text()  # Subject of email, the message for short
     tags = columns.List(columns.UserDefinedType(ResourceTag))

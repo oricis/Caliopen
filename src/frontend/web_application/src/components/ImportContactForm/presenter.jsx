@@ -14,13 +14,15 @@ class ImportContactForm extends Component {
     errors: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
     hasImported: PropTypes.bool,
+    formAction: PropTypes.string,
   };
 
   static defaultProps = {
     onCancel: null,
     errors: {},
     hasImported: false,
-  }
+    formAction: '',
+  };
 
   constructor(props) {
     super(props);
@@ -28,19 +30,20 @@ class ImportContactForm extends Component {
       file: null,
     };
 
-    this.getFile = this.getFile.bind(this);
+    this.handleInputFileChange = this.handleInputFileChange.bind(this);
     this.handleSubmitForm = this.handleSubmitForm.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
   }
 
-  getFile(file) {
+  handleInputFileChange(file) {
     this.setState({
       file,
     });
   }
 
-  handleSubmitForm() {
-    const file = this.state.file;
+  handleSubmitForm(ev) {
+    ev.preventDefault();
+    const { file } = this.state;
     this.props.onSubmit({ file });
   }
 
@@ -78,16 +81,19 @@ class ImportContactForm extends Component {
   }
 
   render() {
-    const { __, hasImported, errors } = this.props;
+    const { __, hasImported, errors, formAction } = this.props;
 
     return (
       <form
         className="m-import-contact-form"
         onSubmit={this.handleSubmitForm}
+        action={formAction}
+        method="post"
+        encType="multipart/form-data"
       >
         {!hasImported ?
           <InputFileGroup
-            onInputChange={this.getFile}
+            onInputChange={this.handleInputFileChange}
             errors={errors}
             descr={__('import-contact.form.descr')}
             fileTypes={VALID_EXT}

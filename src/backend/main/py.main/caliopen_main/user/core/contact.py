@@ -149,6 +149,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         # XXX check and format tags and groups
         title = cls._compute_title(contact)
         contact_id = uuid.uuid4()
+
         attrs = {'contact_id': contact_id,
                  'info': contact.infos,
                  'groups': contact.groups,
@@ -159,7 +160,6 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
                  'prefix_name': contact.name_prefix,
                  'suffix_name': contact.name_suffix,
                  'title': title,
-                 'privacy_index': contact.privacy_index,
                  'emails': cls.create_nested(contact.emails, Email),
                  'ims': cls.create_nested(contact.ims, IM),
                  'phones': cls.create_nested(contact.phones, Phone),

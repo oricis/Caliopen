@@ -8,6 +8,7 @@ from caliopen_main.user.store.tag_index import IndexedResourceTag
 
 from .attachment_index import IndexedMessageAttachment
 from .external_references_index import IndexedExternalReferences
+from caliopen_main.objects.pi import PIIndexModel
 from caliopen_main.user.store.local_identity_index import IndexedIdentity
 from .participant_index import IndexedParticipant
 
@@ -33,6 +34,7 @@ class IndexedMessage(BaseIndexDocument):
     parent_id = dsl.String()
     participants = dsl.Nested(doc_class=IndexedParticipant)
     privacy_features = dsl.Nested()
+    pi = dsl.Nested(doc_class=PIIndexModel)
     raw_msg_id = dsl.String()
     subject = dsl.String()
     tags = dsl.Nested(doc_class=IndexedResourceTag)

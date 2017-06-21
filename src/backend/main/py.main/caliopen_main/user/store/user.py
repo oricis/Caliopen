@@ -12,6 +12,7 @@ from elasticsearch.client.indices import IndicesClient
 
 from caliopen_storage.config import Configuration
 from caliopen_storage.store.model import BaseModel
+from caliopen_main.objects.pi import PIModel
 
 log = logging.getLogger(__name__)
 
@@ -41,10 +42,11 @@ class User(BaseModel):
     params = columns.Map(columns.Text, columns.Text)
     contact_id = columns.UUID()
     main_user_id = columns.UUID()
-    privacy_index = columns.Integer()
-    privacy_features = columns.Map(columns.Text(), columns.Text())
     recovery_email = columns.Text(required=True)
     local_identities = columns.List(columns.Text())
+
+    privacy_features = columns.Map(columns.Text(), columns.Text())
+    pi = columns.UserDefinedType(PIModel)
 
 
 class Counter(BaseModel):

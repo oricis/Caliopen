@@ -6,6 +6,7 @@ import logging
 
 import elasticsearch_dsl as dsl
 from caliopen_storage.store.model import BaseIndexDocument
+from caliopen_main.objects.pi import PIIndexModel
 
 from .tag_index import IndexedResourceTag
 
@@ -86,8 +87,6 @@ class IndexedContact(BaseIndexDocument):
     name_suffix = dsl.String()
     name_prefix = dsl.String()
     date_insert = dsl.Date()
-    privacy_index = dsl.Integer()
-
     organizations = dsl.Nested(doc_class=IndexedOrganization)
     addresses = dsl.Nested(doc_class=IndexedPostalAddress)
     emails = dsl.Nested(doc_class=IndexedInternetAddress)
@@ -95,6 +94,9 @@ class IndexedContact(BaseIndexDocument):
     phones = dsl.Nested(doc_class=IndexedPhone)
     social_identities = dsl.Nested(doc_class=IndexedSocialIdentity)
     tags = dsl.Nested(doc_class=IndexedResourceTag)
+
+    privacy_features = dsl.Nested()
+    pi = dsl.Nested(doc_class=PIIndexModel)
 
     @property
     def contact_id(self):
@@ -113,6 +115,5 @@ class IndexedContact(BaseIndexDocument):
         m.field('name_suffix', dsl.String(index='not_analyzed'))
         m.field('name_prefix', dsl.String(index='not_analyzed'))
         m.field('date_insert', 'date')
-        m.field('privacy_index', 'short')
         m.save(using=cls.client(), index=user_id)
         return m
