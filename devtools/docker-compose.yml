@@ -68,6 +68,7 @@ services:
       environment:
           - xpack.security.enabled=false
           - xpack.monitoring.enabled=false
+          - "ES_JAVA_OPTS=-Xms512M -Xmx512M"
       volumes:
           - index:/usr/share/elasticsearch/data
 
