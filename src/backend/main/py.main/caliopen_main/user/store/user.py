@@ -51,7 +51,7 @@ class FilterRule(BaseModel):
     """User filter rules model."""
 
     user_id = columns.UUID(primary_key=True)
-    rule_id = columns.Integer(primary_key=True)  # counter.rule_id
+    rule_id = columns.UUID(primary_key=True)
     date_insert = columns.DateTime()
     name = columns.Text()
     filter_expr = columns.Text()
