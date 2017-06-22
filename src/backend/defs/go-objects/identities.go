@@ -20,12 +20,12 @@ type (
 		Type       string `cql:"type"           json:"type"`
 	}
 
-	//struct returned to user by suggestion engine when performing a string query search
-	IdentitySuggestion struct {
-		Address  string
-		Id       UUID
-		Label    string
-		Protocol string
-		Type     string
+	//struct returned to user by suggest engine when performing a string query search
+	RecipientSuggestion struct {
+		Address    string // could be empty if suggestion is a contact (or should we automatically put preferred identity's address ?)
+		Contact_Id UUID   // contact's ID if any
+		Label      string // name of contact or <display-name> in case of an address returned from participants lookup, if any
+		Protocol   string // email, IRC…
+		Source     string // "participant" or "contact", ie from where this suggestion came from
 	}
 )

@@ -1,0 +1,93 @@
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "nested": {
+            "path": "participants",
+            "query": {
+              "bool": {
+                "should": [
+                  {
+                    "wildcard": {
+                      "participants.label": "*laurent*"
+                    }
+                  },
+                  {
+                    "wildcard": {
+                      "participants.address": "*laurent*"
+                    }
+                  }
+                ]
+              }
+            },
+            "inner_hits": {}
+          }
+        },
+        {
+          "bool": {
+            "should": [
+              {
+                "wildcard": {
+                  "given_name": {
+                    "value": "*laurent*",
+                    "boost": 2
+                  }
+                }
+              },
+              {
+                "wildcard": {
+                  "family_name": {
+                    "value": "*laurent*",
+                    "boost": 2
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "nested": {
+            "path": "emails",
+            "query": {
+              "bool": {
+                "should": [
+                  {
+                    "wildcard": {
+                      "emails.label": {
+                        "value": "*laurent*",
+                        "boost": 2
+                      }
+                    }
+                  },
+                  {
+                    "wildcard": {
+                      "emails.address": {
+                        "value": "*laurent*",
+                        "boost": 2
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "inner_hits": {}
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "last_messages": {
+      "max": {
+        "field": "date"
+      }
+    }
+  },
+  "_source": [
+    "date",
+    "type",
+    "given_name",
+    "family_name"
+  ]
+}
