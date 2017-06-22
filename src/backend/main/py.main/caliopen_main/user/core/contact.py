@@ -13,7 +13,7 @@ from ..store import (Contact as ModelContact,
                      Organization, Email, IM, PostalAddress,
                      Phone, SocialIdentity,
                      ResourceTag)
-
+from caliopen_main.user.store.contact_index import IndexedContact
 from caliopen_storage.core import BaseCore, BaseUserCore
 from caliopen_storage.core.mixin import MixinCoreRelation, MixinCoreNested
 
@@ -75,6 +75,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
 
     _model_class = ModelContact
     _pkey_name = 'contact_id'
+    _index_class = IndexedContact
 
     _relations = {
         'public_keys': PublicKey,
