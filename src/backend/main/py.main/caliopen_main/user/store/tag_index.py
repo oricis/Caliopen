@@ -4,18 +4,18 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
-import elasticsearch_dsl as dsl
+from elasticsearch_dsl import InnerObjectWrapper, Date, Integer, Boolean, \
+    Keyword, Text
 
 log = logging.getLogger(__name__)
 
 
-class IndexedResourceTag(dsl.InnerObjectWrapper):
-
+class IndexedResourceTag(InnerObjectWrapper):
     """Nest tag indexed model."""
 
-    date_insert = dsl.Date()
-    importance_level = dsl.Integer()
-    label = dsl.String()
-    name = dsl.String()
-    tag_id = dsl.String(index='not_analyzed')
-    type = dsl.Boolean()
+    date_insert = Date()
+    importance_level = Integer()
+    label = Text()
+    name = Keyword()
+    tag_id = Keyword()
+    type = Boolean()

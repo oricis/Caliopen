@@ -3,15 +3,15 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
-import elasticsearch_dsl as dsl
+from elasticsearch_dsl import InnerObjectWrapper, Keyword
 
 log = logging.getLogger(__name__)
 
 
-class IndexedExternalReferences(dsl.InnerObjectWrapper):
+class IndexedExternalReferences(InnerObjectWrapper):
 
     """Nest attachment indexed model."""
 
-    discussion_id = dsl.String()
-    message_id = dsl.String()
-    parent_id = dsl.String()
+    discussion_id = Keyword()
+    message_id = Keyword()
+    parent_id = Keyword()

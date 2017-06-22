@@ -4,26 +4,25 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
-import elasticsearch_dsl as dsl
+from elasticsearch_dsl import InnerObjectWrapper, Text, Keyword
 from caliopen_storage.store.model import BaseIndexDocument
 
 log = logging.getLogger(__name__)
 
 
 class IndexedLocalIdentity(BaseIndexDocument):
-
     """Local identity indexed model."""
 
     doc_type = 'indexed_local_identity'
 
-    display_name = dsl.String()
-    identifier = dsl.String()
-    status = dsl.String()
-    type = dsl.String()
+    display_name = Text()
+    identifier = Text()
+    status = Keyword()
+    type = Keyword()
 
 
-class IndexedIdentity(dsl.InnerObjectWrapper):
+class IndexedIdentity(InnerObjectWrapper):
     """nested identity within a message"""
 
-    identifier = dsl.String()
-    type = dsl.String()
+    identifier = Text()
+    type = Keyword()

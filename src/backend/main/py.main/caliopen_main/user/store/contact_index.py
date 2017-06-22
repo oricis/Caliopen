@@ -98,8 +98,8 @@ class IndexedContact(BaseIndexDocument):
     social_identities = Nested(doc_class=IndexedSocialIdentity)
     tags = Nested(doc_class=IndexedResourceTag)
 
-    privacy_features = dsl.Nested()
-    pi = dsl.Nested(doc_class=PIIndexModel)
+    privacy_features = Nested()
+    pi = Nested(doc_class=PIIndexModel)
 
     @property
     def contact_id(self):
