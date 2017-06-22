@@ -23,7 +23,6 @@ from caliopen_main.interfaces import (IAttachmentParser, IMessageParser,
                                       IParticipantParser)
 from .mail_feature import MailPrivacyFeature
 
-
 log = logging.getLogger(__name__)
 
 
@@ -33,9 +32,17 @@ class MailAttachment(object):
     zope.interface.implements(IAttachmentParser)
 
     def __init__(self, part):
-        """Extract attachment attributes from a mail part."""
+        """
+        Extract attachment attributes from a mail part
+        """
         self.content_type = part.get_content_type()
         self.filename = part.get_filename()
+        content_disposition = part.get("Content-Disposition")
+        if content_disposition:
+            dispositions = content_disposition.strip().split(";")
+            self.is_inline = bool(dispositions[0].lower() == "inline")
+        else:
+            self.is_inline = True
         data = part.get_payload()
         self.size = len(data) if data else 0
         self.can_index = False
@@ -52,7 +59,39 @@ class MailAttachment(object):
             if self.charset:
                 data = data.decode(self.charset, 'replace'). \
                     encode('utf-8')
+        boundary = part.get("Mime-Boundary", failobj="")
+        if boundary is not "":
+            self.mime_boundary = boundary
+        else:
+            self.mime_boundary = ""
         self.data = data
+
+    @classmethod
+    def is_attachment(cls, part):
+        """
+        This method checks if a part conform to Caliopen's attachment definition.
+        A part is an "attachment" if it verifies ANY of this conditions :
+        - it has a Content-Disposition header with param "attachment"
+        - the main part of the Content-Type header
+                                        is within "attachment_types" list below
+
+        see https://www.iana.org/assignments/media-types/media-types.xhtml
+
+        :param part: an email/message's part as return by the walk() func.
+        :return: true or false
+        """
+        content_disposition = part.get("Content-Disposition")
+        if content_disposition:
+            dispositions = content_disposition.strip().split(";")
+            if bool(dispositions[0].lower() == "attachment") or \
+                    bool(dispositions[0].lower() == "inline"):
+                return True
+
+        attachment_types = (
+            "application", "image", "video", "audio", "message", "font")
+        if part.get_content_maintype() in attachment_types:
+            return True
+        return False
 
 
 class MailParticipant(object):
@@ -150,14 +189,19 @@ class MailMessage(object):
 
     @property
     def attachments(self):
-        """Multipart mail message, extract parts into attachments."""
+        """
+        Extract parts which we consider as attachments.
+        See is_attachment() func.
+        """
         if not self.mail.is_multipart():
             return []
-        parts = []
-        for p in self.mail.walk():
+        attchs = []
+        for p in walk_with_boundary(self.mail, ""):
             if not p.is_multipart():
-                parts.append(MailAttachment(p))
-        return parts
+                if MailAttachment.is_attachment(p):
+                    print(p._headers)
+                    attchs.append(MailAttachment(p))
+        return attchs
 
     @property
     def extra_parameters(self):
@@ -197,6 +241,7 @@ class MailMessage(object):
         Duplicate on headers exists, group them by name
         with a related list of values
         """
+
         def keyfunc(item):
             return item[0]
 
@@ -206,3 +251,13 @@ class MailMessage(object):
         for k, g in groupby(data, key=keyfunc):
             headers[k] = [x[1] for x in g]
         return headers
+
+
+def walk_with_boundary(mailMessage, boundary):
+    mailMessage.add_header("Mime-Boundary", boundary)
+    yield mailMessage
+    if mailMessage.is_multipart():
+        subboundary = mailMessage.get_boundary("")
+        for subpart in mailMessage.get_payload():
+            for subsubpart in walk_with_boundary(subpart, subboundary):
+                yield subsubpart

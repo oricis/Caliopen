@@ -12,5 +12,7 @@ properties:
   size:             # size calculated during parsing, for future reference
     type: integer
     format: int64
-  uri:              # ObjectStore url for temporary file (draft)
+  url:              # ObjectStore url for temporary file (draft) or boundary reference for mime-part attachment
+    type: string
+  mime_boundary:    # for attachments embedded in raw messages
     type: string
