@@ -7,6 +7,7 @@ package email_broker
 
 import (
 	"bytes"
+	"fmt"
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/jhillyerd/go.enmime"
@@ -18,6 +19,7 @@ import (
 	"mime"
 	"net/mail"
 	"net/textproto"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -37,7 +39,7 @@ func newAddressesFields() (af map[string][]string) {
 // build a 'ready to send' email from a Caliopen message model
 // conforms to
 // RFC822 / RFC2822 / RFC5322 (internet message format)
-// RFC2045 / RFC2046 / RFC2047 / RFC2048 / RFC2049 (MIME) => TODO
+// RFC2045 / RFC2046 / RFC2047 / RFC2048 / RFC2049 / RFC2183 (MIME) => TODO
 func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err error) {
 
 	em = &obj.EmailMessage{
@@ -98,23 +100,33 @@ func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err 
 		//check if file is available in object storage
 		if b.Store.AttachmentExists(attachment.URL) {
 			//give method to retrieve file from broker storage interface (instead of default filesystem)
-			m.Attach(attachment.File_name, gomail.SetCopyFunc(func(w io.Writer) error {
-				file, err := b.Store.GetAttachment(attachment.URL)
-				if err != nil {
-					return err
-				}
-				_, err = io.Copy(w, file)
-				if err != nil {
-					return err
-				}
-				return nil
-			}))
+			size_str := fmt.Sprintf("%d", attachment.Size)
+			content_disposition := `attachment; filename="` + attachment.File_name + `"; size=` + size_str
+
+			m.Attach(attachment.File_name,
+				gomail.SetCopyFunc(func(w io.Writer) error {
+					file, err := b.Store.GetAttachment(attachment.URL)
+					if err != nil {
+						return err
+					}
+					_, err = io.Copy(w, file)
+					if err != nil {
+						return err
+					}
+					return nil
+				}),
+				gomail.SetHeader(map[string][]string{
+					"Content-Disposition": {content_disposition},
+				}),
+			)
 		}
 	}
 
 	//TODO: errors handling
 
 	m.WriteTo(&em.Email.Raw)
+	json_rep, _ := EmailToJsonRep(em.Email.Raw.String())
+	em.Email_json = &json_rep
 	return
 }
 
@@ -138,9 +150,30 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 		return err
 	}
 	// clean-up attachments' temporary files
-	for i := range ack.EmailMessage.Message.Attachments {
-		b.Store.DeleteAttachment(ack.EmailMessage.Message.Attachments[i].URL)
-		ack.EmailMessage.Message.Attachments[i].URL = ""
+	for _, attachment := range ack.EmailMessage.Message.Attachments {
+		b.Store.DeleteAttachment(attachment.URL)
+	}
+
+	// get new references for embedded attachments
+	ack.EmailMessage.Message.Attachments = []obj.Attachment{}
+	for part := range ack.EmailMessage.Email_json.MimeRoot.Parts.Walk() {
+		if part.Is_attachment {
+			disposition, dparams, err := mime.ParseMediaType(part.Headers["Content-Disposition"][0])
+			if err == nil {
+				is_inline := false
+				if disposition == "inline" {
+					is_inline = true
+				}
+				size, _ := strconv.Atoi(dparams["size"])
+				ack.EmailMessage.Message.Attachments = append(ack.EmailMessage.Message.Attachments, obj.Attachment{
+					Content_type: part.ContentType,
+					File_name:    dparams["filename"],
+					Is_inline:    is_inline,
+					Size:         size,
+					MimeBoundary: part.Boundary,
+				})
+			}
+		}
 	}
 
 	// update caliopen message status
