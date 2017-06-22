@@ -26,7 +26,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 
 	//store temporary file in objectStore facility
 	tmpAttachmentID := uuid.NewV4()
-	uri, size, err := rest.store.StoreAttachment(tmpAttachmentID.String(), file)
+	url, size, err := rest.store.StoreAttachment(tmpAttachmentID.String(), file)
 	if err != nil {
 		return "", err
 	}
@@ -37,7 +37,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 		File_name:    filename,
 		Is_inline:    false,
 		Size:         size,
-		URI:          uri,
+		URL:          url,
 	}
 	attchmntIndex := len(msg.Attachments)
 	msg.Attachments = append(msg.Attachments, draftAttchmnt)
@@ -47,7 +47,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 	err = rest.store.UpdateMessage(msg, fields)
 	if err != nil {
 		//roll-back attachment storage before returning the error
-		rest.store.DeleteAttachment(uri)
+		rest.store.DeleteAttachment(url)
 		return "", err
 	}
 	//update index
@@ -56,7 +56,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 		//roll-back attachment storage before returning the error
 		fields["attachments"] = msg.Attachments[:attchmntIndex]
 		rest.store.UpdateMessage(msg, fields)
-		rest.store.DeleteAttachment(uri)
+		rest.store.DeleteAttachment(url)
 		return "", err
 	}
 
@@ -79,7 +79,7 @@ func (rest *RESTfacility) DeleteAttachment(user_id, message_id string, attchmtIn
 	}
 
 	//remove attachment's reference from draft
-	attachment_uri := msg.Attachments[attchmtIndex].URI
+	attachment_uri := msg.Attachments[attchmtIndex].URL
 	msg.Attachments = append(msg.Attachments[:attchmtIndex], msg.Attachments[attchmtIndex+1:]...)
 
 	//update store
@@ -118,7 +118,7 @@ func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtInde
 	// either from object store (draft context)
 	// or from raw message's mime part (non-draft context)
 	if msg.Is_draft {
-		attachment, e := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URI)
+		attachment, e := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URL)
 		if e != nil {
 			return "", 0, nil, e
 		}

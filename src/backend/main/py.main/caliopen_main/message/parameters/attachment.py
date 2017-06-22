@@ -11,7 +11,8 @@ class Attachment(Model):
     file_name = StringType()
     is_inline = BooleanType()
     size = IntType()
-    uri = StringType()  # objectsStore uri for temporary file (draft) or boundary reference for mime-part attachment
+    url = StringType()  # objectsStore uri for temporary file (draft) or boundary reference for mime-part attachment
+    mime_boundary = StringType()  # for attachments embedded in raw messages
 
     class Options:
         serialize_when_none = False

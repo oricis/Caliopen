@@ -96,10 +96,10 @@ func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err 
 
 	for _, attachment := range msg.Attachments {
 		//check if file is available in object storage
-		if b.Store.AttachmentExists(attachment.URI) {
+		if b.Store.AttachmentExists(attachment.URL) {
 			//give method to retrieve file from broker storage interface (instead of default filesystem)
 			m.Attach(attachment.File_name, gomail.SetCopyFunc(func(w io.Writer) error {
-				file, err := b.Store.GetAttachment(attachment.URI)
+				file, err := b.Store.GetAttachment(attachment.URL)
 				if err != nil {
 					return err
 				}
@@ -139,8 +139,8 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	}
 	// clean-up attachments' temporary files
 	for i := range ack.EmailMessage.Message.Attachments {
-		b.Store.DeleteAttachment(ack.EmailMessage.Message.Attachments[i].URI)
-		ack.EmailMessage.Message.Attachments[i].URI = ""
+		b.Store.DeleteAttachment(ack.EmailMessage.Message.Attachments[i].URL)
+		ack.EmailMessage.Message.Attachments[i].URL = ""
 	}
 
 	// update caliopen message status

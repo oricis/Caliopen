@@ -61,9 +61,9 @@ class MailAttachment(object):
                     encode('utf-8')
         boundary = part.get("Mime-Boundary", failobj="")
         if boundary is not "":
-            self.uri = "urn:email:mime-boundary:" + boundary
+            self.mime_boundary = boundary
         else:
-            self.uri = ""
+            self.mime_boundary = ""
         self.data = data
 
     @classmethod

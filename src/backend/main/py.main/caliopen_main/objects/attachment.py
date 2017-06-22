@@ -19,7 +19,8 @@ class MessageAttachment(base.ObjectJsonDictifiable):
         'file_name': types.SliceType,
         'is_inline': types.BooleanType,
         'size': types.IntType,
-        'uri': types.StringType
+        'url': types.StringType,
+        'mime_boundary': types.StringType
     # objectsStore uri for temporary file (draft) or boundary reference for mime-part attachment
     }
 
