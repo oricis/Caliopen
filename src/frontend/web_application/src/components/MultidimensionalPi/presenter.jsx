@@ -11,13 +11,8 @@ import './style.scss';
 const PI_MAX = 100; // max value for PI levels
 const DropdownControl = withDropdownControl(Button);
 
-
 const MultidimensionalPi = ({ pi, displayAveragePi, className, mini }) => {
   const gridWidth = PI_MAX * 2;
-  const piLength = pi.length;
-  const angle = 360 / piLength;
-  const piLevels = pi.map(p => p.level);
-  const averagePi = (piLevels.reduce((a, b) => a + b, 0)) / piLength;
   const id = uuidV1();
 
   return (
@@ -41,7 +36,6 @@ const MultidimensionalPi = ({ pi, displayAveragePi, className, mini }) => {
             <Ratings
               pi={pi}
               piMax={PI_MAX}
-              averagePi={averagePi}
               displayAveragePi={displayAveragePi}
             />
           </Dropdown>
@@ -52,12 +46,10 @@ const MultidimensionalPi = ({ pi, displayAveragePi, className, mini }) => {
             gridWidth={gridWidth}
             piMax={PI_MAX}
             pi={pi}
-            angle={angle}
           />
           <Ratings
             pi={pi}
             piMax={PI_MAX}
-            averagePi={averagePi}
             displayAveragePi={displayAveragePi}
           />
         </div>
@@ -73,7 +65,7 @@ MultidimensionalPi.defaultProps = {
   mini: false,
 };
 MultidimensionalPi.propTypes = {
-  pi: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  pi: PropTypes.shape({}).isRequired,
   mini: PropTypes.bool,
   className: PropTypes.string,
   displayAveragePi: PropTypes.bool,

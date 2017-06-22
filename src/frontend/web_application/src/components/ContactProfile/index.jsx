@@ -79,7 +79,7 @@ class ContactProfile extends Component {
         {this.state.editMode ? (
           <ContactProfileForm contact={contact} onChange={onChange} />
         ) : (
-          <MultidimensionalPi className="m-contact-profile__pi" pi={contact.privacy_index} />
+          <MultidimensionalPi className="m-contact-profile__pi" pi={contact.pi} />
         )
         }
       </div>

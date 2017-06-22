@@ -8,10 +8,20 @@ const actions = {
 
 const selectors = {
   all: () => state => state.contacts,
+  byId: ({ contact_id }) => createSelector(
+    selectors.all(),
+    contacts => {
+      const contact = contacts.find(contact => contact.contact_id === contact_id);
+      if (contact) {
+        return contact;
+      }
+
+      throw new Error('contact not found');
+    }
+  ),
 };
 
 const reducer = {
-  [actions.get]: state => state,
 };
 
 const routes = {
@@ -20,6 +30,11 @@ const routes = {
     selector: selectors.all,
     status: 200,
     middlewares: [createCollectionMiddleware('contacts')],
+  },
+  'GET /:contact_id': {
+    action: actions.get,
+    selector: selectors.byId,
+    status: 200,
   },
 };
 

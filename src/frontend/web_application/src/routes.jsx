@@ -37,6 +37,7 @@ export const getRouteConfig = ({ __ }) => [
       },
       {
         path: '/contacts',
+        exact: true,
         component: ContactBook,
         app: 'contact',
       },
