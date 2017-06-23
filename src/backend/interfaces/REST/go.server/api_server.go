@@ -161,7 +161,7 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	/** users API **/
 	//u := api.Group("/users")
 	identities := api.Group("/identities", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
-	identities.GET("/", users.SuggestIdentities)
+	identities.GET("/suggest", users.SuggestIdentities)
 	identities.GET("/locals", users.GetLocalsIdentities)
 	identities.GET("/locals/:identity_id", users.GetLocalIdentity)
 

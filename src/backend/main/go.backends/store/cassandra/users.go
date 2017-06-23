@@ -7,9 +7,9 @@
 package store
 
 import (
+	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/gocql/gocql"
-	"errors"
 )
 
 func (cb *CassandraBackend) Get(*User) error {

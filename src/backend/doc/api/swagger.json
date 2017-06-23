@@ -4010,7 +4010,10 @@
                               "type": "integer",
                               "format": "int64"
                             },
-                            "uri": {
+                            "url": {
+                              "type": "string"
+                            },
+                            "mime_boundary": {
                               "type": "string"
                             }
                           }
@@ -4286,7 +4289,10 @@
                         "type": "integer",
                         "format": "int64"
                       },
-                      "uri": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "mime_boundary": {
                         "type": "string"
                       }
                     }
@@ -4546,7 +4552,10 @@
                         "type": "integer",
                         "format": "int64"
                       },
-                      "uri": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "mime_boundary": {
                         "type": "string"
                       }
                     }
@@ -4826,7 +4835,10 @@
                             "type": "integer",
                             "format": "int64"
                           },
-                          "uri": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "mime_boundary": {
                             "type": "string"
                           }
                         }
@@ -5028,7 +5040,10 @@
                         "type": "integer",
                         "format": "int64"
                       },
-                      "uri": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "mime_boundary": {
                         "type": "string"
                       }
                     }
@@ -5509,7 +5524,10 @@
                         "type": "integer",
                         "format": "int64"
                       },
-                      "uri": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "mime_boundary": {
                         "type": "string"
                       }
                     }
@@ -5718,7 +5736,10 @@
                         "type": "integer",
                         "format": "int64"
                       },
-                      "uri": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "mime_boundary": {
                         "type": "string"
                       }
                     }
@@ -6136,10 +6157,7 @@
         "produces": [],
         "responses": {
           "200": {
-            "description": "the raw mime part, in the 'content-transfer-encoding' format of the part.",
-            "schema": {
-              "type": "string"
-            }
+            "description": "the attachment, in the 'content-transfer-encoding' format of the part."
           },
           "400": {
             "description": "bad request"
@@ -7237,6 +7255,121 @@
           },
           "422": {
             "description": "patch was semantically malformed or unprocessable",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/identities/suggest": {
+      "get": {
+        "description": "Returns a list of IDs suggestions according to given parameters/filter. Search is performed within current user's indexes (messages & contacts).",
+        "tags": [
+          "identities"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "context",
+            "in": "query",
+            "description": "current user's context (to optimize suggest relevance)",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "msg_compose"
+            ]
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "a string (3 chars at least) from which to perform the suggestion search",
+            "required": true,
+            "type": "string",
+            "minLength": 3
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "a list of suggestions for user to pick-up an identity",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "description": "could be empty if suggestion is a contact (or should we automatically put preferred identity's address ?)"
+                  },
+                  "contact_id": {
+                    "type": "string",
+                    "description": "contact's ID if any"
+                  },
+                  "label": {
+                    "type": "string",
+                    "description": "name of contact or <display-name> in case of an address returned from participants lookup, if any"
+                  },
+                  "protocol": {
+                    "type": "string",
+                    "description": "email, IRC…"
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "'participant' or 'contact', ie from where this suggestion came from"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "malform request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
             "schema": {
               "type": "object",
               "properties": {

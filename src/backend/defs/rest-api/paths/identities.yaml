@@ -1,5 +1,5 @@
 ---
-identities:
+identities_suggest:
   get:
     description: Returns a list of IDs suggestions according to given parameters/filter. Search is performed within current user's indexes (messages & contacts).
     tags:
@@ -7,11 +7,19 @@ identities:
     security:
     - basicAuth: []
     parameters:
+    - name: context
+      in: query
+      description: current user's context (to optimize suggest relevance)
+      required: true
+      type: string
+      enum:
+      - msg_compose
     - name: q
       in: query
       description: a string (3 chars at least) from which to perform the suggestion search
       required: true
       type: string
+      minLength: 3
     produces:
     - application/json
     responses:
@@ -20,7 +28,7 @@ identities:
         schema:
           type: array
           items:
-            "$ref": "../objects/IdentitySuggests.yaml"
+            "$ref": "../objects/IdentitySuggest.yaml"
       '400':
         description: malform request
         schema:

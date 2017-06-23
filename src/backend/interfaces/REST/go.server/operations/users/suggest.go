@@ -12,22 +12,44 @@ import (
 	"net/http"
 )
 
-// GET …/identities/?q=
+// GET …/identities/suggest?context=xxxx&q=xxx
 func SuggestIdentities(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	query_string := ctx.Param("q")
+	query_context := ctx.Request.URL.Query().Get("context")
+	if query_context == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "Missing 'context' param in query")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	query_string := ctx.Request.URL.Query().Get("q")
+	if query_string == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "Missing 'q' param in query")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	if len(query_string) < 3 {
 		e := swgErr.New(http.StatusUnprocessableEntity, "Query string must be at least 3 chars long.")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	suggest, err := caliopen.Facilities.RESTfacility.SuggestIdentities(user_id, query_string)
-	if err != nil {
-		e := swgErr.New(http.StatusInternalServerError, err.Error())
+	switch query_context {
+	case "msg_compose":
+		suggest, err := caliopen.Facilities.RESTfacility.SuggestRecipients(user_id, query_string)
+		if err != nil {
+			e := swgErr.New(http.StatusInternalServerError, err.Error())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+			return
+		}
+		ctx.JSON(http.StatusOK, suggest)
+	default:
+		e := swgErr.New(http.StatusUnprocessableEntity, "Unknown ")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	ctx.JSON(http.StatusOK, suggest)
+
 }
