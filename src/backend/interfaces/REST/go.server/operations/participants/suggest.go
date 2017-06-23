@@ -37,14 +37,16 @@ func Suggest(ctx *gin.Context) {
 	}
 	switch query_context {
 	case "msg_compose":
-		suggest, err := caliopen.Facilities.RESTfacility.SuggestRecipients(user_id, query_string)
+		suggests, err := caliopen.Facilities.RESTfacility.SuggestRecipients(user_id, query_string)
+
 		if err != nil {
 			e := swgErr.New(http.StatusInternalServerError, err.Error())
 			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 			ctx.Abort()
 			return
 		}
-		ctx.JSON(http.StatusOK, suggest)
+
+		ctx.JSON(http.StatusOK, suggests)
 	default:
 		e := swgErr.New(http.StatusUnprocessableEntity, "Unknown ")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)

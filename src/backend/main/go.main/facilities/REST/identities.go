@@ -11,4 +11,3 @@ import (
 func (rest *RESTfacility) LocalsIdentities(user_id string) ([]LocalIdentity, error) {
 	return rest.store.GetLocalsIdentities(user_id)
 }
-

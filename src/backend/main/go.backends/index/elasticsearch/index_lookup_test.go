@@ -29,6 +29,9 @@ func TestElasticSearchBackend_RecipientsSuggest(t *testing.T) {
 			t.Error(err)
 		}
 		t.Logf("##### Result for string <%s> : ", query_string)
+		if len(results) == 0 {
+			t.Logf("%T", results)
+		}
 		for _, result := range results {
 			t.Logf("%+v", result)
 		}

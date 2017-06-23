@@ -42,15 +42,21 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 	contact_family_name_q := elastic.NewWildcardQuery("family_name", q_string).Boost(2)
 	contact_name_q := elastic.NewBoolQuery().Should(contact_given_name_q, contact_family_name_q)
 
+	email_label_q := elastic.NewWildcardQuery("emails.label", q_string).Boost(2)
+	email_address_q := elastic.NewWildcardQuery("emails.address", q_string).Boost(2)
+	nested_emails_q := elastic.NewBoolQuery().Should(email_label_q, email_address_q)
+	emails_q := elastic.NewNestedQuery("emails", nested_emails_q)
+	emails_q.InnerHit(elastic.NewInnerHit())
+
 	// doc source pruning
 	fsc := elastic.NewFetchSourceContext(true)
-	fsc.Include("date", "type", "given_name", "family_name", "title")
+	fsc.Include("title")
 
 	// make aggregations
 	max_date_agg := elastic.NewMaxAggregation().Field("date")
 
 	// run the query
-	main_query := elastic.NewBoolQuery().Should(participants_q, contact_name_q)
+	main_query := elastic.NewBoolQuery().Should(participants_q, contact_name_q, emails_q)
 	search := es.Client.Search().
 		Index(user_id).
 		FetchSourceContext(fsc).
