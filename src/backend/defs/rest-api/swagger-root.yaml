@@ -48,12 +48,12 @@ paths:
     "$ref": paths/devices.yaml#/devices
   "/v1/devices/{device_id}":
     "$ref": paths/devices.yaml#/devices_{device_id}
-  "/v2/identities/suggest":
-    "$ref": paths/identities.yaml#/identities_suggest
   "/v2/identities/locals":
     "$ref": paths/identities.yaml#/identities_locals
-  "/v1/remotes":
-    "$ref": paths/identities.yaml#/remotes
+  "/v1/identities/remotes":
+    "$ref": paths/identities.yaml#/identities_remotes
+  "/v2/participants/suggest":
+    "$ref": paths/participants.yaml#/participants_suggest
 
 securityDefinitions:
   basicAuth:

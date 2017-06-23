@@ -5,8 +5,8 @@
 package REST
 
 import (
-	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"errors"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 // Make use of index facility to return to user a list of suggested recipients

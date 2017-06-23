@@ -2,7 +2,7 @@
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
-package users
+package participants
 
 import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
@@ -12,8 +12,8 @@ import (
 	"net/http"
 )
 
-// GET …/identities/suggest?context=xxxx&q=xxx
-func SuggestIdentities(ctx *gin.Context) {
+// GET …/participants/suggest?context=xxxx&q=xxx
+func Suggest(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	query_context := ctx.Request.URL.Query().Get("context")
 	if query_context == "" {

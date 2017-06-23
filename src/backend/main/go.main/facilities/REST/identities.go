@@ -12,17 +12,3 @@ func (rest *RESTfacility) LocalsIdentities(user_id string) ([]LocalIdentity, err
 	return rest.store.GetLocalsIdentities(user_id)
 }
 
-// Make use of index facility to return to user a list of suggested recipients
-// within the context of composing a new message
-// list is ordered by relevance : first suggestion should be the best
-func (rest *RESTfacility) SuggestRecipients(user_id, query_string string) (suggests []RecipientSuggestion, err error) {
-	suggestion := RecipientSuggestion{
-		Address:  "dave@idoi.re",
-		Label:    "La belle rouge",
-		Protocol: "email",
-		Source:   "participant",
-	}
-	suggests = []RecipientSuggestion{suggestion}
-
-	return
-}
