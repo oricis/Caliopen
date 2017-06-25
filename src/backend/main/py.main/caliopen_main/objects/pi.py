@@ -12,7 +12,7 @@ from uuid import UUID
 from cassandra.cqlengine import columns
 import elasticsearch_dsl as dsl
 from schematics.models import Model
-from schematics.types import IntType
+from schematics.types import IntType, DateTimeType
 
 from caliopen_storage.store import BaseUserType
 from .base import ObjectIndexable
@@ -25,6 +25,7 @@ class PIParameter(Model):
     comportment = IntType()
     context = IntType()
     version = IntType()
+    date_update = DateTimeType()
 
 
 class PIModel(BaseUserType):
