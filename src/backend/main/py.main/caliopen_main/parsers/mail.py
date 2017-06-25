@@ -199,7 +199,6 @@ class MailMessage(object):
         for p in walk_with_boundary(self.mail, ""):
             if not p.is_multipart():
                 if MailAttachment.is_attachment(p):
-                    print(p._headers)
                     attchs.append(MailAttachment(p))
         return attchs
 
