@@ -4010,7 +4010,10 @@
                               "type": "integer",
                               "format": "int64"
                             },
-                            "uri": {
+                            "url": {
+                              "type": "string"
+                            },
+                            "mime_boundary": {
                               "type": "string"
                             }
                           }
@@ -4286,7 +4289,10 @@
                         "type": "integer",
                         "format": "int64"
                       },
-                      "uri": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "mime_boundary": {
                         "type": "string"
                       }
                     }
@@ -4546,7 +4552,10 @@
                         "type": "integer",
                         "format": "int64"
                       },
-                      "uri": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "mime_boundary": {
                         "type": "string"
                       }
                     }
@@ -4826,7 +4835,10 @@
                             "type": "integer",
                             "format": "int64"
                           },
-                          "uri": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "mime_boundary": {
                             "type": "string"
                           }
                         }
@@ -5028,7 +5040,10 @@
                         "type": "integer",
                         "format": "int64"
                       },
-                      "uri": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "mime_boundary": {
                         "type": "string"
                       }
                     }
@@ -5509,7 +5524,10 @@
                         "type": "integer",
                         "format": "int64"
                       },
-                      "uri": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "mime_boundary": {
                         "type": "string"
                       }
                     }
@@ -5718,7 +5736,10 @@
                         "type": "integer",
                         "format": "int64"
                       },
-                      "uri": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "mime_boundary": {
                         "type": "string"
                       }
                     }
@@ -6136,9 +6157,9 @@
         "produces": [],
         "responses": {
           "200": {
-            "description": "the raw mime part, in the 'content-transfer-encoding' format of the part.",
+            "description": "the attachment, in the 'content-transfer-encoding' format of the part.",
             "schema": {
-              "type": "string"
+              "type": "file"
             }
           },
           "400": {
