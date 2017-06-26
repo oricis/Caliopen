@@ -44,7 +44,7 @@ class EmailForm extends Component {
   handleSubmit(ev) {
     ev.preventDefault();
     const { contactDetail } = this.state;
-    this.props.onSubmit({ im: contactDetail });
+    this.props.onSubmit({ contactDetail });
   }
 
   handleInputChange(event) {

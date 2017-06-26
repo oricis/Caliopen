@@ -4,6 +4,21 @@ import Button from '../../../Button';
 import { TextFieldGroup } from '../../../form';
 import './style.scss';
 
+const generateStateFromProps = (props, prevState) => {
+  const contactInfo = props.contact.info || {};
+
+  return {
+    contact: {
+      ...prevState.contact,
+      ...props.contact,
+      infos: {
+        ...prevState.contact.infos,
+        ...contactInfo,
+      },
+    },
+  };
+};
+
 class ContactProfileForm extends Component {
   static propTypes = {
     contact: PropTypes.shape({}),
@@ -18,11 +33,28 @@ class ContactProfileForm extends Component {
     super(props);
 
     this.state = {
-      contact: props.contact,
+      contact: {
+        title: '',
+        name_prefix: '',
+        given_name: '',
+        family_name: '',
+        name_suffix: '',
+        infos: {
+          birthday: '',
+        },
+      },
     };
 
     this.handleChanges = this.handleChanges.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(prevState => generateStateFromProps(nextProps, prevState));
   }
 
   handleChanges(event) {
@@ -31,12 +63,11 @@ class ContactProfileForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.onChange(this.state.contact);
+    this.props.onChange({ contact: this.state.contact, original: this.props.contact });
   }
 
   render() {
     const { __ } = this.props;
-    const contact = this.state.contact;
 
     return (
       <form
@@ -45,42 +76,42 @@ class ContactProfileForm extends Component {
       >
         <TextFieldGroup
           className="m-contact-profile-form__title"
-          value={contact.title}
+          value={this.state.contact.title}
           label={__('contact_profile.form.title.label')}
           name="title"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
           className="m-contact-profile-form__name-prefix"
-          value={contact.name_prefix}
+          value={this.state.contact.name_prefix}
           label={__('contact_profile.form.name-prefix.label')}
           name="name_prefix"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
           className="m-contact-profile-form__firstname"
-          value={contact.given_name}
+          value={this.state.contact.given_name}
           label={__('contact_profile.form.firstname.label')}
           name="given_name"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
           className="m-contact-profile-form__lastname"
-          value={contact.family_name}
+          value={this.state.contact.family_name}
           label={__('contact_profile.form.lastname.label')}
           name="family_name"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
           className="m-contact-profile-form__name-suffix"
-          value={contact.name_suffix}
+          value={this.state.contact.name_suffix}
           label={__('contact_profile.form.name-suffix.label')}
           name="name_suffix"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
           className="m-contact-profile-form__birthday"
-          value={contact.infos.birthday}
+          value={this.state.contact.infos.birthday}
           label={__('contact_profile.form.birthday.label')}
           name="birthday"
           onChange={this.handleChanges}

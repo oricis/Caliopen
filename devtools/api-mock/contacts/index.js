@@ -4,6 +4,7 @@ import createCollectionMiddleware from '../collection-middleware';
 
 const actions = {
   get: createAction('Get contacts'),
+  patch: createAction('Patch contact'),
 };
 
 const selectors = {
@@ -22,6 +23,21 @@ const selectors = {
 };
 
 const reducer = {
+  [actions.patch]: (state, { params, body }) => {
+    const nextState = [...state];
+    const original = state.find(contact => contact.contact_id === params.contact_id);
+    if (!original) {
+      throw `contact w/ id ${params.contact_id} not found`;
+    }
+    const index = nextState.indexOf(original);
+    const { current_state, ...props } = body;
+    nextState[index] = {
+      ...original,
+      ...props,
+    };
+
+    return nextState;
+  },
 };
 
 const routes = {
@@ -35,6 +51,10 @@ const routes = {
     action: actions.get,
     selector: selectors.byId,
     status: 200,
+  },
+  'PATCH /:contact_id': {
+    action: actions.patch,
+    status: 204,
   },
 };
 

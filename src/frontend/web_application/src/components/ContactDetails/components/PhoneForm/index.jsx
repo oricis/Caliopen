@@ -2,29 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../../Icon';
 import Button from '../../../Button';
-import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, FormGrid, FormRow, FormColumn, CheckboxFieldGroup } from '../../../form';
+import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../form';
 import './style.scss';
 
-const EMAIL_TYPES = ['work', 'home', 'other'];
+const PHONE_TYPES = ['work', 'home', 'other'];
 
-const generateStateFromProps = (props, prevState) => ({
-  contactDetail: {
-    ...prevState.contactDetail,
-    ...props.contactDetail,
-  },
-});
-
-class EmailForm extends Component {
+class PhoneForm extends Component {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     onSubmit: PropTypes.func.isRequired,
-    contactDetail: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
   };
-
   static defaultProps = {
     errors: [],
-    contactDetail: undefined,
   };
 
   constructor(props) {
@@ -34,28 +24,20 @@ class EmailForm extends Component {
     this.handleSwitchChange = this.handleSwitchChange.bind(this);
     this.state = {
       contactDetail: {
-        address: '',
-        type: EMAIL_TYPES[0],
+        number: '',
+        type: PHONE_TYPES[0],
         is_primary: false,
       },
     };
     this.initTranslations();
   }
 
-  componentWillMount() {
-    this.setState(prevState => generateStateFromProps(this.props, prevState));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState(prevState => generateStateFromProps(nextProps, prevState));
-  }
-
   initTranslations() {
     const { __ } = this.props;
     this.addressTypes = {
-      work: __('contact.email_type.work'),
-      home: __('contact.email_type.home'),
-      other: __('contact.email_type.other'),
+      work: __('contact.phone_type.work'),
+      home: __('contact.phone_type.home'),
+      other: __('contact.phone_type.other'),
     };
   }
 
@@ -87,27 +69,27 @@ class EmailForm extends Component {
 
   render() {
     const { __, errors = [] } = this.props;
-    const addressTypeOptions = EMAIL_TYPES.map(value => ({
+    const typeOptions = PHONE_TYPES.map(value => ({
       value,
       label: this.addressTypes[value],
     }));
 
     return (
-      <FormGrid onSubmit={this.handleSubmit} className="m-email-form" name="email_form">
+      <FormGrid onSubmit={this.handleSubmit} className="m-phone-form" name="phone_form">
         <Fieldset>
           <Legend>
-            <Icon className="m-email-form__icon" type="envelope" />
-            {__('contact.email_form.legend')}
+            <Icon className="m-phone-form__icon" type="phone" />
+            {__('contact.phone_form.legend')}
           </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
             <FormColumn size="medium">
               <TextFieldGroup
-                name="address"
-                type="email"
-                value={this.state.contactDetail.address}
+                name="number"
+                type="tel"
+                value={this.state.contactDetail.number}
                 onChange={this.handleInputChange}
-                label={__('contact.email_form.address.label')}
+                label={__('contact.phone_form.number.label')}
                 showLabelforSr
                 required
               />
@@ -117,22 +99,22 @@ class EmailForm extends Component {
                 name="type"
                 value={this.state.contactDetail.type}
                 onChange={this.handleInputChange}
-                label={__('contact.email_form.type.label')}
+                label={__('contact.phone_form.type.label')}
                 showLabelforSr
-                options={addressTypeOptions}
+                options={typeOptions}
               />
             </FormColumn>
-            <FormColumn size="shrink" className="s-contact-detail-form__checkbox-label">
+            <FormColumn size="shrink">
               <CheckboxFieldGroup
                 name="is_primary"
                 value={this.state.contactDetail.is_primary}
                 onChange={this.handleSwitchChange}
-                label={__('contact.email_form.is_primary.label')}
+                label={__('contact.phone_form.is_primary.label')}
                 displaySwitch
                 showTextLabel
               />
             </FormColumn>
-            <FormColumn size="shrink" className="m-email-form__action">
+            <FormColumn size="shrink" className="m-phone-form__action">
               <Button type="submit" display="expanded" shape="plain" icon="plus">
                 {__('contact.action.add_contact_detail')}
               </Button>
@@ -144,4 +126,4 @@ class EmailForm extends Component {
   }
 }
 
-export default EmailForm;
+export default PhoneForm;

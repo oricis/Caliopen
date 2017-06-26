@@ -50,7 +50,7 @@ class EmailDetails extends Component {
 
   handleDelete() {
     const { onDelete, email } = this.props;
-    onDelete({ email });
+    onDelete({ contactDetail: email });
   }
 
   renderConnectIdentityToggleButton() {

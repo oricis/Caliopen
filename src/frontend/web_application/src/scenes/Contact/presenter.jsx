@@ -9,6 +9,7 @@ class Contact extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
     requestContact: PropTypes.func.isRequired,
+    updateContact: PropTypes.func.isRequired,
     contactId: PropTypes.string.isRequired,
     contact: PropTypes.shape({}),
     isFetching: PropTypes.bool,
@@ -19,9 +20,18 @@ class Contact extends Component {
     contact: undefined,
   };
 
+  constructor(props) {
+    super(props);
+    this.handleContactChange = this.handleContactChange.bind(this);
+  }
+
   componentDidMount() {
     const { contactId, requestContact } = this.props;
     requestContact({ contactId });
+  }
+
+  handleContactChange({ contact, original }) {
+    this.props.updateContact({ contact, original });
   }
 
   render() {
@@ -38,15 +48,14 @@ class Contact extends Component {
                 <ContactProfile
                   className="s-contact__contact-profile"
                   contact={contact}
-                  onChange={str => str}
+                  onChange={this.handleContactChange}
                 />
               )}
             </div>
             <div className="s-contact__col-datas-online">
               <ContactDetails
                 contact={contact}
-                onAddContactDetail={str => str}
-                onDeleteContactDetail={str => str}
+                onUpdateContact={this.handleContactChange}
                 __={__}
               />
             </div>

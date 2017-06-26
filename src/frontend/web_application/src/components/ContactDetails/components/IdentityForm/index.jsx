@@ -23,7 +23,7 @@ class IdentityForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.state = {
-      identityDetails: {
+      contactDetail: {
         type: IDENTITY_TYPES[0],
         value: '',
       },
@@ -32,15 +32,15 @@ class IdentityForm extends Component {
 
   handleSubmit(ev) {
     ev.preventDefault();
-    const { identityDetails } = this.state;
-    this.props.onSubmit({ identity: identityDetails });
+    const { contactDetail } = this.state;
+    this.props.onSubmit({ contactDetail });
   }
 
   handleInputChange(event) {
     const { name, value } = event.target;
     this.setState(prevState => ({
-      identityDetails: {
-        ...prevState.identityDetails,
+      contactDetail: {
+        ...prevState.contactDetail,
         [name]: value,
       },
     }));
@@ -65,7 +65,7 @@ class IdentityForm extends Component {
             <FormColumn size="shrink">
               <SelectFieldGroup
                 name="type"
-                value={this.state.identityDetails.type}
+                value={this.state.contactDetail.type}
                 onChange={this.handleInputChange}
                 label={__('contact.identity_form.service.label')}
                 options={identityTypeOptions}
@@ -76,7 +76,7 @@ class IdentityForm extends Component {
               <TextFieldGroup
                 name="value"
                 type="text"
-                value={this.state.identityDetails.department}
+                value={this.state.contactDetail.department}
                 onChange={this.handleInputChange}
                 label={__('contact.identity_form.identity.label')}
                 showLabelforSr

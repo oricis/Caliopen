@@ -32,7 +32,7 @@ class AddressDetails extends Component {
 
   handleDelete() {
     const { onDelete, address } = this.props;
-    onDelete({ address });
+    onDelete({ contactDetail: address });
   }
 
   renderDeleteButton() {

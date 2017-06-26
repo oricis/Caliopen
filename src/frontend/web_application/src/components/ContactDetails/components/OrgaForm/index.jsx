@@ -32,7 +32,7 @@ class OrgaForm extends Component {
   handleSubmit(ev) {
     ev.preventDefault();
     const { organization } = this.state;
-    this.props.onSubmit({ organization });
+    this.props.onSubmit({ contactDetail: organization });
   }
 
   handleInputChange(event) {
