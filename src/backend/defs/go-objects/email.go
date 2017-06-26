@@ -54,16 +54,68 @@ type (
 		Attachments_count int
 		Root_boundary     string
 		Inline_count      int
-		Parts             []Part
+		Parts             Parts
 	}
 
 	Part struct {
 		Boundary      string
-		ChildParts    []Part
+		Charset       string
 		Content       []byte
+		ContentType   string
+		Headers       map[string][]string
 		Is_attachment bool
 		Is_inline     bool
-		MediaType     string
-		Params        map[string]string
+		Parts         Parts
 	}
+
+	Parts []Part
 )
+
+// Returns a flattened array of attachments' bytes, ordered by precedence (in depth-first order, see Walk() func below)
+// function walks through email's parts tree to find parts that are labelled «is_attachment»
+// if an (optional) index is provided, the func returns bytes for the referenced attachment only
+// attachments are decoded according to "Content-Transfer-Encoding" header.
+func (email EmailJson) ExtractAttachments(index ...int) (attachments [][]byte, err error) {
+	i := 0
+	withIndex := false
+	if len(index) == 1 {
+		withIndex = true
+	}
+	for part := range email.MimeRoot.Parts.Walk() {
+		if part.Is_attachment {
+			if withIndex {
+				if i == index[0] {
+					attachments = append(attachments, part.Content)
+					return
+				}
+			} else {
+				attachments = append(attachments, part.Content)
+			}
+			i++
+		}
+	}
+	return
+}
+
+// mimic Python's email.walk() func :
+// Walk over the message tree, yielding each subpart.
+// The walk is performed in depth-first order.  This method is an iterator.
+// usage : for part := range parts.Walk() {…}
+func (parts Parts) Walk() <-chan Part {
+	if len(parts) < 1 {
+		return nil
+	}
+	partChan := make(chan Part)
+	go func() {
+		for _, part := range parts {
+			partChan <- part
+			if len(part.Parts) > 0 {
+				for sub_part := range part.Parts.Walk() {
+					partChan <- sub_part
+				}
+			}
+		}
+		close(partChan)
+	}()
+	return partChan
+}

@@ -28,3 +28,27 @@ locals:
         schema:
           "$ref": "../objects/Error.yaml"
 
+remotes:
+  post:
+    description: create a new remote identity for an user
+    tags:
+    - identities
+    security:
+    - basicAuth: []
+    consumes:
+    - application/json
+    parameters:
+    - name: identity
+      in: body
+      required: true
+      schema:
+        "$ref": "../objects/NewRemoteIdentity.yaml"
+    responses:
+      '200':
+        description: Remote identity created
+        schema:
+          type: object
+          properties:
+            location:
+              type: string
+              description: url to retrieve new remote identity's infos at /remotes/{identifier}

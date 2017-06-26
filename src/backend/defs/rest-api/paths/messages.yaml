@@ -298,7 +298,6 @@ messages_{message_id}_attachments:
         description: Request entity too large
       '415':
         description: Unsupported media type
-
 messages_{message_id}_attachments_{attachment_index}:
   get:
     description: Download file from server
@@ -320,9 +319,9 @@ messages_{message_id}_attachments_{attachment_index}:
     produces: [] # permissive because a large set of file types could be returned.
     responses:
       '200':
-        description: the raw mime part, in the 'content-transfer-encoding' format of the part.
+        description: the attachment, in the 'content-transfer-encoding' format of the part.
         schema:
-          type: string
+          type: file
       '400':
         description: bad request
       '401':

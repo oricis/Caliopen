@@ -6,7 +6,7 @@ package index
 
 import (
 	log "github.com/Sirupsen/logrus"
-	elastic "gopkg.in/olivere/elastic.v2"
+	elastic "gopkg.in/olivere/elastic.v5"
 )
 
 type (
@@ -29,7 +29,6 @@ func (es *ElasticSearchBackend) initialize(config ElasticSearchConfig) (err erro
 	// Create elastic client
 	es.Client, err = elastic.NewClient(
 		elastic.SetURL(config.Urls...),
-		elastic.SetSniff(false),
 	)
 
 	if err != nil {

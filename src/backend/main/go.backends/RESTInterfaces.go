@@ -16,7 +16,9 @@ type APIStorage interface {
 	GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 	SetMessageUnread(user_id, message_id string, status bool) error
 	StoreAttachment(attachment_id string, file io.Reader) (uri string, size int, err error)
+	GetAttachment(uri string) (file io.Reader, err error)
 	DeleteAttachment(uri string) error
+	GetRawMessage(raw_message_id string) (raw_message RawMessage, err error)
 }
 
 type APIIndex interface {

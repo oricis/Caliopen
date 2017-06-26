@@ -49,20 +49,11 @@ class User(BaseModel):
     pi = columns.UserDefinedType(PIModel)
 
 
-class Counter(BaseModel):
-    """User counters model."""
-
-    user_id = columns.UUID(primary_key=True)
-    message_id = columns.Counter()
-    thread_id = columns.Counter()
-    rule_id = columns.Counter()
-
-
 class FilterRule(BaseModel):
     """User filter rules model."""
 
     user_id = columns.UUID(primary_key=True)
-    rule_id = columns.Integer(primary_key=True)  # counter.rule_id
+    rule_id = columns.UUID(primary_key=True)
     date_insert = columns.DateTime()
     name = columns.Text()
     filter_expr = columns.Text()
@@ -74,11 +65,12 @@ class RemoteIdentity(BaseModel):
     """User remote identities model."""
 
     user_id = columns.UUID(primary_key=True)
-    identity_id = columns.Text(primary_key=True)
+    identifier = columns.Text(primary_key=True)
+    display_name = columns.Text()
     type = columns.Text()
     status = columns.Text()
-    credentials = columns.List(columns.Text)
     last_check = columns.DateTime()
+    infos = columns.Map(columns.Text, columns.Text)
 
 
 class IndexUser(object):

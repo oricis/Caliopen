@@ -5,8 +5,10 @@
 package REST
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/satori/go.uuid"
 	"io"
@@ -24,7 +26,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 
 	//store temporary file in objectStore facility
 	tmpAttachmentID := uuid.NewV4()
-	uri, size, err := rest.store.StoreAttachment(tmpAttachmentID.String(), file)
+	url, size, err := rest.store.StoreAttachment(tmpAttachmentID.String(), file)
 	if err != nil {
 		return "", err
 	}
@@ -35,7 +37,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 		File_name:    filename,
 		Is_inline:    false,
 		Size:         size,
-		URI:          uri,
+		URL:          url,
 	}
 	attchmntIndex := len(msg.Attachments)
 	msg.Attachments = append(msg.Attachments, draftAttchmnt)
@@ -45,7 +47,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 	err = rest.store.UpdateMessage(msg, fields)
 	if err != nil {
 		//roll-back attachment storage before returning the error
-		rest.store.DeleteAttachment(uri)
+		rest.store.DeleteAttachment(url)
 		return "", err
 	}
 	//update index
@@ -54,7 +56,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 		//roll-back attachment storage before returning the error
 		fields["attachments"] = msg.Attachments[:attchmntIndex]
 		rest.store.UpdateMessage(msg, fields)
-		rest.store.DeleteAttachment(uri)
+		rest.store.DeleteAttachment(url)
 		return "", err
 	}
 
@@ -77,7 +79,7 @@ func (rest *RESTfacility) DeleteAttachment(user_id, message_id string, attchmtIn
 	}
 
 	//remove attachment's reference from draft
-	attachment_uri := msg.Attachments[attchmtIndex].URI
+	attachment_uri := msg.Attachments[attchmtIndex].URL
 	msg.Attachments = append(msg.Attachments[:attchmtIndex], msg.Attachments[attchmtIndex+1:]...)
 
 	//update store
@@ -97,4 +99,46 @@ func (rest *RESTfacility) DeleteAttachment(user_id, message_id string, attchmtIn
 	}
 
 	return nil
+}
+
+// returns an io.Reader and metadata to conveniently read the attachment
+func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error) {
+	//check if message_id belongs to user and index is consistent
+	msg, err := rest.store.GetMessage(user_id, message_id)
+	if err != nil {
+		return "", 0, nil, err
+	}
+	if attchmtIndex < 0 || attchmtIndex > (len(msg.Attachments)-1) {
+		return "", 0, nil, errors.New(fmt.Sprintf("index %d for message %s is not consistent.", attchmtIndex, message_id))
+	}
+	contentType = msg.Attachments[attchmtIndex].Content_type
+	size = msg.Attachments[attchmtIndex].Size
+
+	// create a Reader
+	// either from object store (draft context)
+	// or from raw message's mime part (non-draft context)
+	if msg.Is_draft {
+		attachment, e := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URL)
+		if e != nil {
+			return "", 0, nil, e
+		}
+		content = attachment
+		return
+
+	} else {
+		rawMsg, e := rest.store.GetRawMessage(msg.Raw_msg_id.String())
+		if e != nil {
+			return "", 0, nil, e
+		}
+		json_email, e := email_broker.EmailToJsonRep(rawMsg.Raw_data)
+		if e != nil {
+			return "", 0, nil, e
+		}
+		attachments, e := json_email.ExtractAttachments(attchmtIndex)
+		if e != nil {
+			return "", 0, nil, e
+		}
+		content = bytes.NewReader(attachments[0])
+		return
+	}
 }

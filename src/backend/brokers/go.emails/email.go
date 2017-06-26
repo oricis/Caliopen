@@ -7,15 +7,19 @@ package email_broker
 
 import (
 	"bytes"
+	"fmt"
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/jhillyerd/go.enmime"
+	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
 	"gopkg.in/gomail.v2"
 	"io"
 	"io/ioutil"
 	"mime"
 	"net/mail"
+	"net/textproto"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -35,7 +39,7 @@ func newAddressesFields() (af map[string][]string) {
 // build a 'ready to send' email from a Caliopen message model
 // conforms to
 // RFC822 / RFC2822 / RFC5322 (internet message format)
-// RFC2045 / RFC2046 / RFC2047 / RFC2048 / RFC2049 (MIME) => TODO
+// RFC2045 / RFC2046 / RFC2047 / RFC2048 / RFC2049 / RFC2183 (MIME) => TODO
 func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err error) {
 
 	em = &obj.EmailMessage{
@@ -94,25 +98,35 @@ func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err 
 
 	for _, attachment := range msg.Attachments {
 		//check if file is available in object storage
-		if b.Store.AttachmentExists(attachment.URI) {
+		if b.Store.AttachmentExists(attachment.URL) {
 			//give method to retrieve file from broker storage interface (instead of default filesystem)
-			m.Attach(attachment.File_name, gomail.SetCopyFunc(func(w io.Writer) error {
-				file, err := b.Store.GetAttachment(attachment.URI)
-				if err != nil {
-					return err
-				}
-				_, err = io.Copy(w, file)
-				if err != nil {
-					return err
-				}
-				return nil
-			}))
+			size_str := fmt.Sprintf("%d", attachment.Size)
+			content_disposition := `attachment; filename="` + attachment.File_name + `"; size=` + size_str
+
+			m.Attach(attachment.File_name,
+				gomail.SetCopyFunc(func(w io.Writer) error {
+					file, err := b.Store.GetAttachment(attachment.URL)
+					if err != nil {
+						return err
+					}
+					_, err = io.Copy(w, file)
+					if err != nil {
+						return err
+					}
+					return nil
+				}),
+				gomail.SetHeader(map[string][]string{
+					"Content-Disposition": {content_disposition},
+				}),
+			)
 		}
 	}
 
 	//TODO: errors handling
 
 	m.WriteTo(&em.Email.Raw)
+	json_rep, _ := EmailToJsonRep(em.Email.Raw.String())
+	em.Email_json = &json_rep
 	return
 }
 
@@ -123,20 +137,43 @@ func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err 
 func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 
 	// save raw email in db
-	json_mail, err := emailToJsonRep(ack.EmailMessage.Email.Raw.String())
-	if err == nil {
-		json_mail.Envelope.From = ack.EmailMessage.Email.SmtpMailFrom
-		json_mail.Envelope.To = ack.EmailMessage.Email.SmtpRcpTo
-	}
+	/*
+		json_mail, err := EmailToJsonRep(ack.EmailMessage.Email.Raw.String())
+		if err == nil {
+			json_mail.Envelope.From = ack.EmailMessage.Email.SmtpMailFrom
+			json_mail.Envelope.To = ack.EmailMessage.Email.SmtpRcpTo
+		}
+	*/
 	raw_email_id, err := b.Store.StoreRawMessage(ack.EmailMessage.Email.Raw.String())
 	if err != nil {
 		log.WithError(err).Warn("outbound: storing raw email failed")
 		return err
 	}
 	// clean-up attachments' temporary files
-	for i := range ack.EmailMessage.Message.Attachments {
-		b.Store.DeleteAttachment(ack.EmailMessage.Message.Attachments[i].URI)
-		ack.EmailMessage.Message.Attachments[i].URI = ""
+	for _, attachment := range ack.EmailMessage.Message.Attachments {
+		b.Store.DeleteAttachment(attachment.URL)
+	}
+
+	// get new references for embedded attachments
+	ack.EmailMessage.Message.Attachments = []obj.Attachment{}
+	for part := range ack.EmailMessage.Email_json.MimeRoot.Parts.Walk() {
+		if part.Is_attachment {
+			disposition, dparams, err := mime.ParseMediaType(part.Headers["Content-Disposition"][0])
+			if err == nil {
+				is_inline := false
+				if disposition == "inline" {
+					is_inline = true
+				}
+				size, _ := strconv.Atoi(dparams["size"])
+				ack.EmailMessage.Message.Attachments = append(ack.EmailMessage.Message.Attachments, obj.Attachment{
+					Content_type: part.ContentType,
+					File_name:    dparams["filename"],
+					Is_inline:    is_inline,
+					Size:         size,
+					MimeBoundary: part.Boundary,
+				})
+			}
+		}
 	}
 
 	// update caliopen message status
@@ -235,11 +272,15 @@ func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, 
 	return
 }
 
-// returns an EmailJson object which is an object ready to
-// output our json representation of the raw email
-func emailToJsonRep(email string) (json_email obj.EmailJson, err error) {
+// returns an EmailJson object which is our json representation of the raw email
+// in particular, attachments are qualified following Caliopen's rules
+// (see addChildPart() func for attachment qualification algorithm)
+func EmailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 	reader := bytes.NewReader([]byte(email))
-	msg, err := mail.ReadMessage(reader)   // Read email using Go's net/mail
+	msg, err := mail.ReadMessage(reader) // Read email using Go's net/mail
+	if err != nil {
+		return
+	}
 	mime, err := enmime.ParseMIMEBody(msg) // Parse message body with enmime
 	if err != nil {
 		return
@@ -268,9 +309,8 @@ func emailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 			json_email.Date = v[0] //TODO : manage multiple date fields
 		case "subject":
 			json_email.Subject = v[0] //TODO : manage multiple subject fields
-		default:
-			json_email.Headers[k] = v
 		}
+		json_email.Headers[k] = v
 	}
 
 	json_email.Html = mime.HTML
@@ -279,71 +319,95 @@ func emailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 
 	if mime.Root != nil {
 		//message was MIME encoded, build the mime tree
-
-		root_boundary, _ := boundary(mime.GetHeader("Content-Type"))
+		root_part_content_type := mime.GetHeader("Content-Type")
+		root_boundary, _ := GetBoundary(root_part_content_type)
 		json_email.MimeRoot = obj.MimeRoot{
 			Attachments_count: len(mime.Attachments),
 			Root_boundary:     root_boundary,
 			Inline_count:      len(mime.Inlines),
 			Parts:             []obj.Part{},
 		}
-
+		mime.Root.SetHeader(textproto.MIMEHeader{
+			"Content-Type": []string{root_part_content_type},
+		})
 		child := mime.Root.FirstChild()
 		if child != nil {
 			json_email.MimeRoot.Parts = addChildPart(json_email.MimeRoot.Parts, child)
+			for sibling := child.NextSibling(); sibling != nil; sibling = sibling.NextSibling() {
+				json_email.MimeRoot.Parts = addChildPart(json_email.MimeRoot.Parts, sibling)
+			}
 		}
 
 	}
 	return json_email, nil
 }
 
-// Build part objects recursively
+// Build part tree recursively
+// and compute properties for each part
 func addChildPart(parent []obj.Part, part enmime.MIMEPart) []obj.Part {
 
 	child := obj.Part{
-		ChildParts: []obj.Part{},
+		Parts: []obj.Part{},
 	}
-	content_type := part.Header().Get("Content-Type")
-	child.Boundary, _ = boundary(content_type)
+	if content_type, ok := part.Parent().Header()["Content-Type"]; ok {
+		var e error
+		child.Boundary, e = GetBoundary(content_type[0])
+		if e != nil {
+			child.Boundary = ""
+		}
+	}
+	child.Charset = part.Charset()
 	child.Content = part.Content()
-	child.MediaType, child.Params, _ = mime.ParseMediaType(content_type)
+	child.ContentType = part.ContentType()
+	child.Headers = part.Header()
 
-	mediatype, _, _ := mime.ParseMediaType(part.Header().Get("Content-Disposition"))
-	if strings.ToLower(mediatype) == "attachment" ||
-		strings.ToLower(mediatype) == "inline" {
+	disposition, _, _ := mime.ParseMediaType(part.Header().Get("Content-Disposition"))
+	if strings.ToLower(disposition) == "attachment" {
 		child.Is_attachment = true
 	}
-	if strings.ToLower(mediatype) == "inline" {
+	if strings.ToLower(disposition) == "inline" {
+		child.Is_attachment = true
 		child.Is_inline = true
 	}
-	if strings.ToLower(child.MediaType) == "attachment" {
+
+	attachment_types := map[string]bool{
+		"application": true,
+		"image":       true,
+		"video":       true,
+		"audio":       true,
+		"message":     true,
+		"font":        true,
+	}
+
+	mainType := strings.Split(strings.ToLower(child.ContentType), "/")[0]
+	if _, ok := attachment_types[mainType]; ok {
 		child.Is_attachment = true
 	}
 
 	sub_child := part.FirstChild()
 	if sub_child != nil {
-		child.ChildParts = addChildPart(child.ChildParts, sub_child)
-	}
-
-	sibling := part.NextSibling()
-	if sibling != nil {
-		parent = addChildPart(parent, sibling)
+		child.Parts = addChildPart(child.Parts, sub_child)
+		for sibling := sub_child.NextSibling(); sibling != nil; sibling = sibling.NextSibling() {
+			child.Parts = addChildPart(child.Parts, sub_child)
+		}
 	}
 
 	return append(parent, child)
 }
 
 // Returns the boundary string from a part header
-func boundary(s string) (boundary string, err error) {
+func GetBoundary(s string) (boundary string, err error) {
 	mediatype, params, err := mime.ParseMediaType(s)
 	if err != nil {
 		return "", err
 	}
-	if strings.HasPrefix(mediatype, "multipart/") {
+	if strings.HasPrefix(mediatype, "multipart") {
 		boundary = params["boundary"]
 		if err != nil {
 			return "", err
 		}
+		return boundary, nil
+	} else {
+		return "", errors.New("no boundary")
 	}
-	return boundary, nil
 }

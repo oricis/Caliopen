@@ -9,4 +9,4 @@ properties:
     type: integer
   version:
     type: integer
-additionalProperties: false
+additionalProperties: true

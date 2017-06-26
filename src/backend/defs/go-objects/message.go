@@ -108,7 +108,8 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) {
 		a.File_name, _ = attachment["file_name"].(string)
 		a.Is_inline, _ = attachment["is_inline"].(bool)
 		a.Size, _ = attachment["size"].(int)
-		a.URI, _ = attachment["uri"].(string)
+		a.URL, _ = attachment["url"].(string)
+		a.MimeBoundary, _ = attachment["mime_boundary"].(string)
 		msg.Attachments = append(msg.Attachments, a)
 	}
 	msg.Body, _ = input["body"].(string)
