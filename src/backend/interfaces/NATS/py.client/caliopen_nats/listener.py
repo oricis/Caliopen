@@ -17,8 +17,8 @@ log = logging.getLogger(__name__)
 
 
 @tornado.gen.coroutine
-def main(config):
-    """Create client and connect to server."""
+def inbound_handler(config):
+    """Inbound message NATS handler."""
     client = Nats()
     server = 'nats://{}:{}'.format(config['host'], config['port'])
     servers = [server]
@@ -46,6 +46,6 @@ if __name__ == '__main__':
     import subscribers
 
     connect_storage()
-    main(Configuration('global').get('message_queue'))
+    inbound_handler(Configuration('global').get('message_queue'))
     loop_instance = tornado.ioloop.IOLoop.instance()
     loop_instance.start()
