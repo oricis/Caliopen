@@ -168,7 +168,6 @@ class UserMessageQualifier(object):
             attachment.content_type = a.content_type
             attachment.file_name = a.filename
             attachment.size = a.size
-            attachment.url = a.url
             attachment.mime_boundary = a.mime_boundary
             if hasattr(a, "is_inline"):
                 attachment.is_inline = a.is_inline
