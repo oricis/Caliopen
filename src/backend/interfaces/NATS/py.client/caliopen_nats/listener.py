@@ -1,38 +1,38 @@
+# -*- coding: utf-8 -*-
+"""Caliopen NATS listener for message processing."""
+from __future__ import absolute_import, print_function, unicode_literals
+
 import argparse
 import sys
+import logging
 
 import tornado.ioloop
 import tornado.gen
-from nats.io import Client as NATS
+from nats.io import Client as Nats
 
 from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage
 
-
-def show_usage():
-    print("nats-sub SUBJECT [-s SERVER] [-q QUEUE]")
-
-
-def show_usage_and_die():
-    show_usage()
-    sys.exit(1)
+log = logging.getLogger(__name__)
 
 
 @tornado.gen.coroutine
-def main():
-    # Create client and connect to server
-    nc = NATS()
-    servers = ["nats://nats.dev.caliopen.org:4222"]
+def main(config):
+    """Create client and connect to server."""
+    client = Nats()
+    server = 'nats://{}:{}'.format(config['host'], config['port'])
+    servers = [server]
 
     opts = {"servers": servers}
-    yield nc.connect(**opts)
+    yield client.connect(**opts)
 
     # create and register subscriber(s)
-    inbound_email_sub = subscribers.InboundEmail(nc)
-    future = nc.subscribe("inboundSMTP", "SMTPqueue",
-                          inbound_email_sub.handler)
-    print("nats subscription started")
-    sid = future.result()
+    inbound_email_sub = subscribers.InboundEmail(client)
+    future = client.subscribe("inboundSMTP", "SMTPqueue",
+                              inbound_email_sub.handler)
+    log.info("nats subscription started")
+    future.result()
+
 
 if __name__ == '__main__':
     # load Caliopen config
@@ -46,6 +46,6 @@ if __name__ == '__main__':
     import subscribers
 
     connect_storage()
-    main()
+    main(Configuration('global').get('message_queue'))
     loop_instance = tornado.ioloop.IOLoop.instance()
     loop_instance.start()

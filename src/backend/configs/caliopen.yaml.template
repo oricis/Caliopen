@@ -18,6 +18,10 @@ broker:
     port: 2525
     host: localhost
 
+message_queue:
+    port: 4222
+    host: localhost
+
 object_store:
     db_size_limit: 1048576
     service: s3
