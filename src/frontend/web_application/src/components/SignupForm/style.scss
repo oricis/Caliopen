@@ -9,7 +9,10 @@
   max-width: map-get($co-form__width, 'xlarge');
 
   &__modal {
-    max-width: map-get($co-form__width, 'xlarge');
+    max-width: 100%;
+    @include breakpoint(medium) {
+      max-width: 2 * map-get($co-form__width, 'xlarge');
+    }
   }
 
   &__form {
