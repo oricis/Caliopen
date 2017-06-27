@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../../Icon';
 import Button from '../../../Button';
-import { FieldErrors, Fieldset, Legend, TextFieldGroup, FormGrid, FormRow, FormColumn } from '../../../form';
+import { FieldErrors, Fieldset, Legend, TextFieldGroup, FormGrid, FormRow, FormColumn, CheckboxFieldGroup } from '../../../form';
 
 import './style.scss';
 
@@ -20,11 +20,15 @@ class OrgaForm extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSwitchChange = this.handleSwitchChange.bind(this);
     this.state = {
       organization: {
-        name: '',
         department: '',
+        is_primary: false,
         job_description: '',
+        label: '',
+        name: '',
+        title: '',
       },
     };
   }
@@ -45,6 +49,16 @@ class OrgaForm extends Component {
     }));
   }
 
+  handleSwitchChange(event) {
+    const { name, checked } = event.target;
+    this.setState(prevState => ({
+      organization: {
+        ...prevState.organization,
+        [name]: checked,
+      },
+    }));
+  }
+
   render() {
     const { __, errors } = this.props;
 
@@ -59,11 +73,28 @@ class OrgaForm extends Component {
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
             <FormColumn>
               <TextFieldGroup
+                name="label"
+                value={this.state.organization.label}
+                onChange={this.handleInputChange}
+                label={__('contact.orga_form.label.label')}
+                required
+              />
+            </FormColumn>
+            <FormColumn>
+              <TextFieldGroup
                 name="name"
                 value={this.state.organization.name}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.name.label')}
                 required
+              />
+            </FormColumn>
+            <FormColumn size="medium">
+              <TextFieldGroup
+                name="title"
+                value={this.state.organization.title}
+                onChange={this.handleInputChange}
+                label={__('contact.orga_form.title.label')}
               />
             </FormColumn>
             <FormColumn size="medium">
@@ -80,6 +111,18 @@ class OrgaForm extends Component {
                 value={this.state.organization.job_description}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.job_description.label')}
+              />
+            </FormColumn>
+          </FormRow>
+          <FormRow>
+            <FormColumn size="shrink" className="m-orga-form__switch">
+              <CheckboxFieldGroup
+                name="is_primary"
+                value={this.state.organization.is_primary}
+                onChange={this.handleSwitchChange}
+                label={__('contact.orga_form.is_primary.label')}
+                displaySwitch
+                showTextLabel
               />
             </FormColumn>
           </FormRow>

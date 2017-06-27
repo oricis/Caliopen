@@ -98,7 +98,7 @@ class ContactDetails extends Component {
       contact: {
         ...contact,
         [type]: [
-          ...contact[type],
+          ...(contact[type] ? contact[type] : []),
           contactDetail,
         ],
       },
@@ -209,12 +209,13 @@ class ContactDetails extends Component {
 
   renderContactDetails() {
     const { contact } = this.props;
-    const emails = [...contact.emails].sort((a, b) => a.address.localeCompare(b.address));
+    const emails = contact.emails ?
+      [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
     const contactDetails = [
       ...emails.map(detail => this.renderEmail(detail)),
-      ...contact.phones.map(detail => this.renderPhone(detail)),
-      ...contact.ims.map(detail => this.renderIm(detail)),
-      ...contact.addresses.map(detail => this.renderAddress(detail)),
+      ...(contact.phones ? contact.phones.map(detail => this.renderPhone(detail)) : []),
+      ...(contact.ims ? contact.ims.map(detail => this.renderIm(detail)) : []),
+      ...(contact.addresses ? contact.addresses.map(detail => this.renderAddress(detail)) : []),
     ];
 
     return (
@@ -226,15 +227,16 @@ class ContactDetails extends Component {
 
   renderContactDetailsForm() {
     const { __, contact } = this.props;
-    const emails = [...contact.emails].sort((a, b) => a.address.localeCompare(b.address));
+    const emails = contact.emails ?
+      [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
     const contactDetails = [
       ...emails.map(detail => this.renderEmail(detail)),
       (<EmailForm onSubmit={this.makeHandleAddContactDetail('emails')} __={__} />),
-      ...contact.phones.map(detail => this.renderPhone(detail)),
+      ...(contact.phones ? contact.phones.map(detail => this.renderPhone(detail)) : []),
       (<PhoneForm onSubmit={this.makeHandleAddContactDetail('phones')} __={__} />),
-      ...contact.ims.map(detail => this.renderIm(detail)),
+      ...(contact.ims ? contact.ims.map(detail => this.renderIm(detail)) : []),
       (<ImForm onSubmit={this.makeHandleAddContactDetail('ims')} __={__} />),
-      ...contact.addresses.map(detail => this.renderAddress(detail)),
+      ...(contact.addresses ? contact.addresses.map(detail => this.renderAddress(detail)) : []),
       (<AddressForm onSubmit={this.makeHandleAddContactDetail('addresses')} __={__} />),
     ];
 
@@ -268,7 +270,7 @@ class ContactDetails extends Component {
           </Subtitle>
           <div className="m-contact-details__list">
             <TextList>
-              {contact.organizations.map(organization => (
+              {contact.organizations && contact.organizations.map(organization => (
                 <OrgaDetails
                   key={organization.organization_id}
                   organization={organization}

@@ -69,7 +69,7 @@ class ContactProfile extends Component {
         </div>
 
 
-        {contact.tags.length > 0 &&
+        {contact.tags &&
           <div className="m-contact-profile__tags">
             {contact.tags.map(tag => (
               <Badge className="m-contact-profile__tag" key={tag}>{tag}</Badge>
@@ -78,7 +78,7 @@ class ContactProfile extends Component {
         }
         {this.state.editMode ? (
           <ContactProfileForm contact={contact} onChange={onChange} />
-        ) : (
+        ) : contact.pi && (
           <MultidimensionalPi className="m-contact-profile__pi" pi={contact.pi} />
         )
         }

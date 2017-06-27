@@ -25,7 +25,7 @@ class IdentityForm extends Component {
     this.state = {
       contactDetail: {
         type: IDENTITY_TYPES[0],
-        value: '',
+        name: '',
       },
     };
   }
@@ -74,9 +74,9 @@ class IdentityForm extends Component {
             </FormColumn>
             <FormColumn size="medium">
               <TextFieldGroup
-                name="value"
+                name="name"
                 type="text"
-                value={this.state.contactDetail.department}
+                value={this.state.contactDetail.name}
                 onChange={this.handleInputChange}
                 label={__('contact.identity_form.identity.label')}
                 showLabelforSr
