@@ -22,7 +22,8 @@ describe('Save a draft and send', () => {
   it('saves a draft', () => {
     const waitAndRefresh = waitForElementSelector => browser.sleep(6 * 1000)
         .then(() => browser.refresh())
-        .then(() => browser.wait(EC.presenceOf($(waitForElementSelector)), 5 * 1000));
+        .then(() => browser.wait(EC.presenceOf($(waitForElementSelector)), 5 * 1000))
+        .then(() => console.log('page refreshed'));
 
     const discussion1Selector = by.cssContainingText(
       '.s-discussion-list__thread',
@@ -100,9 +101,10 @@ describe('Save a draft and send', () => {
         expect(draftBodyElement2.getText()).toEqual(text3);
       })
       // FIXME: restore state between tests
-
+      .then(() => console.log('send'))
       .then(() => element(by.cssContainingText('button', __('send'))).click())
       .then(() => switchApp('discussions'))
+      .then(() => console.log('go to discussion'))
       .then(() => element(discussion1Selector).click())
       .then(() => expect(element(by.cssContainingText('button', __('send'))).isPresent())
         .toEqual(true))
