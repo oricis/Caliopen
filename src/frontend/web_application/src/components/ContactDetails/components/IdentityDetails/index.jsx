@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Icon from '../../../Icon';
 import Button from '../../../Button';
+import Icon from '../../../Icon';
+import { ItemContent } from '../../../TextList';
+
 import './style.scss';
 
-class ImDetails extends Component {
+class IdentityDetails extends Component {
   static propTypes = {
-    im: PropTypes.shape({}).isRequired,
+    identity: PropTypes.shape({}).isRequired,
     editMode: PropTypes.bool,
     onDelete: PropTypes.func,
     __: PropTypes.func.isRequired,
@@ -19,21 +21,11 @@ class ImDetails extends Component {
   constructor(props) {
     super(props);
     this.handleDelete = this.handleDelete.bind(this);
-    this.initTranslations();
-  }
-
-  initTranslations() {
-    const { __ } = this.props;
-    this.imTypesTranslations = {
-      work: __('contact.im_type.work'),
-      home: __('contact.im_type.home'),
-      other: __('contact.im_type.other'),
-    };
   }
 
   handleDelete() {
-    const { onDelete, im } = this.props;
-    onDelete({ contactDetail: im });
+    const { onDelete, identity } = this.props;
+    onDelete({ contactDetail: identity });
   }
 
   renderDeleteButton() {
@@ -47,21 +39,16 @@ class ImDetails extends Component {
   }
 
   render() {
-    const {
-      im,
-      editMode,
-    } = this.props;
+    const { identity, editMode } = this.props;
 
     return (
-      <span className="m-im-details">
-        <Icon className="m-im-details__icon" type="comment" />
-        {im.address}
-        {' '}
-        <small><em>{this.imTypesTranslations[im.type]}</em></small>
+      <ItemContent large>
+        <Icon type={identity.type} className="m-identity-details__icon" />
+        {identity.value}
         {editMode && this.renderDeleteButton()}
-      </span>
+      </ItemContent>
     );
   }
 }
 
-export default ImDetails;
+export default IdentityDetails;

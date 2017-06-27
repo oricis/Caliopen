@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import Icon from '../../../Icon';
 import Button from '../../../Button';
 import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, FormGrid, FormRow, FormColumn } from '../../../form';
+
 import './style.scss';
 
-const IM_TYPES = ['work', 'home', 'other', 'netmeeting'];
+const IDENTITY_TYPES = ['twitter', 'facebook', 'other'];
 
-class EmailForm extends Component {
+class IdentityForm extends Component {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     onSubmit: PropTypes.func.isRequired,
@@ -21,23 +22,11 @@ class EmailForm extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSwitchChange = this.handleSwitchChange.bind(this);
     this.state = {
       contactDetail: {
-        address: '',
-        type: IM_TYPES[0],
+        type: IDENTITY_TYPES[0],
+        name: '',
       },
-    };
-    this.initTranslations();
-  }
-
-  initTranslations() {
-    const { __ } = this.props;
-    this.addressTypes = {
-      work: __('contact.im_type.work'),
-      home: __('contact.im_type.home'),
-      other: __('contact.im_type.other'),
-      netmeeting: __('contact.im_type.netmeeting'),
     };
   }
 
@@ -57,56 +46,45 @@ class EmailForm extends Component {
     }));
   }
 
-  handleSwitchChange(event) {
-    const { name, checked } = event.target;
-    this.setState(prevState => ({
-      contactDetail: {
-        ...prevState.contactDetail,
-        [name]: checked,
-      },
-    }));
-  }
-
   render() {
-    const { __, errors = [] } = this.props;
-    const addressTypeOptions = IM_TYPES.map(value => ({
+    const { __, errors } = this.props;
+    const identityTypeOptions = IDENTITY_TYPES.map(value => ({
       value,
-      label: this.addressTypes[value],
+      label: value,
     }));
 
     return (
-      <FormGrid onSubmit={this.handleSubmit} className="m-im-form" name="im_form">
+      <FormGrid onSubmit={this.handleSubmit} className="m-identity-form" name="identity_form">
         <Fieldset>
           <Legend>
-            <Icon className="m-im-form__icon" type="comment" />
-            {__('contact.im_form.legend')}
+            <Icon className="m-identity-form__icon" type="user" />
+            {__('contact.identity_form.legend')}
           </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="medium">
-              <TextFieldGroup
-                name="address"
-                type="email"
-                value={this.state.contactDetail.address}
-                onChange={this.handleInputChange}
-                label={__('contact.im_form.address.label')}
-                showLabelforSr
-                required
-              />
-            </FormColumn>
             <FormColumn size="shrink">
               <SelectFieldGroup
                 name="type"
                 value={this.state.contactDetail.type}
                 onChange={this.handleInputChange}
-                label={__('contact.im_form.type.label')}
+                label={__('contact.identity_form.service.label')}
+                options={identityTypeOptions}
                 showLabelforSr
-                options={addressTypeOptions}
               />
             </FormColumn>
-            <FormColumn size="shrink" className="m-im-form__action">
+            <FormColumn size="medium">
+              <TextFieldGroup
+                name="name"
+                type="text"
+                value={this.state.contactDetail.name}
+                onChange={this.handleInputChange}
+                label={__('contact.identity_form.identity.label')}
+                showLabelforSr
+              />
+            </FormColumn>
+            <FormColumn size="shrink" className="m-identity-form__action">
               <Button type="submit" display="expanded" shape="plain" icon="plus">
-                {__('contact.action.add_contact_detail')}
+                {__('contact.action.add_identity_detail')}
               </Button>
             </FormColumn>
           </FormRow>
@@ -116,4 +94,4 @@ class EmailForm extends Component {
   }
 }
 
-export default EmailForm;
+export default IdentityForm;

@@ -19,7 +19,7 @@ class EmailDetails extends Component {
   static defaultProps = {
     remoteIdentity: undefined,
     editMode: false,
-    allowConnectRemoteEntity: undefined,
+    allowConnectRemoteEntity: false,
     onConnectRemoteIdentity: undefined,
     onDisconnectRemoteIdentity: undefined,
   };
@@ -50,7 +50,7 @@ class EmailDetails extends Component {
 
   handleDelete() {
     const { onDelete, email } = this.props;
-    onDelete({ email });
+    onDelete({ contactDetail: email });
   }
 
   renderConnectIdentityToggleButton() {

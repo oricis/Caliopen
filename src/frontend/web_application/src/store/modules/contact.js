@@ -1,10 +1,14 @@
-// import calcObjectForPatch from '../../services/api-patch';
+import calcObjectForPatch from '../../services/api-patch';
+
 export const REQUEST_CONTACTS = 'co/contact/REQUEST_CONTACTS';
 export const REQUEST_CONTACTS_SUCCESS = 'co/contact/REQUEST_CONTACTS_SUCCESS';
 export const REQUEST_CONTACTS_FAIL = 'co/contact/REQUEST_CONTACTS_FAIL';
 export const INVALIDATE_CONTACTS = 'co/contact/INVALIDATE_CONTACTS';
 export const LOAD_MORE_CONTACTS = 'co/contact/LOAD_MORE_CONTACTS';
 export const REQUEST_CONTACT = 'co/contact/REQUEST_CONTACT';
+export const REQUEST_CONTACT_SUCCESS = 'co/contact/REQUEST_CONTACT_SUCCESS';
+export const UPDATE_CONTACT = 'co/contact/UPDATE_CONTACT';
+export const UPDATE_CONTACT_SUCCESS = 'co/contact/UPDATE_CONTACT_SUCCESS';
 export const REMOVE_CONTACT = 'co/contact/REMOVE_CONTACT';
 
 export function requestContacts(params = {}) {
@@ -46,11 +50,37 @@ export function invalidate() {
   };
 }
 
+export function updateContact({ contact, original }) {
+  return (dispatch) => {
+    const data = calcObjectForPatch(contact, original);
+    dispatch({
+      type: UPDATE_CONTACT,
+      payload: {
+        request: {
+          method: 'patch',
+          url: `/v1/contacts/${contact.contact_id}`,
+          data,
+        },
+      },
+    }).then(() => dispatch(requestContact({ contactId: contact.contact_id })));
+  };
+}
+
 function contactsByIdReducer(state = {}, action = {}) {
-  return action.payload.data.contacts.reduce((previousState, contact) => ({
-    ...previousState,
-    [contact.contact_id]: contact,
-  }), state);
+  switch (action.type) {
+    case REQUEST_CONTACTS_SUCCESS:
+      return action.payload.data.contacts.reduce((previousState, contact) => ({
+        ...previousState,
+        [contact.contact_id]: contact,
+      }), state);
+    case REQUEST_CONTACT_SUCCESS:
+      return {
+        ...state,
+        [action.payload.data.contact_id]: action.payload.data,
+      };
+    default:
+      return state;
+  }
 }
 
 function contactListReducer(state = [], action = {}) {
@@ -106,6 +136,20 @@ export default function reducer(state = initialState, action) {
       };
     case INVALIDATE_CONTACTS:
       return { ...state, didInvalidate: true };
+    case REQUEST_CONTACT:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case REQUEST_CONTACT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        contactsById: contactsByIdReducer(
+          state.contactsById,
+          action
+        ),
+      };
     default:
       return state;
   }

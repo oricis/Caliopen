@@ -4,16 +4,57 @@ import Button from '../../../Button';
 import { TextFieldGroup } from '../../../form';
 import './style.scss';
 
+const generateStateFromProps = (props, prevState) => {
+  const contactInfo = props.contact.info || {};
+
+  return {
+    contact: {
+      ...prevState.contact,
+      ...props.contact,
+      infos: {
+        ...prevState.contact.infos,
+        ...contactInfo,
+      },
+    },
+  };
+};
+
 class ContactProfileForm extends Component {
+  static propTypes = {
+    contact: PropTypes.shape({}),
+    onChange: PropTypes.func.isRequired,
+    __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    contact: {},
+  };
+
   constructor(props) {
     super(props);
 
     this.state = {
-      contact: props.contact,
+      contact: {
+        title: '',
+        name_prefix: '',
+        given_name: '',
+        family_name: '',
+        name_suffix: '',
+        infos: {
+          birthday: '',
+        },
+      },
     };
 
     this.handleChanges = this.handleChanges.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(prevState => generateStateFromProps(nextProps, prevState));
   }
 
   handleChanges(event) {
@@ -22,7 +63,7 @@ class ContactProfileForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.onChange(this.state.contact);
+    this.props.onChange({ contact: this.state.contact, original: this.props.contact });
   }
 
   render() {
@@ -33,6 +74,20 @@ class ContactProfileForm extends Component {
         className="m-contact-profile-form"
         onSubmit={this.handleSubmit}
       >
+        <TextFieldGroup
+          className="m-contact-profile-form__title"
+          value={this.state.contact.title}
+          label={__('contact_profile.form.title.label')}
+          name="title"
+          onChange={this.handleChanges}
+        />
+        <TextFieldGroup
+          className="m-contact-profile-form__name-prefix"
+          value={this.state.contact.name_prefix}
+          label={__('contact_profile.form.name-prefix.label')}
+          name="name_prefix"
+          onChange={this.handleChanges}
+        />
         <TextFieldGroup
           className="m-contact-profile-form__firstname"
           value={this.state.contact.given_name}
@@ -48,12 +103,18 @@ class ContactProfileForm extends Component {
           onChange={this.handleChanges}
         />
         <TextFieldGroup
+          className="m-contact-profile-form__name-suffix"
+          value={this.state.contact.name_suffix}
+          label={__('contact_profile.form.name-suffix.label')}
+          name="name_suffix"
+          onChange={this.handleChanges}
+        />
+        <TextFieldGroup
           className="m-contact-profile-form__birthday"
-          value={this.state.contact.birthday}
+          value={this.state.contact.infos.birthday}
           label={__('contact_profile.form.birthday.label')}
           name="birthday"
           onChange={this.handleChanges}
-          expanded={false}
         />
         <div className="m-contact-profile-form__save-button">
           <div className="m-contact-profile-form__save-button-wrapper">
@@ -65,10 +126,5 @@ class ContactProfileForm extends Component {
   }
 }
 
-ContactProfileForm.propTypes = {
-  contact: PropTypes.shape({}),
-  onChange: PropTypes.func,
-  __: PropTypes.func.isRequired,
-};
 
 export default withTranslator()(ContactProfileForm);

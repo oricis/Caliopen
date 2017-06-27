@@ -32,7 +32,7 @@ class AddressDetails extends Component {
 
   handleDelete() {
     const { onDelete, address } = this.props;
-    onDelete({ address });
+    onDelete({ contactDetail: address });
   }
 
   renderDeleteButton() {
@@ -55,13 +55,18 @@ class AddressDetails extends Component {
       <span className="m-address-details">
         <Icon className="m-address-details__icon" type="map-marker" />
         <address className="m-address-details__postal-address">
-          {address.street}, {address.postal_code} {address.city}
-          {address.country} {address.region}
+          {address.street}{address.street && ', '}
+          {address.postal_code}{address.postal_code && ' '}
+          {address.city}{address.city && ' '}
+          {address.country}{address.country && ' '}
+          {address.region}
         </address>
         {' '}
-        <small>
-          <em>({address.label} {this.addressTypesTranslations[address.type]})</em>
-        </small>
+        {(address.label || address.type) &&
+          <small>
+            <em>({address.label}{address.label && ' '}{this.addressTypesTranslations[address.type]})</em>
+          </small>
+        }
         {editMode && this.renderDeleteButton()}
       </span>
     );

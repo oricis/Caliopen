@@ -1,7 +1,11 @@
 @import '../../styles/common';
 
 .m-contact-details {
-  background-color: $co-color__fg__back--low;
+  &__panel {
+    margin-top: $co-margin;
+    padding-bottom: $co-component__spacing;
+    background-color: $co-color__fg__back--low;
+  }
 
   &__list {
     padding: 0 $co-margin;
