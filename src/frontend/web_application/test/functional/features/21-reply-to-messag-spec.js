@@ -106,6 +106,7 @@ describe('Save a draft and send', () => {
       .then(() => switchApp('discussions'))
       .then(() => console.log('go to discussion'))
       .then(() => element(discussion1Selector).click())
+      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
       .then(() => expect(element(by.cssContainingText('button', __('send'))).isPresent())
         .toEqual(true))
     ;
