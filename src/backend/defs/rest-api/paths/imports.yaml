@@ -1,15 +1,12 @@
 imports:
   post:
     consumes:
-    - text/vcard
-    - text/vcf
-    - text/x-vcard
+    - multipart/form-data
     parameters:
-    - name: vcard
+    - name: file
       in: formData
       description: the vcard file to upload
-      schema:
-        type: file
+      type: file
       required: true
     security:
     - basicAuth: []

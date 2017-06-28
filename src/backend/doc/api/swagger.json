@@ -223,7 +223,6 @@
                           }
                         },
                         "required": [
-                          "email_id",
                           "address"
                         ],
                         "additionalProperties": false
@@ -245,82 +244,54 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "infos": {
-                                "type": "object"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "name"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "identity_id": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "identity_id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "identity_id"
-                            ],
-                            "additionalProperties": false
+                          "infos": {
+                            "type": "object"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "ims": {
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "address": {
-                                "type": "string"
-                              },
-                              "is_primary": {
-                                "type": "boolean"
-                              },
-                              "label": {
-                                "type": "string"
-                              },
-                              "protocol": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "address"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "im_id": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "im_id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "im_id"
-                            ],
-                            "additionalProperties": false
+                          "address": {
+                            "type": "string"
+                          },
+                          "is_primary": {
+                            "type": "boolean"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "protocol": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "address"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "infos": {
@@ -336,92 +307,64 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "department": {
-                                "type": "string"
-                              },
-                              "is_primary": {
-                                "type": "boolean"
-                              },
-                              "job_description": {
-                                "type": "string"
-                              },
-                              "label": {
-                                "type": "string"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "title": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "label",
-                              "name"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "deleted": {
+                            "type": "boolean"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "deleted": {
-                                "type": "boolean"
-                              }
-                            },
-                            "required": [
-                              "organization_id"
-                            ],
-                            "additionalProperties": false
+                          "department": {
+                            "type": "string"
+                          },
+                          "is_primary": {
+                            "type": "boolean"
+                          },
+                          "job_description": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "label",
+                          "name"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "phones": {
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "is_primary": {
-                                "type": "boolean"
-                              },
-                              "number": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              },
-                              "uri": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "number"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "phone_id": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "phone_id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "phone_id"
-                            ],
-                            "additionalProperties": false
+                          "is_primary": {
+                            "type": "boolean"
+                          },
+                          "number": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "uri": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "number"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "privacy_features": {
@@ -450,74 +393,60 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
+                        "properties": {
+                          "privacy_features": {
                             "type": "object",
-                            "properties": {
-                              "expire_date": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "fingerprint": {
-                                "type": "string"
-                              },
-                              "key": {
-                                "type": "string"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "size": {
-                                "type": "integer",
-                                "format": "int32"
-                              }
-                            },
-                            "required": [
-                              "key",
-                              "name"
-                            ],
-                            "additionalProperties": false
+                            "properties": {}
                           },
-                          {
+                          "pi": {
                             "type": "object",
                             "properties": {
-                              "privacy_features": {
-                                "type": "object",
-                                "properties": {}
+                              "technic": {
+                                "type": "integer"
                               },
-                              "pi": {
-                                "type": "object",
-                                "properties": {
-                                  "technic": {
-                                    "type": "integer"
-                                  },
-                                  "context": {
-                                    "type": "integer"
-                                  },
-                                  "comportment": {
-                                    "type": "integer"
-                                  },
-                                  "version": {
-                                    "type": "integer"
-                                  }
-                                },
-                                "additionalProperties": true
+                              "context": {
+                                "type": "integer"
                               },
-                              "date_insert": {
-                                "type": "string",
-                                "format": "date-time"
+                              "comportment": {
+                                "type": "integer"
                               },
-                              "date_update": {
-                                "type": "string",
-                                "format": "date-time"
+                              "version": {
+                                "type": "integer"
                               }
                             },
-                            "required": [
-                              "date_insert"
-                            ],
-                            "additionalProperties": false
+                            "additionalProperties": true
+                          },
+                          "date_insert": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "date_update": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "expire_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "fingerprint": {
+                            "type": "string"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "size": {
+                            "type": "integer",
+                            "format": "int32"
                           }
-                        ]
+                        },
+                        "required": [
+                          "key",
+                          "name"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "tags": {
@@ -547,8 +476,6 @@
                           }
                         },
                         "required": [
-                          "name",
-                          "type",
                           "label"
                         ],
                         "additionalProperties": false
@@ -866,7 +793,6 @@
                           }
                         },
                         "required": [
-                          "email_id",
                           "address"
                         ],
                         "additionalProperties": false
@@ -888,82 +814,54 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "infos": {
-                                "type": "object"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "name"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "identity_id": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "identity_id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "identity_id"
-                            ],
-                            "additionalProperties": false
+                          "infos": {
+                            "type": "object"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "ims": {
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "address": {
-                                "type": "string"
-                              },
-                              "is_primary": {
-                                "type": "boolean"
-                              },
-                              "label": {
-                                "type": "string"
-                              },
-                              "protocol": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "address"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "im_id": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "im_id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "im_id"
-                            ],
-                            "additionalProperties": false
+                          "address": {
+                            "type": "string"
+                          },
+                          "is_primary": {
+                            "type": "boolean"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "protocol": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "address"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "infos": {
@@ -979,92 +877,64 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "department": {
-                                "type": "string"
-                              },
-                              "is_primary": {
-                                "type": "boolean"
-                              },
-                              "job_description": {
-                                "type": "string"
-                              },
-                              "label": {
-                                "type": "string"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "title": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "label",
-                              "name"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "deleted": {
+                            "type": "boolean"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "deleted": {
-                                "type": "boolean"
-                              }
-                            },
-                            "required": [
-                              "organization_id"
-                            ],
-                            "additionalProperties": false
+                          "department": {
+                            "type": "string"
+                          },
+                          "is_primary": {
+                            "type": "boolean"
+                          },
+                          "job_description": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "label",
+                          "name"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "phones": {
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "is_primary": {
-                                "type": "boolean"
-                              },
-                              "number": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              },
-                              "uri": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "number"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "phone_id": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "phone_id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "phone_id"
-                            ],
-                            "additionalProperties": false
+                          "is_primary": {
+                            "type": "boolean"
+                          },
+                          "number": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "uri": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "number"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "privacy_features": {
@@ -1093,74 +963,60 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
+                        "properties": {
+                          "privacy_features": {
                             "type": "object",
-                            "properties": {
-                              "expire_date": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "fingerprint": {
-                                "type": "string"
-                              },
-                              "key": {
-                                "type": "string"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "size": {
-                                "type": "integer",
-                                "format": "int32"
-                              }
-                            },
-                            "required": [
-                              "key",
-                              "name"
-                            ],
-                            "additionalProperties": false
+                            "properties": {}
                           },
-                          {
+                          "pi": {
                             "type": "object",
                             "properties": {
-                              "privacy_features": {
-                                "type": "object",
-                                "properties": {}
+                              "technic": {
+                                "type": "integer"
                               },
-                              "pi": {
-                                "type": "object",
-                                "properties": {
-                                  "technic": {
-                                    "type": "integer"
-                                  },
-                                  "context": {
-                                    "type": "integer"
-                                  },
-                                  "comportment": {
-                                    "type": "integer"
-                                  },
-                                  "version": {
-                                    "type": "integer"
-                                  }
-                                },
-                                "additionalProperties": true
+                              "context": {
+                                "type": "integer"
                               },
-                              "date_insert": {
-                                "type": "string",
-                                "format": "date-time"
+                              "comportment": {
+                                "type": "integer"
                               },
-                              "date_update": {
-                                "type": "string",
-                                "format": "date-time"
+                              "version": {
+                                "type": "integer"
                               }
                             },
-                            "required": [
-                              "date_insert"
-                            ],
-                            "additionalProperties": false
+                            "additionalProperties": true
+                          },
+                          "date_insert": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "date_update": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "expire_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "fingerprint": {
+                            "type": "string"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "size": {
+                            "type": "integer",
+                            "format": "int32"
                           }
-                        ]
+                        },
+                        "required": [
+                          "key",
+                          "name"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "tags": {
@@ -1190,8 +1046,6 @@
                           }
                         },
                         "required": [
-                          "name",
-                          "type",
                           "label"
                         ],
                         "additionalProperties": false
@@ -1531,7 +1385,6 @@
                             }
                           },
                           "required": [
-                            "email_id",
                             "address"
                           ],
                           "additionalProperties": false
@@ -1553,82 +1406,54 @@
                         "type": "array",
                         "items": {
                           "type": "object",
-                          "allOf": [
-                            {
-                              "type": "object",
-                              "properties": {
-                                "infos": {
-                                  "type": "object"
-                                },
-                                "name": {
-                                  "type": "string"
-                                },
-                                "type": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "name"
-                              ],
-                              "additionalProperties": false
+                          "properties": {
+                            "identity_id": {
+                              "type": "string"
                             },
-                            {
-                              "type": "object",
-                              "properties": {
-                                "identity_id": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "identity_id"
-                              ],
-                              "additionalProperties": false
+                            "infos": {
+                              "type": "object"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
                             }
-                          ]
+                          },
+                          "required": [
+                            "name"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "ims": {
                         "type": "array",
                         "items": {
                           "type": "object",
-                          "allOf": [
-                            {
-                              "type": "object",
-                              "properties": {
-                                "address": {
-                                  "type": "string"
-                                },
-                                "is_primary": {
-                                  "type": "boolean"
-                                },
-                                "label": {
-                                  "type": "string"
-                                },
-                                "protocol": {
-                                  "type": "string"
-                                },
-                                "type": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "address"
-                              ],
-                              "additionalProperties": false
+                          "properties": {
+                            "im_id": {
+                              "type": "string"
                             },
-                            {
-                              "type": "object",
-                              "properties": {
-                                "im_id": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "im_id"
-                              ],
-                              "additionalProperties": false
+                            "address": {
+                              "type": "string"
+                            },
+                            "is_primary": {
+                              "type": "boolean"
+                            },
+                            "label": {
+                              "type": "string"
+                            },
+                            "protocol": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
                             }
-                          ]
+                          },
+                          "required": [
+                            "address"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "infos": {
@@ -1644,92 +1469,64 @@
                         "type": "array",
                         "items": {
                           "type": "object",
-                          "allOf": [
-                            {
-                              "type": "object",
-                              "properties": {
-                                "department": {
-                                  "type": "string"
-                                },
-                                "is_primary": {
-                                  "type": "boolean"
-                                },
-                                "job_description": {
-                                  "type": "string"
-                                },
-                                "label": {
-                                  "type": "string"
-                                },
-                                "name": {
-                                  "type": "string"
-                                },
-                                "title": {
-                                  "type": "string"
-                                },
-                                "type": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "label",
-                                "name"
-                              ],
-                              "additionalProperties": false
+                          "properties": {
+                            "deleted": {
+                              "type": "boolean"
                             },
-                            {
-                              "type": "object",
-                              "properties": {
-                                "deleted": {
-                                  "type": "boolean"
-                                }
-                              },
-                              "required": [
-                                "organization_id"
-                              ],
-                              "additionalProperties": false
+                            "department": {
+                              "type": "string"
+                            },
+                            "is_primary": {
+                              "type": "boolean"
+                            },
+                            "job_description": {
+                              "type": "string"
+                            },
+                            "label": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
                             }
-                          ]
+                          },
+                          "required": [
+                            "label",
+                            "name"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "phones": {
                         "type": "array",
                         "items": {
                           "type": "object",
-                          "allOf": [
-                            {
-                              "type": "object",
-                              "properties": {
-                                "is_primary": {
-                                  "type": "boolean"
-                                },
-                                "number": {
-                                  "type": "string"
-                                },
-                                "type": {
-                                  "type": "string"
-                                },
-                                "uri": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "number"
-                              ],
-                              "additionalProperties": false
+                          "properties": {
+                            "phone_id": {
+                              "type": "string"
                             },
-                            {
-                              "type": "object",
-                              "properties": {
-                                "phone_id": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "phone_id"
-                              ],
-                              "additionalProperties": false
+                            "is_primary": {
+                              "type": "boolean"
+                            },
+                            "number": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "uri": {
+                              "type": "string"
                             }
-                          ]
+                          },
+                          "required": [
+                            "number"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "privacy_features": {
@@ -1758,74 +1555,60 @@
                         "type": "array",
                         "items": {
                           "type": "object",
-                          "allOf": [
-                            {
+                          "properties": {
+                            "privacy_features": {
                               "type": "object",
-                              "properties": {
-                                "expire_date": {
-                                  "type": "string",
-                                  "format": "date-time"
-                                },
-                                "fingerprint": {
-                                  "type": "string"
-                                },
-                                "key": {
-                                  "type": "string"
-                                },
-                                "name": {
-                                  "type": "string"
-                                },
-                                "size": {
-                                  "type": "integer",
-                                  "format": "int32"
-                                }
-                              },
-                              "required": [
-                                "key",
-                                "name"
-                              ],
-                              "additionalProperties": false
+                              "properties": {}
                             },
-                            {
+                            "pi": {
                               "type": "object",
                               "properties": {
-                                "privacy_features": {
-                                  "type": "object",
-                                  "properties": {}
+                                "technic": {
+                                  "type": "integer"
                                 },
-                                "pi": {
-                                  "type": "object",
-                                  "properties": {
-                                    "technic": {
-                                      "type": "integer"
-                                    },
-                                    "context": {
-                                      "type": "integer"
-                                    },
-                                    "comportment": {
-                                      "type": "integer"
-                                    },
-                                    "version": {
-                                      "type": "integer"
-                                    }
-                                  },
-                                  "additionalProperties": true
+                                "context": {
+                                  "type": "integer"
                                 },
-                                "date_insert": {
-                                  "type": "string",
-                                  "format": "date-time"
+                                "comportment": {
+                                  "type": "integer"
                                 },
-                                "date_update": {
-                                  "type": "string",
-                                  "format": "date-time"
+                                "version": {
+                                  "type": "integer"
                                 }
                               },
-                              "required": [
-                                "date_insert"
-                              ],
-                              "additionalProperties": false
+                              "additionalProperties": true
+                            },
+                            "date_insert": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "date_update": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "expire_date": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "fingerprint": {
+                              "type": "string"
+                            },
+                            "key": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "size": {
+                              "type": "integer",
+                              "format": "int32"
                             }
-                          ]
+                          },
+                          "required": [
+                            "key",
+                            "name"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "tags": {
@@ -1855,8 +1638,6 @@
                             }
                           },
                           "required": [
-                            "name",
-                            "type",
                             "label"
                           ],
                           "additionalProperties": false
@@ -2102,7 +1883,6 @@
                       }
                     },
                     "required": [
-                      "email_id",
                       "address"
                     ],
                     "additionalProperties": false
@@ -2124,82 +1904,54 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "infos": {
-                            "type": "object"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "name"
-                        ],
-                        "additionalProperties": false
+                    "properties": {
+                      "identity_id": {
+                        "type": "string"
                       },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "identity_id": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "identity_id"
-                        ],
-                        "additionalProperties": false
+                      "infos": {
+                        "type": "object"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
                       }
-                    ]
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "ims": {
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "address": {
-                            "type": "string"
-                          },
-                          "is_primary": {
-                            "type": "boolean"
-                          },
-                          "label": {
-                            "type": "string"
-                          },
-                          "protocol": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "address"
-                        ],
-                        "additionalProperties": false
+                    "properties": {
+                      "im_id": {
+                        "type": "string"
                       },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "im_id": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "im_id"
-                        ],
-                        "additionalProperties": false
+                      "address": {
+                        "type": "string"
+                      },
+                      "is_primary": {
+                        "type": "boolean"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "protocol": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
                       }
-                    ]
+                    },
+                    "required": [
+                      "address"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "infos": {
@@ -2215,92 +1967,64 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "department": {
-                            "type": "string"
-                          },
-                          "is_primary": {
-                            "type": "boolean"
-                          },
-                          "job_description": {
-                            "type": "string"
-                          },
-                          "label": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "title": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "label",
-                          "name"
-                        ],
-                        "additionalProperties": false
+                    "properties": {
+                      "deleted": {
+                        "type": "boolean"
                       },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "deleted": {
-                            "type": "boolean"
-                          }
-                        },
-                        "required": [
-                          "organization_id"
-                        ],
-                        "additionalProperties": false
+                      "department": {
+                        "type": "string"
+                      },
+                      "is_primary": {
+                        "type": "boolean"
+                      },
+                      "job_description": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
                       }
-                    ]
+                    },
+                    "required": [
+                      "label",
+                      "name"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "phones": {
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "is_primary": {
-                            "type": "boolean"
-                          },
-                          "number": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "uri": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "number"
-                        ],
-                        "additionalProperties": false
+                    "properties": {
+                      "phone_id": {
+                        "type": "string"
                       },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "phone_id": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "phone_id"
-                        ],
-                        "additionalProperties": false
+                      "is_primary": {
+                        "type": "boolean"
+                      },
+                      "number": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "uri": {
+                        "type": "string"
                       }
-                    ]
+                    },
+                    "required": [
+                      "number"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "privacy_features": {
@@ -2329,74 +2053,60 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "allOf": [
-                      {
+                    "properties": {
+                      "privacy_features": {
                         "type": "object",
-                        "properties": {
-                          "expire_date": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "fingerprint": {
-                            "type": "string"
-                          },
-                          "key": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "size": {
-                            "type": "integer",
-                            "format": "int32"
-                          }
-                        },
-                        "required": [
-                          "key",
-                          "name"
-                        ],
-                        "additionalProperties": false
+                        "properties": {}
                       },
-                      {
+                      "pi": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "technic": {
+                            "type": "integer"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "context": {
+                            "type": "integer"
                           },
-                          "date_insert": {
-                            "type": "string",
-                            "format": "date-time"
+                          "comportment": {
+                            "type": "integer"
                           },
-                          "date_update": {
-                            "type": "string",
-                            "format": "date-time"
+                          "version": {
+                            "type": "integer"
                           }
                         },
-                        "required": [
-                          "date_insert"
-                        ],
-                        "additionalProperties": false
+                        "additionalProperties": true
+                      },
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "date_update": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "expire_date": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fingerprint": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "format": "int32"
                       }
-                    ]
+                    },
+                    "required": [
+                      "key",
+                      "name"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "tags": {
@@ -2426,8 +2136,6 @@
                       }
                     },
                     "required": [
-                      "name",
-                      "type",
                       "label"
                     ],
                     "additionalProperties": false
@@ -2629,7 +2337,6 @@
                           }
                         },
                         "required": [
-                          "email_id",
                           "address"
                         ],
                         "additionalProperties": false
@@ -2651,82 +2358,54 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "infos": {
-                                "type": "object"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "name"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "identity_id": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "identity_id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "identity_id"
-                            ],
-                            "additionalProperties": false
+                          "infos": {
+                            "type": "object"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "ims": {
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "address": {
-                                "type": "string"
-                              },
-                              "is_primary": {
-                                "type": "boolean"
-                              },
-                              "label": {
-                                "type": "string"
-                              },
-                              "protocol": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "address"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "im_id": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "im_id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "im_id"
-                            ],
-                            "additionalProperties": false
+                          "address": {
+                            "type": "string"
+                          },
+                          "is_primary": {
+                            "type": "boolean"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "protocol": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "address"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "infos": {
@@ -2742,92 +2421,64 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "department": {
-                                "type": "string"
-                              },
-                              "is_primary": {
-                                "type": "boolean"
-                              },
-                              "job_description": {
-                                "type": "string"
-                              },
-                              "label": {
-                                "type": "string"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "title": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "label",
-                              "name"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "deleted": {
+                            "type": "boolean"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "deleted": {
-                                "type": "boolean"
-                              }
-                            },
-                            "required": [
-                              "organization_id"
-                            ],
-                            "additionalProperties": false
+                          "department": {
+                            "type": "string"
+                          },
+                          "is_primary": {
+                            "type": "boolean"
+                          },
+                          "job_description": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "label",
+                          "name"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "phones": {
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "is_primary": {
-                                "type": "boolean"
-                              },
-                              "number": {
-                                "type": "string"
-                              },
-                              "type": {
-                                "type": "string"
-                              },
-                              "uri": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "number"
-                            ],
-                            "additionalProperties": false
+                        "properties": {
+                          "phone_id": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "phone_id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "phone_id"
-                            ],
-                            "additionalProperties": false
+                          "is_primary": {
+                            "type": "boolean"
+                          },
+                          "number": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "uri": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "number"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "privacy_features": {
@@ -2856,74 +2507,60 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "allOf": [
-                          {
+                        "properties": {
+                          "privacy_features": {
                             "type": "object",
-                            "properties": {
-                              "expire_date": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "fingerprint": {
-                                "type": "string"
-                              },
-                              "key": {
-                                "type": "string"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "size": {
-                                "type": "integer",
-                                "format": "int32"
-                              }
-                            },
-                            "required": [
-                              "key",
-                              "name"
-                            ],
-                            "additionalProperties": false
+                            "properties": {}
                           },
-                          {
+                          "pi": {
                             "type": "object",
                             "properties": {
-                              "privacy_features": {
-                                "type": "object",
-                                "properties": {}
+                              "technic": {
+                                "type": "integer"
                               },
-                              "pi": {
-                                "type": "object",
-                                "properties": {
-                                  "technic": {
-                                    "type": "integer"
-                                  },
-                                  "context": {
-                                    "type": "integer"
-                                  },
-                                  "comportment": {
-                                    "type": "integer"
-                                  },
-                                  "version": {
-                                    "type": "integer"
-                                  }
-                                },
-                                "additionalProperties": true
+                              "context": {
+                                "type": "integer"
                               },
-                              "date_insert": {
-                                "type": "string",
-                                "format": "date-time"
+                              "comportment": {
+                                "type": "integer"
                               },
-                              "date_update": {
-                                "type": "string",
-                                "format": "date-time"
+                              "version": {
+                                "type": "integer"
                               }
                             },
-                            "required": [
-                              "date_insert"
-                            ],
-                            "additionalProperties": false
+                            "additionalProperties": true
+                          },
+                          "date_insert": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "date_update": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "expire_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "fingerprint": {
+                            "type": "string"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "size": {
+                            "type": "integer",
+                            "format": "int32"
                           }
-                        ]
+                        },
+                        "required": [
+                          "key",
+                          "name"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "tags": {
@@ -2953,8 +2590,6 @@
                           }
                         },
                         "required": [
-                          "name",
-                          "type",
                           "label"
                         ],
                         "additionalProperties": false
@@ -3050,7 +2685,6 @@
                       }
                     },
                     "required": [
-                      "email_id",
                       "address"
                     ],
                     "additionalProperties": false
@@ -3072,82 +2706,54 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "infos": {
-                            "type": "object"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "name"
-                        ],
-                        "additionalProperties": false
+                    "properties": {
+                      "identity_id": {
+                        "type": "string"
                       },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "identity_id": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "identity_id"
-                        ],
-                        "additionalProperties": false
+                      "infos": {
+                        "type": "object"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
                       }
-                    ]
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "ims": {
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "address": {
-                            "type": "string"
-                          },
-                          "is_primary": {
-                            "type": "boolean"
-                          },
-                          "label": {
-                            "type": "string"
-                          },
-                          "protocol": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "address"
-                        ],
-                        "additionalProperties": false
+                    "properties": {
+                      "im_id": {
+                        "type": "string"
                       },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "im_id": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "im_id"
-                        ],
-                        "additionalProperties": false
+                      "address": {
+                        "type": "string"
+                      },
+                      "is_primary": {
+                        "type": "boolean"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "protocol": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
                       }
-                    ]
+                    },
+                    "required": [
+                      "address"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "infos": {
@@ -3163,92 +2769,64 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "department": {
-                            "type": "string"
-                          },
-                          "is_primary": {
-                            "type": "boolean"
-                          },
-                          "job_description": {
-                            "type": "string"
-                          },
-                          "label": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "title": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "label",
-                          "name"
-                        ],
-                        "additionalProperties": false
+                    "properties": {
+                      "deleted": {
+                        "type": "boolean"
                       },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "deleted": {
-                            "type": "boolean"
-                          }
-                        },
-                        "required": [
-                          "organization_id"
-                        ],
-                        "additionalProperties": false
+                      "department": {
+                        "type": "string"
+                      },
+                      "is_primary": {
+                        "type": "boolean"
+                      },
+                      "job_description": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
                       }
-                    ]
+                    },
+                    "required": [
+                      "label",
+                      "name"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "phones": {
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "is_primary": {
-                            "type": "boolean"
-                          },
-                          "number": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "uri": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "number"
-                        ],
-                        "additionalProperties": false
+                    "properties": {
+                      "phone_id": {
+                        "type": "string"
                       },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "phone_id": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "phone_id"
-                        ],
-                        "additionalProperties": false
+                      "is_primary": {
+                        "type": "boolean"
+                      },
+                      "number": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "uri": {
+                        "type": "string"
                       }
-                    ]
+                    },
+                    "required": [
+                      "number"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "privacy_features": {
@@ -3277,74 +2855,60 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "allOf": [
-                      {
+                    "properties": {
+                      "privacy_features": {
                         "type": "object",
-                        "properties": {
-                          "expire_date": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "fingerprint": {
-                            "type": "string"
-                          },
-                          "key": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "size": {
-                            "type": "integer",
-                            "format": "int32"
-                          }
-                        },
-                        "required": [
-                          "key",
-                          "name"
-                        ],
-                        "additionalProperties": false
+                        "properties": {}
                       },
-                      {
+                      "pi": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "technic": {
+                            "type": "integer"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "context": {
+                            "type": "integer"
                           },
-                          "date_insert": {
-                            "type": "string",
-                            "format": "date-time"
+                          "comportment": {
+                            "type": "integer"
                           },
-                          "date_update": {
-                            "type": "string",
-                            "format": "date-time"
+                          "version": {
+                            "type": "integer"
                           }
                         },
-                        "required": [
-                          "date_insert"
-                        ],
-                        "additionalProperties": false
+                        "additionalProperties": true
+                      },
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "date_update": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "expire_date": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fingerprint": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "format": "int32"
                       }
-                    ]
+                    },
+                    "required": [
+                      "key",
+                      "name"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "tags": {
@@ -3374,8 +2938,6 @@
                       }
                     },
                     "required": [
-                      "name",
-                      "type",
                       "label"
                     ],
                     "additionalProperties": false
@@ -3522,18 +3084,14 @@
     "/v1/imports": {
       "post": {
         "consumes": [
-          "text/vcard",
-          "text/vcf",
-          "text/x-vcard"
+          "multipart/form-data"
         ],
         "parameters": [
           {
-            "name": "vcard",
+            "name": "file",
             "in": "formData",
             "description": "the vcard file to upload",
-            "schema": {
-              "type": "file"
-            },
+            "type": "file",
             "required": true
           }
         ],
@@ -4190,8 +3748,6 @@
                             }
                           },
                           "required": [
-                            "name",
-                            "type",
                             "label"
                           ],
                           "additionalProperties": false
@@ -4411,8 +3967,6 @@
                       }
                     },
                     "required": [
-                      "name",
-                      "type",
                       "label"
                     ],
                     "additionalProperties": false
@@ -4732,8 +4286,6 @@
                       }
                     },
                     "required": [
-                      "name",
-                      "type",
                       "label"
                     ],
                     "additionalProperties": false
@@ -5015,8 +4567,6 @@
                           }
                         },
                         "required": [
-                          "name",
-                          "type",
                           "label"
                         ],
                         "additionalProperties": false
@@ -5220,8 +4770,6 @@
                       }
                     },
                     "required": [
-                      "name",
-                      "type",
                       "label"
                     ],
                     "additionalProperties": false
@@ -5704,8 +5252,6 @@
                       }
                     },
                     "required": [
-                      "name",
-                      "type",
                       "label"
                     ],
                     "additionalProperties": false
@@ -5916,8 +5462,6 @@
                       }
                     },
                     "required": [
-                      "name",
-                      "type",
                       "label"
                     ],
                     "additionalProperties": false
@@ -6390,8 +5934,6 @@
                       }
                     },
                     "required": [
-                      "name",
-                      "type",
                       "label"
                     ],
                     "additionalProperties": false
@@ -6507,8 +6049,6 @@
                 }
               },
               "required": [
-                "name",
-                "type",
                 "label"
               ],
               "additionalProperties": false
