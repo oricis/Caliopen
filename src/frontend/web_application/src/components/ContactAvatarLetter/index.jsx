@@ -8,6 +8,7 @@ export const SIZE_SMALL = 'small';
 export const SIZE_MEDIUM = 'medium';
 export const SIZE_LARGE = 'large';
 export const SIZE_XLARGE = 'xlarge';
+export const SIZE_XXLARGE = 'xxlarge';
 
 const ContactAvatarLetter = ({ contact, className, size, isRound }) => {
   const ClassNameShape = classnames(
@@ -19,6 +20,7 @@ const ContactAvatarLetter = ({ contact, className, size, isRound }) => {
     [SIZE_MEDIUM]: 'm-avatar--medium',
     [SIZE_LARGE]: 'm-avatar--large',
     [SIZE_XLARGE]: 'm-avatar--xlarge',
+    [SIZE_XXLARGE]: 'm-avatar--xxlarge',
   };
   const classNameSize = classNameModifiers[size];
   const letterClassNameSize = classNameSize ? `${classNameSize}__letter` : null;
@@ -35,7 +37,7 @@ const ContactAvatarLetter = ({ contact, className, size, isRound }) => {
 
 ContactAvatarLetter.propTypes = {
   contact: PropTypes.shape({}),
-  size: PropTypes.oneOf([SIZE_SMALL, SIZE_MEDIUM, SIZE_LARGE, SIZE_XLARGE]),
+  size: PropTypes.oneOf([SIZE_SMALL, SIZE_MEDIUM, SIZE_LARGE, SIZE_XLARGE, SIZE_XXLARGE]),
   isRound: PropTypes.bool,
   className: PropTypes.string,
 };

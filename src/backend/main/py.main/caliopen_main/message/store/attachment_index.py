@@ -16,4 +16,5 @@ class IndexedMessageAttachment(dsl.InnerObjectWrapper):
     file_name = dsl.String()
     is_inline = dsl.Boolean()
     size = dsl.Integer()
-    uri = dsl.String()  # objectsStore uri for temporary file (draft)
+    url = dsl.String()  # objectsStore uri for temporary file (draft)
+    mime_boundary = dsl.String()  # for attachments embedded in raw messages

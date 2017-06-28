@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .user import User, UserName, ReservedName, Counter, FilterRule
+from .user import User, UserName, ReservedName, FilterRule
 from .user import RemoteIdentity, IndexUser
 from .contact import Contact, IndexedContact, ContactLookup
 from .contact import Organization, PostalAddress
@@ -15,7 +15,7 @@ from .local_identity import LocalIdentity
 
 
 __all__ = [
-    'User', 'UserName', 'Counter', 'UserTag', 'FilterRule', 'ReservedName',
+    'User', 'UserName', 'UserTag', 'FilterRule', 'ReservedName',
     'RemoteIdentity', 'IndexUser',
     'Contact', 'ContactLookup', 'IndexedContact',
     'Organization', 'PostalAddress',

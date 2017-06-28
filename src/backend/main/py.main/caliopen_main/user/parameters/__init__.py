@@ -12,7 +12,7 @@ from .contact import NewSocialIdentity, SocialIdentity, NewPublicKey, PublicKey
 from .contact import NewContact, Contact, ShortContact
 from .tag import ResourceTag, NewUserTag, UserTag
 from .device import NewDevice, Device
-from .identity import Identity, LocalIdentity
+from .identity import Identity, LocalIdentity, NewRemoteIdentity, RemoteIdentity
 
 __all__ = [
     'InternetAddressType', 'PhoneNumberType',
@@ -24,5 +24,5 @@ __all__ = [
     'NewContact', 'Contact', 'ShortContact',
     'NewUserTag', 'UserTag', 'ResourceTag',
     'NewDevice', 'Device',
-    'Identity', 'LocalIdentity'
+    'Identity', 'LocalIdentity', 'NewRemoteIdentity', 'RemoteIdentity',
 ]

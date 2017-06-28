@@ -13,6 +13,8 @@ class IAttachmentParser(zope.interface.Interface):
     data = zope.interface.Attribute('Attachment data')
     size = zope.interface.Attribute('Attachment size')
     charset = zope.interface.Attribute('Attachment charset')
+    is_inline = zope.interface.Attribute('Is inline')
+    mime_boundary = zope.interface.Attribute('MIME boundary value')
 
 
 class IParticipantParser(zope.interface.Interface):

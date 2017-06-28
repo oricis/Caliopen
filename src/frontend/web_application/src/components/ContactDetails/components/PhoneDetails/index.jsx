@@ -19,11 +19,21 @@ class PhoneDetails extends Component {
   constructor(props) {
     super(props);
     this.handleDelete = this.handleDelete.bind(this);
+    this.initTranslations();
+  }
+
+  initTranslations() {
+    const { __ } = this.props;
+    this.typeTranslations = {
+      work: __('contact.phone_type.work'),
+      home: __('contact.phone_type.home'),
+      other: __('contact.phone_type.other'),
+    };
   }
 
   handleDelete() {
     const { onDelete, phone } = this.props;
-    onDelete({ phone });
+    onDelete({ contactDetail: phone });
   }
 
   renderDeleteButton() {
@@ -47,6 +57,7 @@ class PhoneDetails extends Component {
         <Icon className="m-phone-details__icon" type="phone" />
         {phone.number}
         {' '}
+        {phone.type && <small><em>{this.typeTranslations[phone.type]}</em></small>}
         {editMode && this.renderDeleteButton()}
       </span>
     );

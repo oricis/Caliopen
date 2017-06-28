@@ -40,7 +40,7 @@ class TestMailFormat(unittest.TestCase):
         mail = MailMessage(data)
         self.assertTrue(verifyObject(IMessageParser, mail))
         self.assertTrue(len(mail.participants) > 1)
-        self.assertEqual(len(mail.attachments), 2)
+        self.assertEqual(len(mail.attachments), 1)
         self.assertEqual(mail.subject, 'signed content')
         self.assertTrue(isinstance(mail.date, datetime))
         expected_features = {'message_encrypted': False,

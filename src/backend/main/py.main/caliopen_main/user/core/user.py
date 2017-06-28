@@ -20,8 +20,8 @@ from ..store import (User as ModelUser,
                      FilterRule as ModelFilterRule,
                      ReservedName as ModelReservedName,
                      LocalIdentity as ModelLocalIdentity,
-                     ContactLookup
-                     )
+                     RemoteIdentity as ModelRemoteIdentity,
+                     ContactLookup)
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
 from .contact import Contact as CoreContact
@@ -37,6 +37,13 @@ class LocalIdentity(BaseCore):
 
     _model_class = ModelLocalIdentity
     _pkey_name = 'identifier'
+
+
+class RemoteIdentity(BaseCore):
+    """User remote identity core class."""
+
+    _model_class = ModelRemoteIdentity
+    _pkey_name = 'identity_id'
 
 
 class Tag(BaseUserCore):
@@ -132,7 +139,6 @@ class User(BaseCore):
         # then
         #      create user and linked contact
         """
-
         def rollback_username_storage(username):
             UserName.get(username).delete()
 
@@ -377,3 +383,21 @@ class User(BaseCore):
         except Exception as exc:
             log.error('Unexpected exception {}'.format(exc))
         return False
+
+    def add_remote_identity(self, remote):
+        """Add a remote identity to an user.
+
+        return: the RemoteIdentity created instance.
+        rtype: RemoteIdentity
+        """
+        # XXX check for duplicate before insert
+        identifier = remote.identifier.lower()
+        name = remote.display_name if remote.display_name else identifier
+        identity = RemoteIdentity.create(user_id=self.user_id,
+                                         identifier=identifier,
+                                         display_name=name,
+                                         type=remote.type,
+                                         status=remote.status,
+                                         last_check=None,
+                                         infos=remote.infos)
+        return identity

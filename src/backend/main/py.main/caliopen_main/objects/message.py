@@ -99,6 +99,7 @@ class Message(base.ObjectIndexable):
             draft_param.message_id = uuid.uuid4()
             draft_param.validate_consistency(user_id, True)
         except Exception as exc:
+            log.warn("draft_param error")
             log.warn(exc)
             raise exc
 

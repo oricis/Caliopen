@@ -11,16 +11,18 @@ import './style.scss';
 const CheckboxFieldGroup = ({
   id, className, label, showTextLabel, displaySwitch, errors, ...inputProps
 }) => {
+  const checkboxId = id || uuidV1();
+
   const renderCheckbox = () => (
-    <Checkbox id={id} label={label} {...inputProps} />
+    <Checkbox id={checkboxId} label={label} {...inputProps} />
   );
 
 
   const renderSwitch = () => (
     <div>
-      <Switch id={id} label={label} {...inputProps} />
+      <Switch id={checkboxId} label={label} {...inputProps} />
       {showTextLabel &&
-        <label htmlFor={id} className="m-switch-field-group__label">{label}</label>
+        <label htmlFor={checkboxId} className="m-switch-field-group__label">{label}</label>
       }
     </div>
   );
@@ -47,7 +49,7 @@ CheckboxFieldGroup.propTypes = {
 };
 
 CheckboxFieldGroup.defaultProps = {
-  id: uuidV1(),
+  id: undefined,
   className: null,
   showTextLabel: false,
   displaySwitch: false,

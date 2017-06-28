@@ -170,7 +170,8 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	/** messages API **/
 	msg := api.Group("/messages", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
 	msg.POST("/:message_id/actions", messages.Actions)
-	//draft attachments
+	//attachments
 	msg.POST("/:message_id/attachments", messages.UploadAttachment)
 	msg.DELETE("/:message_id/attachments/:attachment_id", messages.DeleteAttachment)
+	msg.GET("/:message_id/attachments/:attachment_id", messages.DownloadAttachment)
 }

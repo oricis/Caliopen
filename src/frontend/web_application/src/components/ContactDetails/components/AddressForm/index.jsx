@@ -47,7 +47,7 @@ class AddressForm extends Component {
   handleSubmit(ev) {
     ev.preventDefault();
     const { contactDetail } = this.state;
-    this.props.onSubmit({ address: contactDetail });
+    this.props.onSubmit({ contactDetail });
   }
 
   handleInputChange(event) {
@@ -76,6 +76,19 @@ class AddressForm extends Component {
           </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
+          </FormRow>
+          <FormRow>
+            <FormColumn size="shrink">
+              <SelectFieldGroup
+                name="type"
+                value={this.state.contactDetail.type}
+                onChange={this.handleInputChange}
+                label={__('contact.address_form.type.label')}
+                options={addressTypeOptions}
+              />
+            </FormColumn>
+          </FormRow>
+          <FormRow>
             <FormColumn size="medium">
               <TextFieldGroup
                 name="street"
@@ -114,15 +127,6 @@ class AddressForm extends Component {
                 value={this.state.contactDetail.region}
                 onChange={this.handleInputChange}
                 label={__('contact.address_form.region.label')}
-              />
-            </FormColumn>
-            <FormColumn size="shrink">
-              <SelectFieldGroup
-                name="type"
-                value={this.state.contactDetail.type}
-                onChange={this.handleInputChange}
-                label={__('contact.address_form.type.label')}
-                options={addressTypeOptions}
               />
             </FormColumn>
           </FormRow>
