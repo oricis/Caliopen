@@ -351,9 +351,9 @@ class ObjectUser(ObjectStorable):
                 if patch_current[key] in (None, [], {}):
                     create_sub_object = True
 
-            unmarshall_item(patch, key, self, self._attrs[key],
+            if patch[key] is not None:
+                unmarshall_item(patch, key, self, self._attrs[key],
                             create_sub_object)
-
         if "db" in options and options["db"] is True:
             # apply changes to db model and update db
             self.marshall_db()
@@ -570,7 +570,6 @@ def unmarshall_item(document, key, target_object, target_attr_type,
                 sub_obj = target_attr_type[0]()
                 sub_obj.unmarshall_dict(item)
                 if is_creation:
-                    print(sub_obj._model_class._pkey)
                     sub_obj.set_uuid()
                 lst.append(sub_obj)
         elif issubclass(target_attr_type[0], uuid.UUID):
@@ -597,6 +596,7 @@ def unmarshall_item(document, key, target_object, target_attr_type,
         else:
             setattr(target_object, key, document[key])
     else:
+        new_attr = document[key]
         if hasattr(target_attr_type, "validate"):
-            target_attr_type().validate(document[key])
-        setattr(target_object, key, document[key])
+            new_attr = target_attr_type().validate(document[key])
+        setattr(target_object, key, new_attr)
