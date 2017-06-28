@@ -597,4 +597,6 @@ def unmarshall_item(document, key, target_object, target_attr_type,
         else:
             setattr(target_object, key, document[key])
     else:
+        if hasattr(target_attr_type, "validate"):
+            target_attr_type().validate(document[key])
         setattr(target_object, key, document[key])
