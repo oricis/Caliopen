@@ -13,6 +13,7 @@ import DevicesRoute from './scenes/DevicesRoute';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
 import Tags from './scenes/Tags';
+import SettingsView from './scenes/SettingsView';
 import { Device } from './scenes/Devices';
 
 export const getRouteConfig = ({ __ }) => [
@@ -62,6 +63,11 @@ export const getRouteConfig = ({ __ }) => [
             path: '/settings/account',
             component: Account,
             label: __('settings.route.label.account'),
+          },
+          {
+            path: '/settings/view',
+            component: SettingsView,
+            label: __('settings.route.label.view'),
           },
           {
             path: '/settings/tags',
