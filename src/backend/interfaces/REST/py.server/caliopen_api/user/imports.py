@@ -30,8 +30,8 @@ class ContactImport(Api):
         # because swagger lib failed to do it correctly :(
         try:
             self.request.POST.getone("file")
-        except:
-            raise ValidationError("param <file> is missing in form-data")
+        except Exception as exc:
+            raise ValidationError(exc)
 
         data = self.request.POST['file'].file
         vcards = read_file(data, False)

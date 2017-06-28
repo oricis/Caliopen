@@ -370,7 +370,6 @@ class ObjectUser(ObjectStorable):
             if key not in patch_current.keys():
                 # means patch wants to add the key. Value in db should be null
                 # TODO : need to check if cur_val is an empty array or empty dict
-                print(cur_val)
                 if cur_val != None:
                     return main_errors.PatchConflict(
                         message=msg.format(0, key))
