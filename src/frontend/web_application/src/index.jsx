@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { ConnectedRouter } from 'react-router-redux';
 import { AppContainer } from 'react-hot-loader';
 import PiwikReactRouter from 'piwik-react-router';
-import { v1 as uuidv1 } from 'uuid';
 import App from './App';
 import configureStore from './store/configure-store';
 import getRouterHistory from './services/router-history';
@@ -12,7 +11,6 @@ import { getLocale } from './services/i18n';
 const piwik = PiwikReactRouter({
   url: 'https://piwik.caliopen.org/analytics',
   siteId: 6,
-  userId: uuidv1(), //userId can be username, email adress or uuid
 });
 
 let devTools;
