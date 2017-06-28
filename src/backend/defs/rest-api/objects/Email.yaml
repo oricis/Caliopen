@@ -5,7 +5,6 @@ properties:
   email_id:
     type: string
 required:
-- email_id
 - address
 additionalProperties: false
 
