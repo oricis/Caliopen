@@ -1,12 +1,10 @@
 ---
 type: object
-allOf:
-- "$ref": NewSocialIdentity.yaml
-- type: object
-  properties:
-    identity_id:
+properties:
+  "$ref": NewSocialIdentity.yaml#/properties
+  identity_id:
       type: string
-  required:
-  - identity_id
-  additionalProperties: false
+required:
+- name
+additionalProperties: false
 

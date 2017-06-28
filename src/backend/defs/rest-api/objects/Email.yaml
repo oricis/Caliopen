@@ -7,4 +7,3 @@ properties:
 required:
 - address
 additionalProperties: false
-

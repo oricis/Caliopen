@@ -1,22 +1,21 @@
 ---
 type: object
-allOf:
-- "$ref": NewPublicKey.yaml
-- type: object
-  properties:
-    privacy_features:
-      type: object
-      "$ref": PrivacyFeatures.yaml
-    pi:
-      type: object
-      "$ref": PI.yaml
-    date_insert:
-      type: string
-      format: date-time
-    date_update:
-      type: string
-      format: date-time
-  required:
-  - date_insert
-  additionalProperties: false
+properties:
+  "$ref": NewPublicKey.yaml#/properties
+  privacy_features:
+    type: object
+    "$ref": PrivacyFeatures.yaml
+  pi:
+    type: object
+    "$ref": PI.yaml
+  date_insert:
+    type: string
+    format: date-time
+  date_update:
+    type: string
+    format: date-time
+required:
+- key
+- name
+additionalProperties: false
 

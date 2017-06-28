@@ -1,12 +1,11 @@
 ---
 type: object
-allOf:
-- "$ref": NewOrganization.yaml
-- type: object
-  properties:
-    deleted:
-      type: boolean
-  required:
-  - organization_id
-  additionalProperties: false
+properties:
+  "$ref": NewOrganization.yaml#/properties
+  deleted:
+    type: boolean
+required:
+- label
+- name
+additionalProperties: false
 
