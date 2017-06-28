@@ -10,7 +10,7 @@ and build a suitable representation for displaying.
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
-import elasticsearch_dsl as dsl
+from elasticsearch_dsl import A
 from caliopen_storage.store.model import BaseIndexDocument
 from caliopen_main.message.store.message_index import IndexedMessage
 
@@ -47,8 +47,8 @@ class DiscussionIndexManager(object):
         search = self._prepare_search(min_pi, max_pi)
         # Do bucket term aggregation, sorted by last_message date
         size = offset + (limit * 2)
-        agg = dsl.A('terms', field='discussion_id',
-                    order={'last_message': 'desc'}, size=size, shard_size=size)
+        agg = A('terms', field='discussion_id',
+                order={'last_message': 'desc'}, size=size, shard_size=size)
         search.aggs.bucket('discussions', agg).metric('last_message', 'max',
                                                       field='date')
         # XXX add sorting on message date_insert

@@ -6911,7 +6911,7 @@
         }
       }
     },
-    "/v1/remotes": {
+    "/v1/identities/remotes": {
       "post": {
         "description": "create a new remote identity for an user",
         "tags": [
@@ -6961,6 +6961,122 @@
                 "location": {
                   "type": "string",
                   "description": "url to retrieve new remote identity's infos at /remotes/{identifier}"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/participants/suggest": {
+      "get": {
+        "description": "Returns a list of suggestions according to given parameters/filter. Search is performed within current user's indexes (messages & contacts).",
+        "tags": [
+          "participants",
+          "suggest"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "context",
+            "in": "query",
+            "description": "current user's context (to optimize suggest relevance)",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "msg_compose"
+            ]
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "a string (3 chars at least) from which to perform the suggestion search",
+            "required": true,
+            "type": "string",
+            "minLength": 3
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "a list of suggestions for user to pick-up an identity",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "description": "could be empty if suggestion is a contact (or should we automatically put preferred identity's address ?)"
+                  },
+                  "contact_id": {
+                    "type": "string",
+                    "description": "contact's ID if any"
+                  },
+                  "label": {
+                    "type": "string",
+                    "description": "name of contact or <display-name> in case of an address returned from participants lookup, if any"
+                  },
+                  "protocol": {
+                    "type": "string",
+                    "description": "email, IRC…"
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "'participant' or 'contact', ie from where this suggestion came from"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "malform request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }

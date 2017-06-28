@@ -16,7 +16,7 @@ requires = [
     'setuptools',
     'bcrypt',
     'PyYAML',
-    'elasticsearch-dsl==2.1.0',
+    'elasticsearch-dsl>=5.0.0,<6.0.0',
     'cassandra-driver==3.4.1',
     'schematics',
     'simplejson',

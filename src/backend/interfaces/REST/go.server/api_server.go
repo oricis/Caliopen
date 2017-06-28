@@ -8,6 +8,7 @@ import (
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/messages"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/participants"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/users"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	log "github.com/Sirupsen/logrus"
@@ -174,4 +175,8 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	msg.POST("/:message_id/attachments", messages.UploadAttachment)
 	msg.DELETE("/:message_id/attachments/:attachment_id", messages.DeleteAttachment)
 	msg.GET("/:message_id/attachments/:attachment_id", messages.DownloadAttachment)
+
+	/** participants API **/
+	parts := api.Group("/participants", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
+	parts.GET("/suggest", participants.Suggest)
 }

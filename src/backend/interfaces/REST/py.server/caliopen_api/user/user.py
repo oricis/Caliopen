@@ -134,8 +134,8 @@ class MeUserAPI(Api):
         return ReturnUser.build(user).serialize()
 
 
-@resource(path='/remotes/{identifier}',
-          collection_path='/remotes',
+@resource(path='/identities/remotes/{identifier}',
+          collection_path='/identities/remotes',
           name='RemoteIdentities',
           factory=DefaultContext)
 class RemoteIdentityAPI(Api):

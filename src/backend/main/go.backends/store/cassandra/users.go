@@ -7,6 +7,7 @@
 package store
 
 import (
+	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/gocql/gocql"
 )
@@ -19,6 +20,10 @@ func (cb *CassandraBackend) GetLocalsIdentities(user_id string) (identities []Lo
 	user_identities := make(map[string]interface{})
 	cb.Session.Query(`SELECT local_identities from user where user_id = ?`, user_id).MapScan(user_identities)
 
+	if user_identities["local_identities"] == nil {
+		err = errors.New("[cassandra] : local identities lookup returns empty")
+		return
+	}
 	for _, identifier := range user_identities["local_identities"].([]string) {
 		i := make(map[string]interface{})
 		cb.Session.Query(`SELECT * FROM local_identity where identifier = ?`, identifier).MapScan(i)

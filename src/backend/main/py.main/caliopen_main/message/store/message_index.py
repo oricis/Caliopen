@@ -2,7 +2,8 @@
 """Caliopen message index classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-import elasticsearch_dsl as dsl
+from elasticsearch_dsl import Mapping, Nested, Text, Keyword, Date, Boolean, \
+    Integer, Completion
 from caliopen_storage.store.model import BaseIndexDocument
 from caliopen_main.user.store.tag_index import IndexedResourceTag
 
@@ -18,27 +19,27 @@ class IndexedMessage(BaseIndexDocument):
 
     doc_type = 'indexed_message'
 
-    attachments = dsl.Nested(doc_class=IndexedMessageAttachment)
-    body = dsl.String()
-    date = dsl.Date()
-    date_delete = dsl.Date()
-    date_insert = dsl.Date()
-    discussion_id = dsl.String()
-    external_references = dsl.Nested(doc_class=IndexedExternalReferences)
-    identities = dsl.Nested(doc_class=IndexedIdentity)
-    importance_level = dsl.Integer()
-    is_answered = dsl.Boolean()
-    is_draft = dsl.Boolean()
-    is_unread = dsl.Boolean()
-    message_id = dsl.String()
-    parent_id = dsl.String()
-    participants = dsl.Nested(doc_class=IndexedParticipant)
-    privacy_features = dsl.Nested()
-    pi = dsl.Nested(doc_class=PIIndexModel)
-    raw_msg_id = dsl.String()
-    subject = dsl.String()
-    tags = dsl.Nested(doc_class=IndexedResourceTag)
-    type = dsl.String()
+    attachments = Nested(doc_class=IndexedMessageAttachment)
+    body = Text()
+    date = Date()
+    date_delete = Date()
+    date_insert = Date()
+    discussion_id = Keyword()
+    external_references = Nested(doc_class=IndexedExternalReferences)
+    identities = Nested(doc_class=IndexedIdentity)
+    importance_level = Integer()
+    is_answered = Boolean()
+    is_draft = Boolean()
+    is_unread = Boolean()
+    message_id = Keyword()
+    parent_id = Keyword()
+    participants = Nested(doc_class=IndexedParticipant)
+    privacy_features = Nested()
+    pi = Nested(doc_class=PIIndexModel)
+    raw_msg_id = Keyword()
+    subject = Text()
+    tags = Nested(doc_class=IndexedResourceTag)
+    type = Keyword()
 
     @property
     def message_id(self):
@@ -48,33 +49,41 @@ class IndexedMessage(BaseIndexDocument):
     @classmethod
     def create_mapping(cls, user_id):
         """Create elasticsearch mapping object for an user."""
-        m = dsl.Mapping(cls.doc_type)
+
+        m = Mapping(cls.doc_type)
         m.meta('_all', enabled=False)
-        m.field('attachments', dsl.Nested(doc_class=IndexedMessageAttachment,
-                                          include_in_all=True))
-        m.field('body', 'string')
+        m.field('attachments', Nested(doc_class=IndexedMessageAttachment,
+                                      include_in_all=True))
+        m.field('body', 'text')
         m.field('date', 'date')
         m.field('date_delete', 'date')
         m.field('date_insert', 'date')
-        m.field('discussion_id', dsl.String(index='not_analyzed'))
+        m.field('discussion_id', Keyword())
         m.field('external_references',
-                dsl.Nested(doc_class=IndexedExternalReferences,
-                           include_in_all=True))
+                Nested(doc_class=IndexedExternalReferences,
+                       include_in_all=True))
         m.field('identities',
-                dsl.Nested(doc_class=IndexedIdentity, include_in_all=True))
+                Nested(doc_class=IndexedIdentity, include_in_all=True))
         m.field('importance_level', 'short')
         m.field('is_answered', 'boolean')
         m.field('is_draft', 'boolean')
         m.field('is_unread', 'boolean')
-        m.field('message_id', dsl.String(index='not_analyzed'))
-        m.field('parent_id', dsl.String(index='not_analyzed'))
-        m.field('participants',
-                dsl.Nested(doc_class=IndexedParticipant, include_in_all=True))
-        m.field('privacy_features', dsl.Nested(include_in_all=True))
-        m.field('raw_msg_id', dsl.String(index='not_analyzed'))
-        m.field('subject', 'string')
+        m.field('message_id', Keyword())
+        m.field('parent_id', Keyword())
+        participants = Nested(doc_class=IndexedParticipant, include_in_all=True,
+                              properties={
+                                  "address": Keyword(),
+                                  "contact_id": Keyword(),
+                                  "label": Text(),
+                                  "protocol": Keyword(),
+                                  "type": Keyword()
+                              })
+        m.field('participants', participants)
+        m.field('privacy_features', Nested(include_in_all=True))
+        m.field('raw_msg_id', Keyword())
+        m.field('subject', 'text')
         m.field('tags',
-                dsl.Nested(doc_class=IndexedResourceTag, include_in_all=True))
-        m.field('type', dsl.String(index='not_analyzed'))
+                Nested(doc_class=IndexedResourceTag, include_in_all=True))
+        m.field('type', Keyword())
         m.save(using=cls.client(), index=user_id)
         return m

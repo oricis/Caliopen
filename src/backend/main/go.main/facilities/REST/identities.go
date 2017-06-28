@@ -4,7 +4,9 @@
 
 package REST
 
-import . "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+import (
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+)
 
 func (rest *RESTfacility) LocalsIdentities(user_id string) ([]LocalIdentity, error) {
 	return rest.store.GetLocalsIdentities(user_id)

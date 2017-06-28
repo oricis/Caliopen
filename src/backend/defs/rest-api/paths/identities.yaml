@@ -1,5 +1,5 @@
 ---
-locals:
+identities_locals:
   get:
     description: returns the list of user's local identities
     tags:
@@ -28,7 +28,7 @@ locals:
         schema:
           "$ref": "../objects/Error.yaml"
 
-remotes:
+identities_remotes:
   post:
     description: create a new remote identity for an user
     tags:
