@@ -83,7 +83,10 @@ class ReturnCoreObject(BaseReturnObject):
             if attr is None and v is not None:
                 setattr(obj, k, v)
             else:
-                setattr(obj, k, attr)
+                if hasattr(attr, 'to_dict'):
+                    setattr(obj, k, attr.to_dict())
+                else:
+                    setattr(obj, k, attr)
         obj.validate()
         return obj
 

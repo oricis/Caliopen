@@ -33,7 +33,7 @@ class ImDetails extends Component {
 
   handleDelete() {
     const { onDelete, im } = this.props;
-    onDelete({ im });
+    onDelete({ contactDetail: im });
   }
 
   renderDeleteButton() {

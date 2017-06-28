@@ -9,9 +9,6 @@ from pyramid.response import Response
 from caliopen_main.parsers.vcard import parse_vcards
 from caliopen_main.parsers.vcard import read_file
 
-import logging
-log = logging.getLogger(__name__)
-
 from ..base.exception import (ValidationError,
                               Unprocessable)
 
@@ -22,13 +19,19 @@ log = logging.getLogger(__name__)
 
 @resource(collection_path='/imports', path='')
 class ContactImport(Api):
-
     def __init__(self, request):
         self.request = request
         self.user = request.authenticated_userid
 
     @view(permission='authenticated')
     def collection_post(self):
+
+        # need to check by ourself if <file> param is present
+        # because swagger lib failed to do it correctly :(
+        try:
+            self.request.POST.getone("file")
+        except Exception as exc:
+            raise ValidationError(exc)
 
         data = self.request.POST['file'].file
         vcards = read_file(data, False)
@@ -41,7 +44,8 @@ class ContactImport(Api):
             for i in new_contacts:
                 CoreContact.create(self.user, i)
         except Exception as exc:
-            log.error('File valid but we can create the new contact: {}'.format(exc))
+            log.error(
+                'File valid but we can create the new contact: {}'.format(exc))
             raise Unprocessable(exc)
 
         return Response(status=200)

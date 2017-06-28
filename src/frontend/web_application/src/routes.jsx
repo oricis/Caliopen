@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import { withTranslator } from '@gandi/react-translate';
 import Account from './scenes/Account';
+import Contact from './scenes/Contact';
 import Auth from './scenes/Auth';
 import DiscussionList from './scenes/DiscussionList';
 import AppRoute from './scenes/AppRoute';
@@ -42,7 +43,13 @@ export const getRouteConfig = ({ __ }) => [
       },
       {
         path: '/contacts',
+        exact: true,
         component: ContactBook,
+        app: 'contact',
+      },
+      {
+        path: '/contacts/:contactId',
+        component: Contact,
         app: 'contact',
       },
       {

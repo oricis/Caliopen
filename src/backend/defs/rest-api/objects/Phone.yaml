@@ -1,12 +1,10 @@
 ---
 type: object
-allOf:
-- "$ref": NewPhone.yaml
-- type: object
-  properties:
-    phone_id:
+properties:
+  "$ref": NewPhone.yaml#/properties
+  phone_id:
       type: string
-  required:
-  - phone_id
-  additionalProperties: false
+required:
+- number
+additionalProperties: false
 

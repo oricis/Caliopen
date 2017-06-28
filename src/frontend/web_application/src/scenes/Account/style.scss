@@ -14,11 +14,6 @@
     @include flex-grid-column(12, 0);
   }
 
-  &__pi {
-    margin-top: $co-margin;
-    margin-bottom: $co-margin;
-  }
-
   &__contact-profile {
     margin-bottom: $co-margin;
   }

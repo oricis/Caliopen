@@ -2,7 +2,10 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-contact-profile-form {
+  margin-top: $co-margin;
+
   &__save-button {
+    margin-top: $co-margin;
     line-height: $co-component__height;
   }
 
@@ -19,9 +22,12 @@
     }
 
     &__field-group--medium,
+    &__title,
     &__firstname,
+    &__name-prefix,
+    &__name-suffix,
     &__lastname {
-      @include flex-grid-column(6);
+      @include flex-grid-column(12);
     }
 
     &__field-group--small { @include flex-grid-column(3); }

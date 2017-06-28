@@ -7,11 +7,24 @@ import './style.scss';
 
 const EMAIL_TYPES = ['work', 'home', 'other'];
 
+const generateStateFromProps = (props, prevState) => ({
+  contactDetail: {
+    ...prevState.contactDetail,
+    ...props.contactDetail,
+  },
+});
+
 class EmailForm extends Component {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     onSubmit: PropTypes.func.isRequired,
+    contactDetail: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    errors: [],
+    contactDetail: undefined,
   };
 
   constructor(props) {
@@ -29,6 +42,14 @@ class EmailForm extends Component {
     this.initTranslations();
   }
 
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(prevState => generateStateFromProps(nextProps, prevState));
+  }
+
   initTranslations() {
     const { __ } = this.props;
     this.addressTypes = {
@@ -41,7 +62,7 @@ class EmailForm extends Component {
   handleSubmit(ev) {
     ev.preventDefault();
     const { contactDetail } = this.state;
-    this.props.onSubmit({ email: contactDetail });
+    this.props.onSubmit({ contactDetail });
   }
 
   handleInputChange(event) {
@@ -110,11 +131,7 @@ class EmailForm extends Component {
                 displaySwitch
                 showTextLabel
               />
-              {' '}
-              {__('contact.email_form.is_primary.label')}
             </FormColumn>
-          </FormRow>
-          <FormRow>
             <FormColumn size="shrink" className="m-email-form__action">
               <Button type="submit" display="expanded" shape="plain" icon="plus">
                 {__('contact.action.add_contact_detail')}

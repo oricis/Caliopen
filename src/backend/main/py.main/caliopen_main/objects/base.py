@@ -369,9 +369,11 @@ class ObjectUser(ObjectStorable):
             msg = "Patch current_state not consistent with db, step {} key {}"
             if key not in patch_current.keys():
                 # means patch wants to add the key. Value in db should be null
+                # TODO : need to check if cur_val is an empty array or empty dict
                 if cur_val != None:
                     return main_errors.PatchConflict(
                         message=msg.format(0, key))
+                # TODO : need to instanciate nested object
                 setattr(self, key, getattr(obj_patch_new, key))
             else:
                 if isinstance(current_attr, types.ListType):

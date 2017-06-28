@@ -320,6 +320,8 @@ messages_{message_id}_attachments_{attachment_index}:
     responses:
       '200':
         description: the attachment, in the 'content-transfer-encoding' format of the part.
+        schema:
+          type: file
       '400':
         description: bad request
       '401':

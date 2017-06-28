@@ -1,26 +1,9 @@
 import React, { PropTypes } from 'react';
+import { calcPolygonPoints, calcGridCoordinates } from './services/svg';
 import './style.scss';
 
-
-function calcXpoint(level, tilt, axeLength) {
-  return Math.round(axeLength - (level * Math.sin((tilt * Math.PI) / 180)));
-}
-function calcYpoint(level, tilt, axeLength) {
-  return Math.round(axeLength - (level * Math.cos((tilt * Math.PI) / 180)));
-}
-
-const Grid = ({ pi, angle, axeLength }) => {
-  const axeCoordinates = [];
-  const outlinePoints = [];
-  let tilt = 0;
-  pi.forEach((p) => {
-    const axeName = p.name;
-    const pointX = calcXpoint(axeLength, tilt, axeLength);
-    const pointY = calcYpoint(axeLength, tilt, axeLength);
-    outlinePoints.push(pointX, pointY);
-    axeCoordinates.push({ axeName, x: pointX, y: pointY });
-    tilt -= angle;
-  });
+const Grid = ({ pi, axeLength }) => {
+  const { axeCoordinates, outlinePoints } = calcGridCoordinates({ pi, axeLength });
 
   return (
     <g className="m-pi-graph__grid">
@@ -44,22 +27,12 @@ const Grid = ({ pi, angle, axeLength }) => {
 };
 
 Grid.propTypes = {
-  pi: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  angle: PropTypes.number.isRequired,
+  pi: PropTypes.shape({}).isRequired,
   axeLength: PropTypes.number.isRequired,
 };
 
-const Polygon = ({ pi, angle, axeLength }) => {
-  const polygonPoints = [];
-  let tilt = 0;
-  pi.forEach((p) => {
-    const piLevel = p.level;
-    polygonPoints.push(
-      calcXpoint(piLevel, tilt, axeLength),
-      calcYpoint(piLevel, tilt, axeLength)
-    );
-    tilt -= angle;
-  });
+const Polygon = ({ pi, axeLength }) => {
+  const polygonPoints = calcPolygonPoints({ pi, axeLength });
 
   return (
     <polygon
@@ -70,12 +43,11 @@ const Polygon = ({ pi, angle, axeLength }) => {
 };
 
 Polygon.propTypes = {
-  pi: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  angle: PropTypes.number.isRequired,
+  pi: PropTypes.shape({}).isRequired,
   axeLength: PropTypes.number.isRequired,
 };
 
-const PiGraph = ({ pi, angle, gridWidth }) => {
+const PiGraph = ({ pi, gridWidth }) => {
   const viewBox = [0, 0, gridWidth, gridWidth];
   const axeLength = gridWidth / 2;
 
@@ -88,12 +60,10 @@ const PiGraph = ({ pi, angle, gridWidth }) => {
     >
       <Polygon
         pi={pi}
-        angle={angle}
         axeLength={axeLength}
       />
       <Grid
         pi={pi}
-        angle={angle}
         axeLength={axeLength}
       />
     </svg>
@@ -101,8 +71,7 @@ const PiGraph = ({ pi, angle, gridWidth }) => {
 };
 
 PiGraph.propTypes = {
-  pi: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  angle: PropTypes.number.isRequired,
+  pi: PropTypes.shape({}).isRequired,
   gridWidth: PropTypes.number.isRequired,
 };
 

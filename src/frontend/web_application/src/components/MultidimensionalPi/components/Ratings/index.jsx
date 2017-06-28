@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
+import { getAveragePI, getPiProps } from '../../services/pi';
 import './style.scss';
 
 const Rating = ({ name, level, piMax, className, mini }) => {
@@ -32,28 +33,30 @@ Rating.defaultProps = {
   mini: false,
 };
 
-const Ratings = ({ pi, piMax, averagePi, displayAveragePi, mini }) => {
+const Ratings = ({ pi, piMax, displayAveragePi, mini }) => {
   const ratingsClassName = classnames(
     'm-pi-ratings',
     { 'm-pi-ratings--mini': mini },
   );
+  const piProps = getPiProps(pi);
+  const title = piProps.map(name => `${name}: ${pi[name]}`).join(', ');
 
   return (
-    <div className={ratingsClassName} title={pi.map(p => ` ${p.name}: ${p.level}`)}>
+    <div className={ratingsClassName} title={title}>
       {displayAveragePi &&
         <Rating
           className="m-pi-ratings__item--average"
           name="Average PI"
-          level={Math.round(averagePi)}
+          level={Math.round(getAveragePI(pi))}
           piMax={piMax}
           mini={mini}
         />
       }
-      {pi.map(p =>
+      {piProps.map(name =>
         <Rating
-          name={p.name}
-          level={p.level <= piMax ? p.level : piMax}
-          key={p.name}
+          name={name}
+          level={pi[name] <= piMax ? pi[name] : piMax}
+          key={name}
           piMax={piMax}
           mini={mini}
         />
@@ -65,15 +68,12 @@ const Ratings = ({ pi, piMax, averagePi, displayAveragePi, mini }) => {
 Ratings.defaultProps = {
   displayAveragePi: false,
   mini: false,
-  averagePi: null,
 };
 Ratings.propTypes = {
-  pi: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  pi: PropTypes.shape({}).isRequired,
   piMax: PropTypes.number.isRequired,
   displayAveragePi: PropTypes.bool,
   mini: PropTypes.bool,
-  averagePi: PropTypes.number,
 };
-
 
 export default Ratings;
