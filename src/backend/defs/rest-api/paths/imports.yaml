@@ -8,8 +8,7 @@ imports:
     - name: vcard
       in: formData
       description: the vcard file to upload
-      schema:
-        type: file
+      type: file
       required: true
     security:
     - basicAuth: []
