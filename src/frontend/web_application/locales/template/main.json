@@ -243,6 +243,7 @@
     "signup.privacy.modal.text.get_data": "signup.privacy.modal.text.get_data",
     "signup.privacy.modal.text.desactivate_dnt": "signup.privacy.modal.text.desactivate_dnt",
     "signup.privacy.modal.text.piwik": "signup.privacy.modal.text.piwik",
+    "signup.privacy.modal.text.sensitive_message": "signup.privacy.modal.text.sensitive_message",
     "signup.privacy.modal.close": "signup.privacy.modal.close",
     "signup.form.recovery_email.label": "signup.form.recovery_email.label",
     "signup.form.recovery_email.placeholder": "signup.form.recovery_email.placeholder",
