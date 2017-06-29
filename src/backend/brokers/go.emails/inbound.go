@@ -48,12 +48,12 @@ func (b *EmailBroker) incomingSmtpWorker() {
 				//unable to write, don't block
 			}
 		}
-		go b.processInbound(in, false)
+		go b.processInbound(in, true)
 	}
 }
 
 // stores raw email + json + message and sends an order on NATS topic for next composant to process it
-// if raw_only is true, only stores the raw email with its json representation but doen't unmarshal to our message model
+// if raw_only is true, only stores the raw email with its json representation but do not unmarshal to our message model
 func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 	resp := &DeliveryAck{
 		EmailMessage: in.EmailMessage,

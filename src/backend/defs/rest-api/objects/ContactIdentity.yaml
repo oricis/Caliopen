@@ -1,0 +1,12 @@
+--- # Mean of communication for a contact, with on-demand calculated PI.
+type: object
+properties:
+  identifier:     # the 'I' like in URI, ie : the email address for email ; the user's real name for IRC
+    type: string
+  label:          # the 'display-name' field in email address if available ; the 'nickname' for IRC
+    type: string
+  privacy_index:
+    type: object
+    "$ref": PI.yaml
+  protocol:       # email, irc, sms, etc.
+    type: string
