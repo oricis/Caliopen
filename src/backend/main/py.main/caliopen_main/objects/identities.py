@@ -40,8 +40,8 @@ class SocialIdentity(base.ObjectIndexable):
 
     _attrs = {
         "contact_id":       UUID,
-        "identity_id":      UUID,
-        "infos":            {},
+        "social_id": UUID,
+        "infos": types.DictType,
         "name":             types.StringType,
         "type":             types.StringType,
         "user_id":          UUID

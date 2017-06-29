@@ -2,7 +2,7 @@
 type: object
 properties:
   "$ref": NewSocialIdentity.yaml#/properties
-  identity_id:
+  social_id:
       type: string
 required:
 - name
