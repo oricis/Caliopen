@@ -175,7 +175,6 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 			}
 		}
 	}
-
 	// update caliopen message status
 	fields := make(map[string]interface{})
 	fields["raw_msg_id"] = raw_email_id
