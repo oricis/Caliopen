@@ -1,7 +1,7 @@
 import zope.interface
 
 import types
-from uuid import UUID
+import uuid
 import datetime
 import pytz
 from six import add_metaclass
@@ -105,35 +105,8 @@ class ObjectDictifiable(CaliopenObject):
         """
         for attr, attrtype in self._attrs.items():
             if attr in document and document[attr] is not None:
-                if isinstance(attrtype, list):
-                    lst = []
-                    if issubclass(attrtype[0], ObjectDictifiable):
-                        for item in document[attr]:
-                            sub_obj = attrtype[0]()
-                            sub_obj.unmarshall_dict(item)
-                            lst.append(sub_obj)
-                    elif issubclass(attrtype[0], UUID):
-                        for item in document[attr]:
-                            sub_obj = UUID(str(item))
-                            lst.append(sub_obj)
-                    else:
-                        lst = document[attr]
-                    setattr(self, attr, lst)
-                elif issubclass(attrtype, ObjectDictifiable):
-                    sub_obj = attrtype()
-                    sub_obj.unmarshall_dict(document[attr])
-                    setattr(self, attr, sub_obj)
-                elif issubclass(attrtype, UUID):
-                    setattr(self, attr, UUID(str(document[attr])))
-                elif issubclass(attrtype, datetime.datetime):
-                    if document[attr] is not None \
-                            and document[attr].tzinfo is None:
-                        setattr(self, attr, document[attr].replace(tzinfo=
-                                                                   pytz.utc))
-                    else:
-                        setattr(self, attr, document[attr])
-                else:
-                    setattr(self, attr, document[attr])
+                unmarshall_item(document, attr, self, attrtype,
+                                is_creation=False)
             else:
                 if isinstance(attrtype, types.ListType):
                     setattr(self, attr, [])
@@ -287,6 +260,9 @@ class ObjectStorable(ObjectJsonDictifiable):
             log.warn('Invalid model class, expect {}, have {}'.
                      format(self._db.__class__, self._model_class.__class__))
 
+    def set_uuid(self):
+        setattr(self, self._model_class._pkey, uuid.uuid4())
+
 
 class ObjectUser(ObjectStorable):
     """Objects that MUST belong to a user to survive in Caliopen's world..."""
@@ -360,54 +336,24 @@ class ObjectUser(ObjectStorable):
         self.unmarshall_db()
 
         for key in patch.keys():
-            if key not in self._attrs.keys():
-                return main_errors.PatchUnprocessable(
-                    message="unknown key in patch")
             current_attr = self._attrs[key]
-            old_val = getattr(obj_patch_old, key)
-            cur_val = getattr(self, key)
-            msg = "Patch current_state not consistent with db, step {} key {}"
+            error = self._check_key_consistency(current_attr, key,
+                                                obj_patch_old,
+                                                patch_current)
+            if error is not None:
+                return error
+
+            # all controls passed, we can actually set the new attribute
+            create_sub_object = False
             if key not in patch_current.keys():
-                # means patch wants to add the key. Value in db should be null
-                # TODO : need to check if cur_val is an empty array or empty dict
-                if cur_val != None:
-                    return main_errors.PatchConflict(
-                        message=msg.format(0, key))
-                # TODO : need to instanciate nested object
-                setattr(self, key, getattr(obj_patch_new, key))
+                create_sub_object = True
             else:
-                if isinstance(current_attr, types.ListType):
-                    if old_val == [] and cur_val != []:
-                        return main_errors.PatchConflict(
-                            message=msg.format(1, key))
-                    if cur_val == [] and old_val != []:
-                        return main_errors.PatchConflict(
-                            message=msg.format(2, key))
-                    for old in old_val:
-                        found = False
-                        for elem in cur_val:
-                            if issubclass(current_attr[0], CaliopenObject):
-                                if elem.__dict__ == old.__dict__:
-                                    found = True
-                                    break
-                            else:
-                                if elem == old:
-                                    found = True
-                                    break
-                        if not found:
-                            return main_errors.PatchConflict(
-                                message=msg.format(3, key))
-                elif isinstance(self._attrs[key], types.DictType):
-                    if cmp(old_val, cur_val) != 0:
-                        return main_errors.PatchConflict(
-                            message=msg.format(4, key))
-                else:
-                    if old_val != cur_val:
-                        return main_errors.PatchConflict(
-                            message=msg.format(5, key))
+                if patch_current[key] in (None, [], {}):
+                    create_sub_object = True
 
-                setattr(self, key, getattr(obj_patch_new, key))
-
+            if patch[key] is not None:
+                unmarshall_item(patch, key, self, self._attrs[key],
+                            create_sub_object)
         if "db" in options and options["db"] is True:
             # apply changes to db model and update db
             self.marshall_db()
@@ -418,6 +364,59 @@ class ObjectUser(ObjectStorable):
                 return main_errors.PatchError(message="Error when updating db")
 
         return None
+
+    def _check_key_consistency(self, current_attr, key, obj_patch_old,
+                               patch_current):
+        """
+        check if a key provided in patch is consistent with current state
+
+        """
+
+        if key not in self._attrs.keys():
+            return main_errors.PatchUnprocessable(
+                message="unknown key in patch")
+        old_val = getattr(obj_patch_old, key)
+        cur_val = getattr(self, key)
+        msg = "Patch current_state not consistent with db, step {} key {}"
+
+        if isinstance(current_attr, types.ListType):
+            if not isinstance(cur_val, types.ListType):
+                return main_errors.PatchConflict(
+                    messag=msg.format(0, key))
+
+        if key not in patch_current.keys():
+            # means patch wants to add the key.
+            # Value in db should be null or empty
+            if cur_val not in (None, [], {}):
+                return main_errors.PatchConflict(
+                    message=msg.format(0.5, key))
+        else:
+            if isinstance(current_attr, types.ListType):
+                if old_val == [] and cur_val != []:
+                    return main_errors.PatchConflict(
+                        message=msg.format(1, key))
+                if cur_val == [] and old_val != []:
+                    return main_errors.PatchConflict(
+                        message=msg.format(2, key))
+                for old in old_val:
+                    for elem in cur_val:
+                        if issubclass(current_attr[0], CaliopenObject):
+                            if elem.__dict__ == old.__dict__:
+                                break
+                        else:
+                            if elem == old:
+                                break
+                else:
+                    return main_errors.PatchConflict(
+                            message=msg.format(3, key))
+            elif isinstance(self._attrs[key], types.DictType):
+                if cmp(old_val, cur_val) != 0:
+                    return main_errors.PatchConflict(
+                        message=msg.format(4, key))
+            else:
+                if old_val != cur_val:
+                    return main_errors.PatchConflict(
+                        message=msg.format(5, key))
 
 
 class ObjectIndexable(ObjectUser):
@@ -545,3 +544,56 @@ class ObjectIndexable(ObjectUser):
                 self.update_index()
             except Exception as exc:
                 return exc
+
+
+def unmarshall_item(document, key, target_object, target_attr_type,
+                    is_creation):
+    """
+    general function to cast a dict item (ie: document[key])
+    into the corresponding target_object's attr (ie: target_object.key)
+
+    :param document: source dict
+    :param key: source dict key to unmarshall
+    :param target_object: object to unmarshall document[key] into
+    :param target_attr_type: the types.type of corresponding attr in target obj.
+    :param is_creation: if true, we are in the context of the creation of an obj
+    :return: nothing, target object is modified in-place
+    """
+
+    if isinstance(target_attr_type, list):
+        lst = []
+        if issubclass(target_attr_type[0], ObjectDictifiable):
+            for item in document[key]:
+                sub_obj = target_attr_type[0]()
+                sub_obj.unmarshall_dict(item)
+                if is_creation:
+                    sub_obj.set_uuid()
+                lst.append(sub_obj)
+        elif issubclass(target_attr_type[0], uuid.UUID):
+            for item in document[key]:
+                sub_obj = uuid.UUID(str(item))
+                lst.append(sub_obj)
+        else:
+            lst = document[key]
+        setattr(target_object, key, lst)
+
+    elif issubclass(target_attr_type, ObjectDictifiable):
+        sub_obj = target_attr_type()
+        sub_obj.unmarshall_dict(document[key])
+        setattr(target_object, key, sub_obj)
+
+    elif issubclass(target_attr_type, uuid.UUID):
+        setattr(target_object, key, uuid.UUID(str(document[key])))
+
+    elif issubclass(target_attr_type, datetime.datetime):
+        if document[key] is not None \
+                and document[key].tzinfo is None:
+            setattr(target_object, key, document[key].replace(tzinfo=
+                                                              pytz.utc))
+        else:
+            setattr(target_object, key, document[key])
+    else:
+        new_attr = document[key]
+        if hasattr(target_attr_type, "validate"):
+            new_attr = target_attr_type().validate(document[key])
+        setattr(target_object, key, new_attr)
