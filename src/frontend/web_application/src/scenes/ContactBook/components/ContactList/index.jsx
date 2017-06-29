@@ -44,7 +44,7 @@ const ContactList = ({ contacts, sortView }) => {
 
   return (
     <div className="m-contact-list">
-      {letters.map(letter =>
+      {letters.map(letter => (
         <div key={uuidV1()} className="m-contact-list__group">
           <ContactListLetter
             letter={letter}
@@ -66,7 +66,7 @@ const ContactList = ({ contacts, sortView }) => {
                 />
             ))}
         </div>
-    )}
+    ))}
     </div>
   );
 };

@@ -10,7 +10,6 @@ class ImportContact extends Component {
     onUploadSuccess: PropTypes.func,
     notifySuccess: PropTypes.func,
     notifyError: PropTypes.func,
-    requestContacts: PropTypes.func,
   };
 
   static defaultProps = {
@@ -19,7 +18,6 @@ class ImportContact extends Component {
     onUploadSuccess: () => {},
     notifySuccess: () => {},
     notifyError: () => {},
-    requestContacts: () => {},
   }
 
   constructor(props) {

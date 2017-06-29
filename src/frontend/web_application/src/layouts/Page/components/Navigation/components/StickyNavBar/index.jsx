@@ -9,6 +9,11 @@ class StickyNavbarClass extends Component {
     stickyClassName: PropTypes.string,
   }
 
+  static defaultProps = {
+    className: undefined,
+    stickyClassName: undefined,
+  }
+
   constructor(props) {
     super(props);
     this.state = {

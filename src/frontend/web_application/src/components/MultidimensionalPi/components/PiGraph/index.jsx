@@ -11,7 +11,7 @@ const Grid = ({ pi, axeLength }) => {
         className="m-pi-graph__outline"
         points={outlinePoints.join(' ')}
       />
-      {axeCoordinates.map(p =>
+      {axeCoordinates.map(p => (
         <line
           key={p.axeName}
           className="m-pi-graph__line"
@@ -21,7 +21,7 @@ const Grid = ({ pi, axeLength }) => {
           x2={p.x}
           y2={p.y}
         />
-      )}
+      ))}
     </g>
   );
 };

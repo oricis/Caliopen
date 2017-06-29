@@ -52,7 +52,7 @@ const Ratings = ({ pi, piMax, displayAveragePi, mini }) => {
           mini={mini}
         />
       }
-      {piProps.map(name =>
+      {piProps.map(name => (
         <Rating
           name={name}
           level={pi[name] <= piMax ? pi[name] : piMax}
@@ -60,7 +60,7 @@ const Ratings = ({ pi, piMax, displayAveragePi, mini }) => {
           piMax={piMax}
           mini={mini}
         />
-      )}
+      ))}
     </div>
   );
 };

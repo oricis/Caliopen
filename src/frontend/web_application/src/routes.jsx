@@ -103,7 +103,8 @@ export const flattenRouteConfig = routes => routes.reduce((acc, route) => {
 
 export const RouteWithSubRoutes = route => (
   <Route
-    path={route.path} render={props => (
+    path={route.path}
+    render={props => (
       <route.component {...props} routes={route.routes} />
     )}
   />
