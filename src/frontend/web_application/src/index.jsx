@@ -2,10 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ConnectedRouter } from 'react-router-redux';
 import { AppContainer } from 'react-hot-loader';
+import PiwikReactRouter from 'piwik-react-router';
 import App from './App';
 import configureStore from './store/configure-store';
 import getRouterHistory from './services/router-history';
 import { getLocale } from './services/i18n';
+
+const piwik = PiwikReactRouter({
+  url: 'https://piwik.caliopen.org/analytics',
+  siteId: 6,
+});
 
 let devTools;
 
@@ -24,7 +30,7 @@ const history = getRouterHistory();
 const rootEl = document.getElementById('root');
 ReactDOM.render(
   <AppContainer>
-    <ConnectedRouter store={store} history={history}>
+    <ConnectedRouter store={store} history={piwik.connectToHistory(history)}>
       <App store={store} />
     </ConnectedRouter>
   </AppContainer>,
@@ -39,7 +45,7 @@ if (module.hot) {
     const NextApp = require('./App').default;
     ReactDOM.render(
       <AppContainer>
-        <ConnectedRouter history={history}>
+        <ConnectedRouter history={piwik.connectToHistory(history)}>
           <NextApp store={store} />
         </ConnectedRouter>
       </AppContainer>,

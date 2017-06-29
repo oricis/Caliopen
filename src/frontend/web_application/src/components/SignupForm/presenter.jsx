@@ -135,12 +135,16 @@ class SignupForm extends Component {
         title={__('signup.privacy.modal.label')}
         onClose={this.handleCloseModal}
       >
-        <p>{__('signup.privacy.modal.text')}</p>
+        <p>{__('signup.privacy.modal.title')}</p>
+        <p>{__('signup.privacy.modal.text.alpha_tester')}</p>
+        <p>{__('signup.privacy.modal.text.get_data')}</p>
+        <p>{__('signup.privacy.modal.text.desactivate_dnt')}</p>
+        <p>{__('signup.privacy.modal.text.piwik')}</p>
         <Button
           shape="plain"
           onClick={this.handleCloseModal}
         >
-          {__('signup.privacy.modal.close')}
+          {' '}{__('signup.privacy.modal.close')}
         </Button>
       </Modal>
     );
