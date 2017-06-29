@@ -89,7 +89,7 @@ class Draft(NewMessage):
         else:
             if len(self.participants) > 0:
                 for i, participant in enumerate(self.participants):
-                    if re.match("[Ff][Rr][Oo][Mm]", participant.type):
+                    if re.match("from", participant.type, re.IGNORECASE):
                         self.participants.pop(i)
 
         from_participant = Participant()
@@ -178,7 +178,7 @@ class Draft(NewMessage):
         d_id = self.discussion_id
         last_message = dim.get_last_message(d_id, 0, 100, False)
         for i, participant in enumerate(last_message.participants):
-            if re.match("[Ff][Rr][Oo][Mm]", participant['type']):
+            if re.match("from", participant['type'], re.IGNORECASE):
                 participant.type = "To"
                 self.participants.append(participant)
             else:
@@ -189,7 +189,7 @@ class Draft(NewMessage):
         sender = self._add_from_participant(user_id)
         for i, participant in enumerate(self.participants):
             if participant['address'] == sender.address:
-                if re.match("[Tt][Oo]", participant['type']) or \
-                        re.match("[Cc][Cc]", participant['type']) or \
-                        re.match("[Bb][Cc][Cc]", participant['type']):
+                if re.match("to", participant['type'], re.IGNORECASE) or \
+                        re.match("cc", participant['type'], re.IGNORECASE) or \
+                        re.match("bcc", participant['type'], re.IGNORECASE):
                     self.participants.pop(i)
