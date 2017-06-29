@@ -399,18 +399,15 @@ class ObjectUser(ObjectStorable):
                     return main_errors.PatchConflict(
                         message=msg.format(2, key))
                 for old in old_val:
-                    found = False
                     for elem in cur_val:
                         if issubclass(current_attr[0], CaliopenObject):
                             if elem.__dict__ == old.__dict__:
-                                found = True
                                 break
                         else:
                             if elem == old:
-                                found = True
                                 break
-                    if not found:
-                        return main_errors.PatchConflict(
+                else:
+                    return main_errors.PatchConflict(
                             message=msg.format(3, key))
             elif isinstance(self._attrs[key], types.DictType):
                 if cmp(old_val, cur_val) != 0:
