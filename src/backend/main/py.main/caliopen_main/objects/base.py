@@ -353,7 +353,7 @@ class ObjectUser(ObjectStorable):
 
             if patch[key] is not None:
                 unmarshall_item(patch, key, self, self._attrs[key],
-                            create_sub_object)
+                                create_sub_object)
         if "db" in options and options["db"] is True:
             # apply changes to db model and update db
             self.marshall_db()
@@ -406,8 +406,8 @@ class ObjectUser(ObjectStorable):
                         else:
                             if elem == old:
                                 break
-                else:
-                    return main_errors.PatchConflict(
+                    else:
+                        return main_errors.PatchConflict(
                             message=msg.format(3, key))
             elif isinstance(self._attrs[key], types.DictType):
                 if cmp(old_val, cur_val) != 0:
