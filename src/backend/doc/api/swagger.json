@@ -311,6 +311,9 @@
                           "deleted": {
                             "type": "boolean"
                           },
+                          "organization_id": {
+                            "type": "string"
+                          },
                           "department": {
                             "type": "string"
                           },
@@ -880,6 +883,9 @@
                         "properties": {
                           "deleted": {
                             "type": "boolean"
+                          },
+                          "organization_id": {
+                            "type": "string"
                           },
                           "department": {
                             "type": "string"
@@ -1473,6 +1479,9 @@
                             "deleted": {
                               "type": "boolean"
                             },
+                            "organization_id": {
+                              "type": "string"
+                            },
                             "department": {
                               "type": "string"
                             },
@@ -1971,6 +1980,9 @@
                       "deleted": {
                         "type": "boolean"
                       },
+                      "organization_id": {
+                        "type": "string"
+                      },
                       "department": {
                         "type": "string"
                       },
@@ -2425,6 +2437,9 @@
                           "deleted": {
                             "type": "boolean"
                           },
+                          "organization_id": {
+                            "type": "string"
+                          },
                           "department": {
                             "type": "string"
                           },
@@ -2772,6 +2787,9 @@
                     "properties": {
                       "deleted": {
                         "type": "boolean"
+                      },
+                      "organization_id": {
+                        "type": "string"
                       },
                       "department": {
                         "type": "string"
