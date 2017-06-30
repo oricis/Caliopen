@@ -13,12 +13,12 @@ import (
 func (cb *CassandraBackend) GetContact(user_id, contact_id string) (contact Contact, err error) {
 
 	/*
-	err = cb.Session.Query(`SELECT user_id, contact_id, date_insert, family_name, given_name FROM contact WHERE user_id = ? and contact_id = ?`, user_id, contact_id).Scan(
-		contact.User_id, contact.Contact_id, contact.Date_insert, contact.Family_name, contact.Given_name,
-	)
-	if err != nil {
-		return nil, err
-	}
+		err = cb.Session.Query(`SELECT user_id, contact_id, date_insert, family_name, given_name FROM contact WHERE user_id = ? and contact_id = ?`, user_id, contact_id).Scan(
+			contact.User_id, contact.Contact_id, contact.Date_insert, contact.Family_name, contact.Given_name,
+		)
+		if err != nil {
+			return nil, err
+		}
 	*/
 	// TODO
 

@@ -5,11 +5,11 @@
 package REST
 
 import (
+	"context"
 	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	pi "github.com/CaliOpen/Caliopen/src/backend/main/go.main/Privacy-Index"
 	"github.com/satori/go.uuid"
-	"context"
 )
 
 func (rest *RESTfacility) LocalsIdentities(user_id string) ([]LocalIdentity, error) {
