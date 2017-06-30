@@ -35,7 +35,7 @@ $mini-pi-bar__margin: .25rem;
 
   &__item-level__label {
     @include flex-grid-size(2);
-    padding-left: $co-component__spacing;
+    text-align: center;
   }
 
   &__item-level__bar {
