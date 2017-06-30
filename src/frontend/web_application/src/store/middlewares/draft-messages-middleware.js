@@ -118,6 +118,8 @@ function getDefaultIdentities({ protocols, identities }) {
   }, []);
 }
 
+const localIdentityToIdentity = ({ identifier, type }) => ({ identifier, type });
+
 async function getNewDraft({ discussionId, store, messageToAnswer }) {
   await store.dispatch(requestLocalIdentities());
   const { localIdentities } = store.getState().localIdentity;
@@ -126,7 +128,8 @@ async function getNewDraft({ discussionId, store, messageToAnswer }) {
     discussion_id: discussionId,
     body: '',
     participants: [],
-    identities: getDefaultIdentities({ protocols: ['email'], identities: localIdentities }),
+    identities: getDefaultIdentities({ protocols: ['email'], identities: localIdentities })
+      .map(localIdentityToIdentity),
     subject: messageToAnswer && messageToAnswer.subject,
   };
 }
