@@ -118,7 +118,7 @@ class Account extends Component {
                 />
               )}
 
-              <TextBlock>
+              <TextBlock className="s-account__email">
                 <Icon type="envelope" /> {this.state.user.name}
                 <span className="pull-right">
                   {__('account.primary_email_label')}

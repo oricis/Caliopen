@@ -6,32 +6,19 @@
 
   &__col-datas-irl {
     @include flex-grid-column(12);
-    padding: $co-margin;
-    padding-top: 0;
   }
 
   &__col-datas-online {
     @include flex-grid-column(12, 0);
   }
 
-  &__contact-profile {
-    margin-bottom: $co-margin;
-  }
-
-  &__m-subtitle {
-    padding: 0 $co-margin;
-  }
-
-  &__remote-identity-fetching-panel {
-    @include flex-grid-row;
-  }
-
-  &__remote-identity-fetching-panel-content {
-    @include flex-grid-column;
-  }
-
   &__openpgp {
     margin-top: $co-margin;
+    padding: $co-component__spacing;
+  }
+
+  &__email {
+      padding: $co-component__spacing;
   }
 
   @include breakpoint(medium) {
