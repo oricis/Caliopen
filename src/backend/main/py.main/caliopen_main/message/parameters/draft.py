@@ -161,6 +161,8 @@ class Draft(NewMessage):
                         raise err.PatchConflict(message="provided message "
                                                         "parent_id does not belong"
                                                         "to this discussion")
+            else:
+                last_message = None
         else:
             last_message = None
 
