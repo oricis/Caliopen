@@ -4,6 +4,8 @@ properties:
   "$ref": NewOrganization.yaml#/properties
   deleted:
     type: boolean
+  organization_id:
+    type: string
 required:
 - label
 - name
