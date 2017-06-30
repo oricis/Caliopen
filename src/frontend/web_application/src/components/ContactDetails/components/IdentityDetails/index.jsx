@@ -44,7 +44,7 @@ class IdentityDetails extends Component {
     return (
       <ItemContent large>
         <Icon type={identity.type} className="m-identity-details__icon" />
-        {identity.value}
+        {identity.name}
         {editMode && this.renderDeleteButton()}
       </ItemContent>
     );
