@@ -13,7 +13,7 @@ from .attachment import Attachment
 from .external_references import ExternalReferences
 from caliopen_main.objects.pi import PIParameter
 from caliopen_main.user.parameters import ResourceTag
-from caliopen_main.user.parameters import LocalIdentity
+from caliopen_main.user.parameters import Identity
 
 RECIPIENT_TYPES = ['To', 'From', 'Cc', 'Bcc', 'Reply-To', 'Sender']
 MESSAGE_TYPES = ['email']
@@ -30,7 +30,7 @@ class NewMessage(Model):
                         tzd=u'utc')
     discussion_id = UUIDType()
     external_references = ModelType(ExternalReferences)
-    identities = ListType(ModelType(LocalIdentity), default=lambda: [])
+    identities = ListType(ModelType(Identity), default=lambda: [])
     importance_level = IntType()
     is_answered = BooleanType()
     is_draft = BooleanType()

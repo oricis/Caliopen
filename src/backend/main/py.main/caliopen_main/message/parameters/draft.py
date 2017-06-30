@@ -6,7 +6,7 @@ import re
 from .message import NewMessage
 from caliopen_main.objects.identities import LocalIdentity
 from caliopen_main.user.core import User
-from caliopen_main.objects.participant import Participant
+from caliopen_main.message.parameters.participant import Participant
 from caliopen_storage.exception import NotFound
 from caliopen_main.discussion.store.discussion_index import \
     DiscussionIndexManager as DIM
@@ -29,21 +29,17 @@ class Draft(NewMessage):
                                     otherwise it is an update of existing one
                             
         If needed, draft is modified to conform.
-        Returns a validated draft or error.
         """
 
         try:
             self.validate()
         except Exception as exc:
-            log.warn(exc)
+            log.warn("draft validation failed with error {}".format(exc))
             raise exc
 
-        if is_new and self.discussion_id is None:
-            if hasattr(self, 'participants') and len(self.participants) > 0:
-                for i, participant in enumerate(self.participants):
-                    if re.match("[Ff][Rr][Oo][Mm]", participant.type):
-                        self.participants.pop(i)
-            self._add_from_participant(user_id)
+        # always fill <from> field consistently
+        # based on current user's selected identity
+        self._add_from_participant(user_id)
 
         # check discussion consistency and get last message from discussion
         last_message = self._check_discussion_consistency(user_id)
@@ -90,13 +86,19 @@ class Draft(NewMessage):
         user = User.get(user_id)
         if not hasattr(self, 'participants'):
             self.participants = []
+        else:
+            if len(self.participants) > 0:
+                for i, participant in enumerate(self.participants):
+                    if re.match("from", participant.type, re.IGNORECASE):
+                        self.participants.pop(i)
+
         from_participant = Participant()
         from_participant.address = local_identity.identifier
         from_participant.label = local_identity.display_name
         from_participant.protocol = "email"
         from_participant.type = "From"
         from_participant.contact_ids = [user.contact.contact_id]
-        self.participants.append(from_participant.marshall_dict())
+        self.participants.append(from_participant)
         return from_participant
 
     def _check_discussion_consistency(self, user_id):
@@ -176,7 +178,7 @@ class Draft(NewMessage):
         d_id = self.discussion_id
         last_message = dim.get_last_message(d_id, 0, 100, False)
         for i, participant in enumerate(last_message.participants):
-            if re.match("[Ff][Rr][Oo][Mm]", participant['type']):
+            if re.match("from", participant['type'], re.IGNORECASE):
                 participant.type = "To"
                 self.participants.append(participant)
             else:
@@ -187,7 +189,7 @@ class Draft(NewMessage):
         sender = self._add_from_participant(user_id)
         for i, participant in enumerate(self.participants):
             if participant['address'] == sender.address:
-                if re.match("[Tt][Oo]", participant['type']) or \
-                        re.match("[Cc][Cc]", participant['type']) or \
-                        re.match("[Bb][Cc][Cc]", participant['type']):
+                if re.match("to", participant['type'], re.IGNORECASE) or \
+                        re.match("cc", participant['type'], re.IGNORECASE) or \
+                        re.match("bcc", participant['type'], re.IGNORECASE):
                     self.participants.pop(i)

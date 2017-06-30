@@ -9,6 +9,7 @@ import uuid
 from uuid import UUID
 import datetime
 import json
+import copy
 
 from caliopen_main.message.store import Message as ModelMessage
 from caliopen_main.message.store import IndexedMessage
@@ -132,7 +133,7 @@ class Message(base.ObjectIndexable):
             return err.PatchUnprocessable(message="this message is not a draft")
         try:
             params = dict(patch)
-            params.pop("current_state")
+            current_state = params.pop("current_state")
             draft_param = Draft(params)
         except Exception as exc:
             log.warn(exc)
@@ -140,31 +141,41 @@ class Message(base.ObjectIndexable):
 
         # add missing params to be able to check consistency
         self_dict = self.marshall_dict()
-        if not hasattr(params, "message_id") and self.message_id is not None:
+        if "message_id" not in params and self.message_id is not None:
             draft_param.message_id = UUIDType().to_native(self.message_id)
 
-        if not hasattr(params,
-                       "discussion_id") and self.discussion_id is not None:
+        if "discussion_id" not in params and self.discussion_id is not None:
             draft_param.discussion_id = UUIDType().to_native(self.discussion_id)
 
-        if not hasattr(params, "parent_id") and self.parent_id is not None:
+        if "parent_id" not in params and self.parent_id is not None:
             draft_param.parent_id = UUIDType().to_native(self.parent_id)
 
-        if not hasattr(params, "subject"):
+        if "subject" not in params:
             draft_param.subject = self.subject
 
-        if not hasattr(params,
-                       "participants") and self.participants is not None:
+        if "participants" not in params and self.participants is not None:
             for participant in self_dict['participants']:
                 draft_param.participants.append(IndexedParticipant(participant))
+
+        if "identities" not in params and self.identities is not None:
+            draft_param.identities = self_dict["identities"]
 
         try:
             draft_param.validate_consistency(str(self.user_id), False)
         except Exception as exc:
-            log.warn(exc)
+            log.warn("consistency validation failed with err : {}".format(exc))
             return err.PatchError(message=exc.message)
 
-        return self.apply_patch(patch, **options)
+        # make sure the <from> participant is present
+        # and is consistent with selected user's identity
+        validated_draft = draft_param.serialize()
+        validated_params = copy.deepcopy(params)
+        if "participants" in params:
+            validated_params["participants"] = validated_draft["participants"]
+
+        validated_params["current_state"] = current_state
+
+        return self.apply_patch(validated_params, **options)
 
     @classmethod
     def by_discussion_id(cls, user, discussion_id, min_pi, max_pi,

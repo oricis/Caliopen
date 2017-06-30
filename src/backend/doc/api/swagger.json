@@ -3876,19 +3876,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "display_name": {
-                        "type": "string"
-                      },
                       "identifier": {
                         "type": "string"
                       },
-                      "status": {
-                        "type": "string"
-                      },
                       "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
                         "type": "string"
                       }
                     }
