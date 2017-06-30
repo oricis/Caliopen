@@ -5,9 +5,9 @@
 package Privacy_Index
 
 import (
+	"context"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"time"
-	"context"
 )
 
 func UpdatePIContactIdentity(ctx context.Context, contact Contact, identity *ContactIdentity) {
@@ -27,7 +27,6 @@ func UpdatePIContactIdentity(ctx context.Context, contact Contact, identity *Con
 		case "im":
 			identity.PrivacyIndex.Technic -= 2
 		}
-		identity.PrivacyIndex.Technic = contact.PrivacyIndex.Technic
 	} else {
 		identity.PrivacyIndex = PrivacyIndex{}
 	}
