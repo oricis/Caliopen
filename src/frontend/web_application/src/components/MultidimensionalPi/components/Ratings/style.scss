@@ -7,7 +7,7 @@ $mini-pi-bar__height:  .35rem;
 $mini-pi-bar__margin: .25rem;
 
 .m-pi-ratings {
-  max-width: $co-pi-width;
+  max-width: $co-pi-width + 2rem;
   margin-right: auto;
   margin-left: auto;
   font-size: $co-font__size--xsmall;
@@ -16,34 +16,33 @@ $mini-pi-bar__margin: .25rem;
   &__item {
     @include flex-grid-row;
     align-items: center;
+    margin-top: $co-component__spacing;
   }
 
   &__item-name {
     @include flex-grid-size(5);
+    padding-right: $co-component__spacing;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: right;
-  }
-
-  &__item-level-label {
-    @include flex-grid-size(shrink);
-    padding: $co-component__spacing 0 0 $co-component__spacing;
+    text-transform: uppercase;
   }
 
   &__item-level {
-    @include flex-grid-size;
+    @include flex-grid-size(5);
     background: $co-color__fg__back--low;
-    text-align: right;
   }
 
-  &__item-level-bar {
+  &__item-level__label {
+    @include flex-grid-size(2);
+    padding-left: $co-component__spacing;
+  }
+
+  &__item-level__bar {
     height: $co-component__height / 3;
     transition: .5s width;
     background: $co-color__privacy;
     line-height: $co-component__height / 3;
-  }
-
-  &__item-name-label {
-    padding-right: $co-component__spacing;
-    text-transform: uppercase;
   }
 
   &--mini {
@@ -52,18 +51,22 @@ $mini-pi-bar__margin: .25rem;
 
     &__item {
       display: block;
+      width: $mini-pi__width;
+      max-width: 100%;
       margin: $mini-pi-bar__margin 0;
     }
 
     &__item-level {
+      display: block;
       width: $mini-pi__width;
+      max-width: 100%;
     }
 
-    &__item-level-bar {
+    &__item-level__bar {
       height: $mini-pi-bar__height;
     }
 
-    &__item-level-label,
+    &__item-level__label,
     &__item-name {
       display: none;
     }

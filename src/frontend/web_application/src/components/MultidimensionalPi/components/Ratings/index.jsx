@@ -10,12 +10,12 @@ const Rating = ({ name, level, piMax, className, mini }) => {
   return (
     <div className={classnames('m-pi-ratings__item', { 'm-pi-ratings--mini__item': mini }, className)}>
       <div className={classnames('m-pi-ratings__item-name', { 'm-pi-ratings--mini__item-name': mini })}>
-        <span className={classnames('m-pi-ratings__item-name-label', { 'm-pi-ratings--mini__item-name-label': mini })}>{name}</span>
+        {name}
       </div>
       <div className={classnames('m-pi-ratings__item-level', { 'm-pi-ratings--mini__item-level': mini })}>
-        <div className={classnames('m-pi-ratings__item-level-bar', { 'm-pi-ratings--mini__item-level-bar': mini })} style={style} />
+        <div className={classnames('m-pi-ratings__item-level__bar', { 'm-pi-ratings--mini__item-level__bar': mini })} style={style} />
       </div>
-      <div className={classnames('m-pi-ratings__item-level-label', { 'm-pi-ratings--mini__item-level-label': mini })}>{level}</div>
+      <div className={classnames('m-pi-ratings__item-level__label', { 'm-pi-ratings--mini__item-level__label': mini })}>{level}</div>
     </div>
   );
 };
