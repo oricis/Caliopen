@@ -14,11 +14,7 @@ import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
 
-const PI = [
-  { name: 'behavioral', level: 40 },
-  { name: 'contextual', level: 15 },
-  { name: 'technical', level: 90 },
-];
+const PI = { technic: 87, context: 45, comportment: 25 };
 
 const MessageInfosContainer = ({ __, message, author, locale }) => {
   const typeTranslations = {

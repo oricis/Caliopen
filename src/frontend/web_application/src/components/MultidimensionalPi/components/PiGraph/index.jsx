@@ -48,7 +48,7 @@ Polygon.propTypes = {
 };
 
 const PiGraph = ({ pi, gridWidth }) => {
-  const viewBox = [0, 0, gridWidth, gridWidth];
+  const viewBox = [0, 0, gridWidth, gridWidth * 0.85]; // 0.85 ratio to avoid margin under PiGraph
   const axeLength = gridWidth / 2;
 
   return (

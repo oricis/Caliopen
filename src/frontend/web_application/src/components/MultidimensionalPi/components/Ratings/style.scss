@@ -1,13 +1,11 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
-$gridColor: $co-color__fg__back--higher;
-$mini-pi__width: 2rem;
 $mini-pi-bar__height:  .35rem;
 $mini-pi-bar__margin: .25rem;
 
 .m-pi-ratings {
-  max-width: $co-pi-width;
+  max-width: map-get($co-pi-width, 'ratings');
   margin-right: auto;
   margin-left: auto;
   font-size: $co-font__size--xsmall;
@@ -16,22 +14,26 @@ $mini-pi-bar__margin: .25rem;
   &__item {
     @include flex-grid-row;
     align-items: center;
+    margin-top: $co-component__spacing;
   }
 
   &__item-name {
     @include flex-grid-size(5);
+    padding-right: $co-component__spacing;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: right;
-  }
-
-  &__item-level-label {
-    @include flex-grid-size(shrink);
-    padding: $co-component__spacing 0 0 $co-component__spacing;
+    text-transform: uppercase;
   }
 
   &__item-level {
-    @include flex-grid-size;
+    @include flex-grid-size(5);
     background: $co-color__fg__back--low;
-    text-align: right;
+  }
+
+  &__item-level-label {
+    @include flex-grid-size(2);
+    text-align: center;
   }
 
   &__item-level-bar {
@@ -41,22 +43,21 @@ $mini-pi-bar__margin: .25rem;
     line-height: $co-component__height / 3;
   }
 
-  &__item-name-label {
-    padding-right: $co-component__spacing;
-    text-transform: uppercase;
-  }
-
   &--mini {
-    max-width: $mini-pi__width;
+    max-width: map-get($co-pi-width, 'mini-ratings');
     cursor: help;
 
     &__item {
       display: block;
+      width: map-get($co-pi-width, 'mini-ratings');;
+      max-width: 100%;
       margin: $mini-pi-bar__margin 0;
     }
 
     &__item-level {
-      width: $mini-pi__width;
+      display: block;
+      width: map-get($co-pi-width, 'mini-ratings');
+      max-width: 100%;
     }
 
     &__item-level-bar {
