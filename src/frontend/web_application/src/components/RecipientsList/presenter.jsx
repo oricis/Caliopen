@@ -40,7 +40,7 @@ const makeParticipant = ({
 const getIdentities = ({ contacts, identitiesToIgnore }) => contacts
   .reduce((acc, contact) => [
     ...acc,
-    ...contact.emails.map(email => ({
+    ...(contact.emails || []).map(email => ({
       protocol: 'email',
       address: email.address,
       contact_id: contact.contact_id,
