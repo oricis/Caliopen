@@ -65,10 +65,12 @@ class Contact extends Component {
   renderTagsModal() {
     const { contact, updateContact, __ } = this.props;
     const count = contact.tags ? contact.tags.length : 0;
-    const title = [
-      __('tags.header.title'),
-      (<span key="1" className="m-tags-form__count">{__('tags.header.count', { count }) }</span>),
-    ];
+    const title = (
+      <span>{__('tags.header.title')}
+        <span className="m-tags-form__count">
+          {__('tags.header.count', { count }) }
+        </span>
+      </span>);
 
     return (
       <Modal
@@ -100,8 +102,8 @@ class Contact extends Component {
               icon="tags"
             >{__('contact.action.edit_tags')}</Button>
             {this.renderTagsModal()}
-            </MenuBar>
-          )}
+          </MenuBar>
+        )}
         <Spinner isLoading={isFetching} />
         {
           contact && (
