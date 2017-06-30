@@ -101,11 +101,12 @@ func (email EmailJson) ExtractAttachments(index ...int) (attachments [][]byte, e
 // Walk over the message tree, yielding each subpart.
 // The walk is performed in depth-first order.  This method is an iterator.
 // usage : for part := range parts.Walk() {…}
-func (parts Parts) Walk() <-chan Part {
+func (parts Parts) Walk() (partChan chan Part) {
+	partChan = make(chan Part)
 	if len(parts) < 1 {
-		return nil
+		close(partChan)
+		return
 	}
-	partChan := make(chan Part)
 	go func() {
 		for _, part := range parts {
 			partChan <- part
@@ -117,5 +118,5 @@ func (parts Parts) Walk() <-chan Part {
 		}
 		close(partChan)
 	}()
-	return partChan
+	return
 }
