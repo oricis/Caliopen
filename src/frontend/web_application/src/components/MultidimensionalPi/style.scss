@@ -22,7 +22,7 @@
 
 
   &__mini-graph {
-    width: $co-pi-width + 2rem;
+    width: map-get($co-pi-width, 'ratings');
     padding: $co-component__spacing;
     background: $co-color__fg__back--lower;
     box-shadow: $co-shadow;
