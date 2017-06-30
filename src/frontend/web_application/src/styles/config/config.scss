@@ -1,5 +1,9 @@
 $co-brand-width: 10rem;
-$co-pi-width: 15rem;
+$co-pi-width: (
+  graph: 15rem,
+  ratings: 17rem,
+  mini-ratings: 2rem,
+);
 
 $co-margin: 1.5rem;
 $co-radius: .2rem;

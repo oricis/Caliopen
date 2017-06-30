@@ -1,13 +1,11 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
-$gridColor: $co-color__fg__back--higher;
-$mini-pi__width: 2rem;
 $mini-pi-bar__height:  .35rem;
 $mini-pi-bar__margin: .25rem;
 
 .m-pi-ratings {
-  max-width: $co-pi-width + 2rem;
+  max-width: map-get($co-pi-width, 'ratings');
   margin-right: auto;
   margin-left: auto;
   font-size: $co-font__size--xsmall;
@@ -33,12 +31,12 @@ $mini-pi-bar__margin: .25rem;
     background: $co-color__fg__back--low;
   }
 
-  &__item-level__label {
+  &__item-level-label {
     @include flex-grid-size(2);
     text-align: center;
   }
 
-  &__item-level__bar {
+  &__item-level-bar {
     height: $co-component__height / 3;
     transition: .5s width;
     background: $co-color__privacy;
@@ -46,27 +44,27 @@ $mini-pi-bar__margin: .25rem;
   }
 
   &--mini {
-    max-width: $mini-pi__width;
+    max-width: map-get($co-pi-width, 'mini-ratings');
     cursor: help;
 
     &__item {
       display: block;
-      width: $mini-pi__width;
+      width: map-get($co-pi-width, 'mini-ratings');;
       max-width: 100%;
       margin: $mini-pi-bar__margin 0;
     }
 
     &__item-level {
       display: block;
-      width: $mini-pi__width;
+      width: map-get($co-pi-width, 'mini-ratings');
       max-width: 100%;
     }
 
-    &__item-level__bar {
+    &__item-level-bar {
       height: $mini-pi-bar__height;
     }
 
-    &__item-level__label,
+    &__item-level-label,
     &__item-name {
       display: none;
     }
