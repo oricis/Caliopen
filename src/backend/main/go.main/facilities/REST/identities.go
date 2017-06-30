@@ -11,3 +11,8 @@ import (
 func (rest *RESTfacility) LocalsIdentities(user_id string) ([]LocalIdentity, error) {
 	return rest.store.GetLocalsIdentities(user_id)
 }
+
+func (rest *RESTfacility) ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error) {
+
+	return
+}
