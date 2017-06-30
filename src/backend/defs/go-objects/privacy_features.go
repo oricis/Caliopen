@@ -4,6 +4,4 @@
 
 package objects
 
-type PrivacyFeatures struct {
-	Empty_is_boring bool
-}
+type PrivacyFeatures map[string]string
