@@ -14,6 +14,14 @@ type (
 		User_id      UUID   `cql:"user_id"                 json:"user_id"           formatter:"rfc4122"`
 	}
 
+	// embedded in a contact
+	SocialIdentity struct {
+		Infos    map[string]string `cql:"infos"     json:"infos"`
+		Name     string            `cql:"name"      json:"name"`
+		SocialId UUID              `cql:"social_id" json:"social_id"`
+		Type     string            `cql:"type"      json:"type"`
+	}
+
 	//reference embedded in a message
 	Identity struct {
 		Identifier string `cql:"identifier"     json:"identifier"`

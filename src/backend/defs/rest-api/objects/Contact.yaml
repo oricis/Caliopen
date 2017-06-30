@@ -53,12 +53,12 @@ properties:
     type: array
     items:
       "$ref": Phone.yaml
-  privacy_features:
-    type: object
-    "$ref": PrivacyFeatures.yaml
   pi:
     type: object
     "$ref": PI.yaml
+  privacy_features:
+    type: object
+    "$ref": PrivacyFeatures.yaml
   public_keys:
     type: array
     items:

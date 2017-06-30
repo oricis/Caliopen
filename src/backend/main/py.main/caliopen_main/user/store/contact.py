@@ -19,14 +19,14 @@ class Organization(BaseUserType):
 
     _pkey = 'organization_id'
 
-    organization_id = columns.UUID(default=uuid.uuid4)
     deleted = columns.Boolean(default=False)
-    label = columns.Text()
     department = columns.Text()
-    job_description = columns.Text()
-    name = columns.Text()
-    title = columns.Text()
     is_primary = columns.Boolean(default=False)
+    job_description = columns.Text()
+    label = columns.Text()
+    name = columns.Text()
+    organization_id = columns.UUID(default=uuid.uuid4)
+    title = columns.Text()
     type = columns.Text()   # work, other
 
 
@@ -36,14 +36,14 @@ class PostalAddress(BaseUserType):
     _pkey = 'address_id'
 
     address_id = columns.UUID(default=uuid.uuid4)
-    label = columns.Text()
-    type = columns.Text()
-    is_primary = columns.Boolean(default=False)
-    street = columns.Text()
     city = columns.Text()
-    postal_code = columns.Text()
     country = columns.Text()
+    is_primary = columns.Boolean(default=False)
+    label = columns.Text()
+    postal_code = columns.Text()
     region = columns.Text()
+    street = columns.Text()
+    type = columns.Text()
 
 
 class Email(BaseUserType):
@@ -52,10 +52,10 @@ class Email(BaseUserType):
     _pkey = 'email_id'
     uniq_name = 'address'
 
-    email_id = columns.UUID(default=uuid.uuid4)
     address = columns.Text()
-    label = columns.Text()
+    email_id = columns.UUID(default=uuid.uuid4)
     is_primary = columns.Boolean(default=False)
+    label = columns.Text()
     type = columns.Text()   # home, work, other
 
 
@@ -65,12 +65,12 @@ class IM(BaseUserType):
     _pkey = 'im_id'
     uniq_name = 'address'
 
-    im_id = columns.UUID(default=uuid.uuid4)
     address = columns.Text()
-    label = columns.Text()
-    type = columns.Text()
-    protocol = columns.Text()
+    im_id = columns.UUID(default=uuid.uuid4)
     is_primary = columns.Boolean(default=False)
+    label = columns.Text()
+    protocol = columns.Text()
+    type = columns.Text()
 
 
 class Phone(BaseUserType):
@@ -79,10 +79,10 @@ class Phone(BaseUserType):
     _pkey = 'phone_id'
     uniq_name = 'number'
 
-    phone_id = columns.UUID(default=uuid.uuid4)
-    number = columns.Text()
-    type = columns.Text()
     is_primary = columns.Boolean(default=False)
+    number = columns.Text()
+    phone_id = columns.UUID(default=uuid.uuid4)
+    type = columns.Text()
     uri = columns.Text()    # RFC3966
 
 
@@ -103,34 +103,29 @@ class Contact(BaseModel, IndexedModelMixin):
 
     _index_class = IndexedContact
 
-    user_id = columns.UUID(primary_key=True)
+    additional_name = columns.Text()
+    addresses = columns.List(columns.UserDefinedType(PostalAddress))
+    avatar = columns.Text()
     contact_id = columns.UUID(primary_key=True)     # clustering key
     date_insert = columns.DateTime(default=datetime.utcnow())
     date_update = columns.DateTime()
-    # Redefine, need default
     deleted = columns.Boolean(default=False)
-    title = columns.Text()          # computed value, read only
-    # detailed name structure
-    given_name = columns.Text()
-    additional_name = columns.Text()
+    emails = columns.List(columns.UserDefinedType(Email))
     family_name = columns.Text()
+    given_name = columns.Text()
+    groups = columns.List(columns.Text)
+    identities = columns.List(columns.UserDefinedType(SocialIdentity))
+    ims = columns.List(columns.UserDefinedType(IM))
+    infos = columns.Map(columns.Text, columns.Text)
     name_prefix = columns.Text()
     name_suffix = columns.Text()
-    groups = columns.List(columns.Text)
-    privacy_features = columns.Map(columns.Text(), columns.Text())
-    pi = columns.UserDefinedType(PIModel)
-
-    # UDT
     organizations = columns.List(columns.UserDefinedType(Organization))
-    addresses = columns.List(columns.UserDefinedType(PostalAddress))
-    emails = columns.List(columns.UserDefinedType(Email))
-    ims = columns.List(columns.UserDefinedType(IM))
     phones = columns.List(columns.UserDefinedType(Phone))
-    identities = columns.List(columns.UserDefinedType(SocialIdentity))
+    pi = columns.UserDefinedType(PIModel)
+    privacy_features = columns.Map(columns.Text(), columns.Text())
     tags = columns.List(columns.UserDefinedType(ResourceTag))
-
-    # everything else in a map
-    infos = columns.Map(columns.Text, columns.Text)
+    title = columns.Text()  # computed value, read only
+    user_id = columns.UUID(primary_key=True)
 
 
 class PublicKey(BaseModel):
