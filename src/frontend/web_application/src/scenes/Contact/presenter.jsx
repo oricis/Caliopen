@@ -63,7 +63,7 @@ class Contact extends Component {
   }
 
   renderTagsModal() {
-    const { contact, __ } = this.props;
+    const { contact, updateContact, __ } = this.props;
     const count = contact.tags ? contact.tags.length : 0;
     const title = [
       __('tags.header.title'),
@@ -77,7 +77,7 @@ class Contact extends Component {
         title={title}
         onClose={this.handleCloseTagsModal}
       >
-        <ManageTags contact={contact} />
+        <ManageTags contact={contact} onContactChange={updateContact} />
       </Modal>
     );
   }
