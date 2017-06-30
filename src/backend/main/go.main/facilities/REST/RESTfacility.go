@@ -26,6 +26,7 @@ type (
 		OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error)
 		GetRawMessage(raw_message_id string) (message []byte, err error)
 		SuggestRecipients(user_id, query_string string) (suggests []RecipientSuggestion, err error)
+		ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 	}
 	RESTfacility struct {
 		store              backends.APIStorage

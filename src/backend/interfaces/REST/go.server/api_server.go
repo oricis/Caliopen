@@ -7,6 +7,7 @@ package rest_api
 import (
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/contacts"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/messages"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/participants"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/users"
@@ -179,4 +180,8 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	/** participants API **/
 	parts := api.Group("/participants", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
 	parts.GET("/suggest", participants.Suggest)
+
+	/** contacts API **/
+	cts := api.Group("/contacts", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
+	cts.GET("/:contact_id/identities", contacts.GetIdentities)
 }
