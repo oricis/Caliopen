@@ -13,16 +13,21 @@ type APIStorage interface {
 	UserNameStorage
 	GetMessage(user_id, msg_id string) (msg *Message, err error)
 	UpdateMessage(msg *Message, fields map[string]interface{}) error
-	GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 	SetMessageUnread(user_id, message_id string, status bool) error
+	GetRawMessage(raw_message_id string) (raw_message RawMessage, err error)
+
 	StoreAttachment(attachment_id string, file io.Reader) (uri string, size int, err error)
 	GetAttachment(uri string) (file io.Reader, err error)
 	DeleteAttachment(uri string) error
-	GetRawMessage(raw_message_id string) (raw_message RawMessage, err error)
+
+	GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error)
+
+	GetContact(user_id, contact_id string) (Contact, error)
 }
 
 type APIIndex interface {
 	SetMessageUnread(user_id, message_id string, status bool) error
 	UpdateMessage(msg *Message, fields map[string]interface{}) error
 	RecipientsSuggest(user_id, query_string string) (suggests []RecipientSuggestion, err error)
+	ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 }

@@ -24,8 +24,8 @@ type (
 		NameSuffix      string            `cql:"name_suffix"        json:"name_suffix"`
 		Organizations   []Organization    `cql:"organizations"      json:"organizations"`
 		Phones          []Phone           `cql:"phones"             json:"phones"`
-		PrivacyIndex    PrivacyIndex      `cql:"pi"                 json:"pi"`
-		PrivacyFeatures PrivacyFeatures   `cql:"privacy_features"   json:"privacy_features"`
+		PrivacyIndex    *PrivacyIndex     `cql:"pi"                 json:"pi"`
+		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features"`
 		Tags            []Tag             `cql:"tags"               json:"tags"`
 		Title           string            `cql:"title"              json:"title"`
 		UserId          UUID              `cql:"user_id"            json:"user_id"`
