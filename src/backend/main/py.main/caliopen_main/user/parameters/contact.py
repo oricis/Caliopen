@@ -199,7 +199,7 @@ class SocialIdentity(NewSocialIdentity):
     """Existing social identity."""
 
     contact_id = UUIDType()
-    identity_id = UUIDType(required=True)
+    social_id = UUIDType(required=True)
     user_id = UUIDType()
 
     class Options:
