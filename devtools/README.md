@@ -141,4 +141,7 @@ According to [this issue](https://github.com/docker-library/elasticsearch/issues
 
 ```
 sysctl -w vm.max_map_count=262144
+
+# make it permanent:
+echo "vm.max_map_count = 262144" > sudo tee /etc/sysctl.d/vm.caliopen.conf
 ```
