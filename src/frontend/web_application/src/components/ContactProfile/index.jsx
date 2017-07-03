@@ -69,7 +69,7 @@ class ContactProfile extends Component {
         </div>
 
 
-        {contact.tags.length > 0 &&
+        {contact.tags &&
           <div className="m-contact-profile__tags">
             {contact.tags.map(tag => (
               <Badge className="m-contact-profile__tag" key={tag}>{tag}</Badge>
