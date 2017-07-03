@@ -99,14 +99,7 @@ docker-compose run cli create_user -e dev -p 123456
 docker-compose run cli import -e dev@caliopen.local -f mbox -p devtools/fixtures/mbox/dev@caliopen.local
 ```
 
-##  
-**NB** : data are persisted after containers are stopped, event after they are destroyed. Here is how to clean-up your data to start the stack with an empty storage :
-* remove storage containers :
-    * `docker-compose rm cassandra elasticsearch object_store`
-* remove volumes created after containers :
-    * `docker volume rm devtools_db devtools_index devtools_store`
-
-##
+**NB** : data are persisted after containers are stopped, even after beeing destroyed.
 
 Finally start the api and the frontend:
 
@@ -126,3 +119,26 @@ docker-compose up -d broker
 You will have a Caliopen instance filled with data, accessible from your browser on localhost:4000.  
 You could check outgoing emails by pointing your browser at localhost:8888.  
 
+### Fresh install
+
+To reset containers and data:
+
+```
+docker-compose stop
+
+# remove containers :
+docker-compose rm
+
+# remove volumes created by containers :
+docker volume rm devtools_db devtools_index devtools_store
+```
+
+### Troubleshoutings
+
+**elasticsearch won't start**:
+
+According to [this issue](https://github.com/docker-library/elasticsearch/issues/111), you might solve it with this command on the host:
+
+```
+sysctl -w vm.max_map_count=262144
+```
