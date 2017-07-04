@@ -142,3 +142,16 @@ According to [this issue](https://github.com/docker-library/elasticsearch/issues
 ```
 sysctl -w vm.max_map_count=262144
 ```
+
+# Staging scenarios
+
+Please refer to [ansible-poc][ansible-poc] project, this will prepare your host and start Caliopen
+in stable mode (latest release).
+
+Under the hood it will run docker-compose with production config:
+
+```bash
+docker-compose -f docker-compose.staging.yml up -d frontend broker
+```
+
+[ansible-poc]: https://github.com/CaliOpen/ansible-poc
