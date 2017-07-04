@@ -1,0 +1,138 @@
+version: '2'
+volumes:
+  index:
+    driver: local
+  db:
+    driver: local
+  store:
+    driver: local
+services:
+  # Caliopen APIv2
+  api:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.go-api
+    links:
+      - apiv1:apiv1.dev.caliopen.org
+      - redis:redis.dev.caliopen.org
+      - cassandra:cassandra.dev.caliopen.org
+      - nats:nats.dev.caliopen.org
+      - elasticsearch:es.dev.caliopen.org
+      - object_store:minio.dev.caliopen.org
+    expose:
+      - "31415"
+
+  # Caliopen APIv1
+  apiv1:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.py-api
+    links:
+      - redis:redis.dev.caliopen.org
+      - cassandra:cassandra.dev.caliopen.org
+      - elasticsearch:es.dev.caliopen.org
+    expose:
+      - "6543"
+
+  # ### Redis Database
+  #
+  # Used to store sessions.
+  redis:
+    image: redis
+    expose:
+      - "6379"
+
+  # ### Cassandra
+  #
+  # Cassandra is used as the reference storage for business data
+  cassandra:
+    image: scylladb/scylla
+    expose:
+      - "9042"
+      - "9160"
+      - "7000"
+    volumes:
+      - db:/var/lib/scylla
+    entrypoint:
+      - /docker-entrypoint.py
+      - --memory
+      - 512M
+
+  # ### Elasticsearch
+  #
+  # Used to index mail content and ensure great research performances.
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
+    expose:
+      - "9200"
+    environment:
+      - xpack.security.enabled=false
+      - xpack.monitoring.enabled=false
+      - "ES_JAVA_OPTS=-Xms512M -Xmx512M"
+    volumes:
+      - index:/usr/share/elasticsearch/data
+
+  # Caliopen cli tool
+  cli:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.cli
+    links:
+      - cassandra:cassandra.dev.caliopen.org
+      - elasticsearch:es.dev.caliopen.org
+      - broker:broker.dev.caliopen.org
+    environment:
+      CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
+    volumes:
+      - .:/srv/caliopen/src/backend/devtools
+
+  # Caliopen frontend
+  frontend:
+    build:
+      context: ../src/frontend/web_application
+    links:
+      - api:api.dev.caliopen.org
+    ports:
+      - "127.0.0.1:4000:4000"
+  # Broker
+  broker:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.go-lmtp
+    links:
+      - cassandra:cassandra.dev.caliopen.org
+      - elasticsearch:es.dev.caliopen.org
+      - object_store:minio.dev.caliopen.org
+      - nats:nats.dev.caliopen.org
+      - message_handler:mc.dev.caliopen.org
+    ports:
+      - "127.0.0.1:2525:2525"
+  # NATS
+  nats:
+    image: nats:0.9.6
+    expose:
+      - "4222"
+
+  # NATS Message Handler
+  message_handler:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.message_handler
+    links:
+      - cassandra:cassandra.dev.caliopen.org
+      - elasticsearch:es.dev.caliopen.org
+      - nats:nats.dev.caliopen.org
+
+  # object storage
+  object_store:
+    image: minio/minio
+    expose:
+      - "9090"
+    volumes:
+      - ../src/backend/configs:/configs
+      - store:/export
+    command:
+      server --address :9090 -C /configs/minio /export
+
+  # Postfix : a complete smpt server that act as the Caliopen's MTA
+  # TODO
