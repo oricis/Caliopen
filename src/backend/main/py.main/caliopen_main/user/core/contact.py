@@ -16,6 +16,7 @@ from ..store import (Contact as ModelContact,
 from caliopen_main.user.store.contact_index import IndexedContact
 from caliopen_storage.core import BaseCore, BaseUserCore
 from caliopen_storage.core.mixin import MixinCoreRelation, MixinCoreNested
+from caliopen_main.objects.pi import PIModel
 
 log = logging.getLogger(__name__)
 
@@ -151,6 +152,13 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         title = cls._compute_title(contact)
         contact_id = uuid.uuid4()
 
+        # XXX PI compute
+        pi = PIModel()
+        pi.technic = 0
+        pi.comportment = 0
+        pi.context = 0
+        pi.version = 0
+
         attrs = {'contact_id': contact_id,
                  'info': contact.infos,
                  'groups': contact.groups,
@@ -170,7 +178,8 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
                                                         SocialIdentity),
                  'organizations': cls.create_nested(contact.organizations,
                                                     Organization),
-                 'tags': cls.create_nested(contact.tags, ResourceTag)}
+                 'tags': cls.create_nested(contact.tags, ResourceTag),
+                 'pi': pi}
 
         core = super(Contact, cls).create(user, **attrs)
         log.debug('Created contact %s' % core.contact_id)
