@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.1] - 2017-07-04
+### Added
+- GET /identities/remotes/<identifier> route to fix issue #383
+- add a docker compose for staging platform
+
 ## [0.2.0] - 2017-07-02
 ### Added
 - Participants suggestion API
