@@ -195,7 +195,7 @@ class MailPrivacyFeature(object):
                     if internal in path[1] and internal not in path[0]:
                         ingress = path
                         break
-            if not is_internal:
+            if is_internal:
                 internal_hops += 1
 
         # Qualify ingress connection
