@@ -87,12 +87,33 @@ class MailPrivacyFeature(object):
     @property
     def spam_informations(self):
         """Compute features around spam information in mail headers."""
+        scores = [0.0]
         score = self.message.mail.get('X-Spam-Score', 0)
-        try:
-            score = float(score)
-        except TypeError:
-            score = 0.0
-        return {'spam_score': score}
+        if score:
+            try:
+                score = float(score)
+                scores.append(score * 10)
+            except TypeError:
+                log.debug('Invalid type for X-Spam-Score value {}'.
+                          format(score))
+        level = self.message.mail.get('X-Spam-Level', '')
+        if '*' in level:
+            # SpamAssassin style, level is *** notation, up to 25 *
+            note = level.count('*')
+            scores.append(min(100.0, note * 4.0))
+        status = self.message.mail.get('X-Spam-Status', '')
+        if status:
+            match = re.match('^X-Spam-Status: Yes, score=(\d.\d).*', status)
+            if match:
+                scores.append(min(100.0, float(match[0] * 10)))
+
+        if len(scores) == 1:
+            # Really not a SPAM ? (and moderate effect of this flag)
+            flag = self.message.mail.get('X-Spam-Flag', '')
+            if flag.lower().startswith('y'):
+                scores.append(80.0)
+
+        return {'spam_score': max(scores)}
 
     def get_signature_informations(self):
         """Get message signature features."""
