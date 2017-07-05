@@ -4,7 +4,7 @@ import Brand from '../../components/Brand';
 import './style.scss';
 
 const DEV_INFOS = {
-  version: '0.1.0',
+  version: 'release-0.2.1',
   login: 'john',
   password: '123456',
 };
