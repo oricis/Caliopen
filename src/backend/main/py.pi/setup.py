@@ -15,7 +15,7 @@ with open(init_file) as v_file:
         match(v_file.read()).group(1)
 
 requires = [
-    'caliopen_storage',
+    'pgpy',
 ]
 
 extras_require = {
