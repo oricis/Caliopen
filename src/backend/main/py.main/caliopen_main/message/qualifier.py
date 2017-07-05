@@ -10,6 +10,7 @@ from caliopen_main.user.core import Contact
 from caliopen_main.discussion.core import (DiscussionMessageLookup,
                                            DiscussionRecipientLookup,
                                            DiscussionExternalLookup)
+from caliopen_pi.features import InboundMailFeature
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.parsers import MailMessage
 
@@ -174,11 +175,12 @@ class UserMessageQualifier(object):
             new_message.attachments.append(attachment)
 
         # Compute PI !!
-        new_message.pi = self._compute_pi(new_message,
-                                          message.privacy_features)
+        extractor = InboundMailFeature(message)
+        privacy_features = extractor.process()
+        new_message.pi = self._compute_pi(new_message, privacy_features)
 
         # XXX hard type privacy_features for the moment
-        for k, v in message.privacy_features.items():
+        for k, v in privacy_features.items():
             if v is not None:
                 new_message.privacy_features[k] = str(v)
 
