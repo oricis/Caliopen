@@ -8,10 +8,10 @@ import './style.scss';
 const TextFieldGroup = ({
   id = uuidV1(),
   label,
-  errors = [],
-  expanded = true,
+  errors,
+  expanded,
   className,
-  showLabelforSr = false,
+  showLabelforSr,
   ...inputProps
 }) => {
   const hasError = errors.length > 0;
@@ -23,10 +23,7 @@ const TextFieldGroup = ({
   return (
     <div className={classnames('m-text-field-group', className)}>
       <label htmlFor={id} className={labelClassName}>{label}</label>
-      <InputText
-        id={id} expanded={expanded} hasError={hasError}
-        {...inputProps}
-      />
+      <InputText id={id} expanded={expanded} hasError={hasError} {...inputProps} />
       { errors.length > 0 && (
         <FieldErrors className="m-text-field-group__errors" errors={errors} />
       )}
@@ -41,6 +38,13 @@ TextFieldGroup.propTypes = {
   errors: PropTypes.arrayOf(PropTypes.string),
   expanded: PropTypes.bool,
   className: PropTypes.string,
+};
+TextFieldGroup.defaultProps = {
+  id: undefined,
+  showLabelforSr: false,
+  errors: [],
+  expanded: true,
+  className: undefined,
 };
 
 export default TextFieldGroup;

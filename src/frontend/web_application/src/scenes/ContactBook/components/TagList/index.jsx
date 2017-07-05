@@ -71,7 +71,7 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag, __ }) => {
         onTagClick={onTagClick}
         active={activeTag === ''}
       />
-      {tagList.map(tag =>
+      {tagList.map(tag => (
         <TagItem
           title={tag}
           link={tag}
@@ -80,7 +80,7 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag, __ }) => {
           onTagClick={onTagClick}
           active={tag === activeTag}
         />
-      )}
+      ))}
     </NavList>
   );
 };

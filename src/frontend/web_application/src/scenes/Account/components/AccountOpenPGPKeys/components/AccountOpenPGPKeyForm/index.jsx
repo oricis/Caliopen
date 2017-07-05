@@ -59,7 +59,17 @@ class AccountOpenPGPKeyForm extends Component {
     isLoading: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.node,
-    __: PropTypes.func,
+    __: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    emails: [],
+    onImport: () => {},
+    onGenerate: () => {},
+    importForm: {},
+    isLoading: false,
+    className: undefined,
+    children: undefined,
   };
 
   constructor(props) {

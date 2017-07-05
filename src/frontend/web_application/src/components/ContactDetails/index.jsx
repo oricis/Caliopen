@@ -292,7 +292,7 @@ class ContactDetails extends Component {
           </Subtitle>
           <div className="m-contact-details__list">
             <TextList>
-              {contact.identities && contact.identities.map(identity =>
+              {contact.identities && contact.identities.map(identity => (
                 <IdentityDetails
                   key={identity.value}
                   identity={identity}
@@ -300,7 +300,7 @@ class ContactDetails extends Component {
                   onDelete={this.makeHandleDeleteContactDetail('identities')}
                   __={__}
                 />
-              )}
+              ))}
             </TextList>
             {this.state.editMode.identities && (
               <IdentityForm onSubmit={this.makeHandleAddContactDetail('identities')} __={__} />
