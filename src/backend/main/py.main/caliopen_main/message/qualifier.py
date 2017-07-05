@@ -5,6 +5,7 @@ import logging
 from .parameters import NewMessage, Participant, Attachment
 
 from caliopen_storage.exception import NotFound
+from caliopen_storage.config import Configuration
 from caliopen_main.objects.pi import PIParameter
 from caliopen_main.user.core import Contact
 from caliopen_main.discussion.core import (DiscussionMessageLookup,
@@ -175,7 +176,8 @@ class UserMessageQualifier(object):
             new_message.attachments.append(attachment)
 
         # Compute PI !!
-        extractor = InboundMailFeature(message)
+        conf = Configuration('global').configuration
+        extractor = InboundMailFeature(message, conf)
         privacy_features = extractor.process()
         new_message.pi = self._compute_pi(new_message, privacy_features)
 

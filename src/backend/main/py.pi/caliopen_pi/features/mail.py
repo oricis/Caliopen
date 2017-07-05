@@ -7,8 +7,6 @@ import logging
 
 import pgpy
 
-from caliopen_storage.config import Configuration
-
 
 log = logging.getLogger(__name__)
 
@@ -33,13 +31,14 @@ class InboundMailFeature(object):
         'nb_external_hops': 0,
     }
 
-    def __init__(self, message):
+    def __init__(self, message, config):
         """Get a ``MailMessage`` instance and extract privacy features."""
         self.message = message
+        self.config = config
 
     def is_blacklist_mx(self, mx):
         """MX is blacklisted."""
-        blacklisted = Configuration('global').get('blacklistes.mx')
+        blacklisted = self.config.get('blacklistes.mx')
         if not blacklisted:
             return False
         if mx in blacklisted:
@@ -48,7 +47,7 @@ class InboundMailFeature(object):
 
     def is_whitelist_mx(self, mx):
         """MX is whitelisted."""
-        whitelistes = Configuration('global').get('whitelistes.mx')
+        whitelistes = self.config.get('whitelistes.mx')
         if not whitelistes:
             return False
         if mx in whitelistes:
@@ -58,7 +57,7 @@ class InboundMailFeature(object):
     @property
     def internal_domains(self):
         """Get internal hosts from configuration."""
-        domains = Configuration('global').get('internal_domains')
+        domains = self.config.get('internal_domains')
         return domains if domains else []
 
     def emitter_reputation(self, mx):
