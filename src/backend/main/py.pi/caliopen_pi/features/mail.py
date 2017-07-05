@@ -13,7 +13,7 @@ from caliopen_storage.config import Configuration
 log = logging.getLogger(__name__)
 
 
-class MailPrivacyFeature(object):
+class InboundMailFeature(object):
     """Process a parsed mail message and extract available privacy features."""
 
     _features = {
