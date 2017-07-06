@@ -112,6 +112,12 @@ class ObjectDictifiable(CaliopenObject):
                     setattr(self, attr, [])
                 elif isinstance(attrtype, types.DictType):
                     setattr(self, attr, {})
+                elif issubclass(attrtype, types.BooleanType):
+                    setattr(self, attr, False)
+                elif issubclass(attrtype, types.StringType):
+                    setattr(self, attr, "")
+                elif issubclass(attrtype, types.IntType):
+                    setattr(self, attr, 0)
                 else:
                     setattr(self, attr, None)
 
@@ -339,7 +345,7 @@ class ObjectUser(ObjectStorable):
             current_attr = self._attrs[key]
             error = self._check_key_consistency(current_attr, key,
                                                 obj_patch_old,
-                                                patch_current)
+                                                obj_patch_new)
             if error is not None:
                 return error
 

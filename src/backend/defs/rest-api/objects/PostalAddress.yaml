@@ -5,7 +5,6 @@ properties:
   address_id:
     type: string
 required:
-- address_id
 - city
 additionalProperties: false
 

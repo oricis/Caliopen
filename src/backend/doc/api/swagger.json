@@ -178,7 +178,6 @@
                           }
                         },
                         "required": [
-                          "address_id",
                           "city"
                         ],
                         "additionalProperties": false
@@ -751,7 +750,6 @@
                           }
                         },
                         "required": [
-                          "address_id",
                           "city"
                         ],
                         "additionalProperties": false
@@ -1346,7 +1344,6 @@
                             }
                           },
                           "required": [
-                            "address_id",
                             "city"
                           ],
                           "additionalProperties": false
@@ -1847,7 +1844,6 @@
                       }
                     },
                     "required": [
-                      "address_id",
                       "city"
                     ],
                     "additionalProperties": false
@@ -2304,7 +2300,6 @@
                           }
                         },
                         "required": [
-                          "address_id",
                           "city"
                         ],
                         "additionalProperties": false
@@ -2655,7 +2650,6 @@
                       }
                     },
                     "required": [
-                      "address_id",
                       "city"
                     ],
                     "additionalProperties": false
