@@ -53,7 +53,8 @@ export function invalidate() {
 export function updateContact({ contact, original }) {
   return (dispatch) => {
     const data = calcObjectForPatch(contact, original);
-    dispatch({
+
+    return dispatch({
       type: UPDATE_CONTACT,
       payload: {
         request: {

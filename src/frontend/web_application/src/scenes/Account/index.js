@@ -1,46 +1,42 @@
+import { createSelector } from 'reselect';
+import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
+import { withTranslator } from '@gandi/react-translate';
 import { createNotification, NOTIFICATION_TYPE_INFO } from 'react-redux-notify';
+import { requestUser } from '../../store/modules/user';
+import { updateContact } from '../../store/modules/contact';
 import Presenter from './presenter';
 
+const userSelector = state => state.user;
 
-// import { createSelector } from 'reselect';
-//
-// const userSelector = createSelector(
-//   state => state.userReducer,
-//   userReducer => ({ ...userReducer })
-// );
-//
 // const remoteIdentitiesSelector = createSelector(
-//   state => state.remoteIdentityReducer,
-//   remoteIdentityReducer => ({
-//     remoteIdentities: remoteIdentityReducer
-//       .remoteIdentities.map((id) => remoteIdentityReducer.remoteIdentitiesById[id]),
+//   state => state.remoteIdentity,
+//   remoteIdentityState => ({
+//     remoteIdentities: remoteIdentityState
+//       .remoteIdentities.map(id => remoteIdentityState.remoteIdentitiesById[id]),
 //   })
 // );
-// this.$scope.$on('$destroy', this.$ngRedux.connect(userSelector)(this));
-// this.$scope.$on('$destroy', this.$ngRedux.connect(remoteIdentitiesSelector)(this));
 
-const mapDispatchToProps = dispatch => ({
-  onContactProfileChange: () => {
-    dispatch(createNotification({
-      message: 'Updating a contact is not yet available.',
-      type: NOTIFICATION_TYPE_INFO,
-      duration: 10000,
-      canDismiss: true,
-    }));
-    // XXX: this.$ngRedux.dispatch(this.UserActions.updateUserContact(contact));
-  },
-  setMainAddress: () => {
-    // TODO: API for main address
-    // does caliopen instance address is in contact details (I suppose)
-    // is primary available for all digital contact details and can be used as real primary ?
-    dispatch(createNotification({
-      message: 'Primary contact protocol/address definition is not yet implemented.',
-      type: NOTIFICATION_TYPE_INFO,
-      duration: 10000,
-      canDismiss: true,
-    }));
-  },
-});
+const mapStateToProps = createSelector(
+  [userSelector],
+  userState => ({
+    user: userState.user,
+    isFetching: userState.isFetching,
+  })
+);
 
-export default connect(null, mapDispatchToProps)(Presenter);
+const mapDispatchToProps = dispatch => bindActionCreators({
+  requestUser,
+  updateContact,
+  onRemoteIdentityChange: () => createNotification({
+    message: 'Connecting a remote identity is not yet available.',
+    type: NOTIFICATION_TYPE_INFO,
+    duration: 10000,
+    canDismiss: true,
+  }),
+}, dispatch);
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTranslator()
+)(Presenter);
