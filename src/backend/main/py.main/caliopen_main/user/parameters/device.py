@@ -7,8 +7,7 @@ from schematics.transforms import blacklist
 from schematics.types import DateTimeType, StringType, UUIDType
 from schematics.types.compound import ListType, ModelType, DictType
 
-from caliopen_main.objects.pi import PIParameter
-
+from caliopen_pi.parameters import PIParameter
 
 DEVICE_TYPES = ['unknow', 'desktop', 'laptop', 'smartphone', 'tablet']
 
@@ -52,7 +51,6 @@ class Device(NewDevice):
 
     privacy_features = DictType(StringType, default=lambda: {})
     pi = ModelType(PIParameter)
-
 
     class Options:
         serialize_when_none = False

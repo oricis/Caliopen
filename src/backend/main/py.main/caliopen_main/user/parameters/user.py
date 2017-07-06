@@ -9,7 +9,7 @@ from schematics.transforms import blacklist
 
 from .contact import NewContact, Contact
 
-from caliopen_main.objects.pi import PIParameter
+from caliopen_pi.parameters import PIParameter
 
 
 class NewUser(Model):
