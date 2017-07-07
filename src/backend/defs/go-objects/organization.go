@@ -13,6 +13,6 @@ type Organization struct {
 	Label          string `cql:"label"              json:"label"`
 	Name           string `cql:"name"               json:"name"`
 	OrganizationId UUID   `cql:"organization_id"    json:"organization_id"`
-	Title          string `cql:"titel"              json:"title"`
+	Title          string `cql:"title"              json:"title"`
 	Type           string `cql:"type"               json:"type"`
 }

@@ -23,7 +23,7 @@ func (rest *RESTfacility) ContactIdentities(user_id, contact_id string) (identit
 	_, e := uuid.FromString(contact_id)
 	if user_id != "" && contact_id != "" && e == nil {
 		contact, err := rest.store.GetContact(user_id, contact_id)
-		if err != nil {
+		if err != nil || contact == nil {
 			err = errors.New("[RESTfacility.ContactIdentities] error when retrieving contact : " + err.Error())
 			return []ContactIdentity{}, err
 		}
@@ -38,15 +38,31 @@ func (rest *RESTfacility) ContactIdentities(user_id, contact_id string) (identit
 		}
 
 		for _, identity := range contact.Identities {
+			identities = append(identities, ContactIdentity{
+				Identifier:   identity.Name,
+				Label:        identity.Name,
+				PrivacyIndex: PrivacyIndex{},
+				Protocol:     identity.Type,
+			})
 
 		}
 
 		for _, im := range contact.Ims {
-
+			identities = append(identities, ContactIdentity{
+				Identifier:   im.Address,
+				Label:        im.Label,
+				PrivacyIndex: PrivacyIndex{},
+				Protocol:     im.Protocol,
+			})
 		}
 
 		for _, phone := range contact.Phones {
-
+			identities = append(identities, ContactIdentity{
+				Identifier:   phone.Number,
+				Label:        phone.Number,
+				PrivacyIndex: PrivacyIndex{},
+				Protocol:     SmsProtocol,
+			})
 		}
 
 		for i := range identities {

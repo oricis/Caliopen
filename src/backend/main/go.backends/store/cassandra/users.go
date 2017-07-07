@@ -13,7 +13,7 @@ import (
 )
 
 func (cb *CassandraBackend) Get(*User) error {
-	return nil
+	return errors.New("[CassandraBackend] Get not implemented")
 }
 
 func (cb *CassandraBackend) GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error) {

@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func UpdatePIContactIdentity(ctx context.Context, contact Contact, identity *ContactIdentity) {
+func UpdatePIContactIdentity(ctx context.Context, contact *Contact, identity *ContactIdentity) {
 	// TODO: real update. But how to do it ???
 	// ctx should be use to pass context information to this calculator
 	// few computations below are just for demonstration
@@ -19,16 +19,16 @@ func UpdatePIContactIdentity(ctx context.Context, contact Contact, identity *Con
 		identity.PrivacyIndex.Comportment = contact.PrivacyIndex.Comportment
 		identity.PrivacyIndex.Context = contact.PrivacyIndex.Context
 		identity.PrivacyIndex.Technic = contact.PrivacyIndex.Technic
-		switch identity.Protocol {
-		case "email":
-			identity.PrivacyIndex.Technic--
-		case "telephone":
-			identity.PrivacyIndex.Technic++
-		case "im":
-			identity.PrivacyIndex.Technic -= 2
-		}
 	} else {
 		identity.PrivacyIndex = PrivacyIndex{}
+	}
+	switch identity.Protocol {
+	case "email":
+		identity.PrivacyIndex.Technic--
+	case "telephone":
+		identity.PrivacyIndex.Technic++
+	case "im":
+		identity.PrivacyIndex.Technic -= 2
 	}
 
 	identity.PrivacyIndex.DateUpdate = time.Now()

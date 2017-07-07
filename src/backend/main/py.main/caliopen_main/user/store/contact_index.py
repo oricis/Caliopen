@@ -174,8 +174,8 @@ class IndexedContact(BaseIndexDocument):
                         properties={
                             "is_primary": Boolean(),
                             "number": Text(),
-                            "type": Text(),
-                            "uri": Text()
+                            "type": Keyword(),
+                            "uri": Keyword()
                         })
         m.field("phones", phones)
         pi = Nested(doc_class=PIIndexModel, include_in_all=True,

@@ -22,7 +22,7 @@ type APIStorage interface {
 
 	GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 
-	GetContact(user_id, contact_id string) (Contact, error)
+	GetContact(user_id, contact_id string) (*Contact, error)
 }
 
 type APIIndex interface {

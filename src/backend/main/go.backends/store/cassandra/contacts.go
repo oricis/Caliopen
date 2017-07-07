@@ -10,19 +10,16 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
-func (cb *CassandraBackend) GetContact(user_id, contact_id string) (contact Contact, err error) {
-
-	/*
-		err = cb.Session.Query(`SELECT user_id, contact_id, date_insert, family_name, given_name FROM contact WHERE user_id = ? and contact_id = ?`, user_id, contact_id).Scan(
-			contact.User_id, contact.Contact_id, contact.Date_insert, contact.Family_name, contact.Given_name,
-		)
-		if err != nil {
-			return nil, err
-		}
-	*/
-	// TODO
-
-	return
+func (cb *CassandraBackend) GetContact(user_id, contact_id string) (contact *Contact, err error) {
+	contact = &Contact{}
+	m := map[string]interface{}{}
+	q := cb.Session.Query(`SELECT * FROM contact WHERE user_id = ? AND contact_id = ?`, user_id, contact_id)
+	err = q.MapScan(m)
+	if err != nil {
+		return nil, err
+	}
+	contact.UnmarshalMap(m)
+	return contact, err
 }
 
 func (cb *CassandraBackend) LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error) {
