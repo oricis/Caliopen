@@ -7,7 +7,6 @@ properties:
   organization_id:
     type: string
 required:
-- label
 - name
 additionalProperties: false
 

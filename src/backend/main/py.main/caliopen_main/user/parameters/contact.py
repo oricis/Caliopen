@@ -51,11 +51,11 @@ class NewOrganization(Model):
     department = StringType()
     is_primary = BooleanType(default=False)
     job_description = StringType()
-    label = StringType(required=True)
+    label = StringType()
     name = StringType(required=True)
     title = StringType()
     # XXX Add enumerated list
-    type = StringType(choices=ORG_TYPES)
+    type = StringType()
 
     class Options:
         serialize_when_none = False

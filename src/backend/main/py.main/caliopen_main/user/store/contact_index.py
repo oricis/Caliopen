@@ -19,7 +19,7 @@ class IndexedOrganization(InnerObjectWrapper):
 
     """Contact indexed organization model."""
 
-    organization_id = Text()
+    organization_id = Keyword()
     deleted = Boolean()
     label = Text()
     department = Text()
@@ -27,7 +27,7 @@ class IndexedOrganization(InnerObjectWrapper):
     name = Text()
     title = Text()
     is_primary = Boolean()
-    type = Text()
+    type = Keyword()
 
 
 class IndexedPostalAddress(InnerObjectWrapper):
