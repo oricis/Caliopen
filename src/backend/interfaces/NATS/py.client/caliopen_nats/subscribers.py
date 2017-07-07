@@ -18,8 +18,8 @@ class InboundEmail(object):
         """Create a new inbound messsage handler from a nats connection."""
         self.natsConn = nats_cnx
 
-    def handler(self, msg):
-        """Handle an process_raw nats messages."""
+    def process_raw(self, msg, payload):
+        """Process an inbound raw message."""
         nats_error = {
             'error': '',
             'message': 'inbound email message process failed'
@@ -27,16 +27,22 @@ class InboundEmail(object):
         nats_success = {
             'message': 'OK : inbound email message proceeded'
         }
+        user = User.get(payload['user_id'])
+        deliver = UserMessageDelivery(user)
+        try:
+            deliver.process_raw(payload['message_id'])
+            self.natsConn.publish(msg.reply, json.dumps(nats_success))
+        except Exception as exc:
+            log.error("deliver process failed : {}".format(exc))
+            nats_error['error'] = str(exc.message)
+            self.natsConn.publish(msg.reply, json.dumps(nats_error))
+            return exc
+
+    def handler(self, msg):
+        """Handle an process_raw nats messages."""
         payload = json.loads(msg.data)
         log.info('Get payload order {}'.format(payload['order']))
         if payload['order'] == "process_raw":
-            user = User.get(payload['user_id'])
-            deliver = UserMessageDelivery(user)
-            try:
-                deliver.process_raw(payload['message_id'])
-            except Exception as exc:
-                print("deliver process failed : {}".format(exc))
-                nats_error['error'] = str(exc.message)
-                self.natsConn.publish(msg.reply, json.dumps(nats_error))
-                return exc
-            self.natsConn.publish(msg.reply, json.dumps(nats_success))
+            self.process_raw(msg, payload)
+        else:
+            log.warn('Unhandled payload type {}'.format(payload['order']))

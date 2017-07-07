@@ -27,6 +27,10 @@ broker:
     port: 2525
     host: broker.dev.caliopen.org
 
+message_queue:
+    port: 4222
+    host: nats.dev.caliopen.org
+
 object_store:
     db_size_limit: 1048576
     service: s3
