@@ -29,25 +29,18 @@ class ContactProfileForm extends Component {
     contact: {},
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      contact: {
-        title: '',
-        name_prefix: '',
-        given_name: '',
-        family_name: '',
-        name_suffix: '',
-        infos: {
-          birthday: '',
-        },
+  state = {
+    contact: {
+      title: '',
+      name_prefix: '',
+      given_name: '',
+      family_name: '',
+      name_suffix: '',
+      infos: {
+        birthday: '',
       },
-    };
-
-    this.handleChanges = this.handleChanges.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+    },
+  };
 
   componentWillMount() {
     this.setState(prevState => generateStateFromProps(this.props, prevState));
@@ -57,11 +50,23 @@ class ContactProfileForm extends Component {
     this.setState(prevState => generateStateFromProps(nextProps, prevState));
   }
 
-  handleChanges(event) {
+  handleChanges = (event) => {
     this.setState({ contact: { ...this.state.contact, [event.target.name]: event.target.value } });
   }
 
-  handleSubmit(event) {
+  handleInfosChanges = (event) => {
+    this.setState({
+      contact: {
+        ...this.state.contact,
+        infos: {
+          ...this.state.contact.infos,
+          [event.target.name]: event.target.value,
+        },
+      },
+    });
+  }
+
+  handleSubmit = (event) => {
     event.preventDefault();
     this.props.onChange({ contact: this.state.contact, original: this.props.contact });
   }
@@ -114,7 +119,7 @@ class ContactProfileForm extends Component {
           value={this.state.contact.infos.birthday}
           label={__('contact_profile.form.birthday.label')}
           name="birthday"
-          onChange={this.handleChanges}
+          onChange={this.handleInfosChanges}
         />
         <div className="m-contact-profile-form__save-button">
           <div className="m-contact-profile-form__save-button-wrapper">
