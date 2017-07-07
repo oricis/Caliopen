@@ -29,5 +29,4 @@ type APIIndex interface {
 	SetMessageUnread(user_id, message_id string, status bool) error
 	UpdateMessage(msg *Message, fields map[string]interface{}) error
 	RecipientsSuggest(user_id, query_string string) (suggests []RecipientSuggestion, err error)
-	ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 }
