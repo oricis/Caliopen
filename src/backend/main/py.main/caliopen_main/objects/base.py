@@ -110,7 +110,7 @@ class ObjectDictifiable(CaliopenObject):
             else:
                 if isinstance(attrtype, types.ListType):
                     setattr(self, attr, [])
-                elif isinstance(attrtype, types.DictType):
+                elif issubclass(attrtype, types.DictType):
                     setattr(self, attr, {})
                 elif issubclass(attrtype, types.BooleanType):
                     setattr(self, attr, False)
@@ -356,6 +356,9 @@ class ObjectUser(ObjectStorable):
             else:
                 if patch_current[key] in (None, [], {}):
                     create_sub_object = True
+                if isinstance(patch_current[key], list) and len(
+                        patch[key]) > len(patch_current[key]):
+                    create_sub_object = True
 
             if patch[key] is not None:
                 unmarshall_item(patch, key, self, self._attrs[key],
@@ -415,7 +418,7 @@ class ObjectUser(ObjectStorable):
                     else:
                         return main_errors.PatchConflict(
                             message=msg.format(3, key))
-            elif isinstance(self._attrs[key], types.DictType):
+            elif issubclass(self._attrs[key], types.DictType):
                 if cmp(old_val, cur_val) != 0:
                     return main_errors.PatchConflict(
                         message=msg.format(4, key))
