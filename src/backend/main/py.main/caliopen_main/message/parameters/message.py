@@ -11,7 +11,7 @@ from schematics.transforms import blacklist
 from .participant import Participant
 from .attachment import Attachment
 from .external_references import ExternalReferences
-from caliopen_main.objects.pi import PIParameter
+from caliopen_pi.parameters import PIParameter
 from caliopen_main.user.parameters import ResourceTag
 from caliopen_main.user.parameters import Identity
 

@@ -7,23 +7,16 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
-name = "caliopen_main"
+name = "caliopen_pi"
 
-with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file:
-    version = re.compile(r".*__version__ = '(.*?)'", re.S).match(v_file.read()).group(1)
+init_file = os.path.join(*([here] + name.split('.') + ['__init__.py']))
+with open(init_file) as v_file:
+    version = re.compile(r".*__version__ = '(.*?)'", re.S). \
+        match(v_file.read()).group(1)
 
 requires = [
-    'phonenumbers',
-    'caliopen_storage',
-    'caliopen_pi',
-    'pytz',
-    'zxcvbn_python',
-    'validate_email',
-    'uuid',
-    'regex',
-    'zope.interface',
-    'vobject',
-    'minio',
+    'schematics',
+    'pgpy',
 ]
 
 extras_require = {
@@ -38,7 +31,7 @@ extras_require = {
 
 setup(name=name,
       version=version,
-      description='Caliopen main package. Entry point for whole application',
+      description='Caliopen pi package. All stuff related to privacy index',
       long_description=README + '\n\n' + CHANGES,
       classifiers=["Programming Language :: Python", ],
       author='Caliopen contributors',
