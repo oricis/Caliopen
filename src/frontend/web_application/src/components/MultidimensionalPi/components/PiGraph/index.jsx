@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import { calcPolygonPoints, calcGridCoordinates } from './services/svg';
 import './style.scss';
 
-const Grid = ({ pi, axeLength }) => {
-  const { axeCoordinates, outlinePoints } = calcGridCoordinates({ pi, axeLength });
+const Grid = ({ axeLength }) => {
+  const { axeCoordinates, outlinePoints } = calcGridCoordinates({ axeLength });
 
   return (
     <g className="m-pi-graph__grid">
@@ -27,7 +27,6 @@ const Grid = ({ pi, axeLength }) => {
 };
 
 Grid.propTypes = {
-  pi: PropTypes.shape({}).isRequired,
   axeLength: PropTypes.number.isRequired,
 };
 
@@ -63,7 +62,6 @@ const PiGraph = ({ pi, gridWidth }) => {
         axeLength={axeLength}
       />
       <Grid
-        pi={pi}
         axeLength={axeLength}
       />
     </svg>

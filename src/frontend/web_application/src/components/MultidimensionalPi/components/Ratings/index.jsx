@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
-import { getAveragePI, getPiProps } from '../../services/pi';
+import { getAveragePI, PI_PROPERTIES } from '../../services/pi';
 import './style.scss';
 
 const Rating = ({ name, level, piMax, className, mini }) => {
@@ -38,8 +38,7 @@ const Ratings = ({ pi, piMax, displayAveragePi, mini }) => {
     'm-pi-ratings',
     { 'm-pi-ratings--mini': mini },
   );
-  const piProps = getPiProps(pi);
-  const title = piProps.map(name => `${name}: ${pi[name]}`).join(', ');
+  const title = PI_PROPERTIES.map(name => `${name}: ${pi[name]}`).join(', ');
 
   return (
     <div className={ratingsClassName} title={title}>
@@ -52,7 +51,7 @@ const Ratings = ({ pi, piMax, displayAveragePi, mini }) => {
           mini={mini}
         />
       }
-      {piProps.map(name => (
+      {PI_PROPERTIES.map(name => (
         <Rating
           name={name}
           level={pi[name] <= piMax ? pi[name] : piMax}

@@ -39,6 +39,7 @@ const reducer = {
       is_unread: false,
       date: Date.now(),
       date_insert: Date.now(),
+      pi: { technic: 50, context: 45, comportment: 25, version: 1 },
     },
   ]),
   [actions.patch]: (state, { params, body }) => {

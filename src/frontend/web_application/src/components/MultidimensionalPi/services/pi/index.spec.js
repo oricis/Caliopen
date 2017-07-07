@@ -1,31 +1,20 @@
-import { getAngles, getAveragePI } from './';
+import { getAngles, getAveragePI, PI_PROPERTIES } from './';
 
 describe('MultidimensionalPi > services > pi', () => {
   describe('getAngles', () => {
-    it('gives 90° for 4 points', () => {
-      expect(getAngles({
-        foo: 5,
-        bar: 10,
-        oof: 15,
-        rab: 20,
-        version: 1,
-      })).toEqual(90);
-    });
-    it('gives 0 for no points', () => {
-      expect(getAngles({
-        version: 1,
-      })).toEqual(0);
+    it('gives 360 / 3 or n props', () => {
+      expect(getAngles()).toEqual(360 / PI_PROPERTIES.length);
     });
   });
   describe('getAveragePI', () => {
     it('gives a basic avarage value', () => {
       expect(getAveragePI({
-        foo: 5,
-        bar: 10,
-        oof: 15,
+        comportment: 5,
+        technic: 10,
+        context: 15,
         rab: 20,
         version: 1,
-      })).toEqual((5 + 10 + 15 + 20) / 4);
+      })).toEqual((5 + 10 + 15) / 3);
     });
   });
 });

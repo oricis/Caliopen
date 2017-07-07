@@ -14,8 +14,6 @@ import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
 
-const PI = { technic: 87, context: 45, comportment: 25 };
-
 const MessageInfosContainer = ({ __, message, author, locale }) => {
   const typeTranslations = {
     email: __('message-list.message.protocol.email'),
@@ -143,7 +141,7 @@ class Message extends Component {
         </div>
         <div className="m-message__content">
           <div className={topBarClassName}>
-            <MultidimensionalPi pi={PI} className="m-message__pi" mini />
+            <MultidimensionalPi pi={message.pi} className="m-message__pi" mini />
 
             <MessageInfosContainer
               message={message}
