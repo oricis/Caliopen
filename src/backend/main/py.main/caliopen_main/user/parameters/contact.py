@@ -269,6 +269,7 @@ class Contact(NewContact):
 
     """Existing contact."""
 
+    addresses = ListType(ModelType(PostalAddress), default=lambda: [])
     avatar = StringType(default='avatar.png')
     contact_id = UUIDType(required=True)
     date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
@@ -276,6 +277,12 @@ class Contact(NewContact):
     date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
                                tzd=u'utc')
     deleted = BooleanType()
+    emails = ListType(ModelType(Email), default=lambda: [])
+    identities = ListType(ModelType(SocialIdentity), default=lambda: [])
+    ims = ListType(ModelType(IM), default=lambda: [])
+    organizations = ListType(ModelType(Organization), default=lambda: [])
+    phones = ListType(ModelType(Phone), default=lambda: [])
+    public_keys = ListType(ModelType(PublicKey), default=lambda: [])
     pi = ModelType(PIParameter)
     # XXX not such default here
     title = StringType()

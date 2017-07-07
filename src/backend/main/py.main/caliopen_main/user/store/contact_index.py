@@ -46,6 +46,7 @@ class IndexedInternetAddress(InnerObjectWrapper):
     """Contact indexed address on internet (email, im) model."""
 
     address = Keyword()
+    email_id = Keyword()
     is_primary = Boolean()
     label = Text()
     type = Keyword()
@@ -56,6 +57,7 @@ class IndexedPhone(InnerObjectWrapper):
 
     is_primary = Boolean()
     number = Text()
+    phone_id = Keyword()
     type = Keyword()
     uri = Keyword()
 
