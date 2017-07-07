@@ -60,9 +60,9 @@ class IndexedPhone(InnerObjectWrapper):
     """Contact indexed phone model."""
 
     number = Text()
-    type = Text()
+    type = Keyword()
     is_primary = Boolean()
-    uri = Text()
+    uri = Keyword()
 
 
 class IndexedSocialIdentity(InnerObjectWrapper):
