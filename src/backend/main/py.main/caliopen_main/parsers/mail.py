@@ -21,7 +21,6 @@ import zope.interface
 from caliopen_main.user.helpers.normalize import clean_email_address
 from caliopen_main.interfaces import (IAttachmentParser, IMessageParser,
                                       IParticipantParser)
-from .mail_feature import MailPrivacyFeature
 
 log = logging.getLogger(__name__)
 
@@ -209,12 +208,6 @@ class MailMessage(object):
         for list_name in self.headers.get('List-ID', []):
             lists.append(list_name)
         return {'lists': lists}
-
-    @property
-    def privacy_features(self):
-        """Mail message privacy features."""
-        extractor = MailPrivacyFeature(self)
-        return extractor.process()
 
     def lookup_discussion_sequence(self, *args, **kwargs):
         """Return list of lookup type, value from a mail message."""

@@ -11,31 +11,19 @@ from uuid import UUID
 
 from cassandra.cqlengine import columns
 from elasticsearch_dsl import InnerObjectWrapper, Integer, Date
-from schematics.models import Model
-from schematics.types import IntType, DateTimeType
 
 from caliopen_storage.store import BaseUserType
 from .base import ObjectIndexable
 
 
-class PIParameter(Model):
-    """The privacy indexes schematics parameter definition."""
-
-    technic = IntType()
-    comportment = IntType()
-    context = IntType()
-    version = IntType()
-    date_update = DateTimeType()
-
-
 class PIModel(BaseUserType):
     """The privacy indexes model definition."""
 
+    technic = columns.Integer(default=0)
     comportment = columns.Integer(default=0)
     context = columns.Integer(default=0)
-    date_update = columns.DateTime()
-    technic = columns.Integer(default=0)
     version = columns.Integer(default=0)
+    date_update = columns.DateTime()
 
 
 class PIIndexModel(InnerObjectWrapper):
@@ -52,10 +40,11 @@ class PIObject(ObjectIndexable):
     """The caliopen object definition of privacy indexes."""
 
     _attrs = {
+        "technic": types.IntType,
         "comportment": types.IntType,
         "context": types.IntType,
-        "technic": types.IntType,
         "version": types.IntType,
+        "user_id": UUID
     }
 
     _model_class = PIModel

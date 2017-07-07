@@ -11,7 +11,7 @@ from schematics.transforms import blacklist
 from .types import InternetAddressType, PhoneNumberType
 from .tag import ResourceTag
 
-from caliopen_main.objects.pi import PIParameter
+from caliopen_pi.parameters import PIParameter
 
 ORG_TYPES = ['work', 'home']
 ADDRESS_TYPES = ['work', 'home', 'other']
