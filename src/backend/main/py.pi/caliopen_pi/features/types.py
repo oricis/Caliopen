@@ -17,6 +17,7 @@ FEATURES_0 = {'technic': [{'mail_emitter_mx_reputation': {'type': 'string'}},
                           {'spam_score': {'max': 100,
                                           'min': 0,
                                           'type': 'int'}},
+                          {'spam_method': {'type': 'string'}},
                           {'ingress_socket_version': {'type': 'string'}},
                           {'ingress_cipher': {'type': 'string'}},
                           {'nb_external_hops': {'type': 'int'}}]}
