@@ -7,6 +7,7 @@ import logging
 
 import pgpy
 
+from .spam import SpamScorer
 from ..parameters import PIParameter
 
 log = logging.getLogger(__name__)
@@ -27,6 +28,7 @@ class InboundMailFeature(object):
         'mail_agent': None,
         'spam_score': 0,
         'spam_method': None,
+        'is_spam': False,
         'ingress_socket_version': None,
         'ingress_cipher': None,
         'ingress_server': None,
@@ -88,52 +90,10 @@ class InboundMailFeature(object):
     @property
     def spam_informations(self):
         """Return a global spam_score and related features."""
-        scores = self.spam_scores()
-        log.debug('Found spam scores {s}'.format(s=scores))
-        if 'level' in scores:
-            return {'spam_score': min(100.0, scores['level'] * 4.0),
-                    'spam_method': 'level'}
-        if 'score' in scores:
-            return {'spam_score': scores['score'] * 10.0,
-                    'spam_method': 'score'}
-        if 'status_score' in scores:
-            if scores['status_score'] < 2.0:
-                score = 0.0
-            else:
-                score = scores['status_score'] * 10
-            return {'spam_score': score,
-                    'spam_method': 'status'}
-
-    def spam_scores(self):
-        """Extract different spam scores from headers."""
-        scores = {}
-        score = self.message.mail.get('X-Spam-Score', 0)
-        if score:
-            try:
-                score = float(score)
-                scores['score'] = score
-            except TypeError:
-                log.debug('Invalid type for X-Spam-Score value {}'.
-                          format(score))
-        level = self.message.mail.get('X-Spam-Level', '')
-        if '*' in level:
-            # SpamAssassin style, level is *** notation, up to 25 *
-            scores['level'] = level.count('*')
-        status = self.message.mail.get('X-Spam-Status', '')
-        if status:
-            match = re.match('^X-Spam-Status: (\s+), score=(\d.\d).*', status)
-            if match:
-                scores['status_score'] = match[1]
-                if match[0].lower().startswith('y'):
-                    scores['flag'] = True
-                else:
-                    scores['flag'] = False
-
-        flag = self.message.mail.get('X-Spam-Flag', '')
-        if flag.lower().startswith('y'):
-            scores['flag'] = True
-
-        return scores
+        spam = SpamScorer(self.message.mail.headers())
+        return {'spam_score': spam.score,
+                'spam_method': spam.method,
+                'is_spam': spam.is_spam}
 
     def get_signature_informations(self):
         """Get message signature features."""
