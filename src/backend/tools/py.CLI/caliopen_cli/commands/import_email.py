@@ -58,8 +58,8 @@ def import_email(email, import_path, format, **kwargs):
         # (should use inject cmd for large messages)
         size = len(data.as_string())
         if size > max_size:
-            log.warn("Message {} too large to fit into db. \
-            Please, use 'inject' cmd for importing large emails.".format(i))
+            log.warn("Message too large to fit into db. \
+            Please, use 'inject' cmd for importing large emails.")
             continue
 
         raw = RawMessage.create(data.as_string())
