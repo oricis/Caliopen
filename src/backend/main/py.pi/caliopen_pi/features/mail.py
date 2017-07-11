@@ -151,7 +151,7 @@ class InboundMailFeature(object):
         known_public_key = 0
         for part, contact in participants:
             if contact:
-                known_contacts += 1
+                known_contacts.append(contact)
                 if contact.public_key:
                     known_public_key += 1
         if len(participants) == len(known_contacts):

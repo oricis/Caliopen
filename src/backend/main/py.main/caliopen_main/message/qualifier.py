@@ -84,7 +84,7 @@ class UserMessageQualifier(object):
                   format(participant.address, self.user.user_id))
         c = Contact.lookup(self.user, participant.address)
         if c:
-            p.contact_ids = [c]
+            p.contact_ids = [c.contact_id]
         return p, c
 
     def process_inbound(self, raw):

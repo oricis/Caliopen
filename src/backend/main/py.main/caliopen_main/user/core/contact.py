@@ -124,7 +124,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         log.debug('Will create lookup for type {} and value {}'.
                   format(type, value))
         lookup = ContactLookup.create(self.user, value=value, type=type,
-                                      contact_id=self.contact_id)
+                                      contact_ids=[self.contact_id])
         return lookup
 
     def _create_lookups(self):
@@ -198,9 +198,11 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
 
     @classmethod
     def lookup(cls, user, value):
-        lookup = ContactLookup.get(user, value)
-        if lookup and lookup.contact_id:
-            return cls.get(user, lookup.contact_id)
+        lookups = ContactLookup._model_class.filter(user_id=user.user_id,
+                                                    value=value)
+        if lookups and lookups[0].contact_ids:
+            # XXX how to manage many contacts
+            return cls.get(user, lookups[0].contact_ids[0])
         # XXX something else to do ?
         return None
 
