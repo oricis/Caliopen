@@ -127,13 +127,7 @@ class UserMessageQualifier(object):
         # Compute PI !!
         conf = Configuration('global').configuration
         extractor = InboundMailFeature(message, conf)
-        privacy_features = extractor.process()
-        new_message.pi = extractor.compute_pi(participants, privacy_features)
-
-        # XXX hard type privacy_features for the moment
-        for k, v in privacy_features.items():
-            if v is not None:
-                new_message.privacy_features[k] = str(v)
+        extractor.process(new_message, participants)
 
         # compute tags
         new_message.tags = self._get_tags(message)

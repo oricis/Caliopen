@@ -7,6 +7,7 @@ import logging
 import pgpy
 
 from .spam import SpamScorer
+from .types import unmarshall_features
 from .ingress_path import get_ingress_features
 from ..parameters import PIParameter
 
@@ -118,8 +119,8 @@ class InboundMailFeature(object):
         is_encrypted = True if encrypted_parts else False
         return {'message_encrypted': is_encrypted}
 
-    def process(self):
-        """Process the message for privacy features extraction."""
+    def _get_features(self):
+        """Extract privacy features."""
         features = self._features.copy()
         received = self.message.headers.get('Received', [])
         features.update(get_ingress_features(received, self.internal_domains))
@@ -136,7 +137,7 @@ class InboundMailFeature(object):
             features.update({'transport_signed': True})
         return features
 
-    def compute_pi(self, participants, features):
+    def _compute_pi(self, participants, features):
         """Compute Privacy Indexes for a message."""
         log.info('PI features {}'.format(features))
         pi_cx = {}   # Contextual privacy index
@@ -184,3 +185,9 @@ class InboundMailFeature(object):
                             'context': sum(pi_cx.values()),
                             'comportment': sum(pi_co.values()),
                             'version': 0})
+
+    def process(self, message, participants):
+        """Process the message for privacy features and PI compute."""
+        features = self._get_features()
+        message.pi = self._compute_pi(participants, features)
+        message.privacy_features = unmarshall_features(features)
