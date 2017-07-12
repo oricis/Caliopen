@@ -15,7 +15,6 @@ import (
 	"github.com/satori/go.uuid"
 	"gopkg.in/gomail.v2"
 	"io"
-	"io/ioutil"
 	"mime"
 	"net/mail"
 	"net/textproto"
@@ -94,7 +93,8 @@ func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err 
 
 	//TODO: In-Reply-To header
 	m.SetHeader("Subject", msg.Subject)
-	m.SetBody("text/plain", msg.Body)
+	m.AddAlternative("text/html", msg.Body_html)
+	m.AddAlternative("text/plain", msg.Body_plain)
 
 	for _, attachment := range msg.Attachments {
 		//check if file is available in object storage
@@ -209,13 +209,14 @@ func (b *EmailBroker) UnmarshalEmail(em *obj.EmailMessage, user_id obj.UUID) (ms
 		log.WithError(err).Warn("unable to parse email's date")
 	}
 
+	/*
 	mail_body, err := ioutil.ReadAll(parsed_mail.Body)
 	if err != nil {
 		log.WithError(err).Warn("unable to parse email's body")
 	}
-	//TODO: Attachments, Externals_references, identities, parent_id
+	*/
+	//TODO: Body parts, Attachments, Externals_references, identities, parent_id…
 	msg = &obj.Message{
-		Body:             string(mail_body),
 		Date:             mail_date,
 		Date_insert:      time.Now(),
 		Is_unread:        true,
@@ -280,7 +281,7 @@ func EmailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 	if err != nil {
 		return
 	}
-	mime, err := enmime.ParseMIMEBody(msg) // Parse message body with enmime
+	mm, err := enmime.ParseMIMEBody(msg) // Parse message body with enmime
 	if err != nil {
 		return
 	}
@@ -312,24 +313,24 @@ func EmailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 		json_email.Headers[k] = v
 	}
 
-	json_email.Html = mime.HTML
-	json_email.Plain = mime.Text
-	json_email.IsTextFromHTML = mime.IsTextFromHTML
+	json_email.Html = mm.HTML
+	json_email.Plain = mm.Text
+	json_email.IsTextFromHTML = mm.IsTextFromHTML
 
-	if mime.Root != nil {
+	if mm.Root != nil {
 		//message was MIME encoded, build the mime tree
-		root_part_content_type := mime.GetHeader("Content-Type")
+		root_part_content_type := mm.GetHeader("Content-Type")
 		root_boundary, _ := GetBoundary(root_part_content_type)
 		json_email.MimeRoot = obj.MimeRoot{
-			Attachments_count: len(mime.Attachments),
+			Attachments_count: len(mm.Attachments),
 			Root_boundary:     root_boundary,
-			Inline_count:      len(mime.Inlines),
+			Inline_count:      len(mm.Inlines),
 			Parts:             []obj.Part{},
 		}
-		mime.Root.SetHeader(textproto.MIMEHeader{
+		mm.Root.SetHeader(textproto.MIMEHeader{
 			"Content-Type": []string{root_part_content_type},
 		})
-		child := mime.Root.FirstChild()
+		child := mm.Root.FirstChild()
 		if child != nil {
 			json_email.MimeRoot.Parts = addChildPart(json_email.MimeRoot.Parts, child)
 			for sibling := child.NextSibling(); sibling != nil; sibling = sibling.NextSibling() {

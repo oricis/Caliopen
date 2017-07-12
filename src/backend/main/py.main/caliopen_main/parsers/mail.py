@@ -119,6 +119,8 @@ class MailMessage(object):
     recipient_headers = ['From', 'To', 'Cc', 'Bcc']
     message_type = 'email'
     warnings = []
+    body_html = ""
+    body_plain = ""
 
     def __init__(self, raw_data):
         """Parse an RFC2822,5322 mail message."""
@@ -132,6 +134,7 @@ class MailMessage(object):
             # XXX what to do ?
             log.warn('Defects on parsed mail %r' % self.mail.defects)
             self.warning = self.mail.defects
+            # TODO : plain & html body parts extraction
 
     @property
     def subject(self):
@@ -139,9 +142,9 @@ class MailMessage(object):
         return self.mail.get('Subject')
 
     @property
-    def body(self):
-        """Mail body."""
-        # XXX define the extraction logic for multipart and co.
+    def prefered_body(self):
+        """Mail prefered body."""
+        # TODO: returns either html or plain, according user's preferences
         if not self.mail.is_multipart():
             return self.mail.get_payload()
         return ''

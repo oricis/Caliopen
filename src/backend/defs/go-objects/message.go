@@ -113,7 +113,8 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) {
 		a.MimeBoundary, _ = attachment["mime_boundary"].(string)
 		msg.Attachments = append(msg.Attachments, a)
 	}
-	msg.Body, _ = input["body"].(string)
+	msg.Body_html, _ = input["body_html"].(string)
+	msg.Body_plain, _ = input["body_plain"].(string)
 	msg.Date, _ = input["date"].(time.Time)
 	msg.Date_delete, _ = input["date_delete"].(time.Time)
 	msg.Date_insert, _ = input["date_insert"].(time.Time)

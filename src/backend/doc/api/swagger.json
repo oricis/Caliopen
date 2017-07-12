@@ -3594,7 +3594,10 @@
                           }
                         }
                       },
-                      "body": {
+                      "body_html": {
+                        "type": "string"
+                      },
+                      "body_plain": {
                         "type": "string"
                       },
                       "date": {
@@ -3871,7 +3874,10 @@
                     }
                   }
                 },
-                "body": {
+                "body_html": {
+                  "type": "string"
+                },
+                "body_plain": {
                   "type": "string"
                 },
                 "discussion_id": {
@@ -4123,7 +4129,10 @@
                     }
                   }
                 },
-                "body": {
+                "body_html": {
+                  "type": "string"
+                },
+                "body_plain": {
                   "type": "string"
                 },
                 "date": {
@@ -4404,7 +4413,10 @@
                         }
                       }
                     },
-                    "body": {
+                    "body_html": {
+                      "type": "string"
+                    },
+                    "body_plain": {
                       "type": "string"
                     },
                     "date": {
@@ -4607,7 +4619,10 @@
                     }
                   }
                 },
-                "body": {
+                "body_html": {
+                  "type": "string"
+                },
+                "body_plain": {
                   "type": "string"
                 },
                 "date": {
@@ -5089,7 +5104,10 @@
                     }
                   }
                 },
-                "body": {
+                "body_html": {
+                  "type": "string"
+                },
+                "body_plain": {
                   "type": "string"
                 },
                 "date": {
@@ -5299,7 +5317,10 @@
                     }
                   }
                 },
-                "body": {
+                "body_html": {
+                  "type": "string"
+                },
+                "body_plain": {
                   "type": "string"
                 },
                 "date": {

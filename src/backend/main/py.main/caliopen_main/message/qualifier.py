@@ -97,7 +97,8 @@ class UserMessageQualifier(object):
         new_message = NewMessage()
         new_message.raw_msg_id = raw.raw_msg_id
         new_message.subject = message.subject
-        new_message.body = message.body
+        new_message.body_html = message.body_html
+        new_message.body_plain = message.body_plain
         new_message.date = message.date
         new_message.size = message.size
         new_message.type = message.message_type
