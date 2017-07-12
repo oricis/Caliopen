@@ -1,11 +1,28 @@
 # -*- coding: utf-8 -*-
-"""Caliopen mail message privacy features extraction methods."""
+"""
+A kind of algorithm to parse SMTP Received headers.
+
+Extract some privacy features about an eventual detected ingress SMTP server
+and number of external hops from an SMTP relay path.
+
+It's far from perfect as so many format and practices exists around Received
+headers, and off course also a relative trust about them.
+"""
 from __future__ import absolute_import, print_function, unicode_literals
 
 import re
 import logging
 
 log = logging.getLogger(__name__)
+
+
+def normalize_ssocket_infos(socket_info, cipher):
+    """Normalize tls information from a Received header."""
+    if socket_info:
+        tls_version = socket_info.replace('_', '.').lower()
+    else:
+        tls_version = ''
+    return tls_version, cipher
 
 
 def get_ingress_features(headers, internal_domains=None):
@@ -19,12 +36,15 @@ def get_ingress_features(headers, internal_domains=None):
         return parts[0]
 
     def parse_ingress(header):
+        """Parse detected ingress header to find encryption infos."""
         header = header.replace('\n', '')
-        search = re.compile(r'.*using (\S+) with cipher ([\S-]+)',
-                            re.MULTILINE)
-        match = search.match(header)
-        if match:
-            return match.groups()
+        # XXX to complete but MUST match with tls_version, cipher groups
+        searches = ['.*using (\S+) with cipher ([\S-]+)']
+        for regex in searches:
+            search = re.compile(regex, re.MULTILINE)
+            match = search.match(header)
+            if match:
+                return match.groups()
         return None
 
     found_features = {}
@@ -71,8 +91,9 @@ def get_ingress_features(headers, internal_domains=None):
     if ingress:
         cnx_info = parse_ingress(ingress[2][0])
         if cnx_info and len(cnx_info) > 1:
-            found_features.update({'ingress_socket_version': cnx_info[0],
-                                   'ingress_cipher': cnx_info[1]})
+            tls_version, cipher = normalize_ssocket_infos(cnx_info)
+            found_features.update({'ingress_socket_version': tls_version,
+                                   'ingress_cipher': cipher})
         found_features.update({'ingress_server': ingress[0]})
 
     # Try to count external hops
