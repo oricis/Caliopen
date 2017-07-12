@@ -5,20 +5,20 @@
 package backends
 
 import (
-	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"io"
 )
 
 //LDA only deals with email
 type LDAStore interface {
 	Close()
-	GetMessage(user_id, msg_id string) (msg *objects.Message, err error)
-	GetUsersForRecipients([]string) ([]objects.UUID, error) // returns a list of user Ids for each recipients. No deduplicate.
-	StoreMessage(msg *objects.Message) error
+	GetMessage(user_id, msg_id string) (msg *Message, err error)
+	GetUsersForRecipients([]string) ([]UUID, error) // returns a list of user Ids for each recipients. No deduplicate.
+	StoreMessage(msg *Message) error
 
-	StoreRawMessage(data string) (raw_id string, err error)
+	StoreRawMessage(msg RawMessage) (err error)
 
-	UpdateMessage(msg *objects.Message, fields map[string]interface{}) error
+	UpdateMessage(msg *Message, fields map[string]interface{}) error
 	LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error)
 
 	GetAttachment(uri string) (file io.Reader, err error)
@@ -28,6 +28,6 @@ type LDAStore interface {
 
 type LDAIndex interface {
 	Close()
-	UpdateMessage(msg *objects.Message, fields map[string]interface{}) error
-	IndexMessage(msg *objects.Message) error
+	UpdateMessage(msg *Message, fields map[string]interface{}) error
+	IndexMessage(msg *Message) error
 }

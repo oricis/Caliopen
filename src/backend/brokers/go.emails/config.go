@@ -4,6 +4,10 @@
 
 package email_broker
 
+import (
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+)
+
 type (
 	LDAConfig struct {
 		BrokerType       string      `mapstructure:"broker_type"`
@@ -33,13 +37,5 @@ type (
 
 	IndexConfig struct {
 		Urls []string `mapstructure:"urls"`
-	}
-
-	OSSConfig struct {
-		Endpoint  string            `mapstructure:"endpoint"`
-		AccessKey string            `mapstructure:"access_key"`
-		SecretKey string            `mapstructure:"secret_key"`
-		Location  string            `mapstructure:"location"`
-		Buckets   map[string]string `mapstructure:"buckets"`
 	}
 )
