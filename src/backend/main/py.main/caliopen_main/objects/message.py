@@ -39,7 +39,8 @@ class Message(base.ObjectIndexable):
     # TODO : manage attrs that should not be editable directly by users
     _attrs = {
         'attachments': [MessageAttachment],
-        'body': types.StringType,
+        'body_html': types.StringType,
+        'body_plain': types.StringType,
         'date': datetime.datetime,
         'date_delete': datetime.datetime,
         'date_insert': datetime.datetime,

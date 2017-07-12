@@ -18,14 +18,15 @@ const (
 
 type Message struct {
 	Attachments         []Attachment       `cql:"attachments"              json:"attachments"       `
-	Body                string             `cql:"body"                     json:"body"             `
+	Body_html           string             `cql:"body_html"                json:"body_html"         `
+	Body_plain          string             `cql:"body_plain"               json:"body_plain"        `
 	Date                time.Time          `cql:"date"                     json:"date"                                         formatter:"RFC3339Nano"`
 	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete"                                  formatter:"RFC3339Nano"`
 	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"RFC3339Nano"`
 	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id"                                formatter:"rfc4122"`
-	External_references ExternalReferences `cql:"external_references"      json:"external_references"   `
+	External_references ExternalReferences `cql:"external_references"      json:"external_references"`
 	Identities          []Identity         `cql:"identities"               json:"identities"       `
-	Importance_level    int32              `cql:"importance_level"         json:"importance_level"`
+	Importance_level    int32              `cql:"importance_level"         json:"importance_level" `
 	Is_answered         bool               `cql:"is_answered"              json:"is_answered"      `
 	Is_draft            bool               `cql:"is_draft"                 json:"is_draft"         `
 	Is_unread           bool               `cql:"is_unread"                json:"is_unread"        `

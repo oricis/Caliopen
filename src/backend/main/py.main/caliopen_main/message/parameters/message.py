@@ -25,7 +25,8 @@ class NewMessage(Model):
     """New message parameter."""
 
     attachments = ListType(ModelType(Attachment), default=lambda: [])
-    body = StringType()
+    body_html = StringType()
+    body_plain = StringType()
     date = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
                         tzd=u'utc')
     discussion_id = UUIDType()

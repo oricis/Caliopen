@@ -27,7 +27,8 @@ class Message(BaseModel, IndexedModelMixin):
     _index_class = IndexedMessage
 
     attachments = columns.List(columns.UserDefinedType(MessageAttachment))
-    body = columns.Text()
+    body_html = columns.Text()
+    body_plain = columns.Text()
     date = columns.DateTime()
     date_delete = columns.DateTime()
     date_insert = columns.DateTime(default=datetime.utcnow)
