@@ -81,4 +81,8 @@ def marshall_features(features):
 
 def unmarshall_features(features):
     """Unmarshall a dict of features suitable for storage."""
-    return dict((name, str(value)) for name, value in features.items())
+    res = {}
+    for k, v in features.items():
+        if not (v == '' or v is None):
+            res[k] = str(v)
+    return res
