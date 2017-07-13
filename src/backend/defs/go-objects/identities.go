@@ -14,10 +14,26 @@ type (
 		User_id      UUID   `cql:"user_id"                 json:"user_id"           formatter:"rfc4122"`
 	}
 
+	// embedded in a contact
+	SocialIdentity struct {
+		Infos    map[string]string `cql:"infos"     json:"infos"`
+		Name     string            `cql:"name"      json:"name"`
+		SocialId UUID              `cql:"social_id" json:"social_id"`
+		Type     string            `cql:"type"      json:"type"`
+	}
+
 	//reference embedded in a message
 	Identity struct {
 		Identifier string `cql:"identifier"     json:"identifier"`
 		Type       string `cql:"type"           json:"type"`
+	}
+
+	// Mean of communication for a contact, with on-demand calculated PI.
+	ContactIdentity struct {
+		Identifier   string       `json:"identifier"` // the 'I' like in URI, ie : the email address for email ; the user's real name for IRC
+		Label        string       `json:"label"`      // the 'display-name' field in email address if available ; the 'nickname' for IRC
+		PrivacyIndex PrivacyIndex `json:"privacy_index"`
+		Protocol     string       `json:"protocol"` // email, irc, sms, etc.
 	}
 
 	//struct returned to user by suggest engine when performing a string query search

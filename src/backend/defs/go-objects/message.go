@@ -12,10 +12,6 @@ import (
 	"time"
 )
 
-const (
-	EmailProtocol string = "email"
-)
-
 type Message struct {
 	Attachments         []Attachment       `cql:"attachments"              json:"attachments"       `
 	Body                string             `cql:"body"                     json:"body"             `
@@ -42,7 +38,7 @@ type Message struct {
 
 // bespoke implementation of the json.Marshaler interface
 // outputs a JSON representation of an object
-// this marshaler takes account of custom tags for given 'context'
+// this marshaller takes account of custom tags for given 'context'
 func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 	var jsonBuf bytes.Buffer
 	enc := json.NewEncoder(&jsonBuf)
@@ -100,7 +96,8 @@ func (msg *Message) MarshalES() ([]byte, error) {
 	return customJSONMarshaler(msg, "elastic")
 }
 
-// unmarshal a map[string]interface{} that must owns all Message fields
+// unmarshal a map[string]interface{} that must owns all Message's fields
+// typical usage is for unmarshaling response from Cassandra backend
 func (msg *Message) UnmarshalMap(input map[string]interface{}) {
 	for _, attachment := range input["attachments"].([]map[string]interface{}) {
 		a := Attachment{}

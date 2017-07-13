@@ -6,6 +6,7 @@ import types
 from uuid import UUID
 
 from caliopen_main.objects import base
+from caliopen_main.objects.pi import PIObject
 from caliopen_main.user.store import LocalIdentity as ModelLocalIdentity
 from caliopen_main.user.store import IndexedLocalIdentity
 from caliopen_main.user.store.contact import SocialIdentity as ModelSocialIdentity
@@ -62,3 +63,19 @@ class Identity(base.ObjectJsonDictifiable):
 
     _model_class = ModelIdentity
     _index_class = IndexedIdentity
+
+
+class ContactIdentity(base.ObjectJsonDictifiable):
+    """
+    Mean of communication for a contact, with on-demand calculated PI.
+    [for ex., a list of ContactIdentity is built for REST API
+                                            …/contact/{contact_id}/identities]
+
+    """
+
+    _attrs = {
+        "identifier": types.StringType,
+        "label": types.StringType,
+        "privacy_index": PIObject,
+        "protocol": types.StringType,
+    }

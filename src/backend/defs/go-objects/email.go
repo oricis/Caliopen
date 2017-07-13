@@ -69,6 +69,15 @@ type (
 	}
 
 	Parts []Part
+
+	// emails model embedded in contact
+	EmailContact struct {
+		Address   string `cql:"address"     json:"address"`
+		EmailId   UUID   `cql:"email_id"    json:"email_id"`
+		IsPrimary bool   `cql:"is_primary"  json:"is_primary"`
+		Label     string `cql:"label"       json:"label"`
+		Type      string `cql:"type"        json:"type"`
+	}
 )
 
 // Returns a flattened array of attachments' bytes, ordered by precedence (in depth-first order, see Walk() func below)

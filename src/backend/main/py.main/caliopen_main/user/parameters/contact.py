@@ -258,7 +258,6 @@ class NewContact(Model):
     organizations = ListType(ModelType(NewOrganization), default=lambda: [])
     phones = ListType(ModelType(NewPhone), default=lambda: [])
     privacy_features = DictType(StringType, default=lambda: {})
-
     public_keys = ListType(ModelType(NewPublicKey), default=lambda: [])
     tags = ListType(ModelType(ResourceTag), default=lambda: [])
 

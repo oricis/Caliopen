@@ -10,7 +10,7 @@ import types
 from uuid import UUID
 
 from cassandra.cqlengine import columns
-from elasticsearch_dsl import InnerObjectWrapper, Integer
+from elasticsearch_dsl import InnerObjectWrapper, Integer, Date
 
 from caliopen_storage.store import BaseUserType
 from .base import ObjectIndexable
@@ -29,9 +29,11 @@ class PIModel(BaseUserType):
 class PIIndexModel(InnerObjectWrapper):
     """The privacy indexes model definition for index part."""
 
-    technic = Integer()
     comportment = Integer()
     context = Integer()
+    date_update = Date()
+    technic = Integer()
+    version = Integer()
 
 
 class PIObject(ObjectIndexable):

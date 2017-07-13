@@ -7,20 +7,19 @@
 package store
 
 import (
-	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
-func (cb *CassandraBackend) GetContact(user_id, contact_id string) (contact *objects.ContactModel, err error) {
-
-	var c objects.ContactModel
-	err = cb.Session.Query(`SELECT user_id, contact_id, date_insert, family_name, given_name FROM contact WHERE user_id = ? and contact_id = ?`, user_id, contact_id).Scan(
-		&c.User_id, &c.Contact_id, &c.Date_insert, &c.Family_name, &c.Given_name,
-	)
+func (cb *CassandraBackend) GetContact(user_id, contact_id string) (contact *Contact, err error) {
+	contact = &Contact{}
+	m := map[string]interface{}{}
+	q := cb.Session.Query(`SELECT * FROM contact WHERE user_id = ? AND contact_id = ?`, user_id, contact_id)
+	err = q.MapScan(m)
 	if err != nil {
 		return nil, err
 	}
-	contact = &c
-	return
+	contact.UnmarshalMap(m)
+	return contact, err
 }
 
 func (cb *CassandraBackend) LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error) {
