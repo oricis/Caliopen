@@ -10,6 +10,7 @@ import (
 	"fmt"
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
+	"github.com/gocql/gocql"
 	"github.com/jhillyerd/go.enmime"
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
@@ -144,7 +145,15 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 			json_mail.Envelope.To = ack.EmailMessage.Email.SmtpRcpTo
 		}
 	*/
-	raw_email_id, err := b.Store.StoreRawMessage(ack.EmailMessage.Email.Raw.String())
+	raw_uuid, err := gocql.RandomUUID()
+	var msg_id obj.UUID
+	msg_id.UnmarshalBinary(raw_uuid.Bytes())
+	m := obj.RawMessage{
+		Raw_msg_id: msg_id,
+		Raw_Size:   uint64(len(ack.EmailMessage.Email.Raw.String())),
+		Raw_data:   ack.EmailMessage.Email.Raw.String(),
+	}
+	err = b.Store.StoreRawMessage(m)
 	if err != nil {
 		log.WithError(err).Warn("outbound: storing raw email failed")
 		return err
@@ -177,7 +186,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	}
 	// update caliopen message status
 	fields := make(map[string]interface{})
-	fields["raw_msg_id"] = raw_email_id
+	fields["raw_msg_id"] = m.Raw_msg_id.String()
 	fields["is_draft"] = false
 	fields["date"] = ack.EmailMessage.Message.Date
 	fields["attachments"] = ack.EmailMessage.Message.Attachments

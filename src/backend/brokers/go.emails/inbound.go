@@ -14,8 +14,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
+	"github.com/gocql/gocql"
 	"github.com/hashicorp/go-multierror"
 	"sync"
 	"time"
@@ -93,7 +94,15 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 	}
 
 	//step 2 : store raw email and get its raw_id
-	raw_email_id, err := b.Store.StoreRawMessage(in.EmailMessage.Email.Raw.String())
+	raw_uuid, err := gocql.RandomUUID()
+	var msg_id UUID
+	msg_id.UnmarshalBinary(raw_uuid.Bytes())
+	m := RawMessage{
+		Raw_msg_id: msg_id,
+		Raw_Size:   uint64(len(in.EmailMessage.Email.Raw.String())),
+		Raw_data:   in.EmailMessage.Email.Raw.String(),
+	}
+	err = b.Store.StoreRawMessage(m)
 	if err != nil {
 		log.WithError(err).Warn("inbound: storing raw email failed")
 		resp.Response = "storing raw email failed"
@@ -106,10 +115,10 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 	wg := new(sync.WaitGroup)
 	wg.Add(len(rcptsIds))
 	for _, rcptId := range rcptsIds {
-		go func(rcptId objects.UUID) {
+		go func(rcptId UUID) {
 			defer wg.Done()
 			const nats_order = "process_raw"
-			natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, rcptId.String(), raw_email_id)
+			natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, rcptId.String(), m.Raw_msg_id.String())
 			// XXX manage timeout correctly
 			resp, err := b.NatsConn.Request(b.Config.InTopic, []byte(natsMessage), 10*time.Second)
 			if err != nil {

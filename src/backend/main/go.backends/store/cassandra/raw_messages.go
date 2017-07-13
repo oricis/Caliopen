@@ -13,7 +13,7 @@ import (
 	"io"
 )
 
-func (cb *CassandraBackend) StoreRawMessage(raw_message string) (uuid string, err error) {
+func (cb *CassandraBackend) StoreRawMessage(msg obj.RawMessage) (err error) {
 	rawMsgTable := cb.IKeyspace.MapTable("raw_message", "raw_msg_id", &obj.RawMessage{})
 	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
 
@@ -23,35 +23,23 @@ func (cb *CassandraBackend) StoreRawMessage(raw_message string) (uuid string, er
 		Consistency: &consistency,
 	})
 
-	raw_uuid, err := gocql.RandomUUID()
-	var msg_id obj.UUID
-	msg_id.UnmarshalBinary(raw_uuid.Bytes())
-	m := obj.RawMessage{
-		Raw_msg_id: msg_id,
-		Raw_Size:   uint64(len(raw_message)),
-	}
-
 	// handle emails too large to fit into cassandra
-	if m.Raw_Size > cb.CassandraConfig.SizeLimit {
+	if msg.Raw_Size > cb.CassandraConfig.SizeLimit {
 		if cb.CassandraConfig.WithObjStore {
-			uri, err := cb.ObjectsStore.PutRawMessage(msg_id, raw_message)
+			uri, err := cb.ObjectsStore.PutRawMessage(msg.Raw_msg_id, msg.Raw_data)
 			if err != nil {
-				return "", err
+				return err
 			}
-			m.URI = uri
-			m.Raw_data = ""
+			msg.URI = uri
+			msg.Raw_data = ""
 		} else {
-			return "", errors.New("Object too large to fit into cassandra")
+			return errors.New("Object too large to fit into cassandra")
 		}
-	} else {
-		m.Raw_data = raw_message
-		m.URI = ""
 	}
 
-	if err = rawMsgTable.Set(m).Run(); err != nil {
-		return "", err
+	if err = rawMsgTable.Set(msg).Run(); err != nil {
+		return err
 	}
-	uuid = raw_uuid.String()
 	return
 }
 
