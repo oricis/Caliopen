@@ -3,7 +3,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from elasticsearch_dsl import Mapping, Nested, Text, Keyword, Date, Boolean, \
-    Integer, Completion
+    Integer
 from caliopen_storage.store.model import BaseIndexDocument
 from caliopen_main.user.store.tag_index import IndexedResourceTag
 
@@ -50,7 +50,6 @@ class IndexedMessage(BaseIndexDocument):
     @classmethod
     def create_mapping(cls, user_id):
         """Create elasticsearch mapping object for an user."""
-
         m = Mapping(cls.doc_type)
         m.meta('_all', enabled=False)
         m.field('attachments', Nested(doc_class=IndexedMessageAttachment,
@@ -72,7 +71,8 @@ class IndexedMessage(BaseIndexDocument):
         m.field('is_unread', 'boolean')
         m.field('message_id', 'keyword')
         m.field('parent_id', 'keyword')
-        participants = Nested(doc_class=IndexedParticipant, include_in_all=True,
+        participants = Nested(doc_class=IndexedParticipant,
+                              include_in_all=True,
                               properties={
                                   "address": 'keyword',
                                   "contact_id": 'keyword',
@@ -84,13 +84,14 @@ class IndexedMessage(BaseIndexDocument):
         m.field('privacy_features', Nested(include_in_all=True))
         pi = Nested(doc_class=PIIndexModel, include_in_all=True,
                     properties={
-                        "technic": "integer",
-                        "comportment": "integer",
-                        "context": "integer",
-                        "version": "integer"
+                        "technic": Integer(),
+                        "comportment": Integer(),
+                        "context": Integer(),
+                        "version": Integer(),
+                        "date_update": Date()
                     })
         m.field("pi", pi)
-        m.field('raw_msg_id', 'keyword')
+        m.field('raw_msg_id', Keyword())
         m.field('subject', 'text')
         m.field('tags',
                 Nested(doc_class=IndexedResourceTag, include_in_all=True))

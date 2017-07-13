@@ -5,7 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from elasticsearch_dsl import Mapping, Nested, Text, Keyword, Date, Boolean, \
-    InnerObjectWrapper, Integer
+    InnerObjectWrapper
 from caliopen_storage.store.model import BaseIndexDocument
 from caliopen_main.objects.pi import PIIndexModel
 
@@ -108,7 +108,6 @@ class IndexedContact(BaseIndexDocument):
     @classmethod
     def create_mapping(cls, user_id):
         """Create elasticsearch indexed_contacts mapping object for an user."""
-
         m = Mapping(cls.doc_type)
         m.meta('_all', enabled=True)
         m.field('additional_name', 'keyword')
