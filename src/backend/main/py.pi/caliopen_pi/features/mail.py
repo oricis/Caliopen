@@ -13,6 +13,13 @@ from ..parameters import PIParameter
 
 log = logging.getLogger(__name__)
 
+TLS_VERSION_PI = {
+    'tlsv1/sslv3': 2,
+    'tls1': 7,
+    'tlsv1': 7,
+    'tls12': 10,
+}
+
 
 class InboundMailFeature(object):
     """Process a parsed mail message and extract available privacy features."""
@@ -165,15 +172,10 @@ class InboundMailFeature(object):
         if ext_hops <= 1:
             tls = features.get('ingress_socket_version')
             if tls:
-                tls = tls.replace('_', '.').lower()
-                if tls == 'tlsv1/sslv3':
-                    pi_t['tls10'] = 2
-                elif tls in ('tls1', 'tlsv1'):
-                    pi_t['tls11'] = 7
-                elif tls == 'tls1.2':
-                    pi_t['tls12'] = 10
-                else:
+                if tls not in TLS_VERSION_PI:
                     log.warn('Unknown TLS version {}'.format(tls))
+                else:
+                    pi_t += TLS_VERSION_PI[tls]
         if features.get('mail_emitter_certificate'):
             pi_t['emitter_certificate'] = 10
         if features.get('transport_signed'):
