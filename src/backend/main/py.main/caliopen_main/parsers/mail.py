@@ -122,11 +122,31 @@ class MailMessage(object):
     body_html = ""
     body_plain = ""
 
+    def get_bodies(self):
+        """
+        extract body alternatives, if any,
+        and put them in self.body_html and self.body_plain.
+
+        """
+        if self.mail.is_multipart() and self.mail.has_key("Content-Type"):
+            for top_level_part in self.mail.get_payload():
+                if top_level_part.get_content_type() == "multipart/alternative":
+                    for alternative in top_level_part.get_payload():
+                        if alternative.get_content_type() == "text/plain":
+                            self.body_plain = alternative.get_payload(
+                                decode=True)
+                        if alternative.get_content_type() == "text/html":
+                            self.body_html = alternative.get_payload(
+                                decode=True)
+        else:
+            self.body_plain = self.mail.get_payload(decode=True)
+
     def __init__(self, raw_data):
         """Parse an RFC2822,5322 mail message."""
         self.raw = raw_data
         try:
             self.mail = Message(raw_data)
+            self.get_bodies()
         except Exception as exc:
             log.error('Parse message failed %s' % exc)
             raise exc
@@ -134,7 +154,6 @@ class MailMessage(object):
             # XXX what to do ?
             log.warn('Defects on parsed mail %r' % self.mail.defects)
             self.warning = self.mail.defects
-            # TODO : plain & html body parts extraction
 
     @property
     def subject(self):
@@ -142,12 +161,13 @@ class MailMessage(object):
         return self.mail.get('Subject')
 
     @property
-    def prefered_body(self):
-        """Mail prefered body."""
+    def preferred_body(self):
+        """users's preferred body alternative, if available"""
+
         # TODO: returns either html or plain, according user's preferences
-        if not self.mail.is_multipart():
-            return self.mail.get_payload()
-        return ''
+        # for now, plain always returned
+        # TODO: decide what to do if preferred alternative not available
+        return self.body_plain
 
     @property
     def size(self):

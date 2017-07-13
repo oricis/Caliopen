@@ -210,10 +210,10 @@ func (b *EmailBroker) UnmarshalEmail(em *obj.EmailMessage, user_id obj.UUID) (ms
 	}
 
 	/*
-	mail_body, err := ioutil.ReadAll(parsed_mail.Body)
-	if err != nil {
-		log.WithError(err).Warn("unable to parse email's body")
-	}
+		mail_body, err := ioutil.ReadAll(parsed_mail.Body)
+		if err != nil {
+			log.WithError(err).Warn("unable to parse email's body")
+		}
 	*/
 	//TODO: Body parts, Attachments, Externals_references, identities, parent_id…
 	msg = &obj.Message{

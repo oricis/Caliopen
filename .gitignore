@@ -157,3 +157,6 @@ ENV/
 
 # Node
 node_modules
+
+# private fixtures
+/devtools/email-with-parts-and-attachments
