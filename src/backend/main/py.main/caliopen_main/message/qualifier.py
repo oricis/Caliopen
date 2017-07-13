@@ -105,7 +105,7 @@ class UserMessageQualifier(object):
         new_message.is_unread = True
         new_message.is_draft = False
         new_message.is_answered = False
-        new_message.importance_level = 0    # XXX tofix on parser
+        new_message.importance_level = 0  # XXX tofix on parser
         new_message.external_references = message.external_references
 
         participants = []
@@ -147,6 +147,12 @@ class UserMessageQualifier(object):
 
         if lkp:
             new_message.discussion_id = lkp.discussion_id
-        new_message.validate()
+        try:
+            new_message.validate()
+        except Exception as exc:
+            log.error(
+                "validation failed with error : « {} » \
+                for new_message {}[dump : {}]".format(
+                    exc, new_message, vars(new_message)))
         return new_message
         # XXX create lookup

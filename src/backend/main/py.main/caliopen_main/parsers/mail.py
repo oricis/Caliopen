@@ -128,25 +128,79 @@ class MailMessage(object):
         and put them in self.body_html and self.body_plain.
 
         """
-        if self.mail.is_multipart() and self.mail.has_key("Content-Type"):
-            for top_level_part in self.mail.get_payload():
-                if top_level_part.get_content_type() == "multipart/alternative":
-                    for alternative in top_level_part.get_payload():
-                        if alternative.get_content_type() == "text/plain":
-                            self.body_plain = alternative.get_payload(
-                                decode=True)
-                        if alternative.get_content_type() == "text/html":
-                            self.body_html = alternative.get_payload(
-                                decode=True)
+        body_html = ""
+        body_plain = ""
+
+        if self.mail.has_key("Content-Type"):
+            if self.mail.is_multipart():
+                for top_level_part in self.mail.get_payload():
+                    if top_level_part.get_content_maintype() == "multipart":
+                        for alternative in top_level_part.get_payload():
+                            charset = alternative.get_param("charset")
+                            if isinstance(charset, tuple):
+                                charset = unicode(charset[2],
+                                                  charset[0] or "us-ascii")
+                            if alternative.get_content_type() == "text/plain":
+                                body_plain = alternative.get_payload(
+                                    decode=True)
+                                if charset is not None:
+                                    self.body_plain = body_plain.decode(
+                                        charset).encode("utf-8")
+                                else:
+                                    self.body_plain = body_plain
+                            elif alternative.get_content_type() == "text/html":
+                                body_html = alternative.get_payload(decode=True)
+                                if charset is not None:
+                                    self.body_html = body_html.decode(
+                                        charset).encode("utf-8")
+                                else:
+                                    self.body_html = body_html
+                        break
+                    else:
+                        charset = top_level_part.get_param("charset")
+                        if isinstance(charset, tuple):
+                            charset = unicode(charset[2],
+                                              charset[0] or "us-ascii")
+                        if top_level_part.get_content_type() == "text/plain":
+                            body_plain = top_level_part.get_payload(decode=True)
+                            if charset is not None:
+                                self.body_plain = body_plain.decode(
+                                    charset).encode("utf-8")
+                            else:
+                                self.body_plain = body_plain
+                        elif top_level_part.get_content_type() == "text/html":
+                            body_html = top_level_part.get_payload(decode=True)
+                            if charset is not None:
+                                self.body_html = body_html.decode(
+                                    charset).encode("utf-8")
+                            else:
+                                self.body_html = body_html
+            else:
+                charset = self.mail.get_param("charset")
+                if isinstance(charset, tuple):
+                    charset = unicode(charset[2], charset[0] or "us-ascii")
+                if self.mail.get("Content-Type") == "text/html":
+                    body_html = self.mail.get_payload(decode=True)
+                    if charset is not None:
+                        self.body_html = body_html.decode(charset).encode(
+                            "utf-8")
+                    else:
+                        self.body_html = body_html
+                else:
+                    body_plain = self.mail.get_payload(decode=True)
+                    if charset is not None:
+                        self.body_plain = body_plain.decode(charset).encode(
+                            "utf-8")
+                    else:
+                        self.body_plain = body_plain
         else:
-            self.body_plain = self.mail.get_payload(decode=True)
+            body_plain = self.mail.get_payload(decode=True)
 
     def __init__(self, raw_data):
         """Parse an RFC2822,5322 mail message."""
         self.raw = raw_data
         try:
             self.mail = Message(raw_data)
-            self.get_bodies()
         except Exception as exc:
             log.error('Parse message failed %s' % exc)
             raise exc
@@ -154,6 +208,7 @@ class MailMessage(object):
             # XXX what to do ?
             log.warn('Defects on parsed mail %r' % self.mail.defects)
             self.warning = self.mail.defects
+        self.get_bodies()
 
     @property
     def subject(self):
