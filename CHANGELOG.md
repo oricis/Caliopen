@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - A python package caliopen_pi to group all logic related to privacy index
+- Add route `GET /v2/contacts/{contact_id}/identities` to search & retreive identities from a contact.
 
 ## [0.2.1] - 2017-07-04
 ### Added
