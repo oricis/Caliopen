@@ -15,13 +15,14 @@ class DatePickerGroup extends Component {
     inputClassName: PropTypes.string,
     label: PropTypes.string,
     onDateChange: PropTypes.func.isRequired,
-    startDate: PropTypes.instanceOf(Date).isRequired,
+    selected: PropTypes.instanceOf(Date),
   };
   static defaultProps = {
     calendarClassName: null,
     className: null,
     inputClassName: null,
     label: null,
+    selected: null,
   };
 
   state = {
@@ -36,9 +37,11 @@ class DatePickerGroup extends Component {
       inputClassName,
       label,
       onDateChange,
-      startDate,
+      selected,
       ...props
     } = this.props;
+
+    const selectedProps = selected ? moment(selected) : false;
 
     return (
       <div className={classnames('m-date-picker-group', className)}>
@@ -49,7 +52,7 @@ class DatePickerGroup extends Component {
           id={id}
           className={classnames('m-date-picker-group__input', inputClassName)}
           calendarClassName={classnames('m-date-picker-group__calendar', calendarClassName)}
-          selected={moment(startDate)}
+          selected={selectedProps}
           onChange={onDateChange}
           {...props}
         />

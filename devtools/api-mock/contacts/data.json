@@ -16,7 +16,9 @@
   "deleted": 0,
   "pi": { "technic": 87, "context": 45, "comportment": 25 },
   "tags": ["Robots", "Planet Express"],
-  "infos": {},
+  "infos": {
+    "birthday": "2016-05-09T15:01:42.11600"
+  },
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00000001",
     "is_primary": 0,

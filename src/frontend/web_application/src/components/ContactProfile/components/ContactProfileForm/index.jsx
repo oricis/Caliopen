@@ -5,7 +5,7 @@ import { DatePickerGroup, TextFieldGroup } from '../../../form';
 import './style.scss';
 
 const generateStateFromProps = (props, prevState) => {
-  const contactInfo = props.contact.info || {};
+  const contactInfo = props.contact.infos || {};
 
   return {
     contact: {
@@ -73,7 +73,10 @@ class ContactProfileForm extends Component {
 
   render() {
     const { __ } = this.props;
-    const fakeBirthday = new Date();
+    const dateProps = {};
+    if (this.state.contact.infos.birthday) {
+      dateProps.selected = new Date(this.state.contact.infos.birthday);
+    }
 
     return (
       <form
@@ -118,7 +121,6 @@ class ContactProfileForm extends Component {
 
         {
           // TODO:
-          // <DatePickerGroup startDate={contact.infos.birthday}
           // add localization (moment.local())
           // prevent selecting dates after today
           // see https://github.com/Hacker0x01/react-datepicker
@@ -127,14 +129,11 @@ class ContactProfileForm extends Component {
           id="contact-form-birthday"
           className="m-contact-profile-form__birthday"
           label={__('contact_profile.form.birthday.label')}
-          startDate={
-            this.state.contact.infos.birthday ? this.state.contact.infos.birthday : fakeBirthday
-          }
           onDateChange={this.handleBirthdayChanges}
-          // peekNextMonth
           showMonthDropdown
           showYearDropdown
           dropdownMode="select"
+          {...dateProps}
         />
 
         <div className="m-contact-profile-form__save-button">
