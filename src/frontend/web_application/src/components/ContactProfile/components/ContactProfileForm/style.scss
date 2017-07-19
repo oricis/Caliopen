@@ -1,10 +1,7 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
-@import '../../../../styles/object/o-date-picker';
-@import '../../../../styles/object/o-form-element';
 
 .m-contact-profile-form {
-  @include o-date-picker-popper;
   margin-top: $co-margin;
 
   &__save-button {

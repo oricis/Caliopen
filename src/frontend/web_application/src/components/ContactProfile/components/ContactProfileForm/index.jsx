@@ -116,6 +116,13 @@ class ContactProfileForm extends Component {
           onChange={this.handleChanges}
         />
 
+        {
+          // TODO:
+          // <DatePickerGroup startDate={contact.infos.birthday}
+          // add localization (moment.local())
+          // prevent selecting dates after today
+          // see https://github.com/Hacker0x01/react-datepicker
+        }
         <DatePickerGroup
           id="contact-form-birthday"
           className="m-contact-profile-form__birthday"
@@ -124,7 +131,7 @@ class ContactProfileForm extends Component {
             this.state.contact.infos.birthday ? this.state.contact.infos.birthday : fakeBirthday
           }
           onDateChange={this.handleBirthdayChanges}
-          peekNextMonth
+          // peekNextMonth
           showMonthDropdown
           showYearDropdown
           dropdownMode="select"
