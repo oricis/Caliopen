@@ -347,6 +347,7 @@ class ObjectUser(ObjectStorable):
                                                 obj_patch_old,
                                                 obj_patch_new)
             if error is not None:
+                log.info("key consistency checking failed: {}".format(error))
                 return error
 
             # all controls passed, we can actually set the new attribute
@@ -477,8 +478,12 @@ class ObjectIndexable(ObjectUser):
         """
         self.get_index()
         if self._index is not None:
-            update_dict = self.marshall_index(update=True)
-            self._index.update(using=self._index_class.client(), **update_dict)
+            try:
+                update_dict = self.marshall_index(update=True)
+                self._index.update(using=self._index_class.client(),
+                                   **update_dict)
+            except Exception as exc:
+                log.info("update index failed: {}".format(exc))
         else:
             # for some reasons, index doc not found... create one from scratch
             self.create_index()
@@ -494,6 +499,7 @@ class ObjectIndexable(ObjectUser):
         # TODO : manage protected attrs (ie attributes that user should not be able to change directly)
 
         update = False
+
         if "update" in options and options["update"] is True:
             update = True
         # index_sibling is instanciated with self._index values to perform
@@ -502,7 +508,6 @@ class ObjectIndexable(ObjectUser):
         index_sibling._index = self._index
 
         index_sibling.unmarshall_index()
-
         if not isinstance(self._index, self._index_class):
             self._index = self._index_class()
             self._index.meta.index = self.user_id
@@ -534,7 +539,7 @@ class ObjectIndexable(ObjectUser):
 
         if update:
             delattr(update_sibling, "user_id")
-            return update_sibling.marshall_json_dict()
+            return update_sibling.marshall_dict()
 
     def unmarshall_index(self, **options):
         """squash self.attrs with index representation"""
@@ -545,6 +550,8 @@ class ObjectIndexable(ObjectUser):
         error = super(ObjectIndexable, self).apply_patch(patch, **options)
 
         if error is not None:
+            log.info("ObjectIndexable apply_patch() returned error: {}".format(
+                error))
             return error
 
         if "index" in options and options["index"] is True:
@@ -552,6 +559,7 @@ class ObjectIndexable(ObjectUser):
             try:
                 self.update_index()
             except Exception as exc:
+                log.info("apply_patch update_index() exception: {}".format(exc))
                 return exc
 
 

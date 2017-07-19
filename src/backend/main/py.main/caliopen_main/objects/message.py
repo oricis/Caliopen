@@ -142,13 +142,14 @@ class Message(base.ObjectIndexable):
 
         # add missing params to be able to check consistency
         self_dict = self.marshall_dict()
-        if "message_id" not in params and self.message_id is not None:
+        if "message_id" not in params and self.message_id not in (None, ""):
             draft_param.message_id = UUIDType().to_native(self.message_id)
 
-        if "discussion_id" not in params and self.discussion_id is not None:
+        if "discussion_id" not in params and self.discussion_id not in (
+        None, ""):
             draft_param.discussion_id = UUIDType().to_native(self.discussion_id)
 
-        if "parent_id" not in params and self.parent_id is not None:
+        if "parent_id" not in params and self.parent_id not in (None, ""):
             draft_param.parent_id = UUIDType().to_native(self.parent_id)
 
         if "subject" not in params:
@@ -173,6 +174,15 @@ class Message(base.ObjectIndexable):
         validated_params = copy.deepcopy(params)
         if "participants" in params:
             validated_params["participants"] = validated_draft["participants"]
+
+        # handle body key mapping to body_plain or body_html
+        # TODO: handle plain/html flag to map to right field
+        if "body" in validated_params:
+            validated_params["body_plain"] = validated_params["body"]
+            del (validated_params["body"])
+        if "body" in current_state:
+            current_state["body_plain"] = current_state["body"]
+            del (current_state["body"])
 
         validated_params["current_state"] = current_state
 
@@ -200,3 +210,19 @@ class Message(base.ObjectIndexable):
             return {'hits': messages, 'total': res.hits.total}
         else:
             raise NotFound
+
+    def unmarshall_json_dict(self, document, **options):
+        super(Message, self).unmarshall_json_dict(document, **options)
+        # TODO: handle html/plain flag to copy "body" key into right place
+        if "body" in document and document["body"] is not None:
+            self.body_plain = document["body"]
+
+    def marshall_json_dict(self, **options):
+        d = self.marshall_dict()
+        # TODO: handle html/plain regarding user's preferences
+        d["body"] = self.body_plain
+        if "body_plain" in d:
+            del (d["body_plain"])
+        if "body_html" in d:
+            del (d["body_html"])
+        return self._json_model(d).serialize()

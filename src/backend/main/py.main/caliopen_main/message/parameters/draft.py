@@ -19,6 +19,9 @@ log = logging.getLogger(__name__)
 
 
 class Draft(NewMessage):
+    body_plain = ""
+    body_html = ""
+
     def validate_consistency(self, user_id, is_new):
         """
         Function used by create_draft and patch_draft

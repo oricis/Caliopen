@@ -5,9 +5,7 @@ properties:
     type: array
     items:
       "$ref": Attachment.yaml
-  body_html:
-    type: string
-  body_plain:
+  body:
     type: string
   date:
     type: string
