@@ -1,0 +1,83 @@
+// overrides react-datepicker/dist/react-datepicker.css
+
+$date-picker-bg: $co-color__fg__back--low;
+$date-picker-header-bg: $co-color__fg__back;
+$date-picker-font-size: $co-font__size--small;
+$date-picker-text-color: $co-color__fg__text;
+
+@mixin o-date-picker-popper {
+  .react-datepicker-popper[data-placement^="bottom"] {
+    .react-datepicker__triangle,
+    .react-datepicker__triangle:before {
+      border-bottom-color: $date-picker-header-bg;
+    }
+  }
+
+  .react-datepicker-popper[data-placement^="top"] {
+    .react-datepicker__triangle,
+    .react-datepicker__triangle:before {
+      border-top-color: $date-picker-bg;
+    }
+  }
+}
+
+@mixin o-date-picker-calendar {
+  font-family: inherit;
+  font-size: $date-picker-font-size;
+  background-color: $date-picker-bg;
+  color: $date-picker-text-color;
+  border: 0;
+  border-radius: 0;
+  box-shadow: $co-shadow--higher;
+
+  * {
+    font-family: inherit;
+    font-size: $date-picker-font-size;
+    color: $date-picker-text-color;
+    border-radius: 0;
+  }
+
+  .react-datepicker {
+    &__navigation {
+      &--previous { border-right-color: $date-picker-text-color; }
+      &--next { border-left-color: $date-picker-text-color; }
+    }
+
+    &__header {
+      background-color: $date-picker-header-bg;
+      border: 0;
+
+      * { background-color: $date-picker-header-bg; }
+
+      &__dropdown {
+        margin-top: $co-margin / 3;
+
+        select {
+          background: $date-picker-bg;
+          border: 0;
+          padding: $co-component__spacing / 2;
+        }
+      }
+    }
+
+    &__day {
+      border-radius: 0;
+
+      &--today {
+        background: $date-picker-header-bg;
+      }
+
+      &:hover,
+      &--selected {
+        border-radius: 0;
+        background: $co-color__primary;
+      }
+    }
+
+    &__day-name {
+      margin-top: $co-margin / 3;
+      font-size: $co-font__size--xsmall;
+      color: $co-color__fg__text--lower;
+    }
+  }
+}

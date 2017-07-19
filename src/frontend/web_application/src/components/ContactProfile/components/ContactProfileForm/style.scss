@@ -1,7 +1,10 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
+@import '../../../../styles/object/o-date-picker';
+@import '../../../../styles/object/o-form-element';
 
 .m-contact-profile-form {
+  @include o-date-picker-popper;
   margin-top: $co-margin;
 
   &__save-button {
@@ -26,14 +29,14 @@
     &__firstname,
     &__name-prefix,
     &__name-suffix,
-    &__lastname {
+    &__lastname,
+    &__birthday {
       @include flex-grid-column(12);
     }
 
     &__field-group--small { @include flex-grid-column(3); }
 
-    &__field-group--shrink,
-    &__birthday {
+    &__field-group--shrink {
       @include flex-grid-column(shrink);
     }
 
