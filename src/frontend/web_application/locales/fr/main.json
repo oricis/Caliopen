@@ -35,6 +35,8 @@
     "contact.address_form.region.label": "Région",
     "contact.address_form.street.label": "Rue",
     "contact.address_form.type.label": "Type",
+    "contact.address_form.select_country": "Sélectionnez un pays",
+    "contact.address_form.select_region": "Sélectionnez une région",
     "contact.address_type.home": "Personnel",
     "contact.address_type.other": "Autre",
     "contact.address_type.work": "Professionel",

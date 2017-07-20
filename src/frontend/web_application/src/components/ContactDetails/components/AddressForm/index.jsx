@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import Icon from '../../../Icon';
 import Button from '../../../Button';
 import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, FormGrid, FormRow, FormColumn } from '../../../form';
@@ -20,8 +21,6 @@ class AddressForm extends Component {
 
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
     this.state = {
       contactDetail: {
         street: '',
@@ -44,18 +43,36 @@ class AddressForm extends Component {
     };
   }
 
-  handleSubmit(ev) {
+  handleSubmit = (ev) => {
     ev.preventDefault();
     const { contactDetail } = this.state;
     this.props.onSubmit({ contactDetail });
   }
 
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
       contactDetail: {
         ...prevState.contactDetail,
         [name]: value,
+      },
+    }));
+  }
+
+  handleSelectCountry = (country) => {
+    this.setState(prevState => ({
+      contactDetail: {
+        ...prevState.contactDetail,
+        country,
+      },
+    }));
+  }
+
+  handleSelectRegion = (region) => {
+    this.setState(prevState => ({
+      contactDetail: {
+        ...prevState.contactDetail,
+        region,
       },
     }));
   }
@@ -114,19 +131,28 @@ class AddressForm extends Component {
               />
             </FormColumn>
             <FormColumn size="medium">
-              <TextFieldGroup
-                name="country"
+              <label htmlFor="contact-adress-country">
+                {__('contact.address_form.country.label')}
+              </label>
+              <CountryDropdown
+                id="contact-adress-country"
+                classes="m-address-form__select"
+                defaultOptionLabel={__('contact.address_form.select_country')}
                 value={this.state.contactDetail.country}
-                onChange={this.handleInputChange}
-                label={__('contact.address_form.country.label')}
+                onChange={this.handleSelectCountry}
               />
             </FormColumn>
             <FormColumn size="medium">
-              <TextFieldGroup
-                name="region"
+              <label htmlFor="contact-adress-region">
+                {__('contact.address_form.region.label')}
+              </label>
+              <RegionDropdown
+                id="contact-adress-region"
+                classes="m-address-form__select"
+                defaultOptionLabel={__('contact.address_form.select_region')}
+                country={this.state.contactDetail.country}
                 value={this.state.contactDetail.region}
-                onChange={this.handleInputChange}
-                label={__('contact.address_form.region.label')}
+                onChange={this.handleSelectRegion}
               />
             </FormColumn>
           </FormRow>
