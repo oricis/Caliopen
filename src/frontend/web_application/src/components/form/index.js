@@ -1,3 +1,4 @@
+import DatePickerGroup from './DatePickerGroup';
 import FieldErrors from './FieldErrors';
 import Fieldset, { Legend } from './Fieldset';
 import FormGrid, { FormRow, FormColumn } from './FormGrid';
@@ -13,6 +14,7 @@ import TextFieldGroup from './TextFieldGroup';
 import TextareaFieldGroup from './TextareaFieldGroup';
 
 export {
+  DatePickerGroup,
   FieldErrors,
   Fieldset,
   Legend,

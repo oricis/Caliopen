@@ -1,11 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { withTranslator } from '@gandi/react-translate';
 import Button from '../../../Button';
-import { TextFieldGroup } from '../../../form';
+import { DatePickerGroup, TextFieldGroup } from '../../../form';
 import './style.scss';
 
 const generateStateFromProps = (props, prevState) => {
-  const contactInfo = props.contact.info || {};
+  const contactInfo = props.contact.infos || {};
 
   return {
     contact: {
@@ -51,19 +51,24 @@ class ContactProfileForm extends Component {
   }
 
   handleChanges = (event) => {
-    this.setState({ contact: { ...this.state.contact, [event.target.name]: event.target.value } });
+    this.setState(prevState => ({
+      contact: {
+        ...prevState.contact,
+        [event.target.name]: event.target.value,
+      },
+    }));
   }
 
-  handleInfosChanges = (event) => {
-    this.setState({
+  handleBirthdayChanges = (date) => {
+    this.setState(prevState => ({
       contact: {
-        ...this.state.contact,
+        ...prevState.contact,
         infos: {
-          ...this.state.contact.infos,
-          [event.target.name]: event.target.value,
+          ...prevState.contact.infos,
+          birthday: date.format('YYYY-MM-DD HH:mm:ss'),
         },
       },
-    });
+    }));
   }
 
   handleSubmit = (event) => {
@@ -81,46 +86,56 @@ class ContactProfileForm extends Component {
       >
         <TextFieldGroup
           className="m-contact-profile-form__title"
-          value={this.state.contact.title}
+          defaultValue={this.state.contact.title}
           label={__('contact_profile.form.title.label')}
           name="title"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
           className="m-contact-profile-form__name-prefix"
-          value={this.state.contact.name_prefix}
+          defaultValue={this.state.contact.name_prefix}
           label={__('contact_profile.form.name-prefix.label')}
           name="name_prefix"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
           className="m-contact-profile-form__firstname"
-          value={this.state.contact.given_name}
+          defaultValue={this.state.contact.given_name}
           label={__('contact_profile.form.firstname.label')}
           name="given_name"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
           className="m-contact-profile-form__lastname"
-          value={this.state.contact.family_name}
+          defaultValue={this.state.contact.family_name}
           label={__('contact_profile.form.lastname.label')}
           name="family_name"
           onChange={this.handleChanges}
         />
         <TextFieldGroup
           className="m-contact-profile-form__name-suffix"
-          value={this.state.contact.name_suffix}
+          defaultValue={this.state.contact.name_suffix}
           label={__('contact_profile.form.name-suffix.label')}
           name="name_suffix"
           onChange={this.handleChanges}
         />
-        <TextFieldGroup
+
+        {
+          // TODO:
+          // prevent selecting dates after today
+          // see https://github.com/Hacker0x01/react-datepicker
+        }
+        <DatePickerGroup
+          id="contact-form-birthday"
           className="m-contact-profile-form__birthday"
-          value={this.state.contact.infos.birthday}
           label={__('contact_profile.form.birthday.label')}
-          name="birthday"
-          onChange={this.handleInfosChanges}
+          onDateChange={this.handleBirthdayChanges}
+          showMonthDropdown
+          showYearDropdown
+          dropdownMode="select"
+          selected={this.state.contact.infos.birthday ? this.state.contact.infos.birthday : null}
         />
+
         <div className="m-contact-profile-form__save-button">
           <div className="m-contact-profile-form__save-button-wrapper">
             <Button type="submit" display="expanded" shape="plain" icon="check">{__('contact_profile.action.save')}</Button>
