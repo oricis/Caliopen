@@ -26,12 +26,12 @@ import (
 
 func newAddressesFields() (af map[string][]string) {
 	af = map[string][]string{
-		"From":     []string{},
-		"Sender":   []string{},
-		"Reply-To": []string{},
-		"To":       []string{},
-		"Cc":       []string{},
-		"Bcc":      []string{},
+		"From":     {},
+		"Sender":   {},
+		"Reply-To": {},
+		"To":       {},
+		"Cc":       {},
+		"Bcc":      {},
 	}
 	return
 }
@@ -238,7 +238,7 @@ func (b *EmailBroker) UnmarshalEmail(em *obj.EmailMessage, user_id obj.UUID) (ms
 		User_id:          user_id,
 	}
 
-	for field, _ := range newAddressesFields() {
+	for field := range newAddressesFields() {
 		p, err := b.unmarshalParticipants(parsed_mail.Header, field, user_id)
 		if err == nil {
 			msg.Participants = append(msg.Participants, p...)

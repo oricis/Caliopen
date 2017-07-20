@@ -12,6 +12,10 @@ import (
 	"time"
 )
 
+const (
+	EmailProtocol string = "email"
+)
+
 type Message struct {
 	Attachments         []Attachment       `cql:"attachments"              json:"attachments"       `
 	Body_html           string             `cql:"body_html"                json:"body_html"         `
@@ -37,28 +41,64 @@ type Message struct {
 	User_id             UUID               `cql:"user_id"                  json:"user_id"                  elastic:"omit"      formatter:"rfc4122"`
 }
 
+// params to pass to API to get a messages list
+type MessagesListFilter struct {
+	Discussion_id UUID
+	Limit         int16
+	Max_pi        int8
+	Min_pi        int8
+	Offset        int16
+	User_id       UUID
+}
+
 // bespoke implementation of the json.Marshaler interface
 // outputs a JSON representation of an object
-// this marshaller takes account of custom tags for given 'context'
-func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
+// this marshaler takes account of custom tags for given 'context'
+func (msg *Message) JSONMarshaler(context string) ([]byte, error) {
 	var jsonBuf bytes.Buffer
 	enc := json.NewEncoder(&jsonBuf)
 
-	fields, err := reflections.Fields(obj)
+	fields, err := reflections.Fields(*msg)
 	if err != nil {
 		return jsonBuf.Bytes(), err
 	}
 	jsonBuf.WriteByte('{')
 	first := true
+	body_not_merged := true
+fieldsLoop:
 	for _, field := range fields {
-		j_field, err := reflections.GetFieldTag(obj, field, "json")
+		j_field, err := reflections.GetFieldTag(*msg, field, "json")
 		if err == nil && j_field != "" && j_field != "-" {
-			if context == "elastic" {
-				j_elastic, err := reflections.GetFieldTag(obj, field, "elastic")
+			switch context {
+			case "elastic":
+				j_elastic, err := reflections.GetFieldTag(*msg, field, "elastic")
 				if err == nil {
 					switch j_elastic {
 					case "omit":
-						continue
+						continue fieldsLoop
+					}
+				}
+			case "frontend":
+				//output only one body for frontend clients
+				if field == "Body_html" || field == "Body_plain" {
+					if body_not_merged {
+						if first {
+							first = false
+						} else {
+							jsonBuf.WriteByte(',')
+						}
+						jsonBuf.WriteString("\"body\":")
+						// TODO : put html or plain in exported body regarding current user preferences
+						if msg.Body_html != "" {
+							enc.Encode(msg.Body_html)
+						} else {
+							enc.Encode(msg.Body_plain)
+						}
+
+						body_not_merged = false
+						continue fieldsLoop
+					} else {
+						continue fieldsLoop
 					}
 				}
 			}
@@ -68,8 +108,8 @@ func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 				jsonBuf.WriteByte(',')
 			}
 			jsonBuf.WriteString("\"" + j_field + "\":")
-			field_value, err := reflections.GetField(obj, field)
-			j_formatter, err := reflections.GetFieldTag(obj, field, "formatter")
+			field_value, err := reflections.GetField(*msg, field)
+			j_formatter, err := reflections.GetFieldTag(*msg, field, "formatter")
 
 			if err == nil {
 				switch j_formatter {
@@ -90,11 +130,16 @@ func customJSONMarshaler(obj interface{}, context string) ([]byte, error) {
 }
 
 func (msg *Message) MarshalJSON() ([]byte, error) {
-	return customJSONMarshaler(msg, "json")
+	return msg.JSONMarshaler("json")
 }
 
 func (msg *Message) MarshalES() ([]byte, error) {
-	return customJSONMarshaler(msg, "elastic")
+	return msg.JSONMarshaler("elastic")
+}
+
+// return a JSON representation of Message suitable for frontend client
+func (msg *Message) MarshalFrontEnd() ([]byte, error) {
+	return msg.JSONMarshaler("frontend")
 }
 
 // unmarshal a map[string]interface{} that must owns all Message's fields
