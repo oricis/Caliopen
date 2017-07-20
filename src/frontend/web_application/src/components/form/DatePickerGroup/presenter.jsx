@@ -16,7 +16,7 @@ class DatePickerGroup extends Component {
     label: PropTypes.string,
     locale: PropTypes.string,
     onDateChange: PropTypes.func.isRequired,
-    selected: PropTypes.instanceOf(Date),
+    selected: PropTypes.string,
   };
   static defaultProps = {
     calendarClassName: null,

@@ -65,7 +65,7 @@ class ContactProfileForm extends Component {
         ...prevState.contact,
         infos: {
           ...prevState.contact.infos,
-          birthday: date,
+          birthday: date.format('YYYY-MM-DD HH:mm:ss'),
         },
       },
     }));
@@ -78,10 +78,6 @@ class ContactProfileForm extends Component {
 
   render() {
     const { __ } = this.props;
-    const dateProps = {};
-    if (this.state.contact.infos.birthday) {
-      dateProps.selected = new Date(this.state.contact.infos.birthday);
-    }
 
     return (
       <form
@@ -137,7 +133,7 @@ class ContactProfileForm extends Component {
           showMonthDropdown
           showYearDropdown
           dropdownMode="select"
-          {...dateProps}
+          selected={this.state.contact.infos.birthday ? this.state.contact.infos.birthday : null}
         />
 
         <div className="m-contact-profile-form__save-button">
