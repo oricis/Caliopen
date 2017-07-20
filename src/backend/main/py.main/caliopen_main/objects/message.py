@@ -128,8 +128,12 @@ class Message(base.ObjectIndexable):
 
     def patch_draft(self, patch, **options):
         """Operation specific to draft, before applying generic patch."""
-        self.get_db()
-        self.unmarshall_db()
+        try:
+            self.get_db()
+            self.unmarshall_db()
+        except:
+            return NotFound()
+
         if not self.is_draft:
             return err.PatchUnprocessable(message="this message is not a draft")
         try:

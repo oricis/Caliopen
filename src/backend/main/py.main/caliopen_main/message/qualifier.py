@@ -2,7 +2,7 @@
 """Caliopen user message qualification logic."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
-from .parameters import NewMessage, Participant, Attachment
+from .parameters import NewInboundMessage, Participant, Attachment
 
 from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
@@ -94,7 +94,7 @@ class UserMessageQualifier(object):
         @rtype: NewMessage
         """
         message = MailMessage(raw.raw_data)
-        new_message = NewMessage()
+        new_message = NewInboundMessage()
         new_message.raw_msg_id = raw.raw_msg_id
         new_message.subject = message.subject
         new_message.body_html = message.body_html

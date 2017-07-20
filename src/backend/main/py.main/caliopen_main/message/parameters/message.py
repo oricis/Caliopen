@@ -25,7 +25,6 @@ class NewMessage(Model):
     """New message parameter."""
 
     attachments = ListType(ModelType(Attachment), default=lambda: [])
-    body = StringType()
     date = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
                         tzd=u'utc')
     discussion_id = UUIDType()
@@ -50,9 +49,14 @@ class NewMessage(Model):
         serialize_when_none = False
 
 
+class NewInboundMessage(NewMessage):
+    body_html = StringType()
+    body_plain = StringType()
+
 class Message(NewMessage):
     """Existing message parameter."""
 
+    body = StringType()
     user_id = UUIDType()
     message_id = UUIDType(required=True)
     raw_msg_id = UUIDType(required=True)

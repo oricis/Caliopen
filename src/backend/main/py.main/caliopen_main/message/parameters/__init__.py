@@ -3,7 +3,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 from .attachment import Attachment
 from .draft import Draft
 from .external_references import ExternalReferences
-from .message import NewMessage, Message
+from .message import NewMessage, NewInboundMessage, Message
 from .participant import Participant
 
 
