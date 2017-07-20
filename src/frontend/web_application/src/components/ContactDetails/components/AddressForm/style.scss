@@ -1,7 +1,14 @@
 @import '../../../../styles/common';
+@import '../../../../styles/object/o-form-element';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-address-form {
   margin-bottom: $co-margin;
+
+  &__select {
+    @include o-form-element;
+    @include o-form-element--dark;
+  }
 
   &__icon {
     margin-right: $co-margin / 4;
