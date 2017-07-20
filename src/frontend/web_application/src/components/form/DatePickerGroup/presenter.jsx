@@ -44,8 +44,6 @@ class DatePickerGroup extends Component {
       ...props
     } = this.props;
 
-    const selectedProps = selected ? moment(selected) : false;
-
     return (
       <div className={classnames('m-date-picker-group', className)}>
 
@@ -55,7 +53,7 @@ class DatePickerGroup extends Component {
           id={id}
           className={classnames('m-date-picker-group__input', inputClassName)}
           calendarClassName={classnames('m-date-picker-group__calendar', calendarClassName)}
-          selected={selectedProps}
+          selected={selected ? moment(selected) : null}
           onChange={onDateChange}
           locale={locale}
           {...props}
