@@ -51,19 +51,24 @@ class ContactProfileForm extends Component {
   }
 
   handleChanges = (event) => {
-    this.setState({ contact: { ...this.state.contact, [event.target.name]: event.target.value } });
+    this.setState(prevState => ({
+      contact: {
+        ...prevState.contact,
+        [event.target.name]: event.target.value,
+      },
+    }));
   }
 
   handleBirthdayChanges = (date) => {
-    this.setState({
+    this.setState(prevState => ({
       contact: {
-        ...this.state.contact,
+        ...prevState.contact,
         infos: {
-          ...this.state.contact.infos,
-          birthday: new Date(date),
+          ...prevState.contact.infos,
+          birthday: date,
         },
       },
-    });
+    }));
   }
 
   handleSubmit = (event) => {
@@ -121,7 +126,6 @@ class ContactProfileForm extends Component {
 
         {
           // TODO:
-          // add localization (moment.local())
           // prevent selecting dates after today
           // see https://github.com/Hacker0x01/react-datepicker
         }
