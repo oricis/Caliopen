@@ -39,3 +39,4 @@ class ForbiddenAction(Exception):
 
     def __init__(self, message=None, **kw):
         Exception.__init__(self, message, **kw)
+

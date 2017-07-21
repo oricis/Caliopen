@@ -312,7 +312,7 @@ class ObjectUser(ObjectStorable):
         :return: Exception or None
         """
         if patch is None or "current_state" not in patch:
-            return main_errors.PatchUnprocessable()
+            raise main_errors.PatchUnprocessable()
 
         patch_current = patch.pop("current_state")
 
@@ -323,18 +323,16 @@ class ObjectUser(ObjectStorable):
             obj_patch_new.unmarshall_json_dict(patch)
         except Exception as exc:
             log.info(exc)
-            return main_errors.PatchUnprocessable(message="unable to unmarshall"
+            raise main_errors.PatchUnprocessable(message="unable to unmarshall"
                                                           " patch into object")
         try:
             obj_patch_old.unmarshall_json_dict(patch_current)
         except Exception as exc:
             log.info(exc)
-            return main_errors.PatchUnprocessable(message="unable to unmarshall"
+            raise main_errors.PatchUnprocessable(message="unable to unmarshall"
                                                           " patch into object")
-        try:
-            self.get_db()
-        except NotFound as exc:
-            return exc
+        self.get_db()
+
 
         # TODO : manage protected attributes, to prevent patch on them
         # check if patch is consistent with db current state
@@ -343,11 +341,13 @@ class ObjectUser(ObjectStorable):
 
         for key in patch.keys():
             current_attr = self._attrs[key]
-            error = self._check_key_consistency(current_attr, key,
+            try:
+                self._check_key_consistency(current_attr, key,
                                                 obj_patch_old,
                                                 obj_patch_new)
-            if error is not None:
-                return error
+            except Exception as exc:
+                log.info("key consistency checking failed: {}".format(exc))
+                raise exc
 
             # all controls passed, we can actually set the new attribute
             create_sub_object = False
@@ -370,9 +370,7 @@ class ObjectUser(ObjectStorable):
                 self.update_db()
             except Exception as exc:
                 log.info(exc)
-                return main_errors.PatchError(message="Error when updating db")
-
-        return None
+                raise main_errors.PatchError(message="Error when updating db")
 
     def _check_key_consistency(self, current_attr, key, obj_patch_old,
                                patch_current):
@@ -382,7 +380,7 @@ class ObjectUser(ObjectStorable):
         """
 
         if key not in self._attrs.keys():
-            return main_errors.PatchUnprocessable(
+            raise main_errors.PatchUnprocessable(
                 message="unknown key in patch")
         old_val = getattr(obj_patch_old, key)
         cur_val = getattr(self, key)
@@ -390,22 +388,22 @@ class ObjectUser(ObjectStorable):
 
         if isinstance(current_attr, types.ListType):
             if not isinstance(cur_val, types.ListType):
-                return main_errors.PatchConflict(
+                raise main_errors.PatchConflict(
                     messag=msg.format(0, key))
 
         if key not in patch_current.keys():
             # means patch wants to add the key.
             # Value in db should be null or empty
             if cur_val not in (None, [], {}):
-                return main_errors.PatchConflict(
+                raise main_errors.PatchConflict(
                     message=msg.format(0.5, key))
         else:
             if isinstance(current_attr, types.ListType):
                 if old_val == [] and cur_val != []:
-                    return main_errors.PatchConflict(
+                    raise main_errors.PatchConflict(
                         message=msg.format(1, key))
                 if cur_val == [] and old_val != []:
-                    return main_errors.PatchConflict(
+                    raise main_errors.PatchConflict(
                         message=msg.format(2, key))
                 for old in old_val:
                     for elem in cur_val:
@@ -416,15 +414,15 @@ class ObjectUser(ObjectStorable):
                             if elem == old:
                                 break
                     else:
-                        return main_errors.PatchConflict(
+                        raise main_errors.PatchConflict(
                             message=msg.format(3, key))
             elif issubclass(self._attrs[key], types.DictType):
                 if cmp(old_val, cur_val) != 0:
-                    return main_errors.PatchConflict(
+                    raise main_errors.PatchConflict(
                         message=msg.format(4, key))
             else:
                 if old_val != cur_val:
-                    return main_errors.PatchConflict(
+                    raise main_errors.PatchConflict(
                         message=msg.format(5, key))
 
 
@@ -477,8 +475,12 @@ class ObjectIndexable(ObjectUser):
         """
         self.get_index()
         if self._index is not None:
-            update_dict = self.marshall_index(update=True)
-            self._index.update(using=self._index_class.client(), **update_dict)
+            try:
+                update_dict = self.marshall_index(update=True)
+                self._index.update(using=self._index_class.client(),
+                                   **update_dict)
+            except Exception as exc:
+                log.info("update index failed: {}".format(exc))
         else:
             # for some reasons, index doc not found... create one from scratch
             self.create_index()
@@ -494,6 +496,7 @@ class ObjectIndexable(ObjectUser):
         # TODO : manage protected attrs (ie attributes that user should not be able to change directly)
 
         update = False
+
         if "update" in options and options["update"] is True:
             update = True
         # index_sibling is instanciated with self._index values to perform
@@ -502,7 +505,6 @@ class ObjectIndexable(ObjectUser):
         index_sibling._index = self._index
 
         index_sibling.unmarshall_index()
-
         if not isinstance(self._index, self._index_class):
             self._index = self._index_class()
             self._index.meta.index = self.user_id
@@ -534,7 +536,7 @@ class ObjectIndexable(ObjectUser):
 
         if update:
             delattr(update_sibling, "user_id")
-            return update_sibling.marshall_json_dict()
+            return update_sibling.marshall_dict()
 
     def unmarshall_index(self, **options):
         """squash self.attrs with index representation"""
@@ -542,17 +544,20 @@ class ObjectIndexable(ObjectUser):
             self.unmarshall_dict(self._index.to_dict())
 
     def apply_patch(self, patch, **options):
-        error = super(ObjectIndexable, self).apply_patch(patch, **options)
-
-        if error is not None:
-            return error
+        try:
+            super(ObjectIndexable, self).apply_patch(patch, **options)
+        except Exception as exc:
+            log.info("ObjectIndexable apply_patch() returned error: {}".format(
+                exc))
+            raise exc
 
         if "index" in options and options["index"] is True:
             # silently update index. Should we raise an error if it fails ?
             try:
                 self.update_index()
             except Exception as exc:
-                return exc
+                log.info("apply_patch update_index() exception: {}".format(exc))
+                raise exc
 
 
 def unmarshall_item(document, key, target_object, target_attr_type,

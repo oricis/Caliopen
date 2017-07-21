@@ -5,7 +5,7 @@ properties:
     type: array
     items:
       "$ref": Attachment.yaml
-  body: # in future, could be only a preview of body, limited to xxx chars
+  body:
     type: string
   date:
     type: string

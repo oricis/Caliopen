@@ -39,7 +39,8 @@ class Message(base.ObjectIndexable):
     # TODO : manage attrs that should not be editable directly by users
     _attrs = {
         'attachments': [MessageAttachment],
-        'body': types.StringType,
+        'body_html': types.StringType,
+        'body_plain': types.StringType,
         'date': datetime.datetime,
         'date_delete': datetime.datetime,
         'date_insert': datetime.datetime,
@@ -127,44 +128,50 @@ class Message(base.ObjectIndexable):
 
     def patch_draft(self, patch, **options):
         """Operation specific to draft, before applying generic patch."""
-        self.get_db()
-        self.unmarshall_db()
+        try:
+            self.get_db()
+            self.unmarshall_db()
+        except Exception as exc:
+            log.info("patch_draft() failed to get msg from db: {}".format(
+                exc))
+            raise exc
+
         if not self.is_draft:
-            return err.PatchUnprocessable(message="this message is not a draft")
+            raise err.PatchUnprocessable(message="this message is not a draft")
         try:
             params = dict(patch)
             current_state = params.pop("current_state")
             draft_param = Draft(params)
         except Exception as exc:
-            log.warn(exc)
-            return err.PatchError(message=exc.message)
+            log.info(exc)
+            raise err.PatchError(message=exc.message)
 
         # add missing params to be able to check consistency
         self_dict = self.marshall_dict()
-        if "message_id" not in params and self.message_id is not None:
+        if "message_id" not in params and self.message_id:
             draft_param.message_id = UUIDType().to_native(self.message_id)
 
-        if "discussion_id" not in params and self.discussion_id is not None:
+        if "discussion_id" not in params and self.discussion_id:
             draft_param.discussion_id = UUIDType().to_native(self.discussion_id)
 
-        if "parent_id" not in params and self.parent_id is not None:
+        if "parent_id" not in params and self.parent_id:
             draft_param.parent_id = UUIDType().to_native(self.parent_id)
 
         if "subject" not in params:
             draft_param.subject = self.subject
 
-        if "participants" not in params and self.participants is not None:
+        if "participants" not in params and self.participants:
             for participant in self_dict['participants']:
                 draft_param.participants.append(IndexedParticipant(participant))
 
-        if "identities" not in params and self.identities is not None:
+        if "identities" not in params and self.identities:
             draft_param.identities = self_dict["identities"]
 
         try:
             draft_param.validate_consistency(str(self.user_id), False)
         except Exception as exc:
-            log.warn("consistency validation failed with err : {}".format(exc))
-            return err.PatchError(message=exc.message)
+            log.info("consistency validation failed with err : {}".format(exc))
+            raise err.PatchError(message=exc.message)
 
         # make sure the <from> participant is present
         # and is consistent with selected user's identity
@@ -173,9 +180,22 @@ class Message(base.ObjectIndexable):
         if "participants" in params:
             validated_params["participants"] = validated_draft["participants"]
 
+        # handle body key mapping to body_plain or body_html
+        # TODO: handle plain/html flag to map to right field
+        if "body" in validated_params:
+            validated_params["body_plain"] = validated_params["body"]
+            del (validated_params["body"])
+        if "body" in current_state:
+            current_state["body_plain"] = current_state["body"]
+            del (current_state["body"])
+
         validated_params["current_state"] = current_state
 
-        return self.apply_patch(validated_params, **options)
+        try:
+            self.apply_patch(validated_params, **options)
+        except Exception as exc:
+            log.info("apply_patch() failed with error : {}".format(exc))
+            raise exc
 
     @classmethod
     def by_discussion_id(cls, user, discussion_id, min_pi, max_pi,
@@ -199,3 +219,19 @@ class Message(base.ObjectIndexable):
             return {'hits': messages, 'total': res.hits.total}
         else:
             raise NotFound
+
+    def unmarshall_json_dict(self, document, **options):
+        super(Message, self).unmarshall_json_dict(document, **options)
+        # TODO: handle html/plain flag to copy "body" key into right place
+        if "body" in document and document["body"] is not None:
+            self.body_plain = document["body"]
+
+    def marshall_json_dict(self, **options):
+        d = self.marshall_dict()
+        # TODO: handle html/plain regarding user's preferences
+        d["body"] = self.body_plain
+        if "body_plain" in d:
+            del (d["body_plain"])
+        if "body_html" in d:
+            del (d["body_html"])
+        return self._json_model(d).serialize()

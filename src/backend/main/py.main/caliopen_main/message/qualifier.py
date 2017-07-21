@@ -2,7 +2,7 @@
 """Caliopen user message qualification logic."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
-from .parameters import NewMessage, Participant, Attachment
+from .parameters import NewInboundMessage, Participant, Attachment
 
 from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
@@ -94,17 +94,18 @@ class UserMessageQualifier(object):
         @rtype: NewMessage
         """
         message = MailMessage(raw.raw_data)
-        new_message = NewMessage()
+        new_message = NewInboundMessage()
         new_message.raw_msg_id = raw.raw_msg_id
         new_message.subject = message.subject
-        new_message.body = message.body
+        new_message.body_html = message.body_html
+        new_message.body_plain = message.body_plain
         new_message.date = message.date
         new_message.size = message.size
         new_message.type = message.message_type
         new_message.is_unread = True
         new_message.is_draft = False
         new_message.is_answered = False
-        new_message.importance_level = 0    # XXX tofix on parser
+        new_message.importance_level = 0  # XXX tofix on parser
         new_message.external_references = message.external_references
 
         participants = []
@@ -146,6 +147,12 @@ class UserMessageQualifier(object):
 
         if lkp:
             new_message.discussion_id = lkp.discussion_id
-        new_message.validate()
+        try:
+            new_message.validate()
+        except Exception as exc:
+            log.error(
+                "validation failed with error : « {} » \
+                for new_message {}[dump : {}]".format(
+                    exc, new_message, vars(new_message)))
         return new_message
         # XXX create lookup

@@ -61,7 +61,8 @@ def build_discussion(core, index):
     discuss.discussion_id = core.discussion_id
     discuss.date_insert = core.date_insert
     discuss.date_update = index.last_message.date_insert
-    discuss.excerpt = index.last_message.body[:100]
+    # TODO : excerpt from plain or html body
+    discuss.excerpt = index.last_message.body_plain[:100]
     discuss.total_count = index.total_count
 
     # TODO
@@ -120,11 +121,12 @@ class Discussion(BaseUserCore):
     @classmethod
     def create_from_message(cls, user, message):
         new_id = uuid.uuid4()
+        # TODO excerpt from plain or html body
         kwargs = {'discussion_id': new_id,
                   'date_insert': datetime.utcnow(),
                   # 'privacy_index': message.privacy_index,
                   'importance_level': message.importance_level,
-                  'excerpt': message.body[:200],
+                  'excerpt': message.body_plain[:200],
                   }
         discussion = cls.create(user, **kwargs)
         log.debug('Created discussion {}'.format(discussion.discussion_id))

@@ -2,7 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import re
-
+from schematics.types import StringType
 from .message import NewMessage
 from caliopen_main.objects.identities import LocalIdentity
 from caliopen_main.user.core import User
@@ -19,6 +19,10 @@ log = logging.getLogger(__name__)
 
 
 class Draft(NewMessage):
+    body_plain = ""
+    body_html = ""
+    body = StringType()
+
     def validate_consistency(self, user_id, is_new):
         """
         Function used by create_draft and patch_draft

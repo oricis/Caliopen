@@ -20,7 +20,8 @@ class IndexedMessage(BaseIndexDocument):
     doc_type = 'indexed_message'
 
     attachments = Nested(doc_class=IndexedMessageAttachment)
-    body = Text()
+    body_html = Text()
+    body_plain = Text()
     date = Date()
     date_delete = Date()
     date_insert = Date()
@@ -54,7 +55,8 @@ class IndexedMessage(BaseIndexDocument):
         m.meta('_all', enabled=False)
         m.field('attachments', Nested(doc_class=IndexedMessageAttachment,
                                       include_in_all=True))
-        m.field('body', 'text')
+        m.field('body_html', 'text')
+        m.field('body_plain', 'text')
         m.field('date', 'date')
         m.field('date_delete', 'date')
         m.field('date_insert', 'date')

@@ -35,7 +35,8 @@ class IMessageParser(zope.interface.Interface):
     subject = zope.interface.Attribute('Message subject if any')
     date = zope.interface.Attribute('Message date')
     size = zope.interface.Attribute('Message size in bytes')
-    body = zope.interface.Attribute('Message text body')
+    body_html = zope.interface.Attribute('Message html body')
+    body_plain = zope.interface.Attribute('Message plain txt body')
 
     participants = zope.interface.Attribute('List of participants')
     attachments = zope.interface.Attribute('List of attachments')
