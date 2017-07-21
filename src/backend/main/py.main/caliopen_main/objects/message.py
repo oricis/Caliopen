@@ -148,24 +148,23 @@ class Message(base.ObjectIndexable):
 
         # add missing params to be able to check consistency
         self_dict = self.marshall_dict()
-        if "message_id" not in params and self.message_id not in (None, ""):
+        if "message_id" not in params and self.message_id:
             draft_param.message_id = UUIDType().to_native(self.message_id)
 
-        if "discussion_id" not in params and self.discussion_id not in (
-        None, ""):
+        if "discussion_id" not in params and self.discussion_id:
             draft_param.discussion_id = UUIDType().to_native(self.discussion_id)
 
-        if "parent_id" not in params and self.parent_id not in (None, ""):
+        if "parent_id" not in params and self.parent_id:
             draft_param.parent_id = UUIDType().to_native(self.parent_id)
 
         if "subject" not in params:
             draft_param.subject = self.subject
 
-        if "participants" not in params and self.participants is not None:
+        if "participants" not in params and self.participants:
             for participant in self_dict['participants']:
                 draft_param.participants.append(IndexedParticipant(participant))
 
-        if "identities" not in params and self.identities is not None:
+        if "identities" not in params and self.identities:
             draft_param.identities = self_dict["identities"]
 
         try:
