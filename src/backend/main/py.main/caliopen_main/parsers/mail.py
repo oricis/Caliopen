@@ -220,15 +220,6 @@ class MailMessage(object):
         return self.mail.get('Subject')
 
     @property
-    def preferred_body(self):
-        """users's preferred body alternative, if available"""
-
-        # TODO: returns either html or plain, according user's preferences
-        # for now, plain always returned
-        # TODO: decide what to do if preferred alternative not available
-        return self.body_plain
-
-    @property
     def size(self):
         """Get mail size in bytes."""
         return len(self.mail.as_string())
