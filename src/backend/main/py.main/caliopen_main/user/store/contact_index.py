@@ -172,19 +172,19 @@ class IndexedContact(BaseIndexDocument):
                         properties={
                             "is_primary": "boolean",
                             "number": "text",
-                            "phone_id": "keyword"
-                                        "type": "keyword",
-                                                "uri": "keyword"
-        })
+                            "phone_id": "keyword",
+                            "type": "keyword",
+                            "uri": "keyword"
+                        })
         m.field("phones", phones)
         pi = Nested(doc_class=PIIndexModel, include_in_all=True,
                     properties={
                         "comportment": "integer",
                         "context": "integer",
-                        "date_update": "date"
-                                       "technic": "integer",
-                                                  "version": "integer"
-        })
+                        "date_update": "date",
+                        "technic": "integer",
+                        "version": "integer"
+                    })
         m.field("pi", pi)
         m.field("privacy_features", Nested(include_in_all=True))
         m.field("public_key", Nested())
