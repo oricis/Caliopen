@@ -131,18 +131,20 @@ class Message(base.ObjectIndexable):
         try:
             self.get_db()
             self.unmarshall_db()
-        except:
-            return NotFound()
+        except Exception as exc:
+            log.info("patch_draft() failed to get msg from db: {}".format(
+                exc))
+            raise exc
 
         if not self.is_draft:
-            return err.PatchUnprocessable(message="this message is not a draft")
+            raise err.PatchUnprocessable(message="this message is not a draft")
         try:
             params = dict(patch)
             current_state = params.pop("current_state")
             draft_param = Draft(params)
         except Exception as exc:
-            log.warn(exc)
-            return err.PatchError(message=exc.message)
+            log.info(exc)
+            raise err.PatchError(message=exc.message)
 
         # add missing params to be able to check consistency
         self_dict = self.marshall_dict()
@@ -169,8 +171,8 @@ class Message(base.ObjectIndexable):
         try:
             draft_param.validate_consistency(str(self.user_id), False)
         except Exception as exc:
-            log.warn("consistency validation failed with err : {}".format(exc))
-            return err.PatchError(message=exc.message)
+            log.info("consistency validation failed with err : {}".format(exc))
+            raise err.PatchError(message=exc.message)
 
         # make sure the <from> participant is present
         # and is consistent with selected user's identity
@@ -190,7 +192,11 @@ class Message(base.ObjectIndexable):
 
         validated_params["current_state"] = current_state
 
-        return self.apply_patch(validated_params, **options)
+        try:
+            self.apply_patch(validated_params, **options)
+        except Exception as exc:
+            log.info("apply_patch() failed with error : {}".format(exc))
+            raise exc
 
     @classmethod
     def by_discussion_id(cls, user, discussion_id, min_pi, max_pi,

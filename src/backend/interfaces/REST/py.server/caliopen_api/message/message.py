@@ -97,9 +97,10 @@ class Message(Api):
         patch = self.request.json
 
         message = ObjectMessage(self.user.user_id, message_id=message_id)
-        error = message.patch_draft(patch, db=True, index=True)
-        if error is not None:
-            raise MergePatchError(error)
+        try:
+            message.patch_draft(patch, db=True, index=True)
+        except Exception as exc:
+            raise MergePatchError(exc)
 
         return Response(None, 204)
 
