@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/gocql/gocql"
+	"github.com/satori/go.uuid"
 	"gopkg.in/oleiade/reflections.v1"
 	"time"
 )
@@ -39,12 +40,10 @@ type Message struct {
 
 // params to pass to API to get a messages list
 type MessagesListFilter struct {
-	Discussion_id UUID
-	Limit         int16
-	Max_pi        int8
-	Min_pi        int8
-	Offset        int16
-	User_id       UUID
+	Limit   int
+	Offset  int
+	Terms   map[string]string
+	User_id UUID
 }
 
 // bespoke implementation of the json.Marshaler interface
@@ -138,40 +137,153 @@ func (msg *Message) MarshalFrontEnd() ([]byte, error) {
 	return msg.JSONMarshaler("frontend")
 }
 
-// unmarshal a map[string]interface{} that must owns all Message's fields
-// typical usage is for unmarshaling response from Cassandra backend
-func (msg *Message) UnmarshalMap(input map[string]interface{}) {
-	for _, attachment := range input["attachments"].([]map[string]interface{}) {
-		a := Attachment{}
-		a.Content_type, _ = attachment["content_type"].(string)
-		a.File_name, _ = attachment["file_name"].(string)
-		a.Is_inline, _ = attachment["is_inline"].(bool)
-		a.Size, _ = attachment["size"].(int)
-		a.URL, _ = attachment["url"].(string)
-		a.MimeBoundary, _ = attachment["mime_boundary"].(string)
-		msg.Attachments = append(msg.Attachments, a)
+func (msg *Message) UnmarshalJSON(b []byte) error {
+	input := map[string]interface{}{}
+	if err := json.Unmarshal(b, &input); err != nil {
+		return err
+	}
+	//	bool, for JSON booleans
+	//	float64, for JSON numbers
+	//	string, for JSON strings
+	//	[]interface{}, for JSON arrays
+	//	map[string]interface{}, for JSON objects
+	//	nil for JSON null
+	if _, ok := input["attachments"]; ok {
+		for _, attachment := range input["attachments"].([]interface{}) {
+			a := attachment.(map[string]interface{})
+			A := Attachment{}
+			A.Content_type, _ = a["content_type"].(string)
+			A.File_name, _ = a["file_name"].(string)
+			A.Is_inline, _ = a["is_inline"].(bool)
+			size, _ := a["size"].(float64)
+			A.Size = int(size)
+			A.URL, _ = a["url"].(string)
+			A.MimeBoundary, _ = a["mime_boundary"].(string)
+			msg.Attachments = append(msg.Attachments, A)
+		}
+	}
+	msg.Body_html, _ = input["body_html"].(string)
+	msg.Body_plain, _ = input["body_plain"].(string)
+	if date, ok := input["date"]; ok {
+		msg.Date, _ = time.Parse(time.RFC3339Nano, date.(string))
+	}
+	if date, ok := input["date_delete"]; ok {
+		msg.Date_delete, _ = time.Parse(time.RFC3339Nano, date.(string))
+	}
+	if date, ok := input["date_insert"]; ok {
+		msg.Date_insert, _ = time.Parse(TimeUTCmicro, date.(string))
+	}
+	if discussion_id, ok := input["discussion_id"].(string); ok {
+		if id, err := uuid.FromString(discussion_id); err == nil {
+			msg.Discussion_id.UnmarshalBinary(id.Bytes())
+		}
+	}
+	if ex_ref, ok := input["external_references"].(map[string]interface{}); ok {
+		msg.External_references = ExternalReferences{}
+		msg.External_references.Discussion_id, _ = ex_ref["discussion_id"].(string)
+		msg.External_references.Message_id, _ = ex_ref["message_id"].(string)
+		msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
+		msg.External_references.References, _ = ex_ref["references"].([]string)
+	}
+	if _, ok := input["identities"]; ok {
+		for _, identity := range input["identities"].([]interface{}) {
+			i := identity.(map[string]interface{})
+			I := Identity{}
+			I.Identifier, _ = i["identifier"].(string)
+			I.Type, _ = i["type"].(string)
+
+			msg.Identities = append(msg.Identities, I)
+		}
+	}
+	importance_level, _ := input["importance_level"].(float64)
+	msg.Importance_level = int32(importance_level)
+	msg.Is_answered, _ = input["is_answered"].(bool)
+	msg.Is_draft, _ = input["is_draft"].(bool)
+	msg.Is_unread, _ = input["is_unread"].(bool)
+	if message_id, ok := input["message_id"].(string); ok {
+		if id, err := uuid.FromString(message_id); err == nil {
+			msg.Message_id.UnmarshalBinary(id.Bytes())
+		}
+	}
+	msg.Parent_id, _ = input["parent_id"].(string)
+	msg.Participants = []Participant{}
+	if _, ok := input["participants"]; ok {
+		for _, participant := range input["participants"].([]interface{}) {
+			p := participant.(map[string]interface{})
+			P := Participant{}
+			P.Address, _ = p["address"].(string)
+			P.Label, _ = p["labebl"].(string)
+			P.Protocol, _ = p["protocol"].(string)
+			P.Type, _ = p["type"].(string)
+			if _, ok := p["contact_ids"]; ok {
+				P.Contact_ids = []UUID{}
+				for _, contact_id := range p["contact_ids"].([]interface{}) {
+					c_id := contact_id.(string)
+					var contact_uuid UUID
+					if id, err := uuid.FromString(c_id); err == nil {
+						contact_uuid.UnmarshalBinary(id.Bytes())
+					}
+					P.Contact_ids = append(P.Contact_ids, contact_uuid)
+				}
+			}
+			msg.Participants = append(msg.Participants, P)
+		}
+	}
+	//TODO: privacy_features
+	if raw_msg_id, ok := input["raw_msg_id"].(string); ok {
+		if id, err := uuid.FromString(raw_msg_id); err == nil {
+			msg.Raw_msg_id.UnmarshalBinary(id.Bytes())
+		}
+	}
+	msg.Subject, _ = input["subject"].(string)
+	//TODO: tags
+	msg.Type, _ = input["type"].(string)
+	if user_id, ok := input["user_id"].(string); ok {
+		if id, err := uuid.FromString(user_id); err == nil {
+			msg.User_id.UnmarshalBinary(id.Bytes())
+		}
+	}
+
+	return nil
+}
+
+// unmarshal a map[string]interface{} coming from gocql
+func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) {
+	if _, ok := input["attachments"]; ok {
+		for _, attachment := range input["attachments"].([]map[string]interface{}) {
+			a := Attachment{}
+			a.Content_type, _ = attachment["content_type"].(string)
+			a.File_name, _ = attachment["file_name"].(string)
+			a.Is_inline, _ = attachment["is_inline"].(bool)
+			a.Size, _ = attachment["size"].(int)
+			a.URL, _ = attachment["url"].(string)
+			a.MimeBoundary, _ = attachment["mime_boundary"].(string)
+			msg.Attachments = append(msg.Attachments, a)
+		}
 	}
 	msg.Body_html, _ = input["body_html"].(string)
 	msg.Body_plain, _ = input["body_plain"].(string)
 	msg.Date, _ = input["date"].(time.Time)
 	msg.Date_delete, _ = input["date_delete"].(time.Time)
 	msg.Date_insert, _ = input["date_insert"].(time.Time)
-	discussion_id, _ := input["discussion_id"].(gocql.UUID)
-	msg.Discussion_id.UnmarshalBinary(discussion_id.Bytes())
+	if discussion_id, ok := input["discussion_id"].(gocql.UUID); ok {
+		msg.Discussion_id.UnmarshalBinary(discussion_id.Bytes())
+	}
+	if ex_ref, ok := input["external_references"].(map[string]interface{}); ok {
+		msg.External_references = ExternalReferences{}
+		msg.External_references.Discussion_id, _ = ex_ref["discussion_id"].(string)
+		msg.External_references.Message_id, _ = ex_ref["message_id"].(string)
+		msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
+		msg.External_references.References, _ = ex_ref["references"].([]string)
+	}
+	if _, ok := input["identities"]; ok {
+		for _, identity := range input["identities"].([]map[string]interface{}) {
+			i := Identity{}
+			i.Identifier, _ = identity["identifier"].(string)
+			i.Type, _ = identity["type"].(string)
 
-	ex_ref, _ := input["external_references"].(map[string]interface{})
-	msg.External_references = ExternalReferences{}
-	msg.External_references.Discussion_id, _ = ex_ref["discussion_id"].(string)
-	msg.External_references.Message_id, _ = ex_ref["message_id"].(string)
-	msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
-	msg.External_references.References, _ = ex_ref["references"].([]string)
-
-	for _, identity := range input["identities"].([]map[string]interface{}) {
-		i := Identity{}
-		i.Identifier, _ = identity["identifier"].(string)
-		i.Type, _ = identity["type"].(string)
-
-		msg.Identities = append(msg.Identities, i)
+			msg.Identities = append(msg.Identities, i)
+		}
 	}
 	importance_level, _ := input["importance_level"].(int)
 	msg.Importance_level = int32(importance_level)
@@ -182,27 +294,32 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) {
 	msg.Message_id.UnmarshalBinary(message_id.Bytes())
 	msg.Parent_id, _ = input["parent_id"].(string)
 	msg.Participants = []Participant{}
-	for _, participant := range input["participants"].([]map[string]interface{}) {
-		p := Participant{}
-		p.Address, _ = participant["address"].(string)
-		p.Label, _ = participant["labebl"].(string)
-		p.Protocol, _ = participant["protocol"].(string)
-		p.Type, _ = participant["type"].(string)
-		p.Contact_ids = []UUID{}
-		for _, id := range participant["contact_ids"].([]gocql.UUID) {
-			var uuid UUID
-			uuid.UnmarshalBinary(id.Bytes())
-			p.Contact_ids = append(p.Contact_ids, uuid)
+	if _, ok := input["participants"]; ok {
+		for _, participant := range input["participants"].([]map[string]interface{}) {
+			p := Participant{}
+			p.Address, _ = participant["address"].(string)
+			p.Label, _ = participant["labebl"].(string)
+			p.Protocol, _ = participant["protocol"].(string)
+			p.Type, _ = participant["type"].(string)
+			if _, ok := participant["contact_ids"]; ok {
+				p.Contact_ids = []UUID{}
+				for _, id := range participant["contact_ids"].([]gocql.UUID) {
+					var uuid UUID
+					uuid.UnmarshalBinary(id.Bytes())
+					p.Contact_ids = append(p.Contact_ids, uuid)
+				}
+			}
+			msg.Participants = append(msg.Participants, p)
 		}
-
-		msg.Participants = append(msg.Participants, p)
 	}
 	//TODO: privacy_features
-	raw_msg_id, _ := input["raw_msg_id"].(gocql.UUID)
-	msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
+	if raw_msg_id, ok := input["raw_msg_id"].(gocql.UUID); ok {
+		msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
+	}
 	msg.Subject, _ = input["subject"].(string)
 	//TODO: tags
 	msg.Type, _ = input["type"].(string)
-	user_id, _ := input["user_id"].(gocql.UUID)
-	msg.User_id.UnmarshalBinary(user_id.Bytes())
+	if user_id, ok := input["user_id"].(gocql.UUID); ok {
+		msg.User_id.UnmarshalBinary(user_id.Bytes())
+	}
 }

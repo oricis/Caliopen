@@ -25,7 +25,7 @@ type (
 		Keyspace     string            `mapstructure:"keyspace"`
 		Consistency  gocql.Consistency `mapstructure:"consistency_level"`
 		SizeLimit    uint64            `mapstructure:"raw_size_limit"` // max size to store (in bytes)
-		WithObjStore bool                                              // whether to use an objects store service for objects above SizeLimit
+		WithObjStore bool              // whether to use an objects store service for objects above SizeLimit
 		object_store.OSSConfig
 	}
 )

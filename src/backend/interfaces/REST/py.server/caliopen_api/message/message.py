@@ -68,17 +68,19 @@ class Message(Api):
 
     @view(renderer='json', permission='authenticated')
     def get(self):
-        # pi_range = self.request.authenticated_userid.pi_range
-        message_id = self.request.swagger_data["message_id"]
-        message = ObjectMessage(self.user.user_id, message_id=message_id)
-        try:
-            message.get_db()
-        except Exception as exc:
-            log.warn(exc)
-            raise ResourceNotFound
-
-        message.unmarshall_db()
-        return message.marshall_json_dict()
+        # LEGACY CODE. ROUTE MOVED TO API V2
+        #     # pi_range = self.request.authenticated_userid.pi_range
+        #     message_id = self.request.swagger_data["message_id"]
+        #     message = ObjectMessage(self.user.user_id, message_id=message_id)
+        #     try:
+        #         message.get_db()
+        #     except Exception as exc:
+        #         log.warn(exc)
+        #         raise ResourceNotFound
+        #
+        #     message.unmarshall_db()
+        #     return message.marshall_json_dict()
+        return Response(None, 301)
 
     @view(renderer='json', permission='authenticated')
     def patch(self):

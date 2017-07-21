@@ -6,8 +6,11 @@ package index
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
+	"github.com/satori/go.uuid"
+	"gopkg.in/olivere/elastic.v5"
 )
 
 func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[string]interface{}) error {
@@ -50,6 +53,40 @@ func (es *ElasticSearchBackend) SetMessageUnread(user_id, message_id string, sta
 
 	update := es.Client.Update().Index(user_id).Type("indexed_message").Id(message_id)
 	_, err = update.Doc(payload).Refresh("true").Do(context.TODO())
+
+	return
+}
+
+func (es *ElasticSearchBackend) FilterMessages(filter objects.MessagesListFilter) (messages []*objects.Message, err error) {
+
+	search := es.Client.Search().Index(filter.User_id.String()).Type("indexed_message")
+	q := elastic.NewBoolQuery()
+	for name, value := range filter.Terms {
+		q = q.Filter(elastic.NewTermQuery(name, value))
+	}
+	search = search.Query(q).Sort("date_insert", false)
+	if filter.Offset > 0 {
+		search = search.From(filter.Offset)
+	}
+	if filter.Limit > 0 {
+		search = search.Size(filter.Limit)
+	}
+	result, err := search.Do(context.TODO())
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, hit := range result.Hits.Hits {
+		msg := new(objects.Message)
+		if err := json.Unmarshal(*hit.Source, msg); err != nil {
+			log.Info(err)
+			continue
+		}
+		msg_id, _ := uuid.FromString(hit.Id)
+		msg.Message_id.UnmarshalBinary(msg_id.Bytes())
+		messages = append(messages, msg)
+	}
 
 	return
 }

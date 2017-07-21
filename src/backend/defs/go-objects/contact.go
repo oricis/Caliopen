@@ -35,7 +35,7 @@ type (
 
 // unmarshal a map[string]interface{} that must owns all Contact's fields
 // typical usage is for unmarshaling response from Cassandra backend
-func (contact *Contact) UnmarshalMap(input map[string]interface{}) {
+func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 	contact.AdditionalName, _ = input["additional_name"].(string)
 	for _, address := range input["addresses"].([]map[string]interface{}) {
 		pa := PostalAddress{}
