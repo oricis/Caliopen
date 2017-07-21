@@ -20,6 +20,7 @@ type (
 		UsernameIsAvailable(string) (bool, error)
 		LocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 		SuggestRecipients(user_id, query_string string) (suggests []RecipientSuggestion, err error)
+		ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 		//messages
 		GetMessagesList(filter MessagesListFilter) (messages []*Message, err error)
 		GetMessage(user_id, message_id string) (message *Message, err error)

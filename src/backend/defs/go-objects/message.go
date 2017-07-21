@@ -12,10 +12,6 @@ import (
 	"time"
 )
 
-const (
-	EmailProtocol string = "email"
-)
-
 type Message struct {
 	Attachments         []Attachment       `cql:"attachments"              json:"attachments"       `
 	Body_html           string             `cql:"body_html"                json:"body_html"         `
