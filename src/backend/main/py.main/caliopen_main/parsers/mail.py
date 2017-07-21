@@ -144,13 +144,19 @@ class MailMessage(object):
                 try:
                     return input.decode(charset, "replace").encode("utf-8",
                                                                    "replace")
-                except:
+                except Exception as exc:
+                    log.info(
+                        "decoding <{}> string to utf-8 failed with error : {}".format(
+                            input, exc))
                     return input
             else:
                 try:
                     return input.decode("us-ascii", "replace").encode("utf-8",
                                                                       "replace")
-                except:
+                except Exception as exc:
+                    log.info(
+                        "decoding <{}> string to utf-8 failed with error : {}".format(
+                            input, exc))
                     return input
 
         if self.mail.has_key("Content-Type"):
