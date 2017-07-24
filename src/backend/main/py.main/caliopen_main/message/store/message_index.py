@@ -84,14 +84,14 @@ class IndexedMessage(BaseIndexDocument):
         m.field('privacy_features', Nested(include_in_all=True))
         pi = Nested(doc_class=PIIndexModel, include_in_all=True,
                     properties={
-                        "technic": Integer(),
-                        "comportment": Integer(),
-                        "context": Integer(),
-                        "version": Integer(),
-                        "date_update": Date()
+                        "technic": "integer",
+                        "comportment": "integer",
+                        "context": "integer",
+                        "version": "integer",
+                        "date_update": "date"
                     })
         m.field("pi", pi)
-        m.field('raw_msg_id', Keyword())
+        m.field('raw_msg_id', "keyword")
         m.field('subject', 'text')
         m.field('tags',
                 Nested(doc_class=IndexedResourceTag, include_in_all=True))
