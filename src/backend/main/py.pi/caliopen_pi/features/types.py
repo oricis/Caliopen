@@ -42,6 +42,7 @@ def check_feature(name, value):
     for dimension in FEATURE_DIMENSIONS:
         if name in FEATURES_0[dimension]:
             feature = FEATURES_0[dimension][name]
+            break
     else:
         return False
     if feature['type'] == 'int':
