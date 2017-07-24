@@ -590,7 +590,7 @@ def unmarshall_item(document, key, target_object, target_attr_type,
             for item in document[key]:
                 sub_obj = target_attr_type[0]()
                 sub_obj.unmarshall_dict(item)
-                if is_creation:
+                if is_creation and isinstance(sub_obj, ObjectStorable):
                     sub_obj.set_uuid()
                 lst.append(sub_obj)
         elif issubclass(target_attr_type[0], uuid.UUID):
