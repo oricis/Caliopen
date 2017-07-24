@@ -29,10 +29,12 @@ func (rest *RESTfacility) GetRawMessage(raw_message_id string) (raw_message []by
 }
 
 //return a list of messages given filter parameters
-//messages are sanitized, ready for display in front interface
+//messages are sanitized, ie : ready for display in front interface
 func (rest *RESTfacility) GetMessagesList(filter MessagesListFilter) (messages []*Message, err error) {
 
-	return
+	//TODO : sanitation
+
+	return rest.index.FilterMessages(filter)
 }
 
 //return a sanitized message, ready for display in front interface

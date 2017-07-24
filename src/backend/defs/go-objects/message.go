@@ -46,10 +46,10 @@ type MessagesListFilter struct {
 	User_id UUID
 }
 
-// bespoke implementation of the json.Marshaler interface
+// bespoke implementation of the json.Marshaller interface
 // outputs a JSON representation of an object
 // this marshaler takes account of custom tags for given 'context'
-func (msg *Message) JSONMarshaler(context string) ([]byte, error) {
+func (msg *Message) JSONMarshaller(context string) ([]byte, error) {
 	var jsonBuf bytes.Buffer
 	enc := json.NewEncoder(&jsonBuf)
 
@@ -125,16 +125,16 @@ fieldsLoop:
 }
 
 func (msg *Message) MarshalJSON() ([]byte, error) {
-	return msg.JSONMarshaler("json")
+	return msg.JSONMarshaller("json")
 }
 
 func (msg *Message) MarshalES() ([]byte, error) {
-	return msg.JSONMarshaler("elastic")
+	return msg.JSONMarshaller("elastic")
 }
 
 // return a JSON representation of Message suitable for frontend client
 func (msg *Message) MarshalFrontEnd() ([]byte, error) {
-	return msg.JSONMarshaler("frontend")
+	return msg.JSONMarshaller("frontend")
 }
 
 func (msg *Message) UnmarshalJSON(b []byte) error {
@@ -142,12 +142,6 @@ func (msg *Message) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &input); err != nil {
 		return err
 	}
-	//	bool, for JSON booleans
-	//	float64, for JSON numbers
-	//	string, for JSON strings
-	//	[]interface{}, for JSON arrays
-	//	map[string]interface{}, for JSON objects
-	//	nil for JSON null
 	if _, ok := input["attachments"]; ok {
 		for _, attachment := range input["attachments"].([]interface{}) {
 			a := attachment.(map[string]interface{})
@@ -168,10 +162,10 @@ func (msg *Message) UnmarshalJSON(b []byte) error {
 		msg.Date, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
 	if date, ok := input["date_delete"]; ok {
-		msg.Date_delete, _ = time.Parse(time.RFC3339Nano, date.(string))
+		msg.Date_delete, _ = time.Parse(TimeUTCmicro, date.(string))
 	}
 	if date, ok := input["date_insert"]; ok {
-		msg.Date_insert, _ = time.Parse(TimeUTCmicro, date.(string))
+		msg.Date_insert, _ = time.Parse(TimeUTCmicro, date.(string)) //default datetime string format serialized by ES. TODO: make ES serialize a RFC3339 string.
 	}
 	if discussion_id, ok := input["discussion_id"].(string); ok {
 		if id, err := uuid.FromString(discussion_id); err == nil {
