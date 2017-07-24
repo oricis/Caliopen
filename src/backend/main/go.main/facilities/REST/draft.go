@@ -41,6 +41,6 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 	if err != nil {
 		return nil, err
 	}
-	helpers.SanitizeMessageBody(msg)
+	helpers.SanitizeMessageBodies(msg)
 	return msg, err
 }

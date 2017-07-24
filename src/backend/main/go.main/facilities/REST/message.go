@@ -31,10 +31,14 @@ func (rest *RESTfacility) GetRawMessage(raw_message_id string) (raw_message []by
 //return a list of messages given filter parameters
 //messages are sanitized, ie : ready for display in front interface
 func (rest *RESTfacility) GetMessagesList(filter MessagesListFilter) (messages []*Message, err error) {
-
-	//TODO : sanitation
-
-	return rest.index.FilterMessages(filter)
+	messages, err = rest.index.FilterMessages(filter)
+	if err != nil {
+		return []*Message{}, err
+	}
+	for _, msg := range messages {
+		helpers.SanitizeMessageBodies(msg)
+	}
+	return
 }
 
 //return a sanitized message, ready for display in front interface
@@ -43,6 +47,6 @@ func (rest *RESTfacility) GetMessage(user_id, msg_id string) (msg *Message, err 
 	if err != nil {
 		return nil, err
 	}
-	helpers.SanitizeMessageBody(msg)
+	helpers.SanitizeMessageBodies(msg)
 	return msg, err
 }
