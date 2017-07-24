@@ -292,7 +292,7 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) {
 		for _, participant := range input["participants"].([]map[string]interface{}) {
 			p := Participant{}
 			p.Address, _ = participant["address"].(string)
-			p.Label, _ = participant["labebl"].(string)
+			p.Label, _ = participant["label"].(string)
 			p.Protocol, _ = participant["protocol"].(string)
 			p.Type, _ = participant["type"].(string)
 			if _, ok := participant["contact_ids"]; ok {
