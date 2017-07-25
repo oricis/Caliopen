@@ -14,7 +14,7 @@ class ExternalReferences(base.ObjectJsonDictifiable):
     """external references, nested within message object"""
 
     _attrs = {
-        'discussion_id': types.StringType,
+        'ancestors_ids': [types.StringType],
         'message_id': types.StringType,
         'parent_id': types.StringType
     }
