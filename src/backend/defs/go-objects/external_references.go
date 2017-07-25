@@ -5,8 +5,7 @@
 package objects
 
 type ExternalReferences struct {
-	Discussion_id string   `cql:"discussion_id"            json:"discussion_id"`
-	Message_id    string   `cql:"message_id"               json:"message_id"`
-	Parent_id     string   `cql:"parent_id"                json:"parent_id"`
-	References    []string `cql:"references"               json:"references"` //References header (see RFC5322#3.6.4)
+	Ancestors_ids []string   `cql:"ancestors_ids"            json:"ancestors_ids"`
+	Message_id    string     `cql:"message_id"               json:"message_id"`
+	Parent_id     string     `cql:"parent_id"                json:"parent_id"`
 }
