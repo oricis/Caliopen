@@ -81,7 +81,7 @@ def get_ingress_features(headers, internal_domains=None):
             if internal in path[0]:
                 is_internal = True
             else:
-                if internal in path[1] and internal not in path[0]:
+                if internal in path[1]:
                     ingress = path
                     break
         if is_internal:

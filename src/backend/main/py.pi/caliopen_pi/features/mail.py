@@ -189,7 +189,14 @@ class InboundMailFeature(object):
                             'version': 0})
 
     def process(self, message, participants):
-        """Process the message for privacy features and PI compute."""
+        """
+        Process the message for privacy features and PI compute.
+
+        :param message: a message parameter that will be updated with PI
+        :ptype message: NewMessage
+        :param participants: an array of participant with related Contact
+        :ptype participants: list(Participant, Contact)
+        """
         features = self._get_features()
         message.pi = self._compute_pi(participants, features)
         message.privacy_features = unmarshall_features(features)
