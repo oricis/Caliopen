@@ -33,9 +33,9 @@ describe('Save a draft and send', () => {
       '.s-discussion-list__thread',
       'john@caliopen.local, fry@planet-express.tld'
     );
-    const text1 = 'Eat my shinny ';
-    const text2 = 'ass!';
-    const text3 = 'No. ';
+    const text1 = 'Automatically saves a draft, then refresh.';
+    const text2 = ' Automatically updates a draft, then refresh.';
+    const text3 = 'Add an answer to second discussion, don\'t wait and go to first one. It will be sent at the end.';
 
     browser.get('/')
       .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000))
@@ -100,7 +100,6 @@ describe('Save a draft and send', () => {
         const draftBodyElement2 = element(by.css('.m-discussion-textarea__body'));
         expect(draftBodyElement2.getText()).toEqual(text3);
       })
-      // FIXME: restore state between tests
       .then(() => console.log('send'))
       .then(() => element(by.cssContainingText('button', __('send'))).click())
       .then(() => switchApp('discussions'))
@@ -108,7 +107,8 @@ describe('Save a draft and send', () => {
       .then(() => element(discussion1Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
       .then(() => console.log('I should see the Send button'))
-      // .then(() => expect(element(by.css('.m-message-list')).isPresent()).toEqual(true))
+      .then(() => element(by.cssContainingText('button', __('send'))).click())
+      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
     ;
   });
 
@@ -117,7 +117,7 @@ describe('Save a draft and send', () => {
       '.s-discussion-list__thread',
       'test@caliopen.local, john@caliopen.local, zoidberg@planet-express.tld'
     );
-    const text1 = 'I am not bender';
+    const text1 = 'Force save a draft.';
     browser.get('/')
       .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
@@ -136,8 +136,8 @@ describe('Save a draft and send', () => {
         const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
         expect(draftBodyElement1.getText()).toEqual(text1);
       })
-      // FIXME: restore state between tests
       .then(() => element(by.cssContainingText('button', __('send'))).click())
+      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
     ;
   });
 

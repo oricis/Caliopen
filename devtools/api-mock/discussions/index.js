@@ -24,6 +24,10 @@ const selectors = {
 
 const reducer = {
   [actions.create]: (state, { body, req }) => {
+    if (body.discussion_id) {
+      return state;
+    }
+
     const discussion = {
       discussion_id: uuidv1(),
       participants: [],
