@@ -238,7 +238,7 @@ class MailMessage(object):
             message-id
             in-reply-to
             references
-        headers' strings are cleaned-up to extract email addresses only.
+        headers' strings are pruned to extract email addresses only.
         """
         ext_id = self.mail.get('Message-Id')
         parent_id = self.mail.get('In-Reply-To')
@@ -248,8 +248,8 @@ class MailMessage(object):
 
         return {
             'message_id': clean_email_address(ext_id)[1] if ext_id else None,
-            'parent_id': clean_email_address(parent_id)[
-                1] if parent_id else None,
+            'parent_id': clean_email_address(parent_id)[1] \
+                if parent_id else None,
             'ancestors_ids': ref_ids}
 
     @property
@@ -297,10 +297,10 @@ class MailMessage(object):
     @property
     def extra_parameters(self):
         """Mail message extra parameters."""
-        lists = []
-        for list_name in self.headers.get('List-ID', []):
-            lists.append(list_name)
-        return {'lists': lists}
+        lists = self.mail.get_all("List-ID")
+        lists_addr = getaddresses(lists) if lists else None
+        lists_ids = [address[1] for address in lists_addr] if lists_addr else []
+        return {'lists': lists_ids}
 
     def lookup_discussion_sequence(self, *args, **kwargs):
         """Return list of lookup type, value from a mail message."""
@@ -315,11 +315,12 @@ class MailMessage(object):
         elif self.external_references["message_id"]:
             seq.append(("thread", self.external_references["message_id"]))
 
-        # TODO : participants lookup and list lookup
-        # # then list lookup
-        # for listname in self.extra_parameters.get('lists', []):
-        #     seq.append(('list', listname))
-        # # last try to lookup from sender address
+        # then list lookup
+        for list_id in self.extra_parameters.get('lists', []):
+            seq.append(('list', list_id))
+
+        # TODO:
+        # # last try to lookup by participants
         # for p in self.participants:
         #     if p.type == 'from' and len(self.participants) == 2:
         #         seq.append(('from', p.address))

@@ -19,23 +19,11 @@ class Discussion(BaseModel):
     excerpt = columns.Text()
 
 
-class DiscussionRecipientLookup(
-    BaseModel):  # TODO: rename to DiscussionParticipantLookup
-    """Lookup discussion by a recipient name."""
-
-    # XXX temporary, until a recipients able lookup can be design
-    user_id = columns.UUID(primary_key=True)
-    recipient_name = columns.Text(primary_key=True)
-    discussion_id = columns.UUID()
-
-
-class DiscussionExternalLookup(
-    BaseModel):  # TODO: renamo to DiscussionListLookup
-
-    """Lookup discussion by external_thread_id."""
+class DiscussionListLookup(BaseModel):
+    """Lookup discussion by external list-id."""
 
     user_id = columns.UUID(primary_key=True)
-    external_id = columns.Text(primary_key=True)
+    list_id = columns.Text(primary_key=True)
     discussion_id = columns.UUID()
 
 
@@ -45,4 +33,13 @@ class DiscussionThreadLookup(BaseModel):
     user_id = columns.UUID(primary_key=True)
     external_root_msg_id = columns.Text(primary_key=True)
     discussion_id = columns.UUID()
-    message_id = columns.UUID()
+
+
+class DiscussionRecipientLookup(
+    BaseModel):  # TODO: rename to DiscussionParticipantLookup
+    """Lookup discussion by a recipient name."""
+
+    # XXX temporary, until a recipients able lookup can be design
+    user_id = columns.UUID(primary_key=True)
+    recipient_name = columns.Text(primary_key=True)
+    discussion_id = columns.UUID()

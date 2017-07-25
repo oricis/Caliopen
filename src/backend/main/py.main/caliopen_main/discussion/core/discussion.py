@@ -11,7 +11,7 @@ from caliopen_storage.core import BaseUserCore
 from caliopen_storage.parameters import ReturnCoreObject
 
 from ..store.discussion import \
-    (DiscussionExternalLookup as ModelExternalLookup,
+    (DiscussionListLookup as ModelListLookup,
      DiscussionRecipientLookup as ModelRecipientLookup,
      DiscussionThreadLookup as ModelThreadLookup,
      Discussion as ModelDiscussion)
@@ -33,11 +33,11 @@ def count_attachment(message):
     return cpt
 
 
-class DiscussionExternalLookup(BaseUserCore):
-    """Lookup discussion by external id (facebook, gmail, ...)."""
+class DiscussionListLookup(BaseUserCore):
+    """Lookup discussion by external list-id"""
 
-    _model_class = ModelExternalLookup
-    _pkey_name = 'external_id'
+    _model_class = ModelListLookup
+    _pkey_name = 'list_id'
 
 
 class DiscussionRecipientLookup(BaseUserCore):

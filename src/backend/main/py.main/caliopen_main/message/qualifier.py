@@ -8,8 +8,7 @@ from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
 from caliopen_main.user.core import Contact
 from caliopen_main.discussion.core import (DiscussionThreadLookup,
-                                           DiscussionRecipientLookup,
-                                           DiscussionExternalLookup)
+                                           DiscussionListLookup)
 from caliopen_pi.features import InboundMailFeature
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.parsers import MailMessage
@@ -31,10 +30,8 @@ class UserMessageQualifier(object):
 
     _lookups = {
         'thread': DiscussionThreadLookup,
-        'list': DiscussionRecipientLookup,
-        'recipient': DiscussionRecipientLookup,
-        'external_thread': DiscussionExternalLookup,
-        'from': DiscussionRecipientLookup,
+        'list': DiscussionListLookup,
+        # 'recipient': DiscussionRecipientLookup,
     }
 
     def __init__(self, user):
@@ -57,6 +54,7 @@ class UserMessageQualifier(object):
             except NotFound:
                 log.debug('Lookup type %s with value %s failed' %
                           (prop[0], prop[1]))
+
         return None
 
     def create_lookups(self, sequence, message):
@@ -67,12 +65,9 @@ class UserMessageQualifier(object):
                 kls._pkey_name: prop[1],
                 'discussion_id': message.discussion_id
             }
-            if 'message_id' in kls._model_class._columns.keys():
-                params.update({'message_id': message.message_id})
             lookup = kls.create(self.user, **params)
             log.debug('Create lookup %r' % lookup)
-            if prop[0] == 'list':
-                return
+
 
     def get_participant(self, message, participant):
         """Try to find a related contact and return a Participant instance."""
