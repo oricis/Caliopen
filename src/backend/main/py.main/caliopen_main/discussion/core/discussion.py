@@ -13,7 +13,7 @@ from caliopen_storage.parameters import ReturnCoreObject
 from ..store.discussion import \
     (DiscussionExternalLookup as ModelExternalLookup,
      DiscussionRecipientLookup as ModelRecipientLookup,
-     DiscussionMessageLookup as ModelMessageLookup,
+     DiscussionThreadLookup as ModelThreadLookup,
      Discussion as ModelDiscussion)
 from ..store.discussion_index import DiscussionIndexManager as DIM
 
@@ -47,11 +47,11 @@ class DiscussionRecipientLookup(BaseUserCore):
     _pkey_name = 'recipient_name'
 
 
-class DiscussionMessageLookup(BaseUserCore):
-    """Lookup discussion by external message_id."""
+class DiscussionThreadLookup(BaseUserCore):
+    """Lookup discussion by external thread's root message_id."""
 
-    _model_class = ModelMessageLookup
-    _pkey_name = 'external_message_id'
+    _model_class = ModelThreadLookup
+    _pkey_name = 'external_root_msg_id'
 
 
 def build_discussion(core, index):
@@ -125,7 +125,7 @@ class Discussion(BaseUserCore):
         kwargs = {'discussion_id': new_id,
                   'date_insert': datetime.utcnow(),
                   # 'privacy_index': message.privacy_index,
-                  'importance_level': message.importance_level,
+                  # 'importance_level': message.importance_level,
                   'excerpt': message.body_plain[:200],
                   }
         discussion = cls.create(user, **kwargs)

@@ -7,12 +7,13 @@ from .parameters import NewInboundMessage, Participant, Attachment
 from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
 from caliopen_main.user.core import Contact
-from caliopen_main.discussion.core import (DiscussionMessageLookup,
+from caliopen_main.discussion.core import (DiscussionThreadLookup,
                                            DiscussionRecipientLookup,
                                            DiscussionExternalLookup)
 from caliopen_pi.features import InboundMailFeature
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.parsers import MailMessage
+from ..discussion.core import Discussion
 
 log = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ class UserMessageQualifier(object):
     """
 
     _lookups = {
-        'parent': DiscussionMessageLookup,
+        'thread': DiscussionThreadLookup,
         'list': DiscussionRecipientLookup,
         'recipient': DiscussionRecipientLookup,
         'external_thread': DiscussionExternalLookup,
@@ -141,6 +142,12 @@ class UserMessageQualifier(object):
 
         if lkp:
             new_message.discussion_id = lkp.discussion_id
+        else:
+            discussion = Discussion.create_from_message(self.user, message)
+            log.debug('Created discussion {}'.format(discussion.discussion_id))
+            new_message.discussion_id = discussion.discussion_id
+            self.create_lookups(lookup_sequence, new_message)
+
         try:
             new_message.validate()
         except Exception as exc:
