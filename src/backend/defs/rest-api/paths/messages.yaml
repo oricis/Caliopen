@@ -1,6 +1,5 @@
 ---
 messages:
-
   post:
     description: Create a new Message (draft) for an user
     tags:

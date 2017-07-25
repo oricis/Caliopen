@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from datetime import datetime
 import logging
 
 from cornice.resource import resource, view
@@ -62,6 +61,7 @@ class Message(Api):
         message_url = self.request.route_path('message',
                                               message_id=str(
                                                   message.message_id))
+        message_url = message_url.replace("/v1/", "/v2/")
 
         self.request.response.location = message_url.encode('utf-8')
         return {'location': message_url}
@@ -80,7 +80,10 @@ class Message(Api):
         #
         #     message.unmarshall_db()
         #     return message.marshall_json_dict()
-        raise HTTPMovedPermanently(location="/V2/messages/{message_id}")
+        message_id = self.request.swagger_data["message_id"]
+        message_url = self.request.route_path('message', message_id=message_id)
+        message_url = message_url.replace("/v1/", "/v2/")
+        raise HTTPMovedPermanently(location=message_url)
 
     @view(renderer='json', permission='authenticated')
     def patch(self):
