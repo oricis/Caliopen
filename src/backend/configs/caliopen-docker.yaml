@@ -58,6 +58,7 @@ default_domain: caliopen.local
 
 internal_domains:
     - caliopen.local
+    - brainstorm.fr
 
 blacklistes:
     mx:

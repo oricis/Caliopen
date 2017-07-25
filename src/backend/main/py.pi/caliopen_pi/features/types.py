@@ -14,9 +14,11 @@ FEATURES_0 = {'technic': [{'mail_emitter_mx_reputation': {'type': 'string'}},
                           {'message_signature_type': {'type': 'string'}},
                           {'message_encrypted': {'type': 'bool'}},
                           {'message_encryption_infos': {'type': 'string'}},
+                          {'is_spam': {'type': 'bool'}},
                           {'spam_score': {'max': 100,
                                           'min': 0,
                                           'type': 'int'}},
+                          {'spam_method': {'type': 'string'}},
                           {'ingress_socket_version': {'type': 'string'}},
                           {'ingress_cipher': {'type': 'string'}},
                           {'nb_external_hops': {'type': 'int'}}]}
@@ -40,6 +42,7 @@ def check_feature(name, value):
     for dimension in FEATURE_DIMENSIONS:
         if name in FEATURES_0[dimension]:
             feature = FEATURES_0[dimension][name]
+            break
     else:
         return False
     if feature['type'] == 'int':
@@ -79,4 +82,8 @@ def marshall_features(features):
 
 def unmarshall_features(features):
     """Unmarshall a dict of features suitable for storage."""
-    return dict((name, str(value)) for name, value in features.items())
+    res = {}
+    for k, v in features.items():
+        if not (v == '' or v is None):
+            res[k] = str(v)
+    return res

@@ -2,14 +2,23 @@
 """Caliopen mail message privacy features extraction methods."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-import re
 import logging
 
 import pgpy
 
+from .spam import SpamScorer
+from .types import unmarshall_features
+from .ingress_path import get_ingress_features
 from ..parameters import PIParameter
 
 log = logging.getLogger(__name__)
+
+TLS_VERSION_PI = {
+    'tlsv1/sslv3': 2,
+    'tls1': 7,
+    'tlsv1': 7,
+    'tls12': 10,
+}
 
 
 class InboundMailFeature(object):
@@ -26,6 +35,8 @@ class InboundMailFeature(object):
         'message_encryption_infos': None,
         'mail_agent': None,
         'spam_score': 0,
+        'spam_method': None,
+        'is_spam': False,
         'ingress_socket_version': None,
         'ingress_cipher': None,
         'ingress_server': None,
@@ -86,34 +97,11 @@ class InboundMailFeature(object):
 
     @property
     def spam_informations(self):
-        """Compute features around spam information in mail headers."""
-        scores = [0.0]
-        score = self.message.mail.get('X-Spam-Score', 0)
-        if score:
-            try:
-                score = float(score)
-                scores.append(score * 10)
-            except TypeError:
-                log.debug('Invalid type for X-Spam-Score value {}'.
-                          format(score))
-        level = self.message.mail.get('X-Spam-Level', '')
-        if '*' in level:
-            # SpamAssassin style, level is *** notation, up to 25 *
-            note = level.count('*')
-            scores.append(min(100.0, note * 4.0))
-        status = self.message.mail.get('X-Spam-Status', '')
-        if status:
-            match = re.match('^X-Spam-Status: Yes, score=(\d.\d).*', status)
-            if match:
-                scores.append(min(100.0, float(match[0] * 10)))
-
-        if len(scores) == 1:
-            # Really not a SPAM ? (and moderate effect of this flag)
-            flag = self.message.mail.get('X-Spam-Flag', '')
-            if flag.lower().startswith('y'):
-                scores.append(80.0)
-
-        return {'spam_score': max(scores)}
+        """Return a global spam_score and related features."""
+        spam = SpamScorer(self.message.mail)
+        return {'spam_score': spam.score,
+                'spam_method': spam.method,
+                'is_spam': spam.is_spam}
 
     def get_signature_informations(self):
         """Get message signature features."""
@@ -138,83 +126,11 @@ class InboundMailFeature(object):
         is_encrypted = True if encrypted_parts else False
         return {'message_encrypted': is_encrypted}
 
-    def get_ingress_features(self):
-        """Try to find information about ingress server that send this mail."""
-        def get_host(line):
-            if ' ' not in line:
-                return None
-            parts = line.split(' ')
-            return parts[0]
-
-        def parse_ingress(header):
-            header = header.replace('\n', '')
-            search = re.compile(r'.*using (\S+) with cipher ([\S-]+)',
-                                re.MULTILINE)
-            match = search.match(header)
-            if match:
-                return match.groups()
-            return None
-
-        found_features = {}
-        received = self.message.headers.get('Received')
-        if not received:
-            return {}
-
-        # First step Search for 'paths' (from / by) information
-        search = re.compile(r'^from (.*) by (.*)', re.MULTILINE + re.DOTALL)
-        paths = []
-        for r in received:
-            r = r.replace('\n', '')
-            match = search.match(r)
-            if match:
-                groups = match.groups()
-                from_ = get_host(groups[0])
-                by = get_host(groups[1])
-                if from_ and by:
-                    paths.append((from_, by, groups))
-                else:
-                    log.warn('Invalid from {} or by {} path in {}'.
-                             format(from_, by, r))
-            else:
-                if r.startswith('by'):
-                    # XXX first hop, to consider ?
-                    pass
-                else:
-                    log.warn('Received header, does not match format {}'.
-                             format(r))
-
-        # Second step: qualify path if internal and try to find the ingress one
-        ingress = None
-        internal_hops = 0
-        for path in paths:
-            is_internal = False
-            for internal in self.internal_domains:
-                if internal in path[0]:
-                    is_internal = True
-                else:
-                    if internal in path[1] and internal not in path[0]:
-                        ingress = path
-                        break
-            if is_internal:
-                internal_hops += 1
-
-        # Qualify ingress connection
-        if ingress:
-            cnx_info = parse_ingress(ingress[2][0])
-            if cnx_info and len(cnx_info) > 1:
-                found_features.update({'ingress_socket_version': cnx_info[0],
-                                       'ingress_cipher': cnx_info[1]})
-            found_features.update({'ingress_server': ingress[0]})
-
-        # Try to count external hops
-        external_hops = len(paths) - internal_hops
-        found_features.update({'nb_external_hops': external_hops})
-        return found_features
-
-    def process(self):
-        """Process the message for privacy features extraction."""
+    def _get_features(self):
+        """Extract privacy features."""
         features = self._features.copy()
-        features.update(self.get_ingress_features())
+        received = self.message.headers.get('Received', [])
+        features.update(get_ingress_features(received, self.internal_domains))
         mx = features.get('ingress_server')
         reputation = None if not mx else self.emitter_reputation(mx)
         features['mail_emitter_mx_reputation'] = reputation
@@ -228,7 +144,7 @@ class InboundMailFeature(object):
             features.update({'transport_signed': True})
         return features
 
-    def compute_pi(self, participants, features):
+    def _compute_pi(self, participants, features):
         """Compute Privacy Indexes for a message."""
         log.info('PI features {}'.format(features))
         pi_cx = {}   # Contextual privacy index
@@ -243,7 +159,7 @@ class InboundMailFeature(object):
         known_public_key = 0
         for part, contact in participants:
             if contact:
-                known_contacts += 1
+                known_contacts.append(contact)
                 if contact.public_key:
                     known_public_key += 1
         if len(participants) == len(known_contacts):
@@ -256,15 +172,10 @@ class InboundMailFeature(object):
         if ext_hops <= 1:
             tls = features.get('ingress_socket_version')
             if tls:
-                tls = tls.replace('_', '.').lower()
-                if tls == 'tlsv1/sslv3':
-                    pi_t['tls10'] = 2
-                elif tls in ('tls1', 'tlsv1'):
-                    pi_t['tls11'] = 7
-                elif tls == 'tls1.2':
-                    pi_t['tls12'] = 10
-                else:
+                if tls not in TLS_VERSION_PI:
                     log.warn('Unknown TLS version {}'.format(tls))
+                else:
+                    pi_t += TLS_VERSION_PI[tls]
         if features.get('mail_emitter_certificate'):
             pi_t['emitter_certificate'] = 10
         if features.get('transport_signed'):
@@ -276,3 +187,16 @@ class InboundMailFeature(object):
                             'context': sum(pi_cx.values()),
                             'comportment': sum(pi_co.values()),
                             'version': 0})
+
+    def process(self, message, participants):
+        """
+        Process the message for privacy features and PI compute.
+
+        :param message: a message parameter that will be updated with PI
+        :ptype message: NewMessage
+        :param participants: an array of participant with related Contact
+        :ptype participants: list(Participant, Contact)
+        """
+        features = self._get_features()
+        message.pi = self._compute_pi(participants, features)
+        message.privacy_features = unmarshall_features(features)

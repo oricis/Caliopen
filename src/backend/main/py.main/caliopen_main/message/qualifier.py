@@ -84,7 +84,7 @@ class UserMessageQualifier(object):
                   format(participant.address, self.user.user_id))
         c = Contact.lookup(self.user, participant.address)
         if c:
-            p.contact_ids = [c]
+            p.contact_ids = [c.contact_id]
         return p, c
 
     def process_inbound(self, raw):
@@ -127,13 +127,7 @@ class UserMessageQualifier(object):
         # Compute PI !!
         conf = Configuration('global').configuration
         extractor = InboundMailFeature(message, conf)
-        privacy_features = extractor.process()
-        new_message.pi = extractor.compute_pi(participants, privacy_features)
-
-        # XXX hard type privacy_features for the moment
-        for k, v in privacy_features.items():
-            if v is not None:
-                new_message.privacy_features[k] = str(v)
+        extractor.process(new_message, participants)
 
         # compute tags
         new_message.tags = self._get_tags(message)
