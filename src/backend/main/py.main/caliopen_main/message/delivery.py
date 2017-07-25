@@ -4,6 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import uuid
 
+import datetime
 from caliopen_storage.exception import NotFound
 from ..message.core import RawMessage
 from .qualifier import UserMessageQualifier
@@ -41,6 +42,7 @@ class UserMessageDelivery(object):
         obj.unmarshall_dict(message.to_native())
         obj.user_id = uuid.UUID(self.user.user_id)
         obj.message_id = uuid.uuid4()
+        obj.date_insert = datetime.datetime.utcnow()
         obj.marshall_db()
         obj.save_db()
         obj.marshall_index()

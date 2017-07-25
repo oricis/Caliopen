@@ -64,7 +64,7 @@ func (es *ElasticSearchBackend) FilterMessages(filter objects.MessagesListFilter
 	for name, value := range filter.Terms {
 		q = q.Filter(elastic.NewTermQuery(name, value))
 	}
-	search = search.Query(q).Sort("date_insert", false)
+	search = search.Query(q).Sort("date", false)
 	if filter.Offset > 0 {
 		search = search.From(filter.Offset)
 	}
