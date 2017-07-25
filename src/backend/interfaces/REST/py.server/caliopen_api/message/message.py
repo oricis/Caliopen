@@ -14,10 +14,8 @@ from caliopen_storage.exception import NotFound
 from ..base import Api
 
 from ..base.exception import (ResourceNotFound,
-                              ValidationError,
-                              MethodNotAllowed,
                               MergePatchError)
-from pyramid.httpexceptions import HTTPServerError
+from pyramid.httpexceptions import HTTPServerError, HTTPMovedPermanently
 
 log = logging.getLogger(__name__)
 
@@ -31,22 +29,24 @@ class Message(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
-        discussion_id = self.request.swagger_data['discussion_id']
-        pi_range = self.request.authenticated_userid.pi_range
-        try:
-            messages = ObjectMessage.by_discussion_id(self.user, discussion_id,
-                                                      min_pi=pi_range[0],
-                                                      max_pi=pi_range[1],
-                                                      limit=self.get_limit(),
-                                                      offset=self.get_offset())
-            results = []
-        except Exception as exc:
-            log.warn(exc)
-            raise ResourceNotFound
-
-        for msg in messages['hits']:
-            results.append(msg.marshall_json_dict())
-        return {'messages': results, 'total': messages['total']}
+        # LEGACY CODE. ROUTE MOVED TO API V2
+        # discussion_id = self.request.swagger_data['discussion_id']
+        # pi_range = self.request.authenticated_userid.pi_range
+        # try:
+        #     messages = ObjectMessage.by_discussion_id(self.user, discussion_id,
+        #                                               min_pi=pi_range[0],
+        #                                               max_pi=pi_range[1],
+        #                                               limit=self.get_limit(),
+        #                                               offset=self.get_offset())
+        #     results = []
+        # except Exception as exc:
+        #     log.warn(exc)
+        #     raise ResourceNotFound
+        #
+        # for msg in messages['hits']:
+        #     results.append(msg.marshall_json_dict())
+        # return {'messages': results, 'total': messages['total']}
+        raise HTTPMovedPermanently(location="/V2/messages")
 
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
@@ -80,7 +80,7 @@ class Message(Api):
         #
         #     message.unmarshall_db()
         #     return message.marshall_json_dict()
-        return Response(None, 301)
+        raise HTTPMovedPermanently(location="/V2/messages/{message_id}")
 
     @view(renderer='json', permission='authenticated')
     def patch(self):
