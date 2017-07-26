@@ -5,6 +5,8 @@ import Icon from '../../../../../../../../components/Icon';
 import ItemButton from '../ItemButton';
 import ItemLink from '../ItemLink';
 
+import './style.scss';
+
 class Tab extends Component {
   static propTypes = {
     className: PropTypes.string,
@@ -36,8 +38,7 @@ class Tab extends Component {
         active={isActive}
         contentChildren={(
           <ItemLink to={tab.pathname}>
-            <Icon type={tab.icon || 'dot-circle-o'} />
-            {' '}
+            <Icon className="m-tab__icon" type={tab.icon || 'dot-circle-o'} />
             {tab.label}
           </ItemLink>
         )}

@@ -12,6 +12,7 @@ const registeredRoutes = [
   '/contacts/:contactId',
   '/compose',
   '/settings/:setting',
+  '/account/:setting',
 ];
 
 const routeActionHandler = ({ store, action }) => {
@@ -121,6 +122,37 @@ const selectOrAddTabSetting = ({ store, pathname }) => {
   return store.dispatch(addTab(tab));
 };
 
+const getAccountTab = ({ pathname }) => {
+  const { translate: __ } = getTranslator();
+
+  const routeConfig = flattenRouteConfig(getRouteConfig({ __ }))
+    .filter(route => route.path.indexOf('/account/') !== -1)
+    .find(route => matchPath(pathname, { path: route.path }));
+
+  return {
+    pathname,
+    label: (routeConfig && routeConfig.label) || __('account.route.label.default'),
+    icon: 'user',
+  };
+};
+
+const selectOrAddTabAccount = ({ store, pathname }) => {
+  if (!matchPath(pathname, { path: '/account/:subpath' })) {
+    return null;
+  }
+
+  const original = store.getState().tab.tabs
+    .find(tab => matchPath(tab.pathname, { path: '/account' }));
+
+  const tab = getAccountTab({ pathname });
+  if (original) {
+    return store.dispatch(updateTab({ original, tab }));
+  }
+
+  return store.dispatch(addTab(tab));
+};
+
+
 const selectOrAddTabCompose = ({ store, pathname }) => {
   const match = matchPath(pathname, { path: '/compose' });
   if (!match) {
@@ -143,7 +175,8 @@ export default store => next => (action) => {
 
   if (action.type === SELECT_OR_ADD_TAB) {
     const { payload: { pathname } } = action;
-    [selectOrAddTabDiscussion, selectOrAddTabContact, selectOrAddTabSetting, selectOrAddTabCompose]
+    [selectOrAddTabDiscussion, selectOrAddTabContact, selectOrAddTabSetting,
+      selectOrAddTabAccount, selectOrAddTabCompose]
       .forEach(fn => fn({ store, pathname }));
   }
 

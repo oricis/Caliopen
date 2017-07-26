@@ -3,6 +3,10 @@
 .m-application-switcher {
   position: relative;
 
+  &__icon {
+    margin-right: $co-component__spacing;
+  }
+
   &__dropdown {
     position: absolute;
     width: 100%;
