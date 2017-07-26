@@ -43,3 +43,4 @@ _(People involved in the project)_
 * [@Zeriuno](https://github.com/Zeriuno)
 * The NSA (to make it happen)
 * [@ptran32](https://github.com/ptran32)
+* [@Mindiell](https://github.com/Mindiell)
