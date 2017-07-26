@@ -10,7 +10,7 @@ class ExternalReferences(BaseUserType):
 
     """External references nested in message."""
 
-    discussion_id = columns.Text()
+    ancestors_ids = columns.List(columns.Text())
     message_id = columns.Text()
     parent_id = columns.Text()
 

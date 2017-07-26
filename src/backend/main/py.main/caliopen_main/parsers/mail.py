@@ -15,7 +15,7 @@ from itertools import groupby
 from mailbox import Message
 from email.header import decode_header
 from datetime import datetime
-from email.utils import parsedate_tz, mktime_tz
+from email.utils import parsedate_tz, mktime_tz, getaddresses
 
 import zope.interface
 
@@ -232,11 +232,25 @@ class MailMessage(object):
 
     @property
     def external_references(self):
-        """Return mail references to be used as ExternalReferences."""
+        """Return mail references to be used as external references.
+
+         making use of RFC5322 headers :
+            message-id
+            in-reply-to
+            references
+        headers' strings are pruned to extract email addresses only.
+        """
         ext_id = self.mail.get('Message-Id')
         parent_id = self.mail.get('In-Reply-To')
-        return {'message_id': ext_id,
-                'parent_id': parent_id}
+        ref = self.mail.get_all("References")
+        ref_addr = getaddresses(ref) if ref else None
+        ref_ids = [address[1] for address in ref_addr] if ref_addr else []
+
+        return {
+            'message_id': clean_email_address(ext_id)[1] if ext_id else None,
+            'parent_id': clean_email_address(parent_id)[1] \
+                if parent_id else None,
+            'ancestors_ids': ref_ids}
 
     @property
     def date(self):
@@ -283,24 +297,34 @@ class MailMessage(object):
     @property
     def extra_parameters(self):
         """Mail message extra parameters."""
-        lists = []
-        for list_name in self.headers.get('List-ID', []):
-            lists.append(list_name)
-        return {'lists': lists}
+        lists = self.mail.get_all("List-ID")
+        lists_addr = getaddresses(lists) if lists else None
+        lists_ids = [address[1] for address in lists_addr] if lists_addr else []
+        return {'lists': lists_ids}
 
     def lookup_discussion_sequence(self, *args, **kwargs):
         """Return list of lookup type, value from a mail message."""
         seq = []
-        # first from parent
-        if self.external_references['parent_id']:
-            seq.append(('parent', self.external_references['parent_id']))
+
+        # first from thread logic :
+        # try to link message to external thread's root message-id
+        if len(self.external_references["ancestors_ids"]) > 0:
+            seq.append(("thread", self.external_references["ancestors_ids"][0]))
+        elif self.external_references["parent_id"]:
+            seq.append(("thread", self.external_references["parent_id"]))
+        elif self.external_references["message_id"]:
+            seq.append(("thread", self.external_references["message_id"]))
+
         # then list lookup
-        for listname in self.extra_parameters.get('lists', []):
-            seq.append(('list', listname))
-        # last try to lookup from sender address
-        for p in self.participants:
-            if p.type == 'from' and len(self.participants) == 2:
-                seq.append(('from', p.address))
+        for list_id in self.extra_parameters.get('lists', []):
+            seq.append(('list', list_id))
+
+        # TODO:
+        # # last try to lookup by participants
+        # for p in self.participants:
+        #     if p.type == 'from' and len(self.participants) == 2:
+        #         seq.append(('from', p.address))
+
         return seq
 
     # Others parameters specific for mail message

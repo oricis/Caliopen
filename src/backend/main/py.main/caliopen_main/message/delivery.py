@@ -8,7 +8,6 @@ import datetime
 from caliopen_storage.exception import NotFound
 from ..message.core import RawMessage
 from .qualifier import UserMessageQualifier
-from ..discussion.core import Discussion
 from ..objects.message import Message
 
 log = logging.getLogger(__name__)
@@ -31,11 +30,6 @@ class UserMessageDelivery(object):
 
         qualifier = UserMessageQualifier(self.user)
         message = qualifier.process_inbound(raw)
-        if not message.discussion_id:
-            discussion = Discussion.create_from_message(self.user, message)
-            log.debug('Created discussion {}'.format(discussion.discussion_id))
-            # xxx create lookup ?
-            message.discussion_id = discussion.discussion_id
 
         # store and index message
         obj = Message(self.user)

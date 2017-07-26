@@ -53,6 +53,7 @@ class NewInboundMessage(NewMessage):
     body_html = StringType()
     body_plain = StringType()
 
+
 class Message(NewMessage):
     """Existing message parameter."""
 

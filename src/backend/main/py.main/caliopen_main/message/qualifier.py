@@ -7,12 +7,12 @@ from .parameters import NewInboundMessage, Participant, Attachment
 from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
 from caliopen_main.user.core import Contact
-from caliopen_main.discussion.core import (DiscussionMessageLookup,
-                                           DiscussionRecipientLookup,
-                                           DiscussionExternalLookup)
+from caliopen_main.discussion.core import (DiscussionThreadLookup,
+                                           DiscussionListLookup)
 from caliopen_pi.features import InboundMailFeature
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.parsers import MailMessage
+from ..discussion.core import Discussion
 
 log = logging.getLogger(__name__)
 
@@ -29,11 +29,9 @@ class UserMessageQualifier(object):
     """
 
     _lookups = {
-        'parent': DiscussionMessageLookup,
-        'list': DiscussionRecipientLookup,
-        'recipient': DiscussionRecipientLookup,
-        'external_thread': DiscussionExternalLookup,
-        'from': DiscussionRecipientLookup,
+        'thread': DiscussionThreadLookup,
+        'list': DiscussionListLookup,
+        # 'recipient': DiscussionRecipientLookup,
     }
 
     def __init__(self, user):
@@ -56,6 +54,7 @@ class UserMessageQualifier(object):
             except NotFound:
                 log.debug('Lookup type %s with value %s failed' %
                           (prop[0], prop[1]))
+
         return None
 
     def create_lookups(self, sequence, message):
@@ -66,12 +65,9 @@ class UserMessageQualifier(object):
                 kls._pkey_name: prop[1],
                 'discussion_id': message.discussion_id
             }
-            if 'message_id' in kls._model_class._columns.keys():
-                params.update({'message_id': message.message_id})
             lookup = kls.create(self.user, **params)
             log.debug('Create lookup %r' % lookup)
-            if prop[0] == 'list':
-                return
+
 
     def get_participant(self, message, participant):
         """Try to find a related contact and return a Participant instance."""
@@ -141,6 +137,12 @@ class UserMessageQualifier(object):
 
         if lkp:
             new_message.discussion_id = lkp.discussion_id
+        else:
+            discussion = Discussion.create_from_message(self.user, message)
+            log.debug('Created discussion {}'.format(discussion.discussion_id))
+            new_message.discussion_id = discussion.discussion_id
+            self.create_lookups(lookup_sequence, new_message)
+
         try:
             new_message.validate()
         except Exception as exc:

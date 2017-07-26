@@ -19,7 +19,7 @@ type Message struct {
 	Body_plain          string             `cql:"body_plain"               json:"body_plain"        `
 	Date                time.Time          `cql:"date"                     json:"date"                                         formatter:"RFC3339Nano"`
 	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete"                                  formatter:"RFC3339Nano"`
-	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"RFC3339Nano"`
+	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"TimeUTCmicro"`
 	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id"                                formatter:"rfc4122"`
 	External_references ExternalReferences `cql:"external_references"      json:"external_references"`
 	Identities          []Identity         `cql:"identities"               json:"identities"       `
@@ -112,6 +112,8 @@ fieldsLoop:
 					enc.Encode(field_value)
 				case "RFC3339Nano":
 					jsonBuf.WriteString("\"" + field_value.(time.Time).Format(time.RFC3339Nano) + "\"")
+				case "TimeUTCmicro":
+					jsonBuf.WriteString("\"" + field_value.(time.Time).Format(TimeUTCmicro) + "\"")
 				default:
 					enc.Encode(field_value)
 				}
@@ -174,10 +176,9 @@ func (msg *Message) UnmarshalJSON(b []byte) error {
 	}
 	if ex_ref, ok := input["external_references"].(map[string]interface{}); ok {
 		msg.External_references = ExternalReferences{}
-		msg.External_references.Discussion_id, _ = ex_ref["discussion_id"].(string)
+		msg.External_references.Ancestors_ids, _ = ex_ref["ancestors_ids"].([]string)
 		msg.External_references.Message_id, _ = ex_ref["message_id"].(string)
 		msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
-		msg.External_references.References, _ = ex_ref["references"].([]string)
 	}
 	if _, ok := input["identities"]; ok {
 		for _, identity := range input["identities"].([]interface{}) {
@@ -265,10 +266,9 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) {
 	}
 	if ex_ref, ok := input["external_references"].(map[string]interface{}); ok {
 		msg.External_references = ExternalReferences{}
-		msg.External_references.Discussion_id, _ = ex_ref["discussion_id"].(string)
+		msg.External_references.Ancestors_ids, _ = ex_ref["ancestors_ids"].([]string)
 		msg.External_references.Message_id, _ = ex_ref["message_id"].(string)
 		msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
-		msg.External_references.References, _ = ex_ref["references"].([]string)
 	}
 	if _, ok := input["identities"]; ok {
 		for _, identity := range input["identities"].([]map[string]interface{}) {
@@ -298,9 +298,9 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) {
 			if _, ok := participant["contact_ids"]; ok {
 				p.Contact_ids = []UUID{}
 				for _, id := range participant["contact_ids"].([]gocql.UUID) {
-					var uuid UUID
-					uuid.UnmarshalBinary(id.Bytes())
-					p.Contact_ids = append(p.Contact_ids, uuid)
+					var contact_uuid UUID
+					contact_uuid.UnmarshalBinary(id.Bytes())
+					p.Contact_ids = append(p.Contact_ids, contact_uuid)
 				}
 			}
 			msg.Participants = append(msg.Participants, p)
