@@ -1,0 +1,20 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-settings-identities {
+  @include flex-grid-row($size: expand);
+  margin-top: $co-margin;
+
+  &__menu {
+    @include flex-grid-column(12);
+  }
+
+  &__panel {
+    @include flex-grid-size(12);
+  }
+
+  @include breakpoint(medium) {
+    &__menu { @include flex-grid-size(shrink); }
+    &__panel { @include flex-grid-size; }
+  }
+}

@@ -1,0 +1,33 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-account-privacy {
+  @include flex-grid-row($size: expand);
+  margin-top: $co-margin;
+
+  &__pi {
+    @include flex-grid-column(12);
+  }
+
+  &__info {
+    @include flex-grid-column(12);
+    margin-top: $co-margin;
+  }
+
+  &__tips {
+    list-style: inside disc;
+  }
+
+  &__tip {
+    padding: $co-component__spacing 0;
+  }
+
+  @include breakpoint(medium) {
+    &__pi { @include flex-grid-size(4); }
+
+    &__info {
+      @include flex-grid-column(8);
+      margin-top: 0;
+    }
+  }
+}

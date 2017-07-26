@@ -60,6 +60,7 @@ class AccountOpenPGPKeyForm extends Component {
     className: PropTypes.string,
     children: PropTypes.node,
     __: PropTypes.func.isRequired,
+    cancel: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -81,12 +82,6 @@ class AccountOpenPGPKeyForm extends Component {
       importForm: {},
     };
 
-    this.handleSwitchFormType = this.handleSwitchFormType.bind(this);
-    this.handleToggleHasPassprase = this.handleToggleHasPassprase.bind(this);
-    this.handleGenerateChanges = this.handleGenerateChanges.bind(this);
-    this.handleGenerateSubmit = this.handleGenerateSubmit.bind(this);
-    this.handleImportChanges = this.handleImportChanges.bind(this);
-    this.handleImportSubmit = this.handleImportSubmit.bind(this);
     this.initTranslations();
   }
 
@@ -117,19 +112,19 @@ class AccountOpenPGPKeyForm extends Component {
     };
   }
 
-  handleSwitchFormType(event) {
+  handleSwitchFormType = (event) => {
     this.setState({
       formType: event.target.name,
     });
   }
 
-  handleToggleHasPassprase() {
+  handleToggleHasPassprase = () => {
     this.setState(prevState => ({
       hasPassphrase: !prevState.hasPassphrase,
     }));
   }
 
-  handleGenerateChanges(event) {
+  handleGenerateChanges = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
       generateForm: {
@@ -139,12 +134,12 @@ class AccountOpenPGPKeyForm extends Component {
     }));
   }
 
-  handleGenerateSubmit(event) {
+  handleGenerateSubmit = (event) => {
     event.preventDefault();
     this.props.onGenerate(this.state.generateForm);
   }
 
-  handleImportChanges(event) {
+  handleImportChanges = (event) => {
     const { name, value } = event.target;
 
     this.setState(prevState => ({
@@ -155,17 +150,21 @@ class AccountOpenPGPKeyForm extends Component {
     }));
   }
 
-  handleImportSubmit(event) {
+  handleImportSubmit = (event) => {
     event.preventDefault();
     this.props.onImport(this.state.importForm);
+  }
+
+  handleCancelForm = () => {
+    this.props.cancel();
   }
 
   render() {
     // XXX: note on importForm, errors comes from props and form items from this.state since form is
     // not real time saved in redux store
     const { __, isLoading, className, importForm, children } = this.props;
-    const generateHollowProp = this.state.formType === FORM_TYPE_GENERATE ? { display: 'hollow' } : {};
-    const rawHollowProp = this.state.formType === FORM_TYPE_RAW ? { display: 'hollow' } : {};
+    const generateHollowProp = this.state.formType === FORM_TYPE_GENERATE ? { shape: 'hollow' } : {};
+    const rawHollowProp = this.state.formType === FORM_TYPE_RAW ? { shape: 'hollow' } : {};
 
     return (
       <div className={classnames('m-account-openpgp-form', className)}>
@@ -235,6 +234,12 @@ class AccountOpenPGPKeyForm extends Component {
                 <Spinner isLoading={isLoading} />
                 {' '}
                 {__('account.openpgp.action.create')}
+              </Button>
+              <Button
+                onClick={this.handleCancelForm}
+                shape="hollow"
+              >
+                {__('cancel')}
               </Button>
             </div>
           </form>
