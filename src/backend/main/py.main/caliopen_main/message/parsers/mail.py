@@ -16,7 +16,6 @@ from mailbox import Message
 from email.header import decode_header
 import datetime
 import pytz
-from email.utils import parsedate_tz, mktime_tz
 from datetime import datetime
 from email.utils import parsedate_tz, mktime_tz, getaddresses
 
@@ -257,7 +256,7 @@ class MailMessage(object):
 
     @property
     def date(self):
-        """Get date from a mail message."""
+        """Get UTC date from a mail message."""
         mail_date = self.mail.get('Date')
         if mail_date:
             tmp_date = parsedate_tz(mail_date)
