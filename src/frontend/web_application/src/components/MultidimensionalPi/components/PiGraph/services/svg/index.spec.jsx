@@ -4,12 +4,6 @@ describe('comp PiGraph > services > svg', () => {
   describe('calcGridCoordinates', () => {
     it('returns normal values', () => {
       const result = calcGridCoordinates({
-        pi: {
-          foo: 80,
-          bar: 50,
-          oof: 10,
-          version: 1,
-        },
         axeLength: 100,
       });
 
@@ -23,9 +17,9 @@ describe('comp PiGraph > services > svg', () => {
           calcYpoint(100, -240, 100),
         ],
         axeCoordinates: [
-          { axeName: 'foo', x: calcXpoint(100, 0, 100), y: calcYpoint(100, 0, 100) },
-          { axeName: 'bar', x: calcXpoint(100, -120, 100), y: calcYpoint(100, -120, 100) },
-          { axeName: 'oof', x: calcXpoint(100, -240, 100), y: calcYpoint(100, -240, 100) },
+          { axeName: 'comportment', x: calcXpoint(100, 0, 100), y: calcYpoint(100, 0, 100) },
+          { axeName: 'technic', x: calcXpoint(100, -120, 100), y: calcYpoint(100, -120, 100) },
+          { axeName: 'context', x: calcXpoint(100, -240, 100), y: calcYpoint(100, -240, 100) },
         ],
       };
 
@@ -37,9 +31,9 @@ describe('comp PiGraph > services > svg', () => {
     it('returns normal values', () => {
       const result = calcPolygonPoints({
         pi: {
-          foo: 80,
-          bar: 50,
-          oof: 10,
+          comportment: 80,
+          technic: 50,
+          context: 10,
           version: 1,
         },
         axeLength: 100,

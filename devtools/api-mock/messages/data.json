@@ -44,6 +44,7 @@
 		"type": "system"
 	}],
 	"type": "email",
+	"pi": { "technic": 50, "context": 45, "comportment": 25, "version": 1 },
 	"user_id": ""
 }, {
 	"attachments": [],
@@ -90,6 +91,7 @@
 		"type": "system"
 	}],
 	"type": "email",
+	"pi": { "technic": 30, "context": 25, "comportment": 25, "version": 1 },
 	"user_id": ""
 }, {
 	"attachments": [],
@@ -130,5 +132,6 @@
 		"name": "lolilol",
 		"type": "user"
 	}],
-	"type": "email"
+	"type": "email",
+	"pi": { "technic": 40, "context": 15, "comportment": 45, "version": 1 }
 }]

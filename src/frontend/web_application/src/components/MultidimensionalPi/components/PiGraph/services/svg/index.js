@@ -1,4 +1,4 @@
-import { getPiProps, getAngles } from '../../../../services/pi';
+import { PI_PROPERTIES, getAngles } from '../../../../services/pi';
 
 export function calcXpoint(level, tilt, axeLength) {
   return Math.round(axeLength - (level * Math.sin((tilt * Math.PI) / 180)));
@@ -8,13 +8,13 @@ export function calcYpoint(level, tilt, axeLength) {
   return Math.round(axeLength - (level * Math.cos((tilt * Math.PI) / 180)));
 }
 
-export const calcGridCoordinates = ({ pi, axeLength }) => {
-  const angle = getAngles(pi);
+export const calcGridCoordinates = ({ axeLength }) => {
+  const angle = getAngles();
   const axeCoordinates = [];
   const outlinePoints = [];
   let tilt = 0;
 
-  getPiProps(pi).forEach((axeName) => {
+  PI_PROPERTIES.forEach((axeName) => {
     const pointX = calcXpoint(axeLength, tilt, axeLength);
     const pointY = calcYpoint(axeLength, tilt, axeLength);
     outlinePoints.push(pointX, pointY);
@@ -26,10 +26,10 @@ export const calcGridCoordinates = ({ pi, axeLength }) => {
 };
 
 export const calcPolygonPoints = ({ pi, axeLength }) => {
-  const angle = getAngles(pi);
+  const angle = getAngles();
   const polygonPoints = [];
   let tilt = 0;
-  getPiProps(pi).forEach((name) => {
+  PI_PROPERTIES.forEach((name) => {
     const piLevel = pi[name];
 
     polygonPoints.push(

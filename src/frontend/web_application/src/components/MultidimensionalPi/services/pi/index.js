@@ -1,7 +1,7 @@
-export const getPiProps = pi => Object.keys(pi).filter(key => key !== 'version');
+export const PI_PROPERTIES = ['comportment', 'technic', 'context'];
 
-export const getAngles = (pi) => {
-  const piLength = getPiProps(pi).length;
+export const getAngles = () => {
+  const piLength = PI_PROPERTIES.length;
   if (piLength === 0) {
     return 0;
   }
@@ -10,7 +10,7 @@ export const getAngles = (pi) => {
 };
 
 export const getAveragePI = (pi) => {
-  const piProps = getPiProps(pi);
+  const piProps = PI_PROPERTIES;
 
   return (piProps.reduce((acc, name) => acc + pi[name], 0)) / piProps.length;
 };
