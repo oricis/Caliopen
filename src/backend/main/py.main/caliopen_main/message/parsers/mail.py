@@ -14,6 +14,9 @@ import base64
 from itertools import groupby
 from mailbox import Message
 from email.header import decode_header
+import datetime
+import pytz
+from email.utils import parsedate_tz, mktime_tz
 from datetime import datetime
 from email.utils import parsedate_tz, mktime_tz, getaddresses
 
@@ -258,9 +261,9 @@ class MailMessage(object):
         mail_date = self.mail.get('Date')
         if mail_date:
             tmp_date = parsedate_tz(mail_date)
-            return datetime.fromtimestamp(mktime_tz(tmp_date))
+            return datetime.datetime.fromtimestamp(mktime_tz(tmp_date))
         log.debug('No date on mail using now (UTC)')
-        return datetime.utcnow()
+        return datetime.datetime.now(tz=pytz.utc)
 
     @property
     def participants(self):

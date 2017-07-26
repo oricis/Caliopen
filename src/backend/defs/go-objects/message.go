@@ -171,10 +171,10 @@ func (msg *Message) UnmarshalJSON(b []byte) error {
 		msg.Date, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
 	if date, ok := input["date_delete"]; ok {
-		msg.Date_delete, _ = time.Parse(TimeUTCmicro, date.(string))
+		msg.Date_delete, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
 	if date, ok := input["date_insert"]; ok {
-		msg.Date_insert, _ = time.Parse(TimeUTCmicro, date.(string)) //default datetime string format serialized by ES. TODO: make ES serialize a RFC3339 string.
+		msg.Date_insert, _ = time.Parse(time.RFC3339Nano, date.(string)) //default datetime string format serialized by ES. TODO: make ES serialize a RFC3339 string.
 	}
 	if discussion_id, ok := input["discussion_id"].(string); ok {
 		if id, err := uuid.FromString(discussion_id); err == nil {
