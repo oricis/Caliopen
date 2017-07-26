@@ -29,6 +29,27 @@ export const withDropdownControl = (WrappedComponent) => {
 };
 
 class Dropdown extends Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    position: PropTypes.oneOf(['bottom', 'left']),
+    closeOnClick: PropTypes.bool,
+    closeOnClickExceptSelectors: PropTypes.arrayOf(PropTypes.string),
+    show: PropTypes.bool,
+    children: PropTypes.node,
+    onToggle: PropTypes.func,
+  };
+
+  static defaultProps = {
+    className: null,
+    position: null,
+    closeOnClick: false,
+    closeOnClickExceptSelectors: null,
+    show: false,
+    children: undefined,
+    onToggle: null,
+  };
+
   componentDidMount() {
     this.$dropdown = jQuery(`#${this.props.id}`);
     // eslint-disable-next-line no-new
@@ -99,7 +120,16 @@ class Dropdown extends Component {
   }
 
   render() {
-    const { id, closeOnClick, className, position, onToggle, ...props } = this.props;
+    const {
+      id,
+      closeOnClick,
+      className,
+      position,
+      onToggle,
+      closeOnClickExceptSelectors, // declare here because can't be passed to <div>
+      show, // declare here because can't be passed to <div>
+      ...props
+    } = this.props;
     this.onToggle = onToggle;
 
     const dropdownProps = {
@@ -112,26 +142,5 @@ class Dropdown extends Component {
     return <div {...dropdownProps} />;
   }
 }
-
-Dropdown.propTypes = {
-  id: PropTypes.string.isRequired,
-  className: PropTypes.string,
-  position: PropTypes.oneOf(['bottom', 'left']),
-  closeOnClick: PropTypes.bool,
-  closeOnClickExceptSelectors: PropTypes.arrayOf(PropTypes.string),
-  show: PropTypes.bool,
-  children: PropTypes.node,
-  onToggle: PropTypes.func,
-};
-
-Dropdown.defaultProps = {
-  className: null,
-  position: null,
-  closeOnClick: false,
-  closeOnClickExceptSelectors: null,
-  show: false,
-  children: undefined,
-  onToggle: null,
-};
 
 export default Dropdown;
