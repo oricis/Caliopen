@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Button';
-import Icon from '../Icon';
 import { FormGrid } from '../form';
 import TagItem from './components/TagItem';
 import TagSearch from './components/TagSearch';
@@ -24,18 +23,11 @@ class TagsForm extends Component {
     onSearchSubmit: null,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchTerms: '',
-    };
+  state = {
+    searchTerms: '',
+  };
 
-    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-    this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.handleCreate = this.handleCreate.bind(this);
-  }
-
-  handleSearchChange({ terms }) {
+  handleSearchChange = ({ terms }) => {
     this.setState({
       searchTerms: terms,
     });
@@ -45,14 +37,14 @@ class TagsForm extends Component {
     }
   }
 
-  handleSearchSubmit(ev) {
+  handleSearchSubmit = (ev) => {
     ev.preventDefault();
     if (this.props.onSearchSubmit) {
       this.props.onSearchSubmit(ev);
     }
   }
 
-  handleCreate(ev) {
+  handleCreate = (ev) => {
     ev.preventDefault();
 
     if (this.state.searchTerms.length > 0) {
@@ -81,10 +73,9 @@ class TagsForm extends Component {
           <Button
             className="m-tags-form__action"
             onClick={this.handleCreate}
-            plain
+            shape="plain"
+            icon="plus"
           >
-            <Icon type="plus" spaced />
-            {' '}
             {__('tags.action.create')}
           </Button>
         </FormGrid>

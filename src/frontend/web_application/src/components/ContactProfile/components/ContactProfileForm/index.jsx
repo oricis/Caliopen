@@ -30,16 +30,7 @@ class ContactProfileForm extends Component {
   };
 
   state = {
-    contact: {
-      title: '',
-      name_prefix: '',
-      given_name: '',
-      family_name: '',
-      name_suffix: '',
-      infos: {
-        birthday: '',
-      },
-    },
+    contact: {},
   };
 
   componentWillMount() {
@@ -51,10 +42,11 @@ class ContactProfileForm extends Component {
   }
 
   handleChanges = (event) => {
+    const { name, value } = event.target;
     this.setState(prevState => ({
       contact: {
         ...prevState.contact,
-        [event.target.name]: event.target.value,
+        [name]: value,
       },
     }));
   }

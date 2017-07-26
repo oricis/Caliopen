@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import Button from '../../../Button';
-import Icon from '../../../Icon';
 import { TextFieldGroup } from '../../../form';
 
 import './style.scss';
@@ -16,17 +15,11 @@ class TagSearch extends Component {
     onChange: null,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      terms: '',
-    };
+  state = {
+    terms: '',
+  };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(ev) {
+  handleChange = (ev) => {
     const terms = ev.target.value;
     this.setState({ terms });
     if (this.props.onChange) {
@@ -34,7 +27,7 @@ class TagSearch extends Component {
     }
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
     if (this.state.terms.length === 0) {
       return;
     }
@@ -63,7 +56,7 @@ class TagSearch extends Component {
           onChange={this.handleChange}
           showLabelforSr
         />
-        <Button inline onClick={this.handleSubmit}><Icon type="search" /></Button>
+        <Button display="inline" icon="search" onClick={this.handleSubmit} />
       </div>
     );
   }
