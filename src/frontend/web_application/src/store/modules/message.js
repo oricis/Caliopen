@@ -29,7 +29,7 @@ export function requestMessages(parameters = {}) {
     type: REQUEST_MESSAGES,
     payload: {
       request: {
-        url: '/v1/messages',
+        url: '/v2/messages',
         params,
       },
     },
@@ -68,7 +68,7 @@ export function requestMessage({ messageId }) {
     type: REQUEST_MESSAGE,
     payload: {
       request: {
-        url: `/v1/messages/${messageId}`,
+        url: `/v2/messages/${messageId}`,
       },
     },
   };

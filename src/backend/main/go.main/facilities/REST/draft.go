@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	log "github.com/Sirupsen/logrus"
 	"time"
 )
@@ -36,5 +37,10 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		log.Warn("[RESTfacility]: SendDraft error")
 		return nil, errors.New(reply.Response)
 	}
-	return rest.store.GetMessage(user_id, msg_id)
+	msg, err = rest.store.GetMessage(user_id, msg_id)
+	if err != nil {
+		return nil, err
+	}
+	helpers.SanitizeMessageBodies(msg)
+	return msg, err
 }

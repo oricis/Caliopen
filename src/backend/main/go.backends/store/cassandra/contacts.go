@@ -18,7 +18,7 @@ func (cb *CassandraBackend) GetContact(user_id, contact_id string) (contact *Con
 	if err != nil {
 		return nil, err
 	}
-	contact.UnmarshalMap(m)
+	contact.UnmarshalCQLMap(m)
 	return contact, err
 }
 

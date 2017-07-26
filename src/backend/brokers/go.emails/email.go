@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"fmt"
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/jhillyerd/go.enmime"
@@ -26,12 +27,12 @@ import (
 
 func newAddressesFields() (af map[string][]string) {
 	af = map[string][]string{
-		"From":     []string{},
-		"Sender":   []string{},
-		"Reply-To": []string{},
-		"To":       []string{},
-		"Cc":       []string{},
-		"Bcc":      []string{},
+		"From":     {},
+		"Sender":   {},
+		"Reply-To": {},
+		"To":       {},
+		"Cc":       {},
+		"Bcc":      {},
 	}
 	return
 }
@@ -94,8 +95,13 @@ func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err 
 
 	//TODO: In-Reply-To header
 	m.SetHeader("Subject", msg.Subject)
-	m.AddAlternative("text/html", msg.Body_html)
-	m.AddAlternative("text/plain", msg.Body_plain)
+	helpers.SanitizeMessageBodies(msg)
+	if msg.Body_html != "" {
+		m.AddAlternative("text/html", msg.Body_html)
+	}
+	if msg.Body_plain != "" {
+		m.AddAlternative("text/plain", msg.Body_plain)
+	}
 
 	for _, attachment := range msg.Attachments {
 		//check if file is available in object storage
@@ -238,7 +244,7 @@ func (b *EmailBroker) UnmarshalEmail(em *obj.EmailMessage, user_id obj.UUID) (ms
 		User_id:          user_id,
 	}
 
-	for field, _ := range newAddressesFields() {
+	for field := range newAddressesFields() {
 		p, err := b.unmarshalParticipants(parsed_mail.Header, field, user_id)
 		if err == nil {
 			msg.Participants = append(msg.Participants, p...)

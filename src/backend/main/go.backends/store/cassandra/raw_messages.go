@@ -53,7 +53,7 @@ func (cb *CassandraBackend) GetRawMessage(raw_message_id string) (message obj.Ra
 	if err != nil {
 		return obj.RawMessage{}, err
 	}
-	message.UnmarshalMap(m)
+	message.UnmarshalCQLMap(m)
 
 	// check if raw_data is filled or if we need to get it from object store
 	if message.URI != "" && len(message.Raw_data) == 0 {

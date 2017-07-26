@@ -18,15 +18,19 @@ import (
 type (
 	RESTservices interface {
 		UsernameIsAvailable(string) (bool, error)
-		SendDraft(user_id, msg_id string) (msg *Message, err error)
 		LocalsIdentities(user_id string) (identities []LocalIdentity, err error)
+		SuggestRecipients(user_id, query_string string) (suggests []RecipientSuggestion, err error)
+		ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
+		//messages
+		GetMessagesList(filter MessagesListFilter) (messages []*Message, err error)
+		GetMessage(user_id, message_id string) (message *Message, err error)
+		SendDraft(user_id, msg_id string) (msg *Message, err error)
 		SetMessageUnread(user_id, message_id string, status bool) error
+		GetRawMessage(raw_message_id string) (message []byte, err error)
+		//attachments
 		AddAttachment(user_id, message_id, filename, content_type string, file io.Reader) (attachmentURL string, err error)
 		DeleteAttachment(user_id, message_id string, attchmtIndex int) error
 		OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error)
-		GetRawMessage(raw_message_id string) (message []byte, err error)
-		SuggestRecipients(user_id, query_string string) (suggests []RecipientSuggestion, err error)
-		ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 	}
 	RESTfacility struct {
 		store              backends.APIStorage

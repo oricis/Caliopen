@@ -32,7 +32,14 @@ func Actions(ctx *gin.Context) {
 				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 				ctx.Abort()
 			} else {
-				ctx.JSON(http.StatusOK, updated_msg)
+				msg_json, err := updated_msg.MarshalFrontEnd()
+				if err != nil {
+					e := swgErr.New(http.StatusFailedDependency, err.Error())
+					http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+					ctx.Abort()
+				} else {
+					ctx.Data(http.StatusOK, "application/json; charset=utf-8", msg_json)
+				}
 			}
 		case "set_read":
 			err := caliopen.Facilities.RESTfacility.SetMessageUnread(user_id, msg_id, false)

@@ -10,7 +10,7 @@ func TestElasticSearchBackend_RecipientsSuggest(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	user_id := "f34528ca-b172-4df3-b27f-32cb18e1ad1f"
+	user_id := "8430b7e1-018e-482e-a06b-eb5e01a9ebcf"
 	query_strings := []string{
 		"clem",
 		"laurent",

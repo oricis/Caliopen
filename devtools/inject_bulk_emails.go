@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	log "github.com/Sirupsen/logrus"
+	"gopkg.in/gomail.v2"
 	"net/smtp"
 	"sync"
 	"time"
-	"gopkg.in/gomail.v2"
 )
 
 const (

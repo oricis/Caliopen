@@ -3,7 +3,7 @@ import isEqual from 'lodash.isequal';
 import { push } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
 import { EDIT_DRAFT, EDIT_SIMPLE_DRAFT, REQUEST_DRAFT, REQUEST_SIMPLE_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestDraftSuccess, requestSimpleDraftSuccess, draftCreated, clearDraft, clearSimpleDraft } from '../modules/draft-message';
-import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, requestMessages, createMessage, updateMessage, syncMessage, postActions } from '../modules/message';
+import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, requestMessages, requestMessage, createMessage, updateMessage, syncMessage, postActions } from '../modules/message';
 import { requestLocalIdentities } from '../modules/local-identity';
 import { removeTab } from '../modules/tab';
 import fetchLocation from '../../services/api-location';
@@ -36,9 +36,26 @@ const normalizeDiscussionDraft = ({ draft, user, discussion }) => {
   };
 };
 
-const manageCreateOrUpdateResult = async ({ result: action, store }) => {
-  if (action.type === CREATE_MESSAGE_SUCCESS) {
-    const { location } = action.payload.data;
+const createDraft = async ({ draft, discussionId, store }) => {
+  let normalizedDraft = draft;
+
+  if (discussionId) {
+    const {
+      user: { user },
+      discussion: {
+        discussionsById: {
+          [discussionId]: discussion,
+        },
+      },
+    } = store.getState();
+
+    normalizedDraft = normalizeDiscussionDraft({ draft, user, discussion });
+  }
+
+  const resultAction = await store.dispatch(createMessage({ message: normalizedDraft }));
+
+  if (resultAction.type === CREATE_MESSAGE_SUCCESS) {
+    const { location } = resultAction.payload.data;
     const { data: message } = await fetchLocation(location);
     await store.dispatch(draftCreated({ draft: message }));
     await store.dispatch(syncMessage({ message }));
@@ -46,15 +63,19 @@ const manageCreateOrUpdateResult = async ({ result: action, store }) => {
     return message;
   }
 
-  if (action.type === UPDATE_MESSAGE_SUCCESS) {
-    const location = action.meta.previousAction.payload.request.url;
-    const { data: message } = await fetchLocation(location);
-    await store.dispatch(syncMessage({ message }));
+  throw new Error(`Unexpected type ${resultAction.type} in createDraft`);
+};
 
-    return message;
+const updateDraft = async ({ draft, original, store }) => {
+  const resultAction = await store.dispatch(updateMessage({
+    message: draft, original,
+  }));
+
+  if (resultAction.type === UPDATE_MESSAGE_SUCCESS) {
+    return store.dispatch(requestMessage({ messageId: draft.message_id }));
   }
 
-  if (action.type === UPDATE_MESSAGE_FAIL) {
+  if (resultAction.type === UPDATE_MESSAGE_FAIL) {
     const { translate: __ } = getTranslator();
     const notification = {
       message: __('message.feedbak.update_fail'), // Unable to update, may be the message has been modified somewhere else
@@ -65,35 +86,15 @@ const manageCreateOrUpdateResult = async ({ result: action, store }) => {
     store.dispatch(createNotification(notification));
   }
 
-  throw new Error(`Uknkown type ${action.type} in manageCreateOrUpdateResult`);
+  throw new Error(`Uknkown type ${resultAction.type} in updateDraft`);
 };
 
 const createOrUpdateDraft = async ({ draft, discussionId, store, original }) => {
-  let result;
   if (draft.message_id) {
-    result = await store.dispatch(updateMessage({
-      message: draft, original,
-    }));
-  } else {
-    let message = draft;
-
-    if (discussionId) {
-      const {
-        user: { user },
-        discussion: {
-          discussionsById: {
-            [discussionId]: discussion,
-          },
-        },
-      } = store.getState();
-
-      message = normalizeDiscussionDraft({ draft, user, discussion });
-    }
-
-    result = await store.dispatch(createMessage({ message }));
+    return updateDraft({ draft, original, store });
   }
 
-  return manageCreateOrUpdateResult({ result, store });
+  return createDraft({ draft, discussionId, store });
 };
 
 let throttled;

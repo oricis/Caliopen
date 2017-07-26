@@ -18,7 +18,7 @@ func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *obj.Message
 	if err != nil {
 		return nil, err
 	}
-	msg.UnmarshalMap(m)
+	msg.UnmarshalCQLMap(m)
 	return msg, err
 
 }

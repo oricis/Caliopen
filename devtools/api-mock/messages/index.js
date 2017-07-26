@@ -19,7 +19,7 @@ const selectors = {
   ),
   lastLocation: () => createSelector(
     selectors.last(),
-    message => ({ location: `/api/v1/messages/${message.message_id}` })
+    message => ({ location: `/api/v2/messages/${message.message_id}` })
   ),
   byId: ({ message_id }) => createSelector(
     selectors.all(),
@@ -85,13 +85,13 @@ const reducer = {
 };
 
 const routes = {
-  'GET /v1/messages/': {
+  'GET /v2/messages/': {
     action: actions.get,
     selector: selectors.byDiscussionId,
     status: 200,
     middlewares: [createCollectionMiddleware('messages')],
   },
-  'GET /v1/messages/:message_id': {
+  'GET /v2/messages/:message_id': {
     action: actions.get,
     selector: selectors.byId,
     status: 200,
