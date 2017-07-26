@@ -174,9 +174,7 @@ class Message extends Component {
             {subject &&
               <div className="m-message__body__subject">{subject}</div>
             }
-            <div className={bodyClassName}>
-              {this.state.body}
-            </div>
+            <div className={bodyClassName} dangerouslySetInnerHTML={{ __html: this.state.body }} />
           </div>
 
           {this.state.isTooLong &&
