@@ -20,7 +20,7 @@ type Message struct {
 	Body_plain          string             `cql:"body_plain"               json:"body_plain"        `
 	Date                time.Time          `cql:"date"                     json:"date"                                         formatter:"RFC3339Nano"`
 	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete"                                  formatter:"RFC3339Nano"`
-	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"TimeUTCmicro"`
+	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"RFC3339Nano"`
 	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id"                                formatter:"rfc4122"`
 	External_references ExternalReferences `cql:"external_references"      json:"external_references"`
 	Identities          []Identity         `cql:"identities"               json:"identities"       `
@@ -174,7 +174,7 @@ func (msg *Message) UnmarshalJSON(b []byte) error {
 		msg.Date_delete, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
 	if date, ok := input["date_insert"]; ok {
-		msg.Date_insert, _ = time.Parse(time.RFC3339Nano, date.(string)) //default datetime string format serialized by ES. TODO: make ES serialize a RFC3339 string.
+		msg.Date_insert, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
 	if discussion_id, ok := input["discussion_id"].(string); ok {
 		if id, err := uuid.FromString(discussion_id); err == nil {

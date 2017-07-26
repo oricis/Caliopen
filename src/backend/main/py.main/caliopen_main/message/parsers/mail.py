@@ -16,7 +16,6 @@ from mailbox import Message
 from email.header import decode_header
 import datetime
 import pytz
-from datetime import datetime
 from email.utils import parsedate_tz, mktime_tz, getaddresses
 
 import zope.interface
