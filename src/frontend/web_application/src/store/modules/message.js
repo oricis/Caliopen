@@ -10,7 +10,8 @@ export const REQUEST_MESSAGE_SUCCESS = 'co/message/REQUEST_MESSAGE_SUCCESS';
 export const UPDATE_MESSAGE = 'co/message/UPDATE_MESSAGE';
 export const UPDATE_MESSAGE_SUCCESS = 'co/message/UPDATE_MESSAGE_SUCCESS';
 export const UPDATE_MESSAGE_FAIL = 'co/message/UPDATE_MESSAGE_FAIL';
-export const REMOVE_MESSAGE = 'co/message/REMOVE_MESSAGE';
+export const DELETE_MESSAGE = 'co/message/DELETE_MESSAGE';
+export const DELETE_MESSAGE_SUCCESS = 'co/message/DELETE_MESSAGE_SUCCESS';
 export const CREATE_MESSAGE = 'co/message/CREATE_MESSAGE';
 export const CREATE_MESSAGE_SUCCESS = 'co/message/CREATE_MESSAGE_SUCCESS';
 export const SYNC_MESSAGE = 'co/message/SYNC_MESSAGE';
@@ -84,6 +85,18 @@ export function updateMessage({ message, original }) {
         method: 'patch',
         url: `/v1/messages/${message.message_id}`,
         data,
+      },
+    },
+  };
+}
+
+export function deleteMessage({ message }) {
+  return {
+    type: DELETE_MESSAGE,
+    payload: {
+      request: {
+        method: 'delete',
+        url: `/v1/messages/${message.message_id}`,
       },
     },
   };

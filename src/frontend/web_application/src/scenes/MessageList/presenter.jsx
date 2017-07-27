@@ -10,17 +10,16 @@ class MessageList extends Component {
     discussionId: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     setMessageRead: PropTypes.func.isRequired,
+    deleteMessage: PropTypes.func.isRequired,
+    removeTab: PropTypes.func.isRequired,
+    currentTab: PropTypes.shape({}),
   };
 
   static defaultProps = {
     messages: [],
     discussion: {},
+    currentTab: undefined,
   };
-
-  constructor(props) {
-    super(props);
-    this.handleMessageViewed = this.handleMessageViewed.bind(this);
-  }
 
   componentDidMount() {
     const { discussionId } = this.props;
@@ -28,9 +27,29 @@ class MessageList extends Component {
     this.props.requestDiscussion({ discussionId });
   }
 
-  handleMessageViewed({ message }) {
+  handleViewMessage = ({ message }) => {
     this.props.setMessageRead({ message, isRead: true });
-  }
+  };
+
+  handleDeleteMessage = ({ message }) => {
+    const { deleteMessage, requestMessages, removeTab, discussionId, currentTab } = this.props;
+    deleteMessage({ message })
+      .then(() => requestMessages({ discussionId }))
+      .then(
+        ({ payload: { data } }) => data.messages.length === 0 && removeTab(currentTab)
+      );
+  };
+
+  handleDelete = () => {
+    const {
+      messages, deleteMessage, requestMessages, removeTab, discussionId, currentTab,
+    } = this.props;
+    Promise.all(messages.map(message => deleteMessage({ message })))
+      .then(() => requestMessages({ discussionId }))
+      .then(
+        ({ payload: { data } }) => data.messages.length === 0 && removeTab(currentTab)
+      );
+  };
 
   render() {
     const { messages, discussionId } = this.props;
@@ -38,11 +57,12 @@ class MessageList extends Component {
     return (
       <MessageListBase
         messages={messages}
-        onMessageView={this.handleMessageViewed}
+        onMessageView={this.handleViewMessage}
         replyForm={<ReplyForm discussionId={discussionId} />}
         onReply={() => {}}
         onForward={() => {}}
-        onDelete={() => {}}
+        onDelete={this.handleDelete}
+        onMessageDelete={this.handleDeleteMessage}
       />
     );
   }
