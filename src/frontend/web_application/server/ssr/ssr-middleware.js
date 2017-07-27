@@ -9,17 +9,23 @@ const template = require('../../dist/server/template.html');
  * base html template
  */
 function getMarkup({ store, context, location }) {
-  const markup = ReactDOMServer.renderToString(
-    React.createElement(Bootstrap, {
-      context, location, store,
-    }));
+  try {
+    const markup = ReactDOMServer.renderToString(
+      React.createElement(Bootstrap, {
+        context, location, store,
+      }));
 
-  const initialState = store.getState();
+    const initialState = store.getState();
 
-  return [
-    { key: '</head>', value: `<script>window.__STORE__ = ${JSON.stringify(initialState)};</script></head>` },
-    { key: '%MARKUP%', value: markup },
-  ].reduce((str, current) => str.replace(current.key, current.value), template);
+    return [
+      { key: '</head>', value: `<script>window.__STORE__ = ${JSON.stringify(initialState)};</script></head>` },
+      { key: '%MARKUP%', value: markup },
+    ].reduce((str, current) => str.replace(current.key, current.value), template);
+  } catch (e) {
+    console.error('Unable to render markup:', e);
+
+    throw e;
+  }
 }
 
 function applyUserLocaleToGlobal(req) {

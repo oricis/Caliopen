@@ -1,9 +1,12 @@
-import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, POST_ACTIONS_SUCCESS, invalidate, requestMessage } from '../modules/message';
+import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, POST_ACTIONS_SUCCESS, DELETE_MESSAGE_SUCCESS, invalidate, requestMessage } from '../modules/message';
 
 export default store => next => (action) => {
   const result = next(action);
 
-  if ([CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS].indexOf(action.type) !== -1) {
+  if (
+    [CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, DELETE_MESSAGE_SUCCESS]
+      .indexOf(action.type) !== -1
+  ) {
     store.dispatch(invalidate());
   }
 

@@ -7,6 +7,7 @@ const actions = {
   get: createAction('Get messages'),
   post: createAction('Post message'),
   patch: createAction('Patch message'),
+  delete: createAction('Delete message'),
   actions: createAction('Actions message'),
 };
 
@@ -57,6 +58,14 @@ const reducer = {
 
     return nextState;
   },
+  [actions.delete]: (state, { params, body }) => {
+    const original = state.find(message => message.message_id === params.message_id);
+    if (!original) {
+      throw `message w/ id ${params.message_id} not found`;
+    }
+
+    return [...state.filter(message => message.message_id !== params.message_id)];
+  },
   [actions.actions]: (state, { params, body }) => {
     const original = state.find(message => message.message_id === params.message_id);
     if (!original) {
@@ -96,6 +105,11 @@ const routes = {
     action: actions.get,
     selector: selectors.byId,
     status: 200,
+  },
+  'DELETE /v1/messages/:message_id': {
+    action: actions.delete,
+    selector: selectors.byId,
+    status: 204,
   },
   'POST /v2/messages/:message_id/actions': {
     action: actions.actions,

@@ -18,7 +18,7 @@ describe('Discussions', () => {
       .then(() => {
         expect(element.all(by.css('.s-discussion-list__thread')).first().getText())
           .toContain('test@caliopen.local, john@caliopen.local, zoidberg@planet-express.tld');
-        expect(element.all(by.css('.s-discussion-list__thread')).count()).toEqual(2);
+        expect(element.all(by.css('.s-discussion-list__thread')).count()).toEqual(4);
         expect(
           element(by.cssContainingText('.s-discussion-list__load-more', 'Load more')).isPresent()
         ).toBe(false);

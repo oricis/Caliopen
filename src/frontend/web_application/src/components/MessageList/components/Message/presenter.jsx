@@ -52,6 +52,7 @@ class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     onView: PropTypes.func,
+    onDelete: PropTypes.func.isRequired,
     locale: PropTypes.string,
     __: PropTypes.func.isRequired,
   };
@@ -117,7 +118,7 @@ class Message extends Component {
   }
 
   render() {
-    const { message, locale, __ } = this.props;
+    const { message, locale, onDelete, __ } = this.props;
     const author = message.participants.find(participant => participant.type === 'From');
     const subject = message.subject;
     const topBarClassName = classnames(
@@ -163,6 +164,8 @@ class Message extends Component {
               <MessageActionsContainer
                 className="m-message__actions-container"
                 __={__}
+                message={message}
+                onDelete={onDelete}
               />
             </Dropdown>
 

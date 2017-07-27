@@ -8,7 +8,7 @@ import groupMessages from './services/groupMessages';
 
 import './style.scss';
 
-const renderDayGroups = (messages, onMessageView, __) => {
+const renderDayGroups = (messages, onMessageView, onMessageDelete, __) => {
   const messagesGroupedByday = groupMessages(messages);
 
   return Object.keys(messagesGroupedByday)
@@ -20,6 +20,7 @@ const renderDayGroups = (messages, onMessageView, __) => {
             message={message}
             className="m-message-list__message"
             onView={onMessageView}
+            onDelete={onMessageDelete}
             __={__}
           />
         ))}
@@ -27,7 +28,9 @@ const renderDayGroups = (messages, onMessageView, __) => {
     ));
 };
 
-const MessageList = ({ onMessageView, onReply, onForward, onDelete, messages, replyForm, __ }) => (
+const MessageList = ({
+  onMessageView, onMessageDelete, onReply, onForward, onDelete, messages, replyForm, __,
+}) => (
   <div className="m-message-list">
     <MenuBar>
       <Button className="m-message-list__action" onClick={onReply} icon="reply" responsive="icon-only" >{__('message-list.action.reply')}</Button>
@@ -35,7 +38,7 @@ const MessageList = ({ onMessageView, onReply, onForward, onDelete, messages, re
       <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >{__('message-list.action.delete')}</Button>
     </MenuBar>
     <div className="m-message-list__list">
-      {renderDayGroups(messages, onMessageView, __)}
+      {renderDayGroups(messages, onMessageView, onMessageDelete, __)}
     </div>
     <div className="m-message-list__reply">
       {replyForm}
@@ -45,6 +48,7 @@ const MessageList = ({ onMessageView, onReply, onForward, onDelete, messages, re
 
 MessageList.propTypes = {
   onMessageView: PropTypes.func,
+  onMessageDelete: PropTypes.func.isRequired,
   onReply: PropTypes.func.isRequired,
   onForward: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
