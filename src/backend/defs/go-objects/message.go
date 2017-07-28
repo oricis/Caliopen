@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
+	log "github.com/Sirupsen/logrus"
 	"gopkg.in/oleiade/reflections.v1"
 	"time"
 )
@@ -31,6 +32,7 @@ type Message struct {
 	Parent_id           string             `cql:"parent_id"                json:"parent_id"        `
 	Participants        []Participant      `cql:"participants"             json:"participants"     `
 	Privacy_features    PrivacyFeatures    `cql:"privacy_features"         json:"privacy_features" `
+	PrivacyIndex        *PrivacyIndex      `cql:"pi"                 json:"pi"`
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
 	Subject             string             `cql:"subject"                  json:"subject"          `
 	Tags                []Tag              `cql:"tags"                     json:"tags"             `
@@ -63,62 +65,67 @@ func (msg *Message) JSONMarshaller(context string) ([]byte, error) {
 fieldsLoop:
 	for _, field := range fields {
 		j_field, err := reflections.GetFieldTag(*msg, field, "json")
-		if err == nil && j_field != "" && j_field != "-" {
-			switch context {
-			case "elastic":
-				j_elastic, err := reflections.GetFieldTag(*msg, field, "elastic")
+		if err != nil {
+			log.WithError(err).Warnf("reflection for field %s failed", field)
+		} else {
+			if j_field != "" && j_field != "-" {
+				switch context {
+				case "elastic":
+					j_elastic, err := reflections.GetFieldTag(*msg, field, "elastic")
+					if err == nil {
+						switch j_elastic {
+						case "omit":
+							continue fieldsLoop
+						}
+					}
+				case "frontend":
+					//output only one body for frontend clients
+					if field == "Body_html" || field == "Body_plain" {
+						if body_not_merged {
+							if first {
+								first = false
+							} else {
+								jsonBuf.WriteByte(',')
+							}
+							jsonBuf.WriteString("\"body\":")
+							// TODO : put html or plain in exported body regarding current user preferences
+							if msg.Body_html != "" {
+								enc.Encode(msg.Body_html)
+							} else {
+								enc.Encode(msg.Body_plain)
+							}
+
+							body_not_merged = false
+							continue fieldsLoop
+						} else {
+							continue fieldsLoop
+						}
+					}
+				}
+				if first {
+					first = false
+				} else {
+					jsonBuf.WriteByte(',')
+				}
+				jsonBuf.WriteString("\"" + j_field + "\":")
+				field_value, err := reflections.GetField(*msg, field)
+				j_formatter, err := reflections.GetFieldTag(*msg, field, "formatter")
 				if err == nil {
-					switch j_elastic {
-					case "omit":
-						continue fieldsLoop
+					switch j_formatter {
+					case "rfc4122":
+						enc.Encode(field_value)
+					case "RFC3339Nano":
+						jsonBuf.WriteString("\"" + field_value.(time.Time).Format(time.RFC3339Nano) + "\"")
+					case "TimeUTCmicro":
+						jsonBuf.WriteString("\"" + field_value.(time.Time).Format(TimeUTCmicro) + "\"")
+					default:
+						enc.Encode(field_value)
 					}
-				}
-			case "frontend":
-				//output only one body for frontend clients
-				if field == "Body_html" || field == "Body_plain" {
-					if body_not_merged {
-						if first {
-							first = false
-						} else {
-							jsonBuf.WriteByte(',')
-						}
-						jsonBuf.WriteString("\"body\":")
-						// TODO : put html or plain in exported body regarding current user preferences
-						if msg.Body_html != "" {
-							enc.Encode(msg.Body_html)
-						} else {
-							enc.Encode(msg.Body_plain)
-						}
-
-						body_not_merged = false
-						continue fieldsLoop
-					} else {
-						continue fieldsLoop
-					}
-				}
-			}
-			if first {
-				first = false
-			} else {
-				jsonBuf.WriteByte(',')
-			}
-			jsonBuf.WriteString("\"" + j_field + "\":")
-			field_value, err := reflections.GetField(*msg, field)
-			j_formatter, err := reflections.GetFieldTag(*msg, field, "formatter")
-
-			if err == nil {
-				switch j_formatter {
-				case "rfc4122":
-					enc.Encode(field_value)
-				case "RFC3339Nano":
-					jsonBuf.WriteString("\"" + field_value.(time.Time).Format(time.RFC3339Nano) + "\"")
-				case "TimeUTCmicro":
-					jsonBuf.WriteString("\"" + field_value.(time.Time).Format(TimeUTCmicro) + "\"")
-				default:
-					enc.Encode(field_value)
+				} else {
+					jsonBuf.Write([]byte{'"', '"'})
 				}
 			} else {
-				jsonBuf.Write([]byte{'"', '"'})
+				log.Warnf("Invalid field %s value: %s", field, j_field)
 			}
 		}
 	}
@@ -224,6 +231,15 @@ func (msg *Message) UnmarshalJSON(b []byte) error {
 			msg.Participants = append(msg.Participants, P)
 		}
 	}
+	i_pi, _ := input["pi"].(map[string]interface{})
+	pi := PrivacyIndex{}
+	pi.Comportment, _ = i_pi["comportment"].(int)
+	pi.Context, _ = i_pi["context"].(int)
+	pi.DateUpdate, _ = i_pi["date_update"].(time.Time)
+	pi.Technic, _ = i_pi["technic"].(int)
+	pi.Version, _ = i_pi["version"].(int)
+	msg.PrivacyIndex = &pi
+
 	//TODO: privacy_features
 	if raw_msg_id, ok := input["raw_msg_id"].(string); ok {
 		if id, err := uuid.FromString(raw_msg_id); err == nil {
@@ -306,6 +322,14 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) {
 			msg.Participants = append(msg.Participants, p)
 		}
 	}
+	i_pi, _ := input["pi"].(map[string]interface{})
+	pi := PrivacyIndex{}
+	pi.Comportment, _ = i_pi["comportment"].(int)
+	pi.Context, _ = i_pi["context"].(int)
+	pi.DateUpdate, _ = i_pi["date_update"].(time.Time)
+	pi.Technic, _ = i_pi["technic"].(int)
+	pi.Version, _ = i_pi["version"].(int)
+	msg.PrivacyIndex = &pi
 	//TODO: privacy_features
 	if raw_msg_id, ok := input["raw_msg_id"].(gocql.UUID); ok {
 		msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
