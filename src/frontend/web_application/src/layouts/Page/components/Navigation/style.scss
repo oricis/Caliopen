@@ -44,14 +44,21 @@
     @include flex-grid-column(shrink, 0);
   }
 
-  &__sliders-container {
+  &__sliders-toggle-button {
+    color: $co-color__importance;
+  }
+
+  &__sliders-dropdown {
+    width: calc(1 + 2 * 1rem); // width of the toggle button: icon width + padding
     height: 50vh;
-    margin: 1rem;
+    background-color: $co-color__fg__back--higher;
+    box-shadow: $co-shadow;
     white-space: nowrap;
   }
 
-  &__slider {
-    display: inline-block;
-    margin: 0 .5rem;
+  &__sliders-container {
+    height: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 }
