@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withTranslator } from '@gandi/react-translate';
 import classnames from 'classnames';
-import Button from '../../../../../../components/Button';
-import Spinner from '../../../../../../components/Spinner';
-import { CheckboxFieldGroup, SelectFieldGroup, TextFieldGroup, FieldErrors, TextareaFieldGroup } from '../../../../../../components/form';
+import Button from '../../../../components/Button';
+import Spinner from '../../../../components/Spinner';
+import { CheckboxFieldGroup, SelectFieldGroup, TextFieldGroup, FieldErrors, TextareaFieldGroup } from '../../../../components/form';
 import {
   ERROR_UNABLE_READ_PUBLIC_KEY,
   ERROR_UNABLE_READ_PRIVATE_KEY,
   ERROR_FINGERPRINTS_NOT_MATCH,
-} from '../../../../../../services/openpgp-manager';
+} from '../../../../services/openpgp-manager';
 import './style.scss';
 
 const FORM_TYPE_GENERATE = 'generate';
 const FORM_TYPE_RAW = 'raw';
 
 
-// class AccountOpenPGPKeyFormController {
+// class OpenPGPKeyFormController {
 //   $onInit() {
 //     this.generateForm = { ...this.generateForm };
 //     this.importForm = {};
@@ -50,7 +50,7 @@ const FORM_TYPE_RAW = 'raw';
 // }
 
 @withTranslator()
-class AccountOpenPGPKeyForm extends Component {
+class OpenPGPKeyForm extends Component {
   static propTypes = {
     emails: PropTypes.arrayOf(PropTypes.shape({})),
     onImport: PropTypes.func,
@@ -177,14 +177,14 @@ class AccountOpenPGPKeyForm extends Component {
               name={FORM_TYPE_GENERATE}
               {...generateHollowProp}
             >
-              {__('account.openpgp.action.switch-generate-key')}
+              {__('user.openpgp.action.switch-generate-key')}
             </Button>
             <Button
               onClick={this.handleSwitchFormType}
               name={FORM_TYPE_RAW}
               {...rawHollowProp}
             >
-              {__('account.openpgp.action.switch-import-raw-key')}
+              {__('user.openpgp.action.switch-import-raw-key')}
             </Button>
           </div>
         </div>
@@ -194,7 +194,7 @@ class AccountOpenPGPKeyForm extends Component {
               this.emailOptions.length !== 1 && (
                 <SelectFieldGroup
                   className="m-account-openpgp-form__field-group"
-                  label={__('account.openpgp.form.email.label')}
+                  label={__('user.openpgp.form.email.label')}
                   value={this.state.generateForm.email}
                   onChange={this.handleGenerateChanges}
                   name="email"
@@ -205,15 +205,15 @@ class AccountOpenPGPKeyForm extends Component {
             }
             {this.emailOptions.length === 1 && (
               <p className="m-account-openpgp-form__field-group">
-                {__('account.openpgp.form.email.label')}{' '}{this.state.generateForm.email}
+                {__('user.openpgp.form.email.label')}{' '}{this.state.generateForm.email}
               </p>
             )}
             <div className="m-account-openpgp-form__field-group">
-              {__('account.openpgp.has-passphrase')}
+              {__('user.openpgp.has-passphrase')}
               {' '}
               <CheckboxFieldGroup
                 displaySwitch
-                label={__('account.openpgp.has-passphrase')}
+                label={__('user.openpgp.has-passphrase')}
                 value={this.state.hasPassphrase}
                 onChange={this.handleToggleHasPassprase}
               />
@@ -222,7 +222,7 @@ class AccountOpenPGPKeyForm extends Component {
             {this.state.hasPassphrase && (
               <div className="m-account-openpgp-form__field-group">
                 <TextFieldGroup
-                  label={__('account.openpgp.form.passphrase.label')}
+                  label={__('user.openpgp.form.passphrase.label')}
                   value={this.state.generateForm.passphrase}
                   onChange={this.handleGenerateChanges}
                   name="passphrase"
@@ -233,7 +233,7 @@ class AccountOpenPGPKeyForm extends Component {
               <Button type="submit" shape="plain">
                 <Spinner isLoading={isLoading} />
                 {' '}
-                {__('account.openpgp.action.create')}
+                {__('user.openpgp.action.create')}
               </Button>
               <Button
                 onClick={this.handleCancelForm}
@@ -256,7 +256,7 @@ class AccountOpenPGPKeyForm extends Component {
             }
             <TextareaFieldGroup
               className="m-account-openpgp-form__field-group"
-              label={__('account.openpgp.form.public-key.label')}
+              label={__('user.openpgp.form.public-key.label')}
               value={this.state.importForm.publicKeyArmored}
               onChange={this.handleImportChanges}
               name="publicKeyArmored"
@@ -267,7 +267,7 @@ class AccountOpenPGPKeyForm extends Component {
             />
             <TextareaFieldGroup
               className="m-account-openpgp-form__field-group"
-              label={__('account.openpgp.form.private-key.label')}
+              label={__('user.openpgp.form.private-key.label')}
               value={this.state.importForm.privateKeyArmored}
               onChange={this.handleImportChanges}
               name="privateKeyArmored"
@@ -282,7 +282,7 @@ class AccountOpenPGPKeyForm extends Component {
               shape="plain"
             >
               <Spinner isLoading={isLoading} />
-              {__('account.openpgp.action.add')}
+              {__('user.openpgp.action.add')}
             </Button>
           </form>
         )
@@ -292,4 +292,4 @@ class AccountOpenPGPKeyForm extends Component {
   }
 }
 
-export default AccountOpenPGPKeyForm;
+export default OpenPGPKeyForm;

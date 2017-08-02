@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { RouteWithSubRoutes } from '../../routes';
-import Account from '../../layouts/Account';
+import User from '../../layouts/User';
 
 
-const AccountRoute = ({ routes }) => (
-  <Account>
+const UserRoute = ({ routes }) => (
+  <User>
     {routes.map((route, i) => (
       <RouteWithSubRoutes key={i} {...route} />
     ))}
-  </Account>
+  </User>
 );
 
-AccountRoute.propTypes = {
+UserRoute.propTypes = {
   routes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-export default AccountRoute;
+export default UserRoute;

@@ -12,7 +12,7 @@ const registeredRoutes = [
   '/contacts/:contactId',
   '/compose',
   '/settings/:setting',
-  '/account/:setting',
+  '/user/:setting',
 ];
 
 const routeActionHandler = ({ store, action }) => {
@@ -122,29 +122,29 @@ const selectOrAddTabSetting = ({ store, pathname }) => {
   return store.dispatch(addTab(tab));
 };
 
-const getAccountTab = ({ pathname }) => {
+const getUserTab = ({ pathname }) => {
   const { translate: __ } = getTranslator();
 
   const routeConfig = flattenRouteConfig(getRouteConfig({ __ }))
-    .filter(route => route.path.indexOf('/account/') !== -1)
+    .filter(route => route.path.indexOf('/user/') !== -1)
     .find(route => matchPath(pathname, { path: route.path }));
 
   return {
     pathname,
-    label: (routeConfig && routeConfig.label) || __('account.route.label.default'),
+    label: (routeConfig && routeConfig.label) || __('user.route.label.default'),
     icon: 'user',
   };
 };
 
-const selectOrAddTabAccount = ({ store, pathname }) => {
-  if (!matchPath(pathname, { path: '/account/:subpath' })) {
+const selectOrAddTabUser = ({ store, pathname }) => {
+  if (!matchPath(pathname, { path: '/user/:subpath' })) {
     return null;
   }
 
   const original = store.getState().tab.tabs
-    .find(tab => matchPath(tab.pathname, { path: '/account' }));
+    .find(tab => matchPath(tab.pathname, { path: '/user' }));
 
-  const tab = getAccountTab({ pathname });
+  const tab = getUserTab({ pathname });
   if (original) {
     return store.dispatch(updateTab({ original, tab }));
   }
@@ -176,7 +176,7 @@ export default store => next => (action) => {
   if (action.type === SELECT_OR_ADD_TAB) {
     const { payload: { pathname } } = action;
     [selectOrAddTabDiscussion, selectOrAddTabContact, selectOrAddTabSetting,
-      selectOrAddTabAccount, selectOrAddTabCompose]
+      selectOrAddTabUser, selectOrAddTabCompose]
       .forEach(fn => fn({ store, pathname }));
   }
 

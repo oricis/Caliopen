@@ -1,6 +1,6 @@
 // const moduleName = 'caliopenApp';
 
-describe('component Account', () => {
+describe('component User', () => {
   it('needs to be implemented', () => {
     console.warn('TODO');
   });

@@ -7,10 +7,10 @@ import Auth from './scenes/Auth';
 import DiscussionList from './scenes/DiscussionList';
 import AppRoute from './scenes/AppRoute';
 import NewDraft from './scenes/NewDraft';
-import AccountRoute from './scenes/AccountRoute';
-import AccountProfile from './scenes/AccountProfile';
-import AccountSecurity from './scenes/AccountSecurity';
-import AccountPrivacy from './scenes/AccountPrivacy';
+import UserRoute from './scenes/UserRoute';
+import UserProfile from './scenes/UserProfile';
+import UserSecurity from './scenes/UserSecurity';
+import UserPrivacy from './scenes/UserPrivacy';
 import SettingsRoute from './scenes/SettingsRoute';
 import SettingsIdentities from './scenes/SettingsIdentities';
 import SettingsContacts from './scenes/SettingsContacts';
@@ -62,25 +62,25 @@ export const getRouteConfig = ({ __ }) => [
         app: 'contact',
       },
       {
-        path: '/account',
-        component: AccountRoute,
+        path: '/user',
+        component: UserRoute,
         app: 'account',
-        label: __('account.route.label.default'),
+        label: __('user.route.label.default'),
         routes: [
           {
-            path: '/account/profile',
-            component: AccountProfile,
-            label: __('account.route.label.profile'),
+            path: '/user/profile',
+            component: UserProfile,
+            label: __('user.route.label.profile'),
           },
           {
-            path: '/account/privacy',
-            component: AccountPrivacy,
-            label: __('account.route.label.privacy'),
+            path: '/user/privacy',
+            component: UserPrivacy,
+            label: __('user.route.label.privacy'),
           },
           {
-            path: '/account/security',
-            component: AccountSecurity,
-            label: __('account.route.label.security'),
+            path: '/user/security',
+            component: UserSecurity,
+            label: __('user.route.label.security'),
           },
         ],
       },

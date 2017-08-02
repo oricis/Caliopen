@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MultidimensionalPi from '../../components/MultidimensionalPi';
-import Title from '../../components/Title';
+import Section from '../../components/Section';
 import TextList, { ItemContent } from '../../components/TextList';
 
 import './style.scss';
 
-class AccountPrivacy extends Component {
+class UserPrivacy extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
     // requestUser: PropTypes.func.isRequired,
@@ -31,8 +31,7 @@ class AccountPrivacy extends Component {
 
         <MultidimensionalPi className="s-account-privacy__pi" pi={fakePi} />
 
-        <div className="s-account-privacy__info">
-          <Title>{__('account.privacy.improve_pi')}</Title>
+        <Section className="s-account-privacy__info" title={__('user.privacy.improve_pi')}>
           <TextList className="s-account-privacy__tips">
             {privacyTips.map(tip => (
               <ItemContent
@@ -41,10 +40,10 @@ class AccountPrivacy extends Component {
               >{tip.content}</ItemContent>
             ))}
           </TextList>
-        </div>
+        </Section>
       </div>
     );
   }
 }
 
-export default AccountPrivacy;
+export default UserPrivacy;

@@ -4,11 +4,11 @@ import { withTranslator } from '@gandi/react-translate';
 import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
 import OpenPGPKey from '../../../../components/OpenPGPKey';
-import AccountOpenPGPKeyForm from './components/AccountOpenPGPKeyForm';
+import OpenPGPKeyForm from '../OpenPGPKeyForm';
 import './style.scss';
 
 @withTranslator()
-class AccountOpenPGPKeys extends Component {
+class OpenPGPKeysDetails extends Component {
   static propTypes = {
     user: PropTypes.shape({}).isRequired,
     privateKeys: PropTypes.arrayOf(PropTypes.shape({})),
@@ -78,7 +78,7 @@ class AccountOpenPGPKeys extends Component {
         {privateKeys.map(this.renderPrivateKey)}
         {this.state.editMode ? (
           <div>
-            <AccountOpenPGPKeyForm
+            <OpenPGPKeyForm
               className="m-account-openpgp__form"
               emails={user.contact.emails}
               onImport={onImportKey}
@@ -108,7 +108,7 @@ class AccountOpenPGPKeys extends Component {
             shape="plain"
             icon="plus"
           >
-            {__('account.openpgp.action.edit-keys')}
+            {__('user.openpgp.action.edit-keys')}
           </Button>
         }
       </div>
@@ -116,4 +116,4 @@ class AccountOpenPGPKeys extends Component {
   }
 }
 
-export default AccountOpenPGPKeys;
+export default OpenPGPKeysDetails;
