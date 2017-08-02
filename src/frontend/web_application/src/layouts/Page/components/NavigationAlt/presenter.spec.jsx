@@ -18,6 +18,6 @@ describe('component NavigationAlt', () => {
     );
 
     expect(comp.text()).toContain('UserInfo');
-    expect(comp.find('VerticalMenu').length).toEqual(2);
+    expect(comp.find('VerticalMenu').length).toEqual(3);
   });
 });

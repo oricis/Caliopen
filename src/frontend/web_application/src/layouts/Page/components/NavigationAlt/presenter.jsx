@@ -4,6 +4,7 @@ import Link from '../../../../components/Link';
 import Icon from '../../../../components/Icon';
 import VerticalMenu, { VerticalMenuItem } from '../../../../components/VerticalMenu';
 import TabList from './components/TabList';
+import SliderContainer from '../../../../components/ImportanceSliderContainer';
 import UserInfo from '../UserInfo';
 import './style.scss';
 
@@ -27,6 +28,12 @@ const NavigationAlt = ({ currentApplication, applications, __ }) => (
       }
     </VerticalMenu>
     <TabList />
+    <VerticalMenu className="l-nav-alt__menu">
+      <VerticalMenuItem className="l-nav-alt__importance-slider">
+        <Icon type="warning" className="l-nav-alt__importance-slider-icon" />
+        <SliderContainer className="l-nav-alt__slider" />
+      </VerticalMenuItem>
+    </VerticalMenu>
     <VerticalMenu className="l-nav-alt__menu">
       <VerticalMenuItem>
         <Link to="/user/profile" button expanded>

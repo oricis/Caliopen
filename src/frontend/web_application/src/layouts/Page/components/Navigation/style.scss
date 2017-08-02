@@ -60,5 +60,12 @@
     height: 100%;
     padding-top: 1rem;
     padding-bottom: 1rem;
+
+    // SHAME: force center slider
+    // and prevent closing Dropdown when releasing mouse outside of the slider
+    .rc-slider {
+      margin-right: auto;
+      margin-left: auto;
+    }
   }
 }

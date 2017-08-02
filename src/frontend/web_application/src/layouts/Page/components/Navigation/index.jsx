@@ -5,7 +5,7 @@ import ApplicationSwitcher from './components/ApplicationSwitcher';
 import Navbar, { NavbarItem } from './components/Navbar';
 import StickyNavbar from './components/StickyNavBar';
 import TabList from './components/TabList';
-import SliderContainer from './components/SliderContainer';
+import SliderContainer from '../../../../components/ImportanceSliderContainer';
 import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
 import Button from '../../../../components/Button';
 import Icon from '../../../../components/Icon';
@@ -44,7 +44,7 @@ class Navigation extends PureComponent {
               closeOnClick
               className="l-navigation__sliders-dropdown"
             >
-              <SliderContainer className="l-navigation__sliders-container" />
+              <SliderContainer vertical className="l-navigation__sliders-container" />
             </Dropdown>
           </NavbarItem>
         </StickyNavbar>
