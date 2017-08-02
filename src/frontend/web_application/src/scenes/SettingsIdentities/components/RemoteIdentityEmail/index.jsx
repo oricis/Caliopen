@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '../../../Button';
-import Spinner from '../../../Spinner';
-import { TextFieldGroup, SelectFieldGroup, RadioFieldGroup } from '../../../form';
+import Button from '../../../../components/Button';
+import Spinner from '../../../../components/Spinner';
+import { TextFieldGroup, SelectFieldGroup, RadioFieldGroup } from '../../../../components/form';
 
 const MAX_PHASE = 3;
 const MAIL_PROTOCOLS = ['', 'IMAP', 'POP'];

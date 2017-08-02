@@ -27,15 +27,15 @@ class UserPrivacy extends Component {
     ];
 
     return (
-      <div className="s-account-privacy">
+      <div className="s-user-privacy">
 
-        <MultidimensionalPi className="s-account-privacy__pi" pi={fakePi} />
+        <MultidimensionalPi className="s-user-privacy__pi" pi={fakePi} />
 
-        <Section className="s-account-privacy__info" title={__('user.privacy.improve_pi')}>
-          <TextList className="s-account-privacy__tips">
+        <Section className="s-user-privacy__info" title={__('user.privacy.improve_pi')}>
+          <TextList className="s-user-privacy__tips">
             {privacyTips.map(tip => (
               <ItemContent
-                className="s-account-privacy__tip"
+                className="s-user-privacy__tip"
                 key={tip.name}
               >{tip.content}</ItemContent>
             ))}

@@ -1,7 +1,7 @@
 @import '../../styles/common';
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
-.s-account-privacy {
+.s-user-privacy {
   @include flex-grid-row($size: expand);
   margin-top: $co-margin;
 

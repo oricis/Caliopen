@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Section from '../../components/Section';
-import InterfaceForm from '../../components/InterfaceForm';
-import PresentationForm from '../../components/PresentationForm';
+import InterfaceForm from './components/InterfaceForm';
+import PresentationForm from './components/PresentationForm';
 
 const fakeInterfaceSettings = {
   language: 'English',

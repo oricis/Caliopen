@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import Button from '../../../../components/Button';
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../../../../components/form';
 
-import './style.scss';
-
 function generateStateFromProps(props, prevState) {
   return {
     user: {
@@ -25,7 +23,16 @@ class ProfileForm extends Component {
   };
 
   state = {
-    user: {},
+    user: {
+      username: null,
+      family_name: null,
+      given_name: null,
+      name: null,
+      recovery_email: null,
+      contact: {
+        avatar: null,
+      },
+    },
   };
 
   componentWillMount() {
@@ -57,7 +64,7 @@ class ProfileForm extends Component {
     const { errors, __ } = this.props;
 
     return (
-      <FormGrid method="post" className="m-profile-form" name="profile_form">
+      <FormGrid method="post" name="profile_form">
         {errors.global && errors.global.length !== 0 && (
         <FormRow>
           <FormColumn bottomSpace>
@@ -106,9 +113,12 @@ class ProfileForm extends Component {
         </FormRow>
         <FormRow>
           <FormColumn size="shrink" bottomSpace >
+            {
+              // FIXME: can't get this.state.user.email
+            }
             <TextFieldGroup
               name="email"
-              value={this.state.user.email}
+              value=""
               onChange={this.handleInputChange}
               label={__('user.profile.form.email.label')}
             />
@@ -120,11 +130,10 @@ class ProfileForm extends Component {
               onChange={this.handleInputChange}
               label={__('user.profile.form.recovery_email.label')}
             />
-            {this.state.user.subscribed_date}
           </FormColumn>
         </FormRow>
         <FormRow>
-          <FormColumn size="shrink" className="m-contacts-form__action" bottomSpace>
+          <FormColumn size="shrink" bottomSpace>
             <Button
               type="submit"
               onClick={this.handleSubmit}

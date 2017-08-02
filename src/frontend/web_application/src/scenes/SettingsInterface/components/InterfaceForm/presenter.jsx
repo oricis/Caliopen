@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '../Button';
-import { FormGrid, FormRow, FormColumn, SelectFieldGroup, FieldErrors } from '../form';
+import Button from '../../../../components/Button';
+import { FormGrid, FormRow, FormColumn, SelectFieldGroup, FieldErrors } from '../../../../components/form';
 
+// FIXME: i18n the following:
 const LANGUAGES = ['Français', 'English'];
 const TIME_ZONES = ['Automatic', 'Timezone 1', 'Timezone 2'];
 const DATE_FORMATS = ['DD/MM/YYYY', 'MM/DD/YYYY'];
@@ -30,11 +31,11 @@ class InterfaceForm extends Component {
 
   state = {
     settings: {
-      language: null,
-      time_zone: null,
-      date_format: null,
-      time_format: null,
-      refresh: null,
+      language: undefined,
+      time_zone: undefined,
+      date_format: undefined,
+      time_format: undefined,
+      refresh: undefined,
     },
   };
 
@@ -61,10 +62,15 @@ class InterfaceForm extends Component {
     this.props.onSubmit({ settings });
   }
 
-  handleInputChange = (/* ev */) => {
-    // const { name, value } = ev.target;
+  handleInputChange = (ev) => {
+    const { name, value } = ev.target;
 
-    // this.setState((prevState) => {});
+    this.setState(prevState => ({
+      settings: {
+        ...prevState.settings,
+        [name]: value,
+      },
+    }));
   }
 
   render() {
@@ -91,7 +97,7 @@ class InterfaceForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <SelectFieldGroup
               name="language"
-              defaultValue={settings.language}
+              value={settings.language}
               onChange={this.handleInputChange}
               label={__('settings.interface.language.label')}
               options={languageOptions}
@@ -102,7 +108,7 @@ class InterfaceForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <SelectFieldGroup
               name="time_zone"
-              defaultValue={settings.time_zone}
+              value={settings.time_zone}
               onChange={this.handleInputChange}
               label={__('settings.interface.time_zone.label')}
               options={timeZoneOptions}
@@ -113,7 +119,7 @@ class InterfaceForm extends Component {
           <FormColumn size="shrink" bottomSpace>
             <SelectFieldGroup
               name="date_format"
-              defaultValue={settings.date_format}
+              value={settings.date_format}
               onChange={this.handleInputChange}
               label={__('settings.interface.date_format.label')}
               options={dateFormatOptions}
@@ -122,7 +128,7 @@ class InterfaceForm extends Component {
           <FormColumn size="shrink" bottomSpace>
             <SelectFieldGroup
               name="time_format"
-              defaultValue={settings.time_format}
+              value={settings.time_format}
               onChange={this.handleInputChange}
               label={__('settings.interface.time_format.label')}
               options={timeFormatOptions}
@@ -133,7 +139,7 @@ class InterfaceForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <SelectFieldGroup
               name="refresh"
-              defaultValue={settings.refresh}
+              value={settings.refresh}
               onChange={this.handleInputChange}
               label={__('settings.interface.refresh.label')}
               options={refreshOptions}

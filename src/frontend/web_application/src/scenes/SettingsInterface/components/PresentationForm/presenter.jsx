@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '../Button';
-import { FormGrid, FormRow, FormColumn, SelectFieldGroup, FieldErrors, CheckboxFieldGroup } from '../form';
+import Button from '../../../../components/Button';
+import { FormGrid, FormRow, FormColumn, SelectFieldGroup, FieldErrors, CheckboxFieldGroup } from '../../../../components/form';
 
 const DISPLAY_PREVIEW = ['1 line', '2 lines', 'Bla'];
 
@@ -26,11 +26,11 @@ class PresentationForm extends Component {
 
   state = {
     settings: {
-      show_avatar_inbox: null,
-      show_unread_msg_bolder: null,
-      show_recent_msg_on_top: null,
-      show_msg_in_conversation: null,
-      display_preview_inbox: null,
+      show_avatar_inbox: false,
+      show_unread_msg_bolder: false,
+      show_recent_msg_on_top: false,
+      show_msg_in_conversation: false,
+      display_preview_inbox: undefined,
     },
   };
 
@@ -42,11 +42,10 @@ class PresentationForm extends Component {
     this.setState(prevState => generateStateFromProps(newProps, prevState));
   }
 
-  getOptionsFromArray = (options, setting) => {
+  getOptionsFromArray = (options) => {
     const selectedOptions = options.map(value => ({
       value,
       label: value,
-      selected: setting === value && setting !== null && true,
     }));
 
     return selectedOptions;
@@ -57,25 +56,30 @@ class PresentationForm extends Component {
     this.props.onSubmit({ settings });
   }
 
-  handleInputChange = (/* ev */) => {
-    // const { name, value } = ev.target;
-
-    // this.setState((prevState) => {});
+  handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    this.setState(prevState => ({
+      settings: {
+        ...prevState.settings,
+        [name]: checked,
+      },
+    }));
   }
 
-  handleSwitchChange = (/* ev */) => {
-    // const { name, value } = ev.target;
-
-    // this.setState((prevState) => {});
+  handleSelectChange = (event) => {
+    const { name, value } = event.target;
+    this.setState(prevState => ({
+      settings: {
+        ...prevState.settings,
+        [name]: value,
+      },
+    }));
   }
 
   render() {
     const { errors, __ } = this.props;
 
-    const displayPreviewOptions = this.getOptionsFromArray(
-      DISPLAY_PREVIEW,
-      this.state.settings.display_preview_inbox
-    );
+    const displayPreviewOptions = this.getOptionsFromArray(DISPLAY_PREVIEW);
 
     return (
       <FormGrid method="post" className="m-presentation-form" name="presentation_form">
@@ -90,10 +94,9 @@ class PresentationForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <CheckboxFieldGroup
               name="show_avatar_inbox"
-              value={this.state.settings.show_avatar_inbox}
-              onChange={this.handleSwitchChange}
+              onChange={this.handleCheckboxChange}
               label={__('settings.presentation.show_avatar_inbox.label')}
-              checked={this.state.settings.show_avatar_inbox ? true : null}
+              checked={this.state.settings.show_avatar_inbox}
               showTextLabel
             />
           </FormColumn>
@@ -102,10 +105,9 @@ class PresentationForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <CheckboxFieldGroup
               name="show_unread_msg_bolder"
-              value={this.state.settings.show_unread_msg_bolder}
-              onChange={this.handleSwitchChange}
+              onChange={this.handleCheckboxChange}
               label={__('settings.presentation.show_unread_msg_bolder.label')}
-              checked={this.state.settings.show_unread_msg_bolder && true}
+              checked={this.state.settings.show_unread_msg_bolder}
               showTextLabel
             />
           </FormColumn>
@@ -114,10 +116,9 @@ class PresentationForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <CheckboxFieldGroup
               name="show_recent_msg_on_top"
-              value={this.state.settings.show_recent_msg_on_top}
-              onChange={this.handleSwitchChange}
+              onChange={this.handleCheckboxChange}
               label={__('settings.presentation.show_recent_msg_on_top.label')}
-              checked={this.state.settings.show_recent_msg_on_top && true}
+              checked={this.state.settings.show_recent_msg_on_top}
               showTextLabel
             />
           </FormColumn>
@@ -126,10 +127,9 @@ class PresentationForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <CheckboxFieldGroup
               name="show_msg_in_conversation"
-              value={this.state.settings.show_msg_in_conversation}
-              onChange={this.handleSwitchChange}
+              onChange={this.handleCheckboxChange}
               label={__('settings.presentation.show_msg_in_conversation.label')}
-              checked={this.state.settings.show_msg_in_conversation && true}
+              checked={this.state.settings.show_msg_in_conversation}
               showTextLabel
             />
           </FormColumn>
@@ -138,8 +138,8 @@ class PresentationForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <SelectFieldGroup
               name="display_preview_inbox"
-              defaultValue={this.state.settings.language}
-              onChange={this.handleInputChange}
+              value={this.state.settings.display_preview_inbox}
+              onChange={this.handleCheckboxChange}
               label={__('settings.presentation.display.label')}
               options={displayPreviewOptions}
             />

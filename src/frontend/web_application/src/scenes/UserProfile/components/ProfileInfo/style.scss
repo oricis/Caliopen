@@ -3,7 +3,7 @@
 @import '../../../../styles/object/o-avatar';
 
 
-@mixin m-profile-info--horizontal {
+@mixin m-user-profile-info--horizontal {
   &__avatar-wrapper {
     @include flex-grid-size(shrink);
   }
@@ -18,7 +18,7 @@
   }
 }
 
-@mixin m-profile-info--vertical {
+@mixin m-user-profile-info--vertical {
   &__avatar-wrapper {
     @include flex-grid-size(12);
   }
@@ -32,7 +32,7 @@
   }
 }
 
-.m-profile-details {
+.m-user-profile-details {
   &__header {
     @include flex-grid-row($size: expand);
     position: relative;
@@ -74,10 +74,10 @@
     font-weight: 600;
   }
 
-  @include m-profile-info--horizontal;
+  @include m-user-profile-info--horizontal;
 
   @include breakpoint(medium) {
-    @include m-profile-info--vertical;
+    @include m-user-profile-info--vertical;
 
     &__rank-badge {
       @include flex-grid-size(4);

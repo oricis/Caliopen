@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import Section from '../../components/Section';
-import BrowserNotifications from '../BrowserNotifications';
-
-// import './style.scss';
-
+import BrowserNotifications from './components//BrowserNotifications';
 
 class SettingsNotifications extends Component {
   static propTypes = {

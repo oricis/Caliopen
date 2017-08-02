@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextList from '../TextList';
-import RemoteIdentityEmail from './components/RemoteIdentityEmail';
-
-// import './style.scss';
+import RemoteIdentityEmail from '../RemoteIdentityEmail';
+import TextList from '../../../../components/TextList';
 
 class IdentityForm extends Component {
   static propTypes = {

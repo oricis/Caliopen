@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import IdentityForm from '../../components/IdentityForm';
+import IdentityForm from './components/IdentityForm';
 import Section from '../../components/Section';
 import NavList, { ItemContent } from '../../components/NavList';
 import Link from '../../components/Link';

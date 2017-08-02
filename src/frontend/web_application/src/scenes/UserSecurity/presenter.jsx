@@ -24,7 +24,7 @@ class UserSecurity extends Component {
     const { __, user } = this.props;
 
     return (
-      <div className="s-account-security">
+      <div className="s-user-account-security">
         {
           // FIXME: according to UX, there should be a sub-menu in right column
           // to switch between each <Section />

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '../Button';
-import { FormGrid, FormRow, FormColumn, TextareaFieldGroup, FieldErrors } from '../form';
+import Button from '../../../../components/Button';
+import { FormGrid, FormRow, FormColumn, TextareaFieldGroup, FieldErrors } from '../../../../components/form';
 
 function generateStateFromProps(props, prevState) {
   return {

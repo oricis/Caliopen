@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '../Button';
-import { FormGrid, FormRow, FormColumn, SelectFieldGroup, FieldErrors } from '../form';
+import Button from '../../../../components/Button';
+import { FormGrid, FormRow, FormColumn, SelectFieldGroup, FieldErrors } from '../../../../components/form';
 
-import './style.scss';
-
+// FIXME: i18n the following:
 const DISPLAY_CONTACTS = ['Firstname, Lastname', 'Lastname, Firstname'];
 const ORDER_CONTACTS = ['Lastname', 'Firstname'];
 const CONTACT_FORMATS = ['Firstname only', 'Lastname only', 'Lastname and Firstname'];
@@ -52,11 +51,10 @@ class ContactsForm extends Component {
     this.setState(prevState => generateStateFromProps(newProps, prevState));
   }
 
-  getOptionsFromArray = (options, setting) => {
+  getOptionsFromArray = (options) => {
     const selectedOptions = options.map(value => ({
       value,
       label: value,
-      selected: setting === value && true,
     }));
 
     return selectedOptions;
@@ -67,23 +65,27 @@ class ContactsForm extends Component {
     this.props.onSubmit({ settings });
   }
 
-  handleInputChange = (/* ev */) => {
-    // const { name, value } = ev.target;
+  handleInputChange = (ev) => {
+    const { name, value } = ev.target;
 
-    // this.setState((prevState) => {});
+    this.setState(prevState => ({
+      settings: {
+        ...prevState.settings,
+        [name]: value,
+      },
+    }));
   }
 
   render() {
     const { errors, __ } = this.props;
-    const { settings } = this.state;
 
-    const displayOptions = this.getOptionsFromArray(DISPLAY_CONTACTS, settings.display);
-    const orderOptions = this.getOptionsFromArray(ORDER_CONTACTS, settings.order);
-    const contactFormatOptions = this.getOptionsFromArray(CONTACT_FORMATS, settings.contact_format);
-    const adressFormatOptions = this.getOptionsFromArray(ADRESS_FORMATS, settings.adress_format);
-    const phoneFormatOptions = this.getOptionsFromArray(PHONE_FORMATS, settings.phone_format);
-    const vcardFormatOptions = this.getOptionsFromArray(VCARD_FORMATS, settings.vcard_format);
-    const vcardEncodingOptions = this.getOptionsFromArray(VCARD_ENCODING, settings.vcard_encoding);
+    const displayOptions = this.getOptionsFromArray(DISPLAY_CONTACTS);
+    const orderOptions = this.getOptionsFromArray(ORDER_CONTACTS);
+    const contactFormatOptions = this.getOptionsFromArray(CONTACT_FORMATS);
+    const adressFormatOptions = this.getOptionsFromArray(ADRESS_FORMATS);
+    const phoneFormatOptions = this.getOptionsFromArray(PHONE_FORMATS);
+    const vcardFormatOptions = this.getOptionsFromArray(VCARD_FORMATS);
+    const vcardEncodingOptions = this.getOptionsFromArray(VCARD_ENCODING);
 
 
     return (
@@ -99,7 +101,7 @@ class ContactsForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <SelectFieldGroup
               name="display"
-              defaultValue={settings.display}
+              value={this.state.settings.display}
               onChange={this.handleInputChange}
               label={__('settings.contacts.display.label')}
               options={displayOptions}
@@ -110,7 +112,7 @@ class ContactsForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <SelectFieldGroup
               name="order"
-              defaultValue={settings.order}
+              value={this.state.settings.order}
               onChange={this.handleInputChange}
               label={__('settings.contacts.order.label')}
               options={orderOptions}
@@ -121,7 +123,7 @@ class ContactsForm extends Component {
           <FormColumn size="shrink" bottomSpace>
             <SelectFieldGroup
               name="contact_format"
-              defaultValue={settings.contact_format}
+              value={this.state.settings.contact_format}
               onChange={this.handleInputChange}
               label={__('settings.contacts.contact_format.label')}
               options={contactFormatOptions}
@@ -132,7 +134,7 @@ class ContactsForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <SelectFieldGroup
               name="adress_format"
-              defaultValue={settings.adress_format}
+              value={this.state.settings.adress_format}
               onChange={this.handleInputChange}
               label={__('settings.contacts.adress_format.label')}
               options={adressFormatOptions}
@@ -143,7 +145,7 @@ class ContactsForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <SelectFieldGroup
               name="phone_format"
-              defaultValue={settings.phone_format}
+              value={this.state.settings.phone_format}
               onChange={this.handleInputChange}
               label={__('settings.contacts.phone_format.label')}
               options={phoneFormatOptions}
@@ -154,7 +156,7 @@ class ContactsForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <SelectFieldGroup
               name="vcard_format"
-              defaultValue={settings.vcard_format}
+              value={this.state.settings.vcard_format}
               onChange={this.handleInputChange}
               label={__('settings.contacts.vcard_format.label')}
               options={vcardFormatOptions}
@@ -165,7 +167,7 @@ class ContactsForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <SelectFieldGroup
               name="vcard_encoding"
-              defaultValue={settings.vcard_encoding}
+              value={this.state.settings.vcard_encoding}
               onChange={this.handleInputChange}
               label={__('settings.contacts.vcard_encoding.label')}
               options={vcardEncodingOptions}

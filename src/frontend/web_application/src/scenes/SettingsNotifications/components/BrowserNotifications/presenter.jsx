@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Section from '../../components/Section';
-import Button from '../../components/Button';
-import Notification, { isSupported, PERMISSION_DENIED, PERMISSION_GRANTED } from '../../services/browser-notification';
+import Button from '../../../../components/Button';
+import Notification, { isSupported, PERMISSION_DENIED, PERMISSION_GRANTED } from '../../../../services/browser-notification';
 
-class SettingsView extends Component {
+class BrowserNotifications extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
   };
-  static defaultProps = {
+
+  state = {
+    hasBrowserNotificationSupport: false,
+    hasBrowserNotificationEnabled: false,
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasBrowserNotificationSupport: false,
-      hasBrowserNotificationEnabled: false,
-    };
-    this.handleRequestBrowserNotification = this.handleRequestBrowserNotification.bind(this);
-    this.handleClickTestBrowser = this.handleClickTestBrowser.bind(this);
-  }
 
   componentWillMount() {
     this.setState({
@@ -27,13 +20,13 @@ class SettingsView extends Component {
     });
   }
 
-  handleRequestBrowserNotification() {
+  handleRequestBrowserNotification = () => {
     Notification.requestPermission(permission => this.setState({
       hasBrowserNotificationPermission: permission,
     }));
   }
 
-  handleClickTestBrowser() {
+  handleClickTestBrowser = () => {
     const { __ } = this.props;
 
     return new Notification(__('settings-view.feedback.desktop-notification-enabled'));
@@ -78,18 +71,14 @@ class SettingsView extends Component {
   }
 
   render() {
-    const { __ } = this.props;
-
     return (
-      <div className="s-settings-view">
-        <Section title={__('settings-view.notifications.title')}>
-          {isSupported ?
-            this.renderNotification() :
-            this.renderNoSupport()}
-        </Section>
+      <div>
+        {isSupported ?
+          this.renderNotification() :
+          this.renderNoSupport()}
       </div>
     );
   }
 }
 
-export default SettingsView;
+export default BrowserNotifications;
