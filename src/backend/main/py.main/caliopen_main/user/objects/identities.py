@@ -5,16 +5,16 @@ from __future__ import absolute_import, print_function, unicode_literals
 import types
 from uuid import UUID
 
-from caliopen_main.objects import base
-from caliopen_main.objects.pi import PIObject
-from caliopen_main.user.store import LocalIdentity as ModelLocalIdentity
-from caliopen_main.user.store import IndexedLocalIdentity
-from caliopen_main.user.store.contact import SocialIdentity as ModelSocialIdentity
-from caliopen_main.user.parameters.contact import \
-    SocialIdentity as SocialIdentityParam
-from caliopen_main.user.store.contact_index import IndexedSocialIdentity
-from caliopen_main.user.store.local_identity import Identity as ModelIdentity
-from caliopen_main.user.store.local_identity_index import IndexedIdentity
+from caliopen_main.commom.objects import base
+from caliopen_main.pi.objects import PIObject
+
+from ..store import LocalIdentity as ModelLocalIdentity
+from ..store import IndexedLocalIdentity
+from ..store.contact import SocialIdentity as ModelSocialIdentity
+from ..parameters.contact import SocialIdentity as SocialIdentityParam
+from ..store.contact_index import IndexedSocialIdentity
+from ..store.local_identity import Identity as ModelIdentity
+from ..store.local_identity_index import IndexedIdentity
 
 
 class LocalIdentity(base.ObjectStorable):

@@ -24,9 +24,9 @@ from ..store import (User as ModelUser,
                      ContactLookup)
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
-from .contact import Contact as CoreContact
-from caliopen_main.objects.contact import Contact
-from caliopen_main.objects.pi import PIModel
+from caliopen_main.contact.core import Contact as CoreContact
+from caliopen_main.contact.objects import Contact
+from caliopen_main.pi.objects import PIModel
 from caliopen_main.user.helpers import validators
 
 log = logging.getLogger(__name__)

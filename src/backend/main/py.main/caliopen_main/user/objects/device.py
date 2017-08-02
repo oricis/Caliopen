@@ -7,13 +7,13 @@ import logging
 import types
 import uuid
 
-from caliopen_main.user.parameters.device import Device as DeviceParam
+from caliopen_main.common.objects import ObjectStorable, ObjectUser
+from caliopen_main.pi.objects import PIObject
 
-from caliopen_main.user.store import (Device as ModelDevice,
-                                      DeviceLocation as ModelDeviceLocation)
+from ..parameters.device import Device as DeviceParam
+from ..store import (Device as ModelDevice,
+                     DeviceLocation as ModelDeviceLocation)
 
-from .base import ObjectStorable, ObjectUser
-from .pi import PIObject
 
 log = logging.getLogger(__name__)
 
