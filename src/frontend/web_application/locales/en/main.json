@@ -207,7 +207,7 @@
     "settings.contacts.display.label": "Display",
     "settings.contacts.order.label": "Order by",
     "settings.contacts.contact_format.label": "Format",
-    "settings.contacts.adress_format.label": "Adress format",
+    "settings.contacts.adress_format.label": "Address format",
     "settings.contacts.phone_format.label": "Phone number format",
     "settings.contacts.vcard_format.label": "VCards format",
     "settings.contacts.vcard_encoding.label": "VCards encoding",

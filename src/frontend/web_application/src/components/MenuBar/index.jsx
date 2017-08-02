@@ -37,6 +37,7 @@ class MenuBar extends Component {
         {navLinks &&
           <NavList>
             {navLinks.map(link => (
+              // FIXME: active prop not working
               <ItemContent
                 active={this.state.activeLink === link && true}
                 large

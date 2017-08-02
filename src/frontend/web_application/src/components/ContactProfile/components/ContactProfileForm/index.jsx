@@ -30,7 +30,16 @@ class ContactProfileForm extends Component {
   };
 
   state = {
-    contact: {},
+    contact: {
+      title: '',
+      name_prefix: '',
+      given_name: '',
+      family_name: '',
+      name_suffix: '',
+      infos: {
+        birthday: '',
+      },
+    },
   };
 
   componentWillMount() {

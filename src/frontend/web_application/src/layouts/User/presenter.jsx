@@ -11,6 +11,10 @@ const User = ({ __, children }) => {
 
   return (
     <div className="l-user">
+      {
+        // FIXME: component should be connected to detect active links and pass them
+        // to MenuBar
+      }
       <MenuBar
         className="l-user__menu-bar"
         navLinks={navLinks}

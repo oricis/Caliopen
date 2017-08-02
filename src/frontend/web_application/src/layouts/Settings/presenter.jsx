@@ -13,6 +13,10 @@ const Settings = ({ __, children }) => {
 
   return (
     <div className="l-settings">
+      {
+        // FIXME: component should be connected to detect active links and pass them
+        // to MenuBar
+      }
       <MenuBar className="l-settings__menu-bar" navLinks={navLinks} />
       <div className="l-settings__panel">{children}</div>
     </div>
