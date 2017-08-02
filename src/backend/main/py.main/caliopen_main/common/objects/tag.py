@@ -6,8 +6,8 @@ import uuid
 import datetime
 
 from .base import ObjectJsonDictifiable
-from ..store import ResourceTag as ModelResourceTag
-from ..store import IndexedResourceTag
+from ..store.tag import ResourceTag as ModelResourceTag
+from ..store.tag import IndexedResourceTag
 
 import logging
 log = logging.getLogger(__name__)

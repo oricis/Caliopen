@@ -3,17 +3,16 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from caliopen_storage.parameters import ReturnCoreObject
 
-from ..core.contact import Contact, PublicKey
-from ..parameters.contact import (
-    Contact as ContactParam,
-    ShortContact as ContactShortParam,
-    Email as EmailParam,
-    Phone as PhoneParam,
-    IM as IMParam,
-    Organization as OrganizationParam,
-    PublicKey as PublicKeyParam,
-    PostalAddress as PostalAddressParam,
-    SocialIdentity as SocialIdentityParam)
+from .core import Contact, PublicKey
+from .parameters import (Contact as ContactParam,
+                         ShortContact as ContactShortParam,
+                         Email as EmailParam,
+                         Phone as PhoneParam,
+                         IM as IMParam,
+                         Organization as OrganizationParam,
+                         PublicKey as PublicKeyParam,
+                         PostalAddress as PostalAddressParam,
+                         SocialIdentity as SocialIdentityParam)
 
 
 class ReturnContact(ReturnCoreObject):

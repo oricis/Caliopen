@@ -5,20 +5,16 @@ from __future__ import absolute_import, print_function, unicode_literals
 import types
 from uuid import UUID
 
-from caliopen_main.commom.objects import base
-from caliopen_main.pi.objects import PIObject
+from caliopen_main.common.objects.base import ObjectStorable, \
+    ObjectJsonDictifiable
 
 from ..store import LocalIdentity as ModelLocalIdentity
 from ..store import IndexedLocalIdentity
-from ..store.contact import SocialIdentity as ModelSocialIdentity
-from ..parameters.contact import SocialIdentity as SocialIdentityParam
-from ..store.contact_index import IndexedSocialIdentity
 from ..store.local_identity import Identity as ModelIdentity
 from ..store.local_identity_index import IndexedIdentity
 
 
-class LocalIdentity(base.ObjectStorable):
-
+class LocalIdentity(ObjectStorable):
     """Local identity related to an user."""
 
     _attrs = {
@@ -37,24 +33,8 @@ class LocalIdentity(base.ObjectStorable):
     _index = None
 
 
-class SocialIdentity(base.ObjectIndexable):
-
-    _attrs = {
-        "contact_id":       UUID,
-        "social_id": UUID,
-        "infos": types.DictType,
-        "name":             types.StringType,
-        "type":             types.StringType,
-        "user_id":          UUID
-    }
-
-    _json_model = SocialIdentityParam
-    _model_class = ModelSocialIdentity
-    _index_class = IndexedSocialIdentity
-
-
-class Identity(base.ObjectJsonDictifiable):
-    """"Reference to an identity embedded in a message """
+class Identity(ObjectJsonDictifiable):
+    """"Reference to an identity embedded in a message."""
 
     _attrs = {
         "identifier": types.StringType,
@@ -63,19 +43,3 @@ class Identity(base.ObjectJsonDictifiable):
 
     _model_class = ModelIdentity
     _index_class = IndexedIdentity
-
-
-class ContactIdentity(base.ObjectJsonDictifiable):
-    """
-    Mean of communication for a contact, with on-demand calculated PI.
-    [for ex., a list of ContactIdentity is built for REST API
-                                            …/contact/{contact_id}/identities]
-
-    """
-
-    _attrs = {
-        "identifier": types.StringType,
-        "label": types.StringType,
-        "privacy_index": PIObject,
-        "protocol": types.StringType,
-    }

@@ -8,10 +8,10 @@ from cassandra.cqlengine import columns
 
 from caliopen_storage.store.mixin import IndexedModelMixin
 from caliopen_storage.store import BaseModel, BaseUserType
-from caliopen_main.objects.pi import PIModel
+from caliopen_main.pi.objects import PIModel
 
 from .contact_index import IndexedContact
-from .tag import ResourceTag
+from caliopen_main.common.store.tag import ResourceTag
 
 
 class Organization(BaseUserType):

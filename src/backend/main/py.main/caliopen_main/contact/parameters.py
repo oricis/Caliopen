@@ -8,10 +8,10 @@ from schematics.types import (StringType, IntType, URLType,
 from schematics.types.compound import ListType, ModelType, DictType
 from schematics.transforms import blacklist
 
-from .types import InternetAddressType, PhoneNumberType
-from .tag import ResourceTag
+from caliopen_main.common.parameters.types import InternetAddressType, PhoneNumberType
+from caliopen_main.common.parameters.tag import ResourceTag
 
-from caliopen_pi.parameters import PIParameter
+from caliopen_main.pi.parameters import PIParameter
 
 ORG_TYPES = ['work', 'home']
 ADDRESS_TYPES = ['work', 'home', 'other']

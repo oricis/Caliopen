@@ -3,14 +3,14 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import types
-from caliopen_main.objects import base
+from caliopen_main.common.objects.base import ObjectIndexable
 from uuid import UUID
-from caliopen_main.user.store.contact import PostalAddress as ModelPostalAddress
-from caliopen_main.user.returns.contact import PostalAddressParam
-from caliopen_main.user.store.contact_index import IndexedPostalAddress
+from ..store.contact import PostalAddress as ModelPostalAddress
+from ..returns import PostalAddressParam
+from ..store.contact_index import IndexedPostalAddress
 
 
-class PostalAddress(base.ObjectIndexable):
+class PostalAddress(ObjectIndexable):
 
     _attrs = {
         "address_id":               UUID,

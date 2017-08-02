@@ -7,9 +7,9 @@ from schematics.types import (StringType, UUIDType, IntType,
 from schematics.types.compound import ModelType, DictType, ListType
 from schematics.transforms import blacklist
 
-from .contact import NewContact, Contact
+from caliopen_main.contact.parameters import NewContact, Contact
 
-from caliopen_pi.parameters import PIParameter
+from caliopen_main.pi.parameters import PIParameter
 
 
 class NewUser(Model):

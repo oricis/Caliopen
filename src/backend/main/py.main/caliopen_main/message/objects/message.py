@@ -3,7 +3,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import types
-from caliopen_main.objects import base
+from caliopen_main.common.objects.base import ObjectIndexable
 
 import uuid
 from uuid import UUID
@@ -11,29 +11,30 @@ import datetime
 import json
 import copy
 
-from caliopen_main.message.store import Message as ModelMessage
-from caliopen_main.message.store import IndexedMessage
-from caliopen_main.message.parameters.message import Message as ParamMessage
-from caliopen_main.message.parameters.draft import Draft
-from caliopen_main.message.core import RawMessage
 from caliopen_storage.exception import NotFound
-from .pi import PIObject
-from .tag import ResourceTag
+from caliopen_main.pi.objects import PIObject
+from caliopen_main.common.objects.tag import ResourceTag
+
+from ..store import Message as ModelMessage
+from ..store import IndexedMessage
+from ..parameters.message import Message as ParamMessage
+from ..parameters.draft import Draft
+from ..core import RawMessage
 from .attachment import MessageAttachment
 from .external_references import ExternalReferences
-from .identities import Identity
+from caliopen_main.user.objects.identities import Identity
 from .participant import Participant
 from schematics.types import UUIDType
 from caliopen_main.message.parameters.participant import \
     Participant as IndexedParticipant
-import caliopen_main.errors as err
+from caliopen_main.common import errors as err
 
 import logging
 
 log = logging.getLogger(__name__)
 
 
-class Message(base.ObjectIndexable):
+class Message(ObjectIndexable):
     """Message object class."""
 
     # TODO : manage attrs that should not be editable directly by users

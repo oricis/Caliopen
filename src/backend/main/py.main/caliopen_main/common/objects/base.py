@@ -7,8 +7,8 @@ import pytz
 from six import add_metaclass
 
 from caliopen_storage.exception import NotFound
-import caliopen_main.errors as main_errors
-from caliopen_main.interfaces import (IO, storage)
+import caliopen_main.common.errors as main_errors
+from caliopen_main.common.interfaces import (IO, storage)
 from elasticsearch import exceptions as ESexceptions
 
 from caliopen_storage.core.base import CoreMetaClass
@@ -18,10 +18,12 @@ log = logging.getLogger(__name__)
 
 
 class CaliopenObject(object):
-    """empty class to identify Caliopen objects/types
+    """
+    Empty class to identify Caliopen objects/types.
 
     all custom classes should inherit from that
     """
+
     _attrs = {}
 
     def __init__(self, **kwargs):

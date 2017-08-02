@@ -13,7 +13,7 @@ from cassandra.cqlengine import columns
 from elasticsearch_dsl import InnerObjectWrapper, Integer, Date
 
 from caliopen_storage.store import BaseUserType
-from .base import ObjectIndexable
+from caliopen_main.common.objects.base import ObjectIndexable
 
 
 class PIModel(BaseUserType):

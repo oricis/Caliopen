@@ -3,15 +3,15 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import types
-from caliopen_main.objects import base
+from caliopen_main.common.objects.base import ObjectIndexable
 from uuid import UUID
-from caliopen_main.user.parameters.types import InternetAddressType
-from caliopen_main.user.store.contact import IM as ModelIM
-from caliopen_main.user.returns.contact import IMParam
-from caliopen_main.user.store.contact_index import IndexedInternetAddress
+from caliopen_main.common.parameters.types import InternetAddressType
+from ..store.contact import IM as ModelIM
+from ..returns import IMParam
+from ..store.contact_index import IndexedInternetAddress
 
 
-class IM(base.ObjectIndexable):
+class IM(ObjectIndexable):
 
     _attrs = {
         "address":              InternetAddressType,

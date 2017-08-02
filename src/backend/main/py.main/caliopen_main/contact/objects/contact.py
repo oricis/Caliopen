@@ -3,29 +3,30 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import types
-from caliopen_main.objects import base
 from uuid import UUID
 import datetime
-from caliopen_main.user.store.contact import (Contact as ModelContact,
-                                              ContactLookup as ModelContactLookup,
-                                              PublicKey as ModelPublicKey)
-from caliopen_main.user.store.contact_index import IndexedContact
-from caliopen_main.user.parameters.contact import Contact as ParamContact
+
+from caliopen_main.common.objects.base import ObjectStorable, ObjectIndexable
+from ..store.contact import (Contact as ModelContact,
+                             ContactLookup as ModelContactLookup,
+                             PublicKey as ModelPublicKey)
+from ..store.contact_index import IndexedContact
+from ..parameters import Contact as ParamContact
 
 from .email import Email
-from .identities import SocialIdentity
+from .identity import SocialIdentity
 from .im import IM
 from .organization import Organization
 from .phone import Phone
 from .postal_address import PostalAddress
-from .tag import ResourceTag
-from .pi import PIObject
+from caliopen_main.common.objects.tag import ResourceTag
+from caliopen_main.pi.objects import PIObject
 
 import logging
 log = logging.getLogger(__name__)
 
 
-class ContactLookup(base.ObjectStorable):
+class ContactLookup(ObjectStorable):
     """Contact lookup core class."""
 
     def __init__(self):
@@ -33,14 +34,14 @@ class ContactLookup(base.ObjectStorable):
         self._pkey_name = 'value'
 
 
-class PublicKey(base.ObjectStorable):
+class PublicKey(ObjectStorable):
 
     def __init__(self):
         self._model_class = ModelPublicKey
         self._pkey_name = 'name'
 
 
-class Contact(base.ObjectIndexable):
+class Contact(ObjectIndexable):
 
     # TODO : manage attrs that should not be modifiable directly by users
     _attrs = {

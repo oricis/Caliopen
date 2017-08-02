@@ -3,15 +3,15 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import types
-from caliopen_main.objects import base
-from caliopen_main.user.parameters.types import PhoneNumberType
+from caliopen_main.common.objects.base import ObjectIndexable
+from caliopen_main.common.parameters.types import PhoneNumberType
 from uuid import UUID
-from caliopen_main.user.store.contact import Phone as ModelPhone
-from caliopen_main.user.returns.contact import PhoneParam
-from caliopen_main.user.store.contact_index import IndexedPhone
+from ..store.contact import Phone as ModelPhone
+from ..store.contact_index import IndexedPhone
+from ..returns import PhoneParam
 
 
-class Phone(base.ObjectIndexable):
+class Phone(ObjectIndexable):
 
     _attrs = {
         "contact_id":               UUID,

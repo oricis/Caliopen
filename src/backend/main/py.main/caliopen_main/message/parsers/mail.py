@@ -19,9 +19,9 @@ from email.utils import parsedate_tz, mktime_tz, getaddresses
 
 import zope.interface
 
-from caliopen_main.user.helpers.normalize import clean_email_address
-from caliopen_main.interfaces import (IAttachmentParser, IMessageParser,
-                                      IParticipantParser)
+from caliopen_main.common.helpers.normalize import clean_email_address
+from caliopen_main.common.interfaces import (IAttachmentParser, IMessageParser,
+                                             IParticipantParser)
 
 log = logging.getLogger(__name__)
 

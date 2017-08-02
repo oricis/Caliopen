@@ -7,16 +7,16 @@ import uuid
 
 from datetime import datetime
 
-from ..store import (Contact as ModelContact,
-                     ContactLookup as ModelContactLookup,
-                     PublicKey as ModelPublicKey,
-                     Organization, Email, IM, PostalAddress,
-                     Phone, SocialIdentity,
-                     ResourceTag)
-from caliopen_main.user.store.contact_index import IndexedContact
+from .store import (Contact as ModelContact,
+                    ContactLookup as ModelContactLookup,
+                    PublicKey as ModelPublicKey,
+                    Organization, Email, IM, PostalAddress,
+                    Phone, SocialIdentity)
+from .store.contact_index import IndexedContact
+from caliopen_main.common.store.tag import ResourceTag
 from caliopen_storage.core import BaseCore, BaseUserCore
 from caliopen_storage.core.mixin import MixinCoreRelation, MixinCoreNested
-from caliopen_main.objects.pi import PIModel
+from caliopen_main.pi.objects import PIModel
 
 log = logging.getLogger(__name__)
 

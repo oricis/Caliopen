@@ -5,13 +5,12 @@ from __future__ import absolute_import, print_function, unicode_literals
 import types
 
 from uuid import UUID
-from caliopen_main.objects import base
-from caliopen_main.message.store.participant import \
-    Participant as ModelParticipant
-from caliopen_main.message.store.participant_index import IndexedParticipant
+from caliopen_main.common.objects.base import ObjectJsonDictifiable
+from ..store.participant import Participant as ModelParticipant
+from ..store.participant_index import IndexedParticipant
 
 
-class Participant(base.ObjectJsonDictifiable):
+class Participant(ObjectJsonDictifiable):
     """attachment's attributes, nested within message object"""
 
     _attrs = {

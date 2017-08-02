@@ -20,12 +20,11 @@ from ..store import (User as ModelUser,
                      FilterRule as ModelFilterRule,
                      ReservedName as ModelReservedName,
                      LocalIdentity as ModelLocalIdentity,
-                     RemoteIdentity as ModelRemoteIdentity,
-                     ContactLookup)
+                     RemoteIdentity as ModelRemoteIdentity)
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
-from caliopen_main.contact.core import Contact as CoreContact
-from caliopen_main.contact.objects import Contact
+from caliopen_main.contact.core import Contact as CoreContact, ContactLookup
+from caliopen_main.contact.objects.contact import Contact
 from caliopen_main.pi.objects import PIModel
 from caliopen_main.user.helpers import validators
 

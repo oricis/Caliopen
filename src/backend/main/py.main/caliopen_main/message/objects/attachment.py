@@ -3,14 +3,12 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import types
-from caliopen_main.objects import base
-from caliopen_main.message.store.attachment import \
-    MessageAttachment as ModelMessageAttachment
-from caliopen_main.message.store.attachment_index import \
-    IndexedMessageAttachment
+from caliopen_main.common.objects.base import ObjectJsonDictifiable
+from ..store.attachment import MessageAttachment as ModelMessageAttachment
+from ..store.attachment_index import IndexedMessageAttachment
 
 
-class MessageAttachment(base.ObjectJsonDictifiable):
+class MessageAttachment(ObjectJsonDictifiable):
 
     """attachment's attributes, nested within message object"""
 
@@ -21,7 +19,6 @@ class MessageAttachment(base.ObjectJsonDictifiable):
         'size': types.IntType,
         'url': types.StringType,
         'mime_boundary': types.StringType
-    # objectsStore uri for temporary file (draft) or boundary reference for mime-part attachment
     }
 
     _model_class = ModelMessageAttachment

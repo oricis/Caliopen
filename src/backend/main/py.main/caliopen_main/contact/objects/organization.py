@@ -3,14 +3,14 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import types
-from caliopen_main.objects import base
+from caliopen_main.common.objects.base import ObjectIndexable
 from uuid import UUID
-from caliopen_main.user.store.contact import Organization as ModelOrganization
-from caliopen_main.user.returns.contact import OrganizationParam
-from caliopen_main.user.store.contact_index import IndexedOrganization
+from ..store.contact import Organization as ModelOrganization
+from ..store.contact_index import IndexedOrganization
+from ..returns import OrganizationParam
 
 
-class Organization(base.ObjectIndexable):
+class Organization(ObjectIndexable):
 
     _attrs = {
         "department":               types.StringType,

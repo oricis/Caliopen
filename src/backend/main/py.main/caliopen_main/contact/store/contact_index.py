@@ -7,9 +7,9 @@ import logging
 from elasticsearch_dsl import Mapping, Nested, Text, Keyword, Date, Boolean, \
     InnerObjectWrapper
 from caliopen_storage.store.model import BaseIndexDocument
-from caliopen_main.objects.pi import PIIndexModel
+from caliopen_main.pi.objects import PIIndexModel
 
-from .tag_index import IndexedResourceTag
+from caliopen_main.common.store.tag import IndexedResourceTag
 
 log = logging.getLogger(__name__)
 
