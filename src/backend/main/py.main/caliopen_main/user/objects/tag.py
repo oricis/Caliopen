@@ -5,14 +5,14 @@ import types
 import uuid
 import datetime
 
-from caliopen_main.objects import base
+from caliopen_main.common.objects.base import ObjectUser
 from caliopen_main.user.store import UserTag as ModelUSerTag
 
 import logging
 log = logging.getLogger(__name__)
 
 
-class UserTag(base.ObjectUser):
+class UserTag(ObjectUser):
     """Tag related to an user."""
 
     _attrs = {

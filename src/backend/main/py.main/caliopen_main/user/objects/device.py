@@ -7,7 +7,7 @@ import logging
 import types
 import uuid
 
-from caliopen_main.common.objects import ObjectStorable, ObjectUser
+from caliopen_main.common.objects.base import ObjectStorable, ObjectUser
 from caliopen_main.pi.objects import PIObject
 
 from ..parameters.device import Device as DeviceParam

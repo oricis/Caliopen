@@ -2,28 +2,23 @@
 """Caliopen vcard parsing."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-from ..user.parameters.contact import (NewContact, NewEmail,
-                                       NewPostalAddress,
-                                       NewPhone, NewOrganization, NewIM,
-                                       ADDRESS_TYPES, EMAIL_TYPES, IM_TYPES)
+from caliopen_main.contact.parameters import (NewContact,
+                                              NewEmail,
+                                              NewPostalAddress,
+                                              NewPublicKey,
+                                              NewPhone,
+                                              NewOrganization,
+                                              NewIM,
+                                              KEY_CHOICES,
+                                              ADDRESS_TYPES,
+                                              EMAIL_TYPES,
+                                              IM_TYPES)
 
-from caliopen_main.user.parameters.types import PhoneNumberType
-from caliopen_main.user.parameters.types import InternetAddressType
+from caliopen_main.common.parameters.types import PhoneNumberType
+from caliopen_main.common.parameters.types import InternetAddressType
 
 import os
 import vobject
-import ssl
-
-from caliopen_main.user.parameters.contact import (NewContact, NewEmail,
-                                        NewPostalAddress, NewPublicKey, NewPhone,
-                                        NewOrganization, NewIM, Contact, PHONE_TYPES,
-                                        ADDRESS_TYPES, EMAIL_TYPES, KEY_CHOICES, ORG_TYPES,
-                                        IM_TYPES)
-
-from schematics.types import UUIDType
-
-from caliopen_main.user.core.contact import Contact as CoreContact
-from caliopen_main.user.core.user import User as CoreUser
 
 
 def validate_email(val):
@@ -170,7 +165,7 @@ def parse_vcard(vcard):
                 ke = NewPublicKey()
                 if key.params:
                     if key.params.get('ENCODING'):
-                       test = False
+                        test = False
                     else:
                         test = True
                 if test:
@@ -191,7 +186,7 @@ def parse_vcard(vcard):
                                 if j == 'pgp':
                                     j = 'gpg'
                                 ke.type = j
-                    ke.name = ('key{}{}'.format(ke.type,ke.size))
+                    ke.name = ('key{}{}'.format(ke.type, ke.size))
                     new_contact.public_keys.append(ke)
 
         elif v == 'tel':
@@ -200,7 +195,7 @@ def parse_vcard(vcard):
                 phone.is_primary = False
                 try:
                     func = PhoneNumberType.validate_phone
-                    phone.number = func(PhoneNumberType(),tel.value)
+                    phone.number = func(PhoneNumberType(), tel.value)
                     new_contact.phones.append(phone)
                 except:
                     pass
@@ -214,12 +209,6 @@ def parse_vcards(vcards):
         yield parse_vcard(v)
 
 
-def parse_vcards(vcards):
-
-    for v in vcards:
-        yield parse_vcard(v)
-
-
 def read_file(file_vcard, test):
 
     vcards= []
@@ -227,9 +216,9 @@ def read_file(file_vcard, test):
         ext = file_vcard.split('.')[-1]
         if ext == 'vcard' or ext == 'vcf':
             with open('{}'.format(file_vcard), 'r') as fh:
-                 vcards_tmp = vobject.readComponents(fh)
-                 for v in vcards_tmp:
-                     vcards.append(v)
+                vcards_tmp = vobject.readComponents(fh)
+                for v in vcards_tmp:
+                    vcards.append(v)
     else:
         vcards = vobject.readComponents(file_vcard)
     return vcards
@@ -237,9 +226,9 @@ def read_file(file_vcard, test):
 
 def read_directory(directory):
 
-    vcards= []
+    vcards = []
     files = [f for f in os.listdir(directory) if
-                 os.path.isfile(os.path.join(directory, f))]
+             os.path.isfile(os.path.join(directory, f))]
     for f in files:
         ext = f.split('.')[-1]
         if ext == 'vcard' or ext == 'vcf':

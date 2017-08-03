@@ -9,10 +9,9 @@ from pyramid.httpexceptions import (HTTPConflict, HTTPOk, HTTPNotFound,
 
 from ..base.context import DefaultContext
 
-from caliopen_storage.config import Configuration
 from caliopen_storage.exception import NotFound
 from caliopen_main.user.core import Tag as CoreTag, User as CoreUser
-from caliopen_main.objects.tag import UserTag as UserTagObject
+from caliopen_main.user.objects.tag import UserTag as UserTagObject
 from ..base import Api
 
 
