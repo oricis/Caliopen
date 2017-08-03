@@ -14,28 +14,27 @@ class ContactProfile extends Component {
     contact: PropTypes.shape({}).isRequired,
     className: PropTypes.string,
     onChange: PropTypes.func.isRequired,
+    editMode: PropTypes.bool.isRequired,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
     className: undefined,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      editMode: false,
-    };
+  state = {
+    editProfile: false,
+  };
 
-    this.toggleEditMode = this.toggleEditMode.bind(this);
-  }
-
-  toggleEditMode() {
-    this.setState({ editMode: !this.state.editMode });
+  toggleEditProfile = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      editProfile: !prevState.editProfile,
+    }));
   }
 
   render() {
-    const { contact, className, onChange, __ } = this.props;
-    const activeButtonProp = this.state.editMode ? { color: 'active' } : {};
+    const { contact, className, onChange, editMode, __ } = this.props;
+    const activeButtonProp = this.state.toggleEditProfile ? { color: 'active' } : {};
 
     return (
       <div className={classnames('m-contact-profile', className)}>
@@ -55,15 +54,17 @@ class ContactProfile extends Component {
           </div>
 
           <div className="m-contact-profile__edit-button">
-            <Button
-              icon="edit"
-              {...activeButtonProp}
-              onClick={this.toggleEditMode}
-            >
-              <span className="show-for-sr">
-                {__('contact_profile.action.edit_contact')}
-              </span>
-            </Button>
+            {editMode && (
+              <Button
+                icon="edit"
+                {...activeButtonProp}
+                onClick={this.toggleEditProfile}
+              >
+                <span className="show-for-sr">
+                  {__('contact_profile.action.edit_contact')}
+                </span>
+              </Button>
+            )}
           </div>
 
         </div>
@@ -76,9 +77,9 @@ class ContactProfile extends Component {
             ))}
           </div>
         }
-        {this.state.editMode ? (
+        {this.state.editProfile ? (
           <ContactProfileForm contact={contact} onChange={onChange} />
-        ) : contact.pi && (
+        ) : contact.pi && !editMode && (
           <MultidimensionalPi className="m-contact-profile__pi" pi={contact.pi} />
         )
         }

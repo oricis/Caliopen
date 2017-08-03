@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Subtitle from '../Subtitle';
-import Button from '../Button';
 import TextList, { ItemContent } from '../TextList';
 import AddressDetails from './components/AddressDetails';
 import EmailDetails from './components/EmailDetails';
@@ -25,6 +24,7 @@ class ContactDetails extends Component {
     onConnectRemoteIdentity: PropTypes.func,
     onDisconnectRemoteIdentity: PropTypes.func,
     remoteIdentities: PropTypes.arrayOf(PropTypes.shape({})),
+    editMode: PropTypes.bool.isRequired,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
@@ -37,41 +37,15 @@ class ContactDetails extends Component {
 
   constructor(props) {
     super(props);
-    this.makeHandleSwitchEditMode = this.makeHandleSwitchEditMode.bind(this);
-    this.renderAddress = this.renderAddress.bind(this);
-    this.renderEmail = this.renderEmail.bind(this);
-    this.renderPhone = this.renderPhone.bind(this);
-    this.renderIm = this.renderIm.bind(this);
-    this.makeHandleAddContactDetail = this.makeHandleAddContactDetail.bind(this);
-    this.makeHandleDeleteContactDetail = this.makeHandleDeleteContactDetail.bind(this);
-    this.state = {
-      editMode: {
-        details: false,
-        organizations: false,
-        identities: false,
-      },
-    };
-
     this.initDetailsTranslations();
   }
 
-  getRemoteIdentity(identityType, identityId) {
-    return this.props.remoteIdentities
+  getRemoteIdentity = (identityType, identityId) => {
+    this.props.remoteIdentities
       .find(
         remoteIdentity => remoteIdentity.identity_type === identityType
           && remoteIdentity.identity_id === identityId
       );
-  }
-
-  makeHandleSwitchEditMode(panel) {
-    return () => {
-      this.setState(prevState => ({
-        editMode: {
-          ...prevState.editMode,
-          [panel]: !prevState.editMode[panel],
-        },
-      }));
-    };
   }
 
   initDetailsTranslations() {
@@ -91,7 +65,7 @@ class ContactDetails extends Component {
     };
   }
 
-  makeHandleAddContactDetail(type) {
+  makeHandleAddContactDetail = (type) => {
     const { onUpdateContact, contact } = this.props;
 
     return ({ contactDetail }) => onUpdateContact({
@@ -106,7 +80,7 @@ class ContactDetails extends Component {
     });
   }
 
-  makeHandleDeleteContactDetail(type) {
+  makeHandleDeleteContactDetail = (type) => {
     const { onUpdateContact, contact } = this.props;
 
     return ({ contactDetail }) => onUpdateContact({
@@ -118,28 +92,13 @@ class ContactDetails extends Component {
     });
   }
 
-  renderSubtitleActions(panel) {
-    const { __ } = this.props;
-    const activeButtonProp = this.state.editMode[panel] ? { color: 'active' } : {};
-
-    return (
-      <Button
-        className="pull-right"
-        {...activeButtonProp}
-        onClick={this.makeHandleSwitchEditMode(panel)}
-        icon="edit"
-      >
-        <span className="show-for-sr">{__('contact.action.edit_contact_details')}</span>
-      </Button>
-    );
-  }
-
-  renderEmail(email) {
+  renderEmail = (email) => {
     const {
       __,
       allowConnectRemoteEntity,
       onConnectRemoteIdentity,
       onDisconnectRemoteIdentity,
+      editMode,
     } = this.props;
 
     const remoteIdentity = allowConnectRemoteEntity ?
@@ -152,7 +111,7 @@ class ContactDetails extends Component {
           email={email}
           allowConnectRemoteEntity={allowConnectRemoteEntity}
           remoteIdentity={remoteIdentity}
-          editMode={this.state.editMode.details}
+          editMode={editMode}
           onDelete={this.makeHandleDeleteContactDetail('emails')}
           onConnectRemoteIdentity={onConnectRemoteIdentity}
           onDisconnectRemoteIdentity={onDisconnectRemoteIdentity}
@@ -162,14 +121,14 @@ class ContactDetails extends Component {
     );
   }
 
-  renderPhone(phone) {
-    const { __ } = this.props;
+  renderPhone = (phone) => {
+    const { __, editMode } = this.props;
 
     return (
       <ItemContent large>
         <PhoneDetails
           phone={phone}
-          editMode={this.state.editMode.details}
+          editMode={editMode}
           onDelete={this.makeHandleDeleteContactDetail('phones')}
           __={__}
         />
@@ -177,14 +136,14 @@ class ContactDetails extends Component {
     );
   }
 
-  renderIm(im) {
-    const { __ } = this.props;
+  renderIm = (im) => {
+    const { __, editMode } = this.props;
 
     return (
       <ItemContent large>
         <ImDetails
           im={im}
-          editMode={this.state.editMode.details}
+          editMode={editMode}
           onDelete={this.makeHandleDeleteContactDetail('ims')}
           __={__}
         />
@@ -192,14 +151,14 @@ class ContactDetails extends Component {
     );
   }
 
-  renderAddress(address) {
-    const { __ } = this.props;
+  renderAddress = (address) => {
+    const { __, editMode } = this.props;
 
     return (
       <ItemContent large>
         <AddressDetails
           address={address}
-          editMode={this.state.editMode.details}
+          editMode={editMode}
           onDelete={this.makeHandleDeleteContactDetail('addresses')}
           __={__}
         />
@@ -207,7 +166,7 @@ class ContactDetails extends Component {
     );
   }
 
-  renderContactDetails() {
+  renderContactDetails = () => {
     const { contact } = this.props;
     const emails = contact.emails ?
       [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
@@ -225,7 +184,7 @@ class ContactDetails extends Component {
     );
   }
 
-  renderContactDetailsForm() {
+  renderContactDetailsForm = () => {
     const { __, contact } = this.props;
     const emails = contact.emails ?
       [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
@@ -248,24 +207,24 @@ class ContactDetails extends Component {
   }
 
   render() {
-    const { __, contact } = this.props;
+    const { __, contact, editMode } = this.props;
 
     return (
       <div className="m-contact-details">
         <div className="m-contact-details__panel">
-          <Subtitle hr actions={this.renderSubtitleActions('details')}>
+          <Subtitle hr>
             {__('contact.contact_details')}
           </Subtitle>
           <div className="m-contact-details__list">
-            {this.state.editMode.details ?
+            {editMode ?
               this.renderContactDetailsForm() :
-              this.renderContactDetails()}
-
+              this.renderContactDetails()
+            }
           </div>
         </div>
 
         <div className="m-contact-details__panel">
-          <Subtitle hr actions={this.renderSubtitleActions('organizations')}>
+          <Subtitle hr>
             {__('contact.contact_organizations')}
           </Subtitle>
           <div className="m-contact-details__list">
@@ -274,20 +233,20 @@ class ContactDetails extends Component {
                 <OrgaDetails
                   key={organization.organization_id}
                   organization={organization}
-                  editMode={this.state.editMode.organizations}
+                  editMode={editMode}
                   onDelete={this.makeHandleDeleteContactDetail('organizations')}
                   __={__}
                 />
               ))}
             </TextList>
-            {this.state.editMode.organizations && (
+            {editMode && (
               <OrgaForm onSubmit={this.makeHandleAddContactDetail('organizations')} __={__} />
             )}
           </div>
         </div>
 
         <div className="m-contact-details__panel">
-          <Subtitle hr actions={this.renderSubtitleActions('identities')}>
+          <Subtitle hr>
             {__('contact.contact_identities')}
           </Subtitle>
           <div className="m-contact-details__list">
@@ -296,13 +255,13 @@ class ContactDetails extends Component {
                 <IdentityDetails
                   key={identity.value}
                   identity={identity}
-                  editMode={this.state.editMode.identities}
+                  editMode={editMode}
                   onDelete={this.makeHandleDeleteContactDetail('identities')}
                   __={__}
                 />
               ))}
             </TextList>
-            {this.state.editMode.identities && (
+            {editMode && (
               <IdentityForm onSubmit={this.makeHandleAddContactDetail('identities')} __={__} />
             )}
           </div>

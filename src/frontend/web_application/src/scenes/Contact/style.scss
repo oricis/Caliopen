@@ -5,7 +5,25 @@
   @include flex-grid-row($size: expand);
 
   &__menu-bar {
+    @include flex-grid-column(12);
     margin-bottom: $co-margin;
+  }
+
+  &__action-bar,
+  &__edit-bar {
+    @include flex-grid-row($size: expand);
+    justify-content: space-between;
+  }
+
+  &__action,
+  &__bar-title {
+    @include flex-grid-column(shrink);
+  }
+
+  &__bar-title {
+    color: $co-color__fg__text--high;
+    font-weight: 600;
+    line-height: $co-component__height;
   }
 
   &__col-datas-irl {

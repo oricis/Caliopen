@@ -7,6 +7,7 @@ import ContactProfile from '../../components/ContactProfile';
 import Modal from '../../components/Modal';
 import MenuBar from '../../components/MenuBar';
 import Button from '../../components/Button';
+import TextBlock from '../../components/TextBlock';
 
 import './style.scss';
 
@@ -29,40 +30,46 @@ class Contact extends Component {
     contact: undefined,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isTagModalOpen: false,
-    };
-    this.handleContactChange = this.handleContactChange.bind(this);
-    this.handleContactDelete = this.handleContactDelete.bind(this);
-    this.handleClickTags = this.handleClickTags.bind(this);
-    this.handleCloseTagsModal = this.handleCloseTagsModal.bind(this);
-    this.renderTagsModal = this.renderTagsModal.bind(this);
-  }
+  state = {
+    isTagsModalOpen: false,
+    editMode: false,
+  };
 
   componentDidMount() {
     const { contactId, requestContact } = this.props;
     requestContact({ contactId });
   }
 
-  handleContactChange({ contact, original }) {
+  handleContactChange = ({ contact, original }) => {
     this.props.updateContact({ contact, original });
   }
 
-  handleContactDelete({ contact }) {
+  handleContactDelete = ({ contact }) => {
     this.props.removeContact({ contact });
   }
 
-  handleClickTags() {
-    this.setState({ isTagModalOpen: true });
+  openTagsModal = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isTagsModalOpen: true,
+    }));
   }
 
-  handleCloseTagsModal() {
-    this.setState({ isTagModalOpen: false });
+  closeTagsModal = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isTagsModalOpen: false,
+    }));
   }
 
-  renderTagsModal() {
+  toggleEditMode = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      editMode: !prevState.editMode,
+    }));
+  }
+
+  renderTagsModal = () => {
     const { contact, updateContact, __ } = this.props;
     const count = contact.tags ? contact.tags.length : 0;
     const title = (
@@ -77,10 +84,46 @@ class Contact extends Component {
         isOpen={this.state.isTagModalOpen}
         contentLabel={__('tags.header.title')}
         title={title}
-        onClose={this.handleCloseTagsModal}
+        onClose={this.closeTagsModal}
       >
         <ManageTags contact={contact} onContactChange={updateContact} />
       </Modal>
+    );
+  }
+
+  renderEditBar = () => {
+    const { __ } = this.props;
+
+    return (
+      <div className="s-contact__edit-bar">
+        <TextBlock className="s-contact__bar-title">
+          {__('Editing contact')}
+        </TextBlock>
+        <Button
+          onClick={this.toggleEditMode}
+          responsive="icon-only"
+          icon="check"
+          className="s-contact__action"
+        />
+      </div>
+    );
+  }
+
+  renderActionBar = () => {
+    const { contact } = this.props;
+
+    return (
+      <div className="s-contact__action-bar">
+        <TextBlock className="s-contact__bar-title">
+          {contact.title}
+        </TextBlock>
+        <Button
+          onClick={this.toggleEditMode}
+          responsive="icon-only"
+          icon="pencil"
+          className="s-contact__action"
+        />
+      </div>
     );
   }
 
@@ -88,44 +131,34 @@ class Contact extends Component {
     const { __, isFetching, contact } = this.props;
 
     return (
-      <div>
+      <div className="s-contact">
         {contact && (
           <MenuBar className="s-contact__menu-bar">
-            <Button
-              onClick={this.handleContactDelete}
-              responsive="icon-only"
-              icon="trash"
-            >{__('contact.action.delete_contact')}</Button>
-            <Button
-              onClick={this.handleClickTags}
-              responsive="icon-only"
-              icon="tags"
-            >{__('contact.action.edit_tags')}</Button>
-            {this.renderTagsModal()}
+            {this.state.editMode ? this.renderEditBar() : this.renderActionBar()}
           </MenuBar>
         )}
+
         <Spinner isLoading={isFetching} />
-        {
-          contact && (
+
+        {contact && (
           <div className="s-contact">
             <div className="s-contact__col-datas-irl">
-              {contact && (
-                <ContactProfile
-                  contact={contact}
-                  onChange={this.handleContactChange}
-                />
-              )}
+              <ContactProfile
+                contact={contact}
+                onChange={this.handleContactChange}
+                editMode={this.state.editMode}
+              />
             </div>
             <div className="s-contact__col-datas-online">
               <ContactDetails
                 contact={contact}
                 onUpdateContact={this.handleContactChange}
+                editMode={this.state.editMode}
                 __={__}
               />
             </div>
           </div>
-          )
-        }
+          )}
       </div>
     );
   }
