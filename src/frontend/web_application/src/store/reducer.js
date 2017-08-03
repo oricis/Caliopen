@@ -7,6 +7,7 @@ import deviceReducer from './modules/device';
 import discussionReducer from './modules/discussion';
 import draftMessageReducer from './modules/draft-message';
 import i18nReducer from './modules/i18n';
+import importanceLevelReducer from './modules/importance-level';
 import localIdentityReducer from './modules/local-identity';
 import messageReducer from './modules/message';
 import openPGPKeychainReducer from './modules/openpgp-keychain';
@@ -22,6 +23,7 @@ const reducer = combineReducers({
   discussion: discussionReducer,
   draftMessage: draftMessageReducer,
   i18n: i18nReducer,
+  importanceLevel: importanceLevelReducer,
   localIdentity: localIdentityReducer,
   message: messageReducer,
   openPGPKeychain: openPGPKeychainReducer,

@@ -54,6 +54,7 @@ export const typeAssoc = {
   twitter: 'fa fa-twitter',
   'th-large': 'fa fa-th-large',
   trash: 'fa fa-trash',
+  warning: 'fa fa-warning',
   'window-maximize': 'fa fa-window-maximize',
 };
 

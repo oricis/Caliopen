@@ -12,4 +12,21 @@
   &__menu {
     line-height: $co-component__height;
   }
+
+  &__importance-slider {
+    display: flex;
+    margin-right: 1rem;
+    margin-left: 1rem;
+  }
+
+  &__importance-slider-icon {
+    flex: 0 1;
+    margin: auto;
+    color: $co-color__importance;
+  }
+
+  &__slider {
+    flex: 1 0;
+    margin: auto auto auto 1rem;
+  }
 }
