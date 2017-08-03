@@ -6,9 +6,9 @@ import uuid
 
 import datetime
 from caliopen_storage.exception import NotFound
-from ..message.core import RawMessage
-from .qualifier import UserMessageQualifier
-from ..objects.message import Message
+from caliopen_main.message.core import RawMessage
+from caliopen_main.message.objects.message import Message
+from caliopen_pi.qualifier import UserMessageQualifier
 
 log = logging.getLogger(__name__)
 

@@ -2,17 +2,19 @@
 """Caliopen user message qualification logic."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
-from .parameters import NewInboundMessage, Participant, Attachment
+from caliopen_main.message.parameters import NewInboundMessage, Participant, Attachment
 
 from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
-from caliopen_main.user.core import Contact
+from caliopen_main.contact.core import Contact
 from caliopen_main.discussion.core import (DiscussionThreadLookup,
                                            DiscussionListLookup)
-from caliopen_pi.features import InboundMailFeature
 # XXX use a message formatter registry not directly mail format
-from caliopen_main.parsers import MailMessage
-from ..discussion.core import Discussion
+from caliopen_main.message.parsers.mail import MailMessage
+from caliopen_main.discussion.core import Discussion
+
+from .features import InboundMailFeature
+
 
 log = logging.getLogger(__name__)
 
@@ -67,7 +69,6 @@ class UserMessageQualifier(object):
             }
             lookup = kls.create(self.user, **params)
             log.debug('Create lookup %r' % lookup)
-
 
     def get_participant(self, message, participant):
         """Try to find a related contact and return a Participant instance."""

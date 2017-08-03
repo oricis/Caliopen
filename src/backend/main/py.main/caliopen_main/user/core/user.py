@@ -260,9 +260,10 @@ class User(BaseCore):
 
             # fill contact_lookup table
             log.info("contact id : {}".format(contact.contact_id))
-            ContactLookup.create(user_id=core.user_id,
-                                 value=default_local_id, type='email',
-                                 contact_ids=[contact.contact_id])
+            # TOFIX does not work
+            # ContactLookup.create(user_id=core.user_id,
+            #                     value=default_local_id, type='email',
+            #                     contact_ids=[contact.contact_id])
 
         core.save()
 

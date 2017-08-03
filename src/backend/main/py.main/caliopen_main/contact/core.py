@@ -103,8 +103,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
 
     @property
     def user(self):
-        # XXX TOFIX we should not be there, bad design
-        from .user import User
+        from caliopen_main.user.core import User
         return User.get(self.user_id)
 
     @classmethod

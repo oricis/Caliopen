@@ -6,10 +6,10 @@ import logging
 
 import pgpy
 
+from caliopen_main.pi.parameters import PIParameter
 from .spam import SpamScorer
 from .types import unmarshall_features
 from .ingress_path import get_ingress_features
-from ..parameters import PIParameter
 
 log = logging.getLogger(__name__)
 
