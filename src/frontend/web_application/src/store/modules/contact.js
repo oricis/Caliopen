@@ -9,6 +9,7 @@ export const REQUEST_CONTACT = 'co/contact/REQUEST_CONTACT';
 export const REQUEST_CONTACT_SUCCESS = 'co/contact/REQUEST_CONTACT_SUCCESS';
 export const UPDATE_CONTACT = 'co/contact/UPDATE_CONTACT';
 export const UPDATE_CONTACT_SUCCESS = 'co/contact/UPDATE_CONTACT_SUCCESS';
+export const UPDATE_CONTACT_FAIL = 'co/contact/UPDATE_CONTACT_FAIL';
 export const REMOVE_CONTACT = 'co/contact/REMOVE_CONTACT';
 
 export function requestContacts(params = {}) {
@@ -51,19 +52,17 @@ export function invalidate() {
 }
 
 export function updateContact({ contact, original }) {
-  return (dispatch) => {
-    const data = calcObjectForPatch(contact, original);
+  const data = calcObjectForPatch(contact, original);
 
-    return dispatch({
-      type: UPDATE_CONTACT,
-      payload: {
-        request: {
-          method: 'patch',
-          url: `/v1/contacts/${contact.contact_id}`,
-          data,
-        },
+  return {
+    type: UPDATE_CONTACT,
+    payload: {
+      request: {
+        method: 'patch',
+        url: `/v1/contacts/${contact.contact_id}`,
+        data,
       },
-    }).then(() => dispatch(requestContact({ contactId: contact.contact_id })));
+    },
   };
 }
 

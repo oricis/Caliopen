@@ -36,6 +36,7 @@
     "contact.email_type.home": "Personal",
     "contact.email_type.other": "Other",
     "contact.email_type.work": "Professional",
+    "contact.feedback.update-fail": "Unable to save. The contact seems to be outdated, please try to refresh.",
     "contact.identity_form.identity.label": "Identity",
     "contact.identity_form.legend": "Identities",
     "contact.identity_form.service.label": "Service",

@@ -7,6 +7,7 @@ import ContactProfile from '../../components/ContactProfile';
 import Modal from '../../components/Modal';
 import MenuBar from '../../components/MenuBar';
 import Button from '../../components/Button';
+import { UPDATE_CONTACT_SUCCESS } from '../../store/modules/contact';
 
 import './style.scss';
 
@@ -17,6 +18,7 @@ class Contact extends Component {
     __: PropTypes.func.isRequired,
     requestContact: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,
+    notifyError: PropTypes.func.isRequired,
     removeContact: PropTypes.func,
     contactId: PropTypes.string.isRequired,
     contact: PropTypes.shape({}),
@@ -29,36 +31,38 @@ class Contact extends Component {
     contact: undefined,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isTagModalOpen: false,
-    };
-    this.handleContactChange = this.handleContactChange.bind(this);
-    this.handleContactDelete = this.handleContactDelete.bind(this);
-    this.handleClickTags = this.handleClickTags.bind(this);
-    this.handleCloseTagsModal = this.handleCloseTagsModal.bind(this);
-    this.renderTagsModal = this.renderTagsModal.bind(this);
-  }
+  state = {
+    isTagModalOpen: false,
+  };
 
   componentDidMount() {
     const { contactId, requestContact } = this.props;
     requestContact({ contactId });
   }
 
-  handleContactChange({ contact, original }) {
-    this.props.updateContact({ contact, original });
+  handleContactChange = ({ contact, original }) => {
+    const { __, updateContact, notifyError, requestContact } = this.props;
+
+    updateContact({ contact, original })
+      .then((action) => {
+        if (action.type === UPDATE_CONTACT_SUCCESS) {
+          return requestContact({ contactId: contact.contact_id });
+        }
+
+        return notifyError(__('contact.feedback.update-fail'));
+      })
+    ;
   }
 
-  handleContactDelete({ contact }) {
+  handleContactDelete = ({ contact }) => {
     this.props.removeContact({ contact });
   }
 
-  handleClickTags() {
+  handleClickTags = () => {
     this.setState({ isTagModalOpen: true });
   }
 
-  handleCloseTagsModal() {
+  handleCloseTagsModal = () => {
     this.setState({ isTagModalOpen: false });
   }
 
