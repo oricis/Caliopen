@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - A python package caliopen_pi to group all logic related to privacy index
 - Add route `GET /v2/contacts/{contact_id}/identities` to search & retreive identities from a contact.
+- New scenes componnents related to Settings layout
+
+### Changed
+- Rename <Account...> layout and related scenes to <User...>
 
 ## [0.2.1] - 2017-07-04
 ### Added
@@ -29,7 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add or reply save draft message
 - Send a draft message
 - Basic import of a contact book
-- Add piwik, the analytics plateform for the alpha testing purpose 
+- Add piwik, the analytics plateform for the alpha testing purpose
 
 
 ### Changed
@@ -46,7 +50,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Initial release
 - Basic inbound email processing using NATS as message queue broker
 - Contact API
-- Message API 
+- Message API
 - Timeline build on basic discussion structure
 - development CLI with basic commands to manage storage and load fixtures
 - docker compose development stack

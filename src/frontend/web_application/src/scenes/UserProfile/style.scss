@@ -1,0 +1,30 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-user-profile {
+  @include flex-grid-row($size: expand);
+
+  &__actions {
+    @include flex-grid-column(12);
+    margin-top: $co-margin;
+    margin-bottom: $co-margin;
+  }
+
+  &__info {
+    @include flex-grid-column(12);
+  }
+
+  &__details {
+    @include flex-grid-column(12);
+  }
+
+  @include breakpoint(medium) {
+    &__info { @include flex-grid-size(5); }
+    &__details { @include flex-grid-size(7); }
+  }
+
+  @include breakpoint(large) {
+    &__info { @include flex-grid-size(4); }
+    &__details { @include flex-grid-size(8); }
+  }
+}

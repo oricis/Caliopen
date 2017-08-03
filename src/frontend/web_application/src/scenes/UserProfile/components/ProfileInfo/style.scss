@@ -1,0 +1,96 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+@import '../../../../styles/object/o-avatar';
+
+
+@mixin m-user-profile-info--horizontal {
+  &__avatar-wrapper {
+    @include flex-grid-size(shrink);
+  }
+
+  &__avatar {
+    @include m-avatar--size(large);
+    margin-bottom: $co-margin / 2;
+  }
+
+  &__name {
+    @include flex-grid-column(shrink);
+  }
+}
+
+@mixin m-user-profile-info--vertical {
+  &__avatar-wrapper {
+    @include flex-grid-size(12);
+  }
+
+  &__avatar {
+    @include m-avatar--size(xxlarge);
+  }
+
+  &__name {
+    @include flex-grid-column(12);
+  }
+}
+
+.m-user-profile-details {
+  &__header {
+    @include flex-grid-row($size: expand);
+    position: relative;
+  }
+
+  &__title {
+    margin: 0;
+    color: $co-color__fg__text--high;
+  }
+
+  &__subtitle {
+    margin: 0;
+    color: $co-color__fg__text;
+    font-size: $co-font__size--small;
+    font-weight: 400;
+  }
+
+  &__rank {
+    @include flex-grid-row($size: expand);
+  }
+
+  &__rank-badge {
+    @include flex-grid-size(4);
+  }
+
+  &__rank-info {
+    @include flex-grid-column(8);
+    text-align: center;
+  }
+
+  &__rank-title {
+    color: $co-color__fg__text--high;
+    font-weight: 600;
+  }
+
+  &__subscribed-date {
+    display: block;
+    color: $co-color__fg__text--high;
+    font-weight: 600;
+  }
+
+  @include m-user-profile-info--horizontal;
+
+  @include breakpoint(medium) {
+    @include m-user-profile-info--vertical;
+
+    &__rank-badge {
+      @include flex-grid-size(4);
+    }
+
+    &__rank-info {
+      @include flex-grid-column(8);
+    }
+
+    &__name,
+    &__avatar-wrapper {
+      text-align: center;
+    }
+
+  }
+}

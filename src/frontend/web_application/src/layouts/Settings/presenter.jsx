@@ -1,32 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NavList, { ItemContent } from '../../components/NavList';
 import MenuBar from '../../components/MenuBar';
-import Link from '../../components/Link';
-
-import './style.scss';
 
 const Settings = ({ __, children }) => {
   const navLinks = [
-    { title: __('settings.account'), to: '/settings/account', active: false },
-    { title: __('settings.application'), to: '/settings/appplication', active: false },
-    { title: __('settings.view'), to: '/settings/view', active: false },
-    { title: __('settings.tags'), to: '/settings/tags', active: false },
-    { title: __('settings.devices'), to: '/settings/devices', active: false },
-    { title: __('settings.signatures'), to: '/settings/signatures', active: false },
+    { title: __('settings.identities'), to: '/settings/identities' },
+    { title: __('settings.application'), to: '/settings/application/interface' },
+    { title: __('settings.tags'), to: '/settings/tags' },
+    { title: __('settings.devices'), to: '/settings/devices' },
+    { title: __('settings.signatures'), to: '/settings/signatures' },
   ];
 
   return (
     <div className="l-settings">
-      <MenuBar>
-        <NavList>
-          {navLinks.map(link => (
-            <ItemContent active={link.active} large key={link.title}>
-              <Link noDecoration {...link}>{link.title}</Link>
-            </ItemContent>
-          ))}
-        </NavList>
-      </MenuBar>
+      {
+        // FIXME: component should be connected to detect active links and pass them
+        // to MenuBar
+      }
+      <MenuBar className="l-settings__menu-bar" navLinks={navLinks} />
       <div className="l-settings__panel">{children}</div>
     </div>
   );

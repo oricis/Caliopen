@@ -16,13 +16,13 @@ class Presenter extends Component {
     __: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isDropdownOpen: false,
-    };
-    this.handleDropdownToggle = this.handleDropdownToggle.bind(this);
-  }
+  static defaultProps = {
+    user: {},
+  };
+
+  state = {
+    isDropdownOpen: false,
+  };
 
   handleDropdownToggle = () => {
     this.setState(prevState => ({ isDropdownOpen: !prevState.isDropdownOpen }));
@@ -54,10 +54,10 @@ class Presenter extends Component {
             </VerticalMenuItem>
             <Separator />
             <VerticalMenuItem>
-              <Link to="/settings/account" expanded button>{__('header.menu.account')}</Link>
+              <Link to="/user/profile" expanded button>{__('header.menu.account')}</Link>
             </VerticalMenuItem>
             <VerticalMenuItem>
-              <Link to="/settings/devices" expanded button>{__('header.menu.settings')}</Link>
+              <Link to="/settings/identities" expanded button>{__('header.menu.settings')}</Link>
             </VerticalMenuItem>
             <VerticalMenuItem>
               {user && (

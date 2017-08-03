@@ -65,7 +65,7 @@ class EmailDetails extends Component {
       >
         {' '}
         <Icon type={this.state.connectIdentityEditMode ? 'caret-up' : 'caret-down'} />
-        <span className="show-for-sr">{__('account.action.connect_identity')}</span>
+        <span className="show-for-sr">{__('user.action.connect_identity')}</span>
       </Button>
     );
   }

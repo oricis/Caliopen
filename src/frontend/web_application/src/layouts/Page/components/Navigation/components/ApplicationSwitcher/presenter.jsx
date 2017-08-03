@@ -44,8 +44,7 @@ class ApplicationSwitcher extends Component {
         active={isactive}
         contentChildren={(
           <ItemLink to={this.props.currentApplication.route}>
-            <Icon type={this.props.currentApplication.icon} />
-            {' '}
+            <Icon className="m-application-switcher__icon" type={this.props.currentApplication.icon} />
             {applicationLabels[this.props.currentApplication.name]}
           </ItemLink>
         )}

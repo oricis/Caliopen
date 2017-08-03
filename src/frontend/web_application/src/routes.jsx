@@ -2,18 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import { withTranslator } from '@gandi/react-translate';
-import Account from './scenes/Account';
 import Contact from './scenes/Contact';
 import Auth from './scenes/Auth';
 import DiscussionList from './scenes/DiscussionList';
 import AppRoute from './scenes/AppRoute';
 import NewDraft from './scenes/NewDraft';
+import UserRoute from './scenes/UserRoute';
+import UserProfile from './scenes/UserProfile';
+import UserSecurity from './scenes/UserSecurity';
+import UserPrivacy from './scenes/UserPrivacy';
 import SettingsRoute from './scenes/SettingsRoute';
+import SettingsIdentities from './scenes/SettingsIdentities';
+import SettingsContacts from './scenes/SettingsContacts';
+import SettingsNotifications from './scenes/SettingsNotifications';
+import SettingsInterface from './scenes/SettingsInterface';
+import SettingsSignatures from './scenes/SettingsSignatures';
+import SettingsApplicationRoute from './scenes/SettingsApplicationRoute';
 import DevicesRoute from './scenes/DevicesRoute';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
 import Tags from './scenes/Tags';
-import SettingsView from './scenes/SettingsView';
 import { Device } from './scenes/Devices';
 
 export const getRouteConfig = ({ __ }) => [
@@ -54,20 +62,57 @@ export const getRouteConfig = ({ __ }) => [
         app: 'contact',
       },
       {
+        path: '/user',
+        component: UserRoute,
+        app: 'account',
+        label: __('user.route.label.default'),
+        routes: [
+          {
+            path: '/user/profile',
+            component: UserProfile,
+            label: __('user.route.label.profile'),
+          },
+          {
+            path: '/user/privacy',
+            component: UserPrivacy,
+            label: __('user.route.label.privacy'),
+          },
+          {
+            path: '/user/security',
+            component: UserSecurity,
+            label: __('user.route.label.security'),
+          },
+        ],
+      },
+      {
         path: '/settings',
         component: SettingsRoute,
         app: 'settings',
         label: __('settings.route.label.default'),
         routes: [
           {
-            path: '/settings/account',
-            component: Account,
-            label: __('settings.route.label.account'),
+            path: '/settings/identities',
+            component: SettingsIdentities,
+            label: __('settings.route.label.identities'),
           },
           {
-            path: '/settings/view',
-            component: SettingsView,
-            label: __('settings.route.label.view'),
+            path: '/settings/application',
+            component: SettingsApplicationRoute,
+            label: __('settings.route.label.application'),
+            routes: [
+              {
+                path: '/settings/application/interface',
+                component: SettingsInterface,
+              },
+              {
+                path: '/settings/application/contacts',
+                component: SettingsContacts,
+              },
+              {
+                path: '/settings/application/notifications',
+                component: SettingsNotifications,
+              },
+            ],
           },
           {
             path: '/settings/tags',
@@ -84,6 +129,11 @@ export const getRouteConfig = ({ __ }) => [
                 component: Device,
               },
             ],
+          },
+          {
+            path: '/settings/signatures',
+            component: SettingsSignatures,
+            label: __('settings.route.label.signatures'),
           },
         ],
       },
