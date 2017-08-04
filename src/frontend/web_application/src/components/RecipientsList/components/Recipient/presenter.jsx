@@ -23,12 +23,7 @@ class Recipient extends Component {
     className: undefined,
   };
 
-  constructor(props) {
-    super(props);
-    this.handleClickRemove = this.handleClickRemove.bind(this);
-  }
-
-  handleClickRemove() {
+  handleClickRemove = () => {
     this.props.onRemove(this.props.participant);
   }
 
@@ -42,7 +37,7 @@ class Recipient extends Component {
           <span>{participant.address}</span>
         </span>
         <Button
-          className="m-recipient__col-remove m-link m-link--button"
+          className="m-recipient__col-remove"
           onClick={this.handleClickRemove}
           title={__('messages.compose.action.remove-recipient')}
         >

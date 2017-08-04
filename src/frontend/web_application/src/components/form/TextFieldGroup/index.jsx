@@ -12,20 +12,40 @@ const TextFieldGroup = ({
   expanded,
   className,
   showLabelforSr,
+  display,
   ...inputProps
 }) => {
   const hasError = errors.length > 0;
 
+  const groupClassName = classnames(className, 'm-text-field-group', {
+    'm-text-field-group--inline': display === 'inline',
+  });
+
   const labelClassName = classnames('m-text-field-group__label', {
     'show-for-sr': showLabelforSr,
+    'm-text-field-group--inline__label': display === 'inline',
+  });
+
+  const inputClassName = classnames('m-text-field-group__input', {
+    'm-text-field-group--inline__input': display === 'inline',
+  });
+
+  const errorsClassName = classnames('m-text-field-group__errors', {
+    'm-text-field-group--inline__errors': display === 'inline',
   });
 
   return (
-    <div className={classnames('m-text-field-group', className)}>
+    <div className={groupClassName}>
       <label htmlFor={id} className={labelClassName}>{label}</label>
-      <InputText id={id} expanded={expanded} hasError={hasError} {...inputProps} />
+      <InputText
+        id={id}
+        className={inputClassName}
+        expanded={expanded}
+        hasError={hasError}
+        {...inputProps}
+      />
       { errors.length > 0 && (
-        <FieldErrors className="m-text-field-group__errors" errors={errors} />
+        <FieldErrors className={errorsClassName} errors={errors} />
       )}
     </div>
   );
@@ -38,6 +58,7 @@ TextFieldGroup.propTypes = {
   errors: PropTypes.arrayOf(PropTypes.string),
   expanded: PropTypes.bool,
   className: PropTypes.string,
+  display: PropTypes.oneOf(['inline', 'block']),
 };
 TextFieldGroup.defaultProps = {
   id: undefined,
@@ -45,6 +66,7 @@ TextFieldGroup.defaultProps = {
   errors: [],
   expanded: true,
   className: undefined,
+  display: 'block',
 };
 
 export default TextFieldGroup;
