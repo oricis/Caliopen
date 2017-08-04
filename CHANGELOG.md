@@ -8,12 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - A python package caliopen_pi to group all logic related to privacy index
 - Add route `GET /v2/contacts/{contact_id}/identities` to search & retreive identities from a contact.
-- New scenes componnents related to Settings layout
+- New scene components related to Settings layout
 - New Importance Level range slider in tabs & alt navigation
 - In compose, add subject input field when recipient uses an email
 
 ### Changed
 - Rename <Account...> layout and related scenes to <User...>
+
+### Fixed
+- Bad wording for message update failures
 
 ## [0.2.1] - 2017-07-04
 ### Added
