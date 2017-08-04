@@ -73,6 +73,7 @@ class DiscussionItemActionsContainer extends Component {
           id={this.dropdownId}
           position="bottom"
           closeOnClick
+          hasTriangle
         >
           <VerticalMenu className="m-discussion-item-actions-container__menu">
             <VerticalMenuItem>
