@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withTranslator } from '@gandi/react-translate';
 import Button from '../Button';
@@ -7,6 +8,18 @@ import MultidimensionalPi from '../../components/MultidimensionalPi';
 import ContactAvatarLetter from '../ContactAvatarLetter';
 import ContactProfileForm from './components/ContactProfileForm';
 import './style.scss';
+
+const FAKE_TAGS = ['Caliopen', 'Gandi', 'Macarons'];
+
+function getContactTitle(contact) {
+  const familyName = contact.family_name || '';
+  const givenName = contact.given_name || '';
+  const title = contact.title || '';
+
+  if (!familyName && !givenName) { return title; }
+
+  return `${familyName}${givenName && familyName && ', '}${givenName}`;
+}
 
 @withTranslator()
 class ContactProfile extends Component {
@@ -44,19 +57,16 @@ class ContactProfile extends Component {
           </div>
 
           <div className="m-contact-profile__name">
-            <h3 className="m-contact-profile__title">{contact.title}</h3>
-            <h4 className="m-contact-profile__subtitle">
-              {contact.name_prefix}{contact.name_prefix && ' '}
-              {contact.given_name}{contact.given_name && ' '}
-              {contact.family_name}{contact.name_suffix && ' '}
-              {contact.name_suffix}
-            </h4>
+            <h3 className="m-contact-profile__title">
+              {getContactTitle(contact)}
+            </h3>
           </div>
 
           <div className="m-contact-profile__edit-button">
             {editMode && (
               <Button
-                icon="edit"
+                icon="caret-down"
+                display="inline"
                 {...activeButtonProp}
                 onClick={this.toggleEditProfile}
               >
@@ -69,20 +79,26 @@ class ContactProfile extends Component {
 
         </div>
 
+        {this.state.editProfile &&
+          <ContactProfileForm contact={contact} onChange={onChange} />
+        }
 
-        {contact.tags &&
+        {// contact.tags &&
+          // FIXME: contact.tags replaced with FAKE_TAGS for testing purpose
           <div className="m-contact-profile__tags">
-            {contact.tags.map(tag => (
+            {FAKE_TAGS.map(tag => (
               <Badge className="m-contact-profile__tag" key={tag}>{tag}</Badge>
             ))}
           </div>
         }
-        {this.state.editProfile ? (
-          <ContactProfileForm contact={contact} onChange={onChange} />
-        ) : contact.pi && !editMode && (
+
+        {contact.pi && !editMode && (
+
+        // FIXME: on mobile, MultidimensionalPi should be displayed on
+        // 2 columns (graph on left, rates on right)
+
           <MultidimensionalPi className="m-contact-profile__pi" pi={contact.pi} />
-        )
-        }
+        )}
       </div>
     );
   }

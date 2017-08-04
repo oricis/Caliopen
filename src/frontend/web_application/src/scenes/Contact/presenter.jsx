@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { v1 as uuidV1 } from 'uuid';
 import ManageTags from './ManageTags';
 import Spinner from '../../components/Spinner';
 import ContactDetails from '../../components/ContactDetails';
@@ -8,8 +9,13 @@ import Modal from '../../components/Modal';
 import MenuBar from '../../components/MenuBar';
 import Button from '../../components/Button';
 import TextBlock from '../../components/TextBlock';
+import DropdownMenu, { withDropdownControl } from '../../components/DropdownMenu';
+import VerticalMenu, { VerticalMenuItem } from '../../components/VerticalMenu';
 
 import './style.scss';
+
+// const FAKE_TAGS = ['Caliopen', 'Gandi', 'Macarons'];
+const DropdownControl = withDropdownControl(Button);
 
 const noop = str => str;
 
@@ -29,6 +35,11 @@ class Contact extends Component {
     removeContact: noop,
     contact: undefined,
   };
+
+  constructor(props) {
+    super(props);
+    this.dropdownId = uuidV1();
+  }
 
   state = {
     isTagsModalOpen: false,
@@ -81,7 +92,7 @@ class Contact extends Component {
 
     return (
       <Modal
-        isOpen={this.state.isTagModalOpen}
+        isOpen={this.state.isTagsModalOpen}
         contentLabel={__('tags.header.title')}
         title={title}
         onClose={this.closeTagsModal}
@@ -96,6 +107,12 @@ class Contact extends Component {
 
     return (
       <div className="s-contact__edit-bar">
+        <Button
+          onClick={this.toggleEditMode}
+          responsive="icon-only"
+          icon="remove"
+          className="s-contact__action"
+        >Cancel</Button>
         <TextBlock className="s-contact__bar-title">
           {__('Editing contact')}
         </TextBlock>
@@ -104,7 +121,7 @@ class Contact extends Component {
           responsive="icon-only"
           icon="check"
           className="s-contact__action"
-        />
+        >Validate</Button>
       </div>
     );
   }
@@ -117,12 +134,54 @@ class Contact extends Component {
         <TextBlock className="s-contact__bar-title">
           {contact.title}
         </TextBlock>
-        <Button
-          onClick={this.toggleEditMode}
-          responsive="icon-only"
-          icon="pencil"
-          className="s-contact__action"
+        <DropdownControl
+          toggle={this.dropdownId}
+          className="s-contact__actions-switcher float-right"
+          icon="ellipsis-v"
         />
+
+        <DropdownMenu
+          id={this.dropdownId}
+          className="s-contact__actions-menu"
+          position="bottom"
+          closeOnClick
+        >
+          <VerticalMenu>
+            <VerticalMenuItem>
+              <Button
+                onClick={this.toggleEditMode}
+                className="s-contact__action"
+                display="expanded"
+              >Edit</Button>
+            </VerticalMenuItem>
+            <VerticalMenuItem>
+              <Button
+                onClick={this.openTagsModal}
+                className="s-contact__action"
+                display="expanded"
+              >Manage Tags</Button>
+              {
+                // FIXME: when you open tagsModal, and then close it,
+                // Dropdown bugs.
+                this.renderTagsModal()
+              }
+            </VerticalMenuItem>
+            <VerticalMenuItem>
+              <Button
+                onClick={this.openTagsModal}
+                className="s-contact__action"
+                display="expanded"
+              >Share</Button>
+            </VerticalMenuItem>
+            <VerticalMenuItem>
+              <Button
+                onClick={this.handleContactDelete}
+                className="s-contact__action"
+                display="expanded"
+              >Delete</Button>
+            </VerticalMenuItem>
+          </VerticalMenu>
+        </DropdownMenu>
       </div>
     );
   }
@@ -131,9 +190,13 @@ class Contact extends Component {
     const { __, isFetching, contact } = this.props;
 
     return (
-      <div className="s-contact">
+      <div>
         {contact && (
           <MenuBar className="s-contact__menu-bar">
+            {
+              // FIXME: edit and action bars be displayed in fixed Header,
+              // not in MenuBar
+            }
             {this.state.editMode ? this.renderEditBar() : this.renderActionBar()}
           </MenuBar>
         )}
