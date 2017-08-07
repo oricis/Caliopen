@@ -36,6 +36,7 @@
     "contact.email_type.home": "contact.email_type.home",
     "contact.email_type.other": "contact.email_type.other",
     "contact.email_type.work": "contact.email_type.work",
+    "contact.feedback.update-fail": "contact.feedback.update-fail",
     "contact.identity_form.identity.label": "contact.identity_form.identity.label",
     "contact.identity_form.legend": "contact.identity_form.legend",
     "contact.identity_form.service.label": "contact.identity_form.service.label",

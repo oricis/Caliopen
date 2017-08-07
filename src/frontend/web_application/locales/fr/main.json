@@ -36,6 +36,7 @@
     "contact.email_type.home": "Personnel",
     "contact.email_type.other": "Autre",
     "contact.email_type.work": "Professionel",
+    "contact.feedback.update-fail": "Impossible de sauvegarder. Le contact ne semble pas à jour, essayez de rafraîchir",
     "contact.identity_form.identity.label": "Identité",
     "contact.identity_form.legend": "Identités",
     "contact.identity_form.service.label": "Service",
