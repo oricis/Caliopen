@@ -10,6 +10,7 @@ export const SAVE_DRAFT = 'co/draft-message/SAVE_DRAFT';
 export const SEND_DRAFT = 'co/draft-message/SEND_DRAFT';
 export const SEND_DRAFT_SUCCESS = 'co/draft-message/SEND_DRAFT_SUCCESS';
 export const CLEAR_DRAFT = 'co/draft-message/CLEAR_DRAFT';
+export const SET_RECIPIENT_SEARCH_TERMS = 'co/draft-message/SET_RECIPIENT_SEARCH_TERMS';
 
 export function editDraft({ discussionId, draft, message }) {
   return {
@@ -88,6 +89,13 @@ export function clearDraft({ discussionId }) {
   };
 }
 
+export function setRecipientSearchTerms({ discussionId, searchTerms }) {
+  return {
+    type: SET_RECIPIENT_SEARCH_TERMS,
+    payload: { discussionId, searchTerms },
+  };
+}
+
 function draftReducer(state = { participants: [] }, action) {
   switch (action.type) {
     case REQUEST_SIMPLE_DRAFT_SUCCESS:
@@ -136,6 +144,7 @@ const initialState = {
   didInvalidate: false,
   draftsByDiscussionId: {},
   simpleDraft: undefined,
+  recipientSearchTermsById: {},
 };
 
 export default function reducer(state = initialState, action) {
@@ -160,6 +169,15 @@ export default function reducer(state = initialState, action) {
         ...state,
         simpleDraft: undefined,
       };
+    case SET_RECIPIENT_SEARCH_TERMS: {
+      return {
+        ...state,
+        recipientSearchTermsById: {
+          ...state.recipientSearchTermsById,
+          [action.payload.discussionId]: action.payload.searchTerms,
+        },
+      };
+    }
     default:
       return state;
   }

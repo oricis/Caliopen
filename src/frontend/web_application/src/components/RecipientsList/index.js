@@ -3,25 +3,42 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslator } from '@gandi/react-translate';
 import Presenter from './presenter';
-import { requestContacts } from '../../store/modules/contact';
+import { setRecipientSearchTerms } from '../../store/modules/draft-message';
+import { suggest as participantSuggest } from '../../store/modules/participant-suggestions';
 
-const contactsSelector = createSelector(
-  state => state.contact,
-  payload => payload.contacts.map(contactId => payload.contactsById[contactId])
+const findRecipient = (recipients, { address, protocol }) => recipients.find(recipient =>
+  recipient.address === address && recipient.protocol === protocol
 );
 
-const contactIsFetchingSelector = state => state.contact.isFetching;
+const searchTermsSelector = (state, ownProps) =>
+  state.draftMessage.recipientSearchTermsById[ownProps.discussionId];
+
+const participantSuggestionsSelector = state => state.participantSuggestions;
+
+const recipientsSelector = (state, ownProps) => ownProps.recipients;
 
 const mapStateToProps = createSelector(
-  [contactsSelector, contactIsFetchingSelector],
-  (contacts, isFetching) => ({
-    contacts,
-    isFetching,
-  })
+  [
+    participantSuggestionsSelector,
+    searchTermsSelector,
+    recipientsSelector,
+  ],
+  (participantSuggestions, searchTerms, recipients) => {
+    const { isFetching, resultsBySearchTerms } = participantSuggestions;
+    const searchResults = (resultsBySearchTerms[searchTerms] && resultsBySearchTerms[searchTerms]
+      .filter(identity => !findRecipient(recipients, identity))) || [];
+
+    return {
+      isFetching,
+      searchResults,
+      searchTerms,
+    };
+  }
 );
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  requestContacts,
+  setSearchTerms: setRecipientSearchTerms,
+  search: participantSuggest,
 }, dispatch);
 
 export default compose(

@@ -133,6 +133,7 @@ class NewDraftForm extends Component {
           </TopRow>
           <BodyRow className="m-new-draft__body">
             <RecipientsList
+              discussionId={this.state.draft.discussionId || 'simpleDraft'}
               recipients={recipients}
               onRecipientsChange={this.handleRecipientsChange}
             />
