@@ -7,6 +7,13 @@ let headers = {
   'X-Caliopen-IL': '0;100',
 };
 
+if (BUILD_TARGET !== 'server') {
+  headers = {
+    ...headers,
+    'X-Requested-With': 'XMLHttpRequest',
+  };
+}
+
 if (BUILD_TARGET === 'server') {
   // eslint-disable-next-line global-require
   const { getSubRequestHeaders } = require('../../../server/api/lib/sub-request-manager');
