@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Rename <Account...> layout and related scenes to <User...>
 - Display notification if contact update failed
+- support TAB for adding a participant to a discussion
+- use participant suggestions API for a new message
+- Handle 4xx errors when updating contact fails
 
 ### Fixed
 - Bad wording for message update failures
