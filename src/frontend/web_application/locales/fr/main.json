@@ -1,5 +1,6 @@
 {
     "application_switcher.action.choose": "Sélectionner",
+    "auth.feedback.deauth": "Vous n'êtes plus authentifié, merci de vous reconnecter",
     "call-to-action.action.compose": "Écrire",
     "call-to-action.action.compose_contact": "Écrire à ce contact",
     "call-to-action.action.create_contact": "Créer un contact",
