@@ -4,6 +4,13 @@ import RecipientList from './presenter';
 
 describe('component RecipientList', () => {
   const noop = str => str;
+  const requiredProps = {
+    discussionId: 'simpleDraft',
+    search: noop,
+    setSearchTerms: noop,
+    __: noop,
+  };
+
   /* eslint-disable max-len */
   const recipients = [
     { contact_ids: [], name: 'foo bar', protocol: { identifier: '+033 000 000 000', type: 'sms', privacy_index: 10 } },
@@ -14,7 +21,7 @@ describe('component RecipientList', () => {
 
   it('render', () => {
     const comp = shallow(
-      <RecipientList __={noop} />
+      <RecipientList {...requiredProps} />
     );
     const inst = comp.instance();
 
@@ -29,7 +36,7 @@ describe('component RecipientList', () => {
       };
 
       const comp = shallow(
-        <RecipientList __={noop} {...props} />
+        <RecipientList {...requiredProps} {...props} />
       );
       const inst = comp.instance();
 
@@ -44,7 +51,7 @@ describe('component RecipientList', () => {
       };
 
       const comp = shallow(
-        <RecipientList __={noop} {...props} />
+        <RecipientList {...requiredProps} {...props} />
       );
       const inst = comp.instance();
 
@@ -60,7 +67,7 @@ describe('component RecipientList', () => {
       };
 
       const comp = shallow(
-        <RecipientList __={noop} {...props} />
+        <RecipientList {...requiredProps} {...props} />
       );
       const inst = comp.instance();
 
@@ -79,7 +86,7 @@ describe('component RecipientList', () => {
       };
 
       const comp = shallow(
-        <RecipientList __={noop} {...props} />
+        <RecipientList {...requiredProps} {...props} />
       );
       const inst = comp.instance();
 
@@ -98,7 +105,7 @@ describe('component RecipientList', () => {
       };
 
       const comp = shallow(
-        <RecipientList __={noop} {...props} />
+        <RecipientList {...requiredProps} {...props} />
       );
       const inst = comp.instance();
 

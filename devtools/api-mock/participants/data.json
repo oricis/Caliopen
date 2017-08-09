@@ -1,0 +1,114 @@
+[{
+  "address": "bender@caliopen.local",
+  "contact_id": "92d3727a-eefc-4537-b879-85f1c9d197bb",
+  "label": "Bender",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "zoidberg@caliopen.local",
+  "contact_id": "0ba2e346-e4f8-4c45-9adc-eeb1d42fuie0",
+  "label": "Zoidberg",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "leela@john.doe",
+  "contact_id": "19c3ui42-e3ba-46e7-984f-4c3e8de11c05",
+  "label": "Leela",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "fry@caliopen.local",
+  "contact_id": "92d3907a-eeui-4537-b229-85f1c9d197bb",
+  "label": "Fry",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "amy@caliopen.local",
+  "contact_id": "0ba2e346-e4f8-4c45-999c-eeb1d42f07e0",
+  "label": "Amy",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "professor@planet.express",
+  "contact_id": "19c3ce42-e3ba-46e7-902f-4cui8de11c05",
+  "label": "Farnsworth",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "lrrr@caliopen.local",
+  "contact_id": "9ui3907a-eefc-4537-b229-85f1c9d197bb",
+  "label": "Lrrr",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "stephen@caliopen.local",
+  "contact_id": "98o3907a-eefc-6724-bv28-85f1c9d197bb",
+  "label": "Stephen Hawking",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "kroker@caliopen.local",
+  "contact_id": "0327707a-eefc-6724-bv28-85f1c9d197bb",
+  "label": "Kif",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "zapp@caliopen.local",
+  "contact_id": "5488707a-eefc-6724-bv28-85f1c9d197bb",
+  "label": "Zapp Brannigan",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "francine@doop",
+  "contact_id": "19c3ce42-e3ba-46e7-902f-4cui8d",
+  "label": "Elzar",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "algore@caliopen.local",
+  "contact_id": "a3ce42-e3ba-46e7-902f-4cfdsfsui8d",
+  "label": "Scruffy",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "Conrad@caliopen.local",
+  "contact_id": "a3ce42-e3ba-46e7-dfsd902f-4cui8d",
+  "label": "Hermès",
+  "protocol": "email",
+  "source": "contact"
+}, {
+  "address": "flexo@caliopen.local",
+  "label": "Flexo",
+  "protocol": "email",
+  "source": "participant"
+}, {
+  "address": "calc@caliopen.local",
+  "label": "Calculon",
+  "protocol": "email",
+  "source": "participant"
+}, {
+  "address": "mom@john.doe",
+  "label": "Mom",
+  "protocol": "email",
+  "source": "participant"
+}, {
+  "address": "morbo@caliopen.local",
+  "label": "Morbo the Annihilator",
+  "protocol": "email",
+  "source": "participant"
+}, {
+  "address": "Panucci@caliopen.local",
+  "label": "Panucci",
+  "protocol": "email",
+  "source": "participant"
+}, {
+  "address": "nib@planet.express",
+  "label": "Nibbler",
+  "protocol": "email",
+  "source": "participant"
+}, {
+  "address": "Hypnotoad@caliopen.local",
+  "label": "Hypnotoad",
+  "protocol": "email",
+  "source": "participant"
+}]
