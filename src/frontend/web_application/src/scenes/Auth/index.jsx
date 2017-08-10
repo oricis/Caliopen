@@ -1,13 +1,16 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import Loadable from 'react-loadable';
 import AuthPage from '../../layouts/AuthPage';
 import Signin from '../Signin';
-import AsyncLoad from '../../components/AsyncLoad';
-import Spinner from '../../components/Spinner';
+import BaseSpinner from '../../components/Spinner';
 
-const AsyncSignup = () => (
-  <AsyncLoad load={import('../Signup')} loading={(<Spinner isLoading />)} />
-);
+const Spinner = () => (<BaseSpinner isLoading />);
+
+const AsyncSignup = Loadable({
+  loader: () => import('../Signup'),
+  loading: Spinner,
+});
 
 const Auth = () => (
   <AuthPage>
