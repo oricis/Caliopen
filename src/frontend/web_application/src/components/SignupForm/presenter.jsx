@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import zxcvbn from 'zxcvbn';
 import Button from '../Button';
 import Link from '../Link';
 import Title from '../Title';
@@ -34,71 +33,71 @@ class SignupForm extends Component {
     onUsernameBlur: noop,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isModalOpen: false,
-      formValues: {
-        username: '',
-        password: '',
-        tos: false,
-        privacy: false,
-        recovery_email: '',
-      },
-      passwordStrength: '',
-    };
-
-    this.handleOpenModal = this.handleOpenModal.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.renderModal = this.renderModal.bind(this);
-  }
+  state = {
+    isModalOpen: false,
+    formValues: {
+      username: '',
+      password: '',
+      tos: false,
+      privacy: false,
+      recovery_email: '',
+    },
+    passwordStrength: '',
+  };
 
   componentWillMount() {
     this.setState(generateStateFromProps(this.props));
+  }
+
+  componentDidMount() {
+    import('zxcvbn').then((zxcvbn) => {
+      this.zxcvbn = zxcvbn;
+    });
   }
 
   componentWillReceiveProps(newProps) {
     this.setState(generateStateFromProps(newProps));
   }
 
-  handleOpenModal() {
+  handleOpenModal = () => {
     this.setState({
       isModalOpen: true,
     });
-  }
-  handleCloseModal() {
+  };
+
+  handleCloseModal = () => {
     this.setState({
       isModalOpen: false,
     });
-  }
+  };
 
-  handleUsernameChange(event) {
+  handleUsernameChange = (event) => {
     this.handleInputChange(event);
 
     this.props.onUsernameChange(event);
-  }
+  };
 
-  handlePasswordChange(event) {
+  handlePasswordChange = (event) => {
     this.handleInputChange(event);
+    this.calcPasswordStrengh();
+  }
 
-    this.setState((prevState) => {
-      const { password } = prevState.formValues;
-      const passwordStrength = !password.length ? '' : zxcvbn(password).score;
+  calcPasswordStrengh = () => {
+    if (this.zxcvbn) {
+      this.setState((prevState) => {
+        const { password } = prevState.formValues;
+        const passwordStrength = !password.length ? '' : this.zxcvbn(password).score;
 
-      return {
-        ...prevState,
-        passwordStrength,
-      };
-    });
+        return {
+          ...prevState,
+          passwordStrength,
+        };
+      });
+    }
   }
 
 
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
       formValues: {
@@ -106,9 +105,9 @@ class SignupForm extends Component {
         [name]: value,
       },
     }));
-  }
+  };
 
-  handleCheckboxChange(event) {
+  handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
     this.setState(prevState => ({
       formValues: {
@@ -116,15 +115,15 @@ class SignupForm extends Component {
         [name]: checked,
       },
     }));
-  }
+  };
 
-  handleSubmit(ev) {
+  handleSubmit = (ev) => {
     ev.preventDefault();
     const { formValues } = this.state;
     this.props.onSubmit({ formValues });
-  }
+  };
 
-  renderModal() {
+  renderModal = () => {
     const { __ } = this.props;
 
     return (
