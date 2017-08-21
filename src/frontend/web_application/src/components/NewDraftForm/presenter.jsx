@@ -8,6 +8,7 @@ import Dropdown, { withDropdownControl } from '../Dropdown';
 import DiscussionDraft, { TopRow, BodyRow, BottomRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
 import RecipientsList from '../RecipientsList';
+import { TextFieldGroup } from '../form';
 import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
@@ -17,6 +18,9 @@ function generateStateFromProps(props) {
 
   return { draft };
 }
+
+const hasMailSupport = recipients =>
+  recipients && recipients.find(recipient => recipient.protocol === 'email') && true;
 
 class NewDraftForm extends Component {
   static propTypes = {
@@ -32,16 +36,8 @@ class NewDraftForm extends Component {
     onChange: () => {},
     user: { contact: {} },
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      isActive: true,
-    };
-    this.handleSend = this.handleSend.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleRecipientsChange = this.handleRecipientsChange.bind(this);
-  }
+
+  state = { draft: { participants: [], subject: '', body: '' } };
 
   componentWillMount() {
     this.setState(prevState => generateStateFromProps(this.props, prevState));
@@ -51,17 +47,17 @@ class NewDraftForm extends Component {
     this.setState(prevState => generateStateFromProps(newProps, prevState));
   }
 
-  handleSave() {
+  handleSave = () => {
     const { draft } = this.state;
     this.props.onSave({ draft });
   }
 
-  handleSend() {
+  handleSend = () => {
     const { draft } = this.state;
     this.props.onSend({ draft });
   }
 
-  handleChange(ev) {
+  handleChange = (ev) => {
     const { name, value } = ev.target;
 
     this.setState((prevState) => {
@@ -73,7 +69,7 @@ class NewDraftForm extends Component {
     });
   }
 
-  handleRecipientsChange(recipients) {
+  handleRecipientsChange = (recipients) => {
     this.setState(prevState => ({
       draft: {
         ...prevState.draft,
@@ -83,12 +79,6 @@ class NewDraftForm extends Component {
     }), () => {
       this.props.onChange({ draft: this.state.draft });
     });
-  }
-
-  handleActiveClick() {
-    this.setState(prevState => ({
-      isActive: !prevState.isActive,
-    }));
   }
 
   renderDraftType() {
@@ -143,9 +133,20 @@ class NewDraftForm extends Component {
           </TopRow>
           <BodyRow className="m-new-draft__body">
             <RecipientsList
+              discussionId={this.state.draft.discussionId || 'simpleDraft'}
               recipients={recipients}
               onRecipientsChange={this.handleRecipientsChange}
             />
+            {hasMailSupport(recipients) && (
+              <TextFieldGroup
+                className="m-new-draft__subject"
+                display="inline"
+                label={__('Subject')}
+                name="subject"
+                value={this.state.draft.subject}
+                onChange={this.handleChange}
+              />
+            )}
             <DiscussionTextarea
               body={this.state.draft.body}
               onChange={this.handleChange}

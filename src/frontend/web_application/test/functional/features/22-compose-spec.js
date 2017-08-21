@@ -70,15 +70,16 @@ describe('Compose new message', () => {
         .then(() => element(writeButtonSelector).click())
         .then(() => browser.wait(EC.presenceOf($('.m-new-draft')), 1000))
         .then(() => {
-          console.log('search recipient');
+          console.info('search recipient');
           const searchInputElement = element(by.css('.m-recipient-list__search-input'));
-          searchInputElement.sendKeys('ben');
 
-          return element.all(by.css('.m-recipient-list__search-result'))
-            .then(results => results[0].click());
+          return searchInputElement.sendKeys('ben');
         })
+        .then(() => browser.wait(EC.presenceOf($('.m-recipient-list__search-result')), 3 * 1000))
+        .then(() => element.all(by.css('.m-recipient-list__search-result')))
+        .then(results => results[0].click())
         .then(() => {
-          console.log('write msg');
+          console.info('write msg');
           const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
           draftBodyElement1.sendKeys(text1);
         })
@@ -107,30 +108,26 @@ describe('Compose new message', () => {
         .then(() => element(writeButtonSelector).click())
         .then(() => browser.wait(EC.presenceOf($('.m-new-draft')), 1000))
         .then(() => {
-          console.log('search recipient');
+          console.info('search recipient');
           const searchInputElement = element(by.css('.m-recipient-list__search-input'));
-          searchInputElement.sendKeys('be');
 
-          const benderResultElement = element(by.cssContainingText('.m-recipient-list__search-result', 'bender@caliopen.local'));
-
-          return benderResultElement.click();
+          return searchInputElement.sendKeys('caliopen');
         })
+        .then(() => browser.wait(EC.presenceOf($('.m-recipient-list__search-result')), 3 * 1000))
+        .then(() => element(by.cssContainingText('.m-recipient-list__search-result', 'bender@caliopen.local')).click())
         .then(() => {
           const searchInputElement = element(by.css('.m-recipient-list__search-input'));
-          searchInputElement.sendKeys('be');
 
-          return element.all(by.css('.m-recipient-list__search-result'))
-            .then((results) => {
-              expect(results.length).toEqual(2);
-
-              return results;
-            });
+          return searchInputElement.sendKeys('caliopen');
         })
-        .then(() => {
-          const benderResultElement = element(by.cssContainingText('.m-recipient-list__search-result', 'bender@caliopen.local'));
-
-          expect(benderResultElement.isPresent()).toEqual(false);
-        })
+        .then(() => browser.wait(EC.presenceOf($('.m-recipient-list__search-result')), 3 * 1000))
+        .then(() =>
+          expect(
+            element(
+              by.cssContainingText('.m-recipient-list__search-result', 'bender@caliopen.local')
+            ).isPresent()
+          ).toEqual(false)
+        )
         .then(
           () => element.all(by.css('.m-recipient-list__recipient'))
             .then((items) => {
@@ -155,8 +152,10 @@ describe('Compose new message', () => {
         .then(() => {
           console.log('search recipient');
           const searchInputElement = element(by.css('.m-recipient-list__search-input'));
-          searchInputElement.sendKeys('be');
+
+          return searchInputElement.sendKeys('ben');
         })
+        .then(() => browser.wait(EC.presenceOf($('.m-recipient-list__search-result')), 3 * 1000))
         .then(() => expect(element(dropdownSelector).isDisplayed()).toEqual(true))
         .then(() => element(by.css('.m-recipient-list__search-input')).click())
         .then(() => expect(element(dropdownSelector).isDisplayed()).toEqual(true))
@@ -191,11 +190,13 @@ describe('Compose new message', () => {
         .then(() => {
           console.log('search recipient');
           const searchInputElement = element(by.css('.m-recipient-list__search-input'));
-          searchInputElement.sendKeys('be');
+          const searchPromise = searchInputElement.sendKeys('caliopen')
+            .then(() => browser.wait(EC.presenceOf($('.m-recipient-list__search-result')), 3 * 1000));
 
-          return searchInputElement;
+
+          return { searchInputElement, searchPromise };
         })
-        .then(searchInputElement =>
+        .then(({ searchInputElement }) =>
           element.all(searchResultItemsSelector)
             .then(items => expect(items[0].getAttribute('class')).toContain('m-button--active'))
             .then(() => searchInputElement.sendKeys(protractor.Key.ARROW_DOWN))

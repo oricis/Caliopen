@@ -54,6 +54,11 @@
     color: $co-color__fg__text;
   }
 
+  &__subject {
+    padding: map-get($co-form__spacing, 'medium');
+    background-color: $co-color__fg__back--high;
+  }
+
   &__bottom-bar {
     padding: 2 * $co-component__spacing $co-component__spacing;
     background: $co-color__fg__back--high;

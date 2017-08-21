@@ -6,16 +6,23 @@ module.exports = (app) => {
   const target = `http://${hostname}:${port}`;
 
   app.use('/api', proxy(target, {
-    forwardPath: req => url.parse(req.originalUrl).path,
-    decorateRequest: (proxyReq, req) => {
-      if (!req.security) {
-        return;
+    proxyReqPathResolver: req => url.parse(req.originalUrl).path,
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      if (!srcReq.security) {
+        return proxyReqOpts;
       }
 
       // TODO refactor in Auth library may be or ...
-      const bearer = new Buffer(`${req.user.user_id}:${req.user.tokens.access_token}`)
+      const bearer = new Buffer(`${srcReq.user.user_id}:${srcReq.user.tokens.access_token}`)
         .toString('base64');
-      proxyReq.headers.Authorization = `Bearer ${bearer}`;
+
+      return {
+        ...proxyReqOpts,
+        headers: {
+          ...proxyReqOpts.headers,
+          Authorization: `Bearer ${bearer}`,
+        },
+      };
     },
   }));
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MessageListBase from '../../components/MessageList';
-import ReplyForm from './components/ReplyForm';
+import ReplyForm from './components/DraftForm';
 
 class MessageList extends Component {
   static propTypes = {

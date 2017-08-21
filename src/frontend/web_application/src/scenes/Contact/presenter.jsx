@@ -11,7 +11,7 @@ import Button from '../../components/Button';
 import TextBlock from '../../components/TextBlock';
 import DropdownMenu, { withDropdownControl } from '../../components/DropdownMenu';
 import VerticalMenu, { VerticalMenuItem } from '../../components/VerticalMenu';
-
+import { UPDATE_CONTACT_SUCCESS } from '../../store/modules/contact';
 import './style.scss';
 
 // const FAKE_TAGS = ['Caliopen', 'Gandi', 'Macarons'];
@@ -24,6 +24,7 @@ class Contact extends Component {
     __: PropTypes.func.isRequired,
     requestContact: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,
+    notifyError: PropTypes.func.isRequired,
     removeContact: PropTypes.func,
     contactId: PropTypes.string.isRequired,
     contact: PropTypes.shape({}),
@@ -52,7 +53,17 @@ class Contact extends Component {
   }
 
   handleContactChange = ({ contact, original }) => {
-    this.props.updateContact({ contact, original });
+    const { __, updateContact, notifyError, requestContact } = this.props;
+
+    updateContact({ contact, original })
+      .then((action) => {
+        if (action.type === UPDATE_CONTACT_SUCCESS) {
+          return requestContact({ contactId: contact.contact_id });
+        }
+
+        return notifyError(__('contact.feedback.update-fail'));
+      })
+    ;
   }
 
   handleContactDelete = ({ contact }) => {

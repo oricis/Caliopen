@@ -19,7 +19,7 @@ const mapStateToProps = createSelector(
     const message = discussionMessages.find(item => item.is_draft === true);
 
     return {
-      allowEditRecipients: discussionMessages.length === 1 && message,
+      allowEditRecipients: discussionMessages.length === 1 && message && true,
       message,
       draft,
       discussionId,

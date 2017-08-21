@@ -23,8 +23,8 @@ const initialConfig = {
   },
 };
 
-const configureStylesheet = (config, filename = 'client.css', relativePath = '') => {
-  const extractTextPlugin = new ExtractTextPlugin(relativePath + filename);
+const configureStylesheet = (config, filename = 'client_[name]', relativePath = '') => {
+  const extractTextPlugin = new ExtractTextPlugin(relativePath + filename, { allChunks: true });
   const cfg = Object.assign({}, config, {
     sassLoader: {
       includePaths: [
@@ -90,11 +90,15 @@ const configureVendorSplit = (config) => {
     'axios',
     'classnames',
     'history',
+    'lodash.debounce',
     'lodash.isequal',
     'lodash.throttle',
     'moment-timezone',
     'prop-types',
+    'rc-slider',
     'react',
+    'react-country-region-selector',
+    'react-datepicker',
     'react-dom',
     'react-modal',
     'react-moment',
