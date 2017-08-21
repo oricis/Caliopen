@@ -58,7 +58,7 @@ class MessageList extends Component {
       <MessageListBase
         messages={messages}
         onMessageView={this.handleViewMessage}
-        replyForm={<ReplyForm discussionId={discussionId} />}
+        replyForm={<ReplyForm discussionId={discussionId} internalId={discussionId} />}
         onReply={() => {}}
         onForward={() => {}}
         onDelete={this.handleDelete}

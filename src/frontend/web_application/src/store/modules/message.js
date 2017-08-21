@@ -19,12 +19,8 @@ export const POST_ACTIONS = 'co/message/POST_ACTIONS';
 export const POST_ACTIONS_SUCCESS = 'co/message/POST_ACTIONS_SUCCESS';
 
 
-export function requestMessages(parameters = {}) {
-  const { offset = 0, limit = 20, discussionId } = parameters;
-  const params = { offset, limit };
-  if (discussionId) {
-    params.discussion_id = discussionId;
-  }
+export function requestMessages({ offset = 0, limit = 20, discussionId }) {
+  const params = { offset, limit, discussion_id: discussionId };
 
   return {
     type: REQUEST_MESSAGES,

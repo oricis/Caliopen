@@ -47,7 +47,7 @@ const getStateFromProps = props => ({
 
 class RecipientList extends Component {
   static propTypes = {
-    discussionId: PropTypes.string.isRequired,
+    internalId: PropTypes.string.isRequired,
     recipients: PropTypes.arrayOf(PropTypes.shape()),
     onRecipientsChange: PropTypes.func,
     setSearchTerms: PropTypes.func.isRequired,
@@ -90,8 +90,8 @@ class RecipientList extends Component {
       searchTerms: ev.target.value,
       searchOpened: true,
     }, () => {
-      const { setSearchTerms, discussionId } = this.props;
-      setSearchTerms({ discussionId, searchTerms: this.state.searchTerms });
+      const { setSearchTerms, internalId } = this.props;
+      setSearchTerms({ internalId, searchTerms: this.state.searchTerms });
 
       if (this.state.searchTerms.length >= 3) {
         return this.search(this.state.searchTerms);
