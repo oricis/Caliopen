@@ -9,6 +9,7 @@ import { removeTab } from '../../store/modules/tab';
 import Presenter from './presenter';
 
 const messageByIdSelector = state => state.message.messagesById;
+const messagesDidInvalidateSelector = state => state.message.didInvalidate;
 const discussionIdSelector = (state, ownProps) => ownProps.match.params.discussionId;
 const currentTabSelector = createSelector(
   [state => state.tab.tabs, state => state.router.location && state.router.location.pathname],
@@ -16,13 +17,14 @@ const currentTabSelector = createSelector(
 );
 
 const mapStateToProps = createSelector(
-  [messageByIdSelector, discussionIdSelector, currentTabSelector],
-  (messagesById, discussionId, currentTab) => ({
+  [messageByIdSelector, messagesDidInvalidateSelector, discussionIdSelector, currentTabSelector],
+  (messagesById, messagesDidInvalidate, discussionId, currentTab) => ({
     discussionId,
     messages: Object.keys(messagesById)
       .map(messageId => messagesById[messageId])
       .filter(message => message.discussion_id === discussionId && message.is_draft !== true),
     currentTab,
+    messagesDidInvalidate,
   })
 );
 

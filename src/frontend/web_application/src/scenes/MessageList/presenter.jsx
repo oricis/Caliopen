@@ -9,6 +9,7 @@ class MessageList extends Component {
     requestDiscussion: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
+    messagesDidInvalidate: PropTypes.bool.isRequired,
     setMessageRead: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
@@ -25,6 +26,13 @@ class MessageList extends Component {
     const { discussionId } = this.props;
     this.props.requestMessages({ discussionId });
     this.props.requestDiscussion({ discussionId });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // TODO: better way to manage invalidated resources & refetch
+    if (nextProps.messages.length === 0 || nextProps.messagesDidInvalidate) {
+      this.props.requestMessages({ discussionId: nextProps.discussionId });
+    }
   }
 
   handleViewMessage = ({ message }) => {
