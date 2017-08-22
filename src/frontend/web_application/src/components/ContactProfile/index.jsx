@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withTranslator } from '@gandi/react-translate';
-import Button from '../Button';
 import Badge from '../Badge';
 import MultidimensionalPi from '../../components/MultidimensionalPi';
 import ContactAvatarLetter from '../ContactAvatarLetter';
@@ -10,16 +9,6 @@ import ContactProfileForm from './components/ContactProfileForm';
 import './style.scss';
 
 const FAKE_TAGS = ['Caliopen', 'Gandi', 'Macarons'];
-
-function getContactTitle(contact) {
-  const familyName = contact.family_name || '';
-  const givenName = contact.given_name || '';
-  const title = contact.title || '';
-
-  if (!familyName && !givenName) { return title; }
-
-  return `${familyName}${givenName && familyName && ', '}${givenName}`;
-}
 
 @withTranslator()
 class ContactProfile extends Component {
@@ -47,7 +36,6 @@ class ContactProfile extends Component {
 
   render() {
     const { contact, className, onChange, editMode, __ } = this.props;
-    const activeButtonProp = this.state.toggleEditProfile ? { color: 'active' } : {};
 
     return (
       <div className={classnames('m-contact-profile', className)}>
@@ -56,31 +44,13 @@ class ContactProfile extends Component {
             <ContactAvatarLetter contact={contact} className="m-contact-profile__avatar" />
           </div>
 
-          <div className="m-contact-profile__name">
-            <h3 className="m-contact-profile__title">
-              {getContactTitle(contact)}
-            </h3>
-          </div>
-
-          <div className="m-contact-profile__edit-button">
-            {editMode && (
-              <Button
-                icon="caret-down"
-                display="inline"
-                {...activeButtonProp}
-                onClick={this.toggleEditProfile}
-              >
-                <span className="show-for-sr">
-                  {__('contact_profile.action.edit_contact')}
-                </span>
-              </Button>
-            )}
-          </div>
-
+          {!editMode &&
+          <h3 className="m-contact-profile__name">{contact.title}</h3>
+        }
         </div>
 
-        {this.state.editProfile &&
-          <ContactProfileForm contact={contact} onChange={onChange} />
+        {editMode &&
+          <ContactProfileForm contact={contact} onChange={onChange} __={__} />
         }
 
         {// contact.tags &&

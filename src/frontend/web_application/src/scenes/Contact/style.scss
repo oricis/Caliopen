@@ -36,7 +36,7 @@
   }
 
   &__col-datas-online {
-    @include flex-grid-column(12, 0);
+    @include flex-grid-column(12);
   }
 
   @include breakpoint(medium) {

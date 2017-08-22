@@ -40,6 +40,7 @@ class ContactProfileForm extends Component {
         birthday: '',
       },
     },
+    isExpanded: false,
   };
 
   componentWillMount() {
@@ -77,6 +78,13 @@ class ContactProfileForm extends Component {
     this.props.onChange({ contact: this.state.contact, original: this.props.contact });
   }
 
+  toggleExpandForm = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isExpanded: !prevState.isExpanded,
+    }));
+  }
+
   render() {
     const { __ } = this.props;
 
@@ -85,41 +93,81 @@ class ContactProfileForm extends Component {
         className="m-contact-profile-form"
         onSubmit={this.handleSubmit}
       >
-        <TextFieldGroup
-          className="m-contact-profile-form__title"
-          defaultValue={this.state.contact.title}
-          label={__('contact_profile.form.title.label')}
-          name="title"
-          onChange={this.handleChanges}
-        />
-        <TextFieldGroup
-          className="m-contact-profile-form__name-prefix"
-          defaultValue={this.state.contact.name_prefix}
-          label={__('contact_profile.form.name-prefix.label')}
-          name="name_prefix"
-          onChange={this.handleChanges}
-        />
-        <TextFieldGroup
-          className="m-contact-profile-form__firstname"
-          defaultValue={this.state.contact.given_name}
-          label={__('contact_profile.form.firstname.label')}
-          name="given_name"
-          onChange={this.handleChanges}
-        />
-        <TextFieldGroup
-          className="m-contact-profile-form__lastname"
-          defaultValue={this.state.contact.family_name}
-          label={__('contact_profile.form.lastname.label')}
-          name="family_name"
-          onChange={this.handleChanges}
-        />
-        <TextFieldGroup
-          className="m-contact-profile-form__name-suffix"
-          defaultValue={this.state.contact.name_suffix}
-          label={__('contact_profile.form.name-suffix.label')}
-          name="name_suffix"
-          onChange={this.handleChanges}
-        />
+        <div className="m-contact-profile-form__header">
+          <TextFieldGroup
+            className="m-contact-profile-form__title"
+            defaultValue={this.state.contact.title}
+            label={__('contact_profile.form.title.label')}
+            placeholder={__('contact_profile.form.title.label')}
+            name="title"
+            onChange={this.handleChanges}
+            showLabelforSr
+          />
+          {this.state.isExpanded ?
+            <Button
+              icon="caret-up"
+              display="inline"
+              onClick={this.toggleExpandForm}
+              className="m-contact-profile-form__expand-button"
+            >
+              <span className="show-for-sr">
+                {__('contact_profile.action.edit_contact')}
+              </span>
+            </Button>
+          :
+            <Button
+              icon="caret-down"
+              display="inline"
+              onClick={this.toggleExpandForm}
+              className="m-contact-profile-form__expand-button"
+            >
+              <span className="show-for-sr">
+                {__('contact_profile.action.edit_contact')}
+              </span>
+            </Button>
+          }
+        </div>
+
+        {this.state.isExpanded &&
+          <div className="m-contact-profile-form__expanded-form">
+            <TextFieldGroup
+              className="m-contact-profile-form__input"
+              defaultValue={this.state.contact.name_prefix}
+              label={__('contact_profile.form.name-prefix.label')}
+              placeholder={__('contact_profile.form.name-prefix.label')}
+              name="name_prefix"
+              onChange={this.handleChanges}
+              showLabelforSr
+            />
+            <TextFieldGroup
+              className="m-contact-profile-form__input"
+              defaultValue={this.state.contact.given_name}
+              label={__('contact_profile.form.firstname.label')}
+              placeholder={__('contact_profile.form.firstname.label')}
+              name="given_name"
+              onChange={this.handleChanges}
+              showLabelforSr
+            />
+            <TextFieldGroup
+              className="m-contact-profile-form__input"
+              defaultValue={this.state.contact.family_name}
+              label={__('contact_profile.form.lastname.label')}
+              placeholder={__('contact_profile.form.lastname.label')}
+              name="family_name"
+              onChange={this.handleChanges}
+              showLabelforSr
+            />
+            <TextFieldGroup
+              className="m-contact-profile-form__input"
+              defaultValue={this.state.contact.name_suffix}
+              label={__('contact_profile.form.name-suffix.label')}
+              placeholder={__('contact_profile.form.name-suffix.label')}
+              name="name_suffix"
+              onChange={this.handleChanges}
+              showLabelforSr
+            />
+          </div>
+        }
 
         {
           // TODO:
@@ -129,18 +177,24 @@ class ContactProfileForm extends Component {
         <DatePickerGroup
           id="contact-form-birthday"
           className="m-contact-profile-form__birthday"
+          inputClassName="m-contact-profile-form__birthday-input"
           label={__('contact_profile.form.birthday.label')}
           onDateChange={this.handleBirthdayChanges}
           showMonthDropdown
           showYearDropdown
           dropdownMode="select"
-          selected={this.state.contact.infos.birthday ? this.state.contact.infos.birthday : null}
+          selected={this.state.contact.infos.birthday ?
+            this.state.contact.infos.birthday : null}
         />
 
-        <div className="m-contact-profile-form__save-button">
-          <div className="m-contact-profile-form__save-button-wrapper">
-            <Button type="submit" display="expanded" shape="plain" icon="check">{__('contact_profile.action.save')}</Button>
-          </div>
+        <div className="m-contact-profile-form__save-button-wrapper">
+          <Button
+            type="submit"
+            className="m-contact-profile-form__save-button"
+            display="expanded"
+            shape="plain"
+            icon="check"
+          >{__('contact_profile.action.save')}</Button>
         </div>
       </form>
     );
