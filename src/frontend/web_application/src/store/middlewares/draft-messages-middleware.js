@@ -2,7 +2,7 @@ import throttle from 'lodash.throttle';
 import isEqual from 'lodash.isequal';
 import { push, replace } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
-import { REQUEST_NEW_DRAFT, REQUEST_NEW_DRAFT_SUCCESS, REQUEST_DRAFT, EDIT_DRAFT, SEND_DRAFT, requestNewDraftSuccess, requestDraftSuccess, syncDraft, clearDraft } from '../modules/draft-message';
+import { REQUEST_NEW_DRAFT, REQUEST_NEW_DRAFT_SUCCESS, REQUEST_DRAFT, EDIT_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestNewDraftSuccess, requestDraftSuccess, syncDraft, clearDraft } from '../modules/draft-message';
 import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, requestMessages, requestMessage, createMessage, updateMessage, postActions } from '../modules/message';
 import { requestLocalIdentities } from '../modules/local-identity';
 import { removeTab, updateTab } from '../modules/tab';
@@ -191,6 +191,15 @@ const requestNewDraftSuccessHandler = ({ store, action }) => {
   store.dispatch(replace(newPathname));
 };
 
+const saveDraftHandler = ({ store, action }) => {
+  if (action.type !== SAVE_DRAFT) {
+    return;
+  }
+
+  const { internalId, draft, discussionId, original } = action.payload;
+  createOrUpdateDraft({ internalId, draft, discussionId, store, original });
+};
+
 const editDraftHandler = ({ store, action }) => {
   if (action.type !== EDIT_DRAFT) {
     return;
@@ -249,6 +258,7 @@ export default store => next => (action) => {
 
   editDraftHandler({ store, action });
   requestDraftHandler({ store, action });
+  saveDraftHandler({ store, action });
   sendDraftHandler({ store, action });
   requestNewDraftHandler({ store, action });
   requestNewDraftSuccessHandler({ store, action });
