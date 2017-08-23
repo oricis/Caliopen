@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Subtitle from '../Subtitle';
 import TextList, { ItemContent } from '../TextList';
 import AddressDetails from './components/AddressDetails';
+import BirthdayDetails from './components/BirthdayDetails';
 import EmailDetails from './components/EmailDetails';
 import PhoneDetails from './components/PhoneDetails';
 import PhoneForm from './components/PhoneForm';
@@ -14,6 +15,8 @@ import AddressForm from './components/AddressForm';
 import EmailForm from './components/EmailForm';
 import ImForm from './components/ImForm';
 import IdentityForm from './components/IdentityForm';
+import FormSelector from './components/FormSelector';
+
 import './style.scss';
 
 class ContactDetails extends Component {
@@ -129,6 +132,7 @@ class ContactDetails extends Component {
         <PhoneDetails
           phone={phone}
           editMode={editMode}
+          onEdit={str => str} // FIXME should be edit function
           onDelete={this.makeHandleDeleteContactDetail('phones')}
           __={__}
         />
@@ -166,6 +170,20 @@ class ContactDetails extends Component {
     );
   }
 
+  renderBirthday = (date) => {
+    const { __, editMode } = this.props;
+
+    return (
+      <ItemContent large>
+        <BirthdayDetails
+          birthday={date}
+          editMode={editMode}
+          __={__}
+        />
+      </ItemContent>
+    );
+  }
+
   renderContactDetails = () => {
     const { contact } = this.props;
     const emails = contact.emails ?
@@ -175,6 +193,8 @@ class ContactDetails extends Component {
       ...(contact.phones ? contact.phones.map(detail => this.renderPhone(detail)) : []),
       ...(contact.ims ? contact.ims.map(detail => this.renderIm(detail)) : []),
       ...(contact.addresses ? contact.addresses.map(detail => this.renderAddress(detail)) : []),
+      ...(contact.infos && contact.infos.birthday ?
+        [this.renderBirthday(contact.infos.birthday)] : []),
     ];
 
     return (
@@ -184,19 +204,38 @@ class ContactDetails extends Component {
     );
   }
 
+  renderFormSelector = () => {
+    const { __ } = this.props;
+
+    const formsOptions = [
+      { name: __('contact.form-selector.add_new_field.label'), obj: null },
+      { name: __('contact.form-selector.email_form.label'), obj: (<EmailForm onSubmit={this.makeHandleAddContactDetail('emails')} __={__} />) },
+      { name: __('contact.form-selector.phone_form.label'), obj: (<PhoneForm onSubmit={this.makeHandleAddContactDetail('phones')} __={__} />) },
+      { name: __('contact.form-selector.im_form.label'), obj: (<ImForm onSubmit={this.makeHandleAddContactDetail('ims')} __={__} />) },
+      { name: __('contact.form-selector.address_form.label'), obj: (<AddressForm onSubmit={this.makeHandleAddContactDetail('addresses')} __={__} />) },
+    ];
+
+    return (
+      <FormSelector __={__} formsOptions={formsOptions} />
+    );
+  }
+
   renderContactDetailsForm = () => {
     const { __, contact } = this.props;
     const emails = contact.emails ?
       [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
     const contactDetails = [
       ...emails.map(detail => this.renderEmail(detail)),
-      (<EmailForm onSubmit={this.makeHandleAddContactDetail('emails')} __={__} />),
-      ...(contact.phones ? contact.phones.map(detail => this.renderPhone(detail)) : []),
-      (<PhoneForm onSubmit={this.makeHandleAddContactDetail('phones')} __={__} />),
+      ...(contact.phones ? contact.phones.map(detail =>
+        (<PhoneForm
+          phone={detail}
+          onDelete={this.makeHandleDeleteContactDetail('phones')}
+          onEdit={str => str} // FIXME: should be edit function
+          __={__}
+        />)
+      ) : []),
       ...(contact.ims ? contact.ims.map(detail => this.renderIm(detail)) : []),
-      (<ImForm onSubmit={this.makeHandleAddContactDetail('ims')} __={__} />),
       ...(contact.addresses ? contact.addresses.map(detail => this.renderAddress(detail)) : []),
-      (<AddressForm onSubmit={this.makeHandleAddContactDetail('addresses')} __={__} />),
     ];
 
     return (
@@ -220,6 +259,9 @@ class ContactDetails extends Component {
               this.renderContactDetailsForm() :
               this.renderContactDetails()
             }
+            <div className="m-contact-details__new-form">
+              {editMode && this.renderFormSelector()}
+            </div>
           </div>
         </div>
 
@@ -253,7 +295,7 @@ class ContactDetails extends Component {
             <TextList>
               {contact.identities && contact.identities.map(identity => (
                 <IdentityDetails
-                  key={identity.value}
+                  key={identity.name}
                   identity={identity}
                   editMode={editMode}
                   onDelete={this.makeHandleDeleteContactDetail('identities')}
