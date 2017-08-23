@@ -6,8 +6,8 @@ import logging
 from cornice.resource import resource, view
 from pyramid.response import Response
 
-from caliopen_main.objects.message import Message as ObjectMessage
-from caliopen_main.message.core.raw import RawMessage
+from caliopen_main.message.objects.message import Message as ObjectMessage
+from caliopen_main.message.core import RawMessage
 from caliopen_storage.exception import NotFound
 
 from ..base import Api

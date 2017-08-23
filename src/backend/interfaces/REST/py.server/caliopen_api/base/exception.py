@@ -3,8 +3,8 @@
 from __future__ import absolute_import, print_function, unicode_literals
 from pyramid.httpexceptions import HTTPClientError
 from caliopen_storage.exception import NotFound
-from caliopen_main.errors import (PatchUnprocessable, PatchError,
-                                  PatchConflict)
+from caliopen_main.common.errors import (PatchUnprocessable, PatchError,
+                                         PatchConflict)
 
 import logging
 log = logging.getLogger(__name__)

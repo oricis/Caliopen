@@ -11,8 +11,8 @@ from schematics.transforms import blacklist
 from .participant import Participant
 from .attachment import Attachment
 from .external_references import ExternalReferences
-from caliopen_pi.parameters import PIParameter
-from caliopen_main.user.parameters import ResourceTag
+from caliopen_main.pi.parameters import PIParameter
+from caliopen_main.common.parameters.tag import ResourceTag
 from caliopen_main.user.parameters import Identity
 
 RECIPIENT_TYPES = ['To', 'From', 'Cc', 'Bcc', 'Reply-To', 'Sender']

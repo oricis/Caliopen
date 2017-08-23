@@ -7,7 +7,6 @@ from schematics.transforms import blacklist
 
 
 class NewUserTag(Model):
-
     """Create a new user tag."""
 
     user_id = UUIDType()
@@ -19,17 +18,8 @@ class NewUserTag(Model):
 
 
 class UserTag(NewUserTag):
-
     """Existing user tag."""
+
     type = StringType()
-    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
-                               tzd=u'utc')
-
-
-class ResourceTag(Model):
-
-    """Tag related to a resource."""
-
-    tag_id = UUIDType()
-    name = StringType()
-    type = StringType()
+    date_format = "%Y-%m-%dT%H:%M:%S.%f+00:00"
+    date_insert = DateTimeType(serialized_format=date_format, tzd=u'utc')

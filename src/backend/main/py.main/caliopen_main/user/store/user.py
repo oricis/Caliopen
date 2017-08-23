@@ -12,7 +12,7 @@ from elasticsearch.client.indices import IndicesClient
 
 from caliopen_storage.config import Configuration
 from caliopen_storage.store.model import BaseModel
-from caliopen_main.objects.pi import PIModel
+from caliopen_main.pi.objects import PIModel
 
 log = logging.getLogger(__name__)
 

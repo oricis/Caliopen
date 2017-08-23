@@ -7,7 +7,7 @@ from schematics.transforms import blacklist
 from schematics.types import DateTimeType, StringType, UUIDType
 from schematics.types.compound import ListType, ModelType, DictType
 
-from caliopen_pi.parameters import PIParameter
+from caliopen_main.pi.parameters import PIParameter
 
 DEVICE_TYPES = ['unknow', 'desktop', 'laptop', 'smartphone', 'tablet']
 
