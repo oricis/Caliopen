@@ -5,6 +5,8 @@ from schematics.models import Model
 from schematics.types import StringType, UUIDType, DateTimeType
 from schematics.types.compound import DictType
 
+import caliopen_storage.helpers.json as helpers
+
 REMOTE_IDENTITY_TYPES = ['imap']
 REMOTE_IDENTITY_STATUS = ['active', 'inactive', 'deleted']
 
@@ -32,5 +34,5 @@ class NewRemoteIdentity(Model):
 
 class RemoteIdentity(NewRemoteIdentity):
     user_id = UUIDType(required=True)
-    last_check = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+    last_check = DateTimeType(serialized_format=helpers.RFC3339Milli,
                               tzd=u'utc')

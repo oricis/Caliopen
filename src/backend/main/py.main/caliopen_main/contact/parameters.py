@@ -12,6 +12,7 @@ from caliopen_main.common.parameters.types import InternetAddressType, PhoneNumb
 from caliopen_main.common.parameters.tag import ResourceTag
 
 from caliopen_main.pi.parameters import PIParameter
+import caliopen_storage.helpers.json as helpers
 
 ORG_TYPES = ['work', 'home']
 ADDRESS_TYPES = ['work', 'home', 'other']
@@ -211,7 +212,7 @@ class NewPublicKey(Model):
 
     """Input structure for a new public key."""
 
-    expire_date = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+    expire_date = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
     fingerprint = StringType()
     key = StringType(required=True)
@@ -229,9 +230,9 @@ class PublicKey(NewPublicKey):
 
     contact_id = UUIDType()
     date_insert = DateTimeType(required=True,
-                               serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
-    date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+    date_update = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
     user_id = UUIDType()
 
@@ -272,9 +273,9 @@ class Contact(NewContact):
     addresses = ListType(ModelType(PostalAddress), default=lambda: [])
     avatar = StringType(default='avatar.png')
     contact_id = UUIDType(required=True)
-    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+    date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
-    date_update = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+    date_update = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
     deleted = BooleanType()
     emails = ListType(ModelType(Email), default=lambda: [])

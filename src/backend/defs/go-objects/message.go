@@ -7,9 +7,9 @@ package objects
 import (
 	"bytes"
 	"encoding/json"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
-	log "github.com/Sirupsen/logrus"
 	"gopkg.in/oleiade/reflections.v1"
 	"time"
 )
@@ -18,9 +18,9 @@ type Message struct {
 	Attachments         []Attachment       `cql:"attachments"              json:"attachments"       `
 	Body_html           string             `cql:"body_html"                json:"body_html"         `
 	Body_plain          string             `cql:"body_plain"               json:"body_plain"        `
-	Date                time.Time          `cql:"date"                     json:"date"                                         formatter:"RFC3339Nano"`
-	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete"                                  formatter:"RFC3339Nano"`
-	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"RFC3339Nano"`
+	Date                time.Time          `cql:"date"                     json:"date"                                         formatter:"RFC3339Milli"`
+	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete"                                  formatter:"RFC3339Milli"`
+	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"RFC3339Milli"`
 	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id"                                formatter:"rfc4122"`
 	External_references ExternalReferences `cql:"external_references"      json:"external_references"`
 	Identities          []Identity         `cql:"identities"               json:"identities"       `
@@ -114,8 +114,8 @@ fieldsLoop:
 					switch j_formatter {
 					case "rfc4122":
 						enc.Encode(field_value)
-					case "RFC3339Nano":
-						jsonBuf.WriteString("\"" + field_value.(time.Time).Format(time.RFC3339Nano) + "\"")
+					case "RFC3339Milli":
+						jsonBuf.WriteString("\"" + field_value.(time.Time).Format(RFC3339Milli) + "\"")
 					case "TimeUTCmicro":
 						jsonBuf.WriteString("\"" + field_value.(time.Time).Format(TimeUTCmicro) + "\"")
 					default:

@@ -10,6 +10,7 @@ from schematics.transforms import blacklist
 from caliopen_main.contact.parameters import NewContact, Contact
 
 from caliopen_main.pi.parameters import PIParameter
+import caliopen_storage.helpers.json as helpers
 
 
 class NewUser(Model):
@@ -35,7 +36,7 @@ class User(NewUser):
     """Existing user."""
 
     contact = ModelType(Contact)
-    date_insert = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+    date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
     family_name = StringType()
     given_name = StringType()
