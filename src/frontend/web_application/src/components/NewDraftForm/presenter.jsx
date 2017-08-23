@@ -25,7 +25,7 @@ const hasMailSupport = recipients =>
 class NewDraftForm extends Component {
   static propTypes = {
     draft: PropTypes.shape({}),
-    internalId: PropTypes.string.isRequired,
+    internalId: PropTypes.string,
     onSave: PropTypes.func.isRequired,
     onSend: PropTypes.func.isRequired,
     onChange: PropTypes.func,
@@ -34,6 +34,7 @@ class NewDraftForm extends Component {
   };
   static defaultProps = {
     draft: {},
+    internalId: undefined,
     onChange: () => {},
     user: { contact: {} },
   };
