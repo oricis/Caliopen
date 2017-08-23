@@ -18,9 +18,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - support TAB for adding a participant to a discussion
 - use participant suggestions API for a new message
 - Handle 4xx errors when updating contact fails
+- Compose in multiple tabs messages, not only one
 
 ### Fixed
 - Bad wording for message update failures
+- Blink when composing a new message
 
 ## [0.2.1] - 2017-07-04
 ### Added

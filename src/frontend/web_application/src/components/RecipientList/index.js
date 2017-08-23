@@ -11,7 +11,7 @@ const findRecipient = (recipients, { address, protocol }) => recipients.find(rec
 );
 
 const searchTermsSelector = (state, ownProps) =>
-  state.draftMessage.recipientSearchTermsById[ownProps.discussionId];
+  state.draftMessage.recipientSearchTermsByInternalId[ownProps.internalId];
 
 const participantSuggestionsSelector = state => state.participantSuggestions;
 

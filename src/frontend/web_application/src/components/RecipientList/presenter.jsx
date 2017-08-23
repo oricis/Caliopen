@@ -47,7 +47,7 @@ const getStateFromProps = props => ({
 
 class RecipientList extends Component {
   static propTypes = {
-    discussionId: PropTypes.string.isRequired,
+    internalId: PropTypes.string,
     recipients: PropTypes.arrayOf(PropTypes.shape()),
     onRecipientsChange: PropTypes.func,
     setSearchTerms: PropTypes.func.isRequired,
@@ -56,6 +56,7 @@ class RecipientList extends Component {
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
+    internalId: undefined,
     contacts: [],
     recipients: [],
     searchResults: [],
@@ -86,12 +87,16 @@ class RecipientList extends Component {
   };
 
   handleSearchChange = (ev) => {
+    const { setSearchTerms, internalId } = this.props;
+    if (!internalId) {
+      return;
+    }
+
     this.setState({
       searchTerms: ev.target.value,
       searchOpened: true,
     }, () => {
-      const { setSearchTerms, discussionId } = this.props;
-      setSearchTerms({ discussionId, searchTerms: this.state.searchTerms });
+      setSearchTerms({ internalId, searchTerms: this.state.searchTerms });
 
       if (this.state.searchTerms.length >= 3) {
         return this.search(this.state.searchTerms);

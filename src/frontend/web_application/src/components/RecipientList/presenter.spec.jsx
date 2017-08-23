@@ -5,7 +5,8 @@ import RecipientList from './presenter';
 describe('component RecipientList', () => {
   const noop = str => str;
   const requiredProps = {
-    discussionId: 'simpleDraft',
+    // discussionId: 'simpleDraft',
+    internalId: 'simpleDraft',
     search: noop,
     setSearchTerms: noop,
     __: noop,
