@@ -16,30 +16,24 @@ class OrgaForm extends Component {
     errors: [],
   };
 
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSwitchChange = this.handleSwitchChange.bind(this);
-    this.state = {
-      organization: {
-        department: '',
-        is_primary: false,
-        job_description: '',
-        label: '',
-        name: '',
-        title: '',
-      },
-    };
-  }
+  state = {
+    organization: {
+      department: '',
+      is_primary: false,
+      job_description: '',
+      label: '',
+      name: '',
+      title: '',
+    },
+  };
 
-  handleSubmit(ev) {
+  handleSubmit = (ev) => {
     ev.preventDefault();
     const { organization } = this.state;
     this.props.onSubmit({ contactDetail: organization });
   }
 
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
       organization: {
@@ -49,7 +43,7 @@ class OrgaForm extends Component {
     }));
   }
 
-  handleSwitchChange(event) {
+  handleSwitchChange = (event) => {
     const { name, checked } = event.target;
     this.setState(prevState => ({
       organization: {
@@ -66,7 +60,7 @@ class OrgaForm extends Component {
       <FormGrid onSubmit={this.handleSubmit} className="m-orga-form" name="orga_form">
         <Fieldset>
           <Legend>
-            <Icon className="m-orga-form__icon" type="building" />
+            <Icon rightSpaced type="building" />
             {__('contact.orga_form.legend')}
           </Legend>
           <FormRow>

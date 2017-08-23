@@ -4,8 +4,6 @@ import Button from '../../../Button';
 import Icon from '../../../Icon';
 import { ItemContent } from '../../../TextList';
 
-import './style.scss';
-
 class OrgaDetails extends Component {
   static propTypes = {
     organization: PropTypes.shape({}).isRequired,
@@ -18,12 +16,7 @@ class OrgaDetails extends Component {
     onDelete: () => {},
   };
 
-  constructor(props) {
-    super(props);
-    this.handleDelete = this.handleDelete.bind(this);
-  }
-
-  handleDelete() {
+  handleDelete = () => {
     const { onDelete, organization } = this.props;
     onDelete({ contactDetail: organization });
   }
@@ -59,7 +52,7 @@ class OrgaDetails extends Component {
 
     return (
       <ItemContent large key={organization.organization_id}>
-        <Icon type="briefcase" className="m-orga-details__icon" />
+        <Icon type="briefcase" rightSpaced />
         {this.renderJobTitle()}
         { ' ' }
         {editMode && this.renderDeleteButton()}

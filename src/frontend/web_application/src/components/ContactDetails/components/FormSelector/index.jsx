@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { SelectFieldGroup } from '../../../form';
 
+import './style.scss';
+
 class FormSelector extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
@@ -30,6 +32,7 @@ class FormSelector extends Component {
     return (
       <SelectFieldGroup
         name="selectedForm"
+        className="m-form-selector__select"
         value={this.state.selectedForm ? this.state.selectedForm : ''}
         onChange={this.handleSelectChange}
         label={__('contact.form-selector.add_new_field.label')}
@@ -42,7 +45,9 @@ class FormSelector extends Component {
   renderNewForm = (form) => {
     const { formsOptions } = this.props;
     const newForm = formsOptions.map(option => option.name === form &&
-      <div key={option.name}>{option.obj}</div>
+      <div className="m-form-selector__form" key={option.name}>
+        {option.obj}
+      </div>
     );
 
     return newForm;

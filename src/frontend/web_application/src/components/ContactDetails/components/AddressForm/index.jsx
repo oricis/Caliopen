@@ -21,18 +21,19 @@ class AddressForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      contactDetail: {
-        street: '',
-        postal_code: '',
-        city: '',
-        country: '',
-        region: '',
-        type: ADDRESS_TYPES[0],
-      },
-    };
     this.initTranslations();
   }
+
+  state = {
+    contactDetail: {
+      street: '',
+      postal_code: '',
+      city: '',
+      country: '',
+      region: '',
+      type: ADDRESS_TYPES[0],
+    },
+  };
 
   initTranslations() {
     const { __ } = this.props;
@@ -88,7 +89,7 @@ class AddressForm extends Component {
       <FormGrid onSubmit={this.handleSubmit} className="m-address-form" name="address_form">
         <Fieldset>
           <Legend>
-            <Icon className="m-address-form__icon" type="map-marker" />
+            <Icon rightSpaced type="map-marker" />
             {__('contact.address_form.legend')}
           </Legend>
           <FormRow>

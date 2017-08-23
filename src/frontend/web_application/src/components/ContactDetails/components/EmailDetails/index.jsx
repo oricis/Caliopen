@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Icon from '../../../Icon';
 import Button from '../../../Button';
 import RemoteIdentityEmail from '../RemoteIdentityEmail';
-import './style.scss';
 
 class EmailDetails extends Component {
   static propTypes = {
@@ -26,16 +25,14 @@ class EmailDetails extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      connectIdentityEditMode: false,
-    };
-    this.renderConnectIdentityToggleButton = this.renderConnectIdentityToggleButton.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleToggleConnectIdentityForm = this.handleToggleConnectIdentityForm.bind(this);
     this.initTranslations();
   }
 
-  handleToggleConnectIdentityForm() {
+  state = {
+    connectIdentityEditMode: false,
+  };
+
+  handleToggleConnectIdentityForm = () => {
     this.setState(prevState => ({ connectIdentityEditMode: !prevState.connectIdentityEditMode }));
   }
 
@@ -48,12 +45,12 @@ class EmailDetails extends Component {
     };
   }
 
-  handleDelete() {
+  handleDelete= () => {
     const { onDelete, email } = this.props;
     onDelete({ contactDetail: email });
   }
 
-  renderConnectIdentityToggleButton() {
+  renderConnectIdentityToggleButton= () => {
     const { remoteIdentity, __ } = this.props;
     const successButtonProp = (remoteIdentity && remoteIdentity.connected) && { color: 'success' };
 
@@ -98,7 +95,7 @@ class EmailDetails extends Component {
 
     return (
       <span className="m-email-details">
-        <Icon className="m-email-details__icon" type="envelope" />
+        <Icon rightSpaced type="envelope" />
         {address}
         {' '}
         <small><em>{this.emailTypesTranslations[email.type]}</em></small>

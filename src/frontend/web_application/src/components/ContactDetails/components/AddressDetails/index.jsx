@@ -17,7 +17,6 @@ class AddressDetails extends Component {
 
   constructor(props) {
     super(props);
-    this.handleDelete = this.handleDelete.bind(this);
     this.initTranslations();
   }
 
@@ -30,7 +29,7 @@ class AddressDetails extends Component {
     };
   }
 
-  handleDelete() {
+  handleDelete = () => {
     const { onDelete, address } = this.props;
     onDelete({ contactDetail: address });
   }
@@ -46,14 +45,11 @@ class AddressDetails extends Component {
   }
 
   render() {
-    const {
-      address,
-      editMode,
-    } = this.props;
+    const { address, editMode } = this.props;
 
     return (
       <span className="m-address-details">
-        <Icon className="m-address-details__icon" type="map-marker" />
+        <Icon type="map-marker" rightSpaced />
         <address className="m-address-details__postal-address">
           {address.street}{address.street && ', '}
           {address.postal_code}{address.postal_code && ' '}

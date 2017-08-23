@@ -10,10 +10,6 @@
     @include o-form-element--dark;
   }
 
-  &__icon {
-    margin-right: $co-margin / 4;
-  }
-
   &__action {
     margin-top: $co-margin;
     line-height: $co-component__height;

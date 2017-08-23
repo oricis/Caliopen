@@ -4,8 +4,6 @@ import Button from '../../../Button';
 import Icon from '../../../Icon';
 import { ItemContent } from '../../../TextList';
 
-import './style.scss';
-
 class IdentityDetails extends Component {
   static propTypes = {
     identity: PropTypes.shape({}).isRequired,
@@ -43,7 +41,7 @@ class IdentityDetails extends Component {
 
     return (
       <ItemContent large>
-        <Icon type={identity.type} className="m-identity-details__icon" />
+        <Icon type={identity.type} rightSpaced />
         {identity.name}
         {editMode && this.renderDeleteButton()}
       </ItemContent>

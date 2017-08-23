@@ -18,25 +18,20 @@ class IdentityForm extends Component {
     errors: [],
   };
 
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.state = {
-      contactDetail: {
-        type: IDENTITY_TYPES[0],
-        name: '',
-      },
-    };
-  }
+  state = {
+    contactDetail: {
+      type: IDENTITY_TYPES[0],
+      name: '',
+    },
+  };
 
-  handleSubmit(ev) {
+  handleSubmit = (ev) => {
     ev.preventDefault();
     const { contactDetail } = this.state;
     this.props.onSubmit({ contactDetail });
   }
 
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
       contactDetail: {
@@ -57,21 +52,11 @@ class IdentityForm extends Component {
       <FormGrid onSubmit={this.handleSubmit} className="m-identity-form" name="identity_form">
         <Fieldset>
           <Legend>
-            <Icon className="m-identity-form__icon" type="user" />
+            <Icon rightSpaced type="user" />
             {__('contact.identity_form.legend')}
           </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="shrink">
-              <SelectFieldGroup
-                name="type"
-                value={this.state.contactDetail.type}
-                onChange={this.handleInputChange}
-                label={__('contact.identity_form.service.label')}
-                options={identityTypeOptions}
-                showLabelforSr
-              />
-            </FormColumn>
             <FormColumn size="medium">
               <TextFieldGroup
                 name="name"
@@ -79,6 +64,16 @@ class IdentityForm extends Component {
                 value={this.state.contactDetail.name}
                 onChange={this.handleInputChange}
                 label={__('contact.identity_form.identity.label')}
+                showLabelforSr
+              />
+            </FormColumn>
+            <FormColumn size="shrink">
+              <SelectFieldGroup
+                name="type"
+                value={this.state.contactDetail.type}
+                onChange={this.handleInputChange}
+                label={__('contact.identity_form.service.label')}
+                options={identityTypeOptions}
                 showLabelforSr
               />
             </FormColumn>

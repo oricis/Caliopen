@@ -9,7 +9,7 @@ import { FieldErrors } from '..';
 import './style.scss';
 
 const CheckboxFieldGroup = ({
-  id, className, label, showTextLabel, displaySwitch, errors, ...inputProps
+  id, className, label, showTextLabel, labelClassname, displaySwitch, errors, ...inputProps
 }) => {
   const checkboxId = id || uuidV1();
 
@@ -21,7 +21,12 @@ const CheckboxFieldGroup = ({
     <div>
       <Switch id={checkboxId} label={label} {...inputProps} />
       {showTextLabel &&
-        <label htmlFor={checkboxId} className="m-switch-field-group__label">{label}</label>
+        <label
+          htmlFor={checkboxId}
+          className={classnames('m-switch-field-group__label', labelClassname)}
+        >
+          {label}
+        </label>
       }
     </div>
   );
@@ -40,6 +45,7 @@ CheckboxFieldGroup.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   label: PropTypes.string.isRequired,
+  labelClassname: PropTypes.string,
   showTextLabel: PropTypes.bool,
   displaySwitch: PropTypes.bool,
   errors: PropTypes.arrayOf(PropTypes.string),
@@ -48,6 +54,7 @@ CheckboxFieldGroup.propTypes = {
 CheckboxFieldGroup.defaultProps = {
   id: undefined,
   className: null,
+  labelClassname: null,
   showTextLabel: false,
   displaySwitch: false,
   errors: [],

@@ -67,7 +67,7 @@ class ContactProfileForm extends Component {
         ...prevState.contact,
         infos: {
           ...prevState.contact.infos,
-          birthday: date.format('YYYY-MM-DD HH:mm:ss'),
+          birthday: date.format('YYYY-MM-DD'),
         },
       },
     }));

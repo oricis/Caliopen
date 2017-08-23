@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../../Icon';
 import Button from '../../../Button';
-import './style.scss';
 
 class ImDetails extends Component {
   static propTypes = {
@@ -54,7 +53,7 @@ class ImDetails extends Component {
 
     return (
       <span className="m-im-details">
-        <Icon className="m-im-details__icon" type="comment" />
+        <Icon rightSpaced type="comment" />
         {im.address}
         {' '}
         <small><em>{this.imTypesTranslations[im.type]}</em></small>

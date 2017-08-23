@@ -128,7 +128,7 @@ class Contact extends Component {
           {__('Editing contact')}
         </TextBlock>
         <Button
-          onClick={this.toggleEditMode}
+          onClick={this.toggleEditMode} // FIXME: this should validate contact change
           responsive="icon-only"
           icon="check"
           className="s-contact__action"
@@ -227,6 +227,7 @@ class Contact extends Component {
               <ContactDetails
                 contact={contact}
                 onUpdateContact={this.handleContactChange}
+                // FIXME: this should update state + update contact on "validate button" click
                 editMode={this.state.editMode}
                 __={__}
               />

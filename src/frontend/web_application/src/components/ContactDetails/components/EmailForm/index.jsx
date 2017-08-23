@@ -18,7 +18,6 @@ class EmailForm extends Component {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     onSubmit: PropTypes.func.isRequired,
-    contactDetail: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
   };
 
@@ -29,18 +28,16 @@ class EmailForm extends Component {
 
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSwitchChange = this.handleSwitchChange.bind(this);
-    this.state = {
-      contactDetail: {
-        address: '',
-        type: EMAIL_TYPES[0],
-        is_primary: false,
-      },
-    };
     this.initTranslations();
   }
+
+  state = {
+    contactDetail: {
+      address: '',
+      type: EMAIL_TYPES[0],
+      is_primary: false,
+    },
+  };
 
   componentWillMount() {
     this.setState(prevState => generateStateFromProps(this.props, prevState));
@@ -59,13 +56,13 @@ class EmailForm extends Component {
     };
   }
 
-  handleSubmit(ev) {
+  handleSubmit = (ev) => {
     ev.preventDefault();
     const { contactDetail } = this.state;
     this.props.onSubmit({ contactDetail });
   }
 
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
       contactDetail: {
@@ -75,7 +72,7 @@ class EmailForm extends Component {
     }));
   }
 
-  handleSwitchChange(event) {
+  handleSwitchChange = (event) => {
     const { name, checked } = event.target;
     this.setState(prevState => ({
       contactDetail: {
@@ -96,12 +93,22 @@ class EmailForm extends Component {
       <FormGrid onSubmit={this.handleSubmit} className="m-email-form" name="email_form">
         <Fieldset>
           <Legend>
-            <Icon className="m-email-form__icon" type="envelope" />
+            <Icon type="envelope" rightSpaced />
             {__('contact.email_form.legend')}
           </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="medium">
+            <FormColumn size="shrink" className="s-contact-detail-form__checkbox-label">
+              <CheckboxFieldGroup
+                name="is_primary"
+                value={this.state.contactDetail.is_primary}
+                onChange={this.handleSwitchChange}
+                label={__('contact.email_form.is_primary.label')}
+                displaySwitch
+                showTextLabel
+              />
+            </FormColumn>
+            <FormColumn size="small">
               <TextFieldGroup
                 name="address"
                 type="email"
@@ -120,16 +127,6 @@ class EmailForm extends Component {
                 label={__('contact.email_form.type.label')}
                 showLabelforSr
                 options={addressTypeOptions}
-              />
-            </FormColumn>
-            <FormColumn size="shrink" className="s-contact-detail-form__checkbox-label">
-              <CheckboxFieldGroup
-                name="is_primary"
-                value={this.state.contactDetail.is_primary}
-                onChange={this.handleSwitchChange}
-                label={__('contact.email_form.is_primary.label')}
-                displaySwitch
-                showTextLabel
               />
             </FormColumn>
             <FormColumn size="shrink" className="m-email-form__action">

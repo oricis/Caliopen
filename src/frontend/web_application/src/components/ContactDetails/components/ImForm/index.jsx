@@ -19,20 +19,19 @@ class EmailForm extends Component {
 
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSwitchChange = this.handleSwitchChange.bind(this);
-    this.state = {
-      contactDetail: {
-        address: '',
-        type: IM_TYPES[0],
-      },
-    };
     this.initTranslations();
   }
 
+  state = {
+    contactDetail: {
+      address: '',
+      type: IM_TYPES[0],
+    },
+  };
+
   initTranslations() {
     const { __ } = this.props;
+
     this.addressTypes = {
       work: __('contact.im_type.work'),
       home: __('contact.im_type.home'),
@@ -41,13 +40,13 @@ class EmailForm extends Component {
     };
   }
 
-  handleSubmit(ev) {
+  handleSubmit = (ev) => {
     ev.preventDefault();
     const { contactDetail } = this.state;
     this.props.onSubmit({ contactDetail });
   }
 
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
       contactDetail: {
@@ -57,7 +56,7 @@ class EmailForm extends Component {
     }));
   }
 
-  handleSwitchChange(event) {
+  handleSwitchChange = (event) => {
     const { name, checked } = event.target;
     this.setState(prevState => ({
       contactDetail: {
@@ -78,12 +77,12 @@ class EmailForm extends Component {
       <FormGrid onSubmit={this.handleSubmit} className="m-im-form" name="im_form">
         <Fieldset>
           <Legend>
-            <Icon className="m-im-form__icon" type="comment" />
+            <Icon rightSpaced type="comment" />
             {__('contact.im_form.legend')}
           </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="medium">
+            <FormColumn size="small">
               <TextFieldGroup
                 name="address"
                 type="email"
