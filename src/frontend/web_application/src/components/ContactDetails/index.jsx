@@ -15,6 +15,7 @@ import IdentityForm from './components/IdentityForm';
 import ImForm from './components/ImForm';
 import OrgaForm from './components/OrgaForm';
 import PhoneForm from './components/PhoneForm';
+import FormButton from './components/FormButton';
 import FormSelector from './components/FormSelector';
 
 import './style.scss';
@@ -72,6 +73,7 @@ class ContactDetails extends Component {
     const { onUpdateContact, contact } = this.props;
 
     return ({ contactDetail }) => onUpdateContact({
+      resetNewForm: true,
       contact: {
         ...contact,
         [type]: [
@@ -87,6 +89,7 @@ class ContactDetails extends Component {
     const { onUpdateContact, contact } = this.props;
 
     return ({ contactDetail }) => onUpdateContact({
+      resetNewForm: true,
       contact: {
         ...contact,
         [type]: contact[type].filter(entity => entity !== contactDetail),
@@ -125,15 +128,24 @@ class ContactDetails extends Component {
   }
 
   renderPhone = (phone) => {
-    const { __, editMode } = this.props;
+    const { __ } = this.props;
 
     return (
       <ItemContent large>
-        <PhoneDetails
+        <PhoneDetails phone={phone} __={__} />
+      </ItemContent>
+    );
+  }
+
+  renderPhoneForm = (phone) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <PhoneForm
           phone={phone}
-          editMode={editMode}
-          onEdit={str => str} // FIXME should be edit function
           onDelete={this.makeHandleDeleteContactDetail('phones')}
+          onEdit={str => str} // FIXME: should be edit function
           __={__}
         />
       </ItemContent>
@@ -141,13 +153,23 @@ class ContactDetails extends Component {
   }
 
   renderIm = (im) => {
-    const { __, editMode } = this.props;
+    const { __ } = this.props;
 
     return (
       <ItemContent large>
-        <ImDetails
+        <ImDetails im={im} __={__} />
+      </ItemContent>
+    );
+  }
+
+  renderImForm = (im) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <ImForm
           im={im}
-          editMode={editMode}
+          onEdit={str => str} // FIXME: should be edit function
           onDelete={this.makeHandleDeleteContactDetail('ims')}
           __={__}
         />
@@ -205,37 +227,68 @@ class ContactDetails extends Component {
   }
 
   renderFormSelector = () => {
-    const { __ } = this.props;
+    const { __, contact } = this.props;
+
+    const emailOption = {
+      name: __('contact.form-selector.email_form.label'),
+      obj: (<EmailForm onSubmit={this.makeHandleAddContactDetail('emails')} __={__} />),
+    };
+
+    const phoneOption = {
+      name: __('contact.form-selector.phone_form.label'),
+      obj: (<PhoneForm onSubmit={this.makeHandleAddContactDetail('phones')} __={__} />),
+    };
+
+    const imOption = {
+      name: __('contact.form-selector.im_form.label'),
+      obj: (<ImForm onSubmit={this.makeHandleAddContactDetail('ims')} __={__} />),
+    };
+
+    const addressOption = {
+      name: __('contact.form-selector.address_form.label'),
+      obj: (<AddressForm onSubmit={this.makeHandleAddContactDetail('addresses')} __={__} />),
+    };
 
     const formsOptions = [
-      { name: __('contact.form-selector.add_new_field.label'), obj: null },
-      { name: __('contact.form-selector.email_form.label'), obj: (<EmailForm onSubmit={this.makeHandleAddContactDetail('emails')} __={__} />) },
-      { name: __('contact.form-selector.phone_form.label'), obj: (<PhoneForm onSubmit={this.makeHandleAddContactDetail('phones')} __={__} />) },
-      { name: __('contact.form-selector.im_form.label'), obj: (<ImForm onSubmit={this.makeHandleAddContactDetail('ims')} __={__} />) },
-      { name: __('contact.form-selector.address_form.label'), obj: (<AddressForm onSubmit={this.makeHandleAddContactDetail('addresses')} __={__} />) },
-    ];
+      { name: ' - ', obj: null },
+      !contact.emails ? emailOption : null,
+      !contact.phones ? phoneOption : null,
+      !contact.ims ? imOption : null,
+      !contact.addresses ? addressOption : null,
+    ].filter(option => option !== null); // only return new forms for empty contact's attributes
 
     return (
       <FormSelector __={__} formsOptions={formsOptions} />
     );
   }
 
+  renderAddFormButton = (obj) => {
+    const { __ } = this.props;
+
+    return (
+      <FormButton obj={obj} __={__} />
+    );
+  }
+
   renderContactDetailsForm = () => {
-    const { __, contact } = this.props;
+    const { contact, __ } = this.props;
+
+    const newEmailForm = <EmailForm onSubmit={this.makeHandleAddContactDetail('emails')} __={__} />;
+    const newPhoneForm = <PhoneForm onSubmit={this.makeHandleAddContactDetail('phones')} __={__} />;
+    const newImForm = <ImForm onSubmit={this.makeHandleAddContactDetail('ims')} __={__} />;
+    const newAddressForm = <AddressForm onSubmit={this.makeHandleAddContactDetail('addresses')} __={__} />;
+
     const emails = contact.emails ?
       [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
     const contactDetails = [
       ...emails.map(detail => this.renderEmail(detail)),
-      ...(contact.phones ? contact.phones.map(detail =>
-        (<PhoneForm
-          phone={detail}
-          onDelete={this.makeHandleDeleteContactDetail('phones')}
-          onEdit={str => str} // FIXME: should be edit function
-          __={__}
-        />)
-      ) : []),
-      ...(contact.ims ? contact.ims.map(detail => this.renderIm(detail)) : []),
+      ...(contact.emails ? [this.renderAddFormButton(newEmailForm)] : []),
+      ...(contact.phones ? contact.phones.map(detail => (this.renderPhoneForm(detail))) : []),
+      ...(contact.phones ? [this.renderAddFormButton(newPhoneForm)] : []),
+      ...(contact.ims ? contact.ims.map(detail => this.renderImForm(detail)) : []),
+      ...(contact.ims ? [this.renderAddFormButton(newImForm)] : []),
       ...(contact.addresses ? contact.addresses.map(detail => this.renderAddress(detail)) : []),
+      ...(contact.addresses ? [this.renderAddFormButton(newAddressForm)] : []),
     ];
 
     return (
@@ -259,9 +312,13 @@ class ContactDetails extends Component {
               this.renderContactDetailsForm() :
               this.renderContactDetails()
             }
-            <div className="m-contact-details__new-form">
-              {editMode && this.renderFormSelector()}
-            </div>
+            {editMode &&
+              (!contact.emails || !contact.phones || !contact.ims || !contact.addresses) &&
+              // if at least one contact's attribute is empty
+              <div className="m-contact-details__new-form">
+                {this.renderFormSelector()}
+              </div>
+            }
           </div>
         </div>
 

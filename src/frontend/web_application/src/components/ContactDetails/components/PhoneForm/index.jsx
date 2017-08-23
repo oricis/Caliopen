@@ -122,7 +122,7 @@ class PhoneForm extends Component {
           </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="shrink">
+            <FormColumn fluid>
               <CheckboxFieldGroup
                 name="is_primary"
                 label={__('contact.phone_form.is_primary.label')}
@@ -132,7 +132,7 @@ class PhoneForm extends Component {
                 showTextLabel
               />
             </FormColumn>
-            <FormColumn size="small" fluid>
+            <FormColumn fluid>
               <TextFieldGroup
                 name="number"
                 type="tel"
@@ -143,7 +143,7 @@ class PhoneForm extends Component {
                 required
               />
             </FormColumn>
-            <FormColumn size="shrink" fluid>
+            <FormColumn fluid>
               <SelectFieldGroup
                 name="type"
                 value={this.state.contactDetail.type}
@@ -153,9 +153,9 @@ class PhoneForm extends Component {
                 options={typeOptions}
               />
             </FormColumn>
-            <FormColumn size="shrink" fluid className="m-phone-form__action">
+            <FormColumn fluid>
               {!phone ?
-                <Button type="submit" display="expanded" shape="plain" icon="plus">
+                <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
                   {__('contact.action.add_contact_detail')}
                 </Button>
               :

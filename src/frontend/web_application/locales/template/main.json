@@ -29,6 +29,7 @@
     "contact.contact_details": "contact.contact_details",
     "contact.contact_identities": "contact.contact_identities",
     "contact.contact_organizations": "contact.contact_organizations",
+    "contact.edit_contact.title": "contact.edit_contact.title",
     "contact.email_form.address.label": "contact.email_form.address.label",
     "contact.email_form.is_primary.label": "contact.email_form.is_primary.label",
     "contact.email_form.legend": "contact.email_form.legend",

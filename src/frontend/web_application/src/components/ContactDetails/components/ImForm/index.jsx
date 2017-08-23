@@ -7,14 +7,32 @@ import './style.scss';
 
 const IM_TYPES = ['work', 'home', 'other', 'netmeeting'];
 
-class EmailForm extends Component {
+const generateStateFromProps = (props, prevState) => {
+  const im = props.im || {};
+
+  return {
+    contactDetail: {
+      ...prevState.contactDetail,
+      ...im,
+    },
+  };
+};
+
+class ImForm extends Component {
   static propTypes = {
+    im: PropTypes.shape({}),
     errors: PropTypes.arrayOf(PropTypes.string),
-    onSubmit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
+    onSubmit: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
     errors: [],
+    im: null,
+    onDelete: () => {},
+    onEdit: () => {},
+    onSubmit: () => {},
   };
 
   constructor(props) {
@@ -28,6 +46,14 @@ class EmailForm extends Component {
       type: IM_TYPES[0],
     },
   };
+
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(prevState => generateStateFromProps(nextProps, prevState));
+  }
 
   initTranslations() {
     const { __ } = this.props;
@@ -44,6 +70,17 @@ class EmailForm extends Component {
     ev.preventDefault();
     const { contactDetail } = this.state;
     this.props.onSubmit({ contactDetail });
+  }
+
+  handleDelete = () => {
+    const { onDelete, im } = this.props;
+    onDelete({ contactDetail: im });
+  }
+
+  handleEdit = (ev) => {
+    ev.preventDefault();
+    const { contactDetail } = this.state;
+    this.props.onEdit({ contactDetail });
   }
 
   handleInputChange = (event) => {
@@ -67,7 +104,7 @@ class EmailForm extends Component {
   }
 
   render() {
-    const { __, errors = [] } = this.props;
+    const { __, errors = [], im } = this.props;
     const addressTypeOptions = IM_TYPES.map(value => ({
       value,
       label: this.addressTypes[value],
@@ -104,9 +141,13 @@ class EmailForm extends Component {
               />
             </FormColumn>
             <FormColumn size="shrink" className="m-im-form__action">
-              <Button type="submit" display="expanded" shape="plain" icon="plus">
-                {__('contact.action.add_contact_detail')}
-              </Button>
+              {!im ?
+                <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
+                  {__('contact.action.add_contact_detail')}
+                </Button>
+              :
+                <Button icon="remove" onClick={this.handleDelete} />
+              }
             </FormColumn>
           </FormRow>
         </Fieldset>
@@ -115,4 +156,4 @@ class EmailForm extends Component {
   }
 }
 
-export default EmailForm;
+export default ImForm;

@@ -125,7 +125,7 @@ class Contact extends Component {
           className="s-contact__action"
         >Cancel</Button>
         <TextBlock className="s-contact__bar-title">
-          {__('Editing contact')}
+          {__('contact.edit_contact.title')}
         </TextBlock>
         <Button
           onClick={this.toggleEditMode} // FIXME: this should validate contact change
@@ -226,8 +226,7 @@ class Contact extends Component {
             <div className="s-contact__col-datas-online">
               <ContactDetails
                 contact={contact}
-                onUpdateContact={this.handleContactChange}
-                // FIXME: this should update state + update contact on "validate button" click
+                onUpdateContact={this.handleContactChange} // FIXME: this should update state
                 editMode={this.state.editMode}
                 __={__}
               />

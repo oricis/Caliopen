@@ -30,6 +30,7 @@
     "contact.contact_details": "Coordonnées",
     "contact.contact_identities": "Identités",
     "contact.contact_organizations": "Professionel",
+    "contact.edit_contact.title": "Éditer le contact",
     "contact.email_form.address.label": "Adresse",
     "contact.email_form.is_primary.label": "Principale",
     "contact.email_form.legend": "Email",

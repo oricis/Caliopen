@@ -33,10 +33,9 @@ class FormSelector extends Component {
       <SelectFieldGroup
         name="selectedForm"
         className="m-form-selector__select"
-        value={this.state.selectedForm ? this.state.selectedForm : ''}
+        value=""
         onChange={this.handleSelectChange}
         label={__('contact.form-selector.add_new_field.label')}
-        showLabelforSr
         options={typeOptions}
       />
     );
@@ -56,8 +55,8 @@ class FormSelector extends Component {
   render() {
     return (
       <div className="m-form-selector">
-        {this.renderSelector()}
         {this.renderNewForm(this.state.selectedForm)}
+        {this.renderSelector()}
       </div>
     );
   }
