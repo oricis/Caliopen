@@ -123,7 +123,7 @@ class Contact extends Component {
           responsive="icon-only"
           icon="remove"
           className="s-contact__action"
-        >Cancel</Button>
+        >{__('contact.action.cancel_edit')}</Button>
         <TextBlock className="s-contact__bar-title">
           {__('contact.edit_contact.title')}
         </TextBlock>
@@ -132,13 +132,13 @@ class Contact extends Component {
           responsive="icon-only"
           icon="check"
           className="s-contact__action"
-        >Validate</Button>
+        >{__('contact.action.validate_edit')}</Button>
       </div>
     );
   }
 
   renderActionBar = () => {
-    const { contact } = this.props;
+    const { __, contact } = this.props;
 
     return (
       <div className="s-contact__action-bar">
@@ -163,33 +163,29 @@ class Contact extends Component {
                 onClick={this.toggleEditMode}
                 className="s-contact__action"
                 display="expanded"
-              >Edit</Button>
+              >{__('contact.action.edit_contact')}</Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
                 onClick={this.openTagsModal}
                 className="s-contact__action"
                 display="expanded"
-              >Manage Tags</Button>
-              {
-                // FIXME: when you open tagsModal, and then close it,
-                // Dropdown bugs.
-                this.renderTagsModal()
-              }
+              >{__('contact.action.edit_tags')}</Button>
+              { this.renderTagsModal() }
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
                 onClick={this.openTagsModal}
                 className="s-contact__action"
                 display="expanded"
-              >Share</Button>
+              >{__('contact.action.share_contact')}</Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
                 onClick={this.handleContactDelete}
                 className="s-contact__action"
                 display="expanded"
-              >Delete</Button>
+              >{__('contact.action.delete_contact')}</Button>
             </VerticalMenuItem>
           </VerticalMenu>
         </DropdownMenu>

@@ -7,14 +7,14 @@ import './style.scss';
 class FormButton extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
-    obj: PropTypes.shape({}).isRequired,
+    children: PropTypes.node.isRequired,
   };
 
   state = {
     isActive: false,
   }
 
-  toogleForm = () => {
+  toggleForm = () => {
     this.setState(prevState => ({
       isActive: !prevState.isActive,
     }));
@@ -29,17 +29,17 @@ class FormButton extends Component {
     return (
       <Button
         {...buttonProps}
-        onClick={this.toogleForm}
+        onClick={this.toggleForm}
       >{this.state.isActive ? __('contact.action.cancel_new_field') : __('contact.action.add_new_field')}</Button>
     );
   }
 
   render() {
-    const { obj } = this.props;
+    const { children } = this.props;
 
     return (
       <div className="m-new-form-button">
-        {this.state.isActive && <div className="m-new-form-button__form">{obj}</div>}
+        {this.state.isActive && <div className="m-new-form-button__form">{children}</div>}
         {this.renderButton()}
       </div>
     );

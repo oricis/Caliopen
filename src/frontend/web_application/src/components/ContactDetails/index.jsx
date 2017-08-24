@@ -73,7 +73,6 @@ class ContactDetails extends Component {
     const { onUpdateContact, contact } = this.props;
 
     return ({ contactDetail }) => onUpdateContact({
-      resetNewForm: true,
       contact: {
         ...contact,
         [type]: [
@@ -92,7 +91,6 @@ class ContactDetails extends Component {
     const { onUpdateContact, contact } = this.props;
 
     return ({ contactDetail }) => onUpdateContact({
-      resetNewForm: true,
       contact: {
         ...contact,
         [type]: contact[type].filter(entity => entity !== contactDetail),
@@ -340,12 +338,12 @@ class ContactDetails extends Component {
     );
   }
 
-  renderAddFormButton = (obj) => {
+  renderAddFormButton = (form) => {
     const { __ } = this.props;
 
     return (
       <ItemContent large>
-        <FormButton obj={obj} __={__} />
+        <FormButton __={__}>{form}</FormButton>
       </ItemContent>
     );
   }
