@@ -466,7 +466,8 @@ class ObjectIndexable(ObjectUser):
 
     def delete_index(self, **options):
         try:
-            self._index.delete(using=self._index_class.client())
+            self._index.delete(using=self._index_class.client(),
+                               refresh="wait_for")
         except Exception as exc:
             log.info(exc)
             return exc
