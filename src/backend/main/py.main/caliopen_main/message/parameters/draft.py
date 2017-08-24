@@ -4,7 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import re
 from schematics.types import StringType
 from .message import NewMessage
-from caliopen_main.user.parameters.identity import LocalIdentity
+from caliopen_main.user.objects.identities import LocalIdentity
 from caliopen_main.user.core import User
 from caliopen_main.message.parameters.participant import Participant
 from caliopen_storage.exception import NotFound
@@ -106,7 +106,7 @@ class Draft(NewMessage):
         return from_participant
 
     def _check_discussion_consistency(self, user_id):
-        from caliopen_main.objects.message import Message
+        from caliopen_main.message.objects.message import Message
         new_discussion = False
 
         if not hasattr(self, 'discussion_id') or self.discussion_id == "" \
