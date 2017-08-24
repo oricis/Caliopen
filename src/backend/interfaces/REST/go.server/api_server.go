@@ -191,7 +191,7 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	/** tags API **/
 	tag := api.Group("/tags", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
 	tag.GET("", tags.GetUserTags)
-	tag.POST("", tags.CreateUserTag)
+	tag.POST("", tags.CreateTag)
 	tag.GET("/:tag_id", tags.GetTag)
 	tag.PATCH("/:tag_id", tags.PatchTag)
 	tag.DELETE("/:tag_id", tags.DeleteTag)
