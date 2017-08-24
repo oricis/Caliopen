@@ -56,7 +56,7 @@ class Message(Api):
                                                    **data)
         except Exception as exc:
             log.warn(exc)
-            raise MergePatchError(exc)
+            raise MergePatchError(error=exc)
 
         message_url = self.request.route_path('message',
                                               message_id=str(
