@@ -133,10 +133,10 @@ export function postActions({ message, actions }) {
   };
 }
 
-export function replyToMessage({ message }) {
+export function replyToMessage({ internalId, message }) {
   return {
     type: REPLY_TO_MESSAGE,
-    payload: { message },
+    payload: { internalId, message },
   };
 }
 

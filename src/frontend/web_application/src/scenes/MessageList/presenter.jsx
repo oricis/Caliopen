@@ -74,6 +74,11 @@ class MessageList extends Component {
     Promise.all(messages.map(message => deleteMessage({ message })));
   };
 
+  makeHandleReplyToMessage = internalId => ({ message }) => this.props.replyToMessage({
+    message,
+    internalId,
+  });
+
   loadMore = () => {
     if (this.props.hasMore) {
       this.throttledLoadMore();
@@ -89,9 +94,8 @@ class MessageList extends Component {
   }
 
   render() {
-    const {
-      messages, discussionId, isFetching, replyToMessage, copyMessageTo, editMessageTags,
-    } = this.props;
+    const { messages, discussionId, isFetching, copyMessageTo, editMessageTags } = this.props;
+    const internalId = discussionId;
 
     return (
       <MessageListBase
@@ -99,12 +103,12 @@ class MessageList extends Component {
         onMessageRead={this.handleSetMessageRead}
         onMessageUnread={this.handleSetMessageUnread}
         isFetching={isFetching}
-        replyForm={<ReplyForm discussionId={discussionId} internalId={discussionId} />}
+        replyForm={<ReplyForm discussionId={discussionId} internalId={internalId} />}
         onForward={() => {}}
         onDelete={this.handleDelete}
         onMessageDelete={this.handleDeleteMessage}
+        onMessageReply={this.makeHandleReplyToMessage(internalId)}
         loadMore={this.renderLoadMore()}
-        onMessageReply={replyToMessage}
         onMessageCopyTo={copyMessageTo}
         onMessageEditTags={editMessageTags}
       />

@@ -2,8 +2,8 @@ import throttle from 'lodash.throttle';
 import isEqual from 'lodash.isequal';
 import { push, replace } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
-import { REQUEST_NEW_DRAFT, REQUEST_NEW_DRAFT_SUCCESS, REQUEST_DRAFT, EDIT_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestNewDraftSuccess, requestDraftSuccess, syncDraft, clearDraft } from '../modules/draft-message';
-import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, requestMessages, requestMessage, createMessage, updateMessage, postActions } from '../modules/message';
+import { REQUEST_NEW_DRAFT, REQUEST_NEW_DRAFT_SUCCESS, REQUEST_DRAFT, EDIT_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestNewDraftSuccess, requestDraftSuccess, syncDraft, clearDraft, editDraft } from '../modules/draft-message';
+import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, REPLY_TO_MESSAGE, requestMessages, requestMessage, createMessage, updateMessage, postActions } from '../modules/message';
 import { requestLocalIdentities } from '../modules/local-identity';
 import { removeTab, updateTab } from '../modules/tab';
 import fetchLocation from '../../services/api-location';
@@ -206,6 +206,22 @@ const sendDraftHandler = async ({ store, action }) => {
   store.dispatch(clearDraft({ internalId }));
 };
 
+const replyToMessageHandler = ({ store, action }) => {
+  if (action.type !== REPLY_TO_MESSAGE) {
+    return;
+  }
+
+  const { internalId, message: messageInReply } = action.payload;
+  const state = store.getState();
+  const draft = {
+    ...state.draftMessage.draftsByInternalId[internalId],
+    parent_id: messageInReply.message_id,
+  };
+  const message = draft.message_id ? state.message.messagesById[draft.message_id] : undefined;
+
+  store.dispatch(editDraft({ internalId, draft, message }));
+};
+
 export default store => next => (action) => {
   if ([EDIT_DRAFT].indexOf(action.type) !== -1) {
     if (throttled) {
@@ -226,6 +242,7 @@ export default store => next => (action) => {
   sendDraftHandler({ store, action });
   requestNewDraftHandler({ store, action });
   requestNewDraftSuccessHandler({ store, action });
+  replyToMessageHandler({ store, action });
 
   return result;
 };
