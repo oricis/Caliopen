@@ -245,6 +245,7 @@ class User(BaseCore):
         if hasattr(new_user, "contact"):
             contact = Contact(user_id=user_id, **new_user.contact.serialize())
             contact.contact_id = uuid.uuid4()
+            contact.title = Contact._compute_title(contact)
 
             for email in contact.emails:
                 if email.address is not None and validate_email(email.address):

@@ -96,3 +96,14 @@ class Contact(ObjectIndexable):
         if self.user.contact_id == self.contact_id:
             raise Exception("Can't delete contact related to user")
         return super(Contact, self).delete()
+
+    @classmethod
+    def _compute_title(cls, contact):
+        elmts = []
+        elmts.append(contact.name_prefix) if contact.name_prefix else None
+        elmts.append(contact.name_suffix) if contact.name_suffix else None
+        elmts.append(contact.given_name) if contact.given_name else None
+        elmts.append(contact.additional_name) if \
+            contact.additional_name else None
+        elmts.append(contact.family_name) if contact.family_name else None
+        return " ".join(elmts) if len(elmts) > 0 else " (N/A) "
