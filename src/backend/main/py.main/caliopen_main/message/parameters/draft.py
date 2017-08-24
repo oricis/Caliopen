@@ -29,10 +29,12 @@ class Draft(NewMessage):
         if not self.message_id or not isinstance(self.message_id, uuid.UUID):
             raise err.PatchUnprocessable(
                 message="missing or invalid message_id")
-        q = ModelMessage.objects.filter(user_id=user_id,
+        try:
+            ModelMessage.get(user_id=user_id,
                                         message_id=self.message_id)
-        if q.first():
             raise err.PatchUnprocessable(message="message_id not unique")
+        except NotFound:
+            pass
 
     def validate_consistency(self, user_id, is_new):
         """
