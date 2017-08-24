@@ -4,7 +4,7 @@
 .m-contacts-filters {
   @include flex-grid-row($size: expand)
 
-  &__select {
+  &__item {
     @include flex-grid-row;
     align-items: center;
     margin-top: $co-component__spacing;
@@ -12,14 +12,13 @@
     @include breakpoint(medium) {
       margin-top: 0;
     }
+  }
 
-    label {
-      @include flex-grid-column(shrink);
-      margin-bottom: 0;
-    }
+  &__label {
+    @include flex-grid-column(shrink);
+  }
 
-    .m-select-field-group__select-wrapper {
-      @include flex-grid-size;
-    }
+  &__select {
+    @include flex-grid-size;
   }
 }

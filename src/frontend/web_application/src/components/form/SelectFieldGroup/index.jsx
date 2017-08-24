@@ -36,10 +36,10 @@ class SelectFieldGroup extends PureComponent {
       errors, expanded, showLabelforSr, className, label, onChange, options, ...props
     } = this.props;
     const id = uuidV1();
-    const selectClassName = classnames(
-      'm-select-field-group__select',
+    const selectWrapperClassName = classnames(
+      'm-select-field-group__select-wrapper',
       {
-        'm-select-field-group--expanded__select': expanded,
+        'm-select-field-group--expanded__select-wrapper': expanded,
       }
     );
     const labelClassName = classnames('m-select-field-group__label', {
@@ -49,10 +49,10 @@ class SelectFieldGroup extends PureComponent {
     return (
       <div className={classnames('m-select-field-group', className)}>
         <label htmlFor={id} className={labelClassName}>{label}</label>
-        <div className="m-select-field-group__select-wrapper">
+        <div className={selectWrapperClassName}>
           <select
             onChange={onChange}
-            className={selectClassName}
+            className="m-select-field-group__select"
             id={id}
             {...props}
           >
