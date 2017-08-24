@@ -24,6 +24,9 @@ class Message extends Component {
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
+    onReply: PropTypes.func.isRequired,
+    onCopyTo: PropTypes.func.isRequired,
+    onEditTags: PropTypes.func.isRequired,
     locale: PropTypes.string,
     __: PropTypes.func.isRequired,
   };
@@ -102,7 +105,9 @@ class Message extends Component {
   }
 
   render() {
-    const { message, locale, onDelete, onMessageUnread, onMessageRead, __ } = this.props;
+    const {
+      message, locale, onDelete, onMessageUnread, onMessageRead, onReply, onCopyTo, onEditTags, __,
+    } = this.props;
     const author = message.participants.find(participant => participant.type === 'From');
     const typeTranslations = {
       email: __('message-list.message.protocol.email'),
@@ -159,6 +164,9 @@ class Message extends Component {
                 onDelete={onDelete}
                 onMessageRead={onMessageRead}
                 onMessageUnread={onMessageUnread}
+                onReply={onReply}
+                onCopyTo={onCopyTo}
+                onEditTags={onEditTags}
                 __={__}
               />
             </Dropdown>

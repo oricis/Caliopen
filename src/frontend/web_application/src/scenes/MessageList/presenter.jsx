@@ -18,6 +18,9 @@ class MessageList extends Component {
     isFetching: PropTypes.bool.isRequired,
     setMessageRead: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
+    replyToMessage: PropTypes.func.isRequired,
+    copyMessageTo: PropTypes.func.isRequired,
+    editMessageTags: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     hasMore: PropTypes.bool.isRequired,
@@ -86,7 +89,9 @@ class MessageList extends Component {
   }
 
   render() {
-    const { messages, discussionId, isFetching } = this.props;
+    const {
+      messages, discussionId, isFetching, replyToMessage, copyMessageTo, editMessageTags,
+    } = this.props;
 
     return (
       <MessageListBase
@@ -95,11 +100,13 @@ class MessageList extends Component {
         onMessageUnread={this.handleSetMessageUnread}
         isFetching={isFetching}
         replyForm={<ReplyForm discussionId={discussionId} internalId={discussionId} />}
-        onReply={() => {}}
         onForward={() => {}}
         onDelete={this.handleDelete}
         onMessageDelete={this.handleDeleteMessage}
         loadMore={this.renderLoadMore()}
+        onMessageReply={replyToMessage}
+        onMessageCopyTo={copyMessageTo}
+        onMessageEditTags={editMessageTags}
       />
     );
   }

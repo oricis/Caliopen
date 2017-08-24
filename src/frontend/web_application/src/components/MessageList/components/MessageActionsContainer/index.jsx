@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Button from '../../../Button';
 
 import './style.scss';
@@ -16,7 +17,15 @@ class MessageActionsContainer extends Component {
     onDelete: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     onMessageRead: PropTypes.func.isRequired,
+    onReply: PropTypes.func.isRequired,
+    onCopyTo: PropTypes.func.isRequired,
+    onEditTags: PropTypes.func.isRequired,
+    className: PropTypes.string,
     __: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    className: null,
   };
 
   state = {
@@ -31,9 +40,9 @@ class MessageActionsContainer extends Component {
     this.setState(generateStateFromProps(nextProps));
   }
 
-  handleDelete = () => {
-    const { message, onDelete } = this.props;
-    onDelete({ message });
+  makeHandle = action => () => {
+    const { message } = this.props;
+    action({ message });
   };
 
   handleToggle = () => {
@@ -49,17 +58,18 @@ class MessageActionsContainer extends Component {
   }
 
   render() {
-    const { __ } = this.props;
+    const { onDelete, onReply, onCopyTo, onEditTags, className, __ } = this.props;
+    const messageActionsContainerClassName = classnames(
+      'm-message-actions-container',
+      className,
+    );
 
     return (
-      <div className="m-message-actions-container">
-        <Button className="m-message-actions-container__action" display="expanded">{__('message-list.message.action.reply')}</Button>
-        <Button
-          className="m-message-actions-container__action"
-          onClick={this.handleDelete}
-          display="expanded"
-        >{__('message-list.message.action.delete')}</Button>
-
+      <div className={messageActionsContainerClassName}>
+        <Button onClick={this.makeHandle(onReply)} className="m-message-actions-container__action" icon="reply" responsive="icon-only">{__('message-list.message.action.reply')}</Button>
+        <Button onClick={this.makeHandle(onCopyTo)} className="m-message-actions-container__action" icon="share" responsive="icon-only">{__('message-list.message.action.copy-to')}</Button>
+        <Button onClick={this.makeHandle(onEditTags)} className="m-message-actions-container__action" icon="tags" responsive="icon-only">{__('message-list.message.action.tags')}</Button>
+        <Button onClick={this.makeHandle(onDelete)} className="m-message-actions-container__action" icon="trash" responsive="icon-only">{__('message-list.message.action.delete')}</Button>
         <Button
           className="m-message-actions-container__action"
           display="expanded"

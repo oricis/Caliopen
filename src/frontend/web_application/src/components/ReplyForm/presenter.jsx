@@ -19,7 +19,7 @@ function generateStateFromProps(props) {
 
 class ReplyForm extends Component {
   static propTypes = {
-    draft: PropTypes.shape({}).isRequired,
+    draft: PropTypes.shape({}),
     onSave: PropTypes.func.isRequired,
     onSend: PropTypes.func.isRequired,
     onChange: PropTypes.func,
@@ -27,19 +27,17 @@ class ReplyForm extends Component {
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
+    draft: {
+      body: '',
+    },
     onChange: () => {},
     user: { contact: {} },
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      isActive: true,
-      protocol: 'email',
-    };
-    this.handleSend = this.handleSend.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
+
+  state = {
+    isActive: true,
+    protocol: 'email',
+  };
 
   componentWillMount() {
     this.setState(prevState => generateStateFromProps(this.props, prevState));
@@ -49,17 +47,17 @@ class ReplyForm extends Component {
     this.setState(prevState => generateStateFromProps(newProps, prevState));
   }
 
-  handleSave() {
+  handleSave = () => {
     const { draft } = this.state;
     this.props.onSave({ draft });
-  }
+  };
 
-  handleSend() {
+  handleSend = () => {
     const { draft } = this.state;
     this.props.onSend({ draft });
-  }
+  };
 
-  handleChange(ev) {
+  handleChange = (ev) => {
     const { name, value } = ev.target;
 
     this.setState((prevState) => {
@@ -69,13 +67,13 @@ class ReplyForm extends Component {
     }, () => {
       this.props.onChange({ draft: this.state.draft });
     });
-  }
+  };
 
-  handleActiveClick() {
+  handleActiveClick = () => {
     this.setState(prevState => ({
       isActive: !prevState.isActive,
     }));
-  }
+  };
 
   renderDraftType() {
     const { __ } = this.props;

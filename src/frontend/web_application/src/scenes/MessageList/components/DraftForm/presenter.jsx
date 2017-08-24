@@ -19,7 +19,7 @@ class DraftForm extends Component {
   static defaultProps = {
     allowEditRecipients: false,
     message: {},
-    draft: null,
+    draft: undefined,
     user: undefined,
   };
 
@@ -48,10 +48,6 @@ class DraftForm extends Component {
     const {
        draft, discussionId, allowEditRecipients, user, editDraft, saveDraft, sendDraft,
     } = this.props;
-
-    if (!draft) {
-      return (<div />);
-    }
 
     if (allowEditRecipients) {
       return (<NewDraftForm

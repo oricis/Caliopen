@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
+import { scrollToWhen } from 'react-redux-scroll';
 import { editDraft, requestDraft, saveDraft, sendDraft } from '../../../../store/modules/draft-message';
+import { REPLY_TO_MESSAGE } from '../../../../store/modules/message';
 import Presenter from './presenter';
 
 const messageDraftSelector = state => state.draftMessage.draftsByInternalId;
@@ -39,4 +41,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   sendDraft,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Presenter);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  scrollToWhen(REPLY_TO_MESSAGE)
+)(Presenter);
