@@ -96,9 +96,10 @@ class Contact(Api):
         patch = self.request.json
 
         contact = ContactObject(self.user.user_id, contact_id=contact_id)
-        error = contact.apply_patch(patch, db=True, index=True)
-        if error is not None:
-            raise MergePatchError(error)
+        try:
+            contact.apply_patch(patch, db=True, index=True)
+        except Exception as exc:
+            raise MergePatchError(error=exc)
 
         return Response(None, 204)
 
