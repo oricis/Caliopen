@@ -276,7 +276,6 @@ class RecipientList extends Component {
           />
           <DropdownMenu
             id={dropdownId}
-            hasTriangle
             onToggle={this.handleToggleDropdown}
             show={searchResults.length > 0 && this.state.searchOpened}
             closeOnClickExceptSelectors={['.m-recipient-list', '.m-recipient-list .m-recipient-list__search-input']}
