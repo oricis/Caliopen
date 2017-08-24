@@ -39,7 +39,7 @@ class DraftForm extends Component {
 
   makeHandle = action => ({ draft }) => {
     const { discussionId, message } = this.props;
-    const params = { draft, discussionId, message, internalId: discussionId };
+    const params = { draft, message, internalId: discussionId };
 
     return action(params);
   };
