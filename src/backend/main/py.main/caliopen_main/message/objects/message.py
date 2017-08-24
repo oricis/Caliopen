@@ -100,7 +100,10 @@ class Message(ObjectIndexable):
 
         try:
             draft_param = Draft(params)
-            draft_param.message_id = uuid.uuid4()
+            if draft_param.message_id:
+                draft_param.validate_uuid(user_id)
+            else:
+                draft_param.message_id = uuid.uuid4()
             draft_param.validate_consistency(user_id, True)
         except Exception as exc:
             log.warn("draft_param error")

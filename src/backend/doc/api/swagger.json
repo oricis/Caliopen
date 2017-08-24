@@ -368,10 +368,6 @@
                         "additionalProperties": false
                       }
                     },
-                    "privacy_features": {
-                      "type": "object",
-                      "properties": {}
-                    },
                     "pi": {
                       "type": "object",
                       "properties": {
@@ -389,6 +385,10 @@
                         }
                       },
                       "additionalProperties": true
+                    },
+                    "privacy_features": {
+                      "type": "object",
+                      "properties": {}
                     },
                     "public_keys": {
                       "type": "array",
@@ -939,10 +939,6 @@
                         "additionalProperties": false
                       }
                     },
-                    "privacy_features": {
-                      "type": "object",
-                      "properties": {}
-                    },
                     "pi": {
                       "type": "object",
                       "properties": {
@@ -960,6 +956,10 @@
                         }
                       },
                       "additionalProperties": true
+                    },
+                    "privacy_features": {
+                      "type": "object",
+                      "properties": {}
                     },
                     "public_keys": {
                       "type": "array",
@@ -1532,10 +1532,6 @@
                           "additionalProperties": false
                         }
                       },
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
-                      },
                       "pi": {
                         "type": "object",
                         "properties": {
@@ -1553,6 +1549,10 @@
                           }
                         },
                         "additionalProperties": true
+                      },
+                      "privacy_features": {
+                        "type": "object",
+                        "properties": {}
                       },
                       "public_keys": {
                         "type": "array",
@@ -2031,10 +2031,6 @@
                     "additionalProperties": false
                   }
                 },
-                "privacy_features": {
-                  "type": "object",
-                  "properties": {}
-                },
                 "pi": {
                   "type": "object",
                   "properties": {
@@ -2052,6 +2048,10 @@
                     }
                   },
                   "additionalProperties": true
+                },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
                 },
                 "public_keys": {
                   "type": "array",
@@ -2486,10 +2486,6 @@
                         "additionalProperties": false
                       }
                     },
-                    "privacy_features": {
-                      "type": "object",
-                      "properties": {}
-                    },
                     "pi": {
                       "type": "object",
                       "properties": {
@@ -2507,6 +2503,10 @@
                         }
                       },
                       "additionalProperties": true
+                    },
+                    "privacy_features": {
+                      "type": "object",
+                      "properties": {}
                     },
                     "public_keys": {
                       "type": "array",
@@ -2835,10 +2835,6 @@
                     "additionalProperties": false
                   }
                 },
-                "privacy_features": {
-                  "type": "object",
-                  "properties": {}
-                },
                 "pi": {
                   "type": "object",
                   "properties": {
@@ -2856,6 +2852,10 @@
                     }
                   },
                   "additionalProperties": true
+                },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
                 },
                 "public_keys": {
                   "type": "array",
@@ -3696,6 +3696,9 @@
                     }
                   }
                 },
+                "message_id": {
+                  "type": "string"
+                },
                 "parent_id": {
                   "type": "string"
                 },
@@ -3982,7 +3985,7 @@
                       "external_references": {
                         "type": "object",
                         "properties": {
-                          "discussion_id": {
+                          "ancestors_id": {
                             "type": "string"
                           },
                           "message_id": {
@@ -4268,7 +4271,7 @@
                     "external_references": {
                       "type": "object",
                       "properties": {
-                        "discussion_id": {
+                        "ancestors_id": {
                           "type": "string"
                         },
                         "message_id": {
@@ -4471,7 +4474,7 @@
                 "external_references": {
                   "type": "object",
                   "properties": {
-                    "discussion_id": {
+                    "ancestors_id": {
                       "type": "string"
                     },
                     "message_id": {
@@ -4925,7 +4928,7 @@
                 "external_references": {
                   "type": "object",
                   "properties": {
-                    "discussion_id": {
+                    "ancestors_id": {
                       "type": "string"
                     },
                     "message_id": {
@@ -5235,7 +5238,7 @@
                 "external_references": {
                   "type": "object",
                   "properties": {
-                    "discussion_id": {
+                    "ancestors_id": {
                       "type": "string"
                     },
                     "message_id": {
@@ -5445,7 +5448,7 @@
                 "external_references": {
                   "type": "object",
                   "properties": {
-                    "discussion_id": {
+                    "ancestors_id": {
                       "type": "string"
                     },
                     "message_id": {
