@@ -6,6 +6,7 @@
 
   &__select {
     @include flex-grid-row;
+    align-items: center;
     margin-top: $co-component__spacing;
 
     @include breakpoint(medium) {
@@ -14,12 +15,11 @@
 
     label {
       @include flex-grid-column(shrink);
-      height: $co-component__height;
-      line-height: $co-component__height;
+      margin-bottom: 0;
     }
 
-    select {
-      @include flex-grid-column;
+    .m-select-field-group__select-wrapper {
+      @include flex-grid-size;
     }
   }
 }
