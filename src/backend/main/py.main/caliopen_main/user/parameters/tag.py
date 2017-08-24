@@ -5,6 +5,7 @@ from schematics.models import Model
 from schematics.types import StringType, UUIDType, DateTimeType
 from schematics.transforms import blacklist
 
+import caliopen_storage.helpers.json as helpers
 
 class NewUserTag(Model):
     """Create a new user tag."""
@@ -21,5 +22,5 @@ class UserTag(NewUserTag):
     """Existing user tag."""
 
     type = StringType()
-    date_format = "%Y-%m-%dT%H:%M:%S.%f+00:00"
-    date_insert = DateTimeType(serialized_format=date_format, tzd=u'utc')
+    date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
+                               tzd=u'utc')

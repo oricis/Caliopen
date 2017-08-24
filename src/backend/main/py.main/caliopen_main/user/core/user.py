@@ -2,7 +2,8 @@
 """Caliopen user related core classes."""
 
 from __future__ import absolute_import, print_function, unicode_literals
-from datetime import datetime
+import datetime
+import pytz
 import bcrypt
 import logging
 import uuid
@@ -65,7 +66,8 @@ class FilterRule(BaseUserCore):
         # XXX : expr value is evil
         o = super(FilterRule, cls).create(user_id=user.user_id,
                                           rule_id=user.new_rule_id(),
-                                          date_insert=datetime.utcnow(),
+                                          date_insert=datetime.datetime.now(
+                                              tz=pytz.utc),
                                           name=rule.name,
                                           filter_expr=rule.expr,
                                           position=rule.position,
@@ -214,7 +216,8 @@ class User(BaseCore):
                                            password=new_user.password,
                                            recovery_email=recovery,
                                            params=new_user.params,
-                                           date_insert=datetime.utcnow(),
+                                           date_insert=datetime.datetime.now(
+                                               tz=pytz.utc),
                                            privacy_features=privacy_features,
                                            pi=pi,
                                            family_name=family_name,
@@ -328,7 +331,7 @@ class User(BaseCore):
         default_tags = Configuration('global').get('system.default_tags')
         for tag in default_tags:
             tag['type'] = 'system'
-            tag['date_insert'] = datetime.utcnow()
+            tag['date_insert'] = datetime.datetime.now(tz=pytz.utc)
             Tag.create(self, **tag)
 
     @property

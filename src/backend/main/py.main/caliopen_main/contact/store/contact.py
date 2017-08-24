@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Caliopen objects related to contact definition."""
 from __future__ import absolute_import, print_function, unicode_literals
-from datetime import datetime
+import datetime
+import pytz
 import uuid
 
 from cassandra.cqlengine import columns
@@ -107,7 +108,7 @@ class Contact(BaseModel, IndexedModelMixin):
     addresses = columns.List(columns.UserDefinedType(PostalAddress))
     avatar = columns.Text()
     contact_id = columns.UUID(primary_key=True)     # clustering key
-    date_insert = columns.DateTime(default=datetime.utcnow())
+    date_insert = columns.DateTime()
     date_update = columns.DateTime()
     deleted = columns.Boolean(default=False)
     emails = columns.List(columns.UserDefinedType(Email))
@@ -135,7 +136,7 @@ class PublicKey(BaseModel):
     contact_id = columns.UUID(primary_key=True)     # clustering key
     name = columns.Text(primary_key=True)
 
-    date_insert = columns.DateTime(default=datetime.utcnow())
+    date_insert = columns.DateTime(default=datetime.datetime.now(tz=pytz.utc))
     date_update = columns.DateTime()
     type = columns.Text()
     size = columns.Integer()

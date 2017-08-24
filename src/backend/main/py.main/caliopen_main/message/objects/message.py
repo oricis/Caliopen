@@ -8,6 +8,7 @@ from caliopen_main.common.objects.base import ObjectIndexable
 import uuid
 from uuid import UUID
 import datetime
+import pytz
 import json
 import copy
 
@@ -111,7 +112,7 @@ class Message(ObjectIndexable):
         message.user_id = UUID(user_id)
         message.is_draft = True
         message.type = "email"  # TODO: type handling inferred from participants
-        message.date_insert = datetime.datetime.utcnow()
+        message.date_insert = datetime.datetime.now(tz=pytz.utc)
 
         try:
             message.marshall_db()

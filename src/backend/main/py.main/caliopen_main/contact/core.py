@@ -4,8 +4,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import uuid
-
-from datetime import datetime
+import datetime
+import pytz
 
 from .store import (Contact as ModelContact,
                     ContactLookup as ModelContactLookup,
@@ -161,7 +161,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         attrs = {'contact_id': contact_id,
                  'info': contact.infos,
                  'groups': contact.groups,
-                 'date_insert': datetime.utcnow(),
+                 'date_insert': datetime.datetime.now(tz=pytz.utc),
                  'given_name': contact.given_name,
                  'additional_name': contact.additional_name,
                  'family_name': contact.family_name,

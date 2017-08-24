@@ -5,6 +5,7 @@ import logging
 import uuid
 
 import datetime
+import pytz
 from caliopen_storage.exception import NotFound
 from caliopen_main.message.core import RawMessage
 from caliopen_main.message.objects.message import Message
@@ -36,7 +37,7 @@ class UserMessageDelivery(object):
         obj.unmarshall_dict(message.to_native())
         obj.user_id = uuid.UUID(self.user.user_id)
         obj.message_id = uuid.uuid4()
-        obj.date_insert = datetime.datetime.utcnow()
+        obj.date_insert = datetime.datetime.now(tz=pytz.utc)
         obj.marshall_db()
         obj.save_db()
         obj.marshall_index()

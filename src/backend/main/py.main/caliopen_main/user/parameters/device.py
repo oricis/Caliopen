@@ -8,6 +8,7 @@ from schematics.types import DateTimeType, StringType, UUIDType
 from schematics.types.compound import ListType, ModelType, DictType
 
 from caliopen_main.pi.parameters import PIParameter
+import caliopen_storage.helpers.json as helpers
 
 DEVICE_TYPES = ['unknow', 'desktop', 'laptop', 'smartphone', 'tablet']
 
@@ -43,9 +44,9 @@ class Device(NewDevice):
     device_id = UUIDType(required=True)
     user_id = UUIDType(required=True)
     date_insert = DateTimeType(required=True,
-                               serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+                               serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
-    last_seen = DateTimeType(serialized_format="%Y-%m-%dT%H:%M:%S.%f+00:00",
+    last_seen = DateTimeType(serialized_format=helpers.RFC3339Milli,
                              tzd=u'utc')
     status = StringType(required=True)
 
