@@ -6,14 +6,33 @@ import { FieldErrors, Fieldset, Legend, TextFieldGroup, FormGrid, FormRow, FormC
 
 import './style.scss';
 
+const generateStateFromProps = (props, prevState) => {
+  const organization = props.organization || {};
+
+  return {
+    contactDetail: {
+      ...prevState.contactDetail,
+      ...organization,
+    },
+  };
+};
+
+
 class OrgaForm extends Component {
   static propTypes = {
+    organization: PropTypes.shape({}),
     errors: PropTypes.arrayOf(PropTypes.string),
-    onSubmit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
+    onSubmit: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
     errors: [],
+    organization: null,
+    onDelete: () => {},
+    onEdit: () => {},
+    onSubmit: () => {},
   };
 
   state = {
@@ -27,10 +46,29 @@ class OrgaForm extends Component {
     },
   };
 
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(prevState => generateStateFromProps(nextProps, prevState));
+  }
+
   handleSubmit = (ev) => {
     ev.preventDefault();
-    const { organization } = this.state;
-    this.props.onSubmit({ contactDetail: organization });
+    const { contactDetail } = this.state;
+    this.props.onSubmit({ contactDetail });
+  }
+
+  handleDelete = () => {
+    const { onDelete, organization } = this.props;
+    onDelete({ contactDetail: organization });
+  }
+
+  handleEdit = (ev) => {
+    ev.preventDefault();
+    const { contactDetail } = this.state;
+    this.props.onEdit({ contactDetail });
   }
 
   handleInputChange = (event) => {
@@ -54,7 +92,7 @@ class OrgaForm extends Component {
   }
 
   render() {
-    const { __, errors } = this.props;
+    const { __, errors, organization } = this.props;
 
     return (
       <FormGrid onSubmit={this.handleSubmit} className="m-orga-form" name="orga_form">
@@ -112,7 +150,7 @@ class OrgaForm extends Component {
             <FormColumn size="shrink" className="m-orga-form__switch">
               <CheckboxFieldGroup
                 name="is_primary"
-                value={this.state.organization.is_primary}
+                checked={this.state.organization.is_primary}
                 onChange={this.handleSwitchChange}
                 label={__('contact.orga_form.is_primary.label')}
                 displaySwitch
@@ -122,9 +160,13 @@ class OrgaForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn size="shrink" className="m-orga-form__action">
-              <Button type="submit" display="expanded" shape="plain" icon="plus">
-                {__('contact.action.add_orga_detail')}
-              </Button>
+              {!organization ?
+                <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
+                  {__('contact.action.add_contact_detail')}
+                </Button>
+              :
+                <Button icon="remove" onClick={this.handleDelete} />
+              }
             </FormColumn>
           </FormRow>
         </Fieldset>

@@ -85,6 +85,9 @@ class ContactDetails extends Component {
     });
   }
 
+  // TODO: makeHandleEditContactDetail()
+
+
   makeHandleDeleteContactDetail = (type) => {
     const { onUpdateContact, contact } = this.props;
 
@@ -121,6 +124,21 @@ class ContactDetails extends Component {
           onDelete={this.makeHandleDeleteContactDetail('emails')}
           onConnectRemoteIdentity={onConnectRemoteIdentity}
           onDisconnectRemoteIdentity={onDisconnectRemoteIdentity}
+          __={__}
+        />
+      </ItemContent>
+    );
+  }
+
+  renderEmailForm = (email) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <EmailForm
+          email={email}
+          onDelete={this.makeHandleDeleteContactDetail('emails')}
+          onEdit={str => str} // FIXME: should be edit function
           __={__}
         />
       </ItemContent>
@@ -178,14 +196,74 @@ class ContactDetails extends Component {
   }
 
   renderAddress = (address) => {
-    const { __, editMode } = this.props;
+    const { __ } = this.props;
 
     return (
       <ItemContent large>
-        <AddressDetails
+        <AddressDetails address={address} __={__} />
+      </ItemContent>
+    );
+  }
+
+  renderAddressForm = (address) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <AddressForm
           address={address}
-          editMode={editMode}
+          onEdit={str => str} // FIXME: should be edit function
           onDelete={this.makeHandleDeleteContactDetail('addresses')}
+          __={__}
+        />
+      </ItemContent>
+    );
+  }
+
+  renderIdentity = (identity) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <IdentityDetails identity={identity} __={__} />
+      </ItemContent>
+    );
+  }
+
+  renderIdentityForm = (identity) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <IdentityForm
+          identity={identity}
+          onEdit={str => str} // FIXME: should be edit function
+          onDelete={this.makeHandleDeleteContactDetail('identities')}
+          __={__}
+        />
+      </ItemContent>
+    );
+  }
+
+  renderOrganization = (organization) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <OrgaDetails organization={organization} __={__} />
+      </ItemContent>
+    );
+  }
+
+  renderOrganizationForm = (organization) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <OrgaForm
+          identity={organization}
+          onEdit={str => str} // FIXME: should be edit function
+          onDelete={this.makeHandleDeleteContactDetail('organizations')}
           __={__}
         />
       </ItemContent>
@@ -208,6 +286,7 @@ class ContactDetails extends Component {
 
   renderContactDetails = () => {
     const { contact } = this.props;
+    const infos = contact.infos;
     const emails = contact.emails ?
       [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
     const contactDetails = [
@@ -215,8 +294,7 @@ class ContactDetails extends Component {
       ...(contact.phones ? contact.phones.map(detail => this.renderPhone(detail)) : []),
       ...(contact.ims ? contact.ims.map(detail => this.renderIm(detail)) : []),
       ...(contact.addresses ? contact.addresses.map(detail => this.renderAddress(detail)) : []),
-      ...(contact.infos && contact.infos.birthday ?
-        [this.renderBirthday(contact.infos.birthday)] : []),
+      ...(infos && infos.birthday ? [this.renderBirthday(infos.birthday)] : []),
     ];
 
     return (
@@ -266,7 +344,9 @@ class ContactDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <FormButton obj={obj} __={__} />
+      <ItemContent large>
+        <FormButton obj={obj} __={__} />
+      </ItemContent>
     );
   }
 
@@ -281,19 +361,84 @@ class ContactDetails extends Component {
     const emails = contact.emails ?
       [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
     const contactDetails = [
-      ...emails.map(detail => this.renderEmail(detail)),
+      ...emails.map(detail => this.renderEmailForm(detail)),
       ...(contact.emails ? [this.renderAddFormButton(newEmailForm)] : []),
       ...(contact.phones ? contact.phones.map(detail => (this.renderPhoneForm(detail))) : []),
       ...(contact.phones ? [this.renderAddFormButton(newPhoneForm)] : []),
       ...(contact.ims ? contact.ims.map(detail => this.renderImForm(detail)) : []),
       ...(contact.ims ? [this.renderAddFormButton(newImForm)] : []),
-      ...(contact.addresses ? contact.addresses.map(detail => this.renderAddress(detail)) : []),
+      ...(contact.addresses ? contact.addresses.map(detail => this.renderAddressForm(detail)) : []),
       ...(contact.addresses ? [this.renderAddFormButton(newAddressForm)] : []),
     ];
 
     return (
       <TextList>
         {contactDetails.map((C, key) => <C.type {...C.props} key={key} />)}
+      </TextList>
+    );
+  }
+
+  renderOrganizationsDetails = () => {
+    const { contact } = this.props;
+
+    const contactDetails = [
+      ...(contact.organizations ?
+        contact.organizations.map(detail => this.renderOrganization(detail)) : []),
+    ];
+
+    return (
+      <TextList>
+        {contactDetails.map((C, key) => <C.type {...C.props} key={key} />)}
+      </TextList>
+    );
+  }
+
+  renderOrganizationsDetailsForm = () => {
+    const { contact, __ } = this.props;
+
+    const newOrganizationForm = <OrgaForm onSubmit={this.makeHandleAddContactDetail('organizations')} __={__} />;
+
+    const organisationsDetails = [
+      ...(contact.organizations ?
+        contact.organizations.map(detail => (this.renderOrganizationForm(detail))) : []),
+      ...([this.renderAddFormButton(newOrganizationForm)]),
+    ];
+
+    return (
+      <TextList>
+        {organisationsDetails.map((C, key) => <C.type {...C.props} key={key} />)}
+      </TextList>
+    );
+  }
+
+  renderIdentitiesDetails = () => {
+    const { contact } = this.props;
+
+    const contactDetails = [
+      ...(contact.identities ?
+        contact.identities.map(detail => this.renderIdentity(detail)) : []),
+    ];
+
+    return (
+      <TextList>
+        {contactDetails.map((C, key) => <C.type {...C.props} key={key} />)}
+      </TextList>
+    );
+  }
+
+  renderIdentitiesDetailsForm = () => {
+    const { contact, __ } = this.props;
+    const newIdentityForm = <IdentityForm onSubmit={this.makeHandleAddContactDetail('identities')} __={__} />;
+
+    const identitiesDetails = [
+      ...(contact.identities ?
+        contact.identities.map(detail => (this.renderIdentityForm(detail))) : []),
+      ...([this.renderAddFormButton(newIdentityForm)]),
+    ];
+
+    return (
+      <TextList>
+        {identitiesDetails.map((C, key) => <C.type {...C.props} key={key} />)}
       </TextList>
     );
   }
@@ -323,46 +468,22 @@ class ContactDetails extends Component {
         </div>
 
         <div className="m-contact-details__panel">
-          <Subtitle hr>
-            {__('contact.contact_organizations')}
-          </Subtitle>
+          <Subtitle hr>{__('contact.contact_organizations')}</Subtitle>
           <div className="m-contact-details__list">
-            <TextList>
-              {contact.organizations && contact.organizations.map(organization => (
-                <OrgaDetails
-                  key={organization.organization_id}
-                  organization={organization}
-                  editMode={editMode}
-                  onDelete={this.makeHandleDeleteContactDetail('organizations')}
-                  __={__}
-                />
-              ))}
-            </TextList>
-            {editMode && (
-              <OrgaForm onSubmit={this.makeHandleAddContactDetail('organizations')} __={__} />
-            )}
+            {editMode ?
+              this.renderOrganizationsDetailsForm() :
+              this.renderOrganizationsDetails()
+            }
           </div>
         </div>
 
         <div className="m-contact-details__panel">
-          <Subtitle hr>
-            {__('contact.contact_identities')}
-          </Subtitle>
+          <Subtitle hr>{__('contact.contact_identities')}</Subtitle>
           <div className="m-contact-details__list">
-            <TextList>
-              {contact.identities && contact.identities.map(identity => (
-                <IdentityDetails
-                  key={identity.name}
-                  identity={identity}
-                  editMode={editMode}
-                  onDelete={this.makeHandleDeleteContactDetail('identities')}
-                  __={__}
-                />
-              ))}
-            </TextList>
-            {editMode && (
-              <IdentityForm onSubmit={this.makeHandleAddContactDetail('identities')} __={__} />
-            )}
+            {editMode ?
+              this.renderIdentitiesDetailsForm() :
+              this.renderIdentitiesDetails()
+            }
           </div>
         </div>
       </div>

@@ -7,23 +7,33 @@ import './style.scss';
 
 const EMAIL_TYPES = ['work', 'home', 'other'];
 
-const generateStateFromProps = (props, prevState) => ({
-  contactDetail: {
-    ...prevState.contactDetail,
-    ...props.contactDetail,
-  },
-});
+const generateStateFromProps = (props, prevState) => {
+  const email = props.email || {};
+
+  return {
+    contactDetail: {
+      ...prevState.contactDetail,
+      ...email,
+    },
+  };
+};
 
 class EmailForm extends Component {
   static propTypes = {
+    email: PropTypes.shape({}),
     errors: PropTypes.arrayOf(PropTypes.string),
-    onSubmit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
+    onSubmit: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     errors: [],
-    contactDetail: undefined,
+    email: null,
+    onDelete: () => {},
+    onEdit: () => {},
+    onSubmit: () => {},
   };
 
   constructor(props) {
@@ -62,6 +72,18 @@ class EmailForm extends Component {
     this.props.onSubmit({ contactDetail });
   }
 
+  handleDelete = () => {
+    const { onDelete, email } = this.props;
+    onDelete({ contactDetail: email });
+  }
+
+  handleEdit = (ev) => {
+    ev.preventDefault();
+    const { contactDetail } = this.state;
+    this.props.onEdit({ contactDetail });
+  }
+
+
   handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
@@ -83,7 +105,7 @@ class EmailForm extends Component {
   }
 
   render() {
-    const { __, errors = [] } = this.props;
+    const { __, errors = [], email } = this.props;
     const addressTypeOptions = EMAIL_TYPES.map(value => ({
       value,
       label: this.addressTypes[value],
@@ -98,17 +120,16 @@ class EmailForm extends Component {
           </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="shrink" className="s-contact-detail-form__checkbox-label">
+            <FormColumn size="shrink">
               <CheckboxFieldGroup
                 name="is_primary"
-                value={this.state.contactDetail.is_primary}
+                checked={this.state.contactDetail.is_primary}
                 onChange={this.handleSwitchChange}
                 label={__('contact.email_form.is_primary.label')}
                 displaySwitch
-                showTextLabel
               />
             </FormColumn>
-            <FormColumn size="small">
+            <FormColumn size="medium">
               <TextFieldGroup
                 name="address"
                 type="email"
@@ -130,9 +151,13 @@ class EmailForm extends Component {
               />
             </FormColumn>
             <FormColumn size="shrink" className="m-email-form__action">
-              <Button type="submit" display="expanded" shape="plain" icon="plus">
-                {__('contact.action.add_contact_detail')}
-              </Button>
+              {!email ?
+                <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
+                  {__('contact.action.add_contact_detail')}
+                </Button>
+              :
+                <Button icon="remove" onClick={this.handleDelete} />
+              }
             </FormColumn>
           </FormRow>
         </Fieldset>

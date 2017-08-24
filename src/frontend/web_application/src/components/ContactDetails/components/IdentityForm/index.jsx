@@ -8,14 +8,32 @@ import './style.scss';
 
 const IDENTITY_TYPES = ['twitter', 'facebook', 'other'];
 
+const generateStateFromProps = (props, prevState) => {
+  const identity = props.identity || {};
+
+  return {
+    contactDetail: {
+      ...prevState.contactDetail,
+      ...identity,
+    },
+  };
+};
+
 class IdentityForm extends Component {
   static propTypes = {
+    identity: PropTypes.shape({}),
     errors: PropTypes.arrayOf(PropTypes.string),
-    onSubmit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
+    onSubmit: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
     errors: [],
+    identity: null,
+    onDelete: () => {},
+    onEdit: () => {},
+    onSubmit: () => {},
   };
 
   state = {
@@ -25,10 +43,29 @@ class IdentityForm extends Component {
     },
   };
 
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(prevState => generateStateFromProps(nextProps, prevState));
+  }
+
   handleSubmit = (ev) => {
     ev.preventDefault();
     const { contactDetail } = this.state;
     this.props.onSubmit({ contactDetail });
+  }
+
+  handleDelete = () => {
+    const { onDelete, identity } = this.props;
+    onDelete({ contactDetail: identity });
+  }
+
+  handleEdit = (ev) => {
+    ev.preventDefault();
+    const { contactDetail } = this.state;
+    this.props.onEdit({ contactDetail });
   }
 
   handleInputChange = (event) => {
@@ -42,7 +79,7 @@ class IdentityForm extends Component {
   }
 
   render() {
-    const { __, errors } = this.props;
+    const { __, errors, identity } = this.props;
     const identityTypeOptions = IDENTITY_TYPES.map(value => ({
       value,
       label: value,
@@ -78,9 +115,13 @@ class IdentityForm extends Component {
               />
             </FormColumn>
             <FormColumn size="shrink" className="m-identity-form__action">
-              <Button type="submit" display="expanded" shape="plain" icon="plus">
-                {__('contact.action.add_identity_detail')}
-              </Button>
+              {!identity ?
+                <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
+                  {__('contact.action.add_contact_detail')}
+                </Button>
+              :
+                <Button icon="remove" onClick={this.handleDelete} />
+              }
             </FormColumn>
           </FormRow>
         </Fieldset>

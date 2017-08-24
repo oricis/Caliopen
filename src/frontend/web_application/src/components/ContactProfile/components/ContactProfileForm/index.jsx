@@ -171,6 +171,7 @@ class ContactProfileForm extends Component {
 
         {
           // TODO:
+          // This should be displayed in ContactDetails
           // prevent selecting dates after today
           // see https://github.com/Hacker0x01/react-datepicker
         }

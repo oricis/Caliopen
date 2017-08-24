@@ -8,15 +8,33 @@ import './style.scss';
 
 const ADDRESS_TYPES = ['work', 'home', 'other'];
 
+const generateStateFromProps = (props, prevState) => {
+  const address = props.address || {};
+
+  return {
+    contactDetail: {
+      ...prevState.contactDetail,
+      ...address,
+    },
+  };
+};
+
 class AddressForm extends Component {
   static propTypes = {
+    address: PropTypes.shape({}),
     errors: PropTypes.arrayOf(PropTypes.string),
-    onSubmit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
+    onSubmit: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     errors: [],
+    address: null,
+    onDelete: () => {},
+    onEdit: () => {},
+    onSubmit: () => {},
   };
 
   constructor(props) {
@@ -35,6 +53,14 @@ class AddressForm extends Component {
     },
   };
 
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(prevState => generateStateFromProps(nextProps, prevState));
+  }
+
   initTranslations() {
     const { __ } = this.props;
     this.addressTypes = {
@@ -48,6 +74,17 @@ class AddressForm extends Component {
     ev.preventDefault();
     const { contactDetail } = this.state;
     this.props.onSubmit({ contactDetail });
+  }
+
+  handleDelete = () => {
+    const { onDelete, address } = this.props;
+    onDelete({ contactDetail: address });
+  }
+
+  handleEdit = (ev) => {
+    ev.preventDefault();
+    const { contactDetail } = this.state;
+    this.props.onEdit({ contactDetail });
   }
 
   handleInputChange = (event) => {
@@ -79,7 +116,7 @@ class AddressForm extends Component {
   }
 
   render() {
-    const { __, errors = [] } = this.props;
+    const { __, errors = [], address } = this.props;
     const addressTypeOptions = ADDRESS_TYPES.map(value => ({
       value,
       label: this.addressTypes[value],
@@ -159,9 +196,13 @@ class AddressForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn size="shrink" className="m-address-form__action">
-              <Button type="submit" display="expanded" shape="plain" icon="plus">
-                {__('contact.action.add_contact_detail')}
-              </Button>
+              {!address ?
+                <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
+                  {__('contact.action.add_contact_detail')}
+                </Button>
+              :
+                <Button icon="remove" onClick={this.handleDelete} />
+              }
             </FormColumn>
           </FormRow>
         </Fieldset>

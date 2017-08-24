@@ -11,6 +11,8 @@
     "contact.action.add_contact_detail": "Add",
     "contact.action.add_identity_detail": "Add new identity",
     "contact.action.add_orga_detail": "Add",
+    "contact.action.add_new_field" : "Add new",
+    "contact.action.cancel_new_field" : "Cancel",
     "contact.action.delete_contact": "Delete contact",
     "contact.action.delete_contact_detail": "Delete",
     "contact.action.edit_contact_details": "Edit contact details",

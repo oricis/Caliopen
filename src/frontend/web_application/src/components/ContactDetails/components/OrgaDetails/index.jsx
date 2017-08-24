@@ -1,35 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '../../../Button';
 import Icon from '../../../Icon';
-import { ItemContent } from '../../../TextList';
 
 class OrgaDetails extends Component {
   static propTypes = {
     organization: PropTypes.shape({}).isRequired,
-    editMode: PropTypes.bool,
-    onDelete: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
-  static defaultProps = {
-    editMode: false,
-    onDelete: () => {},
-  };
-
-  handleDelete = () => {
-    const { onDelete, organization } = this.props;
-    onDelete({ contactDetail: organization });
-  }
-
-  renderDeleteButton() {
-    const { __ } = this.props;
-
-    return (
-      <Button onClick={this.handleDelete} color="alert" icon="remove">
-        <span className="show-for-sr">{__('contact.action.delete_contact_detail')}</span>
-      </Button>
-    );
-  }
 
   renderJobTitle() {
     const { organization, __ } = this.props;
@@ -48,15 +25,12 @@ class OrgaDetails extends Component {
   }
 
   render() {
-    const { organization, editMode } = this.props;
-
     return (
-      <ItemContent large key={organization.organization_id}>
+      <span className="m-orga-details">
         <Icon type="briefcase" rightSpaced />
         {this.renderJobTitle()}
         { ' ' }
-        {editMode && this.renderDeleteButton()}
-      </ItemContent>
+      </span>
     );
   }
 }

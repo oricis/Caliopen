@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../../Icon';
-import Button from '../../../Button';
 import './style.scss';
 
 class AddressDetails extends Component {
   static propTypes = {
     address: PropTypes.shape({}).isRequired,
-    editMode: PropTypes.bool,
-    onDelete: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
-  };
-  static defaultProps = {
-    editMode: false,
   };
 
   constructor(props) {
@@ -29,23 +23,8 @@ class AddressDetails extends Component {
     };
   }
 
-  handleDelete = () => {
-    const { onDelete, address } = this.props;
-    onDelete({ contactDetail: address });
-  }
-
-  renderDeleteButton() {
-    const { __ } = this.props;
-
-    return (
-      <Button onClick={this.handleDelete} color="alert" icon="remove">
-        <span className="show-for-sr">{__('contact.action.delete_contact_detail')}</span>
-      </Button>
-    );
-  }
-
   render() {
-    const { address, editMode } = this.props;
+    const { address } = this.props;
 
     return (
       <span className="m-address-details">
@@ -63,7 +42,6 @@ class AddressDetails extends Component {
             <em>({address.label}{address.label && ' '}{this.addressTypesTranslations[address.type]})</em>
           </small>
         }
-        {editMode && this.renderDeleteButton()}
       </span>
     );
   }

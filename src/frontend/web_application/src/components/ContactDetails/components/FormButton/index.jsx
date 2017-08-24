@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../../../Button';
 
+import './style.scss';
+
 class FormButton extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
@@ -12,41 +14,33 @@ class FormButton extends Component {
     isActive: false,
   }
 
-  handleButtonClick = () => {
+  toogleForm = () => {
     this.setState(prevState => ({
-      ...prevState,
-      isActive: true,
+      isActive: !prevState.isActive,
     }));
   }
 
   renderButton = () => {
     const { __ } = this.props;
+    const buttonProps = {
+      icon: this.state.isActive ? 'remove' : 'plus',
+    };
 
     return (
       <Button
-        icon="plus"
-        onClick={this.handleButtonClick}
-      >{__('add')}</Button>
+        {...buttonProps}
+        onClick={this.toogleForm}
+      >{this.state.isActive ? __('contact.action.cancel_new_field') : __('contact.action.add_new_field')}</Button>
     );
-  }
-
-  renderNewForm = () => {
-    const { obj } = this.props;
-    const newForm = (
-      <div className="m-new-form-button__form">{obj}</div>
-    );
-
-    return newForm;
   }
 
   render() {
+    const { obj } = this.props;
+
     return (
       <div className="m-new-form-button">
-        {this.state.isActive ?
-          this.renderNewForm()
-        :
-          this.renderButton()
-        }
+        {this.state.isActive && <div className="m-new-form-button__form">{obj}</div>}
+        {this.renderButton()}
       </div>
     );
   }

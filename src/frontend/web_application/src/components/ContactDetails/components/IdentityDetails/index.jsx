@@ -1,52 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '../../../Button';
 import Icon from '../../../Icon';
-import { ItemContent } from '../../../TextList';
 
-class IdentityDetails extends Component {
-  static propTypes = {
-    identity: PropTypes.shape({}).isRequired,
-    editMode: PropTypes.bool,
-    onDelete: PropTypes.func,
-    __: PropTypes.func.isRequired,
-  };
-  static defaultProps = {
-    editMode: false,
-    onDelete: () => {},
-  };
+const IdentityDetails = ({ identity }) => (
+  <span className="m-identity-details">
+    <Icon type={identity.type} rightSpaced />
+    {identity.name}
+  </span>
+  );
 
-  constructor(props) {
-    super(props);
-    this.handleDelete = this.handleDelete.bind(this);
-  }
+IdentityDetails.propTypes = {
+  identity: PropTypes.shape({}),
+};
 
-  handleDelete() {
-    const { onDelete, identity } = this.props;
-    onDelete({ contactDetail: identity });
-  }
+IdentityDetails.defaultProps = {
+  identity: null,
+};
 
-  renderDeleteButton() {
-    const { __ } = this.props;
-
-    return (
-      <Button onClick={this.handleDelete} color="alert" icon="remove">
-        <span className="show-for-sr">{__('contact.action.delete_contact_detail')}</span>
-      </Button>
-    );
-  }
-
-  render() {
-    const { identity, editMode } = this.props;
-
-    return (
-      <ItemContent large>
-        <Icon type={identity.type} rightSpaced />
-        {identity.name}
-        {editMode && this.renderDeleteButton()}
-      </ItemContent>
-    );
-  }
-}
 
 export default IdentityDetails;
