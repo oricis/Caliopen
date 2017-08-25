@@ -145,7 +145,6 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 		t.Date_insert, _ = tag["date_insert"].(time.Time)
 		il, _ := tag["importance_level"].(int)
 		t.Importance_level = int32(il)
-		t.Label, _ = tag["label"].(string)
 		t.Name, _ = tag["name"].(string)
 		tagid, _ := tag["tag_id"].(gocql.UUID)
 		t.Tag_id.UnmarshalBinary(tagid.Bytes())

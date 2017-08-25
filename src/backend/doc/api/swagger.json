@@ -455,6 +455,10 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "date_insert": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
                           "tag_id": {
                             "type": "string"
                           },
@@ -466,9 +470,6 @@
                             ]
                           },
                           "name": {
-                            "type": "string"
-                          },
-                          "label": {
                             "type": "string"
                           },
                           "importance_level": {
@@ -1026,6 +1027,10 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "date_insert": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
                           "tag_id": {
                             "type": "string"
                           },
@@ -1037,9 +1042,6 @@
                             ]
                           },
                           "name": {
-                            "type": "string"
-                          },
-                          "label": {
                             "type": "string"
                           },
                           "importance_level": {
@@ -1619,6 +1621,10 @@
                         "items": {
                           "type": "object",
                           "properties": {
+                            "date_insert": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
                             "tag_id": {
                               "type": "string"
                             },
@@ -1630,9 +1636,6 @@
                               ]
                             },
                             "name": {
-                              "type": "string"
-                            },
-                            "label": {
                               "type": "string"
                             },
                             "importance_level": {
@@ -2118,6 +2121,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
                       "tag_id": {
                         "type": "string"
                       },
@@ -2129,9 +2136,6 @@
                         ]
                       },
                       "name": {
-                        "type": "string"
-                      },
-                      "label": {
                         "type": "string"
                       },
                       "importance_level": {
@@ -2573,6 +2577,10 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "date_insert": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
                           "tag_id": {
                             "type": "string"
                           },
@@ -2584,9 +2592,6 @@
                             ]
                           },
                           "name": {
-                            "type": "string"
-                          },
-                          "label": {
                             "type": "string"
                           },
                           "importance_level": {
@@ -2922,6 +2927,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
                       "tag_id": {
                         "type": "string"
                       },
@@ -2933,9 +2942,6 @@
                         ]
                       },
                       "name": {
-                        "type": "string"
-                      },
-                      "label": {
                         "type": "string"
                       },
                       "importance_level": {
@@ -3750,6 +3756,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
                       "tag_id": {
                         "type": "string"
                       },
@@ -3761,9 +3771,6 @@
                         ]
                       },
                       "name": {
-                        "type": "string"
-                      },
-                      "label": {
                         "type": "string"
                       },
                       "importance_level": {
@@ -4102,6 +4109,10 @@
                         "items": {
                           "type": "object",
                           "properties": {
+                            "date_insert": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
                             "tag_id": {
                               "type": "string"
                             },
@@ -4113,9 +4124,6 @@
                               ]
                             },
                             "name": {
-                              "type": "string"
-                            },
-                            "label": {
                               "type": "string"
                             },
                             "importance_level": {
@@ -4388,6 +4396,10 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "date_insert": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
                           "tag_id": {
                             "type": "string"
                           },
@@ -4399,9 +4411,6 @@
                             ]
                           },
                           "name": {
-                            "type": "string"
-                          },
-                          "label": {
                             "type": "string"
                           },
                           "importance_level": {
@@ -4591,6 +4600,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
                       "tag_id": {
                         "type": "string"
                       },
@@ -4602,9 +4615,6 @@
                         ]
                       },
                       "name": {
-                        "type": "string"
-                      },
-                      "label": {
                         "type": "string"
                       },
                       "importance_level": {
@@ -5045,6 +5055,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
                       "tag_id": {
                         "type": "string"
                       },
@@ -5056,9 +5070,6 @@
                         ]
                       },
                       "name": {
-                        "type": "string"
-                      },
-                      "label": {
                         "type": "string"
                       },
                       "importance_level": {
@@ -5355,6 +5366,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
                       "tag_id": {
                         "type": "string"
                       },
@@ -5366,9 +5381,6 @@
                         ]
                       },
                       "name": {
-                        "type": "string"
-                      },
-                      "label": {
                         "type": "string"
                       },
                       "importance_level": {
@@ -5565,6 +5577,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
                       "tag_id": {
                         "type": "string"
                       },
@@ -5576,9 +5592,6 @@
                         ]
                       },
                       "name": {
-                        "type": "string"
-                      },
-                      "label": {
                         "type": "string"
                       },
                       "importance_level": {
@@ -6037,6 +6050,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
                       "tag_id": {
                         "type": "string"
                       },
@@ -6048,9 +6065,6 @@
                         ]
                       },
                       "name": {
-                        "type": "string"
-                      },
-                      "label": {
                         "type": "string"
                       },
                       "importance_level": {
@@ -6090,7 +6104,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "label": {
+                "name": {
                   "type": "string"
                 },
                 "importance_level": {
@@ -6099,7 +6113,7 @@
                 }
               },
               "required": [
-                "label"
+                "name"
               ],
               "additionalProperties": false
             }
@@ -6221,6 +6235,10 @@
             "schema": {
               "type": "object",
               "properties": {
+                "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
+                },
                 "tag_id": {
                   "type": "string"
                 },
@@ -6232,9 +6250,6 @@
                   ]
                 },
                 "name": {
-                  "type": "string"
-                },
-                "label": {
                   "type": "string"
                 },
                 "importance_level": {
@@ -6304,6 +6319,10 @@
                 "current_state": {
                   "type": "object",
                   "properties": {
+                    "date_insert": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
                     "tag_id": {
                       "type": "string"
                     },
@@ -6317,14 +6336,15 @@
                     "name": {
                       "type": "string"
                     },
-                    "label": {
-                      "type": "string"
-                    },
                     "importance_level": {
                       "type": "integer",
                       "format": "int32"
                     }
                   }
+                },
+                "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
                 },
                 "tag_id": {
                   "type": "string"
@@ -6337,9 +6357,6 @@
                   ]
                 },
                 "name": {
-                  "type": "string"
-                },
-                "label": {
                   "type": "string"
                 },
                 "importance_level": {
