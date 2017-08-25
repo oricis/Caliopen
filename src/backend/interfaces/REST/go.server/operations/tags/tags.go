@@ -93,12 +93,19 @@ func UpdateTag(ctx *gin.Context) {
 func DeleteTag(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	tag_id := ctx.Param("tag_id")
-	err := caliopen.Facilities.RESTfacility.DeleteTag(user_id, tag_id)
-	if err != nil {
-		e := swgErr.New(http.StatusFailedDependency, err.Error())
+	if user_id != "" && tag_id != "" {
+		err := caliopen.Facilities.RESTfacility.DeleteTag(user_id, tag_id)
+		if err != nil {
+			e := swgErr.New(http.StatusFailedDependency, err.Error())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+		} else {
+			ctx.Status(http.StatusNoContent)
+		}
+	} else {
+		err := errors.New("invalid params")
+		e := swgErr.New(http.StatusBadRequest, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
-	} else {
-		ctx.Status(http.StatusNoContent)
 	}
 }

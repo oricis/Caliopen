@@ -2,6 +2,7 @@ package REST
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/pkg/errors"
 )
 
 func (rest *RESTfacility) RetrieveUserTags(user_id string) (tags []Tag, err error) {
@@ -24,5 +25,14 @@ func (rest *RESTfacility) UpdateTag(tag *Tag) error {
 }
 
 func (rest *RESTfacility) DeleteTag(user_id, tag_id string) error {
+
+	tag, err := rest.store.RetrieveTag(user_id, tag_id)
+	if err != nil {
+		return err
+	}
+	if tag.Type == SystemTag {
+		return errors.New("system tags can't be deleted by user")
+	}
+
 	return rest.store.DeleteTag(user_id, tag_id)
 }

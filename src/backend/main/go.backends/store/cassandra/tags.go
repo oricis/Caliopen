@@ -87,6 +87,5 @@ func (cb *CassandraBackend) UpdateTag(tag *Tag) error {
 }
 
 func (cb *CassandraBackend) DeleteTag(user_id, tag_id string) error {
-	//TODO
-	return nil
+	return cb.Session.Query(`DELETE FROM user_tag WHERE user_id = ? AND tag_id = ?`, user_id, tag_id).Exec()
 }
