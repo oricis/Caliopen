@@ -47,6 +47,22 @@ tags:
             location:
               type: string
               description: url to retrieve new tag's infos at /tags/{name}
+      '400':
+        description: malform request
+        schema:
+          type: object
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '422':
+        description: Unprocessable entity. Parameters were valid but the server was
+          unable to create the tag (probably because of a semantically erroneous
+          document, like an empty tag)
+        schema:
+          type: object
+          "$ref": "../objects/Error.yaml"
 tags_{tag_id}:
   get:
     description: Retrieve tag infos
@@ -76,6 +92,8 @@ tags_{tag_id}:
     - tags
     security:
     - basicAuth: []
+    consumes:
+    - application/json
     parameters:
     - name: tag_id
       in: path
@@ -95,7 +113,7 @@ tags_{tag_id}:
               "$ref": "../objects/Tag.yaml#/properties"
         required:
         - current_state
-    consumes:
+    produces:
     - application/json
     responses:
       '204':
@@ -133,7 +151,7 @@ tags_{tag_id}:
       required: true
       type: string
     responses:
-      '200':
+      '204':
         description: Successful deletion
       '401':
         description: Unauthorized access
