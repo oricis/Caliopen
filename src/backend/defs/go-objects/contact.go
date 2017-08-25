@@ -150,8 +150,6 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 		t.Tag_id.UnmarshalBinary(tagid.Bytes())
 		tagtype, _ := tag["type"].(string)
 		t.Type = TagType(tagtype)
-		userid, _ := tag["user_id"].(gocql.UUID)
-		t.User_id.UnmarshalBinary(userid.Bytes())
 	}
 	contact.Title, _ = input["title"].(string)
 	userid, _ := input["user_id"].(gocql.UUID)

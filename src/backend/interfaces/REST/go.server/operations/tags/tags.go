@@ -14,9 +14,9 @@ import (
 	"strconv"
 )
 
-func GetUserTags(ctx *gin.Context) {
+func RetrieveUserTags(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	tags, err := caliopen.Facilities.RESTfacility.GetUserTags(user_id)
+	tags, err := caliopen.Facilities.RESTfacility.RetrieveUserTags(user_id)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
@@ -64,10 +64,10 @@ func CreateTag(ctx *gin.Context) {
 
 }
 
-func GetTag(ctx *gin.Context) {
+func RetrieveTag(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	tag_id := ctx.Request.URL.Query().Get("tag_id")
-	tag, err := caliopen.Facilities.RESTfacility.GetTag(user_id, tag_id)
+	tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(user_id, tag_id)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
@@ -76,7 +76,7 @@ func GetTag(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, tag)
 }
 
-func PatchTag(ctx *gin.Context) {
+func UpdateTag(ctx *gin.Context) {
 	ctx.Status(http.StatusNotImplemented)
 }
 
