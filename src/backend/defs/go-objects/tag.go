@@ -15,7 +15,6 @@ import (
 type Tag struct {
 	Date_insert      time.Time `cql:"date_insert"             json:"date_insert"        formatter:"RFC3339Milli"`
 	Importance_level int32     `cql:"importance_level"        json:"importance_level"`
-	Label            string    `cql:"label"                   json:"label"`
 	Name             string    `cql:"name"                    json:"name"`
 	Tag_id           UUID      `cql:"tag_id"                  json:"tag_id"             formatter:"rfc4122"`
 	Type             TagType   `cql:"type"                    json:"type"`

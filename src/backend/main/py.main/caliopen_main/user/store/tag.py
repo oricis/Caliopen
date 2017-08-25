@@ -13,7 +13,6 @@ class UserTag(BaseModel):
 
     date_insert = columns.DateTime()
     importance_level = columns.Integer()
-    label = columns.Text()
     name = columns.Text()
     tag_id = columns.UUID(primary_key=True, default=uuid.uuid4)
     type = columns.Text()

@@ -343,6 +343,7 @@ class User(BaseCore):
 
     def setup_system_tags(self):
         """Create system tags."""
+        # TODO: translate tags'name to user's preferred language
         default_tags = Configuration('global').get('system.default_tags')
         for tag in default_tags:
             tag['type'] = 'system'

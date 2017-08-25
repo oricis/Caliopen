@@ -18,10 +18,11 @@ class UserTag(ObjectUser):
     _attrs = {
         'date_insert': datetime.datetime,
         'importance_level': types.IntType,
-        'label': types.StringType,
         'name': types.StringType,
         'tag_id': uuid.UUID,
-        'type': types.StringType}
+        'type': types.StringType,
+        'user_id': uuid.UUID
+    }
 
     _model_class = ModelUSerTag
     _pkey_name = 'tag_id'
