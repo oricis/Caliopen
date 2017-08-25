@@ -147,7 +147,7 @@ func (server *REST_API) start() error {
 		router.Use(http_middleware.SwaggerValidator())
 	}
 	// adds our routes and handlers
-	api := router.Group("/api/v2")
+	api := router.Group(http_middleware.RoutePrefix)
 	server.AddHandlers(api)
 
 	// listens
@@ -163,7 +163,7 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 
 	/** users API **/
 	//u := api.Group("/users")
-	identities := api.Group("/identities", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
+	identities := api.Group(http_middleware.IdentitesRoute, http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
 	identities.GET("/locals", users.GetLocalsIdentities)
 	identities.GET("/locals/:identity_id", users.GetLocalIdentity)
 
@@ -189,7 +189,7 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	cts.GET("/:contact_id/identities", contacts.GetIdentities)
 
 	/** tags API **/
-	tag := api.Group("/tags", http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
+	tag := api.Group(http_middleware.TagsRoute, http_middleware.BasicAuthFromCache(server.cache, "caliopen"))
 	tag.GET("", tags.RetrieveUserTags)
 	tag.POST("", tags.CreateTag)
 	tag.GET("/:tag_id", tags.RetrieveTag)

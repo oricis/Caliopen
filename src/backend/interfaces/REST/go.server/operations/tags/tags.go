@@ -53,7 +53,9 @@ func CreateTag(ctx *gin.Context) {
 			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 			ctx.Abort()
 		} else {
-			ctx.JSON(http.StatusOK, tag)
+			ctx.JSON(http.StatusOK, struct{ Location string }{
+				http_middleware.RoutePrefix + http_middleware.TagsRoute + "/" + tag.Tag_id.String(),
+			})
 		}
 	} else {
 		err := errors.New("Unable to marshal provided json.")

@@ -30,10 +30,33 @@ func (cb *CassandraBackend) RetrieveUserTags(user_id string) (tags []Tag, err er
 	}
 	return
 }
+
+// CreateTag checks if tag's name doesn't exist for user before inserting into db.
 func (cb *CassandraBackend) CreateTag(tag *Tag) error {
-	//TODO
-	return nil
+
+	user_tags, err := cb.RetrieveUserTags((*tag).User_id.String())
+	if err != nil {
+		return err
+	}
+	for _, t := range user_tags {
+		if t.Name == (*tag).Name {
+			return errors.New("tag name <" + t.Name + "> already exists for user.")
+		}
+	}
+	tag_id, _ := gocql.RandomUUID()
+	user_id, _ := gocql.UUIDFromBytes((*tag).User_id.Bytes())
+	(*tag).Date_insert = time.Now()
+	(*tag).Type = TagType(UserTag)
+	(*tag).Tag_id.UnmarshalBinary(tag_id.Bytes())
+	return cb.Session.Query(`INSERT INTO user_tag (user_id, tag_id, date_insert, importance_level, name, type) VALUES (?,?,?,?,?,?)`,
+		user_id,
+		tag_id,
+		(*tag).Date_insert,
+		(*tag).Importance_level,
+		(*tag).Name,
+		(*tag).Type).Exec()
 }
+
 func (cb *CassandraBackend) RetrieveTag(user_id, tag_id string) (tag Tag, err error) {
 	//TODO
 	return Tag{
@@ -45,10 +68,12 @@ func (cb *CassandraBackend) RetrieveTag(user_id, tag_id string) (tag Tag, err er
 		User_id:          UUID{},
 	}, nil
 }
+
 func (cb *CassandraBackend) UpdateTag(tag *Tag) error {
 	//not yet implemented
 	return nil
 }
+
 func (cb *CassandraBackend) DeleteTag(user_id, tag_id string) error {
 	//TODO
 	return nil

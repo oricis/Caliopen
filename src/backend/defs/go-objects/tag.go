@@ -18,7 +18,7 @@ type Tag struct {
 	Name             string    `cql:"name"                    json:"name"`
 	Tag_id           UUID      `cql:"tag_id"                  json:"tag_id"                 formatter:"rfc4122"`
 	Type             TagType   `cql:"type"                    json:"type"`
-	User_id          UUID      `cql:"user_id"                 json:"user_id,omitempty"      formatter:"rfc4122"`
+	User_id          UUID      `cql:"user_id"                 json:"user_id"      formatter:"rfc4122"`
 }
 
 type TagType string
