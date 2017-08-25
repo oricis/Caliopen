@@ -259,7 +259,7 @@ class ContactDetails extends Component {
     return (
       <ItemContent large>
         <OrgaForm
-          identity={organization}
+          organization={organization}
           onEdit={str => str} // FIXME: should be edit function
           onDelete={this.makeHandleDeleteContactDetail('organizations')}
           __={__}

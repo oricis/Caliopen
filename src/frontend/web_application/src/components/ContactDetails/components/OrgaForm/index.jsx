@@ -36,7 +36,7 @@ class OrgaForm extends Component {
   };
 
   state = {
-    organization: {
+    contactDetail: {
       department: '',
       is_primary: false,
       job_description: '',
@@ -74,8 +74,8 @@ class OrgaForm extends Component {
   handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
-      organization: {
-        ...prevState.organization,
+      contactDetail: {
+        ...prevState.contactDetail,
         [name]: value,
       },
     }));
@@ -84,8 +84,8 @@ class OrgaForm extends Component {
   handleSwitchChange = (event) => {
     const { name, checked } = event.target;
     this.setState(prevState => ({
-      organization: {
-        ...prevState.organization,
+      contactDetail: {
+        ...prevState.contactDetail,
         [name]: checked,
       },
     }));
@@ -106,7 +106,7 @@ class OrgaForm extends Component {
             <FormColumn>
               <TextFieldGroup
                 name="label"
-                value={this.state.organization.label}
+                value={this.state.contactDetail.label}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.label.label')}
                 required
@@ -115,7 +115,7 @@ class OrgaForm extends Component {
             <FormColumn>
               <TextFieldGroup
                 name="name"
-                value={this.state.organization.name}
+                value={this.state.contactDetail.name}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.name.label')}
                 required
@@ -124,7 +124,7 @@ class OrgaForm extends Component {
             <FormColumn size="medium">
               <TextFieldGroup
                 name="title"
-                value={this.state.organization.title}
+                value={this.state.contactDetail.title}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.title.label')}
               />
@@ -132,7 +132,7 @@ class OrgaForm extends Component {
             <FormColumn size="medium">
               <TextFieldGroup
                 name="department"
-                value={this.state.organization.department}
+                value={this.state.contactDetail.department}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.department.label')}
               />
@@ -140,7 +140,7 @@ class OrgaForm extends Component {
             <FormColumn size="medium">
               <TextFieldGroup
                 name="job_description"
-                value={this.state.organization.job_description}
+                value={this.state.contactDetail.job_description}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.job_description.label')}
               />
@@ -150,7 +150,7 @@ class OrgaForm extends Component {
             <FormColumn size="shrink" className="m-orga-form__switch">
               <CheckboxFieldGroup
                 name="is_primary"
-                checked={this.state.organization.is_primary}
+                checked={this.state.contactDetail.is_primary}
                 onChange={this.handleSwitchChange}
                 label={__('contact.orga_form.is_primary.label')}
                 displaySwitch
