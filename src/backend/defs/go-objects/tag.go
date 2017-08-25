@@ -31,18 +31,18 @@ const (
 // bespoke implementation of the json.Marshaller interface
 // outputs a JSON representation of an object
 // this marshaler takes account of custom tags
-func (tag *Tag) MarshalJSON() ([]byte, error) {
+func (tag Tag) MarshalJSON() ([]byte, error) {
 	var jsonBuf bytes.Buffer
 	enc := json.NewEncoder(&jsonBuf)
 
-	fields, err := reflections.Fields(*tag)
+	fields, err := reflections.Fields(tag)
 	if err != nil {
 		return jsonBuf.Bytes(), err
 	}
 	jsonBuf.WriteByte('{')
 	first := true
 	for _, field := range fields {
-		j_field, err := reflections.GetFieldTag(*tag, field, "json")
+		j_field, err := reflections.GetFieldTag(tag, field, "json")
 		if err != nil {
 			log.WithError(err).Warnf("reflection for field %s failed", field)
 		} else {
@@ -53,8 +53,8 @@ func (tag *Tag) MarshalJSON() ([]byte, error) {
 					jsonBuf.WriteByte(',')
 				}
 				jsonBuf.WriteString("\"" + j_field + "\":")
-				field_value, err := reflections.GetField(*tag, field)
-				j_formatter, err := reflections.GetFieldTag(*tag, field, "formatter")
+				field_value, err := reflections.GetField(tag, field)
+				j_formatter, err := reflections.GetFieldTag(tag, field, "formatter")
 				if err == nil {
 					switch j_formatter {
 					case "RFC3339Milli":
