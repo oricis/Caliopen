@@ -25,6 +25,7 @@ export function requestMessages({ offset = 0, limit = 20, discussionId }) {
   return {
     type: REQUEST_MESSAGES,
     payload: {
+      discussionId,
       request: {
         url: '/v2/messages',
         params,
@@ -40,10 +41,12 @@ export function loadMoreMessages() {
   };
 }
 
-export function invalidate() {
+export function invalidateDiscussion({ discussionId }) {
   return {
     type: INVALIDATE_MESSAGES,
-    payload: {},
+    payload: {
+      discussionId,
+    },
   };
 }
 
@@ -90,6 +93,7 @@ export function deleteMessage({ message }) {
   return {
     type: DELETE_MESSAGE,
     payload: {
+      discussionId: message.discussion_id,
       request: {
         method: 'delete',
         url: `/v1/messages/${message.message_id}`,
@@ -151,9 +155,65 @@ function messagesByIdReducer(state = {}, action = {}) {
   }
 }
 
+function discussionInvalidateReducer(state, action) {
+  switch (action.type) {
+    case REQUEST_MESSAGES_SUCCESS:
+      // we assume this results gives only messages from a discussion, cf. requestMessages
+      return Object.keys(state).reduce((acc, discussionId) => {
+        if (discussionId !== action.meta.previousAction.payload.discussionId) {
+          return {
+            ...acc,
+            [discussionId]: state[discussionId],
+          };
+        }
+
+        return acc;
+      }, {});
+    case INVALIDATE_MESSAGES:
+      return {
+        ...state,
+        [action.payload.discussionId]: true,
+      };
+    default:
+      return state;
+  }
+}
+
+const removeDiscussionFromMessagesById = (messagesById, discussionId) => Object.keys(messagesById)
+  .reduce((acc, messageId) => {
+    if (messagesById[messageId].discussion_id === discussionId) {
+      return acc;
+    }
+
+    return {
+      ...acc,
+      [messageId]: messagesById[messageId],
+    };
+  }, {});
+
+const manageRequestMessagesSuccessReducer = (state, action) => {
+  const { discussionId } = action.meta.previousAction.payload;
+  const isInvalidated = state.didDiscussionInvalidate[discussionId] || false;
+
+  const cleanedState = {
+    ...state,
+    messagesById: (isInvalidated ?
+      removeDiscussionFromMessagesById(state.messagesById, discussionId) :
+      state.messagesById),
+  };
+
+  return {
+    ...cleanedState,
+    isFetching: false,
+    didDiscussionInvalidate: discussionInvalidateReducer(state.didDiscussionInvalidate, action),
+    messagesById: messagesByIdReducer(cleanedState.messagesById, action),
+    total: action.payload.data.total,
+  };
+};
+
 const initialState = {
   isFetching: false,
-  didInvalidate: false,
+  didDiscussionInvalidate: {},
   messagesById: {},
   total: 0,
 };
@@ -175,18 +235,12 @@ export default function reducer(state = initialState, action) {
         ),
       };
     case REQUEST_MESSAGES_SUCCESS:
+      return manageRequestMessagesSuccessReducer(state, action);
+    case INVALIDATE_MESSAGES:
       return {
         ...state,
-        isFetching: false,
-        didInvalidate: false,
-        messagesById: messagesByIdReducer(
-          state.didInvalidate === true ? {} : state.messagesById,
-          action
-        ),
-        total: action.payload.data.total,
+        didDiscussionInvalidate: discussionInvalidateReducer(state.didDiscussionInvalidate, action),
       };
-    case INVALIDATE_MESSAGES:
-      return { ...state, didInvalidate: true };
     case SYNC_MESSAGE:
       return {
         ...state,
