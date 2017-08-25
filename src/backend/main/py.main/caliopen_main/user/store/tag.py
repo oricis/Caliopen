@@ -14,6 +14,6 @@ class UserTag(BaseModel):
     date_insert = columns.DateTime()
     importance_level = columns.Integer()
     name = columns.Text()
+    user_id = columns.UUID(primary_key=True)
     tag_id = columns.UUID(primary_key=True, default=uuid.uuid4)
     type = columns.Text()
-    user_id = columns.UUID(primary_key=True)
