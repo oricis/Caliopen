@@ -68,14 +68,22 @@ func CreateTag(ctx *gin.Context) {
 
 func RetrieveTag(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	tag_id := ctx.Request.URL.Query().Get("tag_id")
-	tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(user_id, tag_id)
-	if err != nil {
-		e := swgErr.New(http.StatusFailedDependency, err.Error())
+	tag_id := ctx.Param("tag_id")
+	if user_id != "" && tag_id != "" {
+		tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(user_id, tag_id)
+		if err != nil {
+			e := swgErr.New(http.StatusFailedDependency, err.Error())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+		} else {
+			ctx.JSON(http.StatusOK, tag)
+		}
+	} else {
+		err := errors.New("invalid params")
+		e := swgErr.New(http.StatusBadRequest, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	}
-	ctx.JSON(http.StatusOK, tag)
 }
 
 func UpdateTag(ctx *gin.Context) {
@@ -84,7 +92,7 @@ func UpdateTag(ctx *gin.Context) {
 
 func DeleteTag(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	tag_id := ctx.Request.URL.Query().Get("tag_id")
+	tag_id := ctx.Param("tag_id")
 	err := caliopen.Facilities.RESTfacility.DeleteTag(user_id, tag_id)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())

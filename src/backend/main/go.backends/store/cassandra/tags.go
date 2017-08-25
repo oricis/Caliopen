@@ -58,15 +58,27 @@ func (cb *CassandraBackend) CreateTag(tag *Tag) error {
 }
 
 func (cb *CassandraBackend) RetrieveTag(user_id, tag_id string) (tag Tag, err error) {
-	//TODO
-	return Tag{
-		Date_insert:      time.Now(),
-		Importance_level: 12,
-		Name:             "tag_name",
-		Tag_id:           UUID{},
-		Type:             TagType("tag_type"),
-		User_id:          UUID{},
-	}, nil
+	tags, err := cb.Session.Query(`SELECT * FROM user_tag WHERE user_id = ? AND tag_id = ?`, user_id, tag_id).Iter().SliceMap()
+	if err != nil {
+		return
+	}
+	if len(tags) == 0 {
+		err = errors.New("tag not found")
+		return
+	}
+
+	tag = Tag{
+		Date_insert:      tags[0]["date_insert"].(time.Time),
+		Importance_level: int32(tags[0]["importance_level"].(int)),
+		Name:             tags[0]["name"].(string),
+		Type:             TagType(tags[0]["type"].(string)),
+	}
+	err = tag.Tag_id.UnmarshalBinary(tags[0]["tag_id"].(gocql.UUID).Bytes())
+	err = tag.User_id.UnmarshalBinary(tags[0]["user_id"].(gocql.UUID).Bytes())
+	if err != nil {
+		return Tag{}, err
+	}
+	return
 }
 
 func (cb *CassandraBackend) UpdateTag(tag *Tag) error {
