@@ -10,6 +10,44 @@
 
 }
 
+@mixin o-form-element-select-wrapper {
+  display: inline-block;
+  position: relative;
+  padding-right: 10px;
+
+  &,
+  > * {
+    cursor: pointer;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 7px;
+    width: 0;
+    margin-top: -3px;
+    border-width: 6px 4px;
+    border-style: solid;
+    border-color: $co-color__fg__text transparent transparent;
+    pointer-events: none;
+  }
+}
+
+@mixin o-form-element-select {
+  // sass-lint:disable-all
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
+
+  -webkit-appearance: none;
+  -moz-appearance: radio-container;
+  appearance: none;
+
+  // sass-lint:enable-all
+}
+
 @mixin o-form-element--dark {
   background-color: $co-color__fg__back--lower;
   color: $co-color__fg__text;

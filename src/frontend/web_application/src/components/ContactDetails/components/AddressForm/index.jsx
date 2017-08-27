@@ -134,26 +134,30 @@ class AddressForm extends Component {
               <label htmlFor="contact-adress-country">
                 {__('contact.address_form.country.label')}
               </label>
-              <CountryDropdown
-                id="contact-adress-country"
-                classes="m-address-form__select"
-                defaultOptionLabel={__('contact.address_form.select_country')}
-                value={this.state.contactDetail.country}
-                onChange={this.handleSelectCountry}
-              />
+              <div className="m-address-form__select-wrapper">
+                <CountryDropdown
+                  id="contact-adress-country"
+                  classes="m-address-form__select"
+                  defaultOptionLabel={__('contact.address_form.select_country')}
+                  value={this.state.contactDetail.country}
+                  onChange={this.handleSelectCountry}
+                />
+              </div>
             </FormColumn>
             <FormColumn size="medium">
               <label htmlFor="contact-adress-region">
                 {__('contact.address_form.region.label')}
               </label>
-              <RegionDropdown
-                id="contact-adress-region"
-                classes="m-address-form__select"
-                defaultOptionLabel={__('contact.address_form.select_region')}
-                country={this.state.contactDetail.country}
-                value={this.state.contactDetail.region}
-                onChange={this.handleSelectRegion}
-              />
+              <div className="m-address-form__select-wrapper">
+                <RegionDropdown
+                  id="contact-adress-region"
+                  classes="m-address-form__select"
+                  defaultOptionLabel={__('contact.address_form.select_region')}
+                  country={this.state.contactDetail.country}
+                  value={this.state.contactDetail.region}
+                  onChange={this.handleSelectRegion}
+                />
+              </div>
             </FormColumn>
           </FormRow>
           <FormRow>
