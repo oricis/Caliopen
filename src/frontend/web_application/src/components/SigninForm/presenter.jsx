@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../form';
 import Button from '../Button';
+import Section from '../Section';
 import Link from '../Link';
-import Title from '../Title';
 
 import './style.scss';
 
@@ -26,18 +26,12 @@ class SigninForm extends Component {
     form: {},
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      formValues: {
-        username: '',
-        password: '',
-      },
-    };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  state = {
+    formValues: {
+      username: '',
+      password: '',
+    },
+  };
 
   componentWillMount() {
     this.setState(generateStateFromProps(this.props));
@@ -47,7 +41,7 @@ class SigninForm extends Component {
     this.setState(generateStateFromProps(newProps));
   }
 
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
       formValues: {
@@ -57,7 +51,7 @@ class SigninForm extends Component {
     }));
   }
 
-  handleSubmit(ev) {
+  handleSubmit = (ev) => {
     ev.preventDefault();
     const { formValues } = this.state;
     this.props.onSubmit({ formValues });
@@ -67,7 +61,7 @@ class SigninForm extends Component {
     const { errors = {}, form, __ } = this.props;
 
     return (
-      <div className="s-signin">
+      <Section className="s-signin" title={__('signin.title')}>
         <FormGrid method="post" className="s-signin__form" {...form}>
           { errors.global && (
             <FormColumn bottomSpace>
@@ -77,9 +71,6 @@ class SigninForm extends Component {
             </FormColumn>
           )}
           <FormRow>
-            <FormColumn className="s-signin__title" bottomSpace>
-              <Title>{__('signin.title')}</Title>
-            </FormColumn>
             <FormColumn bottomSpace>
               <TextFieldGroup
                 id="signin_username"
@@ -107,7 +98,7 @@ class SigninForm extends Component {
             </FormColumn>
           </FormRow>
           <FormRow>
-            <FormColumn className="m-im-form__action" bottomSpace>
+            <FormColumn className="s-signin__action" bottomSpace>
               <Button
                 type="submit"
                 onClick={this.handleSubmit}
@@ -122,7 +113,7 @@ class SigninForm extends Component {
             </FormColumn>
           </FormRow>
         </FormGrid>
-      </div>
+      </Section>
     );
   }
 }

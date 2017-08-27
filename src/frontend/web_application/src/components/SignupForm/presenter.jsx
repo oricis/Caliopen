@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Button';
 import Link from '../Link';
-import Title from '../Title';
+import Section from '../Section';
 import Modal from '../Modal';
 
 import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../form';
@@ -153,13 +153,8 @@ class SignupForm extends Component {
     const { form, errors = {}, __ } = this.props;
 
     return (
-      <div className="s-signup">
+      <Section className="s-signup" title={__('signup.title')}>
         <FormGrid method="post" className="s-signup__form" name="ac_form" {...form}>
-          <FormRow>
-            <FormColumn className="s-signup__title" bottomSpace>
-              <Title>{__('signup.title')}</Title>
-            </FormColumn>
-          </FormRow>
           {errors.global && errors.global.length !== 0 && (
           <FormRow>
             <FormColumn bottomSpace>
@@ -232,18 +227,18 @@ class SignupForm extends Component {
           <FormRow>
             <FormColumn className="s-signup__privacy" bottomSpace>
               <h4>{__('signup.form.privacy.title')}</h4>
-              <p className="s-signup__privacy__text">
+              <p className="s-signup__privacy-text">
                 {__('signup.form.privacy.intro')}
               </p>
               <Button
-                className="s-signup__privacy__link"
+                className="s-signup__privacy-link"
                 onClick={this.handleOpenModal}
                 icon="question-circle"
               >{__('signup.form.privacy.more_info')}</Button>
               {this.renderModal()}
               <CheckboxFieldGroup
                 id="signup_privacy"
-                className="s-signup__privacy__checkbox"
+                className="s-signup__privacy-checkbox"
                 label={__('signup.form.privacy.checkbox.label')}
                 name="privacy"
                 checked={this.state.formValues.privacy}
@@ -253,7 +248,7 @@ class SignupForm extends Component {
             </FormColumn>
           </FormRow>
           <FormRow>
-            <FormColumn className="m-im-form__action" bottomSpace>
+            <FormColumn className="s-signup__action" bottomSpace>
               <Button
                 type="submit"
                 onClick={this.handleSubmit}
@@ -268,7 +263,7 @@ class SignupForm extends Component {
             </FormColumn>
           </FormRow>
         </FormGrid>
-      </div>
+      </Section>
     );
   }
 }

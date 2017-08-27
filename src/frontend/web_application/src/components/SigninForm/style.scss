@@ -4,22 +4,11 @@
 
 .s-signin {
   @include flex-grid-size(12);
+  // max-width: map-get($co-form__width, 'xlarge');
+
+  &__action { line-height: $co-component__height; }
 
   @include breakpoint(medium) {
     @include flex-grid-size(4);
-    max-width: map-get($co-form__width, 'xlarge');
-  }
-
-  &__form {
-    padding: map-get($co-form__spacing, 'large') map-get($co-form__spacing, 'medium');
-    background-color: $co-color__fg__back;
-
-    @include breakpoint(medium) {
-      padding-right: 0;
-    }
-  }
-
-  &__title {
-    text-align: center;
   }
 }
