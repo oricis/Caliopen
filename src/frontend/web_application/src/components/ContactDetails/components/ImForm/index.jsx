@@ -113,13 +113,25 @@ class ImForm extends Component {
     return (
       <FormGrid onSubmit={this.handleSubmit} className="m-im-form" name="im_form">
         <Fieldset>
-          <Legend>
-            <Icon rightSpaced type="comment" />
-            {__('contact.im_form.legend')}
-          </Legend>
           <FormRow>
+            <FormColumn size="shrink">
+              <Legend>
+                <Icon type="comment" rightSpaced />
+                <span className="m-im-form__legend">{__('contact.im_form.legend')}</span>
+              </Legend>
+            </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="small">
+            <FormColumn size="shrink" bottomSpace>
+              <SelectFieldGroup
+                name="type"
+                value={this.state.contactDetail.type}
+                onChange={this.handleInputChange}
+                label={__('contact.im_form.type.label')}
+                showLabelforSr
+                options={addressTypeOptions}
+              />
+            </FormColumn>
+            <FormColumn size="medium" fluid bottomSpace>
               <TextFieldGroup
                 name="address"
                 type="email"
@@ -130,23 +142,13 @@ class ImForm extends Component {
                 required
               />
             </FormColumn>
-            <FormColumn size="shrink">
-              <SelectFieldGroup
-                name="type"
-                value={this.state.contactDetail.type}
-                onChange={this.handleInputChange}
-                label={__('contact.im_form.type.label')}
-                showLabelforSr
-                options={addressTypeOptions}
-              />
-            </FormColumn>
-            <FormColumn size="shrink" className="m-im-form__action">
+            <FormColumn className="m-im-form__col-button">
               {!im ?
-                <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
+                <Button type="submit" className="m-im-form__button" shape="plain" icon="plus">
                   {__('contact.action.add_contact_detail')}
                 </Button>
               :
-                <Button icon="remove" onClick={this.handleDelete} />
+                <Button color="alert" icon="remove" onClick={this.handleDelete} />
               }
             </FormColumn>
           </FormRow>

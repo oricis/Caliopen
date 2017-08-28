@@ -24,6 +24,7 @@ class FormButton extends Component {
     const { __ } = this.props;
     const buttonProps = {
       icon: this.state.isActive ? 'remove' : 'plus',
+      shape: !this.state.isActive ? 'plain' : null,
     };
 
     return (

@@ -105,7 +105,6 @@ class ContactDetails extends Component {
       allowConnectRemoteEntity,
       onConnectRemoteIdentity,
       onDisconnectRemoteIdentity,
-      editMode,
     } = this.props;
 
     const remoteIdentity = allowConnectRemoteEntity ?
@@ -118,7 +117,6 @@ class ContactDetails extends Component {
           email={email}
           allowConnectRemoteEntity={allowConnectRemoteEntity}
           remoteIdentity={remoteIdentity}
-          editMode={editMode}
           onDelete={this.makeHandleDeleteContactDetail('emails')}
           onConnectRemoteIdentity={onConnectRemoteIdentity}
           onDisconnectRemoteIdentity={onDisconnectRemoteIdentity}
@@ -132,7 +130,7 @@ class ContactDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <ItemContent large>
+      <ItemContent large className="m-contact-details__form">
         <EmailForm
           email={email}
           onDelete={this.makeHandleDeleteContactDetail('emails')}
@@ -157,7 +155,7 @@ class ContactDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <ItemContent large>
+      <ItemContent large className="m-contact-details__form">
         <PhoneForm
           phone={phone}
           onDelete={this.makeHandleDeleteContactDetail('phones')}
@@ -182,7 +180,7 @@ class ContactDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <ItemContent large>
+      <ItemContent large className="m-contact-details__form">
         <ImForm
           im={im}
           onEdit={str => str} // FIXME: should be edit function
@@ -207,7 +205,7 @@ class ContactDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <ItemContent large>
+      <ItemContent large className="m-contact-details__form">
         <AddressForm
           address={address}
           onEdit={str => str} // FIXME: should be edit function
@@ -232,7 +230,7 @@ class ContactDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <ItemContent large>
+      <ItemContent large className="m-contact-details__form">
         <IdentityForm
           identity={identity}
           onEdit={str => str} // FIXME: should be edit function
@@ -257,7 +255,7 @@ class ContactDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <ItemContent large>
+      <ItemContent large className="m-contact-details__form">
         <OrgaForm
           organization={organization}
           onEdit={str => str} // FIXME: should be edit function
@@ -268,14 +266,13 @@ class ContactDetails extends Component {
     );
   }
 
-  renderBirthday = (date) => {
-    const { __, editMode } = this.props;
+  renderBirthday = (birthday) => {
+    const { __ } = this.props;
 
     return (
-      <ItemContent large>
+      <ItemContent large className="m-contact-details__form">
         <BirthdayDetails
-          birthday={date}
-          editMode={editMode}
+          birthday={birthday}
           __={__}
         />
       </ItemContent>
@@ -284,7 +281,7 @@ class ContactDetails extends Component {
 
   renderContactDetails = () => {
     const { contact } = this.props;
-    const infos = contact.infos;
+    const infos = contact.infos ? contact.infos : {};
     const emails = contact.emails ?
       [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
     const contactDetails = [
@@ -292,7 +289,7 @@ class ContactDetails extends Component {
       ...(contact.phones ? contact.phones.map(detail => this.renderPhone(detail)) : []),
       ...(contact.ims ? contact.ims.map(detail => this.renderIm(detail)) : []),
       ...(contact.addresses ? contact.addresses.map(detail => this.renderAddress(detail)) : []),
-      ...(infos && infos.birthday ? [this.renderBirthday(infos.birthday)] : []),
+      ...(infos ? [this.renderBirthday(infos.birthday ? infos.birthday : '')] : []),
     ];
 
     return (

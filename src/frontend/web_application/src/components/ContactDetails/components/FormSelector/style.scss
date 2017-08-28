@@ -1,11 +1,12 @@
 @import '../../../../styles/common';
 
 .m-form-selector {
-  &__select {
-    margin-bottom: $co-margin;
-  }
 
   &__form {
-    margin-bottom: $co-margin;
+    margin-bottom: $co-margin / 2;
+  }
+
+  &__select {
+    margin-bottom: $co-margin / 2;
   }
 }
