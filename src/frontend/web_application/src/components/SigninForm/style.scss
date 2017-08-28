@@ -3,12 +3,9 @@
 
 
 .s-signin {
-  @include flex-grid-size(12);
-  // max-width: map-get($co-form__width, 'xlarge');
+  @include flex-grid-size;
+  max-width: map-get($co-form__width, 'xlarge');
 
   &__action { line-height: $co-component__height; }
 
-  @include breakpoint(medium) {
-    @include flex-grid-size(4);
-  }
 }

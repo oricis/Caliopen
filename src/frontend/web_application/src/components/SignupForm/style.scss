@@ -5,7 +5,8 @@
 
 
 .s-signup {
-  @include flex-grid-size(12);
+  @include flex-grid-size;
+  max-width: map-get($co-form__width, 'xlarge');
 
   &__action { line-height: $co-component__height; }
 
@@ -22,9 +23,5 @@
     margin-top: $co-margin / 2;
     color: $co-color__fg__text--high;
     font-weight: 600;
-  }
-
-  @include breakpoint(medium) {
-    @include flex-grid-size(4);
   }
 }
