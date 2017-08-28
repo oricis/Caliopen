@@ -31,9 +31,12 @@
     font-weight: 600;
   }
 
-  &__col-datas-irl,
-  &__col-datas-online {
+  &__col-datas-irl {
     @include flex-grid-column(12);
+  }
+
+  &__col-datas-online {
+    @include flex-grid-size(12);
   }
 
   @include breakpoint(medium) {

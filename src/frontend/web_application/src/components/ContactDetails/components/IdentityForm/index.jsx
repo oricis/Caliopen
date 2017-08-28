@@ -88,23 +88,15 @@ class IdentityForm extends Component {
     return (
       <FormGrid onSubmit={this.handleSubmit} className="m-identity-form" name="identity_form">
         <Fieldset>
-          <Legend>
-            <Icon rightSpaced type="user" />
-            {__('contact.identity_form.legend')}
-          </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="medium">
-              <TextFieldGroup
-                name="name"
-                type="text"
-                value={this.state.contactDetail.name}
-                onChange={this.handleInputChange}
-                label={__('contact.identity_form.identity.label')}
-                showLabelforSr
-              />
-            </FormColumn>
             <FormColumn size="shrink">
+              <Legend>
+                <Icon rightSpaced type="user" />
+                <span className="m-identity-form__legend">{__('contact.identity_form.legend')}</span>
+              </Legend>
+            </FormColumn>
+            <FormColumn size="shrink" bottomSpace>
               <SelectFieldGroup
                 name="type"
                 value={this.state.contactDetail.type}
@@ -114,13 +106,23 @@ class IdentityForm extends Component {
                 showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="shrink" className="m-identity-form__action">
+            <FormColumn size="medium" fluid bottomSpace>
+              <TextFieldGroup
+                name="name"
+                type="text"
+                value={this.state.contactDetail.name}
+                onChange={this.handleInputChange}
+                label={__('contact.identity_form.identity.label')}
+                showLabelforSr
+              />
+            </FormColumn>
+            <FormColumn className="m-identity-form__col-button">
               {!identity ?
-                <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
+                <Button type="submit" className="m-identity-form__button" shape="plain" icon="plus">
                   {__('contact.action.add_contact_detail')}
                 </Button>
               :
-                <Button icon="remove" onClick={this.handleDelete} />
+                <Button color="alert" icon="remove" onClick={this.handleDelete} />
               }
             </FormColumn>
           </FormRow>

@@ -3,15 +3,15 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-address-form {
-  margin-bottom: $co-margin;
-
-  &__select {
+  &__select { // TODO: insert a wrapper to select to fit new SelectFieldGroup architecture
     @include o-form-element;
     @include o-form-element--dark;
   }
 
-  &__action {
-    margin-top: $co-margin;
-    line-height: $co-component__height;
+  &__col-button { @include flex-grid-size(shrink); }
+  &__button { margin-left: map_get($co-form__spacing, 'medium'); }
+
+  @include breakpoint(medium) {
+    &__button { margin-left: 0; }
   }
 }

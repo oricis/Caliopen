@@ -125,51 +125,55 @@ class AddressForm extends Component {
     return (
       <FormGrid onSubmit={this.handleSubmit} className="m-address-form" name="address_form">
         <Fieldset>
-          <Legend>
-            <Icon rightSpaced type="map-marker" />
-            {__('contact.address_form.legend')}
-          </Legend>
           <FormRow>
+            <FormColumn>
+              <Legend>
+                <Icon rightSpaced type="map-marker" />
+                {__('contact.address_form.legend')}
+              </Legend>
+            </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
           </FormRow>
           <FormRow>
-            <FormColumn size="shrink">
-              <SelectFieldGroup
-                name="type"
-                value={this.state.contactDetail.type}
-                onChange={this.handleInputChange}
-                label={__('contact.address_form.type.label')}
-                options={addressTypeOptions}
-              />
-            </FormColumn>
-          </FormRow>
-          <FormRow>
-            <FormColumn size="medium">
+            <FormColumn bottomSpace>
               <TextFieldGroup
                 name="street"
                 value={this.state.contactDetail.street}
                 onChange={this.handleInputChange}
                 label={__('contact.address_form.street.label')}
+                placeholder={__('contact.address_form.street.label')}
+                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="shrink">
+          </FormRow>
+          <FormRow>
+            <FormColumn size="small" bottomSpace>
               <TextFieldGroup
                 name="postal_code"
                 value={this.state.contactDetail.postal_code}
                 onChange={this.handleInputChange}
                 label={__('contact.address_form.postal_code.label')}
+                placeholder={__('contact.address_form.postal_code.label')}
+                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="medium">
+            <FormColumn size="large" bottomSpace>
               <TextFieldGroup
                 name="city"
                 value={this.state.contactDetail.city}
                 onChange={this.handleInputChange}
                 label={__('contact.address_form.city.label')}
+                placeholder={__('contact.address_form.city.label')}
+                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="medium">
-              <label htmlFor="contact-adress-country">
+          </FormRow>
+          <FormRow>
+            <FormColumn size="medium" bottomSpace>
+              {
+                // TODO: insert select-wrapper to fit SelectFieldGroup architecture
+              }
+              <label className="show-for-sr" htmlFor="contact-adress-country">
                 {__('contact.address_form.country.label')}
               </label>
               <CountryDropdown
@@ -180,8 +184,11 @@ class AddressForm extends Component {
                 onChange={this.handleSelectCountry}
               />
             </FormColumn>
-            <FormColumn size="medium">
-              <label htmlFor="contact-adress-region">
+            <FormColumn size="medium" bottomSpace>
+              {
+                // TODO: insert select-wrapper to fit SelectFieldGroup architecture
+              }
+              <label className="show-for-sr" htmlFor="contact-adress-region">
                 {__('contact.address_form.region.label')}
               </label>
               <RegionDropdown
@@ -193,15 +200,23 @@ class AddressForm extends Component {
                 onChange={this.handleSelectRegion}
               />
             </FormColumn>
-          </FormRow>
-          <FormRow>
-            <FormColumn size="shrink" className="m-address-form__action">
+            <FormColumn size="shrink" bottomSpace fluid>
+              <SelectFieldGroup
+                name="type"
+                value={this.state.contactDetail.type}
+                onChange={this.handleInputChange}
+                label={__('contact.address_form.type.label')}
+                options={addressTypeOptions}
+                showLabelforSr
+              />
+            </FormColumn>
+            <FormColumn size="shrink" className="m-address-form__col-button">
               {!address ?
-                <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
+                <Button className="m-address-form__button" type="submit" shape="plain" display="expanded" icon="plus">
                   {__('contact.action.add_contact_detail')}
                 </Button>
               :
-                <Button icon="remove" onClick={this.handleDelete} />
+                <Button color="alert" icon="remove" onClick={this.handleDelete} />
               }
             </FormColumn>
           </FormRow>

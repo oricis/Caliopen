@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import TextList, { ItemContent } from '../../../TextList';
 import { SelectFieldGroup } from '../../../form';
 
 import './style.scss';
@@ -30,23 +31,24 @@ class FormSelector extends Component {
     }));
 
     return (
-      <SelectFieldGroup
-        name="selectedForm"
-        className="m-form-selector__select"
-        value=""
-        onChange={this.handleSelectChange}
-        label={__('contact.form-selector.add_new_field.label')}
-        options={typeOptions}
-      />
+      <ItemContent large className="m-form-selector__select">
+        <SelectFieldGroup
+          name="selectedForm"
+          value=""
+          onChange={this.handleSelectChange}
+          label={__('contact.form-selector.add_new_field.label')}
+          options={typeOptions}
+        />
+      </ItemContent>
     );
   }
 
   renderNewForm = (form) => {
     const { formsOptions } = this.props;
     const newForm = formsOptions.map(option => option.name === form &&
-      <div className="m-form-selector__form" key={option.name}>
+      <ItemContent large className="m-form-selector__form" key={option.name}>
         {option.obj}
-      </div>
+      </ItemContent>
     );
 
     return newForm;
@@ -54,10 +56,10 @@ class FormSelector extends Component {
 
   render() {
     return (
-      <div className="m-form-selector">
+      <TextList className="m-form-selector">
         {this.renderNewForm(this.state.selectedForm)}
         {this.renderSelector()}
-      </div>
+      </TextList>
     );
   }
 }

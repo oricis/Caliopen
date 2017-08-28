@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../../Icon';
 import Button from '../../../Button';
-import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../form';
+import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, FormGrid, FormRow, FormColumn } from '../../../form';
 import './style.scss';
 
 const PHONE_TYPES = ['work', 'home', 'other'];
@@ -116,22 +116,25 @@ class PhoneForm extends Component {
         name="phone_form"
       >
         <Fieldset>
-          <Legend>
-            <Icon rightSpaced type="phone" />
-            {__('contact.phone_form.legend')}
-          </Legend>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
             <FormColumn size="shrink">
-              <CheckboxFieldGroup
-                name="is_primary"
-                label={__('contact.phone_form.is_primary.label')}
-                checked={this.state.contactDetail.is_primary}
-                onChange={this.handleSwitchChange}
-                displaySwitch
+              <Legend>
+                <Icon rightSpaced type="phone" />
+                <span className="m-phone-form__legend">{__('contact.phone_form.legend')}</span>
+              </Legend>
+            </FormColumn>
+            <FormColumn size="shrink" bottomSpace>
+              <SelectFieldGroup
+                name="type"
+                value={this.state.contactDetail.type}
+                onChange={this.handleInputChange}
+                label={__('contact.phone_form.type.label')}
+                showLabelforSr
+                options={typeOptions}
               />
             </FormColumn>
-            <FormColumn size="medium">
+            <FormColumn size="medium" fluid bottomSpace>
               <TextFieldGroup
                 name="number"
                 type="tel"
@@ -142,23 +145,13 @@ class PhoneForm extends Component {
                 required
               />
             </FormColumn>
-            <FormColumn size="shrink">
-              <SelectFieldGroup
-                name="type"
-                value={this.state.contactDetail.type}
-                onChange={this.handleInputChange}
-                label={__('contact.phone_form.type.label')}
-                showLabelforSr
-                options={typeOptions}
-              />
-            </FormColumn>
-            <FormColumn size="shrink">
+            <FormColumn className="m-phone-form__col-button">
               {!phone ?
-                <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
+                <Button type="submit" className="m-phone-form__button" shape="plain" icon="plus">
                   {__('contact.action.add_contact_detail')}
                 </Button>
               :
-                <Button icon="remove" onClick={this.handleDelete} />
+                <Button icon="remove" color="alert" onClick={this.handleDelete} />
               }
             </FormColumn>
           </FormRow>

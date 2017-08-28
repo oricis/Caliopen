@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../../Icon';
 import Button from '../../../Button';
-import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, FormGrid, FormRow, FormColumn, CheckboxFieldGroup } from '../../../form';
+import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, FormGrid, FormRow, FormColumn } from '../../../form';
 import './style.scss';
 
 const EMAIL_TYPES = ['work', 'home', 'other'];
@@ -114,22 +114,25 @@ class EmailForm extends Component {
     return (
       <FormGrid onSubmit={this.handleSubmit} className="m-email-form" name="email_form">
         <Fieldset>
-          <Legend>
-            <Icon type="envelope" rightSpaced />
-            {__('contact.email_form.legend')}
-          </Legend>
           <FormRow>
-            {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
             <FormColumn size="shrink">
-              <CheckboxFieldGroup
-                name="is_primary"
-                checked={this.state.contactDetail.is_primary}
-                onChange={this.handleSwitchChange}
-                label={__('contact.email_form.is_primary.label')}
-                displaySwitch
+              <Legend>
+                <Icon type="envelope" rightSpaced />
+                <span className="m-email-form__legend">{__('contact.email_form.legend')}</span>
+              </Legend>
+            </FormColumn>
+            {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
+            <FormColumn size="shrink" bottomSpace>
+              <SelectFieldGroup
+                name="type"
+                value={this.state.contactDetail.type}
+                onChange={this.handleInputChange}
+                label={__('contact.email_form.type.label')}
+                showLabelforSr
+                options={addressTypeOptions}
               />
             </FormColumn>
-            <FormColumn size="medium">
+            <FormColumn size="medium" fluid bottomSpace>
               <TextFieldGroup
                 name="address"
                 type="email"
@@ -140,23 +143,13 @@ class EmailForm extends Component {
                 required
               />
             </FormColumn>
-            <FormColumn size="shrink">
-              <SelectFieldGroup
-                name="type"
-                value={this.state.contactDetail.type}
-                onChange={this.handleInputChange}
-                label={__('contact.email_form.type.label')}
-                showLabelforSr
-                options={addressTypeOptions}
-              />
-            </FormColumn>
-            <FormColumn size="shrink" className="m-email-form__action">
+            <FormColumn className="m-email-form__col-button">
               {!email ?
-                <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
+                <Button className="m-email-form__button" type="submit" shape="plain" icon="plus">
                   {__('contact.action.add_contact_detail')}
                 </Button>
               :
-                <Button icon="remove" onClick={this.handleDelete} />
+                <Button icon="remove" color="alert" onClick={this.handleDelete} />
               }
             </FormColumn>
           </FormRow>

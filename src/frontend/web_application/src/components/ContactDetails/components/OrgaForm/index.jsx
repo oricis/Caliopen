@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../../Icon';
 import Button from '../../../Button';
-import { FieldErrors, Fieldset, Legend, TextFieldGroup, FormGrid, FormRow, FormColumn, CheckboxFieldGroup } from '../../../form';
+import { FieldErrors, Fieldset, Legend, TextFieldGroup, FormGrid, FormRow, FormColumn } from '../../../form';
 
 import './style.scss';
 
@@ -97,75 +97,75 @@ class OrgaForm extends Component {
     return (
       <FormGrid onSubmit={this.handleSubmit} className="m-orga-form" name="orga_form">
         <Fieldset>
-          <Legend>
-            <Icon rightSpaced type="building" />
-            {__('contact.orga_form.legend')}
-          </Legend>
           <FormRow>
-            {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
             <FormColumn>
+              <Legend>
+                <Icon rightSpaced type="building" />
+                {__('contact.orga_form.legend')}
+              </Legend>
+            </FormColumn>
+            {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
+          </FormRow>
+          <FormRow>
+            <FormColumn size="medium" bottomSpace>
               <TextFieldGroup
                 name="label"
                 value={this.state.contactDetail.label}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.label.label')}
+                placeholder={__('contact.orga_form.label.label')}
+                showLabelforSr
                 required
               />
             </FormColumn>
-            <FormColumn>
+            <FormColumn size="medium" bottomSpace>
               <TextFieldGroup
                 name="name"
                 value={this.state.contactDetail.name}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.name.label')}
+                placeholder={__('contact.orga_form.name.label')}
+                showLabelforSr
                 required
               />
             </FormColumn>
-            <FormColumn size="medium">
+            <FormColumn size="medium" bottomSpace>
               <TextFieldGroup
                 name="title"
                 value={this.state.contactDetail.title}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.title.label')}
+                placeholder={__('contact.orga_form.title.label')}
+                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="medium">
+            <FormColumn size="medium" bottomSpace>
               <TextFieldGroup
                 name="department"
                 value={this.state.contactDetail.department}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.department.label')}
+                placeholder={__('contact.orga_form.department.label')}
+                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="medium">
+            <FormColumn size="medium" bottomSpace>
               <TextFieldGroup
                 name="job_description"
                 value={this.state.contactDetail.job_description}
                 onChange={this.handleInputChange}
                 label={__('contact.orga_form.job_description.label')}
+                placeholder={__('contact.orga_form.job_description.label')}
+                showLabelforSr
               />
             </FormColumn>
-          </FormRow>
-          <FormRow>
-            <FormColumn size="shrink" className="m-orga-form__switch">
-              <CheckboxFieldGroup
-                name="is_primary"
-                checked={this.state.contactDetail.is_primary}
-                onChange={this.handleSwitchChange}
-                label={__('contact.orga_form.is_primary.label')}
-                displaySwitch
-                showTextLabel
-              />
-            </FormColumn>
-          </FormRow>
-          <FormRow>
-            <FormColumn size="shrink" className="m-orga-form__action">
+            <FormColumn className="m-orga-form__col-button">
               {!organization ?
                 <Button type="submit" shape="plain" icon="plus" responsive="icon-only">
                   {__('contact.action.add_contact_detail')}
                 </Button>
               :
-                <Button icon="remove" onClick={this.handleDelete} />
+                <Button icon="remove" color="alert" onClick={this.handleDelete} />
               }
             </FormColumn>
           </FormRow>
