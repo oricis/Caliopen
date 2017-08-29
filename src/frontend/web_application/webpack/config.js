@@ -109,6 +109,7 @@ const configureVendorSplit = (config) => {
     'react-tappable',
     'redux',
     'redux-axios-middleware',
+    'redux-form',
     'reselect',
     'uuid',
     'xregexp'

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import ManageTags from './ManageTags';
+import ContactProfileForm from './components/ContactProfileForm';
 import Spinner from '../../components/Spinner';
 import ContactDetails from '../../components/ContactDetails';
 import ContactProfile from '../../components/ContactProfile';
@@ -23,6 +24,8 @@ class Contact extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
     requestContact: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    reset: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,
     notifyError: PropTypes.func.isRequired,
     removeContact: PropTypes.func,
@@ -88,7 +91,16 @@ class Contact extends Component {
     this.setState(prevState => ({
       ...prevState,
       editMode: !prevState.editMode,
-    }));
+    }), () => {
+      if (!this.state.editMode) {
+        this.props.reset();
+      }
+    });
+  }
+
+  handleSubmit = (ev) => {
+    this.props.handleSubmit(ev);
+    this.toggleEditMode();
   }
 
   renderTagsModal = () => {
@@ -128,7 +140,7 @@ class Contact extends Component {
           {__('contact.edit_contact.title')}
         </TextBlock>
         <Button
-          onClick={this.toggleEditMode} // FIXME: this should validate contact change
+          type="submit"
           responsive="icon-only"
           icon="check"
           className="s-contact__action"
@@ -197,7 +209,7 @@ class Contact extends Component {
     const { __, isFetching, contact } = this.props;
 
     return (
-      <div>
+      <form onSubmit={this.handleSubmit} method="post">
         {contact && (
           <MenuBar className="s-contact__menu-bar">
             {
@@ -217,6 +229,7 @@ class Contact extends Component {
                 contact={contact}
                 onChange={this.handleContactChange}
                 editMode={this.state.editMode}
+                form={(<ContactProfileForm contact={contact} />)}
               />
             </div>
             <div className="s-contact__col-datas-online">
@@ -229,7 +242,7 @@ class Contact extends Component {
             </div>
           </div>
           )}
-      </div>
+      </form>
     );
   }
 }
