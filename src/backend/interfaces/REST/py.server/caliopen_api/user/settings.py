@@ -5,7 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from pyramid.response import Response
-from caliopen_main.objects.settings import Settings as ObjectSettings
+from caliopen_main.user.objects.settings import Settings as ObjectSettings
 from cornice.resource import resource, view
 
 from ..base import Api

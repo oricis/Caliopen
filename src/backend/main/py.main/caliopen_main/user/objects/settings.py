@@ -9,7 +9,7 @@ import uuid
 from caliopen_main.user.parameters.settings import Settings as SettingsParam
 
 from caliopen_main.user.store import Settings as ModelSettings
-from .base import ObjectUser
+from caliopen_main.common.objects.base import ObjectUser
 
 log = logging.getLogger(__name__)
 
