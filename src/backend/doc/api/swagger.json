@@ -6958,6 +6958,190 @@
         }
       }
     },
+    "/v1/settings": {
+      "get": {
+        "description": "Returns settings belonging to current user",
+        "tags": [
+          "settings"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Settings returned",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "default_language": {
+                  "type": "string"
+                },
+                "default_timezone": {
+                  "type": "string"
+                },
+                "date_format": {
+                  "type": "string"
+                },
+                "message_display_format": {
+                  "type": "string"
+                },
+                "contact_display_order": {
+                  "type": "string"
+                },
+                "contact_phone_format": {
+                  "type": "string"
+                },
+                "notification_style": {
+                  "type": "string"
+                },
+                "notification_delay": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Update settings with rfc5789 and rfc7396 specifications",
+        "tags": [
+          "settings"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "patch",
+            "in": "body",
+            "required": true,
+            "description": "the patch to apply. See 'Caliopen Patch RFC' within /doc directory.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "current_state": {
+                  "type": "object",
+                  "properties": {
+                    "default_language": {
+                      "type": "string"
+                    },
+                    "default_timezone": {
+                      "type": "string"
+                    },
+                    "date_format": {
+                      "type": "string"
+                    },
+                    "message_display_format": {
+                      "type": "string"
+                    },
+                    "contact_display_order": {
+                      "type": "string"
+                    },
+                    "contact_phone_format": {
+                      "type": "string"
+                    },
+                    "notification_style": {
+                      "type": "string"
+                    },
+                    "notification_delay": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "default_language": {
+                  "type": "string"
+                },
+                "default_timezone": {
+                  "type": "string"
+                },
+                "date_format": {
+                  "type": "string"
+                },
+                "message_display_format": {
+                  "type": "string"
+                },
+                "contact_display_order": {
+                  "type": "string"
+                },
+                "contact_phone_format": {
+                  "type": "string"
+                },
+                "notification_style": {
+                  "type": "string"
+                },
+                "notification_delay": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Update successful. No body is returned."
+          },
+          "400": {
+            "description": "json payload malformed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "patch was semantically malformed or unprocessable",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v2/identities/locals": {
       "get": {
         "description": "returns the list of user's local identities",
