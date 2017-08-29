@@ -2,7 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from .user import User, UserName, ReservedName, FilterRule
-from .user import RemoteIdentity, IndexUser
+from .user import RemoteIdentity, IndexUser, Settings
 from .tag import UserTag
 from .device import Device, DeviceLocation
 from .device import DeviceConnectionLog, DevicePublicKey
@@ -12,7 +12,7 @@ from .local_identity import LocalIdentity
 
 __all__ = [
     'User', 'UserName', 'UserTag', 'FilterRule', 'ReservedName',
-    'RemoteIdentity', 'IndexUser', 'UserTag',
+    'RemoteIdentity', 'IndexUser', 'UserTag', 'Settings',
     'Device', 'DeviceLocation',
     'DeviceConnectionLog', 'DevicePublicKey',
     'IndexedLocalIdentity', 'LocalIdentity',
