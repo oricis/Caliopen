@@ -32,5 +32,5 @@ class Settings(ObjectUser):
     }
 
     _model_class = ModelSettings
-    _pkey_name = 'device_id'
+    _pkey_name = None
     _json_model = SettingsParam
