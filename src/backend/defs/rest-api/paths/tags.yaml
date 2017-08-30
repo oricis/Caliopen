@@ -106,12 +106,19 @@ tags_{tag_id}:
       schema:
         type: object
         properties:
-          "$ref": "../objects/Tag.yaml#/properties"
+          name:
+            type: string
           current_state:
             type: object
             properties:
-              "$ref": "../objects/Tag.yaml#/properties"
-        required:
+              name:
+                type: string
+            additionalProperties: false
+            required :
+            - name
+        additionalProperties: false
+        required :
+        - name
         - current_state
     produces:
     - application/json
@@ -133,6 +140,10 @@ tags_{tag_id}:
           "$ref": "../objects/Error.yaml"
       '404':
         description: tag not found
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '409':
+        description: json is valid but patch conflicts with db's current state
         schema:
           "$ref": "../objects/Error.yaml"
       '422':

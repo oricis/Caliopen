@@ -193,6 +193,6 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	tag.GET("", tags.RetrieveUserTags)
 	tag.POST("", tags.CreateTag)
 	tag.GET("/:tag_id", tags.RetrieveTag)
-	tag.PATCH("/:tag_id", tags.UpdateTag)
+	tag.PATCH("/:tag_id", tags.PatchTag)
 	tag.DELETE("/:tag_id", tags.DeleteTag)
 }

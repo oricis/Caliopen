@@ -82,8 +82,15 @@ func (cb *CassandraBackend) RetrieveTag(user_id, tag_id string) (tag Tag, err er
 }
 
 func (cb *CassandraBackend) UpdateTag(tag *Tag) error {
-	//not yet implemented
-	return nil
+	return cb.Session.Query(`UPDATE user_tag SET date_insert = ?, importance_level = ?, name = ?, type = ? WHERE user_id = ? AND tag_id = ?`,
+		tag.Date_insert,
+		tag.Importance_level,
+		tag.Name,
+		tag.Type,
+		tag.User_id,
+		tag.Tag_id,
+	).Exec()
+
 }
 
 func (cb *CassandraBackend) DeleteTag(user_id, tag_id string) error {

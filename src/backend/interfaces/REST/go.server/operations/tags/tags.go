@@ -10,6 +10,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
 	"gopkg.in/gin-gonic/gin.v1"
+	"gopkg.in/gin-gonic/gin.v1/binding"
 	"net/http"
 	"strconv"
 )
@@ -44,7 +45,8 @@ func RetrieveUserTags(ctx *gin.Context) {
 
 func CreateTag(ctx *gin.Context) {
 	var tag Tag
-	if ctx.BindJSON(&tag) == nil {
+	b := binding.JSON
+	if err := b.Bind(ctx.Request, &tag); err == nil {
 		user_uuid, _ := uuid.FromString(ctx.MustGet("user_id").(string))
 		tag.User_id.UnmarshalBinary(user_uuid.Bytes())
 		err := caliopen.Facilities.RESTfacility.CreateTag(&tag)
@@ -58,7 +60,7 @@ func CreateTag(ctx *gin.Context) {
 			})
 		}
 	} else {
-		err := errors.New("Unable to marshal provided json.")
+		err := errors.WithMessage(err, "Unable to json marshal the provided payload.")
 		e := swgErr.New(http.StatusBadRequest, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
@@ -86,8 +88,58 @@ func RetrieveTag(ctx *gin.Context) {
 	}
 }
 
-func UpdateTag(ctx *gin.Context) {
-	ctx.Status(http.StatusNotImplemented)
+func PatchTag(ctx *gin.Context) {
+	patchTag := struct {
+		Tag
+		Current_state Tag
+	}{}
+	b := binding.JSON
+	if err := b.Bind(ctx.Request, &patchTag); err == nil {
+
+		user_uuid, _ := uuid.FromString(ctx.MustGet("user_id").(string))
+		patchTag.User_id.UnmarshalBinary(user_uuid.Bytes())
+		patchTag.Current_state.User_id = patchTag.User_id
+
+		tag_uuid, _ := uuid.FromString(ctx.Param("tag_id"))
+		patchTag.Tag_id.UnmarshalBinary(tag_uuid.Bytes())
+		patchTag.Current_state.Tag_id = patchTag.Tag_id
+
+		current_tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(patchTag.User_id.String(), patchTag.Tag_id.String())
+		if err != nil {
+			e := swgErr.New(http.StatusFailedDependency, err.Error())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+		} else {
+			if current_tag.Name != patchTag.Current_state.Name {
+				err := errors.New("patch's current_state not consistent with db.")
+				e := swgErr.New(http.StatusConflict, err.Error())
+				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+				ctx.Abort()
+			} else {
+				new_tag := Tag{
+					Date_insert:      current_tag.Date_insert,
+					Importance_level: current_tag.Importance_level,
+					Name:             patchTag.Name,
+					Tag_id:           current_tag.Tag_id,
+					Type:             current_tag.Type,
+					User_id:          current_tag.User_id,
+				}
+				err := caliopen.Facilities.RESTfacility.UpdateTag(&new_tag)
+				if err != nil {
+					e := swgErr.New(http.StatusFailedDependency, err.Error())
+					http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+					ctx.Abort()
+				} else {
+					ctx.Status(http.StatusNoContent)
+				}
+			}
+		}
+	} else {
+		err = errors.WithMessage(err, "Unable to json marshal the provided payload.")
+		e := swgErr.New(http.StatusBadRequest, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	}
 }
 
 func DeleteTag(ctx *gin.Context) {
