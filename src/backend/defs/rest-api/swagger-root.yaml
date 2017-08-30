@@ -54,6 +54,8 @@ paths:
     "$ref": paths/devices.yaml#/devices
   "/v1/devices/{device_id}":
     "$ref": paths/devices.yaml#/devices_{device_id}
+  "/v1/settings":
+     "$ref": paths/settings.yaml#/settings
   "/v2/identities/locals":
     "$ref": paths/identities.yaml#/identities_locals
   "/v1/identities/remotes":

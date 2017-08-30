@@ -18,10 +18,13 @@ from ..store import (User as ModelUser,
                      UserName as ModelUserName,
                      IndexUser,
                      UserTag as ModelUserTag,
+                     Settings as ModelSettings,
                      FilterRule as ModelFilterRule,
                      ReservedName as ModelReservedName,
                      LocalIdentity as ModelLocalIdentity,
                      RemoteIdentity as ModelRemoteIdentity)
+
+from caliopen_main.user.objects.settings import Settings as ObjectSettings
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
 from caliopen_main.contact.core import Contact as CoreContact, ContactLookup
@@ -115,6 +118,16 @@ class UserName(BaseCore):
 
     _model_class = ModelUserName
     _pkey_name = 'name'
+
+
+class Settings(BaseUserCore):
+    """User settings core object."""
+
+    # XXX this core object is here to fill core_registry
+    # it's not used, objects representation have to be used.
+
+    _model_class = ModelSettings
+    _pkey_name = None
 
 
 class User(BaseCore):
@@ -232,8 +245,9 @@ class User(BaseCore):
         # Setup index
         core._setup_user_index()
 
+        # Setup others entities related to user
         core.setup_system_tags()
-
+        core.setup_settings()
         # Add a default local identity on a default configured domain
         default_domain = Configuration('global').get('default_domain')
         default_local_id = '{}@{}'.format(core.name, default_domain)
@@ -334,6 +348,29 @@ class User(BaseCore):
             tag['type'] = 'system'
             tag['date_insert'] = datetime.datetime.now(tz=pytz.utc)
             Tag.create(self, **tag)
+
+    def setup_settings(self):
+        """Create settings related to user."""
+        # XXX set correct values
+        settings = {
+            'user_id': self.user_id,
+            'default_language': 'en',
+            'default_timezone': 'utc',
+            'date_format': 'dd/mm/yyyy',
+            'message_display_format': 'html',
+            'contact_display_order': '',
+            'contact_display_format': '',
+            'contact_phone_format': 'international',
+            'contact_vcard_format': '4.0',
+            'notification_style': 'system',
+            'notification_delay': 10,
+        }
+
+        obj = ObjectSettings(self.user_id)
+        obj.unmarshall_dict(settings)
+        obj.marshall_db()
+        obj.save_db()
+        return True
 
     @property
     def contact(self):
