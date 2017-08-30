@@ -41,14 +41,13 @@ class NewDevice(Model):
 class Device(NewDevice):
     """Parameter for an existing device."""
 
-    device_id = UUIDType(required=True)
-    user_id = UUIDType(required=True)
-    date_insert = DateTimeType(required=True,
-                               serialized_format=helpers.RFC3339Milli,
+    device_id = UUIDType()
+    user_id = UUIDType()
+    date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
     last_seen = DateTimeType(serialized_format=helpers.RFC3339Milli,
                              tzd=u'utc')
-    status = StringType(required=True)
+    status = StringType()
 
     privacy_features = DictType(StringType, default=lambda: {})
     pi = ModelType(PIParameter)

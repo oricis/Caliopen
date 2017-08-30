@@ -43,7 +43,7 @@ class User(NewUser):
     password = StringType()     # not outpout by default, not required
     privacy_features = DictType(StringType, default=lambda: {}, )
     pi = ModelType(PIParameter)
-    user_id = UUIDType(required=True)
+    user_id = UUIDType()
 
     class Options:
         roles = {'default': blacklist('password')}

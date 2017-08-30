@@ -97,7 +97,7 @@ class Draft(NewMessage):
         except NotFound:
             raise NotFound
         if str(local_identity.user_id) != user_id:
-            raise err.ForbiddenAction
+            raise err.ForbiddenAction(message="Action forbidden for this user")
 
         # add 'from' participant with local identity's identifier
         user = User.get(user_id)

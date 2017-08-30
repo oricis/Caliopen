@@ -37,8 +37,7 @@ class NewMessage(Model):
     is_unread = BooleanType()
     message_id = UUIDType()
     parent_id = StringType()
-    participants = ListType(ModelType(Participant), default=lambda: [],
-                            required=True)
+    participants = ListType(ModelType(Participant), default=lambda: [])
     privacy_features = DictType(StringType, default=lambda: {})
     pi = ModelType(PIParameter)
     raw_msg_id = UUIDType()
@@ -60,10 +59,9 @@ class Message(NewMessage):
 
     body = StringType()
     user_id = UUIDType()
-    message_id = UUIDType(required=True)
-    raw_msg_id = UUIDType(required=True)
-    date_insert = DateTimeType(required=True,
-                               serialized_format=helpers.RFC3339Milli,
+    message_id = UUIDType()
+    raw_msg_id = UUIDType()
+    date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
     date_delete = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')

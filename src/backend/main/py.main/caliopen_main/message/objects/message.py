@@ -111,7 +111,7 @@ class Message(ObjectIndexable):
             raise exc
 
         message = Message()
-        message.unmarshall_json_dict(draft_param)
+        message.unmarshall_json_dict(draft_param.to_primitive())
         message.user_id = UUID(user_id)
         message.is_draft = True
         message.type = "email"  # TODO: type handling inferred from participants

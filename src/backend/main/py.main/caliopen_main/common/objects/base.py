@@ -145,6 +145,15 @@ class ObjectJsonDictifiable(ObjectDictifiable):
 
     def unmarshall_json_dict(self, document, **options):
         """ TODO: handle conversion of basic json type into obj. types"""
+
+        # validate document against json_model before trying to unmarshal
+        valid_doc = self._json_model(document)
+        try:
+            valid_doc.validate()
+        except Exception as exc:
+            log.warn("document validation failed with error {}".format(exc))
+            raise exc
+
         self.unmarshall_dict(document, **options)
 
 

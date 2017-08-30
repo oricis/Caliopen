@@ -21,7 +21,7 @@ class LocalIdentity(Model):
     identifier = StringType(required=True)
     status = StringType()
     type = StringType()
-    user_id = UUIDType(required=True)
+    user_id = UUIDType()
 
 
 class NewRemoteIdentity(Model):
@@ -33,6 +33,6 @@ class NewRemoteIdentity(Model):
 
 
 class RemoteIdentity(NewRemoteIdentity):
-    user_id = UUIDType(required=True)
+    user_id = UUIDType()
     last_check = DateTimeType(serialized_format=helpers.RFC3339Milli,
                               tzd=u'utc')
