@@ -1,7 +1,7 @@
 package http_middleware
 
 const (
-	RoutePrefix    = "/api/v2"
-	IdentitesRoute = "/identities"
-	TagsRoute      = "/tags"
+	RoutePrefix     = "/api/v2"
+	IdentitiesRoute = "/identities"
+	TagsRoute       = "/tags"
 )
