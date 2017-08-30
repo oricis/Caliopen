@@ -35,17 +35,8 @@
 }
 
 @mixin o-form-element-select {
-  // sass-lint:disable-all
-  -webkit-user-select: none;
-  -moz-user-select: -moz-none;
-  -ms-user-select: none;
   user-select: none;
-
-  -webkit-appearance: none;
-  -moz-appearance: radio-container;
   appearance: none;
-
-  // sass-lint:enable-all
 }
 
 @mixin o-form-element--dark {
