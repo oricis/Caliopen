@@ -6,12 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- A python package caliopen_pi to group all logic related to privacy index
+- A python package caliopen_pi to group all logic related to privacy index compute
 - Add route `GET /v2/contacts/{contact_id}/identities` to search & retreive identities from a contact.
 - New scene components related to Settings layout
 - New Importance Level range slider in tabs & alt navigation
 - In compose, add subject input field when recipient uses an email
 - Install postcss-loader and Autoprefixer (run by webpack)
+- Add user settings storage and API for management (GET and PATCH /settings)
 
 ### Changed
 - Rename <Account...> layout and related scenes to <User...>
@@ -20,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - use participant suggestions API for a new message
 - Handle 4xx errors when updating contact fails
 - Compose in multiple tabs messages, not only one
+- Refactore caliopen_main package for cleaner namespaces
 
 ### Fixed
 - Bad wording for message update failures

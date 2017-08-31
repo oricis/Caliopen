@@ -161,10 +161,12 @@ class ObjectStorable(ObjectJsonDictifiable):
 
     def get_db(self, **options):
         """Get a core object from database and put it in self._db attribute"""
-
-        param = {
-            self._pkey_name: getattr(self, self._pkey_name)
-        }
+        if self._pkey_name:
+            param = {
+                self._pkey_name: getattr(self, self._pkey_name)
+            }
+        else:
+            param = {}
         self._db = self._model_class.get(**param)
         if self._db is None:
             raise NotFound('%s #%s not found.' %
@@ -293,10 +295,13 @@ class ObjectUser(ObjectStorable):
 
     def get_db(self, **options):
         """Get an object belonging to an user and put it in self._db attrs"""
+        if self._pkey_name:
+            param = {
+                self._pkey_name: getattr(self, self._pkey_name)
+            }
+        else:
+            param = {}
 
-        param = {
-            self._pkey_name: getattr(self, self._pkey_name)
-        }
         self._db = self._model_class.get(user_id=self.user_id, **param)
         if self._db is None:
             raise NotFound('%s #%s not found for user %s' %
