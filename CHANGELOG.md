@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - New scene components related to Settings layout
 - New Importance Level range slider in tabs & alt navigation
 - In compose, add subject input field when recipient uses an email
+- Install postcss-loader and Autoprefixer (run by webpack)
 
 ### Changed
 - Rename <Account...> layout and related scenes to <User...>
