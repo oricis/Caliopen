@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - HTML body is sanitized before output to frontend.
 - MailMessages's subject decoded to always output an UTF-8 string.
 - Index operations return after index has been fully updated
+- API /v1/discussions returns messages ordered by last_messsage date_insert field.
 
 ### Changed
 - Rename <Account...> layout and related scenes to <User...>
