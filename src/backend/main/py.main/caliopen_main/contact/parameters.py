@@ -25,7 +25,7 @@ PHONE_TYPES = ['assistant', 'callback', 'car', 'company_main',
                'tty_tdd', 'work', 'work_fax', 'work_mobile', 'work_pager']
 # XXX : use configuration instead ?
 SOCIAL_TYPES = ['facebook', 'twitter', 'google', 'github', 'bitbucket',
-                'linkedin', 'ello', 'instagram', 'tumblr', 'skype']
+                'linkedin', 'ello', 'instagram', 'tumblr', 'skype', 'mastodon']
 
 KEY_CHOICES = ['rsa', 'gpg', 'ssh']
 
@@ -68,7 +68,7 @@ class Organization(NewOrganization):
 
     contact_id = UUIDType()
     deleted = BooleanType(default=False)
-    organization_id = UUIDType(required=True)
+    organization_id = UUIDType()
     user_id = UUIDType()
 
     class Options:
@@ -81,7 +81,7 @@ class NewPostalAddress(Model):
     """Input structure for a new postal address."""
 
     address_id = StringType()
-    city = StringType(required=True)
+    city = StringType()
     country = StringType()
     is_primary = BooleanType(default=False)
     label = StringType()
@@ -98,7 +98,7 @@ class PostalAddress(NewPostalAddress):
 
     """Existing postal address."""
 
-    address_id = UUIDType(required=True)
+    address_id = UUIDType()
     contact_id = UUIDType()
     user_id = UUIDType()
 
@@ -149,7 +149,7 @@ class IM(NewIM):
     """Existing IM."""
 
     contact_id = UUIDType()
-    im_id = UUIDType(required=True)
+    im_id = UUIDType()
     user_id = UUIDType()
 
     class Options:
@@ -162,7 +162,7 @@ class NewPhone(Model):
     """Input structure for a new phone."""
 
     is_primary = BooleanType(default=False)
-    number = PhoneNumberType(required=True)
+    number = PhoneNumberType()
     type = StringType(choices=PHONE_TYPES, default='other')
     uri = StringType()
 
@@ -175,7 +175,7 @@ class Phone(NewPhone):
     """Existing phone."""
 
     contact_id = UUIDType()
-    phone_id = UUIDType(required=True)
+    phone_id = UUIDType()
     user_id = UUIDType()
 
     class Options:
@@ -189,7 +189,7 @@ class NewSocialIdentity(Model):
 
     infos = DictType(StringType, default=lambda: {})
     name = StringType(required=True)
-    type = StringType(choices=SOCIAL_TYPES)
+    type = StringType(choices=SOCIAL_TYPES, required=True)
 
     class Options:
         serialize_when_none = False
@@ -200,7 +200,7 @@ class SocialIdentity(NewSocialIdentity):
     """Existing social identity."""
 
     contact_id = UUIDType()
-    social_id = UUIDType(required=True)
+    social_id = UUIDType()
     user_id = UUIDType()
 
     class Options:
@@ -229,8 +229,7 @@ class PublicKey(NewPublicKey):
     """Existing public key."""
 
     contact_id = UUIDType()
-    date_insert = DateTimeType(required=True,
-                               serialized_format=helpers.RFC3339Milli,
+    date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
     date_update = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
@@ -272,7 +271,7 @@ class Contact(NewContact):
 
     addresses = ListType(ModelType(PostalAddress), default=lambda: [])
     avatar = StringType(default='avatar.png')
-    contact_id = UUIDType(required=True)
+    contact_id = UUIDType()
     date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
     date_update = DateTimeType(serialized_format=helpers.RFC3339Milli,
@@ -287,7 +286,7 @@ class Contact(NewContact):
     pi = ModelType(PIParameter)
     # XXX not such default here
     title = StringType()
-    user_id = UUIDType(required=True)
+    user_id = UUIDType()
 
     class Options:
         serialize_when_none = False
@@ -297,7 +296,7 @@ class ShortContact(Model):
 
     """Input structure for contact in short form."""
 
-    contact_id = UUIDType(required=True)
+    contact_id = UUIDType()
     family_name = StringType()
     given_name = StringType()
     tags = ListType(ModelType(ResourceTag), default=lambda: [])
