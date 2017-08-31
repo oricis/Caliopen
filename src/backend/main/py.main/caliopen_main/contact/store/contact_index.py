@@ -192,7 +192,6 @@ class IndexedContact(BaseIndexDocument):
                       properties={
                           "date_insert": "date",
                           "importance_level": "integer",
-                          "label": "text",
                           "name": "keyword",
                           "tag_id": "keyword",
                           "type": "boolean"

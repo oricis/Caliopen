@@ -14,8 +14,8 @@ class ResourceTag(BaseUserType):
 
     _pkey = 'tag_id'
 
+    date_insert = columns.DateTime()
     importance_level = columns.Integer()
-    label = columns.Text()
     name = columns.Text()
     tag_id = columns.UUID()
     type = columns.Text()
@@ -26,7 +26,6 @@ class IndexedResourceTag(InnerObjectWrapper):
 
     date_insert = Date()
     importance_level = Integer()
-    label = Text()
     name = Keyword()
     tag_id = Keyword()
     type = Boolean()
