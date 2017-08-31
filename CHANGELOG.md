@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - use participant suggestions API for a new message
 - Handle 4xx errors when updating contact fails
 - Compose in multiple tabs messages, not only one
+- Cross-browser <select> element styles.
 
 ### Fixed
 - Bad wording for message update failures

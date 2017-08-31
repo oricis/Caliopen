@@ -5,12 +5,6 @@
 .m-address-form {
   margin-bottom: $co-margin;
 
-  &__select-wrapper {
-    @include o-form-element-select-wrapper;
-    @include o-form-element--dark;
-    width: 100%;
-  }
-
   &__select {
     @include o-form-element;
     @include o-form-element-select;
