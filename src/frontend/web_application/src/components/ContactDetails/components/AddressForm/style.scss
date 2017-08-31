@@ -7,6 +7,7 @@
 
   &__select {
     @include o-form-element;
+    @include o-form-element-select;
     @include o-form-element--dark;
   }
 
