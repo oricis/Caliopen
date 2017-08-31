@@ -18,6 +18,7 @@ class ContactProfileForm extends Component {
     isExpanded: false,
   };
 
+  // TODO: remove
   // handleBirthdayChanges = (date) => {
   //   this.setState(prevState => ({
   //     contact: {

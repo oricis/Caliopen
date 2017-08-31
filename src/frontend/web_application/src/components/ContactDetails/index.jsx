@@ -11,9 +11,7 @@ import OrgaDetails from './components/OrgaDetails';
 import PhoneDetails from './components/PhoneDetails';
 import AddressForm from './components/AddressForm';
 import EmailForm from './components/EmailForm';
-import IdentityForm from './components/IdentityForm';
 import ImForm from './components/ImForm';
-import OrgaForm from './components/OrgaForm';
 import PhoneForm from './components/PhoneForm';
 import FormButton from './components/FormButton';
 import FormSelector from './components/FormSelector';
@@ -30,6 +28,9 @@ class ContactDetails extends Component {
     remoteIdentities: PropTypes.arrayOf(PropTypes.shape({})),
     editMode: PropTypes.bool.isRequired,
     __: PropTypes.func.isRequired,
+    detailForm: PropTypes.node.isRequired,
+    orgaForms: PropTypes.node.isRequired,
+    identityForms: PropTypes.node.isRequired,
   };
   static defaultProps = {
     allowConnectRemoteEntity: false,
@@ -130,7 +131,7 @@ class ContactDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <ItemContent large className="m-contact-details__form">
+      <ItemContent large>
         <EmailForm
           email={email}
           onDelete={this.makeHandleDeleteContactDetail('emails')}
@@ -155,7 +156,7 @@ class ContactDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <ItemContent large className="m-contact-details__form">
+      <ItemContent large>
         <PhoneForm
           phone={phone}
           onDelete={this.makeHandleDeleteContactDetail('phones')}
@@ -180,7 +181,7 @@ class ContactDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <ItemContent large className="m-contact-details__form">
+      <ItemContent large>
         <ImForm
           im={im}
           onEdit={str => str} // FIXME: should be edit function
@@ -205,7 +206,7 @@ class ContactDetails extends Component {
     const { __ } = this.props;
 
     return (
-      <ItemContent large className="m-contact-details__form">
+      <ItemContent large>
         <AddressForm
           address={address}
           onEdit={str => str} // FIXME: should be edit function
@@ -226,21 +227,6 @@ class ContactDetails extends Component {
     );
   }
 
-  renderIdentityForm = (identity) => {
-    const { __ } = this.props;
-
-    return (
-      <ItemContent large className="m-contact-details__form">
-        <IdentityForm
-          identity={identity}
-          onEdit={str => str} // FIXME: should be edit function
-          onDelete={this.makeHandleDeleteContactDetail('identities')}
-          __={__}
-        />
-      </ItemContent>
-    );
-  }
-
   renderOrganization = (organization) => {
     const { __ } = this.props;
 
@@ -251,26 +237,11 @@ class ContactDetails extends Component {
     );
   }
 
-  renderOrganizationForm = (organization) => {
-    const { __ } = this.props;
-
-    return (
-      <ItemContent large className="m-contact-details__form">
-        <OrgaForm
-          organization={organization}
-          onEdit={str => str} // FIXME: should be edit function
-          onDelete={this.makeHandleDeleteContactDetail('organizations')}
-          __={__}
-        />
-      </ItemContent>
-    );
-  }
-
   renderBirthday = (birthday) => {
     const { __ } = this.props;
 
     return (
-      <ItemContent large className="m-contact-details__form">
+      <ItemContent large>
         <BirthdayDetails
           birthday={birthday}
           __={__}
@@ -388,24 +359,6 @@ class ContactDetails extends Component {
     );
   }
 
-  renderOrganizationsDetailsForm = () => {
-    const { contact, __ } = this.props;
-
-    const newOrganizationForm = <OrgaForm onSubmit={this.makeHandleAddContactDetail('organizations')} __={__} />;
-
-    const organisationsDetails = [
-      ...(contact.organizations ?
-        contact.organizations.map(detail => (this.renderOrganizationForm(detail))) : []),
-      ...([this.renderAddFormButton(newOrganizationForm)]),
-    ];
-
-    return (
-      <TextList>
-        {organisationsDetails.map((C, key) => <C.type {...C.props} key={key} />)}
-      </TextList>
-    );
-  }
-
   renderIdentitiesDetails = () => {
     const { contact } = this.props;
 
@@ -417,23 +370,6 @@ class ContactDetails extends Component {
     return (
       <TextList>
         {contactDetails.map((C, key) => <C.type {...C.props} key={key} />)}
-      </TextList>
-    );
-  }
-
-  renderIdentitiesDetailsForm = () => {
-    const { contact, __ } = this.props;
-    const newIdentityForm = <IdentityForm onSubmit={this.makeHandleAddContactDetail('identities')} __={__} />;
-
-    const identitiesDetails = [
-      ...(contact.identities ?
-        contact.identities.map(detail => (this.renderIdentityForm(detail))) : []),
-      ...([this.renderAddFormButton(newIdentityForm)]),
-    ];
-
-    return (
-      <TextList>
-        {identitiesDetails.map((C, key) => <C.type {...C.props} key={key} />)}
       </TextList>
     );
   }
@@ -459,6 +395,7 @@ class ContactDetails extends Component {
                 {this.renderFormSelector()}
               </div>
             }
+            {editMode && this.props.detailForm}
           </div>
         </div>
 
@@ -466,7 +403,7 @@ class ContactDetails extends Component {
           <Subtitle hr>{__('contact.contact_organizations')}</Subtitle>
           <div className="m-contact-details__list">
             {editMode ?
-              this.renderOrganizationsDetailsForm() :
+              this.props.orgaForms :
               this.renderOrganizationsDetails()
             }
           </div>
@@ -476,7 +413,7 @@ class ContactDetails extends Component {
           <Subtitle hr>{__('contact.contact_identities')}</Subtitle>
           <div className="m-contact-details__list">
             {editMode ?
-              this.renderIdentitiesDetailsForm() :
+              this.props.identityForms :
               this.renderIdentitiesDetails()
             }
           </div>

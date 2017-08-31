@@ -51,13 +51,15 @@ FormRow.defaultProps = {
 };
 
 const Form = ({ className, ...props }) => (
-  <form className={classnames('m-form-grid', className)} {...props} />
+  <props.tag className={classnames('m-form-grid', className)} {...props} />
 );
 
 Form.propTypes = {
+  tag: PropTypes.string,
   className: PropTypes.string,
 };
 Form.defaultProps = {
+  tag: 'form',
   className: undefined,
 };
 

@@ -21,17 +21,6 @@ class ContactProfile extends Component {
     className: undefined,
   };
 
-  state = {
-    editProfile: false,
-  };
-
-  toggleEditProfile = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      editProfile: !prevState.editProfile,
-    }));
-  }
-
   render() {
     const { contact, className, editMode, form } = this.props;
 
