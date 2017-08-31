@@ -7,6 +7,7 @@ class MessageList extends Component {
   static propTypes = {
     requestMessages: PropTypes.func.isRequired,
     requestDiscussion: PropTypes.func.isRequired,
+    invalidateDiscussion: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     messagesDidInvalidate: PropTypes.bool.isRequired,
@@ -29,8 +30,7 @@ class MessageList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // TODO: better way to manage invalidated resources & refetch
-    if (nextProps.messages.length === 0 || nextProps.messagesDidInvalidate) {
+    if (nextProps.messagesDidInvalidate) {
       this.props.requestMessages({ discussionId: nextProps.discussionId });
     }
   }
@@ -40,8 +40,11 @@ class MessageList extends Component {
   };
 
   handleDeleteMessage = ({ message }) => {
-    const { deleteMessage, requestMessages, removeTab, discussionId, currentTab } = this.props;
+    const {
+      deleteMessage, invalidateDiscussion, requestMessages, removeTab, discussionId, currentTab,
+    } = this.props;
     deleteMessage({ message })
+      .then(() => invalidateDiscussion({ discussionId }))
       .then(() => requestMessages({ discussionId }))
       .then(
         ({ payload: { data } }) => data.messages.length === 0 && removeTab(currentTab)
@@ -50,9 +53,11 @@ class MessageList extends Component {
 
   handleDelete = () => {
     const {
-      messages, deleteMessage, requestMessages, removeTab, discussionId, currentTab,
+      messages, deleteMessage, invalidateDiscussion, requestMessages, removeTab, discussionId,
+      currentTab,
     } = this.props;
     Promise.all(messages.map(message => deleteMessage({ message })))
+      .then(() => invalidateDiscussion({ discussionId }))
       .then(() => requestMessages({ discussionId }))
       .then(
         ({ payload: { data } }) => data.messages.length === 0 && removeTab(currentTab)

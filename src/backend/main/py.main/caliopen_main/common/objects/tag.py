@@ -19,7 +19,6 @@ class ResourceTag(ObjectJsonDictifiable):
     _attrs = {
         'date_insert': datetime.datetime,
         'importance_level': types.IntType,
-        'label': types.StringType,
         'name': types.StringType,
         'tag_id': uuid.UUID,
         'type': types.StringType,

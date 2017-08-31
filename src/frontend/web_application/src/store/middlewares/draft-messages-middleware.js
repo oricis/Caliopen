@@ -42,23 +42,8 @@ const getMessageUpToDate = async ({ store, messageId }) => {
   return store.getState().message.messagesById[messageId];
 };
 
-const createDraft = async ({ internalId, draft, discussionId, store }) => {
-  let normalizedDraft = draft;
-
-  if (discussionId) {
-    const {
-      user: { user },
-      discussion: {
-        discussionsById: {
-          [discussionId]: discussion,
-        },
-      },
-    } = store.getState();
-
-    normalizedDraft = normalizeDiscussionDraft({ draft, user, discussion });
-  }
-
-  const resultAction = await store.dispatch(createMessage({ message: normalizedDraft }));
+const createDraft = async ({ internalId, draft, store }) => {
+  const resultAction = await store.dispatch(createMessage({ message: draft }));
 
   if (resultAction.type === CREATE_MESSAGE_SUCCESS) {
     const { location } = resultAction.payload.data;
@@ -94,20 +79,20 @@ const updateDraft = async ({ draft, original, store }) => {
   throw new Error(`Uknkown type ${resultAction.type} in updateDraft`);
 };
 
-const createOrUpdateDraft = async ({ internalId, draft, discussionId, store, original }) => {
+const createOrUpdateDraft = async ({ internalId, draft, store, original }) => {
   if (draft.message_id) {
     return updateDraft({ draft, original, store });
   }
 
-  return createDraft({ internalId, draft, discussionId, store });
+  return createDraft({ internalId, draft, store });
 };
 
 let throttled;
 const createThrottle = ({ store, action, callback = message => message }) => throttle(() => {
   throttled = undefined;
-  const { draft, original, discussionId, internalId } = action.payload;
+  const { draft, original, internalId } = action.payload;
 
-  createOrUpdateDraft({ internalId, draft, discussionId, store, original })
+  createOrUpdateDraft({ internalId, draft, store, original })
     .then(message => callback(message));
 }, UPDATE_WAIT_TIME, { leading: false });
 
@@ -130,14 +115,27 @@ async function getNewDraft({ discussionId, store, messageToAnswer }) {
   await store.dispatch(requestLocalIdentities());
   const { localIdentities } = store.getState().localIdentity;
 
-  return {
-    ...(discussionId ? { discussion_id: discussionId } : {}),
+  let draft = {
     ...(messageToAnswer && messageToAnswer.subject ? { subject: messageToAnswer.subject } : {}),
     body: '',
-    participants: [],
     identities: getDefaultIdentities({ protocols: ['email'], identities: localIdentities })
       .map(localIdentityToIdentity),
   };
+
+  if (discussionId) {
+    const {
+      user: { user },
+      discussion: {
+        discussionsById: {
+          [discussionId]: discussion,
+        },
+      },
+    } = store.getState();
+
+    draft = normalizeDiscussionDraft({ draft, user, discussion });
+  }
+
+  return draft;
 }
 
 async function requestDraftHandler({ store, action }) {
@@ -196,8 +194,8 @@ const saveDraftHandler = ({ store, action }) => {
     return;
   }
 
-  const { internalId, draft, discussionId, original } = action.payload;
-  createOrUpdateDraft({ internalId, draft, discussionId, store, original });
+  const { internalId, draft, original } = action.payload;
+  createOrUpdateDraft({ internalId, draft, store, original });
 };
 
 const editDraftHandler = ({ store, action }) => {
@@ -213,13 +211,13 @@ const sendDraftHandler = async ({ store, action }) => {
     return;
   }
 
-  const { internalId, draft, discussionId, original } = action.payload;
+  const { internalId, draft, original } = action.payload;
   const getMessage = async () => {
     if (isEqual(draft, original)) {
       return draft;
     }
 
-    return createOrUpdateDraft({ internalId, draft, discussionId, store, original });
+    return createOrUpdateDraft({ internalId, draft, store, original });
   };
 
   const message = await getMessage();
