@@ -14,8 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add user settings storage and API for management (GET and PATCH /settings)
 - Frontend can post draftID
 - Messages have 2 bodies : plain + HTML.
-    - Only one body is returned to frontend.
-    - HTML body is sanitized before output to frontend.
+- Only one body is returned to frontend for Message.
+- HTML body is sanitized before output to frontend.
 - MailMessages's subject decoded to always output an UTF-8 string.
 - Index operations return after index has been fully updated
 
