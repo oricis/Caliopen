@@ -50,17 +50,15 @@ FormRow.defaultProps = {
   reverse: false,
 };
 
-const Form = ({ className, ...props }) => (
-  <props.tag className={classnames('m-form-grid', className)} {...props} />
+const FormGrid = ({ className, ...props }) => (
+  <div className={classnames('m-form-grid', className)} {...props} />
 );
 
-Form.propTypes = {
-  tag: PropTypes.string,
+FormGrid.propTypes = {
   className: PropTypes.string,
 };
-Form.defaultProps = {
-  tag: 'form',
+FormGrid.defaultProps = {
   className: undefined,
 };
 
-export default Form;
+export default FormGrid;
