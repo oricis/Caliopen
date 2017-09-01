@@ -54,7 +54,7 @@ class EmailForm extends PureComponent {
     }));
 
     return (
-      <FormGrid tag="div" onSubmit={this.handleSubmit} className="m-email-form" name="email_form">
+      <FormGrid className="m-email-form">
         <Fieldset>
           <FormRow>
             <FormColumn size="shrink">

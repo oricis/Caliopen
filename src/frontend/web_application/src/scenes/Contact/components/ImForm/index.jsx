@@ -46,7 +46,7 @@ class ImForm extends PureComponent {
     }));
 
     return (
-      <FormGrid onSubmit={this.handleSubmit} className="m-im-form" name="im_form">
+      <FormGrid className="m-im-form">
         <Fieldset>
           <FormRow>
             <FormColumn size="shrink">

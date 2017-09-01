@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+import { CountryDropdown as CountryDropdownBase, RegionDropdown as RegionDropdownBase } from 'react-country-region-selector';
 import { Field } from 'redux-form';
-import { withTranslator } from '@gandi/react-translate';
 import renderReduxField from '../../services/renderReduxField';
 import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
@@ -12,10 +11,9 @@ import './style.scss';
 const ADDRESS_TYPES = ['work', 'home', 'other'];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
+const CountryDropdown = renderReduxField(CountryDropdownBase);
+const RegionDropdown = renderReduxField(RegionDropdownBase);
 
-// TODO select country
-
-@withTranslator()
 class AddressForm extends PureComponent {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
@@ -50,7 +48,7 @@ class AddressForm extends PureComponent {
     }));
 
     return (
-      <FormGrid onSubmit={this.handleSubmit} className="m-address-form" name="address_form">
+      <FormGrid className="m-address-form">
         <Fieldset>
           <FormRow>
             <FormColumn>

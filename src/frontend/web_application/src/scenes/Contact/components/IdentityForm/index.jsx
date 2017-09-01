@@ -32,7 +32,7 @@ class IdentityForm extends PureComponent {
     }));
 
     return (
-      <FormGrid tag="div" className="m-identity-form" name="identity_form">
+      <FormGrid className="m-identity-form">
         <Fieldset>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}

@@ -16,6 +16,7 @@ import FormCollection from './components/FormCollection';
 import EmailForm from './components/EmailForm';
 import PhoneForm from './components/PhoneForm';
 import ImForm from './components/ImForm';
+import AddressForm from './components/AddressForm';
 import OrgaForm from './components/OrgaForm';
 import IdentityForm from './components/IdentityForm';
 import AddFormFieldForm from './components/AddFormFieldForm';
@@ -222,6 +223,7 @@ class Contact extends Component {
         <FormCollection component={(<EmailForm />)} propertyName="emails" hideAddIfEmpty />
         <FormCollection component={(<PhoneForm />)} propertyName="phones" hideAddIfEmpty />
         <FormCollection component={(<ImForm />)} propertyName="ims" hideAddIfEmpty />
+        <FormCollection component={(<AddressForm />)} propertyName="addresses" hideAddIfEmpty />
         <AddFormFieldForm form={form} />
       </div>
     );

@@ -25,7 +25,7 @@ class OrgaForm extends Component {
     const { __, errors, onDelete } = this.props;
 
     return (
-      <FormGrid tag="div" onSubmit={this.handleSubmit} className="m-orga-form" name="orga_form">
+      <FormGrid className="m-orga-form">
         <Fieldset>
           <FormRow>
             <FormColumn>

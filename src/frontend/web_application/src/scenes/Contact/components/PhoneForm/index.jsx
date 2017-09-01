@@ -44,12 +44,7 @@ class PhoneForm extends PureComponent {
     }));
 
     return (
-      <FormGrid
-        tag="div"
-        onSubmit={this.handleSubmit}
-        className="m-phone-form"
-        name="phone_form"
-      >
+      <FormGrid className="m-phone-form">
         <Fieldset>
           <FormRow>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
