@@ -20,6 +20,7 @@ const NavigationAlt = ({ currentApplication, applications, __ }) => (
               button
               expanded
               active={currentApplication === application}
+              data-toggle="left_off_canvas"
             >
               <Icon type={application.icon} /> {__(`header.menu.${application.name}`)}
             </Link>
@@ -36,17 +37,17 @@ const NavigationAlt = ({ currentApplication, applications, __ }) => (
     </VerticalMenu>
     <VerticalMenu className="l-nav-alt__menu">
       <VerticalMenuItem>
-        <Link to="/user/profile" button expanded>
+        <Link to="/user/profile" button expanded data-toggle="left_off_canvas">
           {__('header.menu.account')}
         </Link>
       </VerticalMenuItem>
       <VerticalMenuItem>
-        <Link to="/settings/identities" button expanded>
+        <Link to="/settings/identities" button expanded data-toggle="left_off_canvas">
           {__('header.menu.settings')}
         </Link>
       </VerticalMenuItem>
       <VerticalMenuItem>
-        <Link to="/auth/signout" button expanded>
+        <Link to="/auth/signout" button expanded data-toggle="left_off_canvas">
           {__('header.menu.signout')}
         </Link>
       </VerticalMenuItem>

@@ -41,7 +41,7 @@ class TabList extends Component {
     return (
       <ul className={className}>
         {tabs.map(tab => (
-          <li key={tab.pathname}><Tab tab={tab} onRemove={removeTab} last={isLast(tab)} /></li>
+          <li key={tab.pathname} data-toggle="left_off_canvas"><Tab tab={tab} onRemove={removeTab} last={isLast(tab)} /></li>
         ))}
       </ul>
     );
