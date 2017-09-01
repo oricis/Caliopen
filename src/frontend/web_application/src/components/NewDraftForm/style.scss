@@ -30,21 +30,21 @@
 
   &__type-icon { color: $co-color__fg__text; }
 
+  &__type-label { display: none; }
+
   &__author {
     @include flex-grid-column(shrink);
-    color: $co-color__fg__text--high;
+    color: $co-color__fg__text;
     font-weight: 600;
   }
+
+  &__avatar-col { flex: none; }
+
+  &__avatar { display: none; }
 
   &__date {
     @include flex-grid-column(shrink);
     margin-left: auto;
-  }
-
-  &__author {
-    margin-right: $co-component__spacing;
-    color: $co-color__fg__text;
-    font-weight: 600;
   }
 
   &__body {
@@ -74,20 +74,6 @@
     background: $co-color__fg__back--higher; // waiting for Button refacto
 
     &--editor { margin-left: auto; }
-  }
-
-  @include breakpoint(small) {
-    &__avatar-col { flex: none; }
-
-    &__avatar { display: none; }
-
-    &__type-label { display: none; }
-
-    &__bottom-bar { display: none; } // to be replace with responsive bottom bar
-  }
-
-  @include breakpoint(medium-small) {
-    &__bottom-bar { display: block; } // to be replace with responsive bottom bar
   }
 
   @include breakpoint(medium) {

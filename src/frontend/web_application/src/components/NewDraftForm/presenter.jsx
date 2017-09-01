@@ -158,17 +158,17 @@ class NewDraftForm extends Component {
           <BottomRow className="m-new-draft__bottom-bar">
             <div className="m-new-draft__bottom-actions">
               <div className="m-new-draft__bottom-action">
-                <Button shape="plain" onClick={this.handleSend} icon="send">
+                <Button shape="plain" onClick={this.handleSend} icon="send" responsive="icon-only">
                   {__('messages.compose.action.send')}
                 </Button>
               </div>
               <div className="m-new-draft__bottom-action">
-                <Button onClick={this.handleSave} icon="save">
+                <Button onClick={this.handleSave} icon="save" responsive="icon-only">
                   {__('messages.compose.action.save')}
                 </Button>
               </div>
               <div className="m-new-draft__bottom-action m-new-draft__bottom-action--editor">
-                <Button icon="editor" />
+                <Button icon="editor" responsive="icon-only" />
               </div>
             </div>
           </BottomRow>

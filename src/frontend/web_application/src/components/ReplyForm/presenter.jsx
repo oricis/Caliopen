@@ -135,22 +135,22 @@ class ReplyForm extends Component {
           <BottomRow className="m-reply__bottom-bar">
             <div className="m-reply__bottom-actions">
               <div className="m-reply__bottom-action">
-                <Button shape="plain" onClick={this.handleSend} icon="send">
+                <Button shape="plain" onClick={this.handleSend} icon="send" responsive="icon-only">
                   {__('messages.compose.action.send')}
                 </Button>
               </div>
               <div className="m-reply__bottom-action">
-                <Button onClick={this.handleSave} icon="save">
+                <Button onClick={this.handleSave} icon="save" responsive="icon-only">
                   {__('messages.compose.action.save')}
                 </Button>
               </div>
               <div className="m-reply__bottom-action">
-                <Button onClick={this.handleSave} icon="share-alt">
+                <Button onClick={this.handleSave} icon="share-alt" responsive="icon-only">
                   {__('messages.compose.action.copy')}
                 </Button>
               </div>
               <div className="m-reply__bottom-action m-reply__bottom-action--editor">
-                <Button icon="editor" />
+                <Button icon="editor" responsive="icon-only" />
               </div>
             </div>
           </BottomRow>
