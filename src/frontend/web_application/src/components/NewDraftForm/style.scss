@@ -24,17 +24,9 @@
     border-left: 1px solid $co-color__bg__back;
   }
 
-  &__type {
-    @include flex-grid-size(shrink);
-  }
-
+  &__type { @include flex-grid-size(shrink); }
   &__type-icon { color: $co-color__fg__text; }
-
-  &__author {
-    @include flex-grid-column(shrink);
-    color: $co-color__fg__text--high;
-    font-weight: 600;
-  }
+  &__type-label { display: none; }
 
   &__date {
     @include flex-grid-column(shrink);
@@ -42,10 +34,12 @@
   }
 
   &__author {
-    margin-right: $co-component__spacing;
+    @include flex-grid-column(shrink);
     color: $co-color__fg__text;
     font-weight: 600;
   }
+
+  &__avatar-col { display: none; }
 
   &__body {
     border-top: 1px solid $co-color__bg__back;
@@ -60,46 +54,30 @@
   }
 
   &__bottom-bar {
-    padding: 2 * $co-component__spacing $co-component__spacing;
-    background: $co-color__fg__back--high;
-  }
-
-  &__bottom-actions {
     @include flex-grid-row($size: expand);
+    padding: 2 * $co-component__spacing $co-component__spacing;
+    background-color: $co-color__fg__back--high;
   }
 
   &__bottom-action {
     @include flex-grid-size(shrink);
-    margin-left: $co-component__spacing;
-    background: $co-color__fg__back--higher; // waiting for Button refacto
+    margin-right: $co-component__spacing;
+    background-color: $co-color__fg__back--higher;
 
-    &--editor { margin-left: auto; }
-  }
-
-  @include breakpoint(small) {
-    &__avatar-col { flex: none; }
-
-    &__avatar { display: none; }
-
-    &__type-label { display: none; }
-
-    &__bottom-bar { display: none; } // to be replace with responsive bottom bar
-  }
-
-  @include breakpoint(medium-small) {
-    &__bottom-bar { display: block; } // to be replace with responsive bottom bar
+    &--editor {
+      margin-right: 0;
+      margin-left: auto;
+    }
   }
 
   @include breakpoint(medium) {
     &__avatar-col {
       @include flex-grid-column(shrink);
+      display: flex;
       padding-top: $co-component__spacing;
     }
 
-    &__avatar {
-      @include m-avatar--size(medium);
-      display: block;
-    }
+    &__avatar { @include m-avatar--size(medium) }
 
     &__type-label { display: inline; }
   }
