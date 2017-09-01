@@ -39,8 +39,7 @@
     font-weight: 600;
   }
 
-  &__avatar-col { flex: none; }
-  &__avatar { display: none; }
+  &__avatar-col { display: none; }
 
   &__body {
     border-top: 1px solid $co-color__bg__back;
@@ -74,13 +73,11 @@
   @include breakpoint(medium) {
     &__avatar-col {
       @include flex-grid-column(shrink);
+      display: flex;
       padding-top: $co-component__spacing;
     }
 
-    &__avatar {
-      @include m-avatar--size(medium);
-      display: block;
-    }
+    &__avatar { @include m-avatar--size(medium) }
 
     &__type-label { display: inline; }
   }

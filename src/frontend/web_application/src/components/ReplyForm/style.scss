@@ -31,8 +31,7 @@
   &__type-icon { color: $co-color__fg__text; }
   &__type-label { display: none; }
 
-  &__avatar-col { flex: none; }
-  &__avatar { display: none; }
+  &__avatar-col { display: none; }
 
   &__date {
     @include flex-grid-column(shrink);
@@ -73,13 +72,11 @@
   @include breakpoint(medium) {
     &__avatar-col {
       @include flex-grid-column(shrink);
+      display: flex;
       padding-top: $co-component__spacing;
     }
 
-    &__avatar {
-      @include m-avatar--size(medium);
-      display: block;
-    }
+    &__avatar { @include m-avatar--size(medium) }
 
     &__type-label { display: inline; }
   }
