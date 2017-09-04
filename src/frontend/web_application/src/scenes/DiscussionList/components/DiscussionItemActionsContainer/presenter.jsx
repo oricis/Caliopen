@@ -57,7 +57,11 @@ class DiscussionItemActionsContainer extends Component {
 
     return (
       <div
-        className={classnames('m-discussion-item-actions-container__actions', { 'm-discussion-item-actions-container--active__actions': this.state.isActive })}
+        className={classnames(
+          'm-discussion-item-actions-container__actions',
+          { 'm-discussion-item-actions-container--active__actions': this.state.isActive },
+          'show-for-medium'
+        )}
       >
         <Button shape="plain" className="m-discussion-item-actions-container__action">{__('Delete')}</Button>
         <Button shape="plain" className="m-discussion-item-actions-container__action">{__('Reply')}</Button>
