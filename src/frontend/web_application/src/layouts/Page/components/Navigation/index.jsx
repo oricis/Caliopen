@@ -25,7 +25,7 @@ class Navigation extends PureComponent {
     return (
       <Navbar className="l-navigation">
         <StickyNavbar
-          className="l-navigation__wrapper hide-for-small-only"
+          className="l-navigation__wrapper show-for-medium"
           stickyClassName="l-navigation__wrapper--sticky"
         >
           <ApplicationSwitcher className="l-navigation__application-switcher" />
