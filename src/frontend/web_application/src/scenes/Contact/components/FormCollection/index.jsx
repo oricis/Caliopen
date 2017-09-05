@@ -4,6 +4,8 @@ import { FieldArray, FormSection } from 'redux-form';
 import { withTranslator } from '@gandi/react-translate';
 import Button from '../../../../components/Button';
 import TextList, { ItemContent } from '../../../../components/TextList';
+import { FormGrid, FormRow, FormColumn } from '../../../../components/form';
+
 
 @withTranslator()
 class FormCollection extends PureComponent {
@@ -11,14 +13,14 @@ class FormCollection extends PureComponent {
     __: PropTypes.func.isRequired,
     propertyName: PropTypes.string.isRequired,
     component: PropTypes.element.isRequired,
-    hideAddIfEmpty: PropTypes.bool,
+    showAdd: PropTypes.bool,
   };
   static defaultProps = {
-    hideAddIfEmpty: false,
+    showAdd: true,
   };
 
   renderForms = ({ fields }) => {
-    const { component, hideAddIfEmpty, __ } = this.props;
+    const { component, showAdd, __ } = this.props;
 
     return (
       <TextList>
@@ -29,11 +31,17 @@ class FormCollection extends PureComponent {
             </FormSection>
           </ItemContent>
         ))}
-        {(!hideAddIfEmpty || fields.length !== 0) && (
+        {showAdd && (
           <ItemContent large>
-            <Button icon="plus" shape="plain" onClick={() => fields.push({ })}>
-              {__('contact.action.add_new_field')}
-            </Button>
+            <FormGrid>
+              <FormRow>
+                <FormColumn>
+                  <Button icon="plus" shape="plain" onClick={() => fields.push({ })}>
+                    {__('contact.action.add_new_field')}
+                  </Button>
+                </FormColumn>
+              </FormRow>
+            </FormGrid>
           </ItemContent>
         )}
       </TextList>

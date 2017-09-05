@@ -9,7 +9,7 @@ import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, Se
 
 import './style.scss';
 
-const IDENTITY_TYPES = ['twitter', 'facebook', 'other'];
+const IDENTITY_TYPES = ['twitter', 'facebook'];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 

@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm } from 'redux-form';
+import { reduxForm, formValues } from 'redux-form';
 import { withTranslator } from '@gandi/react-translate';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
 import { requestContact, updateContact } from '../../store/modules/contact';
@@ -25,9 +25,8 @@ const mapStateToProps = createSelector(
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestContact,
-  onSubmit: (values, disp, props) => {
-    disp(updateContact({ contact: values, original: props.initialValues }));
-  },
+  onSubmit: (values, disp, props) =>
+    updateContact({ contact: values, original: props.initialValues }),
   updateContact,
   notifyError: message => createNotification({
     message,
@@ -39,6 +38,8 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     destroyOnUnmount: false,
+    enableReinitialize: true,
   }),
+  formValues({ birthday: 'info.birthday' }),
   withTranslator()
 )(Presenter);

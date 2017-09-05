@@ -9,48 +9,20 @@ import IdentityDetails from './components/IdentityDetails';
 import ImDetails from './components/ImDetails';
 import OrgaDetails from './components/OrgaDetails';
 import PhoneDetails from './components/PhoneDetails';
-import AddressForm from './components/AddressForm';
-import EmailForm from './components/EmailForm';
-import ImForm from './components/ImForm';
-import PhoneForm from './components/PhoneForm';
-import FormButton from './components/FormButton';
-import FormSelector from './components/FormSelector';
-
 import './style.scss';
 
 class ContactDetails extends Component {
   static propTypes = {
     contact: PropTypes.shape({}).isRequired,
-    onUpdateContact: PropTypes.func,
-    allowConnectRemoteEntity: PropTypes.bool,
-    onConnectRemoteIdentity: PropTypes.func,
-    onDisconnectRemoteIdentity: PropTypes.func,
-    remoteIdentities: PropTypes.arrayOf(PropTypes.shape({})),
     editMode: PropTypes.bool.isRequired,
-    __: PropTypes.func.isRequired,
-    detailForm: PropTypes.node.isRequired,
+    detailForms: PropTypes.node.isRequired,
     orgaForms: PropTypes.node.isRequired,
     identityForms: PropTypes.node.isRequired,
-  };
-  static defaultProps = {
-    allowConnectRemoteEntity: false,
-    onUpdateContact: () => {},
-    onConnectRemoteIdentity: () => {},
-    onDisconnectRemoteIdentity: () => {},
-    remoteIdentities: [],
+    __: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
+  componentWillMount() {
     this.initDetailsTranslations();
-  }
-
-  getRemoteIdentity = (identityType, identityId) => {
-    this.props.remoteIdentities
-      .find(
-        remoteIdentity => remoteIdentity.identity_type === identityType
-          && remoteIdentity.identity_id === identityId
-      );
   }
 
   initDetailsTranslations() {
@@ -70,74 +42,12 @@ class ContactDetails extends Component {
     };
   }
 
-  makeHandleAddContactDetail = (type) => {
-    const { onUpdateContact, contact } = this.props;
-
-    return ({ contactDetail }) => onUpdateContact({
-      contact: {
-        ...contact,
-        [type]: [
-          ...(contact[type] ? contact[type] : []),
-          contactDetail,
-        ],
-      },
-      original: contact,
-    });
-  }
-
-  // TODO: makeHandleEditContactDetail()
-
-
-  makeHandleDeleteContactDetail = (type) => {
-    const { onUpdateContact, contact } = this.props;
-
-    return ({ contactDetail }) => onUpdateContact({
-      contact: {
-        ...contact,
-        [type]: contact[type].filter(entity => entity !== contactDetail),
-      },
-      original: contact,
-    });
-  }
-
   renderEmail = (email) => {
-    const {
-      __,
-      allowConnectRemoteEntity,
-      onConnectRemoteIdentity,
-      onDisconnectRemoteIdentity,
-    } = this.props;
-
-    const remoteIdentity = allowConnectRemoteEntity ?
-      this.getRemoteIdentity('email', email.email_id) :
-      undefined;
-
-    return (
-      <ItemContent large>
-        <EmailDetails
-          email={email}
-          allowConnectRemoteEntity={allowConnectRemoteEntity}
-          remoteIdentity={remoteIdentity}
-          onDelete={this.makeHandleDeleteContactDetail('emails')}
-          onConnectRemoteIdentity={onConnectRemoteIdentity}
-          onDisconnectRemoteIdentity={onDisconnectRemoteIdentity}
-          __={__}
-        />
-      </ItemContent>
-    );
-  }
-
-  renderEmailForm = (email) => {
     const { __ } = this.props;
 
     return (
       <ItemContent large>
-        <EmailForm
-          email={email}
-          onDelete={this.makeHandleDeleteContactDetail('emails')}
-          onEdit={str => str} // FIXME: should be edit function
-          __={__}
-        />
+        <EmailDetails email={email} __={__} />
       </ItemContent>
     );
   }
@@ -152,21 +62,6 @@ class ContactDetails extends Component {
     );
   }
 
-  renderPhoneForm = (phone) => {
-    const { __ } = this.props;
-
-    return (
-      <ItemContent large>
-        <PhoneForm
-          phone={phone}
-          onDelete={this.makeHandleDeleteContactDetail('phones')}
-          onEdit={str => str} // FIXME: should be edit function
-          __={__}
-        />
-      </ItemContent>
-    );
-  }
-
   renderIm = (im) => {
     const { __ } = this.props;
 
@@ -177,42 +72,12 @@ class ContactDetails extends Component {
     );
   }
 
-  renderImForm = (im) => {
-    const { __ } = this.props;
-
-    return (
-      <ItemContent large>
-        <ImForm
-          im={im}
-          onEdit={str => str} // FIXME: should be edit function
-          onDelete={this.makeHandleDeleteContactDetail('ims')}
-          __={__}
-        />
-      </ItemContent>
-    );
-  }
-
   renderAddress = (address) => {
     const { __ } = this.props;
 
     return (
       <ItemContent large>
         <AddressDetails address={address} __={__} />
-      </ItemContent>
-    );
-  }
-
-  renderAddressForm = (address) => {
-    const { __ } = this.props;
-
-    return (
-      <ItemContent large>
-        <AddressForm
-          address={address}
-          onEdit={str => str} // FIXME: should be edit function
-          onDelete={this.makeHandleDeleteContactDetail('addresses')}
-          __={__}
-        />
       </ItemContent>
     );
   }
@@ -270,80 +135,6 @@ class ContactDetails extends Component {
     );
   }
 
-  renderFormSelector = () => {
-    const { __, contact } = this.props;
-
-    const emailOption = {
-      name: __('contact.form-selector.email_form.label'),
-      obj: (<EmailForm onSubmit={this.makeHandleAddContactDetail('emails')} __={__} />),
-    };
-
-    const phoneOption = {
-      name: __('contact.form-selector.phone_form.label'),
-      obj: (<PhoneForm onSubmit={this.makeHandleAddContactDetail('phones')} __={__} />),
-    };
-
-    const imOption = {
-      name: __('contact.form-selector.im_form.label'),
-      obj: (<ImForm onSubmit={this.makeHandleAddContactDetail('ims')} __={__} />),
-    };
-
-    const addressOption = {
-      name: __('contact.form-selector.address_form.label'),
-      obj: (<AddressForm onSubmit={this.makeHandleAddContactDetail('addresses')} __={__} />),
-    };
-
-    const formsOptions = [
-      { name: ' - ', obj: null },
-      !contact.emails ? emailOption : null,
-      !contact.phones ? phoneOption : null,
-      !contact.ims ? imOption : null,
-      !contact.addresses ? addressOption : null,
-    ].filter(option => option !== null); // only return new forms for empty contact's attributes
-
-    return (
-      <FormSelector __={__} formsOptions={formsOptions} />
-    );
-  }
-
-  renderAddFormButton = (form) => {
-    const { __ } = this.props;
-
-    return (
-      <ItemContent large>
-        <FormButton __={__}>{form}</FormButton>
-      </ItemContent>
-    );
-  }
-
-  renderContactDetailsForm = () => {
-    const { contact, __ } = this.props;
-
-    const newEmailForm = <EmailForm onSubmit={this.makeHandleAddContactDetail('emails')} __={__} />;
-    const newPhoneForm = <PhoneForm onSubmit={this.makeHandleAddContactDetail('phones')} __={__} />;
-    const newImForm = <ImForm onSubmit={this.makeHandleAddContactDetail('ims')} __={__} />;
-    const newAddressForm = <AddressForm onSubmit={this.makeHandleAddContactDetail('addresses')} __={__} />;
-
-    const emails = contact.emails ?
-      [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
-    const contactDetails = [
-      ...emails.map(detail => this.renderEmailForm(detail)),
-      ...(contact.emails ? [this.renderAddFormButton(newEmailForm)] : []),
-      ...(contact.phones ? contact.phones.map(detail => (this.renderPhoneForm(detail))) : []),
-      ...(contact.phones ? [this.renderAddFormButton(newPhoneForm)] : []),
-      ...(contact.ims ? contact.ims.map(detail => this.renderImForm(detail)) : []),
-      ...(contact.ims ? [this.renderAddFormButton(newImForm)] : []),
-      ...(contact.addresses ? contact.addresses.map(detail => this.renderAddressForm(detail)) : []),
-      ...(contact.addresses ? [this.renderAddFormButton(newAddressForm)] : []),
-    ];
-
-    return (
-      <TextList>
-        {contactDetails.map((C, key) => <C.type {...C.props} key={key} />)}
-      </TextList>
-    );
-  }
-
   renderOrganizationsDetails = () => {
     const { contact } = this.props;
 
@@ -375,7 +166,7 @@ class ContactDetails extends Component {
   }
 
   render() {
-    const { __, contact, editMode } = this.props;
+    const { __, editMode } = this.props;
 
     return (
       <div className="m-contact-details">
@@ -385,17 +176,9 @@ class ContactDetails extends Component {
           </Subtitle>
           <div className="m-contact-details__list">
             {editMode ?
-              this.renderContactDetailsForm() :
+              this.props.detailForms :
               this.renderContactDetails()
             }
-            {editMode &&
-              (!contact.emails || !contact.phones || !contact.ims || !contact.addresses) &&
-              // if at least one contact's attribute is empty
-              <div className="m-contact-details__new-form">
-                {this.renderFormSelector()}
-              </div>
-            }
-            {editMode && this.props.detailForm}
           </div>
         </div>
 

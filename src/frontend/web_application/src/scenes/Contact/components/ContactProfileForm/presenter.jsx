@@ -4,7 +4,6 @@ import { Field } from 'redux-form';
 import renderReduxField from '../../services/renderReduxField';
 import Button from '../../../../components/Button';
 import { TextFieldGroup as TextFieldGroupBase } from '../../../../components/form';
-// import { DatePickerGroup, TextFieldGroup } from '../../../form';
 import './style.scss';
 
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
@@ -17,19 +16,6 @@ class ContactProfileForm extends Component {
   state = {
     isExpanded: false,
   };
-
-  // TODO: remove
-  // handleBirthdayChanges = (date) => {
-  //   this.setState(prevState => ({
-  //     contact: {
-  //       ...prevState.contact,
-  //       infos: {
-  //         ...prevState.contact.infos,
-  //         birthday: date.format('YYYY-MM-DD'),
-  //       },
-  //     },
-  //   }));
-  // }
 
   toggleExpandForm = () => {
     this.setState(prevState => ({
@@ -113,25 +99,6 @@ class ContactProfileForm extends Component {
             />
           </div>
         }
-
-        {
-          // TODO:
-          // This should be displayed in ContactDetails
-          // prevent selecting dates after today
-          // see https://github.com/Hacker0x01/react-datepicker
-        }
-        {/* <DatePickerGroup
-          id="contact-form-birthday"
-          className="m-contact-profile-form__birthday"
-          inputClassName="m-contact-profile-form__birthday-input"
-          label={__('contact_profile.form.birthday.label')}
-          onDateChange={this.handleBirthdayChanges}
-          showMonthDropdown
-          showYearDropdown
-          dropdownMode="select"
-          selected={this.state.contact.infos.birthday ?
-            this.state.contact.infos.birthday : null}
-        /> */}
       </div>
     );
   }

@@ -17,6 +17,8 @@ import EmailForm from './components/EmailForm';
 import PhoneForm from './components/PhoneForm';
 import ImForm from './components/ImForm';
 import AddressForm from './components/AddressForm';
+// FIXME: birthday deactivated due to redux-form bug cf. AddFormFieldForm
+// import BirthdayForm from './components/BirthdayForm';
 import OrgaForm from './components/OrgaForm';
 import IdentityForm from './components/IdentityForm';
 import AddFormFieldForm from './components/AddFormFieldForm';
@@ -42,12 +44,14 @@ class Contact extends Component {
     contact: PropTypes.shape({}),
     isFetching: PropTypes.bool,
     form: PropTypes.string.isRequired,
+    // birthday: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
   static defaultProps = {
     isFetching: false,
     removeContact: noop,
     contact: undefined,
+    birthday: undefined,
   };
 
   constructor(props) {
@@ -109,8 +113,11 @@ class Contact extends Component {
   }
 
   handleSubmit = (ev) => {
-    this.props.handleSubmit(ev);
-    this.toggleEditMode();
+    const { handleSubmit, contactId, requestContact } = this.props;
+
+    handleSubmit(ev)
+      .then(() => this.toggleEditMode())
+      .then(() => requestContact({ contactId }));
   }
 
   renderTagsModal = () => {
@@ -217,13 +224,15 @@ class Contact extends Component {
 
   renderDetailForms() {
     const { form } = this.props;
+    // const hasBirthday = this.props.birthday !== undefined;
 
     return (
       <div>
-        <FormCollection component={(<EmailForm />)} propertyName="emails" hideAddIfEmpty />
-        <FormCollection component={(<PhoneForm />)} propertyName="phones" hideAddIfEmpty />
-        <FormCollection component={(<ImForm />)} propertyName="ims" hideAddIfEmpty />
-        <FormCollection component={(<AddressForm />)} propertyName="addresses" hideAddIfEmpty />
+        <FormCollection component={(<EmailForm />)} propertyName="emails" showAdd={false} />
+        <FormCollection component={(<PhoneForm />)} propertyName="phones" showAdd={false} />
+        <FormCollection component={(<ImForm />)} propertyName="ims" showAdd={false} />
+        <FormCollection component={(<AddressForm />)} propertyName="addresses" showAdd={false} />
+        {/* {hasBirthday && (<BirthdayForm form={form} />)} */}
         <AddFormFieldForm form={form} />
       </div>
     );
@@ -259,7 +268,7 @@ class Contact extends Component {
               <ContactDetails
                 contact={contact}
                 editMode={this.state.editMode}
-                detailForm={this.renderDetailForms()}
+                detailForms={this.renderDetailForms()}
                 orgaForms={(<FormCollection component={(<OrgaForm />)} propertyName="organizations" />)}
                 identityForms={(<FormCollection component={(<IdentityForm />)} propertyName="identities" />)}
                 __={__}
