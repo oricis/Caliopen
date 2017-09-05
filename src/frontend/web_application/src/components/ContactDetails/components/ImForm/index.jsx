@@ -7,32 +7,57 @@ import './style.scss';
 
 const IM_TYPES = ['work', 'home', 'other', 'netmeeting'];
 
-class EmailForm extends Component {
+const generateStateFromProps = (props, prevState) => {
+  const im = props.im || {};
+
+  return {
+    contactDetail: {
+      ...prevState.contactDetail,
+      ...im,
+    },
+  };
+};
+
+class ImForm extends Component {
   static propTypes = {
+    im: PropTypes.shape({}),
     errors: PropTypes.arrayOf(PropTypes.string),
-    onSubmit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
+    onSubmit: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
     errors: [],
+    im: null,
+    onDelete: () => {},
+    onEdit: () => {},
+    onSubmit: () => {},
   };
 
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSwitchChange = this.handleSwitchChange.bind(this);
-    this.state = {
-      contactDetail: {
-        address: '',
-        type: IM_TYPES[0],
-      },
-    };
     this.initTranslations();
+  }
+
+  state = {
+    contactDetail: {
+      address: '',
+      type: IM_TYPES[0],
+    },
+  };
+
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(prevState => generateStateFromProps(nextProps, prevState));
   }
 
   initTranslations() {
     const { __ } = this.props;
+
     this.addressTypes = {
       work: __('contact.im_type.work'),
       home: __('contact.im_type.home'),
@@ -41,13 +66,24 @@ class EmailForm extends Component {
     };
   }
 
-  handleSubmit(ev) {
+  handleSubmit = (ev) => {
     ev.preventDefault();
     const { contactDetail } = this.state;
     this.props.onSubmit({ contactDetail });
   }
 
-  handleInputChange(event) {
+  handleDelete = () => {
+    const { onDelete, im } = this.props;
+    onDelete({ contactDetail: im });
+  }
+
+  handleEdit = (ev) => {
+    ev.preventDefault();
+    const { contactDetail } = this.state;
+    this.props.onEdit({ contactDetail });
+  }
+
+  handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
       contactDetail: {
@@ -57,7 +93,7 @@ class EmailForm extends Component {
     }));
   }
 
-  handleSwitchChange(event) {
+  handleSwitchChange = (event) => {
     const { name, checked } = event.target;
     this.setState(prevState => ({
       contactDetail: {
@@ -68,7 +104,7 @@ class EmailForm extends Component {
   }
 
   render() {
-    const { __, errors = [] } = this.props;
+    const { __, errors = [], im } = this.props;
     const addressTypeOptions = IM_TYPES.map(value => ({
       value,
       label: this.addressTypes[value],
@@ -77,13 +113,25 @@ class EmailForm extends Component {
     return (
       <FormGrid onSubmit={this.handleSubmit} className="m-im-form" name="im_form">
         <Fieldset>
-          <Legend>
-            <Icon className="m-im-form__icon" type="comment" />
-            {__('contact.im_form.legend')}
-          </Legend>
           <FormRow>
+            <FormColumn size="shrink">
+              <Legend>
+                <Icon type="comment" rightSpaced />
+                <span className="m-im-form__legend">{__('contact.im_form.legend')}</span>
+              </Legend>
+            </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="medium">
+            <FormColumn size="shrink" bottomSpace>
+              <SelectFieldGroup
+                name="type"
+                value={this.state.contactDetail.type}
+                onChange={this.handleInputChange}
+                label={__('contact.im_form.type.label')}
+                showLabelforSr
+                options={addressTypeOptions}
+              />
+            </FormColumn>
+            <FormColumn size="medium" fluid bottomSpace>
               <TextFieldGroup
                 name="address"
                 type="email"
@@ -94,20 +142,14 @@ class EmailForm extends Component {
                 required
               />
             </FormColumn>
-            <FormColumn size="shrink">
-              <SelectFieldGroup
-                name="type"
-                value={this.state.contactDetail.type}
-                onChange={this.handleInputChange}
-                label={__('contact.im_form.type.label')}
-                showLabelforSr
-                options={addressTypeOptions}
-              />
-            </FormColumn>
-            <FormColumn size="shrink" className="m-im-form__action">
-              <Button type="submit" display="expanded" shape="plain" icon="plus">
-                {__('contact.action.add_contact_detail')}
-              </Button>
+            <FormColumn className="m-im-form__col-button">
+              {!im ?
+                <Button type="submit" className="m-im-form__button" shape="plain" icon="plus">
+                  {__('contact.action.add_contact_detail')}
+                </Button>
+              :
+                <Button color="alert" icon="remove" onClick={this.handleDelete} />
+              }
             </FormColumn>
           </FormRow>
         </Fieldset>
@@ -116,4 +158,4 @@ class EmailForm extends Component {
   }
 }
 
-export default EmailForm;
+export default ImForm;

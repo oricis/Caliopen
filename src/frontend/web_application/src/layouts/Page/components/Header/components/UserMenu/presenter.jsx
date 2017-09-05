@@ -45,6 +45,7 @@ class Presenter extends Component {
         <DropdownMenu
           id="co-user-menu"
           position="bottom"
+          hasTriangle
           closeOnClick
           onToggle={this.handleDropdownToggle}
         >

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { v1 as uuidV1 } from 'uuid';
 import ManageTags from './ManageTags';
 import Spinner from '../../components/Spinner';
 import ContactDetails from '../../components/ContactDetails';
@@ -7,9 +8,14 @@ import ContactProfile from '../../components/ContactProfile';
 import Modal from '../../components/Modal';
 import MenuBar from '../../components/MenuBar';
 import Button from '../../components/Button';
+import TextBlock from '../../components/TextBlock';
+import DropdownMenu, { withDropdownControl } from '../../components/DropdownMenu';
+import VerticalMenu, { VerticalMenuItem } from '../../components/VerticalMenu';
 import { UPDATE_CONTACT_SUCCESS } from '../../store/modules/contact';
-
 import './style.scss';
+
+// const FAKE_TAGS = ['Caliopen', 'Gandi', 'Macarons'];
+const DropdownControl = withDropdownControl(Button);
 
 const noop = str => str;
 
@@ -31,8 +37,14 @@ class Contact extends Component {
     contact: undefined,
   };
 
+  constructor(props) {
+    super(props);
+    this.dropdownId = uuidV1();
+  }
+
   state = {
-    isTagModalOpen: false,
+    isTagsModalOpen: false,
+    editMode: false,
   };
 
   componentDidMount() {
@@ -58,15 +70,28 @@ class Contact extends Component {
     this.props.removeContact({ contact });
   }
 
-  handleClickTags = () => {
-    this.setState({ isTagModalOpen: true });
+  openTagsModal = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isTagsModalOpen: true,
+    }));
   }
 
-  handleCloseTagsModal = () => {
-    this.setState({ isTagModalOpen: false });
+  closeTagsModal = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isTagsModalOpen: false,
+    }));
   }
 
-  renderTagsModal() {
+  toggleEditMode = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      editMode: !prevState.editMode,
+    }));
+  }
+
+  renderTagsModal = () => {
     const { contact, updateContact, __ } = this.props;
     const count = contact.tags ? contact.tags.length : 0;
     const title = (
@@ -78,13 +103,93 @@ class Contact extends Component {
 
     return (
       <Modal
-        isOpen={this.state.isTagModalOpen}
+        isOpen={this.state.isTagsModalOpen}
         contentLabel={__('tags.header.title')}
         title={title}
-        onClose={this.handleCloseTagsModal}
+        onClose={this.closeTagsModal}
       >
         <ManageTags contact={contact} onContactChange={updateContact} />
       </Modal>
+    );
+  }
+
+  renderEditBar = () => {
+    const { __ } = this.props;
+
+    return (
+      <div className="s-contact__edit-bar">
+        <Button
+          onClick={this.toggleEditMode}
+          responsive="icon-only"
+          icon="remove"
+          className="s-contact__action"
+        >{__('contact.action.cancel_edit')}</Button>
+        <TextBlock className="s-contact__bar-title">
+          {__('contact.edit_contact.title')}
+        </TextBlock>
+        <Button
+          onClick={this.toggleEditMode} // FIXME: this should validate contact change
+          responsive="icon-only"
+          icon="check"
+          className="s-contact__action"
+        >{__('contact.action.validate_edit')}</Button>
+      </div>
+    );
+  }
+
+  renderActionBar = () => {
+    const { __, contact } = this.props;
+
+    return (
+      <div className="s-contact__action-bar">
+        <TextBlock className="s-contact__bar-title">
+          {contact.title}
+        </TextBlock>
+        <DropdownControl
+          toggle={this.dropdownId}
+          className="s-contact__actions-switcher float-right"
+          icon="ellipsis-v"
+        />
+
+        <DropdownMenu
+          id={this.dropdownId}
+          className="s-contact__actions-menu"
+          position="bottom"
+          closeOnClick
+        >
+          <VerticalMenu>
+            <VerticalMenuItem>
+              <Button
+                onClick={this.toggleEditMode}
+                className="s-contact__action"
+                display="expanded"
+              >{__('contact.action.edit_contact')}</Button>
+            </VerticalMenuItem>
+            <VerticalMenuItem>
+              <Button
+                onClick={this.openTagsModal}
+                className="s-contact__action"
+                display="expanded"
+              >{__('contact.action.edit_tags')}</Button>
+              { this.renderTagsModal() }
+            </VerticalMenuItem>
+            <VerticalMenuItem>
+              <Button
+                onClick={this.openTagsModal}
+                className="s-contact__action"
+                display="expanded"
+              >{__('contact.action.share_contact')}</Button>
+            </VerticalMenuItem>
+            <VerticalMenuItem>
+              <Button
+                onClick={this.handleContactDelete}
+                className="s-contact__action"
+                display="expanded"
+              >{__('contact.action.delete_contact')}</Button>
+            </VerticalMenuItem>
+          </VerticalMenu>
+        </DropdownMenu>
+      </div>
     );
   }
 
@@ -95,41 +200,35 @@ class Contact extends Component {
       <div>
         {contact && (
           <MenuBar className="s-contact__menu-bar">
-            <Button
-              onClick={this.handleContactDelete}
-              responsive="icon-only"
-              icon="trash"
-            >{__('contact.action.delete_contact')}</Button>
-            <Button
-              onClick={this.handleClickTags}
-              responsive="icon-only"
-              icon="tags"
-            >{__('contact.action.edit_tags')}</Button>
-            {this.renderTagsModal()}
+            {
+              // FIXME: edit and action bars be displayed in fixed Header,
+              // not in MenuBar
+            }
+            {this.state.editMode ? this.renderEditBar() : this.renderActionBar()}
           </MenuBar>
         )}
+
         <Spinner isLoading={isFetching} />
-        {
-          contact && (
+
+        {contact && (
           <div className="s-contact">
             <div className="s-contact__col-datas-irl">
-              {contact && (
-                <ContactProfile
-                  contact={contact}
-                  onChange={this.handleContactChange}
-                />
-              )}
+              <ContactProfile
+                contact={contact}
+                onChange={this.handleContactChange}
+                editMode={this.state.editMode}
+              />
             </div>
             <div className="s-contact__col-datas-online">
               <ContactDetails
                 contact={contact}
-                onUpdateContact={this.handleContactChange}
+                onUpdateContact={this.handleContactChange} // FIXME: this should update state
+                editMode={this.state.editMode}
                 __={__}
               />
             </div>
           </div>
-          )
-        }
+          )}
       </div>
     );
   }

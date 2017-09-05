@@ -1,18 +1,11 @@
 @import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-orga-form {
-  margin-bottom: $co-margin;
+  &__col-button { @include flex-grid-size(shrink); }
+  &__button { margin-left: map_get($co-form__spacing, 'medium'); }
 
-  &__icon {
-    margin-right: $co-margin / 4;
-  }
-
-  &__action {
-    margin-top: $co-margin;
-    line-height: $co-component__height;
-  }
-
-  &__switch {
-    margin-top: $co-margin;
+  @include breakpoint(medium) {
+    &__button { margin-left: 0; }
   }
 }

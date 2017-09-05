@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Subtitle from '../Subtitle';
-import Button from '../Button';
 import TextList, { ItemContent } from '../TextList';
 import AddressDetails from './components/AddressDetails';
+import BirthdayDetails from './components/BirthdayDetails';
 import EmailDetails from './components/EmailDetails';
-import PhoneDetails from './components/PhoneDetails';
-import PhoneForm from './components/PhoneForm';
-import OrgaDetails from './components/OrgaDetails';
-import OrgaForm from './components/OrgaForm';
 import IdentityDetails from './components/IdentityDetails';
 import ImDetails from './components/ImDetails';
+import OrgaDetails from './components/OrgaDetails';
+import PhoneDetails from './components/PhoneDetails';
 import AddressForm from './components/AddressForm';
 import EmailForm from './components/EmailForm';
-import ImForm from './components/ImForm';
 import IdentityForm from './components/IdentityForm';
+import ImForm from './components/ImForm';
+import OrgaForm from './components/OrgaForm';
+import PhoneForm from './components/PhoneForm';
+import FormButton from './components/FormButton';
+import FormSelector from './components/FormSelector';
+
 import './style.scss';
 
 class ContactDetails extends Component {
@@ -25,6 +28,7 @@ class ContactDetails extends Component {
     onConnectRemoteIdentity: PropTypes.func,
     onDisconnectRemoteIdentity: PropTypes.func,
     remoteIdentities: PropTypes.arrayOf(PropTypes.shape({})),
+    editMode: PropTypes.bool.isRequired,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
@@ -37,41 +41,15 @@ class ContactDetails extends Component {
 
   constructor(props) {
     super(props);
-    this.makeHandleSwitchEditMode = this.makeHandleSwitchEditMode.bind(this);
-    this.renderAddress = this.renderAddress.bind(this);
-    this.renderEmail = this.renderEmail.bind(this);
-    this.renderPhone = this.renderPhone.bind(this);
-    this.renderIm = this.renderIm.bind(this);
-    this.makeHandleAddContactDetail = this.makeHandleAddContactDetail.bind(this);
-    this.makeHandleDeleteContactDetail = this.makeHandleDeleteContactDetail.bind(this);
-    this.state = {
-      editMode: {
-        details: false,
-        organizations: false,
-        identities: false,
-      },
-    };
-
     this.initDetailsTranslations();
   }
 
-  getRemoteIdentity(identityType, identityId) {
-    return this.props.remoteIdentities
+  getRemoteIdentity = (identityType, identityId) => {
+    this.props.remoteIdentities
       .find(
         remoteIdentity => remoteIdentity.identity_type === identityType
           && remoteIdentity.identity_id === identityId
       );
-  }
-
-  makeHandleSwitchEditMode(panel) {
-    return () => {
-      this.setState(prevState => ({
-        editMode: {
-          ...prevState.editMode,
-          [panel]: !prevState.editMode[panel],
-        },
-      }));
-    };
   }
 
   initDetailsTranslations() {
@@ -91,7 +69,7 @@ class ContactDetails extends Component {
     };
   }
 
-  makeHandleAddContactDetail(type) {
+  makeHandleAddContactDetail = (type) => {
     const { onUpdateContact, contact } = this.props;
 
     return ({ contactDetail }) => onUpdateContact({
@@ -106,7 +84,10 @@ class ContactDetails extends Component {
     });
   }
 
-  makeHandleDeleteContactDetail(type) {
+  // TODO: makeHandleEditContactDetail()
+
+
+  makeHandleDeleteContactDetail = (type) => {
     const { onUpdateContact, contact } = this.props;
 
     return ({ contactDetail }) => onUpdateContact({
@@ -118,23 +99,7 @@ class ContactDetails extends Component {
     });
   }
 
-  renderSubtitleActions(panel) {
-    const { __ } = this.props;
-    const activeButtonProp = this.state.editMode[panel] ? { color: 'active' } : {};
-
-    return (
-      <Button
-        className="pull-right"
-        {...activeButtonProp}
-        onClick={this.makeHandleSwitchEditMode(panel)}
-        icon="edit"
-      >
-        <span className="show-for-sr">{__('contact.action.edit_contact_details')}</span>
-      </Button>
-    );
-  }
-
-  renderEmail(email) {
+  renderEmail = (email) => {
     const {
       __,
       allowConnectRemoteEntity,
@@ -152,7 +117,6 @@ class ContactDetails extends Component {
           email={email}
           allowConnectRemoteEntity={allowConnectRemoteEntity}
           remoteIdentity={remoteIdentity}
-          editMode={this.state.editMode.details}
           onDelete={this.makeHandleDeleteContactDetail('emails')}
           onConnectRemoteIdentity={onConnectRemoteIdentity}
           onDisconnectRemoteIdentity={onDisconnectRemoteIdentity}
@@ -162,29 +126,64 @@ class ContactDetails extends Component {
     );
   }
 
-  renderPhone(phone) {
+  renderEmailForm = (email) => {
     const { __ } = this.props;
 
     return (
-      <ItemContent large>
-        <PhoneDetails
-          phone={phone}
-          editMode={this.state.editMode.details}
-          onDelete={this.makeHandleDeleteContactDetail('phones')}
+      <ItemContent large className="m-contact-details__form">
+        <EmailForm
+          email={email}
+          onDelete={this.makeHandleDeleteContactDetail('emails')}
+          onEdit={str => str} // FIXME: should be edit function
           __={__}
         />
       </ItemContent>
     );
   }
 
-  renderIm(im) {
+  renderPhone = (phone) => {
     const { __ } = this.props;
 
     return (
       <ItemContent large>
-        <ImDetails
+        <PhoneDetails phone={phone} __={__} />
+      </ItemContent>
+    );
+  }
+
+  renderPhoneForm = (phone) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large className="m-contact-details__form">
+        <PhoneForm
+          phone={phone}
+          onDelete={this.makeHandleDeleteContactDetail('phones')}
+          onEdit={str => str} // FIXME: should be edit function
+          __={__}
+        />
+      </ItemContent>
+    );
+  }
+
+  renderIm = (im) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <ImDetails im={im} __={__} />
+      </ItemContent>
+    );
+  }
+
+  renderImForm = (im) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large className="m-contact-details__form">
+        <ImForm
           im={im}
-          editMode={this.state.editMode.details}
+          onEdit={str => str} // FIXME: should be edit function
           onDelete={this.makeHandleDeleteContactDetail('ims')}
           __={__}
         />
@@ -192,14 +191,24 @@ class ContactDetails extends Component {
     );
   }
 
-  renderAddress(address) {
+  renderAddress = (address) => {
     const { __ } = this.props;
 
     return (
       <ItemContent large>
-        <AddressDetails
+        <AddressDetails address={address} __={__} />
+      </ItemContent>
+    );
+  }
+
+  renderAddressForm = (address) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large className="m-contact-details__form">
+        <AddressForm
           address={address}
-          editMode={this.state.editMode.details}
+          onEdit={str => str} // FIXME: should be edit function
           onDelete={this.makeHandleDeleteContactDetail('addresses')}
           __={__}
         />
@@ -207,8 +216,72 @@ class ContactDetails extends Component {
     );
   }
 
-  renderContactDetails() {
+  renderIdentity = (identity) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <IdentityDetails identity={identity} __={__} />
+      </ItemContent>
+    );
+  }
+
+  renderIdentityForm = (identity) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large className="m-contact-details__form">
+        <IdentityForm
+          identity={identity}
+          onEdit={str => str} // FIXME: should be edit function
+          onDelete={this.makeHandleDeleteContactDetail('identities')}
+          __={__}
+        />
+      </ItemContent>
+    );
+  }
+
+  renderOrganization = (organization) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <OrgaDetails organization={organization} __={__} />
+      </ItemContent>
+    );
+  }
+
+  renderOrganizationForm = (organization) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large className="m-contact-details__form">
+        <OrgaForm
+          organization={organization}
+          onEdit={str => str} // FIXME: should be edit function
+          onDelete={this.makeHandleDeleteContactDetail('organizations')}
+          __={__}
+        />
+      </ItemContent>
+    );
+  }
+
+  renderBirthday = (birthday) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large className="m-contact-details__form">
+        <BirthdayDetails
+          birthday={birthday}
+          __={__}
+        />
+      </ItemContent>
+    );
+  }
+
+  renderContactDetails = () => {
     const { contact } = this.props;
+    const infos = contact.infos ? contact.infos : {};
     const emails = contact.emails ?
       [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
     const contactDetails = [
@@ -216,6 +289,7 @@ class ContactDetails extends Component {
       ...(contact.phones ? contact.phones.map(detail => this.renderPhone(detail)) : []),
       ...(contact.ims ? contact.ims.map(detail => this.renderIm(detail)) : []),
       ...(contact.addresses ? contact.addresses.map(detail => this.renderAddress(detail)) : []),
+      ...(infos ? [this.renderBirthday(infos.birthday ? infos.birthday : '')] : []),
     ];
 
     return (
@@ -225,86 +299,186 @@ class ContactDetails extends Component {
     );
   }
 
-  renderContactDetailsForm() {
+  renderFormSelector = () => {
     const { __, contact } = this.props;
+
+    const emailOption = {
+      name: __('contact.form-selector.email_form.label'),
+      obj: (<EmailForm onSubmit={this.makeHandleAddContactDetail('emails')} __={__} />),
+    };
+
+    const phoneOption = {
+      name: __('contact.form-selector.phone_form.label'),
+      obj: (<PhoneForm onSubmit={this.makeHandleAddContactDetail('phones')} __={__} />),
+    };
+
+    const imOption = {
+      name: __('contact.form-selector.im_form.label'),
+      obj: (<ImForm onSubmit={this.makeHandleAddContactDetail('ims')} __={__} />),
+    };
+
+    const addressOption = {
+      name: __('contact.form-selector.address_form.label'),
+      obj: (<AddressForm onSubmit={this.makeHandleAddContactDetail('addresses')} __={__} />),
+    };
+
+    const formsOptions = [
+      { name: ' - ', obj: null },
+      !contact.emails ? emailOption : null,
+      !contact.phones ? phoneOption : null,
+      !contact.ims ? imOption : null,
+      !contact.addresses ? addressOption : null,
+    ].filter(option => option !== null); // only return new forms for empty contact's attributes
+
+    return (
+      <FormSelector __={__} formsOptions={formsOptions} />
+    );
+  }
+
+  renderAddFormButton = (form) => {
+    const { __ } = this.props;
+
+    return (
+      <ItemContent large>
+        <FormButton __={__}>{form}</FormButton>
+      </ItemContent>
+    );
+  }
+
+  renderContactDetailsForm = () => {
+    const { contact, __ } = this.props;
+
+    const newEmailForm = <EmailForm onSubmit={this.makeHandleAddContactDetail('emails')} __={__} />;
+    const newPhoneForm = <PhoneForm onSubmit={this.makeHandleAddContactDetail('phones')} __={__} />;
+    const newImForm = <ImForm onSubmit={this.makeHandleAddContactDetail('ims')} __={__} />;
+    const newAddressForm = <AddressForm onSubmit={this.makeHandleAddContactDetail('addresses')} __={__} />;
+
     const emails = contact.emails ?
       [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
     const contactDetails = [
-      ...emails.map(detail => this.renderEmail(detail)),
-      (<EmailForm onSubmit={this.makeHandleAddContactDetail('emails')} __={__} />),
-      ...(contact.phones ? contact.phones.map(detail => this.renderPhone(detail)) : []),
-      (<PhoneForm onSubmit={this.makeHandleAddContactDetail('phones')} __={__} />),
-      ...(contact.ims ? contact.ims.map(detail => this.renderIm(detail)) : []),
-      (<ImForm onSubmit={this.makeHandleAddContactDetail('ims')} __={__} />),
-      ...(contact.addresses ? contact.addresses.map(detail => this.renderAddress(detail)) : []),
-      (<AddressForm onSubmit={this.makeHandleAddContactDetail('addresses')} __={__} />),
+      ...emails.map(detail => this.renderEmailForm(detail)),
+      ...(contact.emails ? [this.renderAddFormButton(newEmailForm)] : []),
+      ...(contact.phones ? contact.phones.map(detail => (this.renderPhoneForm(detail))) : []),
+      ...(contact.phones ? [this.renderAddFormButton(newPhoneForm)] : []),
+      ...(contact.ims ? contact.ims.map(detail => this.renderImForm(detail)) : []),
+      ...(contact.ims ? [this.renderAddFormButton(newImForm)] : []),
+      ...(contact.addresses ? contact.addresses.map(detail => this.renderAddressForm(detail)) : []),
+      ...(contact.addresses ? [this.renderAddFormButton(newAddressForm)] : []),
     ];
 
     return (
       <TextList>
         {contactDetails.map((C, key) => <C.type {...C.props} key={key} />)}
+      </TextList>
+    );
+  }
+
+  renderOrganizationsDetails = () => {
+    const { contact } = this.props;
+
+    const contactDetails = [
+      ...(contact.organizations ?
+        contact.organizations.map(detail => this.renderOrganization(detail)) : []),
+    ];
+
+    return (
+      <TextList>
+        {contactDetails.map((C, key) => <C.type {...C.props} key={key} />)}
+      </TextList>
+    );
+  }
+
+  renderOrganizationsDetailsForm = () => {
+    const { contact, __ } = this.props;
+
+    const newOrganizationForm = <OrgaForm onSubmit={this.makeHandleAddContactDetail('organizations')} __={__} />;
+
+    const organisationsDetails = [
+      ...(contact.organizations ?
+        contact.organizations.map(detail => (this.renderOrganizationForm(detail))) : []),
+      ...([this.renderAddFormButton(newOrganizationForm)]),
+    ];
+
+    return (
+      <TextList>
+        {organisationsDetails.map((C, key) => <C.type {...C.props} key={key} />)}
+      </TextList>
+    );
+  }
+
+  renderIdentitiesDetails = () => {
+    const { contact } = this.props;
+
+    const contactDetails = [
+      ...(contact.identities ?
+        contact.identities.map(detail => this.renderIdentity(detail)) : []),
+    ];
+
+    return (
+      <TextList>
+        {contactDetails.map((C, key) => <C.type {...C.props} key={key} />)}
+      </TextList>
+    );
+  }
+
+  renderIdentitiesDetailsForm = () => {
+    const { contact, __ } = this.props;
+    const newIdentityForm = <IdentityForm onSubmit={this.makeHandleAddContactDetail('identities')} __={__} />;
+
+    const identitiesDetails = [
+      ...(contact.identities ?
+        contact.identities.map(detail => (this.renderIdentityForm(detail))) : []),
+      ...([this.renderAddFormButton(newIdentityForm)]),
+    ];
+
+    return (
+      <TextList>
+        {identitiesDetails.map((C, key) => <C.type {...C.props} key={key} />)}
       </TextList>
     );
   }
 
   render() {
-    const { __, contact } = this.props;
+    const { __, contact, editMode } = this.props;
 
     return (
       <div className="m-contact-details">
         <div className="m-contact-details__panel">
-          <Subtitle hr actions={this.renderSubtitleActions('details')}>
+          <Subtitle hr>
             {__('contact.contact_details')}
           </Subtitle>
           <div className="m-contact-details__list">
-            {this.state.editMode.details ?
+            {editMode ?
               this.renderContactDetailsForm() :
-              this.renderContactDetails()}
-
+              this.renderContactDetails()
+            }
+            {editMode &&
+              (!contact.emails || !contact.phones || !contact.ims || !contact.addresses) &&
+              // if at least one contact's attribute is empty
+              <div className="m-contact-details__new-form">
+                {this.renderFormSelector()}
+              </div>
+            }
           </div>
         </div>
 
         <div className="m-contact-details__panel">
-          <Subtitle hr actions={this.renderSubtitleActions('organizations')}>
-            {__('contact.contact_organizations')}
-          </Subtitle>
+          <Subtitle hr>{__('contact.contact_organizations')}</Subtitle>
           <div className="m-contact-details__list">
-            <TextList>
-              {contact.organizations && contact.organizations.map(organization => (
-                <OrgaDetails
-                  key={organization.organization_id}
-                  organization={organization}
-                  editMode={this.state.editMode.organizations}
-                  onDelete={this.makeHandleDeleteContactDetail('organizations')}
-                  __={__}
-                />
-              ))}
-            </TextList>
-            {this.state.editMode.organizations && (
-              <OrgaForm onSubmit={this.makeHandleAddContactDetail('organizations')} __={__} />
-            )}
+            {editMode ?
+              this.renderOrganizationsDetailsForm() :
+              this.renderOrganizationsDetails()
+            }
           </div>
         </div>
 
         <div className="m-contact-details__panel">
-          <Subtitle hr actions={this.renderSubtitleActions('identities')}>
-            {__('contact.contact_identities')}
-          </Subtitle>
+          <Subtitle hr>{__('contact.contact_identities')}</Subtitle>
           <div className="m-contact-details__list">
-            <TextList>
-              {contact.identities && contact.identities.map(identity => (
-                <IdentityDetails
-                  key={identity.value}
-                  identity={identity}
-                  editMode={this.state.editMode.identities}
-                  onDelete={this.makeHandleDeleteContactDetail('identities')}
-                  __={__}
-                />
-              ))}
-            </TextList>
-            {this.state.editMode.identities && (
-              <IdentityForm onSubmit={this.makeHandleAddContactDetail('identities')} __={__} />
-            )}
+            {editMode ?
+              this.renderIdentitiesDetailsForm() :
+              this.renderIdentitiesDetails()
+            }
           </div>
         </div>
       </div>

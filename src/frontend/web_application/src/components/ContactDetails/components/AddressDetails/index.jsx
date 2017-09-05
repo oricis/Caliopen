@@ -1,23 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../../Icon';
-import Button from '../../../Button';
 import './style.scss';
 
 class AddressDetails extends Component {
   static propTypes = {
     address: PropTypes.shape({}).isRequired,
-    editMode: PropTypes.bool,
-    onDelete: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
-  };
-  static defaultProps = {
-    editMode: false,
   };
 
   constructor(props) {
     super(props);
-    this.handleDelete = this.handleDelete.bind(this);
     this.initTranslations();
   }
 
@@ -30,30 +23,12 @@ class AddressDetails extends Component {
     };
   }
 
-  handleDelete() {
-    const { onDelete, address } = this.props;
-    onDelete({ contactDetail: address });
-  }
-
-  renderDeleteButton() {
-    const { __ } = this.props;
-
-    return (
-      <Button onClick={this.handleDelete} color="alert" icon="remove">
-        <span className="show-for-sr">{__('contact.action.delete_contact_detail')}</span>
-      </Button>
-    );
-  }
-
   render() {
-    const {
-      address,
-      editMode,
-    } = this.props;
+    const { address } = this.props;
 
     return (
       <span className="m-address-details">
-        <Icon className="m-address-details__icon" type="map-marker" />
+        <Icon type="map-marker" rightSpaced />
         <address className="m-address-details__postal-address">
           {address.street}{address.street && ', '}
           {address.postal_code}{address.postal_code && ' '}
@@ -67,7 +42,6 @@ class AddressDetails extends Component {
             <em>({address.label}{address.label && ' '}{this.addressTypesTranslations[address.type]})</em>
           </small>
         }
-        {editMode && this.renderDeleteButton()}
       </span>
     );
   }

@@ -6,15 +6,24 @@ import './style.scss';
 
 export { withDropdownControl };
 
-const DropdownMenu = ({ className, ...props }) => (
-  <Dropdown className={classnames('m-dropdown-menu', className)} {...props} />
+const DropdownMenu = ({ className, hasTriangle, ...props }) => (
+  <Dropdown
+    className={classnames(
+      'm-dropdown-menu',
+      { 'm-dropdown-menu--has-triangle': hasTriangle },
+      className
+    )}
+    {...props}
+  />
 );
 DropdownMenu.propTypes = {
   className: PropTypes.string,
+  hasTriangle: PropTypes.bool,
 };
 
 DropdownMenu.defaultProps = {
   className: null,
+  hasTriangle: false,
 };
 
 export default DropdownMenu;

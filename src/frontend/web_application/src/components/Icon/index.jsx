@@ -8,6 +8,7 @@ export const typeAssoc = {
   'angle-down': 'fa fa-angle-down',
   'arrow-right': 'fa fa-arrow-right',
   'arrow-left': 'fa fa-arrow-left',
+  'birthday-cake': 'fa fa-birthday-cake',
   briefcase: 'fa fa-briefcase',
   building: 'fa fa-building',
   calendar: 'fa fa-calendar',
@@ -59,7 +60,7 @@ export const typeAssoc = {
 };
 
 
-const Icon = ({ className, type, spaced, ...props }) => {
+const Icon = ({ className, type, spaced, rightSpaced, ...props }) => {
   // eslint-disable-next-line no-console
   const typeClassName = typeAssoc[type] || console.error(`The type "${type}" is not a valid Icon component type`);
   const iconProps = {
@@ -67,7 +68,7 @@ const Icon = ({ className, type, spaced, ...props }) => {
     className: classnames(
       className,
       typeClassName,
-      { 'm-icon--spaced': spaced }
+      { 'm-icon--spaced': spaced, 'm-icon--right-spaced': rightSpaced }
     ),
   };
 
@@ -78,11 +79,13 @@ Icon.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string,
   spaced: PropTypes.bool,
+  rightSpaced: PropTypes.bool,
 };
 Icon.defaultProps = {
   className: undefined,
   type: undefined,
   spaced: false,
+  rightSpaced: false,
 };
 
 export default Icon;

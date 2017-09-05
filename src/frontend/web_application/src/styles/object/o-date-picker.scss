@@ -6,35 +6,40 @@ $date-picker-font-size: $co-font__size--small;
 $date-picker-text-color: $co-color__fg__text;
 
 @mixin o-date-picker-popper {
-  .react-datepicker-popper[data-placement^="bottom"] {
+  .react-datepicker-popper[data-placement^='bottom'] {
     .react-datepicker__triangle,
     .react-datepicker__triangle:before {
       border-bottom-color: $date-picker-header-bg;
     }
   }
 
-  .react-datepicker-popper[data-placement^="top"] {
+  .react-datepicker-popper[data-placement^='top'] {
     .react-datepicker__triangle,
     .react-datepicker__triangle:before {
       border-top-color: $date-picker-bg;
     }
   }
+
+  .react-datepicker-wrapper,
+  .react-datepicker__input-container {
+    width: 100%;
+  }
 }
 
 @mixin o-date-picker-calendar {
-  font-family: inherit;
-  font-size: $date-picker-font-size;
-  background-color: $date-picker-bg;
-  color: $date-picker-text-color;
   border: 0;
   border-radius: 0;
+  background-color: $date-picker-bg;
   box-shadow: $co-shadow--higher;
+  color: $date-picker-text-color;
+  font-family: inherit;
+  font-size: $date-picker-font-size;
 
   * {
+    border-radius: 0;
+    color: $date-picker-text-color;
     font-family: inherit;
     font-size: $date-picker-font-size;
-    color: $date-picker-text-color;
-    border-radius: 0;
   }
 
   .react-datepicker {
@@ -44,8 +49,8 @@ $date-picker-text-color: $co-color__fg__text;
     }
 
     &__header {
-      background-color: $date-picker-header-bg;
       border: 0;
+      background-color: $date-picker-header-bg;
 
       * { background-color: $date-picker-header-bg; }
 
@@ -53,9 +58,9 @@ $date-picker-text-color: $co-color__fg__text;
         margin-top: $co-margin / 3;
 
         select {
-          background: $date-picker-bg;
-          border: 0;
           padding: $co-component__spacing / 2;
+          border: 0;
+          background: $date-picker-bg;
         }
       }
     }
@@ -76,8 +81,8 @@ $date-picker-text-color: $co-color__fg__text;
 
     &__day-name {
       margin-top: $co-margin / 3;
-      font-size: $co-font__size--xsmall;
       color: $co-color__fg__text--lower;
+      font-size: $co-font__size--xsmall;
     }
   }
 }

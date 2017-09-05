@@ -5,7 +5,30 @@
   @include flex-grid-row($size: expand);
 
   &__menu-bar {
+    @include flex-grid-column(12);
     margin-bottom: $co-margin;
+  }
+
+  &__action-bar,
+  &__edit-bar {
+    @include flex-grid-row($size: expand);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__action,
+  &__bar-title,
+  &__actions-switcher {
+    @include flex-grid-size(shrink);
+  }
+
+  &__action {
+    line-height: $co-component__height;
+  }
+
+  &__bar-title {
+    color: $co-color__fg__text--high;
+    font-weight: 600;
   }
 
   &__col-datas-irl {
@@ -13,16 +36,16 @@
   }
 
   &__col-datas-online {
-    @include flex-grid-column(12, 0);
+    @include flex-grid-size(12);
   }
 
   @include breakpoint(medium) {
-    &__col-datas-irl { @include flex-grid-size(5); }
-    &__col-datas-online { @include flex-grid-size(7); }
+    &__col-datas-irl { @include flex-grid-size(4); }
+    &__col-datas-online { @include flex-grid-size(8); }
   }
 
   @include breakpoint(large) {
-    &__col-datas-irl { @include flex-grid-size(4); }
-    &__col-datas-online { @include flex-grid-size(8); }
+    &__col-datas-irl { @include flex-grid-size(3); }
+    &__col-datas-online { @include flex-grid-size(9); }
   }
 }

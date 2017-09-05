@@ -1,12 +1,14 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withTranslator } from '@gandi/react-translate';
-import Button from '../Button';
 import Badge from '../Badge';
 import MultidimensionalPi from '../../components/MultidimensionalPi';
 import ContactAvatarLetter from '../ContactAvatarLetter';
 import ContactProfileForm from './components/ContactProfileForm';
 import './style.scss';
+
+const FAKE_TAGS = ['Caliopen', 'Gandi', 'Macarons'];
 
 @withTranslator()
 class ContactProfile extends Component {
@@ -14,28 +16,26 @@ class ContactProfile extends Component {
     contact: PropTypes.shape({}).isRequired,
     className: PropTypes.string,
     onChange: PropTypes.func.isRequired,
+    editMode: PropTypes.bool.isRequired,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
     className: undefined,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      editMode: false,
-    };
+  state = {
+    editProfile: false,
+  };
 
-    this.toggleEditMode = this.toggleEditMode.bind(this);
-  }
-
-  toggleEditMode() {
-    this.setState({ editMode: !this.state.editMode });
+  toggleEditProfile = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      editProfile: !prevState.editProfile,
+    }));
   }
 
   render() {
-    const { contact, className, onChange, __ } = this.props;
-    const activeButtonProp = this.state.editMode ? { color: 'active' } : {};
+    const { contact, className, onChange, editMode, __ } = this.props;
 
     return (
       <div className={classnames('m-contact-profile', className)}>
@@ -44,44 +44,31 @@ class ContactProfile extends Component {
             <ContactAvatarLetter contact={contact} className="m-contact-profile__avatar" />
           </div>
 
-          <div className="m-contact-profile__name">
-            <h3 className="m-contact-profile__title">{contact.title}</h3>
-            <h4 className="m-contact-profile__subtitle">
-              {contact.name_prefix}{contact.name_prefix && ' '}
-              {contact.given_name}{contact.given_name && ' '}
-              {contact.family_name}{contact.name_suffix && ' '}
-              {contact.name_suffix}
-            </h4>
-          </div>
-
-          <div className="m-contact-profile__edit-button">
-            <Button
-              icon="edit"
-              {...activeButtonProp}
-              onClick={this.toggleEditMode}
-            >
-              <span className="show-for-sr">
-                {__('contact_profile.action.edit_contact')}
-              </span>
-            </Button>
-          </div>
-
+          {!editMode &&
+          <h3 className="m-contact-profile__name">{contact.title}</h3>
+        }
         </div>
 
+        {editMode &&
+          <ContactProfileForm contact={contact} onChange={onChange} __={__} />
+        }
 
-        {contact.tags &&
+        {// contact.tags &&
+          // FIXME: contact.tags replaced with FAKE_TAGS for testing purpose
           <div className="m-contact-profile__tags">
-            {contact.tags.map(tag => (
+            {FAKE_TAGS.map(tag => (
               <Badge className="m-contact-profile__tag" key={tag}>{tag}</Badge>
             ))}
           </div>
         }
-        {this.state.editMode ? (
-          <ContactProfileForm contact={contact} onChange={onChange} />
-        ) : contact.pi && (
+
+        {contact.pi && !editMode && (
+
+        // FIXME: on mobile, MultidimensionalPi should be displayed on
+        // 2 columns (graph on left, rates on right)
+
           <MultidimensionalPi className="m-contact-profile__pi" pi={contact.pi} />
-        )
-        }
+        )}
       </div>
     );
   }

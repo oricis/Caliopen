@@ -2,45 +2,52 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../../Icon';
 import Button from '../../../Button';
-import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, FormGrid, FormRow, FormColumn, CheckboxFieldGroup } from '../../../form';
+import { FieldErrors, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, FormGrid, FormRow, FormColumn } from '../../../form';
 import './style.scss';
 
 const EMAIL_TYPES = ['work', 'home', 'other'];
 
-const generateStateFromProps = (props, prevState) => ({
-  contactDetail: {
-    ...prevState.contactDetail,
-    ...props.contactDetail,
-  },
-});
+const generateStateFromProps = (props, prevState) => {
+  const email = props.email || {};
+
+  return {
+    contactDetail: {
+      ...prevState.contactDetail,
+      ...email,
+    },
+  };
+};
 
 class EmailForm extends Component {
   static propTypes = {
+    email: PropTypes.shape({}),
     errors: PropTypes.arrayOf(PropTypes.string),
-    onSubmit: PropTypes.func.isRequired,
-    contactDetail: PropTypes.shape({}),
+    onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
+    onSubmit: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     errors: [],
-    contactDetail: undefined,
+    email: null,
+    onDelete: () => {},
+    onEdit: () => {},
+    onSubmit: () => {},
   };
 
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSwitchChange = this.handleSwitchChange.bind(this);
-    this.state = {
-      contactDetail: {
-        address: '',
-        type: EMAIL_TYPES[0],
-        is_primary: false,
-      },
-    };
     this.initTranslations();
   }
+
+  state = {
+    contactDetail: {
+      address: '',
+      type: EMAIL_TYPES[0],
+      is_primary: false,
+    },
+  };
 
   componentWillMount() {
     this.setState(prevState => generateStateFromProps(this.props, prevState));
@@ -59,13 +66,25 @@ class EmailForm extends Component {
     };
   }
 
-  handleSubmit(ev) {
+  handleSubmit = (ev) => {
     ev.preventDefault();
     const { contactDetail } = this.state;
     this.props.onSubmit({ contactDetail });
   }
 
-  handleInputChange(event) {
+  handleDelete = () => {
+    const { onDelete, email } = this.props;
+    onDelete({ contactDetail: email });
+  }
+
+  handleEdit = (ev) => {
+    ev.preventDefault();
+    const { contactDetail } = this.state;
+    this.props.onEdit({ contactDetail });
+  }
+
+
+  handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState(prevState => ({
       contactDetail: {
@@ -75,7 +94,7 @@ class EmailForm extends Component {
     }));
   }
 
-  handleSwitchChange(event) {
+  handleSwitchChange = (event) => {
     const { name, checked } = event.target;
     this.setState(prevState => ({
       contactDetail: {
@@ -86,7 +105,7 @@ class EmailForm extends Component {
   }
 
   render() {
-    const { __, errors = [] } = this.props;
+    const { __, errors = [], email } = this.props;
     const addressTypeOptions = EMAIL_TYPES.map(value => ({
       value,
       label: this.addressTypes[value],
@@ -95,13 +114,25 @@ class EmailForm extends Component {
     return (
       <FormGrid onSubmit={this.handleSubmit} className="m-email-form" name="email_form">
         <Fieldset>
-          <Legend>
-            <Icon className="m-email-form__icon" type="envelope" />
-            {__('contact.email_form.legend')}
-          </Legend>
           <FormRow>
+            <FormColumn size="shrink">
+              <Legend>
+                <Icon type="envelope" rightSpaced />
+                <span className="m-email-form__legend">{__('contact.email_form.legend')}</span>
+              </Legend>
+            </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
-            <FormColumn size="medium">
+            <FormColumn size="shrink" bottomSpace>
+              <SelectFieldGroup
+                name="type"
+                value={this.state.contactDetail.type}
+                onChange={this.handleInputChange}
+                label={__('contact.email_form.type.label')}
+                showLabelforSr
+                options={addressTypeOptions}
+              />
+            </FormColumn>
+            <FormColumn size="medium" fluid bottomSpace>
               <TextFieldGroup
                 name="address"
                 type="email"
@@ -112,30 +143,14 @@ class EmailForm extends Component {
                 required
               />
             </FormColumn>
-            <FormColumn size="shrink">
-              <SelectFieldGroup
-                name="type"
-                value={this.state.contactDetail.type}
-                onChange={this.handleInputChange}
-                label={__('contact.email_form.type.label')}
-                showLabelforSr
-                options={addressTypeOptions}
-              />
-            </FormColumn>
-            <FormColumn size="shrink" className="s-contact-detail-form__checkbox-label">
-              <CheckboxFieldGroup
-                name="is_primary"
-                value={this.state.contactDetail.is_primary}
-                onChange={this.handleSwitchChange}
-                label={__('contact.email_form.is_primary.label')}
-                displaySwitch
-                showTextLabel
-              />
-            </FormColumn>
-            <FormColumn size="shrink" className="m-email-form__action">
-              <Button type="submit" display="expanded" shape="plain" icon="plus">
-                {__('contact.action.add_contact_detail')}
-              </Button>
+            <FormColumn className="m-email-form__col-button">
+              {!email ?
+                <Button className="m-email-form__button" type="submit" shape="plain" icon="plus">
+                  {__('contact.action.add_contact_detail')}
+                </Button>
+              :
+                <Button icon="remove" color="alert" onClick={this.handleDelete} />
+              }
             </FormColumn>
           </FormRow>
         </Fieldset>

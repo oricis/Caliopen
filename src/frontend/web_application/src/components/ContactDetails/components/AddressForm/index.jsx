@@ -8,30 +8,57 @@ import './style.scss';
 
 const ADDRESS_TYPES = ['work', 'home', 'other'];
 
+const generateStateFromProps = (props, prevState) => {
+  const address = props.address || {};
+
+  return {
+    contactDetail: {
+      ...prevState.contactDetail,
+      ...address,
+    },
+  };
+};
+
 class AddressForm extends Component {
   static propTypes = {
+    address: PropTypes.shape({}),
     errors: PropTypes.arrayOf(PropTypes.string),
-    onSubmit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
+    onSubmit: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     errors: [],
+    address: null,
+    onDelete: () => {},
+    onEdit: () => {},
+    onSubmit: () => {},
   };
 
   constructor(props) {
     super(props);
-    this.state = {
-      contactDetail: {
-        street: '',
-        postal_code: '',
-        city: '',
-        country: '',
-        region: '',
-        type: ADDRESS_TYPES[0],
-      },
-    };
     this.initTranslations();
+  }
+
+  state = {
+    contactDetail: {
+      street: '',
+      postal_code: '',
+      city: '',
+      country: '',
+      region: '',
+      type: ADDRESS_TYPES[0],
+    },
+  };
+
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(prevState => generateStateFromProps(nextProps, prevState));
   }
 
   initTranslations() {
@@ -47,6 +74,17 @@ class AddressForm extends Component {
     ev.preventDefault();
     const { contactDetail } = this.state;
     this.props.onSubmit({ contactDetail });
+  }
+
+  handleDelete = () => {
+    const { onDelete, address } = this.props;
+    onDelete({ contactDetail: address });
+  }
+
+  handleEdit = (ev) => {
+    ev.preventDefault();
+    const { contactDetail } = this.state;
+    this.props.onEdit({ contactDetail });
   }
 
   handleInputChange = (event) => {
@@ -78,7 +116,7 @@ class AddressForm extends Component {
   }
 
   render() {
-    const { __, errors = [] } = this.props;
+    const { __, errors = [], address } = this.props;
     const addressTypeOptions = ADDRESS_TYPES.map(value => ({
       value,
       label: this.addressTypes[value],
@@ -87,51 +125,55 @@ class AddressForm extends Component {
     return (
       <FormGrid onSubmit={this.handleSubmit} className="m-address-form" name="address_form">
         <Fieldset>
-          <Legend>
-            <Icon className="m-address-form__icon" type="map-marker" />
-            {__('contact.address_form.legend')}
-          </Legend>
           <FormRow>
+            <FormColumn>
+              <Legend>
+                <Icon rightSpaced type="map-marker" />
+                {__('contact.address_form.legend')}
+              </Legend>
+            </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
           </FormRow>
           <FormRow>
-            <FormColumn size="shrink">
-              <SelectFieldGroup
-                name="type"
-                value={this.state.contactDetail.type}
-                onChange={this.handleInputChange}
-                label={__('contact.address_form.type.label')}
-                options={addressTypeOptions}
-              />
-            </FormColumn>
-          </FormRow>
-          <FormRow>
-            <FormColumn size="medium">
+            <FormColumn bottomSpace>
               <TextFieldGroup
                 name="street"
                 value={this.state.contactDetail.street}
                 onChange={this.handleInputChange}
                 label={__('contact.address_form.street.label')}
+                placeholder={__('contact.address_form.street.label')}
+                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="shrink">
+          </FormRow>
+          <FormRow>
+            <FormColumn size="small" bottomSpace>
               <TextFieldGroup
                 name="postal_code"
                 value={this.state.contactDetail.postal_code}
                 onChange={this.handleInputChange}
                 label={__('contact.address_form.postal_code.label')}
+                placeholder={__('contact.address_form.postal_code.label')}
+                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="medium">
+            <FormColumn size="large" bottomSpace>
               <TextFieldGroup
                 name="city"
                 value={this.state.contactDetail.city}
                 onChange={this.handleInputChange}
                 label={__('contact.address_form.city.label')}
+                placeholder={__('contact.address_form.city.label')}
+                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="medium">
-              <label htmlFor="contact-adress-country">
+          </FormRow>
+          <FormRow>
+            <FormColumn size="medium" bottomSpace>
+              {
+                // TODO: insert select-wrapper to fit SelectFieldGroup architecture
+              }
+              <label className="show-for-sr" htmlFor="contact-adress-country">
                 {__('contact.address_form.country.label')}
               </label>
               <CountryDropdown
@@ -142,8 +184,11 @@ class AddressForm extends Component {
                 onChange={this.handleSelectCountry}
               />
             </FormColumn>
-            <FormColumn size="medium">
-              <label htmlFor="contact-adress-region">
+            <FormColumn size="medium" bottomSpace>
+              {
+                // TODO: insert select-wrapper to fit SelectFieldGroup architecture
+              }
+              <label className="show-for-sr" htmlFor="contact-adress-region">
                 {__('contact.address_form.region.label')}
               </label>
               <RegionDropdown
@@ -155,12 +200,24 @@ class AddressForm extends Component {
                 onChange={this.handleSelectRegion}
               />
             </FormColumn>
-          </FormRow>
-          <FormRow>
-            <FormColumn size="shrink" className="m-address-form__action">
-              <Button type="submit" display="expanded" shape="plain" icon="plus">
-                {__('contact.action.add_contact_detail')}
-              </Button>
+            <FormColumn size="shrink" bottomSpace fluid>
+              <SelectFieldGroup
+                name="type"
+                value={this.state.contactDetail.type}
+                onChange={this.handleInputChange}
+                label={__('contact.address_form.type.label')}
+                options={addressTypeOptions}
+                showLabelforSr
+              />
+            </FormColumn>
+            <FormColumn size="shrink" className="m-address-form__col-button">
+              {!address ?
+                <Button className="m-address-form__button" type="submit" shape="plain" display="expanded" icon="plus">
+                  {__('contact.action.add_contact_detail')}
+                </Button>
+              :
+                <Button color="alert" icon="remove" onClick={this.handleDelete} />
+              }
             </FormColumn>
           </FormRow>
         </Fieldset>
