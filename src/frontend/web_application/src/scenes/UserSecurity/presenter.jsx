@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import OpenPGPKeysDetails from './components/OpenPGPKeysDetails';
 import TFAForm from './components/TFAForm';
-import PasswordForm from './components/PasswordForm';
+import PasswordDetails from './components/PasswordDetails';
+import LoginDetails from './components/LoginDetails';
 import Section from '../../components/Section';
-
+import './style.scss';
 
 class UserSecurity extends Component {
   static propTypes = {
@@ -22,6 +23,13 @@ class UserSecurity extends Component {
 
   render() {
     const { __, user } = this.props;
+    const fakeUser = {
+      username: 'Dev',
+      privacy_features: {
+        password_strength: 2,
+      },
+      password: '123456',
+    };
 
     return (
       <div className="s-user-account-security">
@@ -30,7 +38,14 @@ class UserSecurity extends Component {
           // to switch between each <Section />
         }
         <Section title={__('user.security.section_password.title')}>
-          <PasswordForm user={user} />
+          <div className="s-user-account-security__credentials">
+            <div className="s-user-account-security__login">
+              <LoginDetails user={fakeUser} __={__} />
+            </div>
+            <div className="s-user-account-security__password">
+              <PasswordDetails user={fakeUser} __={__} />
+            </div>
+          </div>
         </Section>
         <Section title={__('user.security.section_tfa.title')}>
           <TFAForm user={user} />

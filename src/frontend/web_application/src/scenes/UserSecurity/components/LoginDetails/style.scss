@@ -1,0 +1,26 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-login-details {
+  @include flex-grid-row;
+
+  &__title {
+    @include flex-grid-size(12);
+    margin-bottom: $co-margin;
+  }
+
+  &__input {
+    @include flex-grid-size(12);
+  }
+
+  &__action { @include flex-grid-size(shrink); }
+
+  @include breakpoint(medium) {
+    &__input { @include flex-grid-size; }
+    &__action { @include flex-grid-column(shrink); }
+  }
+
+  @include breakpoint(large) {
+    &__strength { @include flex-grid-size(8); }
+  }
+}
