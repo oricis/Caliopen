@@ -14,7 +14,7 @@
   }
 
   &__action { line-height: $co-component__height; }
-  &__strength { margin-bottom: map-get($co-form__spacing, 'small'); }
+  &__strength { margin-top: map-get($co-form__spacing, 'small'); }
 
   @include breakpoint(medium) {
     &__tip {

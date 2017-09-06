@@ -16,7 +16,7 @@ class LoginDetails extends Component {
   }
 
   toggleEditMode = () => {
-    this.setState({ editMode: !this.state.editMode });
+    this.setState(prevState => ({ editMode: !prevState.editMode }));
   }
 
   render() {

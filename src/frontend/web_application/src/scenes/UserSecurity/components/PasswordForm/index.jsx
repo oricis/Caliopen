@@ -93,6 +93,11 @@ class PasswordForm extends Component {
   render() {
     const { __, onCancel } = this.props;
 
+    const submitButtonProps = {
+      disabled: this.state.formValues.newPassword !== '' &&
+      (this.state.formValues.newPassword === this.state.passwordConfirmation) ? null : true,
+    };
+
     return (
       <FormGrid className="m-password-form">
         <form method="post" name="password_form" onSubmit={this.handleSubmit}>
@@ -170,12 +175,14 @@ class PasswordForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn size="medium" className="m-password-form__action" bottomSpace>
-              <Button shape="plain" display="expanded" type="submit">
+              <Button shape="plain" display="expanded" type="submit" {...submitButtonProps}>
                 {__('password.form.action.validate')}
               </Button>
             </FormColumn>
             <FormColumn size="shrink" className="m-password-form__action">
-              <Button shape="hollow" display="expanded" onClick={onCancel}>{__('password.form.action.cancel')}</Button>
+              <Button shape="hollow" display="expanded" onClick={onCancel}>
+                {__('password.form.action.cancel')}
+              </Button>
             </FormColumn>
           </FormRow>
         </form>
