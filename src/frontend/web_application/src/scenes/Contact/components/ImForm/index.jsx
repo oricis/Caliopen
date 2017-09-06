@@ -8,7 +8,7 @@ import Button from '../../../../components/Button';
 import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
 import './style.scss';
 
-const IM_TYPES = ['work', 'home', 'other', 'netmeeting'];
+const IM_TYPES = ['', 'work', 'home', 'other', 'netmeeting'];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 
@@ -42,7 +42,7 @@ class ImForm extends PureComponent {
     const { __, errors = [], onDelete } = this.props;
     const addressTypeOptions = IM_TYPES.map(value => ({
       value,
-      label: this.addressTypes[value],
+      label: this.addressTypes[value] || '',
     }));
 
     return (

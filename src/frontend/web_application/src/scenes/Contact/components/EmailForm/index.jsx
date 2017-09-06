@@ -8,7 +8,7 @@ import Button from '../../../../components/Button';
 import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
 import './style.scss';
 
-const EMAIL_TYPES = ['work', 'home', 'other'];
+const EMAIL_TYPES = ['', 'work', 'home', 'other'];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 
@@ -50,7 +50,7 @@ class EmailForm extends PureComponent {
     const { __, errors = [], onDelete } = this.props;
     const addressTypeOptions = EMAIL_TYPES.map(value => ({
       value,
-      label: this.addressTypes[value],
+      label: this.addressTypes[value] || '',
     }));
 
     return (

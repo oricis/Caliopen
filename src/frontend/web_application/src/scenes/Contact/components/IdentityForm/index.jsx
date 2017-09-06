@@ -9,7 +9,7 @@ import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, Se
 
 import './style.scss';
 
-const IDENTITY_TYPES = ['twitter', 'facebook'];
+const IDENTITY_TYPES = ['', 'twitter', 'facebook'];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 
@@ -49,6 +49,7 @@ class IdentityForm extends PureComponent {
                 label={__('contact.identity_form.service.label')}
                 options={identityTypeOptions}
                 showLabelforSr
+                required
               />
             </FormColumn>
             <FormColumn size="medium" fluid bottomSpace>
@@ -57,6 +58,7 @@ class IdentityForm extends PureComponent {
                 name="name"
                 label={__('contact.identity_form.identity.label')}
                 showLabelforSr
+                required
               />
             </FormColumn>
             <FormColumn className="m-identity-form__col-button">

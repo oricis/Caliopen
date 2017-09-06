@@ -8,7 +8,7 @@ import Button from '../../../../components/Button';
 import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
 import './style.scss';
 
-const PHONE_TYPES = ['work', 'home', 'other'];
+const PHONE_TYPES = ['', 'work', 'home', 'other'];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 
@@ -40,7 +40,7 @@ class PhoneForm extends PureComponent {
     const { __, errors, onDelete } = this.props;
     const typeOptions = PHONE_TYPES.map(value => ({
       value,
-      label: this.addressTypes[value],
+      label: this.addressTypes[value] || '',
     }));
 
     return (

@@ -44,7 +44,6 @@ class OrgaForm extends Component {
                 label={__('contact.orga_form.label.label')}
                 placeholder={__('contact.orga_form.label.label')}
                 showLabelforSr
-                required
               />
             </FormColumn>
             <FormColumn size="medium" bottomSpace>

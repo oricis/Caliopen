@@ -8,7 +8,7 @@ import Button from '../../../../components/Button';
 import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
 import './style.scss';
 
-const ADDRESS_TYPES = ['work', 'home', 'other'];
+const ADDRESS_TYPES = ['', 'work', 'home', 'other'];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 const CountryDropdown = renderReduxField(CountryDropdownBase);
@@ -44,7 +44,7 @@ class AddressForm extends PureComponent {
     const { __, errors = [], onDelete, country } = this.props;
     const addressTypeOptions = ADDRESS_TYPES.map(value => ({
       value,
-      label: this.addressTypes[value],
+      label: this.addressTypes[value] || '',
     }));
 
     return (
