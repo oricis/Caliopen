@@ -86,13 +86,14 @@ class PasswordForm extends Component {
                 type="password"
                 value={this.state.formValues.password}
                 onChange={this.handleInputChange}
-                label="Current password"
+                label={__('password.form.current_password.label')}
+                placeholder={__('password.form.current_password.placeholder')}
                 required
               />
             </FormColumn>
             <FormColumn size="medium">
               <label htmlFor="password" className="m-password-form__tip">
-                The password you want to replace
+                {__('password.form.current_password.tip')}
               </label>
             </FormColumn>
           </FormRow>
@@ -103,13 +104,14 @@ class PasswordForm extends Component {
                 type="password"
                 value={this.state.formValues.newPassword}
                 onChange={this.handleNewPasswordChange}
-                label="New password"
+                label={__('password.form.new_password.label')}
+                placeholder={__('password.form.new_password.placeholder')}
                 required
               />
             </FormColumn>
             <FormColumn size="medium">
               <label htmlFor="newPassword" className="m-password-form__tip">
-                The new password you want to use from now
+                {__('password.form.new_password.tip')}
               </label>
             </FormColumn>
             {this.state.passwordStrength.length !== 0 && (
@@ -126,8 +128,8 @@ class PasswordForm extends Component {
                 value={this.state.formValues.confirmNewPassword}
                 onChange={this.handleConfirmPasswordChange}
                 errors={this.state.formErrors.confirmNewPassword}
-                label="New password confirmation"
-                placeholder="Repeat new password"
+                label={__('password.form.new_password_confirmation.label')}
+                placeholder={__('password.form.new_password_confirmation.placeholder')}
                 required
               />
             </FormColumn>
@@ -138,23 +140,23 @@ class PasswordForm extends Component {
                 name="tfa"
                 value={this.state.formValues.taf}
                 onChange={this.handleInputChange}
-                label="TOTP validation code"
-                placeholder="Enter the 2-auth code"
+                label={__('password.form.tfa.label')}
+                placeholder={__('password.form.tfa.placeholder')}
                 disabled
               />
             </FormColumn>
             <FormColumn size="medium">
               <label htmlFor="newPassword" className="m-password-form__tip">
-                Only if you have enabled the 2-factor authentification method
+                {__('password.form.tfa.tip')}
               </label>
             </FormColumn>
           </FormRow>
           <FormRow>
             <FormColumn size="medium" className="m-password-form__action" bottomSpace>
-              <Button shape="plain" display="expanded" type="submit">{__('Validate')}</Button>
+              <Button shape="plain" display="expanded" type="submit">{__('password.form.action.validate')}</Button>
             </FormColumn>
             <FormColumn size="shrink" className="m-password-form__action">
-              <Button shape="hollow" display="expanded" onClick={onCancel}>{__('Cancel')}</Button>
+              <Button shape="hollow" display="expanded" onClick={onCancel}>{__('password.form.action.cancel')}</Button>
             </FormColumn>
           </FormRow>
         </form>

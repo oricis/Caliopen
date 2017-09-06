@@ -19,8 +19,4 @@
     &__input { @include flex-grid-size; }
     &__action { @include flex-grid-column(shrink); }
   }
-
-  @include breakpoint(large) {
-    &__strength { @include flex-grid-size(8); }
-  }
 }

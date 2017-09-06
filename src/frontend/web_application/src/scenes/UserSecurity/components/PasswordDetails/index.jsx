@@ -31,7 +31,7 @@ class PasswordDetails extends Component {
     return (
       <div className="m-password-details">
         {!this.state.editMode &&
-          <TextBlock className="m-password-details__title">Password strength</TextBlock>
+          <TextBlock className="m-password-details__title">{__('password.details.password_strength.title')}</TextBlock>
         }
         {this.state.editMode ?
           // FIXME: PasswordForm should have its own route to be displayed in new tab
@@ -47,7 +47,7 @@ class PasswordDetails extends Component {
         {!this.state.editMode &&
           // FIXME: button should be a link to PasswordForm route (new tab)
           <div className="m-password-details__action">
-            <Button onClick={this.toggleEditMode}>Change</Button>
+            <Button onClick={this.toggleEditMode}>{__('password.details.action.change')}</Button>
           </div>
         }
       </div>

@@ -24,16 +24,16 @@ class LoginDetails extends Component {
 
     return (
       <div className="m-login-details">
-        <TextBlock className="m-login-details__title">Login</TextBlock>
+        <TextBlock className="m-login-details__title">{__('login.details.title')}</TextBlock>
         <TextFieldGroup
           className="m-login-details__input"
           value={user.username}
-          label={__('Login')}
+          label={__('login.details.label')}
           showLabelforSr
           disabled
         />
         <div className="m-login-details__action">
-          <Button onClick={this.toggleEditMode}>{__('Change')}</Button>
+          <Button onClick={this.toggleEditMode}>{__('login.details.action.change')}</Button>
         </div>
       </div>
     );
