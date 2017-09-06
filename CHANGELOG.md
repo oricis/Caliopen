@@ -30,9 +30,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - support TAB for adding a participant to a discussion
 - use participant suggestions API for a new message
 - Handle 4xx errors when updating contact fails
-- Compose in multiple tabs messages, not only one
-- Cross-browser <select> element styles.
-- Refactore caliopen_main package for cleaner namespaces
+- Compose in multiple tabs messages, not only one.
+- Cross-browser `<select>` element styles.
+- Refactor caliopen_main package for cleaner namespaces.
 - Move tags API to V2. CRUD operations are now on routes /v2/tags
 - Discussions creation from ingress messages are build from messages' external references.
 - ingress & egress JSON payload are double validated by our API instead of only relying on swagger.

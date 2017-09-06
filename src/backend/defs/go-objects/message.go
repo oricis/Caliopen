@@ -89,12 +89,19 @@ fieldsLoop:
 							}
 							jsonBuf.WriteString("\"body\":")
 							// TODO : put html or plain in exported body regarding current user preferences
+							var body_is_plain bool
 							if msg.Body_html != "" {
 								enc.Encode(msg.Body_html)
+								body_is_plain = false
 							} else {
 								enc.Encode(msg.Body_plain)
+								body_is_plain = true
 							}
-
+							if body_is_plain {
+								jsonBuf.WriteString(",\"body_is_plain\":true")
+							} else {
+								jsonBuf.WriteString(",\"body_is_plain\":false")
+							}
 							body_not_merged = false
 							continue fieldsLoop
 						} else {
