@@ -56,6 +56,7 @@ class DiscussionItemActionsContainer extends Component {
     const { __ } = this.props;
 
     return (
+      // FIXME: DiscussionItemActionsContainer should swipe on mobile view
       <div
         className={classnames('m-discussion-item-actions-container__actions', { 'm-discussion-item-actions-container--active__actions': this.state.isActive })}
       >

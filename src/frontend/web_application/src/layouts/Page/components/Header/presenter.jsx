@@ -38,7 +38,7 @@ class Header extends Component {
       <div className="l-header">
         <div className="l-header__wrapper">
           <div className="l-header__brand">
-            <span className="show-for-small-only">
+            <span className="hide-for-medium">
               <button
                 aria-label={__('header.menu.toggle-navigation')}
                 data-toggle="left_off_canvas"
@@ -50,7 +50,7 @@ class Header extends Component {
               <Brand className="l-header__brand-icon" />
             </Link>
           </div>
-          <div className="l-header__search-toggler show-for-small-only">
+          <div className="l-header__search-toggler hide-for-medium">
             <Button
               aria-label={__('header.menu.toggle-search-form')}
               onClick={this.handleClickToggleSearchAsDropdown}
