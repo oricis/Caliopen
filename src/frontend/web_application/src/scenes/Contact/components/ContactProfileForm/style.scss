@@ -5,8 +5,7 @@
   margin: $co-margin 0;
 
   &__header,
-  &__expanded-form,
-  &__save-button-wrapper {
+  &__expanded-form {
     @include flex-grid-row($size: expand);
     margin-bottom: $co-margin / 2;
   }
@@ -19,8 +18,7 @@
     @include flex-grid-column(shrink);
   }
 
-  &__input,
-  &__save-button {
+  &__input {
     @include flex-grid-size(12);
     margin-bottom: $co-margin / 2;
   }
@@ -33,9 +31,4 @@
   &__birthday-input {
     margin-bottom: $co-margin / 2;
   }
-
-  &__save-button {
-    line-height: $co-component__height;
-  }
-
 }
