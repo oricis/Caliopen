@@ -20,11 +20,17 @@ import (
 func GetMessagesList(ctx *gin.Context) {
 	user_uuid, _ := uuid.FromString(ctx.MustGet("user_id").(string))
 	var user_UUID UUID
+	var limit, offset int
 	user_UUID.UnmarshalBinary(user_uuid.Bytes())
-	//discussion_id := ctx.Request.URL.Query().Get("discussion_id")
-	limit, _ := strconv.Atoi(ctx.Request.URL.Query().Get("limit"))
-	offset, _ := strconv.Atoi(ctx.Request.URL.Query().Get("offset"))
 	query_values := ctx.Request.URL.Query()
+	if l, ok := query_values["limit"]; ok {
+		limit, _ = strconv.Atoi(l[0])
+		query_values.Del("limit")
+	}
+	if o, ok := query_values["offset"]; ok {
+		offset, _ = strconv.Atoi(o[0])
+		query_values.Del("offset")
+	}
 
 	filter := MessagesListFilter{
 		User_id: user_UUID,
