@@ -17,12 +17,14 @@ class PasswordForm extends Component {
   };
 
   state = {
-    formErrors: {},
+    formErrors: {
+      passwordError: [],
+    },
+    passwordConfirmation: '',
     passwordStrength: '',
     formValues: {
       password: '',
       newPassword: '',
-      confirmNewPassword: '',
       tfa: '',
     },
   }
@@ -63,8 +65,23 @@ class PasswordForm extends Component {
   }
 
   handleConfirmPasswordChange = (event) => {
-    this.handleInputChange(event);
-    // FIXME: this.comparePasswords(); function to compare passwords and return error in state
+    const { __ } = this.props;
+    const { value } = event.target;
+
+    this.setState((prevState) => {
+      const newPassword = prevState.formValues.newPassword;
+      const error = __('password.form.new_password_confirmation.error');
+      const passwordError = newPassword === value ? [] : [error];
+
+      return {
+        ...prevState,
+        passwordConfirmation: value,
+        formErrors: {
+          ...prevState.formErrors,
+          passwordError,
+        },
+      };
+    });
   }
 
   handleSubmit(ev) {
@@ -115,7 +132,7 @@ class PasswordForm extends Component {
               </label>
             </FormColumn>
             {this.state.passwordStrength.length !== 0 && (
-              <FormColumn size="medium" bottomSpace>
+              <FormColumn size="medium" bottomSpace className="m-password-form__strength">
                 <PasswordStrength strength={this.state.passwordStrength} />
               </FormColumn>
             )}
@@ -125,9 +142,9 @@ class PasswordForm extends Component {
               <TextFieldGroup
                 name="confirmNewPassword"
                 type="password"
-                value={this.state.formValues.confirmNewPassword}
+                value={this.state.passwordConfirmation}
                 onChange={this.handleConfirmPasswordChange}
-                errors={this.state.formErrors.confirmNewPassword}
+                errors={this.state.formErrors.passwordError}
                 label={__('password.form.new_password_confirmation.label')}
                 placeholder={__('password.form.new_password_confirmation.placeholder')}
                 required
@@ -153,7 +170,9 @@ class PasswordForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn size="medium" className="m-password-form__action" bottomSpace>
-              <Button shape="plain" display="expanded" type="submit">{__('password.form.action.validate')}</Button>
+              <Button shape="plain" display="expanded" type="submit">
+                {__('password.form.action.validate')}
+              </Button>
             </FormColumn>
             <FormColumn size="shrink" className="m-password-form__action">
               <Button shape="hollow" display="expanded" onClick={onCancel}>{__('password.form.action.cancel')}</Button>
