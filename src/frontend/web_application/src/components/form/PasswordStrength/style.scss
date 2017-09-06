@@ -18,11 +18,12 @@ $color-strong: map_get($caliopen-palette, 'success');
 .m-password-strength {
 
   &__graph {
-    @include flex-grid-row;
+    @include flex-grid-row($size: expand);
   }
 
   &__icon {
-    @include flex-grid-column(shrink);
+    @include flex-grid-size(shrink);
+    padding-right: $bar-margin;
   }
 
   &__guide {
@@ -64,7 +65,8 @@ $color-strong: map_get($caliopen-palette, 'success');
   }
 
   &__text {
-    padding-left: map-get($co-form__spacing, 'xlarge');;
+    @include flex-grid-size(12);
+    padding-left: map-get($co-form__spacing, 'medium');;
     font-size: $co-font__size--xsmall;
     font-weight: 700;
     text-shadow: 0 0 1px $co-color__shadow;
