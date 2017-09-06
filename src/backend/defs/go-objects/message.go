@@ -44,7 +44,7 @@ type Message struct {
 type MessagesListFilter struct {
 	Limit   int
 	Offset  int
-	Terms   map[string]string
+	Terms   map[string][]string
 	User_id UUID
 }
 

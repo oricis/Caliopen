@@ -21,18 +21,16 @@ func GetMessagesList(ctx *gin.Context) {
 	user_uuid, _ := uuid.FromString(ctx.MustGet("user_id").(string))
 	var user_UUID UUID
 	user_UUID.UnmarshalBinary(user_uuid.Bytes())
-	discussion_id := ctx.Request.URL.Query().Get("discussion_id")
-	if discussion_id == "" {
-		e := swgErr.New(http.StatusUnprocessableEntity, "Missing 'discussion_id' param in query")
-		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-		ctx.Abort()
-		return
-	}
+	//discussion_id := ctx.Request.URL.Query().Get("discussion_id")
+	limit, _ := strconv.Atoi(ctx.Request.URL.Query().Get("limit"))
+	offset, _ := strconv.Atoi(ctx.Request.URL.Query().Get("offset"))
+	query_values := ctx.Request.URL.Query()
+
 	filter := MessagesListFilter{
 		User_id: user_UUID,
-		Terms: map[string]string{
-			"discussion_id": discussion_id,
-		},
+		Terms:   map[string][]string(query_values),
+		Limit:   limit,
+		Offset:  offset,
 	}
 	list, err := caliopen.Facilities.RESTfacility.GetMessagesList(filter)
 	if err != nil {
