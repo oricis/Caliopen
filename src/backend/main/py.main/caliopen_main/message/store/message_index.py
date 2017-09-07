@@ -51,7 +51,7 @@ class IndexedMessage(BaseIndexDocument):
     def create_mapping(cls, user_id):
         """Create elasticsearch mapping object for an user."""
         m = Mapping(cls.doc_type)
-        m.meta('_all', enabled=False)
+        m.meta('_all', enabled=True)
         m.field('attachments', Nested(doc_class=IndexedMessageAttachment,
                                       include_in_all=True))
         m.field('body_html', 'text')

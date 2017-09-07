@@ -97,7 +97,8 @@ class Contact(Api):
 
         contact = ContactObject(self.user.user_id, contact_id=contact_id)
         try:
-            contact.apply_patch(patch, db=True, index=True)
+            contact.apply_patch(patch, db=True, index=True,
+                                with_validation=True)
         except Exception as exc:
             raise MergePatchError(error=exc)
 
