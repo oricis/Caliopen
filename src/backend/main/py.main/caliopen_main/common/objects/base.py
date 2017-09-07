@@ -340,15 +340,16 @@ class ObjectUser(ObjectStorable):
         except Exception as exc:
             log.info(exc)
             raise main_errors.PatchUnprocessable(message="unable to unmarshall"
-                                                          " patch into object")
+                                                         " patch into object <{}>".format(
+                exc))
         try:
             obj_patch_old.unmarshall_json_dict(patch_current)
         except Exception as exc:
             log.info(exc)
             raise main_errors.PatchUnprocessable(message="unable to unmarshall"
-                                                          " patch into object")
+                                                         " patch into object <{}>".format(
+                exc))
         self.get_db()
-
 
         # TODO : manage protected attributes, to prevent patch on them
         # check if patch is consistent with db current state
@@ -359,8 +360,8 @@ class ObjectUser(ObjectStorable):
             current_attr = self._attrs[key]
             try:
                 self._check_key_consistency(current_attr, key,
-                                                obj_patch_old,
-                                                obj_patch_new)
+                                            obj_patch_old,
+                                            obj_patch_new)
             except Exception as exc:
                 log.info("key consistency checking failed: {}".format(exc))
                 raise exc
@@ -379,8 +380,20 @@ class ObjectUser(ObjectStorable):
             if patch[key] is not None:
                 unmarshall_item(patch, key, self, self._attrs[key],
                                 create_sub_object)
+
         if "db" in options and options["db"] is True:
             # apply changes to db model and update db
+            if "with_validation" in options and options[
+                "with_validation"] is True:
+                d = self.marshall_dict()
+                try:
+                    self._json_model(d).validate()
+                except Exception as exc:
+                    log.info("document is not valid: {}".format(exc))
+                    raise main_errors.PatchUnprocessable(
+                        message="document is not valid,"
+                                " can't insert it into db: <{}>".format(exc))
+
             self.marshall_db()
             try:
                 self.update_db()

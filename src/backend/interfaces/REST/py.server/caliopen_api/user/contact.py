@@ -51,8 +51,16 @@ class Contact(Api):
                          'offset': self.get_offset()}
         log.debug('Filter parameters {}'.format(filter_params))
         results = CoreContact._model_class.search(self.user, **filter_params)
-        data = [ReturnContact.build(CoreContact.get(self.user, x.contact_id)).
-                serialize() for x in results]
+        data = []
+        for item in results:
+            try:
+                c = ReturnContact.build(
+                    CoreContact.get(self.user, item.contact_id)). \
+                    serialize()
+                data.append(c)
+            except Exception as exc:
+                log.error("unable to serialize contact : {}".format(exc))
+
         return {'contacts': data, 'total': results.hits.total}
 
     @view(renderer='json', permission='authenticated')
@@ -97,7 +105,8 @@ class Contact(Api):
 
         contact = ContactObject(self.user.user_id, contact_id=contact_id)
         try:
-            contact.apply_patch(patch, db=True, index=True)
+            contact.apply_patch(patch, db=True, index=True,
+                                with_validation=True)
         except Exception as exc:
             raise MergePatchError(error=exc)
 
