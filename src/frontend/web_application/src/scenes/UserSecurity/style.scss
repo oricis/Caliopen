@@ -1,0 +1,23 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-user-account-security {
+
+  &__credentials {
+    @include flex-grid-row;
+  }
+
+  &__login,
+  &__password {
+    @include flex-grid-size(12);
+    margin-bottom: $co-margin;
+  }
+
+  @include breakpoint(medium) {
+    &__login,
+    &__password {
+      @include flex-grid-column(6);
+      margin-bottom: 0;
+    }
+  }
+}

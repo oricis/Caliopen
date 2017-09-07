@@ -7,7 +7,6 @@
   @if has-value($co-animation__box-transition) {
     transition: $co-animation__box-transition;
   }
-
 }
 
 @mixin o-form-element-select-wrapper {
@@ -47,6 +46,8 @@
     background-color: $co-color__fg__back--lower;
     color: $co-color__fg__text;
   }
+
+  &:disabled { background: $co-color__fg__back--high; }
 
   // ::placeholder
   &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
