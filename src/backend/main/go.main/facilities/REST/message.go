@@ -29,7 +29,7 @@ func (rest *RESTfacility) GetRawMessage(raw_message_id string) (raw_message []by
 }
 
 //return a list of messages given filter parameters
-//messages are sanitized, ie : ready for display in front interface
+//messages are sanitized, ie : ready for display in front interface, and an excerpt of body is generated
 func (rest *RESTfacility) GetMessagesList(filter MessagesListFilter) (messages []*Message, err error) {
 	messages, err = rest.index.FilterMessages(filter)
 	if err != nil {
@@ -37,6 +37,7 @@ func (rest *RESTfacility) GetMessagesList(filter MessagesListFilter) (messages [
 	}
 	for _, msg := range messages {
 		helpers.SanitizeMessageBodies(msg)
+		(*msg).Body_excerpt = helpers.ExcerptMessage(*msg, 200, true, true)
 	}
 	return
 }
