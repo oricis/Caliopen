@@ -58,7 +58,11 @@ class SpamScorer(object):
             self.score = min(100.0, self.scores['level'] * 4.0)
         if 'score' in self.scores:
             self.method = 'score'
-            self.score = min(0.0, self.scores['score']) * 10.0
+            score = self.scores['score']
+            if score < 0:
+                self.score = 0
+            else:
+                self.score = min(0.0, self.scores['score']) * 10.0
         if 'status_score' in self.scores:
             self.method = 'status'
             if self.scores['status_score'] < 2.0:
