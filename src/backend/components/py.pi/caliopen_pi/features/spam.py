@@ -58,11 +58,7 @@ class SpamScorer(object):
             self.score = min(100.0, self.scores['level'] * 4.0)
         if 'score' in self.scores:
             self.method = 'score'
-            score = self.scores['score']
-            if score < 0:
-                self.score = 0
-            else:
-                self.score = min(0.0, self.scores['score']) * 10.0
+            self.score = min(0.0, self.scores['score']) * 10.0
         if 'status_score' in self.scores:
             self.method = 'status'
             if self.scores['status_score'] < 2.0:
@@ -75,3 +71,7 @@ class SpamScorer(object):
             self.source_flag = self.scores['flag']
         if not self.is_spam and self.score >= 50:
             self.is_spam = True
+        if self.score < 0:
+            self.score = 0.0
+        if self.score > 100:
+            self.score = 100.0
