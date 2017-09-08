@@ -49,5 +49,6 @@ func (rest *RESTfacility) GetMessage(user_id, msg_id string) (msg *Message, err 
 		return nil, err
 	}
 	helpers.SanitizeMessageBodies(msg)
+	(*msg).Body_excerpt = helpers.ExcerptMessage(*msg, 200, true, true)
 	return msg, err
 }
