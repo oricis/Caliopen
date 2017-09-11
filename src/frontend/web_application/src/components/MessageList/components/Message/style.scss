@@ -1,5 +1,6 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 @import '../../../../styles/object/o-avatar';
+@import '../../../../styles/object/o-reset-html-message';
 
 .m-message {
   @include flex-grid-row($size: expand);
@@ -23,9 +24,26 @@
 
   &__top-bar {
     @include flex-grid-row($size: expand);
-    justify-content: center;
+    align-items: center;
     border-bottom: 1px solid $co-color__fg__back--lower;
     background: $co-color__fg__back--higher;
+  }
+
+  &__type {  @include flex-grid-size(shrink); }
+  &__type-icon { color: $co-color__fg__text; }
+  &__type-label { display: none; }
+
+  &__pi { @include flex-grid-size(shrink); }
+
+  &__author {
+    @include flex-grid-column;
+    color: $co-color__fg__text--high;
+    font-weight: 600;
+  }
+
+  &__date {
+    @include flex-grid-column(shrink);
+    margin-left: auto;
   }
 
   &__actions-switcher {
@@ -60,16 +78,7 @@
       }
     }
 
-    &--html {
-      blockquote {
-        display: block;
-        margin-left: $co-component__spacing / 2;
-        padding: $co-component__spacing;
-        border-left: 2px solid $co-color__fg__back--high;
-        color: $co-color__fg__text--lower;
-        font-size: $co-font__size--small;
-      }
-    }
+    &--html { @include o-reset-html-message; }
   }
 
   &__expand-button {
@@ -78,29 +87,6 @@
     color: $co-color__fg__text--lower;
     line-height: $co-component__height;
     text-align: center;
-  }
-
-  &__infos-container {
-    @include flex-grid-row($size: expand);
-    flex: 1;
-    align-items: center;
-  }
-
-  &__type {  @include flex-grid-size(shrink); }
-  &__type-icon { color: $co-color__fg__text; }
-  &__type-label { display: none; }
-
-  &__pi { @include flex-grid-size(shrink); }
-
-  &__author {
-    @include flex-grid-column;
-    color: $co-color__fg__text--high;
-    font-weight: 600;
-  }
-
-  &__date {
-    @include flex-grid-column(shrink);
-    margin-left: auto;
   }
 
   @include breakpoint(medium) {

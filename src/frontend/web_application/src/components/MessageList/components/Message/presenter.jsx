@@ -15,40 +15,6 @@ import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
 
-const MessageInfosContainer = ({ __, message, author, locale }) => {
-  const typeTranslations = {
-    email: __('message-list.message.protocol.email'),
-  };
-
-  return (
-    <div className="m-message__infos-container">
-      <TextBlock className="m-message__author">{author.address}</TextBlock>
-      {message.type &&
-        (<div className="m-message__type">
-          <span className="m-message__type-label">
-            {__('message-list.message.by', { type: typeTranslations[message.type] })}
-          </span>
-          {' '}
-          <Icon type={message.type} className="m-message__type-icon" spaced />
-        </div>
-      )}
-      <Moment className="m-message__date" format="LT" locale={locale}>
-        {message.date}
-      </Moment>
-    </div>
-  );
-};
-
-MessageInfosContainer.propTypes = {
-  author: PropTypes.shape({}).isRequired,
-  message: PropTypes.shape({}).isRequired,
-  locale: PropTypes.string,
-  __: PropTypes.func.isRequired,
-};
-MessageInfosContainer.defaultProps = {
-  locale: undefined,
-};
-
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
@@ -117,6 +83,9 @@ class Message extends Component {
     );
 
     const dropdownId = uuidV1();
+    const typeTranslations = {
+      email: __('message-list.message.protocol.email'),
+    };
 
     return (
       <div className="m-message">
@@ -130,12 +99,20 @@ class Message extends Component {
           <div className={topBarClassName}>
             <MultidimensionalPi pi={message.pi} className="m-message__pi" mini />
 
-            <MessageInfosContainer
-              message={message}
-              author={author}
-              locale={locale}
-              __={__}
-            />
+            <TextBlock className="m-message__author">{author.address}</TextBlock>
+            {message.type &&
+              (<div className="m-message__type">
+                <span className="m-message__type-label">
+                  {__('message-list.message.by', { type: typeTranslations[message.type] })}
+                </span>
+                {' '}
+                <Icon type={message.type} className="m-message__type-icon" spaced />
+              </div>
+            )}
+
+            <Moment className="m-message__date" format="LT" locale={locale}>
+              {message.date}
+            </Moment>
 
             <DropdownControl toggle={dropdownId} className="m-message__actions-switcher">
               <Icon type="ellipsis-v" />
