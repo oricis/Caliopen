@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthPage from '../../layouts/AuthPage';
 import Signin from '../Signin';
 import Signup from '../Signup';
+import ResetPassword from '../ResetPassword';
 
 const Auth = () => (
   <AuthPage>
@@ -10,6 +11,7 @@ const Auth = () => (
       <Route exact path="/auth/"><Redirect to="signin" /></Route>
       <Route path="/auth/signin" component={Signin} />
       <Route path="/auth/signup" component={Signup} />
+      <Route path="/auth/reset-password" component={ResetPassword} />
       <Route path="/auth/signout"><Redirect to="signin" /></Route>
     </Switch>
   </AuthPage>
