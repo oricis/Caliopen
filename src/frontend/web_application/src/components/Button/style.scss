@@ -46,7 +46,11 @@
     }
 
   }
-  &--inline { @include o-clickable--inline; }
+
+  &--inline {
+    @include o-clickable--inline;
+    @include o-clickable--text;
+  }
 
   &--active {
     @include o-clickable--active-text;

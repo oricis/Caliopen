@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import PasswordResetForm from '../PasswordResetForm';
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../form';
 import Button from '../Button';
 import Section from '../Section';
@@ -27,6 +28,7 @@ class SigninForm extends Component {
   };
 
   state = {
+    resetPassword: false,
     formValues: {
       username: '',
       password: '',
@@ -57,63 +59,81 @@ class SigninForm extends Component {
     this.props.onSubmit({ formValues });
   }
 
+  toggleResetPassword = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      resetPassword: !prevState.resetPassword,
+    }));
+  }
+
+  handleSubmitReset = () => {
+    // TODO: processing reset form
+  }
+
   render() {
     const { errors = {}, form, __ } = this.props;
 
     return (
-      <Section className="s-signin" title={__('signin.title')}>
+      <Section className="s-signin" title={this.state.resetPassword ? __('Reset your password') : __('signin.title')}>
         <FormGrid className="s-signin__form">
-          <form method="post" {...form}>
-            { errors.global && (
-              <FormColumn bottomSpace>
-                <FormRow>
-                  <FieldErrors errors={errors.global} />
-                </FormRow>
-              </FormColumn>
-            )}
-            <FormRow>
-              <FormColumn bottomSpace>
-                <TextFieldGroup
-                  id="signin_username"
-                  label={__('signin.form.username.label')}
-                  placeholder={__('signin.form.username.placeholder')}
-                  name="username"
-                  value={this.state.username}
-                  errors={errors.username}
-                  onChange={this.handleInputChange}
-                  showLabelforSr
-                />
-              </FormColumn>
-              <FormColumn bottomSpace>
-                <TextFieldGroup
-                  id="signin_password"
-                  label={__('signin.form.password.label')}
-                  placeholder={__('signin.form.password.placeholder')}
-                  name="password"
-                  type="password"
-                  value={this.state.password}
-                  errors={errors.password}
-                  onChange={this.handleInputChange}
-                  showLabelforSr
-                />
-              </FormColumn>
-            </FormRow>
-            <FormRow>
-              <FormColumn className="s-signin__action" bottomSpace>
-                <Button
-                  type="submit"
-                  onClick={this.handleSubmit}
-                  display="expanded"
-                  shape="plain"
-                >{__('signin.action.login')}</Button>
-              </FormColumn>
-            </FormRow>
-            <FormRow>
-              <FormColumn>
-                <Link to="/auth/signup">{__('signin.create_an_account')}</Link>
-              </FormColumn>
-            </FormRow>
-          </form>
+          {this.state.resetPassword ?
+            <PasswordResetForm __={__} onSubmit={this.toggleResetPassword} />
+            :
+            <form method="post" {...form}>
+              { errors.global && (
+                <FormColumn bottomSpace>
+                  <FormRow>
+                    <FieldErrors errors={errors.global} />
+                  </FormRow>
+                </FormColumn>
+              )}
+              <FormRow>
+                <FormColumn bottomSpace>
+                  <TextFieldGroup
+                    id="signin_username"
+                    label={__('signin.form.username.label')}
+                    placeholder={__('signin.form.username.placeholder')}
+                    name="username"
+                    value={this.state.username}
+                    errors={errors.username}
+                    onChange={this.handleInputChange}
+                    showLabelforSr
+                  />
+                </FormColumn>
+                <FormColumn bottomSpace>
+                  <TextFieldGroup
+                    id="signin_password"
+                    label={__('signin.form.password.label')}
+                    placeholder={__('signin.form.password.placeholder')}
+                    name="password"
+                    type="password"
+                    value={this.state.password}
+                    errors={errors.password}
+                    onChange={this.handleInputChange}
+                    showLabelforSr
+                  />
+                </FormColumn>
+              </FormRow>
+              <FormRow>
+                <FormColumn className="s-signin__action" bottomSpace>
+                  <Button
+                    type="submit"
+                    onClick={this.handleSubmit}
+                    display="expanded"
+                    shape="plain"
+                  >{__('signin.action.login')}</Button>
+                </FormColumn>
+              </FormRow>
+              <FormRow>
+                <FormColumn bottomSpace>
+                  <Button display="inline" onClick={this.toggleResetPassword}>{__('Reset password')}</Button>
+                </FormColumn>
+                <FormColumn>
+                  <Link to="/auth/signup">{__('signin.create_an_account')}</Link>
+                </FormColumn>
+              </FormRow>
+            </form>
+          }
         </FormGrid>
       </Section>
     );

@@ -56,7 +56,7 @@ class TagSearch extends Component {
           onChange={this.handleChange}
           showLabelforSr
         />
-        <Button display="inline" icon="search" onClick={this.handleSubmit} />
+        <Button className="m-tags-search__button" icon="search" onClick={this.handleSubmit} />
       </div>
     );
   }

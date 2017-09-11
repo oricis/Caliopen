@@ -1,0 +1,7 @@
+@import '../../styles/common';
+
+.m-password-reset-form {
+  &__action {
+    line-height: $co-component__height;
+  }
+}

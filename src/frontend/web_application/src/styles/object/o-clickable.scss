@@ -77,9 +77,16 @@
 }
 
 @mixin o-clickable--inline {
-  margin-left: 1px;
-  background: $co-color__fg__back--lower;
-  font-size: $co-font__size--xsmall;
+  display: inline;
+  padding: 0;
+  background-color: transparent;
+  line-height: inherit;
+  white-space: nowrap;
+
+  &:hover,
+  &:active {
+    background-color: transparent;
+  }
 }
 
 @mixin o-clickable--active-text {
