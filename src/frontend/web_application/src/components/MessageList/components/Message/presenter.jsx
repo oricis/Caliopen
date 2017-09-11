@@ -6,6 +6,7 @@ import ContactAvatarLetter from '../../../ContactAvatarLetter';
 import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
 import Button from '../../../Button';
 import Icon from '../../../Icon';
+import TextBlock from '../../../TextBlock';
 import MultidimensionalPi from '../../../MultidimensionalPi';
 
 import MessageActionsContainer from '../MessageActionsContainer';
@@ -21,7 +22,7 @@ const MessageInfosContainer = ({ __, message, author, locale }) => {
 
   return (
     <div className="m-message__infos-container">
-      <div className="m-message__author">{author.address}</div>
+      <TextBlock className="m-message__author">{author.address}</TextBlock>
       {message.type &&
         (<div className="m-message__type">
           <span className="m-message__type-label">
@@ -62,17 +63,12 @@ class Message extends Component {
     locale: undefined,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      body: '',
-      isExpanded: true,
-      isTooLong: false,
-      isActive: false,
-    };
-    this.handleActiveClick = this.handleActiveClick.bind(this);
-    this.handleExpandClick = this.handleExpandClick.bind(this);
-  }
+  state = {
+    body: '',
+    exerpt: '',
+    isExerpt: false,
+    isTooLong: false,
+  };
 
   componentDidMount() {
     this.setBodyHeight();
@@ -86,34 +82,21 @@ class Message extends Component {
     }
   }
 
-  setBodyHeight() {
+  setBodyHeight = () => {
     const message = this.props.message;
     const body = message.body;
     if (body.length > 140) {
       this.setState({
         isTooLong: true,
-        isExpanded: false,
-        body: body.substring(0, 140),
-      });
-    } else {
-      this.setState({
-        body,
+        isExerpt: true,
+        exerpt: body.substring(0, 140),
       });
     }
   }
 
-  handleActiveClick() {
+  handleExpandClick = () => {
     this.setState(prevState => ({
-      isActive: !prevState.isActive,
-    }));
-  }
-
-  handleExpandClick() {
-    const message = this.props.message;
-    const body = message.body;
-    this.setState(prevState => ({
-      isExpanded: !prevState.isExpanded,
-      body: prevState.isExpanded ? body.substring(0, 140) : body,
+      isExerpt: !prevState.isExerpt,
     }));
   }
 
@@ -121,13 +104,16 @@ class Message extends Component {
     const { message, locale, onDelete, __ } = this.props;
     const author = message.participants.find(participant => participant.type === 'From');
     const subject = message.subject;
+
+    const bodyClassName = classnames(
+      'm-message__body',
+      { 'm-message__body--exerpt': this.state.isExerpt },
+      { 'm-message__body--html': !message.body_is_plain },
+    );
+
     const topBarClassName = classnames(
       'm-message__top-bar',
-      { 'm-message__top-bar--active': this.state.isActive }
-    );
-    const bodyClassName = classnames(
-      'm-message__body__content',
-      { 'm-message__body__content--expanded': this.state.isExpanded }
+      { 'm-message__top-bar--new': message.is_unread },
     );
 
     const dropdownId = uuidV1();
@@ -140,7 +126,7 @@ class Message extends Component {
             className="m-message__avatar"
           />
         </div>
-        <div className="m-message__content">
+        <div className="m-message__container">
           <div className={topBarClassName}>
             <MultidimensionalPi pi={message.pi} className="m-message__pi" mini />
 
@@ -171,21 +157,36 @@ class Message extends Component {
 
           </div>
 
-          <div className="m-message__body">
-            {subject &&
-              <div className="m-message__body__subject">{subject}</div>
-            }
-            <div className={bodyClassName} dangerouslySetInnerHTML={{ __html: this.state.body }} />
-          </div>
+          {subject &&
+            <TextBlock className="m-message__subject">
+              <Icon type="comments-o" rightSpaced />{subject}
+            </TextBlock>
+          }
+          {message.body_is_plain ? (
+            <pre
+              className={bodyClassName}
+              dangerouslySetInnerHTML={
+                { __html: this.state.isExerpt ? this.state.exerpt : message.body }
+              }
+            />
+          ) : (
+            <div
+              className={bodyClassName}
+              dangerouslySetInnerHTML={
+                { __html: this.state.isExerpt ? this.state.exerpt : message.body }
+              }
+            />
+            )
+          }
 
           {this.state.isTooLong &&
             <div className="m-message__expand-button">
               <Button
                 onClick={this.handleExpandClick}
-                value={this.state.isExpanded}
-                title={this.state.isExpanded ? __('message-list.message.action.collapse') : __('message-list.message.action.expand')}
+                value={this.state.isExerpt}
+                display="expanded"
               >
-                {this.state.isExpanded ? __('message-list.message.action.collapse') : __('message-list.message.action.expand')}
+                {this.state.isExerpt ? __('message-list.message.action.expand') : __('message-list.message.action.collapse')}
               </Button>
             </div>
           }

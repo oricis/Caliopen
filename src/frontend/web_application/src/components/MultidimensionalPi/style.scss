@@ -13,10 +13,12 @@
 
   &__toggle-mini-pi {
     flex: auto;
+    padding: 0;
 
+    &,
     &:hover,
     &:active {
-      background: $co-color__fg__back--high;
+      background: inherit;
     }
   }
 
@@ -28,8 +30,8 @@
     box-shadow: $co-shadow;
 
     &::before {
-      @include o-triangle('top', .75rem, $co-color__fg__back--lower);
-      left: 1rem;
+      @include o-triangle('top', .5rem, $co-color__fg__back--lower);
+      left: .5rem;
     }
   }
 }

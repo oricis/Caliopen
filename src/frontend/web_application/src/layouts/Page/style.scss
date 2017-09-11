@@ -17,7 +17,7 @@ $navigation-after__height: $co-component__spacing;
 .l-body {
   &__content {
     // XXX: need a better fix for call-to-action override on mobile
-    margin-bottom: 160px;
+    margin-bottom: 280px;
   }
 
   @include breakpoint(medium) {

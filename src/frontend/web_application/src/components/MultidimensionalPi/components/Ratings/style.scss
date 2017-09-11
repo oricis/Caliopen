@@ -1,8 +1,9 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
-$mini-pi-bar__height:  .35rem;
-$mini-pi-bar__margin: .25rem;
+$mini-pi-bar__height:  6px;
+$mini-pi-bar__margin: 1px;
+$mini-pi__height: 3 * ($mini-pi-bar__height + ($mini-pi-bar__margin * 2));
 
 .m-pi-ratings {
   max-width: map-get($co-pi-width, 'ratings');
@@ -14,7 +15,7 @@ $mini-pi-bar__margin: .25rem;
   &__item {
     @include flex-grid-row;
     align-items: center;
-    margin-top: $co-component__spacing;
+    padding-top: $co-component__spacing;
   }
 
   &__item-name {
@@ -44,19 +45,22 @@ $mini-pi-bar__margin: .25rem;
   }
 
   &--mini {
-    max-width: map-get($co-pi-width, 'mini-ratings');
+    width: $mini-pi__height;
+    max-width: $mini-pi__height;
+    padding: $co-component__spacing;
     cursor: help;
+    box-sizing: content-box;
 
     &__item {
       display: block;
-      width: map-get($co-pi-width, 'mini-ratings');;
+      width: 100%;
       max-width: 100%;
-      margin: $mini-pi-bar__margin 0;
+      padding: $mini-pi-bar__margin 0;
     }
 
     &__item-level {
       display: block;
-      width: map-get($co-pi-width, 'mini-ratings');
+      width: 100%;
       max-width: 100%;
     }
 
