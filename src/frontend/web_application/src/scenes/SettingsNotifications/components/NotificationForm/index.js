@@ -24,7 +24,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withTranslator(),
   reduxForm({
-    form: 'settings-contact',
+    form: 'settings-notification',
     enableReinitialize: true,
   })
 )(Presenter);

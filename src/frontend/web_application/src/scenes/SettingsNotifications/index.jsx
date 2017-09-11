@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 // import PropTypes from 'prop-types';
 import Section from '../../components/Section';
 import BrowserNotifications from './components//BrowserNotifications';
+import NotificationForm from './components/NotificationForm';
 
-class SettingsNotifications extends Component {
+class SettingsNotifications extends PureComponent {
   static propTypes = {
 
   };
@@ -13,12 +14,10 @@ class SettingsNotifications extends Component {
   };
 
   render() {
-    // const { __, isFetching, contact } = this.props;
-
     return (
       <div className="s-settings-notifications">
         <Section title="notifications settings">
-          settings notifications
+          <NotificationForm />
         </Section>
         <Section title="browser notifications settings">
           <BrowserNotifications />
