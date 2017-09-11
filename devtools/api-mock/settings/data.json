@@ -1,10 +1,11 @@
 {
-  "default_language": "fr_FR",
-  "default_timezone": "Europe/Paris",
-  "date_format": "DD/MM/YYYY HH:mm:ss",
-  "message_display_format": "html",
-  "contact_display_order": "a-z",
-  "contact_phone_format": "",
-  "notification_style": "",
-  "notification_delay": ""
+  "default_locale": "fr_FR",
+  "message_display_format": "rich_text",
+  "contact_display_order": "given_name",
+  "contact_display_order_by": "given_name",
+  "notification_enabled": true,
+  "notification_message_preview": "always",
+  "notification_sound_enabled": true,
+  "notification_delay_disappear": 10,
+  "notification_delay_disappear_unit": "s",
 }
