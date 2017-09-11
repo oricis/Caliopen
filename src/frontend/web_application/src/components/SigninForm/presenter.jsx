@@ -5,6 +5,7 @@ import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../f
 import Button from '../Button';
 import Section from '../Section';
 import Link from '../Link';
+import Icon from '../Icon';
 
 import './style.scss';
 
@@ -29,6 +30,7 @@ class SigninForm extends Component {
 
   state = {
     resetPassword: false,
+    resetPasswordSucces: false,
     formValues: {
       username: '',
       password: '',
@@ -63,32 +65,49 @@ class SigninForm extends Component {
     this.setState(prevState => ({
       ...prevState,
       resetPassword: !prevState.resetPassword,
+      resetPasswordSucces: false,
     }));
   }
 
   handleSubmitReset = () => {
     // TODO: processing reset form
+    this.setState(prevState => ({
+      ...prevState,
+      resetPassword: false,
+      resetPasswordSucces: !prevState.resetPasswordSucces,
+    }));
   }
 
   render() {
     const { errors = {}, form, __ } = this.props;
 
     return (
-      <Section className="s-signin" title={this.state.resetPassword ? __('Reset your password') : __('signin.title')}>
-        <FormGrid className="s-signin__form">
-          {this.state.resetPassword ?
-            <PasswordResetForm __={__} onSubmit={this.toggleResetPassword} />
-            :
+      <Section className="s-signin" title={this.state.resetPassword ? __('password.reset-form.title') : __('signin.title')}>
+        {this.state.resetPassword ? (
+          <PasswordResetForm
+            onSubmit={this.handleSubmitReset}
+            cancel={this.toggleResetPassword}
+            __={__}
+          />
+        ) : (
+          <FormGrid className="s-signin__form">
             <form method="post" {...form}>
               { errors.global && (
-                <FormColumn bottomSpace>
-                  <FormRow>
+                <FormRow>
+                  <FormColumn size="full" bottomSpace>
                     <FieldErrors errors={errors.global} />
-                  </FormRow>
-                </FormColumn>
+                  </FormColumn>
+                </FormRow>
+              )}
+              { this.state.resetPasswordSucces && (
+                <FormRow>
+                  <FormColumn size="full" bottomSpace className="s-signin__password-success">
+                    <Icon type="check" rightSpaced />{__('password.reset-form.success')}
+                  </FormColumn>
+                </FormRow>
               )}
               <FormRow>
-                <FormColumn bottomSpace>
+                <FormColumn size="full" bottomSpace>
                   <TextFieldGroup
                     id="signin_username"
                     label={__('signin.form.username.label')}
@@ -100,7 +119,7 @@ class SigninForm extends Component {
                     showLabelforSr
                   />
                 </FormColumn>
-                <FormColumn bottomSpace>
+                <FormColumn size="full" bottomSpace>
                   <TextFieldGroup
                     id="signin_password"
                     label={__('signin.form.password.label')}
@@ -115,7 +134,7 @@ class SigninForm extends Component {
                 </FormColumn>
               </FormRow>
               <FormRow>
-                <FormColumn className="s-signin__action" bottomSpace>
+                <FormColumn size="full" className="s-signin__action" bottomSpace>
                   <Button
                     type="submit"
                     onClick={this.handleSubmit}
@@ -125,16 +144,16 @@ class SigninForm extends Component {
                 </FormColumn>
               </FormRow>
               <FormRow>
-                <FormColumn bottomSpace>
-                  <Button display="inline" onClick={this.toggleResetPassword}>{__('Reset password')}</Button>
+                <FormColumn size="full">
+                  <Button display="inline" onClick={this.toggleResetPassword}>{__('signin.action.forgot_password')}</Button>
                 </FormColumn>
-                <FormColumn>
+                <FormColumn size="full">
                   <Link to="/auth/signup">{__('signin.create_an_account')}</Link>
                 </FormColumn>
               </FormRow>
             </form>
-          }
-        </FormGrid>
+          </FormGrid>
+        )}
       </Section>
     );
   }

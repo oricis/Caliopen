@@ -11,6 +11,7 @@ export const FormColumn = ({ className, bottomSpace, size, fluid, ...props }) =>
     'm-form-grid__column--small': size === 'small',
     'm-form-grid__column--medium': size === 'medium',
     'm-form-grid__column--large': size === 'large',
+    'm-form-grid__column--full': size === 'full',
   }, className);
 
   return (
@@ -20,7 +21,7 @@ export const FormColumn = ({ className, bottomSpace, size, fluid, ...props }) =>
 
 FormColumn.propTypes = {
   className: PropTypes.string,
-  size: PropTypes.oneOf(['shrink', 'small', 'medium', 'large']),
+  size: PropTypes.oneOf(['shrink', 'small', 'medium', 'large', 'full']),
   fluid: PropTypes.bool,
   bottomSpace: PropTypes.bool,
 };

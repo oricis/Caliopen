@@ -31,6 +31,10 @@
 
       padding-right: map_get($co-form__spacing, 'medium');
 
+      &--full {
+        padding-right: 0;
+      }
+
       &--align-right {
         text-align: right;
       }

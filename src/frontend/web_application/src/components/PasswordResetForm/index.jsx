@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormRow, FormColumn, FieldErrors, TextFieldGroup } from '../form';
+import { Fieldset, Legend, FormGrid, FormRow, FormColumn, FieldErrors, TextFieldGroup } from '../form';
 import Button from '../Button';
+
 import './style.scss';
 
 class PasswordResetForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
     onSubmit: PropTypes.func.isRequired,
+    cancel: PropTypes.func,
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     errors: {},
+    cancel: str => str,
   };
 
   state = {
@@ -38,40 +41,55 @@ class PasswordResetForm extends Component {
   }
 
   render() {
-    const { __, errors } = this.props;
+    const { __, errors, cancel } = this.props;
 
     return (
-      <form method="post" onSubmit={this.handleSubmit}>
-        { errors.global && (
-          <FormColumn bottomSpace>
+      <FormGrid className="m-password-reset-form">
+        <form method="post" onSubmit={this.handleSubmit}>
+          <Fieldset>
             <FormRow>
-              <FieldErrors errors={errors.global} />
+              <FormColumn>
+                <Legend size="full" bottomSpace>
+                  {__('password.reset-form.instructions')}
+                </Legend>
+              </FormColumn>
             </FormRow>
-          </FormColumn>
-        )}
-        <FormRow>
-          <FormColumn bottomSpace>
-            <TextFieldGroup
-              label={__('signin.form.username.label')}
-              placeholder={__('signin.form.username.placeholder')}
-              name="username"
-              value={this.state.formValues.username}
-              errors={errors.username}
-              onChange={this.handleInputChange}
-              showLabelforSr
-            />
-          </FormColumn>
-        </FormRow>
-        <FormRow>
-          <FormColumn className="m-password-reset-form__action" bottomSpace>
-            <Button
-              type="submit"
-              display="expanded"
-              shape="plain"
-            >{__('Reset password')}</Button>
-          </FormColumn>
-        </FormRow>
-      </form>
+            {errors.global && (
+              <FormRow>
+                <FormColumn size="full" bottomSpace>
+                  <FieldErrors errors={errors.global} />
+                </FormColumn>
+              </FormRow>
+            )}
+            <FormRow>
+              <FormColumn size="full" bottomSpace>
+                <TextFieldGroup
+                  label={__('password.reset-form.username.label')}
+                  placeholder={__('password.reset-form.username.placeholder')}
+                  name="username"
+                  value={this.state.formValues.username}
+                  errors={errors.username}
+                  onChange={this.handleInputChange}
+                  required
+                  showLabelforSr
+                />
+              </FormColumn>
+              <FormColumn size="full" className="m-password-reset-form__action" bottomSpace>
+                <Button
+                  type="submit"
+                  display="expanded"
+                  shape="plain"
+                >{__('password.reset-form.action.reset')}</Button>
+              </FormColumn>
+            </FormRow>
+            <FormRow>
+              <FormColumn size="full">
+                <Button display="inline" onClick={cancel}>{__('back to login')}</Button>
+              </FormColumn>
+            </FormRow>
+          </Fieldset>
+        </form>
+      </FormGrid>
     );
   }
 }
