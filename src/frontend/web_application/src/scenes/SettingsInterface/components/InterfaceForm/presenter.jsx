@@ -1,92 +1,67 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Field } from 'redux-form';
+import moment from 'moment-timezone';
 import Button from '../../../../components/Button';
-import { FormGrid, FormRow, FormColumn, SelectFieldGroup, FieldErrors } from '../../../../components/form';
+import { FormGrid, FormRow, FormColumn, SelectFieldGroup as SelectFieldGroupBase, FieldErrors } from '../../../../components/form';
+import renderReduxField from '../../../../services/renderReduxField';
 
-// FIXME: i18n the following:
-const LANGUAGES = ['Français', 'English'];
-const TIME_ZONES = ['Automatic', 'Timezone 1', 'Timezone 2'];
-const DATE_FORMATS = ['DD/MM/YYYY', 'MM/DD/YYYY'];
-const TIME_FORMATS = ['12h', '24h'];
-const REFRESH = ['Every 1 minute', 'Every 5 minutes', 'Every 10 minutes', 'Every 30 minutes'];
+const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 
-function generateStateFromProps(props, prevState) {
-  return {
-    settings: {
-      ...prevState.settings,
-      ...props.settings,
-    },
-  };
-}
+const LANGUAGES = ['fr_FR', 'en_EN'];
+const TIMEZONES = moment.tz.names();
+const DATE_FORMATS = ['DD/MM/YYYY HH:mm:ss', 'MM/DD/YYYY h:mm:ss a'];
+// const TIME_FORMATS = ['12h', '24h'];
+// const REFRESH = ['Every 1 minute', 'Every 5 minutes', 'Every 10 minutes', 'Every 30 minutes'];
 
 class InterfaceForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
-    onSubmit: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    requestSettings: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
     errors: {},
   };
 
-  state = {
-    settings: {
-      language: undefined,
-      time_zone: undefined,
-      date_format: undefined,
-      time_format: undefined,
-      refresh: undefined,
-    },
-  };
-
   componentWillMount() {
-    this.setState(prevState => generateStateFromProps(this.props, prevState));
+    this.initTranslations();
   }
 
-  componentWillReceiveProps(newProps) {
-    this.setState(prevState => generateStateFromProps(newProps, prevState));
+  componentDidMount() {
+    this.props.requestSettings();
   }
 
-  getOptionsFromArray = (options, setting) => {
-    const selectedOptions = options.map(value => ({
-      value,
-      label: value,
-      selected: setting === value && setting !== null && true,
-    }));
+  getOptionsFromArray = options => options.map(value => ({
+    value,
+    label: this.i18n[value] || value,
+  }));
 
-    return selectedOptions;
+  handleSubmit = (ev) => {
+    const { handleSubmit, requestSettings } = this.props;
+
+    return handleSubmit(ev).then(requestSettings);
   }
 
-  handleSubmit = () => {
-    const { settings } = this.state;
-    this.props.onSubmit({ settings });
-  }
-
-  handleInputChange = (ev) => {
-    const { name, value } = ev.target;
-
-    this.setState(prevState => ({
-      settings: {
-        ...prevState.settings,
-        [name]: value,
-      },
-    }));
+  initTranslations() {
+    const { __ } = this.props;
+    this.i18n = {
+      fr_FR: __('settings.interface.language.options.fr'),
+      en_EN: __('settings.interface.language.options.en'),
+    };
   }
 
   render() {
     const { errors, __ } = this.props;
-    const { settings } = this.state;
-
-    const languageOptions = this.getOptionsFromArray(LANGUAGES, settings.language);
-    const timeZoneOptions = this.getOptionsFromArray(TIME_ZONES, settings.time_zone);
-    const dateFormatOptions = this.getOptionsFromArray(DATE_FORMATS, settings.date_format);
-    const timeFormatOptions = this.getOptionsFromArray(TIME_FORMATS, settings.time_format);
-    const refreshOptions = this.getOptionsFromArray(REFRESH, settings.refresh);
-
+    const languageOptions = this.getOptionsFromArray(LANGUAGES);
+    const timeZoneOptions = this.getOptionsFromArray(TIMEZONES);
+    const dateFormatOptions = this.getOptionsFromArray(DATE_FORMATS);
+    // const refreshOptions = this.getOptionsFromArray(REFRESH, settings.refresh);
 
     return (
       <FormGrid className="m-interface-form">
-        <form method="post" name="interface_form">
+        <form method="post" name="interface_form" onSubmit={this.handleSubmit}>
           {errors.global && errors.global.length !== 0 && (
           <FormRow>
             <FormColumn bottomSpace>
@@ -96,10 +71,9 @@ class InterfaceForm extends Component {
           )}
           <FormRow>
             <FormColumn size="shrink" bottomSpace >
-              <SelectFieldGroup
-                name="language"
-                value={settings.language}
-                onChange={this.handleInputChange}
+              <Field
+                component={SelectFieldGroup}
+                name="default_language"
                 label={__('settings.interface.language.label')}
                 options={languageOptions}
               />
@@ -107,10 +81,9 @@ class InterfaceForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn size="shrink" bottomSpace >
-              <SelectFieldGroup
-                name="time_zone"
-                value={settings.time_zone}
-                onChange={this.handleInputChange}
+              <Field
+                component={SelectFieldGroup}
+                name="default_timezone"
                 label={__('settings.interface.time_zone.label')}
                 options={timeZoneOptions}
               />
@@ -118,27 +91,18 @@ class InterfaceForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn size="shrink" bottomSpace>
-              <SelectFieldGroup
+              <Field
+                component={SelectFieldGroup}
                 name="date_format"
-                value={settings.date_format}
-                onChange={this.handleInputChange}
                 label={__('settings.interface.date_format.label')}
                 options={dateFormatOptions}
               />
             </FormColumn>
-            <FormColumn size="shrink" bottomSpace>
-              <SelectFieldGroup
-                name="time_format"
-                value={settings.time_format}
-                onChange={this.handleInputChange}
-                label={__('settings.interface.time_format.label')}
-                options={timeFormatOptions}
-              />
-            </FormColumn>
           </FormRow>
-          <FormRow>
+          {/* <FormRow>
             <FormColumn size="shrink" bottomSpace >
-              <SelectFieldGroup
+              <Field
+                component={SelectFieldGroup}
                 name="refresh"
                 value={settings.refresh}
                 onChange={this.handleInputChange}
@@ -146,7 +110,7 @@ class InterfaceForm extends Component {
                 options={refreshOptions}
               />
             </FormColumn>
-          </FormRow>
+          </FormRow> */}
           <FormRow>
             <FormColumn size="shrink" className="m-interface-form__action" bottomSpace>
               <Button

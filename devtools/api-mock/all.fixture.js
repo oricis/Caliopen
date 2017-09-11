@@ -10,6 +10,7 @@ module.exports = {
     require('./contacts').default,
     require('./messages').default,
     require('./participants').default,
+    require('./settings').default,
     require('./tags').default,
   ],
 };
