@@ -31,8 +31,8 @@ class Message extends Component {
 
   state = {
     body: '',
-    exerpt: '',
-    isExerpt: false,
+    excerpt: '',
+    isExcerpt: false,
     isTooLong: false,
   };
 
@@ -54,15 +54,15 @@ class Message extends Component {
     if (body.length > 140) {
       this.setState({
         isTooLong: true,
-        isExerpt: true,
-        exerpt: body.substring(0, 140),
+        isExcerpt: true,
+        excerpt: body.substring(0, 140),
       });
     }
   }
 
   handleExpandClick = () => {
     this.setState(prevState => ({
-      isExerpt: !prevState.isExerpt,
+      isExcerpt: !prevState.isExcerpt,
     }));
   }
 
@@ -73,7 +73,7 @@ class Message extends Component {
 
     const bodyClassName = classnames(
       'm-message__body',
-      { 'm-message__body--exerpt': this.state.isExerpt },
+      { 'm-message__body--excerpt': this.state.isExcerpt },
       { 'm-message__body--html': !message.body_is_plain },
     );
 
@@ -143,14 +143,14 @@ class Message extends Component {
             <pre
               className={bodyClassName}
               dangerouslySetInnerHTML={
-                { __html: this.state.isExerpt ? this.state.exerpt : message.body }
+                { __html: this.state.isExcerpt ? this.state.excerpt : message.body }
               }
             />
           ) : (
             <div
               className={bodyClassName}
               dangerouslySetInnerHTML={
-                { __html: this.state.isExerpt ? this.state.exerpt : message.body }
+                { __html: this.state.isExcerpt ? this.state.excerpt : message.body }
               }
             />
             )
@@ -160,10 +160,10 @@ class Message extends Component {
             <div className="m-message__expand-button">
               <Button
                 onClick={this.handleExpandClick}
-                value={this.state.isExerpt}
+                value={this.state.isExcerpt}
                 display="expanded"
               >
-                {this.state.isExerpt ? __('message-list.message.action.expand') : __('message-list.message.action.collapse')}
+                {this.state.isExcerpt ? __('message-list.message.action.expand') : __('message-list.message.action.collapse')}
               </Button>
             </div>
           }
