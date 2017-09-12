@@ -13,11 +13,8 @@ import UserSecurity from './scenes/UserSecurity';
 import UserPrivacy from './scenes/UserPrivacy';
 import SettingsRoute from './scenes/SettingsRoute';
 import SettingsIdentities from './scenes/SettingsIdentities';
-import SettingsContacts from './scenes/SettingsContacts';
-import SettingsNotifications from './scenes/SettingsNotifications';
-import SettingsInterface from './scenes/SettingsInterface';
 import SettingsSignatures from './scenes/SettingsSignatures';
-import SettingsApplicationRoute from './scenes/SettingsApplicationRoute';
+import ApplicationSettings from './scenes/ApplicationSettings';
 // import DevicesRoute from './scenes/DevicesRoute';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
@@ -104,22 +101,8 @@ export const getRouteConfig = ({ __ }) => [
           },
           {
             path: '/settings/application',
-            component: SettingsApplicationRoute,
+            component: ApplicationSettings,
             label: __('settings.route.label.application'),
-            routes: [
-              {
-                path: '/settings/application/interface',
-                component: SettingsInterface,
-              },
-              {
-                path: '/settings/application/contacts',
-                component: SettingsContacts,
-              },
-              {
-                path: '/settings/application/notifications',
-                component: SettingsNotifications,
-              },
-            ],
           },
           {
             path: '/settings/tags',

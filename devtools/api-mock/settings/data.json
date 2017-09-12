@@ -7,5 +7,5 @@
   "notification_message_preview": "always",
   "notification_sound_enabled": true,
   "notification_delay_disappear": 10,
-  "notification_delay_disappear_unit": "s",
+  "notification_delay_disappear_unit": "s"
 }

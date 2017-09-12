@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withTranslator } from '@gandi/react-translate';
 import { reduxForm } from 'redux-form';
 import Presenter from './presenter';
-import { requestSettings, updateSettings } from '../../../../store/modules/settings';
+import { requestSettings, updateSettings } from '../../store/modules/settings';
 
 const settingsSelector = state => state.settings.settings;
 const mapStateToProps = createSelector(
@@ -24,7 +24,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withTranslator(),
   reduxForm({
-    form: 'settings-contact',
+    form: 'settings-application',
     enableReinitialize: true,
   })
 )(Presenter);

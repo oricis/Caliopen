@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '../../../../components/Button';
 import Notification, { isSupported, PERMISSION_DENIED, PERMISSION_GRANTED } from '../../../../services/browser-notification';
 
-class BrowserNotifications extends Component {
+class DesktopNotificationSettings extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
   };
@@ -29,7 +29,7 @@ class BrowserNotifications extends Component {
   handleClickTestBrowser = () => {
     const { __ } = this.props;
 
-    return new Notification(__('settings-view.feedback.desktop-notification-enabled'));
+    return new Notification(__('settings.desktop_notification.feedback.enabled'));
   }
 
   renderNoSupport() {
@@ -37,7 +37,7 @@ class BrowserNotifications extends Component {
 
     return (
       <div>
-        {__('settings-view.no-desktop-notification-support')}
+        {__('settings.desktop_notification.no_support')}
       </div>
     );
   }
@@ -47,24 +47,24 @@ class BrowserNotifications extends Component {
     if (this.state.hasBrowserNotificationPermission === PERMISSION_GRANTED) {
       return (
         <div>
-          {__('settings-view.desktop-notifications-enabled')}{' '}
+          {__('settings.desktop_notification.desktop_notifications_enabled')}{' '}
           <Button
             onClick={this.handleClickTestBrowser}
           >
-            {__('settings-view.action.test-desktop-notification')}
+            {__('settings.desktop_notification.action.test_desktop_notification')}
           </Button>
         </div>
       );
     }
 
     if (this.state.hasBrowserNotificationPermission === PERMISSION_DENIED) {
-      return (<div>{__('settings-view.desktop-notifications-disabled')}</div>);
+      return (<div>{__('settings.desktop_notification.disabled')}</div>);
     }
 
     return (
       <div>
         <Button onClick={this.handleRequestBrowserNotification}>
-          {__('settings-view.action.request-desktop-notification-permission')}
+          {__('settings.desktop_notification.action.request-desktop_notification_permission')}
         </Button>
       </div>
     );
@@ -81,4 +81,4 @@ class BrowserNotifications extends Component {
   }
 }
 
-export default BrowserNotifications;
+export default DesktopNotificationSettings;
