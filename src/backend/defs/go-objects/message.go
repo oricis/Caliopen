@@ -41,14 +41,6 @@ type Message struct {
 	User_id             UUID               `cql:"user_id"                  json:"user_id"                  elastic:"omit"      formatter:"rfc4122"`
 }
 
-// params to pass to API to get a messages list
-type MessagesListFilter struct {
-	Limit   int
-	Offset  int
-	Terms   map[string][]string
-	User_id UUID
-}
-
 // bespoke implementation of the json.Marshaller interface
 // outputs a JSON representation of an object
 // this marshaler takes account of custom tags for given 'context'

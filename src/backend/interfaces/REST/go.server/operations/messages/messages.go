@@ -32,7 +32,7 @@ func GetMessagesList(ctx *gin.Context) {
 		query_values.Del("offset")
 	}
 
-	filter := MessagesListFilter{
+	filter := IndexSearch{
 		User_id: user_UUID,
 		Terms:   map[string][]string(query_values),
 		Limit:   limit,

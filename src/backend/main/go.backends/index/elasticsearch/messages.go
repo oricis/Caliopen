@@ -58,7 +58,7 @@ func (es *ElasticSearchBackend) SetMessageUnread(user_id, message_id string, sta
 	return
 }
 
-func (es *ElasticSearchBackend) FilterMessages(filter objects.MessagesListFilter) (messages []*objects.Message, err error) {
+func (es *ElasticSearchBackend) FilterMessages(filter objects.IndexSearch) (messages []*objects.Message, err error) {
 
 	search := es.Client.Search().Index(filter.User_id.String()).Type("indexed_message")
 	q := elastic.NewBoolQuery()
