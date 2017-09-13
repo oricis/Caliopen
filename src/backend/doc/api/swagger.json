@@ -7844,6 +7844,733 @@
           }
         }
       }
+    },
+    "/v2/search": {
+      "get": {
+        "description": "Simple API to execute full-text searches within user's indexes. A more complexe API will be available with a POST verb.",
+        "tags": [
+          "messages",
+          "contacts",
+          "search"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "context",
+            "in": "query",
+            "description": "current user's context (to optimize search relevance). Required but not used by API for now.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "terms",
+            "in": "query",
+            "description": "a string (3 chars at least) from which to perform the search",
+            "required": true,
+            "type": "string",
+            "minLength": 3
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "number of objects to return per page"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "number of pages to skip from the response"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "an object with two arrays, Contacts & Messages objects found.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "total number of objects found"
+                },
+                "messages": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "total nomber of messages found"
+                    },
+                    "messages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "attachments": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "attachment_id": {
+                                  "type": "string"
+                                },
+                                "content_type": {
+                                  "type": "string"
+                                },
+                                "is_inline": {
+                                  "type": "boolean"
+                                },
+                                "filename": {
+                                  "type": "string"
+                                },
+                                "size": {
+                                  "type": "integer",
+                                  "format": "int64"
+                                },
+                                "url": {
+                                  "type": "string"
+                                },
+                                "mime_boundary": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "body": {
+                            "type": "string"
+                          },
+                          "body_is_plain": {
+                            "type": "boolean"
+                          },
+                          "date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "date_delete": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "date_insert": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "discussion_id": {
+                            "type": "string"
+                          },
+                          "external_references": {
+                            "type": "object",
+                            "properties": {
+                              "ancestors_id": {
+                                "type": "string"
+                              },
+                              "message_id": {
+                                "type": "string"
+                              },
+                              "parent_id": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "excerpt": {
+                            "type": "string"
+                          },
+                          "identities": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "identifier": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "importance_level": {
+                            "type": "integer",
+                            "format": "int32"
+                          },
+                          "is_answered": {
+                            "type": "boolean"
+                          },
+                          "is_draft": {
+                            "type": "boolean"
+                          },
+                          "is_unread": {
+                            "type": "boolean"
+                          },
+                          "message_id": {
+                            "type": "string"
+                          },
+                          "parent_id": {
+                            "type": "string"
+                          },
+                          "participants": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "address": {
+                                  "type": "string"
+                                },
+                                "contact_ids": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "protocol": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "To",
+                                    "Cc",
+                                    "Bcc",
+                                    "From",
+                                    "Reply-To",
+                                    "Sender"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "address",
+                                "type",
+                                "protocol"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "privacy_features": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "pi": {
+                            "type": "object",
+                            "properties": {
+                              "technic": {
+                                "type": "integer"
+                              },
+                              "context": {
+                                "type": "integer"
+                              },
+                              "comportment": {
+                                "type": "integer"
+                              },
+                              "version": {
+                                "type": "integer"
+                              }
+                            },
+                            "additionalProperties": true
+                          },
+                          "raw_msg_id": {
+                            "type": "string"
+                          },
+                          "subject": {
+                            "type": "string"
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "date_insert": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "tag_id": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "user",
+                                    "system"
+                                  ]
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "importance_level": {
+                                  "type": "integer",
+                                  "format": "int32"
+                                }
+                              },
+                              "required": [
+                                "label"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    }
+                  }
+                },
+                "contacts": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "total nomber of contacts found"
+                    },
+                    "contacts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "additional_name": {
+                            "type": "string"
+                          },
+                          "addresses": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "address_id": {
+                                  "type": "string"
+                                },
+                                "city": {
+                                  "type": "string"
+                                },
+                                "country": {
+                                  "type": "string"
+                                },
+                                "is_primary": {
+                                  "type": "boolean"
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "postal_code": {
+                                  "type": "string"
+                                },
+                                "region": {
+                                  "type": "string"
+                                },
+                                "street": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "city"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "avatar": {
+                            "type": "string"
+                          },
+                          "contact_id": {
+                            "type": "string"
+                          },
+                          "date_insert": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "date_update": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "deleted": {
+                            "type": "boolean"
+                          },
+                          "emails": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "email_id": {
+                                  "type": "string"
+                                },
+                                "address": {
+                                  "type": "string"
+                                },
+                                "is_primary": {
+                                  "type": "boolean"
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "address"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "family_name": {
+                            "type": "string"
+                          },
+                          "given_name": {
+                            "type": "string"
+                          },
+                          "groups": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "identities": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "social_id": {
+                                  "type": "string"
+                                },
+                                "infos": {
+                                  "type": "object"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "name"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "ims": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "im_id": {
+                                  "type": "string"
+                                },
+                                "address": {
+                                  "type": "string"
+                                },
+                                "is_primary": {
+                                  "type": "boolean"
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "protocol": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "address"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "infos": {
+                            "type": "object"
+                          },
+                          "name_prefix": {
+                            "type": "string"
+                          },
+                          "name_suffix": {
+                            "type": "string"
+                          },
+                          "organizations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "deleted": {
+                                  "type": "boolean"
+                                },
+                                "organization_id": {
+                                  "type": "string"
+                                },
+                                "department": {
+                                  "type": "string"
+                                },
+                                "is_primary": {
+                                  "type": "boolean"
+                                },
+                                "job_description": {
+                                  "type": "string"
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "name"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "phones": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "phone_id": {
+                                  "type": "string"
+                                },
+                                "is_primary": {
+                                  "type": "boolean"
+                                },
+                                "number": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "uri": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "number"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "pi": {
+                            "type": "object",
+                            "properties": {
+                              "technic": {
+                                "type": "integer"
+                              },
+                              "context": {
+                                "type": "integer"
+                              },
+                              "comportment": {
+                                "type": "integer"
+                              },
+                              "version": {
+                                "type": "integer"
+                              }
+                            },
+                            "additionalProperties": true
+                          },
+                          "privacy_features": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "public_keys": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "privacy_features": {
+                                  "type": "object",
+                                  "properties": {}
+                                },
+                                "pi": {
+                                  "type": "object",
+                                  "properties": {
+                                    "technic": {
+                                      "type": "integer"
+                                    },
+                                    "context": {
+                                      "type": "integer"
+                                    },
+                                    "comportment": {
+                                      "type": "integer"
+                                    },
+                                    "version": {
+                                      "type": "integer"
+                                    }
+                                  },
+                                  "additionalProperties": true
+                                },
+                                "date_insert": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "date_update": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "expire_date": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "fingerprint": {
+                                  "type": "string"
+                                },
+                                "key": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "size": {
+                                  "type": "integer",
+                                  "format": "int32"
+                                }
+                              },
+                              "required": [
+                                "key",
+                                "name"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "date_insert": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "tag_id": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "user",
+                                    "system"
+                                  ]
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "importance_level": {
+                                  "type": "integer",
+                                  "format": "int32"
+                                }
+                              },
+                              "required": [
+                                "label"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "contact_id",
+                          "user_id"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "malform request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Not yet implemented. Future route for more complexe searches.",
+        "tags": [
+          "contacts",
+          "messages",
+          "search"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "501": null,
+          "default": {
+            "description": "route not implemented, should raise an error"
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {
