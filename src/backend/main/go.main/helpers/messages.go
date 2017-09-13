@@ -90,7 +90,7 @@ func excerptFromHMTL(source string) (excerpt string, err error) {
 	}
 
 	f(doc)
-	excerpt = strings.Join(excerpt_strings, "\n")
+	excerpt = strings.Join(excerpt_strings, " ")
 	return
 }
 
