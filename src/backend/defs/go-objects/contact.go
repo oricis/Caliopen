@@ -26,6 +26,7 @@ type (
 		Organizations   []Organization    `cql:"organizations"      json:"organizations"`
 		Phones          []Phone           `cql:"phones"             json:"phones"`
 		PrivacyIndex    *PrivacyIndex     `cql:"pi"                 json:"pi"`
+		PublicKeys      []PublicKey       `cql:"public_keys"        json:"public_keys"`
 		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features"`
 		Tags            []Tag             `cql:"tags"               json:"tags"`
 		Title           string            `cql:"title"              json:"title"`
