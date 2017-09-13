@@ -62,10 +62,12 @@ func (es *ElasticSearchBackend) FilterMessages(filter objects.MessagesListFilter
 
 	search := es.Client.Search().Index(filter.User_id.String()).Type("indexed_message")
 	q := elastic.NewBoolQuery()
-	for name, value := range filter.Terms {
-		q = q.Filter(elastic.NewTermQuery(name, value))
+	for name, values := range filter.Terms {
+		for _, value := range values {
+			q = q.Filter(elastic.NewTermQuery(name, value))
+		}
 	}
-	search = search.Query(q).Sort("date", false)
+	search = search.Query(q).Sort("date_insert", false)
 	if filter.Offset > 0 {
 		search = search.From(filter.Offset)
 	}
