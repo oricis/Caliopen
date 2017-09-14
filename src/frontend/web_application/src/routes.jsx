@@ -19,6 +19,7 @@ import ApplicationSettings from './scenes/ApplicationSettings';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
 import Tags from './scenes/Tags';
+import PageNotFound from './scenes/PageNotFound';
 // import { Device } from './scenes/Devices';
 
 export const getRouteConfig = ({ __ }) => [
@@ -128,7 +129,13 @@ export const getRouteConfig = ({ __ }) => [
           },
         ],
       },
+      {
+        component: PageNotFound,
+      },
     ],
+  },
+  {
+    component: PageNotFound,
   },
 ];
 

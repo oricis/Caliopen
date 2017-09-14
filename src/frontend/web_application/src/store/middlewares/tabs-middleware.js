@@ -96,7 +96,7 @@ const getSettingTab = ({ pathname }) => {
   const { translate: __ } = getTranslator();
 
   const routeConfig = flattenRouteConfig(getRouteConfig({ __ }))
-    .filter(route => route.path.indexOf('/settings/') !== -1)
+    .filter(route => route.path && route.path.indexOf('/settings/') !== -1)
     .find(route => matchPath(pathname, { path: route.path }));
 
   return {

@@ -2,7 +2,8 @@ const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 const Bootstrap = require('./components/Bootstrap').default;
 const configureStore = require('../../src/store/configure-store').default;
-
+const { getUserLocales } = require('../../src/services/i18n');
+const getDefaultSettings = require('../../src/services/settings').default;
 const template = require('../../dist/server/template.html');
 
 /**
@@ -29,14 +30,20 @@ function getMarkup({ store, context, location }) {
 }
 
 function applyUserLocaleToGlobal(req) {
-  global.USER_LOCALE = req.cookies.locale || req.locale;
+  global.USER_LOCALE = req.locale;
 }
 
 module.exports = (req, res) => {
   applyUserLocaleToGlobal(req);
 
+  const locales = getUserLocales();
+  const settings = getDefaultSettings(locales[0]);
+
   // XXX: prefetch
   const initialState = {
+    settings: {
+      settings,
+    },
   };
 
   const store = configureStore(initialState);
