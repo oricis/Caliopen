@@ -19,16 +19,14 @@ class Settings(ObjectUser):
 
     _attrs = {
         'user_id': uuid.UUID,
-        'default_language': types.StringType,
-        'default_timezone': types.StringType,
-        'date_format': types.StringType,
+        'default_locale': types.StringType,
         'message_display_format': types.StringType,
         'contact_display_order': types.StringType,
         'contact_display_format': types.StringType,
-        'contact_phone_format': types.StringType,
-        'contact_vcard_format': types.StringType,
-        'notification_style': types.StringType,
-        'notification_delay': types.IntType,
+        'notification_enabled': types.BooleanType,
+        'notification_message_preview': types.StringType,
+        'notification_sound_enabled': types.BooleanType,
+        'notification_delay_disappear': types.IntType,
     }
 
     _model_class = ModelSettings

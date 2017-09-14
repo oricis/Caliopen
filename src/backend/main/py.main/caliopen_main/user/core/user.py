@@ -27,7 +27,7 @@ from ..store import (User as ModelUser,
 from caliopen_main.user.objects.settings import Settings as ObjectSettings
 
 from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
-from caliopen_main.contact.core import Contact as CoreContact, ContactLookup
+from caliopen_main.contact.core import Contact as CoreContact
 from caliopen_main.contact.objects.contact import Contact
 from caliopen_main.pi.objects import PIModel
 from caliopen_main.user.helpers import validators
@@ -247,7 +247,7 @@ class User(BaseCore):
 
         # Setup others entities related to user
         core.setup_system_tags()
-        core.setup_settings()
+        core.setup_settings(new_user.settings)
         # Add a default local identity on a default configured domain
         default_domain = Configuration('global').get('default_domain')
         default_local_id = '{}@{}'.format(core.name, default_domain)
@@ -350,21 +350,23 @@ class User(BaseCore):
             tag['date_insert'] = datetime.datetime.now(tz=pytz.utc)
             Tag.create(self, **tag)
 
-    def setup_settings(self):
+    def setup_settings(self, settings):
         """Create settings related to user."""
         # XXX set correct values
+
         settings = {
             'user_id': self.user_id,
-            'default_language': 'en',
-            'default_timezone': 'utc',
-            'date_format': 'dd/mm/yyyy',
-            'message_display_format': 'html',
-            'contact_display_order': '',
-            'contact_display_format': '',
-            'contact_phone_format': 'international',
-            'contact_vcard_format': '4.0',
-            'notification_style': 'system',
-            'notification_delay': 10,
+            'default_locale': settings.default_locale,
+            'message_display_format': settings.message_display_format,
+            'contact_display_order': settings.contact_display_order,
+            'contact_display_format': settings.contact_display_format,
+            'notification_enabled': settings.notification_enabled,
+            'notification_message_preview':
+                settings.notification_message_preview,
+            'notification_sound_enabled':
+                settings.notification_sound_enabled,
+            'notification_delay_disappear':
+                settings.notification_delay_disappear,
         }
 
         obj = ObjectSettings(self.user_id)
