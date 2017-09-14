@@ -4,6 +4,13 @@
     max-width: 100%;
   }
 
+  > * {
+    &:first-child {
+      margin-top: 0;
+      padding-top: 0;
+    }
+  }
+
   blockquote {
     display: block;
     margin-left: $co-component__spacing / 2;

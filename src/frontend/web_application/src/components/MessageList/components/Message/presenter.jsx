@@ -13,7 +13,17 @@ import MessageActionsContainer from '../MessageActionsContainer';
 
 import './style.scss';
 
+const FOLD_HEIGHT = 80; // = .m-message__content--fold height
+
 const DropdownControl = withDropdownControl(Button);
+
+function generateStateFromProps(props) {
+  const { message } = props;
+
+  return {
+    isUnread: message.is_unread,
+  };
+}
 
 class Message extends Component {
   static propTypes = {
@@ -30,14 +40,18 @@ class Message extends Component {
   };
 
   state = {
-    body: '',
-    excerpt: '',
-    isExcerpt: false,
+    bodyHeight: null,
     isTooLong: false,
+    isFold: false,
+    isUnread: false,
   };
 
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
   componentDidMount() {
-    this.setBodyHeight();
+    this.setContentHeight();
   }
 
   componentDidUpdate() {
@@ -48,44 +62,78 @@ class Message extends Component {
     }
   }
 
-  setBodyHeight = () => {
-    const message = this.props.message;
-    const body = message.body;
-    if (body.length > 140) {
-      this.setState({
-        isTooLong: true,
-        isExcerpt: true,
-        excerpt: body.substring(0, 140),
-      });
-    }
+  setContentHeight = () => {
+    const bodyHeight = this.divElement.clientHeight;
+
+    this.setState(prevState => ({
+      ...prevState,
+      bodyHeight,
+      isTooLong: bodyHeight > FOLD_HEIGHT && true,
+      isFold: bodyHeight > FOLD_HEIGHT && !prevState.isUnread && true,
+    }));
   }
 
   handleExpandClick = () => {
+    const bodyHeight = this.divElement.clientHeight;
     this.setState(prevState => ({
-      isExcerpt: !prevState.isExcerpt,
+      isFold: !prevState.isFold,
+      bodyHeight,
     }));
+  }
+
+  renderMessageContent = () => {
+    const { message } = this.props;
+
+    const contentProps = {
+      className: classnames(
+        'm-message__content',
+        { 'm-message__content--fold': this.state.isFold },
+      ),
+      style: {
+        height: this.state.isFold ? null : this.state.bodyHeight,
+        transitionTimingFunction: this.state.isFold ? 'ease-in-out' : 'ease-out', // to make 'expand'/'collapse' animation smoother
+        transitionDuration: `${((this.state.bodyHeight / 100) * 0.05)}s`, // to make 'expand'/'collapse' animation smoother
+      },
+    };
+
+    const bodyProps = {
+      className: classnames(
+        'm-message__body',
+        { 'm-message__body--rich-text': !message.body_is_plain },
+      ),
+      ref: (divElement) => { this.divElement = divElement; },
+    };
+
+    return (
+      <div {...contentProps}>
+        {!message.body_is_plain ? (
+          <div {...bodyProps} dangerouslySetInnerHTML={{ __html: message.body }} />
+        ) : (
+          <pre {...bodyProps}>{message.body}</pre>
+        )
+        }
+      </div>
+    );
   }
 
   render() {
     const { message, locale, onDelete, __ } = this.props;
     const author = message.participants.find(participant => participant.type === 'From');
     const subject = message.subject;
-
-    const bodyClassName = classnames(
-      'm-message__body',
-      { 'm-message__body--excerpt': this.state.isExcerpt },
-      { 'm-message__body--html': !message.body_is_plain },
-    );
-
-    const topBarClassName = classnames(
-      'm-message__top-bar',
-      { 'm-message__top-bar--new': message.is_unread },
-    );
-
     const dropdownId = uuidV1();
     const typeTranslations = {
       email: __('message-list.message.protocol.email'),
     };
+
+    const topBarClassName = classnames(
+      'm-message__top-bar',
+      { 'm-message__top-bar--is-unread': this.state.isUnread },
+    );
+
+    const subjectClassName = classnames(
+      'm-message__subject',
+      { 'm-message__subject--is-unread': this.state.isUnread },
+    );
 
     return (
       <div className="m-message">
@@ -135,39 +183,22 @@ class Message extends Component {
           </div>
 
           {subject &&
-            <TextBlock className="m-message__subject">
+            <TextBlock className={subjectClassName}>
               <Icon type="comments-o" rightSpaced />{subject}
             </TextBlock>
           }
-          {message.body_is_plain ? (
-            <pre
-              className={bodyClassName}
-              dangerouslySetInnerHTML={
-                { __html: this.state.isExcerpt ? this.state.excerpt : message.body }
-              }
-            />
-          ) : (
-            <div
-              className={bodyClassName}
-              dangerouslySetInnerHTML={
-                { __html: this.state.isExcerpt ? this.state.excerpt : message.body }
-              }
-            />
-            )
-          }
+
+          {this.renderMessageContent()}
 
           {this.state.isTooLong &&
-            <div className="m-message__expand-button">
-              <Button
-                onClick={this.handleExpandClick}
-                value={this.state.isExcerpt}
-                display="expanded"
-              >
-                {this.state.isExcerpt ? __('message-list.message.action.expand') : __('message-list.message.action.collapse')}
-              </Button>
-            </div>
+            <Button
+              className="m-message__expand-button"
+              onClick={this.handleExpandClick}
+              display="expanded"
+            >
+              {this.state.isFold ? __('message-list.message.action.expand') : __('message-list.message.action.collapse')}
+            </Button>
           }
-
         </div>
       </div>
     );

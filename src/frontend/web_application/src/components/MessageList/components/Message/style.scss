@@ -2,6 +2,8 @@
 @import '../../../../styles/object/o-avatar';
 @import '../../../../styles/object/o-reset-html-message';
 
+$message-content--fold__height: 80px; // = const FOLD_HEIGHT
+
 .m-message {
   @include flex-grid-row($size: expand);
   margin-bottom: $co-grid__gutter--small;
@@ -26,7 +28,11 @@
     @include flex-grid-row($size: expand);
     align-items: center;
     border-bottom: 1px solid $co-color__fg__back--lower;
-    background: $co-color__fg__back--higher;
+    background: $co-color__fg__back--high;
+
+    &--is-unread {
+      background: $co-color__fg__back--higher;
+    }
   }
 
   &__type {  @include flex-grid-size(shrink); }
@@ -53,32 +59,45 @@
 
   &__actions-menu { background: $co-color__fg__back--higher; }
 
-
   &__subject {
     padding: $co-component__spacing;
     border-bottom: 1px solid $co-color__fg__back--lower;
     color: $co-color__fg__text--lower;
+
+    &--is-unread {
+      background: $co-color__fg__back--higher;
+      color: $co-color__fg__text;
+    }
+  }
+
+  &__content {
+    position: relative;
+    transition-duration: .15s; // transition-duration is overrided by JS
+    transition-property: height;
+    transition-timing-function: ease-out; // transition-timing-function is overrided by JS
+    overflow: hidden;
+    color: $co-color__fg__text;
+    box-sizing: content-box;
+
+    &--fold {
+      height: $message-content--fold__height;
+
+      &::before {
+        display: block;
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: $message-content--fold__height / 2;
+        background: linear-gradient(to bottom, transparent, $co-color__fg__back);
+      }
+    }
   }
 
   &__body {
     padding: $co-component__spacing;
-    overflow: hidden;
-    color: $co-color__fg__text;
-
-    &--excerpt {
-      &,
-      > * {
-        display: inline-block;
-      }
-
-      &::after {
-        display: inline;
-        content: ' [...]';
-        color: $co-color__fg__text--lower;
-      }
-    }
-
-    &--html { @include o-reset-html-message; }
+    &--rich-text { @include o-reset-html-message; }
   }
 
   &__expand-button {
