@@ -652,6 +652,32 @@
                 },
                 "recovery_email": {
                   "type": "string"
+                },
+                "settings": {
+                  "type": "object",
+                  "properties": {
+                    "default_locale": {
+                      "type": "string"
+                    },
+                    "message_display_format": {
+                      "type": "string"
+                    },
+                    "contact_display_order": {
+                      "type": "string"
+                    },
+                    "notification_enabled": {
+                      "type": "boolean"
+                    },
+                    "notification_message_preview": {
+                      "type": "string"
+                    },
+                    "notification_sound_enabled": {
+                      "type": "boolean"
+                    },
+                    "notification_delay_disappear": {
+                      "type": "integer"
+                    }
+                  }
                 }
               },
               "additionalProperties": false,
@@ -7300,13 +7326,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "default_language": {
-                  "type": "string"
-                },
-                "default_timezone": {
-                  "type": "string"
-                },
-                "date_format": {
+                "default_locale": {
                   "type": "string"
                 },
                 "message_display_format": {
@@ -7315,13 +7335,16 @@
                 "contact_display_order": {
                   "type": "string"
                 },
-                "contact_phone_format": {
+                "notification_enabled": {
+                  "type": "boolean"
+                },
+                "notification_message_preview": {
                   "type": "string"
                 },
-                "notification_style": {
-                  "type": "string"
+                "notification_sound_enabled": {
+                  "type": "boolean"
                 },
-                "notification_delay": {
+                "notification_delay_disappear": {
                   "type": "integer"
                 }
               }
@@ -7354,13 +7377,7 @@
                 "current_state": {
                   "type": "object",
                   "properties": {
-                    "default_language": {
-                      "type": "string"
-                    },
-                    "default_timezone": {
-                      "type": "string"
-                    },
-                    "date_format": {
+                    "default_locale": {
                       "type": "string"
                     },
                     "message_display_format": {
@@ -7369,24 +7386,21 @@
                     "contact_display_order": {
                       "type": "string"
                     },
-                    "contact_phone_format": {
+                    "notification_enabled": {
+                      "type": "boolean"
+                    },
+                    "notification_message_preview": {
                       "type": "string"
                     },
-                    "notification_style": {
-                      "type": "string"
+                    "notification_sound_enabled": {
+                      "type": "boolean"
                     },
-                    "notification_delay": {
+                    "notification_delay_disappear": {
                       "type": "integer"
                     }
                   }
                 },
-                "default_language": {
-                  "type": "string"
-                },
-                "default_timezone": {
-                  "type": "string"
-                },
-                "date_format": {
+                "default_locale": {
                   "type": "string"
                 },
                 "message_display_format": {
@@ -7395,13 +7409,16 @@
                 "contact_display_order": {
                   "type": "string"
                 },
-                "contact_phone_format": {
+                "notification_enabled": {
+                  "type": "boolean"
+                },
+                "notification_message_preview": {
                   "type": "string"
                 },
-                "notification_style": {
-                  "type": "string"
+                "notification_sound_enabled": {
+                  "type": "boolean"
                 },
-                "notification_delay": {
+                "notification_delay_disappear": {
                   "type": "integer"
                 }
               }
