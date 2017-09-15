@@ -16,7 +16,7 @@ DELAY_CHOICES = [0, 5, 10, 30]
 class Settings(Model):
     """Location structure for a device."""
 
-    default_locale = StringType(default='fr_FR')
+    default_locale = StringType(default='fr-FR')
     message_display_format = StringType(default='rich_text',
                                         choices=MESSAGE_FORMAT_CHOICES)
     contact_display_format = StringType(default='family_name, given_name',

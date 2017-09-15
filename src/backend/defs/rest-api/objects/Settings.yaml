@@ -3,7 +3,7 @@ type: object
 properties:
   default_locale:
     type: string
-    default: fr_FR
+    default: fr-FR
   message_display_format:
     type: string
     default: rich_text
