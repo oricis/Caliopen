@@ -38,14 +38,14 @@ func GetMessagesList(ctx *gin.Context) {
 		Limit:   limit,
 		Offset:  offset,
 	}
-	list, err := caliopen.Facilities.RESTfacility.GetMessagesList(filter)
+	list, totalFound, err := caliopen.Facilities.RESTfacility.GetMessagesList(filter)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	} else {
 		var respBuf bytes.Buffer
-		respBuf.WriteString("{\"total\": " + strconv.Itoa(len(list)) + ",")
+		respBuf.WriteString("{\"total\": " + strconv.FormatInt(totalFound, 10) + ",")
 		respBuf.WriteString("\"messages\":[")
 		first := true
 		for _, msg := range list {
