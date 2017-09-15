@@ -1,19 +1,27 @@
 ---
 type: object
 properties:
-  default_language:
+  default_locale:
     type: string
-  default_timezone:
-    type: string
-  date_format:
-    type: string
+    default: fr-FR
   message_display_format:
     type: string
+    default: rich_text
   contact_display_order:
     type: string
-  contact_phone_format:
+    default: given_name
+  contact_display_format:
     type: string
-  notification_style:
+    default: family_name, given_name
+  notification_enabled:
+    type: boolean
+    default: true
+  notification_message_preview:
     type: string
-  notification_delay:
+    default: always
+  notification_sound_enabled:
+    type: boolean
+    default: false
+  notification_delay_disappear:
     type: integer
+    default: 10

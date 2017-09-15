@@ -65,16 +65,14 @@ class Settings(BaseModel):
     """All settings related to an user."""
 
     user_id = columns.UUID(primary_key=True)
-    default_language = columns.Text()
-    default_timezone = columns.Text()
-    date_format = columns.Text()
+    default_locale = columns.Text()
     message_display_format = columns.Text()
-    contact_display_order = columns.Text()
     contact_display_format = columns.Text()
-    contact_phone_format = columns.Text()
-    contact_vcard_format = columns.Text()
-    notification_style = columns.Text()
-    notification_delay = columns.Integer()
+    contact_display_order = columns.Text()
+    notification_enabled = columns.Boolean()
+    notification_message_preview = columns.Text()
+    notification_sound_enabled = columns.Boolean()
+    notification_delay_disappear = columns.Integer()
 
 
 class RemoteIdentity(BaseModel):

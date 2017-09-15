@@ -15,7 +15,7 @@ from ..base import Api
 from ..base.exception import AuthenticationError
 
 from caliopen_main.user.core import User
-from caliopen_main.user.parameters import NewUser, NewRemoteIdentity
+from caliopen_main.user.parameters import NewUser, NewRemoteIdentity, Settings
 from caliopen_main.user.returns.user import ReturnUser, ReturnRemoteIdentity
 from caliopen_main.contact.parameters import NewContact
 
@@ -96,12 +96,16 @@ class UserAPI(Api):
     def collection_post(self):
         """Create a new user."""
         contact = self.request.swagger_data['user']['contact']
+        settings = Settings()
+        settings.import_data(self.request.swagger_data['user']['settings'])
+        settings.validate()
         param = NewUser({'name': self.request.swagger_data['user']['username'],
                          'password': self.request.swagger_data['user'][
                              'password'],
                          'recovery_email': self.request.swagger_data['user'][
                              'recovery_email'],
-                         'contact': contact
+                         'contact': contact,
+                         'settings': settings,
                          })
 
         if self.request.swagger_data['user']['contact'] is not None:
