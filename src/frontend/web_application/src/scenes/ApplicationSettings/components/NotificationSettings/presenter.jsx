@@ -9,7 +9,6 @@ const CheckboxFieldGroup = renderReduxField(CheckboxFieldGroupBase);
 
 const MESSAGE_PREVIEW = ['off', 'always'];
 const DELAY_DISAPPEAR = [0, 5, 10, 30];
-const DELAY_DISAPPEAR_UNIT = ['s', 'm'];
 
 class NotificationForm extends Component {
   static propTypes = {
@@ -33,8 +32,6 @@ class NotificationForm extends Component {
     this.i18n = {
       off: __('settings.notification.message_preview.options.off'),
       always: __('settings.notification.message_preview.options.always'),
-      s: __('settings.notification.delay_disappear_unit.options.second'),
-      m: __('settings.notification.delay_disappear_unit.options.minute'),
     };
   }
 
@@ -42,8 +39,10 @@ class NotificationForm extends Component {
     const { __ } = this.props;
 
     const messagePreviewOptions = this.getOptionsFromArray(MESSAGE_PREVIEW);
-    const delayDisappearOptions = this.getOptionsFromArray(DELAY_DISAPPEAR);
-    const delayDisappearUnitOptions = this.getOptionsFromArray(DELAY_DISAPPEAR_UNIT);
+    const delayDisappearOptions = DELAY_DISAPPEAR.map(delay => ({
+      value: delay,
+      label: __('settings.notification.delay_disappear.options.second', { delay }),
+    }));
 
     return (
       <FormGrid className="m-contacts-form">
@@ -82,14 +81,6 @@ class NotificationForm extends Component {
               name="notification_delay_disappear"
               label={__('settings.notification.delay_disappear.label')}
               options={delayDisappearOptions}
-            />
-          </FormColumn>
-          <FormColumn size="shrink" bottomSpace >
-            <Field
-              component={SelectFieldGroup}
-              name="notification_delay_disappear_unit"
-              label={__('settings.notification.delay_disappear_unit.label')}
-              options={delayDisappearUnitOptions}
             />
           </FormColumn>
         </FormRow>

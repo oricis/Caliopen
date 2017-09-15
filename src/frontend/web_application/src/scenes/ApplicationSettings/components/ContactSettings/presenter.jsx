@@ -57,7 +57,7 @@ class ContactsForm extends Component {
           <FormColumn size="shrink" bottomSpace >
             <Field
               component={SelectFieldGroup}
-              name="contact_display_order_by"
+              name="contact_display_order"
               label={__('settings.contacts.order.label')}
               options={displayOrderByOptions}
             />
