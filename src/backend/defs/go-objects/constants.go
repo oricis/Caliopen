@@ -20,8 +20,8 @@ const (
 	TimeISO8601      = "2006-01-02T15:04:05-07:00"
 	TimeUTCmicro     = "2006-01-02T15:04:05.999999"
 	RFC3339Milli     = "2006-01-02T15:04:05.000Z07:00"
-	MessageType      = "Message"
-	ContactType      = "Contact"
+	MessageType      = "message"
+	ContactType      = "contact"
 	MessageIndexType = "indexed_message"
 	ContactIndexType = "indexed_contact"
 )
