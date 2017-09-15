@@ -10,7 +10,6 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
-	"gopkg.in/olivere/elastic.v5"
 )
 
 func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[string]interface{}) error {
@@ -61,13 +60,8 @@ func (es *ElasticSearchBackend) SetMessageUnread(user_id, message_id string, sta
 func (es *ElasticSearchBackend) FilterMessages(filter objects.IndexSearch) (messages []*objects.Message, totalFound int64, err error) {
 
 	search := es.Client.Search().Index(filter.User_id.String()).Type(objects.MessageIndexType)
-	q := elastic.NewBoolQuery()
-	for name, values := range filter.Terms {
-		for _, value := range values {
-			q = q.Filter(elastic.NewTermQuery(name, value))
-		}
-	}
-	search = search.Query(q).Sort("date_insert", false)
+	search = filter.FilterQuery(search).Sort("date_insert", false)
+
 	if filter.Offset > 0 {
 		search = search.From(filter.Offset)
 	}
@@ -93,4 +87,3 @@ func (es *ElasticSearchBackend) FilterMessages(filter objects.IndexSearch) (mess
 	totalFound = result.TotalHits()
 	return
 }
-
