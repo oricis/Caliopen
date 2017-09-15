@@ -25,13 +25,9 @@ func SimpleSearch(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	query_string := ctx.Request.URL.Query().Get("terms")
-	if query_string == "" {
-		e := swgErr.New(http.StatusUnprocessableEntity, "Missing 'terms' param in query")
-		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-		ctx.Abort()
-		return
-	}
+
+	query.Del("context") // do not take into account of context for now
+
 	if l, ok := query["limit"]; ok {
 		limit, _ = strconv.Atoi(l[0])
 		query.Del("limit")
@@ -39,6 +35,23 @@ func SimpleSearch(ctx *gin.Context) {
 	if o, ok := query["offset"]; ok {
 		offset, _ = strconv.Atoi(o[0])
 		query.Del("offset")
+	}
+	if len(query) == 0 {
+		e := swgErr.New(http.StatusUnprocessableEntity, "Missing terms in query")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	for _, value := range query {
+		for _, str := range value {
+			if len(str) < 3 {
+				e := swgErr.New(http.StatusUnprocessableEntity, "At least one term is less than 3 chars")
+				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+				ctx.Abort()
+				return
+			}
+		}
 	}
 
 	search := IndexSearch{
