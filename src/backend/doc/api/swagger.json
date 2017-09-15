@@ -657,25 +657,36 @@
                   "type": "object",
                   "properties": {
                     "default_locale": {
-                      "type": "string"
+                      "type": "string",
+                      "default": "fr_FR"
                     },
                     "message_display_format": {
-                      "type": "string"
+                      "type": "string",
+                      "default": "rich_text"
                     },
                     "contact_display_order": {
-                      "type": "string"
+                      "type": "string",
+                      "default": "given_name"
+                    },
+                    "contact_display_format": {
+                      "type": "string",
+                      "default": "family_name, given_name"
                     },
                     "notification_enabled": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "default": true
                     },
                     "notification_message_preview": {
-                      "type": "string"
+                      "type": "string",
+                      "default": "always"
                     },
                     "notification_sound_enabled": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "default": false
                     },
                     "notification_delay_disappear": {
-                      "type": "integer"
+                      "type": "integer",
+                      "default": 10
                     }
                   }
                 }
@@ -7327,25 +7338,36 @@
               "type": "object",
               "properties": {
                 "default_locale": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "fr_FR"
                 },
                 "message_display_format": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "rich_text"
                 },
                 "contact_display_order": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "given_name"
+                },
+                "contact_display_format": {
+                  "type": "string",
+                  "default": "family_name, given_name"
                 },
                 "notification_enabled": {
-                  "type": "boolean"
+                  "type": "boolean",
+                  "default": true
                 },
                 "notification_message_preview": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "always"
                 },
                 "notification_sound_enabled": {
-                  "type": "boolean"
+                  "type": "boolean",
+                  "default": false
                 },
                 "notification_delay_disappear": {
-                  "type": "integer"
+                  "type": "integer",
+                  "default": 10
                 }
               }
             }
@@ -7378,48 +7400,70 @@
                   "type": "object",
                   "properties": {
                     "default_locale": {
-                      "type": "string"
+                      "type": "string",
+                      "default": "fr_FR"
                     },
                     "message_display_format": {
-                      "type": "string"
+                      "type": "string",
+                      "default": "rich_text"
                     },
                     "contact_display_order": {
-                      "type": "string"
+                      "type": "string",
+                      "default": "given_name"
+                    },
+                    "contact_display_format": {
+                      "type": "string",
+                      "default": "family_name, given_name"
                     },
                     "notification_enabled": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "default": true
                     },
                     "notification_message_preview": {
-                      "type": "string"
+                      "type": "string",
+                      "default": "always"
                     },
                     "notification_sound_enabled": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "default": false
                     },
                     "notification_delay_disappear": {
-                      "type": "integer"
+                      "type": "integer",
+                      "default": 10
                     }
                   }
                 },
                 "default_locale": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "fr_FR"
                 },
                 "message_display_format": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "rich_text"
                 },
                 "contact_display_order": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "given_name"
+                },
+                "contact_display_format": {
+                  "type": "string",
+                  "default": "family_name, given_name"
                 },
                 "notification_enabled": {
-                  "type": "boolean"
+                  "type": "boolean",
+                  "default": true
                 },
                 "notification_message_preview": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "always"
                 },
                 "notification_sound_enabled": {
-                  "type": "boolean"
+                  "type": "boolean",
+                  "default": false
                 },
                 "notification_delay_disappear": {
-                  "type": "integer"
+                  "type": "integer",
+                  "default": 10
                 }
               }
             }
