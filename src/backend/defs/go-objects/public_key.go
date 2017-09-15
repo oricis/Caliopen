@@ -6,6 +6,7 @@ package objects
 
 import (
 	"github.com/gocql/gocql"
+	"github.com/satori/go.uuid"
 	"time"
 )
 
@@ -46,4 +47,38 @@ func (pk *PublicKey) UnmarshalCQLMap(input map[string]interface{}) {
 	pk.Size, _ = input["size"].(int)
 	userid, _ := input["user_id"].(gocql.UUID)
 	pk.UserId.UnmarshalBinary(userid.Bytes())
+}
+
+func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
+	if contact_id, ok := input["contact_id"].(string); ok {
+		if id, err := uuid.FromString(contact_id); err == nil {
+			pk.ContactId.UnmarshalBinary(id.Bytes())
+		}
+	}
+	if date, ok := input["date_insert"]; ok {
+		pk.DateInsert, _ = time.Parse(time.RFC3339Nano, date.(string))
+	}
+	if date, ok := input["date_update"]; ok {
+		pk.DateUpdate, _ = time.Parse(time.RFC3339Nano, date.(string))
+	}
+	if date, ok := input["expire_date"]; ok {
+		pk.ExpireDate, _ = time.Parse(time.RFC3339Nano, date.(string))
+	}
+	pk.Fingerprint, _ = input["fingerprint"].(string)
+	pk.Key, _ = input["key"].(string)
+	pk.Name, _ = input["name"].(string)
+
+	if pf, ok := input["privacy_features"]; ok {
+		PF := PrivacyFeatures{}
+		PF = pf.(map[string]string)
+		pk.PrivacyFeatures = &PF
+	}
+	pk.Size, _ = input["size"].(int)
+	if u_id, ok := input["user_id"].(string); ok {
+		if id, err := uuid.FromString(u_id); err == nil {
+			pk.UserId.UnmarshalBinary(id.Bytes())
+		}
+	}
+
+	return nil //TODO : errors handling
 }
