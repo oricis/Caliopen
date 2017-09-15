@@ -34,36 +34,17 @@ search:
     - application/json
     responses:
       '200':
-        description: an object with two arrays, Contacts & Messages objects found.
+        description: an object holding an array of documents found. Docs could be of any type.
         schema:
           type: object
           properties:
             total:
               type: integer
               format: int32
-              description: total number of objects found
-            messages:
+              description: total number of documents found
+            hits:
               type: object
-              properties:
-                total:
-                  type: integer
-                  format: int32
-                  description: total nomber of messages found
-                messages:
-                  type: array
-                  items:
-                    "$ref": "../objects/MessageV2.yaml"
-            contacts:
-              type: object
-              properties:
-                total:
-                  type: integer
-                  format: int32
-                  description: total nomber of contacts found
-                contacts:
-                  type: array
-                  items:
-                    "$ref": "../objects/Contact.yaml"
+              "$ref": "../objects/SearchResponse.yaml"
       '400':
         description: malform request
         schema:

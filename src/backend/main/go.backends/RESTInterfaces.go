@@ -37,4 +37,5 @@ type APIIndex interface {
 	UpdateMessage(msg *Message, fields map[string]interface{}) error
 	RecipientsSuggest(user_id, query_string string) (suggests []RecipientSuggestion, err error)
 	FilterMessages(search IndexSearch) ([]*Message, error)
+	Search(search IndexSearch) (result *IndexResult, err error)
 }
