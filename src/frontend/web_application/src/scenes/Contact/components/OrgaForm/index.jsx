@@ -5,7 +5,7 @@ import { withTranslator } from '@gandi/react-translate';
 import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
 import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
-import renderReduxField from '../../services/renderReduxField';
+import renderReduxField from '../../../../services/renderReduxField';
 import './style.scss';
 
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);

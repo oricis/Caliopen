@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import NavList, { ItemContent } from '../../components/NavList';
 import Link from '../../components/Link';
-
-
 import './style.scss';
-
 
 class MenuBar extends Component {
   static propTypes = {
@@ -21,10 +18,6 @@ class MenuBar extends Component {
     navLinks: null,
   };
 
-  state = {
-    activeLink: {},
-  };
-
   render() {
     const { className, navLinks, children } = this.props;
     const menuBarClassName = classnames(
@@ -37,23 +30,13 @@ class MenuBar extends Component {
         {navLinks &&
           <NavList>
             {navLinks.map(link => (
-              // FIXME: active prop not working
-              <ItemContent
-                active={this.state.activeLink === link && true}
-                large
-                key={link.title}
-              >
-                <Link
-                  noDecoration
-                  // onClick={this.handleClickLink}
-                  {...link}
-                >{link.title}</Link>
+              <ItemContent active={link.isActive} large key={link.title}>
+                <Link noDecoration title={link.title} to={link.to}>{link.title}</Link>
               </ItemContent>
             ))}
           </NavList>
         }
         { !navLinks && children }
-
       </div>
     );
   }

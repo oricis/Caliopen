@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { withTranslator } from '@gandi/react-translate';
 import { Field } from 'redux-form';
-import renderReduxField from '../../services/renderReduxField';
+import renderReduxField from '../../../../services/renderReduxField';
 import Button from '../../../../components/Button';
 import { TextFieldGroup as TextFieldGroupBase } from '../../../../components/form';
 import './style.scss';

@@ -1,0 +1,10 @@
+{
+  "default_locale": "fr_FR",
+  "message_display_format": "rich_text",
+  "contact_display_format": "given_name, family_name",
+  "contact_display_order": "given_name",
+  "notification_enabled": true,
+  "notification_message_preview": "always",
+  "notification_sound_enabled": true,
+  "notification_delay_disappear": 10
+}
