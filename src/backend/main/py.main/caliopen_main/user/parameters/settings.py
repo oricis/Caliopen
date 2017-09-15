@@ -10,7 +10,7 @@ CONTACT_FORMAT_CHOICES = ['given_name', 'family_name',
                           'family_name, given_name']
 CONTACT_ORDER_CHOICES = ['family_name', 'given_name']
 PREVIEW_CHOICES = ['off', 'always']
-DELAY_CHOICES = [5, 10, 10, 30]
+DELAY_CHOICES = [0, 5, 10, 30]
 
 
 class Settings(Model):
