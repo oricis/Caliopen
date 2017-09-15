@@ -66,13 +66,13 @@ class SigninForm extends Component {
           <form method="post" {...form}>
             { errors.global && (
               <FormRow>
-                <FormColumn size="full" bottomSpace>
+                <FormColumn rightSpace={false} bottomSpace>
                   <FieldErrors errors={errors.global} />
                 </FormColumn>
               </FormRow>
             )}
             <FormRow>
-              <FormColumn size="full" bottomSpace>
+              <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_username"
                   label={__('signin.form.username.label')}
@@ -84,7 +84,7 @@ class SigninForm extends Component {
                   showLabelforSr
                 />
               </FormColumn>
-              <FormColumn size="full" bottomSpace>
+              <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_password"
                   label={__('signin.form.password.label')}
@@ -99,7 +99,7 @@ class SigninForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn size="full" className="s-signin__action" bottomSpace>
+              <FormColumn rightSpace={false} className="s-signin__action" bottomSpace>
                 <Button
                   type="submit"
                   onClick={this.handleSubmit}
@@ -109,10 +109,10 @@ class SigninForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn size="full">
+              <FormColumn rightSpace={false}>
                 <Link to="/auth/reset-password">{__('signin.action.forgot_password')}</Link>
               </FormColumn>
-              <FormColumn size="full">
+              <FormColumn rightSpace={false}>
                 <Link to="/auth/signup">{__('signin.create_an_account')}</Link>
               </FormColumn>
             </FormRow>

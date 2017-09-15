@@ -53,17 +53,17 @@ class PasswordResetForm extends Component {
             <Fieldset>
               {errors.global && (
                 <FormRow>
-                  <FormColumn size="full" bottomSpace>
+                  <FormColumn rightSpace={false} bottomSpace>
                     <FieldErrors errors={errors.global} />
                   </FormColumn>
                 </FormRow>
               )}
               {success ? (
                 <FormRow>
-                  <FormColumn size="full" bottomSpace className="s-signin__password-success">
+                  <FormColumn rightSpace={false} bottomSpace className="s-signin__password-success">
                     <Icon type="check" rightSpaced />{__('password.reset-form.success')}
                   </FormColumn>
-                  <FormColumn size="full" className="m-password-reset-form__action" bottomSpace>
+                  <FormColumn rightSpace={false} className="m-password-reset-form__action" bottomSpace>
                     <Link
                       button
                       plain
@@ -74,12 +74,12 @@ class PasswordResetForm extends Component {
                 </FormRow>
               ) : (
                 <FormRow>
-                  <FormColumn size="full" bottomSpace>
+                  <FormColumn rightSpace={false} bottomSpace>
                     <Legend>
                       {__('password.reset-form.instructions')}
                     </Legend>
                   </FormColumn>
-                  <FormColumn size="full" bottomSpace>
+                  <FormColumn rightSpace={false} bottomSpace>
                     <TextFieldGroup
                       label={__('password.reset-form.username.label')}
                       placeholder={__('password.reset-form.username.placeholder')}
@@ -91,14 +91,14 @@ class PasswordResetForm extends Component {
                       showLabelforSr
                     />
                   </FormColumn>
-                  <FormColumn size="full" className="m-password-reset-form__action" bottomSpace>
+                  <FormColumn rightSpace={false} className="m-password-reset-form__action" bottomSpace>
                     <Button
                       type="submit"
                       display="expanded"
                       shape="plain"
                     >{__('password.reset-form.action.send')}</Button>
                   </FormColumn>
-                  <FormColumn size="full">
+                  <FormColumn rightSpace={false}>
                     <Link to="/auth/signin">{__('password.reset-form.cancel')}</Link>
                   </FormColumn>
                 </FormRow>

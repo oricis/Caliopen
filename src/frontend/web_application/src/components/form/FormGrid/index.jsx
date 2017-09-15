@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './style.scss';
 
-export const FormColumn = ({ className, bottomSpace, size, fluid, ...props }) => {
+export const FormColumn = ({ className, bottomSpace, size, fluid, rightSpace, ...props }) => {
   const colClassName = classnames('m-form-grid__column', {
     'm-form-grid__column--fluid': fluid,
     'm-form-grid__column--bottom-space': bottomSpace,
@@ -11,7 +11,7 @@ export const FormColumn = ({ className, bottomSpace, size, fluid, ...props }) =>
     'm-form-grid__column--small': size === 'small',
     'm-form-grid__column--medium': size === 'medium',
     'm-form-grid__column--large': size === 'large',
-    'm-form-grid__column--full': size === 'full',
+    'm-form-grid__column--right-space': rightSpace,
   }, className);
 
   return (
@@ -21,8 +21,9 @@ export const FormColumn = ({ className, bottomSpace, size, fluid, ...props }) =>
 
 FormColumn.propTypes = {
   className: PropTypes.string,
-  size: PropTypes.oneOf(['shrink', 'small', 'medium', 'large', 'full']),
+  size: PropTypes.oneOf(['shrink', 'small', 'medium', 'large']),
   fluid: PropTypes.bool,
+  rightSpace: PropTypes.bool,
   bottomSpace: PropTypes.bool,
 };
 FormColumn.defaultProps = {
@@ -30,6 +31,7 @@ FormColumn.defaultProps = {
   size: undefined,
   fluid: false,
   bottomSpace: false,
+  rightSpace: true, // --right-space style is default for FormColumn
 };
 
 export const FormRow = ({ className, reverse, ...props }) => {
