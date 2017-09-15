@@ -14,12 +14,11 @@ search:
       description: current user's context (to optimize search relevance). Required but not used by API for now.
       required: true
       type: string
-    - name: terms
+    - name: _all
       in: query
-      description: a string (3 chars at least) from which to perform the search
-      required: true
+      description: a string (3 chars at least) from which to perform the search (all fields will be search with param _all)
+      required: false
       type: string
-      minLength: 3
     - name: limit
       in: query
       required: false

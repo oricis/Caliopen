@@ -7867,12 +7867,11 @@
             "type": "string"
           },
           {
-            "name": "terms",
+            "name": "_all",
             "in": "query",
-            "description": "a string (3 chars at least) from which to perform the search",
-            "required": true,
-            "type": "string",
-            "minLength": 3
+            "description": "a string (3 chars at least) from which to perform the search (all fields will be search with param _all)",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "limit",
@@ -7923,7 +7922,7 @@
                       "format": "float",
                       "description": "how confident is our index for this document to match the request. Higher is better. Documents are sorted on this field by default."
                     },
-                    "highlight": {
+                    "highlights": {
                       "type": "object",
                       "description": "Field names where terms of request where found. Each key maps to an array of excerpts."
                     },
