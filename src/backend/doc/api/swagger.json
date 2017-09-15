@@ -658,7 +658,7 @@
                   "properties": {
                     "default_locale": {
                       "type": "string",
-                      "default": "fr_FR"
+                      "default": "fr-FR"
                     },
                     "message_display_format": {
                       "type": "string",
@@ -7339,7 +7339,7 @@
               "properties": {
                 "default_locale": {
                   "type": "string",
-                  "default": "fr_FR"
+                  "default": "fr-FR"
                 },
                 "message_display_format": {
                   "type": "string",
@@ -7401,7 +7401,7 @@
                   "properties": {
                     "default_locale": {
                       "type": "string",
-                      "default": "fr_FR"
+                      "default": "fr-FR"
                     },
                     "message_display_format": {
                       "type": "string",
@@ -7435,7 +7435,7 @@
                 },
                 "default_locale": {
                   "type": "string",
-                  "default": "fr_FR"
+                  "default": "fr-FR"
                 },
                 "message_display_format": {
                   "type": "string",
@@ -7996,9 +7996,28 @@
           }
         ],
         "responses": {
-          "501": null,
-          "default": {
-            "description": "route not implemented, should raise an error"
+          "501": {
+            "description": "route not implemented.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

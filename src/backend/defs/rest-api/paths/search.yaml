@@ -63,5 +63,6 @@ search:
     - basicAuth: []
     responses:
       '501':
-      default:
-        description: route not implemented, should raise an error
+        description: route not implemented.
+        schema:
+          "$ref": "../objects/Error.yaml"
