@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { v1 as uuidV1 } from 'uuid';
 import Title from '../../../../components/Title';
-import ContactItem from './components/ContactItem';
-import { SORT_VIEW_TITLE } from '../../../ContactBook/presenter';
+import ContactItem from '../../components/ContactItem';
+import { DEFAULT_SORT_DIR } from '../../presenter';
 
 import './style.scss';
 
@@ -27,54 +26,52 @@ const ContactListLetter = ({ letter }) => (
 ContactListLetter.propTypes = {
   letter: PropTypes.string.isRequired,
 };
-const ContactList = ({ contacts, sortView }) => {
-  const altSortView = SORT_VIEW_TITLE;
-  const letters = [];
-  let firstLetter = null;
-  contacts.map((contact) => {
-    const contactTitle = contact[sortView] ? contact[sortView] : contact[altSortView];
-    if (getFirstLetter(contactTitle) !== firstLetter) {
-      letters.push(getFirstLetter(contactTitle));
-    }
 
-    firstLetter = getFirstLetter(contactTitle);
+class ContactList extends PureComponent {
+  static propTypes = {
+    contacts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    sortDir: PropTypes.string,
+  };
+  static defaultProps = {
+    sortDir: DEFAULT_SORT_DIR,
+  };
 
-    return false;
-  });
+  render() {
+    const { contacts, sortDir } = this.props;
+    const contactsGroupedByLetter = contacts.reduce((acc, contact) => {
+      const firstLetter = getFirstLetter(contact.title);
 
-  return (
-    <div className="m-contact-list">
-      {letters.map(letter => (
-        <div key={uuidV1()} className="m-contact-list__group">
-          <ContactListLetter
-            letter={letter}
-          />
-          {contacts.map(contact => (
-            contact[sortView] ?
-            getFirstLetter(contact[sortView]) === letter &&
-              <ContactItem
-                contact={contact}
-                key={contact.contact_id}
-                sortView={sortView}
-              />
-              :
-              getFirstLetter(contact[altSortView]) === letter &&
-                <ContactItem
-                  contact={contact}
-                  key={contact.contact_id}
-                  sortView={sortView}
-                />
+      return {
+        ...acc,
+        [firstLetter]: [
+          ...(acc[firstLetter] || []),
+          contact,
+        ],
+      };
+    }, {});
+    const firstLetters = Object.keys(contactsGroupedByLetter).sort((a, b) => {
+      switch (sortDir) {
+        default:
+        case 'ASC':
+          return (a || '').localeCompare(b);
+        case 'DESC':
+          return (b || '').localeCompare(a);
+      }
+    });
+
+    return (
+      <div className="m-contact-list">
+        {firstLetters.map(letter => (
+          <div key={letter} className="m-contact-list__group">
+            <ContactListLetter letter={letter} />
+            {contactsGroupedByLetter[letter].map(contact => (
+              <ContactItem contact={contact} key={contact.contact_id} />
             ))}
-        </div>
-    ))}
-    </div>
-  );
-};
-
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  sortView: PropTypes.string.isRequired,
-};
+          </div>
+        ))}
+      </div>
+    );
+  }
+}
 
 export default ContactList;
