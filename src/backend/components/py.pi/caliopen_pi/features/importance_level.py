@@ -35,24 +35,24 @@ def get_importance_tags(tags):
     return max_value
 
 
-def compute_inbound(user, message, participants):
+def compute_inbound(user, message, features, participants):
     """Compute importance level for an inbound message."""
     positive = 0
     negative = 0
     scores = []
     # Spam level
-    if message.privacy_features.get('is_spam'):
-        spam_score = message.privacy_features.get('spam_score', 0) / 100.0
+    if features.get('is_spam'):
+        spam_score = features.get('spam_score', 0) / 100.0
         negative -= spam_score * abs(MIN_VALUE * SPAM_RATIO)
         scores.append(('spam_score', spam_score))
     # PI message
     if message.pi.context:
         context_score = message.pi.context / 100.0
-        positive += context_score * PI_CX_RATIO
+        positive += context_score * PI_CX_RATIO * MAX_VALUE
         scores.append(('context_score', context_score))
     if message.pi.comportment:
         comportment_score = message.pi.comportment / 100.0
-        positive += comportment_score * PI_CO_RATIO
+        positive += comportment_score * PI_CO_RATIO * MAX_VALUE
         scores.append(('comportment_score', comportment_score))
     # Tags
     if message.tags:
@@ -64,7 +64,7 @@ def compute_inbound(user, message, participants):
     if message.external_references:
         # XXX find if we know related messages to increment level
         positive += REPLY_VALUE
-        scores.append('reply_score', REPLY_VALUE)
+        scores.append(('reply_score', REPLY_VALUE))
 
     log.info('Importance scores: {0}'.format(scores))
     # Return the final value

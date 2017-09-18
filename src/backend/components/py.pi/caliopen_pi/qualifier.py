@@ -124,7 +124,7 @@ class UserMessageQualifier(object):
         # Compute PI !!
         conf = Configuration('global').configuration
         extractor = InboundMailFeature(message, conf)
-        extractor.process(new_message, participants)
+        extractor.process(self.user, new_message, participants)
 
         # compute tags
         new_message.tags = self._get_tags(message)

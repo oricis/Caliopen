@@ -8,8 +8,9 @@ import pgpy
 
 from caliopen_main.pi.parameters import PIParameter
 from .spam import SpamScorer
-from .types import unmarshall_features
 from .ingress_path import get_ingress_features
+from .types import unmarshall_features
+from .importance_level import compute_inbound as compute_inbound_importance
 
 log = logging.getLogger(__name__)
 
@@ -188,10 +189,12 @@ class InboundMailFeature(object):
                             'comportment': sum(pi_co.values()),
                             'version': 0})
 
-    def process(self, message, participants):
+    def process(self, user, message, participants):
         """
         Process the message for privacy features and PI compute.
 
+        :param user: user the message belong to
+        :ptype user: caliopen_main.user.core.User
         :param message: a message parameter that will be updated with PI
         :ptype message: NewMessage
         :param participants: an array of participant with related Contact
@@ -199,4 +202,6 @@ class InboundMailFeature(object):
         """
         features = self._get_features()
         message.pi = self._compute_pi(participants, features)
+        il = compute_inbound_importance(user, message, features, participants)
         message.privacy_features = unmarshall_features(features)
+        message.importance_level = il
