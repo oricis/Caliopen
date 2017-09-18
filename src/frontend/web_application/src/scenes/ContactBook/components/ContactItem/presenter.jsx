@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Link from '../../../../components/Link';
 import ContactAvatarLetter, { SIZE_SMALL } from '../../../../components/ContactAvatarLetter';
 import TextBlock from '../../../../components/TextBlock';
+import { formatName } from '../../../../services/contact';
 
 class ContactItem extends PureComponent {
   static propTypes = {
@@ -13,16 +14,9 @@ class ContactItem extends PureComponent {
   };
 
   renderTitle() {
-    const { contact, contact_display_format } = this.props;
-    const title = contact_display_format
-      .split(',')
-      .map(field => field.trim())
-      .map(field => contact[field])
-      .join(' ')
-      .trim()
-    ;
+    const { contact, contact_display_format: format } = this.props;
 
-    return title || contact.title;
+    return formatName({ contact, format });
   }
 
   render() {
