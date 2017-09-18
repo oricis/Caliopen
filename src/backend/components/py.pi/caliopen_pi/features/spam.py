@@ -71,3 +71,7 @@ class SpamScorer(object):
             self.source_flag = self.scores['flag']
         if not self.is_spam and self.score >= 50:
             self.is_spam = True
+        if self.score < 0:
+            self.score = 0.0
+        if self.score > 100:
+            self.score = 100.0

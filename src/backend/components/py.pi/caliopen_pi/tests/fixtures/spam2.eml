@@ -1,0 +1,10 @@
+Return-Path: <caliopdev-bounces@caliop.net>
+X-Original-To: dev@caliopen.local
+Received: from localhost (mfiltercorp1-d.gandi.net [217.70.183.155])
+	by mail4.gandi.net (Postfix) with ESMTP id 782B2120A1F;
+	Fri, 28 Nov 2014 16:00:57 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mfiltercorp1-d.gandi.net
+X-Spam-Score: 5.111
+X-Spam-Level: 
+X-Spam-Status: Yes, score=5.111 tagged_above=-999 required=5
+	tests=[BAYES_20=-0.74, RATWARE_GECKO_BUILD=1.691]

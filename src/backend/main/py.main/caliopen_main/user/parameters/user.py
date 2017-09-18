@@ -48,7 +48,7 @@ class User(NewUser):
     user_id = UUIDType()
 
     class Options:
-        roles = {'default': blacklist('password')}
+        roles = {'default': blacklist('password', 'settings')}
         serialize_when_none = False
 
 
