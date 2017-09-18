@@ -20,10 +20,6 @@ class ApplicationSettings extends PureComponent {
     errors: {},
   };
 
-  componentDidMount() {
-    this.props.requestSettings();
-  }
-
   handleSubmit = (ev) => {
     const { handleSubmit, requestSettings } = this.props;
 
