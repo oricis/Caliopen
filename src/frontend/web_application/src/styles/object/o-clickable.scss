@@ -7,6 +7,7 @@
 
   &:disabled {
     cursor: default;
+
     &:hover {
       color: $co-color__fg__text;
     }
@@ -46,7 +47,10 @@
     text-decoration: underline;
   }
 }
-
+// display: inline or inline-block (
+@mixin o-clickable--inline {
+  display: inline;
+}
 @mixin o-clickable--button {
   display: inline-block;
   padding: 0 1rem;
@@ -62,32 +66,21 @@
   }
 }
 
+// expanded: true
 @mixin o-clickable--expanded {
   display: block;
   line-height: inherit;
 }
 
+// shape: hollow or plain
 @mixin o-clickable--hollow {
   border-width: 1px;
   border-style: solid;
 }
-
 @mixin o-clickable--plain {
   background-color: $co-color__primary;
 }
 
-@mixin o-clickable--inline {
-  display: inline;
-  padding: 0;
-  background-color: transparent;
-  line-height: inherit;
-  white-space: nowrap;
-
-  &:hover,
-  &:active {
-    background-color: transparent;
-  }
-}
 
 @mixin o-clickable--active-text {
   color: $co-color__fg__text--high;

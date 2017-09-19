@@ -175,12 +175,12 @@ class PasswordForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn size="medium" className="m-password-form__action" bottomSpace>
-              <Button shape="plain" display="expanded" type="submit" {...submitButtonProps}>
+              <Button shape="plain" expanded type="submit" {...submitButtonProps}>
                 {__('password.form.action.validate')}
               </Button>
             </FormColumn>
             <FormColumn size="shrink" className="m-password-form__action">
-              <Button shape="hollow" display="expanded" onClick={onCancel}>
+              <Button shape="hollow" expanded onClick={onCancel}>
                 {__('password.form.action.cancel')}
               </Button>
             </FormColumn>

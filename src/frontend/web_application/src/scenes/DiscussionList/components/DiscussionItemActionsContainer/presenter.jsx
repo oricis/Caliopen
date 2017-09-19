@@ -80,19 +80,19 @@ class DiscussionItemActionsContainer extends Component {
             <VerticalMenuItem>
               <Button
                 className="m-discussion-item-actions-container__menu-button"
-                display="expanded"
+                expanded
               >{__('Archive')}</Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
                 className="m-discussion-item-actions-container__menu-button"
-                display="expanded"
+                expanded
               >{__('Enable tracking')}</Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
                 className="m-discussion-item-actions-container__menu-button"
-                display="expanded"
+                expanded
                 onClick={this.handleClickTags}
               >{__('Manage tags')}</Button>
             </VerticalMenuItem>

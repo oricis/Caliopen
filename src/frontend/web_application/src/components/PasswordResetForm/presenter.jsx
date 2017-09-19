@@ -94,7 +94,7 @@ class PasswordResetForm extends Component {
                   <FormColumn rightSpace={false} className="m-password-reset-form__action" bottomSpace>
                     <Button
                       type="submit"
-                      display="expanded"
+                      expanded
                       shape="plain"
                     >{__('password.reset-form.action.send')}</Button>
                   </FormColumn>

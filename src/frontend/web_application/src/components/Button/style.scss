@@ -4,15 +4,26 @@
 
 .m-button {
   @include o-clickable;
-  @include o-clickable--button;
 
+  &__text { margin-left: $co-margin / 4; }
+
+  // display: inline or inline-block :
+  &--inline-block {
+    @include o-clickable--button;
+  }
+
+  &--inline {
+    @include o-clickable--inline;
+    @include o-clickable--text;
+  }
+
+  // expanded: true :
   &--expanded {
     @include o-clickable--expanded;
     width: 100%;
   }
 
-  &__text { margin-left: $co-margin / 4; }
-
+  // shape: plain or hollow :
   &--plain {
     @include o-clickable--plain;
     @each $name, $color in $caliopen-palette {
@@ -45,11 +56,6 @@
       }
     }
 
-  }
-
-  &--inline {
-    @include o-clickable--inline;
-    @include o-clickable--text;
   }
 
   &--active {
