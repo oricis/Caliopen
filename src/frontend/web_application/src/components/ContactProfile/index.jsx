@@ -5,6 +5,7 @@ import { withTranslator } from '@gandi/react-translate';
 import Badge from '../Badge';
 import MultidimensionalPi from '../../components/MultidimensionalPi';
 import ContactAvatarLetter from '../ContactAvatarLetter';
+import { formatName } from '../../services/contact';
 import './style.scss';
 
 const FAKE_TAGS = ['Caliopen', 'Gandi', 'Macarons'];
@@ -16,22 +17,29 @@ class ContactProfile extends Component {
     className: PropTypes.string,
     editMode: PropTypes.bool.isRequired,
     form: PropTypes.node.isRequired,
+    contactDisplayFormat: PropTypes.string.isRequired,
   };
   static defaultProps = {
     className: undefined,
   };
 
   render() {
-    const { contact, className, editMode, form } = this.props;
+    const { contact, contactDisplayFormat: format, className, editMode, form } = this.props;
 
     return (
       <div className={classnames('m-contact-profile', className)}>
         <div className="m-contact-profile__header">
           <div className="m-contact-profile__avatar-wrapper">
-            <ContactAvatarLetter contact={contact} className="m-contact-profile__avatar" />
+            <ContactAvatarLetter
+              contact={contact}
+              contactDisplayFormat={format}
+              className="m-contact-profile__avatar"
+            />
           </div>
 
-          {!editMode && (<h3 className="m-contact-profile__name">{contact.title}</h3>)}
+          {!editMode && (
+            <h3 className="m-contact-profile__name">{formatName({ contact, format })}</h3>
+          )}
         </div>
 
         {editMode && form }
