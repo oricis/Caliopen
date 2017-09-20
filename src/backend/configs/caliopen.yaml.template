@@ -9,6 +9,7 @@ cassandra:
     hosts:
         - 'cassandra.dev.caliopen.org'
     consistency_level: 1
+    protocol_version: 3
 
 lmtp:
     port: 4025
