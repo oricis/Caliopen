@@ -158,13 +158,13 @@ class SignupForm extends Component {
           <form method="post" name="ac_form" {...form}>
             {errors.global && errors.global.length !== 0 && (
             <FormRow>
-              <FormColumn bottomSpace>
+              <FormColumn rightSpace={false} bottomSpace>
                 <FieldErrors className="s-signup__global-errors" errors={errors.global} />
               </FormColumn>
             </FormRow>
             )}
             <FormRow>
-              <FormColumn bottomSpace >
+              <FormColumn rightSpace={false} bottomSpace >
                 <TextFieldGroup
                   id="signup_username"
                   name="username"
@@ -179,7 +179,7 @@ class SignupForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn bottomSpace>
+              <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signup_password"
                   name="password"
@@ -193,13 +193,13 @@ class SignupForm extends Component {
                 />
               </FormColumn>
               {this.state.passwordStrength.length !== 0 && (
-              <FormColumn bottomSpace>
+              <FormColumn rightSpace={false} bottomSpace>
                 <PasswordStrength strength={this.state.passwordStrength} />
               </FormColumn>
               )}
             </FormRow>
             <FormRow>
-              <FormColumn bottomSpace >
+              <FormColumn rightSpace={false} bottomSpace >
                 <TextFieldGroup
                   id="signup_recovery_email"
                   name="recovery_email"
@@ -213,7 +213,7 @@ class SignupForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn bottomSpace>
+              <FormColumn rightSpace={false} bottomSpace>
                 <CheckboxFieldGroup
                   id="signup_tos"
                   className="s-signup__tos-checkbox"
@@ -226,7 +226,7 @@ class SignupForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn className="s-signup__privacy" bottomSpace>
+              <FormColumn rightSpace={false} className="s-signup__privacy" bottomSpace>
                 <h4>{__('signup.form.privacy.title')}</h4>
                 <p className="s-signup__privacy-text">
                   {__('signup.form.privacy.intro')}
@@ -249,7 +249,7 @@ class SignupForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn className="s-signup__action" bottomSpace>
+              <FormColumn rightSpace={false} className="s-signup__action" bottomSpace>
                 <Button
                   type="submit"
                   onClick={this.handleSubmit}
@@ -259,7 +259,7 @@ class SignupForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn>
+              <FormColumn rightSpace={false}>
                 <Link to="/auth/signin">{__('signup.go_signin')}</Link>
               </FormColumn>
             </FormRow>

@@ -23,7 +23,9 @@ RawButton.defaultProps = {
   type: 'button',
 };
 
-const Button = ({ children, className, icon, display, color, shape, responsive, ...props }) => {
+const Button = ({
+  children, className, icon, display, color, shape, responsive, ...props
+}) => {
   const buttonProps = {
     ...props,
     className: classnames(
@@ -37,6 +39,7 @@ const Button = ({ children, className, icon, display, color, shape, responsive, 
 
         'm-button--expanded': display === 'expanded',
         'm-button--inline': display === 'inline',
+        'm-button--inline-block': display === 'inline-block',
 
         'm-button--plain': shape === 'plain',
         'm-button--hollow': shape === 'hollow',
@@ -66,7 +69,7 @@ Button.propTypes = {
   children: PropTypes.node,
   shape: PropTypes.oneOf(['plain', 'hollow']),
   icon: PropTypes.string,
-  display: PropTypes.oneOf(['inline', 'expanded']),
+  display: PropTypes.oneOf(['inline', 'inline-block', 'expanded']),
   color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active']),
   responsive: PropTypes.oneOf(['icon-only', 'text-only']),
   accessKey: PropTypes.string,
@@ -78,7 +81,7 @@ Button.defaultProps = {
   children: null,
   shape: null,
   icon: null,
-  display: null,
+  display: 'inline-block', // default style for button is --inline-block
   color: null,
   responsive: null,
   accessKey: null,

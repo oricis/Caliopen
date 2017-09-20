@@ -7,6 +7,7 @@
 
   &:disabled {
     cursor: default;
+
     &:hover {
       color: $co-color__fg__text;
     }
@@ -46,7 +47,10 @@
     text-decoration: underline;
   }
 }
-
+// display: inline, inline-block or expanded (
+@mixin o-clickable--inline {
+  display: inline;
+}
 @mixin o-clickable--button {
   display: inline-block;
   padding: 0 1rem;
@@ -61,26 +65,21 @@
     background-color: $co-color__primary--lower;
   }
 }
-
 @mixin o-clickable--expanded {
   display: block;
+  width: 100%;
   line-height: inherit;
 }
 
+// shape: hollow or plain
 @mixin o-clickable--hollow {
   border-width: 1px;
   border-style: solid;
 }
-
 @mixin o-clickable--plain {
   background-color: $co-color__primary;
 }
 
-@mixin o-clickable--inline {
-  margin-left: 1px;
-  background: $co-color__fg__back--lower;
-  font-size: $co-font__size--xsmall;
-}
 
 @mixin o-clickable--active-text {
   color: $co-color__fg__text--high;

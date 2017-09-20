@@ -65,14 +65,14 @@ class SigninForm extends Component {
         <FormGrid className="s-signin__form">
           <form method="post" {...form}>
             { errors.global && (
-              <FormColumn bottomSpace>
-                <FormRow>
+              <FormRow>
+                <FormColumn rightSpace={false} bottomSpace>
                   <FieldErrors errors={errors.global} />
-                </FormRow>
-              </FormColumn>
+                </FormColumn>
+              </FormRow>
             )}
             <FormRow>
-              <FormColumn bottomSpace>
+              <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_username"
                   label={__('signin.form.username.label')}
@@ -84,7 +84,7 @@ class SigninForm extends Component {
                   showLabelforSr
                 />
               </FormColumn>
-              <FormColumn bottomSpace>
+              <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_password"
                   label={__('signin.form.password.label')}
@@ -99,7 +99,7 @@ class SigninForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn className="s-signin__action" bottomSpace>
+              <FormColumn rightSpace={false} className="s-signin__action" bottomSpace>
                 <Button
                   type="submit"
                   onClick={this.handleSubmit}
@@ -109,7 +109,10 @@ class SigninForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn>
+              <FormColumn rightSpace={false}>
+                <Link to="/auth/reset-password">{__('signin.action.forgot_password')}</Link>
+              </FormColumn>
+              <FormColumn rightSpace={false}>
                 <Link to="/auth/signup">{__('signin.create_an_account')}</Link>
               </FormColumn>
             </FormRow>

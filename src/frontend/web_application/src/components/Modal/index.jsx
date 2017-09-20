@@ -15,7 +15,7 @@ const Modal = ({ className, title, children, onClose, ...props }) => (
       {title && (
         <div className="m-modal__title">{title}</div>
       )}
-      <Button display="inline" className="m-modal__close" onClick={onClose} icon="remove" />
+      <Button className="m-modal__close" onClick={onClose} icon="remove" />
     </header>
     <div className="m-modal__content">
       {children}

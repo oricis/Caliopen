@@ -29,7 +29,9 @@
 
     @include breakpoint(medium) {
 
-      padding-right: map_get($co-form__spacing, 'medium');
+      &--right-space {
+        padding-right: map_get($co-form__spacing, 'medium');
+      }
 
       &--align-right {
         text-align: right;

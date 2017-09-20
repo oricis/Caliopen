@@ -1,0 +1,12 @@
+@import '../../styles/common';
+@import '../../styles/object/o-clickable';
+
+
+.m-password-reset-form {
+  max-width: map-get($co-form__width, 'xlarge');
+
+  &__action {
+    line-height: $co-component__height;
+    text-align: center;
+  }
+}

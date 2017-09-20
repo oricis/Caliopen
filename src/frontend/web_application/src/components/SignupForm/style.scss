@@ -5,7 +5,6 @@
 
 
 .s-signup {
-  @include flex-grid-size;
   max-width: map-get($co-form__width, 'xlarge');
 
   &__action { line-height: $co-component__height; }
