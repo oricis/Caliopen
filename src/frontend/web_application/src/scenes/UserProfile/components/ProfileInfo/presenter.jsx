@@ -8,13 +8,14 @@ import './style.scss';
 
 class ProfileInfo extends Component {
   static propTypes = {
-    user: PropTypes.shape({}).isRequired,
+    user: PropTypes.shape({}),
     className: PropTypes.string,
     locale: PropTypes.string,
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    user: undefined,
     className: undefined,
     locale: undefined,
   };
@@ -26,20 +27,27 @@ class ProfileInfo extends Component {
       <div className={classnames('m-user-profile-details', className)}>
         <div className="m-user-profile-details__header">
           <div className="m-user-profile-details__avatar-wrapper">
-            <ContactAvatarLetter contact={user.contact} className="m-user-profile-details__avatar" />
+            {user && (
+              <ContactAvatarLetter
+                contact={user.contact}
+                className="m-user-profile-details__avatar"
+              />
+            )}
           </div>
         </div>
         <div className="m-user-profile-details__name">
-          <h3 className="m-user-profile-details__title">{user.name}</h3>
+          <h3 className="m-user-profile-details__title">{user && user.name}</h3>
           <h4 className="m-user-profile-details__subtitle">
-            {user.given_name}{user.given_name && ' '}{user.family_name}
+            {user && `${user.given_name}${user.given_name} ${user.family_name}`}
           </h4>
           <p>{__('user.profile.subscribed_date')}
-            <Moment
-              className="m-user-profile-details__subscribed-date"
-              format="ll"
-              locale={locale}
-            >{user.date_insert}</Moment>
+            {user && (
+              <Moment
+                className="m-user-profile-details__subscribed-date"
+                format="ll"
+                locale={locale}
+              >{user.date_insert}</Moment>
+            )}
           </p>
         </div>
 

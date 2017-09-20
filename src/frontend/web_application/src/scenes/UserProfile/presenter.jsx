@@ -48,9 +48,7 @@ class UserProfile extends Component {
           <Button onClick={str => str}>{__('user.action.share_profile')}</Button>
         </div>
         <div className="s-user-profile__info">
-          <ProfileInfo
-            user={user}
-          />
+          <ProfileInfo user={user} />
         </div>
         <Section className="s-user-profile__details" title={__('user.profile.form.title')}>
           {
