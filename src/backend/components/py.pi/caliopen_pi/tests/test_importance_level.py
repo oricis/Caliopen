@@ -39,32 +39,32 @@ class TestInboundImportanceLevel(unittest.TestCase):
         features = {'is_spam': True, 'spam_score': 100.0}
         message = MockMessage(pi)
         score = compute_inbound(None, message, features, [])
-        self.assertEqual(score, -5.0)
+        self.assertEqual(score, -5)
 
     def test_half_spam(self):
         pi = MockPI(0, 0, 0)
         features = {'is_spam': True, 'spam_score': 50.0}
         message = MockMessage(pi)
         score = compute_inbound(None, message, features, [])
-        self.assertEqual(score, -2.5)
+        self.assertEqual(score, -3)
 
     def test_max_pi_context(self):
         pi = MockPI(0, 100, 0)
         features = {}
         message = MockMessage(pi)
         score = compute_inbound(None, message, features, [])
-        self.assertEqual(score, 1.25)
+        self.assertEqual(score, 1)
 
     def test_max_pi_comportment(self):
         pi = MockPI(0, 0, 100)
         features = {}
         message = MockMessage(pi)
         score = compute_inbound(None, message, features, [])
-        self.assertEqual(score, 2.5)
+        self.assertEqual(score, 3)
 
     def test_max_pi_context_comportment(self):
         pi = MockPI(0, 100, 100)
         features = {}
         message = MockMessage(pi)
         score = compute_inbound(None, message, features, [])
-        self.assertEqual(score, 3.75)
+        self.assertEqual(score, 4)

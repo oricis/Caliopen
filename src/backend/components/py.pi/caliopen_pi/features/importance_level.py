@@ -69,5 +69,5 @@ def compute_inbound(user, message, features, participants):
     log.info('Importance scores: {0}'.format(scores))
     # Return the final value
     if negative:
-        return max(MIN_VALUE, negative)
-    return min(MAX_VALUE, positive)
+        return round(max(MIN_VALUE, negative))
+    return round(min(MAX_VALUE, positive))
