@@ -25,6 +25,7 @@ function do_backend_tests {
 
     export CALIOPEN_BASEDIR=${PROJECT_DIRECTORY}
     nosetests -sv src/backend/main/py.main/caliopen_main/tests
+    nosetests -sv src/backend/components/py.pi/caliopen_pi/tests
 }
 
 function do_frontend_tests {

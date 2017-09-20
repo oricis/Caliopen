@@ -1,4 +1,4 @@
-"""Test mail message format processing."""
+"""Test spam privacy feature extraction."""
 
 import unittest
 import os
