@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { withTranslator } from '@gandi/react-translate';
 import { Field } from 'redux-form';
+import ContactTitleField from '../ContactTitleField';
 import renderReduxField from '../../../../services/renderReduxField';
 import Button from '../../../../components/Button';
 import { TextFieldGroup as TextFieldGroupBase } from '../../../../components/form';
@@ -11,6 +12,7 @@ const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 class ContactProfileForm extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
+    form: PropTypes.string.isRequired,
   };
 
   state = {
@@ -25,19 +27,12 @@ class ContactProfileForm extends Component {
   };
 
   render() {
-    const { __ } = this.props;
+    const { __, form } = this.props;
 
     return (
       <div className="m-contact-profile-form">
         <div className="m-contact-profile-form__header">
-          <Field
-            component={TextFieldGroup}
-            className="m-contact-profile-form__title"
-            label={__('contact_profile.form.title.label')}
-            placeholder={__('contact_profile.form.title.label')}
-            name="title"
-            showLabelforSr
-          />
+          <ContactTitleField className="m-contact-profile-form__title" form={form} />
           {this.state.isExpanded ?
             <Button
               icon="caret-up"

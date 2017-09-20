@@ -9,10 +9,11 @@ import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.match.params.contactId;
 const contactSelector = state => state.contact;
+const settingsSelector = state => state.settings.settings;
 
 const mapStateToProps = createSelector(
-  [contactIdSelector, contactSelector],
-  (contactId, contactState) => ({
+  [contactIdSelector, contactSelector, settingsSelector],
+  (contactId, contactState, { contact_display_format }) => ({
     contactId,
     contact: contactState.contactsById[contactId],
     form: `contact-${contactId}`,
@@ -20,6 +21,7 @@ const mapStateToProps = createSelector(
     key: `contact-${contactId}`,
     initialValues: contactState.contactsById[contactId],
     isFetching: contactState.isFetching,
+    contact_display_format,
   })
 );
 
