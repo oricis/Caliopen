@@ -191,14 +191,14 @@ class Contact extends Component {
               <Button
                 onClick={this.toggleEditMode}
                 className="s-contact__action"
-                expanded
+                display="expanded"
               >{__('contact.action.edit_contact')}</Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
                 onClick={this.openTagsModal}
                 className="s-contact__action"
-                expanded
+                display="expanded"
               >{__('contact.action.edit_tags')}</Button>
               { this.renderTagsModal() }
             </VerticalMenuItem>
@@ -206,14 +206,14 @@ class Contact extends Component {
               <Button
                 onClick={this.openTagsModal}
                 className="s-contact__action"
-                expanded
+                display="expanded"
               >{__('contact.action.share_contact')}</Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
                 onClick={this.handleContactDelete}
                 className="s-contact__action"
-                expanded
+                display="expanded"
               >{__('contact.action.delete_contact')}</Button>
             </VerticalMenuItem>
           </VerticalMenu>

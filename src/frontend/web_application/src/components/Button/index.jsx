@@ -24,7 +24,7 @@ RawButton.defaultProps = {
 };
 
 const Button = ({
-  children, className, icon, display, expanded, color, shape, responsive, ...props
+  children, className, icon, display, color, shape, responsive, ...props
 }) => {
   const buttonProps = {
     ...props,
@@ -37,7 +37,7 @@ const Button = ({
         'm-button--secondary': color === 'secondary',
         'm-button--success': color === 'success',
 
-        'm-button--expanded': expanded,
+        'm-button--expanded': display === 'expanded',
         'm-button--inline': display === 'inline',
         'm-button--inline-block': display === 'inline-block',
 
@@ -70,7 +70,6 @@ Button.propTypes = {
   shape: PropTypes.oneOf(['plain', 'hollow']),
   icon: PropTypes.string,
   display: PropTypes.oneOf(['inline', 'inline-block', 'expanded']),
-  expanded: PropTypes.bool,
   color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active']),
   responsive: PropTypes.oneOf(['icon-only', 'text-only']),
   accessKey: PropTypes.string,
@@ -82,7 +81,6 @@ Button.defaultProps = {
   children: null,
   shape: null,
   icon: null,
-  expanded: false,
   display: 'inline-block', // default style for button is --inline-block
   color: null,
   responsive: null,

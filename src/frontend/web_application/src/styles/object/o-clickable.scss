@@ -47,7 +47,7 @@
     text-decoration: underline;
   }
 }
-// display: inline or inline-block (
+// display: inline, inline-block or expanded (
 @mixin o-clickable--inline {
   display: inline;
 }
@@ -65,10 +65,9 @@
     background-color: $co-color__primary--lower;
   }
 }
-
-// expanded: true
 @mixin o-clickable--expanded {
   display: block;
+  width: 100%;
   line-height: inherit;
 }
 

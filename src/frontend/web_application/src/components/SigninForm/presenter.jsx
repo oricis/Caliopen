@@ -103,7 +103,7 @@ class SigninForm extends Component {
                 <Button
                   type="submit"
                   onClick={this.handleSubmit}
-                  expanded
+                  display="expanded"
                   shape="plain"
                 >{__('signin.action.login')}</Button>
               </FormColumn>

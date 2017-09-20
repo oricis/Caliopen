@@ -36,7 +36,7 @@ class Presenter extends Component {
         <DropdownControl
           toggle="co-user-menu"
           className="float-right"
-          expanded
+          display="expanded"
           icon="user"
         >
           <span className="show-for-small-only">{user && user.name}</span>&nbsp;
