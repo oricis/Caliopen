@@ -652,6 +652,43 @@
                 },
                 "recovery_email": {
                   "type": "string"
+                },
+                "settings": {
+                  "type": "object",
+                  "properties": {
+                    "default_locale": {
+                      "type": "string",
+                      "default": "fr_FR"
+                    },
+                    "message_display_format": {
+                      "type": "string",
+                      "default": "rich_text"
+                    },
+                    "contact_display_order": {
+                      "type": "string",
+                      "default": "given_name"
+                    },
+                    "contact_display_format": {
+                      "type": "string",
+                      "default": "family_name, given_name"
+                    },
+                    "notification_enabled": {
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "notification_message_preview": {
+                      "type": "string",
+                      "default": "always"
+                    },
+                    "notification_sound_enabled": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "notification_delay_disappear": {
+                      "type": "integer",
+                      "default": 10
+                    }
+                  }
                 }
               },
               "additionalProperties": false,
@@ -3904,7 +3941,7 @@
             "name": "discussion_id",
             "in": "query",
             "description": "filter messages belonging to a specific discussion",
-            "required": true,
+            "required": false,
             "type": "string"
           },
           {
@@ -3974,6 +4011,9 @@
                       "body": {
                         "type": "string"
                       },
+                      "body_is_plain": {
+                        "type": "boolean"
+                      },
                       "date": {
                         "type": "string",
                         "format": "date-time"
@@ -4002,6 +4042,9 @@
                             "type": "string"
                           }
                         }
+                      },
+                      "excerpt": {
+                        "type": "string"
                       },
                       "identities": {
                         "type": "array",
@@ -4261,6 +4304,9 @@
                     "body": {
                       "type": "string"
                     },
+                    "body_is_plain": {
+                      "type": "boolean"
+                    },
                     "date": {
                       "type": "string",
                       "format": "date-time"
@@ -4289,6 +4335,9 @@
                           "type": "string"
                         }
                       }
+                    },
+                    "excerpt": {
+                      "type": "string"
                     },
                     "identities": {
                       "type": "array",
@@ -4465,6 +4514,9 @@
                 "body": {
                   "type": "string"
                 },
+                "body_is_plain": {
+                  "type": "boolean"
+                },
                 "date": {
                   "type": "string",
                   "format": "date-time"
@@ -4493,6 +4545,9 @@
                       "type": "string"
                     }
                   }
+                },
+                "excerpt": {
+                  "type": "string"
                 },
                 "identities": {
                   "type": "array",
@@ -4920,6 +4975,9 @@
                 "body": {
                   "type": "string"
                 },
+                "body_is_plain": {
+                  "type": "boolean"
+                },
                 "date": {
                   "type": "string",
                   "format": "date-time"
@@ -4948,6 +5006,9 @@
                       "type": "string"
                     }
                   }
+                },
+                "excerpt": {
+                  "type": "string"
                 },
                 "identities": {
                   "type": "array",
@@ -5231,6 +5292,9 @@
                 "body": {
                   "type": "string"
                 },
+                "body_is_plain": {
+                  "type": "boolean"
+                },
                 "date": {
                   "type": "string",
                   "format": "date-time"
@@ -5259,6 +5323,9 @@
                       "type": "string"
                     }
                   }
+                },
+                "excerpt": {
+                  "type": "string"
                 },
                 "identities": {
                   "type": "array",
@@ -5442,6 +5509,9 @@
                 "body": {
                   "type": "string"
                 },
+                "body_is_plain": {
+                  "type": "boolean"
+                },
                 "date": {
                   "type": "string",
                   "format": "date-time"
@@ -5470,6 +5540,9 @@
                       "type": "string"
                     }
                   }
+                },
+                "excerpt": {
+                  "type": "string"
                 },
                 "identities": {
                   "type": "array",
@@ -7264,29 +7337,37 @@
             "schema": {
               "type": "object",
               "properties": {
-                "default_language": {
-                  "type": "string"
-                },
-                "default_timezone": {
-                  "type": "string"
-                },
-                "date_format": {
-                  "type": "string"
+                "default_locale": {
+                  "type": "string",
+                  "default": "fr_FR"
                 },
                 "message_display_format": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "rich_text"
                 },
                 "contact_display_order": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "given_name"
                 },
-                "contact_phone_format": {
-                  "type": "string"
+                "contact_display_format": {
+                  "type": "string",
+                  "default": "family_name, given_name"
                 },
-                "notification_style": {
-                  "type": "string"
+                "notification_enabled": {
+                  "type": "boolean",
+                  "default": true
                 },
-                "notification_delay": {
-                  "type": "integer"
+                "notification_message_preview": {
+                  "type": "string",
+                  "default": "always"
+                },
+                "notification_sound_enabled": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "notification_delay_disappear": {
+                  "type": "integer",
+                  "default": 10
                 }
               }
             }
@@ -7318,55 +7399,71 @@
                 "current_state": {
                   "type": "object",
                   "properties": {
-                    "default_language": {
-                      "type": "string"
-                    },
-                    "default_timezone": {
-                      "type": "string"
-                    },
-                    "date_format": {
-                      "type": "string"
+                    "default_locale": {
+                      "type": "string",
+                      "default": "fr_FR"
                     },
                     "message_display_format": {
-                      "type": "string"
+                      "type": "string",
+                      "default": "rich_text"
                     },
                     "contact_display_order": {
-                      "type": "string"
+                      "type": "string",
+                      "default": "given_name"
                     },
-                    "contact_phone_format": {
-                      "type": "string"
+                    "contact_display_format": {
+                      "type": "string",
+                      "default": "family_name, given_name"
                     },
-                    "notification_style": {
-                      "type": "string"
+                    "notification_enabled": {
+                      "type": "boolean",
+                      "default": true
                     },
-                    "notification_delay": {
-                      "type": "integer"
+                    "notification_message_preview": {
+                      "type": "string",
+                      "default": "always"
+                    },
+                    "notification_sound_enabled": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "notification_delay_disappear": {
+                      "type": "integer",
+                      "default": 10
                     }
                   }
                 },
-                "default_language": {
-                  "type": "string"
-                },
-                "default_timezone": {
-                  "type": "string"
-                },
-                "date_format": {
-                  "type": "string"
+                "default_locale": {
+                  "type": "string",
+                  "default": "fr_FR"
                 },
                 "message_display_format": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "rich_text"
                 },
                 "contact_display_order": {
-                  "type": "string"
+                  "type": "string",
+                  "default": "given_name"
                 },
-                "contact_phone_format": {
-                  "type": "string"
+                "contact_display_format": {
+                  "type": "string",
+                  "default": "family_name, given_name"
                 },
-                "notification_style": {
-                  "type": "string"
+                "notification_enabled": {
+                  "type": "boolean",
+                  "default": true
                 },
-                "notification_delay": {
-                  "type": "integer"
+                "notification_message_preview": {
+                  "type": "string",
+                  "default": "always"
+                },
+                "notification_sound_enabled": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "notification_delay_disappear": {
+                  "type": "integer",
+                  "default": 10
                 }
               }
             }

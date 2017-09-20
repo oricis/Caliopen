@@ -17,7 +17,7 @@ messages:
     - name: discussion_id
       in: query
       description: filter messages belonging to a specific discussion
-      required: true
+      required: false
       type: string
     - name: limit
       in: query

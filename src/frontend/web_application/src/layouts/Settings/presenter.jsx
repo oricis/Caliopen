@@ -1,35 +1,40 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { matchPath } from 'react-router-dom';
 import MenuBar from '../../components/MenuBar';
 
-const Settings = ({ __, children }) => {
-  const navLinks = [
-    { title: __('settings.identities'), to: '/settings/identities' },
-    { title: __('settings.application'), to: '/settings/application/interface' },
-    { title: __('settings.tags'), to: '/settings/tags' },
-    { title: __('settings.devices'), to: '/settings/devices' },
-    { title: __('settings.signatures'), to: '/settings/signatures' },
-  ];
+class Settings extends PureComponent {
+  static propTypes = {
+    pathname: PropTypes.string,
+    children: PropTypes.node,
+    __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    pathname: undefined,
+    children: null,
+  };
 
-  return (
-    <div className="l-settings">
-      {
-        // FIXME: component should be connected to detect active links and pass them
-        // to MenuBar
-      }
-      <MenuBar className="l-settings__menu-bar" navLinks={navLinks} />
-      <div className="l-settings__panel">{children}</div>
-    </div>
-  );
-};
+  render() {
+    const { __, children, pathname } = this.props;
 
-Settings.propTypes = {
-  children: PropTypes.node,
-  __: PropTypes.func.isRequired,
-};
+    const navLinks = [
+      { title: __('settings.identities'), to: '/settings/identities' },
+      { title: __('settings.application'), to: '/settings/application' },
+      { title: __('settings.tags'), to: '/settings/tags' },
+      // { title: __('settings.devices'), to: '/settings/devices' },
+      { title: __('settings.signatures'), to: '/settings/signatures' },
+    ].map(link => ({
+      ...link,
+      isActive: matchPath(pathname, { path: link.to, exact: false, strict: false }) && true,
+    }));
 
-Settings.defaultProps = {
-  children: null,
-};
+    return (
+      <div className="l-settings">
+        <MenuBar className="l-settings__menu-bar" navLinks={navLinks} />
+        <div className="l-settings__panel">{children}</div>
+      </div>
+    );
+  }
+}
 
 export default Settings;

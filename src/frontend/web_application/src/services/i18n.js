@@ -1,4 +1,4 @@
-import { provideTranslate, negociateLocale, createTranslator } from '@gandi/react-translate';
+import { provideTranslate, createTranslator } from '@gandi/react-translate';
 
 const availableTranslations = {
   /* eslint-disable global-require */
@@ -6,58 +6,78 @@ const availableTranslations = {
   fr: require('../../locales/fr/main.json'),
   /* eslint-enable global-require */
 };
-const defaultLocale = 'en';
+export const availableLanguages = Object.keys(availableTranslations);
+export const defaultLanguage = 'en';
 
-export function changeLocale(translator, locale) {
-  translator.registerTranslations(locale, availableTranslations[locale]);
-  translator.setLocale(locale);
+export function changeLocale(translator, language) {
+  translator.registerTranslations(language, availableTranslations[language]);
+  translator.setLocale(language);
 }
 
-export const getLocale = () => {
-  let preferedUserLocales = [];
-
+export const getUserLocales = () => {
   if (BUILD_TARGET === 'browser') {
     const languages = window.navigator.languages || [];
-    preferedUserLocales = [
-      document.cookie.locale,
+
+    return [
       ...languages,
-      (window.navigator.language || window.navigator.userLanguage),
-    ].filter(rawLocale => rawLocale && true);
+      ...(window.navigator.language || window.navigator.userLanguage || defaultLanguage),
+    ];
   }
 
-  if (BUILD_TARGET === 'server') {
-    preferedUserLocales = [global.USER_LOCALE];
+  if (BUILD_TARGET === 'server' && global.USER_LOCALE) {
+    return [global.USER_LOCALE];
   }
 
   if (BUILD_TARGET === 'electron') {
     const { ipcRenderer } = require('electron'); // eslint-disable-line
-    preferedUserLocales = [ipcRenderer.sendSync('getLocale')];
+
+    return [ipcRenderer.sendSync('getLocale')];
   }
 
-  return negociateLocale(preferedUserLocales, Object.keys(availableTranslations), defaultLocale);
+  return [];
+};
+
+export const getLanguage = (locales = []) => {
+  const language = locales.reduce((acc, locale) => {
+    if (acc) {
+      return acc;
+    }
+    if (availableLanguages.indexOf(locale) !== -1) {
+      return locale;
+    }
+
+    const lang = availableLanguages.find(availableLang => locale.startsWith(availableLang));
+
+    if (lang) {
+      return lang;
+    }
+
+    return acc;
+  }, undefined);
+
+  return language || defaultLanguage;
 };
 
 export const getLocaleAsync = () => new Promise((resolve, reject) => {
   if (BUILD_TARGET === 'cordova') {
     navigator.globalization.getLocaleName((locale) => {
-      resolve(negociateLocale([locale.value], Object.keys(availableTranslations), defaultLocale));
+      resolve(getLanguage([locale.value]));
     }, (err) => {
       reject(err);
     });
   }
 
-  resolve(getLocale());
+  resolve(getLanguage(getUserLocales()));
 });
-
 
 let translator;
 export const getTranslator = () => {
   if (!translator) {
-    const locale = getLocale();
+    const language = getLanguage(getUserLocales());
     const translatorParams = {
-      locale,
-      translations: availableTranslations[locale],
-      defaultLocale: locale,
+      locale: language,
+      translations: availableTranslations[language],
+      defaultLocale: language,
       logMissing: true,
     };
     translator = createTranslator(translatorParams);
@@ -70,8 +90,8 @@ export default function enableI18n(Component) {
   const currentTranslator = getTranslator();
 
   if (BUILD_TARGET === 'cordova') {
-    getLocaleAsync().then((localeUpdated) => {
-      changeLocale(currentTranslator, localeUpdated);
+    getLocaleAsync().then((language) => {
+      changeLocale(currentTranslator.translator, language);
     });
   }
 

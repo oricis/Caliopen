@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import renderReduxField from '../../services/renderReduxField';
+import renderReduxField from '../../../../services/renderReduxField';
 import { FieldErrors, Fieldset, Legend, DatePickerGroup as DatePickerGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
 import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';

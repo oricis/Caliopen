@@ -8,6 +8,7 @@ from schematics.types.compound import ModelType, DictType, ListType
 from schematics.transforms import blacklist
 
 from caliopen_main.contact.parameters import NewContact, Contact
+from .settings import Settings
 
 from caliopen_main.pi.parameters import PIParameter
 import caliopen_storage.helpers.json as helpers
@@ -27,6 +28,7 @@ class NewUser(Model):
     params = DictType(StringType())
     password = StringType(required=True)
     recovery_email = EmailType(required=True)
+    settings = ModelType(Settings, default=lambda: {})
 
     class Options:
         serialize_when_none = False
@@ -46,7 +48,7 @@ class User(NewUser):
     user_id = UUIDType()
 
     class Options:
-        roles = {'default': blacklist('password')}
+        roles = {'default': blacklist('password', 'settings')}
         serialize_when_none = False
 
 

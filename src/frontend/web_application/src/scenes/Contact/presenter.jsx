@@ -23,7 +23,6 @@ import OrgaForm from './components/OrgaForm';
 import IdentityForm from './components/IdentityForm';
 import AddFormFieldForm from './components/AddFormFieldForm';
 
-import { UPDATE_CONTACT_SUCCESS } from '../../store/modules/contact';
 import './style.scss';
 
 // const FAKE_TAGS = ['Caliopen', 'Gandi', 'Macarons'];
@@ -67,20 +66,6 @@ class Contact extends Component {
   componentDidMount() {
     const { contactId, requestContact } = this.props;
     requestContact({ contactId });
-  }
-
-  handleContactChange = ({ contact, original }) => {
-    const { __, updateContact, notifyError, requestContact } = this.props;
-
-    updateContact({ contact, original })
-      .then((action) => {
-        if (action.type === UPDATE_CONTACT_SUCCESS) {
-          return requestContact({ contactId: contact.contact_id });
-        }
-
-        return notifyError(__('contact.feedback.update-fail'));
-      })
-    ;
   }
 
   handleContactDelete = ({ contact }) => {

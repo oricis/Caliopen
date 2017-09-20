@@ -7,6 +7,8 @@ properties:
       "$ref": Attachment.yaml
   body:
     type: string
+  body_is_plain:
+    type: boolean
   date:
     type: string
     format: date-time
@@ -21,6 +23,8 @@ properties:
   external_references:
     type: object
     "$ref": ExternalReferences.yaml
+  excerpt:
+    type: string
   identities: # to which user's local identities the message is linked to
     type: array
     items:

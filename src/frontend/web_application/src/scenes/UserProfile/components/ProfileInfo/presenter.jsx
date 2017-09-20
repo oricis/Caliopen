@@ -46,7 +46,7 @@ class ProfileInfo extends Component {
         <div className="m-user-profile-details__rank">
           <div className="m-user-profile-details__rank-badge" />
           <div className="m-user-profile-details__rank-info">
-            <h4 className="m-user-profile-details__rank-title">{__('fake rank')}</h4>
+            <h4 className="m-user-profile-details__rank-title">fake rank</h4>
             <Link to="">{__('user.action.improve_rank')}</Link>
           </div>
         </div>

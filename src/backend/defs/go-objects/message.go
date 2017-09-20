@@ -18,6 +18,7 @@ type Message struct {
 	Attachments         []Attachment       `cql:"attachments"              json:"attachments"       `
 	Body_html           string             `cql:"body_html"                json:"body_html"         `
 	Body_plain          string             `cql:"body_plain"               json:"body_plain"        `
+	Body_excerpt        string             `cql:"-"                        json:"excerpt"           `
 	Date                time.Time          `cql:"date"                     json:"date"                                         formatter:"RFC3339Milli"`
 	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete"                                  formatter:"RFC3339Milli"`
 	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"RFC3339Milli"`
@@ -32,7 +33,7 @@ type Message struct {
 	Parent_id           string             `cql:"parent_id"                json:"parent_id"        `
 	Participants        []Participant      `cql:"participants"             json:"participants"     `
 	Privacy_features    PrivacyFeatures    `cql:"privacy_features"         json:"privacy_features" `
-	PrivacyIndex        *PrivacyIndex      `cql:"pi"                 json:"pi"`
+	PrivacyIndex        *PrivacyIndex      `cql:"pi"                       json:"pi"`
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
 	Subject             string             `cql:"subject"                  json:"subject"          `
 	Tags                []Tag              `cql:"tags"                     json:"tags"             `
@@ -44,7 +45,7 @@ type Message struct {
 type MessagesListFilter struct {
 	Limit   int
 	Offset  int
-	Terms   map[string]string
+	Terms   map[string][]string
 	User_id UUID
 }
 
