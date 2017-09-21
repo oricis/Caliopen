@@ -1,14 +1,36 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { withTranslator } from '@gandi/react-translate';
 import ActionButton from '../ActionButton';
 
-const Presenter = ({ translator: { __ }, ...props }) => (
-  <ActionButton {...props} icon="reply">{__('call-to-action.action.reply')}</ActionButton>
-);
+class ComposeContactButton extends PureComponent {
+  static propTypes = {
+    __: PropTypes.func.isRequired,
+    notify: PropTypes.func.isRequired,
+    className: PropTypes.string,
+  };
+  static defaultProps = {
+    className: undefined,
+  };
 
-Presenter.propTypes = {
-  translator: PropTypes.shape({ __: PropTypes.func.isRequired }),
-};
+  handleEventAction = () => {
+    this.props.notify({
+      message: 'Reply to thread is not yet implemented.',
+    });
+  }
 
-export default withTranslator({ propsNamespace: 'translator' })(Presenter);
+  render() {
+    const { __, className } = this.props;
+    const buttonProps = {
+      icon: 'reply',
+      className,
+    };
+
+    return (
+      <ActionButton action={this.handleEventAction} button={buttonProps}>
+        {__('call-to-action.action.reply')}
+      </ActionButton>
+    );
+  }
+}
+
+export default ComposeContactButton;

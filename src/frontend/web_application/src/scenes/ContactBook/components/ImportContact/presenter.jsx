@@ -8,16 +8,14 @@ class ImportContact extends Component {
     __: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     onUploadSuccess: PropTypes.func,
-    notifySuccess: PropTypes.func,
-    notifyError: PropTypes.func,
+    notifySuccess: PropTypes.func.isRequired,
+    notifyError: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     onCancel: null,
     onUploadError: (err) => { throw err; },
     onUploadSuccess: () => {},
-    notifySuccess: () => {},
-    notifyError: () => {},
   }
 
   constructor(props) {
@@ -41,7 +39,7 @@ class ImportContact extends Component {
   handleImportContactSuccess() {
     this.setState({ hasImported: true }, () => {
       const { onUploadSuccess, notifySuccess, __ } = this.props;
-      notifySuccess(__('import-contact.feedback.successfull'));
+      notifySuccess({ message: __('import-contact.feedback.successfull'), duration: 0 });
       onUploadSuccess();
     });
   }
@@ -50,14 +48,14 @@ class ImportContact extends Component {
     const { notifyError, __ } = this.props;
 
     if (response.status === 400) {
-      return notifyError(__('import-contact.feedback.error-file'));
+      return notifyError({ message: __('import-contact.feedback.error-file'), duration: 0 });
     }
 
     if (response.status === 422) {
-      return notifyError(__('import-contact.feedback.error-contact'));
+      return notifyError({ message: __('import-contact.feedback.error-contact'), duration: 0 });
     }
 
-    return notifyError(__('import-contact.feedback.unexpected-error'));
+    return notifyError({ message: __('import-contact.feedback.unexpected-error'), duration: 0 });
   }
 
   render() {

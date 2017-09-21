@@ -3,13 +3,14 @@ import classnames from 'classnames';
 import './style.scss';
 
 class Presenter extends Component {
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    availableActions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    principalAction: PropTypes.shape({}).isRequired,
+  };
 
-    this.state = {
-      isFocus: false,
-    };
-  }
+  state = {
+    isFocus: false,
+  };
 
   render() {
     const { availableActions, principalAction } = this.props;
@@ -33,10 +34,5 @@ class Presenter extends Component {
     );
   }
 }
-
-Presenter.propTypes = {
-  availableActions: PropTypes.arrayOf(PropTypes.shape({})),
-  principalAction: PropTypes.shape({}),
-};
 
 export default Presenter;
