@@ -165,6 +165,11 @@ func (c *Contact) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
+	return c.UnmarshalMap(input)
+}
+
+func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
+
 	c.AdditionalName, _ = input["additional_name"].(string)
 	//addresses
 	if pa, ok := input["addresses"]; ok {
@@ -256,10 +261,11 @@ func (c *Contact) UnmarshalJSON(b []byte) error {
 			}
 		}
 	}
+	// Privacy features
 	if pf, ok := input["privacy_features"]; ok {
-		PF := PrivacyFeatures{}
-		PF = pf.(map[string]string)
-		c.PrivacyFeatures = &PF
+		PF := &PrivacyFeatures{}
+		PF.UnmarshalMap(pf.(map[string]interface{}))
+		c.PrivacyFeatures = PF
 	}
 	//tags
 	if tags, ok := input["tags"]; ok {

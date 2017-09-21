@@ -151,6 +151,10 @@ func (msg *Message) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &input); err != nil {
 		return err
 	}
+	return msg.UnmarshalMap(input)
+}
+
+func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 	if _, ok := input["attachments"]; ok {
 		for _, attachment := range input["attachments"].([]interface{}) {
 			A := new(Attachment)
@@ -210,11 +214,15 @@ func (msg *Message) UnmarshalJSON(b []byte) error {
 			}
 		}
 	}
-	msg.Privacy_features, _ = input["privacy_features"].(map[string]string)
 	if i_pi, ok := input["pi"]; ok {
 		pi := new(PrivacyIndex)
 		pi.UnmarshalMap(i_pi.(map[string]interface{}))
 		msg.PrivacyIndex = pi
+	}
+	if pf, ok := input["privacy_features"]; ok {
+		PF := &PrivacyFeatures{}
+		PF.UnmarshalMap(pf.(map[string]interface{}))
+		msg.Privacy_features = *PF
 	}
 	if raw_msg_id, ok := input["raw_msg_id"].(string); ok {
 		if id, err := uuid.FromString(raw_msg_id); err == nil {
