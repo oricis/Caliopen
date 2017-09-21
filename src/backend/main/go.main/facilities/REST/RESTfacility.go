@@ -37,6 +37,7 @@ type (
 		RetrieveTag(user_id, tag_id string) (tag Tag, err error)
 		UpdateTag(tag *Tag) error
 		DeleteTag(user_id, tag_id string) error
+		GetSettings(user_id string) (settings *Settings, err error)
 	}
 	RESTfacility struct {
 		store              backends.APIStorage

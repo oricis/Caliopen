@@ -30,6 +30,8 @@ type APIStorage interface {
 	RetrieveTag(user_id, tag_id string) (tag Tag, err error)
 	UpdateTag(tag *Tag) error
 	DeleteTag(user_id, tag_id string) error
+	// user
+	GetSettings(user_id string) (settings *Settings, err error)
 }
 
 type APIIndex interface {

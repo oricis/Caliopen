@@ -52,7 +52,7 @@ type MessagesListFilter struct {
 // bespoke implementation of the json.Marshaller interface
 // outputs a JSON representation of an object
 // this marshaler takes account of custom tags for given 'context'
-func (msg *Message) JSONMarshaller(context string) ([]byte, error) {
+func (msg *Message) JSONMarshaller(context string, body_type ...string) ([]byte, error) {
 	var jsonBuf bytes.Buffer
 	enc := json.NewEncoder(&jsonBuf)
 
@@ -91,12 +91,22 @@ fieldsLoop:
 							jsonBuf.WriteString("\"body\":")
 							// TODO : put html or plain in exported body regarding current user preferences
 							var body_is_plain bool
-							if msg.Body_html != "" {
-								enc.Encode(msg.Body_html)
-								body_is_plain = false
+							if len(body_type) > 0 && len(msg.Body_html) > 0 && len(msg.Body_plain) > 0 {
+								if body_type[0] == "rich_text" {
+									enc.Encode(msg.Body_html)
+									body_is_plain = false
+								} else {
+									enc.Encode(msg.Body_plain)
+									body_is_plain = true
+								}
 							} else {
-								enc.Encode(msg.Body_plain)
-								body_is_plain = true
+								if msg.Body_html != "" {
+									enc.Encode(msg.Body_html)
+									body_is_plain = false
+								} else {
+									enc.Encode(msg.Body_plain)
+									body_is_plain = true
+								}
 							}
 							if body_is_plain {
 								jsonBuf.WriteString(",\"body_is_plain\":true")
@@ -150,8 +160,8 @@ func (msg *Message) MarshalES() ([]byte, error) {
 }
 
 // return a JSON representation of Message suitable for frontend client
-func (msg *Message) MarshalFrontEnd() ([]byte, error) {
-	return msg.JSONMarshaller("frontend")
+func (msg *Message) MarshalFrontEnd(body_type string) ([]byte, error) {
+	return msg.JSONMarshaller("frontend", body_type)
 }
 
 func (msg *Message) UnmarshalJSON(b []byte) error {

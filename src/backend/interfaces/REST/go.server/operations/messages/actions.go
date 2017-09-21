@@ -32,7 +32,8 @@ func Actions(ctx *gin.Context) {
 				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 				ctx.Abort()
 			} else {
-				msg_json, err := updated_msg.MarshalFrontEnd()
+				// TODO : find the correct body_type to use
+				msg_json, err := updated_msg.MarshalFrontEnd("plain_text")
 				if err != nil {
 					e := swgErr.New(http.StatusFailedDependency, err.Error())
 					http_middleware.ServeError(ctx.Writer, ctx.Request, e)
