@@ -51,23 +51,23 @@ func GetMessagesList(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	}
-		var respBuf bytes.Buffer
-		respBuf.WriteString("{\"total\": " + strconv.FormatInt(totalFound, 10) + ",")
-		respBuf.WriteString("\"messages\":[")
-		first := true
-		for _, msg := range list {
-			json_msg, err := msg.MarshalFrontEnd(settings.MessageDisplayForma)
-			if err == nil {
-				if first {
-					first = false
-				} else {
-					respBuf.WriteByte(',')
-				}
-				respBuf.Write(json_msg)
+	var respBuf bytes.Buffer
+	respBuf.WriteString("{\"total\": " + strconv.FormatInt(totalFound, 10) + ",")
+	respBuf.WriteString("\"messages\":[")
+	first := true
+	for _, msg := range list {
+		json_msg, err := msg.MarshalFrontEnd(settings.MessageDisplayFormat)
+		if err == nil {
+			if first {
+				first = false
+			} else {
+				respBuf.WriteByte(',')
 			}
+			respBuf.Write(json_msg)
 		}
-		respBuf.WriteString("]}")
-		ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
+	}
+	respBuf.WriteString("]}")
+	ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
 }
 
 // GET …/messages/:message_id
