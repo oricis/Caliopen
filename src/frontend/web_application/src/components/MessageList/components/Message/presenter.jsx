@@ -17,14 +17,6 @@ const FOLD_HEIGHT = 80; // = .m-message__content--fold height
 
 const DropdownControl = withDropdownControl(Button);
 
-function generateStateFromProps(props) {
-  const { message } = props;
-
-  return {
-    isUnread: message.is_unread,
-  };
-}
-
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
@@ -42,16 +34,11 @@ class Message extends Component {
   state = {
     bodyHeight: null,
     isTooLong: false,
-    isFold: false,
-    isUnread: false,
+    isFold: true, // set fold state as default to avoid content's height animation on load
   };
 
-  componentWillMount() {
-    this.setState(prevState => generateStateFromProps(this.props, prevState));
-  }
-
   componentDidMount() {
-    this.setContentHeight();
+    setTimeout(this.setContentHeight, 1);
   }
 
   componentDidUpdate() {
@@ -63,13 +50,15 @@ class Message extends Component {
   }
 
   setContentHeight = () => {
+    const { message } = this.props;
     const bodyHeight = this.divElement.clientHeight;
+    const isTooLong = bodyHeight > FOLD_HEIGHT;
 
     this.setState(prevState => ({
       ...prevState,
       bodyHeight,
-      isTooLong: bodyHeight > FOLD_HEIGHT && true,
-      isFold: bodyHeight > FOLD_HEIGHT && !prevState.isUnread && true,
+      isTooLong,
+      isFold: isTooLong && !message.is_unread,
     }));
   }
 
@@ -91,7 +80,6 @@ class Message extends Component {
       ),
       style: {
         height: this.state.isFold ? null : this.state.bodyHeight,
-        transitionTimingFunction: this.state.isFold ? 'ease-in-out' : 'ease-out', // to make 'expand'/'collapse' animation smoother
         transitionDuration: `${((this.state.bodyHeight / 100) * 0.05)}s`, // to make 'expand'/'collapse' animation smoother
       },
     };
@@ -127,12 +115,12 @@ class Message extends Component {
 
     const topBarClassName = classnames(
       'm-message__top-bar',
-      { 'm-message__top-bar--is-unread': this.state.isUnread },
+      { 'm-message__top-bar--is-unread': message.is_unread },
     );
 
     const subjectClassName = classnames(
       'm-message__subject',
-      { 'm-message__subject--is-unread': this.state.isUnread },
+      { 'm-message__subject--is-unread': message.is_unread },
     );
 
     return (
@@ -141,6 +129,7 @@ class Message extends Component {
           <ContactAvatarLetter
             contact={author}
             className="m-message__avatar"
+            contactDisplayFormat="address"
           />
         </div>
         <div className="m-message__container">

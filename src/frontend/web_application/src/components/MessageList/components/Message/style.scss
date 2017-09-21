@@ -74,13 +74,14 @@ $message-content--fold__height: 80px; // = const FOLD_HEIGHT
     position: relative;
     transition-duration: .15s; // transition-duration is overrided by JS
     transition-property: height;
-    transition-timing-function: ease-out; // transition-timing-function is overrided by JS
+    transition-timing-function: ease-out;
     overflow: hidden;
     color: $co-color__fg__text;
     box-sizing: content-box;
 
     &--fold {
       height: $message-content--fold__height;
+      transition-timing-function: ease-in;
 
       &::before {
         display: block;
