@@ -38,7 +38,7 @@ type (
 		UpdateTag(tag *Tag) error
 		DeleteTag(user_id, tag_id string) error
 		//search
-		Search(IndexSearch) (result []byte, err error)
+		Search(IndexSearch) (result *IndexResult, err error)
 	}
 	RESTfacility struct {
 		store              backends.APIStorage
