@@ -18,15 +18,19 @@ type IndexSearch struct {
 }
 
 type IndexResult struct {
-	Total        int64 `json:"total"`
-	MessagesHits struct {
-		Total    int64       `json:"total"`
-		Messages []*IndexHit `json:"messages"`
-	} `json:"messages_hits"`
-	ContactsHits struct {
-		Total    int64       `json:"total"`
-		Contacts []*IndexHit `json:"contacts"`
-	} `json:"contact_hits"`
+	Total        int64       `json:"total"`
+	MessagesHits MessageHits `json:"messages_hits"`
+	ContactsHits ContactHits `json:"contact_hits"`
+}
+
+type MessageHits struct {
+	Total    int64       `json:"total"`
+	Messages []*IndexHit `json:"messages"`
+}
+
+type ContactHits struct {
+	Total    int64       `json:"total"`
+	Contacts []*IndexHit `json:"contacts"`
 }
 
 type IndexHit struct {

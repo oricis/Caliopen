@@ -60,7 +60,9 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 
 	// build IndexResult from ES response
 	result = &IndexResult{
-		Total: response.TotalHits(),
+		Total:        response.TotalHits(),
+		MessagesHits: MessageHits{0, []*IndexHit{}},
+		ContactsHits: ContactHits{0, []*IndexHit{}},
 	}
 
 	if search.DocType != "" {
