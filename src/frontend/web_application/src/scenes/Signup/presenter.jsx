@@ -9,38 +9,13 @@ const INVALID_FORM_REJECTION = 'INVALID_FORM_REJECTION';
 class Signup extends Component {
   static propTypes = {
     onSignupSuccess: PropTypes.func.isRequired,
+    settings: PropTypes.shape({}).isRequired,
     __: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      errors: {},
-    };
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handleUsernameBlur = this.handleUsernameBlur.bind(this);
-    this.handleSignup = this.handleSignup.bind(this);
-    this.handleSignupSuccess = this.handleSignupSuccess.bind(this);
-    this.handleSignupError = this.handleSignupError.bind(this);
-  }
-
-  updateErrorsState(fieldname, errorType, isValid) {
-    this.setState((prevState) => {
-      let fieldErrors = prevState.errors[fieldname] ? [...prevState.errors[fieldname]] : [];
-      fieldErrors = fieldErrors.filter(msg => msg !== this.localizedErrors[errorType]);
-
-      if (!isValid) {
-        fieldErrors.push(this.localizedErrors[errorType]);
-      }
-
-      return {
-        errors: {
-          ...prevState.errors,
-          [fieldname]: fieldErrors,
-        },
-      };
-    });
-  }
+  state = {
+    errors: {},
+  };
 
   resetErrorsState(fieldname) {
     this.setState(prevState => ({
@@ -52,7 +27,7 @@ class Signup extends Component {
   }
 
 
-  handleUsernameChange(ev) {
+  handleUsernameChange = (ev) => {
     const { value: username } = ev.target;
     if (username.length === 0) {
       this.resetErrorsState('username');
@@ -74,7 +49,7 @@ class Signup extends Component {
     }
   }
 
-  handleUsernameBlur(ev) {
+  handleUsernameBlur = (ev) => {
     const { value: username } = ev.target;
     if (username.length === 0) {
       this.resetErrorsState('username');
@@ -94,14 +69,8 @@ class Signup extends Component {
     });
   }
 
-  checkRequiredFields(formValues) {
-    this.updateErrorsState('username', 'ERR_REQUIRED_USERNAME', formValues.username.length !== 0);
-    this.updateErrorsState('password', 'ERR_REQUIRED_PASSWORD', formValues.password.length !== 0);
-    this.updateErrorsState('tos', 'ERR_REQUIRED_TOS', formValues.tos === true);
-  }
-
-  handleSignup(ev) {
-    const { __ } = this.props;
+  handleSignup = (ev) => {
+    const { __, settings } = this.props;
     formValidator.validate(ev.formValues, __, 'full')
       .catch((errors) => {
         this.setState({ errors });
@@ -110,18 +79,19 @@ class Signup extends Component {
       })
       .then(() => axios.post('/auth/signup', {
         ...ev.formValues,
+        settings,
       }, {
         headers: { 'X-Requested-With': 'XMLHttpRequest' },
       }))
       .then(this.handleSignupSuccess, this.handleSignupError);
   }
 
-  handleSignupSuccess() {
+  handleSignupSuccess = () => {
     const { onSignupSuccess } = this.props;
     onSignupSuccess('/');
   }
 
-  handleSignupError(err) {
+  handleSignupError = (err) => {
     if (err === INVALID_FORM_REJECTION) {
       return;
     }
