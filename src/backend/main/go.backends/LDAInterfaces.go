@@ -14,6 +14,7 @@ type LDAStore interface {
 	Close()
 	GetMessage(user_id, msg_id string) (msg *Message, err error)
 	GetUsersForRecipients([]string) ([]UUID, error) // returns a list of user Ids for each recipients. No deduplicate.
+	GetSettings(user_id string) (settings *Settings, err error)
 	StoreMessage(msg *Message) error
 
 	StoreRawMessage(msg RawMessage) (err error)
