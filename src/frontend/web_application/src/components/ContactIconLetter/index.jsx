@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import IconLetter from '../IconLetter';
+import { formatName } from '../../services/contact';
 
-function getContactTitle(contact) {
-  return contact.title || contact.address;
+class ContactIconLetter extends PureComponent {
+  static propTypes = {
+    contact: PropTypes.shape({}).isRequired,
+    contactDisplayFormat: PropTypes.string,
+  };
+  static defaultProps = {
+    contactDisplayFormat: 'title',
+  };
+
+  render() {
+    const { contact, contactDisplayFormat: format, ...props } = this.props;
+
+    return (
+      <IconLetter word={formatName({ contact, format })} {...props} />
+    );
+  }
 }
-
-const ContactIconLetter = ({ contact, ...props }) => (
-  <IconLetter word={getContactTitle(contact)} {...props} />
-);
-
-ContactIconLetter.propTypes = {
-  contact: PropTypes.shape({}).isRequired,
-};
 
 export default ContactIconLetter;

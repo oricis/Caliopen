@@ -126,7 +126,7 @@ const getUserTab = ({ pathname }) => {
   const { translate: __ } = getTranslator();
 
   const routeConfig = flattenRouteConfig(getRouteConfig({ __ }))
-    .filter(route => route.path.indexOf('/user/') !== -1)
+    .filter(route => route.path && route.path.indexOf('/user/') !== -1)
     .find(route => matchPath(pathname, { path: route.path }));
 
   return {

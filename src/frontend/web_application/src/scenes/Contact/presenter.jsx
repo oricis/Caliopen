@@ -37,12 +37,12 @@ class Contact extends Component {
     handleSubmit: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,
-    notifyError: PropTypes.func.isRequired,
     removeContact: PropTypes.func,
     contactId: PropTypes.string.isRequired,
     contact: PropTypes.shape({}),
     isFetching: PropTypes.bool,
     form: PropTypes.string.isRequired,
+    contact_display_format: PropTypes.string.isRequired,
     // birthday: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
@@ -224,7 +224,7 @@ class Contact extends Component {
   }
 
   render() {
-    const { __, isFetching, contact } = this.props;
+    const { __, isFetching, contact, form, contact_display_format: format } = this.props;
 
     return (
       <form onSubmit={this.handleSubmit} method="post">
@@ -245,8 +245,9 @@ class Contact extends Component {
             <div className="s-contact__col-datas-irl">
               <ContactProfile
                 contact={contact}
+                contactDisplayFormat={format}
                 editMode={this.state.editMode}
-                form={(<ContactProfileForm />)}
+                form={(<ContactProfileForm form={form} />)}
               />
             </div>
             <div className="s-contact__col-datas-online">

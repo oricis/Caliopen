@@ -18,24 +18,6 @@ export const DEFAULT_SORT_VIEW = SORT_VIEW_GIVEN_NAME;
 
 const DEFAULT_SORT_DIR = 'ASC';
 
-function getOrderedContacts(contactList, sortView, sortDir) {
-  const altSortView = SORT_VIEW_TITLE;
-  const sortedContacts = contactList.sort((a, b) => {
-    const first = a[sortView] ? a[sortView] : a[altSortView];
-    const second = b[sortView] ? b[sortView] : b[altSortView];
-
-    switch (sortDir) {
-      default:
-      case 'ASC':
-        return (first || '').localeCompare(second);
-      case 'DESC':
-        return (second || '').localeCompare(first);
-    }
-  });
-
-  return sortedContacts;
-}
-
 function getFilteredContacts(contactList, activeTag) {
   if (activeTag === '') {
     return contactList;
@@ -61,46 +43,49 @@ class ContactBook extends Component {
     hasMore: false,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeTag: '',
-      sortDir: DEFAULT_SORT_DIR,
-      sortView: DEFAULT_SORT_VIEW,
-      isImportModalOpen: false,
-    };
-    this.loadMore = this.loadMore.bind(this);
-    this.handleOpenImportModal = this.handleOpenImportModal.bind(this);
-    this.handleCloseImportModal = this.handleCloseImportModal.bind(this);
-    this.renderImportModal = this.renderImportModal.bind(this);
-    this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
-  }
+  state = {
+    activeTag: '',
+    sortDir: DEFAULT_SORT_DIR,
+    isImportModalOpen: false,
+  };
 
   componentDidMount() {
     this.props.requestContacts();
   }
 
-  loadMore() {
+  loadMore = () => {
     this.props.loadMoreContacts();
   }
 
-  handleOpenImportModal() {
+  handleOpenImportModal = () => {
     this.setState({
       isImportModalOpen: true,
     });
-  }
+  };
 
-  handleCloseImportModal() {
+  handleCloseImportModal = () => {
     this.setState({
       isImportModalOpen: false,
     });
-  }
+  };
 
-  handleUploadSuccess() {
+  handleUploadSuccess = () => {
     this.props.requestContacts();
-  }
+  };
 
-  renderImportModal() {
+  handleTagClick = (event) => {
+    this.setState({
+      activeTag: event.target.value,
+    });
+  };
+
+  handleSortDirChange = (event) => {
+    this.setState({
+      sortDir: event.target.value,
+    });
+  };
+
+  renderImportModal = () => {
     const { __ } = this.props;
 
     return (
@@ -119,24 +104,6 @@ class ContactBook extends Component {
   }
 
   render() {
-    const handleTagClick = (event) => {
-      this.setState({
-        activeTag: event.target.value,
-      });
-    };
-
-    const handleSortDirChange = (event) => {
-      this.setState({
-        sortDir: event.target.value,
-      });
-    };
-
-    const handleSortViewChange = (event) => {
-      this.setState({
-        sortView: event.target.value,
-      });
-    };
-
     const { contacts, isFetching, hasMore, __ } = this.props;
 
     const tags = [].concat(...contacts.map(contact => contact.tags));
@@ -145,10 +112,8 @@ class ContactBook extends Component {
       <div className="l-contact-book">
         <MenuBar>
           <ContactFilters
-            onSortDirChange={handleSortDirChange}
-            onSortViewChange={handleSortViewChange}
+            onSortDirChange={this.handleSortDirChange}
             sortDir={this.state.sortDir}
-            sortView={this.state.sortView}
             __={__}
           />
         </MenuBar>
@@ -158,7 +123,7 @@ class ContactBook extends Component {
             <TagList
               tags={tags}
               activeTag={this.state.activeTag}
-              onTagClick={handleTagClick}
+              onTagClick={this.handleTagClick}
               nbContactsAll={contacts.length}
               __={__}
             />
@@ -173,20 +138,18 @@ class ContactBook extends Component {
           </div>
 
           <div className="l-contact-book__contact-list">
-            {isFetching &&
+            {isFetching && (
               <Spinner isLoading={isFetching} />
-            }
+            )}
             <ContactList
-              contacts={getOrderedContacts(
-                  getFilteredContacts(contacts, this.state.activeTag),
-                  this.state.sortView,
-                  this.state.sortDir
-              )}
-              sortView={this.state.sortView}
+              contacts={getFilteredContacts(contacts, this.state.activeTag)}
+              sortDir={this.state.sortDir}
             />
             {hasMore && (
               <div className="l-contact-book-list__load-more">
-                <Button shape="hollow" onClick={this.loadMore}>{__('general.action.load_more')}</Button>
+                <Button shape="hollow" onClick={this.loadMore}>
+                  {__('general.action.load_more')}
+                </Button>
               </div>
             )}
           </div>
