@@ -9,12 +9,18 @@ search:
     security:
     - basicAuth: []
     parameters:
+    - name: term
+      in: query
+      description: the search string
+      required: true
+      type: string
+      minLength: 3
     - name: field
       in: query
       description: name of a field on which to perform the search. If omitted defaults to « _all ».
       required: false
       type: string
-    - name: doc_type
+    - name: doctype
       in: query
       description: type of documents to narrow the search to.
       required: false
@@ -22,6 +28,7 @@ search:
       enum:
       - message
       - contact
+      - ""
     - name: limit
       in: query
       required: false
