@@ -18,7 +18,8 @@ import (
 
 // GET …/messages
 func GetMessagesList(ctx *gin.Context) {
-	user_uuid, _ := uuid.FromString(ctx.MustGet("user_id").(string))
+	user_uuid_str := ctx.MustGet("user_id").(string)
+	user_uuid, _ := uuid.FromString(user_uuid_str)
 	var user_UUID UUID
 	var limit, offset int
 	user_UUID.UnmarshalBinary(user_uuid.Bytes())
@@ -43,25 +44,30 @@ func GetMessagesList(ctx *gin.Context) {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
-	} else {
-		var respBuf bytes.Buffer
-		respBuf.WriteString("{\"total\": " + strconv.Itoa(len(list)) + ",")
-		respBuf.WriteString("\"messages\":[")
-		first := true
-		for _, msg := range list {
-			json_msg, err := msg.MarshalFrontEnd()
-			if err == nil {
-				if first {
-					first = false
-				} else {
-					respBuf.WriteByte(',')
-				}
-				respBuf.Write(json_msg)
-			}
-		}
-		respBuf.WriteString("]}")
-		ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
 	}
+	settings, err := caliopen.Facilities.RESTfacility.GetSettings(user_uuid_str)
+	if err != nil {
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	}
+	var respBuf bytes.Buffer
+	respBuf.WriteString("{\"total\": " + strconv.Itoa(len(list)) + ",")
+	respBuf.WriteString("\"messages\":[")
+	first := true
+	for _, msg := range list {
+		json_msg, err := msg.MarshalFrontEnd(settings.MessageDisplayFormat)
+		if err == nil {
+			if first {
+				first = false
+			} else {
+				respBuf.WriteByte(',')
+			}
+			respBuf.Write(json_msg)
+		}
+	}
+	respBuf.WriteString("]}")
+	ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
 }
 
 // GET …/messages/:message_id
@@ -73,14 +79,19 @@ func GetMessage(ctx *gin.Context) {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
+	}
+	settings, err := caliopen.Facilities.RESTfacility.GetSettings(user_id)
+	if err != nil {
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	}
+	msg_json, err := msg.MarshalFrontEnd(settings.MessageDisplayFormat)
+	if err != nil {
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
 	} else {
-		msg_json, err := msg.MarshalFrontEnd()
-		if err != nil {
-			e := swgErr.New(http.StatusFailedDependency, err.Error())
-			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-			ctx.Abort()
-		} else {
-			ctx.Data(http.StatusOK, "application/json; charset=utf-8", msg_json)
-		}
+		ctx.Data(http.StatusOK, "application/json; charset=utf-8", msg_json)
 	}
 }
