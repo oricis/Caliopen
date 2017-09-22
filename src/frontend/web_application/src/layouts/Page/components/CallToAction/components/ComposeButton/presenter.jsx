@@ -1,19 +1,27 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ActionButton from '../ActionButton';
 
-const Presenter = ({ __, action, className }) => (
-  <ActionButton action={action} className={className} icon="plus">{__('call-to-action.action.compose')}</ActionButton>
-);
+class ComposeButton extends PureComponent {
+  static propTypes = {
+    __: PropTypes.func.isRequired,
+    action: PropTypes.func.isRequired,
+    className: PropTypes.string,
+  };
+  static defaultProps = {
+    className: undefined,
+  };
 
-Presenter.propTypes = {
-  __: PropTypes.func.isRequired,
-  action: PropTypes.func,
-  className: PropTypes.string,
-};
-Presenter.defaultProps = {
-  action: undefined,
-  className: undefined,
-};
+  render() {
+    const { __, action, className } = this.props;
+    const buttonProps = { className, icon: 'plus' };
 
-export default Presenter;
+    return (
+      <ActionButton action={action} button={buttonProps}>
+        {__('call-to-action.action.compose')}
+      </ActionButton>
+    );
+  }
+}
+
+export default ComposeButton;

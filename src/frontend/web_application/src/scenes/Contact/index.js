@@ -3,7 +3,6 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, formValues } from 'redux-form';
 import { withTranslator } from '@gandi/react-translate';
-import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
 import { requestContact, updateContact } from '../../store/modules/contact';
 import Presenter from './presenter';
 
@@ -30,10 +29,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   onSubmit: (values, disp, props) =>
     updateContact({ contact: values, original: props.initialValues }),
   updateContact,
-  notifyError: message => createNotification({
-    message,
-    type: NOTIFICATION_TYPE_ERROR,
-  }),
 }, dispatch);
 
 export default compose(

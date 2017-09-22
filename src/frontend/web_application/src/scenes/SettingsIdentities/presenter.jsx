@@ -57,15 +57,17 @@ class SettingsIdentities extends Component {
         }
         <div className="s-settings-identities__panel">
           <Section title="Update your identity">
-            <IdentityForm
-              contact={user.contact}
-              onUpdateContact={this.handleContactChange}
-              remoteIdentities={user.remoteIdentities}
-              onConnectRemoteIdentity={this.handleConnectRemoteIdentity}
-              onDisconnectRemoteIdentity={this.handleDisonnectRemoteIdentity}
-              allowConnectRemoteEntity
-              __={__}
-            />
+            { user && (
+              <IdentityForm
+                contact={user.contact}
+                onUpdateContact={this.handleContactChange}
+                remoteIdentities={user.remoteIdentities}
+                onConnectRemoteIdentity={this.handleConnectRemoteIdentity}
+                onDisconnectRemoteIdentity={this.handleDisonnectRemoteIdentity}
+                allowConnectRemoteEntity
+                __={__}
+              />
+            )}
           </Section>
           <Section title="Identity options">
             <p>Signature : (select signature from settings.signatures)</p>

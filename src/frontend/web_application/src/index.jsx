@@ -7,7 +7,7 @@ import App from './App';
 import configureStore from './store/configure-store';
 import getRouterHistory from './services/router-history';
 import { getUserLocales } from './services/i18n';
-import getDefaultSettings from './services/settings';
+import { getDefaultSettings } from './services/settings';
 
 const piwik = PiwikReactRouter({
   url: 'https://piwik.caliopen.org/analytics',
