@@ -5,3 +5,9 @@
 package objects
 
 type PrivacyFeatures map[string]string
+
+func (pf *PrivacyFeatures) UnmarshalMap(input map[string]interface{}) {
+	for k, v := range input {
+		(*pf)[k] = v.(string)
+	}
+}

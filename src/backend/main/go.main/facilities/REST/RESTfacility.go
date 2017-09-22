@@ -21,8 +21,9 @@ type (
 		LocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 		SuggestRecipients(user_id, query_string string) (suggests []RecipientSuggestion, err error)
 		ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
+		GetSettings(user_id string) (settings *Settings, err error)
 		//messages
-		GetMessagesList(filter MessagesListFilter) (messages []*Message, err error)
+		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessage(user_id, message_id string) (message *Message, err error)
 		SendDraft(user_id, msg_id string) (msg *Message, err error)
 		SetMessageUnread(user_id, message_id string, status bool) error
@@ -37,7 +38,8 @@ type (
 		RetrieveTag(user_id, tag_id string) (tag Tag, err error)
 		UpdateTag(tag *Tag) error
 		DeleteTag(user_id, tag_id string) error
-		GetSettings(user_id string) (settings *Settings, err error)
+		//search
+		Search(IndexSearch) (result *IndexResult, err error)
 	}
 	RESTfacility struct {
 		store              backends.APIStorage

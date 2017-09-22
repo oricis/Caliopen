@@ -658,7 +658,7 @@
                   "properties": {
                     "default_locale": {
                       "type": "string",
-                      "default": "fr_FR"
+                      "default": "fr-FR"
                     },
                     "message_display_format": {
                       "type": "string",
@@ -7339,7 +7339,7 @@
               "properties": {
                 "default_locale": {
                   "type": "string",
-                  "default": "fr_FR"
+                  "default": "fr-FR"
                 },
                 "message_display_format": {
                   "type": "string",
@@ -7401,7 +7401,7 @@
                   "properties": {
                     "default_locale": {
                       "type": "string",
-                      "default": "fr_FR"
+                      "default": "fr-FR"
                     },
                     "message_display_format": {
                       "type": "string",
@@ -7435,7 +7435,7 @@
                 },
                 "default_locale": {
                   "type": "string",
-                  "default": "fr_FR"
+                  "default": "fr-FR"
                 },
                 "message_display_format": {
                   "type": "string",
@@ -7821,6 +7821,238 @@
           },
           "401": {
             "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/search": {
+      "get": {
+        "description": "Simple API to execute full-text searches within user's indexes. A more complexe API will be available with a POST verb.",
+        "tags": [
+          "messages",
+          "contacts",
+          "search"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "term",
+            "in": "query",
+            "description": "the search string",
+            "required": true,
+            "type": "string",
+            "minLength": 3
+          },
+          {
+            "name": "field",
+            "in": "query",
+            "description": "name of a field on which to perform the search. If omitted defaults to « _all ».",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "doctype",
+            "in": "query",
+            "description": "type of documents to narrow the search to.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "message",
+              "contact",
+              ""
+            ]
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "number of documents to return per page, but only if param «type» is present."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "number of pages to skip from the response, but only if param «type» is present."
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "an object holding an array of documents found. Docs are assembled by type.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "total number of documents found"
+                },
+                "message_hits": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "total number of messages found"
+                    },
+                    "messages": {
+                      "type": "array",
+                      "description": "at most 5 documents are returned if query param « type » is not specified.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "id of document (shortcut to fetch full doc from db if needed)."
+                          },
+                          "score": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "how confident is our index for this document to match the request. Higher is better. Documents are sorted on this field by default."
+                          },
+                          "highlights": {
+                            "type": "object",
+                            "description": "Field names where terms of request where found. Each key maps to an array of excerpts."
+                          },
+                          "document": {
+                            "type": "object",
+                            "description": "full document returned from index."
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "contact_hits": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "total number of contacts found"
+                    },
+                    "contacts": {
+                      "type": "array",
+                      "description": "at most 5 documents are returned if query param « type » is not specified.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "id of document (shortcut to fetch full doc from db if needed)."
+                          },
+                          "score": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "how confident is our index for this document to match the request. Higher is better. Documents are sorted on this field by default."
+                          },
+                          "highlights": {
+                            "type": "object",
+                            "description": "Field names where terms of request where found. Each key maps to an array of excerpts."
+                          },
+                          "document": {
+                            "type": "object",
+                            "description": "full document returned from index."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "malform request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Not yet implemented. Future route for more complexe searches.",
+        "tags": [
+          "contacts",
+          "messages",
+          "search"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "501": {
+            "description": "route not implemented.",
             "schema": {
               "type": "object",
               "properties": {
