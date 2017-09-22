@@ -6,47 +6,16 @@ import ContactAvatarLetter from '../../../ContactAvatarLetter';
 import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
 import Button from '../../../Button';
 import Icon from '../../../Icon';
+import TextBlock from '../../../TextBlock';
 import MultidimensionalPi from '../../../MultidimensionalPi';
 
 import MessageActionsContainer from '../MessageActionsContainer';
 
 import './style.scss';
 
+const FOLD_HEIGHT = 80; // = .m-message__content--fold height
+
 const DropdownControl = withDropdownControl(Button);
-
-const MessageInfosContainer = ({ __, message, author, locale }) => {
-  const typeTranslations = {
-    email: __('message-list.message.protocol.email'),
-  };
-
-  return (
-    <div className="m-message__infos-container">
-      <div className="m-message__author">{author.address}</div>
-      {message.type &&
-        (<div className="m-message__type">
-          <span className="m-message__type-label">
-            {__('message-list.message.by', { type: typeTranslations[message.type] })}
-          </span>
-          {' '}
-          <Icon type={message.type} className="m-message__type-icon" spaced />
-        </div>
-      )}
-      <Moment className="m-message__date" format="LT" locale={locale}>
-        {message.date}
-      </Moment>
-    </div>
-  );
-};
-
-MessageInfosContainer.propTypes = {
-  author: PropTypes.shape({}).isRequired,
-  message: PropTypes.shape({}).isRequired,
-  locale: PropTypes.string,
-  __: PropTypes.func.isRequired,
-};
-MessageInfosContainer.defaultProps = {
-  locale: undefined,
-};
 
 class Message extends Component {
   static propTypes = {
@@ -62,20 +31,14 @@ class Message extends Component {
     locale: undefined,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      body: '',
-      isExpanded: true,
-      isTooLong: false,
-      isActive: false,
-    };
-    this.handleActiveClick = this.handleActiveClick.bind(this);
-    this.handleExpandClick = this.handleExpandClick.bind(this);
-  }
+  state = {
+    bodyHeight: null,
+    isTooLong: false,
+    isFold: true, // set fold state as default to avoid content's height animation on load
+  };
 
   componentDidMount() {
-    this.setBodyHeight();
+    setTimeout(this.setContentHeight, 1);
   }
 
   componentDidUpdate() {
@@ -86,51 +49,79 @@ class Message extends Component {
     }
   }
 
-  setBodyHeight() {
-    const message = this.props.message;
-    const body = message.body;
-    if (body.length > 140) {
-      this.setState({
-        isTooLong: true,
-        isExpanded: false,
-        body: body.substring(0, 140),
-      });
-    } else {
-      this.setState({
-        body,
-      });
-    }
-  }
+  setContentHeight = () => {
+    const { message } = this.props;
+    const bodyHeight = this.divElement.clientHeight;
+    const isTooLong = bodyHeight > FOLD_HEIGHT;
 
-  handleActiveClick() {
     this.setState(prevState => ({
-      isActive: !prevState.isActive,
+      ...prevState,
+      bodyHeight,
+      isTooLong,
+      isFold: isTooLong && !message.is_unread,
     }));
   }
 
-  handleExpandClick() {
-    const message = this.props.message;
-    const body = message.body;
+  handleExpandClick = () => {
+    const bodyHeight = this.divElement.clientHeight;
     this.setState(prevState => ({
-      isExpanded: !prevState.isExpanded,
-      body: prevState.isExpanded ? body.substring(0, 140) : body,
+      isFold: !prevState.isFold,
+      bodyHeight,
     }));
+  }
+
+  renderMessageContent = () => {
+    const { message } = this.props;
+
+    const contentProps = {
+      className: classnames(
+        'm-message__content',
+        { 'm-message__content--fold': this.state.isFold },
+      ),
+      style: {
+        height: this.state.isFold ? null : this.state.bodyHeight,
+        transitionDuration: `${((this.state.bodyHeight / 100) * 0.05)}s`, // to make 'expand'/'collapse' animation smoother
+      },
+    };
+
+    const bodyProps = {
+      className: classnames(
+        'm-message__body',
+        { 'm-message__body--rich-text': !message.body_is_plain },
+      ),
+      ref: (divElement) => { this.divElement = divElement; },
+    };
+
+    return (
+      <div {...contentProps}>
+        {!message.body_is_plain ? (
+          <div {...bodyProps} dangerouslySetInnerHTML={{ __html: message.body }} />
+        ) : (
+          <pre {...bodyProps}>{message.body}</pre>
+        )
+        }
+      </div>
+    );
   }
 
   render() {
     const { message, locale, onDelete, __ } = this.props;
     const author = message.participants.find(participant => participant.type === 'From');
     const subject = message.subject;
+    const dropdownId = uuidV1();
+    const typeTranslations = {
+      email: __('message-list.message.protocol.email'),
+    };
+
     const topBarClassName = classnames(
       'm-message__top-bar',
-      { 'm-message__top-bar--active': this.state.isActive }
-    );
-    const bodyClassName = classnames(
-      'm-message__body__content',
-      { 'm-message__body__content--expanded': this.state.isExpanded }
+      { 'm-message__top-bar--is-unread': message.is_unread },
     );
 
-    const dropdownId = uuidV1();
+    const subjectClassName = classnames(
+      'm-message__subject',
+      { 'm-message__subject--is-unread': message.is_unread },
+    );
 
     return (
       <div className="m-message">
@@ -138,18 +129,27 @@ class Message extends Component {
           <ContactAvatarLetter
             contact={author}
             className="m-message__avatar"
+            contactDisplayFormat="address"
           />
         </div>
-        <div className="m-message__content">
+        <div className="m-message__container">
           <div className={topBarClassName}>
             <MultidimensionalPi pi={message.pi} className="m-message__pi" mini />
 
-            <MessageInfosContainer
-              message={message}
-              author={author}
-              locale={locale}
-              __={__}
-            />
+            <TextBlock className="m-message__author">{author.address}</TextBlock>
+            {message.type &&
+              (<div className="m-message__type">
+                <span className="m-message__type-label">
+                  {__('message-list.message.by', { type: typeTranslations[message.type] })}
+                </span>
+                {' '}
+                <Icon type={message.type} className="m-message__type-icon" spaced />
+              </div>
+            )}
+
+            <Moment className="m-message__date" format="LT" locale={locale}>
+              {message.date}
+            </Moment>
 
             <DropdownControl toggle={dropdownId} className="m-message__actions-switcher">
               <Icon type="ellipsis-v" />
@@ -171,25 +171,23 @@ class Message extends Component {
 
           </div>
 
-          <div className="m-message__body">
-            {subject &&
-              <div className="m-message__body__subject">{subject}</div>
-            }
-            <div className={bodyClassName} dangerouslySetInnerHTML={{ __html: this.state.body }} />
-          </div>
-
-          {this.state.isTooLong &&
-            <div className="m-message__expand-button">
-              <Button
-                onClick={this.handleExpandClick}
-                value={this.state.isExpanded}
-                title={this.state.isExpanded ? __('message-list.message.action.collapse') : __('message-list.message.action.expand')}
-              >
-                {this.state.isExpanded ? __('message-list.message.action.collapse') : __('message-list.message.action.expand')}
-              </Button>
-            </div>
+          {subject &&
+            <TextBlock className={subjectClassName}>
+              <Icon type="comments-o" rightSpaced />{subject}
+            </TextBlock>
           }
 
+          {this.renderMessageContent()}
+
+          {this.state.isTooLong &&
+            <Button
+              className="m-message__expand-button"
+              onClick={this.handleExpandClick}
+              display="expanded"
+            >
+              {this.state.isFold ? __('message-list.message.action.expand') : __('message-list.message.action.collapse')}
+            </Button>
+          }
         </div>
       </div>
     );

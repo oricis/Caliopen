@@ -20,6 +20,20 @@ dd,
 dl,
 ul,
 li {
+  list-style: none;
   margin: 0;
   padding: 0;
+}
+
+pre {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+blockquote {
+  margin: 0;
 }

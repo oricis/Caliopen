@@ -160,7 +160,7 @@ describe('Save a draft and send', () => {
       .then(() => {
         const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
         expect(draftBodyElement1.getText()).toEqual('');
-        expect(element(by.cssContainingText('.m-message__body__content', text1)).isPresent()).toEqual(true);
+        expect(element(by.cssContainingText('.m-message__body', text1)).isPresent()).toEqual(true);
       })
       ;
   });
