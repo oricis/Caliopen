@@ -3,36 +3,54 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslator } from '@gandi/react-translate';
 import { matchPath } from 'react-router-dom';
-import { requestMessages, postActions, deleteMessage, invalidateDiscussion } from '../../store/modules/message';
-import { requestDiscussion } from '../../store/modules/discussion';
+import { requestMessages, postActions, deleteMessage, invalidate, loadMore, hasMore as getHasMore } from '../../store/modules/message';
 import { removeTab } from '../../store/modules/tab';
 import Presenter from './presenter';
 
+const getDiscussionIdFromProps = props => props.match.params.discussionId;
+
 const messageByIdSelector = state => state.message.messagesById;
-const messagesDidInvalidateSelector = state => state.message.didDiscussionInvalidate;
-const discussionIdSelector = (state, ownProps) => ownProps.match.params.discussionId;
+const discussionIdSelector = (state, ownProps) => getDiscussionIdFromProps(ownProps);
 const currentTabSelector = createSelector(
   [state => state.tab.tabs, state => state.router.location && state.router.location.pathname],
   (tabs, pathname) => tabs.find(tab => matchPath(pathname, { path: tab.pathname, exact: true }))
 );
-
-const mapStateToProps = createSelector(
-  [messageByIdSelector, messagesDidInvalidateSelector, discussionIdSelector, currentTabSelector],
-  (messagesById, messagesDidInvalidate, discussionId, currentTab) => ({
-    discussionId,
-    messages: Object.keys(messagesById)
-      .map(messageId => messagesById[messageId])
-      .filter(message => message.discussion_id === discussionId && message.is_draft !== true),
-    currentTab,
-    messagesDidInvalidate: messagesDidInvalidate[discussionId] || false,
+const messageCollectionStateSelector = createSelector(
+  [state => state.message.messagesCollections, discussionIdSelector],
+  (collections, discussionId) => ({
+    messageIds: (
+      collections.discussion &&
+      collections.discussion[discussionId] &&
+      collections.discussion[discussionId].messages) || [],
+    didInvalidate: (
+      collections.discussion &&
+      collections.discussion[discussionId] &&
+      collections.discussion[discussionId].didInvalidate) || false,
+    hasMore: (
+      collections.discussion &&
+      collections.discussion[discussionId] &&
+      getHasMore(collections.discussion[discussionId])) || false,
   })
 );
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  requestDiscussion,
-  requestMessages,
+const mapStateToProps = createSelector(
+  [messageByIdSelector, discussionIdSelector, currentTabSelector, messageCollectionStateSelector],
+  (messagesById, discussionId, currentTab, { didInvalidate, messageIds, hasMore }) => ({
+    discussionId,
+    didInvalidate,
+    hasMore,
+    messages: messageIds
+      .map(messageId => messagesById[messageId])
+      .filter(message => message.is_draft !== true),
+    currentTab,
+  })
+);
+
+const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
+  requestMessages: requestMessages.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
+  loadMore: loadMore.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
   deleteMessage,
-  invalidateDiscussion,
+  invalidate: invalidate.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
   setMessageRead: ({ message, isRead = true }) => {
     const action = isRead ? 'set_read' : 'set_unread';
 

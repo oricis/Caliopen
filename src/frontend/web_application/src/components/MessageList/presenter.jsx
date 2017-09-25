@@ -29,7 +29,7 @@ const renderDayGroups = (messages, onMessageView, onMessageDelete, __) => {
 };
 
 const MessageList = ({
-  onMessageView, onMessageDelete, onReply, onForward, onDelete, messages, replyForm, __,
+  loadMore, onMessageView, onMessageDelete, onReply, onForward, onDelete, messages, replyForm, __,
 }) => (
   <div className="m-message-list">
     <MenuBar>
@@ -37,6 +37,9 @@ const MessageList = ({
       <Button className="m-message-list__action" onClick={onForward} icon="share" responsive="icon-only" >{__('message-list.action.copy-to')}</Button>
       <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >{__('message-list.action.delete')}</Button>
     </MenuBar>
+    <div className="m-message-list__load-more">
+      {loadMore}
+    </div>
     <div className="m-message-list__list">
       {renderDayGroups(messages, onMessageView, onMessageDelete, __)}
     </div>
@@ -47,6 +50,7 @@ const MessageList = ({
 );
 
 MessageList.propTypes = {
+  loadMore: PropTypes.node,
   onMessageView: PropTypes.func,
   onMessageDelete: PropTypes.func.isRequired,
   onReply: PropTypes.func.isRequired,
@@ -58,6 +62,7 @@ MessageList.propTypes = {
 };
 
 MessageList.defaultProps = {
+  loadMore: null,
   onMessageView: null,
 };
 

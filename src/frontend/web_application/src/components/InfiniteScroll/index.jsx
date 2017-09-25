@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 
@@ -30,7 +30,7 @@ class InfiniteScroll extends Component {
   }
 
   render() {
-    return (<div>{this.props.children}</div>);
+    return Children.only(this.props.children);
   }
 }
 

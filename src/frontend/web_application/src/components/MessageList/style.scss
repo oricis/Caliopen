@@ -5,6 +5,11 @@
 
   &__action { margin-right: $co-component__spacing; }
 
+  &__load-more {
+    padding-top: $co-margin;
+    text-align: center;
+  }
+
   &__reply {
     @include breakpoint(small) {
       position: fixed;

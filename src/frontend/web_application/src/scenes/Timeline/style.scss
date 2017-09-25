@@ -1,0 +1,19 @@
+@import '../../styles/common';
+
+.s-timeline {
+  background-color: $co-color__fg__back;
+
+  &__menu-bar {
+    height: $co-component__height;
+  }
+
+  &__spinner {
+    float: right;
+  }
+
+  &__load-more {
+    padding-top: $co-margin;
+    padding-bottom: $co-margin;
+    text-align: center;
+  }
+}
