@@ -12,9 +12,11 @@ def connect_storage():
         kwargs = {'connection_class': LibevConnection}
     except ImportError:
         kwargs = {}
-    setup_cassandra(Configuration('global').get('cassandra.hosts'),
-                    Configuration('global').get('cassandra.keyspace'),
-                    Configuration('global').get('cassandra.consistency_level'),
+    hosts = Configuration('global').get('cassandra.hosts')
+    keyspace = Configuration('global').get('cassandra.keyspace')
+    consistency = Configuration('global').get('cassandra.consistency_level')
+    protocol = Configuration('global').get('cassandra.protocol_version')
+    setup_cassandra(hosts, keyspace, consistency,
                     lazy_connect=True,
-                    protocol_version=4,
+                    protocol_version=protocol,
                     **kwargs)
