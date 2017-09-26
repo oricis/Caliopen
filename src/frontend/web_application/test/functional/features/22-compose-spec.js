@@ -80,9 +80,9 @@ describe('Compose new message', () => {
           expect(draftBodyElement1.getText()).toEqual(text1);
         })
         .then(() => element(by.cssContainingText('.m-navbar-item__content', 'Discussions')).click())
-        .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 3 * 1000))
+        .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 3 * 1000))
         .then(() => expect(
-          element.all(by.cssContainingText('.s-discussion-list__col-title', text1)).count()
+          element.all(by.cssContainingText('.s-message-item__col-title', text1)).count()
         ).toEqual(1))
       ;
     });

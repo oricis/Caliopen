@@ -18,8 +18,8 @@ describe('Delete message', () => {
 
   it('delete message one by one', () => {
     const discussion1Selector = by.cssContainingText(
-      '.s-discussion-list__thread',
-      'delete a message'
+      '.s-timeline .s-message-item',
+      'first message to remove individually'
     );
     const message1ToDel = 'first message to remove individually';
     const message2ToDel = 'last message to remove individually';
@@ -31,29 +31,29 @@ describe('Delete message', () => {
     };
 
     browser.get('/')
-      .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
       .then(() => deleteAMessage(message1ToDel))
       .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
       .then(() => expect(element(by.cssContainingText('.m-message', message1ToDel)).isPresent()).toBe(false))
       .then(() => deleteAMessage(message2ToDel))
-      .then(() => browser.wait(EC.presenceOf($('.s-discussion-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.s-timeline')), 5 * 1000))
       ;
   });
 
   it('delete all messages of a collection', () => {
     const discussionSelector = by.cssContainingText(
-      '.s-discussion-list__thread',
-      'delete all messages'
+      '.s-timeline .s-message-item',
+      'a message of a collection to remove'
     );
 
     browser.get('/')
-      .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussionSelector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
       .then(() => element(by.cssContainingText('.m-message-list__action', __('delete'))).click())
-      .then(() => browser.wait(EC.presenceOf($('.s-discussion-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.s-timeline')), 5 * 1000))
       ;
   });
 });

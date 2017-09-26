@@ -14,6 +14,13 @@ const actions = {
 const selectors = {
   all: () => state => state.messages,
   last: () => state => [...state.messages].pop(),
+  byQuery: ({ offset = 0, limit = 20, discussion_id }) => createSelector(
+    [discussion_id ? selectors.byDiscussionId({ discussion_id }) :  selectors.all()],
+    messages => {
+      const end = new Number(offset) + new Number(limit);
+      return messages.slice(offset, end);
+    }
+  ),
   byDiscussionId: ({ discussion_id }) => createSelector(
     selectors.all(),
     messages => messages.filter(message => message.discussion_id === discussion_id)
@@ -47,6 +54,7 @@ const reducer = {
     {
       discussion_id: discussionId,
       ...body,
+      excerpt: body.body.slice(0, 30) + '...',
       message_id: uuidv1(),
       is_draft: true,
       is_unread: false,
@@ -111,7 +119,7 @@ const reducer = {
 const routes = {
   'GET /v2/messages/': {
     action: actions.get,
-    selector: selectors.byDiscussionId,
+    selector: selectors.byQuery,
     status: 200,
     middlewares: [createCollectionMiddleware('messages')],
   },

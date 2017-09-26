@@ -14,13 +14,13 @@ describe('Discussions', () => {
         expect(appSwitcher.element(by.cssContainingText('.m-navbar-item__content', 'Discussions')).isPresent())
         .toBe(true);
       })
-      .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => {
-        expect(element.all(by.css('.s-discussion-list__thread')).first().getText())
-          .toContain('test@caliopen.local, john@caliopen.local, zoidberg@planet-express.tld');
-        expect(element.all(by.css('.s-discussion-list__thread')).count()).toEqual(4);
+        expect(element.all(by.cssContainingText('.s-timeline .s-message-item', 'Jaune john (john@caliopen.local)')).first().getText())
+          .toContain('12:55');
+        expect(element.all(by.css('.s-message-item')).count()).toEqual(7);
         expect(
-          element(by.cssContainingText('.s-discussion-list__load-more', 'Load more')).isPresent()
+          element(by.cssContainingText('.s-timeline__load-more', 'Load more')).isPresent()
         ).toBe(false);
       });
   });
@@ -28,14 +28,14 @@ describe('Discussions', () => {
   describe('thread', () => {
     it('render and listed contacts describe the thread', () => {
       browser.get('/');
-      browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000);
+      browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
       element(by.cssContainingText(
-        '.s-discussion-list__thread',
-        'test@caliopen.local, john@caliopen.local, zoidberg@planet-express.tld'
+        '.s-message-item',
+        'zoidberg (zoidberg@planet-express.tld)'
       )).click();
       // TODO tabs
       // expect(element(by.css('.m-tab.m-navbar__item--is-active .m-tab__link')).getText())
-      //   .toContain('test@caliopen.local, zoidberg@caliopen.local');
+      //   .toContain('zoidberg, john');
     });
   });
 });

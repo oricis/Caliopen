@@ -26,14 +26,14 @@ describe('Save a draft and send', () => {
 
   it('Automatically saves a draft', () => {
     const discussion1Selector = by.cssContainingText(
-      '.s-discussion-list__thread',
-      'test@caliopen.local, john@caliopen.local, zoidberg@planet-express.tld'
+      '.s-timeline .s-message-item',
+      'zoidberg (zoidberg@planet-express.tld)'
     );
     const text1 = 'Automatically saves a draft, then refresh.';
     const text2 = ' Automatically updates a draft, then refresh.';
 
     browser.get('/')
-      .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
       .then(() => {
@@ -67,16 +67,16 @@ describe('Save a draft and send', () => {
 
   it('Automatically saves a draft while browsing', () => {
     const discussion1Selector = by.cssContainingText(
-      '.s-discussion-list__thread',
-      'test@caliopen.local, john@caliopen.local, zoidberg@planet-express.tld'
+      '.s-timeline .s-message-item',
+      'zoidberg (zoidberg@planet-express.tld)'
     );
     const discussion2Selector = by.cssContainingText(
-      '.s-discussion-list__thread',
-      'john@caliopen.local, fry@planet-express.tld'
+      '.s-timeline .s-message-item',
+      'Fry (fry@planet-express.tld)'
     );
     const text3 = 'Add an answer to second discussion, don\'t wait and go to first one.';
     browser.get('/')
-      .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion2Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
       .then(() => {
@@ -111,12 +111,12 @@ describe('Save a draft and send', () => {
 
   it('force saves a draft', () => {
     const discussion1Selector = by.cssContainingText(
-      '.s-discussion-list__thread',
-      'test@caliopen.local, john@caliopen.local, zoidberg@planet-express.tld'
+      '.s-timeline .s-message-item',
+      'zoidberg (zoidberg@planet-express.tld)'
     );
     const text1 = 'Force save a draft.';
     browser.get('/')
-      .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
       .then(() => {
@@ -140,12 +140,12 @@ describe('Save a draft and send', () => {
 
   it('sends a draft', () => {
     const discussion1Selector = by.cssContainingText(
-      '.s-discussion-list__thread',
-      'test@caliopen.local, john@caliopen.local, zoidberg@planet-express.tld'
+      '.s-timeline .s-message-item',
+      'zoidberg (zoidberg@planet-express.tld)'
     );
     const text1 = 'yes I am!';
     browser.get('/')
-      .then(() => browser.wait(EC.presenceOf($('.s-discussion-list__thread')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
       .then(() => {
