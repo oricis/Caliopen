@@ -4,7 +4,7 @@ import { withTranslator } from '@gandi/react-translate';
 import classnames from 'classnames';
 import ParticipantsIcon from '../ParticipantsIcon';
 import Link from '../../../../components/Link';
-import DiscussionItemActionsContainer from '../DiscussionItemActionsContainer';
+import DiscussionItemContainer from '../DiscussionItemContainer';
 import Icon from '../../../../components/Icon';
 import TextBlock from '../../../../components/TextBlock';
 import Badge from '../../../../components/Badge';
@@ -22,7 +22,7 @@ const DiscussionItem = ({ user, discussion, formatDate, __ }) => {
   const discussionDate = discussion.date_update || discussion.date_insert;
 
   return (
-    <DiscussionItemActionsContainer discussion={discussion} __={__}>
+    <DiscussionItemContainer discussion={discussion} __={__}>
       <Link
         to={`/discussions/${discussion.discussion_id}`}
         className={classnames('s-discussion-list__thread', { 's-thread-list__thread--unread': hasUnread })}
@@ -59,7 +59,7 @@ const DiscussionItem = ({ user, discussion, formatDate, __ }) => {
           }
         </div>
       </Link>
-    </DiscussionItemActionsContainer>
+    </DiscussionItemContainer>
   );
 };
 
