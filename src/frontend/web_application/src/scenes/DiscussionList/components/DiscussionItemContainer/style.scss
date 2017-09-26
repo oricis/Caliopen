@@ -1,0 +1,67 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-discussion-item-container {
+  display: block;
+  position: relative;
+  transition: background-color .15s linear;
+
+  &--active {
+    &,
+    .s-discussion-list__tag {
+      background-color: $co-color__primary--lower;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    position: absolute;
+    right: -100%;
+    left: 100%;
+    align-content: stretch;
+    width: 100%;
+    height: 100%;
+    transition: left .15s ease-in, right .05s ease-in;
+
+    &--hover {
+      right: 0;
+      left: auto;
+      transition: right .05s ease-out;
+    }
+
+    &--swiped {
+      right: auto;
+      left: 0;
+      transition: left .1s ease-out;
+    }
+  }
+
+  &__action {
+    flex-grow: 1;
+    border-left: 1px solid $co-color__primary--lower;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__action-button { line-height: $co-component__height; }
+
+  @include breakpoint(medium) {
+    &__actions {
+      width: auto;
+
+      &--swiped {
+        right: 0;
+        left: auto;
+        transition: right .1s ease-out;
+      }
+    }
+
+    &__action {
+      flex-shrink: 1;
+      overflow: auto;
+      text-overflow: inherit;
+      white-space: normal;
+    }
+  }
+}

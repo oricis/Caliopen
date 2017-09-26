@@ -91,6 +91,7 @@
     "react-redux-notify": "^1.0.8",
     "react-router-dom": "^4.1.1",
     "react-router-redux": "next",
+    "react-swipeable": "^4.1.0",
     "react-tappable": "^0.8.4",
     "redux": "^3.7.1",
     "redux-axios-middleware": "^4.0.0",
