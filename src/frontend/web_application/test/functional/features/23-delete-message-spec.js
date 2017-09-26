@@ -19,7 +19,7 @@ describe('Delete message', () => {
   it('delete message one by one', () => {
     const discussion1Selector = by.cssContainingText(
       '.s-timeline .s-message-item',
-      'first message to remove individually'
+      'last message to remove individually'
     );
     const message1ToDel = 'first message to remove individually';
     const message2ToDel = 'last message to remove individually';
