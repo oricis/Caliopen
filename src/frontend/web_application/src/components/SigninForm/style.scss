@@ -1,14 +1,8 @@
 @import '../../styles/common';
 @import '../../styles/vendor/bootstrap_foundation-sites';
-@import '../../styles/object/o-callout';
 
 .s-signin {
   max-width: map-get($co-form__width, 'xlarge');
-
-  &__password-success {
-    @include o-callout-base;
-    @include o-callout--color($co-color__success);
-  }
 
   &__action { line-height: $co-component__height; }
 }

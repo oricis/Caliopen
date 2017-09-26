@@ -10,6 +10,6 @@ describe('scene - ResetPassword', () => {
       <Presenter __={translator} location={{ search: '' }} />
     );
 
-    expect(comp.text()).toContain('ResetPasswordForm');
+    expect(comp.text()).toContain('PasswordResetForm');
   });
 });

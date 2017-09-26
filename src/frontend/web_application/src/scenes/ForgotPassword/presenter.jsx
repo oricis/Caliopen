@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // import axios from 'axios';
-import ResetPasswordForm from '../../components/ResetPasswordForm';
+import ForgotPasswordForm from '../../components/ForgotPasswordForm';
 
-
-class ResetPassword extends Component {
+class ForgotPassword extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
   };
@@ -14,16 +13,18 @@ class ResetPassword extends Component {
     isSuccess: false,
   };
 
-  /* handleError = () => {} */
-
   handleSuccess = () => {
     this.setState({ isSuccess: true });
   }
 
-  handleResetPassword = (/* ev */) => {
-    // TODO: process reset password form
+  /* handleError = () => {
 
-    /* axios.post('/auth/reset-password', {
+  } */
+
+  handleProcessForm = (/* ev */) => {
+    // TODO: process forgot password form
+
+    /* axios.post('/auth/forgot-password', {
       ...ev.formValues,
     }, {
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
@@ -33,8 +34,8 @@ class ResetPassword extends Component {
 
   render() {
     return (
-      <ResetPasswordForm
-        onSubmit={this.handleSuccess} // should be this.handleResetPassword
+      <ForgotPasswordForm
+        onSubmit={this.handleSuccess} // should be this.handleProcessForm
         errors={this.state.errors}
         success={this.state.isSuccess}
       />
@@ -42,4 +43,4 @@ class ResetPassword extends Component {
   }
 }
 
-export default ResetPassword;
+export default ForgotPassword;
