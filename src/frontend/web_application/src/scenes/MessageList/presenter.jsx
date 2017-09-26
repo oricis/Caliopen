@@ -15,6 +15,7 @@ class MessageList extends Component {
     discussionId: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     didInvalidate: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool.isRequired,
     setMessageRead: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
@@ -41,8 +42,13 @@ class MessageList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.didInvalidate) {
+    if (nextProps.didInvalidate && !nextProps.isFetching) {
       this.props.requestMessages({ discussion_id: nextProps.discussionId });
+    }
+
+    if (!nextProps.didInvalidate && !nextProps.isFetching && nextProps.messages.length === 0) {
+      const { currentTab, removeTab } = nextProps;
+      removeTab(currentTab);
     }
   }
 
@@ -51,28 +57,13 @@ class MessageList extends Component {
   };
 
   handleDeleteMessage = ({ message }) => {
-    const {
-      deleteMessage, invalidate, requestMessages, removeTab, discussionId, currentTab,
-    } = this.props;
-    deleteMessage({ message })
-      .then(() => invalidate({ discussionId }))
-      .then(() => requestMessages({ discussion_id: discussionId }))
-      .then(
-        ({ payload: { data } }) => data.messages.length === 0 && removeTab(currentTab)
-      );
+    const { deleteMessage } = this.props;
+    deleteMessage({ message });
   };
 
   handleDelete = () => {
-    const {
-      messages, deleteMessage, invalidate, requestMessages, removeTab, discussionId,
-      currentTab,
-    } = this.props;
-    Promise.all(messages.map(message => deleteMessage({ message })))
-      .then(() => invalidate({ discussionId }))
-      .then(() => requestMessages({ discussion_id: discussionId }))
-      .then(
-        ({ payload: { data } }) => data.messages.length === 0 && removeTab(currentTab)
-      );
+    const { messages, deleteMessage } = this.props;
+    Promise.all(messages.map(message => deleteMessage({ message })));
   };
 
   loadMore = () => {

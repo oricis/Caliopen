@@ -30,14 +30,19 @@ const messageCollectionStateSelector = createSelector(
       collections.discussion &&
       collections.discussion[discussionId] &&
       getHasMore(collections.discussion[discussionId])) || false,
+    isFetching: (
+      collections.discussion &&
+      collections.discussion[discussionId] &&
+      collections.discussion[discussionId].isFetching) || false,
   })
 );
 
 const mapStateToProps = createSelector(
   [messageByIdSelector, discussionIdSelector, currentTabSelector, messageCollectionStateSelector],
-  (messagesById, discussionId, currentTab, { didInvalidate, messageIds, hasMore }) => ({
+  (messagesById, discussionId, currentTab, { didInvalidate, messageIds, hasMore, isFetching }) => ({
     discussionId,
     didInvalidate,
+    isFetching,
     hasMore,
     messages: messageIds
       .map(messageId => messagesById[messageId])

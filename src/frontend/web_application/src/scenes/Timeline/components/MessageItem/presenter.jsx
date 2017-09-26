@@ -22,7 +22,7 @@ class MessageItem extends PureComponent {
 
   renderAuthor() {
     const { message: { participants } } = this.props;
-    const author = participants.find(participant => participant.type === 'To');
+    const author = participants.find(participant => participant.type === 'From');
 
     return `${author.label} (${author.address})`;
   }

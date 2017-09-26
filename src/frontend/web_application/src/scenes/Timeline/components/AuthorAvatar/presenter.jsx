@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ParticipantIconLetter from '../../../../components/ParticipantIconLetter';
 import './style.scss';
 
-const getAuthor = message => message.participants.find(participant => participant.type === 'To');
+const getAuthor = message => message.participants.find(participant => participant.type === 'From');
 
 class AuthorAvatar extends PureComponent {
   static propTypes = {

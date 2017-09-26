@@ -18,7 +18,7 @@ export const SYNC_MESSAGE = 'co/message/SYNC_MESSAGE';
 export const POST_ACTIONS = 'co/message/POST_ACTIONS';
 export const POST_ACTIONS_SUCCESS = 'co/message/POST_ACTIONS_SUCCESS';
 
-export function requestMessages(type, key, { offset = 0, limit = 10, ...opts } = {}) {
+export function requestMessages(type, key, { offset = 0, limit = 20, ...opts } = {}) {
   const params = { offset, limit, ...opts };
 
   return {
@@ -91,6 +91,7 @@ export function deleteMessage({ message }) {
   return {
     type: DELETE_MESSAGE,
     payload: {
+      message,
       discussionId: message.discussion_id,
       request: {
         method: 'delete',
