@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Link from '../../../../components/Link';
 // FIXME
-import DiscussionItemActionsContainer from '../../../DiscussionList/components/DiscussionItemActionsContainer';
+import DiscussionItemContainer from '../../../DiscussionList/components/DiscussionItemContainer';
 import AuthorAvatar from '../AuthorAvatar';
 import Icon from '../../../../components/Icon';
 import TextBlock from '../../../../components/TextBlock';
@@ -42,7 +42,7 @@ class MessageItem extends PureComponent {
     const { message, formatDate, __ } = this.props;
 
     return (
-      <DiscussionItemActionsContainer discussion={{}} __={__}>
+      <DiscussionItemContainer discussion={{}} __={__}>
         <Link
           to={`/discussions/${message.discussion_id}`}
           className={classnames('s-message-item', { 's-message-item--unread': message.is_unread, 's-message-item--draft': message.is_draft })}
@@ -72,7 +72,7 @@ class MessageItem extends PureComponent {
             </time>
           </div>
         </Link>
-      </DiscussionItemActionsContainer>
+      </DiscussionItemContainer>
     );
   }
 }
