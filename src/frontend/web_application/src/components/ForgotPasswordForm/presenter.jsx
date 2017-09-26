@@ -8,7 +8,7 @@ import Link from '../Link';
 
 import './style.scss';
 
-class PasswordResetForm extends Component {
+class ForgotPasswordForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
     onSubmit: PropTypes.func.isRequired,
@@ -47,8 +47,8 @@ class PasswordResetForm extends Component {
     const { __, errors, success } = this.props;
 
     return (
-      <Section title={__('password.reset-form.title')} className="m-password-reset-form">
-        <FormGrid className="m-password-reset-form">
+      <Section title={__('password.forgot-form.title')} className="m-forgot-password-form">
+        <FormGrid className="m-forgot-password-form">
           <form method="post" onSubmit={this.handleSubmit}>
             <Fieldset>
               {errors.global && (
@@ -60,29 +60,29 @@ class PasswordResetForm extends Component {
               )}
               {success ? (
                 <FormRow>
-                  <FormColumn rightSpace={false} bottomSpace className="s-signin__password-success">
-                    <Icon type="check" rightSpaced />{__('password.reset-form.success')}
+                  <FormColumn rightSpace={false} bottomSpace className="m-forgot-password-form__success">
+                    <Icon type="check" rightSpaced />{__('password.forgot-form.success')}
                   </FormColumn>
-                  <FormColumn rightSpace={false} className="m-password-reset-form__action" bottomSpace>
+                  <FormColumn rightSpace={false} className="m-forgot-password-form__action" bottomSpace>
                     <Link
                       button
                       plain
                       expanded
                       to="/auth/signin"
-                    >{__('password.reset-form.action.login')}</Link>
+                    >{__('password.forgot-form.action.login')}</Link>
                   </FormColumn>
                 </FormRow>
               ) : (
                 <FormRow>
                   <FormColumn rightSpace={false} bottomSpace>
                     <Legend>
-                      {__('password.reset-form.instructions')}
+                      {__('password.forgot-form.instructions')}
                     </Legend>
                   </FormColumn>
                   <FormColumn rightSpace={false} bottomSpace>
                     <TextFieldGroup
-                      label={__('password.reset-form.username.label')}
-                      placeholder={__('password.reset-form.username.placeholder')}
+                      label={__('password.forgot-form.username.label')}
+                      placeholder={__('password.forgot-form.username.placeholder')}
                       name="username"
                       value={this.state.formValues.username}
                       errors={errors.username}
@@ -91,15 +91,15 @@ class PasswordResetForm extends Component {
                       showLabelforSr
                     />
                   </FormColumn>
-                  <FormColumn rightSpace={false} className="m-password-reset-form__action" bottomSpace>
+                  <FormColumn rightSpace={false} className="m-forgot-password-form__action" bottomSpace>
                     <Button
                       type="submit"
                       display="expanded"
                       shape="plain"
-                    >{__('password.reset-form.action.send')}</Button>
+                    >{__('password.forgot-form.action.send')}</Button>
                   </FormColumn>
                   <FormColumn rightSpace={false}>
-                    <Link to="/auth/signin">{__('password.reset-form.cancel')}</Link>
+                    <Link to="/auth/signin">{__('password.forgot-form.cancel')}</Link>
                   </FormColumn>
                 </FormRow>
               )}
@@ -111,4 +111,4 @@ class PasswordResetForm extends Component {
   }
 }
 
-export default PasswordResetForm;
+export default ForgotPasswordForm;

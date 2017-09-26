@@ -1,0 +1,17 @@
+@import '../../styles/common';
+@import '../../styles/object/o-clickable';
+@import '../../styles/object/o-callout';
+
+.m-forgot-password-form {
+  max-width: map-get($co-form__width, 'xlarge');
+
+  &__action {
+    line-height: $co-component__height;
+    text-align: center;
+  }
+
+  &__success {
+    @include o-callout-base;
+    @include o-callout--color($co-color__success);
+  }
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Presenter from './presenter';
 
-describe('scene - ResetPassword', () => {
+describe('scene - ForgotPassword', () => {
   const translator = str => str;
 
   it('render', () => {
@@ -10,6 +10,6 @@ describe('scene - ResetPassword', () => {
       <Presenter __={translator} location={{ search: '' }} />
     );
 
-    expect(comp.text()).toContain('ResetPasswordForm');
+    expect(comp.text()).toContain('ForgotPasswordForm');
   });
 });
