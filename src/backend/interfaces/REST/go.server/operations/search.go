@@ -10,7 +10,6 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 func SimpleSearch(ctx *gin.Context) {
@@ -21,17 +20,6 @@ func SimpleSearch(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
-	}
-
-	//extract importance level
-	il_header := ctx.Request.Header["X-Caliopen-Il"][0] // get only first value found
-	il_range_str := strings.Split(il_header, ";")
-	il_range := [2]int8{-10, 10} // default values
-	if from, e := strconv.Atoi(il_range_str[0]); e == nil {
-		il_range[0] = int8(from)
-	}
-	if to, e := strconv.Atoi(il_range_str[1]); e == nil {
-		il_range[1] = int8(to)
 	}
 
 	user_uuid, _ := uuid.FromString(ctx.MustGet("user_id").(string))
@@ -83,7 +71,7 @@ func SimpleSearch(ctx *gin.Context) {
 		User_id: user_UUID,
 		Limit:   limit,
 		Offset:  offset,
-		ILrange: il_range,
+		ILrange: GetImportanceLevel(ctx),
 	}
 
 	if field, ok := query["field"]; ok {
