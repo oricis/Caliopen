@@ -23,6 +23,8 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 	for field, value := range search.Terms {
 		q = q.Must(elastic.NewCommonTermsQuery(field, value).CutoffFrequency(0.01)) //words that have a document frequency greater than 1% will be treated as common terms.
 	}
+	rq := elastic.NewRangeQuery("importance_level").Gte(search.ILrange[0]).Lte(search.ILrange[1])
+	q = q.Filter(rq)
 
 	// make aggregation to file docs by type:
 	// get only the 5 most relevant doc for each type if search.DocType is empty
