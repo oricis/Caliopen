@@ -31,7 +31,7 @@ func GetMessagesList(ctx *gin.Context) {
 	//extract importance level
 	il_header := ctx.Request.Header["X-Caliopen-Il"][0] // get only first value found
 	il_range_str := strings.Split(il_header, ";")
-	il_range := [2]int8{0, 0}
+	il_range := [2]int8{-10, 10} // default values
 	if from, e := strconv.Atoi(il_range_str[0]); e == nil {
 		il_range[0] = int8(from)
 	}
