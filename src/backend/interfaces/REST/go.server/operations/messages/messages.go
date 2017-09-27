@@ -14,15 +14,38 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 // GET …/messages
 func GetMessagesList(ctx *gin.Context) {
+	// temporary hack to check if X-Caliopen-IL header is in request, because go-openapi pkg fails to do it.
+	// (NB : CanonicalHeaderKey func normalize http headers with uppercase at beginning of words)
+	if _, ok := ctx.Request.Header["X-Caliopen-Il"]; !ok {
+		e := swgErr.New(http.StatusFailedDependency, "Missing mandatory header 'X-Caliopen-Il'.")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	//extract importance level
+	il_header := ctx.Request.Header["X-Caliopen-Il"][0] // get only first value found
+	il_range_str := strings.Split(il_header, ";")
+	il_range := [2]int8{0, 0}
+	if from, e := strconv.Atoi(il_range_str[0]); e == nil {
+		il_range[0] = int8(from)
+	}
+	if to, e := strconv.Atoi(il_range_str[1]); e == nil {
+		il_range[1] = int8(to)
+	}
+
+	var limit, offset int
+	var user_UUID UUID
+
 	user_uuid_str := ctx.MustGet("user_id").(string)
 	user_uuid, _ := uuid.FromString(user_uuid_str)
-	var user_UUID UUID
-	var limit, offset int
 	user_UUID.UnmarshalBinary(user_uuid.Bytes())
+
 	query_values := ctx.Request.URL.Query()
 	if l, ok := query_values["limit"]; ok {
 		limit, _ = strconv.Atoi(l[0])
@@ -38,18 +61,21 @@ func GetMessagesList(ctx *gin.Context) {
 		Terms:   map[string][]string(query_values),
 		Limit:   limit,
 		Offset:  offset,
+		ILrange: il_range,
 	}
 	list, totalFound, err := caliopen.Facilities.RESTfacility.GetMessagesList(filter)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
+		return
 	}
 	settings, err := caliopen.Facilities.RESTfacility.GetSettings(user_uuid_str)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
+		return
 	}
 	var respBuf bytes.Buffer
 	respBuf.WriteString("{\"total\": " + strconv.FormatInt(totalFound, 10) + ",")
