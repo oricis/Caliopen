@@ -161,6 +161,11 @@ def make_packages(config, version, languages):
         release = {'version': version, 'date': datetime.utcnow().isoformat(),
                    'packages': RELEASE_PACKAGES}
         f.write(json.dumps(release, indent=4))
+    # Copy swagger.json into release directory
+    swagger_src_file = '{}/src/backend/doc/api/swagger.json'.format(basedir)
+    swagger_dst_file = '{}/swagger.json'.format(output_directory)
+    shutil.copyfile(swagger_src_file, swagger_dst_file)
+
     return True
 
 
