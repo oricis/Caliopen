@@ -8,13 +8,13 @@ import (
 	"bytes"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	swgErr "github.com/go-openapi/errors"
 	"github.com/satori/go.uuid"
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 // GET …/messages
@@ -26,17 +26,6 @@ func GetMessagesList(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
-	}
-
-	//extract importance level
-	il_header := ctx.Request.Header["X-Caliopen-Il"][0] // get only first value found
-	il_range_str := strings.Split(il_header, ";")
-	il_range := [2]int8{-10, 10} // default values
-	if from, e := strconv.Atoi(il_range_str[0]); e == nil {
-		il_range[0] = int8(from)
-	}
-	if to, e := strconv.Atoi(il_range_str[1]); e == nil {
-		il_range[1] = int8(to)
 	}
 
 	var limit, offset int
@@ -61,7 +50,7 @@ func GetMessagesList(ctx *gin.Context) {
 		Terms:   map[string][]string(query_values),
 		Limit:   limit,
 		Offset:  offset,
-		ILrange: il_range,
+		ILrange: operations.GetImportanceLevel(ctx),
 	}
 	list, totalFound, err := caliopen.Facilities.RESTfacility.GetMessagesList(filter)
 	if err != nil {
