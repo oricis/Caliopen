@@ -79,7 +79,7 @@ func (tag *Tag) UnmarshalMap(input map[string]interface{}) error {
 	if date, ok := input["date_insert"]; ok {
 		tag.Date_insert, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
-	il, _ := input["importance_level"].(int)
+	il, _ := input["importance_level"].(float64)
 	tag.Importance_level = int32(il)
 	tag.Name, _ = input["name"].(string)
 	if id, ok := input["tag_id"].(string); ok {
