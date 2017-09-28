@@ -6,13 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
 - Connect settings and apply
 - The brand new Timeline
 - Load more in the discussions
 - API for importance level messages filtering
 - API for full-text searches on messages & contacts
+
+### Changed
+
 - Improve `PATCH` API
 - Backend produces `excerpt` for messages.
+
+### Fixed
+
+- Render tag list in contact book
 
 ## [0.3.0] 2017-08-31
 

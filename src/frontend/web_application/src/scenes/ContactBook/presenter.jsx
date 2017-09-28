@@ -106,7 +106,12 @@ class ContactBook extends Component {
   render() {
     const { contacts, isFetching, hasMore, __ } = this.props;
 
-    const tags = [].concat(...contacts.map(contact => contact.tags));
+    const tags = contacts
+      .filter(contact => contact.tags)
+      .reduce((acc, contact) => [
+        ...acc,
+        ...contact.tags,
+      ], []);
 
     return (
       <div className="l-contact-book">
