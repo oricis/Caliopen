@@ -12,7 +12,6 @@
 @mixin o-form-element-select-wrapper {
   display: inline-block;
   position: relative;
-  padding-right: 10px;
 
   &,
   > * {
@@ -34,6 +33,7 @@
 }
 
 @mixin o-form-element-select {
+  margin-right: 10px;
   user-select: none;
   appearance: none;
 }
