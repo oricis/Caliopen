@@ -55,4 +55,4 @@ class Discussion(Api):
         # return resp
         discussion_id = self.request.swagger_data['discussion_id']
         raise HTTPMovedPermanently(
-            location="/V2/messages?discussion_id=" + discussion_id)
+            location="/v2/messages?discussion_id=" + discussion_id)
