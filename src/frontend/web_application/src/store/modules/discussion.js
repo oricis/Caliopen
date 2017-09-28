@@ -10,6 +10,9 @@ export const UPDATE_DISCUSSION = 'co/discussion/UPDATE_DISCUSSION';
 export const REMOVE_DISCUSSION = 'co/discussion/REMOVE_DISCUSSION';
 
 export function requestDiscussions(params = {}) {
+  const deprecated = new Error('requestDiscussions is deprecated');
+  console.warn(deprecated);
+
   const { offset = 0, limit = 20 } = params;
 
   return {
@@ -31,6 +34,9 @@ export function loadMoreDiscussions() {
 }
 
 export function requestDiscussion({ discussionId }) {
+  const deprecated = new Error('requestDiscussion is deprecated');
+  console.warn(deprecated);
+
   return {
     type: REQUEST_DISCUSSION,
     payload: {
@@ -48,20 +54,9 @@ export function invalidate() {
   };
 }
 
-export function updateDiscussion({ discussion, original }) {
-  console.log(discussion, original);
-  // const data = calcObjectForPatch(discussion, original);
-  //
-  // return {
-  //   type: UPDATE_DISCUSSION,
-  //   payload: {
-  //     request: {
-  //       method: 'patch',
-  //       url: `/v1/discussions/${discussion.discussion_id}`,
-  //       data,
-  //     },
-  //   },
-  // };
+export function updateDiscussion() {
+  const deprecated = new Error('updateDiscussion is deprecated');
+  console.warn(deprecated);
 }
 
 function discussionsByIdReducer(state = {}, action = {}) {

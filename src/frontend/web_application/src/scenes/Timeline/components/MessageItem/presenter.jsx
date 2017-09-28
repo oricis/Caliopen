@@ -8,6 +8,7 @@ import AuthorAvatar from '../AuthorAvatar';
 import Icon from '../../../../components/Icon';
 import TextBlock from '../../../../components/TextBlock';
 import Badge from '../../../../components/Badge';
+import { renderParticipant } from '../../../../services/message';
 
 import './style.scss';
 
@@ -24,7 +25,7 @@ class MessageItem extends PureComponent {
     const { message: { participants } } = this.props;
     const author = participants.find(participant => participant.type === 'From');
 
-    return `${author.label} (${author.address})`;
+    return renderParticipant(author);
   }
 
   renderTags() {

@@ -3,11 +3,12 @@ import isEqual from 'lodash.isequal';
 import { push, replace } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
 import { REQUEST_NEW_DRAFT, REQUEST_NEW_DRAFT_SUCCESS, REQUEST_DRAFT, EDIT_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestNewDraftSuccess, requestDraftSuccess, syncDraft, clearDraft } from '../modules/draft-message';
-import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, requestMessages, requestMessage, createMessage, updateMessage, postActions } from '../modules/message';
+import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, requestMessages, requestMessage, createMessage, updateMessage, postActions, getMessagesFromCollection } from '../modules/message';
 import { requestLocalIdentities } from '../modules/local-identity';
 import { removeTab, updateTab } from '../modules/tab';
 import fetchLocation from '../../services/api-location';
 import { getTranslator } from '../../services/i18n';
+import { getLastMessage } from '../../services/message';
 
 const UPDATE_WAIT_TIME = 5 * 1000;
 
@@ -23,15 +24,14 @@ const forceAuthor = ({ addresses, participants }) => [...participants].map((part
   };
 });
 
-const normalizeDiscussionDraft = ({ draft, user, discussion }) => {
-  const { discussion_id } = discussion;
+const normalizeDiscussionDraft = ({ draft, user, discussionId, messageInReply }) => {
   const { contact: { emails } } = user;
   const addresses = emails.map(email => email.address);
-  const participants = forceAuthor({ addresses, participants: discussion.participants });
+  const participants = forceAuthor({ addresses, participants: messageInReply.participants });
 
   return {
     ...draft,
-    discussion_id,
+    discussion_id: discussionId,
     participants,
   };
 };
@@ -123,16 +123,15 @@ async function getNewDraft({ discussionId, store, messageToAnswer }) {
   };
 
   if (discussionId) {
+    const state = store.getState();
     const {
       user: { user },
-      discussion: {
-        discussionsById: {
-          [discussionId]: discussion,
-        },
-      },
-    } = store.getState();
+    } = state;
+    const messageInReply = getLastMessage(
+      getMessagesFromCollection('discussion', discussionId, { state: state.message })
+    );
 
-    draft = normalizeDiscussionDraft({ draft, user, discussion });
+    draft = normalizeDiscussionDraft({ draft, user, discussionId, messageInReply });
   }
 
   return draft;
