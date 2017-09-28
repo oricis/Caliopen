@@ -25,29 +25,6 @@ users:
             location:
               type: string
               description: url to retrieve new user's infos at /users/{user_id}
-users_{user_id}:
-  get:
-    description: Retrieve contact infos
-    tags:
-    - users
-    security:
-    - basicAuth: []
-    parameters:
-    - name: user_id
-      in: path
-      required: true
-      type: string
-    produces:
-    - application/json
-    responses:
-      '200':
-        description: Successful response with json object
-        schema:
-          "$ref": "../objects/User.yaml"
-      '401':
-        description: Unauthorized access
-        schema:
-          "$ref": "../objects/Error.yaml"
   delete:
     description: Not Yet Implemented
     tags:

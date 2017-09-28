@@ -8,16 +8,24 @@ schemes:
 host: localhost:31415
 basePath: "/api"
 paths:
+## user ##
   "/v1/authentications":
     "$ref": paths/authentications.yaml#/authentications
   "/v1/me":
     "$ref": paths/me.yaml#/me
   "/v1/users":
     "$ref": paths/users.yaml#/users
-  "/v1/users/{user_id}":
-    "$ref": paths/users.yaml#/users_{user_id}
   "/v2/username/isAvailable":
     "$ref": paths/users.yaml#/users_isAvailable
+  "/v1/settings":
+     "$ref": paths/settings.yaml#/settings
+  "/v2/identities/locals":
+    "$ref": paths/identities.yaml#/identities_locals
+  "/v1/identities/remotes":
+    "$ref": paths/identities.yaml#/identities_remotes
+  "/v1/identities/remotes/{identifier}":
+    "$ref": paths/identities.yaml#/identities_remotes_{identifier}
+## contacts ##
   "/v1/contacts":
     "$ref": paths/contacts.yaml#/contacts
   "/v1/contacts/{contact_id}":
@@ -26,6 +34,7 @@ paths:
     "$ref": paths/contacts.yaml#/contacts_{contact_id}_identities
   "/v1/imports":
     "$ref": paths/imports.yaml#/imports
+## messages/discussions ##
   "/v1/discussions":
     "$ref": paths/discussions.yaml#/discussions
   "/v1/discussions/{discussion_id}":
@@ -46,22 +55,17 @@ paths:
     "$ref": paths/messagesV2.yaml#/messages_{message_id}_attachments_{attachment_index}
   "/v1/raws/{raw_msg_id}":
     "$ref": paths/raws.yaml#/raws_{raw_msg_id}
+## tags ##
   "/v2/tags":
     "$ref": paths/tags.yaml#/tags
   "/v2/tags/{tag_id}":
     "$ref": paths/tags.yaml#/tags_{tag_id}
+## devices ##
   "/v1/devices":
     "$ref": paths/devices.yaml#/devices
   "/v1/devices/{device_id}":
     "$ref": paths/devices.yaml#/devices_{device_id}
-  "/v1/settings":
-     "$ref": paths/settings.yaml#/settings
-  "/v2/identities/locals":
-    "$ref": paths/identities.yaml#/identities_locals
-  "/v1/identities/remotes":
-    "$ref": paths/identities.yaml#/identities_remotes
-  "/v1/identities/remotes/{identifier}":
-    "$ref": paths/identities.yaml#/identities_remotes_{identifier}
+## search/suggest ##
   "/v2/participants/suggest":
     "$ref": paths/participants.yaml#/participants_suggest
   "/v2/search":

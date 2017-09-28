@@ -81,16 +81,6 @@ class UserAPI(Api):
     """User API."""
 
     @view(renderer='json',
-          permission='authenticated')
-    def get(self):
-        """Get information about logged user."""
-        user_id = self.request.swagger_data['user_id']
-        if user_id != self.request.authenticated_userid.user_id:
-            raise AuthenticationError()
-        user = User.get(user_id)
-        return ReturnUser.build(user).serialize()
-
-    @view(renderer='json',
           permission=NO_PERMISSION_REQUIRED,
           validators=no_such_user)
     def collection_post(self):
