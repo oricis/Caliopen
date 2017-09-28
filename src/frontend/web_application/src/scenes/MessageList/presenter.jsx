@@ -81,11 +81,12 @@ class MessageList extends Component {
   }
 
   render() {
-    const { messages, discussionId } = this.props;
+    const { messages, discussionId, isFetching } = this.props;
 
     return (
       <MessageListBase
         messages={messages}
+        isFetching={isFetching}
         onMessageView={this.handleViewMessage}
         replyForm={<ReplyForm discussionId={discussionId} internalId={discussionId} />}
         onReply={() => {}}

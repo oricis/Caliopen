@@ -7,6 +7,7 @@ import deviceMiddleware from './middlewares/device-middleware';
 import discussionMiddleware from './middlewares/discussions-middleware';
 import draftMessageMiddleware from './middlewares/draft-messages-middleware';
 import i18nMiddleware from './middlewares/i18n-middleware';
+import importanceLevelMiddleware from './middlewares/importance-level-middleware';
 import messageMiddleware from './middlewares/messages-middleware';
 import promiseMiddleware from './middlewares/promise-middleware';
 import reactRouterMiddleware from './middlewares/react-router-redux-middleware';
@@ -22,6 +23,7 @@ const middlewares = [
   discussionMiddleware,
   draftMessageMiddleware,
   i18nMiddleware,
+  importanceLevelMiddleware,
   messageMiddleware,
   promiseMiddleware,
   reactRouterMiddleware,

@@ -14,6 +14,7 @@ const mapStateToProps = createSelector(
       .sort((a, b) => new Date(b.date_insert) - new Date(a.date_insert)),
     hasMore: timeline && hasMore(timeline),
     isFetching: timeline && timeline.isFetching,
+    didInvalidate: timeline && timeline.didInvalidate,
   })
 );
 const mapDispatchToProps = dispatch => bindActionCreators({
