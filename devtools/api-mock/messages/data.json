@@ -1,6 +1,7 @@
 [{
 	"attachments": [],
 	"body": "<p>It's okay, Bender. I like cooking too. You, minion. Lift my arm. AFTER H=\r\nIM! I don't know what you did, Fry, but once again, you screwed up! Now all\r\nthe planets are gonna start cracking wise abo",
+	"excerpt": "It's okay, Bender. I like cooking too. You, minion. Lift my arm. AFTER HIM! I don't ...",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "cd53e13a-267d-4d9c-97ee-d0fc59c64200",
@@ -49,6 +50,7 @@
 }, {
 	"attachments": [],
 	"body": "Fry! Stay back! He's too powerful! Can I use the gun? I barely knew Philip, but as a clergyman I have no problem telling his most intimate friends all about him. What are you hacking off? Is it my torso?! 'It is!' My precious torso!",
+	"excerpt": "Fry! Stay back! He's too powerful! Can I use the gun? I barely knew Philip, but as a ...",
 	"date": "2017-03-21T12:55:00.153000+00:00",
 	"date_insert": "2017-03-21T12:55:00.153000+00:00",
 	"discussion_id": "cd53e13a-267d-4d9c-97ee-d0fc59c64200",
@@ -97,6 +99,7 @@
 {
 	"attachments": [],
 	"body": "Shut up and take my money! Leela, are you alright? You got wanged on the he=\r\nad. Bender, you risked your life To save me! Spare me your space age techno=\r\nbabble, Attila the Hun! Now that the, uh, ga",
+	"excerpt": "Shut up and take my money! Leela, are you alright? You got wanged on the head. Bender, ...",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "46d30c27-6cd8-407b-8536-fda4196c20ca",
@@ -119,6 +122,12 @@
 		"contact_ids": ["0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0"],
 		"label": "zoidberg",
 		"protocol": "email",
+		"type": "To"
+	},{
+		"address": "fry@planet-express.tld",
+		"contact_ids": ["92d3907a-eeui-4537-b229-85f1c9d197bb"],
+		"label": "Fry",
+		"protocol": "email",
 		"type": "From"
 	}],
 	"privacy_features": {},
@@ -139,6 +148,7 @@
 {
 	"attachments": [],
 	"body": "first message to remove individually",
+	"excerpt": "first message to remove individually",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "3330c27-6cd8-407b-8536-fda4196c20ca",
@@ -172,6 +182,7 @@
 {
 	"attachments": [],
 	"body": "last message to remove individually",
+	"excerpt": "last message to remove individually",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "3330c27-6cd8-407b-8536-fda4196c20ca",
@@ -205,6 +216,7 @@
 {
 	"attachments": [],
 	"body": "a message of a collection to remove ",
+	"excerpt": "a message of a collection to remove ",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "44440c27-6cd8-407b-8536-fda4196c20ca",
@@ -238,6 +250,7 @@
 {
 	"attachments": [],
 	"body": "an other message of a collection to remove",
+	"excerpt": "an other message of a collection to remove",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "44440c27-6cd8-407b-8536-fda4196c20ca",

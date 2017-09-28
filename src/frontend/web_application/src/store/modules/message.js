@@ -18,14 +18,14 @@ export const SYNC_MESSAGE = 'co/message/SYNC_MESSAGE';
 export const POST_ACTIONS = 'co/message/POST_ACTIONS';
 export const POST_ACTIONS_SUCCESS = 'co/message/POST_ACTIONS_SUCCESS';
 
-
-export function requestMessages({ offset = 0, limit = 20, discussionId }) {
-  const params = { offset, limit, discussion_id: discussionId };
+export function requestMessages(type, key, { offset = 0, limit = 20, ...opts } = {}) {
+  const params = { offset, limit, ...opts };
 
   return {
     type: REQUEST_MESSAGES,
     payload: {
-      discussionId,
+      type,
+      key,
       request: {
         url: '/v2/messages',
         params,
@@ -34,19 +34,17 @@ export function requestMessages({ offset = 0, limit = 20, discussionId }) {
   };
 }
 
-export function loadMoreMessages() {
+export function loadMore(type, key) {
   return {
     type: LOAD_MORE_MESSAGES,
-    payload: {},
+    payload: { type, key },
   };
 }
 
-export function invalidateDiscussion({ discussionId }) {
+export function invalidate(type, key) {
   return {
     type: INVALIDATE_MESSAGES,
-    payload: {
-      discussionId,
-    },
+    payload: { type, key },
   };
 }
 
@@ -93,6 +91,7 @@ export function deleteMessage({ message }) {
   return {
     type: DELETE_MESSAGE,
     payload: {
+      message,
       discussionId: message.discussion_id,
       request: {
         method: 'delete',
@@ -155,91 +154,107 @@ function messagesByIdReducer(state = {}, action = {}) {
   }
 }
 
-function discussionInvalidateReducer(state, action) {
+const messagesCollectionReducer = (state = {
+  isFetching: false,
+  didInvalidate: false,
+  messages: [],
+  total: 0,
+  request: {},
+}, action) => {
   switch (action.type) {
+    case REQUEST_MESSAGES:
+      return {
+        ...state,
+        isFetching: true,
+      };
     case REQUEST_MESSAGES_SUCCESS:
-      // we assume this results gives only messages from a discussion, cf. requestMessages
-      return Object.keys(state).reduce((acc, discussionId) => {
-        if (discussionId !== action.meta.previousAction.payload.discussionId) {
-          return {
-            ...acc,
-            [discussionId]: state[discussionId],
-          };
-        }
-
-        return acc;
-      }, {});
+      // FIXME: uniqueness messageIds
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: false,
+        messages: [
+          ...new Set([
+            ...((state.didInvalidate && []) || state.messages),
+            ...action.payload.data.messages.map(message => message.message_id),
+          ]),
+        ],
+        total: action.payload.data.total,
+        request: action.meta.previousAction.payload.request,
+      };
     case INVALIDATE_MESSAGES:
       return {
         ...state,
-        [action.payload.discussionId]: true,
+        didInvalidate: true,
       };
     default:
       return state;
   }
-}
+};
 
-const removeDiscussionFromMessagesById = (messagesById, discussionId) => Object.keys(messagesById)
-  .reduce((acc, messageId) => {
-    if (messagesById[messageId].discussion_id === discussionId) {
-      return acc;
-    }
+const getTypeAndKeyFromAction = (action) => {
+  switch (action.type) {
+    case REQUEST_MESSAGES:
+    case INVALIDATE_MESSAGES:
+      return { type: action.payload.type, key: action.payload.key };
+    case REQUEST_MESSAGES_SUCCESS:
+      return {
+        type: action.meta.previousAction.payload.type,
+        key: action.meta.previousAction.payload.key,
+      };
+    default:
+      throw new Error('invalid action', action);
+  }
+};
 
-    return {
-      ...acc,
-      [messageId]: messagesById[messageId],
-    };
-  }, {});
+const makeMessagesCollectionTypeReducer = (action) => {
+  const { type, key } = getTypeAndKeyFromAction(action);
 
-const manageRequestMessagesSuccessReducer = (state, action) => {
-  const { discussionId } = action.meta.previousAction.payload;
-  const isInvalidated = state.didDiscussionInvalidate[discussionId] || false;
-
-  const cleanedState = {
+  return (state = {}, act) => ({
     ...state,
-    messagesById: (isInvalidated ?
-      removeDiscussionFromMessagesById(state.messagesById, discussionId) :
-      state.messagesById),
-  };
-
-  return {
-    ...cleanedState,
-    isFetching: false,
-    didDiscussionInvalidate: discussionInvalidateReducer(state.didDiscussionInvalidate, action),
-    messagesById: messagesByIdReducer(cleanedState.messagesById, action),
-    total: action.payload.data.total,
-  };
+    [type]: {
+      ...(state[type] || {}),
+      [key]: messagesCollectionReducer(state[type] && state[type][key], act),
+    },
+  });
 };
 
 const initialState = {
-  isFetching: false,
-  didDiscussionInvalidate: {},
   messagesById: {},
-  total: 0,
+  messagesCollections: {},
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case REQUEST_MESSAGES:
-    case CREATE_MESSAGE:
-    case UPDATE_MESSAGE:
-    case REQUEST_MESSAGE:
-      return { ...state, isFetching: true };
     case REQUEST_MESSAGE_SUCCESS:
       return {
         ...state,
-        isFetching: false,
         messagesById: messagesByIdReducer(
           state.messagesById,
           action
         ),
       };
+    case REQUEST_MESSAGES:
+      return {
+        ...state,
+        messagesCollections: makeMessagesCollectionTypeReducer(action)(
+          state.messagesCollections, action
+        ),
+      };
     case REQUEST_MESSAGES_SUCCESS:
-      return manageRequestMessagesSuccessReducer(state, action);
+      return {
+        ...state,
+        messagesById: messagesByIdReducer(state.messagesById, action),
+        messagesCollections: makeMessagesCollectionTypeReducer(action)(
+          state.messagesCollections, action
+        ),
+      };
     case INVALIDATE_MESSAGES:
       return {
         ...state,
-        didDiscussionInvalidate: discussionInvalidateReducer(state.didDiscussionInvalidate, action),
+        messagesCollections: makeMessagesCollectionTypeReducer(action)(
+          state.messagesCollections, action
+        ),
       };
     case SYNC_MESSAGE:
       return {

@@ -144,15 +144,16 @@ async function requestDraftHandler({ store, action }) {
   }
 
   const { internalId, discussionId } = action.payload;
-  await store.dispatch(requestMessages({ discussionId }));
+  await store.dispatch(requestMessages('discussion', discussionId, { discussion_id: discussionId }));
 
   const {
-    message: { messagesById },
+    message: {
+      messagesById,
+      messagesCollections: { discussion: { [discussionId]: { messages: messageIds } } },
+    },
   } = store.getState();
 
-  const messages = Object.keys(messagesById)
-    .map(messageId => messagesById[messageId])
-    .filter(item => item.discussion_id === discussionId);
+  const messages = messageIds.map(id => messagesById[id]);
 
   const message = messages.find(item => item.is_draft)
     || await getNewDraft({ discussionId, store, messageToAnswer: messages[0] });

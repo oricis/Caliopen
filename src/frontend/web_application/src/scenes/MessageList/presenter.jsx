@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
 import MessageListBase from '../../components/MessageList';
+import Button from '../../components/Button';
 import ReplyForm from './components/DraftForm';
+
+const LOAD_MORE_THROTTLE = 1000;
 
 class MessageList extends Component {
   static propTypes = {
+    __: PropTypes.func.isRequired,
     requestMessages: PropTypes.func.isRequired,
-    requestDiscussion: PropTypes.func.isRequired,
-    invalidateDiscussion: PropTypes.func.isRequired,
+    invalidate: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
-    messagesDidInvalidate: PropTypes.bool.isRequired,
+    didInvalidate: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool.isRequired,
     setMessageRead: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
+    loadMore: PropTypes.func.isRequired,
+    hasMore: PropTypes.bool.isRequired,
     currentTab: PropTypes.shape({}),
   };
 
@@ -25,13 +32,23 @@ class MessageList extends Component {
 
   componentDidMount() {
     const { discussionId } = this.props;
-    this.props.requestMessages({ discussionId });
-    this.props.requestDiscussion({ discussionId });
+    this.props.requestMessages({ discussion_id: discussionId });
+
+    this.throttledLoadMore = throttle(
+      () => this.props.loadMore(),
+      LOAD_MORE_THROTTLE,
+      { trailing: false }
+    );
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.messagesDidInvalidate) {
-      this.props.requestMessages({ discussionId: nextProps.discussionId });
+    if (nextProps.didInvalidate && !nextProps.isFetching) {
+      this.props.requestMessages({ discussion_id: nextProps.discussionId });
+    }
+
+    if (!nextProps.didInvalidate && !nextProps.isFetching && nextProps.messages.length === 0) {
+      const { currentTab, removeTab } = nextProps;
+      removeTab(currentTab);
     }
   }
 
@@ -40,29 +57,28 @@ class MessageList extends Component {
   };
 
   handleDeleteMessage = ({ message }) => {
-    const {
-      deleteMessage, invalidateDiscussion, requestMessages, removeTab, discussionId, currentTab,
-    } = this.props;
-    deleteMessage({ message })
-      .then(() => invalidateDiscussion({ discussionId }))
-      .then(() => requestMessages({ discussionId }))
-      .then(
-        ({ payload: { data } }) => data.messages.length === 0 && removeTab(currentTab)
-      );
+    const { deleteMessage } = this.props;
+    deleteMessage({ message });
   };
 
   handleDelete = () => {
-    const {
-      messages, deleteMessage, invalidateDiscussion, requestMessages, removeTab, discussionId,
-      currentTab,
-    } = this.props;
-    Promise.all(messages.map(message => deleteMessage({ message })))
-      .then(() => invalidateDiscussion({ discussionId }))
-      .then(() => requestMessages({ discussionId }))
-      .then(
-        ({ payload: { data } }) => data.messages.length === 0 && removeTab(currentTab)
-      );
+    const { messages, deleteMessage } = this.props;
+    Promise.all(messages.map(message => deleteMessage({ message })));
   };
+
+  loadMore = () => {
+    if (this.props.hasMore) {
+      this.throttledLoadMore();
+    }
+  }
+
+  renderLoadMore() {
+    const { __, hasMore } = this.props;
+
+    return hasMore && (
+      <Button shape="hollow" onClick={this.loadMore}>{__('general.action.load_more')}</Button>
+    );
+  }
 
   render() {
     const { messages, discussionId } = this.props;
@@ -76,6 +92,7 @@ class MessageList extends Component {
         onForward={() => {}}
         onDelete={this.handleDelete}
         onMessageDelete={this.handleDeleteMessage}
+        loadMore={this.renderLoadMore()}
       />
     );
   }

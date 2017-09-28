@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { withTranslator } from '@gandi/react-translate';
 import Contact from './scenes/Contact';
 import Auth from './scenes/Auth';
+import Timeline from './scenes/Timeline';
 import DiscussionList from './scenes/DiscussionList';
 import AppRoute from './scenes/AppRoute';
 import NewDraft from './scenes/NewDraft';
@@ -34,6 +35,12 @@ export const getRouteConfig = ({ __ }) => [
     routes: [
       {
         path: '/',
+        exact: true,
+        component: Timeline,
+        app: 'discussion',
+      },
+      {
+        path: '/discussions',
         exact: true,
         component: DiscussionList,
         app: 'discussion',

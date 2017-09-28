@@ -5,6 +5,12 @@ const cfg = {
     // firefox
     browserName: 'chrome',
     maxInstances: 1,
+    chromeOptions: {
+      args: ['lang=en-US'],
+      prefs: {
+        intl: { accept_languages: 'en-US' },
+      },
+    },
   },
   specs: ['./features/**/*-spec.js'],
   jasmineNodeOpts: {
