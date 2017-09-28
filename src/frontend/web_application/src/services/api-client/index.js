@@ -1,10 +1,11 @@
 import axios from 'axios';
 import config from '../config';
+import { importanceLevelHeader } from '../importance-level';
 
 let client;
 let headers = {
+  ...importanceLevelHeader,
   'X-Caliopen-PI': '0;100',
-  'X-Caliopen-IL': '0;100',
 };
 
 if (BUILD_TARGET !== 'server') {
