@@ -2,6 +2,7 @@
 
 .m-message-actions-container {
   @include flex-grid-row;
+  align-items: stretch;
 
   &__action {
     @include flex-grid-column(shrink);
