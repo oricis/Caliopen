@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
 import { Range } from 'rc-slider';
+import { IL_MIN, IL_MAX } from '../../services/importance-level';
 
 import './style.scss';
 
@@ -23,7 +24,7 @@ class ImportanceSliderContainer extends Component {
   };
 
   state = {
-    importanceLevelRange: [0, 100],
+    importanceLevelRange: [IL_MIN, IL_MAX],
   };
 
   componentWillMount() {
@@ -64,6 +65,8 @@ class ImportanceSliderContainer extends Component {
     return (
       <div className={classnames(className, 'm-slider-container', { 'm-slider-container--vertical': vertical })}>
         <Range
+          min={IL_MIN}
+          max={IL_MAX}
           onChange={this.handleChange}
           value={this.state.importanceLevelRange}
           vertical={vertical}

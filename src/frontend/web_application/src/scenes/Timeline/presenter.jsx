@@ -18,6 +18,7 @@ class Timeline extends Component {
     loadMore: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     isFetching: PropTypes.bool,
+    didInvalidate: PropTypes.bool,
     hasMore: PropTypes.bool,
     __: PropTypes.func.isRequired,
   };
@@ -26,6 +27,7 @@ class Timeline extends Component {
     user: null,
     messages: [],
     isFetching: false,
+    didInvalidate: false,
     hasMore: false,
   };
   state = {};
@@ -38,6 +40,12 @@ class Timeline extends Component {
       LOAD_MORE_THROTTLE,
       { trailing: false }
     );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.didInvalidate && !nextProps.isFetching) {
+      this.props.requestMessages();
+    }
   }
 
   loadMore = () => {

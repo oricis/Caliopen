@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Button';
 import MenuBar from '../MenuBar';
+import Spinner from '../Spinner';
 import DayMessageList from './components/DayMessageList';
 import Message from './components/Message';
 import groupMessages from './services/groupMessages';
@@ -30,6 +31,7 @@ const renderDayGroups = (messages, onMessageRead, onMessageUnread, onMessageDele
 };
 
 const MessageList = ({
+  isFetching,
   loadMore,
   onMessageRead,
   onMessageUnread,
@@ -46,6 +48,7 @@ const MessageList = ({
       <Button className="m-message-list__action" onClick={onReply} icon="reply" responsive="icon-only" >{__('message-list.action.reply')}</Button>
       <Button className="m-message-list__action" onClick={onForward} icon="share" responsive="icon-only" >{__('message-list.action.copy-to')}</Button>
       <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >{__('message-list.action.delete')}</Button>
+      <Spinner isLoading={isFetching} className="m-message-list__spinner" />
     </MenuBar>
     <div className="m-message-list__load-more">
       {loadMore}
@@ -60,6 +63,7 @@ const MessageList = ({
 );
 
 MessageList.propTypes = {
+  isFetching: PropTypes.bool,
   loadMore: PropTypes.node,
   onMessageRead: PropTypes.func,
   onMessageUnread: PropTypes.func,
@@ -73,6 +77,7 @@ MessageList.propTypes = {
 };
 
 MessageList.defaultProps = {
+  isFetching: false,
   loadMore: null,
   onMessageRead: null,
   onMessageUnread: null,

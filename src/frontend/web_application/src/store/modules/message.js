@@ -4,6 +4,7 @@ export const REQUEST_MESSAGES = 'co/message/REQUEST_MESSAGES';
 export const REQUEST_MESSAGES_SUCCESS = 'co/message/REQUEST_MESSAGES_SUCCESS';
 export const REQUEST_MESSAGES_FAIL = 'co/message/REQUEST_MESSAGES_FAIL';
 export const INVALIDATE_MESSAGES = 'co/message/INVALIDATE_MESSAGES';
+export const INVALIDATE_ALL_MESSAGES = 'co/message/INVALIDATE_ALL_MESSAGES';
 export const LOAD_MORE_MESSAGES = 'co/message/LOAD_MORE_MESSAGES';
 export const REQUEST_MESSAGE = 'co/message/REQUEST_MESSAGE';
 export const REQUEST_MESSAGE_SUCCESS = 'co/message/REQUEST_MESSAGE_SUCCESS';
@@ -45,6 +46,13 @@ export function invalidate(type, key) {
   return {
     type: INVALIDATE_MESSAGES,
     payload: { type, key },
+  };
+}
+
+export function invalidateAll() {
+  return {
+    type: INVALIDATE_ALL_MESSAGES,
+    payload: { },
   };
 }
 
@@ -182,6 +190,7 @@ const messagesCollectionReducer = (state = {
         total: action.payload.data.total,
         request: action.meta.previousAction.payload.request,
       };
+    case INVALIDATE_ALL_MESSAGES:
     case INVALIDATE_MESSAGES:
       return {
         ...state,
@@ -219,6 +228,15 @@ const makeMessagesCollectionTypeReducer = (action) => {
   });
 };
 
+const allMessagesCollectionsReducer = (state, action) => Object.keys(state)
+  .reduce((accType, type) => ({
+    ...accType,
+    [type]: Object.keys(state[type]).reduce((accKey, key) => ({
+      ...accKey,
+      [key]: messagesCollectionReducer(state[type][key], action),
+    }), {}),
+  }), {});
+
 const initialState = {
   messagesById: {},
   messagesCollections: {},
@@ -255,6 +273,11 @@ export default function reducer(state = initialState, action) {
         messagesCollections: makeMessagesCollectionTypeReducer(action)(
           state.messagesCollections, action
         ),
+      };
+    case INVALIDATE_ALL_MESSAGES:
+      return {
+        ...state,
+        messagesCollections: allMessagesCollectionsReducer(state.messagesCollections, action),
       };
     case SYNC_MESSAGE:
       return {

@@ -69,11 +69,12 @@ func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
 	pk.Name, _ = input["name"].(string)
 
 	if pf, ok := input["privacy_features"]; ok {
-		PF := PrivacyFeatures{}
-		PF = pf.(map[string]string)
-		pk.PrivacyFeatures = &PF
+		PF := &PrivacyFeatures{}
+		PF.UnmarshalMap(pf.(map[string]interface{}))
+		pk.PrivacyFeatures = PF
 	}
-	pk.Size, _ = input["size"].(int)
+	size, _ := input["size"].(float64)
+	pk.Size = int(size)
 	if u_id, ok := input["user_id"].(string); ok {
 		if id, err := uuid.FromString(u_id); err == nil {
 			pk.UserId.UnmarshalBinary(id.Bytes())

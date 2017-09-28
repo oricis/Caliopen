@@ -4,7 +4,9 @@
 
 package objects
 
-import "time"
+import (
+	"time"
+)
 
 type PrivacyIndex struct {
 	Comportment int       `cql:"comportment"    json:"comportment"`
@@ -16,13 +18,20 @@ type PrivacyIndex struct {
 
 func (pi *PrivacyIndex) UnmarshalMap(input map[string]interface{}) error {
 
-	pi.Comportment, _ = input["comportment"].(int)
-	pi.Context, _ = input["context"].(int)
+	pi_comp, _ := input["comportment"].(float64)
+	pi.Comportment = int(pi_comp)
+
+	pi_ctx, _ := input["context"].(float64)
+	pi.Context = int(pi_ctx)
+
 	if date, ok := input["date_update"]; ok {
 		pi.DateUpdate, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
-	pi.Technic, _ = input["technic"].(int)
-	pi.Version, _ = input["version"].(int)
 
+	pi_tech, _ := input["technic"].(float64)
+	pi.Technic = int(pi_tech)
+
+	pi_ver, _ := input["version"].(float64)
+	pi.Version = int(pi_ver)
 	return nil //TODO: errors handling
 }

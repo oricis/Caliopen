@@ -85,13 +85,14 @@ class MessageList extends Component {
   }
 
   render() {
-    const { messages, discussionId } = this.props;
+    const { messages, discussionId, isFetching } = this.props;
 
     return (
       <MessageListBase
         messages={messages}
         onMessageRead={this.handleSetMessageRead}
         onMessageUnread={this.handleSetMessageUnread}
+        isFetching={isFetching}
         replyForm={<ReplyForm discussionId={discussionId} internalId={discussionId} />}
         onReply={() => {}}
         onForward={() => {}}

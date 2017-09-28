@@ -55,19 +55,75 @@ describe('ducks module message', () => {
         },
       };
       const action = module.invalidate('timeline', '0');
-      expect(reducer(initialState, action)).toEqual({
-        ...initialState,
+      expect(reducer(initialState, action).messagesCollections).toEqual({
+        ...initialState.messagesCollections,
+        timeline: {
+          0: {
+            ...initialState.messagesCollections.timeline[0],
+            didInvalidate: true,
+          },
+        },
+      });
+    });
+
+    it('reduces INVALIDATE_ALL_MESSAGES', () => {
+      const initialState = {
+        ...reducer(undefined, { type: '@@INIT' }),
+        messagesById: {
+          a0: { body: 'already here', discussion_id: 'a001', message_id: 'a0' },
+          a1: { body: 'already here 2', discussion_id: 'a002', message_id: 'a1' },
+        },
         messagesCollections: {
           timeline: {
             0: {
               isFetching: false,
-              didInvalidate: true,
+              didInvalidate: false,
+              messages: ['a0', 'a1'],
+              total: 2,
+              request: {
+                foo: 'bar',
+              },
+            },
+          },
+          discussion: {
+            a001: {
+              isFetching: false,
+              didInvalidate: false,
               messages: ['a0'],
               total: 1,
               request: {
                 foo: 'bar',
               },
             },
+            a002: {
+              isFetching: false,
+              didInvalidate: false,
+              messages: ['a1'],
+              total: 1,
+              request: {
+                foo: 'bar',
+              },
+            },
+          },
+        },
+      };
+      const action = module.invalidateAll();
+      expect(reducer(initialState, action).messagesCollections).toEqual({
+        ...initialState.messagesCollections,
+        timeline: {
+          0: {
+            ...initialState.messagesCollections.timeline[0],
+            didInvalidate: true,
+          },
+        },
+        discussion: {
+          a001: {
+            ...initialState.messagesCollections.discussion.a001,
+            didInvalidate: true,
+          },
+          a002: {
+            ...initialState.messagesCollections.discussion.a002,
+            didInvalidate: true,
           },
         },
       });
