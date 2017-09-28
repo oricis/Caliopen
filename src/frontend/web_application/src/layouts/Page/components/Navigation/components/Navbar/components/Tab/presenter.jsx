@@ -37,7 +37,7 @@ class Tab extends Component {
         className={className}
         active={isActive}
         contentChildren={(
-          <ItemLink to={tab.pathname}>
+          <ItemLink to={tab.pathname} title={tab.label}>
             <Icon className="m-tab__icon" type={tab.icon || 'dot-circle-o'} />
             {tab.label}
           </ItemLink>

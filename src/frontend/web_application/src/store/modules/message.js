@@ -140,6 +140,14 @@ export function hasMore(state) {
   return state.total > state.messages.length;
 }
 
+export function getMessagesFromCollection(type, key, { state }) {
+  if (!state.messagesCollections[type] || !state.messagesCollections[type][key]) {
+    return [];
+  }
+
+  return state.messagesCollections[type][key].messages.map(id => state.messagesById[id]);
+}
+
 function messagesByIdReducer(state = {}, action = {}) {
   switch (action.type) {
     case REQUEST_MESSAGE_SUCCESS:

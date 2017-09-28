@@ -3,9 +3,10 @@ import { push } from 'react-router-redux';
 import { getInfosFromName } from '../../services/application-manager';
 import { getTranslator } from '../../services/i18n';
 import { SELECT_OR_ADD_TAB, REMOVE_TAB, addTab, selectOrAdd, updateTab } from '../modules/tab';
-import { requestDiscussion } from '../modules/discussion';
 import { requestContact } from '../modules/contact';
+import { requestMessages, getMessagesFromCollection } from '../modules/message';
 import { getRouteConfig, flattenRouteConfig } from '../../routes';
+import { sortMessages, renderParticipant } from '../../services/message';
 
 const registeredRoutes = [
   '/discussions/:discussionId',
@@ -30,8 +31,12 @@ const selectTabByPathname = ({ store, pathname }) =>
   store.getState().tab.tabs.find(tab => pathname === tab.pathname);
 
 const createDiscussionTab = async ({ pathname, discussionId, store }) => {
-  const { payload: { data: { excerpt: label } } }
-    = await store.dispatch(requestDiscussion({ discussionId }));
+  await store.dispatch(requestMessages('discussion', discussionId, { discussion_id: discussionId }));
+  const state = store.getState().message;
+  const messages = getMessagesFromCollection('discussion', discussionId, { state });
+  const message = sortMessages(messages, true)[0];
+
+  const label = message.participants.map(renderParticipant).join(' ');
 
   return {
     pathname,
