@@ -154,6 +154,8 @@
     "message-list.message.action.tags": "message-list.message.action.tags",
     "message-list.message.by": "message-list.message.by",
     "message-list.message.protocol.email": "message-list.message.protocol.email",
+    "message-list.message.status.read": "message-list.message.status.read",
+    "message-list.message.status.unread": "message-list.message.status.unread",
     "message.feedbak.update_fail": "message.feedbak.update_fail",
     "messages.compose.action.copy": "messages.compose.action.copy",
     "messages.compose.action.remove-recipient": "messages.compose.action.remove-recipient",

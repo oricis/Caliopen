@@ -154,6 +154,8 @@
     "message-list.message.action.tags": "Tags",
     "message-list.message.by": "by %(type)s",
     "message-list.message.protocol.email": "email",
+    "message-list.message.status.read": "Read",
+    "message-list.message.status.unread": "Unread",
     "message.feedbak.update_fail": "Update failed",
     "messages.compose.action.copy": "Copy to",
     "messages.compose.action.remove-recipient": "Remove recipient",

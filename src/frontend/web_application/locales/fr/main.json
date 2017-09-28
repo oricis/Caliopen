@@ -154,6 +154,8 @@
     "message-list.message.action.tags": "Tags",
     "message-list.message.by": "par %(type)s",
     "message-list.message.protocol.email": "email",
+    "message-list.message.status.read": "Lu",
+    "message-list.message.status.unread": "Non lu",
     "message.feedbak.update_fail": "La sauvegarde n'a pas pu être réalisée",
     "messages.compose.action.copy": "Copier à",
     "messages.compose.action.remove-recipient": "Supprimer le destinataire",

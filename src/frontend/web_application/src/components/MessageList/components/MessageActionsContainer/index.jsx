@@ -75,7 +75,7 @@ class MessageActionsContainer extends Component {
           <Button className="m-message-actions-container__action" icon="share" responsive="icon-only">{__('message-list.message.action.copy-to')}</Button>
           <CheckboxFieldGroup
             className="m-message-actions-container__action"
-            label="Lu"
+            label={message.is_unread ? __('message-list.message.status.unread') : __('message-list.message.status.read')}
             name="isRead"
             checked={!message.is_unread}
             onChange={this.handleToggle}
