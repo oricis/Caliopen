@@ -25,6 +25,7 @@ users:
             location:
               type: string
               description: url to retrieve new user's infos at /users/{user_id}
+users_{user_id}:
   delete:
     description: Not Yet Implemented
     tags:
@@ -40,9 +41,10 @@ users:
       default:
         description: route not implemented, should raise an error
   patch:
-    description: Not Yet Implemented
+    description: Partially implemented. Currently only for changing password.
     tags:
     - users
+    - password
     security:
     - basicAuth: []
     parameters:
@@ -50,9 +52,100 @@ users:
       in: path
       required: true
       type: string
+    - name: patch
+      in: body
+      required: true
+      description: the patch to apply. See 'Caliopen Patch RFC' within /doc directory.
+      schema:
+        type: object
+        properties:
+          "$ref": "../objects/MessageV2.yaml#/properties"
+          current_state:
+            type: object
+            properties:
+              "$ref": "../objects/MessageV2.yaml#/properties"
+        required:
+        - current_state
+    consumes:
+    - application/json
     responses:
-      default:
-        description: route not implemented, should raise an error
+      '204':
+        description: Update successful. No body is returned.
+      '400':
+        description: json payload malformed
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '403':
+        description: Forbidden patch. Server is refusing to apply the given patch's
+          properties to this ressource
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '404':
+        description: message not found
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '422':
+        description: json is valid but patch was semantically malformed or unprocessable
+        schema:
+          "$ref": "../objects/Error.yaml"
+users_{user_id}_actions:
+  post:
+    description: 'send an order to execute one (or many) action(s) regarding the user
+                       : reset_password, etc. A successful execution of the action will probably modify one or
+                       more user''s attribute(s)'
+    tags:
+    - users
+    - password
+    security:
+    - basicAuth: []
+    consumes:
+    - application/json
+    parameters:
+    - name: user_id
+      in: path
+      type: string
+      required: true
+    - name: actions
+      in: body
+      required: true
+      schema:
+        "$ref": "../objects/Actions.yaml"
+    produces:
+    - application/json
+    responses:
+      '204':
+        description: action(s) successfully executed. Nothing returned.
+        schema:
+          "$ref": "../objects/MessageV2.yaml"
+      '400':
+        description: json payload malformed
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '403':
+        description: Forbidden action. Server is refusing to execute the given action(s)
+          to this ressource
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '404':
+        description: Message not found
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '422':
+        description: json is valid but action was semantically malformed or unprocessable
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '424':
+        description: execution of action failed.
+        schema:
+          "$ref": "../objects/Error.yaml"
 users_isAvailable:
   get:
     description: Check if an username is available for creation within Caliopen instance

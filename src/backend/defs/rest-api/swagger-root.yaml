@@ -15,6 +15,10 @@ paths:
     "$ref": paths/me.yaml#/me
   "/v1/users":
     "$ref": paths/users.yaml#/users
+  "/v2/users/{user_id}":
+    "$ref": paths/users.yaml#/users_{user_id}
+  "/v2/users/{user_id}/actions":
+    "$ref": paths/users.yaml#/users_{user_id}_actions
   "/v2/username/isAvailable":
     "$ref": paths/users.yaml#/users_isAvailable
   "/v1/settings":
