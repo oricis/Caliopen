@@ -1,78 +1,62 @@
 import React, { PropTypes, Component } from 'react';
 import classnames from 'classnames';
 import { v1 as uuidV1 } from 'uuid';
-import VisibilitySensor from 'react-visibility-sensor'; // https://github.com/joshwnj/react-visibility-sensor
+import VisibilitySensor from 'react-visibility-sensor';
 import Moment from 'react-moment';
 import ContactAvatarLetter from '../../../ContactAvatarLetter';
 import Button from '../../../Button';
 import Icon from '../../../Icon';
 import TextBlock from '../../../TextBlock';
 import MultidimensionalPi from '../../../MultidimensionalPi';
+import DropdownMenu, { withDropdownControl } from '../../../../components/DropdownMenu';
 import MessageActionsContainer from '../MessageActionsContainer';
 
 import './style.scss';
 
+const DropdownControl = withDropdownControl(Button);
+
 const FOLD_HEIGHT = 80; // = .m-message__content--fold height
-
-function generateStateFromProps(props) {
-  const { message } = props;
-
-  return {
-    isRead: !message.is_unread,
-  };
-}
 
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
-    onMessageRead: PropTypes.func,
-    onMessageUnread: PropTypes.func,
+    onMessageRead: PropTypes.func.isRequired,
+    onMessageUnread: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     locale: PropTypes.string,
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    onMessageRead: null,
-    onMessageUnread: null,
     locale: undefined,
   };
 
-  constructor(props) {
-    super(props);
-    this.dropdownId = uuidV1();
-  }
-
   state = {
     isFold: true,
-    isRead: false,
     isTooLong: false,
   };
 
   componentWillMount() {
-    this.setState(generateStateFromProps(this.props));
+    this.dropdownId = uuidV1();
   }
 
   componentDidMount() {
     setTimeout(this.setContentHeight, 1);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState(generateStateFromProps(nextProps));
-  }
-
   onChange = (isVisible) => {
     const { message, onMessageRead } = this.props;
-    if (isVisible && !this.state.isRead) { onMessageRead({ message }); }
+    if (isVisible && message.is_unread) { onMessageRead({ message }); }
   }
 
   setContentHeight = () => {
+    const { message } = this.props;
     const isTooLong = this.divElement.clientHeight > FOLD_HEIGHT;
 
     this.setState(prevState => ({
       ...prevState,
       isTooLong,
-      isFold: isTooLong && prevState.isRead,
+      isFold: isTooLong && !message.is_unread,
     }));
   }
 
@@ -125,12 +109,12 @@ class Message extends Component {
 
     const topBarClassName = classnames(
       'm-message__top-bar',
-      { 'm-message__top-bar--is-unread': !this.state.isRead },
+      { 'm-message__top-bar--is-unread': message.is_unread },
     );
 
     const subjectClassName = classnames(
       'm-message__subject',
-      { 'm-message__subject--is-unread': !this.state.isRead },
+      { 'm-message__subject--is-unread': message.is_unread },
     );
 
     return (
@@ -160,27 +144,35 @@ class Message extends Component {
                 {message.date}
               </Moment> }
 
-            <MessageActionsContainer
-              message={message}
-              dropdownId={this.dropdownId}
-              onDelete={onDelete}
-              onMessageRead={onMessageRead}
-              onMessageUnread={onMessageUnread}
-              __={__}
-            />
+            <DropdownControl toggle={this.dropdownId} className="m-message__actions-switcher">
+              <Icon type="ellipsis-v" />
+            </DropdownControl>
+
+            <DropdownMenu
+              id={this.dropdownId}
+              position="bottom"
+              closeOnClick
+            >
+              <MessageActionsContainer
+                message={message}
+                dropdownId={this.dropdownId}
+                onDelete={onDelete}
+                onMessageRead={onMessageRead}
+                onMessageUnread={onMessageUnread}
+                __={__}
+              />
+            </DropdownMenu>
 
           </div>
 
-          <div className={subjectClassName}>
-            {message.subject &&
-              <TextBlock className="m-message__subject-text">
-                {message.subject}
-              </TextBlock>
-            }
-          </div>
+          {message.subject &&
+            <TextBlock className={subjectClassName}>
+              {message.subject}
+            </TextBlock>
+          }
 
           {this.renderMessageContent()}
-          <VisibilitySensor onChange={this.onChange} scrollThrottle={100} />
+          <VisibilitySensor onChange={this.onChange} scrollCheck scrollThrottle={100} />
 
           <div className="m-message__footer">
             {this.state.isTooLong &&

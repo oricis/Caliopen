@@ -2,8 +2,6 @@
 @import '../../../../styles/object/o-avatar';
 @import '../../../../styles/object/o-reset-html-message';
 
-$message-content--fold__height: 80px; // = const FOLD_HEIGHT
-
 .m-message {
   @include flex-grid-row($size: expand);
   margin-bottom: $co-grid__gutter--small;
@@ -57,10 +55,7 @@ $message-content--fold__height: 80px; // = const FOLD_HEIGHT
     border-left: 1px solid $co-color__fg__back--lower;
   }
 
-  &__actions-menu { background: $co-color__fg__back--higher; }
-
   &__subject {
-    @include flex-grid-row($size: expand);
     padding: $co-component__spacing;
     border-bottom: 1px solid $co-color__fg__back--lower;
     color: $co-color__fg__text--lower;
@@ -69,10 +64,6 @@ $message-content--fold__height: 80px; // = const FOLD_HEIGHT
       background: $co-color__fg__back--higher;
       color: $co-color__fg__text;
     }
-  }
-
-  &__subject-text {
-    @include flex-grid-size;
   }
 
   &__subject-checkbox {
