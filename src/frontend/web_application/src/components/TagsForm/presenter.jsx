@@ -53,7 +53,7 @@ class TagsForm extends Component {
   }
 
   render() {
-    const { __, onUpdate } = this.props;
+    const { __, tags, onUpdate } = this.props;
 
     return (
       <div className="m-tags-form">
@@ -64,7 +64,7 @@ class TagsForm extends Component {
         />
 
         <div className="m-tags-form__section">
-          {this.props.tags.map(tag =>
+          {tags && tags.length > 0 && tags.map(tag =>
             <TagItem tag={tag} key={tag.tag_id} onUpdate={onUpdate} __={__} />
           )}
         </div>

@@ -5,7 +5,6 @@ import { withTranslator } from '@gandi/react-translate';
 import Contact from './scenes/Contact';
 import Auth from './scenes/Auth';
 import Timeline from './scenes/Timeline';
-import DiscussionList from './scenes/DiscussionList';
 import AppRoute from './scenes/AppRoute';
 import NewDraft from './scenes/NewDraft';
 import UserRoute from './scenes/UserRoute';
@@ -37,12 +36,6 @@ export const getRouteConfig = ({ __ }) => [
         path: '/',
         exact: true,
         component: Timeline,
-        app: 'discussion',
-      },
-      {
-        path: '/discussions',
-        exact: true,
-        component: DiscussionList,
         app: 'discussion',
       },
       {
