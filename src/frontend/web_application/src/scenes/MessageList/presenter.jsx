@@ -52,8 +52,12 @@ class MessageList extends Component {
     }
   }
 
-  handleViewMessage = ({ message }) => {
+  handleSetMessageRead = ({ message }) => {
     this.props.setMessageRead({ message, isRead: true });
+  };
+
+  handleSetMessageUnread = ({ message }) => {
+    this.props.setMessageRead({ message, isRead: false });
   };
 
   handleDeleteMessage = ({ message }) => {
@@ -86,8 +90,9 @@ class MessageList extends Component {
     return (
       <MessageListBase
         messages={messages}
+        onMessageRead={this.handleSetMessageRead}
+        onMessageUnread={this.handleSetMessageUnread}
         isFetching={isFetching}
-        onMessageView={this.handleViewMessage}
         replyForm={<ReplyForm discussionId={discussionId} internalId={discussionId} />}
         onReply={() => {}}
         onForward={() => {}}

@@ -150,6 +150,8 @@
     "message-list.message.action.copy-to": "Copy to",
     "message-list.message.action.delete": "Delete",
     "message-list.message.action.expand": "Expand",
+    "message-list.message.action.mark_as_read": "Mark as read",
+    "message-list.message.action.mark_as_unread": "Mark as unread",
     "message-list.message.action.reply": "Reply",
     "message-list.message.action.tags": "Tags",
     "message-list.message.by": "by %(type)s",

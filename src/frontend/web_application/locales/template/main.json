@@ -150,6 +150,8 @@
     "message-list.message.action.copy-to": "message-list.message.action.copy-to",
     "message-list.message.action.delete": "message-list.message.action.delete",
     "message-list.message.action.expand": "message-list.message.action.expand",
+    "message-list.message.action.mark_as_read": "message-list.message.action.mark_as_read",
+    "message-list.message.action.mark_as_unread": "message-list.message.action.mark_as_unread",
     "message-list.message.action.reply": "message-list.message.action.reply",
     "message-list.message.action.tags": "message-list.message.action.tags",
     "message-list.message.by": "message-list.message.by",

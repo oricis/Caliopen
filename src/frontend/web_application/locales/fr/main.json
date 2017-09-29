@@ -150,6 +150,8 @@
     "message-list.message.action.copy-to": "Copier à",
     "message-list.message.action.delete": "Supprimer",
     "message-list.message.action.expand": "Déplier",
+    "message-list.message.action.mark_as_read": "Marquer comme lu",
+    "message-list.message.action.mark_as_unread": "Marquer comme non lu",
     "message-list.message.action.reply": "Répondre",
     "message-list.message.action.tags": "Tags",
     "message-list.message.by": "par %(type)s",

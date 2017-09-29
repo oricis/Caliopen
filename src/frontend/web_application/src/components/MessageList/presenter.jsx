@@ -9,7 +9,7 @@ import groupMessages from './services/groupMessages';
 
 import './style.scss';
 
-const renderDayGroups = (messages, onMessageView, onMessageDelete, __) => {
+const renderDayGroups = (messages, onMessageRead, onMessageUnread, onMessageDelete, __) => {
   const messagesGroupedByday = groupMessages(messages);
 
   return Object.keys(messagesGroupedByday)
@@ -20,7 +20,8 @@ const renderDayGroups = (messages, onMessageView, onMessageDelete, __) => {
             key={message.message_id}
             message={message}
             className="m-message-list__message"
-            onView={onMessageView}
+            onMessageRead={onMessageRead}
+            onMessageUnread={onMessageUnread}
             onDelete={onMessageDelete}
             __={__}
           />
@@ -30,8 +31,17 @@ const renderDayGroups = (messages, onMessageView, onMessageDelete, __) => {
 };
 
 const MessageList = ({
-  isFetching, loadMore, onMessageView, onMessageDelete, onReply, onForward, onDelete, messages,
-  replyForm, __,
+  isFetching,
+  loadMore,
+  onMessageRead,
+  onMessageUnread,
+  onMessageDelete,
+  onReply,
+  onForward,
+  onDelete,
+  messages,
+  replyForm,
+  __,
 }) => (
   <div className="m-message-list">
     <MenuBar>
@@ -44,7 +54,7 @@ const MessageList = ({
       {loadMore}
     </div>
     <div className="m-message-list__list">
-      {renderDayGroups(messages, onMessageView, onMessageDelete, __)}
+      {renderDayGroups(messages, onMessageRead, onMessageUnread, onMessageDelete, __)}
     </div>
     <div className="m-message-list__reply">
       {replyForm}
@@ -55,7 +65,8 @@ const MessageList = ({
 MessageList.propTypes = {
   isFetching: PropTypes.bool,
   loadMore: PropTypes.node,
-  onMessageView: PropTypes.func,
+  onMessageRead: PropTypes.func,
+  onMessageUnread: PropTypes.func,
   onMessageDelete: PropTypes.func.isRequired,
   onReply: PropTypes.func.isRequired,
   onForward: PropTypes.func.isRequired,
@@ -68,7 +79,8 @@ MessageList.propTypes = {
 MessageList.defaultProps = {
   isFetching: false,
   loadMore: null,
-  onMessageView: null,
+  onMessageRead: null,
+  onMessageUnread: null,
 };
 
 export default MessageList;
