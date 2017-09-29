@@ -1,7 +1,7 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
-.m-discussion-item-container {
+.m-message-item-container {
   display: block;
   position: relative;
   transition: background-color .15s linear;
@@ -16,6 +16,7 @@
   &__actions {
     display: flex;
     position: absolute;
+    top: 0;
     right: -100%;
     left: 100%;
     align-content: stretch;
