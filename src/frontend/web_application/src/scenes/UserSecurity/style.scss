@@ -2,9 +2,9 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-user-account-security {
-
   &__credentials {
     @include flex-grid-row;
+    min-height: 100vh; // TODO: remove min-height for credentials' section if there's other section (TFA, PGP...) displayed below
   }
 
   &__login,

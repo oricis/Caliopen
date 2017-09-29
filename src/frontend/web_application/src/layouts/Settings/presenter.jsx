@@ -18,11 +18,11 @@ class Settings extends PureComponent {
     const { __, children, pathname } = this.props;
 
     const navLinks = [
-      { title: __('settings.identities'), to: '/settings/identities' },
+      // { title: __('settings.identities'), to: '/settings/identities' },
       { title: __('settings.application'), to: '/settings/application' },
-      { title: __('settings.tags'), to: '/settings/tags' },
+      // { title: __('settings.tags'), to: '/settings/tags' },
       // { title: __('settings.devices'), to: '/settings/devices' },
-      { title: __('settings.signatures'), to: '/settings/signatures' },
+      //{ title: __('settings.signatures'), to: '/settings/signatures' },
     ].map(link => ({
       ...link,
       isActive: matchPath(pathname, { path: link.to, exact: false, strict: false }) && true,
