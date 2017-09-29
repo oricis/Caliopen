@@ -42,7 +42,7 @@ class MessageItem extends PureComponent {
     const { message, formatDate, __ } = this.props;
 
     return (
-      <MessageItemContainer message={{}} __={__}>
+      <MessageItemContainer message={message} __={__}>
         <Link
           to={`/discussions/${message.discussion_id}`}
           className={classnames('s-message-item', { 's-message-item--unread': message.is_unread, 's-message-item--draft': message.is_draft })}

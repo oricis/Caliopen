@@ -39,12 +39,6 @@ export const getRouteConfig = ({ __ }) => [
         app: 'discussion',
       },
       {
-        path: '/discussions',
-        exact: true,
-        component: Timeline,
-        app: 'discussion',
-      },
-      {
         path: '/discussions/:discussionId',
         component: MessageList,
         app: 'discussion',

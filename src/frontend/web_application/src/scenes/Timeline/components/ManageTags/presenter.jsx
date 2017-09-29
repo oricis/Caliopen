@@ -14,7 +14,7 @@ const ManageTags = ({ message, onMessageChange }) => {
 
   return (
     <TagsForm
-      tags={message.tags}
+      tags={message.tags && message.tags}
       onUpdate={handleTagsChange}
       onCreate={str => str}
     />
