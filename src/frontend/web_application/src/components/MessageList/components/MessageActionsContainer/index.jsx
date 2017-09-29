@@ -4,6 +4,12 @@ import Button from '../../../Button';
 
 import './style.scss';
 
+function generateStateFromProps(props) {
+  const { message } = props;
+
+  return { isRead: !message.is_unread };
+}
+
 class MessageActionsContainer extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
@@ -12,6 +18,18 @@ class MessageActionsContainer extends Component {
     onMessageRead: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
   };
+
+  state = {
+    isRead: false,
+  }
+
+  componentWillMount() {
+    this.setState(generateStateFromProps(this.props));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(generateStateFromProps(nextProps));
+  }
 
   handleDelete = () => {
     const { message, onDelete } = this.props;
@@ -23,19 +41,22 @@ class MessageActionsContainer extends Component {
 
     if (message.is_unread) { onMessageRead({ message }); }
     if (!message.is_unread) { onMessageUnread({ message }); }
+
+    this.setState(prevState => ({
+      ...prevState,
+      isRead: !message.is_unread,
+    }));
   }
 
   render() {
-    const { __, message } = this.props;
+    const { __ } = this.props;
 
     return (
       <div className="m-message-actions-container">
-        <Button className="m-message-actions-container__action" display="expanded" icon="reply" responsive="icon-only">{__('message-list.message.action.reply')}</Button>
+        <Button className="m-message-actions-container__action" display="expanded">{__('message-list.message.action.reply')}</Button>
         <Button
           className="m-message-actions-container__action"
           onClick={this.handleDelete}
-          icon="trash"
-          responsive="icon-only"
           display="expanded"
         >{__('message-list.message.action.delete')}</Button>
 
@@ -43,7 +64,7 @@ class MessageActionsContainer extends Component {
           className="m-message-actions-container__action"
           display="expanded"
           onClick={this.handleToggle}
-        >{message.is_unread ? 'Mark read' : 'Mark unread'}</Button>
+        >{!this.state.isRead ? __('message-list.message.action.mark_as_read') : __('message-list.message.action.mark_as_unread')}</Button>
       </div>
     );
   }

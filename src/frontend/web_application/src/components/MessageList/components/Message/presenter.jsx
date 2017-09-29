@@ -144,7 +144,10 @@ class Message extends Component {
                 {message.date}
               </Moment> }
 
-            <DropdownControl toggle={this.dropdownId} className="m-message__actions-switcher">
+            <DropdownControl toggle={this.dropdownId} className="m-message__actions-switcher float-right">
+              {
+                // FIXME: when switching read/unread, DropdownMenu (absolute) position is not good
+              }
               <Icon type="ellipsis-v" />
             </DropdownControl>
 
