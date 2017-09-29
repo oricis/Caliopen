@@ -54,10 +54,6 @@ class Draft(NewMessage):
             log.warn("draft validation failed with error {}".format(exc))
             raise exc
 
-        # always fill <from> field consistently
-        # based on current user's selected identity
-        self._add_from_participant(user_id)
-
         # check discussion consistency and get last message from discussion
         last_message = self._check_discussion_consistency(user_id)
 
@@ -79,6 +75,10 @@ class Draft(NewMessage):
 
                 # TODO: prevent modification of protected attributes
                 # below attributes should be protected by Message class
+        else:
+            # fill <from> field consistently
+            # based on current user's selected identity
+            self._add_from_participant(user_id)
 
     def _add_from_participant(self, user_id):
 
@@ -106,7 +106,7 @@ class Draft(NewMessage):
         else:
             if len(self.participants) > 0:
                 for i, participant in enumerate(self.participants):
-                    if re.match("from", participant.type, re.IGNORECASE):
+                    if re.match("from", participant['type'], re.IGNORECASE):
                         self.participants.pop(i)
 
         from_participant = Participant()
@@ -144,7 +144,7 @@ class Draft(NewMessage):
         if not new_discussion:
             dim = DIM(user_id)
             d_id = self.discussion_id
-            last_message = dim.get_last_message(d_id, 0, 100, True)
+            last_message = dim.get_last_message(d_id, -10, 10, True)
             if last_message == {}:
                 raise err.PatchError(
                     message='No such discussion {}'.format(d_id))
@@ -192,13 +192,12 @@ class Draft(NewMessage):
         - provided identity is used to fill the new 'From' participant
         - new sender is removed from former recipients
         """
-
         dim = DIM(user_id)
         d_id = self.discussion_id
-        last_message = dim.get_last_message(d_id, 0, 100, False)
-        for i, participant in enumerate(last_message.participants):
+        last_message = dim.get_last_message(d_id, -10, 10, False)
+        for i, participant in enumerate(last_message["participants"]):
             if re.match("from", participant['type'], re.IGNORECASE):
-                participant.type = "To"
+                participant["type"] = "To"
                 self.participants.append(participant)
             else:
                 self.participants.append(participant)
