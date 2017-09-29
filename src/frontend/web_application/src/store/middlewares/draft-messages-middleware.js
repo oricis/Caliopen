@@ -3,38 +3,13 @@ import isEqual from 'lodash.isequal';
 import { push, replace } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
 import { REQUEST_NEW_DRAFT, REQUEST_NEW_DRAFT_SUCCESS, REQUEST_DRAFT, EDIT_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestNewDraftSuccess, requestDraftSuccess, syncDraft, clearDraft } from '../modules/draft-message';
-import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, requestMessages, requestMessage, createMessage, updateMessage, postActions, getMessagesFromCollection } from '../modules/message';
+import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, requestMessages, requestMessage, createMessage, updateMessage, postActions } from '../modules/message';
 import { requestLocalIdentities } from '../modules/local-identity';
 import { removeTab, updateTab } from '../modules/tab';
 import fetchLocation from '../../services/api-location';
 import { getTranslator } from '../../services/i18n';
-import { getLastMessage } from '../../services/message';
 
 const UPDATE_WAIT_TIME = 5 * 1000;
-
-const forceAuthor = ({ addresses, participants }) => [...participants].map((participant) => {
-  let type = participant.type === 'From' ? 'To' : participant.type;
-  if (addresses.indexOf(participant.address) !== -1) {
-    type = 'From';
-  }
-
-  return {
-    ...participant,
-    type,
-  };
-});
-
-const normalizeDiscussionDraft = ({ draft, user, discussionId, messageInReply }) => {
-  const { contact: { emails } } = user;
-  const addresses = emails.map(email => email.address);
-  const participants = forceAuthor({ addresses, participants: messageInReply.participants });
-
-  return {
-    ...draft,
-    discussion_id: discussionId,
-    participants,
-  };
-};
 
 const getMessageUpToDate = async ({ store, messageId }) => {
   await store.dispatch(requestMessage({ messageId }));
@@ -115,24 +90,15 @@ async function getNewDraft({ discussionId, store, messageToAnswer }) {
   await store.dispatch(requestLocalIdentities());
   const { localIdentities } = store.getState().localIdentity;
 
-  let draft = {
+  const draft = {
     ...(messageToAnswer && messageToAnswer.subject ? { subject: messageToAnswer.subject } : {}),
     body: '',
     identities: getDefaultIdentities({ protocols: ['email'], identities: localIdentities })
       .map(localIdentityToIdentity),
+    discussion_id: discussionId,
+    // TODO: bind reply-to (create/edit ..)
+    // parent_id: messageToAnswer.message_id,
   };
-
-  if (discussionId) {
-    const state = store.getState();
-    const {
-      user: { user },
-    } = state;
-    const messageInReply = getLastMessage(
-      getMessagesFromCollection('discussion', discussionId, { state: state.message })
-    );
-
-    draft = normalizeDiscussionDraft({ draft, user, discussionId, messageInReply });
-  }
 
   return draft;
 }

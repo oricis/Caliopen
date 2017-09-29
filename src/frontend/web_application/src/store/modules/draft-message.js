@@ -81,7 +81,7 @@ export function setRecipientSearchTerms({ internalId, searchTerms }) {
   };
 }
 
-function draftReducer(state = { participants: [] }, action) {
+function draftReducer(state = {}, action) {
   switch (action.type) {
     case REQUEST_DRAFT_SUCCESS:
     case REQUEST_NEW_DRAFT_SUCCESS:
