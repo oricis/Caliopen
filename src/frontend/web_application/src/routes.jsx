@@ -105,13 +105,13 @@ export const getRouteConfig = ({ __ }) => [
             component: ApplicationSettings,
             label: __('settings.route.label.application'),
           },
-          //TODO: enable tags managment
+          // TODO: enable tags management
           // {
           //   path: '/settings/tags',
           //   component: Tags,
           //   label: __('settings.route.label.tags'),
           // },
-          //
+
           // TODO: enable devices when API ready: https://tree.taiga.io/project/caliopen-caliopen/us/314?no-milestone=1
           // {
           //   path: '/settings/devices',
@@ -124,6 +124,7 @@ export const getRouteConfig = ({ __ }) => [
           //     },
           //   ],
           // },
+
           // TODO: enable signatures
           // {
           //  path: '/settings/signatures',
