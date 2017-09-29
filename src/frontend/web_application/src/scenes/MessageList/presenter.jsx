@@ -11,9 +11,9 @@ class MessageList extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
     requestMessages: PropTypes.func.isRequired,
-    invalidate: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
+    hasDraft: PropTypes.bool,
     didInvalidate: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
     setMessageRead: PropTypes.func.isRequired,
@@ -28,6 +28,7 @@ class MessageList extends Component {
     messages: [],
     discussion: {},
     currentTab: undefined,
+    hasDraft: false,
   };
 
   componentDidMount() {
@@ -42,13 +43,13 @@ class MessageList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.didInvalidate && !nextProps.isFetching) {
+    const { didInvalidate, isFetching, messages, hasDraft, currentTab } = nextProps;
+    if (didInvalidate && !isFetching) {
       this.props.requestMessages({ discussion_id: nextProps.discussionId });
     }
 
-    if (!nextProps.didInvalidate && !nextProps.isFetching && nextProps.messages.length === 0) {
-      const { currentTab, removeTab } = nextProps;
-      removeTab(currentTab);
+    if (!didInvalidate && !isFetching && messages.length === 0 && !hasDraft) {
+      this.props.removeTab(currentTab);
     }
   }
 
