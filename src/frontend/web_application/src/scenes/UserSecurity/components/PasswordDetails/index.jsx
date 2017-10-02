@@ -27,6 +27,8 @@ class PasswordDetails extends Component {
 
   render() {
     const { __, user } = this.props;
+    // privacy_features.password_strength is a string
+    const passwordStrengthNumber = parseInt(user.privacy_features.password_strength, 1);
 
     return (
       <div className="m-password-details">
@@ -40,7 +42,7 @@ class PasswordDetails extends Component {
         :
           <PasswordStrength
             className="m-password-details__strength"
-            strength={user.privacy_features.password_strength}
+            strength={passwordStrengthNumber}
           />
         }
         {!this.state.editMode &&

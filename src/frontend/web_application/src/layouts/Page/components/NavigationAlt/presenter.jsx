@@ -42,7 +42,7 @@ const NavigationAlt = ({ currentApplication, applications, __ }) => (
         </Link>
       </VerticalMenuItem>
       <VerticalMenuItem>
-        <Link to="/settings/identities" button expanded data-toggle="left_off_canvas">
+        <Link to="/settings/application" button expanded data-toggle="left_off_canvas">
           {__('header.menu.settings')}
         </Link>
       </VerticalMenuItem>

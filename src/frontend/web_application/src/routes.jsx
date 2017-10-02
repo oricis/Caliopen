@@ -12,13 +12,13 @@ import UserProfile from './scenes/UserProfile';
 import UserSecurity from './scenes/UserSecurity';
 import UserPrivacy from './scenes/UserPrivacy';
 import SettingsRoute from './scenes/SettingsRoute';
-import SettingsIdentities from './scenes/SettingsIdentities';
-import SettingsSignatures from './scenes/SettingsSignatures';
+// import SettingsIdentities from './scenes/SettingsIdentities';
+// import SettingsSignatures from './scenes/SettingsSignatures';
 import ApplicationSettings from './scenes/ApplicationSettings';
 // import DevicesRoute from './scenes/DevicesRoute';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
-import Tags from './scenes/Tags';
+// import Tags from './scenes/Tags';
 import PageNotFound from './scenes/PageNotFound';
 // import { Device } from './scenes/Devices';
 
@@ -95,21 +95,23 @@ export const getRouteConfig = ({ __ }) => [
         app: 'settings',
         label: __('settings.route.label.default'),
         routes: [
-          {
-            path: '/settings/identities',
-            component: SettingsIdentities,
-            label: __('settings.route.label.identities'),
-          },
+          // {
+          //   path: '/settings/identities',
+          //   component: SettingsIdentities,
+          //   label: __('settings.route.label.identities'),
+          // },
           {
             path: '/settings/application',
             component: ApplicationSettings,
             label: __('settings.route.label.application'),
           },
-          {
-            path: '/settings/tags',
-            component: Tags,
-            label: __('settings.route.label.tags'),
-          },
+          // TODO: enable tags management
+          // {
+          //   path: '/settings/tags',
+          //   component: Tags,
+          //   label: __('settings.route.label.tags'),
+          // },
+
           // TODO: enable devices when API ready: https://tree.taiga.io/project/caliopen-caliopen/us/314?no-milestone=1
           // {
           //   path: '/settings/devices',
@@ -122,11 +124,13 @@ export const getRouteConfig = ({ __ }) => [
           //     },
           //   ],
           // },
-          {
-            path: '/settings/signatures',
-            component: SettingsSignatures,
-            label: __('settings.route.label.signatures'),
-          },
+
+          // TODO: enable signatures
+          // {
+          //  path: '/settings/signatures',
+          //  component: SettingsSignatures,
+          //  label: __('settings.route.label.signatures'),
+          // },
         ],
       },
       {
