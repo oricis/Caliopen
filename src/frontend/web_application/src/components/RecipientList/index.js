@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withTranslator } from '@gandi/react-translate';
 import Presenter from './presenter';
 import { setRecipientSearchTerms } from '../../store/modules/draft-message';
-import { suggest as participantSuggest } from '../../store/modules/participant-suggestions';
+import { search, getKey } from '../../store/modules/participant-suggestions';
 
 const findRecipient = (recipients, { address, protocol }) => recipients.find(recipient =>
   recipient.address === address && recipient.protocol === protocol
@@ -24,9 +24,12 @@ const mapStateToProps = createSelector(
     recipientsSelector,
   ],
   (participantSuggestions, searchTerms, recipients) => {
-    const { isFetching, resultsBySearchTerms } = participantSuggestions;
-    const searchResults = (resultsBySearchTerms[searchTerms] && resultsBySearchTerms[searchTerms]
-      .filter(identity => !findRecipient(recipients, identity))) || [];
+    const { isFetching, resultsByKey } = participantSuggestions;
+    const searchResults = (
+      searchTerms &&
+      resultsByKey[getKey(searchTerms)] &&
+      resultsByKey[getKey(searchTerms)].filter(identity => !findRecipient(recipients, identity))
+    ) || [];
 
     return {
       isFetching,
@@ -38,7 +41,7 @@ const mapStateToProps = createSelector(
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   setSearchTerms: setRecipientSearchTerms,
-  search: participantSuggest,
+  search,
 }, dispatch);
 
 export default compose(

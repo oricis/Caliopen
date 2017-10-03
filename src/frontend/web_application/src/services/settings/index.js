@@ -1,4 +1,4 @@
-import withSettings from './withSettings';
+import withSettings, { settingsSelector } from './withSettings';
 
 function getDefaultSettings(locale) {
   return {
@@ -14,4 +14,4 @@ function getDefaultSettings(locale) {
   };
 }
 
-export { getDefaultSettings, withSettings };
+export { getDefaultSettings, withSettings, settingsSelector };

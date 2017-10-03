@@ -9,6 +9,7 @@ import draftMessageMiddleware from './middlewares/draft-messages-middleware';
 import i18nMiddleware from './middlewares/i18n-middleware';
 import importanceLevelMiddleware from './middlewares/importance-level-middleware';
 import messageMiddleware from './middlewares/messages-middleware';
+import participantSuggestions from './middlewares/participant-suggestions-middleware';
 import promiseMiddleware from './middlewares/promise-middleware';
 import reactRouterMiddleware from './middlewares/react-router-redux-middleware';
 import tabsMiddleware from './middlewares/tabs-middleware';
@@ -25,6 +26,7 @@ const middlewares = [
   i18nMiddleware,
   importanceLevelMiddleware,
   messageMiddleware,
+  participantSuggestions,
   promiseMiddleware,
   reactRouterMiddleware,
   tabsMiddleware,

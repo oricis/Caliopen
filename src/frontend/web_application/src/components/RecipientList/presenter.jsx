@@ -248,6 +248,53 @@ class RecipientList extends Component {
     );
   }
 
+  renderSearchResultLabel = (identity, isContact, hasLabel) => {
+    if (!hasLabel) {
+      return null;
+    }
+
+    if (isContact) {
+      return (
+        <span className="m-recipient-list__search-result-title m-recipient-list__search-result-title--contact">
+          <Icon type="user" rightSpaced />
+          {identity.label}
+        </span>
+      );
+    }
+
+    return (
+      <span className="m-recipient-list__search-result-title">
+        {identity.label}
+      </span>
+    );
+  }
+
+  renderSearchResult(identity, index, results) {
+    const isContact = identity.source === 'contact';
+    // results are sorted by contact
+    const hasLabel = isContact &&
+      index === results.findIndex(result => result.contact_id === identity.contact_id);
+
+    return (
+      <Button
+        display="expanded"
+        onClick={this.makeAddKnownParticipant(identity)}
+        className={classnames('m-recipient-list__search-result')}
+        color={index === this.state.activeSearchResultIndex ? 'active' : null}
+      >
+        {this.renderSearchResultLabel(identity, isContact, hasLabel)}
+        <span className="m-recipient-list__search-result-info">
+          <Icon
+            type={assocProtocolIcon[identity.protocol]}
+            aria-label={identity.protocol}
+            rightSpaced
+          />
+          <i>{identity.address}</i>
+        </span>
+      </Button>
+    );
+  }
+
   render() {
     const componentId = uuidV1();
     const dropdownId = uuidV1();
@@ -288,22 +335,7 @@ class RecipientList extends Component {
             <VerticalMenu>
               {searchResults.map((identity, index) => (
                 <VerticalMenuItem key={`${identity.address}_${identity.protocol}`}>
-                  <Button
-                    onClick={this.makeAddKnownParticipant(identity)}
-                    className={classnames('m-recipient-list__search-result')}
-                    color={index === this.state.activeSearchResultIndex ? 'active' : null}
-                  >
-                    <span className="m-recipient-list__search-result-title">
-                      {identity.label}
-                    </span>
-                    <span className="m-recipient-list__search-result-info">
-                      <Icon
-                        type={assocProtocolIcon[identity.protocol]}
-                        aria-label={identity.protocol}
-                      />
-                      <i>{identity.address}</i>
-                    </span>
-                  </Button>
+                  {this.renderSearchResult(identity, index, searchResults)}
                 </VerticalMenuItem>
               ))}
             </VerticalMenu>
