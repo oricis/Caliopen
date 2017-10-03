@@ -8,13 +8,13 @@ import NavList, { ItemContent } from '../../../../components/NavList';
 import './style.scss';
 
 function nbContactsbyTag(list, tag) {
-  /**
+/* *
  * Count the number of time `tag` appears in `list` (array of all tags from all contacts)
  * (= number of contacts tagged with `tag`)
  * @param Array(<string>) list
  * @param <string> tag
  * @return <number>
- **/
+ * */
   const count = [];
   list.map(item => item === tag && count.push(item));
 
