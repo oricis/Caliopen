@@ -154,10 +154,17 @@ The following error may appears:
 Module build failed: Error: ENOENT: no such file or directory, scandir '/.../CaliOpen/Caliopen/src/frontend/web_application/node_modules/node-sass/vendor
 ```
 
-It is related to node-sass installation. To fix the easiest way is to remove `node_modules` then reinstall with yarn:
+It is related to [node-sass](https://github.com/sass/node-sass/issues/1579#issuecomment-227661284)
+installation. To fix the easiest way is to remove `node_modules` then reinstall with yarn:
 
 ```
 (cd src/frontend/web_application/ && rm -r node_modules && yarn)
+```
+
+or rebuild node-sass:
+
+```
+npm rebuild node-sass
 ```
 
 # Staging scenarios
