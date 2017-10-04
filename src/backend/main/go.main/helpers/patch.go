@@ -1,3 +1,7 @@
+// Copyleft (ɔ) 2017 The Caliopen contributors.
+// Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
+// license (AGPL) that can be found in the LICENSE file.
+
 package helpers
 
 import (
@@ -52,10 +56,11 @@ func ValidatePatchSemantic(obj CaliopenObject, patch *gjson.Result) (valid bool,
 	return
 }
 
-// ValidatePatchCurrentState verifies if the provided current_state, within a json patch, is consistent with storage.
+// ValidatePatchCurrentState verifies if the provided current_state within a json patch
+// is consistent with the provided object (coming from db for example).
 func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) (valid bool, err error) {
 	valid = true
-	// build one obj sibling from patch
+	// build one sibling from patch
 	current_state := patch.Get("current_state")
 	patch_current := obj.NewEmpty().(CaliopenObject)
 	patch_current.UnmarshalJSON([]byte(current_state.Raw))
@@ -72,7 +77,7 @@ func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) (valid b
 		}
 		if !reflect.DeepEqual(current, store) {
 			valid = false
-			err = errors.New(fmt.Sprintf("[Patch] current_state for field <%s> not consitent with stored value", field_name))
+			err = errors.New(fmt.Sprintf("[Patch] current_state for field <%s> not consistent with stored value", field_name))
 			return false
 		}
 		return true
@@ -83,5 +88,6 @@ func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) (valid b
 // UpdateWithPatch updates obj attributes with values provided in the patch
 // obj must be a pointer to an object belongings to the objects package
 func UpdateWithPatch(obj CaliopenObject, patch []byte) error {
+	//TODO
 	return nil
 }
