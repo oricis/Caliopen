@@ -15,7 +15,7 @@ const searchTermsSelector = (state, ownProps) =>
 
 const participantSuggestionsSelector = state => state.participantSuggestions;
 
-const recipientsSelector = (state, ownProps) => ownProps.recipients;
+const recipientsSelector = (state, ownProps) => ownProps.recipients || [];
 
 const mapStateToProps = createSelector(
   [
