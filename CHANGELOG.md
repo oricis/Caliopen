@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.4.0]
+
 ### Added
 
 - Connect settings and apply
@@ -13,11 +15,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Load more in the discussions
 - API for importance level messages filtering
 - API for full-text searches on messages & contacts
+- Compute importance level v0 for inbound messages
 
 ### Changed
 
 - Improve `PATCH` API
 - Backend produces `excerpt` for messages.
+- Backend produces plain or rich body using setting value
 
 ### Fixed
 
