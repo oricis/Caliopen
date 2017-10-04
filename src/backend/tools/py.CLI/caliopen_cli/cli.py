@@ -31,8 +31,11 @@ def main(args=sys.argv):
                            default='mbox')
     sp_import.add_argument('-p', dest='import_path')
     sp_import.add_argument('-e', dest='email')
+    sp_import.add_argument('--contact-probability', dest='contact_probability',
+                           default=1.0)
 
-    sp_import_vcard = subparsers.add_parser('import_vcard', help='import vcard')
+    sp_import_vcard = subparsers.add_parser('import_vcard',
+                                            help='import vcard')
     sp_import_vcard.set_defaults(func=import_vcard)
     sp_import_vcard.add_argument('-u', dest='username', help='username')
     sp_import_vcard.add_argument('-d', dest='directory', help='directory')
