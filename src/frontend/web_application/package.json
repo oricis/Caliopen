@@ -1,5 +1,5 @@
 {
-  "name": "caliopen.frontend",
+  "name": "@caliopen/frontend",
   "version": "0.4.0",
   "description": "CaliOpen UI is the user interface for CaliOpen.",
   "homepage": "https://caliopen.org/",
@@ -36,9 +36,7 @@
     "lint": "npm-run-all lint:js lint:sass",
     "lint:js": "eslint --ext .js --ext .jsx --ignore-pattern *.spec.js --ignore-pattern *.spec.jsx src/",
     "lint:sass": "sass-lint 'src/**/*.scss'",
-    "i18n": "react-translate-scripts",
-    "storybook": "start-storybook -p 6006 --dont-track",
-    "storybook:build": "build-storybook -o dist/storybook"
+    "i18n": "react-translate-scripts"
   },
   "author": "CaliOpen <contact@caliopen.org> (https://caliopen.org/)",
   "license": "MIT",
@@ -109,9 +107,6 @@
     "zxcvbn": "^4.4.1"
   },
   "devDependencies": {
-    "@kadira/react-storybook-addon-info": "^3.4.0",
-    "@kadira/storybook": "^2.21.0",
-    "@kadira/storybook-addon-knobs": "^1.7.1",
     "autoprefixer": "^7.1.3",
     "axios-mock-adapter": "^1.9.0",
     "babel-cli": "^6.24.1",
@@ -147,7 +142,6 @@
     "react-addons-test-utils": "^15.6.0",
     "react-dev-utils": "^3.0.1",
     "react-markdown": "^2.5.0",
-    "react-storybook-addon-backgrounds": "^0.0.7",
     "react-test-renderer": "^15.6.1",
     "sass-lint": "^1.9.1",
     "sasslint-loader": "0.0.1",
