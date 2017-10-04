@@ -2,6 +2,7 @@
 """Caliopen functions for histogram informations from index."""
 from __future__ import absolute_import, print_function, unicode_literals
 
+from dateutil.parser import parse as parse_date
 import elasticsearch_dsl as dsl
 
 from caliopen_storage.helpers.connection import get_index_connection
@@ -16,6 +17,11 @@ class ParticipantHistogram(object):
         self.user_id = user_id
         self.resolution = resolution
 
+    def _format_results(self, results):
+        """Return a list of date, value tuples."""
+        return [(parse_date(x['key_as_string']),
+                 x['doc_count']) for x in results]
+
     def _do_query(self, value, term):
         search = dsl.Search(using=self.esclient, index=self.user_id,
                             doc_type='indexed_message')
@@ -28,7 +34,8 @@ class ParticipantHistogram(object):
                            field='date', interval=self.resolution)
 
         r = search.execute()
-        return r.aggregations.messages_with_value['buckets']
+        results = r.aggregations.messages_with_value['buckets']
+        return self._format_results(results)
 
     def find_by_address(self, address):
         """Build a date histogram with a participant address."""
