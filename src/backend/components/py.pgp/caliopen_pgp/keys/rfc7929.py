@@ -14,7 +14,7 @@ from dnsknife import resolver
 
 from .base import BaseDiscovery
 
-from caliopen_main.user.helpers.normalize import clean_email_address
+from caliopen_main.common.helpers.normalize import clean_email_address
 
 
 log = logging.getLogger(__name__)
@@ -28,14 +28,13 @@ def compute_qname(username, domain):
 
 
 class DNSDiscovery(BaseDiscovery):
-
     """Class to discover OPENPGPKEY using Dns."""
 
     def __init__(self, conf):
         self.default_name_server = conf.get('name_server')
         self.resolve_timeout = conf.get('timeout', 5)
 
-    def find_by_mail(self, email):
+    def find_by_email(self, email):
         """Find for a given email an openpgp key in its DNS zone."""
         clean = clean_email_address(email)
         local_part, domain = clean[0].split('@', 2)
