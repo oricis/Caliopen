@@ -1,6 +1,8 @@
 package users
 
 import (
+	"errors"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/tidwall/gjson"
 	"testing"
@@ -9,9 +11,10 @@ import (
 func TestChangeUserPassword(t *testing.T) {
 	fakeStore := new(fakeStorage)
 	user := User{
-		Password: []byte(`$2b$12$pPAhvbQUnRyEC/eX/C8Y9O/N75ZN8Hxe1zD1mlle9Ru0Ngwa6LNgS`),
+		Password:        []byte(`$2b$12$pPAhvbQUnRyEC/eX/C8Y9O/N75ZN8Hxe1zD1mlle9Ru0Ngwa6LNgS`),
+		PrivacyFeatures: &PrivacyFeatures{},
 	}
-	patch := []byte(`{"current_state":{"password":"12334"},"password":"1234new"}`)
+	patch := []byte(`{"current_state":{"password":"123456"},"password":"1234caienrstivovv887new"}`)
 	p := gjson.ParseBytes(patch)
 	e := ChangeUserPassword(&user, &p, fakeStore)
 
@@ -27,7 +30,7 @@ func (f *fakeStorage) RetrieveUser(user_id string) (user *User, err error) {
 	return nil, nil
 }
 func (f *fakeStorage) UpdateUserPassword(user *User) error {
-	return nil
+	return errors.New(fmt.Sprintf("%s", (*user).Password))
 }
 func (f *fakeStorage) UpdateUser(user *User, fields map[string]interface{}) error {
 	return nil
