@@ -27,4 +27,12 @@ const (
 
 	//nats related constants
 	Nats_message_tmpl = "{\"order\":\"%s\", \"message_id\":\"%s\", \"user_id\":\"%s\"}"
+
+	//participant types
+	ParticipantBcc     = "Bcc"
+	ParticipantCC      = "Cc"
+	ParticipantFrom    = "From"
+	ParticipantReplyTo = "Reply-To"
+	ParticipantSender  = "Sender"
+	ParticipantTo      = "To"
 )
