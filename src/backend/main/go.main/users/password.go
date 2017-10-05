@@ -29,7 +29,9 @@ func ChangeUserPassword(user *User, patch *gjson.Result, store backends.UserStor
 
 	new_password := patch.Get("password").Str
 	//compute new password strength
-	scoring := zxcvbn.PasswordStrength(new_password, []string{}) // TODO: take user's infos into account
+	user_infos := []string{user.Name, user.GivenName, user.FamilyName, user.RecoveryEmail}
+	user_infos = append(user_infos, user.LocalIdentities...)
+	scoring := zxcvbn.PasswordStrength(new_password, user_infos)
 	(*(*user).PrivacyFeatures)[passwordStrengthkey] = strconv.FormatInt(int64(scoring.Score), 10)
 
 	// hash new password and store it
