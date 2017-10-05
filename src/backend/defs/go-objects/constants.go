@@ -24,4 +24,7 @@ const (
 	ContactType      = "contact"
 	MessageIndexType = "indexed_message"
 	ContactIndexType = "indexed_contact"
+
+	//nats related constants
+	Nats_message_tmpl = "{\"order\":\"%s\", \"message_id\":\"%s\", \"user_id\":\"%s\"}"
 )

@@ -10,6 +10,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/REST"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
 )
 
 var (
@@ -27,6 +28,9 @@ type (
 
 		// LDA facility
 		LDAstore backends.LDAStore
+
+		// Notifications facility
+		Notifiers Notifications.Notifiers
 	}
 )
 
@@ -47,5 +51,7 @@ func (facilities *CaliopenFacilities) initialize(config obj.CaliopenConfig) (err
 	//REST facility initialization
 	facilities.RESTfacility = REST.NewRESTfacility(config, facilities.nats)
 
+	//Notifications facility initialization
+	facilities.Notifiers = Notifications.NewNotificationsFacility(config, facilities.nats)
 	return
 }

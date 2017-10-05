@@ -14,6 +14,7 @@ import (
 	"github.com/nats-io/go-nats"
 	"github.com/tidwall/gjson"
 	"io"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
 )
 
 type (
@@ -42,7 +43,7 @@ type (
 		//search
 		Search(IndexSearch) (result *IndexResult, err error)
 		//users
-		PatchUser(user_id string, patch *gjson.Result) error
+		PatchUser(user_id string, patch *gjson.Result, notifier Notifications.Notifiers) error
 	}
 	RESTfacility struct {
 		store              backends.APIStorage
@@ -52,7 +53,6 @@ type (
 	}
 )
 
-const nats_message_tmpl = "{\"order\":\"%s\", \"message_id\":\"%s\", \"user_id\":\"%s\"}"
 
 func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility *RESTfacility) {
 	rest_facility = new(RESTfacility)
