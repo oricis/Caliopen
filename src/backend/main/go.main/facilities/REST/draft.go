@@ -17,7 +17,7 @@ import (
 
 func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err error) {
 	const nats_order = "deliver"
-	natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, msg_id, user_id)
+	natsMessage := fmt.Sprintf(Nats_message_tmpl, nats_order, msg_id, user_id)
 	rep, err := rest.nats_conn.Request(rest.nats_outSMTP_topic, []byte(natsMessage), 30*time.Second)
 	if err != nil {
 		log.WithError(err).Warn("[RESTfacility]: SendDraft error")

@@ -38,7 +38,7 @@ func PatchUser(ctx *gin.Context) {
 		return
 	}
 
-	err = caliopen.Facilities.RESTfacility.PatchUser(auth_user, patch)
+	err = caliopen.Facilities.RESTfacility.PatchUser(auth_user, patch, caliopen.Facilities.Notifiers)
 
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())

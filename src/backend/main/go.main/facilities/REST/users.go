@@ -8,13 +8,14 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/users"
 	"github.com/tidwall/gjson"
 )
 
 // as of oct. 2017, PatchUser only implemented for changing user's password
 // any attempt to patch something else should trigger an error
-func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result) error {
+func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result, notifiers Notifications.Notifiers) error {
 
 	user, err := rest.store.RetrieveUser(user_id)
 	if err != nil {
@@ -29,7 +30,15 @@ func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result) error {
 			return errors.New("[PatchUser] invalid password patch : " + err.Error())
 		}
 		// call the service that change user password
-		return users.ChangeUserPassword(user, patch, rest.store)
+		err = users.ChangeUserPassword(user, patch, rest.store)
+		if err != nil {
+			return err
+		}
+		//TODO : send an email to user
+		notif := new(Message)
+
+		go notifiers.SendEmailAdminToUser(user, notif)
+		return nil
 	} else {
 		// hack to ensure that patch is for password only
 		// should be replaced by :

@@ -41,8 +41,6 @@ func ChangeUserPassword(user *User, patch *gjson.Result, store backends.UserStor
 	if err != nil {
 		return errors.New("[ChangeUserPassword] failed to store updated user : " + err.Error())
 	}
-	// send an email to user
-	//TODO
 
 	return nil
 }
