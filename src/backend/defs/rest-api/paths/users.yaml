@@ -47,6 +47,8 @@ users_{user_id}:
     - password
     security:
     - basicAuth: []
+    consumes:
+    - application/json
     parameters:
     - name: user_id
       in: path
@@ -66,7 +68,7 @@ users_{user_id}:
               "$ref": "../objects/MessageV2.yaml#/properties"
         required:
         - current_state
-    consumes:
+    produces:
     - application/json
     responses:
       '204':
@@ -96,7 +98,7 @@ users_{user_id}_actions:
   post:
     description: 'send an order to execute one (or many) action(s) regarding the user
                        : reset_password, etc. A successful execution of the action will probably modify one or
-                       more user''s attribute(s)'
+                       more user''s attribute(s) ## NOT YET IMPLEMENTED ##'
     tags:
     - users
     - password

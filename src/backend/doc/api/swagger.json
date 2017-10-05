@@ -755,6 +755,9 @@
             "basicAuth": []
           }
         ],
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -1198,7 +1201,7 @@
             }
           }
         ],
-        "consumes": [
+        "produces": [
           "application/json"
         ],
         "responses": {
@@ -1325,7 +1328,7 @@
     },
     "/v2/users/{user_id}/actions": {
       "post": {
-        "description": "send an order to execute one (or many) action(s) regarding the user : reset_password, etc. A successful execution of the action will probably modify one or more user's attribute(s)",
+        "description": "send an order to execute one (or many) action(s) regarding the user : reset_password, etc. A successful execution of the action will probably modify one or more user's attribute(s) ## NOT YET IMPLEMENTED ##",
         "tags": [
           "users",
           "password"
