@@ -36,7 +36,10 @@ class ContactMessageQualifier(object):
         extractor = ContactFeature(self.user)
         pi, features = extractor.process(contact)
         # XXX for the moment apply features and pi
-        current_pi = contact.pi.marshall_dict()
+        if not contact.pi:
+            current_pi = None
+        else:
+            current_pi = contact.pi.marshall_dict()
         new_pi = pi.serialize()
         new_pi.pop('date_update')
         current = {'privacy_features': contact.privacy_features,
