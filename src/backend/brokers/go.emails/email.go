@@ -9,7 +9,7 @@ import (
 	"bytes"
 	"fmt"
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/messages"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/jhillyerd/go.enmime"
@@ -95,7 +95,7 @@ func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err 
 
 	//TODO: In-Reply-To header
 	m.SetHeader("Subject", msg.Subject)
-	helpers.SanitizeMessageBodies(msg)
+	messages.SanitizeMessageBodies(msg)
 	if msg.Body_html != "" {
 		m.AddAlternative("text/html", msg.Body_html)
 	}
