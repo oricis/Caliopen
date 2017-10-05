@@ -57,3 +57,8 @@ internal_domains:
 blacklistes:
     mx:
         - mx.bad.guy
+
+key_discovery:
+    dns:
+        enable: True
+        name_server: ns.example.com
