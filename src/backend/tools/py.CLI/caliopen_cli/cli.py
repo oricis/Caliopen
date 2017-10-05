@@ -14,7 +14,7 @@ from caliopen_storage.helpers.connection import connect_storage
 from caliopen_cli.commands import (shell, import_email,
                                    setup_storage, create_user,
                                    import_vcard, dump_model,
-                                   inject_email)
+                                   inject_email, basic_compute)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -71,6 +71,11 @@ def main(args=sys.argv):
     sp_inject.add_argument('-e', dest='email')
     sp_inject.add_argument('--host', dest='host', help='host to send mail to',
                            default='localhost:25')
+
+    sp_compute = subparsers.add_parser('compute', help='Launch basic compute')
+    sp_compute.set_defaults(func=basic_compute)
+    sp_compute.add_argument('-u', dest='username', help='username')
+    sp_compute.add_argument('-j', dest='job', help='job name')
 
     kwargs = parser.parse_args(args[1:])
     kwargs = vars(kwargs)
