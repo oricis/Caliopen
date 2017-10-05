@@ -12,8 +12,25 @@ import (
 	"github.com/gocql/gocql"
 )
 
-func (cb *CassandraBackend) Get(*User) error {
-	return errors.New("[CassandraBackend] Get not implemented")
+func (cb *CassandraBackend) RetrieveUser(user_id string) (user *User, err error) {
+	u, err := cb.Session.Query(`SELECT * FROM user WHERE user_id = ?`, user_id).Iter().SliceMap()
+	if err != nil {
+		return nil, err
+	}
+	if len(u) != 1 {
+		err = errors.New("[CassandraBackend] user not found")
+		return nil, err
+	}
+	user = new(User)
+	user.UnmarshalCQLMap(u[0])
+	return user, nil
+}
+
+func (cb *CassandraBackend) UpdateUserPassword(user *User) error {
+	return cb.Session.Query(`UPDATE user SET password = ? WHERE user_id = ?`,
+		user.Password,
+		user.UserId,
+	).Exec()
 }
 
 func (cb *CassandraBackend) GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error) {
