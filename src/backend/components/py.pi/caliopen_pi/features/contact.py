@@ -11,7 +11,8 @@ from .types import unmarshall_features
 
 log = logging.getLogger(__name__)
 
-MESSAGE_DAY_THRESHOLD = 10
+MESSAGE_TOTAL_THRESHOLD = 10
+NB_PROTOCOLS_THRESHOLD = 3
 
 
 def pstdev(avg, data):
@@ -28,6 +29,8 @@ class ContactFeature(object):
         'message_day_avg': 0,
         'message_day_pstdev': 0,
         'public_key_best_size': 0,
+        'address_or_phone': False,
+        'nb_protocols': 0
     }
 
     def __init__(self, user, conf=None):
@@ -66,7 +69,7 @@ class ContactFeature(object):
                 features.update({'public_key_best_size': max_size})
         return features
 
-    def _compute_pi(self, features):
+    def _compute_pi(self, contact, features):
         pi_t = 0
         pi_cx = 0
         pi_co = 0
@@ -80,8 +83,17 @@ class ContactFeature(object):
                 pi_t += 20
 
         if 'message_day_total' in features:
-            if features['message_day_total'] >= MESSAGE_DAY_THRESHOLD:
+            if features['message_day_total'] >= MESSAGE_TOTAL_THRESHOLD:
                 pi_cx += 10
+
+        if contact.postal_addresses or contact.phones:
+            features.update({'address_or_phone': True})
+            pi_co += 10
+
+        nb_protocols = len(contact.emails) + len(contact.phones)
+        if nb_protocols >= NB_PROTOCOLS_THRESHOLD:
+            features.update({'nb_protocols': nb_protocols})
+            pi_co += 5
 
         return PIParameter({'technic': pi_t,
                             'comportment': pi_co,
@@ -94,5 +106,5 @@ class ContactFeature(object):
         features.update(self._get_technical(contact))
         log.info('Contact {0} have features {1}'.
                  format(contact.contact_id, features))
-        pi = self._compute_pi(features)
+        pi = self._compute_pi(contact, features)
         return pi, unmarshall_features(features)
