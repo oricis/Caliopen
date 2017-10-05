@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/messages"
 	log "github.com/Sirupsen/logrus"
 	"time"
 )
@@ -41,6 +41,6 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 	if err != nil {
 		return nil, err
 	}
-	helpers.SanitizeMessageBodies(msg)
+	messages.SanitizeMessageBodies(msg)
 	return msg, err
 }

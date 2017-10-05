@@ -6,7 +6,7 @@ package REST
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	m "github.com/CaliOpen/Caliopen/src/backend/main/go.main/messages"
 )
 
 func (rest *RESTfacility) SetMessageUnread(user_id, message_id string, status bool) (err error) {
@@ -36,8 +36,8 @@ func (rest *RESTfacility) GetMessagesList(filter IndexSearch) (messages []*Messa
 		return []*Message{}, 0, err
 	}
 	for _, msg := range messages {
-		helpers.SanitizeMessageBodies(msg)
-		(*msg).Body_excerpt = helpers.ExcerptMessage(*msg, 200, true, true)
+		m.SanitizeMessageBodies(msg)
+		(*msg).Body_excerpt = m.ExcerptMessage(*msg, 200, true, true)
 	}
 	return
 }
@@ -48,7 +48,7 @@ func (rest *RESTfacility) GetMessage(user_id, msg_id string) (msg *Message, err 
 	if err != nil {
 		return nil, err
 	}
-	helpers.SanitizeMessageBodies(msg)
-	(*msg).Body_excerpt = helpers.ExcerptMessage(*msg, 200, true, true)
+	m.SanitizeMessageBodies(msg)
+	(*msg).Body_excerpt = m.ExcerptMessage(*msg, 200, true, true)
 	return msg, err
 }

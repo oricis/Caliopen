@@ -12,24 +12,38 @@ import (
 
 func TestValidatePatchSemantic(t *testing.T) {
 	msg := getAMessage()
-	msg_p := ParsePatch([]byte(msg_patch))
-	v, e := ValidatePatchSemantic(msg, msg_p)
-	t.Logf("Message patch semantic => valid: %t, error: %s\n", v, e)
+	msg_p, e := ParsePatch([]byte(msg_patch))
+	if e != nil {
+		t.Fatal(e)
+	}
+	e = ValidatePatchSemantic(msg, msg_p)
+	t.Logf("Message patch semantic => error: %v\n", e)
 	user := getAUser()
-	user_p := ParsePatch([]byte(user_patch))
-	v, e = ValidatePatchSemantic(user, user_p)
-	t.Logf("User patch semantic => valid: %t, error: %s\n", v, e)
+	user_p, e := ParsePatch([]byte(user_patch))
+	if e != nil {
+		t.Fatal(e)
+	}
+	e = ValidatePatchSemantic(user, user_p)
+	t.Logf("User patch semantic => error: %v\n", e)
+
+	user_p.Get()
 }
 
 func TestValidatePatchCurrentState(t *testing.T) {
 	msg := getAMessage()
-	p := ParsePatch([]byte(msg_patch))
-	v, e := ValidatePatchCurrentState(msg, p)
-	t.Logf("Message patch current state => valid: %t, error: %s\n", v, e)
+	p, e := ParsePatch([]byte(msg_patch))
+	if e != nil {
+		t.Fatal(e)
+	}
+	e = ValidatePatchCurrentState(msg, p)
+	t.Logf("Message patch current state => error: %v\n", e)
 	user := getAUser()
-	user_p := ParsePatch([]byte(user_patch))
-	v, e = ValidatePatchCurrentState(user, user_p)
-	t.Logf("User patch current state => valid: %t, error: %s\n", v, e)
+	user_p, e := ParsePatch([]byte(user_patch))
+	if e != nil {
+		t.Fatal(e)
+	}
+	e = ValidatePatchCurrentState(user, user_p)
+	t.Logf("User patch current state => error: %v\n", e)
 }
 
 // returns a basic Message that should have been retrieved from db

@@ -12,6 +12,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
+	"github.com/tidwall/gjson"
 	"io"
 )
 
@@ -40,6 +41,8 @@ type (
 		DeleteTag(user_id, tag_id string) error
 		//search
 		Search(IndexSearch) (result *IndexResult, err error)
+		//users
+		PatchUser(user_id string, patch *gjson.Result) error
 	}
 	RESTfacility struct {
 		store              backends.APIStorage

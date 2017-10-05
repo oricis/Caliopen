@@ -14,23 +14,26 @@ import (
 )
 
 // func to do the parsing once and get a pointer to the result.
-func ParsePatch(json []byte) *gjson.Result {
+func ParsePatch(json []byte) (*gjson.Result, error) {
+	if !gjson.Valid(string(json)) {
+		return nil, errors.New("invalid json")
+	}
 	r := gjson.ParseBytes(json)
-	return &r
+	return &r, nil
 }
 
 // ValidatePatchSemantic verifies if the provided patch — a json — could be applied to the given object.
 // json is semantically checked regarding the obj it should apply to,
 // meaning json's keys must be consistent with obj's properties.
 // if validation passes, func returns
-func ValidatePatchSemantic(obj CaliopenObject, patch *gjson.Result) (valid bool, err error) {
-	valid = true
+func ValidatePatchSemantic(obj CaliopenObject, patch *gjson.Result) error {
+	var err error
 	current_state := patch.Get("current_state")
 	if !current_state.Exists() {
-		return false, errors.New("[Patch] missing 'current_state' property in patch json")
+		return errors.New("[Patch] missing 'current_state' property in patch json")
 	}
 	if !current_state.IsObject() {
-		return false, errors.New("[Patch] 'current_state' property in patch json is not an object")
+		return errors.New("[Patch] 'current_state' property in patch json is not an object")
 	}
 
 	// check if each key in the json has a corresponding property in obj
@@ -41,7 +44,6 @@ func ValidatePatchSemantic(obj CaliopenObject, patch *gjson.Result) (valid bool,
 			key_name := jsonTags[key.String()]
 			var ok bool
 			if ok, err = reflections.HasField(obj, key_name); !ok || err != nil {
-				valid = false
 				err = errors.New(fmt.Sprintf("[Patch] found invalid key <%s> in the json patch", key.String()))
 				return false
 			} else {
@@ -51,15 +53,18 @@ func ValidatePatchSemantic(obj CaliopenObject, patch *gjson.Result) (valid bool,
 		return true
 	}
 	patch.ForEach(keyValidator)
-	current_state.ForEach(keyValidator)
+	if err == nil {
+		current_state.ForEach(keyValidator)
+	}
 
-	return
+	return err
 }
 
 // ValidatePatchCurrentState verifies if the provided current_state within a json patch
 // is consistent with the provided object (coming from db for example).
-func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) (valid bool, err error) {
-	valid = true
+func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) error {
+	var err error
+	valid := true
 	// build one sibling from patch
 	current_state := patch.Get("current_state")
 	patch_current := obj.NewEmpty().(CaliopenObject)
@@ -82,7 +87,11 @@ func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) (valid b
 		}
 		return true
 	})
-	return
+	if !valid {
+		return err
+	} else {
+		return nil
+	}
 }
 
 // UpdateWithPatch updates obj attributes with values provided in the patch
