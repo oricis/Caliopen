@@ -14,13 +14,16 @@ import (
 
 const defaultBcryptCost = 12 // 12 is the default cost of python's bcrypt lib
 
-func ChangeUserPassword(user *User, patch *gjson.Result, store backends.APIStorage) error {
+func ChangeUserPassword(user *User, patch *gjson.Result, store backends.UserStorage) error {
 	// verify that current_password in patch is the good one
 	current_pwd := patch.Get("current_state.password").Str
 	err := bcrypt.CompareHashAndPassword(user.Password, []byte(current_pwd))
 	if err != nil {
 		return errors.New("old password is incorrect")
 	}
+
+	//compute new password strength
+
 	// hash new password and store it
 	hashpass, err := bcrypt.GenerateFromPassword([]byte(patch.Get("password").Str), defaultBcryptCost)
 	(*user).Password = hashpass
