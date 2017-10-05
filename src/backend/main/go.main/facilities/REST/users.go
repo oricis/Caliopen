@@ -13,6 +13,14 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+const (
+	changePasswordSubject   = "Information Caliopen : votre mot de passe a été changé"
+	changePasswordBodyPlain = `
+	Caliopen vous informe que le mot de passe de votre compte a été changé.
+	`
+	changePasswordBodyRich = changePasswordBodyPlain
+)
+
 // as of oct. 2017, PatchUser only implemented for changing user's password
 // any attempt to patch something else should trigger an error
 func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result, notifiers Notifications.Notifiers) error {
@@ -27,23 +35,26 @@ func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result, notifie
 		// there should be no other properties to patch
 		err = validatePasswordPatch(patch)
 		if err != nil {
-			return errors.New("[PatchUser] invalid password patch : " + err.Error())
+			return errors.New("[REST PatchUser] invalid password patch : " + err.Error())
 		}
 		// call the service that change user password
 		err = users.ChangeUserPassword(user, patch, rest.store)
 		if err != nil {
 			return err
 		}
-		//TODO : send an email to user
-		notif := new(Message)
-
+		// compose and send a notification email to user
+		notif := &Message{
+			Body_plain: changePasswordBodyPlain,
+			Body_html:  changePasswordBodyRich,
+			Subject:    changePasswordSubject,
+		}
 		go notifiers.SendEmailAdminToUser(user, notif)
 		return nil
 	} else {
 		// hack to ensure that patch is for password only
 		// should be replaced by :
 		// helpers.ValidatePatchSemantic(user, patch)
-		return errors.New("[REST] PatchUser only implemented to change password for now")
+		return errors.New("[REST] PatchUser only implemented for changing password (for now)")
 	}
 	return nil
 }

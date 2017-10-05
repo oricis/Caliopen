@@ -37,7 +37,7 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		log.Warn("[RESTfacility]: SendDraft error")
 		return nil, errors.New(reply.Response)
 	}
-	msg, err = rest.store.GetMessage(user_id, msg_id)
+	msg, err = rest.store.RetrieveMessage(user_id, msg_id)
 	if err != nil {
 		return nil, err
 	}

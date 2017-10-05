@@ -44,7 +44,7 @@ func (rest *RESTfacility) GetMessagesList(filter IndexSearch) (messages []*Messa
 
 //return a sanitized message, ready for display in front interface
 func (rest *RESTfacility) GetMessage(user_id, msg_id string) (msg *Message, err error) {
-	msg, err = rest.store.GetMessage(user_id, msg_id)
+	msg, err = rest.store.RetrieveMessage(user_id, msg_id)
 	if err != nil {
 		return nil, err
 	}

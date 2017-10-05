@@ -16,7 +16,7 @@ import (
 
 func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_type string, file io.Reader) (attachmentPath string, err error) {
 	//check if message_id belongs to user and is a draft
-	msg, err := rest.store.GetMessage(user_id, message_id)
+	msg, err := rest.store.RetrieveMessage(user_id, message_id)
 	if err != nil {
 		return "", err
 	}
@@ -66,7 +66,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 
 func (rest *RESTfacility) DeleteAttachment(user_id, message_id string, attchmtIndex int) error {
 	//check if message_id belongs to user and is a draft and index is consistent
-	msg, err := rest.store.GetMessage(user_id, message_id)
+	msg, err := rest.store.RetrieveMessage(user_id, message_id)
 	if err != nil {
 		return err
 	}
@@ -104,7 +104,7 @@ func (rest *RESTfacility) DeleteAttachment(user_id, message_id string, attchmtIn
 // returns an io.Reader and metadata to conveniently read the attachment
 func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error) {
 	//check if message_id belongs to user and index is consistent
-	msg, err := rest.store.GetMessage(user_id, message_id)
+	msg, err := rest.store.RetrieveMessage(user_id, message_id)
 	if err != nil {
 		return "", 0, nil, err
 	}
