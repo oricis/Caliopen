@@ -6,6 +6,8 @@ import logging
 
 from caliopen_main.pi.parameters import PIParameter
 from .histogram import ParticipantHistogram
+from .types import unmarshall_features
+
 
 log = logging.getLogger(__name__)
 
@@ -46,7 +48,7 @@ class ContactFeature(object):
 
     def _get_histogram(self, contact):
         """Get privacy features related to message histograms."""
-        histograms = [self._compute_histogram(x['address'])
+        histograms = [self._compute_histogram(x.address)
                       for x in contact.emails]
         if histograms:
             best = max(histograms)
@@ -83,7 +85,8 @@ class ContactFeature(object):
 
         return PIParameter({'technic': pi_t,
                             'comportment': pi_co,
-                            'context': pi_cx})
+                            'context': pi_cx,
+                            'version': 0})
 
     def process(self, contact):
         """Process a contact to extract all privacy features."""
@@ -92,4 +95,4 @@ class ContactFeature(object):
         log.info('Contact {0} have features {1}'.
                  format(contact.contact_id, features))
         pi = self._compute_pi(features)
-        return pi, features
+        return pi, unmarshall_features(features)

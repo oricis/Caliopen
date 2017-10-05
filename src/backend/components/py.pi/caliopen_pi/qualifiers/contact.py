@@ -4,8 +4,9 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from caliopen_storage.config import Configuration
-from caliopen_main.contact.core import Contact
 from caliopen_main.contact.parameters import NewPublicKey as NewKeyParam
+from caliopen_main.pi.parameters import PIParameter
+
 
 from caliopen_pgp.keys import PublicKeyDiscoverer
 from ..features import ContactFeature
@@ -30,15 +31,21 @@ class ContactMessageQualifier(object):
     def __init__(self, user):
         self.user = user
 
-    def process_contact(self, contact_id):
+    def process(self, contact):
         """Qualification for a contact."""
-        contact = Contact.get(self.user, contact_id)
         extractor = ContactFeature(self.user)
         pi, features = extractor.process(contact)
         # XXX for the moment apply features and pi
-        contact.pi = pi
-        contact.privacy_features = features
-        contact.save()
+        current_pi = contact.pi.marshall_dict()
+        new_pi = pi.serialize()
+        new_pi.pop('date_update')
+        current = {'privacy_features': contact.privacy_features,
+                   'pi': current_pi}
+        patch = {'privacy_features': features,
+                 'pi': new_pi,
+                 'current_state': current}
+        log.info('Will patch with {0}'.format(patch))
+        contact.apply_patch(patch, db=True)
 
 
 class ContactEmailQualifier(object):
@@ -90,9 +97,8 @@ class ContactEmailQualifier(object):
                 contact.pi.comportment = contact.pi.comportment + co_boost
             contact.save()
 
-    def create_new_email(self, contact_id, email):
+    def create_new_email(self, contact, email):
         """Add a new email for a contact."""
-        contact = Contact.get(self.user, contact_id)
         found_keys = self.key_disco.search_email(email)
         if found_keys:
             log.info('Found keys for email {0}: {1}'.format(email, found_keys))
