@@ -3,12 +3,12 @@
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
-from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
 from caliopen_main.contact.core import Contact
 from caliopen_main.contact.parameters import NewPublicKey as NewKeyParam
 
 from caliopen_pgp.keys import PublicKeyDiscoverer
+from ..features import ContactFeature
 
 log = logging.getLogger(__name__)
 
@@ -22,6 +22,23 @@ def unmarshall_pgp_key(key):
     param.type = key.algorithms
     param.name = key.keyid
     return param
+
+
+class ContactMessageQualifier(object):
+    """Explore messages between an user and a contact to qualify."""
+
+    def __init__(self, user):
+        self.user = user
+
+    def process_contact(self, contact_id):
+        """Qualification for a contact."""
+        contact = Contact.get(self.user, contact_id)
+        extractor = ContactFeature(self.user)
+        pi, features = extractor.process(contact)
+        # XXX for the moment apply features and pi
+        contact.pi = pi
+        contact.privacy_features = features
+        contact.save()
 
 
 class ContactEmailQualifier(object):

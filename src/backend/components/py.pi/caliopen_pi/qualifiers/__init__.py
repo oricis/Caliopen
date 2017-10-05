@@ -3,6 +3,8 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from .mail import UserMessageQualifier
-from .contact import ContactEmailQualifier
+from .contact import ContactEmailQualifier, ContactMessageQualifier
 
-__all__ = ['UserMessageQualifier', 'ContactEmailQualifier']
+__all__ = ['UserMessageQualifier',
+           'ContactEmailQualifier',
+           'ContactMessageQualifier']
