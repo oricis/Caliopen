@@ -30,6 +30,6 @@ class PublicKeyDiscoverer(object):
                     key = self.discoverer[disco].search(email)
                     found_keys.append(key)
                 except Exception as exc:
-                    log.error('Exception during key lookup using {} for email {}'.
-                              format(disco, email))
+                    log.error('Exception during key lookup using {} '
+                              'for email {}'.format(disco, email))
         return found_keys
