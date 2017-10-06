@@ -75,7 +75,7 @@ func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notif_fa
 
 	user, err := notif_facility.store.UserByUsername(config.AdminUsername)
 	if err != nil {
-		log.WithError(err).Fatalf("Failed to retrieve admin user <%s>", config.AdminUsername)
+		log.WithError(err).Warnf("Failed to retrieve admin user <%s>", config.AdminUsername)
 	}
 	notif_facility.admin = user
 	return notif_facility
