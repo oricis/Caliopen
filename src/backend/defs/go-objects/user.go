@@ -40,7 +40,7 @@ func (user *User) UnmarshalCQLMap(input map[string]interface{}) {
 	user.LocalIdentities, _ = input["local_identities"].([]string)
 	mainUserId, _ := input["main_user_id"].(gocql.UUID)
 	user.MainUserId.UnmarshalBinary(mainUserId.Bytes())
-	user.Name, _ = input["Name"].(string)
+	user.Name, _ = input["name"].(string)
 	password, _ := input["password"].(string)
 	user.Password = []byte(password)
 	if input["pi"] != nil {

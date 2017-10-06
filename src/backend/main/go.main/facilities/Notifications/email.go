@@ -23,6 +23,12 @@ type EmailNotifiers interface {
 // this is an email composed by the backend to inform user that something happened related to its account
 // func is in charge of saving & indexing draft before sending the "deliver" order to the SMTP broker.
 func (fac *Facility) SendEmailAdminToUser(user *User, email *Message) error {
+	log.Infof("[NotificationsFacility] Password has been changed for user <%s> [%s] via REST API", user.Name, user.UserId.String())
+	if fac.admin == nil {
+		err := errors.New("[NotificationsFacility] can't SendEmailAdminToUser, no admin user has been set")
+		log.Warn(err)
+		return err
+	}
 	sender := Participant{
 		Address:  fac.admin.RecoveryEmail,
 		Label:    fac.admin.Name,
