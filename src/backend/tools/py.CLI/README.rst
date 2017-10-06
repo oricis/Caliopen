@@ -19,6 +19,7 @@ Define a ``caliopen`` command in your shell path.
     caliopen -f caliopen.yaml setup
 
 
+(it also will create a default admin user from configuration file)
 ## Create a user::
 
     caliopen create_user --help
