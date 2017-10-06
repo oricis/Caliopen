@@ -50,6 +50,8 @@ system:
             color: white
 
 default_domain: caliopen.local
+default_admin_username: admin
+default_admin_password: be-good
 
 internal_domains:
     - caliopen.local
