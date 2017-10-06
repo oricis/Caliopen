@@ -40,6 +40,7 @@ type (
 		IndexConfig   `mapstructure:"IndexConfig"`
 		CacheSettings `mapstructure:"RedisConfig"`
 		NatsConfig    `mapstructure:"NatsConfig"`
+		AdminUsername string `mapstructure:"adminUsername"`
 	}
 
 	BackendConfig struct {
@@ -103,6 +104,7 @@ func (server *REST_API) initialize(config APIConfig) error {
 			Url:           config.NatsConfig.Url,
 			OutSMTP_topic: config.NatsConfig.OutSMTP_topic,
 		},
+		AdminUsername: config.AdminUsername,
 	}
 
 	err := caliopen.Initialize(caliopenConfig)

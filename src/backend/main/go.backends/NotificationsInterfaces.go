@@ -11,6 +11,7 @@ import (
 //LDA only deals with email
 type NotificationsStore interface {
 	CreateMessage(msg *Message) error
+	UserByUsername(username string) (user *User, err error) // to retrieve admin user
 }
 
 type NotificationsIndex interface {

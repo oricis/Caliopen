@@ -6,6 +6,7 @@ type (
 		RESTindexConfig RESTIndexConfig
 		NatsConfig      NatsConfig
 		//LDAstoreConfig  LDAstoreConfig
+		AdminUsername string
 	}
 
 	// REST API

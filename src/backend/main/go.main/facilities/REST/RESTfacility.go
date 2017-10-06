@@ -9,12 +9,12 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
 	"github.com/tidwall/gjson"
 	"io"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
 )
 
 type (
@@ -52,7 +52,6 @@ type (
 		nats_outSMTP_topic string
 	}
 )
-
 
 func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility *RESTfacility) {
 	rest_facility = new(RESTfacility)

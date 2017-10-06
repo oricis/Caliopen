@@ -30,11 +30,10 @@ type (
 
 // NewNotificationsFacility initialises the notifiers
 // it takes the same store & index configurations than the REST API for now
-func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn, admin *User) (notif_facility *Facility) {
+func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notif_facility *Facility) {
 	notif_facility = new(Facility)
 	notif_facility.queue = queue
 	notif_facility.nats_outSMTP_topic = config.NatsConfig.OutSMTP_topic
-	notif_facility.admin = admin
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":
 		cassaConfig := store.CassandraConfig{
@@ -74,5 +73,10 @@ func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn, admin *Us
 		log.Fatalf("Unknown index: %s", config.RESTindexConfig.IndexName)
 	}
 
+	user, err := notif_facility.store.UserByUsername(config.AdminUsername)
+	if err != nil {
+		log.WithError(err).Fatalf("Failed to retrieve admin user <%s>", config.AdminUsername)
+	}
+	notif_facility.admin = user
 	return notif_facility
 }

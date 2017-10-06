@@ -41,22 +41,18 @@ func (facilities *CaliopenFacilities) initialize(config CaliopenConfig) (err err
 
 	facilities.config = config
 
-	// Retrieve admin user
-	// TODO : retrieve admin user from db. This is a fake one for now
-	facilities.Admin = &User{
-		RecoveryEmail: "admin@caliopen.org",
-		Name:          "Caliopen",
-	}
 	// NATS facility initialization
 	facilities.nats, err = nats.Connect(config.NatsConfig.Url)
 	if err != nil {
 		log.WithError(err).Warn("CaliopenFacilities : initalization of NATS connexion failed")
 		return
 	}
+
 	// REST facility initialization
 	facilities.RESTfacility = REST.NewRESTfacility(config, facilities.nats)
+
 	// Notifications facility initialization
-	facilities.Notifiers = Notifications.NewNotificationsFacility(config, facilities.nats, facilities.Admin)
+	facilities.Notifiers = Notifications.NewNotificationsFacility(config, facilities.nats)
 
 	return
 }
