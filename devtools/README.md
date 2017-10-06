@@ -92,12 +92,17 @@ docker-compose up -d redis cassandra elasticsearch
 (wait few seconds for cassandra to warm-up)
 
 Using caliopen cli tool:
-* You must setup storage (it also will create a default admin user from configuration file) :
+* You must setup storage :
 ```
 cd devtools
 docker-compose run cli setup
 ```
-* then, you could create an user and import email 
+* You should create an admin user with the same username as in `configs/caliopen-go-api_dev.yaml`
+```
+docker-compose run cli create_user -e admin -p 123456
+```
+
+* Then, you could create an user and import email 
 ```
 docker-compose run cli create_user -e dev -p 123456
 docker-compose run cli import -e dev@caliopen.local -f mbox -p devtools/fixtures/mbox/dev@caliopen.local

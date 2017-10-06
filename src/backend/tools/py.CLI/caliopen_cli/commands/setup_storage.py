@@ -27,32 +27,3 @@ def setup_storage(settings=None):
         if hasattr(kls._model_class, 'pk'):
             # XXX find a better way to detect model from udt
             sync_table(kls._model_class)
-
-    # Add a default admin user
-    from caliopen_main.user.core import User
-    from caliopen_main.user.parameters import NewUser
-    from caliopen_main.contact.parameters import NewContact
-    from caliopen_main.contact.parameters import NewEmail
-
-    conf = Configuration('global').configuration
-
-    email_adim = u'{}@{}'.format(conf['default_admin_username'],
-                                 conf['default_domain'])
-
-    email = NewEmail()
-    email.address = email_adim
-
-    contact = NewContact()
-    contact.family_name = conf['default_admin_username']
-    contact.emails = [email]
-
-    param = NewUser()
-    param.name = conf['default_admin_username']
-    param.contact = contact
-    param.password = conf['default_admin_password']
-    param.recovery_email = email_adim
-
-    user = User.create(param)
-    log.info(
-        'Admin user <{}> created with user_id: {}'.format(user.name,
-                                                          user.user_id))
