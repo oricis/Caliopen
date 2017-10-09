@@ -14,7 +14,7 @@ describe('Message list', () => {
         '.s-timeline .s-message-item',
         'zoidberg (zoidberg@planet-express.tld)'
       )).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-message')), 5 * 1000))
       .then(() => expect(element.all(by.css('.m-message')).count()).toEqual(2));
   });
 });
