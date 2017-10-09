@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
-import DropdownMenu, { withDropdownControl } from '../DropdownMenu';
+import Dropdown from '../Dropdown';
 import Button from '../Button';
 import Icon from '../Icon';
 import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
@@ -37,9 +37,6 @@ const makeParticipant = ({
 const assocProtocolIcon = {
   email: 'envelope',
 };
-
-// DropdownController is useless but required by the lib, we just add an empty/invisible element
-const DropdownController = withDropdownControl(props => (<span {...props} />));
 
 const getStateFromProps = props => ({
   recipients: props.recipients,
@@ -303,7 +300,7 @@ class RecipientList extends Component {
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div id={componentId} onClick={this.handleClickRecipientList} role="presentation" className="m-recipient-list">
+      <div id={componentId} onClick={this.handleClickRecipientList} ref={(el) => { this.recipientListRef = el; }} role="presentation" className="m-recipient-list">
         { !this.state.recipients.length && (
           <span className="m-recipient-list__placeholder">
             {__('messages.compose.form.to.label')}
@@ -326,11 +323,16 @@ class RecipientList extends Component {
             onKeyDown={this.handleSearchKeydown}
             onFocus={this.handleSearchInputFocus}
           />
-          <DropdownMenu
+          <Dropdown
             id={dropdownId}
             onToggle={this.handleToggleDropdown}
-            show={searchResults.length > 0 && this.state.searchOpened}
-            closeOnClickExceptSelectors={['.m-recipient-list', '.m-recipient-list .m-recipient-list__search-input']}
+            show={
+              this.state.searchTerms.length >= 3
+              && searchResults.length > 0
+              && this.state.searchOpened
+            }
+            closeOnClickExceptSelectors={[this.searchInputRef, this.recipientListRef]}
+            isMenu
           >
             <VerticalMenu>
               {searchResults.map((identity, index) => (
@@ -339,8 +341,7 @@ class RecipientList extends Component {
                 </VerticalMenuItem>
               ))}
             </VerticalMenu>
-          </DropdownMenu>
-          <DropdownController toggle={dropdownId} />
+          </Dropdown>
         </div>
       </div>
     );

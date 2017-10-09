@@ -124,12 +124,13 @@ class NewDraftForm extends Component {
               <div className="m-new-draft__date">{__('reply-form.now')}</div>
             </div>
 
-            <DropdownControl toggle={dropdownId} className="m-new-draft__top-actions-switcher" icon="ellipsis-v" />
+            <DropdownControl toggleId={dropdownId} className="m-new-draft__top-actions-switcher" icon="ellipsis-v" />
 
             <Dropdown
               id={dropdownId}
               className="m-new-draft__top-actions-menu"
-              position="left"
+              alignRight
+              isMenu
               closeOnClick
             />
           </TopRow>
@@ -143,7 +144,7 @@ class NewDraftForm extends Component {
               <TextFieldGroup
                 className="m-new-draft__subject"
                 display="inline"
-                label={__('Subject')}
+                label={__('messages.compose.form.subject.label')}
                 name="subject"
                 value={this.state.draft.subject}
                 onChange={this.handleChange}

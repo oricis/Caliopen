@@ -8,7 +8,7 @@ import Button from '../../../Button';
 import Icon from '../../../Icon';
 import TextBlock from '../../../TextBlock';
 import MultidimensionalPi from '../../../MultidimensionalPi';
-import DropdownMenu, { withDropdownControl } from '../../../../components/DropdownMenu';
+import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
 import MessageActionsContainer from '../MessageActionsContainer';
 
 import './style.scss';
@@ -144,27 +144,23 @@ class Message extends Component {
                 {message.date}
               </Moment> }
 
-            <DropdownControl toggle={this.dropdownId} className="m-message__actions-switcher float-right">
-              {
-                // FIXME: when switching read/unread, DropdownMenu (absolute) position is not good
-              }
-              <Icon type="ellipsis-v" />
-            </DropdownControl>
+            <DropdownControl toggleId={this.dropdownId} className="m-message__actions-switcher" icon="ellipsis-v" />
 
-            <DropdownMenu
+            <Dropdown
               id={this.dropdownId}
-              position="bottom"
+              alignRight
+              isMenu
               closeOnClick
+              closeOnScroll
             >
               <MessageActionsContainer
                 message={message}
-                dropdownId={this.dropdownId}
                 onDelete={onDelete}
                 onMessageRead={onMessageRead}
                 onMessageUnread={onMessageUnread}
                 __={__}
               />
-            </DropdownMenu>
+            </Dropdown>
 
           </div>
 

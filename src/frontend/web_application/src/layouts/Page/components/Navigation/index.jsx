@@ -32,7 +32,7 @@ class Navigation extends PureComponent {
           <TabList className="l-navigation__tab-list" />
           <NavbarItem className="l-navigation__sliders-toggle">
             <ToggleSliderButton
-              toggle="IL_navigation_slider_dropdown"
+              toggleId="IL_navigation_slider_dropdown"
               title={__('navigation.actions.toggle-importance-level-slider')}
               className="l-navigation__sliders-toggle-button"
             >
@@ -40,8 +40,6 @@ class Navigation extends PureComponent {
             </ToggleSliderButton>
             <Dropdown
               id="IL_navigation_slider_dropdown"
-              position="bottom"
-              closeOnClick
               className="l-navigation__sliders-dropdown"
             >
               <SliderContainer vertical className="l-navigation__sliders-container" />

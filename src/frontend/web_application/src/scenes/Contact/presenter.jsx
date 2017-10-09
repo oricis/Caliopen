@@ -10,7 +10,7 @@ import Modal from '../../components/Modal';
 import MenuBar from '../../components/MenuBar';
 import Button from '../../components/Button';
 import TextBlock from '../../components/TextBlock';
-import DropdownMenu, { withDropdownControl } from '../../components/DropdownMenu';
+import Dropdown, { withDropdownControl } from '../../components/Dropdown';
 import VerticalMenu, { VerticalMenuItem } from '../../components/VerticalMenu';
 import FormCollection from './components/FormCollection';
 import EmailForm from './components/EmailForm';
@@ -160,16 +160,16 @@ class Contact extends Component {
           {contact.title}
         </TextBlock>
         <DropdownControl
-          toggle={this.dropdownId}
-          className="s-contact__actions-switcher float-right"
+          toggleId={this.dropdownId}
+          className="s-contact__actions-switcher"
           icon="ellipsis-v"
         />
 
-        <DropdownMenu
+        <Dropdown
           id={this.dropdownId}
           className="s-contact__actions-menu"
-          position="bottom"
           closeOnClick
+          isMenu
         >
           <VerticalMenu>
             <VerticalMenuItem>
@@ -202,7 +202,7 @@ class Contact extends Component {
               >{__('contact.action.delete_contact')}</Button>
             </VerticalMenuItem>
           </VerticalMenu>
-        </DropdownMenu>
+        </Dropdown>
       </div>
     );
   }

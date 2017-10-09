@@ -116,12 +116,13 @@ class ReplyForm extends Component {
               <div className="m-reply__date">{__('reply-form.now')}</div>
             </div>
 
-            <DropdownControl toggle={dropdownId} className="m-reply__top-actions-switcher" icon="ellipsis-v" />
+            <DropdownControl toggleId={dropdownId} className="m-reply__top-actions-switcher" icon="ellipsis-v" />
 
             <Dropdown
               id={dropdownId}
               className="m-reply__top-actions-menu"
-              position="left"
+              alignRight
+              isMenu
               closeOnClick
             />
           </TopRow>

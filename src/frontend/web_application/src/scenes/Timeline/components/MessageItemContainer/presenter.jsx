@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Swipeable from 'react-swipeable';
 import classnames from 'classnames';
-import { v1 as uuidV1 } from 'uuid';
 import Button from '../../../../components/Button';
 import Modal from '../../../../components/Modal';
 import ManageTags from '../ManageTags';
@@ -15,11 +14,6 @@ class MessageItemContainer extends Component {
     children: PropTypes.node.isRequired,
     __: PropTypes.func.isRequired,
   };
-
-  constructor(props) {
-    super(props);
-    this.dropdownId = uuidV1();
-  }
 
   state = {
     isActive: false,

@@ -27,6 +27,11 @@
     position: relative;
   }
 
+  &__suggest {
+    top: 100%;
+    left: 0;
+  }
+
   &__search-input {
     display: block;
     width: 100%;

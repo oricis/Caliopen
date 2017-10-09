@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Improve `PATCH` API
 - Backend produces `excerpt` for messages.
 - Backend produces plain or rich body using setting value
+- Frontend: refactoring Dropdown
 
 ### Fixed
 

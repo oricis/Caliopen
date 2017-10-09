@@ -12,11 +12,6 @@
     width: 100%;
     background-color: $co-color__fg__back--higher;
     box-shadow: $co-shadow;
-    visibility: hidden;
-
-    &.is-open {
-      visibility: visible;
-    }
   }
 
   &__dropdown-item {
