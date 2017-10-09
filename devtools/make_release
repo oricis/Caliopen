@@ -93,8 +93,11 @@ def make_javascript_package(package, directory, version, output_directory):
     if not os.path.isdir(distdir):
         log.error('No dist directory after build')
         sys.exit(1)
+
+    # Copy entire client directory for the moment
     destdir = '{}/{}'.format(output_directory, package['name'])
-    os.rename(distdir, destdir)
+    shutil.copytree(directory, destdir)
+    # os.rename(distdir, destdir)
     return True
 
 
