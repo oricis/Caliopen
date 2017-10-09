@@ -5,7 +5,7 @@ import Link from '../../../../../../components/Link';
 import Button from '../../../../../../components/Button';
 import Icon from '../../../../../../components/Icon';
 import VerticalMenu, { VerticalMenuItem, Separator } from '../../../../../../components/VerticalMenu';
-import DropdownMenu, { withDropdownControl } from '../../../../../../components/DropdownMenu';
+import Dropdown, { withDropdownControl } from '../../../../../../components/Dropdown';
 import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
@@ -24,8 +24,8 @@ class Presenter extends Component {
     isDropdownOpen: false,
   };
 
-  handleDropdownToggle = () => {
-    this.setState(prevState => ({ isDropdownOpen: !prevState.isDropdownOpen }));
+  handleDropdownToggle = (isDropdownOpen) => {
+    this.setState({ isDropdownOpen });
   };
 
   render() {
@@ -34,17 +34,17 @@ class Presenter extends Component {
     return (
       <div className="m-user-menu">
         <DropdownControl
-          toggle="co-user-menu"
-          className="float-right"
+          toggleId="co-user-menu"
           display="expanded"
           icon="user"
         >
           <span className="show-for-small-only">{user && user.name}</span>&nbsp;
           <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
         </DropdownControl>
-        <DropdownMenu
+        <Dropdown
           id="co-user-menu"
-          position="bottom"
+          alignRight
+          isMenu
           hasTriangle
           closeOnClick
           onToggle={this.handleDropdownToggle}
@@ -69,7 +69,7 @@ class Presenter extends Component {
               )}
             </VerticalMenuItem>
           </VerticalMenu>
-        </DropdownMenu>
+        </Dropdown>
       </div>
     );
   }

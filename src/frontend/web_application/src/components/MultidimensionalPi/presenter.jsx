@@ -19,7 +19,7 @@ const MultidimensionalPi = ({ pi, displayAveragePi, className, mini }) => {
     <div className={classnames('m-multidimensional-pi', className)}>
       {mini ? (
         <div className="m-multidimensional-pi__mini-pi">
-          <DropdownControl toggle={id} className="m-multidimensional-pi__toggle-mini-pi">
+          <DropdownControl toggleId={id} className="m-multidimensional-pi__toggle-mini-pi">
             <Ratings
               pi={pi}
               piMax={PI_MAX}

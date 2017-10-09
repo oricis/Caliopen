@@ -159,6 +159,7 @@
     "messages.compose.action.send": "messages.compose.action.send",
     "messages.compose.form.body.label": "messages.compose.form.body.label",
     "messages.compose.form.body.placeholder": "messages.compose.form.body.placeholder",
+    "messages.compose.form.subject.label": "messages.compose.form.subject.label",
     "messages.compose.form.to.label": "messages.compose.form.to.label",
     "navigation.actions.toggle-importance-level-slider": "navigation.actions.toggle-importance-level-slider",
     "openpgp.action.remove-key": "openpgp.action.remove-key",

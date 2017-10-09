@@ -1,12 +1,24 @@
 @import '../../styles/common';
+@import '../../styles/object/o-triangle';
 
 .m-dropdown {
-  display: block;
   position: absolute;
-  z-index: $l-z-index__dropdown;
   visibility: hidden;
 
-  &.is-open {
+  &--is-open {
+    z-index: $l-z-index__actions-container;
     visibility: visible;
+  }
+
+  &--is-menu {
+    background-color: $co-color__primary--lower;
+    box-shadow: $co-shadow;
+  }
+
+  &--has-triangle {
+    &::before {
+      @include o-triangle('top', 1rem, $co-color__primary--lower);
+      right: 1rem;
+    }
   }
 }

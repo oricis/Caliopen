@@ -159,6 +159,7 @@
     "messages.compose.action.send": "Send",
     "messages.compose.form.body.label": "Type your message here...",
     "messages.compose.form.body.placeholder": "Type your message here...",
+    "messages.compose.form.subject.label": "Subject",
     "messages.compose.form.to.label": "To",
     "navigation.actions.toggle-importance-level-slider": "Toggle Importance Level selection",
     "openpgp.action.remove-key": "Remove",

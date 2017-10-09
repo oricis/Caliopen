@@ -23,18 +23,13 @@ class ApplicationSwitcher extends Component {
     __: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isDropdownOpen: false,
-    };
-  }
+  state = { isDropdownOpen: false };
+
+  handleDropdownToggle = (isDropdownOpen) => {
+    this.setState({ isDropdownOpen });
+  };
 
   render() {
-    const onDropdownToggle = () => {
-      this.setState({ isDropdownOpen: !this.state.isDropdownOpen });
-    };
-
     const { __, isactive } = this.props;
     const applicationLabels = getLabels(__);
 
@@ -50,8 +45,8 @@ class ApplicationSwitcher extends Component {
         )}
         actionChildren={(
           <DropdownControl
-            toggle="co-application-switcher"
-            className="dropdown-float-right m-application-switcher__toggler"
+            toggleId="co-application-switcher"
+            className="m-application-switcher__toggler"
           >
             <span className="show-for-sr">{__('application_switcher.action.choose')}</span>
             <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
@@ -61,9 +56,9 @@ class ApplicationSwitcher extends Component {
         <Dropdown
           id="co-application-switcher"
           closeOnClick
-          position="bottom"
+          alignRight
           className="m-application-switcher__dropdown"
-          onToggle={onDropdownToggle}
+          onToggle={this.handleDropdownToggle}
         >
           <VerticalMenu>
             {
