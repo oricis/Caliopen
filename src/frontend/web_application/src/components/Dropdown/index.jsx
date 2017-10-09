@@ -46,7 +46,11 @@ class Dropdown extends Component {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     className: PropTypes.string,
     closeOnClick: PropTypes.bool, // should Dropdown close on click?
-    closeOnClickExceptSelectors: PropTypes.arrayOf(PropTypes.shape({})),
+    // closeOnClickExceptRefs: array of refs that should not close dropdown on click
+    // usage:
+    // <div ref={foo => this.foo =foo} />
+    // <Dropdown closeOnClickExceptRefs={[this.foo]} />
+    closeOnClickExceptRefs: PropTypes.arrayOf(PropTypes.shape({})),
     closeOnScroll: PropTypes.bool, // should Dropdown close on windows scroll ?
     isMenu: PropTypes.bool,
     position: PropTypes.oneOf(['top', 'bottom']),
@@ -59,7 +63,7 @@ class Dropdown extends Component {
     children: null,
     className: null,
     closeOnClick: false,
-    closeOnClickExceptSelectors: null,
+    closeOnClickExceptRefs: null,
     closeOnScroll: false,
     position: 'bottom',
     isMenu: false,
@@ -79,13 +83,13 @@ class Dropdown extends Component {
 
     this.handleDocumentClick = (ev) => {
       const target = ev.target;
-      const exceptSelectors = this.props.closeOnClickExceptSelectors;
+      const exceptRefs = this.props.closeOnClickExceptRefs;
 
       const dropdownClick = !this.props.closeOnClick &&
         (this.dropdown === target || this.dropdown.contains(target));
 
-      const exeptSelectorsClick = exceptSelectors &&
-        exceptSelectors.find(selector => (selector === target));
+      const exeptRefsClick = exceptRefs &&
+        exceptRefs.find(ref => (ref === target));
 
       const controlClick = this.dropdownControl &&
         (this.dropdownControl === target || this.dropdownControl.contains(target));
@@ -96,23 +100,31 @@ class Dropdown extends Component {
         return;
       }
       if (dropdownClick) { return; }
-      if (exeptSelectorsClick) { return; }
+      if (exeptRefsClick) { return; }
 
       this.toggle(false);
     };
 
     this.toggle(this.props.show);
     document.addEventListener('click', this.handleDocumentClick);
-    if (this.props.closeOnScroll) { window.addEventListener('scroll', this.handleDocumentScroll); }
+    if (this.props.closeOnScroll) {
+      window.addEventListener('scroll', this.handleDocumentScroll);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.show !== nextProps.show) { this.toggle(nextProps.show); }
+    if (this.props.show !== nextProps.show) {
+      this.toggle(nextProps.show);
+    }
   }
 
   componentWillUnmount() {
-    if (this.handleDocumentClick) { document.removeEventListener('click', this.handleDocumentClick); }
-    if (this.handleWindowScroll) { window.removeEventListener('scroll', this.handleWindowScroll); }
+    if (this.handleDocumentClick) {
+      document.removeEventListener('click', this.handleDocumentClick);
+    }
+    if (this.handleWindowScroll) {
+      window.removeEventListener('scroll', this.handleWindowScroll);
+    }
   }
 
   toggle = (isVisible) => {

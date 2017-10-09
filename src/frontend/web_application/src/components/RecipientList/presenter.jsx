@@ -297,7 +297,6 @@ class RecipientList extends Component {
     const dropdownId = uuidV1();
     const { __, searchResults } = this.props;
 
-
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div id={componentId} onClick={this.handleClickRecipientList} ref={(el) => { this.recipientListRef = el; }} role="presentation" className="m-recipient-list">
@@ -326,12 +325,10 @@ class RecipientList extends Component {
           <Dropdown
             id={dropdownId}
             onToggle={this.handleToggleDropdown}
-            show={
-              this.state.searchTerms && this.state.searchTerms.length >= 3
-              && searchResults.length > 0
-              && this.state.searchOpened
+            show={this.state.searchTerms ?
+              (searchResults.length > 0 && this.state.searchOpened) : false
             }
-            closeOnClickExceptSelectors={[this.searchInputRef, this.recipientListRef]}
+            closeOnClickExceptRefs={[this.searchInputRef, this.recipientListRef]}
             isMenu
           >
             <VerticalMenu>
