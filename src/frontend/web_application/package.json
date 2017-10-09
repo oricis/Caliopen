@@ -43,6 +43,10 @@
   },
   "author": "CaliOpen <contact@caliopen.org> (https://caliopen.org/)",
   "license": "MIT",
+  "resolutions": {
+    "react": "16.0.0",
+    "react-dom": "16.0.0"
+  },
   "dependencies": {
     "@gandi/react-translate": "^1.0.3",
     "async-validator": "^1.8.1",
