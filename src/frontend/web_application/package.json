@@ -99,6 +99,7 @@
     "babel-gettext-plugin": "^2.2.0",
     "babel-jest": "^21.2.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-dynamic-import-node": "^1.1.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
@@ -109,6 +110,7 @@
     "deep-freeze-strict": "^1.1.1",
     "electron": "^1.6.11",
     "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-loader": "^1.8.0",
@@ -149,6 +151,7 @@
     "webpack-merge": "^4.1.0"
   },
   "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/test/unit/setup.js",
     "moduleNameMapper": {
       "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "^.+\\.(css|less|scss)$": "<rootDir>/__mocks__/styleMock.js"
