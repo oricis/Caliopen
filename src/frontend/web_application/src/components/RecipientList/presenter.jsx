@@ -327,7 +327,7 @@ class RecipientList extends Component {
             id={dropdownId}
             onToggle={this.handleToggleDropdown}
             show={
-              this.state.searchTerms.length >= 3
+              this.state.searchTerms && this.state.searchTerms.length >= 3
               && searchResults.length > 0
               && this.state.searchOpened
             }

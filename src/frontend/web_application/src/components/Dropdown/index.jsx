@@ -121,7 +121,6 @@ class Dropdown extends Component {
       // otherwise return prevState.offset
       const newOffset = prevState.isOpen ? prevState.offset : this.updateOffset();
 
-      // otherwise return prevState.offset
       if (isVisible !== prevState.isOpen) { this.props.onToggle(isVisible); }
 
       return {
@@ -136,7 +135,7 @@ class Dropdown extends Component {
     const control = this.dropdownControl;
     const dropdown = this.dropdown;
 
-    // if no dropdownControl decared, return empty offset
+    // if no dropdownControl declared, return empty offset
     // otherwise, return new offset
     return control ? getOffset(alignRight, position, control, dropdown) : {};
   }
