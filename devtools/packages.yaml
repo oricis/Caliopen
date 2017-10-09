@@ -4,7 +4,7 @@ repository:
 packages:
   javascript:
       -
-          name: server
+          name: client
           build_target: release
           description: proxy api, provides html & assets (js)
           path: src/frontend/web_application
