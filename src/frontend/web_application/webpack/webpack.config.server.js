@@ -1,12 +1,15 @@
 const path = require('path');
-const baseConfig = require('./config.js');
+const webpackMerge = require('webpack-merge');
+const configs = require('./config.js');
+const common = require('./webpack.common.js');
 
-const config = Object.assign(baseConfig.getBase('server'), {
+const base = {
   target: 'node',
   entry: ['babel-polyfill', path.join(__dirname, '../server/index.js')],
   output: {
     path: path.join(__dirname, '../dist/server/'),
     filename: 'index.js',
+    chunkFilename: '[name].js',
     publicPath: '/',
   },
   externals: [
@@ -21,19 +24,26 @@ const config = Object.assign(baseConfig.getBase('server'), {
       return callback();
     },
   ],
-});
+  module: {
+    rules: [
+      {
+        test: /\.(s?css|jpe?g|png|gif)$/,
+        loader: 'null-loader',
+      },
+      {
+        test: /\.jsx?$/,
+        include: path.join(__dirname, '../server/'),
+        loader: 'babel-loader',
+      },
+      { test: /\.html$/, loader: 'raw-loader' },
+    ],
+  },
+};
 
-config.module.rules.push(
-  {
-    test: /\.(s?css|jpe?g|png|gif)$/,
-    loader: 'null-loader',
-  },
-  {
-    test: /\.jsx?$/,
-    include: path.join(__dirname, '../server/'),
-    loader: 'babel-loader',
-  },
-  { test: /\.html$/, loader: 'raw-loader' }
+const config = webpackMerge(
+  common,
+  configs.configureEnv('server'),
+  base
 );
 
 module.exports = config;

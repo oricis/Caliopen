@@ -5,7 +5,6 @@
     "stage-2"
   ],
   "plugins": [
-    "transform-decorators-legacy",
-    ["import-inspector", { "serverSideRequirePath": true }]
+    "transform-decorators-legacy"
   ]
 }

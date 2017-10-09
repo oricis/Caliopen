@@ -1,15 +1,12 @@
 const path = require('path');
-const webpack = require('webpack');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const baseConfig = require('./config.js');
+const webpackMerge = require('webpack-merge');
+const configs = require('./config.js');
+const common = require('./webpack.common.js');
 
 const PUBLIC_PATH = '/assets/';
-const isTest = process.env.NODE_ENV === 'test';
 const isDev = process.env.NODE_ENV === 'development';
-const isProd = process.env.NODE_ENV === 'production';
 
-let config = Object.assign(baseConfig.getBase('browser'), {
-  devtool: 'source-map',
+const base = {
   entry: {
     app: [
       path.join(__dirname, '../src/index.jsx'),
@@ -23,12 +20,17 @@ let config = Object.assign(baseConfig.getBase('browser'), {
   output: {
     path: path.join(__dirname, '..', 'dist/server/public/assets'),
     filename: '[name].[chunkhash].js',
+    chunkFilename: '[name].js',
     publicPath: PUBLIC_PATH,
   },
-});
+};
 
-if (isDev) {
-  config = Object.assign(config, {
+const configureDevServer = () => {
+  if (!isDev) {
+    return {};
+  }
+
+  return {
     devServer: {
       contentBase: false,
       hot: false,
@@ -44,12 +46,18 @@ if (isDev) {
         poll: 1000,
       },
     },
-  });
-}
+  };
+};
 
-config = baseConfig.configureStylesheet(config, 'client.css');
-config = baseConfig.configureAssets(config);
-config = baseConfig.configureVendorSplit(config);
-config = baseConfig.configureHTMLTemplate(config);
+const config = webpackMerge(
+  common,
+  configs.configureStylesheet('client.css'),
+  configs.configureAssets(),
+  configs.configureVendorSplit(),
+  configs.configureHTMLTemplate(),
+  configs.configureEnv('browser'),
+  configureDevServer(),
+  base
+);
 
 module.exports = config;
