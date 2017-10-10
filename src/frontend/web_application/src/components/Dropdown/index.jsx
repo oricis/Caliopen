@@ -51,7 +51,6 @@ class Dropdown extends Component {
     // <div ref={foo => this.foo =foo} />
     // <Dropdown closeOnClickExceptRefs={[this.foo]} />
     closeOnClickExceptRefs: PropTypes.arrayOf(PropTypes.shape({})),
-    closeOnScroll: PropTypes.bool, // should Dropdown close on windows scroll ?
     isMenu: PropTypes.bool,
     position: PropTypes.oneOf(['top', 'bottom']),
     onToggle: PropTypes.func,
@@ -64,7 +63,6 @@ class Dropdown extends Component {
     className: null,
     closeOnClick: false,
     closeOnClickExceptRefs: null,
-    closeOnScroll: false,
     position: 'bottom',
     isMenu: false,
     onToggle: str => str,
@@ -78,8 +76,6 @@ class Dropdown extends Component {
 
   componentDidMount() {
     this.dropdownControl = document.getElementById(`${CONTROL_PREFIX}-${this.props.id}`);
-
-    this.handleDocumentScroll = () => { this.toggle(false); };
 
     this.handleDocumentClick = (ev) => {
       const target = ev.target;
@@ -107,9 +103,6 @@ class Dropdown extends Component {
 
     this.toggle(this.props.show);
     document.addEventListener('click', this.handleDocumentClick);
-    if (this.props.closeOnScroll) {
-      window.addEventListener('scroll', this.handleDocumentScroll);
-    }
   }
 
   componentWillReceiveProps(nextProps) {
