@@ -1,37 +1,49 @@
 const path = require('path');
-const baseConfig = require('./config.js');
+const webpackMerge = require('webpack-merge');
+const configs = require('./config.js');
+const common = require('./webpack.common.js');
 
-const isDev = process.env.NODE_ENV === 'development';
-const KOTATSU_PUBLIC_PATH = '/build/';
-
-const config = Object.assign(baseConfig.getBase('server'), {
+const base = {
   target: 'node',
   entry: ['babel-polyfill', path.join(__dirname, '../server/index.js')],
   output: {
     path: path.join(__dirname, '../dist/server/'),
     filename: 'index.js',
-    publicPath: isDev ? KOTATSU_PUBLIC_PATH : '/',
+    chunkFilename: '[name].js',
+    publicPath: '/',
   },
-});
+  externals: [
+    (context, request, callback) => {
+      if ([
+        'body-parser', 'cookie-parser', 'debug', 'express', 'express-http-proxy', 'iron', 'locale',
+        'serve-favicon',
+      ].some(module => module === request)) {
+        return callback(null, `commonjs ${request}`);
+      }
 
-config.module.loaders.push(
-  {
-    test: /\.(s?css|jpe?g|png|gif)$/,
-    loaders: ['null-loader'],
+      return callback();
+    },
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.(s?css|jpe?g|png|gif)$/,
+        loader: 'null-loader',
+      },
+      {
+        test: /\.jsx?$/,
+        include: path.join(__dirname, '../server/'),
+        loader: 'babel-loader',
+      },
+      { test: /\.html$/, loader: 'raw-loader' },
+    ],
   },
-  {
-    test: /\.jsx?$/,
-    include: path.join(__dirname, '../server/'),
-    loaders: ['babel-loader'],
-  },
-  { test: /\.html$/, loader: 'raw-loader' }
+};
+
+const config = webpackMerge(
+  common,
+  configs.configureEnv('server'),
+  base
 );
-
-if (isDev) {
-  config.output = {
-    path: path.join(__dirname, '../.kotatsu/'),
-    filename: 'bundle.js',
-  };
-}
 
 module.exports = config;

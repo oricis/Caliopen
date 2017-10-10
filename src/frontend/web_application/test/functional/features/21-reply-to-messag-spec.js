@@ -35,7 +35,7 @@ describe('Save a draft and send', () => {
     browser.get('/')
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000))
       .then(() => {
         console.log('write msg');
         const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
@@ -61,7 +61,7 @@ describe('Save a draft and send', () => {
         expect(draftBodyElement1.getText()).toEqual(`${text1}${text2}`);
       })
       .then(() => element(by.cssContainingText('button', __('send'))).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 1 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-message-list__list')), 1 * 1000))
       ;
   });
 
@@ -78,7 +78,7 @@ describe('Save a draft and send', () => {
     browser.get('/')
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion2Selector).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000))
       .then(() => {
         const draftBodyElement2 = element(by.css('.m-discussion-textarea__body'));
 
@@ -90,14 +90,14 @@ describe('Save a draft and send', () => {
         return switchApp('discussions');
       })
       .then(() => element(discussion1Selector).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-message-list__list')), 5 * 1000))
       .then(() => {
         console.log('go to 2nd discussion, wait then refresh');
 
         return switchApp('discussions');
       })
       .then(() => element(discussion2Selector).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-message-list__list')), 5 * 1000))
       .then(() => waitAndRefresh('.m-discussion-textarea__body'))
       .then(() => {
         const draftBodyElement2 = element(by.css('.m-discussion-textarea__body'));
@@ -105,7 +105,7 @@ describe('Save a draft and send', () => {
       })
       .then(() => console.log('send'))
       .then(() => element(by.cssContainingText('button', __('send'))).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-message-list__list')), 5 * 1000))
     ;
   });
 
@@ -118,10 +118,10 @@ describe('Save a draft and send', () => {
     browser.get('/')
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000))
       .then(() => {
         console.info('write msg');
-        const draftBodyElement1 = element(by.css('.m-discussion-textarea textarea'));
+        const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
         draftBodyElement1.sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), text1);
 
         return element(by.cssContainingText('button', __('save'))).click();
@@ -134,7 +134,7 @@ describe('Save a draft and send', () => {
         expect(draftBodyElement1.getText()).toEqual(text1);
       })
       .then(() => element(by.cssContainingText('button', __('send'))).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-message-list__list')), 5 * 1000))
     ;
   });
 
@@ -147,10 +147,10 @@ describe('Save a draft and send', () => {
     browser.get('/')
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000))
       .then(() => {
         console.info('write msg');
-        const draftBodyElement1 = element(by.css('.m-discussion-textarea textarea'));
+        const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
         draftBodyElement1.sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), text1);
 
         return element(by.cssContainingText('button', __('send'))).click();

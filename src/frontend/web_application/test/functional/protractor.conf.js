@@ -43,6 +43,13 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
       name: `CaliOpen e2e - ${branch}`,
     },
     // {
+    //   browserName: 'chrome',
+    //   platform: 'Linux',
+    //   'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    //   build: process.env.TRAVIS_JOB_NUMBER,
+    //   name: `CaliOpen e2e - ${branch}`,
+    // },
+    // {
     //   browserName: 'Internet Explorer',
     //   plateform: 'Windows 10',
     //   version: '11.103',

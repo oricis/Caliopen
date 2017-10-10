@@ -32,7 +32,7 @@ class ResetPasswordForm extends Component {
   }
 
   componentDidMount() {
-    import('zxcvbn').then((zxcvbn) => {
+    import(/* webpackChunkName: "zxcvbn" */ 'zxcvbn').then((zxcvbn) => {
       this.zxcvbn = zxcvbn;
     });
   }

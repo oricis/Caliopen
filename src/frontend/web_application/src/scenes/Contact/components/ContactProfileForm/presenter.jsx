@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withTranslator } from '@gandi/react-translate';
 import { Field } from 'redux-form';
 import ContactTitleField from '../ContactTitleField';

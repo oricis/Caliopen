@@ -8,13 +8,13 @@ describe('Message list', () => {
   });
 
   it('list', () => {
-    browser.get('/')
-      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
+    browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000)
       .then(() => element(by.cssContainingText(
         '.s-timeline .s-message-item',
         'zoidberg (zoidberg@planet-express.tld)'
       )).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list')), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf($('.m-message')), 5 * 1000))
+      .then(() => console.log('wait success for .m-message'))
       .then(() => expect(element.all(by.css('.m-message')).count()).toEqual(2));
   });
 });
