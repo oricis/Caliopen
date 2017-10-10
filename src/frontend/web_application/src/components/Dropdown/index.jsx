@@ -89,6 +89,12 @@ class Dropdown extends Component {
       }
     }, 100, { leading: true, trailing: true });
 
+    this.handleResize = () => {
+      // this prevent dropdown to be misplaced on window resize
+      // TODO: get new offset instead of closing dropdown
+      this.toggle(false);
+    };
+
     this.handleDocumentClick = (ev) => {
       const target = ev.target;
       const exceptRefs = this.props.closeOnClickExceptRefs;
@@ -115,6 +121,7 @@ class Dropdown extends Component {
 
     this.toggle(this.props.show);
     document.addEventListener('click', this.handleDocumentClick);
+    window.addEventListener('resize', this.handleResize);
     if (this.props.closeOnScroll) {
       window.addEventListener('scroll', this.handleScroll);
     }
@@ -129,6 +136,9 @@ class Dropdown extends Component {
   componentWillUnmount() {
     if (this.handleDocumentClick) {
       document.removeEventListener('click', this.handleDocumentClick);
+    }
+    if (this.handleResize) {
+      window.removeEventListener('resize', this.handleResize);
     }
     if (this.handleWindowScroll) {
       window.removeEventListener('scroll', this.handleScroll);
