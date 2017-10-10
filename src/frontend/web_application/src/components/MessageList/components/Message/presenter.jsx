@@ -151,6 +151,7 @@ class Message extends Component {
               alignRight
               isMenu
               closeOnClick
+              closeOnScroll
             >
               <MessageActionsContainer
                 message={message}

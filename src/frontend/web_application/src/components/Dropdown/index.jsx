@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import throttle from 'lodash.throttle';
 import { getOffset } from './services/getOffset';
 import './style.scss';
 
@@ -51,6 +52,7 @@ class Dropdown extends Component {
     // <div ref={foo => this.foo =foo} />
     // <Dropdown closeOnClickExceptRefs={[this.foo]} />
     closeOnClickExceptRefs: PropTypes.arrayOf(PropTypes.shape({})),
+    closeOnScroll: PropTypes.bool, // should Dropdown close on windows scroll ?
     isMenu: PropTypes.bool,
     position: PropTypes.oneOf(['top', 'bottom']),
     onToggle: PropTypes.func,
@@ -63,6 +65,7 @@ class Dropdown extends Component {
     className: null,
     closeOnClick: false,
     closeOnClickExceptRefs: null,
+    closeOnScroll: false,
     position: 'bottom',
     isMenu: false,
     onToggle: str => str,
@@ -76,6 +79,15 @@ class Dropdown extends Component {
 
   componentDidMount() {
     this.dropdownControl = document.getElementById(`${CONTROL_PREFIX}-${this.props.id}`);
+
+    this.handleScroll = throttle(() => {
+      const scrollSize = window.scrollY;
+      const closeDropdown = scrollSize > 10;
+
+      if (closeDropdown) {
+        this.toggle(false);
+      }
+    }, 100, { leading: true, trailing: true });
 
     this.handleDocumentClick = (ev) => {
       const target = ev.target;
@@ -103,6 +115,9 @@ class Dropdown extends Component {
 
     this.toggle(this.props.show);
     document.addEventListener('click', this.handleDocumentClick);
+    if (this.props.closeOnScroll) {
+      window.addEventListener('scroll', this.handleScroll);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -116,7 +131,7 @@ class Dropdown extends Component {
       document.removeEventListener('click', this.handleDocumentClick);
     }
     if (this.handleWindowScroll) {
-      window.removeEventListener('scroll', this.handleWindowScroll);
+      window.removeEventListener('scroll', this.handleScroll);
     }
   }
 
