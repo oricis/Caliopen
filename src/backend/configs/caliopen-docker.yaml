@@ -64,3 +64,8 @@ internal_domains:
 blacklistes:
     mx:
         - mx.bad.guy
+
+key_discovery:
+    dns:
+        enable: True
+        name_server: 8.8.8.8

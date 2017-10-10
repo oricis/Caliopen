@@ -450,6 +450,12 @@ class ObjectUser(ObjectStorable):
                     raise main_errors.PatchConflict(
                         message=msg.format(4, key))
             else:
+                # XXX ugly patch but else compare 2 distinct objects
+                # and not their representation
+                if hasattr(old_val, 'marshall_dict') and \
+                   hasattr(cur_val, 'marshall_dict'):
+                    old_val = old_val.marshall_dict()
+                    cur_val = cur_val.marshall_dict()
                 if old_val != cur_val:
                     raise main_errors.PatchConflict(
                         message=msg.format(5, key))

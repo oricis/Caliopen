@@ -104,10 +104,12 @@ class Contact(BaseModel, IndexedModelMixin):
 
     _index_class = IndexedContact
 
+    user_id = columns.UUID(primary_key=True)
+    contact_id = columns.UUID(primary_key=True)     # clustering key
+
     additional_name = columns.Text()
     addresses = columns.List(columns.UserDefinedType(PostalAddress))
     avatar = columns.Text()
-    contact_id = columns.UUID(primary_key=True)     # clustering key
     date_insert = columns.DateTime()
     date_update = columns.DateTime()
     deleted = columns.Boolean(default=False)
@@ -126,7 +128,6 @@ class Contact(BaseModel, IndexedModelMixin):
     privacy_features = columns.Map(columns.Text(), columns.Text())
     tags = columns.List(columns.UserDefinedType(ResourceTag))
     title = columns.Text()  # computed value, read only
-    user_id = columns.UUID(primary_key=True)
 
 
 class PublicKey(BaseModel):

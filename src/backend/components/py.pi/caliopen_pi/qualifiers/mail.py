@@ -2,7 +2,9 @@
 """Caliopen user message qualification logic."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
-from caliopen_main.message.parameters import NewInboundMessage, Participant, Attachment
+from caliopen_main.message.parameters import (NewInboundMessage,
+                                              Participant,
+                                              Attachment)
 
 from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
@@ -13,7 +15,7 @@ from caliopen_main.discussion.core import (DiscussionThreadLookup,
 from caliopen_main.message.parsers.mail import MailMessage
 from caliopen_main.discussion.core import Discussion
 
-from .features import InboundMailFeature
+from ..features import InboundMailFeature
 
 
 log = logging.getLogger(__name__)
