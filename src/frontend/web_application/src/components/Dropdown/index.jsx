@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import throttle from 'lodash.throttle';
 import { getOffset } from './services/getOffset';
 import './style.scss';
 
-const CONTROL_PREFIX = 'toggle';
+export const CONTROL_PREFIX = 'toggle';
 
 export const withDropdownControl = (WrappedComponent) => {
   const WithDropdownControl = ({ toggleId, className, ...props }) => {
@@ -73,13 +74,29 @@ class Dropdown extends Component {
 
   state = {
     isOpen: false,
-    offset: {},
+    offset: {
+      top: null,
+      left: null,
+    },
   };
 
   componentDidMount() {
     this.dropdownControl = document.getElementById(`${CONTROL_PREFIX}-${this.props.id}`);
 
-    this.handleDocumentScroll = () => { this.toggle(false); };
+    this.handleScroll = throttle(() => {
+      const scrollSize = window.scrollY;
+      const closeDropdown = scrollSize > 10;
+
+      if (closeDropdown) {
+        this.toggle(false);
+      }
+    }, 100, { leading: true, trailing: true });
+
+    this.handleResize = () => {
+      // this prevent dropdown to be misplaced on window resize
+      // TODO: get new offset instead of closing dropdown
+      this.toggle(false);
+    };
 
     this.handleDocumentClick = (ev) => {
       const target = ev.target;
@@ -107,8 +124,9 @@ class Dropdown extends Component {
 
     this.toggle(this.props.show);
     document.addEventListener('click', this.handleDocumentClick);
+    window.addEventListener('resize', this.handleResize);
     if (this.props.closeOnScroll) {
-      window.addEventListener('scroll', this.handleDocumentScroll);
+      window.addEventListener('scroll', this.handleScroll);
     }
   }
 
@@ -122,8 +140,11 @@ class Dropdown extends Component {
     if (this.handleDocumentClick) {
       document.removeEventListener('click', this.handleDocumentClick);
     }
+    if (this.handleResize) {
+      window.removeEventListener('resize', this.handleResize);
+    }
     if (this.handleWindowScroll) {
-      window.removeEventListener('scroll', this.handleWindowScroll);
+      window.removeEventListener('scroll', this.handleScroll);
     }
   }
 
@@ -149,7 +170,7 @@ class Dropdown extends Component {
 
     // if no dropdownControl declared, return empty offset
     // otherwise, return new offset
-    return control ? getOffset(alignRight, position, control, dropdown) : {};
+    return control ? getOffset(alignRight, position, control, dropdown) : { top: null, left: null };
   }
 
   render() {

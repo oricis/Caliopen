@@ -24,8 +24,8 @@ export const getOffset = (alignRight, position, control, dropdown) => {
   const offsetX = isAlignRight || isTouchingRight ? (initLeft + alignRightOffset) : initLeft;
 
   const offset = {
-    left: control ? offsetX : null,
-    top: control ? offsetY : null,
+    left: offsetX,
+    top: offsetY,
   };
 
   return offset;
