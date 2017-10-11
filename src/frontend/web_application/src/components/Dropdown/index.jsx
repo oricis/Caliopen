@@ -5,7 +5,7 @@ import throttle from 'lodash.throttle';
 import { getOffset } from './services/getOffset';
 import './style.scss';
 
-const CONTROL_PREFIX = 'toggle';
+export const CONTROL_PREFIX = 'toggle';
 
 export const withDropdownControl = (WrappedComponent) => {
   const WithDropdownControl = ({ toggleId, className, ...props }) => {
@@ -74,7 +74,10 @@ class Dropdown extends Component {
 
   state = {
     isOpen: false,
-    offset: {},
+    offset: {
+      top: null,
+      left: null,
+    },
   };
 
   componentDidMount() {
@@ -167,7 +170,7 @@ class Dropdown extends Component {
 
     // if no dropdownControl declared, return empty offset
     // otherwise, return new offset
-    return control ? getOffset(alignRight, position, control, dropdown) : {};
+    return control ? getOffset(alignRight, position, control, dropdown) : { top: null, left: null };
   }
 
   render() {
