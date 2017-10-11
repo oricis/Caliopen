@@ -10,10 +10,37 @@ import (
 	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/gocql/gocql"
+	"github.com/gocassa/gocassa"
 )
 
-func (cb *CassandraBackend) Get(*User) error {
-	return errors.New("[CassandraBackend] Get not implemented")
+func (cb *CassandraBackend) RetrieveUser(user_id string) (user *User, err error) {
+	u, err := cb.Session.Query(`SELECT * FROM user WHERE user_id = ?`, user_id).Iter().SliceMap()
+	if err != nil {
+		return nil, err
+	}
+	if len(u) != 1 {
+		err = errors.New("[CassandraBackend] user not found")
+		return nil, err
+	}
+	user = new(User)
+	user.UnmarshalCQLMap(u[0])
+	return user, nil
+}
+
+func (cb *CassandraBackend) UpdateUser(user *User, fields map[string]interface{}) error {
+
+	userT := cb.IKeyspace.Table("user", &User{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id"},
+	}).WithOptions(gocassa.Options{TableName: "user"})
+
+	return userT.Where(gocassa.Eq("user_id", user.UserId.String())).Update(fields).Run()
+}
+
+func (cb *CassandraBackend) UpdateUserPassword(user *User) error {
+	return cb.Session.Query(`UPDATE user SET password = ? WHERE user_id = ?`,
+		user.Password,
+		user.UserId,
+	).Exec()
 }
 
 func (cb *CassandraBackend) GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error) {

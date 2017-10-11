@@ -10,14 +10,14 @@ import (
 	"fmt"
 	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/messages"
 	log "github.com/Sirupsen/logrus"
 	"time"
 )
 
 func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err error) {
 	const nats_order = "deliver"
-	natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, msg_id, user_id)
+	natsMessage := fmt.Sprintf(Nats_message_tmpl, nats_order, msg_id, user_id)
 	rep, err := rest.nats_conn.Request(rest.nats_outSMTP_topic, []byte(natsMessage), 30*time.Second)
 	if err != nil {
 		log.WithError(err).Warn("[RESTfacility]: SendDraft error")
@@ -37,10 +37,10 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		log.Warn("[RESTfacility]: SendDraft error")
 		return nil, errors.New(reply.Response)
 	}
-	msg, err = rest.store.GetMessage(user_id, msg_id)
+	msg, err = rest.store.RetrieveMessage(user_id, msg_id)
 	if err != nil {
 		return nil, err
 	}
-	helpers.SanitizeMessageBodies(msg)
+	messages.SanitizeMessageBodies(msg)
 	return msg, err
 }

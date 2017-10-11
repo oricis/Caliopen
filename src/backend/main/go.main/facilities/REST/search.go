@@ -3,7 +3,7 @@ package REST
 import (
 	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	m "github.com/CaliOpen/Caliopen/src/backend/main/go.main/messages"
 )
 
 // API to execute broad-based searches within index
@@ -30,8 +30,8 @@ func (rest *RESTfacility) Search(search IndexSearch) (response *IndexResult, err
 	// prepare messages objects for frontend rendering
 	for _, doc := range result.MessagesHits.Messages {
 		msg := doc.Document.(*Message)
-		helpers.SanitizeMessageBodies(msg)
-		(*msg).Body_excerpt = helpers.ExcerptMessage(*msg, 200, true, true)
+		m.SanitizeMessageBodies(msg)
+		(*msg).Body_excerpt = m.ExcerptMessage(*msg, 200, true, true)
 	}
 
 	return result, nil

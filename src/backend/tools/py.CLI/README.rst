@@ -19,6 +19,10 @@ Define a ``caliopen`` command in your shell path.
     caliopen -f caliopen.yaml setup
 
 
+## Create an admin ::
+
+    caliopen -f caliopen.yaml create_user -e admin -p password
+
 ## Create a user::
 
     caliopen create_user --help

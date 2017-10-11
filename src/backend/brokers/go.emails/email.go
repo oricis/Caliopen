@@ -8,8 +8,8 @@ package email_broker
 import (
 	"bytes"
 	"fmt"
-	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/messages"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/jhillyerd/go.enmime"
@@ -41,10 +41,10 @@ func newAddressesFields() (af map[string][]string) {
 // conforms to
 // RFC822 / RFC2822 / RFC5322 (internet message format)
 // RFC2045 / RFC2046 / RFC2047 / RFC2048 / RFC2049 / RFC2183 (MIME) => TODO
-func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err error) {
+func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 
-	em = &obj.EmailMessage{
-		Email: &obj.Email{
+	em = &EmailMessage{
+		Email: &Email{
 			SmtpMailFrom: []string{},
 			SmtpRcpTo:    []string{},
 		},
@@ -55,20 +55,20 @@ func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err 
 	addr_fields := newAddressesFields()
 	for _, participant := range msg.Participants {
 		switch participant.Type {
-		case "From":
+		case ParticipantFrom:
 			addr_fields["From"] = append(addr_fields["From"], m.FormatAddress(participant.Address, participant.Label))
 			em.Email.SmtpMailFrom = append(em.Email.SmtpMailFrom, participant.Address) //TODO: handle multisender to conform to RFC5322#3.6.2 (coupled with sender field)
-		case "Reply-To":
+		case ParticipantReplyTo:
 			addr_fields["Reply-To"] = append(addr_fields["Reply-To"], m.FormatAddress(participant.Address, participant.Label))
-		case "To":
+		case ParticipantTo:
 			addr_fields["To"] = append(addr_fields["To"], m.FormatAddress(participant.Address, participant.Label))
 			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
-		case "Cc":
+		case ParticipantCC:
 			addr_fields["Cc"] = append(addr_fields["Cc"], m.FormatAddress(participant.Address, participant.Label))
 			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
-		case "Bcc":
+		case ParticipantBcc:
 			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
-		case "Sender":
+		case ParticipantSender:
 			addr_fields["Sender"] = append(addr_fields["Sender"], m.FormatAddress(participant.Address, participant.Label))
 			em.Email.SmtpMailFrom = append(em.Email.SmtpMailFrom, participant.Address) //TODO: handle multisender to conform to RFC5322#3.6.2 (coupled with sender field)
 		}
@@ -95,7 +95,7 @@ func (b *EmailBroker) MarshalEmail(msg *obj.Message) (em *obj.EmailMessage, err 
 
 	//TODO: In-Reply-To header
 	m.SetHeader("Subject", msg.Subject)
-	helpers.SanitizeMessageBodies(msg)
+	messages.SanitizeMessageBodies(msg)
 	if msg.Body_html != "" {
 		m.AddAlternative("text/html", msg.Body_html)
 	}
@@ -152,9 +152,9 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 		}
 	*/
 	raw_uuid, err := gocql.RandomUUID()
-	var msg_id obj.UUID
+	var msg_id UUID
 	msg_id.UnmarshalBinary(raw_uuid.Bytes())
-	m := obj.RawMessage{
+	m := RawMessage{
 		Raw_msg_id: msg_id,
 		Raw_Size:   uint64(len(ack.EmailMessage.Email.Raw.String())),
 		Raw_data:   ack.EmailMessage.Email.Raw.String(),
@@ -170,7 +170,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	}
 
 	// get new references for embedded attachments
-	ack.EmailMessage.Message.Attachments = []obj.Attachment{}
+	ack.EmailMessage.Message.Attachments = []Attachment{}
 	for part := range ack.EmailMessage.Email_json.MimeRoot.Parts.Walk() {
 		if part.Is_attachment {
 			disposition, dparams, err := mime.ParseMediaType(part.Headers["Content-Disposition"][0])
@@ -180,7 +180,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 					is_inline = true
 				}
 				size, _ := strconv.Atoi(dparams["size"])
-				ack.EmailMessage.Message.Attachments = append(ack.EmailMessage.Message.Attachments, obj.Attachment{
+				ack.EmailMessage.Message.Attachments = append(ack.EmailMessage.Message.Attachments, Attachment{
 					Content_type: part.ContentType,
 					File_name:    dparams["filename"],
 					Is_inline:    is_inline,
@@ -209,7 +209,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 
 // gets a raw email and transforms into a Caliopen 'message' object
 // belonging to an user
-func (b *EmailBroker) UnmarshalEmail(em *obj.EmailMessage, user_id obj.UUID) (msg *obj.Message, err error) {
+func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id UUID) (msg *Message, err error) {
 
 	parsed_mail, err := mail.ReadMessage(&em.Email.Raw)
 	if err != nil {
@@ -217,7 +217,7 @@ func (b *EmailBroker) UnmarshalEmail(em *obj.EmailMessage, user_id obj.UUID) (ms
 		return nil, err
 	}
 
-	var m_id obj.UUID
+	var m_id UUID
 	m_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	mail_date, err := parsed_mail.Header.Date()
 	if err != nil {
@@ -231,16 +231,16 @@ func (b *EmailBroker) UnmarshalEmail(em *obj.EmailMessage, user_id obj.UUID) (ms
 		}
 	*/
 	//TODO: Body parts, Attachments, Externals_references, identities, parent_id…
-	msg = &obj.Message{
+	msg = &Message{
 		Date:             mail_date,
 		Date_insert:      time.Now(),
 		Is_unread:        true,
 		Message_id:       m_id,
-		Participants:     []obj.Participant{},
-		Privacy_features: obj.PrivacyFeatures{},
+		Participants:     []Participant{},
+		Privacy_features: PrivacyFeatures{},
 		Raw_msg_id:       em.Message.Raw_msg_id,
 		Subject:          parsed_mail.Header.Get("subject"),
-		Type:             obj.EmailProtocol,
+		Type:             EmailProtocol,
 		User_id:          user_id,
 	}
 
@@ -256,25 +256,25 @@ func (b *EmailBroker) UnmarshalEmail(em *obj.EmailMessage, user_id obj.UUID) (ms
 
 // if an user_id is provided, the func will try to find a matching contact for each recipient within user's contactbook in db
 // otherwise, contact_id will be nil for recipient
-func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, user_id ...obj.UUID) (participants []obj.Participant, err error) {
-	participants = []obj.Participant{}
+func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, user_id ...UUID) (participants []Participant, err error) {
+	participants = []Participant{}
 	addresses, err := h.AddressList(address_type)
 	if err != nil {
 		return participants, err
 	}
 	for _, a := range addresses {
-		rcpt := obj.Participant{
+		rcpt := Participant{
 			Type:        address_type,
-			Protocol:    obj.EmailProtocol,
+			Protocol:    EmailProtocol,
 			Address:     a.Address,
 			Label:       a.Name,
-			Contact_ids: []obj.UUID{},
+			Contact_ids: []UUID{},
 		}
 		if len(user_id) == 1 {
 			contact_ids, err := b.Store.LookupContactsByIdentifier(user_id[0].String(), a.Address)
 			if err == nil {
 				for _, id := range contact_ids {
-					var contact_id obj.UUID
+					var contact_id UUID
 					uuid, _ := uuid.FromString(id)
 					contact_id.UnmarshalBinary(uuid.Bytes())
 					rcpt.Contact_ids = append(rcpt.Contact_ids, contact_id)
@@ -290,7 +290,7 @@ func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, 
 // returns an EmailJson object which is our json representation of the raw email
 // in particular, attachments are qualified following Caliopen's rules
 // (see addChildPart() func for attachment qualification algorithm)
-func EmailToJsonRep(email string) (json_email obj.EmailJson, err error) {
+func EmailToJsonRep(email string) (json_email EmailJson, err error) {
 	reader := bytes.NewReader([]byte(email))
 	msg, err := mail.ReadMessage(reader) // Read email using Go's net/mail
 	if err != nil {
@@ -301,8 +301,8 @@ func EmailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 		return
 	}
 
-	json_email = obj.EmailJson{
-		Addresses: []obj.EmailAddress{},
+	json_email = EmailJson{
+		Addresses: []EmailAddress{},
 		Headers:   map[string][]string{},
 	}
 
@@ -311,9 +311,9 @@ func EmailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 		case "from", "to", "cc", "bcc", "reply-to", "sender":
 			addr_ptrs, err := msg.Header.AddressList(k)
 			if err == nil {
-				var addr []obj.EmailAddress
+				var addr []EmailAddress
 				for _, addr_ptr := range addr_ptrs {
-					addr = append(addr, obj.EmailAddress{
+					addr = append(addr, EmailAddress{
 						*addr_ptr,
 						k,
 					})
@@ -336,11 +336,11 @@ func EmailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 		//message was MIME encoded, build the mime tree
 		root_part_content_type := mm.GetHeader("Content-Type")
 		root_boundary, _ := GetBoundary(root_part_content_type)
-		json_email.MimeRoot = obj.MimeRoot{
+		json_email.MimeRoot = MimeRoot{
 			Attachments_count: len(mm.Attachments),
 			Root_boundary:     root_boundary,
 			Inline_count:      len(mm.Inlines),
-			Parts:             []obj.Part{},
+			Parts:             []Part{},
 		}
 		mm.Root.SetHeader(textproto.MIMEHeader{
 			"Content-Type": []string{root_part_content_type},
@@ -359,10 +359,10 @@ func EmailToJsonRep(email string) (json_email obj.EmailJson, err error) {
 
 // Build part tree recursively
 // and compute properties for each part
-func addChildPart(parent []obj.Part, part enmime.MIMEPart) []obj.Part {
+func addChildPart(parent []Part, part enmime.MIMEPart) []Part {
 
-	child := obj.Part{
-		Parts: []obj.Part{},
+	child := Part{
+		Parts: []Part{},
 	}
 	if content_type, ok := part.Parent().Header()["Content-Type"]; ok {
 		var e error

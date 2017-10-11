@@ -343,3 +343,21 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 
 	return nil //TODO: error handling
 }
+
+// implementation of the CaliopenObject interface
+func (msg *Message) JsonTags() (tags map[string]string) {
+	return jsonTags(msg)
+}
+
+// NewEmpty returns a new empty initialized sibling of itself
+func (msg *Message) NewEmpty() interface{} {
+	m := new(Message)
+	m.Attachments = []Attachment{}
+	m.External_references = ExternalReferences{}
+	m.Identities = []Identity{}
+	m.Participants = []Participant{}
+	m.Privacy_features = make(PrivacyFeatures)
+	m.PrivacyIndex = &PrivacyIndex{}
+	m.Tags = []Tag{}
+	return m
+}

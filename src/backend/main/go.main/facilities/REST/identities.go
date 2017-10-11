@@ -8,7 +8,7 @@ import (
 	"context"
 	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	pi "github.com/CaliOpen/Caliopen/src/backend/main/go.main/Privacy-Index"
+	pi "github.com/CaliOpen/Caliopen/src/backend/main/go.main/pi"
 	"github.com/satori/go.uuid"
 )
 

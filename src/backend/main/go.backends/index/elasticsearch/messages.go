@@ -12,21 +12,7 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[string]interface{}) error {
-
-	update, err := es.Client.Update().Index(msg.User_id.String()).Type(objects.MessageIndexType).Id(msg.Message_id.String()).
-		Doc(fields).
-		Refresh("wait_for").
-		Do(context.TODO())
-	if err != nil {
-		log.WithError(err).Warn("backend Index: updateMessage operation failed")
-		return err
-	}
-	log.Infof("New version of indexed msg %s is now %d", update.Id, update.Version)
-	return nil
-}
-
-func (es *ElasticSearchBackend) IndexMessage(msg *objects.Message) error {
+func (es *ElasticSearchBackend) CreateMessage(msg *objects.Message) error {
 
 	es_msg, err := msg.MarshalES()
 	if err != nil {
@@ -45,6 +31,22 @@ func (es *ElasticSearchBackend) IndexMessage(msg *objects.Message) error {
 	return nil
 
 }
+
+func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[string]interface{}) error {
+
+	update, err := es.Client.Update().Index(msg.User_id.String()).Type(objects.MessageIndexType).Id(msg.Message_id.String()).
+		Doc(fields).
+		Refresh("wait_for").
+		Do(context.TODO())
+	if err != nil {
+		log.WithError(err).Warn("backend Index: updateMessage operation failed")
+		return err
+	}
+	log.Infof("New version of indexed msg %s is now %d", update.Id, update.Version)
+	return nil
+}
+
+
 
 func (es *ElasticSearchBackend) SetMessageUnread(user_id, message_id string, status bool) (err error) {
 	payload := struct {

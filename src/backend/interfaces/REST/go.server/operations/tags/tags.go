@@ -88,6 +88,8 @@ func RetrieveTag(ctx *gin.Context) {
 	}
 }
 
+// TODO : refactor by making use of helpers.patch pkg now available
+// (patch operations should be done by RESTfacility)
 func PatchTag(ctx *gin.Context) {
 	patchTag := struct {
 		Tag

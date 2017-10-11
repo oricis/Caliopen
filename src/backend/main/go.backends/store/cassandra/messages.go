@@ -5,13 +5,23 @@
 package store
 
 import (
-	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"errors"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/gocassa/gocassa"
 )
 
-func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *obj.Message, err error) {
+func (cb *CassandraBackend) CreateMessage(msg *Message) error {
 
-	msg = &obj.Message{}
+	messageT := cb.IKeyspace.Table("message", &Message{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "message_id"},
+	}).WithOptions(gocassa.Options{TableName: "message"}) // need to overwrite default gocassa table naming convention
+
+	return messageT.Set(msg).Run()
+}
+
+func (cb *CassandraBackend) RetrieveMessage(user_id, msg_id string) (msg *Message, err error) {
+
+	msg = &Message{}
 	m := map[string]interface{}{}
 	q := cb.Session.Query(`SELECT * FROM message WHERE user_id = ? and message_id = ?`, user_id, msg_id)
 	err = q.MapScan(m)
@@ -24,9 +34,9 @@ func (cb *CassandraBackend) GetMessage(user_id, msg_id string) (msg *obj.Message
 }
 
 // update given fields for a message in db
-func (cb *CassandraBackend) UpdateMessage(msg *obj.Message, fields map[string]interface{}) error {
+func (cb *CassandraBackend) UpdateMessage(msg *Message, fields map[string]interface{}) error {
 
-	messageT := cb.IKeyspace.Table("message", &obj.Message{}, gocassa.Keys{
+	messageT := cb.IKeyspace.Table("message", &Message{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "message_id"},
 	}).WithOptions(gocassa.Options{TableName: "message"}) // need to overwrite default gocassa table naming convention
 
@@ -37,26 +47,8 @@ func (cb *CassandraBackend) UpdateMessage(msg *obj.Message, fields map[string]in
 	return err
 }
 
-func (cb *CassandraBackend) StoreMessage(msg *obj.Message) error {
-
-	messageT := cb.IKeyspace.Table("message", &obj.Message{}, gocassa.Keys{
-		PartitionKeys: []string{"user_id", "message_id"},
-	}).WithOptions(gocassa.Options{TableName: "message"}) // need to overwrite default gocassa table naming convention
-
-	err := messageT.Set(msg).Run()
-	if err != nil {
-		return err
-	}
-
-	rawLookupT := cb.IKeyspace.Table("user_raw_lookup", &obj.Message{}, gocassa.Keys{
-		PartitionKeys: []string{"user_id", "raw_msg_id"},
-	}).WithOptions(gocassa.Options{TableName: "user_raw_lookup"}) // need to overwrite default gocassa table naming convention
-
-	err = rawLookupT.Set(struct {
-		User_id    string
-		Raw_msg_id string
-	}{msg.User_id.String(), msg.Raw_msg_id.String()}).Run()
-	return err
+func (cb *CassandraBackend) DeleteMessage(msg *Message) error {
+	return errors.New("[CassandraBackend] DeleteMessage not yet implemented")
 }
 
 func (cb *CassandraBackend) SetMessageUnread(user_id, message_id string, status bool) (err error) {

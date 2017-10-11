@@ -4,11 +4,16 @@
 
 package backends
 
-import "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+import (
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+)
 
 type (
 	UserStorage interface {
-		Get(*objects.User) error
+		GetSettings(user_id string) (settings *Settings, err error)
+		RetrieveUser(user_id string) (user *User, err error)
+		UpdateUserPassword(user *User) error
+		UpdateUser(user *User, fields map[string]interface{}) error
 	}
 	UserNameStorage interface {
 		UsernameIsAvailable(username string) (bool, error)

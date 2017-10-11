@@ -12,10 +12,10 @@ import (
 //LDA only deals with email
 type LDAStore interface {
 	Close()
-	GetMessage(user_id, msg_id string) (msg *Message, err error)
+	RetrieveMessage(user_id, msg_id string) (msg *Message, err error)
 	GetUsersForRecipients([]string) ([]UUID, error) // returns a list of user Ids for each recipients. No deduplicate.
 	GetSettings(user_id string) (settings *Settings, err error)
-	StoreMessage(msg *Message) error
+	CreateMessage(msg *Message) error
 
 	StoreRawMessage(msg RawMessage) (err error)
 
@@ -29,6 +29,6 @@ type LDAStore interface {
 
 type LDAIndex interface {
 	Close()
+	CreateMessage(msg *Message) error
 	UpdateMessage(msg *Message, fields map[string]interface{}) error
-	IndexMessage(msg *Message) error
 }

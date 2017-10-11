@@ -51,7 +51,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 
 	if order.Order == "deliver" {
 		//retrieve message from db
-		m, err := b.Store.GetMessage(order.UserId, order.MessageId)
+		m, err := b.Store.RetrieveMessage(order.UserId, order.MessageId)
 		if err != nil {
 			log.Warn(err)
 			b.natsReplyError(msg, err)

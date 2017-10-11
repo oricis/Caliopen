@@ -60,6 +60,19 @@ func (si *SocialIdentity) UnmarshalMap(input map[string]interface{}) error {
 	return nil //TODO: errors handling
 }
 
+func (li *LocalIdentity) UnmarshalMap(input map[string]interface{}) error {
+	li.Display_name, _ = input["display_name"].(string)
+	li.Identifier, _ = input["identifier"].(string)
+	li.Status, _ = input["status"].(string)
+	li.Type, _ = input["type"].(string)
+	if user_id, ok := input["user_id"].(string); ok {
+		if id, err := uuid.FromString(user_id); err == nil {
+			li.User_id.UnmarshalBinary(id.Bytes())
+		}
+	}
+	return nil //TODO: errors handling
+}
+
 func (i *Identity) UnmarshalMap(input map[string]interface{}) error {
 	i.Identifier, _ = input["identifier"].(string)
 	i.Type, _ = input["type"].(string)

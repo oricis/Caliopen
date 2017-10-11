@@ -9,6 +9,7 @@ properties:
         - send
         - set_read
         - set_unread
+        - reset_password
 additionalProperties: false
 required:
   - actions

@@ -2,61 +2,38 @@
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
-package REST
+package Notifications
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
-	"github.com/tidwall/gjson"
-	"io"
 )
 
 type (
-	RESTservices interface {
-		UsernameIsAvailable(string) (bool, error)
-		LocalsIdentities(user_id string) (identities []LocalIdentity, err error)
-		SuggestRecipients(user_id, query_string string) (suggests []RecipientSuggestion, err error)
-		ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
-		GetSettings(user_id string) (settings *Settings, err error)
-		//messages
-		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
-		GetMessage(user_id, message_id string) (message *Message, err error)
-		SendDraft(user_id, msg_id string) (msg *Message, err error)
-		SetMessageUnread(user_id, message_id string, status bool) error
-		GetRawMessage(raw_message_id string) (message []byte, err error)
-		//attachments
-		AddAttachment(user_id, message_id, filename, content_type string, file io.Reader) (attachmentURL string, err error)
-		DeleteAttachment(user_id, message_id string, attchmtIndex int) error
-		OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error)
-		//tags
-		RetrieveUserTags(user_id string) (tags []Tag, err error)
-		CreateTag(tag *Tag) error
-		RetrieveTag(user_id, tag_id string) (tag Tag, err error)
-		UpdateTag(tag *Tag) error
-		DeleteTag(user_id, tag_id string) error
-		//search
-		Search(IndexSearch) (result *IndexResult, err error)
-		//users
-		PatchUser(user_id string, patch *gjson.Result, notifier Notifications.Notifiers) error
+	Notifiers interface {
+		EmailNotifiers
 	}
-	RESTfacility struct {
-		store              backends.APIStorage
-		index              backends.APIIndex
-		nats_conn          *nats.Conn
+
+	Facility struct {
+		index              backends.NotificationsIndex
 		nats_outSMTP_topic string
+		queue              *nats.Conn
+		store              backends.NotificationsStore
+		admin              *User //Admin user on whose behalf actions could be done
 	}
 )
 
-func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility *RESTfacility) {
-	rest_facility = new(RESTfacility)
-	rest_facility.nats_conn = nats_conn
-	rest_facility.nats_outSMTP_topic = config.NatsConfig.OutSMTP_topic
+// NewNotificationsFacility initialises the notifiers
+// it takes the same store & index configurations than the REST API for now
+func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notif_facility *Facility) {
+	notif_facility = new(Facility)
+	notif_facility.queue = queue
+	notif_facility.nats_outSMTP_topic = config.NatsConfig.OutSMTP_topic
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":
 		cassaConfig := store.CassandraConfig{
@@ -77,7 +54,7 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 		if err != nil {
 			log.WithError(err).Fatalf("Initalization of %s backend failed", config.RESTstoreConfig.BackendName)
 		}
-		rest_facility.store = backends.APIStorage(backend) // type conversion
+		notif_facility.store = backends.NotificationsStore(backend) // type conversion
 	default:
 		log.Fatalf("Unknown backend: %s", config.RESTstoreConfig.BackendName)
 	}
@@ -91,10 +68,15 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 		if err != nil {
 			log.WithError(err).Fatalf("Initalization of %s index failed", config.RESTindexConfig.IndexName)
 		}
-		rest_facility.index = backends.APIIndex(index) // type conversion
+		notif_facility.index = backends.NotificationsIndex(index) // type conversion
 	default:
 		log.Fatalf("Unknown index: %s", config.RESTindexConfig.IndexName)
 	}
 
-	return rest_facility
+	user, err := notif_facility.store.UserByUsername(config.AdminUsername)
+	if err != nil {
+		log.WithError(err).Warnf("Failed to retrieve admin user <%s>", config.AdminUsername)
+	}
+	notif_facility.admin = user
+	return notif_facility
 }
