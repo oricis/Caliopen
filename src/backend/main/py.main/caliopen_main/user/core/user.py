@@ -2,6 +2,8 @@
 """Caliopen user related core classes."""
 
 from __future__ import absolute_import, print_function, unicode_literals
+
+import os
 import datetime
 import pytz
 import bcrypt
@@ -138,6 +140,19 @@ class User(BaseCore):
     _index_class = IndexUser
 
     @classmethod
+    def _check_whitelistes(cls, user):
+        """Check if user is in a white list if apply."""
+        whitelistes = Configuration('global').get('whitelistes', {})
+        emails_file = whitelistes.get('user_emails')
+        if emails_file and os.path.isfile(emails_file):
+            with open(emails_file) as f:
+                emails = [x for x in f.read().split('\n') if x]
+                if user.recovery_email in emails:
+                    return True
+                else:
+                    raise ValueError('user email not in whitelist')
+
+    @classmethod
     def create(cls, new_user):
         """Create a new user.
 
@@ -156,6 +171,8 @@ class User(BaseCore):
         def rollback_username_storage(username):
             UserName.get(username).delete()
 
+        # 0. check for user email white list
+        cls._check_whitelistes(new_user)
         # 1.
         try:
             validators.is_valid_username(new_user.name)
