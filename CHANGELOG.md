@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- frontend custom settings for the instance and the running environment
 - API to allow users to change their password, with email notification
 
 ## [0.4.0]

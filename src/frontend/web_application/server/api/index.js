@@ -1,9 +1,11 @@
 const proxy = require('express-http-proxy');
 const url = require('url');
+const getConfig = require('../config');
+
+const { api: { hostname, port, protocol } } = getConfig();
 
 module.exports = (app) => {
-  const { api: { hostname, port } } = app.get('coConfig');
-  const target = `http://${hostname}:${port}`;
+  const target = `${protocol}://${hostname}:${port}`;
 
   app.use('/api', proxy(target, {
     proxyReqPathResolver: req => url.parse(req.originalUrl).path,

@@ -131,16 +131,23 @@ const configureHTMLTemplate = () => ({
   ],
 });
 
-const configureEnv = buildTarget => ({
-  plugins: [
-    new webpack.DefinePlugin({
-      BUILD_TARGET: JSON.stringify(buildTarget),
-      HAS_SSR: process.env.HAS_SSR || true,
-      CALIOPEN_ENV: JSON.stringify(process.env.NODE_ENV),
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-    }),
-  ],
-});
+const configureEnv = (buildTarget, isNode = false) => {
+  const defined = Object.assign({
+    BUILD_TARGET: JSON.stringify(buildTarget),
+    HAS_SSR: process.env.HAS_SSR || true,
+    CALIOPEN_ENV: JSON.stringify(process.env.NODE_ENV),
+  }, isNode ? {} : {
+    'process.env': {
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+    },
+  });
+
+  return {
+    plugins: [
+      new webpack.DefinePlugin(defined),
+    ],
+  };
+};
 
 module.exports = {
   configureStylesheet,

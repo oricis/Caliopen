@@ -1,5 +1,15 @@
 const seal = require('../lib/seal');
 const Auth = require('../lib/Auth');
+const getConfig = require('../../config');
+
+const COOKIE_NAME = 'caliopen.web';
+const COOKIE_OPTIONS = {
+  maxAge: 3600,
+  signed: true,
+};
+const REDIRECT = '/';
+
+const { seal: { secret } } = getConfig();
 
 const ERR_REQUIRED = 'ERR_REQUIRED';
 const ERR_INVALID = 'ERR_INVALID';
@@ -8,7 +18,7 @@ const createLoginRouting = (router) => {
   router.post('/signin', (req, res, next) => {
     let hasError = false;
     const errors = {};
-    const auth = new Auth(req.config);
+    const auth = new Auth();
 
     if (!req.body || !Object.keys(req.body).length) {
       const err = new Error('Bad request');
@@ -56,19 +66,18 @@ const createLoginRouting = (router) => {
 
         seal.encode(
           user,
-          req.config.seal.secret,
+          secret,
           (err, sealed) => {
             if (err || !seal) {
               next(err || new Error('Unexpected Error'));
 
               return;
             }
-            res.cookie(req.config.cookie.name, sealed, req.config.cookie.options);
+            res.cookie(COOKIE_NAME, sealed, COOKIE_OPTIONS);
 
             if (!req.xhr) {
-              const redirect = req.query.redirect || '/';
-              const url = `${req.config.frontend.rootPath.replace(/\/$/, '')}${redirect}`;
-              res.redirect(url);
+              const redirect = req.query.redirect || REDIRECT;
+              res.redirect(redirect);
             } else {
               res.send({ success: 'success' });
             }
@@ -91,7 +100,7 @@ const createLoginRouting = (router) => {
   });
 
   router.get('/signout', (req, res) => {
-    res.clearCookie(req.config.cookie.name);
+    res.clearCookie(COOKIE_NAME);
     // XXX: render a temporary confirmation on next rendering
     res.redirect('signin');
   });

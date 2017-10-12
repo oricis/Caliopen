@@ -1,6 +1,8 @@
 const isDev = process.env.NODE_ENV === 'development';
 
 const catchError = (err, req, res, next) => {
+  console.error(err);
+
   const publicError = {
     status: err.status,
     message: err.message,

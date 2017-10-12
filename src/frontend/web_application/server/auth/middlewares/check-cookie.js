@@ -1,5 +1,9 @@
+const getConfig = require('../../config');
+
+const { cookie: { name: cookieName } } = getConfig();
+
 const checkCookie = (req, res, next) => {
-  const cookie = req.cookies && req.cookies[req.config.cookie.name];
+  const cookie = req.cookies && req.cookies[cookieName];
 
   if (!cookie) {
     if (req.security === false) {

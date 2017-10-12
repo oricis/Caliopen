@@ -5,6 +5,10 @@ const common = require('./webpack.common.js');
 
 const base = {
   target: 'node',
+  node: {
+    __dirname: true,
+    __filename: true,
+  },
   entry: ['babel-polyfill', path.join(__dirname, '../server/index.js')],
   output: {
     path: path.join(__dirname, '../dist/server/'),
@@ -16,7 +20,7 @@ const base = {
     (context, request, callback) => {
       if ([
         'body-parser', 'cookie-parser', 'debug', 'express', 'express-http-proxy', 'iron', 'locale',
-        'serve-favicon',
+        'serve-favicon', 'config/server.defaults.js',
       ].some(module => module === request)) {
         return callback(null, `commonjs ${request}`);
       }
@@ -42,7 +46,7 @@ const base = {
 
 const config = webpackMerge(
   common,
-  configs.configureEnv('server'),
+  configs.configureEnv('server', 'node'),
   base
 );
 

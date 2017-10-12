@@ -4,6 +4,7 @@ const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 
 const template = fs.readFileSync(path.join(process.cwd(), 'template', 'index.html'), 'utf8');
+const CSS_FILES = ['/assets/client.css'];
 
 const renderTemplate = (markup, assets) => {
   const stylesheets = assets.styles.reduce((str, url) => `${str}<link rel="stylesheet" href="${url}"></link>\n`, '');
@@ -23,9 +24,9 @@ const renderTemplate = (markup, assets) => {
  * the components are in-memory, a view path is not required. The express render method will work as
  * usually: `app.render('login.component', {})`
  */
-const createEngine = (routes = {}, config) => {
+const createEngine = (routes = {}) => {
   const assets = {
-    styles: config.frontend.cssFiles,
+    styles: CSS_FILES,
   };
 
   const renderview = (viewName, options, cb) => {
