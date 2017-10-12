@@ -143,7 +143,7 @@ class Dropdown extends Component {
     if (this.handleResize) {
       window.removeEventListener('resize', this.handleResize);
     }
-    if (this.handleWindowScroll) {
+    if (this.handleScroll) {
       window.removeEventListener('scroll', this.handleScroll);
     }
   }
