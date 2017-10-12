@@ -23,6 +23,7 @@
     "jQuery": true,
     "BUILD_TARGET": true,
     "SERVER_API": true,
-    "CALIOPEN_ENV": true
+    "CALIOPEN_ENV": true,
+    "CALIOPEN_OPTIONS": true
   }
 }

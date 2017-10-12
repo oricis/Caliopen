@@ -5,15 +5,19 @@ const configureStore = require('../../src/store/configure-store').default;
 const { getUserLocales } = require('../../src/services/i18n');
 const { getDefaultSettings } = require('../../src/services/settings');
 const template = require('../../dist/server/template.html');
+const { getConfig } = require('../config');
 
 /**
  * base html template
  */
 function getMarkup({ store, context, location }) {
   try {
+    const { protocol, hostname, port } = getConfig();
+    const config = { protocol, hostname, port };
+    console.log('getMarkup', config);
     const markup = ReactDOMServer.renderToString(
       React.createElement(Bootstrap, {
-        context, location, store,
+        context, location, store, config,
       }));
 
     const initialState = store.getState();

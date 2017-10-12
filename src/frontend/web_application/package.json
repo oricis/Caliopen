@@ -7,10 +7,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npm-run-all --parallel build:clean--race start:dev:server start:dev:assets",
-    "start:dev": "DASHBOARD=false HAS_SSR=false npm-run-all -l build:clean --parallel --race start:dev:server start:dev:assets",
+    "start:dev": "HAS_SSR=false npm-run-all -l build:clean --parallel --race start:dev:server start:dev:assets",
     "start:dev:server": "npm-run-all --parallel --race build:server:watch start:dev:server:watch",
-    "start:dev:server:watch": "CALIOPEN_API_HOSTNAME=localhost CALIOPEN_PORT=4001 CALIOPEN_HOSTNAME=127.0.0.1 nodemon dist/server/index.js",
-    "start:dev:assets": "NODE_ENV=development webpack-dev-server --public --progress --config webpack/webpack.config.browser.js --port 4000",
+    "start:dev:server:watch": "CALIOPEN_API_HOSTNAME=localhost CALIOPEN_WEB_SERVER_PORT=4001 CALIOPEN_WEB_SERVER_HOSTNAME=127.0.0.1 nodemon dist/server/index.js",
+    "start:dev:assets": "NODE_ENV=development CALIOPEN_MOTD='credentials: dev / 123456' webpack-dev-server --public --progress --config webpack/webpack.config.browser.js --port 4000",
     "start:prod": "NODE_ENV=production ./bin/server",
     "start:desktop": "npm-run-all --parallel --race build:desktop:dev start:desktop:electron",
     "start:desktop:electron": "NODE_ENV=development electron ./electron/",

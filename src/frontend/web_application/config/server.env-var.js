@@ -1,7 +1,11 @@
 module.exports = {
-  version: process.env.CALIOPEN_VERSION,
-  port: process.env.CALIOPEN_PORT,
+  protocol: process.env.CALIOPEN_PROTOCOL,
   hostname: process.env.CALIOPEN_HOSTNAME,
+  port: process.env.CALIOPEN_PORT,
+  webServer: {
+    port: process.env.CALIOPEN_WEB_SERVER_PORT,
+    hostname: process.env.CALIOPEN_WEB_SERVER_HOSTNAME,
+  },
   api: {
     protocol: process.env.CALIOPEN_API_PROTOCOL,
     hostname: process.env.CALIOPEN_API_HOSTNAME,

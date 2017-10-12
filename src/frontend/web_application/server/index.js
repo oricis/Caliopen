@@ -27,7 +27,7 @@ if (optionPath) {
 }
 
 const server = http.createServer(getApp());
-const { port, hostname } = getConfig();
+const { webServer: { port, hostname } } = getConfig();
 const params = [
   port,
   ...(hostname ? [hostname] : []),

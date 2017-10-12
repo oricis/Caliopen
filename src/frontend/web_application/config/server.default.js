@@ -1,9 +1,14 @@
-const { version } = require('../package.json');
-
 module.exports = {
-  version: `v${version}`,
-  port: 4000,
-  hostname: undefined,
+  // the public url of the instance
+  protocol: 'http',
+  hostname: 'localhost',
+  port: 80,
+  // the internal url of the expressjs server
+  webServer: {
+    port: 4000,
+    hostname: undefined,
+  },
+  // the internal url of the backend
   api: {
     protocol: 'http',
     hostname: 'api.dev.caliopen.org',

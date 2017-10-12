@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const { CommonsChunkPlugin } = require('webpack').optimize;
 // const StyleLintPlugin = require('stylelint-webpack-plugin');
+const clientOptions = require('../config/client.default.js');
 
 const configureStylesheet = (filename = 'client_[name]', relativePath = '') => {
   const extractTextPlugin = new ExtractTextPlugin({
@@ -136,6 +137,7 @@ const configureEnv = (buildTarget, isNode = false) => {
     BUILD_TARGET: JSON.stringify(buildTarget),
     HAS_SSR: process.env.HAS_SSR || true,
     CALIOPEN_ENV: JSON.stringify(process.env.NODE_ENV),
+    CALIOPEN_OPTIONS: JSON.stringify(clientOptions),
   }, isNode ? {} : {
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
