@@ -37,12 +37,13 @@ bin/server --config=<path-to-file>.[js|json]
 ```
 
 The default variables are set in `config/server.default.js`.
+The environment variables are set in `config/server.env-var.js`.
 
 We **strongly** recommand to overide `CALIOPEN_COOKIE_SECRET` and `CALIOPEN_SEAL_SECRET`.
 
 The precedence of config definitions:
 
-> custom file > env var > defaults
+> env var > custom file > defaults
 
 ## Release
 

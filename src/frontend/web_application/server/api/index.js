@@ -1,10 +1,9 @@
 const proxy = require('express-http-proxy');
 const url = require('url');
-const getConfig = require('../config');
-
-const { api: { hostname, port, protocol } } = getConfig();
+const { getConfig } = require('../config');
 
 module.exports = (app) => {
+  const { api: { hostname, port, protocol } } = getConfig();
   const target = `${protocol}://${hostname}:${port}`;
 
   app.use('/api', proxy(target, {

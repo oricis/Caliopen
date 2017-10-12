@@ -1,10 +1,8 @@
 const cyphered = require('../lib/seal');
-const getConfig = require('../../config');
-
-const { seal: { secret } } = getConfig();
-
+const { getConfig } = require('../../config');
 
 const decodeCookie = (req, res, next) => {
+  const { seal: { secret } } = getConfig();
   const seal = req.seal;
 
   if (!seal && req.security === false) {

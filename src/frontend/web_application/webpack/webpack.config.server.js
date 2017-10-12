@@ -20,7 +20,7 @@ const base = {
     (context, request, callback) => {
       if ([
         'body-parser', 'cookie-parser', 'debug', 'express', 'express-http-proxy', 'iron', 'locale',
-        'serve-favicon', 'config/server.defaults.js',
+        'serve-favicon', 'config/server.defaults.js', 'argv',
       ].some(module => module === request)) {
         return callback(null, `commonjs ${request}`);
       }

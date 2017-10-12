@@ -1,20 +1,10 @@
-const path = require('path');
-const fs = require('fs');
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
+const template = require('../../dist/server/template.html');
 
-const template = fs.readFileSync(path.join(process.cwd(), 'template', 'index.html'), 'utf8');
-const CSS_FILES = ['/assets/client.css'];
-
-const renderTemplate = (markup, assets) => {
-  const stylesheets = assets.styles.reduce((str, url) => `${str}<link rel="stylesheet" href="${url}"></link>\n`, '');
-
-  return [
-    { key: '%HEAD%', value: stylesheets },
-    { key: '%MARKUP%', value: markup },
-    { key: '%BODY_SCRIPT%', value: '' },
-  ].reduce((str, current) => str.replace(current.key, current.value), template);
-};
+const renderTemplate = markup => [
+  { key: '%MARKUP%', value: markup },
+].reduce((str, current) => str.replace(current.key, current.value), template);
 
 /**
  * This engine uses react components, those are pre-compiled and given in the route argument e.g:
@@ -25,10 +15,6 @@ const renderTemplate = (markup, assets) => {
  * usually: `app.render('login.component', {})`
  */
 const createEngine = (routes = {}) => {
-  const assets = {
-    styles: CSS_FILES,
-  };
-
   const renderview = (viewName, options, cb) => {
     // XXX: cb is useless : not async, try catch also
     let markup;
@@ -40,7 +26,7 @@ const createEngine = (routes = {}) => {
       return cb(e);
     }
 
-    return cb(null, renderTemplate(markup, assets));
+    return cb(null, renderTemplate(markup));
   };
 
   return renderview;

@@ -1,17 +1,15 @@
 const seal = require('../lib/seal');
 const Auth = require('../lib/Auth');
-const getConfig = require('../../config');
+const { getConfig } = require('../../config');
 const { COOKIE_NAME, COOKIE_OPTIONS } = require('../lib/cookie');
 
 const REDIRECT = '/';
-
-const { seal: { secret } } = getConfig();
-
 const ERR_REQUIRED = 'ERR_REQUIRED';
 const ERR_INVALID = 'ERR_INVALID';
 
 const createLoginRouting = (router) => {
   router.post('/signin', (req, res, next) => {
+    const { seal: { secret } } = getConfig();
     let hasError = false;
     const errors = {};
     const auth = new Auth();

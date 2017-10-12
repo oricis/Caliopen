@@ -1,10 +1,10 @@
 const http = require('http');
 const debug = require('debug')('caliopen.web:app:api-query');
-const getConfig = require('../../config');
+const { getConfig } = require('../../config');
 
-const { api: { protocol, hostname, port } } = getConfig();
 
 function query(params) {
+  const { api: { protocol, hostname, port } } = getConfig();
   const options = Object.assign({
     protocol: `${protocol}:`, hostname, port,
   }, this.defaults || {}, params);
