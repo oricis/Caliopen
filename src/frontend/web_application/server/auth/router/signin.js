@@ -1,12 +1,8 @@
 const seal = require('../lib/seal');
 const Auth = require('../lib/Auth');
 const getConfig = require('../../config');
+const { COOKIE_NAME, COOKIE_OPTIONS } = require('../lib/cookie');
 
-const COOKIE_NAME = 'caliopen.web';
-const COOKIE_OPTIONS = {
-  maxAge: 3600,
-  signed: true,
-};
 const REDIRECT = '/';
 
 const { seal: { secret } } = getConfig();
