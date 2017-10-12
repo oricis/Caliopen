@@ -1,5 +1,7 @@
+const { version } = require('../package.json');
+
 module.exports = {
-  version: process.env.CALIOPEN_VERSION || 'master',
+  version: process.env.CALIOPEN_VERSION || `v${version}`,
   port: process.env.CALIOPEN_PORT || 4000,
   hostname: process.env.CALIOPEN_HOSTNAME,
   api: {
