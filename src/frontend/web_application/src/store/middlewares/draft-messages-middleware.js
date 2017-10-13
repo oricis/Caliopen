@@ -2,6 +2,7 @@ import throttle from 'lodash.throttle';
 import isEqual from 'lodash.isequal';
 import { push, replace } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
+import { matchPath } from 'react-router-dom';
 import { REQUEST_NEW_DRAFT, REQUEST_NEW_DRAFT_SUCCESS, REQUEST_DRAFT, EDIT_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestNewDraftSuccess, requestDraftSuccess, syncDraft, clearDraft, editDraft } from '../modules/draft-message';
 import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, REPLY_TO_MESSAGE, requestMessages, requestMessage, createMessage, updateMessage, postActions } from '../modules/message';
 import { requestLocalIdentities } from '../modules/local-identity';
@@ -213,6 +214,14 @@ const replyToMessageHandler = ({ store, action }) => {
 
   const { internalId, message: messageInReply } = action.payload;
   const state = store.getState();
+
+  const { router: { location } } = state;
+  const discussionPath = `/discussions/${messageInReply.discussion_id}`;
+
+  if (location && !matchPath(location.pathname, { path: discussionPath })) {
+    store.dispatch(push(discussionPath));
+  }
+
   const draft = {
     ...state.draftMessage.draftsByInternalId[internalId],
     parent_id: messageInReply.message_id,
