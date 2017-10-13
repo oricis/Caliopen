@@ -165,7 +165,8 @@
     },
     "globals": {
       "CALIOPEN_ENV": "test",
-      "BUILD_TARGET": "none"
+      "BUILD_TARGET": "none",
+      "CALIOPEN_OPTIONS": {}
     }
   }
 }
