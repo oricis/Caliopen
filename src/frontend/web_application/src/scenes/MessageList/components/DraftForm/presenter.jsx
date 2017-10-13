@@ -8,6 +8,7 @@ class DraftForm extends Component {
     discussionId: PropTypes.string.isRequired,
     allowEditRecipients: PropTypes.bool,
     message: PropTypes.shape({ }),
+    parentMessage: PropTypes.shape({ }),
     draft: PropTypes.shape({ }),
     requestDraft: PropTypes.func.isRequired,
     editDraft: PropTypes.func.isRequired,
@@ -19,6 +20,7 @@ class DraftForm extends Component {
   static defaultProps = {
     allowEditRecipients: false,
     message: {},
+    parentMessage: undefined,
     draft: undefined,
     user: undefined,
   };
@@ -47,6 +49,7 @@ class DraftForm extends Component {
   render() {
     const {
        draft, discussionId, allowEditRecipients, user, editDraft, saveDraft, sendDraft,
+       parentMessage,
     } = this.props;
 
     if (allowEditRecipients) {
@@ -62,6 +65,7 @@ class DraftForm extends Component {
 
     return (
       <ReplyFormBase
+        parentMessage={parentMessage}
         draft={draft}
         onChange={this.makeHandle(editDraft)}
         onSave={this.makeHandle(saveDraft)}

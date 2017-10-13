@@ -31,6 +31,16 @@
   &__type-icon { color: $co-color__fg__text; }
   &__type-label { display: none; }
 
+  &__parent {
+    @include flex-grid-size;
+    padding: $co-component__spacing;
+    background: $co-color__fg__back;
+  }
+
+  &__parent-link {
+    color: $co-color__fg__text--low;
+  }
+
   &__avatar-col { display: none; }
 
   &__date {

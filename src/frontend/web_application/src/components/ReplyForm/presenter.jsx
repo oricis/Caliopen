@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import Button from '../Button';
+import Link from '../Link';
 import Icon from '../Icon';
 import ContactAvatarLetter from '../ContactAvatarLetter';
 import Dropdown, { withDropdownControl } from '../Dropdown';
@@ -20,6 +21,7 @@ function generateStateFromProps(props) {
 class ReplyForm extends Component {
   static propTypes = {
     draft: PropTypes.shape({}),
+    parentMessage: PropTypes.shape({}),
     onSave: PropTypes.func.isRequired,
     onSend: PropTypes.func.isRequired,
     onChange: PropTypes.func,
@@ -30,6 +32,7 @@ class ReplyForm extends Component {
     draft: {
       body: '',
     },
+    parentMessage: undefined,
     onChange: () => {},
     user: { contact: {} },
   };
@@ -95,7 +98,7 @@ class ReplyForm extends Component {
   }
 
   render() {
-    const { user, __ } = this.props;
+    const { user, parentMessage, __ } = this.props;
     const dropdownId = uuidV1();
 
     return (
@@ -124,6 +127,13 @@ class ReplyForm extends Component {
               closeOnClick
             />
           </TopRow>
+          {parentMessage && (
+            <div className="m-reply__parent">
+              <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
+                {__('reply-form.in-reply-to', { excerpt: parentMessage.excerpt })}
+              </Link>
+            </div>
+          )}
           <BodyRow className="m-reply__body">
             <DiscussionTextarea
               body={this.state.draft.body}
