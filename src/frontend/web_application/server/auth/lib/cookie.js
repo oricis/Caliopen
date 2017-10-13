@@ -1,6 +1,5 @@
 const COOKIE_NAME = 'caliopen.web';
 const COOKIE_OPTIONS = {
-  maxAge: 3600,
   signed: true,
 };
 
