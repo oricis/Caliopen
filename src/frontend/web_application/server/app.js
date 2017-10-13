@@ -4,29 +4,29 @@ const applyAPI = require('./api');
 const applySecurity = require('./security');
 const applyAssets = require('./assets');
 const applyAuth = require('./auth');
-const applyConfig = require('./config');
 const applyError = require('./error');
+const { configure: applyExpressReact } = require('./express-react');
 
-const app = express();
+module.exports = () => {
+  const app = express();
 
-app.set('port', (process.env.PORT || 4000));
+  //-------
+  applySecurity(app);
+  applyAuth(app);
+  applyAssets(app);
+  applyAPI(app);
+  applyExpressReact(app);
 
-//-------
-applyConfig(app);
-applySecurity(app);
-applyAuth(app);
-applyAssets(app);
-applyAPI(app);
+  if (process.env.HAS_SSR) {
+    // eslint-disable-next-line global-require
+    const applySSR = require('./ssr');
+    applySSR(app);
+  } else {
+    app.get('*', (req, res) => {
+      res.sendFile(path.resolve('./dist/server/template.html'));
+    });
+  }
+  applyError(app);
 
-if (HAS_SSR) {
-  // eslint-disable-next-line global-require
-  const applySSR = require('./ssr');
-  applySSR(app);
-} else {
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dist/server/template.html'));
-  });
-}
-applyError(app);
-
-module.exports = app;
+  return app;
+};

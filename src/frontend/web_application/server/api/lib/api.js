@@ -1,12 +1,15 @@
-'use strict';
+const http = require('http');
+const debug = require('debug')('caliopen.web:app:api-query');
+const { getConfig } = require('../../config');
 
-var http = require('http');
-var ObjectAssign = Object.assign || require('object-assign');
-var debug = require('debug')('caliopen.web:app:api-query');
 
 function query(params) {
-  var options = ObjectAssign({}, this.defaults || {}, params);
+  const { api: { protocol, hostname, port } } = getConfig();
+  const options = Object.assign({
+    protocol: `${protocol}:`, hostname, port,
+  }, this.defaults || {}, params);
   let postData;
+
 
   if (options.body) {
     postData = JSON.stringify(options.body);
@@ -14,9 +17,9 @@ function query(params) {
     options.headers['Content-Length'] = Buffer.byteLength(postData);
   }
 
-  debug('\n','Preparing API query:', '\n', options);
+  debug('\n', 'Preparing API query:', '\n', options);
 
-  var req = http.request(options, function queryResponseCallback(res) {
+  const req = http.request(options, function queryResponseCallback(res) {
     debug(
       '\n',
       'API query response:',
@@ -26,7 +29,7 @@ function query(params) {
       res.headers
     );
 
-    var data = [];
+    const data = [];
 
     res.on('data', function dataCallback(chunk) {
       data.push(chunk);
@@ -34,7 +37,7 @@ function query(params) {
 
     res.on('end', function endCallback() {
       try {
-        var responseBody = Buffer.concat(data).toString();
+        let responseBody = Buffer.concat(data).toString();
 
         if (res.headers['content-type'] && res.headers['content-type'].indexOf('json') !== -1) {
           responseBody = JSON.parse(responseBody);
@@ -43,7 +46,7 @@ function query(params) {
         if (res && res.statusCode >= 200 && res.statusCode < 300) {
           !options.success || options.success(responseBody);
         } else {
-          var error = new Error(
+          const error = new Error(
             'API Query Error ' + res.statusCode + ' : ' + res.statusMessage
           );
           error.status = res.statusCode;

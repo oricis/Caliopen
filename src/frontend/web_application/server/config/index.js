@@ -1,19 +1,12 @@
-const { View, createEngine } = require('../express-react');
-const { default: Error } = require('../error/components/Error');
-const makeConfig = require('../cfg');
+const merge = require('lodash.merge');
+const defaults = require('../../config/server.default.js');
+const envVars = require('../../config/server.env-var.js');
 
-module.exports = (app) => {
-  const config = makeConfig(app.get('env'));
-  app.set('coConfig', config);
+let config = merge(defaults, envVars);
 
-  app.set('view', View);
-  app.set('view engine', 'component');
-  app.engine('component', createEngine({
-    'error.component': Error,
-  }, config));
-
-  app.use((req, res, next) => {
-    req.config = config;
-    next();
-  });
+module.exports = {
+  getConfig: () => config,
+  initConfig: (forceDefaults) => {
+    config = merge(defaults, forceDefaults, envVars);
+  },
 };

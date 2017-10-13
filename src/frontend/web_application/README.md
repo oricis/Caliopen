@@ -7,87 +7,51 @@ This subtree is meant for building and serving CaliOpen frontend.
 * build or run desktop applications
 * build or run mobile devices applications
 
-## Installation
+## Prerequisite
+
+* [yarn](https://yarnpkg.com/en/docs/install)
+
+_(make sure you have an up-to-date version)_
+
+## Usage (production ready)
+
+This will install dependencies then start the web server. Depending you custom options, you will be
+able to access to Caliopen interface via http://0.0.0.0:4000
 
 ```
-npm install
+export NODE_ENV=production
+yarn
+bin/server
 ```
 
-## USAGE for development purposes
+### Options
 
-**For web**
-
-```
-npm start
-```
-
-**For web (without SSR)**
+You can set instance settings via environment variables and a js/json file:
 
 ```
-npm run start:dev:browser
+export CALIOPEN_API_HOSTNAME=api.foobar.tld
 ```
 
-
-**For desktop**
-
 ```
-npm run start:desktop
+bin/server --config=<path-to-file>.[js|json]
 ```
 
-Open console with `ctrl+maj+I`.  
-There's no HMR, so old school `ctrl+R` to see changes.
+The default variables are set in `config/server.default.js`.
+The environment variables are set in `config/server.env-var.js`.
 
-**For smartphone**
+We **strongly** recommand to overide `CALIOPEN_COOKIE_SECRET` and `CALIOPEN_SEAL_SECRET`.
 
-There're requirements to build and run a cordova app, follow installation instructions from [cordova website](https://cordova.apache.org/docs/en/latest/guide/cli/index.html#install-pre-requisites-for-building).
+The precedence of config definitions:
 
-Sometimes it is required to install or update plugins and platforms by running:
+> env var > custom file > defaults
 
-```
-npm run cordova prepare
-```
-
-For android, when `npm run cordova requirements` is ok and if you have [AVD and a working emulated
-android](https://developer.android.com/studio/run/managing-avds.html), you may want to launch the stack:
+## Release
 
 ```
-npm run start:smartphone
+NODE_ENV=production yarn release
 ```
 
-_(Other platforms are not yet supported)_
-
-The app is launched every time you change a file. If you prefer control when the app is reloaded,
-launch the following commands:
-
-```
-npm run build:smartphone:dev
-npm run cordova emulate android --debug
-```
-
-### Troubleshoutings
-
-**Android SDK Build-tools**
-
-The following error may appears when running emulation:
-
-```
-Exception in thread "main" java.lang.UnsupportedClassVersionError: com/android/dx/command/Main : Unsupported major.minor version 52.0
-```
-
-It sounds like "Android SDK Build-tools" (v24.0.3) fails with cordova, ionic, ...  
-With Android SDK Manager, downgrade to v23.0.3 and remove the latest one.
-
-## Release (production)
-
-```
-npm run release
-```
-
-## Web server (production)
-
-```
-npm run start:prod
-```
+This will build the different packages to run Caliopen web server in the dist directory.
 
 ## Code architecture
 
@@ -95,7 +59,7 @@ All the things related to react follows [this guide](https://medium.com/@alexmng
 
 Each build target has its folder:
 
-* server (SSR and browser client)
+* server (the web server providing html pages thanks to SSR and the javascript browser client)
 * cordova (for platforms android, ios and WP)
 * electron (for linux, macos and windows)
 

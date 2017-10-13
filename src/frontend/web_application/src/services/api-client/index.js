@@ -1,5 +1,5 @@
 import axios from 'axios';
-import config from '../config';
+import { getAPIBaseUrl } from '../config';
 import { importanceLevelHeader } from '../importance-level';
 
 let client;
@@ -27,7 +27,7 @@ if (BUILD_TARGET === 'server') {
 export default function getClient() {
   if (!client) {
     client = axios.create({
-      baseURL: config.getAPIBaseUrl(),
+      baseURL: getAPIBaseUrl(),
       responseType: 'json',
       headers,
     });

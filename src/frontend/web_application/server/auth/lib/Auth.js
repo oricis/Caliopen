@@ -1,23 +1,13 @@
-'use strict';
+const API = require('../../api/lib/api');
 
-var path = require('path');
-
-var API = require('../../api/lib/api');
-
-var ObjectKeys = Object.keys || require('object-keys');
-var ObjectAssign = Object.assign || require('object-assign');
+const API_PATH_AUTH = '/api/v1/authentications';
+const API_PATH_SIGNUP = '/api/v1/users';
 
 // username, password, callback
 function signup(params) {
-  var config = this.config;
-
   return this.query(
-    ObjectAssign({
-      path: path.join(
-        config.api.prefix,
-        config.api.version,
-        config.api.user
-      ),
+    Object.assign({
+      path: API_PATH_SIGNUP,
     }, params)
   );
 }
@@ -31,8 +21,6 @@ function authenticate(params) {
     );
   }
 
-  var config = this.config;
-
   params.body = {
     username: params.username + '',
     password: params.password + '',
@@ -42,53 +30,31 @@ function authenticate(params) {
   delete params.password;
 
   return this.query(
-    ObjectAssign({
-      path: path.join(
-        config.api.prefix,
-        config.api.version,
-        config.api.auth
-      ),
+    Object.assign({
+      path: API_PATH_AUTH,
     }, params)
   );
 }
 
 // refreshToken, uuid, callback
-function refreshAccessToken(params) {
-  var config = this.config;
+function refreshAccessToken() {
+  // XXX: usefull ?
+  // what should be API_PATH_TOKENS ?
 
-  return this.query(
-    ObjectAssign({
-      path: path.join(
-        config.api.prefix,
-        config.api.version,
-        config.api.tokens
-      ),
-    }, params)
-  );
+  // return this.query(
+  //   Object.assign({
+  //     path: API_PATH_TOKENS,
+  //   }, params)
+  // );
 }
 
-var Auth = function (config) {
-  if (
-    !(this instanceof Auth) ||
-    !config ||
-    !ObjectKeys(config).length ||
-    !config.api
-  ) {
-    throw new Error(
-      'Usage: var auth = new Auth(config { .. api: { hostname, port } .. })'
-    );
-  }
-
-  this.config = config;
-
-  this.defaults = {
+class Auth {
+  defaults = {
     /* These defaults souldn't need be overidden */
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    hostname: this.config.api.hostname,
-    port: this.config.api.port,
     method: 'POST',
 
     /* But you might want to override these */
@@ -98,8 +64,8 @@ var Auth = function (config) {
       function defaultSuccessCallback() {},
     error: /* defaultErrorCallback(error) */
      function defaultErrorCallback() {},
-  };
-};
+  }
+}
 
 Auth.prototype.query = API.query;
 Auth.prototype.signup = signup;

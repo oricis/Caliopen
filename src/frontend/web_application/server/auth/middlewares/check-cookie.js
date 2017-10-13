@@ -1,5 +1,7 @@
+const { COOKIE_NAME } = require('../lib/cookie');
+
 const checkCookie = (req, res, next) => {
-  const cookie = req.cookies && req.cookies[req.config.cookie.name];
+  const cookie = req.signedCookies && req.signedCookies[COOKIE_NAME];
 
   if (!cookie) {
     if (req.security === false) {
