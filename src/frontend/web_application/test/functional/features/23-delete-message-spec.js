@@ -52,6 +52,7 @@ describe('Delete message', () => {
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussionSelector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list__action')), 5 * 1000))
+      .then(() => browser.executeScript('window.scrollTo(0,0);'))
       .then(() => element(by.cssContainingText('.m-message-list__action', __('delete'))).click())
       .then(() => browser.wait(EC.presenceOf($('.s-timeline')), 5 * 1000))
       ;
