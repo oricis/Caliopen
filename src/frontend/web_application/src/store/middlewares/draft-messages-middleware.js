@@ -92,24 +92,20 @@ async function getNewDraft({ discussionId, store, messageToAnswer }) {
   const { localIdentities } = store.getState().localIdentity;
 
   const draft = {
-    ...(messageToAnswer && messageToAnswer.subject ? { subject: messageToAnswer.subject } : {}),
+    ...(messageToAnswer && messageToAnswer.subject ? {
+      subject: messageToAnswer.subject,
+      parent_id: messageToAnswer.message_id,
+    } : {}),
     body: '',
     identities: getDefaultIdentities({ protocols: ['email'], identities: localIdentities })
       .map(localIdentityToIdentity),
     discussion_id: discussionId,
-    // TODO: bind reply-to (create/edit ..)
-    // parent_id: messageToAnswer.message_id,
   };
 
   return draft;
 }
 
-async function requestDraftHandler({ store, action }) {
-  if (action.type !== REQUEST_DRAFT) {
-    return;
-  }
-
-  const { internalId, discussionId } = action.payload;
+const concretRequestDraft = async ({ store, internalId, discussionId }) => {
   await store.dispatch(requestMessages('discussion', discussionId, { discussion_id: discussionId }));
 
   const {
@@ -124,7 +120,17 @@ async function requestDraftHandler({ store, action }) {
   const message = messages.find(item => item.is_draft)
     || await getNewDraft({ discussionId, store, messageToAnswer: messages[0] });
 
-  store.dispatch(requestDraftSuccess({ internalId, draft: message }));
+  return store.dispatch(requestDraftSuccess({ internalId, draft: message }));
+};
+
+function requestDraftHandler({ store, action }) {
+  if (action.type !== REQUEST_DRAFT) {
+    return undefined;
+  }
+
+  const { internalId, discussionId } = action.payload;
+
+  return concretRequestDraft({ store, internalId, discussionId });
 }
 
 async function requestNewDraftHandler({ store, action }) {
@@ -207,28 +213,35 @@ const sendDraftHandler = async ({ store, action }) => {
   store.dispatch(clearDraft({ internalId }));
 };
 
-const replyToMessageHandler = ({ store, action }) => {
+const draftSelector = (state, { internalId }) => state.draftMessage.draftsByInternalId[internalId];
+const locationSelector = state => state.router.location;
+
+const replyToMessageHandler = async ({ store, action }) => {
   if (action.type !== REPLY_TO_MESSAGE) {
-    return;
+    return undefined;
   }
 
   const { internalId, message: messageInReply } = action.payload;
+
+  await concretRequestDraft({ store, discussionId: messageInReply.discussion_id, internalId });
+
   const state = store.getState();
 
-  const { router: { location } } = state;
-  const discussionPath = `/discussions/${messageInReply.discussion_id}`;
-
-  if (location && !matchPath(location.pathname, { path: discussionPath })) {
-    store.dispatch(push(discussionPath));
-  }
-
   const draft = {
-    ...state.draftMessage.draftsByInternalId[internalId],
+    ...draftSelector(state, { internalId }),
     parent_id: messageInReply.message_id,
   };
   const message = draft.message_id ? state.message.messagesById[draft.message_id] : undefined;
+  const discussionPath = `/discussions/${messageInReply.discussion_id}`;
+  const location = locationSelector(state);
+  const isCurrentDiscussionLocation = location && matchPath(location.pathname, {
+    path: discussionPath,
+  });
 
-  store.dispatch(editDraft({ internalId, draft, message }));
+  return Promise.all([
+    ...(!isCurrentDiscussionLocation ? [store.dispatch(push(discussionPath))] : []),
+    store.dispatch(editDraft({ internalId, draft, message })),
+  ]);
 };
 
 export default store => next => (action) => {

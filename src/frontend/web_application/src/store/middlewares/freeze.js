@@ -22,13 +22,13 @@ export default function freezeState(store) {
   return next => (action) => {
     freezeStoreState(store);
     try {
-      next(action);
-
-      return;
+      return next(action);
     } catch (err) {
-      console.error('STATE HAS MUTATED!', err.stack);    // eslint-disable-line no-console
+      console.error('State may has mutated', err.stack);    // eslint-disable-line no-console
     }
 
     freezeStoreState(store);
+
+    return undefined;
   };
 }
