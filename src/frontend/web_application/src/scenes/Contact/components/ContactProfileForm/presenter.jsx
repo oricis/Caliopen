@@ -14,11 +14,24 @@ class ContactProfileForm extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
     form: PropTypes.string.isRequired,
+    isNew: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    isNew: false,
   };
 
   state = {
     isExpanded: false,
   };
+
+  componentWillMount() {
+    if (this.props.isNew) {
+      this.setState({
+        isExpanded: true,
+      });
+    }
+  }
 
   toggleExpandForm = () => {
     this.setState(prevState => ({

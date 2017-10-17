@@ -5,28 +5,22 @@ import ActionButton from '../ActionButton';
 class ComposeContactButton extends PureComponent {
   static propTypes = {
     __: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
+    action: PropTypes.func.isRequired,
     className: PropTypes.string,
   };
   static defaultProps = {
     className: undefined,
   };
 
-  handleEventAction = () => {
-    this.props.notify({
-      message: 'Contact creation not yet implemented.',
-    });
-  }
-
   render() {
-    const { __, className } = this.props;
+    const { action, __, className } = this.props;
     const buttonProps = {
       icon: 'user',
       className,
     };
 
     return (
-      <ActionButton action={this.handleEventAction} button={buttonProps}>
+      <ActionButton action={action} button={buttonProps}>
         {__('call-to-action.action.create_contact')}
       </ActionButton>
     );

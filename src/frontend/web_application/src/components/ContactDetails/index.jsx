@@ -13,12 +13,16 @@ import './style.scss';
 
 class ContactDetails extends Component {
   static propTypes = {
-    contact: PropTypes.shape({}).isRequired,
+    contact: PropTypes.shape({}),
     editMode: PropTypes.bool.isRequired,
     detailForms: PropTypes.node.isRequired,
     orgaForms: PropTypes.node.isRequired,
     identityForms: PropTypes.node.isRequired,
     __: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    contact: undefined,
   };
 
   componentWillMount() {
@@ -117,14 +121,18 @@ class ContactDetails extends Component {
 
   renderContactDetails = () => {
     const { contact } = this.props;
-    const infos = contact.infos ? contact.infos : {};
-    const emails = contact.emails ?
+    const infos = contact && contact.infos ? contact.infos : {};
+    const emails = contact && contact.emails ?
       [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
     const contactDetails = [
       ...emails.map(detail => this.renderEmail(detail)),
-      ...(contact.phones ? contact.phones.map(detail => this.renderPhone(detail)) : []),
-      ...(contact.ims ? contact.ims.map(detail => this.renderIm(detail)) : []),
-      ...(contact.addresses ? contact.addresses.map(detail => this.renderAddress(detail)) : []),
+      ...(contact && contact.phones ? contact.phones.map(detail => this.renderPhone(detail)) : []),
+      ...(contact && contact.ims ? contact.ims.map(detail => this.renderIm(detail)) : []),
+      ...(
+        contact && contact.addresses ?
+        contact.addresses.map(detail => this.renderAddress(detail)) :
+        []
+      ),
       ...(infos ? [this.renderBirthday(infos.birthday ? infos.birthday : '')] : []),
     ];
 
@@ -139,7 +147,7 @@ class ContactDetails extends Component {
     const { contact } = this.props;
 
     const contactDetails = [
-      ...(contact.organizations ?
+      ...(contact && contact.organizations ?
         contact.organizations.map(detail => this.renderOrganization(detail)) : []),
     ];
 
@@ -154,7 +162,7 @@ class ContactDetails extends Component {
     const { contact } = this.props;
 
     const contactDetails = [
-      ...(contact.identities ?
+      ...(contact && contact.identities ?
         contact.identities.map(detail => this.renderIdentity(detail)) : []),
     ];
 
