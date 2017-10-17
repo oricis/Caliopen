@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - frontend custom settings for the instance and the running environment
 - API to allow users to change their password, with email notification
+- Compute first contact privacy features
+- Permit to restrict registration to a whitelist of user recovery emails
 
 ## [0.4.0]
 
@@ -21,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - API for importance level messages filtering
 - API for full-text searches on messages & contacts
 - Compute importance level v0 for inbound messages
+
 
 ### Changed
 

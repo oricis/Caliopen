@@ -58,6 +58,10 @@ blacklistes:
     mx:
         - mx.bad.guy
 
+whitelistes:
+    # Restrict user registration to list of recovery emails in a file
+    user_emails: /etc/caliopen/whitelist_user_email.txt
+
 key_discovery:
     dns:
         enable: True
