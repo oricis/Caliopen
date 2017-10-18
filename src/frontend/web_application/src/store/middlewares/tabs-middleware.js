@@ -6,7 +6,7 @@ import { SELECT_OR_ADD_TAB, REMOVE_TAB, addTab, selectOrAdd, updateTab } from '.
 import { requestContact } from '../modules/contact';
 import { requestMessages, getMessagesFromCollection } from '../modules/message';
 import { getRouteConfig, flattenRouteConfig } from '../../routes';
-import { sortMessages, renderParticipant } from '../../services/message';
+import { getLastMessage, renderParticipant } from '../../services/message';
 
 const registeredRoutes = [
   '/discussions/:discussionId',
@@ -35,27 +35,28 @@ const createDiscussionTab = async ({ pathname, discussionId, store }) => {
   await store.dispatch(requestMessages('discussion', discussionId, { discussion_id: discussionId }));
   const state = store.getState().message;
   const messages = getMessagesFromCollection('discussion', discussionId, { state });
-  const message = sortMessages(messages, true)[0];
+  const message = getLastMessage(messages, true);
 
-  const label = message.participants.map(renderParticipant).join(' ');
+  if (message) {
+    const label = message.participants.map(renderParticipant).join(' ');
 
-  return {
-    pathname,
-    label,
-    icon: 'comments-o',
-  };
+    return {
+      pathname,
+      label,
+      icon: 'comments-o',
+    };
+  }
+
+  return Promise.reject('no messages');
 };
 
-const createContactTab = async ({ pathname, contactId, store }) => {
-  const { payload: { data: { title: label } } }
-    = await store.dispatch(requestContact({ contactId }));
-
-  return {
-    pathname,
-    label,
-    icon: 'user',
-  };
-};
+const createContactTab = async ({ pathname, contactId, store }) =>
+  store.dispatch(requestContact({ contactId }))
+    .then(({ payload: { data: { title: label } } }) => ({
+      pathname,
+      label,
+      icon: 'user',
+    }));
 
 const createNewContactTab = ({ pathname }) => {
   const { translate: __ } = getTranslator();
@@ -88,9 +89,9 @@ const selectOrAddTabDiscussion = async ({ store, pathname }) => {
   }
 
   const { params: { discussionId } } = match;
-  const tab = await createDiscussionTab({ pathname, discussionId, store });
 
-  return store.dispatch(addTab(tab));
+  return createDiscussionTab({ pathname, discussionId, store })
+    .then(tab => store.dispatch(addTab(tab)));
 };
 
 const selectOrAddTabContact = async ({ store, pathname }) => {
@@ -104,12 +105,12 @@ const selectOrAddTabContact = async ({ store, pathname }) => {
   }
 
   const { params: { contactId } } = match;
-  const tab = await createContactTab({ pathname, contactId, store });
 
-  return store.dispatch(addTab(tab));
+  return createContactTab({ pathname, contactId, store })
+    .then(tab => store.dispatch(addTab(tab)));
 };
 
-const selectOrAddTabNewContact = async ({ store, pathname }) => {
+const selectOrAddTabNewContact = ({ store, pathname }) => {
   const match = matchPath(pathname, { path: '/new-contact' });
   if (!match) {
     return null;
@@ -119,7 +120,7 @@ const selectOrAddTabNewContact = async ({ store, pathname }) => {
     return foundTab;
   }
 
-  const tab = await createNewContactTab({ pathname });
+  const tab = createNewContactTab({ pathname });
 
   return store.dispatch(addTab(tab));
 };

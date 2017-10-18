@@ -3,6 +3,7 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslator } from '@gandi/react-translate';
 import { matchPath } from 'react-router-dom';
+import { push } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_INFO } from 'react-redux-notify';
 import { requestMessages, postActions, deleteMessage, loadMore, hasMore as getHasMore, replyToMessage } from '../../store/modules/message';
 import { removeTab } from '../../store/modules/tab';
@@ -75,6 +76,7 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   replyToMessage,
   copyMessageTo: () => notif,
   editMessageTags: () => notif,
+  push,
 }, dispatch);
 
 export default compose(
