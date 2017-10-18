@@ -36,7 +36,7 @@ class NewMessage(Model):
     is_draft = BooleanType()
     is_unread = BooleanType()
     message_id = UUIDType()
-    parent_id = StringType()
+    parent_id = UUIDType()
     participants = ListType(ModelType(Participant), default=lambda: [])
     privacy_features = DictType(StringType, default=lambda: {})
     pi = ModelType(PIParameter)
@@ -54,7 +54,7 @@ class NewInboundMessage(NewMessage):
     body_plain = StringType()
 
 
-class Message(NewMessage):
+class Message(NewInboundMessage):
     """Existing message parameter."""
 
     body = StringType()

@@ -98,21 +98,16 @@ class DiscussionIndexManager(object):
         # XXX total do not work completly, hack a bit
         return discussions, total + len(discussions)
 
-    def get_message_id(self, discussion_id, message_id):
-        """Search a message_id within a discussion"""
+    def message_belongs_to(self, discussion_id, message_id):
+        """Search if a message belongs to a discussion"""
 
-        result = self._prepare_search(0, 100) \
-            .filter("match", discussion_id=discussion_id) \
-            .filter("match", message_id=message_id) \
-            .execute()
-        if not result.hits:
-            return None
-        return result.hits[0]
+        msg = IndexedMessage.get(message_id, using=self.proxy, index=self.index)
+        return str(msg.discussion_id) == str(discussion_id)
 
     def get_by_id(self, discussion_id):
         """Return a single discussion by discussion_id"""
 
-        result = self._prepare_search(0, 100) \
+        result = self._prepare_search() \
             .filter("match", discussion_id=discussion_id) \
             .execute()
         if not result.hits:

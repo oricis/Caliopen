@@ -339,16 +339,16 @@ class ObjectUser(ObjectStorable):
             obj_patch_new.unmarshall_json_dict(patch)
         except Exception as exc:
             log.info(exc)
-            raise main_errors.PatchUnprocessable(message="unable to unmarshall"
-                                                         " patch into object <{}>".format(
-                exc))
+            raise main_errors.PatchUnprocessable(message= \
+                                                     "unable to unmarshall patch into object <{}>".format(
+                                                         exc))
         try:
             obj_patch_old.unmarshall_json_dict(patch_current)
         except Exception as exc:
             log.info(exc)
-            raise main_errors.PatchUnprocessable(message="unable to unmarshall"
-                                                         " patch into object <{}>".format(
-                exc))
+            raise main_errors.PatchUnprocessable(message= \
+                                                     "unable to unmarshall patch into object <{}>".format(
+                                                         exc))
         self.get_db()
 
         # TODO : manage protected attributes, to prevent patch on them
@@ -453,7 +453,7 @@ class ObjectUser(ObjectStorable):
                 # XXX ugly patch but else compare 2 distinct objects
                 # and not their representation
                 if hasattr(old_val, 'marshall_dict') and \
-                   hasattr(cur_val, 'marshall_dict'):
+                        hasattr(cur_val, 'marshall_dict'):
                     old_val = old_val.marshall_dict()
                     cur_val = cur_val.marshall_dict()
                 if old_val != cur_val:

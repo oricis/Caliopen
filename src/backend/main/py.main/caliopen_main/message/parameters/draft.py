@@ -4,7 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import re
 import uuid
 from schematics.types import StringType
-from .message import NewMessage
+from .message import NewInboundMessage
 from caliopen_main.user.objects.identities import LocalIdentity
 from caliopen_main.user.core import User
 from caliopen_main.message.parameters.participant import Participant
@@ -20,7 +20,7 @@ import logging
 log = logging.getLogger(__name__)
 
 
-class Draft(NewMessage):
+class Draft(NewInboundMessage):
     body_plain = ""
     body_html = ""
     body = StringType()
@@ -31,7 +31,7 @@ class Draft(NewMessage):
                 message="missing or invalid message_id")
         try:
             ModelMessage.get(user_id=user_id,
-                                        message_id=self.message_id)
+                             message_id=self.message_id)
             raise err.PatchUnprocessable(message="message_id not unique")
         except NotFound:
             pass
@@ -171,12 +171,13 @@ class Draft(NewMessage):
                     self.build_participants_for_reply(user_id)
 
                 # check parent_id consistency
-                if 'parent_id' in self and self['parent_id'] != "" \
-                        and self['parent_id'] is not None:
-                    if not dim.get_message_id(self['discussion_id'],
-                                              self['parent_id']):
+                if 'parent_id' in self and self.parent_id != "" \
+                        and self.parent_id is not None:
+                    if not dim.message_belongs_to(
+                            discussion_id=self.discussion_id,
+                            message_id=self.parent_id):
                         raise err.PatchConflict(message="provided message "
-                                                        "parent_id does not belong"
+                                                        "parent_id does not belong "
                                                         "to this discussion")
             else:
                 last_message = None
