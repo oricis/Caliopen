@@ -50,6 +50,12 @@
     font-weight: 600;
   }
 
+  &__subject {
+    color: $co-color__fg__text--low;
+    font-style: italic;
+    margin-right: $co-component__spacing * 2;
+  }
+
   @include breakpoint(medium) {
     &__col-dates { display: block; }
   }

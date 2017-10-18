@@ -56,7 +56,10 @@ class MessageItem extends PureComponent {
               {this.renderAuthor()}
               {this.renderTags()}
             </TextBlock>
-            <TextBlock>{message.excerpt}</TextBlock>
+            <TextBlock>
+              {message.subject && (<span className="s-message-item__subject">{message.subject}</span>)}
+              {message.excerpt}
+            </TextBlock>
           </div>
           <div className="s-message-item__col-file">
             { message.attachments && <Icon type="paperclip" /> }
