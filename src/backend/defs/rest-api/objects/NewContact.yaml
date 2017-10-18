@@ -3,6 +3,12 @@ type: object
 properties:
   additional_name:
     type: string
+  addresses:
+    type: array
+    items:
+      "$ref": PostalAddress.yaml
+  avatar:
+    type: string
   emails:
     type: array
     items:
@@ -15,6 +21,10 @@ properties:
     type: array
     items:
       type: string
+  identities:
+    type: array
+    items:
+      "$ref": SocialIdentity.yaml
   ims:
     type: array
     items:
@@ -29,6 +39,14 @@ properties:
     type: array
     items:
       type: object
+  phones:
+    type: array
+    items:
+      "$ref": Phone.yaml
+  public_keys:
+    type: array
+    items:
+      "$ref": PublicKey.yaml
   tags:
     type: array
     items:

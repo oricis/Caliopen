@@ -578,6 +578,48 @@
                     "additional_name": {
                       "type": "string"
                     },
+                    "addresses": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "address_id": {
+                            "type": "string"
+                          },
+                          "city": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          },
+                          "is_primary": {
+                            "type": "boolean"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "postal_code": {
+                            "type": "string"
+                          },
+                          "region": {
+                            "type": "string"
+                          },
+                          "street": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "city"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "avatar": {
+                      "type": "string"
+                    },
                     "emails": {
                       "type": "array",
                       "items": {
@@ -614,6 +656,30 @@
                         "type": "string"
                       }
                     },
+                    "identities": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "social_id": {
+                            "type": "string"
+                          },
+                          "infos": {
+                            "type": "object"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
                     "ims": {
                       "type": "array",
                       "items": {
@@ -633,6 +699,93 @@
                       "type": "array",
                       "items": {
                         "type": "object"
+                      }
+                    },
+                    "phones": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "phone_id": {
+                            "type": "string"
+                          },
+                          "is_primary": {
+                            "type": "boolean"
+                          },
+                          "number": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "uri": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "number"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "public_keys": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "privacy_features": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "pi": {
+                            "type": "object",
+                            "properties": {
+                              "technic": {
+                                "type": "integer"
+                              },
+                              "context": {
+                                "type": "integer"
+                              },
+                              "comportment": {
+                                "type": "integer"
+                              },
+                              "version": {
+                                "type": "integer"
+                              }
+                            },
+                            "additionalProperties": true
+                          },
+                          "date_insert": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "date_update": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "expire_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "fingerprint": {
+                            "type": "string"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "size": {
+                            "type": "integer",
+                            "format": "int32"
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "name"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "tags": {
@@ -2659,6 +2812,48 @@
                 "additional_name": {
                   "type": "string"
                 },
+                "addresses": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address_id": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      },
+                      "is_primary": {
+                        "type": "boolean"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "postal_code": {
+                        "type": "string"
+                      },
+                      "region": {
+                        "type": "string"
+                      },
+                      "street": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "city"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "avatar": {
+                  "type": "string"
+                },
                 "emails": {
                   "type": "array",
                   "items": {
@@ -2695,6 +2890,30 @@
                     "type": "string"
                   }
                 },
+                "identities": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "social_id": {
+                        "type": "string"
+                      },
+                      "infos": {
+                        "type": "object"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
                 "ims": {
                   "type": "array",
                   "items": {
@@ -2714,6 +2933,93 @@
                   "type": "array",
                   "items": {
                     "type": "object"
+                  }
+                },
+                "phones": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "phone_id": {
+                        "type": "string"
+                      },
+                      "is_primary": {
+                        "type": "boolean"
+                      },
+                      "number": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "uri": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "number"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "public_keys": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "privacy_features": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "pi": {
+                        "type": "object",
+                        "properties": {
+                          "technic": {
+                            "type": "integer"
+                          },
+                          "context": {
+                            "type": "integer"
+                          },
+                          "comportment": {
+                            "type": "integer"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "date_update": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "expire_date": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fingerprint": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "name"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "tags": {
