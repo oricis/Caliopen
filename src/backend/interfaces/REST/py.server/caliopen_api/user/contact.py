@@ -5,6 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import json
 import colander
+import uuid
 from cornice.resource import resource, view
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
@@ -66,6 +67,12 @@ class Contact(Api):
     @view(renderer='json', permission='authenticated')
     def get(self):
         contact_id = self.request.swagger_data["contact_id"]
+        try:
+            uuid.UUID(contact_id)
+        except Exception as exc:
+            log.error("unable to extract contact_id: {}".format(exc))
+            raise ValidationError(exc)
+
         contact = ContactObject(self.user.user_id, contact_id=contact_id)
         contact.get_db()
         contact.unmarshall_db()

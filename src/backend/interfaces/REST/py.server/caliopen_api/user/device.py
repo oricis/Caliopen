@@ -3,7 +3,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
-
+import uuid
 from pyramid.response import Response
 from caliopen_main.user.objects.device import Device as ObjectDevice
 from caliopen_main.user.core import Device as CoreDevice
@@ -13,7 +13,7 @@ from cornice.resource import resource, view
 from ..base import Api
 from ..base.context import DefaultContext
 
-from ..base.exception import MergePatchError
+from ..base.exception import MergePatchError, ValidationError
 
 log = logging.getLogger(__name__)
 
@@ -56,6 +56,12 @@ class DeviceAPI(Api):
     def get(self):
         """Get a complete device information."""
         device_id = self.request.swagger_data["device_id"]
+        try:
+            uuid.UUID(device_id)
+        except Exception as exc:
+            log.error("unable to extract device_id: {}".format(exc))
+            raise ValidationError(exc)
+
         device = ObjectDevice(self.user.user_id, device_id=device_id)
         device.get_db()
         device.unmarshall_db()
