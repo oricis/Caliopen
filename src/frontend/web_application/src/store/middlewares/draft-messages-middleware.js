@@ -2,8 +2,9 @@ import throttle from 'lodash.throttle';
 import isEqual from 'lodash.isequal';
 import { push, replace } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
-import { REQUEST_NEW_DRAFT, REQUEST_NEW_DRAFT_SUCCESS, REQUEST_DRAFT, EDIT_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestNewDraftSuccess, requestDraftSuccess, syncDraft, clearDraft } from '../modules/draft-message';
-import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, requestMessages, requestMessage, createMessage, updateMessage, postActions } from '../modules/message';
+import { matchPath } from 'react-router-dom';
+import { REQUEST_NEW_DRAFT, REQUEST_NEW_DRAFT_SUCCESS, REQUEST_DRAFT, EDIT_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestNewDraftSuccess, requestDraftSuccess, syncDraft, clearDraft, editDraft } from '../modules/draft-message';
+import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, REPLY_TO_MESSAGE, requestMessages, requestMessage, createMessage, updateMessage, postActions } from '../modules/message';
 import { requestLocalIdentities } from '../modules/local-identity';
 import { removeTab, updateTab } from '../modules/tab';
 import fetchLocation from '../../services/api-location';
@@ -91,24 +92,20 @@ async function getNewDraft({ discussionId, store, messageToAnswer }) {
   const { localIdentities } = store.getState().localIdentity;
 
   const draft = {
-    ...(messageToAnswer && messageToAnswer.subject ? { subject: messageToAnswer.subject } : {}),
+    ...(messageToAnswer && messageToAnswer.subject ? {
+      subject: messageToAnswer.subject,
+      parent_id: messageToAnswer.message_id,
+    } : {}),
     body: '',
     identities: getDefaultIdentities({ protocols: ['email'], identities: localIdentities })
       .map(localIdentityToIdentity),
     discussion_id: discussionId,
-    // TODO: bind reply-to (create/edit ..)
-    // parent_id: messageToAnswer.message_id,
   };
 
   return draft;
 }
 
-async function requestDraftHandler({ store, action }) {
-  if (action.type !== REQUEST_DRAFT) {
-    return;
-  }
-
-  const { internalId, discussionId } = action.payload;
+const concretRequestDraft = async ({ store, internalId, discussionId }) => {
   await store.dispatch(requestMessages('discussion', discussionId, { discussion_id: discussionId }));
 
   const {
@@ -123,7 +120,17 @@ async function requestDraftHandler({ store, action }) {
   const message = messages.find(item => item.is_draft)
     || await getNewDraft({ discussionId, store, messageToAnswer: messages[0] });
 
-  store.dispatch(requestDraftSuccess({ internalId, draft: message }));
+  return store.dispatch(requestDraftSuccess({ internalId, draft: message }));
+};
+
+function requestDraftHandler({ store, action }) {
+  if (action.type !== REQUEST_DRAFT) {
+    return undefined;
+  }
+
+  const { internalId, discussionId } = action.payload;
+
+  return concretRequestDraft({ store, internalId, discussionId });
 }
 
 async function requestNewDraftHandler({ store, action }) {
@@ -206,6 +213,37 @@ const sendDraftHandler = async ({ store, action }) => {
   store.dispatch(clearDraft({ internalId }));
 };
 
+const draftSelector = (state, { internalId }) => state.draftMessage.draftsByInternalId[internalId];
+const locationSelector = state => state.router.location;
+
+const replyToMessageHandler = async ({ store, action }) => {
+  if (action.type !== REPLY_TO_MESSAGE) {
+    return undefined;
+  }
+
+  const { internalId, message: messageInReply } = action.payload;
+
+  await concretRequestDraft({ store, discussionId: messageInReply.discussion_id, internalId });
+
+  const state = store.getState();
+
+  const draft = {
+    ...draftSelector(state, { internalId }),
+    parent_id: messageInReply.message_id,
+  };
+  const message = draft.message_id ? state.message.messagesById[draft.message_id] : undefined;
+  const discussionPath = `/discussions/${messageInReply.discussion_id}`;
+  const location = locationSelector(state);
+  const isCurrentDiscussionLocation = location && matchPath(location.pathname, {
+    path: discussionPath,
+  });
+
+  return Promise.all([
+    ...(!isCurrentDiscussionLocation ? [store.dispatch(push(discussionPath))] : []),
+    store.dispatch(editDraft({ internalId, draft, message })),
+  ]);
+};
+
 export default store => next => (action) => {
   if ([EDIT_DRAFT].indexOf(action.type) !== -1) {
     if (throttled) {
@@ -226,6 +264,7 @@ export default store => next => (action) => {
   sendDraftHandler({ store, action });
   requestNewDraftHandler({ store, action });
   requestNewDraftSuccessHandler({ store, action });
+  replyToMessageHandler({ store, action });
 
   return result;
 };

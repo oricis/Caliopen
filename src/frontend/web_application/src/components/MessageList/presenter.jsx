@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Button';
 import MenuBar from '../MenuBar';
@@ -9,78 +9,87 @@ import groupMessages from './services/groupMessages';
 
 import './style.scss';
 
-const renderDayGroups = (messages, onMessageRead, onMessageUnread, onMessageDelete, __) => {
-  const messagesGroupedByday = groupMessages(messages);
+class MessageList extends PureComponent {
+  static propTypes = {
+    isFetching: PropTypes.bool,
+    loadMore: PropTypes.node,
+    onMessageRead: PropTypes.func.isRequired,
+    onMessageUnread: PropTypes.func.isRequired,
+    onMessageDelete: PropTypes.func.isRequired,
+    onMessageReply: PropTypes.func.isRequired,
+    onMessageCopyTo: PropTypes.func.isRequired,
+    onMessageEditTags: PropTypes.func.isRequired,
+    onForward: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    replyForm: PropTypes.node.isRequired,
+    __: PropTypes.func.isRequired,
+  };
 
-  return Object.keys(messagesGroupedByday)
-    .map(date => (
-      <DayMessageList key={date} date={date}>
-        {messagesGroupedByday[date].map(message => (
-          <Message
-            key={message.message_id}
-            message={message}
-            className="m-message-list__message"
-            onMessageRead={onMessageRead}
-            onMessageUnread={onMessageUnread}
-            onDelete={onMessageDelete}
-            __={__}
-          />
-        ))}
-      </DayMessageList>
-    ));
-};
+  static defaultProps = {
+    isFetching: false,
+    loadMore: null,
+    onMessageView: null,
+  };
 
-const MessageList = ({
-  isFetching,
-  loadMore,
-  onMessageRead,
-  onMessageUnread,
-  onMessageDelete,
-  onReply,
-  onForward,
-  onDelete,
-  messages,
-  replyForm,
-  __,
-}) => (
-  <div className="m-message-list">
-    <MenuBar>
-      <Button className="m-message-list__action" onClick={onReply} icon="reply" responsive="icon-only" >{__('message-list.action.reply')}</Button>
-      <Button className="m-message-list__action" onClick={onForward} icon="share" responsive="icon-only" >{__('message-list.action.copy-to')}</Button>
-      <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >{__('message-list.action.delete')}</Button>
-      <Spinner isLoading={isFetching} className="m-message-list__spinner" />
-    </MenuBar>
-    <div className="m-message-list__load-more">
-      {loadMore}
-    </div>
-    <div className="m-message-list__list">
-      {renderDayGroups(messages, onMessageRead, onMessageUnread, onMessageDelete, __)}
-    </div>
-    <div className="m-message-list__reply">
-      {replyForm}
-    </div>
-  </div>
-);
+  handleReplyToLastMessage = () => {
+    const { messages, onMessageReply } = this.props;
+    const message = messages[messages.length - 1];
 
-MessageList.propTypes = {
-  isFetching: PropTypes.bool,
-  loadMore: PropTypes.node,
-  onMessageRead: PropTypes.func,
-  onMessageUnread: PropTypes.func,
-  onMessageDelete: PropTypes.func.isRequired,
-  onReply: PropTypes.func.isRequired,
-  onForward: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  replyForm: PropTypes.node.isRequired,
-  __: PropTypes.func.isRequired,
-};
+    return onMessageReply({ message });
+  };
 
-MessageList.defaultProps = {
-  isFetching: false,
-  loadMore: null,
-  onMessageRead: null,
-  onMessageUnread: null,
-};
+  renderDayGroups() {
+    const {
+      messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply, onMessageCopyTo,
+      onMessageEditTags, __,
+    } = this.props;
+    const messagesGroupedByday = groupMessages(messages);
+
+    return Object.keys(messagesGroupedByday)
+      .map(date => (
+        <DayMessageList key={date} date={date}>
+          {messagesGroupedByday[date].map(message => (
+            <Message
+              key={message.message_id}
+              message={message}
+              className="m-message-list__message"
+              onMessageRead={onMessageRead}
+              onMessageUnread={onMessageUnread}
+              onDelete={onMessageDelete}
+              onReply={onMessageReply}
+              onCopyTo={onMessageCopyTo}
+              onEditTags={onMessageEditTags}
+              __={__}
+            />
+          ))}
+        </DayMessageList>
+      ));
+  }
+
+  render() {
+    const { isFetching, loadMore, onForward, onDelete, replyForm, __ } = this.props;
+
+    return (
+      <div className="m-message-list">
+        <MenuBar>
+          <Button className="m-message-list__action" onClick={this.handleReplyToLastMessage} icon="reply" responsive="icon-only" >{__('message-list.action.reply')}</Button>
+          <Button className="m-message-list__action" onClick={onForward} icon="share" responsive="icon-only" >{__('message-list.action.copy-to')}</Button>
+          <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >{__('message-list.action.delete')}</Button>
+          <Spinner isLoading={isFetching} className="m-message-list__spinner" />
+        </MenuBar>
+        <div className="m-message-list__load-more">
+          {loadMore}
+        </div>
+        <div className="m-message-list__list">
+          {this.renderDayGroups()}
+        </div>
+        <div className="m-message-list__reply">
+          {replyForm}
+        </div>
+      </div>
+    );
+  }
+}
 
 export default MessageList;

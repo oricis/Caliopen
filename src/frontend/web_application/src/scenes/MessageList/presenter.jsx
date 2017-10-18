@@ -18,6 +18,9 @@ class MessageList extends Component {
     isFetching: PropTypes.bool.isRequired,
     setMessageRead: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
+    replyToMessage: PropTypes.func.isRequired,
+    copyMessageTo: PropTypes.func.isRequired,
+    editMessageTags: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     hasMore: PropTypes.bool.isRequired,
@@ -71,6 +74,11 @@ class MessageList extends Component {
     Promise.all(messages.map(message => deleteMessage({ message })));
   };
 
+  makeHandleReplyToMessage = internalId => ({ message }) => this.props.replyToMessage({
+    message,
+    internalId,
+  });
+
   loadMore = () => {
     if (this.props.hasMore) {
       this.throttledLoadMore();
@@ -86,7 +94,8 @@ class MessageList extends Component {
   }
 
   render() {
-    const { messages, discussionId, isFetching } = this.props;
+    const { messages, discussionId, isFetching, copyMessageTo, editMessageTags } = this.props;
+    const internalId = discussionId;
 
     return (
       <MessageListBase
@@ -94,12 +103,14 @@ class MessageList extends Component {
         onMessageRead={this.handleSetMessageRead}
         onMessageUnread={this.handleSetMessageUnread}
         isFetching={isFetching}
-        replyForm={<ReplyForm discussionId={discussionId} internalId={discussionId} />}
-        onReply={() => {}}
+        replyForm={<ReplyForm discussionId={discussionId} internalId={internalId} />}
         onForward={() => {}}
         onDelete={this.handleDelete}
         onMessageDelete={this.handleDeleteMessage}
+        onMessageReply={this.makeHandleReplyToMessage(internalId)}
         loadMore={this.renderLoadMore()}
+        onMessageCopyTo={copyMessageTo}
+        onMessageEditTags={editMessageTags}
       />
     );
   }

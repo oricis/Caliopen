@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import Button from '../Button';
+import Link from '../Link';
 import Icon from '../Icon';
 import ContactAvatarLetter from '../ContactAvatarLetter';
 import Dropdown, { withDropdownControl } from '../Dropdown';
@@ -19,7 +20,8 @@ function generateStateFromProps(props) {
 
 class ReplyForm extends Component {
   static propTypes = {
-    draft: PropTypes.shape({}).isRequired,
+    draft: PropTypes.shape({}),
+    parentMessage: PropTypes.shape({}),
     onSave: PropTypes.func.isRequired,
     onSend: PropTypes.func.isRequired,
     onChange: PropTypes.func,
@@ -27,19 +29,18 @@ class ReplyForm extends Component {
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
+    draft: {
+      body: '',
+    },
+    parentMessage: undefined,
     onChange: () => {},
     user: { contact: {} },
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      isActive: true,
-      protocol: 'email',
-    };
-    this.handleSend = this.handleSend.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
+
+  state = {
+    isActive: true,
+    protocol: 'email',
+  };
 
   componentWillMount() {
     this.setState(prevState => generateStateFromProps(this.props, prevState));
@@ -49,17 +50,17 @@ class ReplyForm extends Component {
     this.setState(prevState => generateStateFromProps(newProps, prevState));
   }
 
-  handleSave() {
+  handleSave = () => {
     const { draft } = this.state;
     this.props.onSave({ draft });
-  }
+  };
 
-  handleSend() {
+  handleSend = () => {
     const { draft } = this.state;
     this.props.onSend({ draft });
-  }
+  };
 
-  handleChange(ev) {
+  handleChange = (ev) => {
     const { name, value } = ev.target;
 
     this.setState((prevState) => {
@@ -69,13 +70,13 @@ class ReplyForm extends Component {
     }, () => {
       this.props.onChange({ draft: this.state.draft });
     });
-  }
+  };
 
-  handleActiveClick() {
+  handleActiveClick = () => {
     this.setState(prevState => ({
       isActive: !prevState.isActive,
     }));
-  }
+  };
 
   renderDraftType() {
     const { __ } = this.props;
@@ -97,7 +98,7 @@ class ReplyForm extends Component {
   }
 
   render() {
-    const { user, __ } = this.props;
+    const { user, parentMessage, __ } = this.props;
     const dropdownId = uuidV1();
 
     return (
@@ -126,6 +127,13 @@ class ReplyForm extends Component {
               closeOnClick
             />
           </TopRow>
+          {parentMessage && (
+            <div className="m-reply__parent">
+              <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
+                {__('reply-form.in-reply-to', { excerpt: parentMessage.excerpt })}
+              </Link>
+            </div>
+          )}
           <BodyRow className="m-reply__body">
             <DiscussionTextarea
               body={this.state.draft.body}

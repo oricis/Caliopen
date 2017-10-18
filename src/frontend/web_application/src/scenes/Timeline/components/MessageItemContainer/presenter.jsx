@@ -13,6 +13,7 @@ class MessageItemContainer extends Component {
     message: PropTypes.shape({}).isRequired,
     children: PropTypes.node.isRequired,
     __: PropTypes.func.isRequired,
+    replyToMessage: PropTypes.func.isRequired,
   };
 
   state = {
@@ -33,6 +34,11 @@ class MessageItemContainer extends Component {
       ...prevState,
       isTagModalOpen: false,
     }));
+  }
+
+  handleReply = () => {
+    const { replyToMessage, message } = this.props;
+    replyToMessage({ internalId: message.discussion_id, message });
   }
 
   handleSwipeLeft = () => {
@@ -79,8 +85,12 @@ class MessageItemContainer extends Component {
 
     return (
       <div className={actionsClassName}>
-        <Button shape="plain" className="m-message-item-container__action">{__('message-item.action.delete')}</Button>
-        <Button shape="plain" className="m-message-item-container__action">{__('message-item.action.reply')}</Button>
+        <Button shape="plain" className="m-message-item-container__action" onClick={this.handleDelete}>
+          {__('message-item.action.delete')}
+        </Button>
+        <Button shape="plain" className="m-message-item-container__action" onClick={this.handleReply}>
+          {__('message-item.action.reply')}
+        </Button>
         <Button shape="plain" className="m-message-item-container__action" onClick={this.handleOpenTags}>
           {__('message-item.action.manage_tags')}
         </Button>

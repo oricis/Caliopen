@@ -3,7 +3,8 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslator } from '@gandi/react-translate';
 import { matchPath } from 'react-router-dom';
-import { requestMessages, postActions, deleteMessage, loadMore, hasMore as getHasMore } from '../../store/modules/message';
+import { createNotification, NOTIFICATION_TYPE_INFO } from 'react-redux-notify';
+import { requestMessages, postActions, deleteMessage, loadMore, hasMore as getHasMore, replyToMessage } from '../../store/modules/message';
 import { removeTab } from '../../store/modules/tab';
 import Presenter from './presenter';
 
@@ -54,6 +55,13 @@ const mapStateToProps = createSelector(
   }
 );
 
+const notif = createNotification({
+  message: 'Functionnality is not yet available',
+  type: NOTIFICATION_TYPE_INFO,
+  duration: 10000,
+  canDismiss: true,
+});
+
 const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   requestMessages: requestMessages.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
   loadMore: loadMore.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
@@ -64,6 +72,9 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
     return postActions({ message, actions: [action] });
   },
   removeTab,
+  replyToMessage,
+  copyMessageTo: () => notif,
+  editMessageTags: () => notif,
 }, dispatch);
 
 export default compose(

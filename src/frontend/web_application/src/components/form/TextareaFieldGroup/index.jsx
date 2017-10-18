@@ -27,7 +27,7 @@ const TextareaFieldGroup = ({
         {...props}
       />
       {errors.length !== 0 && (
-        <FieldErrors lassName="m-textarea-field-group__errors" errors={errors} />
+        <FieldErrors className="m-textarea-field-group__errors" errors={errors} />
       )}
     </div>
   );
