@@ -67,6 +67,11 @@ export const getRouteConfig = ({ __ }) => [
         app: 'contact',
       },
       {
+        path: '/new-contact',
+        component: Contact,
+        app: 'contact',
+      },
+      {
         path: '/user',
         component: UserRoute,
         app: 'account',

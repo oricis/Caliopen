@@ -38,7 +38,7 @@ class Contact extends Component {
     reset: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,
     removeContact: PropTypes.func,
-    contactId: PropTypes.string.isRequired,
+    contactId: PropTypes.string,
     contact: PropTypes.shape({}),
     isFetching: PropTypes.bool,
     form: PropTypes.string.isRequired,
@@ -50,6 +50,7 @@ class Contact extends Component {
     isFetching: false,
     removeContact: noop,
     contact: undefined,
+    contactId: undefined,
     birthday: undefined,
   };
 
@@ -63,9 +64,19 @@ class Contact extends Component {
     editMode: false,
   };
 
+  componentWillMount() {
+    if (!this.props.contactId) {
+      this.setState({
+        editMode: true,
+      });
+    }
+  }
+
   componentDidMount() {
     const { contactId, requestContact } = this.props;
-    requestContact({ contactId });
+    if (contactId) {
+      requestContact({ contactId });
+    }
   }
 
   handleContactDelete = ({ contact }) => {
@@ -98,11 +109,7 @@ class Contact extends Component {
   }
 
   handleSubmit = (ev) => {
-    const { handleSubmit, contactId, requestContact } = this.props;
-
-    handleSubmit(ev)
-      .then(() => this.toggleEditMode())
-      .then(() => requestContact({ contactId }));
+    this.props.handleSubmit(ev).then(() => this.props.contactId && this.toggleEditMode());
   }
 
   renderTagsModal = () => {
@@ -224,11 +231,11 @@ class Contact extends Component {
   }
 
   render() {
-    const { __, isFetching, contact, form, contact_display_format: format } = this.props;
+    const { __, isFetching, contact, contactId, form, contact_display_format: format } = this.props;
 
     return (
       <form onSubmit={this.handleSubmit} method="post">
-        {contact && (
+        {(contact || !contactId) && (
           <MenuBar className="s-contact__menu-bar">
             {
               // FIXME: edit and action bars be displayed in fixed Header,
@@ -240,14 +247,14 @@ class Contact extends Component {
 
         <Spinner isLoading={isFetching} />
 
-        {contact && (
+        {(contact || !contactId) && (
           <div className="s-contact">
             <div className="s-contact__col-datas-irl">
               <ContactProfile
                 contact={contact}
                 contactDisplayFormat={format}
                 editMode={this.state.editMode}
-                form={(<ContactProfileForm form={form} />)}
+                form={(<ContactProfileForm form={form} isNew={!contact} />)}
               />
             </div>
             <div className="s-contact__col-datas-online">

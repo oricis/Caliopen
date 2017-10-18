@@ -1,3 +1,19 @@
+// initialize a contact, usefull for redux-form to prevent recursiv delete of initial values if a
+// propoerty is undefined
+export const getNewContact = () => ({
+  name_prefix: '',
+  given_name: '',
+  family_name: '',
+  name_suffix: '',
+  organizations: [],
+  identities: [],
+  infos: {},
+  emails: [],
+  phones: [],
+  ims: [],
+  addresses: [],
+});
+
 export function formatName({ contact, format }) {
   const title = format.split(',')
     .map(field => field.trim())

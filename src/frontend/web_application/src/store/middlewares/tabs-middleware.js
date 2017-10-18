@@ -12,6 +12,7 @@ const registeredRoutes = [
   '/discussions/:discussionId',
   '/contacts/:contactId',
   '/compose',
+  '/new-contact',
   '/settings/:setting',
   '/user/:setting',
 ];
@@ -55,6 +56,17 @@ const createContactTab = async ({ pathname, contactId, store }) => {
     icon: 'user',
   };
 };
+
+const createNewContactTab = ({ pathname }) => {
+  const { translate: __ } = getTranslator();
+
+  return {
+    pathname,
+    label: __('new-contact.route.label'),
+    icon: 'user',
+  };
+};
+
 const createComposeTab = ({ pathname }) => {
   const { translate: __ } = getTranslator();
 
@@ -93,6 +105,21 @@ const selectOrAddTabContact = async ({ store, pathname }) => {
 
   const { params: { contactId } } = match;
   const tab = await createContactTab({ pathname, contactId, store });
+
+  return store.dispatch(addTab(tab));
+};
+
+const selectOrAddTabNewContact = async ({ store, pathname }) => {
+  const match = matchPath(pathname, { path: '/new-contact' });
+  if (!match) {
+    return null;
+  }
+  const foundTab = selectTabByPathname({ store, pathname });
+  if (foundTab) {
+    return foundTab;
+  }
+
+  const tab = await createNewContactTab({ pathname });
 
   return store.dispatch(addTab(tab));
 };
@@ -180,8 +207,10 @@ export default store => next => (action) => {
 
   if (action.type === SELECT_OR_ADD_TAB) {
     const { payload: { pathname } } = action;
-    [selectOrAddTabDiscussion, selectOrAddTabContact, selectOrAddTabSetting,
-      selectOrAddTabUser, selectOrAddTabCompose]
+    [
+      selectOrAddTabDiscussion, selectOrAddTabContact, selectOrAddTabNewContact,
+      selectOrAddTabSetting, selectOrAddTabUser, selectOrAddTabCompose,
+    ]
       .forEach(fn => fn({ store, pathname }));
   }
 

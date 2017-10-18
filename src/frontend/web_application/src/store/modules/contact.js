@@ -10,6 +10,9 @@ export const REQUEST_CONTACT_SUCCESS = 'co/contact/REQUEST_CONTACT_SUCCESS';
 export const UPDATE_CONTACT = 'co/contact/UPDATE_CONTACT';
 export const UPDATE_CONTACT_SUCCESS = 'co/contact/UPDATE_CONTACT_SUCCESS';
 export const UPDATE_CONTACT_FAIL = 'co/contact/UPDATE_CONTACT_FAIL';
+export const CREATE_CONTACT = 'co/contact/CREATE_CONTACT';
+export const CREATE_CONTACT_SUCCESS = 'co/contact/CREATE_CONTACT_SUCCESS';
+export const CREATE_CONTACT_FAIL = 'co/contact/CREATE_CONTACT_FAIL';
 export const REMOVE_CONTACT = 'co/contact/REMOVE_CONTACT';
 
 export function requestContacts(params = {}) {
@@ -61,6 +64,19 @@ export function updateContact({ contact, original }) {
         method: 'patch',
         url: `/v1/contacts/${contact.contact_id}`,
         data,
+      },
+    },
+  };
+}
+
+export function createContact({ contact }) {
+  return {
+    type: CREATE_CONTACT,
+    payload: {
+      request: {
+        method: 'post',
+        url: '/v1/contacts',
+        data: contact,
       },
     },
   };
