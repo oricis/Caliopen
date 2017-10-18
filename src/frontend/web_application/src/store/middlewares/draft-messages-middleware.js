@@ -4,7 +4,7 @@ import { push, replace } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
 import { matchPath } from 'react-router-dom';
 import { REQUEST_NEW_DRAFT, REQUEST_NEW_DRAFT_SUCCESS, REQUEST_DRAFT, EDIT_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestNewDraftSuccess, requestDraftSuccess, syncDraft, clearDraft, editDraft } from '../modules/draft-message';
-import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_FAIL, POST_ACTIONS_SUCCESS, REPLY_TO_MESSAGE, requestMessages, requestMessage, createMessage, updateMessage, postActions } from '../modules/message';
+import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, POST_ACTIONS_SUCCESS, REPLY_TO_MESSAGE, requestMessages, requestMessage, createMessage, updateMessage, postActions } from '../modules/message';
 import { requestLocalIdentities } from '../modules/local-identity';
 import { removeTab, updateTab } from '../modules/tab';
 import fetchLocation from '../../services/api-location';
@@ -32,28 +32,20 @@ const createDraft = async ({ internalId, draft, store }) => {
   throw new Error(`Unexpected type ${resultAction.type} in createDraft`);
 };
 
-const updateDraft = async ({ draft, original, store }) => {
-  const resultAction = await store.dispatch(updateMessage({
-    message: draft, original,
-  }));
+const updateDraft = async ({ draft, original, store }) => store.dispatch(updateMessage({
+  message: draft, original,
+})).then(() => getMessageUpToDate({ store, messageId: draft.message_id }))
+.catch(() => {
+  const { translate: __ } = getTranslator();
+  const notification = {
+    message: __('message.feedbak.update_fail'), // Unable to update, may be the message has been modified somewhere else
+    type: NOTIFICATION_TYPE_ERROR,
+    duration: 0,
+    canDismiss: true,
+  };
 
-  if (resultAction.type === UPDATE_MESSAGE_SUCCESS) {
-    return getMessageUpToDate({ store, messageId: draft.message_id });
-  }
-
-  if (resultAction.type === UPDATE_MESSAGE_FAIL) {
-    const { translate: __ } = getTranslator();
-    const notification = {
-      message: __('message.feedbak.update_fail'), // Unable to update, may be the message has been modified somewhere else
-      type: NOTIFICATION_TYPE_ERROR,
-      duration: 0,
-      canDismiss: true,
-    };
-    store.dispatch(createNotification(notification));
-  }
-
-  throw new Error(`Uknkown type ${resultAction.type} in updateDraft`);
-};
+  return store.dispatch(createNotification(notification));
+});
 
 const createOrUpdateDraft = async ({ internalId, draft, store, original }) => {
   if (draft.message_id) {

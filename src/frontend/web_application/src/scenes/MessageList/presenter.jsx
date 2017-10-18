@@ -13,6 +13,7 @@ class MessageList extends Component {
     requestMessages: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
+    push: PropTypes.func.isRequired,
     hasDraft: PropTypes.bool,
     didInvalidate: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
@@ -52,8 +53,16 @@ class MessageList extends Component {
     }
 
     if (!didInvalidate && !isFetching && messages.length === 0 && !hasDraft) {
-      this.props.removeTab(currentTab);
+      this.closeTab({ currentTab });
     }
+  }
+
+  closeTab({ currentTab }) {
+    if (currentTab) {
+      return this.props.removeTab(currentTab);
+    }
+
+    return this.props.push('/');
   }
 
   handleSetMessageRead = ({ message }) => {

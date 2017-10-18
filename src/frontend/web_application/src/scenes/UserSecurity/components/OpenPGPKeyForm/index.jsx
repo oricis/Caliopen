@@ -239,7 +239,7 @@ class OpenPGPKeyForm extends Component {
                 onClick={this.handleCancelForm}
                 shape="hollow"
               >
-                {__('cancel')}
+                {__('general.action.cancel')}
               </Button>
             </div>
           </form>
