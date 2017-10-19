@@ -1,13 +1,18 @@
+import { requestMessages } from '../../store/modules/message';
+import { requestContacts } from '../../store/modules/contact';
+
 const APPLICATIONS = {
   discussions: {
     route: '/',
     icon: 'comments',
     label: 'header.menu.discussions',
+    refreshAction: dispatch => dispatch(requestMessages('timeline', '0')),
   },
   contacts: {
     route: '/contacts',
     icon: 'users',
     label: 'header.menu.contacts',
+    refreshAction: dispatch => dispatch(requestContacts()),
   },
 };
 
@@ -18,8 +23,7 @@ export const getLabels = __ => ({
 
 export const getInfosFromName = name => ({
   name,
-  route: APPLICATIONS[name].route,
-  icon: APPLICATIONS[name].icon,
+  ...APPLICATIONS[name],
 });
 
 export const getInfosFromRoute = (route) => {

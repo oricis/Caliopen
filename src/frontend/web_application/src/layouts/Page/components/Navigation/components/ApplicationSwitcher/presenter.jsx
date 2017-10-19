@@ -20,6 +20,7 @@ class ApplicationSwitcher extends Component {
       name: PropTypes.string.isRequired,
     }).isRequired,
     isactive: PropTypes.bool.isRequired,
+    onClickApp: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
   };
 
@@ -30,7 +31,7 @@ class ApplicationSwitcher extends Component {
   };
 
   render() {
-    const { __, isactive } = this.props;
+    const { __, onClickApp, isactive } = this.props;
     const applicationLabels = getLabels(__);
 
     return (
@@ -38,7 +39,10 @@ class ApplicationSwitcher extends Component {
         className="m-application-switcher"
         active={isactive}
         contentChildren={(
-          <ItemLink to={this.props.currentApplication.route}>
+          <ItemLink
+            to={this.props.currentApplication.route}
+            onClick={() => onClickApp(this.props.currentApplication)}
+          >
             <Icon className="m-application-switcher__icon" type={this.props.currentApplication.icon} />
             {applicationLabels[this.props.currentApplication.name]}
           </ItemLink>

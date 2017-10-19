@@ -20,7 +20,7 @@ export const POST_ACTIONS = 'co/message/POST_ACTIONS';
 export const POST_ACTIONS_SUCCESS = 'co/message/POST_ACTIONS_SUCCESS';
 export const REPLY_TO_MESSAGE = 'co/message/REPLY_TO_MESSAGE';
 
-export function requestMessages(type, key, { offset = 0, limit = 20, ...opts } = {}) {
+export function requestMessages(type = 'timeline', key = '0', { offset = 0, limit = 20, ...opts } = {}) {
   const params = { offset, limit, ...opts };
 
   return {

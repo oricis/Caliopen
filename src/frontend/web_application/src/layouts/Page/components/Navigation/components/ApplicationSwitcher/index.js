@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
 import Presenter from './presenter';
 import { getApplications } from '../../../../../../services/application-manager/';
+import { withRefreshApp } from '../../../../../../hoc/application';
 
 const applicationSelector = state => state.application.applicationName;
 const locationSelector = state => state.router.location;
@@ -21,5 +22,6 @@ const mapStateToProps = createSelector(
 
 export default compose(
   connect(mapStateToProps),
+  withRefreshApp(),
   withTranslator()
 )(Presenter);
