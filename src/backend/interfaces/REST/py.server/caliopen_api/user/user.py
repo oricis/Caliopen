@@ -17,7 +17,7 @@ from ..base.exception import AuthenticationError
 from caliopen_main.user.core import User
 from caliopen_main.user.parameters import NewUser, NewRemoteIdentity, Settings
 from caliopen_main.user.returns.user import ReturnUser, ReturnRemoteIdentity
-from caliopen_main.contact.parameters import NewContact
+from caliopen_main.contact.parameters import NewContact, NewEmail
 
 log = logging.getLogger(__name__)
 
@@ -101,7 +101,12 @@ class UserAPI(Api):
         if self.request.swagger_data['user']['contact'] is not None:
             param.contact = self.request.swagger_data['user']['contact']
         else:
-            param.contact = NewContact()
+            c = NewContact()
+            c.given_name = param.name
+            email = NewEmail()
+            email.address = param.recovery_email
+            c.emails = [email]
+            param.contact = c
 
         try:
             user = User.create(param)
