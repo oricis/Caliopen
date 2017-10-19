@@ -311,6 +311,7 @@
     "signup.form.username.label": "Nom d'utilisateur",
     "signup.form.username.placeholder": "nom d'utilisateur",
     "signup.go_signin": "J'ai déjà un compte",
+    "signup.limited_registration": "Pendant la phase alpha, l'inscription est limitée. Merci de vous enregistrer sur <a href=\"https://welcome.caliopen.org\">https://welcome.caliopen.org</a>.",
     "signup.privacy.modal.close": "Ok compris !",
     "signup.privacy.modal.label": "À propos de Piwik",
     "signup.privacy.modal.text.alpha_tester": "En tant qu’alpha-testeur, votre contribution est précieuse et nous permet de travailler à la finalisation de Caliopen.",

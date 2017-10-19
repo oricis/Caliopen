@@ -299,6 +299,7 @@
     "signup.form.username.label": "signup.form.username.label",
     "signup.form.username.placeholder": "signup.form.username.placeholder",
     "signup.go_signin": "signup.go_signin",
+    "signup.limited_registration": "signup.limited_registration",
     "signup.privacy.modal.close": "signup.privacy.modal.close",
     "signup.privacy.modal.label": "signup.privacy.modal.label",
     "signup.privacy.modal.text.alpha_tester": "signup.privacy.modal.text.alpha_tester",

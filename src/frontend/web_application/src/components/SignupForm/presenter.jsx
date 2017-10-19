@@ -156,6 +156,11 @@ class SignupForm extends Component {
       <Section className="s-signup" title={__('signup.title')}>
         <FormGrid className="s-signup__form">
           <form method="post" name="ac_form" {...form}>
+            <FormRow>
+              <FormColumn rightSpace={false} bottomSpace>
+                <div className="s-signup__alpha" dangerouslySetInnerHTML={__('signup.limited_registration', { withHTML: true })} />
+              </FormColumn>
+            </FormRow>
             {errors.global && errors.global.length !== 0 && (
             <FormRow>
               <FormColumn rightSpace={false} bottomSpace>

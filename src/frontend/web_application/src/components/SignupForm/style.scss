@@ -7,6 +7,12 @@
 .s-signup {
   max-width: map-get($co-form__width, 'xlarge');
 
+  &__alpha {
+    a {
+      color: white;
+    }
+  }
+
   &__action { line-height: $co-component__height; }
 
   &__modal {
