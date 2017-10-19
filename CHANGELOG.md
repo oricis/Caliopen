@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Notify the user the draft is saved after a manual save
+
+### Added
+
 - create new contact
 - the excerpt of the message in reply into draft form
 - frontend custom settings for the instance and the running environment

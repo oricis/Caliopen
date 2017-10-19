@@ -5,8 +5,8 @@ import { withTranslator } from '@gandi/react-translate';
 import { reduxForm } from 'redux-form';
 import Presenter from './presenter';
 import { requestSettings, updateSettings } from '../../store/modules/settings';
+import { settingsSelector } from '../../store/selectors/settings';
 
-const settingsSelector = state => state.settings.settings;
 const mapStateToProps = createSelector(
   [settingsSelector],
   settings => ({
