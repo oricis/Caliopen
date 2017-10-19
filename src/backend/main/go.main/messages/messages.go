@@ -18,6 +18,7 @@ import (
 func SanitizeMessageBodies(msg *objects.Message) {
 	p := CaliopenPolicy()
 	msg.Body_plain = p.Sanitize(msg.Body_plain)
+	msg.Body_plain = html.UnescapeString(msg.Body_plain)
 	msg.Body_html = p.Sanitize(msg.Body_html)
 }
 

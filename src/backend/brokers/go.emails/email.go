@@ -88,6 +88,7 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 	em.Message.Date = time.Now()
 	m.SetHeader("Date", em.Message.Date.Format(time.RFC1123Z))
 
+	//TODO: put a hash of message_id instead
 	messageId := "<" + msg.Message_id.String() + "@" + b.Config.PrimaryMailHost + ">" // should be the default domain in case there are multiple 'from' addresses
 
 	m.SetHeader("Message-ID", messageId)
@@ -204,6 +205,8 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	if err != nil {
 		log.Warn("Index.UpdateMessage operation failed")
 	}
+
+	//TODO : add external message-id (and parent-id if any) to external_references
 	return err
 }
 
