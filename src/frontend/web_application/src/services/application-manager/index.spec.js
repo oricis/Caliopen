@@ -2,30 +2,21 @@ import * as ApplicationManager from './index';
 
 describe('Service ApplicationManager', () => {
   describe('getInfos', () => {
-    it('give infos from name', () => {
-      expect(ApplicationManager.getInfosFromName('discussions')).toEqual({
-        name: 'discussions',
-        route: '/',
-        icon: 'comments',
-      });
+    it('give infos from name [discussions]', () => {
+      expect(ApplicationManager.getInfosFromName('discussions').name).toEqual('discussions');
+      expect(ApplicationManager.getInfosFromName('discussions').route).toEqual('/');
     });
 
-    it('give infos', () => {
-      expect(ApplicationManager.getInfosFromName('contacts')).toEqual({
-        name: 'contacts',
-        route: '/contacts',
-        icon: 'users',
-      });
+    it('give infos [contacts]', () => {
+      expect(ApplicationManager.getInfosFromName('contacts').name).toEqual('contacts');
+      expect(ApplicationManager.getInfosFromName('contacts').route).toEqual('/contacts');
     });
   });
 
   describe('getInfosFromRoute', () => {
     it('retrieves an app', () => {
-      expect(ApplicationManager.getInfosFromRoute('/contacts')).toEqual({
-        name: 'contacts',
-        route: '/contacts',
-        icon: 'users',
-      });
+      expect(ApplicationManager.getInfosFromRoute('/contacts').name).toEqual('contacts');
+      expect(ApplicationManager.getInfosFromRoute('/contacts').route).toEqual('/contacts');
     });
 
     it('does not retrieve an app', () => {

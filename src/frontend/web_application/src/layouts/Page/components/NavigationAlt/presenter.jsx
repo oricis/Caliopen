@@ -12,10 +12,13 @@ class NavigationAlt extends PureComponent {
   static propTypes = {
     applications: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     currentApplication: PropTypes.shape({}).isRequired,
+    onClickApp: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
   };
+
+  createHandleClickApp = app => () => this.props.onClickApp(app);
 
   render() {
     const { currentApplication, applications, __ } = this.props;
@@ -29,6 +32,7 @@ class NavigationAlt extends PureComponent {
               <VerticalMenuItem key={application.name}>
                 <Link
                   to={application.route}
+                  onClick={this.createHandleClickApp(application)}
                   button
                   expanded
                   active={currentApplication === application}

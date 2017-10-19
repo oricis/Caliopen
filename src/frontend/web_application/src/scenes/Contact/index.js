@@ -4,20 +4,16 @@ import { connect } from 'react-redux';
 import { reduxForm, formValues } from 'redux-form';
 import { withTranslator } from '@gandi/react-translate';
 import { push } from 'react-router-redux';
-import { matchPath } from 'react-router-dom';
 import { requestContact, updateContact, createContact } from '../../store/modules/contact';
 import { removeTab } from '../../store/modules/tab';
 import fetchLocation from '../../services/api-location';
 import { getNewContact } from '../../services/contact';
+import { currentTabSelector } from '../../store/selectors/tab';
 import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.match.params.contactId;
 const contactSelector = state => state.contact;
 const settingsSelector = state => state.settings.settings;
-const currentTabSelector = createSelector(
-  [state => state.tab.tabs, state => state.router.location && state.router.location.pathname],
-  (tabs, pathname) => tabs.find(tab => matchPath(pathname, { path: tab.pathname, exact: true }))
-);
 
 const mapStateToProps = createSelector(
   [contactIdSelector, contactSelector, settingsSelector, currentTabSelector],
