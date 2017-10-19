@@ -20,6 +20,13 @@ $navigation-after__height: $co-component__spacing;
     margin-bottom: 280px;
   }
 
+  &__footer-alpha {
+    color: $co-color__bg__text--lower;
+    a {
+      color: $co-color__bg__text;
+    }
+  }
+
   @include breakpoint(medium) {
     &__content {
       padding-top: ($navigation__height + $navigation__padding + $navigation-after__height);
