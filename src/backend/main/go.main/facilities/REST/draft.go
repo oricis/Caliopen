@@ -42,5 +42,6 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		return nil, err
 	}
 	messages.SanitizeMessageBodies(msg)
+	(*msg).Body_excerpt = messages.ExcerptMessage(*msg, 200, true, true)
 	return msg, err
 }
