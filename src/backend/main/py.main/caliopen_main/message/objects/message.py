@@ -54,7 +54,7 @@ class Message(ObjectIndexable):
         'is_draft': types.BooleanType,
         'is_unread': types.BooleanType,
         'message_id': UUID,
-        'parent_id': types.StringType,
+        'parent_id': UUID,
         'participants': [Participant],
         'privacy_features': types.DictType,
         'pi': PIObject,

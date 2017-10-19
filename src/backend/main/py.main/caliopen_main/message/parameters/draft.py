@@ -21,8 +21,6 @@ log = logging.getLogger(__name__)
 
 
 class Draft(NewInboundMessage):
-    body_plain = ""
-    body_html = ""
     body = StringType()
 
     def validate_uuid(self, user_id):
@@ -47,16 +45,15 @@ class Draft(NewInboundMessage):
                             
         If needed, draft is modified to conform.
         """
-
         try:
             self.validate()
         except Exception as exc:
             log.warn("draft validation failed with error {}".format(exc))
             raise exc
-
+        # copy body to body_plain TODO : manage plain or html depending on user pref.
+        self.body_plain = self.body
         # check discussion consistency and get last message from discussion
         last_message = self._check_discussion_consistency(user_id)
-
         if last_message is not None:
             # check subject consistency
             # (https://www.wikiwand.com/en/List_of_email_subject_abbreviations)
@@ -121,7 +118,6 @@ class Draft(NewInboundMessage):
     def _check_discussion_consistency(self, user_id):
         from caliopen_main.message.objects.message import Message
         new_discussion = False
-
         if not hasattr(self, 'discussion_id') or self.discussion_id == "" \
                 or self.discussion_id is None:
             # no discussion_id provided. Try to find one with draft's parent_id
@@ -140,7 +136,6 @@ class Draft(NewInboundMessage):
                 discussion = Discussion.create_from_message(user, self)
                 self.discussion_id = discussion.discussion_id
                 new_discussion = True
-
         if not new_discussion:
             dim = DIM(user_id)
             d_id = self.discussion_id

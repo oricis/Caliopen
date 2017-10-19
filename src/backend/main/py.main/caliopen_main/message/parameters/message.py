@@ -59,8 +59,6 @@ class Message(NewInboundMessage):
 
     body = StringType()
     user_id = UUIDType()
-    message_id = UUIDType()
-    raw_msg_id = UUIDType()
     date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
     date_delete = DateTimeType(serialized_format=helpers.RFC3339Milli,
