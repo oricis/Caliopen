@@ -1,5 +1,5 @@
 {
-    "alpha.footer.feedback": "Tell us if something went wrong at <a href=\"https://feedback.caliopen.org/\">https://feedback.caliopen.org/</a>. Or send something to all alpha testers using the mailing list [TO DEFINE].",
+    "alpha.footer.feedback": "Tell us if something went wrong at <a href=\"https://feedback.caliopen.org/\">https://feedback.caliopen.org/</a>.",
     "application_switcher.action.choose": "Choose",
     "auth.feedback.deauth": "You are not authenticated anymore. Please reconnect.",
     "call-to-action.action.compose": "Compose",
