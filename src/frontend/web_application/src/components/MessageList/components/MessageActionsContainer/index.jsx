@@ -66,10 +66,10 @@ class MessageActionsContainer extends Component {
 
     return (
       <div className={messageActionsContainerClassName}>
-        <Button onClick={this.makeHandle(onReply)} className="m-message-actions-container__action" icon="reply" responsive="icon-only">{__('message-list.message.action.reply')}</Button>
-        <Button onClick={this.makeHandle(onCopyTo)} className="m-message-actions-container__action" icon="share" responsive="icon-only">{__('message-list.message.action.copy-to')}</Button>
-        <Button onClick={this.makeHandle(onEditTags)} className="m-message-actions-container__action" icon="tags" responsive="icon-only">{__('message-list.message.action.tags')}</Button>
-        <Button onClick={this.makeHandle(onDelete)} className="m-message-actions-container__action" icon="trash" responsive="icon-only">{__('message-list.message.action.delete')}</Button>
+        <Button onClick={this.makeHandle(onReply)} className="m-message-actions-container__action" display="expanded" icon="reply" responsive="icon-only">{__('message-list.message.action.reply')}</Button>
+        <Button onClick={this.makeHandle(onCopyTo)} className="m-message-actions-container__action" display="expanded" icon="share" responsive="icon-only">{__('message-list.message.action.copy-to')}</Button>
+        <Button onClick={this.makeHandle(onEditTags)} className="m-message-actions-container__action" display="expanded" icon="tags" responsive="icon-only">{__('message-list.message.action.tags')}</Button>
+        <Button onClick={this.makeHandle(onDelete)} className="m-message-actions-container__action" display="expanded" icon="trash" responsive="icon-only">{__('message-list.message.action.delete')}</Button>
         <Button
           className="m-message-actions-container__action"
           display="expanded"

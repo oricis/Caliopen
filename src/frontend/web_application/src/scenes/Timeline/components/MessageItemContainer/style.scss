@@ -11,6 +11,11 @@
     .s-discussion-list__tag {
       background-color: $co-color__primary--lower;
     }
+
+    .s-message-item--draft,
+    .s-message-item--unread {
+      background-color: $co-color__primary--low;
+    }
   }
 
   &__actions {

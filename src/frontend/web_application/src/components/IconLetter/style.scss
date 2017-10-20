@@ -1,7 +1,8 @@
 // ok
 .m-letter--none {
   &::before {
-    content: '.';
+    content: ' ';
+    height: 100%;
     background-color: SteelBlue;
   }
 }
