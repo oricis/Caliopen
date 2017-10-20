@@ -109,9 +109,9 @@ class SigninForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn rightSpace={false}>
+              {/* <FormColumn rightSpace={false}>
                 <Link to="/auth/forgot-password">{__('signin.action.forgot_password')}</Link>
-              </FormColumn>
+              </FormColumn> */}
               <FormColumn rightSpace={false}>
                 <Link to="/auth/signup">{__('signin.create_an_account')}</Link>
               </FormColumn>

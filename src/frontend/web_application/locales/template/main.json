@@ -1,4 +1,5 @@
 {
+    "alpha.footer.feedback": "alpha.footer.feedback",
     "application_switcher.action.choose": "application_switcher.action.choose",
     "auth.feedback.deauth": "auth.feedback.deauth",
     "call-to-action.action.compose": "call-to-action.action.compose",
@@ -299,6 +300,7 @@
     "signup.form.username.label": "signup.form.username.label",
     "signup.form.username.placeholder": "signup.form.username.placeholder",
     "signup.go_signin": "signup.go_signin",
+    "signup.limited_registration": "signup.limited_registration",
     "signup.privacy.modal.close": "signup.privacy.modal.close",
     "signup.privacy.modal.label": "signup.privacy.modal.label",
     "signup.privacy.modal.text.alpha_tester": "signup.privacy.modal.text.alpha_tester",

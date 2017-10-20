@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import SignupForm from '../../components/SignupForm';
-import formValidator, { getLocalizedErrors } from './form-validator';
+import formValidator, { getLocalizedErrors, ERR_INVALID_GLOBAL } from './form-validator';
 
 const INVALID_FORM_REJECTION = 'INVALID_FORM_REJECTION';
 
@@ -109,13 +109,18 @@ class Signup extends Component {
     const localizedErrors = getLocalizedErrors(__);
 
     const getLocalizedError = (msg, field) =>
-      localizedErrors[`${msg}_${field.toUpperCase()}`];
+      localizedErrors[`${msg}_${field.toUpperCase()}`] ||
+      localizedErrors[ERR_INVALID_GLOBAL];
 
-    const { errors } = err.response.data;
+    const { errors = [] } = err.response.data;
     const global = Object.keys(errors).reduce((prev, field) => ([
       ...prev,
       ...errors[field].map(msg => getLocalizedError(msg, field)),
     ]), []);
+
+    if (global.length === 0) {
+      global.push(localizedErrors[ERR_INVALID_GLOBAL]);
+    }
     this.setState({ errors: { global } });
   }
 
