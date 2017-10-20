@@ -11,6 +11,7 @@
   &__username {
     @include flex-grid-column;
     overflow: hidden;
+    color: $co-color__fg__text--high;
     font-weight: bold;
   }
 }
