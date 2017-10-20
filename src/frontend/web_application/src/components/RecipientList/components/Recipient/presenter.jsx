@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import Badge from '../../../Badge';
 import Button from '../../../Button';
 import Icon from '../../../Icon';
-
-const ASSOC_PROTOCOL_ICON = {
-  email: 'envelope',
-  unknown: 'question-circle',
-};
+import { ASSOC_PROTOCOL_ICON } from '../../../../services/protocols-config';
 
 const getIconType = protocol => ASSOC_PROTOCOL_ICON[protocol] || ASSOC_PROTOCOL_ICON.unknown;
 
