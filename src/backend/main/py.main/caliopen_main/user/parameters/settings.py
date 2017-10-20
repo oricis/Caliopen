@@ -6,7 +6,7 @@ from schematics.models import Model
 from schematics.types import StringType, IntType, BooleanType
 
 MESSAGE_FORMAT_CHOICES = ['rich_text', 'plain_text']
-CONTACT_FORMAT_CHOICES = ['given_name', 'family_name',
+CONTACT_FORMAT_CHOICES = ['given_name, family_name',
                           'family_name, given_name']
 CONTACT_ORDER_CHOICES = ['family_name', 'given_name']
 PREVIEW_CHOICES = ['off', 'always']
