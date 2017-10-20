@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../form';
 import Button from '../Button';
 import Section from '../Section';
-import Link from '../Link';
+// import Link from '../Link';
 
 import './style.scss';
 
@@ -64,6 +64,11 @@ class SigninForm extends Component {
       <Section className="s-signin" title={__('signin.title')}>
         <FormGrid className="s-signin__form">
           <form method="post" {...form}>
+            <FormRow>
+              <FormColumn rightSpace={false} bottomSpace>
+                <div className="s-signin__alpha" dangerouslySetInnerHTML={__('signup.limited_registration', { withHTML: true })} />
+              </FormColumn>
+            </FormRow>
             { errors.global && (
               <FormRow>
                 <FormColumn rightSpace={false} bottomSpace>
@@ -112,9 +117,9 @@ class SigninForm extends Component {
               {/* <FormColumn rightSpace={false}>
                 <Link to="/auth/forgot-password">{__('signin.action.forgot_password')}</Link>
               </FormColumn> */}
-              <FormColumn rightSpace={false}>
+              {/* <FormColumn rightSpace={false}>
                 <Link to="/auth/signup">{__('signin.create_an_account')}</Link>
-              </FormColumn>
+              </FormColumn> */}
             </FormRow>
           </form>
         </FormGrid>

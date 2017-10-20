@@ -7,7 +7,7 @@ import Dropdown from '../Dropdown';
 import Button from '../Button';
 import Icon from '../Icon';
 import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
-import protocolsConfig from '../../services/protocols-config';
+import protocolsConfig, { ASSOC_PROTOCOL_ICON } from '../../services/protocols-config';
 import Recipient from './components/Recipient';
 import './style.scss';
 
@@ -33,10 +33,6 @@ const makeParticipant = ({
   contact_ids,
   type,
 });
-
-const assocProtocolIcon = {
-  email: 'envelope',
-};
 
 const getStateFromProps = props => ({
   recipients: props.recipients,
@@ -282,7 +278,7 @@ class RecipientList extends Component {
         {this.renderSearchResultLabel(identity, isContact, hasLabel)}
         <span className="m-recipient-list__search-result-info">
           <Icon
-            type={assocProtocolIcon[identity.protocol]}
+            type={ASSOC_PROTOCOL_ICON[identity.protocol]}
             aria-label={identity.protocol}
             rightSpaced
           />
