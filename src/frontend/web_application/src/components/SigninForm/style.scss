@@ -5,4 +5,10 @@
   max-width: map-get($co-form__width, 'xlarge');
 
   &__action { line-height: $co-component__height; }
+
+  &__alpha {
+    a {
+      color: white;
+    }
+  }
 }
