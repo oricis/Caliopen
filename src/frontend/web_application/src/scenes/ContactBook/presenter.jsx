@@ -133,11 +133,15 @@ class ContactBook extends Component {
               __={__}
             />
             <div className="l-contact-book__import">
-              <Button
-                icon="plus"
-                shape="hollow"
-                onClick={this.handleOpenImportModal}
-              >{__('import-contact.action.import_contacts')}</Button>
+              <div className="l-contact-book__import-button">
+                <Button
+                  icon="plus"
+                  className="l-contact-book__button"
+                  shape="hollow"
+                  display="expanded"
+                  onClick={this.handleOpenImportModal}
+                >{__('import-contact.action.import_contacts')}</Button>
+              </div>
               {this.renderImportModal()}
             </div>
           </div>

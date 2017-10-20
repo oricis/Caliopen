@@ -14,8 +14,16 @@
   }
 
   &__import {
+    @include flex-grid-row;
     margin-top: $co-margin;
+    margin-bottom: $co-margin;
   }
+
+  &__import-button {
+    @include flex-grid-column;
+  }
+
+  &__button { line-height: $co-component__height; }
 
   &__contact-list {
     @include flex-grid-size;
