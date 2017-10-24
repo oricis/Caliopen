@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Delete a message from Timeline
+- Delete a draft
 - Notify the user the draft is saved after a manual save
 
 ## [0.5.0]
