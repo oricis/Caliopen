@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
+import { settingsSelector } from '../store/selectors/settings';
 
-export const settingsSelector = state => state.settings.settings;
 const mapStateToProps = createSelector(
   [settingsSelector],
   settings => ({
@@ -11,4 +11,4 @@ const mapStateToProps = createSelector(
 
 const withSettings = () => Component => connect(mapStateToProps)(Component);
 
-export default withSettings;
+export { withSettings };

@@ -3,6 +3,7 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslator } from '@gandi/react-translate';
 import { editDraft, requestNewDraft, saveDraft, sendDraft } from '../../store/modules/draft-message';
+import { withNotification } from '../../hoc/notification';
 import Presenter from './presenter';
 
 const messageDraftSelector = state => state.draftMessage.draftsByInternalId;
@@ -21,14 +22,22 @@ const mapStateToProps = createSelector(
     internalId,
   })
 );
-const mapDispatchToProps = dispatch => bindActionCreators({
-  requestNewDraft,
-  editDraft,
-  saveDraft,
-  sendDraft,
-}, dispatch);
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  ...bindActionCreators({
+    requestNewDraft,
+    editDraft,
+    sendDraft,
+  }, dispatch),
+  saveDraft: params => dispatch(saveDraft(params))
+    .then(() => {
+      const { __, notifySuccess } = ownProps;
+
+      return notifySuccess({ message: __('draft.feedback.saved') });
+    }),
+});
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withTranslator()
+  withTranslator(),
+  withNotification(),
+  connect(mapStateToProps, mapDispatchToProps)
 )(Presenter);

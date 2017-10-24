@@ -154,13 +154,14 @@ const requestNewDraftSuccessHandler = ({ store, action }) => {
   store.dispatch(replace(newPathname));
 };
 
-const saveDraftHandler = ({ store, action }) => {
+const saveDraftMiddleware = store => next => (action) => {
   if (action.type !== SAVE_DRAFT) {
-    return;
+    return next(action);
   }
 
   const { internalId, draft, original } = action.payload;
-  createOrUpdateDraft({ internalId, draft, store, original });
+
+  return createOrUpdateDraft({ internalId, draft, store, original });
 };
 
 const editDraftHandler = ({ store, action }) => {
@@ -237,10 +238,8 @@ const replyToMessageHandler = async ({ store, action }) => {
 };
 
 export default store => next => (action) => {
-  if ([EDIT_DRAFT].indexOf(action.type) !== -1) {
-    if (throttled) {
-      throttled.cancel();
-    }
+  if ([EDIT_DRAFT, SAVE_DRAFT].indexOf(action.type) !== -1 && throttled) {
+    throttled.cancel();
   }
 
   if ([CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS].indexOf(action.type) !== -1 && throttled) {
@@ -252,7 +251,6 @@ export default store => next => (action) => {
 
   editDraftHandler({ store, action });
   requestDraftHandler({ store, action });
-  saveDraftHandler({ store, action });
   sendDraftHandler({ store, action });
   requestNewDraftHandler({ store, action });
   requestNewDraftSuccessHandler({ store, action });
@@ -260,3 +258,7 @@ export default store => next => (action) => {
 
   return result;
 };
+
+export const middlewares = [
+  saveDraftMiddleware,
+];
