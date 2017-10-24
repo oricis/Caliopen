@@ -6,12 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-
-## [0.5.0]
-
 ### Added
 
 - Notify the user the draft is saved after a manual save
+
+## [0.5.0]
 
 ### Added
 
