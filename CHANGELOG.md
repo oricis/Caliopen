@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Render correctly the frontend Server Side (%MARKUP% will not show up anymore)
 
 ## [0.5.0]
 

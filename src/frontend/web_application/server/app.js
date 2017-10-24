@@ -17,7 +17,7 @@ module.exports = () => {
   applyAPI(app);
   applyExpressReact(app);
 
-  if (process.env.HAS_SSR) {
+  if (process.env.HAS_SSR !== false) {
     // eslint-disable-next-line global-require
     const applySSR = require('./ssr');
     applySSR(app);
