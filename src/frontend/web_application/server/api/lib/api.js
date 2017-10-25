@@ -5,7 +5,7 @@ const { getConfig } = require('../../config');
 
 
 function query(params) {
-  const { api: { protocol, hostname, port } } = getConfig();
+  const { api: { protocol, hostname, port, checkCertificate } } = getConfig();
   const options = Object.assign({
     protocol: `${protocol}:`, hostname, port,
   }, this.defaults || {}, params);
@@ -16,6 +16,10 @@ function query(params) {
     postData = JSON.stringify(options.body);
     delete options.body;
     options.headers['Content-Length'] = Buffer.byteLength(postData);
+  }
+
+  if (!checkCertificate) {
+    options.rejectUnauthorized = false;
   }
 
   debug('\n', 'Preparing API query:', '\n', options);
