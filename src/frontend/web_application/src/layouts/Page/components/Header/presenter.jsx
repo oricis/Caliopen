@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import Button from '../../../../components/Button';
 import Brand from '../../../../components/Brand';
-import SearchField from './components/SearchField';
+// import SearchField from './components/SearchField';
 import UserMenu from './components/UserMenu';
 import './style.scss';
 
