@@ -6,13 +6,13 @@ const getApp = require('./app');
 const { getConfig, initConfig } = require('./config');
 const { version } = require('../package.json');
 
-const { options: { options: optionPath } } = argv
+const { options: { config: configPath } } = argv
   .option([
     {
-      name: 'options',
+      name: 'config',
       type: 'path',
       description: 'the file to set Caliopen options. See config/server.default.js for default options. This can be a regular js or a json file, cf. README.md.',
-      example: 'server --options=~/caliopen.webserver.json',
+      example: 'server --config=~/caliopen.webserver.json',
     },
   ])
   .version(version)
@@ -20,9 +20,10 @@ const { options: { options: optionPath } } = argv
   .run()
 ;
 
-if (optionPath) {
+if (configPath) {
   // read user's config file outside of webpack
-  const userOpts = JSON.parse(fs.readFileSync(path.join(optionPath), 'utf8'));
+  const userOpts = JSON.parse(fs.readFileSync(path.join(configPath), 'utf8'));
+
   initConfig(userOpts);
 }
 

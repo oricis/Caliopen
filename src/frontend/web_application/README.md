@@ -24,16 +24,16 @@ yarn
 bin/server
 ```
 
-### Options
+### Web Server Options
 
-You can set instance settings via environment variables and a js/json file:
+You can set instance config via environment variables and a json file:
 
 ```
 export CALIOPEN_API_HOSTNAME=api.foobar.tld
 ```
 
 ```
-bin/server --config=<path-to-file>.[js|json]
+NODE_ENV=production bin/server --config=<path-to-file>.json
 ```
 
 The default variables are set in `config/server.default.js`.
@@ -45,6 +45,8 @@ The precedence of config definitions:
 
 > env var > custom file > defaults
 
+Config for the client is not dynamic and can be done **in release** phase (see below).
+
 ## Release
 
 ```
@@ -52,6 +54,14 @@ NODE_ENV=production yarn release
 ```
 
 This will build the different packages to run Caliopen web server in the dist directory.
+
+### Client options
+
+Due to webpack restrictions, config can be pass using environment variables only.
+
+The default variables and environment variables definitions are set in `config/client.default.js`.
+
+We **strongly** recommand to overide `CALIOPEN_PIWIK_SITE_ID`.
 
 ## Code architecture
 
