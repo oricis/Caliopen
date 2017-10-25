@@ -1,4 +1,5 @@
 const http = require('http');
+const https = require('https');
 const debug = require('debug')('caliopen.web:app:api-query');
 const { getConfig } = require('../../config');
 
@@ -19,7 +20,8 @@ function query(params) {
 
   debug('\n', 'Preparing API query:', '\n', options);
 
-  const req = http.request(options, function queryResponseCallback(res) {
+  const request = protocol === 'https' ? https.request : http.request;
+  const req = request(options, function queryResponseCallback(res) {
     debug(
       '\n',
       'API query response:',
