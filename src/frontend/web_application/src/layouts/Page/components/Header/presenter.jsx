@@ -58,7 +58,9 @@ class Header extends Component {
             />
           </div>
           <div className={searchClassName}>
-            <div className="l-header__m-search-field"><SearchField /></div>
+            <div className="l-header__m-search-field">
+              {/* <SearchField /> */}
+            </div>
           </div>
           <div className="l-header__user"><UserMenu /></div>
         </div>
