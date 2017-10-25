@@ -13,7 +13,6 @@ module.exports = {
     protocol: 'http',
     hostname: 'api.dev.caliopen.org',
     port: 31415,
-    // XXX: not yet implemented
     checkCertificate: true,
   },
   cookie: {
