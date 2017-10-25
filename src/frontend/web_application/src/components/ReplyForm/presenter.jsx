@@ -26,6 +26,7 @@ class ReplyForm extends Component {
     onSend: PropTypes.func.isRequired,
     onChange: PropTypes.func,
     user: PropTypes.shape({}),
+    renderDraftMessageActionsContainer: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
@@ -98,7 +99,7 @@ class ReplyForm extends Component {
   }
 
   render() {
-    const { user, parentMessage, __ } = this.props;
+    const { user, parentMessage, renderDraftMessageActionsContainer, __ } = this.props;
     const dropdownId = uuidV1();
 
     return (
@@ -125,7 +126,7 @@ class ReplyForm extends Component {
               alignRight
               isMenu
               closeOnClick
-            />
+            >{renderDraftMessageActionsContainer()}</Dropdown>
           </TopRow>
           {parentMessage && (
             <div className="m-reply__parent">

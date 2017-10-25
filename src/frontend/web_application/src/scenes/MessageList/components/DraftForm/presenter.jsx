@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReplyFormBase from '../../../../components/ReplyForm';
 import NewDraftForm from '../../../../components/NewDraftForm';
+import DraftMessageActionsContainer from '../../../../components/DraftMessageActionsContainer';
 
 class DraftForm extends Component {
   static propTypes = {
@@ -14,6 +15,7 @@ class DraftForm extends Component {
     editDraft: PropTypes.func.isRequired,
     saveDraft: PropTypes.func.isRequired,
     sendDraft: PropTypes.func.isRequired,
+    onDeleteMessage: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
   };
 
@@ -46,6 +48,22 @@ class DraftForm extends Component {
     return action(params);
   };
 
+  handleDelete = () => {
+    const { message, discussionId, onDeleteMessage, allowEditRecipients } = this.props;
+
+    onDeleteMessage({ message, internalId: discussionId, isNewDiscussion: allowEditRecipients });
+  }
+
+  renderDraftMessageActionsContainer = () => {
+    const { message, discussionId } = this.props;
+
+    return (<DraftMessageActionsContainer
+      message={message}
+      internalId={discussionId}
+      onDelete={this.handleDelete}
+    />);
+  }
+
   render() {
     const {
        draft, discussionId, allowEditRecipients, user, editDraft, saveDraft, sendDraft,
@@ -59,6 +77,7 @@ class DraftForm extends Component {
         onChange={this.makeHandle(editDraft)}
         onSave={this.makeHandle(saveDraft)}
         onSend={this.makeHandle(sendDraft)}
+        renderDraftMessageActionsContainer={this.renderDraftMessageActionsContainer}
         user={user}
       />);
     }
@@ -70,6 +89,7 @@ class DraftForm extends Component {
         onChange={this.makeHandle(editDraft)}
         onSave={this.makeHandle(saveDraft)}
         onSend={this.makeHandle(sendDraft)}
+        renderDraftMessageActionsContainer={this.renderDraftMessageActionsContainer}
         user={user}
       />
     );

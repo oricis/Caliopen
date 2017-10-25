@@ -2,8 +2,9 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { scrollToWhen } from 'react-redux-scroll';
-import { editDraft, requestDraft, saveDraft, sendDraft } from '../../../../store/modules/draft-message';
-import { REPLY_TO_MESSAGE } from '../../../../store/modules/message';
+import { push } from 'react-router-redux';
+import { editDraft, requestDraft, saveDraft, sendDraft, clearDraft } from '../../../../store/modules/draft-message';
+import { REPLY_TO_MESSAGE, deleteMessage } from '../../../../store/modules/message';
 import { getLastMessage } from '../../../../services/message';
 import Presenter from './presenter';
 
@@ -40,11 +41,17 @@ const mapStateToProps = createSelector(
   }
 );
 
+const onDeleteMessage = ({ message, internalId, isNewDiscussion }) => dispatch =>
+  dispatch(deleteMessage({ message }))
+    .then(() => dispatch(clearDraft({ internalId })))
+    .then(() => isNewDiscussion && dispatch(push('/')));
+
 const mapDispatchToProps = dispatch => bindActionCreators({
   editDraft,
   requestDraft,
   saveDraft,
   sendDraft,
+  onDeleteMessage,
 }, dispatch);
 
 export default compose(

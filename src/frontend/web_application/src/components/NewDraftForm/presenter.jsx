@@ -30,6 +30,7 @@ class NewDraftForm extends Component {
     onSend: PropTypes.func.isRequired,
     onChange: PropTypes.func,
     user: PropTypes.shape({}),
+    renderDraftMessageActionsContainer: PropTypes.func.isRequired,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
@@ -103,7 +104,7 @@ class NewDraftForm extends Component {
   }
 
   render() {
-    const { user, internalId, __ } = this.props;
+    const { user, internalId, renderDraftMessageActionsContainer, __ } = this.props;
     const dropdownId = uuidV1();
     const recipients = this.state.draft.participants && this.state.draft.participants
       .filter(participant => participant.type.toLowerCase() !== 'from');
@@ -132,7 +133,7 @@ class NewDraftForm extends Component {
               alignRight
               isMenu
               closeOnClick
-            />
+            >{renderDraftMessageActionsContainer()}</Dropdown>
           </TopRow>
           <BodyRow className="m-new-draft__body">
             <RecipientList

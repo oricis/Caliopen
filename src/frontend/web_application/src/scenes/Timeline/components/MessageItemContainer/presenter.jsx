@@ -14,6 +14,7 @@ class MessageItemContainer extends Component {
     children: PropTypes.node.isRequired,
     __: PropTypes.func.isRequired,
     replyToMessage: PropTypes.func.isRequired,
+    deleteMessage: PropTypes.func.isRequired,
   };
 
   state = {
@@ -39,6 +40,11 @@ class MessageItemContainer extends Component {
   handleReply = () => {
     const { replyToMessage, message } = this.props;
     replyToMessage({ internalId: message.discussion_id, message });
+  }
+
+  handleDelete = () => {
+    const { deleteMessage, message } = this.props;
+    deleteMessage({ message });
   }
 
   handleSwipeLeft = () => {
