@@ -94,12 +94,14 @@ func GetMessage(ctx *gin.Context) {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
+		return
 	}
 	settings, err := caliopen.Facilities.RESTfacility.GetSettings(user_id)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
+		return
 	}
 	msg_json, err := msg.MarshalFrontEnd(settings.MessageDisplayFormat)
 	if err != nil {

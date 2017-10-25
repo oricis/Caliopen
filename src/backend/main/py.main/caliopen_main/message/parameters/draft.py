@@ -8,6 +8,8 @@ from .message import NewInboundMessage
 from caliopen_main.user.objects.identities import LocalIdentity
 from caliopen_main.user.core import User
 from caliopen_main.message.parameters.participant import Participant
+from caliopen_main.message.parameters.external_references import \
+    ExternalReferences
 from caliopen_storage.exception import NotFound
 from caliopen_main.discussion.store.discussion_index import \
     DiscussionIndexManager as DIM
@@ -174,6 +176,11 @@ class Draft(NewInboundMessage):
                         raise err.PatchConflict(message="provided message "
                                                         "parent_id does not belong "
                                                         "to this discussion")
+                else:
+                    self.parent_id = last_message.parent_id
+
+                self.update_external_references(user_id)
+
             else:
                 last_message = None
         else:
@@ -207,3 +214,21 @@ class Draft(NewInboundMessage):
                         re.match("cc", participant['type'], re.IGNORECASE) or \
                         re.match("bcc", participant['type'], re.IGNORECASE):
                     self.participants.pop(i)
+
+    def update_external_references(self, user_id):
+        """
+        copy externals references from current draft's ancestor
+        and change parent_id to reflect new message's hierarchy
+        :return:
+        """
+        from caliopen_main.message.objects.message import Message
+        parent_msg = Message(user_id, message_id=self.parent_id)
+        parent_msg.get_db()
+        parent_msg.unmarshall_db()
+        if parent_msg:
+            self.external_references = ExternalReferences(
+                vars(parent_msg.external_references))
+            self.external_references.ancestors_ids.append(
+                parent_msg.external_references.message_id)
+            self.external_references.parent_id = parent_msg.external_references.message_id
+            self.external_references.message_id = ""  # will be set by broker at sending time

@@ -7,6 +7,8 @@ package email_broker
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"encoding/base64"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/messages"
@@ -80,18 +82,26 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 		}
 	}
 
-	if msg.Parent_id != "" {
-		m.SetHeader("In-Reply-To", msg.Parent_id)
-		//TODO: handle "References" header (RFC5322#3.6.4)
+	if msg.External_references.Parent_id != "" {
+		m.SetHeader("In-Reply-To", "<"+msg.External_references.Parent_id+">")
+		ref := []string{}
+		for _, ancestors := range msg.External_references.Ancestors_ids {
+			ref = append(ref, "<"+ancestors+">")
+		}
+		m.SetHeader("References", strings.Join(ref, " "))
 	}
 
 	em.Message.Date = time.Now()
 	m.SetHeader("Date", em.Message.Date.Format(time.RFC1123Z))
 
-	//TODO: put a hash of message_id instead
-	messageId := "<" + msg.Message_id.String() + "@" + b.Config.PrimaryMailHost + ">" // should be the default domain in case there are multiple 'from' addresses
+	// sha256 internal message id to form external message id
+	hasher := sha256.New()
+	hasher.Write(em.Message.Message_id.Bytes())
+	sha := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+	messageId := sha + "@" + b.Config.PrimaryMailHost // should be the default domain in case there are multiple 'from' addresses
+	m.SetHeader("Message-ID", "<"+messageId+">")
 
-	m.SetHeader("Message-ID", messageId)
+	em.Message.External_references.Message_id = messageId
 	m.SetHeader("X-Mailer", "Caliopen-"+b.Config.AppVersion)
 
 	//TODO: In-Reply-To header
@@ -165,6 +175,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 		log.WithError(err).Warn("outbound: storing raw email failed")
 		return err
 	}
+
 	// clean-up attachments' temporary files
 	for _, attachment := range ack.EmailMessage.Message.Attachments {
 		b.Store.DeleteAttachment(attachment.URL)
@@ -193,10 +204,12 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	}
 	// update caliopen message status
 	fields := make(map[string]interface{})
+
 	fields["raw_msg_id"] = m.Raw_msg_id.String()
 	fields["is_draft"] = false
 	fields["date"] = ack.EmailMessage.Message.Date
 	fields["attachments"] = ack.EmailMessage.Message.Attachments
+	fields["external_references"] = ack.EmailMessage.Message.External_references
 	err = b.Store.UpdateMessage(ack.EmailMessage.Message, fields)
 	if err != nil {
 		log.Warn("Store.UpdateMessage operation failed")
