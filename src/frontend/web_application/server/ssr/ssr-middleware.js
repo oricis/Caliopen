@@ -14,7 +14,6 @@ function getMarkup({ store, context, location }) {
   try {
     const { protocol, hostname, port } = getConfig();
     const config = { protocol, hostname, port };
-    console.log('getMarkup', config);
     const markup = ReactDOMServer.renderToString(
       React.createElement(Bootstrap, {
         context, location, store, config,

@@ -7,11 +7,7 @@ import configureStore from './store/configure-store';
 import getRouterHistory from './services/router-history';
 import { getUserLocales } from './services/i18n';
 import { getDefaultSettings } from './services/settings';
-
-const piwik = PiwikReactRouter({
-  url: 'https://piwik.caliopen.org/analytics',
-  siteId: 6,
-});
+import { getConfig } from './services/config';
 
 let devTools;
 
@@ -21,18 +17,31 @@ if (CALIOPEN_ENV === 'development') {
 
 const locales = getUserLocales();
 const settings = getDefaultSettings(locales[0]);
+const getHistory = () => {
+  const history = getRouterHistory();
+  const { piwik: { siteId } } = getConfig();
+  if (siteId) {
+    const piwik = PiwikReactRouter({
+      url: 'https://piwik.caliopen.org/analytics',
+      siteId,
+    });
+
+    return piwik.connectToHistory(history);
+  }
+
+  return history;
+};
 
 const store = configureStore({
   settings: {
     settings,
   },
 }, devTools);
-const history = getRouterHistory();
 
 const rootEl = document.getElementById('root');
 ReactDOM.render(
   (
-    <ConnectedRouter store={store} history={piwik.connectToHistory(history)}>
+    <ConnectedRouter store={store} history={getHistory()}>
       <App store={store} />
     </ConnectedRouter>
   ),

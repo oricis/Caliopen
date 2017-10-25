@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Delete a draft
 - Notify the user the draft is saved after a manual save
 
+### Fixed
+
+- support https in api query configuration
+- Render correctly the frontend Server Side (%MARKUP% will not show up anymore)
+
 ## [0.5.0]
 
 ### Added

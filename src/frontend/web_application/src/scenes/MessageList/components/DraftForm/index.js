@@ -1,12 +1,17 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { scrollToWhen } from 'react-redux-scroll';
 import { push } from 'react-router-redux';
 import { editDraft, requestDraft, saveDraft, sendDraft, clearDraft } from '../../../../store/modules/draft-message';
 import { REPLY_TO_MESSAGE, deleteMessage } from '../../../../store/modules/message';
 import { getLastMessage } from '../../../../services/message';
 import Presenter from './presenter';
+
+let scrollToWhen;
+
+if (BUILD_TARGET === 'browser') {
+  scrollToWhen = require('react-redux-scroll').scrollToWhen; // eslint-disable-line
+}
 
 const messageDraftSelector = state => state.draftMessage.draftsByInternalId;
 const discussionIdSelector = (state, ownProps) => ownProps.discussionId;
@@ -54,7 +59,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   onDeleteMessage,
 }, dispatch);
 
-export default compose(
+export default compose(...[
   connect(mapStateToProps, mapDispatchToProps),
-  scrollToWhen(REPLY_TO_MESSAGE)
-)(Presenter);
+  ...(scrollToWhen ? [scrollToWhen(REPLY_TO_MESSAGE)] : []),
+])(Presenter);

@@ -1,10 +1,11 @@
 const http = require('http');
+const https = require('https');
 const debug = require('debug')('caliopen.web:app:api-query');
 const { getConfig } = require('../../config');
 
 
 function query(params) {
-  const { api: { protocol, hostname, port } } = getConfig();
+  const { api: { protocol, hostname, port, checkCertificate } } = getConfig();
   const options = Object.assign({
     protocol: `${protocol}:`, hostname, port,
   }, this.defaults || {}, params);
@@ -17,9 +18,14 @@ function query(params) {
     options.headers['Content-Length'] = Buffer.byteLength(postData);
   }
 
+  if (!checkCertificate) {
+    options.rejectUnauthorized = false;
+  }
+
   debug('\n', 'Preparing API query:', '\n', options);
 
-  const req = http.request(options, function queryResponseCallback(res) {
+  const request = protocol === 'https' ? https.request : http.request;
+  const req = request(options, function queryResponseCallback(res) {
     debug(
       '\n',
       'API query response:',
