@@ -35,6 +35,7 @@ type (
 
 // build ES queries and responses for finding relevant recipients when an user compose a message
 func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) (suggests []RecipientSuggestion, err error) {
+	suggests = []RecipientSuggestion{}
 	q_string := `*` + query_string + `*`
 
 	// build nested queries for participants lookup
