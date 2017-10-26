@@ -30,7 +30,7 @@ type Message struct {
 	Is_draft            bool               `cql:"is_draft"                 json:"is_draft"         `
 	Is_unread           bool               `cql:"is_unread"                json:"is_unread"        `
 	Message_id          UUID               `cql:"message_id"               json:"message_id"                                   formatter:"rfc4122"`
-	Parent_id           string             `cql:"parent_id"                json:"parent_id"        `
+	Parent_id           UUID               `cql:"parent_id"                json:"parent_id"        `
 	Participants        []Participant      `cql:"participants"             json:"participants"     `
 	Privacy_features    PrivacyFeatures    `cql:"privacy_features"         json:"privacy_features" `
 	PrivacyIndex        *PrivacyIndex      `cql:"pi"                       json:"pi"`
@@ -214,7 +214,13 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 			msg.Message_id.UnmarshalBinary(id.Bytes())
 		}
 	}
-	msg.Parent_id, _ = input["parent_id"].(string)
+
+	if parent_id, ok := input["parent_id"].(string); ok {
+		if id, err := uuid.FromString(parent_id); err == nil {
+			msg.Parent_id.UnmarshalBinary(id.Bytes())
+		}
+	}
+
 	msg.Participants = []Participant{}
 	if _, ok := input["participants"]; ok {
 		for _, participant := range input["participants"].([]interface{}) {
@@ -300,10 +306,13 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	msg.Is_answered, _ = input["is_answered"].(bool)
 	msg.Is_draft, _ = input["is_draft"].(bool)
 	msg.Is_unread, _ = input["is_unread"].(bool)
+
 	message_id, _ := input["message_id"].(gocql.UUID)
 	msg.Message_id.UnmarshalBinary(message_id.Bytes())
-	msg.Parent_id, _ = input["parent_id"].(string)
-	msg.Participants = []Participant{}
+
+	parent_id, _ := input["parent_id"].(gocql.UUID)
+	msg.Parent_id.UnmarshalBinary(parent_id.Bytes())
+
 	if _, ok := input["participants"]; ok {
 		for _, participant := range input["participants"].([]map[string]interface{}) {
 			p := Participant{}

@@ -2,7 +2,6 @@
 """Caliopen storage model for messages."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-
 from cassandra.cqlengine import columns
 
 from caliopen_storage.store.model import BaseModel
@@ -15,7 +14,6 @@ from .attachment import MessageAttachment
 from .external_references import ExternalReferences
 from .participant import Participant
 from .message_index import IndexedMessage
-
 
 import uuid
 
@@ -39,7 +37,7 @@ class Message(BaseModel, IndexedModelMixin):
     is_draft = columns.Boolean()
     is_unread = columns.Boolean()
     message_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    parent_id = columns.Text()
+    parent_id = columns.UUID()
     participants = columns.List(columns.UserDefinedType(Participant))
     privacy_features = columns.Map(columns.Text(), columns.Text())
     pi = columns.UserDefinedType(PIModel)
