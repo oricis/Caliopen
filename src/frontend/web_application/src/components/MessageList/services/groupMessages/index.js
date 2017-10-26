@@ -1,7 +1,7 @@
 const groupMessages = messages => [...messages]
-  .sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
+  .sort((a, b) => Date.parse(a.date_insert) - Date.parse(b.date_insert))
   .reduce((acc, message) => {
-    const datetime = new Date(message.date);
+    const datetime = new Date(message.date_insert);
     const oneDayAgo = new Date();
     oneDayAgo.setHours(oneDayAgo.getHours() - 24);
     let date = new Date(Date.UTC(
