@@ -14,7 +14,8 @@ from caliopen_storage.helpers.connection import connect_storage
 from caliopen_cli.commands import (shell, import_email,
                                    setup_storage, create_user,
                                    import_vcard, dump_model,
-                                   inject_email, basic_compute)
+                                   inject_email, basic_compute,
+                                   import_reserved_names)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -76,6 +77,11 @@ def main(args=sys.argv):
     sp_compute.set_defaults(func=basic_compute)
     sp_compute.add_argument('-u', dest='username', help='username')
     sp_compute.add_argument('-j', dest='job', help='job name')
+
+    sp_reserved = subparsers.add_parser('reserved_names',
+                                        help='Import reserved names list')
+    sp_reserved.set_defaults(func=import_reserved_names)
+    sp_reserved.add_argument('-i', dest='input_file', help='csv file')
 
     kwargs = parser.parse_args(args[1:])
     kwargs = vars(kwargs)
