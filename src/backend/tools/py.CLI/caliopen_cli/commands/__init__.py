@@ -6,3 +6,4 @@ from .inject_email import inject_email
 from .import_vcard import import_vcard
 from .dump_model import dump_model
 from .compute import basic_compute
+from .reserved_names import import_reserved_names
