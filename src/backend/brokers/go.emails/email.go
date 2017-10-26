@@ -82,15 +82,6 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 		}
 	}
 
-	if msg.External_references.Parent_id != "" {
-		m.SetHeader("In-Reply-To", "<"+msg.External_references.Parent_id+">")
-		ref := []string{}
-		for _, ancestors := range msg.External_references.Ancestors_ids {
-			ref = append(ref, "<"+ancestors+">")
-		}
-		m.SetHeader("References", strings.Join(ref, " "))
-	}
-
 	em.Message.Date = time.Now()
 	m.SetHeader("Date", em.Message.Date.Format(time.RFC1123Z))
 
@@ -102,6 +93,16 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 	m.SetHeader("Message-ID", "<"+messageId+">")
 
 	em.Message.External_references.Message_id = messageId
+
+	if msg.External_references.Parent_id != "" {
+		m.SetHeader("In-Reply-To", "<"+msg.External_references.Parent_id+">")
+		ref := []string{}
+		for _, ancestors := range msg.External_references.Ancestors_ids {
+			ref = append(ref, "<"+ancestors+">")
+		}
+		m.SetHeader("References", strings.Join(ref, " "))
+	}
+
 	m.SetHeader("X-Mailer", "Caliopen-"+b.Config.AppVersion)
 
 	//TODO: In-Reply-To header
@@ -149,9 +150,10 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 }
 
 // executed by natsMsgHandler after an outgoing email has been transmitted to the MTA without error
-// it flags the caliopen message to 'sent' in cassandra and elastic
-// cleans-up temporary attachment files if any
-// and stores the raw outbound email
+//  - flags the caliopen message to 'sent' in cassandra and elastic
+//  - cleans-up temporary attachment files if any
+//  - stores raw outbound email counterpart
+//  - creates discussion lookup entry
 func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 
 	// save raw email in db
@@ -172,7 +174,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	}
 	err = b.Store.StoreRawMessage(m)
 	if err != nil {
-		log.WithError(err).Warn("outbound: storing raw email failed")
+		log.WithError(err).Warn("[Email Broker] outbound: storing raw email failed")
 		return err
 	}
 
@@ -212,14 +214,24 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	fields["external_references"] = ack.EmailMessage.Message.External_references
 	err = b.Store.UpdateMessage(ack.EmailMessage.Message, fields)
 	if err != nil {
-		log.Warn("Store.UpdateMessage operation failed")
+		log.WithError(err).Warn("[Email Broker] Store.UpdateMessage operation failed")
 	}
 	err = b.Index.UpdateMessage(ack.EmailMessage.Message, fields)
 	if err != nil {
-		log.Warn("Index.UpdateMessage operation failed")
+		log.WithError(err).Warn("[Email Broker] Index.UpdateMessage operation failed")
 	}
 
-	//TODO : add external message-id (and parent-id if any) to external_references
+	// if needed :
+	// insert new entry into discussion_lookup table
+	// with message's external reference
+	if ack.EmailMessage.Message.External_references.Parent_id == "" {
+		err = b.Store.CreateThreadLookup(ack.EmailMessage.Message.User_id,
+			ack.EmailMessage.Message.Discussion_id,
+			ack.EmailMessage.Message.External_references.Message_id)
+		if err != nil {
+			log.WithError(err).Warn("[Email Broker] Store.CreateThreadLookup operation failed")
+		}
+	}
 	return err
 }
 
@@ -229,7 +241,7 @@ func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id UUID) (msg *Messa
 
 	parsed_mail, err := mail.ReadMessage(&em.Email.Raw)
 	if err != nil {
-		log.Warn("unable to parse email with raw_id : %s", em.Message.Raw_msg_id)
+		log.WithError(err).Warn("[Email Broker] unable to parse email with raw_id : %s", em.Message.Raw_msg_id)
 		return nil, err
 	}
 
@@ -237,7 +249,7 @@ func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id UUID) (msg *Messa
 	m_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	mail_date, err := parsed_mail.Header.Date()
 	if err != nil {
-		log.WithError(err).Warn("unable to parse email's date")
+		log.WithError(err).Warn("[Email Broker] unable to parse email's date")
 	}
 
 	/*
