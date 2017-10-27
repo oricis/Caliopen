@@ -27,12 +27,11 @@ class Message extends Component {
     onReply: PropTypes.func.isRequired,
     onCopyTo: PropTypes.func.isRequired,
     onEditTags: PropTypes.func.isRequired,
-    locale: PropTypes.string,
+    settings: PropTypes.shape({}).isRequired,
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    locale: undefined,
   };
 
   state = {
@@ -106,7 +105,8 @@ class Message extends Component {
 
   render() {
     const {
-      message, locale, onDelete, onMessageUnread, onMessageRead, onReply, onCopyTo, onEditTags, __,
+      message, settings: { default_locale: locale }, onDelete, onMessageUnread, onMessageRead,
+      onReply, onCopyTo, onEditTags, __,
     } = this.props;
     const author = message.participants.find(participant => participant.type === 'From');
     const typeTranslations = {

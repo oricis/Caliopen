@@ -16,8 +16,8 @@ describe('Discussions', () => {
       })
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => {
-        expect(element.all(by.cssContainingText('.s-timeline .s-message-item', 'Jaune john (john@caliopen.local)')).first().getText())
-          .toContain('12:55');
+        expect(element.all(by.css('.s-timeline .s-message-item')).first().getText())
+          .toContain('Fry! Stay back! He\'s too powerful!');
         expect(element.all(by.css('.s-message-item')).count()).toEqual(7);
         expect(
           element(by.cssContainingText('.s-timeline__load-more', 'Load more')).isPresent()
