@@ -24,6 +24,8 @@ describe('Compose new message', () => {
       const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('Compose'));
 
       browser.get('/')
+      // XXX: click .btn--principal to force :hover callback actions
+        .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
         .then(() => browser.wait(EC.presenceOf($('.m-new-draft')), 1000))
         .then(() => element.all(by.css('.m-navbar-item .m-item-link'))
@@ -58,6 +60,8 @@ describe('Compose new message', () => {
       const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('Compose'));
 
       browser.get('/')
+      // XXX: click .btn--principal to force :hover callback actions
+        .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
         .then(() => browser.wait(EC.presenceOf($('.m-new-draft')), 1000))
         .then(() =>
@@ -93,6 +97,8 @@ describe('Compose new message', () => {
       const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('Compose'));
 
       browser.get('/')
+      // XXX: click .btn--principal to force :hover callback actions
+        .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
         .then(() => browser.wait(EC.presenceOf($('.m-new-draft')), 1000))
         .then(() => {
@@ -131,6 +137,8 @@ describe('Compose new message', () => {
       const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('Compose'));
 
       browser.get('/')
+      // XXX: click .btn--principal to force :hover callback actions
+        .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
         .then(() => browser.wait(EC.presenceOf($('.m-new-draft')), 1000))
         .then(() => {
@@ -173,6 +181,8 @@ describe('Compose new message', () => {
       const dropdownSelector = by.css('.m-recipient-list__search .m-dropdown');
 
       browser.get('/')
+      // XXX: click .btn--principal to force :hover callback actions
+        .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
         .then(() => browser.wait(EC.presenceOf($('.m-new-draft')), 1000))
         .then(() => {
@@ -211,6 +221,8 @@ describe('Compose new message', () => {
       const searchResultItemsSelector = by.css('.m-recipient-list__search-result');
 
       browser.get('/')
+      // XXX: click .btn--principal to force :hover callback actions
+        .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
         .then(() => browser.wait(EC.presenceOf($('.m-new-draft')), 1000))
         .then(() => {
