@@ -2,8 +2,8 @@ const seal = require('../lib/seal');
 const Auth = require('../lib/Auth');
 const { getConfig } = require('../../config');
 const { COOKIE_NAME, COOKIE_OPTIONS } = require('../lib/cookie');
+const { DEFAULT_REDIRECT } = require('../lib/redirect');
 
-const REDIRECT = '/';
 const ERR_REQUIRED = 'ERR_REQUIRED';
 const ERR_INVALID = 'ERR_INVALID';
 
@@ -70,7 +70,7 @@ const createLoginRouting = (router) => {
             res.cookie(COOKIE_NAME, sealed, COOKIE_OPTIONS);
 
             if (!req.xhr) {
-              const redirect = req.query.redirect || REDIRECT;
+              const redirect = req.query.redirect || DEFAULT_REDIRECT;
               res.redirect(redirect);
             } else {
               res.send({ success: 'success' });

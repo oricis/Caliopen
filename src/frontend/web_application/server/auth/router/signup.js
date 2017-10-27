@@ -1,27 +1,15 @@
 const seal = require('../lib/seal');
 const Auth = require('../lib/Auth');
+const { getConfig } = require('../../config');
+const { COOKIE_NAME, COOKIE_OPTIONS } = require('../lib/cookie');
+const { DEFAULT_REDIRECT } = require('../lib/redirect');
 
-const FORM_PROPS = { action: '/auth/signup', method: 'POST' };
 const ERR_REQUIRED = 'ERR_REQUIRED';
 const ERR_INVALID = 'ERR_INVALID';
 
-const getDevInfos = config => ({
-  version: config.version,
-});
-
-const getFormParam = (req) => {
-  const form = Object.assign({}, FORM_PROPS);
-
-  if (req.originalUrl.indexOf('?') !== -1) {
-    form.action += `?${req.originalUrl.split('?')[1]}`;
-  }
-
-  return form;
-};
-
 const authenticateAfterSignup = (req, res, next) => {
   const { username, password } = req.body;
-  const auth = new Auth(req.config);
+  const auth = new Auth();
 
   auth.authenticate({
     username,
@@ -38,33 +26,26 @@ const authenticateAfterSignup = (req, res, next) => {
         return;
       }
 
+      const { seal: { secret } } = getConfig();
+
       seal.encode(
         user,
-        req.config.seal.secret,
+        secret,
         (err, sealed) => {
           if (err || !seal) {
             next(err || new Error('Unexpected Error'));
 
             return;
           }
-          res.cookie(req.config.cookie.name, sealed, req.config.cookie.options);
-          const redirect = req.query.redirect || '/';
-          const url = `${req.config.frontend.rootPath.replace(/\/$/, '')}${redirect}`;
-          res.redirect(url);
+          res.cookie(COOKIE_NAME, sealed, COOKIE_OPTIONS);
+          const redirect = req.query.redirect || DEFAULT_REDIRECT;
+          res.redirect(redirect);
         }
       );
     },
-    error: (error) => {
-      error = error || new Error('Bad gateway');
-      if (error.status && error.status >= 400 && error.status < 500) {
-        res.status(error.status);
-        errors.global = ['Username or password is invalid'];
-        res.render('login.component', { form: getFormParam(req), errors, formValues: values, devInfos: getDevInfos(req.config) });
-
-        return;
-      }
-
-      error.status = error.status || 502;
+    error: () => {
+      const error = new Error('Unable to automatically authenticate after signup');
+      error.status = 502;
       next(error);
     },
   });
@@ -109,7 +90,7 @@ const createSignupRouting = (router) => {
       return;
     }
 
-    const auth = new Auth(req.config);
+    const auth = new Auth();
 
     auth.signup({
       body: values,

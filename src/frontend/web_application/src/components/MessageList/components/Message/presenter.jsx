@@ -27,12 +27,11 @@ class Message extends Component {
     onReply: PropTypes.func.isRequired,
     onCopyTo: PropTypes.func.isRequired,
     onEditTags: PropTypes.func.isRequired,
-    locale: PropTypes.string,
+    settings: PropTypes.shape({}).isRequired,
     __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    locale: undefined,
   };
 
   state = {
@@ -106,7 +105,8 @@ class Message extends Component {
 
   render() {
     const {
-      message, locale, onDelete, onMessageUnread, onMessageRead, onReply, onCopyTo, onEditTags, __,
+      message, settings: { default_locale: locale }, onDelete, onMessageUnread, onMessageRead,
+      onReply, onCopyTo, onEditTags, __,
     } = this.props;
     const author = message.participants.find(participant => participant.type === 'From');
     const typeTranslations = {
@@ -145,9 +145,9 @@ class Message extends Component {
                 <Icon type={message.type} className="m-message__type-icon" spaced />
               </div>
             )}
-            {message.date &&
+            {message.date_insert &&
               <Moment className="m-message__date" format="LT" locale={locale}>
-                {message.date}
+                {message.date_insert}
               </Moment> }
 
             <DropdownControl toggleId={this.dropdownId} className="m-message__actions-switcher" icon="ellipsis-v" />
