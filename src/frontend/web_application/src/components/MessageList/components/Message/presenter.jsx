@@ -145,9 +145,9 @@ class Message extends Component {
                 <Icon type={message.type} className="m-message__type-icon" spaced />
               </div>
             )}
-            {message.date &&
+            {message.date_insert &&
               <Moment className="m-message__date" format="LT" locale={locale}>
-                {message.date}
+                {message.date_insert}
               </Moment> }
 
             <DropdownControl toggleId={this.dropdownId} className="m-message__actions-switcher" icon="ellipsis-v" />

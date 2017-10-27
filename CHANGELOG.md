@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- fix sort in discussions
 - support https in api query configuration
 - Render correctly the frontend Server Side (%MARKUP% will not show up anymore)
 

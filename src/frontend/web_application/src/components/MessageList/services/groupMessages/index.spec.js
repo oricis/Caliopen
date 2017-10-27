@@ -7,9 +7,9 @@ describe('service MessageList groupMessages', () => {
 
   it('give an object with 2 groups', () => {
     const messages = [
-      { date: '2017-01-03' },
-      { date: '2017-01-01' },
-      { date: '2017-01-01' },
+      { date_insert: '2017-01-03' },
+      { date_insert: '2017-01-01' },
+      { date_insert: '2017-01-01' },
     ];
 
     expect(groupMessages(messages)).toEqual({
@@ -24,8 +24,8 @@ describe('service MessageList groupMessages', () => {
     oneHourAgo.setHours(oneHourAgo.getHours() - 1);
     twoHoursAgo.setHours(twoHoursAgo.getHours() - 2);
     const messages = [
-      { date: twoHoursAgo.toJSON() },
-      { date: oneHourAgo.toJSON() },
+      { date_insert: twoHoursAgo.toJSON() },
+      { date_insert: oneHourAgo.toJSON() },
     ];
 
     expect(groupMessages(messages)).toEqual({
