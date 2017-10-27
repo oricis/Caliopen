@@ -32,9 +32,10 @@ const createDraft = async ({ internalId, draft, store }) => {
   throw new Error(`Unexpected type ${resultAction.type} in createDraft`);
 };
 
-const updateDraft = async ({ draft, original, store }) => store.dispatch(updateMessage({
+const updateDraft = async ({ internalId, draft, original, store }) => store.dispatch(updateMessage({
   message: draft, original,
 })).then(() => getMessageUpToDate({ store, messageId: draft.message_id }))
+.then(message => store.dispatch(syncDraft({ internalId, draft: message })))
 .catch(() => {
   const { translate: __ } = getTranslator();
   const notification = {
@@ -49,7 +50,7 @@ const updateDraft = async ({ draft, original, store }) => store.dispatch(updateM
 
 const createOrUpdateDraft = async ({ internalId, draft, store, original }) => {
   if (draft.message_id) {
-    return updateDraft({ draft, original, store });
+    return updateDraft({ internalId, draft, original, store });
   }
 
   return createDraft({ internalId, draft, store });
