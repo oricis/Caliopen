@@ -21,7 +21,7 @@ describe('Compose new message', () => {
   describe('navigation between drafts', () => {
     it('creates a new draft', () => {
       const text1 = 'Compose creates a new draft';
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn--principal', __('Compose'));
+      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('Compose'));
 
       browser.get('/')
         .then(() => element(writeButtonSelector).click())
@@ -55,7 +55,7 @@ describe('Compose new message', () => {
     it('composes a new message with no recipients', () => {
       const text1 = 'new message with no rcpts ';
 
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn--principal', __('Compose'));
+      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('Compose'));
 
       browser.get('/')
         .then(() => element(writeButtonSelector).click())
@@ -90,7 +90,7 @@ describe('Compose new message', () => {
     it('composes a new message with a known recipient', () => {
       const text1 = 'new message for a known recipient';
 
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn--principal', __('Compose'));
+      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('Compose'));
 
       browser.get('/')
         .then(() => element(writeButtonSelector).click())
@@ -128,7 +128,7 @@ describe('Compose new message', () => {
 
   describe('recipient search results manipulation', () => {
     it('has no suggestions for an already selected recipient', () => {
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn--principal', __('Compose'));
+      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('Compose'));
 
       browser.get('/')
         .then(() => element(writeButtonSelector).click())
@@ -169,7 +169,7 @@ describe('Compose new message', () => {
     });
 
     it('shows and hide rcpt search results', () => {
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn--principal', __('Compose'));
+      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('Compose'));
       const dropdownSelector = by.css('.m-recipient-list__search .m-dropdown');
 
       browser.get('/')
@@ -207,7 +207,7 @@ describe('Compose new message', () => {
     });
 
     it('can use keyboard arrows to select search result', () => {
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn--principal', __('Compose'));
+      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('Compose'));
       const searchResultItemsSelector = by.css('.m-recipient-list__search-result');
 
       browser.get('/')
