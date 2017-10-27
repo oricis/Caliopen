@@ -81,6 +81,17 @@ export function setRecipientSearchTerms({ internalId, searchTerms }) {
   };
 }
 
+function syncReadOnlyProps(state, draft) {
+  const {
+    excerpt,
+  } = draft;
+
+  return {
+    ...state,
+    excerpt,
+  };
+}
+
 function draftReducer(state = {}, action) {
   switch (action.type) {
     case REQUEST_DRAFT_SUCCESS:
@@ -94,6 +105,7 @@ function draftReducer(state = {}, action) {
       return {
         ...action.payload.draft,
         ...state,
+        ...syncReadOnlyProps(state, action.payload.draft),
       };
     default:
       return state;
