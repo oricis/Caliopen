@@ -29,7 +29,7 @@ func (b *EmailBroker) startOutcomingSmtpAgent() error {
 	sub, err := b.NatsConn.QueueSubscribe(b.Config.OutTopic, b.Config.NatsQueue, func(msg *nats.Msg) {
 		_, err := b.natsMsgHandler(msg)
 		if err != nil {
-			log.WithError(err).Warn("broker outbound : nats msg handler failed to process incoming msg")
+			log.WithError(err).Warn("[broker outbound] : nats msg handler failed to process incoming msg")
 		}
 
 	})
@@ -46,8 +46,12 @@ func (b *EmailBroker) startOutcomingSmtpAgent() error {
 // retrieves a caliopen message from db, build an email from it
 // sends the email to recipient(s) and stores the raw email sent in db
 func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
+	resp = []byte{}
 	var order natsOrder
-	json.Unmarshal(msg.Data, &order)
+	err = json.Unmarshal(msg.Data, &order)
+	if err != nil {
+		return
+	}
 
 	if order.Order == "deliver" {
 		//retrieve message from db
@@ -120,15 +124,20 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 // assuming well formatted NATS JSON message
 // hydrates the natsOrder with provided data
 func (msg *natsOrder) UnmarshalJSON(data []byte) error {
-	msg.Order = string(data[10:17])
-	msg.MessageId = string(data[34:70])
-	msg.UserId = string(data[84:120])
-	//TODO: error handling
+	//TODO: better error handling
+	if len(data) == 122 {
+		msg.Order = string(data[10:17])
+		msg.MessageId = string(data[34:70])
+		msg.UserId = string(data[84:120])
+	} else {
+		log.Warnf("[Broker outbound] invalid natsOrder length for nats message : %s", data)
+		return fmt.Errorf("[Broker outbound] invalid natsOrder length. Should be 122 bytes it is : %d", len(data))
+	}
 	return nil
 }
 
 func (b *EmailBroker) natsReplyError(msg *nats.Msg, err error) {
-	log.Warn("email broker [outbound] : error when processing incoming nats message")
+	log.WithError(err).Warn("email broker [outbound] : error when processing incoming nats message")
 
 	var order natsOrder
 	json.Unmarshal(msg.Data, &order)
