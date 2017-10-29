@@ -6,13 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.5.1] 2017-10-29
+
 ### Fixed
 
 - fix sort in discussions
 - support https in api query configuration
 - Render correctly the frontend Server Side (%MARKUP% will not show up anymore)
+- fix empty UUID on patch #574
+- lmtp crash with invalid nats message #575
+- attach correctly to same discussion first outbound message and its reply #566
+- handle better invalid message unmarshalling #579
 
-## [0.5.0]
+## [0.5.0] 2017-10-25
 
 ### Added
 
