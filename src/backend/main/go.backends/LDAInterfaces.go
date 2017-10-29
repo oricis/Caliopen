@@ -18,8 +18,9 @@ type LDAStore interface {
 	CreateMessage(msg *Message) error
 
 	StoreRawMessage(msg RawMessage) (err error)
-
 	UpdateMessage(msg *Message, fields map[string]interface{}) error
+	CreateThreadLookup(user_id, discussion_id UUID, external_msg_id string) error
+
 	LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error)
 
 	GetAttachment(uri string) (file io.Reader, err error)

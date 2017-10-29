@@ -43,6 +43,9 @@ class Contact extends Component {
     isFetching: PropTypes.bool,
     form: PropTypes.string.isRequired,
     contact_display_format: PropTypes.string.isRequired,
+    currentTab: PropTypes.shape({}),
+    removeTab: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
     // birthday: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
@@ -50,6 +53,7 @@ class Contact extends Component {
     isFetching: false,
     removeContact: noop,
     contact: undefined,
+    currentTab: undefined,
     contactId: undefined,
     birthday: undefined,
   };
@@ -112,6 +116,19 @@ class Contact extends Component {
     this.props.handleSubmit(ev).then(() => this.props.contactId && this.toggleEditMode());
   }
 
+  handleCancel = () => {
+    const { currentTab, contactId } = this.props;
+    if (!contactId) {
+      if (currentTab) {
+        return this.props.removeTab(currentTab);
+      }
+
+      return this.props.push('/contacts');
+    }
+
+    return this.toggleEditMode();
+  }
+
   renderTagsModal = () => {
     const { contact, updateContact, __ } = this.props;
     const count = contact.tags ? contact.tags.length : 0;
@@ -140,7 +157,7 @@ class Contact extends Component {
     return (
       <div className="s-contact__edit-bar">
         <Button
-          onClick={this.toggleEditMode}
+          onClick={this.handleCancel}
           responsive="icon-only"
           icon="remove"
           className="s-contact__action"

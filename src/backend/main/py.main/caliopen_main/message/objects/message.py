@@ -185,6 +185,13 @@ class Message(ObjectIndexable):
         if "participants" in params:
             validated_params["participants"] = validated_draft["participants"]
 
+        # remove empty UUIDs from current state if any
+        if "parent_id" in current_state and current_state["parent_id"] == "":
+            del (current_state["parent_id"])
+        if "discussion_id" in current_state and current_state[
+            "discussion_id"] == "":
+            del (current_state["discussion_id"])
+
         # handle body key mapping to body_plain or body_html
         # TODO: handle plain/html flag to map to right field
         if "body" in validated_params:

@@ -234,6 +234,8 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 		pi := new(PrivacyIndex)
 		pi.UnmarshalMap(i_pi.(map[string]interface{}))
 		msg.PrivacyIndex = pi
+	} else {
+		msg.PrivacyIndex = new(PrivacyIndex)
 	}
 	if pf, ok := input["privacy_features"]; ok {
 		PF := &PrivacyFeatures{}
@@ -287,8 +289,14 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 		msg.Discussion_id.UnmarshalBinary(discussion_id.Bytes())
 	}
 	if ex_ref, ok := input["external_references"].(map[string]interface{}); ok {
-		msg.External_references = ExternalReferences{}
-		msg.External_references.Ancestors_ids, _ = ex_ref["ancestors_ids"].([]string)
+		msg.External_references = ExternalReferences{
+			Ancestors_ids: []string{},
+		}
+		if ids, ok := ex_ref["ancestors_ids"]; ok && len(ids.([]string)) > 0 {
+			msg.External_references.Ancestors_ids, _ = ids.([]string)
+		} else {
+			msg.External_references.Ancestors_ids = []string{}
+		}
 		msg.External_references.Message_id, _ = ex_ref["message_id"].(string)
 		msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
 	}

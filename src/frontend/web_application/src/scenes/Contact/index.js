@@ -15,6 +15,7 @@ import Presenter from './presenter';
 const contactIdSelector = (state, ownProps) => ownProps.match.params.contactId;
 const contactSelector = state => state.contact;
 
+
 const mapStateToProps = createSelector(
   [contactIdSelector, contactSelector, settingsSelector, currentTabSelector],
   (contactId, contactState, { contact_display_format }, currentTab) => ({
@@ -30,11 +31,14 @@ const mapStateToProps = createSelector(
   })
 );
 
+
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({
     requestContact,
     updateContact,
     createContact,
+    removeTab,
+    push,
   }, dispatch),
   onSubmit: async (values, disp, props) => {
     // XXX: refactor me in middleware ?

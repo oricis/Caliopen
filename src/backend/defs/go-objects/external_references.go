@@ -11,7 +11,12 @@ type ExternalReferences struct {
 }
 
 func (er *ExternalReferences) UnmarshalMap(input map[string]interface{}) error {
-	er.Ancestors_ids, _ = input["ancestors_ids"].([]string)
+	er.Ancestors_ids = []string{}
+	if _, ok := input["ancestors_ids"]; ok && input["ancestors_ids"] != nil {
+		for _, id := range input["ancestors_ids"].([]interface{}) {
+			er.Ancestors_ids = append(er.Ancestors_ids, id.(string))
+		}
+	}
 	er.Message_id, _ = input["message_id"].(string)
 	er.Parent_id, _ = input["parent_id"].(string)
 	return nil //TODO: error handling
