@@ -18,7 +18,7 @@ class NewUser(Model):
     """
     Parameter to create a new user.
 
-    only name and password are required
+    name, recovery_email and password are required
     a ``NewContact`` can be attached when creating user
     """
 
