@@ -4,6 +4,7 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 	"strconv"
 	"strings"
+	"github.com/satori/go.uuid"
 )
 
 // fall back to default values if can't extract valid numbers.
@@ -40,3 +41,19 @@ func GetImportanceLevel(ctx *gin.Context) (il [2]int8) {
 		return
 	}
 }
+
+// NormalizeUUIDstring returns a valid uuidv4 string from input
+// or an error if input string is invalid.
+// Following input formats are supported:
+// "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+// "{6ba7b810-9dad-11d1-80b4-00c04fd430c8}",
+// "urn:uuid:6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+// Output string is always in "6ba7b810-9dad-11d1-80b4-00c04fd430c8" format.
+func NormalizeUUIDstring(uuid_str string) (string, error) {
+	uuid, err := uuid.FromString(uuid_str)
+	if err != nil {
+		return "", err
+	}
+	return uuid.String(), nil
+}
+

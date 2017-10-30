@@ -7,6 +7,7 @@ package contacts
 import (
 	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	swgErr "github.com/go-openapi/errors"
 	"gopkg.in/gin-gonic/gin.v1"
@@ -16,7 +17,13 @@ import (
 //GET …/contacts/{contact_id}/identities
 func GetIdentities(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	contact_id := ctx.Param("contact_id")
+	contact_id, err := operations.NormalizeUUIDstring(ctx.Param("contact_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	identities, err := caliopen.Facilities.RESTfacility.ContactIdentities(user_id, contact_id)
 	if err != nil {
 		e := swgErr.New(http.StatusInternalServerError, err.Error())
