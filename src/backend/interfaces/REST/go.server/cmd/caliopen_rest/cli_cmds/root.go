@@ -30,7 +30,7 @@ func init() {
 		"print out the version of this program")
 	RootCmd.Run = func(cmd *cobra.Command, args []string) {
 		if version {
-			log.Infof("Caliopen SMTPd version %s", __version__)
+			log.Infof("Caliopen APIv2 version %s", __version__)
 		}
 	}
 	RootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {

@@ -13,12 +13,19 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 )
 
 // POST …/:message_id/attachments
 func UploadAttachment(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	msg_id := ctx.Param("message_id")
+	msg_id, err := operations.NormalizeUUIDstring(ctx.Param("message_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	file, header, err := ctx.Request.FormFile("attachment")
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
@@ -45,7 +52,13 @@ func UploadAttachment(ctx *gin.Context) {
 // DELETE …/:message_id/attachments/:attachment_index
 func DeleteAttachment(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	msg_id := ctx.Param("message_id")
+	msg_id, err := operations.NormalizeUUIDstring(ctx.Param("message_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	attch_id, err := strconv.Atoi(ctx.Param("attachment_id"))
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
@@ -67,7 +80,13 @@ func DeleteAttachment(ctx *gin.Context) {
 // sends attachment as a file to client
 func DownloadAttachment(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	msg_id := ctx.Param("message_id")
+	msg_id, err := operations.NormalizeUUIDstring(ctx.Param("message_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	attch_id, err := strconv.Atoi(ctx.Param("attachment_id"))
 	if err != nil || msg_id == "" {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())

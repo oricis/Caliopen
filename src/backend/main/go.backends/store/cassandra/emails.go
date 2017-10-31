@@ -9,6 +9,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
+	"strings"
 )
 
 // part of LDABackend interface implementation
@@ -25,7 +26,7 @@ func (cb *CassandraBackend) GetUsersForRecipients(rcpts []string) (user_ids []ob
 
 	result := obj.UserName{}
 	for _, rcpt := range rcpts {
-		err = userTable.Read(rcpt, &result).Run()
+		err = userTable.Read(strings.ToLower(rcpt), &result).Run()
 		if err != nil {
 			log.WithError(err).Infoln("error on userTable query")
 			return

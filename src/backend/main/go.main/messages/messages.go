@@ -17,9 +17,8 @@ import (
 // if sanitation failed, message's string bodies are emptied
 func SanitizeMessageBodies(msg *objects.Message) {
 	p := CaliopenPolicy()
-	msg.Body_plain = p.Sanitize(msg.Body_plain)
-	msg.Body_plain = html.UnescapeString(msg.Body_plain)
-	msg.Body_html = p.Sanitize(msg.Body_html)
+	(*msg).Body_plain = html.UnescapeString(p.Sanitize(msg.Body_plain))
+	(*msg).Body_html = p.Sanitize(msg.Body_html)
 }
 
 // UGCPolicy returns a policy aimed at user generated content that is a result

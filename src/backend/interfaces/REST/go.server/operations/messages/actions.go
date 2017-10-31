@@ -6,6 +6,7 @@ package messages
 
 import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	log "github.com/Sirupsen/logrus"
 	swgErr "github.com/go-openapi/errors"
@@ -21,7 +22,13 @@ type REST_order struct {
 // POST …/:message_id/actions
 func Actions(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	msg_id := ctx.Param("message_id")
+	msg_id, err := operations.NormalizeUUIDstring(ctx.Param("message_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	var actions REST_order
 	if err := ctx.BindJSON(&actions); err == nil {
 		switch actions.Actions[0] {

@@ -86,7 +86,7 @@ class ContactFeature(object):
             if features['message_day_total'] >= MESSAGE_TOTAL_THRESHOLD:
                 pi_cx += 10
 
-        if contact.postal_addresses or contact.phones:
+        if contact.addresses or contact.phones:
             features.update({'address_or_phone': True})
             pi_co += 10
 
