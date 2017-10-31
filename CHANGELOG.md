@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.5.2] 2017-10-31
+
+## Fixed
+
+- piwik site id environment variable ok with client build #590
+- lower case local identity lookup #589
+- empty string instead of none for family name #587
+- plain text body unescaped only #586
+- enforce uuid validation in apiv2 #584
+
 ## [0.5.1] 2017-10-29
 
 ### Fixed
