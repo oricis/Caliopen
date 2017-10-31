@@ -85,7 +85,6 @@ class UserAPI(Api):
           validators=no_such_user)
     def collection_post(self):
         """Create a new user."""
-        contact = self.request.swagger_data['user']['contact']
         settings = Settings()
         settings.import_data(self.request.swagger_data['user']['settings'])
         settings.validate()
@@ -94,7 +93,6 @@ class UserAPI(Api):
                              'password'],
                          'recovery_email': self.request.swagger_data['user'][
                              'recovery_email'],
-                         'contact': contact,
                          'settings': settings,
                          })
 
@@ -103,6 +101,7 @@ class UserAPI(Api):
         else:
             c = NewContact()
             c.given_name = param.name
+            c.family_name = ""  # can't guess it !
             email = NewEmail()
             email.address = param.recovery_email
             c.emails = [email]
