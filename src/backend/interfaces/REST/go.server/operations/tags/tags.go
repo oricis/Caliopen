@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	swgErr "github.com/go-openapi/errors"
 	"github.com/pkg/errors"
@@ -70,7 +71,13 @@ func CreateTag(ctx *gin.Context) {
 
 func RetrieveTag(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	tag_id := ctx.Param("tag_id")
+	tag_id, err := operations.NormalizeUUIDstring(ctx.Param("tag_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	if user_id != "" && tag_id != "" {
 		tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(user_id, tag_id)
 		if err != nil {
@@ -102,7 +109,16 @@ func PatchTag(ctx *gin.Context) {
 		patchTag.User_id.UnmarshalBinary(user_uuid.Bytes())
 		patchTag.Current_state.User_id = patchTag.User_id
 
-		tag_uuid, _ := uuid.FromString(ctx.Param("tag_id"))
+		tag_id, err := operations.NormalizeUUIDstring(ctx.Param("tag_id"))
+		if err != nil {
+			e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+			return
+		}
+
+		tag_uuid, _ := uuid.FromString(tag_id)
+
 		patchTag.Tag_id.UnmarshalBinary(tag_uuid.Bytes())
 		patchTag.Current_state.Tag_id = patchTag.Tag_id
 
@@ -146,7 +162,13 @@ func PatchTag(ctx *gin.Context) {
 
 func DeleteTag(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	tag_id := ctx.Param("tag_id")
+	tag_id, err := operations.NormalizeUUIDstring(ctx.Param("tag_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	if user_id != "" && tag_id != "" {
 		err := caliopen.Facilities.RESTfacility.DeleteTag(user_id, tag_id)
 		if err != nil {

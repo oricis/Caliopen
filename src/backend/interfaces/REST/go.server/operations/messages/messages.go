@@ -88,7 +88,13 @@ func GetMessagesList(ctx *gin.Context) {
 // GET …/messages/:message_id
 func GetMessage(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	msg_id := ctx.Param("message_id")
+	msg_id, err := operations.NormalizeUUIDstring(ctx.Param("message_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	msg, err := caliopen.Facilities.RESTfacility.GetMessage(user_id, msg_id)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())

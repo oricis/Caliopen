@@ -6,6 +6,7 @@ package users
 
 import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	swgErr "github.com/go-openapi/errors"
@@ -20,9 +21,15 @@ import (
 func PatchUser(ctx *gin.Context) {
 	var err error
 	auth_user := ctx.MustGet("user_id").(string)
-	user_id := ctx.Param("user_id")
+	user_id, err := operations.NormalizeUUIDstring(ctx.Param("user_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	// for now, an user can only modify himself
-	if (auth_user != user_id) || (user_id == "") {
+	if auth_user != user_id {
 		e := swgErr.New(http.StatusUnauthorized, "user can only modify himself")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
