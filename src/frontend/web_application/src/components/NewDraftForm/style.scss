@@ -3,6 +3,7 @@
 
 .m-new-draft {
   @include flex-grid-row($size: expand);
+  margin-top: $co-margin;
   font-size: $co-font__size--small;
 
   &__form-col { @include flex-grid-size; }
