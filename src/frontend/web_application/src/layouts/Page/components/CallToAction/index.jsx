@@ -55,7 +55,7 @@ const defaultActionsSelector = createSelector(
       return prev;
     },
     undefined)
-);*/
+); */
 
 export const availableActionsSelector = createSelector(
   [
