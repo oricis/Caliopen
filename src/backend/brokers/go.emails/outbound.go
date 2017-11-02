@@ -137,7 +137,7 @@ func (msg *natsOrder) UnmarshalJSON(data []byte) error {
 }
 
 func (b *EmailBroker) natsReplyError(msg *nats.Msg, err error) {
-	log.WithError(err).Warn("email broker [outbound] : error when processing incoming nats message")
+	log.WithError(err).Warnf("email broker [outbound] : error when processing incoming nats message : %s", *msg)
 
 	var order natsOrder
 	json.Unmarshal(msg.Data, &order)
