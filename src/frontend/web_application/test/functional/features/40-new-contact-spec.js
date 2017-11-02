@@ -26,8 +26,8 @@ describe('Create new contact', () => {
     const name = 'Foobar';
 
     browser.get('./')
-      // XXX: click compose to force :hover callback actions
-      .then(() => element(by.cssContainingText('.m-call-to-action__btn--principal', __('compose'))).click())
+      // XXX: click .btn--principal to force :hover callback actions
+      .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
       .then(() => element(createButtonSelector).click())
       .then(() => browser.wait(EC.presenceOf($('.s-contact .m-contact-profile-form')), 1000))
       .then(() => element(by.css('.m-contact-profile-form__input input[name="given_name"]')).sendKeys(name))

@@ -1,16 +1,12 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { editDraft, requestDraft, saveDraft, sendDraft } from '../../../../store/modules/draft-message';
-import { REPLY_TO_MESSAGE } from '../../../../store/modules/message';
+import { scrollToWhen } from 'react-redux-scroll';
+import { push } from 'react-router-redux';
+import { editDraft, requestDraft, saveDraft, sendDraft, clearDraft } from '../../../../store/modules/draft-message';
+import { REPLY_TO_MESSAGE, deleteMessage } from '../../../../store/modules/message';
 import { getLastMessage } from '../../../../services/message';
 import Presenter from './presenter';
-
-let scrollToWhen;
-
-if (BUILD_TARGET === 'browser') {
-  scrollToWhen = require('react-redux-scroll').scrollToWhen; // eslint-disable-line
-}
 
 const messageDraftSelector = state => state.draftMessage.draftsByInternalId;
 const discussionIdSelector = (state, ownProps) => ownProps.discussionId;
@@ -45,14 +41,20 @@ const mapStateToProps = createSelector(
   }
 );
 
+const onDeleteMessage = ({ message, internalId, isNewDiscussion }) => dispatch =>
+  dispatch(deleteMessage({ message }))
+    .then(() => dispatch(clearDraft({ internalId })))
+    .then(() => isNewDiscussion && dispatch(push('/')));
+
 const mapDispatchToProps = dispatch => bindActionCreators({
   editDraft,
   requestDraft,
   saveDraft,
   sendDraft,
+  onDeleteMessage,
 }, dispatch);
 
 export default compose(...[
   connect(mapStateToProps, mapDispatchToProps),
-  ...(scrollToWhen ? [scrollToWhen(REPLY_TO_MESSAGE)] : []),
+  scrollToWhen(REPLY_TO_MESSAGE),
 ])(Presenter);

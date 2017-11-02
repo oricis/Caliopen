@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware } from 'redux';
+import { createScrollMiddleware } from 'react-redux-scroll';
 import rootReducer from './reducer';
 import applicationMiddleware from './middlewares/application-middleware';
 import axiosMiddleware from './middlewares/axios-middleware';
 import contactMiddleware from './middlewares/contacts-middleware';
 import deviceMiddleware from './middlewares/device-middleware';
 import discussionMiddleware from './middlewares/discussions-middleware';
-import draftMessageMiddleware from './middlewares/draft-messages-middleware';
+import draftMessageMiddleware, { middlewares as draftMessageMiddlewares } from './middlewares/draft-messages-middleware';
 import i18nMiddleware from './middlewares/i18n-middleware';
 import importanceLevelMiddleware from './middlewares/importance-level-middleware';
 import messageMiddleware from './middlewares/messages-middleware';
@@ -23,6 +24,7 @@ const middlewares = [
   deviceMiddleware,
   discussionMiddleware,
   draftMessageMiddleware,
+  ...draftMessageMiddlewares,
   i18nMiddleware,
   importanceLevelMiddleware,
   messageMiddleware,
@@ -32,6 +34,7 @@ const middlewares = [
   tabsMiddleware,
   tagsMiddleware,
   thunkMiddleware,
+  createScrollMiddleware(),
 ];
 
 if (CALIOPEN_ENV === 'development' || CALIOPEN_ENV === 'staging') {
@@ -40,7 +43,6 @@ if (CALIOPEN_ENV === 'development' || CALIOPEN_ENV === 'staging') {
 }
 
 if (BUILD_TARGET === 'browser') {
-  middlewares.push(require('react-redux-scroll').createScrollMiddleware()); // eslint-disable-line
   middlewares.push(require('./middlewares/openpgp-middleware').default); // eslint-disable-line
 }
 

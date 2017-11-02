@@ -1,7 +1,7 @@
 import { SEARCH, suggest, searchSuccess } from '../modules/participant-suggestions';
 import { requestContact, REQUEST_CONTACT_SUCCESS } from '../modules/contact';
 import { formatName } from '../../services/contact';
-import { settingsSelector } from '../../services/settings';
+import { settingsSelector } from '../../store/selectors/settings';
 
 const sortResults = ({ contactSuggestions, rawSuggestions }) => contactSuggestions
   .reduce((acc, suggestion) => {

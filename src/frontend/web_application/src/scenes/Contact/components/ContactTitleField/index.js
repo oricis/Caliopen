@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { withTranslator } from '@gandi/react-translate';
 import { getFormValues } from 'redux-form';
 import Presenter from './presenter';
+import { settingsSelector } from '../../../../store/selectors/settings';
 
-const settingsSelector = state => state.settings.settings;
 const formValuesSelector = (state, ownProps) => getFormValues(ownProps.form)(state);
 
 const mapStateToProps = createSelector(

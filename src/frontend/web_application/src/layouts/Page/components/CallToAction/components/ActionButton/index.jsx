@@ -25,7 +25,7 @@ class ActionButton extends PureComponent {
 
     return (
       <Tappable {...tappableProps}>
-        <Button {...button} shape="plain" responsive="icon-only">{children}</Button>
+        <Button {...button} shape="plain">{children}</Button>
       </Tappable>
     );
   }

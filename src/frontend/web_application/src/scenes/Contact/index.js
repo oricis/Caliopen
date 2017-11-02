@@ -9,11 +9,11 @@ import { removeTab } from '../../store/modules/tab';
 import fetchLocation from '../../services/api-location';
 import { getNewContact } from '../../services/contact';
 import { currentTabSelector } from '../../store/selectors/tab';
+import { settingsSelector } from '../../store/selectors/settings';
 import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.match.params.contactId;
 const contactSelector = state => state.contact;
-const settingsSelector = state => state.settings.settings;
 
 
 const mapStateToProps = createSelector(

@@ -6,9 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Delete a message from Timeline
+- Delete a draft
+- Notify the user the draft is saved after a manual save
+
+### Fixed
+
+- Disable buttons send and save when draft is untouched
+
 ## [0.5.2] 2017-10-31
 
-## Fixed
+### Fixed
 
 - piwik site id environment variable ok with client build #590
 - lower case local identity lookup #589

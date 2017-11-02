@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withTranslator } from '@gandi/react-translate';
 import { requestUser } from '../../store/modules/user';
 import { updateContact } from '../../store/modules/contact';
-import { withNotification } from '../../services/notification';
+import { withNotification } from '../../hoc/notification';
 import Presenter from './presenter';
 
 const userSelector = state => state.user;
