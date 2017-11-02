@@ -68,7 +68,7 @@ func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
 	pk.Key, _ = input["key"].(string)
 	pk.Name, _ = input["name"].(string)
 
-	if pf, ok := input["privacy_features"]; ok {
+	if pf, ok := input["privacy_features"]; ok && pf != nil {
 		PF := &PrivacyFeatures{}
 		PF.UnmarshalMap(pf.(map[string]interface{}))
 		pk.PrivacyFeatures = PF

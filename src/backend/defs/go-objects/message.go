@@ -165,8 +165,8 @@ func (msg *Message) UnmarshalJSON(b []byte) error {
 }
 
 func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
-	if _, ok := input["attachments"]; ok {
-		for _, attachment := range input["attachments"].([]interface{}) {
+	if attachments, ok := input["attachments"]; ok && attachments != nil {
+		for _, attachment := range attachments.([]interface{}) {
 			A := new(Attachment)
 			if err := A.UnmarshalMap(attachment.(map[string]interface{})); err == nil {
 				msg.Attachments = append(msg.Attachments, *A)
@@ -192,11 +192,11 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 	msg.External_references = ExternalReferences{
 		Ancestors_ids: []string{},
 	}
-	if ex_ref, ok := input["external_references"].(map[string]interface{}); ok {
-		msg.External_references.UnmarshalMap(ex_ref)
+	if ex_ref, ok := input["external_references"]; ok && ex_ref != nil {
+		msg.External_references.UnmarshalMap(ex_ref.(map[string]interface{}))
 	}
-	if _, ok := input["identities"]; ok {
-		for _, identity := range input["identities"].([]interface{}) {
+	if identities, ok := input["identities"]; ok && identities != nil {
+		for _, identity := range identities.([]interface{}) {
 			I := new(Identity)
 			if err := I.UnmarshalMap(identity.(map[string]interface{})); err == nil {
 				msg.Identities = append(msg.Identities, *I)
@@ -221,22 +221,22 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 	}
 
 	msg.Participants = []Participant{}
-	if _, ok := input["participants"]; ok {
-		for _, participant := range input["participants"].([]interface{}) {
+	if participants, ok := input["participants"]; ok && participants != nil {
+		for _, participant := range participants.([]interface{}) {
 			P := new(Participant)
 			if err := P.UnmarshalMap(participant.(map[string]interface{})); err == nil {
 				msg.Participants = append(msg.Participants, *P)
 			}
 		}
 	}
-	if i_pi, ok := input["pi"]; ok {
+	if i_pi, ok := input["pi"]; ok && i_pi != nil {
 		pi := new(PrivacyIndex)
 		pi.UnmarshalMap(i_pi.(map[string]interface{}))
 		msg.PrivacyIndex = pi
 	} else {
 		msg.PrivacyIndex = new(PrivacyIndex)
 	}
-	if pf, ok := input["privacy_features"]; ok {
+	if pf, ok := input["privacy_features"]; ok && pf != nil {
 		PF := &PrivacyFeatures{}
 		PF.UnmarshalMap(pf.(map[string]interface{}))
 		msg.Privacy_features = *PF
@@ -247,7 +247,7 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	msg.Subject, _ = input["subject"].(string)
-	if tags, ok := input["tags"]; ok {
+	if tags, ok := input["tags"]; ok && tags != nil {
 		for _, tag := range tags.([]interface{}) {
 			T := new(Tag)
 			if err := T.UnmarshalMap(tag.(map[string]interface{})); err == nil {
@@ -287,10 +287,10 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	if discussion_id, ok := input["discussion_id"].(gocql.UUID); ok {
 		msg.Discussion_id.UnmarshalBinary(discussion_id.Bytes())
 	}
-	if ex_ref, ok := input["external_references"].(map[string]interface{}); ok {
-		msg.External_references = ExternalReferences{
-			Ancestors_ids: []string{},
-		}
+	msg.External_references = ExternalReferences{
+		Ancestors_ids: []string{},
+	}
+	if ex_ref, ok := input["external_references"].(map[string]interface{}); ok && ex_ref != nil {
 		if ids, ok := ex_ref["ancestors_ids"]; ok && len(ids.([]string)) > 0 {
 			msg.External_references.Ancestors_ids, _ = ids.([]string)
 		} else {
@@ -299,8 +299,8 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 		msg.External_references.Message_id, _ = ex_ref["message_id"].(string)
 		msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
 	}
-	if _, ok := input["identities"]; ok {
-		for _, identity := range input["identities"].([]map[string]interface{}) {
+	if identities, ok := input["identities"]; ok && identities != nil {
+		for _, identity := range identities.([]map[string]interface{}) {
 			i := Identity{}
 			i.Identifier, _ = identity["identifier"].(string)
 			i.Type, _ = identity["type"].(string)
@@ -320,8 +320,8 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	parent_id, _ := input["parent_id"].(gocql.UUID)
 	msg.Parent_id.UnmarshalBinary(parent_id.Bytes())
 
-	if _, ok := input["participants"]; ok {
-		for _, participant := range input["participants"].([]map[string]interface{}) {
+	if participants, ok := input["participants"]; ok && participants != nil {
+		for _, participant := range participants.([]map[string]interface{}) {
 			p := Participant{}
 			p.Address, _ = participant["address"].(string)
 			p.Label, _ = participant["label"].(string)
@@ -338,14 +338,17 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 			msg.Participants = append(msg.Participants, p)
 		}
 	}
-	i_pi, _ := input["pi"].(map[string]interface{})
-	pi := PrivacyIndex{}
-	pi.Comportment, _ = i_pi["comportment"].(int)
-	pi.Context, _ = i_pi["context"].(int)
-	pi.DateUpdate, _ = i_pi["date_update"].(time.Time)
-	pi.Technic, _ = i_pi["technic"].(int)
-	pi.Version, _ = i_pi["version"].(int)
-	msg.PrivacyIndex = &pi
+	if i_pi, ok := input["pi"].(map[string]interface{}); ok && i_pi != nil {
+		pi := PrivacyIndex{}
+		pi.Comportment, _ = i_pi["comportment"].(int)
+		pi.Context, _ = i_pi["context"].(int)
+		pi.DateUpdate, _ = i_pi["date_update"].(time.Time)
+		pi.Technic, _ = i_pi["technic"].(int)
+		pi.Version, _ = i_pi["version"].(int)
+		msg.PrivacyIndex = &pi
+	} else {
+		msg.PrivacyIndex = new(PrivacyIndex)
+	}
 	//TODO: privacy_features
 	if raw_msg_id, ok := input["raw_msg_id"].(gocql.UUID); ok {
 		msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
