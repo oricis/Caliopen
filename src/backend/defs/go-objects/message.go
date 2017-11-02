@@ -189,12 +189,11 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 			msg.Discussion_id.UnmarshalBinary(id.Bytes())
 		}
 	}
+	msg.External_references = ExternalReferences{
+		Ancestors_ids: []string{},
+	}
 	if ex_ref, ok := input["external_references"].(map[string]interface{}); ok {
-		er := new(ExternalReferences)
-		if err := er.UnmarshalMap(ex_ref); err == nil {
-			msg.External_references = *er
-		}
-
+		msg.External_references.UnmarshalMap(ex_ref)
 	}
 	if _, ok := input["identities"]; ok {
 		for _, identity := range input["identities"].([]interface{}) {
