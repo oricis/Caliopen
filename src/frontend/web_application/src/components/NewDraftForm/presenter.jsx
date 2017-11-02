@@ -40,7 +40,10 @@ class NewDraftForm extends Component {
     user: { contact: {} },
   };
 
-  state = { draft: { participants: [], subject: '', body: '' } };
+  state = {
+    draft: { participants: [], subject: '', body: '' },
+    hasChanged: false,
+  };
 
   componentWillMount() {
     this.setState(prevState => generateStateFromProps(this.props, prevState));
@@ -48,6 +51,7 @@ class NewDraftForm extends Component {
 
   componentWillReceiveProps(newProps) {
     this.setState(prevState => generateStateFromProps(newProps, prevState));
+    console.log(this.state.draft);
   }
 
   handleSave = () => {
@@ -64,9 +68,15 @@ class NewDraftForm extends Component {
     const { name, value } = ev.target;
 
     this.setState((prevState) => {
-      const draft = { ...prevState.draft, [name]: value };
+      const draft = {
+        ...prevState.draft,
+        [name]: value,
+      };
 
-      return { draft };
+      return {
+        draft,
+        hasChanged: true,
+      };
     }, () => {
       this.props.onChange({ draft: this.state.draft });
     });
@@ -79,6 +89,7 @@ class NewDraftForm extends Component {
         // no need to merge author, backend does it
         participants: recipients,
       },
+      hasChanged: true,
     }), () => {
       this.props.onChange({ draft: this.state.draft });
     });
@@ -158,10 +169,23 @@ class NewDraftForm extends Component {
             />
           </BodyRow>
           <BottomRow className="m-new-draft__bottom-bar">
-            <Button className="m-new-draft__bottom-action" shape="plain" onClick={this.handleSend} icon="send" responsive="icon-only">
+            <Button
+              className="m-new-draft__bottom-action"
+              shape="plain"
+              onClick={this.handleSend}
+              icon="send"
+              responsive="icon-only"
+              disabled={!recipients || recipients.length === 0}
+            >
               {__('messages.compose.action.send')}
             </Button>
-            <Button className="m-new-draft__bottom-action" onClick={this.handleSave} icon="save" responsive="icon-only">
+            <Button
+              className="m-new-draft__bottom-action"
+              onClick={this.handleSave}
+              icon="save"
+              responsive="icon-only"
+              disabled={!this.state.hasChanged}
+            >
               {__('messages.compose.action.save')}
             </Button>
             <Button className="m-new-draft__bottom-action m-new-draft__bottom-action--editor" icon="editor" responsive="icon-only" />
