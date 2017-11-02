@@ -51,7 +51,6 @@ class NewDraftForm extends Component {
 
   componentWillReceiveProps(newProps) {
     this.setState(prevState => generateStateFromProps(newProps, prevState));
-    console.log(this.state.draft);
   }
 
   handleSave = () => {
