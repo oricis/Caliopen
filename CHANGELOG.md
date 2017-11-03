@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- unmarshal nested empty structures in go objects.
+
 ## [0.5.3] 2017-11-02
 
 ### Added
