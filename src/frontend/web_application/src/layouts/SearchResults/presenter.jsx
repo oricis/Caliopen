@@ -39,12 +39,10 @@ class SearchResults extends PureComponent {
       },
     } = this.props;
 
-    console.log('total', total, nbMessages, nbContacts);
-
     const navLinks = [
-      { title: __('search-results.all'), to: `/search-results?term=${term}` },
-      { title: __('search-results.messages'), to: `/search-results?term=${term}&doctype=message` },
-      { title: __('search-results.contacts'), to: `/search-results?term=${term}&doctype=contact` },
+      { title: __('search-results.all', { count: total }), to: `/search-results?term=${term}` },
+      { title: __('search-results.messages', { count: nbMessages }), to: `/search-results?term=${term}&doctype=message` },
+      { title: __('search-results.contacts', { count: nbContacts }), to: `/search-results?term=${term}&doctype=contact` },
     ].map(link => ({
       ...link,
       isActive: matchPath(pathname, { path: link.to, exact: false, strict: false }) && true,

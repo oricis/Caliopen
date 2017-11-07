@@ -3,30 +3,34 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslator } from '@gandi/react-translate';
 import { paramsSelector } from '../../store/selectors/router';
-import { search, getKey } from '../../store/modules/search';
+import { search, loadMore, getKey, hasMore } from '../../store/modules/search';
 import Presenter from './presenter';
 
-const searchResultsSelector = state => state.search.resultsByKey;
+const searchSelector = state => state.search;
 
 const mapStateToProps = createSelector(
-  [paramsSelector, searchResultsSelector],
-  (params, searchResultsByKey) => {
+  [paramsSelector, searchSelector],
+  (params, searchState) => {
     if (!params) {
       return {};
     }
 
+    const { resultsByKey } = searchState;
     const { term, doctype } = params;
+    const hasMoreByDoctype = doctype && { [doctype]: hasMore(term, doctype, searchState) };
 
     return {
       term,
       doctype,
-      searchResults: searchResultsByKey[getKey(term, doctype)],
-      searchResultsPreview: searchResultsByKey[getKey(term, '')],
+      hasMoreByDoctype,
+      searchResults: resultsByKey[getKey(term, doctype)],
+      searchResultsPreview: resultsByKey[getKey(term, '')],
     };
   }
 );
 const mapDispatchToProps = dispatch => bindActionCreators({
   search,
+  loadMore,
 }, dispatch);
 
 export default compose(
