@@ -111,7 +111,7 @@ class SearchResults extends Component {
       <div>
         {messages && (
           <div>
-            {__('search-results.preview.nb-messages', { count: nbMessages })}
+            {__('search-results.preview.nb-messages', { count: nbMessages, term })}
             {' '}
             <Link to={`/search-results?term=${term}&doctype=message`}>
               {__('search-results.actions.display-all')}
@@ -121,7 +121,7 @@ class SearchResults extends Component {
         {messages && this.renderMessages(messages)}
         {contacts && (
           <div>
-            {__('search-results.preview.nb-contacts', { count: nbContacts })}
+            {__('search-results.preview.nb-contacts', { count: nbContacts, term })}
             {' '}
             <Link to={`/search-results?term=${term}&doctype=contact`}>
               {__('search-results.actions.display-all')}

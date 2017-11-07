@@ -1,5 +1,6 @@
 import { matchPath } from 'react-router-dom';
 import { push } from 'react-router-redux';
+import { URLSearchParams } from 'universal-url';
 import { getInfosFromName } from '../../services/application-manager';
 import { getTranslator } from '../../services/i18n';
 import { SELECT_OR_ADD_TAB, REMOVE_TAB, addTab, selectOrAdd, updateTab } from '../modules/tab';
@@ -89,12 +90,13 @@ const createComposeTab = ({ pathname, search, hash }) => {
 
 const createSearchResultTab = ({ pathname, search, hash }) => {
   const { translate: __ } = getTranslator();
+  const term = new URLSearchParams(search).get('term');
 
   return {
     pathname,
     search,
     hash,
-    label: __('search-results.route.label'),
+    label: __('search-results.route.label', { term }),
     icon: 'search',
   };
 };
@@ -232,8 +234,13 @@ const selectOrAddTabSearch = (store, { pathname, search, hash }) => {
     return null;
   }
 
+  const term = new URLSearchParams(search).get('term');
+
   const original = store.getState().tab.tabs
-    .find(tab => matchPath(tab.pathname, { path: '/search-results' }));
+    .find(tab =>
+      matchPath(tab.pathname, { path: '/search-results' }) &&
+      RegExp(`term=${term}(&.*)?$`, 'i').test(tab.search)
+    );
 
   const tab = createSearchResultTab({ pathname, search, hash });
   if (original) {
