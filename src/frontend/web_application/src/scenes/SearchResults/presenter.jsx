@@ -44,7 +44,7 @@ class SearchResults extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { term, doctype, search } = this.props;
-    if (nextProps.term !== term || nextProps.doctype !== doctype) {
+    if (nextProps.term && (nextProps.term !== term || nextProps.doctype !== doctype)) {
       this.initLoadMore({ doctype: nextProps.doctype, term: nextProps.term });
       search({ term: nextProps.term, doctype: nextProps.doctype });
     }
