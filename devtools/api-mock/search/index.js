@@ -23,7 +23,7 @@ const routes = {
 };
 
 export default {
-  name: 'participants',
+  name: 'search',
   data: require('./data.json'),
   reducer: reducer,
   endpoint: '/api/v2/search',
