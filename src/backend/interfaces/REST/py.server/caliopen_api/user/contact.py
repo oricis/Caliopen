@@ -8,7 +8,7 @@ import colander
 import uuid
 from cornice.resource import resource, view
 from pyramid.response import Response
-from pyramid.httpexceptions import HTTPBadRequest
+from pyramid.httpexceptions import HTTPBadRequest, HTTPServerError
 
 from caliopen_main.contact.core import (Contact as CoreContact,
                                         PublicKey as CorePublicKey)
@@ -116,6 +116,25 @@ class Contact(Api):
                                 with_validation=True)
         except Exception as exc:
             raise MergePatchError(error=exc)
+
+        return Response(None, 204)
+
+    @view(renderer='json', permission='authenticated')
+    def delete(self):
+        contact_id = self.request.swagger_data["contact_id"]
+        contact = ContactObject(self.user.user_id, contact_id=contact_id)
+
+        try:
+            contact.get_db()
+            contact.get_index()
+        except NotFound:
+            raise ResourceNotFound
+
+        try:
+            contact.delete_db()
+            contact.delete_index()
+        except Exception as exc:
+            raise HTTPServerError(exc)
 
         return Response(None, 204)
 
