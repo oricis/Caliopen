@@ -5,6 +5,7 @@ type (
 		RESTstoreConfig RESTstoreConfig
 		RESTindexConfig RESTIndexConfig
 		NatsConfig      NatsConfig
+		CacheConfig     CacheConfig
 		//LDAstoreConfig  LDAstoreConfig
 		AdminUsername string
 	}
@@ -23,6 +24,13 @@ type (
 	RESTIndexConfig struct {
 		IndexName string   `mapstructure:"index_name"`
 		Hosts     []string `mapstructure:"hosts"`
+	}
+
+	// redis
+	CacheConfig struct {
+		Host     string `mapstructure:"host"`
+		Password string `mapstructure:"password"`
+		Db       int    `mapstructure:"db"`
 	}
 
 	// NATS
