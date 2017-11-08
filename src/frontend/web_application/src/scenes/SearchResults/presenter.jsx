@@ -8,6 +8,8 @@ import InfiniteScroll from '../../components/InfiniteScroll';
 import MessageItem from './components/MessageItem';
 import ContactItem from './components/ContactItem';
 
+import './style.scss';
+
 const LOAD_MORE_INTERVAL = 1000;
 
 class SearchResults extends Component {
@@ -67,7 +69,7 @@ class SearchResults extends Component {
     const { term } = this.props;
 
     return (
-      <div>
+      <div className="s-search-results__item">
         {messages.map(messageHit => (
           <MessageItem
             key={messageHit.document.message_id}
@@ -84,7 +86,7 @@ class SearchResults extends Component {
     const { term } = this.props;
 
     return (
-      <div>
+      <div className="s-search-results__item">
         {contacts.map(contactHit => (
           <ContactItem
             key={contactHit.document.contact_id}
@@ -110,20 +112,20 @@ class SearchResults extends Component {
     return (
       <div>
         {messages && (
-          <div>
+          <div className="s-search-results__label">
             {__('search-results.preview.nb-messages', { count: nbMessages, term })}
             {' '}
-            <Link to={`/search-results?term=${term}&doctype=message`}>
+            <Link className="s-search-results__link" to={`/search-results?term=${term}&doctype=message`}>
               {__('search-results.actions.display-all')}
             </Link>
           </div>
         )}
         {messages && this.renderMessages(messages)}
         {contacts && (
-          <div>
+          <div className="s-search-results__label">
             {__('search-results.preview.nb-contacts', { count: nbContacts, term })}
             {' '}
-            <Link to={`/search-results?term=${term}&doctype=contact`}>
+            <Link className="s-search-results__link" to={`/search-results?term=${term}&doctype=contact`}>
               {__('search-results.actions.display-all')}
             </Link>
           </div>
