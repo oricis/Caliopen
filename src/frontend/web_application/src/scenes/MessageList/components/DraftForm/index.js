@@ -3,6 +3,8 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { scrollToWhen } from 'react-redux-scroll';
 import { push } from 'react-router-redux';
+import { withTranslator } from '@gandi/react-translate';
+import { withNotification } from '../../../../hoc/notification';
 import { editDraft, requestDraft, saveDraft, sendDraft, clearDraft } from '../../../../store/modules/draft-message';
 import { REPLY_TO_MESSAGE, deleteMessage } from '../../../../store/modules/message';
 import { getLastMessage } from '../../../../services/message';
@@ -46,15 +48,25 @@ const onDeleteMessage = ({ message, internalId, isNewDiscussion }) => dispatch =
     .then(() => dispatch(clearDraft({ internalId })))
     .then(() => isNewDiscussion && dispatch(push('/')));
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const onSaveDraft = ({ internalId, draft, message }, ownProps) => dispatch =>
+  dispatch(saveDraft({ internalId, draft, message }))
+    .then(() => {
+      const { __, notifySuccess } = ownProps;
+
+      return notifySuccess({ message: __('draft.feedback.saved') });
+    });
+
+const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   editDraft,
   requestDraft,
-  saveDraft,
+  saveDraft: params => onSaveDraft(params, ownProps),
   sendDraft,
   onDeleteMessage,
 }, dispatch);
 
 export default compose(...[
+  withTranslator(),
+  withNotification(),
   connect(mapStateToProps, mapDispatchToProps),
   scrollToWhen(REPLY_TO_MESSAGE),
 ])(Presenter);

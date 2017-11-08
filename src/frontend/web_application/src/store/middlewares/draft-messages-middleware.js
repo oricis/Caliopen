@@ -35,7 +35,8 @@ const createDraft = async ({ internalId, draft, store }) => {
 const updateDraft = async ({ internalId, draft, original, store }) => store.dispatch(updateMessage({
   message: draft, original,
 })).then(() => getMessageUpToDate({ store, messageId: draft.message_id }))
-.then(message => store.dispatch(syncDraft({ internalId, draft: message })))
+.then(message =>
+    Promise.resolve(store.dispatch(syncDraft({ internalId, draft: message }))).then(() => message))
 .catch(() => {
   const { translate: __ } = getTranslator();
   const notification = {
@@ -45,7 +46,9 @@ const updateDraft = async ({ internalId, draft, original, store }) => store.disp
     canDismiss: true,
   };
 
-  return store.dispatch(createNotification(notification));
+  store.dispatch(createNotification(notification));
+
+  return Promise.reject(notification);
 });
 
 const createOrUpdateDraft = async ({ internalId, draft, store, original }) => {

@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Delete a contact
+
+### Fixed
+
+- Unmarshal nested empty structures in go objects.
+
+## [0.5.3] 2017-11-02
+
+### Added
+
 - Delete a message from Timeline
 - Delete a draft
 - Notify the user the draft is saved after a manual save
@@ -15,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Disable buttons send and save when draft is untouched
+- ancestors_id empty array and not null
 
 ## [0.5.2] 2017-10-31
 

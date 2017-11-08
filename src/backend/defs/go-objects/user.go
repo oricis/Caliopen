@@ -107,14 +107,14 @@ func (user *User) UnmarshalMap(input map[string]interface{}) error {
 	password, _ := input["password"].(string)
 	user.Password = []byte(password)
 
-	if pi, ok := input["pi"]; ok {
+	if pi, ok := input["pi"]; ok && pi != nil {
 		PI := new(PrivacyIndex)
 		if err := PI.UnmarshalMap(pi.(map[string]interface{})); err == nil {
 			user.PrivacyIndex = PI
 		}
 	}
 
-	if pf, ok := input["privacy_features"]; ok {
+	if pf, ok := input["privacy_features"]; ok && pf != nil {
 		PF := &PrivacyFeatures{}
 		PF.UnmarshalMap(pf.(map[string]interface{}))
 		user.PrivacyFeatures = PF

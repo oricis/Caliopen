@@ -172,7 +172,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 
 	c.AdditionalName, _ = input["additional_name"].(string)
 	//addresses
-	if pa, ok := input["addresses"]; ok {
+	if pa, ok := input["addresses"]; ok && pa != nil {
 		for _, address := range pa.([]interface{}) {
 			PA := new(PostalAddress)
 			if err := PA.UnmarshalMap(address.(map[string]interface{})); err == nil {
@@ -194,7 +194,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	}
 	c.Deleted, _ = input["deleted"].(bool)
 	//emails
-	if emails, ok := input["emails"]; ok {
+	if emails, ok := input["emails"]; ok && emails != nil {
 		for _, email := range emails.([]interface{}) {
 			E := new(EmailContact)
 			if err := E.UnmarshalMap(email.(map[string]interface{})); err == nil {
@@ -207,7 +207,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	c.GivenName, _ = input["given_name"].(string)
 	c.Groups, _ = input["groups"].([]string)
 	//identities
-	if identities, ok := input["identities"]; ok {
+	if identities, ok := input["identities"]; ok && identities != nil {
 		for _, identity := range identities.([]interface{}) {
 			I := new(SocialIdentity)
 			if err := I.UnmarshalMap(identity.(map[string]interface{})); err == nil {
@@ -216,7 +216,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	//Ims
-	if ims, ok := input["ims"]; ok {
+	if ims, ok := input["ims"]; ok && ims != nil {
 		for _, im := range ims.([]interface{}) {
 			I := new(IM)
 			if err := I.UnmarshalMap(im.(map[string]interface{})); err == nil {
@@ -228,7 +228,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	c.NamePrefix, _ = input["name_prefix"].(string)
 	c.NameSuffix, _ = input["name_suffix"].(string)
 	//organizations
-	if orgas, ok := input["organizations"]; ok {
+	if orgas, ok := input["organizations"]; ok && orgas != nil {
 		for _, orga := range orgas.([]interface{}) {
 			O := new(Organization)
 			if err := O.UnmarshalMap(orga.(map[string]interface{})); err == nil {
@@ -237,7 +237,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	//phones
-	if phones, ok := input["phones"]; ok {
+	if phones, ok := input["phones"]; ok && phones != nil {
 		for _, phone := range phones.([]interface{}) {
 			P := new(Phone)
 			if err := P.UnmarshalMap(phone.(map[string]interface{})); err == nil {
@@ -262,13 +262,13 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	// Privacy features
-	if pf, ok := input["privacy_features"]; ok {
+	if pf, ok := input["privacy_features"]; ok && pf != nil {
 		PF := &PrivacyFeatures{}
 		PF.UnmarshalMap(pf.(map[string]interface{}))
 		c.PrivacyFeatures = PF
 	}
 	//tags
-	if tags, ok := input["tags"]; ok {
+	if tags, ok := input["tags"]; ok && tags != nil {
 		for _, tag := range tags.([]interface{}) {
 			T := new(Tag)
 			if err := T.UnmarshalMap(tag.(map[string]interface{})); err == nil {

@@ -28,8 +28,8 @@ func (p *Participant) UnmarshalMap(input map[string]interface{}) error {
 	p.Protocol, _ = input["protocol"].(string)
 	p.Type, _ = input["type"].(string)
 	p.Contact_ids = []UUID{}
-	if _, ok := input["contact_ids"]; ok {
-		for _, contact_id := range input["contact_ids"].([]interface{}) {
+	if contact_ids, ok := input["contact_ids"]; ok && contact_ids != nil {
+		for _, contact_id := range contact_ids.([]interface{}) {
 			c_id := contact_id.(string)
 			var contact_uuid UUID
 			if id, err := uuid.FromString(c_id); err == nil {
