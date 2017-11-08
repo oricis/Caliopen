@@ -1,6 +1,6 @@
 const userUtil = require('../utils/user-util');
 
-fdescribe('Create new contact', () => {
+describe('search', () => {
   const EC = protractor.ExpectedConditions;
   const locale = 'en';
   const __ = key => ({
@@ -22,7 +22,7 @@ fdescribe('Create new contact', () => {
     userUtil.signin();
   });
 
-  it('creates a new contact', () => {
+  it('search for Foobar', () => {
     const searchTerms = 'Foobar';
 
     browser.get('./')
