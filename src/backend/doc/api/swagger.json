@@ -2496,45 +2496,8 @@
           "application/json"
         ],
         "responses": {
-          "200": {
-            "404": {
-              "description": "reset route not found or expired",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "error": {
-                    "type": "object",
-                    "properties": {
-                      "message": {
-                        "type": "string"
-                      },
-                      "code": {
-                        "type": "integer",
-                        "format": "int32"
-                      },
-                      "name": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "description": "Successful request on a valid temporary route.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "temp_username": {
-                  "type": "string",
-                  "description": "temp_username makes the 'username' for basicAuth"
-                },
-                "temp_password": {
-                  "type": "string",
-                  "description": "temp_password makes the 'password' for basicAuth"
-                }
-              },
-              "additionalProperties": false
-            }
+          "204": {
+            "description": "Route is valid. No body is returned."
           }
         }
       },
@@ -2543,15 +2506,17 @@
         "tags": [
           "passwords"
         ],
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
+        "security": [],
         "consumes": [
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "new_password",
             "in": "body",
