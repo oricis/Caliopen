@@ -2391,10 +2391,7 @@
                   "type": "string"
                 }
               },
-              "additionalProperties": false,
-              "required": [
-                "recovery_email"
-              ]
+              "additionalProperties": false
             }
           }
         ],
