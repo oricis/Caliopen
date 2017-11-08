@@ -1,6 +1,6 @@
 import { matchPath } from 'react-router-dom';
 import { push } from 'react-router-redux';
-import { URLSearchParams } from 'universal-url';
+import { URLSearchParams } from '../../services/url';
 import { getInfosFromName } from '../../services/application-manager';
 import { getTranslator } from '../../services/i18n';
 import { SELECT_OR_ADD_TAB, REMOVE_TAB, addTab, selectOrAdd, updateTab } from '../modules/tab';

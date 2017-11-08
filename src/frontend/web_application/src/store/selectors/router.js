@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { URLSearchParams } from 'universal-url';
+import { URLSearchParams } from '../../services/url';
 
 export const locationSelector = state => state.router.location;
 export const pathnameSelector = state => state.router.location && state.router.location.pathname;
