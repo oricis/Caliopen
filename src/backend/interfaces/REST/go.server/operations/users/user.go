@@ -92,9 +92,24 @@ func RequestPasswordReset(ctx *gin.Context) {
 // ValidatePassResetToken handles a GET on /passwords/reset/:reset_token
 // this route does nothing more than responding with a 204 if reset_token is still valid
 func ValidatePassResetToken(ctx *gin.Context) {
-	e := swgErr.New(http.StatusNotImplemented, "not implemented")
-	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-	ctx.Abort()
+
+	token := ctx.Param("reset_token")
+	if token == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "reset token is empty")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	err := caliopen.Facilities.RESTfacility.ValidatePasswordResetToken(token)
+
+	if err != nil {
+		e := swgErr.New(http.StatusNotFound, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	} else {
+		ctx.Status(http.StatusNoContent)
+	}
 	return
 }
 

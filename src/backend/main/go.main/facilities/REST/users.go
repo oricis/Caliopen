@@ -13,6 +13,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/renstrom/shortuuid"
 	"github.com/tidwall/gjson"
+	"time"
 )
 
 const (
@@ -142,7 +143,23 @@ func (rest *RESTfacility) RequestPasswordReset(payload PasswordResetRequest, not
 	// 4. send reset link to user's recovery email address.
 	err = notifier.SendPasswordResetEmail(reset_session)
 	if err != nil {
-		logrus.WithError(err).Warn("[RESTfacility] sending password recovery mail failed for user %s", user.UserId.String())
+		logrus.WithError(err).Warnf("[RESTfacility] sending password reset email failed for user %s", user.UserId.String())
 	}
+	return nil
+}
+
+func (rest *RESTfacility) ValidatePasswordResetToken(token string) error {
+	session, err := rest.Cache.GetResetPasswordToken(token)
+	if err != nil || session == nil {
+		return errors.New("[RESTfacility] token not found")
+	}
+	if session.Expires_at.After(time.Now()) {
+		return errors.New("[RESTfacility] token expired")
+	}
+	return nil
+}
+
+func (rest *RESTfacility) ResetUserPassword(token, new_password string) error {
+
 	return nil
 }

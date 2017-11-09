@@ -28,6 +28,11 @@ func ChangeUserPassword(user *User, patch *gjson.Result, store backends.UserStor
 	}
 
 	new_password := patch.Get("password").Str
+
+	return ResetUserPassword(user, new_password, store)
+}
+
+func ResetUserPassword(user *User, new_password string, store backends.UserStorage) error {
 	//compute new password strength
 	user_infos := []string{user.Name, user.GivenName, user.FamilyName, user.RecoveryEmail}
 	user_infos = append(user_infos, user.LocalIdentities...)
@@ -41,6 +46,5 @@ func ChangeUserPassword(user *User, patch *gjson.Result, store backends.UserStor
 	if err != nil {
 		return errors.New("[ChangeUserPassword] failed to store updated user : " + err.Error())
 	}
-
 	return nil
 }

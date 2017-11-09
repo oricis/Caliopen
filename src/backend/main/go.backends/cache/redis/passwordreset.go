@@ -13,6 +13,7 @@ import (
 const (
 	sessionPrefix    = "resetsession::"
 	resetTokenPrefix = "resettoken::"
+	resetPasswordTTL = 8 // ttl in hours
 )
 
 // GetResetPasswordSession returns reset password session values stored for the user_id, if any
@@ -37,7 +38,7 @@ func (cache *RedisBackend) GetResetPasswordSession(user_id string) (session *Pas
 // Func returns a pointer to the Pass_reset_session object that represents values stored in the cache.
 // user_id and reset_token strings must be well-formatted, they will not be checked.
 func (cache *RedisBackend) SetResetPasswordSession(user_id, reset_token string) (session *Pass_reset_session, err error) {
-	ttl := 8 * time.Hour
+	ttl := resetPasswordTTL * time.Hour
 	expiration := time.Now().Add(ttl)
 	session = &Pass_reset_session{
 		Reset_token: reset_token,
