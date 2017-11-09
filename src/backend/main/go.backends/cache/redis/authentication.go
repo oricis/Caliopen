@@ -9,6 +9,9 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
+// GetAuthToken retrieves auth values stored for the given key
+// values are casted into an Auth_cache struct
+// key is in the form of "tokens::user_id"
 func (cache *RedisBackend) GetAuthToken(key string) (value *Auth_cache, err error) {
 	value = &Auth_cache{}
 	cache_str, err := cache.client.Get(key).Result()

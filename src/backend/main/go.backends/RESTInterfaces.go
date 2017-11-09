@@ -30,7 +30,11 @@ type APIIndex interface {
 }
 
 type APICache interface {
+	// authentication
 	GetAuthToken(token string) (value *Auth_cache, err error)
-	GetResetPasswordToken(token string)
-	SetResetPasswordToken() error
+	// password reset process
+	GetResetPasswordToken(token string) (*Pass_reset_session, error)
+	GetResetPasswordSession(user_id string) (*Pass_reset_session, error)
+	SetResetPasswordSession(user_id, reset_token string) (*Pass_reset_session, error)
+	DeleteResetPasswordSession(user_id string) error
 }
