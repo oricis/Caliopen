@@ -13,6 +13,9 @@
     }
   }
 
+  &__user { text-align: right; }
+  &__username { color: $co-color__fg__text--high;  }
+
   &__action { line-height: $co-component__height; }
 
   &__modal {

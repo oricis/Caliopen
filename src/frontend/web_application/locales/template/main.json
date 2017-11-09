@@ -295,6 +295,8 @@
     "signup.form.privacy.intro": "signup.form.privacy.intro",
     "signup.form.privacy.more_info": "signup.form.privacy.more_info",
     "signup.form.privacy.title": "signup.form.privacy.title",
+    "signup.form.invitation_email.label": "signup.form.invitation_email.label",
+    "signup.form.invitation_email.placeholder": "signup.form.invitation_email.placeholder",
     "signup.form.recovery_email.label": "signup.form.recovery_email.label",
     "signup.form.recovery_email.placeholder": "signup.form.recovery_email.placeholder",
     "signup.form.tos.label": "signup.form.tos.label",

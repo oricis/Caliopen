@@ -306,6 +306,8 @@
     "signup.form.privacy.intro": "Throughout the development phase, we collect some data (but no more than the NSA).",
     "signup.form.privacy.more_info": "More info",
     "signup.form.privacy.title": "Privacy policy",
+    "signup.form.invitation_email.label": "Please fill with email provided when you requested invitation",
+    "signup.form.invitation_email.placeholder": "Invitation email",
     "signup.form.recovery_email.label": "Backup email address",
     "signup.form.recovery_email.placeholder": "Backup email address",
     "signup.form.tos.label": "I agree Terms and conditions",
