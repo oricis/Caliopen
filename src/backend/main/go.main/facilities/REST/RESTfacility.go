@@ -46,8 +46,8 @@ type (
 		//users
 		PatchUser(user_id string, patch *gjson.Result, notifier Notifications.Notifiers) error
 		RequestPasswordReset(payload PasswordResetRequest, notifier Notifications.EmailNotifiers) error
-		ValidatePasswordResetToken(token string) error
-		ResetUserPassword(token, new_password string) error
+		ValidatePasswordResetToken(token string) (session *Pass_reset_session, err error)
+		ResetUserPassword(token, new_password string, notifier Notifications.EmailNotifiers) error
 	}
 	RESTfacility struct {
 		store              backends.APIStorage

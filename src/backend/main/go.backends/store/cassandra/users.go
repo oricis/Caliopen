@@ -36,7 +36,7 @@ func (cb *CassandraBackend) UpdateUser(user *User, fields map[string]interface{}
 	return userT.Where(gocassa.Eq("user_id", user.UserId.String())).Update(fields).Run()
 }
 
-func (cb *CassandraBackend) UpdateUserPassword(user *User) error {
+func (cb *CassandraBackend) UpdateUserPasswordHash(user *User) error {
 	return cb.Session.Query(`UPDATE user SET password = ? WHERE user_id = ?`,
 		user.Password,
 		user.UserId,

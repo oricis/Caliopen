@@ -17,21 +17,35 @@ import (
 
 type EmailNotifiers interface {
 	SendEmailAdminToUser(user *User, email *Message) error
-	SendPasswordResetEmail(session *Pass_reset_session) error
+	SendPasswordResetEmail(user *User, session *Pass_reset_session) error
 }
+
+const (
+	resetPasswordSubject   = "Demande de remise à zéro de votre mot de passe"
+	resetPasswordBodyPlain = `
+	Bonjour,
+	nous avons pris note d'une demande de changement de mot de passe,
+	pour le réinitialiser, veuillez cliquer sur ce lien :
+	%s
+	et suivre les indications à l'écran.
+
+	Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce mail.
+
+	Cordialement,
+	L'équipe de Caliopen.
+	`
+	resetPasswordBodyRich = resetPasswordBodyPlain
+)
 
 // SendEmailAdminToUser sends an administrative email to user, ie :
 // this is an email composed by the backend to inform user that something happened related to its account
 // func is in charge of saving & indexing draft before sending the "deliver" order to the SMTP broker.
 func (fac *Facility) SendEmailAdminToUser(user *User, email *Message) error {
-	log.Infof("[NotificationsFacility] Password has been changed for user <%s> [%s] via REST API", user.Name, user.UserId.String())
 	if fac.admin == nil {
 		err := errors.New("[NotificationsFacility] can't SendEmailAdminToUser, no admin user has been set")
 		log.Warn(err)
 		return err
 	}
-
-	// should create a draft then send it via apiV1
 
 	sender := Participant{
 		Address:  fac.admin.RecoveryEmail,
@@ -68,6 +82,7 @@ func (fac *Facility) SendEmailAdminToUser(user *User, email *Message) error {
 		return err
 	}
 
+	log.Infof("[NotificationsFacility] sending email admin for user <%s> [%s]", user.Name, user.UserId.String())
 	const nats_order = "deliver"
 	natsMessage := fmt.Sprintf(Nats_message_tmpl, nats_order, email.Message_id.String(), fac.admin.UserId.String())
 	rep, err := fac.queue.Request(fac.nats_outSMTP_topic, []byte(natsMessage), 30*time.Second)
@@ -93,7 +108,24 @@ func (fac *Facility) SendEmailAdminToUser(user *User, email *Message) error {
 	return nil
 }
 
-func (fac *Facility) SendPasswordResetEmail(session *Pass_reset_session) error {
-	log.Infof("%+v", session)
-	return errors.New("not implemented")
+func (fac *Facility) SendPasswordResetEmail(user *User, session *Pass_reset_session) error {
+	if user == nil || session == nil {
+		return errors.New("[NotificationsFacility] SendPasswordResetEmail invalid params")
+	}
+	reset_link := fmt.Sprintf("https://alpha.caliopen.org/passwords/reset/%s", session.Reset_token) // TODO : get domain from config
+
+	email := &Message{
+		Body_plain: fmt.Sprintf(resetPasswordBodyPlain, reset_link),
+		Subject:    resetPasswordSubject,
+	}
+
+	err := fac.SendEmailAdminToUser(user, email)
+
+	if err != nil {
+		log.WithError(err).Warnf("[RESTfacility] sending password reset email failed for user %s", user.UserId.String())
+	} else {
+
+	}
+
+	return err
 }

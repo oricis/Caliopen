@@ -131,6 +131,7 @@ func (rest *RESTfacility) RequestPasswordReset(payload PasswordResetRequest, not
 	reset_session, err := rest.Cache.GetResetPasswordSession(user.UserId.String())
 	if reset_session != nil {
 		rest.Cache.DeleteResetPasswordSession(user.UserId.String())
+		logrus.Infof("[RESTFacility] reset password session deleted for user <%s> [%s]", user.Name, user.UserId.String())
 	}
 
 	// 3. generate a reset token and cache it
@@ -141,25 +142,56 @@ func (rest *RESTfacility) RequestPasswordReset(payload PasswordResetRequest, not
 	}
 
 	// 4. send reset link to user's recovery email address.
-	err = notifier.SendPasswordResetEmail(reset_session)
-	if err != nil {
-		logrus.WithError(err).Warnf("[RESTfacility] sending password reset email failed for user %s", user.UserId.String())
-	}
+	go notifier.SendPasswordResetEmail(user, reset_session)
+	logrus.Infof("[RESTFacility] reset password session ignited for user <%s> [%s]", user.Name, user.UserId.String())
+
 	return nil
 }
 
-func (rest *RESTfacility) ValidatePasswordResetToken(token string) error {
-	session, err := rest.Cache.GetResetPasswordToken(token)
+func (rest *RESTfacility) ValidatePasswordResetToken(token string) (session *Pass_reset_session, err error) {
+	session, err = rest.Cache.GetResetPasswordToken(token)
 	if err != nil || session == nil {
-		return errors.New("[RESTfacility] token not found")
+		return nil, errors.New("[RESTfacility] token not found")
 	}
-	if session.Expires_at.After(time.Now()) {
-		return errors.New("[RESTfacility] token expired")
+	if time.Now().After(session.Expires_at) {
+		return nil, errors.New("[RESTfacility] token expired")
 	}
-	return nil
+	return session, nil
 }
 
-func (rest *RESTfacility) ResetUserPassword(token, new_password string) error {
+func (rest *RESTfacility) ResetUserPassword(token, new_password string, notifier Notifications.EmailNotifiers) error {
+	session, err := rest.ValidatePasswordResetToken(token)
+	if err != nil {
+		return err
+	}
+	user, err := rest.store.RetrieveUser(session.User_id)
+	if err != nil {
+		return err
+	}
+
+	// reset password
+	err = users.ResetUserPassword(user, new_password, rest.store)
+	if err != nil {
+		return err
+	}
+
+	logrus.Infof("[RESTFacility] password reset for user <%s> [%s]", user.Name, user.UserId.String())
+
+	// delete reset session cache
+	err = rest.Cache.DeleteResetPasswordSession(user.UserId.String())
+	if err != nil {
+		logrus.WithError(err).Warnf("[RESTfacility] failed to delete reset session cache for user %s", user.UserId.String())
+	} else {
+		logrus.Infof("[RESTFacility] reset password session deleted for user <%s> [%s]", user.Name, user.UserId.String())
+	}
+
+	// send email notification to user's recovery email address
+	notif := &Message{
+		Body_plain: changePasswordBodyPlain,
+		Body_html:  changePasswordBodyRich,
+		Subject:    changePasswordSubject,
+	}
+	go notifier.SendEmailAdminToUser(user, notif)
 
 	return nil
 }

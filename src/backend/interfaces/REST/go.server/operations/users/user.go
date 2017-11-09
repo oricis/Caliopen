@@ -94,6 +94,7 @@ func RequestPasswordReset(ctx *gin.Context) {
 func ValidatePassResetToken(ctx *gin.Context) {
 
 	token := ctx.Param("reset_token")
+
 	if token == "" {
 		e := swgErr.New(http.StatusUnprocessableEntity, "reset token is empty")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
@@ -101,7 +102,7 @@ func ValidatePassResetToken(ctx *gin.Context) {
 		return
 	}
 
-	err := caliopen.Facilities.RESTfacility.ValidatePasswordResetToken(token)
+	_, err := caliopen.Facilities.RESTfacility.ValidatePasswordResetToken(token)
 
 	if err != nil {
 		e := swgErr.New(http.StatusNotFound, err.Error())
@@ -114,12 +115,38 @@ func ValidatePassResetToken(ctx *gin.Context) {
 }
 
 // ResetPassword handles POST on /passwords/reset/:reset_token
-// payload should a json with new password
+// payload should be a json with new password
 func ResetPassword(ctx *gin.Context) {
-	e := swgErr.New(http.StatusNotImplemented, "not implemented")
-	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-	ctx.Abort()
-	return
+
+	token := ctx.Param("reset_token")
+
+	if token == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "reset token is empty")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	var payload struct {
+		Password string `json:"password"`
+	}
+	err := ctx.BindJSON(&payload)
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, "unable to unmarshal payload : "+err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	err = caliopen.Facilities.RESTfacility.ResetUserPassword(token, payload.Password, caliopen.Facilities.Notifiers)
+
+	if err != nil {
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	} else {
+		ctx.Status(http.StatusNoContent)
+	}
 }
 
 // POST …/users/

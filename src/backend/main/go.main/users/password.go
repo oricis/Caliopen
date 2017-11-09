@@ -42,7 +42,7 @@ func ResetUserPassword(user *User, new_password string, store backends.UserStora
 	// hash new password and store it
 	hashpass, err := bcrypt.GenerateFromPassword([]byte(new_password), defaultBcryptCost)
 	(*user).Password = hashpass
-	err = store.UpdateUserPassword(user)
+	err = store.UpdateUserPasswordHash(user)
 	if err != nil {
 		return errors.New("[ChangeUserPassword] failed to store updated user : " + err.Error())
 	}
