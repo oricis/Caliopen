@@ -17,6 +17,7 @@ import (
 
 type EmailNotifiers interface {
 	SendEmailAdminToUser(user *User, email *Message) error
+	SendPasswordResetEmail(session *Pass_reset_session) error
 }
 
 // SendEmailAdminToUser sends an administrative email to user, ie :
@@ -29,6 +30,9 @@ func (fac *Facility) SendEmailAdminToUser(user *User, email *Message) error {
 		log.Warn(err)
 		return err
 	}
+
+	// should create a draft then send it via apiV1
+
 	sender := Participant{
 		Address:  fac.admin.RecoveryEmail,
 		Label:    fac.admin.Name,
@@ -50,6 +54,8 @@ func (fac *Facility) SendEmailAdminToUser(user *User, email *Message) error {
 	(*email).Participants = []Participant{sender, recipient}
 	(*email).Type = EmailProtocol
 	(*email).User_id = fac.admin.UserId
+
+	// need to create discussion
 
 	err := fac.store.CreateMessage(email)
 	if err != nil {
@@ -85,4 +91,9 @@ func (fac *Facility) SendEmailAdminToUser(user *User, email *Message) error {
 		return err
 	}
 	return nil
+}
+
+func (fac *Facility) SendPasswordResetEmail(session *Pass_reset_session) error {
+	log.Infof("%+v", session)
+	return errors.New("not implemented")
 }

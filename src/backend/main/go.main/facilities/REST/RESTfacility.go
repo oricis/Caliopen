@@ -45,7 +45,7 @@ type (
 		Search(IndexSearch) (result *IndexResult, err error)
 		//users
 		PatchUser(user_id string, patch *gjson.Result, notifier Notifications.Notifiers) error
-		RequestPasswordReset(PasswordResetRequest) error
+		RequestPasswordReset(payload PasswordResetRequest, notifier Notifications.EmailNotifiers) error
 	}
 	RESTfacility struct {
 		store              backends.APIStorage

@@ -10,6 +10,8 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/users"
+	"github.com/Sirupsen/logrus"
+	"github.com/renstrom/shortuuid"
 	"github.com/tidwall/gjson"
 )
 
@@ -88,4 +90,59 @@ func validatePasswordPatch(patch *gjson.Result) error {
 	}
 
 	return err
+}
+
+// RequestPasswordReset checks if an user could be found with provided payload request,
+// if found, it will trigger the password reset procedure that ends by notifying the user via the provided notifiers interface
+func (rest *RESTfacility) RequestPasswordReset(payload PasswordResetRequest, notifier Notifications.EmailNotifiers) error {
+	var user *User
+	var err error
+	// 1. check if user exist
+	if payload.Username != "" {
+		user, err = rest.store.UserByUsername(payload.Username)
+		if err != nil || user == nil {
+			logrus.Info(err)
+			return errors.New("[RESTfacility] user not found")
+		}
+		if payload.RecoveryMail != "" {
+			// check if provided email is consistent for this user
+			if payload.RecoveryMail != user.RecoveryEmail {
+				return errors.New("[RESTfacility] username and recovery email mismatch")
+			}
+		}
+	} else if payload.RecoveryMail != "" {
+		user, err = rest.store.UserByRecoveryEmail(payload.RecoveryMail)
+		if err != nil || user == nil {
+			logrus.Info(err)
+			return errors.New("[RESTfacility] user not found")
+		}
+		if payload.Username != "" {
+			// check if provided username is consistent for this user
+			if payload.Username != user.Name {
+				return errors.New("[RESTfacility] username and recovery email mismatch")
+			}
+		}
+	} else {
+		return errors.New("[RESTfacility] neither username, nor recovery email provided, at least one required")
+	}
+
+	// 2. check if a password reset has already been ignited for that user
+	reset_session, err := rest.Cache.GetResetPasswordSession(user.UserId.String())
+	if reset_session != nil {
+		rest.Cache.DeleteResetPasswordSession(user.UserId.String())
+	}
+
+	// 3. generate a reset token and cache it
+	token := shortuuid.New()
+	reset_session, err = rest.Cache.SetResetPasswordSession(user.UserId.String(), token)
+	if err != nil {
+		return err
+	}
+
+	// 4. send reset link to user's recovery email address.
+	err = notifier.SendPasswordResetEmail(reset_session)
+	if err != nil {
+		logrus.WithError(err).Warn("[RESTfacility] sending password recovery mail failed for user %s", user.UserId.String())
+	}
+	return nil
 }

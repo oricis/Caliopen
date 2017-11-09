@@ -68,3 +68,8 @@ func (cb *CassandraBackend) GetLocalsIdentities(user_id string) (identities []Lo
 
 	return
 }
+
+func (cb *CassandraBackend) UserByRecoveryEmail(email string) (user *User, err error) {
+	return nil, errors.New("[CassandraBackend] UserByRecoveryEmail not implemented")
+}
+

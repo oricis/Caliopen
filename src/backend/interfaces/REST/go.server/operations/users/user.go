@@ -5,6 +5,7 @@
 package users
 
 import (
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
@@ -55,6 +56,55 @@ func PatchUser(ctx *gin.Context) {
 		ctx.Status(http.StatusNoContent)
 	}
 
+}
+
+// RequestPasswordReset handles an anonymous POST request on /passwords/reset/ with json payload
+// it will try to trigger a password reset procedure
+func RequestPasswordReset(ctx *gin.Context) {
+	var payload PasswordResetRequest
+	err := ctx.BindJSON(&payload)
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	if payload.RecoveryMail == "" && payload.Username == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "neither username nor recovery email provided, at least one required")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	err = caliopen.Facilities.RESTfacility.RequestPasswordReset(payload, caliopen.Facilities.Notifiers)
+
+	if err != nil {
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	} else {
+		ctx.Status(http.StatusNoContent)
+	}
+	return
+}
+
+// ValidatePassResetToken handles a GET on /passwords/reset/:reset_token
+// this route does nothing more than responding with a 204 if reset_token is still valid
+func ValidatePassResetToken(ctx *gin.Context) {
+	e := swgErr.New(http.StatusNotImplemented, "not implemented")
+	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+	ctx.Abort()
+	return
+}
+
+// ResetPassword handles POST on /passwords/reset/:reset_token
+// payload should a json with new password
+func ResetPassword(ctx *gin.Context) {
+	e := swgErr.New(http.StatusNotImplemented, "not implemented")
+	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+	ctx.Abort()
+	return
 }
 
 // POST …/users/
