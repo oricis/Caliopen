@@ -307,6 +307,8 @@
     "signup.form.privacy.intro": "Durant toute la phase de développement, nous recueillons certaines données d'utilisation (mais pas plus que la NSA).",
     "signup.form.privacy.more_info": "En savoir plus",
     "signup.form.privacy.title": "Confidentialité",
+    "signup.form.invitation_email.label": "Merci de renseigner l'email que vous avez fourni lors de la demande d'invitation.",
+    "signup.form.invitation_email.placeholder": "Email d'invitation",
     "signup.form.recovery_email.label": "Email de secours",
     "signup.form.recovery_email.placeholder": "Email de secours",
     "signup.form.tos.label": "J'accepte les Conditions Générales d'Utilisation (CGU)",
