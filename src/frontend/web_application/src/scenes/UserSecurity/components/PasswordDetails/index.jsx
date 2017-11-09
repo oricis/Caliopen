@@ -9,7 +9,7 @@ import './style.scss';
 function generateStateFromProps(props, prevState) {
   return {
     ...prevState,
-    editMode: prevState.editMode && props.updated && false,
+    editMode: prevState.editMode && !props.updated,
   };
 }
 
