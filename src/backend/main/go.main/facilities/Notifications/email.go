@@ -36,8 +36,8 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 	}
 
 	sender := Participant{
-		Address:  notif.admin.RecoveryEmail,
-		Label:    notif.admin.Name,
+		Address:  (*notif.adminLocalID).Identifier,
+		Label:    (*notif.adminLocalID).Display_name,
 		Protocol: EmailProtocol,
 		Type:     ParticipantFrom,
 	}
@@ -52,13 +52,13 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 	(*email).Date = now
 	(*email).Date_insert = now
 	(*email).Message_id.UnmarshalBinary(uuid.NewV4().Bytes())
+	(*email).Discussion_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	(*email).Is_draft = true
 	(*email).Participants = []Participant{sender, recipient}
 	(*email).Type = EmailProtocol
 	(*email).User_id = notif.admin.UserId
 
-	// need to create discussion
-
+	// save & index message
 	err := notif.store.CreateMessage(email)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser failed to store draft")

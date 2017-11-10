@@ -24,7 +24,8 @@ type (
 		nats_outSMTP_topic string
 		queue              *nats.Conn
 		store              backends.NotificationsStore
-		admin              *User //Admin user on whose behalf actions could be done
+		admin              *User          //Admin user on whose behalf actions could be done
+		adminLocalID       *LocalIdentity // admin's local identity used to send emails
 		config             *NotifierConfig
 	}
 )
@@ -80,5 +81,13 @@ func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notifier
 		log.WithError(err).Warnf("Failed to retrieve admin user <%s>", config.NotifierConfig.AdminUsername)
 	}
 	notifier.admin = user
+	ids, err := notifier.store.GetLocalsIdentities(user.UserId.String())
+	if err != nil {
+		log.WithError(err).Warnf("Failed to retrieve local identities for admin user <%s>", config.NotifierConfig.AdminUsername)
+	}
+
+	// get first local identity found for now
+	notifier.adminLocalID = &(ids[0])
+
 	return notifier
 }
