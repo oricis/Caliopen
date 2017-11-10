@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Reset password API
+
 ### Fixed
 
 - unmarshal nested empty structures in go objects.
