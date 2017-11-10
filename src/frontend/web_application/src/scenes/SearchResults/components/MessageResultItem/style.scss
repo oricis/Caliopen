@@ -1,15 +1,15 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
-
-// carefull, this name is in conflict with s-message-item in Timeline
-.s-message-item {
+.s-message-result-item {
   @include flex-grid-row($size: expand);
   align-items: center;
   height: 2 * $co-component__height;
+  border-bottom: 1px solid $co-color__bg__back;
 
   &:hover {
     color: $co-color__fg__text--high;
+    background-color: $co-color__fg__back--high;
   }
 
   &:active {

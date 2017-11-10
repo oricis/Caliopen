@@ -6,7 +6,7 @@ import TextBlock from '../../../../components/TextBlock';
 import { formatName } from '../../../../services/contact';
 import './style.scss';
 
-class ContactItem extends PureComponent {
+class ContactResultItem extends PureComponent {
   static propTypes = {
     contact: PropTypes.shape({}).isRequired,
     contact_display_format: PropTypes.string.isRequired,
@@ -24,14 +24,14 @@ class ContactItem extends PureComponent {
     const { contact } = this.props;
 
     return (
-      <Link noDecoration className="m-contact-item" to={`/contacts/${contact.contact_id}`}>
-        <div className="m-contact-item__contact-avatar">
+      <Link noDecoration className="m-contact-result-item" to={`/contacts/${contact.contact_id}`}>
+        <div className="m-contact-result-item__contact-avatar">
           <ContactAvatarLetter isRound contact={contact} size={SIZE_SMALL} />
         </div>
-        <TextBlock className="m-contact-item__contact-info">
-          {contact.name_prefix && (<span className="m-contact-item__contact-prefix">{contact.name_prefix}</span>)}
-          <span className="m-contact-item__contact-title">{this.renderTitle()}</span>
-          {contact.name_suffix && (<span className="m-contact-item__contact-suffix">, {contact.name_suffix}</span>)}
+        <TextBlock className="m-contact-result-item__contact-info">
+          {contact.name_prefix && (<span className="m-contact-result-item__contact-prefix">{contact.name_prefix}</span>)}
+          <span className="m-contact-result-item__contact-title">{this.renderTitle()}</span>
+          {contact.name_suffix && (<span className="m-contact-result-item__contact-suffix">, {contact.name_suffix}</span>)}
         </TextBlock>
         {/*  TODO: add tags */}
       </Link>
@@ -39,4 +39,4 @@ class ContactItem extends PureComponent {
   }
 }
 
-export default ContactItem;
+export default ContactResultItem;

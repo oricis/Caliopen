@@ -5,8 +5,8 @@ import SearchResultsLayout from '../../layouts/SearchResults';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
 import InfiniteScroll from '../../components/InfiniteScroll';
-import MessageItem from './components/MessageItem';
-import ContactItem from './components/ContactItem';
+import MessageResultItem from './components/MessageResultItem';
+import ContactResultItem from './components/ContactResultItem';
 
 import './style.scss';
 
@@ -71,7 +71,7 @@ class SearchResults extends Component {
     return (
       <div className="s-search-results__item">
         {messages.map(messageHit => (
-          <MessageItem
+          <MessageResultItem
             key={messageHit.document.message_id}
             message={messageHit.document}
             highlights={messageHit.highlights}
@@ -88,7 +88,7 @@ class SearchResults extends Component {
     return (
       <div className="s-search-results__item">
         {contacts.map(contactHit => (
-          <ContactItem
+          <ContactResultItem
             key={contactHit.document.contact_id}
             contact={contactHit.document}
             highlights={contactHit.highlights}
