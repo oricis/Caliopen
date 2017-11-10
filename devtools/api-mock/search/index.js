@@ -9,7 +9,7 @@ const match = ({ item, props, searchTerms }) => props.find(propName =>
       item[propName] && item[propName].toLowerCase().includes(searchTerms.toLowerCase()));
 
 const selectors = {
-  all: () => state => state.participants,
+  all: () => state => state.search,
 };
 
 const reducer = {
