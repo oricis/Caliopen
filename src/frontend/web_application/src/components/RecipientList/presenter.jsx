@@ -8,7 +8,7 @@ import Button from '../Button';
 import Icon from '../Icon';
 import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
 import protocolsConfig, { ASSOC_PROTOCOL_ICON } from '../../services/protocols-config';
-import { addEventHandler } from '../../services/event-manager';
+import { addEventListener } from '../../services/event-manager';
 import Recipient from './components/Recipient';
 import './style.scss';
 
@@ -116,7 +116,7 @@ class RecipientList extends Component {
 
   handleSearchInputFocus = () => {
     this.setState({ searchOpened: true });
-    this.unsubscribeInputBlur = addEventHandler('click', (ev) => {
+    this.unsubscribeInputBlur = addEventListener('click', (ev) => {
       if (ev.target === this.searchInputRef) {
         return;
       }
