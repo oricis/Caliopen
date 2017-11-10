@@ -21,22 +21,8 @@ type EmailNotifiers interface {
 }
 
 const (
-	resetPasswordSubject   = "Demande de réinitialisation de votre mot de passe"
-	resetPasswordBodyPlain = `
-	Bonjour,
-	nous avons pris note d'une demande de changement de mot de passe,
-	pour le réinitialiser, veuillez cliquer sur ce lien :
-
-	%s
-
-	et suivre les indications à l'écran.
-
-	Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce mail.
-
-	Cordialement,
-	L'équipe de Caliopen.
-	`
-	resetPasswordBodyRich = resetPasswordBodyPlain
+	resetPasswordTemplate = "email-reset-password-link.yaml"
+	resetLinkFmt          = "%s/passwords/reset/%s"
 )
 
 // SendEmailAdminToUser sends an administrative email to user, ie :
@@ -114,20 +100,26 @@ func (notif *Notifier) SendPasswordResetEmail(user *User, session *Pass_reset_se
 	if user == nil || session == nil {
 		return errors.New("[NotificationsFacility] SendPasswordResetEmail invalid params")
 	}
-	reset_link := fmt.Sprintf("https://alpha.caliopen.org/passwords/reset/%s", session.Reset_token) // TODO : get domain from config
 
-	email := &Message{
-		Body_plain: fmt.Sprintf(resetPasswordBodyPlain, reset_link),
-		Subject:    resetPasswordSubject,
+	reset_link := fmt.Sprintf(resetLinkFmt, notif.config.BaseUrl, session.Reset_token)
+	context := map[string]interface{}{
+		"given_name":  user.GivenName,
+		"family_name": user.FamilyName,
+		"domain":      notif.config.BaseUrl,
+		"url":         reset_link,
+	}
+	email, err := RenderResetEmail(notif.config.TemplatesPath+resetPasswordTemplate, context)
+	if err != nil {
+		log.WithError(err).Warnf("[RESTfacility] failed to build reset email from template for user %s", user.UserId.String())
+		return errors.New("[RESTfacility] failed to build reset email")
 	}
 
-	err := notif.SendEmailAdminToUser(user, email)
+	err = notif.SendEmailAdminToUser(user, email)
 
 	if err != nil {
 		log.WithError(err).Warnf("[RESTfacility] sending password reset email failed for user %s", user.UserId.String())
-	} else {
-
+		return errors.New("[RESTfacility] failed to send password reset email")
 	}
 
-	return err
+	return nil
 }

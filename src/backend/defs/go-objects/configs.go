@@ -48,8 +48,8 @@ type (
 
 	// Notifications facility
 	NotifierConfig struct {
-		AdminUsername     string `mapstructure:"admin_username"`
-		DefaultMailDomain string `mapstructure:"default_mail_domain"` // domain from which emails will be sent from by Notifiers
-		TemplatesPath     string `mapstructure:"templates_path"`      // path to templates Notifiers may need to access to
+		AdminUsername string `mapstructure:"admin_username"`
+		BaseUrl       string `mapstructure:"base_url"`       // url upon which to build custom links sent to users. No trailing slash please.
+		TemplatesPath string `mapstructure:"templates_path"` // path to templates Notifiers may need to access to
 	}
 )

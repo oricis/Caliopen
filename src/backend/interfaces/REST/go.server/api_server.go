@@ -76,9 +76,9 @@ type (
 	}
 
 	NotifierConfig struct {
-		AdminUsername     string `mapstructure:"admin_username"`
-		DefaultMailDomain string `mapstructure:"default_mail_domain"`
-		TemplatesPath     string `mapstructure:"templates_path"`
+		AdminUsername string `mapstructure:"admin_username"`
+		BaseUrl       string `mapstructure:"base_url"`
+		TemplatesPath string `mapstructure:"templates_path"`
 	}
 )
 
@@ -115,9 +115,9 @@ func (server *REST_API) initialize(config APIConfig) error {
 			OutSMTP_topic: config.NatsConfig.OutSMTP_topic,
 		},
 		NotifierConfig: obj.NotifierConfig{
-			AdminUsername:     config.NotifierConfig.AdminUsername,
-			DefaultMailDomain: config.NotifierConfig.DefaultMailDomain,
-			TemplatesPath:     config.NotifierConfig.TemplatesPath,
+			AdminUsername: config.NotifierConfig.AdminUsername,
+			BaseUrl:       config.NotifierConfig.BaseUrl,
+			TemplatesPath: config.NotifierConfig.TemplatesPath,
 		},
 	}
 
