@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - do not force phone nnumber normalization, accept everything and try to normalize
 - permit to set contact title on user input, do not compute it strictly
+- Reset password API
 
 ### Fixed
 
