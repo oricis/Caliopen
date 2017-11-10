@@ -12,7 +12,7 @@ import { renderParticipant } from '../../../../services/message';
 
 import './style.scss';
 
-class MessageItem extends PureComponent {
+class MessageResultItem extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     term: PropTypes.string.isRequired,
@@ -43,7 +43,7 @@ class MessageItem extends PureComponent {
     return message.tags && message.tags.map(tag => (
       <span key={tag.name}>
         {' '}
-        <Badge className="s-message-item__tag">{tag.name}</Badge>
+        <Badge className="s-message-result-item__tag">{tag.name}</Badge>
       </span>
     ));
   }
@@ -67,27 +67,27 @@ class MessageItem extends PureComponent {
     return (
       <Link
         to={`/discussions/${message.discussion_id}`}
-        className={classnames('s-message-item', { 's-message-item--unread': message.is_unread, 's-message-item--draft': message.is_draft })}
+        className={classnames('s-message-result-item', { 's-message-result-item--unread': message.is_unread, 's-message-result-item--draft': message.is_draft })}
         noDecoration
       >
-        <div className="s-message-item__col-avatars">
+        <div className="s-message-result-item__col-avatars">
           <AuthorAvatar message={message} />
         </div>
-        <div className="s-message-item__col-title">
+        <div className="s-message-result-item__col-title">
           <TextBlock>
             {this.renderAuthor()}
             {this.renderTags()}
           </TextBlock>
           <TextBlock>
-            {message.is_draft && (<span className="s-message-item__draft-prefix">{__('timeline.draft-prefix')}</span>)}
-            {message.subject && (<span className="s-message-item__subject">{message.subject}</span>)}
+            {message.is_draft && (<span className="s-message-result-item__draft-prefix">{__('timeline.draft-prefix')}</span>)}
+            {message.subject && (<span className="s-message-result-item__subject">{message.subject}</span>)}
             {this.renderHighlights()}
           </TextBlock>
         </div>
-        <div className="s-message-item__col-file">
+        <div className="s-message-result-item__col-file">
           { message.attachments && <Icon type="paperclip" /> }
         </div>
-        <div className="s-message-item__col-dates">
+        <div className="s-message-result-item__col-dates">
           <Moment className="m-message__date" locale={locale} element={MessageDate}>
             {message.date_insert}
           </Moment>
@@ -97,4 +97,4 @@ class MessageItem extends PureComponent {
   }
 }
 
-export default MessageItem;
+export default MessageResultItem;

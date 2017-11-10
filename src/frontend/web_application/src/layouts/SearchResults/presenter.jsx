@@ -6,6 +6,7 @@ import MenuBar from '../../components/MenuBar';
 class SearchResults extends PureComponent {
   static propTypes = {
     pathname: PropTypes.string,
+    search: PropTypes.string,
     term: PropTypes.string,
     searchResultsPreview: PropTypes.shape({}),
     children: PropTypes.node,
@@ -13,6 +14,7 @@ class SearchResults extends PureComponent {
   };
   static defaultProps = {
     pathname: undefined,
+    search: undefined,
     term: '',
     searchResultsPreview: {
       contact_hits: {
@@ -31,6 +33,7 @@ class SearchResults extends PureComponent {
       __,
       children,
       pathname,
+      search,
       term,
       searchResultsPreview: {
         total,
@@ -39,13 +42,15 @@ class SearchResults extends PureComponent {
       },
     } = this.props;
 
+    const location = `${pathname}${search}`;
+
     const navLinks = [
       { title: __('search-results.all', { count: total }), to: `/search-results?term=${term}` },
       { title: __('search-results.messages', { count: nbMessages }), to: `/search-results?term=${term}&doctype=message` },
       { title: __('search-results.contacts', { count: nbContacts }), to: `/search-results?term=${term}&doctype=contact` },
     ].map(link => ({
       ...link,
-      isActive: matchPath(pathname, { path: link.to, exact: false, strict: false }) && true,
+      isActive: matchPath(location, { path: link.to, exact: false, strict: false }) && true,
     }));
 
     return (
