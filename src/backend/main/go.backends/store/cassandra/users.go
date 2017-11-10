@@ -9,8 +9,8 @@ package store
 import (
 	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/gocql/gocql"
 	"github.com/gocassa/gocassa"
+	"github.com/gocql/gocql"
 )
 
 func (cb *CassandraBackend) RetrieveUser(user_id string) (user *User, err error) {
@@ -69,7 +69,13 @@ func (cb *CassandraBackend) GetLocalsIdentities(user_id string) (identities []Lo
 	return
 }
 
+// UserByRecoveryEmail lookups table user_recovery_email to get the user_id for the given email
+// if a user_id is found, the user is fetched from user table.
 func (cb *CassandraBackend) UserByRecoveryEmail(email string) (user *User, err error) {
-	return nil, errors.New("[CassandraBackend] UserByRecoveryEmail not implemented")
+	user_id := new(gocql.UUID)
+	err = cb.Session.Query(`SELECT user_id FROM user_recovery_email WHERE recovery_email = ?`, email).Scan(user_id)
+	if err != nil || len(user_id.Bytes()) == 0 {
+		return nil, err
+	}
+	return cb.RetrieveUser(user_id.String())
 }
-
