@@ -31,14 +31,14 @@ type (
 	}
 
 	APIConfig struct {
-		Host          string `mapstructure:"host"`
-		Port          string `mapstructure:"port"`
-		SwaggerFile   string `mapstructure:"swaggerSpec"`
-		BackendConfig `mapstructure:"BackendConfig"`
-		IndexConfig   `mapstructure:"IndexConfig"`
-		CacheSettings `mapstructure:"RedisConfig"`
-		NatsConfig    `mapstructure:"NatsConfig"`
-		AdminUsername string `mapstructure:"adminUsername"`
+		Host           string `mapstructure:"host"`
+		Port           string `mapstructure:"port"`
+		SwaggerFile    string `mapstructure:"swaggerSpec"`
+		BackendConfig  `mapstructure:"BackendConfig"`
+		IndexConfig    `mapstructure:"IndexConfig"`
+		CacheSettings  `mapstructure:"RedisConfig"`
+		NatsConfig     `mapstructure:"NatsConfig"`
+		NotifierConfig `mapstructure:"NotifierConfig"`
 	}
 
 	BackendConfig struct {
@@ -69,9 +69,16 @@ type (
 		Password string `mapstructure:"password"`
 		Db       int    `mapstructure:"db"`
 	}
+
 	NatsConfig struct {
 		Url           string `mapstructure:"url"`
 		OutSMTP_topic string `mapstructure:"outSMTP_topic"`
+	}
+
+	NotifierConfig struct {
+		AdminUsername     string `mapstructure:"admin_username"`
+		DefaultMailDomain string `mapstructure:"default_mail_domain"`
+		TemplatesPath     string `mapstructure:"templates_path"`
 	}
 )
 
@@ -107,7 +114,11 @@ func (server *REST_API) initialize(config APIConfig) error {
 			Url:           config.NatsConfig.Url,
 			OutSMTP_topic: config.NatsConfig.OutSMTP_topic,
 		},
-		AdminUsername: config.AdminUsername,
+		NotifierConfig: obj.NotifierConfig{
+			AdminUsername:     config.NotifierConfig.AdminUsername,
+			DefaultMailDomain: config.NotifierConfig.DefaultMailDomain,
+			TemplatesPath:     config.NotifierConfig.TemplatesPath,
+		},
 	}
 
 	err := caliopen.Initialize(caliopenConfig)

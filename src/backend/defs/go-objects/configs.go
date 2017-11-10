@@ -6,8 +6,7 @@ type (
 		RESTindexConfig RESTIndexConfig
 		NatsConfig      NatsConfig
 		CacheConfig     CacheConfig
-		//LDAstoreConfig  LDAstoreConfig
-		AdminUsername string
+		NotifierConfig  NotifierConfig
 	}
 
 	// REST API
@@ -45,5 +44,12 @@ type (
 		SecretKey string            `mapstructure:"secret_key"`
 		Location  string            `mapstructure:"location"`
 		Buckets   map[string]string `mapstructure:"buckets"`
+	}
+
+	// Notifications facility
+	NotifierConfig struct {
+		AdminUsername     string `mapstructure:"admin_username"`
+		DefaultMailDomain string `mapstructure:"default_mail_domain"` // domain from which emails will be sent from by Notifiers
+		TemplatesPath     string `mapstructure:"templates_path"`      // path to templates Notifiers may need to access to
 	}
 )

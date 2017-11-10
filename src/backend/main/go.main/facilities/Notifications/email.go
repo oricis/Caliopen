@@ -21,12 +21,14 @@ type EmailNotifiers interface {
 }
 
 const (
-	resetPasswordSubject   = "Demande de remise à zéro de votre mot de passe"
+	resetPasswordSubject   = "Demande de réinitialisation de votre mot de passe"
 	resetPasswordBodyPlain = `
 	Bonjour,
 	nous avons pris note d'une demande de changement de mot de passe,
 	pour le réinitialiser, veuillez cliquer sur ce lien :
+
 	%s
+
 	et suivre les indications à l'écran.
 
 	Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce mail.
@@ -40,16 +42,16 @@ const (
 // SendEmailAdminToUser sends an administrative email to user, ie :
 // this is an email composed by the backend to inform user that something happened related to its account
 // func is in charge of saving & indexing draft before sending the "deliver" order to the SMTP broker.
-func (fac *Facility) SendEmailAdminToUser(user *User, email *Message) error {
-	if fac.admin == nil {
+func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
+	if notif.admin == nil {
 		err := errors.New("[NotificationsFacility] can't SendEmailAdminToUser, no admin user has been set")
 		log.Warn(err)
 		return err
 	}
 
 	sender := Participant{
-		Address:  fac.admin.RecoveryEmail,
-		Label:    fac.admin.Name,
+		Address:  notif.admin.RecoveryEmail,
+		Label:    notif.admin.Name,
 		Protocol: EmailProtocol,
 		Type:     ParticipantFrom,
 	}
@@ -67,16 +69,16 @@ func (fac *Facility) SendEmailAdminToUser(user *User, email *Message) error {
 	(*email).Is_draft = true
 	(*email).Participants = []Participant{sender, recipient}
 	(*email).Type = EmailProtocol
-	(*email).User_id = fac.admin.UserId
+	(*email).User_id = notif.admin.UserId
 
 	// need to create discussion
 
-	err := fac.store.CreateMessage(email)
+	err := notif.store.CreateMessage(email)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser failed to store draft")
 		return err
 	}
-	err = fac.index.CreateMessage(email)
+	err = notif.index.CreateMessage(email)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser failed to index draft")
 		return err
@@ -84,12 +86,12 @@ func (fac *Facility) SendEmailAdminToUser(user *User, email *Message) error {
 
 	log.Infof("[NotificationsFacility] sending email admin for user <%s> [%s]", user.Name, user.UserId.String())
 	const nats_order = "deliver"
-	natsMessage := fmt.Sprintf(Nats_message_tmpl, nats_order, email.Message_id.String(), fac.admin.UserId.String())
-	rep, err := fac.queue.Request(fac.nats_outSMTP_topic, []byte(natsMessage), 30*time.Second)
+	natsMessage := fmt.Sprintf(Nats_message_tmpl, nats_order, email.Message_id.String(), notif.admin.UserId.String())
+	rep, err := notif.queue.Request(notif.nats_outSMTP_topic, []byte(natsMessage), 30*time.Second)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser error")
-		if fac.queue.LastError() != nil {
-			log.WithError(fac.queue.LastError()).Warn("[EmailNotifiers]: SendEmailAdminToUser error")
+		if notif.queue.LastError() != nil {
+			log.WithError(notif.queue.LastError()).Warn("[EmailNotifiers]: SendEmailAdminToUser error")
 			return err
 		}
 		return err
@@ -108,7 +110,7 @@ func (fac *Facility) SendEmailAdminToUser(user *User, email *Message) error {
 	return nil
 }
 
-func (fac *Facility) SendPasswordResetEmail(user *User, session *Pass_reset_session) error {
+func (notif *Notifier) SendPasswordResetEmail(user *User, session *Pass_reset_session) error {
 	if user == nil || session == nil {
 		return errors.New("[NotificationsFacility] SendPasswordResetEmail invalid params")
 	}
@@ -119,7 +121,7 @@ func (fac *Facility) SendPasswordResetEmail(user *User, session *Pass_reset_sess
 		Subject:    resetPasswordSubject,
 	}
 
-	err := fac.SendEmailAdminToUser(user, email)
+	err := notif.SendEmailAdminToUser(user, email)
 
 	if err != nil {
 		log.WithError(err).Warnf("[RESTfacility] sending password reset email failed for user %s", user.UserId.String())
