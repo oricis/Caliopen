@@ -16,7 +16,7 @@ describe('scene Signup form-validator', () => {
     try {
       const isValid = await validator.validate({
         password: '',
-        tos: false,
+        // tos: false,
         privacy: false,
         recovery_email: 'bender',
       }, noopStr, 'full');
@@ -24,7 +24,7 @@ describe('scene Signup form-validator', () => {
     } catch (e) {
       expect(e).toEqual({
         username: ['signup.feedback.required_username'],
-        tos: ['signup.feedback.required_tos'],
+        // tos: ['signup.feedback.required_tos'],
         privacy: ['signup.feedback.required_privacy'],
         password: ['signup.feedback.required_password'],
         recovery_email: ['signup.feedback.invalid_recovery_email'],
