@@ -30,7 +30,25 @@ def inbound_handler(config):
     inbound_email_sub = subscribers.InboundEmail(client)
     future = client.subscribe("inboundSMTP", "SMTPqueue",
                               inbound_email_sub.handler)
-    log.info("nats subscription started")
+    log.info("nats subscription started for inboundSMTP")
+    future.result()
+
+
+@tornado.gen.coroutine
+def contact_update_handler(config):
+    """NATS handler for contact update events."""
+    client = Nats()
+    server = 'nats://{}:{}'.format(config['host'], config['port'])
+    servers = [server]
+
+    opts = {"servers": servers}
+    yield client.connect(**opts)
+
+    # create and register subscriber(s)
+    contact_subscriber = subscribers.ContactAction(client)
+    future = client.subscribe("contactAction", "contactQueue",
+                              contact_subscriber.handler)
+    log.info("nats subscription started for contactAction")
     future.result()
 
 

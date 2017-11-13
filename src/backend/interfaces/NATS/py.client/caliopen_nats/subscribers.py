@@ -11,12 +11,16 @@ from caliopen_main.user.core import User
 log = logging.getLogger(__name__)
 
 
-class InboundEmail(object):
-    """Inbound message class handler."""
+class BaseHandler(object):
+    """Base class for NATS message handlers."""
 
     def __init__(self, nats_cnx):
         """Create a new inbound messsage handler from a nats connection."""
         self.natsConn = nats_cnx
+
+
+class InboundEmail(BaseHandler):
+    """Inbound message class handler."""
 
     def process_raw(self, msg, payload):
         """Process an inbound raw message."""
@@ -44,5 +48,18 @@ class InboundEmail(object):
         log.info('Get payload order {}'.format(payload['order']))
         if payload['order'] == "process_raw":
             self.process_raw(msg, payload)
+        else:
+            log.warn('Unhandled payload type {}'.format(payload['order']))
+
+
+class ContactAction(BaseHandler):
+    """Handler for contact action message."""
+
+    def handler(self, msg):
+        """Handle an process_raw nats messages."""
+        payload = json.loads(msg.data)
+        log.info('Get payload order {}'.format(payload['order']))
+        if payload['order'] == "contact_update":
+            self.process_update(msg, payload)
         else:
             log.warn('Unhandled payload type {}'.format(payload['order']))
