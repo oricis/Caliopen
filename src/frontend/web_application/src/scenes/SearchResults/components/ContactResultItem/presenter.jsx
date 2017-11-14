@@ -4,34 +4,55 @@ import Link from '../../../../components/Link';
 import ContactAvatarLetter, { SIZE_SMALL } from '../../../../components/ContactAvatarLetter';
 import TextBlock from '../../../../components/TextBlock';
 import { formatName } from '../../../../services/contact';
+import Highlights from '../Highlights';
 import './style.scss';
+
+const CONTACT_NAME_PROPERTIES = ['title', 'name_prefix, name_suffix', 'family_name', 'given_name'];
 
 class ContactResultItem extends PureComponent {
   static propTypes = {
+    term: PropTypes.string.isRequired,
+    highlights: PropTypes.shape({}).isRequired,
     contact: PropTypes.shape({}).isRequired,
     contact_display_format: PropTypes.string.isRequired,
   };
   static defaultProps = {
+    term: '',
+    highlights: [],
   };
 
   renderTitle() {
-    const { contact, contact_display_format: format } = this.props;
+    const { term, contact, contact_display_format: format } = this.props;
 
-    return formatName({ contact, format });
+    return (<Highlights term={term} highlights={formatName({ contact, format })} />);
+  }
+
+  renderHighlights() {
+    const { term, highlights } = this.props;
+
+    const highlight = Object.keys(highlights)
+      .filter(contactProperty => CONTACT_NAME_PROPERTIES.indexOf(contactProperty) === -1)
+      .map(contactProperty => highlights[contactProperty])
+      .join(' ... ');
+
+    return <Highlights term={term} highlights={highlight} />;
   }
 
   render() {
-    const { contact } = this.props;
+    const { term, contact } = this.props;
 
     return (
       <Link noDecoration className="m-contact-result-item" to={`/contacts/${contact.contact_id}`}>
         <div className="m-contact-result-item__contact-avatar">
           <ContactAvatarLetter isRound contact={contact} size={SIZE_SMALL} />
         </div>
-        <TextBlock className="m-contact-result-item__contact-info">
-          {contact.name_prefix && (<span className="m-contact-result-item__contact-prefix">{contact.name_prefix}</span>)}
+        <TextBlock>
+          {contact.name_prefix && (<span className="m-contact-result-item__contact-prefix"><Highlights term={term} highlights={contact.name_prefix} /></span>)}
           <span className="m-contact-result-item__contact-title">{this.renderTitle()}</span>
-          {contact.name_suffix && (<span className="m-contact-result-item__contact-suffix">, {contact.name_suffix}</span>)}
+          {contact.name_suffix && (<span className="m-contact-result-item__contact-suffix">, <Highlights term={term} highlights={contact.name_suffix} /></span>)}
+        </TextBlock>
+        <TextBlock>
+          {this.renderHighlights()}
         </TextBlock>
         {/*  TODO: add tags */}
       </Link>
