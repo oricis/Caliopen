@@ -65,5 +65,6 @@ if __name__ == '__main__':
 
     connect_storage()
     inbound_handler(Configuration('global').get('message_queue'))
+    contact_update_handler(Configuration('global').get('message_queue'))
     loop_instance = tornado.ioloop.IOLoop.instance()
     loop_instance.start()
