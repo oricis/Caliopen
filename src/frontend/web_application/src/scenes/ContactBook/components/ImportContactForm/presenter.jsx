@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import InputFileGroup from '../form/InputFileGroup';
-import Button from '../Button';
+import InputFileGroup from '../../../../components/form/InputFileGroup';
+import Button from '../../../../components/Button';
 
 import './style.scss';
 

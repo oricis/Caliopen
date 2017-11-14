@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import ImportContactForm from '../../../../components/ImportContactForm';
+import ImportContactForm from '../ImportContactForm';
 
 class ImportContact extends Component {
   static propTypes = {
