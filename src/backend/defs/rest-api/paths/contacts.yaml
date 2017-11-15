@@ -99,7 +99,7 @@ contacts_{contact_id}:
         schema:
           "$ref": "../objects/Error.yaml"
   delete:
-    description: Not Yet Implemented
+    description: Delete a contact
     tags:
     - contacts
     security:
@@ -110,8 +110,16 @@ contacts_{contact_id}:
       required: true
       type: string
     responses:
-      default:
-        description: route not implemented, should raise an error
+      '204':
+        description: Contact deleted
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '404':
+        description: Contact not found
+        schema:
+          "$ref": "../objects/Error.yaml"
   patch:
     description: update a contact with rfc5789 and rfc7396 specifications
     tags:

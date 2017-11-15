@@ -9,19 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Reset password API
-
-### Fixed
-
-- unmarshal nested empty structures in go objects.
-
-## [0.5.3] 2017-11-02
-
-### Added
-
+- In a draft, press comma or semicolon key to add a recipient
+- Basic search in messages and contacts
 - Delete a contact
 
 ### Fixed
 
+- In a draft to edit last recipient, pressing backspace does not remove last letter
+- In a draft, click outside of recipient list add a recipient
 - Unmarshal nested empty structures in go objects.
 
 ## [0.5.3] 2017-11-02
