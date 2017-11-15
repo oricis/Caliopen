@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Reset password API
 - In a draft, press comma or semicolon key to add a recipient
 - Basic search in messages and contacts
 - Delete a contact
