@@ -58,8 +58,9 @@ class ContactMessageQualifier(object):
             patch.update({'current_state': current})
             log.info('Will patch with {0}'.format(patch))
             contact.apply_patch(patch, db=True)
-        else:
-            log.debug('No confidentiality update for contact')
+            return True
+        log.debug('No confidentiality update for contact')
+        return False
 
 
 class ContactEmailQualifier(object):
