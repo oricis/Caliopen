@@ -66,6 +66,7 @@ class ContactAction(BaseHandler):
         user = User.get(payload['user_id'])
         contact = Contact(user.user_id, contact_id=payload['contact_id'])
         contact.get_db()
+        contact.unmarshall_db()
         qualifier = ContactMessageQualifier(user)
         log.info('Will process update for contact {0} of user {1}'.
                  format(contact.contact_id, user.user_id))
