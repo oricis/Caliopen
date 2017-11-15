@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- efficient search highlights
+- Set max file size for contact import
+- Efficient search highlights
 
 ## [0.5.5] 2017-11-13
 
