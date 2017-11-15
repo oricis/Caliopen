@@ -162,7 +162,8 @@ class NewPhone(Model):
     """Input structure for a new phone."""
 
     is_primary = BooleanType(default=False)
-    number = PhoneNumberType()
+    number = StringType(required=True)
+    normalized_number = PhoneNumberType()
     type = StringType(choices=PHONE_TYPES, default='other')
     uri = StringType()
 

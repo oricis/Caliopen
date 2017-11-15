@@ -6,6 +6,7 @@ import logging
 import uuid
 import datetime
 import pytz
+import phonenumbers
 
 from .store import (Contact as ModelContact,
                     ContactLookup as ModelContactLookup,
@@ -137,6 +138,17 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
                         self._create_lookup(obj['type'], lookup_value)
 
     @classmethod
+    def normalize_phones(cls, phones):
+        for phone in phones:
+            try:
+                normalized = phonenumbers.parse(phone.number, None)
+                phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
+                new = phonenumbers.format_number(normalized, phone_format)
+                phone.normalized_number = new
+            except:
+                pass
+
+    @classmethod
     def create(cls, user, contact, **related):
         # XXX do sanity check about only one primary for related objects
         # XXX check no extra arguments in related than relations
@@ -157,6 +169,9 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         pi.comportment = 0
         pi.context = 0
         pi.version = 0
+        phones = cls.create_nested(contact.phones, Phone)
+        # Normalize phones if possible
+        cls.normalize_phones(phones)
 
         attrs = {'contact_id': contact_id,
                  'info': contact.infos,
@@ -170,7 +185,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
                  'title': title,
                  'emails': cls.create_nested(contact.emails, Email),
                  'ims': cls.create_nested(contact.ims, IM),
-                 'phones': cls.create_nested(contact.phones, Phone),
+                 'phones': phones,
                  'addresses': cls.create_nested(contact.addresses,
                                                 PostalAddress),
                  'social_identities': cls.create_nested(contact.identities,
