@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import { InputText } from '../../../../../../components/form';
 import Icon from '../../../../../../components/Icon';
-import { RawButton } from '../../../../../../components/Button';
+import RawButton from '../../../../../../components/RawButton';
 
 const generateStateFromProps = ({ term }) => ({ term });
 
