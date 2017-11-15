@@ -6,11 +6,10 @@
 }
 
 .m-spinner {
-  display: inline-block;
-  padding: ($co-margin / 2);
-
-  // color: $co-color__fg__text--higher;
-  // font-size: 1rem;
+  &--inline-block {
+    display: inline-block;
+    padding: ($co-margin / 2);
+  }
 
   &__icon {
     display: inline-block;
