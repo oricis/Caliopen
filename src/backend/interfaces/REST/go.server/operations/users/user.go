@@ -71,7 +71,7 @@ func RequestPasswordReset(ctx *gin.Context) {
 	}
 
 	if payload.RecoveryMail == "" && payload.Username == "" {
-		e := swgErr.New(http.StatusUnprocessableEntity, "neither username nor recovery email provided, at least one required")
+		e := swgErr.New(http.StatusBadRequest, "neither username nor recovery email provided, at least one required")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
@@ -121,7 +121,7 @@ func ResetPassword(ctx *gin.Context) {
 	token := ctx.Param("reset_token")
 
 	if token == "" {
-		e := swgErr.New(http.StatusUnprocessableEntity, "reset token is empty")
+		e := swgErr.New(http.StatusBadRequest, "reset token is empty")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
