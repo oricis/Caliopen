@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Save updated password strength after password modification
+- Disable import contact button on uploading and add a spinner
 - Set max file size for contact import
 - Efficient search highlights
 - Access to /user/security route
