@@ -159,9 +159,18 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
                 [x.validate() for x in v]
             else:
                 raise Exception('Invalid argument to contact.create : %s' % k)
-        # XXX check and format tags and groups
-        title = cls._compute_title(contact)
+
         contact_id = uuid.uuid4()
+        if not contact.title:
+            title = cls._compute_title(contact)
+        else:
+            title = contact.title
+            if not contact.given_name and contact.family_name:
+                # XXX more complex logic and not arbitrary order and character
+                if ',' in contact.title:
+                    gn, fn = contact.title.split(',', 2)
+                    contact.given_name = gn
+                    contact.family_name = fn
 
         # XXX PI compute
         pi = PIModel()

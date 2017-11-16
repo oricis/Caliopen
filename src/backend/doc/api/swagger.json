@@ -233,6 +233,9 @@
                     "given_name": {
                       "type": "string"
                     },
+                    "title": {
+                      "type": "string"
+                    },
                     "groups": {
                       "type": "array",
                       "items": {
@@ -347,6 +350,9 @@
                         "type": "object",
                         "properties": {
                           "phone_id": {
+                            "type": "string"
+                          },
+                          "normalized_number": {
                             "type": "string"
                           },
                           "is_primary": {
@@ -482,9 +488,6 @@
                         ],
                         "additionalProperties": false
                       }
-                    },
-                    "title": {
-                      "type": "string"
                     },
                     "user_id": {
                       "type": "string"
@@ -650,6 +653,9 @@
                     "given_name": {
                       "type": "string"
                     },
+                    "title": {
+                      "type": "string"
+                    },
                     "groups": {
                       "type": "array",
                       "items": {
@@ -707,6 +713,9 @@
                         "type": "object",
                         "properties": {
                           "phone_id": {
+                            "type": "string"
+                          },
+                          "normalized_number": {
                             "type": "string"
                           },
                           "is_primary": {
@@ -2519,6 +2528,9 @@
                       "given_name": {
                         "type": "string"
                       },
+                      "title": {
+                        "type": "string"
+                      },
                       "groups": {
                         "type": "array",
                         "items": {
@@ -2633,6 +2645,9 @@
                           "type": "object",
                           "properties": {
                             "phone_id": {
+                              "type": "string"
+                            },
+                            "normalized_number": {
                               "type": "string"
                             },
                             "is_primary": {
@@ -2769,9 +2784,6 @@
                           "additionalProperties": false
                         }
                       },
-                      "title": {
-                        "type": "string"
-                      },
                       "user_id": {
                         "type": "string"
                       }
@@ -2884,6 +2896,9 @@
                 "given_name": {
                   "type": "string"
                 },
+                "title": {
+                  "type": "string"
+                },
                 "groups": {
                   "type": "array",
                   "items": {
@@ -2941,6 +2956,9 @@
                     "type": "object",
                     "properties": {
                       "phone_id": {
+                        "type": "string"
+                      },
+                      "normalized_number": {
                         "type": "string"
                       },
                       "is_primary": {
@@ -3172,6 +3190,9 @@
                 "given_name": {
                   "type": "string"
                 },
+                "title": {
+                  "type": "string"
+                },
                 "groups": {
                   "type": "array",
                   "items": {
@@ -3286,6 +3307,9 @@
                     "type": "object",
                     "properties": {
                       "phone_id": {
+                        "type": "string"
+                      },
+                      "normalized_number": {
                         "type": "string"
                       },
                       "is_primary": {
@@ -3421,9 +3445,6 @@
                     ],
                     "additionalProperties": false
                   }
-                },
-                "title": {
-                  "type": "string"
                 },
                 "user_id": {
                   "type": "string"
@@ -3674,6 +3695,9 @@
                     "given_name": {
                       "type": "string"
                     },
+                    "title": {
+                      "type": "string"
+                    },
                     "groups": {
                       "type": "array",
                       "items": {
@@ -3788,6 +3812,9 @@
                         "type": "object",
                         "properties": {
                           "phone_id": {
+                            "type": "string"
+                          },
+                          "normalized_number": {
                             "type": "string"
                           },
                           "is_primary": {
@@ -3924,9 +3951,6 @@
                         "additionalProperties": false
                       }
                     },
-                    "title": {
-                      "type": "string"
-                    },
                     "user_id": {
                       "type": "string"
                     }
@@ -4022,6 +4046,9 @@
                   "type": "string"
                 },
                 "given_name": {
+                  "type": "string"
+                },
+                "title": {
                   "type": "string"
                 },
                 "groups": {
@@ -4138,6 +4165,9 @@
                     "type": "object",
                     "properties": {
                       "phone_id": {
+                        "type": "string"
+                      },
+                      "normalized_number": {
                         "type": "string"
                       },
                       "is_primary": {
@@ -4273,9 +4303,6 @@
                     ],
                     "additionalProperties": false
                   }
-                },
-                "title": {
-                  "type": "string"
                 },
                 "user_id": {
                   "type": "string"
