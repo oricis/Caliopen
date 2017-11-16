@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import InputFileGroup from '../form/InputFileGroup';
-import Button from '../Button';
+import InputFileGroup from '../../../../components/form/InputFileGroup';
+import Button from '../../../../components/Button';
 
 import './style.scss';
 
 const VALID_EXT = ['.vcf', '.vcard']; // Valid file extensions for input#file
+const MAX_SIZE = 5000000;
 
 class ImportContactForm extends Component {
   static propTypes = {
@@ -13,6 +14,7 @@ class ImportContactForm extends Component {
     onCancel: PropTypes.func,
     errors: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
+    formatNumber: PropTypes.func.isRequired,
     hasImported: PropTypes.bool,
     formAction: PropTypes.string,
   };
@@ -24,24 +26,17 @@ class ImportContactForm extends Component {
     formAction: '',
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      file: null,
-    };
+  state = {
+    file: null,
+  };
 
-    this.handleInputFileChange = this.handleInputFileChange.bind(this);
-    this.handleSubmitForm = this.handleSubmitForm.bind(this);
-    this.renderButtons = this.renderButtons.bind(this);
-  }
-
-  handleInputFileChange(file) {
+  handleInputFileChange = (file) => {
     this.setState({
       file,
     });
   }
 
-  handleSubmitForm(ev) {
+  handleSubmitForm = (ev) => {
     ev.preventDefault();
     const { file } = this.state;
     this.props.onSubmit({ file });
@@ -81,7 +76,7 @@ class ImportContactForm extends Component {
   }
 
   render() {
-    const { __, hasImported, errors, formAction } = this.props;
+    const { __, formatNumber, hasImported, errors, formAction } = this.props;
 
     return (
       <form
@@ -97,7 +92,9 @@ class ImportContactForm extends Component {
             errors={errors}
             descr={__('import-contact.form.descr')}
             fileTypes={VALID_EXT}
+            maxSize={MAX_SIZE}
             __={__}
+            formatNumber={formatNumber}
           />
         :
           <p>{__('import-contact.form.success')}</p>

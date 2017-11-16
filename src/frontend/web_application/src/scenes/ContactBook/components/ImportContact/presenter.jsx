@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import ImportContactForm from '../../../../components/ImportContactForm';
+import ImportContactForm from '../ImportContactForm';
 
 class ImportContact extends Component {
   static propTypes = {
@@ -18,25 +18,19 @@ class ImportContact extends Component {
     onUploadSuccess: () => {},
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      errors: {},
-      hasImported: false,
-    };
-    this.handleImportContact = this.handleImportContact.bind(this);
-    this.handleImportContactSuccess = this.handleImportContactSuccess.bind(this);
-    this.handleImportContactError = this.handleImportContactError.bind(this);
-  }
+  state = {
+    errors: {},
+    hasImported: false,
+  };
 
-  handleImportContact({ file }) {
+  handleImportContact = ({ file }) => {
     const data = new FormData();
     data.append('file', file);
     axios.post('/api/v1/imports', data)
       .then(this.handleImportContactSuccess, this.handleImportContactError);
   }
 
-  handleImportContactSuccess() {
+  handleImportContactSuccess = () => {
     this.setState({ hasImported: true }, () => {
       const { onUploadSuccess, notifySuccess, __ } = this.props;
       notifySuccess({ message: __('import-contact.feedback.successfull'), duration: 0 });
@@ -44,7 +38,7 @@ class ImportContact extends Component {
     });
   }
 
-  handleImportContactError({ response }) {
+  handleImportContactError = ({ response }) => {
     const { notifyError, __ } = this.props;
 
     if (response.status === 400) {

@@ -6,12 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Set max file size for contact import
+- Efficient search highlights
+
+## [0.5.5] 2017-11-13
+
 ### Added
 
 - Reset password API
 - In a draft, press comma or semicolon key to add a recipient
 - Basic search in messages and contacts
 - Delete a contact
+- Change password
 
 ### Fixed
 
@@ -19,6 +27,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - In a draft, click outside of recipient list add a recipient
 - Unmarshal nested empty structures in go objects.
 - Save updated password strength after password modification
+
+## [0.5.4] 2017-11-03
+
+### Fixed
+
+- unmarshal nested empty structures in go objects
+- ancestors_id always an array, even empty
+- save a draft notify correctly
+
 
 ## [0.5.3] 2017-11-02
 
