@@ -233,9 +233,6 @@
                     "given_name": {
                       "type": "string"
                     },
-                    "title": {
-                      "type": "string"
-                    },
                     "groups": {
                       "type": "array",
                       "items": {
@@ -488,6 +485,9 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "title": {
+                      "type": "string"
                     },
                     "user_id": {
                       "type": "string"
@@ -2528,9 +2528,6 @@
                       "given_name": {
                         "type": "string"
                       },
-                      "title": {
-                        "type": "string"
-                      },
                       "groups": {
                         "type": "array",
                         "items": {
@@ -2783,6 +2780,9 @@
                           ],
                           "additionalProperties": false
                         }
+                      },
+                      "title": {
+                        "type": "string"
                       },
                       "user_id": {
                         "type": "string"
@@ -3190,9 +3190,6 @@
                 "given_name": {
                   "type": "string"
                 },
-                "title": {
-                  "type": "string"
-                },
                 "groups": {
                   "type": "array",
                   "items": {
@@ -3446,6 +3443,9 @@
                     "additionalProperties": false
                   }
                 },
+                "title": {
+                  "type": "string"
+                },
                 "user_id": {
                   "type": "string"
                 }
@@ -3693,9 +3693,6 @@
                       "type": "string"
                     },
                     "given_name": {
-                      "type": "string"
-                    },
-                    "title": {
                       "type": "string"
                     },
                     "groups": {
@@ -3951,6 +3948,9 @@
                         "additionalProperties": false
                       }
                     },
+                    "title": {
+                      "type": "string"
+                    },
                     "user_id": {
                       "type": "string"
                     }
@@ -4046,9 +4046,6 @@
                   "type": "string"
                 },
                 "given_name": {
-                  "type": "string"
-                },
-                "title": {
                   "type": "string"
                 },
                 "groups": {
@@ -4303,6 +4300,9 @@
                     ],
                     "additionalProperties": false
                   }
+                },
+                "title": {
+                  "type": "string"
                 },
                 "user_id": {
                   "type": "string"

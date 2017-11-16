@@ -165,12 +165,12 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
             title = cls._compute_title(contact)
         else:
             title = contact.title
-            if not contact.given_name and contact.family_name:
+            if not contact.given_name and not contact.family_name:
                 # XXX more complex logic and not arbitrary order and character
                 if ',' in contact.title:
                     gn, fn = contact.title.split(',', 2)
-                    contact.given_name = gn
-                    contact.family_name = fn
+                    contact.given_name = gn.rstrip().lstrip()
+                    contact.family_name = fn.rstrip().lstrip()
 
         # XXX PI compute
         pi = PIModel()
