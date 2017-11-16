@@ -37,8 +37,9 @@ func (cb *CassandraBackend) UpdateUser(user *User, fields map[string]interface{}
 }
 
 func (cb *CassandraBackend) UpdateUserPasswordHash(user *User) error {
-	return cb.Session.Query(`UPDATE user SET password = ? WHERE user_id = ?`,
+	return cb.Session.Query(`UPDATE user SET password = ?, privacy_features = ? WHERE user_id = ?`,
 		user.Password,
+		user.PrivacyFeatures,
 		user.UserId,
 	).Exec()
 }
