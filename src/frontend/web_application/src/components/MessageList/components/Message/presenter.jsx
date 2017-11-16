@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import throttle from 'lodash.throttle';
 import { v1 as uuidV1 } from 'uuid';
 import VisibilitySensor from 'react-visibility-sensor';
 import Moment from 'react-moment';
@@ -17,34 +18,64 @@ import './style.scss';
 const DropdownControl = withDropdownControl(Button);
 
 const FOLD_HEIGHT = 80; // = .m-message__content--fold height
+const HEADER_HEIGHT = 120;
 
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
+    onMessageIsOnTop: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
     onCopyTo: PropTypes.func.isRequired,
     onEditTags: PropTypes.func.isRequired,
     settings: PropTypes.shape({}).isRequired,
     __: PropTypes.func.isRequired,
-  };
+  }
 
   static defaultProps = {
-  };
+  }
 
   state = {
     isFold: true,
     isTooLong: false,
-  };
+    isOnTop: undefined,
+  }
 
   componentWillMount() {
     this.dropdownId = uuidV1();
   }
 
   componentDidMount() {
-    setTimeout(this.setContentHeight, 1);
+    const { message } = this.props;
+    setTimeout(this.setContentHeight(), 1);
+
+    this.unsubscribeScrollEvent = addEventListener('scroll', throttle(() => {
+      // on page scroll, checks if Message is on top of page
+      // if yes, sends message id to onMessageScroll
+      const messageRect = this.messageDiv && this.messageDiv.getBoundingClientRect();
+
+      if (messageRect) {
+        const { top } = messageRect;
+        const isOnTop = top > HEADER_HEIGHT && top < 2 * HEADER_HEIGHT;
+
+        if (!this.state.isOnTop && isOnTop) {
+          this.props.onMessageIsOnTop(message.message_id);
+        }
+
+        this.setState(prevState => ({
+          ...prevState,
+          isOnTop,
+        }));
+      }
+    }, 10, { leading: true, trailing: true }));
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribeScrollEvent) {
+      this.unsubscribeScrollEvent();
+    }
   }
 
   onChange = (isVisible) => {
@@ -53,14 +84,32 @@ class Message extends Component {
   }
 
   setContentHeight = () => {
+    const { hash } = window.location;
     const { message } = this.props;
-    const isTooLong = this.divElement.clientHeight > FOLD_HEIGHT;
+    const isTooLong = this.bodyEl.clientHeight > FOLD_HEIGHT;
+    const isAnchor = hash && hash.replace('#', '') === message.message_id;
 
     this.setState(prevState => ({
       ...prevState,
       isTooLong,
       isFold: isTooLong && !message.is_unread,
     }));
+
+    if (isAnchor) {
+      setTimeout(() => {
+        this.scrollToAnchor();
+      }, 1);
+    }
+  }
+
+  scrollToAnchor = () => {
+    // if there's a hash in location,
+    // scroll to message
+    const messageRect = this.messageDiv.getBoundingClientRect();
+    const top = messageRect.top + window.scrollY;
+    setTimeout(() => {
+      window.scroll(0, top - HEADER_HEIGHT);
+    }, 0);
   }
 
   handleExpandClick = () => {
@@ -88,7 +137,7 @@ class Message extends Component {
         'm-message__body',
         { 'm-message__body--rich-text': !message.body_is_plain },
       ),
-      ref: (divElement) => { this.divElement = divElement; },
+      ref: (el) => { this.bodyEl = el; },
     };
 
     return (
@@ -124,7 +173,7 @@ class Message extends Component {
     );
 
     return (
-      <div className="m-message" onChange={this.onChange}>
+      <div id={message.message_id} ref={(div) => { this.messageDiv = div; }} className="m-message" onChange={this.onChange}>
         <div className="m-message__avatar-col">
           <ContactAvatarLetter
             contact={author}

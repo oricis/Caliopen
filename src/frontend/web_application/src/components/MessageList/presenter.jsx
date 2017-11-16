@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Button';
 import MenuBar from '../MenuBar';
@@ -9,7 +9,7 @@ import groupMessages from './services/groupMessages';
 
 import './style.scss';
 
-class MessageList extends PureComponent {
+class MessageList extends Component {
   static propTypes = {
     isFetching: PropTypes.bool,
     loadMore: PropTypes.node,
@@ -19,6 +19,7 @@ class MessageList extends PureComponent {
     onMessageReply: PropTypes.func.isRequired,
     onMessageCopyTo: PropTypes.func.isRequired,
     onMessageEditTags: PropTypes.func.isRequired,
+    onMessageIsOnTop: PropTypes.func.isRequired,
     onForward: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -32,6 +33,10 @@ class MessageList extends PureComponent {
     onMessageView: null,
   };
 
+  state = {
+    anchor: '',
+  }
+
   handleReplyToLastMessage = () => {
     const { messages, onMessageReply } = this.props;
     const message = messages[messages.length - 1];
@@ -42,7 +47,7 @@ class MessageList extends PureComponent {
   renderDayGroups() {
     const {
       messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply, onMessageCopyTo,
-      onMessageEditTags, __,
+      onMessageEditTags, onMessageIsOnTop, __,
     } = this.props;
     const messagesGroupedByday = groupMessages(messages);
 
@@ -60,6 +65,7 @@ class MessageList extends PureComponent {
               onReply={onMessageReply}
               onCopyTo={onMessageCopyTo}
               onEditTags={onMessageEditTags}
+              onMessageIsOnTop={onMessageIsOnTop}
               __={__}
             />
           ))}

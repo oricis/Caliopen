@@ -46,7 +46,8 @@ class MessageItem extends PureComponent {
     return (
       <MessageItemContainer message={message} __={__}>
         <Link
-          to={`/discussions/${message.discussion_id}`}
+          // link to messageId
+          to={`/discussions/${message.discussion_id}#${message.message_id}`}
           className={classnames('s-message-item', { 's-message-item--unread': message.is_unread, 's-message-item--draft': message.is_draft })}
           noDecoration
         >
