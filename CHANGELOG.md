@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - In a draft to edit last recipient, pressing backspace does not remove last letter
 - In a draft, click outside of recipient list add a recipient
 - Unmarshal nested empty structures in go objects.
+- Access to /user/security route
 
 ## [0.5.4] 2017-11-03
 
