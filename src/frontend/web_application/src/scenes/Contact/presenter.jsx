@@ -45,6 +45,8 @@ class Contact extends Component {
     currentTab: PropTypes.shape({}),
     removeTab: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
+    pristine: PropTypes.bool.isRequired,
+    submitting: PropTypes.bool.isRequired,
     // birthday: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
@@ -156,7 +158,7 @@ class Contact extends Component {
   }
 
   renderEditBar = () => {
-    const { __ } = this.props;
+    const { __, pristine, submitting } = this.props;
 
     return (
       <div className="s-contact__edit-bar">
@@ -174,6 +176,7 @@ class Contact extends Component {
           responsive="icon-only"
           icon="check"
           className="s-contact__action"
+          disabled={pristine || submitting}
         >{__('contact.action.validate_edit')}</Button>
       </div>
     );
