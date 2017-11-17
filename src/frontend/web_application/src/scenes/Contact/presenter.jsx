@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
+import { formatName } from '../../services/contact';
 import ManageTags from './ManageTags';
 import ContactProfileForm from './components/ContactProfileForm';
 import Spinner from '../../components/Spinner';
@@ -179,12 +180,13 @@ class Contact extends Component {
   }
 
   renderActionBar = () => {
-    const { __, contact } = this.props;
+    const { __, contact, contact_display_format: format } = this.props;
+    const contactDisplayName = formatName({ contact, format });
 
     return (
       <div className="s-contact__action-bar">
         <TextBlock className="s-contact__bar-title">
-          {contact.title}
+          {contactDisplayName}
         </TextBlock>
         <DropdownControl
           toggleId={this.dropdownId}
