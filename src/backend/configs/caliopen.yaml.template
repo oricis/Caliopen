@@ -35,6 +35,7 @@ object_store:
         temporary_attachments: caliopen-tmp-attachments
 
 system:
+    max_users: 2000
     default_tags:
         -
             name: INBOX
