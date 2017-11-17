@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import InputFileGroup from '../../../../components/form/InputFileGroup';
 import Button from '../../../../components/Button';
+import Spinner from '../../../../components/Spinner';
 
 import './style.scss';
 
@@ -16,6 +17,7 @@ class ImportContactForm extends Component {
     __: PropTypes.func.isRequired,
     formatNumber: PropTypes.func.isRequired,
     hasImported: PropTypes.bool,
+    isLoading: PropTypes.bool,
     formAction: PropTypes.string,
   };
 
@@ -23,6 +25,7 @@ class ImportContactForm extends Component {
     onCancel: null,
     errors: {},
     hasImported: false,
+    isLoading: false,
     formAction: '',
   };
 
@@ -43,7 +46,7 @@ class ImportContactForm extends Component {
   }
 
   renderButtons() {
-    const { __, onCancel } = this.props;
+    const { __, onCancel, isLoading } = this.props;
 
     return (
       <div className="m-import-contact-form__buttons">
@@ -60,7 +63,8 @@ class ImportContactForm extends Component {
             className="m-import-contact-form__button m-import-contact-form__button--right"
             type="submit"
             shape="plain"
-            icon="download"
+            icon={isLoading ? (<Spinner isLoading display="inline" />) : 'download'}
+            disabled={isLoading}
           >{__('import-contact.action.import')}</Button>
         }
 

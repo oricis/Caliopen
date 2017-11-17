@@ -349,6 +349,9 @@
                           "phone_id": {
                             "type": "string"
                           },
+                          "normalized_number": {
+                            "type": "string"
+                          },
                           "is_primary": {
                             "type": "boolean"
                           },
@@ -650,6 +653,9 @@
                     "given_name": {
                       "type": "string"
                     },
+                    "title": {
+                      "type": "string"
+                    },
                     "groups": {
                       "type": "array",
                       "items": {
@@ -707,6 +713,9 @@
                         "type": "object",
                         "properties": {
                           "phone_id": {
+                            "type": "string"
+                          },
+                          "normalized_number": {
                             "type": "string"
                           },
                           "is_primary": {
@@ -2905,6 +2914,9 @@
                             "phone_id": {
                               "type": "string"
                             },
+                            "normalized_number": {
+                              "type": "string"
+                            },
                             "is_primary": {
                               "type": "boolean"
                             },
@@ -3154,6 +3166,9 @@
                 "given_name": {
                   "type": "string"
                 },
+                "title": {
+                  "type": "string"
+                },
                 "groups": {
                   "type": "array",
                   "items": {
@@ -3211,6 +3226,9 @@
                     "type": "object",
                     "properties": {
                       "phone_id": {
+                        "type": "string"
+                      },
+                      "normalized_number": {
                         "type": "string"
                       },
                       "is_primary": {
@@ -3556,6 +3574,9 @@
                     "type": "object",
                     "properties": {
                       "phone_id": {
+                        "type": "string"
+                      },
+                      "normalized_number": {
                         "type": "string"
                       },
                       "is_primary": {
@@ -4060,6 +4081,9 @@
                           "phone_id": {
                             "type": "string"
                           },
+                          "normalized_number": {
+                            "type": "string"
+                          },
                           "is_primary": {
                             "type": "boolean"
                           },
@@ -4408,6 +4432,9 @@
                     "type": "object",
                     "properties": {
                       "phone_id": {
+                        "type": "string"
+                      },
+                      "normalized_number": {
                         "type": "string"
                       },
                       "is_primary": {

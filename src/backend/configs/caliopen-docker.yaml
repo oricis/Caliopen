@@ -41,6 +41,7 @@ object_store:
     location: eu-fr-localhost
 
 system:
+    max_users: 100
     default_tags:
         -
             name: INBOX
