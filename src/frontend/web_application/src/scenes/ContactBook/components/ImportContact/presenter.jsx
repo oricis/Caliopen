@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import getClient from '../../../../services/api-client';
 import ImportContactForm from '../ImportContactForm';
 
 class ImportContact extends Component {
@@ -21,13 +21,17 @@ class ImportContact extends Component {
   state = {
     errors: {},
     hasImported: false,
+    isLoading: false,
   };
 
   handleImportContact = ({ file }) => {
     const data = new FormData();
     data.append('file', file);
-    axios.post('/api/v1/imports', data)
-      .then(this.handleImportContactSuccess, this.handleImportContactError);
+
+    this.setState({ isLoading: true });
+    getClient().post('/v1/imports', data)
+      .then(this.handleImportContactSuccess, this.handleImportContactError)
+      .then(() => this.setState({ isLoading: false }));
   }
 
   handleImportContactSuccess = () => {
@@ -62,6 +66,7 @@ class ImportContact extends Component {
         onSubmit={this.handleImportContact}
         errors={this.state.errors}
         hasImported={this.state.hasImported}
+        isLoading={this.state.isLoading}
         formAction="/api/v1/imports"
       />
     );
