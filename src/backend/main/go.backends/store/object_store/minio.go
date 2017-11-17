@@ -6,6 +6,7 @@ package object_store
 
 import (
 	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/Sirupsen/logrus"
 	"github.com/minio/minio-go"
 	"io"
 )
@@ -52,6 +53,7 @@ func InitializeObjectsStore(config OSSConfig) (oss ObjectsStore, err error) {
 		// Create a new bucket for raw messages
 		err = mb.Client.MakeBucket(config.RawMsgBucket, config.Location)
 		if err != nil {
+			logrus.WithError(err).Warnf("[ObjectStore] failed to create new bucket for large raw messages")
 			mb.Client = nil
 			return
 		}
@@ -63,6 +65,7 @@ func InitializeObjectsStore(config OSSConfig) (oss ObjectsStore, err error) {
 		// Create a new bucket for raw messages
 		err = mb.Client.MakeBucket(config.AttachmentBucket, config.Location)
 		if err != nil {
+			logrus.WithError(err).Warnf("[ObjectStore] failed to create new bucket for draft attachments")
 			mb.Client = nil
 			return
 		}

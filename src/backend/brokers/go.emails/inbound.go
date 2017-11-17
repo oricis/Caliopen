@@ -123,22 +123,26 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 			resp, err := b.NatsConn.Request(b.Config.InTopic, []byte(natsMessage), 10*time.Second)
 			if err != nil {
 				if b.NatsConn.LastError() != nil {
-					log.WithError(b.NatsConn.LastError()).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId.String())
+					log.WithError(b.NatsConn.LastError()).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", rcptId.String())
+					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 					errs = multierror.Append(errs, err)
 				} else {
-					log.WithError(err).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId.String())
+					log.WithError(b.NatsConn.LastError()).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", rcptId.String())
+					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 					errs = multierror.Append(errs, err)
 				}
 			} else {
 				nats_ack := new(map[string]interface{})
 				err := json.Unmarshal(resp.Data, &nats_ack)
 				if err != nil {
-					log.WithError(err).Warnf("EmailBroker failed to parse inbound ack on NATS for user %s", rcptId.String())
+					log.WithError(err).Warnf("[EmailBroker] failed to parse inbound ack on NATS for user %s", rcptId.String())
+					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 					errs = multierror.Append(err)
 					return
 				}
 				if err, ok := (*nats_ack)["error"]; ok {
-					log.WithField("error", err.(string)).Warnf("EmailBroker failed to publish inbound request on NATS for user %s", rcptId.String())
+					log.WithError(b.NatsConn.LastError()).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", rcptId.String())
+					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 					errs = multierror.Append(errors.New(err.(string)))
 					return
 				}
