@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
+import { formatName } from '../../services/contact';
 import ManageTags from './ManageTags';
 import ContactProfileForm from './components/ContactProfileForm';
 import Spinner from '../../components/Spinner';
@@ -45,6 +46,8 @@ class Contact extends Component {
     currentTab: PropTypes.shape({}),
     removeTab: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
+    pristine: PropTypes.bool.isRequired,
+    submitting: PropTypes.bool.isRequired,
     // birthday: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
@@ -156,7 +159,7 @@ class Contact extends Component {
   }
 
   renderEditBar = () => {
-    const { __ } = this.props;
+    const { __, pristine, submitting } = this.props;
 
     return (
       <div className="s-contact__edit-bar">
@@ -174,18 +177,20 @@ class Contact extends Component {
           responsive="icon-only"
           icon="check"
           className="s-contact__action"
+          disabled={pristine || submitting}
         >{__('contact.action.validate_edit')}</Button>
       </div>
     );
   }
 
   renderActionBar = () => {
-    const { __, contact } = this.props;
+    const { __, contact, contact_display_format: format } = this.props;
+    const contactDisplayName = formatName({ contact, format });
 
     return (
       <div className="s-contact__action-bar">
         <TextBlock className="s-contact__bar-title">
-          {contact.title}
+          {contactDisplayName}
         </TextBlock>
         <DropdownControl
           toggleId={this.dropdownId}

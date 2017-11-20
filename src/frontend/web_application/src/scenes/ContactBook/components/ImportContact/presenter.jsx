@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import ImportContactForm from '../../../../components/ImportContactForm';
+import getClient from '../../../../services/api-client';
+import ImportContactForm from '../ImportContactForm';
 
 class ImportContact extends Component {
   static propTypes = {
@@ -18,25 +18,23 @@ class ImportContact extends Component {
     onUploadSuccess: () => {},
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      errors: {},
-      hasImported: false,
-    };
-    this.handleImportContact = this.handleImportContact.bind(this);
-    this.handleImportContactSuccess = this.handleImportContactSuccess.bind(this);
-    this.handleImportContactError = this.handleImportContactError.bind(this);
-  }
+  state = {
+    errors: {},
+    hasImported: false,
+    isLoading: false,
+  };
 
-  handleImportContact({ file }) {
+  handleImportContact = ({ file }) => {
     const data = new FormData();
     data.append('file', file);
-    axios.post('/api/v1/imports', data)
-      .then(this.handleImportContactSuccess, this.handleImportContactError);
+
+    this.setState({ isLoading: true });
+    getClient().post('/v1/imports', data)
+      .then(this.handleImportContactSuccess, this.handleImportContactError)
+      .then(() => this.setState({ isLoading: false }));
   }
 
-  handleImportContactSuccess() {
+  handleImportContactSuccess = () => {
     this.setState({ hasImported: true }, () => {
       const { onUploadSuccess, notifySuccess, __ } = this.props;
       notifySuccess({ message: __('import-contact.feedback.successfull'), duration: 0 });
@@ -44,7 +42,7 @@ class ImportContact extends Component {
     });
   }
 
-  handleImportContactError({ response }) {
+  handleImportContactError = ({ response }) => {
     const { notifyError, __ } = this.props;
 
     if (response.status === 400) {
@@ -68,6 +66,7 @@ class ImportContact extends Component {
         onSubmit={this.handleImportContact}
         errors={this.state.errors}
         hasImported={this.state.hasImported}
+        isLoading={this.state.isLoading}
         formAction="/api/v1/imports"
       />
     );

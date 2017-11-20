@@ -9,6 +9,7 @@ import Icon from '../../../../components/Icon';
 import TextBlock from '../../../../components/TextBlock';
 import Badge from '../../../../components/Badge';
 import { renderParticipant } from '../../../../services/message';
+import Highlights from '../Highlights';
 
 import './style.scss';
 
@@ -22,13 +23,6 @@ class MessageResultItem extends PureComponent {
   };
   static defaultProps = {
   };
-
-  parseHighlight = (term, highlights) => highlights.split(term)
-    .reduce((acc, part, index) => [
-      ...acc,
-      ...(index !== 0) ? [(<b>{term}</b>)] : [],
-      part,
-    ], []);
 
   renderAuthor() {
     const { message: { participants } } = this.props;
@@ -56,7 +50,7 @@ class MessageResultItem extends PureComponent {
 
     return (
       <span title={highlights}>
-        {this.parseHighlight(term, highlights).map((item, idx) => (<span key={idx}>{item}</span>))}
+        <Highlights term={term} highlights={highlights} />
       </span>
     );
   }

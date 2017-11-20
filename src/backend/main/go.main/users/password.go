@@ -37,7 +37,7 @@ func ResetUserPassword(user *User, new_password string, store backends.UserStora
 	user_infos := []string{user.Name, user.GivenName, user.FamilyName, user.RecoveryEmail}
 	user_infos = append(user_infos, user.LocalIdentities...)
 	scoring := zxcvbn.PasswordStrength(new_password, user_infos)
-	(*(*user).PrivacyFeatures)[passwordStrengthkey] = strconv.FormatInt(int64(scoring.Score), 10)
+	(*user.PrivacyFeatures)[passwordStrengthkey] = strconv.FormatInt(int64(scoring.Score), 10)
 
 	// hash new password and store it
 	hashpass, err := bcrypt.GenerateFromPassword([]byte(new_password), defaultBcryptCost)

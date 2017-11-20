@@ -129,6 +129,8 @@
     "import-contact.form.button.close": "import-contact.form.button.close",
     "import-contact.form.descr": "import-contact.form.descr",
     "import-contact.form.success": "import-contact.form.success",
+    "input-file-group.error.file_is_required": "input-file-group.error.file_is_required",
+    "input-file-group.error.max_size": "input-file-group.error.max_size",
     "input-file-group.error.no_valid_ext": "input-file-group.error.no_valid_ext",
     "input-file-group.file.size": "input-file-group.file.size",
     "input-file.add_a_file.label": "input-file.add_a_file.label",

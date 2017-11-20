@@ -160,6 +160,16 @@ class User(BaseCore):
                     raise ValueError('user email not in whitelist')
 
     @classmethod
+    def _check_max_users(cls):
+        """Check if maximum number of users reached."""
+        conf = Configuration('global').get('system', {})
+        max_users = conf.get('max_users', 0)
+        if max_users:
+            nb_users = User._model_class.objects.count()
+            if nb_users >= max_users:
+                raise ValueError('Max number of users reached')
+
+    @classmethod
     def create(cls, new_user):
         """Create a new user.
 
@@ -178,8 +188,9 @@ class User(BaseCore):
         def rollback_username_storage(username):
             UserName.get(username).delete()
 
-        # 0. check for user email white list
+        # 0. check for user email white list and max number of users
         cls._check_whitelistes(new_user)
+        cls._check_max_users()
         # 1.
         try:
             validators.is_valid_username(new_user.name)
