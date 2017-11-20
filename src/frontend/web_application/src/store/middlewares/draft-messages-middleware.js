@@ -213,6 +213,8 @@ const sendDraftHandler = async ({ store, action }) => {
 const draftSelector = (state, { internalId }) => state.draftMessage.draftsByInternalId[internalId];
 const locationSelector = state => state.router.location;
 
+const REPLY_HASH = 'reply';
+
 const replyToMessageHandler = async ({ store, action }) => {
   if (action.type !== REPLY_TO_MESSAGE) {
     return undefined;
@@ -229,7 +231,7 @@ const replyToMessageHandler = async ({ store, action }) => {
     parent_id: messageInReply.message_id,
   };
   const message = draft.message_id ? state.message.messagesById[draft.message_id] : undefined;
-  const discussionPath = `/discussions/${messageInReply.discussion_id}`;
+  const discussionPath = `/discussions/${messageInReply.discussion_id}#${REPLY_HASH}`;
   const location = locationSelector(state);
   const isCurrentDiscussionLocation = location && matchPath(location.pathname, {
     path: discussionPath,
