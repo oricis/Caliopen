@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Efficient search highlights
 - Access to /user/security route
 - Contact's name consistency
+- On editing/creating contact, disable submit button if form is untouched
 
 ## [0.5.5] 2017-11-13
 
@@ -39,7 +40,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - In a draft to edit last recipient, pressing backspace does not remove last letter
 - In a draft, click outside of recipient list add a recipient
 - Unmarshal nested empty structures in go objects.
-- Access to /user/security route
 - Save updated password strength after password modification
 
 ## [0.5.4] 2017-11-03
