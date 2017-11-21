@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Disable send message when already sent and add visual feedback (spinner)
 - Disable import contact button on uploading and add a spinner
 - Save updated password strength after password modification
 - Set max file size for contact import
