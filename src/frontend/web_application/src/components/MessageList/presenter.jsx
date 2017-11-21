@@ -19,7 +19,6 @@ class MessageList extends Component {
     onMessageReply: PropTypes.func.isRequired,
     onMessageCopyTo: PropTypes.func.isRequired,
     onMessageEditTags: PropTypes.func.isRequired,
-    onMessageIsOnTop: PropTypes.func.isRequired,
     onForward: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -47,7 +46,7 @@ class MessageList extends Component {
   renderDayGroups() {
     const {
       messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply, onMessageCopyTo,
-      onMessageEditTags, onMessageIsOnTop, __,
+      onMessageEditTags, __,
     } = this.props;
     const messagesGroupedByday = groupMessages(messages);
 
@@ -65,7 +64,6 @@ class MessageList extends Component {
               onReply={onMessageReply}
               onCopyTo={onMessageCopyTo}
               onEditTags={onMessageEditTags}
-              onMessageIsOnTop={onMessageIsOnTop}
               __={__}
             />
           ))}

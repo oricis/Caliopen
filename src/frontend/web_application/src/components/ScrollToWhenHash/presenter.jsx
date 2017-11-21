@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { scroll } from '../../services/scroll';
+import { scrollTop, getViewPortTop } from '../../services/scroll';
 
 class ScrollToWhenHash extends PureComponent {
   static propTypes = {
@@ -25,15 +25,13 @@ class ScrollToWhenHash extends PureComponent {
   componentDidMount() {
     const { id, hash, forceTop } = this.props;
 
-    if (!forceTop && id === hash.replace('#', '')) {
-      const divRect = this.scrollDiv.getBoundingClientRect();
-      // XXX: remove dependency to window
-      const top = divRect.top + window.scrollY;
-      scroll(0, top - 120);
+    if (!forceTop && hash && id === hash.replace('#', '')) {
+      const top = getViewPortTop(this.scrollDiv);
+      scrollTop(top);
     }
 
     if (forceTop) {
-      scroll(0, 0);
+      scrollTop(0);
     }
 
     if (this.context.scrollSpySubscribe) {

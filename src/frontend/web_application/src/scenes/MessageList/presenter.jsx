@@ -80,18 +80,6 @@ class MessageList extends Component {
     deleteMessage({ message });
   };
 
-  handleUpdateTab = (messageId) => {
-    // on page scroll, Message's components are self-checking if they're on top of page
-    // if yes, their Id is store as new tab.hash
-    // this works fine except tab is no more active when hash is updateTab
-    const hash = `#${messageId}`;
-    // update tab's hash
-    this.props.updateTab({
-      original: this.props.currentTab,
-      tab: { ...this.props.currentTab, hash },
-    });
-  };
-
   handleDelete = () => {
     const { messages, deleteMessage } = this.props;
     Promise.all(messages.map(message => deleteMessage({ message })));
@@ -135,7 +123,6 @@ class MessageList extends Component {
           loadMore={this.renderLoadMore()}
           onMessageCopyTo={copyMessageTo}
           onMessageEditTags={editMessageTags}
-          onMessageIsOnTop={this.handleUpdateTab}
         />
       </ScrollSpy>
     );

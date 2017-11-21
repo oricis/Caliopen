@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import throttle from 'lodash.throttle';
-
-const HEADER_HEIGHT = 120;
+import debounce from 'lodash.debounce';
+import { getTop, scrollTop, getViewPortTop } from '../../services/scroll';
 
 class ScrollSpy extends Component {
   static propTypes = {
@@ -20,6 +19,7 @@ class ScrollSpy extends Component {
 
   static childContextTypes = {
     scrollSpySubscribe: PropTypes.func.isRequired,
+    scrollToHash: PropTypes.func.isRequired,
   };
 
   state = {
@@ -35,11 +35,15 @@ class ScrollSpy extends Component {
           subscriptions: prevState.subscriptions.filter(subscription => subscription !== ref),
         }));
       },
+      scrollToHash: (hash) => {
+        const domNode = this.state.subscriptions.find(ref => ref.id === hash);
+        scrollTop(getViewPortTop(domNode), true);
+      },
     };
   }
 
   componentDidMount() {
-    this.unsubscribeScrollEvent = addEventListener('scroll', throttle(() => {
+    this.unsubscribeScrollEvent = addEventListener('scroll', debounce(() => {
       const { location } = this.props;
       if (!location) {
         return;
@@ -49,7 +53,7 @@ class ScrollSpy extends Component {
       if (domNode && location.hash.replace('#', '') !== domNode.id) {
         this.props.replaceLocation({ ...location, hash: `#${domNode.id}` });
       }
-    }, 10, { leading: true, trailing: true }));
+    }, 100, { leading: false, trailing: true }));
   }
 
   componentWillUnmount() {
@@ -58,14 +62,12 @@ class ScrollSpy extends Component {
     }
   }
 
-  getTop = domNode => domNode.getBoundingClientRect().top - HEADER_HEIGHT;
-
   getNearestElementFromTop = subscriptions => subscriptions.reduce((acc, target) => {
-    if (this.getTop(target) < 0) {
+    if (getTop(target) < 0) {
       return acc;
     }
 
-    if (!acc || this.getTop(acc) > this.getTop(target)) {
+    if (!acc || getTop(acc) > getTop(target)) {
       return target;
     }
 

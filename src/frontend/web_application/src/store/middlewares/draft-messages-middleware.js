@@ -2,7 +2,6 @@ import throttle from 'lodash.throttle';
 import isEqual from 'lodash.isequal';
 import { push, replace } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
-import { matchPath } from 'react-router-dom';
 import { REQUEST_NEW_DRAFT, REQUEST_NEW_DRAFT_SUCCESS, REQUEST_DRAFT, EDIT_DRAFT, SAVE_DRAFT, SEND_DRAFT, requestNewDraftSuccess, requestDraftSuccess, syncDraft, clearDraft, editDraft } from '../modules/draft-message';
 import { CREATE_MESSAGE_SUCCESS, UPDATE_MESSAGE_SUCCESS, POST_ACTIONS_SUCCESS, REPLY_TO_MESSAGE, requestMessages, requestMessage, createMessage, updateMessage, postActions } from '../modules/message';
 import { requestLocalIdentities } from '../modules/local-identity';
@@ -211,7 +210,6 @@ const sendDraftHandler = async ({ store, action }) => {
 };
 
 const draftSelector = (state, { internalId }) => state.draftMessage.draftsByInternalId[internalId];
-const locationSelector = state => state.router.location;
 
 const REPLY_HASH = 'reply';
 
@@ -232,13 +230,9 @@ const replyToMessageHandler = async ({ store, action }) => {
   };
   const message = draft.message_id ? state.message.messagesById[draft.message_id] : undefined;
   const discussionPath = `/discussions/${messageInReply.discussion_id}#${REPLY_HASH}`;
-  const location = locationSelector(state);
-  const isCurrentDiscussionLocation = location && matchPath(location.pathname, {
-    path: discussionPath,
-  });
 
   return Promise.all([
-    ...(!isCurrentDiscussionLocation ? [store.dispatch(push(discussionPath))] : []),
+    store.dispatch(push(discussionPath)),
     store.dispatch(editDraft({ internalId, draft, message })),
   ]);
 };
