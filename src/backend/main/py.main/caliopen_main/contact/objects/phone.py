@@ -23,7 +23,7 @@ class Phone(ObjectIndexable):
         "contact_id": UUID,
         "is_primary": types.BooleanType,
         "number": types.StringType,
-        "normalized_number": PhoneNumberType,
+        "normalized_number": types.StringType,
         "phone_id": UUID,
         "type": types.StringType,
         "uri": types.StringType,
@@ -44,8 +44,8 @@ class Phone(ObjectIndexable):
                      format(number, exc))
 
     def unmarshall_dict(self, document, **options):
-        """Marshall into db object but normalized number if possible."""
-        super(self, ObjectIndexable).unmarshall_dict(document, options)
+        """try to extract a normalize phone number from document"""
+        super(Phone, self).unmarshall_dict(document, **options)
         normalized = self.normalize_number(self.number)
         if normalized:
             setattr(self, 'normalized_number', normalized)
