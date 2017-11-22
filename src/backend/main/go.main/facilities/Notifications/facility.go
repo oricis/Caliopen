@@ -79,15 +79,16 @@ func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notifier
 	user, err := notifier.store.UserByUsername(config.NotifierConfig.AdminUsername)
 	if err != nil {
 		log.WithError(err).Warnf("Failed to retrieve admin user <%s>", config.NotifierConfig.AdminUsername)
+	} else if user != nil {
+		notifier.admin = user
+		ids, err := notifier.store.GetLocalsIdentities(user.UserId.String())
+		if err != nil {
+			log.WithError(err).Warnf("Failed to retrieve local identities for admin user <%s>", config.NotifierConfig.AdminUsername)
+		} else {
+			// get first local identity found for now
+			notifier.adminLocalID = &(ids[0])
+		}
 	}
-	notifier.admin = user
-	ids, err := notifier.store.GetLocalsIdentities(user.UserId.String())
-	if err != nil {
-		log.WithError(err).Warnf("Failed to retrieve local identities for admin user <%s>", config.NotifierConfig.AdminUsername)
-	}
-
-	// get first local identity found for now
-	notifier.adminLocalID = &(ids[0])
 
 	return notifier
 }
