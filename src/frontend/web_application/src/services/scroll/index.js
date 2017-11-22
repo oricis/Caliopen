@@ -12,5 +12,5 @@ export const scrollTop = (y, isAnimated = false) => {
     return;
   }
 
-  scrollDoc().scroll(0, y);
+  window.scroll(0, y);
 };
