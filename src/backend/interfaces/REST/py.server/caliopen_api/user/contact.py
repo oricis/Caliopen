@@ -8,7 +8,9 @@ import colander
 import uuid
 from cornice.resource import resource, view
 from pyramid.response import Response
-from pyramid.httpexceptions import HTTPBadRequest, HTTPServerError
+from pyramid.httpexceptions import HTTPBadRequest, HTTPServerError, \
+    HTTPForbidden
+from caliopen_main.common.errors import ForbiddenAction
 
 from caliopen_main.contact.core import (Contact as CoreContact,
                                         PublicKey as CorePublicKey)
@@ -125,16 +127,12 @@ class Contact(Api):
         contact = ContactObject(self.user.user_id, contact_id=contact_id)
 
         try:
-            contact.get_db()
-            contact.get_index()
-        except NotFound:
-            raise ResourceNotFound
-
-        try:
-            contact.delete_db()
-            contact.delete_index()
+            contact.delete()
         except Exception as exc:
-            raise HTTPServerError(exc)
+            if isinstance(exc, ForbiddenAction):
+                raise HTTPForbidden(exc)
+            else:
+                raise HTTPServerError(exc)
 
         return Response(None, 204)
 

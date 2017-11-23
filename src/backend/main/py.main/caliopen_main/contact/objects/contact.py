@@ -7,6 +7,7 @@ from uuid import UUID
 import datetime
 
 from caliopen_main.common.objects.base import ObjectStorable, ObjectIndexable
+
 from ..store.contact import (Contact as ModelContact,
                              ContactLookup as ModelContactLookup,
                              PublicKey as ModelPublicKey)
@@ -21,6 +22,8 @@ from .phone import Phone
 from .postal_address import PostalAddress
 from caliopen_main.common.objects.tag import ResourceTag
 from caliopen_main.pi.objects import PIObject
+from caliopen_storage.exception import NotFound
+from caliopen_main.common.errors import ForbiddenAction
 
 import logging
 log = logging.getLogger(__name__)
@@ -93,9 +96,22 @@ class Contact(ObjectIndexable):
     _index = None
 
     def delete(self):
-        if self.user.contact_id == self.contact_id:
-            raise Exception("Can't delete contact related to user")
-        return super(Contact, self).delete()
+        # XXX prevent circular dependency import
+        from caliopen_main.user.core.user import User
+        user = User.get(self.user_id)
+        if user.contact_id == self.contact_id:
+            raise ForbiddenAction("Can't delete contact related to user")
+        try:
+            self.get_db()
+            self.get_index()
+        except Exception as exc:
+            raise NotFound
+
+        try:
+            self.delete_db()
+            self.delete_index()
+        except Exception as exc:
+            raise exc
 
     @classmethod
     def _compute_title(cls, contact):
