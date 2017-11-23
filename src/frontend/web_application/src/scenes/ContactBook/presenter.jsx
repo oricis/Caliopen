@@ -8,7 +8,6 @@ import MenuBar from '../../components/MenuBar';
 import TagList from './components/TagList';
 import Spinner from '../../components/Spinner';
 import Button from '../../components/Button';
-import ScrollToWhenHash from '../../components/ScrollToWhenHash';
 
 import './style.scss';
 
@@ -115,7 +114,7 @@ class ContactBook extends Component {
       ], []);
 
     return (
-      <ScrollToWhenHash forceTop className="l-contact-book">
+      <div className="l-contact-book">
         <MenuBar>
           <ContactFilters
             onSortDirChange={this.handleSortDirChange}
@@ -164,7 +163,7 @@ class ContactBook extends Component {
             )}
           </div>
         </div>
-      </ScrollToWhenHash>
+      </div>
     );
   }
 }

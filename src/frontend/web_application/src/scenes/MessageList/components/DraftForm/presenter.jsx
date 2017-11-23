@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import ReplyFormBase from '../../../../components/ReplyForm';
 import NewDraftForm from '../../../../components/NewDraftForm';
 import DraftMessageActionsContainer from '../../../../components/DraftMessageActionsContainer';
-import ScrollToWhenHash from '../../../../components/ScrollToWhenHash';
 
 class DraftForm extends Component {
   static propTypes = {
@@ -98,7 +97,7 @@ class DraftForm extends Component {
     }
 
     return (
-      <ScrollToWhenHash id="reply">
+      <div id="reply">
         <ReplyFormBase
           parentMessage={parentMessage}
           draft={draft}
@@ -109,7 +108,7 @@ class DraftForm extends Component {
           renderDraftMessageActionsContainer={this.renderDraftMessageActionsContainer}
           user={user}
         />
-      </ScrollToWhenHash>
+      </div>
     );
   }
 }
