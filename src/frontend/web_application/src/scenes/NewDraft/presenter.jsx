@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ScrollToWhenHash from '../../components/ScrollToWhenHash';
 import NewDraftForm from '../../components/NewDraftForm';
 import DraftMessageActionsContainer from '../../components/DraftMessageActionsContainer';
 
@@ -69,17 +68,15 @@ class NewDraft extends Component {
     const { draft, internalId, editDraft, onSaveDraft } = this.props;
 
     return (
-      <ScrollToWhenHash forceTop>
-        <NewDraftForm
-          internalId={internalId}
-          draft={draft}
-          onChange={this.makeHandle(editDraft)}
-          onSave={this.makeHandle(onSaveDraft)}
-          onSend={this.handleSend}
-          isSending={this.state.isSending}
-          renderDraftMessageActionsContainer={this.renderDraftMessageActionsContainer}
-        />
-      </ScrollToWhenHash>
+      <NewDraftForm
+        internalId={internalId}
+        draft={draft}
+        onChange={this.makeHandle(editDraft)}
+        onSave={this.makeHandle(onSaveDraft)}
+        onSend={this.handleSend}
+        isSending={this.state.isSending}
+        renderDraftMessageActionsContainer={this.renderDraftMessageActionsContainer}
+      />
     );
   }
 }

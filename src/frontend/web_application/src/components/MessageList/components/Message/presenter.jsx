@@ -10,7 +10,6 @@ import Icon from '../../../Icon';
 import TextBlock from '../../../TextBlock';
 import MultidimensionalPi from '../../../MultidimensionalPi';
 import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
-import ScrollToWhenHash from '../../../../components/ScrollToWhenHash';
 import MessageActionsContainer from '../MessageActionsContainer';
 import './style.scss';
 
@@ -125,7 +124,7 @@ class Message extends Component {
     );
 
     return (
-      <ScrollToWhenHash id={message.message_id} className="m-message">
+      <div id={message.message_id} className="m-message">
         <div className="m-message__avatar-col">
           <ContactAvatarLetter
             contact={author}
@@ -195,7 +194,7 @@ class Message extends Component {
             }
           </div>
         </div>
-      </ScrollToWhenHash>
+      </div>
     );
   }
 }

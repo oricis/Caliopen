@@ -4,7 +4,6 @@ import throttle from 'lodash.throttle';
 import MessageListBase from '../../components/MessageList';
 import Button from '../../components/Button';
 import ReplyForm from './components/DraftForm';
-import ScrollSpy from '../../components/ScrollSpy';
 
 const LOAD_MORE_THROTTLE = 1000;
 
@@ -109,22 +108,20 @@ class MessageList extends Component {
     const internalId = discussionId;
 
     return (
-      <ScrollSpy>
-        <MessageListBase
-          messages={messages}
-          onMessageRead={this.handleSetMessageRead}
-          onMessageUnread={this.handleSetMessageUnread}
-          isFetching={isFetching}
-          replyForm={<ReplyForm discussionId={discussionId} internalId={internalId} />}
-          onForward={() => {}}
-          onDelete={this.handleDelete}
-          onMessageDelete={this.handleDeleteMessage}
-          onMessageReply={this.makeHandleReplyToMessage(internalId)}
-          loadMore={this.renderLoadMore()}
-          onMessageCopyTo={copyMessageTo}
-          onMessageEditTags={editMessageTags}
-        />
-      </ScrollSpy>
+      <MessageListBase
+        messages={messages}
+        onMessageRead={this.handleSetMessageRead}
+        onMessageUnread={this.handleSetMessageUnread}
+        isFetching={isFetching}
+        replyForm={<ReplyForm discussionId={discussionId} internalId={internalId} />}
+        onForward={() => {}}
+        onDelete={this.handleDelete}
+        onMessageDelete={this.handleDeleteMessage}
+        onMessageReply={this.makeHandleReplyToMessage(internalId)}
+        loadMore={this.renderLoadMore()}
+        onMessageCopyTo={copyMessageTo}
+        onMessageEditTags={editMessageTags}
+      />
     );
   }
 }

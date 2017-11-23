@@ -23,7 +23,6 @@ import AddressForm from './components/AddressForm';
 import OrgaForm from './components/OrgaForm';
 import IdentityForm from './components/IdentityForm';
 import AddFormFieldForm from './components/AddFormFieldForm';
-import ScrollToWhenHash from '../../components/ScrollToWhenHash';
 
 import './style.scss';
 
@@ -262,44 +261,42 @@ class Contact extends Component {
     const { __, isFetching, contact, contactId, form, contact_display_format: format } = this.props;
 
     return (
-      <ScrollToWhenHash forceTop>
-        <form onSubmit={this.handleSubmit} method="post">
-          {(contact || !contactId) && (
-            <MenuBar className="s-contact__menu-bar">
-              {
-                // FIXME: edit and action bars be displayed in fixed Header,
-                // not in MenuBar
-              }
-              {this.state.editMode ? this.renderEditBar() : this.renderActionBar()}
-            </MenuBar>
-          )}
+      <form onSubmit={this.handleSubmit} method="post">
+        {(contact || !contactId) && (
+          <MenuBar className="s-contact__menu-bar">
+            {
+              // FIXME: edit and action bars be displayed in fixed Header,
+              // not in MenuBar
+            }
+            {this.state.editMode ? this.renderEditBar() : this.renderActionBar()}
+          </MenuBar>
+        )}
 
-          <Spinner isLoading={isFetching} />
+        <Spinner isLoading={isFetching} />
 
-          {(contact || !contactId) && (
-            <div className="s-contact">
-              <div className="s-contact__col-datas-irl">
-                <ContactProfile
-                  contact={contact}
-                  contactDisplayFormat={format}
-                  editMode={this.state.editMode}
-                  form={(<ContactProfileForm form={form} isNew={!contact} />)}
-                />
-              </div>
-              <div className="s-contact__col-datas-online">
-                <ContactDetails
-                  contact={contact}
-                  editMode={this.state.editMode}
-                  detailForms={this.renderDetailForms()}
-                  orgaForms={(<FormCollection component={(<OrgaForm />)} propertyName="organizations" />)}
-                  identityForms={(<FormCollection component={(<IdentityForm />)} propertyName="identities" />)}
-                  __={__}
-                />
-              </div>
+        {(contact || !contactId) && (
+          <div className="s-contact">
+            <div className="s-contact__col-datas-irl">
+              <ContactProfile
+                contact={contact}
+                contactDisplayFormat={format}
+                editMode={this.state.editMode}
+                form={(<ContactProfileForm form={form} isNew={!contact} />)}
+              />
             </div>
-            )}
-        </form>
-      </ScrollToWhenHash>
+            <div className="s-contact__col-datas-online">
+              <ContactDetails
+                contact={contact}
+                editMode={this.state.editMode}
+                detailForms={this.renderDetailForms()}
+                orgaForms={(<FormCollection component={(<OrgaForm />)} propertyName="organizations" />)}
+                identityForms={(<FormCollection component={(<IdentityForm />)} propertyName="identities" />)}
+                __={__}
+              />
+            </div>
+          </div>
+          )}
+      </form>
     );
   }
 }
