@@ -14,11 +14,12 @@ import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.match.params.contactId;
 const contactSelector = state => state.contact;
-
+const userSelector = state => state.user;
 
 const mapStateToProps = createSelector(
-  [contactIdSelector, contactSelector, settingsSelector, currentTabSelector],
-  (contactId, contactState, { contact_display_format }, currentTab) => ({
+  [userSelector, contactIdSelector, contactSelector, settingsSelector, currentTabSelector],
+  (userState, contactId, contactState, { contact_display_format }, currentTab) => ({
+    user: userState.user,
     contactId,
     contact: contactState.contactsById[contactId],
     form: `contact-${contactId || 'new'}`,

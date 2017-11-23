@@ -39,6 +39,7 @@ class Contact extends Component {
     deleteContact: PropTypes.func.isRequired,
     contactId: PropTypes.string,
     contact: PropTypes.shape({}),
+    user: PropTypes.shape({}),
     isFetching: PropTypes.bool,
     form: PropTypes.string.isRequired,
     contact_display_format: PropTypes.string.isRequired,
@@ -56,6 +57,7 @@ class Contact extends Component {
     currentTab: undefined,
     contactId: undefined,
     birthday: undefined,
+    user: undefined,
   };
 
   constructor(props) {
@@ -183,8 +185,9 @@ class Contact extends Component {
   }
 
   renderActionBar = () => {
-    const { __, contact, contact_display_format: format } = this.props;
+    const { __, contact, contact_display_format: format, user, contactId } = this.props;
     const contactDisplayName = formatName({ contact, format });
+    const contactIsUser = contactId && user && user.contact.contact_id === contactId;
 
     return (
       <div className="s-contact__action-bar">
@@ -228,13 +231,15 @@ class Contact extends Component {
                 >{__('contact.action.share_contact')}</Button>
               </VerticalMenuItem>
             */}
-            <VerticalMenuItem>
-              <Button
-                onClick={this.handleDelete}
-                className="s-contact__action"
-                display="expanded"
-              >{__('contact.action.delete_contact')}</Button>
-            </VerticalMenuItem>
+            { !contactIsUser && // to prevents deleting user's contact
+              <VerticalMenuItem>
+                <Button
+                  onClick={this.handleDelete}
+                  className="s-contact__action"
+                  display="expanded"
+                >{__('contact.action.delete_contact')}</Button>
+              </VerticalMenuItem>
+            }
           </VerticalMenu>
         </Dropdown>
       </div>
