@@ -46,8 +46,6 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 }
 
 func kickUnauthorizedRequest(c *gin.Context, realm string) {
-	// we return 401 and abort handlers chain.
-	c.Header("WWW-Authenticate", realm)
 	c.AbortWithStatus(401)
 }
 
