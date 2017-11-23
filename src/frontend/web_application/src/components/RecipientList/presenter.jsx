@@ -131,10 +131,6 @@ class RecipientList extends Component {
     });
   }
 
-  handleToggleDropdown = (searchOpened) => {
-    this.setState({ searchOpened });
-  };
-
   handleSearchKeydown = (ev) => {
     const { which: keyCode, key } = ev;
 
@@ -349,7 +345,6 @@ class RecipientList extends Component {
           />
           <Dropdown
             id={dropdownId}
-            onToggle={this.handleToggleDropdown}
             show={this.state.searchTerms ?
               (searchResults.length > 0 && this.state.searchOpened) : false
             }
