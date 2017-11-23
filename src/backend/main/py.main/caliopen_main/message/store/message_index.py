@@ -49,11 +49,18 @@ class IndexedMessage(BaseIndexDocument):
 
     @classmethod
     def create_mapping(cls, user_id):
-        """Create elasticsearch mapping object for an user."""
+        """Create and save elasticsearch mapping for indexing messages."""
+        m = cls.build_mapping()
+        m.save(using=cls.client(), index=user_id)
+
+    @classmethod
+    def build_mapping(cls):
+        """Generate the mapping definition for indexed messages"""
         m = Mapping(cls.doc_type)
         m.meta('_all', enabled=True)
         m.field('attachments', Nested(doc_class=IndexedMessageAttachment,
-                                      include_in_all=True))
+                                      include_in_all=True)
+                )
         m.field('body_html', 'text')
         m.field('body_plain', 'text')
         m.field('date', 'date')
@@ -96,5 +103,4 @@ class IndexedMessage(BaseIndexDocument):
         m.field('tags',
                 Nested(doc_class=IndexedResourceTag, include_in_all=True))
         m.field('type', 'keyword')
-        m.save(using=cls.client(), index=user_id)
         return m

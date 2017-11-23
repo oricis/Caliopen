@@ -10,7 +10,6 @@ import bcrypt
 import logging
 import uuid
 
-from elasticsearch import Elasticsearch
 from zxcvbn import zxcvbn
 from validate_email import validate_email
 
@@ -27,13 +26,13 @@ from ..store import (User as ModelUser,
                      LocalIdentity as ModelLocalIdentity,
                      RemoteIdentity as ModelRemoteIdentity)
 
-from caliopen_main.user.objects.settings import Settings as ObjectSettings
-
-from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
+from caliopen_storage.core import BaseCore, BaseUserCore
 from caliopen_main.contact.core import Contact as CoreContact
 from caliopen_main.contact.objects.contact import Contact
 from caliopen_main.pi.objects import PIModel
 from caliopen_main.user.helpers import validators
+from .new_user_setups import (setup_index, setup_system_tags,
+                              setup_settings)
 
 log = logging.getLogger(__name__)
 
@@ -129,6 +128,7 @@ class UserRecoveryEmail(BaseCore):
     _model_class = ModelUserRecoveryEmail
     _pkey_name = 'recovery_email'
 
+
 class Settings(BaseUserCore):
     """User settings core object."""
 
@@ -185,12 +185,13 @@ class User(BaseCore):
         # then
         #      create user and linked contact
         """
+
         def rollback_username_storage(username):
             UserName.get(username).delete()
 
         # 0. check for user email white list and max number of users
-        cls._check_whitelistes(new_user)
-        cls._check_max_users()
+        # cls._check_whitelistes(new_user)
+        # cls._check_max_users()
         # 1.
         try:
             validators.is_valid_username(new_user.name)
@@ -228,7 +229,7 @@ class User(BaseCore):
             password_strength = zxcvbn(new_user.password,
                                        user_inputs=user_inputs)
             privacy_features = {"password_strength":
-                                str(password_strength["score"])}
+                                    str(password_strength["score"])}
             passwd = new_user.password.encode('utf-8')
             new_user.password = bcrypt.hashpw(passwd, bcrypt.gensalt())
         except Exception as exc:
@@ -278,11 +279,11 @@ class User(BaseCore):
 
         # **** operations below do not raise fatal error and rollback **** #
         # Setup index
-        core._setup_user_index()
-
+        setup_index(core)
         # Setup others entities related to user
-        core.setup_system_tags()
-        core.setup_settings(new_user.settings)
+        setup_system_tags(core)
+        setup_settings(core, new_user.settings)
+
         UserRecoveryEmail.create(recovery_email=recovery, user_id=user_id)
         # Add a default local identity on a default configured domain
         default_domain = Configuration('global').get('default_domain')
@@ -356,60 +357,6 @@ class User(BaseCore):
                          str(user.password)) == user.password:
             return user
         raise CredentialException('Invalid credentials')
-
-    def _setup_user_index(self):
-        """Create user index and setup mappings."""
-        url = Configuration('global').get('elasticsearch.url')
-        client = Elasticsearch(url)
-        log.debug('Creating index for user {}'.format(self.user_id))
-        if not client.indices.exists(self.user_id):
-            client.indices.create(self.user_id)
-        else:
-            log.warn('Index already exist {}'.format(self.user_id))
-
-        for name, kls in core_registry.items():
-            if hasattr(kls, "_index_class") and \
-                    hasattr(kls._model_class, 'user_id'):
-                idx_kls = kls._index_class()
-                log.debug('Init index for {}'.format(idx_kls))
-                if hasattr(idx_kls, 'create_mapping'):
-                    log.info('Create index {} mapping for doc_type {}'.
-                             format(self.user_id, idx_kls.doc_type))
-                    idx_kls.create_mapping(self.user_id)
-
-    def setup_system_tags(self):
-        """Create system tags."""
-        # TODO: translate tags'name to user's preferred language
-        default_tags = Configuration('global').get('system.default_tags')
-        for tag in default_tags:
-            tag['type'] = 'system'
-            tag['date_insert'] = datetime.datetime.now(tz=pytz.utc)
-            Tag.create(self, **tag)
-
-    def setup_settings(self, settings):
-        """Create settings related to user."""
-        # XXX set correct values
-
-        settings = {
-            'user_id': self.user_id,
-            'default_locale': settings.default_locale,
-            'message_display_format': settings.message_display_format,
-            'contact_display_order': settings.contact_display_order,
-            'contact_display_format': settings.contact_display_format,
-            'notification_enabled': settings.notification_enabled,
-            'notification_message_preview':
-                settings.notification_message_preview,
-            'notification_sound_enabled':
-                settings.notification_sound_enabled,
-            'notification_delay_disappear':
-                settings.notification_delay_disappear,
-        }
-
-        obj = ObjectSettings(self.user_id)
-        obj.unmarshall_dict(settings)
-        obj.marshall_db()
-        obj.save_db()
-        return True
 
     @property
     def contact(self):
