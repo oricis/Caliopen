@@ -6,10 +6,15 @@
       },
       "properties": {
         "additional_name": {
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
           "type": "text"
         },
         "addresses": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "address_id": {
@@ -28,7 +33,7 @@
               "type": "text"
             },
             "postal_code": {
-              "type": "text"
+              "type": "keyword"
             },
             "region": {
               "type": "text"
@@ -39,7 +44,8 @@
             "type": {
               "type": "keyword"
             }
-          }
+          },
+          "type": "nested"
         },
         "avatar": {
           "type": "keyword"
@@ -54,21 +60,20 @@
           "type": "date"
         },
         "emails": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "address": {
-              "type": "text",
-              "analyzer": "participant_analyzer",
+              "analyzer": "text_analyzer",
               "fields": {
+                "parts": {
+                  "analyzer": "email_analyzer",
+                  "type": "text"
+                },
                 "raw": {
                   "type": "keyword"
-                },
-                "parts": {
-                  "type": "text",
-                  "analyzer": "email_analyzer"
                 }
-              }
+              },
+              "type": "text"
             },
             "email_id": {
               "type": "keyword"
@@ -77,27 +82,37 @@
               "type": "boolean"
             },
             "label": {
-              "type": "text",
-              "analyzer": "participant_analyzer"
+              "analyzer": "text_analyzer",
+              "type": "text"
             },
             "type": {
               "type": "keyword"
             }
-          }
+          },
+          "type": "nested"
         },
         "family_name": {
-          "type": "text",
-          "analyzer": "participant_analyzer"
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
+          "type": "text"
         },
         "given_name": {
-          "type": "text",
-          "analyzer": "participant_analyzer"
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
+          "type": "text"
         },
         "groups": {
           "type": "keyword"
         },
         "identities": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "infos": {
@@ -109,14 +124,24 @@
             "type": {
               "type": "keyword"
             }
-          }
+          },
+          "type": "nested"
         },
         "ims": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "address": {
-              "type": "keyword"
+              "analyzer": "text_analyzer",
+              "fields": {
+                "parts": {
+                  "analyzer": "email_analyzer",
+                  "type": "text"
+                },
+                "raw": {
+                  "type": "keyword"
+                }
+              },
+              "type": "text"
             },
             "email_id": {
               "type": "keyword"
@@ -125,30 +150,32 @@
               "type": "boolean"
             },
             "label": {
+              "analyzer": "text_analyzer",
               "type": "text"
             },
             "type": {
               "type": "keyword"
             }
-          }
+          },
+          "type": "nested"
         },
         "infos": {
           "type": "nested"
         },
         "name_prefix": {
-          "type": "text"
+          "type": "keyword"
         },
         "name_suffix": {
-          "type": "text"
+          "type": "keyword"
         },
         "organizations": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "deleted": {
               "type": "boolean"
             },
             "department": {
+              "analyzer": "text_analyzer",
               "type": "text"
             },
             "is_primary": {
@@ -158,9 +185,16 @@
               "type": "text"
             },
             "label": {
+              "analyzer": "text_analyzer",
               "type": "text"
             },
             "name": {
+              "fields": {
+                "normalized": {
+                  "analyzer": "text_analyzer",
+                  "type": "text"
+                }
+              },
               "type": "text"
             },
             "organization_id": {
@@ -172,14 +206,17 @@
             "type": {
               "type": "keyword"
             }
-          }
+          },
+          "type": "nested"
         },
         "phones": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "is_primary": {
               "type": "boolean"
+            },
+            "normalized_number": {
+              "type": "text"
             },
             "number": {
               "type": "text"
@@ -193,10 +230,10 @@
             "uri": {
               "type": "keyword"
             }
-          }
+          },
+          "type": "nested"
         },
         "pi": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "comportment": {
@@ -214,17 +251,17 @@
             "version": {
               "type": "integer"
             }
-          }
+          },
+          "type": "nested"
         },
         "privacy_features": {
-          "type": "nested",
-          "include_in_all": true
+          "include_in_all": true,
+          "type": "nested"
         },
         "public_key": {
           "type": "nested"
         },
         "social_identities": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "infos": {
@@ -236,10 +273,10 @@
             "type": {
               "type": "keyword"
             }
-          }
+          },
+          "type": "nested"
         },
         "tags": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "date_insert": {
@@ -249,7 +286,7 @@
               "type": "integer"
             },
             "name": {
-              "type": "text"
+              "type": "keyword"
             },
             "tag_id": {
               "type": "keyword"
@@ -257,19 +294,11 @@
             "type": {
               "type": "boolean"
             }
-          }
+          },
+          "type": "nested"
         },
         "title": {
           "type": "text"
-        },
-        "user_id": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
         }
       }
     },
@@ -279,57 +308,45 @@
       },
       "properties": {
         "attachments": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "content_type": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
+              "type": "keyword"
             },
             "file_name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
+              "type": "keyword"
             },
             "is_inline": {
               "type": "boolean"
             },
             "mime_boundary": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
+              "type": "keyword"
             },
             "size": {
-              "type": "long"
+              "type": "integer"
             },
             "url": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
+              "type": "keyword"
             }
-          }
+          },
+          "type": "nested"
         },
         "body_html": {
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
           "type": "text"
         },
         "body_plain": {
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
           "type": "text"
         },
         "date": {
@@ -345,55 +362,40 @@
           "type": "keyword"
         },
         "external_references": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "ancestors_ids": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
+              "type": "keyword"
             },
             "message_id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
+              "type": "keyword"
             },
             "parent_id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
+              "type": "keyword"
             }
-          }
+          },
+          "type": "nested"
         },
         "identities": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "identifier": {
-              "type": "text",
               "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
+                "parts": {
+                  "analyzer": "email_analyzer",
+                  "type": "text"
+                },
+                "raw": {
+                  "type": "keyword"
                 }
-              }
+              },
+              "type": "text"
             },
             "type": {
               "type": "keyword"
             }
-          }
+          },
+          "type": "nested"
         },
         "importance_level": {
           "type": "short"
@@ -414,37 +416,27 @@
           "type": "keyword"
         },
         "participants": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "address": {
-              "type": "text",
-              "analyzer": "participant_analyzer",
+              "analyzer": "text_analyzer",
               "fields": {
+                "parts": {
+                  "analyzer": "email_analyzer",
+                  "type": "text"
+                },
                 "raw": {
                   "type": "keyword"
-                },
-                "parts": {
-                  "type": "text",
-                  "analyzer": "email_analyzer"
                 }
-              }
-            },
-            "contact_id": {
-              "type": "keyword"
+              },
+              "type": "text"
             },
             "contact_ids": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
+              "type": "keyword"
             },
             "label": {
-              "type": "text",
-              "analyzer": "participant_analyzer"
+              "analyzer": "text_analyzer",
+              "type": "text"
             },
             "protocol": {
               "type": "keyword"
@@ -452,10 +444,10 @@
             "type": {
               "type": "keyword"
             }
-          }
+          },
+          "type": "nested"
         },
         "pi": {
-          "type": "nested",
           "include_in_all": true,
           "properties": {
             "comportment": {
@@ -473,98 +465,48 @@
             "version": {
               "type": "integer"
             }
-          }
+          },
+          "type": "nested"
         },
         "privacy_features": {
-          "type": "nested",
           "include_in_all": true,
-          "properties": {
-            "is_spam": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "message_encrypted": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "message_signed": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "nb_external_hops": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "spam_score": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "transport_signed": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            }
-          }
+          "type": "nested"
         },
         "raw_msg_id": {
           "type": "keyword"
         },
-        "refresh": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
         "subject": {
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
           "type": "text"
         },
         "tags": {
-          "type": "nested",
-          "include_in_all": true
+          "include_in_all": true,
+          "properties": {
+            "date_insert": {
+              "type": "date"
+            },
+            "importance_level": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "keyword"
+            },
+            "tag_id": {
+              "type": "keyword"
+            },
+            "type": {
+              "type": "boolean"
+            }
+          },
+          "type": "nested"
         },
         "type": {
           "type": "keyword"
-        },
-        "user_id": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
         }
       }
     }
@@ -572,7 +514,7 @@
   "settings": {
     "analysis": {
       "analyzer": {
-        "participant_analyzer": {
+        "text_analyzer": {
           "type": "custom",
           "tokenizer": "lowercase",
           "filter": [

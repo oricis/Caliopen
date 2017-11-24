@@ -37,7 +37,7 @@ type (
 func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) (suggests []RecipientSuggestion, err error) {
 	suggests = []RecipientSuggestion{}
 	q_string := query_string
-
+	user_id = "7d67bb5e-6683-4528-9a5c-bb292210a0ef_v10"
 	// build nested queries for participants lookup
 	queries := []elastic.Query{
 		elastic.NewPrefixQuery("participants.label", q_string),
@@ -50,8 +50,10 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 
 	// build queries for contact lookup
 	queries = []elastic.Query{
-		elastic.NewPrefixQuery("given_name", q_string).Boost(2),
-		elastic.NewPrefixQuery("family_name", q_string).Boost(2),
+		elastic.NewPrefixQuery("given_name", q_string).Boost(3),
+		elastic.NewPrefixQuery("given_name.normalized", q_string).Boost(3),
+		elastic.NewPrefixQuery("family_name", q_string).Boost(3),
+		elastic.NewPrefixQuery("family_name.normalized", q_string).Boost(3),
 	}
 	contact_name_q := elastic.NewBoolQuery().Should(queries...)
 
@@ -68,15 +70,12 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 	fsc := elastic.NewFetchSourceContext(true)
 	fsc.Include("title")
 
-	// make aggregations
-	max_date_agg := elastic.NewMaxAggregation().Field("date")
-
 	// run the query
 	main_query := elastic.NewBoolQuery().Should(participants_q, contact_name_q, emails_q)
 	search := es.Client.Search().
 		Index(user_id).
 		FetchSourceContext(fsc).
-		Aggregation("last_message", max_date_agg)
+		Size(30)
 	/** log the full json query to help development
 	source, _ := main_query.Source()
 	json_query, _ := json.Marshal(source)
@@ -91,6 +90,7 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 	}
 	participants_suggests := make(map[string]RecipientSuggestion)
 	for _, hit := range result.Hits.Hits {
+		log.Infof("%+v\n", hit)
 		switch hit.Type {
 		case MessageIndexType:
 			suggest, e := extractParticipantInfos(hit)

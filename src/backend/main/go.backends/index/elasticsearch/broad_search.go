@@ -21,7 +21,18 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 	)
 	q := elastic.NewBoolQuery()
 	for field, value := range search.Terms {
-		q = q.Must(elastic.NewCommonTermsQuery(field, value).CutoffFrequency(0.01)) //words that have a document frequency greater than 1% will be treated as common terms.
+		q = q.Should(elastic.NewCommonTermsQuery(field, value).CutoffFrequency(0.01)) //words that have a document frequency greater than 1% will be treated as common terms.
+		// always add the common fields below to improve results
+		q = q.Should(elastic.NewCommonTermsQuery("body_plain", value).CutoffFrequency(0.01))
+		q = q.Should(elastic.NewCommonTermsQuery("body_plain.normalized", value).CutoffFrequency(0.01))
+		q = q.Should(elastic.NewCommonTermsQuery("body_html", value).CutoffFrequency(0.01))
+		q = q.Should(elastic.NewCommonTermsQuery("body_html.normalized", value).CutoffFrequency(0.01))
+		q = q.Should(elastic.NewCommonTermsQuery("subject", value).CutoffFrequency(0.01))
+		q = q.Should(elastic.NewCommonTermsQuery("subject.normalized", value).CutoffFrequency(0.01))
+		q = q.Should(elastic.NewCommonTermsQuery("given_name", value).CutoffFrequency(0.01))
+		q = q.Should(elastic.NewCommonTermsQuery("given_name.normalized", value).CutoffFrequency(0.01))
+		q = q.Should(elastic.NewCommonTermsQuery("family_name", value).CutoffFrequency(0.01))
+		q = q.Should(elastic.NewCommonTermsQuery("family_name.normalized", value).CutoffFrequency(0.01))
 	}
 
 	// make aggregation to file docs by type:
@@ -46,7 +57,7 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 		q = q.Filter(rq)
 		s = es.Client.Search().Index(search.User_id.String()).Query(q).FetchSource(true).Highlight(h)
 	case ContactIndexType:
-		// The search focuses on message document type, no aggregation needed and importance level not taken into account
+		// The search focuses on contact document type, no aggregation needed and importance level not taken into account
 		h := elastic.NewHighlight().Fields(elastic.NewHighlighterField("*").RequireFieldMatch(false))
 		s = es.Client.Search().Index(search.User_id.String()).Query(q).FetchSource(true).Highlight(h)
 	}
@@ -62,7 +73,12 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 			s = s.Size(search.Limit)
 		}
 	}
+	/** log the full json query to help development
+	source, _ := q.Source()
+	json_query, _ := json.Marshal(source)
+	log.Infof("\nES query source: %s\n", json_query)
 
+	/** end of log **/
 	// execute the search
 	response, err := s.Do(context.TODO())
 	if err != nil {
@@ -75,7 +91,6 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 		MessagesHits: MessageHits{0, []*IndexHit{}},
 		ContactsHits: ContactHits{0, []*IndexHit{}},
 	}
-
 	if search.DocType != "" {
 		// no aggregation, thus elastic returns a parsed json
 		switch search.DocType {
