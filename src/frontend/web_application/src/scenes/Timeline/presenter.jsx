@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import Spinner from '../../components/Spinner';
+import PageTitle from '../../components/PageTitle';
 import Button from '../../components/Button';
 import BlockList from '../../components/BlockList';
 import InfiniteScroll from '../../components/InfiniteScroll';
@@ -59,6 +60,7 @@ class Timeline extends Component {
 
     return (
       <div className="s-timeline">
+        <PageTitle title={__('header.menu.discussions')} />
         <MenuBar className="s-timeline__menu-bar">
           <Spinner isLoading={isFetching} className="s-timeline__spinner" />
         </MenuBar>
