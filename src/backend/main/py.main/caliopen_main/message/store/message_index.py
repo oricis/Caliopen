@@ -52,37 +52,69 @@ class IndexedMessage(BaseIndexDocument):
         """Generate the mapping definition for indexed messages"""
         m = Mapping(cls.doc_type)
         m.meta('_all', enabled=True)
+        # attachments
         m.field('attachments', Nested(doc_class=IndexedMessageAttachment,
-                                      include_in_all=True)
+                                      include_in_all=True,
+                                      properties={
+                                          "content_type": Keyword(),
+                                          "file_name": Keyword(),
+                                          "is_inline": Boolean(),
+                                          "size": Integer(),
+                                          "url": Keyword(),
+                                          "mime_boundary": Keyword()
+                                      })
                 )
-        m.field('body_html', 'text')
-        m.field('body_plain', 'text')
+        m.field('body_html', 'text', fields={
+            "normalized": {"type": "text", "analyzer": "text_analyzer"}
+        })
+        m.field('body_plain', 'text', fields={
+            "normalized": {"type": "text", "analyzer": "text_analyzer"}
+        })
         m.field('date', 'date')
         m.field('date_delete', 'date')
         m.field('date_insert', 'date')
         m.field('discussion_id', 'keyword')
+        # external references
         m.field('external_references',
                 Nested(doc_class=IndexedExternalReferences,
-                       include_in_all=True))
-        m.field('identities',
-                Nested(doc_class=IndexedIdentity, include_in_all=True))
+                       include_in_all=True,
+                       properties={
+                           "ancestors_ids": Keyword(),
+                           "message_id": Keyword(),
+                           "parent_id": Keyword()
+                       })
+                )
+        # identities
+        identities = Nested(doc_class=IndexedExternalReferences,
+                            include_in_all=True)
+        identities.field("identifier", "text", fields={
+            "raw": Keyword(),
+            "parts": {"type": "text", "analyzer": "email_analyzer"}
+        })
+        identities.field("type", "keyword")
+        m.field('identities', identities)
+
         m.field('importance_level', 'short')
         m.field('is_answered', 'boolean')
         m.field('is_draft', 'boolean')
         m.field('is_unread', 'boolean')
         m.field('message_id', 'keyword')
         m.field('parent_id', 'keyword')
+        # participants
         participants = Nested(doc_class=IndexedParticipant,
-                              include_in_all=True,
-                              properties={
-                                  "address": 'keyword',
-                                  "contact_id": 'keyword',
-                                  "label": 'text',
-                                  "protocol": 'keyword',
-                                  "type": 'keyword'
-                              })
+                              include_in_all=True)
+        participants.field("address", "text", analyzer="text_analyzer",
+                           fields={
+                               "raw": {"type": "keyword"},
+                               "parts": {"type": "text",
+                                         "analyzer": "email_analyzer"}
+                           })
+        participants.field("contact_ids", Keyword(multi=True))
+        participants.field("label", "text", analyzer="text_analyzer")
+        participants.field("protocol", Keyword())
+        participants.field("type", Keyword())
         m.field('participants', participants)
-        m.field('privacy_features', Nested(include_in_all=True))
+        # PI
         pi = Nested(doc_class=PIIndexModel, include_in_all=True,
                     properties={
                         "technic": "integer",
@@ -92,10 +124,20 @@ class IndexedMessage(BaseIndexDocument):
                         "date_update": "date"
                     })
         m.field("pi", pi)
+        m.field('privacy_features', Nested(include_in_all=True))
         m.field('raw_msg_id', "keyword")
-        m.field('subject', 'text')
-        m.field('tags',
-                Nested(doc_class=IndexedResourceTag, include_in_all=True))
+        m.field('subject', 'text', fields={
+            "normalized": {"type": "text", "analyzer": "text_analyzer"}
+        })
+        # tags
+        tags = Nested('tags', doc_class=IndexedResourceTag, include_in_all=True)
+        tags.field("date_insert", Date())
+        tags.field("importance_level", Integer())
+        tags.field("name", Keyword())
+        tags.field("tag_id", Keyword())
+        tags.field("type", Boolean())
+        m.field("tags", tags)
+
         m.field('type', 'keyword')
 
         return m

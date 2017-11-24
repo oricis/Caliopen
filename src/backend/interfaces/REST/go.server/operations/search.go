@@ -46,7 +46,6 @@ func SimpleSearch(ctx *gin.Context) {
 			reasons = append(reasons, errors.New("'term' param must length 3 chars at least."))
 		}
 	}
-
 	doc_type, has_doc_type := query["doctype"]
 
 	if l, ok := query["limit"]; ok {

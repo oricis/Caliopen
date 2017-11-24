@@ -37,7 +37,7 @@ def setup_index(user):
                 "settings": {
                     "analysis": {
                         "analyzer": {
-                            "participant_analyzer": {
+                            "text_analyzer": {
                                 "type": "custom",
                                 "tokenizer": "lowercase",
                                 "filter": [

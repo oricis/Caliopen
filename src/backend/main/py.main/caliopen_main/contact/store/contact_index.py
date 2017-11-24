@@ -5,7 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from elasticsearch_dsl import Mapping, Nested, Text, Keyword, Date, Boolean, \
-    InnerObjectWrapper
+    InnerObjectWrapper, Integer
 from caliopen_storage.store.model import BaseIndexDocument
 from caliopen_main.pi.objects import PIIndexModel
 
@@ -111,7 +111,10 @@ class IndexedContact(BaseIndexDocument):
         """Create elasticsearch indexed_contacts mapping object for an user."""
         m = Mapping(cls.doc_type)
         m.meta('_all', enabled=True)
-        m.field('additional_name', 'keyword')
+        m.field('additional_name', 'text', fields={
+            "normalized": {"type": "text", "analyzer": "text_analyzer"}
+        })
+        # addresses
         addresses = Nested(doc_class=IndexedPostalAddress, include_in_all=True,
                            properties={
                                "address_id": "keyword",
@@ -120,7 +123,7 @@ class IndexedContact(BaseIndexDocument):
                                "is_primary": "boolean",
                                "street": "text",
                                "city": "text",
-                               "postal_code": "text",
+                               "postal_code": "keyword",
                                "country": "text",
                                "region": "text"
                            })
@@ -129,19 +132,30 @@ class IndexedContact(BaseIndexDocument):
         m.field('date_insert', 'date')
         m.field('date_update', 'date')
         m.field('deleted', 'date')
-        internet_add = Nested(doc_class=IndexedInternetAddress,
-                              include_in_all=True,
-                              properties={
-                                  "address": 'keyword',
-                                  "email_id": "keyword",
-                                  "is_primary": "boolean",
-                                  "label": 'text',
-                                  "type": 'keyword'
-                              })
-        m.field("emails", internet_add)
-        m.field('family_name', 'keyword')
-        m.field('given_name', 'keyword')
+        # emails
+        internet_addr = Nested(doc_class=IndexedInternetAddress,
+                               include_in_all=True,
+                               )
+        internet_addr.field("address", "text", analyzer="text_analyzer",
+                            fields={
+                                "raw": {"type": "keyword"},
+                                "parts": {"type": "text",
+                                          "analyzer": "email_analyzer"}
+                            })
+        internet_addr.field("email_id", Keyword())
+        internet_addr.field("is_primary", Boolean())
+        internet_addr.field("label", "text", analyzer="text_analyzer")
+        internet_addr.field("type", Keyword())
+        m.field("emails", internet_addr)
+
+        m.field('family_name', "text", fields={
+            "normalized": {"type": "text", "analyzer": "text_analyzer"}
+        })
+        m.field('given_name', 'text', fields={
+            "normalized": {"type": "text", "analyzer": "text_analyzer"}
+        })
         m.field("groups", Keyword(multi=True))
+        # social ids
         social_ids = Nested(doc_class=IndexedSocialIdentity,
                             include_in_all=True,
                             properties={
@@ -150,24 +164,26 @@ class IndexedContact(BaseIndexDocument):
                                 "infos": Nested()
                             })
         m.field("identities", social_ids)
-        m.field("ims", internet_add)
+        m.field("ims", internet_addr)
         m.field("infos", Nested())
         m.field('name_prefix', 'keyword')
         m.field('name_suffix', 'keyword')
+        # organizations
         organizations = Nested(doc_class=IndexedOrganization,
-                               include_in_all=True,
-                               properties={
-                                   "deleted": "boolean",
-                                   "department": "text",
-                                   "is_primary": "boolean",
-                                   "job_description": "text",
-                                   "label": "text",
-                                   "name": "keyword",
-                                   "organization_id": "keyword",
-                                   "title": "keyword",
-                                   "type": "keyword"
-                               })
+                               include_in_all=True)
+        organizations.field("deleted", Boolean())
+        organizations.field("department", "text", analyzer="text_analyzer")
+        organizations.field("is_primary", Boolean())
+        organizations.field("job_description", "text")
+        organizations.field("label", "text", analyzer="text_analyzer")
+        organizations.field("name", 'text', fields={
+            "normalized": {"type": "text", "analyzer": "text_analyzer"}
+        })
+        organizations.field("organization_id", Keyword())
+        organizations.field("title", Keyword())
+        organizations.field("type", Keyword())
         m.field("organizations", organizations)
+        # phones
         phones = Nested(doc_class=IndexedPhone, include_in_all=True,
                         properties={
                             "is_primary": "boolean",
@@ -177,7 +193,9 @@ class IndexedContact(BaseIndexDocument):
                             "type": "keyword",
                             "uri": "keyword"
                         })
+
         m.field("phones", phones)
+        # pi
         pi = Nested(doc_class=PIIndexModel, include_in_all=True,
                     properties={
                         "comportment": "integer",
@@ -190,15 +208,15 @@ class IndexedContact(BaseIndexDocument):
         m.field("privacy_features", Nested(include_in_all=True))
         m.field("public_key", Nested())
         m.field("social_identities", social_ids)
-        tags = Nested(doc_class=IndexedResourceTag, include_in_all=True,
-                      properties={
-                          "date_insert": "date",
-                          "importance_level": "integer",
-                          "name": "keyword",
-                          "tag_id": "keyword",
-                          "type": "boolean"
-                      })
+        # tags
+        tags = Nested('tags', doc_class=IndexedResourceTag, include_in_all=True)
+        tags.field("date_insert", Date())
+        tags.field("importance_level", Integer())
+        tags.field("name", Keyword())
+        tags.field("tag_id", Keyword())
+        tags.field("type", Boolean())
         m.field("tags", tags)
+
         m.field('title', 'text')
 
         return m
