@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import SearchResultsLayout from '../../layouts/SearchResults';
 import Link from '../../components/Link';
+import PageTitle from '../../components/PageTitle';
 import Button from '../../components/Button';
 import InfiniteScroll from '../../components/InfiniteScroll';
 import MessageResultItem from './components/MessageResultItem';
@@ -111,6 +112,7 @@ class SearchResults extends Component {
 
     return (
       <div>
+        <PageTitle />
         {messages && (
           <div className="s-search-results__label">
             {__('search-results.preview.nb-messages', { count: nbMessages, term })}

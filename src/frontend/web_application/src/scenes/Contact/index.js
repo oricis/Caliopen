@@ -8,7 +8,7 @@ import { requestContact, updateContact, createContact, deleteContact } from '../
 import { removeTab } from '../../store/modules/tab';
 import fetchLocation from '../../services/api-location';
 import { getNewContact } from '../../services/contact';
-import { currentTabSelector } from '../../store/selectors/tab';
+import { withCurrentTab } from '../../hoc/tab';
 import { settingsSelector } from '../../store/selectors/settings';
 import Presenter from './presenter';
 
@@ -17,8 +17,8 @@ const contactSelector = state => state.contact;
 const userSelector = state => state.user;
 
 const mapStateToProps = createSelector(
-  [userSelector, contactIdSelector, contactSelector, settingsSelector, currentTabSelector],
-  (userState, contactId, contactState, { contact_display_format }, currentTab) => ({
+  [userSelector, contactIdSelector, contactSelector, settingsSelector],
+  (userState, contactId, contactState, { contact_display_format }) => ({
     user: userState.user,
     contactId,
     contact: contactState.contactsById[contactId],
@@ -28,7 +28,6 @@ const mapStateToProps = createSelector(
     initialValues: contactState.contactsById[contactId] || getNewContact(),
     isFetching: contactState.isFetching,
     contact_display_format,
-    currentTab,
   })
 );
 
@@ -68,5 +67,6 @@ export default compose(
     enableReinitialize: true,
   }),
   formValues({ birthday: 'info.birthday' }),
-  withTranslator()
+  withTranslator(),
+  withCurrentTab()
 )(Presenter);

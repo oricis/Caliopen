@@ -11,6 +11,7 @@ import Modal from '../../components/Modal';
 import MenuBar from '../../components/MenuBar';
 import Button from '../../components/Button';
 import TextBlock from '../../components/TextBlock';
+import PageTitle from '../../components/PageTitle';
 import Dropdown, { withDropdownControl } from '../../components/Dropdown';
 import VerticalMenu, { VerticalMenuItem } from '../../components/VerticalMenu';
 import FormCollection from './components/FormCollection';
@@ -23,6 +24,7 @@ import AddressForm from './components/AddressForm';
 import OrgaForm from './components/OrgaForm';
 import IdentityForm from './components/IdentityForm';
 import AddFormFieldForm from './components/AddFormFieldForm';
+
 
 import './style.scss';
 
@@ -263,10 +265,13 @@ class Contact extends Component {
   }
 
   render() {
-    const { __, isFetching, contact, contactId, form, contact_display_format: format } = this.props;
+    const {
+      __, isFetching, contact, contactId, form, contact_display_format: format,
+    } = this.props;
 
     return (
       <form onSubmit={this.handleSubmit} method="post">
+        <PageTitle />
         {(contact || !contactId) && (
           <MenuBar className="s-contact__menu-bar">
             {
