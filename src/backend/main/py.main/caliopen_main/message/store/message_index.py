@@ -48,12 +48,6 @@ class IndexedMessage(BaseIndexDocument):
         return self.meta.id
 
     @classmethod
-    def create_mapping(cls, user_id):
-        """Create and save elasticsearch mapping for indexing messages."""
-        m = cls.build_mapping()
-        m.save(using=cls.client(), index=user_id)
-
-    @classmethod
     def build_mapping(cls):
         """Generate the mapping definition for indexed messages"""
         m = Mapping(cls.doc_type)
@@ -103,4 +97,5 @@ class IndexedMessage(BaseIndexDocument):
         m.field('tags',
                 Nested(doc_class=IndexedResourceTag, include_in_all=True))
         m.field('type', 'keyword')
+
         return m

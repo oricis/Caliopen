@@ -9,7 +9,7 @@ import pytz
 
 from caliopen_storage.config import Configuration
 from elasticsearch import Elasticsearch
-from caliopen_storage.core import BaseCore, BaseUserCore, core_registry
+from caliopen_storage.core import core_registry
 from caliopen_main.user.objects.settings import Settings as ObjectSettings
 
 log = logging.getLogger(__name__)
@@ -19,20 +19,73 @@ def setup_index(user):
     """Creates user index and setups mappings."""
     url = Configuration('global').get('elasticsearch.url')
     client = Elasticsearch(url)
-    log.debug('Creating index for user {}'.format(user.user_id))
-    if not client.indices.exists(user.user_id):
-        client.indices.create(user.user_id)
-    else:
-        log.warn('Index already exist {}'.format(user.user_id))
 
+    # Creates a versioned index with our custom analyzers, tokenizers, etc.
+    log.debug('Creating index for user {}'.format(user.user_id))
+    m_version = Configuration('global').get('elasticsearch.mappings_version')
+    if m_version == "":
+        log.warn('Empty mappings_version for {}'.format(user.user_id))
+        return
+
+    index_name = user.user_id + "_" + m_version
+    alias_name = user.user_id
+
+    try:
+        client.indices.create(
+            index=index_name,
+            body={
+                "settings": {
+                    "analysis": {
+                        "analyzer": {
+                            "participant_analyzer": {
+                                "type": "custom",
+                                "tokenizer": "lowercase",
+                                "filter": [
+                                    "ascii_folding"
+                                ]
+                            },
+                            "email_analyzer": {
+                                "type": "custom",
+                                "tokenizer": "email_tokenizer",
+                                "filter": [
+                                    "ascii_folding"
+                                ]
+                            }
+                        },
+                        "filter": {
+                            "ascii_folding": {
+                                "type": "asciifolding",
+                                "preserve_original": True
+                            }
+                        },
+                        "tokenizer": {
+                            "email_tokenizer": {
+                                "type": "ngram",
+                                "min_gram": 3,
+                                "max_gram": 25
+                            }
+                        }
+                    }
+                }
+            })
+    except Exception as exc:
+        log.warn("failed to create index {} : {}".format(index_name, exc))
+        return
+
+    # Points an alias to the underlying user's index
+    try:
+        client.indices.put_alias(index=index_name, name=alias_name)
+    except Exception as exc:
+        log.warn("failed to create alias {} : {}".format(alias_name, exc))
+        return
+
+    # PUT mappings for each type, if any
     for name, kls in core_registry.items():
         if hasattr(kls, "_index_class") and \
                 hasattr(kls._model_class, 'user_id'):
             idx_kls = kls._index_class()
-            log.debug('Init index for {}'.format(idx_kls))
-            if hasattr(idx_kls, 'create_mapping'):
-                log.info('Create index {} mapping for doc_type {}'.
-                         format(user.user_id, idx_kls.doc_type))
+            if hasattr(idx_kls, "build_mapping"):
+                log.debug('Init index for {}'.format(idx_kls))
                 idx_kls.create_mapping(user.user_id)
 
 

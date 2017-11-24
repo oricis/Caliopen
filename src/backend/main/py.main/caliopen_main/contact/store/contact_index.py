@@ -107,7 +107,7 @@ class IndexedContact(BaseIndexDocument):
         return self.meta.id
 
     @classmethod
-    def create_mapping(cls, user_id):
+    def build_mapping(cls):
         """Create elasticsearch indexed_contacts mapping object for an user."""
         m = Mapping(cls.doc_type)
         m.meta('_all', enabled=True)
@@ -201,5 +201,4 @@ class IndexedContact(BaseIndexDocument):
         m.field("tags", tags)
         m.field('title', 'text')
 
-        m.save(using=cls.client(), index=user_id)
         return m
