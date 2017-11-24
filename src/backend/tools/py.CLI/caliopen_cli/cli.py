@@ -13,7 +13,7 @@ from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage
 from caliopen_cli.commands import (shell, import_email,
                                    setup_storage, create_user,
-                                   import_vcard, dump_model,
+                                   import_vcard, dump_model, dump_indexes,
                                    inject_email, basic_compute,
                                    import_reserved_names)
 
@@ -62,6 +62,10 @@ def main(args=sys.argv):
     sp_dump = subparsers.add_parser('dump')
     sp_dump.set_defaults(func=dump_model)
     sp_dump.add_argument('-m', dest='model', help='model to dump')
+    sp_dump.add_argument('-o', dest='output_path', help='output path')
+
+    sp_dump = subparsers.add_parser('dump_index')
+    sp_dump.set_defaults(func=dump_indexes)
     sp_dump.add_argument('-o', dest='output_path', help='output path')
 
     sp_inject = subparsers.add_parser('inject')

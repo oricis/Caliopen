@@ -13,12 +13,10 @@ from elasticsearch_dsl import DocType
 from ..config import Configuration
 from ..exception import NotFound
 
-
 log = logging.getLogger(__name__)
 
 
 class BaseModel(Model):
-
     """Cassandra base model."""
 
     __abstract__ = True
@@ -58,7 +56,6 @@ class BaseModel(Model):
 
 
 class BaseIndexDocument(DocType):
-
     """Base class for indexed objects."""
 
     doc_type = None
@@ -69,9 +66,21 @@ class BaseIndexDocument(DocType):
         """Return an elasticsearch client."""
         return Elasticsearch(cls.__url__)
 
+    @classmethod
+    def create_mapping(cls, user_id):
+        """Create and save elasticsearch mapping for the cls.doc_type."""
+
+        if hasattr(cls, 'build_mapping'):
+            log.info('Create index {} mapping for doc_type {}'.
+                     format(user_id, cls.doc_type))
+            try:
+                cls.build_mapping().save(using=cls.client(), index=user_id)
+            except Exception as exc:
+                log.warn(
+                    "failed to put mapping for {} : {}".format(user_id, exc))
+
 
 class BaseUserType(UserType):
-
     """Base class for UserDefined Type in store layer."""
 
     def to_dict(self):
