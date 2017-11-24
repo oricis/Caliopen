@@ -90,7 +90,6 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 	}
 	participants_suggests := make(map[string]RecipientSuggestion)
 	for _, hit := range result.Hits.Hits {
-		log.Infof("%+v\n", hit)
 		switch hit.Type {
 		case MessageIndexType:
 			suggest, e := extractParticipantInfos(hit)
