@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Route, Switch } from 'react-router-dom';
 import { withTranslator } from '@gandi/react-translate';
+import { SwitchWithRoutes } from './modules/routing';
+import Signin from './scenes/Signin';
+import Signup from './scenes/Signup';
+import ForgotPassword from './scenes/ForgotPassword';
+import ResetPassword from './scenes/ResetPassword';
 import Contact from './scenes/Contact';
-import Auth from './scenes/Auth';
+import AuthPage from './layouts/AuthPage';
+import Page from './layouts/Page';
 import Timeline from './scenes/Timeline';
-import AppRoute from './scenes/AppRoute';
 import NewDraft from './scenes/NewDraft';
 import SearchResults from './scenes/SearchResults';
-import UserRoute from './scenes/UserRoute';
 import UserProfile from './scenes/UserProfile';
 import UserSecurity from './scenes/UserSecurity';
 import UserPrivacy from './scenes/UserPrivacy';
-import SettingsRoute from './scenes/SettingsRoute';
 // import SettingsIdentities from './scenes/SettingsIdentities';
 // import SettingsSignatures from './scenes/SettingsSignatures';
 import ApplicationSettings from './scenes/ApplicationSettings';
-// import DevicesRoute from './scenes/DevicesRoute';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
 // import Tags from './scenes/Tags';
@@ -26,12 +27,20 @@ import PageNotFound from './scenes/PageNotFound';
 export const getRouteConfig = ({ __ }) => [
   {
     path: '/auth',
-    component: Auth,
+    component: AuthPage,
     app: 'auth',
+    routes: [
+      { path: '/auth/', exact: true, redirect: '/auth/signin' },
+      { path: '/auth/signin', component: Signin },
+      { path: '/auth/signup', component: Signup },
+      { path: '/auth/forgot-password', component: ForgotPassword },
+      { path: '/auth/passwords/reset/:key', component: ResetPassword },
+      { path: '/auth/signout', redirect: '/auth/signin' },
+    ],
   },
   {
     path: '/',
-    component: AppRoute,
+    component: Page,
     routes: [
       {
         path: '/',
@@ -79,7 +88,6 @@ export const getRouteConfig = ({ __ }) => [
       },
       {
         path: '/user',
-        component: UserRoute,
         app: 'account',
         label: __('user.route.label.default'),
         routes: [
@@ -102,7 +110,6 @@ export const getRouteConfig = ({ __ }) => [
       },
       {
         path: '/settings',
-        component: SettingsRoute,
         app: 'settings',
         label: __('settings.route.label.default'),
         routes: [
@@ -126,7 +133,6 @@ export const getRouteConfig = ({ __ }) => [
           // TODO: enable devices when API ready: https://tree.taiga.io/project/caliopen-caliopen/us/314?no-milestone=1
           // {
           //   path: '/settings/devices',
-          //   component: DevicesRoute,
           //   label: __('settings.route.label.devices'),
           //   routes: [
           //     {
@@ -164,24 +170,20 @@ export const flattenRouteConfig = routes => routes.reduce((acc, route) => {
   return flattened;
 }, []);
 
-export const RouteWithSubRoutes = route => (
-  <Route
-    path={route.path}
-    render={props => (
-      <route.component {...props} routes={route.routes} />
-    )}
-  />
-);
+class Routes extends Component {
+  static propTypes = {
+    __: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+  };
 
-const Routes = ({ __ }) => (
-  <Switch>
-    {getRouteConfig({ __ }).map((route, i) => (
-      <RouteWithSubRoutes key={i} {...route} />
-    ))}
-  </Switch>
-);
-Routes.propTypes = {
-  __: PropTypes.func.isRequired,
-};
+  render() {
+    const { __ } = this.props;
+
+    return (
+      <SwitchWithRoutes routes={getRouteConfig({ __ })} />
+    );
+  }
+}
 
 export default withTranslator()(Routes);

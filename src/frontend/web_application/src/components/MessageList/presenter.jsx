@@ -7,6 +7,7 @@ import DayMessageList from './components/DayMessageList';
 import Message from './components/Message';
 import groupMessages from './services/groupMessages';
 import { isMessageFromUser } from '../../services/message';
+import { WithSettings } from '../../modules/settings';
 
 import './style.scss';
 
@@ -46,7 +47,7 @@ class MessageList extends Component {
     return onMessageReply({ message });
   };
 
-  renderDayGroups() {
+  renderDayGroups(settings) {
     const {
       messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply, onMessageCopyTo,
       onMessageEditTags, __, user,
@@ -61,6 +62,7 @@ class MessageList extends Component {
             <Message
               key={message.message_id}
               message={message}
+              settings={settings}
               isMessageFromUser={(user && isMessageFromUser(message, user)) || false}
               className="m-message-list__message"
               onMessageRead={onMessageRead}
@@ -77,29 +79,36 @@ class MessageList extends Component {
   }
 
   render() {
-    const { isFetching, loadMore, onDelete, replyForm, __ } = this.props;
+    const { messages, isFetching, loadMore, onDelete, replyForm, __ } = this.props;
 
     return (
-      <div className="m-message-list">
-        <MenuBar>
-          <Button className="m-message-list__action" onClick={this.handleReplyToLastMessage} icon="reply" responsive="icon-only" >{__('message-list.action.reply')}</Button>
-          {/*
-            <Button className="m-message-list__action" onClick={onForward} icon="share"
-            responsive="icon-only" >{__('message-list.action.copy-to')}</Button>
-          */}
-          <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >{__('message-list.action.delete')}</Button>
-          <Spinner isLoading={isFetching} className="m-message-list__spinner" />
-        </MenuBar>
-        <div className="m-message-list__load-more">
-          {loadMore}
+      <WithSettings render={settings => (
+        <div className="m-message-list">
+          <MenuBar>
+            <Button className="m-message-list__action" onClick={this.handleReplyToLastMessage} icon="reply" responsive="icon-only" >{__('message-list.action.reply')}</Button>
+            {/*
+              <Button className="m-message-list__action" onClick={onForward} icon="share"
+              responsive="icon-only" >{__('message-list.action.copy-to')}</Button>
+            */}
+            <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >{__('message-list.action.delete')}</Button>
+            <Spinner isLoading={isFetching} className="m-message-list__spinner" />
+          </MenuBar>
+          { ((messages.length > 0 || !isFetching) && settings) && (
+            <div>
+              <div className="m-message-list__load-more">
+                {loadMore}
+              </div>
+              <div className="m-message-list__list">
+                {this.renderDayGroups(settings)}
+              </div>
+              <div className="m-message-list__reply">
+                {replyForm}
+              </div>
+            </div>
+          )}
         </div>
-        <div className="m-message-list__list">
-          {this.renderDayGroups()}
-        </div>
-        <div className="m-message-list__reply">
-          {replyForm}
-        </div>
-      </div>
+      )}
+      />
     );
   }
 }
