@@ -18,7 +18,7 @@
     "contact.address_form.city.label": "Stadt",
     "contact.address_form.country.label": "Land",
     "contact.address_form.legend": "Postleitzahl",
-    "contact.address_form.postal_code.label": "Postleitzahl",
+    "contact.address_form.postal_code.label": "PLZ",
     "contact.address_form.region.label": "Region",
     "contact.address_form.select_country": "Land wählen",
     "contact.address_form.select_region": "Region wählen",
