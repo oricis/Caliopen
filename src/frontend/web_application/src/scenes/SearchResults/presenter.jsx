@@ -112,7 +112,6 @@ class SearchResults extends Component {
 
     return (
       <div>
-        <PageTitle />
         {messages && (
           <div className="s-search-results__label">
             {__('search-results.preview.nb-messages', { count: nbMessages, term })}
@@ -193,6 +192,7 @@ class SearchResults extends Component {
 
     return (
       <div className="s-search-results">
+        <PageTitle />
         <SearchResultsLayout
           term={term}
           searchResultsPreview={searchResultsPreview}
