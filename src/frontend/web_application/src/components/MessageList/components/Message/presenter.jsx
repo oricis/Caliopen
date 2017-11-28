@@ -11,6 +11,8 @@ import TextBlock from '../../../TextBlock';
 import MultidimensionalPi from '../../../MultidimensionalPi';
 import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
 import MessageActionsContainer from '../MessageActionsContainer';
+import { getAuthor } from '../../../../services/message';
+
 import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
@@ -27,10 +29,12 @@ class Message extends Component {
     onCopyTo: PropTypes.func.isRequired,
     onEditTags: PropTypes.func.isRequired,
     settings: PropTypes.shape({}).isRequired,
+    isMessageFromUser: PropTypes.bool,
     __: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
+    isMessageFromUser: false,
   }
 
   state = {
@@ -106,9 +110,9 @@ class Message extends Component {
   render() {
     const {
       message, settings: { default_locale: locale }, onDelete, onMessageUnread, onMessageRead,
-      onReply, onCopyTo, onEditTags, __,
+      onReply, onCopyTo, onEditTags, __, isMessageFromUser,
     } = this.props;
-    const author = message.participants.find(participant => participant.type === 'From');
+    const author = getAuthor(message);
     const typeTranslations = {
       email: __('message-list.message.protocol.email'),
     };
@@ -147,7 +151,7 @@ class Message extends Component {
             )}
             {message.date_insert &&
               <Moment className="m-message__date" format="LT" locale={locale}>
-                {message.date_insert}
+                {isMessageFromUser ? message.date : message.date_insert}
               </Moment> }
 
             <DropdownControl toggleId={this.dropdownId} className="m-message__actions-switcher" icon="ellipsis-v" />
