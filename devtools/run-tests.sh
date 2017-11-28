@@ -10,8 +10,8 @@ if [[ "${CURRENT_BRANCH}" == "master" ]]; then
     BACKEND_CHANGE="yes"
     FRONTEND_CHANGE="yes"
 else
-    BACKEND_CHANGE=`(cd $PROJECT_DIRECTORY && git diff-tree --no-commit-id --name-only -r HEAD..origin/$TARGET_BRANCH src/backend)`
-    FRONTEND_CHANGE=`(cd $PROJECT_DIRECTORY && git diff-tree --no-commit-id --name-only -r HEAD..origin/$TARGET_BRANCH src/frontend)`
+    BACKEND_CHANGE=`(cd $PROJECT_DIRECTORY && git diff-tree --no-commit-id --name-only -r HEAD..$TARGET_BRANCH -- src/backend)`
+    FRONTEND_CHANGE=`(cd $PROJECT_DIRECTORY && git diff-tree --no-commit-id --name-only -r HEAD..$TARGET_BRANCH -- src/frontend)`
 fi
 
 function do_backend_tests {
