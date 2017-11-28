@@ -25,8 +25,8 @@ class Timeline extends Component {
   };
 
   static defaultProps = {
-    user: null,
     messages: [],
+    user: undefined,
     isFetching: false,
     didInvalidate: false,
     hasMore: false,

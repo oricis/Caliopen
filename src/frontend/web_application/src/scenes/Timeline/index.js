@@ -7,14 +7,17 @@ import { requestMessages, loadMore, hasMore } from '../../store/modules/message'
 
 const timelineSelector = state => state.message.messagesCollections.timeline && state.message.messagesCollections.timeline['0'];
 const messagesSelector = state => state.message.messagesById;
+const userSelector = state => state.user;
+
 const mapStateToProps = createSelector(
-  [timelineSelector, messagesSelector],
-  (timeline, messagesById) => ({
+  [timelineSelector, messagesSelector, userSelector],
+  (timeline, messagesById, userState) => ({
     messages: timeline && timeline.messages.map(id => messagesById[id])
       .sort((a, b) => new Date(b.date_insert) - new Date(a.date_insert)),
     hasMore: timeline && hasMore(timeline),
     isFetching: timeline && timeline.isFetching,
     didInvalidate: timeline && timeline.didInvalidate,
+    user: userState.user,
   })
 );
 const mapDispatchToProps = dispatch => bindActionCreators({

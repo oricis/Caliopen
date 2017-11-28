@@ -9,7 +9,7 @@ import MessageItemContainer from '../MessageItemContainer';
 import Icon from '../../../../components/Icon';
 import TextBlock from '../../../../components/TextBlock';
 import Badge from '../../../../components/Badge';
-import { renderParticipant } from '../../../../services/message';
+import { renderParticipant, getAuthor, isMessageFromUser } from '../../../../services/message';
 
 import './style.scss';
 
@@ -17,14 +17,15 @@ class MessageItem extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     settings: PropTypes.shape({}).isRequired,
+    user: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
+    user: undefined,
   };
 
   renderAuthor() {
-    const { message: { participants } } = this.props;
-    const author = participants.find(participant => participant.type === 'From');
+    const author = getAuthor(this.props.message);
 
     return renderParticipant(author);
   }
@@ -41,7 +42,7 @@ class MessageItem extends PureComponent {
   }
 
   render() {
-    const { message, settings: { default_locale: locale }, __ } = this.props;
+    const { message, settings: { default_locale: locale }, user, __ } = this.props;
     const hash = message.is_draft ? 'reply' : message.message_id;
 
     return (
@@ -70,7 +71,7 @@ class MessageItem extends PureComponent {
           </div>
           <div className="s-message-item__col-dates">
             <Moment className="m-message__date" locale={locale} element={MessageDate}>
-              {message.date_insert}
+              {isMessageFromUser(message, user) ? message.date : message.date_insert}
             </Moment>
           </div>
         </Link>
