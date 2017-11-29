@@ -14,11 +14,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- Move activity spinner to the top right of contact page
+- Prevent double click on contact save
 - User's contact cannot be deleted anymore
 - The name of the Timeline tab is now "Messages" instead of "Discussions"
 
 ### Fixed
 
+- Notify when saving contact failed
+- Refresh contacts after a deletion
 - Do not close the dropdown when receiving new suggestions
 - Disable send message when already sent and add visual feedback (spinner)
 - Disable import contact button on uploading and add a spinner
