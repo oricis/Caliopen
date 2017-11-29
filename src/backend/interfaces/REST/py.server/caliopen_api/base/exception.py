@@ -34,22 +34,42 @@ class AuthenticationError(HTTPClientError):
 
     code: 401, title: Unauthorized
     """
+
+    def __init__(self, error=None):
+        if error:
+            self.message = error.message
+
     code = 401
     title = 'Authentication error'
     explanation = 'Wrong credentials (e.g., bad password or username)'
 
 
-class AuthorizationError(HTTPClientError):
-    code = 403
-    title = 'Forbidden'
-    explanation = 'Access was denied to this resource.'
+class AuthenticationError(HTTPClientError):
+    """
+    subclass of :class:`~HTTPClientError`
 
-    def __init__(self, detail=None, headers=None, comment=None,
-                 body_template=None, result=None, **kw):
-        HTTPClientError.__init__(self, detail=detail, headers=headers,
-                                 comment=comment, body_template=body_template,
-                                 **kw)
-        self.result = result
+    This indicates that the user authentication failed.
+
+    code: 401, title: Unauthorized
+    """
+
+    def __init__(self, error=None):
+        if error:
+            self.message = error.message
+
+    code = 401
+    title = 'Authentication error'
+    explanation = 'Wrong credentials (e.g., bad password or username)'
+
+
+class NotAcceptable(HTTPClientError):
+    code = 406
+    title = 'Not acceptable'
+    explanation = 'Server cannot fulfill the request with given payload'
+
+    def __init__(self, error=None):
+        if error:
+            self.message = error.message
 
 
 class ResourceNotFound(HTTPClientError):

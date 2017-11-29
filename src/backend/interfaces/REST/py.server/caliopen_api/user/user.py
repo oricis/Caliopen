@@ -12,7 +12,7 @@ from ..base.context import DefaultContext
 from .util import create_token
 
 from ..base import Api
-from ..base.exception import AuthenticationError
+from ..base.exception import AuthenticationError, NotAcceptable, Unprocessable
 
 from caliopen_main.user.core import User
 from caliopen_main.user.parameters import NewUser, NewRemoteIdentity, Settings
@@ -70,7 +70,7 @@ def no_such_user(request):
     """Validator that an user does not exist."""
     username = request.swagger_data['user']['username']
     if not User.is_username_available(username):
-        raise AuthenticationError('User already exist')
+        raise NotAcceptable(Exception('User already exist'))
 
 
 @resource(path='/users/{user_id}',
@@ -87,7 +87,11 @@ class UserAPI(Api):
         """Create a new user."""
         settings = Settings()
         settings.import_data(self.request.swagger_data['user']['settings'])
-        settings.validate()
+        try:
+            settings.validate()
+        except Exception as exc:
+            raise Unprocessable(exc)
+
         param = NewUser({'name': self.request.swagger_data['user']['username'],
                          'password': self.request.swagger_data['user'][
                              'password'],
@@ -110,7 +114,7 @@ class UserAPI(Api):
         try:
             user = User.create(param)
         except Exception as exc:
-            raise AuthenticationError(exc.message)  # why this class of error ?
+            raise NotAcceptable(exc)
 
         log.info('Created user {} with name {}'.
                  format(user.user_id, user.name))
