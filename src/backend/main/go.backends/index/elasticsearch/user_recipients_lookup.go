@@ -37,7 +37,6 @@ type (
 func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) (suggests []RecipientSuggestion, err error) {
 	suggests = []RecipientSuggestion{}
 	q_string := query_string
-	user_id = "7d67bb5e-6683-4528-9a5c-bb292210a0ef_v10"
 	// build nested queries for participants lookup
 	queries := []elastic.Query{
 		elastic.NewPrefixQuery("participants.label", q_string),
@@ -86,6 +85,7 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 	/** end of log **/
 	result, err := search.Query(main_query).Do(context.TODO())
 	if err != nil {
+		log.WithError(err).Warn("[Elasticsearch] failed to suggest participant.")
 		return
 	}
 	participants_suggests := make(map[string]RecipientSuggestion)
@@ -94,7 +94,7 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 		case MessageIndexType:
 			suggest, e := extractParticipantInfos(hit)
 			if e != nil {
-				log.WithError(e).Warnf("failed to extract message participants")
+				log.WithError(e).Warnf("[Elasticsearch] failed to extract message participants")
 			}
 			//deduplicate
 			if _, ok := participants_suggests[suggest.Address]; !ok {
@@ -104,7 +104,7 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 		case ContactIndexType:
 			suggest, e := extractContactInfos(hit)
 			if e != nil {
-				log.WithError(e).Warnf("failed to extract contact info")
+				log.WithError(e).Warnf("[Elasticsearch] failed to extract contact info")
 			}
 			suggests = append(suggests, suggest)
 		default:
