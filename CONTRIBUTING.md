@@ -23,7 +23,7 @@ _(This code of conduct may evolve)_.
 * [@iamdey](https://github.com/iamdey)
 * [@sapiens-sapide](https://github.com/sapiens-sapide)
 * [@myleneb](https://github.com/myleneb)
-* [@lisonferez](https://github.com/lisonferez)
+* [@judbd](https://github.com/orgs/CaliOpen/people/judbd)
 
 ## Contributors
 
@@ -46,3 +46,4 @@ _(People involved in the project)_
 * [@Mindiell](https://github.com/Mindiell)
 * [@goofy-bz](https://github.com/goofy-bz)
 * [@josepot](https://github.com/josepot)
+* [@lisonferez](https://github.com/lisonferez)
