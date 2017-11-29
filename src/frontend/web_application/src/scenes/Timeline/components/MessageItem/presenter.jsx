@@ -9,7 +9,7 @@ import MessageItemContainer from '../MessageItemContainer';
 import Icon from '../../../../components/Icon';
 import TextBlock from '../../../../components/TextBlock';
 import Badge from '../../../../components/Badge';
-import { renderParticipant, getAuthor, isMessageFromUser } from '../../../../services/message';
+import { renderParticipant, getAuthor } from '../../../../services/message';
 
 import './style.scss';
 
@@ -17,17 +17,30 @@ class MessageItem extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     settings: PropTypes.shape({}).isRequired,
-    user: PropTypes.shape({}),
+    isMessageFromUser: PropTypes.bool.isRequired,
     __: PropTypes.func.isRequired,
-  };
-  static defaultProps = {
-    user: undefined,
   };
 
   renderAuthor() {
     const author = getAuthor(this.props.message);
 
     return renderParticipant(author);
+  }
+
+  renderDate = () => {
+    const { message, settings: { default_locale: locale }, isMessageFromUser } = this.props;
+    const hasDate = (isMessageFromUser && message.date)
+      || (!isMessageFromUser && message.date_insert);
+
+    return (
+      <div className="s-message-item__col-dates">
+        {hasDate &&
+          <Moment className="m-message__date" locale={locale} element={MessageDate}>
+            {isMessageFromUser ? message.date : message.date_insert}
+          </Moment>
+        }
+      </div>
+    );
   }
 
   renderTags() {
@@ -42,7 +55,7 @@ class MessageItem extends PureComponent {
   }
 
   render() {
-    const { message, settings: { default_locale: locale }, user, __ } = this.props;
+    const { message, __ } = this.props;
     const hash = message.is_draft ? 'reply' : message.message_id;
 
     return (
@@ -69,11 +82,7 @@ class MessageItem extends PureComponent {
           <div className="s-message-item__col-file">
             { message.attachments && <Icon type="paperclip" /> }
           </div>
-          <div className="s-message-item__col-dates">
-            <Moment className="m-message__date" locale={locale} element={MessageDate}>
-              {isMessageFromUser(message, user) ? message.date : message.date_insert}
-            </Moment>
-          </div>
+          {this.renderDate()}
         </Link>
       </MessageItemContainer>
     );

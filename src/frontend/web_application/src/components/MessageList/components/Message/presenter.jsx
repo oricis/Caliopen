@@ -74,6 +74,23 @@ class Message extends Component {
     }));
   }
 
+  renderDate = () => {
+    const { message, settings: { default_locale: locale }, isMessageFromUser } = this.props;
+    const hasDate = (isMessageFromUser && message.date)
+      || (!isMessageFromUser && message.date_insert);
+
+    return (
+      <div className="m-message__date">
+        {hasDate &&
+          <Moment format="LT" locale={locale}>
+            {isMessageFromUser ? message.date : message.date_insert}
+          </Moment>
+        }
+      </div>
+
+    );
+  }
+
   renderMessageContent = () => {
     const { message } = this.props;
 
@@ -109,8 +126,8 @@ class Message extends Component {
 
   render() {
     const {
-      message, settings: { default_locale: locale }, onDelete, onMessageUnread, onMessageRead,
-      onReply, onCopyTo, onEditTags, __, isMessageFromUser,
+      message, onDelete, onMessageUnread, onMessageRead,
+      onReply, onCopyTo, onEditTags, __,
     } = this.props;
     const author = getAuthor(message);
     const typeTranslations = {
@@ -149,10 +166,7 @@ class Message extends Component {
                 <Icon type={message.type} className="m-message__type-icon" spaced />
               </div>
             )}
-            {message.date_insert &&
-              <Moment className="m-message__date" format="LT" locale={locale}>
-                {isMessageFromUser ? message.date : message.date_insert}
-              </Moment> }
+            {this.renderDate()}
 
             <DropdownControl toggleId={this.dropdownId} className="m-message__actions-switcher" icon="ellipsis-v" />
 

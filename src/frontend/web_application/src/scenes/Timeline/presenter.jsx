@@ -8,6 +8,8 @@ import BlockList from '../../components/BlockList';
 import InfiniteScroll from '../../components/InfiniteScroll';
 import MenuBar from '../../components/MenuBar';
 import MessageItem from './components/MessageItem';
+import { isMessageFromUser } from '../../services/message';
+
 import './style.scss';
 
 const LOAD_MORE_THROTTLE = 1000;
@@ -66,8 +68,12 @@ class Timeline extends Component {
         </MenuBar>
         <InfiniteScroll onReachBottom={this.loadMore}>
           <BlockList className="s-timeline__list">
-            {messages.map(item => (
-              <MessageItem key={item.message_id} user={user} message={item} />
+            {messages.map(message => (
+              <MessageItem
+                key={message.message_id}
+                isMessageFromUser={user && isMessageFromUser(message, user)}
+                message={message}
+              />
             ))}
           </BlockList>
         </InfiniteScroll>

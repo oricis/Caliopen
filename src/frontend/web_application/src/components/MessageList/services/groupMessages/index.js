@@ -1,15 +1,14 @@
-
 import { isMessageFromUser } from '../../../../services/message';
 
 const groupMessages = (messages, user) => [...messages]
   .sort((a, b) => Date.parse(
-    isMessageFromUser(a, user) ? a.date : a.date_insert
+    user && isMessageFromUser(a, user) ? a.date : a.date_insert
   ) - Date.parse(
-    isMessageFromUser(b, user) ? b.date : b.date_insert
+    user && isMessageFromUser(b, user) ? b.date : b.date_insert
   ))
   .reduce((acc, message) => {
     const datetime = new Date(
-    isMessageFromUser(message, user) ? message.date : message.date_insert);
+    user && isMessageFromUser(message, user) ? message.date : message.date_insert);
     const oneDayAgo = new Date();
     oneDayAgo.setHours(oneDayAgo.getHours() - 24);
     let date = new Date(Date.UTC(

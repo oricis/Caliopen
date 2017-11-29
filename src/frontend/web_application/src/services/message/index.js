@@ -14,8 +14,8 @@ export const getAuthor = message => message.participants && message.participants
 
 export const isMessageFromUser = (message, user) => {
   const author = getAuthor(message);
-  const authorId = author && author.contact_ids[0];
-  const userId = user && user.contact.contact_id;
+  const userContactId = user.contact.contact_id;
+  const isFromUser = authorContactId => authorContactId === userContactId;
 
-  return userId && authorId && userId === authorId;
+  return author.contact_ids.some(isFromUser);
 };

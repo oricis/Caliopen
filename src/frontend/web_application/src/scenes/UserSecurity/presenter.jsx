@@ -13,9 +13,12 @@ class UserSecurity extends Component {
   static propTypes = {
     __: PropTypes.func.isRequired,
     requestUser: PropTypes.func.isRequired,
-    user: PropTypes.shape({}).isRequired,
+    user: PropTypes.shape({}),
     notifySuccess: PropTypes.func.isRequired,
     notifyError: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    user: undefined,
   };
 
   state = {
