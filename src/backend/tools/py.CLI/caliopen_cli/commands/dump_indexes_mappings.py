@@ -2,7 +2,7 @@ import json
 from caliopen_storage.helpers.json import JSONEncoder
 
 
-def dump_indexes(output_path, **kwargs):
+def dump_indexes(**kwargs):
     # Discover base core classes
     from caliopen_main.user.core import User
     from caliopen_main.contact.objects.contact import Contact
@@ -18,7 +18,7 @@ def dump_indexes(output_path, **kwargs):
             kls = core_registry.get(obj)
             if not kls:
                 raise Exception('core class %s not found in registry' % obj)
-            output_file = '%s/%s.json' % (output_path, obj.lower())
+            output_file = '%s/%s.json' % (kwargs["output_path"], obj.lower())
             dump_index_mapping(kls._index_class, output_file)
 
 
