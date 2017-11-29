@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { reduxForm, formValues } from 'redux-form';
 import { withTranslator } from '@gandi/react-translate';
 import { push } from 'react-router-redux';
-import { requestContact, updateContact, createContact, deleteContact } from '../../store/modules/contact';
-import { removeTab } from '../../store/modules/tab';
-import fetchLocation from '../../services/api-location';
+import { requestContact, updateContact, createContact, deleteContact, invalidate as invalidateContacts } from '../../store/modules/contact';
+import { withSettings } from '../../hoc/settings';
+import { withNotification } from '../../hoc/notification';
+import { removeTab, updateTab } from '../../store/modules/tab';
 import { getNewContact } from '../../services/contact';
 import { withCurrentTab } from '../../hoc/tab';
 import { settingsSelector } from '../../store/selectors/settings';
@@ -31,33 +32,18 @@ const mapStateToProps = createSelector(
   })
 );
 
-
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({
     requestContact,
     updateContact,
     createContact,
     deleteContact,
+    invalidateContacts,
     removeTab,
+    updateTab,
     push,
   }, dispatch),
-  onSubmit: async (values, disp, props) => {
-    // XXX: refactor me in middleware ?
-    if (props.contactId) {
-      await dispatch(updateContact({ contact: values, original: props.contact }));
-
-      return dispatch(requestContact({ contactId: props.contact.contact_id }));
-    }
-
-    const resultAction = await dispatch(createContact({ contact: values }));
-    const { location } = resultAction.payload.data;
-    const { data: contact } = await fetchLocation(location);
-
-    return Promise.all([
-      dispatch(push(`/contacts/${contact.contact_id}`)),
-      dispatch(removeTab(props.currentTab)),
-    ]);
-  },
+  onSubmit: values => Promise.resolve(values),
 });
 
 export default compose(
@@ -68,5 +54,7 @@ export default compose(
   }),
   formValues({ birthday: 'info.birthday' }),
   withTranslator(),
-  withCurrentTab()
+  withCurrentTab(),
+  withSettings(),
+  withNotification(),
 )(Presenter);
