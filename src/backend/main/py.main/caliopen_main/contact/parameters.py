@@ -163,7 +163,7 @@ class NewPhone(Model):
 
     is_primary = BooleanType(default=False)
     number = StringType(required=True)
-    normalized_number = PhoneNumberType()
+    normalized_number = StringType()
     type = StringType(choices=PHONE_TYPES, default='other')
     uri = StringType()
 
