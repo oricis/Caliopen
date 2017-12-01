@@ -257,6 +257,16 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 			}
 		}
 	}
+
+	if tags, ok := input["tags"]; ok && tags != nil {
+		for _, tag := range tags.([]interface{}) {
+			T := new(Tag)
+			if err := T.UnmarshalMap(tag.(map[string]interface{})); err == nil {
+				msg.Tags = append(msg.Tags, *T)
+			}
+		}
+	}
+
 	msg.Type, _ = input["type"].(string)
 	if user_id, ok := input["user_id"].(string); ok {
 		if id, err := uuid.FromString(user_id); err == nil {
@@ -357,7 +367,28 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 		msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
 	}
 	msg.Subject, _ = input["subject"].(string)
-	//TODO: tags
+
+	if tags, ok := input["tags"]; ok && tags != nil {
+		for _, tag := range tags.([]map[string]interface{}) {
+			t := Tag{}
+			t.Date_insert, _ = tag["date_insert"].(time.Time)
+			il, _ := tag["importance_level"].(int)
+			t.Importance_level = int32(il)
+			t.Name, _ = tag["name"].(string)
+			if tag_id, ok := tag["tag_id"].(gocql.UUID); ok {
+				t.Tag_id.UnmarshalBinary(tag_id.Bytes())
+			}
+			tp, _ := tag["type"].(string)
+			t.Type = TagType(tp)
+
+			if user_id, ok := tag["user_id"].(gocql.UUID); ok {
+				t.User_id.UnmarshalBinary(user_id.Bytes())
+			}
+
+			msg.Tags = append(msg.Tags, t)
+		}
+	}
+
 	msg.Type, _ = input["type"].(string)
 	if user_id, ok := input["user_id"].(gocql.UUID); ok {
 		msg.User_id.UnmarshalBinary(user_id.Bytes())
