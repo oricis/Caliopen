@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Add take a tour for current features
+
 ### Changed
 
 - Move activity spinner to the top right of contact page
