@@ -6,6 +6,7 @@ import Spinner from '../Spinner';
 import DayMessageList from './components/DayMessageList';
 import Message from './components/Message';
 import groupMessages from './services/groupMessages';
+import { isMessageFromUser } from '../../services/message';
 
 import './style.scss';
 
@@ -23,6 +24,7 @@ class MessageList extends Component {
     onDelete: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     replyForm: PropTypes.node.isRequired,
+    user: PropTypes.shape({}),
     __: PropTypes.func.isRequired,
   };
 
@@ -30,6 +32,7 @@ class MessageList extends Component {
     isFetching: false,
     loadMore: null,
     onMessageView: null,
+    user: undefined,
   };
 
   state = {
@@ -46,9 +49,10 @@ class MessageList extends Component {
   renderDayGroups() {
     const {
       messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply, onMessageCopyTo,
-      onMessageEditTags, __,
+      onMessageEditTags, __, user,
     } = this.props;
-    const messagesGroupedByday = groupMessages(messages);
+
+    const messagesGroupedByday = groupMessages(messages, user);
 
     return Object.keys(messagesGroupedByday)
       .map(date => (
@@ -57,6 +61,7 @@ class MessageList extends Component {
             <Message
               key={message.message_id}
               message={message}
+              isMessageFromUser={(user && isMessageFromUser(message, user)) || false}
               className="m-message-list__message"
               onMessageRead={onMessageRead}
               onMessageUnread={onMessageUnread}
