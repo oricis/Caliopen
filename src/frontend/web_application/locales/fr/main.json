@@ -358,7 +358,7 @@
     "take-a-tour.current-step": "Visite guidée (%(current)s de %(total)s)",
     "take-a-tour.step.call-to-action.content": "<p>Créer à la volée un nouveau message ou un nouveau contact. </p><p>Tout ce dont vous avez besoin pour commencer est ici.</p>",
     "take-a-tour.step.call-to-action.title": "Créer rapidement",
-    "take-a-tour.step.importance-slider.content": "<p>Ce curseur vous aidera à masquer ou à afficher certains messages en fonction de leur niveau d'importance.</p><p>Diminuer le curseur du haut pour afficher uniquement les spams ou monter celui du bas pour n'afficher que les messages directs.</p>",
+    "take-a-tour.step.importance-slider.content": "<p>Ces curseurs vous aideront à masquer ou à afficher certains messages en fonction de leur niveau d'importance.</p><p>Abaisser le curseur du haut pour afficher uniquement les spams ou monter celui du bas pour n'afficher que les messages les plus importants.</p>",
     "take-a-tour.step.importance-slider.title": "Niveau d'importance",
     "take-a-tour.step.intro.content": "<p>Avec Caliopen, vous pouvez accéder à tous vos messages privés (Email, et plus à venir) via un seul login. </p><p>Maintenant, jetez un coup d'oeil à nos principales fonctionnalités, telles que la gestion unifiée des messages, la recherche intuitive et plus encore !</p>",
     "take-a-tour.step.intro.title": "Bienvenue!",
