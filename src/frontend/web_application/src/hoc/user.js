@@ -6,7 +6,6 @@ const mapStateToProps = createSelector(
   [UserSelector],
   userState => ({
     user: userState.user,
-    isFetching: userState.isFetching,
   })
 );
 
