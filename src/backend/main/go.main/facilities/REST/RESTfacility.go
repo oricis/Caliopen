@@ -40,6 +40,7 @@ type (
 		CreateTag(tag *Tag) error
 		RetrieveTag(user_id, tag_id string) (tag Tag, err error)
 		UpdateTag(tag *Tag) error
+		PatchTag(patch []byte, user_id, tag_id string) error
 		DeleteTag(user_id, tag_id string) error
 		//search
 		Search(IndexSearch) (result *IndexResult, err error)

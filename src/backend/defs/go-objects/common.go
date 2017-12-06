@@ -8,8 +8,8 @@ import "gopkg.in/oleiade/reflections.v1"
 
 // this interface is mainly a collection of helpers to facilitate the job of reflection
 type CaliopenObject interface {
-	// JsonTags returns a map[string]string of the json tags found for each object property
-	// key is the tag name, value is the corresponding property name
+	// JsonTags returns a map[string]string of the "json" tags found for each object property
+	// map key is the tag value (json:"xxxx"), mapping to the corresponding struct property name
 	JsonTags() map[string]string
 	// NewInstance returns the pointer returned by the new() builtin applied to the underlying object
 	NewEmpty() interface{}

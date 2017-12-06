@@ -2,6 +2,7 @@ package REST
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	"github.com/pkg/errors"
 )
 
@@ -17,6 +18,25 @@ func (rest *RESTfacility) CreateTag(tag *Tag) error {
 
 func (rest *RESTfacility) RetrieveTag(user_id, tag_id string) (tag Tag, err error) {
 	return rest.store.RetrieveTag(user_id, tag_id)
+}
+
+// PatchTag is a shortcut for REST api to call :
+// - UpdateWithPatch () to retrieve the tag and update it
+// - then UpdateTag() to save updated tag to stores if everything went good.
+func (rest *RESTfacility) PatchTag(patch []byte, user_id, tag_id string) error {
+
+	current_tag, err := rest.RetrieveTag(user_id, tag_id)
+	if err != nil {
+		return err
+	}
+
+	err = helpers.UpdateWithPatch(&current_tag, patch, UserActor)
+	if err != nil {
+		return err
+	}
+
+	return rest.UpdateTag(&current_tag)
+
 }
 
 func (rest *RESTfacility) UpdateTag(tag *Tag) error {

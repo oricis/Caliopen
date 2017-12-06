@@ -13,13 +13,16 @@ import (
 	"time"
 )
 
+// "patch" tag indicates that the property could be modified by the specified actor.
+// for example :
+// If the "patch" tag is missing or not set to "user", property cannot be modified directly by an "UserInitiator" with a call to a PATCH method.
 type Tag struct {
-	Date_insert      time.Time `cql:"date_insert"             json:"date_insert"            formatter:"RFC3339Milli"`
-	Importance_level int32     `cql:"importance_level"        json:"importance_level"`
-	Name             string    `cql:"name"                    json:"name"`
-	Tag_id           UUID      `cql:"tag_id"                  json:"tag_id"                 formatter:"rfc4122"`
-	Type             TagType   `cql:"type"                    json:"type"`
-	User_id          UUID      `cql:"user_id"                 json:"user_id"      formatter:"rfc4122"`
+	Date_insert      time.Time `cql:"date_insert" json:"date_insert" formatter:"RFC3339Milli"`
+	Importance_level int32     `cql:"importance_level" json:"importance_level"`
+	Name             string    `cql:"name" json:"name" patch:"user"`
+	Tag_id           UUID      `cql:"tag_id" json:"tag_id" formatter:"rfc4122"`
+	Type             TagType   `cql:"type" json:"type"`
+	User_id          UUID      `cql:"user_id" json:"user_id" formatter:"rfc4122"`
 }
 
 type TagType string
@@ -75,24 +78,49 @@ func (tag Tag) MarshalJSON() ([]byte, error) {
 	return jsonBuf.Bytes(), nil
 }
 
+// UnmarshalMap is used when unmarshalling a JSON to a Tag
+// it knows how to convert from json types to our custom types or nested struct.
+// it lazily ignores missing fields, or unknown fields found in input map.
 func (tag *Tag) UnmarshalMap(input map[string]interface{}) error {
 	if date, ok := input["date_insert"]; ok {
 		tag.Date_insert, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
-	il, _ := input["importance_level"].(float64)
-	tag.Importance_level = int32(il)
-	tag.Name, _ = input["name"].(string)
+	if il, ok := input["importance_level"].(float64); ok {
+		tag.Importance_level = int32(il)
+	}
+
+	if name, ok := input["name"].(string); ok {
+		tag.Name = name
+	}
 	if id, ok := input["tag_id"].(string); ok {
 		if id, err := uuid.FromString(id); err == nil {
 			tag.Tag_id.UnmarshalBinary(id.Bytes())
 		}
 	}
-	tt, _ := input["type"].(string)
-	tag.Type = TagType(tt)
+	if tt, ok := input["type"].(string); ok {
+		tag.Type = TagType(tt)
+	}
 	if id, ok := input["user_id"].(string); ok {
 		if id, err := uuid.FromString(id); err == nil {
 			tag.User_id.UnmarshalBinary(id.Bytes())
 		}
 	}
 	return nil //TODO: errors handling
+}
+
+func (tag *Tag) UnmarshalJSON(b []byte) error {
+	input := map[string]interface{}{}
+	if err := json.Unmarshal(b, &input); err != nil {
+		return err
+	}
+	return tag.UnmarshalMap(input)
+}
+
+// implementation of the CaliopenObject interface
+func (tag *Tag) JsonTags() (tags map[string]string) {
+	return jsonTags(tag)
+}
+
+func (tag *Tag) NewEmpty() interface{} {
+	return new(Tag)
 }
