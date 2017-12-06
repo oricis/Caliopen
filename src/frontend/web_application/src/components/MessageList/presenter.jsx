@@ -61,7 +61,7 @@ class MessageList extends Component {
             <Message
               key={message.message_id}
               message={message}
-              isMessageFromUser={user && isMessageFromUser(message, user)}
+              isMessageFromUser={(user && isMessageFromUser(message, user)) || false}
               className="m-message-list__message"
               onMessageRead={onMessageRead}
               onMessageUnread={onMessageUnread}

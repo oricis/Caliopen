@@ -71,7 +71,7 @@ class Timeline extends Component {
             {messages.map(message => (
               <MessageItem
                 key={message.message_id}
-                isMessageFromUser={user && isMessageFromUser(message, user)}
+                isMessageFromUser={(user && isMessageFromUser(message, user)) || false}
                 message={message}
               />
             ))}
