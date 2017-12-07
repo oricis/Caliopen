@@ -12,11 +12,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- Do not save the draft until body or participants is filled
 - Move activity spinner to the top right of contact page
 - Prevent double click on contact save
 
 ### Fixed
 
+- Show correctly the message in reply on the current draft
 - Notify when saving contact failed
 - Refresh contacts after a deletion
 
