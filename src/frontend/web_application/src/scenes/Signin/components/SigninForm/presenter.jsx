@@ -37,8 +37,23 @@ class SigninForm extends Component {
     this.setState(generateStateFromProps(this.props));
   }
 
+  componentDidMount() {
+    setTimeout(this.setValues(), 1);
+  }
+
   componentWillReceiveProps(newProps) {
     this.setState(generateStateFromProps(newProps));
+  }
+
+  setValues = () => {
+    const password = this.passwordInputRef.value;
+    const username = this.usernameInputRef.value;
+    this.setState(prevState => ({
+      formValues: {
+        password: prevState.password !== password && password,
+        username: prevState.username !== password && username,
+      },
+    }));
   }
 
   handleInputChange = (event) => {
@@ -87,6 +102,7 @@ class SigninForm extends Component {
                   errors={errors.username}
                   onChange={this.handleInputChange}
                   showLabelforSr
+                  inputRef={(input) => { this.usernameInputRef = input; }}
                 />
               </FormColumn>
               <FormColumn rightSpace={false} bottomSpace>
@@ -100,6 +116,7 @@ class SigninForm extends Component {
                   errors={errors.password}
                   onChange={this.handleInputChange}
                   showLabelforSr
+                  inputRef={(input) => { this.passwordInputRef = input; }}
                 />
               </FormColumn>
             </FormRow>

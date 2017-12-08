@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Show correctly the message in reply on the current draft
 - Notify when saving contact failed
 - Refresh contacts after a deletion
+- Get browsers' autofills on SigninForm
 
 ## [0.6.0] 2017-11-24
 

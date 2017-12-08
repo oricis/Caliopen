@@ -59,6 +59,7 @@ TextFieldGroup.propTypes = {
   expanded: PropTypes.bool,
   className: PropTypes.string,
   display: PropTypes.oneOf(['inline', 'block']),
+  inputRef: PropTypes.func,
 };
 TextFieldGroup.defaultProps = {
   id: undefined,
@@ -67,6 +68,7 @@ TextFieldGroup.defaultProps = {
   expanded: true,
   className: undefined,
   display: 'block',
+  inputRef: null,
 };
 
 export default TextFieldGroup;
