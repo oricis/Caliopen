@@ -194,6 +194,8 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	msg.POST("/:message_id/attachments", messages.UploadAttachment)
 	msg.DELETE("/:message_id/attachments/:attachment_id", messages.DeleteAttachment)
 	msg.GET("/:message_id/attachments/:attachment_id", messages.DownloadAttachment)
+	//tags
+	msg.PATCH("/:message_id/tags", tags.PatchResourceWithTag)
 
 	/** participants API **/
 	parts := api.Group("/participants", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
@@ -202,6 +204,7 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	/** contacts API **/
 	cts := api.Group("/contacts", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	cts.GET("/:contact_id/identities", contacts.GetIdentities)
+	cts.PATCH("/:contact_id/tags", tags.PatchResourceWithTag)
 
 	/** tags API **/
 	tag := api.Group(http_middleware.TagsRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))

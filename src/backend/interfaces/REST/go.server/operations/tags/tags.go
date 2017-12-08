@@ -12,6 +12,7 @@ import (
 	"github.com/satori/go.uuid"
 	"gopkg.in/gin-gonic/gin.v1"
 	"gopkg.in/gin-gonic/gin.v1/binding"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 )
@@ -116,20 +117,6 @@ func PatchTag(ctx *gin.Context) {
 		}
 	}
 
-	if id, ok := ctx.Get("user_id"); !ok {
-		e := swgErr.New(http.StatusUnprocessableEntity, "user_id is missing")
-		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-		ctx.Abort()
-		return
-	} else {
-		if user_id, err = operations.NormalizeUUIDstring(id.(string)); err != nil {
-			e := swgErr.New(http.StatusUnprocessableEntity, "user_id is invalid")
-			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-			ctx.Abort()
-			return
-		}
-	}
-
 	tag_id, err = operations.NormalizeUUIDstring(ctx.Param("tag_id"))
 	if err != nil || tag_id == "" {
 		e := swgErr.New(http.StatusUnprocessableEntity, "tag_id is invalid or missing")
@@ -139,7 +126,7 @@ func PatchTag(ctx *gin.Context) {
 	}
 
 	var patch []byte
-	_, err = ctx.Request.Body.Read(patch)
+	patch, err = ioutil.ReadAll(ctx.Request.Body)
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
@@ -182,4 +169,9 @@ func DeleteTag(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	}
+}
+
+// PatchResourceWithTag apply the payload (a PATCH tag json) to a resource to update its tags
+func PatchResourceWithTag(ctx *gin.Context) {
+	ctx.AbortWithStatus(http.StatusNotImplemented)
 }
