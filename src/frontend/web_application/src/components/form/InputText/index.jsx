@@ -19,7 +19,7 @@ class InputText extends PureComponent {
     bottomSpace: false,
     hasError: false,
     className: null,
-    inputRef: null,
+    inputRef: undefined,
   };
 
   state = {}

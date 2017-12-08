@@ -48,12 +48,12 @@ class SigninForm extends Component {
   setValues = () => {
     const password = this.passwordInputRef.value;
     const username = this.usernameInputRef.value;
-    this.setState(prevState => ({
+    this.setState({
       formValues: {
-        password: prevState.password !== password && password,
-        username: prevState.username !== password && username,
+        password,
+        username,
       },
-    }));
+    });
   }
 
   handleInputChange = (event) => {
