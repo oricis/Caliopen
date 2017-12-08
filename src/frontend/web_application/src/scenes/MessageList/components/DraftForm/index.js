@@ -27,9 +27,9 @@ const mapStateToProps = createSelector(
     const message = messages && messages.find(item => item.is_draft === true);
     const sentMessages = messages.filter(item => item.is_draft !== true);
     const lastMessage = getLastMessage(sentMessages);
-    const parentMessage = message && sentMessages
-      .find(item => item.message_id === message.parent_id && item !== lastMessage);
     const draft = drafts[internalId] || message;
+    const parentMessage = draft && sentMessages
+      .find(item => item.message_id === draft.parent_id && item !== lastMessage);
 
     return {
       allowEditRecipients: messages.length === 1 && message && true,
