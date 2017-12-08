@@ -37,7 +37,7 @@ type Message struct {
 	PrivacyIndex        *PrivacyIndex      `cql:"pi"                       json:"pi"`
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
 	Subject             string             `cql:"subject"                  json:"subject"          `
-	Tags                []Tag              `cql:"tags"                     json:"tags"             `
+	Tags                []UUID             `cql:"tags"                     json:"tags"             `
 	Type                string             `cql:"type"                     json:"type"             `
 	User_id             UUID               `cql:"user_id"                  json:"user_id"                  elastic:"omit"      formatter:"rfc4122"`
 }
@@ -249,20 +249,14 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	msg.Subject, _ = input["subject"].(string)
-	if tags, ok := input["tags"]; ok && tags != nil {
-		for _, tag := range tags.([]interface{}) {
-			T := new(Tag)
-			if err := T.UnmarshalMap(tag.(map[string]interface{})); err == nil {
-				msg.Tags = append(msg.Tags, *T)
-			}
-		}
-	}
 
 	if tags, ok := input["tags"]; ok && tags != nil {
 		for _, tag := range tags.([]interface{}) {
-			T := new(Tag)
-			if err := T.UnmarshalMap(tag.(map[string]interface{})); err == nil {
-				msg.Tags = append(msg.Tags, *T)
+			id, err := uuid.FromString(tag.(string))
+			if err == nil {
+				var t UUID
+				t.UnmarshalBinary(id.Bytes())
+				msg.Tags = append(msg.Tags, t)
 			}
 		}
 	}
@@ -369,22 +363,9 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	msg.Subject, _ = input["subject"].(string)
 
 	if tags, ok := input["tags"]; ok && tags != nil {
-		for _, tag := range tags.([]map[string]interface{}) {
-			t := Tag{}
-			t.Date_insert, _ = tag["date_insert"].(time.Time)
-			il, _ := tag["importance_level"].(int)
-			t.Importance_level = int32(il)
-			t.Name, _ = tag["name"].(string)
-			if tag_id, ok := tag["tag_id"].(gocql.UUID); ok {
-				t.Tag_id.UnmarshalBinary(tag_id.Bytes())
-			}
-			tp, _ := tag["type"].(string)
-			t.Type = TagType(tp)
-
-			if user_id, ok := tag["user_id"].(gocql.UUID); ok {
-				t.User_id.UnmarshalBinary(user_id.Bytes())
-			}
-
+		for _, tag := range tags.([]gocql.UUID) {
+			var t UUID
+			t.UnmarshalBinary(tag.Bytes())
 			msg.Tags = append(msg.Tags, t)
 		}
 	}
@@ -411,6 +392,6 @@ func (msg *Message) NewEmpty() interface{} {
 	m.Participants = []Participant{}
 	m.Privacy_features = make(PrivacyFeatures)
 	m.PrivacyIndex = &PrivacyIndex{}
-	m.Tags = []Tag{}
+	m.Tags = []UUID{}
 	return m
 }

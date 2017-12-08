@@ -73,7 +73,8 @@ class Draft(NewInboundMessage):
                 self.subject = "Re: " + p.sub('', last_message.subject).strip()
 
                 # TODO: prevent modification of protected attributes
-                # below attributes should be protected by Message class
+                # below attributes should not be editable by patch:
+                # - tags
         else:
             # fill <from> field consistently
             # based on current user's selected identity

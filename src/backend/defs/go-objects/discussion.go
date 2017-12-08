@@ -13,7 +13,7 @@ type Discussion struct {
 	Discussion_id    UUID          `cql:"discussion_id"            json:"discussion_id"            formatter:"rfc4122"`
 	Importance_level int32         `cql:"importance_level"         json:"importance_level"`
 	Participants     []Participant `cql:"participants"             json:"participants"`
-	Tags             []string      `cql:"tags"                     json:"tags"`
+	Tags             []UUID        `cql:"tags"                     json:"tags"`
 	Excerpt          string        `cql:"excerpt"                  json:"excerpt"`
 	Total_count      int32         `cql:"total_count"              json:"total_count"`
 	Unread_count     int32         `cql:"unread_count"             json:"unread_count"`

@@ -40,7 +40,7 @@ class IndexedMessage(BaseIndexDocument):
     pi = Nested(doc_class=PIIndexModel)
     raw_msg_id = Keyword()
     subject = Text()
-    tags = Nested(doc_class=IndexedResourceTag)
+    tags = Keyword(multi=True)
     type = Keyword()
 
     @property
@@ -130,15 +130,10 @@ class IndexedMessage(BaseIndexDocument):
         m.field('subject', 'text', fields={
             "normalized": {"type": "text", "analyzer": "text_analyzer"}
         })
-        # tags
-        tags = Nested('tags', doc_class=IndexedResourceTag, include_in_all=True)
-        tags.field("date_insert", Date())
-        tags.field("importance_level", Integer())
-        tags.field("name", Keyword())
-        tags.field("tag_id", Keyword())
-        tags.field("type", Boolean())
-        m.field("tags", tags)
+        m.field('tags', Keyword(multi=True))
 
+        m.field('subject', 'text')
+        m.field('tags', Keyword(multi=True))
         m.field('type', 'keyword')
 
         return m

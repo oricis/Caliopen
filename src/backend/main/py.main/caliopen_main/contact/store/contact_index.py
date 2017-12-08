@@ -9,8 +9,6 @@ from elasticsearch_dsl import Mapping, Nested, Text, Keyword, Date, Boolean, \
 from caliopen_storage.store.model import BaseIndexDocument
 from caliopen_main.pi.objects import PIIndexModel
 
-from caliopen_main.common.store.tag import IndexedResourceTag
-
 log = logging.getLogger(__name__)
 
 
@@ -98,7 +96,7 @@ class IndexedContact(BaseIndexDocument):
     privacy_features = Nested()
     public_key = Nested()
     social_identities = Nested(doc_class=IndexedSocialIdentity)
-    tags = Nested(doc_class=IndexedResourceTag)
+    tags = Keyword(multi=True)
     title = Text()
 
     @property
@@ -208,15 +206,7 @@ class IndexedContact(BaseIndexDocument):
         m.field("privacy_features", Nested(include_in_all=True))
         m.field("public_key", Nested())
         m.field("social_identities", social_ids)
-        # tags
-        tags = Nested('tags', doc_class=IndexedResourceTag, include_in_all=True)
-        tags.field("date_insert", Date())
-        tags.field("importance_level", Integer())
-        tags.field("name", Keyword())
-        tags.field("tag_id", Keyword())
-        tags.field("type", Boolean())
-        m.field("tags", tags)
-
+        m.field("tags", Keyword(multi=True))
         m.field('title', 'text')
 
         return m

@@ -12,7 +12,6 @@ from .participant import Participant
 from .attachment import Attachment
 from .external_references import ExternalReferences
 from caliopen_main.pi.parameters import PIParameter
-from caliopen_main.common.parameters.tag import ResourceTag
 from caliopen_main.user.parameters import Identity
 import caliopen_storage.helpers.json as helpers
 
@@ -43,7 +42,7 @@ class NewMessage(Model):
     pi = ModelType(PIParameter)
     raw_msg_id = UUIDType()
     subject = StringType()
-    tags = ListType(ModelType(ResourceTag), default=lambda: [])
+    tags = ListType(UUIDType(), default=lambda: [])
     type = StringType(choices=MESSAGE_TYPES)
 
     class Options:

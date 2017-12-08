@@ -13,6 +13,8 @@ import logging
 log = logging.getLogger(__name__)
 
 
+### legacy code.
+# Tags are not anymore nested into other objects as instance, but just as []uuid.
 class ResourceTag(ObjectJsonDictifiable):
     """Tag nested in resources."""
 

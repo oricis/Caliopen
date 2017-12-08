@@ -68,6 +68,8 @@ paths:
     "$ref": paths/tags.yaml#/tags
   "/v2/tags/{tag_id}":
     "$ref": paths/tags.yaml#/tags_{tag_id}
+  "/v2/tags/{tag_id}/actions":
+    "$ref": paths/tags.yaml#/tags_{tag_id}_actions
 ## devices ##
   "/v1/devices":
     "$ref": paths/devices.yaml#/devices
