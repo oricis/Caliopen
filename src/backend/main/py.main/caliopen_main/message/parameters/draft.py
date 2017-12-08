@@ -16,6 +16,7 @@ from caliopen_main.discussion.store.discussion_index import \
 from caliopen_main.message.store import Message as ModelMessage
 from caliopen_main.discussion.core import Discussion
 from caliopen_main.common import errors as err
+import caliopen_main.common.errors as main_errors
 
 import logging
 
@@ -49,11 +50,17 @@ class Draft(NewInboundMessage):
         """
         try:
             self.validate()
+            if hasattr(self, "tags"):
+                raise main_errors.ForbiddenAction(
+                    message="patching tags through parent object is forbidden")
         except Exception as exc:
             log.warn("draft validation failed with error {}".format(exc))
             raise exc
         # copy body to body_plain TODO : manage plain or html depending on user pref.
-        self.body_plain = self.body
+        if hasattr(self, "body") and self.body is not None:
+            self.body_plain = self.body
+        else:
+            self.body = self.body_plain = ""
         # check discussion consistency and get last message from discussion
         last_message = self._check_discussion_consistency(user_id)
         if last_message is not None:
@@ -125,8 +132,9 @@ class Draft(NewInboundMessage):
                 or self.discussion_id is None:
             # no discussion_id provided. Try to find one with draft's parent_id
             # or create new discussion
-            if hasattr(self, 'parent_id') and self.parent_id != "" \
-                    and self.parent_id is not None:
+            if hasattr(self, 'parent_id') \
+                    and self.parent_id is not None \
+                    and self.parent_id != "":
                 parent_msg = Message(user_id, message_id=self.parent_id)
                 try:
                     parent_msg.get_db()
