@@ -13,10 +13,6 @@ properties:
     type: string
   subject:
     type: string
-  tags:
-    type: array
-    items:
-      "$ref": Tag.yaml
   text:
     type: string
   to_recipients:

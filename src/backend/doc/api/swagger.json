@@ -456,34 +456,7 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "date_insert": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "tag_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "user",
-                              "system"
-                            ]
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "importance_level": {
-                            "type": "integer",
-                            "format": "int32"
-                          }
-                        },
-                        "required": [
-                          "label"
-                        ],
-                        "additionalProperties": false
+                        "type": "string"
                       }
                     },
                     "title": {
@@ -800,7 +773,7 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "object"
+                        "type": "string"
                       }
                     }
                   },
@@ -1156,34 +1129,7 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "date_insert": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "tag_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "user",
-                              "system"
-                            ]
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "importance_level": {
-                            "type": "integer",
-                            "format": "int32"
-                          }
-                        },
-                        "required": [
-                          "label"
-                        ],
-                        "additionalProperties": false
+                        "type": "string"
                       }
                     },
                     "type": {
@@ -1366,34 +1312,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "date_insert": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "tag_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "user",
-                          "system"
-                        ]
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "importance_level": {
-                        "type": "integer",
-                        "format": "int32"
-                      }
-                    },
-                    "required": [
-                      "label"
-                    ],
-                    "additionalProperties": false
+                    "type": "string"
                   }
                 },
                 "type": {
@@ -1764,34 +1683,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "date_insert": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "tag_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "user",
-                          "system"
-                        ]
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "importance_level": {
-                        "type": "integer",
-                        "format": "int32"
-                      }
-                    },
-                    "required": [
-                      "label"
-                    ],
-                    "additionalProperties": false
+                    "type": "string"
                   }
                 },
                 "type": {
@@ -3067,34 +2959,7 @@
                       "tags": {
                         "type": "array",
                         "items": {
-                          "type": "object",
-                          "properties": {
-                            "date_insert": {
-                              "type": "string",
-                              "format": "date-time"
-                            },
-                            "tag_id": {
-                              "type": "string"
-                            },
-                            "type": {
-                              "type": "string",
-                              "enum": [
-                                "user",
-                                "system"
-                              ]
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "importance_level": {
-                              "type": "integer",
-                              "format": "int32"
-                            }
-                          },
-                          "required": [
-                            "label"
-                          ],
-                          "additionalProperties": false
+                          "type": "string"
                         }
                       },
                       "title": {
@@ -3359,7 +3224,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "object"
+                    "type": "string"
                   }
                 }
               },
@@ -3729,34 +3594,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "date_insert": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "tag_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "user",
-                          "system"
-                        ]
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "importance_level": {
-                        "type": "integer",
-                        "format": "int32"
-                      }
-                    },
-                    "required": [
-                      "label"
-                    ],
-                    "additionalProperties": false
+                    "type": "string"
                   }
                 },
                 "title": {
@@ -4234,34 +4072,7 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "date_insert": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "tag_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "user",
-                              "system"
-                            ]
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "importance_level": {
-                            "type": "integer",
-                            "format": "int32"
-                          }
-                        },
-                        "required": [
-                          "label"
-                        ],
-                        "additionalProperties": false
+                        "type": "string"
                       }
                     },
                     "title": {
@@ -4587,34 +4398,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "date_insert": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "tag_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "user",
-                          "system"
-                        ]
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "importance_level": {
-                        "type": "integer",
-                        "format": "int32"
-                      }
-                    },
-                    "required": [
-                      "label"
-                    ],
-                    "additionalProperties": false
+                    "type": "string"
                   }
                 },
                 "title": {
@@ -5436,39 +5220,6 @@
                 },
                 "subject": {
                   "type": "string"
-                },
-                "tags": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "date_insert": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "tag_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "user",
-                          "system"
-                        ]
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "importance_level": {
-                        "type": "integer",
-                        "format": "int32"
-                      }
-                    },
-                    "required": [
-                      "label"
-                    ],
-                    "additionalProperties": false
-                  }
                 }
               },
               "required": [
@@ -5807,34 +5558,7 @@
                       "tags": {
                         "type": "array",
                         "items": {
-                          "type": "object",
-                          "properties": {
-                            "date_insert": {
-                              "type": "string",
-                              "format": "date-time"
-                            },
-                            "tag_id": {
-                              "type": "string"
-                            },
-                            "type": {
-                              "type": "string",
-                              "enum": [
-                                "user",
-                                "system"
-                              ]
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "importance_level": {
-                              "type": "integer",
-                              "format": "int32"
-                            }
-                          },
-                          "required": [
-                            "label"
-                          ],
-                          "additionalProperties": false
+                          "type": "string"
                         }
                       },
                       "type": {
@@ -5901,7 +5625,7 @@
     },
     "/v1/messages/{message_id}": {
       "patch": {
-        "description": "update a contact with rfc5789 and rfc7396 specifications",
+        "description": "update a draft with rfc5789 and rfc7396 specifications",
         "tags": [
           "messages"
         ],
@@ -6100,34 +5824,7 @@
                     "tags": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "date_insert": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "tag_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "user",
-                              "system"
-                            ]
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "importance_level": {
-                            "type": "integer",
-                            "format": "int32"
-                          }
-                        },
-                        "required": [
-                          "label"
-                        ],
-                        "additionalProperties": false
+                        "type": "string"
                       }
                     },
                     "type": {
@@ -6310,34 +6007,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "date_insert": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "tag_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "user",
-                          "system"
-                        ]
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "importance_level": {
-                        "type": "integer",
-                        "format": "int32"
-                      }
-                    },
-                    "required": [
-                      "label"
-                    ],
-                    "additionalProperties": false
+                    "type": "string"
                   }
                 },
                 "type": {
@@ -6771,34 +6441,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "date_insert": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "tag_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "user",
-                          "system"
-                        ]
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "importance_level": {
-                        "type": "integer",
-                        "format": "int32"
-                      }
-                    },
-                    "required": [
-                      "label"
-                    ],
-                    "additionalProperties": false
+                    "type": "string"
                   }
                 },
                 "type": {
@@ -7089,34 +6732,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "date_insert": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "tag_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "user",
-                          "system"
-                        ]
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "importance_level": {
-                        "type": "integer",
-                        "format": "int32"
-                      }
-                    },
-                    "required": [
-                      "label"
-                    ],
-                    "additionalProperties": false
+                    "type": "string"
                   }
                 },
                 "type": {
@@ -7306,34 +6922,7 @@
                 "tags": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "date_insert": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "tag_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "user",
-                          "system"
-                        ]
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "importance_level": {
-                        "type": "integer",
-                        "format": "int32"
-                      }
-                    },
-                    "required": [
-                      "label"
-                    ],
-                    "additionalProperties": false
+                    "type": "string"
                   }
                 },
                 "type": {

@@ -52,6 +52,6 @@ properties:
   tags:
     type: array
     items:
-      type: object
+      type: string
 additionalProperties: false
 
