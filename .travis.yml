@@ -29,5 +29,4 @@ addons:
 notifications:
   irc:
     channels:
-    - "chat.freenode.net#caliopdev"
-    use_notice: false
+      - "chat.freenode.net#caliopdev"

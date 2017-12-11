@@ -29,6 +29,7 @@ export const typeAssoc = {
   editor: 'fa fa-font',
   'exclamation-triangle': 'fa fa-exclamation-triangle',
   facebook: 'fa fa-facebook',
+  filter: 'fa fa-filter',
   folder: 'fa fa-folder-open',
   'info-circle': 'fa fa-info-circle',
   key: 'fa fa-key',

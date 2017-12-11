@@ -1,5 +1,6 @@
 import calcObjectForPatch from '../../services/api-patch';
 
+export const SET_TIMELINE_FILTER = 'co/message/SET_TIMELINE_FILTER';
 export const REQUEST_MESSAGES = 'co/message/REQUEST_MESSAGES';
 export const REQUEST_MESSAGES_SUCCESS = 'co/message/REQUEST_MESSAGES_SUCCESS';
 export const REQUEST_MESSAGES_FAIL = 'co/message/REQUEST_MESSAGES_FAIL';
@@ -19,6 +20,11 @@ export const SYNC_MESSAGE = 'co/message/SYNC_MESSAGE';
 export const POST_ACTIONS = 'co/message/POST_ACTIONS';
 export const POST_ACTIONS_SUCCESS = 'co/message/POST_ACTIONS_SUCCESS';
 export const REPLY_TO_MESSAGE = 'co/message/REPLY_TO_MESSAGE';
+
+export const TIMELINE_FILTER_ALL = 'all';
+export const TIMELINE_FILTER_RECEIVED = 'received';
+export const TIMELINE_FILTER_SENT = 'sent';
+export const TIMELINE_FILTER_DRAFT = 'draft';
 
 export function requestMessages(type = 'timeline', key = '0', { offset = 0, limit = 20, ...opts } = {}) {
   const params = { offset, limit, ...opts };
@@ -40,6 +46,13 @@ export function loadMore(type, key) {
   return {
     type: LOAD_MORE_MESSAGES,
     payload: { type, key },
+  };
+}
+
+export function setTimelineFilter(type) {
+  return {
+    type: SET_TIMELINE_FILTER,
+    payload: { type },
   };
 }
 
@@ -257,6 +270,7 @@ const allMessagesCollectionsReducer = (state, action) => Object.keys(state)
   }), {});
 
 const initialState = {
+  timelineFilter: TIMELINE_FILTER_RECEIVED,
   messagesById: {},
   messagesCollections: {},
 };
@@ -285,6 +299,11 @@ export default function reducer(state = initialState, action) {
         messagesCollections: makeMessagesCollectionTypeReducer(action)(
           state.messagesCollections, action
         ),
+      };
+    case SET_TIMELINE_FILTER:
+      return {
+        ...state,
+        timelineFilter: action.payload.type,
       };
     case INVALIDATE_MESSAGES:
       return {
