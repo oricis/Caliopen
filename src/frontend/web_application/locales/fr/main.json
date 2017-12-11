@@ -270,6 +270,7 @@
     "settings.desktop_notification.title": "Notifications du bureau",
     "settings.identities": "Identités",
     "settings.interface.language.label": "Langue",
+    "settings.interface.language.options.de": "Allemand",
     "settings.interface.language.options.en": "Anglais",
     "settings.interface.language.options.fr": "Français",
     "settings.interface.title": "Personnalisez votre interface",

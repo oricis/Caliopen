@@ -269,6 +269,7 @@
     "settings.desktop_notification.title": "Desktop notifications",
     "settings.identities": "Identities",
     "settings.interface.language.label": "Language",
+    "settings.interface.language.options.de": "German",
     "settings.interface.language.options.en": "English",
     "settings.interface.language.options.fr": "French",
     "settings.interface.title": "Customize your interface",
