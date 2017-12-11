@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Sort message by date sent for user's messages
 - Settings can be saved when display delay is changed
 - A draft still appears after been deleted
 - Show correctly the message in reply on the current draft
