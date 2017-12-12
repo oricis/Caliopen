@@ -77,13 +77,16 @@ class MessageList extends Component {
   }
 
   render() {
-    const { isFetching, loadMore, onForward, onDelete, replyForm, __ } = this.props;
+    const { isFetching, loadMore, onDelete, replyForm, __ } = this.props;
 
     return (
       <div className="m-message-list">
         <MenuBar>
           <Button className="m-message-list__action" onClick={this.handleReplyToLastMessage} icon="reply" responsive="icon-only" >{__('message-list.action.reply')}</Button>
-          <Button className="m-message-list__action" onClick={onForward} icon="share" responsive="icon-only" >{__('message-list.action.copy-to')}</Button>
+          {/*
+            <Button className="m-message-list__action" onClick={onForward} icon="share"
+            responsive="icon-only" >{__('message-list.action.copy-to')}</Button>
+          */}
           <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >{__('message-list.action.delete')}</Button>
           <Spinner isLoading={isFetching} className="m-message-list__spinner" />
         </MenuBar>
