@@ -32,6 +32,7 @@ class IndexedMessage(BaseIndexDocument):
     is_answered = Boolean()
     is_draft = Boolean()
     is_unread = Boolean()
+    is_received = Boolean()
     message_id = Keyword()
     parent_id = Keyword()
     participants = Nested(doc_class=IndexedParticipant)

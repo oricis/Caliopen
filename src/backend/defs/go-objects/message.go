@@ -29,6 +29,7 @@ type Message struct {
 	Is_answered         bool               `cql:"is_answered"              json:"is_answered"      `
 	Is_draft            bool               `cql:"is_draft"                 json:"is_draft"         `
 	Is_unread           bool               `cql:"is_unread"                json:"is_unread"        `
+	Is_received         bool               `cql:"is_received"              json:"is_received"      `
 	Message_id          UUID               `cql:"message_id"               json:"message_id"                                   formatter:"rfc4122"`
 	Parent_id           UUID               `cql:"parent_id"                json:"parent_id"        `
 	Participants        []Participant      `cql:"participants"             json:"participants"     `
@@ -208,6 +209,7 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 	msg.Is_answered, _ = input["is_answered"].(bool)
 	msg.Is_draft, _ = input["is_draft"].(bool)
 	msg.Is_unread, _ = input["is_unread"].(bool)
+	msg.Is_received, _ = input["is_received"].(bool)
 	if message_id, ok := input["message_id"].(string); ok {
 		if id, err := uuid.FromString(message_id); err == nil {
 			msg.Message_id.UnmarshalBinary(id.Bytes())
@@ -313,6 +315,7 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	msg.Is_answered, _ = input["is_answered"].(bool)
 	msg.Is_draft, _ = input["is_draft"].(bool)
 	msg.Is_unread, _ = input["is_unread"].(bool)
+	msg.Is_received, _ = input["is_received"].(bool)
 
 	message_id, _ := input["message_id"].(gocql.UUID)
 	msg.Message_id.UnmarshalBinary(message_id.Bytes())

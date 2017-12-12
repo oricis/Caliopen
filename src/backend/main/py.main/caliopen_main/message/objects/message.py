@@ -53,6 +53,7 @@ class Message(ObjectIndexable):
         'is_answered': types.BooleanType,
         'is_draft': types.BooleanType,
         'is_unread': types.BooleanType,
+        'is_received': types.BooleanType,
         'message_id': UUID,
         'parent_id': UUID,
         'participants': [Participant],
@@ -114,6 +115,7 @@ class Message(ObjectIndexable):
         message.unmarshall_json_dict(draft_param.to_primitive())
         message.user_id = UUID(user_id)
         message.is_draft = True
+        message.is_received = False
         message.type = "email"  # TODO: type handling inferred from participants
         message.date_insert = datetime.datetime.now(tz=pytz.utc)
 

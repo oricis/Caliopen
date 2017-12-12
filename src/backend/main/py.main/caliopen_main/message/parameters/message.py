@@ -35,6 +35,7 @@ class NewMessage(Model):
     is_answered = BooleanType()
     is_draft = BooleanType()
     is_unread = BooleanType()
+    is_received = BooleanType()
     message_id = UUIDType()
     parent_id = UUIDType()
     participants = ListType(ModelType(Participant), default=lambda: [])
