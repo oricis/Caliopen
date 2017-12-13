@@ -1,4 +1,5 @@
 const { version } = require('../package.json');
+const { maxBodySize } = require('./server.default.js');
 
 const siteId = process.env.CALIOPEN_PIWIK_SITE_ID && JSON.parse(process.env.CALIOPEN_PIWIK_SITE_ID);
 
@@ -10,4 +11,5 @@ module.exports = {
   piwik: {
     siteId: (siteId === false) ? false : siteId || 6,
   },
+  maxBodySize,
 };

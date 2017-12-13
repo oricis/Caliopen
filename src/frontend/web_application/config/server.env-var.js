@@ -18,4 +18,5 @@ module.exports = {
   seal: {
     secret: process.env.CALIOPEN_SEAL_SECRET,
   },
+  maxBodySize: process.env.CALIOPEN_MAX_BODY_SIZE,
 };

@@ -3,10 +3,11 @@ const url = require('url');
 const { getConfig } = require('../config');
 
 module.exports = (app) => {
-  const { api: { hostname, port, protocol, checkCertificate } } = getConfig();
+  const { api: { hostname, port, protocol, checkCertificate }, maxBodySize } = getConfig();
   const target = `${protocol}://${hostname}:${port}`;
 
   app.use('/api', proxy(target, {
+    limit: maxBodySize,
     proxyReqPathResolver: req => url.parse(req.originalUrl).path,
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       const decoratedReqOpts = {
