@@ -46,16 +46,14 @@ system:
     default_tags:
         -
             name: INBOX
-            background: '#000000'
-            color: black
         -
             name: SPAM
-            background: '#AAAAAA'
-            color: white
         -
             name: IMPORTANT
-            background: '#FF0000'
-            color: white
+            importance_level: 5
+        -
+            name: CALIOPEN
+            importance_level: 2
 
 default_domain: caliopen.local
 
