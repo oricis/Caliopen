@@ -35,9 +35,6 @@ def load_from_file(filepath):
     if file_ext.lower() == '.py':
         py_mod = imp.load_source(mod_name, filepath)
 
-    elif file_ext.lower() == '.pyc':
-        py_mod = imp.load_compiled(mod_name, filepath)
-
     if hasattr(py_mod, expected_class):
         c = getattr(py_mod, expected_class)
 
