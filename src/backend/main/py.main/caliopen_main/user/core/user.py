@@ -31,8 +31,8 @@ from caliopen_main.contact.core import Contact as CoreContact
 from caliopen_main.contact.objects.contact import Contact
 from caliopen_main.pi.objects import PIModel
 from caliopen_main.user.helpers import validators
-from .new_user_setups import (setup_index, setup_system_tags,
-                              setup_settings)
+from .setups import (setup_index, setup_system_tags,
+                     setup_settings)
 
 log = logging.getLogger(__name__)
 
@@ -190,8 +190,9 @@ class User(BaseCore):
             UserName.get(username).delete()
 
         # 0. check for user email white list and max number of users
-        # cls._check_whitelistes(new_user)
-        # cls._check_max_users()
+        cls._check_whitelistes(new_user)
+        cls._check_max_users()
+
         # 1.
         try:
             validators.is_valid_username(new_user.name)
