@@ -76,7 +76,7 @@ class BaseIndexDocument(DocType):
             try:
                 cls.build_mapping().save(using=cls.client(), index=user_id)
             except Exception as exc:
-                log.warn(
+                log.error(
                     "failed to put mapping for {} : {}".format(user_id, exc))
 
 
