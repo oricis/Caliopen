@@ -63,7 +63,7 @@ class NavigationAlt extends PureComponent {
             </Link>
           </VerticalMenuItem>
           <VerticalMenuItem>
-            <Link to="/auth/signout" button expanded data-toggle="left_off_canvas">
+            <Link href="/auth/signout" button expanded data-toggle="left_off_canvas">
               {__('header.menu.signout')}
             </Link>
           </VerticalMenuItem>

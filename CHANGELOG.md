@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Signout on mobile doesn't disconnect
 - suggest participants fails if a contact has no emails
 - Max body size of a request (import contact)
 - Sort message by date sent for user's messages
