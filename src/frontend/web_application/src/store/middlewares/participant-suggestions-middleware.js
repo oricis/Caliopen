@@ -29,15 +29,20 @@ const getContacts = ({ store, contactIds }) => Promise.all(
 const getSuggestion = ({ label, address, protocol, ...opts }) => ({
   label, address, protocol, ...opts,
 });
-const createGetContactSuggestions = format => contact => [
-  ...contact.emails.map(email => getSuggestion({
+const createGetContactSuggestions = format => (contact) => {
+  if (!contact.emails) {
+    return [];
+  }
+
+  return contact.emails.map(email => getSuggestion({
     label: formatName({ contact, format }),
     address: email.address,
     protocol: 'email',
     contact_id: contact.contact_id,
     source: 'contact',
-  })),
-];
+  }));
+};
+
 const createExtractSuggestionsFromContacts = getContactSuggestions => contacts => contacts
   .reduce((acc, contact) => [
     ...acc,
