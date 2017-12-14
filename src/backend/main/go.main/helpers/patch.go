@@ -62,19 +62,22 @@ func ValidatePatchSemantic(obj CaliopenObject, patch *gjson.Result) error {
 
 // ValidatePatchCurrentState verifies if the provided current_state within a json patch
 // is consistent with the provided object (coming from db for example).
+// Keys in patch that do not belong to the object will be silently ignored
 func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) error {
 	var err error
 	valid := true
-	// build one sibling from patch
+	// build 1 sibling from patch's current_state
 	current_state := patch.Get("current_state")
-	patch_current := obj.NewEmpty().(CaliopenObject)
-	patch_current.UnmarshalJSON([]byte(current_state.Raw))
+	obj_current := obj.NewEmpty().(CaliopenObject)
+	obj_current.UnmarshalJSON([]byte(current_state.Raw))
 
 	jsonTags := obj.JsonTags()
+
+	// check that provided values in current_state are consistent with db
 	current_state.ForEach(func(key, value gjson.Result) bool {
 		var e error
 		field_name := jsonTags[key.String()]
-		current, e := reflections.GetField(patch_current, field_name)
+		current, e := reflections.GetField(obj_current, field_name)
 		store, e := reflections.GetField(obj, field_name)
 		if e != nil {
 			valid = false
@@ -88,6 +91,33 @@ func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) error {
 		}
 		return true
 	})
+
+	// seek for keys within patch that are not in current_state
+	//  means patch wants to add the key => value in db should equal to defaults
+	current_map := current_state.Map()
+	empty_state := obj.NewEmpty()
+	patch.ForEach(func(key, value gjson.Result) bool {
+		if key.Str != "current_state" {
+			if _, ok := current_map[key.Str]; !ok {
+				field_name := jsonTags[key.String()]
+				empty, e := reflections.GetField(empty_state, field_name)
+				store, e := reflections.GetField(obj, field_name)
+				if e != nil {
+					valid = false
+					err = errors.New(fmt.Sprintf("[Patch] failed to retrieve field <%s> from object", field_name))
+					return false
+				}
+				if !reflect.DeepEqual(store, empty) {
+					valid = false
+					err = errors.New(fmt.Sprintf("[Patch] current_state for field <%s> not consistent with stored value", field_name))
+					return false
+				}
+			}
+			return true
+		}
+		return true
+	})
+
 	if !valid {
 		return err
 	} else {
@@ -100,6 +130,7 @@ func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) error {
 // ("patch" tag within object definition is checked against the "initiator" to allow/prevent the modification).
 // Patch will be pre-processed by ValidatePatchSemantic and ValidatePatchCurrentState before being applied to object.
 func UpdateWithPatch(obj CaliopenObject, patch []byte, actor Initiator) error {
+
 	pp, err := ParsePatch(patch)
 	if err != nil {
 		return err
