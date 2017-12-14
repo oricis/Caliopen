@@ -26,14 +26,27 @@ type PublicKey struct {
 // unmarshal a map[string]interface{} that must owns all PublicKey's fields
 // typical usage is for unmarshaling response from Cassandra backend
 func (pk *PublicKey) UnmarshalCQLMap(input map[string]interface{}) {
-	contactId, _ := input["contact_id"].(gocql.UUID)
-	pk.ContactId.UnmarshalBinary(contactId.Bytes())
-	pk.DateInsert, _ = input["date_insert"].(time.Time)
-	pk.DateUpdate, _ = input["date_update"].(time.Time)
-	pk.ExpireDate, _ = input["expire_date"].(time.Time)
-	pk.Fingerprint, _ = input["fingerprint"].(string)
-	pk.Key, _ = input["key"].(string)
-	pk.Name, _ = input["name"].(string)
+	if contactId, ok := input["contact_id"].(gocql.UUID); ok {
+		pk.ContactId.UnmarshalBinary(contactId.Bytes())
+	}
+	if dateInsert, ok := input["date_insert"].(time.Time); ok {
+		pk.DateInsert = dateInsert
+	}
+	if dateUpdate, ok := input["date_update"].(time.Time); ok {
+		pk.DateUpdate = dateUpdate
+	}
+	if expireDate, ok := input["expire_date"].(time.Time); ok {
+		pk.ExpireDate = expireDate
+	}
+	if fingerprint, ok := input["fingerprint"].(string); ok {
+		pk.Fingerprint = fingerprint
+	}
+	if key, ok := input["key"].(string); ok {
+		pk.Key = key
+	}
+	if name, ok := input["name"].(string); ok {
+		pk.Name = name
+	}
 	if i_pf, ok := input["privacy_features"].(map[string]string); ok {
 		pf := PrivacyFeatures{}
 		for k, v := range i_pf {
@@ -41,12 +54,13 @@ func (pk *PublicKey) UnmarshalCQLMap(input map[string]interface{}) {
 		}
 		pk.PrivacyFeatures = &pf
 
-	} else {
-		pk.PrivacyFeatures = nil
 	}
-	pk.Size, _ = input["size"].(int)
-	userid, _ := input["user_id"].(gocql.UUID)
-	pk.UserId.UnmarshalBinary(userid.Bytes())
+	if size, ok := input["size"].(int); ok {
+		pk.Size = size
+	}
+	if userid, ok := input["user_id"].(gocql.UUID); ok {
+		pk.UserId.UnmarshalBinary(userid.Bytes())
+	}
 }
 
 func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
@@ -64,17 +78,23 @@ func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
 	if date, ok := input["expire_date"]; ok {
 		pk.ExpireDate, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
-	pk.Fingerprint, _ = input["fingerprint"].(string)
-	pk.Key, _ = input["key"].(string)
-	pk.Name, _ = input["name"].(string)
-
+	if fingerprint, ok := input["fingerprint"].(string); ok {
+		pk.Fingerprint = fingerprint
+	}
+	if key, ok := input["key"].(string); ok {
+		pk.Key = key
+	}
+	if name, ok := input["name"].(string); ok {
+		pk.Name = name
+	}
 	if pf, ok := input["privacy_features"]; ok && pf != nil {
 		PF := &PrivacyFeatures{}
 		PF.UnmarshalMap(pf.(map[string]interface{}))
 		pk.PrivacyFeatures = PF
 	}
-	size, _ := input["size"].(float64)
-	pk.Size = int(size)
+	if size, ok := input["size"].(float64); ok {
+		pk.Size = int(size)
+	}
 	if u_id, ok := input["user_id"].(string); ok {
 		if id, err := uuid.FromString(u_id); err == nil {
 			pk.UserId.UnmarshalBinary(id.Bytes())

@@ -16,14 +16,22 @@ type Phone struct {
 }
 
 func (p *Phone) UnmarshalMap(input map[string]interface{}) error {
-	p.IsPrimary, _ = input["is_primary"].(bool)
-	p.Number, _ = input["number"].(string)
+	if isPrimary, ok := input["is_primary"].(bool); ok {
+		p.IsPrimary = isPrimary
+	}
+	if number, ok := input["number"].(string); ok {
+		p.Number = number
+	}
 	if p_id, ok := input["phone_id"].(string); ok {
 		if id, err := uuid.FromString(p_id); err == nil {
 			p.PhoneId.UnmarshalBinary(id.Bytes())
 		}
 	}
-	p.Type, _ = input["type"].(string)
-	p.Uri, _ = input["uri"].(string)
+	if t, ok := input["type"].(string); ok {
+		p.Type = t
+	}
+	if uri, ok := input["uri"].(string); ok {
+		p.Uri = uri
+	}
 	return nil //TODO : errors handling
 }

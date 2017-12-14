@@ -27,21 +27,7 @@ func (pa *PostalAddress) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
-	if add_id, ok := input["address_id"].(string); ok {
-		if id, err := uuid.FromString(add_id); err == nil {
-			pa.AddressId.UnmarshalBinary(id.Bytes())
-		}
-	}
-	pa.City, _ = input["city"].(string)
-	pa.Country, _ = input["country"].(string)
-	pa.IsPrimary, _ = input["is_primary"].(bool)
-	pa.Label, _ = input["label"].(string)
-	pa.PostalCode, _ = input["postal_code"].(string)
-	pa.Region, _ = input["region"].(string)
-	pa.Street, _ = input["street"].(string)
-	pa.Type, _ = input["type"].(string)
-
-	return nil
+	return pa.UnmarshalMap(input)
 }
 
 func (pa *PostalAddress) UnmarshalMap(input map[string]interface{}) error {
@@ -50,14 +36,30 @@ func (pa *PostalAddress) UnmarshalMap(input map[string]interface{}) error {
 			pa.AddressId.UnmarshalBinary(id.Bytes())
 		}
 	}
-	pa.City, _ = input["city"].(string)
-	pa.Country, _ = input["country"].(string)
-	pa.IsPrimary, _ = input["is_primary"].(bool)
-	pa.Label, _ = input["label"].(string)
-	pa.PostalCode, _ = input["postal_code"].(string)
-	pa.Region, _ = input["region"].(string)
-	pa.Street, _ = input["street"].(string)
-	pa.Type, _ = input["type"].(string)
+	if city, ok := input["city"].(string); ok {
+		pa.City = city
+	}
+	if country, ok := input["country"].(string); ok {
+		pa.Country = country
+	}
+	if isPrimary, ok := input["is_primary"].(bool); ok {
+		pa.IsPrimary = isPrimary
+	}
+	if label, ok := input["label"].(string); ok {
+		pa.Label = label
+	}
+	if postalCode, ok := input["postal_code"].(string); ok {
+		pa.PostalCode = postalCode
+	}
+	if region, ok := input["region"].(string); ok {
+		pa.Region = region
+	}
+	if street, ok := input["street"].(string); ok {
+		pa.Street = street
+	}
+	if t, ok := input["type"].(string); ok {
+		pa.Type = t
+	}
 
 	return nil //TODO: errors handling
 }

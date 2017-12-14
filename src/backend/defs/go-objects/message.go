@@ -175,8 +175,12 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 			}
 		}
 	}
-	msg.Body_html, _ = input["body_html"].(string)
-	msg.Body_plain, _ = input["body_plain"].(string)
+	if body_html, ok := input["body_html"].(string); ok {
+		msg.Body_html = body_html
+	}
+	if body_plain, ok := input["body_plain"].(string); ok {
+		msg.Body_plain = body_plain
+	}
 	if date, ok := input["date"]; ok {
 		msg.Date, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
@@ -206,12 +210,21 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 			}
 		}
 	}
-	importance_level, _ := input["importance_level"].(float64)
-	msg.Importance_level = int32(importance_level)
-	msg.Is_answered, _ = input["is_answered"].(bool)
-	msg.Is_draft, _ = input["is_draft"].(bool)
-	msg.Is_unread, _ = input["is_unread"].(bool)
-	msg.Is_received, _ = input["is_received"].(bool)
+	if importance_level, ok := input["importance_level"].(float64); ok {
+		msg.Importance_level = int32(importance_level)
+	}
+	if is_answered, ok := input["is_answered"].(bool); ok {
+		msg.Is_answered = is_answered
+	}
+	if is_draft, ok := input["is_draft"].(bool); ok {
+		msg.Is_draft = is_draft
+	}
+	if is_unread, ok := input["is_unread"].(bool); ok {
+		msg.Is_unread = is_unread
+	}
+	if is_received, ok := input["is_received"].(bool); ok {
+		msg.Is_received = is_received
+	}
 	if message_id, ok := input["message_id"].(string); ok {
 		if id, err := uuid.FromString(message_id); err == nil {
 			msg.Message_id.UnmarshalBinary(id.Bytes())
@@ -251,9 +264,18 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 			msg.Raw_msg_id.UnmarshalBinary(id.Bytes())
 		}
 	}
-	msg.Subject, _ = input["subject"].(string)
-	msg.Tags, _ = input["tags"].([]string)
-	msg.Type, _ = input["type"].(string)
+	if subject, ok := input["subject"].(string); ok {
+		msg.Subject = subject
+	}
+	if tags, ok := input["tags"]; ok && tags != nil {
+		msg.Tags = []string{}
+		for _, tag := range tags.([]interface{}) {
+			msg.Tags = append(msg.Tags, tag.(string))
+		}
+	}
+	if t, ok := input["type"].(string); ok {
+		msg.Type = t
+	}
 	if user_id, ok := input["user_id"].(string); ok {
 		if id, err := uuid.FromString(user_id); err == nil {
 			msg.User_id.UnmarshalBinary(id.Bytes())
@@ -278,11 +300,21 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 			msg.Attachments = append(msg.Attachments, a)
 		}
 	}
-	msg.Body_html, _ = input["body_html"].(string)
-	msg.Body_plain, _ = input["body_plain"].(string)
-	msg.Date, _ = input["date"].(time.Time)
-	msg.Date_delete, _ = input["date_delete"].(time.Time)
-	msg.Date_insert, _ = input["date_insert"].(time.Time)
+	if body_html, ok := input["body_html"].(string); ok {
+		msg.Body_html = body_html
+	}
+	if body_plain, ok := input["body_plain"].(string); ok {
+		msg.Body_plain = body_plain
+	}
+	if date, ok := input["date"].(time.Time); ok {
+		msg.Date = date
+	}
+	if date_delete, ok := input["date_delete"].(time.Time); ok {
+		msg.Date_delete = date_delete
+	}
+	if date_insert, ok := input["date_insert"].(time.Time); ok {
+		msg.Date_insert = date_insert
+	}
 	if discussion_id, ok := input["discussion_id"].(gocql.UUID); ok {
 		msg.Discussion_id.UnmarshalBinary(discussion_id.Bytes())
 	}
@@ -308,18 +340,28 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 			msg.Identities = append(msg.Identities, i)
 		}
 	}
-	importance_level, _ := input["importance_level"].(int)
-	msg.Importance_level = int32(importance_level)
-	msg.Is_answered, _ = input["is_answered"].(bool)
-	msg.Is_draft, _ = input["is_draft"].(bool)
-	msg.Is_unread, _ = input["is_unread"].(bool)
-	msg.Is_received, _ = input["is_received"].(bool)
+	if importance_level, ok := input["importance_level"].(int); ok {
+		msg.Importance_level = int32(importance_level)
+	}
+	if is_answered, ok := input["is_answered"].(bool); ok {
+		msg.Is_answered = is_answered
+	}
+	if is_draft, ok := input["is_draft"].(bool); ok {
+		msg.Is_draft = is_draft
+	}
+	if is_unread, ok := input["is_unread"].(bool); ok {
+		msg.Is_unread = is_unread
+	}
+	if is_received, ok := input["is_received"].(bool); ok {
+		msg.Is_received = is_received
+	}
+	if message_id, ok := input["message_id"].(gocql.UUID); ok {
+		msg.Message_id.UnmarshalBinary(message_id.Bytes())
+	}
 
-	message_id, _ := input["message_id"].(gocql.UUID)
-	msg.Message_id.UnmarshalBinary(message_id.Bytes())
-
-	parent_id, _ := input["parent_id"].(gocql.UUID)
-	msg.Parent_id.UnmarshalBinary(parent_id.Bytes())
+	if parent_id, ok := input["parent_id"].(gocql.UUID); ok {
+		msg.Parent_id.UnmarshalBinary(parent_id.Bytes())
+	}
 
 	if participants, ok := input["participants"]; ok && participants != nil {
 		msg.Participants = []Participant{}
@@ -355,9 +397,18 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	if raw_msg_id, ok := input["raw_msg_id"].(gocql.UUID); ok {
 		msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
 	}
-	msg.Subject, _ = input["subject"].(string)
-	msg.Tags, _ = input["tags"].([]string)
-	msg.Type, _ = input["type"].(string)
+	if subject, ok := input["subject"].(string); ok {
+		msg.Subject = subject
+	}
+	if tags, ok := input["tags"]; ok && tags != nil {
+		msg.Tags = []string{}
+		for _, tag := range tags.([]string) {
+			msg.Tags = append(msg.Tags, tag)
+		}
+	}
+	if t, ok := input["type"].(string); ok {
+		msg.Type = t
+	}
 	if user_id, ok := input["user_id"].(gocql.UUID); ok {
 		msg.User_id.UnmarshalBinary(user_id.Bytes())
 	}

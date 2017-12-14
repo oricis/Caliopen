@@ -3,6 +3,7 @@ package objects
 import (
 	"encoding/json"
 	"github.com/gocql/gocql"
+	"github.com/golang/lint/testdata"
 	"github.com/satori/go.uuid"
 	"time"
 )
@@ -39,7 +40,9 @@ type (
 // unmarshal a map[string]interface{} that must owns all Contact's fields
 // typical usage is for unmarshaling response from Cassandra backend
 func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
-	contact.AdditionalName, _ = input["additional_name"].(string)
+	if additionalName, ok := input["additional_name"].(string); ok {
+		contact.AdditionalName = additionalName
+	}
 	if addresses, ok := input["addresses"]; ok && addresses != nil {
 		contact.Addresses = []PostalAddress{}
 		for _, address := range addresses.([]map[string]interface{}) {
@@ -58,12 +61,21 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 		}
 	}
 
-	contact.Avatar, _ = input["avatar"].(string)
-	contactId, _ := input["contact_id"].(gocql.UUID)
-	contact.ContactId.UnmarshalBinary(contactId.Bytes())
-	contact.DateInsert, _ = input["date_insert"].(time.Time)
-	contact.DateUpdate, _ = input["date_update"].(time.Time)
-	contact.Deleted, _ = input["deleted"].(bool)
+	if avatar, ok := input["avatar"].(string); ok {
+		contact.Avatar = avatar
+	}
+	if contactId, ok := input["contact_id"].(gocql.UUID); ok {
+		contact.ContactId.UnmarshalBinary(contactId.Bytes())
+	}
+	if dateInsert, ok := input["date_insert"].(time.Time); ok {
+		contact.DateInsert = dateInsert
+	}
+	if dateUpdate, ok := input["date_update"].(time.Time); ok {
+		contact.DateUpdate = dateUpdate
+	}
+	if deleted, ok := input["deleted"].(bool); ok {
+		contact.Deleted = deleted
+	}
 	if emails, ok := input["emails"]; ok && emails != nil {
 		contact.Emails = []EmailContact{}
 		for _, email := range emails.([]map[string]interface{}) {
@@ -78,9 +90,15 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 		}
 	}
 
-	contact.FamilyName, _ = input["family_name"].(string)
-	contact.GivenName, _ = input["given_name"].(string)
-	contact.Groups, _ = input["groups"].([]string)
+	if familyName, ok := input["family_name"].(string); ok {
+		contact.FamilyName = familyName
+	}
+	if givenName, ok := input["given_name"].(string); ok {
+		contact.GivenName = givenName
+	}
+	if groups, ok := input["groups"].([]string); ok {
+		contact.Groups = groups
+	}
 	if identities, ok := input["identities"]; ok && identities != nil {
 		contact.Identities = []SocialIdentity{}
 		for _, identity := range identities.([]map[string]interface{}) {
@@ -108,9 +126,15 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 		}
 	}
 
-	contact.Infos, _ = input["infos"].(map[string]string)
-	contact.NamePrefix, _ = input["name_prefix"].(string)
-	contact.NameSuffix, _ = input["name_suffix"].(string)
+	if infos, ok := input["infos"].(map[string]string); ok {
+		contact.Infos = infos
+	}
+	if namePrefix, ok := input["name_prefix"].(string); ok {
+		contact.NamePrefix = namePrefix
+	}
+	if nameSuffix, ok := input["name_suffix"].(string); ok {
+		contact.NameSuffix = nameSuffix
+	}
 	if organizations, ok := input["organizations"]; ok && organizations != nil {
 		contact.Organizations = []Organization{}
 		for _, org := range organizations.([]map[string]interface{}) {
@@ -143,8 +167,7 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 		}
 	}
 
-	if input["pi"] != nil {
-		i_pi, _ := input["pi"].(map[string]interface{})
+	if i_pi, ok := input["pi"].(map[string]interface{}); ok && i_pi != nil {
 		pi := PrivacyIndex{}
 		pi.Comportment, _ = i_pi["comportment"].(int)
 		pi.Context, _ = i_pi["context"].(int)
@@ -155,8 +178,7 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 	} else {
 		contact.PrivacyIndex = nil
 	}
-	if input["privacy_features"] != nil {
-		i_pf, _ := input["privacy_features"].(map[string]string)
+	if i_pf, ok := input["privacy_features"].(map[string]string); ok && i_pf != nil {
 		pf := PrivacyFeatures{}
 		for k, v := range i_pf {
 			pf[k] = v
@@ -167,10 +189,15 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 		contact.PrivacyFeatures = nil
 	}
 
-	contact.Tags, _ = input["tags"].([]string)
-	contact.Title, _ = input["title"].(string)
-	userid, _ := input["user_id"].(gocql.UUID)
-	contact.UserId.UnmarshalBinary(userid.Bytes())
+	if tags, ok := input["tags"].([]string); ok {
+		contact.Tags = tags
+	}
+	if title, ok := input["title"].(string); ok {
+		contact.Title = title
+	}
+	if userid, ok := input["user_id"].(gocql.UUID); ok {
+		contact.UserId.UnmarshalBinary(userid.Bytes())
+	}
 }
 
 func (c *Contact) UnmarshalJSON(b []byte) error {
@@ -184,7 +211,9 @@ func (c *Contact) UnmarshalJSON(b []byte) error {
 
 func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 
-	c.AdditionalName, _ = input["additional_name"].(string)
+	if additionalName, ok := input["additional_name"].(string); ok {
+		c.AdditionalName = additionalName
+	}
 	//addresses
 	if pa, ok := input["addresses"]; ok && pa != nil {
 		c.Addresses = []PostalAddress{}
@@ -195,7 +224,9 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 			}
 		}
 	}
-	c.Avatar, _ = input["avatar"].(string)
+	if avatar, ok := input["avatar"].(string); ok {
+		c.Avatar = avatar
+	}
 	if contact_id, ok := input["contact_id"].(string); ok {
 		if id, err := uuid.FromString(contact_id); err == nil {
 			c.ContactId.UnmarshalBinary(id.Bytes())
@@ -207,7 +238,9 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	if date, ok := input["date_update"]; ok {
 		c.DateUpdate, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
-	c.Deleted, _ = input["deleted"].(bool)
+	if deleted, ok := input["deleted"].(bool); ok {
+		c.Deleted = deleted
+	}
 	//emails
 	if emails, ok := input["emails"]; ok && emails != nil {
 		c.Emails = []EmailContact{}
@@ -219,9 +252,18 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 
-	c.FamilyName, _ = input["family_name"].(string)
-	c.GivenName, _ = input["given_name"].(string)
-	c.Groups, _ = input["groups"].([]string)
+	if familyName, ok := input["family_name"].(string); ok {
+		c.FamilyName = familyName
+	}
+	if givenName, ok := input["given_name"].(string); ok {
+		c.GivenName = givenName
+	}
+	if groups, ok := input["groups"]; ok {
+		c.Groups = []string{}
+		for _, group := range groups.([]interface{}) {
+			c.Groups = append(c.Groups, group.(string))
+		}
+	}
 	//identities
 	if identities, ok := input["identities"]; ok && identities != nil {
 		c.Identities = []SocialIdentity{}
@@ -242,9 +284,18 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 			}
 		}
 	}
-	c.Infos, _ = input["infos"].(map[string]string)
-	c.NamePrefix, _ = input["name_prefix"].(string)
-	c.NameSuffix, _ = input["name_suffix"].(string)
+	if infos, ok := input["infos"].(map[string]interface{}); ok && infos != nil {
+		c.Infos = make(map[string]string)
+		for k, v := range infos {
+			c.Infos[k] = v.(string)
+		}
+	}
+	if namePrefix, ok := input["name_prefix"].(string); ok {
+		c.NamePrefix = namePrefix
+	}
+	if nameSuffix, ok := input["name_suffix"].(string); ok {
+		c.NameSuffix = nameSuffix
+	}
 	//organizations
 	if orgas, ok := input["organizations"]; ok && orgas != nil {
 		c.Organizations = []Organization{}
@@ -288,8 +339,15 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 		PF.UnmarshalMap(pf.(map[string]interface{}))
 		c.PrivacyFeatures = PF
 	}
-	c.Tags, _ = input["tags"].([]string)
-	c.Title, _ = input["title"].(string)
+	if tags, ok := input["tags"].([]interface{}); ok && tags != nil {
+		c.Tags = []string{}
+		for _, tag := range tags {
+			c.Tags = append(c.Tags, tag.(string))
+		}
+	}
+	if title, ok := input["title"].(string); ok {
+		c.Title = title
+	}
 	if user_id, ok := input["user_id"].(string); ok {
 		if id, err := uuid.FromString(user_id); err == nil {
 			c.UserId.UnmarshalBinary(id.Bytes())

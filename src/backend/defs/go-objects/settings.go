@@ -39,15 +39,30 @@ func (s *Settings) UnmarshalCQLMap(input map[string]interface{}) {
 }
 
 func (s *Settings) UnmarshalMap(input map[string]interface{}) error {
-	s.ContactDisplayOrder, _ = input["contact_display_order"].(string)
-	s.ContactDisplayFormat, _ = input["contact_display_format"].(string)
-	s.DefaultLocale, _ = input["default_locale"].(string)
-	s.MessageDisplayFormat, _ = input["message_display_format"].(string)
-	delay, _ := input["notification_delay_disappear"].(float64)
-	s.NotificationDelayDisappear = int(delay)
-	s.NotificationEnabled, _ = input["notification_enabled"].(bool)
-	s.NotificationSoundEnabled, _ = input["notification_sound_enabled"].(bool)
-	s.NotificationMessagePreview, _ = input["notification_message_preview"].(string)
+	if contactDisplayOrder, ok := input["contact_display_order"].(string); ok {
+		s.ContactDisplayOrder = contactDisplayOrder
+	}
+	if contactDisplayFormat, ok := input["contact_display_format"].(string); ok {
+		s.ContactDisplayFormat = contactDisplayFormat
+	}
+	if defaultLocale, ok := input["default_locale"].(string); ok {
+		s.DefaultLocale = defaultLocale
+	}
+	if messageDisplayFormat, ok := input["message_display_format"].(string); ok {
+		s.MessageDisplayFormat = messageDisplayFormat
+	}
+	if delay, ok := input["notification_delay_disappear"].(float64); ok {
+		s.NotificationDelayDisappear = int(delay)
+	}
+	if notificationEnabled, ok := input["notification_enabled"].(bool); ok {
+		s.NotificationEnabled = notificationEnabled
+	}
+	if notificationSoundEnabled, ok := input["notification_sound_enabled"].(bool); ok {
+		s.NotificationSoundEnabled = notificationSoundEnabled
+	}
+	if notificationMessagePreview, ok := input["notification_message_preview"].(string); ok {
+		s.NotificationMessagePreview = notificationMessagePreview
+	}
 	if userID, ok := input["user_id"].(string); ok {
 		if id, err := uuid.FromString(userID); err == nil {
 			s.UserId.UnmarshalBinary(id.Bytes())

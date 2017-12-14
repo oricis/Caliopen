@@ -91,15 +91,12 @@ func (tag *Tag) UnmarshalMap(input map[string]interface{}) error {
 	if il, ok := input["importance_level"].(float64); ok {
 		tag.Importance_level = int32(il)
 	}
-
 	if label, ok := input["label"].(string); ok {
 		tag.Label = label
 	}
-
 	if name, ok := input["name"].(string); ok {
 		tag.Name = name
 	}
-
 	if tt, ok := input["type"].(string); ok {
 		tag.Type = TagType(tt)
 	}

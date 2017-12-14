@@ -18,20 +18,24 @@ type PrivacyIndex struct {
 
 func (pi *PrivacyIndex) UnmarshalMap(input map[string]interface{}) error {
 
-	pi_comp, _ := input["comportment"].(float64)
-	pi.Comportment = int(pi_comp)
+	if pi_comp, ok := input["comportment"].(float64); ok {
+		pi.Comportment = int(pi_comp)
+	}
 
-	pi_ctx, _ := input["context"].(float64)
-	pi.Context = int(pi_ctx)
+	if pi_ctx, ok := input["context"].(float64); ok {
+		pi.Context = int(pi_ctx)
+	}
 
 	if date, ok := input["date_update"]; ok {
 		pi.DateUpdate, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
 
-	pi_tech, _ := input["technic"].(float64)
-	pi.Technic = int(pi_tech)
+	if pi_tech, ok := input["technic"].(float64); ok {
+		pi.Technic = int(pi_tech)
+	}
 
-	pi_ver, _ := input["version"].(float64)
-	pi.Version = int(pi_ver)
+	if pi_ver, ok := input["version"].(float64); ok {
+		pi.Version = int(pi_ver)
+	}
 	return nil //TODO: errors handling
 }
