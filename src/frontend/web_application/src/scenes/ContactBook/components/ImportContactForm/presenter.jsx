@@ -3,11 +3,19 @@ import PropTypes from 'prop-types';
 import InputFileGroup from '../../../../components/form/InputFileGroup';
 import Button from '../../../../components/Button';
 import Spinner from '../../../../components/Spinner';
+import { getConfig } from '../../../../services/config';
+
 
 import './style.scss';
 
 const VALID_EXT = ['.vcf', '.vcard']; // Valid file extensions for input#file
-const MAX_SIZE = 5000000;
+const getMaxSize = (literalSize) => {
+  const numberSize = literalSize.toLowerCase()
+    .replace('kb', '000')
+    .replace('mb', '000000');
+
+  return Number(numberSize);
+};
 
 class ImportContactForm extends Component {
   static propTypes = {
@@ -81,6 +89,7 @@ class ImportContactForm extends Component {
 
   render() {
     const { __, formatNumber, hasImported, errors, formAction } = this.props;
+    const { maxBodySize } = getConfig();
 
     return (
       <form
@@ -96,7 +105,7 @@ class ImportContactForm extends Component {
             errors={errors}
             descr={__('import-contact.form.descr')}
             fileTypes={VALID_EXT}
-            maxSize={MAX_SIZE}
+            maxSize={getMaxSize(maxBodySize)}
             __={__}
             formatNumber={formatNumber}
           />
