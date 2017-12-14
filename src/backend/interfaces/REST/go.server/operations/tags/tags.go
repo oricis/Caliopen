@@ -83,7 +83,7 @@ func RetrieveTag(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	if user_id != "" && tag_name != "" {
+	if user_id != "" {
 		tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(user_id, tag_name)
 		if err != nil {
 			e := swgErr.New(http.StatusFailedDependency, err.Error())

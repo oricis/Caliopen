@@ -53,11 +53,12 @@ func (cb *CassandraBackend) RetrieveTag(user_id, name string) (tag Tag, err erro
 		err = errors.New("tag not found")
 		return
 	}
-
+	tag = Tag{}
+	err = tag.UnmarshalCQLMap(tags[0])
 	if err != nil {
-		return Tag{}, err
+		return
 	}
-	return
+	return tag, nil
 }
 
 func (cb *CassandraBackend) UpdateTag(tag *Tag) error {
