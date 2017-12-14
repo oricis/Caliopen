@@ -8616,15 +8616,15 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "tag_id": {
-                        "type": "string"
-                      },
                       "type": {
                         "type": "string",
                         "enum": [
                           "user",
                           "system"
                         ]
+                      },
+                      "label": {
+                        "type": "string"
                       },
                       "name": {
                         "type": "string"
@@ -8634,9 +8634,6 @@
                         "format": "int32"
                       }
                     },
-                    "required": [
-                      "label"
-                    ],
                     "additionalProperties": false
                   }
                 }
@@ -8666,6 +8663,9 @@
             "schema": {
               "type": "object",
               "properties": {
+                "label": {
+                  "type": "string"
+                },
                 "name": {
                   "type": "string"
                 },
@@ -8801,15 +8801,15 @@
                   "type": "string",
                   "format": "date-time"
                 },
-                "tag_id": {
-                  "type": "string"
-                },
                 "type": {
                   "type": "string",
                   "enum": [
                     "user",
                     "system"
                   ]
+                },
+                "label": {
+                  "type": "string"
                 },
                 "name": {
                   "type": "string"
@@ -8819,9 +8819,6 @@
                   "format": "int32"
                 }
               },
-              "required": [
-                "label"
-              ],
               "additionalProperties": false
             }
           },
@@ -8878,19 +8875,27 @@
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
+                "label": {
                   "type": "string"
+                },
+                "importance_level": {
+                  "type": "integer",
+                  "format": "int32"
                 },
                 "current_state": {
                   "type": "object",
                   "properties": {
                     "name": {
                       "type": "string"
+                    },
+                    "importance_level": {
+                      "type": "integer",
+                      "format": "int32"
                     }
                   },
                   "additionalProperties": false,
                   "required": [
-                    "name"
+                    "current_state"
                   ]
                 }
               },

@@ -233,17 +233,17 @@ class NewContact(Model):
     family_name = StringType()
     given_name = StringType()
     title = StringType()
-    groups = ListType(StringType)
+    groups = ListType(StringType())
     identities = ListType(ModelType(NewSocialIdentity), default=lambda: [])
     ims = ListType(ModelType(NewIM), default=lambda: [], )
-    infos = DictType(StringType)
+    infos = DictType(StringType())
     name_prefix = StringType()
     name_suffix = StringType()
     organizations = ListType(ModelType(NewOrganization), default=lambda: [])
     phones = ListType(ModelType(NewPhone), default=lambda: [])
-    privacy_features = DictType(StringType, default=lambda: {})
+    privacy_features = DictType(StringType(), default=lambda: {})
     public_keys = ListType(ModelType(NewPublicKey), default=lambda: [])
-    tags = ListType(UUIDType(), default=lambda: [])
+    tags = ListType(StringType(), default=lambda: [])
 
     class Options:
         serialize_when_none = False
@@ -279,7 +279,7 @@ class ShortContact(Model):
     contact_id = UUIDType()
     family_name = StringType()
     given_name = StringType()
-    tags = ListType(UUIDType(), default=lambda: [])
+    tags = ListType(StringType(), default=lambda: [])
     title = StringType()
     pi = ModelType(PIParameter)
 

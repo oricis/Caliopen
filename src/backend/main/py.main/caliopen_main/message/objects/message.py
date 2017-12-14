@@ -60,7 +60,7 @@ class Message(ObjectIndexable):
         'pi': PIObject,
         'raw_msg_id': UUID,
         'subject': types.StringType,
-        'tags': [UUID],
+        'tags': [types.StringType],
         'type': types.StringType,
         'user_id': UUID,
     }

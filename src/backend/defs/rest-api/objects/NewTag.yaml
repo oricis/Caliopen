@@ -1,7 +1,9 @@
 ---
 type: object
 properties:
-  name:            # editable by user.
+  label:
+    type: string
+  name:
     type: string
   importance_level:
     type: integer

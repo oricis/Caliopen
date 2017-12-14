@@ -6,7 +6,7 @@ import uuid
 import datetime
 
 from caliopen_main.common.objects.base import ObjectUser
-from caliopen_main.user.store import UserTag as ModelUSerTag
+from caliopen_main.user.store import UserTag as ModelUserTag
 
 import logging
 log = logging.getLogger(__name__)
@@ -19,12 +19,12 @@ class UserTag(ObjectUser):
         'date_insert': datetime.datetime,
         'importance_level': types.IntType,
         'name': types.StringType,
-        'tag_id': uuid.UUID,
+        'label': types.StringType,
         'type': types.StringType,
         'user_id': uuid.UUID
     }
 
-    _model_class = ModelUSerTag
+    _model_class = ModelUserTag
     _pkey_name = 'tag_id'
 
     def delete_db(self):

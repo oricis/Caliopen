@@ -116,7 +116,7 @@ class Contact(BaseModel, IndexedModelMixin):
     emails = columns.List(columns.UserDefinedType(Email))
     family_name = columns.Text()
     given_name = columns.Text()
-    groups = columns.List(columns.Text)
+    groups = columns.List(columns.Text())
     identities = columns.List(columns.UserDefinedType(SocialIdentity))
     ims = columns.List(columns.UserDefinedType(IM))
     infos = columns.Map(columns.Text, columns.Text)
@@ -126,7 +126,7 @@ class Contact(BaseModel, IndexedModelMixin):
     phones = columns.List(columns.UserDefinedType(Phone))
     pi = columns.UserDefinedType(PIModel)
     privacy_features = columns.Map(columns.Text(), columns.Text())
-    tags = columns.List(columns.UUID)
+    tags = columns.List(columns.Text())
     title = columns.Text()  # computed value, read only
 
 

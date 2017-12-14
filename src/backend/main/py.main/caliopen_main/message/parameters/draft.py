@@ -50,9 +50,7 @@ class Draft(NewInboundMessage):
         """
         try:
             self.validate()
-            if hasattr(self, "tags"):
-                raise main_errors.ForbiddenAction(
-                    message="patching tags through parent object is forbidden")
+
         except Exception as exc:
             log.warn("draft validation failed with error {}".format(exc))
             raise exc

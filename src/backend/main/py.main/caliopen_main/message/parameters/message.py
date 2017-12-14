@@ -38,11 +38,11 @@ class NewMessage(Model):
     message_id = UUIDType()
     parent_id = UUIDType()
     participants = ListType(ModelType(Participant), default=lambda: [])
-    privacy_features = DictType(StringType, default=lambda: {})
+    privacy_features = DictType(StringType(), default=lambda: {})
     pi = ModelType(PIParameter)
     raw_msg_id = UUIDType()
     subject = StringType()
-    tags = ListType(UUIDType(), default=lambda: [])
+    tags = ListType(StringType(), default=lambda: [])
     type = StringType(choices=MESSAGE_TYPES)
 
     class Options:

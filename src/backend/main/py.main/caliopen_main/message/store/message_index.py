@@ -5,7 +5,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 from elasticsearch_dsl import Mapping, Nested, Text, Keyword, Date, Boolean, \
     Integer
 from caliopen_storage.store.model import BaseIndexDocument
-from caliopen_main.common.store.tag import IndexedResourceTag
 
 from .attachment_index import IndexedMessageAttachment
 from .external_references_index import IndexedExternalReferences

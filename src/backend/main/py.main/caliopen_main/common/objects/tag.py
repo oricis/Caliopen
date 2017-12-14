@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 ### legacy code.
-# Tags are not anymore nested into other objects as instance, but just as []uuid.
+# Tags are not anymore nested into other objects as objects, but as []string.
 class ResourceTag(ObjectJsonDictifiable):
     """Tag nested in resources."""
 
@@ -22,7 +22,7 @@ class ResourceTag(ObjectJsonDictifiable):
         'date_insert': datetime.datetime,
         'importance_level': types.IntType,
         'name': types.StringType,
-        'tag_id': uuid.UUID,
+        'label': types.StringType,
         'type': types.StringType,
     }
 

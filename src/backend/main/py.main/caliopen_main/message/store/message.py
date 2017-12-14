@@ -43,6 +43,6 @@ class Message(BaseModel, IndexedModelMixin):
     pi = columns.UserDefinedType(PIModel)
     raw_msg_id = columns.UUID()
     subject = columns.Text()  # Subject of email, the message for short
-    tags = columns.List(columns.UUID())
+    tags = columns.List(columns.Text())
     type = columns.Text()
     user_id = columns.UUID(primary_key=True)

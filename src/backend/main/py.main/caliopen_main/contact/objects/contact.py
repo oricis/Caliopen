@@ -68,7 +68,7 @@ class Contact(ObjectIndexable):
         'pi':                  PIObject,
         'privacy_features': types.DictType,
         'public_keys':         [PublicKey],
-        'tags': [UUID],
+        'tags': [types.StringType],
         'title':               types.StringType,
         'user_id':             UUID
     }
