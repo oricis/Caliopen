@@ -30,7 +30,7 @@ type (
 		PrivacyIndex    *PrivacyIndex     `cql:"pi"                 json:"pi"`
 		PublicKeys      []PublicKey       `cql:"public_keys"        json:"public_keys"`
 		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features"`
-		Tags            []UUID            `cql:"tags"               json:"tags"`
+		Tags            []UUID            `cql:"tags"               json:"tags"                 patch:"user"`
 		Title           string            `cql:"title"              json:"title"`
 		UserId          UUID              `cql:"user_id"            json:"user_id"`
 	}
@@ -40,86 +40,109 @@ type (
 // typical usage is for unmarshaling response from Cassandra backend
 func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 	contact.AdditionalName, _ = input["additional_name"].(string)
-	for _, address := range input["addresses"].([]map[string]interface{}) {
-		pa := PostalAddress{}
-		addressId, _ := address["address_id"].(gocql.UUID)
-		pa.AddressId.UnmarshalBinary(addressId.Bytes())
-		pa.City, _ = address["city"].(string)
-		pa.Country, _ = address["country"].(string)
-		pa.IsPrimary, _ = address["is_primary"].(bool)
-		pa.Label, _ = address["label"].(string)
-		pa.PostalCode, _ = address["postal_code"].(string)
-		pa.Region, _ = address["region"].(string)
-		pa.Street, _ = address["street"].(string)
-		pa.Type, _ = address["type"].(string)
-		contact.Addresses = append(contact.Addresses, pa)
+	if addresses, ok := input["addresses"]; ok && addresses != nil {
+		contact.Addresses = []PostalAddress{}
+		for _, address := range addresses.([]map[string]interface{}) {
+			pa := PostalAddress{}
+			addressId, _ := address["address_id"].(gocql.UUID)
+			pa.AddressId.UnmarshalBinary(addressId.Bytes())
+			pa.City, _ = address["city"].(string)
+			pa.Country, _ = address["country"].(string)
+			pa.IsPrimary, _ = address["is_primary"].(bool)
+			pa.Label, _ = address["label"].(string)
+			pa.PostalCode, _ = address["postal_code"].(string)
+			pa.Region, _ = address["region"].(string)
+			pa.Street, _ = address["street"].(string)
+			pa.Type, _ = address["type"].(string)
+			contact.Addresses = append(contact.Addresses, pa)
+		}
 	}
+
 	contact.Avatar, _ = input["avatar"].(string)
 	contactId, _ := input["contact_id"].(gocql.UUID)
 	contact.ContactId.UnmarshalBinary(contactId.Bytes())
 	contact.DateInsert, _ = input["date_insert"].(time.Time)
 	contact.DateUpdate, _ = input["date_update"].(time.Time)
 	contact.Deleted, _ = input["deleted"].(bool)
-	for _, email := range input["emails"].([]map[string]interface{}) {
-		e := EmailContact{}
-		e.Address, _ = email["address"].(string)
-		emailId, _ := email["email_id"].(gocql.UUID)
-		e.EmailId.UnmarshalBinary(emailId.Bytes())
-		e.IsPrimary, _ = email["is_primary"].(bool)
-		e.Label, _ = email["label"].(string)
-		e.Type, _ = email["type"].(string)
-		contact.Emails = append(contact.Emails, e)
+	if emails, ok := input["emails"]; ok && emails != nil {
+		contact.Emails = []EmailContact{}
+		for _, email := range emails.([]map[string]interface{}) {
+			e := EmailContact{}
+			e.Address, _ = email["address"].(string)
+			emailId, _ := email["email_id"].(gocql.UUID)
+			e.EmailId.UnmarshalBinary(emailId.Bytes())
+			e.IsPrimary, _ = email["is_primary"].(bool)
+			e.Label, _ = email["label"].(string)
+			e.Type, _ = email["type"].(string)
+			contact.Emails = append(contact.Emails, e)
+		}
 	}
+
 	contact.FamilyName, _ = input["family_name"].(string)
 	contact.GivenName, _ = input["given_name"].(string)
 	contact.Groups, _ = input["groups"].([]string)
-	for _, identity := range input["identities"].([]map[string]interface{}) {
-		i := SocialIdentity{}
-		i.Infos, _ = identity["infos"].(map[string]string)
-		i.Name, _ = identity["name"].(string)
-		socialId, _ := identity["social_id"].(gocql.UUID)
-		i.SocialId.UnmarshalBinary(socialId.Bytes())
-		i.Type, _ = identity["type"].(string)
-		contact.Identities = append(contact.Identities, i)
+	if identities, ok := input["identities"]; ok && identities != nil {
+		contact.Identities = []SocialIdentity{}
+		for _, identity := range identities.([]map[string]interface{}) {
+			i := SocialIdentity{}
+			i.Infos, _ = identity["infos"].(map[string]string)
+			i.Name, _ = identity["name"].(string)
+			socialId, _ := identity["social_id"].(gocql.UUID)
+			i.SocialId.UnmarshalBinary(socialId.Bytes())
+			i.Type, _ = identity["type"].(string)
+			contact.Identities = append(contact.Identities, i)
+		}
 	}
-	for _, im := range input["ims"].([]map[string]interface{}) {
-		i_m := IM{}
-		i_m.Address, _ = im["address"].(string)
-		imid, _ := im["im_id"].(gocql.UUID)
-		i_m.IMId.UnmarshalBinary(imid.Bytes())
-		i_m.IsPrimary, _ = im["is_primary"].(bool)
-		i_m.Label, _ = im["label"].(string)
-		i_m.Protocol, _ = im["protocol"].(string)
-		i_m.Type, _ = im["type"].(string)
-		contact.Ims = append(contact.Ims, i_m)
+	if ims, ok := input["ims"]; ok && ims != nil {
+		contact.Ims = []IM{}
+		for _, im := range ims.([]map[string]interface{}) {
+			i_m := IM{}
+			i_m.Address, _ = im["address"].(string)
+			imid, _ := im["im_id"].(gocql.UUID)
+			i_m.IMId.UnmarshalBinary(imid.Bytes())
+			i_m.IsPrimary, _ = im["is_primary"].(bool)
+			i_m.Label, _ = im["label"].(string)
+			i_m.Protocol, _ = im["protocol"].(string)
+			i_m.Type, _ = im["type"].(string)
+			contact.Ims = append(contact.Ims, i_m)
+		}
 	}
+
 	contact.Infos, _ = input["infos"].(map[string]string)
 	contact.NamePrefix, _ = input["name_prefix"].(string)
 	contact.NameSuffix, _ = input["name_suffix"].(string)
-	for _, org := range input["organizations"].([]map[string]interface{}) {
-		o := Organization{}
-		o.Deleted, _ = org["deleted"].(bool)
-		o.Department, _ = org["department"].(string)
-		o.IsPrimary, _ = org["is_primary"].(bool)
-		o.JobDescription, _ = org["job_description"].(string)
-		o.Label, _ = org["label"].(string)
-		o.Name, _ = org["name"].(string)
-		orgId, _ := org["organization_id"].(gocql.UUID)
-		o.OrganizationId.UnmarshalBinary(orgId.Bytes())
-		o.Title, _ = org["title"].(string)
-		o.Type, _ = org["type"].(string)
-		contact.Organizations = append(contact.Organizations, o)
+	if organizations, ok := input["organizations"]; ok && organizations != nil {
+		contact.Organizations = []Organization{}
+		for _, org := range organizations.([]map[string]interface{}) {
+			o := Organization{}
+			o.Deleted, _ = org["deleted"].(bool)
+			o.Department, _ = org["department"].(string)
+			o.IsPrimary, _ = org["is_primary"].(bool)
+			o.JobDescription, _ = org["job_description"].(string)
+			o.Label, _ = org["label"].(string)
+			o.Name, _ = org["name"].(string)
+			orgId, _ := org["organization_id"].(gocql.UUID)
+			o.OrganizationId.UnmarshalBinary(orgId.Bytes())
+			o.Title, _ = org["title"].(string)
+			o.Type, _ = org["type"].(string)
+			contact.Organizations = append(contact.Organizations, o)
+		}
 	}
-	for _, phone := range input["phones"].([]map[string]interface{}) {
-		p := Phone{}
-		p.IsPrimary, _ = phone["is_primary"].(bool)
-		p.Number, _ = phone["number"].(string)
-		phoneId, _ := phone["phone_id"].(gocql.UUID)
-		p.PhoneId.UnmarshalBinary(phoneId.Bytes())
-		p.Type, _ = phone["type"].(string)
-		p.Uri, _ = phone["uri"].(string)
-		contact.Phones = append(contact.Phones, p)
+
+	if phones, ok := input["phones"]; ok && phones != nil {
+		contact.Phones = []Phone{}
+		for _, phone := range phones.([]map[string]interface{}) {
+			p := Phone{}
+			p.IsPrimary, _ = phone["is_primary"].(bool)
+			p.Number, _ = phone["number"].(string)
+			phoneId, _ := phone["phone_id"].(gocql.UUID)
+			p.PhoneId.UnmarshalBinary(phoneId.Bytes())
+			p.Type, _ = phone["type"].(string)
+			p.Uri, _ = phone["uri"].(string)
+			contact.Phones = append(contact.Phones, p)
+		}
 	}
+
 	if input["pi"] != nil {
 		i_pi, _ := input["pi"].(map[string]interface{})
 		pi := PrivacyIndex{}
@@ -143,11 +166,16 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 	} else {
 		contact.PrivacyFeatures = nil
 	}
-	for _, tag := range input["tags"].([]gocql.UUID) {
-		var t UUID
-		t.UnmarshalBinary(tag.Bytes())
-		contact.Tags = append(contact.Tags, t)
+
+	if tags, ok := input["tags"]; ok && tags != nil {
+		contact.Tags = []UUID{}
+		for _, tag := range tags.([]gocql.UUID) {
+			var t UUID
+			t.UnmarshalBinary(tag.Bytes())
+			contact.Tags = append(contact.Tags, t)
+		}
 	}
+
 	contact.Title, _ = input["title"].(string)
 	userid, _ := input["user_id"].(gocql.UUID)
 	contact.UserId.UnmarshalBinary(userid.Bytes())
@@ -167,6 +195,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	c.AdditionalName, _ = input["additional_name"].(string)
 	//addresses
 	if pa, ok := input["addresses"]; ok && pa != nil {
+		c.Addresses = []PostalAddress{}
 		for _, address := range pa.([]interface{}) {
 			PA := new(PostalAddress)
 			if err := PA.UnmarshalMap(address.(map[string]interface{})); err == nil {
@@ -189,6 +218,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	c.Deleted, _ = input["deleted"].(bool)
 	//emails
 	if emails, ok := input["emails"]; ok && emails != nil {
+		c.Emails = []EmailContact{}
 		for _, email := range emails.([]interface{}) {
 			E := new(EmailContact)
 			if err := E.UnmarshalMap(email.(map[string]interface{})); err == nil {
@@ -202,6 +232,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	c.Groups, _ = input["groups"].([]string)
 	//identities
 	if identities, ok := input["identities"]; ok && identities != nil {
+		c.Identities = []SocialIdentity{}
 		for _, identity := range identities.([]interface{}) {
 			I := new(SocialIdentity)
 			if err := I.UnmarshalMap(identity.(map[string]interface{})); err == nil {
@@ -211,6 +242,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	}
 	//Ims
 	if ims, ok := input["ims"]; ok && ims != nil {
+		c.Ims = []IM{}
 		for _, im := range ims.([]interface{}) {
 			I := new(IM)
 			if err := I.UnmarshalMap(im.(map[string]interface{})); err == nil {
@@ -223,6 +255,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	c.NameSuffix, _ = input["name_suffix"].(string)
 	//organizations
 	if orgas, ok := input["organizations"]; ok && orgas != nil {
+		c.Organizations = []Organization{}
 		for _, orga := range orgas.([]interface{}) {
 			O := new(Organization)
 			if err := O.UnmarshalMap(orga.(map[string]interface{})); err == nil {
@@ -232,6 +265,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	}
 	//phones
 	if phones, ok := input["phones"]; ok && phones != nil {
+		c.Phones = []Phone{}
 		for _, phone := range phones.([]interface{}) {
 			P := new(Phone)
 			if err := P.UnmarshalMap(phone.(map[string]interface{})); err == nil {
@@ -248,6 +282,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	}
 	//PublicKeys
 	if pks, ok := input["public_keys"]; ok {
+		c.PublicKeys = []PublicKey{}
 		for _, pk := range pks.([]interface{}) {
 			K := new(PublicKey)
 			if err := K.UnmarshalMap(pk.(map[string]interface{})); err == nil {
@@ -263,6 +298,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	}
 	//tags
 	if tags, ok := input["tags"]; ok && tags != nil {
+		c.Tags = []UUID{}
 		for _, tag := range tags.([]interface{}) {
 			id, err := uuid.FromString(tag.(string))
 			if err == nil {
@@ -281,4 +317,23 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	}
 
 	return nil
+}
+
+func (c *Contact) JsonTags() map[string]string {
+	return jsonTags(c)
+}
+
+func (c *Contact) NewEmpty() interface{} {
+	c = new(Contact)
+	c.Addresses = []PostalAddress{}
+	c.Emails = []EmailContact{}
+	c.Groups = []string{}
+	c.Identities = []SocialIdentity{}
+	c.Ims = []IM{}
+	c.Infos = map[string]string{}
+	c.Organizations = []Organization{}
+	c.Phones = []Phone{}
+	c.PublicKeys = []PublicKey{}
+	c.Tags = []UUID{}
+	return c
 }

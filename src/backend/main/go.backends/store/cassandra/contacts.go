@@ -11,7 +11,7 @@ import (
 )
 
 func (cb *CassandraBackend) GetContact(user_id, contact_id string) (contact *Contact, err error) {
-	contact = &Contact{}
+	contact = new(Contact).NewEmpty().(*Contact)
 	m := map[string]interface{}{}
 	q := cb.Session.Query(`SELECT * FROM contact WHERE user_id = ? AND contact_id = ?`, user_id, contact_id)
 	err = q.MapScan(m)

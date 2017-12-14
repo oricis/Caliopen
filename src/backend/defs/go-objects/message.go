@@ -37,7 +37,7 @@ type Message struct {
 	PrivacyIndex        *PrivacyIndex      `cql:"pi"                       json:"pi"`
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
 	Subject             string             `cql:"subject"                  json:"subject"          `
-	Tags                []UUID             `cql:"tags"                     json:"tags"             `
+	Tags                []UUID             `cql:"tags"                     json:"tags"            patch:"user" `
 	Type                string             `cql:"type"                     json:"type"             `
 	User_id             UUID               `cql:"user_id"                  json:"user_id"                  elastic:"omit"      formatter:"rfc4122"`
 }
@@ -167,6 +167,7 @@ func (msg *Message) UnmarshalJSON(b []byte) error {
 
 func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 	if attachments, ok := input["attachments"]; ok && attachments != nil {
+		msg.Attachments = []Attachment{}
 		for _, attachment := range attachments.([]interface{}) {
 			A := new(Attachment)
 			if err := A.UnmarshalMap(attachment.(map[string]interface{})); err == nil {
@@ -197,6 +198,7 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 		msg.External_references.UnmarshalMap(ex_ref.(map[string]interface{}))
 	}
 	if identities, ok := input["identities"]; ok && identities != nil {
+		msg.Identities = []Identity{}
 		for _, identity := range identities.([]interface{}) {
 			I := new(Identity)
 			if err := I.UnmarshalMap(identity.(map[string]interface{})); err == nil {
@@ -224,6 +226,7 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 
 	msg.Participants = []Participant{}
 	if participants, ok := input["participants"]; ok && participants != nil {
+		msg.Participants = []Participant{}
 		for _, participant := range participants.([]interface{}) {
 			P := new(Participant)
 			if err := P.UnmarshalMap(participant.(map[string]interface{})); err == nil {
@@ -251,6 +254,7 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 	msg.Subject, _ = input["subject"].(string)
 
 	if tags, ok := input["tags"]; ok && tags != nil {
+		msg.Tags = []UUID{}
 		for _, tag := range tags.([]interface{}) {
 			id, err := uuid.FromString(tag.(string))
 			if err == nil {
@@ -274,6 +278,7 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 // unmarshal a map[string]interface{} coming from gocql
 func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	if _, ok := input["attachments"]; ok {
+		msg.Attachments = []Attachment{}
 		for _, attachment := range input["attachments"].([]map[string]interface{}) {
 			a := Attachment{}
 			a.Content_type, _ = attachment["content_type"].(string)
@@ -306,6 +311,7 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 		msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
 	}
 	if identities, ok := input["identities"]; ok && identities != nil {
+		msg.Identities = []Identity{}
 		for _, identity := range identities.([]map[string]interface{}) {
 			i := Identity{}
 			i.Identifier, _ = identity["identifier"].(string)
@@ -328,6 +334,7 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	msg.Parent_id.UnmarshalBinary(parent_id.Bytes())
 
 	if participants, ok := input["participants"]; ok && participants != nil {
+		msg.Participants = []Participant{}
 		for _, participant := range participants.([]map[string]interface{}) {
 			p := Participant{}
 			p.Address, _ = participant["address"].(string)
@@ -363,6 +370,7 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	msg.Subject, _ = input["subject"].(string)
 
 	if tags, ok := input["tags"]; ok && tags != nil {
+		msg.Tags = []UUID{}
 		for _, tag := range tags.([]gocql.UUID) {
 			var t UUID
 			t.UnmarshalBinary(tag.Bytes())
@@ -378,12 +386,13 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	return nil //TODO: error handling
 }
 
-// implementation of the CaliopenObject interface
+// part of the CaliopenObject interface
 func (msg *Message) JsonTags() (tags map[string]string) {
 	return jsonTags(msg)
 }
 
 // NewEmpty returns a new empty initialized sibling of itself
+// part of the CaliopenObject interface
 func (msg *Message) NewEmpty() interface{} {
 	m := new(Message)
 	m.Attachments = []Attachment{}

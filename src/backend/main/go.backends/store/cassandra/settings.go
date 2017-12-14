@@ -5,12 +5,12 @@
 package store
 
 import (
-	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
-func (cb *CassandraBackend) GetSettings(user_id string) (settings *obj.Settings, err error) {
+func (cb *CassandraBackend) GetSettings(user_id string) (settings *Settings, err error) {
 
-	settings = &obj.Settings{}
+	settings = new(Settings).NewEmpty().(*Settings)
 	m := map[string]interface{}{}
 	q := cb.Session.Query(`SELECT * FROM settings WHERE user_id = ?`, user_id)
 	err = q.MapScan(m)
