@@ -14,21 +14,21 @@ func (rest *RESTfacility) RetrieveUserTags(user_id string) (tags []Tag, err erro
 
 // CreateTag :
 // - adds the tag in db for user if it doesn't exist yet
-// - modifies tag in-place to add the tag_id returned by store
+// - modifies tag in-place to add the date_insert returned by store
 func (rest *RESTfacility) CreateTag(tag *Tag) error {
 	return rest.store.CreateTag(tag)
 }
 
-func (rest *RESTfacility) RetrieveTag(user_id, tag_id string) (tag Tag, err error) {
-	return rest.store.RetrieveTag(user_id, tag_id)
+func (rest *RESTfacility) RetrieveTag(user_id, tag_name string) (tag Tag, err error) {
+	return rest.store.RetrieveTag(user_id, tag_name)
 }
 
 // PatchTag is a shortcut for REST api to call two methods :
 // - UpdateWithPatch () to retrieve the tag and update it
 // - then UpdateTag() to save updated tag to stores if everything went good.
-func (rest *RESTfacility) PatchTag(patch []byte, user_id, tag_id string) error {
+func (rest *RESTfacility) PatchTag(patch []byte, user_id, tag_name string) error {
 
-	current_tag, err := rest.RetrieveTag(user_id, tag_id)
+	current_tag, err := rest.RetrieveTag(user_id, tag_name)
 	if err != nil {
 		return err
 	}
@@ -46,10 +46,9 @@ func (rest *RESTfacility) PatchTag(patch []byte, user_id, tag_id string) error {
 // only if tag is a user tag.
 func (rest *RESTfacility) UpdateTag(tag *Tag) error {
 	user_id := tag.User_id.String()
-	tag_id := tag.Tag_id.String()
-	if user_id != "" && tag_id != "" {
+	if user_id != "" && tag.Name != "" {
 
-		db_tag, err := rest.store.RetrieveTag(user_id, tag_id)
+		db_tag, err := rest.store.RetrieveTag(user_id, tag.Name)
 		if err != nil {
 			return err
 		}
@@ -62,15 +61,15 @@ func (rest *RESTfacility) UpdateTag(tag *Tag) error {
 		return rest.store.UpdateTag(tag)
 
 	} else {
-		return errors.New("invalid tag's tag_id and/or user_id")
+		return errors.New("invalid tag's name and/or user_id")
 	}
 }
 
 // DeleteTag deletes a tag in store,
 // only if tag is a user tag.
-func (rest *RESTfacility) DeleteTag(user_id, tag_id string) error {
+func (rest *RESTfacility) DeleteTag(user_id, tag_name string) error {
 
-	tag, err := rest.store.RetrieveTag(user_id, tag_id)
+	tag, err := rest.store.RetrieveTag(user_id, tag_name)
 	if err != nil {
 		return err
 	}
@@ -78,24 +77,24 @@ func (rest *RESTfacility) DeleteTag(user_id, tag_id string) error {
 		return errors.New("system tags can't be deleted by user")
 	}
 
-	return rest.store.DeleteTag(user_id, tag_id)
+	return rest.store.DeleteTag(user_id, tag_name)
 }
 
 // UpdateResourceTags :
-// - checks that tag_ids within patch belong to user and are unique,
+// - checks that tag_names within patch belong to user and are unique,
 // - calls generic UpdateWithPatch func to patch the resource,
 // - saves and indexes updated resource.
 // It is caller responsibility to call this func with a well-formed patch that has only "tags" properties
 func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType string, patch []byte) error {
 	var err error
-	// 1. check that tag_ids within patch belong to user and are unique
+	// 1. check that tag_names within patch belong to user and are unique
 	tags, err := rest.RetrieveUserTags(userID)
 	if err != nil {
 		return err
 	}
 	userTagsMap := make(map[string]bool)
 	for _, tag := range tags {
-		userTagsMap[tag.Tag_id.String()] = true
+		userTagsMap[tag.Name] = true
 	}
 
 	p, err := simplejson.NewJson(patch)
@@ -107,7 +106,7 @@ func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType st
 	for _, tag := range p.Get("tags").MustStringArray() {
 		// is tag belonging to user ?
 		if _, ok := userTagsMap[tag]; !ok {
-			err = fmt.Errorf("[RESTfacility] UpdateResourceTags : tag with id <%s> does not belong to user <%s>", tag, userID)
+			err = fmt.Errorf("[RESTfacility] UpdateResourceTags : tag with name <%s> does not belong to user <%s>", tag, userID)
 			break
 		}
 		// is tag unique ?
@@ -149,7 +148,6 @@ func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType st
 	}
 
 	// 3. store and index updated resource
-
 	switch resourceType {
 	case MessageType:
 		update := map[string]interface{}{

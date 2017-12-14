@@ -61,7 +61,7 @@ func CreateTag(ctx *gin.Context) {
 			ctx.Abort()
 		} else {
 			ctx.JSON(http.StatusOK, struct{ Location string }{
-				http_middleware.RoutePrefix + http_middleware.TagsRoute + "/" + tag.Tag_id.String(),
+				http_middleware.RoutePrefix + http_middleware.TagsRoute + "/" + tag.Name,
 			})
 		}
 	} else {
@@ -73,18 +73,18 @@ func CreateTag(ctx *gin.Context) {
 
 }
 
-// RetrieveTage fetches a tag with tag_id & user_id
+// RetrieveTag fetches a tag with tag_name & user_id
 func RetrieveTag(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	tag_id, err := operations.NormalizeUUIDstring(ctx.Param("tag_id"))
-	if err != nil {
-		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+	tag_name := ctx.Param("tag_name")
+	if tag_name == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "missing tag name")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	if user_id != "" && tag_id != "" {
-		tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(user_id, tag_id)
+	if user_id != "" && tag_name != "" {
+		tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(user_id, tag_name)
 		if err != nil {
 			e := swgErr.New(http.StatusFailedDependency, err.Error())
 			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
@@ -103,7 +103,7 @@ func RetrieveTag(ctx *gin.Context) {
 func PatchTag(ctx *gin.Context) {
 	var err error
 	var user_id string
-	var tag_id string
+	var tag_name string
 
 	if id, ok := ctx.Get("user_id"); !ok {
 		e := swgErr.New(http.StatusUnprocessableEntity, "user_id is missing")
@@ -119,9 +119,9 @@ func PatchTag(ctx *gin.Context) {
 		}
 	}
 
-	tag_id, err = operations.NormalizeUUIDstring(ctx.Param("tag_id"))
-	if err != nil || tag_id == "" {
-		e := swgErr.New(http.StatusUnprocessableEntity, "tag_id is invalid or missing")
+	tag_name = ctx.Param("tag_name")
+	if tag_name == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "tag_name is missing")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
@@ -136,7 +136,7 @@ func PatchTag(ctx *gin.Context) {
 		return
 	}
 
-	err = caliopen.Facilities.RESTfacility.PatchTag(patch, user_id, tag_id)
+	err = caliopen.Facilities.RESTfacility.PatchTag(patch, user_id, tag_name)
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
@@ -149,15 +149,15 @@ func PatchTag(ctx *gin.Context) {
 
 func DeleteTag(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	tag_id, err := operations.NormalizeUUIDstring(ctx.Param("tag_id"))
-	if err != nil {
-		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+	tag_name := ctx.Param("tag_name")
+	if tag_name == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "tag_name is missing")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	if user_id != "" && tag_id != "" {
-		err := caliopen.Facilities.RESTfacility.DeleteTag(user_id, tag_id)
+	if user_id != "" {
+		err := caliopen.Facilities.RESTfacility.DeleteTag(user_id, tag_name)
 		if err != nil {
 			e := swgErr.New(http.StatusFailedDependency, err.Error())
 			http_middleware.ServeError(ctx.Writer, ctx.Request, e)

@@ -3,7 +3,6 @@ package objects
 import (
 	"encoding/json"
 	"github.com/gocql/gocql"
-	"github.com/golang/lint/testdata"
 	"github.com/satori/go.uuid"
 	"time"
 )
