@@ -37,7 +37,7 @@ type Message struct {
 	PrivacyIndex        *PrivacyIndex      `cql:"pi"                       json:"pi"`
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
 	Subject             string             `cql:"subject"                  json:"subject"          `
-	Tags                []UUID             `cql:"tags"                     json:"tags"            patch:"user" `
+	Tags                []string           `cql:"tags"                     json:"tags"            patch:"user" `
 	Type                string             `cql:"type"                     json:"type"             `
 	User_id             UUID               `cql:"user_id"                  json:"user_id"                  elastic:"omit"      formatter:"rfc4122"`
 }
@@ -252,19 +252,7 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	msg.Subject, _ = input["subject"].(string)
-
-	if tags, ok := input["tags"]; ok && tags != nil {
-		msg.Tags = []UUID{}
-		for _, tag := range tags.([]interface{}) {
-			id, err := uuid.FromString(tag.(string))
-			if err == nil {
-				var t UUID
-				t.UnmarshalBinary(id.Bytes())
-				msg.Tags = append(msg.Tags, t)
-			}
-		}
-	}
-
+	msg.Tags, _ = input["tags"].([]string)
 	msg.Type, _ = input["type"].(string)
 	if user_id, ok := input["user_id"].(string); ok {
 		if id, err := uuid.FromString(user_id); err == nil {
@@ -368,16 +356,7 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 		msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
 	}
 	msg.Subject, _ = input["subject"].(string)
-
-	if tags, ok := input["tags"]; ok && tags != nil {
-		msg.Tags = []UUID{}
-		for _, tag := range tags.([]gocql.UUID) {
-			var t UUID
-			t.UnmarshalBinary(tag.Bytes())
-			msg.Tags = append(msg.Tags, t)
-		}
-	}
-
+	msg.Tags, _ = input["tags"].([]string)
 	msg.Type, _ = input["type"].(string)
 	if user_id, ok := input["user_id"].(gocql.UUID); ok {
 		msg.User_id.UnmarshalBinary(user_id.Bytes())
@@ -401,6 +380,6 @@ func (msg *Message) NewEmpty() interface{} {
 	m.Participants = []Participant{}
 	m.Privacy_features = make(PrivacyFeatures)
 	m.PrivacyIndex = &PrivacyIndex{}
-	m.Tags = []UUID{}
+	m.Tags = []string{}
 	return m
 }

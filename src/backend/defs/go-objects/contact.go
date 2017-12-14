@@ -30,7 +30,7 @@ type (
 		PrivacyIndex    *PrivacyIndex     `cql:"pi"                 json:"pi"`
 		PublicKeys      []PublicKey       `cql:"public_keys"        json:"public_keys"`
 		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features"`
-		Tags            []UUID            `cql:"tags"               json:"tags"                 patch:"user"`
+		Tags            []string          `cql:"tags"               json:"tags"                 patch:"user"`
 		Title           string            `cql:"title"              json:"title"`
 		UserId          UUID              `cql:"user_id"            json:"user_id"`
 	}
@@ -167,15 +167,7 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 		contact.PrivacyFeatures = nil
 	}
 
-	if tags, ok := input["tags"]; ok && tags != nil {
-		contact.Tags = []UUID{}
-		for _, tag := range tags.([]gocql.UUID) {
-			var t UUID
-			t.UnmarshalBinary(tag.Bytes())
-			contact.Tags = append(contact.Tags, t)
-		}
-	}
-
+	contact.Tags, _ = input["tags"].([]string)
 	contact.Title, _ = input["title"].(string)
 	userid, _ := input["user_id"].(gocql.UUID)
 	contact.UserId.UnmarshalBinary(userid.Bytes())
@@ -296,19 +288,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 		PF.UnmarshalMap(pf.(map[string]interface{}))
 		c.PrivacyFeatures = PF
 	}
-	//tags
-	if tags, ok := input["tags"]; ok && tags != nil {
-		c.Tags = []UUID{}
-		for _, tag := range tags.([]interface{}) {
-			id, err := uuid.FromString(tag.(string))
-			if err == nil {
-				var t UUID
-				t.UnmarshalBinary(id.Bytes())
-				c.Tags = append(c.Tags, t)
-			}
-		}
-	}
-
+	c.Tags, _ = input["tags"].([]string)
 	c.Title, _ = input["title"].(string)
 	if user_id, ok := input["user_id"].(string); ok {
 		if id, err := uuid.FromString(user_id); err == nil {
@@ -334,6 +314,6 @@ func (c *Contact) NewEmpty() interface{} {
 	c.Organizations = []Organization{}
 	c.Phones = []Phone{}
 	c.PublicKeys = []PublicKey{}
-	c.Tags = []UUID{}
+	c.Tags = []string{}
 	return c
 }

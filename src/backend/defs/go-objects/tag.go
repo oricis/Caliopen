@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
+	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"gopkg.in/oleiade/reflections.v1"
 	"time"
@@ -17,12 +18,14 @@ import (
 // for example :
 // If the "patch" tag is missing or not set to "user", property cannot be modified directly by an "UserInitiator" with a call to a PATCH method.
 type Tag struct {
+	// compound index
+	User_id UUID   `cql:"user_id" json:"user_id" formatter:"rfc4122"` // primary key
+	Name    string `cql:"name" json:"name"`                           // primary key
+	// values
 	Date_insert      time.Time `cql:"date_insert" json:"date_insert" formatter:"RFC3339Milli"`
-	Importance_level int32     `cql:"importance_level" json:"importance_level"`
-	Name             string    `cql:"name" json:"name" patch:"user"`
-	Tag_id           UUID      `cql:"tag_id" json:"tag_id" formatter:"rfc4122"`
+	Importance_level int32     `cql:"importance_level" json:"importance_level" patch:"user"`
+	Label            string    `cql:"label" json:"label" patch:"user"`
 	Type             TagType   `cql:"type" json:"type"`
-	User_id          UUID      `cql:"user_id" json:"user_id" formatter:"rfc4122"`
 }
 
 type TagType string
@@ -89,14 +92,14 @@ func (tag *Tag) UnmarshalMap(input map[string]interface{}) error {
 		tag.Importance_level = int32(il)
 	}
 
+	if label, ok := input["label"].(string); ok {
+		tag.Label = label
+	}
+
 	if name, ok := input["name"].(string); ok {
 		tag.Name = name
 	}
-	if id, ok := input["tag_id"].(string); ok {
-		if id, err := uuid.FromString(id); err == nil {
-			tag.Tag_id.UnmarshalBinary(id.Bytes())
-		}
-	}
+
 	if tt, ok := input["type"].(string); ok {
 		tag.Type = TagType(tt)
 	}
@@ -106,6 +109,19 @@ func (tag *Tag) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	return nil //TODO: errors handling
+}
+
+// unmarshal a map[string]interface{} that must owns all Tag's fields
+// typical usage is for unmarshaling response from Cassandra backend
+func (tag *Tag) UnmarshalCQLMap(input map[string]interface{}) error {
+	tag.Date_insert = input["date_insert"].(time.Time)
+	tag.Importance_level = int32(input["importance_level"].(int))
+	tag.Label = input["label"].(string)
+	tag.Name = input["name"].(string)
+	tag.Type = TagType(input["type"].(string))
+	userID, _ := input["user_id"].(gocql.UUID)
+	tag.User_id.UnmarshalBinary(userID.Bytes())
+	return nil
 }
 
 func (tag *Tag) UnmarshalJSON(b []byte) error {
