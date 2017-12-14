@@ -3,6 +3,7 @@ package tags
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
@@ -10,6 +11,7 @@ import (
 	swgErr "github.com/go-openapi/errors"
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
+	"github.com/tidwall/gjson"
 	"gopkg.in/gin-gonic/gin.v1"
 	"gopkg.in/gin-gonic/gin.v1/binding"
 	"io/ioutil"
@@ -169,9 +171,92 @@ func DeleteTag(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	}
+	// TODO : remove tag refs. nested in resources
 }
 
 // PatchResourceWithTag apply the payload (a PATCH tag json) to a resource to update its tags
-func PatchResourceWithTag(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNotImplemented)
+func PatchResourceWithTags(ctx *gin.Context) {
+	var err error
+	var userID string
+	var resourceID string
+	var patch []byte
+	var resourceType string
+
+	if id, ok := ctx.Get("user_id"); !ok {
+		e := swgErr.New(http.StatusBadRequest, "user_id is missing")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	} else {
+		if userID, err = operations.NormalizeUUIDstring(id.(string)); err != nil {
+			e := swgErr.New(http.StatusUnprocessableEntity, "user_id is invalid")
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+			return
+		}
+	}
+
+	// parse payload and ensure it is a patch for tags property only
+	patch, err = ioutil.ReadAll(ctx.Request.Body)
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	if !gjson.Valid(string(patch)) {
+		e := swgErr.New(http.StatusUnprocessableEntity, "invalid json")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	p := gjson.ParseBytes(patch)
+	p.ForEach(func(key, value gjson.Result) bool {
+		if key.Str != "tags" && key.Str != "current_state" {
+			err = swgErr.New(http.StatusBadRequest, fmt.Sprintf("invalid property <%s> within json", key.Str))
+			return false
+		} else if key.Str == "current_state" {
+			value.ForEach(func(k, v gjson.Result) bool {
+				if k.Str != "tags" {
+					err = swgErr.New(http.StatusBadRequest, fmt.Sprintf("invalid property <%s> within json", k.Str))
+					return false
+				}
+				return true
+			})
+		}
+		return true
+	})
+	if err != nil {
+		http_middleware.ServeError(ctx.Writer, ctx.Request, err)
+		ctx.Abort()
+		return
+	}
+
+	// call UpdateResourceWithPatch API with correct resourceType depending on provided param
+	param := ctx.Params[0]
+	switch param.Key {
+	case "contact_id":
+		resourceType = ContactType
+	case "message_id":
+		resourceType = MessageType
+	default:
+		err = swgErr.New(http.StatusBadRequest, "missing resource param")
+	}
+	if resourceID, err = operations.NormalizeUUIDstring(param.Value); err != nil {
+		err = swgErr.New(http.StatusBadRequest, "resource_id is invalid")
+	}
+	if err != nil {
+		http_middleware.ServeError(ctx.Writer, ctx.Request, err)
+		ctx.Abort()
+		return
+	}
+
+	err = caliopen.Facilities.RESTfacility.UpdateResourceTags(userID, resourceID, resourceType, patch)
+
+	if err != nil {
+		http_middleware.ServeError(ctx.Writer, ctx.Request, err)
+		ctx.Abort()
+		return
+	}
+	ctx.Status(http.StatusNoContent)
 }

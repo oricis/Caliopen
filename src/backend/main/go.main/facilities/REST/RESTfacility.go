@@ -42,6 +42,7 @@ type (
 		UpdateTag(tag *Tag) error
 		PatchTag(patch []byte, user_id, tag_id string) error
 		DeleteTag(user_id, tag_id string) error
+		UpdateResourceTags(userID, resourceID, resourceType string, patch []byte) error
 		//search
 		Search(IndexSearch) (result *IndexResult, err error)
 		//users
