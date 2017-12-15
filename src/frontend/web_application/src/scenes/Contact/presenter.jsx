@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
+import { WithSettings } from '../../modules/settings';
 import fetchLocation from '../../services/api-location';
 import { formatName } from '../../services/contact';
 import ManageTags from './ManageTags';
@@ -47,7 +48,6 @@ class Contact extends Component {
     user: PropTypes.shape({}),
     isFetching: PropTypes.bool,
     form: PropTypes.string.isRequired,
-    contact_display_format: PropTypes.string.isRequired,
     currentTab: PropTypes.shape({}),
     removeTab: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
@@ -235,9 +235,9 @@ class Contact extends Component {
     );
   }
 
-  renderActionBar = () => {
-    const { __, submitting, contact, contact_display_format: format, user, contactId } = this.props;
-    const contactDisplayName = formatName({ contact, format });
+  renderActionBar = (contactDisplayFormat) => {
+    const { __, submitting, contact, user, contactId } = this.props;
+    const contactDisplayName = formatName({ contact, format: contactDisplayFormat });
     const contactIsUser = contactId && user && user.contact.contact_id === contactId;
     const hasActivity = submitting || this.state.isFetching || this.state.isSaving;
 
@@ -316,45 +316,53 @@ class Contact extends Component {
 
   render() {
     const {
-      __, contact, contactId, form, contact_display_format: format,
+      __, contact, contactId, form,
     } = this.props;
 
     return (
-      <form onSubmit={this.handleSubmit} method="post">
-        <PageTitle />
-        {(contact || !contactId) && (
-          <MenuBar className="s-contact__menu-bar">
-            {
-              // FIXME: edit and action bars be displayed in fixed Header,
-              // not in MenuBar
-            }
-            {this.state.editMode ? this.renderEditBar() : this.renderActionBar()}
-          </MenuBar>
-        )}
+      <WithSettings
+        synced
+        render={({ contact_display_format: contactDisplayFormat }) => (
+          <form onSubmit={this.handleSubmit} method="post">
+            <PageTitle />
+            {(contact || !contactId) && (
+              <MenuBar className="s-contact__menu-bar">
+                {
+                  // FIXME: edit and action bars be displayed in fixed Header,
+                  // not in MenuBar
+                }
+                {this.state.editMode ?
+                  this.renderEditBar() :
+                  this.renderActionBar(contactDisplayFormat)
+                }
+              </MenuBar>
+            )}
 
-        {(contact || !contactId) && (
-          <div className="s-contact">
-            <div className="s-contact__col-datas-irl">
-              <ContactProfile
-                contact={contact}
-                contactDisplayFormat={format}
-                editMode={this.state.editMode}
-                form={(<ContactProfileForm form={form} isNew={!contact} />)}
-              />
-            </div>
-            <div className="s-contact__col-datas-online">
-              <ContactDetails
-                contact={contact}
-                editMode={this.state.editMode}
-                detailForms={this.renderDetailForms()}
-                orgaForms={(<FormCollection component={(<OrgaForm />)} propertyName="organizations" />)}
-                identityForms={(<FormCollection component={(<IdentityForm />)} propertyName="identities" />)}
-                __={__}
-              />
-            </div>
-          </div>
-          )}
-      </form>
+            {(contact || !contactId) && (
+              <div className="s-contact">
+                <div className="s-contact__col-datas-irl">
+                  <ContactProfile
+                    contact={contact}
+                    contactDisplayFormat={contactDisplayFormat}
+                    editMode={this.state.editMode}
+                    form={(<ContactProfileForm form={form} isNew={!contact} />)}
+                  />
+                </div>
+                <div className="s-contact__col-datas-online">
+                  <ContactDetails
+                    contact={contact}
+                    editMode={this.state.editMode}
+                    detailForms={this.renderDetailForms()}
+                    orgaForms={(<FormCollection component={(<OrgaForm />)} propertyName="organizations" />)}
+                    identityForms={(<FormCollection component={(<IdentityForm />)} propertyName="identities" />)}
+                    __={__}
+                  />
+                </div>
+              </div>
+                )}
+          </form>
+        )}
+      />
     );
   }
 }

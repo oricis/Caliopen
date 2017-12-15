@@ -18,7 +18,7 @@ class MessageResultItem extends PureComponent {
     message: PropTypes.shape({}).isRequired,
     term: PropTypes.string.isRequired,
     highlights: PropTypes.shape({}).isRequired,
-    settings: PropTypes.shape({}).isRequired,
+    locale: PropTypes.string.isRequired,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
@@ -56,7 +56,7 @@ class MessageResultItem extends PureComponent {
   }
 
   render() {
-    const { message, settings: { default_locale: locale }, __ } = this.props;
+    const { message, locale, __ } = this.props;
 
     return (
       <Link

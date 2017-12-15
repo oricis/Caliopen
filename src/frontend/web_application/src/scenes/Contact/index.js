@@ -5,12 +5,10 @@ import { reduxForm, formValues } from 'redux-form';
 import { withTranslator } from '@gandi/react-translate';
 import { push } from 'react-router-redux';
 import { requestContact, updateContact, createContact, deleteContact, invalidate as invalidateContacts } from '../../store/modules/contact';
-import { withSettings } from '../../hoc/settings';
 import { withNotification } from '../../hoc/notification';
 import { removeTab, updateTab } from '../../store/modules/tab';
 import { getNewContact } from '../../services/contact';
 import { withCurrentTab } from '../../hoc/tab';
-import { settingsSelector } from '../../store/selectors/settings';
 import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.match.params.contactId;
@@ -18,8 +16,8 @@ const contactSelector = state => state.contact;
 const userSelector = state => state.user;
 
 const mapStateToProps = createSelector(
-  [userSelector, contactIdSelector, contactSelector, settingsSelector],
-  (userState, contactId, contactState, { contact_display_format }) => ({
+  [userSelector, contactIdSelector, contactSelector],
+  (userState, contactId, contactState) => ({
     user: userState.user,
     contactId,
     contact: contactState.contactsById[contactId],
@@ -28,7 +26,6 @@ const mapStateToProps = createSelector(
     key: `contact-${contactId || 'new'}`,
     initialValues: contactState.contactsById[contactId] || getNewContact(),
     isFetching: contactState.isFetching,
-    contact_display_format,
   })
 );
 
@@ -55,6 +52,5 @@ export default compose(
   formValues({ birthday: 'info.birthday' }),
   withTranslator(),
   withCurrentTab(),
-  withSettings(),
   withNotification(),
 )(Presenter);
