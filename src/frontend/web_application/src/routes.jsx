@@ -9,6 +9,7 @@ import ResetPassword from './scenes/ResetPassword';
 import Contact from './scenes/Contact';
 import AuthPage from './layouts/AuthPage';
 import Page from './layouts/Page';
+import Settings from './layouts/Settings';
 import Timeline from './scenes/Timeline';
 import NewDraft from './scenes/NewDraft';
 import SearchResults from './scenes/SearchResults';
@@ -111,6 +112,7 @@ export const getRouteConfig = ({ __ }) => [
       {
         path: '/settings',
         app: 'settings',
+        component: Settings,
         label: __('settings.route.label.default'),
         routes: [
           // {
