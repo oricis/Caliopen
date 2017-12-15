@@ -3,7 +3,7 @@ import { createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_INFO, 
 import PropTypes from 'prop-types';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withSettings } from './settings';
+import { withSettings } from '../modules/settings';
 
 export {
   NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_INFO, NOTIFICATION_TYPE_WARNING,
