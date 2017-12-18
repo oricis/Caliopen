@@ -1,0 +1,15 @@
+@import '../../../../../../styles/common';
+
+.m-timeline-filter-container {
+  &__dropdown {
+    background-color: $co-color__fg__back--higher;
+    box-shadow: $co-shadow;
+  }
+
+  &__dropdown-item {
+    line-height: $co-component__height;
+  }
+  &__dropdown-button {
+    text-align: left;
+  }
+}

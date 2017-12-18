@@ -5,6 +5,7 @@ import ApplicationSwitcher from './components/ApplicationSwitcher';
 import Navbar, { NavbarItem } from './components/Navbar';
 import StickyNavbar from './components/StickyNavBar';
 import TabList from './components/TabList';
+import TimelineFilterContainer from './components/TimelineFilterContainer';
 import SliderContainer from '../../../../components/ImportanceSliderContainer';
 import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
 import Button from '../../../../components/Button';
@@ -44,6 +45,9 @@ class Navigation extends PureComponent {
             >
               <SliderContainer vertical className="l-navigation__sliders-container" />
             </Dropdown>
+          </NavbarItem>
+          <NavbarItem className="l-navigation__timeline-filter-toggle">
+            <TimelineFilterContainer />
           </NavbarItem>
         </StickyNavbar>
       </Navbar>

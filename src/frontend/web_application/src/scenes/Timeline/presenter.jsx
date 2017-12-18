@@ -18,6 +18,7 @@ class Timeline extends Component {
   static propTypes = {
     user: PropTypes.shape({}),
     requestMessages: PropTypes.func.isRequired,
+    timelineFilter: PropTypes.string.isRequired,
     loadMore: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     isFetching: PropTypes.bool,
@@ -36,10 +37,11 @@ class Timeline extends Component {
   state = {};
 
   componentDidMount() {
-    this.props.requestMessages();
+    const { requestMessages, timelineFilter, loadMore } = this.props;
+    requestMessages(timelineFilter);
 
     this.throttledLoadMore = throttle(
-      () => this.props.loadMore(),
+      () => loadMore(),
       LOAD_MORE_THROTTLE,
       { trailing: false }
     );

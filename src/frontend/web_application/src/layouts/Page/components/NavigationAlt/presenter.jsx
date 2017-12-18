@@ -4,6 +4,7 @@ import Link from '../../../../components/Link';
 import Icon from '../../../../components/Icon';
 import VerticalMenu, { VerticalMenuItem } from '../../../../components/VerticalMenu';
 import TabList from './components/TabList';
+import TimelineFilterSelector from './components/TimelineFilterSwitcher';
 import SliderContainer from '../../../../components/ImportanceSliderContainer';
 import UserInfo from '../UserInfo';
 import './style.scss';
@@ -43,6 +44,10 @@ class NavigationAlt extends PureComponent {
               </VerticalMenuItem>
             ))
           }
+          <VerticalMenuItem className="l-nav-alt__filter">
+            <Icon type="filter" className="l-nav-alt__timeline-filter-icon" />
+            <TimelineFilterSelector className="l-nav-alt__timeline-filter" />
+          </VerticalMenuItem>
         </VerticalMenu>
         <TabList />
         <VerticalMenu className="l-nav-alt__menu">
