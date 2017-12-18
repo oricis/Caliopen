@@ -367,6 +367,7 @@
     "take-a-tour.step.search.title": "Intuitive search",
     "take-a-tour.step.user-menu.content": "<p>Keep up-to-date your account information and manage your settings from here!</p><p>Customize your application in your settings.</p>",
     "take-a-tour.step.user-menu.title": "Account menu",
+    "timeline-filter.label": "Timeline filter",
     "timeline-filter.options.all": "All",
     "timeline-filter.options.draft": "Drafts",
     "timeline-filter.options.received": "Received",

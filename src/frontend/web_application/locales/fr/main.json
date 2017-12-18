@@ -368,6 +368,7 @@
     "take-a-tour.step.search.title": "Recherche intuitive",
     "take-a-tour.step.user-menu.content": "<p>Mettez à jour les informations de votre compte.</p><p>Personnalisez votre application dans vos paramètres.</p>",
     "take-a-tour.step.user-menu.title": "Menu utilisateur",
+    "timeline-filter.label": "Filtre des messages",
     "timeline-filter.options.all": "Tous",
     "timeline-filter.options.draft": "Brouillons",
     "timeline-filter.options.received": "Reçus",
