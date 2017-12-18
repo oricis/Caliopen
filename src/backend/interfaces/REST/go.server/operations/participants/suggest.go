@@ -10,6 +10,7 @@ import (
 	swgErr "github.com/go-openapi/errors"
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
+	"strings"
 )
 
 // GET …/participants/suggest?context=xxxx&q=xxx
@@ -22,6 +23,7 @@ func Suggest(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
+
 	query_string := ctx.Request.URL.Query().Get("q")
 	if query_string == "" {
 		e := swgErr.New(http.StatusUnprocessableEntity, "Missing 'q' param in query")
@@ -37,6 +39,9 @@ func Suggest(ctx *gin.Context) {
 	}
 	switch query_context {
 	case "msg_compose":
+		// convert string query to lower to benefit the case insensitive search from ES
+		// as suggest is in the context of a msg_compose, ie : we are looking for an address
+		query_string = strings.ToLower(query_string)
 		suggests, err := caliopen.Facilities.RESTfacility.SuggestRecipients(user_id, query_string)
 
 		if err != nil {

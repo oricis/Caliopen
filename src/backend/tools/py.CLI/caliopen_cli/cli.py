@@ -13,15 +13,14 @@ from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage
 from caliopen_cli.commands import (shell, import_email,
                                    setup_storage, create_user,
-                                   import_vcard, dump_model,
-                                   inject_email, basic_compute,
+                                   import_vcard, dump_model, dump_indexes,
+                                   inject_email, basic_compute, migrate_index,
                                    import_reserved_names)
 
 logging.basicConfig(level=logging.INFO)
 
 
 def main(args=sys.argv):
-
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', dest='conffile', default='development.ini')
     subparsers = parser.add_subparsers(title="action")
@@ -43,11 +42,11 @@ def main(args=sys.argv):
     sp_import_vcard.add_argument('-f', dest='file_vcard', help='file')
 
     sp_setup_storage = subparsers.add_parser('setup',
-        help='initialize the storage engine')
+                                             help='initialize the storage engine')
     sp_setup_storage.set_defaults(func=setup_storage)
 
     sp_create_user = subparsers.add_parser('create_user',
-        help='Create a new user')
+                                           help='Create a new user')
     sp_create_user.set_defaults(func=create_user)
     sp_create_user.add_argument('-e', dest='email', help='user email')
     sp_create_user.add_argument('-p', dest='password', help='password')
@@ -63,6 +62,15 @@ def main(args=sys.argv):
     sp_dump.set_defaults(func=dump_model)
     sp_dump.add_argument('-m', dest='model', help='model to dump')
     sp_dump.add_argument('-o', dest='output_path', help='output path')
+
+    sp_dump_index = subparsers.add_parser('dump_index')
+    sp_dump_index.set_defaults(func=dump_indexes)
+    sp_dump_index.add_argument('-o', dest='output_path', help='output path')
+
+    sp_migrate_index = subparsers.add_parser('migrate_index')
+    sp_migrate_index.set_defaults(func=migrate_index)
+    sp_migrate_index.add_argument('-s', dest='input_script',
+                                  help='python script to execute against index')
 
     sp_inject = subparsers.add_parser('inject')
     sp_inject.set_defaults(func=inject_email)

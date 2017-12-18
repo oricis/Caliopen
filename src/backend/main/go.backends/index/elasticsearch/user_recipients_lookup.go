@@ -36,23 +36,32 @@ type (
 // build ES queries and responses for finding relevant recipients when an user compose a message
 func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) (suggests []RecipientSuggestion, err error) {
 	suggests = []RecipientSuggestion{}
-	q_string := `*` + query_string + `*`
-
+	q_string := query_string
 	// build nested queries for participants lookup
-	participants_label_q := elastic.NewWildcardQuery("participants.label", q_string)
-	participants_address_q := elastic.NewWildcardQuery("participants.address", q_string)
-	participants_fields_q := elastic.NewBoolQuery().Should(participants_address_q, participants_label_q)
+	queries := []elastic.Query{
+		elastic.NewPrefixQuery("participants.label", q_string),
+		elastic.NewPrefixQuery("participants.address.raw", q_string),
+		elastic.NewTermQuery("participants.address.parts", q_string),
+	}
+	participants_fields_q := elastic.NewBoolQuery().Should(queries...)
 	participants_q := elastic.NewNestedQuery("participants", participants_fields_q)
 	participants_q.InnerHit(elastic.NewInnerHit().Size(1))
 
 	// build queries for contact lookup
-	contact_given_name_q := elastic.NewWildcardQuery("given_name", q_string).Boost(2)
-	contact_family_name_q := elastic.NewWildcardQuery("family_name", q_string).Boost(2)
-	contact_name_q := elastic.NewBoolQuery().Should(contact_given_name_q, contact_family_name_q)
+	queries = []elastic.Query{
+		elastic.NewPrefixQuery("given_name", q_string).Boost(3),
+		elastic.NewPrefixQuery("given_name.normalized", q_string).Boost(3),
+		elastic.NewPrefixQuery("family_name", q_string).Boost(3),
+		elastic.NewPrefixQuery("family_name.normalized", q_string).Boost(3),
+	}
+	contact_name_q := elastic.NewBoolQuery().Should(queries...)
 
-	email_label_q := elastic.NewWildcardQuery("emails.label", q_string).Boost(2)
-	email_address_q := elastic.NewWildcardQuery("emails.address", q_string).Boost(2)
-	nested_emails_q := elastic.NewBoolQuery().Should(email_label_q, email_address_q)
+	queries = []elastic.Query{
+		elastic.NewPrefixQuery("emails.label", q_string).Boost(2),
+		elastic.NewPrefixQuery("emails.address.raw", q_string).Boost(2),
+		elastic.NewTermQuery("emails.address.parts", q_string).Boost(2),
+	}
+	nested_emails_q := elastic.NewBoolQuery().Should(queries...)
 	emails_q := elastic.NewNestedQuery("emails", nested_emails_q)
 	emails_q.InnerHit(elastic.NewInnerHit())
 
@@ -60,25 +69,32 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 	fsc := elastic.NewFetchSourceContext(true)
 	fsc.Include("title")
 
-	// make aggregations
-	max_date_agg := elastic.NewMaxAggregation().Field("date")
-
 	// run the query
 	main_query := elastic.NewBoolQuery().Should(participants_q, contact_name_q, emails_q)
 	search := es.Client.Search().
 		Index(user_id).
 		FetchSourceContext(fsc).
-		Aggregation("last_message", max_date_agg)
-
+		Size(30)
+	/** log the full json query to help development
+	source, _ := main_query.Source()
+	json_query, _ := json.Marshal(source)
+	log.Infof("\nES query source: %s\n", json_query)
+	agg_source, _ := max_date_agg.Source()
+	json_agg, _ := json.Marshal(agg_source)
+	log.Infof("\nES aggregation source: %s\n", json_agg)
+	/** end of log **/
 	result, err := search.Query(main_query).Do(context.TODO())
-
+	if err != nil {
+		log.WithError(err).Warn("[Elasticsearch] failed to suggest participant.")
+		return
+	}
 	participants_suggests := make(map[string]RecipientSuggestion)
 	for _, hit := range result.Hits.Hits {
 		switch hit.Type {
 		case MessageIndexType:
 			suggest, e := extractParticipantInfos(hit)
 			if e != nil {
-				log.WithError(e).Warnf("failed to extract message participants")
+				log.WithError(e).Warnf("[Elasticsearch] failed to extract message participants")
 			}
 			//deduplicate
 			if _, ok := participants_suggests[suggest.Address]; !ok {
@@ -88,7 +104,7 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 		case ContactIndexType:
 			suggest, e := extractContactInfos(hit)
 			if e != nil {
-				log.WithError(e).Warnf("failed to extract contact info")
+				log.WithError(e).Warnf("[Elasticsearch] failed to extract contact info")
 			}
 			suggests = append(suggests, suggest)
 		default:

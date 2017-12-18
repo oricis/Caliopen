@@ -13,7 +13,7 @@ class IndexedParticipant(InnerObjectWrapper):
     """Nest participant indexed model."""
 
     address = Keyword()
-    contact_id = Keyword()
+    contact_ids = Keyword(multi=True)
     label = Text()
     protocol = Keyword()
     type = Keyword()

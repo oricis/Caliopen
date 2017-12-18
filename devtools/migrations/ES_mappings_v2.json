@@ -1,0 +1,547 @@
+{
+  "mappings": {
+    "indexed_contact": {
+      "_all": {
+        "enabled": true
+      },
+      "properties": {
+        "additional_name": {
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
+          "type": "text"
+        },
+        "addresses": {
+          "include_in_all": true,
+          "properties": {
+            "address_id": {
+              "type": "keyword"
+            },
+            "city": {
+              "type": "text"
+            },
+            "country": {
+              "type": "text"
+            },
+            "is_primary": {
+              "type": "boolean"
+            },
+            "label": {
+              "type": "text"
+            },
+            "postal_code": {
+              "type": "keyword"
+            },
+            "region": {
+              "type": "text"
+            },
+            "street": {
+              "type": "text"
+            },
+            "type": {
+              "type": "keyword"
+            }
+          },
+          "type": "nested"
+        },
+        "avatar": {
+          "type": "keyword"
+        },
+        "date_insert": {
+          "type": "date"
+        },
+        "date_update": {
+          "type": "date"
+        },
+        "deleted": {
+          "type": "date"
+        },
+        "emails": {
+          "include_in_all": true,
+          "properties": {
+            "address": {
+              "analyzer": "text_analyzer",
+              "fields": {
+                "parts": {
+                  "analyzer": "email_analyzer",
+                  "type": "text"
+                },
+                "raw": {
+                  "type": "keyword"
+                }
+              },
+              "type": "text"
+            },
+            "email_id": {
+              "type": "keyword"
+            },
+            "is_primary": {
+              "type": "boolean"
+            },
+            "label": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            },
+            "type": {
+              "type": "keyword"
+            }
+          },
+          "type": "nested"
+        },
+        "family_name": {
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
+          "type": "text"
+        },
+        "given_name": {
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
+          "type": "text"
+        },
+        "groups": {
+          "type": "keyword"
+        },
+        "identities": {
+          "include_in_all": true,
+          "properties": {
+            "infos": {
+              "type": "nested"
+            },
+            "name": {
+              "type": "text"
+            },
+            "type": {
+              "type": "keyword"
+            }
+          },
+          "type": "nested"
+        },
+        "ims": {
+          "include_in_all": true,
+          "properties": {
+            "address": {
+              "analyzer": "text_analyzer",
+              "fields": {
+                "parts": {
+                  "analyzer": "email_analyzer",
+                  "type": "text"
+                },
+                "raw": {
+                  "type": "keyword"
+                }
+              },
+              "type": "text"
+            },
+            "email_id": {
+              "type": "keyword"
+            },
+            "is_primary": {
+              "type": "boolean"
+            },
+            "label": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            },
+            "type": {
+              "type": "keyword"
+            }
+          },
+          "type": "nested"
+        },
+        "infos": {
+          "type": "nested"
+        },
+        "name_prefix": {
+          "type": "keyword"
+        },
+        "name_suffix": {
+          "type": "keyword"
+        },
+        "organizations": {
+          "include_in_all": true,
+          "properties": {
+            "deleted": {
+              "type": "boolean"
+            },
+            "department": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            },
+            "is_primary": {
+              "type": "boolean"
+            },
+            "job_description": {
+              "type": "text"
+            },
+            "label": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            },
+            "name": {
+              "fields": {
+                "normalized": {
+                  "analyzer": "text_analyzer",
+                  "type": "text"
+                }
+              },
+              "type": "text"
+            },
+            "organization_id": {
+              "type": "keyword"
+            },
+            "title": {
+              "type": "keyword"
+            },
+            "type": {
+              "type": "keyword"
+            }
+          },
+          "type": "nested"
+        },
+        "phones": {
+          "include_in_all": true,
+          "properties": {
+            "is_primary": {
+              "type": "boolean"
+            },
+            "normalized_number": {
+              "type": "text"
+            },
+            "number": {
+              "type": "text"
+            },
+            "phone_id": {
+              "type": "keyword"
+            },
+            "type": {
+              "type": "keyword"
+            },
+            "uri": {
+              "type": "keyword"
+            }
+          },
+          "type": "nested"
+        },
+        "pi": {
+          "include_in_all": true,
+          "properties": {
+            "comportment": {
+              "type": "integer"
+            },
+            "context": {
+              "type": "integer"
+            },
+            "date_update": {
+              "type": "date"
+            },
+            "technic": {
+              "type": "integer"
+            },
+            "version": {
+              "type": "integer"
+            }
+          },
+          "type": "nested"
+        },
+        "privacy_features": {
+          "include_in_all": true,
+          "type": "nested"
+        },
+        "public_key": {
+          "type": "nested"
+        },
+        "social_identities": {
+          "include_in_all": true,
+          "properties": {
+            "infos": {
+              "type": "nested"
+            },
+            "name": {
+              "type": "text"
+            },
+            "type": {
+              "type": "keyword"
+            }
+          },
+          "type": "nested"
+        },
+        "tags": {
+          "include_in_all": true,
+          "properties": {
+            "date_insert": {
+              "type": "date"
+            },
+            "importance_level": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "keyword"
+            },
+            "tag_id": {
+              "type": "keyword"
+            },
+            "type": {
+              "type": "boolean"
+            }
+          },
+          "type": "nested"
+        },
+        "title": {
+          "type": "text"
+        }
+      }
+    },
+    "indexed_message": {
+      "_all": {
+        "enabled": true
+      },
+      "properties": {
+        "attachments": {
+          "include_in_all": true,
+          "properties": {
+            "content_type": {
+              "type": "keyword"
+            },
+            "file_name": {
+              "type": "keyword"
+            },
+            "is_inline": {
+              "type": "boolean"
+            },
+            "mime_boundary": {
+              "type": "keyword"
+            },
+            "size": {
+              "type": "integer"
+            },
+            "url": {
+              "type": "keyword"
+            }
+          },
+          "type": "nested"
+        },
+        "body_html": {
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
+          "type": "text"
+        },
+        "body_plain": {
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
+          "type": "text"
+        },
+        "date": {
+          "type": "date"
+        },
+        "date_delete": {
+          "type": "date"
+        },
+        "date_insert": {
+          "type": "date"
+        },
+        "discussion_id": {
+          "type": "keyword"
+        },
+        "external_references": {
+          "include_in_all": true,
+          "properties": {
+            "ancestors_ids": {
+              "type": "keyword"
+            },
+            "message_id": {
+              "type": "keyword"
+            },
+            "parent_id": {
+              "type": "keyword"
+            }
+          },
+          "type": "nested"
+        },
+        "identities": {
+          "include_in_all": true,
+          "properties": {
+            "identifier": {
+              "fields": {
+                "parts": {
+                  "analyzer": "email_analyzer",
+                  "type": "text"
+                },
+                "raw": {
+                  "type": "keyword"
+                }
+              },
+              "type": "text"
+            },
+            "type": {
+              "type": "keyword"
+            }
+          },
+          "type": "nested"
+        },
+        "importance_level": {
+          "type": "short"
+        },
+        "is_answered": {
+          "type": "boolean"
+        },
+        "is_draft": {
+          "type": "boolean"
+        },
+        "is_unread": {
+          "type": "boolean"
+        },
+        "message_id": {
+          "type": "keyword"
+        },
+        "parent_id": {
+          "type": "keyword"
+        },
+        "participants": {
+          "include_in_all": true,
+          "properties": {
+            "address": {
+              "analyzer": "text_analyzer",
+              "fields": {
+                "parts": {
+                  "analyzer": "email_analyzer",
+                  "type": "text"
+                },
+                "raw": {
+                  "type": "keyword"
+                }
+              },
+              "type": "text"
+            },
+            "contact_ids": {
+              "type": "keyword"
+            },
+            "label": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            },
+            "protocol": {
+              "type": "keyword"
+            },
+            "type": {
+              "type": "keyword"
+            }
+          },
+          "type": "nested"
+        },
+        "pi": {
+          "include_in_all": true,
+          "properties": {
+            "comportment": {
+              "type": "integer"
+            },
+            "context": {
+              "type": "integer"
+            },
+            "date_update": {
+              "type": "date"
+            },
+            "technic": {
+              "type": "integer"
+            },
+            "version": {
+              "type": "integer"
+            }
+          },
+          "type": "nested"
+        },
+        "privacy_features": {
+          "include_in_all": true,
+          "type": "nested"
+        },
+        "raw_msg_id": {
+          "type": "keyword"
+        },
+        "subject": {
+          "fields": {
+            "normalized": {
+              "analyzer": "text_analyzer",
+              "type": "text"
+            }
+          },
+          "type": "text"
+        },
+        "tags": {
+          "include_in_all": true,
+          "properties": {
+            "date_insert": {
+              "type": "date"
+            },
+            "importance_level": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "keyword"
+            },
+            "tag_id": {
+              "type": "keyword"
+            },
+            "type": {
+              "type": "boolean"
+            }
+          },
+          "type": "nested"
+        },
+        "type": {
+          "type": "keyword"
+        }
+      }
+    }
+  },
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "text_analyzer": {
+          "type": "custom",
+          "tokenizer": "lowercase",
+          "filter": [
+            "ascii_folding"
+          ]
+        },
+        "email_analyzer": {
+          "type": "custom",
+          "tokenizer": "email_tokenizer",
+          "filter": [
+            "ascii_folding"
+          ]
+        }
+      },
+      "filter": {
+        "ascii_folding": {
+          "type": "asciifolding",
+          "preserve_original": true
+        }
+      },
+      "tokenizer": {
+        "email_tokenizer": {
+          "type": "ngram",
+          "min_gram": 3,
+          "max_gram": 25
+        }
+      }
+    }
+  }
+}
