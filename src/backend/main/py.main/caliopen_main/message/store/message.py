@@ -36,6 +36,7 @@ class Message(BaseModel, IndexedModelMixin):
     is_answered = columns.Boolean()
     is_draft = columns.Boolean()
     is_unread = columns.Boolean()
+    is_received = columns.Boolean(default=False)
     message_id = columns.UUID(primary_key=True, default=uuid.uuid4)
     parent_id = columns.UUID()
     participants = columns.List(columns.UserDefinedType(Participant))
