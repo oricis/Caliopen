@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
+import { WithSettings } from '../../modules/settings';
 import SearchResultsLayout from '../../layouts/SearchResults';
 import Link from '../../components/Link';
 import PageTitle from '../../components/PageTitle';
@@ -70,16 +71,20 @@ class SearchResults extends Component {
     const { term } = this.props;
 
     return (
-      <div className="s-search-results__item">
-        {messages.map(messageHit => (
-          <MessageResultItem
-            key={messageHit.document.message_id}
-            message={messageHit.document}
-            highlights={messageHit.highlights}
-            term={term}
-          />
-        ))}
-      </div>
+      <WithSettings render={({ default_locale: locale }) => (
+        <div className="s-search-results__item">
+          {messages.map(messageHit => (
+            <MessageResultItem
+              locale={locale}
+              key={messageHit.document.message_id}
+              message={messageHit.document}
+              highlights={messageHit.highlights}
+              term={term}
+            />
+          ))}
+        </div>
+      )}
+      />
     );
   }
 
