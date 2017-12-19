@@ -48,6 +48,6 @@ class ContactImport(Api):
         except Exception as exc:
             log.error(
                 'File valid but we can create the new contact: {}'.format(exc))
-            raise Unprocessable(exc)
+            raise Unprocessable(detail=exc.message)
 
         return Response(status=200)

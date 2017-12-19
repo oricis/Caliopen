@@ -34,29 +34,6 @@ class AuthenticationError(HTTPClientError):
 
     code: 401, title: Unauthorized
     """
-
-    def __init__(self, error=None):
-        if error:
-            self.message = error.message
-
-    code = 401
-    title = 'Authentication error'
-    explanation = 'Wrong credentials (e.g., bad password or username)'
-
-
-class AuthenticationError(HTTPClientError):
-    """
-    subclass of :class:`~HTTPClientError`
-
-    This indicates that the user authentication failed.
-
-    code: 401, title: Unauthorized
-    """
-
-    def __init__(self, error=None):
-        if error:
-            self.message = error.message
-
     code = 401
     title = 'Authentication error'
     explanation = 'Wrong credentials (e.g., bad password or username)'
@@ -66,10 +43,6 @@ class NotAcceptable(HTTPClientError):
     code = 406
     title = 'Not acceptable'
     explanation = 'Server cannot fulfill the request with given payload'
-
-    def __init__(self, error=None):
-        if error:
-            self.message = error.message
 
 
 class ResourceNotFound(HTTPClientError):
@@ -116,9 +89,6 @@ class Unprocessable(HTTPClientError):
 
     code: 422, title: Bad Request
     """
-
-    def __init__(self, error=None):
-        self.code = 422
-        self.title = 'Unprocessable entity'
-        self.explanation = ('The server encounter when processing payload')
-        self.message = error.message
+    code = 422
+    title = 'Unprocessable entity'
+    explanation = 'The method is not allowed or not yet implemented'

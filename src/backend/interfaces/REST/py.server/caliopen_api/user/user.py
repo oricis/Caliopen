@@ -45,7 +45,7 @@ class AuthenticationAPI(Api):
         except Exception as exc:
             log.info('Authentication error for {name} : {error}'.
                      format(name=params['username'], error=exc))
-            raise AuthenticationError()
+            raise AuthenticationError(detail=exc.message)
 
         access_token = create_token()
         refresh_token = create_token(80)
@@ -70,7 +70,7 @@ def no_such_user(request):
     """Validator that an user does not exist."""
     username = request.swagger_data['user']['username']
     if not User.is_username_available(username):
-        raise NotAcceptable(Exception('User already exist'))
+        raise NotAcceptable(detail='User already exist')
 
 
 @resource(path='/users/{user_id}',
@@ -90,7 +90,7 @@ class UserAPI(Api):
         try:
             settings.validate()
         except Exception as exc:
-            raise Unprocessable(exc)
+            raise Unprocessable(detail=exc.message)
 
         param = NewUser({'name': self.request.swagger_data['user']['username'],
                          'password': self.request.swagger_data['user'][
@@ -114,7 +114,7 @@ class UserAPI(Api):
         try:
             user = User.create(param)
         except Exception as exc:
-            raise NotAcceptable(exc)
+            raise NotAcceptable(detail=exc.message)
 
         log.info('Created user {} with name {}'.
                  format(user.user_id, user.name))
