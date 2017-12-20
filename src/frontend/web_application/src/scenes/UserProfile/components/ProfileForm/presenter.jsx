@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../../../../components/Button';
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../../../../components/form';
 
@@ -16,7 +17,7 @@ class ProfileForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
     onUpdateUser: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     errors: {},
@@ -61,7 +62,7 @@ class ProfileForm extends Component {
   }
 
   render() {
-    const { errors, __ } = this.props;
+    const { errors, i18n } = this.props;
 
     return (
       <FormGrid>
@@ -82,7 +83,7 @@ class ProfileForm extends Component {
                 name="avatar"
                 value={this.state.user.avatar}
                 onChange={this.handleInputChange}
-                label={__('user.profile.form.avatar.label')}
+                label={i18n.t`user.profile.form.avatar.label`}
               />
             </FormColumn>
             <FormColumn size="shrink" bottomSpace >
@@ -90,7 +91,7 @@ class ProfileForm extends Component {
                 name="username"
                 value={this.state.user.username}
                 onChange={this.handleInputChange}
-                label={__('user.profile.form.username.label')}
+                label={i18n.t`user.profile.form.username.label`}
               />
             </FormColumn>
           </FormRow>
@@ -100,7 +101,7 @@ class ProfileForm extends Component {
                 name="given_name"
                 value={this.state.user.given_name}
                 onChange={this.handleInputChange}
-                label={__('user.profile.form.given_name.label')}
+                label={i18n.t`user.profile.form.given_name.label`}
               />
             </FormColumn>
             <FormColumn size="shrink" bottomSpace >
@@ -108,7 +109,7 @@ class ProfileForm extends Component {
                 name="family_name"
                 value={this.state.user.family_name}
                 onChange={this.handleInputChange}
-                label={__('user.profile.form.family_name.label')}
+                label={i18n.t`user.profile.form.family_name.label`}
               />
             </FormColumn>
           </FormRow>
@@ -121,7 +122,7 @@ class ProfileForm extends Component {
                 name="email"
                 value=""
                 onChange={this.handleInputChange}
-                label={__('user.profile.form.email.label')}
+                label={i18n.t`user.profile.form.email.label`}
               />
             </FormColumn>
             <FormColumn size="shrink" bottomSpace >
@@ -129,7 +130,7 @@ class ProfileForm extends Component {
                 name="recovery_email"
                 value={this.state.user.recovery_email}
                 onChange={this.handleInputChange}
-                label={__('user.profile.form.recovery_email.label')}
+                label={i18n.t`user.profile.form.recovery_email.label`}
               />
             </FormColumn>
           </FormRow>
@@ -138,7 +139,7 @@ class ProfileForm extends Component {
               <Button
                 type="submit"
                 shape="plain"
-              >{__('user.action.update')}</Button>
+              ><Trans id="user.action.update">user.action.update</Trans></Button>
             </FormColumn>
           </FormRow>
         </form>

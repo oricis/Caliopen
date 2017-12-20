@@ -7,7 +7,7 @@ import './style.scss';
 
 class TimelineFilterContainer extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     className: PropTypes.string,
   };
   static defaultProps = {
@@ -16,7 +16,7 @@ class TimelineFilterContainer extends Component {
   state = {};
 
   renderSelect = (options, currentFilter) => {
-    const { __, className } = this.props;
+    const { i18n, className } = this.props;
     const handleChange = (ev) => {
       options.find(option => option.value === ev.target.value).select();
     };
@@ -27,7 +27,7 @@ class TimelineFilterContainer extends Component {
       <SelectFieldGroup
         className={classnames('m-timeline-filter-switcher', className)}
         showLabelforSr
-        label={__('timeline-filter.label')}
+        label={i18n.t`timeline-filter.label`}
         options={selectOptions}
         onChange={handleChange}
         value={currentFilter}

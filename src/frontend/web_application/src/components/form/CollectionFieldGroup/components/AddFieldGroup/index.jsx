@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../../../../Button';
 import Icon from '../../../../Icon';
 import './style.scss';
@@ -16,7 +17,6 @@ class AddFieldGroup extends Component {
     defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]),
     onAdd: PropTypes.func.isRequired,
     validate: PropTypes.func,
-    __: PropTypes.func.isRequired,
   };
   static defaultProps = {
     defaultValue: '',
@@ -62,7 +62,7 @@ class AddFieldGroup extends Component {
   }
 
   render() {
-    const { template, __ } = this.props;
+    const { template } = this.props;
 
     return (
       <div className="m-add-field-group">
@@ -79,7 +79,7 @@ class AddFieldGroup extends Component {
           onClick={this.handleAdd}
           disabled={this.state.item.length === 0}
         >
-          <span className="show-for-sr">{__('collection-field-group.action.add')}</span>
+          <span className="show-for-sr"><Trans id="collection-field-group.action.add">collection-field-group.action.add</Trans></span>
           <Icon type="plus" />
         </Button>
       </div>

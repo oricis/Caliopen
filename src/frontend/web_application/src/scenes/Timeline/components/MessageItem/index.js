@@ -1,9 +1,9 @@
 import { compose } from 'redux';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import { withSettings } from '../../../../modules/settings';
 import Presenter from './presenter';
 
 export default compose(
   withSettings(),
-  withTranslator()
+  withI18n()
 )(Presenter);

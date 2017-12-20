@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import IdentityForm from './components/IdentityForm';
 import PageTitle from '../../components/PageTitle';
@@ -10,7 +11,7 @@ import './style.scss';
 
 class SettingsIdentities extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     requestUser: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,
     onRemoteIdentityChange: PropTypes.func.isRequired,
@@ -37,7 +38,7 @@ class SettingsIdentities extends Component {
   }
 
   render() {
-    const { user, __ } = this.props;
+    const { user, i18n } = this.props;
 
     const navLinks = [
       { title: 'myself@caliopen.local', to: '/settings/identities' },

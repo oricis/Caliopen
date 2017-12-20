@@ -5,7 +5,7 @@ import Icon from '../../../Icon';
 class PhoneDetails extends Component {
   static propTypes = {
     phone: PropTypes.shape({}).isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   constructor(props) {
@@ -14,11 +14,11 @@ class PhoneDetails extends Component {
   }
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.typeTranslations = {
-      work: __('contact.phone_type.work'),
-      home: __('contact.phone_type.home'),
-      other: __('contact.phone_type.other'),
+      work: i18n.t`contact.phone_type.work`,
+      home: i18n.t`contact.phone_type.home`,
+      other: i18n.t`contact.phone_type.other`,
     };
   }
 

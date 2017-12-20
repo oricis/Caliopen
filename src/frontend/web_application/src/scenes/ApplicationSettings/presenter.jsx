@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Section from '../../components/Section';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
@@ -15,7 +16,7 @@ class ApplicationSettings extends PureComponent {
     handleSubmit: PropTypes.func.isRequired,
     requestSettings: PropTypes.func.isRequired,
     errors: PropTypes.shape({}),
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     errors: {},
@@ -28,7 +29,7 @@ class ApplicationSettings extends PureComponent {
   }
 
   render() {
-    const { errors, __ } = this.props;
+    const { errors, i18n } = this.props;
 
     return (
       <form method="post" name="settings_application_form" onSubmit={this.handleSubmit}>
@@ -36,14 +37,14 @@ class ApplicationSettings extends PureComponent {
         {errors.global && errors.global.length !== 0 && (
           <FieldErrors errors={errors.global} />
         )}
-        <Section title={__('settings.interface.title')}><InterfaceSettings /></Section>
-        <Section title={__('settings.message.title')}><MessageSettings /></Section>
-        <Section title={__('settings.contact.title')}><ContactSettings /></Section>
-        <Section title={__('settings.notification.title')}><NotificationSettings /></Section>
-        <Section title={__('settings.desktop_notification.title')}><DesktopNotificationSettings /></Section>
+        <Section title={i18n.t`settings.interface.title`}><InterfaceSettings /></Section>
+        <Section title={i18n.t`settings.message.title`}><MessageSettings /></Section>
+        <Section title={i18n.t`settings.contact.title`}><ContactSettings /></Section>
+        <Section title={i18n.t`settings.notification.title`}><NotificationSettings /></Section>
+        <Section title={i18n.t`settings.desktop_notification.title`}><DesktopNotificationSettings /></Section>
         <Section>
           <Button type="submit" shape="plain">
-            {__('settings.presentation.update.action')}
+            <Trans id="settings.presentation.update.action">settings.presentation.update.action</Trans>
           </Button>
         </Section>
       </form>

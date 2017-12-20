@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Tour from './components/Tour';
 import Button from '../../../../components/Button';
 
 class TakeATour extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
   };
@@ -26,15 +27,15 @@ class TakeATour extends Component {
   }
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     const steps = [
       {
         selector: '.s-timeline',
         content: (
           <div>
-            <h2>{__('take-a-tour.step.intro.title')}</h2>
-            <div dangerouslySetInnerHTML={__('take-a-tour.step.intro.content', { withHTML: true })} />
+            <h2><Trans id="take-a-tour.step.intro.title">take-a-tour.step.intro.title</Trans></h2>
+            <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.intro.content` }} />
           </div>
         ),
         position: 'center',
@@ -43,8 +44,8 @@ class TakeATour extends Component {
         selector: '.l-header__m-search-field',
         content: (
           <div>
-            <h2>{__('take-a-tour.step.search.title')}</h2>
-            <div dangerouslySetInnerHTML={__('take-a-tour.step.search.content', { withHTML: true })} />
+            <h2><Trans id="take-a-tour.step.search.title">take-a-tour.step.search.title</Trans></h2>
+            <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.search.content` }} />
           </div>
         ),
       },
@@ -52,8 +53,8 @@ class TakeATour extends Component {
         selector: '.l-header__user',
         content: (
           <div>
-            <h2>{__('take-a-tour.step.user-menu.title')}</h2>
-            <div dangerouslySetInnerHTML={__('take-a-tour.step.user-menu.content', { withHTML: true })} />
+            <h2><Trans id="take-a-tour.step.user-menu.title">take-a-tour.step.user-menu.title</Trans></h2>
+            <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.user-menu.content` }} />
           </div>
         ),
         position: 'bottom',
@@ -62,8 +63,8 @@ class TakeATour extends Component {
         selector: '.l-call-to-action',
         content: (
           <div>
-            <h2>{__('take-a-tour.step.call-to-action.title')}</h2>
-            <div dangerouslySetInnerHTML={__('take-a-tour.step.call-to-action.content', { withHTML: true })} />
+            <h2><Trans id="take-a-tour.step.call-to-action.title">take-a-tour.step.call-to-action.title</Trans></h2>
+            <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.call-to-action.content` }} />
           </div>
         ),
       },
@@ -71,8 +72,8 @@ class TakeATour extends Component {
         selector: '#toggle-IL_navigation_slider_dropdown',
         content: (
           <div>
-            <h2>{__('take-a-tour.step.importance-slider.title')}</h2>
-            <div dangerouslySetInnerHTML={__('take-a-tour.step.importance-slider.content', { withHTML: true })} />
+            <h2><Trans id="take-a-tour.step.importance-slider.title">take-a-tour.step.importance-slider.title</Trans></h2>
+            <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.importance-slider.content` }} />
           </div>
         ),
       },
@@ -80,19 +81,19 @@ class TakeATour extends Component {
 
     return (
       <Button onClick={this.handleToggleTour} icon="question-circle" display="expanded">
-        <span className="show-for-sr">{__('take-a-tour.action.toggle')}</span>
+        <span className="show-for-sr"><Trans id="take-a-tour.action.toggle">take-a-tour.action.toggle</Trans></span>
         <Tour
           isOpen={this.state.isTourActive}
           step={this.state.tourStep}
           onRequestClose={this.handleclose}
           steps={steps}
-          badgeContent={(current, total) => __('take-a-tour.current-step', { current, total })}
+          badgeContent={(current, total) => i18n.t('take-a-tour.current-step', { current, total })}
           showNavigation={false}
-          skipButton={__('take-a-tour.action.skip')}
-          prevButton={__('take-a-tour.action.prev')}
-          nextButton={__('take-a-tour.action.next')}
-          lastStepNextButton={__('take-a-tour.action.last-step')}
-          closeButton={__('take-a-tour.action.close')}
+          skipButton={i18n.t`take-a-tour.action.skip`}
+          prevButton={i18n.t`take-a-tour.action.prev`}
+          nextButton={i18n.t`take-a-tour.action.next`}
+          lastStepNextButton={i18n.t`take-a-tour.action.last-step`}
+          closeButton={i18n.t`take-a-tour.action.close`}
         />
       </Button>
     );

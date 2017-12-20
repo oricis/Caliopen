@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import Badge from '../Badge';
 import MultidimensionalPi from '../../components/MultidimensionalPi';
 import ContactAvatarLetter from '../ContactAvatarLetter';
 import { formatName } from '../../services/contact';
 import './style.scss';
 
-@withTranslator()
+@withI18n()
 class ContactProfile extends Component {
   static propTypes = {
     contact: PropTypes.shape({}),
@@ -16,7 +16,7 @@ class ContactProfile extends Component {
     editMode: PropTypes.bool.isRequired,
     form: PropTypes.node.isRequired,
     contactDisplayFormat: PropTypes.string.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     contact: undefined,
@@ -24,7 +24,7 @@ class ContactProfile extends Component {
   };
 
   render() {
-    const { contact, contactDisplayFormat: format, className, editMode, form, __ } = this.props;
+    const { contact, contactDisplayFormat: format, className, editMode, form, i18n } = this.props;
 
     return (
       <div className={classnames('m-contact-profile', className)}>
@@ -41,7 +41,7 @@ class ContactProfile extends Component {
 
           {!editMode && (
             <h3 className="m-contact-profile__name">
-              {contact ? formatName({ contact, format }) : __('contact.profile.name_not_set')}
+              {contact ? formatName({ contact, format }) : i18n.t`contact.profile.name_not_set`}
             </h3>
           )}
         </div>

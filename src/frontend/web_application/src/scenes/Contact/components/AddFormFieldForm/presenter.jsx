@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import TextList, { ItemContent } from '../../../../components/TextList';
 import { SelectFieldGroup, FormGrid, FormRow, FormColumn, Legend } from '../../../../components/form';
 import Button from '../../../../components/Button';
@@ -12,7 +13,7 @@ class AddFormFieldForm extends Component {
     addFieldToCollection: PropTypes.func.isRequired,
     changeField: PropTypes.func.isRequired,
     // formValues: PropTypes.shape({}).isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
   };
@@ -38,30 +39,30 @@ class AddFormFieldForm extends Component {
   }
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     // FIXME: an autofilled field is removed on blur or change to empty https://github.com/erikras/redux-form/issues/3366
-    // const { formValues: { info }, __ } = this.props;
+    // const { formValues: { info }, i18n } = this.props;
     // const hasBirthday = info && info.birthday && info.birthday.length > 0;
 
     const typeOptions = [
       {
-        label: __('contact.form-selector.email_form.label'),
+        label: i18n.t`contact.form-selector.email_form.label`,
         value: 'emails',
       },
       {
-        label: __('contact.form-selector.phone_form.label'),
+        label: i18n.t`contact.form-selector.phone_form.label`,
         value: 'phones',
       },
       {
-        label: __('contact.form-selector.im_form.label'),
+        label: i18n.t`contact.form-selector.im_form.label`,
         value: 'ims',
       },
       {
-        label: __('contact.form-selector.address_form.label'),
+        label: i18n.t`contact.form-selector.address_form.label`,
         value: 'addresses',
       },
       // ...(hasBirthday ? [] : [{
-      //   label: __('contact.form-selector.birthday_form.label'),
+      //   label: i18n.t`contact.form-selector.birthday_form.label`,
       //   value: 'info.birthday',
       // }]),
     ];
@@ -79,7 +80,7 @@ class AddFormFieldForm extends Component {
                 <Legend>
                   <Icon type="crosshairs" rightSpaced />
                   <span className="m-add-form-field-form__legend">
-                    {__('contact.form-selector.add_new_field.label')}
+                    <Trans id="contact.form-selector.add_new_field.label">contact.form-selector.add_new_field.label</Trans>
                   </span>
                 </Legend>
               </FormColumn>
@@ -90,12 +91,12 @@ class AddFormFieldForm extends Component {
                   value={this.state.formType}
                   options={typeOptions}
                   showLabelforSr
-                  label={__('contact.form-selector.add_new_field.label')}
+                  label={i18n.t`contact.form-selector.add_new_field.label`}
                 />
               </FormColumn>
               <FormColumn size="shrink" className="m-add-form-field-form__col-button">
                 <Button icon="plus" shape="plain" onClick={this.handleAddForm}>
-                  {__('contact.action.add_new_field')}
+                  <Trans id="contact.action.add_new_field">contact.action.add_new_field</Trans>
                 </Button>
               </FormColumn>
             </FormRow>

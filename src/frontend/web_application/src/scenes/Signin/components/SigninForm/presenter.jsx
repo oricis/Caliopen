@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../../../../components/form';
 import Button from '../../../../components/Button';
 import Section from '../../../../components/Section';
@@ -18,7 +19,7 @@ class SigninForm extends Component {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
     onSubmit: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -73,15 +74,15 @@ class SigninForm extends Component {
   }
 
   render() {
-    const { errors = {}, form, __ } = this.props;
+    const { errors = {}, form, i18n } = this.props;
 
     return (
-      <Section className="s-signin" title={__('signin.title')}>
+      <Section className="s-signin" title={i18n.t`signin.title`}>
         <FormGrid className="s-signin__form">
           <form method="post" {...form}>
             <FormRow>
               <FormColumn rightSpace={false} bottomSpace>
-                <div className="s-signin__alpha" dangerouslySetInnerHTML={__('signup.limited_registration', { withHTML: true })} />
+                <div className="s-signin__alpha" dangerouslySetInnerHTML={{ __html: i18n.t`signup.limited_registration` }} />
               </FormColumn>
             </FormRow>
             { errors.global && (
@@ -95,8 +96,8 @@ class SigninForm extends Component {
               <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_username"
-                  label={__('signin.form.username.label')}
-                  placeholder={__('signin.form.username.placeholder')}
+                  label={i18n.t`signin.form.username.label`}
+                  placeholder={i18n.t`signin.form.username.placeholder`}
                   name="username"
                   value={this.state.username}
                   errors={errors.username}
@@ -108,8 +109,8 @@ class SigninForm extends Component {
               <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_password"
-                  label={__('signin.form.password.label')}
-                  placeholder={__('signin.form.password.placeholder')}
+                  label={i18n.t`signin.form.password.label`}
+                  placeholder={i18n.t`signin.form.password.placeholder`}
                   name="password"
                   type="password"
                   value={this.state.password}
@@ -127,15 +128,17 @@ class SigninForm extends Component {
                   onClick={this.handleSubmit}
                   display="expanded"
                   shape="plain"
-                >{__('signin.action.login')}</Button>
+                ><Trans id="signin.action.login">signin.action.login</Trans></Button>
               </FormColumn>
             </FormRow>
             <FormRow>
               <FormColumn rightSpace={false}>
-                <Link to="/auth/forgot-password">{__('signin.action.forgot_password')}</Link>
+                <Link to="/auth/forgot-password"><Trans id="signin.action.forgot_password">signin.action.forgot_password</Trans></Link>
               </FormColumn>
               {/* <FormColumn rightSpace={false}>
-                <Link to="/auth/signup">{__('signin.create_an_account')}</Link>
+                <Link to="/auth/signup">
+                  <Trans id="signin.create_an_account">signin.create_an_account</Trans>
+                </Link>
               </FormColumn> */}
             </FormRow>
           </form>

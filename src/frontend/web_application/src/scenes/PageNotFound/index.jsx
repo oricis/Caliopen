@@ -1,23 +1,25 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { withTranslator } from '@gandi/react-translate';
+import { Trans, withI18n } from 'lingui-react';
 import PageTitle from '../../components/PageTitle';
 
-@withTranslator()
+@withI18n()
 class PageNotFound extends PureComponent {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
   };
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     return (
       <div>
-        <PageTitle title={__('page not found')} />
-        {__('page not found')}
+        <PageTitle title={i18n.t`page_not_found.title`} />
+        <Trans id="page_not_found.title">
+          Page not found
+        </Trans>
       </div>
     );
   }

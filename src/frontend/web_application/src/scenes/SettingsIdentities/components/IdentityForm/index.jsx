@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import RemoteIdentityEmail from '../RemoteIdentityEmail';
 import TextList from '../../../../components/TextList';
@@ -11,7 +12,7 @@ class IdentityForm extends Component {
     onConnectRemoteIdentity: PropTypes.func,
     onDisconnectRemoteIdentity: PropTypes.func,
     remoteIdentities: PropTypes.arrayOf(PropTypes.shape({})),
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     allowConnectRemoteEntity: false,
@@ -39,18 +40,18 @@ class IdentityForm extends Component {
   }
 
   initDetailsTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.detailsTranslations = {
       address_type: {
-        work: __('contact.address_type.work'),
-        home: __('contact.address_type.home'),
-        other: __('contact.address_type.other'),
+        work: i18n.t`contact.address_type.work`,
+        home: i18n.t`contact.address_type.home`,
+        other: i18n.t`contact.address_type.other`,
       },
       im_type: {
-        work: __('contact.im_type.work'),
-        home: __('contact.im_type.home'),
-        other: __('contact.im_type.other'),
-        netmeeting: __('contact.im_type.netmeeting'),
+        work: i18n.t`contact.im_type.work`,
+        home: i18n.t`contact.im_type.home`,
+        other: i18n.t`contact.im_type.other`,
+        netmeeting: i18n.t`contact.im_type.netmeeting`,
       },
     };
   }

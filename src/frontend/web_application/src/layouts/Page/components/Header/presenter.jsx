@@ -11,7 +11,7 @@ import './style.scss';
 
 class Header extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   constructor(props) {
@@ -28,7 +28,7 @@ class Header extends Component {
     });
   }
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     const searchClassName = classnames(
       'l-header__search',
@@ -41,7 +41,7 @@ class Header extends Component {
           <div className="l-header__brand">
             <span className="hide-for-medium">
               <button
-                aria-label={__('header.menu.toggle-navigation')}
+                aria-label={i18n.t`header.menu.toggle-navigation`}
                 data-toggle="left_off_canvas"
                 type="button"
                 className="l-header__menu-icon menu-icon"
@@ -53,7 +53,7 @@ class Header extends Component {
           </div>
           <div className="l-header__search-toggler hide-for-medium">
             <Button
-              aria-label={__('header.menu.toggle-search-form')}
+              aria-label={i18n.t`header.menu.toggle-search-form`}
               onClick={this.handleClickToggleSearchAsDropdown}
               icon="search"
             />

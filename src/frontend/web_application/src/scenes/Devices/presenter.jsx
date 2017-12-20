@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Link from '../../components/Link';
@@ -14,7 +15,7 @@ class Devices extends Component {
     requestDevices: PropTypes.func.isRequired,
     children: PropTypes.node,
     params: PropTypes.shape({ }),
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -50,7 +51,7 @@ class Devices extends Component {
   }
 
   render() {
-    const { devices, children, __ } = this.props;
+    const { devices, children, i18n } = this.props;
 
     return (
       <div className="s-devices">
@@ -59,7 +60,7 @@ class Devices extends Component {
           {devices.map(device => this.renderDevice(device))}
         </NavList>
         <section className="s-devices__device">
-          {!children ? __('device.no-selected-device') : children}
+          {!children ? i18n.t`device.no-selected-device` : children}
         </section>
       </div>
     );

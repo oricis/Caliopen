@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withTranslator } from '@gandi/react-translate';
+import { Trans, withI18n } from 'lingui-react';
 import classnames from 'classnames';
 import Button from '../../../../components/Button';
 import Spinner from '../../../../components/Spinner';
@@ -49,7 +49,7 @@ const FORM_TYPE_RAW = 'raw';
 //   }
 // }
 
-@withTranslator()
+@withI18n()
 class OpenPGPKeyForm extends Component {
   static propTypes = {
     emails: PropTypes.arrayOf(PropTypes.shape({})),
@@ -59,7 +59,7 @@ class OpenPGPKeyForm extends Component {
     isLoading: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.node,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     cancel: PropTypes.func.isRequired,
   };
 
@@ -103,12 +103,12 @@ class OpenPGPKeyForm extends Component {
   }
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     this.errorsLabels = {
-      [ERROR_UNABLE_READ_PUBLIC_KEY]: __('openpgp.feedback.unable-read-public-key'),
-      [ERROR_UNABLE_READ_PRIVATE_KEY]: __('openpgp.feedback.unable-read-private-key'),
-      [ERROR_FINGERPRINTS_NOT_MATCH]: __('openpgp.feedback.fingerprints-not-match'),
+      [ERROR_UNABLE_READ_PUBLIC_KEY]: i18n.t`openpgp.feedback.unable-read-public-key`,
+      [ERROR_UNABLE_READ_PRIVATE_KEY]: i18n.t`openpgp.feedback.unable-read-private-key`,
+      [ERROR_FINGERPRINTS_NOT_MATCH]: i18n.t`openpgp.feedback.fingerprints-not-match`,
     };
   }
 
@@ -162,7 +162,7 @@ class OpenPGPKeyForm extends Component {
   render() {
     // XXX: note on importForm, errors comes from props and form items from this.state since form is
     // not real time saved in redux store
-    const { __, isLoading, className, importForm, children } = this.props;
+    const { i18n, isLoading, className, importForm, children } = this.props;
     const generateHollowProp = this.state.formType === FORM_TYPE_GENERATE ? { shape: 'hollow' } : {};
     const rawHollowProp = this.state.formType === FORM_TYPE_RAW ? { shape: 'hollow' } : {};
 
@@ -177,14 +177,14 @@ class OpenPGPKeyForm extends Component {
               name={FORM_TYPE_GENERATE}
               {...generateHollowProp}
             >
-              {__('user.openpgp.action.switch-generate-key')}
+              <Trans id="user.openpgp.action.switch-generate-key">user.openpgp.action.switch-generate-key</Trans>
             </Button>
             <Button
               onClick={this.handleSwitchFormType}
               name={FORM_TYPE_RAW}
               {...rawHollowProp}
             >
-              {__('user.openpgp.action.switch-import-raw-key')}
+              <Trans id="user.openpgp.action.switch-import-raw-key">user.openpgp.action.switch-import-raw-key</Trans>
             </Button>
           </div>
         </div>
@@ -194,7 +194,7 @@ class OpenPGPKeyForm extends Component {
               this.emailOptions.length !== 1 && (
                 <SelectFieldGroup
                   className="m-account-openpgp-form__field-group"
-                  label={__('user.openpgp.form.email.label')}
+                  label={i18n.t`user.openpgp.form.email.label`}
                   value={this.state.generateForm.email}
                   onChange={this.handleGenerateChanges}
                   name="email"
@@ -205,15 +205,17 @@ class OpenPGPKeyForm extends Component {
             }
             {this.emailOptions.length === 1 && (
               <p className="m-account-openpgp-form__field-group">
-                {__('user.openpgp.form.email.label')}{' '}{this.state.generateForm.email}
+                <Trans id="user.openpgp.form.email.label">user.openpgp.form.email.label</Trans>
+                {' '}
+                {this.state.generateForm.email}
               </p>
             )}
             <div className="m-account-openpgp-form__field-group">
-              {__('user.openpgp.has-passphrase')}
+              <Trans id="user.openpgp.has-passphrase">user.openpgp.has-passphrase</Trans>
               {' '}
               <CheckboxFieldGroup
                 displaySwitch
-                label={__('user.openpgp.has-passphrase')}
+                label={i18n.t`user.openpgp.has-passphrase`}
                 value={this.state.hasPassphrase}
                 onChange={this.handleToggleHasPassprase}
               />
@@ -222,7 +224,7 @@ class OpenPGPKeyForm extends Component {
             {this.state.hasPassphrase && (
               <div className="m-account-openpgp-form__field-group">
                 <TextFieldGroup
-                  label={__('user.openpgp.form.passphrase.label')}
+                  label={i18n.t`user.openpgp.form.passphrase.label`}
                   value={this.state.generateForm.passphrase}
                   onChange={this.handleGenerateChanges}
                   name="passphrase"
@@ -233,13 +235,13 @@ class OpenPGPKeyForm extends Component {
               <Button type="submit" shape="plain">
                 <Spinner isLoading={isLoading} />
                 {' '}
-                {__('user.openpgp.action.create')}
+                <Trans id="user.openpgp.action.create">user.openpgp.action.create</Trans>
               </Button>
               <Button
                 onClick={this.handleCancelForm}
                 shape="hollow"
               >
-                {__('general.action.cancel')}
+                <Trans id="general.action.cancel">general.action.cancel</Trans>
               </Button>
             </div>
           </form>
@@ -256,7 +258,7 @@ class OpenPGPKeyForm extends Component {
             }
             <TextareaFieldGroup
               className="m-account-openpgp-form__field-group"
-              label={__('user.openpgp.form.public-key.label')}
+              label={i18n.t`user.openpgp.form.public-key.label`}
               value={this.state.importForm.publicKeyArmored}
               onChange={this.handleImportChanges}
               name="publicKeyArmored"
@@ -267,7 +269,7 @@ class OpenPGPKeyForm extends Component {
             />
             <TextareaFieldGroup
               className="m-account-openpgp-form__field-group"
-              label={__('user.openpgp.form.private-key.label')}
+              label={i18n.t`user.openpgp.form.private-key.label`}
               value={this.state.importForm.privateKeyArmored}
               onChange={this.handleImportChanges}
               name="privateKeyArmored"
@@ -282,7 +284,7 @@ class OpenPGPKeyForm extends Component {
               shape="plain"
             >
               <Spinner isLoading={isLoading} />
-              {__('user.openpgp.action.add')}
+              <Trans id="user.openpgp.action.add">user.openpgp.action.add</Trans>
             </Button>
           </form>
         )

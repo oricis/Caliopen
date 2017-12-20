@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
+import { Trans } from 'lingui-react';
 import { WithSettings } from '../../modules/settings';
 import SearchResultsLayout from '../../layouts/SearchResults';
 import Link from '../../components/Link';
@@ -16,7 +17,6 @@ const LOAD_MORE_INTERVAL = 1000;
 
 class SearchResults extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     term: PropTypes.string,
@@ -110,7 +110,7 @@ class SearchResults extends Component {
       return null;
     }
 
-    const { __, term, searchResultsPreview: {
+    const { term, searchResultsPreview: {
       messages_hits: { total: nbMessages, messages },
       contact_hits: { total: nbContacts, contacts },
     } } = this.props;
@@ -119,20 +119,20 @@ class SearchResults extends Component {
       <div>
         {messages && (
           <div className="s-search-results__label">
-            {__('search-results.preview.nb-messages', { count: nbMessages, term })}
+            <Trans id="search-results.preview.nb-messages" values={{ count: nbMessages, term }}>search-results.preview.nb-messages</Trans>
             {' '}
             <Link className="s-search-results__link" to={`/search-results?term=${term}&doctype=message`}>
-              {__('search-results.actions.display-all')}
+              <Trans id="search-results.actions.display-all">search-results.actions.display-all</Trans>
             </Link>
           </div>
         )}
         {messages && this.renderMessages(messages)}
         {contacts && (
           <div className="s-search-results__label">
-            {__('search-results.preview.nb-contacts', { count: nbContacts, term })}
+            <Trans id="search-results.preview.nb-contacts" values={{ count: nbContacts, term }}>search-results.preview.nb-contacts</Trans>
             {' '}
             <Link className="s-search-results__link" to={`/search-results?term=${term}&doctype=contact`}>
-              {__('search-results.actions.display-all')}
+              <Trans id="search-results.actions.display-all">search-results.actions.display-all</Trans>
             </Link>
           </div>
         )}
@@ -147,7 +147,6 @@ class SearchResults extends Component {
     }
 
     const {
-      __,
       doctype,
       hasMoreByDoctype,
       searchResults: {
@@ -166,7 +165,7 @@ class SearchResults extends Component {
             {hasMoreByDoctype && hasMoreByDoctype.message && (
               <div className="s-search-results__load-more">
                 <Button shape="hollow" onClick={this.debouncedLoadMore}>
-                  {__('general.action.load_more')}
+                  <Trans id="general.action.load_more">general.action.load_more</Trans>
                 </Button>
               </div>
             )}
@@ -181,7 +180,7 @@ class SearchResults extends Component {
             {hasMoreByDoctype && hasMoreByDoctype.contact && (
               <div className="s-search-results__load-more">
                 <Button shape="hollow" onClick={this.debouncedLoadMore}>
-                  {__('general.action.load_more')}
+                  <Trans id="general.action.load_more">general.action.load_more</Trans>
                 </Button>
               </div>
             )}

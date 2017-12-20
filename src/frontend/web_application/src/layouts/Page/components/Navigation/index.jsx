@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import ApplicationSwitcher from './components/ApplicationSwitcher';
 import Navbar, { NavbarItem } from './components/Navbar';
 import StickyNavbar from './components/StickyNavBar';
@@ -14,14 +14,14 @@ import './style.scss';
 
 const ToggleSliderButton = withDropdownControl(Button);
 
-@withTranslator()
+@withI18n()
 class Navigation extends PureComponent {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     return (
       <Navbar className="l-navigation">
@@ -34,7 +34,7 @@ class Navigation extends PureComponent {
           <NavbarItem className="l-navigation__sliders-toggle">
             <ToggleSliderButton
               toggleId="IL_navigation_slider_dropdown"
-              title={__('navigation.actions.toggle-importance-level-slider')}
+              title={i18n.t`navigation.actions.toggle-importance-level-slider`}
               className="l-navigation__sliders-toggle-button"
             >
               <Icon type="warning" />

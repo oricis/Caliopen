@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Trans, withI18n } from 'lingui-react';
 import { Field } from 'redux-form';
-import { withTranslator } from '@gandi/react-translate';
 import renderReduxField from '../../../../services/renderReduxField';
 import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
@@ -13,19 +13,19 @@ const IDENTITY_TYPES = ['', 'twitter', 'facebook'];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 
-@withTranslator()
+@withI18n()
 class IdentityForm extends PureComponent {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     onDelete: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     errors: [],
   };
 
   render() {
-    const { __, onDelete, errors } = this.props;
+    const { i18n, onDelete, errors } = this.props;
     const identityTypeOptions = IDENTITY_TYPES.map(value => ({
       value,
       label: value,
@@ -39,14 +39,14 @@ class IdentityForm extends PureComponent {
             <FormColumn size="shrink">
               <Legend>
                 <Icon rightSpaced type="user" />
-                <span className="m-identity-form__legend">{__('contact.identity_form.legend')}</span>
+                <span className="m-identity-form__legend"><Trans id="contact.identity_form.legend">contact.identity_form.legend</Trans></span>
               </Legend>
             </FormColumn>
             <FormColumn size="shrink" bottomSpace>
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={__('contact.identity_form.service.label')}
+                label={i18n.t`contact.identity_form.service.label`}
                 options={identityTypeOptions}
                 showLabelforSr
                 required
@@ -56,7 +56,7 @@ class IdentityForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="name"
-                label={__('contact.identity_form.identity.label')}
+                label={i18n.t`contact.identity_form.identity.label`}
                 showLabelforSr
                 required
               />

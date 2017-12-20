@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import Section from '../../components/Section';
 import PageTitle from '../../components/PageTitle';
@@ -31,7 +32,7 @@ const SettingsSignatures = ({ __ }) => (
       </NavList>
     }
     <div className="s-settings-signatures__panel">
-      <Section title={__('settings.signatures.title')}>
+      <Section title={i18n.t`settings.signatures.title`}>
         <SignatureForm settings={fakeSignaturesSettings} onSubmit={str => str} />
       </Section>
     </div>
@@ -39,7 +40,7 @@ const SettingsSignatures = ({ __ }) => (
 );
 
 SettingsSignatures.propTypes = {
-  __: PropTypes.func.isRequired,
+  i18n: PropTypes.shape({}).isRequired,
 };
 
 export default SettingsSignatures;

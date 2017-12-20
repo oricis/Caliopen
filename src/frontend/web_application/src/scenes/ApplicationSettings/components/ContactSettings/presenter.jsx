@@ -10,7 +10,7 @@ const DISPLAY_ORDER_BY = ['given_name', 'family_name'];
 
 class ContactsForm extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     errors: {},
@@ -26,17 +26,17 @@ class ContactsForm extends Component {
   }));
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.i18n = {
-      'given_name, family_name': __('settings.contact.display_format.options.first_last'),
-      'family_name, given_name': __('settings.contact.display_format.options.last_first'),
-      given_name: __('settings.contact.display_order_by.options.firstname'),
-      family_name: __('settings.contact.display_order_by.options.lastname'),
+      'given_name, family_name': i18n.t`settings.contact.display_format.options.first_last`,
+      'family_name, given_name': i18n.t`settings.contact.display_format.options.last_first`,
+      given_name: i18n.t`settings.contact.display_order_by.options.firstname`,
+      family_name: i18n.t`settings.contact.display_order_by.options.lastname`,
     };
   }
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     const displayFormatOptions = this.getOptionsFromArray(DISPLAY_FORMAT);
     const displayOrderByOptions = this.getOptionsFromArray(DISPLAY_ORDER_BY);
@@ -48,7 +48,7 @@ class ContactsForm extends Component {
             <Field
               component={SelectFieldGroup}
               name="contact_display_format"
-              label={__('settings.contacts.display.label')}
+              label={i18n.t`settings.contacts.display.label`}
               options={displayFormatOptions}
             />
           </FormColumn>
@@ -58,7 +58,7 @@ class ContactsForm extends Component {
             <Field
               component={SelectFieldGroup}
               name="contact_display_order"
-              label={__('settings.contacts.order.label')}
+              label={i18n.t`settings.contacts.order.label`}
               options={displayOrderByOptions}
             />
           </FormColumn>

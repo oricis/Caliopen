@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Trans } from 'lingui-react';
 import Button from '../../../Button';
 
 import './style.scss';
@@ -21,7 +22,6 @@ class MessageActionsContainer extends Component {
     onCopyTo: PropTypes.func.isRequired,
     onEditTags: PropTypes.func.isRequired,
     className: PropTypes.string,
-    __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -63,7 +63,7 @@ class MessageActionsContainer extends Component {
   }
 
   render() {
-    const { onDelete, onCopyTo, onEditTags, className, __ } = this.props;
+    const { onDelete, onCopyTo, onEditTags, className } = this.props;
     const messageActionsContainerClassName = classnames(
       'm-message-actions-container',
       className,
@@ -71,15 +71,21 @@ class MessageActionsContainer extends Component {
 
     return (
       <div className={messageActionsContainerClassName}>
-        <Button onClick={this.handleReply} className="m-message-actions-container__action" display="expanded" icon="reply" responsive="icon-only">{__('message-list.message.action.reply')}</Button>
-        <Button onClick={this.makeHandle(onCopyTo)} className="m-message-actions-container__action" display="expanded" icon="share" responsive="icon-only">{__('message-list.message.action.copy-to')}</Button>
-        <Button onClick={this.makeHandle(onEditTags)} className="m-message-actions-container__action" display="expanded" icon="tags" responsive="icon-only">{__('message-list.message.action.tags')}</Button>
-        <Button onClick={this.makeHandle(onDelete)} className="m-message-actions-container__action" display="expanded" icon="trash" responsive="icon-only">{__('message-list.message.action.delete')}</Button>
+        <Button onClick={this.handleReply} className="m-message-actions-container__action" display="expanded" icon="reply" responsive="icon-only"><Trans id="message-list.message.action.reply">message-list.message.action.reply</Trans></Button>
+        <Button onClick={this.makeHandle(onCopyTo)} className="m-message-actions-container__action" display="expanded" icon="share" responsive="icon-only"><Trans id="message-list.message.action.copy-to">message-list.message.action.copy-to</Trans></Button>
+        <Button onClick={this.makeHandle(onEditTags)} className="m-message-actions-container__action" display="expanded" icon="tags" responsive="icon-only"><Trans id="message-list.message.action.tags">message-list.message.action.tags</Trans></Button>
+        <Button onClick={this.makeHandle(onDelete)} className="m-message-actions-container__action" display="expanded" icon="trash" responsive="icon-only"><Trans id="message-list.message.action.delete">message-list.message.action.delete</Trans></Button>
         <Button
           className="m-message-actions-container__action"
           display="expanded"
           onClick={this.handleToggle}
-        >{!this.state.isRead ? __('message-list.message.action.mark_as_read') : __('message-list.message.action.mark_as_unread')}</Button>
+        >
+          {!this.state.isRead ? (
+            <Trans id="message-list.message.action.mark_as_read">message-list.message.action.mark_as_read</Trans>
+          ) : (
+            <Trans id="message-list.message.action.mark_as_unread">message-list.message.action.mark_as_unread</Trans>
+          )}
+        </Button>
       </div>
     );
   }

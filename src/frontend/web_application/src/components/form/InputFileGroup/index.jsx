@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Trans } from 'lingui-react';
 import { InputFile, FieldErrors } from '../';
 import File from './components/File';
 
@@ -10,7 +11,7 @@ class InputFileGroup extends Component {
   static propTypes = {
     onInputChange: PropTypes.func.isRequired,
     errors: PropTypes.shape({}),
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     formatNumber: PropTypes.func.isRequired,
     // multiple: PropTypes.bool,
     fileTypes: PropTypes.arrayOf(PropTypes.string),
@@ -56,25 +57,29 @@ class InputFileGroup extends Component {
   }
 
   validate = (file) => {
-    const { __, formatNumber, fileTypes, maxSize } = this.props;
+    const { i18n, formatNumber, fileTypes, maxSize } = this.props;
     const errors = [];
 
     if (!file) {
-      return Promise.reject(__('input-file-group.error.file_is_required'));
+      return Promise.reject(i18n.t`input-file-group.error.file_is_required`);
     }
 
     const ext = file.name ? `.${file.name.split('.').pop()}` : null;
     if (fileTypes && (!ext || !fileTypes.includes(ext))) {
-      errors.push(
-        __('input-file-group.error.no_valid_ext', { fileTypes: fileTypes.join(', ') })
-      );
+      errors.push((
+        <Trans id="input-file-group.error.no_valid_ext" values={{ fileTypes: fileTypes.join(', ') }}>input-file-group.error.no_valid_ext</Trans>
+      ));
     }
 
     if (maxSize && file.size > maxSize) {
       errors.push(
-        __('input-file-group.error.max_size', {
-          maxSize: formatNumber(Math.round(maxSize / 100) / 10),
-        })
+        (
+          <Trans
+            id="input-file-group.error.max_size"
+            values={{
+              maxSize: formatNumber(Math.round(maxSize / 100) / 10),
+            }}
+          >input-file-group.error.max_size</Trans>)
       );
     }
 
@@ -86,7 +91,7 @@ class InputFileGroup extends Component {
   }
 
   render() {
-    const { __, formatNumber, errors, descr, className, fileTypes } = this.props;
+    const { formatNumber, errors, descr, className, fileTypes } = this.props;
     const allErrors = errors ? Object.keys(errors).map(key => errors[key]) : null;
     const acceptProp = fileTypes ? { accept: fileTypes } : {};
 
@@ -100,14 +105,12 @@ class InputFileGroup extends Component {
           <File
             file={this.state.file}
             onRemove={this.resetForm}
-            __={__}
             formatNumber={formatNumber}
           />
           :
           <InputFile
             onChange={this.handleInputChange}
             errors={this.state.fieldError}
-            __={__}
             {...acceptProp}
             // multiple={multiple}
           />

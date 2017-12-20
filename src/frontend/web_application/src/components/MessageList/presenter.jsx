@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../Button';
 import MenuBar from '../MenuBar';
 import Spinner from '../Spinner';
@@ -26,7 +27,6 @@ class MessageList extends Component {
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     replyForm: PropTypes.node.isRequired,
     user: PropTypes.shape({}),
-    __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -50,7 +50,7 @@ class MessageList extends Component {
   renderDayGroups(settings) {
     const {
       messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply, onMessageCopyTo,
-      onMessageEditTags, __, user,
+      onMessageEditTags, user,
     } = this.props;
 
     const messagesGroupedByday = groupMessages(messages, user);
@@ -71,7 +71,6 @@ class MessageList extends Component {
               onReply={onMessageReply}
               onCopyTo={onMessageCopyTo}
               onEditTags={onMessageEditTags}
-              __={__}
             />
           ))}
         </DayMessageList>
@@ -79,18 +78,24 @@ class MessageList extends Component {
   }
 
   render() {
-    const { messages, isFetching, loadMore, onDelete, replyForm, __ } = this.props;
+    const { messages, isFetching, loadMore, onDelete, replyForm } = this.props;
 
     return (
       <WithSettings render={settings => (
         <div className="m-message-list">
           <MenuBar>
-            <Button className="m-message-list__action" onClick={this.handleReplyToLastMessage} icon="reply" responsive="icon-only" >{__('message-list.action.reply')}</Button>
+            <Button className="m-message-list__action" onClick={this.handleReplyToLastMessage} icon="reply" responsive="icon-only" >
+              <Trans id="message-list.action.reply">message-list.action.reply</Trans>
+            </Button>
             {/*
               <Button className="m-message-list__action" onClick={onForward} icon="share"
-              responsive="icon-only" >{__('message-list.action.copy-to')}</Button>
+              responsive="icon-only" >
+                <Trans id="message-list.action.copy-to">message-list.action.copy-to</Trans>
+              </Button>
             */}
-            <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >{__('message-list.action.delete')}</Button>
+            <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >
+              <Trans id="message-list.action.delete">message-list.action.delete</Trans>
+            </Button>
             <Spinner isLoading={isFetching} className="m-message-list__spinner" />
           </MenuBar>
           { ((messages.length > 0 || !isFetching) && settings) && (

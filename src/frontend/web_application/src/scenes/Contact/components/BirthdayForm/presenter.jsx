@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import { Field } from 'redux-form';
 import renderReduxField from '../../../../services/renderReduxField';
 import { FieldErrors, Fieldset, Legend, DatePickerGroup as DatePickerGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
@@ -10,7 +11,7 @@ const DatePickerGroup = renderReduxField(DatePickerGroupBase);
 
 class BirthdayForm extends PureComponent {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     form: PropTypes.string.isRequired,
     changeField: PropTypes.func.isRequired,
     errors: PropTypes.arrayOf(PropTypes.shape({})),
@@ -38,7 +39,7 @@ class BirthdayForm extends PureComponent {
   };
 
   render() {
-    const { __, errors } = this.props;
+    const { i18n, errors } = this.props;
 
     return (
       <FormGrid className="m-email-form">
@@ -47,7 +48,7 @@ class BirthdayForm extends PureComponent {
             <FormColumn size="shrink">
               <Legend>
                 <Icon type="envelope" rightSpaced />
-                <span className="m-email-form__legend">{__('contact.email_form.legend')}</span>
+                <span className="m-email-form__legend"><Trans id="contact.email_form.legend">contact.email_form.legend</Trans></span>
               </Legend>
             </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
@@ -60,7 +61,7 @@ class BirthdayForm extends PureComponent {
                 id="contact-form-birthday"
                 className="m-contact-profile-form__birthday"
                 inputClassName="m-contact-profile-form__birthday-input"
-                label={__('contact_profile.form.birthday.label')}
+                label={i18n.t`contact_profile.form.birthday.label`}
                 onDateChange={this.handleBirthdayChanges}
                 showMonthDropdown
                 showYearDropdown

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import DeviceBase from '../../../../components/Device';
 import Spinner from '../../../../components/Spinner';
@@ -7,7 +8,7 @@ class Device extends Component {
   static propTypes = {
     device: PropTypes.shape({}),
     isFetching: PropTypes.bool,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -16,7 +17,7 @@ class Device extends Component {
   };
 
   render() {
-    const { device, isFetching, __ } = this.props;
+    const { device, isFetching, i18n } = this.props;
 
     if (isFetching) {
       return <Spinner isLoading />;

@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslator } from '@gandi/react-translate';
 import Presenter from './presenter';
 import { setImportanceLevel } from '../../store/modules/importance-level';
 
@@ -15,5 +14,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({ setImportanceLevel }
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withTranslator()
 )(Presenter);

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
+import { Trans } from 'lingui-react';
 import Dropdown from '../Dropdown';
 import Button from '../Button';
 import Icon from '../Icon';
@@ -49,7 +50,6 @@ class RecipientList extends Component {
     setSearchTerms: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
     searchResults: PropTypes.arrayOf(PropTypes.shape({})),
-    __: PropTypes.func.isRequired,
   };
   static defaultProps = {
     internalId: undefined,
@@ -307,14 +307,14 @@ class RecipientList extends Component {
   render() {
     const componentId = uuidV1();
     const dropdownId = uuidV1();
-    const { __, searchResults } = this.props;
+    const { searchResults } = this.props;
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div id={componentId} onClick={this.handleClickRecipientList} ref={(el) => { this.recipientListRef = el; }} role="presentation" className="m-recipient-list">
         { !this.state.recipients.length && (
           <span className="m-recipient-list__placeholder">
-            {__('messages.compose.form.to.label')}
+            <Trans id="messages.compose.form.to.label">messages.compose.form.to.label</Trans>
           </span>
         )}
         {this.state.recipients.map(participant => (

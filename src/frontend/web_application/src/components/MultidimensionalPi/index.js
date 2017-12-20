@@ -1,5 +1,5 @@
-// import { withTranslator } from '@gandi/react-translate';
+// import { withI18n } from 'lingui-react';
 import Presenter from './presenter';
 
-// export default withTranslator()(Presenter);
+// export default withI18n()(Presenter);
 export default Presenter;

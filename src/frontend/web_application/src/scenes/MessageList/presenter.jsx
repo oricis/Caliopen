@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
+import { Trans } from 'lingui-react';
 import MessageListBase from '../../components/MessageList';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
@@ -11,7 +12,6 @@ const LOAD_MORE_THROTTLE = 1000;
 
 class MessageList extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
     requestMessages: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
@@ -98,10 +98,10 @@ class MessageList extends Component {
   }
 
   renderLoadMore() {
-    const { __, hasMore } = this.props;
+    const { hasMore } = this.props;
 
     return hasMore && (
-      <Button shape="hollow" onClick={this.loadMore}>{__('general.action.load_more')}</Button>
+      <Button shape="hollow" onClick={this.loadMore}><Trans id="general.action.load_more">general.action.load_more</Trans></Button>
     );
   }
 

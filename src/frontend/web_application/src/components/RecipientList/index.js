@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import Presenter from './presenter';
 import { setRecipientSearchTerms } from '../../store/modules/draft-message';
 import { search, getKey } from '../../store/modules/participant-suggestions';
@@ -46,5 +46,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withTranslator()
+  withI18n()
 )(Presenter);

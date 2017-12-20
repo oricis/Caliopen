@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { Trans } from 'lingui-react';
 // import PropTypes from 'prop-types';
 
 
 class TFAForm extends Component {
   static propTypes = {
-    // __: PropTypes.func.isRequired,
+    // i18n: PropTypes.shape({}).isRequired,
     // requestUser: PropTypes.func.isRequired,
   };
   static defaultProps = {

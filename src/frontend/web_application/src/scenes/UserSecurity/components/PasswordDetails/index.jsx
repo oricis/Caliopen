@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../../../../components/Button';
 import { PasswordStrength } from '../../../../components/form';
 import PasswordForm from '../PasswordForm';
@@ -15,7 +16,6 @@ function generateStateFromProps(props, prevState) {
 
 class PasswordDetails extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
     user: PropTypes.shape({}).isRequired,
     onSubmit: PropTypes.func.isRequired,
   };
@@ -41,7 +41,7 @@ class PasswordDetails extends Component {
   }
 
   render() {
-    const { __, user, onSubmit } = this.props;
+    const { user, onSubmit } = this.props;
     // privacy_features.password_strength is a string
     const passwordStrengthNumber = user ? Number(user.privacy_features.password_strength) : 0;
 
@@ -49,13 +49,12 @@ class PasswordDetails extends Component {
       <div className="m-password-details">
         {!this.state.editMode &&
           <TextBlock className="m-password-details__title">
-            {__('password.details.password_strength.title')}
+            <Trans id="password.details.password_strength.title">password.details.password_strength.title</Trans>
           </TextBlock>
         }
         {this.state.editMode ?
           <div className="m-password-details__form">
             <PasswordForm
-              __={__}
               onSubmit={onSubmit}
               onCancel={this.toggleEditMode}
             />
@@ -68,7 +67,7 @@ class PasswordDetails extends Component {
         }
         {!this.state.editMode &&
           <div className="m-password-details__action">
-            <Button onClick={this.toggleEditMode}>{__('password.details.action.change')}</Button>
+            <Button onClick={this.toggleEditMode}><Trans id="password.details.action.change">password.details.action.change</Trans></Button>
           </div>
         }
       </div>

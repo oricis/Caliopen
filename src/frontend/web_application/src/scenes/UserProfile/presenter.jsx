@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
 import Section from '../../components/Section';
@@ -10,7 +11,7 @@ import './style.scss';
 
 class UserProfile extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     requestUser: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
@@ -36,23 +37,23 @@ class UserProfile extends Component {
   }
 
   render() {
-    const { user, __ } = this.props;
+    const { user, i18n } = this.props;
 
     return (
       <div className="s-user-profile">
         <PageTitle />
         <div className="s-user-profile__actions">
           {this.state.editMode === true ? (
-            <Button onClick={this.toggleEditMode}>{__('user.action.cancel_edit')}</Button>
+            <Button onClick={this.toggleEditMode}><Trans id="user.action.cancel_edit">user.action.cancel_edit</Trans></Button>
           ) : (
-            <Button onClick={this.toggleEditMode}>{__('user.action.edit_profile')}</Button>
+            <Button onClick={this.toggleEditMode}><Trans id="user.action.edit_profile">user.action.edit_profile</Trans></Button>
           )}
-          <Button onClick={str => str}>{__('user.action.share_profile')}</Button>
+          <Button onClick={str => str}><Trans id="user.action.share_profile">user.action.share_profile</Trans></Button>
         </div>
         <div className="s-user-profile__info">
           <ProfileInfo user={user} />
         </div>
-        <Section className="s-user-profile__details" title={__('user.profile.form.title')}>
+        <Section className="s-user-profile__details" title={i18n.t`user.profile.form.title`}>
           {
             // FIXME: should show ProfileDetails if editMode === false
           }

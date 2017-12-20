@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import { matchPath } from 'react-router-dom';
 import MenuBar from '../../components/MenuBar';
@@ -7,7 +8,7 @@ class User extends PureComponent {
   static propTypes = {
     pathname: PropTypes.string,
     children: PropTypes.node,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     pathname: undefined,
@@ -15,12 +16,12 @@ class User extends PureComponent {
   };
 
   render() {
-    const { __, children, pathname } = this.props;
+    const { i18n, children, pathname } = this.props;
 
     const navLinks = [
-      // { title: __('user.profile'), to: '/user/profile' },
-      // { title: __('user.privacy'), to: '/user/privacy' },
-      { title: __('user.security'), to: '/user/security' },
+      // { title: i18n.t`user.profile`, to: '/user/profile' },
+      // { title: i18n.t`user.privacy`, to: '/user/privacy' },
+      { title: i18n.t`user.security`, to: '/user/security' },
     ].map(link => ({
       ...link,
       isActive: matchPath(pathname, { path: link.to, exact: false, strict: false }) && true,

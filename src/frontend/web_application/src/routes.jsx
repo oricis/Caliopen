@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import { SwitchWithRoutes } from './modules/routing';
 import Signin from './scenes/Signin';
 import Signup from './scenes/Signup';
@@ -25,7 +25,7 @@ import ContactBook from './scenes/ContactBook';
 import PageNotFound from './scenes/PageNotFound';
 // import { Device } from './scenes/Devices';
 
-export const getRouteConfig = ({ __ }) => [
+export const getRouteConfig = ({ i18n }) => [
   {
     path: '/auth',
     component: AuthPage,
@@ -90,22 +90,22 @@ export const getRouteConfig = ({ __ }) => [
       {
         path: '/user',
         app: 'account',
-        label: __('user.route.label.default'),
+        label: i18n.t`user.route.label.default`,
         routes: [
           {
             path: '/user/profile',
             component: UserProfile,
-            label: __('user.route.label.profile'),
+            label: i18n.t`user.route.label.profile`,
           },
           {
             path: '/user/privacy',
             component: UserPrivacy,
-            label: __('user.route.label.privacy'),
+            label: i18n.t`user.route.label.privacy`,
           },
           {
             path: '/user/security',
             component: UserSecurity,
-            label: __('user.route.label.security'),
+            label: i18n.t`user.route.label.security`,
           },
         ],
       },
@@ -113,29 +113,29 @@ export const getRouteConfig = ({ __ }) => [
         path: '/settings',
         app: 'settings',
         component: Settings,
-        label: __('settings.route.label.default'),
+        label: i18n.t`settings.route.label.default`,
         routes: [
           // {
           //   path: '/settings/identities',
           //   component: SettingsIdentities,
-          //   label: __('settings.route.label.identities'),
+          //   label: i18n.t`settings.route.label.identities`,
           // },
           {
             path: '/settings/application',
             component: ApplicationSettings,
-            label: __('settings.route.label.application'),
+            label: i18n.t`settings.route.label.application`,
           },
           // TODO: enable tags management
           // {
           //   path: '/settings/tags',
           //   component: Tags,
-          //   label: __('settings.route.label.tags'),
+          //   label: i18n.t`settings.route.label.tags`,
           // },
 
           // TODO: enable devices when API ready: https://tree.taiga.io/project/caliopen-caliopen/us/314?no-milestone=1
           // {
           //   path: '/settings/devices',
-          //   label: __('settings.route.label.devices'),
+          //   label: i18n.t`settings.route.label.devices`,
           //   routes: [
           //     {
           //       path: '/settings/devices/:deviceId',
@@ -148,7 +148,7 @@ export const getRouteConfig = ({ __ }) => [
           // {
           //  path: '/settings/signatures',
           //  component: SettingsSignatures,
-          //  label: __('settings.route.label.signatures'),
+          //  label: i18n.t`settings.route.label.signatures`,
           // },
         ],
       },
@@ -174,18 +174,18 @@ export const flattenRouteConfig = routes => routes.reduce((acc, route) => {
 
 class Routes extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
   };
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     return (
-      <SwitchWithRoutes routes={getRouteConfig({ __ })} />
+      <SwitchWithRoutes routes={getRouteConfig({ i18n })} />
     );
   }
 }
 
-export default withTranslator()(Routes);
+export default withI18n()(Routes);

@@ -9,26 +9,26 @@ import RevokeDevice from './components/RevokeDevice';
 
 import './style.scss';
 
-const renderForm = (device, __) => (
+const renderForm = (device, i18n) => (
   <div>
     <Section className="m-device__pi">
       <PiBar level={device.pi} />
     </Section>
 
     <Section
-      title={__('device.manage.title')}
-      descr={__('device.manage.descr')}
+      title={i18n.t`device.manage.title`}
+      descr={i18n.t`device.manage.descr`}
     >
       <DeviceForm device={device} />
     </Section>
 
-    <Section title={__('device.info.title')}>
+    <Section title={i18n.t`device.info.title`}>
       <DeviceInformation device={device} />
     </Section>
 
     <Section
-      title={__('device.revoke.title')}
-      descr={__('device.revoke.descr')}
+      title={i18n.t`device.revoke.title`}
+      descr={i18n.t`device.revoke.descr`}
       hasSeparator={false}
     >
       <RevokeDevice device={device} />
@@ -36,10 +36,10 @@ const renderForm = (device, __) => (
   </div>
 );
 
-const renderVerifyDevice = (device, __) => (
+const renderVerifyDevice = (device, i18n) => (
   <Section
-    title={__('device.verify.title')}
-    descr={__('device.verify.descr')}
+    title={i18n.t`device.verify.title`}
+    descr={i18n.t`device.verify.descr`}
     hasSeparator={false}
   >
     <DeviceInformation device={device} />
@@ -47,18 +47,18 @@ const renderVerifyDevice = (device, __) => (
   </Section>
 );
 
-const Device = ({ device, __ }) => (
+const Device = ({ device, i18n }) => (
   <div className="m-device">
     {device.signature_key === null ?
-      renderVerifyDevice(device, __) :
-      renderForm(device, __)
+      renderVerifyDevice(device, i18n) :
+      renderForm(device, i18n)
     }
   </div>
 );
 
 Device.propTypes = {
   device: PropTypes.shape({}).isRequired,
-  __: PropTypes.func.isRequired,
+  i18n: PropTypes.shape({}).isRequired,
 };
 
 export default Device;

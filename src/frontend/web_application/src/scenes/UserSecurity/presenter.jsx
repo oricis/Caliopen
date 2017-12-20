@@ -11,7 +11,7 @@ import './style.scss';
 
 class UserSecurity extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     requestUser: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
     notifySuccess: PropTypes.func.isRequired,
@@ -40,38 +40,37 @@ class UserSecurity extends Component {
 
   handleSubmitSuccess = () => {
     this.setState({ updated: true, errors: {} }, () => {
-      const { requestUser, notifySuccess, __ } = this.props;
-      notifySuccess({ message: __('password.form.feedback.successfull'), duration: 0 });
+      const { requestUser, notifySuccess, i18n } = this.props;
+      notifySuccess({ message: i18n.t`password.form.feedback.successfull`, duration: 0 });
       requestUser();
     });
   }
 
   handleSubmitError = ({ response }) => {
-    const { notifyError, __ } = this.props;
+    const { notifyError, i18n } = this.props;
 
     if (response.status === 424) {
-      return notifyError({ message: __('password.form.feedback.error-old-password'), duration: 0 });
+      return notifyError({ message: i18n.t`password.form.feedback.error-old-password`, duration: 0 });
     }
 
-    return notifyError({ message: __('password.form.feedback.unexpected-error'), duration: 0 });
+    return notifyError({ message: i18n.t`password.form.feedback.unexpected-error`, duration: 0 });
   }
 
   render() {
-    const { __, user } = this.props;
+    const { i18n, user } = this.props;
 
     return (
       <div className="s-user-account-security">
         <PageTitle />
         <form method="post" name="user_security_form">
-          <Section title={__('user.security.section_password.title')}>
+          <Section title={i18n.t`user.security.section_password.title`}>
             <div className="s-user-account-security__credentials">
               <div className="s-user-account-security__login">
-                <LoginDetails user={user} __={__} />
+                <LoginDetails user={user} />
               </div>
               <div className="s-user-account-security__password">
                 <PasswordDetails
                   user={user}
-                  __={__}
                   updated={this.state.updated}
                   onSubmit={this.handleSubmit}
                 />
@@ -79,10 +78,10 @@ class UserSecurity extends Component {
             </div>
           </Section>
           {/* TODO: enable TFA and PGP sections
-            <Section title={__('user.security.section_tfa.title')}>
+            <Section title={i18n.t`user.security.section_tfa.title`}>
             <TFAForm user={user} />
           </Section>
-          <Section title={__('user.security.section_pgpkeys.title')}>
+          <Section title={i18n.t`user.security.section_pgpkeys.title`}>
             <OpenPGPKeysDetails user={user} />
           </Section>
           */}

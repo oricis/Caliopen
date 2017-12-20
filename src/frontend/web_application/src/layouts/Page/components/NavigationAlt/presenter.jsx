@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Link from '../../../../components/Link';
 import Icon from '../../../../components/Icon';
 import VerticalMenu, { VerticalMenuItem } from '../../../../components/VerticalMenu';
@@ -14,7 +15,7 @@ class NavigationAlt extends PureComponent {
     applications: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     currentApplication: PropTypes.shape({}).isRequired,
     onClickApp: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
   };
@@ -22,7 +23,7 @@ class NavigationAlt extends PureComponent {
   createHandleClickApp = app => () => this.props.onClickApp(app);
 
   render() {
-    const { currentApplication, applications, __ } = this.props;
+    const { currentApplication, applications, i18n } = this.props;
 
     return (
       <div className="l-nav-alt">
@@ -39,7 +40,7 @@ class NavigationAlt extends PureComponent {
                   active={currentApplication === application}
                   data-toggle="left_off_canvas"
                 >
-                  <Icon type={application.icon} /> {__(`header.menu.${application.name}`)}
+                  <Icon type={application.icon} /> {i18n.t`header.menu.${application.name}`}
                 </Link>
               </VerticalMenuItem>
             ))
@@ -59,17 +60,17 @@ class NavigationAlt extends PureComponent {
         <VerticalMenu className="l-nav-alt__menu">
           {/* <VerticalMenuItem>
             <Link to="/user/profile" button expanded data-toggle="left_off_canvas">
-              {__('header.menu.account')}
+             <Trans id="header.menu.account">header.menu.account</Trans>
             </Link>
           </VerticalMenuItem> */}
           <VerticalMenuItem>
             <Link to="/settings/application" button expanded data-toggle="left_off_canvas">
-              {__('header.menu.settings')}
+              <Trans id="header.menu.settings">header.menu.settings</Trans>
             </Link>
           </VerticalMenuItem>
           <VerticalMenuItem>
             <Link href="/auth/signout" button expanded data-toggle="left_off_canvas">
-              {__('header.menu.signout')}
+              <Trans id="header.menu.signout">header.menu.signout</Trans>
             </Link>
           </VerticalMenuItem>
         </VerticalMenu>

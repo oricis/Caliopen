@@ -1,17 +1,21 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
-// import PhoneForm from './';
-//
+import React from 'react';
+import { shallow } from 'enzyme';
+import PhoneForm from './';
+
+jest.mock('lingui-react', () => ({
+  withI18n: () => whatever => whatever,
+}));
+
 describe('component PhoneForm', () => {
   it('init form', () => {
-//     const props = {
-//       __: str => str,
-//     };
-//
-//     const comp = shallow(
-//       <PhoneForm {...props} />
-//     );
-//
-//     expect(comp.find('Button').prop('type')).toEqual('submit');
+    const props = {
+      i18n: { t: strs => strs[0] },
+    };
+
+    const comp = shallow(
+      <PhoneForm {...props} />
+    );
+
+    expect(comp.text()).toEqual('<FormGrid />');
   });
 });

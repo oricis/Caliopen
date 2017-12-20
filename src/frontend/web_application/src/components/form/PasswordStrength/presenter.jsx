@@ -8,7 +8,7 @@ class PasswordStrength extends PureComponent {
   static propTypes = {
     strength: PropTypes.number.isRequired,
     className: PropTypes.string,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -16,12 +16,12 @@ class PasswordStrength extends PureComponent {
   };
 
   render() {
-    const { strength, className, __ } = this.props;
+    const { strength, className, i18n } = this.props;
 
     const feedbacks = {
-      weak: __('password_strength.feedback.weak'),
-      moderate: __('password_strength.feedback.moderate'),
-      strong: __('password_strength.feedback.strong'),
+      weak: i18n.t`password_strength.feedback.weak`,
+      moderate: i18n.t`password_strength.feedback.moderate`,
+      strong: i18n.t`password_strength.feedback.strong`,
     };
 
     const classNameModifiers = {

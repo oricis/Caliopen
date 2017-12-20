@@ -16,9 +16,9 @@ const APPLICATIONS = {
   },
 };
 
-export const getLabels = __ => ({
-  discussions: __('header.menu.discussions'),
-  contacts: __('header.menu.contacts'),
+export const getLabels = i18n => ({
+  discussions: i18n.t`header.menu.discussions`,
+  contacts: i18n.t`header.menu.contacts`,
 });
 
 export const getInfosFromName = name => ({

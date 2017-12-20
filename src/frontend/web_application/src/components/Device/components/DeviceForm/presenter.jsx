@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import classnames from 'classnames';
 import Button from '../../../../components/Button';
 import { FormGrid, FormRow, FormColumn, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, CollectionFieldGroup } from '../../../../components/form';
@@ -20,7 +21,7 @@ class DeviceForm extends Component {
   static propTypes = {
     device: PropTypes.shape({}).isRequired,
     onChange: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   constructor(props) {
@@ -66,9 +67,9 @@ class DeviceForm extends Component {
       return { isValid: true };
     }
 
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
-    return { isValid: false, errors: [__('device.feedback.invalid_ip')] };
+    return { isValid: false, errors: [i18n.t`device.feedback.invalid_ip`] };
   }
 
   handleSubmit(event) {
@@ -77,18 +78,18 @@ class DeviceForm extends Component {
   }
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     const deviceTypes = [
-      { value: 'desktop', label: __('device.type.desktop') },
-      { value: 'laptop', label: __('device.type.laptop') },
-      { value: 'smartphone', label: __('device.type.smartphone') },
-      { value: 'tablet', label: __('device.type.tablet') },
+      { value: 'desktop', label: i18n.t`device.type.desktop` },
+      { value: 'laptop', label: i18n.t`device.type.laptop` },
+      { value: 'smartphone', label: i18n.t`device.type.smartphone` },
+      { value: 'tablet', label: i18n.t`device.type.tablet` },
     ];
     const locationTypes = [
-      { label: __('device.location.type.unknown'), value: 'unknown' },
-      { label: __('device.location.type.home'), value: 'home' },
-      { label: __('device.location.type.work'), value: 'work' },
-      { label: __('device.location.type.public'), value: 'public' },
+      { label: i18n.t`device.location.type.unknown`, value: 'unknown' },
+      { label: i18n.t`device.location.type.home`, value: 'home' },
+      { label: i18n.t`device.location.type.work`, value: 'work' },
+      { label: i18n.t`device.location.type.public`, value: 'public' },
     ];
     const defaultLocation = { address: '', type: locationTypes[0].value };
 
@@ -108,7 +109,7 @@ class DeviceForm extends Component {
           <TextFieldGroup
             showLabelforSr
             name="address"
-            label={__('device.form.locations.address.label')}
+            label={i18n.t`device.form.locations.address.label`}
             value={location.address}
             onChange={handleChange}
             className="m-device-form__location-address"
@@ -116,7 +117,7 @@ class DeviceForm extends Component {
           <SelectFieldGroup
             showLabelforSr
             name="type"
-            label={__('device.form.locations.type.label')}
+            label={i18n.t`device.form.locations.type.label`}
             value={location.type}
             options={locationTypes}
             onChange={handleChange}
@@ -130,14 +131,14 @@ class DeviceForm extends Component {
       <FormGrid className="m-device-form">
         <form method="post" onSubmit={this.handleSubmit}>
           <Fieldset className="m-device-form__fieldset">
-            <Legend>{__('device.manage_form.name.label')}</Legend>
+            <Legend><Trans id="device.manage_form.name.label">device.manage_form.name.label</Trans></Legend>
             <FormRow reverse>
               <FormColumn bottomSpace size="medium">
-                <label htmlFor="device-name">{__('device.manage_form.name.infotext')}</label>
+                <label htmlFor="device-name"><Trans id="device.manage_form.name.infotext">device.manage_form.name.infotext</Trans></label>
               </FormColumn>
               <FormColumn bottomSpace size="medium">
                 <TextFieldGroup
-                  label={__('device.manage_form.name.label')}
+                  label={i18n.t`device.manage_form.name.label`}
                   name="name"
                   id="device-name"
                   showLabelforSr
@@ -148,15 +149,15 @@ class DeviceForm extends Component {
             </FormRow>
           </Fieldset>
           <Fieldset className="m-device-form__fieldset">
-            <Legend>{__('device.manage_form.type.label')}</Legend>
+            <Legend><Trans id="device.manage_form.type.label">device.manage_form.type.label</Trans></Legend>
             <FormRow reverse>
               <FormColumn bottomSpace size="medium">
-                <label htmlFor="device-type">{__('device.manage_form.type.infotext')}</label>
+                <label htmlFor="device-type"><Trans id="device.manage_form.type.infotext">device.manage_form.type.infotext</Trans></label>
               </FormColumn>
               <FormColumn size="medium">
                 <SelectFieldGroup
                   className="m-device-form__type"
-                  label={__('device.manage_form.type.label')}
+                  label={i18n.t`device.manage_form.type.label`}
                   name="type"
                   id="device-type"
                   showLabelforSr
@@ -168,10 +169,10 @@ class DeviceForm extends Component {
             </FormRow>
           </Fieldset>
           <Fieldset className="m-device-form__fieldset">
-            <Legend>{__('device.manage_form.ips.label')}</Legend>
+            <Legend><Trans id="device.manage_form.ips.label">device.manage_form.ips.label</Trans></Legend>
             <FormRow reverse>
               <FormColumn bottomSpace size="medium">
-                <label htmlFor="device-ips">{__('device.manage_form.ips.infotext')}</label>
+                <label htmlFor="device-ips"><Trans id="device.manage_form.ips.infotext">device.manage_form.ips.infotext</Trans></label>
               </FormColumn>
               <FormColumn bottomSpace size="medium">
                 <CollectionFieldGroup
@@ -186,7 +187,7 @@ class DeviceForm extends Component {
           </Fieldset>
           <FormRow>
             <FormColumn size="medium">
-              <Button plain type="submit">{__('device.action.save_changes')}</Button>
+              <Button plain type="submit"><Trans id="device.action.save_changes">device.action.save_changes</Trans></Button>
             </FormColumn>
           </FormRow>
         </form>

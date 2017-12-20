@@ -6,7 +6,7 @@ import './style.scss';
 class AddressDetails extends Component {
   static propTypes = {
     address: PropTypes.shape({}).isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   constructor(props) {
@@ -15,11 +15,11 @@ class AddressDetails extends Component {
   }
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.addressTypesTranslations = {
-      work: __('contact.address_type.work'),
-      home: __('contact.address_type.home'),
-      other: __('contact.address_type.other'),
+      work: i18n.t`contact.address_type.work`,
+      home: i18n.t`contact.address_type.home`,
+      other: i18n.t`contact.address_type.other`,
     };
   }
 

@@ -13,7 +13,7 @@ function getRedirect(queryString) {
 class Signin extends Component {
   static propTypes = {
     location: PropTypes.shape({}).isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   constructor(props) {
@@ -29,11 +29,11 @@ class Signin extends Component {
   }
 
   initTranslation() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.localizedErrors = {
-      ERR_REQUIRED_USERNAME: __('signin.feedback.required_username'),
-      ERR_REQUIRED_PASSWORD: __('signin.feedback.required_password'),
-      ERR_INVALID_GLOBAL: __('signin.feedback.invalid'),
+      ERR_REQUIRED_USERNAME: i18n.t`signin.feedback.required_username`,
+      ERR_REQUIRED_PASSWORD: i18n.t`signin.feedback.required_password`,
+      ERR_INVALID_GLOBAL: i18n.t`signin.feedback.invalid`,
     };
   }
 

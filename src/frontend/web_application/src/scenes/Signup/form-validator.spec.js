@@ -1,7 +1,7 @@
 import validator from './form-validator';
 
 describe('scene Signup form-validator', () => {
-  const noopStr = str => str;
+  const i18n = { t: strs => strs[0] };
   it('validates', async () => {
     const isValid = await validator.validate({
       username: 'bender',
@@ -9,7 +9,7 @@ describe('scene Signup form-validator', () => {
       tos: true,
       privacy: true,
       recovery_email: 'bender@planetexpress.tld',
-    }, noopStr, 'full');
+    }, i18n, 'full');
     expect(isValid).toBe(true);
   });
   it('render errors for form', async () => {
@@ -19,7 +19,7 @@ describe('scene Signup form-validator', () => {
         // tos: false,
         privacy: false,
         recovery_email: 'bender',
-      }, noopStr, 'full');
+      }, i18n, 'full');
       expect(isValid).not.toBe(true);
     } catch (e) {
       expect(e).toEqual({

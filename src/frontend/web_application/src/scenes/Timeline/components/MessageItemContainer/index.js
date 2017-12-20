@@ -1,6 +1,6 @@
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import { replyToMessage, deleteMessage } from '../../../../store/modules/message';
 import { clearDraft } from '../../../../store/modules/draft-message';
 import Presenter from './presenter';
@@ -22,5 +22,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default compose(
   connect(null, mapDispatchToProps),
-  withTranslator()
+  withI18n()
 )(Presenter);

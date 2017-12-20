@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import Spinner from '../../components/Spinner';
 import TagsForm from '../../components/TagsForm';

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Moment from 'react-moment';
+import { Trans } from 'lingui-react';
 import Link from '../../../../components/Link';
 import MessageDate from '../../../../components/MessageDate';
 import AuthorAvatar from '../../../../components/AuthorAvatar';
@@ -18,7 +19,6 @@ class MessageItem extends PureComponent {
     message: PropTypes.shape({}).isRequired,
     settings: PropTypes.shape({}).isRequired,
     isMessageFromUser: PropTypes.bool.isRequired,
-    __: PropTypes.func.isRequired,
   };
 
   renderAuthor() {
@@ -55,11 +55,11 @@ class MessageItem extends PureComponent {
   }
 
   render() {
-    const { message, __ } = this.props;
+    const { message } = this.props;
     const hash = message.is_draft ? 'reply' : message.message_id;
 
     return (
-      <MessageItemContainer message={message} __={__}>
+      <MessageItemContainer message={message}>
         <Link
           to={`/discussions/${message.discussion_id}#${hash}`}
           className={classnames('s-message-item', { 's-message-item--unread': message.is_unread, 's-message-item--draft': message.is_draft })}
@@ -74,7 +74,7 @@ class MessageItem extends PureComponent {
               {this.renderTags()}
             </TextBlock>
             <TextBlock>
-              {message.is_draft && (<span className="s-message-item__draft-prefix">{__('timeline.draft-prefix')}</span>)}
+              {message.is_draft && (<span className="s-message-item__draft-prefix"><Trans id="timeline.draft-prefix">timeline.draft-prefix</Trans></span>)}
               {message.subject && (<span className="s-message-item__subject">{message.subject}</span>)}
               {message.excerpt}
             </TextBlock>

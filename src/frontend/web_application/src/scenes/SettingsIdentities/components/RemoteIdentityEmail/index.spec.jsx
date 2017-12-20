@@ -8,7 +8,7 @@ describe('component RemoteIdentityEmail', () => {
       remoteIdentity: {},
       onConnect: jest.fn(),
       onDisconnect: jest.fn(),
-      __: str => str,
+      i18n: { t: strs => strs[0] },
     };
 
     const comp = shallow(

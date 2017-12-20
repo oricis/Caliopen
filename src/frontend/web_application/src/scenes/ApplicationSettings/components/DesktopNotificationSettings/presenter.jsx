@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../../../../components/Button';
 import Notification, { isSupported, PERMISSION_DENIED, PERMISSION_GRANTED } from '../../../../services/browser-notification';
 
 class DesktopNotificationSettings extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   state = {
@@ -27,44 +28,42 @@ class DesktopNotificationSettings extends Component {
   }
 
   handleClickTestBrowser = () => {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
-    return new Notification(__('settings.desktop_notification.feedback.enabled'));
+    return new Notification(i18n.t`settings.desktop_notification.feedback.enabled`);
   }
 
+  // eslint-disable-next-line
   renderNoSupport() {
-    const { __ } = this.props;
-
     return (
       <div>
-        {__('settings.desktop_notification.no_support')}
+        <Trans id="settings.desktop_notification.no_support">settings.desktop_notification.no_support</Trans>
       </div>
     );
   }
 
   renderNotification() {
-    const { __ } = this.props;
     if (this.state.hasBrowserNotificationPermission === PERMISSION_GRANTED) {
       return (
         <div>
-          {__('settings.desktop_notification.desktop_notifications_enabled')}{' '}
+          <Trans id="settings.desktop_notification.desktop_notifications_enabled">settings.desktop_notification.desktop_notifications_enabled</Trans>{' '}
           <Button
             onClick={this.handleClickTestBrowser}
           >
-            {__('settings.desktop_notification.action.test_desktop_notification')}
+            <Trans id="settings.desktop_notification.action.test_desktop_notification">settings.desktop_notification.action.test_desktop_notification</Trans>
           </Button>
         </div>
       );
     }
 
     if (this.state.hasBrowserNotificationPermission === PERMISSION_DENIED) {
-      return (<div>{__('settings.desktop_notification.disabled')}</div>);
+      return (<div><Trans id="settings.desktop_notification.disabled">settings.desktop_notification.disabled</Trans></div>);
     }
 
     return (
       <div>
         <Button onClick={this.handleRequestBrowserNotification}>
-          {__('settings.desktop_notification.action.request-desktop_notification_permission')}
+          <Trans id="settings.desktop_notification.action.request-desktop_notification_permission">settings.desktop_notification.action.request-desktop_notification_permission</Trans>
         </Button>
       </div>
     );

@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
+import { I18nProvider } from 'lingui-react';
 import PageTitle from './components/PageTitle';
 import Routes from './routes';
-import I18nProvider from './components/I18nProvider';
+import I18nProviderLegacy from './components/I18nProvider';
 import { initConfig } from './services/config';
+
+// eslint-disable-next-line import/no-extraneous-dependencies
+const linguiDev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/dev') : undefined;
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
@@ -28,10 +32,12 @@ class App extends Component {
 
     return (
       <Provider store={store}>
-        <I18nProvider>
-          <PageTitle />
-          <Routes />
-        </I18nProvider>
+        <I18nProviderLegacy>
+          <I18nProvider language="en" development={linguiDev}>
+            <PageTitle />
+            <Routes />
+          </I18nProvider>
+        </I18nProviderLegacy>
       </Provider>
     );
   }

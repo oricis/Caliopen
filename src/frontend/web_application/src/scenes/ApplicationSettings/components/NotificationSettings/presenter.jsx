@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { FormGrid, FormRow, FormColumn, SelectFieldGroup as SelectFieldGroupBase, CheckboxFieldGroup as CheckboxFieldGroupBase } from '../../../../components/form';
@@ -12,7 +13,7 @@ const DELAY_DISAPPEAR = [0, 5, 10, 30];
 
 class NotificationForm extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     errors: {},
@@ -28,20 +29,20 @@ class NotificationForm extends Component {
   }));
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.i18n = {
-      off: __('settings.notification.message_preview.options.off'),
-      always: __('settings.notification.message_preview.options.always'),
+      off: i18n.t`settings.notification.message_preview.options.off`,
+      always: i18n.t`settings.notification.message_preview.options.always`,
     };
   }
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     const messagePreviewOptions = this.getOptionsFromArray(MESSAGE_PREVIEW);
     const delayDisappearOptions = DELAY_DISAPPEAR.map(delay => ({
       value: delay,
-      label: __('settings.notification.delay_disappear.options.second', { delay }),
+      label: (<Trans id="settings.notification.delay_disappear.options.second" values={{ delay }}>settings.notification.delay_disappear.options.second</Trans>),
     }));
 
     return (
@@ -51,7 +52,7 @@ class NotificationForm extends Component {
             <Field
               component={CheckboxFieldGroup}
               name="notification_enabled"
-              label={__('settings.notification.enabled.label')}
+              label={i18n.t`settings.notification.enabled.label`}
             />
           </FormColumn>
         </FormRow>
@@ -60,7 +61,7 @@ class NotificationForm extends Component {
             <Field
               component={SelectFieldGroup}
               name="notification_message_preview"
-              label={__('settings.notification.message_preview.label')}
+              label={i18n.t`settings.notification.message_preview.label`}
               options={messagePreviewOptions}
             />
           </FormColumn>
@@ -70,7 +71,7 @@ class NotificationForm extends Component {
             <Field
               component={CheckboxFieldGroup}
               name="notification_sound_enabled"
-              label={__('settings.notification.sound_enabled.label')}
+              label={i18n.t`settings.notification.sound_enabled.label`}
             />
           </FormColumn>
         </FormRow>
@@ -79,7 +80,7 @@ class NotificationForm extends Component {
             <Field
               component={SelectFieldGroup}
               name="notification_delay_disappear"
-              label={__('settings.notification.delay_disappear.label')}
+              label={i18n.t`settings.notification.delay_disappear.label`}
               options={delayDisappearOptions}
             />
           </FormColumn>

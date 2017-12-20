@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../../../../components/Button';
 
-const VerifyDevice = ({ device, onVerifyDevice, onDeleteDevice, __ }) => {
+const VerifyDevice = ({ device, onVerifyDevice, onDeleteDevice }) => {
   const handleVerify = () => {
     onVerifyDevice({ device });
   };
@@ -16,11 +17,11 @@ const VerifyDevice = ({ device, onVerifyDevice, onDeleteDevice, __ }) => {
         plain
         className="m-device-verify__button"
         onClick={handleVerify}
-      >{__('device.action.verify')}</Button>
+      ><Trans id="device.action.verify">device.action.verify</Trans></Button>
       <br />
-      {__('device.verify.not-you')}
+      <Trans id="device.verify.not-you">device.verify.not-you</Trans>
       {' '}
-      <Button onClick={handleDelete}>{__('device.action.delete')}</Button>
+      <Button onClick={handleDelete}><Trans id="device.action.delete">device.action.delete</Trans></Button>
     </div>
   );
 };
@@ -29,7 +30,6 @@ VerifyDevice.propTypes = {
   device: PropTypes.shape({}).isRequired,
   onDeleteDevice: PropTypes.func.isRequired,
   onVerifyDevice: PropTypes.func.isRequired,
-  __: PropTypes.func.isRequired,
 };
 
 export default VerifyDevice;

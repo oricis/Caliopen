@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withTranslator } from '@gandi/react-translate';
+import { Trans, withI18n } from 'lingui-react';
 import Moment from 'react-moment';
 import Button from '../Button';
 import Spinner from '../Spinner';
@@ -31,12 +31,10 @@ function generateStateFromProps({ props, getKeyFromASCII, keyStatuses }) {
   };
 }
 
-
-// XXX: @themouette recommand to give a __ props on not routed component instead of this decorator
-@withTranslator()
+@withI18n()
 class OpenPGPKey extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     locale: PropTypes.string,
     children: PropTypes.node,
     publicKeyArmored: PropTypes.string.isRequired,
@@ -87,13 +85,13 @@ class OpenPGPKey extends Component {
   }
 
   render() {
-    const { __, locale, children, publicKeyArmored, privateKeyArmored, editMode } = this.props;
+    const { i18n, locale, children, publicKeyArmored, privateKeyArmored, editMode } = this.props;
     const openpgpStatuses = {
-      invalid: __('openpgp.status.invalid'),
-      expired: __('openpgp.status.expired'),
-      revoked: __('openpgp.status.revoked'),
-      valid: __('openpgp.status.valid'),
-      no_self_cert: __('openpgp.status.no_self_cert'),
+      invalid: i18n.t`openpgp.status.invalid`,
+      expired: i18n.t`openpgp.status.expired`,
+      revoked: i18n.t`openpgp.status.revoked`,
+      valid: i18n.t`openpgp.status.valid`,
+      no_self_cert: i18n.t`openpgp.status.no_self_cert`,
     };
 
     return (
@@ -112,12 +110,12 @@ class OpenPGPKey extends Component {
               {' '}
               <Icon type="caret-down" />
               {' '}
-              <span className="show-for-sr">{__('openpgp.action.toggle-details')}</span>
+              <span className="show-for-sr"><Trans id="openpgp.action.toggle-details">openpgp.action.toggle-details</Trans></span>
             </Button>
             {editMode && (
               <Button color="alert" onClick={this.handleDeleteKey}>
                 <Icon type="remove" />
-                <span className="show-for-sr">{__('openpgp.action.remove-key')}</span>
+                <span className="show-for-sr"><Trans id="openpgp.action.remove-key">openpgp.action.remove-key</Trans></span>
               </Button>
             )}
           </div>
@@ -148,25 +146,25 @@ class OpenPGPKey extends Component {
             <DefList
               className="m-openpgp-key__detail"
               definitions={[
-                { title: __('openpgp.details.identities'), descriptions: this.state.openpgpKey.userIds },
-                { title: __('openpgp.details.algorithm'), descriptions: [this.state.openpgpKey.algorithm] },
-                { title: __('openpgp.details.key-size'), descriptions: [this.state.openpgpKey.bitSize] },
-                { title: __('openpgp.details.status'), descriptions: [openpgpStatuses[this.state.openpgpKey.keyStatus]] },
-                { title: __('openpgp.details.creation'), descriptions: this.state.openpgpKey.created ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.created}</Moment>] : [] },
-                { title: __('openpgp.details.expiration'), descriptions: this.state.openpgpKey.expirationTime ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.expirationTime}</Moment>] : [] },
+                { title: i18n.t`openpgp.details.identities`, descriptions: this.state.openpgpKey.userIds },
+                { title: i18n.t`openpgp.details.algorithm`, descriptions: [this.state.openpgpKey.algorithm] },
+                { title: i18n.t`openpgp.details.key-size`, descriptions: [this.state.openpgpKey.bitSize] },
+                { title: i18n.t`openpgp.details.status`, descriptions: [openpgpStatuses[this.state.openpgpKey.keyStatus]] },
+                { title: i18n.t`openpgp.details.creation`, descriptions: this.state.openpgpKey.created ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.created}</Moment>] : [] },
+                { title: i18n.t`openpgp.details.expiration`, descriptions: this.state.openpgpKey.expirationTime ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.expirationTime}</Moment>] : [] },
               ]}
             />
 
             <TextareaFieldGroup
               className="m-openpgp-key__detail"
-              label={__('openpgp.public-key')}
+              label={i18n.t`openpgp.public-key`}
               readOnly
               value={publicKeyArmored}
             />
             {privateKeyArmored && (
               <TextareaFieldGroup
                 className="m-openpgp-key__detail"
-                label={__('openpgp.private-key')}
+                label={i18n.t`openpgp.private-key`}
                 readOnly
                 value={privateKeyArmored}
               />

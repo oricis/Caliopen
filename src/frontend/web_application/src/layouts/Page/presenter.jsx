@@ -12,7 +12,7 @@ class PageContainer extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     requestUser: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   componentDidMount() {
@@ -20,7 +20,7 @@ class PageContainer extends Component {
   }
 
   render() {
-    const { children, __ } = this.props;
+    const { children, i18n } = this.props;
 
     return (
       <OffCanvas leftChildren={<NavigationAlt />}>
@@ -31,7 +31,7 @@ class PageContainer extends Component {
             <div className="l-body__content">{children}</div>
           </section>
           <section>
-            <div className="l-body__footer-alpha" dangerouslySetInnerHTML={__('alpha.footer.feedback', { withHTML: true })} />
+            <div className="l-body__footer-alpha" dangerouslySetInnerHTML={{ __html: i18n.t`alpha.footer.feedback` }} />
           </section>
           <CallToAction />
           <NotificationCenter />

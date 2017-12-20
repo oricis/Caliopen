@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { v1 as uuidV1 } from 'uuid';
 import VisibilitySensor from 'react-visibility-sensor';
 import Moment from 'react-moment';
+import { Trans } from 'lingui-react';
 import ContactAvatarLetter from '../../../ContactAvatarLetter';
 import Button from '../../../Button';
 import Icon from '../../../Icon';
@@ -30,7 +31,7 @@ class Message extends Component {
     onEditTags: PropTypes.func.isRequired,
     settings: PropTypes.shape({}).isRequired,
     isMessageFromUser: PropTypes.bool,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   }
 
   static defaultProps = {
@@ -127,11 +128,11 @@ class Message extends Component {
   render() {
     const {
       message, onDelete, onMessageUnread, onMessageRead,
-      onReply, onCopyTo, onEditTags, __,
+      onReply, onCopyTo, onEditTags, i18n,
     } = this.props;
     const author = getAuthor(message);
     const typeTranslations = {
-      email: __('message-list.message.protocol.email'),
+      email: i18n.t`message-list.message.protocol.email`,
     };
 
     const topBarClassName = classnames(
@@ -160,7 +161,7 @@ class Message extends Component {
             {message.type &&
               (<div className="m-message__type">
                 <span className="m-message__type-label">
-                  {__('message-list.message.by', { type: typeTranslations[message.type] })}
+                  <Trans id="message-list.message.by" values={{ type: typeTranslations[message.type] }}>message-list.message.by</Trans>
                 </span>
                 {' '}
                 <Icon type={message.type} className="m-message__type-icon" spaced />
@@ -185,7 +186,6 @@ class Message extends Component {
                 onReply={onReply}
                 onCopyTo={onCopyTo}
                 onEditTags={onEditTags}
-                __={__}
               />
             </Dropdown>
 
@@ -207,7 +207,10 @@ class Message extends Component {
                 display="expanded"
                 className="m-message__footer-button"
               >
-                {this.state.isFold ? __('message-list.message.action.expand') : __('message-list.message.action.collapse')}
+                {this.state.isFold ?
+                  (<Trans id="message-list.message.action.expand">message-list.message.action.expand</Trans>) :
+                  (<Trans id="message-list.message.action.collapse">message-list.message.action.collapse</Trans>)
+                }
               </Button>
             }
           </div>

@@ -5,7 +5,7 @@ import Icon from '../../../Icon';
 class EmailDetails extends Component {
   static propTypes = {
     email: PropTypes.shape({}).isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   constructor(props) {
@@ -14,20 +14,20 @@ class EmailDetails extends Component {
   }
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.emailTypesTranslations = {
-      work: __('contact.email_type.work'),
-      home: __('contact.email_type.home'),
-      other: __('contact.email_type.other'),
+      work: i18n.t`contact.email_type.work`,
+      home: i18n.t`contact.email_type.home`,
+      other: i18n.t`contact.email_type.other`,
     };
   }
 
   render() {
-    const { email, __ } = this.props;
+    const { email, i18n } = this.props;
 
     const address = !email.is_primary ?
       email.address :
-      (<strong title={__('contact.primary')}>{email.address}</strong>);
+      (<strong title={i18n.t`contact.primary`}>{email.address}</strong>);
 
     return (
       <span className="m-email-details">
