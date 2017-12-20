@@ -2,7 +2,6 @@ package tags
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
@@ -33,7 +32,7 @@ func RetrieveUserTags(ctx *gin.Context) {
 		respBuf.WriteString(("\"tags\":["))
 		first := true
 		for _, tag := range tags {
-			json_tag, err := json.Marshal(tag)
+			json_tag, err := tag.MarshalFrontEnd()
 			if err == nil {
 				if first {
 					first = false
@@ -90,7 +89,14 @@ func RetrieveTag(ctx *gin.Context) {
 			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 			ctx.Abort()
 		} else {
-			ctx.JSON(http.StatusOK, tag)
+			tag_json, err := tag.MarshalFrontEnd()
+			if err != nil {
+				e := swgErr.New(http.StatusFailedDependency, err.Error())
+				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+				ctx.Abort()
+			} else {
+				ctx.Data(http.StatusOK, "application/json; charset=utf-8", tag_json)
+			}
 		}
 	} else {
 		err := errors.New("invalid params")
