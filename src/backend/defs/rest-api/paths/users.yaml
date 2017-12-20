@@ -25,6 +25,14 @@ users:
             location:
               type: string
               description: url to retrieve new user's infos at /users/{user_id}
+      '400':
+        description: json payload malformed
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '406':
+        description: NotAcceptable. Server refuses to fulfill the request
+        schema:
+          "$ref": "../objects/Error.yaml"
 users_{user_id}:
   delete:
     description: Not Yet Implemented

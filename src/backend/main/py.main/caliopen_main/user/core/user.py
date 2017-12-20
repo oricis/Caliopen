@@ -210,8 +210,12 @@ class User(BaseCore):
         # 3.
         if not new_user.recovery_email:
             raise ValueError("Missing recovery email")
-        if not validate_email(new_user.recovery_email):
-            raise ValueError("Invalid recovery email address")
+
+        try:
+            cls.validate_recovery_email(new_user.recovery_email)
+        except Exception as exc:
+            log.info("recovery email failed validation : {}".format(exc))
+            raise ValueError(exc)
 
         # 4. & 5.
         if User.is_username_available(new_user.name.lower()):
@@ -433,3 +437,33 @@ class User(BaseCore):
     def get_remote_identity(self, identifier):
         """Get an user remote identity."""
         return RemoteIdentity.get(self, identifier)
+
+    @classmethod
+    def validate_recovery_email(cls, email):
+        """
+        provided email has to pass the validations below,
+        otherwise this func will raise an error
+        @:arg email: string
+        """
+
+        #  1. is email well-formed ?
+        if not validate_email(email):
+            raise ValueError("recovery email malformed")
+
+        # 2. is email already in our db ? (recovery_email must be unique)
+        try:
+            UserRecoveryEmail.get(email)
+        except NotFound:
+            pass
+        else:
+            raise ValueError("recovery email already used in this instance")
+
+        # 3. is email belonging to one of our domains ?
+        #  (recovery_email must be external)
+        domain = email.split("@")[1]
+        if domain in Configuration("global").get("default_domain"):
+            raise ValueError(
+                "recovery email must be outside of this domain instance")
+
+            # 4. TODO: check that provided recovery email can really receive email
+            # send a confirmation email ?
