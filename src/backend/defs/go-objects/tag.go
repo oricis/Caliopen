@@ -19,8 +19,8 @@ import (
 // If the "patch" tag is missing or not set to "user", property cannot be modified directly by an "UserInitiator" with a call to a PATCH method.
 type Tag struct {
 	// compound index
-	User_id UUID   `cql:"user_id" json:"user_id" formatter:"rfc4122"` // primary key
-	Name    string `cql:"name" json:"name"`                           // primary key
+	User_id UUID   `cql:"user_id" json:"user_id" formatter:"rfc4122" frontend:"omit"` // primary key
+	Name    string `cql:"name" json:"name"`                                           // primary key
 	// values
 	Date_insert      time.Time `cql:"date_insert" json:"date_insert" formatter:"RFC3339Milli"`
 	Importance_level int32     `cql:"importance_level" json:"importance_level" patch:"user"`
@@ -37,8 +37,8 @@ const (
 
 // bespoke implementation of the json.Marshaller interface
 // outputs a JSON representation of an object
-// this marshaler takes account of custom tags
-func (tag Tag) MarshalJSON() ([]byte, error) {
+// this marshaler takes account of custom tags for given 'context'
+func (tag *Tag) JSONMarshaller(context string) ([]byte, error) {
 	var jsonBuf bytes.Buffer
 	enc := json.NewEncoder(&jsonBuf)
 
@@ -48,7 +48,18 @@ func (tag Tag) MarshalJSON() ([]byte, error) {
 	}
 	jsonBuf.WriteByte('{')
 	first := true
+fieldsLoop:
 	for _, field := range fields {
+		switch context {
+		case "frontend":
+			front, err := reflections.GetFieldTag(*tag, field, "frontend")
+			if err == nil {
+				switch front {
+				case "omit":
+					continue fieldsLoop
+				}
+			}
+		}
 		j_field, err := reflections.GetFieldTag(tag, field, "json")
 		if err != nil {
 			log.WithError(err).Warnf("reflection for field %s failed", field)
@@ -79,6 +90,11 @@ func (tag Tag) MarshalJSON() ([]byte, error) {
 	}
 	jsonBuf.WriteByte('}')
 	return jsonBuf.Bytes(), nil
+}
+
+// return a JSON representation of Tag suitable for frontend client
+func (tag *Tag) MarshalFrontEnd() ([]byte, error) {
+	return tag.JSONMarshaller("frontend")
 }
 
 // UnmarshalMap is used when unmarshalling a JSON to a Tag

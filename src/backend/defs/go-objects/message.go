@@ -37,7 +37,7 @@ type Message struct {
 	PrivacyIndex        *PrivacyIndex      `cql:"pi"                       json:"pi"`
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
 	Subject             string             `cql:"subject"                  json:"subject"          `
-	Tags                []string           `cql:"tags"                     json:"tags"            patch:"user" `
+	Tags                []string           `cql:"tags"                     json:"tags"                     patch:"user" `
 	Type                string             `cql:"type"                     json:"type"             `
 	User_id             UUID               `cql:"user_id"                  json:"user_id"                  elastic:"omit"      formatter:"rfc4122"`
 }
