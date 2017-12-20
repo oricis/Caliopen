@@ -39,17 +39,10 @@ class AuthenticationError(HTTPClientError):
     explanation = 'Wrong credentials (e.g., bad password or username)'
 
 
-class AuthorizationError(HTTPClientError):
-    code = 403
-    title = 'Forbidden'
-    explanation = 'Access was denied to this resource.'
-
-    def __init__(self, detail=None, headers=None, comment=None,
-                 body_template=None, result=None, **kw):
-        HTTPClientError.__init__(self, detail=detail, headers=headers,
-                                 comment=comment, body_template=body_template,
-                                 **kw)
-        self.result = result
+class NotAcceptable(HTTPClientError):
+    code = 406
+    title = 'Not acceptable'
+    explanation = 'Server cannot fulfill the request with given payload'
 
 
 class ResourceNotFound(HTTPClientError):
@@ -96,9 +89,6 @@ class Unprocessable(HTTPClientError):
 
     code: 422, title: Bad Request
     """
-
-    def __init__(self, error=None):
-        self.code = 422
-        self.title = 'Unprocessable entity'
-        self.explanation = ('The server encounter when processing payload')
-        self.message = error.message
+    code = 422
+    title = 'Unprocessable entity'
+    explanation = 'The method is not allowed or not yet implemented'
