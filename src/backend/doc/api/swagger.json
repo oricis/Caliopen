@@ -1052,6 +1052,9 @@
                     "is_unread": {
                       "type": "boolean"
                     },
+                    "is_received": {
+                      "type": "boolean"
+                    },
                     "message_id": {
                       "type": "string"
                     },
@@ -1233,6 +1236,9 @@
                   "type": "boolean"
                 },
                 "is_unread": {
+                  "type": "boolean"
+                },
+                "is_received": {
                   "type": "boolean"
                 },
                 "message_id": {
@@ -1604,6 +1610,9 @@
                   "type": "boolean"
                 },
                 "is_unread": {
+                  "type": "boolean"
+                },
+                "is_received": {
                   "type": "boolean"
                 },
                 "message_id": {
@@ -6520,6 +6529,9 @@
                       "is_unread": {
                         "type": "boolean"
                       },
+                      "is_received": {
+                        "type": "boolean"
+                      },
                       "message_id": {
                         "type": "string"
                       },
@@ -6786,6 +6798,9 @@
                     "is_unread": {
                       "type": "boolean"
                     },
+                    "is_received": {
+                      "type": "boolean"
+                    },
                     "message_id": {
                       "type": "string"
                     },
@@ -6967,6 +6982,9 @@
                   "type": "boolean"
                 },
                 "is_unread": {
+                  "type": "boolean"
+                },
+                "is_received": {
                   "type": "boolean"
                 },
                 "message_id": {
@@ -7401,6 +7419,9 @@
                   "type": "boolean"
                 },
                 "is_unread": {
+                  "type": "boolean"
+                },
+                "is_received": {
                   "type": "boolean"
                 },
                 "message_id": {
@@ -7897,6 +7918,9 @@
                 "is_unread": {
                   "type": "boolean"
                 },
+                "is_received": {
+                  "type": "boolean"
+                },
                 "message_id": {
                   "type": "string"
                 },
@@ -8085,6 +8109,9 @@
                   "type": "boolean"
                 },
                 "is_unread": {
+                  "type": "boolean"
+                },
+                "is_received": {
                   "type": "boolean"
                 },
                 "message_id": {
@@ -8885,7 +8912,7 @@
                 "current_state": {
                   "type": "object",
                   "properties": {
-                    "name": {
+                    "label": {
                       "type": "string"
                     },
                     "importance_level": {
@@ -8893,15 +8920,11 @@
                       "format": "int32"
                     }
                   },
-                  "additionalProperties": false,
-                  "required": [
-                    "current_state"
-                  ]
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false,
               "required": [
-                "name",
                 "current_state"
               ]
             }

@@ -114,17 +114,14 @@ tags_{tag_id}:
           current_state:
             type: object
             properties:
-              name:
+              label:
                 type: string
               importance_level:
                 type: integer
                 format: int32
             additionalProperties: false
-            required :
-            - current_state
         additionalProperties: false
         required :
-        - name
         - current_state
     produces:
     - application/json
