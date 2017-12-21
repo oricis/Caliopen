@@ -98,7 +98,12 @@ func (rest *RESTfacility) DeleteTag(user_id, tag_name string) error {
 		return errors.New("[RESTfacility] system tags can't be deleted by user")
 	}
 
-	return rest.store.DeleteTag(user_id, tag_name)
+	err = rest.store.DeleteTag(user_id, tag_name)
+	if err != nil {
+		return err
+	}
+	go rest.deleteEmbeddedTagReferences(user_id, tag_name)
+	return nil
 }
 
 // UpdateResourceTags :
@@ -215,6 +220,10 @@ func (rest *RESTfacility) IsTagLabelNameUnique(label, userID string) (bool, stri
 		}
 	}
 	return true, normalizedLabel
+}
+
+func (rest *RESTfacility) deleteEmbeddedTagReferences(userID, tagName string) {
+	//TODO : async deletion of tag references embedded into resources.
 }
 
 func utf8ToASCIILowerNoSpace(s string) string {
