@@ -62,7 +62,7 @@ class ForgotPasswordForm extends Component {
               {success ? (
                 <FormRow>
                   <FormColumn rightSpace={false} bottomSpace className="m-forgot-password-form__success">
-                    <Icon type="check" rightSpaced /><Trans id="password.forgot-form.success">password.forgot-form.success</Trans>
+                    <Icon type="check" rightSpaced /><Trans id="password.forgot-form.success">Done! You will receive an email shortly with instructions to reset your password.</Trans>
                   </FormColumn>
                   <FormColumn rightSpace={false} className="m-forgot-password-form__action" bottomSpace>
                     <Link
@@ -70,14 +70,14 @@ class ForgotPasswordForm extends Component {
                       plain
                       expanded
                       to="/auth/signin"
-                    ><Trans id="password.forgot-form.action.login">password.forgot-form.action.login</Trans></Link>
+                    ><Trans id="password.forgot-form.action.login">Ok</Trans></Link>
                   </FormColumn>
                 </FormRow>
               ) : (
                 <FormRow>
                   <FormColumn rightSpace={false} bottomSpace>
                     <Legend>
-                      <Trans id="password.forgot-form.instructions">password.forgot-form.instructions</Trans>
+                      <Trans id="password.forgot-form.instructions">Enter your username and we'll email instructions on how to reset your password.</Trans>
                     </Legend>
                   </FormColumn>
                   <FormColumn rightSpace={false} bottomSpace>
@@ -107,10 +107,10 @@ class ForgotPasswordForm extends Component {
                       type="submit"
                       display="expanded"
                       shape="plain"
-                    ><Trans id="password.forgot-form.action.send">password.forgot-form.action.send</Trans></Button>
+                    ><Trans id="password.forgot-form.action.send">Send</Trans></Button>
                   </FormColumn>
                   <FormColumn rightSpace={false}>
-                    <Link to="/auth/signin"><Trans id="password.forgot-form.cancel">password.forgot-form.cancel</Trans></Link>
+                    <Link to="/auth/signin"><Trans id="password.forgot-form.cancel">Cancel</Trans></Link>
                   </FormColumn>
                 </FormRow>
               )}

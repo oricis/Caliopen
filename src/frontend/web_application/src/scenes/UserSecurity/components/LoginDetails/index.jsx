@@ -25,7 +25,7 @@ class LoginDetails extends Component {
 
     return (
       <div className="m-login-details">
-        <TextBlock className="m-login-details__title"><Trans id="login.details.title">login.details.title</Trans></TextBlock>
+        <TextBlock className="m-login-details__title"><Trans id="login.details.title">Login:</Trans></TextBlock>
         <TextFieldGroup
           className="m-login-details__input"
           value={user && user.name}
@@ -36,7 +36,7 @@ class LoginDetails extends Component {
         {/* TODO: enable editing login info
           <div className="m-login-details__action">
           <Button onClick={this.toggleEditMode}>
-            <Trans id="login.details.action.change">login.details.action.change</Trans>
+            <Trans id="login.details.action.change">Change your login</Trans>
           </Button>
         </div>
       */}

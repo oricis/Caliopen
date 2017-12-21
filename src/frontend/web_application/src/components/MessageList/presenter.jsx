@@ -85,16 +85,16 @@ class MessageList extends Component {
         <div className="m-message-list">
           <MenuBar>
             <Button className="m-message-list__action" onClick={this.handleReplyToLastMessage} icon="reply" responsive="icon-only" >
-              <Trans id="message-list.action.reply">message-list.action.reply</Trans>
+              <Trans id="message-list.action.reply">Reply</Trans>
             </Button>
             {/*
               <Button className="m-message-list__action" onClick={onForward} icon="share"
               responsive="icon-only" >
-                <Trans id="message-list.action.copy-to">message-list.action.copy-to</Trans>
+                <Trans id="message-list.action.copy-to">Copy to</Trans>
               </Button>
             */}
             <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >
-              <Trans id="message-list.action.delete">message-list.action.delete</Trans>
+              <Trans id="message-list.action.delete">Delete</Trans>
             </Button>
             <Spinner isLoading={isFetching} className="m-message-list__spinner" />
           </MenuBar>

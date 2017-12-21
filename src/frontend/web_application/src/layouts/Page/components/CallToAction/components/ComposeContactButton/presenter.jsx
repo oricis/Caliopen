@@ -27,7 +27,7 @@ class ComposeContactButton extends PureComponent {
 
     return (
       <ActionButton action={this.handleEventAction} button={buttonProps}>
-        <Trans id="call-to-action.action.compose_contact">call-to-action.action.compose_contact</Trans>
+        <Trans id="call-to-action.action.compose_contact">Compose to this contact</Trans>
       </ActionButton>
     );
   }

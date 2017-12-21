@@ -92,7 +92,7 @@ class ReplyForm extends Component {
     return (
       <div className="m-reply__type">
         <span className="m-reply__type-label">
-          <Trans id="reply-form.by" values={{ type: typeTranslations[this.state.draft.type] }}>reply-form.by</Trans>
+          <Trans id="reply-form.by" values={{ type: typeTranslations[this.state.draft.type] }}>by %(type)s</Trans>
         </span>
         {' '}
         <Icon className="m-reply__type-icon" type={this.state.draft.type} spaced />
@@ -117,9 +117,9 @@ class ReplyForm extends Component {
         <form method="POST" className="m-reply__form-col">
           <TopRow className="m-reply__top-bar">
             <div className="m-reply__top-bar-info">
-              <div className="m-reply__author"><Trans id="reply-form.you">reply-form.you</Trans></div>
+              <div className="m-reply__author"><Trans id="reply-form.you">You</Trans></div>
               {this.state.draft.type && this.renderDraftType()}
-              <div className="m-reply__date"><Trans id="reply-form.now">reply-form.now</Trans></div>
+              <div className="m-reply__date"><Trans id="reply-form.now">Now</Trans></div>
             </div>
 
             <DropdownControl toggleId={dropdownId} className="m-reply__top-actions-switcher" icon="ellipsis-v" />
@@ -135,7 +135,7 @@ class ReplyForm extends Component {
           {parentMessage && (
             <div className="m-reply__parent">
               <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
-                <Trans id="reply-form.in-reply-to" values={{ excerpt: parentMessage.excerpt }}>reply-form.in-reply-to</Trans>
+                <Trans id="reply-form.in-reply-to" values={{ excerpt: parentMessage.excerpt }}>In reply to: %(excerpt)s</Trans>
               </Link>
             </div>
           )}
@@ -154,7 +154,7 @@ class ReplyForm extends Component {
               responsive="icon-only"
               disabled={isSending || !this.state.draft.body.length}
             >
-              <Trans id="messages.compose.action.send">messages.compose.action.send</Trans>
+              <Trans id="messages.compose.action.send">Send</Trans>
             </Button>
             <Button
               className="m-reply__bottom-action"
@@ -163,10 +163,10 @@ class ReplyForm extends Component {
               responsive="icon-only"
               disabled={!this.state.hasChanged}
             >
-              <Trans id="messages.compose.action.save">messages.compose.action.save</Trans>
+              <Trans id="messages.compose.action.save">Save</Trans>
             </Button>
             <Button className="m-reply__bottom-action" onClick={this.handleSave} icon="share-alt" responsive="icon-only">
-              <Trans id="messages.compose.action.copy">messages.compose.action.copy</Trans>
+              <Trans id="messages.compose.action.copy">Copy to</Trans>
             </Button>
             <Button className="m-new-reply__bottom-action m-reply__bottom-action--editor" icon="editor" responsive="icon-only" />
           </BottomRow>

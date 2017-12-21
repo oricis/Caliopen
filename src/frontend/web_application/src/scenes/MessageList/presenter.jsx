@@ -101,7 +101,7 @@ class MessageList extends Component {
     const { hasMore } = this.props;
 
     return hasMore && (
-      <Button shape="hollow" onClick={this.loadMore}><Trans id="general.action.load_more">general.action.load_more</Trans></Button>
+      <Button shape="hollow" onClick={this.loadMore}><Trans id="general.action.load_more">Load more</Trans></Button>
     );
   }
 

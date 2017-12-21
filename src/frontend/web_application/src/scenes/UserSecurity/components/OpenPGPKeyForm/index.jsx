@@ -177,14 +177,14 @@ class OpenPGPKeyForm extends Component {
               name={FORM_TYPE_GENERATE}
               {...generateHollowProp}
             >
-              <Trans id="user.openpgp.action.switch-generate-key">user.openpgp.action.switch-generate-key</Trans>
+              <Trans id="user.openpgp.action.switch-generate-key">Generate key</Trans>
             </Button>
             <Button
               onClick={this.handleSwitchFormType}
               name={FORM_TYPE_RAW}
               {...rawHollowProp}
             >
-              <Trans id="user.openpgp.action.switch-import-raw-key">user.openpgp.action.switch-import-raw-key</Trans>
+              <Trans id="user.openpgp.action.switch-import-raw-key">Import key</Trans>
             </Button>
           </div>
         </div>
@@ -205,13 +205,13 @@ class OpenPGPKeyForm extends Component {
             }
             {this.emailOptions.length === 1 && (
               <p className="m-account-openpgp-form__field-group">
-                <Trans id="user.openpgp.form.email.label">user.openpgp.form.email.label</Trans>
+                <Trans id="user.openpgp.form.email.label">Email</Trans>
                 {' '}
                 {this.state.generateForm.email}
               </p>
             )}
             <div className="m-account-openpgp-form__field-group">
-              <Trans id="user.openpgp.has-passphrase">user.openpgp.has-passphrase</Trans>
+              <Trans id="user.openpgp.has-passphrase">Enable passphrase</Trans>
               {' '}
               <CheckboxFieldGroup
                 displaySwitch
@@ -235,13 +235,13 @@ class OpenPGPKeyForm extends Component {
               <Button type="submit" shape="plain">
                 <Spinner isLoading={isLoading} />
                 {' '}
-                <Trans id="user.openpgp.action.create">user.openpgp.action.create</Trans>
+                <Trans id="user.openpgp.action.create">Create</Trans>
               </Button>
               <Button
                 onClick={this.handleCancelForm}
                 shape="hollow"
               >
-                <Trans id="general.action.cancel">general.action.cancel</Trans>
+                <Trans id="general.action.cancel">Cancel</Trans>
               </Button>
             </div>
           </form>
@@ -284,7 +284,7 @@ class OpenPGPKeyForm extends Component {
               shape="plain"
             >
               <Spinner isLoading={isLoading} />
-              <Trans id="user.openpgp.action.add">user.openpgp.action.add</Trans>
+              <Trans id="user.openpgp.action.add">Add</Trans>
             </Button>
           </form>
         )

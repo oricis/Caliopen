@@ -115,7 +115,7 @@ class PasswordForm extends Component {
           </FormColumn>
           <FormColumn size="medium">
             <label htmlFor="password" className="m-password-form__tip">
-              <Trans id="password.form.current_password.tip">password.form.current_password.tip</Trans>
+              <Trans id="password.form.current_password.tip">The password you want to replace.</Trans>
             </label>
           </FormColumn>
         </FormRow>
@@ -132,7 +132,7 @@ class PasswordForm extends Component {
           </FormColumn>
           <FormColumn size="medium">
             <label htmlFor="newPassword" className="m-password-form__tip">
-              <Trans id="password.form.new_password.tip">password.form.new_password.tip</Trans>
+              <Trans id="password.form.new_password.tip">The password you want to use from now.</Trans>
             </label>
           </FormColumn>
           {this.state.passwordStrength.length !== 0 && (
@@ -168,7 +168,7 @@ class PasswordForm extends Component {
           </FormColumn>
           <FormColumn size="medium">
             <label htmlFor="newPassword" className="m-password-form__tip">
-              <Trans id="password.form.tfa.tip">password.form.tfa.tip</Trans>
+              <Trans id="password.form.tfa.tip">Only if you have enabled the 2-Factor Authentification method.</Trans>
             </label>
           </FormColumn>
         </FormRow>
@@ -176,12 +176,12 @@ class PasswordForm extends Component {
         <FormRow>
           <FormColumn size="medium" className="m-password-form__action" bottomSpace>
             <Button shape="plain" display="expanded" onClick={this.handleSubmit} {...submitButtonProps}>
-              <Trans id="password.form.action.validate">password.form.action.validate</Trans>
+              <Trans id="password.form.action.validate">Apply modifications</Trans>
             </Button>
           </FormColumn>
           <FormColumn size="shrink" className="m-password-form__action">
             <Button shape="hollow" display="expanded" onClick={onCancel}>
-              <Trans id="password.form.action.cancel">password.form.action.cancel</Trans>
+              <Trans id="password.form.action.cancel">Cancel</Trans>
             </Button>
           </FormColumn>
         </FormRow>

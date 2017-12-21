@@ -17,11 +17,11 @@ const VerifyDevice = ({ device, onVerifyDevice, onDeleteDevice }) => {
         plain
         className="m-device-verify__button"
         onClick={handleVerify}
-      ><Trans id="device.action.verify">device.action.verify</Trans></Button>
+      ><Trans id="device.action.verify">Verify this device</Trans></Button>
       <br />
-      <Trans id="device.verify.not-you">device.verify.not-you</Trans>
+      <Trans id="device.verify.not-you">It's not you?</Trans>
       {' '}
-      <Button onClick={handleDelete}><Trans id="device.action.delete">device.action.delete</Trans></Button>
+      <Button onClick={handleDelete}><Trans id="device.action.delete">Delete</Trans></Button>
     </div>
   );
 };

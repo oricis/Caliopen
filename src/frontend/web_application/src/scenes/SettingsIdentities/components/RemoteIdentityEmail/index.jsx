@@ -171,14 +171,14 @@ class RemoteIdentityEmail extends Component {
     <div className="m-remote-identity__fetching-panel">
       <div className="m-remote-identity__fetching-panel-text">
         <Spinner isLoading />
-        <Trans id="remote_identity.feedback.loading_messages">remote_identity.feedback.loading_messages</Trans>
+        <Trans id="remote_identity.feedback.loading_messages">Loading your messages, please wait.</Trans>
       </div>
       <Button
         disabled="$ctrl.remoteIdentity.cancel_fetch_required"
         onClick={this.handleDisconnect}
         color="alert"
       >
-        <Trans id="remote_identity.action.cancel">remote_identity.action.cancel</Trans>
+        <Trans id="remote_identity.action.cancel">Cancel</Trans>
       </Button>
     </div>
   );
@@ -288,22 +288,22 @@ class RemoteIdentityEmail extends Component {
               onClick={this.handleDisconnect}
               color="alert"
             >
-              <Trans id="remote_identity.action.disconnect">remote_identity.action.disconnect</Trans>
+              <Trans id="remote_identity.action.disconnect">Disconnect</Trans>
             </Button>
           )}
           {this.state.phase > 1 && (
             <Button onClick={this.handleClickPrevious} shape="hollow">
-              <Trans id="remote_identity.action.back">remote_identity.action.back</Trans>
+              <Trans id="remote_identity.action.back">Previous</Trans>
             </Button>
           )}
           {this.state.phase < MAX_PHASE && (
             <Button shape="plain" onClick={this.handleClickNext}>
-              <Trans id="remote_identity.action.next">remote_identity.action.next</Trans>
+              <Trans id="remote_identity.action.next">Next</Trans>
             </Button>
           )}
           {this.state.phase === MAX_PHASE && (
             <Button onClick={this.handleClickFinish} shape="plain" color="secondary">
-              <Trans id="remote_identity.action.finish">remote_identity.action.finish</Trans>
+              <Trans id="remote_identity.action.finish">Connect</Trans>
             </Button>
           )}
         </div>

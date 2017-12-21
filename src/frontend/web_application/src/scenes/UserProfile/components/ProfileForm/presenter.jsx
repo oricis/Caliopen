@@ -139,7 +139,7 @@ class ProfileForm extends Component {
               <Button
                 type="submit"
                 shape="plain"
-              ><Trans id="user.action.update">user.action.update</Trans></Button>
+              ><Trans id="user.action.update">Update</Trans></Button>
             </FormColumn>
           </FormRow>
         </form>

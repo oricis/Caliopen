@@ -136,16 +136,16 @@ class SignupForm extends Component {
         title={i18n.t`signup.privacy.modal.label`}
         onClose={this.handleCloseModal}
       >
-        <p><Trans id="signup.privacy.modal.title">signup.privacy.modal.title</Trans></p>
-        <p><Trans id="signup.privacy.modal.text.alpha_tester">signup.privacy.modal.text.alpha_tester</Trans></p>
-        <p><Trans id="signup.privacy.modal.text.get_data">signup.privacy.modal.text.get_data</Trans></p>
-        <p><Trans id="signup.privacy.modal.text.desactivate_dnt">signup.privacy.modal.text.desactivate_dnt</Trans></p>
-        <p><Trans id="signup.privacy.modal.text.piwik">signup.privacy.modal.text.piwik</Trans></p>
+        <p><Trans id="signup.privacy.modal.title">Caliopen is under development !</Trans></p>
+        <p><Trans id="signup.privacy.modal.text.alpha_tester">As an alpha-tester your contribution is precious and will allow us to finalize Caliopen.</Trans></p>
+        <p><Trans id="signup.privacy.modal.text.get_data">For this purpose, you grant us the right to collect data related to your usage (displayed pages, timings, clics, scrolls ...almost everything that can be collected!).</Trans></p>
+        <p><Trans id="signup.privacy.modal.text.desactivate_dnt">You need to deactivate the DoNotTrack setting from your browser preferences (more informations at http://donottrack.us), as well as allowing cookies.</Trans></p>
+        <p><Trans id="signup.privacy.modal.text.piwik">We use https://piwik.org/ the open-source analytics plateform. The collected data will not be disclosed to any third party, and will stay scoped to Caliopen's alpha testing purpose.</Trans></p>
         <Button
           shape="plain"
           onClick={this.handleCloseModal}
         >
-          <Trans id="signup.privacy.modal.close">signup.privacy.modal.close</Trans>
+          <Trans id="signup.privacy.modal.close">Ok got it !</Trans>
         </Button>
       </Modal>
     );
@@ -223,7 +223,7 @@ class SignupForm extends Component {
                   onChange={this.handleInputChange}
                   showLabelforSr
                 />
-                <span><Trans id="signup.form.invitation_email.label">signup.form.invitation_email.label</Trans></span>
+                <span><Trans id="signup.form.invitation_email.label">Please fill with the email provided when you requested an invitation.</Trans></span>
               </FormColumn>
             </FormRow>
             {/* Alpha: hide TOS checkbox
@@ -243,15 +243,15 @@ class SignupForm extends Component {
               */}
             <FormRow>
               <FormColumn rightSpace={false} className="s-signup__privacy" bottomSpace>
-                <h4><Trans id="signup.form.privacy.title">signup.form.privacy.title</Trans></h4>
+                <h4><Trans id="signup.form.privacy.title">Privacy policy</Trans></h4>
                 <p className="s-signup__privacy-text">
-                  <Trans id="signup.form.privacy.intro">signup.form.privacy.intro</Trans>
+                  <Trans id="signup.form.privacy.intro">Throughout the development phase, we collect some data (but no more than the NSA).</Trans>
                 </p>
                 <Button
                   className="s-signup__privacy-link"
                   onClick={this.handleOpenModal}
                   icon="question-circle"
-                ><Trans id="signup.form.privacy.more_info">signup.form.privacy.more_info</Trans></Button>
+                ><Trans id="signup.form.privacy.more_info">More info</Trans></Button>
                 {this.renderModal()}
                 <CheckboxFieldGroup
                   id="signup_privacy"
@@ -271,12 +271,12 @@ class SignupForm extends Component {
                   onClick={this.handleSubmit}
                   display="expanded"
                   shape="plain"
-                ><Trans id="signup.action.create">signup.action.create</Trans></Button>
+                ><Trans id="signup.action.create">Create</Trans></Button>
               </FormColumn>
             </FormRow>
             <FormRow>
               <FormColumn rightSpace={false}>
-                <Link to="/auth/signin"><Trans id="signup.go_signin">signup.go_signin</Trans></Link>
+                <Link to="/auth/signin"><Trans id="signup.go_signin">I already have an account</Trans></Link>
               </FormColumn>
             </FormRow>
           </form>

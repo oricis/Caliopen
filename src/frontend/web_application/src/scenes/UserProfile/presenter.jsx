@@ -44,11 +44,11 @@ class UserProfile extends Component {
         <PageTitle />
         <div className="s-user-profile__actions">
           {this.state.editMode === true ? (
-            <Button onClick={this.toggleEditMode}><Trans id="user.action.cancel_edit">user.action.cancel_edit</Trans></Button>
+            <Button onClick={this.toggleEditMode}><Trans id="user.action.cancel_edit">Cancel</Trans></Button>
           ) : (
-            <Button onClick={this.toggleEditMode}><Trans id="user.action.edit_profile">user.action.edit_profile</Trans></Button>
+            <Button onClick={this.toggleEditMode}><Trans id="user.action.edit_profile">Edit</Trans></Button>
           )}
-          <Button onClick={str => str}><Trans id="user.action.share_profile">user.action.share_profile</Trans></Button>
+          <Button onClick={str => str}><Trans id="user.action.share_profile">Share</Trans></Button>
         </div>
         <div className="s-user-profile__info">
           <ProfileInfo user={user} />

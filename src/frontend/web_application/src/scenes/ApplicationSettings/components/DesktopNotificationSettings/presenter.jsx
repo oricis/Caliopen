@@ -37,7 +37,7 @@ class DesktopNotificationSettings extends Component {
   renderNoSupport() {
     return (
       <div>
-        <Trans id="settings.desktop_notification.no_support">settings.desktop_notification.no_support</Trans>
+        <Trans id="settings.desktop_notification.no_support">Notifications are not supported by your browser</Trans>
       </div>
     );
   }
@@ -46,24 +46,24 @@ class DesktopNotificationSettings extends Component {
     if (this.state.hasBrowserNotificationPermission === PERMISSION_GRANTED) {
       return (
         <div>
-          <Trans id="settings.desktop_notification.desktop_notifications_enabled">settings.desktop_notification.desktop_notifications_enabled</Trans>{' '}
+          <Trans id="settings.desktop_notification.desktop_notifications_enabled">Desktop notifications enabled</Trans>{' '}
           <Button
             onClick={this.handleClickTestBrowser}
           >
-            <Trans id="settings.desktop_notification.action.test_desktop_notification">settings.desktop_notification.action.test_desktop_notification</Trans>
+            <Trans id="settings.desktop_notification.action.test_desktop_notification">Check desktop notifications</Trans>
           </Button>
         </div>
       );
     }
 
     if (this.state.hasBrowserNotificationPermission === PERMISSION_DENIED) {
-      return (<div><Trans id="settings.desktop_notification.disabled">settings.desktop_notification.disabled</Trans></div>);
+      return (<div><Trans id="settings.desktop_notification.disabled">Notifications are disabled, please check your browser settings</Trans></div>);
     }
 
     return (
       <div>
         <Button onClick={this.handleRequestBrowserNotification}>
-          <Trans id="settings.desktop_notification.action.request-desktop_notification_permission">settings.desktop_notification.action.request-desktop_notification_permission</Trans>
+          <Trans id="settings.desktop_notification.action.request-desktop_notification_permission">Enable desktop notifications</Trans>
         </Button>
       </div>
     );

@@ -152,7 +152,7 @@ class ContactDetails extends Component {
       <div className="m-contact-details">
         <div className="m-contact-details__panel">
           <Subtitle hr>
-            <Trans id="contact.contact_details">contact.contact_details</Trans>
+            <Trans id="contact.contact_details">Contact details</Trans>
           </Subtitle>
           <div className="m-contact-details__list">
             {editMode ?
@@ -163,7 +163,7 @@ class ContactDetails extends Component {
         </div>
 
         <div className="m-contact-details__panel">
-          <Subtitle hr><Trans id="contact.contact_organizations">contact.contact_organizations</Trans></Subtitle>
+          <Subtitle hr><Trans id="contact.contact_organizations">Professional</Trans></Subtitle>
           <div className="m-contact-details__list">
             {editMode ?
               this.props.orgaForms :
@@ -173,7 +173,7 @@ class ContactDetails extends Component {
         </div>
 
         <div className="m-contact-details__panel">
-          <Subtitle hr><Trans id="contact.contact_identities">contact.contact_identities</Trans></Subtitle>
+          <Subtitle hr><Trans id="contact.contact_identities">Social identity</Trans></Subtitle>
           <div className="m-contact-details__list">
             {editMode ?
               this.props.identityForms :

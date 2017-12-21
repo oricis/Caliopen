@@ -105,7 +105,7 @@ class OpenPGPKeysDetails extends Component {
             shape="plain"
             icon="plus"
           >
-            <Trans id="user.openpgp.action.edit-keys">user.openpgp.action.edit-keys</Trans>
+            <Trans id="user.openpgp.action.edit-keys">Edit and add keys</Trans>
           </Button>
         }
       </div>

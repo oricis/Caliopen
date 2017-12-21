@@ -161,7 +161,7 @@ class Message extends Component {
             {message.type &&
               (<div className="m-message__type">
                 <span className="m-message__type-label">
-                  <Trans id="message-list.message.by" values={{ type: typeTranslations[message.type] }}>message-list.message.by</Trans>
+                  <Trans id="message-list.message.by" values={{ type: typeTranslations[message.type] }}>by %(type)s</Trans>
                 </span>
                 {' '}
                 <Icon type={message.type} className="m-message__type-icon" spaced />
@@ -208,8 +208,8 @@ class Message extends Component {
                 className="m-message__footer-button"
               >
                 {this.state.isFold ?
-                  (<Trans id="message-list.message.action.expand">message-list.message.action.expand</Trans>) :
-                  (<Trans id="message-list.message.action.collapse">message-list.message.action.collapse</Trans>)
+                  (<Trans id="message-list.message.action.expand">Expand</Trans>) :
+                  (<Trans id="message-list.message.action.collapse">Collapse</Trans>)
                 }
               </Button>
             }

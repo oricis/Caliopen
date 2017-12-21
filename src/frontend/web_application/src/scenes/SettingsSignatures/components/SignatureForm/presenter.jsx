@@ -88,7 +88,7 @@ class SignatureForm extends Component {
                 type="submit"
                 onClick={this.handleSubmit}
                 shape="plain"
-              ><Trans id="settings.signature.update.action">settings.signature.update.action</Trans></Button>
+              ><Trans id="settings.signature.update.action">Save</Trans></Button>
             </FormColumn>
           </FormRow>
         </form>

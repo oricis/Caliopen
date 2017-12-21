@@ -21,7 +21,7 @@ class ComposeContactButton extends PureComponent {
 
     return (
       <ActionButton action={action} button={buttonProps}>
-        <Trans id="call-to-action.action.create_contact">call-to-action.action.create_contact</Trans>
+        <Trans id="call-to-action.action.create_contact">Create a contact</Trans>
       </ActionButton>
     );
   }

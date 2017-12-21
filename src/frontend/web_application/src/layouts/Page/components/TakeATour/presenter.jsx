@@ -34,7 +34,7 @@ class TakeATour extends Component {
         selector: '.s-timeline',
         content: (
           <div>
-            <h2><Trans id="take-a-tour.step.intro.title">take-a-tour.step.intro.title</Trans></h2>
+            <h2><Trans id="take-a-tour.step.intro.title">Welcome!</Trans></h2>
             <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.intro.content` }} />
           </div>
         ),
@@ -44,7 +44,7 @@ class TakeATour extends Component {
         selector: '.l-header__m-search-field',
         content: (
           <div>
-            <h2><Trans id="take-a-tour.step.search.title">take-a-tour.step.search.title</Trans></h2>
+            <h2><Trans id="take-a-tour.step.search.title">Intuitive search</Trans></h2>
             <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.search.content` }} />
           </div>
         ),
@@ -53,7 +53,7 @@ class TakeATour extends Component {
         selector: '.l-header__user',
         content: (
           <div>
-            <h2><Trans id="take-a-tour.step.user-menu.title">take-a-tour.step.user-menu.title</Trans></h2>
+            <h2><Trans id="take-a-tour.step.user-menu.title">Account menu</Trans></h2>
             <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.user-menu.content` }} />
           </div>
         ),
@@ -63,7 +63,7 @@ class TakeATour extends Component {
         selector: '.l-call-to-action',
         content: (
           <div>
-            <h2><Trans id="take-a-tour.step.call-to-action.title">take-a-tour.step.call-to-action.title</Trans></h2>
+            <h2><Trans id="take-a-tour.step.call-to-action.title">Create quickly</Trans></h2>
             <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.call-to-action.content` }} />
           </div>
         ),
@@ -72,7 +72,7 @@ class TakeATour extends Component {
         selector: '#toggle-IL_navigation_slider_dropdown',
         content: (
           <div>
-            <h2><Trans id="take-a-tour.step.importance-slider.title">take-a-tour.step.importance-slider.title</Trans></h2>
+            <h2><Trans id="take-a-tour.step.importance-slider.title">Importance level</Trans></h2>
             <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.importance-slider.content` }} />
           </div>
         ),
@@ -81,7 +81,7 @@ class TakeATour extends Component {
 
     return (
       <Button onClick={this.handleToggleTour} icon="question-circle" display="expanded">
-        <span className="show-for-sr"><Trans id="take-a-tour.action.toggle">take-a-tour.action.toggle</Trans></span>
+        <span className="show-for-sr"><Trans id="take-a-tour.action.toggle">Take a tour</Trans></span>
         <Tour
           isOpen={this.state.isTourActive}
           step={this.state.tourStep}

@@ -119,20 +119,20 @@ class SearchResults extends Component {
       <div>
         {messages && (
           <div className="s-search-results__label">
-            <Trans id="search-results.preview.nb-messages" values={{ count: nbMessages, term }}>search-results.preview.nb-messages</Trans>
+            <Trans id="search-results.preview.nb-messages" values={{ count: nbMessages, term }}>%(count)s messages contains "%(term)s" in their subject or content:</Trans>
             {' '}
             <Link className="s-search-results__link" to={`/search-results?term=${term}&doctype=message`}>
-              <Trans id="search-results.actions.display-all">search-results.actions.display-all</Trans>
+              <Trans id="search-results.actions.display-all">Display all</Trans>
             </Link>
           </div>
         )}
         {messages && this.renderMessages(messages)}
         {contacts && (
           <div className="s-search-results__label">
-            <Trans id="search-results.preview.nb-contacts" values={{ count: nbContacts, term }}>search-results.preview.nb-contacts</Trans>
+            <Trans id="search-results.preview.nb-contacts" values={{ count: nbContacts, term }}>%(count)s contacts contains "%(term)s" in their label or profile:</Trans>
             {' '}
             <Link className="s-search-results__link" to={`/search-results?term=${term}&doctype=contact`}>
-              <Trans id="search-results.actions.display-all">search-results.actions.display-all</Trans>
+              <Trans id="search-results.actions.display-all">Display all</Trans>
             </Link>
           </div>
         )}
@@ -165,7 +165,7 @@ class SearchResults extends Component {
             {hasMoreByDoctype && hasMoreByDoctype.message && (
               <div className="s-search-results__load-more">
                 <Button shape="hollow" onClick={this.debouncedLoadMore}>
-                  <Trans id="general.action.load_more">general.action.load_more</Trans>
+                  <Trans id="general.action.load_more">Load more</Trans>
                 </Button>
               </div>
             )}
@@ -180,7 +180,7 @@ class SearchResults extends Component {
             {hasMoreByDoctype && hasMoreByDoctype.contact && (
               <div className="s-search-results__load-more">
                 <Button shape="hollow" onClick={this.debouncedLoadMore}>
-                  <Trans id="general.action.load_more">general.action.load_more</Trans>
+                  <Trans id="general.action.load_more">Load more</Trans>
                 </Button>
               </div>
             )}

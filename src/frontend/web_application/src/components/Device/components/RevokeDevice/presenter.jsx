@@ -15,7 +15,7 @@ const RevokeDevice = ({ device, onRevokeDevice }) => {
         shape="plain"
         color="alert"
         onClick={handleRevoke}
-      ><Trans id="device.action.revoke">device.action.revoke</Trans></Button>
+      ><Trans id="device.action.revoke">Revoke this device</Trans></Button>
     </div>
   );
 };

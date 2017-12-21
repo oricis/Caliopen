@@ -192,9 +192,9 @@ class Contact extends Component {
     const { contact, updateContact, i18n } = this.props;
     const count = contact.tags ? contact.tags.length : 0;
     const title = (
-      <span><Trans id="tags.header.title">tags.header.title</Trans>
+      <span><Trans id="tags.header.title">Tags</Trans>
         <span className="m-tags-form__count">
-          <Trans id="tags.header.count" values={{ count }}>tags.header.count</Trans>
+          <Trans id="tags.header.count" values={{ count }}>(Total: %(count)s)</Trans>
         </span>
       </span>);
 
@@ -221,9 +221,9 @@ class Contact extends Component {
           responsive="icon-only"
           icon="remove"
           className="s-contact__action"
-        ><Trans id="contact.action.cancel_edit">contact.action.cancel_edit</Trans></Button>
+        ><Trans id="contact.action.cancel_edit">Cancel</Trans></Button>
         <TextBlock className="s-contact__bar-title">
-          <Trans id="contact.edit_contact.title">contact.edit_contact.title</Trans>
+          <Trans id="contact.edit_contact.title">Edit contact</Trans>
         </TextBlock>
         <Button
           type="submit"
@@ -231,7 +231,7 @@ class Contact extends Component {
           icon={hasActivity ? (<Spinner isLoading display="inline" />) : 'check'}
           className="s-contact__action"
           disabled={pristine || hasActivity}
-        ><Trans id="contact.action.validate_edit">contact.action.validate_edit</Trans></Button>
+        ><Trans id="contact.action.validate_edit">Validate</Trans></Button>
       </div>
     );
   }
@@ -265,14 +265,14 @@ class Contact extends Component {
                 onClick={this.toggleEditMode}
                 className="s-contact__action"
                 display="expanded"
-              ><Trans id="contact.action.edit_contact">contact.action.edit_contact</Trans></Button>
+              ><Trans id="contact.action.edit_contact">Edit contact</Trans></Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
                 onClick={this.openTagsModal}
                 className="s-contact__action"
                 display="expanded"
-              ><Trans id="contact.action.edit_tags">contact.action.edit_tags</Trans></Button>
+              ><Trans id="contact.action.edit_tags">Edit tags</Trans></Button>
               { this.renderTagsModal() }
             </VerticalMenuItem>
             {/* TODO: this.handleShare() function
@@ -282,7 +282,7 @@ class Contact extends Component {
                   className="s-contact__action"
                   display="expanded"
                 >
-                  <Trans id="contact.action.share_contact">contact.action.share_contact</Trans>
+                  <Trans id="contact.action.share_contact">Share</Trans>
                 </Button>
               </VerticalMenuItem>
             */}
@@ -292,7 +292,7 @@ class Contact extends Component {
                   onClick={this.handleDelete}
                   className="s-contact__action"
                   display="expanded"
-                ><Trans id="contact.action.delete_contact">contact.action.delete_contact</Trans></Button>
+                ><Trans id="contact.action.delete_contact">Delete</Trans></Button>
               </VerticalMenuItem>
             }
           </VerticalMenu>

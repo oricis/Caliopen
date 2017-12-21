@@ -110,12 +110,12 @@ class OpenPGPKey extends Component {
               {' '}
               <Icon type="caret-down" />
               {' '}
-              <span className="show-for-sr"><Trans id="openpgp.action.toggle-details">openpgp.action.toggle-details</Trans></span>
+              <span className="show-for-sr"><Trans id="openpgp.action.toggle-details">Toggle details</Trans></span>
             </Button>
             {editMode && (
               <Button color="alert" onClick={this.handleDeleteKey}>
                 <Icon type="remove" />
-                <span className="show-for-sr"><Trans id="openpgp.action.remove-key">openpgp.action.remove-key</Trans></span>
+                <span className="show-for-sr"><Trans id="openpgp.action.remove-key">Remove</Trans></span>
               </Button>
             )}
           </div>

@@ -82,7 +82,7 @@ class Timeline extends Component {
         </InfiniteScroll>
         {hasMore && (
           <div className="s-timeline__load-more">
-            <Button shape="hollow" onClick={this.loadMore}><Trans id="general.action.load_more">general.action.load_more</Trans></Button>
+            <Button shape="hollow" onClick={this.loadMore}><Trans id="general.action.load_more">Load more</Trans></Button>
           </div>
         )}
       </div>

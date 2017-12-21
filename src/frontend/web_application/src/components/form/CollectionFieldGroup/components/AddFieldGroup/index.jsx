@@ -79,7 +79,7 @@ class AddFieldGroup extends Component {
           onClick={this.handleAdd}
           disabled={this.state.item.length === 0}
         >
-          <span className="show-for-sr"><Trans id="collection-field-group.action.add">collection-field-group.action.add</Trans></span>
+          <span className="show-for-sr"><Trans id="collection-field-group.action.add">Add</Trans></span>
           <Icon type="plus" />
         </Button>
       </div>

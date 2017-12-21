@@ -51,7 +51,7 @@ class PhoneForm extends PureComponent {
             <FormColumn size="shrink">
               <Legend>
                 <Icon rightSpaced type="phone" />
-                <span className="m-phone-form__legend"><Trans id="contact.phone_form.legend">contact.phone_form.legend</Trans></span>
+                <span className="m-phone-form__legend"><Trans id="contact.phone_form.legend">Phone</Trans></span>
               </Legend>
             </FormColumn>
             <FormColumn size="shrink" bottomSpace>

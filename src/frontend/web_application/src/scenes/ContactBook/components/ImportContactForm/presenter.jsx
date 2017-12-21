@@ -64,7 +64,7 @@ class ImportContactForm extends Component {
             className="m-import-contact-form__button"
             shape="hollow"
             onClick={onCancel}
-          ><Trans id="general.action.cancel">general.action.cancel</Trans></Button>
+          ><Trans id="general.action.cancel">Cancel</Trans></Button>
         }
 
         {this.state.file && !this.props.hasImported &&
@@ -74,7 +74,7 @@ class ImportContactForm extends Component {
             shape="plain"
             icon={isLoading ? (<Spinner isLoading display="inline" />) : 'download'}
             disabled={isLoading}
-          ><Trans id="import-contact.action.import">import-contact.action.import</Trans></Button>
+          ><Trans id="import-contact.action.import">Import</Trans></Button>
         }
 
         {this.props.hasImported &&
@@ -82,7 +82,7 @@ class ImportContactForm extends Component {
             className="m-import-contact-form__button m-import-contact-form__button--right"
             shape="plain"
             onClick={onCancel}
-          ><Trans id="import-contact.form.button.close">import-contact.form.button.close</Trans></Button>
+          ><Trans id="import-contact.form.button.close">Close</Trans></Button>
         }
       </div>
     );
@@ -110,7 +110,7 @@ class ImportContactForm extends Component {
             formatNumber={formatNumber}
           />
         :
-          <p><Trans id="import-contact.form.success">import-contact.form.success</Trans></p>
+          <p><Trans id="import-contact.form.success">Successfuly imported !</Trans></p>
       }
         {this.renderButtons()}
       </form>

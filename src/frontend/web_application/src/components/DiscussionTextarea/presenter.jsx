@@ -9,7 +9,7 @@ const DiscussionDraft = ({ body, onChange, i18n }) => {
 
   return (
     <div className="m-discussion-textarea">
-      <label htmlFor={id} className="sr-only"><Trans id="messages.compose.form.body.label">messages.compose.form.body.label</Trans></label>
+      <label htmlFor={id} className="sr-only"><Trans id="messages.compose.form.body.label">Type your message here...</Trans></label>
       <textarea
         id={id}
         name="body"

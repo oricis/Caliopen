@@ -74,7 +74,7 @@ class MessageItem extends PureComponent {
               {this.renderTags()}
             </TextBlock>
             <TextBlock>
-              {message.is_draft && (<span className="s-message-item__draft-prefix"><Trans id="timeline.draft-prefix">timeline.draft-prefix</Trans></span>)}
+              {message.is_draft && (<span className="s-message-item__draft-prefix"><Trans id="timeline.draft-prefix">Draft in progress:</Trans></span>)}
               {message.subject && (<span className="s-message-item__subject">{message.subject}</span>)}
               {message.excerpt}
             </TextBlock>

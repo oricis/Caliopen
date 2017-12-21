@@ -39,7 +39,7 @@ class IdentityForm extends PureComponent {
             <FormColumn size="shrink">
               <Legend>
                 <Icon rightSpaced type="user" />
-                <span className="m-identity-form__legend"><Trans id="contact.identity_form.legend">contact.identity_form.legend</Trans></span>
+                <span className="m-identity-form__legend"><Trans id="contact.identity_form.legend">Identities</Trans></span>
               </Legend>
             </FormColumn>
             <FormColumn size="shrink" bottomSpace>

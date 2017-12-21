@@ -55,7 +55,7 @@ class ContactProfileForm extends Component {
               className="m-contact-profile-form__expand-button"
             >
               <span className="show-for-sr">
-                <Trans id="contact_profile.action.edit_contact">contact_profile.action.edit_contact</Trans>
+                <Trans id="contact_profile.action.edit_contact">Edit</Trans>
               </span>
             </Button>
           :
@@ -66,7 +66,7 @@ class ContactProfileForm extends Component {
               className="m-contact-profile-form__expand-button"
             >
               <span className="show-for-sr">
-                <Trans id="contact_profile.action.edit_contact">contact_profile.action.edit_contact</Trans>
+                <Trans id="contact_profile.action.edit_contact">Edit</Trans>
               </span>
             </Button>
           }

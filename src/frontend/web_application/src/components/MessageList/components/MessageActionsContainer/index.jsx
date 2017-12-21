@@ -71,19 +71,19 @@ class MessageActionsContainer extends Component {
 
     return (
       <div className={messageActionsContainerClassName}>
-        <Button onClick={this.handleReply} className="m-message-actions-container__action" display="expanded" icon="reply" responsive="icon-only"><Trans id="message-list.message.action.reply">message-list.message.action.reply</Trans></Button>
-        <Button onClick={this.makeHandle(onCopyTo)} className="m-message-actions-container__action" display="expanded" icon="share" responsive="icon-only"><Trans id="message-list.message.action.copy-to">message-list.message.action.copy-to</Trans></Button>
-        <Button onClick={this.makeHandle(onEditTags)} className="m-message-actions-container__action" display="expanded" icon="tags" responsive="icon-only"><Trans id="message-list.message.action.tags">message-list.message.action.tags</Trans></Button>
-        <Button onClick={this.makeHandle(onDelete)} className="m-message-actions-container__action" display="expanded" icon="trash" responsive="icon-only"><Trans id="message-list.message.action.delete">message-list.message.action.delete</Trans></Button>
+        <Button onClick={this.handleReply} className="m-message-actions-container__action" display="expanded" icon="reply" responsive="icon-only"><Trans id="message-list.message.action.reply">Reply</Trans></Button>
+        <Button onClick={this.makeHandle(onCopyTo)} className="m-message-actions-container__action" display="expanded" icon="share" responsive="icon-only"><Trans id="message-list.message.action.copy-to">Copy to</Trans></Button>
+        <Button onClick={this.makeHandle(onEditTags)} className="m-message-actions-container__action" display="expanded" icon="tags" responsive="icon-only"><Trans id="message-list.message.action.tags">Tags</Trans></Button>
+        <Button onClick={this.makeHandle(onDelete)} className="m-message-actions-container__action" display="expanded" icon="trash" responsive="icon-only"><Trans id="message-list.message.action.delete">Delete</Trans></Button>
         <Button
           className="m-message-actions-container__action"
           display="expanded"
           onClick={this.handleToggle}
         >
           {!this.state.isRead ? (
-            <Trans id="message-list.message.action.mark_as_read">message-list.message.action.mark_as_read</Trans>
+            <Trans id="message-list.message.action.mark_as_read">Mark as read</Trans>
           ) : (
-            <Trans id="message-list.message.action.mark_as_unread">message-list.message.action.mark_as_unread</Trans>
+            <Trans id="message-list.message.action.mark_as_unread">Mark as unread</Trans>
           )}
         </Button>
       </div>

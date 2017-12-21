@@ -93,13 +93,13 @@ class MessageItemContainer extends Component {
     return (
       <div className={actionsClassName}>
         <Button shape="plain" className="m-message-item-container__action" onClick={this.handleDelete}>
-          <Trans id="message-item.action.delete">message-item.action.delete</Trans>
+          <Trans id="message-item.action.delete">Delete</Trans>
         </Button>
         {!message.is_draft && (<Button shape="plain" className="m-message-item-container__action" onClick={this.handleReply}>
-          <Trans id="message-item.action.reply">message-item.action.reply</Trans>
+          <Trans id="message-item.action.reply">Reply</Trans>
         </Button>)}
         <Button shape="plain" className="m-message-item-container__action" onClick={this.handleOpenTags}>
-          <Trans id="message-item.action.manage_tags">message-item.action.manage_tags</Trans>
+          <Trans id="message-item.action.manage_tags">Manage tags</Trans>
         </Button>
         {this.renderTagsModal()}
       </div>
@@ -112,7 +112,7 @@ class MessageItemContainer extends Component {
     const count = message.tags ? message.tags.length : 0;
     const title = [
       i18n.t`tags.header.title`,
-      (<span key="1" className="m-tags-form__count"><Trans id="tags.header.count" values={{ count }}>tags.header.count</Trans></span>),
+      (<span key="1" className="m-tags-form__count"><Trans id="tags.header.count" values={{ count }}>(Total: %(count)s)</Trans></span>),
     ];
 
     return (

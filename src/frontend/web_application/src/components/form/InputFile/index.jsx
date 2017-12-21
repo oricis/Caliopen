@@ -16,7 +16,7 @@ const InputFile = ({ onChange, className, accept, errors }) => {
     <div className={classnames('m-input-file', className)}>
       <label htmlFor={id} className="m-input-file__label">
         <Button className="m-input-file__label__button" icon="plus" shape="plain" />
-        <span className="m-input-file__label__text"><Trans id="input-file.add_a_file.label">input-file.add_a_file.label</Trans></span>
+        <span className="m-input-file__label__text"><Trans id="input-file.add_a_file.label">Add a file</Trans></span>
         <span className="m-input-file__label__icon"><Icon type="folder" /></span>
         <input
           id={id}

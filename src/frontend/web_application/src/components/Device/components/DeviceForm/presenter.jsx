@@ -131,10 +131,10 @@ class DeviceForm extends Component {
       <FormGrid className="m-device-form">
         <form method="post" onSubmit={this.handleSubmit}>
           <Fieldset className="m-device-form__fieldset">
-            <Legend><Trans id="device.manage_form.name.label">device.manage_form.name.label</Trans></Legend>
+            <Legend><Trans id="device.manage_form.name.label">Name:</Trans></Legend>
             <FormRow reverse>
               <FormColumn bottomSpace size="medium">
-                <label htmlFor="device-name"><Trans id="device.manage_form.name.infotext">device.manage_form.name.infotext</Trans></label>
+                <label htmlFor="device-name"><Trans id="device.manage_form.name.infotext">This is the name which allows you to identify your device everywhere.</Trans></label>
               </FormColumn>
               <FormColumn bottomSpace size="medium">
                 <TextFieldGroup
@@ -149,10 +149,10 @@ class DeviceForm extends Component {
             </FormRow>
           </Fieldset>
           <Fieldset className="m-device-form__fieldset">
-            <Legend><Trans id="device.manage_form.type.label">device.manage_form.type.label</Trans></Legend>
+            <Legend><Trans id="device.manage_form.type.label">Type:</Trans></Legend>
             <FormRow reverse>
               <FormColumn bottomSpace size="medium">
-                <label htmlFor="device-type"><Trans id="device.manage_form.type.infotext">device.manage_form.type.infotext</Trans></label>
+                <label htmlFor="device-type"><Trans id="device.manage_form.type.infotext">You can select the type of your device: smartphone, tablet, laptop or desktop.</Trans></label>
               </FormColumn>
               <FormColumn size="medium">
                 <SelectFieldGroup
@@ -169,10 +169,10 @@ class DeviceForm extends Component {
             </FormRow>
           </Fieldset>
           <Fieldset className="m-device-form__fieldset">
-            <Legend><Trans id="device.manage_form.ips.label">device.manage_form.ips.label</Trans></Legend>
+            <Legend><Trans id="device.manage_form.ips.label">IP or subnet address</Trans></Legend>
             <FormRow reverse>
               <FormColumn bottomSpace size="medium">
-                <label htmlFor="device-ips"><Trans id="device.manage_form.ips.infotext">device.manage_form.ips.infotext</Trans></label>
+                <label htmlFor="device-ips"><Trans id="device.manage_form.ips.infotext">Restrict the access of your account to certain IP addresses for this device. (e.g. 192.168.10 or 192.168.1.1/24 or 192.168.1.1-20)</Trans></label>
               </FormColumn>
               <FormColumn bottomSpace size="medium">
                 <CollectionFieldGroup
@@ -187,7 +187,7 @@ class DeviceForm extends Component {
           </Fieldset>
           <FormRow>
             <FormColumn size="medium">
-              <Button plain type="submit"><Trans id="device.action.save_changes">device.action.save_changes</Trans></Button>
+              <Button plain type="submit"><Trans id="device.action.save_changes">Save modifications</Trans></Button>
             </FormColumn>
           </FormRow>
         </form>

@@ -31,7 +31,7 @@ class OrgaForm extends Component {
             <FormColumn>
               <Legend>
                 <Icon rightSpaced type="building" />
-                <Trans id="contact.orga_form.legend">contact.orga_form.legend</Trans>
+                <Trans id="contact.orga_form.legend">Organization</Trans>
               </Legend>
             </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}

@@ -42,7 +42,7 @@ class NotificationForm extends Component {
     const messagePreviewOptions = this.getOptionsFromArray(MESSAGE_PREVIEW);
     const delayDisappearOptions = DELAY_DISAPPEAR.map(delay => ({
       value: delay,
-      label: (<Trans id="settings.notification.delay_disappear.options.second" values={{ delay }}>settings.notification.delay_disappear.options.second</Trans>),
+      label: (<Trans id="settings.notification.delay_disappear.options.second" values={{ delay }}>%(delay)s Seconds</Trans>),
     }));
 
     return (

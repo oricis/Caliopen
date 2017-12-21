@@ -140,7 +140,7 @@ class ContactBook extends Component {
                   shape="hollow"
                   display="expanded"
                   onClick={this.handleOpenImportModal}
-                ><Trans id="import-contact.action.import_contacts">import-contact.action.import_contacts</Trans></Button>
+                ><Trans id="import-contact.action.import_contacts">Import contacts</Trans></Button>
               </div>
               {this.renderImportModal()}
             </div>
@@ -157,7 +157,7 @@ class ContactBook extends Component {
             {hasMore && (
               <div className="l-contact-book-list__load-more">
                 <Button shape="hollow" onClick={this.loadMore}>
-                  <Trans id="general.action.load_more">general.action.load_more</Trans>
+                  <Trans id="general.action.load_more">Load more</Trans>
                 </Button>
               </div>
             )}

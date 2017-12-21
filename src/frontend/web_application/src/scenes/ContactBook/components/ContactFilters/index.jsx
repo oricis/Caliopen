@@ -11,7 +11,7 @@ const ContactFilters = ({ onSortDirChange, sortDir, i18n }) => (
       <FormColumn size="shrink">
         <div className="m-contacts-filters__item">
           <label htmlFor="order-by" className="m-contacts-filters__label">
-            <Trans id="contacts-filters.order-by.label">contacts-filters.order-by.label</Trans>
+            <Trans id="contacts-filters.order-by.label">Order by</Trans>
           </label>
           <SelectFieldGroup
             className="m-contacts-filters__select"

@@ -92,13 +92,13 @@ class ResetPasswordForm extends Component {
 
   renderSuccess = () => (
     <div className="m-reset-password-form__success">
-      <Icon type="check" rightSpaced /><Trans id="password.reset-form.success">password.reset-form.success</Trans>
+      <Icon type="check" rightSpaced /><Trans id="password.reset-form.success">Done!</Trans>
     </div>
   );
 
   renderInvalid = () => (
     <div className="m-reset-password-form__error">
-      <Trans id="reset-password.form.errors.token_not_found">reset-password.form.errors.token_not_found</Trans>
+      <Trans id="reset-password.form.errors.token_not_found">Token is no more valid. Please retry.</Trans>
     </div>
   );
 
@@ -152,7 +152,7 @@ class ResetPasswordForm extends Component {
             </FormColumn>
             <FormColumn className="m-reset-password-form__action" rightSpace={false}>
               <Button shape="plain" display="expanded" type="submit" {...submitButtonProps}>
-                <Trans id="password.form.action.validate">password.form.action.validate</Trans>
+                <Trans id="password.form.action.validate">Apply modifications</Trans>
               </Button>
             </FormColumn>
           </FormRow>
@@ -180,7 +180,7 @@ class ResetPasswordForm extends Component {
       <Section title={i18n.t`password.reset-form.title`} className="m-reset-password-form">
         {this.renderSection()}
         <div>
-          <Link to="/auth/signin"><Trans id="password.action.go_signin">password.action.go_signin</Trans></Link>
+          <Link to="/auth/signin"><Trans id="password.action.go_signin">Signin</Trans></Link>
         </div>
       </Section>
     );

@@ -60,17 +60,17 @@ class NavigationAlt extends PureComponent {
         <VerticalMenu className="l-nav-alt__menu">
           {/* <VerticalMenuItem>
             <Link to="/user/profile" button expanded data-toggle="left_off_canvas">
-             <Trans id="header.menu.account">header.menu.account</Trans>
+             <Trans id="header.menu.account">Account</Trans>
             </Link>
           </VerticalMenuItem> */}
           <VerticalMenuItem>
             <Link to="/settings/application" button expanded data-toggle="left_off_canvas">
-              <Trans id="header.menu.settings">header.menu.settings</Trans>
+              <Trans id="header.menu.settings">Settings</Trans>
             </Link>
           </VerticalMenuItem>
           <VerticalMenuItem>
             <Link href="/auth/signout" button expanded data-toggle="left_off_canvas">
-              <Trans id="header.menu.signout">header.menu.signout</Trans>
+              <Trans id="header.menu.signout">Signout</Trans>
             </Link>
           </VerticalMenuItem>
         </VerticalMenu>

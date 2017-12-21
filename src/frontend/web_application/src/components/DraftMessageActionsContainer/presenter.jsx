@@ -44,14 +44,14 @@ class DraftMessageActionsContainer extends Component {
           className="m-message-actions-container__action"
           icon="tags"
           responsive="icon-only"
-        ><Trans id="message-list.message.action.tags">message-list.message.action.tags</Trans></Button>
+        ><Trans id="message-list.message.action.tags">Tags</Trans></Button>
         <Button
           onClick={this.makeHandle(onDelete)}
           className="m-message-actions-container__action"
           icon="trash"
           responsive="icon-only"
           disabled={!message || !message.message_id}
-        ><Trans id="message-list.message.action.delete">message-list.message.action.delete</Trans></Button>
+        ><Trans id="message-list.message.action.delete">Delete</Trans></Button>
       </div>
     );
   }

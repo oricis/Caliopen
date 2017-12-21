@@ -314,7 +314,7 @@ class RecipientList extends Component {
       <div id={componentId} onClick={this.handleClickRecipientList} ref={(el) => { this.recipientListRef = el; }} role="presentation" className="m-recipient-list">
         { !this.state.recipients.length && (
           <span className="m-recipient-list__placeholder">
-            <Trans id="messages.compose.form.to.label">messages.compose.form.to.label</Trans>
+            <Trans id="messages.compose.form.to.label">To</Trans>
           </span>
         )}
         {this.state.recipients.map(participant => (

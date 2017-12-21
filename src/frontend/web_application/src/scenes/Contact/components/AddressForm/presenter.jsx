@@ -55,7 +55,7 @@ class AddressForm extends PureComponent {
             <FormColumn>
               <Legend>
                 <Icon rightSpaced type="map-marker" />
-                <Trans id="contact.address_form.legend">contact.address_form.legend</Trans>
+                <Trans id="contact.address_form.legend">Postal address</Trans>
               </Legend>
             </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
@@ -97,7 +97,7 @@ class AddressForm extends PureComponent {
                 // TODO: insert select-wrapper to fit SelectFieldGroup architecture
               }
               <label className="show-for-sr" htmlFor="contact-adress-country">
-                <Trans id="contact.address_form.country.label">contact.address_form.country.label</Trans>
+                <Trans id="contact.address_form.country.label">Country</Trans>
               </label>
               <Field
                 component={CountryDropdown}
@@ -112,7 +112,7 @@ class AddressForm extends PureComponent {
                 // TODO: insert select-wrapper to fit SelectFieldGroup architecture
               }
               <label className="show-for-sr" htmlFor="contact-adress-region">
-                <Trans id="contact.address_form.region.label">contact.address_form.region.label</Trans>
+                <Trans id="contact.address_form.region.label">Region</Trans>
               </label>
               <Field
                 component={RegionDropdown}

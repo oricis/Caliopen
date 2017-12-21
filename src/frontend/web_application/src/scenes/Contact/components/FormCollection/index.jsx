@@ -34,7 +34,7 @@ class FormCollection extends PureComponent {
               <FormRow>
                 <FormColumn>
                   <Button icon="plus" shape="plain" onClick={() => fields.push({ })}>
-                    <Trans id="contact.action.add_new_field">contact.action.add_new_field</Trans>
+                    <Trans id="contact.action.add_new_field">Add new</Trans>
                   </Button>
                 </FormColumn>
               </FormRow>

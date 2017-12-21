@@ -53,7 +53,7 @@ class ApplicationSwitcher extends Component {
             toggleId="co-application-switcher"
             className="m-application-switcher__toggler"
           >
-            <span className="show-for-sr"><Trans id="application_switcher.action.choose">application_switcher.action.choose</Trans></span>
+            <span className="show-for-sr"><Trans id="application_switcher.action.choose">Choose</Trans></span>
             <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
           </DropdownControl>
         )}

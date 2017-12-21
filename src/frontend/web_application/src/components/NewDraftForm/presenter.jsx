@@ -106,7 +106,7 @@ class NewDraftForm extends Component {
     return (
       <div className="m-new-draft__type">
         <span className="m-new-draft__type-label">
-          <Trans id="reply-form.by" values={{ type: typeTranslations[this.state.draft.type] }}>reply-form.by</Trans>
+          <Trans id="reply-form.by" values={{ type: typeTranslations[this.state.draft.type] }}>by %(type)s</Trans>
         </span>
         {' '}
         <Icon className="m-new-draft__type-icon" type={this.state.draft.type} spaced />
@@ -134,9 +134,9 @@ class NewDraftForm extends Component {
         <form method="POST" className="m-new-draft__form-col">
           <TopRow className="m-new-draft__top-bar">
             <div className="m-new-draft__top-bar-info">
-              <div className="m-new-draft__author"><Trans id="reply-form.you">reply-form.you</Trans></div>
+              <div className="m-new-draft__author"><Trans id="reply-form.you">You</Trans></div>
               {this.state.draft.type && this.renderDraftType()}
-              <div className="m-new-draft__date"><Trans id="reply-form.now">reply-form.now</Trans></div>
+              <div className="m-new-draft__date"><Trans id="reply-form.now">Now</Trans></div>
             </div>
 
             <DropdownControl toggleId={dropdownId} className="m-new-draft__top-actions-switcher" icon="ellipsis-v" />
@@ -179,7 +179,7 @@ class NewDraftForm extends Component {
               responsive="icon-only"
               disabled={!isMessageValid || isSending}
             >
-              <Trans id="messages.compose.action.send">messages.compose.action.send</Trans>
+              <Trans id="messages.compose.action.send">Send</Trans>
             </Button>
             <Button
               className="m-new-draft__bottom-action"
@@ -188,7 +188,7 @@ class NewDraftForm extends Component {
               responsive="icon-only"
               disabled={!this.state.hasChanged}
             >
-              <Trans id="messages.compose.action.save">messages.compose.action.save</Trans>
+              <Trans id="messages.compose.action.save">Save</Trans>
             </Button>
             <Button className="m-new-draft__bottom-action m-new-draft__bottom-action--editor" icon="editor" responsive="icon-only" />
           </BottomRow>

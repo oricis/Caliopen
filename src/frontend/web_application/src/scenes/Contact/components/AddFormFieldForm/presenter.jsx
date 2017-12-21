@@ -80,7 +80,7 @@ class AddFormFieldForm extends Component {
                 <Legend>
                   <Icon type="crosshairs" rightSpaced />
                   <span className="m-add-form-field-form__legend">
-                    <Trans id="contact.form-selector.add_new_field.label">contact.form-selector.add_new_field.label</Trans>
+                    <Trans id="contact.form-selector.add_new_field.label">Add a new field</Trans>
                   </span>
                 </Legend>
               </FormColumn>
@@ -96,7 +96,7 @@ class AddFormFieldForm extends Component {
               </FormColumn>
               <FormColumn size="shrink" className="m-add-form-field-form__col-button">
                 <Button icon="plus" shape="plain" onClick={this.handleAddForm}>
-                  <Trans id="contact.action.add_new_field">contact.action.add_new_field</Trans>
+                  <Trans id="contact.action.add_new_field">Add new</Trans>
                 </Button>
               </FormColumn>
             </FormRow>

@@ -60,7 +60,7 @@ class EmailForm extends PureComponent {
             <FormColumn size="shrink">
               <Legend>
                 <Icon type="envelope" rightSpaced />
-                <span className="m-email-form__legend"><Trans id="contact.email_form.legend">contact.email_form.legend</Trans></span>
+                <span className="m-email-form__legend"><Trans id="contact.email_form.legend">Email</Trans></span>
               </Legend>
             </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}

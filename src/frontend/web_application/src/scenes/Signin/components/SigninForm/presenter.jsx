@@ -128,16 +128,16 @@ class SigninForm extends Component {
                   onClick={this.handleSubmit}
                   display="expanded"
                   shape="plain"
-                ><Trans id="signin.action.login">signin.action.login</Trans></Button>
+                ><Trans id="signin.action.login">Login</Trans></Button>
               </FormColumn>
             </FormRow>
             <FormRow>
               <FormColumn rightSpace={false}>
-                <Link to="/auth/forgot-password"><Trans id="signin.action.forgot_password">signin.action.forgot_password</Trans></Link>
+                <Link to="/auth/forgot-password"><Trans id="signin.action.forgot_password">Forgot password?</Trans></Link>
               </FormColumn>
               {/* <FormColumn rightSpace={false}>
                 <Link to="/auth/signup">
-                  <Trans id="signin.create_an_account">signin.create_an_account</Trans>
+                  <Trans id="signin.create_an_account">Create an account</Trans>
                 </Link>
               </FormColumn> */}
             </FormRow>

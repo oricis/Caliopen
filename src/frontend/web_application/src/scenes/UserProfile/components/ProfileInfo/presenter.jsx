@@ -41,7 +41,7 @@ class ProfileInfo extends Component {
           <h4 className="m-user-profile-details__subtitle">
             {user && `${user.given_name}${user.given_name} ${user.family_name}`}
           </h4>
-          <p><Trans id="user.profile.subscribed_date">user.profile.subscribed_date</Trans>
+          <p><Trans id="user.profile.subscribed_date">Subscribed on</Trans>
             {user && (
               <Moment
                 className="m-user-profile-details__subscribed-date"
@@ -56,7 +56,7 @@ class ProfileInfo extends Component {
           <div className="m-user-profile-details__rank-badge" />
           <div className="m-user-profile-details__rank-info">
             <h4 className="m-user-profile-details__rank-title">fake rank</h4>
-            <Link to=""><Trans id="user.action.improve_rank">user.action.improve_rank</Trans></Link>
+            <Link to=""><Trans id="user.action.improve_rank">Improve rank</Trans></Link>
           </div>
         </div>
       </div>

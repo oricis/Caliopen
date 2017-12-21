@@ -44,7 +44,7 @@ class ApplicationSettings extends PureComponent {
         <Section title={i18n.t`settings.desktop_notification.title`}><DesktopNotificationSettings /></Section>
         <Section>
           <Button type="submit" shape="plain">
-            <Trans id="settings.presentation.update.action">settings.presentation.update.action</Trans>
+            <Trans id="settings.presentation.update.action">Save settings</Trans>
           </Button>
         </Section>
       </form>

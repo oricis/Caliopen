@@ -67,7 +67,7 @@ class InputFileGroup extends Component {
     const ext = file.name ? `.${file.name.split('.').pop()}` : null;
     if (fileTypes && (!ext || !fileTypes.includes(ext))) {
       errors.push((
-        <Trans id="input-file-group.error.no_valid_ext" values={{ fileTypes: fileTypes.join(', ') }}>input-file-group.error.no_valid_ext</Trans>
+        <Trans id="input-file-group.error.no_valid_ext" values={{ fileTypes: fileTypes.join(', ') }}>Only files %(fileTypes)s</Trans>
       ));
     }
 

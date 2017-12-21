@@ -75,7 +75,7 @@ class TagsForm extends Component {
             shape="plain"
             icon="plus"
           >
-            <Trans id="tags.action.create">tags.action.create</Trans>
+            <Trans id="tags.action.create">Create</Trans>
           </Button>
         </FormGrid>
       </div>
