@@ -184,7 +184,18 @@ func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType st
 			return err
 		}
 	case ContactType:
+		update := map[string]interface{}{
+			"tags": obj.(*Contact).Tags,
+		}
+		err := rest.store.UpdateContact(obj.(*Contact), update)
+		if err != nil {
+			return err
+		}
 
+		err = rest.index.UpdateContact(obj.(*Contact), update)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
