@@ -311,9 +311,10 @@ class ObjectUser(ObjectStorable):
         else:
             param = {}
 
-        self._db = self._model_class.get(user_id=self.user_id, **param)
-        if self._db is None:
-            raise NotFound('%s #%s not found for user %s' %
+        try:
+            self._db = self._model_class.get(user_id=self.user_id, **param)
+        except NotFound:
+            raise NotFound('%s %s not found for user %s' %
                            (self.__class__.__name__,
                             param[self._pkey_name], self.user_id))
 
