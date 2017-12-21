@@ -1,0 +1,51 @@
+{
+  "settings.interface.title": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/presenter.jsx",
+        40
+      ]
+    ]
+  },
+  "settings.message.title": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/presenter.jsx",
+        41
+      ]
+    ]
+  },
+  "settings.contact.title": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/presenter.jsx",
+        42
+      ]
+    ]
+  },
+  "settings.notification.title": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/presenter.jsx",
+        43
+      ]
+    ]
+  },
+  "settings.desktop_notification.title": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/presenter.jsx",
+        44
+      ]
+    ]
+  },
+  "settings.presentation.update.action": {
+    "defaults": "Save settings",
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/presenter.jsx",
+        47
+      ]
+    ]
+  }
+}

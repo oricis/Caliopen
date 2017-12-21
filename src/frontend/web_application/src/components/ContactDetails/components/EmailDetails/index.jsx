@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withI18n } from 'lingui-react';
 import Icon from '../../../Icon';
 
+@withI18n()
 class EmailDetails extends Component {
   static propTypes = {
     email: PropTypes.shape({}).isRequired,

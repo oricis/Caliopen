@@ -1,0 +1,113 @@
+{
+  "contact.address_type.work": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        38
+      ]
+    ]
+  },
+  "contact.address_type.home": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        39
+      ]
+    ]
+  },
+  "contact.address_type.other": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        40
+      ]
+    ]
+  },
+  "contact.address_form.legend": {
+    "defaults": "Postal address",
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        58
+      ]
+    ]
+  },
+  "contact.address_form.street.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        68
+      ],
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        69
+      ]
+    ]
+  },
+  "contact.address_form.postal_code.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        79
+      ],
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        80
+      ]
+    ]
+  },
+  "contact.address_form.city.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        88
+      ],
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        89
+      ]
+    ]
+  },
+  "contact.address_form.country.label": {
+    "defaults": "Country",
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        100
+      ]
+    ]
+  },
+  "contact.address_form.select_country": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        107
+      ]
+    ]
+  },
+  "contact.address_form.region.label": {
+    "defaults": "Region",
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        115
+      ]
+    ]
+  },
+  "contact.address_form.select_region": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        122
+      ]
+    ]
+  },
+  "contact.address_form.type.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddressForm/presenter.jsx",
+        130
+      ]
+    ]
+  }
+}

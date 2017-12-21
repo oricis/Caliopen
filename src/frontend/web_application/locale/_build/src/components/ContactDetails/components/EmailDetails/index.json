@@ -1,0 +1,34 @@
+{
+  "contact.email_type.work": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/EmailDetails/index.jsx",
+        19
+      ]
+    ]
+  },
+  "contact.email_type.home": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/EmailDetails/index.jsx",
+        20
+      ]
+    ]
+  },
+  "contact.email_type.other": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/EmailDetails/index.jsx",
+        21
+      ]
+    ]
+  },
+  "contact.primary": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/EmailDetails/index.jsx",
+        30
+      ]
+    ]
+  }
+}

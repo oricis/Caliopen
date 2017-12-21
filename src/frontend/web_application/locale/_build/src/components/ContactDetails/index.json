@@ -1,0 +1,85 @@
+{
+  "contact.address_type.work": {
+    "origin": [
+      [
+        "src/components/ContactDetails/index.jsx",
+        37
+      ]
+    ]
+  },
+  "contact.address_type.home": {
+    "origin": [
+      [
+        "src/components/ContactDetails/index.jsx",
+        38
+      ]
+    ]
+  },
+  "contact.address_type.other": {
+    "origin": [
+      [
+        "src/components/ContactDetails/index.jsx",
+        39
+      ]
+    ]
+  },
+  "contact.im_type.work": {
+    "origin": [
+      [
+        "src/components/ContactDetails/index.jsx",
+        42
+      ]
+    ]
+  },
+  "contact.im_type.home": {
+    "origin": [
+      [
+        "src/components/ContactDetails/index.jsx",
+        43
+      ]
+    ]
+  },
+  "contact.im_type.other": {
+    "origin": [
+      [
+        "src/components/ContactDetails/index.jsx",
+        44
+      ]
+    ]
+  },
+  "contact.im_type.netmeeting": {
+    "origin": [
+      [
+        "src/components/ContactDetails/index.jsx",
+        45
+      ]
+    ]
+  },
+  "contact.contact_details": {
+    "defaults": "Contact details",
+    "origin": [
+      [
+        "src/components/ContactDetails/index.jsx",
+        155
+      ]
+    ]
+  },
+  "contact.contact_organizations": {
+    "defaults": "Professional",
+    "origin": [
+      [
+        "src/components/ContactDetails/index.jsx",
+        166
+      ]
+    ]
+  },
+  "contact.contact_identities": {
+    "defaults": "Social identity",
+    "origin": [
+      [
+        "src/components/ContactDetails/index.jsx",
+        176
+      ]
+    ]
+  }
+}

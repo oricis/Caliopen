@@ -1,0 +1,36 @@
+{
+  "import-contact.action.import_contacts": {
+    "defaults": "Import contacts",
+    "origin": [
+      [
+        "src/scenes/ContactBook/presenter.jsx",
+        95
+      ],
+      [
+        "src/scenes/ContactBook/presenter.jsx",
+        96
+      ],
+      [
+        "src/scenes/ContactBook/presenter.jsx",
+        143
+      ]
+    ]
+  },
+  "header.menu.contacts": {
+    "origin": [
+      [
+        "src/scenes/ContactBook/presenter.jsx",
+        119
+      ]
+    ]
+  },
+  "general.action.load_more": {
+    "defaults": "Load more",
+    "origin": [
+      [
+        "src/scenes/ContactBook/presenter.jsx",
+        160
+      ]
+    ]
+  }
+}

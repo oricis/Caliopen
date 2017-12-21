@@ -1,0 +1,34 @@
+{
+  "device.info.date_insert": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceInformation/presenter.jsx",
+        9
+      ]
+    ]
+  },
+  "device.info.last_seen": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceInformation/presenter.jsx",
+        10
+      ]
+    ]
+  },
+  "device.info.os": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceInformation/presenter.jsx",
+        11
+      ]
+    ]
+  },
+  "device.info.os-version": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceInformation/presenter.jsx",
+        12
+      ]
+    ]
+  }
+}

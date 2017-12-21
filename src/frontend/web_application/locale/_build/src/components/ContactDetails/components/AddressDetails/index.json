@@ -1,0 +1,26 @@
+{
+  "contact.address_type.work": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/AddressDetails/index.jsx",
+        20
+      ]
+    ]
+  },
+  "contact.address_type.home": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/AddressDetails/index.jsx",
+        21
+      ]
+    ]
+  },
+  "contact.address_type.other": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/AddressDetails/index.jsx",
+        22
+      ]
+    ]
+  }
+}

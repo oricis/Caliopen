@@ -161,7 +161,7 @@ class Message extends Component {
             {message.type &&
               (<div className="m-message__type">
                 <span className="m-message__type-label">
-                  <Trans id="message-list.message.by" values={{ type: typeTranslations[message.type] }}>by %(type)s</Trans>
+                  <Trans id="message-list.message.by">by {typeTranslations[message.type]}</Trans>
                 </span>
                 {' '}
                 <Icon type={message.type} className="m-message__type-icon" spaced />

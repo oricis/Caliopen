@@ -1,0 +1,18 @@
+{
+  "header.menu.discussions": {
+    "origin": [
+      [
+        "src/services/application-manager/index.js",
+        20
+      ]
+    ]
+  },
+  "header.menu.contacts": {
+    "origin": [
+      [
+        "src/services/application-manager/index.js",
+        21
+      ]
+    ]
+  }
+}

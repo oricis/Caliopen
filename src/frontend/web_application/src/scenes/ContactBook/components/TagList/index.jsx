@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
+import { withI18n } from 'lingui-react';
 import Button from '../../../../components/Button';
 import NavList, { ItemContent } from '../../../../components/NavList';
 
@@ -92,4 +93,4 @@ TagList.propTypes = {
   nbContactsAll: PropTypes.number.isRequired,
   i18n: PropTypes.shape({}).isRequired,
 };
-export default TagList;
+export default withI18n()(TagList);

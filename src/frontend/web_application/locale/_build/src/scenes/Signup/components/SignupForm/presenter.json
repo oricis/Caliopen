@@ -1,0 +1,190 @@
+{
+  "signup.privacy.modal.label": {
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        135
+      ],
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        136
+      ]
+    ]
+  },
+  "signup.privacy.modal.title": {
+    "defaults": "Caliopen is under development !",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        139
+      ]
+    ]
+  },
+  "signup.privacy.modal.text.alpha_tester": {
+    "defaults": "As an alpha-tester your contribution is precious and will allow us to finalize Caliopen.",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        140
+      ]
+    ]
+  },
+  "signup.privacy.modal.text.get_data": {
+    "defaults": "For this purpose, you grant us the right to collect data related to your usage (displayed pages, timings, clics, scrolls ...almost everything that can be collected!).",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        141
+      ]
+    ]
+  },
+  "signup.privacy.modal.text.desactivate_dnt": {
+    "defaults": "You need to deactivate the DoNotTrack setting from your browser preferences (more informations at http://donottrack.us), as well as allowing cookies.",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        142
+      ]
+    ]
+  },
+  "signup.privacy.modal.text.piwik": {
+    "defaults": "We use https://piwik.org/ the open-source analytics plateform. The collected data will not be disclosed to any third party, and will stay scoped to Caliopen's alpha testing purpose.",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        143
+      ]
+    ]
+  },
+  "signup.privacy.modal.close": {
+    "defaults": "Ok got it !",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        148
+      ]
+    ]
+  },
+  "signup.title": {
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        158
+      ]
+    ]
+  },
+  "signup.limited_registration": {
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        163
+      ]
+    ]
+  },
+  "signup.form.username.label": {
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        178
+      ]
+    ]
+  },
+  "signup.form.username.placeholder": {
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        179
+      ]
+    ]
+  },
+  "signup.form.password.label": {
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        196
+      ]
+    ]
+  },
+  "signup.form.password.placeholder": {
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        197
+      ]
+    ]
+  },
+  "signup.form.invitation_email.label": {
+    "defaults": "Please fill with the email provided when you requested an invitation.",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        219
+      ],
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        226
+      ]
+    ]
+  },
+  "signup.form.invitation_email.placeholder": {
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        220
+      ]
+    ]
+  },
+  "signup.form.privacy.title": {
+    "defaults": "Privacy policy",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        246
+      ]
+    ]
+  },
+  "signup.form.privacy.intro": {
+    "defaults": "Throughout the development phase, we collect some data (but no more than the NSA).",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        248
+      ]
+    ]
+  },
+  "signup.form.privacy.more_info": {
+    "defaults": "More info",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        254
+      ]
+    ]
+  },
+  "signup.form.privacy.checkbox.label": {
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        259
+      ]
+    ]
+  },
+  "signup.action.create": {
+    "defaults": "Create",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        274
+      ]
+    ]
+  },
+  "signup.go_signin": {
+    "defaults": "I already have an account",
+    "origin": [
+      [
+        "src/scenes/Signup/components/SignupForm/presenter.jsx",
+        279
+      ]
+    ]
+  }
+}

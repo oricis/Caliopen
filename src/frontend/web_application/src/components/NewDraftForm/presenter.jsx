@@ -106,7 +106,7 @@ class NewDraftForm extends Component {
     return (
       <div className="m-new-draft__type">
         <span className="m-new-draft__type-label">
-          <Trans id="reply-form.by" values={{ type: typeTranslations[this.state.draft.type] }}>by %(type)s</Trans>
+          <Trans id="reply-form.by">by {typeTranslations[this.state.draft.type]}</Trans>
         </span>
         {' '}
         <Icon className="m-new-draft__type-icon" type={this.state.draft.type} spaced />

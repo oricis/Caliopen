@@ -194,7 +194,7 @@ class Contact extends Component {
     const title = (
       <span><Trans id="tags.header.title">Tags</Trans>
         <span className="m-tags-form__count">
-          <Trans id="tags.header.count" values={{ count }}>(Total: %(count)s)</Trans>
+          <Trans id="tags.header.count">(Total: {count})</Trans>
         </span>
       </span>);
 

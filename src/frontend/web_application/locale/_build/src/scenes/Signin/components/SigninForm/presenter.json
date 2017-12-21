@@ -1,0 +1,68 @@
+{
+  "signin.title": {
+    "origin": [
+      [
+        "src/scenes/Signin/components/SigninForm/presenter.jsx",
+        80
+      ]
+    ]
+  },
+  "signup.limited_registration": {
+    "origin": [
+      [
+        "src/scenes/Signin/components/SigninForm/presenter.jsx",
+        85
+      ]
+    ]
+  },
+  "signin.form.username.label": {
+    "origin": [
+      [
+        "src/scenes/Signin/components/SigninForm/presenter.jsx",
+        99
+      ]
+    ]
+  },
+  "signin.form.username.placeholder": {
+    "origin": [
+      [
+        "src/scenes/Signin/components/SigninForm/presenter.jsx",
+        100
+      ]
+    ]
+  },
+  "signin.form.password.label": {
+    "origin": [
+      [
+        "src/scenes/Signin/components/SigninForm/presenter.jsx",
+        112
+      ]
+    ]
+  },
+  "signin.form.password.placeholder": {
+    "origin": [
+      [
+        "src/scenes/Signin/components/SigninForm/presenter.jsx",
+        113
+      ]
+    ]
+  },
+  "signin.action.login": {
+    "defaults": "Login",
+    "origin": [
+      [
+        "src/scenes/Signin/components/SigninForm/presenter.jsx",
+        131
+      ]
+    ]
+  },
+  "signin.action.forgot_password": {
+    "defaults": "Forgot password?",
+    "origin": [
+      [
+        "src/scenes/Signin/components/SigninForm/presenter.jsx",
+        136
+      ]
+    ]
+  }
+}

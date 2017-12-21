@@ -44,9 +44,9 @@ class SearchResults extends PureComponent {
     const location = `${pathname}${search}`;
 
     const navLinks = [
-      { title: <Trans id="search-results.all" values={{ count: total }}>All (%(count)s)</Trans>, to: `/search-results?term=${term}` },
-      { title: <Trans id="search-results.messages" values={{ count: nbMessages }}>Messages (%(count)s)</Trans>, to: `/search-results?term=${term}&doctype=message` },
-      { title: <Trans id="search-results.contacts" values={{ count: nbContacts }}>Contacts (%(count)s)</Trans>, to: `/search-results?term=${term}&doctype=contact` },
+      { title: <Trans id="search-results.all">All ({total})</Trans>, to: `/search-results?term=${term}` },
+      { title: <Trans id="search-results.messages">Messages ({nbMessages})</Trans>, to: `/search-results?term=${term}&doctype=message` },
+      { title: <Trans id="search-results.contacts">Contacts ({nbContacts})</Trans>, to: `/search-results?term=${term}&doctype=contact` },
     ].map(link => ({
       ...link,
       isActive: matchPath(location, { path: link.to, exact: false, strict: false }) && true,

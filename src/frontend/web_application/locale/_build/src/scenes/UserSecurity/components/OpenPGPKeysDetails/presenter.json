@@ -1,0 +1,11 @@
+{
+  "user.openpgp.action.edit-keys": {
+    "defaults": "Edit and add keys",
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/OpenPGPKeysDetails/presenter.jsx",
+        108
+      ]
+    ]
+  }
+}

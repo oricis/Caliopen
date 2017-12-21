@@ -1,0 +1,10 @@
+{
+  "settings.signatures.title": {
+    "origin": [
+      [
+        "src/scenes/SettingsSignatures/presenter.jsx",
+        35
+      ]
+    ]
+  }
+}

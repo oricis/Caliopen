@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans, withI18n } from 'lingui-react';
 import Subtitle from '../Subtitle';
 import TextList, { ItemContent } from '../TextList';
 import AddressDetails from './components/AddressDetails';
@@ -12,6 +12,7 @@ import OrgaDetails from './components/OrgaDetails';
 import PhoneDetails from './components/PhoneDetails';
 import './style.scss';
 
+@withI18n()
 class ContactDetails extends Component {
   static propTypes = {
     contact: PropTypes.shape({}),

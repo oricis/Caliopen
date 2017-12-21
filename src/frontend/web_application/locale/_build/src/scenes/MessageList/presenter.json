@@ -1,0 +1,11 @@
+{
+  "general.action.load_more": {
+    "defaults": "Load more",
+    "origin": [
+      [
+        "src/scenes/MessageList/presenter.jsx",
+        104
+      ]
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "general.action.cancel": {
+    "defaults": "Cancel",
+    "origin": [
+      [
+        "src/scenes/ContactBook/components/ImportContactForm/presenter.jsx",
+        67
+      ]
+    ]
+  },
+  "import-contact.action.import": {
+    "defaults": "Import",
+    "origin": [
+      [
+        "src/scenes/ContactBook/components/ImportContactForm/presenter.jsx",
+        77
+      ]
+    ]
+  },
+  "import-contact.form.button.close": {
+    "defaults": "Close",
+    "origin": [
+      [
+        "src/scenes/ContactBook/components/ImportContactForm/presenter.jsx",
+        85
+      ]
+    ]
+  },
+  "import-contact.form.descr": {
+    "origin": [
+      [
+        "src/scenes/ContactBook/components/ImportContactForm/presenter.jsx",
+        107
+      ]
+    ]
+  },
+  "import-contact.form.success": {
+    "defaults": "Successfuly imported !",
+    "origin": [
+      [
+        "src/scenes/ContactBook/components/ImportContactForm/presenter.jsx",
+        113
+      ]
+    ]
+  }
+}

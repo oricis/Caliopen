@@ -92,7 +92,7 @@ class ReplyForm extends Component {
     return (
       <div className="m-reply__type">
         <span className="m-reply__type-label">
-          <Trans id="reply-form.by" values={{ type: typeTranslations[this.state.draft.type] }}>by %(type)s</Trans>
+          <Trans id="reply-form.by">by {typeTranslations[this.state.draft.type]}</Trans>
         </span>
         {' '}
         <Icon className="m-reply__type-icon" type={this.state.draft.type} spaced />
@@ -135,7 +135,7 @@ class ReplyForm extends Component {
           {parentMessage && (
             <div className="m-reply__parent">
               <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
-                <Trans id="reply-form.in-reply-to" values={{ excerpt: parentMessage.excerpt }}>In reply to: %(excerpt)s</Trans>
+                <Trans id="reply-form.in-reply-to">In reply to: {parentMessage.excerpt}</Trans>
               </Link>
             </div>
           )}

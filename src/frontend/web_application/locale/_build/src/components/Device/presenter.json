@@ -1,0 +1,58 @@
+{
+  "device.manage.title": {
+    "origin": [
+      [
+        "src/components/Device/presenter.jsx",
+        19
+      ]
+    ]
+  },
+  "device.manage.descr": {
+    "origin": [
+      [
+        "src/components/Device/presenter.jsx",
+        20
+      ]
+    ]
+  },
+  "device.info.title": {
+    "origin": [
+      [
+        "src/components/Device/presenter.jsx",
+        25
+      ]
+    ]
+  },
+  "device.revoke.title": {
+    "origin": [
+      [
+        "src/components/Device/presenter.jsx",
+        30
+      ]
+    ]
+  },
+  "device.revoke.descr": {
+    "origin": [
+      [
+        "src/components/Device/presenter.jsx",
+        31
+      ]
+    ]
+  },
+  "device.verify.title": {
+    "origin": [
+      [
+        "src/components/Device/presenter.jsx",
+        41
+      ]
+    ]
+  },
+  "device.verify.descr": {
+    "origin": [
+      [
+        "src/components/Device/presenter.jsx",
+        42
+      ]
+    ]
+  }
+}

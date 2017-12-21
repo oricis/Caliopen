@@ -1,0 +1,51 @@
+{
+  "contact.email_type.work": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/EmailForm/index.jsx",
+        43
+      ]
+    ]
+  },
+  "contact.email_type.home": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/EmailForm/index.jsx",
+        44
+      ]
+    ]
+  },
+  "contact.email_type.other": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/EmailForm/index.jsx",
+        45
+      ]
+    ]
+  },
+  "contact.email_form.legend": {
+    "defaults": "Email",
+    "origin": [
+      [
+        "src/scenes/Contact/components/EmailForm/index.jsx",
+        63
+      ]
+    ]
+  },
+  "contact.email_form.type.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/EmailForm/index.jsx",
+        71
+      ]
+    ]
+  },
+  "contact.email_form.address.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/EmailForm/index.jsx",
+        81
+      ]
+    ]
+  }
+}

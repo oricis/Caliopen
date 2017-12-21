@@ -77,7 +77,10 @@ class ForgotPasswordForm extends Component {
                 <FormRow>
                   <FormColumn rightSpace={false} bottomSpace>
                     <Legend>
-                      <Trans id="password.forgot-form.instructions">Enter your username and we'll email instructions on how to reset your password.</Trans>
+                      <Trans id="password.forgot-form.instructions">
+                        Enter your username and we&apos;ll email instructions on how to reset your
+                        password.
+                      </Trans>
                     </Legend>
                   </FormColumn>
                   <FormColumn rightSpace={false} bottomSpace>

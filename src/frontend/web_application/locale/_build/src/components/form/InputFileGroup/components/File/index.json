@@ -1,0 +1,11 @@
+{
+  "input-file-group.file.size": {
+    "defaults": "%(size)s kB",
+    "origin": [
+      [
+        "src/components/form/InputFileGroup/components/File/index.jsx",
+        30
+      ]
+    ]
+  }
+}

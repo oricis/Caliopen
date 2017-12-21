@@ -1,0 +1,29 @@
+{
+  "search-results.all": {
+    "defaults": "All (%(count)s)",
+    "origin": [
+      [
+        "src/layouts/SearchResults/presenter.jsx",
+        47
+      ]
+    ]
+  },
+  "search-results.messages": {
+    "defaults": "Messages (%(count)s)",
+    "origin": [
+      [
+        "src/layouts/SearchResults/presenter.jsx",
+        48
+      ]
+    ]
+  },
+  "search-results.contacts": {
+    "defaults": "Contacts (%(count)s)",
+    "origin": [
+      [
+        "src/layouts/SearchResults/presenter.jsx",
+        49
+      ]
+    ]
+  }
+}

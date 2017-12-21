@@ -1,0 +1,26 @@
+{
+  "settings.message.display_format.options.rich_text": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/MessageSettings/presenter.jsx",
+        28
+      ]
+    ]
+  },
+  "settings.message.display_format.options.plain_text": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/MessageSettings/presenter.jsx",
+        29
+      ]
+    ]
+  },
+  "settings.message.display_format.label": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/MessageSettings/presenter.jsx",
+        45
+      ]
+    ]
+  }
+}

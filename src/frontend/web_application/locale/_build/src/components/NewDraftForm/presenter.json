@@ -1,0 +1,63 @@
+{
+  "reply-form.protocol.email": {
+    "origin": [
+      [
+        "src/components/NewDraftForm/presenter.jsx",
+        103
+      ]
+    ]
+  },
+  "reply-form.by": {
+    "defaults": "by %(type)s",
+    "origin": [
+      [
+        "src/components/NewDraftForm/presenter.jsx",
+        109
+      ]
+    ]
+  },
+  "reply-form.you": {
+    "defaults": "You",
+    "origin": [
+      [
+        "src/components/NewDraftForm/presenter.jsx",
+        137
+      ]
+    ]
+  },
+  "reply-form.now": {
+    "defaults": "Now",
+    "origin": [
+      [
+        "src/components/NewDraftForm/presenter.jsx",
+        139
+      ]
+    ]
+  },
+  "messages.compose.form.subject.label": {
+    "origin": [
+      [
+        "src/components/NewDraftForm/presenter.jsx",
+        162
+      ]
+    ]
+  },
+  "messages.compose.action.send": {
+    "defaults": "Send",
+    "origin": [
+      [
+        "src/components/NewDraftForm/presenter.jsx",
+        182
+      ]
+    ]
+  },
+  "messages.compose.action.save": {
+    "defaults": "Save",
+    "origin": [
+      [
+        "src/components/NewDraftForm/presenter.jsx",
+        191
+      ]
+    ]
+  }
+}

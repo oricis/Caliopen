@@ -112,7 +112,7 @@ class MessageItemContainer extends Component {
     const count = message.tags ? message.tags.length : 0;
     const title = [
       i18n.t`tags.header.title`,
-      (<span key="1" className="m-tags-form__count"><Trans id="tags.header.count" values={{ count }}>(Total: %(count)s)</Trans></span>),
+      (<span key="1" className="m-tags-form__count"><Trans id="tags.header.count">(Total: {count})</Trans></span>),
     ];
 
     return (

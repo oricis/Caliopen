@@ -168,7 +168,9 @@ class PasswordForm extends Component {
           </FormColumn>
           <FormColumn size="medium">
             <label htmlFor="newPassword" className="m-password-form__tip">
-              <Trans id="password.form.tfa.tip">Only if you have enabled the 2-Factor Authentification method.</Trans>
+              <Trans id="password.form.tfa.tip">
+                Only if you have enabled the 2-Factor Authentification method.
+              </Trans>
             </label>
           </FormColumn>
         </FormRow>

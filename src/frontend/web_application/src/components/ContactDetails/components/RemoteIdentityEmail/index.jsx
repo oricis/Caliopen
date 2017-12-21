@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans, withI18n } from 'lingui-react';
 import Button from '../../../Button';
 import Spinner from '../../../Spinner';
 import { TextFieldGroup, SelectFieldGroup, RadioFieldGroup } from '../../../form';
@@ -18,6 +18,7 @@ function generateStateFromProps(props, prevState) {
   };
 }
 
+@withI18n()
 class RemoteIdentityEmail extends Component {
   static propTypes = {
     remoteIdentity: PropTypes.shape({}).isRequired,

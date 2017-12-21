@@ -1,0 +1,94 @@
+{
+  "password.form.new_password_confirmation.error": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        68
+      ]
+    ]
+  },
+  "password.form.current_password.label": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        110
+      ]
+    ]
+  },
+  "password.form.current_password.placeholder": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        111
+      ]
+    ]
+  },
+  "password.form.current_password.tip": {
+    "defaults": "The password you want to replace.",
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        118
+      ]
+    ]
+  },
+  "password.form.new_password.label": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        128
+      ]
+    ]
+  },
+  "password.form.new_password.placeholder": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        129
+      ]
+    ]
+  },
+  "password.form.new_password.tip": {
+    "defaults": "The password you want to use from now.",
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        135
+      ]
+    ]
+  },
+  "password.form.new_password_confirmation.label": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        151
+      ]
+    ]
+  },
+  "password.form.new_password_confirmation.placeholder": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        152
+      ]
+    ]
+  },
+  "password.form.action.validate": {
+    "defaults": "Apply modifications",
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        179
+      ]
+    ]
+  },
+  "password.form.action.cancel": {
+    "defaults": "Cancel",
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        184
+      ]
+    ]
+  }
+}

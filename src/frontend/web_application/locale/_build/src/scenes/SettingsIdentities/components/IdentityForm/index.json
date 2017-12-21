@@ -1,0 +1,58 @@
+{
+  "contact.address_type.work": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
+        46
+      ]
+    ]
+  },
+  "contact.address_type.home": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
+        47
+      ]
+    ]
+  },
+  "contact.address_type.other": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
+        48
+      ]
+    ]
+  },
+  "contact.im_type.work": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
+        51
+      ]
+    ]
+  },
+  "contact.im_type.home": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
+        52
+      ]
+    ]
+  },
+  "contact.im_type.other": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
+        53
+      ]
+    ]
+  },
+  "contact.im_type.netmeeting": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
+        54
+      ]
+    ]
+  }
+}

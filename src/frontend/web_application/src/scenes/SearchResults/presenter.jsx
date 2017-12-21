@@ -119,7 +119,9 @@ class SearchResults extends Component {
       <div>
         {messages && (
           <div className="s-search-results__label">
-            <Trans id="search-results.preview.nb-messages" values={{ count: nbMessages, term }}>%(count)s messages contains "%(term)s" in their subject or content:</Trans>
+            <Trans id="search-results.preview.nb-messages">
+              {nbMessages} messages contains &quot;{term}&quot; in their subject or content:
+            </Trans>
             {' '}
             <Link className="s-search-results__link" to={`/search-results?term=${term}&doctype=message`}>
               <Trans id="search-results.actions.display-all">Display all</Trans>
@@ -129,7 +131,9 @@ class SearchResults extends Component {
         {messages && this.renderMessages(messages)}
         {contacts && (
           <div className="s-search-results__label">
-            <Trans id="search-results.preview.nb-contacts" values={{ count: nbContacts, term }}>%(count)s contacts contains "%(term)s" in their label or profile:</Trans>
+            <Trans id="search-results.preview.nb-contacts" values={{ count: nbContacts, term }}>
+              {nbContacts} contacts contains &quot;{term}&quot; in their label or profile:
+            </Trans>
             {' '}
             <Link className="s-search-results__link" to={`/search-results?term=${term}&doctype=contact`}>
               <Trans id="search-results.actions.display-all">Display all</Trans>

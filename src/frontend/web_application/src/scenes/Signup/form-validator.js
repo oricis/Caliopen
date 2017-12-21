@@ -19,7 +19,7 @@ export const getLocalizedErrors = i18n => ({
   [ERR_REQUIRED_TOS]: i18n.t`signup.feedback.required_tos`,
   [ERR_INVALID_GLOBAL]: i18n.t`signup.feedback.invalid`,
   [ERR_REQUIRED_USERNAME]: i18n.t`signup.feedback.required_username`,
-  [ERR_INVALID_CHARACTER]: i18n.t`signup.feedback.username_invalid_characters`,
+  [ERR_INVALID_CHARACTER]: i18n.t(['signup.feedback.username_invalid_characters'], ['"@`:;<>[]\\']),
   [ERR_REQUIRED_PASSWORD]: i18n.t`signup.feedback.required_password`,
   [ERR_UNAVAILABLE_USERNAME]: i18n.t`signup.feedback.unavailable_username`,
   [ERR_INVALID_RECOVERY_EMAIL]: i18n.t`signup.feedback.invalid_recovery_email`,

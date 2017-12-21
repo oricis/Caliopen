@@ -1,0 +1,18 @@
+{
+  "header.menu.toggle-navigation": {
+    "origin": [
+      [
+        "src/layouts/Page/components/Header/presenter.jsx",
+        44
+      ]
+    ]
+  },
+  "header.menu.toggle-search-form": {
+    "origin": [
+      [
+        "src/layouts/Page/components/Header/presenter.jsx",
+        56
+      ]
+    ]
+  }
+}

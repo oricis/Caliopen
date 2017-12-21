@@ -1,0 +1,10 @@
+{
+  "timeline-filter.label": {
+    "origin": [
+      [
+        "src/layouts/Page/components/NavigationAlt/components/TimelineFilterSwitcher/presenter.jsx",
+        30
+      ]
+    ]
+  }
+}

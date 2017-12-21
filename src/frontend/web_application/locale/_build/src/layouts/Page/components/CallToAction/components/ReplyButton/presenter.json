@@ -1,0 +1,11 @@
+{
+  "call-to-action.action.reply": {
+    "defaults": "Reply",
+    "origin": [
+      [
+        "src/layouts/Page/components/CallToAction/components/ReplyButton/presenter.jsx",
+        30
+      ]
+    ]
+  }
+}

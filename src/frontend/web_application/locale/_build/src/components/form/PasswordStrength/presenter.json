@@ -1,0 +1,26 @@
+{
+  "password_strength.feedback.weak": {
+    "origin": [
+      [
+        "src/components/form/PasswordStrength/presenter.jsx",
+        22
+      ]
+    ]
+  },
+  "password_strength.feedback.moderate": {
+    "origin": [
+      [
+        "src/components/form/PasswordStrength/presenter.jsx",
+        23
+      ]
+    ]
+  },
+  "password_strength.feedback.strong": {
+    "origin": [
+      [
+        "src/components/form/PasswordStrength/presenter.jsx",
+        24
+      ]
+    ]
+  }
+}
