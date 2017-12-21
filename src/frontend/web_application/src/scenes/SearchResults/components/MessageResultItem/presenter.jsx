@@ -17,11 +17,12 @@ class MessageResultItem extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     term: PropTypes.string.isRequired,
-    highlights: PropTypes.shape({}).isRequired,
+    highlights: PropTypes.shape({}),
     settings: PropTypes.shape({}).isRequired,
     __: PropTypes.func.isRequired,
   };
   static defaultProps = {
+    highlights: null,
   };
 
   renderAuthor() {
@@ -43,14 +44,14 @@ class MessageResultItem extends PureComponent {
   }
 
   renderHighlights() {
-    const { term } = this.props;
-    const highlights = Object.entries(this.props.highlights)
+    const { term, highlights } = this.props;
+    const highlightsString = !highlights ? '' : Object.entries(highlights)
       .reduce((acc, [, value]) => [...acc, ...value], [])
       .join(' ... ');
 
     return (
-      <span title={highlights}>
-        <Highlights term={term} highlights={highlights} />
+      <span title={highlightsString}>
+        <Highlights term={term} highlights={highlightsString} />
       </span>
     );
   }
