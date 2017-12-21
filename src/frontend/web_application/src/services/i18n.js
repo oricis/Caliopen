@@ -2,9 +2,9 @@ import { provideTranslate, createTranslator } from '@gandi/react-translate';
 
 const availableTranslations = {
   /* eslint-disable global-require */
-  de: require('../../locales/de/main.json'),
-  en: require('../../locales/en/main.json'),
-  fr: require('../../locales/fr/main.json'),
+  de: require('../../locale/de/messages.json'),
+  en: require('../../locale/en/messages.json'),
+  fr: require('../../locale/fr/messages.json'),
   /* eslint-enable global-require */
 };
 export const availableLanguages = Object.keys(availableTranslations);
