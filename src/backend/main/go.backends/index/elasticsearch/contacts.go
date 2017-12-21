@@ -5,8 +5,10 @@
 package index
 
 import (
+	"context"
 	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
 )
 
 func (es *ElasticSearchBackend) CreateContact(contact *Contact) error {
@@ -14,7 +16,16 @@ func (es *ElasticSearchBackend) CreateContact(contact *Contact) error {
 }
 
 func (es *ElasticSearchBackend) UpdateContact(contact *Contact, fields map[string]interface{}) error {
-	return errors.New("[ElasticSearchBackend] not implemented")
+	update, err := es.Client.Update().Index(contact.UserId.String()).Type(ContactIndexType).Id(contact.ContactId.String()).
+		Doc(fields).
+		Refresh("wait_for").
+		Do(context.TODO())
+	if err != nil {
+		log.WithError(err).Warn("backend Index: updateMessage operation failed")
+		return err
+	}
+	log.Infof("New version of indexed contact %s is now %d", update.Id, update.Version)
+	return nil
 }
 
 func (es *ElasticSearchBackend) SetContactUnread(user_id, Contact_id string, status bool) (err error) {
