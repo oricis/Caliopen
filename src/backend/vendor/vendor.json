@@ -399,6 +399,18 @@
 			"revisionTime": "2017-04-22T00:02:51Z"
 		},
 		{
+			"checksumSHA1": "O60x2mXes26ITuTIyUMwqhOKsfI=",
+			"path": "github.com/mozillazg/go-unidecode",
+			"revision": "8772af720c7f2f4d216cc73c5f23de17450dd008",
+			"revisionTime": "2016-11-07T13:59:01Z"
+		},
+		{
+			"checksumSHA1": "8aydIRe3ywfQEZ1IM1RtC1TGfNg=",
+			"path": "github.com/mozillazg/go-unidecode/table",
+			"revision": "8772af720c7f2f4d216cc73c5f23de17450dd008",
+			"revisionTime": "2016-11-07T13:59:01Z"
+		},
+		{
 			"checksumSHA1": "WD1vH1wVNKcnnFE6tbTxSYrr+1o=",
 			"path": "github.com/nats-io/go-nats",
 			"revision": "5de724c34e492d986d0c7cb95ac7ba38935dacc6",

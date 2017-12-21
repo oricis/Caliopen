@@ -5,7 +5,9 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	"github.com/bitly/go-simplejson"
+	"github.com/mozillazg/go-unidecode"
 	"github.com/pkg/errors"
+	"strings"
 )
 
 func (rest *RESTfacility) RetrieveUserTags(user_id string) (tags []Tag, err error) {
@@ -13,9 +15,19 @@ func (rest *RESTfacility) RetrieveUserTags(user_id string) (tags []Tag, err erro
 }
 
 // CreateTag :
+// - ensures tag's label is unique
+// - copies tag's name to tag's label
+// - converts tag's name to lower & ASCII and replace spaces by "_"
 // - adds the tag in db for user if it doesn't exist yet
-// - modifies tag in-place to add the date_insert returned by store
+// - updates tag in-place with its new properties
 func (rest *RESTfacility) CreateTag(tag *Tag) error {
+	tag.Label = tag.Name
+	var isUnique bool
+	isUnique, tag.Name = rest.IsTagLabelNameUnique(tag.Label, tag.User_id.String())
+	if !isUnique {
+		return errors.New("[RESTfacility] tag's name/label conflict with existing one")
+	}
+
 	return rest.store.CreateTag(tag)
 }
 
@@ -24,13 +36,23 @@ func (rest *RESTfacility) RetrieveTag(user_id, tag_name string) (tag Tag, err er
 }
 
 // PatchTag is a shortcut for REST api to call two methods :
-// - UpdateWithPatch () to retrieve the tag and update it
+// - UpdateWithPatch () to retrieve the tag from db
+// - checks that new label is not conflicting with an existing one
 // - then UpdateTag() to save updated tag to stores if everything went good.
 func (rest *RESTfacility) PatchTag(patch []byte, user_id, tag_name string) error {
 
 	current_tag, err := rest.RetrieveTag(user_id, tag_name)
 	if err != nil {
 		return err
+	}
+
+	p, err := simplejson.NewJson(patch)
+	if err != nil {
+		return err
+	}
+	label := p.Get("label")
+	if isUnique, _ := rest.IsTagLabelNameUnique(label.MustString(), user_id); !isUnique {
+		return errors.New("[RESTfacility] tag's name/label conflict with existing one")
 	}
 
 	err = helpers.UpdateWithPatch(&current_tag, patch, UserActor)
@@ -43,7 +65,6 @@ func (rest *RESTfacility) PatchTag(patch []byte, user_id, tag_name string) error
 }
 
 // UpdateTag updates a tag in store with payload,
-// only if tag is a user tag.
 func (rest *RESTfacility) UpdateTag(tag *Tag) error {
 	user_id := tag.User_id.String()
 	if user_id != "" && tag.Name != "" {
@@ -52,16 +73,16 @@ func (rest *RESTfacility) UpdateTag(tag *Tag) error {
 		if err != nil {
 			return err
 		}
-		if db_tag.Type == SystemTag {
-			return errors.New("system tags can't be updated by user")
-		}
-		// RESTfacility allows user to only modify the name attribute
+		// RESTfacility allows user to only modify label and importance_level properties
+		// thus squash other properties with those from db to ignore any modifications
 		tag.Date_insert = db_tag.Date_insert
-		tag.Importance_level = db_tag.Importance_level
+		tag.Name = db_tag.Name
+		tag.Type = db_tag.Type
+		tag.User_id = db_tag.User_id
 		return rest.store.UpdateTag(tag)
 
 	} else {
-		return errors.New("invalid tag's name and/or user_id")
+		return errors.New("[RESTfacility] invalid tag's name and/or user_id")
 	}
 }
 
@@ -74,7 +95,7 @@ func (rest *RESTfacility) DeleteTag(user_id, tag_name string) error {
 		return err
 	}
 	if tag.Type == SystemTag {
-		return errors.New("system tags can't be deleted by user")
+		return errors.New("[RESTfacility] system tags can't be deleted by user")
 	}
 
 	return rest.store.DeleteTag(user_id, tag_name)
@@ -134,7 +155,7 @@ func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType st
 		}
 		obj = CaliopenObject(m)
 	case ContactType:
-		c, err := rest.store.GetContact(userID, resourceID)
+		c, err := rest.store.RetrieveContact(userID, resourceID)
 		if err != nil {
 			return err
 		}
@@ -162,7 +183,33 @@ func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType st
 		if err != nil {
 			return err
 		}
+	case ContactType:
+
 	}
 
 	return nil
+}
+
+// IsTagLabelNameUnique ensures that a name and/or label is not conflicting with a name/label of another tag.
+// returns true if tag is unique, along with the label normalized to a string that could be used as tag's name.
+func (rest *RESTfacility) IsTagLabelNameUnique(label, userID string) (bool, string) {
+	normalizedLabel := utf8ToASCIILowerNoSpace(label)
+	tags, err := rest.store.RetrieveUserTags(userID)
+	if err != nil {
+		return false, ""
+	}
+	for _, t := range tags {
+		if t.Name == normalizedLabel {
+			return false, ""
+		}
+	}
+	return true, normalizedLabel
+}
+
+func utf8ToASCIILowerNoSpace(s string) string {
+	b := make([]byte, len(s))
+	b = []byte(unidecode.Unidecode(s))
+	b = []byte(strings.ToLower(string(b)))
+	b = []byte(strings.Replace(string(b), " ", "_", -1))
+	return string(b)
 }
