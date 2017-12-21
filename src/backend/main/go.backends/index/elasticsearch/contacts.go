@@ -21,7 +21,7 @@ func (es *ElasticSearchBackend) UpdateContact(contact *Contact, fields map[strin
 		Refresh("wait_for").
 		Do(context.TODO())
 	if err != nil {
-		log.WithError(err).Warn("backend Index: updateMessage operation failed")
+		log.WithError(err).Warn("[ElasticSearchBackend] updateContact operation failed")
 		return err
 	}
 	log.Infof("New version of indexed contact %s is now %d", update.Id, update.Version)

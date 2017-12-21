@@ -9,6 +9,7 @@ package store
 import (
 	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/gocassa/gocassa"
 )
 
 func (cb *CassandraBackend) CreateContact(contact *Contact) error {
@@ -38,7 +39,15 @@ func (cb *CassandraBackend) RetrieveContact(user_id, contact_id string) (contact
 }
 
 func (cb *CassandraBackend) UpdateContact(contact *Contact, fields map[string]interface{}) error {
-	return errors.New("[CassandraBackend] not implemented")
+	contactT := cb.IKeyspace.Table("contact", &Contact{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "contact_id"},
+	}).WithOptions(gocassa.Options{TableName: "contact"}) // need to overwrite default gocassa table naming convention
+
+	err := contactT.
+		Where(gocassa.Eq("user_id", contact.UserId.String()), gocassa.Eq("contact_id", contact.ContactId.String())).
+		Update(fields).
+		Run()
+	return err
 }
 
 func (cb *CassandraBackend) DeleteContact(contact *Contact) error {
