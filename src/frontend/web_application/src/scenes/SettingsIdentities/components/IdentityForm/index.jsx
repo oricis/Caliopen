@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import RemoteIdentityEmail from '../RemoteIdentityEmail';
 import TextList from '../../../../components/TextList';
@@ -85,7 +84,6 @@ class IdentityForm extends Component {
 
   renderEmail(email) {
     const {
-      __,
       allowConnectRemoteEntity,
       onConnectRemoteIdentity,
       onDisconnectRemoteIdentity,
@@ -101,7 +99,6 @@ class IdentityForm extends Component {
         contactSubObjectId={email.email_id}
         onConnect={onConnectRemoteIdentity}
         onDisconnect={onDisconnectRemoteIdentity}
-        __={__}
       />
     );
   }

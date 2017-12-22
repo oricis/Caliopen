@@ -19,7 +19,7 @@ const VerifyDevice = ({ device, onVerifyDevice, onDeleteDevice }) => {
         onClick={handleVerify}
       ><Trans id="device.action.verify">Verify this device</Trans></Button>
       <br />
-      <Trans id="device.verify.not-you">It's not you?</Trans>
+      <Trans id="device.verify.not-you">It&apos;s not you?</Trans>
       {' '}
       <Button onClick={handleDelete}><Trans id="device.action.delete">Delete</Trans></Button>
     </div>

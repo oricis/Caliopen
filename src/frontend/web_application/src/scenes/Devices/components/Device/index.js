@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { withI18n } from 'lingui-react';
 import Presenter from './presenter';
 
 const devicesSelector = state => state.device.devicesById;
@@ -13,6 +12,5 @@ const mapStateToProps = createSelector(
 );
 
 export default compose(
-  connect(mapStateToProps),
-  withI18n()
+  connect(mapStateToProps)
 )(Presenter);

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import Section from '../../components/Section';
 import PageTitle from '../../components/PageTitle';
@@ -18,7 +17,7 @@ const navLinks = [
   { title: 'myothermyself@caliopen.local', to: '/settings/signatures' },
 ];
 
-const SettingsSignatures = ({ __ }) => (
+const SettingsSignatures = ({ i18n }) => (
   <div className="s-settings-signatures">
     <PageTitle />
     {navLinks &&

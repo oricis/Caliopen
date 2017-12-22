@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Trans } from 'lingui-react';
 // import PropTypes from 'prop-types';
 
 
