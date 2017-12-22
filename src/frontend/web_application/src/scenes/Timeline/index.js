@@ -27,7 +27,7 @@ const mapStateToProps = createSelector(
 );
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestMessages: filterTimeline,
-  loadMore: loadMore.bind(null, 'timeline', '0'),
+  loadMore: loadMore.bind(null, 'timeline'),
 }, dispatch);
 
 export default compose(

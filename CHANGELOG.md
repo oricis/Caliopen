@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- unable to load more messages on Timeline
+
 ## [0.7.0] 20121221
 
 ### Added

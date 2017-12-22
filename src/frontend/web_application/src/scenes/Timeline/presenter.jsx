@@ -41,7 +41,7 @@ class Timeline extends Component {
     requestMessages(timelineFilter);
 
     this.throttledLoadMore = throttle(
-      () => loadMore(),
+      () => loadMore(timelineFilter),
       LOAD_MORE_THROTTLE,
       { trailing: false }
     );
