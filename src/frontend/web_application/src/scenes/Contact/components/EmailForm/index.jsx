@@ -40,9 +40,9 @@ class EmailForm extends PureComponent {
   initTranslations() {
     const { i18n } = this.props;
     this.addressTypes = {
-      work: i18n.t`contact.email_type.work`,
-      home: i18n.t`contact.email_type.home`,
-      other: i18n.t`contact.email_type.other`,
+      work: i18n._('contact.email_type.work'),
+      home: i18n._('contact.email_type.home'),
+      other: i18n._('contact.email_type.other'),
     };
   }
 
@@ -68,7 +68,7 @@ class EmailForm extends PureComponent {
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={i18n.t`contact.email_form.type.label`}
+                label={i18n._('contact.email_form.type.label')}
                 showLabelforSr
                 options={addressTypeOptions}
               />
@@ -78,7 +78,7 @@ class EmailForm extends PureComponent {
                 component={TextFieldGroup}
                 name="address"
                 type="email"
-                label={i18n.t`contact.email_form.address.label`}
+                label={i18n._('contact.email_form.address.label')}
                 showLabelforSr
                 required
               />

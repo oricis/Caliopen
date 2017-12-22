@@ -77,7 +77,7 @@ class SignatureForm extends Component {
                 name="signature"
                 defaultValue={this.state.settings.signature}
                 onChange={this.handleTextareaChange}
-                label={i18n.t`settings.signature.label`}
+                label={i18n._('settings.signature.label')}
                 showTextLabel
               />
             </FormColumn>

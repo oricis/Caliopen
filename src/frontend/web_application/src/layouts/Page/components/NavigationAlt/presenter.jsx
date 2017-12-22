@@ -15,7 +15,6 @@ class NavigationAlt extends PureComponent {
     applications: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     currentApplication: PropTypes.shape({}).isRequired,
     onClickApp: PropTypes.func.isRequired,
-    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
   };
@@ -23,7 +22,7 @@ class NavigationAlt extends PureComponent {
   createHandleClickApp = app => () => this.props.onClickApp(app);
 
   render() {
-    const { currentApplication, applications, i18n } = this.props;
+    const { currentApplication, applications } = this.props;
 
     return (
       <div className="l-nav-alt">
@@ -40,7 +39,9 @@ class NavigationAlt extends PureComponent {
                   active={currentApplication === application}
                   data-toggle="left_off_canvas"
                 >
-                  <Icon type={application.icon} /> {i18n.t`header.menu.${application.name}`}
+                  <Icon type={application.icon} />
+                  {' '}
+                  <Trans>{application.label}</Trans>
                 </Link>
               </VerticalMenuItem>
             ))

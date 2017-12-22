@@ -8,7 +8,7 @@
     ]
   },
   "input-file-group.error.no_valid_ext": {
-    "defaults": "Only files %(fileTypes)s",
+    "defaults": "Only files {0}",
     "origin": [
       [
         "src/components/form/InputFileGroup/index.jsx",

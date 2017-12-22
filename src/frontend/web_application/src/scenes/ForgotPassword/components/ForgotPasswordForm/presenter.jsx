@@ -48,7 +48,7 @@ class ForgotPasswordForm extends Component {
     const { i18n, errors, success } = this.props;
 
     return (
-      <Section title={i18n.t`password.forgot-form.title`} className="m-forgot-password-form">
+      <Section title={i18n._('password.forgot-form.title')} className="m-forgot-password-form">
         <FormGrid className="m-forgot-password-form">
           <form method="post" onSubmit={this.handleSubmit}>
             <Fieldset>
@@ -85,8 +85,8 @@ class ForgotPasswordForm extends Component {
                   </FormColumn>
                   <FormColumn rightSpace={false} bottomSpace>
                     <TextFieldGroup
-                      label={i18n.t`password.forgot-form.username.label`}
-                      placeholder={i18n.t`password.forgot-form.username.placeholder`}
+                      label={i18n._('password.forgot-form.username.label')}
+                      placeholder={i18n._('password.forgot-form.username.placeholder')}
                       name="username"
                       value={this.state.formValues.username}
                       errors={errors.username}
@@ -96,8 +96,8 @@ class ForgotPasswordForm extends Component {
                   </FormColumn>
                   <FormColumn rightSpace={false} bottomSpace>
                     <TextFieldGroup
-                      label={i18n.t`password.forgot-form.recovery_email.label`}
-                      placeholder={i18n.t`password.forgot-form.recovery_email.placeholder`}
+                      label={i18n._('password.forgot-form.recovery_email.label')}
+                      placeholder={i18n._('password.forgot-form.recovery_email.placeholder')}
                       name="recovery_email"
                       value={this.state.formValues.recovery_email}
                       errors={errors.recovery_email}

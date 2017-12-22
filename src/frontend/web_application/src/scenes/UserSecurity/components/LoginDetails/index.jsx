@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { withI18n, Trans } from 'lingui-react';
 // import Button from '../../../../components/Button';
 import TextBlock from '../../../../components/TextBlock';
 import { TextFieldGroup } from '../../../../components/form';
 import './style.scss';
 
+@withI18n()
 class LoginDetails extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
@@ -29,7 +30,7 @@ class LoginDetails extends Component {
         <TextFieldGroup
           className="m-login-details__input"
           value={user && user.name}
-          label={i18n.t`login.details.label`}
+          label={i18n._('login.details.label')}
           showLabelforSr
           disabled
         />

@@ -32,7 +32,7 @@ const SettingsSignatures = ({ __ }) => (
       </NavList>
     }
     <div className="s-settings-signatures__panel">
-      <Section title={i18n.t`settings.signatures.title`}>
+      <Section title={i18n._('settings.signatures.title')}>
         <SignatureForm settings={fakeSignaturesSettings} onSubmit={str => str} />
       </Section>
     </div>

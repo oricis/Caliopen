@@ -18,9 +18,9 @@ class EmailDetails extends Component {
   initTranslations() {
     const { i18n } = this.props;
     this.emailTypesTranslations = {
-      work: i18n.t`contact.email_type.work`,
-      home: i18n.t`contact.email_type.home`,
-      other: i18n.t`contact.email_type.other`,
+      work: i18n._('contact.email_type.work'),
+      home: i18n._('contact.email_type.home'),
+      other: i18n._('contact.email_type.other'),
     };
   }
 
@@ -29,7 +29,7 @@ class EmailDetails extends Component {
 
     const address = !email.is_primary ?
       email.address :
-      (<strong title={i18n.t`contact.primary`}>{email.address}</strong>);
+      (<strong title={i18n._('contact.primary')}>{email.address}</strong>);
 
     return (
       <span className="m-email-details">

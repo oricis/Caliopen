@@ -100,13 +100,13 @@ class NewDraftForm extends Component {
   renderDraftType() {
     const { i18n } = this.props;
     const typeTranslations = {
-      email: i18n.t`reply-form.protocol.email`,
+      email: i18n._('reply-form.protocol.email'),
     };
 
     return (
       <div className="m-new-draft__type">
         <span className="m-new-draft__type-label">
-          <Trans id="reply-form.by">by {typeTranslations[this.state.draft.type]}</Trans>
+          <Trans id="reply-form.by" values={{ 0: typeTranslations[this.state.draft.type] }}>by {0}</Trans>
         </span>
         {' '}
         <Icon className="m-new-draft__type-icon" type={this.state.draft.type} spaced />
@@ -159,7 +159,7 @@ class NewDraftForm extends Component {
               <TextFieldGroup
                 className="m-new-draft__subject"
                 display="inline"
-                label={i18n.t`messages.compose.form.subject.label`}
+                label={i18n._('messages.compose.form.subject.label')}
                 name="subject"
                 value={this.state.draft.subject}
                 onChange={this.handleChange}

@@ -37,11 +37,11 @@ class ApplicationSettings extends PureComponent {
         {errors.global && errors.global.length !== 0 && (
           <FieldErrors errors={errors.global} />
         )}
-        <Section title={i18n.t`settings.interface.title`}><InterfaceSettings /></Section>
-        <Section title={i18n.t`settings.message.title`}><MessageSettings /></Section>
-        <Section title={i18n.t`settings.contact.title`}><ContactSettings /></Section>
-        <Section title={i18n.t`settings.notification.title`}><NotificationSettings /></Section>
-        <Section title={i18n.t`settings.desktop_notification.title`}><DesktopNotificationSettings /></Section>
+        <Section title={i18n._('settings.interface.title')}><InterfaceSettings /></Section>
+        <Section title={i18n._('settings.message.title')}><MessageSettings /></Section>
+        <Section title={i18n._('settings.contact.title')}><ContactSettings /></Section>
+        <Section title={i18n._('settings.notification.title')}><NotificationSettings /></Section>
+        <Section title={i18n._('settings.desktop_notification.title')}><DesktopNotificationSettings /></Section>
         <Section>
           <Button type="submit" shape="plain">
             <Trans id="settings.presentation.update.action">Save settings</Trans>

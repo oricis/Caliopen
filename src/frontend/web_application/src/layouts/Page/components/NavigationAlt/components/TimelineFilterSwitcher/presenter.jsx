@@ -27,7 +27,7 @@ class TimelineFilterContainer extends Component {
       <SelectFieldGroup
         className={classnames('m-timeline-filter-switcher', className)}
         showLabelforSr
-        label={i18n.t`timeline-filter.label`}
+        label={i18n._('timeline-filter.label')}
         options={selectOptions}
         onChange={handleChange}
         value={currentFilter}

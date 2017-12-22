@@ -1,5 +1,5 @@
 {
-  "header.menu.{0}": {
+  "header.menu.${application.name}": {
     "origin": [
       [
         "src/layouts/Page/components/NavigationAlt/presenter.jsx",

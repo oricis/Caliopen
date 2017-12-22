@@ -15,7 +15,7 @@ const DiscussionDraft = ({ body, onChange, i18n }) => {
         name="body"
         className="m-discussion-textarea__body"
         onChange={onChange}
-        placeholder={i18n.t`messages.compose.form.body.placeholder`}
+        placeholder={i18n._('messages.compose.form.body.placeholder')}
         value={body}
       />
     </div>

@@ -86,13 +86,13 @@ class ReplyForm extends Component {
   renderDraftType() {
     const { i18n } = this.props;
     const typeTranslations = {
-      email: i18n.t`reply-form.protocol.email`,
+      email: i18n._('reply-form.protocol.email'),
     };
 
     return (
       <div className="m-reply__type">
         <span className="m-reply__type-label">
-          <Trans id="reply-form.by">by {typeTranslations[this.state.draft.type]}</Trans>
+          <Trans id="reply-form.by" values={{ 0: typeTranslations[this.state.draft.type] }}>by {0}</Trans>
         </span>
         {' '}
         <Icon className="m-reply__type-icon" type={this.state.draft.type} spaced />
@@ -135,7 +135,7 @@ class ReplyForm extends Component {
           {parentMessage && (
             <div className="m-reply__parent">
               <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
-                <Trans id="reply-form.in-reply-to">In reply to: {parentMessage.excerpt}</Trans>
+                <Trans id="reply-form.in-reply-to" values={{ 0: parentMessage.excerpt }}>In reply to: {0}</Trans>
               </Link>
             </div>
           )}

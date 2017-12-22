@@ -24,7 +24,7 @@ class TimelineFilterContainer extends Component {
         <div className="m-timeline-filter-container">
           <DropdownControlButton
             toggleId="timeline-filter_navigation_dropdown"
-            title={i18n.t`navigation.actions.toggle-timeline-filter`}
+            title={i18n._('navigation.actions.toggle-timeline-filter')}
             className="m-timeline-filter-container__dropdown-control"
             icon="filter"
           >

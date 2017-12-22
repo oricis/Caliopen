@@ -27,8 +27,8 @@ class File extends PureComponent {
         />
         <span className="m-input-file-group__file__name">{file.name}</span>
         <span className="m-input-file-group__file__size">
-          <Trans id="input-file-group.file.size">
-            {formatNumber(Math.round(file.size / 100) / 10)} kB
+          <Trans id="input-file-group.file.size" values={{ 0: formatNumber(Math.round(file.size / 100) / 10) }}>
+            {0} kB
           </Trans>
         </span>
       </div>

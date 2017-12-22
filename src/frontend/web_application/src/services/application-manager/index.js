@@ -1,3 +1,4 @@
+import { i18nMark } from 'lingui-react';
 import { requestMessages } from '../../store/modules/message';
 import { requestContacts } from '../../store/modules/contact';
 
@@ -5,20 +6,20 @@ const APPLICATIONS = {
   discussions: {
     route: '/',
     icon: 'comments',
-    label: 'header.menu.discussions',
+    label: i18nMark('header.menu.discussions'),
     refreshAction: dispatch => dispatch(requestMessages('timeline', '0')),
   },
   contacts: {
     route: '/contacts',
     icon: 'users',
-    label: 'header.menu.contacts',
+    label: i18nMark('header.menu.contacts'),
     refreshAction: dispatch => dispatch(requestContacts()),
   },
 };
 
 export const getLabels = i18n => ({
-  discussions: i18n.t`header.menu.discussions`,
-  contacts: i18n.t`header.menu.contacts`,
+  discussions: i18n._('header.menu.discussions'),
+  contacts: i18n._('header.menu.contacts'),
 });
 
 export const getInfosFromName = name => ({

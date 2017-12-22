@@ -6,10 +6,10 @@ import DefList from '../../../../components/DefList';
 const DeviceInformation = ({ device, locale, i18n }) => (
   <DefList
     definitions={[
-      { title: i18n.t`device.info.date_insert`, descriptions: [<Moment format="LLL" locale={locale}>{device.date_insert}</Moment>] },
-      { title: i18n.t`device.info.last_seen`, descriptions: [<Moment format="LLL" locale={locale}>{device.last_seen}</Moment>] },
-      { title: i18n.t`device.info.os`, descriptions: [device.os] },
-      { title: i18n.t`device.info.os-version`, descriptions: [device.os_version] },
+      { title: i18n._('device.info.date_insert'), descriptions: [<Moment format="LLL" locale={locale}>{device.date_insert}</Moment>] },
+      { title: i18n._('device.info.last_seen'), descriptions: [<Moment format="LLL" locale={locale}>{device.last_seen}</Moment>] },
+      { title: i18n._('device.info.os'), descriptions: [device.os] },
+      { title: i18n._('device.info.os-version'), descriptions: [device.os_version] },
     ]}
   />
 );

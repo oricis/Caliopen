@@ -132,7 +132,7 @@ class Message extends Component {
     } = this.props;
     const author = getAuthor(message);
     const typeTranslations = {
-      email: i18n.t`message-list.message.protocol.email`,
+      email: i18n._('message-list.message.protocol.email'),
     };
 
     const topBarClassName = classnames(
@@ -161,7 +161,7 @@ class Message extends Component {
             {message.type &&
               (<div className="m-message__type">
                 <span className="m-message__type-label">
-                  <Trans id="message-list.message.by">by {typeTranslations[message.type]}</Trans>
+                  <Trans id="message-list.message.by" values={{ 0: typeTranslations[message.type] }}>by {0}</Trans>
                 </span>
                 {' '}
                 <Icon type={message.type} className="m-message__type-icon" spaced />

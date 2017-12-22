@@ -43,15 +43,15 @@ class IdentityForm extends Component {
     const { i18n } = this.props;
     this.detailsTranslations = {
       address_type: {
-        work: i18n.t`contact.address_type.work`,
-        home: i18n.t`contact.address_type.home`,
-        other: i18n.t`contact.address_type.other`,
+        work: i18n._('contact.address_type.work'),
+        home: i18n._('contact.address_type.home'),
+        other: i18n._('contact.address_type.other'),
       },
       im_type: {
-        work: i18n.t`contact.im_type.work`,
-        home: i18n.t`contact.im_type.home`,
-        other: i18n.t`contact.im_type.other`,
-        netmeeting: i18n.t`contact.im_type.netmeeting`,
+        work: i18n._('contact.im_type.work'),
+        home: i18n._('contact.im_type.home'),
+        other: i18n._('contact.im_type.other'),
+        netmeeting: i18n._('contact.im_type.netmeeting'),
       },
     };
   }

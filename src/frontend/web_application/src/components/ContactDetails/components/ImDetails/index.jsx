@@ -18,9 +18,9 @@ class ImDetails extends Component {
   initTranslations() {
     const { i18n } = this.props;
     this.imTypesTranslations = {
-      work: i18n.t`contact.im_type.work`,
-      home: i18n.t`contact.im_type.home`,
-      other: i18n.t`contact.im_type.other`,
+      work: i18n._('contact.im_type.work'),
+      home: i18n._('contact.im_type.home'),
+      other: i18n._('contact.im_type.other'),
     };
   }
 

@@ -35,7 +35,7 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.intro.title">Welcome!</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.intro.content` }} />
+            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.intro.content') }} />
           </div>
         ),
         position: 'center',
@@ -45,7 +45,7 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.search.title">Intuitive search</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.search.content` }} />
+            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.search.content') }} />
           </div>
         ),
       },
@@ -54,7 +54,7 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.user-menu.title">Account menu</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.user-menu.content` }} />
+            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.user-menu.content') }} />
           </div>
         ),
         position: 'bottom',
@@ -64,7 +64,7 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.call-to-action.title">Create quickly</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.call-to-action.content` }} />
+            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.call-to-action.content') }} />
           </div>
         ),
       },
@@ -73,7 +73,7 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.importance-slider.title">Importance level</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n.t`take-a-tour.step.importance-slider.content` }} />
+            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.importance-slider.content') }} />
           </div>
         ),
       },
@@ -87,13 +87,13 @@ class TakeATour extends Component {
           step={this.state.tourStep}
           onRequestClose={this.handleclose}
           steps={steps}
-          badgeContent={(current, total) => (<Trans id="take-a-tour.current-step">Take a tour ({current} of {total})</Trans>)}
+          badgeContent={(current, total) => (<Trans id="take-a-tour.current-step" values={{ current, total }}>Take a tour ({current} of {total})</Trans>)}
           showNavigation={false}
-          skipButton={i18n.t`take-a-tour.action.skip`}
-          prevButton={i18n.t`take-a-tour.action.prev`}
-          nextButton={i18n.t`take-a-tour.action.next`}
-          lastStepNextButton={i18n.t`take-a-tour.action.last-step`}
-          closeButton={i18n.t`take-a-tour.action.close`}
+          skipButton={i18n._('take-a-tour.action.skip')}
+          prevButton={i18n._('take-a-tour.action.prev')}
+          nextButton={i18n._('take-a-tour.action.next')}
+          lastStepNextButton={i18n._('take-a-tour.action.last-step')}
+          closeButton={i18n._('take-a-tour.action.close')}
         />
       </Button>
     );

@@ -66,7 +66,7 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag, i18n }) => {
   return (
     <NavList className="m-tag-list" dir="vertical">
       <TagItem
-        title={i18n.t`tag_list.all_contacts`}
+        title={i18n._('tag_list.all_contacts')}
         link=""
         nbContacts={nbContactsAll}
         onTagClick={onTagClick}

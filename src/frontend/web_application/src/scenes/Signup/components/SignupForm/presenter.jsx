@@ -132,8 +132,8 @@ class SignupForm extends Component {
       <Modal
         className="s-signup__modal"
         isOpen={this.state.isModalOpen}
-        contentLabel={i18n.t`signup.privacy.modal.label`}
-        title={i18n.t`signup.privacy.modal.label`}
+        contentLabel={i18n._('signup.privacy.modal.label')}
+        title={i18n._('signup.privacy.modal.label')}
         onClose={this.handleCloseModal}
       >
         <p><Trans id="signup.privacy.modal.title">
@@ -169,12 +169,12 @@ class SignupForm extends Component {
     const { form, errors = {}, i18n } = this.props;
 
     return (
-      <Section className="s-signup" title={i18n.t`signup.title`}>
+      <Section className="s-signup" title={i18n._('signup.title')}>
         <FormGrid className="s-signup__form">
           <form method="post" name="ac_form" {...form}>
             <FormRow>
               <FormColumn rightSpace={false} bottomSpace>
-                <div className="s-signup__alpha" dangerouslySetInnerHTML={{ __html: i18n.t`signup.limited_registration` }} />
+                <div className="s-signup__alpha" dangerouslySetInnerHTML={{ __html: i18n._('signup.limited_registration') }} />
               </FormColumn>
             </FormRow>
             {errors.global && errors.global.length !== 0 && (
@@ -189,8 +189,8 @@ class SignupForm extends Component {
                 <TextFieldGroup
                   id="signup_username"
                   name="username"
-                  label={i18n.t`signup.form.username.label`}
-                  placeholder={i18n.t`signup.form.username.placeholder`}
+                  label={i18n._('signup.form.username.label')}
+                  placeholder={i18n._('signup.form.username.placeholder')}
                   value={this.state.formValues.username}
                   errors={errors.username}
                   onChange={this.handleUsernameChange}
@@ -207,8 +207,8 @@ class SignupForm extends Component {
                 <TextFieldGroup
                   id="signup_password"
                   name="password"
-                  label={i18n.t`signup.form.password.label`}
-                  placeholder={i18n.t`signup.form.password.placeholder`}
+                  label={i18n._('signup.form.password.label')}
+                  placeholder={i18n._('signup.form.password.placeholder')}
                   showLabelforSr
                   type="password"
                   value={this.state.formValues.password}
@@ -228,10 +228,10 @@ class SignupForm extends Component {
                   id="signup_recovery_email"
                   name="recovery_email"
                   // Alpha: label "recovery email" replaced by "invitation email"
-                  // label={i18n.t`signup.form.recovery_email.label`}
-                  // placeholder={i18n.t`signup.form.recovery_email.placeholder`}
-                  label={i18n.t`signup.form.invitation_email.label`}
-                  placeholder={i18n.t`signup.form.invitation_email.placeholder`}
+                  // label={i18n._('signup.form.recovery_email.label')}
+                  // placeholder={i18n._('signup.form.recovery_email.placeholder')}
+                  label={i18n._('signup.form.invitation_email.label')}
+                  placeholder={i18n._('signup.form.invitation_email.placeholder')}
                   value={this.state.formValues.recovery_email}
                   errors={errors.recovery_email}
                   onChange={this.handleInputChange}
@@ -246,7 +246,7 @@ class SignupForm extends Component {
                   <CheckboxFieldGroup
                     id="signup_tos"
                     className="s-signup__tos-checkbox"
-                    label={i18n.t`signup.form.tos.label`}
+                    label={i18n._('signup.form.tos.label')}
                     name="tos"
                     checked={this.state.formValues.tos}
                     errors={errors.tos}
@@ -270,7 +270,7 @@ class SignupForm extends Component {
                 <CheckboxFieldGroup
                   id="signup_privacy"
                   className="s-signup__privacy-checkbox"
-                  label={i18n.t`signup.form.privacy.checkbox.label`}
+                  label={i18n._('signup.form.privacy.checkbox.label')}
                   name="privacy"
                   checked={this.state.formValues.privacy}
                   errors={errors.privacy}

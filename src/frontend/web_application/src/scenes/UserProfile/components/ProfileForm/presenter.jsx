@@ -83,7 +83,7 @@ class ProfileForm extends Component {
                 name="avatar"
                 value={this.state.user.avatar}
                 onChange={this.handleInputChange}
-                label={i18n.t`user.profile.form.avatar.label`}
+                label={i18n._('user.profile.form.avatar.label')}
               />
             </FormColumn>
             <FormColumn size="shrink" bottomSpace >
@@ -91,7 +91,7 @@ class ProfileForm extends Component {
                 name="username"
                 value={this.state.user.username}
                 onChange={this.handleInputChange}
-                label={i18n.t`user.profile.form.username.label`}
+                label={i18n._('user.profile.form.username.label')}
               />
             </FormColumn>
           </FormRow>
@@ -101,7 +101,7 @@ class ProfileForm extends Component {
                 name="given_name"
                 value={this.state.user.given_name}
                 onChange={this.handleInputChange}
-                label={i18n.t`user.profile.form.given_name.label`}
+                label={i18n._('user.profile.form.given_name.label')}
               />
             </FormColumn>
             <FormColumn size="shrink" bottomSpace >
@@ -109,7 +109,7 @@ class ProfileForm extends Component {
                 name="family_name"
                 value={this.state.user.family_name}
                 onChange={this.handleInputChange}
-                label={i18n.t`user.profile.form.family_name.label`}
+                label={i18n._('user.profile.form.family_name.label')}
               />
             </FormColumn>
           </FormRow>
@@ -122,7 +122,7 @@ class ProfileForm extends Component {
                 name="email"
                 value=""
                 onChange={this.handleInputChange}
-                label={i18n.t`user.profile.form.email.label`}
+                label={i18n._('user.profile.form.email.label')}
               />
             </FormColumn>
             <FormColumn size="shrink" bottomSpace >
@@ -130,7 +130,7 @@ class ProfileForm extends Component {
                 name="recovery_email"
                 value={this.state.user.recovery_email}
                 onChange={this.handleInputChange}
-                label={i18n.t`user.profile.form.recovery_email.label`}
+                label={i18n._('user.profile.form.recovery_email.label')}
               />
             </FormColumn>
           </FormRow>

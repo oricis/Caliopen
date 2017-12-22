@@ -29,7 +29,7 @@
     ]
   },
   "tags.header.count": {
-    "defaults": "(Total: %(count)s)",
+    "defaults": "(Total: {count})",
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",

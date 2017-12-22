@@ -19,9 +19,9 @@ class AddressDetails extends Component {
   initTranslations() {
     const { i18n } = this.props;
     this.addressTypesTranslations = {
-      work: i18n.t`contact.address_type.work`,
-      home: i18n.t`contact.address_type.home`,
-      other: i18n.t`contact.address_type.other`,
+      work: i18n._('contact.address_type.work'),
+      home: i18n._('contact.address_type.home'),
+      other: i18n._('contact.address_type.other'),
     };
   }
 

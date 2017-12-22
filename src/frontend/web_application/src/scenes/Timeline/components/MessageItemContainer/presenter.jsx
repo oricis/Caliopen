@@ -109,16 +109,16 @@ class MessageItemContainer extends Component {
 
   renderTagsModal = () => {
     const { message, i18n } = this.props;
-    const count = message.tags ? message.tags.length : 0;
+    const nb = message.tags ? message.tags.length : 0;
     const title = [
-      i18n.t`tags.header.title`,
-      (<span key="1" className="m-tags-form__count"><Trans id="tags.header.count">(Total: {count})</Trans></span>),
+      i18n._('tags.header.title'),
+      (<span key="1" className="m-tags-form__count"><Trans id="tags.header.count" values={{ 0: nb }}>(Total: {0})</Trans></span>),
     ];
 
     return (
       <Modal
         isOpen={this.state.isTagModalOpen}
-        contentLabel={i18n.t`tags.header.title`}
+        contentLabel={i18n._('tags.header.title')}
         title={title}
         onClose={this.handleCloseTags}
       >

@@ -160,7 +160,7 @@ class Contact extends Component {
       const format = settings.contact_display_format;
       const tab = {
         ...currentTab,
-        label: formatName({ contact, format }) || i18n.t`contact.profile.name_not_set`,
+        label: formatName({ contact, format }) || i18n._('contact.profile.name_not_set'),
       };
       updateTab({ tab, original: currentTab });
 
@@ -183,25 +183,25 @@ class Contact extends Component {
     handleSubmit(ev)
       .then(contact => this.createOrUpdateAction({ contact, original }))
       .then(() => contactId && this.toggleEditMode(), () => {
-        notifyError({ message: i18n.t`contact.feedback.unable_to_save` });
+        notifyError({ message: i18n._('contact.feedback.unable_to_save') });
       })
       .then(() => this.setState({ isSaving: false }));
   }
 
   renderTagsModal = () => {
     const { contact, updateContact, i18n } = this.props;
-    const count = contact.tags ? contact.tags.length : 0;
+    const nb = contact.tags ? contact.tags.length : 0;
     const title = (
       <span><Trans id="tags.header.title">Tags</Trans>
         <span className="m-tags-form__count">
-          <Trans id="tags.header.count">(Total: {count})</Trans>
+          <Trans id="tags.header.count" values={{ 0: nb }}>(Total: {0})</Trans>
         </span>
       </span>);
 
     return (
       <Modal
         isOpen={this.state.isTagsModalOpen}
-        contentLabel={i18n.t`tags.header.title`}
+        contentLabel={i18n._('tags.header.title')}
         title={title}
         onClose={this.closeTagsModal}
       >

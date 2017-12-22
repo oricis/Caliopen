@@ -168,7 +168,6 @@
   },
   "lingui": {
     "fallbackLocale": "en",
-    "sourceLocale": "en",
     "format": "minimal",
     "srcPathDirs": [
       "<rootDir>/src"

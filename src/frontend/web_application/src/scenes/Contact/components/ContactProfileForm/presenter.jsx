@@ -77,32 +77,32 @@ class ContactProfileForm extends Component {
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n.t`contact_profile.form.name-prefix.label`}
-              placeholder={i18n.t`contact_profile.form.name-prefix.label`}
+              label={i18n._('contact_profile.form.name-prefix.label')}
+              placeholder={i18n._('contact_profile.form.name-prefix.label')}
               name="name_prefix"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n.t`contact_profile.form.firstname.label`}
-              placeholder={i18n.t`contact_profile.form.firstname.label`}
+              label={i18n._('contact_profile.form.firstname.label')}
+              placeholder={i18n._('contact_profile.form.firstname.label')}
               name="given_name"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n.t`contact_profile.form.lastname.label`}
-              placeholder={i18n.t`contact_profile.form.lastname.label`}
+              label={i18n._('contact_profile.form.lastname.label')}
+              placeholder={i18n._('contact_profile.form.lastname.label')}
               name="family_name"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n.t`contact_profile.form.name-suffix.label`}
-              placeholder={i18n.t`contact_profile.form.name-suffix.label`}
+              label={i18n._('contact_profile.form.name-suffix.label')}
+              placeholder={i18n._('contact_profile.form.name-suffix.label')}
               name="name_suffix"
               showLabelforSr
             />

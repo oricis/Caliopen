@@ -12,18 +12,18 @@ const ERR_INVALID_RECOVERY_EMAIL = 'ERR_INVALID_RECOVERY_EMAIL';
 const ERR_REQUIRED_RECOVERY_EMAIL = 'ERR_REQUIRED_RECOVERY_EMAIL';
 
 export const getLocalizedErrors = i18n => ({
-  [ERR_DOTS]: i18n.t`signup.feedback.username_starting_ending_dot`,
-  [ERR_MIN_MAX]: i18n.t`signup.feedback.username_length`,
-  [ERR_DOUBLE_DOTS]: i18n.t`signup.feedback.username_double_dots`,
-  [ERR_REQUIRED_PRIVACY]: i18n.t`signup.feedback.required_privacy`,
-  [ERR_REQUIRED_TOS]: i18n.t`signup.feedback.required_tos`,
-  [ERR_INVALID_GLOBAL]: i18n.t`signup.feedback.invalid`,
-  [ERR_REQUIRED_USERNAME]: i18n.t`signup.feedback.required_username`,
-  [ERR_INVALID_CHARACTER]: i18n.t(['signup.feedback.username_invalid_characters'], ['"@`:;<>[]\\']),
-  [ERR_REQUIRED_PASSWORD]: i18n.t`signup.feedback.required_password`,
-  [ERR_UNAVAILABLE_USERNAME]: i18n.t`signup.feedback.unavailable_username`,
-  [ERR_INVALID_RECOVERY_EMAIL]: i18n.t`signup.feedback.invalid_recovery_email`,
-  [ERR_REQUIRED_RECOVERY_EMAIL]: i18n.t`signup.feedback.required_recovery_email`,
+  [ERR_DOTS]: i18n._('signup.feedback.username_starting_ending_dot'),
+  [ERR_MIN_MAX]: i18n._('signup.feedback.username_length'),
+  [ERR_DOUBLE_DOTS]: i18n._('signup.feedback.username_double_dots'),
+  [ERR_REQUIRED_PRIVACY]: i18n._('signup.feedback.required_privacy'),
+  [ERR_REQUIRED_TOS]: i18n._('signup.feedback.required_tos'),
+  [ERR_INVALID_GLOBAL]: i18n._('signup.feedback.invalid'),
+  [ERR_REQUIRED_USERNAME]: i18n._('signup.feedback.required_username'),
+  [ERR_INVALID_CHARACTER]: i18n._('signup.feedback.username_invalid_characters', { 0: { chars: '"@`:;<>[]\\' } }),
+  [ERR_REQUIRED_PASSWORD]: i18n._('signup.feedback.required_password'),
+  [ERR_UNAVAILABLE_USERNAME]: i18n._('signup.feedback.unavailable_username'),
+  [ERR_INVALID_RECOVERY_EMAIL]: i18n._('signup.feedback.invalid_recovery_email'),
+  [ERR_REQUIRED_RECOVERY_EMAIL]: i18n._('signup.feedback.required_recovery_email'),
 });
 
 const descriptor = {

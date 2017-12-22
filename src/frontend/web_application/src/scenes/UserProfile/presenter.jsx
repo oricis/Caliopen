@@ -53,7 +53,7 @@ class UserProfile extends Component {
         <div className="s-user-profile__info">
           <ProfileInfo user={user} />
         </div>
-        <Section className="s-user-profile__details" title={i18n.t`user.profile.form.title`}>
+        <Section className="s-user-profile__details" title={i18n._('user.profile.form.title')}>
           {
             // FIXME: should show ProfileDetails if editMode === false
           }

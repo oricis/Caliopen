@@ -38,7 +38,7 @@
     "origin": [
       [
         "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
-        85
+        88
       ]
     ]
   },
@@ -46,7 +46,7 @@
     "origin": [
       [
         "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
-        86
+        89
       ]
     ]
   },
@@ -54,7 +54,7 @@
     "origin": [
       [
         "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
-        96
+        99
       ]
     ]
   },
@@ -62,7 +62,7 @@
     "origin": [
       [
         "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
-        97
+        100
       ]
     ]
   },
@@ -71,7 +71,7 @@
     "origin": [
       [
         "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
-        110
+        113
       ]
     ]
   },
@@ -80,7 +80,7 @@
     "origin": [
       [
         "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
-        113
+        116
       ]
     ]
   }

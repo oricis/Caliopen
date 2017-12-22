@@ -16,19 +16,19 @@ const renderForm = (device, i18n) => (
     </Section>
 
     <Section
-      title={i18n.t`device.manage.title`}
-      descr={i18n.t`device.manage.descr`}
+      title={i18n._('device.manage.title')}
+      descr={i18n._('device.manage.descr')}
     >
       <DeviceForm device={device} />
     </Section>
 
-    <Section title={i18n.t`device.info.title`}>
+    <Section title={i18n._('device.info.title')}>
       <DeviceInformation device={device} />
     </Section>
 
     <Section
-      title={i18n.t`device.revoke.title`}
-      descr={i18n.t`device.revoke.descr`}
+      title={i18n._('device.revoke.title')}
+      descr={i18n._('device.revoke.descr')}
       hasSeparator={false}
     >
       <RevokeDevice device={device} />
@@ -38,8 +38,8 @@ const renderForm = (device, i18n) => (
 
 const renderVerifyDevice = (device, i18n) => (
   <Section
-    title={i18n.t`device.verify.title`}
-    descr={i18n.t`device.verify.descr`}
+    title={i18n._('device.verify.title')}
+    descr={i18n._('device.verify.descr')}
     hasSeparator={false}
   >
     <DeviceInformation device={device} />

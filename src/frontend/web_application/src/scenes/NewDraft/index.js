@@ -30,7 +30,7 @@ const onSaveDraft = ({ internalId, draft, message }, ownProps) => dispatch =>
     .then(() => {
       const { i18n, notifySuccess } = ownProps;
 
-      return notifySuccess({ message: i18n.t`draft.feedback.saved` });
+      return notifySuccess({ message: i18n._('draft.feedback.saved') });
     });
 
 const onDeleteMessage = ({ message, internalId }) => dispatch =>

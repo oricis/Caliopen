@@ -65,7 +65,7 @@ class PasswordForm extends Component {
 
     this.setState((prevState) => {
       const newPassword = prevState.formValues.newPassword;
-      const error = i18n.t`password.form.new_password_confirmation.error`;
+      const error = i18n._('password.form.new_password_confirmation.error');
       const passwordError = newPassword === value ? [] : [error];
 
       return {
@@ -107,8 +107,8 @@ class PasswordForm extends Component {
               name="password"
               type="password"
               onChange={this.handleInputChange}
-              label={i18n.t`password.form.current_password.label`}
-              placeholder={i18n.t`password.form.current_password.placeholder`}
+              label={i18n._('password.form.current_password.label')}
+              placeholder={i18n._('password.form.current_password.placeholder')}
               showLabelforSr
               required
             />
@@ -125,8 +125,8 @@ class PasswordForm extends Component {
               name="newPassword"
               type="password"
               onChange={this.handleNewPasswordChange}
-              label={i18n.t`password.form.new_password.label`}
-              placeholder={i18n.t`password.form.new_password.placeholder`}
+              label={i18n._('password.form.new_password.label')}
+              placeholder={i18n._('password.form.new_password.placeholder')}
               required
             />
           </FormColumn>
@@ -148,8 +148,8 @@ class PasswordForm extends Component {
               type="password"
               onChange={this.handleConfirmPasswordChange}
               errors={this.state.passwordError}
-              label={i18n.t`password.form.new_password_confirmation.label`}
-              placeholder={i18n.t`password.form.new_password_confirmation.placeholder`}
+              label={i18n._('password.form.new_password_confirmation.label')}
+              placeholder={i18n._('password.form.new_password_confirmation.placeholder')}
               required
             />
           </FormColumn>
@@ -161,8 +161,8 @@ class PasswordForm extends Component {
               name="tfa"
               component={TextFieldGroup}
               onChange={this.handleInputChange}
-              label={i18n.t`password.form.tfa.label`}
-              placeholder={i18n.t`password.form.tfa.placeholder`}
+              label={i18n._('password.form.tfa.label')}
+              placeholder={i18n._('password.form.tfa.placeholder')}
               disabled
             />
           </FormColumn>

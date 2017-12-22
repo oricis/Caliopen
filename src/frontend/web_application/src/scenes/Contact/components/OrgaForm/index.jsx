@@ -41,8 +41,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="label"
-                label={i18n.t`contact.orga_form.label.label`}
-                placeholder={i18n.t`contact.orga_form.label.label`}
+                label={i18n._('contact.orga_form.label.label')}
+                placeholder={i18n._('contact.orga_form.label.label')}
                 showLabelforSr
               />
             </FormColumn>
@@ -50,8 +50,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="name"
-                label={i18n.t`contact.orga_form.name.label`}
-                placeholder={i18n.t`contact.orga_form.name.label`}
+                label={i18n._('contact.orga_form.name.label')}
+                placeholder={i18n._('contact.orga_form.name.label')}
                 showLabelforSr
                 required
               />
@@ -60,8 +60,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="title"
-                label={i18n.t`contact.orga_form.title.label`}
-                placeholder={i18n.t`contact.orga_form.title.label`}
+                label={i18n._('contact.orga_form.title.label')}
+                placeholder={i18n._('contact.orga_form.title.label')}
                 showLabelforSr
               />
             </FormColumn>
@@ -69,8 +69,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="department"
-                label={i18n.t`contact.orga_form.department.label`}
-                placeholder={i18n.t`contact.orga_form.department.label`}
+                label={i18n._('contact.orga_form.department.label')}
+                placeholder={i18n._('contact.orga_form.department.label')}
                 showLabelforSr
               />
             </FormColumn>
@@ -78,8 +78,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="job_description"
-                label={i18n.t`contact.orga_form.job_description.label`}
-                placeholder={i18n.t`contact.orga_form.job_description.label`}
+                label={i18n._('contact.orga_form.job_description.label')}
+                placeholder={i18n._('contact.orga_form.job_description.label')}
                 showLabelforSr
               />
             </FormColumn>

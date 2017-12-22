@@ -14,15 +14,17 @@ class OrgaDetails extends Component {
     let organizationDescription = `${(organization.job_description || organization.name)} ${department}`;
 
     if (organization.job_description && organization.name) {
+      const { job_description: jobDesc, name: orgaName } = organization;
+
       organizationDescription = (
         <Trans
           id="orga-details.job.desc-full"
           values={{
-            jobDesc: organization.job_description,
-            orgaName: organization.name,
+            jobDesc,
+            orgaName,
             department,
           }}
-        >orga-details.job.desc-full</Trans>
+        >{jobDesc} at {orgaName} {department}</Trans>
       );
     }
 

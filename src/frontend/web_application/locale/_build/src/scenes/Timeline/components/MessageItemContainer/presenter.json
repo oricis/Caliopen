@@ -39,7 +39,7 @@
     ]
   },
   "tags.header.count": {
-    "defaults": "(Total: %(count)s)",
+    "defaults": "(Total: {count})",
     "origin": [
       [
         "src/scenes/Timeline/components/MessageItemContainer/presenter.jsx",

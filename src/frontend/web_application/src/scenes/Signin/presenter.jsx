@@ -31,9 +31,9 @@ class Signin extends Component {
   initTranslation() {
     const { i18n } = this.props;
     this.localizedErrors = {
-      ERR_REQUIRED_USERNAME: i18n.t`signin.feedback.required_username`,
-      ERR_REQUIRED_PASSWORD: i18n.t`signin.feedback.required_password`,
-      ERR_INVALID_GLOBAL: i18n.t`signin.feedback.invalid`,
+      ERR_REQUIRED_USERNAME: i18n._('signin.feedback.required_username'),
+      ERR_REQUIRED_PASSWORD: i18n._('signin.feedback.required_password'),
+      ERR_INVALID_GLOBAL: i18n._('signin.feedback.invalid'),
     };
   }
 

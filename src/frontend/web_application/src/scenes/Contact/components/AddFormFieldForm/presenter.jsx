@@ -46,23 +46,23 @@ class AddFormFieldForm extends Component {
 
     const typeOptions = [
       {
-        label: i18n.t`contact.form-selector.email_form.label`,
+        label: i18n._('contact.form-selector.email_form.label'),
         value: 'emails',
       },
       {
-        label: i18n.t`contact.form-selector.phone_form.label`,
+        label: i18n._('contact.form-selector.phone_form.label'),
         value: 'phones',
       },
       {
-        label: i18n.t`contact.form-selector.im_form.label`,
+        label: i18n._('contact.form-selector.im_form.label'),
         value: 'ims',
       },
       {
-        label: i18n.t`contact.form-selector.address_form.label`,
+        label: i18n._('contact.form-selector.address_form.label'),
         value: 'addresses',
       },
       // ...(hasBirthday ? [] : [{
-      //   label: i18n.t`contact.form-selector.birthday_form.label`,
+      //   label: i18n._('contact.form-selector.birthday_form.label'),
       //   value: 'info.birthday',
       // }]),
     ];
@@ -91,7 +91,7 @@ class AddFormFieldForm extends Component {
                   value={this.state.formType}
                   options={typeOptions}
                   showLabelforSr
-                  label={i18n.t`contact.form-selector.add_new_field.label`}
+                  label={i18n._('contact.form-selector.add_new_field.label')}
                 />
               </FormColumn>
               <FormColumn size="shrink" className="m-add-form-field-form__col-button">

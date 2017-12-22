@@ -66,8 +66,8 @@ class RemoteIdentityEmail extends Component {
   initTranslations() {
     const { i18n } = this.props;
     this.translations = {
-      from_now: i18n.t`remote_identity.fetch_method.from_now`,
-      fetch_all: i18n.t`remote_identity.fetch_method.fetch_all`,
+      from_now: i18n._('remote_identity.fetch_method.from_now'),
+      fetch_all: i18n._('remote_identity.fetch_method.fetch_all'),
     };
   }
 
@@ -189,7 +189,7 @@ class RemoteIdentityEmail extends Component {
     return (
       <div>
         <TextFieldGroup
-          label={i18n.t`remote_identity.form.login.label`}
+          label={i18n._('remote_identity.form.login.label')}
           value={this.state.remoteIdentity.params.login}
           errors={this.state.formErrors.login}
           onChange={this.handleParamsChange}
@@ -197,7 +197,7 @@ class RemoteIdentityEmail extends Component {
           required
         />
         <TextFieldGroup
-          label={i18n.t`remote_identity.form.password.label`}
+          label={i18n._('remote_identity.form.password.label')}
           type="password"
           value={this.state.remoteIdentity.params.password}
           errors={this.state.formErrors.password}
@@ -215,7 +215,7 @@ class RemoteIdentityEmail extends Component {
     return (
       <div>
         <SelectFieldGroup
-          label={i18n.t`remote_identity.form.protocol.label`}
+          label={i18n._('remote_identity.form.protocol.label')}
           value={this.state.remoteIdentity.params.mailProtocol}
           options={MAIL_PROTOCOLS.map(key => ({ value: key, label: key }))}
           errors={this.state.formErrors.mailProtocol}
@@ -224,7 +224,7 @@ class RemoteIdentityEmail extends Component {
           required
         />
         <TextFieldGroup
-          label={i18n.t`remote_identity.form.incomming_mail_server.label`}
+          label={i18n._('remote_identity.form.incomming_mail_server.label')}
           value={this.state.remoteIdentity.params.incommingMailServer}
           errors={this.state.formErrors.incommingMailServer}
           onChange={this.handleParamsChange}
@@ -232,7 +232,7 @@ class RemoteIdentityEmail extends Component {
           required
         />
         <TextFieldGroup
-          label={i18n.t`remote_identity.form.port.label`}
+          label={i18n._('remote_identity.form.port.label')}
           value={this.state.remoteIdentity.params.mailPort}
           errors={this.state.formErrors.mailPort}
           onChange={this.handleParamsChange}

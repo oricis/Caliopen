@@ -93,6 +93,15 @@
       ]
     ]
   },
+  "take-a-tour.current-step": {
+    "defaults": "Take a tour ({current} of {total})",
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        90
+      ]
+    ]
+  },
   "take-a-tour.action.skip": {
     "origin": [
       [

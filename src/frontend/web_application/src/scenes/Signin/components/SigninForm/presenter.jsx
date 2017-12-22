@@ -77,12 +77,12 @@ class SigninForm extends Component {
     const { errors = {}, form, i18n } = this.props;
 
     return (
-      <Section className="s-signin" title={i18n.t`signin.title`}>
+      <Section className="s-signin" title={i18n._('signin.title')}>
         <FormGrid className="s-signin__form">
           <form method="post" {...form}>
             <FormRow>
               <FormColumn rightSpace={false} bottomSpace>
-                <div className="s-signin__alpha" dangerouslySetInnerHTML={{ __html: i18n.t`signup.limited_registration` }} />
+                <div className="s-signin__alpha" dangerouslySetInnerHTML={{ __html: i18n._('signup.limited_registration') }} />
               </FormColumn>
             </FormRow>
             { errors.global && (
@@ -96,8 +96,8 @@ class SigninForm extends Component {
               <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_username"
-                  label={i18n.t`signin.form.username.label`}
-                  placeholder={i18n.t`signin.form.username.placeholder`}
+                  label={i18n._('signin.form.username.label')}
+                  placeholder={i18n._('signin.form.username.placeholder')}
                   name="username"
                   value={this.state.username}
                   errors={errors.username}
@@ -109,8 +109,8 @@ class SigninForm extends Component {
               <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_password"
-                  label={i18n.t`signin.form.password.label`}
-                  placeholder={i18n.t`signin.form.password.placeholder`}
+                  label={i18n._('signin.form.password.label')}
+                  placeholder={i18n._('signin.form.password.placeholder')}
                   name="password"
                   type="password"
                   value={this.state.password}

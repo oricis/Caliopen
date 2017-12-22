@@ -106,9 +106,9 @@ class OpenPGPKeyForm extends Component {
     const { i18n } = this.props;
 
     this.errorsLabels = {
-      [ERROR_UNABLE_READ_PUBLIC_KEY]: i18n.t`openpgp.feedback.unable-read-public-key`,
-      [ERROR_UNABLE_READ_PRIVATE_KEY]: i18n.t`openpgp.feedback.unable-read-private-key`,
-      [ERROR_FINGERPRINTS_NOT_MATCH]: i18n.t`openpgp.feedback.fingerprints-not-match`,
+      [ERROR_UNABLE_READ_PUBLIC_KEY]: i18n._('openpgp.feedback.unable-read-public-key'),
+      [ERROR_UNABLE_READ_PRIVATE_KEY]: i18n._('openpgp.feedback.unable-read-private-key'),
+      [ERROR_FINGERPRINTS_NOT_MATCH]: i18n._('openpgp.feedback.fingerprints-not-match'),
     };
   }
 
@@ -194,7 +194,7 @@ class OpenPGPKeyForm extends Component {
               this.emailOptions.length !== 1 && (
                 <SelectFieldGroup
                   className="m-account-openpgp-form__field-group"
-                  label={i18n.t`user.openpgp.form.email.label`}
+                  label={i18n._('user.openpgp.form.email.label')}
                   value={this.state.generateForm.email}
                   onChange={this.handleGenerateChanges}
                   name="email"
@@ -215,7 +215,7 @@ class OpenPGPKeyForm extends Component {
               {' '}
               <CheckboxFieldGroup
                 displaySwitch
-                label={i18n.t`user.openpgp.has-passphrase`}
+                label={i18n._('user.openpgp.has-passphrase')}
                 value={this.state.hasPassphrase}
                 onChange={this.handleToggleHasPassprase}
               />
@@ -224,7 +224,7 @@ class OpenPGPKeyForm extends Component {
             {this.state.hasPassphrase && (
               <div className="m-account-openpgp-form__field-group">
                 <TextFieldGroup
-                  label={i18n.t`user.openpgp.form.passphrase.label`}
+                  label={i18n._('user.openpgp.form.passphrase.label')}
                   value={this.state.generateForm.passphrase}
                   onChange={this.handleGenerateChanges}
                   name="passphrase"
@@ -258,7 +258,7 @@ class OpenPGPKeyForm extends Component {
             }
             <TextareaFieldGroup
               className="m-account-openpgp-form__field-group"
-              label={i18n.t`user.openpgp.form.public-key.label`}
+              label={i18n._('user.openpgp.form.public-key.label')}
               value={this.state.importForm.publicKeyArmored}
               onChange={this.handleImportChanges}
               name="publicKeyArmored"
@@ -269,7 +269,7 @@ class OpenPGPKeyForm extends Component {
             />
             <TextareaFieldGroup
               className="m-account-openpgp-form__field-group"
-              label={i18n.t`user.openpgp.form.private-key.label`}
+              label={i18n._('user.openpgp.form.private-key.label')}
               value={this.state.importForm.privateKeyArmored}
               onChange={this.handleImportChanges}
               name="privateKeyArmored"

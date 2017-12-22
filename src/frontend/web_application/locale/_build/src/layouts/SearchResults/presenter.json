@@ -1,6 +1,6 @@
 {
   "search-results.all": {
-    "defaults": "All (%(count)s)",
+    "defaults": "All ({total})",
     "origin": [
       [
         "src/layouts/SearchResults/presenter.jsx",
@@ -9,7 +9,7 @@
     ]
   },
   "search-results.messages": {
-    "defaults": "Messages (%(count)s)",
+    "defaults": "Messages ({nbMessages})",
     "origin": [
       [
         "src/layouts/SearchResults/presenter.jsx",
@@ -18,7 +18,7 @@
     ]
   },
   "search-results.contacts": {
-    "defaults": "Contacts (%(count)s)",
+    "defaults": "Contacts ({nbContacts})",
     "origin": [
       [
         "src/layouts/SearchResults/presenter.jsx",

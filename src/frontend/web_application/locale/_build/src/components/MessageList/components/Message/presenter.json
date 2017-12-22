@@ -8,7 +8,7 @@
     ]
   },
   "message-list.message.by": {
-    "defaults": "by %(type)s",
+    "defaults": "by {0}",
     "origin": [
       [
         "src/components/MessageList/components/Message/presenter.jsx",

@@ -1,6 +1,6 @@
 {
   "search-results.preview.nb-messages": {
-    "defaults": "%(count)s messages contains \"%(term)s\" in their subject or content:",
+    "defaults": "{nbMessages} messages contains \"{term}\" in their subject or content:",
     "origin": [
       [
         "src/scenes/SearchResults/presenter.jsx",
@@ -13,20 +13,20 @@
     "origin": [
       [
         "src/scenes/SearchResults/presenter.jsx",
-        125
+        127
       ],
       [
         "src/scenes/SearchResults/presenter.jsx",
-        135
+        139
       ]
     ]
   },
   "search-results.preview.nb-contacts": {
-    "defaults": "%(count)s contacts contains \"%(term)s\" in their label or profile:",
+    "defaults": "{nbContacts} contacts contains \"{term}\" in their label or profile:",
     "origin": [
       [
         "src/scenes/SearchResults/presenter.jsx",
-        132
+        134
       ]
     ]
   },
@@ -35,11 +35,11 @@
     "origin": [
       [
         "src/scenes/SearchResults/presenter.jsx",
-        168
+        172
       ],
       [
         "src/scenes/SearchResults/presenter.jsx",
-        183
+        187
       ]
     ]
   }

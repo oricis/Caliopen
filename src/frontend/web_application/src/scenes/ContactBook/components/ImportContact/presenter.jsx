@@ -37,7 +37,7 @@ class ImportContact extends Component {
   handleImportContactSuccess = () => {
     this.setState({ hasImported: true }, () => {
       const { onUploadSuccess, notifySuccess, i18n } = this.props;
-      notifySuccess({ message: i18n.t`import-contact.feedback.successfull`, duration: 0 });
+      notifySuccess({ message: i18n._('import-contact.feedback.successfull'), duration: 0 });
       onUploadSuccess();
     });
   }
@@ -46,14 +46,14 @@ class ImportContact extends Component {
     const { notifyError, i18n } = this.props;
 
     if (response.status === 400) {
-      return notifyError({ message: i18n.t`import-contact.feedback.error-file`, duration: 0 });
+      return notifyError({ message: i18n._('import-contact.feedback.error-file'), duration: 0 });
     }
 
     if (response.status === 422) {
-      return notifyError({ message: i18n.t`import-contact.feedback.error-contact`, duration: 0 });
+      return notifyError({ message: i18n._('import-contact.feedback.error-contact'), duration: 0 });
     }
 
-    return notifyError({ message: i18n.t`import-contact.feedback.unexpected-error`, duration: 0 });
+    return notifyError({ message: i18n._('import-contact.feedback.unexpected-error'), duration: 0 });
   }
 
   render() {

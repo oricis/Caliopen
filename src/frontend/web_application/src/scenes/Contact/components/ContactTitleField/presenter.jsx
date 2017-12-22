@@ -21,8 +21,8 @@ class ContactTitleField extends PureComponent {
     return (
       <TextFieldGroup
         className={className}
-        label={i18n.t`contact_profile.form.title.label`}
-        placeholder={i18n.t`contact_profile.form.title.label`}
+        label={i18n._('contact_profile.form.title.label')}
+        placeholder={i18n._('contact_profile.form.title.label')}
         defaultValue={formatName({ contact, format })}
         disabled
         showLabelforSr

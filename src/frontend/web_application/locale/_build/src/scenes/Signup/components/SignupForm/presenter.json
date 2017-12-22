@@ -25,7 +25,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        140
+        142
       ]
     ]
   },
@@ -34,7 +34,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        141
+        145
       ]
     ]
   },
@@ -43,7 +43,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        142
+        149
       ]
     ]
   },
@@ -52,7 +52,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        143
+        153
       ]
     ]
   },
@@ -61,7 +61,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        148
+        162
       ]
     ]
   },
@@ -69,7 +69,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        158
+        172
       ]
     ]
   },
@@ -77,7 +77,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        163
+        177
       ]
     ]
   },
@@ -85,7 +85,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        178
+        192
       ]
     ]
   },
@@ -93,7 +93,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        179
+        193
       ]
     ]
   },
@@ -101,7 +101,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        196
+        210
       ]
     ]
   },
@@ -109,7 +109,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        197
+        211
       ]
     ]
   },
@@ -118,11 +118,11 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        219
+        233
       ],
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        226
+        240
       ]
     ]
   },
@@ -130,7 +130,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        220
+        234
       ]
     ]
   },
@@ -139,7 +139,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        246
+        260
       ]
     ]
   },
@@ -148,7 +148,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        248
+        262
       ]
     ]
   },
@@ -157,7 +157,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        254
+        268
       ]
     ]
   },
@@ -165,7 +165,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        259
+        273
       ]
     ]
   },
@@ -174,7 +174,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        274
+        288
       ]
     ]
   },
@@ -183,7 +183,7 @@
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
-        279
+        293
       ]
     ]
   }

@@ -92,8 +92,8 @@ class ContactBook extends Component {
     return (
       <Modal
         isOpen={this.state.isImportModalOpen}
-        contentLabel={i18n.t`import-contact.action.import_contacts`}
-        title={i18n.t`import-contact.action.import_contacts`}
+        contentLabel={i18n._('import-contact.action.import_contacts')}
+        title={i18n._('import-contact.action.import_contacts')}
         onClose={this.handleCloseImportModal}
       >
         <ImportContact
@@ -116,7 +116,7 @@ class ContactBook extends Component {
 
     return (
       <div className="l-contact-book">
-        <PageTitle title={i18n.t`header.menu.contacts`} />
+        <PageTitle title={i18n._('header.menu.contacts')} />
         <MenuBar>
           <ContactFilters
             onSortDirChange={this.handleSortDirChange}
