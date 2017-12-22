@@ -6,7 +6,7 @@ describe('component Device DeviceInformation', () => {
   it('render', () => {
     const props = {
       device: {},
-      __: str => str,
+      i18n: { _: id => id },
     };
 
     const comp = shallow(

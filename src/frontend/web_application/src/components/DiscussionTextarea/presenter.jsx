@@ -4,7 +4,7 @@ import { Trans } from 'lingui-react';
 import { v1 as uuidv1 } from 'uuid';
 import './style.scss';
 
-const DiscussionDraft = ({ body, onChange, i18n }) => {
+const DiscussionTextarea = ({ body, onChange, i18n }) => {
   const id = uuidv1();
 
   return (
@@ -22,13 +22,13 @@ const DiscussionDraft = ({ body, onChange, i18n }) => {
   );
 };
 
-DiscussionDraft.propTypes = {
+DiscussionTextarea.propTypes = {
   body: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   i18n: PropTypes.shape({}).isRequired,
 };
-DiscussionDraft.defaultProps = {
+DiscussionTextarea.defaultProps = {
   body: '',
 };
 
-export default DiscussionDraft;
+export default DiscussionTextarea;

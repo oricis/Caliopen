@@ -7,7 +7,7 @@ jest.mock('lingui-react', () => ({
 }));
 
 describe('scene - Signin', () => {
-  const i18n = { t: strs => strs[0] };
+  const i18n = { _: id => id };
 
   it('render', () => {
     const comp = shallow(

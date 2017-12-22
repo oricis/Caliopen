@@ -5,7 +5,7 @@ import Presenter from './presenter';
 describe('component DiscussionDraft', () => {
   it('render', () => {
     const props = {
-      __: str => str,
+      i18n: { _: id => id },
       onSave: jest.fn(),
       onSend: jest.fn(),
       renderDraftMessageActionsContainer: jest.fn(),

@@ -1,7 +1,7 @@
 import validator from './form-validator';
 
 describe('scene Signup form-validator', () => {
-  const i18n = { t: strs => strs[0] };
+  const i18n = { _: id => id };
   it('validates', async () => {
     const isValid = await validator.validate({
       username: 'bender',

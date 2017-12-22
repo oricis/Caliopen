@@ -7,7 +7,7 @@ describe('component Device DeviceForm', () => {
     const props = {
       device: {},
       onChange: () => {},
-      __: str => str,
+      i18n: { _: id => id },
     };
 
     const comp = shallow(
@@ -23,7 +23,7 @@ describe('component Device DeviceForm', () => {
       const props = {
         device: {},
         onChange: () => {},
-        __: str => str,
+        i18n: { _: id => id },
       };
 
       const comp = shallow(
@@ -38,7 +38,7 @@ describe('component Device DeviceForm', () => {
       const props = {
         device: {},
         onChange: () => {},
-        __: str => str,
+        i18n: { _: id => id },
       };
 
       const comp = shallow(
