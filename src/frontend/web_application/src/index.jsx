@@ -34,6 +34,8 @@ const getHistory = () => {
 
 const store = configureStore({
   settings: {
+    isFetching: false,
+    isInvalidated: true,
     settings,
   },
 }, devTools);
