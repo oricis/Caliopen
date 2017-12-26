@@ -41,15 +41,16 @@ class Timeline extends Component {
     requestMessages(timelineFilter);
 
     this.throttledLoadMore = throttle(
-      () => loadMore(),
+      () => loadMore(timelineFilter),
       LOAD_MORE_THROTTLE,
       { trailing: false }
     );
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.didInvalidate && !nextProps.isFetching) {
-      this.props.requestMessages();
+    const { requestMessages, timelineFilter, didInvalidate, isFetching } = nextProps;
+    if (didInvalidate && !isFetching) {
+      requestMessages(timelineFilter);
     }
   }
 

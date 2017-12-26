@@ -31,12 +31,13 @@ class MessageItem extends PureComponent {
     const { message, settings: { default_locale: locale }, isMessageFromUser } = this.props;
     const hasDate = (isMessageFromUser && message.date)
       || (!isMessageFromUser && message.date_insert);
+    const msgDate = isMessageFromUser && !message.is_draft ? message.date : message.date_insert;
 
     return (
       <div className="s-message-item__col-dates">
         {hasDate &&
           <Moment className="m-message__date" locale={locale} element={MessageDate}>
-            {isMessageFromUser ? message.date : message.date_insert}
+            {msgDate}
           </Moment>
         }
       </div>

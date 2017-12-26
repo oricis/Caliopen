@@ -49,7 +49,7 @@ export function loadMore(type, key) {
   };
 }
 
-export function setTimelineFilter(type) {
+export function setTimelineFilter(type = TIMELINE_FILTER_RECEIVED) {
   return {
     type: SET_TIMELINE_FILTER,
     payload: { type },

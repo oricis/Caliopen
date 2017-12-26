@@ -124,11 +124,12 @@ class Discussion(BaseUserCore):
     def create_from_message(cls, user, message):
         new_id = uuid.uuid4()
         # TODO excerpt from plain or html body
+        excerpt = message.body_plain[:200] if message.body_plain else ""
         kwargs = {'discussion_id': new_id,
                   'date_insert': datetime.datetime.now(tz=pytz.utc),
                   # 'privacy_index': message.privacy_index,
                   # 'importance_level': message.importance_level,
-                  'excerpt': message.body_plain[:200],
+                  'excerpt': excerpt,
                   }
         discussion = cls.create(user, **kwargs)
         log.debug('Created discussion {}'.format(discussion.discussion_id))

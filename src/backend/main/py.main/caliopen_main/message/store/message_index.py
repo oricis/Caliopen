@@ -99,6 +99,7 @@ class IndexedMessage(BaseIndexDocument):
         m.field('is_answered', 'boolean')
         m.field('is_draft', 'boolean')
         m.field('is_unread', 'boolean')
+        m.field('is_received', 'boolean')
         m.field('message_id', 'keyword')
         m.field('parent_id', 'keyword')
         # participants
