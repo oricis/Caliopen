@@ -8,7 +8,6 @@ describe('component Device VerifyDevice', () => {
       device: {},
       onDeleteDevice: jest.fn(),
       onVerifyDevice: jest.fn(),
-      __: str => str,
     };
 
     const comp = shallow(

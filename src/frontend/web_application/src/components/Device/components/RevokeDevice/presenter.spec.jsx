@@ -7,7 +7,6 @@ describe('component Device RevokeDevice', () => {
     const props = {
       device: {},
       onRevokeDevice: jest.fn(),
-      __: str => str,
     };
 
     const comp = shallow(

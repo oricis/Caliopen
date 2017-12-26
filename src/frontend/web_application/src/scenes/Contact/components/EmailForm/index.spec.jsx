@@ -9,7 +9,7 @@ jest.mock('lingui-react', () => ({
 describe('component EmailForm', () => {
   it('init form', () => {
     const props = {
-      i18n: { _: (id, values) => id },
+      i18n: { _: id => id },
     };
 
     const comp = shallow(

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from 'lingui-react';
 import { shallow } from 'enzyme';
 import WithSettings from './presenter';
 

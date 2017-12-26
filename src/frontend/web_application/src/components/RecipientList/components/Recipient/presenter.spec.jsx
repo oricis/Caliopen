@@ -3,7 +3,9 @@ import { shallow } from 'enzyme';
 import Recipient from './presenter';
 
 describe('component Recipient', () => {
-  const noop = str => str;
+  const props = {
+    i18n: { _: id => id },
+  };
 
   it('render', () => {
     const participant = {
@@ -11,7 +13,7 @@ describe('component Recipient', () => {
       label: 'foobar',
     };
     const comp = shallow(
-      <Recipient participant={participant} __={noop} />
+      <Recipient participant={participant} {...props} />
     );
 
     expect(comp.find('Badge').length).toEqual(1);
