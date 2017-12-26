@@ -5,7 +5,7 @@ import AddFieldGroup from './components/AddFieldGroup';
 import './style.scss';
 
 const CollectionFieldGroup = ({
-  collection, defaultValue, addTemplate, editTemplate, onChange, __,
+  collection, defaultValue, addTemplate, editTemplate, onChange,
 }) => {
   const handleAdd = ({ item }) => {
     onChange([item, ...collection]);
@@ -24,7 +24,7 @@ const CollectionFieldGroup = ({
 
   return (
     <div className="m-collection-field-group">
-      <AddFieldGroup template={addTemplate} defaultValue={defaultValue} onAdd={handleAdd} __={__} />
+      <AddFieldGroup template={addTemplate} defaultValue={defaultValue} onAdd={handleAdd} />
       {collection.map((item, key) => (
         <DeleteFieldGroup
           key={key}
@@ -33,7 +33,6 @@ const CollectionFieldGroup = ({
           template={editTemplate}
           onChange={handleChangeItem}
           onDelete={handleDelete}
-          __={__}
           className="m-collection-field-group__delete-group"
         />
       ))}
@@ -49,7 +48,6 @@ CollectionFieldGroup.propTypes = {
   addTemplate: PropTypes.func.isRequired,
   editTemplate: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  __: PropTypes.func.isRequired,
 };
 
 CollectionFieldGroup.defaultProps = {

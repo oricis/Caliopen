@@ -1,0 +1,10 @@
+{
+  "user.security": {
+    "origin": [
+      [
+        "src/layouts/User/presenter.jsx",
+        24
+      ]
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "settings.application": {
+    "origin": [
+      [
+        "src/layouts/Settings/presenter.jsx",
+        22
+      ]
+    ]
+  }
+}

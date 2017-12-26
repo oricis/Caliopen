@@ -11,7 +11,7 @@ class Recipient extends Component {
   static propTypes = {
     participant: PropTypes.shape({}).isRequired,
     onRemove: PropTypes.func,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     className: PropTypes.string,
   };
   static defaultProps = {
@@ -24,7 +24,7 @@ class Recipient extends Component {
   }
 
   render() {
-    const { participant, className, __ } = this.props;
+    const { participant, className, i18n } = this.props;
 
     return (
       <Badge large className={className}>
@@ -35,7 +35,7 @@ class Recipient extends Component {
         <Button
           className="m-recipient__col-remove"
           onClick={this.handleClickRemove}
-          title={__('messages.compose.action.remove-recipient')}
+          title={i18n._('messages.compose.action.remove-recipient')}
         >
           <Icon type="remove" spaced />
         </Button>

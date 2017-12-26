@@ -1,16 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import { FieldArray, FormSection } from 'redux-form';
-import { withTranslator } from '@gandi/react-translate';
 import Button from '../../../../components/Button';
 import TextList, { ItemContent } from '../../../../components/TextList';
 import { FormGrid, FormRow, FormColumn } from '../../../../components/form';
 
-
-@withTranslator()
 class FormCollection extends PureComponent {
   static propTypes = {
-    __: PropTypes.func.isRequired,
     propertyName: PropTypes.string.isRequired,
     component: PropTypes.element.isRequired,
     showAdd: PropTypes.bool,
@@ -20,7 +17,7 @@ class FormCollection extends PureComponent {
   };
 
   renderForms = ({ fields }) => {
-    const { component, showAdd, __ } = this.props;
+    const { component, showAdd } = this.props;
 
     return (
       <TextList>
@@ -37,7 +34,7 @@ class FormCollection extends PureComponent {
               <FormRow>
                 <FormColumn>
                   <Button icon="plus" shape="plain" onClick={() => fields.push({ })}>
-                    {__('contact.action.add_new_field')}
+                    <Trans id="contact.action.add_new_field">Add new</Trans>
                   </Button>
                 </FormColumn>
               </FormRow>

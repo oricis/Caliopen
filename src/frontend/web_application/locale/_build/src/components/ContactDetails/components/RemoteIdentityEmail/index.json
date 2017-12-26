@@ -1,0 +1,121 @@
+{
+  "remote_identity.fetch_method.from_now": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        70
+      ]
+    ]
+  },
+  "remote_identity.fetch_method.fetch_all": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        71
+      ]
+    ]
+  },
+  "remote_identity.feedback.loading_messages": {
+    "defaults": "Loading your messages, please wait.",
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        176
+      ]
+    ]
+  },
+  "remote_identity.action.cancel": {
+    "defaults": "Cancel",
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        183
+      ]
+    ]
+  },
+  "remote_identity.form.login.label": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        195
+      ]
+    ]
+  },
+  "remote_identity.form.password.label": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        203
+      ]
+    ]
+  },
+  "remote_identity.form.protocol.label": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        221
+      ]
+    ]
+  },
+  "remote_identity.form.incomming_mail_server.label": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        230
+      ]
+    ]
+  },
+  "remote_identity.form.port.label": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        238
+      ]
+    ]
+  },
+  "remote_identity.action.disconnect": {
+    "defaults": "Disconnect",
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        294
+      ]
+    ]
+  },
+  "remote_identity.action.back": {
+    "defaults": "Previous",
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        299
+      ]
+    ]
+  },
+  "remote_identity.action.next": {
+    "defaults": "Next",
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        304
+      ]
+    ]
+  },
+  "remote_identity.action.finish": {
+    "defaults": "Connect",
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        309
+      ]
+    ]
+  },
+  "remote_identity.form_legend": {
+    "defaults": "Connect an email server",
+    "origin": [
+      [
+        "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
+        321
+      ]
+    ]
+  }
+}

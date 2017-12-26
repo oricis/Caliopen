@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import Presenter from './presenter';
 import { filterTimeline } from '../../../../store/actions/timeline';
 import { timelineFilterSelector } from '../../../../store/selectors/timeline';
@@ -18,5 +18,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withTranslator()
+  withI18n()
 )(Presenter);

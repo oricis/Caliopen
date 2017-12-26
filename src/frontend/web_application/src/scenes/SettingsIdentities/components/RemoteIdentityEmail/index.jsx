@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../../../../components/Button';
 import Spinner from '../../../../components/Spinner';
 import { TextFieldGroup, SelectFieldGroup, RadioFieldGroup } from '../../../../components/form';
@@ -22,7 +23,7 @@ class RemoteIdentityEmail extends Component {
     remoteIdentity: PropTypes.shape({}).isRequired,
     onConnect: PropTypes.func.isRequired,
     onDisconnect: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   constructor(props) {
@@ -63,10 +64,10 @@ class RemoteIdentityEmail extends Component {
   }
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.translations = {
-      from_now: __('remote_identity.fetch_method.from_now'),
-      fetch_all: __('remote_identity.fetch_method.fetch_all'),
+      from_now: i18n._('remote_identity.fetch_method.from_now'),
+      fetch_all: i18n._('remote_identity.fetch_method.fetch_all'),
     };
   }
 
@@ -166,33 +167,29 @@ class RemoteIdentityEmail extends Component {
     return isValid;
   }
 
-  renderFetchingPanel() {
-    const { __ } = this.props;
-
-    return (
-      <div className="m-remote-identity__fetching-panel">
-        <div className="m-remote-identity__fetching-panel-text">
-          <Spinner isLoading />
-          {__('remote_identity.feedback.loading_messages')}
-        </div>
-        <Button
-          disabled="$ctrl.remoteIdentity.cancel_fetch_required"
-          onClick={this.handleDisconnect}
-          color="alert"
-        >
-          {__('remote_identity.action.cancel')}
-        </Button>
+  renderFetchingPanel = () => (
+    <div className="m-remote-identity__fetching-panel">
+      <div className="m-remote-identity__fetching-panel-text">
+        <Spinner isLoading />
+        <Trans id="remote_identity.feedback.loading_messages">Loading your messages, please wait.</Trans>
       </div>
-    );
-  }
+      <Button
+        disabled="$ctrl.remoteIdentity.cancel_fetch_required"
+        onClick={this.handleDisconnect}
+        color="alert"
+      >
+        <Trans id="remote_identity.action.cancel">Cancel</Trans>
+      </Button>
+    </div>
+  );
 
   renderFormPhase1() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     return (
       <div>
         <TextFieldGroup
-          label={__('remote_identity.form.login.label')}
+          label={i18n._('remote_identity.form.login.label')}
           value={this.state.remoteIdentity.params.login}
           errors={this.state.formErrors.login}
           onChange={this.handleParamsChange}
@@ -200,7 +197,7 @@ class RemoteIdentityEmail extends Component {
           required
         />
         <TextFieldGroup
-          label={__('remote_identity.form.password.label')}
+          label={i18n._('remote_identity.form.password.label')}
           type="password"
           value={this.state.remoteIdentity.params.password}
           errors={this.state.formErrors.password}
@@ -213,12 +210,12 @@ class RemoteIdentityEmail extends Component {
   }
 
   renderFormPhase2() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     return (
       <div>
         <SelectFieldGroup
-          label={__('remote_identity.form.protocol.label')}
+          label={i18n._('remote_identity.form.protocol.label')}
           value={this.state.remoteIdentity.params.mailProtocol}
           options={MAIL_PROTOCOLS.map(key => ({ value: key, label: key }))}
           errors={this.state.formErrors.mailProtocol}
@@ -227,7 +224,7 @@ class RemoteIdentityEmail extends Component {
           required
         />
         <TextFieldGroup
-          label={__('remote_identity.form.incomming_mail_server.label')}
+          label={i18n._('remote_identity.form.incomming_mail_server.label')}
           value={this.state.remoteIdentity.params.incommingMailServer}
           errors={this.state.formErrors.incommingMailServer}
           onChange={this.handleParamsChange}
@@ -235,7 +232,7 @@ class RemoteIdentityEmail extends Component {
           required
         />
         <TextFieldGroup
-          label={__('remote_identity.form.port.label')}
+          label={i18n._('remote_identity.form.port.label')}
           value={this.state.remoteIdentity.params.mailPort}
           errors={this.state.formErrors.mailPort}
           onChange={this.handleParamsChange}
@@ -266,7 +263,6 @@ class RemoteIdentityEmail extends Component {
   }
 
   renderForm() {
-    const { __ } = this.props;
     let formPhase;
 
     switch (this.state.phase) {
@@ -292,22 +288,22 @@ class RemoteIdentityEmail extends Component {
               onClick={this.handleDisconnect}
               color="alert"
             >
-              {__('remote_identity.action.disconnect')}
+              <Trans id="remote_identity.action.disconnect">Disconnect</Trans>
             </Button>
           )}
           {this.state.phase > 1 && (
             <Button onClick={this.handleClickPrevious} shape="hollow">
-              {__('remote_identity.action.back')}
+              <Trans id="remote_identity.action.back">Previous</Trans>
             </Button>
           )}
           {this.state.phase < MAX_PHASE && (
             <Button shape="plain" onClick={this.handleClickNext}>
-              {__('remote_identity.action.next')}
+              <Trans id="remote_identity.action.next">Next</Trans>
             </Button>
           )}
           {this.state.phase === MAX_PHASE && (
             <Button onClick={this.handleClickFinish} shape="plain" color="secondary">
-              {__('remote_identity.action.finish')}
+              <Trans id="remote_identity.action.finish">Connect</Trans>
             </Button>
           )}
         </div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../../../../components/Button';
 import Link from '../../../../components/Link';
 import Section from '../../../../components/Section';
@@ -24,7 +25,7 @@ class SignupForm extends Component {
     onSubmit: PropTypes.func.isRequired,
     onUsernameChange: PropTypes.func,
     onUsernameBlur: PropTypes.func,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -125,41 +126,55 @@ class SignupForm extends Component {
   };
 
   renderModal = () => {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     return (
       <Modal
         className="s-signup__modal"
         isOpen={this.state.isModalOpen}
-        contentLabel={__('signup.privacy.modal.label')}
-        title={__('signup.privacy.modal.label')}
+        contentLabel={i18n._('signup.privacy.modal.label')}
+        title={i18n._('signup.privacy.modal.label')}
         onClose={this.handleCloseModal}
       >
-        <p>{__('signup.privacy.modal.title')}</p>
-        <p>{__('signup.privacy.modal.text.alpha_tester')}</p>
-        <p>{__('signup.privacy.modal.text.get_data')}</p>
-        <p>{__('signup.privacy.modal.text.desactivate_dnt')}</p>
-        <p>{__('signup.privacy.modal.text.piwik')}</p>
+        <p><Trans id="signup.privacy.modal.title">
+          Caliopen is under development !
+        </Trans></p>
+        <p><Trans id="signup.privacy.modal.text.alpha_tester">
+          As an alpha-tester your contribution is precious and will allow us to finalize Caliopen.
+        </Trans></p>
+        <p><Trans id="signup.privacy.modal.text.get_data">
+          For this purpose, you grant us the right to collect data related to your usage (displayed
+          pages, timings, clics, scrolls ...almost everything that can be collected!).
+        </Trans></p>
+        <p><Trans id="signup.privacy.modal.text.desactivate_dnt">
+          You need to deactivate the DoNotTrack setting from your browser preferences (more
+          informations at http://donottrack.us), as well as allowing cookies.
+        </Trans></p>
+        <p><Trans id="signup.privacy.modal.text.piwik">
+          We use https://piwik.org/ the open-source analytics plateform. The collected data will not
+          be disclosed to any third party, and will stay scoped to Caliopen&apos;s alpha testing
+          purpose.
+        </Trans></p>
         <Button
           shape="plain"
           onClick={this.handleCloseModal}
         >
-          {' '}{__('signup.privacy.modal.close')}
+          <Trans id="signup.privacy.modal.close">Ok got it !</Trans>
         </Button>
       </Modal>
     );
   }
 
   render() {
-    const { form, errors = {}, __ } = this.props;
+    const { form, errors = {}, i18n } = this.props;
 
     return (
-      <Section className="s-signup" title={__('signup.title')}>
+      <Section className="s-signup" title={i18n._('signup.title')}>
         <FormGrid className="s-signup__form">
           <form method="post" name="ac_form" {...form}>
             <FormRow>
               <FormColumn rightSpace={false} bottomSpace>
-                <div className="s-signup__alpha" dangerouslySetInnerHTML={__('signup.limited_registration', { withHTML: true })} />
+                <div className="s-signup__alpha" dangerouslySetInnerHTML={{ __html: i18n._('signup.limited_registration') }} />
               </FormColumn>
             </FormRow>
             {errors.global && errors.global.length !== 0 && (
@@ -174,8 +189,8 @@ class SignupForm extends Component {
                 <TextFieldGroup
                   id="signup_username"
                   name="username"
-                  label={__('signup.form.username.label')}
-                  placeholder={__('signup.form.username.placeholder')}
+                  label={i18n._('signup.form.username.label')}
+                  placeholder={i18n._('signup.form.username.placeholder')}
                   value={this.state.formValues.username}
                   errors={errors.username}
                   onChange={this.handleUsernameChange}
@@ -192,8 +207,8 @@ class SignupForm extends Component {
                 <TextFieldGroup
                   id="signup_password"
                   name="password"
-                  label={__('signup.form.password.label')}
-                  placeholder={__('signup.form.password.placeholder')}
+                  label={i18n._('signup.form.password.label')}
+                  placeholder={i18n._('signup.form.password.placeholder')}
                   showLabelforSr
                   type="password"
                   value={this.state.formValues.password}
@@ -213,16 +228,16 @@ class SignupForm extends Component {
                   id="signup_recovery_email"
                   name="recovery_email"
                   // Alpha: label "recovery email" replaced by "invitation email"
-                  // label={__('signup.form.recovery_email.label')}
-                  // placeholder={__('signup.form.recovery_email.placeholder')}
-                  label={__('signup.form.invitation_email.label')}
-                  placeholder={__('signup.form.invitation_email.placeholder')}
+                  // label={i18n._('signup.form.recovery_email.label')}
+                  // placeholder={i18n._('signup.form.recovery_email.placeholder')}
+                  label={i18n._('signup.form.invitation_email.label')}
+                  placeholder={i18n._('signup.form.invitation_email.placeholder')}
                   value={this.state.formValues.recovery_email}
                   errors={errors.recovery_email}
                   onChange={this.handleInputChange}
                   showLabelforSr
                 />
-                <span>{__('signup.form.invitation_email.label')}</span>
+                <span><Trans id="signup.form.invitation_email.label">Please fill with the email provided when you requested an invitation.</Trans></span>
               </FormColumn>
             </FormRow>
             {/* Alpha: hide TOS checkbox
@@ -231,7 +246,7 @@ class SignupForm extends Component {
                   <CheckboxFieldGroup
                     id="signup_tos"
                     className="s-signup__tos-checkbox"
-                    label={__('signup.form.tos.label')}
+                    label={i18n._('signup.form.tos.label')}
                     name="tos"
                     checked={this.state.formValues.tos}
                     errors={errors.tos}
@@ -242,20 +257,20 @@ class SignupForm extends Component {
               */}
             <FormRow>
               <FormColumn rightSpace={false} className="s-signup__privacy" bottomSpace>
-                <h4>{__('signup.form.privacy.title')}</h4>
+                <h4><Trans id="signup.form.privacy.title">Privacy policy</Trans></h4>
                 <p className="s-signup__privacy-text">
-                  {__('signup.form.privacy.intro')}
+                  <Trans id="signup.form.privacy.intro">Throughout the development phase, we collect some data (but no more than the NSA).</Trans>
                 </p>
                 <Button
                   className="s-signup__privacy-link"
                   onClick={this.handleOpenModal}
                   icon="question-circle"
-                >{__('signup.form.privacy.more_info')}</Button>
+                ><Trans id="signup.form.privacy.more_info">More info</Trans></Button>
                 {this.renderModal()}
                 <CheckboxFieldGroup
                   id="signup_privacy"
                   className="s-signup__privacy-checkbox"
-                  label={__('signup.form.privacy.checkbox.label')}
+                  label={i18n._('signup.form.privacy.checkbox.label')}
                   name="privacy"
                   checked={this.state.formValues.privacy}
                   errors={errors.privacy}
@@ -270,12 +285,12 @@ class SignupForm extends Component {
                   onClick={this.handleSubmit}
                   display="expanded"
                   shape="plain"
-                >{__('signup.action.create')}</Button>
+                ><Trans id="signup.action.create">Create</Trans></Button>
               </FormColumn>
             </FormRow>
             <FormRow>
               <FormColumn rightSpace={false}>
-                <Link to="/auth/signin">{__('signup.go_signin')}</Link>
+                <Link to="/auth/signin"><Trans id="signup.go_signin">I already have an account</Trans></Link>
               </FormColumn>
             </FormRow>
           </form>

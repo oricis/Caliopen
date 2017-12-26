@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { withTranslator } from '@gandi/react-translate';
 import { withNotification } from '../../hoc/notification';
 import Presenter from './presenter';
 
@@ -10,6 +9,5 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 export default compose(
   withNotification(),
-  withTranslator(),
   connect(null, mapDispatchToProps),
 )(Presenter);

@@ -1,0 +1,112 @@
+{
+  "remote_identity.feedback.loading_messages": {
+    "defaults": "Loading your messages, please wait.",
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        174
+      ]
+    ]
+  },
+  "remote_identity.action.cancel": {
+    "defaults": "Cancel",
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        181
+      ]
+    ]
+  },
+  "remote_identity.fetch_method.from_now": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        69
+      ]
+    ]
+  },
+  "remote_identity.fetch_method.fetch_all": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        70
+      ]
+    ]
+  },
+  "remote_identity.form.login.label": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        192
+      ]
+    ]
+  },
+  "remote_identity.form.password.label": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        200
+      ]
+    ]
+  },
+  "remote_identity.form.protocol.label": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        218
+      ]
+    ]
+  },
+  "remote_identity.form.incomming_mail_server.label": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        227
+      ]
+    ]
+  },
+  "remote_identity.form.port.label": {
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        235
+      ]
+    ]
+  },
+  "remote_identity.action.disconnect": {
+    "defaults": "Disconnect",
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        291
+      ]
+    ]
+  },
+  "remote_identity.action.back": {
+    "defaults": "Previous",
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        296
+      ]
+    ]
+  },
+  "remote_identity.action.next": {
+    "defaults": "Next",
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        301
+      ]
+    ]
+  },
+  "remote_identity.action.finish": {
+    "defaults": "Connect",
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/RemoteIdentityEmail/index.jsx",
+        306
+      ]
+    ]
+  }
+}

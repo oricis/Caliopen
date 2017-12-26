@@ -9,20 +9,20 @@ class TimelineFilter extends Component {
     render: PropTypes.func.isRequired,
     filter: PropTypes.func.isRequired,
     currentFilter: PropTypes.string.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
   };
   state = {};
 
   componentWillMount() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     this.translations = {
-      [TIMELINE_FILTER_ALL]: __('timeline-filter.options.all'),
-      [TIMELINE_FILTER_RECEIVED]: __('timeline-filter.options.received'),
-      [TIMELINE_FILTER_SENT]: __('timeline-filter.options.sent'),
-      [TIMELINE_FILTER_DRAFT]: __('timeline-filter.options.draft'),
+      [TIMELINE_FILTER_ALL]: i18n._('timeline-filter.options.all'),
+      [TIMELINE_FILTER_RECEIVED]: i18n._('timeline-filter.options.received'),
+      [TIMELINE_FILTER_SENT]: i18n._('timeline-filter.options.sent'),
+      [TIMELINE_FILTER_DRAFT]: i18n._('timeline-filter.options.draft'),
     };
   }
 

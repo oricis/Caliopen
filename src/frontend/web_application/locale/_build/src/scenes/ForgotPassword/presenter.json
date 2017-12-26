@@ -1,0 +1,26 @@
+{
+  "passwords.form.error.identifiants_mismatch": {
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/presenter.jsx",
+        47
+      ]
+    ]
+  },
+  "passwords.form.error.user_not_found": {
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/presenter.jsx",
+        48
+      ]
+    ]
+  },
+  "passwords.form.error.empty": {
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/presenter.jsx",
+        49
+      ]
+    ]
+  }
+}

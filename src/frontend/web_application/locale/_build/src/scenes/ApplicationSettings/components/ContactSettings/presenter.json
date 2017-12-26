@@ -1,0 +1,50 @@
+{
+  "settings.contact.display_format.options.first_last": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",
+        31
+      ]
+    ]
+  },
+  "settings.contact.display_format.options.last_first": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",
+        32
+      ]
+    ]
+  },
+  "settings.contact.display_order_by.options.firstname": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",
+        33
+      ]
+    ]
+  },
+  "settings.contact.display_order_by.options.lastname": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",
+        34
+      ]
+    ]
+  },
+  "settings.contacts.display.label": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",
+        51
+      ]
+    ]
+  },
+  "settings.contacts.order.label": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",
+        61
+      ]
+    ]
+  }
+}

@@ -6,9 +6,9 @@ describe('component TagsForm', () => {
   it('render', () => {
     const noop = str => str;
     const comp = shallow(
-      <TagsForm onCreate={noop} __={noop} onUpdate={noop} />
+      <TagsForm onCreate={noop} onUpdate={noop} />
     );
 
-    expect(() => comp.render()).not.toThrow();
+    expect(comp.find('FormGrid').length).toEqual(1);
   });
 });

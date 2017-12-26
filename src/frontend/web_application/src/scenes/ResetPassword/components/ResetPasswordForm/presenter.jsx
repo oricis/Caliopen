@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import { PasswordStrength, TextFieldGroup, FormGrid, FieldErrors, FormColumn, FormRow } from '../../../../components/form';
 import Section from '../../../../components/Section';
 import Button from '../../../../components/Button';
@@ -10,7 +11,7 @@ import './style.scss';
 
 class ResetPasswordForm extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     errors: PropTypes.shape({}),
     onSubmit: PropTypes.func.isRequired,
     success: PropTypes.bool,
@@ -66,12 +67,12 @@ class ResetPasswordForm extends Component {
   }
 
   handleConfirmPasswordChange = (event) => {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     const value = event.target.value;
 
     this.setState((prevState) => {
       const password = prevState.formValues.password;
-      const error = __('password.form.new_password_confirmation.error');
+      const error = i18n._('password.form.new_password_confirmation.error');
       const passwordError = password === value ? [] : [error];
 
       return {
@@ -89,28 +90,20 @@ class ResetPasswordForm extends Component {
     this.props.onSubmit({ formValues });
   }
 
-  renderSuccess() {
-    const { __ } = this.props;
+  renderSuccess = () => (
+    <div className="m-reset-password-form__success">
+      <Icon type="check" rightSpaced /><Trans id="password.reset-form.success">Done!</Trans>
+    </div>
+  );
 
-    return (
-      <div className="m-reset-password-form__success">
-        <Icon type="check" rightSpaced />{__('password.reset-form.success')}
-      </div>
-    );
-  }
-
-  renderInvalid() {
-    const { __ } = this.props;
-
-    return (
-      <div className="m-reset-password-form__error">
-        {__('reset-password.form.errors.token_not_found')}
-      </div>
-    );
-  }
+  renderInvalid = () => (
+    <div className="m-reset-password-form__error">
+      <Trans id="reset-password.form.errors.token_not_found">Token is no more valid. Please retry.</Trans>
+    </div>
+  );
 
   renderForm() {
-    const { __, errors } = this.props;
+    const { i18n, errors } = this.props;
 
     const submitButtonProps = {
       // enable submitButton only if password and confirmPassword are matching
@@ -135,8 +128,8 @@ class ResetPasswordForm extends Component {
                 type="password"
                 value={this.state.formValues.password}
                 onChange={this.handlePasswordChange}
-                label={__('password.form.new_password.label')}
-                placeholder={__('password.form.new_password.placeholder')}
+                label={i18n._('password.form.new_password.label')}
+                placeholder={i18n._('password.form.new_password.placeholder')}
                 required
               />
             </FormColumn>
@@ -152,14 +145,14 @@ class ResetPasswordForm extends Component {
                 value={this.state.confirmPassword}
                 onChange={this.handleConfirmPasswordChange}
                 errors={this.state.formErrors.passwordError}
-                label={__('password.form.new_password_confirmation.label')}
-                placeholder={__('password.form.new_password_confirmation.placeholder')}
+                label={i18n._('password.form.new_password_confirmation.label')}
+                placeholder={i18n._('password.form.new_password_confirmation.placeholder')}
                 required
               />
             </FormColumn>
             <FormColumn className="m-reset-password-form__action" rightSpace={false}>
               <Button shape="plain" display="expanded" type="submit" {...submitButtonProps}>
-                {__('password.form.action.validate')}
+                <Trans id="password.form.action.validate">Apply modifications</Trans>
               </Button>
             </FormColumn>
           </FormRow>
@@ -181,13 +174,13 @@ class ResetPasswordForm extends Component {
   }
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     return (
-      <Section title={__('password.reset-form.title')} className="m-reset-password-form">
+      <Section title={i18n._('password.reset-form.title')} className="m-reset-password-form">
         {this.renderSection()}
         <div>
-          <Link to="/auth/signin">{__('password.action.go_signin')}</Link>
+          <Link to="/auth/signin"><Trans id="password.action.go_signin">Signin</Trans></Link>
         </div>
       </Section>
     );

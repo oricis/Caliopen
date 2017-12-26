@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import { reduxForm } from 'redux-form';
 import Presenter from './presenter';
 import { requestSettings, updateSettings } from '../../store/modules/settings';
@@ -27,7 +27,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withTranslator(),
+  withI18n(),
   reduxForm({
     form: 'settings-application',
     enableReinitialize: true,

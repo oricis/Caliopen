@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { withTranslator } from '@gandi/react-translate';
+import { Trans, withI18n } from 'lingui-react';
 import renderReduxField from '../../../../services/renderReduxField';
 import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
@@ -12,12 +12,12 @@ const IM_TYPES = ['', 'work', 'home', 'other', 'netmeeting'];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 
-@withTranslator()
+@withI18n()
 class ImForm extends PureComponent {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     onDelete: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     errors: [],
@@ -28,18 +28,18 @@ class ImForm extends PureComponent {
   }
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     this.addressTypes = {
-      work: __('contact.im_type.work'),
-      home: __('contact.im_type.home'),
-      other: __('contact.im_type.other'),
-      netmeeting: __('contact.im_type.netmeeting'),
+      work: i18n._('contact.im_type.work'),
+      home: i18n._('contact.im_type.home'),
+      other: i18n._('contact.im_type.other'),
+      netmeeting: i18n._('contact.im_type.netmeeting'),
     };
   }
 
   render() {
-    const { __, errors = [], onDelete } = this.props;
+    const { i18n, errors = [], onDelete } = this.props;
     const addressTypeOptions = IM_TYPES.map(value => ({
       value,
       label: this.addressTypes[value] || '',
@@ -52,7 +52,7 @@ class ImForm extends PureComponent {
             <FormColumn size="shrink">
               <Legend>
                 <Icon type="comment" rightSpaced />
-                <span className="m-im-form__legend">{__('contact.im_form.legend')}</span>
+                <span className="m-im-form__legend"><Trans id="contact.im_form.legend">Instant messaging</Trans></span>
               </Legend>
             </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
@@ -60,7 +60,7 @@ class ImForm extends PureComponent {
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={__('contact.im_form.type.label')}
+                label={i18n._('contact.im_form.type.label')}
                 showLabelforSr
                 options={addressTypeOptions}
               />
@@ -70,7 +70,7 @@ class ImForm extends PureComponent {
                 component={TextFieldGroup}
                 name="address"
                 type="email"
-                label={__('contact.im_form.address.label')}
+                label={i18n._('contact.im_form.address.label')}
                 showLabelforSr
                 required
               />

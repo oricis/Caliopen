@@ -7,7 +7,6 @@ class Device extends Component {
   static propTypes = {
     device: PropTypes.shape({}),
     isFetching: PropTypes.bool,
-    __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -16,13 +15,13 @@ class Device extends Component {
   };
 
   render() {
-    const { device, isFetching, __ } = this.props;
+    const { device, isFetching } = this.props;
 
     if (isFetching) {
       return <Spinner isLoading />;
     }
 
-    return (device && <DeviceBase device={device} __={__} />) || null;
+    return (device && <DeviceBase device={device} />) || null;
   }
 }
 

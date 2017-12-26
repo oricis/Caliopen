@@ -1,0 +1,19 @@
+{
+  "messages.compose.form.body.label": {
+    "defaults": "Type your message here...",
+    "origin": [
+      [
+        "src/components/DiscussionTextarea/presenter.jsx",
+        12
+      ]
+    ]
+  },
+  "messages.compose.form.body.placeholder": {
+    "origin": [
+      [
+        "src/components/DiscussionTextarea/presenter.jsx",
+        18
+      ]
+    ]
+  }
+}

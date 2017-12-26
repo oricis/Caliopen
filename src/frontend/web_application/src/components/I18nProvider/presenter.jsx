@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getTranslator, changeLocale, getLanguage } from '../../services/i18n';
+import { getTranslator, changeLocale } from '../../services/i18n';
+import { getLanguage } from '../../modules/i18n';
 
 class I18nProvider extends Component {
   static propTypes = {

@@ -1,0 +1,19 @@
+{
+  "header.menu.discussions": {
+    "origin": [
+      [
+        "src/scenes/Timeline/presenter.jsx",
+        68
+      ]
+    ]
+  },
+  "general.action.load_more": {
+    "defaults": "Load more",
+    "origin": [
+      [
+        "src/scenes/Timeline/presenter.jsx",
+        85
+      ]
+    ]
+  }
+}

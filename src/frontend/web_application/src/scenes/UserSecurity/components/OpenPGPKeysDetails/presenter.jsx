@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withTranslator } from '@gandi/react-translate';
+import { Trans } from 'lingui-react';
 import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
 import OpenPGPKey from '../../../../components/OpenPGPKey';
 import OpenPGPKeyForm from '../OpenPGPKeyForm';
 import './style.scss';
 
-@withTranslator()
 class OpenPGPKeysDetails extends Component {
   static propTypes = {
     user: PropTypes.shape({}).isRequired,
@@ -18,7 +17,6 @@ class OpenPGPKeysDetails extends Component {
     onImportKey: PropTypes.func.isRequired,
     onGenerateKey: PropTypes.func.isRequired,
     prefetch: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -62,7 +60,6 @@ class OpenPGPKeysDetails extends Component {
 
   render() {
     const {
-      __,
       isLoading,
       importForm,
       privateKeys,
@@ -108,7 +105,7 @@ class OpenPGPKeysDetails extends Component {
             shape="plain"
             icon="plus"
           >
-            {__('user.openpgp.action.edit-keys')}
+            <Trans id="user.openpgp.action.edit-keys">Edit and add keys</Trans>
           </Button>
         }
       </div>

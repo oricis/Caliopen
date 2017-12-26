@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import { ItemLink, NavbarItem } from '../Navbar';
 import Link from '../../../../../../components/Link';
 import Icon from '../../../../../../components/Icon';
@@ -21,7 +22,7 @@ class ApplicationSwitcher extends Component {
     }).isRequired,
     isactive: PropTypes.bool.isRequired,
     onClickApp: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   state = { isDropdownOpen: false };
@@ -31,8 +32,8 @@ class ApplicationSwitcher extends Component {
   };
 
   render() {
-    const { __, onClickApp, isactive } = this.props;
-    const applicationLabels = getLabels(__);
+    const { i18n, onClickApp, isactive } = this.props;
+    const applicationLabels = getLabels(i18n);
 
     return (
       <NavbarItem
@@ -52,7 +53,7 @@ class ApplicationSwitcher extends Component {
             toggleId="co-application-switcher"
             className="m-application-switcher__toggler"
           >
-            <span className="show-for-sr">{__('application_switcher.action.choose')}</span>
+            <span className="show-for-sr"><Trans id="application_switcher.action.choose">Choose</Trans></span>
             <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
           </DropdownControl>
         )}

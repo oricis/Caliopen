@@ -10,7 +10,7 @@ const LANGUAGES = ['fr_FR', 'en_EN', 'de_DE'];
 
 class InterfaceSettings extends PureComponent {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   componentWillMount() {
@@ -23,16 +23,16 @@ class InterfaceSettings extends PureComponent {
   }));
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.i18n = {
-      fr_FR: __('settings.interface.language.options.fr'),
-      en_EN: __('settings.interface.language.options.en'),
-      de_DE: __('settings.interface.language.options.de'),
+      fr_FR: i18n._('settings.interface.language.options.fr'),
+      en_EN: i18n._('settings.interface.language.options.en'),
+      de_DE: i18n._('settings.interface.language.options.de'),
     };
   }
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     const languageOptions = this.getOptionsFromArray(LANGUAGES);
 
     return (
@@ -42,7 +42,7 @@ class InterfaceSettings extends PureComponent {
             <Field
               component={SelectFieldGroup}
               name="default_locale"
-              label={__('settings.interface.language.label')}
+              label={i18n._('settings.interface.language.label')}
               options={languageOptions}
             />
           </FormColumn>

@@ -10,21 +10,21 @@ const DropdownControlButton = withDropdownControl(Button);
 
 class TimelineFilterContainer extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
   };
   state = {};
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     return (
       <TimelineFilter render={(options, currentFilter) => (
         <div className="m-timeline-filter-container">
           <DropdownControlButton
             toggleId="timeline-filter_navigation_dropdown"
-            title={__('navigation.actions.toggle-timeline-filter')}
+            title={i18n._('navigation.actions.toggle-timeline-filter')}
             className="m-timeline-filter-container__dropdown-control"
             icon="filter"
           >

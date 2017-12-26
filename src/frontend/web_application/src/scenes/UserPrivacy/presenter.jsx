@@ -9,7 +9,7 @@ import './style.scss';
 
 class UserPrivacy extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     // requestUser: PropTypes.func.isRequired,
     // user: PropTypes.shape({}),
   };
@@ -17,7 +17,7 @@ class UserPrivacy extends Component {
   state = {};
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     const fakePi = { technic: 87, context: 45, comportment: 25 };
 
     const privacyTips = [
@@ -33,7 +33,7 @@ class UserPrivacy extends Component {
 
         <MultidimensionalPi className="s-user-privacy__pi" pi={fakePi} />
 
-        <Section className="s-user-privacy__info" title={__('user.privacy.improve_pi')}>
+        <Section className="s-user-privacy__info" title={i18n._('user.privacy.improve_pi')}>
           <TextList className="s-user-privacy__tips">
             {privacyTips.map(tip => (
               <ItemContent

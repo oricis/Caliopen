@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import InputFileGroup from '../../../../components/form/InputFileGroup';
 import Button from '../../../../components/Button';
 import Spinner from '../../../../components/Spinner';
@@ -22,7 +23,7 @@ class ImportContactForm extends Component {
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     errors: PropTypes.shape({}),
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     formatNumber: PropTypes.func.isRequired,
     hasImported: PropTypes.bool,
     isLoading: PropTypes.bool,
@@ -54,7 +55,7 @@ class ImportContactForm extends Component {
   }
 
   renderButtons() {
-    const { __, onCancel, isLoading } = this.props;
+    const { onCancel, isLoading } = this.props;
 
     return (
       <div className="m-import-contact-form__buttons">
@@ -63,7 +64,7 @@ class ImportContactForm extends Component {
             className="m-import-contact-form__button"
             shape="hollow"
             onClick={onCancel}
-          >{__('general.action.cancel')}</Button>
+          ><Trans id="general.action.cancel">Cancel</Trans></Button>
         }
 
         {this.state.file && !this.props.hasImported &&
@@ -73,7 +74,7 @@ class ImportContactForm extends Component {
             shape="plain"
             icon={isLoading ? (<Spinner isLoading display="inline" />) : 'download'}
             disabled={isLoading}
-          >{__('import-contact.action.import')}</Button>
+          ><Trans id="import-contact.action.import">Import</Trans></Button>
         }
 
         {this.props.hasImported &&
@@ -81,14 +82,14 @@ class ImportContactForm extends Component {
             className="m-import-contact-form__button m-import-contact-form__button--right"
             shape="plain"
             onClick={onCancel}
-          >{__('import-contact.form.button.close')}</Button>
+          ><Trans id="import-contact.form.button.close">Close</Trans></Button>
         }
       </div>
     );
   }
 
   render() {
-    const { __, formatNumber, hasImported, errors, formAction } = this.props;
+    const { i18n, formatNumber, hasImported, errors, formAction } = this.props;
     const { maxBodySize } = getConfig();
 
     return (
@@ -103,14 +104,13 @@ class ImportContactForm extends Component {
           <InputFileGroup
             onInputChange={this.handleInputFileChange}
             errors={errors}
-            descr={__('import-contact.form.descr')}
+            descr={i18n._('import-contact.form.descr')}
             fileTypes={VALID_EXT}
             maxSize={getMaxSize(maxBodySize)}
-            __={__}
             formatNumber={formatNumber}
           />
         :
-          <p>{__('import-contact.form.success')}</p>
+          <p><Trans id="import-contact.form.success">Successfuly imported !</Trans></p>
       }
         {this.renderButtons()}
       </form>

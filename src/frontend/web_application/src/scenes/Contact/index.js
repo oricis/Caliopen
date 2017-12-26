@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, formValues } from 'redux-form';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import { push } from 'react-router-redux';
 import { requestContact, updateContact, createContact, deleteContact, invalidate as invalidateContacts } from '../../store/modules/contact';
 import { withNotification } from '../../hoc/notification';
@@ -50,7 +50,7 @@ export default compose(
     enableReinitialize: true,
   }),
   formValues({ birthday: 'info.birthday' }),
-  withTranslator(),
+  withI18n(),
   withCurrentTab(),
   withNotification(),
 )(Presenter);

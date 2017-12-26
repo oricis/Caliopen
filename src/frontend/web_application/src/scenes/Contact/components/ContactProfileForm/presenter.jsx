@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withTranslator } from '@gandi/react-translate';
+import { Trans } from 'lingui-react';
 import { Field } from 'redux-form';
 import ContactTitleField from '../ContactTitleField';
 import renderReduxField from '../../../../services/renderReduxField';
@@ -12,7 +12,7 @@ const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 
 class ContactProfileForm extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     form: PropTypes.string.isRequired,
     isNew: PropTypes.bool,
   };
@@ -41,7 +41,7 @@ class ContactProfileForm extends Component {
   };
 
   render() {
-    const { __, form } = this.props;
+    const { i18n, form } = this.props;
 
     return (
       <div className="m-contact-profile-form">
@@ -55,7 +55,7 @@ class ContactProfileForm extends Component {
               className="m-contact-profile-form__expand-button"
             >
               <span className="show-for-sr">
-                {__('contact_profile.action.edit_contact')}
+                <Trans id="contact_profile.action.edit_contact">Edit</Trans>
               </span>
             </Button>
           :
@@ -66,7 +66,7 @@ class ContactProfileForm extends Component {
               className="m-contact-profile-form__expand-button"
             >
               <span className="show-for-sr">
-                {__('contact_profile.action.edit_contact')}
+                <Trans id="contact_profile.action.edit_contact">Edit</Trans>
               </span>
             </Button>
           }
@@ -77,32 +77,32 @@ class ContactProfileForm extends Component {
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={__('contact_profile.form.name-prefix.label')}
-              placeholder={__('contact_profile.form.name-prefix.label')}
+              label={i18n._('contact_profile.form.name-prefix.label')}
+              placeholder={i18n._('contact_profile.form.name-prefix.label')}
               name="name_prefix"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={__('contact_profile.form.firstname.label')}
-              placeholder={__('contact_profile.form.firstname.label')}
+              label={i18n._('contact_profile.form.firstname.label')}
+              placeholder={i18n._('contact_profile.form.firstname.label')}
               name="given_name"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={__('contact_profile.form.lastname.label')}
-              placeholder={__('contact_profile.form.lastname.label')}
+              label={i18n._('contact_profile.form.lastname.label')}
+              placeholder={i18n._('contact_profile.form.lastname.label')}
               name="family_name"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={__('contact_profile.form.name-suffix.label')}
-              placeholder={__('contact_profile.form.name-suffix.label')}
+              label={i18n._('contact_profile.form.name-suffix.label')}
+              placeholder={i18n._('contact_profile.form.name-suffix.label')}
               name="name_suffix"
               showLabelforSr
             />
@@ -114,4 +114,4 @@ class ContactProfileForm extends Component {
 }
 
 
-export default withTranslator()(ContactProfileForm);
+export default ContactProfileForm;

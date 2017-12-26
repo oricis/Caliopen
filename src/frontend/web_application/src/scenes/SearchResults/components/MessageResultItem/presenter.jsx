@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Moment from 'react-moment';
+import { Trans } from 'lingui-react';
 import Link from '../../../../components/Link';
 import MessageDate from '../../../../components/MessageDate';
 import AuthorAvatar from '../../../../components/AuthorAvatar';
@@ -19,7 +20,6 @@ class MessageResultItem extends PureComponent {
     term: PropTypes.string.isRequired,
     highlights: PropTypes.shape({}),
     locale: PropTypes.string.isRequired,
-    __: PropTypes.func.isRequired,
   };
   static defaultProps = {
     highlights: null,
@@ -57,7 +57,7 @@ class MessageResultItem extends PureComponent {
   }
 
   render() {
-    const { message, locale, __ } = this.props;
+    const { message, locale } = this.props;
 
     return (
       <Link
@@ -74,7 +74,7 @@ class MessageResultItem extends PureComponent {
             {this.renderTags()}
           </TextBlock>
           <TextBlock>
-            {message.is_draft && (<span className="s-message-result-item__draft-prefix">{__('timeline.draft-prefix')}</span>)}
+            {message.is_draft && (<span className="s-message-result-item__draft-prefix"><Trans id="timeline.draft-prefix">Draft in progress:</Trans></span>)}
             {message.subject && (<span className="s-message-result-item__subject">{message.subject}</span>)}
             {this.renderHighlights()}
           </TextBlock>

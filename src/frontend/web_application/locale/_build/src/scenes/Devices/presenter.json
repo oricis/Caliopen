@@ -1,0 +1,10 @@
+{
+  "device.no-selected-device": {
+    "origin": [
+      [
+        "src/scenes/Devices/presenter.jsx",
+        63
+      ]
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "user.privacy.improve_pi": {
+    "origin": [
+      [
+        "src/scenes/UserPrivacy/presenter.jsx",
+        36
+      ]
+    ]
+  }
+}

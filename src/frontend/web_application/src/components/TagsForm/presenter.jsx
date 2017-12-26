@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../Button';
 import { FormGrid } from '../form';
 import TagItem from './components/TagItem';
@@ -14,7 +15,6 @@ class TagsForm extends Component {
     onSearchSubmit: PropTypes.func,
     onCreate: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -53,19 +53,18 @@ class TagsForm extends Component {
   }
 
   render() {
-    const { __, tags, onUpdate } = this.props;
+    const { tags, onUpdate } = this.props;
 
     return (
       <div className="m-tags-form">
         <TagSearch
           onChange={this.handleSearchChange}
           onSubmit={this.handleSearchSubmit}
-          __={__}
         />
 
         <div className="m-tags-form__section">
           {tags && tags.length > 0 && tags.map(tag =>
-            <TagItem tag={tag} key={tag.tag_id} onUpdate={onUpdate} __={__} />
+            <TagItem tag={tag} key={tag.tag_id} onUpdate={onUpdate} />
           )}
         </div>
 
@@ -76,7 +75,7 @@ class TagsForm extends Component {
             shape="plain"
             icon="plus"
           >
-            {__('tags.action.create')}
+            <Trans id="tags.action.create">Create</Trans>
           </Button>
         </FormGrid>
       </div>

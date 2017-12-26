@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import { push } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_INFO } from 'react-redux-notify';
 import { createMessageCollectionStateSelector } from '../../store/selectors/message';
@@ -69,6 +69,6 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withTranslator(),
+  withI18n(),
   withCurrentTab()
 )(Presenter);

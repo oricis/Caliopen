@@ -10,7 +10,7 @@ class Signup extends Component {
   static propTypes = {
     onSignupSuccess: PropTypes.func.isRequired,
     settings: PropTypes.shape({}).isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   state = {
@@ -35,8 +35,8 @@ class Signup extends Component {
 
     if (username.length >= 3) {
       this.resetErrorsState('username');
-      const { __ } = this.props;
-      formValidator.validate({ username }, __, 'username').catch(
+      const { i18n } = this.props;
+      formValidator.validate({ username }, i18n, 'username').catch(
         (errors) => {
           this.setState(prevState => ({
             errors: {
@@ -57,9 +57,9 @@ class Signup extends Component {
       return;
     }
 
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
-    formValidator.validate({ username }, __, 'usernameAvailability').catch((errors) => {
+    formValidator.validate({ username }, i18n, 'usernameAvailability').catch((errors) => {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
@@ -70,8 +70,8 @@ class Signup extends Component {
   }
 
   handleSignup = (ev) => {
-    const { __, settings } = this.props;
-    formValidator.validate(ev.formValues, __, 'full')
+    const { i18n, settings } = this.props;
+    formValidator.validate(ev.formValues, i18n, 'full')
       .catch((errors) => {
         this.setState({ errors });
 
@@ -105,8 +105,8 @@ class Signup extends Component {
       throw err;
     }
 
-    const { __ } = this.props;
-    const localizedErrors = getLocalizedErrors(__);
+    const { i18n } = this.props;
+    const localizedErrors = getLocalizedErrors(i18n);
 
     const getLocalizedError = (msg, field) =>
       localizedErrors[`${msg}_${field.toUpperCase()}`] ||

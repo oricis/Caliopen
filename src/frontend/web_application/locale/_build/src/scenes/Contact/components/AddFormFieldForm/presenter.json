@@ -1,0 +1,56 @@
+{
+  "contact.form-selector.email_form.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddFormFieldForm/presenter.jsx",
+        49
+      ]
+    ]
+  },
+  "contact.form-selector.phone_form.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddFormFieldForm/presenter.jsx",
+        53
+      ]
+    ]
+  },
+  "contact.form-selector.im_form.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddFormFieldForm/presenter.jsx",
+        57
+      ]
+    ]
+  },
+  "contact.form-selector.address_form.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddFormFieldForm/presenter.jsx",
+        61
+      ]
+    ]
+  },
+  "contact.form-selector.add_new_field.label": {
+    "defaults": "Add a new field",
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddFormFieldForm/presenter.jsx",
+        83
+      ],
+      [
+        "src/scenes/Contact/components/AddFormFieldForm/presenter.jsx",
+        94
+      ]
+    ]
+  },
+  "contact.action.add_new_field": {
+    "defaults": "Add new",
+    "origin": [
+      [
+        "src/scenes/Contact/components/AddFormFieldForm/presenter.jsx",
+        99
+      ]
+    ]
+  }
+}

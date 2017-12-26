@@ -1,0 +1,59 @@
+{
+  "settings.notification.message_preview.options.off": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/NotificationSettings/presenter.jsx",
+        34
+      ]
+    ]
+  },
+  "settings.notification.message_preview.options.always": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/NotificationSettings/presenter.jsx",
+        35
+      ]
+    ]
+  },
+  "settings.notification.delay_disappear.options.second": {
+    "defaults": "{delay} Seconds",
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/NotificationSettings/presenter.jsx",
+        45
+      ]
+    ]
+  },
+  "settings.notification.enabled.label": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/NotificationSettings/presenter.jsx",
+        55
+      ]
+    ]
+  },
+  "settings.notification.message_preview.label": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/NotificationSettings/presenter.jsx",
+        64
+      ]
+    ]
+  },
+  "settings.notification.sound_enabled.label": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/NotificationSettings/presenter.jsx",
+        74
+      ]
+    ]
+  },
+  "settings.notification.delay_disappear.label": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/NotificationSettings/presenter.jsx",
+        83
+      ]
+    ]
+  }
+}

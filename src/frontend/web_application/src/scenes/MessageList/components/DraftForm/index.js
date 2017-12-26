@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import { withNotification } from '../../../../hoc/notification';
 import { createMessageCollectionStateSelector } from '../../../../store/selectors/message';
 import { editDraft, requestDraft, saveDraft, sendDraft, clearDraft } from '../../../../store/modules/draft-message';
@@ -48,9 +48,9 @@ const onDeleteMessage = ({ message, internalId, isNewDiscussion }) => dispatch =
 const onSaveDraft = ({ internalId, draft, message }, ownProps) => dispatch =>
   dispatch(saveDraft({ internalId, draft, message }))
     .then(() => {
-      const { __, notifySuccess } = ownProps;
+      const { i18n, notifySuccess } = ownProps;
 
-      return notifySuccess({ message: __('draft.feedback.saved') });
+      return notifySuccess({ message: i18n._('draft.feedback.saved') });
     });
 
 const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
@@ -62,7 +62,7 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
 }, dispatch);
 
 export default compose(...[
-  withTranslator(),
+  withI18n(),
   withNotification(),
   connect(mapStateToProps, mapDispatchToProps),
 ])(Presenter);

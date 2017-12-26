@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import { Fieldset, Legend, FormGrid, FormRow, FormColumn, FieldErrors, TextFieldGroup } from '../../../../components/form';
 import Section from '../../../../components/Section';
 import Button from '../../../../components/Button';
@@ -13,7 +14,7 @@ class ForgotPasswordForm extends Component {
     errors: PropTypes.shape({}),
     onSubmit: PropTypes.func.isRequired,
     success: PropTypes.bool,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -44,10 +45,10 @@ class ForgotPasswordForm extends Component {
   }
 
   render() {
-    const { __, errors, success } = this.props;
+    const { i18n, errors, success } = this.props;
 
     return (
-      <Section title={__('password.forgot-form.title')} className="m-forgot-password-form">
+      <Section title={i18n._('password.forgot-form.title')} className="m-forgot-password-form">
         <FormGrid className="m-forgot-password-form">
           <form method="post" onSubmit={this.handleSubmit}>
             <Fieldset>
@@ -61,7 +62,7 @@ class ForgotPasswordForm extends Component {
               {success ? (
                 <FormRow>
                   <FormColumn rightSpace={false} bottomSpace className="m-forgot-password-form__success">
-                    <Icon type="check" rightSpaced />{__('password.forgot-form.success')}
+                    <Icon type="check" rightSpaced /><Trans id="password.forgot-form.success">Done! You will receive an email shortly with instructions to reset your password.</Trans>
                   </FormColumn>
                   <FormColumn rightSpace={false} className="m-forgot-password-form__action" bottomSpace>
                     <Link
@@ -69,20 +70,23 @@ class ForgotPasswordForm extends Component {
                       plain
                       expanded
                       to="/auth/signin"
-                    >{__('password.forgot-form.action.login')}</Link>
+                    ><Trans id="password.forgot-form.action.login">Ok</Trans></Link>
                   </FormColumn>
                 </FormRow>
               ) : (
                 <FormRow>
                   <FormColumn rightSpace={false} bottomSpace>
                     <Legend>
-                      {__('password.forgot-form.instructions')}
+                      <Trans id="password.forgot-form.instructions">
+                        Enter your username and we&apos;ll email instructions on how to reset your
+                        password.
+                      </Trans>
                     </Legend>
                   </FormColumn>
                   <FormColumn rightSpace={false} bottomSpace>
                     <TextFieldGroup
-                      label={__('password.forgot-form.username.label')}
-                      placeholder={__('password.forgot-form.username.placeholder')}
+                      label={i18n._('password.forgot-form.username.label')}
+                      placeholder={i18n._('password.forgot-form.username.placeholder')}
                       name="username"
                       value={this.state.formValues.username}
                       errors={errors.username}
@@ -92,8 +96,8 @@ class ForgotPasswordForm extends Component {
                   </FormColumn>
                   <FormColumn rightSpace={false} bottomSpace>
                     <TextFieldGroup
-                      label={__('password.forgot-form.recovery_email.label')}
-                      placeholder={__('password.forgot-form.recovery_email.placeholder')}
+                      label={i18n._('password.forgot-form.recovery_email.label')}
+                      placeholder={i18n._('password.forgot-form.recovery_email.placeholder')}
                       name="recovery_email"
                       value={this.state.formValues.recovery_email}
                       errors={errors.recovery_email}
@@ -106,10 +110,10 @@ class ForgotPasswordForm extends Component {
                       type="submit"
                       display="expanded"
                       shape="plain"
-                    >{__('password.forgot-form.action.send')}</Button>
+                    ><Trans id="password.forgot-form.action.send">Send</Trans></Button>
                   </FormColumn>
                   <FormColumn rightSpace={false}>
-                    <Link to="/auth/signin">{__('password.forgot-form.cancel')}</Link>
+                    <Link to="/auth/signin"><Trans id="password.forgot-form.cancel">Cancel</Trans></Link>
                   </FormColumn>
                 </FormRow>
               )}

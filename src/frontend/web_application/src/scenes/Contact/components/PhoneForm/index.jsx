@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { withTranslator } from '@gandi/react-translate';
+import { Trans, withI18n } from 'lingui-react';
 import renderReduxField from '../../../../services/renderReduxField';
 import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
@@ -12,12 +12,12 @@ const PHONE_TYPES = ['', 'work', 'home', 'other'];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 
-@withTranslator()
+@withI18n()
 class PhoneForm extends PureComponent {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     onDelete: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     errors: [],
@@ -28,16 +28,16 @@ class PhoneForm extends PureComponent {
   }
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.addressTypes = {
-      work: __('contact.phone_type.work'),
-      home: __('contact.phone_type.home'),
-      other: __('contact.phone_type.other'),
+      work: i18n._('contact.phone_type.work'),
+      home: i18n._('contact.phone_type.home'),
+      other: i18n._('contact.phone_type.other'),
     };
   }
 
   render() {
-    const { __, errors, onDelete } = this.props;
+    const { i18n, errors, onDelete } = this.props;
     const typeOptions = PHONE_TYPES.map(value => ({
       value,
       label: this.addressTypes[value] || '',
@@ -51,14 +51,14 @@ class PhoneForm extends PureComponent {
             <FormColumn size="shrink">
               <Legend>
                 <Icon rightSpaced type="phone" />
-                <span className="m-phone-form__legend">{__('contact.phone_form.legend')}</span>
+                <span className="m-phone-form__legend"><Trans id="contact.phone_form.legend">Phone</Trans></span>
               </Legend>
             </FormColumn>
             <FormColumn size="shrink" bottomSpace>
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={__('contact.phone_form.type.label')}
+                label={i18n._('contact.phone_form.type.label')}
                 showLabelforSr
                 options={typeOptions}
               />
@@ -68,7 +68,7 @@ class PhoneForm extends PureComponent {
                 component={TextFieldGroup}
                 name="number"
                 type="tel"
-                label={__('contact.phone_form.number.label')}
+                label={i18n._('contact.phone_form.number.label')}
                 showLabelforSr
                 required
               />

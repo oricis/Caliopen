@@ -1,0 +1,11 @@
+{
+  "timeline.draft-prefix": {
+    "defaults": "Draft in progress:",
+    "origin": [
+      [
+        "src/scenes/Timeline/components/MessageItem/presenter.jsx",
+        77
+      ]
+    ]
+  }
+}

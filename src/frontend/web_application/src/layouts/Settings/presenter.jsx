@@ -7,7 +7,7 @@ class Settings extends PureComponent {
   static propTypes = {
     pathname: PropTypes.string,
     children: PropTypes.node,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     pathname: undefined,
@@ -15,14 +15,14 @@ class Settings extends PureComponent {
   };
 
   render() {
-    const { __, children, pathname } = this.props;
+    const { i18n, children, pathname } = this.props;
 
     const navLinks = [
-      // { title: __('settings.identities'), to: '/settings/identities' },
-      { title: __('settings.application'), to: '/settings/application' },
-      // { title: __('settings.tags'), to: '/settings/tags' },
-      // { title: __('settings.devices'), to: '/settings/devices' },
-      //{ title: __('settings.signatures'), to: '/settings/signatures' },
+      // { title: i18n._('settings.identities'), to: '/settings/identities' },
+      { title: i18n._('settings.application'), to: '/settings/application' },
+      // { title: i18n._('settings.tags'), to: '/settings/tags' },
+      // { title: i18n._('settings.devices'), to: '/settings/devices' },
+      //{ title: i18n._('settings.signatures'), to: '/settings/signatures' },
     ].map(link => ({
       ...link,
       isActive: matchPath(pathname, { path: link.to, exact: false, strict: false }) && true,

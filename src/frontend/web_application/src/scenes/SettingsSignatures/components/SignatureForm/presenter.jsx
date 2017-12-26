@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../../../../components/Button';
 import { FormGrid, FormRow, FormColumn, TextareaFieldGroup, FieldErrors } from '../../../../components/form';
 
@@ -16,7 +17,7 @@ class SignatureForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
     onSubmit: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     errors: {},
@@ -58,7 +59,7 @@ class SignatureForm extends Component {
   }
 
   render() {
-    const { errors, __ } = this.props;
+    const { errors, i18n } = this.props;
 
     return (
       <FormGrid className="m-signature-form">
@@ -76,7 +77,7 @@ class SignatureForm extends Component {
                 name="signature"
                 defaultValue={this.state.settings.signature}
                 onChange={this.handleTextareaChange}
-                label={__('settings.signature.label')}
+                label={i18n._('settings.signature.label')}
                 showTextLabel
               />
             </FormColumn>
@@ -87,7 +88,7 @@ class SignatureForm extends Component {
                 type="submit"
                 onClick={this.handleSubmit}
                 shape="plain"
-              >{__('settings.signature.update.action')}</Button>
+              ><Trans id="settings.signature.update.action">Save</Trans></Button>
             </FormColumn>
           </FormRow>
         </form>

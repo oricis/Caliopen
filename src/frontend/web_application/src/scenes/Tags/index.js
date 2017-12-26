@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslator } from '@gandi/react-translate';
 import { requestTags, createTag, updateTag } from '../../store/modules/tag';
 import Presenter from './presenter';
 
@@ -17,6 +16,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withTranslator()
+  connect(mapStateToProps, mapDispatchToProps)
 )(Presenter);

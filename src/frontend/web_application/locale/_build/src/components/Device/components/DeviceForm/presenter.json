@@ -1,0 +1,161 @@
+{
+  "device.feedback.invalid_ip": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        72
+      ]
+    ]
+  },
+  "device.type.desktop": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        83
+      ]
+    ]
+  },
+  "device.type.laptop": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        84
+      ]
+    ]
+  },
+  "device.type.smartphone": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        85
+      ]
+    ]
+  },
+  "device.type.tablet": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        86
+      ]
+    ]
+  },
+  "device.location.type.unknown": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        89
+      ]
+    ]
+  },
+  "device.location.type.home": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        90
+      ]
+    ]
+  },
+  "device.location.type.work": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        91
+      ]
+    ]
+  },
+  "device.location.type.public": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        92
+      ]
+    ]
+  },
+  "device.form.locations.address.label": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        112
+      ]
+    ]
+  },
+  "device.form.locations.type.label": {
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        120
+      ]
+    ]
+  },
+  "device.manage_form.name.label": {
+    "defaults": "Name:",
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        134
+      ],
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        141
+      ]
+    ]
+  },
+  "device.manage_form.name.infotext": {
+    "defaults": "This is the name which allows you to identify your device everywhere.",
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        137
+      ]
+    ]
+  },
+  "device.manage_form.type.label": {
+    "defaults": "Type:",
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        152
+      ],
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        160
+      ]
+    ]
+  },
+  "device.manage_form.type.infotext": {
+    "defaults": "You can select the type of your device: smartphone, tablet, laptop or desktop.",
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        155
+      ]
+    ]
+  },
+  "device.manage_form.ips.label": {
+    "defaults": "IP or subnet address",
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        172
+      ]
+    ]
+  },
+  "device.manage_form.ips.infotext": {
+    "defaults": "Restrict the access of your account to certain IP addresses for this device. (e.g. 192.168.10 or 192.168.1.1/24 or 192.168.1.1-20)",
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        175
+      ]
+    ]
+  },
+  "device.action.save_changes": {
+    "defaults": "Save modifications",
+    "origin": [
+      [
+        "src/components/Device/components/DeviceForm/presenter.jsx",
+        190
+      ]
+    ]
+  }
+}

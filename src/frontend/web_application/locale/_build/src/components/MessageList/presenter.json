@@ -1,0 +1,20 @@
+{
+  "message-list.action.reply": {
+    "defaults": "Reply",
+    "origin": [
+      [
+        "src/components/MessageList/presenter.jsx",
+        88
+      ]
+    ]
+  },
+  "message-list.action.delete": {
+    "defaults": "Delete",
+    "origin": [
+      [
+        "src/components/MessageList/presenter.jsx",
+        97
+      ]
+    ]
+  }
+}

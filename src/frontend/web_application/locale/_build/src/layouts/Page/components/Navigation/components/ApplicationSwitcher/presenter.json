@@ -1,0 +1,11 @@
+{
+  "application_switcher.action.choose": {
+    "defaults": "Choose",
+    "origin": [
+      [
+        "src/layouts/Page/components/Navigation/components/ApplicationSwitcher/presenter.jsx",
+        56
+      ]
+    ]
+  }
+}

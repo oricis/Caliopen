@@ -13,7 +13,7 @@ class SearchField extends Component {
   static propTypes = {
     term: PropTypes.string,
     push: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     term: '',
@@ -48,7 +48,7 @@ class SearchField extends Component {
   }
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     return (
       <div className="m-search-field">
@@ -57,13 +57,13 @@ class SearchField extends Component {
             name="term"
             onChange={this.handleInputChange}
             value={this.state.term}
-            placeholder={__('header.menu.search')}
+            placeholder={i18n._('header.menu.search')}
             className="m-search-field__input m-input-text"
           />
           <RawButton
             className="m-search-field__button"
             type="submit"
-            aria-label={__('header.menu.search')}
+            aria-label={i18n._('header.menu.search')}
           ><Icon type="search" /></RawButton>
         </form>
       </div>

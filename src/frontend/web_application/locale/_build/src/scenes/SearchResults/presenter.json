@@ -1,0 +1,46 @@
+{
+  "search-results.preview.nb-messages": {
+    "defaults": "{nbMessages} messages contains \"{term}\" in their subject or content:",
+    "origin": [
+      [
+        "src/scenes/SearchResults/presenter.jsx",
+        122
+      ]
+    ]
+  },
+  "search-results.actions.display-all": {
+    "defaults": "Display all",
+    "origin": [
+      [
+        "src/scenes/SearchResults/presenter.jsx",
+        127
+      ],
+      [
+        "src/scenes/SearchResults/presenter.jsx",
+        139
+      ]
+    ]
+  },
+  "search-results.preview.nb-contacts": {
+    "defaults": "{nbContacts} contacts contains \"{term}\" in their label or profile:",
+    "origin": [
+      [
+        "src/scenes/SearchResults/presenter.jsx",
+        134
+      ]
+    ]
+  },
+  "general.action.load_more": {
+    "defaults": "Load more",
+    "origin": [
+      [
+        "src/scenes/SearchResults/presenter.jsx",
+        172
+      ],
+      [
+        "src/scenes/SearchResults/presenter.jsx",
+        187
+      ]
+    ]
+  }
+}

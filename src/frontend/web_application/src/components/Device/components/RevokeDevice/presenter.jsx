@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../../../../components/Button';
 
-const RevokeDevice = ({ device, onRevokeDevice, __ }) => {
+const RevokeDevice = ({ device, onRevokeDevice }) => {
   const handleRevoke = () => {
     onRevokeDevice({ device });
   };
@@ -14,7 +15,7 @@ const RevokeDevice = ({ device, onRevokeDevice, __ }) => {
         shape="plain"
         color="alert"
         onClick={handleRevoke}
-      >{__('device.action.revoke')}</Button>
+      ><Trans id="device.action.revoke">Revoke this device</Trans></Button>
     </div>
   );
 };
@@ -22,7 +23,6 @@ const RevokeDevice = ({ device, onRevokeDevice, __ }) => {
 RevokeDevice.propTypes = {
   device: PropTypes.shape({}).isRequired,
   onRevokeDevice: PropTypes.func.isRequired,
-  __: PropTypes.func.isRequired,
 };
 
 export default RevokeDevice;

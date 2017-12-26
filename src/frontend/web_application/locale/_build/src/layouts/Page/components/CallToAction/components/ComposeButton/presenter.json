@@ -1,0 +1,11 @@
+{
+  "call-to-action.action.compose": {
+    "defaults": "Compose",
+    "origin": [
+      [
+        "src/layouts/Page/components/CallToAction/components/ComposeButton/presenter.jsx",
+        21
+      ]
+    ]
+  }
+}

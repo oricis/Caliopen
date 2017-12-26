@@ -1,0 +1,20 @@
+{
+  "password.details.password_strength.title": {
+    "defaults": "Password strength:",
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordDetails/index.jsx",
+        52
+      ]
+    ]
+  },
+  "password.details.action.change": {
+    "defaults": "Change",
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordDetails/index.jsx",
+        70
+      ]
+    ]
+  }
+}

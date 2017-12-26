@@ -1,0 +1,124 @@
+{
+  "openpgp.status.invalid": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        90
+      ]
+    ]
+  },
+  "openpgp.status.expired": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        91
+      ]
+    ]
+  },
+  "openpgp.status.revoked": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        92
+      ]
+    ]
+  },
+  "openpgp.status.valid": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        93
+      ]
+    ]
+  },
+  "openpgp.status.no_self_cert": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        94
+      ]
+    ]
+  },
+  "openpgp.action.toggle-details": {
+    "defaults": "Toggle details",
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        113
+      ]
+    ]
+  },
+  "openpgp.action.remove-key": {
+    "defaults": "Remove",
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        118
+      ]
+    ]
+  },
+  "openpgp.details.identities": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        149
+      ]
+    ]
+  },
+  "openpgp.details.algorithm": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        150
+      ]
+    ]
+  },
+  "openpgp.details.key-size": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        151
+      ]
+    ]
+  },
+  "openpgp.details.status": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        152
+      ]
+    ]
+  },
+  "openpgp.details.creation": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        153
+      ]
+    ]
+  },
+  "openpgp.details.expiration": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        154
+      ]
+    ]
+  },
+  "openpgp.public-key": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        160
+      ]
+    ]
+  },
+  "openpgp.private-key": {
+    "origin": [
+      [
+        "src/components/OpenPGPKey/presenter.jsx",
+        167
+      ]
+    ]
+  }
+}

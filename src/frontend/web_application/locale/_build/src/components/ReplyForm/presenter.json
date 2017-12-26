@@ -1,0 +1,73 @@
+{
+  "reply-form.protocol.email": {
+    "origin": [
+      [
+        "src/components/ReplyForm/presenter.jsx",
+        89
+      ]
+    ]
+  },
+  "reply-form.by": {
+    "defaults": "by {0}",
+    "origin": [
+      [
+        "src/components/ReplyForm/presenter.jsx",
+        95
+      ]
+    ]
+  },
+  "reply-form.you": {
+    "defaults": "You",
+    "origin": [
+      [
+        "src/components/ReplyForm/presenter.jsx",
+        120
+      ]
+    ]
+  },
+  "reply-form.now": {
+    "defaults": "Now",
+    "origin": [
+      [
+        "src/components/ReplyForm/presenter.jsx",
+        122
+      ]
+    ]
+  },
+  "reply-form.in-reply-to": {
+    "defaults": "In reply to: {0}",
+    "origin": [
+      [
+        "src/components/ReplyForm/presenter.jsx",
+        138
+      ]
+    ]
+  },
+  "messages.compose.action.send": {
+    "defaults": "Send",
+    "origin": [
+      [
+        "src/components/ReplyForm/presenter.jsx",
+        157
+      ]
+    ]
+  },
+  "messages.compose.action.save": {
+    "defaults": "Save",
+    "origin": [
+      [
+        "src/components/ReplyForm/presenter.jsx",
+        166
+      ]
+    ]
+  },
+  "messages.compose.action.copy": {
+    "defaults": "Copy to",
+    "origin": [
+      [
+        "src/components/ReplyForm/presenter.jsx",
+        169
+      ]
+    ]
+  }
+}

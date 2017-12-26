@@ -1,0 +1,19 @@
+{
+  "settings.signature.label": {
+    "origin": [
+      [
+        "src/scenes/SettingsSignatures/components/SignatureForm/presenter.jsx",
+        80
+      ]
+    ]
+  },
+  "settings.signature.update.action": {
+    "defaults": "Save",
+    "origin": [
+      [
+        "src/scenes/SettingsSignatures/components/SignatureForm/presenter.jsx",
+        91
+      ]
+    ]
+  }
+}

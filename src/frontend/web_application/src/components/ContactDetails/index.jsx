@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans, withI18n } from 'lingui-react';
 import Subtitle from '../Subtitle';
 import TextList, { ItemContent } from '../TextList';
 import AddressDetails from './components/AddressDetails';
@@ -11,6 +12,7 @@ import OrgaDetails from './components/OrgaDetails';
 import PhoneDetails from './components/PhoneDetails';
 import './style.scss';
 
+@withI18n()
 class ContactDetails extends Component {
   static propTypes = {
     contact: PropTypes.shape({}),
@@ -18,7 +20,7 @@ class ContactDetails extends Component {
     detailForms: PropTypes.node.isRequired,
     orgaForms: PropTypes.node.isRequired,
     identityForms: PropTypes.node.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -30,94 +32,65 @@ class ContactDetails extends Component {
   }
 
   initDetailsTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.detailsTranslations = {
       address_type: {
-        work: __('contact.address_type.work'),
-        home: __('contact.address_type.home'),
-        other: __('contact.address_type.other'),
+        work: i18n._('contact.address_type.work'),
+        home: i18n._('contact.address_type.home'),
+        other: i18n._('contact.address_type.other'),
       },
       im_type: {
-        work: __('contact.im_type.work'),
-        home: __('contact.im_type.home'),
-        other: __('contact.im_type.other'),
-        netmeeting: __('contact.im_type.netmeeting'),
+        work: i18n._('contact.im_type.work'),
+        home: i18n._('contact.im_type.home'),
+        other: i18n._('contact.im_type.other'),
+        netmeeting: i18n._('contact.im_type.netmeeting'),
       },
     };
   }
 
-  renderEmail = (email) => {
-    const { __ } = this.props;
+  renderEmail = email => (
+    <ItemContent large>
+      <EmailDetails email={email} />
+    </ItemContent>
+  );
 
-    return (
-      <ItemContent large>
-        <EmailDetails email={email} __={__} />
-      </ItemContent>
-    );
-  }
+  renderPhone = phone => (
+    <ItemContent large>
+      <PhoneDetails phone={phone} />
+    </ItemContent>
+  );
 
-  renderPhone = (phone) => {
-    const { __ } = this.props;
+  renderIm = im => (
+    <ItemContent large>
+      <ImDetails im={im} />
+    </ItemContent>
+  );
 
-    return (
-      <ItemContent large>
-        <PhoneDetails phone={phone} __={__} />
-      </ItemContent>
-    );
-  }
+  renderAddress = address => (
+    <ItemContent large>
+      <AddressDetails address={address} />
+    </ItemContent>
+  );
 
-  renderIm = (im) => {
-    const { __ } = this.props;
+  renderIdentity = identity => (
+    <ItemContent large>
+      <IdentityDetails identity={identity} />
+    </ItemContent>
+  );
 
-    return (
-      <ItemContent large>
-        <ImDetails im={im} __={__} />
-      </ItemContent>
-    );
-  }
+  renderOrganization = organization => (
+    <ItemContent large>
+      <OrgaDetails organization={organization} />
+    </ItemContent>
+  );
 
-  renderAddress = (address) => {
-    const { __ } = this.props;
-
-    return (
-      <ItemContent large>
-        <AddressDetails address={address} __={__} />
-      </ItemContent>
-    );
-  }
-
-  renderIdentity = (identity) => {
-    const { __ } = this.props;
-
-    return (
-      <ItemContent large>
-        <IdentityDetails identity={identity} __={__} />
-      </ItemContent>
-    );
-  }
-
-  renderOrganization = (organization) => {
-    const { __ } = this.props;
-
-    return (
-      <ItemContent large>
-        <OrgaDetails organization={organization} __={__} />
-      </ItemContent>
-    );
-  }
-
-  renderBirthday = (birthday) => {
-    const { __ } = this.props;
-
-    return (
-      <ItemContent large>
-        <BirthdayDetails
-          birthday={birthday}
-          __={__}
-        />
-      </ItemContent>
-    );
-  }
+  renderBirthday = birthday => (
+    <ItemContent large>
+      <BirthdayDetails
+        birthday={birthday}
+      />
+    </ItemContent>
+  );
 
   renderContactDetails = () => {
     const { contact } = this.props;
@@ -174,13 +147,13 @@ class ContactDetails extends Component {
   }
 
   render() {
-    const { __, editMode } = this.props;
+    const { editMode } = this.props;
 
     return (
       <div className="m-contact-details">
         <div className="m-contact-details__panel">
           <Subtitle hr>
-            {__('contact.contact_details')}
+            <Trans id="contact.contact_details">Contact details</Trans>
           </Subtitle>
           <div className="m-contact-details__list">
             {editMode ?
@@ -191,7 +164,7 @@ class ContactDetails extends Component {
         </div>
 
         <div className="m-contact-details__panel">
-          <Subtitle hr>{__('contact.contact_organizations')}</Subtitle>
+          <Subtitle hr><Trans id="contact.contact_organizations">Professional</Trans></Subtitle>
           <div className="m-contact-details__list">
             {editMode ?
               this.props.orgaForms :
@@ -201,7 +174,7 @@ class ContactDetails extends Component {
         </div>
 
         <div className="m-contact-details__panel">
-          <Subtitle hr>{__('contact.contact_identities')}</Subtitle>
+          <Subtitle hr><Trans id="contact.contact_identities">Social identity</Trans></Subtitle>
           <div className="m-contact-details__list">
             {editMode ?
               this.props.identityForms :

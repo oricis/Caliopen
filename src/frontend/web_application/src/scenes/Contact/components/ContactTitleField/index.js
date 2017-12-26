@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import { getFormValues } from 'redux-form';
 import Presenter from './presenter';
 import { settingsSelector } from '../../../../store/selectors/settings';
@@ -18,5 +18,5 @@ const mapStateToProps = createSelector(
 
 export default compose(
   connect(mapStateToProps),
-  withTranslator()
+  withI18n()
 )(Presenter);

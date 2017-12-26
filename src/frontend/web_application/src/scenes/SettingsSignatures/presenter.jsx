@@ -17,7 +17,7 @@ const navLinks = [
   { title: 'myothermyself@caliopen.local', to: '/settings/signatures' },
 ];
 
-const SettingsSignatures = ({ __ }) => (
+const SettingsSignatures = ({ i18n }) => (
   <div className="s-settings-signatures">
     <PageTitle />
     {navLinks &&
@@ -31,7 +31,7 @@ const SettingsSignatures = ({ __ }) => (
       </NavList>
     }
     <div className="s-settings-signatures__panel">
-      <Section title={__('settings.signatures.title')}>
+      <Section title={i18n._('settings.signatures.title')}>
         <SignatureForm settings={fakeSignaturesSettings} onSubmit={str => str} />
       </Section>
     </div>
@@ -39,7 +39,7 @@ const SettingsSignatures = ({ __ }) => (
 );
 
 SettingsSignatures.propTypes = {
-  __: PropTypes.func.isRequired,
+  i18n: PropTypes.shape({}).isRequired,
 };
 
 export default SettingsSignatures;
