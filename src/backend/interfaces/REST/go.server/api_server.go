@@ -1,4 +1,4 @@
-// Copyleft (ɔ) 2017 The Caliopen contributors.
+// Copyleft (ɔ) 2018 The Caliopen contributors.
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
@@ -203,9 +203,14 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 
 	/** contacts API **/
 	cts := api.Group("/contacts", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
-	cts.GET("/:contact_id/identities", contacts.GetIdentities)
+	cts.GET("", contacts.GetContactsList)
+	cts.POST("", contacts.NewContact)
+	cts.GET("/:contactID", contacts.GetContact)
+	cts.PATCH("/:contactID", contacts.PatchContact)
+	cts.DELETE("/:contactID", contacts.DeleteContact)
+	cts.GET("/:contactID/identities", contacts.GetIdentities)
 	//tags
-	cts.PATCH("/:contact_id/tags", tags.PatchResourceWithTags)
+	cts.PATCH("/:contactID/tags", tags.PatchResourceWithTags)
 
 	/** tags API **/
 	tag := api.Group(http_middleware.TagsRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))

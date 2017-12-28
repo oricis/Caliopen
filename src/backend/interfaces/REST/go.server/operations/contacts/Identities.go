@@ -17,7 +17,7 @@ import (
 //GET …/contacts/{contact_id}/identities
 func GetIdentities(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	contact_id, err := operations.NormalizeUUIDstring(ctx.Param("contact_id"))
+	contact_id, err := operations.NormalizeUUIDstring(ctx.Param("contactID"))
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
