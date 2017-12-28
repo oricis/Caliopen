@@ -20,18 +20,34 @@ type Organization struct {
 }
 
 func (o *Organization) UnmarshalMap(input map[string]interface{}) error {
-	o.Deleted, _ = input["deleted"].(bool)
-	o.Department, _ = input["department"].(string)
-	o.IsPrimary, _ = input["is_primary"].(bool)
-	o.JobDescription, _ = input["job_description"].(string)
-	o.Label, _ = input["label"].(string)
-	o.Name, _ = input["name"].(string)
+	if deleted, ok := input["deleted"].(bool); ok {
+		o.Deleted = deleted
+	}
+	if department, ok := input["department"].(string); ok {
+		o.Department = department
+	}
+	if isPrimary, ok := input["is_primary"].(bool); ok {
+		o.IsPrimary = isPrimary
+	}
+	if jobDescription, ok := input["job_description"].(string); ok {
+		o.JobDescription = jobDescription
+	}
+	if label, ok := input["label"].(string); ok {
+		o.Label = label
+	}
+	if name, ok := input["name"].(string); ok {
+		o.Name = name
+	}
 	if o_id, ok := input["organization_id"].(string); ok {
 		if id, err := uuid.FromString(o_id); err == nil {
 			o.OrganizationId.UnmarshalBinary(id.Bytes())
 		}
 	}
-	o.Title, _ = input["title"].(string)
-	o.Type, _ = input["type"].(string)
+	if title, ok := input["title"].(string); ok {
+		o.Title = title
+	}
+	if t, ok := input["type"].(string); ok {
+		o.Title = t
+	}
 	return nil //TODO: errors handling
 }

@@ -20,7 +20,6 @@ from .im import IM
 from .organization import Organization
 from .phone import Phone
 from .postal_address import PostalAddress
-from caliopen_main.common.objects.tag import ResourceTag
 from caliopen_main.pi.objects import PIObject
 from caliopen_storage.exception import NotFound
 from caliopen_main.common.errors import ForbiddenAction
@@ -69,7 +68,7 @@ class Contact(ObjectIndexable):
         'pi':                  PIObject,
         'privacy_features': types.DictType,
         'public_keys':         [PublicKey],
-        'tags':                [ResourceTag],
+        'tags': [types.StringType],
         'title':               types.StringType,
         'user_id':             UUID
     }

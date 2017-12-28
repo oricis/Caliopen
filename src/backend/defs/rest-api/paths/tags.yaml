@@ -106,19 +106,22 @@ tags_{tag_id}:
       schema:
         type: object
         properties:
-          name:
+          label:
             type: string
+          importance_level:
+            type: integer
+            format: int32
           current_state:
             type: object
             properties:
-              name:
+              label:
                 type: string
+              importance_level:
+                type: integer
+                format: int32
             additionalProperties: false
-            required :
-            - name
         additionalProperties: false
         required :
-        - name
         - current_state
     produces:
     - application/json

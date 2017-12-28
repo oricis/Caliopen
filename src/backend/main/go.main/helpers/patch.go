@@ -25,7 +25,7 @@ func ParsePatch(json []byte) (*gjson.Result, error) {
 // ValidatePatchSemantic verifies if the provided patch — a json — could be applied to the given object.
 // json is semantically checked regarding the obj it should apply to,
 // meaning json's keys must be consistent with obj's properties.
-// if validation passes, func returns
+// if validation passes, func returns nil
 func ValidatePatchSemantic(obj CaliopenObject, patch *gjson.Result) error {
 	var err error
 	current_state := patch.Get("current_state")
@@ -37,7 +37,7 @@ func ValidatePatchSemantic(obj CaliopenObject, patch *gjson.Result) error {
 	}
 
 	// check if each key in the json has a corresponding property in obj
-	// NB : this check is for consistency only, because unknown keys could be simply ignored when unmarshalling JSON.
+	// NB : this check is for consistency only, because unknown keys will be simply ignored when unmarshalling JSON.
 	jsonTags := obj.JsonTags()
 	keyValidator := func(key, value gjson.Result) bool {
 		if key.String() != "current_state" {
@@ -62,23 +62,27 @@ func ValidatePatchSemantic(obj CaliopenObject, patch *gjson.Result) error {
 
 // ValidatePatchCurrentState verifies if the provided current_state within a json patch
 // is consistent with the provided object (coming from db for example).
+// Keys in patch that do not belong to the object will be silently ignored
 func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) error {
 	var err error
 	valid := true
-	// build one sibling from patch
+	// build 1 sibling from patch's current_state
 	current_state := patch.Get("current_state")
-	patch_current := obj.NewEmpty().(CaliopenObject)
-	patch_current.UnmarshalJSON([]byte(current_state.Raw))
+	obj_current := obj.NewEmpty().(CaliopenObject)
+	obj_current.UnmarshalJSON([]byte(current_state.Raw))
 
 	jsonTags := obj.JsonTags()
+
+	// check that provided values in current_state are consistent with db
 	current_state.ForEach(func(key, value gjson.Result) bool {
 		var e error
 		field_name := jsonTags[key.String()]
-		current, e := reflections.GetField(patch_current, field_name)
+		current, e := reflections.GetField(obj_current, field_name)
 		store, e := reflections.GetField(obj, field_name)
 		if e != nil {
 			valid = false
 			err = errors.New(fmt.Sprintf("[Patch] failed to retrieve field <%s> from object", field_name))
+			return false
 		}
 		if !reflect.DeepEqual(current, store) {
 			valid = false
@@ -87,6 +91,33 @@ func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) error {
 		}
 		return true
 	})
+
+	// seek for keys within patch that are not in current_state
+	//  means patch wants to add the key => value in db should equal to defaults
+	current_map := current_state.Map()
+	empty_state := obj.NewEmpty()
+	patch.ForEach(func(key, value gjson.Result) bool {
+		if key.Str != "current_state" {
+			if _, ok := current_map[key.Str]; !ok {
+				field_name := jsonTags[key.String()]
+				empty, e := reflections.GetField(empty_state, field_name)
+				store, e := reflections.GetField(obj, field_name)
+				if e != nil {
+					valid = false
+					err = errors.New(fmt.Sprintf("[Patch] failed to retrieve field <%s> from object", field_name))
+					return false
+				}
+				if !reflect.DeepEqual(store, empty) {
+					valid = false
+					err = errors.New(fmt.Sprintf("[Patch] current_state for field <%s> not consistent with stored value", field_name))
+					return false
+				}
+			}
+			return true
+		}
+		return true
+	})
+
 	if !valid {
 		return err
 	} else {
@@ -94,9 +125,59 @@ func ValidatePatchCurrentState(obj CaliopenObject, patch *gjson.Result) error {
 	}
 }
 
-// UpdateWithPatch updates obj attributes with values provided in the patch
-// obj must be a pointer to an object belongings to the objects package
-func UpdateWithPatch(obj CaliopenObject, patch []byte) error {
-	//TODO
-	return nil
+// UpdateWithPatch updates obj attributes with values provided in the patch.
+// initiator is needed for the function to allow/disallow updates on properties that may be protected,
+// ("patch" tag within object definition is checked against the "initiator" to allow/prevent the modification).
+// Patch will be pre-processed by ValidatePatchSemantic and ValidatePatchCurrentState before being applied to object.
+func UpdateWithPatch(obj CaliopenObject, patch []byte, actor Initiator) error {
+
+	pp, err := ParsePatch(patch)
+	if err != nil {
+		return err
+	}
+
+	if err = ValidatePatchSemantic(obj, pp); err != nil {
+		return err
+	}
+
+	if err = ValidatePatchCurrentState(obj, pp); err != nil {
+		return err
+	}
+
+	jsonTags := obj.JsonTags()
+
+	var er error
+	pp.ForEach(func(key, value gjson.Result) bool {
+		if key.Str != "current_state" {
+			field_name := jsonTags[key.String()]
+			if !canModifyProperty(obj, field_name, actor) { // checks if initiator has rights to modify the field
+				er = fmt.Errorf("current actor can't modify field %s", field_name)
+				return false
+			}
+		}
+		return true
+	})
+	if er != nil {
+		return er
+	}
+
+	return obj.UnmarshalJSON(patch)
+}
+
+// canModifyProperty returns true if and only if Initiator has rights to modify the property of the object.
+// func makes use of "patch" tag found (or not found) within struct declaration
+func canModifyProperty(obj CaliopenObject, field string, actor Initiator) bool {
+	rightLevel := Unknown
+	directive, err := reflections.GetFieldTag(obj, field, "patch")
+	if directive == "" || err != nil {
+		rightLevel = SystemActor
+	} else {
+		if level, ok := Initiators[directive]; !ok {
+			rightLevel = SystemActor
+		} else {
+			rightLevel = level
+		}
+	}
+
+	return rightLevel >= actor // if rightLevel is below actor level, then actor has not the right to modify
 }

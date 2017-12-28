@@ -1,8 +1,8 @@
 package cache
 
 import (
-	"testing"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"testing"
 )
 
 var R *RedisBackend

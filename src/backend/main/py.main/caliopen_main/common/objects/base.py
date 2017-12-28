@@ -256,7 +256,7 @@ class ObjectStorable(ObjectJsonDictifiable):
                         setattr(self._db, att, getattr(self, att))
                 else:
                     if issubclass(self._attrs[att], datetime.datetime) and \
-                                    getattr(self, att) is not None:
+                            getattr(self, att) is not None:
                         # datetime in cqlengine are 'naive', ours are 'aware'
                         setattr(self._db, att,
                                 getattr(self, att).replace(tzinfo=None))
@@ -341,18 +341,22 @@ class ObjectUser(ObjectStorable):
         except Exception as exc:
             log.info(exc)
             raise main_errors.PatchUnprocessable(message= \
-                                                     "unable to unmarshall patch into object <{}>".format(
-                                                         exc))
+                "unable to unmarshall patch into object <{}>".format(
+                    exc))
         try:
             obj_patch_old.unmarshall_json_dict(patch_current)
         except Exception as exc:
             log.info(exc)
             raise main_errors.PatchUnprocessable(message= \
-                                                     "unable to unmarshall patch into object <{}>".format(
-                                                         exc))
+                "unable to unmarshall patch into object <{}>".format(
+                    exc))
         self.get_db()
 
         # TODO : manage protected attributes, to prevent patch on them
+        if "tags" in patch.keys():
+            raise main_errors.ForbiddenAction(
+                message="patching tags through parent object is forbidden")
+
         # check if patch is consistent with db current state
         # if it is, squash self attributes
         self.unmarshall_db()

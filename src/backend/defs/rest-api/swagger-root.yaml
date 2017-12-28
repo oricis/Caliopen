@@ -39,7 +39,9 @@ paths:
   "/v1/contacts/{contact_id}":
     "$ref": paths/contacts.yaml#/contacts_{contact_id}
   "/v2/contacts/{contact_id}/identities":
-    "$ref": paths/contacts.yaml#/contacts_{contact_id}_identities
+    "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_identities
+  "/v2/contacts/{contact_id}/tags":
+    "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_tags
   "/v1/imports":
     "$ref": paths/imports.yaml#/imports
 ## messages/discussions ##
@@ -55,6 +57,8 @@ paths:
     "$ref": paths/messages.yaml#/messages_{message_id}
   "/v2/messages/{message_id}":
     "$ref": paths/messagesV2.yaml#/messages_{message_id}
+  "/v2/messages/{message_id}/tags":
+    "$ref": paths/messagesV2.yaml#/messages_{message_id}_tags
   "/v2/messages/{message_id}/actions":
     "$ref": paths/messagesV2.yaml#/messages_{message_id}_actions
   "/v2/messages/{message_id}/attachments":

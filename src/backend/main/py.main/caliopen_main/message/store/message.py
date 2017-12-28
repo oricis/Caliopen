@@ -7,7 +7,6 @@ from cassandra.cqlengine import columns
 from caliopen_storage.store.model import BaseModel
 from caliopen_storage.store.mixin import IndexedModelMixin
 from caliopen_main.pi.objects import PIModel
-from caliopen_main.common.store.tag import ResourceTag
 from caliopen_main.user.store.local_identity import Identity
 
 from .attachment import MessageAttachment
@@ -44,6 +43,6 @@ class Message(BaseModel, IndexedModelMixin):
     pi = columns.UserDefinedType(PIModel)
     raw_msg_id = columns.UUID()
     subject = columns.Text()  # Subject of email, the message for short
-    tags = columns.List(columns.UserDefinedType(ResourceTag))
+    tags = columns.List(columns.Text())
     type = columns.Text()
     user_id = columns.UUID(primary_key=True)

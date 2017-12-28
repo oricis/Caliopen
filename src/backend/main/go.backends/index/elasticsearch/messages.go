@@ -46,8 +46,6 @@ func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[s
 	return nil
 }
 
-
-
 func (es *ElasticSearchBackend) SetMessageUnread(user_id, message_id string, status bool) (err error) {
 	payload := struct {
 		Is_unread bool `json:"is_unread"`
@@ -78,7 +76,7 @@ func (es *ElasticSearchBackend) FilterMessages(filter objects.IndexSearch) (mess
 	}
 
 	for _, hit := range result.Hits.Hits {
-		msg := new(objects.Message)
+		msg := new(objects.Message).NewEmpty().(*objects.Message)
 		if err := json.Unmarshal(*hit.Source, msg); err != nil {
 			log.Info(err)
 			continue

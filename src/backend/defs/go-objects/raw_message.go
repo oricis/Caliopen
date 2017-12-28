@@ -16,11 +16,16 @@ type RawMessage struct {
 
 // unmarshal a map[string]interface{} that must owns all Message fields
 func (msg *RawMessage) UnmarshalCQLMap(input map[string]interface{}) {
-	raw_msg_id, _ := input["raw_msg_id"].(gocql.UUID)
-	msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
-	raw_data, _ := input["raw_data"].([]byte)
-	msg.Raw_data = string(raw_data)
-	size, _ := input["raw_size"].(int)
-	msg.Raw_Size = uint64(size)
-	msg.URI, _ = input["uri"].(string)
+	if raw_msg_id, ok := input["raw_msg_id"].(gocql.UUID); ok {
+		msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
+	}
+	if raw_data, ok := input["raw_data"].([]byte); ok {
+		msg.Raw_data = string(raw_data)
+	}
+	if size, ok := input["raw_size"].(int); ok {
+		msg.Raw_Size = uint64(size)
+	}
+	if uri, ok := input["uri"].(string); ok {
+		msg.URI = uri
+	}
 }

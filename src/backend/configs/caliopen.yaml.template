@@ -39,15 +39,15 @@ system:
     max_users: 2000
     default_tags:
         -
-            name: INBOX
+            name: inbox
             background: '#000000'
             color: black
         -
-            name: SPAM
+            name: spam
             background: '#AAAAAA'
             color: white
         -
-            name: IMPORTANT
+            name: important
             background: '#FF0000'
             color: white
 

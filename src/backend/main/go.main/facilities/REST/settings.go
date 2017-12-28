@@ -8,7 +8,6 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
-
 func (rest *RESTfacility) GetSettings(user_id string) (settings *Settings, err error) {
 	settings, err = rest.store.GetSettings(user_id)
 	if err != nil {

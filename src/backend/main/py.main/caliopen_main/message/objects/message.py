@@ -14,7 +14,6 @@ import copy
 
 from caliopen_storage.exception import NotFound
 from caliopen_main.pi.objects import PIObject
-from caliopen_main.common.objects.tag import ResourceTag
 
 from ..store import Message as ModelMessage
 from ..store import IndexedMessage
@@ -61,7 +60,7 @@ class Message(ObjectIndexable):
         'pi': PIObject,
         'raw_msg_id': UUID,
         'subject': types.StringType,
-        'tags': [ResourceTag],
+        'tags': [types.StringType],
         'type': types.StringType,
         'user_id': UUID,
     }

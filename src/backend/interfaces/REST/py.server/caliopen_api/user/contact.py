@@ -91,6 +91,9 @@ class Contact(Api):
         contact_param = NewContactParam(data)
         try:
             contact_param.validate()
+            if hasattr(contact_param, "tags"):
+                raise ValidationError(
+                    "adding tags throught parent object is forbidden")
         except Exception as exc:
             raise ValidationError(exc)
         contact = CoreContact.create(self.user, contact_param)
@@ -142,7 +145,6 @@ class Contact(Api):
 
 
 class BaseSubContactApi(Api):
-
     """Base class for contact sub objects, not nested one."""
 
     core_class = None
@@ -178,7 +180,6 @@ class BaseSubContactApi(Api):
 
 
 class BaseContactNestedApi(Api):
-
     """Base class for API related to nested attributes of a contact."""
 
     return_class = None
@@ -216,7 +217,6 @@ class BaseContactNestedApi(Api):
 
 
 class NewAddressParam(colander.MappingSchema):
-
     """Parameter to create a new postal address."""
 
     contact_id = colander.SchemaNode(colander.String(), location='path')
@@ -232,7 +232,6 @@ class NewAddressParam(colander.MappingSchema):
 
 
 class DeleteAddressParam(colander.MappingSchema):
-
     """Parameter to delete an existing postal address."""
 
     contact_id = colander.SchemaNode(colander.String(), location='path')
@@ -242,7 +241,6 @@ class DeleteAddressParam(colander.MappingSchema):
 @resource(collection_path='/contacts/{contact_id}/addresses',
           path='/contacts/{contact_id}/addresses/{address_id}')
 class ContactAddress(BaseContactNestedApi):
-
     return_class = ReturnAddress
     namespace = 'addresses'
 
@@ -269,7 +267,6 @@ class ContactAddress(BaseContactNestedApi):
 
 
 class NewEmailParam(colander.MappingSchema):
-
     """Parameter to create a new email."""
     contact_id = colander.SchemaNode(colander.String(), location='path')
     type = colander.SchemaNode(colander.String(), location='body')
@@ -277,7 +274,6 @@ class NewEmailParam(colander.MappingSchema):
 
 
 class DeleteEmailParam(colander.MappingSchema):
-
     """Parameter to delete an existing email."""
 
     contact_id = colander.SchemaNode(colander.String(), location='path')
@@ -287,7 +283,6 @@ class DeleteEmailParam(colander.MappingSchema):
 @resource(collection_path='/contacts/{contact_id}/emails',
           path='/contacts/{contact_id}/emails/{address}')
 class ContactEmail(BaseContactNestedApi):
-
     return_class = ReturnEmail
     namespace = 'emails'
 
@@ -313,7 +308,6 @@ class ContactEmail(BaseContactNestedApi):
 
 
 class NewIMParam(colander.MappingSchema):
-
     """Parameter to create a new im."""
     contact_id = colander.SchemaNode(colander.String(), location='path')
     type = colander.SchemaNode(colander.String(), location='body')
@@ -321,7 +315,6 @@ class NewIMParam(colander.MappingSchema):
 
 
 class DeleteIMParam(colander.MappingSchema):
-
     """Parameter to delete an existing im."""
 
     contact_id = colander.SchemaNode(colander.String(), location='path')
@@ -331,7 +324,6 @@ class DeleteIMParam(colander.MappingSchema):
 @resource(collection_path='/contacts/{contact_id}/ims',
           path='/contacts/{contact_id}/ims/{address}')
 class ContactIM(BaseContactNestedApi):
-
     return_class = ReturnIM
     namespace = 'ims'
 
@@ -359,7 +351,6 @@ class ContactIM(BaseContactNestedApi):
 @resource(collection_path='/contacts/{contact_id}/identities',
           path='/contacts/{contact_id}/identities/{identity_id}')
 class ContactSocialIdentity(BaseContactNestedApi):
-
     return_class = ReturnSocialIdentity
     namespace = 'identities'
 
@@ -367,7 +358,6 @@ class ContactSocialIdentity(BaseContactNestedApi):
 @resource(collection_path='/contacts/{contact_id}/phones',
           path='/contacts/{contact_id}/phones/{phone_id}')
 class ContactPhone(BaseContactNestedApi):
-
     return_class = ReturnPhone
     namespace = 'phones'
 
@@ -375,7 +365,6 @@ class ContactPhone(BaseContactNestedApi):
 @resource(collection_path='/contacts/{contact_id}/organizations',
           path='/contacts/{contact_id}/organizations/{org_id}')
 class ContactOrganization(BaseContactNestedApi):
-
     return_class = ReturnOrganization
     namespace = 'organizations'
 
@@ -383,7 +372,6 @@ class ContactOrganization(BaseContactNestedApi):
 @resource(collection_path='/contacts/{contact_id}/keys',
           path='/contacts/{contact_id}/keys/{key_id}')
 class ContactPublicKey(BaseSubContactApi):
-
     core_class = CorePublicKey
     return_class = ReturnPublicKey
     namespace = 'keys'

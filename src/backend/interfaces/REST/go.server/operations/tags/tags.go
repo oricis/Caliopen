@@ -2,7 +2,7 @@ package tags
 
 import (
 	"bytes"
-	"encoding/json"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
@@ -10,12 +10,15 @@ import (
 	swgErr "github.com/go-openapi/errors"
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
+	"github.com/tidwall/gjson"
 	"gopkg.in/gin-gonic/gin.v1"
 	"gopkg.in/gin-gonic/gin.v1/binding"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 )
 
+// RetrieveUserTags fetches all tags tied to an user, system tags as well as custom tags.
 func RetrieveUserTags(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	tags, err := caliopen.Facilities.RESTfacility.RetrieveUserTags(user_id)
@@ -29,7 +32,7 @@ func RetrieveUserTags(ctx *gin.Context) {
 		respBuf.WriteString(("\"tags\":["))
 		first := true
 		for _, tag := range tags {
-			json_tag, err := json.Marshal(tag)
+			json_tag, err := tag.MarshalFrontEnd()
 			if err == nil {
 				if first {
 					first = false
@@ -57,7 +60,7 @@ func CreateTag(ctx *gin.Context) {
 			ctx.Abort()
 		} else {
 			ctx.JSON(http.StatusOK, struct{ Location string }{
-				http_middleware.RoutePrefix + http_middleware.TagsRoute + "/" + tag.Tag_id.String(),
+				http_middleware.RoutePrefix + http_middleware.TagsRoute + "/" + tag.Name,
 			})
 		}
 	} else {
@@ -69,23 +72,31 @@ func CreateTag(ctx *gin.Context) {
 
 }
 
+// RetrieveTag fetches a tag with tag_name & user_id
 func RetrieveTag(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	tag_id, err := operations.NormalizeUUIDstring(ctx.Param("tag_id"))
-	if err != nil {
-		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+	tag_name := ctx.Param("tag_name")
+	if tag_name == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "missing tag name")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	if user_id != "" && tag_id != "" {
-		tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(user_id, tag_id)
+	if user_id != "" {
+		tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(user_id, tag_name)
 		if err != nil {
 			e := swgErr.New(http.StatusFailedDependency, err.Error())
 			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 			ctx.Abort()
 		} else {
-			ctx.JSON(http.StatusOK, tag)
+			tag_json, err := tag.MarshalFrontEnd()
+			if err != nil {
+				e := swgErr.New(http.StatusFailedDependency, err.Error())
+				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+				ctx.Abort()
+			} else {
+				ctx.Data(http.StatusOK, "application/json; charset=utf-8", tag_json)
+			}
 		}
 	} else {
 		err := errors.New("invalid params")
@@ -95,82 +106,64 @@ func RetrieveTag(ctx *gin.Context) {
 	}
 }
 
-// TODO : refactor by making use of helpers.patch pkg now available
-// (patch operations should be done by RESTfacility)
 func PatchTag(ctx *gin.Context) {
-	patchTag := struct {
-		Tag
-		Current_state Tag
-	}{}
-	b := binding.JSON
-	if err := b.Bind(ctx.Request, &patchTag); err == nil {
+	var err error
+	var user_id string
+	var tag_name string
 
-		user_uuid, _ := uuid.FromString(ctx.MustGet("user_id").(string))
-		patchTag.User_id.UnmarshalBinary(user_uuid.Bytes())
-		patchTag.Current_state.User_id = patchTag.User_id
-
-		tag_id, err := operations.NormalizeUUIDstring(ctx.Param("tag_id"))
-		if err != nil {
-			e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+	if id, ok := ctx.Get("user_id"); !ok {
+		e := swgErr.New(http.StatusUnprocessableEntity, "user_id is missing")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	} else {
+		if user_id, err = operations.NormalizeUUIDstring(id.(string)); err != nil {
+			e := swgErr.New(http.StatusUnprocessableEntity, "user_id is invalid")
 			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 			ctx.Abort()
 			return
 		}
+	}
 
-		tag_uuid, _ := uuid.FromString(tag_id)
-
-		patchTag.Tag_id.UnmarshalBinary(tag_uuid.Bytes())
-		patchTag.Current_state.Tag_id = patchTag.Tag_id
-
-		current_tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(patchTag.User_id.String(), patchTag.Tag_id.String())
-		if err != nil {
-			e := swgErr.New(http.StatusFailedDependency, err.Error())
-			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-			ctx.Abort()
-		} else {
-			if current_tag.Name != patchTag.Current_state.Name {
-				err := errors.New("patch's current_state not consistent with db.")
-				e := swgErr.New(http.StatusConflict, err.Error())
-				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-				ctx.Abort()
-			} else {
-				new_tag := Tag{
-					Date_insert:      current_tag.Date_insert,
-					Importance_level: current_tag.Importance_level,
-					Name:             patchTag.Name,
-					Tag_id:           current_tag.Tag_id,
-					Type:             current_tag.Type,
-					User_id:          current_tag.User_id,
-				}
-				err := caliopen.Facilities.RESTfacility.UpdateTag(&new_tag)
-				if err != nil {
-					e := swgErr.New(http.StatusFailedDependency, err.Error())
-					http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-					ctx.Abort()
-				} else {
-					ctx.Status(http.StatusNoContent)
-				}
-			}
-		}
-	} else {
-		err = errors.WithMessage(err, "Unable to json marshal the provided payload.")
-		e := swgErr.New(http.StatusBadRequest, err.Error())
+	tag_name = ctx.Param("tag_name")
+	if tag_name == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "tag_name is missing")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
+		return
 	}
-}
 
-func DeleteTag(ctx *gin.Context) {
-	user_id := ctx.MustGet("user_id").(string)
-	tag_id, err := operations.NormalizeUUIDstring(ctx.Param("tag_id"))
+	var patch []byte
+	patch, err = ioutil.ReadAll(ctx.Request.Body)
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	if user_id != "" && tag_id != "" {
-		err := caliopen.Facilities.RESTfacility.DeleteTag(user_id, tag_id)
+
+	err = caliopen.Facilities.RESTfacility.PatchTag(patch, user_id, tag_name)
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	} else {
+		ctx.Status(http.StatusNoContent)
+	}
+}
+
+func DeleteTag(ctx *gin.Context) {
+	user_id := ctx.MustGet("user_id").(string)
+	tag_name := ctx.Param("tag_name")
+	if tag_name == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "tag_name is missing")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	if user_id != "" {
+		err := caliopen.Facilities.RESTfacility.DeleteTag(user_id, tag_name)
 		if err != nil {
 			e := swgErr.New(http.StatusFailedDependency, err.Error())
 			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
@@ -184,4 +177,92 @@ func DeleteTag(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	}
+	// TODO : remove tag refs. nested in resources
+}
+
+// PatchResourceWithTag apply the payload (a PATCH tag json) to a resource to update its tags
+func PatchResourceWithTags(ctx *gin.Context) {
+	var err error
+	var userID string
+	var resourceID string
+	var patch []byte
+	var resourceType string
+
+	if id, ok := ctx.Get("user_id"); !ok {
+		e := swgErr.New(http.StatusBadRequest, "user_id is missing")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	} else {
+		if userID, err = operations.NormalizeUUIDstring(id.(string)); err != nil {
+			e := swgErr.New(http.StatusUnprocessableEntity, "user_id is invalid")
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+			return
+		}
+	}
+
+	// parse payload and ensure it is a patch for tags property only
+	patch, err = ioutil.ReadAll(ctx.Request.Body)
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	if !gjson.Valid(string(patch)) {
+		e := swgErr.New(http.StatusUnprocessableEntity, "invalid json")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	p := gjson.ParseBytes(patch)
+	p.ForEach(func(key, value gjson.Result) bool {
+		if key.Str != "tags" && key.Str != "current_state" {
+			err = swgErr.New(http.StatusBadRequest, fmt.Sprintf("invalid property <%s> within json", key.Str))
+			return false
+		} else if key.Str == "current_state" {
+			value.ForEach(func(k, v gjson.Result) bool {
+				if k.Str != "tags" {
+					err = swgErr.New(http.StatusBadRequest, fmt.Sprintf("invalid property <%s> within json", k.Str))
+					return false
+				}
+				return true
+			})
+		}
+		return true
+	})
+	if err != nil {
+		http_middleware.ServeError(ctx.Writer, ctx.Request, err)
+		ctx.Abort()
+		return
+	}
+
+	// call UpdateResourceWithPatch API with correct resourceType depending on provided param
+	param := ctx.Params[0]
+	switch param.Key {
+	case "contact_id":
+		resourceType = ContactType
+	case "message_id":
+		resourceType = MessageType
+	default:
+		err = swgErr.New(http.StatusBadRequest, "missing resource param")
+	}
+	if resourceID, err = operations.NormalizeUUIDstring(param.Value); err != nil {
+		err = swgErr.New(http.StatusBadRequest, "resource_id is invalid")
+	}
+	if err != nil {
+		http_middleware.ServeError(ctx.Writer, ctx.Request, err)
+		ctx.Abort()
+		return
+	}
+
+	err = caliopen.Facilities.RESTfacility.UpdateResourceTags(userID, resourceID, resourceType, patch)
+
+	if err != nil {
+		http_middleware.ServeError(ctx.Writer, ctx.Request, err)
+		ctx.Abort()
+		return
+	}
+	ctx.Status(http.StatusNoContent)
 }

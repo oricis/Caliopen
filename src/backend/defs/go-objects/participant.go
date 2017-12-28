@@ -23,12 +23,20 @@ func (rcpt *Participant) MarshalJSON() ([]byte, error) {
 */
 
 func (p *Participant) UnmarshalMap(input map[string]interface{}) error {
-	p.Address, _ = input["address"].(string)
-	p.Label, _ = input["label"].(string)
-	p.Protocol, _ = input["protocol"].(string)
-	p.Type, _ = input["type"].(string)
-	p.Contact_ids = []UUID{}
+	if address, ok := input["address"].(string); ok {
+		p.Address = address
+	}
+	if label, ok := input["label"].(string); ok {
+		p.Label = label
+	}
+	if protocol, ok := input["protocol"].(string); ok {
+		p.Protocol = protocol
+	}
+	if t, ok := input["type"].(string); ok {
+		p.Type = t
+	}
 	if contact_ids, ok := input["contact_ids"]; ok && contact_ids != nil {
+		p.Contact_ids = []UUID{}
 		for _, contact_id := range contact_ids.([]interface{}) {
 			c_id := contact_id.(string)
 			var contact_uuid UUID

@@ -26,7 +26,6 @@ func TestValidatePatchSemantic(t *testing.T) {
 	e = ValidatePatchSemantic(user, user_p)
 	t.Logf("User patch semantic => error: %v\n", e)
 
-	user_p.Get()
 }
 
 func TestValidatePatchCurrentState(t *testing.T) {
@@ -46,6 +45,21 @@ func TestValidatePatchCurrentState(t *testing.T) {
 	t.Logf("User patch current state => error: %v\n", e)
 }
 
+func TestUpdateWithPatch(t *testing.T) {
+	msg := getAMessage()
+	p, e := ParsePatch([]byte(msg_patch))
+	if e != nil {
+		t.Fatal(e)
+	}
+	t.Logf("Message before patch : %v\n", msg)
+	t.Logf("Patch to apply: %v\n", p)
+	e = UpdateWithPatch(msg, []byte(msg_patch), UserActor)
+	if e != nil {
+		t.Error(e)
+	}
+	t.Logf("Message after patch : %v\n", msg)
+}
+
 // returns a basic Message that should have been retrieved from db
 func getAMessage() *Message {
 	msg := new(Message)
@@ -53,6 +67,7 @@ func getAMessage() *Message {
 	msg.Subject = "current subject"
 	id, _ := uuid.FromString("fb8c009e-c921-49a0-80e1-01f1ab1101cb")
 	msg.User_id.UnmarshalBinary(id.Bytes())
+	msg.Message_id.UnmarshalBinary(id.Bytes())
 	identities := []Identity{
 		{
 			"dev@caliopen.local",
@@ -68,7 +83,7 @@ func getAUser() *User {
 	u := new(User)
 	id, _ := uuid.FromString("fb8c009e-c921-49a0-80e1-01f1ab1101cb")
 	u.UserId.UnmarshalBinary(id.Bytes())
-	u.Password = "1234"
+	u.Password = []byte("1234")
 	u.PrivacyFeatures = &PrivacyFeatures{"password_strength": "0"}
 	return u
 }
