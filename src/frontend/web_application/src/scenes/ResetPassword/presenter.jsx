@@ -8,7 +8,7 @@ const STATUS_TOKEN_UNPROCESSABLE = 424;
 
 class ResetPassword extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     match: PropTypes.shape({ params: PropTypes.shape({ key: PropTypes.string }) }),
   };
 
@@ -46,10 +46,10 @@ class ResetPassword extends Component {
       throw new Error('Unexpected error');
     }
 
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     const errors = {
-      global: [__('reset-password.form.errors.token_not_found')],
+      global: [i18n._('reset-password.form.errors.token_not_found')],
     };
     this.setState({
       isSuccess: false,

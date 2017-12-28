@@ -11,19 +11,19 @@ const ERR_UNAVAILABLE_USERNAME = 'ERR_UNAVAILABLE_USERNAME';
 const ERR_INVALID_RECOVERY_EMAIL = 'ERR_INVALID_RECOVERY_EMAIL';
 const ERR_REQUIRED_RECOVERY_EMAIL = 'ERR_REQUIRED_RECOVERY_EMAIL';
 
-export const getLocalizedErrors = __ => ({
-  [ERR_DOTS]: __('signup.feedback.username_starting_ending_dot'),
-  [ERR_MIN_MAX]: __('signup.feedback.username_length'),
-  [ERR_DOUBLE_DOTS]: __('signup.feedback.username_double_dots'),
-  [ERR_REQUIRED_PRIVACY]: __('signup.feedback.required_privacy'),
-  [ERR_REQUIRED_TOS]: __('signup.feedback.required_tos'),
-  [ERR_INVALID_GLOBAL]: __('signup.feedback.invalid'),
-  [ERR_REQUIRED_USERNAME]: __('signup.feedback.required_username'),
-  [ERR_INVALID_CHARACTER]: __('signup.feedback.username_invalid_characters'),
-  [ERR_REQUIRED_PASSWORD]: __('signup.feedback.required_password'),
-  [ERR_UNAVAILABLE_USERNAME]: __('signup.feedback.unavailable_username'),
-  [ERR_INVALID_RECOVERY_EMAIL]: __('signup.feedback.invalid_recovery_email'),
-  [ERR_REQUIRED_RECOVERY_EMAIL]: __('signup.feedback.required_recovery_email'),
+export const getLocalizedErrors = i18n => ({
+  [ERR_DOTS]: i18n._('signup.feedback.username_starting_ending_dot'),
+  [ERR_MIN_MAX]: i18n._('signup.feedback.username_length'),
+  [ERR_DOUBLE_DOTS]: i18n._('signup.feedback.username_double_dots'),
+  [ERR_REQUIRED_PRIVACY]: i18n._('signup.feedback.required_privacy'),
+  [ERR_REQUIRED_TOS]: i18n._('signup.feedback.required_tos'),
+  [ERR_INVALID_GLOBAL]: i18n._('signup.feedback.invalid'),
+  [ERR_REQUIRED_USERNAME]: i18n._('signup.feedback.required_username'),
+  [ERR_INVALID_CHARACTER]: i18n._('signup.feedback.username_invalid_characters', { 0: { chars: '"@`:;<>[]\\' } }),
+  [ERR_REQUIRED_PASSWORD]: i18n._('signup.feedback.required_password'),
+  [ERR_UNAVAILABLE_USERNAME]: i18n._('signup.feedback.unavailable_username'),
+  [ERR_INVALID_RECOVERY_EMAIL]: i18n._('signup.feedback.invalid_recovery_email'),
+  [ERR_REQUIRED_RECOVERY_EMAIL]: i18n._('signup.feedback.required_recovery_email'),
 });
 
 const descriptor = {
@@ -86,8 +86,8 @@ const makeDescriptor = (type) => {
   }
 };
 
-const extractErrors = (fieldsErrors, __) => {
-  const localizedErrors = getLocalizedErrors(__);
+const extractErrors = (fieldsErrors, i18n) => {
+  const localizedErrors = getLocalizedErrors(i18n);
 
   return Object.keys(fieldsErrors).reduce((prev, fieldname) => ({
     ...prev,
@@ -95,11 +95,11 @@ const extractErrors = (fieldsErrors, __) => {
       .map(error => localizedErrors[error.message] || error.message),
   }), {});
 };
-const validate = (formValues, __, descriptorType = false) => new Promise((resolve, reject) => {
+const validate = (formValues, i18n, descriptorType = false) => new Promise((resolve, reject) => {
   const validator = new Schema(makeDescriptor(descriptorType));
   validator.validate(formValues, (errors, fields) => {
     if (errors) {
-      return reject(extractErrors(fields, __));
+      return reject(extractErrors(fields, i18n));
     }
 
     return resolve(true);

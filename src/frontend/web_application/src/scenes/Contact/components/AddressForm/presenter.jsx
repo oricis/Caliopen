@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import { CountryDropdown as CountryDropdownBase, RegionDropdown as RegionDropdownBase } from 'react-country-region-selector';
 import { Field } from 'redux-form';
 import renderReduxField from '../../../../services/renderReduxField';
@@ -18,7 +19,7 @@ class AddressForm extends PureComponent {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     onDelete: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     country: PropTypes.string,
   };
 
@@ -32,16 +33,16 @@ class AddressForm extends PureComponent {
   }
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.addressTypes = {
-      work: __('contact.address_type.work'),
-      home: __('contact.address_type.home'),
-      other: __('contact.address_type.other'),
+      work: i18n._('contact.address_type.work'),
+      home: i18n._('contact.address_type.home'),
+      other: i18n._('contact.address_type.other'),
     };
   }
 
   render() {
-    const { __, errors = [], onDelete, country } = this.props;
+    const { i18n, errors = [], onDelete, country } = this.props;
     const addressTypeOptions = ADDRESS_TYPES.map(value => ({
       value,
       label: this.addressTypes[value] || '',
@@ -54,7 +55,7 @@ class AddressForm extends PureComponent {
             <FormColumn>
               <Legend>
                 <Icon rightSpaced type="map-marker" />
-                {__('contact.address_form.legend')}
+                <Trans id="contact.address_form.legend">Postal address</Trans>
               </Legend>
             </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
@@ -64,8 +65,8 @@ class AddressForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="street"
-                label={__('contact.address_form.street.label')}
-                placeholder={__('contact.address_form.street.label')}
+                label={i18n._('contact.address_form.street.label')}
+                placeholder={i18n._('contact.address_form.street.label')}
                 showLabelforSr
               />
             </FormColumn>
@@ -75,8 +76,8 @@ class AddressForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="postal_code"
-                label={__('contact.address_form.postal_code.label')}
-                placeholder={__('contact.address_form.postal_code.label')}
+                label={i18n._('contact.address_form.postal_code.label')}
+                placeholder={i18n._('contact.address_form.postal_code.label')}
                 showLabelforSr
               />
             </FormColumn>
@@ -84,8 +85,8 @@ class AddressForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="city"
-                label={__('contact.address_form.city.label')}
-                placeholder={__('contact.address_form.city.label')}
+                label={i18n._('contact.address_form.city.label')}
+                placeholder={i18n._('contact.address_form.city.label')}
                 showLabelforSr
               />
             </FormColumn>
@@ -96,14 +97,14 @@ class AddressForm extends PureComponent {
                 // TODO: insert select-wrapper to fit SelectFieldGroup architecture
               }
               <label className="show-for-sr" htmlFor="contact-adress-country">
-                {__('contact.address_form.country.label')}
+                <Trans id="contact.address_form.country.label">Country</Trans>
               </label>
               <Field
                 component={CountryDropdown}
                 id="contact-adress-country"
                 name="country"
                 classes="m-address-form__select"
-                defaultOptionLabel={__('contact.address_form.select_country')}
+                defaultOptionLabel={i18n._('contact.address_form.select_country')}
               />
             </FormColumn>
             <FormColumn size="medium" bottomSpace>
@@ -111,14 +112,14 @@ class AddressForm extends PureComponent {
                 // TODO: insert select-wrapper to fit SelectFieldGroup architecture
               }
               <label className="show-for-sr" htmlFor="contact-adress-region">
-                {__('contact.address_form.region.label')}
+                <Trans id="contact.address_form.region.label">Region</Trans>
               </label>
               <Field
                 component={RegionDropdown}
                 id="contact-adress-region"
                 name="region"
                 classes="m-address-form__select"
-                defaultOptionLabel={__('contact.address_form.select_region')}
+                defaultOptionLabel={i18n._('contact.address_form.select_region')}
                 country={country}
               />
             </FormColumn>
@@ -126,7 +127,7 @@ class AddressForm extends PureComponent {
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={__('contact.address_form.type.label')}
+                label={i18n._('contact.address_form.type.label')}
                 options={addressTypeOptions}
                 showLabelforSr
               />

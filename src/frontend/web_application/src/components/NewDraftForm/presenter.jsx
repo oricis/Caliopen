@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
+import { Trans } from 'lingui-react';
 import Button from '../Button';
 import Icon from '../Icon';
 import Spinner from '../Spinner';
@@ -32,7 +33,7 @@ class NewDraftForm extends Component {
     onChange: PropTypes.func,
     user: PropTypes.shape({}),
     renderDraftMessageActionsContainer: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     isSending: PropTypes.bool.isRequired,
   };
   static defaultProps = {
@@ -97,15 +98,15 @@ class NewDraftForm extends Component {
   }
 
   renderDraftType() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     const typeTranslations = {
-      email: __('reply-form.protocol.email'),
+      email: i18n._('reply-form.protocol.email'),
     };
 
     return (
       <div className="m-new-draft__type">
         <span className="m-new-draft__type-label">
-          {__('reply-form.by', { type: typeTranslations[this.state.draft.type] })}
+          <Trans id="reply-form.by" values={{ 0: typeTranslations[this.state.draft.type] }}>by {0}</Trans>
         </span>
         {' '}
         <Icon className="m-new-draft__type-icon" type={this.state.draft.type} spaced />
@@ -116,7 +117,7 @@ class NewDraftForm extends Component {
   }
 
   render() {
-    const { user, internalId, renderDraftMessageActionsContainer, __, isSending } = this.props;
+    const { user, internalId, renderDraftMessageActionsContainer, i18n, isSending } = this.props;
     const dropdownId = uuidV1();
     const recipients = this.state.draft.participants && this.state.draft.participants
       .filter(participant => participant.type.toLowerCase() !== 'from');
@@ -133,9 +134,9 @@ class NewDraftForm extends Component {
         <form method="POST" className="m-new-draft__form-col">
           <TopRow className="m-new-draft__top-bar">
             <div className="m-new-draft__top-bar-info">
-              <div className="m-new-draft__author">{__('reply-form.you')}</div>
+              <div className="m-new-draft__author"><Trans id="reply-form.you">You</Trans></div>
               {this.state.draft.type && this.renderDraftType()}
-              <div className="m-new-draft__date">{__('reply-form.now')}</div>
+              <div className="m-new-draft__date"><Trans id="reply-form.now">Now</Trans></div>
             </div>
 
             <DropdownControl toggleId={dropdownId} className="m-new-draft__top-actions-switcher" icon="ellipsis-v" />
@@ -158,7 +159,7 @@ class NewDraftForm extends Component {
               <TextFieldGroup
                 className="m-new-draft__subject"
                 display="inline"
-                label={__('messages.compose.form.subject.label')}
+                label={i18n._('messages.compose.form.subject.label')}
                 name="subject"
                 value={this.state.draft.subject}
                 onChange={this.handleChange}
@@ -167,7 +168,6 @@ class NewDraftForm extends Component {
             <DiscussionTextarea
               body={this.state.draft.body}
               onChange={this.handleChange}
-              __={__}
             />
           </BodyRow>
           <BottomRow className="m-new-draft__bottom-bar">
@@ -179,7 +179,7 @@ class NewDraftForm extends Component {
               responsive="icon-only"
               disabled={!isMessageValid || isSending}
             >
-              {__('messages.compose.action.send')}
+              <Trans id="messages.compose.action.send">Send</Trans>
             </Button>
             <Button
               className="m-new-draft__bottom-action"
@@ -188,7 +188,7 @@ class NewDraftForm extends Component {
               responsive="icon-only"
               disabled={!this.state.hasChanged}
             >
-              {__('messages.compose.action.save')}
+              <Trans id="messages.compose.action.save">Save</Trans>
             </Button>
             <Button className="m-new-draft__bottom-action m-new-draft__bottom-action--editor" icon="editor" responsive="icon-only" />
           </BottomRow>

@@ -1,0 +1,34 @@
+{
+  "settings.interface.language.options.fr": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/InterfaceSettings/presenter.jsx",
+        28
+      ]
+    ]
+  },
+  "settings.interface.language.options.en": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/InterfaceSettings/presenter.jsx",
+        29
+      ]
+    ]
+  },
+  "settings.interface.language.options.de": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/InterfaceSettings/presenter.jsx",
+        30
+      ]
+    ]
+  },
+  "settings.interface.language.label": {
+    "origin": [
+      [
+        "src/scenes/ApplicationSettings/components/InterfaceSettings/presenter.jsx",
+        45
+      ]
+    ]
+  }
+}

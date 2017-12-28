@@ -1,0 +1,20 @@
+{
+  "user.profile.subscribed_date": {
+    "defaults": "Subscribed on",
+    "origin": [
+      [
+        "src/scenes/UserProfile/components/ProfileInfo/presenter.jsx",
+        44
+      ]
+    ]
+  },
+  "user.action.improve_rank": {
+    "defaults": "Improve rank",
+    "origin": [
+      [
+        "src/scenes/UserProfile/components/ProfileInfo/presenter.jsx",
+        59
+      ]
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import { matchPath } from 'react-router-dom';
 import MenuBar from '../../components/MenuBar';
@@ -10,7 +11,6 @@ class SearchResults extends PureComponent {
     term: PropTypes.string,
     searchResultsPreview: PropTypes.shape({}),
     children: PropTypes.node,
-    __: PropTypes.func.isRequired,
   };
   static defaultProps = {
     pathname: undefined,
@@ -30,7 +30,6 @@ class SearchResults extends PureComponent {
 
   render() {
     const {
-      __,
       children,
       pathname,
       search,
@@ -45,9 +44,9 @@ class SearchResults extends PureComponent {
     const location = `${pathname}${search}`;
 
     const navLinks = [
-      { title: __('search-results.all', { count: total }), to: `/search-results?term=${term}` },
-      { title: __('search-results.messages', { count: nbMessages }), to: `/search-results?term=${term}&doctype=message` },
-      { title: __('search-results.contacts', { count: nbContacts }), to: `/search-results?term=${term}&doctype=contact` },
+      { title: <Trans id="search-results.all" values={{ total }}>All ({total})</Trans>, to: `/search-results?term=${term}` },
+      { title: <Trans id="search-results.messages" values={{ nbMessages }}>Messages ({nbMessages})</Trans>, to: `/search-results?term=${term}&doctype=message` },
+      { title: <Trans id="search-results.contacts" values={{ nbContacts }}>Contacts ({nbContacts})</Trans>, to: `/search-results?term=${term}&doctype=contact` },
     ].map(link => ({
       ...link,
       isActive: matchPath(location, { path: link.to, exact: false, strict: false }) && true,

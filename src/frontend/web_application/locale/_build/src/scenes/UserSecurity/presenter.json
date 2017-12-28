@@ -1,0 +1,34 @@
+{
+  "password.form.feedback.successfull": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/presenter.jsx",
+        44
+      ]
+    ]
+  },
+  "password.form.feedback.error-old-password": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/presenter.jsx",
+        53
+      ]
+    ]
+  },
+  "password.form.feedback.unexpected-error": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/presenter.jsx",
+        56
+      ]
+    ]
+  },
+  "user.security.section_password.title": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/presenter.jsx",
+        66
+      ]
+    ]
+  }
+}

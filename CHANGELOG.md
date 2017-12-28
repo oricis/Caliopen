@@ -6,7 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [0.6.0] 2017-11-24
+### Added
+
+- API for tags management : user's tags, tags on messages and contacts
+
+### Fixed
+
+- unable to load more messages on Timeline
+
+## [0.7.0] 20121221
 
 ### Added
 

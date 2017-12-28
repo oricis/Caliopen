@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classnames from 'classnames';
+import { Trans } from 'lingui-react';
 import Link from '../../../../components/Link';
 import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
 
@@ -12,7 +13,6 @@ class ProfileInfo extends Component {
     user: PropTypes.shape({}),
     className: PropTypes.string,
     locale: PropTypes.string,
-    __: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -22,7 +22,7 @@ class ProfileInfo extends Component {
   };
 
   render() {
-    const { user, className, __, locale } = this.props;
+    const { user, className, locale } = this.props;
 
     return (
       <div className={classnames('m-user-profile-details', className)}>
@@ -41,7 +41,7 @@ class ProfileInfo extends Component {
           <h4 className="m-user-profile-details__subtitle">
             {user && `${user.given_name}${user.given_name} ${user.family_name}`}
           </h4>
-          <p>{__('user.profile.subscribed_date')}
+          <p><Trans id="user.profile.subscribed_date">Subscribed on</Trans>
             {user && (
               <Moment
                 className="m-user-profile-details__subscribed-date"
@@ -56,7 +56,7 @@ class ProfileInfo extends Component {
           <div className="m-user-profile-details__rank-badge" />
           <div className="m-user-profile-details__rank-info">
             <h4 className="m-user-profile-details__rank-title">fake rank</h4>
-            <Link to="">{__('user.action.improve_rank')}</Link>
+            <Link to=""><Trans id="user.action.improve_rank">Improve rank</Trans></Link>
           </div>
         </div>
       </div>

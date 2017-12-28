@@ -1,0 +1,19 @@
+{
+  "login.details.title": {
+    "defaults": "Login:",
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/LoginDetails/index.jsx",
+        28
+      ]
+    ]
+  },
+  "login.details.label": {
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/LoginDetails/index.jsx",
+        32
+      ]
+    ]
+  }
+}

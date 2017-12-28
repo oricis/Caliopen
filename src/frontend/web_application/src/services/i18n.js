@@ -1,14 +1,16 @@
 import { provideTranslate, createTranslator } from '@gandi/react-translate';
+import { getLanguage, DEFAULT_LANGUAGE } from '../modules/i18n';
 
 const availableTranslations = {
   /* eslint-disable global-require */
-  de: require('../../locales/de/main.json'),
-  en: require('../../locales/en/main.json'),
-  fr: require('../../locales/fr/main.json'),
+  de: require('../../locale/de/messages.json'),
+  en: require('../../locale/en/messages.json'),
+  fr: require('../../locale/fr/messages.json'),
   /* eslint-enable global-require */
 };
+
+// @deprecated cf.modules/i18n
 export const availableLanguages = Object.keys(availableTranslations);
-export const defaultLanguage = 'en';
 
 export function changeLocale(translator, language) {
   translator.registerTranslations(language, availableTranslations[language]);
@@ -21,7 +23,7 @@ export const getUserLocales = () => {
 
     return [
       ...languages,
-      ...(window.navigator.language || window.navigator.userLanguage || defaultLanguage),
+      ...(window.navigator.language || window.navigator.userLanguage || DEFAULT_LANGUAGE),
     ];
   }
 
@@ -36,27 +38,6 @@ export const getUserLocales = () => {
   }
 
   return [];
-};
-
-export const getLanguage = (locales = []) => {
-  const language = locales.reduce((acc, locale) => {
-    if (acc) {
-      return acc;
-    }
-    if (availableLanguages.indexOf(locale) !== -1) {
-      return locale;
-    }
-
-    const lang = availableLanguages.find(availableLang => locale.startsWith(availableLang));
-
-    if (lang) {
-      return lang;
-    }
-
-    return acc;
-  }, undefined);
-
-  return language || defaultLanguage;
 };
 
 export const getLocaleAsync = () => new Promise((resolve, reject) => {

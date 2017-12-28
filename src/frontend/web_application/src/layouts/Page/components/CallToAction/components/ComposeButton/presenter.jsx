@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import ActionButton from '../ActionButton';
 
 class ComposeButton extends PureComponent {
   static propTypes = {
-    __: PropTypes.func.isRequired,
     action: PropTypes.func.isRequired,
     className: PropTypes.string,
   };
@@ -13,12 +13,12 @@ class ComposeButton extends PureComponent {
   };
 
   render() {
-    const { __, action, className } = this.props;
+    const { action, className } = this.props;
     const buttonProps = { className, icon: 'plus' };
 
     return (
       <ActionButton action={action} button={buttonProps}>
-        {__('call-to-action.action.compose')}
+        <Trans id="call-to-action.action.compose">Compose</Trans>
       </ActionButton>
     );
   }

@@ -1,0 +1,59 @@
+{
+  "user.profile.form.avatar.label": {
+    "origin": [
+      [
+        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
+        86
+      ]
+    ]
+  },
+  "user.profile.form.username.label": {
+    "origin": [
+      [
+        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
+        94
+      ]
+    ]
+  },
+  "user.profile.form.given_name.label": {
+    "origin": [
+      [
+        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
+        104
+      ]
+    ]
+  },
+  "user.profile.form.family_name.label": {
+    "origin": [
+      [
+        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
+        112
+      ]
+    ]
+  },
+  "user.profile.form.email.label": {
+    "origin": [
+      [
+        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
+        125
+      ]
+    ]
+  },
+  "user.profile.form.recovery_email.label": {
+    "origin": [
+      [
+        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
+        133
+      ]
+    ]
+  },
+  "user.action.update": {
+    "defaults": "Update",
+    "origin": [
+      [
+        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
+        142
+      ]
+    ]
+  }
+}

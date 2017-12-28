@@ -1,0 +1,34 @@
+{
+  "import-contact.feedback.successfull": {
+    "origin": [
+      [
+        "src/scenes/ContactBook/components/ImportContact/presenter.jsx",
+        40
+      ]
+    ]
+  },
+  "import-contact.feedback.error-file": {
+    "origin": [
+      [
+        "src/scenes/ContactBook/components/ImportContact/presenter.jsx",
+        49
+      ]
+    ]
+  },
+  "import-contact.feedback.error-contact": {
+    "origin": [
+      [
+        "src/scenes/ContactBook/components/ImportContact/presenter.jsx",
+        53
+      ]
+    ]
+  },
+  "import-contact.feedback.unexpected-error": {
+    "origin": [
+      [
+        "src/scenes/ContactBook/components/ImportContact/presenter.jsx",
+        56
+      ]
+    ]
+  }
+}

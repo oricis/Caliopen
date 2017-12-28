@@ -1,0 +1,14 @@
+{
+  "header.menu.search": {
+    "origin": [
+      [
+        "src/layouts/Page/components/Header/components/SearchField/presenter.jsx",
+        60
+      ],
+      [
+        "src/layouts/Page/components/Header/components/SearchField/presenter.jsx",
+        66
+      ]
+    ]
+  }
+}

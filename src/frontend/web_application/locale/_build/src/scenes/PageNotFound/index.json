@@ -1,0 +1,15 @@
+{
+  "page_not_found.title": {
+    "defaults": "Page not found",
+    "origin": [
+      [
+        "src/scenes/PageNotFound/index.jsx",
+        19
+      ],
+      [
+        "src/scenes/PageNotFound/index.jsx",
+        20
+      ]
+    ]
+  }
+}

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import { PasswordStrength, TextFieldGroup, FormGrid, FormColumn, FormRow } from '../../../../components/form';
 import Button from '../../../../components/Button';
 import './style.scss';
 
 class PasswordForm extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     onCancel: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
   };
@@ -59,12 +60,12 @@ class PasswordForm extends Component {
   }
 
   handleConfirmPasswordChange = (event) => {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     const { value } = event.target;
 
     this.setState((prevState) => {
       const newPassword = prevState.formValues.newPassword;
-      const error = __('password.form.new_password_confirmation.error');
+      const error = i18n._('password.form.new_password_confirmation.error');
       const passwordError = newPassword === value ? [] : [error];
 
       return {
@@ -91,7 +92,7 @@ class PasswordForm extends Component {
   }
 
   render() {
-    const { __, onCancel } = this.props;
+    const { i18n, onCancel } = this.props;
 
     const submitButtonProps = {
       disabled: this.state.formValues.newPassword !== '' && this.state.formValues.password !== '' &&
@@ -106,15 +107,15 @@ class PasswordForm extends Component {
               name="password"
               type="password"
               onChange={this.handleInputChange}
-              label={__('password.form.current_password.label')}
-              placeholder={__('password.form.current_password.placeholder')}
+              label={i18n._('password.form.current_password.label')}
+              placeholder={i18n._('password.form.current_password.placeholder')}
               showLabelforSr
               required
             />
           </FormColumn>
           <FormColumn size="medium">
             <label htmlFor="password" className="m-password-form__tip">
-              {__('password.form.current_password.tip')}
+              <Trans id="password.form.current_password.tip">The password you want to replace.</Trans>
             </label>
           </FormColumn>
         </FormRow>
@@ -124,14 +125,14 @@ class PasswordForm extends Component {
               name="newPassword"
               type="password"
               onChange={this.handleNewPasswordChange}
-              label={__('password.form.new_password.label')}
-              placeholder={__('password.form.new_password.placeholder')}
+              label={i18n._('password.form.new_password.label')}
+              placeholder={i18n._('password.form.new_password.placeholder')}
               required
             />
           </FormColumn>
           <FormColumn size="medium">
             <label htmlFor="newPassword" className="m-password-form__tip">
-              {__('password.form.new_password.tip')}
+              <Trans id="password.form.new_password.tip">The password you want to use from now.</Trans>
             </label>
           </FormColumn>
           {this.state.passwordStrength.length !== 0 && (
@@ -147,8 +148,8 @@ class PasswordForm extends Component {
               type="password"
               onChange={this.handleConfirmPasswordChange}
               errors={this.state.passwordError}
-              label={__('password.form.new_password_confirmation.label')}
-              placeholder={__('password.form.new_password_confirmation.placeholder')}
+              label={i18n._('password.form.new_password_confirmation.label')}
+              placeholder={i18n._('password.form.new_password_confirmation.placeholder')}
               required
             />
           </FormColumn>
@@ -160,14 +161,16 @@ class PasswordForm extends Component {
               name="tfa"
               component={TextFieldGroup}
               onChange={this.handleInputChange}
-              label={__('password.form.tfa.label')}
-              placeholder={__('password.form.tfa.placeholder')}
+              label={i18n._('password.form.tfa.label')}
+              placeholder={i18n._('password.form.tfa.placeholder')}
               disabled
             />
           </FormColumn>
           <FormColumn size="medium">
             <label htmlFor="newPassword" className="m-password-form__tip">
-              {__('password.form.tfa.tip')}
+              <Trans id="password.form.tfa.tip">
+                Only if you have enabled the 2-Factor Authentification method.
+              </Trans>
             </label>
           </FormColumn>
         </FormRow>
@@ -175,12 +178,12 @@ class PasswordForm extends Component {
         <FormRow>
           <FormColumn size="medium" className="m-password-form__action" bottomSpace>
             <Button shape="plain" display="expanded" onClick={this.handleSubmit} {...submitButtonProps}>
-              {__('password.form.action.validate')}
+              <Trans id="password.form.action.validate">Apply modifications</Trans>
             </Button>
           </FormColumn>
           <FormColumn size="shrink" className="m-password-form__action">
             <Button shape="hollow" display="expanded" onClick={onCancel}>
-              {__('password.form.action.cancel')}
+              <Trans id="password.form.action.cancel">Cancel</Trans>
             </Button>
           </FormColumn>
         </FormRow>

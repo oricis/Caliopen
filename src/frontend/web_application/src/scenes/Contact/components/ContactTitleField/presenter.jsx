@@ -6,7 +6,7 @@ import { formatName } from '../../../../services/contact';
 
 class ContactTitleField extends PureComponent {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     contact: PropTypes.shape({}).isRequired,
     contact_display_format: PropTypes.string.isRequired,
     className: PropTypes.string,
@@ -16,13 +16,13 @@ class ContactTitleField extends PureComponent {
   };
 
   render() {
-    const { __, contact, contact_display_format: format, className } = this.props;
+    const { i18n, contact, contact_display_format: format, className } = this.props;
 
     return (
       <TextFieldGroup
         className={className}
-        label={__('contact_profile.form.title.label')}
-        placeholder={__('contact_profile.form.title.label')}
+        label={i18n._('contact_profile.form.title.label')}
+        placeholder={i18n._('contact_profile.form.title.label')}
         defaultValue={formatName({ contact, format })}
         disabled
         showLabelforSr

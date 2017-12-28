@@ -1,0 +1,10 @@
+{
+  "reset-password.form.errors.token_not_found": {
+    "origin": [
+      [
+        "src/scenes/ResetPassword/presenter.jsx",
+        52
+      ]
+    ]
+  }
+}

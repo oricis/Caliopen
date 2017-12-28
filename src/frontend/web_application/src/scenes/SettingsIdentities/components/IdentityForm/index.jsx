@@ -11,7 +11,7 @@ class IdentityForm extends Component {
     onConnectRemoteIdentity: PropTypes.func,
     onDisconnectRemoteIdentity: PropTypes.func,
     remoteIdentities: PropTypes.arrayOf(PropTypes.shape({})),
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     allowConnectRemoteEntity: false,
@@ -39,18 +39,18 @@ class IdentityForm extends Component {
   }
 
   initDetailsTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.detailsTranslations = {
       address_type: {
-        work: __('contact.address_type.work'),
-        home: __('contact.address_type.home'),
-        other: __('contact.address_type.other'),
+        work: i18n._('contact.address_type.work'),
+        home: i18n._('contact.address_type.home'),
+        other: i18n._('contact.address_type.other'),
       },
       im_type: {
-        work: __('contact.im_type.work'),
-        home: __('contact.im_type.home'),
-        other: __('contact.im_type.other'),
-        netmeeting: __('contact.im_type.netmeeting'),
+        work: i18n._('contact.im_type.work'),
+        home: i18n._('contact.im_type.home'),
+        other: i18n._('contact.im_type.other'),
+        netmeeting: i18n._('contact.im_type.netmeeting'),
       },
     };
   }
@@ -84,7 +84,6 @@ class IdentityForm extends Component {
 
   renderEmail(email) {
     const {
-      __,
       allowConnectRemoteEntity,
       onConnectRemoteIdentity,
       onDisconnectRemoteIdentity,
@@ -100,7 +99,6 @@ class IdentityForm extends Component {
         contactSubObjectId={email.email_id}
         onConnect={onConnectRemoteIdentity}
         onDisconnect={onDisconnectRemoteIdentity}
-        __={__}
       />
     );
   }

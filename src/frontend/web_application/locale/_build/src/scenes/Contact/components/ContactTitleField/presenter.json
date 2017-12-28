@@ -1,0 +1,14 @@
+{
+  "contact_profile.form.title.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/ContactTitleField/presenter.jsx",
+        24
+      ],
+      [
+        "src/scenes/Contact/components/ContactTitleField/presenter.jsx",
+        25
+      ]
+    ]
+  }
+}

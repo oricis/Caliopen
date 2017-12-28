@@ -1,0 +1,37 @@
+{
+  "user.action.cancel_edit": {
+    "defaults": "Cancel",
+    "origin": [
+      [
+        "src/scenes/UserProfile/presenter.jsx",
+        47
+      ]
+    ]
+  },
+  "user.action.edit_profile": {
+    "defaults": "Edit",
+    "origin": [
+      [
+        "src/scenes/UserProfile/presenter.jsx",
+        49
+      ]
+    ]
+  },
+  "user.action.share_profile": {
+    "defaults": "Share",
+    "origin": [
+      [
+        "src/scenes/UserProfile/presenter.jsx",
+        51
+      ]
+    ]
+  },
+  "user.profile.form.title": {
+    "origin": [
+      [
+        "src/scenes/UserProfile/presenter.jsx",
+        56
+      ]
+    ]
+  }
+}

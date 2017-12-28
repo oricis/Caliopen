@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 class TFAForm extends Component {
   static propTypes = {
-    // __: PropTypes.func.isRequired,
+    // i18n: PropTypes.shape({}).isRequired,
     // requestUser: PropTypes.func.isRequired,
   };
   static defaultProps = {

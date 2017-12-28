@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withI18n } from 'lingui-react';
 import Button from '../../../Button';
 import { TextFieldGroup } from '../../../form';
 
 import './style.scss';
 
+@withI18n()
 class TagSearch extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     onChange: PropTypes.func,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -43,7 +45,7 @@ class TagSearch extends Component {
   }
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     return (
       <div className="m-tags-search">
@@ -52,8 +54,8 @@ class TagSearch extends Component {
           name="terms"
           value={this.state.terms}
           className="m-tags-search__input"
-          label={__('tags.form.search.label')}
-          placeholder={__('tags.form.search.placeholder')}
+          label={i18n._('tags.form.search.label')}
+          placeholder={i18n._('tags.form.search.placeholder')}
           onChange={this.handleChange}
           showLabelforSr
         />

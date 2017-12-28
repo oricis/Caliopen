@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
+import { Trans } from 'lingui-react';
 import Button from '../Button';
 import Link from '../Link';
 import Spinner from '../Spinner';
@@ -28,7 +29,7 @@ class ReplyForm extends Component {
     onChange: PropTypes.func,
     user: PropTypes.shape({}),
     renderDraftMessageActionsContainer: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     isSending: PropTypes.bool.isRequired,
   };
   static defaultProps = {
@@ -83,15 +84,15 @@ class ReplyForm extends Component {
   };
 
   renderDraftType() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     const typeTranslations = {
-      email: __('reply-form.protocol.email'),
+      email: i18n._('reply-form.protocol.email'),
     };
 
     return (
       <div className="m-reply__type">
         <span className="m-reply__type-label">
-          {__('reply-form.by', { type: typeTranslations[this.state.draft.type] })}
+          <Trans id="reply-form.by" values={{ 0: typeTranslations[this.state.draft.type] }}>by {0}</Trans>
         </span>
         {' '}
         <Icon className="m-reply__type-icon" type={this.state.draft.type} spaced />
@@ -102,7 +103,7 @@ class ReplyForm extends Component {
   }
 
   render() {
-    const { user, parentMessage, renderDraftMessageActionsContainer, isSending, __ } = this.props;
+    const { user, parentMessage, renderDraftMessageActionsContainer, isSending } = this.props;
     const dropdownId = uuidV1();
 
     return (
@@ -116,9 +117,9 @@ class ReplyForm extends Component {
         <form method="POST" className="m-reply__form-col">
           <TopRow className="m-reply__top-bar">
             <div className="m-reply__top-bar-info">
-              <div className="m-reply__author">{__('reply-form.you')}</div>
+              <div className="m-reply__author"><Trans id="reply-form.you">You</Trans></div>
               {this.state.draft.type && this.renderDraftType()}
-              <div className="m-reply__date">{__('reply-form.now')}</div>
+              <div className="m-reply__date"><Trans id="reply-form.now">Now</Trans></div>
             </div>
 
             <DropdownControl toggleId={dropdownId} className="m-reply__top-actions-switcher" icon="ellipsis-v" />
@@ -134,7 +135,7 @@ class ReplyForm extends Component {
           {parentMessage && (
             <div className="m-reply__parent">
               <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
-                {__('reply-form.in-reply-to', { excerpt: parentMessage.excerpt })}
+                <Trans id="reply-form.in-reply-to" values={{ 0: parentMessage.excerpt }}>In reply to: {0}</Trans>
               </Link>
             </div>
           )}
@@ -142,7 +143,6 @@ class ReplyForm extends Component {
             <DiscussionTextarea
               body={this.state.draft.body}
               onChange={this.handleChange}
-              __={__}
             />
           </BodyRow>
           <BottomRow className="m-reply__bottom-bar">
@@ -154,7 +154,7 @@ class ReplyForm extends Component {
               responsive="icon-only"
               disabled={isSending || !this.state.draft.body.length}
             >
-              {__('messages.compose.action.send')}
+              <Trans id="messages.compose.action.send">Send</Trans>
             </Button>
             <Button
               className="m-reply__bottom-action"
@@ -163,10 +163,10 @@ class ReplyForm extends Component {
               responsive="icon-only"
               disabled={!this.state.hasChanged}
             >
-              {__('messages.compose.action.save')}
+              <Trans id="messages.compose.action.save">Save</Trans>
             </Button>
             <Button className="m-reply__bottom-action" onClick={this.handleSave} icon="share-alt" responsive="icon-only">
-              {__('messages.compose.action.copy')}
+              <Trans id="messages.compose.action.copy">Copy to</Trans>
             </Button>
             <Button className="m-new-reply__bottom-action m-reply__bottom-action--editor" icon="editor" responsive="icon-only" />
           </BottomRow>

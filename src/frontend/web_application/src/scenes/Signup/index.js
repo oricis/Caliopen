@@ -1,6 +1,6 @@
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import { push } from 'react-router-redux';
 import { withSettings } from '../../modules/settings';
 import Presenter from './presenter';
@@ -10,5 +10,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({ onSignupSuccess: pus
 export default compose(
   withSettings(),
   connect(null, mapDispatchToProps),
-  withTranslator()
+  withI18n()
 )(Presenter);

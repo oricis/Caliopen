@@ -1,0 +1,87 @@
+{
+  "password.forgot-form.title": {
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
+        51
+      ]
+    ]
+  },
+  "password.forgot-form.success": {
+    "defaults": "Done! You will receive an email shortly with instructions to reset your password.",
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
+        65
+      ]
+    ]
+  },
+  "password.forgot-form.action.login": {
+    "defaults": "Ok",
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
+        73
+      ]
+    ]
+  },
+  "password.forgot-form.instructions": {
+    "defaults": "Enter your username and we'll email instructions on how to reset your password.",
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
+        80
+      ]
+    ]
+  },
+  "password.forgot-form.username.label": {
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
+        88
+      ]
+    ]
+  },
+  "password.forgot-form.username.placeholder": {
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
+        89
+      ]
+    ]
+  },
+  "password.forgot-form.recovery_email.label": {
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
+        99
+      ]
+    ]
+  },
+  "password.forgot-form.recovery_email.placeholder": {
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
+        100
+      ]
+    ]
+  },
+  "password.forgot-form.action.send": {
+    "defaults": "Send",
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
+        113
+      ]
+    ]
+  },
+  "password.forgot-form.cancel": {
+    "defaults": "Cancel",
+    "origin": [
+      [
+        "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
+        116
+      ]
+    ]
+  }
+}

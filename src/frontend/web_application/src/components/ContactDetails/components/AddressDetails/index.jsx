@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withI18n } from 'lingui-react';
 import Icon from '../../../Icon';
 import './style.scss';
 
+@withI18n()
 class AddressDetails extends Component {
   static propTypes = {
     address: PropTypes.shape({}).isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   constructor(props) {
@@ -15,11 +17,11 @@ class AddressDetails extends Component {
   }
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.addressTypesTranslations = {
-      work: __('contact.address_type.work'),
-      home: __('contact.address_type.home'),
-      other: __('contact.address_type.other'),
+      work: i18n._('contact.address_type.work'),
+      home: i18n._('contact.address_type.home'),
+      other: i18n._('contact.address_type.other'),
     };
   }
 

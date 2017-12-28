@@ -1,0 +1,20 @@
+{
+  "message-list.message.action.tags": {
+    "defaults": "Tags",
+    "origin": [
+      [
+        "src/components/DraftMessageActionsContainer/presenter.jsx",
+        47
+      ]
+    ]
+  },
+  "message-list.message.action.delete": {
+    "defaults": "Delete",
+    "origin": [
+      [
+        "src/components/DraftMessageActionsContainer/presenter.jsx",
+        54
+      ]
+    ]
+  }
+}

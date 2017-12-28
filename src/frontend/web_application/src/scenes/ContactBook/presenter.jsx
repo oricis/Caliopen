@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import ContactList from './components/ContactList';
 import ContactFilters from './components/ContactFilters';
 import ImportContact from './components/ImportContact';
@@ -9,8 +10,6 @@ import TagList from './components/TagList';
 import Spinner from '../../components/Spinner';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
-
-
 import './style.scss';
 
 export const SORT_VIEW_GIVEN_NAME = 'given_name';
@@ -36,7 +35,7 @@ class ContactBook extends Component {
     contacts: PropTypes.arrayOf(PropTypes.shape({})),
     isFetching: PropTypes.bool,
     hasMore: PropTypes.bool,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -88,13 +87,13 @@ class ContactBook extends Component {
   };
 
   renderImportModal = () => {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     return (
       <Modal
         isOpen={this.state.isImportModalOpen}
-        contentLabel={__('import-contact.action.import_contacts')}
-        title={__('import-contact.action.import_contacts')}
+        contentLabel={i18n._('import-contact.action.import_contacts')}
+        title={i18n._('import-contact.action.import_contacts')}
         onClose={this.handleCloseImportModal}
       >
         <ImportContact
@@ -106,7 +105,7 @@ class ContactBook extends Component {
   }
 
   render() {
-    const { contacts, isFetching, hasMore, __ } = this.props;
+    const { contacts, isFetching, hasMore, i18n } = this.props;
 
     const tags = contacts
       .filter(contact => contact.tags)
@@ -117,12 +116,11 @@ class ContactBook extends Component {
 
     return (
       <div className="l-contact-book">
-        <PageTitle title={__('header.menu.contacts')} />
+        <PageTitle title={i18n._('header.menu.contacts')} />
         <MenuBar>
           <ContactFilters
             onSortDirChange={this.handleSortDirChange}
             sortDir={this.state.sortDir}
-            __={__}
           />
         </MenuBar>
 
@@ -133,7 +131,6 @@ class ContactBook extends Component {
               activeTag={this.state.activeTag}
               onTagClick={this.handleTagClick}
               nbContactsAll={contacts.length}
-              __={__}
             />
             <div className="l-contact-book__import">
               <div className="l-contact-book__import-button">
@@ -143,7 +140,7 @@ class ContactBook extends Component {
                   shape="hollow"
                   display="expanded"
                   onClick={this.handleOpenImportModal}
-                >{__('import-contact.action.import_contacts')}</Button>
+                ><Trans id="import-contact.action.import_contacts">Import contacts</Trans></Button>
               </div>
               {this.renderImportModal()}
             </div>
@@ -160,7 +157,7 @@ class ContactBook extends Component {
             {hasMore && (
               <div className="l-contact-book-list__load-more">
                 <Button shape="hollow" onClick={this.loadMore}>
-                  {__('general.action.load_more')}
+                  <Trans id="general.action.load_more">Load more</Trans>
                 </Button>
               </div>
             )}

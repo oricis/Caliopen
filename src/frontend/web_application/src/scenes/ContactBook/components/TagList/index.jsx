@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
+import { withI18n } from 'lingui-react';
 import Button from '../../../../components/Button';
 import NavList, { ItemContent } from '../../../../components/NavList';
 
@@ -58,14 +59,14 @@ TagItem.defaultProps = {
   className: '',
 };
 
-const TagList = ({ tags, onTagClick, nbContactsAll, activeTag, __ }) => {
+const TagList = ({ tags, onTagClick, nbContactsAll, activeTag, i18n }) => {
   const list = tags.sort((a, b) => a.localeCompare(b));
   const tagList = Array.from(new Set(list));
 
   return (
     <NavList className="m-tag-list" dir="vertical">
       <TagItem
-        title={__('tag_list.all_contacts')}
+        title={i18n._('tag_list.all_contacts')}
         link=""
         nbContacts={nbContactsAll}
         onTagClick={onTagClick}
@@ -90,6 +91,6 @@ TagList.propTypes = {
   onTagClick: PropTypes.func.isRequired,
   activeTag: PropTypes.string.isRequired,
   nbContactsAll: PropTypes.number.isRequired,
-  __: PropTypes.func.isRequired,
+  i18n: PropTypes.shape({}).isRequired,
 };
-export default TagList;
+export default withI18n()(TagList);

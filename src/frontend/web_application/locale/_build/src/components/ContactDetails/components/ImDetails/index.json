@@ -1,0 +1,26 @@
+{
+  "contact.im_type.work": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/ImDetails/index.jsx",
+        21
+      ]
+    ]
+  },
+  "contact.im_type.home": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/ImDetails/index.jsx",
+        22
+      ]
+    ]
+  },
+  "contact.im_type.other": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/ImDetails/index.jsx",
+        23
+      ]
+    ]
+  }
+}

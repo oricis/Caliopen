@@ -1,0 +1,10 @@
+{
+  "navigation.actions.toggle-importance-level-slider": {
+    "origin": [
+      [
+        "src/layouts/Page/components/Navigation/index.jsx",
+        37
+      ]
+    ]
+  }
+}

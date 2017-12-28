@@ -1,0 +1,26 @@
+{
+  "contact.phone_type.work": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/PhoneDetails/index.jsx",
+        21
+      ]
+    ]
+  },
+  "contact.phone_type.home": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/PhoneDetails/index.jsx",
+        22
+      ]
+    ]
+  },
+  "contact.phone_type.other": {
+    "origin": [
+      [
+        "src/components/ContactDetails/components/PhoneDetails/index.jsx",
+        23
+      ]
+    ]
+  }
+}

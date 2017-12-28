@@ -1,0 +1,27 @@
+{
+  "contact.identity_form.legend": {
+    "defaults": "Identities",
+    "origin": [
+      [
+        "src/scenes/Contact/components/IdentityForm/index.jsx",
+        42
+      ]
+    ]
+  },
+  "contact.identity_form.service.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/IdentityForm/index.jsx",
+        49
+      ]
+    ]
+  },
+  "contact.identity_form.identity.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/IdentityForm/index.jsx",
+        59
+      ]
+    ]
+  }
+}

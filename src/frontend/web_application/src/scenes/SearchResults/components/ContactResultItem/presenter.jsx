@@ -12,13 +12,13 @@ const CONTACT_NAME_PROPERTIES = ['title', 'name_prefix, name_suffix', 'family_na
 class ContactResultItem extends PureComponent {
   static propTypes = {
     term: PropTypes.string.isRequired,
-    highlights: PropTypes.shape({}).isRequired,
+    highlights: PropTypes.shape({}),
     contact: PropTypes.shape({}).isRequired,
     contact_display_format: PropTypes.string.isRequired,
   };
   static defaultProps = {
     term: '',
-    highlights: [],
+    highlights: null,
   };
 
   renderTitle() {
@@ -30,7 +30,7 @@ class ContactResultItem extends PureComponent {
   renderHighlights() {
     const { term, highlights } = this.props;
 
-    const highlight = Object.keys(highlights)
+    const highlight = !highlights ? '' : Object.keys(highlights)
       .filter(contactProperty => CONTACT_NAME_PROPERTIES.indexOf(contactProperty) === -1)
       .map(contactProperty => highlights[contactProperty])
       .join(' ... ');

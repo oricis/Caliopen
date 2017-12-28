@@ -1,0 +1,28 @@
+{
+  "header.menu.${application.name}": {
+    "origin": [
+      [
+        "src/layouts/Page/components/NavigationAlt/presenter.jsx",
+        43
+      ]
+    ]
+  },
+  "header.menu.settings": {
+    "defaults": "Settings",
+    "origin": [
+      [
+        "src/layouts/Page/components/NavigationAlt/presenter.jsx",
+        68
+      ]
+    ]
+  },
+  "header.menu.signout": {
+    "defaults": "Signout",
+    "origin": [
+      [
+        "src/layouts/Page/components/NavigationAlt/presenter.jsx",
+        73
+      ]
+    ]
+  }
+}

@@ -10,7 +10,6 @@ import './style.scss';
 
 class SettingsIdentities extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
     requestUser: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,
     onRemoteIdentityChange: PropTypes.func.isRequired,
@@ -37,7 +36,7 @@ class SettingsIdentities extends Component {
   }
 
   render() {
-    const { user, __ } = this.props;
+    const { user } = this.props;
 
     const navLinks = [
       { title: 'myself@caliopen.local', to: '/settings/identities' },
@@ -67,7 +66,6 @@ class SettingsIdentities extends Component {
                 onConnectRemoteIdentity={this.handleConnectRemoteIdentity}
                 onDisconnectRemoteIdentity={this.handleDisonnectRemoteIdentity}
                 allowConnectRemoteEntity
-                __={__}
               />
             )}
           </Section>

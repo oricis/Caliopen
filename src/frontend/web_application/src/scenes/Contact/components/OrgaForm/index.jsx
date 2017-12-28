@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { withTranslator } from '@gandi/react-translate';
+import { Trans, withI18n } from 'lingui-react';
 import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
 import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
@@ -10,19 +10,19 @@ import './style.scss';
 
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 
-@withTranslator()
+@withI18n()
 class OrgaForm extends Component {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     onDelete: PropTypes.func.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     errors: [],
   };
 
   render() {
-    const { __, errors, onDelete } = this.props;
+    const { i18n, errors, onDelete } = this.props;
 
     return (
       <FormGrid className="m-orga-form">
@@ -31,7 +31,7 @@ class OrgaForm extends Component {
             <FormColumn>
               <Legend>
                 <Icon rightSpaced type="building" />
-                {__('contact.orga_form.legend')}
+                <Trans id="contact.orga_form.legend">Organization</Trans>
               </Legend>
             </FormColumn>
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
@@ -41,8 +41,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="label"
-                label={__('contact.orga_form.label.label')}
-                placeholder={__('contact.orga_form.label.label')}
+                label={i18n._('contact.orga_form.label.label')}
+                placeholder={i18n._('contact.orga_form.label.label')}
                 showLabelforSr
               />
             </FormColumn>
@@ -50,8 +50,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="name"
-                label={__('contact.orga_form.name.label')}
-                placeholder={__('contact.orga_form.name.label')}
+                label={i18n._('contact.orga_form.name.label')}
+                placeholder={i18n._('contact.orga_form.name.label')}
                 showLabelforSr
                 required
               />
@@ -60,8 +60,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="title"
-                label={__('contact.orga_form.title.label')}
-                placeholder={__('contact.orga_form.title.label')}
+                label={i18n._('contact.orga_form.title.label')}
+                placeholder={i18n._('contact.orga_form.title.label')}
                 showLabelforSr
               />
             </FormColumn>
@@ -69,8 +69,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="department"
-                label={__('contact.orga_form.department.label')}
-                placeholder={__('contact.orga_form.department.label')}
+                label={i18n._('contact.orga_form.department.label')}
+                placeholder={i18n._('contact.orga_form.department.label')}
                 showLabelforSr
               />
             </FormColumn>
@@ -78,8 +78,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="job_description"
-                label={__('contact.orga_form.job_description.label')}
-                placeholder={__('contact.orga_form.job_description.label')}
+                label={i18n._('contact.orga_form.job_description.label')}
+                placeholder={i18n._('contact.orga_form.job_description.label')}
                 showLabelforSr
               />
             </FormColumn>

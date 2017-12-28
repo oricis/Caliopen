@@ -1,0 +1,59 @@
+{
+  "contact.im_type.work": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/ImForm/index.jsx",
+        34
+      ]
+    ]
+  },
+  "contact.im_type.home": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/ImForm/index.jsx",
+        35
+      ]
+    ]
+  },
+  "contact.im_type.other": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/ImForm/index.jsx",
+        36
+      ]
+    ]
+  },
+  "contact.im_type.netmeeting": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/ImForm/index.jsx",
+        37
+      ]
+    ]
+  },
+  "contact.im_form.legend": {
+    "defaults": "Instant messaging",
+    "origin": [
+      [
+        "src/scenes/Contact/components/ImForm/index.jsx",
+        55
+      ]
+    ]
+  },
+  "contact.im_form.type.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/ImForm/index.jsx",
+        63
+      ]
+    ]
+  },
+  "contact.im_form.address.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/ImForm/index.jsx",
+        73
+      ]
+    ]
+  }
+}

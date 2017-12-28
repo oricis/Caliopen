@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import { withUser } from '../../hoc/user';
 import Presenter from './presenter';
 import { filterTimeline } from '../../store/actions/timeline';
@@ -27,11 +27,11 @@ const mapStateToProps = createSelector(
 );
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestMessages: filterTimeline,
-  loadMore: loadMore.bind(null, 'timeline', '0'),
+  loadMore: loadMore.bind(null, 'timeline'),
 }, dispatch);
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withUser(),
-  withTranslator()
+  withI18n()
 )(Presenter);

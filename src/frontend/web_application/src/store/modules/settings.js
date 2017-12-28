@@ -32,6 +32,7 @@ export function updateSettings({ settings, original }) {
 
 const initialState = {
   isFetching: false,
+  isInvalidated: true,
   settings: {},
 };
 
@@ -43,6 +44,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         isFetching: false,
+        isInvalidated: false,
         settings: action.payload.data,
       };
     default:

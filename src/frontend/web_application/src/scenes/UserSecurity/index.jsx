@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslator } from '@gandi/react-translate';
+import { withI18n } from 'lingui-react';
 import { withNotification } from '../../hoc/notification';
 import { withUser } from '../../hoc/user';
 import { requestUser } from '../../store/modules/user';
@@ -22,7 +22,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withTranslator(),
+  withI18n(),
   withUser(),
   withNotification(),
 )(Presenter);

@@ -1,0 +1,11 @@
+{
+  "messages.compose.form.to.label": {
+    "defaults": "To",
+    "origin": [
+      [
+        "src/components/RecipientList/presenter.jsx",
+        317
+      ]
+    ]
+  }
+}

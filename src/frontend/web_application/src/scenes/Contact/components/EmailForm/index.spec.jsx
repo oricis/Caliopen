@@ -1,18 +1,21 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
-// import EmailForm from './';
+import React from 'react';
+import { shallow } from 'enzyme';
+import EmailForm from './';
+
+jest.mock('lingui-react', () => ({
+  withI18n: () => whatever => whatever,
+}));
 
 describe('component EmailForm', () => {
   it('init form', () => {
-    // cannot test due to @withTranslator()
-    // const props = {
-    //   __: str => str,
-    // };
-    //
-    // const comp = shallow(
-    //   <EmailForm {...props} />
-    // );
-    //
-    // expect(comp.find('Button').prop('type')).toEqual('submit');
+    const props = {
+      i18n: { _: id => id },
+    };
+
+    const comp = shallow(
+      <EmailForm {...props} />
+    );
+
+    expect(comp.text()).toEqual('<FormGrid />');
   });
 });

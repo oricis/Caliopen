@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Swipeable from 'react-swipeable';
 import classnames from 'classnames';
+import { Trans } from 'lingui-react';
 import Button from '../../../../components/Button';
 import Modal from '../../../../components/Modal';
 import ManageTags from '../ManageTags';
@@ -12,7 +13,7 @@ class MessageItemContainer extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     children: PropTypes.node.isRequired,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     replyToMessage: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
   };
@@ -82,7 +83,7 @@ class MessageItemContainer extends Component {
   }
 
   renderActions= () => {
-    const { __, message } = this.props;
+    const { message } = this.props;
     const actionsClassName = classnames(
       'm-message-item-container__actions',
       { 'm-message-item-container__actions--swiped': this.state.isSwiped },
@@ -92,13 +93,13 @@ class MessageItemContainer extends Component {
     return (
       <div className={actionsClassName}>
         <Button shape="plain" className="m-message-item-container__action" onClick={this.handleDelete}>
-          {__('message-item.action.delete')}
+          <Trans id="message-item.action.delete">Delete</Trans>
         </Button>
         {!message.is_draft && (<Button shape="plain" className="m-message-item-container__action" onClick={this.handleReply}>
-          {__('message-item.action.reply')}
+          <Trans id="message-item.action.reply">Reply</Trans>
         </Button>)}
         <Button shape="plain" className="m-message-item-container__action" onClick={this.handleOpenTags}>
-          {__('message-item.action.manage_tags')}
+          <Trans id="message-item.action.manage_tags">Manage tags</Trans>
         </Button>
         {this.renderTagsModal()}
       </div>
@@ -107,17 +108,17 @@ class MessageItemContainer extends Component {
 
 
   renderTagsModal = () => {
-    const { message, __ } = this.props;
-    const count = message.tags ? message.tags.length : 0;
+    const { message, i18n } = this.props;
+    const nb = message.tags ? message.tags.length : 0;
     const title = [
-      __('tags.header.title'),
-      (<span key="1" className="m-tags-form__count">{__('tags.header.count', { count }) }</span>),
+      i18n._('tags.header.title'),
+      (<span key="1" className="m-tags-form__count"><Trans id="tags.header.count" values={{ 0: nb }}>(Total: {0})</Trans></span>),
     ];
 
     return (
       <Modal
         isOpen={this.state.isTagModalOpen}
-        contentLabel={__('tags.header.title')}
+        contentLabel={i18n._('tags.header.title')}
         title={title}
         onClose={this.handleCloseTags}
       >

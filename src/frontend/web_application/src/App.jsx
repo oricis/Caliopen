@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
+import { I18nLoader } from './modules/i18n';
+import { WithSettings } from './modules/settings';
 import PageTitle from './components/PageTitle';
 import Routes from './routes';
-import I18nProvider from './components/I18nProvider';
+import I18nProviderLegacy from './components/I18nProvider';
 import { initConfig } from './services/config';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -28,10 +30,15 @@ class App extends Component {
 
     return (
       <Provider store={store}>
-        <I18nProvider>
-          <PageTitle />
-          <Routes />
-        </I18nProvider>
+        <WithSettings render={({ default_locale: locale }) => (
+          <I18nProviderLegacy>
+            <I18nLoader locale={locale}>
+              <PageTitle />
+              <Routes />
+            </I18nLoader>
+          </I18nProviderLegacy>
+        )}
+        />
       </Provider>
     );
   }

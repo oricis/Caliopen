@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
+import { Trans } from 'lingui-react';
 import Spinner from '../../components/Spinner';
 import PageTitle from '../../components/PageTitle';
 import Button from '../../components/Button';
@@ -24,7 +25,7 @@ class Timeline extends Component {
     isFetching: PropTypes.bool,
     didInvalidate: PropTypes.bool,
     hasMore: PropTypes.bool,
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -41,15 +42,16 @@ class Timeline extends Component {
     requestMessages(timelineFilter);
 
     this.throttledLoadMore = throttle(
-      () => loadMore(),
+      () => loadMore(timelineFilter),
       LOAD_MORE_THROTTLE,
       { trailing: false }
     );
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.didInvalidate && !nextProps.isFetching) {
-      this.props.requestMessages();
+    const { requestMessages, timelineFilter, didInvalidate, isFetching } = nextProps;
+    if (didInvalidate && !isFetching) {
+      requestMessages(timelineFilter);
     }
   }
 
@@ -60,11 +62,11 @@ class Timeline extends Component {
   }
 
   render() {
-    const { user, messages, isFetching, hasMore, __ } = this.props;
+    const { user, messages, isFetching, hasMore, i18n } = this.props;
 
     return (
       <div className="s-timeline">
-        <PageTitle title={__('header.menu.discussions')} />
+        <PageTitle title={i18n._('header.menu.discussions')} />
         <MenuBar className="s-timeline__menu-bar">
           <Spinner isLoading={isFetching} className="s-timeline__spinner" />
         </MenuBar>
@@ -81,7 +83,7 @@ class Timeline extends Component {
         </InfiniteScroll>
         {hasMore && (
           <div className="s-timeline__load-more">
-            <Button shape="hollow" onClick={this.loadMore}>{__('general.action.load_more')}</Button>
+            <Button shape="hollow" onClick={this.loadMore}><Trans id="general.action.load_more">Load more</Trans></Button>
           </div>
         )}
       </div>

@@ -1,0 +1,51 @@
+{
+  "contact.phone_type.work": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/PhoneForm/index.jsx",
+        33
+      ]
+    ]
+  },
+  "contact.phone_type.home": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/PhoneForm/index.jsx",
+        34
+      ]
+    ]
+  },
+  "contact.phone_type.other": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/PhoneForm/index.jsx",
+        35
+      ]
+    ]
+  },
+  "contact.phone_form.legend": {
+    "defaults": "Phone",
+    "origin": [
+      [
+        "src/scenes/Contact/components/PhoneForm/index.jsx",
+        54
+      ]
+    ]
+  },
+  "contact.phone_form.type.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/PhoneForm/index.jsx",
+        61
+      ]
+    ]
+  },
+  "contact.phone_form.number.label": {
+    "origin": [
+      [
+        "src/scenes/Contact/components/PhoneForm/index.jsx",
+        71
+      ]
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "signup.feedback.username_starting_ending_dot": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        15
+      ]
+    ]
+  },
+  "signup.feedback.username_length": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        16
+      ]
+    ]
+  },
+  "signup.feedback.username_double_dots": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        17
+      ]
+    ]
+  },
+  "signup.feedback.required_privacy": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        18
+      ]
+    ]
+  },
+  "signup.feedback.required_tos": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        19
+      ]
+    ]
+  },
+  "signup.feedback.invalid": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        20
+      ]
+    ]
+  },
+  "signup.feedback.required_username": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        21
+      ]
+    ]
+  },
+  "signup.feedback.username_invalid_characters": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        22
+      ]
+    ]
+  },
+  "signup.feedback.required_password": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        23
+      ]
+    ]
+  },
+  "signup.feedback.unavailable_username": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        24
+      ]
+    ]
+  },
+  "signup.feedback.invalid_recovery_email": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        25
+      ]
+    ]
+  },
+  "signup.feedback.required_recovery_email": {
+    "origin": [
+      [
+        "src/scenes/Signup/form-validator.js",
+        26
+      ]
+    ]
+  }
+}

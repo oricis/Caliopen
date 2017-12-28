@@ -54,8 +54,7 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 		// The search focuses on message document type, no aggregation needed, but importance level apply
 		h := elastic.NewHighlight().Fields(elastic.NewHighlighterField("*").RequireFieldMatch(false))
 		rq := elastic.NewRangeQuery("importance_level").Gte(search.ILrange[0]).Lte(search.ILrange[1])
-		q = q.Filter(rq)
-		s = es.Client.Search().Index(search.User_id.String()).Query(q).FetchSource(true).Highlight(h)
+		s = es.Client.Search().Index(search.User_id.String()).Query(q).FetchSource(true).Highlight(h).PostFilter(rq)
 	case ContactIndexType:
 		// The search focuses on contact document type, no aggregation needed and importance level not taken into account
 		h := elastic.NewHighlight().Fields(elastic.NewHighlighterField("*").RequireFieldMatch(false))

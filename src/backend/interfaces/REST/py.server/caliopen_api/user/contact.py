@@ -76,8 +76,12 @@ class Contact(Api):
             raise ValidationError(exc)
 
         contact = ContactObject(self.user.user_id, contact_id=contact_id)
-        contact.get_db()
-        contact.unmarshall_db()
+        try:
+            contact.get_db()
+            contact.unmarshall_db()
+        except Exception as exc:
+            log.warn(exc)
+            raise ResourceNotFound(detail=exc.message)
         return contact.marshall_json_dict()
 
     @view(renderer='json', permission='authenticated')

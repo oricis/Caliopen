@@ -10,7 +10,7 @@ const DISPLAY_FORMATS = ['rich_text', 'plain_text'];
 
 class PresentationForm extends PureComponent {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   componentWillMount() {
@@ -23,15 +23,15 @@ class PresentationForm extends PureComponent {
   }));
 
   initTranslations() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
     this.i18n = {
-      rich_text: __('settings.message.display_format.options.rich_text'),
-      plain_text: __('settings.message.display_format.options.plain_text'),
+      rich_text: i18n._('settings.message.display_format.options.rich_text'),
+      plain_text: i18n._('settings.message.display_format.options.plain_text'),
     };
   }
 
   render() {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     const displayFormatOptions = this.getOptionsFromArray(DISPLAY_FORMATS);
 
@@ -42,7 +42,7 @@ class PresentationForm extends PureComponent {
             <Field
               component={SelectFieldGroup}
               name="message_display_format"
-              label={__('settings.message.display_format.label')}
+              label={i18n._('settings.message.display_format.label')}
               options={displayFormatOptions}
             />
           </FormColumn>

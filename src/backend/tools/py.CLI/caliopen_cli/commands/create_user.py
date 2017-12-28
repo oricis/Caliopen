@@ -27,7 +27,7 @@ def create_user(**kwargs):
         conf = Configuration('global').configuration
         conf['default_domain'] = domain
     param.password = kwargs['password']
-    param.recovery_email = u'{}@caliopen.local'.format(param.name)
+    param.recovery_email = u'{}@recovery-caliopen.local'.format(param.name)
 
     contact = NewContact()
     contact.given_name = kwargs.get('given_name')

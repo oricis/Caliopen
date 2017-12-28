@@ -1,0 +1,29 @@
+{
+  "search-results.all": {
+    "defaults": "All ({total})",
+    "origin": [
+      [
+        "src/layouts/SearchResults/presenter.jsx",
+        47
+      ]
+    ]
+  },
+  "search-results.messages": {
+    "defaults": "Messages ({nbMessages})",
+    "origin": [
+      [
+        "src/layouts/SearchResults/presenter.jsx",
+        48
+      ]
+    ]
+  },
+  "search-results.contacts": {
+    "defaults": "Contacts ({nbContacts})",
+    "origin": [
+      [
+        "src/layouts/SearchResults/presenter.jsx",
+        49
+      ]
+    ]
+  }
+}

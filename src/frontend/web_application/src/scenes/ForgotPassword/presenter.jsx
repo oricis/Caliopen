@@ -10,7 +10,7 @@ const ERROR_USER_NOT_FOUND = '[RESTfacility] user not found';
 
 class ForgotPassword extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   state = {
@@ -37,16 +37,16 @@ class ForgotPassword extends Component {
   }
 
   handleSigninError = ({ response: { status, data: { errors: globalErrors } } }) => {
-    const { __ } = this.props;
+    const { i18n } = this.props;
 
     if (![STATUS_ERROR, STATUS_INVALID_FORM].includes(status)) {
       throw new Error('Unexpected error');
     }
 
     const localizedErrors = {
-      [ERROR_IDENTIFIANTS_MISMATCH]: __('passwords.form.error.identifiants_mismatch'),
-      [ERROR_USER_NOT_FOUND]: __('passwords.form.error.user_not_found'),
-      [STATUS_INVALID_FORM]: __('passwords.form.error.empty'),
+      [ERROR_IDENTIFIANTS_MISMATCH]: i18n._('passwords.form.error.identifiants_mismatch'),
+      [ERROR_USER_NOT_FOUND]: i18n._('passwords.form.error.user_not_found'),
+      [STATUS_INVALID_FORM]: i18n._('passwords.form.error.empty'),
     };
 
     const errors = {

@@ -1,0 +1,11 @@
+{
+  "collection-field-group.action.add": {
+    "defaults": "Add",
+    "origin": [
+      [
+        "src/components/form/CollectionFieldGroup/components/AddFieldGroup/index.jsx",
+        82
+      ]
+    ]
+  }
+}

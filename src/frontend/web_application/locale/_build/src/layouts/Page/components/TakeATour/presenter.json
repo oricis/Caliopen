@@ -1,0 +1,145 @@
+{
+  "take-a-tour.step.intro.title": {
+    "defaults": "Welcome!",
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        37
+      ]
+    ]
+  },
+  "take-a-tour.step.intro.content": {
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        38
+      ]
+    ]
+  },
+  "take-a-tour.step.search.title": {
+    "defaults": "Intuitive search",
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        47
+      ]
+    ]
+  },
+  "take-a-tour.step.search.content": {
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        48
+      ]
+    ]
+  },
+  "take-a-tour.step.user-menu.title": {
+    "defaults": "Account menu",
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        56
+      ]
+    ]
+  },
+  "take-a-tour.step.user-menu.content": {
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        57
+      ]
+    ]
+  },
+  "take-a-tour.step.call-to-action.title": {
+    "defaults": "Create quickly",
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        66
+      ]
+    ]
+  },
+  "take-a-tour.step.call-to-action.content": {
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        67
+      ]
+    ]
+  },
+  "take-a-tour.step.importance-slider.title": {
+    "defaults": "Importance level",
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        75
+      ]
+    ]
+  },
+  "take-a-tour.step.importance-slider.content": {
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        76
+      ]
+    ]
+  },
+  "take-a-tour.action.toggle": {
+    "defaults": "Take a tour",
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        84
+      ]
+    ]
+  },
+  "take-a-tour.current-step": {
+    "defaults": "Take a tour ({current} of {total})",
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        90
+      ]
+    ]
+  },
+  "take-a-tour.action.skip": {
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        92
+      ]
+    ]
+  },
+  "take-a-tour.action.prev": {
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        93
+      ]
+    ]
+  },
+  "take-a-tour.action.next": {
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        94
+      ]
+    ]
+  },
+  "take-a-tour.action.last-step": {
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        95
+      ]
+    ]
+  },
+  "take-a-tour.action.close": {
+    "origin": [
+      [
+        "src/layouts/Page/components/TakeATour/presenter.jsx",
+        96
+      ]
+    ]
+  }
+}

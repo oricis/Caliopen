@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
+import { Trans } from 'lingui-react';
 import { WithSettings } from '../../modules/settings';
 import fetchLocation from '../../services/api-location';
 import { formatName } from '../../services/contact';
@@ -35,7 +36,7 @@ const DropdownControl = withDropdownControl(Button);
 
 class Contact extends Component {
   static propTypes = {
-    __: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     notifyError: PropTypes.func.isRequired,
     requestContact: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
@@ -150,7 +151,7 @@ class Contact extends Component {
   createOrUpdateAction = async ({ contact, original }) => {
     const {
       updateContact, requestContact, settings, createContact, currentTab, updateTab,
-      __, push, removeTab,
+      i18n, push, removeTab,
     } = this.props;
     if (contact.contact_id) {
       await updateContact({ contact, original });
@@ -159,7 +160,7 @@ class Contact extends Component {
       const format = settings.contact_display_format;
       const tab = {
         ...currentTab,
-        label: formatName({ contact, format }) || __('contact.profile.name_not_set'),
+        label: formatName({ contact, format }) || i18n._('contact.profile.name_not_set'),
       };
       updateTab({ tab, original: currentTab });
 
@@ -177,30 +178,30 @@ class Contact extends Component {
   };
 
   handleSubmit = (ev) => {
-    const { __, handleSubmit, contactId, notifyError, contact: original } = this.props;
+    const { i18n, handleSubmit, contactId, notifyError, contact: original } = this.props;
     this.setState({ isSaving: true });
     handleSubmit(ev)
       .then(contact => this.createOrUpdateAction({ contact, original }))
       .then(() => contactId && this.toggleEditMode(), () => {
-        notifyError({ message: __('contact.feedback.unable_to_save') });
+        notifyError({ message: i18n._('contact.feedback.unable_to_save') });
       })
       .then(() => this.setState({ isSaving: false }));
   }
 
   renderTagsModal = () => {
-    const { contact, updateContact, __ } = this.props;
-    const count = contact.tags ? contact.tags.length : 0;
+    const { contact, updateContact, i18n } = this.props;
+    const nb = contact.tags ? contact.tags.length : 0;
     const title = (
-      <span>{__('tags.header.title')}
+      <span><Trans id="tags.header.title">Tags</Trans>
         <span className="m-tags-form__count">
-          {__('tags.header.count', { count }) }
+          <Trans id="tags.header.count" values={{ 0: nb }}>(Total: {0})</Trans>
         </span>
       </span>);
 
     return (
       <Modal
         isOpen={this.state.isTagsModalOpen}
-        contentLabel={__('tags.header.title')}
+        contentLabel={i18n._('tags.header.title')}
         title={title}
         onClose={this.closeTagsModal}
       >
@@ -210,7 +211,7 @@ class Contact extends Component {
   }
 
   renderEditBar = () => {
-    const { __, pristine, submitting } = this.props;
+    const { pristine, submitting } = this.props;
     const hasActivity = submitting || this.state.isSaving;
 
     return (
@@ -220,9 +221,9 @@ class Contact extends Component {
           responsive="icon-only"
           icon="remove"
           className="s-contact__action"
-        >{__('contact.action.cancel_edit')}</Button>
+        ><Trans id="contact.action.cancel_edit">Cancel</Trans></Button>
         <TextBlock className="s-contact__bar-title">
-          {__('contact.edit_contact.title')}
+          <Trans id="contact.edit_contact.title">Edit contact</Trans>
         </TextBlock>
         <Button
           type="submit"
@@ -230,13 +231,13 @@ class Contact extends Component {
           icon={hasActivity ? (<Spinner isLoading display="inline" />) : 'check'}
           className="s-contact__action"
           disabled={pristine || hasActivity}
-        >{__('contact.action.validate_edit')}</Button>
+        ><Trans id="contact.action.validate_edit">Validate</Trans></Button>
       </div>
     );
   }
 
   renderActionBar = (contactDisplayFormat) => {
-    const { __, submitting, contact, user, contactId } = this.props;
+    const { submitting, contact, user, contactId } = this.props;
     const contactDisplayName = formatName({ contact, format: contactDisplayFormat });
     const contactIsUser = contactId && user && user.contact.contact_id === contactId;
     const hasActivity = submitting || this.state.isFetching || this.state.isSaving;
@@ -264,14 +265,14 @@ class Contact extends Component {
                 onClick={this.toggleEditMode}
                 className="s-contact__action"
                 display="expanded"
-              >{__('contact.action.edit_contact')}</Button>
+              ><Trans id="contact.action.edit_contact">Edit contact</Trans></Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
                 onClick={this.openTagsModal}
                 className="s-contact__action"
                 display="expanded"
-              >{__('contact.action.edit_tags')}</Button>
+              ><Trans id="contact.action.edit_tags">Edit tags</Trans></Button>
               { this.renderTagsModal() }
             </VerticalMenuItem>
             {/* TODO: this.handleShare() function
@@ -280,7 +281,9 @@ class Contact extends Component {
                   onClick={this.handleShare}
                   className="s-contact__action"
                   display="expanded"
-                >{__('contact.action.share_contact')}</Button>
+                >
+                  <Trans id="contact.action.share_contact">Share</Trans>
+                </Button>
               </VerticalMenuItem>
             */}
             { !contactIsUser && // to prevents deleting user's contact
@@ -289,7 +292,7 @@ class Contact extends Component {
                   onClick={this.handleDelete}
                   className="s-contact__action"
                   display="expanded"
-                >{__('contact.action.delete_contact')}</Button>
+                ><Trans id="contact.action.delete_contact">Delete</Trans></Button>
               </VerticalMenuItem>
             }
           </VerticalMenu>
@@ -316,7 +319,7 @@ class Contact extends Component {
 
   render() {
     const {
-      __, contact, contactId, form,
+      contact, contactId, form,
     } = this.props;
 
     return (
@@ -355,7 +358,6 @@ class Contact extends Component {
                     detailForms={this.renderDetailForms()}
                     orgaForms={(<FormCollection component={(<OrgaForm />)} propertyName="organizations" />)}
                     identityForms={(<FormCollection component={(<IdentityForm />)} propertyName="identities" />)}
-                    __={__}
                   />
                 </div>
               </div>

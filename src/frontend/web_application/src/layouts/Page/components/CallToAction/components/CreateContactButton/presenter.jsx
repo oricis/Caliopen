@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import ActionButton from '../ActionButton';
 
 class ComposeContactButton extends PureComponent {
   static propTypes = {
-    __: PropTypes.func.isRequired,
     action: PropTypes.func.isRequired,
     className: PropTypes.string,
   };
@@ -13,7 +13,7 @@ class ComposeContactButton extends PureComponent {
   };
 
   render() {
-    const { action, __, className } = this.props;
+    const { action, className } = this.props;
     const buttonProps = {
       icon: 'user',
       className,
@@ -21,7 +21,7 @@ class ComposeContactButton extends PureComponent {
 
     return (
       <ActionButton action={action} button={buttonProps}>
-        {__('call-to-action.action.create_contact')}
+        <Trans id="call-to-action.action.create_contact">Create a contact</Trans>
       </ActionButton>
     );
   }
