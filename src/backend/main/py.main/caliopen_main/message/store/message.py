@@ -38,7 +38,6 @@ class Message(BaseModel, IndexedModelMixin):
     is_draft = columns.Boolean()
     is_unread = columns.Boolean()
     is_received = columns.Boolean(default=False)
-
     parent_id = columns.UUID()
     participants = columns.List(columns.UserDefinedType(Participant))
     privacy_features = columns.Map(columns.Text(), columns.Text())
