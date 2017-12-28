@@ -11,7 +11,6 @@ from caliopen_main.message.parameters import (NewInboundMessage,
 from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
 from caliopen_main.contact.core import Contact
-from caliopen_main.common.parameters.tag import ResourceTag
 from caliopen_main.discussion.core import (DiscussionThreadLookup,
                                            DiscussionListLookup)
 # XXX use a message formatter registry not directly mail format
@@ -51,16 +50,9 @@ class UserMessageQualifier(object):
         tags = []
         if message.privacy_features.get('is_internal', False):
             # XXX do not hardcode the wanted tag
-            internal_tag = [x for x in self.user.tags if x.name == 'CALIOPEN']
+            internal_tag = [x for x in self.user.tags if x.name == 'caliopen']
             if internal_tag:
-                # XXX need to transform UserTag to ResourceTag
-                tag = ResourceTag()
-                tag.date_insert = datetime.utcnow()
-                tag.importance_level = internal_tag[0].importance_level
-                tag.name = internal_tag[0].name
-                tag.tag_id = internal_tag[0].tag_id
-                tag.type = internal_tag[0].type
-                tags.append(tag)
+                tags.append(internal_tag[0].name)
         message.tags = tags
 
     def lookup(self, sequence):

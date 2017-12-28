@@ -45,14 +45,14 @@ system:
     max_users: 100
     default_tags:
         -
-            name: INBOX
+            name: inbox
         -
-            name: SPAM
+            name: spam
         -
-            name: IMPORTANT
+            name: important
             importance_level: 5
         -
-            name: CALIOPEN
+            name: caliopen
             importance_level: 2
 
 default_domain: caliopen.local
