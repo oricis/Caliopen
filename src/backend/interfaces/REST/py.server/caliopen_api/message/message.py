@@ -73,7 +73,7 @@ class Message(Api):
         message_id = self.request.swagger_data["message_id"]
         patch = self.request.json
 
-        message = ObjectMessage(self.user.user_id, message_id=message_id)
+        message = ObjectMessage(user=self.user, message_id=message_id)
         try:
             message.patch_draft(self.user, patch, db=True, index=True,
                                 with_validation=True)
@@ -85,7 +85,7 @@ class Message(Api):
     @view(renderer='json', permission='authenticated')
     def delete(self):
         message_id = self.request.swagger_data["message_id"]
-        message = ObjectMessage(self.user.user_id, message_id=message_id)
+        message = ObjectMessage(user=self.user, message_id=message_id)
 
         try:
             message.get_db()
