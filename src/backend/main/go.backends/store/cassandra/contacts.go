@@ -64,7 +64,7 @@ func (cb *CassandraBackend) UpdateContact(contact *Contact, fields map[string]in
 }
 
 func (cb *CassandraBackend) DeleteContact(contact *Contact) error {
-	return errors.New("[CassandraBackend] not implemented")
+	return cb.Session.Query(`DELETE FROM contact WHERE user_id = ? AND contact_id = ?`, contact.UserId.String(), contact.ContactId.String()).Exec()
 }
 
 func (cb *CassandraBackend) LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error) {

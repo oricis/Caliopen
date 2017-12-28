@@ -41,6 +41,14 @@ func (es *ElasticSearchBackend) UpdateContact(contact *Contact, fields map[strin
 	return nil
 }
 
+func (es *ElasticSearchBackend) DeleteContact(contact *Contact) error {
+	_, err := es.Client.Delete().Index(contact.UserId.String()).Type(ContactIndexType).Id(contact.ContactId.String()).Do(context.TODO())
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (es *ElasticSearchBackend) SetContactUnread(user_id, Contact_id string, status bool) (err error) {
 	return errors.New("[ElasticSearchBackend] not implemented")
 }

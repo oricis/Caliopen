@@ -7,9 +7,13 @@
 package REST
 
 import (
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	"github.com/Sirupsen/logrus"
 	"github.com/pkg/errors"
+	"strings"
+	"sync"
 )
 
 func (rest *RESTfacility) CreateContact(contact *Contact) error {
@@ -70,8 +74,52 @@ func (rest *RESTfacility) UpdateContact(contact *Contact) error {
 		}*/
 }
 
-// DeleteContact deletes a contact in store & index,
-// only if contact belongs to user.
+// DeleteContact deletes a contact in store & index, only if :
+// - contact belongs to user ;-)
+// - contact is not the user's contact card
 func (rest *RESTfacility) DeleteContact(userID, contactID string) error {
-	return errors.New("[RESTfacility] DeleteContact not implemented")
+	user, err := rest.store.RetrieveUser(userID)
+	if err != nil {
+		return err
+	}
+	contact, err := rest.store.RetrieveContact(userID, contactID)
+	if err != nil {
+		return err
+	}
+
+	if user.ContactId == contact.ContactId {
+		return errors.New("can't delete contact card related to user")
+	}
+
+	// parallel deletion in db & index
+	wg := new(sync.WaitGroup)
+	wg.Add(2)
+	errGroup := new([]string)
+	mx := new(sync.Mutex)
+	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
+		err = rest.store.DeleteContact(contact)
+		if err != nil {
+			mx.Lock()
+			*errGroup = append(*errGroup, err.Error())
+			mx.Unlock()
+		}
+		wg.Done()
+	}(wg, errGroup, mx)
+
+	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
+		err = rest.index.DeleteContact(contact)
+		if err != nil {
+			mx.Lock()
+			*errGroup = append(*errGroup, err.Error())
+			mx.Unlock()
+		}
+		wg.Done()
+	}(wg, errGroup, mx)
+
+	wg.Wait()
+	logrus.Info(errGroup)
+	if len(*errGroup) > 0 {
+		return fmt.Errorf("%s", strings.Join(*errGroup, " / "))
+	}
+	return nil
 }
