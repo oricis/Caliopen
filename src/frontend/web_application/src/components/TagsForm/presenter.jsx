@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
 import Button from '../Button';
-import { FormGrid } from '../form';
+import DropdownMenu from '../DropdownMenu';
+import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
+import Icon from '../Icon';
 import TagItem from './components/TagItem';
 import TagSearch from './components/TagSearch';
 
@@ -11,73 +12,73 @@ import './style.scss';
 class TagsForm extends Component {
   static propTypes = {
     tags: PropTypes.arrayOf(PropTypes.shape({})),
-    onSearch: PropTypes.func,
-    onSearchSubmit: PropTypes.func,
-    onCreate: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired,
+    foundTags: PropTypes.arrayOf(PropTypes.shape({})),
+    search: PropTypes.func.isRequired,
+    addTag: PropTypes.func.isRequired,
+    updateTag: PropTypes.func.isRequired,
+    isTagSearchFetching: PropTypes.bool,
   };
 
   static defaultProps = {
     tags: [],
-    onSearch: null,
-    onSearchSubmit: null,
+    foundTags: [],
+    isTagSearchFetching: false,
   };
 
   state = {
     searchTerms: '',
   };
 
-  handleSearchChange = ({ terms }) => {
-    this.setState({
-      searchTerms: terms,
-    });
+  handleSearchChange = (terms) => {
+    this.props.search(terms);
+  }
 
-    if (this.props.onSearch) {
-      this.props.onSearch({ terms });
+  handleAddNewTag = (terms) => {
+    if (terms.length > 0) {
+      this.props.addTag({ label: terms });
     }
   }
 
-  handleSearchSubmit = (ev) => {
-    ev.preventDefault();
-    if (this.props.onSearchSubmit) {
-      this.props.onSearchSubmit(ev);
-    }
-  }
-
-  handleCreate = (ev) => {
-    ev.preventDefault();
-
-    if (this.state.searchTerms.length > 0) {
-      this.props.onCreate({ tagName: this.state.searchTerms });
-    }
+  createHandleAddTag = tag => () => {
+    this.props.addTag(tag);
   }
 
   render() {
-    const { tags, onUpdate } = this.props;
+    const { tags, updateTag, foundTags, isTagSearchFetching } = this.props;
 
     return (
       <div className="m-tags-form">
-        <TagSearch
-          onChange={this.handleSearchChange}
-          onSubmit={this.handleSearchSubmit}
-        />
-
         <div className="m-tags-form__section">
           {tags && tags.length > 0 && tags.map(tag =>
-            <TagItem tag={tag} key={tag.tag_id} onUpdate={onUpdate} />
+            <TagItem tag={tag} key={tag.tag_id} onDelete={updateTag} />
           )}
         </div>
 
-        <FormGrid>
-          <Button
-            className="m-tags-form__action"
-            onClick={this.handleCreate}
-            shape="plain"
-            icon="plus"
-          >
-            <Trans id="tags.action.create">Create</Trans>
-          </Button>
-        </FormGrid>
+        <div className="m-tags-form__section">
+          <TagSearch
+            isFetching={isTagSearchFetching}
+            onChange={this.handleSearchChange}
+            onSubmit={this.handleAddNewTag}
+          />
+          <DropdownMenu show={foundTags.length > 0} className="m-tags-form__dropdown">
+            <VerticalMenu>
+              {foundTags.map(tag => (
+                <VerticalMenuItem key={tag.tag_id}>
+                  <Button
+                    className="m-tags-form__found-tag"
+                    display="expanded"
+                    shape="plain"
+                    onClick={this.createHandleAddTag(tag)}
+                  >
+                    <span className="m-tags-form__found-tag-text">{tag.name}</span>
+                    {' '}
+                    <Icon type="plus" />
+                  </Button>
+                </VerticalMenuItem>
+              ))}
+            </VerticalMenu>
+          </DropdownMenu>
+        </div>
       </div>
     );
   }

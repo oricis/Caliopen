@@ -13,6 +13,28 @@ describe('Service calcObjectForPatch', () => {
         },
       });
     });
+
+    it('handle undefined as new value', () => {
+      const previous = { foo: 'bar' };
+      const updated = { };
+
+      expect(calcObjectForPatch(updated, previous)).toEqual({
+        current_state: {
+          foo: 'bar',
+        },
+      });
+    });
+
+    it('handle undefined as previous value', () => {
+      const updated = { foo: 'bar' };
+      const previous = { };
+
+      expect(calcObjectForPatch(updated, previous)).toEqual({
+        foo: 'bar',
+        current_state: {
+        },
+      });
+    });
   });
 
   describe('update sub-object', () => {

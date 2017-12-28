@@ -15,7 +15,7 @@ export function requestTags() {
     type: REQUEST_TAGS,
     payload: {
       request: {
-        url: '/v1/tags',
+        url: '/v2/tags',
       },
     },
   };
@@ -35,7 +35,7 @@ export function createTag({ tagName }) {
     type: CREATE_TAG,
     payload: {
       request: {
-        url: '/v1/tags',
+        url: '/v2/tags',
         method: 'post',
         data,
       },
@@ -48,7 +48,7 @@ export function requestTag({ id }) {
     type: REQUEST_TAG,
     payload: {
       request: {
-        url: `/v1/tags/${id}`,
+        url: `/v2/tags/${id}`,
       },
     },
   };
@@ -61,7 +61,7 @@ export function removeTag({ tag }) {
     payload: {
       request: {
         method: 'delete',
-        url: `/v1/tags/${tag.tag_id}`,
+        url: `/v2/tags/${tag.tag_id}`,
       },
     },
   };
@@ -75,7 +75,7 @@ export function updateTag({ tag, original }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v1/tags/${tag.tag_id}`,
+        url: `/v2/tags/${tag.tag_id}`,
         data,
       },
     },

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
 import Button from '../../../Button';
+import Spinner from '../../../Spinner';
 import { TextFieldGroup } from '../../../form';
 
 import './style.scss';
@@ -12,10 +13,12 @@ class TagSearch extends Component {
     onSubmit: PropTypes.func.isRequired,
     onChange: PropTypes.func,
     i18n: PropTypes.shape({}).isRequired,
+    isFetching: PropTypes.bool,
   };
 
   static defaultProps = {
-    onChange: null,
+    onChange: () => {},
+    isFetching: false,
   };
 
   state = {
@@ -25,9 +28,7 @@ class TagSearch extends Component {
   handleChange = (ev) => {
     const terms = ev.target.value;
     this.setState({ terms });
-    if (this.props.onChange) {
-      this.props.onChange({ terms });
-    }
+    this.props.onChange(terms);
   }
 
   handleSubmit = () => {
@@ -36,7 +37,7 @@ class TagSearch extends Component {
     }
 
     this.setState((prevState) => {
-      this.props.onSubmit({ tag: prevState.terms });
+      this.props.onSubmit(prevState.terms);
 
       return {
         terms: '',
@@ -45,7 +46,7 @@ class TagSearch extends Component {
   }
 
   render() {
-    const { i18n } = this.props;
+    const { i18n, isFetching } = this.props;
 
     return (
       <div className="m-tags-search">
@@ -59,7 +60,11 @@ class TagSearch extends Component {
           onChange={this.handleChange}
           showLabelforSr
         />
-        <Button className="m-tags-search__button" icon="search" onClick={this.handleSubmit} />
+        <Button
+          className="m-tags-search__button"
+          icon={isFetching ? (<Spinner isLoading display="inline" />) : 'plus'}
+          onClick={this.handleSubmit}
+        />
       </div>
     );
   }
