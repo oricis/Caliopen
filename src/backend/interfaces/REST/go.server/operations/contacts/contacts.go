@@ -7,6 +7,10 @@
 package contacts
 
 import (
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	swgErr "github.com/go-openapi/errors"
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 )
@@ -23,7 +27,29 @@ func NewContact(ctx *gin.Context) {
 
 // GetContact handles GET /contacts/:contactID
 func GetContact(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNotImplemented)
+	userID := ctx.MustGet("user_id").(string)
+	contactID, err := operations.NormalizeUUIDstring(ctx.Param("contactID"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	contact, err := caliopen.Facilities.RESTfacility.RetrieveContact(userID, contactID)
+	if err != nil {
+		e := swgErr.New(http.StatusInternalServerError, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	contact_json, err := contact.MarshalFrontEnd()
+	if err != nil {
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	} else {
+		ctx.Data(http.StatusOK, "application/json; charset=utf-8", contact_json)
+	}
 }
 
 // PatchContact handles PATCH /contacts/:contactID

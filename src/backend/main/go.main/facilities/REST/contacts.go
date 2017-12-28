@@ -23,9 +23,7 @@ func (rest *RESTfacility) RetrieveContacts(userID string) (contacts []Contact, e
 }
 
 func (rest *RESTfacility) RetrieveContact(userID, contactID string) (contact *Contact, err error) {
-	err = errors.New("[RESTfacility] RetrieveContact not implemented")
-	return
-	//return rest.store.RetrieveContact(userID, contactID)
+	return rest.store.RetrieveContact(userID, contactID)
 }
 
 // PatchContact is a shortcut for REST api to :

@@ -1,9 +1,12 @@
 package objects
 
 import (
+	"bytes"
 	"encoding/json"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
+	"gopkg.in/oleiade/reflections.v1"
 	"time"
 )
 
@@ -354,6 +357,68 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	}
 
 	return nil
+}
+
+// return a JSON representation of Contact suitable for frontend client
+func (c *Contact) MarshalFrontEnd() ([]byte, error) {
+	return c.JSONMarshaller("frontend")
+}
+
+// bespoke implementation of the json.Marshaller interface
+// outputs a JSON representation of an object
+// this marshaler takes account of custom tags for given 'context'
+func (c *Contact) JSONMarshaller(context string) ([]byte, error) {
+	var jsonBuf bytes.Buffer
+	enc := json.NewEncoder(&jsonBuf)
+
+	fields, err := reflections.Fields(c)
+	if err != nil {
+		return jsonBuf.Bytes(), err
+	}
+	jsonBuf.WriteByte('{')
+	first := true
+fieldsLoop:
+	for _, field := range fields {
+		switch context {
+		case "frontend":
+			front, err := reflections.GetFieldTag(*c, field, "frontend")
+			if err == nil {
+				switch front {
+				case "omit":
+					continue fieldsLoop
+				}
+			}
+		}
+		j_field, err := reflections.GetFieldTag(c, field, "json")
+		if err != nil {
+			log.WithError(err).Warnf("reflection for field %s failed", field)
+		} else {
+			if j_field != "" && j_field != "-" {
+				if first {
+					first = false
+				} else {
+					jsonBuf.WriteByte(',')
+				}
+				jsonBuf.WriteString("\"" + j_field + "\":")
+				field_value, err := reflections.GetField(c, field)
+				j_formatter, err := reflections.GetFieldTag(c, field, "formatter")
+				if err == nil {
+					switch j_formatter {
+					case "RFC3339Milli":
+						jsonBuf.WriteString("\"" + field_value.(time.Time).Format(RFC3339Milli) + "\"")
+					default:
+						enc.Encode(field_value)
+					}
+				} else {
+					jsonBuf.Write([]byte{'"', '"'})
+				}
+			} else {
+				log.Warnf("Invalid field %s value: %s", field, j_field)
+			}
+		}
+	}
+	jsonBuf.WriteByte('}')
+	return jsonBuf.Bytes(), nil
 }
 
 func (c *Contact) JsonTags() map[string]string {
