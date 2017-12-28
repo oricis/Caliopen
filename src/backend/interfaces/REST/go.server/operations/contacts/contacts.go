@@ -7,17 +7,68 @@
 package contacts
 
 import (
+	"bytes"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	swgErr "github.com/go-openapi/errors"
+	"github.com/satori/go.uuid"
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
+	"strconv"
 )
 
 // GetContactList handles GET /contacts
 func GetContactsList(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNotImplemented)
+	var limit, offset int
+	var user_UUID UUID
+
+	user_uuid_str := ctx.MustGet("user_id").(string)
+	user_uuid, _ := uuid.FromString(user_uuid_str)
+	user_UUID.UnmarshalBinary(user_uuid.Bytes())
+
+	query_values := ctx.Request.URL.Query()
+	if l, ok := query_values["limit"]; ok {
+		limit, _ = strconv.Atoi(l[0])
+		query_values.Del("limit")
+	}
+	if o, ok := query_values["offset"]; ok {
+		offset, _ = strconv.Atoi(o[0])
+		query_values.Del("offset")
+	}
+
+	filter := IndexSearch{
+		User_id: user_UUID,
+		Terms:   map[string][]string(query_values),
+		Limit:   limit,
+		Offset:  offset,
+	}
+
+	list, totalFound, err := caliopen.Facilities.RESTfacility.RetrieveContacts(filter)
+	if err != nil {
+		e := swgErr.New(http.StatusInternalServerError, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	var respBuf bytes.Buffer
+	respBuf.WriteString("{\"total\": " + strconv.FormatInt(totalFound, 10) + ",")
+	respBuf.WriteString("\"contacts\":[")
+	first := true
+	for _, contact := range list {
+		json_contact, err := contact.MarshalFrontEnd()
+		if err == nil {
+			if first {
+				first = false
+			} else {
+				respBuf.WriteByte(',')
+			}
+			respBuf.Write(json_contact)
+		}
+	}
+	respBuf.WriteString("]}")
+	ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
 }
 
 // NewContact handles POST /contacts

@@ -21,8 +21,14 @@ func (rest *RESTfacility) CreateContact(contact *Contact) error {
 	//return rest.store.CreateContact(contact)
 }
 
-func (rest *RESTfacility) RetrieveContacts(userID string) (contacts []Contact, err error) {
-	err = errors.New("[RESTfacility] RetrieveContacts not implemented")
+// RetrieveContacts returns contacts from index given filter params
+func (rest *RESTfacility) RetrieveContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error) {
+
+	contacts, totalFound, err = rest.index.FilterContacts(filter)
+	if err != nil {
+		return []*Contact{}, 0, err
+	}
+
 	return
 }
 

@@ -26,7 +26,7 @@ type (
 		GetSettings(user_id string) (settings *Settings, err error)
 		//contacts
 		CreateContact(contact *Contact) error
-		RetrieveContacts(userID string) ([]Contact, error)
+		RetrieveContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error)
 		RetrieveContact(userID, contactID string) (*Contact, error)
 		UpdateContact(contact *Contact) error
 		PatchContact(patch []byte, userID, contactID string) error

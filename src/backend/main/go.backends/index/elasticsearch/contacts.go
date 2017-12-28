@@ -6,11 +6,13 @@ package index
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"gopkg.in/oleiade/reflections.v1"
+	"github.com/satori/go.uuid"
 )
 
 func (es *ElasticSearchBackend) CreateContact(contact *Contact) error {
@@ -53,7 +55,33 @@ func (es *ElasticSearchBackend) SetContactUnread(user_id, Contact_id string, sta
 	return errors.New("[ElasticSearchBackend] not implemented")
 }
 
-func (es *ElasticSearchBackend) FilterContacts(filter IndexSearch) (Contacts []*Contact, totalFound int64, err error) {
-	err = errors.New("[ElasticSearchBackend] not implemented")
+func (es *ElasticSearchBackend) FilterContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error) {
+	search := es.Client.Search().Index(filter.User_id.String()).Type(ContactIndexType)
+	search = filter.FilterQuery(search, false)
+
+	if filter.Offset > 0 {
+		search = search.From(filter.Offset)
+	}
+	if filter.Limit > 0 {
+		search = search.Size(filter.Limit)
+	}
+
+	result, err := search.Do(context.TODO())
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	for _, hit := range result.Hits.Hits {
+		contact := new(Contact).NewEmpty().(*Contact)
+		if err := json.Unmarshal(*hit.Source, contact); err != nil {
+			log.Info(err)
+			continue
+		}
+		contact_id, _ := uuid.FromString(hit.Id)
+		contact.ContactId.UnmarshalBinary(contact_id.Bytes())
+		contacts = append(contacts, contact)
+	}
+	totalFound = result.TotalHits()
 	return
 }
