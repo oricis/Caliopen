@@ -10,7 +10,6 @@ import (
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
-	"github.com/Sirupsen/logrus"
 	"github.com/pkg/errors"
 	"strings"
 	"sync"
@@ -123,7 +122,6 @@ func (rest *RESTfacility) DeleteContact(userID, contactID string) error {
 	}(wg, errGroup, mx)
 
 	wg.Wait()
-	logrus.Info(errGroup)
 	if len(*errGroup) > 0 {
 		return fmt.Errorf("%s", strings.Join(*errGroup, " / "))
 	}
