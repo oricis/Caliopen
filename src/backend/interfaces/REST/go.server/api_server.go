@@ -15,8 +15,8 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/users"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	log "github.com/Sirupsen/logrus"
+	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/loads"
-	"gopkg.in/gin-gonic/gin.v1"
 	"os"
 )
 
@@ -144,8 +144,8 @@ func (server *REST_API) start() error {
 	// Creates a gin router with default middleware:
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
-	// adds our middlewares
 
+	// adds our middlewares
 	err := http_middleware.InitSwaggerMiddleware(server.config.SwaggerFile)
 	if err != nil {
 		log.WithError(err).Warn("init swagger middleware failed")

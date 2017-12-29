@@ -12,9 +12,9 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
 	"github.com/satori/go.uuid"
-	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 	"strconv"
 )
@@ -73,7 +73,9 @@ func GetContactsList(ctx *gin.Context) {
 
 // NewContact handles POST /contacts
 func NewContact(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNotImplemented)
+	/*userID := ctx.MustGet("user_id").(string)
+	var contact Contact
+	ctx.ShouldBindJSON()*/
 }
 
 // GetContact handles GET /contacts/:contactID
