@@ -115,6 +115,7 @@ class AuthenticationAPI(Api):
         tokens = {'access_token': access_token,
                   'refresh_token': refresh_token,
                   'expires_in': ttl,  # TODO : remove this value
+                  'shard_id': user.shard_id,
                   'expires_at': expires_at.isoformat()}
         cache_key = '{}-{}'.format(user.user_id, device.device_id)
         session_data = tokens.copy()
@@ -128,6 +129,8 @@ class AuthenticationAPI(Api):
 
         self.request.cache.set(cache_key, session_data)
 
+        self.request.cache.set(user.user_id, tokens)
+        tokens.pop('shard_id')
         return {'user_id': user.user_id,
                 'username': user.name,
                 'tokens': tokens,
