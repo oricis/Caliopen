@@ -57,7 +57,7 @@ func (es *ElasticSearchBackend) SetContactUnread(user_id, Contact_id string, sta
 
 func (es *ElasticSearchBackend) FilterContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error) {
 	search := es.Client.Search().Index(filter.User_id.String()).Type(ContactIndexType)
-	search = filter.FilterQuery(search, false)
+	search = filter.FilterQuery(search, false).Sort("title.raw", true)
 
 	if filter.Offset > 0 {
 		search = search.From(filter.Offset)
@@ -80,6 +80,7 @@ func (es *ElasticSearchBackend) FilterContacts(filter IndexSearch) (contacts []*
 		}
 		contact_id, _ := uuid.FromString(hit.Id)
 		contact.ContactId.UnmarshalBinary(contact_id.Bytes())
+		contact.UserId = filter.User_id
 		contacts = append(contacts, contact)
 	}
 	totalFound = result.TotalHits()
