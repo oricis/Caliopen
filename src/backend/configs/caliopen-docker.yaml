@@ -52,7 +52,8 @@ system:
             name: important
             importance_level: 5
         -
-            name: caliopen
+            name: internal
+            label: Caliopen
             importance_level: 2
 
 default_domain: caliopen.local
