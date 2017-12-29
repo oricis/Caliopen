@@ -73,9 +73,34 @@ func GetContactsList(ctx *gin.Context) {
 
 // NewContact handles POST /contacts
 func NewContact(ctx *gin.Context) {
-	/*userID := ctx.MustGet("user_id").(string)
+	user_id := ctx.MustGet("user_id").(string)
+	userID, err := operations.NormalizeUUIDstring(user_id)
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	var contact Contact
-	ctx.ShouldBindJSON()*/
+	err = ctx.ShouldBindJSON(&contact)
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	contact.UserId.UnmarshalBinary([]byte(userID))
+	err = caliopen.Facilities.RESTfacility.CreateContact(&contact)
+	if err != nil {
+		e := swgErr.New(http.StatusInternalServerError, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	} else {
+		ctx.JSON(http.StatusOK, struct{ Location string }{
+			http_middleware.RoutePrefix + http_middleware.ContactsRoute + "/" + contact.ContactId.String(),
+		})
+	}
+	return
 }
 
 // GetContact handles GET /contacts/:contactID

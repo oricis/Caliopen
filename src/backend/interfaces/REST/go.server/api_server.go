@@ -202,7 +202,7 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	parts.GET("/suggest", participants.Suggest)
 
 	/** contacts API **/
-	cts := api.Group("/contacts", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
+	cts := api.Group(http_middleware.ContactsRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	cts.GET("", contacts.GetContactsList)
 	cts.POST("", contacts.NewContact)
 	cts.GET("/:contactID", contacts.GetContact)
