@@ -8,15 +8,55 @@ package REST
 
 import (
 	"fmt"
+	"github.com/CaliOpen/Caliopen/.cache/govendor/github.com/satori/go.uuid"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	"github.com/pkg/errors"
 	"strings"
 	"sync"
+	"time"
 )
 
-func (rest *RESTfacility) CreateContact(contact *Contact) error {
-	return errors.New("[RESTfacility] CreateContact not implemented")
+// CreateContact validates Contact before saving it to cassandra and ES
+func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
+	// add missing properties
+	contact.ContactId.UnmarshalBinary(uuid.NewV4().Bytes())
+	contact.DateInsert = time.Now()
+	contact.DateUpdate = contact.DateInsert
+	helpers.ComputeTitle(contact)
+	//TODO: finish work
+
+	// parallel creation in db & index
+	wg := new(sync.WaitGroup)
+	wg.Add(2)
+	errGroup := new([]string)
+	mx := new(sync.Mutex)
+	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
+		err = rest.store.CreateContact(contact)
+		if err != nil {
+			mx.Lock()
+			*errGroup = append(*errGroup, err.Error())
+			mx.Unlock()
+		}
+		wg.Done()
+	}(wg, errGroup, mx)
+
+	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
+		err = rest.index.CreateContact(contact)
+		if err != nil {
+			mx.Lock()
+			*errGroup = append(*errGroup, err.Error())
+			mx.Unlock()
+		}
+		wg.Done()
+	}(wg, errGroup, mx)
+
+	wg.Wait()
+	if len(*errGroup) > 0 {
+		return fmt.Errorf("%s", strings.Join(*errGroup, " / "))
+	}
+	return nil
+
 	//return rest.store.CreateContact(contact)
 }
 
@@ -42,10 +82,6 @@ func (rest *RESTfacility) RetrieveContact(userID, contactID string) (contact *Co
 func (rest *RESTfacility) PatchContact(patch []byte, userID, contactID string) error {
 
 	current_contact, err := rest.RetrieveContact(userID, contactID)
-	if err != nil {
-		return err
-	}
-
 	if err != nil {
 		return err
 	}
