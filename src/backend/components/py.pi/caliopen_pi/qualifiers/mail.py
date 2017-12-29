@@ -3,7 +3,6 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
-from datetime import datetime
 from caliopen_main.message.parameters import (NewInboundMessage,
                                               Participant,
                                               Attachment)
@@ -50,7 +49,7 @@ class UserMessageQualifier(object):
         tags = []
         if message.privacy_features.get('is_internal', False):
             # XXX do not hardcode the wanted tag
-            internal_tag = [x for x in self.user.tags if x.name == 'caliopen']
+            internal_tag = [x for x in self.user.tags if x.name == 'internal']
             if internal_tag:
                 tags.append(internal_tag[0].name)
         message.tags = tags
