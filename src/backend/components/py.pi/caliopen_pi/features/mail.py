@@ -9,7 +9,6 @@ import pgpy
 from caliopen_main.pi.parameters import PIParameter
 from .spam import SpamScorer
 from .ingress_path import get_ingress_features
-from .types import unmarshall_features
 from .importance_level import compute_inbound as compute_inbound_importance
 
 log = logging.getLogger(__name__)
@@ -42,6 +41,7 @@ class InboundMailFeature(object):
         'ingress_cipher': None,
         'ingress_server': None,
         'nb_external_hops': 0,
+        'is_internal': False,
     }
 
     def __init__(self, message, config):
@@ -104,6 +104,15 @@ class InboundMailFeature(object):
                 'spam_method': spam.method,
                 'is_spam': spam.is_spam}
 
+    @property
+    def is_internal(self):
+        """Return true if it's an internal message."""
+        from_ = self.message.mail.get('From')
+        for domain in self.internal_domains:
+            if domain in from_:
+                return True
+        return False
+
     def get_signature_informations(self):
         """Get message signature features."""
         signed_parts = [x for x in self.message.attachments
@@ -137,6 +146,7 @@ class InboundMailFeature(object):
         features['mail_emitter_mx_reputation'] = reputation
         features['mail_emitter_certificate'] = self.emitter_certificate()
         features['mail_agent'] = self.mail_agent
+        features['is_internal'] = self.is_internal
         features.update(self.get_signature_informations())
         features.update(self.get_encryption_informations())
         features.update(self.spam_informations)
@@ -203,5 +213,5 @@ class InboundMailFeature(object):
         features = self._get_features()
         message.pi = self._compute_pi(participants, features)
         il = compute_inbound_importance(user, message, features, participants)
-        message.privacy_features = unmarshall_features(features)
+        message.privacy_features = features
         message.importance_level = il
