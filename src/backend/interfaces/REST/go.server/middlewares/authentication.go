@@ -110,6 +110,7 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 		//save user_id in context for future retreival
 		c.Set("user_id", user_id)
 		c.Set("access_token", "tokens::"+cache_key)
+		c.Set("shard_id", auth.Shard_id)
 	}
 }
 
