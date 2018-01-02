@@ -31,10 +31,11 @@ type LDAStore interface {
 
 	RetrieveUserIdentity(userId, identityId string, withCredentials bool) (*UserIdentity, error)
 	UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) error
+	RetrieveUser(user_id string) (user *User, err error)
 }
 
 type LDAIndex interface {
 	Close()
-	CreateMessage(msg *Message) error
-	UpdateMessage(msg *Message, fields map[string]interface{}) error // 'fields' are the struct fields names that have been modified
+	CreateMessage(user *UserInfo, msg *Message) error
+	UpdateMessage(user *UserInfo, msg *Message, fields map[string]interface{}) error
 }
