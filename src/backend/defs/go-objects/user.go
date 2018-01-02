@@ -14,6 +14,12 @@ import (
 	"time"
 )
 
+// Struct to operate on user objects
+type UserInfo struct {
+	User_id  string
+	Shard_id string
+}
+
 type User struct {
 	ContactId        UUID              `cql:"contact_id"               json:"contact_id"`
 	DateInsert       time.Time         `cql:"date_insert"              json:"date_insert"                              formatter:"RFC3339Milli"`
@@ -29,6 +35,7 @@ type User struct {
 	*PrivacyFeatures `cql:"privacy_features"         json:"privacy_features"`
 	RecoveryEmail    string `cql:"recovery_email"            json:"recovery_email"`
 	UserId           UUID   `cql:"user_id"                  json:"user_id"              elastic:"omit"      formatter:"rfc4122"`
+	ShardId          string `cql:"shard_id"          json:"shard_id"`
 }
 
 // payload for triggering a password reset procedure for an end-user.
@@ -47,6 +54,7 @@ type Auth_cache struct {
 	X             big.Int   `json:"x"`
 	Y             big.Int   `json:"y"`
 	Key_id        string    `json:"key_id"`
+	Shard_id      string    `json:"shard_id"`
 }
 
 // data stored into cache as long as a reset password request is pending for an user
@@ -193,14 +201,14 @@ func (user *User) NewEmpty() interface{} {
 //bespoke unmarshaller to workaround the expires_at field that is not RFC in cache (tz is missing, thanks python)
 func (ac *Auth_cache) UnmarshalJSON(b []byte) error {
 	var temp struct {
-		Access_token  string `json:"access_token"`
-		Expires_in    int    `json:"expires_in"`
-		Expires_at    string `json:"expires_at"`
-		Refresh_token string `json:"refresh_token"`
-		Curve		  string    `json:"curve"`
-		X             big.Int 	`json:"x"`
-		Y             big.Int   `json:"y"`
-		Key_id        string    `json:"key_id"`
+		Access_token  string  `json:"access_token"`
+		Expires_in    int     `json:"expires_in"`
+		Expires_at    string  `json:"expires_at"`
+		Refresh_token string  `json:"refresh_token"`
+		Curve         string  `json:"curve"`
+		X             big.Int `json:"x"`
+		Y             big.Int `json:"y"`
+		Key_id        string  `json:"key_id"`
 	}
 	if err := json.Unmarshal(b, &temp); err != nil {
 		return err
