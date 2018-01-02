@@ -1,6 +1,9 @@
+import calcObjectForPatch from '../../services/api-patch';
+
 export const REQUEST_USER = 'co/user/REQUEST_USER';
 export const REQUEST_USER_SUCCESS = 'co/user/REQUEST_USER_SUCCESS';
 export const REQUEST_USER_FAIL = 'co/user/REQUEST_USER_FAIL';
+export const UPDATE_USER = 'co/user/UPDATE_USER';
 export const INVALIDATE_USER = 'co/user/INVALIDATE_USER';
 
 export function requestUser() {
@@ -21,12 +24,28 @@ export function invalidate() {
   };
 }
 
+export function updateUser({ user, original }) {
+  const data = calcObjectForPatch(user, original);
+
+  return {
+    type: UPDATE_USER,
+    payload: {
+      request: {
+        method: 'patch',
+        url: `/v2/users/${user.user_id}`,
+        data,
+      },
+    },
+  };
+}
+
 export function updateUserContact(contact) {
   return (dispatch) => {
     dispatch(this.ContactsActions.updateContact(contact));
     dispatch(invalidate());
   };
 }
+
 
 const initialState = {
   isFetching: false,

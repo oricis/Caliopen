@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
 import Section from '../../components/Section';
@@ -11,11 +10,15 @@ import './style.scss';
 
 class UserProfile extends Component {
   static propTypes = {
-    i18n: PropTypes.shape({}).isRequired,
     requestUser: PropTypes.func.isRequired,
-    updateContact: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    pristine: PropTypes.bool.isRequired,
+    submitting: PropTypes.bool.isRequired,
+    notifyError: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     user: PropTypes.shape({}),
   };
+
   static defaultProps = {
     user: undefined,
   };
@@ -28,12 +31,50 @@ class UserProfile extends Component {
     this.props.requestUser();
   }
 
-  handleUserChange = ({ contact, original }) => {
-    this.props.updateContact({ contact, original }).then(() => this.props.requestUser());
+  handleSubmit = async (ev) => {
+    const { handleSubmit } = this.props;
+    await handleSubmit(ev)
+    .then(this.handleSuccess, this.handleError);
+  }
+
+  handleSuccess = async () => {
+    await this.props.requestUser();
+
+    return this.toggleEditMode();
+  }
+
+  handleError = () => {
+    const { i18n, notifyError } = this.props;
+    notifyError({ message: i18n._('contact.feedback.unable_to_save') });
   }
 
   toggleEditMode = () => {
     this.setState({ editMode: !this.state.editMode });
+  }
+
+  renderForm = () => {
+    const { i18n, pristine, submitting } = this.props;
+
+    return (
+      <form method="post" name="user-profile" onSubmit={this.handleSubmit}>
+        <ProfileForm editMode={this.state.editMode} />
+        {!this.state.editMode ? (
+          <Button onClick={this.toggleEditMode} shape="plain">
+            {i18n._('user.action.edit_profile')}</Button>
+        ) : (
+          <div>
+            <Button type="submit" shape="plain" disabled={submitting || pristine}>
+              {i18n._('user.action.update')}
+            </Button>
+            {' '}
+            <Button onClick={this.toggleEditMode} shape="hollow">
+              {i18n._('user.action.cancel_edit')}
+            </Button>
+          </div>
+        )}
+
+      </form>
+    );
   }
 
   render() {
@@ -42,25 +83,11 @@ class UserProfile extends Component {
     return (
       <div className="s-user-profile">
         <PageTitle />
-        <div className="s-user-profile__actions">
-          {this.state.editMode === true ? (
-            <Button onClick={this.toggleEditMode}><Trans id="user.action.cancel_edit">Cancel</Trans></Button>
-          ) : (
-            <Button onClick={this.toggleEditMode}><Trans id="user.action.edit_profile">Edit</Trans></Button>
-          )}
-          <Button onClick={str => str}><Trans id="user.action.share_profile">Share</Trans></Button>
-        </div>
         <div className="s-user-profile__info">
           <ProfileInfo user={user} />
         </div>
         <Section className="s-user-profile__details" title={i18n._('user.profile.form.title')}>
-          {
-            // FIXME: should show ProfileDetails if editMode === false
-          }
-          <ProfileForm
-            user={user}
-            onUpdateUser={this.handleUserChange}
-          />
+          {this.renderForm()}
         </Section>
       </div>
     );
