@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { withI18n, Trans } from 'lingui-react';
 import { PasswordStrength, TextFieldGroup, FormGrid, FormColumn, FormRow } from '../../../../components/form';
 import Button from '../../../../components/Button';
 import './style.scss';
 
+@withI18n()
 class PasswordForm extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
