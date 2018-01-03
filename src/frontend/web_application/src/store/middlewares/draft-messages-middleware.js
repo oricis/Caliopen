@@ -12,7 +12,7 @@ import { getTranslator } from '../../services/i18n';
 const UPDATE_WAIT_TIME = 5 * 1000;
 
 const getMessageUpToDate = async ({ store, messageId }) => {
-  await store.dispatch(requestMessage({ messageId }));
+  await store.dispatch(requestMessage(messageId));
 
   return store.getState().message.messagesById[messageId];
 };

@@ -6,38 +6,31 @@ class WithSearchTags extends Component {
     render: PropTypes.func.isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     isFetching: PropTypes.bool,
-    isInvalidated: PropTypes.bool,
-    requestTags: PropTypes.func.isRequired,
   };
   static defaultProps = {
     isFetching: false,
-    isInvalidated: false,
   };
   state = {
     terms: '',
     foundTags: [],
   };
 
-  search = (terms) => {
+  search = terms => new Promise((resolve) => {
     if (!terms.length) {
-      this.setState({ foundTags: [] });
+      this.setState({ foundTags: [] }, () => resolve(this.state.foundTags));
 
-      return Promise.resolve([]);
+      return;
     }
-    const { requestTags } = this.props;
     const findTags = tagsInState => tagsInState
       .filter(tag => tag.label.toLowerCase().startsWith(terms.toLowerCase()));
 
-    this.setState({ terms, foundTags: findTags(this.props.tags) });
-
-    if (!this.props.tags.length || this.props.isInvalidated) {
-      return requestTags()
-        .then(() => this.setState({ foundTags: findTags(this.props.tags) }))
-        .then(() => this.state.foundTags);
-    }
-
-    return Promise.resolve(this.state.foundTags);
-  }
+    this.setState(
+      { terms, foundTags: findTags(this.props.tags) },
+      () => {
+        resolve(this.state.foundTags);
+      }
+    );
+  });
 
   render() {
     const { render, isFetching } = this.props;

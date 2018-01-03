@@ -28,8 +28,8 @@ export function invalidate() {
   };
 }
 
-export function createTag({ tagName }) {
-  const data = { name: tagName };
+export function createTag({ label }) {
+  const data = { name: label.toLowerCase(), label };
 
   return {
     type: CREATE_TAG,
@@ -55,13 +55,13 @@ export function requestTag({ id }) {
 }
 
 
-export function removeTag({ tag }) {
+export function deleteTag({ tag }) {
   return {
     type: REMOVE_TAG,
     payload: {
       request: {
         method: 'delete',
-        url: `/v2/tags/${tag.tag_id}`,
+        url: `/v2/tags/${tag.name}`,
       },
     },
   };
@@ -75,7 +75,7 @@ export function updateTag({ tag, original }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v2/tags/${tag.tag_id}`,
+        url: `/v2/tags/${tag.name}`,
         data,
       },
     },

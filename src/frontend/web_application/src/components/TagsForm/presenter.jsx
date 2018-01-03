@@ -4,6 +4,7 @@ import Button from '../Button';
 import DropdownMenu from '../DropdownMenu';
 import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
 import Icon from '../Icon';
+import { getTagLabel } from '../../modules/tags';
 import TagItem from './components/TagItem';
 import TagSearch from './components/TagSearch';
 
@@ -14,9 +15,9 @@ class TagsForm extends Component {
     tags: PropTypes.arrayOf(PropTypes.shape({})),
     foundTags: PropTypes.arrayOf(PropTypes.shape({})),
     search: PropTypes.func.isRequired,
-    addTag: PropTypes.func.isRequired,
-    updateTag: PropTypes.func.isRequired,
     isTagSearchFetching: PropTypes.bool,
+    updateTags: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -27,50 +28,69 @@ class TagsForm extends Component {
 
   state = {
     searchTerms: '',
+    isTagCollectionUpdating: false,
   };
 
-  handleSearchChange = (terms) => {
-    this.props.search(terms);
+  updateTags = async ({ tags }) => {
+    const { updateTags } = this.props;
+    this.setState({ isTagCollectionUpdating: true });
+    await updateTags({ tags });
+    this.setState({ isTagCollectionUpdating: false });
   }
 
-  handleAddNewTag = (terms) => {
+  handleSearchChange = (searchTerms) => {
+    this.setState({ searchTerms });
+    this.props.search(searchTerms);
+  }
+
+  handleAddNewTag = async (terms) => {
     if (terms.length > 0) {
-      this.props.addTag({ label: terms });
+      const { tags } = this.props;
+      await this.updateTags({ tags: [...tags, { label: terms }] });
+      this.handleSearchChange('');
     }
   }
 
-  createHandleAddTag = tag => () => {
-    this.props.addTag(tag);
+  createHandleAddTag = tag => async () => {
+    const { tags } = this.props;
+    await this.updateTags({ tags: [...tags, tag] });
+    this.handleSearchChange('');
+  }
+
+  handleDeleteTag = ({ tag }) => {
+    const { tags } = this.props;
+    this.updateTags({ tags: tags.filter(item => item !== tag) });
   }
 
   render() {
-    const { tags, updateTag, foundTags, isTagSearchFetching } = this.props;
+    const { i18n, tags, foundTags, isTagSearchFetching } = this.props;
 
     return (
       <div className="m-tags-form">
         <div className="m-tags-form__section">
           {tags && tags.length > 0 && tags.map(tag =>
-            <TagItem tag={tag} key={tag.tag_id} onDelete={updateTag} />
+            <TagItem tag={tag} key={tag.name} onDelete={this.handleDeleteTag} />
           )}
         </div>
 
         <div className="m-tags-form__section">
           <TagSearch
-            isFetching={isTagSearchFetching}
+            terms={this.state.searchTerms}
+            isFetching={isTagSearchFetching || this.state.isTagCollectionUpdating}
             onChange={this.handleSearchChange}
             onSubmit={this.handleAddNewTag}
           />
           <DropdownMenu show={foundTags.length > 0} className="m-tags-form__dropdown">
             <VerticalMenu>
               {foundTags.map(tag => (
-                <VerticalMenuItem key={tag.tag_id}>
+                <VerticalMenuItem key={tag.name}>
                   <Button
                     className="m-tags-form__found-tag"
                     display="expanded"
                     shape="plain"
                     onClick={this.createHandleAddTag(tag)}
                   >
-                    <span className="m-tags-form__found-tag-text">{tag.name}</span>
+                    <span className="m-tags-form__found-tag-text">{getTagLabel(i18n, tag)}</span>
                     {' '}
                     <Icon type="plus" />
                   </Button>

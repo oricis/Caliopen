@@ -1,2 +1,5 @@
 export { default as WithSearchTags } from './components/WithSearchTags';
-export * from './actions/requestTags';
+export { default as WithUpdateEntityTags } from './components/WithUpdateEntityTags';
+export { default as WithTags } from './components/WithTags';
+export { requestTags } from './actions/requestTags';
+export * from './services/getTagLabel';

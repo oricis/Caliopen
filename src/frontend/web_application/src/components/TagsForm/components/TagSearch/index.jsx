@@ -7,9 +7,16 @@ import { TextFieldGroup } from '../../../form';
 
 import './style.scss';
 
+function generateStateFromProps({ terms }) {
+  return {
+    terms,
+  };
+}
+
 @withI18n()
 class TagSearch extends Component {
   static propTypes = {
+    terms: PropTypes.string,
     onSubmit: PropTypes.func.isRequired,
     onChange: PropTypes.func,
     i18n: PropTypes.shape({}).isRequired,
@@ -17,6 +24,7 @@ class TagSearch extends Component {
   };
 
   static defaultProps = {
+    terms: '',
     onChange: () => {},
     isFetching: false,
   };
@@ -24,6 +32,14 @@ class TagSearch extends Component {
   state = {
     terms: '',
   };
+
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState(prevState => generateStateFromProps(newProps, prevState));
+  }
 
   handleChange = (ev) => {
     const terms = ev.target.value;
@@ -36,13 +52,7 @@ class TagSearch extends Component {
       return;
     }
 
-    this.setState((prevState) => {
-      this.props.onSubmit(prevState.terms);
-
-      return {
-        terms: '',
-      };
-    });
+    this.props.onSubmit(this.state.terms);
   }
 
   render() {
@@ -63,7 +73,9 @@ class TagSearch extends Component {
         <Button
           className="m-tags-search__button"
           icon={isFetching ? (<Spinner isLoading display="inline" />) : 'plus'}
+          disabled={isFetching}
           onClick={this.handleSubmit}
+          aria-label={i18n._('tags.action.add', { defaults: 'Add' })}
         />
       </div>
     );

@@ -1,54 +1,61 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import TagsForm from '../../../../components/TagsForm';
-import { WithSearchTags } from '../../../../modules/tags';
+import { WithTags, WithSearchTags, WithUpdateEntityTags } from '../../../../modules/tags';
 
 class ManageTags extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
-    updateMessage: PropTypes.func.isRequired,
   };
 
-  handleTagsChange = ({ tags }) => {
-    const { message: original, updateMessage } = this.props;
-
-    const message = {
-      ...original,
-      tags,
-    };
-
-    return updateMessage({ message, original });
-  };
-
-  handleAddTag = (tag) => {
-    const { message } = this.props;
-    const tags = [
-      ...(message.tags ? message.tags : []),
-      tag,
-    ];
-
-    return this.handleTagsChange({ tags });
-  };
-
-  filterTags = (tags) => {
+  filterFoundTags = (tags) => {
     const { message } = this.props;
 
-    return tags.filter(tag => !message.tags.some(messageTag => messageTag === tag));
+    return tags.filter(tag => !message.tags.some(name => name === tag.name));
   };
 
-  render() {
+  renderTagsForm({ tags, search, foundTags, isSearchFetching, updateEntityTags }) {
     const { message } = this.props;
+    const tagCollection = message.tags.map(tag => tags.find(item => item.name === tag));
+    const updateMessageTags = updateEntityTags.bind(null, 'message', message);
 
     return (
+      <TagsForm
+        tags={tagCollection}
+        foundTags={this.filterFoundTags(foundTags)}
+        search={search}
+        isTagSearchFetching={isSearchFetching}
+        updateTags={updateMessageTags}
+      />
+    );
+  }
+
+  renderSearchTags({ updateEntityTags, tags, isTagsFetching }) {
+    return (
       <WithSearchTags
-        render={(search, foundTags, isFetching) => (
-          <TagsForm
-            tags={message.tags}
-            foundTags={this.filterTags(foundTags)}
-            search={search}
-            isTagSearchFetching={isFetching}
-            updateTag={this.handleTagsChange}
-            addTag={this.handleAddTag}
+        tags={tags}
+        isFetching={isTagsFetching}
+        render={(search, foundTags, isFetching) =>
+          this.renderTagsForm({
+            tags,
+            search,
+            foundTags,
+            isSearchFetching: isFetching,
+            updateEntityTags,
+          })}
+      />
+    );
+  }
+
+  render() {
+    return (
+      <WithTags
+        render={(tags, isTagsFetching) => (
+          <WithUpdateEntityTags
+            tags={tags}
+            render={updateEntityTags => this.renderSearchTags({
+              updateEntityTags, tags, isTagsFetching,
+            })}
           />
         )}
       />
