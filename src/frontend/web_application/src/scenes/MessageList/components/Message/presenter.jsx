@@ -5,12 +5,9 @@ import { v1 as uuidV1 } from 'uuid';
 import VisibilitySensor from 'react-visibility-sensor';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
-import ContactAvatarLetter from '../../../ContactAvatarLetter';
-import Button from '../../../Button';
-import Icon from '../../../Icon';
-import TextBlock from '../../../TextBlock';
-import MultidimensionalPi from '../../../MultidimensionalPi';
-import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
+import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
+import { Button, Icon, TextBlock, Dropdown, withDropdownControl } from '../../../../components';
+import MultidimensionalPi from '../../../../components/MultidimensionalPi';
 import MessageActionsContainer from '../MessageActionsContainer';
 import { getAuthor } from '../../../../services/message';
 

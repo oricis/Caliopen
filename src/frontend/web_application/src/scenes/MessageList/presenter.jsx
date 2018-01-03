@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import { Trans } from 'lingui-react';
-import MessageListBase from '../../components/MessageList';
-import Button from '../../components/Button';
+import { Button } from '../../components';
 import PageTitle from '../../components/PageTitle';
+import MessageListBase from './components/MessageList';
 import ReplyForm from './components/DraftForm';
-
 
 const LOAD_MORE_THROTTLE = 1000;
 
@@ -25,7 +24,6 @@ class MessageList extends Component {
     copyMessageTo: PropTypes.func.isRequired,
     editMessageTags: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
-    updateTab: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     hasMore: PropTypes.bool.isRequired,
     currentTab: PropTypes.shape({}),

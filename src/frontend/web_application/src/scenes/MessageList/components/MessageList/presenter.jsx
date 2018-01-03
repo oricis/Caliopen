@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import Button from '../Button';
-import MenuBar from '../MenuBar';
-import Spinner from '../Spinner';
-import DayMessageList from './components/DayMessageList';
-import Message from './components/Message';
-import groupMessages from './services/groupMessages';
-import { isMessageFromUser } from '../../services/message';
-import { WithSettings } from '../../modules/settings';
+import { Button, MenuBar, Spinner } from '../../../../components';
+import DayMessageList from '../DayMessageList';
+import Message from '../Message';
+import groupMessages from '../../services/groupMessages';
+import { isMessageFromUser } from '../../../../services/message';
+import { WithSettings } from '../../../../modules/settings';
 
 import './style.scss';
 
