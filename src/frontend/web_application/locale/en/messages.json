@@ -273,7 +273,7 @@
   "passwords.form.error.empty": "At least one field is required.",
   "draft.feedback.saved": "Draft saved",
   "page_not_found.title": "Page not found",
-  "password.form.new_password_confirmation.error": "Passwords does not match",
+  "password.form.new_password_confirmation.error": "Passwords don't match",
   "password.reset-form.success": "Done!",
   "reset-password.form.errors.token_not_found": "Token is no more valid. Please retry.",
   "password.form.new_password.label": "New password:",

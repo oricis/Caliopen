@@ -57,13 +57,13 @@ class SearchField extends Component {
             name="term"
             onChange={this.handleInputChange}
             value={this.state.term}
-            placeholder={i18n._('header.menu.search')}
+            placeholder={i18n._('header.menu.search', { defaults: 'Search' })}
             className="m-search-field__input m-input-text"
           />
           <RawButton
             className="m-search-field__button"
             type="submit"
-            aria-label={i18n._('header.menu.search')}
+            aria-label={i18n._('header.menu.search', { defaults: 'Search' })}
           ><Icon type="search" /></RawButton>
         </form>
       </div>

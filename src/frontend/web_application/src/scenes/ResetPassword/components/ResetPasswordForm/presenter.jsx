@@ -72,7 +72,7 @@ class ResetPasswordForm extends Component {
 
     this.setState((prevState) => {
       const password = prevState.formValues.password;
-      const error = i18n._('password.form.new_password_confirmation.error');
+      const error = i18n._('password.form.new_password_confirmation.error', { defaults: 'Passwords don\'t match' });
       const passwordError = password === value ? [] : [error];
 
       return {
@@ -128,8 +128,8 @@ class ResetPasswordForm extends Component {
                 type="password"
                 value={this.state.formValues.password}
                 onChange={this.handlePasswordChange}
-                label={i18n._('password.form.new_password.label')}
-                placeholder={i18n._('password.form.new_password.placeholder')}
+                label={i18n._('password.form.new_password.label', { defaults: 'New password:' })}
+                placeholder={i18n._('password.form.new_password.placeholder', { defaults: 'Password' })}
                 required
               />
             </FormColumn>
@@ -145,8 +145,8 @@ class ResetPasswordForm extends Component {
                 value={this.state.confirmPassword}
                 onChange={this.handleConfirmPasswordChange}
                 errors={this.state.formErrors.passwordError}
-                label={i18n._('password.form.new_password_confirmation.label')}
-                placeholder={i18n._('password.form.new_password_confirmation.placeholder')}
+                label={i18n._('password.form.new_password_confirmation.label', { defaults: 'New password confirmation:' })}
+                placeholder={i18n._('password.form.new_password_confirmation.placeholder', { defaults: 'Password' })}
                 required
               />
             </FormColumn>
@@ -177,7 +177,7 @@ class ResetPasswordForm extends Component {
     const { i18n } = this.props;
 
     return (
-      <Section title={i18n._('password.reset-form.title')} className="m-reset-password-form">
+      <Section title={i18n._('password.reset-form.title', { defaults: 'Reset your password' })} className="m-reset-password-form">
         {this.renderSection()}
         <div>
           <Link to="/auth/signin"><Trans id="password.action.go_signin">Signin</Trans></Link>

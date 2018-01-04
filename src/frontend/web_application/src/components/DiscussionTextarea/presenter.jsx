@@ -15,7 +15,7 @@ const DiscussionTextarea = ({ body, onChange, i18n }) => {
         name="body"
         className="m-discussion-textarea__body"
         onChange={onChange}
-        placeholder={i18n._('messages.compose.form.body.placeholder')}
+        placeholder={i18n._('messages.compose.form.body.placeholder', { defaults: 'Type your message here...' })}
         value={body}
       />
     </div>

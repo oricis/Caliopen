@@ -16,7 +16,7 @@ class PageNotFound extends PureComponent {
 
     return (
       <div>
-        <PageTitle title={i18n._('page_not_found.title')} />
+        <PageTitle title={i18n._('page_not_found.title', { defaults: 'Page not found.' })} />
         <Trans id="page_not_found.title">
           Page not found
         </Trans>

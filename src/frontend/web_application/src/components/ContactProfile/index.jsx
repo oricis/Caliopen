@@ -41,7 +41,7 @@ class ContactProfile extends Component {
 
           {!editMode && (
             <h3 className="m-contact-profile__name">
-              {contact ? formatName({ contact, format }) : i18n._('contact.profile.name_not_set')}
+              {contact ? formatName({ contact, format }) : i18n._('contact.profile.name_not_set', { defaults: '(N/A)' })}
             </h3>
           )}
         </div>

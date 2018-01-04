@@ -49,7 +49,7 @@ class ResetPassword extends Component {
     const { i18n } = this.props;
 
     const errors = {
-      global: [i18n._('reset-password.form.errors.token_not_found')],
+      global: [i18n._('reset-password.form.errors.token_not_found', { defaults: 'Token is no more valid. Please retry.' })],
     };
     this.setState({
       isSuccess: false,

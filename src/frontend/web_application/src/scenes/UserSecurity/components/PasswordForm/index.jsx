@@ -65,7 +65,7 @@ class PasswordForm extends Component {
 
     this.setState((prevState) => {
       const newPassword = prevState.formValues.newPassword;
-      const error = i18n._('password.form.new_password_confirmation.error');
+      const error = i18n._('password.form.new_password_confirmation.error', { defaults: 'Passwords don\'t match' });
       const passwordError = newPassword === value ? [] : [error];
 
       return {
@@ -107,8 +107,8 @@ class PasswordForm extends Component {
               name="password"
               type="password"
               onChange={this.handleInputChange}
-              label={i18n._('password.form.current_password.label')}
-              placeholder={i18n._('password.form.current_password.placeholder')}
+              label={i18n._('password.form.current_password.label', { defaults: 'Current password:' })}
+              placeholder={i18n._('password.form.current_password.placeholder', { defaults: 'Enter your current password' })}
               showLabelforSr
               required
             />
@@ -125,8 +125,8 @@ class PasswordForm extends Component {
               name="newPassword"
               type="password"
               onChange={this.handleNewPasswordChange}
-              label={i18n._('password.form.new_password.label')}
-              placeholder={i18n._('password.form.new_password.placeholder')}
+              label={i18n._('password.form.new_password.label', { defaults: 'New password:' })}
+              placeholder={i18n._('password.form.new_password.placeholder', { defaults: 'Enter new password' })}
               required
             />
           </FormColumn>
@@ -148,32 +148,32 @@ class PasswordForm extends Component {
               type="password"
               onChange={this.handleConfirmPasswordChange}
               errors={this.state.passwordError}
-              label={i18n._('password.form.new_password_confirmation.label')}
-              placeholder={i18n._('password.form.new_password_confirmation.placeholder')}
+              label={i18n._('password.form.new_password_confirmation.label', { defaults: 'New password confirmation:' })}
+              placeholder={i18n._('password.form.new_password_confirmation.placeholder', { defaults: 'Password' })}
               required
             />
           </FormColumn>
         </FormRow>
         {/*
-          <FormRow className="m-password-form__row">
-          <FormColumn size="medium">
-            <Field
-              name="tfa"
-              component={TextFieldGroup}
-              onChange={this.handleInputChange}
-              label={i18n._('password.form.tfa.label')}
-              placeholder={i18n._('password.form.tfa.placeholder')}
-              disabled
-            />
-          </FormColumn>
-          <FormColumn size="medium">
-            <label htmlFor="newPassword" className="m-password-form__tip">
-              <Trans id="password.form.tfa.tip">
-                Only if you have enabled the 2-Factor Authentification method.
-              </Trans>
-            </label>
-          </FormColumn>
-        </FormRow>
+        <FormRow className="m-password-form__row">
+        <FormColumn size="medium">
+          <Field
+            name="tfa"
+            component={TextFieldGroup}
+            onChange={this.handleInputChange}
+            label={i18n._('password.form.tfa.label', { defaults: 'TOTP validation code:' })}
+            placeholder={i18n._('password.form.tfa.placeholder', { defaults: 'Enter 2-auth code' })}
+            disabled
+          />
+        </FormColumn>
+        <FormColumn size="medium">
+          <label htmlFor="newPassword" className="m-password-form__tip">
+            <Trans id="password.form.tfa.tip">
+              Only if you have enabled the 2-Factor Authentification method.
+            </Trans>
+          </label>
+        </FormColumn>
+      </FormRow>
         */}
         <FormRow>
           <FormColumn size="medium" className="m-password-form__action" bottomSpace>

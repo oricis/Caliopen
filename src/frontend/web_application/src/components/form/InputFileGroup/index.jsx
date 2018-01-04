@@ -61,7 +61,7 @@ class InputFileGroup extends Component {
     const errors = [];
 
     if (!file) {
-      return Promise.reject(i18n._('input-file-group.error.file_is_required'));
+      return Promise.reject(i18n._('input-file-group.error.file_is_required', { defaults: 'A file is required' }));
     }
 
     const ext = file.name ? `.${file.name.split('.').pop()}` : null;

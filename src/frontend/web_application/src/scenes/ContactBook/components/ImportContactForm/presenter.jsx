@@ -104,7 +104,7 @@ class ImportContactForm extends Component {
           <InputFileGroup
             onInputChange={this.handleInputFileChange}
             errors={errors}
-            descr={i18n._('import-contact.form.descr')}
+            descr={i18n._('import-contact.form.descr', { defaults: 'You can import one .vcf or .vcard file.' })}
             fileTypes={VALID_EXT}
             maxSize={getMaxSize(maxBodySize)}
             formatNumber={formatNumber}

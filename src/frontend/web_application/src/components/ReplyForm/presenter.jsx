@@ -86,7 +86,7 @@ class ReplyForm extends Component {
   renderDraftType() {
     const { i18n } = this.props;
     const typeTranslations = {
-      email: i18n._('reply-form.protocol.email'),
+      email: i18n._('reply-form.protocol.email', { defaults: 'email' }),
     };
 
     return (

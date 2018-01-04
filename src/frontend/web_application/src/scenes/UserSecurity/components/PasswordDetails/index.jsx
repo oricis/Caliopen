@@ -16,12 +16,13 @@ function generateStateFromProps(props, prevState) {
 
 class PasswordDetails extends Component {
   static propTypes = {
-    user: PropTypes.shape({}).isRequired,
+    user: PropTypes.shape({}),
     onSubmit: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     errors: [],
+    user: undefined,
   }
 
   state = {

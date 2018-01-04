@@ -33,7 +33,7 @@ class UserPrivacy extends Component {
 
         <MultidimensionalPi className="s-user-privacy__pi" pi={fakePi} />
 
-        <Section className="s-user-privacy__info" title={i18n._('user.privacy.improve_pi')}>
+        <Section className="s-user-privacy__info" title={i18n._('user.privacy.improve_pi', { defaults: 'Improve your privacy index' })}>
           <TextList className="s-user-privacy__tips">
             {privacyTips.map(tip => (
               <ItemContent

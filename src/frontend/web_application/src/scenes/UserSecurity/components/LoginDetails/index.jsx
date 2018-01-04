@@ -30,7 +30,7 @@ class LoginDetails extends Component {
         <TextFieldGroup
           className="m-login-details__input"
           value={user && user.name}
-          label={i18n._('login.details.label')}
+          label={i18n._('login.details.label', { defaults: 'Login:' })}
           showLabelforSr
           disabled
         />

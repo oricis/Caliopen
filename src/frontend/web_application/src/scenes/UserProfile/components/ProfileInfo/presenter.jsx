@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import { Trans } from 'lingui-react';
 import classnames from 'classnames';
 import { formatName } from '../../../../services/contact';
 import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
@@ -50,7 +51,9 @@ class ProfileInfo extends Component {
                 <h4 className="m-user-profile-details__subtitle">
                   {user && user.contact && formatName({ contact, format })}
                 </h4>
-                <p>{i18n._('user.profile.subscribed_date')}
+                <p>
+                  <Trans id="user.profile.subscribed_date">Subscribed on</Trans>
+                  {' '}
                   {user && (
                     <Moment
                       className="m-user-profile-details__subscribed-date"

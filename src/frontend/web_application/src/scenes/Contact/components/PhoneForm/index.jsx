@@ -30,9 +30,9 @@ class PhoneForm extends PureComponent {
   initTranslations() {
     const { i18n } = this.props;
     this.addressTypes = {
-      work: i18n._('contact.phone_type.work'),
-      home: i18n._('contact.phone_type.home'),
-      other: i18n._('contact.phone_type.other'),
+      work: i18n._('contact.phone_type.work', { defaults: 'Professional' }),
+      home: i18n._('contact.phone_type.home', { defaults: 'Personal' }),
+      other: i18n._('contact.phone_type.other', { defaults: 'Other' }),
     };
   }
 
@@ -58,7 +58,7 @@ class PhoneForm extends PureComponent {
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={i18n._('contact.phone_form.type.label')}
+                label={i18n._('contact.phone_form.type.label', { defaults: 'Type' })}
                 showLabelforSr
                 options={typeOptions}
               />
@@ -68,7 +68,7 @@ class PhoneForm extends PureComponent {
                 component={TextFieldGroup}
                 name="number"
                 type="tel"
-                label={i18n._('contact.phone_form.number.label')}
+                label={i18n._('contact.phone_form.number.label', { defaults: 'Number' })}
                 showLabelforSr
                 required
               />

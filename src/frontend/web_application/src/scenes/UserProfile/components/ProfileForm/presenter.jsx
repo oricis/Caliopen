@@ -46,7 +46,7 @@ class ProfileForm extends Component {
             <Field
               component={TextFieldGroup}
               name="name"
-              label={i18n._('user.profile.form.username.label')}
+              label={i18n._('user.profile.form.username.label', { defaults: 'Username' })}
               disabled
             />
           </FormColumn>
@@ -54,7 +54,7 @@ class ProfileForm extends Component {
             <Field
               component={TextFieldGroup}
               name="recovery_email"
-              label={i18n._('user.profile.form.recovery_email.label')}
+              label={i18n._('user.profile.form.recovery_email.label', { defaults: 'Recovery email' })}
               disabled
             />
           </FormColumn>
@@ -64,7 +64,7 @@ class ProfileForm extends Component {
             <Field
               component={TextFieldGroup}
               name="contact.given_name"
-              label={i18n._('user.profile.form.given_name.label')}
+              label={i18n._('user.profile.form.given_name.label', { defaults: 'Given name' })}
               disabled={!editMode}
             />
           </FormColumn>
@@ -72,7 +72,7 @@ class ProfileForm extends Component {
             <Field
               component={TextFieldGroup}
               name="contact.family_name"
-              label={i18n._('user.profile.form.family_name.label')}
+              label={i18n._('user.profile.form.family_name.label', { defaults: 'Family name' })}
               disabled={!editMode}
             />
           </FormColumn>

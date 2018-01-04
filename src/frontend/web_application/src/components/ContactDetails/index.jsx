@@ -35,15 +35,15 @@ class ContactDetails extends Component {
     const { i18n } = this.props;
     this.detailsTranslations = {
       address_type: {
-        work: i18n._('contact.address_type.work'),
-        home: i18n._('contact.address_type.home'),
-        other: i18n._('contact.address_type.other'),
+        work: i18n._('contact.address_type.work', { defaults: 'Professional' }),
+        home: i18n._('contact.address_type.home', { defaults: 'Personal' }),
+        other: i18n._('contact.address_type.other', { defaults: 'Other' }),
       },
       im_type: {
-        work: i18n._('contact.im_type.work'),
-        home: i18n._('contact.im_type.home'),
-        other: i18n._('contact.im_type.other'),
-        netmeeting: i18n._('contact.im_type.netmeeting'),
+        work: i18n._('contact.im_type.work', { defaults: 'Professional' }),
+        home: i18n._('contact.im_type.home', { defaults: 'Personal' }),
+        other: i18n._('contact.im_type.other', { defaults: 'Other' }),
+        netmeeting: i18n._('contact.im_type.netmeeting', { defaults: 'Netmeeting' }),
       },
     };
   }

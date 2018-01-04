@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
 import Section from '../../components/Section';
@@ -45,7 +46,7 @@ class UserProfile extends Component {
 
   handleError = () => {
     const { i18n, notifyError } = this.props;
-    notifyError({ message: i18n._('contact.feedback.unable_to_save') });
+    notifyError({ message: i18n._('contact.feedback.unable_to_save', { defaults: 'Unable to save the contact' }) });
   }
 
   toggleEditMode = () => {
@@ -53,22 +54,23 @@ class UserProfile extends Component {
   }
 
   renderForm = () => {
-    const { i18n, pristine, submitting } = this.props;
+    const { pristine, submitting } = this.props;
 
     return (
       <form method="post" name="user-profile" onSubmit={this.handleSubmit}>
         <ProfileForm editMode={this.state.editMode} />
         {!this.state.editMode ? (
           <Button onClick={this.toggleEditMode} shape="plain">
-            {i18n._('user.action.edit_profile')}</Button>
+            <Trans id="user.action.edit_profile">Edit</Trans>
+          </Button>
         ) : (
           <div>
             <Button type="submit" shape="plain" disabled={submitting || pristine}>
-              {i18n._('user.action.update')}
+              <Trans id="user.action.update">Update</Trans>
             </Button>
             {' '}
             <Button onClick={this.toggleEditMode} shape="hollow">
-              {i18n._('user.action.cancel_edit')}
+              <Trans id="user.action.cancel_edit">Cancel</Trans>
             </Button>
           </div>
         )}
@@ -86,7 +88,7 @@ class UserProfile extends Component {
         <div className="s-user-profile__info">
           <ProfileInfo user={user} />
         </div>
-        <Section className="s-user-profile__details" title={i18n._('user.profile.form.title')}>
+        <Section className="s-user-profile__details" title={i18n._('user.profile.form.title', { defaults: 'Complete your profile' })}>
           {this.renderForm()}
         </Section>
       </div>

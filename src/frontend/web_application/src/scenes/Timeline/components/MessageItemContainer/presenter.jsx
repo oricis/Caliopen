@@ -111,14 +111,14 @@ class MessageItemContainer extends Component {
     const { message, i18n } = this.props;
     const nb = message.tags ? message.tags.length : 0;
     const title = [
-      i18n._('tags.header.title'),
+      i18n._('tags.header.title', { defaults: 'Tags' }),
       (<span key="1" className="m-tags-form__count"><Trans id="tags.header.count" values={{ 0: nb }}>(Total: {0})</Trans></span>),
     ];
 
     return (
       <Modal
         isOpen={this.state.isTagModalOpen}
-        contentLabel={i18n._('tags.header.title')}
+        contentLabel={i18n._('tags.header.title', { defaults: 'Tags' })}
         title={title}
         onClose={this.handleCloseTags}
       >
