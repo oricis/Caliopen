@@ -74,10 +74,10 @@ func (es *ElasticSearchBackend) SetMessageUnread(user *objects.UserInfo, message
 	return
 }
 
-// XXX chamal: need UserInfo filtering
-func (es *ElasticSearchBackend) FilterMessages(filter IndexSearch) (messages []*Message, totalFound int64, err error) {
-	search := es.Client.Search().Index(filter.User_id.String()).Type(MessageIndexType)
-	search = filter.FilterQuery(search, true).Sort("date_sort", false)
+func (es *ElasticSearchBackend) FilterMessages(filter objects.IndexSearch) (messages []*objects.Message, totalFound int64, err error) {
+
+	search := es.Client.Search().Index(filter.Shard_id).Type(objects.MessageIndexType)
+	search = filter.FilterQuery(search, true).Sort("date_insert", false)
 
 	if filter.Offset > 0 {
 		search = search.From(filter.Offset)
