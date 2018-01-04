@@ -609,6 +609,18 @@
 			"revisionTime": "2016-08-30T17:39:30Z"
 		},
 		{
+			"checksumSHA1": "syVZskC5CRNdIaisxqimbeA915I=",
+			"path": "github.com/ttacon/builder",
+			"revision": "c099f663e1c235176c175644792c5eb282017ad7",
+			"revisionTime": "2017-05-18T17:14:03Z"
+		},
+		{
+			"checksumSHA1": "xAT8sVPOnnHCGhNwj61oK79lAIk=",
+			"path": "github.com/ttacon/libphonenumber",
+			"revision": "8ff0c76f75b1e4d840054e4bac021eac597c66da",
+			"revisionTime": "2017-09-01T13:31:19Z"
+		},
+		{
 			"checksumSHA1": "0FCBLTqGOxgifAKfS0360iLTZR4=",
 			"path": "github.com/ugorji/go/codec",
 			"revision": "8c0409fcbb70099c748d71f714529204975f6c3f",

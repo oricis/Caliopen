@@ -8,6 +8,7 @@ package helpers
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/ttacon/libphonenumber"
 	"strings"
 )
 
@@ -70,8 +71,16 @@ func ComputeTitle(c *Contact) {
 
 }
 
-// NormalizePhoneNumbers tries to normalize phone numbers found within contact
-// modifies in-place or lets phone numbers untouched if it fails
+// NormalizePhoneNumbers tries to normalize phone numbers found within contact.
+// It fills Phone.NormalizedNumber property if it could
 func NormalizePhoneNumbers(c *Contact) {
-
+	var num libphonenumber.PhoneNumber
+	for i, phone := range c.Phones {
+		// try to parse phone number by seeking a country code
+		// fallback to french number only if no country code could be found
+		// TODO: lookup into user's contactbook to find the most relevant country code to fallback to
+		if err := libphonenumber.ParseToNumber(phone.Number, "FR", &num); err == nil {
+			c.Phones[i].NormalizedNumber = libphonenumber.Format(&num, libphonenumber.INTERNATIONAL)
+		}
+	}
 }

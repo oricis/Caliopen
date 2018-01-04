@@ -8,11 +8,12 @@ import "github.com/satori/go.uuid"
 
 // contacts' phone model
 type Phone struct {
-	IsPrimary bool   `cql:"is_primary"  json:"is_primary"`
-	Number    string `cql:"number"      json:"number"`
-	PhoneId   UUID   `cql:"phone_id"    json:"phone_id"`
-	Type      string `cql:"type"        json:"type"`
-	Uri       string `cql:"uri"         json:"uri"` //RFC3966
+	IsPrimary        bool   `cql:"is_primary"  json:"is_primary"`
+	NormalizedNumber string `cql:"normalized_number" json:"normalized_number"`
+	Number           string `cql:"number"      json:"number"       cql_lookup:"contact_lookup"`
+	PhoneId          UUID   `cql:"phone_id"    json:"phone_id"`
+	Type             string `cql:"type"        json:"type"`
+	Uri              string `cql:"uri"         json:"uri"` //RFC3966
 }
 
 func (p *Phone) UnmarshalMap(input map[string]interface{}) error {
@@ -21,6 +22,9 @@ func (p *Phone) UnmarshalMap(input map[string]interface{}) error {
 	}
 	if number, ok := input["number"].(string); ok {
 		p.Number = number
+	}
+	if number, ok := input["normalized_number"].(string); ok {
+		p.NormalizedNumber = number
 	}
 	if p_id, ok := input["phone_id"].(string); ok {
 		if id, err := uuid.FromString(p_id); err == nil {

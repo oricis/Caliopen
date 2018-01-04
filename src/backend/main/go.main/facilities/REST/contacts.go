@@ -23,8 +23,9 @@ func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
 	contact.ContactId.UnmarshalBinary(uuid.NewV4().Bytes())
 	contact.DateInsert = time.Now()
 	contact.DateUpdate = contact.DateInsert
+	// normalization
 	helpers.ComputeTitle(contact)
-	//TODO: finish work
+	helpers.NormalizePhoneNumbers(contact)
 
 	// parallel creation in db & index
 	wg := new(sync.WaitGroup)
