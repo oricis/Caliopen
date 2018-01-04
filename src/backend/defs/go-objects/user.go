@@ -209,6 +209,7 @@ func (ac *Auth_cache) UnmarshalJSON(b []byte) error {
 		X             big.Int `json:"x"`
 		Y             big.Int `json:"y"`
 		Key_id        string  `json:"key_id"`
+		Shard_id      string  `json:"shard_id"`
 	}
 	if err := json.Unmarshal(b, &temp); err != nil {
 		return err
@@ -225,5 +226,6 @@ func (ac *Auth_cache) UnmarshalJSON(b []byte) error {
 	ac.X = temp.X
 	ac.Y = temp.Y
 	ac.Curve = temp.Curve
+	ac.Shard_id = temp.Shard_id
 	return nil
 }
