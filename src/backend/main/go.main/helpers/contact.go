@@ -36,11 +36,12 @@ func ComputeTitle(c *Contact) {
 		switch len(title) {
 		case 0:
 			//Title is still empty. try more properties
-			if len(c.Emails) > 0 {
+			switch {
+			case len(c.Emails) > 0:
 				c.Title = c.Emails[0].Address
-			} else if len(c.Phones) > 0 {
+			case len(c.Phones) > 0:
 				c.Title = c.Phones[0].Number
-			} else if len(c.Ims) > 0 {
+			case len(c.Ims) > 0:
 				c.Title = c.Ims[0].Address
 			}
 		case 1:
@@ -54,18 +55,12 @@ func ComputeTitle(c *Contact) {
 		if c.GivenName == "" && c.FamilyName == "" {
 			if space_sep := strings.Split(c.Title, " "); len(space_sep) > 1 {
 				//fill it the Google way : last word to family_name
-				for i, j := 0, len(space_sep)-1; i < j; i, j = i+1, j-1 {
-					space_sep[i], space_sep[j] = space_sep[j], space_sep[i]
-				}
-				c.FamilyName = space_sep[0]
-				c.GivenName = strings.Join(space_sep[1:], " ")
+				c.FamilyName = space_sep[len(space_sep)-1]
+				c.GivenName = strings.Join(space_sep[:len(space_sep)-1], " ")
 			} else if comma_sep := strings.Split(c.Title, ","); len(comma_sep) > 1 {
 				//same algo as above, but with comma
-				for i, j := 0, len(comma_sep)-1; i < j; i, j = i+1, j-1 {
-					comma_sep[i], comma_sep[j] = comma_sep[j], comma_sep[i]
-				}
-				c.FamilyName = comma_sep[0]
-				c.GivenName = strings.Join(comma_sep[1:], " ")
+				c.FamilyName = space_sep[len(space_sep)-1]
+				c.GivenName = strings.Join(space_sep[:len(space_sep)-1], " ")
 				c.Title = strings.Replace(c.Title, ",", " ", -1)
 			} else {
 				c.FamilyName = c.Title
