@@ -19,7 +19,7 @@ export const getLocalizedErrors = i18n => ({
   [ERR_REQUIRED_TOS]: i18n._('signup.feedback.required_tos', { defaults: 'We need your terms and conditions agreement' }),
   [ERR_INVALID_GLOBAL]: i18n._('signup.feedback.invalid', { defaults: 'Credentials are invalid' }),
   [ERR_REQUIRED_USERNAME]: i18n._('signup.feedback.required_username', { defaults: 'A username is required' }),
-  [ERR_INVALID_CHARACTER]: i18n._('signup.feedback.username_invalid_characters', { 0: { chars: '"@`:;<>[]\\' } }, { defaults: 'The username cannot contain some special characters like {0} and space' }),
+  [ERR_INVALID_CHARACTER]: i18n._('signup.feedback.username_invalid_characters', { values: { 0: '"@`:;<>[]\\' } }, { defaults: 'The username cannot contain some special characters like {0} and space' }),
   [ERR_REQUIRED_PASSWORD]: i18n._('signup.feedback.required_password', { defaults: 'A password is required' }),
   [ERR_UNAVAILABLE_USERNAME]: i18n._('signup.feedback.unavailable_username', { defaults: 'We are sorry, this username is not available' }),
   [ERR_INVALID_RECOVERY_EMAIL]: i18n._('signup.feedback.invalid_recovery_email', { defaults: 'The email should be valid' }),

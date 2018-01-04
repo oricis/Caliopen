@@ -91,7 +91,7 @@ class AddFormFieldForm extends Component {
                   value={this.state.formType}
                   options={typeOptions}
                   showLabelforSr
-                  label={i18n._('contact.form-selector.add_new_field.label', { defaults: 'Add new field' })}
+                  label={i18n._('contact.form-selector.add_new_field.label', { defaults: 'Add a new field' })}
                 />
               </FormColumn>
               <FormColumn size="shrink" className="m-add-form-field-form__col-button">

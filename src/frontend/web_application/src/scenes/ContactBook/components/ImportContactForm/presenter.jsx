@@ -24,7 +24,6 @@ class ImportContactForm extends Component {
     onCancel: PropTypes.func,
     errors: PropTypes.shape({}),
     i18n: PropTypes.shape({}).isRequired,
-    formatNumber: PropTypes.func.isRequired,
     hasImported: PropTypes.bool,
     isLoading: PropTypes.bool,
     formAction: PropTypes.string,
@@ -89,7 +88,7 @@ class ImportContactForm extends Component {
   }
 
   render() {
-    const { i18n, formatNumber, hasImported, errors, formAction } = this.props;
+    const { i18n, hasImported, errors, formAction } = this.props;
     const { maxBodySize } = getConfig();
 
     return (
@@ -107,7 +106,6 @@ class ImportContactForm extends Component {
             descr={i18n._('import-contact.form.descr', { defaults: 'You can import one .vcf or .vcard file.' })}
             fileTypes={VALID_EXT}
             maxSize={getMaxSize(maxBodySize)}
-            formatNumber={formatNumber}
           />
         :
           <p><Trans id="import-contact.form.success">Successfuly imported !</Trans></p>

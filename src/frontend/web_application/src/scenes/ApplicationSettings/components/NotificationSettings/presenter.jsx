@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { FormGrid, FormRow, FormColumn, SelectFieldGroup as SelectFieldGroupBase, CheckboxFieldGroup as CheckboxFieldGroupBase } from '../../../../components/form';
@@ -42,7 +41,7 @@ class NotificationForm extends Component {
     const messagePreviewOptions = this.getOptionsFromArray(MESSAGE_PREVIEW);
     const delayDisappearOptions = DELAY_DISAPPEAR.map(delay => ({
       value: delay,
-      label: (<Trans id="settings.notification.delay_disappear.options.second" values={{ 0: delay }}>{0} Seconds</Trans>),
+      label: i18n._('settings.notification.delay_disappear.options.second', { values: { 0: delay } }, { defaults: '{0} Seconds' }),
     }));
 
     return (

@@ -92,8 +92,8 @@ class ContactBook extends Component {
     return (
       <Modal
         isOpen={this.state.isImportModalOpen}
-        contentLabel={i18n._('import-contact.action.import_contacts', { defaults: 'All contacts' })}
-        title={i18n._('import-contact.action.import_contacts', { defaults: 'All contacts' })}
+        contentLabel={i18n._('import-contact.action.import_contacts', { defaults: 'Import contacts' })}
+        title={i18n._('import-contact.action.import_contacts', { defaults: 'Import contacts' })}
         onClose={this.handleCloseImportModal}
       >
         <ImportContact

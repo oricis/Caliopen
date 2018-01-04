@@ -14,14 +14,11 @@ class ProfileInfo extends Component {
   static propTypes = {
     user: PropTypes.shape({}),
     className: PropTypes.string,
-    locale: PropTypes.string,
-    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
     user: undefined,
     className: undefined,
-    locale: undefined,
   };
 
   render() {
@@ -31,6 +28,7 @@ class ProfileInfo extends Component {
       <WithSettings
         render={(settings) => {
           const format = settings.contact_display_format;
+          const locale = settings.default_locale;
           const contact = user && user.contact;
 
           return (
@@ -58,7 +56,7 @@ class ProfileInfo extends Component {
                     <Moment
                       className="m-user-profile-details__subscribed-date"
                       format="ll"
-                      locale={settings.locale}
+                      locale={locale}
                     >{user.date_insert}</Moment>
                   )}
                 </p>
