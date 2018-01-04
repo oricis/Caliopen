@@ -25,7 +25,7 @@ class ProfileInfo extends Component {
   };
 
   render() {
-    const { user, className, i18n } = this.props;
+    const { user, className } = this.props;
 
     return (
       <WithSettings
@@ -69,7 +69,7 @@ class ProfileInfo extends Component {
                 <div className="m-user-profile-details__rank-badge" />
                 <div className="m-user-profile-details__rank-info">
                   <h4 className="m-user-profile-details__rank-title">fake rank</h4>
-                  <Link to="">{__('user.action.improve_rank')}</Link>
+                  <Link to=""><Trans id="user.action.improve_rank">Improve your rank</Trans></Link>
                 </div>
               </div>
               */}
