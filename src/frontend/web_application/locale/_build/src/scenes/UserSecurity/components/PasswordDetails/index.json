@@ -4,7 +4,7 @@
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordDetails/index.jsx",
-        52
+        53
       ]
     ]
   },
@@ -13,7 +13,7 @@
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordDetails/index.jsx",
-        70
+        71
       ]
     ]
   }

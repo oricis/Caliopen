@@ -1,5 +1,6 @@
 {
   "reset-password.form.errors.token_not_found": {
+    "defaults": "Token is no more valid. Please retry.",
     "origin": [
       [
         "src/scenes/ResetPassword/presenter.jsx",

@@ -1,5 +1,6 @@
 {
   "contact.address_type.work": {
+    "defaults": "Professional",
     "origin": [
       [
         "src/components/ContactDetails/components/AddressDetails/index.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "contact.address_type.home": {
+    "defaults": "Personal",
     "origin": [
       [
         "src/components/ContactDetails/components/AddressDetails/index.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "contact.address_type.other": {
+    "defaults": "Other",
     "origin": [
       [
         "src/components/ContactDetails/components/AddressDetails/index.jsx",

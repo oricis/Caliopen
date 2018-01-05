@@ -77,32 +77,32 @@ class ContactProfileForm extends Component {
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n._('contact_profile.form.name-prefix.label')}
-              placeholder={i18n._('contact_profile.form.name-prefix.label')}
+              label={i18n._('contact_profile.form.name-prefix.label', { defaults: 'Prefix' })}
+              placeholder={i18n._('contact_profile.form.name-prefix.label', { defaults: 'Prefix' })}
               name="name_prefix"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n._('contact_profile.form.firstname.label')}
-              placeholder={i18n._('contact_profile.form.firstname.label')}
+              label={i18n._('contact_profile.form.firstname.label', { defaults: 'Firstname' })}
+              placeholder={i18n._('contact_profile.form.firstname.label', { defaults: 'Firstname' })}
               name="given_name"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n._('contact_profile.form.lastname.label')}
-              placeholder={i18n._('contact_profile.form.lastname.label')}
+              label={i18n._('contact_profile.form.lastname.label', { defaults: 'Lastname' })}
+              placeholder={i18n._('contact_profile.form.lastname.label', { defaults: 'Lastname' })}
               name="family_name"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n._('contact_profile.form.name-suffix.label')}
-              placeholder={i18n._('contact_profile.form.name-suffix.label')}
+              label={i18n._('contact_profile.form.name-suffix.label', { defaults: 'Suffix' })}
+              placeholder={i18n._('contact_profile.form.name-suffix.label', { defaults: 'Suffix' })}
               name="name_suffix"
               showLabelforSr
             />

@@ -1,5 +1,6 @@
 {
   "signin.feedback.required_username": {
+    "defaults": "A username is required",
     "origin": [
       [
         "src/scenes/Signin/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "signin.feedback.required_password": {
+    "defaults": "A password is required",
     "origin": [
       [
         "src/scenes/Signin/presenter.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "signin.feedback.invalid": {
+    "defaults": "Credentials are invalid",
     "origin": [
       [
         "src/scenes/Signin/presenter.jsx",

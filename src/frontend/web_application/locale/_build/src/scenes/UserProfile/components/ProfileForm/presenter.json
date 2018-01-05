@@ -1,58 +1,37 @@
 {
-  "user.profile.form.avatar.label": {
-    "origin": [
-      [
-        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
-        86
-      ]
-    ]
-  },
   "user.profile.form.username.label": {
+    "defaults": "Username",
     "origin": [
       [
         "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
-        94
-      ]
-    ]
-  },
-  "user.profile.form.given_name.label": {
-    "origin": [
-      [
-        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
-        104
-      ]
-    ]
-  },
-  "user.profile.form.family_name.label": {
-    "origin": [
-      [
-        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
-        112
-      ]
-    ]
-  },
-  "user.profile.form.email.label": {
-    "origin": [
-      [
-        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
-        125
+        49
       ]
     ]
   },
   "user.profile.form.recovery_email.label": {
+    "defaults": "Recovery email",
     "origin": [
       [
         "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
-        133
+        57
       ]
     ]
   },
-  "user.action.update": {
-    "defaults": "Update",
+  "user.profile.form.given_name.label": {
+    "defaults": "Given name",
     "origin": [
       [
         "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
-        142
+        67
+      ]
+    ]
+  },
+  "user.profile.form.family_name.label": {
+    "defaults": "Family name",
+    "origin": [
+      [
+        "src/scenes/UserProfile/components/ProfileForm/presenter.jsx",
+        75
       ]
     ]
   }

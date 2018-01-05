@@ -1,5 +1,6 @@
 {
   "contact.profile.name_not_set": {
+    "defaults": "(N/A)",
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "contact.feedback.unable_to_save": {
+    "defaults": "Unable to save the contact",
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
@@ -29,7 +31,7 @@
     ]
   },
   "tags.header.count": {
-    "defaults": "(Total: {count})",
+    "defaults": "(Total: {0})",
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",

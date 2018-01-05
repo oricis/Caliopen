@@ -1,5 +1,6 @@
 {
   "contact.address_type.work": {
+    "defaults": "Professional",
     "origin": [
       [
         "src/scenes/Contact/components/AddressForm/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "contact.address_type.home": {
+    "defaults": "Personal",
     "origin": [
       [
         "src/scenes/Contact/components/AddressForm/presenter.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "contact.address_type.other": {
+    "defaults": "Other",
     "origin": [
       [
         "src/scenes/Contact/components/AddressForm/presenter.jsx",
@@ -33,6 +36,7 @@
     ]
   },
   "contact.address_form.street.label": {
+    "defaults": "Street",
     "origin": [
       [
         "src/scenes/Contact/components/AddressForm/presenter.jsx",
@@ -45,6 +49,7 @@
     ]
   },
   "contact.address_form.postal_code.label": {
+    "defaults": "Postal Code",
     "origin": [
       [
         "src/scenes/Contact/components/AddressForm/presenter.jsx",
@@ -57,6 +62,7 @@
     ]
   },
   "contact.address_form.city.label": {
+    "defaults": "City",
     "origin": [
       [
         "src/scenes/Contact/components/AddressForm/presenter.jsx",
@@ -78,6 +84,7 @@
     ]
   },
   "contact.address_form.select_country": {
+    "defaults": "Country",
     "origin": [
       [
         "src/scenes/Contact/components/AddressForm/presenter.jsx",
@@ -95,6 +102,7 @@
     ]
   },
   "contact.address_form.select_region": {
+    "defaults": "Region",
     "origin": [
       [
         "src/scenes/Contact/components/AddressForm/presenter.jsx",
@@ -103,6 +111,7 @@
     ]
   },
   "contact.address_form.type.label": {
+    "defaults": "Type",
     "origin": [
       [
         "src/scenes/Contact/components/AddressForm/presenter.jsx",

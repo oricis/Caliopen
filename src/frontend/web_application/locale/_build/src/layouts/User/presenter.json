@@ -1,9 +1,19 @@
 {
-  "user.security": {
+  "user.profile": {
+    "defaults": "Profile",
     "origin": [
       [
         "src/layouts/User/presenter.jsx",
-        24
+        21
+      ]
+    ]
+  },
+  "user.security": {
+    "defaults": "Security",
+    "origin": [
+      [
+        "src/layouts/User/presenter.jsx",
+        23
       ]
     ]
   }

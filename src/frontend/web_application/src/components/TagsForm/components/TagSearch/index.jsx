@@ -54,8 +54,8 @@ class TagSearch extends Component {
           name="terms"
           value={this.state.terms}
           className="m-tags-search__input"
-          label={i18n._('tags.form.search.label')}
-          placeholder={i18n._('tags.form.search.placeholder')}
+          label={i18n._('tags.form.search.label', { defaults: 'Search' })}
+          placeholder={i18n._('tags.form.search.placeholder', { defaults: 'Search a tag ...' })}
           onChange={this.handleChange}
           showLabelforSr
         />

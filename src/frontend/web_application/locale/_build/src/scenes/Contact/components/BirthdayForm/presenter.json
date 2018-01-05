@@ -9,6 +9,7 @@
     ]
   },
   "contact_profile.form.birthday.label": {
+    "defaults": "Birthday",
     "origin": [
       [
         "src/scenes/Contact/components/BirthdayForm/presenter.jsx",

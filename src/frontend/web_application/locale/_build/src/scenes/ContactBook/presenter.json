@@ -17,6 +17,7 @@
     ]
   },
   "header.menu.contacts": {
+    "defaults": "Contacts",
     "origin": [
       [
         "src/scenes/ContactBook/presenter.jsx",

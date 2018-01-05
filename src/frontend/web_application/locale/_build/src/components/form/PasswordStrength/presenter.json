@@ -1,5 +1,6 @@
 {
   "password_strength.feedback.weak": {
+    "defaults": "Strength: weak",
     "origin": [
       [
         "src/components/form/PasswordStrength/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "password_strength.feedback.moderate": {
+    "defaults": "Strength: moderate",
     "origin": [
       [
         "src/components/form/PasswordStrength/presenter.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "password_strength.feedback.strong": {
+    "defaults": "Strength: strong",
     "origin": [
       [
         "src/components/form/PasswordStrength/presenter.jsx",

@@ -18,9 +18,9 @@ class PhoneDetails extends Component {
   initTranslations() {
     const { i18n } = this.props;
     this.typeTranslations = {
-      work: i18n._('contact.phone_type.work'),
-      home: i18n._('contact.phone_type.home'),
-      other: i18n._('contact.phone_type.other'),
+      work: i18n._('contact.phone_type.work', { defaults: 'Professional' }),
+      home: i18n._('contact.phone_type.home', { defaults: 'Personal' }),
+      other: i18n._('contact.phone_type.other', { defaults: 'Other' }),
     };
   }
 

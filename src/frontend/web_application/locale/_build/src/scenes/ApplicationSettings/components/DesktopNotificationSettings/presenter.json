@@ -1,5 +1,6 @@
 {
   "settings.desktop_notification.feedback.enabled": {
+    "defaults": "Desktop notifications are enabled",
     "origin": [
       [
         "src/scenes/ApplicationSettings/components/DesktopNotificationSettings/presenter.jsx",

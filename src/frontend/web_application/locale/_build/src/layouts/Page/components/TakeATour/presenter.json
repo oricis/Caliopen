@@ -9,6 +9,7 @@
     ]
   },
   "take-a-tour.step.intro.content": {
+    "defaults": "<p>With using  Caliopen, you can access to all of your private messages (Email, and more to come) through a single login.</p><p>Now, take a look at our main features, such as unified message management, intuitive search and more!</p>",
     "origin": [
       [
         "src/layouts/Page/components/TakeATour/presenter.jsx",
@@ -26,6 +27,7 @@
     ]
   },
   "take-a-tour.step.search.content": {
+    "defaults": "<p>Every search can include filters. All of the unencrypted data can be searched.</p><p>Here you can search everything in your messages and contacts.</p>",
     "origin": [
       [
         "src/layouts/Page/components/TakeATour/presenter.jsx",
@@ -43,6 +45,7 @@
     ]
   },
   "take-a-tour.step.user-menu.content": {
+    "defaults": "<p>Keep up-to-date your account information and manage your settings from here!</p><p>Customize your application in your settings.</p>",
     "origin": [
       [
         "src/layouts/Page/components/TakeATour/presenter.jsx",
@@ -60,6 +63,7 @@
     ]
   },
   "take-a-tour.step.call-to-action.content": {
+    "defaults": "<p>Create on the fly a new message or a new contact.</p><p>All you need to begin is here.</p>",
     "origin": [
       [
         "src/layouts/Page/components/TakeATour/presenter.jsx",
@@ -77,6 +81,7 @@
     ]
   },
   "take-a-tour.step.importance-slider.content": {
+    "defaults": "<p>This slider will help you to hide or show some messages depending on their importance level.</p><p>Lower the top slider to show only spams or upper the bottom one to show direct messages.</p>",
     "origin": [
       [
         "src/layouts/Page/components/TakeATour/presenter.jsx",
@@ -103,6 +108,7 @@
     ]
   },
   "take-a-tour.action.skip": {
+    "defaults": "Skip",
     "origin": [
       [
         "src/layouts/Page/components/TakeATour/presenter.jsx",
@@ -111,6 +117,7 @@
     ]
   },
   "take-a-tour.action.prev": {
+    "defaults": "Previous",
     "origin": [
       [
         "src/layouts/Page/components/TakeATour/presenter.jsx",
@@ -119,6 +126,7 @@
     ]
   },
   "take-a-tour.action.next": {
+    "defaults": "Next",
     "origin": [
       [
         "src/layouts/Page/components/TakeATour/presenter.jsx",
@@ -127,6 +135,7 @@
     ]
   },
   "take-a-tour.action.last-step": {
+    "defaults": "Finish",
     "origin": [
       [
         "src/layouts/Page/components/TakeATour/presenter.jsx",
@@ -135,6 +144,7 @@
     ]
   },
   "take-a-tour.action.close": {
+    "defaults": "Close",
     "origin": [
       [
         "src/layouts/Page/components/TakeATour/presenter.jsx",

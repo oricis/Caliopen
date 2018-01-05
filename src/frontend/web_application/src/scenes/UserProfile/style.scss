@@ -3,6 +3,7 @@
 
 .s-user-profile {
   @include flex-grid-row($size: expand);
+  margin-top: $co-margin;
 
   &__actions {
     @include flex-grid-column(12);
@@ -19,12 +20,12 @@
   }
 
   @include breakpoint(medium) {
-    &__info { @include flex-grid-size(5); }
-    &__details { @include flex-grid-size(7); }
+    &__info { @include flex-grid-size(4); }
+    &__details { @include flex-grid-size(8); }
   }
 
   @include breakpoint(large) {
-    &__info { @include flex-grid-size(4); }
-    &__details { @include flex-grid-size(8); }
+    &__info { @include flex-grid-size(3); }
+    &__details { @include flex-grid-size(9); }
   }
 }

@@ -27,6 +27,7 @@
     ]
   },
   "tags.header.title": {
+    "defaults": "Tags",
     "origin": [
       [
         "src/scenes/Timeline/components/MessageItemContainer/presenter.jsx",
@@ -39,7 +40,7 @@
     ]
   },
   "tags.header.count": {
-    "defaults": "(Total: {count})",
+    "defaults": "(Total: {0})",
     "origin": [
       [
         "src/scenes/Timeline/components/MessageItemContainer/presenter.jsx",

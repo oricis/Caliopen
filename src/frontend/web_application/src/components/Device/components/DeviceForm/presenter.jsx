@@ -69,7 +69,7 @@ class DeviceForm extends Component {
 
     const { i18n } = this.props;
 
-    return { isValid: false, errors: [i18n._('device.feedback.invalid_ip')] };
+    return { isValid: false, errors: [i18n._('device.feedback.invalid_ip', { defaults: 'IP or subnet address is invalid.' })] };
   }
 
   handleSubmit(event) {
@@ -80,16 +80,16 @@ class DeviceForm extends Component {
   render() {
     const { i18n } = this.props;
     const deviceTypes = [
-      { value: 'desktop', label: i18n._('device.type.desktop') },
-      { value: 'laptop', label: i18n._('device.type.laptop') },
-      { value: 'smartphone', label: i18n._('device.type.smartphone') },
-      { value: 'tablet', label: i18n._('device.type.tablet') },
+      { value: 'desktop', label: i18n._('device.type.desktop', { defaults: 'Desktop' }) },
+      { value: 'laptop', label: i18n._('device.type.laptop', { defaults: 'Laptop' }) },
+      { value: 'smartphone', label: i18n._('device.type.smartphone', { defaults: 'Smartphone' }) },
+      { value: 'tablet', label: i18n._('device.type.tablet', { defaults: 'Tablet' }) },
     ];
     const locationTypes = [
-      { label: i18n._('device.location.type.unknown'), value: 'unknown' },
-      { label: i18n._('device.location.type.home'), value: 'home' },
-      { label: i18n._('device.location.type.work'), value: 'work' },
-      { label: i18n._('device.location.type.public'), value: 'public' },
+      { label: i18n._('device.location.type.unknown', { defaults: 'Unknown' }), value: 'unknown' },
+      { label: i18n._('device.location.type.home', { defaults: 'Home' }), value: 'home' },
+      { label: i18n._('device.location.type.work', { defaults: 'Work' }), value: 'work' },
+      { label: i18n._('device.location.type.public', { defaults: 'Public' }), value: 'public' },
     ];
     const defaultLocation = { address: '', type: locationTypes[0].value };
 
@@ -109,7 +109,7 @@ class DeviceForm extends Component {
           <TextFieldGroup
             showLabelforSr
             name="address"
-            label={i18n._('device.form.locations.address.label')}
+            label={i18n._('device.form.locations.address.label', { defaults: 'IP or subnet mask' })}
             value={location.address}
             onChange={handleChange}
             className="m-device-form__location-address"
@@ -117,7 +117,7 @@ class DeviceForm extends Component {
           <SelectFieldGroup
             showLabelforSr
             name="type"
-            label={i18n._('device.form.locations.type.label')}
+            label={i18n._('device.form.locations.type.label', { defaults: 'Connection location' })}
             value={location.type}
             options={locationTypes}
             onChange={handleChange}
@@ -138,7 +138,7 @@ class DeviceForm extends Component {
               </FormColumn>
               <FormColumn bottomSpace size="medium">
                 <TextFieldGroup
-                  label={i18n._('device.manage_form.name.label')}
+                  label={i18n._('device.manage_form.name.label', { defaults: 'Name:' })}
                   name="name"
                   id="device-name"
                   showLabelforSr
@@ -157,7 +157,7 @@ class DeviceForm extends Component {
               <FormColumn size="medium">
                 <SelectFieldGroup
                   className="m-device-form__type"
-                  label={i18n._('device.manage_form.type.label')}
+                  label={i18n._('device.manage_form.type.label', { defaults: 'Type:' })}
                   name="type"
                   id="device-type"
                   showLabelforSr

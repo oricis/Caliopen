@@ -13,6 +13,7 @@ import Settings from './layouts/Settings';
 import Timeline from './scenes/Timeline';
 import NewDraft from './scenes/NewDraft';
 import SearchResults from './scenes/SearchResults';
+import User from './layouts/User';
 import UserProfile from './scenes/UserProfile';
 import UserSecurity from './scenes/UserSecurity';
 import UserPrivacy from './scenes/UserPrivacy';
@@ -89,7 +90,8 @@ export const getRouteConfig = ({ __ }) => [
       },
       {
         path: '/user',
-        app: 'account',
+        app: 'user',
+        component: User,
         label: __('user.route.label.default'),
         routes: [
           {

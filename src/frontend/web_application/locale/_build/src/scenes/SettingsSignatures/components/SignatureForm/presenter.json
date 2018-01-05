@@ -1,5 +1,6 @@
 {
   "settings.signature.label": {
+    "defaults": "Signature",
     "origin": [
       [
         "src/scenes/SettingsSignatures/components/SignatureForm/presenter.jsx",

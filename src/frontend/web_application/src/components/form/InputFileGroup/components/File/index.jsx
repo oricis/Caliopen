@@ -7,14 +7,13 @@ class File extends PureComponent {
   static propTypes = {
     onRemove: PropTypes.func.isRequired,
     file: PropTypes.shape({}).isRequired,
-    formatNumber: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
   };
 
   render() {
-    const { file, onRemove, formatNumber } = this.props;
+    const { file, onRemove } = this.props;
 
     return (
       <div className="m-input-file-group__file">
@@ -27,7 +26,7 @@ class File extends PureComponent {
         />
         <span className="m-input-file-group__file__name">{file.name}</span>
         <span className="m-input-file-group__file__size">
-          <Trans id="input-file-group.file.size" values={{ 0: formatNumber(Math.round(file.size / 100) / 10) }}>
+          <Trans id="input-file-group.file.size" values={{ 0: Math.round(file.size / 100) / 10 }}>
             {0} kB
           </Trans>
         </span>
