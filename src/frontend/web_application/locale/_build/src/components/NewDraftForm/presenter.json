@@ -1,5 +1,6 @@
 {
   "reply-form.protocol.email": {
+    "defaults": "email",
     "origin": [
       [
         "src/components/NewDraftForm/presenter.jsx",
@@ -35,6 +36,7 @@
     ]
   },
   "messages.compose.form.subject.label": {
+    "defaults": "Subject",
     "origin": [
       [
         "src/components/NewDraftForm/presenter.jsx",

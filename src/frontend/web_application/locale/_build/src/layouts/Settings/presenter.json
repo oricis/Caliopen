@@ -1,5 +1,6 @@
 {
   "settings.application": {
+    "defaults": "Application",
     "origin": [
       [
         "src/layouts/Settings/presenter.jsx",

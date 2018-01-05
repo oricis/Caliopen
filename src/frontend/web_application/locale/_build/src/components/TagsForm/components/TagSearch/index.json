@@ -1,0 +1,20 @@
+{
+  "tags.form.search.label": {
+    "defaults": "Search",
+    "origin": [
+      [
+        "src/components/TagsForm/components/TagSearch/index.jsx",
+        57
+      ]
+    ]
+  },
+  "tags.form.search.placeholder": {
+    "defaults": "Search a tag ...",
+    "origin": [
+      [
+        "src/components/TagsForm/components/TagSearch/index.jsx",
+        58
+      ]
+    ]
+  }
+}

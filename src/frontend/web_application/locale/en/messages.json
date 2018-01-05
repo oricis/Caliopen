@@ -1,5 +1,4 @@
 {
-  "{0}": "{0}",
   "contact.address_type.work": "Professional",
   "contact.address_type.home": "Personal",
   "contact.address_type.other": "Other",
@@ -133,6 +132,7 @@
   "navigation.actions.toggle-timeline-filter": "Toggle timeline filters",
   "navigation.actions.toggle-importance-level-slider": "Toggle Importance Level selection",
   "timeline-filter.label": "Timeline filter",
+  "{0}": "{0}",
   "take-a-tour.step.intro.title": "Welcome!",
   "take-a-tour.step.intro.content": "<p>With using  Caliopen, you can access to all of your private messages (Email, and more to come) through a single login.</p><p>Now, take a look at our main features, such as unified message management, intuitive search and more!</p>",
   "take-a-tour.step.search.title": "Intuitive search",
@@ -382,7 +382,6 @@
   "user.profile.form.email.label": "Email",
   "user.action.improve_rank": "Improve rank",
   "user.action.share_profile": "Share",
-  "header.menu.{0}": "",
   "auth.feedback.deauth": "You are not authenticated anymore. Please reconnect.",
   "compose.route.label": "Compose",
   "contact.action.share_contact": "Share",

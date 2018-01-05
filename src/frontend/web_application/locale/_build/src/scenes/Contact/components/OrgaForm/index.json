@@ -9,6 +9,7 @@
     ]
   },
   "contact.orga_form.label.label": {
+    "defaults": "Label",
     "origin": [
       [
         "src/scenes/Contact/components/OrgaForm/index.jsx",
@@ -21,6 +22,7 @@
     ]
   },
   "contact.orga_form.name.label": {
+    "defaults": "Name",
     "origin": [
       [
         "src/scenes/Contact/components/OrgaForm/index.jsx",
@@ -33,6 +35,7 @@
     ]
   },
   "contact.orga_form.title.label": {
+    "defaults": "Title",
     "origin": [
       [
         "src/scenes/Contact/components/OrgaForm/index.jsx",
@@ -45,6 +48,7 @@
     ]
   },
   "contact.orga_form.department.label": {
+    "defaults": "Department",
     "origin": [
       [
         "src/scenes/Contact/components/OrgaForm/index.jsx",

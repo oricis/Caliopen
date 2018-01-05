@@ -1,5 +1,6 @@
 {
   "navigation.actions.toggle-timeline-filter": {
+    "defaults": "Toggle timeline filters",
     "origin": [
       [
         "src/layouts/Page/components/Navigation/components/TimelineFilterContainer/presenter.jsx",

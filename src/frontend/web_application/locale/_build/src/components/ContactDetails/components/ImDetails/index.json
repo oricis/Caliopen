@@ -1,5 +1,6 @@
 {
   "contact.im_type.work": {
+    "defaults": "Professional",
     "origin": [
       [
         "src/components/ContactDetails/components/ImDetails/index.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "contact.im_type.home": {
+    "defaults": "Personal",
     "origin": [
       [
         "src/components/ContactDetails/components/ImDetails/index.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "contact.im_type.other": {
+    "defaults": "Other",
     "origin": [
       [
         "src/components/ContactDetails/components/ImDetails/index.jsx",

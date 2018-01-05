@@ -1,5 +1,4 @@
 {
-  "{0}": "{0}",
   "contact.address_type.work": "Geschäftlich",
   "contact.address_type.home": "Privat",
   "contact.address_type.other": "Andere",
@@ -133,6 +132,7 @@
   "navigation.actions.toggle-timeline-filter": "",
   "navigation.actions.toggle-importance-level-slider": "Wichtigkeitsstand wählen",
   "timeline-filter.label": "",
+  "{0}": "{0}",
   "take-a-tour.step.intro.title": "",
   "take-a-tour.step.intro.content": "",
   "take-a-tour.step.search.title": "",

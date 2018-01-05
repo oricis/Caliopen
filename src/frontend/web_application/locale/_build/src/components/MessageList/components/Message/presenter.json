@@ -1,5 +1,6 @@
 {
   "message-list.message.protocol.email": {
+    "defaults": "email",
     "origin": [
       [
         "src/components/MessageList/components/Message/presenter.jsx",

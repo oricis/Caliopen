@@ -1,5 +1,6 @@
 {
   "remote_identity.fetch_method.from_now": {
+    "defaults": "Only all messages from now",
     "origin": [
       [
         "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "remote_identity.fetch_method.fetch_all": {
+    "defaults": "All messages from now and the historical",
     "origin": [
       [
         "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
@@ -34,6 +36,7 @@
     ]
   },
   "remote_identity.form.login.label": {
+    "defaults": "Login:",
     "origin": [
       [
         "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
@@ -42,6 +45,7 @@
     ]
   },
   "remote_identity.form.password.label": {
+    "defaults": "Password:",
     "origin": [
       [
         "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
@@ -50,6 +54,7 @@
     ]
   },
   "remote_identity.form.protocol.label": {
+    "defaults": "Protocol:",
     "origin": [
       [
         "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
@@ -58,6 +63,7 @@
     ]
   },
   "remote_identity.form.incomming_mail_server.label": {
+    "defaults": "Incoming mail server:",
     "origin": [
       [
         "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",
@@ -66,6 +72,7 @@
     ]
   },
   "remote_identity.form.port.label": {
+    "defaults": "Port:",
     "origin": [
       [
         "src/components/ContactDetails/components/RemoteIdentityEmail/index.jsx",

@@ -1,5 +1,6 @@
 {
   "timeline-filter.options.all": {
+    "defaults": "All",
     "origin": [
       [
         "src/layouts/Page/components/TimelineFilter/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "timeline-filter.options.received": {
+    "defaults": "Received",
     "origin": [
       [
         "src/layouts/Page/components/TimelineFilter/presenter.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "timeline-filter.options.sent": {
+    "defaults": "Sent",
     "origin": [
       [
         "src/layouts/Page/components/TimelineFilter/presenter.jsx",
@@ -24,6 +27,7 @@
     ]
   },
   "timeline-filter.options.draft": {
+    "defaults": "Drafts",
     "origin": [
       [
         "src/layouts/Page/components/TimelineFilter/presenter.jsx",

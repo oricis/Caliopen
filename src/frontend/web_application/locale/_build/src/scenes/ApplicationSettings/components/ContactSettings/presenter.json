@@ -1,5 +1,6 @@
 {
   "settings.contact.display_format.options.first_last": {
+    "defaults": "Firstname, Lastname",
     "origin": [
       [
         "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "settings.contact.display_format.options.last_first": {
+    "defaults": "Lastname, Firstname",
     "origin": [
       [
         "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "settings.contact.display_order_by.options.firstname": {
+    "defaults": "Firstname",
     "origin": [
       [
         "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",
@@ -24,6 +27,7 @@
     ]
   },
   "settings.contact.display_order_by.options.lastname": {
+    "defaults": "Lastname",
     "origin": [
       [
         "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",
@@ -32,6 +36,7 @@
     ]
   },
   "settings.contacts.display.label": {
+    "defaults": "Display",
     "origin": [
       [
         "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",
@@ -40,6 +45,7 @@
     ]
   },
   "settings.contacts.order.label": {
+    "defaults": "Order by",
     "origin": [
       [
         "src/scenes/ApplicationSettings/components/ContactSettings/presenter.jsx",

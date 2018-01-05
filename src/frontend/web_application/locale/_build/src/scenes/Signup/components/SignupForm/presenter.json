@@ -1,5 +1,6 @@
 {
   "signup.privacy.modal.label": {
+    "defaults": "About Piwik",
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
@@ -66,6 +67,7 @@
     ]
   },
   "signup.title": {
+    "defaults": "Please Log In",
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
@@ -74,6 +76,7 @@
     ]
   },
   "signup.limited_registration": {
+    "defaults": "During alpha phase, signup is limited. Please register at <a href=\"https://welcome.caliopen.org\">https://welcome.caliopen.org</a>.",
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
@@ -82,6 +85,7 @@
     ]
   },
   "signup.form.username.label": {
+    "defaults": "Username",
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
@@ -90,6 +94,7 @@
     ]
   },
   "signup.form.username.placeholder": {
+    "defaults": "username",
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
@@ -98,6 +103,7 @@
     ]
   },
   "signup.form.password.label": {
+    "defaults": "Password",
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
@@ -106,6 +112,7 @@
     ]
   },
   "signup.form.password.placeholder": {
+    "defaults": "password",
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
@@ -127,6 +134,7 @@
     ]
   },
   "signup.form.invitation_email.placeholder": {
+    "defaults": "Invitation email",
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",
@@ -162,6 +170,7 @@
     ]
   },
   "signup.form.privacy.checkbox.label": {
+    "defaults": "I understand and agree",
     "origin": [
       [
         "src/scenes/Signup/components/SignupForm/presenter.jsx",

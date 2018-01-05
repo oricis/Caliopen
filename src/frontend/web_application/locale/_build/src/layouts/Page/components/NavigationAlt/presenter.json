@@ -1,9 +1,9 @@
 {
-  "header.menu.${application.name}": {
+  "{0}": {
     "origin": [
       [
         "src/layouts/Page/components/NavigationAlt/presenter.jsx",
-        43
+        44
       ]
     ]
   },
@@ -12,7 +12,7 @@
     "origin": [
       [
         "src/layouts/Page/components/NavigationAlt/presenter.jsx",
-        68
+        69
       ]
     ]
   },
@@ -21,7 +21,7 @@
     "origin": [
       [
         "src/layouts/Page/components/NavigationAlt/presenter.jsx",
-        73
+        74
       ]
     ]
   }

@@ -1,6 +1,6 @@
 {
   "search-results.preview.nb-messages": {
-    "defaults": "{nbMessages} messages contains \"{term}\" in their subject or content:",
+    "defaults": "{0} messages contains \"{1}\" in their subject or content:",
     "origin": [
       [
         "src/scenes/SearchResults/presenter.jsx",
@@ -22,7 +22,7 @@
     ]
   },
   "search-results.preview.nb-contacts": {
-    "defaults": "{nbContacts} contacts contains \"{term}\" in their label or profile:",
+    "defaults": "{0} contacts contains \"{1}\" in their label or profile:",
     "origin": [
       [
         "src/scenes/SearchResults/presenter.jsx",

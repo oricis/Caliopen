@@ -1,9 +1,10 @@
 {
   "header.menu.discussions": {
+    "defaults": "Messages",
     "origin": [
       [
         "src/scenes/Timeline/presenter.jsx",
-        68
+        69
       ]
     ]
   },
@@ -12,7 +13,7 @@
     "origin": [
       [
         "src/scenes/Timeline/presenter.jsx",
-        85
+        86
       ]
     ]
   }
