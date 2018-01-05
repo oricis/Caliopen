@@ -81,16 +81,16 @@ func NewContact(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	var contact Contact
-	err = ctx.ShouldBindJSON(&contact)
+	contact := new(Contact)
+	err = ctx.ShouldBindJSON(contact)
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	contact.UserId.UnmarshalBinary([]byte(userID))
-	err = caliopen.Facilities.RESTfacility.CreateContact(&contact)
+	contact.UserId.UnmarshalBinary(uuid.FromStringOrNil(userID).Bytes())
+	err = caliopen.Facilities.RESTfacility.CreateContact(contact)
 	if err != nil {
 		e := swgErr.New(http.StatusInternalServerError, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)

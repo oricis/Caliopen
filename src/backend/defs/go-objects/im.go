@@ -8,7 +8,7 @@ import "github.com/satori/go.uuid"
 
 // contact's instant messaging address model
 type IM struct {
-	Address   string `cql:"address"     json:"address"`
+	Address   string `cql:"address"     json:"address"      cql_lookup:"contact_lookup"`
 	IMId      UUID   `cql:"im_id"       json:"im_id"`
 	IsPrimary bool   `cql:"is_primary"  json:"is_primary"`
 	Label     string `cql:"label"       json:"label"`

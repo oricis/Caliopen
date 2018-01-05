@@ -5,6 +5,7 @@
 package objects
 
 import (
+	"bytes"
 	"encoding/json"
 	"github.com/satori/go.uuid"
 )
@@ -62,4 +63,11 @@ func (pa *PostalAddress) UnmarshalMap(input map[string]interface{}) error {
 	}
 
 	return nil //TODO: errors handling
+}
+
+func (pa *PostalAddress) MarshallNew() {
+	nullID := new(UUID)
+	if len(pa.AddressId) == 0 || (bytes.Equal(pa.AddressId.Bytes(), nullID.Bytes())) {
+		pa.AddressId.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
 }

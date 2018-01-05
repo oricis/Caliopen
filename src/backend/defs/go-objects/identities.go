@@ -4,7 +4,10 @@
 
 package objects
 
-import "github.com/satori/go.uuid"
+import (
+	"bytes"
+	"github.com/satori/go.uuid"
+)
 
 type (
 	//object stored in db
@@ -19,7 +22,7 @@ type (
 	// embedded in a contact
 	SocialIdentity struct {
 		Infos    map[string]string `cql:"infos"     json:"infos"`
-		Name     string            `cql:"name"      json:"name"`
+		Name     string            `cql:"name"      json:"name"         cql_lookup:"contact_lookup"`
 		SocialId UUID              `cql:"social_id" json:"social_id"`
 		Type     string            `cql:"type"      json:"type"`
 	}
@@ -77,4 +80,11 @@ func (i *Identity) UnmarshalMap(input map[string]interface{}) error {
 	i.Identifier, _ = input["identifier"].(string)
 	i.Type, _ = input["type"].(string)
 	return nil //TODO: errors handling
+}
+
+func (si *SocialIdentity) MarshallNew() {
+	nullID := new(UUID)
+	if len(si.SocialId) == 0 || (bytes.Equal(si.SocialId.Bytes(), nullID.Bytes())) {
+		si.SocialId.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
 }

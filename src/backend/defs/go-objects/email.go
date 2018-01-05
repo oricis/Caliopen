@@ -73,7 +73,7 @@ type (
 
 	// emails model embedded in contact
 	EmailContact struct {
-		Address   string `cql:"address"     json:"address"`
+		Address   string `cql:"address"     json:"address"          cql_lookup:"contact_lookup"`
 		EmailId   UUID   `cql:"email_id"    json:"email_id"`
 		IsPrimary bool   `cql:"is_primary"  json:"is_primary"`
 		Label     string `cql:"label"       json:"label"`
@@ -142,4 +142,11 @@ func (ec *EmailContact) UnmarshalMap(input map[string]interface{}) error {
 	ec.Label, _ = input["label"].(string)
 	ec.Type, _ = input["type"].(string)
 	return nil //TODO: errors handling
+}
+
+func (ec *EmailContact) MarshallNew() {
+	nullID := new(UUID)
+	if len(ec.EmailId) == 0 || (bytes.Equal(ec.EmailId.Bytes(), nullID.Bytes())) {
+		ec.EmailId.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
 }

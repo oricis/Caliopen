@@ -4,7 +4,10 @@
 
 package objects
 
-import "github.com/satori/go.uuid"
+import (
+	"bytes"
+	"github.com/satori/go.uuid"
+)
 
 // contacts' organization model
 type Organization struct {
@@ -50,4 +53,11 @@ func (o *Organization) UnmarshalMap(input map[string]interface{}) error {
 		o.Title = t
 	}
 	return nil //TODO: errors handling
+}
+
+func (o *Organization) MarshallNew() {
+	nullID := new(UUID)
+	if len(o.OrganizationId) == 0 || (bytes.Equal(o.OrganizationId.Bytes(), nullID.Bytes())) {
+		o.OrganizationId.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
 }

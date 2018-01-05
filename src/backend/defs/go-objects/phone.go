@@ -4,7 +4,10 @@
 
 package objects
 
-import "github.com/satori/go.uuid"
+import (
+	"bytes"
+	"github.com/satori/go.uuid"
+)
 
 // contacts' phone model
 type Phone struct {
@@ -38,4 +41,11 @@ func (p *Phone) UnmarshalMap(input map[string]interface{}) error {
 		p.Uri = uri
 	}
 	return nil //TODO : errors handling
+}
+
+func (p *Phone) MarshallNew() {
+	nullID := new(UUID)
+	if len(p.PhoneId) == 0 || (bytes.Equal(p.PhoneId.Bytes(), nullID.Bytes())) {
+		p.PhoneId.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
 }

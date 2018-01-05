@@ -7,35 +7,46 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"gopkg.in/oleiade/reflections.v1"
+	"sync"
 	"time"
 )
 
 type (
+	// cql_lookup tags indicate properties which are a lookup value in the specified lookup table
 	Contact struct {
-		AdditionalName  string            `cql:"additional_name"    json:"additional_name"`
-		Addresses       []PostalAddress   `cql:"addresses"          json:"addresses"`
-		Avatar          string            `cql:"avatar"             json:"avatar"`
+		Locker          *sync.Mutex       `cql:"-"                 json:"-"`
+		AdditionalName  string            `cql:"additional_name"    json:"additional_name"      patch:"user"`
+		Addresses       []PostalAddress   `cql:"addresses"          json:"addresses"            patch:"user"`
+		Avatar          string            `cql:"avatar"             json:"avatar"               patch:"user"`
 		ContactId       UUID              `cql:"contact_id"         json:"contact_id"`
 		DateInsert      time.Time         `cql:"date_insert"        json:"date_insert"`
 		DateUpdate      time.Time         `cql:"date_update"        json:"date_update"`
 		Deleted         bool              `cql:"deleted"            json:"deleted"`
-		Emails          []EmailContact    `cql:"emails"             json:"emails"`
-		FamilyName      string            `cql:"family_name"        json:"family_name"`
-		GivenName       string            `cql:"given_name"         json:"given_name"`
-		Groups          []string          `cql:"groups"             json:"groups"`
-		Identities      []SocialIdentity  `cql:"identities"         json:"identities"`
-		Ims             []IM              `cql:"ims"                json:"ims"`
-		Infos           map[string]string `cql:"infos"              json:"infos"`
-		NamePrefix      string            `cql:"name_prefix"        json:"name_prefix"`
-		NameSuffix      string            `cql:"name_suffix"        json:"name_suffix"`
-		Organizations   []Organization    `cql:"organizations"      json:"organizations"`
-		Phones          []Phone           `cql:"phones"             json:"phones"`
+		Emails          []EmailContact    `cql:"emails"             json:"emails"               patch:"user"        cql_lookup:"contact_lookup"`
+		FamilyName      string            `cql:"family_name"        json:"family_name"          patch:"user"`
+		GivenName       string            `cql:"given_name"         json:"given_name"           patch:"user"`
+		Groups          []string          `cql:"groups"             json:"groups"               patch:"user"`
+		Identities      []SocialIdentity  `cql:"identities"         json:"identities"           patch:"user"        cql_lookup:"contact_lookup"`
+		Ims             []IM              `cql:"ims"                json:"ims"                  patch:"user"        cql_lookup:"contact_lookup"`
+		Infos           map[string]string `cql:"infos"              json:"infos"                patch:"user"`
+		NamePrefix      string            `cql:"name_prefix"        json:"name_prefix"          patch:"user"`
+		NameSuffix      string            `cql:"name_suffix"        json:"name_suffix"          patch:"user"`
+		Organizations   []Organization    `cql:"organizations"      json:"organizations"        patch:"user"`
+		Phones          []Phone           `cql:"phones"             json:"phones"               patch:"user"        cql_lookup:"contact_lookup"`
 		PrivacyIndex    *PrivacyIndex     `cql:"pi"                 json:"pi"`
-		PublicKeys      []PublicKey       `cql:"public_keys"        json:"public_keys"`
+		PublicKeys      []PublicKey       `cql:"-"        json:"public_keys"`
 		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features"`
 		Tags            []string          `cql:"tagnames"           json:"tags"                 patch:"user"`
-		Title           string            `cql:"title"              json:"title"`
+		Title           string            `cql:"title"              json:"title"                patch:"user"`
 		UserId          UUID              `cql:"user_id"            json:"user_id"`
+	}
+
+	// ContactLookup is the model of a Cassandra table to lookup contacts by address/email/phone/etc.
+	ContactLookup struct {
+		ContactIDs []string `cql:"contact_ids"`
+		Type       string   `cql:"type"`
+		UserID     string   `cql:"user_id"`
+		Value      string   `cql:"value"`
 	}
 )
 
@@ -366,7 +377,7 @@ func (c *Contact) MarshalFrontEnd() ([]byte, error) {
 
 // bespoke implementation of the json.Marshaller interface
 // outputs a JSON representation of an object
-// this marshaler takes account of custom tags for given 'context'
+// this marshaller takes account of custom tags for given 'context'
 func (c *Contact) JSONMarshaller(context string) ([]byte, error) {
 	var jsonBuf bytes.Buffer
 	enc := json.NewEncoder(&jsonBuf)
@@ -438,4 +449,38 @@ func (c *Contact) NewEmpty() interface{} {
 	c.PublicKeys = []PublicKey{}
 	c.Tags = []string{}
 	return c
+}
+
+// GetSetNested returns a chan to iterate over pointers to embedded structs.
+// It allows the caller to get and/or set embedded structs, concurrent safely.
+func (c *Contact) GetSetNested() <-chan interface{} {
+	getSet := make(chan interface{})
+	if c.Locker == nil {
+		c.Locker = new(sync.Mutex)
+	}
+	go func(*sync.Mutex, chan interface{}) {
+		c.Locker.Lock()
+		for i, _ := range c.Addresses {
+			getSet <- &(c.Addresses[i])
+		}
+		for i, _ := range c.Emails {
+			getSet <- &(c.Emails[i])
+		}
+		for i, _ := range c.Identities {
+			getSet <- &(c.Identities[i])
+		}
+		for i, _ := range c.Ims {
+			getSet <- &(c.Ims[i])
+		}
+		for i, _ := range c.Organizations {
+			getSet <- &(c.Organizations[i])
+		}
+		for i, _ := range c.Phones {
+			getSet <- &(c.Phones[i])
+		}
+		c.Locker.Unlock()
+		close(getSet)
+	}(c.Locker, getSet)
+
+	return getSet
 }
