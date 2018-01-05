@@ -43,7 +43,9 @@ func (p *Phone) UnmarshalMap(input map[string]interface{}) error {
 	return nil //TODO : errors handling
 }
 
-func (p *Phone) MarshallNew() {
+// MarshallNew must be a variadic func to implement NewMarshaller interface,
+// but Phone does not need params to marshal a well-formed Phone: ...interface{} is ignored
+func (p *Phone) MarshallNew(...interface{}) {
 	nullID := new(UUID)
 	if len(p.PhoneId) == 0 || (bytes.Equal(p.PhoneId.Bytes(), nullID.Bytes())) {
 		p.PhoneId.UnmarshalBinary(uuid.NewV4().Bytes())

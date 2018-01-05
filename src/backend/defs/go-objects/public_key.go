@@ -103,3 +103,19 @@ func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
 
 	return nil //TODO : errors handling
 }
+
+// GetTableInfos implements HasTable interface.
+// It returns params needed by CassandraBackend to CRUD on PublicKey table.
+func (pk *PublicKey) GetTableInfos() (table string, partitionKeys []string) {
+	return "public_key", []string{"user_id", "contact_id", "name"}
+}
+
+func (pk *PublicKey) MarshallNew(contacts ...interface{}) {
+	if len(contacts) == 1 {
+		c := contacts[0].(*Contact)
+		pk.UserId.UnmarshalBinary(c.UserId.Bytes())
+		pk.ContactId.UnmarshalBinary(c.ContactId.Bytes())
+		pk.DateInsert = time.Now()
+		pk.DateUpdate = pk.DateInsert
+	}
+}

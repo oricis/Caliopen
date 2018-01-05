@@ -484,3 +484,22 @@ func (c *Contact) GetSetNested() <-chan interface{} {
 
 	return getSet
 }
+
+// GetSetNested returns a chan to iterate over pointers to included structs that are stored in separate tables.
+// It allows the caller to get and/or set this structs, concurrent safely.
+func (c *Contact) GetSetRelated() <-chan interface{} {
+	getSet := make(chan interface{})
+	if c.Locker == nil {
+		c.Locker = new(sync.Mutex)
+	}
+	go func(*sync.Mutex, chan interface{}) {
+		c.Locker.Lock()
+		for i, _ := range c.PublicKeys {
+			getSet <- &(c.PublicKeys[i])
+		}
+		c.Locker.Unlock()
+		close(getSet)
+	}(c.Locker, getSet)
+
+	return getSet
+}

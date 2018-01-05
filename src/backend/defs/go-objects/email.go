@@ -144,7 +144,9 @@ func (ec *EmailContact) UnmarshalMap(input map[string]interface{}) error {
 	return nil //TODO: errors handling
 }
 
-func (ec *EmailContact) MarshallNew() {
+// MarshallNew must be a variadic func to implement NewMarshaller interface,
+// but EmailContact does not need params to marshal a well-formed EmailContact: ...interface{} is ignored
+func (ec *EmailContact) MarshallNew(...interface{}) {
 	nullID := new(UUID)
 	if len(ec.EmailId) == 0 || (bytes.Equal(ec.EmailId.Bytes(), nullID.Bytes())) {
 		ec.EmailId.UnmarshalBinary(uuid.NewV4().Bytes())

@@ -82,7 +82,9 @@ func (i *Identity) UnmarshalMap(input map[string]interface{}) error {
 	return nil //TODO: errors handling
 }
 
-func (si *SocialIdentity) MarshallNew() {
+// MarshallNew must be a variadic func to implement NewMarshaller interface,
+// but SocialIdentity does not need params to marshal a well-formed SocialIdentity: ...interface{} is ignored
+func (si *SocialIdentity) MarshallNew(...interface{}) {
 	nullID := new(UUID)
 	if len(si.SocialId) == 0 || (bytes.Equal(si.SocialId.Bytes(), nullID.Bytes())) {
 		si.SocialId.UnmarshalBinary(uuid.NewV4().Bytes())

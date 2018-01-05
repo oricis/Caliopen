@@ -2,23 +2,40 @@
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
-//******for testing purpose*******
-
 package store
 
 import (
-	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
 	"gopkg.in/oleiade/reflections.v1"
 )
 
 // CreateContact saves Contact to Cassandra
-// AND fills related lookup tables
+// AND fills/updates related lookup tables
 func (cb *CassandraBackend) CreateContact(contact *Contact) error {
-	return errors.New("[CassandraBackend] not implemented")
+	contactT := cb.IKeyspace.Table("contact", &Contact{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "contact_id"},
+	}).WithOptions(gocassa.Options{TableName: "contact"}) // need to overwrite default gocassa table naming convention
+
+	err := contactT.Set(contact).Run()
+	if err != nil {
+		return fmt.Errorf("[CassandraBackend] CreateContact: %s", err)
+	}
+
+	err = cb.UpdateRelated(contact, true)
+	if err != nil {
+		log.WithError(err).Error("[CassandraBackend] CreateContact : failed to UpdateRelated")
+	}
+	err = cb.UpdateLookups(contact)
+
+	if err != nil {
+		log.WithError(err).Error("[CassandraBackend] CreateContact : failed to UpdateLookups")
+	}
+
+	return nil
 }
 
 func (cb *CassandraBackend) RetrieveContact(user_id, contact_id string) (contact *Contact, err error) {
@@ -30,6 +47,11 @@ func (cb *CassandraBackend) RetrieveContact(user_id, contact_id string) (contact
 		return nil, err
 	}
 	contact.UnmarshalCQLMap(m)
+
+	err = cb.RetrieveRelated(contact)
+	if err != nil {
+		log.WithError(err).Error("[CassandraBackend] RetrieveContact: failed to retrieve related.")
+	}
 	// retrieve public keys for this contact and
 	// add keys to contact object.
 	var keys []map[string]interface{}
@@ -66,7 +88,14 @@ func (cb *CassandraBackend) UpdateContact(contact *Contact, fields map[string]in
 		Update(cassaFields).
 		Run()
 
-	// TODO : update related
+	err = cb.UpdateRelated(contact, false)
+	if err != nil {
+		log.WithError(err).Error("[CassandraBackend] UpdateContact: failed to update related")
+	}
+	err = cb.UpdateLookups(contact)
+	if err != nil {
+		log.WithError(err).Error("[CassandraBackend] UpdateContact: failed to update lookups")
+	}
 	return err
 }
 
@@ -76,6 +105,15 @@ func (cb *CassandraBackend) DeleteContact(contact *Contact) error {
 	err := cb.Session.Query(`DELETE FROM contact WHERE user_id = ? AND contact_id = ?`, contact.UserId.String(), contact.ContactId.String()).Exec()
 	if err != nil {
 		return err
+	}
+
+	err = cb.DeleteRelated(contact)
+	if err != nil {
+		log.WithError(err).Error("[CassandraBackend] DeleteContact: failed to delete related")
+	}
+	err = cb.DeleteLookups(contact)
+	if err != nil {
+		log.WithError(err).Error("[CassandraBackend] DeleteContact: failed to delete lookups")
 	}
 
 	// seek into contact_lookup to delete references to the deleted contact

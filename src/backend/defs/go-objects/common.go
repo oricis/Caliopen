@@ -30,7 +30,7 @@ type (
 
 	// objects with joined objects stored in separate table
 	HasRelated interface {
-		GetRelated() map[string]interface{}
+		GetSetRelated() <-chan interface{}
 	}
 
 	// objects with related tables that must be maintained up-to-date
@@ -39,7 +39,7 @@ type (
 	}
 
 	NewMarshaller interface {
-		MarshallNew() // ensure that mandatory properties are correctly set on new structs.
+		MarshallNew(...interface{}) // ensure that mandatory properties are correctly set on new structs.
 	}
 )
 
@@ -59,11 +59,20 @@ func jsonTags(obj interface{}) (tags map[string]string) {
 	return
 }
 
-// MarshalNested calls MarshalNew() on embedded structs
+// MarshalNested calls MarshalNew() on nested structs
 func MarshalNested(obj HasNested) {
 	for nested := range obj.GetSetNested() {
 		if nest, ok := nested.(NewMarshaller); ok {
 			nest.MarshallNew()
+		}
+	}
+}
+
+// MarshalNested calls MarshalNew() on related structs
+func MarshalRelated(obj HasRelated) {
+	for related := range obj.GetSetRelated() {
+		if rel, ok := related.(NewMarshaller); ok {
+			rel.MarshallNew(obj)
 		}
 	}
 }

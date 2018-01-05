@@ -55,7 +55,9 @@ func (o *Organization) UnmarshalMap(input map[string]interface{}) error {
 	return nil //TODO: errors handling
 }
 
-func (o *Organization) MarshallNew() {
+// MarshallNew must be a variadic func to implement NewMarshaller interface,
+// but Organization does not need params to marshal a well-formed Organization: ...interface{} is ignored
+func (o *Organization) MarshallNew(...interface{}) {
 	nullID := new(UUID)
 	if len(o.OrganizationId) == 0 || (bytes.Equal(o.OrganizationId.Bytes(), nullID.Bytes())) {
 		o.OrganizationId.UnmarshalBinary(uuid.NewV4().Bytes())

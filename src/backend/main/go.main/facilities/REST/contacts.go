@@ -23,11 +23,13 @@ func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
 	contact.ContactId.UnmarshalBinary(uuid.NewV4().Bytes())
 	contact.DateInsert = time.Now()
 	contact.DateUpdate = contact.DateInsert
+
 	// normalization
 	helpers.ComputeTitle(contact)
 	helpers.NormalizePhoneNumbers(contact)
+	MarshalNested(contact)
 
-	// parallel creation in db & index
+	// concurrent creation in db & index
 	wg := new(sync.WaitGroup)
 	wg.Add(2)
 	errGroup := new([]string)

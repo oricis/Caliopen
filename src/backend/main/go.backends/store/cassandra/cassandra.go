@@ -28,6 +28,10 @@ type (
 		WithObjStore bool              // whether to use an objects store service for objects above SizeLimit
 		object_store.OSSConfig
 	}
+
+	HasTable interface {
+		GetTableInfos() (table string, partitionKeys []string)
+	}
 )
 
 func InitializeCassandraBackend(config CassandraConfig) (cb *CassandraBackend, err error) {
