@@ -22,7 +22,6 @@ class MessageList extends Component {
     deleteMessage: PropTypes.func.isRequired,
     replyToMessage: PropTypes.func.isRequired,
     copyMessageTo: PropTypes.func.isRequired,
-    editMessageTags: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     hasMore: PropTypes.bool.isRequired,
@@ -105,7 +104,7 @@ class MessageList extends Component {
 
   render() {
     const {
-      messages, discussionId, isFetching, copyMessageTo, editMessageTags,
+      messages, discussionId, isFetching, copyMessageTo,
     } = this.props;
     const internalId = discussionId;
 
@@ -124,7 +123,6 @@ class MessageList extends Component {
           onMessageReply={this.makeHandleReplyToMessage(internalId)}
           loadMore={this.renderLoadMore()}
           onMessageCopyTo={copyMessageTo}
-          onMessageEditTags={editMessageTags}
         />
       </div>
     );

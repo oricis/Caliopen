@@ -25,7 +25,6 @@ class Message extends Component {
     onDelete: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
     onCopyTo: PropTypes.func.isRequired,
-    onEditTags: PropTypes.func.isRequired,
     settings: PropTypes.shape({}).isRequired,
     isMessageFromUser: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
@@ -125,7 +124,7 @@ class Message extends Component {
   render() {
     const {
       message, onDelete, onMessageUnread, onMessageRead,
-      onReply, onCopyTo, onEditTags, i18n,
+      onReply, onCopyTo, i18n,
     } = this.props;
     const author = getAuthor(message);
     const typeTranslations = {
@@ -182,7 +181,6 @@ class Message extends Component {
                 onMessageUnread={onMessageUnread}
                 onReply={onReply}
                 onCopyTo={onCopyTo}
-                onEditTags={onEditTags}
               />
             </Dropdown>
 
