@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { Trans } from 'lingui-react';
 import Button from '../../../../components/Button';
 import Modal from '../../../../components/Modal';
-import ManageTags from '../ManageTags';
+import { ManageEntityTags } from '../../../../modules/tags';
 
 import './style.scss';
 
@@ -122,7 +122,7 @@ class MessageItemContainer extends Component {
         title={title}
         onClose={this.handleCloseTags}
       >
-        <ManageTags message={message} />
+        <ManageEntityTags type="message" entity={message} />
       </Modal>
     );
   }

@@ -1,23 +1,26 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import TagsForm from '../../../../components/TagsForm';
-import { WithTags, WithSearchTags, WithUpdateEntityTags } from '../../../../modules/tags';
+import WithTags from '../WithTags';
+import WithSearchTags from '../WithSearchTags';
+import WithUpdateEntityTags from '../WithUpdateEntityTags';
 
-class ManageTags extends PureComponent {
+class ManageEntityTags extends PureComponent {
   static propTypes = {
-    message: PropTypes.shape({}).isRequired,
+    type: PropTypes.string.isRequired,
+    entity: PropTypes.shape({}).isRequired,
   };
 
   filterFoundTags = (tags) => {
-    const { message } = this.props;
+    const { entity } = this.props;
 
-    return tags.filter(tag => !message.tags.some(name => name === tag.name));
+    return tags.filter(tag => !entity.tags.some(name => name === tag.name));
   };
 
   renderTagsForm({ tags, search, foundTags, isSearchFetching, updateEntityTags }) {
-    const { message } = this.props;
-    const tagCollection = message.tags.map(tag => tags.find(item => item.name === tag));
-    const updateMessageTags = updateEntityTags.bind(null, 'message', message);
+    const { entity, type } = this.props;
+    const tagCollection = entity.tags.map(tag => tags.find(item => item.name === tag));
+    const updateEntityTagsBound = updateEntityTags.bind(null, type, entity);
 
     return (
       <TagsForm
@@ -25,7 +28,7 @@ class ManageTags extends PureComponent {
         foundTags={this.filterFoundTags(foundTags)}
         search={search}
         isTagSearchFetching={isSearchFetching}
-        updateTags={updateMessageTags}
+        updateTags={updateEntityTagsBound}
       />
     );
   }
@@ -35,14 +38,13 @@ class ManageTags extends PureComponent {
       <WithSearchTags
         tags={tags}
         isFetching={isTagsFetching}
-        render={(search, foundTags, isFetching) =>
-          this.renderTagsForm({
-            tags,
-            search,
-            foundTags,
-            isSearchFetching: isFetching,
-            updateEntityTags,
-          })}
+        render={(search, foundTags, isFetching) => this.renderTagsForm({
+          tags,
+          search,
+          foundTags,
+          isSearchFetching: isFetching,
+          updateEntityTags,
+        })}
       />
     );
   }
@@ -63,4 +65,4 @@ class ManageTags extends PureComponent {
   }
 }
 
-export default ManageTags;
+export default ManageEntityTags;
