@@ -16,24 +16,19 @@
     ]
   },
   "tags.header.title": {
-    "defaults": "Tags",
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
         195
-      ],
-      [
-        "src/scenes/Contact/presenter.jsx",
-        204
       ]
     ]
   },
-  "tags.header.count": {
-    "defaults": "(Total: {count})",
+  "tags.header.label": {
+    "defaults": "Tags",
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        197
+        208
       ]
     ]
   },
@@ -42,7 +37,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        224
+        228
       ]
     ]
   },
@@ -51,7 +46,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        226
+        230
       ]
     ]
   },
@@ -60,7 +55,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        234
+        238
       ]
     ]
   },
@@ -69,7 +64,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        268
+        272
       ]
     ]
   },
@@ -78,7 +73,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        275
+        279
       ]
     ]
   },
@@ -87,7 +82,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        295
+        299
       ]
     ]
   }

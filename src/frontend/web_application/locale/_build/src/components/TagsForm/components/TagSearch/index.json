@@ -1,0 +1,27 @@
+{
+  "tags.form.search.label": {
+    "origin": [
+      [
+        "src/components/TagsForm/components/TagSearch/index.jsx",
+        68
+      ]
+    ]
+  },
+  "tags.form.search.placeholder": {
+    "origin": [
+      [
+        "src/components/TagsForm/components/TagSearch/index.jsx",
+        69
+      ]
+    ]
+  },
+  "tags.action.add": {
+    "defaults": "Add",
+    "origin": [
+      [
+        "src/components/TagsForm/components/TagSearch/index.jsx",
+        78
+      ]
+    ]
+  }
+}

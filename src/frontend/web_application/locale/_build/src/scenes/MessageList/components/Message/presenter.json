@@ -1,0 +1,37 @@
+{
+  "message-list.message.protocol.email": {
+    "origin": [
+      [
+        "src/scenes/MessageList/components/Message/presenter.jsx",
+        131
+      ]
+    ]
+  },
+  "message-list.message.by": {
+    "defaults": "by {0}",
+    "origin": [
+      [
+        "src/scenes/MessageList/components/Message/presenter.jsx",
+        160
+      ]
+    ]
+  },
+  "message-list.message.action.expand": {
+    "defaults": "Expand",
+    "origin": [
+      [
+        "src/scenes/MessageList/components/Message/presenter.jsx",
+        206
+      ]
+    ]
+  },
+  "message-list.message.action.collapse": {
+    "defaults": "Collapse",
+    "origin": [
+      [
+        "src/scenes/MessageList/components/Message/presenter.jsx",
+        207
+      ]
+    ]
+  }
+}

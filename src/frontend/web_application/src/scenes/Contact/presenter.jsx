@@ -192,16 +192,20 @@ class Contact extends Component {
     const { contact, updateContact, i18n } = this.props;
     const nb = contact.tags ? contact.tags.length : 0;
     const title = (
-      <span><Trans id="tags.header.title">Tags</Trans>
-        <span className="m-tags-form__count">
-          <Trans id="tags.header.count" values={{ 0: nb }}>(Total: {0})</Trans>
-        </span>
-      </span>);
+      <Trans
+        id="tags.header.title"
+        defaults={'Tags <0>(Total: {nb})</0>'}
+        values={{ nb }}
+        components={[
+          (<span className="m-tags-form__count" />),
+        ]}
+      />
+    );
 
     return (
       <Modal
         isOpen={this.state.isTagsModalOpen}
-        contentLabel={i18n._('tags.header.title')}
+        contentLabel={i18n._('tags.header.label', { defaults: 'Tags' })}
         title={title}
         onClose={this.closeTagsModal}
       >
