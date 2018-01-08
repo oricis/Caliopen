@@ -36,4 +36,13 @@ describe('tag', () => {
       .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag', tagName)).isPresent()).toEqual(false))
     ;
   });
+
+  it('manage tags on timeline', () => {
+    browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000)
+      .then(() => element(by.cssContainingText('.s-timeline .s-message-item', 'zoidberg (zoidberg@planet-express.tld)')).click())
+      .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-message__container', 'zoidberg@planet-express.tld'))), 5 * 1000))
+      .then(() => element(by.cssContainingText('.m-message__container', 'zoidberg@planet-express.tld')).element(by.css('.m-message__actions-switcher')).click())
+      .then(() => element(by.cssContainingText('.m-message-actions-container__action', __('Tags'))).click())
+      .then(() => expect(element(by.cssContainingText('.m-modal', __('Tags'))).isPresent()).toEqual(true));
+  });
 });
