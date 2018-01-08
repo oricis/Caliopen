@@ -2,9 +2,15 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Presenter from './presenter';
 
+jest.mock('lingui-react', () => ({
+  withI18n: () => whatever => whatever,
+  i18nMark: () => whatever => whatever,
+}));
+
 describe('component WithUpdateMessaTags', () => {
   it('render', () => {
     const reduxProps = {
+      i18n: { _: id => id },
       tags: [{ label: 'Foo', name: 'foo' }, { label: 'Bar', name: 'bar' }],
       requestTags: jest.fn(() => {
         reduxProps.tags = [{ label: 'Foo', name: 'foo' }, { label: 'Bar', name: 'bar' }, { label: 'FooBar', name: 'foobar' }];

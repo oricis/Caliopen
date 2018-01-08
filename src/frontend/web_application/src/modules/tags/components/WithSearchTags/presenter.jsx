@@ -1,8 +1,10 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { getTagLabel } from '../../services/getTagLabel';
 
 class WithSearchTags extends Component {
   static propTypes = {
+    i18n: PropTypes.shape({}).isRequired,
     render: PropTypes.func.isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     isFetching: PropTypes.bool,
@@ -21,8 +23,10 @@ class WithSearchTags extends Component {
 
       return;
     }
+
+    const { i18n } = this.props;
     const findTags = tagsInState => tagsInState
-      .filter(tag => tag.label.toLowerCase().startsWith(terms.toLowerCase()));
+      .filter(tag => getTagLabel(i18n, tag).toLowerCase().startsWith(terms.toLowerCase()));
 
     this.setState(
       { terms, foundTags: findTags(this.props.tags) },

@@ -1,9 +1,11 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
+import { getTagLabel } from '../../services/getTagLabel';
 
 class WithUpdateEntityTags extends Component {
   static propTypes = {
+    i18n: PropTypes.shape({}).isRequired,
     render: PropTypes.func.isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     requestTags: PropTypes.func.isRequired,
@@ -15,15 +17,18 @@ class WithUpdateEntityTags extends Component {
     isInvalidated: false,
   };
 
-  getTagFromLabel = (tags, label) => tags
-    .find(tag => tag.label.toLowerCase() === label.toLowerCase());
+  getTagFromLabel = (tags, label) => {
+    const { i18n } = this.props;
+
+    return tags.find(tag => getTagLabel(i18n, tag).toLowerCase() === label.toLowerCase());
+  }
 
   createMissingTags = async (tagCollection) => {
-    const { tags, requestTags } = this.props;
-    const knownLabels = tags.map(tag => tag.label.toLowerCase());
+    const { tags, requestTags, i18n } = this.props;
+    const knownLabels = tags.map(tag => getTagLabel(i18n, tag).toLowerCase());
     const newTags = tagCollection
       .filter(tag => !tag.name)
-      .filter(tag => !knownLabels.includes(tag.label.toLowerCase()));
+      .filter(tag => !knownLabels.includes(getTagLabel(i18n, tag).toLowerCase()));
 
     if (!newTags.length) {
       return tags;
