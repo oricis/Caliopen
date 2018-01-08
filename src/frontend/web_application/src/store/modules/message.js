@@ -20,6 +20,9 @@ export const SYNC_MESSAGE = 'co/message/SYNC_MESSAGE';
 export const POST_ACTIONS = 'co/message/POST_ACTIONS';
 export const POST_ACTIONS_SUCCESS = 'co/message/POST_ACTIONS_SUCCESS';
 export const REPLY_TO_MESSAGE = 'co/message/REPLY_TO_MESSAGE';
+export const UPDATE_TAGS = 'co/message/UPDATE_TAGS';
+export const UPDATE_TAGS_SUCCESS = 'co/message/UPDATE_TAGS_SUCCESS';
+export const UPDATE_TAGS_FAIL = 'co/message/UPDATE_TAGS_FAIL';
 
 export const TIMELINE_FILTER_ALL = 'all';
 export const TIMELINE_FILTER_RECEIVED = 'received';
@@ -83,7 +86,7 @@ export function createMessage({ message }) {
   };
 }
 
-export function requestMessage({ messageId }) {
+export function requestMessage(messageId) {
   return {
     type: REQUEST_MESSAGE,
     payload: {
@@ -150,6 +153,24 @@ export function replyToMessage({ internalId, message }) {
   return {
     type: REPLY_TO_MESSAGE,
     payload: { internalId, message },
+  };
+}
+
+export function updateTags({ message, tags }) {
+  const data = {
+    tags,
+    current_state: { tags: message.tags },
+  };
+
+  return {
+    type: UPDATE_TAGS,
+    payload: {
+      request: {
+        method: 'patch',
+        url: `/v2/messages/${message.message_id}/tags`,
+        data,
+      },
+    },
   };
 }
 

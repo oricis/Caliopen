@@ -10,6 +10,7 @@ import InfiniteScroll from '../../components/InfiniteScroll';
 import MenuBar from '../../components/MenuBar';
 import MessageItem from './components/MessageItem';
 import { isMessageFromUser } from '../../services/message';
+import { WithTags } from '../../modules/tags';
 
 import './style.scss';
 
@@ -61,8 +62,25 @@ class Timeline extends Component {
     }
   }
 
+  renderList({ userTags }) {
+    const { user, messages } = this.props;
+
+    return (
+      <BlockList className="s-timeline__list">
+        {messages.map(message => (
+          <MessageItem
+            key={message.message_id}
+            userTags={userTags}
+            isMessageFromUser={(user && isMessageFromUser(message, user)) || false}
+            message={message}
+          />
+        ))}
+      </BlockList>
+    );
+  }
+
   render() {
-    const { user, messages, isFetching, hasMore, i18n } = this.props;
+    const { isFetching, hasMore, i18n } = this.props;
 
     return (
       <div className="s-timeline">
@@ -71,15 +89,7 @@ class Timeline extends Component {
           <Spinner isLoading={isFetching} className="s-timeline__spinner" />
         </MenuBar>
         <InfiniteScroll onReachBottom={this.loadMore}>
-          <BlockList className="s-timeline__list">
-            {messages.map(message => (
-              <MessageItem
-                key={message.message_id}
-                isMessageFromUser={(user && isMessageFromUser(message, user)) || false}
-                message={message}
-              />
-            ))}
-          </BlockList>
+          <WithTags render={userTags => this.renderList({ userTags })} />
         </InfiniteScroll>
         {hasMore && (
           <div className="s-timeline__load-more">

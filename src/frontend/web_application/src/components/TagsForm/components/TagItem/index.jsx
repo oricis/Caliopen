@@ -1,123 +1,47 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withI18n } from 'lingui-react';
 import Button from '../../../Button';
-import Icon from '../../../Icon';
-import { TextFieldGroup, FormGrid } from '../../../form';
+import Spinner from '../../../Spinner';
+import { getTagLabel } from '../../../../modules/tags';
 
 import './style.scss';
 
-function generateStateFromProps(props) {
-  return { tag: { ...props.tag } };
-}
-
-
+@withI18n()
 class TagItem extends Component {
   static propTypes = {
-    tag: PropTypes.shape({ type: PropTypes.string }).isRequired,
-    onUpdate: PropTypes.func.isRequired,
+    tag: PropTypes.shape({}).isRequired,
+    onDelete: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      tag: { name: '' },
-      edit: false,
-    };
+  state = {
+    isTagCollectionUpdating: false,
+  };
 
-    this.handleClickTag = this.handleClickTag.bind(this);
-    this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
+  handleDeleteTag = async () => {
+    const { onDelete, tag } = this.props;
 
-  componentWillMount() {
-    this.setState(generateStateFromProps(this.props));
-  }
+    this.setState({ isTagCollectionUpdating: true });
+    await onDelete({ tag });
+    this.setState({ isTagCollectionUpdating: false });
+  };
 
-  componentWillReceiveProps(newProps) {
-    this.setState(generateStateFromProps(newProps));
-  }
-
-  handleClickTag() {
-    this.setState(prevState => ({
-      edit: !prevState.edit,
-    }));
-  }
-
-  handleChange(ev) {
-    const name = ev.target.value;
-
-    this.setState(prevState => ({
-      tag: { ...prevState.tag, name },
-    }));
-  }
-
-  handleUpdate() {
-    this.setState((prevState) => {
-      this.props.onUpdate({ tag: this.state.tag, original: this.props.tag });
-
-      return {
-        tag: { ...prevState.tag, name },
-      };
-    });
-  }
-
-  renderForm() {
-    const { tag } = this.props;
-
-    return (
-      <FormGrid className="m-tag">
-        <TextFieldGroup
-          name={tag.tag_id}
-          className="m-tag__input"
-          label={tag.name}
-          placeholder={tag.name}
-          value={this.state.tag.name}
-          onChange={this.handleChange}
-          showLabelforSr
-          autoFocus
-        />
-        <Button inline onClick={this.handleUpdate}><Icon type="check" /></Button>
-      </FormGrid>
-    );
-  }
-
-  renderButton() {
-    const { tag } = this.props;
-
-    return (
-      <FormGrid className="m-tag">
-        <Button
-          className="m-tag__button"
-          onClick={this.handleClickTag}
-          display="expanded"
-        >
-          <span className="m-tag__text">{tag.name}</span>
-          <Icon className="m-tag__icon" type="edit" />
-        </Button>
-      </FormGrid>
-    );
-  }
-
-  renderSystem() {
-    const { tag } = this.props;
+  render() {
+    const { tag, i18n } = this.props;
 
     return (
       <div className="m-tag">
-        <span className="m-tag__text">{tag.name}</span>
+        <span className="m-tag__text">{getTagLabel(i18n, tag)}</span>
+        <Button
+          className="m-tag__button"
+          display="inline-block"
+          onClick={this.handleDeleteTag}
+          icon={this.state.isTagCollectionUpdating ? (<Spinner isLoading display="inline" />) : 'remove'}
+          aria-label={i18n._('tags.action.remove', { defaults: 'Remove' })}
+        />
       </div>
     );
-  }
-
-  render() {
-    if (this.state.edit) {
-      return this.renderForm();
-    }
-
-    if (this.props.tag.type === 'system') {
-      return this.renderSystem();
-    }
-
-    return this.renderButton();
   }
 }
 

@@ -15,7 +15,7 @@ export function requestTags() {
     type: REQUEST_TAGS,
     payload: {
       request: {
-        url: '/v1/tags',
+        url: '/v2/tags',
       },
     },
   };
@@ -28,14 +28,14 @@ export function invalidate() {
   };
 }
 
-export function createTag({ tagName }) {
-  const data = { name: tagName };
+export function createTag({ label }) {
+  const data = { name: label.toLowerCase(), label };
 
   return {
     type: CREATE_TAG,
     payload: {
       request: {
-        url: '/v1/tags',
+        url: '/v2/tags',
         method: 'post',
         data,
       },
@@ -48,20 +48,20 @@ export function requestTag({ id }) {
     type: REQUEST_TAG,
     payload: {
       request: {
-        url: `/v1/tags/${id}`,
+        url: `/v2/tags/${id}`,
       },
     },
   };
 }
 
 
-export function removeTag({ tag }) {
+export function deleteTag({ tag }) {
   return {
     type: REMOVE_TAG,
     payload: {
       request: {
         method: 'delete',
-        url: `/v1/tags/${tag.tag_id}`,
+        url: `/v2/tags/${tag.name}`,
       },
     },
   };
@@ -75,7 +75,7 @@ export function updateTag({ tag, original }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v1/tags/${tag.tag_id}`,
+        url: `/v2/tags/${tag.name}`,
         data,
       },
     },

@@ -1,12 +1,24 @@
 [
   {
-    "tag_id": "1",
-    "name": "FOO",
+    "name": "INBOX",
     "type": "system"
   },
   {
-    "tag_id": "2",
+    "name": "IMPORTANT",
+    "type": "system"
+  },
+  {
+    "name": "SPAM",
+    "type": "system"
+  },
+  {
     "name": "foobar",
+    "label": "Foobar",
+    "type": "user"
+  },
+  {
+    "name": "robot",
+    "label": "Robot",
     "type": "user"
   }
 ]

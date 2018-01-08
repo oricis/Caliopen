@@ -12,4 +12,9 @@
   &__section {
     margin-bottom: map-get($co-form__spacing, 'large');
   }
+
+  &__dropdown {
+    padding: map-get($co-form__spacing, 'small');
+    background-color: $co-color__fg__back--higher;
+  }
 }

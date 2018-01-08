@@ -11,13 +11,13 @@ const actions = {
 const selectors = {
   all: () => state => state.tags,
   last: () => state => [...state.tags].pop(),
-  byId: ({ tag_id }) => createSelector(
+  byName: ({ name }) => createSelector(
     selectors.all(),
-    tags => tags.find(tag => tag.tag_id === tag_id)
+    tags => tags.find(tag => tag.name === name)
   ),
   location: () => createSelector(
     selectors.last(),
-    tag => ({ location: `/api/v1/tags/${tag.tag_id}` })
+    tag => ({ location: `/api/v2/tags/${tag.name}` })
   ),
 };
 
@@ -25,11 +25,11 @@ const reducer = {
   [actions.get]: state => state,
   [actions.post]: (state, params) => ([
     ...state,
-    { ...params.body, type: 'user', tag_id: uuidv1() },
+    { ...params.body, type: 'user', label: params.body.label || params.body.name },
   ]),
   [actions.delete]: (state, { params }) => {
     const copy = state.slice(0);
-    return [...state].filter(tag => tag.tag_id !== params.tag_id);
+    return [...state].filter(tag => tag.name !== params.name);
   },
 };
 
@@ -45,12 +45,12 @@ const routes = {
     selector: selectors.location,
     status: 200,
   },
-  'GET /:tag_id': {
+  'GET /:name': {
     action: actions.get,
-    selector: selectors.byId,
+    selector: selectors.byName,
     status: 200,
   },
-  'DELETE /:tag_id': {
+  'DELETE /:name': {
     action: actions.delete,
     status: 204,
   },
@@ -60,6 +60,6 @@ export default {
   name: 'tags',
   data: require('./data.json'),
   reducer: reducer,
-  endpoint: '/api/v1/tags',
+  endpoint: '/api/v2/tags',
   routes: routes,
 };
