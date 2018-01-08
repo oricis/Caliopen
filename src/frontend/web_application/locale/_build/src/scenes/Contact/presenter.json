@@ -18,7 +18,6 @@
     ]
   },
   "tags.header.title": {
-    "defaults": "Tags <0>(Total: {nb})</0>",
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
