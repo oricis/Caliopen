@@ -14,12 +14,16 @@ class ManageEntityTags extends PureComponent {
   filterFoundTags = (tags) => {
     const { entity } = this.props;
 
+    if (!entity.tags) {
+      return tags;
+    }
+
     return tags.filter(tag => !entity.tags.some(name => name === tag.name));
   };
 
   renderTagsForm({ tags, search, foundTags, isSearchFetching, updateEntityTags }) {
     const { entity, type } = this.props;
-    const tagCollection = entity.tags.map(tag => tags.find(item => item.name === tag));
+    const tagCollection = (entity.tags || []).map(tag => tags.find(item => item.name === tag));
     const updateEntityTagsBound = updateEntityTags.bind(null, type, entity);
 
     return (
