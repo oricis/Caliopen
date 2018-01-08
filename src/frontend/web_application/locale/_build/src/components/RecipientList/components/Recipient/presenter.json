@@ -1,5 +1,6 @@
 {
   "messages.compose.action.remove-recipient": {
+    "defaults": "Remove recipient",
     "origin": [
       [
         "src/components/RecipientList/components/Recipient/presenter.jsx",

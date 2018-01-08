@@ -1,5 +1,6 @@
 {
   "contact_profile.form.title.label": {
+    "defaults": "Title",
     "origin": [
       [
         "src/scenes/Contact/components/ContactTitleField/presenter.jsx",

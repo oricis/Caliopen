@@ -128,7 +128,7 @@ class Message extends Component {
     } = this.props;
     const author = getAuthor(message);
     const typeTranslations = {
-      email: i18n._('message-list.message.protocol.email'),
+      email: i18n._('message-list.message.protocol.email', { defaults: 'email' }),
     };
 
     const topBarClassName = classnames(

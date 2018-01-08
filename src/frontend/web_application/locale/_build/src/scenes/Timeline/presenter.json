@@ -1,5 +1,6 @@
 {
   "header.menu.discussions": {
+    "defaults": "Messages",
     "origin": [
       [
         "src/scenes/Timeline/presenter.jsx",

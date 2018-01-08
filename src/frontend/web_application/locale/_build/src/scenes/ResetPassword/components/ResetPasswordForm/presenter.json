@@ -1,5 +1,6 @@
 {
   "password.form.new_password_confirmation.error": {
+    "defaults": "Passwords don't match",
     "origin": [
       [
         "src/scenes/ResetPassword/components/ResetPasswordForm/presenter.jsx",
@@ -26,6 +27,7 @@
     ]
   },
   "password.form.new_password.label": {
+    "defaults": "New password:",
     "origin": [
       [
         "src/scenes/ResetPassword/components/ResetPasswordForm/presenter.jsx",
@@ -34,6 +36,7 @@
     ]
   },
   "password.form.new_password.placeholder": {
+    "defaults": "Password",
     "origin": [
       [
         "src/scenes/ResetPassword/components/ResetPasswordForm/presenter.jsx",
@@ -42,6 +45,7 @@
     ]
   },
   "password.form.new_password_confirmation.label": {
+    "defaults": "New password confirmation:",
     "origin": [
       [
         "src/scenes/ResetPassword/components/ResetPasswordForm/presenter.jsx",
@@ -50,6 +54,7 @@
     ]
   },
   "password.form.new_password_confirmation.placeholder": {
+    "defaults": "Password",
     "origin": [
       [
         "src/scenes/ResetPassword/components/ResetPasswordForm/presenter.jsx",
@@ -67,6 +72,7 @@
     ]
   },
   "password.reset-form.title": {
+    "defaults": "Reset your password",
     "origin": [
       [
         "src/scenes/ResetPassword/components/ResetPasswordForm/presenter.jsx",

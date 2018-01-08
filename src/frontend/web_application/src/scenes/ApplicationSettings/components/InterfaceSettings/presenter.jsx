@@ -25,9 +25,9 @@ class InterfaceSettings extends PureComponent {
   initTranslations() {
     const { i18n } = this.props;
     this.i18n = {
-      fr_FR: i18n._('settings.interface.language.options.fr'),
-      en_EN: i18n._('settings.interface.language.options.en'),
-      de_DE: i18n._('settings.interface.language.options.de'),
+      fr_FR: i18n._('settings.interface.language.options.fr', { defaults: 'French' }),
+      en_EN: i18n._('settings.interface.language.options.en', { defaults: 'English' }),
+      de_DE: i18n._('settings.interface.language.options.de', { defaults: 'German' }),
     };
   }
 
@@ -42,7 +42,7 @@ class InterfaceSettings extends PureComponent {
             <Field
               component={SelectFieldGroup}
               name="default_locale"
-              label={i18n._('settings.interface.language.label')}
+              label={i18n._('settings.interface.language.label', { defaults: 'Language' })}
               options={languageOptions}
             />
           </FormColumn>

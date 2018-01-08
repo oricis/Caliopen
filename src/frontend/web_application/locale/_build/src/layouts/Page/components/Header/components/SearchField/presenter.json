@@ -1,5 +1,6 @@
 {
   "header.menu.search": {
+    "defaults": "Search",
     "origin": [
       [
         "src/layouts/Page/components/Header/components/SearchField/presenter.jsx",

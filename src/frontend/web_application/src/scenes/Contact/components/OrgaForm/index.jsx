@@ -41,8 +41,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="label"
-                label={i18n._('contact.orga_form.label.label')}
-                placeholder={i18n._('contact.orga_form.label.label')}
+                label={i18n._('contact.orga_form.label.label', { defaults: 'Label' })}
+                placeholder={i18n._('contact.orga_form.label.label', { defaults: 'Label' })}
                 showLabelforSr
               />
             </FormColumn>
@@ -50,8 +50,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="name"
-                label={i18n._('contact.orga_form.name.label')}
-                placeholder={i18n._('contact.orga_form.name.label')}
+                label={i18n._('contact.orga_form.name.label', { defaults: 'Name' })}
+                placeholder={i18n._('contact.orga_form.name.label', { defaults: 'Name' })}
                 showLabelforSr
                 required
               />
@@ -60,8 +60,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="title"
-                label={i18n._('contact.orga_form.title.label')}
-                placeholder={i18n._('contact.orga_form.title.label')}
+                label={i18n._('contact.orga_form.title.label', { defaults: 'Title' })}
+                placeholder={i18n._('contact.orga_form.title.label', { defaults: 'Title' })}
                 showLabelforSr
               />
             </FormColumn>
@@ -69,8 +69,8 @@ class OrgaForm extends Component {
               <Field
                 component={TextFieldGroup}
                 name="department"
-                label={i18n._('contact.orga_form.department.label')}
-                placeholder={i18n._('contact.orga_form.department.label')}
+                label={i18n._('contact.orga_form.department.label', { defaults: 'Department' })}
+                placeholder={i18n._('contact.orga_form.department.label', { defaults: 'Department' })}
                 showLabelforSr
               />
             </FormColumn>

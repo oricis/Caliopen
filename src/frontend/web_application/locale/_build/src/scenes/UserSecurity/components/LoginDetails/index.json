@@ -9,6 +9,7 @@
     ]
   },
   "login.details.label": {
+    "defaults": "Login:",
     "origin": [
       [
         "src/scenes/UserSecurity/components/LoginDetails/index.jsx",

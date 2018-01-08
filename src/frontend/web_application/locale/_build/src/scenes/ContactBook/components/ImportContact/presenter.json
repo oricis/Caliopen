@@ -1,5 +1,6 @@
 {
   "import-contact.feedback.successfull": {
+    "defaults": "Contacts successfully imported",
     "origin": [
       [
         "src/scenes/ContactBook/components/ImportContact/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "import-contact.feedback.error-file": {
+    "defaults": "This file cannot be used to import contacts",
     "origin": [
       [
         "src/scenes/ContactBook/components/ImportContact/presenter.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "import-contact.feedback.error-contact": {
+    "defaults": "The file is valid but new contacts cannot be created",
     "origin": [
       [
         "src/scenes/ContactBook/components/ImportContact/presenter.jsx",
@@ -24,6 +27,7 @@
     ]
   },
   "import-contact.feedback.unexpected-error": {
+    "defaults": "An unexpected error occured.",
     "origin": [
       [
         "src/scenes/ContactBook/components/ImportContact/presenter.jsx",

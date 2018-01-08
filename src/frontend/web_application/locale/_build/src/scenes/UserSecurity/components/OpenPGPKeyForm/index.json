@@ -1,5 +1,6 @@
 {
   "openpgp.feedback.unable-read-public-key": {
+    "defaults": "Unable to read public key",
     "origin": [
       [
         "src/scenes/UserSecurity/components/OpenPGPKeyForm/index.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "openpgp.feedback.unable-read-private-key": {
+    "defaults": "Unable to read private key",
     "origin": [
       [
         "src/scenes/UserSecurity/components/OpenPGPKeyForm/index.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "openpgp.feedback.fingerprints-not-match": {
+    "defaults": "Fingerprints do not match",
     "origin": [
       [
         "src/scenes/UserSecurity/components/OpenPGPKeyForm/index.jsx",
@@ -68,6 +71,7 @@
     ]
   },
   "user.openpgp.form.passphrase.label": {
+    "defaults": "Passphrase",
     "origin": [
       [
         "src/scenes/UserSecurity/components/OpenPGPKeyForm/index.jsx",
@@ -94,6 +98,7 @@
     ]
   },
   "user.openpgp.form.public-key.label": {
+    "defaults": "Public key",
     "origin": [
       [
         "src/scenes/UserSecurity/components/OpenPGPKeyForm/index.jsx",
@@ -102,6 +107,7 @@
     ]
   },
   "user.openpgp.form.private-key.label": {
+    "defaults": "Private key",
     "origin": [
       [
         "src/scenes/UserSecurity/components/OpenPGPKeyForm/index.jsx",

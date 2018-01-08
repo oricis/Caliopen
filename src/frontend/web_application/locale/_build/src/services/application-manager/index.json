@@ -1,5 +1,6 @@
 {
   "header.menu.discussions": {
+    "defaults": "Discussions",
     "origin": [
       [
         "src/services/application-manager/index.js",
@@ -12,6 +13,7 @@
     ]
   },
   "header.menu.contacts": {
+    "defaults": "Contacts",
     "origin": [
       [
         "src/services/application-manager/index.js",

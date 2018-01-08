@@ -28,10 +28,10 @@ class ContactsForm extends Component {
   initTranslations() {
     const { i18n } = this.props;
     this.i18n = {
-      'given_name, family_name': i18n._('settings.contact.display_format.options.first_last'),
-      'family_name, given_name': i18n._('settings.contact.display_format.options.last_first'),
-      given_name: i18n._('settings.contact.display_order_by.options.firstname'),
-      family_name: i18n._('settings.contact.display_order_by.options.lastname'),
+      'given_name, family_name': i18n._('settings.contact.display_format.options.first_last', { defaults: 'Firstname, Lastname' }),
+      'family_name, given_name': i18n._('settings.contact.display_format.options.last_first', { defaults: 'Lastname, Firstname' }),
+      given_name: i18n._('settings.contact.display_order_by.options.firstname', { defaults: 'Firstname' }),
+      family_name: i18n._('settings.contact.display_order_by.options.lastname', { defaults: 'Lastname' }),
     };
   }
 
@@ -48,7 +48,7 @@ class ContactsForm extends Component {
             <Field
               component={SelectFieldGroup}
               name="contact_display_format"
-              label={i18n._('settings.contacts.display.label')}
+              label={i18n._('settings.contacts.display.label', { defaults: 'Display' })}
               options={displayFormatOptions}
             />
           </FormColumn>
@@ -58,7 +58,7 @@ class ContactsForm extends Component {
             <Field
               component={SelectFieldGroup}
               name="contact_display_order"
-              label={i18n._('settings.contacts.order.label')}
+              label={i18n._('settings.contacts.order.label', { defaults: 'Order by' })}
               options={displayOrderByOptions}
             />
           </FormColumn>

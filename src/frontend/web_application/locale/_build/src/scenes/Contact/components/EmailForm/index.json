@@ -1,5 +1,6 @@
 {
   "contact.email_type.work": {
+    "defaults": "Professional",
     "origin": [
       [
         "src/scenes/Contact/components/EmailForm/index.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "contact.email_type.home": {
+    "defaults": "Personal",
     "origin": [
       [
         "src/scenes/Contact/components/EmailForm/index.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "contact.email_type.other": {
+    "defaults": "Other",
     "origin": [
       [
         "src/scenes/Contact/components/EmailForm/index.jsx",
@@ -33,6 +36,7 @@
     ]
   },
   "contact.email_form.type.label": {
+    "defaults": "Type",
     "origin": [
       [
         "src/scenes/Contact/components/EmailForm/index.jsx",
@@ -41,6 +45,7 @@
     ]
   },
   "contact.email_form.address.label": {
+    "defaults": "Address",
     "origin": [
       [
         "src/scenes/Contact/components/EmailForm/index.jsx",

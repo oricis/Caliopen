@@ -1,5 +1,6 @@
 {
   "contact.phone_type.work": {
+    "defaults": "Professional",
     "origin": [
       [
         "src/components/ContactDetails/components/PhoneDetails/index.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "contact.phone_type.home": {
+    "defaults": "Personal",
     "origin": [
       [
         "src/components/ContactDetails/components/PhoneDetails/index.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "contact.phone_type.other": {
+    "defaults": "Other",
     "origin": [
       [
         "src/components/ContactDetails/components/PhoneDetails/index.jsx",

@@ -1,9 +1,10 @@
 {
   "alpha.footer.feedback": {
+    "defaults": "Tell us if something went wrong at <a href=\"https://feedback.caliopen.org/\">https://feedback.caliopen.org/</a>.",
     "origin": [
       [
         "src/layouts/Page/presenter.jsx",
-        34
+        36
       ]
     ]
   }

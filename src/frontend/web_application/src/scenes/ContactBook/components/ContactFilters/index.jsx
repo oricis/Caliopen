@@ -16,7 +16,7 @@ const ContactFilters = ({ onSortDirChange, sortDir, i18n }) => (
           <SelectFieldGroup
             className="m-contacts-filters__select"
             name="order-by"
-            label={i18n._('contacts-filters.order-by.label')}
+            label={i18n._('contacts-filters.order-by.label', { defaults: 'Order by' })}
             value={sortDir}
             options={[{ value: 'ASC', label: 'A -> Z' }, { value: 'DESC', label: 'Z -> A' }]}
             onChange={onSortDirChange}

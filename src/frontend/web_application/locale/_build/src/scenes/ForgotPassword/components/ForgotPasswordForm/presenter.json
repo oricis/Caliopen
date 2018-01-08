@@ -1,5 +1,6 @@
 {
   "password.forgot-form.title": {
+    "defaults": "Forgot password",
     "origin": [
       [
         "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
@@ -35,6 +36,7 @@
     ]
   },
   "password.forgot-form.username.label": {
+    "defaults": "Username",
     "origin": [
       [
         "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
@@ -43,6 +45,7 @@
     ]
   },
   "password.forgot-form.username.placeholder": {
+    "defaults": "Username",
     "origin": [
       [
         "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
@@ -51,6 +54,7 @@
     ]
   },
   "password.forgot-form.recovery_email.label": {
+    "defaults": "Recovery email",
     "origin": [
       [
         "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",
@@ -59,6 +63,7 @@
     ]
   },
   "password.forgot-form.recovery_email.placeholder": {
+    "defaults": "Recovery email",
     "origin": [
       [
         "src/scenes/ForgotPassword/components/ForgotPasswordForm/presenter.jsx",

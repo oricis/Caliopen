@@ -160,7 +160,7 @@ class Contact extends Component {
       const format = settings.contact_display_format;
       const tab = {
         ...currentTab,
-        label: formatName({ contact, format }) || i18n._('contact.profile.name_not_set'),
+        label: formatName({ contact, format }) || i18n._('contact.profile.name_not_set', { defaults: '(N/A)' }),
       };
       updateTab({ tab, original: currentTab });
 
@@ -183,7 +183,7 @@ class Contact extends Component {
     handleSubmit(ev)
       .then(contact => this.createOrUpdateAction({ contact, original }))
       .then(() => contactId && this.toggleEditMode(), () => {
-        notifyError({ message: i18n._('contact.feedback.unable_to_save') });
+        notifyError({ message: i18n._('contact.feedback.unable_to_save', { defaults: 'Unable to save the contact' }) });
       })
       .then(() => this.setState({ isSaving: false }));
   }

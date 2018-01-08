@@ -1,5 +1,6 @@
 {
   "contact.email_type.work": {
+    "defaults": "Professional",
     "origin": [
       [
         "src/components/ContactDetails/components/EmailDetails/index.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "contact.email_type.home": {
+    "defaults": "Personal",
     "origin": [
       [
         "src/components/ContactDetails/components/EmailDetails/index.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "contact.email_type.other": {
+    "defaults": "Other",
     "origin": [
       [
         "src/components/ContactDetails/components/EmailDetails/index.jsx",
@@ -24,6 +27,7 @@
     ]
   },
   "contact.primary": {
+    "defaults": "Primary",
     "origin": [
       [
         "src/components/ContactDetails/components/EmailDetails/index.jsx",

@@ -46,7 +46,7 @@ class IdentityForm extends PureComponent {
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={i18n._('contact.identity_form.service.label')}
+                label={i18n._('contact.identity_form.service.label', { defaults: 'Service' })}
                 options={identityTypeOptions}
                 showLabelforSr
                 required
@@ -56,7 +56,7 @@ class IdentityForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="name"
-                label={i18n._('contact.identity_form.identity.label')}
+                label={i18n._('contact.identity_form.identity.label', { defaults: 'Identity' })}
                 showLabelforSr
                 required
               />

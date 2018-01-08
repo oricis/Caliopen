@@ -1,5 +1,6 @@
 {
   "user.privacy.improve_pi": {
+    "defaults": "Improve your privacy index",
     "origin": [
       [
         "src/scenes/UserPrivacy/presenter.jsx",

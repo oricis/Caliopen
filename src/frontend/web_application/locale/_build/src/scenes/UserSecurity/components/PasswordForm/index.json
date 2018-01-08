@@ -1,5 +1,6 @@
 {
   "password.form.new_password_confirmation.error": {
+    "defaults": "Passwords don't match",
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "password.form.current_password.label": {
+    "defaults": "Current password:",
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "password.form.current_password.placeholder": {
+    "defaults": "Enter your current password",
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
@@ -33,6 +36,7 @@
     ]
   },
   "password.form.new_password.label": {
+    "defaults": "New password:",
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
@@ -41,6 +45,7 @@
     ]
   },
   "password.form.new_password.placeholder": {
+    "defaults": "Enter new password",
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
@@ -58,6 +63,7 @@
     ]
   },
   "password.form.new_password_confirmation.label": {
+    "defaults": "New password confirmation:",
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
@@ -66,6 +72,7 @@
     ]
   },
   "password.form.new_password_confirmation.placeholder": {
+    "defaults": "Password",
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",

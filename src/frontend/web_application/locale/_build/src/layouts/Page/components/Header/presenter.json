@@ -1,5 +1,6 @@
 {
   "header.menu.toggle-navigation": {
+    "defaults": "Toggle navigation",
     "origin": [
       [
         "src/layouts/Page/components/Header/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "header.menu.toggle-search-form": {
+    "defaults": "Toggle search form",
     "origin": [
       [
         "src/layouts/Page/components/Header/presenter.jsx",

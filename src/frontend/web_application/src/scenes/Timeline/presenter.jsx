@@ -84,7 +84,7 @@ class Timeline extends Component {
 
     return (
       <div className="s-timeline">
-        <PageTitle title={i18n._('header.menu.discussions')} />
+        <PageTitle title={i18n._('header.menu.discussions', { defaults: 'Messages' })} />
         <MenuBar className="s-timeline__menu-bar">
           <Spinner isLoading={isFetching} className="s-timeline__spinner" />
         </MenuBar>

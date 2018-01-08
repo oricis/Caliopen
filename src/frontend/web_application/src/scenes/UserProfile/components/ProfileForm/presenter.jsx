@@ -1,148 +1,82 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
-import Button from '../../../../components/Button';
-import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../../../../components/form';
+import { Field } from 'redux-form';
+import { FormGrid, FormRow, FormColumn, TextFieldGroup as TextFieldGroupBase, FieldErrors } from '../../../../components/form';
+import renderReduxField from '../../../../services/renderReduxField';
 
-function generateStateFromProps(props, prevState) {
-  return {
-    user: {
-      ...prevState.settings,
-      ...props.settings,
-    },
-  };
-}
+const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 
 class ProfileForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
-    onUpdateUser: PropTypes.func.isRequired,
+    editMode: PropTypes.bool.isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     errors: {},
   };
 
-  state = {
-    user: {
-      username: null,
-      family_name: null,
-      given_name: null,
-      name: null,
-      recovery_email: null,
-      contact: {
-        avatar: null,
-      },
-    },
-  };
-
-  componentWillMount() {
-    this.setState(prevState => generateStateFromProps(this.props, prevState));
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.setState(prevState => generateStateFromProps(newProps, prevState));
-  }
-
-
-  handleSubmit = () => {
-    const { settings } = this.state;
-    this.props.onUpdateUser({ settings });
-  }
-
-  handleInputChange = (ev) => {
-    const { name, value } = ev.target;
-
-    this.setState(prevState => ({
-      user: {
-        ...prevState.settings,
-        [name]: value,
-      },
-    }));
-  }
 
   render() {
-    const { errors, i18n } = this.props;
+    const { errors, editMode, i18n } = this.props;
 
     return (
-      <FormGrid>
-        <form method="post" name="profile_form" onSubmit={this.handleSubmit}>
-          {errors.global && errors.global.length !== 0 && (
+      <FormGrid className="s-profile-form">
+        {errors.global && errors.global.length !== 0 && (
+        <FormRow>
+          <FormColumn bottomSpace>
+            <FieldErrors errors={errors.global} />
+          </FormColumn>
+        </FormRow>
+        )}
+        {/* disables avatar managment on alpha
           <FormRow>
-            <FormColumn bottomSpace>
-              <FieldErrors errors={errors.global} />
-            </FormColumn>
-          </FormRow>
-          )}
-          <FormRow>
-            <FormColumn size="shrink" bottomSpace >
-              {
-                // FIXME: avatar field should be a input type="file"
-              }
-              <TextFieldGroup
-                name="avatar"
-                value={this.state.user.avatar}
-                onChange={this.handleInputChange}
-                label={i18n._('user.profile.form.avatar.label')}
-              />
-            </FormColumn>
-            <FormColumn size="shrink" bottomSpace >
-              <TextFieldGroup
-                name="username"
-                value={this.state.user.username}
-                onChange={this.handleInputChange}
-                label={i18n._('user.profile.form.username.label')}
+            <FormColumn size="medium" bottomSpace >
+              <Field
+                component={TextFieldGroup}
+                name="contact.avatar"
+                label={__('user.profile.form.avatar.label')}
+                disabled
               />
             </FormColumn>
           </FormRow>
-          <FormRow>
-            <FormColumn size="shrink" bottomSpace>
-              <TextFieldGroup
-                name="given_name"
-                value={this.state.user.given_name}
-                onChange={this.handleInputChange}
-                label={i18n._('user.profile.form.given_name.label')}
-              />
-            </FormColumn>
-            <FormColumn size="shrink" bottomSpace >
-              <TextFieldGroup
-                name="family_name"
-                value={this.state.user.family_name}
-                onChange={this.handleInputChange}
-                label={i18n._('user.profile.form.family_name.label')}
-              />
-            </FormColumn>
-          </FormRow>
-          <FormRow>
-            <FormColumn size="shrink" bottomSpace >
-              {
-                // FIXME: can't get this.state.user.email
-              }
-              <TextFieldGroup
-                name="email"
-                value=""
-                onChange={this.handleInputChange}
-                label={i18n._('user.profile.form.email.label')}
-              />
-            </FormColumn>
-            <FormColumn size="shrink" bottomSpace >
-              <TextFieldGroup
-                name="recovery_email"
-                value={this.state.user.recovery_email}
-                onChange={this.handleInputChange}
-                label={i18n._('user.profile.form.recovery_email.label')}
-              />
-            </FormColumn>
-          </FormRow>
-          <FormRow>
-            <FormColumn size="shrink" bottomSpace>
-              <Button
-                type="submit"
-                shape="plain"
-              ><Trans id="user.action.update">Update</Trans></Button>
-            </FormColumn>
-          </FormRow>
-        </form>
+        */}
+        <FormRow>
+          <FormColumn size="medium" bottomSpace >
+            <Field
+              component={TextFieldGroup}
+              name="name"
+              label={i18n._('user.profile.form.username.label', { defaults: 'Username' })}
+              disabled
+            />
+          </FormColumn>
+          <FormColumn size="medium" bottomSpace >
+            <Field
+              component={TextFieldGroup}
+              name="recovery_email"
+              label={i18n._('user.profile.form.recovery_email.label', { defaults: 'Recovery email' })}
+              disabled
+            />
+          </FormColumn>
+        </FormRow>
+        <FormRow>
+          <FormColumn size="medium" bottomSpace>
+            <Field
+              component={TextFieldGroup}
+              name="contact.given_name"
+              label={i18n._('user.profile.form.given_name.label', { defaults: 'Given name' })}
+              disabled={!editMode}
+            />
+          </FormColumn>
+          <FormColumn size="medium" bottomSpace >
+            <Field
+              component={TextFieldGroup}
+              name="contact.family_name"
+              label={i18n._('user.profile.form.family_name.label', { defaults: 'Family name' })}
+              disabled={!editMode}
+            />
+          </FormColumn>
+        </FormRow>
       </FormGrid>
     );
   }

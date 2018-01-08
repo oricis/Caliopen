@@ -1,5 +1,6 @@
 {
   "contact.phone_type.work": {
+    "defaults": "Professional",
     "origin": [
       [
         "src/scenes/Contact/components/PhoneForm/index.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "contact.phone_type.home": {
+    "defaults": "Personal",
     "origin": [
       [
         "src/scenes/Contact/components/PhoneForm/index.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "contact.phone_type.other": {
+    "defaults": "Other",
     "origin": [
       [
         "src/scenes/Contact/components/PhoneForm/index.jsx",
@@ -33,6 +36,7 @@
     ]
   },
   "contact.phone_form.type.label": {
+    "defaults": "Type",
     "origin": [
       [
         "src/scenes/Contact/components/PhoneForm/index.jsx",
@@ -41,6 +45,7 @@
     ]
   },
   "contact.phone_form.number.label": {
+    "defaults": "Number",
     "origin": [
       [
         "src/scenes/Contact/components/PhoneForm/index.jsx",
