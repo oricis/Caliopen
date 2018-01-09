@@ -4,7 +4,8 @@ import logging
 import vobject
 import phonenumbers
 
-from caliopen_main.contact.parameters import NewContact, NewEmail, NewPhone
+from caliopen_main.contact.parameters import NewContact, NewEmail, EMAIL_TYPES
+from caliopen_main.contact.parameters import NewIM, IM_TYPES, NewPhone
 from caliopen_main.contact.parameters import NewPostalAddress, NewOrganization
 
 log = logging.getLogger(__name__)
@@ -33,7 +34,9 @@ class VcardContact(object):
         email = NewEmail()
         email.address = param.value
         if 'TYPE' in param.params:
-            email.type = param.params['TYPE'][0].lower()
+            email_type = param.params['TYPE'][0].lower()
+            if email_type in EMAIL_TYPES:
+                email.type = email_type
         if 'PREF' in param.params:
             email.is_primary = True
         return email
@@ -103,6 +106,21 @@ class VcardContact(object):
         for param in self._vcard.contents.get('org', []):
             yield self.__build_organization(param)
 
+    def __build_im(self, param):
+        im = NewIM()
+        im.address = param.value
+        if 'TYPE' in param.params and param.params['TYPE']:
+            im_type = param.params['TYPE'][0].lower()
+            if im_type in IM_TYPES:
+                im.type = im_type
+        if 'PREF' in param.params:
+            im.is_primary = True
+        return im
+
+    def __parse_impps(self):
+        for param in self._vcard.contents.get('impp', []):
+            yield self.__build_im(param)
+
     def _parse(self):
         contact = NewContact()
         if 'n' in self._vcard.contents:
@@ -132,6 +150,7 @@ class VcardContact(object):
         contact.emails = self.__parse_emails()
         contact.addresses = self.__parse_addresses()
         contact.organizations = self.__parse_organizations()
+        contact.ims = self.__parse_impps()
         self.contact = contact
 
     def serialize(self):
