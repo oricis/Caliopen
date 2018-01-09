@@ -4,7 +4,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        163
+        160
       ]
     ]
   },
@@ -13,29 +13,24 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        186
+        183
       ]
     ]
   },
   "tags.header.title": {
+    "origin": [
+      [
+        "src/scenes/Contact/presenter.jsx",
+        192
+      ]
+    ]
+  },
+  "tags.header.label": {
     "defaults": "Tags",
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        195
-      ],
-      [
-        "src/scenes/Contact/presenter.jsx",
-        204
-      ]
-    ]
-  },
-  "tags.header.count": {
-    "defaults": "(Total: {0})",
-    "origin": [
-      [
-        "src/scenes/Contact/presenter.jsx",
-        197
+        205
       ]
     ]
   },
@@ -44,7 +39,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        224
+        225
       ]
     ]
   },
@@ -53,7 +48,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        226
+        227
       ]
     ]
   },
@@ -62,7 +57,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        234
+        235
       ]
     ]
   },
@@ -71,7 +66,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        268
+        269
       ]
     ]
   },
@@ -80,7 +75,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        275
+        276
       ]
     ]
   },
@@ -89,7 +84,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        295
+        296
       ]
     ]
   }

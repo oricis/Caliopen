@@ -1,0 +1,11 @@
+{
+  "tags.action.remove": {
+    "defaults": "Remove",
+    "origin": [
+      [
+        "src/components/TagsForm/components/TagItem/index.jsx",
+        41
+      ]
+    ]
+  }
+}

@@ -5,12 +5,9 @@ import { v1 as uuidV1 } from 'uuid';
 import VisibilitySensor from 'react-visibility-sensor';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
-import ContactAvatarLetter from '../../../ContactAvatarLetter';
-import Button from '../../../Button';
-import Icon from '../../../Icon';
-import TextBlock from '../../../TextBlock';
-import MultidimensionalPi from '../../../MultidimensionalPi';
-import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
+import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
+import { Button, Icon, TextBlock, Dropdown, withDropdownControl } from '../../../../components';
+import MultidimensionalPi from '../../../../components/MultidimensionalPi';
 import MessageActionsContainer from '../MessageActionsContainer';
 import { getAuthor } from '../../../../services/message';
 
@@ -28,7 +25,6 @@ class Message extends Component {
     onDelete: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
     onCopyTo: PropTypes.func.isRequired,
-    onEditTags: PropTypes.func.isRequired,
     settings: PropTypes.shape({}).isRequired,
     isMessageFromUser: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
@@ -128,7 +124,7 @@ class Message extends Component {
   render() {
     const {
       message, onDelete, onMessageUnread, onMessageRead,
-      onReply, onCopyTo, onEditTags, i18n,
+      onReply, onCopyTo, i18n,
     } = this.props;
     const author = getAuthor(message);
     const typeTranslations = {
@@ -185,7 +181,6 @@ class Message extends Component {
                 onMessageUnread={onMessageUnread}
                 onReply={onReply}
                 onCopyTo={onCopyTo}
-                onEditTags={onEditTags}
               />
             </Dropdown>
 

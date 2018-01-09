@@ -10,20 +10,28 @@ class WithTags extends Component {
     isInvalidated: PropTypes.bool,
   }
   static defaultProps = {
-    tags: [],
+    tags: undefined,
     isFetching: false,
     isInvalidated: false,
+  }
+
+  state = {
+    initialized: false,
   }
 
   componentDidMount() {
     const { requestTags, tags, isInvalidated, isFetching } = this.props;
     if (!isFetching && (!tags.length || isInvalidated)) {
-      requestTags();
+      requestTags().then(() => this.setState({ initialized: true }));
     }
   }
 
   render() {
     const { tags, isFetching, render } = this.props;
+
+    if (!tags.length && !this.state.initialized) {
+      return null;
+    }
 
     return render(tags, isFetching);
   }

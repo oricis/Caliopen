@@ -4,7 +4,7 @@
     "origin": [
       [
         "src/components/TagsForm/components/TagSearch/index.jsx",
-        57
+        68
       ]
     ]
   },
@@ -13,7 +13,16 @@
     "origin": [
       [
         "src/components/TagsForm/components/TagSearch/index.jsx",
-        58
+        69
+      ]
+    ]
+  },
+  "tags.action.add": {
+    "defaults": "Add",
+    "origin": [
+      [
+        "src/components/TagsForm/components/TagSearch/index.jsx",
+        78
       ]
     ]
   }

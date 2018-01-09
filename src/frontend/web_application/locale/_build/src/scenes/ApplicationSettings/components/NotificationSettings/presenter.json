@@ -18,6 +18,7 @@
     ]
   },
   "settings.notification.delay_disappear.options.second": {
+    "defaults": "{0} Seconds",
     "origin": [
       [
         "src/scenes/ApplicationSettings/components/NotificationSettings/presenter.jsx",

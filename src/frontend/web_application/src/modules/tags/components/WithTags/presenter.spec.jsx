@@ -3,23 +3,28 @@ import { shallow } from 'enzyme';
 import Presenter from './presenter';
 
 describe('component WithTags', () => {
-  it('render', () => {
+  it('render', async () => {
+    const promisedTags = Promise.resolve([{ label: 'Foo', name: 'foo' }, { label: 'Bar', name: 'bar' }, { label: 'FooBar', name: 'foobar' }]);
     const reduxProps = {
       tags: [],
       isFetching: false,
       isInvalidated: false,
-      requestTags: jest.fn(() => {
-        reduxProps.tags = [{ label: 'Foo', name: 'foo' }, { label: 'Bar', name: 'bar' }, { label: 'FooBar', name: 'foobar' }];
+      requestTags: jest.fn(async () => {
+        reduxProps.tags = await promisedTags;
 
-        return Promise.resolve(reduxProps.tags);
+        return reduxProps.tags;
       }),
     };
 
     const render = jest.fn();
-    shallow(
+    const wrapper = shallow(
       <Presenter render={render} {...reduxProps} />
     );
     expect(reduxProps.requestTags).toHaveBeenCalled();
+    expect(render).not.toHaveBeenCalled();
+
+    await promisedTags;
+    await wrapper.render();
     expect(render).toHaveBeenCalled();
   });
 });

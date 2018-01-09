@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import Button from '../Button';
-import MenuBar from '../MenuBar';
-import Spinner from '../Spinner';
-import DayMessageList from './components/DayMessageList';
-import Message from './components/Message';
-import groupMessages from './services/groupMessages';
-import { isMessageFromUser } from '../../services/message';
-import { WithSettings } from '../../modules/settings';
+import { Button, MenuBar, Spinner } from '../../../../components';
+import DayMessageList from '../DayMessageList';
+import Message from '../Message';
+import groupMessages from '../../services/groupMessages';
+import { isMessageFromUser } from '../../../../services/message';
+import { WithSettings } from '../../../../modules/settings';
 
 import './style.scss';
 
@@ -21,7 +19,6 @@ class MessageList extends Component {
     onMessageDelete: PropTypes.func.isRequired,
     onMessageReply: PropTypes.func.isRequired,
     onMessageCopyTo: PropTypes.func.isRequired,
-    onMessageEditTags: PropTypes.func.isRequired,
     onForward: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -50,7 +47,7 @@ class MessageList extends Component {
   renderDayGroups(settings) {
     const {
       messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply, onMessageCopyTo,
-      onMessageEditTags, user,
+      user,
     } = this.props;
 
     const messagesGroupedByday = groupMessages(messages, user);
@@ -70,7 +67,6 @@ class MessageList extends Component {
               onDelete={onMessageDelete}
               onReply={onMessageReply}
               onCopyTo={onMessageCopyTo}
-              onEditTags={onMessageEditTags}
             />
           ))}
         </DayMessageList>

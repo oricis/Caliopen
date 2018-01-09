@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Trans } from 'lingui-react';
-import Button from '../../../Button';
+import { Trans, withI18n } from 'lingui-react';
+import { Button, Modal } from '../../../../components';
+import { ManageEntityTags } from '../../../../modules/tags';
 
 import './style.scss';
 
@@ -12,15 +13,16 @@ function generateStateFromProps(props) {
   return { isRead: !message.is_unread };
 }
 
+@withI18n()
 class MessageActionsContainer extends Component {
   static propTypes = {
+    i18n: PropTypes.shape({}).isRequired,
     message: PropTypes.shape({}).isRequired,
     onDelete: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     onMessageRead: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
     onCopyTo: PropTypes.func.isRequired,
-    onEditTags: PropTypes.func.isRequired,
     className: PropTypes.string,
   };
 
@@ -30,6 +32,7 @@ class MessageActionsContainer extends Component {
 
   state = {
     isRead: false,
+    isTagModalOpen: false,
   }
 
   componentWillMount() {
@@ -44,6 +47,20 @@ class MessageActionsContainer extends Component {
     const { message } = this.props;
     action({ message });
   };
+
+  handleOpenTags = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isTagModalOpen: true,
+    }));
+  }
+
+  handleCloseTags = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isTagModalOpen: false,
+    }));
+  }
 
   handleReply = () => {
     const { onReply, message } = this.props;
@@ -62,8 +79,34 @@ class MessageActionsContainer extends Component {
     }));
   }
 
+  renderTagsModal = () => {
+    const { message, i18n } = this.props;
+    const nb = message.tags ? message.tags.length : 0;
+    const title = (
+      <Trans
+        id="tags.header.title"
+        defaults={'Tags <0>(Total: {nb})</0>'}
+        values={{ nb }}
+        components={[
+          (<span className="m-tags-form__count" />),
+        ]}
+      />
+    );
+
+    return (
+      <Modal
+        isOpen={this.state.isTagModalOpen}
+        contentLabel={i18n._('tags.header.label', { defaults: 'Tags' })}
+        title={title}
+        onClose={this.handleCloseTags}
+      >
+        <ManageEntityTags type="message" entity={message} />
+      </Modal>
+    );
+  }
+
   render() {
-    const { onDelete, onCopyTo, onEditTags, className } = this.props;
+    const { onDelete, onCopyTo, className } = this.props;
     const messageActionsContainerClassName = classnames(
       'm-message-actions-container',
       className,
@@ -73,7 +116,7 @@ class MessageActionsContainer extends Component {
       <div className={messageActionsContainerClassName}>
         <Button onClick={this.handleReply} className="m-message-actions-container__action" display="expanded" icon="reply" responsive="icon-only"><Trans id="message-list.message.action.reply">Reply</Trans></Button>
         <Button onClick={this.makeHandle(onCopyTo)} className="m-message-actions-container__action" display="expanded" icon="share" responsive="icon-only"><Trans id="message-list.message.action.copy-to">Copy to</Trans></Button>
-        <Button onClick={this.makeHandle(onEditTags)} className="m-message-actions-container__action" display="expanded" icon="tags" responsive="icon-only"><Trans id="message-list.message.action.tags">Tags</Trans></Button>
+        <Button onClick={this.handleOpenTags} className="m-message-actions-container__action" display="expanded" icon="tags" responsive="icon-only"><Trans id="message-list.message.action.tags">Tags</Trans></Button>
         <Button onClick={this.makeHandle(onDelete)} className="m-message-actions-container__action" display="expanded" icon="trash" responsive="icon-only"><Trans id="message-list.message.action.delete">Delete</Trans></Button>
         <Button
           className="m-message-actions-container__action"
@@ -86,6 +129,7 @@ class MessageActionsContainer extends Component {
             <Trans id="message-list.message.action.mark_as_unread">Mark as unread</Trans>
           )}
         </Button>
+        {this.renderTagsModal()}
       </div>
     );
   }

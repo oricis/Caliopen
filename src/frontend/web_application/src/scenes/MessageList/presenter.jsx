@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import { Trans } from 'lingui-react';
-import MessageListBase from '../../components/MessageList';
-import Button from '../../components/Button';
+import { Button } from '../../components';
 import PageTitle from '../../components/PageTitle';
+import MessageListBase from './components/MessageList';
 import ReplyForm from './components/DraftForm';
-
 
 const LOAD_MORE_THROTTLE = 1000;
 
@@ -23,9 +22,7 @@ class MessageList extends Component {
     deleteMessage: PropTypes.func.isRequired,
     replyToMessage: PropTypes.func.isRequired,
     copyMessageTo: PropTypes.func.isRequired,
-    editMessageTags: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
-    updateTab: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     hasMore: PropTypes.bool.isRequired,
     currentTab: PropTypes.shape({}),
@@ -107,7 +104,7 @@ class MessageList extends Component {
 
   render() {
     const {
-      messages, discussionId, isFetching, copyMessageTo, editMessageTags,
+      messages, discussionId, isFetching, copyMessageTo,
     } = this.props;
     const internalId = discussionId;
 
@@ -126,7 +123,6 @@ class MessageList extends Component {
           onMessageReply={this.makeHandleReplyToMessage(internalId)}
           loadMore={this.renderLoadMore()}
           onMessageCopyTo={copyMessageTo}
-          onMessageEditTags={editMessageTags}
         />
       </div>
     );
