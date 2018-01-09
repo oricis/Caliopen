@@ -1,5 +1,5 @@
 const userUtil = require('../utils/user-util');
-const { switch: appSwitcher } = require('../utils/switch-application');
+const { switchApp } = require('../utils/navigation');
 
 describe('tag', () => {
   const EC = protractor.ExpectedConditions;
@@ -50,7 +50,7 @@ describe('tag', () => {
   });
 
   it('manage tags on a contact', () => {
-    appSwitcher('Contacts')
+    switchApp('Contacts')
       .then(() => browser.wait(EC.presenceOf($('.m-contact-list__contact')), 5 * 1000))
       .then(() => element(by.cssContainingText('.m-contact-list__contact', 'Bender Bending Rodriguez')).click())
       .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-contact-profile__name', 'Bender Bending Rodriguez'))), 5 * 1000))

@@ -1,5 +1,5 @@
 const userUtil = require('../utils/user-util');
-const { switch: switchApp } = require('../utils/switch-application.js');
+const { home } = require('../utils/navigation');
 
 describe('Save a draft and send', () => {
   const EC = protractor.ExpectedConditions;
@@ -87,14 +87,14 @@ describe('Save a draft and send', () => {
       .then(() => {
         console.log('back to first discussion, don\'t wait');
 
-        return switchApp('discussions');
+        return home();
       })
       .then(() => element(discussion1Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list__list')), 5 * 1000))
       .then(() => {
         console.log('go to 2nd discussion, wait then refresh');
 
-        return switchApp('discussions');
+        return home();
       })
       .then(() => element(discussion2Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list__list')), 5 * 1000))
