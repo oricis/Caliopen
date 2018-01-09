@@ -9,7 +9,13 @@ class MenuBar extends Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
-    navLinks: PropTypes.arrayOf(PropTypes.shape({})),
+    navLinks: PropTypes.arrayOf(PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      label: PropTypes.node.isRequired,
+      title: PropTypes.string,
+      isActive: PropTypes.bool,
+      to: PropTypes.string.isRequired,
+    })),
   };
 
   static defaultProps = {
@@ -30,8 +36,8 @@ class MenuBar extends Component {
         {navLinks &&
           <NavList>
             {navLinks.map(link => (
-              <ItemContent active={link.isActive} large key={link.title}>
-                <Link noDecoration title={link.title} to={link.to}>{link.title}</Link>
+              <ItemContent active={link.isActive} large key={link.key}>
+                <Link noDecoration title={link.title} to={link.to}>{link.label}</Link>
               </ItemContent>
             ))}
           </NavList>
