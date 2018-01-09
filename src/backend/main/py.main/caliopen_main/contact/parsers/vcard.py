@@ -6,6 +6,7 @@ import phonenumbers
 
 from caliopen_main.contact.parameters import NewContact, NewEmail, EMAIL_TYPES
 from caliopen_main.contact.parameters import NewIM, IM_TYPES, NewPhone
+from caliopen_main.contact.parameters import NewSocialIdentity
 from caliopen_main.contact.parameters import NewPostalAddress, NewOrganization
 
 log = logging.getLogger(__name__)
@@ -121,6 +122,16 @@ class VcardContact(object):
         for param in self._vcard.contents.get('impp', []):
             yield self.__build_im(param)
 
+    def __parse_social_identities(self):
+        idents = []
+        if 'x-twitter' in self._vcard.contents:
+            for ident in self._vcard.contents.get('x-twitter', []):
+                social = NewSocialIdentity()
+                social.type = 'twitter'
+                social.name = ident.value
+                idents.append(social)
+        return idents
+
     def _parse(self):
         contact = NewContact()
         if 'n' in self._vcard.contents:
@@ -151,6 +162,7 @@ class VcardContact(object):
         contact.addresses = self.__parse_addresses()
         contact.organizations = self.__parse_organizations()
         contact.ims = self.__parse_impps()
+        contact.identities = self.__parse_social_identities()
         self.contact = contact
 
     def serialize(self):
