@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import { withI18n } from 'lingui-react';
+import { WithTags, getTagLabelFromName } from '../../../../modules/tags';
 import Button from '../../../../components/Button';
 import NavList, { ItemContent } from '../../../../components/NavList';
 
@@ -72,16 +72,18 @@ const TagList = ({ tags, onTagClick, nbContactsAll, activeTag, i18n }) => {
         onTagClick={onTagClick}
         active={activeTag === ''}
       />
-      {tagList.map(tag => (
-        <TagItem
-          title={tag}
-          link={tag}
-          nbContacts={nbContactsbyTag(list, tag)}
-          key={uuidV1()}
-          onTagClick={onTagClick}
-          active={tag === activeTag}
-        />
-      ))}
+      <WithTags render={userTags => tagList.map(
+        name => (
+          <TagItem
+            title={getTagLabelFromName(i18n, userTags, name)}
+            link={name}
+            nbContacts={nbContactsbyTag(list, name)}
+            key={name}
+            onTagClick={onTagClick}
+            active={name === activeTag}
+          />
+        ))}
+      />
     </NavList>
   );
 };

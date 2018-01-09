@@ -21,7 +21,7 @@ const filterSuggestionsWithContact = results => results.filter(result => result.
 const extractContactFromAxios = axiosResult =>
   axiosResult.type === REQUEST_CONTACT_SUCCESS && axiosResult.payload.data;
 const getContacts = ({ store, contactIds }) => Promise.all(
-  contactIds.map(contactId => store.dispatch(requestContact({ contactId })))
+  contactIds.map(contactId => store.dispatch(requestContact(contactId)))
 ).then(allContactAxiosResults => allContactAxiosResults
   .map(extractContactFromAxios)
   .filter(contact => contact)

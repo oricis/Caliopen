@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import { Trans } from 'lingui-react';
 import { WithSettings } from '../../modules/settings';
+import { ManageEntityTags } from '../../modules/tags';
 import fetchLocation from '../../services/api-location';
 import { formatName } from '../../services/contact';
-import ManageTags from './ManageTags';
 import ContactProfileForm from './components/ContactProfileForm';
 import Spinner from '../../components/Spinner';
 import ContactDetails from '../../components/ContactDetails';
@@ -31,7 +31,6 @@ import AddFormFieldForm from './components/AddFormFieldForm';
 
 import './style.scss';
 
-// const FAKE_TAGS = ['Caliopen', 'Gandi', 'Macarons'];
 const DropdownControl = withDropdownControl(Button);
 
 class Contact extends Component {
@@ -47,7 +46,6 @@ class Contact extends Component {
     contactId: PropTypes.string,
     contact: PropTypes.shape({}),
     user: PropTypes.shape({}),
-    isFetching: PropTypes.bool,
     form: PropTypes.string.isRequired,
     currentTab: PropTypes.shape({}),
     removeTab: PropTypes.func.isRequired,
@@ -58,7 +56,6 @@ class Contact extends Component {
   };
 
   static defaultProps = {
-    isFetching: false,
     contact: undefined,
     currentTab: undefined,
     contactId: undefined,
@@ -72,7 +69,7 @@ class Contact extends Component {
   }
 
   state = {
-    isTagsModalOpen: false,
+    isTagModalOpen: false,
     editMode: false,
     isFetching: false,
     isSaving: false,
@@ -91,7 +88,7 @@ class Contact extends Component {
   componentDidMount() {
     const { contactId, requestContact } = this.props;
     if (contactId) {
-      requestContact({ contactId }).then(() => this.setState({ isFetching: false }));
+      requestContact(contactId).then(() => this.setState({ isFetching: false }));
     }
   }
 
@@ -104,17 +101,17 @@ class Contact extends Component {
     return this.props.push('/contacts');
   }
 
-  closeTagsModal = () => {
+  handleOpenTags = () => {
     this.setState(prevState => ({
       ...prevState,
-      isTagsModalOpen: false,
+      isTagModalOpen: true,
     }));
   }
 
-  openTagsModal = () => {
+  handleCloseTags = () => {
     this.setState(prevState => ({
       ...prevState,
-      isTagsModalOpen: true,
+      isTagModalOpen: false,
     }));
   }
 
@@ -156,7 +153,7 @@ class Contact extends Component {
     if (contact.contact_id) {
       await updateContact({ contact, original });
 
-      const contactUpToDate = await requestContact({ contactId: contact.contact_id });
+      const contactUpToDate = await requestContact(contact.contact_id);
       const format = settings.contact_display_format;
       const tab = {
         ...currentTab,
@@ -189,7 +186,7 @@ class Contact extends Component {
   }
 
   renderTagsModal = () => {
-    const { contact, updateContact, i18n } = this.props;
+    const { contact, i18n } = this.props;
     const nb = contact.tags ? contact.tags.length : 0;
     const title = (
       <Trans
@@ -204,12 +201,12 @@ class Contact extends Component {
 
     return (
       <Modal
-        isOpen={this.state.isTagsModalOpen}
+        isOpen={this.state.isTagModalOpen}
         contentLabel={i18n._('tags.header.label', { defaults: 'Tags' })}
         title={title}
-        onClose={this.closeTagsModal}
+        onClose={this.handleCloseTags}
       >
-        <ManageTags contact={contact} onContactChange={updateContact} />
+        <ManageEntityTags type="contact" entity={contact} />
       </Modal>
     );
   }
@@ -273,7 +270,7 @@ class Contact extends Component {
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Button
-                onClick={this.openTagsModal}
+                onClick={this.handleOpenTags}
                 className="s-contact__action"
                 display="expanded"
               ><Trans id="contact.action.edit_tags">Edit tags</Trans></Button>

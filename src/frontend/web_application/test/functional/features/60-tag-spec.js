@@ -1,4 +1,5 @@
 const userUtil = require('../utils/user-util');
+const { switch: appSwitcher } = require('../utils/switch-application');
 
 describe('tag', () => {
   const EC = protractor.ExpectedConditions;
@@ -45,6 +46,16 @@ describe('tag', () => {
       .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-message__container', 'zoidberg@planet-express.tld'))), 5 * 1000))
       .then(() => element(by.cssContainingText('.m-message__container', 'zoidberg@planet-express.tld')).element(by.css('.m-message__actions-switcher')).click())
       .then(() => element(by.cssContainingText('.m-message-actions-container__action', __('Tags'))).click())
+      .then(() => expect(element(by.cssContainingText('.m-modal', __('Tags'))).isPresent()).toEqual(true));
+  });
+
+  it('manage tags on a contact', () => {
+    appSwitcher('Contacts')
+      .then(() => browser.wait(EC.presenceOf($('.m-contact-list__contact')), 5 * 1000))
+      .then(() => element(by.cssContainingText('.m-contact-list__contact', 'Bender Bending Rodriguez')).click())
+      .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-contact-profile__name', 'Bender Bending Rodriguez'))), 5 * 1000))
+      .then(() => element(by.css('.s-contact__actions-switcher')).click())
+      .then(() => element(by.cssContainingText('.s-contact__action', __('Edit tags'))).click())
       .then(() => expect(element(by.cssContainingText('.m-modal', __('Tags'))).isPresent()).toEqual(true));
   });
 });
