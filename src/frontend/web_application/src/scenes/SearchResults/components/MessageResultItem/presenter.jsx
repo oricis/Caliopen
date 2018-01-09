@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
+import { WithTags, getTagLabelFromName } from '../../../../modules/tags';
 import Link from '../../../../components/Link';
 import MessageDate from '../../../../components/MessageDate';
 import AuthorAvatar from '../../../../components/AuthorAvatar';
@@ -16,6 +17,7 @@ import './style.scss';
 
 class MessageResultItem extends PureComponent {
   static propTypes = {
+    i18n: PropTypes.shape({}).isRequired,
     message: PropTypes.shape({}).isRequired,
     term: PropTypes.string.isRequired,
     highlights: PropTypes.shape({}),
@@ -33,14 +35,18 @@ class MessageResultItem extends PureComponent {
   }
 
   renderTags() {
-    const { message } = this.props;
+    const { i18n, message } = this.props;
 
-    return message.tags && message.tags.map(tag => (
-      <span key={tag.name}>
-        {' '}
-        <Badge className="s-message-result-item__tag">{tag.name}</Badge>
-      </span>
-    ));
+    return (
+      <WithTags render={userTags => message.tags && message.tags.map(
+        name => (
+          <span key={name}>
+            {' '}
+            <Badge className="s-message-result-item__tag">{getTagLabelFromName(i18n, userTags, name)}</Badge>
+          </span>
+        ))}
+      />
+    );
   }
 
   renderHighlights() {

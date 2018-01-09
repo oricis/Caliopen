@@ -1,3 +1,4 @@
+import { withI18n } from 'lingui-react';
 import Presenter from './presenter';
 
-export default Presenter;
+export default withI18n()(Presenter);

@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { WithTags, getTagLabelFromName } from '../../../../modules/tags';
 import Link from '../../../../components/Link';
+import Badge from '../../../../components/Badge';
 import ContactAvatarLetter, { SIZE_SMALL } from '../../../../components/ContactAvatarLetter';
 import TextBlock from '../../../../components/TextBlock';
 import { formatName } from '../../../../services/contact';
@@ -11,6 +13,7 @@ const CONTACT_NAME_PROPERTIES = ['title', 'name_prefix, name_suffix', 'family_na
 
 class ContactResultItem extends PureComponent {
   static propTypes = {
+    i18n: PropTypes.shape({}).isRequired,
     term: PropTypes.string.isRequired,
     highlights: PropTypes.shape({}),
     contact: PropTypes.shape({}).isRequired,
@@ -25,6 +28,21 @@ class ContactResultItem extends PureComponent {
     const { term, contact, contact_display_format: format } = this.props;
 
     return (<Highlights term={term} highlights={formatName({ contact, format })} />);
+  }
+
+  renderTags() {
+    const { i18n, contact } = this.props;
+
+    return (
+      <WithTags render={userTags => contact.tags && contact.tags.map(
+        name => (
+          <span key={name}>
+            {' '}
+            <Badge className="m-contact-result-item__tag">{getTagLabelFromName(i18n, userTags, name)}</Badge>
+          </span>
+        ))}
+      />
+    );
   }
 
   renderHighlights() {
@@ -54,7 +72,9 @@ class ContactResultItem extends PureComponent {
         <TextBlock>
           {this.renderHighlights()}
         </TextBlock>
-        {/*  TODO: add tags */}
+        <TextBlock>
+          {this.renderTags()}
+        </TextBlock>
       </Link>
     );
   }
