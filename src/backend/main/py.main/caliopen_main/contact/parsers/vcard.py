@@ -179,11 +179,13 @@ class VcardContact(object):
 class VcardParser(object):
     """Vcard format parser class."""
 
-    def __init__(self, file):
+    def __init__(self, f):
         """Read a vcard file and create a generator on vcard objects."""
-        self.file = file
-        with open(file) as fh:
-            self._vcards = vobject.readComponents(fh.read())
+        if isinstance(f, file):
+            self._vcards = vobject.readComponents(f)
+        else:
+            with open(f) as fh:
+                self._vcards = vobject.readComponents(fh.read())
 
     def parse(self):
         """Generator on vcards objects read from read file."""
