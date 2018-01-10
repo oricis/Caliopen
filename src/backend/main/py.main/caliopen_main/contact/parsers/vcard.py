@@ -142,7 +142,7 @@ class VcardContact(object):
         elif 'fn' in self._vcard.contents:
             contact.title = self._vcard.fn.value
         elif 'cn' in self._vcard.contents:
-            contact.title = self._vcard.contents['cn'].value
+            contact.title = self._vcard.contents['cn'][0].value
         elif self._vcard.contents.get('email'):
             contact.title = self._vcard.contents['email'][0].value
 
