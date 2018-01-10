@@ -24,12 +24,13 @@ func (cb *CassandraBackend) CreateContact(contact *Contact) error {
 	if err != nil {
 		return fmt.Errorf("[CassandraBackend] CreateContact: %s", err)
 	}
-
-	err = cb.UpdateRelated(contact, true)
+	isNew := true
+	err = cb.UpdateRelated(contact, isNew)
 	if err != nil {
 		log.WithError(err).Error("[CassandraBackend] CreateContact : failed to UpdateRelated")
 	}
-	err = cb.UpdateLookups(contact)
+
+	err = cb.UpdateLookups(contact, isNew)
 
 	if err != nil {
 		log.WithError(err).Error("[CassandraBackend] CreateContact : failed to UpdateLookups")
@@ -88,11 +89,12 @@ func (cb *CassandraBackend) UpdateContact(contact *Contact, fields map[string]in
 		Update(cassaFields).
 		Run()
 
-	err = cb.UpdateRelated(contact, false)
+	isNew := false
+	err = cb.UpdateRelated(contact, isNew)
 	if err != nil {
 		log.WithError(err).Error("[CassandraBackend] UpdateContact: failed to update related")
 	}
-	err = cb.UpdateLookups(contact)
+	err = cb.UpdateLookups(contact, isNew)
 	if err != nil {
 		log.WithError(err).Error("[CassandraBackend] UpdateContact: failed to update lookups")
 	}
@@ -114,40 +116,6 @@ func (cb *CassandraBackend) DeleteContact(contact *Contact) error {
 	err = cb.DeleteLookups(contact)
 	if err != nil {
 		log.WithError(err).Error("[CassandraBackend] DeleteContact: failed to delete lookups")
-	}
-
-	// seek into contact_lookup to delete references to the deleted contact
-	related, err := cb.Session.Query(`SELECT * from contact_lookup WHERE user_id = ?`, contact.UserId.String()).Iter().SliceMap()
-	if err != nil {
-		return err
-	}
-	for _, lookup := range related {
-		ids := lookup["contact_ids"].([]gocql.UUID)
-		updated_ids := []string{}
-		for _, id := range ids {
-			if id.String() != contact.ContactId.String() { // keep only contact_ids that are not from the deleted contact
-				updated_ids = append(updated_ids, id.String())
-			}
-		}
-		if len(ids) == 0 || // we found an empty lookup: it should have been removed ! cleaning up
-			len(updated_ids) == 0 { // lookup had only one contact_ids and we just deleted it. cleaning up
-			err := cb.Session.Query(`DELETE FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
-				lookup["user_id"],
-				lookup["value"],
-				lookup["type"]).Exec()
-			if err != nil {
-				return err
-			}
-		} else if len(ids) != len(updated_ids) { // an id has been pop, need to update contact_lookup
-			err := cb.Session.Query(`UPDATE contact_lookup SET contact_ids = ? WHERE user_id = ? AND value = ? AND type = ?`,
-				updated_ids,
-				lookup["user_id"],
-				lookup["value"],
-				lookup["type"]).Exec()
-			if err != nil {
-				return err
-			}
-		}
 	}
 
 	return nil

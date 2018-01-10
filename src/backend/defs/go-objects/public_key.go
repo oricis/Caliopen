@@ -5,13 +5,14 @@
 package objects
 
 import (
+	"bytes"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"time"
 )
 
 type PublicKey struct {
-	ContactId       UUID             `cql:"contact_id"       json:"contact_id"`
+	ContactId       UUID             `cql:"contact_id"       json:"contact_id"          frontend:"omit"`
 	DateInsert      time.Time        `cql:"date_insert"      json:"date_insert"`
 	DateUpdate      time.Time        `cql:"date_update"      json:"date_update"`
 	ExpireDate      time.Time        `cql:"expire_date"      json:"expire_date"`
@@ -20,8 +21,11 @@ type PublicKey struct {
 	Name            string           `cql:"name"             json:"name"`
 	PrivacyFeatures *PrivacyFeatures `cql:"privacy_features" json:"privacy_features"`
 	Size            int              `cql:"size"             json:"size"`
-	UserId          UUID             `cql:"user_id"          json:"user_id"`
+	Type            string           `cql:"type"             json:"type"`
+	UserId          UUID             `cql:"user_id"          json:"user_id"             frontend:"omit"`
 }
+
+type PublicKeys []PublicKey
 
 // unmarshal a map[string]interface{} that must owns all PublicKey's fields
 // typical usage is for unmarshaling response from Cassandra backend
@@ -106,8 +110,17 @@ func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
 
 // GetTableInfos implements HasTable interface.
 // It returns params needed by CassandraBackend to CRUD on PublicKey table.
-func (pk *PublicKey) GetTableInfos() (table string, partitionKeys []string) {
-	return "public_key", []string{"user_id", "contact_id", "name"}
+func (pk *PublicKey) GetTableInfos() (table string, partitionKeys map[string]string, clusteringKeys map[string]string) {
+	return "public_key",
+		map[string]string{
+			"UserId":    "user_id",
+			"ContactId": "contact_id",
+			"Name":      "name",
+		},
+		map[string]string{
+			"UserId":    "user_id",
+			"ContactId": "contact_id",
+		}
 }
 
 func (pk *PublicKey) MarshallNew(contacts ...interface{}) {
@@ -118,4 +131,32 @@ func (pk *PublicKey) MarshallNew(contacts ...interface{}) {
 		pk.DateInsert = time.Now()
 		pk.DateUpdate = pk.DateInsert
 	}
+}
+
+// return a JSON representation of PublicKey suitable for frontend client
+func (pk *PublicKey) MarshalFrontEnd() ([]byte, error) {
+	return pk.JSONMarshaller("frontend")
+}
+
+func (pks PublicKeys) MarshalFrontEnd() ([]byte, error) {
+	var jsonBuf bytes.Buffer
+	jsonBuf.WriteByte('[')
+	first := true
+	for _, pk := range pks {
+		if first {
+			first = false
+		} else {
+			jsonBuf.WriteByte(',')
+		}
+		b, e := pk.MarshalFrontEnd()
+		if e == nil {
+			jsonBuf.Write(b)
+		}
+	}
+	jsonBuf.WriteByte(']')
+	return jsonBuf.Bytes(), nil
+}
+
+func (pk *PublicKey) JSONMarshaller(context string) ([]byte, error) {
+	return JSONMarshaller(context, pk)
 }

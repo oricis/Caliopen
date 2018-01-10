@@ -30,7 +30,9 @@ type (
 	}
 
 	HasTable interface {
-		GetTableInfos() (table string, partitionKeys []string)
+		// GetTableInfos returns the table name and maps with couple [PropertyName]CassandryKeys
+		GetTableInfos() (table string, partitionKeys map[string]string, collectionKeys map[string]string)
+		UnmarshalCQLMap(input map[string]interface{})
 	}
 )
 

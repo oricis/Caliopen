@@ -1,12 +1,9 @@
 package objects
 
 import (
-	"bytes"
 	"encoding/json"
-	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
-	"gopkg.in/oleiade/reflections.v1"
 	"sync"
 	"time"
 )
@@ -14,7 +11,7 @@ import (
 type (
 	// cql_lookup tags indicate properties which are a lookup value in the specified lookup table
 	Contact struct {
-		Locker          *sync.Mutex       `cql:"-"                 json:"-"`
+		Locker          *sync.Mutex       `cql:"-"                  json:"-"`
 		AdditionalName  string            `cql:"additional_name"    json:"additional_name"      patch:"user"`
 		Addresses       []PostalAddress   `cql:"addresses"          json:"addresses"            patch:"user"`
 		Avatar          string            `cql:"avatar"             json:"avatar"               patch:"user"`
@@ -22,27 +19,27 @@ type (
 		DateInsert      time.Time         `cql:"date_insert"        json:"date_insert"`
 		DateUpdate      time.Time         `cql:"date_update"        json:"date_update"`
 		Deleted         bool              `cql:"deleted"            json:"deleted"`
-		Emails          []EmailContact    `cql:"emails"             json:"emails"               patch:"user"        cql_lookup:"contact_lookup"`
+		Emails          []EmailContact    `cql:"emails"             json:"emails"               patch:"user"`
 		FamilyName      string            `cql:"family_name"        json:"family_name"          patch:"user"`
 		GivenName       string            `cql:"given_name"         json:"given_name"           patch:"user"`
 		Groups          []string          `cql:"groups"             json:"groups"               patch:"user"`
-		Identities      []SocialIdentity  `cql:"identities"         json:"identities"           patch:"user"        cql_lookup:"contact_lookup"`
-		Ims             []IM              `cql:"ims"                json:"ims"                  patch:"user"        cql_lookup:"contact_lookup"`
+		Identities      []SocialIdentity  `cql:"identities"         json:"identities"           patch:"user"`
+		Ims             []IM              `cql:"ims"                json:"ims"                  patch:"user"`
 		Infos           map[string]string `cql:"infos"              json:"infos"                patch:"user"`
 		NamePrefix      string            `cql:"name_prefix"        json:"name_prefix"          patch:"user"`
 		NameSuffix      string            `cql:"name_suffix"        json:"name_suffix"          patch:"user"`
 		Organizations   []Organization    `cql:"organizations"      json:"organizations"        patch:"user"`
-		Phones          []Phone           `cql:"phones"             json:"phones"               patch:"user"        cql_lookup:"contact_lookup"`
+		Phones          []Phone           `cql:"phones"             json:"phones"               patch:"user"`
 		PrivacyIndex    *PrivacyIndex     `cql:"pi"                 json:"pi"`
-		PublicKeys      []PublicKey       `cql:"-"        json:"public_keys"`
+		PublicKeys      PublicKeys        `cql:"-"                  json:"public_keys"`
 		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features"`
 		Tags            []string          `cql:"tagnames"           json:"tags"                 patch:"user"`
 		Title           string            `cql:"title"              json:"title"                patch:"user"`
 		UserId          UUID              `cql:"user_id"            json:"user_id"`
 	}
 
-	// ContactLookup is the model of a Cassandra table to lookup contacts by address/email/phone/etc.
-	ContactLookup struct {
+	// ContactByContactPoints is the model of a Cassandra table to lookup contacts by address/email/phone/etc.
+	ContactByContactPoints struct {
 		ContactIDs []string `cql:"contact_ids"`
 		Type       string   `cql:"type"`
 		UserID     string   `cql:"user_id"`
@@ -379,57 +376,7 @@ func (c *Contact) MarshalFrontEnd() ([]byte, error) {
 // outputs a JSON representation of an object
 // this marshaller takes account of custom tags for given 'context'
 func (c *Contact) JSONMarshaller(context string) ([]byte, error) {
-	var jsonBuf bytes.Buffer
-	enc := json.NewEncoder(&jsonBuf)
-
-	fields, err := reflections.Fields(c)
-	if err != nil {
-		return jsonBuf.Bytes(), err
-	}
-	jsonBuf.WriteByte('{')
-	first := true
-fieldsLoop:
-	for _, field := range fields {
-		switch context {
-		case "frontend":
-			front, err := reflections.GetFieldTag(*c, field, "frontend")
-			if err == nil {
-				switch front {
-				case "omit":
-					continue fieldsLoop
-				}
-			}
-		}
-		j_field, err := reflections.GetFieldTag(c, field, "json")
-		if err != nil {
-			log.WithError(err).Warnf("reflection for field %s failed", field)
-		} else {
-			if j_field != "" && j_field != "-" {
-				if first {
-					first = false
-				} else {
-					jsonBuf.WriteByte(',')
-				}
-				jsonBuf.WriteString("\"" + j_field + "\":")
-				field_value, err := reflections.GetField(c, field)
-				j_formatter, err := reflections.GetFieldTag(c, field, "formatter")
-				if err == nil {
-					switch j_formatter {
-					case "RFC3339Milli":
-						jsonBuf.WriteString("\"" + field_value.(time.Time).Format(RFC3339Milli) + "\"")
-					default:
-						enc.Encode(field_value)
-					}
-				} else {
-					jsonBuf.Write([]byte{'"', '"'})
-				}
-			} else {
-				log.Warnf("Invalid field %s value: %s", field, j_field)
-			}
-		}
-	}
-	jsonBuf.WriteByte('}')
-	return jsonBuf.Bytes(), nil
+	return JSONMarshaller(context, c)
 }
 
 func (c *Contact) JsonTags() map[string]string {
@@ -478,15 +425,22 @@ func (c *Contact) GetSetNested() <-chan interface{} {
 		for i, _ := range c.Phones {
 			getSet <- &(c.Phones[i])
 		}
-		c.Locker.Unlock()
 		close(getSet)
+		c.Locker.Unlock()
 	}(c.Locker, getSet)
 
 	return getSet
 }
 
-// GetSetNested returns a chan to iterate over pointers to included structs that are stored in separate tables.
-// It allows the caller to get and/or set this structs, concurrent safely.
+// GetRelatedList returns a map[PropertyKey]Type of structs that are embedded into a Contact from joined tables
+func (c *Contact) GetRelatedList() map[string]interface{} {
+	return map[string]interface{}{
+		"PublicKeys": &PublicKey{},
+	}
+}
+
+// GetSetRelated returns a chan to iterate over pointers to included structs that are stored in separate tables.
+// It allows the caller to get and/or set these structs, concurrent safely.
 func (c *Contact) GetSetRelated() <-chan interface{} {
 	getSet := make(chan interface{})
 	if c.Locker == nil {
@@ -497,9 +451,62 @@ func (c *Contact) GetSetRelated() <-chan interface{} {
 		for i, _ := range c.PublicKeys {
 			getSet <- &(c.PublicKeys[i])
 		}
-		c.Locker.Unlock()
 		close(getSet)
+		c.Locker.Unlock()
 	}(c.Locker, getSet)
 
 	return getSet
+}
+
+// GetLookups returns a slide of structs that must be up-to-date with Contact.
+// These structs must implement StoreLookup interface
+func (c *Contact) GetLookups() []StoreLookup {
+	return []StoreLookup{
+		&ContactByContactPoints{},
+	}
+}
+
+// CleanupLookups implements StoreLookup interface.
+// It returns a func which removes contact points related to the contact given as param of the variadic func.
+func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) func(session *gocql.Session) error {
+	if len(contacts) == 1 {
+		contact := contacts[0].(*Contact)
+		return func(session *gocql.Session) error {
+			// seek into contact_lookup to delete references to the deleted contact
+			related, err := session.Query(`SELECT * from contact_lookup WHERE user_id = ?`, contact.UserId.String()).Iter().SliceMap()
+			if err != nil {
+				return err
+			}
+			for _, lookup := range related {
+				ids := lookup["contact_ids"].([]gocql.UUID)
+				updated_ids := []string{}
+				for _, id := range ids {
+					if id.String() != contact.ContactId.String() { // keep only contact_ids that are not from the deleted contact
+						updated_ids = append(updated_ids, id.String())
+					}
+				}
+				if len(ids) == 0 || // we found an empty lookup: it should have been removed ! cleaning up
+					len(updated_ids) == 0 { // lookup had only one contact_ids and we just deleted it. cleaning up
+					err := session.Query(`DELETE FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
+						lookup["user_id"],
+						lookup["value"],
+						lookup["type"]).Exec()
+					if err != nil {
+						return err
+					}
+				} else if len(ids) != len(updated_ids) { // an id has been pop, need to update contact_lookup
+					err := session.Query(`UPDATE contact_lookup SET contact_ids = ? WHERE user_id = ? AND value = ? AND type = ?`,
+						updated_ids,
+						lookup["user_id"],
+						lookup["value"],
+						lookup["type"]).Exec()
+					if err != nil {
+						return err
+					}
+				}
+			}
+			return nil
+		}
+	}
+	return nil
 }
