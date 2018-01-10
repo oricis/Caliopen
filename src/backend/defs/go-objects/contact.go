@@ -500,7 +500,7 @@ func (c *Contact) GetLookupKeys() <-chan StoreLookup {
 		for _, im := range c.Ims {
 			key := ContactByContactPoints{
 				UserID: c.UserId.String(),
-				Type:   "email",
+				Type:   "im",
 				Value:  im.Address,
 			}
 			getter <- &key

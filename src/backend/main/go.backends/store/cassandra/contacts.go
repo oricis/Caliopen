@@ -28,17 +28,20 @@ func (cb *CassandraBackend) CreateContact(contact *Contact) error {
 	isNew := true
 
 	// create related rows in joined tables
-	err = cb.UpdateRelated(contact, isNew)
-	if err != nil {
-		log.WithError(err).Error("[CassandraBackend] CreateContact : failed to UpdateRelated")
-	}
+	go func(*CassandraBackend, *Contact, bool) {
+		err = cb.UpdateRelated(contact, isNew)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] CreateContact : failed to UpdateRelated")
+		}
+	}(cb, contact, isNew)
 
 	// create related rows in relevant lookup tables
-	err = cb.UpdateLookups(contact, isNew)
-
-	if err != nil {
-		log.WithError(err).Error("[CassandraBackend] CreateContact : failed to UpdateLookups")
-	}
+	go func(*CassandraBackend, *Contact, bool) {
+		err = cb.UpdateLookups(contact, isNew)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] CreateContact : failed to UpdateLookups")
+		}
+	}(cb, contact, isNew)
 
 	return nil
 }
@@ -88,18 +91,23 @@ func (cb *CassandraBackend) UpdateContact(contact *Contact, fields map[string]in
 		Run()
 	isNew := false
 
-	// update related rows in joined tables
-	err = cb.UpdateRelated(contact, isNew)
-	if err != nil {
-		log.WithError(err).Error("[CassandraBackend] UpdateContact: failed to update related")
-	}
+	// create related rows in joined tables
+	go func(*CassandraBackend, *Contact, bool) {
+		err = cb.UpdateRelated(contact, isNew)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] UpdateContact : failed to UpdateRelated")
+		}
+	}(cb, contact, isNew)
 
-	// update related rows in relevant lookup tables
-	err = cb.UpdateLookups(contact, isNew)
-	if err != nil {
-		log.WithError(err).Error("[CassandraBackend] UpdateContact: failed to update lookups")
-	}
-	return err
+	// create related rows in relevant lookup tables
+	go func(*CassandraBackend, *Contact, bool) {
+		err = cb.UpdateLookups(contact, isNew)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] UpdateContact : failed to UpdateLookups")
+		}
+	}(cb, contact, isNew)
+
+	return nil
 }
 
 // DeleteContact removes Contact from Cassandra
@@ -113,16 +121,20 @@ func (cb *CassandraBackend) DeleteContact(contact *Contact) error {
 	}
 
 	// delete related rows in joined tables
-	err = cb.DeleteRelated(contact)
-	if err != nil {
-		log.WithError(err).Error("[CassandraBackend] DeleteContact: failed to delete related")
-	}
+	go func(*CassandraBackend, *Contact) {
+		err = cb.DeleteRelated(contact)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] DeleteContact: failed to delete related")
+		}
+	}(cb, contact)
 
 	// delete related rows in relevant lookup tables
-	err = cb.DeleteLookups(contact)
-	if err != nil {
-		log.WithError(err).Error("[CassandraBackend] DeleteContact: failed to delete lookups")
-	}
+	go func(*CassandraBackend, *Contact) {
+		err = cb.DeleteLookups(contact)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] DeleteContact: failed to delete lookups")
+		}
+	}(cb, contact)
 
 	return nil
 }
