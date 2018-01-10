@@ -2,6 +2,7 @@ package objects
 
 import (
 	"encoding/json"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"sync"
@@ -407,21 +408,27 @@ func (c *Contact) GetSetNested() <-chan interface{} {
 	}
 	go func(*sync.Mutex, chan interface{}) {
 		c.Locker.Lock()
+		// Addresses
 		for i, _ := range c.Addresses {
 			getSet <- &(c.Addresses[i])
 		}
+		// Emails
 		for i, _ := range c.Emails {
 			getSet <- &(c.Emails[i])
 		}
+		// Identities
 		for i, _ := range c.Identities {
 			getSet <- &(c.Identities[i])
 		}
+		// Ims
 		for i, _ := range c.Ims {
 			getSet <- &(c.Ims[i])
 		}
+		// Organizations
 		for i, _ := range c.Organizations {
 			getSet <- &(c.Organizations[i])
 		}
+		// Phones
 		for i, _ := range c.Phones {
 			getSet <- &(c.Phones[i])
 		}
@@ -458,12 +465,118 @@ func (c *Contact) GetSetRelated() <-chan interface{} {
 	return getSet
 }
 
-// GetLookups returns a slide of structs that must be up-to-date with Contact.
+// GetLookups returns a map of table(s) and model(s) that must be up-to-date with Contact.
 // These structs must implement StoreLookup interface
-func (c *Contact) GetLookups() []StoreLookup {
-	return []StoreLookup{
-		&ContactByContactPoints{},
+func (c *Contact) GetLookupsTables() map[string]StoreLookup {
+	return map[string]StoreLookup{
+		"contact_lookup": &ContactByContactPoints{},
 	}
+}
+
+// GetLookupKeys returns a chan to iterate over fields and values that make up the lookup tables keys
+func (c *Contact) GetLookupKeys() <-chan StoreLookup {
+	getter := make(chan StoreLookup)
+
+	go func(chan StoreLookup) {
+		// emails
+		for _, email := range c.Emails {
+			key := ContactByContactPoints{
+				UserID: c.UserId.String(),
+				Type:   "email",
+				Value:  email.Address,
+			}
+			getter <- &key
+		}
+		// identities
+		for _, identity := range c.Identities {
+			key := ContactByContactPoints{
+				UserID: c.UserId.String(),
+				Type:   "social",
+				Value:  identity.Name,
+			}
+			getter <- &key
+		}
+		// Ims
+		for _, im := range c.Ims {
+			key := ContactByContactPoints{
+				UserID: c.UserId.String(),
+				Type:   "email",
+				Value:  im.Address,
+			}
+			getter <- &key
+		}
+		// phones
+		for _, phone := range c.Phones {
+			key := ContactByContactPoints{
+				UserID: c.UserId.String(),
+				Type:   "phone",
+				Value:  phone.Number,
+			}
+			getter <- &key
+
+		}
+		close(getter)
+	}(getter)
+
+	return getter
+}
+
+func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) func(session *gocql.Session) error {
+	if len(contacts) == 1 {
+		contact := contacts[0].(*Contact)
+		return func(session *gocql.Session) error {
+			for lookup := range contact.GetLookupKeys() {
+				lkp := lookup.(*ContactByContactPoints)
+				// try to get the contact_lookup
+				contactIds := new([]string)
+				session.Query(`SELECT contact_ids from contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
+					lkp.UserID,
+					lkp.Value,
+					lkp.Type,
+				).Scan(contactIds)
+				if len(*contactIds) < 1 { // contact_lookup not found or empty => set one
+					err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_ids) VALUES (?,?,?,?)`,
+						(*lkp).UserID,
+						(*lkp).Value,
+						(*lkp).Type,
+						[]string{contact.ContactId.String()},
+					).Exec()
+					if err != nil {
+						log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
+							lkp.UserID,
+							lkp.Value,
+							lkp.Type)
+					}
+				} else { // contact_lookup found with contact_ids => udpate if needed
+					idFound := false
+					for _, contactId := range *contactIds {
+						if contactId == contact.ContactId.String() {
+							idFound = true
+							break
+						}
+					}
+					if !idFound {
+						(*contactIds) = append((*contactIds), contact.ContactId.String())
+						err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_ids) VALUES (?,?,?,?)`,
+							(*lkp).UserID,
+							(*lkp).Value,
+							(*lkp).Type,
+							*contactIds,
+						).Exec()
+						if err != nil {
+							log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
+								lkp.UserID,
+								lkp.Value,
+								lkp.Type)
+						}
+					}
+				}
+
+			}
+			return nil
+		}
+	}
+	return nil
 }
 
 // CleanupLookups implements StoreLookup interface.

@@ -14,22 +14,26 @@ import (
 )
 
 // CreateContact saves Contact to Cassandra
-// AND fills/updates related lookup tables
+// AND fills/updates joined and lookup tables
 func (cb *CassandraBackend) CreateContact(contact *Contact) error {
 	contactT := cb.IKeyspace.Table("contact", &Contact{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "contact_id"},
 	}).WithOptions(gocassa.Options{TableName: "contact"}) // need to overwrite default gocassa table naming convention
 
+	// save contact
 	err := contactT.Set(contact).Run()
 	if err != nil {
 		return fmt.Errorf("[CassandraBackend] CreateContact: %s", err)
 	}
 	isNew := true
+
+	// create related rows in joined tables
 	err = cb.UpdateRelated(contact, isNew)
 	if err != nil {
 		log.WithError(err).Error("[CassandraBackend] CreateContact : failed to UpdateRelated")
 	}
 
+	// create related rows in relevant lookup tables
 	err = cb.UpdateLookups(contact, isNew)
 
 	if err != nil {
@@ -40,6 +44,8 @@ func (cb *CassandraBackend) CreateContact(contact *Contact) error {
 }
 
 func (cb *CassandraBackend) RetrieveContact(user_id, contact_id string) (contact *Contact, err error) {
+
+	// retrieve contact
 	contact = new(Contact).NewEmpty().(*Contact)
 	m := map[string]interface{}{}
 	q := cb.Session.Query(`SELECT * FROM contact WHERE user_id = ? AND contact_id = ?`, user_id, contact_id)
@@ -49,18 +55,10 @@ func (cb *CassandraBackend) RetrieveContact(user_id, contact_id string) (contact
 	}
 	contact.UnmarshalCQLMap(m)
 
+	// embed objects from joined tables
 	err = cb.RetrieveRelated(contact)
 	if err != nil {
 		log.WithError(err).Error("[CassandraBackend] RetrieveContact: failed to retrieve related.")
-	}
-	// retrieve public keys for this contact and
-	// add keys to contact object.
-	var keys []map[string]interface{}
-	keys, err = cb.Session.Query(`SELECT * FROM public_key WHERE user_id = ? AND contact_id = ?`, user_id, contact_id).Iter().SliceMap()
-	for _, key := range keys {
-		pk := &PublicKey{}
-		pk.UnmarshalCQLMap(key)
-		contact.PublicKeys = append(contact.PublicKeys, *pk)
 	}
 
 	return contact, err
@@ -88,12 +86,15 @@ func (cb *CassandraBackend) UpdateContact(contact *Contact, fields map[string]in
 		Where(gocassa.Eq("user_id", contact.UserId.String()), gocassa.Eq("contact_id", contact.ContactId.String())).
 		Update(cassaFields).
 		Run()
-
 	isNew := false
+
+	// update related rows in joined tables
 	err = cb.UpdateRelated(contact, isNew)
 	if err != nil {
 		log.WithError(err).Error("[CassandraBackend] UpdateContact: failed to update related")
 	}
+
+	// update related rows in relevant lookup tables
 	err = cb.UpdateLookups(contact, isNew)
 	if err != nil {
 		log.WithError(err).Error("[CassandraBackend] UpdateContact: failed to update lookups")
@@ -104,15 +105,20 @@ func (cb *CassandraBackend) UpdateContact(contact *Contact, fields map[string]in
 // DeleteContact removes Contact from Cassandra
 // AND removes contactID from related lookup_tables
 func (cb *CassandraBackend) DeleteContact(contact *Contact) error {
+
+	// (hard) delete contact. TODO: soft delete
 	err := cb.Session.Query(`DELETE FROM contact WHERE user_id = ? AND contact_id = ?`, contact.UserId.String(), contact.ContactId.String()).Exec()
 	if err != nil {
 		return err
 	}
 
+	// delete related rows in joined tables
 	err = cb.DeleteRelated(contact)
 	if err != nil {
 		log.WithError(err).Error("[CassandraBackend] DeleteContact: failed to delete related")
 	}
+
+	// delete related rows in relevant lookup tables
 	err = cb.DeleteLookups(contact)
 	if err != nil {
 		log.WithError(err).Error("[CassandraBackend] DeleteContact: failed to delete lookups")

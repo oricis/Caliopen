@@ -35,13 +35,14 @@ type (
 
 	// objects with joined objects stored in separate table
 	HasRelated interface {
-		GetRelatedList() map[string]interface{}
-		GetSetRelated() <-chan interface{}
+		GetRelatedList() map[string]interface{} // returns a map[PropertyKey]Type of structs that are embedded into a struct from joined table(s)
+		GetSetRelated() <-chan interface{}      // returns a chan to iterate over embedded structs
 	}
 
 	// objects with related tables that must be maintained up-to-date
 	HasLookup interface {
-		GetLookups() []StoreLookup
+		GetLookupsTables() map[string]StoreLookup // returns a map[tableName]interface{} with table(s) name(s) and model(s) of the lookup table(s)
+		GetLookupKeys() <-chan StoreLookup        // returns a chan to iterate over fields and values that make up the lookup tables keys
 	}
 
 	NewMarshaller interface {
@@ -49,7 +50,8 @@ type (
 	}
 
 	StoreLookup interface {
-		CleanupLookups(...interface{}) func(session *gocql.Session) error //returns the func which cassandra backend must run to cleanup lookups table
+		CleanupLookups(...interface{}) func(session *gocql.Session) error // returns a func for CassandraBackend that cleanups lookups table
+		UpdateLookups(...interface{}) func(session *gocql.Session) error  // returns a func for CassandraBackend that creates/updates lookups table
 	}
 	// structs capable to return JSON representation suitable for frontend client
 	FrontEndMarshaller interface {

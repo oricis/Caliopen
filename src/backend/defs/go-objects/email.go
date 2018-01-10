@@ -73,7 +73,7 @@ type (
 
 	// emails model embedded in contact
 	EmailContact struct {
-		Address   string `cql:"address"     json:"address"          cql_lookup:"contact_lookup"`
+		Address   string `cql:"address"     json:"address"`
 		EmailId   UUID   `cql:"email_id"    json:"email_id"`
 		IsPrimary bool   `cql:"is_primary"  json:"is_primary"`
 		Label     string `cql:"label"       json:"label"`
