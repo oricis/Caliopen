@@ -112,7 +112,7 @@ class Contact(BaseModel, IndexedModelMixin):
     avatar = columns.Text()
     date_insert = columns.DateTime()
     date_update = columns.DateTime()
-    deleted = columns.Boolean(default=False)
+    deleted = columns.DateTime()
     emails = columns.List(columns.UserDefinedType(Email))
     family_name = columns.Text()
     given_name = columns.Text()

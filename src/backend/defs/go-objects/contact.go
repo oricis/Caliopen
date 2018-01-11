@@ -16,10 +16,10 @@ type (
 		AdditionalName  string            `cql:"additional_name"    json:"additional_name"      patch:"user"`
 		Addresses       []PostalAddress   `cql:"addresses"          json:"addresses"            patch:"user"`
 		Avatar          string            `cql:"avatar"             json:"avatar"               patch:"user"`
-		ContactId       UUID              `cql:"contact_id"         json:"contact_id"`
-		DateInsert      time.Time         `cql:"date_insert"        json:"date_insert"`
-		DateUpdate      time.Time         `cql:"date_update"        json:"date_update"`
-		Deleted         bool              `cql:"deleted"            json:"deleted"`
+		ContactId       UUID              `cql:"contact_id"         json:"contact_id"   elastic:"omit"`
+		DateInsert      time.Time         `cql:"date_insert"        json:"date_insert"          formatter:"RFC3339Milli"`
+		DateUpdate      time.Time         `cql:"date_update"        json:"date_update"          formatter:"RFC3339Milli"`
+		Deleted         time.Time         `cql:"deleted"            json:"deleted"`
 		Emails          []EmailContact    `cql:"emails"             json:"emails"               patch:"user"`
 		FamilyName      string            `cql:"family_name"        json:"family_name"          patch:"user"`
 		GivenName       string            `cql:"given_name"         json:"given_name"           patch:"user"`
@@ -36,7 +36,7 @@ type (
 		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features"`
 		Tags            []string          `cql:"tagnames"           json:"tags"                 patch:"user"`
 		Title           string            `cql:"title"              json:"title"                patch:"user"`
-		UserId          UUID              `cql:"user_id"            json:"user_id"`
+		UserId          UUID              `cql:"user_id"            json:"user_id"      elastic:"omit"`
 	}
 
 	// ContactByContactPoints is the model of a Cassandra table to lookup contacts by address/email/phone/etc.
@@ -84,7 +84,7 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 	if dateUpdate, ok := input["date_update"].(time.Time); ok {
 		contact.DateUpdate = dateUpdate
 	}
-	if deleted, ok := input["deleted"].(bool); ok {
+	if deleted, ok := input["deleted"].(time.Time); ok {
 		contact.Deleted = deleted
 	}
 	if emails, ok := input["emails"]; ok && emails != nil {
@@ -249,8 +249,8 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	if date, ok := input["date_update"]; ok {
 		c.DateUpdate, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
-	if deleted, ok := input["deleted"].(bool); ok {
-		c.Deleted = deleted
+	if deleted, ok := input["deleted"]; ok {
+		c.Deleted, _ = time.Parse(time.RFC3339Nano, deleted.(string))
 	}
 	//emails
 	if emails, ok := input["emails"]; ok && emails != nil {
@@ -328,14 +328,14 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	//PrivacyIndex
-	if pi, ok := input["pi"]; ok {
+	if pi, ok := input["pi"]; ok && pi != nil {
 		PI := new(PrivacyIndex)
 		if err := PI.UnmarshalMap(pi.(map[string]interface{})); err == nil {
 			c.PrivacyIndex = PI
 		}
 	}
 	//PublicKeys
-	if pks, ok := input["public_keys"]; ok {
+	if pks, ok := input["public_keys"]; ok && pks != nil {
 		c.PublicKeys = []PublicKey{}
 		for _, pk := range pks.([]interface{}) {
 			K := new(PublicKey)
@@ -370,14 +370,18 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 
 // return a JSON representation of Contact suitable for frontend client
 func (c *Contact) MarshalFrontEnd() ([]byte, error) {
-	return c.JSONMarshaller("frontend")
+	return JSONMarshaller("frontend", c)
+}
+
+func (c *Contact) MarshelES() ([]byte, error) {
+	return JSONMarshaller("elastic", c)
 }
 
 // bespoke implementation of the json.Marshaller interface
 // outputs a JSON representation of an object
 // this marshaller takes account of custom tags for given 'context'
-func (c *Contact) JSONMarshaller(context string) ([]byte, error) {
-	return JSONMarshaller(context, c)
+func (c *Contact) JSONMarshaller() ([]byte, error) {
+	return JSONMarshaller("", c)
 }
 
 func (c *Contact) JsonTags() map[string]string {
