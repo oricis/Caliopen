@@ -28,6 +28,7 @@ func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
 	helpers.ComputeTitle(contact)
 	helpers.NormalizePhoneNumbers(contact)
 	MarshalNested(contact)
+	MarshalRelated(contact)
 
 	// concurrent creation in db & index
 	wg := new(sync.WaitGroup)
@@ -83,6 +84,8 @@ func (rest *RESTfacility) RetrieveContact(userID, contactID string) (contact *Co
 // - UpdateWithPatch()
 // - then UpdateContact() to save updated contact to stores & index if everything went good.
 func (rest *RESTfacility) PatchContact(patch []byte, userID, contactID string) error {
+
+	return errors.New("not implemented")
 
 	current_contact, err := rest.RetrieveContact(userID, contactID)
 	if err != nil {

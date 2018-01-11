@@ -13,9 +13,9 @@ import (
 
 type PublicKey struct {
 	ContactId       UUID             `cql:"contact_id"       json:"contact_id"          frontend:"omit"`
-	DateInsert      time.Time        `cql:"date_insert"      json:"date_insert"`
-	DateUpdate      time.Time        `cql:"date_update"      json:"date_update"`
-	ExpireDate      time.Time        `cql:"expire_date"      json:"expire_date"`
+	DateInsert      time.Time        `cql:"date_insert"      json:"date_insert"         formatter:"RFC3339Milli"`
+	DateUpdate      time.Time        `cql:"date_update"      json:"date_update"         formatter:"RFC3339Milli"`
+	ExpireDate      time.Time        `cql:"expire_date"      json:"expire_date"         formatter:"RFC3339Milli"`
 	Fingerprint     string           `cql:"fingerprint"      json:"fingerprint"`
 	Key             string           `cql:"key"              json:"key"`
 	Name            string           `cql:"name"             json:"name"`
@@ -128,14 +128,19 @@ func (pk *PublicKey) MarshallNew(contacts ...interface{}) {
 		c := contacts[0].(*Contact)
 		pk.UserId.UnmarshalBinary(c.UserId.Bytes())
 		pk.ContactId.UnmarshalBinary(c.ContactId.Bytes())
-		pk.DateInsert = time.Now()
-		pk.DateUpdate = pk.DateInsert
+		// do not change date if mashallNew has been called multiple time on a publickey being created
+		if pk.DateInsert.IsZero() {
+			pk.DateInsert = time.Now()
+		}
+		if pk.DateUpdate.IsZero() {
+			pk.DateUpdate = pk.DateInsert
+		}
 	}
 }
 
 // return a JSON representation of PublicKey suitable for frontend client
 func (pk *PublicKey) MarshalFrontEnd() ([]byte, error) {
-	return pk.JSONMarshaller("frontend")
+	return JSONMarshaller("frontend", pk)
 }
 
 func (pks PublicKeys) MarshalFrontEnd() ([]byte, error) {
@@ -157,6 +162,6 @@ func (pks PublicKeys) MarshalFrontEnd() ([]byte, error) {
 	return jsonBuf.Bytes(), nil
 }
 
-func (pk *PublicKey) JSONMarshaller(context string) ([]byte, error) {
-	return JSONMarshaller(context, pk)
+func (pk *PublicKey) JSONMarshaller() ([]byte, error) {
+	return JSONMarshaller("", pk)
 }
