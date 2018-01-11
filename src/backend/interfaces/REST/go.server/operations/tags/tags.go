@@ -2,13 +2,13 @@ package tags
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	swgErr "github.com/go-openapi/errors"
-	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
 	"github.com/tidwall/gjson"
 	"gopkg.in/gin-gonic/gin.v1"
@@ -24,8 +24,13 @@ func RetrieveUserTags(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	tags, err := caliopen.Facilities.RESTfacility.RetrieveUserTags(user_id)
 	if err != nil {
-		e := swgErr.New(http.StatusFailedDependency, err.Error())
-		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		returnedErr := new(swgErr.CompositeError)
+		if err.Code() == DbCaliopenErr && err.Cause().Error() == "not found" {
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), err, err.Cause())
+		} else {
+			returnedErr = swgErr.CompositeValidationError(err, err.Cause())
+		}
+		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 		ctx.Abort()
 	} else {
 		var respBuf bytes.Buffer
@@ -65,8 +70,13 @@ func CreateTag(ctx *gin.Context) {
 		tag.Label = strings.TrimSpace(tag.Label)
 		err := caliopen.Facilities.RESTfacility.CreateTag(&tag)
 		if err != nil {
-			e := swgErr.New(http.StatusFailedDependency, err.Error())
-			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			returnedErr := new(swgErr.CompositeError)
+			if err.Code() == DbCaliopenErr && err.Cause().Error() == "not found" {
+				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), err, err.Cause())
+			} else {
+				returnedErr = swgErr.CompositeValidationError(err, err.Cause())
+			}
+			http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 			ctx.Abort()
 		} else {
 			ctx.JSON(http.StatusOK, struct{ Location string }{
@@ -74,8 +84,7 @@ func CreateTag(ctx *gin.Context) {
 			})
 		}
 	} else {
-		err := errors.WithMessage(err, "Unable to json marshal the provided payload.")
-		e := swgErr.New(http.StatusBadRequest, err.Error())
+		e := swgErr.New(http.StatusBadRequest, fmt.Sprintf("Unable to json marshal the provided payload : %s", err))
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	}
@@ -95,8 +104,13 @@ func RetrieveTag(ctx *gin.Context) {
 	if user_id != "" {
 		tag, err := caliopen.Facilities.RESTfacility.RetrieveTag(user_id, tag_name)
 		if err != nil {
-			e := swgErr.New(http.StatusFailedDependency, err.Error())
-			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			returnedErr := new(swgErr.CompositeError)
+			if err.Code() == DbCaliopenErr && err.Cause().Error() == "tag not found" {
+				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), err, err.Cause())
+			} else {
+				returnedErr = swgErr.CompositeValidationError(err, err.Cause())
+			}
+			http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 			ctx.Abort()
 		} else {
 			tag_json, err := tag.MarshalFrontEnd()
@@ -152,10 +166,15 @@ func PatchTag(ctx *gin.Context) {
 		return
 	}
 
-	err = caliopen.Facilities.RESTfacility.PatchTag(patch, user_id, tag_name)
-	if err != nil {
-		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
-		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+	e := caliopen.Facilities.RESTfacility.PatchTag(patch, user_id, tag_name)
+	if e != nil {
+		returnedErr := new(swgErr.CompositeError)
+		if e.Code() == DbCaliopenErr && e.Cause().Error() == "not found" {
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), e, e.Cause())
+		} else {
+			returnedErr = swgErr.CompositeValidationError(e, e.Cause())
+		}
+		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 		ctx.Abort()
 		return
 	} else {
@@ -175,8 +194,13 @@ func DeleteTag(ctx *gin.Context) {
 	if user_id != "" {
 		err := caliopen.Facilities.RESTfacility.DeleteTag(user_id, tag_name)
 		if err != nil {
-			e := swgErr.New(http.StatusFailedDependency, err.Error())
-			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			returnedErr := new(swgErr.CompositeError)
+			if err.Code() == DbCaliopenErr && err.Cause().Error() == "tag not found" {
+				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), err, err.Cause())
+			} else {
+				returnedErr = swgErr.CompositeValidationError(err, err.Cause())
+			}
+			http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 			ctx.Abort()
 		} else {
 			ctx.Status(http.StatusNoContent)
@@ -267,10 +291,15 @@ func PatchResourceWithTags(ctx *gin.Context) {
 		return
 	}
 
-	err = caliopen.Facilities.RESTfacility.UpdateResourceTags(userID, resourceID, resourceType, patch)
-
-	if err != nil {
-		http_middleware.ServeError(ctx.Writer, ctx.Request, err)
+	e := caliopen.Facilities.RESTfacility.UpdateResourceTags(userID, resourceID, resourceType, patch)
+	if e != nil {
+		returnedErr := new(swgErr.CompositeError)
+		if e.Code() == DbCaliopenErr && e.Cause().Error() == "not found" {
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), e, e.Cause())
+		} else {
+			returnedErr = swgErr.CompositeValidationError(e, e.Cause())
+		}
+		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 		ctx.Abort()
 		return
 	}
