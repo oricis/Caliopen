@@ -109,6 +109,14 @@ func JSONMarshaller(context string, obj interface{}) ([]byte, error) {
 fieldsLoop:
 	for _, field := range fields {
 		switch context {
+		case "elastic":
+			j_elastic, err := reflections.GetFieldTag(obj, field, "elastic")
+			if err == nil {
+				switch j_elastic {
+				case "omit":
+					continue fieldsLoop
+				}
+			}
 		case "frontend":
 			front, err := reflections.GetFieldTag(obj, field, "frontend")
 			if err == nil {

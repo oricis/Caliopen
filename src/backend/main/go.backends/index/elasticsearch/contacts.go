@@ -16,7 +16,20 @@ import (
 )
 
 func (es *ElasticSearchBackend) CreateContact(contact *Contact) error {
-	return errors.New("[ElasticSearchBackend] not implemented")
+	es_contact, err := contact.MarshelES()
+	if err != nil {
+		log.WithError(err).Warn("[ElasticSearchBackend] failed to parse contact to json : %s", string(es_contact))
+		return err
+	}
+	resp, err := es.Client.Index().Index(contact.UserId.String()).Type(ContactIndexType).Id(contact.ContactId.String()).
+		BodyString(string(es_contact)).
+		Do(context.TODO())
+	if err != nil {
+		log.WithError(err).Warnf("[ElasticSearchBackend] CreateContact failed for user %s and contact %s", contact.UserId.String(), contact.ContactId.String())
+		return err
+	}
+	log.Infof("New msg indexed with id %s", resp.Id)
+	return nil
 }
 
 func (es *ElasticSearchBackend) UpdateContact(contact *Contact, fields map[string]interface{}) error {
