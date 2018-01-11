@@ -38,7 +38,7 @@ class TagsSettings extends Component {
         await requestTags();
       } catch (err) {
         this.setState({
-          createErrors: [(<Trans id="settings.tag.form.error.create_fail">Unable to create the tag. A tag with the same id may already exists.</Trans>)],
+          createErrors: [(<Trans id="settings.tag.form.error.create_fail">Unable to create the tag. A tag with the same id may already exist.</Trans>)],
         });
       }
     }
