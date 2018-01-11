@@ -1,0 +1,15 @@
+---
+type: object
+properties:
+  user_agent:
+    type: string
+  ip_address:
+    type: string
+  ecdsa_key:
+    type: object
+    "$ref": ECKey.yaml
+
+required:
+- user_agent
+- ip_address
+additionalProperties: false
