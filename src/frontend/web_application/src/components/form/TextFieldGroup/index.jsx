@@ -55,7 +55,7 @@ TextFieldGroup.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string.isRequired,
   showLabelforSr: PropTypes.bool,
-  errors: PropTypes.arrayOf(PropTypes.string),
+  errors: PropTypes.arrayOf(PropTypes.node),
   expanded: PropTypes.bool,
   className: PropTypes.string,
   display: PropTypes.oneOf(['inline', 'block']),

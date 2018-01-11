@@ -20,12 +20,14 @@ class TagSearch extends Component {
     onChange: PropTypes.func,
     i18n: PropTypes.shape({}).isRequired,
     isFetching: PropTypes.bool,
+    errors: PropTypes.arrayOf(PropTypes.node),
   };
 
   static defaultProps = {
     terms: '',
     onChange: () => {},
     isFetching: false,
+    errors: [],
   };
 
   state = {
@@ -55,7 +57,7 @@ class TagSearch extends Component {
   }
 
   render() {
-    const { i18n, isFetching } = this.props;
+    const { i18n, isFetching, errors } = this.props;
 
     return (
       <div className="m-add-tag">
@@ -67,6 +69,7 @@ class TagSearch extends Component {
           placeholder={i18n._('tags.form.add.placeholder', { defaults: 'New tag ...' })}
           onChange={this.handleChange}
           showLabelforSr
+          errors={errors}
         />
         <Button
           className="m-add-tag__button"
