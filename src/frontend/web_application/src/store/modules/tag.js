@@ -28,27 +28,25 @@ export function invalidate() {
   };
 }
 
-export function createTag({ label }) {
-  const data = { name: label.toLowerCase(), label };
-
+export function createTag({ tag }) {
   return {
     type: CREATE_TAG,
     payload: {
       request: {
         url: '/v2/tags',
         method: 'post',
-        data,
+        data: tag,
       },
     },
   };
 }
 
-export function requestTag({ id }) {
+export function requestTag({ name }) {
   return {
     type: REQUEST_TAG,
     payload: {
       request: {
-        url: `/v2/tags/${id}`,
+        url: `/v2/tags/${name}`,
       },
     },
   };
@@ -75,7 +73,7 @@ export function updateTag({ tag, original }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v2/tags/${tag.name}`,
+        url: `/v2/tags/${original.name}`,
         data,
       },
     },
