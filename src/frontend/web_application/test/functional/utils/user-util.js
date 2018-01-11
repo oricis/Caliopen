@@ -20,4 +20,13 @@ module.exports = {
     userMenu.element(by.css('[data-toggle="co-user-menu"]')).click();
     browser.wait(EC.urlContains('settings/account'), 5 * 1000);
   },
+  showSettings: (pageName = null) => element(by.css('.m-user-menu .m-dropdown__trigger')).click()
+    .then(() => element(by.cssContainingText('.m-user-menu .m-link', 'Settings')).click())
+    .then(() => {
+      if (!pageName) {
+        return undefined;
+      }
+
+      return element(by.cssContainingText('.l-settings__menu-bar .m-nav-list .m-link', pageName)).click();
+    }),
 };

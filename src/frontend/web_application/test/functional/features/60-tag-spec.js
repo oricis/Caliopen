@@ -1,4 +1,4 @@
-const userUtil = require('../utils/user-util');
+const { signin, showSettings } = require('../utils/user-util');
 const { switchApp } = require('../utils/navigation');
 
 describe('tag', () => {
@@ -9,7 +9,7 @@ describe('tag', () => {
   }[locale][key] || key);
 
   beforeEach(() => {
-    userUtil.signin();
+    signin();
   });
 
   it('manage tags on timeline', () => {
@@ -57,5 +57,31 @@ describe('tag', () => {
       .then(() => element(by.css('.s-contact__actions-switcher')).click())
       .then(() => element(by.cssContainingText('.s-contact__action', __('Edit tags'))).click())
       .then(() => expect(element(by.cssContainingText('.m-modal', __('Tags'))).isPresent()).toEqual(true));
+  });
+
+  describe('manage tags in settings', () => {
+    it('add and remove a new tag', () => {
+      const tagName = 'Mon nouveau tag';
+      showSettings('Tags')
+        .then(() => browser.wait(EC.presenceOf($('.m-add-tag .m-input-text')), 5 * 1000))
+        .then(() => element(by.css('.m-add-tag .m-input-text')).sendKeys(tagName))
+        .then(() => element(by.css(`.m-add-tag__button[aria-label=${__('Add')}]`)).click())
+        .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName))), 5 * 1000))
+        .then(() => element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).element(by.css('.m-tag-input__delete')).click())
+        .then(() => browser.sleep(1))
+        .then(() => expect(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).isPresent()).toEqual(false))
+      ;
+    });
+
+    it('rename a tag', () => {
+      const tagName = 'Edited ';
+      showSettings('Tags')
+        .then(() => browser.wait(EC.presenceOf($('.m-add-tag .m-input-text')), 5 * 1000))
+        .then(() => element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', __('Inbox'))).click())
+        .then(() => element(by.css('.m-tag-input__input .m-input-text')).sendKeys(tagName))
+        .then(() => element(by.css('.m-tag-input .m-button[aria-label=Save]')).click())
+        .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', 'Edited Inbox')), 5 * 1000)))
+      ;
+    });
   });
 });

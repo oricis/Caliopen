@@ -6,6 +6,7 @@ const actions = {
   get: createAction('Get tags'),
   post: createAction('Create tag'),
   delete: createAction('Delete a tag'),
+  patch: createAction('Patch a tag'),
 };
 
 const selectors = {
@@ -31,6 +32,21 @@ const reducer = {
     const copy = state.slice(0);
     return [...state].filter(tag => tag.name !== params.name);
   },
+  [actions.patch]: (state, { params, body }) => {
+    const nextState = [...state];
+    const original = state.find(tag => tag.name === params.name);
+    if (!original) {
+      throw `tag w/ id ${params.name} not found`;
+    }
+    const index = nextState.indexOf(original);
+    const { current_state, ...props } = body;
+    nextState[index] = {
+      ...original,
+      ...props,
+    };
+
+    return nextState;
+  },
 };
 
 const routes = {
@@ -52,6 +68,10 @@ const routes = {
   },
   'DELETE /:name': {
     action: actions.delete,
+    status: 204,
+  },
+  'PATCH /:name': {
+    action: actions.patch,
     status: 204,
   },
 };

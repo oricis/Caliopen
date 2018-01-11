@@ -20,9 +20,9 @@ import UserPrivacy from './scenes/UserPrivacy';
 // import SettingsIdentities from './scenes/SettingsIdentities';
 // import SettingsSignatures from './scenes/SettingsSignatures';
 import ApplicationSettings from './scenes/ApplicationSettings';
+import Tags from './scenes/TagsSettings';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
-// import Tags from './scenes/Tags';
 import PageNotFound from './scenes/PageNotFound';
 // import { Device } from './scenes/Devices';
 
@@ -127,12 +127,11 @@ export const getRouteConfig = ({ __ }) => [
             component: ApplicationSettings,
             label: __('settings.route.label.application'),
           },
-          // TODO: enable tags management
-          // {
-          //   path: '/settings/tags',
-          //   component: Tags,
-          //   label: __('settings.route.label.tags'),
-          // },
+          {
+            path: '/settings/tags',
+            component: Tags,
+            label: __('settings.route.label.tags'),
+          },
 
           // TODO: enable devices when API ready: https://tree.taiga.io/project/caliopen-caliopen/us/314?no-milestone=1
           // {
