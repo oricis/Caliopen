@@ -16,6 +16,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 // RetrieveUserTags fetches all tags tied to an user, system tags as well as custom tags.
@@ -53,6 +54,15 @@ func CreateTag(ctx *gin.Context) {
 	if err := b.Bind(ctx.Request, &tag); err == nil {
 		user_uuid, _ := uuid.FromString(ctx.MustGet("user_id").(string))
 		tag.User_id.UnmarshalBinary(user_uuid.Bytes())
+		if tag.Name == "" || strings.Replace(tag.Name, " ", "", -1) == "" {
+			err := errors.New("tag's name is empty")
+			e := swgErr.New(http.StatusBadRequest, err.Error())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+			return
+		}
+		tag.Name = strings.TrimSpace(tag.Name)
+		tag.Label = strings.TrimSpace(tag.Label)
 		err := caliopen.Facilities.RESTfacility.CreateTag(&tag)
 		if err != nil {
 			e := swgErr.New(http.StatusFailedDependency, err.Error())

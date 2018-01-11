@@ -21,9 +21,15 @@ func (rest *RESTfacility) RetrieveUserTags(user_id string) (tags []Tag, err erro
 // - adds the tag in db for user if it doesn't exist yet
 // - updates tag in-place with its new properties
 func (rest *RESTfacility) CreateTag(tag *Tag) error {
-	tag.Label = tag.Name
+	if tag.Label == "" {
+		tag.Label = tag.Name
+	}
 	var isUnique bool
-	isUnique, tag.Name = rest.IsTagLabelNameUnique(tag.Label, tag.User_id.String())
+	var err error
+	isUnique, tag.Name, err = rest.IsTagLabelNameUnique(tag.Label, tag.User_id.String())
+	if err != nil {
+		return err
+	}
 	if !isUnique {
 		return errors.New("[RESTfacility] tag's name/label conflict with existing one")
 	}
@@ -50,8 +56,16 @@ func (rest *RESTfacility) PatchTag(patch []byte, user_id, tag_name string) error
 	if err != nil {
 		return err
 	}
-	label := p.Get("label")
-	if isUnique, _ := rest.IsTagLabelNameUnique(label.MustString(), user_id); !isUnique {
+	label := p.Get("label").MustString()
+	if label == "" || strings.Replace(label, " ", "", -1) == "" {
+		return errors.New("[RESTfacility] new tag's label is empty")
+	}
+	isUnique, name, err := rest.IsTagLabelNameUnique(label, user_id)
+	if err != nil {
+		return errors.New("[RESTfacility] tag's name/label conflict with existing one")
+	}
+
+	if !isUnique && name != tag_name {
 		return errors.New("[RESTfacility] tag's name/label conflict with existing one")
 	}
 
@@ -207,19 +221,21 @@ func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType st
 }
 
 // IsTagLabelNameUnique ensures that a name and/or label is not conflicting with a name/label of another tag.
-// returns true if tag is unique, along with the label normalized to a string that could be used as tag's name.
-func (rest *RESTfacility) IsTagLabelNameUnique(label, userID string) (bool, string) {
-	normalizedLabel := utf8ToASCIILowerNoSpace(label)
+// returns :
+//  - true if name/label is unique, along with the labelname normalized to a string that could be used as new tag's slug.
+//  - false if name/label already exists, along with the slug that conflict with
+func (rest *RESTfacility) IsTagLabelNameUnique(labelname, userID string) (bool, string, error) {
+	slug := utf8ToASCIILowerNoSpace(labelname)
 	tags, err := rest.store.RetrieveUserTags(userID)
 	if err != nil {
-		return false, ""
+		return false, "", err
 	}
 	for _, t := range tags {
-		if t.Name == normalizedLabel {
-			return false, ""
+		if t.Name == slug || t.Label == slug || t.Label == labelname {
+			return false, slug, nil
 		}
 	}
-	return true, normalizedLabel
+	return true, slug, nil
 }
 
 func (rest *RESTfacility) deleteEmbeddedTagReferences(userID, tagName string) {
