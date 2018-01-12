@@ -5,13 +5,13 @@
   @include flex-grid-row;
   height: $co-component__height;
   margin-bottom: map-get($co-form__spacing, 'small');
-  background: $co-color__fg__back--high;
+  background: $co-color__fg__back;
 
   &__button {
     @include flex-grid-size;
     line-height: $co-component__height;
     text-align: left;
-    &:hover { background: $co-color__fg__back--higher;  }
+    &:hover { background: $co-color__fg__back;  }
   }
   &__input { @include flex-grid-size; }
   &__delete {
