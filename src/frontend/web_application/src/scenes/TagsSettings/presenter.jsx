@@ -22,18 +22,25 @@ class TagsSettings extends Component {
   };
 
   state = {
+    createErrors: [],
     searchTerms: '',
     foundTags: [],
   };
 
-  handleSearchChange = searchTerms => this.setState({ searchTerms });
+  handleSearchChange = searchTerms => this.setState({ searchTerms, createErrors: [] });
 
   handleCreateTag = async (searchTerms) => {
     if (searchTerms.length > 0) {
       const { createTag, requestTags } = this.props;
-      await createTag({ label: searchTerms });
-      this.handleSearchChange('');
-      await requestTags();
+      try {
+        await createTag({ label: searchTerms });
+        this.handleSearchChange('');
+        await requestTags();
+      } catch (err) {
+        this.setState({
+          createErrors: [(<Trans id="settings.tag.form.error.create_fail">Unable to create the tag. A tag with the same id may already exist.</Trans>)],
+        });
+      }
     }
 
     return undefined;
@@ -71,6 +78,8 @@ class TagsSettings extends Component {
             </Section>
             <Section className="s-tags-settings__search">
               <TagSearch
+                onChange={this.handleSearchChange}
+                errors={this.state.createErrors}
                 terms={this.state.searchTerms}
                 onSubmit={this.handleCreateTag}
               />

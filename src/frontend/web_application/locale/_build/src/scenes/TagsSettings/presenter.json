@@ -1,0 +1,20 @@
+{
+  "settings.tag.form.error.create_fail": {
+    "defaults": "Unable to create the tag. A tag with the same id may already exists.",
+    "origin": [
+      [
+        "src/scenes/TagsSettings/presenter.jsx",
+        41
+      ]
+    ]
+  },
+  "settings.tags.title": {
+    "defaults": "Tags",
+    "origin": [
+      [
+        "src/scenes/TagsSettings/presenter.jsx",
+        69
+      ]
+    ]
+  }
+}

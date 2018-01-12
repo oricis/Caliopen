@@ -12,7 +12,7 @@ const FieldErrors = ({ errors = [], className }) => (
 );
 
 FieldErrors.propTypes = {
-  errors: PropTypes.arrayOf(PropTypes.string),
+  errors: PropTypes.arrayOf(PropTypes.node),
   className: PropTypes.string,
 };
 

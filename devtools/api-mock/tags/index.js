@@ -24,10 +24,21 @@ const selectors = {
 
 const reducer = {
   [actions.get]: state => state,
-  [actions.post]: (state, params) => ([
-    ...state,
-    { ...params.body, type: 'user', label: params.body.label || params.body.name },
-  ]),
+  [actions.post]: (state, { body, res }) => {
+    const name = body.name || body.label.replace(' ', '-').toLowerCase();
+    const exists = state.some(tag => tag.name === name);
+
+    if (exists) {
+      res.status(409).send('Tag already exist');
+
+      return state;
+    }
+
+    return [
+      ...state,
+      { ...body, type: 'user', label: body.label || name, name },
+    ];
+  },
   [actions.delete]: (state, { params }) => {
     const copy = state.slice(0);
     return [...state].filter(tag => tag.name !== params.name);

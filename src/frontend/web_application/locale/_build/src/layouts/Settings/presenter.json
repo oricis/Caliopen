@@ -4,7 +4,16 @@
     "origin": [
       [
         "src/layouts/Settings/presenter.jsx",
-        22
+        23
+      ]
+    ]
+  },
+  "settings.tags": {
+    "defaults": "Tags",
+    "origin": [
+      [
+        "src/layouts/Settings/presenter.jsx",
+        24
       ]
     ]
   }
