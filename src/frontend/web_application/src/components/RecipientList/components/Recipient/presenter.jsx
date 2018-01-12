@@ -35,7 +35,7 @@ class Recipient extends Component {
         <Button
           className="m-recipient__col-remove"
           onClick={this.handleClickRemove}
-          title={i18n._('messages.compose.action.remove-recipient')}
+          title={i18n._('messages.compose.action.remove-recipient', { defaults: 'Remove recipient' })}
         >
           <Icon type="remove" spaced />
         </Button>

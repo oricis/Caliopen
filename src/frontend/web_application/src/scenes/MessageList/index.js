@@ -63,7 +63,6 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   updateTab,
   replyToMessage,
   copyMessageTo: () => notif,
-  editMessageTags: () => notif,
   push,
 }, dispatch);
 

@@ -5,7 +5,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 from elasticsearch_dsl import Mapping, Nested, Text, Keyword, Date, Boolean, \
     Integer
 from caliopen_storage.store.model import BaseIndexDocument
-from caliopen_main.common.store.tag import IndexedResourceTag
 
 from .attachment_index import IndexedMessageAttachment
 from .external_references_index import IndexedExternalReferences
@@ -40,7 +39,7 @@ class IndexedMessage(BaseIndexDocument):
     pi = Nested(doc_class=PIIndexModel)
     raw_msg_id = Keyword()
     subject = Text()
-    tags = Nested(doc_class=IndexedResourceTag)
+    tags = Keyword(multi=True)
     type = Keyword()
 
     @property
@@ -131,15 +130,10 @@ class IndexedMessage(BaseIndexDocument):
         m.field('subject', 'text', fields={
             "normalized": {"type": "text", "analyzer": "text_analyzer"}
         })
-        # tags
-        tags = Nested('tags', doc_class=IndexedResourceTag, include_in_all=True)
-        tags.field("date_insert", Date())
-        tags.field("importance_level", Integer())
-        tags.field("name", Keyword())
-        tags.field("tag_id", Keyword())
-        tags.field("type", Boolean())
-        m.field("tags", tags)
+        m.field('tags', Keyword(multi=True))
 
+        m.field('subject', 'text')
+        m.field('tags', Keyword(multi=True))
         m.field('type', 'keyword')
 
         return m

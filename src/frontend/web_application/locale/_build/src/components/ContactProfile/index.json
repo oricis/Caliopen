@@ -1,9 +1,10 @@
 {
   "contact.profile.name_not_set": {
+    "defaults": "(N/A)",
     "origin": [
       [
         "src/components/ContactProfile/index.jsx",
-        44
+        45
       ]
     ]
   }

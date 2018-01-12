@@ -23,8 +23,9 @@ type (
 		UsernameIsAvailable(string) (bool, error)
 		LocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 		SuggestRecipients(user_id, query_string string) (suggests []RecipientSuggestion, err error)
-		ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 		GetSettings(user_id string) (settings *Settings, err error)
+		//contacts
+		ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessage(user_id, message_id string) (message *Message, err error)
@@ -40,7 +41,9 @@ type (
 		CreateTag(tag *Tag) error
 		RetrieveTag(user_id, tag_id string) (tag Tag, err error)
 		UpdateTag(tag *Tag) error
-		DeleteTag(user_id, tag_id string) error
+		PatchTag(patch []byte, user_id, tag_name string) error
+		DeleteTag(user_id, tag_name string) error
+		UpdateResourceTags(userID, resourceID, resourceType string, patch []byte) error
 		//search
 		Search(IndexSearch) (result *IndexResult, err error)
 		//users

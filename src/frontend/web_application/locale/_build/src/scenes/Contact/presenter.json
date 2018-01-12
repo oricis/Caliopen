@@ -1,39 +1,36 @@
 {
   "contact.profile.name_not_set": {
+    "defaults": "(N/A)",
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        163
+        160
       ]
     ]
   },
   "contact.feedback.unable_to_save": {
+    "defaults": "Unable to save the contact",
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        186
+        183
       ]
     ]
   },
   "tags.header.title": {
+    "origin": [
+      [
+        "src/scenes/Contact/presenter.jsx",
+        192
+      ]
+    ]
+  },
+  "tags.header.label": {
     "defaults": "Tags",
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        195
-      ],
-      [
-        "src/scenes/Contact/presenter.jsx",
-        204
-      ]
-    ]
-  },
-  "tags.header.count": {
-    "defaults": "(Total: {count})",
-    "origin": [
-      [
-        "src/scenes/Contact/presenter.jsx",
-        197
+        205
       ]
     ]
   },
@@ -42,7 +39,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        224
+        225
       ]
     ]
   },
@@ -51,7 +48,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        226
+        227
       ]
     ]
   },
@@ -60,7 +57,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        234
+        235
       ]
     ]
   },
@@ -69,7 +66,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        268
+        269
       ]
     ]
   },
@@ -78,7 +75,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        275
+        276
       ]
     ]
   },
@@ -87,7 +84,7 @@
     "origin": [
       [
         "src/scenes/Contact/presenter.jsx",
-        295
+        296
       ]
     ]
   }

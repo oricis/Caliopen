@@ -9,6 +9,7 @@ const actions = {
   patch: createAction('Patch message'),
   delete: createAction('Delete message'),
   actions: createAction('Actions message'),
+  patchTags: createAction('Patch message\'s tags'),
 };
 
 const selectors = {
@@ -88,6 +89,23 @@ const reducer = {
 
     return [...state.filter(message => message.message_id !== params.message_id)];
   },
+  [actions.patchTags]: (state, { params, body }) => {
+    const original = state.find(message => message.message_id === params.message_id);
+    if (!original) {
+      throw `message w/ id ${params.message_id} not found`;
+    }
+
+    const index = state.indexOf(original);
+    const nextState = [...state];
+    const { tags } = body;
+
+    nextState[index] = {
+      ...original,
+      tags,
+    };
+
+    return nextState;
+  },
   [actions.actions]: (state, { params, body }) => {
     const original = state.find(message => message.message_id === params.message_id);
     if (!original) {
@@ -137,6 +155,10 @@ const routes = {
     action: actions.actions,
     selector: selectors.byId,
     status: 200,
+  },
+  'PATCH /v2/messages/:message_id/tags': {
+    action: actions.patchTags,
+    status: 204,
   },
   'POST /v1/messages/': {
     action: [discussionActions.create, actions.post],

@@ -1,0 +1,20 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-tags-settings {
+  @include flex-grid-row($size: expand);
+  &__tags,
+  &__search {
+    @include flex-grid-column(12);
+  }
+
+  @include breakpoint(medium) {
+    &__tags { @include flex-grid-size(4); }
+    &__search { @include flex-grid-size(8); }
+  }
+
+  @include breakpoint(large) {
+    &__tags { @include flex-grid-size(3); }
+    &__search { @include flex-grid-size(9); }
+  }
+}

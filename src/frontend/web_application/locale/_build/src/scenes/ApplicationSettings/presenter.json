@@ -1,5 +1,6 @@
 {
   "settings.interface.title": {
+    "defaults": "Customize your interface",
     "origin": [
       [
         "src/scenes/ApplicationSettings/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "settings.message.title": {
+    "defaults": "Messages settings",
     "origin": [
       [
         "src/scenes/ApplicationSettings/presenter.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "settings.contact.title": {
+    "defaults": "Contact settings",
     "origin": [
       [
         "src/scenes/ApplicationSettings/presenter.jsx",
@@ -24,6 +27,7 @@
     ]
   },
   "settings.notification.title": {
+    "defaults": "Notifications settings",
     "origin": [
       [
         "src/scenes/ApplicationSettings/presenter.jsx",
@@ -32,6 +36,7 @@
     ]
   },
   "settings.desktop_notification.title": {
+    "defaults": "Desktop notifications settings",
     "origin": [
       [
         "src/scenes/ApplicationSettings/presenter.jsx",

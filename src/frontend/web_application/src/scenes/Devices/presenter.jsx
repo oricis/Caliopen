@@ -59,7 +59,7 @@ class Devices extends Component {
           {devices.map(device => this.renderDevice(device))}
         </NavList>
         <section className="s-devices__device">
-          {!children ? i18n._('device.no-selected-device') : children}
+          {!children ? i18n._('device.no-selected-device', { defaults: 'No selected device' }) : children}
         </section>
       </div>
     );

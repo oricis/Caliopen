@@ -55,7 +55,7 @@ class Presenter extends Component {
             </VerticalMenuItem>
             <Separator />
             <VerticalMenuItem>
-              <Link to="/user/security" expanded button><Trans id="header.menu.account">Account</Trans></Link>
+              <Link to="/user/profile" expanded button><Trans id="header.menu.account">Account</Trans></Link>
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Link to="/settings/application" expanded button><Trans id="header.menu.settings">Settings</Trans></Link>

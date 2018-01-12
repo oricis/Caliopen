@@ -1,9 +1,10 @@
 {
   "settings.signatures.title": {
+    "defaults": "Update your signature",
     "origin": [
       [
         "src/scenes/SettingsSignatures/presenter.jsx",
-        35
+        34
       ]
     ]
   }

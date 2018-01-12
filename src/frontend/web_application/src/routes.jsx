@@ -13,15 +13,16 @@ import Settings from './layouts/Settings';
 import Timeline from './scenes/Timeline';
 import NewDraft from './scenes/NewDraft';
 import SearchResults from './scenes/SearchResults';
+import User from './layouts/User';
 import UserProfile from './scenes/UserProfile';
 import UserSecurity from './scenes/UserSecurity';
 import UserPrivacy from './scenes/UserPrivacy';
 // import SettingsIdentities from './scenes/SettingsIdentities';
 // import SettingsSignatures from './scenes/SettingsSignatures';
 import ApplicationSettings from './scenes/ApplicationSettings';
+import Tags from './scenes/TagsSettings';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
-// import Tags from './scenes/Tags';
 import PageNotFound from './scenes/PageNotFound';
 // import { Device } from './scenes/Devices';
 
@@ -89,7 +90,8 @@ export const getRouteConfig = ({ __ }) => [
       },
       {
         path: '/user',
-        app: 'account',
+        app: 'user',
+        component: User,
         label: __('user.route.label.default'),
         routes: [
           {
@@ -125,12 +127,11 @@ export const getRouteConfig = ({ __ }) => [
             component: ApplicationSettings,
             label: __('settings.route.label.application'),
           },
-          // TODO: enable tags management
-          // {
-          //   path: '/settings/tags',
-          //   component: Tags,
-          //   label: __('settings.route.label.tags'),
-          // },
+          {
+            path: '/settings/tags',
+            component: Tags,
+            label: __('settings.route.label.tags'),
+          },
 
           // TODO: enable devices when API ready: https://tree.taiga.io/project/caliopen-caliopen/us/314?no-milestone=1
           // {

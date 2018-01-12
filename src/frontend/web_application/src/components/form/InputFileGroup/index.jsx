@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Trans } from 'lingui-react';
+import { Trans, withI18n } from 'lingui-react';
 import { InputFile, FieldErrors } from '../';
 import File from './components/File';
 
 import './style.scss';
 
+@withI18n()
 class InputFileGroup extends Component {
   static propTypes = {
     onInputChange: PropTypes.func.isRequired,
     errors: PropTypes.shape({}),
     i18n: PropTypes.shape({}).isRequired,
-    formatNumber: PropTypes.func.isRequired,
     // multiple: PropTypes.bool,
     fileTypes: PropTypes.arrayOf(PropTypes.string),
     maxSize: PropTypes.number,
@@ -57,11 +57,11 @@ class InputFileGroup extends Component {
   }
 
   validate = (file) => {
-    const { i18n, formatNumber, fileTypes, maxSize } = this.props;
+    const { i18n, fileTypes, maxSize } = this.props;
     const errors = [];
 
     if (!file) {
-      return Promise.reject(i18n._('input-file-group.error.file_is_required'));
+      return Promise.reject(i18n._('input-file-group.error.file_is_required', { defaults: 'A file is required' }));
     }
 
     const ext = file.name ? `.${file.name.split('.').pop()}` : null;
@@ -77,7 +77,7 @@ class InputFileGroup extends Component {
           <Trans
             id="input-file-group.error.max_size"
             values={{
-              0: formatNumber(Math.round(maxSize / 100) / 10),
+              0: Math.round(maxSize / 100) / 10,
             }}
           >The file size must be under {0} ko</Trans>)
       );
@@ -91,7 +91,7 @@ class InputFileGroup extends Component {
   }
 
   render() {
-    const { formatNumber, errors, descr, className, fileTypes } = this.props;
+    const { errors, descr, className, fileTypes } = this.props;
     const allErrors = errors ? Object.keys(errors).map(key => errors[key]) : null;
     const acceptProp = fileTypes ? { accept: fileTypes } : {};
 
@@ -105,7 +105,6 @@ class InputFileGroup extends Component {
           <File
             file={this.state.file}
             onRemove={this.resetForm}
-            formatNumber={formatNumber}
           />
           :
           <InputFile

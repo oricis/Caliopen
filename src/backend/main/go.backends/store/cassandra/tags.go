@@ -22,47 +22,30 @@ func (cb *CassandraBackend) RetrieveUserTags(user_id string) (tags []Tag, err er
 		return
 	}
 	for _, tag := range all_tags {
-		t := Tag{
-			Date_insert:      tag["date_insert"].(time.Time),
-			Importance_level: int32(tag["importance_level"].(int)),
-			Name:             tag["name"].(string),
-			Type:             TagType(tag["type"].(string)),
-		}
-		t.Tag_id.UnmarshalBinary(tag["tag_id"].(gocql.UUID).Bytes())
-		t.User_id.UnmarshalBinary(tag["user_id"].(gocql.UUID).Bytes())
-		tags = append(tags, t)
+		t := new(Tag)
+		t.UnmarshalCQLMap(tag)
+		tags = append(tags, *t)
 	}
 	return
 }
 
-// CreateTag checks if tag's name doesn't exist for user before inserting into db.
+// CreateTag inserts Tag into db
 func (cb *CassandraBackend) CreateTag(tag *Tag) error {
 
-	user_tags, err := cb.RetrieveUserTags((*tag).User_id.String())
-	if err != nil {
-		return err
-	}
-	for _, t := range user_tags {
-		if t.Name == (*tag).Name {
-			return errors.New("tag name <" + t.Name + "> already exists for user.")
-		}
-	}
-	tag_id, _ := gocql.RandomUUID()
 	user_id, _ := gocql.UUIDFromBytes((*tag).User_id.Bytes())
 	(*tag).Date_insert = time.Now()
 	(*tag).Type = TagType(UserTag)
-	(*tag).Tag_id.UnmarshalBinary(tag_id.Bytes())
-	return cb.Session.Query(`INSERT INTO user_tag (user_id, tag_id, date_insert, importance_level, name, type) VALUES (?,?,?,?,?,?)`,
+	return cb.Session.Query(`INSERT INTO user_tag (user_id, name, date_insert, importance_level, label, type) VALUES (?,?,?,?,?,?)`,
 		user_id,
-		tag_id,
+		(*tag).Name,
 		(*tag).Date_insert,
 		(*tag).Importance_level,
-		(*tag).Name,
+		(*tag).Label,
 		(*tag).Type).Exec()
 }
 
-func (cb *CassandraBackend) RetrieveTag(user_id, tag_id string) (tag Tag, err error) {
-	tags, err := cb.Session.Query(`SELECT * FROM user_tag WHERE user_id = ? AND tag_id = ?`, user_id, tag_id).Iter().SliceMap()
+func (cb *CassandraBackend) RetrieveTag(user_id, name string) (tag Tag, err error) {
+	tags, err := cb.Session.Query(`SELECT * FROM user_tag WHERE user_id = ? AND name = ?`, user_id, name).Iter().SliceMap()
 	if err != nil {
 		return
 	}
@@ -70,33 +53,25 @@ func (cb *CassandraBackend) RetrieveTag(user_id, tag_id string) (tag Tag, err er
 		err = errors.New("tag not found")
 		return
 	}
-
-	tag = Tag{
-		Date_insert:      tags[0]["date_insert"].(time.Time),
-		Importance_level: int32(tags[0]["importance_level"].(int)),
-		Name:             tags[0]["name"].(string),
-		Type:             TagType(tags[0]["type"].(string)),
-	}
-	err = tag.Tag_id.UnmarshalBinary(tags[0]["tag_id"].(gocql.UUID).Bytes())
-	err = tag.User_id.UnmarshalBinary(tags[0]["user_id"].(gocql.UUID).Bytes())
+	tag = Tag{}
+	err = tag.UnmarshalCQLMap(tags[0])
 	if err != nil {
-		return Tag{}, err
+		return
 	}
-	return
+	return tag, nil
 }
 
 func (cb *CassandraBackend) UpdateTag(tag *Tag) error {
-	return cb.Session.Query(`UPDATE user_tag SET date_insert = ?, importance_level = ?, name = ?, type = ? WHERE user_id = ? AND tag_id = ?`,
-		tag.Date_insert,
+	return cb.Session.Query(`UPDATE user_tag SET importance_level = ?, label = ?, type = ? WHERE user_id = ? AND name = ?`,
 		tag.Importance_level,
-		tag.Name,
+		tag.Label,
 		tag.Type,
 		tag.User_id,
-		tag.Tag_id,
+		tag.Name,
 	).Exec()
 
 }
 
-func (cb *CassandraBackend) DeleteTag(user_id, tag_id string) error {
-	return cb.Session.Query(`DELETE FROM user_tag WHERE user_id = ? AND tag_id = ?`, user_id, tag_id).Exec()
+func (cb *CassandraBackend) DeleteTag(user_id, name string) error {
+	return cb.Session.Query(`DELETE FROM user_tag WHERE user_id = ? AND name = ?`, user_id, name).Exec()
 }

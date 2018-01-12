@@ -34,7 +34,7 @@ class Navigation extends PureComponent {
           <NavbarItem className="l-navigation__sliders-toggle">
             <ToggleSliderButton
               toggleId="IL_navigation_slider_dropdown"
-              title={i18n._('navigation.actions.toggle-importance-level-slider')}
+              title={i18n._('navigation.actions.toggle-importance-level-slider', { defaults: 'Toggle importance slider' })}
               className="l-navigation__sliders-toggle-button"
             >
               <Icon type="warning" />

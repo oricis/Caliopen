@@ -77,12 +77,12 @@ class SigninForm extends Component {
     const { errors = {}, form, i18n } = this.props;
 
     return (
-      <Section className="s-signin" title={i18n._('signin.title')}>
+      <Section className="s-signin" title={i18n._('signin.title', { defaults: 'Please Log In' })}>
         <FormGrid className="s-signin__form">
           <form method="post" {...form}>
             <FormRow>
               <FormColumn rightSpace={false} bottomSpace>
-                <div className="s-signin__alpha" dangerouslySetInnerHTML={{ __html: i18n._('signup.limited_registration') }} />
+                <div className="s-signin__alpha" dangerouslySetInnerHTML={{ __html: i18n._('signup.limited_registration', { defaults: 'During alpha phase, signup is limited. Please register at <a href="https://welcome.caliopen.org">https://welcome.caliopen.org</a>.' }) }} />
               </FormColumn>
             </FormRow>
             { errors.global && (
@@ -96,8 +96,8 @@ class SigninForm extends Component {
               <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_username"
-                  label={i18n._('signin.form.username.label')}
-                  placeholder={i18n._('signin.form.username.placeholder')}
+                  label={i18n._('signin.form.username.label', { defaults: 'Username' })}
+                  placeholder={i18n._('signin.form.username.placeholder', { defaults: 'username' })}
                   name="username"
                   value={this.state.username}
                   errors={errors.username}
@@ -109,8 +109,8 @@ class SigninForm extends Component {
               <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_password"
-                  label={i18n._('signin.form.password.label')}
-                  placeholder={i18n._('signin.form.password.placeholder')}
+                  label={i18n._('signin.form.password.label', { defaults: 'Password' })}
+                  placeholder={i18n._('signin.form.password.placeholder', { defaults: 'password' })}
                   name="password"
                   type="password"
                   value={this.state.password}

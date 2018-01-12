@@ -100,7 +100,7 @@ class NewDraftForm extends Component {
   renderDraftType() {
     const { i18n } = this.props;
     const typeTranslations = {
-      email: i18n._('reply-form.protocol.email'),
+      email: i18n._('reply-form.protocol.email', { defaults: 'email' }),
     };
 
     return (
@@ -159,7 +159,7 @@ class NewDraftForm extends Component {
               <TextFieldGroup
                 className="m-new-draft__subject"
                 display="inline"
-                label={i18n._('messages.compose.form.subject.label')}
+                label={i18n._('messages.compose.form.subject.label', { defaults: 'Subject' })}
                 name="subject"
                 value={this.state.draft.subject}
                 onChange={this.handleChange}

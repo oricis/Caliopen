@@ -5,14 +5,11 @@ properties:
   date_insert:
     type: string
     format: date-time
-  tag_id:
-    type: string
   type:
     type: string
     enum:
     - user
     - system
-required:
-- label
 additionalProperties: false
+
 

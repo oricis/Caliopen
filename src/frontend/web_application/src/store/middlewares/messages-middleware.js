@@ -7,7 +7,7 @@ const postActionsHandler = ({ store, action }) => {
   }
 
   const { meta: { previousAction: { payload: { message } } } } = action;
-  store.dispatch(requestMessage({ messageId: message.message_id }));
+  store.dispatch(requestMessage(message.message_id));
 };
 
 const getListOfCollectionsToInvalidate = (messagesCollections, message) => [

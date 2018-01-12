@@ -1,0 +1,159 @@
+---
+contacts_{contact_id}_identities:
+  get:
+    description: returns a list of contact's identities
+    tags:
+    - contacts
+    security:
+    - basicAuth: []
+    parameters:
+    - name: contact_id
+      in: path
+      required: true
+      type: string
+    produces:
+    - application/json
+    responses:
+      200:
+        description: Contact's identities returned
+        schema:
+          type: object
+          properties:
+            total:
+              type: integer
+              format: int32
+              description: number of identities found for the contact
+            contact_identities:
+              type: array
+              items:
+                "$ref": "../objects/ContactIdentity.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      404:
+        description: Contact not found
+        schema:
+          "$ref": "../objects/Error.yaml"
+  patch:
+    description: update tags list for contact
+    tags:
+    - contacts
+    - tags
+    security:
+    - basicAuth: []
+    parameters:
+    - name: contact_id
+      in: path
+      required: true
+      type: string
+    - name: patch
+      in: body
+      required: true
+      description: the patch to apply. See 'Caliopen Patch RFC' within /doc directory.
+      schema:
+        type: object
+        properties:
+          "$ref": "../objects/Contact.yaml#/properties"
+          current_state:
+            type: object
+            properties:
+              "$ref": "../objects/Contact.yaml#/properties"
+        required:
+        - current_state
+    consumes:
+    - application/json
+    produces:
+    - application/json
+    responses:
+      '204':
+        description: Contact's tags updated. Empty body.
+      '400':
+        description: json payload malformed
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '403':
+        description: Forbidden, server is refusing to apply payload to this ressource
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '404':
+        description: contact not found
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '422':
+        description: json is valid but payload was semantically malformed or unprocessable
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '424':
+        description: server failed to execute the request
+        schema:
+          "$ref": "../objects/Error.yaml"
+contacts_{contact_id}_tags:
+  patch:
+    description: update tags list for contact
+    tags:
+    - contacts
+    - tags
+    security:
+    - basicAuth: []
+    parameters:
+    - name: contact_id
+      in: path
+      required: true
+      type: string
+    - name: patch
+      in: body
+      required: true
+      description: the patch to apply. See 'Caliopen Patch RFC' within /doc directory.
+      schema:
+        type: object
+        properties:
+          tags:
+            type: array
+            items:
+              type: string
+          current_state:
+            type: object
+            properties:
+              tags:
+                type: array
+                items:
+                  type: string
+        required:
+        - tags
+        - current_state
+    consumes:
+    - application/json
+    produces:
+    - application/json
+    responses:
+      '204':
+        description: Contact's tags updated. Empty body.
+      '400':
+        description: json payload malformed
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '403':
+        description: Forbidden, server is refusing to apply payload to this ressource
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '404':
+        description: contact not found
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '422':
+        description: json is valid but payload was semantically malformed or unprocessable
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '424':
+        description: server failed to execute the request
+        schema:
+          "$ref": "../objects/Error.yaml"

@@ -12,7 +12,6 @@ from caliopen_storage.store import BaseModel, BaseUserType
 from caliopen_main.pi.objects import PIModel
 
 from .contact_index import IndexedContact
-from caliopen_main.common.store.tag import ResourceTag
 
 
 class Organization(BaseUserType):
@@ -28,7 +27,7 @@ class Organization(BaseUserType):
     name = columns.Text()
     organization_id = columns.UUID(default=uuid.uuid4)
     title = columns.Text()
-    type = columns.Text()   # work, other
+    type = columns.Text()  # work, other
 
 
 class PostalAddress(BaseUserType):
@@ -57,7 +56,7 @@ class Email(BaseUserType):
     email_id = columns.UUID(default=uuid.uuid4)
     is_primary = columns.Boolean(default=False)
     label = columns.Text()
-    type = columns.Text()   # home, work, other
+    type = columns.Text()  # home, work, other
 
 
 class IM(BaseUserType):
@@ -85,7 +84,7 @@ class Phone(BaseUserType):
     normalized_number = columns.Text()
     phone_id = columns.UUID(default=uuid.uuid4)
     type = columns.Text()
-    uri = columns.Text()    # RFC3966
+    uri = columns.Text()  # RFC3966
 
 
 class SocialIdentity(BaseUserType):
@@ -106,7 +105,7 @@ class Contact(BaseModel, IndexedModelMixin):
     _index_class = IndexedContact
 
     user_id = columns.UUID(primary_key=True)
-    contact_id = columns.UUID(primary_key=True)     # clustering key
+    contact_id = columns.UUID(primary_key=True)  # clustering key
 
     additional_name = columns.Text()
     addresses = columns.List(columns.UserDefinedType(PostalAddress))
@@ -117,7 +116,7 @@ class Contact(BaseModel, IndexedModelMixin):
     emails = columns.List(columns.UserDefinedType(Email))
     family_name = columns.Text()
     given_name = columns.Text()
-    groups = columns.List(columns.Text)
+    groups = columns.List(columns.Text())
     identities = columns.List(columns.UserDefinedType(SocialIdentity))
     ims = columns.List(columns.UserDefinedType(IM))
     infos = columns.Map(columns.Text, columns.Text)
@@ -127,7 +126,7 @@ class Contact(BaseModel, IndexedModelMixin):
     phones = columns.List(columns.UserDefinedType(Phone))
     pi = columns.UserDefinedType(PIModel)
     privacy_features = columns.Map(columns.Text(), columns.Text())
-    tags = columns.List(columns.UserDefinedType(ResourceTag))
+    tags = columns.List(columns.Text())
     title = columns.Text()  # computed value, read only
 
 
@@ -135,7 +134,7 @@ class PublicKey(BaseModel):
     """Contact public cryptographic keys model."""
 
     user_id = columns.UUID(primary_key=True)
-    contact_id = columns.UUID(primary_key=True)     # clustering key
+    contact_id = columns.UUID(primary_key=True)  # clustering key
     name = columns.Text(primary_key=True)
 
     date_insert = columns.DateTime(default=datetime.datetime.now(tz=pytz.utc))

@@ -1,25 +1,28 @@
 {
   "password.form.new_password_confirmation.error": {
+    "defaults": "Passwords don't match",
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
-        68
+        69
       ]
     ]
   },
   "password.form.current_password.label": {
-    "origin": [
-      [
-        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
-        110
-      ]
-    ]
-  },
-  "password.form.current_password.placeholder": {
+    "defaults": "Current password:",
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
         111
+      ]
+    ]
+  },
+  "password.form.current_password.placeholder": {
+    "defaults": "Enter your current password",
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        112
       ]
     ]
   },
@@ -28,23 +31,25 @@
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
-        118
+        119
       ]
     ]
   },
   "password.form.new_password.label": {
-    "origin": [
-      [
-        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
-        128
-      ]
-    ]
-  },
-  "password.form.new_password.placeholder": {
+    "defaults": "New password:",
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
         129
+      ]
+    ]
+  },
+  "password.form.new_password.placeholder": {
+    "defaults": "Enter new password",
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        130
       ]
     ]
   },
@@ -53,23 +58,25 @@
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
-        135
+        136
       ]
     ]
   },
   "password.form.new_password_confirmation.label": {
-    "origin": [
-      [
-        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
-        151
-      ]
-    ]
-  },
-  "password.form.new_password_confirmation.placeholder": {
+    "defaults": "New password confirmation:",
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
         152
+      ]
+    ]
+  },
+  "password.form.new_password_confirmation.placeholder": {
+    "defaults": "Password",
+    "origin": [
+      [
+        "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
+        153
       ]
     ]
   },
@@ -78,7 +85,7 @@
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
-        181
+        182
       ]
     ]
   },
@@ -87,7 +94,7 @@
     "origin": [
       [
         "src/scenes/UserSecurity/components/PasswordForm/index.jsx",
-        186
+        187
       ]
     ]
   }

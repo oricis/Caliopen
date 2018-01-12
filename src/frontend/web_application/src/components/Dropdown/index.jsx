@@ -43,6 +43,7 @@ export const withDropdownControl = (WrappedComponent) => {
 class Dropdown extends Component {
 
   static propTypes = {
+    // XXX: refactor id to ref
     id: PropTypes.string.isRequired,
     alignRight: PropTypes.bool, // force align right
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
@@ -86,15 +87,15 @@ class Dropdown extends Component {
     this.toggle(this.props.show);
 
     this.unsubscribeClickEvent = addEventListener('click', (ev) => {
+      if (!this.props.closeOnClick) {
+        return;
+      }
+
       const target = ev.target;
       const exceptRefs = this.props.closeOnClickExceptRefs;
 
-      const dropdownClick = !this.props.closeOnClick &&
-        (this.dropdown === target || this.dropdown.contains(target));
-
-      const exeptRefsClick = exceptRefs &&
-        exceptRefs.find(ref => (ref === target));
-
+      const dropdownClick = this.dropdown === target || this.dropdown.contains(target);
+      const exeptRefsClick = exceptRefs && exceptRefs.find(ref => (ref === target));
       const controlClick = this.dropdownControl &&
         (this.dropdownControl === target || this.dropdownControl.contains(target));
 

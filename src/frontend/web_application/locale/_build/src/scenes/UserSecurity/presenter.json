@@ -1,5 +1,6 @@
 {
   "password.form.feedback.successfull": {
+    "defaults": "Password updated!",
     "origin": [
       [
         "src/scenes/UserSecurity/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "password.form.feedback.error-old-password": {
+    "defaults": "Wrong old password.",
     "origin": [
       [
         "src/scenes/UserSecurity/presenter.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "password.form.feedback.unexpected-error": {
+    "defaults": "Error when updating password.",
     "origin": [
       [
         "src/scenes/UserSecurity/presenter.jsx",
@@ -24,6 +27,7 @@
     ]
   },
   "user.security.section_password.title": {
+    "defaults": "Customize your interface",
     "origin": [
       [
         "src/scenes/UserSecurity/presenter.jsx",

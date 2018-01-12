@@ -250,3 +250,68 @@ messages_{message_id}_attachments_{attachment_index}:
         description: message or attachment not found
         schema:
           "$ref": "../objects/Error.yaml"
+messages_{message_id}_tags:
+  patch:
+    description: update tags list for message
+    tags:
+    - messages
+    - tags
+    security:
+    - basicAuth: []
+    parameters:
+    - name: message_id
+      in: path
+      required: true
+      type: string
+    - name: patch
+      in: body
+      required: true
+      description: the patch to apply. See 'Caliopen Patch RFC' within /doc directory.
+      schema:
+        type: object
+        properties:
+          tags:
+            type: array
+            items:
+              type: string
+          current_state:
+            type: object
+            properties:
+              tags:
+                type: array
+                items:
+                  type: string
+        required:
+        - tags
+        - current_state
+    consumes:
+    - application/json
+    produces:
+    - application/json
+    responses:
+      '204':
+        description: message's tags updated. Empty body.
+      '400':
+        description: json payload malformed
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '403':
+        description: Forbidden, server is refusing to apply payload to this ressource
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '404':
+        description: message not found
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '422':
+        description: json is valid but payload was semantically malformed or unprocessable
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '424':
+        description: server failed to execute the request
+        schema:
+          "$ref": "../objects/Error.yaml"

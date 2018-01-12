@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Caliopen user message qualification logic."""
 from __future__ import absolute_import, print_function, unicode_literals
+
 import logging
 from caliopen_main.message.parameters import (NewInboundMessage,
                                               Participant,
@@ -15,6 +16,7 @@ from caliopen_main.discussion.core import (DiscussionThreadLookup,
 from caliopen_main.message.parsers.mail import MailMessage
 from caliopen_main.discussion.core import Discussion
 
+from ..features.types import unmarshall_features
 from ..features import InboundMailFeature
 
 
@@ -44,7 +46,13 @@ class UserMessageQualifier(object):
 
     def _get_tags(self, message):
         """Evaluate user rules to get all tags for a mail."""
-        return []
+        tags = []
+        if message.privacy_features.get('is_internal', False):
+            # XXX do not hardcode the wanted tag
+            internal_tag = [x for x in self.user.tags if x.name == 'internal']
+            if internal_tag:
+                tags.append(internal_tag[0].name)
+        message.tags = tags
 
     def lookup(self, sequence):
         """Process lookup sequence to find discussion to associate."""
@@ -130,8 +138,9 @@ class UserMessageQualifier(object):
         extractor.process(self.user, new_message, participants)
 
         # compute tags
-        new_message.tags = self._get_tags(message)
-        log.debug('Resolved tags {}'.format(new_message.tags))
+        self._get_tags(new_message)
+        if new_message.tags:
+            log.debug('Resolved tags {}'.format(new_message.tags))
 
         # lookup by external references
         lookup_sequence = message.lookup_discussion_sequence()
@@ -146,7 +155,9 @@ class UserMessageQualifier(object):
             log.debug('Created discussion {}'.format(discussion.discussion_id))
             new_message.discussion_id = discussion.discussion_id
             self.create_lookups(lookup_sequence, new_message)
-
+        # Format features
+        new_message.privacy_features = \
+            unmarshall_features(new_message.privacy_features)
         try:
             new_message.validate()
         except Exception as exc:

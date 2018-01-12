@@ -35,7 +35,7 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.intro.title">Welcome!</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.intro.content') }} />
+            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.intro.content', { defaults: '<p>With using  Caliopen, you can access to all of your private messages (Email, and more to come) through a single login.</p><p>Now, take a look at our main features, such as unified message management, intuitive search and more!</p>' }) }} />
           </div>
         ),
         position: 'center',
@@ -45,7 +45,7 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.search.title">Intuitive search</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.search.content') }} />
+            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.search.content', { defaults: '<p>Every search can include filters. All of the unencrypted data can be searched.</p><p>Here you can search everything in your messages and contacts.</p>' }) }} />
           </div>
         ),
       },
@@ -54,7 +54,7 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.user-menu.title">Account menu</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.user-menu.content') }} />
+            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.user-menu.content', { defaults: '<p>Keep up-to-date your account information and manage your settings from here!</p><p>Customize your application in your settings.</p>' }) }} />
           </div>
         ),
         position: 'bottom',
@@ -64,7 +64,7 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.call-to-action.title">Create quickly</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.call-to-action.content') }} />
+            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.call-to-action.content', { defaults: '<p>Create on the fly a new message or a new contact.</p><p>All you need to begin is here.</p>' }) }} />
           </div>
         ),
       },
@@ -73,7 +73,7 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.importance-slider.title">Importance level</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.importance-slider.content') }} />
+            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.importance-slider.content', { defaults: '<p>This slider will help you to hide or show some messages depending on their importance level.</p><p>Lower the top slider to show only spams or upper the bottom one to show direct messages.</p>' }) }} />
           </div>
         ),
       },
@@ -89,11 +89,11 @@ class TakeATour extends Component {
           steps={steps}
           badgeContent={(current, total) => (<Trans id="take-a-tour.current-step" values={{ current, total }}>Take a tour ({current} of {total})</Trans>)}
           showNavigation={false}
-          skipButton={i18n._('take-a-tour.action.skip')}
-          prevButton={i18n._('take-a-tour.action.prev')}
-          nextButton={i18n._('take-a-tour.action.next')}
-          lastStepNextButton={i18n._('take-a-tour.action.last-step')}
-          closeButton={i18n._('take-a-tour.action.close')}
+          skipButton={i18n._('take-a-tour.action.skip', { defaults: 'Skip' })}
+          prevButton={i18n._('take-a-tour.action.prev', { defaults: 'Previous' })}
+          nextButton={i18n._('take-a-tour.action.next', { defaults: 'Next' })}
+          lastStepNextButton={i18n._('take-a-tour.action.last-step', { defaults: 'Finish' })}
+          closeButton={i18n._('take-a-tour.action.close', { defaults: 'Close' })}
         />
       </Button>
     );

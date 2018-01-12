@@ -1,5 +1,6 @@
 {
   "device.manage.title": {
+    "defaults": "Manage Your device",
     "origin": [
       [
         "src/components/Device/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "device.manage.descr": {
+    "defaults": "Here you can manage your device allowed to connect to your Caliopen account, set restrictions on some IP addresses and custom the name of your device to better identify it later.",
     "origin": [
       [
         "src/components/Device/presenter.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "device.info.title": {
+    "defaults": "Device informations",
     "origin": [
       [
         "src/components/Device/presenter.jsx",
@@ -24,6 +27,7 @@
     ]
   },
   "device.revoke.title": {
+    "defaults": "Revoke this device",
     "origin": [
       [
         "src/components/Device/presenter.jsx",
@@ -32,6 +36,7 @@
     ]
   },
   "device.revoke.descr": {
+    "defaults": "Please be careful about this section! This operation will delete this device which will be unable to access to your Caliopen account in the future.",
     "origin": [
       [
         "src/components/Device/presenter.jsx",

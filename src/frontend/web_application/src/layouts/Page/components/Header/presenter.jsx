@@ -40,7 +40,7 @@ class Header extends Component {
         <div className="l-header__wrapper">
           <span className="l-header__toggle-nav">
             <button
-              aria-label={i18n._('header.menu.toggle-navigation')}
+              aria-label={i18n._('header.menu.toggle-navigation', { defaults: 'Toggle navigation' })}
               data-toggle="left_off_canvas"
               type="button"
               className="l-header__menu-icon menu-icon"
@@ -58,7 +58,8 @@ class Header extends Component {
           </div>
           {/* <div className="l-header__search-toggler hide-for-medium">
             <Button
-              aria-label={i18n._('header.menu.toggle-search-form')}
+              aria-label={i18n._('header.menu.toggle-search-form',
+              // { defaults: 'Toggle search form' })}
               onClick={this.handleClickToggleSearchAsDropdown}
               icon="search"
             />

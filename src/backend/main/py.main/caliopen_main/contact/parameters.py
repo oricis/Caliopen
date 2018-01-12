@@ -8,8 +8,7 @@ from schematics.types import (StringType, IntType, URLType,
 from schematics.types.compound import ListType, ModelType, DictType
 from schematics.transforms import blacklist
 
-from caliopen_main.common.parameters.types import InternetAddressType, PhoneNumberType
-from caliopen_main.common.parameters.tag import ResourceTag
+from caliopen_main.common.parameters.types import InternetAddressType
 
 from caliopen_main.pi.parameters import PIParameter
 import caliopen_storage.helpers.json as helpers
@@ -29,12 +28,10 @@ SOCIAL_TYPES = ['facebook', 'twitter', 'google', 'github', 'bitbucket',
 
 KEY_CHOICES = ['rsa', 'gpg', 'ssh']
 
-
 RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc']
 
 
 class Recipient(Model):
-
     """Store a contact reference and one of it's address used in a message."""
 
     address = StringType(required=True)
@@ -46,7 +43,6 @@ class Recipient(Model):
 
 
 class NewOrganization(Model):
-
     """Input structure for a new organization."""
 
     department = StringType()
@@ -63,7 +59,6 @@ class NewOrganization(Model):
 
 
 class Organization(NewOrganization):
-
     """Existing organization."""
 
     contact_id = UUIDType()
@@ -77,7 +72,6 @@ class Organization(NewOrganization):
 
 
 class NewPostalAddress(Model):
-
     """Input structure for a new postal address."""
 
     address_id = StringType()
@@ -95,7 +89,6 @@ class NewPostalAddress(Model):
 
 
 class PostalAddress(NewPostalAddress):
-
     """Existing postal address."""
 
     address_id = UUIDType()
@@ -108,7 +101,6 @@ class PostalAddress(NewPostalAddress):
 
 
 class NewEmail(Model):
-
     """Input structure for a new email."""
     address = InternetAddressType(required=True)
     is_primary = BooleanType(default=False)
@@ -120,7 +112,6 @@ class NewEmail(Model):
 
 
 class Email(NewEmail):
-
     """Existing email."""
 
     email_id = UUIDType()
@@ -131,7 +122,6 @@ class Email(NewEmail):
 
 
 class NewIM(Model):
-
     """Input structure for a new IM."""
 
     address = InternetAddressType(required=True)
@@ -145,7 +135,6 @@ class NewIM(Model):
 
 
 class IM(NewIM):
-
     """Existing IM."""
 
     contact_id = UUIDType()
@@ -158,7 +147,6 @@ class IM(NewIM):
 
 
 class NewPhone(Model):
-
     """Input structure for a new phone."""
 
     is_primary = BooleanType(default=False)
@@ -172,7 +160,6 @@ class NewPhone(Model):
 
 
 class Phone(NewPhone):
-
     """Existing phone."""
 
     contact_id = UUIDType()
@@ -185,7 +172,6 @@ class Phone(NewPhone):
 
 
 class NewSocialIdentity(Model):
-
     """Input structure for a new social identity."""
 
     infos = DictType(StringType, default=lambda: {})
@@ -197,7 +183,6 @@ class NewSocialIdentity(Model):
 
 
 class SocialIdentity(NewSocialIdentity):
-
     """Existing social identity."""
 
     contact_id = UUIDType()
@@ -210,7 +195,6 @@ class SocialIdentity(NewSocialIdentity):
 
 
 class NewPublicKey(Model):
-
     """Input structure for a new public key."""
 
     expire_date = DateTimeType(serialized_format=helpers.RFC3339Milli,
@@ -226,7 +210,6 @@ class NewPublicKey(Model):
 
 
 class PublicKey(NewPublicKey):
-
     """Existing public key."""
 
     contact_id = UUIDType()
@@ -242,7 +225,6 @@ class PublicKey(NewPublicKey):
 
 
 class NewContact(Model):
-
     """Input structure for a new contact."""
 
     additional_name = StringType()
@@ -251,24 +233,23 @@ class NewContact(Model):
     family_name = StringType()
     given_name = StringType()
     title = StringType()
-    groups = ListType(StringType)
+    groups = ListType(StringType())
     identities = ListType(ModelType(NewSocialIdentity), default=lambda: [])
     ims = ListType(ModelType(NewIM), default=lambda: [], )
-    infos = DictType(StringType)
+    infos = DictType(StringType())
     name_prefix = StringType()
     name_suffix = StringType()
     organizations = ListType(ModelType(NewOrganization), default=lambda: [])
     phones = ListType(ModelType(NewPhone), default=lambda: [])
-    privacy_features = DictType(StringType, default=lambda: {})
+    privacy_features = DictType(StringType(), default=lambda: {})
     public_keys = ListType(ModelType(NewPublicKey), default=lambda: [])
-    tags = ListType(ModelType(ResourceTag), default=lambda: [])
+    tags = ListType(StringType(), default=lambda: [])
 
     class Options:
         serialize_when_none = False
 
 
 class Contact(NewContact):
-
     """Existing contact."""
 
     addresses = ListType(ModelType(PostalAddress), default=lambda: [])
@@ -285,7 +266,7 @@ class Contact(NewContact):
     organizations = ListType(ModelType(Organization), default=lambda: [])
     phones = ListType(ModelType(Phone), default=lambda: [])
     public_keys = ListType(ModelType(PublicKey), default=lambda: [])
-    pi = ModelType(PIParameter)    
+    pi = ModelType(PIParameter)
     user_id = UUIDType()
 
     class Options:
@@ -293,13 +274,12 @@ class Contact(NewContact):
 
 
 class ShortContact(Model):
-
     """Input structure for contact in short form."""
 
     contact_id = UUIDType()
     family_name = StringType()
     given_name = StringType()
-    tags = ListType(ModelType(ResourceTag), default=lambda: [])
+    tags = ListType(StringType(), default=lambda: [])
     title = StringType()
     pi = ModelType(PIParameter)
 

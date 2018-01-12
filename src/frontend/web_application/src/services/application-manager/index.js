@@ -18,8 +18,8 @@ const APPLICATIONS = {
 };
 
 export const getLabels = i18n => ({
-  discussions: i18n._('header.menu.discussions'),
-  contacts: i18n._('header.menu.contacts'),
+  discussions: i18n._('header.menu.discussions', { defaults: 'Discussions' }),
+  contacts: i18n._('header.menu.contacts', { defaults: 'Contacts' }),
 });
 
 export const getInfosFromName = name => ({

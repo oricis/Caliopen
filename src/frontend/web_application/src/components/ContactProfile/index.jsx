@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withI18n } from 'lingui-react';
+import { WithTags, getTagLabelFromName } from '../../modules/tags';
 import Badge from '../Badge';
 import MultidimensionalPi from '../../components/MultidimensionalPi';
 import ContactAvatarLetter from '../ContactAvatarLetter';
@@ -41,7 +42,7 @@ class ContactProfile extends Component {
 
           {!editMode && (
             <h3 className="m-contact-profile__name">
-              {contact ? formatName({ contact, format }) : i18n._('contact.profile.name_not_set')}
+              {contact ? formatName({ contact, format }) : i18n._('contact.profile.name_not_set', { defaults: '(N/A)' })}
             </h3>
           )}
         </div>
@@ -50,9 +51,10 @@ class ContactProfile extends Component {
 
         {contact && contact.tags &&
           <div className="m-contact-profile__tags">
-            {contact.tags.map(tag => (
-              <Badge className="m-contact-profile__tag" key={tag}>{tag}</Badge>
+            <WithTags render={tags => contact.tags.map(name => (
+              <Badge className="m-contact-profile__tag" key={name}>{getTagLabelFromName(i18n, tags, name)}</Badge>
             ))}
+            />
           </div>
         }
 

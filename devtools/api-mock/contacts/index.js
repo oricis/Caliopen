@@ -6,6 +6,7 @@ const actions = {
   get: createAction('Get contacts'),
   patch: createAction('Patch contact'),
   post: createAction('Post contact'),
+  patchTags: createAction('Patch contact\'s tags'),
 };
 
 const selectors = {
@@ -51,28 +52,49 @@ const reducer = {
 
     return nextState;
   },
+  [actions.patchTags]: (state, { params, body }) => {
+    const original = state.find(contact => contact.contact_id === params.contact_id);
+    if (!original) {
+      throw `contact w/ id ${params.contact_id} not found`;
+    }
+
+    const index = state.indexOf(original);
+    const nextState = [...state];
+    const { tags } = body;
+
+    nextState[index] = {
+      ...original,
+      tags,
+    };
+
+    return nextState;
+  },
 };
 
 const routes = {
-  'GET /': {
+  'GET /v1/contacts/': {
     action: actions.get,
     selector: selectors.all,
     status: 200,
     middlewares: [createCollectionMiddleware('contacts')],
   },
-  'GET /:contact_id': {
+  'GET /v1/contacts/:contact_id': {
     action: actions.get,
     selector: selectors.byId,
     status: 200,
   },
-  'PATCH /:contact_id': {
+  'PATCH /v1/contacts/:contact_id': {
     action: actions.patch,
     status: 204,
   },
-  'POST /': {
+  'POST /v1/contacts/': {
     action: actions.post,
     selector: selectors.lastLocation,
     status: 200,
+  },
+  'PATCH /v2/contacts/:contact_id/tags': {
+    action: actions.patchTags,
+    status: 204,
   },
 };
 
@@ -80,6 +102,6 @@ export default {
   name: 'contacts',
   data: require('./data.json'),
   reducer: reducer,
-  endpoint: '/api/v1/contacts',
+  endpoint: '/api',
   routes: routes,
 };

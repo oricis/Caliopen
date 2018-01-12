@@ -66,7 +66,7 @@ properties:
   tags:
     type: array
     items:
-      "$ref": Tag.yaml
+      type: string
   title:
     type: string
   user_id:

@@ -27,6 +27,12 @@
 			"revisionTime": "2017-04-29T10:26:45Z"
 		},
 		{
+			"checksumSHA1": "0EhLvZ6Og9HYqJtCc2Dzs1EgM30=",
+			"path": "github.com/bitly/go-simplejson",
+			"revision": "0c965951289cce37dec52ad1f34200fefc816777",
+			"revisionTime": "2017-10-23T17:51:54Z"
+		},
+		{
 			"checksumSHA1": "x2Km0Qy3WgJJnV19Zv25VwTJcBM=",
 			"path": "github.com/fsnotify/fsnotify",
 			"revision": "4da3e2cfbabc9f751898f250b49f2439785783a1",
@@ -391,6 +397,18 @@
 			"path": "github.com/mitchellh/mapstructure",
 			"revision": "cc8532a8e9a55ea36402aa21efdf403a60d34096",
 			"revisionTime": "2017-04-22T00:02:51Z"
+		},
+		{
+			"checksumSHA1": "O60x2mXes26ITuTIyUMwqhOKsfI=",
+			"path": "github.com/mozillazg/go-unidecode",
+			"revision": "8772af720c7f2f4d216cc73c5f23de17450dd008",
+			"revisionTime": "2016-11-07T13:59:01Z"
+		},
+		{
+			"checksumSHA1": "8aydIRe3ywfQEZ1IM1RtC1TGfNg=",
+			"path": "github.com/mozillazg/go-unidecode/table",
+			"revision": "8772af720c7f2f4d216cc73c5f23de17450dd008",
+			"revisionTime": "2016-11-07T13:59:01Z"
 		},
 		{
 			"checksumSHA1": "WD1vH1wVNKcnnFE6tbTxSYrr+1o=",

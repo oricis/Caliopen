@@ -30,7 +30,7 @@ class DesktopNotificationSettings extends Component {
   handleClickTestBrowser = () => {
     const { i18n } = this.props;
 
-    return new Notification(i18n._('settings.desktop_notification.feedback.enabled'));
+    return new Notification(i18n._('settings.desktop_notification.feedback.enabled', { defaults: 'Desktop notifications are enabled' }));
   }
 
   // eslint-disable-next-line

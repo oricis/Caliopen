@@ -61,7 +61,7 @@ class BirthdayForm extends PureComponent {
                 id="contact-form-birthday"
                 className="m-contact-profile-form__birthday"
                 inputClassName="m-contact-profile-form__birthday-input"
-                label={i18n._('contact_profile.form.birthday.label')}
+                label={i18n._('contact_profile.form.birthday.label', { defaults: 'Birthday' })}
                 onDateChange={this.handleBirthdayChanges}
                 showMonthDropdown
                 showYearDropdown

@@ -9,6 +9,7 @@
     ]
   },
   "contact.identity_form.service.label": {
+    "defaults": "Service",
     "origin": [
       [
         "src/scenes/Contact/components/IdentityForm/index.jsx",
@@ -17,6 +18,7 @@
     ]
   },
   "contact.identity_form.identity.label": {
+    "defaults": "Identity",
     "origin": [
       [
         "src/scenes/Contact/components/IdentityForm/index.jsx",

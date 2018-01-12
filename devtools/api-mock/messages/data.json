@@ -35,15 +35,7 @@
 	"privacy_features": {},
 	"raw_msg_id": "aaaaaaaa-267d-4d9c-97ee-d0fc59c64201",
 	"subject": "It's okay, Bender. I like cooking too",
-	"tags": [{
-		"tag_id": "foo-bar-1",
-		"name": "robot",
-		"type": "user"
-	}, {
-		"tag_id": "foo-bar-2",
-		"name": "work",
-		"type": "system"
-	}],
+	"tags": ["robot", "IMPORTANT"],
 	"type": "email",
 	"pi": { "technic": 50, "context": 45, "comportment": 25, "version": 1 },
 	"user_id": ""
@@ -83,15 +75,7 @@
 	}],
 	"privacy_features": {},
 	"raw_msg_id": "aaaaaaaa-267d-4d9c-97ee-d0fc59c64202",
-	"tags": [{
-		"tag_id": "foo-bar-1",
-		"name": "robot",
-		"type": "user"
-	}, {
-		"tag_id": "foo-bar-2",
-		"name": "work",
-		"type": "system"
-	}],
+	"tags": ["robot", "INBOX"],
 	"type": "email",
 	"pi": { "technic": 30, "context": 25, "comportment": 25, "version": 1 },
 	"user_id": ""
@@ -133,15 +117,7 @@
 	"privacy_features": {},
 	"raw_msg_id": "bbbbbbbbb-267d-4d9c-97ee-d0fc59c64201",
 	"subject": "Shut up and take my money",
-	"tags": [{
-		"tag_id": "foo-bar-3",
-		"name": "best quotes",
-		"type": "user"
-	}, {
-		"tag_id": "foo-bar-4",
-		"name": "lolilol",
-		"type": "user"
-	}],
+	"tags": ["INBOX", "SPAM"],
 	"type": "email",
 	"pi": { "technic": 40, "context": 15, "comportment": 45, "version": 1 }
 },

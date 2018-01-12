@@ -23,10 +23,6 @@ properties:
       "$ref": Participant.yaml
   subject:
     type: string
-  tags:
-    type: array
-    items:
-      "$ref": Tag.yaml
 required:
   - identities
 additionalProperties: false

@@ -10,15 +10,18 @@ import MessageItemContainer from '../MessageItemContainer';
 import Icon from '../../../../components/Icon';
 import TextBlock from '../../../../components/TextBlock';
 import Badge from '../../../../components/Badge';
+import { getTagLabelFromName } from '../../../../modules/tags';
 import { renderParticipant, getAuthor } from '../../../../services/message';
 
 import './style.scss';
 
 class MessageItem extends PureComponent {
   static propTypes = {
+    i18n: PropTypes.shape({}).isRequired,
     message: PropTypes.shape({}).isRequired,
     settings: PropTypes.shape({}).isRequired,
     isMessageFromUser: PropTypes.bool.isRequired,
+    userTags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
 
   renderAuthor() {
@@ -45,12 +48,12 @@ class MessageItem extends PureComponent {
   }
 
   renderTags() {
-    const { message } = this.props;
+    const { userTags, message, i18n } = this.props;
 
-    return message.tags && message.tags.map(tag => (
-      <span key={tag.name}>
+    return message.tags && message.tags.map(name => (
+      <span key={name}>
         {' '}
-        <Badge className="s-message-item__tag">{tag.name}</Badge>
+        <Badge className="s-message-item__tag">{getTagLabelFromName(i18n, userTags, name)}</Badge>
       </span>
     ));
   }

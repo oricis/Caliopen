@@ -90,7 +90,6 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         'social_identities': SocialIdentity,
         'addresses': PostalAddress,
         'organizations': Organization,
-        'tags': ResourceTag,
     }
 
     # Any of these nested objects,can be a lookup value
@@ -201,7 +200,7 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
                                                         SocialIdentity),
                  'organizations': cls.create_nested(contact.organizations,
                                                     Organization),
-                 'tags': cls.create_nested(contact.tags, ResourceTag),
+                 'tags': contact.tags,
                  'pi': pi}
 
         core = super(Contact, cls).create(user, **attrs)

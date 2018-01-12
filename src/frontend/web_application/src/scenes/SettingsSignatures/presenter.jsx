@@ -31,7 +31,7 @@ const SettingsSignatures = ({ i18n }) => (
       </NavList>
     }
     <div className="s-settings-signatures__panel">
-      <Section title={i18n._('settings.signatures.title')}>
+      <Section title={i18n._('settings.signatures.title', { defaults: 'Update your signature' })}>
         <SignatureForm settings={fakeSignaturesSettings} onSubmit={str => str} />
       </Section>
     </div>

@@ -31,19 +31,15 @@
       [
         "src/scenes/Timeline/components/MessageItemContainer/presenter.jsx",
         114
-      ],
-      [
-        "src/scenes/Timeline/components/MessageItemContainer/presenter.jsx",
-        121
       ]
     ]
   },
-  "tags.header.count": {
-    "defaults": "(Total: {count})",
+  "tags.header.label": {
+    "defaults": "Tags",
     "origin": [
       [
         "src/scenes/Timeline/components/MessageItemContainer/presenter.jsx",
-        115
+        127
       ]
     ]
   }

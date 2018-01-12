@@ -2,32 +2,49 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
 import Button from '../../../Button';
+import Spinner from '../../../Spinner';
 import { TextFieldGroup } from '../../../form';
 
 import './style.scss';
 
+function generateStateFromProps({ terms }) {
+  return {
+    terms,
+  };
+}
+
 @withI18n()
 class TagSearch extends Component {
   static propTypes = {
+    terms: PropTypes.string,
     onSubmit: PropTypes.func.isRequired,
     onChange: PropTypes.func,
     i18n: PropTypes.shape({}).isRequired,
+    isFetching: PropTypes.bool,
   };
 
   static defaultProps = {
-    onChange: null,
+    terms: '',
+    onChange: () => {},
+    isFetching: false,
   };
 
   state = {
     terms: '',
   };
 
+  componentWillMount() {
+    this.setState(prevState => generateStateFromProps(this.props, prevState));
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState(prevState => generateStateFromProps(newProps, prevState));
+  }
+
   handleChange = (ev) => {
     const terms = ev.target.value;
     this.setState({ terms });
-    if (this.props.onChange) {
-      this.props.onChange({ terms });
-    }
+    this.props.onChange(terms);
   }
 
   handleSubmit = () => {
@@ -35,17 +52,11 @@ class TagSearch extends Component {
       return;
     }
 
-    this.setState((prevState) => {
-      this.props.onSubmit({ tag: prevState.terms });
-
-      return {
-        terms: '',
-      };
-    });
+    this.props.onSubmit(this.state.terms);
   }
 
   render() {
-    const { i18n } = this.props;
+    const { i18n, isFetching } = this.props;
 
     return (
       <div className="m-tags-search">
@@ -54,12 +65,18 @@ class TagSearch extends Component {
           name="terms"
           value={this.state.terms}
           className="m-tags-search__input"
-          label={i18n._('tags.form.search.label')}
-          placeholder={i18n._('tags.form.search.placeholder')}
+          label={i18n._('tags.form.search.label', { defaults: 'Search' })}
+          placeholder={i18n._('tags.form.search.placeholder', { defaults: 'Search a tag ...' })}
           onChange={this.handleChange}
           showLabelforSr
         />
-        <Button className="m-tags-search__button" icon="search" onClick={this.handleSubmit} />
+        <Button
+          className="m-tags-search__button"
+          icon={isFetching ? (<Spinner isLoading display="inline" />) : 'plus'}
+          disabled={isFetching}
+          onClick={this.handleSubmit}
+          aria-label={i18n._('tags.action.add', { defaults: 'Add' })}
+        />
       </div>
     );
   }

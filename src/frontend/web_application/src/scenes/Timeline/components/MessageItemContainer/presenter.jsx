@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { Trans } from 'lingui-react';
 import Button from '../../../../components/Button';
 import Modal from '../../../../components/Modal';
-import ManageTags from '../ManageTags';
+import { ManageEntityTags } from '../../../../modules/tags';
 
 import './style.scss';
 
@@ -110,19 +110,25 @@ class MessageItemContainer extends Component {
   renderTagsModal = () => {
     const { message, i18n } = this.props;
     const nb = message.tags ? message.tags.length : 0;
-    const title = [
-      i18n._('tags.header.title'),
-      (<span key="1" className="m-tags-form__count"><Trans id="tags.header.count" values={{ 0: nb }}>(Total: {0})</Trans></span>),
-    ];
+    const title = (
+      <Trans
+        id="tags.header.title"
+        defaults={'Tags <0>(Total: {nb})</0>'}
+        values={{ nb }}
+        components={[
+          (<span className="m-tags-form__count" />),
+        ]}
+      />
+    );
 
     return (
       <Modal
         isOpen={this.state.isTagModalOpen}
-        contentLabel={i18n._('tags.header.title')}
+        contentLabel={i18n._('tags.header.label', { defaults: 'Tags' })}
         title={title}
         onClose={this.handleCloseTags}
       >
-        <ManageTags message={message} />
+        <ManageEntityTags type="message" entity={message} />
       </Modal>
     );
   }

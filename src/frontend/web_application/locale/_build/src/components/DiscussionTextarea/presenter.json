@@ -9,6 +9,7 @@
     ]
   },
   "messages.compose.form.body.placeholder": {
+    "defaults": "Type your message here...",
     "origin": [
       [
         "src/components/DiscussionTextarea/presenter.jsx",

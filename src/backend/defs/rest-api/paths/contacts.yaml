@@ -171,39 +171,3 @@ contacts_{contact_id}:
         description: json is valid but patch was semantically malformed or unprocessable
         schema:
           "$ref": "../objects/Error.yaml"
-contacts_{contact_id}_identities:
-  get:
-    description: returns a list of contact's identities
-    tags:
-    - contacts
-    security:
-    - basicAuth: []
-    parameters:
-    - name: contact_id
-      in: path
-      required: true
-      type: string
-    produces:
-    - application/json
-    responses:
-      200:
-        description: Contact's identities returned
-        schema:
-          type: object
-          properties:
-            total:
-              type: integer
-              format: int32
-              description: number of identities found for the contact
-            contact_identities:
-              type: array
-              items:
-                "$ref": "../objects/ContactIdentity.yaml"
-      '401':
-        description: Unauthorized access
-        schema:
-          "$ref": "../objects/Error.yaml"
-      404:
-        description: Contact not found
-        schema:
-          "$ref": "../objects/Error.yaml"

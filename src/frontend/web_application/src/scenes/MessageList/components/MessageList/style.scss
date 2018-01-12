@@ -1,0 +1,28 @@
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-message-list {
+  position: relative;
+
+  &__action { margin-right: $co-component__spacing; }
+
+  &__load-more {
+    padding-top: $co-margin;
+    text-align: center;
+  }
+
+  &__reply {
+    @include breakpoint(small) {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      box-shadow: $co-shadow--higher;
+    }
+
+    @include breakpoint(medium) {
+      position: static;
+      box-shadow: none;
+    }
+  }
+
+}

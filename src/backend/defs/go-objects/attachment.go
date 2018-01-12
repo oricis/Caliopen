@@ -14,12 +14,23 @@ type Attachment struct {
 }
 
 func (a *Attachment) UnmarshalMap(input map[string]interface{}) error {
-	a.Content_type, _ = input["content_type"].(string)
-	a.File_name, _ = input["file_name"].(string)
-	a.Is_inline, _ = input["is_inline"].(bool)
-	size, _ := input["size"].(float64)
-	a.Size = int(size)
-	a.URL, _ = input["url"].(string)
-	a.MimeBoundary, _ = input["mime_boundary"].(string)
+	if content_type, ok := input["content_type"].(string); ok {
+		a.Content_type = content_type
+	}
+	if file_name, ok := input["file_name"].(string); ok {
+		a.File_name = file_name
+	}
+	if is_inline, ok := input["is_inline"].(bool); ok {
+		a.Is_inline = is_inline
+	}
+	if size, ok := input["size"].(float64); ok {
+		a.Size = int(size)
+	}
+	if url, ok := input["url"].(string); ok {
+		a.URL = url
+	}
+	if mimeBoundary, ok := input["mime_boundary"].(string); ok {
+		a.MimeBoundary = mimeBoundary
+	}
 	return nil //TODO: error handling
 }

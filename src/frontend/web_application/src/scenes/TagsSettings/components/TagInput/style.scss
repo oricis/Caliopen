@@ -1,0 +1,21 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-tag-input {
+  @include flex-grid-row;
+  height: $co-component__height;
+  margin-bottom: map-get($co-form__spacing, 'small');
+  background: $co-color__fg__back--high;
+
+  &__button {
+    @include flex-grid-size;
+    line-height: $co-component__height;
+    text-align: left;
+    &:hover { background: $co-color__fg__back--higher;  }
+  }
+  &__input { @include flex-grid-size; }
+  &__delete {
+    @include flex-grid-size(shrink);
+    line-height: $co-component__height;
+  }
+}

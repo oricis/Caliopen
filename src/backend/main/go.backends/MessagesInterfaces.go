@@ -12,3 +12,10 @@ type MessageStorage interface {
 	SetMessageUnread(user_id, message_id string, status bool) error
 	GetRawMessage(raw_message_id string) (raw_message RawMessage, err error)
 }
+
+type MessageIndex interface {
+	SetMessageUnread(user_id, message_id string, status bool) error
+	CreateMessage(msg *Message) error
+	UpdateMessage(msg *Message, fields map[string]interface{}) error
+	FilterMessages(search IndexSearch) (messages []*Message, totalFound int64, err error)
+}

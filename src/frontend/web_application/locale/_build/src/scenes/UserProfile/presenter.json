@@ -1,10 +1,10 @@
 {
-  "user.action.cancel_edit": {
-    "defaults": "Cancel",
+  "contact.feedback.unable_to_save": {
+    "defaults": "Unable to save the contact",
     "origin": [
       [
         "src/scenes/UserProfile/presenter.jsx",
-        47
+        49
       ]
     ]
   },
@@ -13,24 +13,34 @@
     "origin": [
       [
         "src/scenes/UserProfile/presenter.jsx",
-        49
+        64
       ]
     ]
   },
-  "user.action.share_profile": {
-    "defaults": "Share",
+  "user.action.update": {
+    "defaults": "Update",
     "origin": [
       [
         "src/scenes/UserProfile/presenter.jsx",
-        51
+        69
+      ]
+    ]
+  },
+  "user.action.cancel_edit": {
+    "defaults": "Cancel",
+    "origin": [
+      [
+        "src/scenes/UserProfile/presenter.jsx",
+        73
       ]
     ]
   },
   "user.profile.form.title": {
+    "defaults": "Complete your profile",
     "origin": [
       [
         "src/scenes/UserProfile/presenter.jsx",
-        56
+        91
       ]
     ]
   }

@@ -7,13 +7,13 @@ package messages
 import (
 	"bytes"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	swgErr "github.com/go-openapi/errors"
 	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 	"strconv"
 	"time"
-	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 )
 
 // POST …/:message_id/attachments

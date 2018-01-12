@@ -14,6 +14,9 @@ export const CREATE_CONTACT = 'co/contact/CREATE_CONTACT';
 export const CREATE_CONTACT_SUCCESS = 'co/contact/CREATE_CONTACT_SUCCESS';
 export const CREATE_CONTACT_FAIL = 'co/contact/CREATE_CONTACT_FAIL';
 export const DELETE_CONTACT = 'co/contact/DELETE_CONTACT';
+export const UPDATE_TAGS = 'co/contact/UPDATE_TAGS';
+export const UPDATE_TAGS_SUCCESS = 'co/contact/UPDATE_TAGS_SUCCESS';
+export const UPDATE_TAGS_FAIL = 'co/contact/UPDATE_TAGS_FAIL';
 
 export function requestContacts(params = {}) {
   const { offset = 0, limit = 1000 } = params;
@@ -36,7 +39,7 @@ export function loadMoreContacts() {
   };
 }
 
-export function requestContact({ contactId }) {
+export function requestContact(contactId) {
   return {
     type: REQUEST_CONTACT,
     payload: {
@@ -89,6 +92,24 @@ export function createContact({ contact }) {
         method: 'post',
         url: '/v1/contacts',
         data: contact,
+      },
+    },
+  };
+}
+
+export function updateTags({ contact, tags }) {
+  const data = {
+    tags,
+    current_state: { tags: contact.tags },
+  };
+
+  return {
+    type: UPDATE_TAGS,
+    payload: {
+      request: {
+        method: 'patch',
+        url: `/v2/contacts/${contact.contact_id}/tags`,
+        data,
       },
     },
   };

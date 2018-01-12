@@ -35,9 +35,9 @@ class AddressForm extends PureComponent {
   initTranslations() {
     const { i18n } = this.props;
     this.addressTypes = {
-      work: i18n._('contact.address_type.work'),
-      home: i18n._('contact.address_type.home'),
-      other: i18n._('contact.address_type.other'),
+      work: i18n._('contact.address_type.work', { defaults: 'Professional' }),
+      home: i18n._('contact.address_type.home', { defaults: 'Personal' }),
+      other: i18n._('contact.address_type.other', { defaults: 'Other' }),
     };
   }
 
@@ -65,8 +65,8 @@ class AddressForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="street"
-                label={i18n._('contact.address_form.street.label')}
-                placeholder={i18n._('contact.address_form.street.label')}
+                label={i18n._('contact.address_form.street.label', { defaults: 'Street' })}
+                placeholder={i18n._('contact.address_form.street.label', { defaults: 'Street' })}
                 showLabelforSr
               />
             </FormColumn>
@@ -76,8 +76,8 @@ class AddressForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="postal_code"
-                label={i18n._('contact.address_form.postal_code.label')}
-                placeholder={i18n._('contact.address_form.postal_code.label')}
+                label={i18n._('contact.address_form.postal_code.label', { defaults: 'Postal Code' })}
+                placeholder={i18n._('contact.address_form.postal_code.label', { defaults: 'Postal Code' })}
                 showLabelforSr
               />
             </FormColumn>
@@ -85,8 +85,8 @@ class AddressForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="city"
-                label={i18n._('contact.address_form.city.label')}
-                placeholder={i18n._('contact.address_form.city.label')}
+                label={i18n._('contact.address_form.city.label', { defaults: 'City' })}
+                placeholder={i18n._('contact.address_form.city.label', { defaults: 'City' })}
                 showLabelforSr
               />
             </FormColumn>
@@ -104,7 +104,7 @@ class AddressForm extends PureComponent {
                 id="contact-adress-country"
                 name="country"
                 classes="m-address-form__select"
-                defaultOptionLabel={i18n._('contact.address_form.select_country')}
+                defaultOptionLabel={i18n._('contact.address_form.select_country', { defaults: 'Country' })}
               />
             </FormColumn>
             <FormColumn size="medium" bottomSpace>
@@ -119,7 +119,7 @@ class AddressForm extends PureComponent {
                 id="contact-adress-region"
                 name="region"
                 classes="m-address-form__select"
-                defaultOptionLabel={i18n._('contact.address_form.select_region')}
+                defaultOptionLabel={i18n._('contact.address_form.select_region', { defaults: 'Region' })}
                 country={country}
               />
             </FormColumn>
@@ -127,7 +127,7 @@ class AddressForm extends PureComponent {
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={i18n._('contact.address_form.type.label')}
+                label={i18n._('contact.address_form.type.label', { defaults: 'Type' })}
                 options={addressTypeOptions}
                 showLabelforSr
               />

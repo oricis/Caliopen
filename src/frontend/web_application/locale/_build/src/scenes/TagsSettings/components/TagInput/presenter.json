@@ -1,0 +1,20 @@
+{
+  "settings.tag.action.save-tag": {
+    "defaults": "Save",
+    "origin": [
+      [
+        "src/scenes/TagsSettings/components/TagInput/presenter.jsx",
+        89
+      ]
+    ]
+  },
+  "settings.tags.action.delete": {
+    "defaults": "Delete",
+    "origin": [
+      [
+        "src/scenes/TagsSettings/components/TagInput/presenter.jsx",
+        112
+      ]
+    ]
+  }
+}

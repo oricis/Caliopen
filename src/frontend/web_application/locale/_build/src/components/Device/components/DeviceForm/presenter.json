@@ -1,5 +1,6 @@
 {
   "device.feedback.invalid_ip": {
+    "defaults": "IP or subnet address is invalid.",
     "origin": [
       [
         "src/components/Device/components/DeviceForm/presenter.jsx",
@@ -8,6 +9,7 @@
     ]
   },
   "device.type.desktop": {
+    "defaults": "Desktop",
     "origin": [
       [
         "src/components/Device/components/DeviceForm/presenter.jsx",
@@ -16,6 +18,7 @@
     ]
   },
   "device.type.laptop": {
+    "defaults": "Laptop",
     "origin": [
       [
         "src/components/Device/components/DeviceForm/presenter.jsx",
@@ -24,6 +27,7 @@
     ]
   },
   "device.type.smartphone": {
+    "defaults": "Smartphone",
     "origin": [
       [
         "src/components/Device/components/DeviceForm/presenter.jsx",
@@ -32,6 +36,7 @@
     ]
   },
   "device.type.tablet": {
+    "defaults": "Tablet",
     "origin": [
       [
         "src/components/Device/components/DeviceForm/presenter.jsx",
@@ -40,6 +45,7 @@
     ]
   },
   "device.location.type.unknown": {
+    "defaults": "Unknown",
     "origin": [
       [
         "src/components/Device/components/DeviceForm/presenter.jsx",
@@ -48,6 +54,7 @@
     ]
   },
   "device.location.type.home": {
+    "defaults": "Home",
     "origin": [
       [
         "src/components/Device/components/DeviceForm/presenter.jsx",
@@ -56,6 +63,7 @@
     ]
   },
   "device.location.type.work": {
+    "defaults": "Work",
     "origin": [
       [
         "src/components/Device/components/DeviceForm/presenter.jsx",
@@ -64,6 +72,7 @@
     ]
   },
   "device.location.type.public": {
+    "defaults": "Public",
     "origin": [
       [
         "src/components/Device/components/DeviceForm/presenter.jsx",
@@ -72,6 +81,7 @@
     ]
   },
   "device.form.locations.address.label": {
+    "defaults": "IP or subnet mask",
     "origin": [
       [
         "src/components/Device/components/DeviceForm/presenter.jsx",
@@ -80,6 +90,7 @@
     ]
   },
   "device.form.locations.type.label": {
+    "defaults": "Connection location",
     "origin": [
       [
         "src/components/Device/components/DeviceForm/presenter.jsx",

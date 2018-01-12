@@ -1,5 +1,6 @@
 {
   "reply-form.protocol.email": {
+    "defaults": "email",
     "origin": [
       [
         "src/components/ReplyForm/presenter.jsx",

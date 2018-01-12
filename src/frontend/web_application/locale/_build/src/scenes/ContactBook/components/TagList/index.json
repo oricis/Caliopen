@@ -1,5 +1,6 @@
 {
   "tag_list.all_contacts": {
+    "defaults": "All contacts",
     "origin": [
       [
         "src/scenes/ContactBook/components/TagList/index.jsx",

@@ -1,5 +1,15 @@
 {
   "contact.address_type.work": {
+    "defaults": "Professional",
+    "origin": [
+      [
+        "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
+        45
+      ]
+    ]
+  },
+  "contact.address_type.home": {
+    "defaults": "Personal",
     "origin": [
       [
         "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
@@ -7,7 +17,8 @@
       ]
     ]
   },
-  "contact.address_type.home": {
+  "contact.address_type.other": {
+    "defaults": "Other",
     "origin": [
       [
         "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
@@ -15,15 +26,17 @@
       ]
     ]
   },
-  "contact.address_type.other": {
+  "contact.im_type.work": {
+    "defaults": "Work",
     "origin": [
       [
         "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
-        48
+        50
       ]
     ]
   },
-  "contact.im_type.work": {
+  "contact.im_type.home": {
+    "defaults": "Home",
     "origin": [
       [
         "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
@@ -31,7 +44,8 @@
       ]
     ]
   },
-  "contact.im_type.home": {
+  "contact.im_type.other": {
+    "defaults": "Other",
     "origin": [
       [
         "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
@@ -39,19 +53,12 @@
       ]
     ]
   },
-  "contact.im_type.other": {
+  "contact.im_type.netmeeting": {
+    "defaults": "Netmeeting",
     "origin": [
       [
         "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
         53
-      ]
-    ]
-  },
-  "contact.im_type.netmeeting": {
-    "origin": [
-      [
-        "src/scenes/SettingsIdentities/components/IdentityForm/index.jsx",
-        54
       ]
     ]
   }

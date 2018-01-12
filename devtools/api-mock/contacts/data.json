@@ -15,7 +15,7 @@
   "name_prefix": null,
   "deleted": 0,
   "pi": { "technic": 87, "context": 45, "comportment": 25 },
-  "tags": ["Robots", "Planet Express"],
+  "tags": ["robot", "planet-express"],
   "infos": {
     "birthday": "2016-05-09T15:01:42.11600"
   },
@@ -49,7 +49,7 @@
   "name_prefix": "Dr",
   "deleted": 0,
   "pi": { "technic": 50, "context": 45, "comportment": 25 },
-  "tags": ["Planet Express", "Aliens"],
+  "tags": ["robot", "INPORTANT"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00000002",
@@ -81,7 +81,7 @@
   "name_prefix": null,
   "deleted": 0,
   "pi": { "technic": 87, "context": 20, "comportment": 25 },
-  "tags": ["Planet Express"],
+  "tags": ["planet-express"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00000100",
@@ -113,7 +113,7 @@
   "name_prefix": null,
   "deleted": 0,
   "pi": { "technic": 87, "context": 45, "comportment": 35 },
-  "tags": ["Humans", "Planet Express"],
+  "tags": ["humans", "planet-express"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00002001",
@@ -145,7 +145,7 @@
   "name_prefix": null,
   "deleted": 0,
   "pi": { "technic": 45, "context": 34, "comportment": 25 },
-  "tags": ["Humans", "Planet Express"],
+  "tags": ["humans", "planet-express"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00000022",
@@ -177,7 +177,7 @@
   "name_prefix": "Prof.",
   "deleted": 0,
   "pi": { "technic": 46, "context": 45, "comportment": 87 },
-  "tags": ["Humans", "Planet Express"],
+  "tags": ["humans", "planet-express"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00000120",
@@ -209,7 +209,7 @@
   "name_prefix": "Emperor",
   "deleted": 0,
   "pi": { "technic": 87, "context": 20, "comportment": 50 },
-  "tags": ["Aliens"],
+  "tags": ["aliens"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-02000001",
@@ -241,7 +241,7 @@
   "name_prefix": "Dr",
   "deleted": 0,
   "pi": { "technic": 10, "context": 15, "comportment": 25 },
-  "tags": ["Humans"],
+  "tags": ["humans"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-20020001",
@@ -273,7 +273,7 @@
   "name_prefix": null,
   "deleted": 0,
   "pi": { "technic": 4, "context": 24, "comportment": 25 },
-  "tags": ["Aliens", "Planet Express", "Amphibians"],
+  "tags": ["aliens", "planet-express", "amphibians"],
   "infos": {},
   "emails": [{
     "email_id": "0327707a-4398-4bd4-9bd5-20020001",
@@ -305,7 +305,7 @@
   "name_prefix": null,
   "deleted": 0,
   "pi": { "technic": 41, "context": 15, "comportment": 25 },
-  "tags": ["Humans"],
+  "tags": ["humans"],
   "infos": {},
   "emails": [{
     "email_id": "5488707a-4398-4bd4-9bd5-20020001",
@@ -337,7 +337,7 @@
   "name_prefix": "Chef",
   "deleted": 0,
   "pi": { "technic": 48, "context": 45, "comportment": 25 },
-  "tags": ["Aliens"],
+  "tags": ["aliens"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00000120",
@@ -369,7 +369,7 @@
   "name_prefix": null,
   "deleted": 0,
   "pi": { "technic": 87, "context": 45, "comportment": 35 },
-  "tags": ["Humans", "Planet Express"],
+  "tags": ["humans", "planet-express"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00000120",
@@ -401,7 +401,7 @@
   "name_prefix": null,
   "deleted": 0,
   "pi": { "technic": 87, "context": 70, "comportment": 95 },
-  "tags": ["Humans", "Planet Express"],
+  "tags": ["humans", "planet-express"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00000120",
@@ -433,7 +433,7 @@
   "name_prefix": null,
   "deleted": 0,
   "pi": { "technic": 48, "context": 56, "comportment": 32 },
-  "tags": ["Robots"],
+  "tags": ["robot"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00900001",
@@ -465,7 +465,7 @@
   "name_prefix": "",
   "deleted": 0,
   "pi": { "technic": 10, "context": 15, "comportment": 12 },
-  "tags": ["Robots"],
+  "tags": ["robot"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-90000002",
@@ -497,7 +497,7 @@
   "name_prefix": null,
   "deleted": 0,
   "pi": { "technic": 56, "context": 35, "comportment": 7 },
-  "tags": ["Humans"],
+  "tags": ["humans"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00900100",
@@ -529,7 +529,7 @@
   "name_prefix": null,
   "deleted": 0,
   "pi": { "technic": 41, "context": 45, "comportment": 7 },
-  "tags": ["Aliens"],
+  "tags": ["aliens"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00002901",
@@ -561,7 +561,7 @@
   "name_prefix": "Mr.",
   "deleted": 0,
   "pi": { "technic": 20, "context": 45, "comportment": 75 },
-  "tags": ["Humans"],
+  "tags": ["humans"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-00900022",
@@ -593,7 +593,7 @@
   "name_prefix": "Lord",
   "deleted": 0,
   "pi": { "technic": 65, "context": 45, "comportment": 25 },
-  "tags": ["Aliens", "Planet Express"],
+  "tags": ["aliens", "planet-express"],
   "infos": {},
   "emails": [{
     "email_id": "93f03145-4398-4bd4-9bd5-0009120",
@@ -623,7 +623,7 @@
   "ims": [],
   "given_name": "Hypnotoad",
   "name_prefix": "",
-  "tags": ["Amphibians", "Aliens"],
+  "tags": ["amphibians", "aliens"],
   "deleted": 0,
   "pi": { "technic": 87, "context": 75, "comportment": 25 },
   "infos": {},

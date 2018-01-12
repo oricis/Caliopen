@@ -1,9 +1,10 @@
 {
   "orga-details.job.desc-full": {
+    "defaults": "{jobDesc} at {orgaName} {department}",
     "origin": [
       [
         "src/components/ContactDetails/components/OrgaDetails/index.jsx",
-        18
+        20
       ]
     ]
   }

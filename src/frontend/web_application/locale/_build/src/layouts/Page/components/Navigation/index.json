@@ -1,5 +1,6 @@
 {
   "navigation.actions.toggle-importance-level-slider": {
+    "defaults": "Toggle importance slider",
     "origin": [
       [
         "src/layouts/Page/components/Navigation/index.jsx",

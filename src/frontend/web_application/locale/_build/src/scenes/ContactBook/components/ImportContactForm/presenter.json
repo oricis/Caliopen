@@ -4,7 +4,7 @@
     "origin": [
       [
         "src/scenes/ContactBook/components/ImportContactForm/presenter.jsx",
-        67
+        66
       ]
     ]
   },
@@ -13,7 +13,7 @@
     "origin": [
       [
         "src/scenes/ContactBook/components/ImportContactForm/presenter.jsx",
-        77
+        76
       ]
     ]
   },
@@ -22,15 +22,16 @@
     "origin": [
       [
         "src/scenes/ContactBook/components/ImportContactForm/presenter.jsx",
-        85
+        84
       ]
     ]
   },
   "import-contact.form.descr": {
+    "defaults": "You can import one .vcf or .vcard file.",
     "origin": [
       [
         "src/scenes/ContactBook/components/ImportContactForm/presenter.jsx",
-        107
+        106
       ]
     ]
   },
@@ -39,7 +40,7 @@
     "origin": [
       [
         "src/scenes/ContactBook/components/ImportContactForm/presenter.jsx",
-        113
+        111
       ]
     ]
   }

@@ -1,5 +1,6 @@
 {
   "input-file-group.error.file_is_required": {
+    "defaults": "A file is required",
     "origin": [
       [
         "src/components/form/InputFileGroup/index.jsx",
@@ -17,6 +18,7 @@
     ]
   },
   "input-file-group.error.max_size": {
+    "defaults": "The file size must be under {0} ko",
     "origin": [
       [
         "src/components/form/InputFileGroup/index.jsx",

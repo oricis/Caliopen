@@ -31,7 +31,10 @@ class PageContainer extends Component {
             <div className="l-body__content">{children}</div>
           </section>
           <section>
-            <div className="l-body__footer-alpha" dangerouslySetInnerHTML={{ __html: i18n._('alpha.footer.feedback') }} />
+            <div
+              className="l-body__footer-alpha"
+              dangerouslySetInnerHTML={{ __html: i18n._('alpha.footer.feedback', { defaults: 'Tell us if something went wrong at <a href="https://feedback.caliopen.org/">https://feedback.caliopen.org/</a>.' }) }}
+            />
           </section>
           <CallToAction />
           <NotificationCenter />

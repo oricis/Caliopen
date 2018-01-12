@@ -1,10 +1,10 @@
 package operations
 
 import (
+	"github.com/satori/go.uuid"
 	"gopkg.in/gin-gonic/gin.v1"
 	"strconv"
 	"strings"
-	"github.com/satori/go.uuid"
 )
 
 // fall back to default values if can't extract valid numbers.
@@ -56,4 +56,3 @@ func NormalizeUUIDstring(uuid_str string) (string, error) {
 	}
 	return uuid.String(), nil
 }
-

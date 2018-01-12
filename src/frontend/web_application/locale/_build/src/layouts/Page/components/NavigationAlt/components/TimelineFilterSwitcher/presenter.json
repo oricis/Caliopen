@@ -1,5 +1,6 @@
 {
   "timeline-filter.label": {
+    "defaults": "Timeline filter",
     "origin": [
       [
         "src/layouts/Page/components/NavigationAlt/components/TimelineFilterSwitcher/presenter.jsx",

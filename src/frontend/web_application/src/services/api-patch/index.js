@@ -1,13 +1,18 @@
 import isEqual from 'lodash.isequal';
 
-const calcObjectForPatch = (newObj, previousObj) => Object.keys(newObj).reduce((acc, prop) => {
+const calcObjectForPatch = (newObj, previousObj) => Array.from(new Set(
+  Object.keys(newObj).concat(Object.keys(previousObj))
+)).reduce((acc, prop) => {
   if (!isEqual(newObj[prop], previousObj[prop])) {
+    const nextProp = newObj[prop] ? { [prop]: newObj[prop] } : {};
+    const previousProp = previousObj[prop] ? { [prop]: previousObj[prop] } : {};
+
     return {
       ...acc,
-      [prop]: newObj[prop],
+      ...nextProp,
       current_state: {
         ...acc.current_state,
-        [prop]: previousObj[prop],
+        ...previousProp,
       },
     };
   }

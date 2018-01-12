@@ -56,7 +56,7 @@ const createDiscussionTab = async (store, discussionId, { pathname, search, hash
 };
 
 const createContactTab = async (store, contactId, { pathname, search, hash }) =>
-  store.dispatch(requestContact({ contactId }))
+  store.dispatch(requestContact(contactId))
     .then(({ payload: { data: contact } }) => {
       const { translate: __ } = getTranslator();
       const settings = store.getState().settings.settings;

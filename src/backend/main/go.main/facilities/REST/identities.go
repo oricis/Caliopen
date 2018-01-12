@@ -22,7 +22,7 @@ func (rest *RESTfacility) LocalsIdentities(user_id string) ([]LocalIdentity, err
 func (rest *RESTfacility) ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error) {
 	_, e := uuid.FromString(contact_id)
 	if user_id != "" && contact_id != "" && e == nil {
-		contact, err := rest.store.GetContact(user_id, contact_id)
+		contact, err := rest.store.RetrieveContact(user_id, contact_id)
 		if err != nil || contact == nil {
 			err = errors.New("[RESTfacility.ContactIdentities] error when retrieving contact : " + err.Error())
 			return []ContactIdentity{}, err

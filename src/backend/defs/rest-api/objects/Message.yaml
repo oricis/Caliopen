@@ -40,7 +40,7 @@ properties:
   tags:
     type: array
     items:
-      "$ref": Tag.yaml
+      type: string
   text:
     type: string
   type:

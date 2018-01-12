@@ -45,17 +45,16 @@ system:
     max_users: 100
     default_tags:
         -
-            name: INBOX
-            background: '#000000'
-            color: black
+            name: inbox
         -
-            name: SPAM
-            background: '#AAAAAA'
-            color: white
+            name: spam
         -
-            name: IMPORTANT
-            background: '#FF0000'
-            color: white
+            name: important
+            importance_level: 5
+        -
+            name: internal
+            label: Caliopen
+            importance_level: 2
 
 default_domain: caliopen.local
 

@@ -36,3 +36,18 @@ const (
 	ParticipantSender  = "Sender"
 	ParticipantTo      = "To"
 )
+
+// A Initiator specifies what kind of actor is triggering a PATCH method on any object
+type Initiator int
+
+const (
+	Unknown Initiator = iota
+	SystemActor
+	UserActor
+)
+
+// map internal constants to json tags used within struct definition
+var Initiators = map[string]Initiator{
+	"system": SystemActor,
+	"user":   UserActor,
+}

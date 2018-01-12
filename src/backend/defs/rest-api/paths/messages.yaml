@@ -43,7 +43,7 @@ messages:
           "$ref": "../objects/Error.yaml"
 messages_{message_id}:
   patch:
-    description: update a contact with rfc5789 and rfc7396 specifications
+    description: update a draft with rfc5789 and rfc7396 specifications
     tags:
     - messages
     security:

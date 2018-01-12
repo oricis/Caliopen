@@ -96,6 +96,7 @@ def setup_system_tags(user):
     for tag in default_tags:
         tag['type'] = 'system'
         tag['date_insert'] = datetime.datetime.now(tz=pytz.utc)
+        tag['label'] = tag.get('label', tag['name'])
         from .user import Tag
         Tag.create(user, **tag)
 
