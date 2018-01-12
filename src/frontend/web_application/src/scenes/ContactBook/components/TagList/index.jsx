@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { withI18n } from 'lingui-react';
+import classnames from 'classnames';
 import { WithTags, getTagLabelFromName } from '../../../../modules/tags';
 import Button from '../../../../components/Button';
 import NavList, { ItemContent } from '../../../../components/NavList';
@@ -22,77 +22,61 @@ function nbContactsbyTag(list, tag) {
   return count.length;
 }
 
-const TagItem = ({ title, link, onTagClick, nbContacts, active, className }) => {
-  const tagClassName = classnames(
-    className,
-    'm-tag-list__tag',
-    {
-      'm-tag-list__tag--active': active,
-    }
-  );
+@withI18n()
+class TagList extends Component {
+  static propTypes = {
+    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    onTagClick: PropTypes.func.isRequired,
+    activeTag: PropTypes.string.isRequired,
+    nbContactsAll: PropTypes.number.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
+  };
+  static defaultProps = {
+  };
+  state = {};
 
+  renderItem({ tagName, title, nbContacts }) {
+    const { activeTag, onTagClick } = this.props;
+    const tagClassName = classnames(
+      'm-tag-list__tag',
+      {
+        'm-tag-list__tag--active': activeTag === tagName,
+      }
+    );
 
-  return (
-    <ItemContent className="m-tag-list__item">
-      <Button
-        onClick={onTagClick}
-        value={link}
-        className={tagClassName}
-      >
-        {title} ({nbContacts})
-      </Button>
-    </ItemContent>
-  );
-};
+    return (
+      <Button onClick={onTagClick} className={tagClassName}>{title} ({nbContacts})</Button>
+    );
+  }
 
-TagItem.propTypes = {
-  title: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired,
-  nbContacts: PropTypes.number.isRequired,
-  onTagClick: PropTypes.func.isRequired,
-  active: PropTypes.bool,
-  className: PropTypes.string,
-};
+  render() {
+    const { tags, nbContactsAll, i18n } = this.props;
+    const list = tags.sort((a, b) => a.localeCompare(b));
+    const tagList = Array.from(new Set(list));
 
-TagItem.defaultProps = {
-  active: false,
-  className: '',
-};
+    return (
+      <NavList className="m-tag-list" dir="vertical">
+        <ItemContent className="m-tag-list__item">
+          {this.renderItem({
+            tagName: '',
+            title: i18n._('tag_list.all_contacts', { defaults: 'All contacts' }),
+            nbContacts: nbContactsAll,
+          })}
+        </ItemContent>
+        <WithTags render={userTags => tagList.map(
+          name => (
+            <ItemContent className="m-tag-list__item" key={name}>
+              {this.renderItem({
+                tagName: name,
+                title: getTagLabelFromName(i18n, userTags, name),
+                nbContacts: nbContactsbyTag(list, name),
+              })}
+            </ItemContent>
+          ))}
+        />
+      </NavList>
+    );
+  }
+}
 
-const TagList = ({ tags, onTagClick, nbContactsAll, activeTag, i18n }) => {
-  const list = tags.sort((a, b) => a.localeCompare(b));
-  const tagList = Array.from(new Set(list));
-
-  return (
-    <NavList className="m-tag-list" dir="vertical">
-      <TagItem
-        title={i18n._('tag_list.all_contacts', { defaults: 'All contacts' })}
-        link=""
-        nbContacts={nbContactsAll}
-        onTagClick={onTagClick}
-        active={activeTag === ''}
-      />
-      <WithTags render={userTags => tagList.map(
-        name => (
-          <TagItem
-            title={getTagLabelFromName(i18n, userTags, name)}
-            link={name}
-            nbContacts={nbContactsbyTag(list, name)}
-            key={name}
-            onTagClick={onTagClick}
-            active={name === activeTag}
-          />
-        ))}
-      />
-    </NavList>
-  );
-};
-
-TagList.propTypes = {
-  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onTagClick: PropTypes.func.isRequired,
-  activeTag: PropTypes.string.isRequired,
-  nbContactsAll: PropTypes.number.isRequired,
-  i18n: PropTypes.shape({}).isRequired,
-};
-export default withI18n()(TagList);
+export default TagList;
