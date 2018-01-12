@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getTagLabel } from '../../../../modules/tags';
-import { FormGrid, TextFieldGroup } from '../../../../components/form';
+import { FormGrid, TextFieldGroup, FieldErrors } from '../../../../components/form';
 import { Button, Icon, Spinner } from '../../../../components';
 import './style.scss';
 
@@ -22,6 +22,7 @@ class TagInput extends Component {
     tag: PropTypes.shape({}).isRequired,
     onUpdateTag: PropTypes.func.isRequired,
     onDeleteTag: PropTypes.func.isRequired,
+    errors: PropTypes.arrayOf(PropTypes.node),
   };
   static defaultProps = {
   };
@@ -30,6 +31,7 @@ class TagInput extends Component {
     tag: {},
     edit: false,
     isFetching: false,
+    errors: [],
   };
 
   componentWillMount() {
@@ -69,7 +71,7 @@ class TagInput extends Component {
   }
 
   renderForm() {
-    const { tag, i18n } = this.props;
+    const { tag, errors, i18n } = this.props;
 
     return (
       <FormGrid className="m-tag-input">
@@ -82,6 +84,7 @@ class TagInput extends Component {
           onChange={this.handleChange}
           showLabelforSr
           autoFocus
+          errors={errors}
         />
         <Button
           inline
@@ -95,7 +98,7 @@ class TagInput extends Component {
   }
 
   renderButton() {
-    const { tag, i18n } = this.props;
+    const { errors, tag, i18n } = this.props;
 
     return (
       <FormGrid className="m-tag-input">
@@ -115,6 +118,7 @@ class TagInput extends Component {
             icon={this.state.isFetching ? <Spinner isLoading display="inline" /> : 'remove'}
           />
         )}
+        {errors && (<FieldErrors errors={errors} className="m-tag-input__errors" />)}
       </FormGrid>
     );
   }

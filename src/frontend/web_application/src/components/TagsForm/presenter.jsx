@@ -27,6 +27,7 @@ class TagsForm extends Component {
   };
 
   state = {
+    errors: [],
     searchTerms: '',
     isTagCollectionUpdating: false,
   };
@@ -34,12 +35,23 @@ class TagsForm extends Component {
   updateTags = async ({ tags }) => {
     const { updateTags } = this.props;
     this.setState({ isTagCollectionUpdating: true });
-    await updateTags({ tags });
+    try {
+      await updateTags({ tags });
+    } catch (errors) {
+      this.setState({
+        errors: errors.map(err => err.message),
+        isTagCollectionUpdating: false,
+      });
+
+      return Promise.reject();
+    }
     this.setState({ isTagCollectionUpdating: false });
+
+    return undefined;
   }
 
   handleSearchChange = (searchTerms) => {
-    this.setState({ searchTerms });
+    this.setState({ searchTerms, errors: [] });
     this.props.search(searchTerms);
   }
 
@@ -75,6 +87,7 @@ class TagsForm extends Component {
 
         <div className="m-tags-form__section">
           <TagSearch
+            errors={this.state.errors}
             terms={this.state.searchTerms}
             isFetching={isTagSearchFetching || this.state.isTagCollectionUpdating}
             onChange={this.handleSearchChange}
