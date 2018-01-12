@@ -24,9 +24,6 @@ func (rest *RESTfacility) RetrieveUserTags(user_id string) (tags []Tag, err Cali
 // - adds the tag in db for user if it doesn't exist yet
 // - updates tag in-place with its new properties
 func (rest *RESTfacility) CreateTag(tag *Tag) CaliopenError {
-	if tag.Label == "" {
-		tag.Label = tag.Name
-	}
 	var isUnique bool
 	var err error
 	isUnique, tag.Name, err = rest.IsTagLabelNameUnique(tag.Label, tag.User_id.String())
