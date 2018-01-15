@@ -20,14 +20,6 @@ class DeviceLocation(Model):
     type = StringType()
 
 
-class DeviceInformation(Model):
-    """Device important information when creating a new one."""
-
-    os_version = StringType()
-    hardware_info = StringType()
-    browser_info = StringType()
-
-
 class NewDevice(Model):
     """Structure to create a new user device."""
 
@@ -35,7 +27,8 @@ class NewDevice(Model):
     type = StringType(required=True, choices=DEVICE_TYPES, default='unknow')
 
     locations = ListType(ModelType(DeviceLocation), default=lambda: [])
-    informations = ModelType(DeviceInformation)
+    user_agent = StringType()
+    ip_address = StringType()
 
 
 class Device(NewDevice):

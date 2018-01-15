@@ -16,6 +16,15 @@ from cassandra.cqlengine import columns
 log = logging.getLogger(__name__)
 
 
+class DeviceECKey(BaseUserType):
+    """Device Elliptic Curve public key."""
+
+    curve = columns.Text()
+    hash = columns.Text()
+    x = columns.Integer()
+    y = columns.Integer()
+
+
 class DeviceLocation(BaseUserType):
     """Device known location, base on IP."""
 
@@ -41,6 +50,9 @@ class Device(BaseModel):
     last_seen = columns.DateTime(default=datetime.datetime.now(tz=pytz.utc))
     privacy_features = columns.Map(columns.Text, columns.Text)
     locations = columns.List(columns.UserDefinedType(DeviceLocation))
+    sign_keys = columns.List(columns.UserDefinedType(DeviceECKey))
+    user_agent = columns.Text()
+    ip_creation = columns.Text()
 
 
 class DevicePublicKey(BaseModel):
