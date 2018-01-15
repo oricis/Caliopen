@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
+import { usernameNormalizer } from '../../../../modules/user';
 import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../../../../components/form';
 import Button from '../../../../components/Button';
 import Section from '../../../../components/Section';
@@ -70,7 +71,11 @@ class SigninForm extends Component {
   handleSubmit = (ev) => {
     ev.preventDefault();
     const { formValues } = this.state;
-    this.props.onSubmit({ formValues });
+
+    this.props.onSubmit({
+      ...formValues,
+      username: usernameNormalizer(formValues.username),
+    });
   }
 
   render() {

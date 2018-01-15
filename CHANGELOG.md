@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- trim spaces in username on signin page
 - unable to load more messages on Timeline
 
 ## [0.7.0] 20121221
