@@ -74,9 +74,9 @@ class ContactBook extends Component {
     this.props.requestContacts();
   };
 
-  handleTagClick = (event) => {
+  handleTagClick = (tagName) => {
     this.setState({
-      activeTag: event.target.value,
+      activeTag: tagName,
     });
   };
 
@@ -107,13 +107,6 @@ class ContactBook extends Component {
   render() {
     const { contacts, isFetching, hasMore, i18n } = this.props;
 
-    const tags = contacts
-      .filter(contact => contact.tags)
-      .reduce((acc, contact) => [
-        ...acc,
-        ...contact.tags,
-      ], []);
-
     return (
       <div className="l-contact-book">
         <PageTitle title={i18n._('header.menu.contacts', { defaults: 'Contacts' })} />
@@ -127,10 +120,8 @@ class ContactBook extends Component {
         <div className="l-contact-book__contacts">
           <div className="l-contact-book__tags">
             <TagList
-              tags={tags}
               activeTag={this.state.activeTag}
               onTagClick={this.handleTagClick}
-              nbContactsAll={contacts.length}
             />
             <div className="l-contact-book__import">
               <div className="l-contact-book__import-button">
