@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
-import { WithTags, getTagLabelFromName } from '../../../../modules/tags';
+import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
 import Link from '../../../../components/Link';
 import MessageDate from '../../../../components/MessageDate';
 import AuthorAvatar from '../../../../components/AuthorAvatar';
@@ -38,11 +38,11 @@ class MessageResultItem extends PureComponent {
     const { i18n, message } = this.props;
 
     return (
-      <WithTags render={userTags => message.tags && message.tags.map(
-        name => (
-          <span key={name}>
+      <WithTags render={userTags =>
+        message.tags && getCleanedTagCollection(userTags, message.tags).map(tag => (
+          <span key={tag.name}>
             {' '}
-            <Badge className="s-message-result-item__tag">{getTagLabelFromName(i18n, userTags, name)}</Badge>
+            <Badge className="s-message-result-item__tag">{getTagLabel(i18n, tag)}</Badge>
           </span>
         ))}
       />

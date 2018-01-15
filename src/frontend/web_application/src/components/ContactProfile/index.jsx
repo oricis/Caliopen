@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withI18n } from 'lingui-react';
-import { WithTags, getTagLabelFromName } from '../../modules/tags';
+import { WithTags, getTagLabel, getCleanedTagCollection } from '../../modules/tags';
 import Badge from '../Badge';
 import MultidimensionalPi from '../../components/MultidimensionalPi';
 import ContactAvatarLetter from '../ContactAvatarLetter';
@@ -51,9 +51,11 @@ class ContactProfile extends Component {
 
         {contact && contact.tags &&
           <div className="m-contact-profile__tags">
-            <WithTags render={tags => contact.tags.map(name => (
-              <Badge className="m-contact-profile__tag" key={name}>{getTagLabelFromName(i18n, tags, name)}</Badge>
-            ))}
+            <WithTags render={userTags =>
+              contact.tags && getCleanedTagCollection(userTags, contact.tags).map(
+                tag => (
+                  <Badge className="m-contact-profile__tag" key={tag.name}>{getTagLabel(i18n, tag)}</Badge>
+                ))}
             />
           </div>
         }

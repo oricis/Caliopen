@@ -10,7 +10,7 @@ import MessageItemContainer from '../MessageItemContainer';
 import Icon from '../../../../components/Icon';
 import TextBlock from '../../../../components/TextBlock';
 import Badge from '../../../../components/Badge';
-import { getTagLabelFromName } from '../../../../modules/tags';
+import { getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
 import { renderParticipant, getAuthor } from '../../../../services/message';
 
 import './style.scss';
@@ -50,10 +50,10 @@ class MessageItem extends PureComponent {
   renderTags() {
     const { userTags, message, i18n } = this.props;
 
-    return message.tags && message.tags.map(name => (
-      <span key={name}>
+    return message.tags && getCleanedTagCollection(userTags, message.tags).map(tag => (
+      <span key={tag.name}>
         {' '}
-        <Badge className="s-message-item__tag">{getTagLabelFromName(i18n, userTags, name)}</Badge>
+        <Badge className="s-message-item__tag">{getTagLabel(i18n, tag)}</Badge>
       </span>
     ));
   }
