@@ -49,9 +49,8 @@ class MessageItem extends PureComponent {
 
   renderTags() {
     const { userTags, message, i18n } = this.props;
-    const tags = getCleanedTagCollection(userTags, message.tags);
 
-    return tags && tags.map(tag => (
+    return message.tags && getCleanedTagCollection(userTags, message.tags).map(tag => (
       <span key={tag.name}>
         {' '}
         <Badge className="s-message-item__tag">{getTagLabel(i18n, tag)}</Badge>

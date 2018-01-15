@@ -51,10 +51,11 @@ class ContactProfile extends Component {
 
         {contact && contact.tags &&
           <div className="m-contact-profile__tags">
-            <WithTags render={userTags => getCleanedTagCollection(userTags, contact.tags).map(
-              tag => (
-                <Badge className="m-contact-profile__tag" key={tag.name}>{getTagLabel(i18n, tag)}</Badge>
-              ))}
+            <WithTags render={userTags =>
+              contact.tags && getCleanedTagCollection(userTags, contact.tags).map(
+                tag => (
+                  <Badge className="m-contact-profile__tag" key={tag.name}>{getTagLabel(i18n, tag)}</Badge>
+                ))}
             />
           </div>
         }
