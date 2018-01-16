@@ -61,7 +61,7 @@ class DeviceFeature(object):
                              'device_type': self._get_device_type(ua)})
         # XXX processing IP address to detect some informations
         features.update(self._process_ip_address(device.ip_address))
-        return features
+        return None, features
 
     def _get_device_type(self, ua):
         """Return guessed type of user agent."""
