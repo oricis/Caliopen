@@ -12,6 +12,7 @@ function getRedirect(queryString) {
 
 class Signin extends Component {
   static propTypes = {
+    initSettings: PropTypes.func.isRequired,
     location: PropTypes.shape({}).isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
@@ -41,6 +42,7 @@ class Signin extends Component {
   }
 
   handleSigninSuccess = () => {
+    this.props.initSettings();
     this.setState({ isAuthenticated: true });
   }
 

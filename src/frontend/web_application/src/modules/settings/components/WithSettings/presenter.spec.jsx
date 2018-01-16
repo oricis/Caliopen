@@ -2,6 +2,10 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import WithSettings from './presenter';
 
+jest.mock('../../../user', () => ({
+  isAuthenticated: () => true,
+}));
+
 describe('component WithSettings', () => {
   it('render', () => {
     const ownProps = {

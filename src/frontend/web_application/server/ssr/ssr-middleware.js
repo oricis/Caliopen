@@ -4,7 +4,7 @@ const DocumentTitle = require('react-document-title');
 const Bootstrap = require('./components/Bootstrap').default;
 const configureStore = require('../../src/store/configure-store').default;
 const { getUserLocales } = require('../../src/services/i18n');
-const { getDefaultSettings } = require('../../src/services/settings');
+const { getDefaultSettings } = require('../../src/modules/settings');
 const template = require('../../dist/server/template.html');
 const { getConfig } = require('../config');
 
