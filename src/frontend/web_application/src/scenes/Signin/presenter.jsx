@@ -37,10 +37,8 @@ class Signin extends Component {
     };
   }
 
-  handleSignin(ev) {
-    axios.post('/auth/signin', {
-      ...ev.formValues,
-    }, {
+  handleSignin(formValues) {
+    axios.post('/auth/signin', formValues, {
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
     }).then(this.handleSigninSuccess, this.handleSigninError);
   }
