@@ -12,19 +12,17 @@ function getRedirect(queryString) {
 
 class Signin extends Component {
   static propTypes = {
+    initSettings: PropTypes.func.isRequired,
     location: PropTypes.shape({}).isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      errors: {},
-      isAuthenticated: false,
-    };
-    this.handleSignin = this.handleSignin.bind(this);
-    this.handleSigninSuccess = this.handleSigninSuccess.bind(this);
-    this.handleSigninError = this.handleSigninError.bind(this);
+  state = {
+    errors: {},
+    isAuthenticated: false,
+  };
+
+  componentWillMount() {
     this.initTranslation();
   }
 
@@ -37,17 +35,18 @@ class Signin extends Component {
     };
   }
 
-  handleSignin(formValues) {
+  handleSignin = (formValues) => {
     axios.post('/auth/signin', formValues, {
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
     }).then(this.handleSigninSuccess, this.handleSigninError);
   }
 
-  handleSigninSuccess() {
+  handleSigninSuccess = () => {
+    this.props.initSettings();
     this.setState({ isAuthenticated: true });
   }
 
-  handleSigninError(err) {
+  handleSigninError = (err) => {
     const isExpectedError = err.response &&
       err.response.status >= 400 &&
       err.response.status < 500 &&
