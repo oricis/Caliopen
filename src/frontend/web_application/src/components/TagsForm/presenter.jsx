@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import Button from '../Button';
 import DropdownMenu from '../DropdownMenu';
 import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
@@ -39,7 +40,7 @@ class TagsForm extends Component {
       await updateTags({ tags });
     } catch (errors) {
       this.setState({
-        errors: errors.map(err => err.message),
+        errors: [(<Trans id="settings.tag.form.error.create_fail">Unable to create the tag. A tag with the same id may already exist.</Trans>)],
         isTagCollectionUpdating: false,
       });
 
