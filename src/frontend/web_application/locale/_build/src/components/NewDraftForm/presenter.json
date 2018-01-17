@@ -9,11 +9,11 @@
     ]
   },
   "reply-form.by": {
-    "defaults": "by {0}",
+    "defaults": "by {draftType}",
     "origin": [
       [
         "src/components/NewDraftForm/presenter.jsx",
-        109
+        110
       ]
     ]
   },
@@ -22,7 +22,7 @@
     "origin": [
       [
         "src/components/NewDraftForm/presenter.jsx",
-        137
+        138
       ]
     ]
   },
@@ -31,7 +31,7 @@
     "origin": [
       [
         "src/components/NewDraftForm/presenter.jsx",
-        139
+        140
       ]
     ]
   },
@@ -40,7 +40,7 @@
     "origin": [
       [
         "src/components/NewDraftForm/presenter.jsx",
-        162
+        163
       ]
     ]
   },
@@ -49,7 +49,7 @@
     "origin": [
       [
         "src/components/NewDraftForm/presenter.jsx",
-        182
+        183
       ]
     ]
   },
@@ -58,7 +58,7 @@
     "origin": [
       [
         "src/components/NewDraftForm/presenter.jsx",
-        191
+        192
       ]
     ]
   }

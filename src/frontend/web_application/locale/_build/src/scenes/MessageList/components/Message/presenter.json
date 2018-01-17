@@ -9,11 +9,11 @@
     ]
   },
   "message-list.message.by": {
-    "defaults": "by {0}",
+    "defaults": "by {messageType}",
     "origin": [
       [
         "src/scenes/MessageList/components/Message/presenter.jsx",
-        160
+        162
       ]
     ]
   },
@@ -22,7 +22,7 @@
     "origin": [
       [
         "src/scenes/MessageList/components/Message/presenter.jsx",
-        206
+        208
       ]
     ]
   },
@@ -31,7 +31,7 @@
     "origin": [
       [
         "src/scenes/MessageList/components/Message/presenter.jsx",
-        207
+        209
       ]
     ]
   }

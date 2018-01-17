@@ -67,7 +67,7 @@ class InputFileGroup extends Component {
     const ext = file.name ? `.${file.name.split('.').pop()}` : null;
     if (fileTypes && (!ext || !fileTypes.includes(ext))) {
       errors.push((
-        <Trans id="input-file-group.error.no_valid_ext" values={{ 0: fileTypes.join(', ') }}>Only files {0}</Trans>
+        <Trans id="input-file-group.error.no_valid_ext">Only files {fileTypes.join(', ')}</Trans>
       ));
     }
 
@@ -76,10 +76,7 @@ class InputFileGroup extends Component {
         (
           <Trans
             id="input-file-group.error.max_size"
-            values={{
-              0: Math.round(maxSize / 100) / 10,
-            }}
-          >The file size must be under {0} ko</Trans>)
+          >The file size must be under {Math.round(maxSize / 100) / 10} ko</Trans>)
       );
     }
 

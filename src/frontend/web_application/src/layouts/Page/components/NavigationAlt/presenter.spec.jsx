@@ -13,7 +13,7 @@ describe('component NavigationAlt', () => {
       <Presenter
         applications={applications}
         currentApplication={currentApplication}
-        __={translate}
+        i18n={{ _: translate }}
       />
     );
 
