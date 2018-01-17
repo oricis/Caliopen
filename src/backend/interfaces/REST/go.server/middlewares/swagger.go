@@ -167,7 +167,9 @@ func ServeError(rw gin.ResponseWriter, r *http.Request, err error) {
 	switch e := err.(type) {
 	case *swgErr.CompositeError:
 		er := flattenComposite(e)
-		rw.WriteHeader(asHTTPCode(int(er.Code()))) //returns the first error code only
+		//get the last error code to return it to client
+		lastCode := int(er.Errors[0].(swgErr.Error).Code())
+		rw.WriteHeader(asHTTPCode(lastCode))
 		if r == nil || r.Method != "HEAD" {
 			rw.Write(errorAsJSON(er))
 		}
@@ -205,7 +207,11 @@ func errorAsJSON(err swgErr.Error) []byte {
 	switch er := err.(type) {
 	case *swgErr.CompositeError:
 		for _, e := range er.Errors {
-			errors.Errors = append(errors.Errors, jsonError{err.Code(), e.Error(), ""})
+			if swgerr, ok := e.(swgErr.Error); ok {
+				errors.Errors = append(errors.Errors, jsonError{swgerr.Code(), e.Error(), ""})
+			} else {
+				errors.Errors = append(errors.Errors, jsonError{err.Code(), e.Error(), ""})
+			}
 		}
 		b, _ := json.Marshal(errors)
 		return b
@@ -237,7 +243,7 @@ func flattenComposite(errs *swgErr.CompositeError) *swgErr.CompositeError {
 }
 
 func asHTTPCode(input int) int {
-	if input >= 600 {
+	if input < 400 || input >= 600 {
 		return 422
 	}
 	return input
