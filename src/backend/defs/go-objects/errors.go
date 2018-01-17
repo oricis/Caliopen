@@ -6,7 +6,10 @@
 
 package objects
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // implements standard Error interface as well as custom CaliopenError interface
 type CaliopenErr struct {
@@ -32,29 +35,42 @@ func (ce CaliopenErr) Code() int32 {
 func (ce CaliopenErr) Cause() error {
 	return ce.cause
 }
+func NewCaliopenErr(code int, msg string) CaliopenErr {
+	return CaliopenErr{errors.New("nil"), code, msg}
+}
 
 func NewCaliopenErrf(code int, format string, a ...interface{}) CaliopenErr {
 	return CaliopenErr{
-		cause: nil,
+		cause: errors.New("nil"),
 		code:  code,
 		msg:   fmt.Sprintf(format, a...),
 	}
 }
 
 func WrapCaliopenErrf(err error, code int, format string, a ...interface{}) CaliopenErr {
-	return CaliopenErr{
-		cause: err,
-		code:  code,
-		msg:   fmt.Sprintf(format, a...),
+	e := CaliopenErr{
+		code: code,
+		msg:  fmt.Sprintf(format, a...),
 	}
-}
-
-func NewCaliopenErr(code int, msg string) CaliopenErr {
-	return CaliopenErr{nil, code, msg}
+	if err != nil {
+		e.cause = err
+	} else {
+		e.cause = errors.New("nil")
+	}
+	return e
 }
 
 func WrapCaliopenErr(err error, code int, msg string) CaliopenErr {
-	return CaliopenErr{err, code, msg}
+	e := CaliopenErr{
+		code: code,
+		msg:  msg,
+	}
+	if err != nil {
+		e.cause = err
+	} else {
+		e.cause = errors.New("nil")
+	}
+	return e
 }
 
 // custom errors code

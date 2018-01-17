@@ -25,7 +25,7 @@ func RetrieveUserTags(ctx *gin.Context) {
 	tags, err := caliopen.Facilities.RESTfacility.RetrieveUserTags(user_id)
 	if err != nil {
 		returnedErr := new(swgErr.CompositeError)
-		if err.Code() == DbCaliopenErr && err.Cause().Error() == "not found" {
+		if err.Code() == DbCaliopenErr && err.Cause().Error() == "tags not found" {
 			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), err, err.Cause())
 		} else {
 			returnedErr = swgErr.CompositeValidationError(err, err.Cause())
@@ -168,7 +168,7 @@ func PatchTag(ctx *gin.Context) {
 	e := caliopen.Facilities.RESTfacility.PatchTag(patch, user_id, tag_name)
 	if e != nil {
 		returnedErr := new(swgErr.CompositeError)
-		if e.Code() == DbCaliopenErr && e.Cause().Error() == "not found" {
+		if e.Code() == DbCaliopenErr && e.Cause().Error() == "tag not found" {
 			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), e, e.Cause())
 		} else {
 			returnedErr = swgErr.CompositeValidationError(e, e.Cause())

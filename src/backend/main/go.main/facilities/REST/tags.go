@@ -12,7 +12,7 @@ import (
 func (rest *RESTfacility) RetrieveUserTags(user_id string) (tags []Tag, err CaliopenError) {
 	tags, e := rest.store.RetrieveUserTags(user_id)
 	if e != nil {
-		return tags, WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] RetrieveUserTags failed")
+		return tags, WrapCaliopenErr(e, DbCaliopenErr, "[RESTfacility] RetrieveUserTags failed")
 	}
 	return tags, nil
 }
