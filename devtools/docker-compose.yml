@@ -53,10 +53,6 @@ services:
           - "7000:7000"
       volumes:
           - db:/var/lib/cassandra
-      entrypoint:
-          - /docker-entrypoint.py
-          - --memory
-          - 512M
 
   # ### Elasticsearch
   #
