@@ -8,10 +8,12 @@ import TabList from './components/TabList';
 import TimelineFilterSelector from './components/TimelineFilterSwitcher';
 import SliderContainer from '../../../../components/ImportanceSliderContainer';
 import UserInfo from '../UserInfo';
+import { getLabels } from '../../../../services/application-manager';
 import './style.scss';
 
 class NavigationAlt extends PureComponent {
   static propTypes = {
+    i18n: PropTypes.shape({}).isRequired,
     applications: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     currentApplication: PropTypes.shape({}).isRequired,
     onClickApp: PropTypes.func.isRequired,
@@ -22,7 +24,8 @@ class NavigationAlt extends PureComponent {
   createHandleClickApp = app => () => this.props.onClickApp(app);
 
   render() {
-    const { currentApplication, applications } = this.props;
+    const { currentApplication, applications, i18n } = this.props;
+    const applicationLabels = getLabels(i18n);
 
     return (
       <div className="l-nav-alt">
@@ -41,7 +44,7 @@ class NavigationAlt extends PureComponent {
                 >
                   <Icon type={application.icon} />
                   {' '}
-                  <Trans>{application.label}</Trans>
+                  {applicationLabels[application.name]}
                 </Link>
               </VerticalMenuItem>
             ))
