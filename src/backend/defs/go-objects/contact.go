@@ -30,7 +30,7 @@ type (
 		PrivacyIndex    *PrivacyIndex     `cql:"pi"                 json:"pi"`
 		PublicKeys      []PublicKey       `cql:"public_keys"        json:"public_keys"`
 		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features"`
-		Tags            []string          `cql:"tags"               json:"tags"                 patch:"user"`
+		Tags            []string          `cql:"tagnames"           json:"tags"                 patch:"user"`
 		Title           string            `cql:"title"              json:"title"`
 		UserId          UUID              `cql:"user_id"            json:"user_id"`
 	}
@@ -188,7 +188,7 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 		contact.PrivacyFeatures = nil
 	}
 
-	if tags, ok := input["tags"].([]string); ok {
+	if tags, ok := input["tagnames"].([]string); ok {
 		contact.Tags = tags
 	}
 	if title, ok := input["title"].(string); ok {

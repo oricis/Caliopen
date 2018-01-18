@@ -1,18 +1,10 @@
 {
-  "{0}": {
-    "origin": [
-      [
-        "src/layouts/Page/components/NavigationAlt/presenter.jsx",
-        44
-      ]
-    ]
-  },
   "header.menu.settings": {
     "defaults": "Settings",
     "origin": [
       [
         "src/layouts/Page/components/NavigationAlt/presenter.jsx",
-        69
+        72
       ]
     ]
   },
@@ -21,7 +13,7 @@
     "origin": [
       [
         "src/layouts/Page/components/NavigationAlt/presenter.jsx",
-        74
+        77
       ]
     ]
   }

@@ -6,8 +6,10 @@ package store
 
 import (
 	"errors"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/gocassa/gocassa"
+	"gopkg.in/oleiade/reflections.v1"
 )
 
 func (cb *CassandraBackend) CreateMessage(msg *Message) error {
@@ -36,13 +38,23 @@ func (cb *CassandraBackend) RetrieveMessage(user_id, msg_id string) (msg *Messag
 // update given fields for a message in db
 func (cb *CassandraBackend) UpdateMessage(msg *Message, fields map[string]interface{}) error {
 
+	//get cassandra's field name for each field to modify
+	cassaFields := map[string]interface{}{}
+	for field, value := range fields {
+		cassaField, err := reflections.GetFieldTag(msg, field, "cql")
+		if err != nil {
+			return fmt.Errorf("[CassandraBackend] UpdateMessage failed to find a cql field for object field %s", field)
+		}
+		cassaFields[cassaField] = value
+	}
+
 	messageT := cb.IKeyspace.Table("message", &Message{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "message_id"},
 	}).WithOptions(gocassa.Options{TableName: "message"}) // need to overwrite default gocassa table naming convention
 
 	err := messageT.
 		Where(gocassa.Eq("user_id", msg.User_id.String()), gocassa.Eq("message_id", msg.Message_id.String())).
-		Update(fields).
+		Update(cassaFields).
 		Run()
 	return err
 }

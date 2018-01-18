@@ -7,9 +7,11 @@ package index
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
+	"gopkg.in/oleiade/reflections.v1"
 )
 
 func (es *ElasticSearchBackend) CreateMessage(msg *objects.Message) error {
@@ -34,8 +36,18 @@ func (es *ElasticSearchBackend) CreateMessage(msg *objects.Message) error {
 
 func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[string]interface{}) error {
 
+	//get json field name for each field to modify
+	jsonFields := map[string]interface{}{}
+	for field, value := range fields {
+		jsonField, err := reflections.GetFieldTag(msg, field, "json")
+		if err != nil {
+			return fmt.Errorf("[ElasticSearchBackend] UpdateMessage failed to find a json field for object field %s", field)
+		}
+		jsonFields[jsonField] = value
+	}
+
 	update, err := es.Client.Update().Index(msg.User_id.String()).Type(objects.MessageIndexType).Id(msg.Message_id.String()).
-		Doc(fields).
+		Doc(jsonFields).
 		Refresh("wait_for").
 		Do(context.TODO())
 	if err != nil {
