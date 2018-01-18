@@ -8,9 +8,11 @@ package store
 
 import (
 	"errors"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
+	"gopkg.in/oleiade/reflections.v1"
 )
 
 func (cb *CassandraBackend) RetrieveUser(user_id string) (user *User, err error) {
@@ -29,11 +31,21 @@ func (cb *CassandraBackend) RetrieveUser(user_id string) (user *User, err error)
 
 func (cb *CassandraBackend) UpdateUser(user *User, fields map[string]interface{}) error {
 
+	//get cassandra's field name for each field to modify
+	cassaFields := map[string]interface{}{}
+	for field, value := range fields {
+		cassaField, err := reflections.GetFieldTag(user, field, "cql")
+		if err != nil {
+			return fmt.Errorf("[CassandraBackend] UpdateMessage failed to find a cql field for object field %s", field)
+		}
+		cassaFields[cassaField] = value
+	}
+
 	userT := cb.IKeyspace.Table("user", &User{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id"},
 	}).WithOptions(gocassa.Options{TableName: "user"})
 
-	return userT.Where(gocassa.Eq("user_id", user.UserId.String())).Update(fields).Run()
+	return userT.Where(gocassa.Eq("user_id", user.UserId.String())).Update(cassaFields).Run()
 }
 
 func (cb *CassandraBackend) UpdateUserPasswordHash(user *User) error {

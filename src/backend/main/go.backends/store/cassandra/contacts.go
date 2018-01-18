@@ -8,8 +8,10 @@ package store
 
 import (
 	"errors"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/gocassa/gocassa"
+	"gopkg.in/oleiade/reflections.v1"
 )
 
 func (cb *CassandraBackend) CreateContact(contact *Contact) error {
@@ -39,13 +41,24 @@ func (cb *CassandraBackend) RetrieveContact(user_id, contact_id string) (contact
 }
 
 func (cb *CassandraBackend) UpdateContact(contact *Contact, fields map[string]interface{}) error {
+
+	//get cassandra's field name for each field to modify
+	cassaFields := map[string]interface{}{}
+	for field, value := range fields {
+		cassaField, err := reflections.GetFieldTag(contact, field, "cql")
+		if err != nil {
+			return fmt.Errorf("[CassandraBackend] UpdateContact failed to find a cql field for object field %s", field)
+		}
+		cassaFields[cassaField] = value
+	}
+
 	contactT := cb.IKeyspace.Table("contact", &Contact{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "contact_id"},
 	}).WithOptions(gocassa.Options{TableName: "contact"}) // need to overwrite default gocassa table naming convention
 
 	err := contactT.
 		Where(gocassa.Eq("user_id", contact.UserId.String()), gocassa.Eq("contact_id", contact.ContactId.String())).
-		Update(fields).
+		Update(cassaFields).
 		Run()
 	return err
 }

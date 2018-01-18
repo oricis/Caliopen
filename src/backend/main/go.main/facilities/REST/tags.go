@@ -207,7 +207,7 @@ func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType st
 	switch resourceType {
 	case MessageType:
 		update := map[string]interface{}{
-			"tags": obj.(*Message).Tags,
+			"Tags": obj.(*Message).Tags,
 		}
 		err := rest.store.UpdateMessage(obj.(*Message), update)
 		if err != nil {
@@ -220,7 +220,7 @@ func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType st
 		}
 	case ContactType:
 		update := map[string]interface{}{
-			"tags": obj.(*Contact).Tags,
+			"Tags": obj.(*Contact).Tags,
 		}
 		err := rest.store.UpdateContact(obj.(*Contact), update)
 		if err != nil {

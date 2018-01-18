@@ -7,8 +7,10 @@ package index
 import (
 	"context"
 	"errors"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
+	"gopkg.in/oleiade/reflections.v1"
 )
 
 func (es *ElasticSearchBackend) CreateContact(contact *Contact) error {
@@ -16,8 +18,19 @@ func (es *ElasticSearchBackend) CreateContact(contact *Contact) error {
 }
 
 func (es *ElasticSearchBackend) UpdateContact(contact *Contact, fields map[string]interface{}) error {
+
+	//get json field name for each field to modify
+	jsonFields := map[string]interface{}{}
+	for field, value := range fields {
+		jsonField, err := reflections.GetFieldTag(contact, field, "json")
+		if err != nil {
+			return fmt.Errorf("[ElasticSearchBackend] UpdateContact failed to find a json field for object field %s", field)
+		}
+		jsonFields[jsonField] = value
+	}
+
 	update, err := es.Client.Update().Index(contact.UserId.String()).Type(ContactIndexType).Id(contact.ContactId.String()).
-		Doc(fields).
+		Doc(jsonFields).
 		Refresh("wait_for").
 		Do(context.TODO())
 	if err != nil {
