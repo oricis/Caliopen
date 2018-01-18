@@ -207,11 +207,11 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	// update caliopen message status
 	fields := make(map[string]interface{})
 
-	fields["raw_msg_id"] = m.Raw_msg_id.String()
-	fields["is_draft"] = false
-	fields["date"] = ack.EmailMessage.Message.Date
-	fields["attachments"] = ack.EmailMessage.Message.Attachments
-	fields["external_references"] = ack.EmailMessage.Message.External_references
+	fields["Raw_msg_id"] = m.Raw_msg_id.String()
+	fields["Is_draft"] = false
+	fields["Date"] = ack.EmailMessage.Message.Date
+	fields["Attachments"] = ack.EmailMessage.Message.Attachments
+	fields["External_references"] = ack.EmailMessage.Message.External_references
 	err = b.Store.UpdateMessage(ack.EmailMessage.Message, fields)
 	if err != nil {
 		log.WithError(err).Warn("[Email Broker] Store.UpdateMessage operation failed")

@@ -126,7 +126,7 @@ class Contact(BaseModel, IndexedModelMixin):
     phones = columns.List(columns.UserDefinedType(Phone))
     pi = columns.UserDefinedType(PIModel)
     privacy_features = columns.Map(columns.Text(), columns.Text())
-    tags = columns.List(columns.Text())
+    tags = columns.List(columns.Text(), db_field="tagnames")
     title = columns.Text()  # computed value, read only
 
 
