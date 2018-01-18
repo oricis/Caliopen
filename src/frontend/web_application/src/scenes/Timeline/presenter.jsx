@@ -60,6 +60,32 @@ class Timeline extends Component {
     }
   }
 
+  onSelectMessage = (type, messageId) => {
+    if (type === 'add') {
+      this.setState(prevState => ({
+        ...prevState,
+        selectedMessages: [...prevState.selectedMessages, messageId],
+      }));
+    }
+
+    if (type === 'remove') {
+      this.setState(prevState => ({
+        ...prevState,
+        selectedMessages: [...prevState.selectedMessages].filter(item => item !== messageId),
+      }));
+    }
+  }
+
+  onSelectAllMessages = (checked) => {
+    const { messages } = this.props;
+    const messagesIds = messages.map(message => message.message_id);
+
+    this.setState(prevState => ({
+      ...prevState,
+      selectedMessages: checked ? messagesIds : [],
+    }));
+  }
+
   loadMore = () => {
     if (this.props.hasMore) {
       this.throttledLoadMore();
@@ -77,7 +103,8 @@ class Timeline extends Component {
             userTags={userTags}
             isMessageFromUser={(user && isMessageFromUser(message, user)) || false}
             message={message}
-            // isSelected={}
+            onSelectMessage={this.onSelectMessage}
+            isMessageSelected={[...this.state.selectedMessages].includes(message.message_id)}
           />
         ))}
       </BlockList>
@@ -85,7 +112,7 @@ class Timeline extends Component {
   }
 
   render() {
-    const { isFetching, hasMore, i18n } = this.props;
+    const { messages, isFetching, hasMore, i18n } = this.props;
 
     return (
       <div className="s-timeline">
@@ -93,7 +120,19 @@ class Timeline extends Component {
         <MenuBar className="s-timeline__menu-bar">
           <Spinner isLoading={isFetching} className="s-timeline__spinner" />
           <div className="s-timeline__col-selector">
-            <MessageSelector />
+            <MessageSelector
+              indeterminate={
+                this.state.selectedMessages.length > 0
+                && this.state.selectedMessages.length < messages.length
+              }
+              checked={
+                this.state.selectedMessages.length === messages.length
+                && this.state.selectedMessages.length > 0
+              }
+              count={this.state.selectedMessages.length}
+              totalCount={messages.length}
+              onSelectAllMessages={this.onSelectAllMessages}
+            />
           </div>
         </MenuBar>
         <InfiniteScroll onReachBottom={this.loadMore}>

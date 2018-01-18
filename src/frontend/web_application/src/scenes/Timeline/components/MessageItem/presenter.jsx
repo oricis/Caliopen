@@ -23,16 +23,19 @@ class MessageItem extends Component {
     settings: PropTypes.shape({}).isRequired,
     isMessageFromUser: PropTypes.bool.isRequired,
     userTags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    onSelectMessage: PropTypes.func,
+    isMessageSelected: PropTypes.bool.isRequired,
   };
 
-  state = {
-    isSelected: false,
-  }
+  static defaultProps = {
+    onSelectMessage: str => str,
+  };
 
-  onCheckboxChange = () => {
-    this.setState(prevState => ({
-      isSelected: !prevState.isSelected,
-    }));
+  onCheckboxChange = (ev) => {
+    const { message, onSelectMessage } = this.props;
+    const { checked } = ev.target;
+
+    onSelectMessage(checked ? 'add' : 'remove', message.message_id);
   }
 
   renderAuthor = () => {
@@ -115,7 +118,7 @@ class MessageItem extends Component {
   }
 
   render() {
-    const { message } = this.props;
+    const { message, isMessageSelected } = this.props;
     const { /* pi, */attachments } = message;
 
     return (
@@ -126,7 +129,7 @@ class MessageItem extends Component {
               {
                 's-message-item--unread': message.is_unread,
                 's-message-item--draft': message.is_draft,
-                's-message-item--is-selected': this.state.isSelected,
+                's-message-item--is-selected': isMessageSelected,
                 // TODO: define how to compute PIs for rendering
                 // 's-message-item--pi-super': pi.context >= 90,
                 // 's-message-item--pi-good': pi.context >= 50 && pi.context < 90,
@@ -135,7 +138,9 @@ class MessageItem extends Component {
               })}
         >
           <div className="s-message-item__col-avatar">
-            <AuthorAvatar message={message} />
+            <label htmlFor={message.message_id}>
+              <AuthorAvatar message={message} isSelected={isMessageSelected} />
+            </label>
           </div>
           <div className="s-message-item__col-title">
             {this.renderTitle()}
@@ -151,7 +156,12 @@ class MessageItem extends Component {
             {this.renderDate()}
           </div>
           <div className="s-message-item__col-select">
-            <input type="checkbox" onChange={this.onCheckboxChange} />
+            <input
+              type="checkbox"
+              onChange={this.onCheckboxChange}
+              id={message.message_id}
+              checked={isMessageSelected}
+            />
           </div>
         </div>
       </MessageItemContainer>
