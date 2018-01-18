@@ -129,7 +129,7 @@ class ReplyForm extends Component {
               className="m-reply__top-actions-menu"
               alignRight
               isMenu
-              closeOnClick
+              closeOnClick="all"
             >{renderDraftMessageActionsContainer()}</Dropdown>
           </TopRow>
           {parentMessage && (

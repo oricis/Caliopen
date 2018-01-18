@@ -171,7 +171,7 @@ class Message extends Component {
               id={this.dropdownId}
               alignRight
               isMenu
-              closeOnClick
+              closeOnClick="all"
               closeOnScroll
             >
               <MessageActionsContainer
