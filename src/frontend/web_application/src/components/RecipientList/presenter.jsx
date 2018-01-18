@@ -45,7 +45,7 @@ const getStateFromProps = props => ({
 class RecipientList extends Component {
   static propTypes = {
     internalId: PropTypes.string,
-    recipients: PropTypes.arrayOf(PropTypes.shape()),
+    recipients: PropTypes.arrayOf(PropTypes.shape({})),
     onRecipientsChange: PropTypes.func,
     setSearchTerms: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
