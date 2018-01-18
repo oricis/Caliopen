@@ -154,7 +154,6 @@
     "raw-loader": "^0.5.1",
     "react-addons-test-utils": "^15.6.2",
     "react-dev-utils": "^5.0.0",
-    "react-markdown": "^2.5.0",
     "react-test-renderer": "^16.2.0",
     "sass-lint": "^1.12.1",
     "sass-loader": "^6.0.6",
