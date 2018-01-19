@@ -147,7 +147,7 @@ class NewDraftForm extends Component {
               className="m-new-draft__top-actions-menu"
               alignRight
               isMenu
-              closeOnClick
+              closeOnClick="all"
             >{renderDraftMessageActionsContainer()}</Dropdown>
           </TopRow>
           <BodyRow className="m-new-draft__body">

@@ -60,7 +60,7 @@ class ApplicationSwitcher extends Component {
       >
         <Dropdown
           id="co-application-switcher"
-          closeOnClick
+          closeOnClick="all"
           alignRight
           className="m-application-switcher__dropdown"
           onToggle={this.handleDropdownToggle}

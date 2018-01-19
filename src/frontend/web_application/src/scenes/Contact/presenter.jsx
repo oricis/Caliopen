@@ -257,7 +257,7 @@ class Contact extends Component {
         <Dropdown
           id={this.dropdownId}
           className="s-contact__actions-menu"
-          closeOnClick
+          closeOnClick="all"
           isMenu
         >
           <VerticalMenu>

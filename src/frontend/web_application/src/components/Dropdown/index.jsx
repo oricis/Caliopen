@@ -7,6 +7,8 @@ import { addEventListener } from '../../services/event-manager';
 import './style.scss';
 
 export const CONTROL_PREFIX = 'toggle';
+const CLOSE_ON_CLICK_ALL = 'all';
+const CLOSE_ON_CLICK_EXCEPT_SELF = 'exceptSelf';
 
 export const withDropdownControl = (WrappedComponent) => {
   const WithDropdownControl = ({ toggleId, className, ...props }) => {
@@ -48,12 +50,7 @@ class Dropdown extends Component {
     alignRight: PropTypes.bool, // force align right
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     className: PropTypes.string,
-    closeOnClick: PropTypes.bool, // should Dropdown close on click?
-    // closeOnClickExceptRefs: array of refs that should not close dropdown on click
-    // usage:
-    // <div ref={foo => this.foo =foo} />
-    // <Dropdown closeOnClickExceptRefs={[this.foo]} />
-    closeOnClickExceptRefs: PropTypes.arrayOf(PropTypes.shape({})),
+    closeOnClick: PropTypes.oneOf([CLOSE_ON_CLICK_ALL, CLOSE_ON_CLICK_EXCEPT_SELF]),
     closeOnScroll: PropTypes.bool, // should Dropdown close on windows scroll ?
     isMenu: PropTypes.bool,
     position: PropTypes.oneOf(['top', 'bottom']),
@@ -65,8 +62,7 @@ class Dropdown extends Component {
     alignRight: false,
     children: null,
     className: null,
-    closeOnClick: false,
-    closeOnClickExceptRefs: null,
+    closeOnClick: null,
     closeOnScroll: false,
     position: 'bottom',
     isMenu: false,
@@ -86,29 +82,25 @@ class Dropdown extends Component {
     this.dropdownControl = document.getElementById(`${CONTROL_PREFIX}-${this.props.id}`);
     this.toggle(this.props.show);
 
-    this.unsubscribeClickEvent = addEventListener('click', (ev) => {
-      if (!this.props.closeOnClick) {
-        return;
-      }
+    if (this.props.closeOnClick) {
+      this.unsubscribeClickEvent = addEventListener('click', (ev) => {
+        const target = ev.target;
 
-      const target = ev.target;
-      const exceptRefs = this.props.closeOnClickExceptRefs;
+        const dropdownClick = this.dropdown === target || this.dropdown.contains(target);
+        const controlClick = this.dropdownControl &&
+          (this.dropdownControl === target || this.dropdownControl.contains(target));
 
-      const dropdownClick = this.dropdown === target || this.dropdown.contains(target);
-      const exeptRefsClick = exceptRefs && exceptRefs.find(ref => (ref === target));
-      const controlClick = this.dropdownControl &&
-        (this.dropdownControl === target || this.dropdownControl.contains(target));
+        if (controlClick) {
+          this.toggle(!this.state.isOpen);
 
-      if (controlClick) {
-        this.toggle(!this.state.isOpen);
+          return;
+        }
 
-        return;
-      }
-      if (dropdownClick) { return; }
-      if (exeptRefsClick) { return; }
+        if (this.props.closeOnClick === CLOSE_ON_CLICK_EXCEPT_SELF && dropdownClick) { return; }
 
-      this.toggle(false);
-    });
+        this.toggle(false);
+      });
+    }
 
     this.unsubscribeResizeEvent = addEventListener('resize', () => {
       // this prevent dropdown to be misplaced on window resize
@@ -133,7 +125,9 @@ class Dropdown extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubscribeClickEvent();
+    if (this.props.closeOnClick) {
+      this.unsubscribeClickEvent();
+    }
     this.unsubscribeResizeEvent();
     this.unsubscribeScrollEvent();
   }

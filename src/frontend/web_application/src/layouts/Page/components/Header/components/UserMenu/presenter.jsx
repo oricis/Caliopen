@@ -46,7 +46,7 @@ class Presenter extends Component {
           alignRight
           isMenu
           hasTriangle
-          closeOnClick
+          closeOnClick="all"
           onToggle={this.handleDropdownToggle}
         >
           <VerticalMenu>

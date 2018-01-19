@@ -340,7 +340,7 @@ class RecipientList extends Component {
             show={this.state.searchTerms ?
               (searchResults.length > 0 && this.state.searchOpened) : false
             }
-            closeOnClickExceptRefs={[this.searchInputRef, this.recipientListRef]}
+            // closeOnClickExceptRefs={[this.searchInputRef, this.recipientListRef]}
             isMenu
           >
             <VerticalMenu>

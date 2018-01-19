@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { v1 as uuidV1 } from 'uuid';
 import { Trans } from 'lingui-react';
 import Button from '../Button';
 import DropdownMenu from '../DropdownMenu';
@@ -77,6 +78,7 @@ class TagsForm extends Component {
 
   render() {
     const { i18n, tags, foundTags, isTagSearchFetching } = this.props;
+    const dropdownId = uuidV1();
 
     return (
       <div className="m-tags-form">
@@ -94,7 +96,7 @@ class TagsForm extends Component {
             onChange={this.handleSearchChange}
             onSubmit={this.handleAddNewTag}
           />
-          <DropdownMenu show={foundTags.length > 0} className="m-tags-form__dropdown">
+          <DropdownMenu id={dropdownId} show={foundTags.length > 0} className="m-tags-form__dropdown">
             <VerticalMenu>
               {foundTags.map(tag => (
                 <VerticalMenuItem key={tag.name}>
