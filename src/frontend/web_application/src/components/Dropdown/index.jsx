@@ -7,6 +7,8 @@ import { addEventListener } from '../../services/event-manager';
 import './style.scss';
 
 export const CONTROL_PREFIX = 'toggle';
+const CLOSE_ON_CLICK_ALL = 'all';
+const CLOSE_ON_CLICK_EXCEPT_SELF = 'exceptSelf';
 
 export const withDropdownControl = (WrappedComponent) => {
   const WithDropdownControl = ({ toggleId, className, ...props }) => {
@@ -48,18 +50,12 @@ class Dropdown extends Component {
     alignRight: PropTypes.bool, // force align right
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     className: PropTypes.string,
-    closeOnClick: PropTypes.oneOf(['all', 'exceptSelf']), // should Dropdown close on click?
-    // closeOnClickExceptRefs: array of refs that should not close dropdown on click
-    // usage:
-    // <div ref={foo => this.foo =foo} />
-    // <Dropdown closeOnClickExceptRefs={[this.foo]} />
-    // closeOnClickExceptRefs: PropTypes.arrayOf(PropTypes.shape({})),
+    closeOnClick: PropTypes.oneOf([CLOSE_ON_CLICK_ALL, CLOSE_ON_CLICK_EXCEPT_SELF]),
     closeOnScroll: PropTypes.bool, // should Dropdown close on windows scroll ?
     isMenu: PropTypes.bool,
     position: PropTypes.oneOf(['top', 'bottom']),
     onToggle: PropTypes.func,
     show: PropTypes.bool,
-    exeptionClickFunc: PropTypes.func,
   };
 
   static defaultProps = {
@@ -72,7 +68,6 @@ class Dropdown extends Component {
     isMenu: false,
     onToggle: str => str,
     show: false,
-    exeptionClickFunc: null,
   };
 
   state = {
@@ -90,14 +85,8 @@ class Dropdown extends Component {
     if (this.props.closeOnClick) {
       this.unsubscribeClickEvent = addEventListener('click', (ev) => {
         const target = ev.target;
-        // const exceptRefs = this.props.closeOnClickExceptRefs;
 
-        const dropdownClick = (this.props.closeOnClick === 'exceptSelf') &&
-          (this.dropdown === target || this.dropdown.contains(target));
-
-        /* const exeptRefsClick = exceptRefs &&
-          exceptRefs.find(ref => (ref === target)); */
-
+        const dropdownClick = this.dropdown === target || this.dropdown.contains(target);
         const controlClick = this.dropdownControl &&
           (this.dropdownControl === target || this.dropdownControl.contains(target));
 
@@ -106,8 +95,8 @@ class Dropdown extends Component {
 
           return;
         }
-        if (dropdownClick) { return; }
-        // if (exeptRefsClick) { return; }
+
+        if (this.props.closeOnClick === CLOSE_ON_CLICK_EXCEPT_SELF && dropdownClick) { return; }
 
         this.toggle(false);
       });
