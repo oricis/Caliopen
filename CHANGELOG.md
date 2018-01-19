@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.8.0] 2018-01-19
+
 ### Added
 
 - Tags management: user's tags, tags on messages and contacts
@@ -16,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - trim spaces in username on signin page
 - unable to load more messages on Timeline
 
-## [0.7.0] 20121221
+## [0.7.0] 2017-12-22
 
 ### Added
 
