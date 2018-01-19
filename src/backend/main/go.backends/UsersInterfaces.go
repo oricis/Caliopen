@@ -13,7 +13,7 @@ type (
 		GetSettings(user_id string) (settings *Settings, err error)
 		RetrieveUser(user_id string) (user *User, err error)
 		UpdateUserPasswordHash(user *User) error
-		UpdateUser(user *User, fields map[string]interface{}) error
+		UpdateUser(user *User, fields map[string]interface{}) error // 'fields' are the struct fields names that have been modified
 		UserByRecoveryEmail(email string) (user *User, err error)
 	}
 	UserNameStorage interface {

@@ -8653,9 +8653,6 @@
                       "label": {
                         "type": "string"
                       },
-                      "name": {
-                        "type": "string"
-                      },
                       "importance_level": {
                         "type": "integer",
                         "format": "int32"
@@ -8693,16 +8690,13 @@
                 "label": {
                   "type": "string"
                 },
-                "name": {
-                  "type": "string"
-                },
                 "importance_level": {
                   "type": "integer",
                   "format": "int32"
                 }
               },
               "required": [
-                "name"
+                "label"
               ],
               "additionalProperties": false
             }
@@ -8836,9 +8830,6 @@
                   ]
                 },
                 "label": {
-                  "type": "string"
-                },
-                "name": {
                   "type": "string"
                 },
                 "importance_level": {

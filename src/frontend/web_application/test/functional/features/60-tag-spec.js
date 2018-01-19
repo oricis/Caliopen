@@ -86,7 +86,7 @@ describe('tag', () => {
         .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName))), 5 * 1000))
         .then(() => element(by.css('.m-add-tag .m-input-text')).sendKeys(tagName))
         .then(() => element(by.css(`.m-add-tag__button[aria-label=${__('Add')}]`)).click())
-        .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-field-errors', 'Unable to create the tag. A tag with the same id may already exists.'))), 5 * 1000))
+        .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-field-errors', 'Unable to create the tag. A tag with the same id may already exist.'))), 5 * 1000))
         .then(() => element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).element(by.css('.m-tag-input__delete')).click())
         .then(() => browser.sleep(1))
         .then(() => expect(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).isPresent()).toEqual(false))

@@ -12,7 +12,7 @@
       ],
       [
         "src/scenes/ContactBook/presenter.jsx",
-        143
+        134
       ]
     ]
   },
@@ -21,7 +21,7 @@
     "origin": [
       [
         "src/scenes/ContactBook/presenter.jsx",
-        119
+        112
       ]
     ]
   },
@@ -30,7 +30,7 @@
     "origin": [
       [
         "src/scenes/ContactBook/presenter.jsx",
-        160
+        151
       ]
     ]
   }

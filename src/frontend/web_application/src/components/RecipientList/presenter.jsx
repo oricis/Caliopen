@@ -45,7 +45,7 @@ const getStateFromProps = props => ({
 class RecipientList extends Component {
   static propTypes = {
     internalId: PropTypes.string,
-    recipients: PropTypes.arrayOf(PropTypes.shape()),
+    recipients: PropTypes.arrayOf(PropTypes.shape({})),
     onRecipientsChange: PropTypes.func,
     setSearchTerms: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
@@ -340,7 +340,7 @@ class RecipientList extends Component {
             show={this.state.searchTerms ?
               (searchResults.length > 0 && this.state.searchOpened) : false
             }
-            closeOnClickExceptRefs={[this.searchInputRef, this.recipientListRef]}
+            // closeOnClickExceptRefs={[this.searchInputRef, this.recipientListRef]}
             isMenu
           >
             <VerticalMenu>

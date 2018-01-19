@@ -37,13 +37,13 @@ type (
 		DeleteAttachment(user_id, message_id string, attchmtIndex int) error
 		OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error)
 		//tags
-		RetrieveUserTags(user_id string) (tags []Tag, err error)
-		CreateTag(tag *Tag) error
-		RetrieveTag(user_id, tag_id string) (tag Tag, err error)
-		UpdateTag(tag *Tag) error
-		PatchTag(patch []byte, user_id, tag_name string) error
-		DeleteTag(user_id, tag_name string) error
-		UpdateResourceTags(userID, resourceID, resourceType string, patch []byte) error
+		RetrieveUserTags(user_id string) (tags []Tag, err CaliopenError)
+		CreateTag(tag *Tag) CaliopenError
+		RetrieveTag(user_id, tag_id string) (tag Tag, err CaliopenError)
+		UpdateTag(tag *Tag) CaliopenError
+		PatchTag(patch []byte, user_id, tag_name string) CaliopenError
+		DeleteTag(user_id, tag_name string) CaliopenError
+		UpdateResourceTags(userID, resourceID, resourceType string, patch []byte) CaliopenError
 		//search
 		Search(IndexSearch) (result *IndexResult, err error)
 		//users

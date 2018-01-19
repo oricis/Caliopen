@@ -89,7 +89,7 @@ class TakeATour extends Component {
           step={this.state.tourStep}
           onRequestClose={this.handleclose}
           steps={steps}
-          badgeContent={(current, total) => (<Trans id="take-a-tour.current-step" values={{ current, total }}>Take a tour ({current} of {total})</Trans>)}
+          badgeContent={(current, total) => (<Trans id="take-a-tour.current-step">Take a tour ({current} of {total})</Trans>)}
           showNavigation={false}
           skipButton={i18n._('take-a-tour.action.skip', { defaults: 'Skip' })}
           prevButton={i18n._('take-a-tour.action.prev', { defaults: 'Previous' })}

@@ -507,10 +507,10 @@
 			"revisionTime": "2017-05-04T04:03:14Z"
 		},
 		{
-			"checksumSHA1": "rJab1YdNhQooDiBWNnt7TLWPyBU=",
+			"checksumSHA1": "xCv4GBFyw07vZkVtKF/XrUnkHRk=",
 			"path": "github.com/pkg/errors",
-			"revision": "c605e284fe17294bda444b34710735b29d1a9d90",
-			"revisionTime": "2017-05-05T04:36:39Z"
+			"revision": "e881fd58d78e04cf6d0de1217f8707c8cc2249bc",
+			"revisionTime": "2017-12-16T07:03:16Z"
 		},
 		{
 			"checksumSHA1": "2njdgjt9stCtZmw+GmQzAyFFACg=",

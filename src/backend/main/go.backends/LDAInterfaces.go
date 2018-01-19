@@ -18,7 +18,7 @@ type LDAStore interface {
 	CreateMessage(msg *Message) error
 
 	StoreRawMessage(msg RawMessage) (err error)
-	UpdateMessage(msg *Message, fields map[string]interface{}) error
+	UpdateMessage(msg *Message, fields map[string]interface{}) error // 'fields' are the struct fields names that have been modified
 	CreateThreadLookup(user_id, discussion_id UUID, external_msg_id string) error
 
 	LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error)
@@ -31,5 +31,5 @@ type LDAStore interface {
 type LDAIndex interface {
 	Close()
 	CreateMessage(msg *Message) error
-	UpdateMessage(msg *Message, fields map[string]interface{}) error
+	UpdateMessage(msg *Message, fields map[string]interface{}) error // 'fields' are the struct fields names that have been modified
 }

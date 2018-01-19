@@ -141,6 +141,8 @@ class Message extends Component {
       { 'm-message__subject--is-unread': message.is_unread },
     );
 
+    const messageType = typeTranslations[message.type];
+
     return (
       <div id={message.message_id} className="m-message">
         <div className="m-message__avatar-col">
@@ -157,7 +159,7 @@ class Message extends Component {
             {message.type &&
               (<div className="m-message__type">
                 <span className="m-message__type-label">
-                  <Trans id="message-list.message.by" values={{ 0: typeTranslations[message.type] }}>by {0}</Trans>
+                  <Trans id="message-list.message.by">by {messageType}</Trans>
                 </span>
                 {' '}
                 <Icon type={message.type} className="m-message__type-icon" spaced />
@@ -171,7 +173,7 @@ class Message extends Component {
               id={this.dropdownId}
               alignRight
               isMenu
-              closeOnClick
+              closeOnClick="all"
               closeOnScroll
             >
               <MessageActionsContainer

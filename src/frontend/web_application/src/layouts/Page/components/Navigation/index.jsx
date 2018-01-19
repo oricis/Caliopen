@@ -42,6 +42,7 @@ class Navigation extends PureComponent {
             <Dropdown
               id="IL_navigation_slider_dropdown"
               className="l-navigation__sliders-dropdown"
+              closeOnClick="exceptSelf"
             >
               <SliderContainer vertical className="l-navigation__sliders-container" />
             </Dropdown>

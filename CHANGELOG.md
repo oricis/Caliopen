@@ -8,11 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- API for tags management : user's tags, tags on messages and contacts
+- Tags management: user's tags, tags on messages and contacts
 - add a `internal` tag to messages sent from the same instance than receiver
 
 ### Fixed
 
+- trim spaces in username on signin page
 - unable to load more messages on Timeline
 
 ## [0.7.0] 20121221

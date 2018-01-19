@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { v1 as uuidV1 } from 'uuid';
+import { Trans } from 'lingui-react';
 import Button from '../Button';
 import DropdownMenu from '../DropdownMenu';
 import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
@@ -27,6 +29,7 @@ class TagsForm extends Component {
   };
 
   state = {
+    errors: [],
     searchTerms: '',
     isTagCollectionUpdating: false,
   };
@@ -34,12 +37,23 @@ class TagsForm extends Component {
   updateTags = async ({ tags }) => {
     const { updateTags } = this.props;
     this.setState({ isTagCollectionUpdating: true });
-    await updateTags({ tags });
+    try {
+      await updateTags({ tags });
+    } catch (errors) {
+      this.setState({
+        errors: [(<Trans id="settings.tag.form.error.create_fail">Unable to create the tag. A tag with the same id may already exist.</Trans>)],
+        isTagCollectionUpdating: false,
+      });
+
+      return Promise.reject();
+    }
     this.setState({ isTagCollectionUpdating: false });
+
+    return undefined;
   }
 
   handleSearchChange = (searchTerms) => {
-    this.setState({ searchTerms });
+    this.setState({ searchTerms, errors: [] });
     this.props.search(searchTerms);
   }
 
@@ -64,6 +78,7 @@ class TagsForm extends Component {
 
   render() {
     const { i18n, tags, foundTags, isTagSearchFetching } = this.props;
+    const dropdownId = uuidV1();
 
     return (
       <div className="m-tags-form">
@@ -75,12 +90,13 @@ class TagsForm extends Component {
 
         <div className="m-tags-form__section">
           <TagSearch
+            errors={this.state.errors}
             terms={this.state.searchTerms}
             isFetching={isTagSearchFetching || this.state.isTagCollectionUpdating}
             onChange={this.handleSearchChange}
             onSubmit={this.handleAddNewTag}
           />
-          <DropdownMenu show={foundTags.length > 0} className="m-tags-form__dropdown">
+          <DropdownMenu id={dropdownId} show={foundTags.length > 0} className="m-tags-form__dropdown">
             <VerticalMenu>
               {foundTags.map(tag => (
                 <VerticalMenuItem key={tag.name}>

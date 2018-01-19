@@ -102,11 +102,12 @@ class NewDraftForm extends Component {
     const typeTranslations = {
       email: i18n._('reply-form.protocol.email', { defaults: 'email' }),
     };
+    const draftType = typeTranslations[this.state.draft.type];
 
     return (
       <div className="m-new-draft__type">
         <span className="m-new-draft__type-label">
-          <Trans id="reply-form.by" values={{ 0: typeTranslations[this.state.draft.type] }}>by {0}</Trans>
+          <Trans id="reply-form.by">by {draftType}</Trans>
         </span>
         {' '}
         <Icon className="m-new-draft__type-icon" type={this.state.draft.type} spaced />
@@ -146,7 +147,7 @@ class NewDraftForm extends Component {
               className="m-new-draft__top-actions-menu"
               alignRight
               isMenu
-              closeOnClick
+              closeOnClick="all"
             >{renderDraftMessageActionsContainer()}</Dropdown>
           </TopRow>
           <BodyRow className="m-new-draft__body">

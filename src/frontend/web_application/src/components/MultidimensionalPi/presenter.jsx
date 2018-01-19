@@ -32,7 +32,7 @@ const MultidimensionalPi = ({ pi, displayAveragePi, className, mini }) => {
             id={id}
             className="m-multidimensional-pi__mini-graph"
             position="bottom"
-            closeOnClick
+            closeOnClick="all"
           >
             <Ratings
               pi={pi}

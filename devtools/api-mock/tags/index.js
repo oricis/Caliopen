@@ -29,7 +29,9 @@ const reducer = {
     const exists = state.some(tag => tag.name === name);
 
     if (exists) {
-      res.status(409).send('Tag already exist');
+      res.status(409).send({
+        errors: [{ message: 'Tag already exist', code: 422, name: 'uniqueness' }],
+      });
 
       return state;
     }

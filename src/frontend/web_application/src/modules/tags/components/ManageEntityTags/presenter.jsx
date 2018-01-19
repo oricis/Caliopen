@@ -4,6 +4,7 @@ import TagsForm from '../../../../components/TagsForm';
 import WithTags from '../WithTags';
 import WithSearchTags from '../WithSearchTags';
 import WithUpdateEntityTags from '../WithUpdateEntityTags';
+import { getCleanedTagCollection } from '../../services/getTagLabel';
 
 class ManageEntityTags extends PureComponent {
   static propTypes = {
@@ -23,7 +24,7 @@ class ManageEntityTags extends PureComponent {
 
   renderTagsForm({ tags, search, foundTags, isSearchFetching, updateEntityTags }) {
     const { entity, type } = this.props;
-    const tagCollection = (entity.tags || []).map(tag => tags.find(item => item.name === tag));
+    const tagCollection = !entity.tags ? [] : getCleanedTagCollection(tags, entity.tags);
     const updateEntityTagsBound = updateEntityTags.bind(null, type, entity);
 
     return (

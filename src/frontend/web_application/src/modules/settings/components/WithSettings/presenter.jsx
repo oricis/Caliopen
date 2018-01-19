@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { isAuthenticated } from '../../../user';
 
 class WithSettings extends Component {
   static propTypes = {
@@ -16,12 +17,13 @@ class WithSettings extends Component {
     synced: false,
     isInvalidated: false,
     isFetching: false,
+    fetch: true,
   };
 
   componentDidMount() {
     const { settings, requestSettings, isInvalidated, isFetching } = this.props;
 
-    if ((!settings || isInvalidated) && !isFetching) {
+    if ((!settings || isInvalidated) && !isFetching && isAuthenticated()) {
       requestSettings();
     }
   }

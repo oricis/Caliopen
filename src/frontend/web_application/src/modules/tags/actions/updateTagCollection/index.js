@@ -1,5 +1,6 @@
 import { updateTags as updateMessageTags, requestMessage } from '../../../../store/modules/message';
 import { updateTags as updateContactTags, requestContact } from '../../../../store/modules/contact';
+import { handleAxiosErrors } from '../../../error';
 
 const getUpdateAction = (type) => {
   switch (type) {
@@ -24,7 +25,11 @@ const getRequestEntityAct = (type) => {
 };
 
 export const updateTagCollection = (type, entity, { tags }) => async (dispatch) => {
-  await dispatch(getUpdateAction(type)({ [type]: entity, tags }));
+  try {
+    await dispatch(getUpdateAction(type)({ [type]: entity, tags }));
+  } catch (err) {
+    return handleAxiosErrors(err);
+  }
   const { payload: { data: entityUptoDate } } = await dispatch(getRequestEntityAct(type)(entity[`${type}_id`]));
 
   return entityUptoDate.tags;

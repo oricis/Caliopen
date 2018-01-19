@@ -43,7 +43,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 	msg.Attachments = append(msg.Attachments, draftAttchmnt)
 	//update store
 	fields := make(map[string]interface{})
-	fields["attachments"] = msg.Attachments
+	fields["Attachments"] = msg.Attachments
 	err = rest.store.UpdateMessage(msg, fields)
 	if err != nil {
 		//roll-back attachment storage before returning the error
@@ -54,7 +54,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 	err = rest.index.UpdateMessage(msg, fields)
 	if err != nil {
 		//roll-back attachment storage before returning the error
-		fields["attachments"] = msg.Attachments[:attchmntIndex]
+		fields["Attachments"] = msg.Attachments[:attchmntIndex]
 		rest.store.UpdateMessage(msg, fields)
 		rest.store.DeleteAttachment(url)
 		return "", err
@@ -84,7 +84,7 @@ func (rest *RESTfacility) DeleteAttachment(user_id, message_id string, attchmtIn
 
 	//update store
 	fields := make(map[string]interface{})
-	fields["attachments"] = msg.Attachments
+	fields["Attachments"] = msg.Attachments
 	rest.store.UpdateMessage(msg, fields)
 	if err != nil {
 		return err

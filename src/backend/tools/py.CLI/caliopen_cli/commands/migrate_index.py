@@ -21,9 +21,13 @@ def migrate_index(**kwargs):
     Migrator = load_from_file(kwargs["input_script"])
     if Migrator:
         url = Configuration('global').get('elasticsearch.url')
-        client = Elasticsearch(url)
-        migration = Migrator(client)
-        migration.run()
+        mappings_version = Configuration('global').get(
+            'elasticsearch.mappings_version')
+        if url and mappings_version:
+            client = Elasticsearch(url)
+            migration = Migrator(client=client,
+                                 mappings_version=mappings_version)
+            migration.run()
 
 
 def load_from_file(filepath):

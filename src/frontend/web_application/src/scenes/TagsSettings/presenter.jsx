@@ -23,6 +23,7 @@ class TagsSettings extends Component {
 
   state = {
     createErrors: [],
+    tagErrors: {},
     searchTerms: '',
     foundTags: [],
   };
@@ -47,18 +48,44 @@ class TagsSettings extends Component {
   }
 
   handleUpdateTag = async ({ original, tag }) => {
+    this.setState({
+      tagErrors: {
+        [original.name]: undefined,
+      },
+    });
     if (isEqual(original, tag)) {
       return;
     }
     const { updateTag, requestTags } = this.props;
-    await updateTag({ original, tag });
-    await requestTags();
+    try {
+      await updateTag({ original, tag });
+      await requestTags();
+    } catch (errors) {
+      this.setState({
+        tagErrors: {
+          [original.name]: errors.map(err => err.message),
+        },
+      });
+    }
   }
 
   handleDeleteTag = async ({ tag }) => {
+    this.setState({
+      tagErrors: {
+        [tag.name]: undefined,
+      },
+    });
     const { deleteTag, requestTags } = this.props;
-    await deleteTag({ tag });
-    await requestTags();
+    try {
+      await deleteTag({ tag });
+      await requestTags();
+    } catch (errors) {
+      this.setState({
+        tagErrors: {
+          [tag.name]: errors.map(err => err.message),
+        },
+      });
+    }
   }
 
   render() {
@@ -73,6 +100,7 @@ class TagsSettings extends Component {
                   tag={tag}
                   onUpdateTag={this.handleUpdateTag}
                   onDeleteTag={this.handleDeleteTag}
+                  errors={this.state.tagErrors[tag.name]}
                 />
               ))}
             </Section>

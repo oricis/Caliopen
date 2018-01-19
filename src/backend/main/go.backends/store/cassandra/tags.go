@@ -18,7 +18,7 @@ func (cb *CassandraBackend) RetrieveUserTags(user_id string) (tags []Tag, err er
 		return
 	}
 	if len(all_tags) == 0 {
-		err = errors.New("[cassandra] : user tags lookup returns empty")
+		err = errors.New("tags not found")
 		return
 	}
 	for _, tag := range all_tags {
