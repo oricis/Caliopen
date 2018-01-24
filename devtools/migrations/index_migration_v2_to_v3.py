@@ -20,10 +20,21 @@ class IndexMigrator(object):
         ok = 0
         errors = 0
         count = 1
+        skip = 0
         for index in indexes:
             alias = index[:-3]
             new_index = alias + "_" + self.mappings_version
-            log.warn("Operation {}/{}".format(count, total))
+            if index.endswith(self.mappings_version):
+                log.warn('Index {} already in wanted version'.format(index))
+                skip += 1
+                continue
+
+            if self.es_client.indices.exists(new_index):
+                log.warn('Index {} exists, skipping'.format(new_index))
+                skip += 1
+                continue
+
+            log.info("Operation {}/{}".format(count, total))
             count += 1
             try:
                 self.create_new_index(new_index)
@@ -42,16 +53,17 @@ class IndexMigrator(object):
 
             ok += 1
 
-        log.warn("{} operations completed\n    OK : {}\n    Errors: {}".format(
-            count, ok, errors))
+        log.warn("{} operations completed\nOK : {}\n"
+                 "Errors: {}\nSkip: {}".format(count, ok, errors, skip))
 
     def create_new_index(self, index):
-        """Creates user index and setups mappings."""
+        """Create user index and setups mappings."""
         log.warn('Creating new index {}'.format(index))
 
         try:
             self.es_client.indices.create(
                 index=index,
+                timeout='30s',
                 body={
                     "settings": {
                         "analysis": {
@@ -99,7 +111,7 @@ class IndexMigrator(object):
         log.warn("Copying data from {} to {}".format(old, new))
 
         try:
-            self.es_client.reindex(body={
+            self.es_client.reindex(timeout='1m', body={
                 "source": {
                     "index": old
                 },
