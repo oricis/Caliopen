@@ -10,25 +10,27 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"gopkg.in/oleiade/reflections.v1"
+	"reflect"
+	"strings"
 	"time"
 )
 
 // this interface is mainly a collection of helpers to facilitate the job of reflection
 type CaliopenObject interface {
-	// JsonTags returns a map[string]string of the "json" tags found for each object property
-	// map key is the tag value (json:"xxxx"), mapping to the corresponding struct property name
-	JsonTags() map[string]string
-	// NewInstance returns the pointer returned by the new() builtin applied to the underlying object
+	// NewEmpty returns the pointer returned by the new() builtin applied to the underlying object and its nested objects if needed
 	NewEmpty() interface{}
 	// UnmarshalJSON is json.Unmarshaller interface
 	UnmarshalJSON(b []byte) error
+	// UnmarshalMap hydrate struct with data from a map[string]interface{}
+	UnmarshalMap(map[string]interface{}) error
+	// NewMarshaller ensure mandatory properties are corretly set on struct
+	NewMarshaller
 }
 
 // types below are helpers to manage embedded and related struct within storage
 // as well as lookup tables.
 type (
 	// objects with embedded struct that must be stored alongside their parent.
-	// these embedded struct must have an
 	HasNested interface {
 		GetSetNested() <-chan interface{}
 	}
@@ -53,9 +55,19 @@ type (
 		CleanupLookups(...interface{}) func(session *gocql.Session) error // returns a func for CassandraBackend that cleanups lookups table
 		UpdateLookups(...interface{}) func(session *gocql.Session) error  // returns a func for CassandraBackend that creates/updates lookups table
 	}
-	// structs capable to return JSON representation suitable for frontend client
+	// structs capable of returning JSON representation suitable for frontend client
 	FrontEndMarshaller interface {
 		MarshalFrontEnd() ([]byte, error)
+	}
+
+	ObjectPatchable interface {
+		CaliopenObject
+		// JsonTags returns a map[string]string of the "json" tags found for each object property
+		// map key is the tag value (json:"xxxx"), mapping to the corresponding struct property name
+		JsonTags() map[string]string
+		// SortSlices sorts all slices embedded in the struct in a determinist way
+		SortSlices()
+		// TODO: add a compare(a,b T) func to CaliopenObject interface
 	}
 )
 
@@ -126,33 +138,76 @@ fieldsLoop:
 				}
 			}
 		}
+
 		j_field, err := reflections.GetFieldTag(obj, field, "json")
 		if err != nil {
 			log.WithError(err).Warnf("reflection for field %s failed", field)
 		} else {
 			if j_field != "" && j_field != "-" {
+				split := strings.Split(j_field, ",")
+				if len(split) > 1 && split[1] == "omitempty" {
+					// check if field is empty
+					f, e := reflections.GetField(obj, field)
+					if e != nil {
+						continue fieldsLoop
+					}
+					if isEmptyValue(reflect.ValueOf(f)) {
+						continue fieldsLoop
+					}
+				}
 				if first {
 					first = false
 				} else {
 					jsonBuf.WriteByte(',')
 				}
-				jsonBuf.WriteString("\"" + j_field + "\":")
+
+				jsonBuf.WriteString("\"" + split[0] + "\":")
+
+				// recursively apply JSONMarshaller to embedded structs
+				fieldKind, _ := reflections.GetFieldKind(obj, field)
 				field_value, err := reflections.GetField(obj, field)
 				j_formatter, err := reflections.GetFieldTag(obj, field, "formatter")
+
 				if err == nil {
+					if fieldKind == reflect.Slice {
+						value := reflect.ValueOf(field_value)
+						if value.Len() > 0 {
+							// check if it's a slice of structs before iterating
+							if value.Index(0).Kind() == reflect.Struct {
+								subFirst := true
+								jsonBuf.WriteByte('[')
+								for i := 0; i < value.Len(); i++ {
+									b, e := JSONMarshaller(context, value.Index(i).Interface())
+									if e == nil {
+										if subFirst {
+											subFirst = false
+										} else {
+											jsonBuf.WriteByte(',')
+										}
+										jsonBuf.Write(b)
+									}
+								}
+								jsonBuf.WriteByte(']')
+								continue fieldsLoop
+							}
+						}
+					}
 					switch j_formatter {
 					case "RFC3339Milli":
 						jsonBuf.WriteString("\"" + field_value.(time.Time).Format(RFC3339Milli) + "\"")
 					default:
-						if field_v, ok := field_value.(FrontEndMarshaller); ok {
-							b, e := field_v.MarshalFrontEnd()
+						if fieldKind == reflect.Struct {
+							b, e := JSONMarshaller(context, field_value)
 							if e == nil {
 								jsonBuf.Write(b)
+							} else {
+								jsonBuf.WriteString("null")
 							}
 						} else {
 							enc.Encode(field_value)
 						}
 					}
+
 				} else {
 					jsonBuf.Write([]byte{'"', '"'})
 				}
@@ -161,4 +216,24 @@ fieldsLoop:
 	}
 	jsonBuf.WriteByte('}')
 	return jsonBuf.Bytes(), nil
+}
+
+// borrowed from pkg/encoding/json/encode.go
+
+func isEmptyValue(v reflect.Value) bool {
+	switch v.Kind() {
+	case reflect.Array, reflect.Map, reflect.Slice, reflect.String:
+		return v.Len() == 0
+	case reflect.Bool:
+		return !v.Bool()
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return v.Int() == 0
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+		return v.Uint() == 0
+	case reflect.Float32, reflect.Float64:
+		return v.Float() == 0
+	case reflect.Interface, reflect.Ptr:
+		return v.IsNil()
+	}
+	return false
 }
