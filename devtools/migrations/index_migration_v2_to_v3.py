@@ -57,7 +57,6 @@ class IndexMigrator(object):
 
             log.info("Operation {}/{}".format(count, total))
             count += 1
-            continue
             try:
                 self.create_new_index(new_index)
                 self.copy_old_to_new(index, new_index)
