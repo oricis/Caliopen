@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.8.1] 2018-01-25
+
 ### Fixed
 
 - fix BSOD (Black Screen Of Death) when an author is not in user's contact book
