@@ -17,5 +17,5 @@ export const isMessageFromUser = (message, user) => {
   const userContactId = user.contact.contact_id;
   const isFromUser = authorContactId => authorContactId === userContactId;
 
-  return author.contact_ids.some(isFromUser);
+  return (author.contact_ids && author.contact_ids.some(isFromUser)) || false;
 };
