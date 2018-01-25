@@ -9,7 +9,6 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
-	"github.com/gocql/gocql"
 	"gopkg.in/oleiade/reflections.v1"
 )
 
@@ -29,7 +28,7 @@ func (cb *CassandraBackend) CreateContact(contact *Contact) error {
 
 	// create related rows in joined tables
 	go func(*CassandraBackend, *Contact, bool) {
-		err = cb.UpdateRelated(contact, isNew)
+		err = cb.UpdateRelated(contact, nil, isNew)
 		if err != nil {
 			log.WithError(err).Error("[CassandraBackend] CreateContact : failed to UpdateRelated")
 		}
@@ -37,7 +36,7 @@ func (cb *CassandraBackend) CreateContact(contact *Contact) error {
 
 	// create related rows in relevant lookup tables
 	go func(*CassandraBackend, *Contact, bool) {
-		err = cb.UpdateLookups(contact, isNew)
+		err = cb.UpdateLookups(contact, nil, isNew)
 		if err != nil {
 			log.WithError(err).Error("[CassandraBackend] CreateContact : failed to UpdateLookups")
 		}
@@ -69,7 +68,7 @@ func (cb *CassandraBackend) RetrieveContact(user_id, contact_id string) (contact
 
 // UpdateContact updates fields into Cassandra
 // AND updates related lookup tables if needed
-func (cb *CassandraBackend) UpdateContact(contact *Contact, fields map[string]interface{}) error {
+func (cb *CassandraBackend) UpdateContact(contact, oldContact *Contact, fields map[string]interface{}) error {
 
 	//get cassandra's field name for each field to modify
 	cassaFields := map[string]interface{}{}
@@ -78,7 +77,9 @@ func (cb *CassandraBackend) UpdateContact(contact *Contact, fields map[string]in
 		if err != nil {
 			return fmt.Errorf("[CassandraBackend] UpdateContact failed to find a cql field for object field %s", field)
 		}
-		cassaFields[cassaField] = value
+		if cassaField != "-" {
+			cassaFields[cassaField] = value
+		}
 	}
 
 	contactT := cb.IKeyspace.Table("contact", &Contact{}, gocassa.Keys{
@@ -91,21 +92,21 @@ func (cb *CassandraBackend) UpdateContact(contact *Contact, fields map[string]in
 		Run()
 	isNew := false
 
-	// create related rows in joined tables
-	go func(*CassandraBackend, *Contact, bool) {
-		err = cb.UpdateRelated(contact, isNew)
+	// update related rows in joined tables
+	go func(cb *CassandraBackend, new, old *Contact, isNew bool) {
+		err = cb.UpdateRelated(contact, oldContact, isNew)
 		if err != nil {
 			log.WithError(err).Error("[CassandraBackend] UpdateContact : failed to UpdateRelated")
 		}
-	}(cb, contact, isNew)
+	}(cb, contact, oldContact, isNew)
 
-	// create related rows in relevant lookup tables
-	go func(*CassandraBackend, *Contact, bool) {
-		err = cb.UpdateLookups(contact, isNew)
+	// update related rows in relevant lookup tables
+	go func(cb *CassandraBackend, new, old *Contact, isNew bool) {
+		err = cb.UpdateLookups(contact, oldContact, isNew)
 		if err != nil {
 			log.WithError(err).Error("[CassandraBackend] UpdateContact : failed to UpdateLookups")
 		}
-	}(cb, contact, isNew)
+	}(cb, contact, oldContact, isNew)
 
 	return nil
 }

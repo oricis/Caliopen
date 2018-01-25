@@ -11,8 +11,8 @@ import (
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
-	"gopkg.in/oleiade/reflections.v1"
 	"github.com/satori/go.uuid"
+	"gopkg.in/oleiade/reflections.v1"
 )
 
 func (es *ElasticSearchBackend) CreateContact(contact *Contact) error {

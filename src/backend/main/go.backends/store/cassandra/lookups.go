@@ -10,12 +10,14 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
-// UpdateLookups ensure that tables lookup related to obj are up to date in db,
-func (cb *CassandraBackend) UpdateLookups(obj HasLookup, isNew bool) error {
+// UpdateLookups ensure that tables lookup related to are up to date in db,
+// it updates values with `new` state and delete lookups that have been removed
+func (cb *CassandraBackend) UpdateLookups(new, old HasLookup, isNew bool) error {
 	var err error
-	for _, lookup := range obj.GetLookupsTables() {
-		if update := lookup.UpdateLookups(obj); update != nil {
-			err = update(cb.Session)
+	// update db with current values
+	for _, lookup := range new.GetLookupsTables() {
+		if updateFunc := lookup.UpdateLookups(new, old); updateFunc != nil {
+			err = updateFunc(cb.Session)
 			if err != nil {
 				return err
 			}
