@@ -7,7 +7,6 @@ package objects
 import (
 	"bytes"
 	"encoding/json"
-	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"gopkg.in/oleiade/reflections.v1"
@@ -55,91 +54,69 @@ func (msg *Message) JSONMarshaller(context string, body_type ...string) ([]byte,
 		return jsonBuf.Bytes(), err
 	}
 	jsonBuf.WriteByte('{')
-	first := true
+	first := new(bool)
+	*first = true
 	body_not_merged := true
 fieldsLoop:
 	for _, field := range fields {
-		j_field, err := reflections.GetFieldTag(*msg, field, "json")
-		if err != nil {
-			log.WithError(err).Warnf("reflection for field %s failed", field)
-		} else {
-			if j_field != "" && j_field != "-" {
-				switch context {
-				case "elastic":
-					j_elastic, err := reflections.GetFieldTag(*msg, field, "elastic")
-					if err == nil {
-						switch j_elastic {
-						case "omit":
-							continue fieldsLoop
-						}
-					}
-				case "frontend":
-					//output only one body for frontend clients
-					if field == "Body_html" || field == "Body_plain" {
-						if body_not_merged {
-							if first {
-								first = false
-							} else {
-								jsonBuf.WriteByte(',')
-							}
-							jsonBuf.WriteString("\"body\":")
-							// TODO : put html or plain in exported body regarding current user preferences
-							var body_is_plain bool
-							if len(body_type) > 0 && len(msg.Body_html) > 0 && len(msg.Body_plain) > 0 {
-								if body_type[0] == "rich_text" {
-									enc.Encode(msg.Body_html)
-									body_is_plain = false
-								} else {
-									enc.Encode(msg.Body_plain)
-									body_is_plain = true
-								}
-							} else {
-								if msg.Body_html != "" {
-									enc.Encode(msg.Body_html)
-									body_is_plain = false
-								} else {
-									enc.Encode(msg.Body_plain)
-									body_is_plain = true
-								}
-							}
-							if body_is_plain {
-								jsonBuf.WriteString(",\"body_is_plain\":true")
-							} else {
-								jsonBuf.WriteString(",\"body_is_plain\":false")
-							}
-							body_not_merged = false
-							continue fieldsLoop
+		switch context {
+		case "elastic":
+			j_elastic, err := reflections.GetFieldTag(msg, field, "elastic")
+			if err == nil {
+				switch j_elastic {
+				case "omit":
+					continue fieldsLoop
+				}
+			}
+		case "frontend":
+			front, err := reflections.GetFieldTag(msg, field, "frontend")
+			if err == nil {
+				switch front {
+				case "omit":
+					continue fieldsLoop
+				}
+				//output only one body for frontend clients
+				if field == "Body_html" || field == "Body_plain" {
+					if body_not_merged {
+						if *first {
+							*first = false
 						} else {
-							continue fieldsLoop
+							jsonBuf.WriteByte(',')
 						}
+						jsonBuf.WriteString("\"body\":")
+						// TODO : put html or plain in exported body regarding current user preferences
+						var body_is_plain bool
+						if len(body_type) > 0 && len(msg.Body_html) > 0 && len(msg.Body_plain) > 0 {
+							if body_type[0] == "rich_text" {
+								enc.Encode(msg.Body_html)
+								body_is_plain = false
+							} else {
+								enc.Encode(msg.Body_plain)
+								body_is_plain = true
+							}
+						} else {
+							if msg.Body_html != "" {
+								enc.Encode(msg.Body_html)
+								body_is_plain = false
+							} else {
+								enc.Encode(msg.Body_plain)
+								body_is_plain = true
+							}
+						}
+						if body_is_plain {
+							jsonBuf.WriteString(",\"body_is_plain\":true")
+						} else {
+							jsonBuf.WriteString(",\"body_is_plain\":false")
+						}
+						body_not_merged = false
+						continue fieldsLoop
+					} else {
+						continue fieldsLoop
 					}
 				}
-				if first {
-					first = false
-				} else {
-					jsonBuf.WriteByte(',')
-				}
-				jsonBuf.WriteString("\"" + j_field + "\":")
-				field_value, err := reflections.GetField(*msg, field)
-				j_formatter, err := reflections.GetFieldTag(*msg, field, "formatter")
-				if err == nil {
-					switch j_formatter {
-					case "rfc4122":
-						enc.Encode(field_value)
-					case "RFC3339Milli":
-						jsonBuf.WriteString("\"" + field_value.(time.Time).Format(RFC3339Milli) + "\"")
-					case "TimeUTCmicro":
-						jsonBuf.WriteString("\"" + field_value.(time.Time).Format(TimeUTCmicro) + "\"")
-					default:
-						enc.Encode(field_value)
-					}
-				} else {
-					jsonBuf.Write([]byte{'"', '"'})
-				}
-			} else {
-				log.Warnf("Invalid field %s value: %s", field, j_field)
 			}
 		}
+		marshallField(msg, field, context, &jsonBuf, first, enc)
 	}
 	jsonBuf.WriteByte('}')
 	return jsonBuf.Bytes(), nil

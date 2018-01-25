@@ -80,8 +80,9 @@ func jsonTags(obj interface{}) (tags map[string]string) {
 	}
 	for _, field := range fields {
 		tag, err := reflections.GetFieldTag(obj, field, "json")
+		split := strings.Split(tag, ",")
 		if err == nil {
-			tags[tag] = field
+			tags[split[0]] = field
 		}
 	}
 	return
@@ -117,7 +118,8 @@ func JSONMarshaller(context string, obj interface{}) ([]byte, error) {
 		return jsonBuf.Bytes(), err
 	}
 	jsonBuf.WriteByte('{')
-	first := true
+	first := new(bool)
+	*first = true
 fieldsLoop:
 	for _, field := range fields {
 		switch context {
@@ -138,84 +140,87 @@ fieldsLoop:
 				}
 			}
 		}
-
-		j_field, err := reflections.GetFieldTag(obj, field, "json")
-		if err != nil {
-			log.WithError(err).Warnf("reflection for field %s failed", field)
-		} else {
-			if j_field != "" && j_field != "-" {
-				split := strings.Split(j_field, ",")
-				if len(split) > 1 && split[1] == "omitempty" {
-					// check if field is empty
-					f, e := reflections.GetField(obj, field)
-					if e != nil {
-						continue fieldsLoop
-					}
-					if isEmptyValue(reflect.ValueOf(f)) {
-						continue fieldsLoop
-					}
-				}
-				if first {
-					first = false
-				} else {
-					jsonBuf.WriteByte(',')
-				}
-
-				jsonBuf.WriteString("\"" + split[0] + "\":")
-
-				// recursively apply JSONMarshaller to embedded structs
-				fieldKind, _ := reflections.GetFieldKind(obj, field)
-				field_value, err := reflections.GetField(obj, field)
-				j_formatter, err := reflections.GetFieldTag(obj, field, "formatter")
-
-				if err == nil {
-					if fieldKind == reflect.Slice {
-						value := reflect.ValueOf(field_value)
-						if value.Len() > 0 {
-							// check if it's a slice of structs before iterating
-							if value.Index(0).Kind() == reflect.Struct {
-								subFirst := true
-								jsonBuf.WriteByte('[')
-								for i := 0; i < value.Len(); i++ {
-									b, e := JSONMarshaller(context, value.Index(i).Interface())
-									if e == nil {
-										if subFirst {
-											subFirst = false
-										} else {
-											jsonBuf.WriteByte(',')
-										}
-										jsonBuf.Write(b)
-									}
-								}
-								jsonBuf.WriteByte(']')
-								continue fieldsLoop
-							}
-						}
-					}
-					switch j_formatter {
-					case "RFC3339Milli":
-						jsonBuf.WriteString("\"" + field_value.(time.Time).Format(RFC3339Milli) + "\"")
-					default:
-						if fieldKind == reflect.Struct {
-							b, e := JSONMarshaller(context, field_value)
-							if e == nil {
-								jsonBuf.Write(b)
-							} else {
-								jsonBuf.WriteString("null")
-							}
-						} else {
-							enc.Encode(field_value)
-						}
-					}
-
-				} else {
-					jsonBuf.Write([]byte{'"', '"'})
-				}
-			}
-		}
+		marshallField(obj, field, context, &jsonBuf, first, enc)
 	}
 	jsonBuf.WriteByte('}')
 	return jsonBuf.Bytes(), nil
+}
+
+func marshallField(obj interface{}, field, context string, jsonBuf *bytes.Buffer, first *bool, enc *json.Encoder) {
+	j_field, err := reflections.GetFieldTag(obj, field, "json")
+	if err != nil {
+		log.WithError(err).Warnf("reflection for field %s failed", field)
+	} else {
+		if j_field != "" && j_field != "-" {
+			split := strings.Split(j_field, ",")
+			if len(split) > 1 && split[1] == "omitempty" {
+				// check if field is empty
+				f, e := reflections.GetField(obj, field)
+				if e != nil {
+					return
+				}
+				if isEmptyValue(reflect.ValueOf(f)) {
+					return
+				}
+			}
+			if *first {
+				*first = false
+			} else {
+				jsonBuf.WriteByte(',')
+			}
+
+			jsonBuf.WriteString("\"" + split[0] + "\":")
+
+			// recursively apply JSONMarshaller to embedded structs
+			fieldKind, _ := reflections.GetFieldKind(obj, field)
+			field_value, err := reflections.GetField(obj, field)
+			j_formatter, err := reflections.GetFieldTag(obj, field, "formatter")
+
+			if err == nil {
+				if fieldKind == reflect.Slice {
+					value := reflect.ValueOf(field_value)
+					if value.Len() > 0 {
+						// check if it's a slice of structs before iterating
+						if value.Index(0).Kind() == reflect.Struct {
+							subFirst := true
+							jsonBuf.WriteByte('[')
+							for i := 0; i < value.Len(); i++ {
+								b, e := JSONMarshaller(context, value.Index(i).Interface())
+								if e == nil {
+									if subFirst {
+										subFirst = false
+									} else {
+										jsonBuf.WriteByte(',')
+									}
+									jsonBuf.Write(b)
+								}
+							}
+							jsonBuf.WriteByte(']')
+							return
+						}
+					}
+				}
+				switch j_formatter {
+				case "RFC3339Milli":
+					jsonBuf.WriteString("\"" + field_value.(time.Time).Format(RFC3339Milli) + "\"")
+				default:
+					if fieldKind == reflect.Struct {
+						b, e := JSONMarshaller(context, field_value)
+						if e == nil {
+							jsonBuf.Write(b)
+						} else {
+							jsonBuf.WriteString("null")
+						}
+					} else {
+						enc.Encode(field_value)
+					}
+				}
+
+			} else {
+				jsonBuf.Write([]byte{'"', '"'})
+			}
+		}
+	}
 }
 
 // borrowed from pkg/encoding/json/encode.go
