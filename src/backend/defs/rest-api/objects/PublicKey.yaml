@@ -14,6 +14,12 @@ properties:
   date_update:
     type: string
     format: date-time
+  contact_id:
+    type: string
+  type:
+    type: string
+  user_id:
+    type: string
 required:
 - key
 - name
