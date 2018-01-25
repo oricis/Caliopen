@@ -5,9 +5,9 @@
 package objects
 
 type ExternalReferences struct {
-	Ancestors_ids []string `cql:"ancestors_ids"            json:"ancestors_ids"`
-	Message_id    string   `cql:"message_id"               json:"message_id"`
-	Parent_id     string   `cql:"parent_id"                json:"parent_id"`
+	Ancestors_ids []string `cql:"ancestors_ids"            json:"ancestors_ids,omitempty"`
+	Message_id    string   `cql:"message_id"               json:"message_id,omitempty"`
+	Parent_id     string   `cql:"parent_id"                json:"parent_id,omitempty"`
 }
 
 func (er *ExternalReferences) UnmarshalMap(input map[string]interface{}) error {

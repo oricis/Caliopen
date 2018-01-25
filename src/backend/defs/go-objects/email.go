@@ -73,11 +73,11 @@ type (
 
 	// emails model embedded in contact
 	EmailContact struct {
-		Address   string `cql:"address"     json:"address"`
-		EmailId   UUID   `cql:"email_id"    json:"email_id"`
-		IsPrimary bool   `cql:"is_primary"  json:"is_primary"`
-		Label     string `cql:"label"       json:"label"`
-		Type      string `cql:"type"        json:"type"`
+		Address   string `cql:"address"     json:"address,omitempty"      patch:"user"`
+		EmailId   UUID   `cql:"email_id"    json:"email_id,omitempty"     patch:"system"`
+		IsPrimary bool   `cql:"is_primary"  json:"is_primary"   patch:"user"`
+		Label     string `cql:"label"       json:"label,omitempty"        patch:"user"`
+		Type      string `cql:"type"        json:"type,omitempty"         patch:"user"`
 	}
 )
 
@@ -151,4 +151,19 @@ func (ec *EmailContact) MarshallNew(...interface{}) {
 	if len(ec.EmailId) == 0 || (bytes.Equal(ec.EmailId.Bytes(), nullID.Bytes())) {
 		ec.EmailId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
+}
+
+// Sort interface implementation
+type ByEmailContactID []EmailContact
+
+func (p ByEmailContactID) Len() int {
+	return len(p)
+}
+
+func (p ByEmailContactID) Less(i, j int) bool {
+	return p[i].EmailId.String() < p[j].EmailId.String()
+}
+
+func (p ByEmailContactID) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
 }

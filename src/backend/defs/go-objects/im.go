@@ -42,3 +42,18 @@ func (i *IM) MarshallNew(...interface{}) {
 		i.IMId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
 }
+
+// Sort interface implementation
+type ByIMID []IM
+
+func (p ByIMID) Len() int {
+	return len(p)
+}
+
+func (p ByIMID) Less(i, j int) bool {
+	return p[i].IMId.String() < p[j].IMId.String()
+}
+
+func (p ByIMID) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
+}

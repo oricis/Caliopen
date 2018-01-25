@@ -5,27 +5,25 @@
 package objects
 
 import (
-	"bytes"
+	"encoding/json"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"time"
 )
 
 type PublicKey struct {
-	ContactId       UUID             `cql:"contact_id"       json:"contact_id"          frontend:"omit"`
-	DateInsert      time.Time        `cql:"date_insert"      json:"date_insert"         formatter:"RFC3339Milli"`
-	DateUpdate      time.Time        `cql:"date_update"      json:"date_update"         formatter:"RFC3339Milli"`
-	ExpireDate      time.Time        `cql:"expire_date"      json:"expire_date"         formatter:"RFC3339Milli"`
-	Fingerprint     string           `cql:"fingerprint"      json:"fingerprint"`
-	Key             string           `cql:"key"              json:"key"`
-	Name            string           `cql:"name"             json:"name"`
-	PrivacyFeatures *PrivacyFeatures `cql:"privacy_features" json:"privacy_features"`
-	Size            int              `cql:"size"             json:"size"`
-	Type            string           `cql:"type"             json:"type"`
-	UserId          UUID             `cql:"user_id"          json:"user_id"             frontend:"omit"`
+	ContactId       UUID             `cql:"contact_id"       json:"contact_id,omitempty"                                      patch:"system"`
+	DateInsert      time.Time        `cql:"date_insert"      json:"date_insert,omitempty"         formatter:"RFC3339Milli"    patch:"system"`
+	DateUpdate      time.Time        `cql:"date_update"      json:"date_update,omitempty"         formatter:"RFC3339Milli"    patch:"system"`
+	ExpireDate      time.Time        `cql:"expire_date"      json:"expire_date,omitempty"         formatter:"RFC3339Milli"    patch:"user"`
+	Fingerprint     string           `cql:"fingerprint"      json:"fingerprint,omitempty"                                     patch:"user"`
+	Key             string           `cql:"key"              json:"key,omitempty"                                             patch:"user"`
+	Name            string           `cql:"name"             json:"name,omitempty"                                            patch:"user"`
+	PrivacyFeatures *PrivacyFeatures `cql:"privacy_features" json:"privacy_features,omitempty"                                patch:"system"`
+	Size            int              `cql:"size"             json:"size,omitempty"                                            patch:"user"`
+	Type            string           `cql:"type"             json:"type,omitempty"                                            patch:"user"`
+	UserId          UUID             `cql:"user_id"          json:"user_id,omitempty"                                         patch:"system"`
 }
-
-type PublicKeys []PublicKey
 
 // unmarshal a map[string]interface{} that must owns all PublicKey's fields
 // typical usage is for unmarshaling response from Cassandra backend
@@ -51,13 +49,14 @@ func (pk *PublicKey) UnmarshalCQLMap(input map[string]interface{}) {
 	if name, ok := input["name"].(string); ok {
 		pk.Name = name
 	}
-	if i_pf, ok := input["privacy_features"].(map[string]string); ok {
+	if i_pf, ok := input["privacy_features"].(map[string]string); ok && i_pf != nil {
 		pf := PrivacyFeatures{}
 		for k, v := range i_pf {
 			pf[k] = v
 		}
 		pk.PrivacyFeatures = &pf
-
+	} else {
+		pk.PrivacyFeatures = nil
 	}
 	if size, ok := input["size"].(int); ok {
 		pk.Size = size
@@ -95,6 +94,8 @@ func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
 		PF := &PrivacyFeatures{}
 		PF.UnmarshalMap(pf.(map[string]interface{}))
 		pk.PrivacyFeatures = PF
+	} else {
+		pk.PrivacyFeatures = nil
 	}
 	if size, ok := input["size"].(float64); ok {
 		pk.Size = int(size)
@@ -106,6 +107,15 @@ func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
 	}
 
 	return nil //TODO : errors handling
+}
+
+func (pk *PublicKey) UnmarshalJSON(b []byte) error {
+	input := map[string]interface{}{}
+	if err := json.Unmarshal(b, &input); err != nil {
+		return err
+	}
+
+	return pk.UnmarshalMap(input)
 }
 
 // GetTableInfos implements HasTable interface.
@@ -143,25 +153,36 @@ func (pk *PublicKey) MarshalFrontEnd() ([]byte, error) {
 	return JSONMarshaller("frontend", pk)
 }
 
-func (pks PublicKeys) MarshalFrontEnd() ([]byte, error) {
-	var jsonBuf bytes.Buffer
-	jsonBuf.WriteByte('[')
-	first := true
-	for _, pk := range pks {
-		if first {
-			first = false
-		} else {
-			jsonBuf.WriteByte(',')
-		}
-		b, e := pk.MarshalFrontEnd()
-		if e == nil {
-			jsonBuf.Write(b)
-		}
-	}
-	jsonBuf.WriteByte(']')
-	return jsonBuf.Bytes(), nil
-}
-
 func (pk *PublicKey) JSONMarshaller() ([]byte, error) {
 	return JSONMarshaller("", pk)
+}
+
+func (pk *PublicKey) NewEmpty() interface{} {
+	p := new(PublicKey)
+	p.Size = 0
+	return p
+}
+
+/* ObjectPatchable interface */
+func (pk *PublicKey) JsonTags() map[string]string {
+	return jsonTags(pk)
+}
+
+func (pk *PublicKey) SortSlices() {
+	// nothing to sort
+}
+
+// Sort interface implementation
+type ByName []PublicKey
+
+func (p ByName) Len() int {
+	return len(p)
+}
+
+func (p ByName) Less(i, j int) bool {
+	return p[i].Name < p[j].Name
+}
+
+func (p ByName) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
 }

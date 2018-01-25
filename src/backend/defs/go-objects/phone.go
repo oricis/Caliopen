@@ -6,17 +6,18 @@ package objects
 
 import (
 	"bytes"
+	"encoding/json"
 	"github.com/satori/go.uuid"
 )
 
 // contacts' phone model
 type Phone struct {
-	IsPrimary        bool   `cql:"is_primary"  json:"is_primary"`
-	NormalizedNumber string `cql:"normalized_number" json:"normalized_number"`
-	Number           string `cql:"number"      json:"number"       cql_lookup:"contact_lookup"`
-	PhoneId          UUID   `cql:"phone_id"    json:"phone_id"`
-	Type             string `cql:"type"        json:"type"`
-	Uri              string `cql:"uri"         json:"uri"` //RFC3966
+	IsPrimary        bool   `cql:"is_primary"           json:"is_primary,omitempty"                                       patch:"user"`
+	NormalizedNumber string `cql:"normalized_number"    json:"normalized_number,omitempty"                                patch:"user"`
+	Number           string `cql:"number"               json:"number,omitempty"           cql_lookup:"contact_lookup"     patch:"user"`
+	PhoneId          UUID   `cql:"phone_id"             json:"phone_id,omitempty"                                         patch:"system"`
+	Type             string `cql:"type"                 json:"type,omitempty"                                             patch:"user"`
+	Uri              string `cql:"uri"                  json:"uri,omitempty"                                              patch:"system"` //RFC3966
 }
 
 func (p *Phone) UnmarshalMap(input map[string]interface{}) error {
@@ -50,4 +51,36 @@ func (p *Phone) MarshallNew(...interface{}) {
 	if len(p.PhoneId) == 0 || (bytes.Equal(p.PhoneId.Bytes(), nullID.Bytes())) {
 		p.PhoneId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
+}
+
+func (p *Phone) JsonTags() map[string]string {
+	return jsonTags(p)
+}
+
+func (p *Phone) NewEmpty() interface{} {
+	return new(Phone)
+}
+
+func (p *Phone) UnmarshalJSON(b []byte) error {
+	input := map[string]interface{}{}
+	if err := json.Unmarshal(b, &input); err != nil {
+		return err
+	}
+
+	return p.UnmarshalMap(input)
+}
+
+// Sort interface implementation
+type ByPhoneID []Phone
+
+func (p ByPhoneID) Len() int {
+	return len(p)
+}
+
+func (p ByPhoneID) Less(i, j int) bool {
+	return p[i].PhoneId.String() < p[j].PhoneId.String()
+}
+
+func (p ByPhoneID) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
 }

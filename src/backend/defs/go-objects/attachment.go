@@ -5,7 +5,7 @@
 package objects
 
 type Attachment struct {
-	Content_type string `cql:"content_type"     json:"content_type"`
+	Content_type string `cql:"content_type"     json:"content_type,omitempty"`
 	File_name    string `cql:"file_name"        json:"file_name"`
 	Is_inline    bool   `cql:"is_inline"        json:"is_inline"`
 	Size         int    `cql:"size"             json:"size"`
@@ -33,4 +33,24 @@ func (a *Attachment) UnmarshalMap(input map[string]interface{}) error {
 		a.MimeBoundary = mimeBoundary
 	}
 	return nil //TODO: error handling
+}
+
+// part of CaliopenObject interface
+func (a *Attachment) MarshallNew(...interface{}) {
+	// nothing to enforce
+}
+
+// Sort interface implementation
+type ByFileName []Attachment
+
+func (a ByFileName) Len() int {
+	return len(a)
+}
+
+func (a ByFileName) Less(i, j int) bool {
+	return a[i].File_name < a[j].File_name
+}
+
+func (a ByFileName) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
 }

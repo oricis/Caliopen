@@ -11,35 +11,36 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"gopkg.in/oleiade/reflections.v1"
+	"sort"
 	"time"
 )
 
 type Message struct {
-	Attachments         []Attachment       `cql:"attachments"              json:"attachments"       `
+	Attachments         []Attachment       `cql:"attachments"              json:"attachments,omitempty"       `
 	Body_html           string             `cql:"body_html"                json:"body_html"         `
 	Body_plain          string             `cql:"body_plain"               json:"body_plain"        `
 	Body_excerpt        string             `cql:"-"                        json:"excerpt"           `
 	Date                time.Time          `cql:"date"                     json:"date"                                         formatter:"RFC3339Milli"`
 	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete"                                  formatter:"RFC3339Milli"`
 	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"RFC3339Milli"`
-	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id"                                formatter:"rfc4122"`
-	External_references ExternalReferences `cql:"external_references"      json:"external_references"`
-	Identities          []Identity         `cql:"identities"               json:"identities"       `
+	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id,omitempty"                                formatter:"rfc4122"`
+	External_references ExternalReferences `cql:"external_references"      json:"external_references,omitempty"`
+	Identities          []Identity         `cql:"identities"               json:"identities,omitempty"       `
 	Importance_level    int32              `cql:"importance_level"         json:"importance_level" `
 	Is_answered         bool               `cql:"is_answered"              json:"is_answered"      `
 	Is_draft            bool               `cql:"is_draft"                 json:"is_draft"         `
 	Is_unread           bool               `cql:"is_unread"                json:"is_unread"        `
 	Is_received         bool               `cql:"is_received"              json:"is_received"      `
-	Message_id          UUID               `cql:"message_id"               json:"message_id"                                   formatter:"rfc4122"`
-	Parent_id           UUID               `cql:"parent_id"                json:"parent_id"        `
-	Participants        []Participant      `cql:"participants"             json:"participants"     `
-	Privacy_features    PrivacyFeatures    `cql:"privacy_features"         json:"privacy_features" `
-	PrivacyIndex        *PrivacyIndex      `cql:"pi"                       json:"pi"`
-	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id"                                   formatter:"rfc4122"`
+	Message_id          UUID               `cql:"message_id"               json:"message_id,omitempty"                                   formatter:"rfc4122"`
+	Parent_id           UUID               `cql:"parent_id"                json:"parent_id,omitempty"        `
+	Participants        []Participant      `cql:"participants"             json:"participants,omitempty"     `
+	Privacy_features    PrivacyFeatures    `cql:"privacy_features"         json:"privacy_features,omitempty" `
+	PrivacyIndex        *PrivacyIndex      `cql:"pi"                       json:"pi,omitempty"`
+	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id,omitempty"                                   formatter:"rfc4122"`
 	Subject             string             `cql:"subject"                  json:"subject"          `
-	Tags                []string           `cql:"tagnames"                 json:"tags"                     patch:"user" `
-	Type                string             `cql:"type"                     json:"type"             `
-	User_id             UUID               `cql:"user_id"                  json:"user_id"                  elastic:"omit"      formatter:"rfc4122"`
+	Tags                []string           `cql:"tagnames"                 json:"tags,omitempty"                     patch:"user" `
+	Type                string             `cql:"type"                     json:"type,omitempty"             `
+	User_id             UUID               `cql:"user_id"                  json:"user_id,omitempty"                  elastic:"omit"      formatter:"rfc4122"`
 }
 
 // bespoke implementation of the json.Marshaller interface
@@ -195,10 +196,11 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 			msg.Discussion_id.UnmarshalBinary(id.Bytes())
 		}
 	}
-	msg.External_references = ExternalReferences{
-		Ancestors_ids: []string{},
-	}
+
 	if ex_ref, ok := input["external_references"]; ok && ex_ref != nil {
+		msg.External_references = ExternalReferences{
+			Ancestors_ids: []string{},
+		}
 		msg.External_references.UnmarshalMap(ex_ref.(map[string]interface{}))
 	}
 	if identities, ok := input["identities"]; ok && identities != nil {
@@ -237,7 +239,6 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 
-	msg.Participants = []Participant{}
 	if participants, ok := input["participants"]; ok && participants != nil {
 		msg.Participants = []Participant{}
 		for _, participant := range participants.([]interface{}) {
@@ -417,10 +418,6 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 }
 
 // part of the CaliopenObject interface
-func (msg *Message) JsonTags() (tags map[string]string) {
-	return jsonTags(msg)
-}
-
 // NewEmpty returns a new empty initialized sibling of itself
 // part of the CaliopenObject interface
 func (msg *Message) NewEmpty() interface{} {
@@ -433,4 +430,49 @@ func (msg *Message) NewEmpty() interface{} {
 	m.PrivacyIndex = &PrivacyIndex{}
 	m.Tags = []string{}
 	return m
+}
+
+func (msg *Message) MarshallNew(args ...interface{}) {
+	nullID := new(UUID)
+
+	if len(msg.Message_id) == 0 || (bytes.Equal(msg.Message_id.Bytes(), nullID.Bytes())) {
+		msg.Message_id.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
+	if len(msg.User_id) == 0 || (bytes.Equal(msg.User_id.Bytes(), nullID.Bytes())) {
+		if len(args) == 1 {
+			switch args[0].(type) {
+			case UUID:
+				msg.User_id = args[0].(UUID)
+			}
+		}
+	}
+
+	if msg.Date_insert.IsZero() {
+		msg.Date_insert = time.Now()
+	}
+
+	for i, _ := range msg.Attachments {
+		msg.Attachments[i].MarshallNew()
+	}
+
+	for i, _ := range msg.Identities {
+		msg.Identities[i].MarshallNew()
+	}
+
+	for i, _ := range msg.Participants {
+		msg.Participants[i].MarshallNew()
+	}
+
+}
+
+// part of ObjectPatchable interface
+func (msg *Message) JsonTags() (tags map[string]string) {
+	return jsonTags(msg)
+}
+
+func (msg *Message) SortSlices() {
+	sort.Sort(ByFileName(msg.Attachments))
+	sort.Sort(ByIdentifier(msg.Identities))
+	sort.Sort(ByAddress(msg.Participants))
+	sort.Strings(msg.Tags)
 }
