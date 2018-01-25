@@ -11,6 +11,7 @@ import (
 	"github.com/CaliOpen/Caliopen/.cache/govendor/github.com/satori/go.uuid"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	"github.com/bitly/go-simplejson"
 	"github.com/pkg/errors"
 	"strings"
 	"sync"
@@ -85,40 +86,60 @@ func (rest *RESTfacility) RetrieveContact(userID, contactID string) (contact *Co
 // - then UpdateContact() to save updated contact to stores & index if everything went good.
 func (rest *RESTfacility) PatchContact(patch []byte, userID, contactID string) error {
 
-	return errors.New("not implemented")
-
 	current_contact, err := rest.RetrieveContact(userID, contactID)
 	if err != nil {
-		return err
+		if err.Error() == "not found" {
+			return NewCaliopenErr(NotFoundCaliopenErr, "[RESTfacility] contact not found")
+		} else {
+			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] PatcContact failed to retrieve contact")
+		}
 	}
 
-	err = helpers.UpdateWithPatch(current_contact, patch, UserActor)
+	// read into the patch to make basic controls before processing it with generic helper
+	patchReader, err := simplejson.NewJson(patch)
+	if err != nil {
+		return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[RESTfacility] PatchTag failed with simplejson error : %s", err)
+	}
+	// forbid tags modification immediately
+	if _, hasTagsProp := patchReader.CheckGet("tags"); hasTagsProp {
+		return NewCaliopenErr(ForbiddenCaliopenErr, "[RESTfacility] PatchContact : patching tags through parent object is forbidden")
+	}
+	// checks "current_state" property is present
+	if _, hasCurrentState := patchReader.CheckGet("current_state"); !hasCurrentState {
+		return NewCaliopenErr(ForbiddenCaliopenErr, "[RESTfacility] PatchContact : current_state property must be in patch")
+	}
+
+	// patch seams OK, apply it to the resource
+	var modifiedFields map[string]interface{}
+	newContact, modifiedFields, err := helpers.UpdateWithPatch(patch, current_contact, UserActor)
 	if err != nil {
 		return err
 	}
 
-	return rest.UpdateContact(current_contact)
+	// save updated resource
+	err = rest.UpdateContact(newContact.(*Contact), current_contact, modifiedFields)
+	if err != nil {
+		return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[RESTfacility] PatchContact failed with UpdateContact error : %s", err)
+	}
+
+	return nil
 
 }
 
-// UpdateContact updates a contact in store & index with payload,
-func (rest *RESTfacility) UpdateContact(contact *Contact) error {
-	return errors.New("[RESTfacility] UpdateContact not implemented")
-	/*
-		userID := contact.UserId.String()
-		contactID := contact.ContactId.String()
-		update := map[string]interface{}{
-			"tags": obj.(*Contact).Tags,
-		}
-		err := rest.store.UpdateContact(obj.(*Contact), update)
-		if err != nil {
-			return err
-		}
+// UpdateContact updates a contact in store & index with payload
+func (rest *RESTfacility) UpdateContact(contact, oldContact *Contact, modifiedFields map[string]interface{}) error {
 
-		err = rest.index.UpdateContact(obj.(*Contact), update)
-		if err != nil {
-			return err
-		}*/
+	err := rest.store.UpdateContact(contact, oldContact, modifiedFields)
+	if err != nil {
+		return err
+	}
+
+	err = rest.index.UpdateContact(contact, modifiedFields)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // DeleteContact deletes a contact in store & index, only if :

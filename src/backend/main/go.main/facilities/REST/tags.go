@@ -60,11 +60,12 @@ func (rest *RESTfacility) PatchTag(patch []byte, user_id, tag_name string) Calio
 		return Cerr
 	}
 
-	p, err := simplejson.NewJson(patch)
+	// read into the patch to make basic controls before processing it with generic helper
+	patchReader, err := simplejson.NewJson(patch)
 	if err != nil {
 		return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[RESTfacility] PatchTag failed with simplejson error : %s", err)
 	}
-	label := p.Get("label").MustString()
+	label := patchReader.Get("label").MustString()
 	if label == "" || strings.Replace(label, " ", "", -1) == "" {
 		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] new tag's label is empty")
 	}
@@ -72,17 +73,18 @@ func (rest *RESTfacility) PatchTag(patch []byte, user_id, tag_name string) Calio
 	if err != nil {
 		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] tag's name/label conflict with existing one")
 	}
-
 	if !isUnique && name != tag_name {
 		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] tag's name/label conflict with existing one")
 	}
 
-	err = helpers.UpdateWithPatch(&current_tag, patch, UserActor)
+	// patch seams OK, apply it to the resource
+	newTag, _, err := helpers.UpdateWithPatch(patch, &current_tag, UserActor)
 	if err != nil {
 		return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[RESTfacility] PatchTag failed with UpdateWithPatch error : %s", err)
 	}
 
-	err = rest.UpdateTag(&current_tag)
+	// save updated resource
+	err = rest.UpdateTag(newTag.(*Tag))
 	if err != nil {
 		return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[RESTfacility] PatchTag failed with UpdateTag error : %s", err)
 	}
@@ -94,7 +96,6 @@ func (rest *RESTfacility) PatchTag(patch []byte, user_id, tag_name string) Calio
 func (rest *RESTfacility) UpdateTag(tag *Tag) CaliopenError {
 	user_id := tag.User_id.String()
 	if user_id != "" && tag.Name != "" {
-
 		db_tag, err := rest.store.RetrieveTag(user_id, tag.Name)
 		if err != nil {
 			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] UpdateTag failed to RetrieveTag from store")
@@ -180,7 +181,8 @@ func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType st
 
 	patch, _ = p.MarshalJSON()
 	// 2. call generic UpdateWitchPatch func
-	var obj CaliopenObject
+	var obj ObjectPatchable
+	var newObj ObjectPatchable
 
 	switch resourceType {
 	case MessageType:
@@ -188,17 +190,18 @@ func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType st
 		if err != nil {
 			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] UpdateResourceTags")
 		}
-		obj = CaliopenObject(m)
+		obj = ObjectPatchable(m)
 	case ContactType:
 		c, err := rest.store.RetrieveContact(userID, resourceID)
 		if err != nil {
 			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] UpdateResourceTags")
 		}
-		obj = CaliopenObject(c)
+		obj = ObjectPatchable(c)
 	default:
 		return NewCaliopenErr(UnknownCaliopenErr, "[RESTfacility] UpdateResourceWithPatch : invalid resourceType")
 	}
-	err = helpers.UpdateWithPatch(obj, patch, UserActor)
+
+	newObj, _, err = helpers.UpdateWithPatch(patch, obj, SystemActor)
 	if err != nil {
 		return WrapCaliopenErr(err, UnknownCaliopenErr, "[RESTfacility] UpdateResourceTags : helpers.UpdateWithPatch failed")
 	}
@@ -207,27 +210,27 @@ func (rest *RESTfacility) UpdateResourceTags(userID, resourceID, resourceType st
 	switch resourceType {
 	case MessageType:
 		update := map[string]interface{}{
-			"Tags": obj.(*Message).Tags,
+			"Tags": newObj.(*Message).Tags,
 		}
-		err := rest.store.UpdateMessage(obj.(*Message), update)
+		err := rest.store.UpdateMessage(newObj.(*Message), update)
 		if err != nil {
 			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] UpdateResourceTags")
 		}
 
-		err = rest.index.UpdateMessage(obj.(*Message), update)
+		err = rest.index.UpdateMessage(newObj.(*Message), update)
 		if err != nil {
 			return WrapCaliopenErr(err, IndexCaliopenErr, "[RESTfacility] UpdateResourceTags")
 		}
 	case ContactType:
 		update := map[string]interface{}{
-			"Tags": obj.(*Contact).Tags,
+			"Tags": newObj.(*Contact).Tags,
 		}
-		err := rest.store.UpdateContact(obj.(*Contact), update)
+		err := rest.store.UpdateContact(newObj.(*Contact), obj.(*Contact), update)
 		if err != nil {
 			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] UpdateResourceTags")
 		}
 
-		err = rest.index.UpdateContact(obj.(*Contact), update)
+		err = rest.index.UpdateContact(newObj.(*Contact), update)
 		if err != nil {
 			return WrapCaliopenErr(err, IndexCaliopenErr, "[RESTfacility] UpdateResourceTags")
 		}
