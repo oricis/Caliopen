@@ -274,12 +274,17 @@ func PatchResourceWithTags(ctx *gin.Context) {
 	// call UpdateResourceWithPatch API with correct resourceType depending on provided param
 	param := ctx.Params[0]
 	switch param.Key {
-	case "contact_id":
+	case "contactID":
 		resourceType = ContactType
 	case "message_id":
 		resourceType = MessageType
 	default:
 		err = swgErr.New(http.StatusBadRequest, "missing resource param")
+		if err != nil {
+			http_middleware.ServeError(ctx.Writer, ctx.Request, err)
+			ctx.Abort()
+			return
+		}
 	}
 	if resourceID, err = operations.NormalizeUUIDstring(param.Value); err != nil {
 		err = swgErr.New(http.StatusBadRequest, "resource_id is invalid")
