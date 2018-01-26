@@ -1,61 +1,132 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
+$s-message-item__pi-width: 7px;
+
 .s-message-item {
   @include flex-grid-row($size: expand);
   align-items: center;
-  height: 2 * $co-component__height;
+  position: relative;
+  min-height: $co-component__height;
+  background-color: $co-color__fg__back--low;
+  padding-top: $co-component__spacing;
+  padding-bottom: $co-component__spacing;
+  font-size: $co-font__size--small;
 
-  &:hover {
-    color: $co-color__fg__text--high;
+  &::before {
+    display: block;
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: $s-message-item__pi-width;
+    background: map-get($privacy-palette, 'disabled');
   }
 
-  &:active {
-    color: $co-color__fg__text--low;
+  &--pi-ugly {
+    &::before {
+      background: map-get($privacy-palette, 'ugly');
+    }
+  }
+
+  &--pi-bad {
+    &::before {
+      background: map-get($privacy-palette, 'bad');
+    }
+  }
+
+  &--pi-good {
+    &::before {
+      background: map-get($privacy-palette, 'good');
+    }
+  }
+
+  &--pi-super {
+    &::before {
+      background: map-get($privacy-palette, 'super');
+    }
   }
 
   &--draft,
   &--unread {
     position: relative;
-    background-color: $co-color__fg__back--higher;
-    color: $co-color__fg__text--higher;
-
-    &::before {
-      display: block;
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: $co-color__primary;
-    }
+    background-color: $co-color__fg__back;
   }
 
-  &__col-avatars {
+  &--is-selected {
+    background-color: $co-color__bg__back--higher;
+  }
+
+  &__col-avatar {
     @include flex-grid-column(shrink);
+    margin-left: $s-message-item__pi-width;
   }
 
   &__col-title {
-    @include flex-grid-column;
+    @include flex-grid-size;
     min-width: 0; // https://github.com/zurb/foundation-sites/pull/8511
   }
 
-  &__col-file {
-    @include flex-grid-column(1);
+  &__title {
+    @include flex-grid-row($size: expand);
+    align-items: center;
   }
 
-  &__col-dates {
-    @include flex-grid-column(2);
-    display: none;
+  &__author { @include flex-grid-size(12); }
+
+  &__author-name {
+    color: $co-color__primary--lower;
+    font-size: $co-font__size;
     font-weight: 600;
   }
 
-  &__subject {
-    color: $co-color__fg__text--low;
-    margin-right: $co-component__spacing * 2;
+  &__topic {
+    @include flex-grid-size(12);
+
+    &--unread { font-weight: 600; }
+  }
+
+  &__subject { color: $co-color__fg__text--lower; }
+  &__excerpt { color: $co-color__fg__text--high; }
+
+  &__col-file {
+    @include flex-grid-column(shrink);
+    display: none;
+  }
+
+  &__col-dates {
+    @include flex-grid-column(shrink);
+    color: $co-color__fg__text--high;
+    text-align: right;
+
+    &--unread {
+      color: $co-color__fg__text--low;
+    }
+  }
+
+  &__type-label { display: none; }
+
+  &__col-select {
+    display: none;
+    @include flex-grid-column(shrink);
+    margin-left: auto;
   }
 
   @include breakpoint(medium) {
-    &__col-dates { display: block; }
+    padding-top: 0;
+    padding-bottom: 0;
+
+    &__col-select,
+    &__col-file {
+      display: block;
+    }
+
+    &__topic { @include flex-grid-column; }
+
+    &__col-dates { @include flex-grid-size(shrink); }
+
+    &__author { @include flex-grid-size(shrink); }
+
+    &__type-label { display: inline }
   }
 }
