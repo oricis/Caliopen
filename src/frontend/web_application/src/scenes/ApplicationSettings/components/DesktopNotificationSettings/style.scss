@@ -1,0 +1,12 @@
+@import '../../../../styles/common';
+
+.m-desktop-notifications {
+  &--allowed {
+    color: map-get($caliopen-palette, 'success');
+  }
+
+  &--denied {
+    color: map-get($caliopen-palette, 'alert');
+  }
+
+}

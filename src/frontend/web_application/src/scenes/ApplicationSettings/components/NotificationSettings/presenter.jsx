@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { FormGrid, FormRow, FormColumn, SelectFieldGroup as SelectFieldGroupBase, CheckboxFieldGroup as CheckboxFieldGroupBase } from '../../../../components/form';
+import { FormGrid, FormRow, FormColumn, SelectFieldGroup as SelectFieldGroupBase, CheckboxFieldGroup as CheckboxFieldGroupBase } from '../../../../components/brightForm';
 import renderReduxField from '../../../../services/renderReduxField';
 
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
@@ -47,40 +47,36 @@ class NotificationForm extends Component {
     return (
       <FormGrid className="m-contacts-form">
         <FormRow>
-          <FormColumn size="shrink" bottomSpace >
+          <FormColumn rightSpace={false} bottomSpace >
             <Field
               component={CheckboxFieldGroup}
               name="notification_enabled"
               label={i18n._('settings.notification.enabled.label', { defaults: 'Enabled' })}
             />
           </FormColumn>
-        </FormRow>
-        <FormRow>
-          <FormColumn size="shrink" bottomSpace >
-            <Field
-              component={SelectFieldGroup}
-              name="notification_message_preview"
-              label={i18n._('settings.notification.message_preview.label', { defaults: 'Message preview' })}
-              options={messagePreviewOptions}
-            />
-          </FormColumn>
-        </FormRow>
-        <FormRow>
-          <FormColumn size="shrink" bottomSpace >
+          <FormColumn rightSpace={false} bottomSpace >
             <Field
               component={CheckboxFieldGroup}
               name="notification_sound_enabled"
               label={i18n._('settings.notification.sound_enabled.label', { defaults: 'Sound enabled' })}
             />
           </FormColumn>
-        </FormRow>
-        <FormRow>
-          <FormColumn size="shrink" bottomSpace >
+          <FormColumn rightSpace={false} bottomSpace >
+            <Field
+              component={SelectFieldGroup}
+              name="notification_message_preview"
+              label={i18n._('settings.notification.message_preview.label', { defaults: 'Message preview' })}
+              options={messagePreviewOptions}
+              expanded
+            />
+          </FormColumn>
+          <FormColumn rightSpace={false} >
             <Field
               component={SelectFieldGroup}
               name="notification_delay_disappear"
               label={i18n._('settings.notification.delay_disappear.label', { defaults: 'Display delay' })}
               options={delayDisappearOptions}
+              expanded
             />
           </FormColumn>
         </FormRow>

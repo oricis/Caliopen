@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { FormGrid, FormRow, FormColumn, SelectFieldGroup as SelectFieldGroupBase } from '../../../../components/form';
+import { FormGrid, FormRow, FormColumn, SelectFieldGroup as SelectFieldGroupBase } from '../../../../components/brightForm';
 import renderReduxField from '../../../../services/renderReduxField';
 
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
@@ -38,12 +38,13 @@ class PresentationForm extends PureComponent {
     return (
       <FormGrid className="m-settings-message-form">
         <FormRow>
-          <FormColumn size="shrink" bottomSpace >
+          <FormColumn rightSpace={false} >
             <Field
               component={SelectFieldGroup}
               name="message_display_format"
               label={i18n._('settings.message.display_format.label', { defaults: 'Display' })}
               options={displayFormatOptions}
+              expanded
             />
           </FormColumn>
         </FormRow>

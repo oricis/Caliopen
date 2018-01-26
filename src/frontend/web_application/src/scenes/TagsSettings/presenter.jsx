@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
-import { Trans } from 'lingui-react';
+import { Trans, withI18n } from 'lingui-react';
 import { WithTags } from '../../modules/tags';
 import Section from '../../components/Section';
 import TagSearch from './components/TagSearch';
 import TagInput from './components/TagInput';
 import './style.scss';
 
+@withI18n()
 class TagsSettings extends Component {
   static propTypes = {
     requestTags: PropTypes.func.isRequired,
     createTag: PropTypes.func.isRequired,
     updateTag: PropTypes.func.isRequired,
     deleteTag: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -89,29 +91,35 @@ class TagsSettings extends Component {
   }
 
   render() {
+    const { i18n } = this.props;
+
     return (
       <WithTags render={
         userTags => (
           <div className="s-tags-settings">
-            <Section className="s-tags-settings__tags" title={<Trans id="settings.tags.title">Tags</Trans>}>
-              {userTags.map(tag => (
-                <TagInput
-                  key={tag.name}
-                  tag={tag}
-                  onUpdateTag={this.handleUpdateTag}
-                  onDeleteTag={this.handleDeleteTag}
-                  errors={this.state.tagErrors[tag.name]}
+            <div className="s-tags-settings__create">
+              <Section title={i18n._('settings.tags.create', { defaults: 'Create new tag' })}>
+                <TagSearch
+                  onChange={this.handleSearchChange}
+                  errors={this.state.createErrors}
+                  terms={this.state.searchTerms}
+                  onSubmit={this.handleCreateTag}
                 />
-              ))}
-            </Section>
-            <Section className="s-tags-settings__search">
-              <TagSearch
-                onChange={this.handleSearchChange}
-                errors={this.state.createErrors}
-                terms={this.state.searchTerms}
-                onSubmit={this.handleCreateTag}
-              />
-            </Section>
+              </Section>
+            </div>
+            <div className="s-tags-settings__tags">
+              <Section title={i18n._('settings.tags.title', { defaults: 'Tags' })}>
+                {userTags.map(tag => (
+                  <TagInput
+                    key={tag.name}
+                    tag={tag}
+                    onUpdateTag={this.handleUpdateTag}
+                    onDeleteTag={this.handleDeleteTag}
+                    errors={this.state.tagErrors[tag.name]}
+                  />
+                ))}
+              </Section>
+            </div>
           </div>
         )}
       />
