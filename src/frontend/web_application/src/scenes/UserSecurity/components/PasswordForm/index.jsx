@@ -110,7 +110,6 @@ class PasswordForm extends Component {
               onChange={this.handleInputChange}
               label={i18n._('password.form.current_password.label', { defaults: 'Current password:' })}
               placeholder={i18n._('password.form.current_password.placeholder', { defaults: 'Enter your current password' })}
-              showLabelforSr
               required
             />
           </FormColumn>
