@@ -5,7 +5,7 @@ import { Field } from 'redux-form';
 import ContactTitleField from '../ContactTitleField';
 import renderReduxField from '../../../../services/renderReduxField';
 import Button from '../../../../components/Button';
-import { TextFieldGroup as TextFieldGroupBase } from '../../../../components/form';
+import { TextFieldGroup as TextFieldGroupBase } from '../../../../components/brightForm';
 import './style.scss';
 
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);

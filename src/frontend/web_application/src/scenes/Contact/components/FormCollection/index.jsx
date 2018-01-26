@@ -4,7 +4,7 @@ import { Trans } from 'lingui-react';
 import { FieldArray, FormSection } from 'redux-form';
 import Button from '../../../../components/Button';
 import TextList, { ItemContent } from '../../../../components/TextList';
-import { FormGrid, FormRow, FormColumn } from '../../../../components/form';
+import { FormGrid, FormRow, FormColumn } from '../../../../components/brightForm';
 
 class FormCollection extends PureComponent {
   static propTypes = {

@@ -8,7 +8,7 @@ import MessageDate from '../../../../components/MessageDate';
 import AuthorAvatar from '../../../../components/AuthorAvatar';
 // import MessageItemContainer from '../MessageItemContainer';
 import Icon from '../../../../components/Icon';
-// import { CheckboxFieldGroup } from '../../../../components/form';
+import { Checkbox } from '../../../../components/brightForm';
 import TextBlock from '../../../../components/TextBlock';
 import Badge from '../../../../components/Badge';
 import { getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
@@ -156,11 +156,12 @@ class MessageItem extends Component {
           {this.renderDate()}
         </div>
         <div className="s-message-item__col-select">
-          <input
-            type="checkbox"
+          <Checkbox
+            label="checkbox"
             onChange={this.onCheckboxChange}
             id={message.message_id}
             checked={isMessageSelected}
+            showLabelforSr
           />
         </div>
       </div>

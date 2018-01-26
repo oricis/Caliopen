@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
-import { InputText } from '../../../../../../components/form';
+import { InputText } from '../../../../../../components/brightForm';
 import Icon from '../../../../../../components/Icon';
 import RawButton from '../../../../../../components/RawButton';
 

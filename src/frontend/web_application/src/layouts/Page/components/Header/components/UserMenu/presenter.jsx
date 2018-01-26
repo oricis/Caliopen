@@ -62,6 +62,9 @@ class Presenter extends Component {
               <Link to="/settings/application" expanded button><Trans id="header.menu.settings">Settings</Trans></Link>
             </VerticalMenuItem>
             <VerticalMenuItem>
+              <Link to="/settings/tags" expanded button><Trans id="header.menu.tags">Tags</Trans></Link>
+            </VerticalMenuItem>
+            <VerticalMenuItem>
               {user && (
                 <Link href="/auth/signout" button expanded><Trans id="header.menu.signout">Signout</Trans></Link>
               )}
