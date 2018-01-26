@@ -5,10 +5,10 @@ describe('Home', () => {
   const locale = 'en';
   const __ = key => ({
     fr: {
-      please_login: 'VOUS POUVEZ VOUS AUTHENTIFIER',
+      please_login: 'Vous pouvez vous authentifier',
     },
     en: {
-      please_login: 'PLEASE LOG IN',
+      please_login: 'Please Log In',
     },
   }[locale][key]);
 
