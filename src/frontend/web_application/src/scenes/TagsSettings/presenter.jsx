@@ -98,7 +98,7 @@ class TagsSettings extends Component {
         userTags => (
           <div className="s-tags-settings">
             <div className="s-tags-settings__create">
-              <Section title={i18n._('settings.tags.create', { defaults: 'Create new tag' })}>
+              <Section title={i18n._('settings.tags.title.create', { defaults: 'Create new tag' })}>
                 <TagSearch
                   onChange={this.handleSearchChange}
                   errors={this.state.createErrors}

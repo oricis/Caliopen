@@ -206,8 +206,8 @@ class Timeline extends Component {
           <div className="s-timeline__col-selector">
             <MessageSelector
               indeterminate={
-                (this.state.selectedMessages.length > 0
-                  && this.state.selectedMessages.length < messages.length)
+                this.state.selectedMessages.length > 0
+                  && this.state.selectedMessages.length < messages.length
               }
               checked={
                 this.state.selectedMessages.length === messages.length

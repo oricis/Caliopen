@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, Plural } from 'lingui-react';
+import { withI18n, Trans, Plural } from 'lingui-react';
 import Button from '../../../../components/Button';
 import { Checkbox } from '../../../../components/form';
 
 import './style.scss';
 
+@withI18n()
 class MessageSelector extends Component {
   static propTypes = {
+    i18n: PropTypes.shape({}).isRequired,
     onSelectAllMessages: PropTypes.func,
     onEditTags: PropTypes.func,
     onDeleteMessages: PropTypes.func,
@@ -41,7 +43,7 @@ class MessageSelector extends Component {
   }
 
   render() {
-    const { count, totalCount, checked } = this.props;
+    const { i18n, count, totalCount, checked } = this.props;
 
     return (
       <div className="m-message-selector">
@@ -61,8 +63,8 @@ class MessageSelector extends Component {
         </span>
         <span className="m-message-selector__checkbox">
           <Checkbox
-            label="bla"
-            id="bmabla"
+            label={i18n._('message-list.action.select_all_messages', { defaults: 'Select/unselect all messages' })}
+            id="message-selector"
             defaultChecked={checked}
             indeterminate={this.props.indeterminate}
             onChange={this.toggleCheckbox}

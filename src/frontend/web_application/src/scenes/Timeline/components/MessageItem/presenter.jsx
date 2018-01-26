@@ -119,7 +119,7 @@ class MessageItem extends Component {
   }
 
   render() {
-    const { message, isMessageSelected } = this.props;
+    const { i18n, message, isMessageSelected } = this.props;
     const { /* pi, */attachments } = message;
 
     return (
@@ -157,7 +157,7 @@ class MessageItem extends Component {
         </div>
         <div className="s-message-item__col-select">
           <Checkbox
-            label="checkbox"
+            label={i18n._('message-list.action.select_single_message', { defaults: 'Select/unselect this message' })}
             onChange={this.onCheckboxChange}
             id={message.message_id}
             checked={isMessageSelected}
