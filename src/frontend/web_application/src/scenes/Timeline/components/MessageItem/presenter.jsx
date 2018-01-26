@@ -8,7 +8,7 @@ import MessageDate from '../../../../components/MessageDate';
 import AuthorAvatar from '../../../../components/AuthorAvatar';
 // import MessageItemContainer from '../MessageItemContainer';
 import Icon from '../../../../components/Icon';
-import { Checkbox } from '../../../../components/brightForm';
+import { Checkbox } from '../../../../components/form';
 import TextBlock from '../../../../components/TextBlock';
 import Badge from '../../../../components/Badge';
 import { getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';

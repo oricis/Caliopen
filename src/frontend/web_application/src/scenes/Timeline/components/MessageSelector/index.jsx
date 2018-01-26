@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans, Plural } from 'lingui-react';
 import Button from '../../../../components/Button';
-import { Checkbox } from '../../../../components/brightForm';
+import { Checkbox } from '../../../../components/form';
 
 import './style.scss';
 

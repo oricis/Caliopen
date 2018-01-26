@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import TextList, { ItemContent } from '../../../../components/TextList';
-import { SelectFieldGroup, FormGrid, FormRow, FormColumn, Legend } from '../../../../components/brightForm';
+import { SelectFieldGroup, FormGrid, FormRow, FormColumn, Legend } from '../../../../components/form';
 import Button from '../../../../components/Button';
 import Icon from '../../../../components/Icon';
 import './style.scss';

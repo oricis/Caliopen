@@ -1,7 +1,7 @@
 @import '../../../styles/common';
 @import '../../../styles/object/o-form-element';
 
-.m-bright-select-field-group {
+.m-select-field-group {
   &__label {
     display: block;
     margin-bottom: $co-component__spacing;
@@ -15,7 +15,6 @@
   &__select {
     @include o-form-element;
     @include o-form-element-select;
-    min-height: $co-component__height;
   }
 
   &--dark {

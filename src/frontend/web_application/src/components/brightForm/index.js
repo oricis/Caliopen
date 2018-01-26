@@ -1,18 +1,18 @@
-import DatePickerGroup from './DatePickerGroup';
-import FieldErrors from './FieldErrors';
-import Fieldset, { Legend } from './Fieldset';
-import FormGrid, { FormRow, FormColumn } from './FormGrid';
-import InputText from './InputText';
-import InputFile from './InputFile';
-import InputFileGroup from './InputFileGroup';
-import PasswordStrength from './PasswordStrength';
-import RadioFieldGroup from './RadioFieldGroup';
-import SelectFieldGroup from './SelectFieldGroup';
-import Checkbox from './Checkbox';
-import CheckboxFieldGroup from './CheckboxFieldGroup';
-import CollectionFieldGroup from './CollectionFieldGroup';
-import TextFieldGroup from './TextFieldGroup';
-import TextareaFieldGroup from './TextareaFieldGroup';
+import DatePickerGroup from '../form/DatePickerGroup';
+import FieldErrors from '../form/FieldErrors';
+import Fieldset, { Legend } from '../form/Fieldset';
+import FormGrid, { FormRow, FormColumn } from '../form/FormGrid';
+import InputText from './InputText'; // brighted
+import InputFile from '../form/InputFile';
+import InputFileGroup from '../form/InputFileGroup';
+import PasswordStrength from '../form/PasswordStrength';
+import RadioFieldGroup from '../form/RadioFieldGroup';
+import SelectFieldGroup from './SelectFieldGroup'; // brighted
+import Checkbox from './Checkbox'; // brighted
+import CheckboxFieldGroup from './CheckboxFieldGroup'; // brighted
+import CollectionFieldGroup from '../form/CollectionFieldGroup';
+import TextFieldGroup from './TextFieldGroup'; // brighted
+import TextareaFieldGroup from '../form/TextareaFieldGroup';
 
 export {
   DatePickerGroup,

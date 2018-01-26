@@ -1,5 +1,6 @@
 @mixin o-form-element {
   display: inline-block;
+  min-height: $co-component__height;
   padding: $co-component__spacing;
   border: 0;
   background-color: transparent;

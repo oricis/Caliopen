@@ -33,16 +33,16 @@ class Checkbox extends Component {
     const { id, label, showLabelforSr, indeterminate, ...inputProps } = this.props;
 
     return (
-      <div className="m-bright-checkbox">
+      <div className="m-checkbox">
         <input
           type="checkbox"
-          className="m-bright-checkbox__input"
+          className="m-checkbox__input"
           ref={el => (this.selector = el)}
           id={id}
           {...inputProps}
         />
         <label
-          className={classnames('m-bright-checkbox__label', {
+          className={classnames('m-checkbox__label', {
             'show-for-sr': showLabelforSr,
           })}
           htmlFor={id}

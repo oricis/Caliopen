@@ -62,11 +62,11 @@ class NavigationAlt extends PureComponent {
           </VerticalMenuItem>
         </VerticalMenu>
         <VerticalMenu className="l-nav-alt__menu">
-          {/* <VerticalMenuItem>
+          <VerticalMenuItem>
             <Link to="/user/profile" button expanded data-toggle="left_off_canvas">
-             <Trans id="header.menu.account">Account</Trans>
+              <Trans id="header.menu.account">Account</Trans>
             </Link>
-          </VerticalMenuItem> */}
+          </VerticalMenuItem>
           <VerticalMenuItem>
             <Link to="/settings/application" button expanded data-toggle="left_off_canvas">
               <Trans id="header.menu.settings">Settings</Trans>

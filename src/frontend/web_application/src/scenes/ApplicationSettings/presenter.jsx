@@ -24,6 +24,7 @@ class ApplicationSettings extends PureComponent {
   };
 
   handleSubmit = (ev) => {
+    /* TODO: autosave settings */
     const { handleSubmit, requestSettings } = this.props;
 
     return handleSubmit(ev).then(requestSettings);

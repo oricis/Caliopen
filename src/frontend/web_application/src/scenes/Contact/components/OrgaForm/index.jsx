@@ -4,7 +4,7 @@ import { Field } from 'redux-form';
 import { Trans, withI18n } from 'lingui-react';
 import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
-import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/brightForm';
+import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
 import renderReduxField from '../../../../services/renderReduxField';
 import './style.scss';
 

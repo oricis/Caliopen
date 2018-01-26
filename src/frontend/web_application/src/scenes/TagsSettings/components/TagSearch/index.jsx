@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
 import { Button, Spinner } from '../../../../components';
-import { TextFieldGroup } from '../../../../components/brightForm';
+import { TextFieldGroup } from '../../../../components/form';
 
 import './style.scss';
 

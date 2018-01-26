@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
-import FieldErrors from '../FieldErrors';
+import { FieldErrors } from '../';
 import './style.scss';
 
 const propTypeOption = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
@@ -37,12 +37,12 @@ class SelectFieldGroup extends PureComponent {
     } = this.props;
     const id = uuidV1();
     const selectWrapperClassName = classnames(
-      'm-bright-select-field-group__select-wrapper',
+      'm-select-field-group__select-wrapper',
       {
-        'm-bright-select-field-group--expanded__select-wrapper': expanded,
+        'm-select-field-group--expanded__select-wrapper': expanded,
       }
     );
-    const labelClassName = classnames('m-bright-select-field-group__label', {
+    const labelClassName = classnames('m-select-field-group__label', {
       'show-for-sr': showLabelforSr,
     });
 
@@ -52,7 +52,7 @@ class SelectFieldGroup extends PureComponent {
         <div className={selectWrapperClassName}>
           <select
             onChange={onChange}
-            className="m-bright-select-field-group__select"
+            className="m-select-field-group__select"
             id={id}
             {...props}
           >
@@ -65,7 +65,7 @@ class SelectFieldGroup extends PureComponent {
           </select>
         </div>
         { errors.length !== 0 && (
-          <div className="m-bright-select-field-group__errors">
+          <div className="m-select-field-group__errors">
             <FieldErrors errors={errors} />
           </div>
         )}

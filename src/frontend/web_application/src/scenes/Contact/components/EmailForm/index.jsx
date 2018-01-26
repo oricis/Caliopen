@@ -5,7 +5,7 @@ import { Trans, withI18n } from 'lingui-react';
 import renderReduxField from '../../../../services/renderReduxField';
 import Icon from '../../../../components/Icon';
 import Button from '../../../../components/Button';
-import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/brightForm';
+import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
 import './style.scss';
 
 const EMAIL_TYPES = ['', 'work', 'home', 'other'];

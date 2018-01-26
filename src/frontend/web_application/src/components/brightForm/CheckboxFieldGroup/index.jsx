@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { v1 as uuidV1 } from 'uuid';
 import Checkbox from '../Checkbox';
 import Switch from './components/Switch';
-import { FieldErrors } from '..';
+import { FieldErrors } from '../';
 
 import './style.scss';
 
