@@ -26,7 +26,7 @@ func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
 	contact.DateUpdate = contact.DateInsert
 
 	// normalization
-	helpers.ComputeTitle(contact)
+	helpers.ComputeNewTitle(contact)
 	helpers.NormalizePhoneNumbers(contact)
 	MarshalNested(contact)
 	MarshalRelated(contact)
@@ -114,6 +114,20 @@ func (rest *RESTfacility) PatchContact(patch []byte, userID, contactID string) e
 	newContact, modifiedFields, err := helpers.UpdateWithPatch(patch, current_contact, UserActor)
 	if err != nil {
 		return err
+	}
+
+	// check if title has to be re-computed
+	needNewTitle := false
+	for key, _ := range modifiedFields {
+		switch key {
+		case "AdditionalName", "FamilyName", "GivenName", "NamePrefix", "NameSuffix":
+			needNewTitle = true
+			break
+		}
+	}
+	if needNewTitle {
+		helpers.ComputeTitle(newContact.(*Contact))
+		modifiedFields["Title"] = newContact.(*Contact).Title
 	}
 
 	// save updated resource

@@ -13,6 +13,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
 	"gopkg.in/oleiade/reflections.v1"
+	"strings"
 )
 
 func (es *ElasticSearchBackend) CreateContact(contact *Contact) error {
@@ -41,7 +42,8 @@ func (es *ElasticSearchBackend) UpdateContact(contact *Contact, fields map[strin
 		if err != nil {
 			return fmt.Errorf("[ElasticSearchBackend] UpdateContact failed to find a json field for object field %s", field)
 		}
-		jsonFields[jsonField] = value
+		split := strings.Split(jsonField, ",")
+		jsonFields[split[0]] = value
 	}
 
 	update, err := es.Client.Update().Index(contact.UserId.String()).Type(ContactIndexType).Id(contact.ContactId.String()).

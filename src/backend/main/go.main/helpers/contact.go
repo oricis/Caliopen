@@ -12,44 +12,12 @@ import (
 	"strings"
 )
 
-// ComputeTitle modifies Title property in-place or do nothing if it fails
-// it tries to fill Title with names, then email/phones/etc.
-// conversely : if names are empty but Title is not, names are filled from Title.
-func ComputeTitle(c *Contact) {
+// ComputeNewTitle applies ComputeTitle logic to a new Contact
+// If names are empty but Title is not, names are filled from Title.
+func ComputeNewTitle(c *Contact) {
 	// TODO: improve it
 	if c.Title == "" {
-		title := []string{}
-		if c.NamePrefix != "" {
-			title = append(title, c.NamePrefix)
-		}
-		if c.GivenName != "" {
-			title = append(title, c.GivenName)
-		}
-		if c.AdditionalName != "" {
-			title = append(title, c.AdditionalName)
-		}
-		if c.FamilyName != "" {
-			title = append(title, c.FamilyName)
-		}
-		if c.NameSuffix != "" {
-			title = append(title, c.NameSuffix)
-		}
-		switch len(title) {
-		case 0:
-			//Title is still empty. try more properties
-			switch {
-			case len(c.Emails) > 0:
-				c.Title = c.Emails[0].Address
-			case len(c.Phones) > 0:
-				c.Title = c.Phones[0].Number
-			case len(c.Ims) > 0:
-				c.Title = c.Ims[0].Address
-			}
-		case 1:
-			c.Title = title[0]
-		default:
-			c.Title = strings.Join(title, " ")
-		}
+		ComputeTitle(c)
 	} else {
 		// Title has been set by user,
 		// if given_name & family_name are empty we try to fill them from title
@@ -69,6 +37,43 @@ func ComputeTitle(c *Contact) {
 		}
 	}
 
+}
+
+// ComputeTitle modifies Title property in-place or do nothing if it fails
+// it tries to fill Title with names, then email/phones/etc.
+func ComputeTitle(c *Contact) {
+	title := []string{}
+	if c.NamePrefix != "" {
+		title = append(title, c.NamePrefix)
+	}
+	if c.GivenName != "" {
+		title = append(title, c.GivenName)
+	}
+	if c.AdditionalName != "" {
+		title = append(title, c.AdditionalName)
+	}
+	if c.FamilyName != "" {
+		title = append(title, c.FamilyName)
+	}
+	if c.NameSuffix != "" {
+		title = append(title, c.NameSuffix)
+	}
+	switch len(title) {
+	case 0:
+		//Title is still empty. try more properties
+		switch {
+		case len(c.Emails) > 0:
+			c.Title = c.Emails[0].Address
+		case len(c.Phones) > 0:
+			c.Title = c.Phones[0].Number
+		case len(c.Ims) > 0:
+			c.Title = c.Ims[0].Address
+		}
+	case 1:
+		c.Title = title[0]
+	default:
+		c.Title = strings.Join(title, " ")
+	}
 }
 
 // NormalizePhoneNumbers tries to normalize phone numbers found within contact.
