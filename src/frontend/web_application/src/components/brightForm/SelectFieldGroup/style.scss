@@ -1,0 +1,38 @@
+@import '../../../styles/common';
+@import '../../../styles/object/o-form-element';
+
+.m-bright-select-field-group {
+  &__label {
+    display: block;
+    margin-bottom: $co-component__spacing;
+    color: $co-color__primary;
+  }
+
+  &__select-wrapper {
+    @include o-form-element-select-wrapper;
+  }
+
+  &__select {
+    @include o-form-element;
+    @include o-form-element-select;
+    min-height: $co-component__height;
+  }
+
+  &--dark {
+    &__select-wrapper,
+    &__select {
+      @include o-form-element--dark;
+    }
+  }
+
+  &,
+  &--light {
+    &__select {
+      @include o-form-element--light;
+    }
+  }
+
+  &--expanded {
+    &__select-wrapper { width: 100%; }
+  }
+}

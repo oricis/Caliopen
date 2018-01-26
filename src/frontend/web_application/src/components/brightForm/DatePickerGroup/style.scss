@@ -1,0 +1,22 @@
+@import '../../../styles/common';
+@import '../../../styles/vendor/bootstrap_foundation-sites';
+@import '../../../styles/object/o-date-picker';
+@import '../../../styles/object/o-form-element';
+
+.m-date-picker-group {
+  @include o-date-picker-popper;
+
+  &__label {
+    display: block;
+    color: $co-color__primary;
+  }
+
+  &__input {
+    @include o-form-element;
+    @include o-form-element--light;
+  }
+
+  &__calendar {
+    @include o-date-picker-calendar;
+  }
+}

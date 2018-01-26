@@ -40,7 +40,7 @@ $co-form__spacing: (
   xlarge:  2.625rem, // 42px
 );
 
-$co-grid__gutter: 30px;
+$co-grid__gutter: $co-margin;
 $co-grid__gutter--small: 20px;
 
 $co-animation__clickable-transition: background-color .1s ease-out, color .1s ease-out !default;

@@ -1,0 +1,35 @@
+@import '../../../styles/common';
+
+.m-text-field-group {
+  position: relative;
+
+  &__label {
+    display: block;
+    color: $co-color__primary;
+  }
+
+  &--inline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    &__label,
+    &__input,
+    &__errors {
+      margin: auto;
+    }
+
+    &__label {
+      flex: 0 1;
+      margin-right: map-get($co-form__spacing, 'small');
+    }
+
+    &__input {
+      flex: 1 0;
+    }
+
+    &__errors {
+      flex: 1 0 100%;
+    }
+  }
+}

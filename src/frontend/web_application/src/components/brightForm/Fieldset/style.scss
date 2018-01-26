@@ -1,0 +1,8 @@
+@import '../../../styles/common';
+
+.m-fieldset {
+  &__legend {
+    margin-bottom: map-get($co-form__spacing, 'small');
+    color: $co-color__primary--low;
+  }
+}

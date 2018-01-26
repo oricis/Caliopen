@@ -1,0 +1,60 @@
+@import '../../../styles/common';
+@import '../../../styles/vendor/bootstrap_foundation-sites';
+
+$co-checkbox-size: 14px;
+
+.m-bright-checkbox {
+  @include flex-grid-row;
+  align-items: center;
+
+  &__label {
+    @include flex-grid-column;
+    color: $co-color__primary;
+    cursor: pointer;
+  }
+
+  &__input {
+    @include flex-grid-size(shrink);
+    height: $co-checkbox-size;
+    width: $co-checkbox-size;
+    background: $co-color__fg__back;
+    border: 1px solid $co-color__primary;
+    cursor: pointer;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+
+    &:before {
+      content: ' ';
+      display: none;
+      background: $co-color__primary--low;
+      position: absolute;
+    }
+
+
+    &:checked {
+       position: relative;
+
+       &:before {
+         display: block;
+         top: 1px;
+         right: 1px;
+         bottom: 1px;
+         left: 1px;
+       }
+    }
+
+    &:indeterminate {
+       position: relative;
+
+       &:before {
+         display: block;
+         top: 4px;
+         right: 1px;
+         bottom: 4px;
+         left: 1px;
+       }
+    }
+  }
+}
