@@ -91,7 +91,7 @@ class Contact(Api):
         contact_param = NewContactParam(data)
         try:
             contact_param.validate()
-            if hasattr(contact_param, "tags"):
+            if hasattr(contact_param, "tags") and contact_param.tags:
                 raise ValidationError(
                     "adding tags throught parent object is forbidden")
         except Exception as exc:
