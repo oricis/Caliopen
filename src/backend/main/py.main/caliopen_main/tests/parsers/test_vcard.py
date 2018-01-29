@@ -18,7 +18,8 @@ Configuration.load(conf_file, 'global')
 
 #from caliopen_main.interfaces import IMessageParser
 from caliopen_main.contact.parameters import NewContact
-from caliopen_main.contact.parsers import parse_vcard
+from caliopen_main.contact.parsers import VcardContact
+
 
 def load_vcard(filename):
 
@@ -27,6 +28,11 @@ def load_vcard(filename):
     with open('{}/{}'.format(path, filename)) as f:
         data = f.read()
     return data
+
+
+def parse_vcard(vcard):
+    contact = VcardContact(vcard)
+    return contact.contact
 
 
 class TestVcardFormat(unittest.TestCase):
