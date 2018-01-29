@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'lingui-react';
-import { PasswordStrength, TextFieldGroup, FormGrid, FormColumn, FormRow } from '../../../../components/form';
-import Button from '../../../../components/Button';
+import { TextFieldGroup, Button, PasswordStrength, FormGrid, FormColumn, FormRow } from '../../../../components/';
 import './style.scss';
 
 @withI18n()

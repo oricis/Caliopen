@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/';
 
 const VerifyDevice = ({ device, onVerifyDevice, onDeleteDevice }) => {
   const handleVerify = () => {

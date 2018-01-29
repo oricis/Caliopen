@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans } from 'lingui-react';
-import Modal from '../../../../components/Modal';
+import { Modal } from '../../../../components/';
 import { ManageEntityTags } from '../../../../modules/tags';
 
 import './style.scss';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
 import classnames from 'classnames';
 import { WithTags, getTagLabel } from '../../../../modules/tags';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/';
 import NavList, { ItemContent } from '../../../../components/NavList';
 
 import './style.scss';

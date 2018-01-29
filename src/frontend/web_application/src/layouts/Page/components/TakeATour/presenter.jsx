@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import Tour from './components/Tour';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/';
 
 import './style.scss';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
-import Icon from '../../../Icon';
+import { Icon } from '../../../';
 
 class OrgaDetails extends Component {
   static propTypes = {

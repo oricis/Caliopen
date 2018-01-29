@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MultidimensionalPi from '../../components/MultidimensionalPi';
-import PageTitle from '../../components/PageTitle';
+import { PageTitle } from '../../components/';
 import Section from '../../components/Section';
 import TextList, { ItemContent } from '../../components/TextList';
 

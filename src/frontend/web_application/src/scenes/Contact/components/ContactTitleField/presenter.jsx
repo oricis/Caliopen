@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { TextFieldGroup } from '../../../../components/form';
+import TextFieldGroup from '../../../../components/TextFieldGroup';
 import { formatName } from '../../../../services/contact';
 
 

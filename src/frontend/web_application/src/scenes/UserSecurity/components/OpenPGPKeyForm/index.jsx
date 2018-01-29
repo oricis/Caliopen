@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans, withI18n } from 'lingui-react';
 import classnames from 'classnames';
-import Button from '../../../../components/Button';
-import Spinner from '../../../../components/Spinner';
-import { CheckboxFieldGroup, SelectFieldGroup, TextFieldGroup, FieldErrors, TextareaFieldGroup } from '../../../../components/form';
+import { Spinner, Button, FieldErrors, CheckboxFieldGroup, SelectFieldGroup, TextFieldGroup, TextareaFieldGroup } from '../../../../components/';
+
 import {
   ERROR_UNABLE_READ_PUBLIC_KEY,
   ERROR_UNABLE_READ_PRIVATE_KEY,
