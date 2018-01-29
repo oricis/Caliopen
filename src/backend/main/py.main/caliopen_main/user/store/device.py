@@ -41,16 +41,13 @@ class Device(BaseModel):
     device_id = columns.UUID(primary_key=True, default=uuid.uuid4)
 
     name = columns.Text()
-    signature_key = columns.Text()          # secret key for device validation
     date_insert = columns.DateTime(required=True,
                                    default=datetime.datetime.now(tz=pytz.utc))
     type = columns.Text(required=True)      # laptop, desktop, smartphone, etc
     status = columns.Text(default='unknown')
-    fingerprint = columns.Text()
-    last_seen = columns.DateTime(default=datetime.datetime.now(tz=pytz.utc))
     privacy_features = columns.Map(columns.Text, columns.Text)
     locations = columns.List(columns.UserDefinedType(DeviceLocation))
-    sign_keys = columns.List(columns.UserDefinedType(DeviceECKey))
+    ec_signature = columns.UserDefinedType(DeviceECKey)
     user_agent = columns.Text()
     ip_creation = columns.Text()
 
