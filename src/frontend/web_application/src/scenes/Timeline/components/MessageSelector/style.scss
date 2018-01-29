@@ -5,7 +5,7 @@
     @include flex-grid-row($size: expand);
     align-items: center;
     height: $co-component__height;
-    background-color: $co-color__bg__back--higher;
+    background-color: $co-color__bg__back--high;
 
   &__title,
   &__checkbox {

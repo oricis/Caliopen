@@ -63,7 +63,7 @@ class MessageSelector extends Component {
         </span>
         <span className="m-message-selector__checkbox">
           <Checkbox
-            label={i18n._('message-list.action.select_all_messages', { defaults: 'Select/unselect all messages' })}
+            label={i18n._('message-list.action.select_all_messages', { defaults: 'Select/deselect all messages' })}
             id="message-selector"
             defaultChecked={checked}
             indeterminate={this.props.indeterminate}

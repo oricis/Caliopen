@@ -19,7 +19,7 @@ class Checkbox extends Component {
   state = {}
 
   componentDidMount() {
-    // this sets indeterminate attribute:
+    // apply the indeterminate attribute of the real checkbox element
     this.selector.indeterminate = this.props.indeterminate;
   }
 

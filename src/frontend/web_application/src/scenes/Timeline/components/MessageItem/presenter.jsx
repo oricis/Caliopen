@@ -157,7 +157,7 @@ class MessageItem extends Component {
         </div>
         <div className="s-message-item__col-select">
           <Checkbox
-            label={i18n._('message-list.action.select_single_message', { defaults: 'Select/unselect this message' })}
+            label={i18n._('message-list.action.select_single_message', { defaults: 'Select/deselect this message' })}
             onChange={this.onCheckboxChange}
             id={message.message_id}
             checked={isMessageSelected}
