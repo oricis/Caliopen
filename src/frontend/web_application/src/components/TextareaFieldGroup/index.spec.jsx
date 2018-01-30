@@ -13,7 +13,7 @@ describe('component TextareaFieldGroup', () => {
       <TextareaFieldGroup {...props} />
     );
 
-    expect(comp.find('label').text()).toEqual('Foo');
+    expect(comp.find('FieldGroup').length).toEqual(1);
     comp.find('textarea').simulate('change');
     expect(props.onChange).toHaveBeenCalled();
   });

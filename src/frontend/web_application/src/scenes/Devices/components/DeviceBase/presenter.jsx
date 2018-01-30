@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Section from '../../components/Section';
-import PiBar from '../../components/PiBar/presenter';
+import { Section } from '../../../../components/';
+import PiBar from '../../../../components/PiBar/presenter';
 import DeviceForm from './components/DeviceForm';
 import DeviceInformation from './components/DeviceInformation';
 import VerifyDevice from './components/VerifyDevice';

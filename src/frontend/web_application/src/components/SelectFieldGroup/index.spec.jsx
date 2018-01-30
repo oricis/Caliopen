@@ -14,7 +14,7 @@ describe('component SelectFieldGroup', () => {
       <SelectFieldGroup {...props} />
     );
 
-    expect(comp.find('label').text()).toEqual('Foo');
+    expect(comp.find('FieldGroup').length).toEqual(1);
     expect(comp.find('option').length).toEqual(2);
     comp.find('select').simulate('change');
     expect(props.onChange).toHaveBeenCalled();

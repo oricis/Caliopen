@@ -1,11 +1,11 @@
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { verifyDevice, removeDevice } from '../../../../store/modules/device';
+import { removeDevice } from '../../../../../../store/modules/device';
 import Presenter from './presenter';
+import './style.scss';
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  onVerifyDevice: verifyDevice,
-  onDeleteDevice: removeDevice,
+  onRevokeDevice: removeDevice,
 }, dispatch);
 
 export default compose(

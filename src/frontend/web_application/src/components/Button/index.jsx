@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Icon } from '../';
+import Icon from '../Icon';
 import RawButton from '../RawButton';
 import './style.scss';
 

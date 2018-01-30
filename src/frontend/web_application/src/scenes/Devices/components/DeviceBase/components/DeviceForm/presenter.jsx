@@ -2,7 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import classnames from 'classnames';
-import { Button, TextFieldGroup, SelectFieldGroup, CollectionFieldGroup, FormGrid, FormRow, FormColumn, Fieldset, Legend } from '../../../../';
+import {
+  Button,
+  TextFieldGroup,
+  SelectFieldGroup,
+  CollectionFieldGroup,
+  FormGrid,
+  FormRow,
+  FormColumn,
+  Fieldset,
+  Legend,
+} from '../../../../../../components';
 import './style.scss';
 
 function generateStateFromProps(props) {

@@ -1,7 +1,7 @@
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
-import { updateDevice } from '../../../../store/modules/device';
+import { updateDevice } from '../../../../../../store/modules/device';
 import Presenter from './presenter';
 
 

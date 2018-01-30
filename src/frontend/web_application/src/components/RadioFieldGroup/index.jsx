@@ -33,6 +33,7 @@ class RadioFieldGroup extends PureComponent {
       <div key={key} className="m-radio-field-group__entry">
         <input
           id={id}
+          className="m-radio-field-group__input"
           type="radio"
           name={name}
           checked={value === option.value}
@@ -40,7 +41,7 @@ class RadioFieldGroup extends PureComponent {
           onChange={onChange}
         />
         {' '}
-        <Label htmlFor={id}>{option.label}</Label>
+        <Label className="m-radio-field-group__label" htmlFor={id}>{option.label}</Label>
       </div>
     );
   }
