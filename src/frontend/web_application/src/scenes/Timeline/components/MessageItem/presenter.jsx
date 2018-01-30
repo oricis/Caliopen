@@ -7,9 +7,7 @@ import Link from '../../../../components/Link';
 import MessageDate from '../../../../components/MessageDate';
 import AuthorAvatar from '../../../../components/AuthorAvatar';
 // import MessageItemContainer from '../MessageItemContainer';
-import Icon from '../../../../components/Icon';
-// import { CheckboxFieldGroup } from '../../../../components/form';
-import TextBlock from '../../../../components/TextBlock';
+import { Checkbox, Icon, TextBlock } from '../../../../components/';
 import Badge from '../../../../components/Badge';
 import { getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
 import { renderParticipant, getAuthor } from '../../../../services/message';
@@ -119,7 +117,7 @@ class MessageItem extends Component {
   }
 
   render() {
-    const { message, isMessageSelected } = this.props;
+    const { i18n, message, isMessageSelected } = this.props;
     const { /* pi, */attachments } = message;
 
     return (
@@ -156,11 +154,12 @@ class MessageItem extends Component {
           {this.renderDate()}
         </div>
         <div className="s-message-item__col-select">
-          <input
-            type="checkbox"
+          <Checkbox
+            label={i18n._('message-list.action.select_single_message', { defaults: 'Select/deselect this message' })}
             onChange={this.onCheckboxChange}
             id={message.message_id}
             checked={isMessageSelected}
+            showLabelforSr
           />
         </div>
       </div>

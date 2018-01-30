@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import { Trans } from 'lingui-react';
-import Modal from '../../components/Modal';
-import Spinner from '../../components/Spinner';
-import PageTitle from '../../components/PageTitle';
-import Button from '../../components/Button';
+import { PageTitle, Button, MenuBar, Spinner, Modal } from '../../components/';
 import BlockList from '../../components/BlockList';
 import InfiniteScroll from '../../components/InfiniteScroll';
-import MenuBar from '../../components/MenuBar';
 import MessageSelector from './components/MessageSelector';
 import MessageItem from './components/MessageItem';
 import { isMessageFromUser } from '../../services/message';
@@ -126,7 +122,13 @@ class Timeline extends Component {
       item => item.message_id === selectedMessageId
     );
 
-    return this.props.deleteMessage({ message });
+    return this.props.deleteMessage({ message })
+      .then(() =>
+      this.setState(prevState => ({
+        ...prevState,
+        selectedMessages: [],
+      }))
+    );
   }
 
   loadMore = () => {
@@ -201,7 +203,7 @@ class Timeline extends Component {
             <MessageSelector
               indeterminate={
                 this.state.selectedMessages.length > 0
-                && this.state.selectedMessages.length < messages.length
+                  && this.state.selectedMessages.length < messages.length
               }
               checked={
                 this.state.selectedMessages.length === messages.length

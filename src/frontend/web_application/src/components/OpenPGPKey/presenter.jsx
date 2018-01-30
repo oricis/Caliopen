@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans, withI18n } from 'lingui-react';
 import Moment from 'react-moment';
-import Button from '../Button';
-import Spinner from '../Spinner';
-import Icon from '../Icon';
+import { Button, Spinner, Icon, TextareaFieldGroup } from '../';
 import DefList from '../DefList';
-import { TextareaFieldGroup } from '../form';
 import getPGPManager from '../../services/openpgp-manager';
 import './style.scss';
 

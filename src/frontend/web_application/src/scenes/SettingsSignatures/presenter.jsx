@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Section from '../../components/Section';
-import PageTitle from '../../components/PageTitle';
+import { PageTitle } from '../../components/';
 import SignatureForm from './components/SignatureForm';
 import NavList, { ItemContent } from '../../components/NavList';
 import Link from '../../components/Link';

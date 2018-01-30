@@ -1,6 +1,9 @@
-@import '../../styles/vendor/bootstrap_foundation-sites';
+@import '../../styles/common';
 
 .m-menu-bar {
-  border-bottom: 1px solid $co-color__fg__border--high;
   background: $co-color__fg__back;
+
+  &__navlist {
+    padding-left: $co-margin;
+  }
 }

@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Trans, withI18n } from 'lingui-react';
-import Icon from '../../../../components/Icon';
-import Button from '../../../../components/Button';
-import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
+import { Icon, Button, FieldErrors, TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
 import renderReduxField from '../../../../services/renderReduxField';
 import './style.scss';
 
@@ -37,50 +35,45 @@ class OrgaForm extends Component {
             {errors.length > 0 && (<FormColumn><FieldErrors errors={errors} /></FormColumn>)}
           </FormRow>
           <FormRow>
-            <FormColumn size="medium" bottomSpace>
+            <FormColumn rightSpace={false} bottomSpace>
               <Field
                 component={TextFieldGroup}
                 name="label"
                 label={i18n._('contact.orga_form.label.label', { defaults: 'Label' })}
                 placeholder={i18n._('contact.orga_form.label.label', { defaults: 'Label' })}
-                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="medium" bottomSpace>
+            <FormColumn rightSpace={false} bottomSpace>
               <Field
                 component={TextFieldGroup}
                 name="name"
                 label={i18n._('contact.orga_form.name.label', { defaults: 'Name' })}
                 placeholder={i18n._('contact.orga_form.name.label', { defaults: 'Name' })}
-                showLabelforSr
                 required
               />
             </FormColumn>
-            <FormColumn size="medium" bottomSpace>
+            <FormColumn rightSpace={false} bottomSpace>
               <Field
                 component={TextFieldGroup}
                 name="title"
                 label={i18n._('contact.orga_form.title.label', { defaults: 'Title' })}
                 placeholder={i18n._('contact.orga_form.title.label', { defaults: 'Title' })}
-                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="medium" bottomSpace>
+            <FormColumn rightSpace={false} bottomSpace>
               <Field
                 component={TextFieldGroup}
                 name="department"
                 label={i18n._('contact.orga_form.department.label', { defaults: 'Department' })}
                 placeholder={i18n._('contact.orga_form.department.label', { defaults: 'Department' })}
-                showLabelforSr
               />
             </FormColumn>
-            <FormColumn size="medium" bottomSpace>
+            <FormColumn rightSpace={false} bottomSpace>
               <Field
                 component={TextFieldGroup}
                 name="job_description"
                 label={i18n._('contact.orga_form.job_description.label')}
                 placeholder={i18n._('contact.orga_form.job_description.label')}
-                showLabelforSr
               />
             </FormColumn>
             <FormColumn className="m-orga-form__col-button">

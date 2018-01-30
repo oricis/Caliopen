@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import NavbarItem from '../NavbarItem';
-import Icon from '../../../../../../../../components/Icon';
+import { Icon } from '../../../../../../../../components/';
 import { getTabUrl } from '../../../../../../../../services/tab';
 import ItemButton from '../ItemButton';
 import ItemLink from '../ItemLink';

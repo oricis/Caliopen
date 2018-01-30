@@ -18,7 +18,7 @@ class Section extends PureComponent {
     className: undefined,
     title: undefined,
     descr: undefined,
-    hasSeparator: true,
+    hasSeparator: false,
     children: undefined,
   };
 

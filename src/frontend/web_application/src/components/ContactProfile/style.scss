@@ -4,9 +4,6 @@
 
 
 .m-contact-profile {
-  padding: $co-component__spacing;
-  padding-top: 0;
-
   &__header {
     @include flex-grid-row;
     text-align: center;

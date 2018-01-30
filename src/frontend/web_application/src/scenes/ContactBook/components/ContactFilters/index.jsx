@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Trans, withI18n } from 'lingui-react';
-import { FormGrid, FormRow, FormColumn, SelectFieldGroup } from '../../../../components/form';
+import { SelectFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components/';
 
 import './style.scss';
 

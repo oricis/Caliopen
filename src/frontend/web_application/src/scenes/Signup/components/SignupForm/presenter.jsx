@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import Button from '../../../../components/Button';
 import Link from '../../../../components/Link';
 import Section from '../../../../components/Section';
-import Modal from '../../../../components/Modal';
-import TextBlock from '../../../../components/TextBlock';
-
-import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../../../../components/form';
+import { PasswordStrength, FieldErrors, TextBlock, Modal, Button, TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components/';
 import './style.scss';
 
 function generateStateFromProps(props) {

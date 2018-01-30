@@ -4,8 +4,7 @@ import classnames from 'classnames';
 import { v1 as uuidV1 } from 'uuid';
 import PiGraph from './components/PiGraph';
 import Ratings from './components/Ratings';
-import Button from '../Button';
-import Dropdown, { withDropdownControl } from '../Dropdown';
+import { Button, Dropdown, withDropdownControl } from '../';
 
 import './style.scss';
 

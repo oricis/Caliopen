@@ -1,0 +1,28 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-application-settings {
+  @include flex-grid-row($size: expand);
+  align-items: stretch;
+  padding: $co-margin ($co-margin / 2);
+
+  &__col-sections {
+    @include flex-grid-column(12);
+    margin-bottom: $co-margin;
+  }
+
+  &__section {
+    height: 100%;
+  }
+
+  &__action {
+    @include flex-grid-column(12);
+    text-align: right;
+  }
+
+  @include breakpoint(medium) {
+    &__col-sections {
+      @include flex-grid-column(6);
+    }
+  }
+}

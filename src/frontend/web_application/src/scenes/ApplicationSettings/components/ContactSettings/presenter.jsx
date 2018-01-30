@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { FormGrid, FormRow, FormColumn, SelectFieldGroup as SelectFieldGroupBase } from '../../../../components/form';
+import { SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components';
 import renderReduxField from '../../../../services/renderReduxField';
 
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
@@ -44,22 +44,22 @@ class ContactsForm extends Component {
     return (
       <FormGrid className="m-contacts-form">
         <FormRow>
-          <FormColumn size="shrink" bottomSpace >
+          <FormColumn rightSpace={false} bottomSpace >
             <Field
               component={SelectFieldGroup}
               name="contact_display_format"
               label={i18n._('settings.contacts.display.label', { defaults: 'Display' })}
               options={displayFormatOptions}
+              expanded
             />
           </FormColumn>
-        </FormRow>
-        <FormRow>
-          <FormColumn size="shrink" bottomSpace >
+          <FormColumn rightSpace={false} >
             <Field
               component={SelectFieldGroup}
               name="contact_display_order"
               label={i18n._('settings.contacts.order.label', { defaults: 'Order by' })}
               options={displayOrderByOptions}
+              expanded
             />
           </FormColumn>
         </FormRow>

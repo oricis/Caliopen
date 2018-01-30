@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Link from '../../components/Link';
-import Icon from '../../components/Icon';
+import { PageTitle, Icon } from '../../components/';
 import NavList, { ItemContent } from '../../components/NavList';
-import PageTitle from '../../components/PageTitle';
 
 import './style.scss';
 

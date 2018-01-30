@@ -2,9 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import { FieldArray, FormSection } from 'redux-form';
-import Button from '../../../../components/Button';
+import { Button, FormGrid, FormRow, FormColumn } from '../../../../components/';
 import TextList, { ItemContent } from '../../../../components/TextList';
-import { FormGrid, FormRow, FormColumn } from '../../../../components/form';
 
 class FormCollection extends PureComponent {
   static propTypes = {

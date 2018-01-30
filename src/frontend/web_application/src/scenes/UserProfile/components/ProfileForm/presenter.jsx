@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { FormGrid, FormRow, FormColumn, TextFieldGroup as TextFieldGroupBase, FieldErrors } from '../../../../components/form';
+import { FieldErrors, TextFieldGroup as TextFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components';
 import renderReduxField from '../../../../services/renderReduxField';
 
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);

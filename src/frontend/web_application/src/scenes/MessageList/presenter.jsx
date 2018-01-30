@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import { Trans } from 'lingui-react';
-import { Button } from '../../components';
-import PageTitle from '../../components/PageTitle';
+import { PageTitle, Button } from '../../components';
 import MessageListBase from './components/MessageList';
 import ReplyForm from './components/DraftForm';
 

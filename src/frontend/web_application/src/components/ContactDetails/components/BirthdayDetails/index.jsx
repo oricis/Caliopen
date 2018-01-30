@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Icon from '../../../Icon';
+import { Icon } from '../../../';
 
 class BirthdayDetails extends PureComponent {
   static propTypes = {

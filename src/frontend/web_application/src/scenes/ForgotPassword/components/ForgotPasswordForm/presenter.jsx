@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { Fieldset, Legend, FormGrid, FormRow, FormColumn, FieldErrors, TextFieldGroup } from '../../../../components/form';
+import { Button, Icon, TextFieldGroup, FieldErrors, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components/';
 import Section from '../../../../components/Section';
-import Button from '../../../../components/Button';
-import Icon from '../../../../components/Icon';
 import Link from '../../../../components/Link';
 
 import './style.scss';

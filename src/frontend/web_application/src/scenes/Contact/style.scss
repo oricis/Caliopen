@@ -3,10 +3,11 @@
 
 .s-contact {
   @include flex-grid-row($size: expand);
+  padding: $co-margin ($co-margin / 2);
+  background: $co-color__fg__back;
 
   &__menu-bar {
-    @include flex-grid-column(12);
-    margin-bottom: $co-margin;
+    @include flex-grid-size(12);
   }
 
   &__action-bar,
@@ -19,7 +20,7 @@
   &__action,
   &__bar-title,
   &__actions-switcher {
-    @include flex-grid-size(shrink);
+    @include flex-grid-column(shrink);
   }
 
   &__action {
@@ -27,7 +28,6 @@
   }
 
   &__bar-title {
-    color: $co-color__fg__text--high;
     font-weight: 600;
   }
 
@@ -36,16 +36,16 @@
   }
 
   &__col-datas-online {
-    @include flex-grid-size(12);
+    @include flex-grid-column(12);
   }
 
   @include breakpoint(medium) {
-    &__col-datas-irl { @include flex-grid-size(4); }
-    &__col-datas-online { @include flex-grid-size(8); }
+    &__col-datas-irl { @include flex-grid-column(4); }
+    &__col-datas-online { @include flex-grid-column(8); }
   }
 
   @include breakpoint(large) {
-    &__col-datas-irl { @include flex-grid-size(3); }
-    &__col-datas-online { @include flex-grid-size(9); }
+    &__col-datas-irl { @include flex-grid-column(3); }
+    &__col-datas-online { @include flex-grid-column(9); }
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Dropdown, { withDropdownControl, CONTROL_PREFIX } from './';
-import Button from '../Button';
+import { Button } from '../';
 
 const DropdownControl = withDropdownControl(Button);
 

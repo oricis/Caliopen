@@ -23,6 +23,7 @@
       &:hover,
       &:focus {
         background: none;
+        color: $co-color__fg__text--lower;
       }
     }
 
@@ -31,13 +32,16 @@
     }
 
     &--active {
-      background-color: $co-color__bg__back;
-
+      font-weight: 600;
 
       a,
       button {
-        color: $co-color__fg__text--high;
-        font-weight: 700;
+        color: $co-color__fg__text--low;
+
+        &:hover,
+        &:focus {
+          color: $co-color__fg__text--lower;
+        }
       }
     }
   }

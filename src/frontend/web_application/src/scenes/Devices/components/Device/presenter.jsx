@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import DeviceBase from '../../../../components/Device';
+import DeviceBase from '../Device';
 import Spinner from '../../../../components/Spinner';
 
 class Device extends Component {

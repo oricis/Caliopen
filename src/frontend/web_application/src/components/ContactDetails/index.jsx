@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, withI18n } from 'lingui-react';
-import Subtitle from '../Subtitle';
+import { withI18n } from 'lingui-react';
+import Section from '../Section';
 import TextList, { ItemContent } from '../TextList';
 import AddressDetails from './components/AddressDetails';
 import BirthdayDetails from './components/BirthdayDetails';
@@ -147,41 +147,45 @@ class ContactDetails extends Component {
   }
 
   render() {
-    const { editMode } = this.props;
+    const { editMode, i18n } = this.props;
 
     return (
       <div className="m-contact-details">
-        <div className="m-contact-details__panel">
-          <Subtitle hr>
-            <Trans id="contact.contact_details">Contact details</Trans>
-          </Subtitle>
+        <Section
+          className="m-contact-details__panel"
+          title={i18n._('contact.contact_details', { defaults: 'Contact details' })}
+        >
           <div className="m-contact-details__list">
             {editMode ?
               this.props.detailForms :
               this.renderContactDetails()
             }
           </div>
-        </div>
+        </Section>
 
-        <div className="m-contact-details__panel">
-          <Subtitle hr><Trans id="contact.contact_organizations">Professional</Trans></Subtitle>
+        <Section
+          className="m-contact-details__panel"
+          title={i18n._('contact.contact_organizations', { defaults: 'Professional' })}
+        >
           <div className="m-contact-details__list">
             {editMode ?
               this.props.orgaForms :
               this.renderOrganizationsDetails()
             }
           </div>
-        </div>
+        </Section>
 
-        <div className="m-contact-details__panel">
-          <Subtitle hr><Trans id="contact.contact_identities">Social identity</Trans></Subtitle>
+        <Section
+          className="m-contact-details__panel"
+          title={i18n._('ontact.contact_identities', { defaults: 'Social identity' })}
+        >
           <div className="m-contact-details__list">
             {editMode ?
               this.props.identityForms :
               this.renderIdentitiesDetails()
             }
           </div>
-        </div>
+        </Section>
       </div>
     );
   }
