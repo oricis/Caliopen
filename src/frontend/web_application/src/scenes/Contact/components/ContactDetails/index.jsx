@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
-import Section from '../Section';
-import TextList, { ItemContent } from '../TextList';
-import AddressDetails from './components/AddressDetails';
-import BirthdayDetails from './components/BirthdayDetails';
-import EmailDetails from './components/EmailDetails';
-import IdentityDetails from './components/IdentityDetails';
-import ImDetails from './components/ImDetails';
-import OrgaDetails from './components/OrgaDetails';
-import PhoneDetails from './components/PhoneDetails';
+import { Section, TextList, TextItem } from '../../../../components';
+import AddressDetails from '../AddressDetails';
+import BirthdayDetails from '../BirthdayDetails';
+import EmailDetails from '../EmailDetails';
+import IdentityDetails from '../IdentityDetails';
+import ImDetails from '../ImDetails';
+import OrgaDetails from '../OrgaDetails';
+import PhoneDetails from '../PhoneDetails';
 import './style.scss';
 
 @withI18n()
@@ -49,47 +48,47 @@ class ContactDetails extends Component {
   }
 
   renderEmail = email => (
-    <ItemContent large>
+    <TextItem large>
       <EmailDetails email={email} />
-    </ItemContent>
+    </TextItem>
   );
 
   renderPhone = phone => (
-    <ItemContent large>
+    <TextItem large>
       <PhoneDetails phone={phone} />
-    </ItemContent>
+    </TextItem>
   );
 
   renderIm = im => (
-    <ItemContent large>
+    <TextItem large>
       <ImDetails im={im} />
-    </ItemContent>
+    </TextItem>
   );
 
   renderAddress = address => (
-    <ItemContent large>
+    <TextItem large>
       <AddressDetails address={address} />
-    </ItemContent>
+    </TextItem>
   );
 
   renderIdentity = identity => (
-    <ItemContent large>
+    <TextItem large>
       <IdentityDetails identity={identity} />
-    </ItemContent>
+    </TextItem>
   );
 
   renderOrganization = organization => (
-    <ItemContent large>
+    <TextItem large>
       <OrgaDetails organization={organization} />
-    </ItemContent>
+    </TextItem>
   );
 
   renderBirthday = birthday => (
-    <ItemContent large>
+    <TextItem large>
       <BirthdayDetails
         birthday={birthday}
       />
-    </ItemContent>
+    </TextItem>
   );
 
   renderContactDetails = () => {

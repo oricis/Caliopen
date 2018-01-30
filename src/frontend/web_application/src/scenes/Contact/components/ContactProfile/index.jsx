@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withI18n } from 'lingui-react';
-import { WithTags, getTagLabel, getCleanedTagCollection } from '../../modules/tags';
-import Badge from '../Badge';
-import MultidimensionalPi from '../../components/MultidimensionalPi';
-import ContactAvatarLetter from '../ContactAvatarLetter';
-import { formatName } from '../../services/contact';
+import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
+import Badge from '../../../../components/Badge';
+import MultidimensionalPi from '../../../../components/MultidimensionalPi';
+import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
+import { formatName } from '../../../../services/contact';
 import './style.scss';
 
 @withI18n()

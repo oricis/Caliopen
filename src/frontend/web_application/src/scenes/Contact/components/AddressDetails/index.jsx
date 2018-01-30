@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
-import { Icon } from '../../../';
+import { Icon } from '../../../../components';
 import './style.scss';
 
 @withI18n()

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
-import { Icon } from '../../../';
+import { Icon } from '../../../../components';
 
 @withI18n()
 class EmailDetails extends Component {
