@@ -1,0 +1,7 @@
+@import '../../styles/common';
+
+.m-checkbox-field-group {
+  &__label {
+    padding-left: map-get($co-form__spacing, 'small');
+  }
+}

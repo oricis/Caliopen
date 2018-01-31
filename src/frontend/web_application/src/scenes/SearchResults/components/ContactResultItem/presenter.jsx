@@ -4,7 +4,7 @@ import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modu
 import Link from '../../../../components/Link';
 import Badge from '../../../../components/Badge';
 import ContactAvatarLetter, { SIZE_SMALL } from '../../../../components/ContactAvatarLetter';
-import TextBlock from '../../../../components/TextBlock';
+import { TextBlock } from '../../../../components/';
 import { formatName } from '../../../../services/contact';
 import Highlights from '../Highlights';
 import './style.scss';

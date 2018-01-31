@@ -7,9 +7,7 @@ import StickyNavbar from './components/StickyNavBar';
 import TabList from './components/TabList';
 import TimelineFilterContainer from './components/TimelineFilterContainer';
 import SliderContainer from '../../../../components/ImportanceSliderContainer';
-import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
-import Button from '../../../../components/Button';
-import Icon from '../../../../components/Icon';
+import { Icon, Dropdown, withDropdownControl, Button } from '../../../../components/';
 import './style.scss';
 
 const ToggleSliderButton = withDropdownControl(Button);

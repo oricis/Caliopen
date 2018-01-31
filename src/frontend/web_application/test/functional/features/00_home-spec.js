@@ -5,10 +5,10 @@ describe('Home', () => {
   const locale = 'en';
   const __ = key => ({
     fr: {
-      please_login: 'VOUS POUVEZ VOUS AUTHENTIFIER',
+      please_login: 'Vous pouvez vous authentifier',
     },
     en: {
-      please_login: 'PLEASE LOG IN',
+      please_login: 'Please Log In',
     },
   }[locale][key]);
 
@@ -20,7 +20,7 @@ describe('Home', () => {
     it('Log In', () => {
       userUtil.signin();
       browser.get('/');
-      expect(element(by.css('.m-application-switcher .m-navbar-item__content')).getText()).toContain('Messages');
+      expect(element(by.css('.m-application-switcher .m-navbar-item__content')).getText()).toContain('MESSAGES');
     });
 
     it('Requires authentication', () => {

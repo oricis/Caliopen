@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { Trans, withI18n } from 'lingui-react';
 import { Field } from 'redux-form';
 import renderReduxField from '../../../../services/renderReduxField';
-import Icon from '../../../../components/Icon';
-import Button from '../../../../components/Button';
-import { FieldErrors, Fieldset, Legend, TextFieldGroup as TextFieldGroupBase, SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
+import { Button, Icon, FieldErrors, SelectFieldGroup as SelectFieldGroupBase, TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
 
 import './style.scss';
 

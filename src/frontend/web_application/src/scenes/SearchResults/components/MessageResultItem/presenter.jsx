@@ -7,8 +7,7 @@ import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modu
 import Link from '../../../../components/Link';
 import MessageDate from '../../../../components/MessageDate';
 import AuthorAvatar from '../../../../components/AuthorAvatar';
-import Icon from '../../../../components/Icon';
-import TextBlock from '../../../../components/TextBlock';
+import { Icon, TextBlock } from '../../../../components/';
 import Badge from '../../../../components/Badge';
 import { renderParticipant } from '../../../../services/message';
 import Highlights from '../Highlights';

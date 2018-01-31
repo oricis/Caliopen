@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import TextList, { ItemContent } from '../../../../components/TextList';
-import { SelectFieldGroup, FormGrid, FormRow, FormColumn, Legend } from '../../../../components/form';
-import Button from '../../../../components/Button';
-import Icon from '../../../../components/Icon';
+import { Button, Icon, SelectFieldGroup, FormGrid, FormRow, FormColumn, Legend } from '../../../../components/';
 import './style.scss';
 
 class AddFormFieldForm extends Component {

@@ -3,12 +3,13 @@
 
 .s-signin {
   max-width: map-get($co-form__width, 'xlarge');
+  background-color: $co-color__fg__back;
 
   &__action { line-height: $co-component__height; }
 
   &__alpha {
     a {
-      color: white;
+      color: $co-color__primary--low;
     }
   }
 }

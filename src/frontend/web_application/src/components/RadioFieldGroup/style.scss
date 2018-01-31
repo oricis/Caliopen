@@ -1,0 +1,52 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+$co-radio-size: 14px;
+
+.m-radio-field-group {
+  &__entry {
+    @include flex-grid-row;
+    align-items: center;
+
+    & > .m-radio-field-group__entry {
+      margin-bottom: $co-component__spacing;
+    }
+  }
+
+  &__label {
+    @include flex-grid-column(shrink);
+    cursor: pointer;
+  }
+
+  &__input {
+    @include flex-grid-size(shrink);
+    height: $co-radio-size;
+    width: $co-radio-size;
+    appearance: none;
+    background: $co-color__fg__back;
+    border: 1px solid $co-color__primary;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:before {
+      content: ' ';
+      display: none;
+      background: $co-color__primary--low;
+      border-radius: 50%;
+      position: absolute;
+      right: 1px;
+      left: 1px;
+    }
+
+
+    &:checked {
+       position: relative;
+
+       &:before {
+         display: block;
+         top: 1px;
+         bottom: 1px;
+       }
+    }
+  }
+}

@@ -26,7 +26,7 @@ PHONE_TYPES = ['assistant', 'callback', 'car', 'company_main',
 SOCIAL_TYPES = ['facebook', 'twitter', 'google', 'github', 'bitbucket',
                 'linkedin', 'ello', 'instagram', 'tumblr', 'skype', 'mastodon']
 
-KEY_CHOICES = ['rsa', 'gpg', 'ssh']
+KEY_CHOICES = ['rsa', 'pgp', 'ssh']
 
 RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc']
 

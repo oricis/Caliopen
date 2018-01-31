@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import { usernameNormalizer } from '../../../../modules/user';
-import { FormGrid, FormRow, FormColumn, TextFieldGroup, FieldErrors } from '../../../../components/form';
-import Button from '../../../../components/Button';
+import { FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColumn } from '../../../../components/';
 import Section from '../../../../components/Section';
 import Link from '../../../../components/Link';
 

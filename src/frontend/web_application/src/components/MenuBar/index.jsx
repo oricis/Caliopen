@@ -34,10 +34,10 @@ class MenuBar extends Component {
     return (
       <div className={menuBarClassName}>
         {navLinks &&
-          <NavList>
+          <NavList className="m-menu-bar__navlist">
             {navLinks.map(link => (
               <ItemContent active={link.isActive} large key={link.key}>
-                <Link noDecoration title={link.title} to={link.to}>{link.label}</Link>
+                <Link display="button" noDecoration title={link.title} to={link.to}>{link.label}</Link>
               </ItemContent>
             ))}
           </NavList>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IdentityForm from './components/IdentityForm';
-import PageTitle from '../../components/PageTitle';
+import { PageTitle } from '../../components/';
 import Section from '../../components/Section';
 import NavList, { ItemContent } from '../../components/NavList';
 import Link from '../../components/Link';

@@ -4,7 +4,7 @@ import TourPortalBase from 'reactour/dist/TourPortal';
 import { TopMask, RightMask, BottomMask, LeftMask, ElementMask, Navigation, Dot } from 'reactour/dist/components';
 import cn from 'classnames';
 import Guide from '../Guide';
-import Button from '../../../../../../components/Button';
+import { Button } from '../../../../../../components/';
 import './style.scss';
 
 const CN = {

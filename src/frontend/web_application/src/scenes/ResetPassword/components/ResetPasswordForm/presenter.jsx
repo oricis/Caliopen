@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { PasswordStrength, TextFieldGroup, FormGrid, FieldErrors, FormColumn, FormRow } from '../../../../components/form';
+import { PasswordStrength, Button, Icon, FieldErrors, TextFieldGroup, FormGrid, FormColumn, FormRow } from '../../../../components/';
 import Section from '../../../../components/Section';
-import Button from '../../../../components/Button';
 import Link from '../../../../components/Link';
-import Icon from '../../../../components/Icon';
 
 import './style.scss';
 

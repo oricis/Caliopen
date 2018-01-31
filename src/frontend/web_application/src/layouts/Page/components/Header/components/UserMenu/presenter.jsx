@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import UserInfo from '../../../UserInfo';
 import Link from '../../../../../../components/Link';
-import Button from '../../../../../../components/Button';
-import Icon from '../../../../../../components/Icon';
+import { Button, Icon, Dropdown, withDropdownControl } from '../../../../../../components/';
 import VerticalMenu, { VerticalMenuItem, Separator } from '../../../../../../components/VerticalMenu';
-import Dropdown, { withDropdownControl } from '../../../../../../components/Dropdown';
 import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
@@ -37,6 +35,7 @@ class Presenter extends Component {
           toggleId="co-user-menu"
           display="expanded"
           icon="user"
+          className="m-user-menu__dropdown-control"
         >
           <span className="show-for-small-only">{user && user.name}</span>&nbsp;
           <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />

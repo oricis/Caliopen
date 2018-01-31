@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import { Trans } from 'lingui-react';
-import Button from '../Button';
-import Icon from '../Icon';
-import Spinner from '../Spinner';
+import { Button, Icon, Spinner, Dropdown, withDropdownControl, TextFieldGroup } from '../';
 import ContactAvatarLetter from '../ContactAvatarLetter';
-import Dropdown, { withDropdownControl } from '../Dropdown';
 import DiscussionDraft, { TopRow, BodyRow, BottomRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
 import RecipientList from '../RecipientList';
-import { TextFieldGroup } from '../form';
 import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);

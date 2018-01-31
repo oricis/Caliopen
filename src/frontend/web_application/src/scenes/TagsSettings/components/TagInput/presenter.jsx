@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getTagLabel } from '../../../../modules/tags';
-import { FormGrid, TextFieldGroup, FieldErrors } from '../../../../components/form';
-import { Button, Icon, Spinner } from '../../../../components';
+import { Button, Icon, Spinner, FormGrid, FieldErrors, TextFieldGroup } from '../../../../components';
 import './style.scss';
 
 const TAG_TYPE_USER = 'user';
@@ -87,7 +86,6 @@ class TagInput extends Component {
           errors={errors}
         />
         <Button
-          inline
           onClick={this.handleUpdateTag}
           aria-label={i18n._('settings.tag.action.save-tag', { defaults: 'Save' })}
           icon={this.state.isFetching ? <Spinner isLoading display="inline" /> : 'check'}
