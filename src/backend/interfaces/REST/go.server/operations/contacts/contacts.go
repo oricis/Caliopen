@@ -98,8 +98,12 @@ func NewContact(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	} else {
-		ctx.JSON(http.StatusOK, struct{ Location string }{
+		ctx.JSON(http.StatusOK, struct {
+			Location  string `json:"location"`
+			ContactId string `json:"contact_id"`
+		}{
 			http_middleware.RoutePrefix + http_middleware.ContactsRoute + "/" + contact.ContactId.String(),
+			contact.ContactId.String(),
 		})
 	}
 	return
