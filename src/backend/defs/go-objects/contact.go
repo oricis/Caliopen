@@ -391,18 +391,18 @@ func (c *Contact) JsonTags() map[string]string {
 }
 
 func (c *Contact) NewEmpty() interface{} {
-	c = new(Contact)
-	c.Addresses = []PostalAddress{}
-	c.Emails = []EmailContact{}
-	c.Groups = []string{}
-	c.Identities = []SocialIdentity{}
-	c.Ims = []IM{}
-	c.Infos = map[string]string{}
-	c.Organizations = []Organization{}
-	c.Phones = []Phone{}
-	c.PublicKeys = []ContactPublicKey{}
-	c.Tags = []string{}
-	return c
+	nc := new(Contact)
+	nc.Addresses = []PostalAddress{}
+	nc.Emails = []EmailContact{}
+	nc.Groups = []string{}
+	nc.Identities = []SocialIdentity{}
+	nc.Ims = []IM{}
+	nc.Infos = map[string]string{}
+	nc.Organizations = []Organization{}
+	nc.Phones = []Phone{}
+	nc.PublicKeys = []ContactPublicKey{}
+	nc.Tags = []string{}
+	return nc
 }
 
 // GetSetNested returns a chan to iterate over pointers to embedded structs.
