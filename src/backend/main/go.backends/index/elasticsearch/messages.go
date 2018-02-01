@@ -12,6 +12,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
 	"gopkg.in/oleiade/reflections.v1"
+	"strings"
 )
 
 func (es *ElasticSearchBackend) CreateMessage(msg *objects.Message) error {
@@ -43,7 +44,8 @@ func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[s
 		if err != nil {
 			return fmt.Errorf("[ElasticSearchBackend] UpdateMessage failed to find a json field for object field %s", field)
 		}
-		jsonFields[jsonField] = value
+		split := strings.Split(jsonField, ",")
+		jsonFields[split[0]] = value
 	}
 
 	update, err := es.Client.Update().Index(msg.User_id.String()).Type(objects.MessageIndexType).Id(msg.Message_id.String()).

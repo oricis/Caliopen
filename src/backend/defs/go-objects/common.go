@@ -197,6 +197,9 @@ func marshallField(obj interface{}, field, context string, jsonBuf *bytes.Buffer
 							}
 							jsonBuf.WriteByte(']')
 							return
+						} else {
+							enc.Encode(field_value)
+							return
 						}
 					}
 				}
