@@ -10,7 +10,6 @@ import phonenumbers
 
 from .store import (Contact as ModelContact,
                     ContactLookup as ModelContactLookup,
-                    PublicKey as ModelPublicKey,
                     Organization, Email, IM, PostalAddress,
                     Phone, SocialIdentity)
 from .store.contact_index import IndexedContact
@@ -68,20 +67,11 @@ class BaseContactSubCore(BaseCore):
                 for col in self._model_class._columns.keys()}
 
 
-class PublicKey(BaseContactSubCore):
-    _model_class = ModelPublicKey
-    _pkey_name = 'name'
-
-
 class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
 
     _model_class = ModelContact
     _pkey_name = 'contact_id'
     _index_class = IndexedContact
-
-    _relations = {
-        'public_keys': PublicKey,
-    }
 
     _nested = {
         'emails': Email,

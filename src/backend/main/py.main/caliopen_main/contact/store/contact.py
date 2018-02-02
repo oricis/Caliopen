@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """Caliopen objects related to contact definition."""
 from __future__ import absolute_import, print_function, unicode_literals
-import datetime
-import pytz
 import uuid
 
 from cassandra.cqlengine import columns
@@ -128,25 +126,6 @@ class Contact(BaseModel, IndexedModelMixin):
     privacy_features = columns.Map(columns.Text(), columns.Text())
     tags = columns.List(columns.Text(), db_field="tagnames")
     title = columns.Text()  # computed value, read only
-
-
-class PublicKey(BaseModel):
-    """Contact public cryptographic keys model."""
-
-    user_id = columns.UUID(primary_key=True)
-    contact_id = columns.UUID(primary_key=True)  # clustering key
-    name = columns.Text(primary_key=True)
-
-    date_insert = columns.DateTime(default=datetime.datetime.now(tz=pytz.utc))
-    date_update = columns.DateTime()
-    type = columns.Text()
-    size = columns.Integer()
-    key = columns.Text()
-    expire_date = columns.DateTime()
-    fingerprint = columns.Text()
-
-    privacy_features = columns.Map(columns.Text(), columns.Text())
-    pi = PIModel
 
 
 class ContactLookup(BaseModel):
