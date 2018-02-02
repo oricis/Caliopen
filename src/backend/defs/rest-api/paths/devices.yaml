@@ -93,7 +93,7 @@ devices_{device_id}:
         schema:
           "$ref": "../objects/Error.yaml"
   delete:
-    description: Not Yet Implemented
+    description: Delete a device
     tags:
     - devices
     security:
@@ -104,8 +104,16 @@ devices_{device_id}:
       required: true
       type: string
     responses:
-      default:
-        description: route not implemented, should raise an error
+      '204':
+        description: Device deleted
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '404':
+        description: Device not found
+        schema:
+          "$ref": "../objects/Error.yaml"
   patch:
     description: update a device with rfc5789 and rfc7396 specifications
     tags:
@@ -136,6 +144,15 @@ devices_{device_id}:
         description: Update successful. No body is returned.
       '400':
         description: json payload malformed
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '403':
+        description: Forbidden patch. Server is refusing to apply the given patch's
+          properties to this ressource
         schema:
           "$ref": "../objects/Error.yaml"
       '404':

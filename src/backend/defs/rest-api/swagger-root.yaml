@@ -76,6 +76,11 @@ paths:
     "$ref": paths/tags.yaml#/tags
   "/v2/tags/{tag_id}":
     "$ref": paths/tags.yaml#/tags_{tag_id}
+## devices ##
+  "/v2/devices":
+    "$ref": paths/devices.yaml#/devices
+  "/v2/devices/{device_id}":
+    "$ref": paths/devices.yaml#/devices_{device_id}
 ## search/suggest ##
   "/v2/participants/suggest":
     "$ref": paths/participants.yaml#/participants_suggest

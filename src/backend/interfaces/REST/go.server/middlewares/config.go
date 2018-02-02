@@ -5,4 +5,5 @@ const (
 	IdentitiesRoute = "/identities"
 	TagsRoute       = "/tags"
 	ContactsRoute   = "/contacts"
+	DevicesRoute    = "/devices"
 )

@@ -1,7 +1,22 @@
 ---
 type: object
 properties:
+  device_id:
+    type: string
+  ip_creation:
+    description: ip address at creation
+    type: string
+  locations:
+    type: array
+    items:
+      "$ref": DeviceLocation.yaml
   name:
+    type: string
+  public_keys:
+    type: array
+    items:
+      "$ref": PublicKey.yaml
+  status:
     type: string
   type:
     type: string
@@ -12,10 +27,8 @@ properties:
     - laptop
     - smartphone
     - tablet
-  locations:
-    type: array
-    items:
-      "$ref": DeviceLocation.yaml
+  user_agent:
+    type: string
 required:
 - name
 - type
