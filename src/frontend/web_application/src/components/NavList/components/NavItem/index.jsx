@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-const ItemContent = ({ className, large, ...props }) => {
+const NavItem = ({ className, active, large, ...props }) => {
   const itemClassName = classnames(
-    'm-text-list__item',
+    'm-nav-list__item',
     {
-      'm-text-list__item--large': large,
+      'm-nav-list__item--large': large,
+      'm-nav-list__item--active': active,
     },
     className
   );
@@ -16,13 +17,15 @@ const ItemContent = ({ className, large, ...props }) => {
   );
 };
 
-ItemContent.propTypes = {
+NavItem.propTypes = {
+  active: PropTypes.bool,
   large: PropTypes.bool,
   className: PropTypes.string,
 };
-ItemContent.defaultProps = {
+NavItem.defaultProps = {
+  active: false,
   large: false,
   className: undefined,
 };
 
-export default ItemContent;
+export default NavItem;
