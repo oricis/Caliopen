@@ -1,13 +1,18 @@
 @import '../../styles/common';
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
-$l-auth-page__brand-height: 46px !default;
+$l-auth-page__brand-height: 42px !default;
 $l-auth-page__header-space: (
   top: 86px,
   bottom: 36px,
 );
 
 .l-auth-page {
+  max-width: map-get($co-form__width, 'xlarge');
+  margin: auto;
+  border-top: 8px solid $co-color__primary; // TODO: update border color according to context
+  background: $co-color__fg__back;
+
   &__header {
     padding-top: map-get($l-auth-page__header-space, top);
     padding-bottom: map-get($l-auth-page__header-space, bottom);
@@ -19,8 +24,7 @@ $l-auth-page__header-space: (
   }
 
   &__form {
-    @include flex-grid-row;
-    justify-content: center;
+    margin: 0 $co-margin * 2;
   }
 
   &__footer {

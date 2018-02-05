@@ -124,6 +124,7 @@ class ResetPasswordForm extends Component {
               <TextFieldGroup
                 name="password"
                 type="password"
+                theme="contrasted"
                 value={this.state.formValues.password}
                 onChange={this.handlePasswordChange}
                 label={i18n._('password.form.new_password.label', { defaults: 'New password:' })}
@@ -140,6 +141,7 @@ class ResetPasswordForm extends Component {
               <TextFieldGroup
                 name="confirmPassword"
                 type="password"
+                theme="contrasted"
                 value={this.state.confirmPassword}
                 onChange={this.handleConfirmPasswordChange}
                 errors={this.state.formErrors.passwordError}
