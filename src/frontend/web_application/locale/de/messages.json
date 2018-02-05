@@ -328,6 +328,7 @@
   "signup.form.password.placeholder": "Kennwort",
   "signup.form.invitation_email.label": "",
   "signup.form.invitation_email.placeholder": "",
+  "signup.form.invitation_email.tip": "",
   "signup.form.privacy.title": "Datenschutzbedingungen",
   "signup.form.privacy.intro": "Während der Entwicklungsphase sammeln wir Daten (aber nicht mehr als die NSA).",
   "signup.form.privacy.more_info": "Mehr Infos",
