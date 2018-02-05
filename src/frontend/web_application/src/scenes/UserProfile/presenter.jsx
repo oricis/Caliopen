@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { PageTitle, Button } from '../../components/';
-import Section from '../../components/Section';
+import { Section, PageTitle, Button } from '../../components/';
 import ProfileForm from './components/ProfileForm';
 import ProfileInfo from './components/ProfileInfo';
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, withDropdownControl, Button } from '../../../../../../components/';
-import VerticalMenu, { VerticalMenuItem } from '../../../../../../components/VerticalMenu';
+import { Dropdown, withDropdownControl, Button, VerticalMenu, VerticalMenuItem } from '../../../../../../components/';
 import TimelineFilter from '../../../TimelineFilter';
 import './style.scss';
 

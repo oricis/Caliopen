@@ -4,11 +4,9 @@ import classnames from 'classnames';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
 import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
-import Link from '../../../../components/Link';
 import MessageDate from '../../../../components/MessageDate';
 import AuthorAvatar from '../../../../components/AuthorAvatar';
-import { Icon, TextBlock } from '../../../../components/';
-import Badge from '../../../../components/Badge';
+import { Badge, Link, Icon, TextBlock } from '../../../../components/';
 import { renderParticipant } from '../../../../services/message';
 import Highlights from '../Highlights';
 

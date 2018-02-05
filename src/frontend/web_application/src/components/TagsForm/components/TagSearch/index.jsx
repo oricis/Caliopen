@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
-import { TextFieldGroup, Button, Spinner } from '../../../';
+import TextFieldGroup from '../../../TextFieldGroup';
+import Button from '../../../Button';
+import Spinner from '../../../Spinner';
 
 import './style.scss';
 

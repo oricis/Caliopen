@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
-import { Button } from '../../../';
+import Button from '../../../Button';
 
 class File extends PureComponent {
   static propTypes = {

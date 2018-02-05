@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import { Trans } from 'lingui-react';
-import { FieldErrors, Label, Button, Icon } from '../';
+import FieldErrors from '../FieldErrors';
+import Label from '../Label';
+import Button from '../Button';
+import Icon from '../Icon';
 
 import './style.scss';
 

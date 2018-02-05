@@ -6,7 +6,7 @@ import Navbar, { NavbarItem } from './components/Navbar';
 import StickyNavbar from './components/StickyNavBar';
 import TabList from './components/TabList';
 import TimelineFilterContainer from './components/TimelineFilterContainer';
-import SliderContainer from '../../../../components/ImportanceSliderContainer';
+import SliderContainer from '../ImportanceSliderContainer';
 import { Icon, Dropdown, withDropdownControl, Button } from '../../../../components/';
 import './style.scss';
 

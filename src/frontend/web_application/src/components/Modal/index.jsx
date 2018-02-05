@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import classnames from 'classnames';
-import { Button } from '../../components/';
+import Button from '../Button';
 import './style.scss';
 
 const Modal = ({ className, title, children, onClose, ...props }) => (

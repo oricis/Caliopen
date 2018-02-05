@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans, withI18n } from 'lingui-react';
-import { InputFile, FieldGroup } from '../';
+import FieldGroup from '../FieldGroup';
+import InputFile from '../InputFile';
+
 import File from './components/File';
 
 import './style.scss';

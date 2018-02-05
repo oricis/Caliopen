@@ -2,7 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
-import { InputText, Label, FieldGroup } from '../';
+import InputText from '../InputText';
+import Label from '../Label';
+import FieldGroup from '../FieldGroup';
+
 import './style.scss';
 
 

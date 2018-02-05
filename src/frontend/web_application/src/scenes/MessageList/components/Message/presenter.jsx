@@ -6,8 +6,7 @@ import VisibilitySensor from 'react-visibility-sensor';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
 import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
-import { Button, Icon, TextBlock, Dropdown, withDropdownControl } from '../../../../components';
-import MultidimensionalPi from '../../../../components/MultidimensionalPi';
+import { Button, Icon, TextBlock, Dropdown, withDropdownControl, MultidimensionalPi } from '../../../../components';
 import MessageActionsContainer from '../MessageActionsContainer';
 import { getAuthor } from '../../../../services/message';
 

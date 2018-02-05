@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 // import OpenPGPKeysDetails from './components/OpenPGPKeysDetails';
 // import TFAForm from './components/TFAForm';
-import { PageTitle } from '../../components/';
+import { PageTitle, Section } from '../../components/';
 import PasswordDetails from './components/PasswordDetails';
 import LoginDetails from './components/LoginDetails';
-import Section from '../../components/Section';
 import './style.scss';
 
 class UserSecurity extends Component {

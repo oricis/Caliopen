@@ -2,7 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { v1 as uuidV1 } from 'uuid';
-import { Switch, Checkbox, Label, FieldGroup } from '../';
+import Switch from '../Switch';
+import Checkbox from '../Checkbox';
+import Label from '../Label';
+import FieldGroup from '../FieldGroup';
 
 import './style.scss';
 

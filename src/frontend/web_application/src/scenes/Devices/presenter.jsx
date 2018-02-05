@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Link from '../../components/Link';
-import { PageTitle, Icon } from '../../components/';
-import NavList, { ItemContent } from '../../components/NavList';
+import { Link, PageTitle, Icon, NavList, NavItem } from '../../components/';
 
 import './style.scss';
 
@@ -31,7 +29,7 @@ class Devices extends Component {
     const isVerified = device.signature_key && true;
 
     return (
-      <ItemContent key={device.device_id} active={device.device_id === deviceId}>
+      <NavItem key={device.device_id} active={device.device_id === deviceId}>
         <Link
           to={`/settings/devices/${device.device_id}`}
           className={classnames('s-devices__nav-item', { 's-devices__nav-item--verify': !isVerified })}
@@ -44,7 +42,7 @@ class Devices extends Component {
           }
           {device.name}
         </Link>
-      </ItemContent>
+      </NavItem>
     );
   }
 

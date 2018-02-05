@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IdentityForm from './components/IdentityForm';
-import { PageTitle } from '../../components/';
-import Section from '../../components/Section';
-import NavList, { ItemContent } from '../../components/NavList';
-import Link from '../../components/Link';
+import { Section, Link, PageTitle, NavList, NavItem } from '../../components/';
 
 import './style.scss';
 
@@ -50,9 +47,9 @@ class SettingsIdentities extends Component {
           <NavList dir="vertical" className="s-settings-identities__menu">
             {navLinks.map(link => (
               // this should be identities.map(identity => ... )
-              <ItemContent active={false} large key={link.title}>
+              <NavItem active={false} large key={link.title}>
                 <Link noDecoration {...link}>{link.title}</Link>
-              </ItemContent>
+              </NavItem>
             ))}
           </NavList>
         }

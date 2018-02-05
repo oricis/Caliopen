@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Brand from '../../components/Brand';
+import { Brand } from '../../components/';
 import { getConfig } from '../../services/config';
 import './style.scss';
 
