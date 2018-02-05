@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import Presenter from './presenter';
-import { setImportanceLevel } from '../../store/modules/importance-level';
+import { setImportanceLevel } from '../../../../store/modules/importance-level';
 
 const mapStateToProps = createSelector(
   [state => state.importanceLevel],

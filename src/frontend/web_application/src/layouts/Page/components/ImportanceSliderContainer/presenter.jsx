@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
 import { Range } from 'rc-slider';
-import { IL_MIN, IL_MAX } from '../../services/importance-level';
+import { IL_MIN, IL_MAX } from '../../../../services/importance-level';
 
 import './style.scss';
 
