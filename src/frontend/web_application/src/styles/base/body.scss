@@ -1,0 +1,7 @@
+@import '../config/theme/light';
+
+body {
+  &.white {
+    background: $co-color__fg__back;
+  }
+}
