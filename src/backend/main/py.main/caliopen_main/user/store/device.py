@@ -16,15 +16,6 @@ from cassandra.cqlengine import columns
 log = logging.getLogger(__name__)
 
 
-class DeviceECKey(BaseUserType):
-    """Device Elliptic Curve public key."""
-
-    curve = columns.Text()
-    hash = columns.Text()
-    x = columns.Integer()
-    y = columns.Integer()
-
-
 class DeviceLocation(BaseUserType):
     """Device known location, base on IP."""
 
@@ -47,22 +38,8 @@ class Device(BaseModel):
     status = columns.Text(default='unknown')
     privacy_features = columns.Map(columns.Text, columns.Text)
     locations = columns.List(columns.UserDefinedType(DeviceLocation))
-    ec_signature = columns.UserDefinedType(DeviceECKey)
     user_agent = columns.Text()
     ip_creation = columns.Text()
-
-
-class DevicePublicKey(BaseModel):
-    """Device public key."""
-
-    user_id = columns.UUID(primary_key=True)
-    device_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    fingerprint = columns.Text(primary_key=True)
-
-    date_insert = columns.DateTime(required=True,
-                                   default=datetime.datetime.now(tz=pytz.utc))
-    is_current = columns.Boolean(default=False)
-    public_key = columns.Text()
 
 
 class DeviceConnectionLog(BaseModel):

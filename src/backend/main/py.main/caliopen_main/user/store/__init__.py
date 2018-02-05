@@ -4,8 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 from .user import User, UserName, ReservedName, FilterRule, UserRecoveryEmail
 from .user import RemoteIdentity, IndexUser, Settings
 from .tag import UserTag
-from .device import Device, DeviceLocation
-from .device import DeviceConnectionLog, DevicePublicKey
+from .device import Device, DeviceLocation, DeviceConnectionLog
 from .local_identity_index import IndexedLocalIdentity
 from .local_identity import LocalIdentity
 
@@ -15,6 +14,5 @@ __all__ = [
     'ReservedName',
     'RemoteIdentity', 'IndexUser', 'UserTag', 'Settings',
     'Device', 'DeviceLocation',
-    'DeviceConnectionLog', 'DevicePublicKey',
-    'IndexedLocalIdentity', 'LocalIdentity',
+    'DeviceConnectionLog', 'IndexedLocalIdentity', 'LocalIdentity',
 ]
