@@ -29,9 +29,10 @@ class Device(BaseUserCore, MixinCoreNested):
     def create(cls, user, device, **related):
         """Create a new device for an user."""
         device.validate()
-        device_id = uuid.uuid4()
+        if not device.device_id:
+            device.device_id = uuid.uuid4()
         locations = cls.create_nested(device.locations, ModelDeviceLocation)
-        attrs = {'device_id': device_id,
+        attrs = {'device_id': device.device_id,
                  'type': device.type,
                  'name': device.name,
                  'locations': locations}
