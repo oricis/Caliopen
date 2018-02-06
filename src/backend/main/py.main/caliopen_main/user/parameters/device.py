@@ -4,7 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from schematics.models import Model
 from schematics.transforms import blacklist
-from schematics.types import DateTimeType, StringType, UUIDType
+from schematics.types import DateTimeType, StringType, UUIDType, IntegerType
 from schematics.types.compound import ListType, ModelType, DictType
 
 from caliopen_main.pi.parameters import PIParameter
@@ -20,6 +20,15 @@ class DeviceLocation(Model):
     type = StringType()
 
 
+class EcdsaPubKey(Model):
+    """Device Elliptic Curve signature key."""
+
+    x = IntegerType(required=True)
+    y = IntegerType(required=True)
+    curve = StringType(required=True)
+    hash = StringType()
+
+
 class NewDevice(Model):
     """Structure to create a new user device."""
 
@@ -29,6 +38,7 @@ class NewDevice(Model):
     locations = ListType(ModelType(DeviceLocation), default=lambda: [])
     user_agent = StringType()
     ip_address = StringType()
+    ecdsa_key = ModelType(EcdsaPubKey(), default=lambda: None)
 
 
 class Device(NewDevice):
