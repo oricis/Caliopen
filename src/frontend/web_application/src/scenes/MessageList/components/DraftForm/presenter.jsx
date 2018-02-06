@@ -6,22 +6,26 @@ import DraftMessageActionsContainer from '../../../../components/DraftMessageAct
 
 class DraftForm extends Component {
   static propTypes = {
+    i18n: PropTypes.shape({}).isRequired,
+    tags: PropTypes.arrayOf(PropTypes.shape({})),
     discussionId: PropTypes.string.isRequired,
     allowEditRecipients: PropTypes.bool,
     message: PropTypes.shape({ }),
     parentMessage: PropTypes.shape({ }),
     draft: PropTypes.shape({ }),
     requestDraft: PropTypes.func.isRequired,
-    editDraft: PropTypes.func.isRequired,
-    saveDraft: PropTypes.func.isRequired,
-    sendDraft: PropTypes.func.isRequired,
+    onEditDraft: PropTypes.func.isRequired,
+    onSaveDraft: PropTypes.func.isRequired,
+    onSendDraft: PropTypes.func.isRequired,
     onDeleteMessage: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
+    onUpdateEntityTags: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    tags: [],
     allowEditRecipients: false,
-    message: {},
+    message: undefined,
     parentMessage: undefined,
     draft: undefined,
     user: undefined,
@@ -45,26 +49,51 @@ class DraftForm extends Component {
     }
   }
 
-  makeHandle = action => ({ draft }) => {
-    const { discussionId, message } = this.props;
-    const params = { draft, message, internalId: discussionId };
+  handleSave = async ({ draft }) => {
+    const { discussionId, message, notifySuccess, notifyError, i18n, onSaveDraft } = this.props;
 
-    return action(params);
+    try {
+      await onSaveDraft({ draft, message, internalId: discussionId });
+
+      return notifySuccess({ message: i18n._('draft.feedback.saved', { defaults: 'Draft saved' }) });
+    } catch (err) {
+      return notifyError({
+        message: i18n._('draft.feedback.save-error', { defaults: 'Unable to save the draft' }),
+      });
+    }
+  }
+
+  handleEdit = ({ draft }) => {
+    const { discussionId, message, onEditDraft } = this.props;
+
+    return onEditDraft({ internalId: discussionId, draft, message });
   };
 
-  handleSend = () => {
-    const { sendDraft, discussionId, message, draft } = this.props;
-    const params = { draft, message, internalId: discussionId };
+  handleSend = async () => {
+    const { onSendDraft, discussionId, message, draft, notifyError, i18n } = this.props;
 
     this.setState({ isSending: true });
 
-    return sendDraft(params).then(() => this.setState({ isSending: false }));
+    try {
+      await onSendDraft({ draft, message, internalId: discussionId });
+    } catch (err) {
+      notifyError({
+        message: i18n._('draft.feedback.send-error', { defaults: 'Unable to send the message' }),
+      });
+    }
+    this.setState({ isSending: false });
   }
 
   handleDelete = () => {
     const { message, discussionId, onDeleteMessage, allowEditRecipients } = this.props;
 
     onDeleteMessage({ message, internalId: discussionId, isNewDiscussion: allowEditRecipients });
+  }
+
+  handleTagsChange = async ({ tags }) => {
+    const { onUpdateEntityTags, i18n, tags: userTags, message, draft, discussionId } = this.props;
+
+    return onUpdateEntityTags(discussionId, i18n, userTags, message, { type: 'message', entity: draft, tags });
   }
 
   renderDraftMessageActionsContainer = () => {
@@ -74,21 +103,21 @@ class DraftForm extends Component {
       message={message}
       internalId={discussionId}
       onDelete={this.handleDelete}
+      onTagsChange={this.handleTagsChange}
     />);
   }
 
   render() {
     const {
-       draft, discussionId, allowEditRecipients, user, editDraft, saveDraft,
-       parentMessage,
+       draft, discussionId, allowEditRecipients, user, parentMessage,
     } = this.props;
 
     if (allowEditRecipients) {
       return (<NewDraftForm
         draft={draft}
         internalId={discussionId}
-        onChange={this.makeHandle(editDraft)}
-        onSave={this.makeHandle(saveDraft)}
+        onChange={this.handleEdit}
+        onSave={this.handleSave}
         onSend={this.handleSend}
         renderDraftMessageActionsContainer={this.renderDraftMessageActionsContainer}
         user={user}
@@ -101,8 +130,8 @@ class DraftForm extends Component {
         <ReplyFormBase
           parentMessage={parentMessage}
           draft={draft}
-          onChange={this.makeHandle(editDraft)}
-          onSave={this.makeHandle(saveDraft)}
+          onChange={this.handleEdit}
+          onSave={this.handleSave}
           onSend={this.handleSend}
           isSending={this.state.isSending}
           renderDraftMessageActionsContainer={this.renderDraftMessageActionsContainer}

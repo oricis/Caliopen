@@ -1,5 +1,5 @@
 import { createAction, createSelector } from 'bouchon';
-import { v1 as uuidv1 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import createCollectionMiddleware from '../collection-middleware';
 import { actions as discussionActions } from '../discussions';
 
@@ -56,7 +56,7 @@ const reducer = {
       discussion_id: discussionId,
       ...body,
       excerpt: body.body.slice(0, 30) + '...',
-      message_id: uuidv1(),
+      message_id: body.message_id || uuidv4(),
       is_draft: true,
       is_unread: false,
       date: Date.now(),

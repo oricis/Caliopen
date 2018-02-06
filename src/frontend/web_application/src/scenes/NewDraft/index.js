@@ -3,9 +3,13 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
 import { push } from 'react-router-redux';
-import { editDraft, requestNewDraft, saveDraft, sendDraft, clearDraft } from '../../store/modules/draft-message';
+import { requestNewDraft, clearDraft, syncDraft } from '../../store/modules/draft-message';
+import { removeTab } from '../../store/modules/tab';
+import { saveDraft, sendDraft } from '../../modules/draftMessage';
 import { withNotification } from '../../hoc/notification';
+import { withCurrentTab } from '../../hoc/tab';
 import { deleteMessage } from '../../store/modules/message';
+import { updateTagCollection, withTags } from '../../modules/tags';
 import Presenter from './presenter';
 
 const messageDraftSelector = state => state.draftMessage.draftsByInternalId;
@@ -25,29 +29,59 @@ const mapStateToProps = createSelector(
   })
 );
 
-const onSaveDraft = ({ internalId, draft, message }, ownProps) => dispatch =>
-  dispatch(saveDraft({ internalId, draft, message }))
-    .then(() => {
-      const { i18n, notifySuccess } = ownProps;
+const onSaveDraft = ({ internalId, draft, message }) => dispatch =>
+  dispatch(saveDraft({ internalId, draft, message }, { force: true }));
 
-      return notifySuccess({ message: i18n._('draft.feedback.saved', { defaults: 'Draft saved' }) });
-    });
+const onEditDraft = ({ draft, message, internalId }) => dispatch =>
+  dispatch(saveDraft({ draft, message, internalId }, { withThrottle: true }));
+
+const onUpdateEntityTags = (internalId, i18n, userTags, message, { type, entity, tags }) =>
+  async (dispatch) => {
+    const savedDraft = await dispatch(saveDraft({ internalId, draft: entity, message }, {
+      withThrottle: false,
+      force: true,
+    }));
+    const messageUpTodate = await dispatch(updateTagCollection(
+      i18n, userTags, { type, entity: savedDraft, tags }
+    ));
+
+    return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+  };
+
+const onSendDraft = (currentTab, { draft, message, internalId }) => async (dispatch) => {
+  try {
+    const messageUpToDate = await dispatch(saveDraft({ draft, message, internalId }, {
+      withThrottle: false,
+    }));
+    await dispatch(sendDraft({ draft: messageUpToDate }));
+
+    dispatch(removeTab(currentTab));
+    dispatch(clearDraft({ internalId }));
+
+    return dispatch(push(`/discussions/${messageUpToDate.discussion_id}`));
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
 
 const onDeleteMessage = ({ message, internalId }) => dispatch =>
   dispatch(deleteMessage({ message }))
     .then(() => dispatch(clearDraft({ internalId })))
     .then(() => dispatch(push('/')));
 
-const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
+const mapDispatchToProps = dispatch => bindActionCreators({
   requestNewDraft,
-  editDraft,
-  sendDraft,
-  onSaveDraft: params => onSaveDraft(params, ownProps),
+  onEditDraft,
+  onSaveDraft,
+  onSendDraft,
   onDeleteMessage,
+  onUpdateEntityTags,
 }, dispatch);
 
 export default compose(
   withI18n(),
   withNotification(),
+  withCurrentTab(),
+  withTags(),
   connect(mapStateToProps, mapDispatchToProps)
 )(Presenter);

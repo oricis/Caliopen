@@ -3,19 +3,23 @@ import PropTypes from 'prop-types';
 import TagsForm from '../../../../components/TagsForm';
 import WithTags from '../WithTags';
 import WithSearchTags from '../WithSearchTags';
-import WithUpdateEntityTags from '../WithUpdateEntityTags';
 import { getCleanedTagCollection } from '../../services/getTagLabel';
 
 class ManageEntityTags extends PureComponent {
   static propTypes = {
     type: PropTypes.string.isRequired,
-    entity: PropTypes.shape({}).isRequired,
+    entity: PropTypes.shape({}),
+    onChange: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    entity: undefined,
   };
 
   filterFoundTags = (tags) => {
     const { entity } = this.props;
 
-    if (!entity.tags) {
+    if (!entity || !entity.tags) {
       return tags;
     }
 
@@ -24,7 +28,9 @@ class ManageEntityTags extends PureComponent {
 
   renderTagsForm({ tags, search, foundTags, isSearchFetching, updateEntityTags }) {
     const { entity, type } = this.props;
-    const tagCollection = !entity.tags ? [] : getCleanedTagCollection(tags, entity.tags);
+    const tagCollection = (!entity || !entity.tags) ?
+      [] :
+      getCleanedTagCollection(tags, entity.tags);
     const updateEntityTagsBound = updateEntityTags.bind(null, type, entity);
 
     return (
@@ -55,14 +61,23 @@ class ManageEntityTags extends PureComponent {
   }
 
   render() {
+    const { entity, onChange } = this.props;
+
     return (
       <WithTags
         render={(tags, isTagsFetching) => (
-          <WithUpdateEntityTags
+          <WithSearchTags
             tags={tags}
-            render={updateEntityTags => this.renderSearchTags({
-              updateEntityTags, tags, isTagsFetching,
-            })}
+            isFetching={isTagsFetching}
+            render={(search, foundTags, isSearchFetching) => (
+              <TagsForm
+                tags={(!entity || !entity.tags) ? [] : getCleanedTagCollection(tags, entity.tags)}
+                foundTags={this.filterFoundTags(foundTags)}
+                search={search}
+                isTagSearchFetching={isSearchFetching}
+                updateTags={onChange}
+              />
+            )}
           />
         )}
       />
