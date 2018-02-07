@@ -4,11 +4,14 @@
 
 package objects
 
-import "github.com/satori/go.uuid"
+import (
+	"bytes"
+	"github.com/satori/go.uuid"
+)
 
 // contact's instant messaging address model
 type IM struct {
-	Address   string `cql:"address"     json:"address"`
+	Address   string `cql:"address"     json:"address"      cql_lookup:"contact_lookup"`
 	IMId      UUID   `cql:"im_id"       json:"im_id"`
 	IsPrimary bool   `cql:"is_primary"  json:"is_primary"`
 	Label     string `cql:"label"       json:"label"`
@@ -29,4 +32,28 @@ func (i *IM) UnmarshalMap(input map[string]interface{}) error {
 	i.Type, _ = input["type"].(string)
 
 	return nil //TODO: errors handling
+}
+
+// MarshallNew must be a variadic func to implement NewMarshaller interface,
+// but IM does not need params to marshal a well-formed IM: ...interface{} is ignored
+func (i *IM) MarshallNew(...interface{}) {
+	nullID := new(UUID)
+	if len(i.IMId) == 0 || (bytes.Equal(i.IMId.Bytes(), nullID.Bytes())) {
+		i.IMId.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
+}
+
+// Sort interface implementation
+type ByIMID []IM
+
+func (p ByIMID) Len() int {
+	return len(p)
+}
+
+func (p ByIMID) Less(i, j int) bool {
+	return p[i].IMId.String() < p[j].IMId.String()
+}
+
+func (p ByIMID) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
 }

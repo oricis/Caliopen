@@ -53,7 +53,7 @@ class Contact(ObjectIndexable):
         'contact_id':          UUID,
         'date_insert':         datetime.datetime,
         'date_update':         datetime.datetime,
-        'deleted':             types.BooleanType,
+        'deleted': datetime.datetime,
         'emails':              [Email],
         'family_name':         types.StringType,
         'given_name':          types.StringType,

@@ -207,6 +207,9 @@ class IndexedContact(BaseIndexDocument):
         m.field("public_key", Nested())
         m.field("social_identities", social_ids)
         m.field("tags", Keyword(multi=True))
-        m.field('title', 'text')
+        m.field('title', 'text', analyzer="text_analyzer",
+                fields={
+                    "raw": {"type": "keyword"}
+                })
 
         return m

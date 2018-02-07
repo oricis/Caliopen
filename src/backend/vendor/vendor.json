@@ -39,16 +39,34 @@
 			"revisionTime": "2017-03-29T04:21:07Z"
 		},
 		{
-			"checksumSHA1": "UsILDoIB2S7ra+w2fMdb85mX3HM=",
-			"path": "github.com/gin-gonic/gin/binding",
-			"revision": "d5b353c5d5a560322e6d96121c814115562501f7",
-			"revisionTime": "2017-04-28T10:59:23Z"
+			"checksumSHA1": "QeKwBtN2df+j+4stw3bQJ6yO4EY=",
+			"path": "github.com/gin-contrib/sse",
+			"revision": "22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae",
+			"revisionTime": "2017-01-09T09:34:21Z"
 		},
 		{
-			"checksumSHA1": "PHv9FNb7YavJWtAHcY6ZgXmkmHs=",
+			"checksumSHA1": "ChaIiijOn3YXQppZc831PORMK2U=",
+			"path": "github.com/gin-gonic/gin",
+			"revision": "a712f77d7aaec7eb4766a663924aaa4e54d3fe70",
+			"revisionTime": "2017-12-29T09:10:28Z"
+		},
+		{
+			"checksumSHA1": "3Ttl4CxOEl+NCstutCFyECv0CWs=",
+			"path": "github.com/gin-gonic/gin/binding",
+			"revision": "a712f77d7aaec7eb4766a663924aaa4e54d3fe70",
+			"revisionTime": "2017-12-29T09:10:28Z"
+		},
+		{
+			"checksumSHA1": "woO1qIxIeQ1bcbPSiMfAKk3r4xg=",
+			"path": "github.com/gin-gonic/gin/json",
+			"revision": "a712f77d7aaec7eb4766a663924aaa4e54d3fe70",
+			"revisionTime": "2017-12-29T09:10:28Z"
+		},
+		{
+			"checksumSHA1": "O+2Q4Uc9Vidvc/ctORliL315ZVI=",
 			"path": "github.com/gin-gonic/gin/render",
-			"revision": "d5b353c5d5a560322e6d96121c814115562501f7",
-			"revisionTime": "2017-04-28T10:59:23Z"
+			"revision": "a712f77d7aaec7eb4766a663924aaa4e54d3fe70",
+			"revisionTime": "2017-12-29T09:10:28Z"
 		},
 		{
 			"checksumSHA1": "+IH9gXMht4fL/fxKRZ4sqGBps1g=",
@@ -303,6 +321,12 @@
 			"revisionTime": "2016-11-18T03:06:47Z"
 		},
 		{
+			"checksumSHA1": "50J+ClsLONoc78uu+sDrdJ6IWPA=",
+			"path": "github.com/json-iterator/go",
+			"revision": "96fcb84835b0447f3de9d7addb313c5487071533",
+			"revisionTime": "2017-12-23T02:52:17Z"
+		},
+		{
 			"checksumSHA1": "UvboqgDDSAbGORdtr5tBpkwYR0A=",
 			"path": "github.com/magiconair/properties",
 			"revision": "51463bfca2576e06c62a8504b5c0f06d61312647",
@@ -391,6 +415,12 @@
 			"path": "github.com/minio/minio-go/pkg/set",
 			"revision": "85f15b007f08e11a62c769abe65299b812fd2e0d",
 			"revisionTime": "2017-05-15T18:40:41Z"
+		},
+		{
+			"checksumSHA1": "tWUjKyFOGJtYExocPWVYiXBYsfE=",
+			"path": "github.com/mitchellh/hashstructure",
+			"revision": "2bca23e0e452137f789efbc8610126fd8b94f73b",
+			"revisionTime": "2017-06-09T04:59:27Z"
 		},
 		{
 			"checksumSHA1": "c1JIqjo91nD1RMFImnW69n8jtj8=",
@@ -585,6 +615,18 @@
 			"revisionTime": "2016-08-30T17:39:30Z"
 		},
 		{
+			"checksumSHA1": "syVZskC5CRNdIaisxqimbeA915I=",
+			"path": "github.com/ttacon/builder",
+			"revision": "c099f663e1c235176c175644792c5eb282017ad7",
+			"revisionTime": "2017-05-18T17:14:03Z"
+		},
+		{
+			"checksumSHA1": "xAT8sVPOnnHCGhNwj61oK79lAIk=",
+			"path": "github.com/ttacon/libphonenumber",
+			"revision": "8ff0c76f75b1e4d840054e4bac021eac597c66da",
+			"revisionTime": "2017-09-01T13:31:19Z"
+		},
+		{
 			"checksumSHA1": "0FCBLTqGOxgifAKfS0360iLTZR4=",
 			"path": "github.com/ugorji/go/codec",
 			"revision": "8c0409fcbb70099c748d71f714529204975f6c3f",
@@ -739,18 +781,6 @@
 			"path": "gopkg.in/flosch/pongo2.v3",
 			"revision": "5e81b817a0c48c1c57cdf1a9056cf76bdee02ca9",
 			"revisionTime": "2014-10-28T00:08:13Z"
-		},
-		{
-			"checksumSHA1": "hT+7DPyl8tQ96kUXW3Sr5o0Pcj0=",
-			"path": "gopkg.in/gin-gonic/gin.v1",
-			"revision": "e2212d40c62a98b388a5eb48ecbdcf88534688ba",
-			"revisionTime": "2016-12-04T22:13:08Z"
-		},
-		{
-			"checksumSHA1": "Bo4BONPcezB2H8tWqfrAdmanpuM=",
-			"path": "gopkg.in/gin-gonic/gin.v1/binding",
-			"revision": "d459835d2b077e44f7c9b453505ee29881d5d12d",
-			"revisionTime": "2017-07-02T09:28:26Z"
 		},
 		{
 			"checksumSHA1": "39V1idWER42Lmcmg2Uy40wMzOlo=",

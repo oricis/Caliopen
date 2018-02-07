@@ -93,7 +93,7 @@ class Contact(Api):
             contact_param.validate()
             if hasattr(contact_param, "tags") and contact_param.tags:
                 raise ValidationError(
-                    "adding tags throught parent object is forbidden")
+                    "adding tags through parent object is forbidden")
         except Exception as exc:
             raise ValidationError(exc)
         contact = CoreContact.create(self.user, contact_param)

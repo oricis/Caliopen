@@ -259,7 +259,8 @@ class Contact(NewContact):
                                tzd=u'utc')
     date_update = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
-    deleted = BooleanType()
+    deleted = DateTimeType(serialized_format=helpers.RFC3339Milli,
+                           tzd=u'utc')
     emails = ListType(ModelType(Email), default=lambda: [])
     identities = ListType(ModelType(SocialIdentity), default=lambda: [])
     ims = ListType(ModelType(IM), default=lambda: [])

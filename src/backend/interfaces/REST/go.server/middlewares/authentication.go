@@ -7,7 +7,7 @@ package http_middleware
 import (
 	"encoding/base64"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
-	"gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 	"strings"

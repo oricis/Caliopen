@@ -38,6 +38,10 @@ paths:
     "$ref": paths/contacts.yaml#/contacts
   "/v1/contacts/{contact_id}":
     "$ref": paths/contacts.yaml#/contacts_{contact_id}
+  "/v2/contacts":
+    "$ref": paths/contactsV2.yaml#/contacts
+  "/v2/contacts/{contact_id}":
+    "$ref": paths/contactsV2.yaml#/contacts_{contact_id}
   "/v2/contacts/{contact_id}/identities":
     "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_identities
   "/v2/contacts/{contact_id}/tags":

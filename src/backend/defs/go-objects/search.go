@@ -41,7 +41,7 @@ type IndexHit struct {
 	Document   interface{}         `json:"document"`
 }
 
-func (is *IndexSearch) FilterQuery(service *elastic.SearchService) *elastic.SearchService {
+func (is *IndexSearch) FilterQuery(service *elastic.SearchService, withIL bool) *elastic.SearchService {
 
 	q := elastic.NewBoolQuery()
 	for name, values := range is.Terms {
@@ -49,8 +49,10 @@ func (is *IndexSearch) FilterQuery(service *elastic.SearchService) *elastic.Sear
 			q = q.Filter(elastic.NewTermQuery(name, value))
 		}
 	}
-	rq := elastic.NewRangeQuery("importance_level").Gte(is.ILrange[0]).Lte(is.ILrange[1])
-	q = q.Filter(rq)
+	if withIL {
+		rq := elastic.NewRangeQuery("importance_level").Gte(is.ILrange[0]).Lte(is.ILrange[1])
+		q = q.Filter(rq)
+	}
 	service = service.Query(q)
 
 	return service

@@ -25,7 +25,7 @@ const selectors = {
   last: () => state => [...state.contacts].pop(),
   lastLocation: () => createSelector(
     selectors.last(),
-    contact => ({ location: `/api/v1/contacts/${contact.contact_id}` })
+    contact => ({ location: `/api/v2/contacts/${contact.contact_id}` })
   ),
 };
 
@@ -72,22 +72,22 @@ const reducer = {
 };
 
 const routes = {
-  'GET /v1/contacts/': {
+  'GET /v2/contacts/': {
     action: actions.get,
     selector: selectors.all,
     status: 200,
     middlewares: [createCollectionMiddleware('contacts')],
   },
-  'GET /v1/contacts/:contact_id': {
+  'GET /v2/contacts/:contact_id': {
     action: actions.get,
     selector: selectors.byId,
     status: 200,
   },
-  'PATCH /v1/contacts/:contact_id': {
+  'PATCH /v2/contacts/:contact_id': {
     action: actions.patch,
     status: 204,
   },
-  'POST /v1/contacts/': {
+  'POST /v2/contacts/': {
     action: actions.post,
     selector: selectors.lastLocation,
     status: 200,

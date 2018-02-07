@@ -1,8 +1,8 @@
 package operations
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/satori/go.uuid"
-	"gopkg.in/gin-gonic/gin.v1"
 	"strconv"
 	"strings"
 )

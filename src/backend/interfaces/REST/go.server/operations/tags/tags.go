@@ -8,11 +8,11 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	swgErr "github.com/go-openapi/errors"
 	"github.com/satori/go.uuid"
 	"github.com/tidwall/gjson"
-	"gopkg.in/gin-gonic/gin.v1"
-	"gopkg.in/gin-gonic/gin.v1/binding"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -274,12 +274,17 @@ func PatchResourceWithTags(ctx *gin.Context) {
 	// call UpdateResourceWithPatch API with correct resourceType depending on provided param
 	param := ctx.Params[0]
 	switch param.Key {
-	case "contact_id":
+	case "contactID":
 		resourceType = ContactType
 	case "message_id":
 		resourceType = MessageType
 	default:
 		err = swgErr.New(http.StatusBadRequest, "missing resource param")
+		if err != nil {
+			http_middleware.ServeError(ctx.Writer, ctx.Request, err)
+			ctx.Abort()
+			return
+		}
 	}
 	if resourceID, err = operations.NormalizeUUIDstring(param.Value); err != nil {
 		err = swgErr.New(http.StatusBadRequest, "resource_id is invalid")

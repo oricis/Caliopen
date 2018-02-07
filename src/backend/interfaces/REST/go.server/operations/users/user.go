@@ -10,8 +10,8 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
-	"gopkg.in/gin-gonic/gin.v1"
 	"io/ioutil"
 	"net/http"
 )

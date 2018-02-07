@@ -9,15 +9,15 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
-	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 )
 
 //GET …/contacts/{contact_id}/identities
 func GetIdentities(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	contact_id, err := operations.NormalizeUUIDstring(ctx.Param("contact_id"))
+	contact_id, err := operations.NormalizeUUIDstring(ctx.Param("contactID"))
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
