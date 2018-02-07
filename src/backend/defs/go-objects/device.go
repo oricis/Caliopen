@@ -27,7 +27,7 @@ type Device struct {
 	Name            string           `cql:"name"             json:"name"                       patch:"user"`
 	PrivacyFeatures *PrivacyFeatures `cql:"privacy_features" json:"privacy_features,omitempty" patch:"user"`
 	PrivacyIndex    *PrivacyIndex    `cql:"pi"               json:"pi,omitempty"               patch:"system"`
-	PublicKey       *PublicKey       `cql:"-"                json:"public_key,omitempty"       patch:"user"`
+	PublicKeys      PublicKeys       `cql:"-"                json:"public_keys,omitempty"      patch:"user"`
 	RevokedAt       time.Time        `cql:"revoked_at"       json:"revoked_at,omitempty"       patch:"system"        formatter:"RFC3339Milli"`
 	Status          string           `cql:"status"           json:"status,omitempty"           patch:"system"`
 	Type            string           `cql:"type"             json:"status,omitempty"           patch:"system"`
@@ -78,7 +78,7 @@ func (d *Device) UnmarshalCQLMap(input map[string]interface{}) {
 		d.PrivacyIndex = nil
 	}
 
-	// publicKey is stored in another table
+	// publicKeys are stored in another table
 
 	if revokedAt, ok := input["revoked_at"].(time.Time); ok {
 		d.RevokedAt = revokedAt
@@ -137,10 +137,13 @@ func (d *Device) UnmarshalMap(input map[string]interface{}) error {
 			d.PrivacyIndex = pi
 		}
 	}
-	if i_pk, ok := input["public_key"]; ok && i_pk != nil {
-		pk := new(PublicKey)
-		if err := pk.UnmarshalMap(i_pk.(map[string]interface{})); err == nil {
-			d.PublicKey = pk
+	if pks, ok := input["public_keys"]; ok && pks != nil {
+		d.PublicKeys = PublicKeys{}
+		for _, pk := range pks.([]interface{}) {
+			K := new(PublicKey)
+			if err := K.UnmarshalMap(pk.(map[string]interface{})); err == nil {
+				d.PublicKeys = append(d.PublicKeys, *K)
+			}
 		}
 	}
 	if revokedAt, ok := input["revoked_at"]; ok {
@@ -244,8 +247,10 @@ func (d *Device) GetSetRelated() <-chan interface{} {
 			getSet <- &(d.Locations[i])
 		}
 
-		// send publicKey
-		getSet <- &(d.PublicKey)
+		// send publicKeys
+		for i, _ := range d.PublicKeys {
+			getSet <- &(d.PublicKeys[i])
+		}
 
 		// all done
 		close(getSet)
