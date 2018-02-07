@@ -4,7 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from schematics.models import Model
 from schematics.transforms import blacklist
-from schematics.types import DateTimeType, StringType, UUIDType, IntegerType
+from schematics.types import DateTimeType, StringType, UUIDType, LongType
 from schematics.types.compound import ListType, ModelType, DictType
 
 from caliopen_main.pi.parameters import PIParameter
@@ -20,13 +20,43 @@ class DeviceLocation(Model):
     type = StringType()
 
 
-class EcdsaPubKey(Model):
-    """Device Elliptic Curve signature key."""
+class NewDevicePublicKey(Model):
+    """Input structure for a new public key."""
 
-    x = IntegerType(required=True)
-    y = IntegerType(required=True)
-    curve = StringType(required=True)
-    hash = StringType()
+    expire_date = DateTimeType(serialized_format=helpers.RFC3339Milli,
+                               tzd=u'utc')
+    fingerprint = StringType()
+    key = StringType(required=True)
+    label = StringType(required=True)
+    type = StringType()
+
+    # JWT parameters
+    kty = StringType()    # rsa / ec
+    use = StringType()    # sig / enc
+    alg = StringType()    # algorithm
+    # Elliptic curve public key parameters (rfc7518 6.2.1)
+    crv = StringType()
+    x = LongType()
+    y = LongType()
+
+    class Options:
+        serialize_when_none = False
+
+
+class DevicePublicKey(NewDevicePublicKey):
+    """Existing public key."""
+
+    device_id = UUIDType()
+    key_id = UUIDType()
+    date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
+                               tzd=u'utc')
+    date_update = DateTimeType(serialized_format=helpers.RFC3339Milli,
+                               tzd=u'utc')
+    user_id = UUIDType()
+
+    class Options:
+        roles = {'default': blacklist('user_id', 'device_id')}
+        serialize_when_none = False
 
 
 class NewDevice(Model):
@@ -38,7 +68,6 @@ class NewDevice(Model):
     locations = ListType(ModelType(DeviceLocation), default=lambda: [])
     user_agent = StringType()
     ip_address = StringType()
-    ecdsa_key = ModelType(EcdsaPubKey(), default=lambda: None)
 
 
 class Device(NewDevice):
