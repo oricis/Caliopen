@@ -210,7 +210,6 @@ class NewContact(Model):
     organizations = ListType(ModelType(NewOrganization), default=lambda: [])
     phones = ListType(ModelType(NewPhone), default=lambda: [])
     privacy_features = DictType(StringType(), default=lambda: {})
-    public_keys = ListType(ModelType(NewPublicKey), default=lambda: [])
     tags = ListType(StringType(), default=lambda: [])
 
     class Options:
@@ -234,7 +233,6 @@ class Contact(NewContact):
     ims = ListType(ModelType(IM), default=lambda: [])
     organizations = ListType(ModelType(Organization), default=lambda: [])
     phones = ListType(ModelType(Phone), default=lambda: [])
-    public_keys = ListType(ModelType(PublicKey), default=lambda: [])
     pi = ModelType(PIParameter)
     user_id = UUIDType()
 
