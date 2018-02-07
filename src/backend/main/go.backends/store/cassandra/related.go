@@ -144,7 +144,7 @@ func (cb *CassandraBackend) RetrieveRelated(obj HasRelated) error {
 			rows := new([]map[string]interface{})
 			err := T.Where(relations...).Read(rows).Run()
 			if err != nil {
-				return fmt.Errorf("[CassandraBackend] UpdateRelated: %s", err)
+				return fmt.Errorf("[CassandraBackend] RetrieveRelated: %s", err)
 			}
 
 			// put rows (of unknown type at compilation) into obj

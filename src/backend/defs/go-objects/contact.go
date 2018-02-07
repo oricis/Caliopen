@@ -13,31 +13,31 @@ import (
 
 type (
 	Contact struct {
-		Locker          *sync.Mutex        `cql:"-"                  json:"-"`
-		AdditionalName  string             `cql:"additional_name"    json:"additional_name,omitempty"      patch:"user"`
-		Addresses       []PostalAddress    `cql:"addresses"          json:"addresses,omitempty"            patch:"user"`
-		Avatar          string             `cql:"avatar"             json:"avatar,omitempty"               patch:"user"`
-		ContactId       UUID               `cql:"contact_id"         json:"contact_id,omitempty"   elastic:"omit"`
-		DateInsert      time.Time          `cql:"date_insert"        json:"date_insert,omitempty"          formatter:"RFC3339Milli"`
-		DateUpdate      time.Time          `cql:"date_update"        json:"date_update,omitempty"          formatter:"RFC3339Milli"`
-		Deleted         time.Time          `cql:"deleted"            json:"deleted,omitempty"              formatter:"RFC3339Milli"`
-		Emails          []EmailContact     `cql:"emails"             json:"emails,omitempty"               patch:"user"`
-		FamilyName      string             `cql:"family_name"        json:"family_name,omitempty"          patch:"user"`
-		GivenName       string             `cql:"given_name"         json:"given_name,omitempty"           patch:"user"`
-		Groups          []string           `cql:"groups"             json:"groups,omitempty"               patch:"user"`
-		Identities      []SocialIdentity   `cql:"identities"         json:"identities,omitempty"           patch:"user"`
-		Ims             []IM               `cql:"ims"                json:"ims,omitempty"                  patch:"user"`
-		Infos           map[string]string  `cql:"infos"              json:"infos,omitempty"                patch:"user"`
-		NamePrefix      string             `cql:"name_prefix"        json:"name_prefix,omitempty"          patch:"user"`
-		NameSuffix      string             `cql:"name_suffix"        json:"name_suffix,omitempty"          patch:"user"`
-		Organizations   []Organization     `cql:"organizations"      json:"organizations,omitempty"        patch:"user"`
-		Phones          []Phone            `cql:"phones"             json:"phones,omitempty"               patch:"user"`
-		PrivacyIndex    *PrivacyIndex      `cql:"pi"                 json:"pi,omitempty"`
-		PublicKeys      []ContactPublicKey `cql:"-"                  json:"public_keys,omitempty"          patch:"user"`
-		PrivacyFeatures *PrivacyFeatures   `cql:"privacy_features"   json:"privacy_features,omitempty"`
-		Tags            []string           `cql:"tagnames"           json:"tags,omitempty"                 patch:"system"`
-		Title           string             `cql:"title"              json:"title,omitempty"                patch:"user"`
-		UserId          UUID               `cql:"user_id"            json:"user_id,omitempty"      elastic:"omit"`
+		Locker          *sync.Mutex       `cql:"-"                  json:"-"`
+		AdditionalName  string            `cql:"additional_name"    json:"additional_name,omitempty"      patch:"user"`
+		Addresses       []PostalAddress   `cql:"addresses"          json:"addresses,omitempty"            patch:"user"`
+		Avatar          string            `cql:"avatar"             json:"avatar,omitempty"               patch:"user"`
+		ContactId       UUID              `cql:"contact_id"         json:"contact_id,omitempty"   elastic:"omit"`
+		DateInsert      time.Time         `cql:"date_insert"        json:"date_insert,omitempty"          formatter:"RFC3339Milli"`
+		DateUpdate      time.Time         `cql:"date_update"        json:"date_update,omitempty"          formatter:"RFC3339Milli"`
+		Deleted         time.Time         `cql:"deleted"            json:"deleted,omitempty"              formatter:"RFC3339Milli"`
+		Emails          []EmailContact    `cql:"emails"             json:"emails,omitempty"               patch:"user"`
+		FamilyName      string            `cql:"family_name"        json:"family_name,omitempty"          patch:"user"`
+		GivenName       string            `cql:"given_name"         json:"given_name,omitempty"           patch:"user"`
+		Groups          []string          `cql:"groups"             json:"groups,omitempty"               patch:"user"`
+		Identities      []SocialIdentity  `cql:"identities"         json:"identities,omitempty"           patch:"user"`
+		Ims             []IM              `cql:"ims"                json:"ims,omitempty"                  patch:"user"`
+		Infos           map[string]string `cql:"infos"              json:"infos,omitempty"                patch:"user"`
+		NamePrefix      string            `cql:"name_prefix"        json:"name_prefix,omitempty"          patch:"user"`
+		NameSuffix      string            `cql:"name_suffix"        json:"name_suffix,omitempty"          patch:"user"`
+		Organizations   []Organization    `cql:"organizations"      json:"organizations,omitempty"        patch:"user"`
+		Phones          []Phone           `cql:"phones"             json:"phones,omitempty"               patch:"user"`
+		PrivacyIndex    *PrivacyIndex     `cql:"pi"                 json:"pi,omitempty"`
+		PublicKeys      []PublicKey       `cql:"-"                  json:"public_keys,omitempty"          patch:"user"`
+		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features,omitempty"`
+		Tags            []string          `cql:"tagnames"           json:"tags,omitempty"                 patch:"system"`
+		Title           string            `cql:"title"              json:"title,omitempty"                patch:"user"`
+		UserId          UUID              `cql:"user_id"            json:"user_id,omitempty"      elastic:"omit"`
 	}
 
 	// ContactByContactPoints is the model of a Cassandra table to lookup contacts by address/email/phone/etc.
@@ -338,9 +338,9 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	}
 	//PublicKeys
 	if pks, ok := input["public_keys"]; ok && pks != nil {
-		c.PublicKeys = []ContactPublicKey{}
+		c.PublicKeys = []PublicKey{}
 		for _, pk := range pks.([]interface{}) {
-			K := new(ContactPublicKey)
+			K := new(PublicKey)
 			if err := K.UnmarshalMap(pk.(map[string]interface{})); err == nil {
 				c.PublicKeys = append(c.PublicKeys, *K)
 			}
@@ -400,7 +400,7 @@ func (c *Contact) NewEmpty() interface{} {
 	nc.Infos = map[string]string{}
 	nc.Organizations = []Organization{}
 	nc.Phones = []Phone{}
-	nc.PublicKeys = []ContactPublicKey{}
+	nc.PublicKeys = []PublicKey{}
 	nc.Tags = []string{}
 	return nc
 }
@@ -447,9 +447,12 @@ func (c *Contact) GetSetNested() <-chan interface{} {
 
 // GetRelatedList returns a map[PropertyKey]Type of structs that are embedded into a Contact from joined tables
 func (c *Contact) GetRelatedList() map[string]interface{} {
+	/* TODO
 	return map[string]interface{}{
-		"PublicKeys": &ContactPublicKey{},
+		"PublicKeys": &PublicKey{},
 	}
+	*/
+	return map[string]interface{}{}
 }
 
 // GetSetRelated returns a chan to iterate over pointers to embedded structs that are stored in separate tables.
@@ -461,9 +464,11 @@ func (c *Contact) GetSetRelated() <-chan interface{} {
 	}
 	go func(*sync.Mutex, chan interface{}) {
 		c.Locker.Lock()
+		/* TODO
 		for i, _ := range c.PublicKeys {
 			getSet <- &(c.PublicKeys[i])
 		}
+		*/
 		close(getSet)
 		c.Locker.Unlock()
 	}(c.Locker, getSet)
@@ -489,7 +494,7 @@ func (c *Contact) SortSlices() {
 	sort.Sort(ByIMID(c.Ims))
 	sort.Sort(ByOrganizationID(c.Organizations))
 	sort.Sort(ByPhoneID(c.Phones))
-	sort.Sort(ByName(c.PublicKeys))
+	sort.Sort(ByKeyId(c.PublicKeys))
 	sort.Strings(c.Tags)
 }
 
