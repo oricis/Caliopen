@@ -14,6 +14,7 @@ def setup_storage(settings=None):
     from caliopen_main.contact.objects.contact import Contact
     from caliopen_main.message.objects.message import Message
     from caliopen_main.common.objects.tag import ResourceTag
+    from caliopen_main.device.core import Device
 
     from cassandra.cqlengine.management import sync_table, \
         create_keyspace_simple
