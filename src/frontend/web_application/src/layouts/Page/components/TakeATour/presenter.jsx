@@ -6,8 +6,6 @@ import { Button } from '../../../../components/';
 
 import './style.scss';
 
-import './style.scss';
-
 class TakeATour extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
