@@ -59,6 +59,7 @@ type (
 		ResetUserPassword(token, new_password string, notifier Notifications.EmailNotifiers) error
 		//devices
 		RetrieveDevices(user_id string) ([]Device, CaliopenError)
+		CreateDevice(device *Device) CaliopenError
 	}
 	RESTfacility struct {
 		store      backends.APIStorage

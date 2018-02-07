@@ -65,6 +65,8 @@ devices:
             location:
               type: string
               description: url to retrieve new device's infos at /devices/{device_id}
+            device_id:
+              type: string
 devices_{device_id}:
   get:
     description: Returns a device

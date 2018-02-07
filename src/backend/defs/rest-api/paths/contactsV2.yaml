@@ -71,6 +71,8 @@ contacts:
             location:
               type: string
               description: url to retrieve new contact's infos at /contacts/{contact_id}
+            contact_id:
+              type: string
 contacts_{contact_id}:
   get:
     description: Returns a contact

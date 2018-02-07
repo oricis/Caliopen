@@ -36,7 +36,7 @@ func (rest *RESTfacility) CreateTag(tag *Tag) CaliopenError {
 
 	err = rest.store.CreateTag(tag)
 	if err != nil {
-		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] CreateTag failded to CreateTag in store")
+		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] CreateTag failed to CreateTag in store")
 	}
 	return nil
 }

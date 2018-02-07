@@ -12,7 +12,10 @@ package store
 
 import (
 	"errors"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
+	"github.com/gocassa/gocassa"
 )
 
 // retrieve devices belonging to user_id
@@ -31,4 +34,39 @@ func (cb *CassandraBackend) RetrieveDevices(user_id string) (devices []Device, e
 		devices = append(devices, *d)
 	}
 	return
+}
+
+func (cb *CassandraBackend) CreateDevice(device *Device) error {
+
+	deviceT := cb.IKeyspace.Table("device", &Device{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "device_id"},
+	}).WithOptions(gocassa.Options{TableName: "device"})
+
+	//save device
+	err := deviceT.Set(device).Run()
+	if err != nil {
+		return fmt.Errorf("[CassandraBackend] CreateContact: %s", err)
+	}
+
+	isNew := true
+
+	// create related rows in joinde tables (if any)
+	go func(*CassandraBackend, *Device, bool) {
+		err = cb.UpdateRelated(device, nil, isNew)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] CreateDevice : failed to UpdateRelated")
+		}
+	}(cb, device, isNew)
+
+	/*** NO LOOKUPS for now, code below will be uncommented if needed ***/
+	// create related rows in relevant lookup tables (if any)
+	/*
+		go func(*CassandraBackend, *Device, bool) {
+			err = cb.UpdateLookups(device, nil, isNew)
+			if err != nil {
+				log.WithError(err).Error("[CassandraBackend] CreateDevice : failed to UpdateLookups")
+			}
+		}(cb, device, isNew)
+	*/
+	return nil
 }

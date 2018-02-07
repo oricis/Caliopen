@@ -148,6 +148,8 @@ func (server *REST_API) start() error {
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
 
+	//router.Use(Dumper())
+
 	// adds our middlewares
 	err := http_middleware.InitSwaggerMiddleware(server.config.SwaggerFile)
 	if err != nil {

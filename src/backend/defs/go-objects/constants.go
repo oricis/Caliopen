@@ -54,3 +54,5 @@ var Initiators = map[string]Initiator{
 	"system": SystemActor,
 	"user":   UserActor,
 }
+
+var DeviceTypes = string("laptop|desktop|smartphone|tablet|unknown")
