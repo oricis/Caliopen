@@ -120,6 +120,8 @@ devices_{device_id}:
     - devices
     security:
     - basicAuth: []
+    consumes:
+    - application/json
     parameters:
     - name: device_id
       in: path
@@ -137,7 +139,7 @@ devices_{device_id}:
             type: object
             properties:
               "$ref": "../objects/Device.yaml#/properties"
-    consumes:
+    produces:
     - application/json
     responses:
       '204':
