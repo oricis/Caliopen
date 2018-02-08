@@ -849,7 +849,6 @@
                         "curve": {
                           "type": "string",
                           "enum": [
-                            "P192",
                             "P224",
                             "P256"
                           ]
@@ -863,15 +862,14 @@
                           ]
                         },
                         "x": {
-                          "type": "integer"
+                          "type": "string"
                         },
                         "y": {
-                          "type": "integer"
+                          "type": "string"
                         }
                       },
                       "required": [
                         "curve",
-                        "hash",
                         "x",
                         "y"
                       ],
@@ -11287,8 +11285,37 @@
                       "device_id": {
                         "type": "string"
                       },
-                      "signature_key": {
-                        "type": "string"
+                      "ecdsa_key": {
+                        "type": "object",
+                        "properties": {
+                          "curve": {
+                            "type": "string",
+                            "enum": [
+                              "P224",
+                              "P256"
+                            ]
+                          },
+                          "hash": {
+                            "type": "string",
+                            "enum": [
+                              "SHA256",
+                              "SHA384",
+                              "SHA512"
+                            ]
+                          },
+                          "x": {
+                            "type": "string"
+                          },
+                          "y": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "curve",
+                          "x",
+                          "y"
+                        ],
+                        "additionalProperties": false
                       },
                       "status": {
                         "type": "string"
@@ -11316,10 +11343,6 @@
                         "additionalProperties": true
                       },
                       "date_insert": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "last_seen": {
                         "type": "string",
                         "format": "date-time"
                       },
@@ -11500,8 +11523,37 @@
                 "device_id": {
                   "type": "string"
                 },
-                "signature_key": {
-                  "type": "string"
+                "ecdsa_key": {
+                  "type": "object",
+                  "properties": {
+                    "curve": {
+                      "type": "string",
+                      "enum": [
+                        "P224",
+                        "P256"
+                      ]
+                    },
+                    "hash": {
+                      "type": "string",
+                      "enum": [
+                        "SHA256",
+                        "SHA384",
+                        "SHA512"
+                      ]
+                    },
+                    "x": {
+                      "type": "string"
+                    },
+                    "y": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "curve",
+                    "x",
+                    "y"
+                  ],
+                  "additionalProperties": false
                 },
                 "status": {
                   "type": "string"
@@ -11529,10 +11581,6 @@
                   "additionalProperties": true
                 },
                 "date_insert": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "last_seen": {
                   "type": "string",
                   "format": "date-time"
                 },
@@ -11692,8 +11740,37 @@
                     "device_id": {
                       "type": "string"
                     },
-                    "signature_key": {
-                      "type": "string"
+                    "ecdsa_key": {
+                      "type": "object",
+                      "properties": {
+                        "curve": {
+                          "type": "string",
+                          "enum": [
+                            "P224",
+                            "P256"
+                          ]
+                        },
+                        "hash": {
+                          "type": "string",
+                          "enum": [
+                            "SHA256",
+                            "SHA384",
+                            "SHA512"
+                          ]
+                        },
+                        "x": {
+                          "type": "string"
+                        },
+                        "y": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "curve",
+                        "x",
+                        "y"
+                      ],
+                      "additionalProperties": false
                     },
                     "status": {
                       "type": "string"
@@ -11721,10 +11798,6 @@
                       "additionalProperties": true
                     },
                     "date_insert": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "last_seen": {
                       "type": "string",
                       "format": "date-time"
                     },
@@ -11775,8 +11848,37 @@
                 "device_id": {
                   "type": "string"
                 },
-                "signature_key": {
-                  "type": "string"
+                "ecdsa_key": {
+                  "type": "object",
+                  "properties": {
+                    "curve": {
+                      "type": "string",
+                      "enum": [
+                        "P224",
+                        "P256"
+                      ]
+                    },
+                    "hash": {
+                      "type": "string",
+                      "enum": [
+                        "SHA256",
+                        "SHA384",
+                        "SHA512"
+                      ]
+                    },
+                    "x": {
+                      "type": "string"
+                    },
+                    "y": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "curve",
+                    "x",
+                    "y"
+                  ],
+                  "additionalProperties": false
                 },
                 "status": {
                   "type": "string"
@@ -11804,10 +11906,6 @@
                   "additionalProperties": true
                 },
                 "date_insert": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "last_seen": {
                   "type": "string",
                   "format": "date-time"
                 },

@@ -4,8 +4,9 @@ properties:
   "$ref": NewDevice.yaml#/properties
   device_id:
     type: string
-  signature_key:
-    type: string
+  ecdsa_key:
+    type: object
+    "$ref": ECKey.yaml
   status:
     type: string
   privacy_features:
@@ -15,9 +16,6 @@ properties:
     type: object
     "$ref": PI.yaml
   date_insert:
-    type: string
-    format: date-time
-  last_seen:
     type: string
     format: date-time
   user_id:

@@ -4,7 +4,6 @@ properties:
   curve:
     type: string
     enum:
-      - P192
       - P224
       - P256
   hash:
@@ -14,12 +13,11 @@ properties:
       - SHA384
       - SHA512
   x:
-    type: integer
+    type: string
   y:
-    type: integer
+    type: string
 required:
  - curve
- - hash
  - x
  - y
 additionalProperties: false
