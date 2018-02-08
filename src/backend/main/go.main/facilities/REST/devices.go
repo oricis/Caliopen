@@ -25,6 +25,8 @@ func (rest *RESTfacility) CreateDevice(device *Device) CaliopenError {
 	// add missing properties
 	device.DeviceId.UnmarshalBinary(uuid.NewV4().Bytes())
 	device.DateInsert = time.Now()
+	//MarshalNested(device) // no nested for now.
+	MarshalRelated(device)
 
 	if !strings.Contains(DeviceTypes, device.Type) {
 		return NewCaliopenErrf(UnprocessableCaliopenErr, "[RESTfacility] CreateDevice : unknown type <%s> for new device", device.Type)
@@ -36,4 +38,15 @@ func (rest *RESTfacility) CreateDevice(device *Device) CaliopenError {
 	}
 
 	return nil
+}
+
+func (rest *RESTfacility) RetrieveDevice(userId, deviceId string) (device *Device, err CaliopenError) {
+
+	device, e := rest.store.RetrieveDevice(userId, deviceId)
+
+	if e != nil {
+		return nil, WrapCaliopenErr(e, DbCaliopenErr, "[RESTfacility] RetrieveDevice failed")
+	}
+
+	return device, nil
 }

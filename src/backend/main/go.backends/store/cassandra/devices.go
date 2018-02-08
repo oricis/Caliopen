@@ -18,24 +18,6 @@ import (
 	"github.com/gocassa/gocassa"
 )
 
-// retrieve devices belonging to user_id
-func (cb *CassandraBackend) RetrieveDevices(user_id string) (devices []Device, err error) {
-	all_devices, err := cb.Session.Query(`SELECT * FROM device WHERE user_id = ?`, user_id).Iter().SliceMap()
-	if err != nil {
-		return
-	}
-	if len(all_devices) == 0 {
-		err = errors.New("devices not found")
-		return
-	}
-	for _, device := range all_devices {
-		d := new(Device)
-		d.UnmarshalCQLMap(device)
-		devices = append(devices, *d)
-	}
-	return
-}
-
 func (cb *CassandraBackend) CreateDevice(device *Device) error {
 
 	deviceT := cb.IKeyspace.Table("device", &Device{}, gocassa.Keys{
@@ -69,4 +51,52 @@ func (cb *CassandraBackend) CreateDevice(device *Device) error {
 		}(cb, device, isNew)
 	*/
 	return nil
+}
+
+// retrieve devices belonging to user_id
+func (cb *CassandraBackend) RetrieveDevices(userId string) (devices []Device, err error) {
+	all_devices, err := cb.Session.Query(`SELECT * FROM device WHERE user_id = ?`, userId).Iter().SliceMap()
+	if err != nil {
+		return
+	}
+	if len(all_devices) == 0 {
+		err = errors.New("devices not found")
+		return
+	}
+	for _, device := range all_devices {
+		d := new(Device).NewEmpty().(*Device)
+		d.UnmarshalCQLMap(device)
+		// embed objects from joined tables
+		err = cb.RetrieveRelated(d)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] RetrieveDevice: failed to retrieve related.")
+		} else {
+			devices = append(devices, *d)
+		}
+	}
+	return
+}
+
+func (cb *CassandraBackend) RetrieveDevice(userId, deviceId string) (device *Device, err error) {
+
+	device = new(Device).NewEmpty().(*Device)
+	d := map[string]interface{}{}
+	q := cb.Session.Query(`SELECT * FROM device WHERE user_id = ? AND device_id = ?`, userId, deviceId)
+	err = q.MapScan(d)
+	if err != nil {
+		return nil, err
+	}
+	if len(d) == 0 {
+		err = errors.New("not found")
+		return nil, err
+	}
+	device.UnmarshalCQLMap(d)
+
+	// embed objects from joined tables
+	err = cb.RetrieveRelated(device)
+	if err != nil {
+		log.WithError(err).Error("[CassandraBackend] RetrieveDevice: failed to retrieve related.")
+	}
+
+	return device, nil
 }

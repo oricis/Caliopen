@@ -121,7 +121,6 @@ func (cb *CassandraBackend) RetrieveRelated(obj HasRelated) error {
 	for field, related := range obj.GetRelatedList() {
 		if rel, ok := related.(HasTable); ok {
 			table, partitionKeys, collectionKeys := rel.GetTableInfos()
-
 			// build gocassa Table object
 			keys := []string{}
 			for _, key := range partitionKeys {
@@ -135,7 +134,7 @@ func (cb *CassandraBackend) RetrieveRelated(obj HasRelated) error {
 			relations := []gocassa.Relation{}
 			for property, key := range collectionKeys {
 				value, err := reflections.GetField(obj, property)
-				if err == nil {
+				if err == nil && value != nil {
 					relations = append(relations, gocassa.Eq(key, value))
 				}
 			}
@@ -148,8 +147,8 @@ func (cb *CassandraBackend) RetrieveRelated(obj HasRelated) error {
 			}
 
 			// put rows (of unknown type at compilation) into obj
-			embeddedSlice, err := reflections.GetField(obj, field)
 
+			embeddedSlice, err := reflections.GetField(obj, field)
 			// Create a slice to begin with
 			embeddedSliceType := reflect.TypeOf(embeddedSlice)
 			toEmbed := reflect.MakeSlice(embeddedSliceType, 0, 1) // set capacity as needed

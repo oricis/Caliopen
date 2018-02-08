@@ -11,6 +11,7 @@ import (
 )
 
 type DevicesStorage interface {
-	RetrieveDevices(user_id string) (devices []Device, err error)
 	CreateDevice(device *Device) error
+	RetrieveDevices(user_id string) (devices []Device, err error)
+	RetrieveDevice(userId, deviceId string) (device *Device, err error)
 }

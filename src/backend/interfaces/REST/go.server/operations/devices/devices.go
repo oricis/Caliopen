@@ -12,6 +12,7 @@ import (
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -111,7 +112,34 @@ func GetDevicesList(ctx *gin.Context) {
 
 // GetDevice handles GET /devices/:deviceID
 func GetDevice(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNotImplemented)
+	userId := ctx.MustGet("user_id").(string)
+	deviceId, err := operations.NormalizeUUIDstring(ctx.Param("deviceID"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	device, CalErr := caliopen.Facilities.RESTfacility.RetrieveDevice(userId, deviceId)
+	if CalErr != nil {
+		returnedErr := new(swgErr.CompositeError)
+		if CalErr.Code() == DbCaliopenErr && CalErr.Cause().Error() == "not found" {
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), CalErr, CalErr.Cause())
+		} else {
+			returnedErr = swgErr.CompositeValidationError(CalErr, CalErr.Cause())
+		}
+		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
+		ctx.Abort()
+		return
+	}
+	device_json, err := device.MarshalFrontEnd()
+	if err != nil {
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	} else {
+		ctx.Data(http.StatusOK, "application/json; charset=utf-8", device_json)
+	}
 }
 
 // PatchDevice handles PATCH /devices/:deviceID
