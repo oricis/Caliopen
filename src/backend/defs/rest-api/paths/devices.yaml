@@ -141,6 +141,8 @@ devices_{device_id}:
             type: object
             properties:
               "$ref": "../objects/Device.yaml#/properties"
+        required:
+        - current_state
     produces:
     - application/json
     responses:

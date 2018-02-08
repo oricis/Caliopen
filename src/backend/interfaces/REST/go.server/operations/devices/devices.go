@@ -18,6 +18,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	swgErr "github.com/go-openapi/errors"
 	"github.com/satori/go.uuid"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
@@ -144,7 +145,54 @@ func GetDevice(ctx *gin.Context) {
 
 // PatchDevice handles PATCH /devices/:deviceID
 func PatchDevice(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNotImplemented)
+	var err error
+	userId, err := operations.NormalizeUUIDstring(ctx.MustGet("user_id").(string))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	deviceId, err := operations.NormalizeUUIDstring(ctx.Param("deviceID"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	var patch []byte
+	patch, err = ioutil.ReadAll(ctx.Request.Body)
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	// call REST facility with payload
+	err = caliopen.Facilities.RESTfacility.PatchDevice(patch, userId, deviceId)
+	if err != nil {
+		if Cerr, ok := err.(CaliopenError); ok {
+			returnedErr := new(swgErr.CompositeError)
+			if Cerr.Code() == FailDependencyCaliopenErr {
+				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "[RESTfacility] PatchContact failed"), Cerr, Cerr.Cause())
+			} else {
+				returnedErr = swgErr.CompositeValidationError(Cerr, Cerr.Cause())
+			}
+			http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
+			ctx.Abort()
+			return
+		}
+
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	} else {
+		ctx.Status(http.StatusNoContent)
+	}
 }
 
 // DeleteDevice handles DELETE /devices/:deviceID

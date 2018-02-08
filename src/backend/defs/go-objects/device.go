@@ -29,7 +29,7 @@ type Device struct {
 	PrivacyIndex    *PrivacyIndex    `cql:"pi"               json:"pi,omitempty"               patch:"system"`
 	PublicKeys      PublicKeys       `cql:"-"                json:"public_keys,omitempty"      patch:"user"`
 	Status          string           `cql:"status"           json:"status,omitempty"           patch:"system"`
-	Type            string           `cql:"type"             json:"type,omitempty"             patch:"system"`
+	Type            string           `cql:"type"             json:"type,omitempty"             patch:"user"`
 	UserAgent       string           `cql:"user_agent"       json:"user_agent"                 patch:"system"`
 	UserId          UUID             `cql:"user_id"          json:"user_id"                    patch:"system"`
 }

@@ -99,7 +99,7 @@ func (rest *RESTfacility) PatchContact(patch []byte, userID, contactID string) e
 		if err.Error() == "not found" {
 			return NewCaliopenErr(NotFoundCaliopenErr, "[RESTfacility] contact not found")
 		} else {
-			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] PatcContact failed to retrieve contact")
+			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] PatchContact failed to retrieve contact")
 		}
 	}
 

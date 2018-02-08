@@ -16,6 +16,7 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
+	"gopkg.in/oleiade/reflections.v1"
 )
 
 func (cb *CassandraBackend) CreateDevice(device *Device) error {
@@ -99,4 +100,48 @@ func (cb *CassandraBackend) RetrieveDevice(userId, deviceId string) (device *Dev
 	}
 
 	return device, nil
+}
+
+func (cb *CassandraBackend) UpdateDevice(device, oldDevice *Device, fields map[string]interface{}) error {
+
+	//get cassandra's field name for each field to modify
+	cassaFields := map[string]interface{}{}
+	for field, value := range fields {
+		cassaField, err := reflections.GetFieldTag(device, field, "cql")
+		if err != nil {
+			return fmt.Errorf("[CassandraBackend] UpdateDevice failed to find a cql field for object field %s", field)
+		}
+		if cassaField != "-" {
+			cassaFields[cassaField] = value
+		}
+	}
+
+	deviceT := cb.IKeyspace.Table("device", &Device{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "device_id"},
+	}).WithOptions(gocassa.Options{TableName: "device"}) // need to overwrite default gocassa table naming convention
+
+	err := deviceT.
+		Where(gocassa.Eq("user_id", device.UserId.String()), gocassa.Eq("device_id", device.DeviceId.String())).
+		Update(cassaFields).
+		Run()
+	isNew := false
+
+	// update related rows in joined tables
+	go func(cb *CassandraBackend, new, old *Device, isNew bool) {
+		err = cb.UpdateRelated(device, oldDevice, isNew)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] Updatedevice : failed to UpdateRelated")
+		}
+	}(cb, device, oldDevice, isNew)
+
+	// update related rows in relevant lookup tables
+	/*** no lookups for now
+		go func(cb *CassandraBackend, new, old *Device, isNew bool) {
+			err = cb.UpdateLookups(device, oldDevice, isNew)
+			if err != nil {
+				log.WithError(err).Error("[CassandraBackend] Updatedevice : failed to UpdateLookups")
+			}
+		}(cb, device, oldDevice, isNew)
+	  ***/
+	return nil
 }
