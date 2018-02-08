@@ -138,9 +138,18 @@ class UserAPI(Api):
         dev_key.resource_id = dev.device_id
         dev_key.resource_type = 'device'
         dev_key.label = 'ecdsa key'
+        dev_key.kty = 'ec'
+        dev_key.use = 'sig'
         dev_key.x = int(in_device['ecdsa_key']['x'], 16)
         dev_key.y = int(in_device['ecdsa_key']['y'], 16)
         dev_key.crv = in_device['ecdsa_key']['curve']
+        # XXX Should be better design
+        alg_map = {
+            'P-256': 'ES256',
+            'P-384': 'ES384',
+            'P-521': 'ES512'
+        }
+        dev_key.alg = alg_map[dev_key.crv]
         try:
             device = Device.create(user, dev, public_keys=[dev_key])
             log.info('Device %r created' % device.device_id)
