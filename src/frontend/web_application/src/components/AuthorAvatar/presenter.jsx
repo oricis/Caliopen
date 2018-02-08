@@ -25,7 +25,7 @@ class AuthorAvatar extends PureComponent {
     return (
       <div className={classnames('m-author-avatar', { 'm-author-avatar--small': size === SIZE_SMALL, 'm-author-avatar--medium': size === SIZE_MEDIUM })}>
         <ParticipantIconLetter
-          className={classnames('m-author-avatar__letter', { 'm-author-avatar-small__letter-': size === 'small', 'm-author-avatar--medium__letter': size === 'medium' })}
+          className={classnames('m-author-avatar__letter', { 'm-author-avatar--small__letter-': size === 'small', 'm-author-avatar--medium__letter': size === 'medium' })}
           isSelected={isSelected}
           participant={participant}
         />
