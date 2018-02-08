@@ -14,12 +14,25 @@ KEY_CHOICES = ['rsa', 'gpg', 'ssh']
 class NewPublicKey(Model):
     """Input structure for a new public key."""
 
+    resource_id = UUIDType(required=True)
+    resource_type = StringType(required=True)
+    key_id = UUIDType()
+
     expire_date = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
-    fingerprint = StringType()
-    key = StringType(required=True)
     label = StringType(required=True)
-    type = StringType(choices=KEY_CHOICES)
+    fingerprint = StringType()
+    key = StringType()
+    type = StringType()
+
+    # JWT parameters
+    kty = StringType()    # rsa / ec
+    use = StringType()    # sig / enc
+    alg = StringType()    # algorithm
+    # Elliptic curve public key parameters (rfc7518 6.2.1)
+    crv = StringType()
+    x = StringType()
+    y = StringType()
 
     class Options:
         serialize_when_none = False
@@ -28,8 +41,7 @@ class NewPublicKey(Model):
 class PublicKey(NewPublicKey):
     """Existing public key."""
 
-    resource_type = StringType()
-    resource_id = UUIDType()
+    key_id = UUIDType(required=True)
     date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
     date_update = DateTimeType(serialized_format=helpers.RFC3339Milli,
@@ -37,5 +49,5 @@ class PublicKey(NewPublicKey):
     user_id = UUIDType()
 
     class Options:
-        roles = {'default': blacklist('user_id', 'contact_id')}
+        roles = {'default': blacklist('user_id', 'device_id')}
         serialize_when_none = False
