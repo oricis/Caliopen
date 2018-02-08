@@ -20,6 +20,7 @@ requires = [
     'pyramid_jinja2',
     'caliopen_storage',
     'caliopen_main',
+    'caliopen_pi',
     'pyramid_kvs',
     'waitress',
     'cornice==1.2.1',
