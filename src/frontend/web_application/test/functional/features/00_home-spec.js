@@ -5,10 +5,10 @@ describe('Home', () => {
   const locale = 'en';
   const __ = key => ({
     fr: {
-      please_login: 'Vous pouvez vous authentifier',
+      login: 'Connexion',
     },
     en: {
-      please_login: 'Please Log In',
+      login: 'Login',
     },
   }[locale][key]);
 
@@ -25,15 +25,15 @@ describe('Home', () => {
 
     it('Requires authentication', () => {
       browser.get('/');
-      browser.wait(EC.presenceOf($('.m-title__text')), 1000);
+      browser.wait(EC.presenceOf($('.s-signin__action')), 1000);
 
-      expect(element(by.css('.m-title__text')).getText()).toContain(__('please_login'));
+      expect(element(by.css('.s-signin__action .m-button')).getText()).toContain(__('login'));
     });
 
     it('Log out', () => {
       userUtil.signin();
       userUtil.signout();
-      expect(element(by.css('.m-title__text')).getText()).toContain(__('please_login'));
+      expect(element(by.css('.s-signin__action .m-button')).getText()).toContain(__('login'));
     });
   });
 });
