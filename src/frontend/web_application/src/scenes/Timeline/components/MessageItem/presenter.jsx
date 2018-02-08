@@ -84,7 +84,10 @@ class MessageItem extends Component {
           <span className="s-message-item__tags">{this.renderTags()}</span>
         </TextBlock>
         <TextBlock className={classnames(
-          's-message-item__topic', { 's-message-item__topic--unread': message.is_unread })}
+          's-message-item__topic', {
+            's-message-item__topic--unread': message.is_unread,
+            's-message-item__topic--draft': message.is_draft,
+          })}
         >
           <Link to={`/discussions/${message.discussion_id}#${hash}`} noDecoration >
             {message.is_draft && (<span className="s-message-item__draft-prefix"><Trans id="timeline.draft-prefix">Draft in progress:</Trans></span>)}
