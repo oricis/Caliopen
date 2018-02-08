@@ -4,11 +4,10 @@ import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
 import { Trans } from 'lingui-react';
-import { Dropdown, Button, Icon } from '../';
-import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
-import protocolsConfig, { ASSOC_PROTOCOL_ICON } from '../../services/protocols-config';
-import { addEventListener } from '../../services/event-manager';
-import Recipient from './components/Recipient';
+import { Dropdown, Button, Icon, VerticalMenu, VerticalMenuItem } from '../../../../components';
+import protocolsConfig, { ASSOC_PROTOCOL_ICON } from '../../../../services/protocols-config';
+import { addEventListener } from '../../../../services/event-manager';
+import Recipient from '../Recipient';
 import './style.scss';
 
 export const KEY = {

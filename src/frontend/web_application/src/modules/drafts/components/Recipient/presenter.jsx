@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Badge from '../../../Badge';
-import { Button, Icon } from '../../../';
+import { Badge, Button, Icon } from '../../../../components';
 import { ASSOC_PROTOCOL_ICON } from '../../../../services/protocols-config';
 
 const getIconType = protocol => ASSOC_PROTOCOL_ICON[protocol] || ASSOC_PROTOCOL_ICON.unknown;

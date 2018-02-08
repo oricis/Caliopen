@@ -2,8 +2,8 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import Presenter from './presenter';
-import { setRecipientSearchTerms } from '../../store/modules/draft-message';
-import { search, getKey } from '../../store/modules/participant-suggestions';
+import { setRecipientSearchTerms } from '../../../../store/modules/draft-message';
+import { search, getKey } from '../../../../store/modules/participant-suggestions';
 
 const findRecipient = (recipients, { address, protocol }) => recipients.find(recipient =>
   recipient.address === address && recipient.protocol === protocol
