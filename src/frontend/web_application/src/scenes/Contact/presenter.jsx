@@ -46,6 +46,8 @@ class Contact extends Component {
     push: PropTypes.func.isRequired,
     pristine: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
+    updateTagCollection: PropTypes.func.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.shape({})),
     // birthday: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
@@ -55,6 +57,7 @@ class Contact extends Component {
     contactId: undefined,
     birthday: undefined,
     user: undefined,
+    tags: [],
   };
 
   constructor(props) {
@@ -179,6 +182,12 @@ class Contact extends Component {
       .then(() => this.setState({ isSaving: false }));
   }
 
+  handleTagsChange = async ({ tags }) => {
+    const { updateTagCollection, i18n, tags: userTags, contact: entity } = this.props;
+
+    return updateTagCollection(i18n, userTags, { type: 'contact', entity, tags });
+  }
+
   renderTagsModal = () => {
     const { contact, i18n } = this.props;
     const nb = contact.tags ? contact.tags.length : 0;
@@ -200,7 +209,7 @@ class Contact extends Component {
         title={title}
         onClose={this.handleCloseTags}
       >
-        <ManageEntityTags type="contact" entity={contact} />
+        <ManageEntityTags type="contact" entity={contact} onChange={this.handleTagsChange} />
       </Modal>
     );
   }

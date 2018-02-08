@@ -57,8 +57,18 @@ class MessageSelector extends Component {
           </span>
         )}
         <span className="m-message-selector__actions">
-          <Button icon="tags" onClick={this.handleEditTags} disabled={count === 0} />
-          <Button icon="trash" onClick={this.handleDelete} disabled={count === 0} />
+          <Button
+            icon="tags"
+            onClick={this.handleEditTags}
+            disabled={count === 0}
+            aria-label={i18n._('timeline.action.manage-tags', { defaults: 'Manage tags' })}
+          />
+          <Button
+            icon="trash"
+            onClick={this.handleDelete}
+            disabled={count === 0}
+            aria-label={i18n._('timeline.action.delete', { defaults: 'Delete selected' })}
+          />
         </span>
         <span className="m-message-selector__checkbox">
           <Checkbox

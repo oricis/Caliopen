@@ -14,18 +14,17 @@ describe('tag', () => {
     signin();
   });
 
-  /* TODO: update tests with new tags managment on Timeline
   it('manage tags on timeline', () => {
     const tagName = 'Mon tag';
     browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000)
       .then(() => {
         const messageElement = element(by.cssContainingText(
-          '.m-message-item-container',
+          '.s-message-item',
           'zoidberg'
         ));
 
-        return browser.actions().mouseMove(messageElement).perform()
-          .then(() => messageElement.element(by.cssContainingText('.m-message-item-container__action', __('Manage tags'))).click())
+        return messageElement.element(by.css('.s-message-item__col-select input[type=checkbox]')).click()
+          .then(() => element(by.css('.m-message-selector__actions .m-button[aria-label="Manage tags"]')).click())
           .then(() => expect(element(by.cssContainingText('.m-modal', __('Tags'))).isPresent()).toEqual(true));
       })
       .then(() => browser.element(by.css('.m-tags-form .m-input-text')).sendKeys('in'))
@@ -42,7 +41,6 @@ describe('tag', () => {
       .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag', tagName)).isPresent()).toEqual(false))
     ;
   });
-  */
 
   it('manage tags on a message of a discussion', () => {
     browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000)

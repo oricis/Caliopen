@@ -74,10 +74,10 @@ class Message extends Component {
     }));
   }
 
-  handleTagsChange = async (tags) => {
-    const { updateTagCollection, i18n, userTags, message } = this.props;
+  handleTagsChange = async ({ tags }) => {
+    const { updateTagCollection, i18n, userTags, message: entity } = this.props;
 
-    return updateTagCollection(i18n, userTags, 'message', message, tags);
+    return updateTagCollection(i18n, userTags, { type: 'message', entity, tags });
   }
 
   renderDate = () => {
