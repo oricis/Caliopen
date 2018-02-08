@@ -11,7 +11,7 @@ import (
 )
 
 type PublicKey struct {
-	// PRIMARY KEYS (UserId, ResourceType, ResourceId, KeyId)
+	// PRIMARY KEYS (UserId, ResourceId, KeyId)
 	Algorithm       string           `cql:"alg"              json:"alg,omitempty"                                             patch:"user"`
 	Curve           string           `cql:"crv"              json:"crv,omitempty"                                             patch:"user"`
 	DateInsert      time.Time        `cql:"date_insert"      json:"date_insert,omitempty"         formatter:"RFC3339Milli"    patch:"system"`
@@ -133,13 +133,13 @@ func (pk *PublicKey) UnmarshalJSON(b []byte) error {
 func (pk *PublicKey) GetTableInfos() (table string, partitionKeys map[string]string, clusteringKeys map[string]string) {
 	return "public_key",
 		map[string]string{
-			"UserId":    "user_id",
-			"ContactId": "contact_id",
-			"Name":      "name",
+			"UserId":     "user_id",
+			"ResourceId": "resource_id",
+			"KeyId":      "key_id",
 		},
 		map[string]string{
-			"UserId":    "user_id",
-			"ContactId": "contact_id",
+			"UserId":     "user_id",
+			"ResourceId": "resource_id",
 		}
 }
 

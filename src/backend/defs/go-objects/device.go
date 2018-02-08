@@ -20,17 +20,16 @@ type Device struct {
 	// PRIMARY KEYS (user_id, device_id)
 	Locker          *sync.Mutex      `cql:"-"                json:"-"`
 	DateInsert      time.Time        `cql:"date_insert"      json:"date_insert,omitempty"      patch:"system"        formatter:"RFC3339Milli"`
+	DateRevoked     time.Time        `cql:"date_revoked"     json:"date_revoked,omitempty"     patch:"system"        formatter:"RFC3339Milli"`
 	DeviceId        UUID             `cql:"device_id"        json:"device_id"                  patch:"system"`
 	IpCreation      string           `cql:"ip_creation"      json:"ip_creation"                patch:"user"`
-	IsCurrent       bool             `cql:"is_current"       json:"is_current"                 patch:"is_current"`
-	Locations       DeviceLocations  `cql:"-"                json:"locations,omitempty"        patch:"system"`
+	Locations       DeviceLocations  `cql:"-"                json:"locations,omitempty"        patch:"user"`
 	Name            string           `cql:"name"             json:"name"                       patch:"user"`
 	PrivacyFeatures *PrivacyFeatures `cql:"privacy_features" json:"privacy_features,omitempty" patch:"user"`
 	PrivacyIndex    *PrivacyIndex    `cql:"pi"               json:"pi,omitempty"               patch:"system"`
 	PublicKeys      PublicKeys       `cql:"-"                json:"public_keys,omitempty"      patch:"user"`
-	RevokedAt       time.Time        `cql:"revoked_at"       json:"revoked_at,omitempty"       patch:"system"        formatter:"RFC3339Milli"`
 	Status          string           `cql:"status"           json:"status,omitempty"           patch:"system"`
-	Type            string           `cql:"type"             json:"status,omitempty"           patch:"system"`
+	Type            string           `cql:"type"             json:"type,omitempty"             patch:"system"`
 	UserAgent       string           `cql:"user_agent"       json:"user_agent"                 patch:"system"`
 	UserId          UUID             `cql:"user_id"          json:"user_id"                    patch:"system"`
 }
@@ -47,12 +46,7 @@ func (d *Device) UnmarshalCQLMap(input map[string]interface{}) {
 	if ipCreation, ok := input["ip_creation"].(string); ok {
 		d.IpCreation = ipCreation
 	}
-	if isCurrent, ok := input["is_current"].(bool); ok {
-		d.IsCurrent = isCurrent
-	}
-
 	// locations are stored in another table
-
 	if name, ok := input["name"].(string); ok {
 		d.Name = name
 	}
@@ -81,7 +75,7 @@ func (d *Device) UnmarshalCQLMap(input map[string]interface{}) {
 	// publicKeys are stored in another table
 
 	if revokedAt, ok := input["revoked_at"].(time.Time); ok {
-		d.RevokedAt = revokedAt
+		d.DateRevoked = revokedAt
 	}
 	if status, ok := input["status"].(string); ok {
 		d.Status = status
@@ -110,9 +104,7 @@ func (d *Device) UnmarshalMap(input map[string]interface{}) error {
 	if ipCreation, ok := input["ip_creation"].(string); ok {
 		d.IpCreation = ipCreation
 	}
-	if isCurrent, ok := input["is_current"].(bool); ok {
-		d.IsCurrent = isCurrent
-	}
+
 	if locations, ok := input["locations"]; ok && locations != nil {
 		d.Locations = DeviceLocations{}
 		for _, location := range locations.([]interface{}) {
@@ -147,7 +139,7 @@ func (d *Device) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	if revokedAt, ok := input["revoked_at"]; ok {
-		d.RevokedAt, _ = time.Parse(time.RFC3339Nano, revokedAt.(string))
+		d.DateRevoked, _ = time.Parse(time.RFC3339Nano, revokedAt.(string))
 	}
 	if status, ok := input["status"].(string); ok {
 		d.Status = status
@@ -211,7 +203,7 @@ func (d *Device) MarshallNew(args ...interface{}) {
 	if d.DateInsert.IsZero() {
 		d.DateInsert = time.Now()
 	}
-	d.RevokedAt = time.Time{}
+	d.DateRevoked = time.Time{}
 
 	for i, _ := range d.Locations {
 		d.Locations[i].MarshallNew()
@@ -230,7 +222,7 @@ func (d *Device) SortSlices() {
 func (d *Device) GetRelatedList() map[string]interface{} {
 	return map[string]interface{}{
 		"Locations": &DeviceLocation{},
-		"PublicKey": &PublicKey{},
+		//"PublicKey": &PublicKey{},
 	}
 }
 

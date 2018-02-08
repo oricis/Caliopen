@@ -14,12 +14,12 @@ import (
 )
 
 type DeviceLocation struct {
-	// PRIMARY KEYS (device_id, ip_address)
-	Country         string           `cql:"country"          json:"country,omitempty"`
-	DeviceId        UUID             `cql:"device_id"        json:"device_id"`
-	IpAddress       string           `cql:"ip_address"       json:"ip_address,omitempty"`
-	PrivacyFeatures *PrivacyFeatures `cql:"privacy_features" json:"privacy_features,omitempty"`
-	Type            string           `cql:"type"             json:"type,omitempty"`
+	// PRIMARY KEYS (user_id, device_id, ip_address)
+	Country   string `cql:"country"          json:"country,omitempty"       patch:"user"`
+	DeviceId  UUID   `cql:"device_id"        json:"device_id"               patch:"user"`
+	IpAddress string `cql:"address"          json:"address,omitempty"       patch:"user"`
+	Type      string `cql:"type"             json:"type,omitempty"          patch:"user"`
+	UserId    UUID   `cql:"user_id"          json:"user_id"                 patch:"system"`
 }
 
 type DeviceLocations []DeviceLocation
@@ -33,55 +33,70 @@ func (dl *DeviceLocation) UnmarshalMap(input map[string]interface{}) error {
 			dl.DeviceId.UnmarshalBinary(id.Bytes())
 		}
 	}
-	if ipAddress, ok := input["ip_address"].(string); ok {
+	if ipAddress, ok := input["address"].(string); ok {
 		dl.IpAddress = ipAddress
-	}
-	if i_pf, ok := input["privacy_features"]; ok && i_pf != nil {
-		pf := &PrivacyFeatures{}
-		pf.UnmarshalMap(i_pf.(map[string]interface{}))
-		dl.PrivacyFeatures = pf
-
 	}
 	if i_type, ok := input["type"].(string); ok {
 		dl.Type = i_type
 	}
+	if userId, ok := input["user_id"].(string); ok {
+		if id, err := uuid.FromString(userId); err == nil {
+			dl.UserId.UnmarshalBinary(id.Bytes())
+		}
+	}
 	return nil
 }
 
-func (dl *DeviceLocation) UnmarshalCQLMap(input map[string]interface{}) error {
+func (dl *DeviceLocation) UnmarshalCQLMap(input map[string]interface{}) {
 	if country, ok := input["country"].(string); ok {
 		dl.Country = country
 	}
 	if deviceId, ok := input["device_id"].(gocql.UUID); ok {
 		dl.DeviceId.UnmarshalBinary(deviceId.Bytes())
 	}
-	if ipAddress, ok := input["ip_address"].(string); ok {
+	if ipAddress, ok := input["address"].(string); ok {
 		dl.IpAddress = ipAddress
-	}
-	if i_pf, ok := input["privacy_features"].(map[string]string); ok && i_pf != nil {
-		pf := PrivacyFeatures{}
-		for k, v := range i_pf {
-			pf[k] = v
-		}
-		dl.PrivacyFeatures = &pf
-
-	} else {
-		dl.PrivacyFeatures = nil
 	}
 	if i_type, ok := input["type"].(string); ok {
 		dl.Type = i_type
 	}
-	return nil
+	if userId, ok := input["user_id"].(gocql.UUID); ok {
+		dl.UserId.UnmarshalBinary(userId.Bytes())
+	}
 }
 
+// GetTableInfos implements HasTable interface.
+// It returns params needed by CassandraBackend to CRUD on location table.
+func (dl *DeviceLocation) GetTableInfos() (table string, partitionKeys map[string]string, clusteringKeys map[string]string) {
+	return "device_location",
+		map[string]string{
+			"UserId":    "user_id",
+			"DeviceId":  "device_id",
+			"IpAddress": "address",
+		},
+		map[string]string{
+			"UserId":   "user_id",
+			"DeviceId": "device_id",
+		}
+}
+
+// MarshalNew could have a *Device has first argument
 func (dl *DeviceLocation) MarshallNew(args ...interface{}) {
 	nullID := new(UUID)
 
 	if len(dl.DeviceId) == 0 || (bytes.Equal(dl.DeviceId.Bytes(), nullID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
-			case UUID:
-				dl.DeviceId = args[0].(UUID)
+			case *Device:
+				dl.DeviceId = args[0].(*Device).DeviceId
+			}
+		}
+	}
+	if len(dl.UserId) == 0 || (bytes.Equal(dl.UserId.Bytes(), nullID.Bytes())) {
+		if len(args) == 1 {
+			switch args[0].(type) {
+			case *Device:
+				dl.UserId = args[0].(*Device).UserId
 			}
 		}
 	}

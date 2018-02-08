@@ -207,7 +207,7 @@ func marshallField(obj interface{}, field, context string, jsonBuf *bytes.Buffer
 				case "RFC3339Milli":
 					jsonBuf.WriteString("\"" + field_value.(time.Time).Format(RFC3339Milli) + "\"")
 				default:
-					if fieldKind == reflect.Struct {
+					if fieldKind == reflect.Struct || (fieldKind == reflect.Ptr && field_value != nil) {
 						b, e := JSONMarshaller(context, field_value)
 						if e == nil {
 							jsonBuf.Write(b)

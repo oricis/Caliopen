@@ -11,7 +11,7 @@ import (
 type PrivacyIndex struct {
 	Comportment int       `cql:"comportment"    json:"comportment"`
 	Context     int       `cql:"context"        json:"context"`
-	DateUpdate  time.Time `cql:"date_update"    json:"date_update"`
+	DateUpdate  time.Time `cql:"date_update"    json:"date_update,omitempty"          formatter:"RFC3339Milli"`
 	Technic     int       `cql:"technic"        json:"technic"`
 	Version     int       `cql:"version"        json:"version"`
 }
@@ -38,4 +38,11 @@ func (pi *PrivacyIndex) UnmarshalMap(input map[string]interface{}) error {
 		pi.Version = int(pi_ver)
 	}
 	return nil //TODO: errors handling
+}
+
+// bespoke implementation of the json.Marshaller interface
+// outputs a JSON representation of an object
+// this marshaller takes account of custom tags for given 'context'
+func (pi *PrivacyIndex) JSONMarshaller() ([]byte, error) {
+	return JSONMarshaller("", pi)
 }

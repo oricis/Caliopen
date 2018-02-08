@@ -11331,7 +11331,7 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "revoked_at": {
+                      "date_revoked": {
                         "type": "string",
                         "format": "date-time"
                       },
@@ -11353,6 +11353,12 @@
                             "address": {
                               "type": "string"
                             },
+                            "country": {
+                              "type": "string"
+                            },
+                            "device_id": {
+                              "type": "string"
+                            },
                             "type": {
                               "type": "string",
                               "default": "unknow",
@@ -11362,6 +11368,9 @@
                                 "work",
                                 "public"
                               ]
+                            },
+                            "user_id": {
+                              "type": "string"
                             }
                           },
                           "required": [
@@ -11511,6 +11520,12 @@
                       "address": {
                         "type": "string"
                       },
+                      "country": {
+                        "type": "string"
+                      },
+                      "device_id": {
+                        "type": "string"
+                      },
                       "type": {
                         "type": "string",
                         "default": "unknow",
@@ -11520,6 +11535,9 @@
                           "work",
                           "public"
                         ]
+                      },
+                      "user_id": {
+                        "type": "string"
                       }
                     },
                     "required": [
@@ -11709,7 +11727,7 @@
                   "type": "string",
                   "format": "date-time"
                 },
-                "revoked_at": {
+                "date_revoked": {
                   "type": "string",
                   "format": "date-time"
                 },
@@ -11731,6 +11749,12 @@
                       "address": {
                         "type": "string"
                       },
+                      "country": {
+                        "type": "string"
+                      },
+                      "device_id": {
+                        "type": "string"
+                      },
                       "type": {
                         "type": "string",
                         "default": "unknow",
@@ -11740,6 +11764,9 @@
                           "work",
                           "public"
                         ]
+                      },
+                      "user_id": {
+                        "type": "string"
                       }
                     },
                     "required": [
@@ -12030,7 +12057,7 @@
                       "type": "string",
                       "format": "date-time"
                     },
-                    "revoked_at": {
+                    "date_revoked": {
                       "type": "string",
                       "format": "date-time"
                     },
@@ -12052,6 +12079,12 @@
                           "address": {
                             "type": "string"
                           },
+                          "country": {
+                            "type": "string"
+                          },
+                          "device_id": {
+                            "type": "string"
+                          },
                           "type": {
                             "type": "string",
                             "default": "unknow",
@@ -12061,6 +12094,9 @@
                               "work",
                               "public"
                             ]
+                          },
+                          "user_id": {
+                            "type": "string"
                           }
                         },
                         "required": [
@@ -12193,7 +12229,7 @@
                   "type": "string",
                   "format": "date-time"
                 },
-                "revoked_at": {
+                "date_revoked": {
                   "type": "string",
                   "format": "date-time"
                 },
@@ -12215,6 +12251,12 @@
                       "address": {
                         "type": "string"
                       },
+                      "country": {
+                        "type": "string"
+                      },
+                      "device_id": {
+                        "type": "string"
+                      },
                       "type": {
                         "type": "string",
                         "default": "unknow",
@@ -12224,6 +12266,9 @@
                           "work",
                           "public"
                         ]
+                      },
+                      "user_id": {
+                        "type": "string"
                       }
                     },
                     "required": [
