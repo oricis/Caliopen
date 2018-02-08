@@ -96,3 +96,16 @@ func (rest *RESTfacility) PatchDevice(patch []byte, userId, deviceId string) err
 func (rest *RESTfacility) UpdateDevice(device, oldDevice *Device, modifiedFields map[string]interface{}) error {
 	return rest.store.UpdateDevice(device, oldDevice, modifiedFields)
 }
+
+func (rest *RESTfacility) DeleteDevice(userId, deviceId string) error {
+	device, e := rest.store.RetrieveDevice(userId, deviceId)
+	if e != nil {
+		if e.Error() == "not found" {
+			return NewCaliopenErr(NotFoundCaliopenErr, "[RESTfacility] device not found")
+		} else {
+			return WrapCaliopenErr(e, DbCaliopenErr, "[RESTfacility] DeleteDevice failed to retrieve device")
+		}
+	}
+
+	return rest.store.DeleteDevice(device)
+}

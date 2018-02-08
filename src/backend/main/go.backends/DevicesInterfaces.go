@@ -15,4 +15,5 @@ type DevicesStorage interface {
 	RetrieveDevices(user_id string) (devices []Device, err error)
 	RetrieveDevice(userId, deviceId string) (device *Device, err error)
 	UpdateDevice(device, oldDevice *Device, modifiedFields map[string]interface{}) error
+	DeleteDevice(device *Device) error
 }

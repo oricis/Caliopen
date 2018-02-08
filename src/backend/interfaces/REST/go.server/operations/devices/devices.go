@@ -197,5 +197,28 @@ func PatchDevice(ctx *gin.Context) {
 
 // DeleteDevice handles DELETE /devices/:deviceID
 func DeleteDevice(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNotImplemented)
+	var err error
+	userId, err := operations.NormalizeUUIDstring(ctx.MustGet("user_id").(string))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	deviceId, err := operations.NormalizeUUIDstring(ctx.Param("deviceID"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	err = caliopen.Facilities.RESTfacility.DeleteDevice(userId, deviceId)
+	if err != nil {
+		e := swgErr.New(http.StatusInternalServerError, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	ctx.Status(http.StatusNoContent)
 }

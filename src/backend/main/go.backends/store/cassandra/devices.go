@@ -145,3 +145,30 @@ func (cb *CassandraBackend) UpdateDevice(device, oldDevice *Device, fields map[s
 	  ***/
 	return nil
 }
+
+func (cb *CassandraBackend) DeleteDevice(device *Device) error {
+	// (hard) delete device. TODO: soft delete
+	err := cb.Session.Query(`DELETE FROM device WHERE user_id = ? AND device_id = ?`, device.UserId.String(), device.DeviceId.String()).Exec()
+	if err != nil {
+		return err
+	}
+
+	// delete related rows in joined tables
+	go func(*CassandraBackend, *Device) {
+		err = cb.DeleteRelated(device)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] DeleteDevice: failed to delete related")
+		}
+	}(cb, device)
+
+	// delete related rows in relevant lookup tables
+	/*** no lookups for now
+	go func(*CassandraBackend, *Device) {
+		err = cb.DeleteLookups(device)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] Deletedevice: failed to delete lookups")
+		}
+	}(cb, device)
+	***/
+	return nil
+}
