@@ -177,7 +177,7 @@ class ContactDetails extends Component {
 
         <Section
           className="m-contact-details__panel"
-          title={i18n._('ontact.contact_identities', { defaults: 'Social identity' })}
+          title={i18n._('contact.contact_identities', { defaults: 'Social identity' })}
         >
           <div className="m-contact-details__list">
             {editMode ?

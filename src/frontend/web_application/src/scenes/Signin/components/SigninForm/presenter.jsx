@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import { usernameNormalizer } from '../../../../modules/user';
 import { FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColumn } from '../../../../components/';
-import Section from '../../../../components/Section';
 import Link from '../../../../components/Link';
 
 import './style.scss';
@@ -81,7 +80,7 @@ class SigninForm extends Component {
     const { errors = {}, form, i18n } = this.props;
 
     return (
-      <Section className="s-signin" title={i18n._('signin.title', { defaults: 'Please Log In' })}>
+      <div className="s-signin">
         <FormGrid className="s-signin__form">
           <form method="post" {...form}>
             <FormRow>
@@ -100,19 +99,20 @@ class SigninForm extends Component {
               <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_username"
+                  theme="contrasted"
                   label={i18n._('signin.form.username.label', { defaults: 'Username' })}
                   placeholder={i18n._('signin.form.username.placeholder', { defaults: 'username' })}
                   name="username"
                   value={this.state.username}
                   errors={errors.username}
                   onChange={this.handleInputChange}
-                  showLabelforSr
                   inputRef={(input) => { this.usernameInputRef = input; }}
                 />
               </FormColumn>
               <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signin_password"
+                  theme="contrasted"
                   label={i18n._('signin.form.password.label', { defaults: 'Password' })}
                   placeholder={i18n._('signin.form.password.placeholder', { defaults: 'password' })}
                   name="password"
@@ -120,7 +120,6 @@ class SigninForm extends Component {
                   value={this.state.password}
                   errors={errors.password}
                   onChange={this.handleInputChange}
-                  showLabelforSr
                   inputRef={(input) => { this.passwordInputRef = input; }}
                 />
               </FormColumn>
@@ -136,7 +135,7 @@ class SigninForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn rightSpace={false}>
+              <FormColumn rightSpace={false} className="s-signin__link">
                 <Link to="/auth/forgot-password"><Trans id="signin.action.forgot_password">Forgot password?</Trans></Link>
               </FormColumn>
               {/* <FormColumn rightSpace={false}>
@@ -147,7 +146,7 @@ class SigninForm extends Component {
             </FormRow>
           </form>
         </FormGrid>
-      </Section>
+      </div>
     );
   }
 }

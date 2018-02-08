@@ -3,16 +3,13 @@
 $co-font-path: '../../fonts';
 @import '../../styles/base/fonts';
 @import '../../styles/base/reset';
-
 // --- Vendor ---
 @import '../../styles/vendor/bootstrap_foundation-sites';
-
 @import '../../styles/common';
 
 $navigation__height: $co-component__height;
 $navigation__padding: .75rem;
 $navigation-after__height: $co-component__spacing;
-
 
 .l-body {
   &__content {

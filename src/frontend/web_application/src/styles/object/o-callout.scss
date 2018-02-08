@@ -1,6 +1,6 @@
 @mixin o-callout--color($color) {
-  border-color: darken($color, 35%);
-  background-color: darken($color, 40%);
+  border-color: lighten($color, 20%);
+  background-color: lighten($color, 35%);
 }
 
 @mixin o-callout-base {
@@ -10,9 +10,9 @@
   border: 1px solid $co-color__fg__border;
   border-radius: $co-radius;
   background-color: $co-color__fg__back;
-  box-shadow: $co-shadow;
+  // box-shadow: $co-shadow;
 
-  color: $co-color__fg__text;
+  color: $co-color__fg__text--low;
 }
 
 @mixin o-callout {

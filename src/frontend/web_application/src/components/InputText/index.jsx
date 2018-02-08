@@ -32,6 +32,7 @@ class InputText extends PureComponent {
         'm-input-text--expanded': expanded,
         'm-input-text--light': theme === 'light',
         'm-input-text--dark': theme === 'dark',
+        'm-input-text--contrasted': theme === 'contrasted',
         'm-input-text--bottom-space': bottomSpace,
         'm-input-text--error': hasError,
       },

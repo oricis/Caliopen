@@ -5,10 +5,8 @@
   @include o-form-element;
 
   &--dark { @include o-form-element--dark; }
-
-  &--light {
-    @include o-form-element--light;
-  }
+  &--light { @include o-form-element--light; }
+  &--contrasted { @include o-form-element--contrasted; }
 
   &--expanded { width: 100%; }
 

@@ -2,10 +2,9 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .s-signin {
-  max-width: map-get($co-form__width, 'xlarge');
-  background-color: $co-color__fg__back;
 
   &__action { line-height: $co-component__height; }
+  &__link { text-align: center; }
 
   &__alpha {
     a {

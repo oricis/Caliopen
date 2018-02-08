@@ -39,7 +39,26 @@
   appearance: none;
 }
 
+
+@mixin o-form-element-placeholder($color) {
+  // ::placeholder
+  &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: rgba($color, 0.8);
+  }
+  &::-moz-placeholder { /* Firefox 19+ */
+    color: rgba($color, 0.8);
+  }
+  &:-ms-input-placeholder { /* IE 10+ */
+    color: rgba($color, 0.8);
+  }
+  &:-moz-placeholder { /* Firefox 18- */
+    color: rgba($color, 0.8);
+  }
+}
+
 @mixin o-form-element--dark {
+  @include o-form-element-placeholder($co-color__contrast__text);
+
   background-color: $co-color__contrast__back--lower;
   color: $co-color__fg__text;
 
@@ -49,21 +68,6 @@
   }
 
   &:disabled { background: $co-color__contrast__back--high; }
-
-  // ::placeholder
-  &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: rgba($co-color__contrast__text--lower, 0.8);
-  }
-  &::-moz-placeholder { /* Firefox 19+ */
-    color: rgba($co-color__contrast__text--lower, 0.8);
-  }
-  &:-ms-input-placeholder { /* IE 10+ */
-    color: rgba($co-color__contrast__text--lower, 0.8);
-  }
-  &:-moz-placeholder { /* Firefox 18- */
-    color: rgba($co-color__contrast__text--lower, 0.8);
-  }
-
 }
 
 @mixin o-form-element--light {
@@ -76,21 +80,26 @@
   }
 
   &:disabled {
-    color: $co-color__primary--low;
     background: transparent;
+    color: $co-color__primary--low;
   }
 
-  // ::placeholder
-  &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: rgba($co-color__fg__text--high, 0.8);
+  @include o-form-element-placeholder($co-color__fg__text--high);
+}
+
+@mixin o-form-element--contrasted {
+  border-bottom: 2px solid $co-color__primary;
+  background-color: $co-color__bg__back--higher;
+  color: $co-color__fg__text;
+
+  &:focus {
+    border-color: $co-color__primary--higher;
   }
-  &::-moz-placeholder { /* Firefox 19+ */
-    color: rgba($co-color__fg__text--high, 0.8);
+
+  &:disabled {
+    background: transparent;
+    color: $co-color__primary--low;
   }
-  &:-ms-input-placeholder { /* IE 10+ */
-    color: rgba($co-color__fg__text--high, 0.8);
-  }
-  &:-moz-placeholder { /* Firefox 18- */
-    color: rgba($co-color__fg__text--high, 0.8);
-  }
+
+  @include o-form-element-placeholder($co-color__fg__text--high);
 }

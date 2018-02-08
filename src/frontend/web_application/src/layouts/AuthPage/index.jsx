@@ -9,17 +9,19 @@ const AuthPage = ({ children }) => {
 
   return (
     <div className="l-auth-page">
-      <header className="l-auth-page__header">
-        <Brand className="l-auth-page__brand" theme="low" />
-      </header>
-      <section className="l-auth-page__form">{children}</section>
-      <footer className="l-auth-page__footer">
-        <div>Current version: {version}</div>
-        {motd && (
-          <div>{motd}</div>
-        )}
-        <div>Be good</div>
-      </footer>
+      <div className="l-auth-page__content">
+        <header className="l-auth-page__header">
+          <Brand className="l-auth-page__brand" theme="low" />
+        </header>
+        <section className="l-auth-page__form">{children}</section>
+        <footer className="l-auth-page__footer">
+          <div>Current version: {version}</div>
+          {motd && (
+            <div>{motd}</div>
+          )}
+          <div>Be good</div>
+        </footer>
+      </div>
     </div>
   );
 };
