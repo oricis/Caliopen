@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ReplyForm as ReplyFormBase, NewDraftForm, DraftMessageActionsContainer } from '../../../../modules/drafts';
+import { ReplyForm as ReplyFormBase, NewDraftForm, DraftMessageActionsContainer } from '../../../../modules/draftMessage';
 
 class DraftForm extends Component {
   static propTypes = {
