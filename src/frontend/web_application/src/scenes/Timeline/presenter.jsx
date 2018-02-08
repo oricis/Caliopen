@@ -22,15 +22,18 @@ class Timeline extends Component {
     timelineFilter: PropTypes.string.isRequired,
     loadMore: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
+    tags: PropTypes.arrayOf(PropTypes.shape({})),
     isFetching: PropTypes.bool,
     didInvalidate: PropTypes.bool,
     hasMore: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
     notify: PropTypes.func.isRequired,
+    onUpdateEntityTags: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     messages: [],
+    tags: [],
     user: undefined,
     isFetching: false,
     didInvalidate: false,
@@ -137,6 +140,21 @@ class Timeline extends Component {
     }
   }
 
+  handleTagsChange = ({ tags }) => {
+    const { onUpdateEntityTags, i18n, tags: userTags, messages } = this.props;
+
+    // TODO: for multiple message: diff with common tags then update only common (added/deleted)
+    // don't forget to update the diff after being saved
+
+    const selectedMessageIds = new Set(this.state.selectedMessages);
+
+    return Promise.all(messages
+      .filter(message => selectedMessageIds.has(message.message_id))
+      .map(message =>
+        onUpdateEntityTags(i18n, userTags, { type: 'message', entity: message, tags }))
+      );
+  }
+
   renderList = ({ userTags }) => {
     const { user, messages } = this.props;
 
@@ -159,6 +177,7 @@ class Timeline extends Component {
   renderTagsModal = () => {
     const { messages, i18n } = this.props;
     // TODO: implement multiple messages tags edition
+    // (state common tags for the diff after it has been changed)
     const selectedMessageId = this.state.selectedMessages[0];
     const selectedMessage = messages.find(
       item => item.message_id === selectedMessageId
@@ -185,7 +204,7 @@ class Timeline extends Component {
         onClose={this.handleCloseTags}
       >
         {this.state.isTagModalOpen && (
-          <ManageEntityTags type="message" entity={selectedMessage} />
+          <ManageEntityTags type="message" entity={selectedMessage} onChange={this.handleTagsChange} />
         )}
       </Modal>
     );
