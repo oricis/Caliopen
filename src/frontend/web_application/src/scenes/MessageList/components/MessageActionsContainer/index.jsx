@@ -21,6 +21,7 @@ class MessageActionsContainer extends Component {
     onDelete: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     onMessageRead: PropTypes.func.isRequired,
+    onTagsChange: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
     onCopyTo: PropTypes.func.isRequired,
     className: PropTypes.string,
@@ -80,7 +81,7 @@ class MessageActionsContainer extends Component {
   }
 
   renderTagsModal = () => {
-    const { message, i18n } = this.props;
+    const { message, i18n, onTagsChange } = this.props;
     const nb = message.tags ? message.tags.length : 0;
     const title = (
       <Trans
@@ -100,7 +101,7 @@ class MessageActionsContainer extends Component {
         title={title}
         onClose={this.handleCloseTags}
       >
-        <ManageEntityTags type="message" entity={message} />
+        <ManageEntityTags type="message" entity={message} onChange={onTagsChange} />
       </Modal>
     );
   }

@@ -1,4 +1,4 @@
-import { v1 as uuidv1 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 export const REQUEST_DRAFT = 'co/draft-message/REQUEST_DRAFT';
 export const REQUEST_DRAFT_SUCCESS = 'co/draft-message/REQUEST_DRAFT_SUCCESS';
@@ -25,7 +25,7 @@ export function saveDraft({ internalId, draft, message }) {
   };
 }
 
-export function requestNewDraft({ internalId = uuidv1() }) {
+export function requestNewDraft({ internalId = uuidv4() }) {
   return {
     type: REQUEST_NEW_DRAFT,
     payload: { internalId },
@@ -39,7 +39,7 @@ export function requestNewDraftSuccess({ internalId, draft }) {
   };
 }
 
-export function requestDraft({ internalId = uuidv1(), discussionId }) {
+export function requestDraft({ internalId = uuidv4(), discussionId }) {
   return {
     type: REQUEST_DRAFT,
     payload: { internalId, discussionId },
@@ -84,11 +84,13 @@ export function setRecipientSearchTerms({ internalId, searchTerms }) {
 function syncReadOnlyProps(state, draft) {
   const {
     excerpt,
+    tags,
   } = draft;
 
   return {
     ...state,
     excerpt,
+    tags,
   };
 }
 

@@ -89,7 +89,7 @@ class MessageItem extends Component {
           <Link to={`/discussions/${message.discussion_id}#${hash}`} noDecoration >
             {message.is_draft && (<span className="s-message-item__draft-prefix"><Trans id="timeline.draft-prefix">Draft in progress:</Trans></span>)}
             {message.subject && (<span className="s-message-item__subject">{message.subject}{' '}</span>)}
-            <span className="s-message-item__excerpt">{message.excerpt}</span>)
+            <span className="s-message-item__excerpt">{message.excerpt}</span>
           </Link>
         </TextBlock>
       </span>

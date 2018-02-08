@@ -35,3 +35,30 @@ export default function getClient() {
 
   return client;
 }
+
+
+export const handleClientResponseSuccess = (response) => {
+  if (!response || !response.payload) {
+    throw new Error('Not an axios success Promise');
+  }
+
+  return Promise.resolve(response.payload.data);
+};
+
+export const handleClientResponseError = (payload) => {
+  if (!payload || !payload.error || !payload.error.response) {
+    throw new Error('Not an axios catched Promise', payload);
+  }
+
+  return Promise.reject(payload.error.response.data.errors);
+};
+
+export const tryCatchAxiosAction = async (action) => {
+  try {
+    const response = await action();
+
+    return handleClientResponseSuccess(response);
+  } catch (err) {
+    return handleClientResponseError(err);
+  }
+};

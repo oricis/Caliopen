@@ -7,17 +7,11 @@ jest.mock('lingui-react', () => ({
   i18nMark: () => whatever => whatever,
 }));
 
-describe('component WithUpdateMessaTags', () => {
+describe('modules - tags - component WithUpdateEntityTags', () => {
   it('render', () => {
     const reduxProps = {
       i18n: { _: id => id },
       tags: [{ label: 'Foo', name: 'foo' }, { label: 'Bar', name: 'bar' }],
-      requestTags: jest.fn(() => {
-        reduxProps.tags = [{ label: 'Foo', name: 'foo' }, { label: 'Bar', name: 'bar' }, { label: 'FooBar', name: 'foobar' }];
-
-        return Promise.resolve(reduxProps.tags);
-      }),
-      createTag: jest.fn(),
       updateTagCollection: jest.fn(() => 'foo'),
     };
 
@@ -28,9 +22,8 @@ describe('component WithUpdateMessaTags', () => {
       const render = jest.fn(async (updateEntityTags) => {
         const result = await updateEntityTags('message', message, { tags });
         expect(result).toEqual('foo');
-        expect(reduxProps.createTag).toHaveBeenCalledWith({ label: 'FooBar' });
-        expect(reduxProps.updateTagCollection).toHaveBeenCalledWith('message', message, {
-          tags: ['foo', 'bar', 'foobar'],
+        expect(reduxProps.updateTagCollection).toHaveBeenCalledWith(reduxProps.i18n, reduxProps.tags, 'message', message, {
+          tags,
         });
 
         resolve('done');
@@ -38,7 +31,6 @@ describe('component WithUpdateMessaTags', () => {
       shallow(
         <Presenter render={render} {...reduxProps} />
       );
-      expect(reduxProps.requestTags).not.toHaveBeenCalled();
     });
   });
 });
