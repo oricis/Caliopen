@@ -7,16 +7,16 @@ import pytz
 from cassandra.cqlengine import columns
 
 from caliopen_storage.store import BaseModel
-from caliopen_main.pi.objects import PIModel
 
 
 class PublicKey(BaseModel):
-    """Contact public cryptographic keys model."""
+    """Public cryptographic keys model."""
 
     user_id = columns.UUID(primary_key=True)
-    resource_type = columns.Text(primary_key=True)  # clustering key
     resource_id = columns.UUID(primary_key=True)    # clustering key
     key_id = columns.UUID(primary_key=True)         # clustering key
+
+    resource_type = columns.Text()
     label = columns.Text()
 
     date_insert = columns.DateTime(default=datetime.datetime.now(tz=pytz.utc))
@@ -25,9 +25,6 @@ class PublicKey(BaseModel):
 
     key = columns.Text()
     fingerprint = columns.Text()
-
-    privacy_features = columns.Map(columns.Text(), columns.Text())
-    pi = PIModel
 
     # JWT parameters
     kty = columns.Text()    # rsa / ec

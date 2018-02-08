@@ -11,21 +11,22 @@ log = logging.getLogger(__name__)
 class BaseUserRelatedCore(BaseCore):
     """Core class for related objects to an user and another entity."""
 
-    _resource_name = None
+    _pkey_name = None   # to be defined in real class
 
     @classmethod
     def create(cls, user, resource_id, **kwargs):
         """Create a related user and resource entity."""
-        kwargs.update({cls._resource_name: resource_id})
-        obj = cls._model_class.create(user_id=user.user_id, **kwargs)
+        obj = cls._model_class.create(user_id=user.user_id,
+                                      resource_id=resource_id,
+                                      **kwargs)
         return cls(obj)
 
     @classmethod
     def get(cls, user, resource_id, value):
         """Get a related entity."""
         kwargs = {'user_id': user.user_id,
-                  cls._pkey_name: value,
-                  cls._resource_name: resource_id}
+                  'resource_id': resource_id,
+                  cls._pkey_name: value}
         try:
             obj = cls._model_class.get(**kwargs)
             return cls(obj)
@@ -39,7 +40,7 @@ class BaseUserRelatedCore(BaseCore):
         """Find related object for an user and an given resource."""
         filters = filters if filters else {}
         filters.update({'user_id': user.user_id,
-                        cls._resource_name: resource_id})
+                        'resource_id': resource_id})
         q = cls._model_class.filter(**filters)
         if not filters:
             objs = q
