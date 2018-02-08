@@ -1,4 +1,4 @@
-import { PI_PROPERTIES, getAngles } from '../../../../services/pi';
+import { PI_PROPERTIES, getAngles } from '../pi';
 
 export function calcXpoint(level, tilt, axeLength) {
   return Math.round(axeLength - (level * Math.sin((tilt * Math.PI) / 180)));

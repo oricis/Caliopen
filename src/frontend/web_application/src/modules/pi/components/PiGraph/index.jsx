@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { calcPolygonPoints, calcGridCoordinates } from './services/svg';
+import { calcPolygonPoints, calcGridCoordinates } from '../../services/svg';
 import './style.scss';
 
 const Grid = ({ axeLength }) => {

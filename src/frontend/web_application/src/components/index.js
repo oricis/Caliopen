@@ -10,7 +10,6 @@ export { default as InfiniteScroll } from './InfiniteScroll';
 export { default as Link } from './Link';
 export { default as MenuBar } from './MenuBar';
 export { default as Modal } from './Modal';
-export { default as MultidimensionalPi } from './MultidimensionalPi';
 export { default as NavList, NavItem } from './NavList';
 export { default as PageTitle } from './PageTitle';
 export { default as Section } from './Section';
