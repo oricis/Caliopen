@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import { Trans } from 'lingui-react';
-import Button from '../Button';
-import Icon from '../Icon';
-import DropdownMenu from '../DropdownMenu';
-import VerticalMenu, { VerticalMenuItem } from '../VerticalMenu';
-import { getTagLabel } from '../../modules/tags';
-import TagItem from './components/TagItem';
-import TagSearch from './components/TagSearch';
+import { Button, Icon, DropdownMenu, VerticalMenu, VerticalMenuItem } from '../../../../components';
+import { getTagLabel } from '../../';
+import TagItem from '../TagItem';
+import TagSearch from '../TagSearch';
 
 import './style.scss';
 
