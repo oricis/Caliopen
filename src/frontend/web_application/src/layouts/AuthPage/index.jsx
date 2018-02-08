@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Brand from '../../components/Brand';
-import BodyClass from '../../hoc/bodyClass';
 import { getConfig } from '../../services/config';
 import './style.scss';
 
@@ -9,8 +8,8 @@ const AuthPage = ({ children }) => {
   const { version, motd } = getConfig();
 
   return (
-    <BodyClass backgroundColorClass="white">
-      <div className="l-auth-page">
+    <div className="l-auth-page">
+      <div className="l-auth-page__content">
         <header className="l-auth-page__header">
           <Brand className="l-auth-page__brand" theme="low" />
         </header>
@@ -23,7 +22,7 @@ const AuthPage = ({ children }) => {
           <div>Be good</div>
         </footer>
       </div>
-    </BodyClass>
+    </div>
   );
 };
 
