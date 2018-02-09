@@ -34,8 +34,9 @@ type (
 
 	// NATS
 	NatsConfig struct {
-		Url           string `mapstructure:"url"`
-		OutSMTP_topic string `mapstructure:"outSMTP_topic"`
+		Url            string `mapstructure:"url"`
+		OutSMTP_topic  string `mapstructure:"outSMTP_topic"`
+		Contacts_topic string `mapstructure:"contacts_topic"`
 	}
 	// Objects Store
 	OSSConfig struct {

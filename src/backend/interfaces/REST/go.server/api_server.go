@@ -71,8 +71,9 @@ type (
 	}
 
 	NatsConfig struct {
-		Url           string `mapstructure:"url"`
-		OutSMTP_topic string `mapstructure:"outSMTP_topic"`
+		Url            string `mapstructure:"url"`
+		OutSMTP_topic  string `mapstructure:"outSMTP_topic"`
+		Contacts_topic string `mapstructure:"contacts_topic"`
 	}
 
 	NotifierConfig struct {
@@ -111,8 +112,9 @@ func (server *REST_API) initialize(config APIConfig) error {
 			Db:       config.CacheSettings.Db,
 		},
 		NatsConfig: obj.NatsConfig{
-			Url:           config.NatsConfig.Url,
-			OutSMTP_topic: config.NatsConfig.OutSMTP_topic,
+			Url:            config.NatsConfig.Url,
+			OutSMTP_topic:  config.NatsConfig.OutSMTP_topic,
+			Contacts_topic: config.NatsConfig.Contacts_topic,
 		},
 		NotifierConfig: obj.NotifierConfig{
 			AdminUsername: config.NotifierConfig.AdminUsername,
