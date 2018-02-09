@@ -130,6 +130,7 @@ class UserAPI(Api):
             dev.name = 'default'
             dev.device_id = in_device['device_id']
             dev.user_agent = self.request.headers.get('User-Agent')
+            dev.ip_creation = self.request.headers.get('X-Forwarded-For')
             qualifier = NewDeviceQualifier(user)
             qualifier.process(dev)
             dev.type = dev.privacy_features.get('device_type', 'unknow')

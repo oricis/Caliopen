@@ -38,7 +38,10 @@ class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         device.validate()
         attrs = {'device_id': device.device_id,
                  'type': device.type,
-                 'name': device.name}
+                 'name': device.name,
+                 'user_agent': device.user_agent,
+                 'ip_creation': device.ip_creation,
+                 'privacy_features': device.privacy_features}
 
         core = super(Device, cls).create(user, **attrs)
         log.debug('Created device %s' % core.device_id)
