@@ -12,6 +12,9 @@ properties:
     format: date-time
   ip_creation:
     type: string
+  locations:
+    type: object
+    "$ref": DeviceLocation.yaml
   name:
     type: string
   privacy_features:
