@@ -124,37 +124,38 @@ class UserAPI(Api):
         log.info('Created user {} with name {}'.
                  format(user.user_id, user.name))
         # default device management
-        dev = NewDevice()
-        dev.name = 'default'
         in_device = self.request.swagger_data['user']['device']
-        dev.device_id = in_device['device_id']
-        dev.user_agent = self.request.headers.get('User-Agent')
-        qualifier = NewDeviceQualifier(user)
-        qualifier.process(dev)
-        dev.type = dev.privacy_features.get('device_type', 'unknow')
-        # Device ecdsa key
-        dev_key = NewPublicKey()
-        dev_key.key_id = uuid.uuid4()
-        dev_key.resource_id = dev.device_id
-        dev_key.resource_type = 'device'
-        dev_key.label = 'ecdsa key'
-        dev_key.kty = 'ec'
-        dev_key.use = 'sig'
-        dev_key.x = int(in_device['ecdsa_key']['x'], 16)
-        dev_key.y = int(in_device['ecdsa_key']['y'], 16)
-        dev_key.crv = in_device['ecdsa_key']['curve']
-        # XXX Should be better design
-        alg_map = {
-            'P-256': 'ES256',
-            'P-384': 'ES384',
-            'P-521': 'ES512'
-        }
-        dev_key.alg = alg_map[dev_key.crv]
-        try:
-            device = Device.create(user, dev, public_keys=[dev_key])
-            log.info('Device %r created' % device.device_id)
-        except Exception as exc:
-            log.exception('Error during device creation %r' % exc)
+        if in_device:
+            dev = NewDevice()
+            dev.name = 'default'
+            dev.device_id = in_device['device_id']
+            dev.user_agent = self.request.headers.get('User-Agent')
+            qualifier = NewDeviceQualifier(user)
+            qualifier.process(dev)
+            dev.type = dev.privacy_features.get('device_type', 'unknow')
+            # Device ecdsa key
+            dev_key = NewPublicKey()
+            dev_key.key_id = uuid.uuid4()
+            dev_key.resource_id = dev.device_id
+            dev_key.resource_type = 'device'
+            dev_key.label = 'ecdsa key'
+            dev_key.kty = 'ec'
+            dev_key.use = 'sig'
+            dev_key.x = int(in_device['ecdsa_key']['x'], 16)
+            dev_key.y = int(in_device['ecdsa_key']['y'], 16)
+            dev_key.crv = in_device['ecdsa_key']['curve']
+            # XXX Should be better design
+            alg_map = {
+                'P-256': 'ES256',
+                'P-384': 'ES384',
+                'P-521': 'ES512'
+            }
+            dev_key.alg = alg_map[dev_key.crv]
+            try:
+                device = Device.create(user, dev, public_keys=[dev_key])
+                log.info('Device %r created' % device.device_id)
+            except Exception as exc:
+                log.exception('Error during device creation %r' % exc)
 
         user_url = self.request.route_path('User', user_id=user.user_id)
         self.request.response.location = user_url.encode('utf-8')
