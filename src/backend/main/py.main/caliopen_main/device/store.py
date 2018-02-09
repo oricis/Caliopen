@@ -37,6 +37,7 @@ class Device(BaseModel):
     name = columns.Text()
     date_insert = columns.DateTime(required=True,
                                    default=datetime.datetime.now(tz=pytz.utc))
+    date_revoked = columns.DateTime()
     type = columns.Text(required=True)      # laptop, desktop, smartphone, etc
     status = columns.Text(default='unknown')
     user_agent = columns.Text()

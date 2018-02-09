@@ -4,10 +4,15 @@ properties:
   "$ref": NewDevice.yaml#/properties
   device_id:
     type: string
-  ecdsa_key:
-    type: object
-    "$ref": ECKey.yaml
-  status:
+  date_insert:
+    type: string
+    format: date-time
+  date_revoked:
+    type: string
+    format: date-time
+  ip_creation:
+    type: string
+  name:
     type: string
   privacy_features:
     type: object
@@ -15,13 +20,17 @@ properties:
   pi:
     type: object
     "$ref": PI.yaml
-  date_insert:
+  status:
     type: string
-    format: date-time
+  type:
+    type: string
   user_id:
+    type: string
+  user_agent:
     type: string
 required:
 - device_id
+- user_id
 - name
 - type
 - status
