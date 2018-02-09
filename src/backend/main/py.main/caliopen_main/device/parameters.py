@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Caliopen contact parameters classes."""
+"""Caliopen device parameters classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
 from schematics.models import Model
@@ -16,19 +16,26 @@ DEVICE_TYPES = ['other', 'desktop', 'laptop', 'smartphone', 'tablet']
 class DeviceLocation(Model):
     """Location structure for a device."""
 
+    user_id = UUIDType()
+    device_id = UUIDType()
     address = StringType(required=True)  # With CIDR notation
     type = StringType()
+    country = StringType()
+
+    class Options:
+        serialize_when_none = False
+        roles = {'default': blacklist('user_id', 'device_id')}
 
 
 class NewDevice(Model):
     """Structure to create a new user device."""
 
     name = StringType(required=True)
-    type = StringType(required=True, choices=DEVICE_TYPES, default='unknow')
+    type = StringType(required=True, choices=DEVICE_TYPES, default='other')
 
     locations = ListType(ModelType(DeviceLocation), default=lambda: [])
     user_agent = StringType()
-    ip_address = StringType()
+    ip_creation = StringType()
 
 
 class Device(NewDevice):

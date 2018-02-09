@@ -8,10 +8,17 @@ from .store import DeviceLocation as ModelDeviceLocation
 
 from caliopen_storage.core import BaseUserCore
 from caliopen_storage.core.mixin import MixinCoreRelation, MixinCoreNested
-from caliopen_main.common.core import PublicKey
+from caliopen_main.common.core import PublicKey, BaseUserRelatedCore
 
 
 log = logging.getLogger(__name__)
+
+
+class DeviceLocation(BaseUserRelatedCore):
+    """Locations defined for a device to restrict access."""
+
+    _model_class = ModelDeviceLocation
+    _pkey_name = 'address'
 
 
 class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
@@ -20,23 +27,18 @@ class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
     _model_class = ModelDevice
     _pkey_name = 'device_id'
 
-    _nested = {
-        'locations': ModelDeviceLocation,
-    }
-
     _relations = {
-        'public_keys': PublicKey
+        'public_keys': PublicKey,
+        'locations': ModelDeviceLocation,
     }
 
     @classmethod
     def create(cls, user, device, **related):
         """Create a new device for an user."""
         device.validate()
-        locations = cls.create_nested(device.locations, ModelDeviceLocation)
         attrs = {'device_id': device.device_id,
                  'type': device.type,
-                 'name': device.name,
-                 'locations': locations}
+                 'name': device.name}
 
         core = super(Device, cls).create(user, **attrs)
         log.debug('Created device %s' % core.device_id)
