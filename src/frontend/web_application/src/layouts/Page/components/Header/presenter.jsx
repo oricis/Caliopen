@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 // import { Button } from '../../../../components/';
-import Brand from '../../../../components/Brand';
+import { Brand } from '../../../../components/';
 import SearchField from './components/SearchField';
 import UserMenu from './components/UserMenu';
 import TakeATour from '../TakeATour';

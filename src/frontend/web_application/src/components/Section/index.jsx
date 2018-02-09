@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Title from '../../components/Title';
+import Title from '../Title';
 import './style.scss';
 
 class Section extends PureComponent {

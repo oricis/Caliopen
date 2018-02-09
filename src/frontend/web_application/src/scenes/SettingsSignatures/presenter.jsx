@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Section from '../../components/Section';
-import { PageTitle } from '../../components/';
+import { Section, Link, PageTitle, NavList, NavItem } from '../../components/';
 import SignatureForm from './components/SignatureForm';
-import NavList, { ItemContent } from '../../components/NavList';
-import Link from '../../components/Link';
 
 import './style.scss';
 
@@ -24,9 +21,9 @@ const SettingsSignatures = ({ i18n }) => (
       <NavList dir="vertical" className="s-settings-signatures__menu">
         {navLinks.map(link => (
           // this should be identities.map(identity => ... )
-          <ItemContent active={false} large key={link.title}>
+          <NavItem active={false} large key={link.title}>
             <Link noDecoration {...link}>{link.title}</Link>
-          </ItemContent>
+          </NavItem>
         ))}
       </NavList>
     }

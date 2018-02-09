@@ -1,19 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import NavList, { ItemContent } from './';
+import NavList, { NavItem } from './';
 
 describe('component NavList', () => {
   it('render', () => {
     const comp = shallow(
       <NavList>
         {[
-          <ItemContent key="0">Foo</ItemContent>,
-          <ItemContent key="1">Bar</ItemContent>,
+          <NavItem key="0">Foo</NavItem>,
+          <NavItem key="1">Bar</NavItem>,
         ]}
       </NavList>
     );
 
-    expect(comp.find('ItemContent').length).toEqual(2);
-    expect(comp.find('ItemContent').first().dive().text()).toEqual('Foo');
+    expect(comp.find('NavItem').length).toEqual(2);
+    expect(comp.find('NavItem').first().dive().text()).toEqual('Foo');
   });
 });

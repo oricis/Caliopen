@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Button, Icon } from '../../../';
+import Icon from '../../../Icon';
+import Button from '../../../Button';
 import './style.scss';
 
 const DeleteFieldGroup = ({ template, item, position, onDelete, onChange, className }) => {

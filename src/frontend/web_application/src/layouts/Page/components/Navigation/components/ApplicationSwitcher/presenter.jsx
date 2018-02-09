@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import { ItemLink, NavbarItem } from '../Navbar';
-import Link from '../../../../../../components/Link';
-import { Button, Icon, Dropdown, withDropdownControl } from '../../../../../../components/';
-import VerticalMenu, { VerticalMenuItem } from '../../../../../../components/VerticalMenu';
+import { Link, Button, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem } from '../../../../../../components/';
 import { getLabels } from '../../../../../../services/application-manager';
 import './style.scss';
 

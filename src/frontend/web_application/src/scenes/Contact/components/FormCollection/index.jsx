@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import { FieldArray, FormSection } from 'redux-form';
 import { Button, FormGrid, FormRow, FormColumn } from '../../../../components/';
-import TextList, { ItemContent } from '../../../../components/TextList';
+import TextList, { TextItem } from '../../../../components/TextList';
 
 class FormCollection extends PureComponent {
   static propTypes = {
@@ -21,14 +21,14 @@ class FormCollection extends PureComponent {
     return (
       <TextList>
         {fields.map((fieldName, index) => (
-          <ItemContent key={index} large>
+          <TextItem key={index} large>
             <FormSection name={fieldName}>
               <component.type onDelete={() => fields.remove(index)} />
             </FormSection>
-          </ItemContent>
+          </TextItem>
         ))}
         {showAdd && (
-          <ItemContent large>
+          <TextItem large>
             <FormGrid>
               <FormRow>
                 <FormColumn>
@@ -38,7 +38,7 @@ class FormCollection extends PureComponent {
                 </FormColumn>
               </FormRow>
             </FormGrid>
-          </ItemContent>
+          </TextItem>
         )}
       </TextList>
     );

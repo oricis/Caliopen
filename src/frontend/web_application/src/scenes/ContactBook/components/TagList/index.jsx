@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
 import classnames from 'classnames';
 import { WithTags, getTagLabel } from '../../../../modules/tags';
-import { Button } from '../../../../components/';
-import NavList, { ItemContent } from '../../../../components/NavList';
+import { Button, NavList, NavItem } from '../../../../components/';
 
 import './style.scss';
 
@@ -47,19 +46,19 @@ class TagList extends Component {
 
     return (
       <NavList className="m-tag-list" dir="vertical">
-        <ItemContent className="m-tag-list__item">
+        <NavItem className="m-tag-list__item">
           {this.renderItem({
             tagName: '',
             label: i18n._('tag_list.all_contacts', { defaults: 'All contacts' }),
           })}
-        </ItemContent>
+        </NavItem>
         <WithTags render={userTags => this.sortTags(i18n, userTags).map(tag => (
-          <ItemContent className="m-tag-list__item" key={tag.name}>
+          <NavItem className="m-tag-list__item" key={tag.name}>
             {this.renderItem({
               tagName: tag.name,
               label: getTagLabel(i18n, tag),
             })}
-          </ItemContent>
+          </NavItem>
           ))}
         />
       </NavList>

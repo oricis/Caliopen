@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { PasswordStrength, Button, Icon, FieldErrors, TextFieldGroup, FormGrid, FormColumn, FormRow } from '../../../../components/';
-import Section from '../../../../components/Section';
-import Link from '../../../../components/Link';
+import { Section, Link, PasswordStrength, Button, Icon, FieldErrors, TextFieldGroup, FormGrid, FormColumn, FormRow } from '../../../../components/';
 
 import './style.scss';
 

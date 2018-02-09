@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import UserInfo from '../../../UserInfo';
-import Link from '../../../../../../components/Link';
-import { Button, Icon, Dropdown, withDropdownControl } from '../../../../../../components/';
-import VerticalMenu, { VerticalMenuItem, Separator } from '../../../../../../components/VerticalMenu';
+import { Link, Button, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem, Separator } from '../../../../../../components/';
 import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);

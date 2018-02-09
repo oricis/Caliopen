@@ -1,0 +1,93 @@
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+@import '../../../../styles/object/o-avatar';
+
+.m-reply {
+  @include flex-grid-row($size: expand);
+  font-size: $co-font__size--small;
+
+  &__form-col { @include flex-grid-size; }
+
+  &__top-bar {
+    @include flex-grid-row($size: expand);
+    align-items: center;
+    background: $co-color__fg__back;
+  }
+
+  &__top-bar-info {
+    @include flex-grid-row($size: expand);
+    flex: 1;
+  }
+
+  &__top-actions-switcher {
+    @include flex-grid-size(shrink);
+    margin-left: auto;
+    border-left: 1px solid $co-color__bg__back;
+  }
+
+  &__type {
+    @include flex-grid-size(shrink);
+  }
+
+  &__type-icon { color: $co-color__fg__text; }
+  &__type-label { display: none; }
+
+  &__parent {
+    @include flex-grid-size;
+    padding: $co-component__spacing;
+    background: $co-color__fg__back;
+  }
+
+  &__parent-link {
+    color: $co-color__fg__text--low;
+  }
+
+  &__avatar-col { display: none; }
+
+  &__date {
+    @include flex-grid-column(shrink);
+    margin-left: auto;
+  }
+
+  &__author {
+    @include flex-grid-column(shrink);
+    margin-right: $co-component__spacing;
+    color: $co-color__fg__text;
+    font-weight: 600;
+  }
+
+  &__body {
+    border-top: 1px solid $co-color__bg__back;
+    border-bottom: 1px solid $co-color__bg__back;
+    background: $co-color__fg__back;
+    color: $co-color__fg__text;
+  }
+
+  &__bottom-bar {
+    @include flex-grid-row($size: expand);
+    padding: 2 * $co-component__spacing $co-component__spacing;
+    background-color: $co-color__fg__back;
+  }
+
+  &__bottom-action {
+    @include flex-grid-size(shrink);
+    margin-right: $co-component__spacing;
+    background-color: $co-color__fg__back;
+
+    &--editor {
+      margin-right: 0;
+      margin-left: auto;
+    }
+  }
+
+  @include breakpoint(medium) {
+    &__avatar-col {
+      @include flex-grid-column(shrink);
+      display: flex;
+      padding-top: $co-component__spacing;
+    }
+
+    &__avatar { @include m-avatar--size(medium) }
+
+    &__type-label { display: inline; }
+  }
+}

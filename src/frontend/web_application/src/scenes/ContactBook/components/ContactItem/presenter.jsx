@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Link from '../../../../components/Link';
 import ContactAvatarLetter, { SIZE_SMALL } from '../../../../components/ContactAvatarLetter';
-import { TextBlock } from '../../../../components/';
+import { Link, TextBlock } from '../../../../components/';
 import { formatName } from '../../../../services/contact';
 
 class ContactItem extends PureComponent {

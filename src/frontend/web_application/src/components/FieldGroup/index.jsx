@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { FieldErrors } from '../';
+import FieldErrors from '../FieldErrors';
 
 import './style.scss';
 

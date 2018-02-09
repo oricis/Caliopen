@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
-import Link from '../../../../components/Link';
 import MessageDate from '../../../../components/MessageDate';
 import AuthorAvatar from '../../../../components/AuthorAvatar';
 // import MessageItemContainer from '../MessageItemContainer';
-import { Checkbox, Icon, TextBlock } from '../../../../components/';
-import Badge from '../../../../components/Badge';
+import { Badge, Link, Checkbox, Icon, TextBlock } from '../../../../components/';
 import { getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
 import { renderParticipant, getAuthor } from '../../../../services/message';
 

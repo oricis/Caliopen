@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { Button, Icon, TextFieldGroup, FieldErrors, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components/';
-import Link from '../../../../components/Link';
-import Title from '../../../../components/Title';
+import { Title, Link, Button, Icon, TextFieldGroup, FieldErrors, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components/';
 
 import './style.scss';
 

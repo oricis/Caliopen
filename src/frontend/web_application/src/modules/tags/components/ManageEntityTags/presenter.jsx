@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import TagsForm from '../../../../components/TagsForm';
+import TagsForm from '../TagsForm';
 import WithTags from '../WithTags';
 import WithSearchTags from '../WithSearchTags';
 import { getCleanedTagCollection } from '../../services/getTagLabel';

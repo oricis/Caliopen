@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
-import { FieldGroup, Label } from '../';
+import Label from '../Label';
+import FieldGroup from '../FieldGroup';
+
 import './style.scss';
 
 const alphaNumPropType = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);

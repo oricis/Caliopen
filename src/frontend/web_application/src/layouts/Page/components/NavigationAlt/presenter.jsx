@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import Link from '../../../../components/Link';
-import { Icon } from '../../../../components/';
-import VerticalMenu, { VerticalMenuItem } from '../../../../components/VerticalMenu';
+import { Link, Icon, VerticalMenu, VerticalMenuItem } from '../../../../components/';
 import TabList from './components/TabList';
 import TimelineFilterSelector from './components/TimelineFilterSwitcher';
-import SliderContainer from '../../../../components/ImportanceSliderContainer';
+import SliderContainer from '../ImportanceSliderContainer';
 import UserInfo from '../UserInfo';
 import { getLabels } from '../../../../services/application-manager';
 import './style.scss';
