@@ -9,4 +9,5 @@ properties:
 
 required:
 - device_id
+- ecdsa_key
 additionalProperties: false

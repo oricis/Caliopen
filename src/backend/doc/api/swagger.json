@@ -878,7 +878,8 @@
                     }
                   },
                   "required": [
-                    "device_id"
+                    "device_id",
+                    "ecdsa_key"
                   ],
                   "additionalProperties": false
                 }
@@ -11286,40 +11287,18 @@
                       "device_id": {
                         "type": "string"
                       },
-                      "ecdsa_key": {
-                        "type": "object",
-                        "properties": {
-                          "curve": {
-                            "type": "string",
-                            "enum": [
-                              "P-256",
-                              "P-384",
-                              "P-512"
-                            ]
-                          },
-                          "hash": {
-                            "type": "string",
-                            "enum": [
-                              "SHA256",
-                              "SHA384",
-                              "SHA512"
-                            ]
-                          },
-                          "x": {
-                            "type": "string"
-                          },
-                          "y": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "curve",
-                          "x",
-                          "y"
-                        ],
-                        "additionalProperties": false
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
                       },
-                      "status": {
+                      "date_revoked": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "ip_creation": {
+                        "type": "string"
+                      },
+                      "name": {
                         "type": "string"
                       },
                       "privacy_features": {
@@ -11344,26 +11323,17 @@
                         },
                         "additionalProperties": true
                       },
-                      "date_insert": {
-                        "type": "string",
-                        "format": "date-time"
+                      "status": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
                       },
                       "user_id": {
                         "type": "string"
                       },
-                      "name": {
+                      "user_agent": {
                         "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "default": "unknow",
-                        "enum": [
-                          "unknow",
-                          "desktop",
-                          "laptop",
-                          "smartphone",
-                          "tablet"
-                        ]
                       },
                       "locations": {
                         "type": "array",
@@ -11393,6 +11363,7 @@
                     },
                     "required": [
                       "device_id",
+                      "user_id",
                       "name",
                       "type",
                       "status",
@@ -11525,40 +11496,18 @@
                 "device_id": {
                   "type": "string"
                 },
-                "ecdsa_key": {
-                  "type": "object",
-                  "properties": {
-                    "curve": {
-                      "type": "string",
-                      "enum": [
-                        "P-256",
-                        "P-384",
-                        "P-512"
-                      ]
-                    },
-                    "hash": {
-                      "type": "string",
-                      "enum": [
-                        "SHA256",
-                        "SHA384",
-                        "SHA512"
-                      ]
-                    },
-                    "x": {
-                      "type": "string"
-                    },
-                    "y": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "curve",
-                    "x",
-                    "y"
-                  ],
-                  "additionalProperties": false
+                "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
                 },
-                "status": {
+                "date_revoked": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "ip_creation": {
+                  "type": "string"
+                },
+                "name": {
                   "type": "string"
                 },
                 "privacy_features": {
@@ -11583,26 +11532,17 @@
                   },
                   "additionalProperties": true
                 },
-                "date_insert": {
-                  "type": "string",
-                  "format": "date-time"
+                "status": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
                 },
                 "user_id": {
                   "type": "string"
                 },
-                "name": {
+                "user_agent": {
                   "type": "string"
-                },
-                "type": {
-                  "type": "string",
-                  "default": "unknow",
-                  "enum": [
-                    "unknow",
-                    "desktop",
-                    "laptop",
-                    "smartphone",
-                    "tablet"
-                  ]
                 },
                 "locations": {
                   "type": "array",
@@ -11632,6 +11572,7 @@
               },
               "required": [
                 "device_id",
+                "user_id",
                 "name",
                 "type",
                 "status",
@@ -11743,40 +11684,18 @@
                     "device_id": {
                       "type": "string"
                     },
-                    "ecdsa_key": {
-                      "type": "object",
-                      "properties": {
-                        "curve": {
-                          "type": "string",
-                          "enum": [
-                            "P-256",
-                            "P-384",
-                            "P-512"
-                          ]
-                        },
-                        "hash": {
-                          "type": "string",
-                          "enum": [
-                            "SHA256",
-                            "SHA384",
-                            "SHA512"
-                          ]
-                        },
-                        "x": {
-                          "type": "string"
-                        },
-                        "y": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "curve",
-                        "x",
-                        "y"
-                      ],
-                      "additionalProperties": false
+                    "date_insert": {
+                      "type": "string",
+                      "format": "date-time"
                     },
-                    "status": {
+                    "date_revoked": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "ip_creation": {
+                      "type": "string"
+                    },
+                    "name": {
                       "type": "string"
                     },
                     "privacy_features": {
@@ -11801,26 +11720,17 @@
                       },
                       "additionalProperties": true
                     },
-                    "date_insert": {
-                      "type": "string",
-                      "format": "date-time"
+                    "status": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
                     },
                     "user_id": {
                       "type": "string"
                     },
-                    "name": {
+                    "user_agent": {
                       "type": "string"
-                    },
-                    "type": {
-                      "type": "string",
-                      "default": "unknow",
-                      "enum": [
-                        "unknow",
-                        "desktop",
-                        "laptop",
-                        "smartphone",
-                        "tablet"
-                      ]
                     },
                     "locations": {
                       "type": "array",
@@ -11852,40 +11762,18 @@
                 "device_id": {
                   "type": "string"
                 },
-                "ecdsa_key": {
-                  "type": "object",
-                  "properties": {
-                    "curve": {
-                      "type": "string",
-                      "enum": [
-                        "P-256",
-                        "P-384",
-                        "P-512"
-                      ]
-                    },
-                    "hash": {
-                      "type": "string",
-                      "enum": [
-                        "SHA256",
-                        "SHA384",
-                        "SHA512"
-                      ]
-                    },
-                    "x": {
-                      "type": "string"
-                    },
-                    "y": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "curve",
-                    "x",
-                    "y"
-                  ],
-                  "additionalProperties": false
+                "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
                 },
-                "status": {
+                "date_revoked": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "ip_creation": {
+                  "type": "string"
+                },
+                "name": {
                   "type": "string"
                 },
                 "privacy_features": {
@@ -11910,26 +11798,17 @@
                   },
                   "additionalProperties": true
                 },
-                "date_insert": {
-                  "type": "string",
-                  "format": "date-time"
+                "status": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
                 },
                 "user_id": {
                   "type": "string"
                 },
-                "name": {
+                "user_agent": {
                   "type": "string"
-                },
-                "type": {
-                  "type": "string",
-                  "default": "unknow",
-                  "enum": [
-                    "unknow",
-                    "desktop",
-                    "laptop",
-                    "smartphone",
-                    "tablet"
-                  ]
                 },
                 "locations": {
                   "type": "array",
