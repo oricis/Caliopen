@@ -235,6 +235,7 @@
   "contact.identity_form.legend": "Identitäten",
   "contact.identity_form.service.label": "Dienst",
   "contact.identity_form.identity.label": "Identität",
+  "contact.identity_form.identity.placeholder": "",
   "contact.im_form.legend": "Instant messaging",
   "contact.im_form.type.label": "Typ",
   "contact.im_form.address.label": "Adresse",
