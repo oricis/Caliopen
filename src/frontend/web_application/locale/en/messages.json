@@ -407,6 +407,8 @@
   "password.form.tfa.placeholder": "Enter the 2-auth code",
   "password.form.tfa.tip": "Only if you have enabled the 2-Factor Authentification method.",
   "search-results.route.label": "Results for: %(term)s",
+  "settings.form.feedback.successfull": "Settings successfully updated!",
+  "settings.form.feedback.unexpected-error": "Error when updating settings.",
   "settings.identities": "Identities",
   "settings.route.label.identities": "Identities",
   "settings.route.label.signatures": "Signatures",

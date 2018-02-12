@@ -3,6 +3,7 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
 import { reduxForm } from 'redux-form';
+import { withNotification } from '../../hoc/notification';
 import Presenter from './presenter';
 import { requestSettings, updateSettings } from '../../store/modules/settings';
 import { settingsSelector } from '../../store/selectors/settings';
@@ -28,6 +29,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withI18n(),
+  withNotification(),
   reduxForm({
     form: 'settings-application',
     enableReinitialize: true,

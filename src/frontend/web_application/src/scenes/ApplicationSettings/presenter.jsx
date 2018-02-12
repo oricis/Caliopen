@@ -13,6 +13,8 @@ class ApplicationSettings extends PureComponent {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     requestSettings: PropTypes.func.isRequired,
+    notifyError: PropTypes.func.isRequired,
+    notifySuccess: PropTypes.func.isRequired,
     errors: PropTypes.shape({}),
     i18n: PropTypes.shape({}).isRequired,
   };
@@ -20,18 +22,35 @@ class ApplicationSettings extends PureComponent {
     errors: {},
   };
 
-  handleSubmit = (ev) => {
+  handleSubmit = async (ev) => {
     /* TODO: autosave settings */
-    const { handleSubmit, requestSettings } = this.props;
+    const { handleSubmit } = this.props;
+    await handleSubmit(ev)
+    .then(this.handleSuccess, this.handleError);
+  }
 
-    return handleSubmit(ev).then(requestSettings);
+  handleSuccess = async () => {
+    const { i18n, notifySuccess, requestSettings } = this.props;
+    await requestSettings();
+
+    return notifySuccess({ message: i18n._('settings.form.feedback.successfull', { defaults: 'Settings successfully updated!' }) });
+  }
+
+  handleError = () => {
+    const { i18n, notifyError } = this.props;
+    notifyError({ message: i18n._('settings.form.feedback.unexpected-error', { defaults: 'Error when updating settings.' }) });
   }
 
   render() {
     const { errors, i18n } = this.props;
 
     return (
-      <form method="post" className="s-application-settings" name="settings_application_form" onSubmit={this.handleSubmit}>
+      <form
+        method="post"
+        className="s-application-settings"
+        name="settings_application_form"
+        onSubmit={this.handleSubmit}
+      >
         <PageTitle />
         {errors.global && errors.global.length !== 0 && (
           <FieldErrors errors={errors.global} />
@@ -51,7 +70,7 @@ class ApplicationSettings extends PureComponent {
         </div>
 
         <div className="s-application-settings__action">
-          <Button type="submit" shape="plain">
+          <Button type="submit" shape="plain" icon="check">
             <Trans id="settings.presentation.update.action">Save settings</Trans>
           </Button>
         </div>
