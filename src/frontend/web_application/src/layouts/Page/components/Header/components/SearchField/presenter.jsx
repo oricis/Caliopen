@@ -7,6 +7,7 @@ import RawButton from '../../../../../../components/RawButton';
 const generateStateFromProps = ({ term }) => ({ term });
 
 const SEARCH_PATH = '/search-results';
+const MIN_TERM_LENGTH = 3;
 
 class SearchField extends Component {
   static propTypes = {
@@ -64,6 +65,7 @@ class SearchField extends Component {
             className="m-search-field__button"
             type="submit"
             aria-label={i18n._('header.menu.search', { defaults: 'Search' })}
+            disabled={this.state.term.length < MIN_TERM_LENGTH}
           ><Icon type="search" /></RawButton>
         </form>
       </div>
