@@ -3,6 +3,14 @@
 
 $m-modal__overlay-background: rgba(0, 0, 0, .75);
 
+body {
+  &.ReactModal__Body--open {
+    // this is the class applied by ReactModal to body when modal is open
+    // add overflow: hidden to avoid scrolling on body then
+    overflow: hidden;
+  }
+}
+
 .m-modal {
   position: absolute;
   top: 50%;

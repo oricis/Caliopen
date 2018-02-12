@@ -9,6 +9,7 @@ const Modal = ({ className, title, children, onClose, ...props }) => (
   <ReactModal
     className={classnames('m-modal', className)}
     overlayClassName="m-modal__overlay"
+    appElement={document.body}
     {...props}
   >
     <header className="m-modal__header">
