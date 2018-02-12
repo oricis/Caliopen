@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { Link, Label, Subtitle, PasswordStrength, FieldErrors, TextBlock, Modal, Button, TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components/';
+import { Spinner, Link, Label, Subtitle, PasswordStrength, FieldErrors, TextBlock, Modal, Button, TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components/';
 import './style.scss';
 
 function generateStateFromProps(props) {
@@ -19,6 +19,7 @@ class SignupForm extends Component {
     onSubmit: PropTypes.func.isRequired,
     onUsernameChange: PropTypes.func,
     onUsernameBlur: PropTypes.func,
+    isValidating: PropTypes.bool.isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
 
@@ -160,7 +161,7 @@ class SignupForm extends Component {
   }
 
   render() {
-    const { form, errors = {}, i18n } = this.props;
+    const { form, errors = {}, i18n, isValidating } = this.props;
 
     return (
       <div className="s-signup">
@@ -282,6 +283,8 @@ class SignupForm extends Component {
                   onClick={this.handleSubmit}
                   display="expanded"
                   shape="plain"
+                  disabled={isValidating}
+                  icon={isValidating ? (<Spinner isLoading display="inline" />) : null}
                 ><Trans id="signup.action.create">Create</Trans></Button>
               </FormColumn>
             </FormRow>

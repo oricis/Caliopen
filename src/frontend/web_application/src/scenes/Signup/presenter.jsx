@@ -15,6 +15,7 @@ class Signup extends Component {
 
   state = {
     errors: {},
+    isValidating: false,
   };
 
   resetErrorsState(fieldname) {
@@ -71,6 +72,9 @@ class Signup extends Component {
 
   handleSignup = (ev) => {
     const { i18n, settings } = this.props;
+    this.setState({
+      isValidating: true,
+    });
     formValidator.validate(ev.formValues, i18n, 'full')
       .catch((errors) => {
         this.setState({ errors });
@@ -88,10 +92,16 @@ class Signup extends Component {
 
   handleSignupSuccess = () => {
     const { onSignupSuccess } = this.props;
+    this.setState({
+      isValidating: false,
+    });
     onSignupSuccess('/');
   }
 
   handleSignupError = (err) => {
+    this.setState({
+      isValidating: false,
+    });
     if (err === INVALID_FORM_REJECTION) {
       return;
     }
@@ -131,6 +141,7 @@ class Signup extends Component {
         onUsernameBlur={this.handleUsernameBlur}
         onSubmit={this.handleSignup}
         errors={this.state.errors}
+        isValidating={this.state.isValidating}
       />
     );
   }
