@@ -67,3 +67,7 @@ key_discovery:
     dns:
         enable: True
         name_server: ns.example.com
+
+qualifiers:
+    geoip:
+        file: "{{ geoip2_file }}"

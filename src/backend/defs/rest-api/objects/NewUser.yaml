@@ -11,6 +11,8 @@ properties:
     type: string
   settings:
     "$ref": Settings.yaml
+  device:
+    "$ref": DefaultDevice.yaml
 additionalProperties: false
 required:
 - username

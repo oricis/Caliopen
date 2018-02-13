@@ -9,20 +9,23 @@ import uuid
 import datetime
 import pytz
 
-from caliopen_storage.store.model import BaseModel, BaseUserType
-
 from cassandra.cqlengine import columns
+
+from caliopen_storage.store.model import BaseModel
+from caliopen_main.pi.objects import PIModel
+
 
 log = logging.getLogger(__name__)
 
 
-class DeviceLocation(BaseUserType):
-    """Device known location, base on IP."""
+class DeviceLocation(BaseModel):
+    """Device defined location, based on IP address."""
 
+    user_id = columns.UUID(primary_key=True)
+    device_id = columns.UUID(primary_key=True)
     address = columns.Text(primary_key=True)    # IP address with CIDR
     type = columns.Text()                       # home/work/etc
     country = columns.Text()
-    privacy_features = columns.Map(columns.Text, columns.Text)
 
 
 class Device(BaseModel):
@@ -32,28 +35,15 @@ class Device(BaseModel):
     device_id = columns.UUID(primary_key=True, default=uuid.uuid4)
 
     name = columns.Text()
-    signature_key = columns.Text()          # secret key for device validation
     date_insert = columns.DateTime(required=True,
                                    default=datetime.datetime.now(tz=pytz.utc))
+    date_revoked = columns.DateTime()
     type = columns.Text(required=True)      # laptop, desktop, smartphone, etc
     status = columns.Text(default='unknown')
-    fingerprint = columns.Text()
-    last_seen = columns.DateTime(default=datetime.datetime.now(tz=pytz.utc))
+    user_agent = columns.Text()
+    ip_creation = columns.Text()
     privacy_features = columns.Map(columns.Text, columns.Text)
-    locations = columns.List(columns.UserDefinedType(DeviceLocation))
-
-
-class DevicePublicKey(BaseModel):
-    """Device public key."""
-
-    user_id = columns.UUID(primary_key=True)
-    device_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    fingerprint = columns.Text(primary_key=True)
-
-    date_insert = columns.DateTime(required=True,
-                                   default=datetime.datetime.now(tz=pytz.utc))
-    is_current = columns.Boolean(default=False)
-    public_key = columns.Text()
+    pi = columns.UserDefinedType(PIModel)
 
 
 class DeviceConnectionLog(BaseModel):
@@ -66,4 +56,3 @@ class DeviceConnectionLog(BaseModel):
     ip_address = columns.Text(required=True)
     type = columns.Text()       # Connection type (login/logout)
     country = columns.Text()    # Geoip detected country
-    privacy_features = columns.Map(columns.Text, columns.Text)

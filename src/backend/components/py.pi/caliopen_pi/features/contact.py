@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Caliopen mail message privacy features extraction methods."""
+"""Caliopen contact privacy features extraction methods."""
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging

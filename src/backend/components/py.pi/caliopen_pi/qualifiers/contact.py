@@ -4,25 +4,11 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from caliopen_storage.config import Configuration
-from caliopen_main.contact.parameters import NewPublicKey as NewKeyParam
-from caliopen_main.pi.parameters import PIParameter
-
 
 from caliopen_pgp.keys import PublicKeyDiscoverer
 from ..features import ContactFeature
 
 log = logging.getLogger(__name__)
-
-
-def unmarshall_pgp_key(key):
-    """Map a caliopen_pgp.base.key to a PublicKey parameter."""
-    param = NewKeyParam()
-    param.fingerprint = key.fingerprint
-    param.expire_date = None    # XXXX TOFIX XXXXX
-    param.size = key.size
-    param.type = key.algorithms
-    param.name = key.keyid
-    return param
 
 
 class ContactMessageQualifier(object):
@@ -90,10 +76,6 @@ class ContactEmailQualifier(object):
             log.info('Found new keys {0} for contact'.format(ids))
             # XXX for the moment
             return new_keys
-
-            for new_key in new_keys:
-                param = unmarshall_pgp_key(new_key)
-                contact.add_public_key(param)
 
             if 'valid_public_keys' not in contact.privacy_features.keys():
                 contact.privacy_features['valid_public_keys'] = True
