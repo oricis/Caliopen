@@ -61,9 +61,9 @@ type (
 		CreateDevice(device *Device) CaliopenError
 		RetrieveDevices(userId string) ([]Device, CaliopenError)
 		RetrieveDevice(userId, deviceId string) (*Device, CaliopenError)
-		UpdateDevice(device, oldDevice *Device, update map[string]interface{}) error
-		PatchDevice(patch []byte, userId, deviceId string) error
-		DeleteDevice(userId, deviceId string) error
+		UpdateDevice(device, oldDevice *Device, update map[string]interface{}) CaliopenError
+		PatchDevice(patch []byte, userId, deviceId string) CaliopenError
+		DeleteDevice(userId, deviceId string) CaliopenError
 	}
 	RESTfacility struct {
 		store      backends.APIStorage

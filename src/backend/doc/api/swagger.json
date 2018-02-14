@@ -11298,12 +11298,57 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "device_id": {
+                        "type": "string"
+                      },
                       "date_insert": {
                         "type": "string",
                         "format": "date-time"
                       },
-                      "is_current": {
-                        "type": "boolean"
+                      "date_revoked": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "ip_creation": {
+                        "type": "string"
+                      },
+                      "locations": {
+                        "type": "object",
+                        "properties": {
+                          "address": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          },
+                          "device_id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "default": "other",
+                            "enum": [
+                              "other",
+                              "home",
+                              "work",
+                              "public"
+                            ]
+                          },
+                          "user_id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "address"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "privacy_features": {
+                        "type": "object",
+                        "properties": {}
                       },
                       "pi": {
                         "type": "object",
@@ -11323,63 +11368,16 @@
                         },
                         "additionalProperties": true
                       },
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "status": {
+                        "type": "string"
                       },
-                      "last_seen": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "date_revoked": {
-                        "type": "string",
-                        "format": "date-time"
+                      "type": {
+                        "type": "string"
                       },
                       "user_id": {
                         "type": "string"
                       },
-                      "device_id": {
-                        "type": "string"
-                      },
-                      "ip_creation": {
-                        "description": "ip address at creation",
-                        "type": "string"
-                      },
-                      "locations": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "address": {
-                              "type": "string"
-                            },
-                            "country": {
-                              "type": "string"
-                            },
-                            "device_id": {
-                              "type": "string"
-                            },
-                            "type": {
-                              "type": "string",
-                              "default": "unknow",
-                              "enum": [
-                                "unknow",
-                                "home",
-                                "work",
-                                "public"
-                              ]
-                            },
-                            "user_id": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "address"
-                          ],
-                          "additionalProperties": false
-                        }
-                      },
-                      "name": {
+                      "user_agent": {
                         "type": "string"
                       },
                       "public_keys": {
@@ -11450,27 +11448,11 @@
                           ],
                           "additionalProperties": false
                         }
-                      },
-                      "status": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "default": "unknow",
-                        "enum": [
-                          "unknow",
-                          "desktop",
-                          "laptop",
-                          "smartphone",
-                          "tablet"
-                        ]
-                      },
-                      "user_agent": {
-                        "type": "string"
                       }
                     },
                     "required": [
                       "device_id",
+                      "user_id",
                       "name",
                       "type",
                       "status",
@@ -11528,9 +11510,9 @@
                       },
                       "type": {
                         "type": "string",
-                        "default": "unknow",
+                        "default": "other",
                         "enum": [
-                          "unknow",
+                          "other",
                           "home",
                           "work",
                           "public"
@@ -11625,7 +11607,7 @@
                   "type": "string",
                   "default": "unknow",
                   "enum": [
-                    "unknow",
+                    "other",
                     "desktop",
                     "laptop",
                     "smartphone",
@@ -11694,12 +11676,57 @@
             "schema": {
               "type": "object",
               "properties": {
+                "device_id": {
+                  "type": "string"
+                },
                 "date_insert": {
                   "type": "string",
                   "format": "date-time"
                 },
-                "is_current": {
-                  "type": "boolean"
+                "date_revoked": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "ip_creation": {
+                  "type": "string"
+                },
+                "locations": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "device_id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "default": "other",
+                      "enum": [
+                        "other",
+                        "home",
+                        "work",
+                        "public"
+                      ]
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false
+                },
+                "name": {
+                  "type": "string"
+                },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
                 },
                 "pi": {
                   "type": "object",
@@ -11719,63 +11746,16 @@
                   },
                   "additionalProperties": true
                 },
-                "privacy_features": {
-                  "type": "object",
-                  "properties": {}
+                "status": {
+                  "type": "string"
                 },
-                "last_seen": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "date_revoked": {
-                  "type": "string",
-                  "format": "date-time"
+                "type": {
+                  "type": "string"
                 },
                 "user_id": {
                   "type": "string"
                 },
-                "device_id": {
-                  "type": "string"
-                },
-                "ip_creation": {
-                  "description": "ip address at creation",
-                  "type": "string"
-                },
-                "locations": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "address": {
-                        "type": "string"
-                      },
-                      "country": {
-                        "type": "string"
-                      },
-                      "device_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "default": "unknow",
-                        "enum": [
-                          "unknow",
-                          "home",
-                          "work",
-                          "public"
-                        ]
-                      },
-                      "user_id": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "address"
-                    ],
-                    "additionalProperties": false
-                  }
-                },
-                "name": {
+                "user_agent": {
                   "type": "string"
                 },
                 "public_keys": {
@@ -11846,27 +11826,11 @@
                     ],
                     "additionalProperties": false
                   }
-                },
-                "status": {
-                  "type": "string"
-                },
-                "type": {
-                  "type": "string",
-                  "default": "unknow",
-                  "enum": [
-                    "unknow",
-                    "desktop",
-                    "laptop",
-                    "smartphone",
-                    "tablet"
-                  ]
-                },
-                "user_agent": {
-                  "type": "string"
                 }
               },
               "required": [
                 "device_id",
+                "user_id",
                 "name",
                 "type",
                 "status",
@@ -12024,12 +11988,57 @@
                 "current_state": {
                   "type": "object",
                   "properties": {
+                    "device_id": {
+                      "type": "string"
+                    },
                     "date_insert": {
                       "type": "string",
                       "format": "date-time"
                     },
-                    "is_current": {
-                      "type": "boolean"
+                    "date_revoked": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "ip_creation": {
+                      "type": "string"
+                    },
+                    "locations": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        },
+                        "device_id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "default": "other",
+                          "enum": [
+                            "other",
+                            "home",
+                            "work",
+                            "public"
+                          ]
+                        },
+                        "user_id": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "privacy_features": {
+                      "type": "object",
+                      "properties": {}
                     },
                     "pi": {
                       "type": "object",
@@ -12049,63 +12058,16 @@
                       },
                       "additionalProperties": true
                     },
-                    "privacy_features": {
-                      "type": "object",
-                      "properties": {}
+                    "status": {
+                      "type": "string"
                     },
-                    "last_seen": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "date_revoked": {
-                      "type": "string",
-                      "format": "date-time"
+                    "type": {
+                      "type": "string"
                     },
                     "user_id": {
                       "type": "string"
                     },
-                    "device_id": {
-                      "type": "string"
-                    },
-                    "ip_creation": {
-                      "description": "ip address at creation",
-                      "type": "string"
-                    },
-                    "locations": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "address": {
-                            "type": "string"
-                          },
-                          "country": {
-                            "type": "string"
-                          },
-                          "device_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string",
-                            "default": "unknow",
-                            "enum": [
-                              "unknow",
-                              "home",
-                              "work",
-                              "public"
-                            ]
-                          },
-                          "user_id": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "address"
-                        ],
-                        "additionalProperties": false
-                      }
-                    },
-                    "name": {
+                    "user_agent": {
                       "type": "string"
                     },
                     "public_keys": {
@@ -12176,32 +12138,60 @@
                         ],
                         "additionalProperties": false
                       }
-                    },
-                    "status": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string",
-                      "default": "unknow",
-                      "enum": [
-                        "unknow",
-                        "desktop",
-                        "laptop",
-                        "smartphone",
-                        "tablet"
-                      ]
-                    },
-                    "user_agent": {
-                      "type": "string"
                     }
                   }
+                },
+                "device_id": {
+                  "type": "string"
                 },
                 "date_insert": {
                   "type": "string",
                   "format": "date-time"
                 },
-                "is_current": {
-                  "type": "boolean"
+                "date_revoked": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "ip_creation": {
+                  "type": "string"
+                },
+                "locations": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "device_id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "default": "other",
+                      "enum": [
+                        "other",
+                        "home",
+                        "work",
+                        "public"
+                      ]
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false
+                },
+                "name": {
+                  "type": "string"
+                },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
                 },
                 "pi": {
                   "type": "object",
@@ -12221,63 +12211,16 @@
                   },
                   "additionalProperties": true
                 },
-                "privacy_features": {
-                  "type": "object",
-                  "properties": {}
+                "status": {
+                  "type": "string"
                 },
-                "last_seen": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "date_revoked": {
-                  "type": "string",
-                  "format": "date-time"
+                "type": {
+                  "type": "string"
                 },
                 "user_id": {
                   "type": "string"
                 },
-                "device_id": {
-                  "type": "string"
-                },
-                "ip_creation": {
-                  "description": "ip address at creation",
-                  "type": "string"
-                },
-                "locations": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "address": {
-                        "type": "string"
-                      },
-                      "country": {
-                        "type": "string"
-                      },
-                      "device_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "default": "unknow",
-                        "enum": [
-                          "unknow",
-                          "home",
-                          "work",
-                          "public"
-                        ]
-                      },
-                      "user_id": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "address"
-                    ],
-                    "additionalProperties": false
-                  }
-                },
-                "name": {
+                "user_agent": {
                   "type": "string"
                 },
                 "public_keys": {
@@ -12348,23 +12291,6 @@
                     ],
                     "additionalProperties": false
                   }
-                },
-                "status": {
-                  "type": "string"
-                },
-                "type": {
-                  "type": "string",
-                  "default": "unknow",
-                  "enum": [
-                    "unknow",
-                    "desktop",
-                    "laptop",
-                    "smartphone",
-                    "tablet"
-                  ]
-                },
-                "user_agent": {
-                  "type": "string"
                 }
               },
               "required": [

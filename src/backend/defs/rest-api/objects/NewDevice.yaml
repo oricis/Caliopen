@@ -22,7 +22,7 @@ properties:
     type: string
     default: unknow
     enum:
-    - unknow
+    - other
     - desktop
     - laptop
     - smartphone
