@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import classnames from 'classnames';
 import Button from '../../../../components/Button';
-import { FormGrid, FormRow, FormColumn, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, CollectionFieldGroup } from '../../../../components/form';
+import { FormGrid, FormRow, FormColumn, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, CollectionFieldGroup } from '../../../../components';
 import './style.scss';
 
 function generateStateFromProps(props) {
