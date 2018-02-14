@@ -7,10 +7,10 @@
 package REST
 
 import (
-	"github.com/CaliOpen/Caliopen/.cache/govendor/github.com/satori/go.uuid"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	"github.com/bitly/go-simplejson"
+	"github.com/satori/go.uuid"
 	"strings"
 	"time"
 )
