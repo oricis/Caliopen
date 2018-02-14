@@ -60,6 +60,14 @@ func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
 	if len(*errGroup) > 0 {
 		return fmt.Errorf("%s", strings.Join(*errGroup, " / "))
 	}
+
+	// notify external components
+	go func(contact *Contact) {
+		const updatePI_order = "contact_update"
+		natsMessage := fmt.Sprintf(Nats_contact_tmpl, updatePI_order, contact.ContactId.String(), contact.UserId.String())
+		rest.PublishOnNats(natsMessage, rest.natsTopics[Nats_Contacts_topicKey])
+	}(contact)
+
 	return nil
 
 	//return rest.store.CreateContact(contact)
@@ -152,6 +160,13 @@ func (rest *RESTfacility) UpdateContact(contact, oldContact *Contact, modifiedFi
 	if err != nil {
 		return err
 	}
+
+	// notify external components
+	go func(contact *Contact) {
+		const update_order = "contact_update"
+		natsMessage := fmt.Sprintf(Nats_contact_tmpl, update_order, contact.ContactId.String(), contact.UserId.String())
+		rest.PublishOnNats(natsMessage, rest.natsTopics[Nats_Contacts_topicKey])
+	}(contact)
 
 	return nil
 }

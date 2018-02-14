@@ -59,18 +59,22 @@ type (
 		ResetUserPassword(token, new_password string, notifier Notifications.EmailNotifiers) error
 	}
 	RESTfacility struct {
-		store              backends.APIStorage
-		index              backends.APIIndex
-		Cache              backends.APICache
-		nats_conn          *nats.Conn
-		nats_outSMTP_topic string
+		store      backends.APIStorage
+		index      backends.APIIndex
+		Cache      backends.APICache
+		nats_conn  *nats.Conn
+		natsTopics map[string]string
 	}
 )
 
 func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility *RESTfacility) {
 	rest_facility = new(RESTfacility)
 	rest_facility.nats_conn = nats_conn
-	rest_facility.nats_outSMTP_topic = config.NatsConfig.OutSMTP_topic
+	rest_facility.natsTopics = map[string]string{
+		Nats_outSMTP_topicKey:  config.NatsConfig.OutSMTP_topic,
+		Nats_Contacts_topicKey: config.NatsConfig.Contacts_topic,
+	}
+
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":
 		cassaConfig := store.CassandraConfig{

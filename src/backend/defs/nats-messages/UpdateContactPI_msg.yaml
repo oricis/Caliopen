@@ -1,0 +1,5 @@
+# this is the model of the json payload that must be sent to 'PI' subject on NATS
+# to trigger a new PI computation for a contact that has been created or modified.
+order: contact_update
+user_id: 1aae81ea-2f21-483e-8e68-b4fcf664df5a
+contact_id: 1aae81ea-2f21-483e-8e68-b4fcf664df5a
