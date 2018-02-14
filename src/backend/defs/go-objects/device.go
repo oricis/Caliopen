@@ -12,6 +12,7 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 )
@@ -187,12 +188,10 @@ func (d *Device) NewEmpty() interface{} {
 }
 
 func (d *Device) MarshallNew(args ...interface{}) {
-	nullID := new(UUID)
-
-	if len(d.DeviceId) == 0 || (bytes.Equal(d.DeviceId.Bytes(), nullID.Bytes())) {
+	if len(d.DeviceId) == 0 || (bytes.Equal(d.DeviceId.Bytes(), EmptyUUID.Bytes())) {
 		d.DeviceId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
-	if len(d.UserId) == 0 || (bytes.Equal(d.UserId.Bytes(), nullID.Bytes())) {
+	if len(d.UserId) == 0 || (bytes.Equal(d.UserId.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
 			case UUID:
@@ -207,6 +206,10 @@ func (d *Device) MarshallNew(args ...interface{}) {
 
 	for i, _ := range d.Locations {
 		d.Locations[i].MarshallNew()
+	}
+
+	if strings.TrimSpace(d.Type) == "" {
+		d.Type = DefaultDeviceType()
 	}
 }
 
@@ -250,4 +253,23 @@ func (d *Device) GetSetRelated() <-chan interface{} {
 	}(d.Locker, getSet)
 
 	return getSet
+}
+
+// IsValidDeviceType checks the `t` string against the constant `DeviceTypes`
+// returns true if `t` is a valid type for a device.
+func IsValidDeviceType(t string) bool {
+	types := strings.Split(DeviceTypes, `|`)
+	for _, typ := range types {
+		if typ == t {
+			return true
+		}
+	}
+	return false
+}
+
+// DefaultDeviceType returns the last type found within `DeviceTypes` constant
+// which should be the default one.
+func DefaultDeviceType() string {
+	lastIndex := strings.LastIndexAny(DeviceTypes, `|`)
+	return DeviceTypes[lastIndex+1:]
 }

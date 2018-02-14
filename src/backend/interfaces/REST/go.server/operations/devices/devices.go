@@ -176,8 +176,8 @@ func PatchDevice(ctx *gin.Context) {
 	if err != nil {
 		if Cerr, ok := err.(CaliopenError); ok {
 			returnedErr := new(swgErr.CompositeError)
-			if Cerr.Code() == FailDependencyCaliopenErr {
-				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "[RESTfacility] PatchContact failed"), Cerr, Cerr.Cause())
+			if Cerr.Code() == DbCaliopenErr && Cerr.Cause().Error() == "not found" {
+				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), Cerr, Cerr.Cause())
 			} else {
 				returnedErr = swgErr.CompositeValidationError(Cerr, Cerr.Cause())
 			}
@@ -185,11 +185,9 @@ func PatchDevice(ctx *gin.Context) {
 			ctx.Abort()
 			return
 		}
-
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
-		return
 	} else {
 		ctx.Status(http.StatusNoContent)
 	}
@@ -215,10 +213,21 @@ func DeleteDevice(ctx *gin.Context) {
 	}
 	err = caliopen.Facilities.RESTfacility.DeleteDevice(userId, deviceId)
 	if err != nil {
-		e := swgErr.New(http.StatusInternalServerError, err.Error())
+		if Cerr, ok := err.(CaliopenError); ok {
+			returnedErr := new(swgErr.CompositeError)
+			if Cerr.Code() == DbCaliopenErr && Cerr.Cause().Error() == "not found" {
+				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), Cerr, Cerr.Cause())
+			} else {
+				returnedErr = swgErr.CompositeValidationError(Cerr, Cerr.Cause())
+			}
+			http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
+			ctx.Abort()
+			return
+		}
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
-		return
+	} else {
+		ctx.Status(http.StatusNoContent)
 	}
-	ctx.Status(http.StatusNoContent)
 }

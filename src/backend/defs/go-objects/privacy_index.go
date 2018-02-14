@@ -46,3 +46,11 @@ func (pi *PrivacyIndex) UnmarshalMap(input map[string]interface{}) error {
 func (pi *PrivacyIndex) JSONMarshaller() ([]byte, error) {
 	return JSONMarshaller("", pi)
 }
+
+func (pi *PrivacyIndex) IsEmpty() bool {
+	return pi.DateUpdate.IsZero() &&
+		pi.Comportment == 0 &&
+		pi.Context == 0 &&
+		pi.Technic == 0 &&
+		pi.Version == 0
+}

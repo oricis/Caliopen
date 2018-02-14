@@ -500,12 +500,10 @@ func (c *Contact) SortSlices() {
 
 // MarshallNew implements CaliopenObject interface
 func (c *Contact) MarshallNew(args ...interface{}) {
-	nullID := new(UUID)
-
-	if len(c.ContactId) == 0 || (bytes.Equal(c.ContactId.Bytes(), nullID.Bytes())) {
+	if len(c.ContactId) == 0 || (bytes.Equal(c.ContactId.Bytes(), EmptyUUID.Bytes())) {
 		c.ContactId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
-	if len(c.UserId) == 0 || (bytes.Equal(c.UserId.Bytes(), nullID.Bytes())) {
+	if len(c.UserId) == 0 || (bytes.Equal(c.UserId.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
 			case UUID:

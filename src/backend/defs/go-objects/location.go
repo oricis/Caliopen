@@ -82,9 +82,7 @@ func (dl *DeviceLocation) GetTableInfos() (table string, partitionKeys map[strin
 
 // MarshalNew could have a *Device has first argument
 func (dl *DeviceLocation) MarshallNew(args ...interface{}) {
-	nullID := new(UUID)
-
-	if len(dl.DeviceId) == 0 || (bytes.Equal(dl.DeviceId.Bytes(), nullID.Bytes())) {
+	if len(dl.DeviceId) == 0 || (bytes.Equal(dl.DeviceId.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
 			case *Device:
@@ -92,7 +90,7 @@ func (dl *DeviceLocation) MarshallNew(args ...interface{}) {
 			}
 		}
 	}
-	if len(dl.UserId) == 0 || (bytes.Equal(dl.UserId.Bytes(), nullID.Bytes())) {
+	if len(dl.UserId) == 0 || (bytes.Equal(dl.UserId.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
 			case *Device:
