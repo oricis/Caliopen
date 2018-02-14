@@ -258,8 +258,7 @@ func (d *Device) GetSetRelated() <-chan interface{} {
 // IsValidDeviceType checks the `t` string against the constant `DeviceTypes`
 // returns true if `t` is a valid type for a device.
 func IsValidDeviceType(t string) bool {
-	types := strings.Split(DeviceTypes, `|`)
-	for _, typ := range types {
+	for _, typ := range DeviceTypes {
 		if typ == t {
 			return true
 		}
@@ -267,9 +266,8 @@ func IsValidDeviceType(t string) bool {
 	return false
 }
 
-// DefaultDeviceType returns the last type found within `DeviceTypes` constant
+// DefaultDeviceType returns the first type found within `DeviceTypes` constant
 // which should be the default one.
 func DefaultDeviceType() string {
-	lastIndex := strings.LastIndexAny(DeviceTypes, `|`)
-	return DeviceTypes[lastIndex+1:]
+	return DeviceTypes[0]
 }

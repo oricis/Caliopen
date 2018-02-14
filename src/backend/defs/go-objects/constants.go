@@ -55,6 +55,6 @@ var Initiators = map[string]Initiator{
 	"user":   UserActor,
 }
 
-var DeviceTypes = string("laptop|desktop|smartphone|tablet|other") // always put the default string at last, it will be found by device's func to fill default type.
+var DeviceTypes = [5]string{"other", "laptop", "desktop", "smartphone", "tablet"} // always put the default string at first, it will be found by device's func to fill default type.
 
 var EmptyUUID = new(UUID) // allocate an emptyUUID that should only be used for testing zero value.
