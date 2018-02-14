@@ -7,16 +7,9 @@ import { ManageEntityTags } from '../../modules/tags';
 import fetchLocation from '../../services/api-location';
 import { formatName } from '../../services/contact';
 import ContactProfileForm from './components/ContactProfileForm';
-import Spinner from '../../components/Spinner';
-import ContactDetails from '../../components/ContactDetails';
-import ContactProfile from '../../components/ContactProfile';
-import Modal from '../../components/Modal';
-import MenuBar from '../../components/MenuBar';
-import Button from '../../components/Button';
-import TextBlock from '../../components/TextBlock';
-import PageTitle from '../../components/PageTitle';
-import Dropdown, { withDropdownControl } from '../../components/Dropdown';
-import VerticalMenu, { VerticalMenuItem } from '../../components/VerticalMenu';
+import ContactDetails from './components/ContactDetails';
+import ContactProfile from './components/ContactProfile';
+import { PageTitle, Modal, MenuBar, Button, TextBlock, Dropdown, withDropdownControl, Spinner, VerticalMenu, VerticalMenuItem } from '../../components';
 import FormCollection from './components/FormCollection';
 import EmailForm from './components/EmailForm';
 import PhoneForm from './components/PhoneForm';
@@ -52,6 +45,8 @@ class Contact extends Component {
     push: PropTypes.func.isRequired,
     pristine: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
+    updateTagCollection: PropTypes.func.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.shape({})),
     // birthday: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
@@ -61,6 +56,7 @@ class Contact extends Component {
     contactId: undefined,
     birthday: undefined,
     user: undefined,
+    tags: [],
   };
 
   constructor(props) {
@@ -185,6 +181,12 @@ class Contact extends Component {
       .then(() => this.setState({ isSaving: false }));
   }
 
+  handleTagsChange = async ({ tags }) => {
+    const { updateTagCollection, i18n, tags: userTags, contact: entity } = this.props;
+
+    return updateTagCollection(i18n, userTags, { type: 'contact', entity, tags });
+  }
+
   renderTagsModal = () => {
     const { contact, i18n } = this.props;
     const nb = contact.tags ? contact.tags.length : 0;
@@ -206,7 +208,7 @@ class Contact extends Component {
         title={title}
         onClose={this.handleCloseTags}
       >
-        <ManageEntityTags type="contact" entity={contact} />
+        <ManageEntityTags type="contact" entity={contact} onChange={this.handleTagsChange} />
       </Modal>
     );
   }

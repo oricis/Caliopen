@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Title from '../../../../components/Title';
+import { Title } from '../../../../components/';
 import ContactItem from '../../components/ContactItem';
 import { DEFAULT_SORT_DIR } from '../../presenter';
 import { getFirstLetter, formatName } from '../../../../services/contact';

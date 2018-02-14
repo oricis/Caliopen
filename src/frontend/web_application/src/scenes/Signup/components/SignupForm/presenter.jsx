@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import Button from '../../../../components/Button';
-import Link from '../../../../components/Link';
-import Section from '../../../../components/Section';
-import Modal from '../../../../components/Modal';
-import TextBlock from '../../../../components/TextBlock';
-
-import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../../../../components/form';
+import { Link, Label, Subtitle, PasswordStrength, FieldErrors, TextBlock, Modal, Button, TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components/';
 import './style.scss';
 
 function generateStateFromProps(props) {
@@ -169,7 +163,7 @@ class SignupForm extends Component {
     const { form, errors = {}, i18n } = this.props;
 
     return (
-      <Section className="s-signup" title={i18n._('signup.title', { defaults: 'Please Log In' })}>
+      <div className="s-signup">
         <FormGrid className="s-signup__form">
           <form method="post" name="ac_form" {...form}>
             <FormRow>
@@ -189,13 +183,13 @@ class SignupForm extends Component {
                 <TextFieldGroup
                   id="signup_username"
                   name="username"
+                  theme="contrasted"
                   label={i18n._('signup.form.username.label', { defaults: 'Username' })}
                   placeholder={i18n._('signup.form.username.placeholder', { defaults: 'username' })}
                   value={this.state.formValues.username}
                   errors={errors.username}
                   onChange={this.handleUsernameChange}
                   onBlur={this.props.onUsernameBlur}
-                  showLabelforSr
                 />
                 <TextBlock className="s-signup__user">
                   <span className="s-signup__username">{this.state.formValues.username}</span>@alpha.caliopen.org
@@ -206,10 +200,10 @@ class SignupForm extends Component {
               <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signup_password"
+                  theme="contrasted"
                   name="password"
                   label={i18n._('signup.form.password.label', { defaults: 'Password' })}
                   placeholder={i18n._('signup.form.password.placeholder', { defaults: 'password' })}
-                  showLabelforSr
                   type="password"
                   value={this.state.formValues.password}
                   errors={errors.password}
@@ -226,18 +220,20 @@ class SignupForm extends Component {
               <FormColumn rightSpace={false} bottomSpace >
                 <TextFieldGroup
                   id="signup_recovery_email"
+                  theme="contrasted"
                   name="recovery_email"
                   // Alpha: label "recovery email" replaced by "invitation email"
         // label={i18n._('signup.form.recovery_email.label', { defaults: 'Backup email address' })}
         // placeholder={i18n._('signup.form.recovery_email.placeholder', { defaults: '' })}
-                  label={i18n._('signup.form.invitation_email.label', { defaults: 'Please fill with the email provided when you requested an invitation.' })}
-                  placeholder={i18n._('signup.form.invitation_email.placeholder', { defaults: 'Invitation email' })}
+                  label={i18n._('signup.form.invitation_email.label', { defaults: 'Invitation email:' })}
+                  placeholder={i18n._('signup.form.invitation_email.placeholder', { defaults: 'example@domain.tld' })}
                   value={this.state.formValues.recovery_email}
                   errors={errors.recovery_email}
                   onChange={this.handleInputChange}
-                  showLabelforSr
                 />
-                <span><Trans id="signup.form.invitation_email.label">Please fill with the email provided when you requested an invitation.</Trans></span>
+                <Label htmlFor="signup_recovery_email" className="s-signup__recovery-label">
+                  <Trans id="signup.form.invitation_email.tip">Please fill with the email provided when you requested an invitation.</Trans>
+                </Label>
               </FormColumn>
             </FormRow>
             {/* Alpha: hide TOS checkbox
@@ -257,15 +253,16 @@ class SignupForm extends Component {
               */}
             <FormRow>
               <FormColumn rightSpace={false} className="s-signup__privacy" bottomSpace>
-                <h4><Trans id="signup.form.privacy.title">Privacy policy</Trans></h4>
+                <Subtitle><Trans id="signup.form.privacy.title">Privacy policy</Trans></Subtitle>
                 <p className="s-signup__privacy-text">
                   <Trans id="signup.form.privacy.intro">Throughout the development phase, we collect some data (but no more than the NSA).</Trans>
+                  {' '}
+                  <Button
+                    className="s-signup__privacy-link"
+                    onClick={this.handleOpenModal}
+                    display="inline"
+                  ><Trans id="signup.form.privacy.more_info">More info</Trans></Button>
                 </p>
-                <Button
-                  className="s-signup__privacy-link"
-                  onClick={this.handleOpenModal}
-                  icon="question-circle"
-                ><Trans id="signup.form.privacy.more_info">More info</Trans></Button>
                 {this.renderModal()}
                 <CheckboxFieldGroup
                   id="signup_privacy"
@@ -289,13 +286,13 @@ class SignupForm extends Component {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn rightSpace={false}>
+              <FormColumn rightSpace={false} className="s-signup__link">
                 <Link to="/auth/signin"><Trans id="signup.go_signin">I already have an account</Trans></Link>
               </FormColumn>
             </FormRow>
           </form>
         </FormGrid>
-      </Section>
+      </div>
     );
   }
 }

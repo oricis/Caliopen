@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import Link from '../../../../components/Link';
-import Icon from '../../../../components/Icon';
-import VerticalMenu, { VerticalMenuItem } from '../../../../components/VerticalMenu';
+import { Link, Icon, VerticalMenu, VerticalMenuItem } from '../../../../components/';
 import TabList from './components/TabList';
 import TimelineFilterSelector from './components/TimelineFilterSwitcher';
-import SliderContainer from '../../../../components/ImportanceSliderContainer';
+import SliderContainer from '../ImportanceSliderContainer';
 import UserInfo from '../UserInfo';
 import { getLabels } from '../../../../services/application-manager';
 import './style.scss';
@@ -62,11 +60,11 @@ class NavigationAlt extends PureComponent {
           </VerticalMenuItem>
         </VerticalMenu>
         <VerticalMenu className="l-nav-alt__menu">
-          {/* <VerticalMenuItem>
+          <VerticalMenuItem>
             <Link to="/user/profile" button expanded data-toggle="left_off_canvas">
-             <Trans id="header.menu.account">Account</Trans>
+              <Trans id="header.menu.account">Account</Trans>
             </Link>
-          </VerticalMenuItem> */}
+          </VerticalMenuItem>
           <VerticalMenuItem>
             <Link to="/settings/application" button expanded data-toggle="left_off_canvas">
               <Trans id="header.menu.settings">Settings</Trans>

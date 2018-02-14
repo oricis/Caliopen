@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { Fieldset, Legend, FormGrid, FormRow, FormColumn, FieldErrors, TextFieldGroup } from '../../../../components/form';
-import Section from '../../../../components/Section';
-import Button from '../../../../components/Button';
-import Icon from '../../../../components/Icon';
-import Link from '../../../../components/Link';
+import { Title, Link, Button, Icon, TextFieldGroup, FieldErrors, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components/';
 
 import './style.scss';
 
@@ -48,7 +44,10 @@ class ForgotPasswordForm extends Component {
     const { i18n, errors, success } = this.props;
 
     return (
-      <Section title={i18n._('password.forgot-form.title', { defaults: 'Forgot password' })} className="m-forgot-password-form">
+      <div className="m-forgot-password-form">
+        <Title>
+          <Trans id="password.forgot-form.title">Forgot password</Trans>
+        </Title>
         <FormGrid className="m-forgot-password-form">
           <form method="post" onSubmit={this.handleSubmit}>
             <Fieldset>
@@ -85,24 +84,24 @@ class ForgotPasswordForm extends Component {
                   </FormColumn>
                   <FormColumn rightSpace={false} bottomSpace>
                     <TextFieldGroup
+                      theme="contrasted"
                       label={i18n._('password.forgot-form.username.label', { defaults: 'Username' })}
                       placeholder={i18n._('password.forgot-form.username.placeholder', { defaults: 'Username' })}
                       name="username"
                       value={this.state.formValues.username}
                       errors={errors.username}
                       onChange={this.handleInputChange}
-                      showLabelforSr
                     />
                   </FormColumn>
                   <FormColumn rightSpace={false} bottomSpace>
                     <TextFieldGroup
+                      theme="contrasted"
                       label={i18n._('password.forgot-form.recovery_email.label', { defaults: 'Recovery email' })}
                       placeholder={i18n._('password.forgot-form.recovery_email.placeholder', { defaults: 'Recovery email' })}
                       name="recovery_email"
                       value={this.state.formValues.recovery_email}
                       errors={errors.recovery_email}
                       onChange={this.handleInputChange}
-                      showLabelforSr
                     />
                   </FormColumn>
                   <FormColumn rightSpace={false} className="m-forgot-password-form__action" bottomSpace>
@@ -112,7 +111,7 @@ class ForgotPasswordForm extends Component {
                       shape="plain"
                     ><Trans id="password.forgot-form.action.send">Send</Trans></Button>
                   </FormColumn>
-                  <FormColumn rightSpace={false}>
+                  <FormColumn rightSpace={false} className="m-forgot-password-form__link">
                     <Link to="/auth/signin"><Trans id="password.forgot-form.cancel">Cancel</Trans></Link>
                   </FormColumn>
                 </FormRow>
@@ -120,7 +119,7 @@ class ForgotPasswordForm extends Component {
             </Fieldset>
           </form>
         </FormGrid>
-      </Section>
+      </div>
     );
   }
 }

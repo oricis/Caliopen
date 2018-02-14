@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import Button from '../../../../components/Button';
+import { Icon, Button } from '../../../../components/';
 import Notification, { isSupported, PERMISSION_DENIED, PERMISSION_GRANTED } from '../../../../services/browser-notification';
+import './style.scss';
 
 class DesktopNotificationSettings extends Component {
   static propTypes = {
@@ -46,9 +47,14 @@ class DesktopNotificationSettings extends Component {
     if (this.state.hasBrowserNotificationPermission === PERMISSION_GRANTED) {
       return (
         <div>
-          <Trans id="settings.desktop_notification.desktop_notifications_enabled">Desktop notifications enabled</Trans>{' '}
+          <span className="m-desktop-notifications--allowed">
+            <Icon type="check" />{' '}
+            <Trans id="settings.desktop_notification.desktop_notifications_enabled">Desktop notifications enabled</Trans>{' '}
+          </span>
+          {' '}
           <Button
             onClick={this.handleClickTestBrowser}
+            display="inline"
           >
             <Trans id="settings.desktop_notification.action.test_desktop_notification">Check desktop notifications</Trans>
           </Button>
@@ -57,7 +63,13 @@ class DesktopNotificationSettings extends Component {
     }
 
     if (this.state.hasBrowserNotificationPermission === PERMISSION_DENIED) {
-      return (<div><Trans id="settings.desktop_notification.disabled">Notifications are disabled, please check your browser settings</Trans></div>);
+      return (
+        <div className="m-desktop-notifications--denied">
+          <Icon type="remove" />
+          {' '}
+          <Trans id="settings.desktop_notification.disabled">Notifications are disabled, please check your browser settings</Trans>
+        </div>
+      );
     }
 
     return (

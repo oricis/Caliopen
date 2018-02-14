@@ -2,13 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import { Trans } from 'lingui-react';
-import Modal from '../../components/Modal';
-import Spinner from '../../components/Spinner';
-import PageTitle from '../../components/PageTitle';
-import Button from '../../components/Button';
-import BlockList from '../../components/BlockList';
-import InfiniteScroll from '../../components/InfiniteScroll';
-import MenuBar from '../../components/MenuBar';
+import { InfiniteScroll, BlockList, PageTitle, Button, MenuBar, Spinner, Modal } from '../../components/';
 import MessageSelector from './components/MessageSelector';
 import MessageItem from './components/MessageItem';
 import { isMessageFromUser } from '../../services/message';
@@ -26,15 +20,18 @@ class Timeline extends Component {
     timelineFilter: PropTypes.string.isRequired,
     loadMore: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
+    tags: PropTypes.arrayOf(PropTypes.shape({})),
     isFetching: PropTypes.bool,
     didInvalidate: PropTypes.bool,
     hasMore: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
     notify: PropTypes.func.isRequired,
+    onUpdateEntityTags: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     messages: [],
+    tags: [],
     user: undefined,
     isFetching: false,
     didInvalidate: false,
@@ -126,13 +123,34 @@ class Timeline extends Component {
       item => item.message_id === selectedMessageId
     );
 
-    return this.props.deleteMessage({ message });
+    return this.props.deleteMessage({ message })
+      .then(() =>
+      this.setState(prevState => ({
+        ...prevState,
+        selectedMessages: [],
+      }))
+    );
   }
 
   loadMore = () => {
     if (this.props.hasMore) {
       this.throttledLoadMore();
     }
+  }
+
+  handleTagsChange = ({ tags }) => {
+    const { onUpdateEntityTags, i18n, tags: userTags, messages } = this.props;
+
+    // TODO: for multiple message: diff with common tags then update only common (added/deleted)
+    // don't forget to update the diff after being saved
+
+    const selectedMessageIds = new Set(this.state.selectedMessages);
+
+    return Promise.all(messages
+      .filter(message => selectedMessageIds.has(message.message_id))
+      .map(message =>
+        onUpdateEntityTags(i18n, userTags, { type: 'message', entity: message, tags }))
+      );
   }
 
   renderList = ({ userTags }) => {
@@ -157,6 +175,7 @@ class Timeline extends Component {
   renderTagsModal = () => {
     const { messages, i18n } = this.props;
     // TODO: implement multiple messages tags edition
+    // (state common tags for the diff after it has been changed)
     const selectedMessageId = this.state.selectedMessages[0];
     const selectedMessage = messages.find(
       item => item.message_id === selectedMessageId
@@ -183,7 +202,7 @@ class Timeline extends Component {
         onClose={this.handleCloseTags}
       >
         {this.state.isTagModalOpen && (
-          <ManageEntityTags type="message" entity={selectedMessage} />
+          <ManageEntityTags type="message" entity={selectedMessage} onChange={this.handleTagsChange} />
         )}
       </Modal>
     );
@@ -201,7 +220,7 @@ class Timeline extends Component {
             <MessageSelector
               indeterminate={
                 this.state.selectedMessages.length > 0
-                && this.state.selectedMessages.length < messages.length
+                  && this.state.selectedMessages.length < messages.length
               }
               checked={
                 this.state.selectedMessages.length === messages.length

@@ -4,18 +4,17 @@ $m-title__height: $co-component__height !default;
 
 .m-title {
   display: block;
-  line-height: $m-title__height;
+
 
   &__text {
     display: inline;
-    color: $co-color__fg__text;
+    color: $co-color__primary--lower;
     font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    font-weight: 700;
   }
 
   &--hr {
+    line-height: $m-title__height;
     border-width: 1px 0;
     border-style: solid;
     border-color: $co-color__fg__border;

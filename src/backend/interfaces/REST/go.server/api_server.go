@@ -1,4 +1,4 @@
-// Copyleft (ɔ) 2017 The Caliopen contributors.
+// Copyleft (ɔ) 2018 The Caliopen contributors.
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
@@ -15,8 +15,8 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/users"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	log "github.com/Sirupsen/logrus"
+	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/loads"
-	"gopkg.in/gin-gonic/gin.v1"
 	"os"
 )
 
@@ -71,8 +71,9 @@ type (
 	}
 
 	NatsConfig struct {
-		Url           string `mapstructure:"url"`
-		OutSMTP_topic string `mapstructure:"outSMTP_topic"`
+		Url            string `mapstructure:"url"`
+		OutSMTP_topic  string `mapstructure:"outSMTP_topic"`
+		Contacts_topic string `mapstructure:"contacts_topic"`
 	}
 
 	NotifierConfig struct {
@@ -111,8 +112,9 @@ func (server *REST_API) initialize(config APIConfig) error {
 			Db:       config.CacheSettings.Db,
 		},
 		NatsConfig: obj.NatsConfig{
-			Url:           config.NatsConfig.Url,
-			OutSMTP_topic: config.NatsConfig.OutSMTP_topic,
+			Url:            config.NatsConfig.Url,
+			OutSMTP_topic:  config.NatsConfig.OutSMTP_topic,
+			Contacts_topic: config.NatsConfig.Contacts_topic,
 		},
 		NotifierConfig: obj.NotifierConfig{
 			AdminUsername: config.NotifierConfig.AdminUsername,
@@ -144,8 +146,8 @@ func (server *REST_API) start() error {
 	// Creates a gin router with default middleware:
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
-	// adds our middlewares
 
+	// adds our middlewares
 	err := http_middleware.InitSwaggerMiddleware(server.config.SwaggerFile)
 	if err != nil {
 		log.WithError(err).Warn("init swagger middleware failed")
@@ -202,10 +204,15 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	parts.GET("/suggest", participants.Suggest)
 
 	/** contacts API **/
-	cts := api.Group("/contacts", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
-	cts.GET("/:contact_id/identities", contacts.GetIdentities)
+	cts := api.Group(http_middleware.ContactsRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
+	cts.GET("", contacts.GetContactsList)
+	cts.POST("", contacts.NewContact)
+	cts.GET("/:contactID", contacts.GetContact)
+	cts.PATCH("/:contactID", contacts.PatchContact)
+	cts.DELETE("/:contactID", contacts.DeleteContact)
+	cts.GET("/:contactID/identities", contacts.GetIdentities)
 	//tags
-	cts.PATCH("/:contact_id/tags", tags.PatchResourceWithTags)
+	cts.PATCH("/:contactID/tags", tags.PatchResourceWithTags)
 
 	/** tags API **/
 	tag := api.Group(http_middleware.TagsRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, Plural } from 'lingui-react';
-import Button from '../../../../components/Button';
+import { withI18n, Trans, Plural } from 'lingui-react';
+import { Checkbox, Button } from '../../../../components/';
 
 import './style.scss';
 
+@withI18n()
 class MessageSelector extends Component {
   static propTypes = {
+    i18n: PropTypes.shape({}).isRequired,
     onSelectAllMessages: PropTypes.func,
     onEditTags: PropTypes.func,
     onDeleteMessages: PropTypes.func,
@@ -26,16 +28,6 @@ class MessageSelector extends Component {
     checked: false,
   };
 
-  componentDidMount() {
-    this.selector.indeterminate = this.props.indeterminate;
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.indeterminate !== this.props.indeterminate) {
-      this.selector.indeterminate = this.props.indeterminate;
-    }
-  }
-
   toggleCheckbox = (ev) => {
     const { checked } = ev.target;
     this.props.onSelectAllMessages(checked);
@@ -50,7 +42,7 @@ class MessageSelector extends Component {
   }
 
   render() {
-    const { count, totalCount, checked } = this.props;
+    const { i18n, count, totalCount, checked } = this.props;
 
     return (
       <div className="m-message-selector">
@@ -65,15 +57,27 @@ class MessageSelector extends Component {
           </span>
         )}
         <span className="m-message-selector__actions">
-          <Button icon="tags" onClick={this.handleEditTags} disabled={count === 0} />
-          <Button icon="trash" onClick={this.handleDelete} disabled={count === 0} />
+          <Button
+            icon="tags"
+            onClick={this.handleEditTags}
+            disabled={count === 0}
+            aria-label={i18n._('timeline.action.manage-tags', { defaults: 'Manage tags' })}
+          />
+          <Button
+            icon="trash"
+            onClick={this.handleDelete}
+            disabled={count === 0}
+            aria-label={i18n._('timeline.action.delete', { defaults: 'Delete selected' })}
+          />
         </span>
         <span className="m-message-selector__checkbox">
-          <input
-            type="checkbox"
+          <Checkbox
+            label={i18n._('message-list.action.select_all_messages', { defaults: 'Select/deselect all messages' })}
+            id="message-selector"
             defaultChecked={checked}
+            indeterminate={this.props.indeterminate}
             onChange={this.toggleCheckbox}
-            ref={el => (this.selector = el)}
+            showLabelforSr
           />
         </span>
       </div>

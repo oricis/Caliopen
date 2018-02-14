@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Tappable from 'react-tappable/lib/Tappable';
-import Button from '../../../../../../components/Button';
+import { Button } from '../../../../../../components/';
 
 class ActionButton extends PureComponent {
   static propTypes = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import ItemContent from './components/ItemContent';
+import TextItem from './components/TextItem';
 import './style.scss';
 
 const TextList = ({ className, ...props }) => (
@@ -15,6 +15,6 @@ TextList.defaultProps = {
   className: undefined,
 };
 
-export { ItemContent };
+export { TextItem };
 
 export default TextList;

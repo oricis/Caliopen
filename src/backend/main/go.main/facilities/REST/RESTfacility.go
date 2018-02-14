@@ -25,6 +25,12 @@ type (
 		SuggestRecipients(user_id, query_string string) (suggests []RecipientSuggestion, err error)
 		GetSettings(user_id string) (settings *Settings, err error)
 		//contacts
+		CreateContact(contact *Contact) error
+		RetrieveContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error)
+		RetrieveContact(userID, contactID string) (*Contact, error)
+		UpdateContact(contact, oldContact *Contact, update map[string]interface{}) error
+		PatchContact(patch []byte, userID, contactID string) error
+		DeleteContact(userID, contactID string) error
 		ContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
@@ -53,18 +59,22 @@ type (
 		ResetUserPassword(token, new_password string, notifier Notifications.EmailNotifiers) error
 	}
 	RESTfacility struct {
-		store              backends.APIStorage
-		index              backends.APIIndex
-		Cache              backends.APICache
-		nats_conn          *nats.Conn
-		nats_outSMTP_topic string
+		store      backends.APIStorage
+		index      backends.APIIndex
+		Cache      backends.APICache
+		nats_conn  *nats.Conn
+		natsTopics map[string]string
 	}
 )
 
 func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility *RESTfacility) {
 	rest_facility = new(RESTfacility)
 	rest_facility.nats_conn = nats_conn
-	rest_facility.nats_outSMTP_topic = config.NatsConfig.OutSMTP_topic
+	rest_facility.natsTopics = map[string]string{
+		Nats_outSMTP_topicKey:  config.NatsConfig.OutSMTP_topic,
+		Nats_Contacts_topicKey: config.NatsConfig.Contacts_topic,
+	}
+
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":
 		cassaConfig := store.CassandraConfig{

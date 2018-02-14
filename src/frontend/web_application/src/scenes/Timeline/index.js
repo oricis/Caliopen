@@ -7,6 +7,7 @@ import { withNotification } from '../../hoc/notification';
 import Presenter from './presenter';
 import { filterTimeline } from '../../store/actions/timeline';
 import { replyToMessage, deleteMessage, loadMore, hasMore } from '../../store/modules/message';
+import { updateTagCollection, withTags } from '../../modules/tags';
 import { clearDraft } from '../../store/modules/draft-message';
 import { timelineFilterSelector } from '../../store/selectors/timeline';
 
@@ -26,7 +27,6 @@ const onDeleteMessage = ({ message }) => dispatch =>
       return dispatch(clearDraft({ internalId: message.discussion_id }));
     });
 
-
 const mapStateToProps = createSelector(
   [timelineSelector, messagesSelector, timelineFilterSelector],
   (timeline, messagesById, timelineFilter) => ({
@@ -43,11 +43,13 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   loadMore: loadMore.bind(null, 'timeline'),
   replyToMessage,
   deleteMessage: onDeleteMessage,
+  onUpdateEntityTags: updateTagCollection,
 }, dispatch);
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withUser(),
   withNotification(),
-  withI18n()
+  withI18n(),
+  withTags(),
 )(Presenter);

@@ -12,6 +12,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
 	"gopkg.in/oleiade/reflections.v1"
+	"strings"
 )
 
 func (es *ElasticSearchBackend) CreateMessage(msg *objects.Message) error {
@@ -43,7 +44,8 @@ func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[s
 		if err != nil {
 			return fmt.Errorf("[ElasticSearchBackend] UpdateMessage failed to find a json field for object field %s", field)
 		}
-		jsonFields[jsonField] = value
+		split := strings.Split(jsonField, ",")
+		jsonFields[split[0]] = value
 	}
 
 	update, err := es.Client.Update().Index(msg.User_id.String()).Type(objects.MessageIndexType).Id(msg.Message_id.String()).
@@ -72,7 +74,7 @@ func (es *ElasticSearchBackend) SetMessageUnread(user_id, message_id string, sta
 func (es *ElasticSearchBackend) FilterMessages(filter objects.IndexSearch) (messages []*objects.Message, totalFound int64, err error) {
 
 	search := es.Client.Search().Index(filter.User_id.String()).Type(objects.MessageIndexType)
-	search = filter.FilterQuery(search).Sort("date_insert", false)
+	search = filter.FilterQuery(search, true).Sort("date_insert", false)
 
 	if filter.Offset > 0 {
 		search = search.From(filter.Offset)

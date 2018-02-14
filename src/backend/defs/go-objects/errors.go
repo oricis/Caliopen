@@ -81,4 +81,6 @@ const (
 	NotFoundCaliopenErr
 	FailDependencyCaliopenErr
 	UnprocessableCaliopenErr
+	ForbiddenCaliopenErr
+	NotImplementedCaliopenErr
 )

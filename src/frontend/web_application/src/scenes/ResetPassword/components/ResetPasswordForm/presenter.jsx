@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { PasswordStrength, TextFieldGroup, FormGrid, FieldErrors, FormColumn, FormRow } from '../../../../components/form';
-import Section from '../../../../components/Section';
-import Button from '../../../../components/Button';
-import Link from '../../../../components/Link';
-import Icon from '../../../../components/Icon';
+import { Section, Link, PasswordStrength, Button, Icon, FieldErrors, TextFieldGroup, FormGrid, FormColumn, FormRow } from '../../../../components/';
 
 import './style.scss';
 
@@ -126,6 +122,7 @@ class ResetPasswordForm extends Component {
               <TextFieldGroup
                 name="password"
                 type="password"
+                theme="contrasted"
                 value={this.state.formValues.password}
                 onChange={this.handlePasswordChange}
                 label={i18n._('password.form.new_password.label', { defaults: 'New password:' })}
@@ -142,6 +139,7 @@ class ResetPasswordForm extends Component {
               <TextFieldGroup
                 name="confirmPassword"
                 type="password"
+                theme="contrasted"
                 value={this.state.confirmPassword}
                 onChange={this.handleConfirmPasswordChange}
                 errors={this.state.formErrors.passwordError}

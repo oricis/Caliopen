@@ -5,9 +5,9 @@ import { v1 as uuidV1 } from 'uuid';
 import VisibilitySensor from 'react-visibility-sensor';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
+import { MultidimensionalPi } from '../../../../modules/pi';
 import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
 import { Button, Icon, TextBlock, Dropdown, withDropdownControl } from '../../../../components';
-import MultidimensionalPi from '../../../../components/MultidimensionalPi';
 import MessageActionsContainer from '../MessageActionsContainer';
 import { getAuthor } from '../../../../services/message';
 
@@ -20,8 +20,10 @@ const FOLD_HEIGHT = 80; // = .m-message__content--fold height
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
+    userTags: PropTypes.arrayOf(PropTypes.shape({})),
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
+    updateTagCollection: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
     onCopyTo: PropTypes.func.isRequired,
@@ -31,6 +33,7 @@ class Message extends Component {
   }
 
   static defaultProps = {
+    userTags: [],
     isMessageFromUser: false,
   }
 
@@ -69,6 +72,12 @@ class Message extends Component {
       ...prevState,
       isFold: !prevState.isFold,
     }));
+  }
+
+  handleTagsChange = async ({ tags }) => {
+    const { updateTagCollection, i18n, userTags, message: entity } = this.props;
+
+    return updateTagCollection(i18n, userTags, { type: 'message', entity, tags });
   }
 
   renderDate = () => {
@@ -183,6 +192,7 @@ class Message extends Component {
                 onMessageUnread={onMessageUnread}
                 onReply={onReply}
                 onCopyTo={onCopyTo}
+                onTagsChange={this.handleTagsChange}
               />
             </Dropdown>
 

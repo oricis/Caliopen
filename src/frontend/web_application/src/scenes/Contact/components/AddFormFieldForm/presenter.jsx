@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import TextList, { ItemContent } from '../../../../components/TextList';
-import { SelectFieldGroup, FormGrid, FormRow, FormColumn, Legend } from '../../../../components/form';
-import Button from '../../../../components/Button';
-import Icon from '../../../../components/Icon';
+import TextList, { TextItem } from '../../../../components/TextList';
+import { Button, Icon, SelectFieldGroup, FormGrid, FormRow, FormColumn, Legend } from '../../../../components/';
 import './style.scss';
 
 class AddFormFieldForm extends Component {
@@ -73,7 +71,7 @@ class AddFormFieldForm extends Component {
 
     return (
       <TextList className="m-add-form-field-form">
-        <ItemContent>
+        <TextItem>
           <FormGrid>
             <FormRow>
               <FormColumn size="shrink">
@@ -101,7 +99,7 @@ class AddFormFieldForm extends Component {
               </FormColumn>
             </FormRow>
           </FormGrid>
-        </ItemContent>
+        </TextItem>
       </TextList>
     );
   }

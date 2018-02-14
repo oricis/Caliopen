@@ -2,13 +2,13 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .s-signin {
-  max-width: map-get($co-form__width, 'xlarge');
 
   &__action { line-height: $co-component__height; }
+  &__link { text-align: center; }
 
   &__alpha {
     a {
-      color: white;
+      color: $co-color__primary--low;
     }
   }
   &__login-safe { background-color: map-get($context-palette, 'safe'); }

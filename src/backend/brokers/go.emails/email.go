@@ -265,7 +265,7 @@ func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id UUID) (msg *Messa
 		Is_unread:        true,
 		Message_id:       m_id,
 		Participants:     []Participant{},
-		Privacy_features: PrivacyFeatures{},
+		Privacy_features: &PrivacyFeatures{},
 		Raw_msg_id:       em.Message.Raw_msg_id,
 		Subject:          parsed_mail.Header.Get("subject"),
 		Type:             EmailProtocol,

@@ -38,6 +38,10 @@ paths:
     "$ref": paths/contacts.yaml#/contacts
   "/v1/contacts/{contact_id}":
     "$ref": paths/contacts.yaml#/contacts_{contact_id}
+  "/v2/contacts":
+    "$ref": paths/contactsV2.yaml#/contacts
+  "/v2/contacts/{contact_id}":
+    "$ref": paths/contactsV2.yaml#/contacts_{contact_id}
   "/v2/contacts/{contact_id}/identities":
     "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_identities
   "/v2/contacts/{contact_id}/tags":
@@ -72,11 +76,6 @@ paths:
     "$ref": paths/tags.yaml#/tags
   "/v2/tags/{tag_id}":
     "$ref": paths/tags.yaml#/tags_{tag_id}
-## devices ##
-  "/v1/devices":
-    "$ref": paths/devices.yaml#/devices
-  "/v1/devices/{device_id}":
-    "$ref": paths/devices.yaml#/devices_{device_id}
 ## search/suggest ##
   "/v2/participants/suggest":
     "$ref": paths/participants.yaml#/participants_suggest

@@ -26,8 +26,6 @@ PHONE_TYPES = ['assistant', 'callback', 'car', 'company_main',
 SOCIAL_TYPES = ['facebook', 'twitter', 'google', 'github', 'bitbucket',
                 'linkedin', 'ello', 'instagram', 'tumblr', 'skype', 'mastodon']
 
-KEY_CHOICES = ['rsa', 'gpg', 'ssh']
-
 RECIPIENT_TYPES = ['to', 'from', 'cc', 'bcc']
 
 
@@ -194,36 +192,6 @@ class SocialIdentity(NewSocialIdentity):
         serialize_when_none = False
 
 
-class NewPublicKey(Model):
-    """Input structure for a new public key."""
-
-    expire_date = DateTimeType(serialized_format=helpers.RFC3339Milli,
-                               tzd=u'utc')
-    fingerprint = StringType()
-    key = StringType(required=True)
-    name = StringType(required=True)
-    size = IntType()
-    type = StringType(choices=KEY_CHOICES)
-
-    class Options:
-        serialize_when_none = False
-
-
-class PublicKey(NewPublicKey):
-    """Existing public key."""
-
-    contact_id = UUIDType()
-    date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
-                               tzd=u'utc')
-    date_update = DateTimeType(serialized_format=helpers.RFC3339Milli,
-                               tzd=u'utc')
-    user_id = UUIDType()
-
-    class Options:
-        roles = {'default': blacklist('user_id', 'contact_id')}
-        serialize_when_none = False
-
-
 class NewContact(Model):
     """Input structure for a new contact."""
 
@@ -242,7 +210,6 @@ class NewContact(Model):
     organizations = ListType(ModelType(NewOrganization), default=lambda: [])
     phones = ListType(ModelType(NewPhone), default=lambda: [])
     privacy_features = DictType(StringType(), default=lambda: {})
-    public_keys = ListType(ModelType(NewPublicKey), default=lambda: [])
     tags = ListType(StringType(), default=lambda: [])
 
     class Options:
@@ -259,13 +226,13 @@ class Contact(NewContact):
                                tzd=u'utc')
     date_update = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
-    deleted = BooleanType()
+    deleted = DateTimeType(serialized_format=helpers.RFC3339Milli,
+                           tzd=u'utc')
     emails = ListType(ModelType(Email), default=lambda: [])
     identities = ListType(ModelType(SocialIdentity), default=lambda: [])
     ims = ListType(ModelType(IM), default=lambda: [])
     organizations = ListType(ModelType(Organization), default=lambda: [])
     phones = ListType(ModelType(Phone), default=lambda: [])
-    public_keys = ListType(ModelType(PublicKey), default=lambda: [])
     pi = ModelType(PIParameter)
     user_id = UUIDType()
 

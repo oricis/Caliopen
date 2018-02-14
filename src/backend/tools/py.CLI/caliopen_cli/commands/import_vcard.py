@@ -1,24 +1,34 @@
-def import_vcard(username, directory, file_vcard, **kwargs):
+import logging
+import os
 
-    from caliopen_main.contact.parameters import NewContact
+log = logging.getLogger(__name__)
+
+
+def import_vcard(username, directory, file_vcard, **kwargs):
 
     from caliopen_main.contact.core import Contact as CoreContact
     from caliopen_main.user.core.user import User as CoreUser
 
-    from caliopen_main.contact.parsers import parse_vcards
-    from caliopen_main.contact.parsers import read_file, read_directory
+    from caliopen_main.contact.parsers import VcardParser
 
-    vcards = []
-
+    new_contacts = []
     if directory:
-        vcards = read_directory(directory)
+        files = [f for f in os.listdir(directory) if
+                 os.path.isfile(os.path.join(directory, f))]
+        for f in files:
+            ext = f.split('.')[-1]
+            if ext == 'vcard' or ext == 'vcf':
+                file = '{directory}/{file}'.format(directory=directory, file=f)
+                parser = VcardParser(file)
+                new_contacts.extend(parser.parse())
+            else:
+                log.warn("Not valid file extension for vcard %s" % f)
 
     if file_vcard:
-        vcards = read_file(file_vcard, True)
+        parser = VcardParser(file_vcard)
+        new_contacts = parser.parse()
 
     user = CoreUser.by_name(username)
 
-    new_contacts = parse_vcards(vcards)
-
-    for i in new_contacts:
-        CoreContact.create(user, i)
+    for contact in new_contacts:
+        CoreContact.create(user, contact.contact)

@@ -3,14 +3,10 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
-import Link from '../../../../components/Link';
 import MessageDate from '../../../../components/MessageDate';
 import AuthorAvatar from '../../../../components/AuthorAvatar';
 // import MessageItemContainer from '../MessageItemContainer';
-import Icon from '../../../../components/Icon';
-// import { CheckboxFieldGroup } from '../../../../components/form';
-import TextBlock from '../../../../components/TextBlock';
-import Badge from '../../../../components/Badge';
+import { Badge, Link, Checkbox, Icon, TextBlock } from '../../../../components/';
 import { getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
 import { renderParticipant, getAuthor } from '../../../../services/message';
 
@@ -86,12 +82,15 @@ class MessageItem extends Component {
           <span className="s-message-item__tags">{this.renderTags()}</span>
         </TextBlock>
         <TextBlock className={classnames(
-          's-message-item__topic', { 's-message-item__topic--unread': message.is_unread })}
+          's-message-item__topic', {
+            's-message-item__topic--unread': message.is_unread,
+            's-message-item__topic--draft': message.is_draft,
+          })}
         >
           <Link to={`/discussions/${message.discussion_id}#${hash}`} noDecoration >
             {message.is_draft && (<span className="s-message-item__draft-prefix"><Trans id="timeline.draft-prefix">Draft in progress:</Trans></span>)}
             {message.subject && (<span className="s-message-item__subject">{message.subject}{' '}</span>)}
-            <span className="s-message-item__excerpt">{message.excerpt}</span>)
+            <span className="s-message-item__excerpt">{message.excerpt}</span>
           </Link>
         </TextBlock>
       </span>
@@ -119,7 +118,7 @@ class MessageItem extends Component {
   }
 
   render() {
-    const { message, isMessageSelected } = this.props;
+    const { i18n, message, isMessageSelected } = this.props;
     const { /* pi, */attachments } = message;
 
     return (
@@ -156,11 +155,12 @@ class MessageItem extends Component {
           {this.renderDate()}
         </div>
         <div className="s-message-item__col-select">
-          <input
-            type="checkbox"
+          <Checkbox
+            label={i18n._('message-list.action.select_single_message', { defaults: 'Select/deselect this message' })}
             onChange={this.onCheckboxChange}
             id={message.message_id}
             checked={isMessageSelected}
+            showLabelforSr
           />
         </div>
       </div>

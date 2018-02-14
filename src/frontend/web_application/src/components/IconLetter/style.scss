@@ -1,3 +1,5 @@
+@import '../../styles/common';
+
 // ok
 .m-letter--none {
   &::before {
@@ -10,6 +12,7 @@
 .m-letter--checked {
   &::before {
     content: '✓';
+    background-color: $co-color__primary--low;
   }
 }
 

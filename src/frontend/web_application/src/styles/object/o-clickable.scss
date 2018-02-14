@@ -42,9 +42,13 @@
 }
 
 @mixin o-clickable--text {
+  color: $co-color__primary--low;
+  text-decoration: underline;
+
   &:hover,
   &:focus {
-    text-decoration: underline;
+    color: $co-color__primary--low;
+    text-decoration: none;
   }
 }
 // display: inline, inline-block or expanded (

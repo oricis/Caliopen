@@ -5,9 +5,9 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
 	"github.com/satori/go.uuid"
-	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 	"strconv"
 )

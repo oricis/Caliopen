@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import { Field } from 'redux-form';
 import renderReduxField from '../../../../services/renderReduxField';
-import { FieldErrors, Fieldset, Legend, DatePickerGroup as DatePickerGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components/form';
-import Icon from '../../../../components/Icon';
-import Button from '../../../../components/Button';
+import { Button, Icon, FieldErrors, DatePickerGroup as DatePickerGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
 
 const DatePickerGroup = renderReduxField(DatePickerGroupBase);
 

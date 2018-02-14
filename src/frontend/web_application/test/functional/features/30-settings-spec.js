@@ -5,11 +5,11 @@ describe('Settings', () => {
   const locale = 'en';
   const __ = key => ({
     fr: {
-      custom: 'PERSONNALISEZ VOTRE INTERFACE',
+      custom: 'Personnalisez votre interface',
       save: 'Enregistrer les paramètres',
     },
     en: {
-      custom: 'CUSTOMIZE YOUR INTERFACE',
+      custom: 'Customize your interface',
       save: 'Save settings',
     },
   }[locale][key]);

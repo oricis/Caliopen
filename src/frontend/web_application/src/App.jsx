@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { I18nLoader } from './modules/i18n';
 import { WithSettings } from './modules/settings';
 import { DeviceProvider } from './modules/device';
-import PageTitle from './components/PageTitle';
+import { PageTitle } from './components/';
 import Routes from './routes';
 import I18nProviderLegacy from './components/I18nProvider';
 import { initConfig } from './services/config';

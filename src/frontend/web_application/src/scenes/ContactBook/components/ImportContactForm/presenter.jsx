@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import InputFileGroup from '../../../../components/form/InputFileGroup';
-import Button from '../../../../components/Button';
-import Spinner from '../../../../components/Spinner';
+import { Button, InputFileGroup, Spinner } from '../../../../components/';
 import { getConfig } from '../../../../services/config';
 
 

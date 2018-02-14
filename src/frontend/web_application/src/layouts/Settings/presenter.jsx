@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { matchPath } from 'react-router-dom';
 import MenuBar from '../../components/MenuBar';
+import './style.scss';
 
 class Settings extends PureComponent {
   static propTypes = {

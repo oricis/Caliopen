@@ -18,9 +18,6 @@ def includeme(config):
     log.debug('Loading contact API')
     config.scan('caliopen_api.user.contact')
 
-    log.debug('Loading device API')
-    config.scan('caliopen_api.user.device')
-
     log.debug('Loading imports API')
     config.scan('caliopen_api.user.imports')
 

@@ -9,11 +9,11 @@ import (
 )
 
 type Participant struct {
-	Address     string `cql:"address"          json:"address"`
-	Contact_ids []UUID `cql:"contact_ids"      json:"contact_ids"             formatter:"rfc4122"`
-	Label       string `cql:"label"            json:"label"`
-	Protocol    string `cql:"protocol"         json:"protocol"`
-	Type        string `cql:"type"             json:"type"`
+	Address     string `cql:"address"          json:"address,omitempty"`
+	Contact_ids []UUID `cql:"contact_ids"      json:"contact_ids,omitempty"             formatter:"rfc4122"`
+	Label       string `cql:"label"            json:"label,omitempty"`
+	Protocol    string `cql:"protocol"         json:"protocol,omitempty"`
+	Type        string `cql:"type"             json:"type,omitempty"`
 }
 
 /*
@@ -47,4 +47,24 @@ func (p *Participant) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	return nil //TODO: errors handling
+}
+
+// part of CaliopenObject interface
+func (p *Participant) MarshallNew(...interface{}) {
+	// nothing to enforce
+}
+
+// Sort interface implementation
+type ByAddress []Participant
+
+func (p ByAddress) Len() int {
+	return len(p)
+}
+
+func (p ByAddress) Less(i, j int) bool {
+	return p[i].Address < p[j].Address
+}
+
+func (p ByAddress) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
 }

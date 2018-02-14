@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import Icon from '../../../../components/Icon';
-import Button from '../../../../components/Button';
-import OpenPGPKey from '../../../../components/OpenPGPKey';
+import { Icon, Button } from '../../../../components/';
+import OpenPGPKey from '../OpenPGPKey';
 import OpenPGPKeyForm from '../OpenPGPKeyForm';
 import './style.scss';
 

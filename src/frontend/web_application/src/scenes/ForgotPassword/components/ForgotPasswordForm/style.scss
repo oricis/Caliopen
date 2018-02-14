@@ -3,10 +3,13 @@
 @import '../../../../styles/object/o-callout';
 
 .m-forgot-password-form {
-  max-width: map-get($co-form__width, 'xlarge');
 
   &__action {
     line-height: $co-component__height;
+    text-align: center;
+  }
+
+  &__link {
     text-align: center;
   }
 

@@ -7,9 +7,9 @@ $m-navbar-item--height: $co-component__height + $m-navbar-item--border-top-size 
 .m-navbar-item {
   display: flex;
   height: $m-navbar-item--height;
-  margin-right: .25rem;
+  margin-right: 2px;
   border-top: $m-navbar-item--border-top-size solid $co-color__bg__back;
-  background-color: #f1faff;
+  background-color: $co-color__bg__back__higher;
   color: $co-color__fg__text;
   font-weight: 600;
   text-transform: uppercase;
@@ -20,7 +20,8 @@ $m-navbar-item--height: $co-component__height + $m-navbar-item--border-top-size 
     color: $co-color__primary--lower;
   }
 
-  &--last {
+  &--last,
+  &:last-child {
     margin-right: 0;
   }
 

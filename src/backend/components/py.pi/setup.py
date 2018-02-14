@@ -18,6 +18,8 @@ requires = [
     'schematics',
     'pgpy',
     'caliopen_main',
+    'user-agents',
+    'geoip2',
 ]
 
 extras_require = {

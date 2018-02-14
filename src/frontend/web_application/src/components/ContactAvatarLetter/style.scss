@@ -5,14 +5,13 @@
   display: inline-block;
   vertical-align: middle;
   border-radius: $co-radius;
-  background-color: $co-color__fg__back;
+  background-color: $co-color__primary--low;
   overflow: hidden;
 
   &__letter {
     &::before {
       display: block;
-
-      color: $co-color__fg__text--high;
+      color: $co-color__contrast__text--high;
       text-align: center;
     }
   }
@@ -23,7 +22,6 @@
   &--medium { @include m-avatar--size(medium); }
   &--large  { @include m-avatar--size(large);  }
   &--xlarge { @include m-avatar--size(xlarge); }
-  &--xxlarge { @include m-avatar--size(xxlarge); }
 
   &--round  { border-radius: 50%}
 

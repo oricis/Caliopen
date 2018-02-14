@@ -1,0 +1,11 @@
+@import '../../../../styles/common';
+
+.m-contact-details {
+
+  &__panel {
+    margin-bottom: $co-margin;
+  }
+  &__new-form {
+    margin-top: $co-margin;
+  }
+}
