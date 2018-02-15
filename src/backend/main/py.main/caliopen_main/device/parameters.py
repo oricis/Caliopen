@@ -45,6 +45,8 @@ class Device(NewDevice):
     user_id = UUIDType()
     date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
+    date_revoked = DateTimeType(serialized_format=helpers.RFC3339Milli,
+                                tzd=u'utc')
     status = StringType()
 
     privacy_features = DictType(StringType, default=lambda: {})

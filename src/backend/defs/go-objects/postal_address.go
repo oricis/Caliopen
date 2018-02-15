@@ -68,8 +68,7 @@ func (pa *PostalAddress) UnmarshalMap(input map[string]interface{}) error {
 // MarshallNew must be a variadic func to implement NewMarshaller interface,
 // but PostalAddress does not need params to marshal a well-formed PostalAddress: ...interface{} is ignored
 func (pa *PostalAddress) MarshallNew(...interface{}) {
-	nullID := new(UUID)
-	if len(pa.AddressId) == 0 || (bytes.Equal(pa.AddressId.Bytes(), nullID.Bytes())) {
+	if len(pa.AddressId) == 0 || (bytes.Equal(pa.AddressId.Bytes(), EmptyUUID.Bytes())) {
 		pa.AddressId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
 }

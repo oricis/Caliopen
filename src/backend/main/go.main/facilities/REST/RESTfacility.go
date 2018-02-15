@@ -57,6 +57,13 @@ type (
 		RequestPasswordReset(payload PasswordResetRequest, notifier Notifications.EmailNotifiers) error
 		ValidatePasswordResetToken(token string) (session *Pass_reset_session, err error)
 		ResetUserPassword(token, new_password string, notifier Notifications.EmailNotifiers) error
+		//devices
+		CreateDevice(device *Device) CaliopenError
+		RetrieveDevices(userId string) ([]Device, CaliopenError)
+		RetrieveDevice(userId, deviceId string) (*Device, CaliopenError)
+		UpdateDevice(device, oldDevice *Device, update map[string]interface{}) CaliopenError
+		PatchDevice(patch []byte, userId, deviceId string) CaliopenError
+		DeleteDevice(userId, deviceId string) CaliopenError
 	}
 	RESTfacility struct {
 		store      backends.APIStorage

@@ -9,6 +9,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/contacts"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/devices"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/messages"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/participants"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/tags"
@@ -147,6 +148,8 @@ func (server *REST_API) start() error {
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
 
+	//router.Use(Dumper())
+
 	// adds our middlewares
 	err := http_middleware.InitSwaggerMiddleware(server.config.SwaggerFile)
 	if err != nil {
@@ -213,6 +216,14 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	cts.GET("/:contactID/identities", contacts.GetIdentities)
 	//tags
 	cts.PATCH("/:contactID/tags", tags.PatchResourceWithTags)
+
+	/** devices API **/
+	dev := api.Group(http_middleware.DevicesRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
+	dev.GET("", devices.GetDevicesList)
+	dev.POST("", devices.NewDevice)
+	dev.GET("/:deviceID", devices.GetDevice)
+	dev.PATCH("/:deviceID", devices.PatchDevice)
+	dev.DELETE("/:deviceID", devices.DeleteDevice)
 
 	/** tags API **/
 	tag := api.Group(http_middleware.TagsRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))

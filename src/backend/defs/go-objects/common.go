@@ -207,18 +207,22 @@ func marshallField(obj interface{}, field, context string, jsonBuf *bytes.Buffer
 				case "RFC3339Milli":
 					jsonBuf.WriteString("\"" + field_value.(time.Time).Format(RFC3339Milli) + "\"")
 				default:
+					var b []byte
+					var e error
 					if fieldKind == reflect.Struct {
-						b, e := JSONMarshaller(context, field_value)
-						if e == nil {
-							jsonBuf.Write(b)
-						} else {
-							jsonBuf.WriteString("null")
-						}
+						b, e = JSONMarshaller(context, field_value)
+					} else if fieldKind == reflect.Ptr && field_value != nil {
+						b, e = JSONMarshaller(context, reflect.Indirect(reflect.ValueOf(field_value)))
 					} else {
 						enc.Encode(field_value)
+						return
+					}
+					if e == nil {
+						jsonBuf.Write(b)
+					} else {
+						jsonBuf.WriteString("null")
 					}
 				}
-
 			} else {
 				jsonBuf.Write([]byte{'"', '"'})
 			}
@@ -227,10 +231,18 @@ func marshallField(obj interface{}, field, context string, jsonBuf *bytes.Buffer
 }
 
 // borrowed from pkg/encoding/json/encode.go
-
+// add checks for :
+//  - time.Time
+//  - custom type UUID
 func isEmptyValue(v reflect.Value) bool {
 	switch v.Kind() {
-	case reflect.Array, reflect.Map, reflect.Slice, reflect.String:
+	case reflect.Array:
+		if reflect.TypeOf(v) == reflect.TypeOf(EmptyUUID) {
+			return v.Len() == 0 || (bytes.Equal(v.Interface().(UUID).Bytes(), EmptyUUID.Bytes()))
+		} else {
+			return v.Len() == 0
+		}
+	case reflect.Map, reflect.Slice, reflect.String:
 		return v.Len() == 0
 	case reflect.Bool:
 		return !v.Bool()
@@ -242,6 +254,11 @@ func isEmptyValue(v reflect.Value) bool {
 		return v.Float() == 0
 	case reflect.Interface, reflect.Ptr:
 		return v.IsNil()
+	case reflect.Struct:
+		if v.Type().String() == "time.Time" {
+			return v.Interface().(time.Time).IsZero()
+		}
+		//TODO: CaliopenObjects should implement IsEmpty() for checking empty struct
 	}
 	return false
 }

@@ -14,6 +14,7 @@ class Signup extends Component {
 
   state = {
     errors: {},
+    isValidating: false,
   };
 
   resetErrorsState(fieldname) {
@@ -84,9 +85,15 @@ class Signup extends Component {
   handleSignup = async ({ device }, ev) => {
     const { i18n, settings } = this.props;
     try {
+      this.setState({
+        isValidating: true,
+      });
       await formValidator.validate(ev.formValues, i18n, 'full');
     } catch (errors) {
-      this.setState({ errors });
+      this.setState({
+        errors,
+        isValidating: false,
+      });
 
       return undefined;
     }
@@ -111,7 +118,10 @@ class Signup extends Component {
 
       const localizedErrors = getLocalizedErrors(i18n);
 
-      this.setState({ errors: { global: [localizedErrors[ERR_UNABLE_TO_SIGNUP]] } });
+      this.setState({
+        errors: { global: [localizedErrors[ERR_UNABLE_TO_SIGNUP]] },
+        isValidating: false,
+      });
 
       return undefined;
     }
@@ -126,6 +136,7 @@ class Signup extends Component {
         onFieldBlur={this.handleFieldBlur}
         onSubmit={handleSignup}
         errors={errors}
+        isValidating={this.state.isValidating}
       />
     );
   }
