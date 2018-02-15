@@ -41,6 +41,7 @@ class Timeline extends Component {
   state= {
     selectedMessages: [],
     isTagModalOpen: false,
+    isDeleting: false,
   }
 
   componentDidMount() {
@@ -109,27 +110,28 @@ class Timeline extends Component {
   }
 
   handleDeleteMessages = () => {
-    // TODO: implement multiple message deletion
-    if (this.state.selectedMessages.length > 1) {
-      return this.props.notify({
-        message: 'Delete multiple messages is not yet implemented.',
-      });
-    }
+    const { messages, deleteMessage } = this.props;
+    const selectedMessageIds = new Set(this.state.selectedMessages);
 
-    const { messages } = this.props;
-    const selectedMessageId = this.state.selectedMessages[0];
+    this.setState(prevState => ({
+      ...prevState,
+      isDeleting: true,
+    }));
 
-    const message = messages.find(
-      item => item.message_id === selectedMessageId
-    );
+    return Promise.all(messages
+      .filter(message => selectedMessageIds.has(message.message_id))
+      .map(message =>
+        deleteMessage({ message }))
+      )
+      .then(() => {
+        this.setState(prevState => ({
+          ...prevState,
+          selectedMessages: [],
+          isDeleting: false,
+        }));
+      }
 
-    return this.props.deleteMessage({ message })
-      .then(() =>
-      this.setState(prevState => ({
-        ...prevState,
-        selectedMessages: [],
-      }))
-    );
+      );
   }
 
   loadMore = () => {
@@ -164,6 +166,7 @@ class Timeline extends Component {
             userTags={userTags}
             isMessageFromUser={(user && isMessageFromUser(message, user)) || false}
             message={message}
+            isDeleting={this.state.isDeleting}
             onSelectMessage={this.onSelectMessage}
             isMessageSelected={[...this.state.selectedMessages].includes(message.message_id)}
           />
@@ -231,6 +234,7 @@ class Timeline extends Component {
               onSelectAllMessages={this.onSelectAllMessages}
               onEditTags={this.handleOpenTags}
               onDeleteMessages={this.handleDeleteMessages}
+              isDeleting={this.state.isDeleting}
             />
           </div>
           {this.renderTagsModal()}
