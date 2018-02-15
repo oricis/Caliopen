@@ -75,7 +75,7 @@ class MessageSelector extends Component {
           <Checkbox
             label={i18n._('message-list.action.select_all_messages', { defaults: 'Select/deselect all messages' })}
             id="message-selector"
-            defaultChecked={checked}
+            checked={checked}
             indeterminate={this.props.indeterminate}
             onChange={this.toggleCheckbox}
             disabled={isDeleting}
