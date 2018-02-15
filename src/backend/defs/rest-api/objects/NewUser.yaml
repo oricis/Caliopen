@@ -9,6 +9,10 @@ properties:
     type: string
   recovery_email:
     type: string
+  tos:
+    type: boolean
+  privacy:
+    type: boolean
   settings:
     "$ref": Settings.yaml
   device:
