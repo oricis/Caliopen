@@ -1,5 +1,5 @@
 import { getLocalstorage } from '../../../../services/localStorage';
-import { CURVE_TYPE } from '../ecdsa';
+import { CURVE_TYPE, CURVE_TYPE_ASSOC } from '../ecdsa';
 
 const DEVICE_NAMESPACE = 'device';
 
@@ -49,7 +49,7 @@ export const getPublicDevice = ({ id, keypair }) => {
   return {
     device_id: id,
     ecdsa_key: {
-      curve: CURVE_TYPE,
+      curve: CURVE_TYPE_ASSOC[CURVE_TYPE],
       hash: keypair.ec.hash.name,
       x: pub.x.toString('hex'),
       y: pub.y.toString('hex'),

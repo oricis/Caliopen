@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import { WithDevice } from '../../modules/device';
+import { signup } from '../../modules/user';
 import SignupForm from './components/SignupForm';
-import formValidator, { getLocalizedErrors, ERR_INVALID_GLOBAL } from './form-validator';
-
-const INVALID_FORM_REJECTION = 'INVALID_FORM_REJECTION';
+import formValidator, { getLocalizedErrors, ERR_UNABLE_TO_SIGNUP } from './form-validator';
 
 class Signup extends Component {
   static propTypes = {
@@ -27,9 +25,7 @@ class Signup extends Component {
     }));
   }
 
-
-  handleUsernameChange = (ev) => {
-    const { value: username } = ev.target;
+  usernameHasChanged = (username) => {
     if (username.length === 0) {
       this.resetErrorsState('username');
     }
@@ -50,9 +46,24 @@ class Signup extends Component {
     }
   }
 
-  handleUsernameBlur = (ev) => {
-    const { value: username } = ev.target;
-    if (username.length === 0) {
+  handleFieldChange = (fieldname, value) => {
+    switch (fieldname) {
+      case 'username':
+        this.usernameHasChanged(value);
+        break;
+      default:
+        if (this.state.errors[fieldname]) {
+          this.resetErrorsState(fieldname);
+        }
+    }
+  }
+
+  handleFieldBlur = (fieldname, value) => {
+    if (fieldname !== 'username') {
+      return;
+    }
+
+    if (value.length === 0) {
       this.resetErrorsState('username');
 
       return;
@@ -60,7 +71,7 @@ class Signup extends Component {
 
     const { i18n } = this.props;
 
-    formValidator.validate({ username }, i18n, 'usernameAvailability').catch((errors) => {
+    formValidator.validate({ username: value }, i18n, 'usernameAvailability').catch((errors) => {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
@@ -70,79 +81,58 @@ class Signup extends Component {
     });
   }
 
-  handleSignup = ({ device }, ev) => {
+  handleSignup = async ({ device }, ev) => {
     const { i18n, settings } = this.props;
-    formValidator.validate(ev.formValues, i18n, 'full')
-      .catch((errors) => {
-        this.setState({ errors });
+    try {
+      await formValidator.validate(ev.formValues, i18n, 'full');
+    } catch (errors) {
+      this.setState({ errors });
 
-        return Promise.reject(INVALID_FORM_REJECTION);
-      })
-      .then(() => axios.post('/auth/signup', {
+      return undefined;
+    }
+
+    try {
+      await signup({
         ...ev.formValues,
         device,
         settings,
-      }, {
-        headers: { 'X-Requested-With': 'XMLHttpRequest' },
-      }))
-      .then(this.handleSignupSuccess, this.handleSignupError);
+      });
+      const { onSignupSuccess } = this.props;
+
+      return onSignupSuccess('/');
+    } catch (err) {
+      const isExpectedError = err.response &&
+        err.response.status >= 400 &&
+        err.response.status < 500;
+
+      if (!isExpectedError) {
+        throw err;
+      }
+
+      const localizedErrors = getLocalizedErrors(i18n);
+
+      this.setState({ errors: { global: [localizedErrors[ERR_UNABLE_TO_SIGNUP]] } });
+
+      return undefined;
+    }
   }
 
-  handleSignupSuccess = () => {
-    const { onSignupSuccess } = this.props;
-    onSignupSuccess('/');
-  }
-
-  handleSignupError = (err) => {
-    if (err === INVALID_FORM_REJECTION) {
-      return;
-    }
-
-    const isExpectedError = err.response &&
-      err.response.status >= 400 &&
-      err.response.status < 500 &&
-      err.response.data.errors;
-
-    if (!isExpectedError) {
-      throw err;
-    }
-
-    const { i18n } = this.props;
-    const localizedErrors = getLocalizedErrors(i18n);
-
-    const getLocalizedError = (msg, field) =>
-      localizedErrors[`${msg}_${field.toUpperCase()}`] ||
-      localizedErrors[ERR_INVALID_GLOBAL];
-
-    const { errors = [] } = err.response.data;
-    const global = Object.keys(errors).reduce((prev, field) => ([
-      ...prev,
-      ...errors[field].map(msg => getLocalizedError(msg, field)),
-    ]), []);
-
-    if (global.length === 0) {
-      global.push(localizedErrors[ERR_INVALID_GLOBAL]);
-    }
-    this.setState({ errors: { global } });
-  }
-
-  renderForm = ({ device }) => {
-    console.log('renderForm', device);
+  renderForm = (errors, device) => {
     const handleSignup = this.handleSignup.bind(null, { device });
 
     return (
       <SignupForm
-        onUsernameChange={this.handleUsernameChange}
-        onUsernameBlur={this.handleUsernameBlur}
+        onFieldChange={this.handleFieldChange}
+        onFieldBlur={this.handleFieldBlur}
         onSubmit={handleSignup}
-        errors={this.state.errors}
+        errors={errors}
       />
     );
   }
 
   render() {
     return (
-      <WithDevice render={this.renderForm} />
+      <WithDevice render={({ device }) => this.renderForm(this.state.errors, device)} />
     );
   }
 }

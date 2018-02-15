@@ -1,10 +1,10 @@
 const proxy = require('express-http-proxy');
 const url = require('url');
-const { getConfig } = require('../config');
+const { getConfig, getApiHost } = require('../config');
 
 module.exports = (app) => {
-  const { api: { hostname, port, protocol, checkCertificate }, maxBodySize } = getConfig();
-  const target = `${protocol}://${hostname}:${port}`;
+  const { api: { checkCertificate }, maxBodySize } = getConfig();
+  const target = getApiHost();
 
   app.use('/api', proxy(target, {
     limit: maxBodySize,

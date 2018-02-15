@@ -17,16 +17,16 @@ class SignupForm extends Component {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
     onSubmit: PropTypes.func.isRequired,
-    onUsernameChange: PropTypes.func,
-    onUsernameBlur: PropTypes.func,
+    onFieldChange: PropTypes.func,
+    onFieldBlur: PropTypes.func,
     i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
     errors: {},
     form: {},
-    onUsernameChange: noop,
-    onUsernameBlur: noop,
+    onFieldChange: noop,
+    onFieldBlur: noop,
   }
 
   state = {
@@ -67,12 +67,6 @@ class SignupForm extends Component {
     });
   };
 
-  handleUsernameChange = (event) => {
-    this.handleInputChange(event);
-
-    this.props.onUsernameChange(event);
-  };
-
   handlePasswordChange = (event) => {
     this.handleInputChange(event);
     this.calcPasswordStrengh();
@@ -92,25 +86,26 @@ class SignupForm extends Component {
     }
   }
 
-
   handleInputChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value: inputValue, type, checked } = event.target;
+    const value = type === 'checkbox' ? checked : inputValue;
+    const { onFieldChange } = this.props;
+
     this.setState(prevState => ({
       formValues: {
         ...prevState.formValues,
         [name]: value,
       },
-    }));
+    }), () => {
+      onFieldChange(name, value);
+    });
   };
 
-  handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    this.setState(prevState => ({
-      formValues: {
-        ...prevState.formValues,
-        [name]: checked,
-      },
-    }));
+  handleInputBlur = (event) => {
+    const { name, value } = event.target;
+    const { onFieldBlur } = this.props;
+
+    onFieldBlur(name, value);
   };
 
   handleSubmit = (ev) => {
@@ -188,8 +183,8 @@ class SignupForm extends Component {
                   placeholder={i18n._('signup.form.username.placeholder', { defaults: 'username' })}
                   value={this.state.formValues.username}
                   errors={errors.username}
-                  onChange={this.handleUsernameChange}
-                  onBlur={this.props.onUsernameBlur}
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
                 />
                 <TextBlock className="s-signup__user">
                   <span className="s-signup__username">{this.state.formValues.username}</span>@alpha.caliopen.org
@@ -208,6 +203,7 @@ class SignupForm extends Component {
                   value={this.state.formValues.password}
                   errors={errors.password}
                   onChange={this.handlePasswordChange}
+                  onBlur={this.handleInputBlur}
                 />
               </FormColumn>
               {this.state.passwordStrength.length !== 0 && (
@@ -230,6 +226,7 @@ class SignupForm extends Component {
                   value={this.state.formValues.recovery_email}
                   errors={errors.recovery_email}
                   onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
                 />
                 <Label htmlFor="signup_recovery_email" className="s-signup__recovery-label">
                   <Trans id="signup.form.invitation_email.tip">Please fill with the email provided when you requested an invitation.</Trans>
@@ -246,7 +243,7 @@ class SignupForm extends Component {
                     name="tos"
                     checked={this.state.formValues.tos}
                     errors={errors.tos}
-                    onChange={this.handleCheckboxChange}
+                    onChange={this.handleInputChange}
                   />
                 </FormColumn>
               </FormRow>
@@ -271,7 +268,7 @@ class SignupForm extends Component {
                   name="privacy"
                   checked={this.state.formValues.privacy}
                   errors={errors.privacy}
-                  onChange={this.handleCheckboxChange}
+                  onChange={this.handleInputChange}
                 />
               </FormColumn>
             </FormRow>

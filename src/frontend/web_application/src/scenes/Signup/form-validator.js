@@ -2,14 +2,15 @@ import Schema from 'async-validator';
 import usernameDescriptor, { ERR_MIN_MAX, ERR_INVALID_CHARACTER, ERR_DOTS, ERR_DOUBLE_DOTS } from '../../services/username-utils/username-validity';
 import usernameAvailability from '../../services/username-utils/username-availability';
 
-const ERR_REQUIRED_TOS = 'ERR_REQUIRED_TOS';
-const ERR_REQUIRED_PRIVACY = 'ERR_REQUIRED_PRIVACY';
-const ERR_INVALID_GLOBAL = 'ERR_INVALID_GLOBAL';
-const ERR_REQUIRED_USERNAME = 'ERR_REQUIRED_USERNAME';
-const ERR_REQUIRED_PASSWORD = 'ERR_REQUIRED_PASSWORD';
-const ERR_UNAVAILABLE_USERNAME = 'ERR_UNAVAILABLE_USERNAME';
-const ERR_INVALID_RECOVERY_EMAIL = 'ERR_INVALID_RECOVERY_EMAIL';
-const ERR_REQUIRED_RECOVERY_EMAIL = 'ERR_REQUIRED_RECOVERY_EMAIL';
+export const ERR_REQUIRED_TOS = 'ERR_REQUIRED_TOS';
+export const ERR_REQUIRED_PRIVACY = 'ERR_REQUIRED_PRIVACY';
+export const ERR_INVALID_GLOBAL = 'ERR_INVALID_GLOBAL';
+export const ERR_REQUIRED_USERNAME = 'ERR_REQUIRED_USERNAME';
+export const ERR_REQUIRED_PASSWORD = 'ERR_REQUIRED_PASSWORD';
+export const ERR_UNAVAILABLE_USERNAME = 'ERR_UNAVAILABLE_USERNAME';
+export const ERR_INVALID_RECOVERY_EMAIL = 'ERR_INVALID_RECOVERY_EMAIL';
+export const ERR_REQUIRED_RECOVERY_EMAIL = 'ERR_REQUIRED_RECOVERY_EMAIL';
+export const ERR_UNABLE_TO_SIGNUP = 'ERR_UNABLE_TO_SIGNUP';
 
 export const getLocalizedErrors = i18n => ({
   [ERR_DOTS]: i18n._('signup.feedback.username_starting_ending_dot', { defaults: 'The username cannot start or end with a dot (.)' }),
@@ -24,6 +25,7 @@ export const getLocalizedErrors = i18n => ({
   [ERR_UNAVAILABLE_USERNAME]: i18n._('signup.feedback.unavailable_username', { defaults: 'We are sorry, this username is not available' }),
   [ERR_INVALID_RECOVERY_EMAIL]: i18n._('signup.feedback.invalid_recovery_email', { defaults: 'The email should be valid' }),
   [ERR_REQUIRED_RECOVERY_EMAIL]: i18n._('signup.feedback.required_recovery_email', { defaults: 'A backup email is required' }),
+  [ERR_UNABLE_TO_SIGNUP]: i18n._('signup.feedback.unable_to_signup', { defaults: 'Unable to signup. Please retry or contact an administrator.' }),
 });
 
 const descriptor = {
@@ -61,25 +63,30 @@ const descriptor = {
   ],
 };
 
+const usernameAvailabilityDescriptor = {
+  username: [
+    ...usernameDescriptor.username,
+    (rule, value, callback) => {
+      usernameAvailability(value).then((result) => {
+        if (result === true) {
+          return callback();
+        }
+
+        return callback({ message: ERR_UNAVAILABLE_USERNAME });
+      });
+    },
+  ],
+};
+
 const makeDescriptor = (type) => {
   switch (type) {
     case 'full':
-      return descriptor;
-    case 'usernameAvailability':
       return {
-        username: [
-          ...usernameDescriptor.username,
-          (rule, value, callback) => {
-            usernameAvailability(value).then((result) => {
-              if (result === true) {
-                return callback();
-              }
-
-              return callback({ message: ERR_UNAVAILABLE_USERNAME });
-            });
-          },
-        ],
+        ...descriptor,
+        ...usernameAvailabilityDescriptor,
       };
+    case 'usernameAvailability':
+      return usernameAvailabilityDescriptor;
     default:
     case 'username':
       return usernameDescriptor;

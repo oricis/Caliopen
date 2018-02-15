@@ -1,6 +1,9 @@
 import { ec as EC } from 'elliptic';
 
 export const CURVE_TYPE = 'p256';
+export const CURVE_TYPE_ASSOC = {
+  p256: 'P-256',
+};
 
 let ec;
 const getEC = () => {
