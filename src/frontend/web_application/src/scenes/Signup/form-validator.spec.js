@@ -1,5 +1,9 @@
 import validator from './form-validator';
 
+jest.mock('../../services/username-utils/username-availability', () =>
+  () => Promise.resolve(true)
+);
+
 describe('scene Signup form-validator', () => {
   const i18n = { _: id => id };
   it('validates', async () => {

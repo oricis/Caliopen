@@ -29,7 +29,6 @@ export const getLocalizedErrors = i18n => ({
 });
 
 const descriptor = {
-  ...usernameDescriptor,
   username: [
     ...usernameDescriptor.username,
     { type: 'string', required: true, message: ERR_REQUIRED_USERNAME },
@@ -65,8 +64,13 @@ const descriptor = {
 
 const usernameAvailabilityDescriptor = {
   username: [
-    ...usernameDescriptor.username,
+    ...descriptor.username,
     (rule, value, callback) => {
+      if (!value) {
+        callback();
+
+        return;
+      }
       usernameAvailability(value).then((result) => {
         if (result === true) {
           return callback();
