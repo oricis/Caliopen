@@ -412,6 +412,8 @@
   "password.form.tfa.label": "TOTP Validierungscode:",
   "password.form.tfa.placeholder": "Geben Sie den 2-Authentifizierungscode ein",
   "password.form.tfa.tip": "Nur wenn Sie die 2-Authentifizierungsmethode aktiviert haben.",
+  "settings.form.feedback.successfull": "",
+  "settings.form.feedback.unexpected-error": "",
   "settings.identities": "Identitäten",
   "settings.route.label.identities": "Identitäten",
   "settings.route.label.signatures": "Unterschriften",

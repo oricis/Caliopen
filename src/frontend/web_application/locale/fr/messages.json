@@ -413,6 +413,8 @@
   "password.form.tfa.placeholder": "Entrez le code de double authentification",
   "password.form.tfa.tip": "Seulement si vous avez activé l'authentification à deux facteurs.",
   "search-results.route.label": "Resultats pour : %(term)s",
+  "settings.form.feedback.successfull": "Paramètres mis à jour!",
+  "settings.form.feedback.unexpected-error": "Erreur lors de la mise à jour des paramètres.",
   "settings.identities": "Identités",
   "settings.route.label.identities": "Identités",
   "settings.route.label.signatures": "Signatures",
