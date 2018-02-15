@@ -5,9 +5,24 @@
   }
 }
 
-button, input, optgroup, select, textarea {
+button,
+input,
+optgroup,
+select,
+textarea {
   // force custom font-family on form elements
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, 'Roboto', Arial, sans-serif;
+}
+
+input {
+  &:invalid,
+  &:required,
+  &:-moz-submit-invalid,
+  &:-moz-ui-invalid {
+    // disable pseudo-classes automatically applied to `required` or `invalid` inputs
+    // https://developer.mozilla.org/fr/docs/Web/CSS/:invalid
+    box-shadow: none;
+  }
 }
 
 fieldset {
