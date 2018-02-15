@@ -198,7 +198,8 @@
                       "format": "date-time"
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "string",
+                      "format": "date-time"
                     },
                     "emails": {
                       "type": "array",
@@ -2768,7 +2769,8 @@
                         "format": "date-time"
                       },
                       "deleted": {
-                        "type": "boolean"
+                        "type": "string",
+                        "format": "date-time"
                       },
                       "emails": {
                         "type": "array",
@@ -3415,7 +3417,8 @@
                   "format": "date-time"
                 },
                 "deleted": {
-                  "type": "boolean"
+                  "type": "string",
+                  "format": "date-time"
                 },
                 "emails": {
                   "type": "array",
@@ -3902,7 +3905,8 @@
                       "format": "date-time"
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "string",
+                      "format": "date-time"
                     },
                     "emails": {
                       "type": "array",
@@ -4237,7 +4241,8 @@
                   "format": "date-time"
                 },
                 "deleted": {
-                  "type": "boolean"
+                  "type": "string",
+                  "format": "date-time"
                 },
                 "emails": {
                   "type": "array",
@@ -4764,7 +4769,8 @@
                         "format": "date-time"
                       },
                       "deleted": {
-                        "type": "boolean"
+                        "type": "string",
+                        "format": "date-time"
                       },
                       "emails": {
                         "type": "array",
@@ -5319,6 +5325,9 @@
                 "location": {
                   "type": "string",
                   "description": "url to retrieve new contact's infos at /contacts/{contact_id}"
+                },
+                "contact_id": {
+                  "type": "string"
                 }
               }
             }
@@ -5411,7 +5420,8 @@
                   "format": "date-time"
                 },
                 "deleted": {
-                  "type": "boolean"
+                  "type": "string",
+                  "format": "date-time"
                 },
                 "emails": {
                   "type": "array",
@@ -5901,7 +5911,8 @@
                       "format": "date-time"
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "string",
+                      "format": "date-time"
                     },
                     "emails": {
                       "type": "array",
@@ -6236,7 +6247,8 @@
                   "format": "date-time"
                 },
                 "deleted": {
-                  "type": "boolean"
+                  "type": "string",
+                  "format": "date-time"
                 },
                 "emails": {
                   "type": "array",
@@ -6850,7 +6862,8 @@
                       "format": "date-time"
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "string",
+                      "format": "date-time"
                     },
                     "emails": {
                       "type": "array",
@@ -7185,7 +7198,8 @@
                   "format": "date-time"
                 },
                 "deleted": {
-                  "type": "boolean"
+                  "type": "string",
+                  "format": "date-time"
                 },
                 "emails": {
                   "type": "array",
@@ -11206,6 +11220,1186 @@
           },
           "401": {
             "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/devices": {
+      "get": {
+        "description": "Returns devices belonging to current user according to given parameters",
+        "tags": [
+          "devices"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Caliopen-PI",
+            "in": "header",
+            "required": true,
+            "description": "The PI range requested in form of `1;100`",
+            "type": "string",
+            "default": "1;100"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "number of devices to return per page"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "number of pages to skip from the response"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Devices returned",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "number of devices found for current user for the given parameters"
+                },
+                "devices": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "device_id": {
+                        "type": "string"
+                      },
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "date_revoked": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "ip_creation": {
+                        "type": "string"
+                      },
+                      "locations": {
+                        "type": "object",
+                        "properties": {
+                          "address": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          },
+                          "device_id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "default": "other",
+                            "enum": [
+                              "other",
+                              "home",
+                              "work",
+                              "public"
+                            ]
+                          },
+                          "user_id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "address"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "privacy_features": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "pi": {
+                        "type": "object",
+                        "properties": {
+                          "technic": {
+                            "type": "integer"
+                          },
+                          "context": {
+                            "type": "integer"
+                          },
+                          "comportment": {
+                            "type": "integer"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "user_agent": {
+                        "type": "string"
+                      },
+                      "public_keys": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "privacy_features": {
+                              "type": "object",
+                              "properties": {}
+                            },
+                            "pi": {
+                              "type": "object",
+                              "properties": {
+                                "technic": {
+                                  "type": "integer"
+                                },
+                                "context": {
+                                  "type": "integer"
+                                },
+                                "comportment": {
+                                  "type": "integer"
+                                },
+                                "version": {
+                                  "type": "integer"
+                                }
+                              },
+                              "additionalProperties": true
+                            },
+                            "date_insert": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "date_update": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "contact_id": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "user_id": {
+                              "type": "string"
+                            },
+                            "expire_date": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "fingerprint": {
+                              "type": "string"
+                            },
+                            "key": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "size": {
+                              "type": "integer",
+                              "format": "int32"
+                            }
+                          },
+                          "required": [
+                            "key",
+                            "name"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "device_id",
+                      "user_id",
+                      "name",
+                      "type",
+                      "status",
+                      "date_insert"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new device for the logged-in user",
+        "tags": [
+          "devices"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "device",
+            "in": "body",
+            "description": "the device to create",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "device_id": {
+                  "type": "string"
+                },
+                "ip_creation": {
+                  "description": "ip address at creation",
+                  "type": "string"
+                },
+                "locations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      },
+                      "device_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "default": "other",
+                        "enum": [
+                          "other",
+                          "home",
+                          "work",
+                          "public"
+                        ]
+                      },
+                      "user_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "address"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "name": {
+                  "type": "string"
+                },
+                "public_keys": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "privacy_features": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "pi": {
+                        "type": "object",
+                        "properties": {
+                          "technic": {
+                            "type": "integer"
+                          },
+                          "context": {
+                            "type": "integer"
+                          },
+                          "comportment": {
+                            "type": "integer"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "date_update": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "contact_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "expire_date": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fingerprint": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "name"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "status": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "default": "unknow",
+                  "enum": [
+                    "other",
+                    "desktop",
+                    "laptop",
+                    "smartphone",
+                    "tablet"
+                  ]
+                },
+                "user_agent": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Device created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "url to retrieve new device's infos at /devices/{device_id}"
+                },
+                "device_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/devices/{device_id}": {
+      "get": {
+        "description": "Returns a device",
+        "tags": [
+          "devices"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Device found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "device_id": {
+                  "type": "string"
+                },
+                "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "date_revoked": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "ip_creation": {
+                  "type": "string"
+                },
+                "locations": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "device_id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "default": "other",
+                      "enum": [
+                        "other",
+                        "home",
+                        "work",
+                        "public"
+                      ]
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false
+                },
+                "name": {
+                  "type": "string"
+                },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "pi": {
+                  "type": "object",
+                  "properties": {
+                    "technic": {
+                      "type": "integer"
+                    },
+                    "context": {
+                      "type": "integer"
+                    },
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": true
+                },
+                "status": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "user_id": {
+                  "type": "string"
+                },
+                "user_agent": {
+                  "type": "string"
+                },
+                "public_keys": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "privacy_features": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "pi": {
+                        "type": "object",
+                        "properties": {
+                          "technic": {
+                            "type": "integer"
+                          },
+                          "context": {
+                            "type": "integer"
+                          },
+                          "comportment": {
+                            "type": "integer"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "date_update": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "contact_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "expire_date": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fingerprint": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "name"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "device_id",
+                "user_id",
+                "name",
+                "type",
+                "status",
+                "date_insert"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Device not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a device",
+        "tags": [
+          "devices"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Device deleted"
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Device not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "update a device with rfc5789 and rfc7396 specifications",
+        "tags": [
+          "devices"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "patch",
+            "in": "body",
+            "required": true,
+            "description": "the patch to apply. See 'Caliopen Patch RFC' within /doc directory.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "current_state": {
+                  "type": "object",
+                  "properties": {
+                    "device_id": {
+                      "type": "string"
+                    },
+                    "date_insert": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "date_revoked": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "ip_creation": {
+                      "type": "string"
+                    },
+                    "locations": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        },
+                        "device_id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "default": "other",
+                          "enum": [
+                            "other",
+                            "home",
+                            "work",
+                            "public"
+                          ]
+                        },
+                        "user_id": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "privacy_features": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "pi": {
+                      "type": "object",
+                      "properties": {
+                        "technic": {
+                          "type": "integer"
+                        },
+                        "context": {
+                          "type": "integer"
+                        },
+                        "comportment": {
+                          "type": "integer"
+                        },
+                        "version": {
+                          "type": "integer"
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    },
+                    "user_agent": {
+                      "type": "string"
+                    },
+                    "public_keys": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "privacy_features": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "pi": {
+                            "type": "object",
+                            "properties": {
+                              "technic": {
+                                "type": "integer"
+                              },
+                              "context": {
+                                "type": "integer"
+                              },
+                              "comportment": {
+                                "type": "integer"
+                              },
+                              "version": {
+                                "type": "integer"
+                              }
+                            },
+                            "additionalProperties": true
+                          },
+                          "date_insert": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "date_update": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "contact_id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "expire_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "fingerprint": {
+                            "type": "string"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "size": {
+                            "type": "integer",
+                            "format": "int32"
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  }
+                },
+                "device_id": {
+                  "type": "string"
+                },
+                "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "date_revoked": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "ip_creation": {
+                  "type": "string"
+                },
+                "locations": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "device_id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "default": "other",
+                      "enum": [
+                        "other",
+                        "home",
+                        "work",
+                        "public"
+                      ]
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false
+                },
+                "name": {
+                  "type": "string"
+                },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "pi": {
+                  "type": "object",
+                  "properties": {
+                    "technic": {
+                      "type": "integer"
+                    },
+                    "context": {
+                      "type": "integer"
+                    },
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": true
+                },
+                "status": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "user_id": {
+                  "type": "string"
+                },
+                "user_agent": {
+                  "type": "string"
+                },
+                "public_keys": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "privacy_features": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "pi": {
+                        "type": "object",
+                        "properties": {
+                          "technic": {
+                            "type": "integer"
+                          },
+                          "context": {
+                            "type": "integer"
+                          },
+                          "comportment": {
+                            "type": "integer"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "date_update": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "contact_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "expire_date": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fingerprint": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "name"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "current_state"
+              ]
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Update successful. No body is returned."
+          },
+          "400": {
+            "description": "json payload malformed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden patch. Server is refusing to apply the given patch's properties to this ressource",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "device not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "patch was semantically malformed or unprocessable",
             "schema": {
               "type": "object",
               "properties": {

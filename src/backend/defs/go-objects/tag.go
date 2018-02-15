@@ -156,9 +156,7 @@ func (tag *Tag) NewEmpty() interface{} {
 
 // an UUID should be provided to fill User_id with
 func (tag *Tag) MarshallNew(args ...interface{}) {
-
-	nullID := new(UUID)
-	if len(tag.User_id) == 0 || (bytes.Equal(tag.User_id.Bytes(), nullID.Bytes())) {
+	if len(tag.User_id) == 0 || (bytes.Equal(tag.User_id.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
 			case UUID:

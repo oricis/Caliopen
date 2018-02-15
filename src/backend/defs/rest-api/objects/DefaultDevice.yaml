@@ -6,7 +6,6 @@ properties:
   ecdsa_key:
     type: object
     "$ref": ECKey.yaml
-
 required:
 - device_id
 - ecdsa_key

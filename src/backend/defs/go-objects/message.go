@@ -416,12 +416,10 @@ func (msg *Message) NewEmpty() interface{} {
 }
 
 func (msg *Message) MarshallNew(args ...interface{}) {
-	nullID := new(UUID)
-
-	if len(msg.Message_id) == 0 || (bytes.Equal(msg.Message_id.Bytes(), nullID.Bytes())) {
+	if len(msg.Message_id) == 0 || (bytes.Equal(msg.Message_id.Bytes(), EmptyUUID.Bytes())) {
 		msg.Message_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
-	if len(msg.User_id) == 0 || (bytes.Equal(msg.User_id.Bytes(), nullID.Bytes())) {
+	if len(msg.User_id) == 0 || (bytes.Equal(msg.User_id.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
 			case UUID:

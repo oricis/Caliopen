@@ -37,8 +37,7 @@ func (i *IM) UnmarshalMap(input map[string]interface{}) error {
 // MarshallNew must be a variadic func to implement NewMarshaller interface,
 // but IM does not need params to marshal a well-formed IM: ...interface{} is ignored
 func (i *IM) MarshallNew(...interface{}) {
-	nullID := new(UUID)
-	if len(i.IMId) == 0 || (bytes.Equal(i.IMId.Bytes(), nullID.Bytes())) {
+	if len(i.IMId) == 0 || (bytes.Equal(i.IMId.Bytes(), EmptyUUID.Bytes())) {
 		i.IMId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
 }

@@ -17,6 +17,7 @@ type APIStorage interface {
 	TagsStorage
 	UserNameStorage
 	UserStorage
+	DevicesStorage
 }
 
 type APIIndex interface {

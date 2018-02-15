@@ -12,7 +12,6 @@ import (
 )
 
 type (
-	// cql_lookup tags indicate properties which are a lookup value in the specified lookup table
 	Contact struct {
 		Locker          *sync.Mutex       `cql:"-"                  json:"-"`
 		AdditionalName  string            `cql:"additional_name"    json:"additional_name,omitempty"      patch:"user"`
@@ -50,7 +49,7 @@ type (
 	}
 )
 
-// unmarshal a map[string]interface{} that must owns all Contact's fields
+// UnmarshalCQLMap hydrates a Contact with data from a map[string]interface{}
 // typical usage is for unmarshaling response from Cassandra backend
 func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 	if additionalName, ok := input["additional_name"].(string); ok {
@@ -222,6 +221,7 @@ func (c *Contact) UnmarshalJSON(b []byte) error {
 	return c.UnmarshalMap(input)
 }
 
+// UnmarshalMap hydrates a Contact with data from a map[string]interface{}
 func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 
 	if additionalName, ok := input["additional_name"].(string); ok {
@@ -391,18 +391,18 @@ func (c *Contact) JsonTags() map[string]string {
 }
 
 func (c *Contact) NewEmpty() interface{} {
-	c = new(Contact)
-	c.Addresses = []PostalAddress{}
-	c.Emails = []EmailContact{}
-	c.Groups = []string{}
-	c.Identities = []SocialIdentity{}
-	c.Ims = []IM{}
-	c.Infos = map[string]string{}
-	c.Organizations = []Organization{}
-	c.Phones = []Phone{}
-	c.PublicKeys = []PublicKey{}
-	c.Tags = []string{}
-	return c
+	nc := new(Contact)
+	nc.Addresses = []PostalAddress{}
+	nc.Emails = []EmailContact{}
+	nc.Groups = []string{}
+	nc.Identities = []SocialIdentity{}
+	nc.Ims = []IM{}
+	nc.Infos = map[string]string{}
+	nc.Organizations = []Organization{}
+	nc.Phones = []Phone{}
+	nc.PublicKeys = []PublicKey{}
+	nc.Tags = []string{}
+	return nc
 }
 
 // GetSetNested returns a chan to iterate over pointers to embedded structs.
@@ -447,9 +447,12 @@ func (c *Contact) GetSetNested() <-chan interface{} {
 
 // GetRelatedList returns a map[PropertyKey]Type of structs that are embedded into a Contact from joined tables
 func (c *Contact) GetRelatedList() map[string]interface{} {
+	/* TODO
 	return map[string]interface{}{
 		"PublicKeys": &PublicKey{},
 	}
+	*/
+	return map[string]interface{}{}
 }
 
 // GetSetRelated returns a chan to iterate over pointers to embedded structs that are stored in separate tables.
@@ -461,9 +464,11 @@ func (c *Contact) GetSetRelated() <-chan interface{} {
 	}
 	go func(*sync.Mutex, chan interface{}) {
 		c.Locker.Lock()
+		/* TODO
 		for i, _ := range c.PublicKeys {
 			getSet <- &(c.PublicKeys[i])
 		}
+		*/
 		close(getSet)
 		c.Locker.Unlock()
 	}(c.Locker, getSet)
@@ -489,18 +494,16 @@ func (c *Contact) SortSlices() {
 	sort.Sort(ByIMID(c.Ims))
 	sort.Sort(ByOrganizationID(c.Organizations))
 	sort.Sort(ByPhoneID(c.Phones))
-	sort.Sort(ByName(c.PublicKeys))
+	sort.Sort(ByKeyId(c.PublicKeys))
 	sort.Strings(c.Tags)
 }
 
 // MarshallNew implements CaliopenObject interface
 func (c *Contact) MarshallNew(args ...interface{}) {
-	nullID := new(UUID)
-
-	if len(c.ContactId) == 0 || (bytes.Equal(c.ContactId.Bytes(), nullID.Bytes())) {
+	if len(c.ContactId) == 0 || (bytes.Equal(c.ContactId.Bytes(), EmptyUUID.Bytes())) {
 		c.ContactId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
-	if len(c.UserId) == 0 || (bytes.Equal(c.UserId.Bytes(), nullID.Bytes())) {
+	if len(c.UserId) == 0 || (bytes.Equal(c.UserId.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
 			case UUID:
