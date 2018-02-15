@@ -346,6 +346,7 @@
   "signup.feedback.unavailable_username": "We are sorry, this username is not available",
   "signup.feedback.invalid_recovery_email": "The email should be valid",
   "signup.feedback.required_recovery_email": "A backup email is required",
+  "signup.feedback.unable_to_signup": "Unable to signup. Please retry or contact an administrator.",
   "settings.tag.action.save-tag": "Save",
   "settings.tags.action.delete": "Delete",
   "tags.form.add.label": "Add a tag",

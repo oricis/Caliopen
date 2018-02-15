@@ -346,6 +346,7 @@
   "signup.feedback.unavailable_username": "Es tut uns leid, dieser Benutzername ist nicht verfügbar",
   "signup.feedback.invalid_recovery_email": "Die E-mail sollte gültig sein",
   "signup.feedback.required_recovery_email": "Eine Backup E-mail-Adresse ist erforderlich",
+  "signup.feedback.unable_to_signup": "",
   "settings.tag.action.save-tag": "",
   "settings.tags.action.delete": "",
   "tags.form.add.label": "",

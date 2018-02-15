@@ -346,6 +346,7 @@
   "signup.feedback.unavailable_username": "Nous sommes désolés, ce nom d'utilisateur n'est pas disponible",
   "signup.feedback.invalid_recovery_email": "L'email doit être valide",
   "signup.feedback.required_recovery_email": "Un email de secours est requis",
+  "signup.feedback.unable_to_signup": "Impossible de créer un compte. Merci d'essayer à nouveau ou de contacter un administrateur.",
   "settings.tag.action.save-tag": "Enregistrer",
   "settings.tags.action.delete": "Supprimer",
   "tags.form.add.label": "Ajouter un tag",
