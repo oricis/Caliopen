@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
 import MessageDate from '../../../../components/MessageDate';
-import AuthorAvatar from '../../../../components/AuthorAvatar';
+import { AuthorAvatarLetter, SIZE_SMALL } from '../../../../modules/avatar';
 // import MessageItemContainer from '../MessageItemContainer';
 import { Badge, Link, Checkbox, Icon, TextBlock } from '../../../../components/';
 import { getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
@@ -138,7 +138,11 @@ class MessageItem extends Component {
       >
         <div className="s-message-item__col-avatar">
           <label htmlFor={message.message_id}>
-            <AuthorAvatar message={message} isSelected={isMessageSelected} />
+            <AuthorAvatarLetter
+              size={SIZE_SMALL}
+              message={message}
+              isSelected={isMessageSelected}
+            />
           </label>
         </div>
         <div className="s-message-item__col-title">

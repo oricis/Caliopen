@@ -4,9 +4,8 @@ import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
 import classnames from 'classnames';
 import { formatName } from '../../../../services/contact';
-import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
+import { ContactAvatarLetter } from '../../../../modules/avatar';
 import { WithSettings } from '../../../../modules/settings';
-
 
 import './style.scss';
 

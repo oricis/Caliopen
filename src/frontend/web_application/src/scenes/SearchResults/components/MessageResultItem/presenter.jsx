@@ -5,7 +5,7 @@ import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
 import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
 import MessageDate from '../../../../components/MessageDate';
-import AuthorAvatar from '../../../../components/AuthorAvatar';
+import { AuthorAvatarLetter, SIZE_SMALL } from '../../../../modules/avatar';
 import { Badge, Link, Icon, TextBlock } from '../../../../components/';
 import { renderParticipant } from '../../../../services/message';
 import Highlights from '../Highlights';
@@ -80,7 +80,7 @@ class MessageResultItem extends PureComponent {
         noDecoration
       >
         <div className="s-message-result-item__col-avatar">
-          <AuthorAvatar message={message} size="small" />
+          <AuthorAvatarLetter message={message} size={SIZE_SMALL} />
         </div>
 
         <TextBlock className="s-message-result-item__col-title">

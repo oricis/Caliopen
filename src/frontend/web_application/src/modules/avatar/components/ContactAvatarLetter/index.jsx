@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import IconLetter from '../IconLetter';
-import { formatName } from '../../services/contact';
+import AvatarLetterWrapper from '../AvatarLetterWrapper';
+import AvatarLetter from '../AvatarLetter';
+import { formatName } from '../../../../services/contact';
 
-class ContactIconLetter extends PureComponent {
+class ContactAvatarLetter extends PureComponent {
   static propTypes = {
     contact: PropTypes.shape({}).isRequired,
     contactDisplayFormat: PropTypes.string,
@@ -16,9 +17,11 @@ class ContactIconLetter extends PureComponent {
     const { contact, contactDisplayFormat: format, ...props } = this.props;
 
     return (
-      <IconLetter word={formatName({ contact, format })} {...props} />
+      <AvatarLetterWrapper {...props}>
+        <AvatarLetter word={formatName({ contact, format })} />
+      </AvatarLetterWrapper>
     );
   }
 }
 
-export default ContactIconLetter;
+export default ContactAvatarLetter;

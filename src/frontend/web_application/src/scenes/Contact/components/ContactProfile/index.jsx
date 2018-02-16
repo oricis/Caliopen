@@ -5,7 +5,7 @@ import { withI18n } from 'lingui-react';
 import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
 import { MultidimensionalPi } from '../../../../modules/pi';
 import { Badge } from '../../../../components';
-import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
+import { ContactAvatarLetter } from '../../../../modules/avatar';
 import { formatName } from '../../../../services/contact';
 import './style.scss';
 

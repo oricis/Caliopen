@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
+import { ContactAvatarLetter } from '../../../../modules/avatar';
 import './style.scss';
 
 const UserInfo = ({ user, className }) => (
