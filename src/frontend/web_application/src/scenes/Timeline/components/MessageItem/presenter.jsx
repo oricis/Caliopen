@@ -21,6 +21,7 @@ class MessageItem extends Component {
     userTags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     onSelectMessage: PropTypes.func,
     isMessageSelected: PropTypes.bool.isRequired,
+    isDeleting: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -118,7 +119,7 @@ class MessageItem extends Component {
   }
 
   render() {
-    const { i18n, message, isMessageSelected } = this.props;
+    const { i18n, message, isMessageSelected, isDeleting } = this.props;
     const { /* pi, */attachments } = message;
 
     return (
@@ -160,6 +161,7 @@ class MessageItem extends Component {
             onChange={this.onCheckboxChange}
             id={message.message_id}
             checked={isMessageSelected}
+            disabled={isDeleting}
             showLabelforSr
           />
         </div>
