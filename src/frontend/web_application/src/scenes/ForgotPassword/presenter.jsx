@@ -25,7 +25,7 @@ class ForgotPassword extends Component {
   handleSubmit = (ev) => {
     this.setState({ errors: {} });
 
-    getClient().post('/v2/passwords/reset', {
+    getClient().post('/api/v2/passwords/reset', {
       ...ev.formValues,
     }).then(this.handleSigninSuccess, this.handleSigninError);
   }

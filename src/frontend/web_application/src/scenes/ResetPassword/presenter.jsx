@@ -21,7 +21,7 @@ class ResetPassword extends Component {
   componentDidMount() {
     const { match: { params: { key } } } = this.props;
 
-    getClient().get(`/v2/passwords/reset/${key}`).catch(({ response: { status } }) => {
+    getClient().get(`/api/v2/passwords/reset/${key}`).catch(({ response: { status } }) => {
       if (status !== STATUS_TOKEN_NOT_FOUND) {
         throw new Error('Unexpected error');
       }
@@ -36,7 +36,7 @@ class ResetPassword extends Component {
     this.setState({ errors: {} });
     const { match: { params: { key } } } = this.props;
 
-    getClient().post(`/v2/passwords/reset/${key}`, {
+    getClient().post(`/api/v2/passwords/reset/${key}`, {
       ...ev.formValues,
     }).then(this.handleSuccess, this.handleError);
   }

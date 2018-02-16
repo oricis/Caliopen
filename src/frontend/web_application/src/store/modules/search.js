@@ -13,7 +13,7 @@ export function search({ term, doctype }, options = {}) {
       term,
       doctype,
       request: {
-        url: '/v2/search',
+        url: '/api/v2/search',
         params: { term, doctype, limit, ...options },
       },
     },

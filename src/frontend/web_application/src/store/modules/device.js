@@ -34,7 +34,7 @@ export function requestDevices() {
     type: REQUEST_DEVICES,
     payload: {
       request: {
-        url: '/v1/devices',
+        url: '/api/v2/devices',
       },
     },
   };
@@ -45,7 +45,7 @@ export function requestDevice({ deviceId }) {
     type: REQUEST_DEVICE,
     payload: {
       request: {
-        url: `/v1/devices/${deviceId}`,
+        url: `/api/v2/devices/${deviceId}`,
       },
     },
   };
@@ -64,7 +64,7 @@ export function removeDevice({ device }) {
     payload: {
       request: {
         method: 'delete',
-        url: `/v1/devices/${device.device_id}`,
+        url: `/api/v2/devices/${device.device_id}`,
       },
     },
   };
@@ -87,7 +87,7 @@ export function updateDevice({ device, original }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v1/devices/${device.device_id}`,
+        url: `/api/v2/devices/${device.device_id}`,
         data,
       },
     },

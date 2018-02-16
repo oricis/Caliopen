@@ -9,7 +9,7 @@ export function requestSettings() {
     type: REQUEST_SETTINGS,
     payload: {
       request: {
-        url: '/v1/settings',
+        url: '/api/v1/settings',
       },
     },
   };
@@ -23,7 +23,7 @@ export function updateSettings({ settings, original }) {
     payload: {
       request: {
         method: 'patch',
-        url: '/v1/settings',
+        url: '/api/v1/settings',
         data,
       },
     },

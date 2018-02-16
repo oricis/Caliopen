@@ -4,9 +4,9 @@ let config = CALIOPEN_OPTIONS;
 
 const initConfig = (cfg) => { config = merge(config, cfg); };
 const getConfig = () => config;
-const getAPIBaseUrl = () => {
+const getBaseUrl = () => {
   if (BUILD_TARGET === 'browser') {
-    return '/api';
+    return '';
   }
 
   if (BUILD_TARGET === 'server') {
@@ -18,9 +18,11 @@ const getAPIBaseUrl = () => {
   // FIXME: (for cordova/electron) get from config (yaml -> json -> settings -> here)
   return 'http://notYetImplemented/api';
 };
+const getAPIBaseUrl = () => `${getBaseUrl()}/api`;
 
 
 export {
+  getBaseUrl,
   getAPIBaseUrl,
   initConfig,
   getConfig,

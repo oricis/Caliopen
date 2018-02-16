@@ -38,7 +38,7 @@ export function requestMessages(type = 'timeline', key = '0', { offset = 0, limi
       type,
       key,
       request: {
-        url: '/v2/messages',
+        url: '/api/v2/messages',
         params,
       },
     },
@@ -78,7 +78,7 @@ export function createMessage({ message }) {
     type: CREATE_MESSAGE,
     payload: {
       request: {
-        url: '/v1/messages',
+        url: '/api/v1/messages',
         method: 'post',
         data: { ...message },
       },
@@ -91,7 +91,7 @@ export function requestMessage(messageId) {
     type: REQUEST_MESSAGE,
     payload: {
       request: {
-        url: `/v2/messages/${messageId}`,
+        url: `/api/v2/messages/${messageId}`,
       },
     },
   };
@@ -105,7 +105,7 @@ export function updateMessage({ message, original }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v1/messages/${message.message_id}`,
+        url: `/api/v1/messages/${message.message_id}`,
         data,
       },
     },
@@ -120,7 +120,7 @@ export function deleteMessage({ message }) {
       discussionId: message.discussion_id,
       request: {
         method: 'delete',
-        url: `/v1/messages/${message.message_id}`,
+        url: `/api/v1/messages/${message.message_id}`,
       },
     },
   };
@@ -140,7 +140,7 @@ export function postActions({ message, actions }) {
       message,
       request: {
         method: 'post',
-        url: `/v2/messages/${message.message_id}/actions`,
+        url: `/api/v2/messages/${message.message_id}/actions`,
         data: {
           actions,
         },
@@ -167,7 +167,7 @@ export function updateTags({ message, tags }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v2/messages/${message.message_id}/tags`,
+        url: `/api/v2/messages/${message.message_id}/tags`,
         data,
       },
     },
