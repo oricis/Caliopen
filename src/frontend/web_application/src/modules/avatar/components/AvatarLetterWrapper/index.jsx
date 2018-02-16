@@ -38,16 +38,18 @@ class AvatarLetterWrapper extends PureComponent {
     const classNameSize = classNameModifiers[size];
     const letterClassNameSize = classNameSize ? `${classNameSize}__letter` : null;
     const avatarLetter = React.Children.map(children, (child) => {
-      const avatarLetterClassName = child.props.className || '';
-
-      return React.cloneElement(child, {
+      const childProps = {
+        ...child.props,
+        ...props,
         className: classnames(
           'm-avatar-letter-wrapper__letter',
-          avatarLetterClassName,
           letterClassNameSize
         ),
-        ...props,
-      });
+      };
+
+      return (
+        <child.type {...childProps} />
+      );
     });
 
     return (
