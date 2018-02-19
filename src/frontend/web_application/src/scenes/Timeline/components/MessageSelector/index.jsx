@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n, Trans, Plural } from 'lingui-react';
-import { Checkbox, Button } from '../../../../components/';
+import { Checkbox, Button, Spinner } from '../../../../components/';
 
 import './style.scss';
 
@@ -16,6 +16,7 @@ class MessageSelector extends Component {
     totalCount: PropTypes.number,
     indeterminate: PropTypes.bool,
     checked: PropTypes.bool,
+    isDeleting: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -42,7 +43,7 @@ class MessageSelector extends Component {
   }
 
   render() {
-    const { i18n, count, totalCount, checked } = this.props;
+    const { i18n, count, totalCount, checked, isDeleting } = this.props;
 
     return (
       <div className="m-message-selector">
@@ -64,7 +65,7 @@ class MessageSelector extends Component {
             aria-label={i18n._('timeline.action.manage-tags', { defaults: 'Manage tags' })}
           />
           <Button
-            icon="trash"
+            icon={isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
             onClick={this.handleDelete}
             disabled={count === 0}
             aria-label={i18n._('timeline.action.delete', { defaults: 'Delete selected' })}
@@ -74,9 +75,10 @@ class MessageSelector extends Component {
           <Checkbox
             label={i18n._('message-list.action.select_all_messages', { defaults: 'Select/deselect all messages' })}
             id="message-selector"
-            defaultChecked={checked}
+            checked={checked}
             indeterminate={this.props.indeterminate}
             onChange={this.toggleCheckbox}
+            disabled={isDeleting}
             showLabelforSr
           />
         </span>

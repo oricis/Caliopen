@@ -14,41 +14,51 @@ $co-checkbox-size: 14px;
 
   &__input {
     @include flex-grid-size(shrink);
-    height: $co-checkbox-size;
     width: $co-checkbox-size;
-    appearance: none;
-    background: $co-color__fg__back;
+    height: $co-checkbox-size;
     border: 1px solid $co-color__primary;
+    background: $co-color__fg__back;
     cursor: pointer;
+    appearance: none;
 
-    &:before {
-      content: ' ';
+    &::before {
       display: none;
-      background: $co-color__primary--low;
+      content: ' ';
       position: absolute;
       right: 1px;
       left: 1px;
+      background: $co-color__primary--low;
     }
 
-
     &:checked {
-       position: relative;
+      position: relative;
 
-       &:before {
-         display: block;
-         top: 1px;
-         bottom: 1px;
-       }
+      &::before {
+        display: block;
+        top: 1px;
+        bottom: 1px;
+      }
     }
 
     &:indeterminate {
-       position: relative;
+      position: relative;
 
-       &:before {
-         display: block;
-         top: 4px;
-         bottom: 4px;
-       }
+      &::before {
+        display: block;
+        top: 4px;
+        bottom: 4px;
+      }
+    }
+
+    &:disabled {
+      position: relative;
+      border: 1px solid $co-color__fg__border--high;
+      background: $co-color__fg__back--low;
+      cursor: default;
+
+      &::before {
+        background: $co-color__fg__border--high;
+      }
     }
   }
 }
