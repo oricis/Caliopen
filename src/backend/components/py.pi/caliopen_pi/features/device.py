@@ -70,7 +70,7 @@ class DeviceFeature(object):
         if ua.is_tablet:
             return 'tablet'
         if ua.is_pc:
-            return 'pc'
+            return 'desktop'
         return 'other'
 
     def _process_ip_address(self, addr):
