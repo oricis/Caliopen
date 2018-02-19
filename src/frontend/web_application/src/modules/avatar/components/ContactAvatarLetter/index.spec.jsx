@@ -8,6 +8,6 @@ describe('component ContactAvatarLetter', () => {
       <ContactAvatarLetter contact={{ title: 'Foobar' }} />
     );
 
-    expect(comp.find('ContactIconLetter').length).toEqual(1);
+    expect(comp.find('AvatarLetter').length).toEqual(1);
   });
 });

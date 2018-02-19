@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
-import ContactAvatarLetter, { SIZE_SMALL } from '../../../../components/ContactAvatarLetter';
+import { ContactAvatarLetter, SIZE_SMALL } from '../../../../modules/avatar';
 import { Badge, Link, TextBlock } from '../../../../components/';
 import { formatName } from '../../../../services/contact';
 import Highlights from '../Highlights';

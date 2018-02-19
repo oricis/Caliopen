@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import { Trans } from 'lingui-react';
 import { Link, Button, Spinner, Icon, Dropdown, withDropdownControl } from '../../../../components';
-import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
+import { ContactAvatarLetter } from '../../../../modules/avatar';
 import DiscussionDraft, { TopRow, BodyRow, BottomRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
 import './style.scss';
