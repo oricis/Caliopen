@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
 import MessageDate from '../../../../components/MessageDate';
-import AuthorAvatar from '../../../../components/AuthorAvatar';
+import { AuthorAvatarLetter, SIZE_SMALL } from '../../../../modules/avatar';
 // import MessageItemContainer from '../MessageItemContainer';
 import { Badge, Link, Checkbox, Icon, TextBlock } from '../../../../components/';
 import { getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
@@ -21,6 +21,7 @@ class MessageItem extends Component {
     userTags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     onSelectMessage: PropTypes.func,
     isMessageSelected: PropTypes.bool.isRequired,
+    isDeleting: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -118,7 +119,7 @@ class MessageItem extends Component {
   }
 
   render() {
-    const { i18n, message, isMessageSelected } = this.props;
+    const { i18n, message, isMessageSelected, isDeleting } = this.props;
     const { /* pi, */attachments } = message;
 
     return (
@@ -138,7 +139,11 @@ class MessageItem extends Component {
       >
         <div className="s-message-item__col-avatar">
           <label htmlFor={message.message_id}>
-            <AuthorAvatar message={message} isSelected={isMessageSelected} />
+            <AuthorAvatarLetter
+              size={SIZE_SMALL}
+              message={message}
+              isSelected={isMessageSelected}
+            />
           </label>
         </div>
         <div className="s-message-item__col-title">
@@ -160,6 +165,7 @@ class MessageItem extends Component {
             onChange={this.onCheckboxChange}
             id={message.message_id}
             checked={isMessageSelected}
+            disabled={isDeleting}
             showLabelforSr
           />
         </div>

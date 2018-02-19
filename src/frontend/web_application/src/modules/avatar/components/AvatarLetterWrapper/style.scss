@@ -1,7 +1,7 @@
-@import '../../styles/common';
-@import '../../styles/object/o-avatar';
+@import '../../../../styles/common';
+@import '../../../../styles/object/o-avatar';
 
-.m-avatar {
+.m-avatar-letter-wrapper {
   display: inline-block;
   vertical-align: middle;
   border-radius: $co-radius;

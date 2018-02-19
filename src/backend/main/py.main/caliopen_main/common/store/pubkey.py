@@ -32,5 +32,5 @@ class PublicKey(BaseModel):
     alg = columns.Text()    # algorithm
     # Elliptic curve public key parameters (rfc7518 6.2.1)
     crv = columns.Text()
-    x = columns.Integer()
-    y = columns.Integer()
+    x = columns.VarInt()
+    y = columns.VarInt()

@@ -3,7 +3,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from schematics.models import Model
-from schematics.types import StringType, UUIDType, DateTimeType
+from schematics.types import StringType, UUIDType, DateTimeType, LongType
 from schematics.transforms import blacklist
 
 import caliopen_storage.helpers.json as helpers
@@ -31,8 +31,8 @@ class NewPublicKey(Model):
     alg = StringType()    # algorithm
     # Elliptic curve public key parameters (rfc7518 6.2.1)
     crv = StringType()
-    x = StringType()
-    y = StringType()
+    x = LongType()
+    y = LongType()
 
     class Options:
         serialize_when_none = False

@@ -4,20 +4,20 @@ import classnames from 'classnames';
 import getClassName from './services/stylesheet-helper';
 import './style.scss';
 
-const IconLetter = ({ word, className, isSelected }) => (
+const AvatarLetter = ({ word, className, isSelected }) => (
   <span className={classnames(className, isSelected ? 'm-letter--checked' : getClassName(word))} />
 );
 
-IconLetter.propTypes = {
+AvatarLetter.propTypes = {
   word: PropTypes.string,
   className: PropTypes.string,
   isSelected: PropTypes.bool,
 };
 
-IconLetter.defaultProps = {
+AvatarLetter.defaultProps = {
   word: null,
   className: null,
   isSelected: false,
 };
 
-export default IconLetter;
+export default AvatarLetter;
