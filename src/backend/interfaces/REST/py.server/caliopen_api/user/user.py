@@ -133,7 +133,7 @@ class UserAPI(Api):
             dev.ip_creation = self.request.headers.get('X-Forwarded-For')
             qualifier = NewDeviceQualifier(user)
             qualifier.process(dev)
-            dev.type = dev.privacy_features.get('device_type', 'unknow')
+            dev.type = dev.privacy_features.get('device_type', 'other')
             # Device ecdsa key
             dev_key = NewPublicKey()
             dev_key.key_id = uuid.uuid4()
