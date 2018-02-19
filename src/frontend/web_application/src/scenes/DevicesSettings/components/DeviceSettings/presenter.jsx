@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Spinner, Section, PiBar } from '../../../../components';
+import { Spinner, Section } from '../../../../components';
+import PiBar from '../../../../components/PiBar';
 import DeviceForm from '../DeviceForm';
 import DeviceInformation from '../DeviceInformation';
 import VerifyDevice from '../VerifyDevice';

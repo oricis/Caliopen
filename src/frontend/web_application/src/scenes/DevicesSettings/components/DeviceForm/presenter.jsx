@@ -180,7 +180,7 @@ class DeviceForm extends Component {
           </Fieldset>
           <FormRow>
             <FormColumn size="medium">
-              <Button plain type="submit"><Trans id="device.action.save_changes">Save modifications</Trans></Button>
+              <Button shape="plain" type="submit"><Trans id="device.action.save_changes">Save modifications</Trans></Button>
             </FormColumn>
           </FormRow>
         </form>
