@@ -2,15 +2,6 @@ const userUtil = require('../utils/user-util');
 
 describe('Home', () => {
   const EC = protractor.ExpectedConditions;
-  const locale = 'en';
-  const __ = key => ({
-    fr: {
-      login: 'Connexion',
-    },
-    en: {
-      login: 'Login',
-    },
-  }[locale][key]);
 
   describe('Authentication', () => {
     afterEach(() => {
@@ -27,13 +18,13 @@ describe('Home', () => {
       browser.get('/');
       browser.wait(EC.presenceOf($('.s-signin__action')), 1000);
 
-      expect(element(by.css('.s-signin__action .m-button')).getText()).toContain(__('login'));
+      expect(element(by.css('.s-signin__action .m-button')).getText()).toContain('I\'m in a safe place');
     });
 
     it('Log out', () => {
       userUtil.signin();
       userUtil.signout();
-      expect(element(by.css('.s-signin__action .m-button')).getText()).toContain(__('login'));
+      expect(element(by.css('.s-signin__action .m-button')).getText()).toContain('I\'m in a safe place');
     });
   });
 });

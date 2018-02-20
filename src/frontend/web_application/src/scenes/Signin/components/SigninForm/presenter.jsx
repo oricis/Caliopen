@@ -6,6 +6,10 @@ import { Link, FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColum
 
 import './style.scss';
 
+const CONTEXT_SAFE = 'safe';
+const CONTEXT_PUBLIC = 'public';
+const CONTEXT_UNSECURE = 'unsecure';
+
 function generateStateFromProps(props) {
   return {
     ...props.formValues,
@@ -65,14 +69,17 @@ class SigninForm extends Component {
     }));
   }
 
-  handleSubmit = (ev) => {
+  createHandleSubmit = context => (ev) => {
     ev.preventDefault();
     const { formValues } = this.state;
 
-    this.props.onSubmit({
-      ...formValues,
-      username: usernameNormalizer(formValues.username),
-    });
+    this.props.onSubmit(
+      context,
+      {
+        ...formValues,
+        username: usernameNormalizer(formValues.username),
+      }
+    );
   }
 
   render() {
@@ -127,10 +134,33 @@ class SigninForm extends Component {
               <FormColumn rightSpace={false} className="s-signin__action" bottomSpace>
                 <Button
                   type="submit"
-                  onClick={this.handleSubmit}
+                  onClick={this.createHandleSubmit(CONTEXT_SAFE)}
                   display="expanded"
                   shape="plain"
-                ><Trans id="signin.action.login">Login</Trans></Button>
+                  className="s-signin__login-safe"
+                ><Trans id="signin.action.login_safe">I&apos;m in a safe place</Trans></Button>
+              </FormColumn>
+            </FormRow>
+            <FormRow>
+              <FormColumn rightSpace={false} className="s-signin__action" bottomSpace>
+                <Button
+                  type="submit"
+                  onClick={this.createHandleSubmit(CONTEXT_PUBLIC)}
+                  display="expanded"
+                  shape="plain"
+                  className="s-signin__login-public"
+                ><Trans id="signin.action.login_public">I&apos;m in a public place</Trans></Button>
+              </FormColumn>
+            </FormRow>
+            <FormRow>
+              <FormColumn rightSpace={false} className="s-signin__action" bottomSpace>
+                <Button
+                  type="submit"
+                  onClick={this.createHandleSubmit(CONTEXT_UNSECURE)}
+                  display="expanded"
+                  shape="plain"
+                  className="s-signin__login-unsecure"
+                ><Trans id="signin.action.login_unsecure">I&apos;m in a non private place</Trans></Button>
               </FormColumn>
             </FormRow>
             <FormRow>

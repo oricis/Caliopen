@@ -29,7 +29,7 @@ class ImportContact extends Component {
     data.append('file', file);
 
     this.setState({ isLoading: true });
-    getClient().post('/v1/imports', data)
+    getClient().post('/api/v1/imports', data)
       .then(this.handleImportContactSuccess, this.handleImportContactError)
       .then(() => this.setState({ isLoading: false }));
   }

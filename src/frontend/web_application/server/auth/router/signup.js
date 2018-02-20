@@ -1,11 +1,9 @@
+const proxy = require('express-http-proxy');
 const seal = require('../lib/seal');
 const Auth = require('../lib/Auth');
-const { getConfig } = require('../../config');
+const { getConfig, getApiHost } = require('../../config');
 const { COOKIE_NAME, COOKIE_OPTIONS } = require('../lib/cookie');
 const { DEFAULT_REDIRECT } = require('../lib/redirect');
-
-const ERR_REQUIRED = 'ERR_REQUIRED';
-const ERR_INVALID = 'ERR_INVALID';
 
 const authenticateAfterSignup = (req, res, next) => {
   const { username, password } = req.body;
@@ -52,66 +50,13 @@ const authenticateAfterSignup = (req, res, next) => {
 };
 
 const createSignupRouting = (router) => {
-  router.post('/signup', (req, res, next) => {
-    let hasError = false;
-    const errors = {};
+  const target = getApiHost();
 
-    if (!req.body || !Object.keys(req.body).length) {
-      const err = new Error('Bad request');
-      err.status = 400;
-
-      throw err;
-    }
-
-    const values = {
-      username: req.body.username,
-      password: req.body.password,
-      recovery_email: req.body.recovery_email,
-    };
-
-    if (!values.username) {
-      hasError = true;
-      errors.username = [ERR_REQUIRED];
-    }
-
-    if (!values.password) {
-      hasError = true;
-      errors.password = [ERR_REQUIRED];
-    }
-
-    // Alpha: hide TOS checkbox
-    // if (!req.body.tos) {
-    //   hasError = true;
-    //   errors.tos = [ERR_REQUIRED];
-    // }
-
-    if (hasError) {
-      res.status(400).send({ errors });
-
-      return;
-    }
-
-    const auth = new Auth();
-
-    auth.signup({
-      body: values,
-      success: () => {
-        authenticateAfterSignup(req, res, next);
-      },
-      error: (error) => {
-        error = error || new Error('Bad gateway');
-        if (error.status && error.status >= 400 && error.status < 500) {
-          errors.global = [ERR_INVALID];
-          res.status(error.status).send({ errors });
-
-          return;
-        }
-
-        error.status = error.status || 502;
-        next(error);
-      },
-    });
-  });
+  router.post('/signup', proxy(target, {
+    proxyReqPathResolver: () => '/api/v1/users',
+    skipToNextHandlerFilter: proxyRes => proxyRes.statusCode === 200,
+  }));
+  router.post('/signup', authenticateAfterSignup);
 };
 
 module.exports = createSignupRouting;

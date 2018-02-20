@@ -25,7 +25,7 @@ export function requestContacts(params = {}) {
     type: REQUEST_CONTACTS,
     payload: {
       request: {
-        url: '/v2/contacts',
+        url: '/api/v2/contacts',
         params: { offset, limit },
       },
     },
@@ -44,7 +44,7 @@ export function requestContact(contactId) {
     type: REQUEST_CONTACT,
     payload: {
       request: {
-        url: `/v2/contacts/${contactId}`,
+        url: `/api/v2/contacts/${contactId}`,
       },
     },
   };
@@ -56,7 +56,7 @@ export function deleteContact({ contactId }) {
     payload: {
       request: {
         method: 'delete',
-        url: `/v2/contacts/${contactId}`,
+        url: `/api/v2/contacts/${contactId}`,
       },
     },
   };
@@ -77,7 +77,7 @@ export function updateContact({ contact, original }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v2/contacts/${contact.contact_id}`,
+        url: `/api/v2/contacts/${contact.contact_id}`,
         data,
       },
     },
@@ -90,7 +90,7 @@ export function createContact({ contact }) {
     payload: {
       request: {
         method: 'post',
-        url: '/v2/contacts',
+        url: '/api/v2/contacts',
         data: contact,
       },
     },
@@ -108,7 +108,7 @@ export function updateTags({ contact, tags }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v2/contacts/${contact.contact_id}/tags`,
+        url: `/api/v2/contacts/${contact.contact_id}/tags`,
         data,
       },
     },
