@@ -178,7 +178,8 @@ class InboundMailFeature(object):
             # augmente de la valeur du PIᶜᵒ le plus bas des PIᶜᵒ des contacts.
             contact_pi_cos = [x.pi['comportment'] for x in known_contacts
                               if x.pi and 'comportment' in x.pi]
-            pi_cx['known_contacts'] = min(contact_pi_cos)
+            if contact_pi_cos:
+                pi_cx['known_contacts'] = min(contact_pi_cos)
 
             if known_public_key == len(known_contacts):
                 pi_co['contact_pubkey'] = 20
