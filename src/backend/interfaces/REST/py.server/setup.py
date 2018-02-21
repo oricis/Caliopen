@@ -20,14 +20,12 @@ requires = [
     'pyramid_jinja2',
     'caliopen_storage',
     'caliopen_main',
-    'caliopen_pi',
     'pyramid_kvs',
     'waitress',
     'cornice==1.2.1',
     'colander',
     'pyramid-swagger',
-    'rfc3987'
-    ]
+    'rfc3987']
 
 tests_require = ['nose', 'coverage']
 if sys.version_info < (3, 3):
