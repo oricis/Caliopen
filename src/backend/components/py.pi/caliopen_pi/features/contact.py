@@ -63,7 +63,7 @@ class ContactFeature(object):
     def _get_technical(self, contact):
         """Get technical features for a contact."""
         features = {}
-        if contact.public_keys:
+        if hasattr(contact, 'public_keys') and contact.public_keys:
             max_size = max([x.size for x in contact.public_keys])
             if max_size:
                 features.update({'public_key_best_size': max_size})
