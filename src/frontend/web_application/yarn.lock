@@ -9590,6 +9590,12 @@ react-addons-test-utils@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.6.2.tgz#c12b6efdc2247c10da7b8770d185080a7b047156"
 
+react-composer@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-composer/-/react-composer-4.1.0.tgz#e36dc1e6714c1f8cf062eb4d8b9bea34af5ce83c"
+  dependencies:
+    prop-types "^15.6.0"
+
 react-country-region-selector@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/react-country-region-selector/-/react-country-region-selector-1.2.3.tgz#0c296137f515c3cc9fb53147aad9a5130597a1fd"

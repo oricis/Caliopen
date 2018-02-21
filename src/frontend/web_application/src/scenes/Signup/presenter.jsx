@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { WithDevice } from '../../modules/device';
 import { signup } from '../../modules/user';
 import SignupForm from './components/SignupForm';
 import formValidator, { getLocalizedErrors, ERR_UNABLE_TO_SIGNUP } from './form-validator';
@@ -10,6 +9,11 @@ class Signup extends Component {
     onSignupSuccess: PropTypes.func.isRequired,
     settings: PropTypes.shape({}).isRequired,
     i18n: PropTypes.shape({}).isRequired,
+    clientDevice: PropTypes.shape({}),
+  };
+
+  static defaultProps = {
+    clientDevice: undefined,
   };
 
   state = {
@@ -82,8 +86,8 @@ class Signup extends Component {
     });
   }
 
-  handleSignup = async ({ device }, ev) => {
-    const { i18n, settings } = this.props;
+  handleSignup = async (ev) => {
+    const { clientDevice, i18n, settings } = this.props;
     try {
       this.setState({
         isValidating: true,
@@ -101,7 +105,7 @@ class Signup extends Component {
     try {
       await signup({
         ...ev.formValues,
-        device,
+        device: clientDevice,
         settings,
       });
       const { onSignupSuccess } = this.props;
@@ -127,23 +131,15 @@ class Signup extends Component {
     }
   }
 
-  renderForm = (errors, device) => {
-    const handleSignup = this.handleSignup.bind(null, { device });
-
+  render() {
     return (
       <SignupForm
         onFieldChange={this.handleFieldChange}
         onFieldBlur={this.handleFieldBlur}
-        onSubmit={handleSignup}
-        errors={errors}
+        onSubmit={this.handleSignup}
+        errors={this.state.errors}
         isValidating={this.state.isValidating}
       />
-    );
-  }
-
-  render() {
-    return (
-      <WithDevice render={({ device }) => this.renderForm(this.state.errors, device)} />
     );
   }
 }

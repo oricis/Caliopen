@@ -7,6 +7,7 @@ export const REQUEST_DEVICES_SUCCESS = 'co/device/REQUEST_DEVICES_SUCCESS';
 export const REQUEST_DEVICES_FAIL = 'co/device/REQUEST_DEVICES_FAIL';
 export const INVALIDATE_DEVICES = 'co/device/INVALIDATE_DEVICES';
 export const REQUEST_DEVICE = 'co/device/REQUEST_DEVICE';
+export const CREATE_DEVICE = 'co/device/CREATE_DEVICE';
 export const UPDATE_DEVICE = 'co/device/UPDATE_DEVICE';
 export const REMOVE_DEVICE = 'co/device/REMOVE_DEVICE';
 export const VERIFY_DEVICE = 'co/device/VERIFY_DEVICE';
@@ -35,6 +36,19 @@ export function requestDevices() {
     payload: {
       request: {
         url: '/api/v2/devices',
+      },
+    },
+  };
+}
+
+export function createDevice({ device }) {
+  return {
+    type: CREATE_DEVICE,
+    payload: {
+      request: {
+        method: 'post',
+        url: '/api/v2/devices',
+        data: device,
       },
     },
   };
