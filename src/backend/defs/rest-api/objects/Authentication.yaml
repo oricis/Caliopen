@@ -5,6 +5,8 @@ properties:
     type: string
   password:
     type: string
+  context:
+    type: string
 required:
 - username
 - password
