@@ -31,13 +31,16 @@ class ContactResultItem extends PureComponent {
   renderTags() {
     const { i18n, contact } = this.props;
 
+    if (!contact.tags) {
+      return null;
+    }
+
     return (
-      <WithTags render={userTags =>
-        contact.tags && getCleanedTagCollection(userTags, contact.tags).map(tag => (
-          <span key={tag.name}>
-            {' '}
-            <Badge className="m-contact-result-item__tag">{getTagLabel(i18n, tag)}</Badge>
-          </span>
+      <WithTags render={userTags => getCleanedTagCollection(userTags, contact.tags).map(tag => (
+        <span key={tag.name}>
+          {' '}
+          <Badge className="m-contact-result-item__tag">{getTagLabel(i18n, tag)}</Badge>
+        </span>
         ))}
       />
     );
