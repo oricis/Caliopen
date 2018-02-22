@@ -36,10 +36,7 @@ class Contact(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
-        pi_range = self.request.authenticated_userid.pi_range
-        filter_params = {'min_pi': pi_range[0],
-                         'max_pi': pi_range[1],
-                         'limit': self.get_limit(),
+        filter_params = {'limit': self.get_limit(),
                          'offset': self.get_offset()}
         log.debug('Filter parameters {}'.format(filter_params))
         results = CoreContact._model_class.search(self.user, **filter_params)
