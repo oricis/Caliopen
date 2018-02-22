@@ -56,8 +56,8 @@ class AuthenticationAPI(Api):
                      format(name=params['username'], error=exc))
             raise AuthenticationError(detail=exc.message)
         # Device management
-        if 'device' in self.request.swagger_data['authentication']:
-            in_device = self.request.swagger_data['authentication']['device']
+        in_device = self.request.swagger_data['authentication']['device']
+        if in_device:
             try:
                 device = Device.get(user, in_device['device_id'])
             except NotFound:

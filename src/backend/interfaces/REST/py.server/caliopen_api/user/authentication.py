@@ -37,7 +37,16 @@ class AuthenticatedUser(object):
             raise AuthenticationError
 
         user_id, token = auth.split(':')
-        infos = self.request.cache.get(user_id)
+
+        if 'X-Device-ID' in self.request.headers:
+            device_id = self.request.headers['X-Device-ID']
+            cache_key = '{}-{}'.format(user_id, device_id)
+        else:
+            log.warn('No Device in API call')
+            cache_key = user_id
+
+        infos = self.request.cache.get(cache_key)
+
         if not infos:
             raise AuthenticationError
         if infos.get('access_token') != token:
