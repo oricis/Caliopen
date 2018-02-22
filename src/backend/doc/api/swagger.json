@@ -33,6 +33,55 @@
                 },
                 "password": {
                   "type": "string"
+                },
+                "context": {
+                  "type": "string"
+                },
+                "device": {
+                  "type": "object",
+                  "properties": {
+                    "device_id": {
+                      "type": "string"
+                    },
+                    "ecdsa_key": {
+                      "type": "object",
+                      "properties": {
+                        "curve": {
+                          "type": "string",
+                          "enum": [
+                            "P-256",
+                            "P-384",
+                            "P-512"
+                          ]
+                        },
+                        "hash": {
+                          "type": "string",
+                          "enum": [
+                            "SHA256",
+                            "SHA384",
+                            "SHA512"
+                          ]
+                        },
+                        "x": {
+                          "type": "string"
+                        },
+                        "y": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "curve",
+                        "x",
+                        "y"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "device_id",
+                    "ecdsa_key"
+                  ],
+                  "additionalProperties": false
                 }
               },
               "required": [
@@ -75,6 +124,19 @@
                     },
                     "refresh_token": {
                       "type": "string"
+                    }
+                  }
+                },
+                "device": {
+                  "type": "object",
+                  "properties": {
+                    "device_id": {
+                      "type": "string",
+                      "description": "Identifier of the device used for authentication"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Device status"
                     }
                   }
                 }
