@@ -24,6 +24,7 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 		// Get provided auth headers
 		var user_id, access_token string
 		var ok bool
+		var cache_key string
 
 		//Try auth-scheme 'Bearer' then 'Basic'
 		if user_id, access_token, ok = BearerAuth(c.Request); !ok {
@@ -33,8 +34,14 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 			}
 		}
 
+		if device_id, ok := c.Request.Header["X-Device-ID"]; ok {
+			cache_key = user_id + "-" + device_id[0]
+		} else {
+			cache_key = user_id
+		}
+
 		// Search user in cache of allowed credentials
-		auth, err := cache.GetAuthToken("tokens::" + user_id)
+		auth, err := cache.GetAuthToken("tokens::" + cache_key)
 		if err != nil || auth == nil || auth.Access_token != access_token || time.Since(auth.Expires_at) > 0 {
 			kickUnauthorizedRequest(c, realm)
 			return
