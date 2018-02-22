@@ -34,13 +34,16 @@ class MessageResultItem extends PureComponent {
   renderTags() {
     const { i18n, message } = this.props;
 
+    if (!message.tags) {
+      return null;
+    }
+
     return (
-      <WithTags render={userTags =>
-        message.tags && getCleanedTagCollection(userTags, message.tags).map(tag => (
-          <span key={tag.name}>
-            {' '}
-            <Badge className="s-message-result-item__tag">{getTagLabel(i18n, tag)}</Badge>
-          </span>
+      <WithTags render={userTags => getCleanedTagCollection(userTags, message.tags).map(tag => (
+        <span key={tag.name}>
+          {' '}
+          <Badge className="s-message-result-item__tag">{getTagLabel(i18n, tag)}</Badge>
+        </span>
         ))}
       />
     );
