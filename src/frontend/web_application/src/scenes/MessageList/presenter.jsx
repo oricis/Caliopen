@@ -13,7 +13,6 @@ class MessageList extends Component {
     requestMessages: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
-    tags: PropTypes.arrayOf(PropTypes.shape({})),
     push: PropTypes.func.isRequired,
     hasDraft: PropTypes.bool,
     didInvalidate: PropTypes.bool.isRequired,
@@ -31,7 +30,6 @@ class MessageList extends Component {
 
   static defaultProps = {
     messages: [],
-    tags: [],
     discussion: {},
     currentTab: undefined,
     hasDraft: false,
@@ -106,7 +104,7 @@ class MessageList extends Component {
 
   render() {
     const {
-      messages, discussionId, isFetching, copyMessageTo, updateTagCollection, tags,
+      messages, discussionId, isFetching, copyMessageTo, updateTagCollection,
     } = this.props;
     const internalId = discussionId;
 
@@ -126,7 +124,6 @@ class MessageList extends Component {
           loadMore={this.renderLoadMore()}
           onMessageCopyTo={copyMessageTo}
           updateTagCollection={updateTagCollection}
-          userTags={tags}
         />
       </div>
     );

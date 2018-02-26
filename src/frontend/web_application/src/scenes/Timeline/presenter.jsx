@@ -6,7 +6,7 @@ import { InfiniteScroll, BlockList, PageTitle, Button, MenuBar, Spinner, Modal }
 import MessageSelector from './components/MessageSelector';
 import MessageItem from './components/MessageItem';
 import { isMessageFromUser } from '../../services/message';
-import { WithTags, ManageEntityTags } from '../../modules/tags';
+import { WithTags, TagsForm, getCleanedTagCollection, getTagNamesInCommon } from '../../modules/tags';
 
 import './style.scss';
 
@@ -25,8 +25,7 @@ class Timeline extends Component {
     didInvalidate: PropTypes.bool,
     hasMore: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
-    notify: PropTypes.func.isRequired,
-    onUpdateEntityTags: PropTypes.func.isRequired,
+    updateMessagesTags: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -38,7 +37,7 @@ class Timeline extends Component {
     hasMore: false,
   };
 
-  state= {
+  state = {
     selectedMessages: [],
     isTagModalOpen: false,
     isDeleting: false,
@@ -89,13 +88,7 @@ class Timeline extends Component {
   }
 
   handleOpenTags = () => {
-    if (this.state.selectedMessages.length > 1) {
-      return this.props.notify({
-        message: 'Edit multiple messages is not yet implemented.',
-      });
-    }
-
-    return this.setState(prevState => ({
+    this.setState(prevState => ({
       ...prevState,
       isTagModalOpen: true,
     }));
@@ -141,18 +134,9 @@ class Timeline extends Component {
   }
 
   handleTagsChange = ({ tags }) => {
-    const { onUpdateEntityTags, i18n, tags: userTags, messages } = this.props;
+    const { updateMessagesTags, i18n } = this.props;
 
-    // TODO: for multiple message: diff with common tags then update only common (added/deleted)
-    // don't forget to update the diff after being saved
-
-    const selectedMessageIds = new Set(this.state.selectedMessages);
-
-    return Promise.all(messages
-      .filter(message => selectedMessageIds.has(message.message_id))
-      .map(message =>
-        onUpdateEntityTags(i18n, userTags, { type: 'message', entity: message, tags }))
-      );
+    return updateMessagesTags(i18n, this.state.selectedMessages, tags);
   }
 
   renderList = ({ userTags }) => {
@@ -176,21 +160,20 @@ class Timeline extends Component {
   }
 
   renderTagsModal = () => {
-    const { messages, i18n } = this.props;
-    // TODO: implement multiple messages tags edition
-    // (state common tags for the diff after it has been changed)
-    const selectedMessageId = this.state.selectedMessages[0];
-    const selectedMessage = messages.find(
-      item => item.message_id === selectedMessageId
-    );
-    const nb = this.state.isTagModalOpen && selectedMessage.tags
-      ? selectedMessage.tags.length
-      : 0;
+    const { messages, tags: userTags, i18n } = this.props;
+    const selectedMessageIds = new Set(this.state.selectedMessages);
+    const selectedMessages = messages
+      .filter(message => selectedMessageIds.has(message.message_id))
+    ;
+
+    const tagNamesInCommon = getTagNamesInCommon(selectedMessages);
+    const tagsInCommon = getCleanedTagCollection(userTags, tagNamesInCommon);
+
     const title = (
       <Trans
         id="tags.header.title"
         defaults={'Tags <0>(Total: {nb})</0>'}
-        values={{ nb }}
+        values={{ nb: tagsInCommon.length }}
         components={[
           (<span className="m-tags-form__count" />),
         ]}
@@ -204,9 +187,14 @@ class Timeline extends Component {
         title={title}
         onClose={this.handleCloseTags}
       >
-        {this.state.isTagModalOpen && (
-          <ManageEntityTags type="message" entity={selectedMessage} onChange={this.handleTagsChange} />
+        {selectedMessages.length > 1 && (
+          <Trans id="tags.common_tags_applied">Common tags applied to the current selection:</Trans>
         )}
+        <TagsForm
+          userTags={userTags}
+          tags={tagsInCommon}
+          updateTags={this.handleTagsChange}
+        />
       </Modal>
     );
   }
@@ -237,7 +225,7 @@ class Timeline extends Component {
               isDeleting={this.state.isDeleting}
             />
           </div>
-          {this.renderTagsModal()}
+          {this.state.isTagModalOpen && this.renderTagsModal()}
         </MenuBar>
         <InfiniteScroll onReachBottom={this.loadMore}>
           <WithTags render={userTags => this.renderList({ userTags })} />

@@ -22,7 +22,6 @@ class MessageList extends Component {
     onForward: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    userTags: PropTypes.arrayOf(PropTypes.shape({})),
     replyForm: PropTypes.node.isRequired,
     updateTagCollection: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
@@ -33,7 +32,6 @@ class MessageList extends Component {
     loadMore: null,
     onMessageView: null,
     user: undefined,
-    userTags: [],
   };
 
   state = {
@@ -50,7 +48,7 @@ class MessageList extends Component {
   renderDayGroups(settings) {
     const {
       messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply, onMessageCopyTo,
-      user, updateTagCollection, userTags,
+      user, updateTagCollection,
     } = this.props;
 
     const messagesGroupedByday = groupMessages(messages, user);
@@ -71,7 +69,6 @@ class MessageList extends Component {
               onReply={onMessageReply}
               onCopyTo={onMessageCopyTo}
               updateTagCollection={updateTagCollection}
-              userTags={userTags}
             />
           ))}
         </DayMessageList>

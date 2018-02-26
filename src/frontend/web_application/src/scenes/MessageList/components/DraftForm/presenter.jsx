@@ -5,7 +5,6 @@ import { ReplyForm as ReplyFormBase, NewDraftForm, DraftMessageActionsContainer 
 class DraftForm extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
-    tags: PropTypes.arrayOf(PropTypes.shape({})),
     discussionId: PropTypes.string.isRequired,
     allowEditRecipients: PropTypes.bool,
     message: PropTypes.shape({ }),
@@ -21,7 +20,6 @@ class DraftForm extends Component {
   };
 
   static defaultProps = {
-    tags: [],
     allowEditRecipients: false,
     message: undefined,
     parentMessage: undefined,
@@ -89,9 +87,9 @@ class DraftForm extends Component {
   }
 
   handleTagsChange = async ({ tags }) => {
-    const { onUpdateEntityTags, i18n, tags: userTags, message, draft, discussionId } = this.props;
+    const { onUpdateEntityTags, i18n, message, draft, discussionId } = this.props;
 
-    return onUpdateEntityTags(discussionId, i18n, userTags, message, { type: 'message', entity: draft, tags });
+    return onUpdateEntityTags(discussionId, i18n, message, { type: 'message', entity: draft, tags });
   }
 
   renderDraftMessageActionsContainer = () => {

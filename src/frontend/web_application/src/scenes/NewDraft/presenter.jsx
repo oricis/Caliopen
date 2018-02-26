@@ -5,7 +5,6 @@ import { NewDraftForm, DraftMessageActionsContainer } from '../../modules/draftM
 class NewDraft extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
-    tags: PropTypes.arrayOf(PropTypes.shape({})),
     draft: PropTypes.shape({}),
     message: PropTypes.shape({}),
     currentTab: PropTypes.shape({}),
@@ -21,7 +20,6 @@ class NewDraft extends Component {
   };
 
   static defaultProps = {
-    tags: [],
     draft: undefined,
     message: undefined,
     internalId: undefined,
@@ -46,9 +44,9 @@ class NewDraft extends Component {
   };
 
   handleTagsChange = ({ tags }) => {
-    const { internalId, draft, onUpdateEntityTags, i18n, tags: userTags, message } = this.props;
+    const { internalId, draft, onUpdateEntityTags, i18n, message } = this.props;
 
-    return onUpdateEntityTags(internalId, i18n, userTags, message, { type: 'message', entity: draft, tags });
+    return onUpdateEntityTags(internalId, i18n, message, { type: 'message', entity: draft, tags });
   }
 
   handleSaveDraft = async ({ draft }) => {

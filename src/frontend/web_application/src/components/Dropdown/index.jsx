@@ -55,6 +55,7 @@ class Dropdown extends Component {
     isMenu: PropTypes.bool,
     position: PropTypes.oneOf(['top', 'bottom']),
     onToggle: PropTypes.func,
+    dropdownRef: PropTypes.func,
     show: PropTypes.bool,
   };
 
@@ -68,6 +69,7 @@ class Dropdown extends Component {
     isMenu: false,
     onToggle: str => str,
     show: false,
+    dropdownRef: () => {},
   };
 
   state = {
@@ -158,7 +160,7 @@ class Dropdown extends Component {
   }
 
   render() {
-    const { id, className, children, isMenu } = this.props;
+    const { id, className, children, isMenu, dropdownRef } = this.props;
 
     const dropdownOffset = {
       top: this.dropdownControl ? this.state.offset.top || 0 : null,
@@ -179,7 +181,7 @@ class Dropdown extends Component {
     };
 
     return (
-      <div ref={(node) => { this.dropdown = node; }} {...dropdownProps}>
+      <div ref={(node) => { this.dropdown = node; dropdownRef(node); }} {...dropdownProps}>
         {children}
       </div>
     );

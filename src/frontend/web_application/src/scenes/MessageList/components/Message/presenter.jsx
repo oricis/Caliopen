@@ -20,7 +20,6 @@ const FOLD_HEIGHT = 80; // = .m-message__content--fold height
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
-    userTags: PropTypes.arrayOf(PropTypes.shape({})),
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     updateTagCollection: PropTypes.func.isRequired,
@@ -33,7 +32,6 @@ class Message extends Component {
   }
 
   static defaultProps = {
-    userTags: [],
     isMessageFromUser: false,
   }
 
@@ -75,9 +73,9 @@ class Message extends Component {
   }
 
   handleTagsChange = async ({ tags }) => {
-    const { updateTagCollection, i18n, userTags, message: entity } = this.props;
+    const { updateTagCollection, i18n, message: entity } = this.props;
 
-    return updateTagCollection(i18n, userTags, { type: 'message', entity, tags });
+    return updateTagCollection(i18n, { type: 'message', entity, tags });
   }
 
   renderDate = () => {

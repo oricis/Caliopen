@@ -34,11 +34,13 @@ const mockStore = configureMockStore([promiseMiddleware, thunkMiddleware]);
 
 describe('modules tags - actions - updateTagCollection', () => {
   it('create a new tag then patch message\'s tags', () => {
-    const store = mockStore({});
+    const store = mockStore({
+      tag: {
+        tags: [{ label: 'Foo', name: 'foo' }, { label: 'Bar', name: 'bar' }],
+      },
+    });
 
     const i18n = { _: id => id };
-    const userTags = [{ label: 'Foo', name: 'foo' }, { label: 'Bar', name: 'bar' }];
-
     const message = { tags: [{ label: 'Foo', name: 'foo' }] };
     const tags = [{ label: 'Foo', name: 'foo' }, { label: 'Bar' }, { label: 'FooBar' }];
     const expectedActions = [
@@ -47,7 +49,7 @@ describe('modules tags - actions - updateTagCollection', () => {
       { type: 'updateTags', payload: { message, tags: ['foo', 'bar', 'foobar'] } },
       { type: 'requestMessage' },
     ];
-    const action = updateTagCollection(i18n, userTags, { type: 'message', entity: message, tags });
+    const action = updateTagCollection(i18n, { type: 'message', entity: message, tags });
 
     return store.dispatch(action).then(() => {
       expect(store.getActions()).toEqual(expectedActions);

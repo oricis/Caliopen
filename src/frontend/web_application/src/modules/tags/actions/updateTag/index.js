@@ -1,7 +1,9 @@
-import { updateTag as updateTagBase } from '../../../../store/modules/tag';
-import { handleAxiosErrors } from '../../../error';
+import { updateTag as updateTagBase, invalidate } from '../../../../store/modules/tag';
+import { tryCatchAxiosPromise } from '../../../../services/api-client';
 
-export const updateTag = ({ tag, original }) =>
-  dispatch => dispatch(updateTagBase({ tag, original }))
-    .then(response => response.payload.data)
-    .catch(handleAxiosErrors);
+export const updateTag = ({ tag, original }) => async (dispatch) => {
+  const result = tryCatchAxiosPromise(dispatch(updateTagBase({ tag, original })));
+  dispatch(invalidate());
+
+  return result;
+};

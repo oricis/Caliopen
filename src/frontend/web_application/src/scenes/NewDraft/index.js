@@ -9,7 +9,7 @@ import { saveDraft, sendDraft } from '../../modules/draftMessage';
 import { withNotification } from '../../hoc/notification';
 import { withCurrentTab } from '../../hoc/tab';
 import { deleteMessage } from '../../store/modules/message';
-import { updateTagCollection, withTags } from '../../modules/tags';
+import { updateTagCollection } from '../../modules/tags';
 import Presenter from './presenter';
 
 const messageDraftSelector = state => state.draftMessage.draftsByInternalId;
@@ -35,14 +35,14 @@ const onSaveDraft = ({ internalId, draft, message }) => dispatch =>
 const onEditDraft = ({ draft, message, internalId }) => dispatch =>
   dispatch(saveDraft({ draft, message, internalId }, { withThrottle: true }));
 
-const onUpdateEntityTags = (internalId, i18n, userTags, message, { type, entity, tags }) =>
+const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =>
   async (dispatch) => {
     const savedDraft = await dispatch(saveDraft({ internalId, draft: entity, message }, {
       withThrottle: false,
       force: true,
     }));
     const messageUpTodate = await dispatch(updateTagCollection(
-      i18n, userTags, { type, entity: savedDraft, tags }
+      i18n, { type, entity: savedDraft, tags }
     ));
 
     return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
@@ -82,6 +82,5 @@ export default compose(
   withI18n(),
   withNotification(),
   withCurrentTab(),
-  withTags(),
   connect(mapStateToProps, mapDispatchToProps)
 )(Presenter);
