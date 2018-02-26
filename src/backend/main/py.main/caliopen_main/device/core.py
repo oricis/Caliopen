@@ -38,12 +38,13 @@ class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
 
     @classmethod
     def create_default(cls, user, param, headers):
-        """Create the default device on signup."""
+        """Create a default verified device."""
         dev = NewDevice()
         dev.name = 'default'
         dev.device_id = param['device_id']
         dev.user_agent = headers.get('User-Agent')
         dev.ip_creation = headers.get('X-Forwarded-For')
+        dev.status = 'verified'
         qualifier = NewDeviceQualifier(user)
         qualifier.process(dev)
         dev.type = dev.privacy_features.get('device_type', 'other')
