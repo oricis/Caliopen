@@ -61,6 +61,9 @@ class AuthenticationAPI(Api):
             try:
                 device = Device.get(user, in_device['device_id'])
             except NotFound:
+                devices = Device.find(user)
+                if devices:
+                    in_device['status'] = 'unverified'
                 # we must declare a new device
                 device = Device.create_default(user, in_device,
                                                self.request.headers)

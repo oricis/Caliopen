@@ -44,7 +44,7 @@ class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         dev.device_id = param['device_id']
         dev.user_agent = headers.get('User-Agent')
         dev.ip_creation = headers.get('X-Forwarded-For')
-        dev.status = 'verified'
+        dev.status = 'verified' if 'status' not in param else param['status']
         qualifier = NewDeviceQualifier(user)
         qualifier.process(dev)
         dev.type = dev.privacy_features.get('device_type', 'other')
@@ -77,7 +77,8 @@ class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
                  'name': device.name,
                  'user_agent': device.user_agent,
                  'ip_creation': device.ip_creation,
-                 'privacy_features': device.privacy_features}
+                 'privacy_features': device.privacy_features,
+                 'status': device.status}
 
         core = super(Device, cls).create(user, **attrs)
         log.debug('Created device %s' % core.device_id)
