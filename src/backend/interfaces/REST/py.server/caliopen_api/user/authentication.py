@@ -20,7 +20,6 @@ class AuthenticatedUser(object):
     def __init__(self, request):
         self.request = request
         self._check_user()
-        self.pi_range = self._get_pi_range()
 
     def _check_user(self):
         if 'Authorization' not in self.request.headers:
@@ -37,7 +36,16 @@ class AuthenticatedUser(object):
             raise AuthenticationError
 
         user_id, token = auth.split(':')
-        infos = self.request.cache.get(user_id)
+
+        if 'X-Device-ID' in self.request.headers:
+            device_id = self.request.headers['X-Device-ID']
+            cache_key = '{}-{}'.format(user_id, device_id)
+        else:
+            log.warn('No Device in API call')
+            cache_key = user_id
+
+        infos = self.request.cache.get(cache_key)
+
         if not infos:
             raise AuthenticationError
         if infos.get('access_token') != token:
@@ -46,20 +54,6 @@ class AuthenticatedUser(object):
         self.user_id = user_id
         self.access_token = token
         self._user = None
-
-    def _get_pi_range(self):
-        pi_range = self.request.headers.get('X-Caliopen-PI', None)
-        if not pi_range:
-            log.warn('No X-Caliopen-PI header')
-            return (-1, -1)
-        min_pi, max_pi = pi_range.split(';', 1)
-        try:
-            return (int(min_pi), int(max_pi))
-        except ValueError:
-            log.error('Invalid value for PI {}'.format(pi_range))
-        except Exception as exc:
-            log.error('Invalid range for PI {}: {}'.format(pi_range, exc))
-        return (-1, -1)
 
     def _get_il_range(self):
         il_range = self.request.headers.get('X-Caliopen-IL', None)

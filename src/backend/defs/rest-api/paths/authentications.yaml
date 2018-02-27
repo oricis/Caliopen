@@ -39,6 +39,15 @@ authentications:
                   type: string
                 refresh_token:
                   type: string
+            device:
+              type: object
+              properties:
+                device_id:
+                  type: string
+                  description: Identifier of the device used for authentication
+                status:
+                  type: string
+                  description: Device status
           additionalProperties: false
       '401':
         description: Authentication error

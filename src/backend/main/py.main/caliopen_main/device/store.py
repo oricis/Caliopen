@@ -39,7 +39,7 @@ class Device(BaseModel):
                                    default=datetime.datetime.now(tz=pytz.utc))
     date_revoked = columns.DateTime()
     type = columns.Text(required=True)      # laptop, desktop, smartphone, etc
-    status = columns.Text(default='unknown')
+    status = columns.Text(default='unverified')
     user_agent = columns.Text()
     ip_creation = columns.Text()
     privacy_features = columns.Map(columns.Text, columns.Text)

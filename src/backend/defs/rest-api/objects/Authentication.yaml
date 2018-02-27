@@ -5,8 +5,13 @@ properties:
     type: string
   password:
     type: string
+  context:
+    type: string
+  device:
+    "$ref": DefaultDevice.yaml
 required:
 - username
 - password
+# - device  # XXX to set mandatory later
 additionalProperties: false
 
