@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
@@ -27,7 +26,7 @@ const (
 
 // ByEmail notifies an user by the mean of an email.
 func (N *Notifier) ByEmail(notif *Notification) error {
-	N.LogNotification(notif)
+	N.LogNotification("ByEmail", notif)
 	switch notif.Type {
 	case NotifAdminMail:
 		N.SendEmailAdminToUser(notif.User, notif.InternalPayload.(*Message))
@@ -96,7 +95,7 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 		}
 		return err
 	}
-	var reply email_broker.DeliveryAck
+	var reply DeliveryAck
 	err = json.Unmarshal(rep.Data, &reply)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser error")

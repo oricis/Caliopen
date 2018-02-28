@@ -43,7 +43,7 @@ func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notifier
 	notifier = new(Notifier)
 	notifier.log = log.New()
 	notifier.log.Out = os.Stdout
-	// It could set this to any `io.Writer` such as a file
+	// We could set this to any `io.Writer` such as a file
 	// file, err := os.OpenFile("notifications.log", os.O_CREATE|os.O_WRONLY, 0666)
 	// if err == nil {
 	//  notifier.log.Out = file
@@ -112,9 +112,17 @@ func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notifier
 	return notifier
 }
 
-func (N *Notifier) LogNotification(notif *Notification) {
-	N.log.WithFields(log.Fields{
-		"method": "ByEmail",
-		"id":     notif.Id.String(),
-	}).Infof("[Notifier] a notification has been issued for user %s", notif.User.UserId.String())
+func (N *Notifier) LogNotification(method string, notif *Notification) {
+	if notif != nil {
+		var userId string
+		if notif.User != nil {
+			userId = notif.User.UserId.String()
+		} else {
+			userId = "<unknown user id>"
+		}
+		N.log.WithFields(log.Fields{
+			"method": method,
+			"id":     notif.Id.String(),
+		}).Infof("[Notifier] a notification has been issued for user %s", userId)
+	}
 }

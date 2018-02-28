@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/messages"
 	log "github.com/Sirupsen/logrus"
@@ -27,7 +26,7 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		}
 		return nil, err
 	}
-	var reply email_broker.DeliveryAck
+	var reply DeliveryAck
 	err = json.Unmarshal(rep.Data, &reply)
 	if err != nil {
 		log.WithError(err).Warn("[RESTfacility]: SendDraft error")

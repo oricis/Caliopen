@@ -29,6 +29,7 @@ const (
 	Nats_message_tmpl      = "{\"order\":\"%s\", \"message_id\":\"%s\", \"user_id\":\"%s\"}"
 	Nats_contact_tmpl      = "{\"order\":\"%s\", \"contact_id\":\"%s\", \"user_id\":\"%s\"}"
 	Nats_outSMTP_topicKey  = "outSMTP_topic"
+	Nats_inSMTP_topicKey   = "inSMTP_topic"
 	Nats_Contacts_topicKey = "contacts_topic"
 
 	//participant types
