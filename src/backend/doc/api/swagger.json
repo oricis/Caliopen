@@ -11381,35 +11381,38 @@
                         "type": "string"
                       },
                       "locations": {
-                        "type": "object",
-                        "properties": {
-                          "address": {
-                            "type": "string"
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "address": {
+                              "type": "string"
+                            },
+                            "country": {
+                              "type": "string"
+                            },
+                            "device_id": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "default": "other",
+                              "enum": [
+                                "other",
+                                "home",
+                                "work",
+                                "public"
+                              ]
+                            },
+                            "user_id": {
+                              "type": "string"
+                            }
                           },
-                          "country": {
-                            "type": "string"
-                          },
-                          "device_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string",
-                            "default": "other",
-                            "enum": [
-                              "other",
-                              "home",
-                              "work",
-                              "public"
-                            ]
-                          },
-                          "user_id": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "address"
-                        ],
-                        "additionalProperties": false
+                          "required": [
+                            "address"
+                          ],
+                          "additionalProperties": false
+                        }
                       },
                       "name": {
                         "type": "string"
@@ -11759,35 +11762,38 @@
                   "type": "string"
                 },
                 "locations": {
-                  "type": "object",
-                  "properties": {
-                    "address": {
-                      "type": "string"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      },
+                      "device_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "default": "other",
+                        "enum": [
+                          "other",
+                          "home",
+                          "work",
+                          "public"
+                        ]
+                      },
+                      "user_id": {
+                        "type": "string"
+                      }
                     },
-                    "country": {
-                      "type": "string"
-                    },
-                    "device_id": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string",
-                      "default": "other",
-                      "enum": [
-                        "other",
-                        "home",
-                        "work",
-                        "public"
-                      ]
-                    },
-                    "user_id": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "address"
-                  ],
-                  "additionalProperties": false
+                    "required": [
+                      "address"
+                    ],
+                    "additionalProperties": false
+                  }
                 },
                 "name": {
                   "type": "string"
@@ -12071,35 +12077,38 @@
                       "type": "string"
                     },
                     "locations": {
-                      "type": "object",
-                      "properties": {
-                        "address": {
-                          "type": "string"
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "address": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          },
+                          "device_id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "default": "other",
+                            "enum": [
+                              "other",
+                              "home",
+                              "work",
+                              "public"
+                            ]
+                          },
+                          "user_id": {
+                            "type": "string"
+                          }
                         },
-                        "country": {
-                          "type": "string"
-                        },
-                        "device_id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "default": "other",
-                          "enum": [
-                            "other",
-                            "home",
-                            "work",
-                            "public"
-                          ]
-                        },
-                        "user_id": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "address"
-                      ],
-                      "additionalProperties": false
+                        "required": [
+                          "address"
+                        ],
+                        "additionalProperties": false
+                      }
                     },
                     "name": {
                       "type": "string"
@@ -12224,35 +12233,38 @@
                   "type": "string"
                 },
                 "locations": {
-                  "type": "object",
-                  "properties": {
-                    "address": {
-                      "type": "string"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      },
+                      "device_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "default": "other",
+                        "enum": [
+                          "other",
+                          "home",
+                          "work",
+                          "public"
+                        ]
+                      },
+                      "user_id": {
+                        "type": "string"
+                      }
                     },
-                    "country": {
-                      "type": "string"
-                    },
-                    "device_id": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string",
-                      "default": "other",
-                      "enum": [
-                        "other",
-                        "home",
-                        "work",
-                        "public"
-                      ]
-                    },
-                    "user_id": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "address"
-                  ],
-                  "additionalProperties": false
+                    "required": [
+                      "address"
+                    ],
+                    "additionalProperties": false
+                  }
                 },
                 "name": {
                   "type": "string"

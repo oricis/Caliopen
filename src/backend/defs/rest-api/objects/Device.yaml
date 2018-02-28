@@ -13,8 +13,9 @@ properties:
   ip_creation:
     type: string
   locations:
-    type: object
-    "$ref": DeviceLocation.yaml
+    type: array
+    items:
+      "$ref": DeviceLocation.yaml
   name:
     type: string
   privacy_features:
