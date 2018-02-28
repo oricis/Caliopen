@@ -151,6 +151,9 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 				if b.Config.LogReceivedMails {
 					log.Infof("EmailBroker : NATS inbound request successfully handled for user %s : %s", rcptId.String(), (*nats_ack)["message"])
 				}
+
+				notif := Notification{}
+				go b.Notifier.ByNotifQueue(&notif)
 			}
 		}(rcptId)
 	}
