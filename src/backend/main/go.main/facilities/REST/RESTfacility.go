@@ -54,9 +54,9 @@ type (
 		Search(IndexSearch) (result *IndexResult, err error)
 		//users
 		PatchUser(user_id string, patch *gjson.Result, notifier Notifications.Notifiers) error
-		RequestPasswordReset(payload PasswordResetRequest, notifier Notifications.EmailNotifiers) error
+		RequestPasswordReset(payload PasswordResetRequest, notifier Notifications.Notifiers) error
 		ValidatePasswordResetToken(token string) (session *Pass_reset_session, err error)
-		ResetUserPassword(token, new_password string, notifier Notifications.EmailNotifiers) error
+		ResetUserPassword(token, new_password string, notifier Notifications.Notifiers) error
 		//devices
 		CreateDevice(device *Device) CaliopenError
 		RetrieveDevices(userId string) ([]Device, CaliopenError)

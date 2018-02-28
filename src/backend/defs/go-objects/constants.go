@@ -38,6 +38,10 @@ const (
 	ParticipantReplyTo = "Reply-To"
 	ParticipantSender  = "Sender"
 	ParticipantTo      = "To"
+
+	//notifications types
+	NotifAdminMail     = "adminMail"
+	NotifPasswordReset = "passwordReset"
 )
 
 // A Initiator specifies what kind of actor is triggering a PATCH method on any object
