@@ -8,24 +8,25 @@ package devices
 
 import (
 	"bytes"
-	"errors"
-	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	swgErr "github.com/go-openapi/errors"
-	"github.com/satori/go.uuid"
 	"io/ioutil"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 // NewDevice handles POST /devices
 func NewDevice(ctx *gin.Context) {
+	e := swgErr.New(http.StatusForbidden, "do not create new device this way")
+	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+	ctx.Abort()
+	return
+
+	/* LEGACY code
 	var device Device
 	b := binding.JSON
 	if err := b.Bind(ctx.Request, &device); err == nil {
@@ -75,6 +76,7 @@ func NewDevice(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	}
+	*/
 }
 
 // GetDevicesList handles GET /devices
