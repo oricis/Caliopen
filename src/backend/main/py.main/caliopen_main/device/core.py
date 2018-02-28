@@ -12,6 +12,7 @@ from caliopen_storage.core.mixin import MixinCoreRelation, MixinCoreNested
 from caliopen_main.common.core import PublicKey, BaseUserRelatedCore
 from caliopen_main.common.parameters import NewPublicKey
 from caliopen_main.device.parameters import NewDevice
+
 from caliopen_pi.qualifiers import NewDeviceQualifier
 
 
@@ -37,16 +38,25 @@ class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
     }
 
     @classmethod
-    def create_default(cls, user, param, headers):
-        """Create a default verified device."""
+    def create_from_parameter(cls, user, param, headers):
+        """Create a device from API parameters."""
         dev = NewDevice()
-        dev.name = 'default'
         dev.device_id = param['device_id']
         dev.user_agent = headers.get('User-Agent')
         dev.ip_creation = headers.get('X-Forwarded-For')
         dev.status = 'verified' if 'status' not in param else param['status']
         qualifier = NewDeviceQualifier(user)
         qualifier.process(dev)
+        if 'name' in param:
+            # Used to set the default device
+            dev.name = param['name']
+        else:
+            dev_name = 'new device'
+            if 'device_type' in dev.privacy_features:
+                dev_ext = dev.privacy_features['device_type']
+                dev_name = '{} {}'.format(dev_name, dev_ext)
+            dev.name = dev_name
+
         dev.type = dev.privacy_features.get('device_type', 'other')
         # Device ecdsa key
         dev_key = NewPublicKey()
