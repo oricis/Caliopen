@@ -62,11 +62,13 @@ class AuthenticationAPI(Api):
                 device = Device.get(user, in_device['device_id'])
             except NotFound:
                 devices = Device.find(user)
-                if devices:
+                if devices.get('objects', []):
                     in_device['status'] = 'unverified'
+                else:
+                    in_device['name'] = 'default'
                 # we must declare a new device
-                device = Device.create_default(user, in_device,
-                                               self.request.headers)
+                device = Device.create_from_parameter(user, in_device,
+                                                      self.request.headers)
         else:
             device = FakeDevice()
 
@@ -151,8 +153,9 @@ class UserAPI(Api):
         in_device = self.request.swagger_data['user']['device']
         if in_device:
             try:
-                device = Device.create_default(user, in_device,
-                                               self.request.headers)
+                in_device['name'] = 'default'
+                device = Device.create_from_parameter(user, in_device,
+                                                      self.request.headers)
                 log.info('Device %r created' % device.device_id)
             except Exception as exc:
                 log.exception('Error during default device creation %r' % exc)
