@@ -85,32 +85,30 @@ func GetDevicesList(ctx *gin.Context) {
 	devices, err := caliopen.Facilities.RESTfacility.RetrieveDevices(userId)
 	if err != nil {
 		returnedErr := new(swgErr.CompositeError)
-		if err.Code() == DbCaliopenErr && err.Cause().Error() == "devices not found" {
-			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), err, err.Cause())
-		} else {
+		if err.Cause().Error() != "devices not found" {
 			returnedErr = swgErr.CompositeValidationError(err, err.Cause())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
+			ctx.Abort()
 		}
-		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
-		ctx.Abort()
-	} else {
-		var respBuf bytes.Buffer
-		respBuf.WriteString("{\"total\": " + strconv.Itoa(len(devices)) + ",")
-		respBuf.WriteString(("\"devices\":["))
-		first := true
-		for _, device := range devices {
-			json_device, err := device.MarshalFrontEnd()
-			if err == nil {
-				if first {
-					first = false
-				} else {
-					respBuf.WriteByte(',')
-				}
-				respBuf.Write(json_device)
-			}
-		}
-		respBuf.WriteString("]}")
-		ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
 	}
+	var respBuf bytes.Buffer
+	respBuf.WriteString("{\"total\": " + strconv.Itoa(len(devices)) + ",")
+	respBuf.WriteString(("\"devices\":["))
+	first := true
+	for _, device := range devices {
+		json_device, err := device.MarshalFrontEnd()
+		if err == nil {
+			if first {
+				first = false
+			} else {
+				respBuf.WriteByte(',')
+			}
+			respBuf.Write(json_device)
+		}
+	}
+	respBuf.WriteString("]}")
+	ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
+
 }
 
 // GetDevice handles GET /devices/:deviceID
