@@ -12,6 +12,7 @@ type NotificationsStore interface {
 	CreateMessage(msg *Message) error
 	UserByUsername(username string) (user *User, err error) // to retrieve admin user
 	GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error)
+	PutNotificationInQueue(*Notification) error
 }
 
 type NotificationsIndex interface {

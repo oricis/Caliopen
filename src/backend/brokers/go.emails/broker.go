@@ -155,7 +155,6 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 		},
 	}
 	broker.Notifier = Notifications.NewNotificationsFacility(caliopenConfig, broker.NatsConn)
-	log.Info(broker.Notifier)
 	log.WithField("EmailBroker", conf.BrokerType).Info("EmailBroker started.")
 	return
 }
