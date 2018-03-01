@@ -8,24 +8,25 @@ package devices
 
 import (
 	"bytes"
-	"errors"
-	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	swgErr "github.com/go-openapi/errors"
-	"github.com/satori/go.uuid"
 	"io/ioutil"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 // NewDevice handles POST /devices
 func NewDevice(ctx *gin.Context) {
+	e := swgErr.New(http.StatusForbidden, "do not create new device this way")
+	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+	ctx.Abort()
+	return
+
+	/* LEGACY code
 	var device Device
 	b := binding.JSON
 	if err := b.Bind(ctx.Request, &device); err == nil {
@@ -75,6 +76,7 @@ func NewDevice(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	}
+	*/
 }
 
 // GetDevicesList handles GET /devices
@@ -83,32 +85,30 @@ func GetDevicesList(ctx *gin.Context) {
 	devices, err := caliopen.Facilities.RESTfacility.RetrieveDevices(userId)
 	if err != nil {
 		returnedErr := new(swgErr.CompositeError)
-		if err.Code() == DbCaliopenErr && err.Cause().Error() == "devices not found" {
-			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), err, err.Cause())
-		} else {
+		if err.Cause().Error() != "devices not found" {
 			returnedErr = swgErr.CompositeValidationError(err, err.Cause())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
+			ctx.Abort()
 		}
-		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
-		ctx.Abort()
-	} else {
-		var respBuf bytes.Buffer
-		respBuf.WriteString("{\"total\": " + strconv.Itoa(len(devices)) + ",")
-		respBuf.WriteString(("\"devices\":["))
-		first := true
-		for _, device := range devices {
-			json_device, err := device.MarshalFrontEnd()
-			if err == nil {
-				if first {
-					first = false
-				} else {
-					respBuf.WriteByte(',')
-				}
-				respBuf.Write(json_device)
-			}
-		}
-		respBuf.WriteString("]}")
-		ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
 	}
+	var respBuf bytes.Buffer
+	respBuf.WriteString("{\"total\": " + strconv.Itoa(len(devices)) + ",")
+	respBuf.WriteString(("\"devices\":["))
+	first := true
+	for _, device := range devices {
+		json_device, err := device.MarshalFrontEnd()
+		if err == nil {
+			if first {
+				first = false
+			} else {
+				respBuf.WriteByte(',')
+			}
+			respBuf.Write(json_device)
+		}
+	}
+	respBuf.WriteString("]}")
+	ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
+
 }
 
 // GetDevice handles GET /devices/:deviceID

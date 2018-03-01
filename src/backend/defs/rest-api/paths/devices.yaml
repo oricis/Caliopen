@@ -40,33 +40,6 @@ devices:
               type: array
               items:
                 "$ref": "../objects/Device.yaml"
-  post:
-    description: Create a new device for the logged-in user
-    tags:
-    - devices
-    security:
-    - basicAuth: []
-    consumes:
-    - application/json
-    parameters:
-    - name: device
-      in: body
-      description: the device to create
-      schema:
-        "$ref": "../objects/NewDevice.yaml"
-    produces:
-    - application/json
-    responses:
-      '200':
-        description: Device created
-        schema:
-          type: object
-          properties:
-            location:
-              type: string
-              description: url to retrieve new device's infos at /devices/{device_id}
-            device_id:
-              type: string
 devices_{device_id}:
   get:
     description: Returns a device
