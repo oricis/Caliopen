@@ -11,7 +11,7 @@ import logging
 
 from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage
-from caliopen_cli.commands import (shell, import_email,
+from caliopen_cli.commands import (shell, import_email, set_notifications_ttls,
                                    setup_storage, create_user,
                                    import_vcard, dump_model, dump_indexes,
                                    inject_email, basic_compute, migrate_index,
@@ -57,6 +57,11 @@ def main(args=sys.argv):
 
     sp_shell = subparsers.add_parser('shell')
     sp_shell.set_defaults(func=shell)
+
+    sp_set_ttls = subparsers.add_parser('set_notifs_ttls',
+                                        help='fillup table notification_ttl'
+                                             'with a set of default values')
+    sp_set_ttls.set_defaults(func=set_notifications_ttls)
 
     sp_dump = subparsers.add_parser('dump')
     sp_dump.set_defaults(func=dump_model)
