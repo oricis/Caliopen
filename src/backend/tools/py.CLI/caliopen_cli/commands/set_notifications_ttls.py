@@ -17,7 +17,8 @@ def set_notifications_ttls():
         "long-lived": 43200,  # 12 hours
         "short-term": 86400,  # a day
         "mid-term": 172800,  # 2 days
-        "long-term": 1728000  # 10 days
+        "long-term": 1728000,  # 10 days
+        "forever": 0
     }
 
     for k, v in default_ttls.items():

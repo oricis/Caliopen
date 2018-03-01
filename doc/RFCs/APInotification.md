@@ -17,8 +17,7 @@ Décrire le mode de gestion de la file d'attente des notifications côté backen
 
 ```yaml  
 notifications:  
-  - from: string         // backend entity that's emitting the message. (contacts facility, email facility, etc.)  
-    to: string           // frontend service/component to which message is sent. (api-location, api-patch, contact, event-manager, etc.)  
+  - emitter: string      // backend entity that's emitting the message. (contacts facility, email facility, etc.)  
     id: string           // universally unique id to unambiguously identify a notification message.  
     type: string         // a single word to describe message's type and give indication of importance level (event, info, feedback, warning, teaser, error, alert, etc.)  
     reference: string    // (optional) a reference number previously sent by frontend to link current notification to a previous action/event.  
@@ -28,11 +27,11 @@ notifications:
 
 ##### Les messages de notification comportent des 'headers' et un 'body'.
 
-les 'headers' (`from`, `to`, `id`, `type`, `references`) permettent d'identifier la notification et de la classifier.
+les 'headers' (`emitter`, `id`, `type`, `references`) permettent d'identifier la notification et de la classifier.
 
 le `body` comporte le message/payload de la notification
 
-les headers `from` et `to` servent à identifier les composants du backend (from) et du frontend (to) concernés par la notification.
+le header `emitter` sert à identifier le composant du backend qui a émis la notification.
 
 le header `type` permet d'identifier immédiatement le type de notification : event, info, feedback, warning, teaser, error, alert, etc.
 
@@ -48,22 +47,19 @@ le header `timestamp` est le timestamp unix du moment où la notification a ét�
 
 ```yaml  
 notifications:  
-  - from: email-facility  
-    to: message-component  
+  - emitter: lmtp  
     id: xxxxx-xxxxx-xxxxx  
     type: event  
     timestamp: 1518691674517  
     body:  
       emailReceived: xxxxxx-xxxxx-xxxxx // uuid of new email  
-  - from: email-facility  
-    to: message-component  
+  - emitter: lmtp  
     id: xxxxx-xxxxx-xxxxx  
     type: event  
     timestamp: 1518691674517  
     body:  
       emailReceived: xxxxxx-xxxxx-xxxxx // uuid of new email  
-  - from: email-facility  
-    to: message-component  
+  - emitter: lmtp  
     id: xxxxx-xxxxx-xxxxx  
     type: event  
     timestamp: 1518691674517  
@@ -79,8 +75,7 @@ lors de son prochain call sur GET /v2/notifications, il pourrait recevoir la not
 
 ```yaml  
 notifications:  
-  - from: contact-facility  
-    to: browser-notification  
+  - emitter: contacts  
     id: xxxxxx-xxxxx-xxxxx  
     type: feedback  
     reference: xxxxxxxxx     // could be a hash of the initial call to the API (POST /v1/imports + timestamp (+ headers ?))  
@@ -96,8 +91,7 @@ lors de son prochain call sur GET /v2/notifications, le frontend pourrait recevo
 
 ```yaml  
 notifications:  
-  - from: email-facility  
-    to: message-component  
+  - emitter: email-broker  
     id: xxxxx-xxxxx-xxxxx  
     type: warning  
     reference: xxxxxx-xxxxx-xxxx // uuid of email sent  
@@ -116,8 +110,7 @@ lors de son prochain call sur GET /v2/notifications, le frontend pourrait recevo
 
 ```yaml  
 notifications:  
-  - from: contact-facility  
-    to: event-manager  
+  - emitter: contacts  
     id: xxxxx-xxxxx-xxxxx  
     type: info  
     reference: xxxxxx-xxxxx-xxxx // uuid of contact modified  
@@ -129,8 +122,7 @@ notifications:
 
 ```yaml  
 notifications:  
-  - from: notification-center  
-    to: browser-notification  
+  - emitter: notification-center  
     id: xxxxx-xxxxx-xxxxx  
     type: teaser  
     timestamp: 1518691674517  
@@ -141,36 +133,31 @@ En l'absence de filtre lors du call sur `/api/v2/notifications`, toutes les noti
 
 ```yaml  
 notifications:  
-  - from: email-facility  
-    to: message-component  
+  - emitter: lmtp  
     id: xxxxx-xxxxx-xxxxx  
     type: event  
     timestamp: 1518691674517  
     body:  
       - emailReceived: xxxxxx-xxxxx-xxxxx   
-  - from: contact-facility  
-    to: browser-notification  
+  - emitter: contacts  
     id: xxxxxx-xxxxx-xxxxx  
     type: feedback  
     reference: xxxxxxxxx      
     timestamp: 1518691674517  
     body: success  
-  - from: email-facility  
-    to: message-component  
+  - emitter: lmtp 
     id: xxxxx-xxxxx-xxxxx  
     type: event  
     timestamp: 1518691674517  
     body:  
       emailReceived: xxxxxx-xxxxx-xxxxx // uuid of new email  
-  - from: email-facility  
-    to: message-component  
+  - emitter: lmtp  
     id: xxxxx-xxxxx-xxxxx  
     type: event  
     timestamp: 1518691674517  
     body:  
       emailReceived: xxxxxx-xxxxx-xxxxx // uuid of new email  
-  - from: notification-center  
-    to: browser-notification  
+  - emitter: notification-center  
     id: xxxxx-xxxxx-xxxxx  
     type: teaser  
     timestamp: 1518691674517  
@@ -231,11 +218,10 @@ La table des notifications est stockées dans cassandra.
 ```sql  
 CREATE TABLE user_notification (  
 user_id uuid,  
-timestamp timestamp,  
+timestamp_ timestamp,  
 id uuid,  
 type ascii,  
-n_from text,  
-n_to text,  
+emitter text,  
 reference text,  
 body blob,  
 primary key(user_id, timestamp, id));  
