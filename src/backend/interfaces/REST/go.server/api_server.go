@@ -220,7 +220,7 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	/** devices API **/
 	dev := api.Group(http_middleware.DevicesRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	dev.GET("", devices.GetDevicesList)
-	dev.POST("", devices.NewDevice)
+	//dev.POST("", devices.NewDevice)
 	dev.GET("/:deviceID", devices.GetDevice)
 	dev.PATCH("/:deviceID", devices.PatchDevice)
 	dev.DELETE("/:deviceID", devices.DeleteDevice)
