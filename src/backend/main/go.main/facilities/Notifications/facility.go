@@ -17,12 +17,12 @@ import (
 
 type (
 	Notifiers interface {
-		ByEmail(*Notification) error
-		ByNotifQueue(*Notification) error
-		BySMS(*Notification) error
-		ByIRC(*Notification) error
-		ByXMPP(*Notification) error
-		ByMobilePhonePush(*Notification) error
+		ByEmail(*Notification) CaliopenError
+		ByNotifQueue(*Notification) CaliopenError
+		BySMS(*Notification) CaliopenError
+		ByIRC(*Notification) CaliopenError
+		ByXMPP(*Notification) CaliopenError
+		ByMobilePhonePush(*Notification) CaliopenError
 	}
 
 	Notifier struct {

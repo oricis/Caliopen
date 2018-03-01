@@ -25,7 +25,7 @@ const (
 )
 
 // ByEmail notifies an user by the mean of an email.
-func (N *Notifier) ByEmail(notif *Notification) error {
+func (N *Notifier) ByEmail(notif *Notification) CaliopenError {
 	N.LogNotification("ByEmail", notif)
 	switch notif.Type {
 	case NotifAdminMail:
@@ -33,7 +33,7 @@ func (N *Notifier) ByEmail(notif *Notification) error {
 	case NotifPasswordReset:
 		N.SendPasswordResetEmail(notif.User, notif.InternalPayload.(*Pass_reset_session))
 	default:
-		return fmt.Errorf("[Notifier]ByEmail : unknown notification type <%s>", notif.Type)
+		return NewCaliopenErrf(UnprocessableCaliopenErr, "[Notifier]ByEmail : unknown notification type <%s>", notif.Type)
 	}
 	return nil
 }

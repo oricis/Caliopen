@@ -7,11 +7,10 @@
 package Notifications
 
 import (
-	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 // ByMobilePhonePush notifies an user by the mean of mobile phone facility
-func (N *Notifier) ByMobilePhonePush(notif *Notification) error {
-	return errors.New("not implemented")
+func (N *Notifier) ByMobilePhonePush(notif *Notification) CaliopenError {
+	return NewCaliopenErr(NotImplementedCaliopenErr, "not implemented")
 }

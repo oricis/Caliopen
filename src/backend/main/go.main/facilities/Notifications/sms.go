@@ -7,11 +7,10 @@
 package Notifications
 
 import (
-	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 // BySMS notifies an user by the mean of SMS facility
-func (N *Notifier) BySMS(notif *Notification) error {
-	return errors.New("not implemented")
+func (N *Notifier) BySMS(notif *Notification) CaliopenError {
+	return NewCaliopenErr(NotImplementedCaliopenErr, "not implemented")
 }

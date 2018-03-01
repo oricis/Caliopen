@@ -7,11 +7,10 @@
 package Notifications
 
 import (
-	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 // ByIRC notifies an user by the mean of IRC facility
-func (N *Notifier) ByIRC(notif *Notification) error {
-	return errors.New("not implemented")
+func (N *Notifier) ByIRC(notif *Notification) CaliopenError {
+	return NewCaliopenErr(NotImplementedCaliopenErr, "not implemented")
 }

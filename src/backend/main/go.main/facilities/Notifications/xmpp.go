@@ -7,11 +7,10 @@
 package Notifications
 
 import (
-	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 // ByXMPP notifies an user by the mean of XMPP facility
-func (N *Notifier) ByXMPP(notif *Notification) error {
-	return errors.New("not implemented")
+func (N *Notifier) ByXMPP(notif *Notification) CaliopenError {
+	return NewCaliopenErr(NotImplementedCaliopenErr, "not implemented")
 }
