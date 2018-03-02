@@ -13,6 +13,7 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
 	"os"
+	"time"
 )
 
 type (
@@ -23,6 +24,8 @@ type (
 		ByIRC(*Notification) CaliopenError
 		ByXMPP(*Notification) CaliopenError
 		ByMobilePhonePush(*Notification) CaliopenError
+		RetrieveNotifications(userId string, from, to time.Time) ([]Notification, CaliopenError)
+		DeleteNotifications(userId string, until time.Time) CaliopenError
 	}
 
 	Notifier struct {
@@ -125,4 +128,24 @@ func (N *Notifier) LogNotification(method string, notif *Notification) {
 			"id":     notif.Id.String(),
 		}).Infof("[Notifier] a notification has been issued for user %s", userId)
 	}
+}
+
+func (N *Notifier) RetrieveNotifications(userId string, from, to time.Time) ([]Notification, CaliopenError) {
+
+	notifs, err := N.store.RetrieveNotifications(userId, from, to)
+	if err != nil {
+		return []Notification{}, WrapCaliopenErr(err, DbCaliopenErr, "[RetrieveNotifications] failed")
+	}
+
+	return notifs, nil
+}
+
+func (N *Notifier) DeleteNotifications(userId string, until time.Time) CaliopenError {
+
+	err := N.store.DeleteNotifications(userId, until)
+	if err != nil {
+		return WrapCaliopenErr(err, DbCaliopenErr, "[Notifier]DeleteNotifications failed")
+	}
+
+	return nil
 }
