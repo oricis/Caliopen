@@ -6,7 +6,7 @@
 
 ![Actual POC](doc/assets/play_with_poc.png)
 
-This repository hosts all the code source, the scripts and the tools for the
+This repository hosts all the source code, the scripts and the tools for the
 [CaliOpen](https://caliopen.org) project.
 
 
