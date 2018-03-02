@@ -18,8 +18,6 @@ class Signin extends Component {
     location: PropTypes.shape({}).isRequired,
     i18n: PropTypes.shape({}).isRequired,
     clientDevice: PropTypes.shape({}),
-    requestDevice: PropTypes.func.isRequired,
-    saveDevice: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -46,26 +44,24 @@ class Signin extends Component {
   }
 
   handleSignin = (context, formValues) => {
+    const { clientDevice: device } = this.props;
+
     getClient().post('/auth/signin', {
       context,
       ...formValues,
+      device,
     }).then(this.handleSigninSuccess, this.handleSigninError);
   }
 
-  handleSigninSuccess = async () => {
-    const { initSettings, clientDevice, requestDevice, saveDevice } = this.props;
+  handleSigninSuccess = async (response) => {
+    const { initSettings } = this.props;
 
     const nextState = {
       isAuthenticated: true,
     };
 
-    try {
-      await requestDevice();
-    } catch (err) {
-      if (err.error.response.status === 404) {
-        await saveDevice({ device: clientDevice });
-        nextState.redirectDevice = true;
-      }
+    if (response.data.device.status !== 'verified') {
+      nextState.redirectDevice = true;
     }
 
     initSettings();
