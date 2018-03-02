@@ -203,7 +203,7 @@ func (rest *RESTfacility) ResetUserPassword(token, new_password string, notify N
 	}
 
 	// send email notification to user's recovery email address
-	notif := &Notification{
+	notif := Notification{
 		User: user,
 		InternalPayload: &Message{
 			Body_plain: changePasswordBodyPlain,
@@ -215,7 +215,7 @@ func (rest *RESTfacility) ResetUserPassword(token, new_password string, notify N
 		Body:      fmt.Sprintf("password changed for user %s", user.UserId.String()),
 		Type:      NotifAdminMail,
 	}
-	go notify.ByEmail(notif)
+	go notify.ByEmail(&notif)
 
 	return nil
 }

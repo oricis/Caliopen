@@ -6,30 +6,33 @@
 
 package objects
 
-import "time"
+import (
+	"github.com/gocql/gocql"
+	"time"
+)
 
 type Notification struct {
-	Body            string      `json:"body"`    // could be a simple word or a more complex structure like a json, depending of the notification.
-	Emitter         string      `json:"emitter"` // backend entity that's emitting the message
-	Id              UUID        `json:"id"`
-	InternalPayload interface{} `json:"-"`         // placeholder to put objects needed to build/fulfil notification. Will not be emitted and/or saved.
-	Reference       string      `json:"reference"` // (optional) a reference number previously sent by frontend to link current notification to a previous action/event
-	Timestamp       time.Time   `json:"timestamp"`
-	Type            string      `json:"type"`    // a single word to describe message's type and give indication of importance level (event, info, feedback, warning, teaser, error, alert, etc.)
-	TTLcode         string      `json:"-"`       // chars to pickup default duration into notification_ttl table.
-	User            *User       `json:"user_id"` // only userId will be exported
+	Body            string // could be a simple word or a more complex structure like a json, depending of the notification.
+	Emitter         string // backend entity that's emitting the message
+	Id              UUID
+	InternalPayload interface{} // placeholder to put objects needed to build/fulfil notification. Will not be emitted and/or saved.
+	Reference       string      // (optional) a reference number previously sent by frontend to link current notification to a previous action/event
+	Timestamp       time.Time
+	Type            string // a single word to describe message's type and give indication of importance level (event, info, feedback, warning, teaser, error, alert, etc.)
+	TTLcode         string // chars to pickup default duration into notification_ttl table.
+	User            *User  // only userId will be exported
 }
 
-// model to queue a notification in cassandra
+// model to queue a notification in cassandra or marshal one to json
 type NotificationModel struct {
 	// PRIMARY KEYS (user_id, timestamp_, id)
-	Body      string    `cql:"body"`
-	Emitter   string    `cql:"emitter"`
-	Id        string    `cql:"id"`
-	Reference string    `cql:"reference"`
-	Timestamp time.Time `cql:"timestamp_"`
-	Type      string    `cql:"type"`
-	UserId    string    `cql:"user_id"`
+	Body      string    `cql:"body"         json:"body"`
+	Emitter   string    `cql:"emitter"      json:"emitter"`
+	Id        string    `cql:"id"           json:"id"`
+	Reference string    `cql:"reference"    json:"reference"`
+	Timestamp time.Time `cql:"timestamp_"   json:"timestamp"        formatter:"RFC3339Milli"`
+	Type      string    `cql:"type"         json:"type"`
+	UserId    string    `cql:"user_id"      json:"user_id"          frontend:"omit"`
 }
 
 // model to retrieve default durations for TTLcodes
@@ -59,3 +62,51 @@ const (
 	LongTerm   = "long-term"
 	Forever    = "forever"
 )
+
+// return a JSON representation of Device suitable for frontend client
+func (n *Notification) MarshalFrontEnd() ([]byte, error) {
+	sibling := NotificationModel{
+		Body:      n.Body,
+		Emitter:   n.Emitter,
+		Id:        n.Id.String(),
+		Reference: n.Reference,
+		Timestamp: n.Timestamp,
+		Type:      n.Type,
+		UserId:    n.User.UserId.String(),
+	}
+	return JSONMarshaller("frontend", &sibling)
+}
+
+// UnmarshalCQLMap hydrates a Notification with data from a map[string]interface{}
+// typical usage is for unmarshaling response from Cassandra backend
+func (n *Notification) UnmarshalCQLMap(input map[string]interface{}) {
+
+	if timestamp, ok := input["timestamp_"].(time.Time); ok {
+		n.Timestamp = timestamp
+	}
+
+	if userId, ok := input["user_id"].(gocql.UUID); ok {
+		n.User = &User{}
+		n.User.UserId.UnmarshalBinary(userId.Bytes())
+	}
+
+	if id, ok := input["id"].(gocql.UUID); ok {
+		n.Id.UnmarshalBinary(id.Bytes())
+	}
+
+	if body, ok := input["body"].([]byte); ok {
+		n.Body = string(body)
+	}
+
+	if emitter, ok := input["emitter"].(string); ok {
+		n.Emitter = emitter
+	}
+
+	if reference, ok := input["reference"].(string); ok {
+		n.Reference = reference
+	}
+
+	if typ, ok := input["type"].(string); ok {
+		n.Type = typ
+	}
+}
