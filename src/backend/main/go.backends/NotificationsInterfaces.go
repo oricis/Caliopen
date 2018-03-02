@@ -6,6 +6,7 @@ package backends
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"time"
 )
 
 type NotificationsStore interface {
@@ -13,6 +14,8 @@ type NotificationsStore interface {
 	UserByUsername(username string) (user *User, err error) // to retrieve admin user
 	GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 	PutNotificationInQueue(*Notification) error
+	RetrieveNotifications(userId string, from, to time.Time) ([]Notification, error)
+	DeleteNotifications(userId string, until time.Time) error
 }
 
 type NotificationsIndex interface {
