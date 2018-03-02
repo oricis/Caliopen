@@ -11,6 +11,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/contacts"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/devices"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/messages"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/notifications"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/participants"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/tags"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/users"
@@ -237,4 +238,9 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	search := api.Group("/search", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	search.GET("", operations.SimpleSearch)
 	search.POST("", operations.AdvancedSearch)
+
+	/** notifications API **/
+	notif := api.Group("/notifications", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
+	notif.GET("", notifications.GetPendingNotif)
+	notif.DELETE("", notifications.DeleteNotifications)
 }
