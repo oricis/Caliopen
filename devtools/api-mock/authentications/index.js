@@ -1,20 +1,27 @@
 import { createAction, createSelector } from 'bouchon';
-
+import { actions as devicesAction, selectors as devicesSelector } from '../devices';
 const actions = {
   post: createAction('Authenticate'),
 };
 
 const selectors = {
-  all: () => state => state.authentications,
+  all: (params) => createSelector(
+    [
+      ({ authentications }) => authentications,
+      devicesSelector.byId({ device_id: params.device.device_id }),
+    ],
+    (authentications, device) => ({
+      ...authentications,
+      device,
+    })
+  ),
 };
 
-const reducer = {
-  [actions.post]: state => state,
-};
+const reducer = {};
 
 const routes = {
   'POST /': {
-    action: actions.post,
+    action: [devicesAction.createOnSignin, actions.post],
     selector: selectors.all,
     status: 200,
   },
