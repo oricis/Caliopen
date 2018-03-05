@@ -5,6 +5,9 @@ export const CURVE_TYPE_ASSOC = {
   p256: 'P-256',
 };
 
+// it depends on default props in curve p256 https://github.com/indutny/elliptic/blob/master/lib/elliptic/curves.js#L72-L79
+export const HASH_NAME = 'SHA256';
+
 let ec;
 const getEC = () => {
   if (!ec) {
