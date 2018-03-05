@@ -33,6 +33,7 @@ describe('tag', () => {
       .then(() => browser.element(by.css(`.m-tags-search__button[aria-label=${__('Add')}]`)).click())
       .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 5 * 1000))
       .then(() => element(by.cssContainingText('.m-tags-form__section .m-tag-item', __('Inbox'))).element(by.css(`[aria-label="${__('Remove')}"]`)).click())
+      .then(() => browser.sleep(1))
       .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', __('Inbox'))).isPresent()).toEqual(false))
       .then(() => browser.sleep(1))
       .then(() => element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).element(by.css(`[aria-label="${__('Remove')}"]`)).click())
