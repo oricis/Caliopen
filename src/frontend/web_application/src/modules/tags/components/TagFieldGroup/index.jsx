@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
+import classnames from 'classnames';
 import { TextFieldGroup, Button, Spinner } from '../../../../components';
 
 import './style.scss';
@@ -12,11 +13,11 @@ function generateStateFromProps({ terms }) {
 }
 
 @withI18n()
-class TagSearch extends Component {
+class TagFieldGroup extends Component {
   static propTypes = {
     terms: PropTypes.string,
     onSubmit: PropTypes.func.isRequired,
-    onChange: PropTypes.func,
+    input: PropTypes.shape({}),
     i18n: PropTypes.shape({}).isRequired,
     isFetching: PropTypes.bool,
     errors: PropTypes.arrayOf(PropTypes.node),
@@ -24,7 +25,7 @@ class TagSearch extends Component {
 
   static defaultProps = {
     terms: '',
-    onChange: () => {},
+    input: {},
     isFetching: false,
     errors: [],
   };
@@ -42,9 +43,10 @@ class TagSearch extends Component {
   }
 
   handleChange = (ev) => {
+    const { input: { onChange = () => {} } } = this.props;
     const terms = ev.target.value;
     this.setState({ terms });
-    this.props.onChange(terms);
+    onChange(terms);
   }
 
   handleSubmit = () => {
@@ -56,20 +58,24 @@ class TagSearch extends Component {
   }
 
   render() {
-    const { i18n, isFetching, errors } = this.props;
+    const { i18n, isFetching, errors, input } = this.props;
+
+    const inputProps = {
+      ...input,
+      className: classnames(input.className, 'm-tags-search__input'),
+      label: i18n._('tags.form.search.label', { defaults: 'Search' }),
+      placeholder: i18n._('tags.form.search.placeholder', { defaults: 'Search a tag ...' }),
+      onChange: this.handleChange,
+      showLabelforSr: true,
+      errors,
+    };
 
     return (
       <div className="m-tags-search">
         <TextFieldGroup
-          id="tags-search"
+          {...inputProps}
           name="terms"
           value={this.state.terms}
-          className="m-tags-search__input"
-          label={i18n._('tags.form.search.label', { defaults: 'Search' })}
-          placeholder={i18n._('tags.form.search.placeholder', { defaults: 'Search a tag ...' })}
-          onChange={this.handleChange}
-          showLabelforSr
-          errors={errors}
         />
         <Button
           className="m-tags-search__button"
@@ -83,4 +89,4 @@ class TagSearch extends Component {
   }
 }
 
-export default TagSearch;
+export default TagFieldGroup;

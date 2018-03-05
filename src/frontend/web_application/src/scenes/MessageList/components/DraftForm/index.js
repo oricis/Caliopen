@@ -53,14 +53,14 @@ const onDeleteMessage = ({ message, internalId, isNewDiscussion }) => dispatch =
     .then(() => dispatch(clearDraft({ internalId })))
     .then(() => isNewDiscussion && dispatch(push('/')));
 
-const onUpdateEntityTags = (internalId, i18n, userTags, message, { type, entity, tags }) =>
+const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =>
   async (dispatch) => {
     const savedDraft = await dispatch(saveDraft({ internalId, draft: entity, message }, {
       withThrottle: false,
       force: true,
     }));
     const messageUpTodate = await dispatch(updateTagCollection(
-      i18n, userTags, { type, entity: savedDraft, tags }
+      i18n, { type, entity: savedDraft, tags }
     ));
 
     return dispatch(syncDraft({ internalId, draft: messageUpTodate }));

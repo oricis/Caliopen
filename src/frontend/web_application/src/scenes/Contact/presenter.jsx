@@ -46,7 +46,6 @@ class Contact extends Component {
     pristine: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
     updateTagCollection: PropTypes.func.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.shape({})),
     // birthday: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
@@ -56,7 +55,6 @@ class Contact extends Component {
     contactId: undefined,
     birthday: undefined,
     user: undefined,
-    tags: [],
   };
 
   constructor(props) {
@@ -182,9 +180,9 @@ class Contact extends Component {
   }
 
   handleTagsChange = async ({ tags }) => {
-    const { updateTagCollection, i18n, tags: userTags, contact: entity } = this.props;
+    const { updateTagCollection, i18n, contact: entity } = this.props;
 
-    return updateTagCollection(i18n, userTags, { type: 'contact', entity, tags });
+    return updateTagCollection(i18n, { type: 'contact', entity, tags });
   }
 
   renderTagsModal = () => {
