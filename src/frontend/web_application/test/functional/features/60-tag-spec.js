@@ -71,7 +71,8 @@ describe('tag', () => {
   });
 
   it('manage tags on a message of a discussion', () => {
-    browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000)
+    home()
+      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(by.cssContainingText('.s-timeline .s-message-item .s-message-item__topic .s-message-item__subject', subject)).click())
       .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-message__container', 'zoidberg@planet-express.tld'))), 5 * 1000))
       .then(() => element(by.cssContainingText('.m-message__container', 'zoidberg@planet-express.tld')).element(by.css('.m-message__actions-switcher')).click())
