@@ -1,15 +1,5 @@
 import { POST_ACTIONS_SUCCESS, DELETE_MESSAGE_SUCCESS, LOAD_MORE_MESSAGES, requestMessage, requestMessages, invalidate, getNextOffset } from '../modules/message';
 
-
-const postActionsHandler = ({ store, action }) => {
-  if (action.type !== POST_ACTIONS_SUCCESS) {
-    return;
-  }
-
-  const { meta: { previousAction: { payload: { message } } } } = action;
-  store.dispatch(requestMessage(message.message_id));
-};
-
 const getListOfCollectionsToInvalidate = (messagesCollections, message) => [
   ...new Set(
     Object.keys(messagesCollections).reduce((acc, type) => [
@@ -29,6 +19,20 @@ const getListOfCollectionsToInvalidate = (messagesCollections, message) => [
     ], []),
   ),
 ];
+
+const postActionsHandler = ({ store, action }) => {
+  if (action.type !== POST_ACTIONS_SUCCESS) {
+    return;
+  }
+
+  const { meta: { previousAction: { payload: { message } } } } = action;
+
+  const state = store.getState();
+  getListOfCollectionsToInvalidate(state.message.messagesCollections, message)
+    .forEach(({ type, key }) => store.dispatch(invalidate(type, key)));
+
+  store.dispatch(requestMessage(message.message_id));
+};
 
 const deleteHandler = ({ store, action }) => {
   if (action.type !== DELETE_MESSAGE_SUCCESS) {
