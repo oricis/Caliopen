@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- checkbox wasn't correctly checked in settings
 - fix BSOD (Black Screen Of Death) when an author is not in user's contact book
 
 ## [0.8.0] 2018-01-19
