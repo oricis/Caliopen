@@ -79,6 +79,7 @@
     "prop-types": "^15.6.0",
     "rc-slider": "^8.6.0",
     "react": "^16.2.0",
+    "react-composer": "^4.1.0",
     "react-country-region-selector": "^1.2.3",
     "react-datepicker": "^1.0.4",
     "react-document-title": "^2.0.3",

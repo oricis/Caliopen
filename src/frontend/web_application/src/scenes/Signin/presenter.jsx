@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import axios from 'axios';
 import SigninForm from './components/SigninForm';
-import { WithDevice } from '../../modules/device';
+import getClient from '../../services/api-client';
 
 const URL_DEVICES = '/settings/devices';
 
@@ -18,6 +17,12 @@ class Signin extends Component {
     initSettings: PropTypes.func.isRequired,
     location: PropTypes.shape({}).isRequired,
     i18n: PropTypes.shape({}).isRequired,
+    clientDevice: PropTypes.shape({}),
+  };
+
+  static defaultProps = {
+    clientDevice: undefined,
+    isNewDevice: false,
   };
 
   state = {
@@ -39,17 +44,28 @@ class Signin extends Component {
   }
 
   handleSignin = (context, formValues) => {
-    axios.post('/auth/signin', {
+    const { clientDevice: device } = this.props;
+
+    getClient().post('/auth/signin', {
       context,
       ...formValues,
-    }, {
-      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      device,
     }).then(this.handleSigninSuccess, this.handleSigninError);
   }
 
-  handleSigninSuccess = () => {
-    this.props.initSettings();
-    this.setState({ isAuthenticated: true });
+  handleSigninSuccess = async (response) => {
+    const { initSettings } = this.props;
+
+    const nextState = {
+      isAuthenticated: true,
+    };
+
+    if (response.data.device.status !== 'verified') {
+      nextState.redirectDevice = true;
+    }
+
+    initSettings();
+    this.setState(nextState);
   }
 
   handleSigninError = (err) => {
@@ -71,9 +87,11 @@ class Signin extends Component {
     }
   }
 
-  renderForm = (isAuthenticated, { device, isNew }) => {
-    if (isAuthenticated && isNew) {
-      return <Redirect push to={`${URL_DEVICES}/${device.device_id}`} />;
+  render() {
+    const { clientDevice } = this.props;
+
+    if (this.state.isAuthenticated && this.state.redirectDevice) {
+      return <Redirect push to={`${URL_DEVICES}/${clientDevice.device_id}`} />;
     }
 
     if (this.state.isAuthenticated) {
@@ -87,16 +105,6 @@ class Signin extends Component {
       <SigninForm
         onSubmit={this.handleSignin}
         errors={this.state.errors}
-      />
-    );
-  }
-
-  render() {
-    return (
-      <WithDevice
-        render={
-          ({ device, isNew }) => this.renderForm(this.state.isAuthenticated, { device, isNew })
-        }
       />
     );
   }

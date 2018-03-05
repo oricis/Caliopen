@@ -7,7 +7,6 @@ import { generate } from '../../services/ecdsa';
 class DeviceProvider extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    setNewDevice: PropTypes.func.isRequired,
     setDeviceGenerated: PropTypes.func.isRequired,
   };
   static defaultProps = {
@@ -21,7 +20,6 @@ class DeviceProvider extends Component {
     const config = getConfig();
 
     if (!config) {
-      this.props.setNewDevice(true);
       await this.generateAndHoldKeyPair();
       this.props.setDeviceGenerated(true);
     }
