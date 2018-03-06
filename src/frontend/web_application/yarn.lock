@@ -9326,6 +9326,12 @@ proto-list@~1.2.1:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/proto-list/-/proto-list-1.2.4.tgz#212d5bfe1318306a420f6402b8e26ff39647a849"
 
+protractor-console-plugin@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/protractor-console-plugin/-/protractor-console-plugin-0.1.1.tgz#749da95b0695dede43b50fef3faf9f0b62a47c96"
+  dependencies:
+    q "^1.4.1"
+
 protractor@^5.2.2:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/protractor/-/protractor-5.2.2.tgz#80eff170761455eff6e2f111088a03c438844a41"

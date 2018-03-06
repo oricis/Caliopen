@@ -15,16 +15,23 @@ const cfg = {
   specs: ['./features/**/*-spec.js'],
   jasmineNodeOpts: {
     showColors: true,
-    print: () => {},
+    // print: () => {},
     defaultTimeoutInterval: 50 * 1000,
   },
   baseUrl: 'http://localhost:4000/',
   onPrepare: () => {
     browser.ignoreSynchronization = true;
     jasmine.getEnv().addReporter(new SpecReporter({
-      displayStacktrace: 'specs',
+      spec: {
+        displayErrorMessages: true,
+        displayFailed: true,
+        displayStacktrace: true,
+      },
     }));
   },
+  plugins: [
+    { package: 'protractor-console-plugin', failOnWarning: false, logWarnings: false, exclude: [/Warning:/] },
+  ],
 };
 
 if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
