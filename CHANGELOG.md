@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- messages filtered by status draft/sent/received wasn't up-to-date
 - checkbox wasn't correctly checked in settings
 - fix BSOD (Black Screen Of Death) when an author is not in user's contact book
 
