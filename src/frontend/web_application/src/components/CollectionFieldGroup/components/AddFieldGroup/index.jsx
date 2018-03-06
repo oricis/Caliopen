@@ -73,7 +73,7 @@ class AddFieldGroup extends Component {
           errors: this.state.errors,
         })}
         <Button
-          plain
+          shape="plain"
           display="inline"
           className="m-add-field-group__button"
           onClick={this.handleAdd}
