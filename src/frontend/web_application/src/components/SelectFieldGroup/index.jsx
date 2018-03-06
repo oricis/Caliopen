@@ -17,7 +17,7 @@ class SelectFieldGroup extends PureComponent {
     value: alphaNumPropType,
     expanded: PropTypes.bool,
     options: PropTypes.arrayOf(PropTypes.shape({ label: propTypeOption, value: propTypeOption })),
-    errors: PropTypes.arrayOf(PropTypes.string),
+    errors: PropTypes.arrayOf(PropTypes.node),
     onChange: PropTypes.func,
     className: PropTypes.string,
   };

@@ -17,7 +17,7 @@ class CheckboxFieldGroup extends PureComponent {
     labelClassname: PropTypes.string,
     showTextLabel: PropTypes.bool,
     displaySwitch: PropTypes.bool,
-    errors: PropTypes.arrayOf(PropTypes.string),
+    errors: PropTypes.arrayOf(PropTypes.node),
   };
 
   static defaultProps = {

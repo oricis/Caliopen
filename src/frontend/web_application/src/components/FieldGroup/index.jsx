@@ -9,7 +9,7 @@ class FieldGroup extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
-    errors: PropTypes.arrayOf(PropTypes.string),
+    errors: PropTypes.arrayOf(PropTypes.node),
   };
 
   static defaultProps = {
