@@ -1,4 +1,5 @@
 const userUtil = require('../utils/user-util');
+const { home } = require('../utils/navigation');
 
 describe('search', () => {
   const EC = protractor.ExpectedConditions;
@@ -13,7 +14,7 @@ describe('search', () => {
     const msgLabel = '2 messages contains "Foobar" in their subject or content';
     const contactLabel = '0 contacts contains "Foobar" in their label or profile';
 
-    browser.get('./')
+    home()
       .then(() => element(by.css('.m-search-field__input')).sendKeys(searchTerms))
       .then(() => element(by.css('.m-search-field__button')).click())
       .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.l-search-results__panel', msgLabel))), 5 * 1000))

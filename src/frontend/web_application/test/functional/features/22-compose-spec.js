@@ -1,4 +1,5 @@
 const userUtil = require('../utils/user-util');
+const { home } = require('../utils/navigation');
 
 describe('Compose new message', () => {
   const EC = protractor.ExpectedConditions;
@@ -12,7 +13,7 @@ describe('Compose new message', () => {
       const text1 = 'Compose creates a new draft';
       const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Compose');
 
-      browser.get('/')
+      home()
       // XXX: click .btn--principal to force :hover callback actions
         .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
@@ -49,7 +50,7 @@ describe('Compose new message', () => {
 
       const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Compose');
 
-      browser.get('/')
+      home()
       // XXX: click .btn--principal to force :hover callback actions
         .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
@@ -86,7 +87,7 @@ describe('Compose new message', () => {
 
       const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Compose');
 
-      browser.get('/')
+      home()
       // XXX: click .btn--principal to force :hover callback actions
         .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
@@ -126,7 +127,7 @@ describe('Compose new message', () => {
     it('has no suggestions for an already selected recipient', () => {
       const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Compose');
 
-      browser.get('/')
+      home()
       // XXX: click .btn--principal to force :hover callback actions
         .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
@@ -171,7 +172,7 @@ describe('Compose new message', () => {
       const dropdownSelector = by.css('.m-recipient-list__search .m-dropdown');
       const searchTerm = 'ben';
 
-      browser.get('/')
+      home()
       // XXX: click .btn--principal to force :hover callback actions
         .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
@@ -196,7 +197,7 @@ describe('Compose new message', () => {
       const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Compose');
       const searchResultItemsSelector = by.css('.m-recipient-list__search-result');
 
-      browser.get('/')
+      home()
       // XXX: click .btn--principal to force :hover callback actions
         .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
         .then(() => element(writeButtonSelector).click())
