@@ -427,6 +427,7 @@
   "settings.form.feedback.successfull": "Paramètres mis à jour!",
   "settings.form.feedback.unexpected-error": "Erreur lors de la mise à jour des paramètres.",
   "settings.identities": "Identités",
+  "settings.route.label.devices": "Appareils",
   "settings.route.label.identities": "Identités",
   "settings.route.label.signatures": "Signatures",
   "settings.route.label.tags": "Tags",

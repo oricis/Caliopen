@@ -426,6 +426,7 @@
   "settings.form.feedback.successfull": "",
   "settings.form.feedback.unexpected-error": "",
   "settings.identities": "Identitäten",
+  "settings.route.label.devices": "",
   "settings.route.label.identities": "Identitäten",
   "settings.route.label.signatures": "Unterschriften",
   "settings.route.label.tags": "Tags",
