@@ -15,7 +15,7 @@ class RadioFieldGroup extends PureComponent {
     value: alphaNumPropType,
     onChange: PropTypes.func,
     options: PropTypes.arrayOf(PropTypes.shape({})),
-    errors: PropTypes.arrayOf(PropTypes.string),
+    errors: PropTypes.arrayOf(PropTypes.node),
     className: PropTypes.string,
   };
 

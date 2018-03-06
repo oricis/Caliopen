@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './style.scss';
 
-const FieldErrors = ({ errors = [], className }) => (
-  <ul className={classnames('m-field-errors', className)}>
-    { errors.map(error => (
-      <li key={error}>{error}</li>
-    ))}
-  </ul>
-);
+class FieldErrors extends PureComponent {
+  static propTypes = {
+    errors: PropTypes.arrayOf(PropTypes.node),
+    className: PropTypes.string,
+  };
+  static defaultProps = {
+    errors: [],
+    className: undefined,
+  };
 
-FieldErrors.propTypes = {
-  errors: PropTypes.arrayOf(PropTypes.node),
-  className: PropTypes.string,
-};
+  render() {
+    const { errors, className } = this.props;
+
+    if (errors.length === 0) {
+      return null;
+    }
+
+    return (
+      <ul className={classnames('m-field-errors', className)}>
+        {errors.map(error => (
+          <li key={error}>{error}</li>
+        ))}
+      </ul>
+    );
+  }
+}
 
 export default FieldErrors;

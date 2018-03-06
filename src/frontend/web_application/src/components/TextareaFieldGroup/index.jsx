@@ -11,7 +11,7 @@ class TextareaFieldGroup extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
     expanded: PropTypes.bool,
-    errors: PropTypes.arrayOf(PropTypes.string),
+    errors: PropTypes.arrayOf(PropTypes.node),
     onChange: PropTypes.func,
     className: PropTypes.string,
   };
