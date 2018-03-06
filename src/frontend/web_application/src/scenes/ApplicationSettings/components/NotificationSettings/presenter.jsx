@@ -49,16 +49,16 @@ class NotificationForm extends Component {
         <FormRow>
           <FormColumn rightSpace={false} bottomSpace >
             <Field
-              // FIXME: redux-form Field CheckboxFieldGroup doesn't show right value nor update
               component={CheckboxFieldGroup}
+              type="checkbox"
               name="notification_enabled"
               label={i18n._('settings.notification.enabled.label', { defaults: 'Enabled' })}
             />
           </FormColumn>
           <FormColumn rightSpace={false} bottomSpace >
             <Field
-              // FIXME: redux-form Field CheckboxFieldGroup doesn't show right value nor update
               component={CheckboxFieldGroup}
+              type="checkbox"
               name="notification_sound_enabled"
               label={i18n._('settings.notification.sound_enabled.label', { defaults: 'Sound enabled' })}
             />

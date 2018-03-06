@@ -1,4 +1,5 @@
 const userUtil = require('../utils/user-util');
+const { home } = require('../utils/navigation');
 
 describe('Delete message', () => {
   const EC = protractor.ExpectedConditions;
@@ -30,7 +31,7 @@ describe('Delete message', () => {
         .then(() => messageElem.element(by.cssContainingText('.m-message-actions-container__action', __('delete'))).click());
     };
 
-    browser.get('/')
+    home()
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message')), 5 * 1000))
@@ -48,7 +49,7 @@ describe('Delete message', () => {
       'a message of a collection to remove'
     );
 
-    browser.get('/')
+    home()
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussionSelector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list__action')), 5 * 1000))
