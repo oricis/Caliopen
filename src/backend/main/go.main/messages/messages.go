@@ -36,8 +36,8 @@ func SanitizeMessageBodies(msg *objects.Message) {
 //See https://github.com/microcosm-cc/bluemonday to build a bespoke policy.
 func CaliopenPolicy() *bluemonday.Policy {
 	basePolicy := bluemonday.UGCPolicy()
-
 	basePolicy.AllowAttrs("title").Matching(regexp.MustCompile(`[\p{L}\p{N}\s\-_',:\[\]!\./\\\(\)&]*`)).Globally()
+	basePolicy.RequireNoFollowOnFullyQualifiedLinks(true)
 	// allow body with few attributes
 	basePolicy.AllowElements("body")
 	basePolicy.AllowAttrs("leftmargin").Matching(bluemonday.Integer).OnElements("body")

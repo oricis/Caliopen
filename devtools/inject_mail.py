@@ -17,14 +17,14 @@ import smtplib
 def send_fake_mail(fromaddr, toaddrs, file, subject, content_type, host, port):
     # add useful headers. NB: do not add leading spaces in header lines
     msg = (
-        '''MIME-Version: 1.0
-        From: {}
-        To: {}
-        Subject: {}
-        Content-Type: {}; charset=UTF-8
-        Content-Transfer-Encoding: quoted-printable
-        
-        '''.format(fromaddr, ", ".join(toaddrs), subject, content_type))
+'''MIME-Version: 1.0
+From: {}
+To: {}
+Subject: {}
+Content-Type: {}; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+'''.format(fromaddr, ", ".join(toaddrs), subject, content_type))
 
     with open(file) as f:
         mail = f.read()
