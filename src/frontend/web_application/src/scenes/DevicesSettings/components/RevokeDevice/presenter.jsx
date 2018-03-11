@@ -7,12 +7,32 @@ import './style.scss';
 class RevokeDevice extends Component {
   static propTypes = {
     device: PropTypes.shape({}).isRequired,
-    onRevokeDevice: PropTypes.func.isRequired,
+    revokeDevice: PropTypes.func.isRequired,
+    clientDevice: PropTypes.shape({}),
+    notifyError: PropTypes.func.isRequired,
+    notifySuccess: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
   };
 
-  handleRevoke = () => {
-    const { device, onRevokeDevice } = this.props;
-    onRevokeDevice({ device });
+  static defaultProps = {
+    clientDevice: undefined,
+  };
+
+  handleRevoke = async () => {
+    const { device, revokeDevice, notifySuccess, push, notifyError, clientDevice } = this.props;
+
+    try {
+      await revokeDevice({ device });
+      notifySuccess({ message: (<Trans id="device.feedback.revoke_success">The device has been revoked</Trans>) });
+      if (device.device_id === clientDevice.device_id) {
+        push('/auth/signout');
+
+        return;
+      }
+      push('/settings/devices');
+    } catch ({ message }) {
+      notifyError({ message });
+    }
   };
 
   render() {

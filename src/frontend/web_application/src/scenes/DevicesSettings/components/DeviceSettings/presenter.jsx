@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import { Spinner, Section } from '../../../../components';
 import PiBar from '../../../../components/PiBar';
 import DeviceForm from '../DeviceForm';
@@ -10,15 +11,39 @@ import './style.scss';
 
 class DeviceSettings extends Component {
   static propTypes = {
+    isLastVerifiedDevice: PropTypes.bool,
+    isCurrentDevice: PropTypes.bool,
+    isCurrentDeviceVerified: PropTypes.bool,
     device: PropTypes.shape({}),
     isFetching: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
+    isLastVerifiedDevice: undefined,
+    isCurrentDevice: undefined,
+    isCurrentDeviceVerified: undefined,
     device: null,
     isFetching: false,
   };
+
+  renderRevokeButton() {
+    const { device, isCurrentDevice, isLastVerifiedDevice, isCurrentDeviceVerified } = this.props;
+
+    if (isLastVerifiedDevice === undefined) {
+      return null;
+    }
+
+    if (isLastVerifiedDevice) {
+      return (<Trans id="device.info.last_verified_device">The last verified device can not be revoked.</Trans>);
+    }
+
+    if (isCurrentDeviceVerified || isCurrentDevice) {
+      return (<RevokeDevice device={device} />);
+    }
+
+    return (<Trans id="device.info.other_device">You need a verified device to revoke this one.</Trans>);
+  }
 
   renderForm() {
     const { device, i18n } = this.props;
@@ -45,7 +70,7 @@ class DeviceSettings extends Component {
           descr={i18n._('device.revoke.descr', { defaults: 'Please be careful about this section! This operation will delete this device which will be unable to access to your Caliopen account in the future.' })}
           hasSeparator={false}
         >
-          <RevokeDevice device={device} />
+          {this.renderRevokeButton()}
         </Section>
       </div>
     );
