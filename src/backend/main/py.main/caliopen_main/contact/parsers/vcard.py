@@ -181,11 +181,7 @@ class VcardParser(object):
 
     def __init__(self, f):
         """Read a vcard file and create a generator on vcard objects."""
-        if isinstance(f, file):
-            self._vcards = vobject.readComponents(f)
-        else:
-            with open(f) as fh:
-                self._vcards = vobject.readComponents(fh.read())
+        self._vcards = vobject.readComponents(f)
 
     def parse(self):
         """Generator on vcards objects read from read file."""
