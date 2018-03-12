@@ -33,6 +33,7 @@
     }
   }
 
+  &__with-attachements,
   &__type {  @include flex-grid-size(shrink); }
   &__type-icon { color: $co-color__fg__text; }
   &__type-label { display: none; }

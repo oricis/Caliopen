@@ -5,6 +5,7 @@ export { default as Brand } from './Brand';
 export { default as DefList } from './DefList';
 export { default as Dropdown, withDropdownControl } from './Dropdown';
 export { default as DropdownMenu } from './DropdownMenu';
+export { default as FileSize } from './FileSize';
 export { default as Icon } from './Icon';
 export { default as InfiniteScroll } from './InfiniteScroll';
 export { default as Link } from './Link';

@@ -7,7 +7,7 @@ import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
 import { MultidimensionalPi } from '../../../../modules/pi';
 import { ContactAvatarLetter } from '../../../../modules/avatar';
-import { Button, Icon, TextBlock, Dropdown, withDropdownControl } from '../../../../components';
+import { Button, Icon, TextBlock, Dropdown, withDropdownControl, FileSize } from '../../../../components';
 import MessageActionsContainer from '../MessageActionsContainer';
 import { getAuthor } from '../../../../services/message';
 
@@ -128,6 +128,25 @@ class Message extends Component {
     );
   }
 
+  renderAttachements() {
+    const { message: { message_id: messageId, attachments } } = this.props;
+
+    if (!attachments || attachments.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="m-message__attachements">
+        {attachments.map((attachement, index) => (
+          <a key={attachement.file_name} href={`/api/v2/messages/${messageId}/attachments/${index}`} download={attachement.file_name}>
+            <FileSize size={attachement.size} />
+            {attachement.file_name}
+          </a>
+        ))}
+      </div>
+    );
+  }
+
   render() {
     const {
       message, onDelete, onMessageUnread, onMessageRead,
@@ -163,6 +182,9 @@ class Message extends Component {
           <div className={topBarClassName}>
             {message.pi && <MultidimensionalPi pi={message.pi} className="m-message__pi" mini />}
             {author.address && <TextBlock className="m-message__author">{author.address}</TextBlock>}
+            {message.attachments && message.attachments.length !== 0 && (
+              <div className="m-message__with-attachements"><Icon type="paperclip" /></div>
+            )}
             {message.type &&
               (<div className="m-message__type">
                 <span className="m-message__type-label">
@@ -218,6 +240,7 @@ class Message extends Component {
                 }
               </Button>
             }
+            {this.renderAttachements()}
           </div>
         </div>
       </div>
