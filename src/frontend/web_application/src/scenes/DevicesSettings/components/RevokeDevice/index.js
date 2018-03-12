@@ -1,12 +1,17 @@
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { removeDevice } from '../../../../store/modules/device';
+import { push } from 'react-router-redux';
+import { revokeDevice, withDevice } from '../../../../modules/device';
+import { withNotification } from '../../../../hoc/notification';
 import Presenter from './presenter';
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  onRevokeDevice: removeDevice,
+  revokeDevice,
+  push,
 }, dispatch);
 
 export default compose(
-  connect(null, mapDispatchToProps)
+  withDevice(),
+  connect(null, mapDispatchToProps),
+  withNotification()
 )(Presenter);

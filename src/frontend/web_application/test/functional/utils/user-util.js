@@ -8,7 +8,8 @@ module.exports = {
     element(by.css('input[name=username]')).sendKeys(loginKeys);
     element(by.css('input[name=password]')).sendKeys(passwordKeys);
     element(by.cssContainingText('button[type=submit]', 'I\'m in a safe place')).click();
-    browser.wait(EC.not(EC.urlContains('auth/signin')), 5 * 1000);
+
+    return browser.wait(EC.not(EC.urlContains('auth/signin')), 5 * 1000);
   },
   signout: () => {
     browser.get('/auth/signout');

@@ -8,7 +8,6 @@ import './style.scss';
 class DevicesSettings extends Component {
   static propTypes = {
     devices: PropTypes.arrayOf(PropTypes.shape({})),
-    requestDevices: PropTypes.func.isRequired,
     children: PropTypes.node,
     params: PropTypes.shape({ }),
     i18n: PropTypes.shape({}).isRequired,
@@ -19,10 +18,6 @@ class DevicesSettings extends Component {
     params: { params: { deviceId: null } },
     children: null,
   };
-
-  componentDidMount() {
-    this.props.requestDevices();
-  }
 
   renderDevice(device) {
     const { params: { deviceId } } = this.props;

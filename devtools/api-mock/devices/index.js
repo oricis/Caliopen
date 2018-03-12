@@ -22,24 +22,30 @@ export const selectors = {
   ),
 };
 
+const devicesToIgnore = new Set(['00001']);
+
 const reducer = {
   [actions.createOnSignin]: (state, { body, req }) => {
     const { device_id } = body.device;
-    let device = state.find(device => device.device_id === device_id);
-    let nextState = state;
+    const hasDevice = state.some(device => device.device_id === device_id);
+    const hasVerifiedDevice = state
+      .filter(device => !devicesToIgnore.has(device.device_id))
+      .some(device => device.status === 'verified');
 
-    if (!device) {
-      device = {
-        ...body.device,
-        status: 'unverified',
-      };
-      nextState = [
-        ...state,
-        device,
-      ];
+    if (hasDevice) {
+      return state;
     }
 
-    return nextState;
+    const device = {
+      ...body.device,
+      status: !hasVerifiedDevice ? 'verified' : 'unverified',
+      name: !hasVerifiedDevice ? 'default' : `desktop ${state.length}`,
+    };
+
+    return [
+      ...state,
+      device,
+    ];
   },
   [actions.get]: state => state,
   [actions.delete]: (state, { params }) => {
