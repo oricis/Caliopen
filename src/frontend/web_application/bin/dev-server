@@ -11,7 +11,11 @@ compiler.apply(new webpack.ProgressPlugin({ profile: true }));
 
 const watching = compiler.watch({
   aggregateTimeout: 300,
-  poll: undefined
+  poll: undefined,
+  ignored: [
+    path.join(__dirname, '../src/'),
+    path.join(__dirname, '../locale/'),
+  ],
 }, (err, stats) => {
   if (caliopen) {
     caliopen.kill();

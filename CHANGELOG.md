@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Multiple messages delete on Timeline
 - Multiple messages' tags management on Timeline
 
+### Fixed
+
+- Explain that the NSA joke is a joke using a `:)`
+
 ## [0.8.1] 2018-01-25
 
 ### Fixed
