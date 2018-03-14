@@ -6,11 +6,11 @@ package objects
 
 type Attachment struct {
 	Content_type string `cql:"content_type"     json:"content_type,omitempty"`
-	File_name    string `cql:"file_name"        json:"file_name"`
-	Is_inline    bool   `cql:"is_inline"        json:"is_inline"`
-	Size         int    `cql:"size"             json:"size"`
-	URL          string `cql:"url"              json:"url"`           // ObjectStore url for temporary file (draft)
-	MimeBoundary string `cql:"mime_boundary"    json:"mime_boundary"` // for attachments embedded in raw messages
+	File_name    string `cql:"file_name"        json:"file_name,omitempty"`
+	Is_inline    bool   `cql:"is_inline"        json:"is_inline,omitempty"`
+	Size         int    `cql:"size"             json:"size,omitempty"`
+	URL          string `cql:"url"              json:"url,omitempty"`           // ObjectStore url for temporary file (draft)
+	MimeBoundary string `cql:"mime_boundary"    json:"mime_boundary,omitempty"` // for attachments embedded in raw messages
 }
 
 func (a *Attachment) UnmarshalMap(input map[string]interface{}) error {

@@ -1089,16 +1089,13 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "attachment_id": {
-                            "type": "string"
-                          },
                           "content_type": {
                             "type": "string"
                           },
                           "is_inline": {
                             "type": "boolean"
                           },
-                          "filename": {
+                          "file_name": {
                             "type": "string"
                           },
                           "size": {
@@ -1275,16 +1272,13 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "attachment_id": {
-                        "type": "string"
-                      },
                       "content_type": {
                         "type": "string"
                       },
                       "is_inline": {
                         "type": "boolean"
                       },
-                      "filename": {
+                      "file_name": {
                         "type": "string"
                       },
                       "size": {
@@ -1649,16 +1643,13 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "attachment_id": {
-                        "type": "string"
-                      },
                       "content_type": {
                         "type": "string"
                       },
                       "is_inline": {
                         "type": "boolean"
                       },
-                      "filename": {
+                      "file_name": {
                         "type": "string"
                       },
                       "size": {
@@ -8371,16 +8362,13 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "attachment_id": {
-                        "type": "string"
-                      },
                       "content_type": {
                         "type": "string"
                       },
                       "is_inline": {
                         "type": "boolean"
                       },
-                      "filename": {
+                      "file_name": {
                         "type": "string"
                       },
                       "size": {
@@ -8635,16 +8623,13 @@
                         "items": {
                           "type": "object",
                           "properties": {
-                            "attachment_id": {
-                              "type": "string"
-                            },
                             "content_type": {
                               "type": "string"
                             },
                             "is_inline": {
                               "type": "boolean"
                             },
-                            "filename": {
+                            "file_name": {
                               "type": "string"
                             },
                             "size": {
@@ -8904,16 +8889,13 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "attachment_id": {
-                            "type": "string"
-                          },
                           "content_type": {
                             "type": "string"
                           },
                           "is_inline": {
                             "type": "boolean"
                           },
-                          "filename": {
+                          "file_name": {
                             "type": "string"
                           },
                           "size": {
@@ -9090,16 +9072,13 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "attachment_id": {
-                        "type": "string"
-                      },
                       "content_type": {
                         "type": "string"
                       },
                       "is_inline": {
                         "type": "boolean"
                       },
-                      "filename": {
+                      "file_name": {
                         "type": "string"
                       },
                       "size": {
@@ -9527,16 +9506,13 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "attachment_id": {
-                        "type": "string"
-                      },
                       "content_type": {
                         "type": "string"
                       },
                       "is_inline": {
                         "type": "boolean"
                       },
-                      "filename": {
+                      "file_name": {
                         "type": "string"
                       },
                       "size": {
@@ -10024,16 +10000,13 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "attachment_id": {
-                        "type": "string"
-                      },
                       "content_type": {
                         "type": "string"
                       },
                       "is_inline": {
                         "type": "boolean"
                       },
-                      "filename": {
+                      "file_name": {
                         "type": "string"
                       },
                       "size": {
@@ -10217,16 +10190,13 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "attachment_id": {
-                        "type": "string"
-                      },
                       "content_type": {
                         "type": "string"
                       },
                       "is_inline": {
                         "type": "boolean"
                       },
-                      "filename": {
+                      "file_name": {
                         "type": "string"
                       },
                       "size": {

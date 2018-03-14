@@ -1,13 +1,11 @@
 ---
 type: object
 properties:
-  attachment_id:
-    type: string
   content_type:
     type: string
   is_inline:
     type: boolean
-  filename:         # the name of the related original file, if any, given by the MIME field 'filename='
+  file_name:        # the name of the related original file, if any, given by the MIME field 'filename='
     type: string
   size:             # size calculated during parsing, for future reference
     type: integer
