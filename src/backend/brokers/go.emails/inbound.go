@@ -154,7 +154,7 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 				}
 
 				notif := Notification{
-					Emitter:   "lmtp",
+					Emitter:   "smtp",
 					Timestamp: time.Now(),
 					Type:      EventNotif,
 					TTLcode:   LongLived,
