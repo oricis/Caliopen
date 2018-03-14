@@ -20,10 +20,6 @@ type (
 	Notifiers interface {
 		ByEmail(*Notification) CaliopenError
 		ByNotifQueue(*Notification) CaliopenError
-		BySMS(*Notification) CaliopenError
-		ByIRC(*Notification) CaliopenError
-		ByXMPP(*Notification) CaliopenError
-		ByMobilePhonePush(*Notification) CaliopenError
 		RetrieveNotifications(userId string, from, to time.Time) ([]Notification, CaliopenError)
 		DeleteNotifications(userId string, until time.Time) CaliopenError
 	}
