@@ -8,6 +8,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/microcosm-cc/bluemonday"
 	"golang.org/x/net/html"
+	"regexp"
 	"strings"
 	"unicode"
 )
@@ -17,8 +18,11 @@ import (
 // if sanitation failed, message's string bodies are emptied
 func SanitizeMessageBodies(msg *objects.Message) {
 	p := CaliopenPolicy()
-	(*msg).Body_plain = html.UnescapeString(p.Sanitize(msg.Body_plain))
+	(*msg).Body_plain = html.UnescapeString(msg.Body_plain)
+	(*msg).Body_plain = p.Sanitize(msg.Body_plain)
+	(*msg).Body_plain = replaceBodyTag(msg.Body_plain)
 	(*msg).Body_html = p.Sanitize(msg.Body_html)
+	(*msg).Body_html = replaceBodyTag(msg.Body_html)
 }
 
 // UGCPolicy returns a policy aimed at user generated content that is a result
@@ -31,7 +35,20 @@ func SanitizeMessageBodies(msg *objects.Message) {
 //
 //See https://github.com/microcosm-cc/bluemonday to build a bespoke policy.
 func CaliopenPolicy() *bluemonday.Policy {
-	return bluemonday.UGCPolicy()
+	basePolicy := bluemonday.UGCPolicy()
+	basePolicy.AllowAttrs("title").Matching(regexp.MustCompile(`[\p{L}\p{N}\s\-_',:\[\]!\./\\\(\)&]*`)).Globally()
+	basePolicy.RequireNoFollowOnFullyQualifiedLinks(true)
+	// allow body with few attributes
+	basePolicy.AllowElements("body")
+	basePolicy.AllowAttrs("leftmargin").Matching(bluemonday.Integer).OnElements("body")
+	basePolicy.AllowAttrs("rightmargin").Matching(bluemonday.Integer).OnElements("body")
+	basePolicy.AllowAttrs("topmargin").Matching(bluemonday.Integer).OnElements("body")
+	basePolicy.AllowAttrs("bottommargin").Matching(bluemonday.Integer).OnElements("body")
+	basePolicy.AllowAttrs("marginwidth").Matching(bluemonday.Integer).OnElements("body")
+	basePolicy.AllowAttrs("marginheight").Matching(bluemonday.Integer).OnElements("body")
+	basePolicy.AllowAttrs("offset").Matching(bluemonday.Integer).OnElements("body")
+
+	return basePolicy
 }
 
 // Returns an excerpt of Message from either body_plain, body_html or subject.
@@ -110,4 +127,14 @@ func trimExcerpt(s string, l int, wordWrap, addEllipsis bool) string {
 	}
 	return s
 
+}
+
+func replaceBodyTag(in string) (out string) {
+
+	bodyStart := strings.NewReplacer(`<body`, `<div class="caliopen-email"`)
+	out = bodyStart.Replace(in)
+	bodyEnd := strings.NewReplacer(`/body>`, `/div>`)
+	out = bodyEnd.Replace(out)
+
+	return out
 }
