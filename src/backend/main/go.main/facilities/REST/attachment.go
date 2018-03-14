@@ -12,6 +12,7 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/satori/go.uuid"
 	"io"
+	"strconv"
 )
 
 func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_type string, file io.Reader) (attachmentPath string, err error) {
@@ -102,17 +103,19 @@ func (rest *RESTfacility) DeleteAttachment(user_id, message_id string, attchmtIn
 }
 
 // returns an io.Reader and metadata to conveniently read the attachment
-func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error) {
+func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtIndex int) (meta map[string]string, content io.Reader, err error) {
+	meta = make(map[string]string)
 	//check if message_id belongs to user and index is consistent
 	msg, err := rest.store.RetrieveMessage(user_id, message_id)
 	if err != nil {
-		return "", 0, nil, err
+		return meta, nil, err
 	}
 	if attchmtIndex < 0 || attchmtIndex > (len(msg.Attachments)-1) {
-		return "", 0, nil, errors.New(fmt.Sprintf("index %d for message %s is not consistent.", attchmtIndex, message_id))
+		return meta, nil, errors.New(fmt.Sprintf("index %d for message %s is not consistent.", attchmtIndex, message_id))
 	}
-	contentType = msg.Attachments[attchmtIndex].Content_type
-	size = msg.Attachments[attchmtIndex].Size
+	meta["Content-Type"] = msg.Attachments[attchmtIndex].Content_type
+	meta["Message-Size"] = strconv.Itoa(msg.Attachments[attchmtIndex].Size)
+	meta["Filename"] = msg.Attachments[attchmtIndex].File_name
 
 	// create a Reader
 	// either from object store (draft context)
@@ -120,7 +123,7 @@ func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtInde
 	if msg.Is_draft {
 		attachment, e := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URL)
 		if e != nil {
-			return "", 0, nil, e
+			return map[string]string{}, nil, e
 		}
 		content = attachment
 		return
@@ -128,15 +131,15 @@ func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtInde
 	} else {
 		rawMsg, e := rest.store.GetRawMessage(msg.Raw_msg_id.String())
 		if e != nil {
-			return "", 0, nil, e
+			return map[string]string{}, nil, e
 		}
 		json_email, e := email_broker.EmailToJsonRep(rawMsg.Raw_data)
 		if e != nil {
-			return "", 0, nil, e
+			return map[string]string{}, nil, e
 		}
 		attachments, e := json_email.ExtractAttachments(attchmtIndex)
 		if e != nil {
-			return "", 0, nil, e
+			return map[string]string{}, nil, e
 		}
 		content = bytes.NewReader(attachments[0])
 		return

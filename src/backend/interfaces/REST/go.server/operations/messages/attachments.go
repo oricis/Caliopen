@@ -11,6 +11,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
+	"mime"
 	"net/http"
 	"strconv"
 	"time"
@@ -94,7 +95,7 @@ func DownloadAttachment(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	contentType, size, content, err := caliopen.Facilities.RESTfacility.OpenAttachment(user_id, msg_id, attch_id)
+	meta, content, err := caliopen.Facilities.RESTfacility.OpenAttachment(user_id, msg_id, attch_id)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
@@ -102,10 +103,18 @@ func DownloadAttachment(ctx *gin.Context) {
 		return
 	}
 	// create a ReaderSeeker from the io.Reader returned by OpenAttachment
+	size, err := strconv.ParseInt(meta["Message-Size"], 10, 64)
+	if err != nil {
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 	attch_bytes := make([]byte, size)
 	content.Read(attch_bytes)
 	rs := bytes.NewReader(attch_bytes)
 
-	ctx.Header("Content-Type", contentType)
+	ctx.Header("Content-Type", meta["Content-Type"])
+	ctx.Header("Content-Disposition", `attachment; filename="`+mime.BEncoding.Encode("UTF-8", meta["Filename"])+`"`)
 	http.ServeContent(ctx.Writer, ctx.Request, "", time.Time{}, rs)
 }
