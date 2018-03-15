@@ -62,6 +62,11 @@
     color: $co-color__fg__text;
   }
 
+  &__attachements {
+    padding-top: $co-component__spacing;
+    background-color: $co-color__fg__back;
+  }
+
   &__bottom-bar {
     @include flex-grid-row($size: expand);
     padding: 2 * $co-component__spacing $co-component__spacing;

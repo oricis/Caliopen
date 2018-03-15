@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { FileSize, Button, Modal, InputFileGroup, Spinner, Icon } from '../../../../components';
+import { Link, FileSize, TextBlock, Button, Modal, InputFileGroup, Spinner, Icon } from '../../../../components';
 import { getMaxSize } from '../../../../services/config';
+import './style.scss';
 
 function generateStateFromProps(props) {
   const { message } = props;
@@ -124,31 +125,33 @@ class AttachmentManager extends Component {
     const { i18n } = this.props;
 
     return (
-      <div>
-        <ul>
+      <div className="m-attachement-manager">
+        <ul className="m-attachement-manager__list">
           {this.state.attachments
             .map((attachement, index) => (
-              <li key={index}>
-                <a href={`/api/v2/messages/${this.state.message_id}/attachments/${index}`} download={attachement.file_name}>
+              <li key={index} className="m-attachement-manager__item">
+                <Link className="m-attachement-manager__file-name" href={`/api/v2/messages/${this.state.message_id}/attachments/${index}`} download={attachement.file_name}>
                   {attachement.file_name}
-                </a>
-                <FileSize size={attachement.size} />
+                </Link>
+                <TextBlock className="m-attachement-manager__file-size">
+                  <FileSize size={attachement.size} />
+                </TextBlock>
                 <Button
+                  className="m-attachement-manager__file-delete"
                   onClick={this.createHandleDeleteAttachement(index)}
                   icon={this.state.isFetching[index] ? <Spinner isLoading display="inline" /> : <Icon type="remove" />}
                   aria-label={i18n._('message.compose.action.delete_attachement')}
                 />
               </li>
             ))}
-          <li>
-            <Button
-              onClick={this.handleOpenImportModal}
-              icon={this.state.isAttachmentsLoading ? <Spinner isLoading display="inline" /> : <Icon type="paperclip" />}
-            >
-              <Trans id="message.compose.action.open_import_attachements">Add an attachement</Trans>
-            </Button>
-          </li>
         </ul>
+        <Button
+          className="m-attachement-manager__button"
+          onClick={this.handleOpenImportModal}
+          icon={this.state.isAttachmentsLoading ? <Spinner isLoading display="inline" /> : <Icon type="paperclip" />}
+        >
+          <Trans id="message.compose.action.open_import_attachements">Add an attachement</Trans>
+        </Button>
         {this.renderImportModal()}
       </div>
     );
