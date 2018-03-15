@@ -6,6 +6,7 @@ package messages
 
 import (
 	"bytes"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
@@ -37,7 +38,7 @@ func UploadAttachment(ctx *gin.Context) {
 
 	filename := header.Filename
 	content_type := header.Header["Content-Type"][0]
-	attchmtUrl, err := caliopen.Facilities.RESTfacility.AddAttachment(user_id, msg_id, filename, content_type, file)
+	tempId, err := caliopen.Facilities.RESTfacility.AddAttachment(user_id, msg_id, filename, content_type, file)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
@@ -45,12 +46,12 @@ func UploadAttachment(ctx *gin.Context) {
 		return
 	}
 	resp := struct {
-		Location string
-	}{attchmtUrl}
+		TempId string `json:"temp_id"`
+	}{tempId}
 	ctx.JSON(http.StatusOK, resp)
 }
 
-// DELETE …/:message_id/attachments/:attachment_index
+// DELETE …/:message_id/attachments/:attachment_id
 func DeleteAttachment(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	msg_id, err := operations.NormalizeUUIDstring(ctx.Param("message_id"))
@@ -60,24 +61,31 @@ func DeleteAttachment(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	attch_id, err := strconv.Atoi(ctx.Param("attachment_id"))
+	attch_id, err := operations.NormalizeUUIDstring(ctx.Param("attachment_id"))
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	err = caliopen.Facilities.RESTfacility.DeleteAttachment(user_id, msg_id, attch_id)
-	if err != nil {
-		e := swgErr.New(http.StatusFailedDependency, err.Error())
-		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+	caliopenErr := caliopen.Facilities.RESTfacility.DeleteAttachment(user_id, msg_id, attch_id)
+	if caliopenErr != nil {
+		returnedErr := new(swgErr.CompositeError)
+		if caliopenErr.Error() == "message not found" ||
+			caliopenErr.Error() == "attachment not found" ||
+			caliopenErr.Code() == NotFoundCaliopenErr {
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), caliopenErr, caliopenErr.Cause())
+		} else {
+			returnedErr = swgErr.CompositeValidationError(caliopenErr, caliopenErr.Cause())
+		}
+		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 		ctx.Abort()
 		return
 	}
 	ctx.Status(http.StatusOK)
 }
 
-// GET …/:message_id/attachments/:attachment_index
+// GET …/:message_id/attachments/:attachment_id
 // sends attachment as a file to client
 func DownloadAttachment(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)

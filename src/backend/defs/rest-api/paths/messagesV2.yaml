@@ -169,13 +169,13 @@ messages_{message_id}_attachments:
     - application/json
     responses:
       '201':
-        description: File uploaded sucessfully. Backend sends back attachment's url.
+        description: File uploaded sucessfully. Backend sends back attachment's temp_id.
         schema:
           type: object
           properties:
-            location:
+            temp_id:
               type: string
-              description: url to retrieve attachment at /messages/{message_id}/attachments/{attachment_index}
+              description: attachment's temporary id. temp_id exists as long as message has 'draft' status.
       '400':
         description: bad request
       '401':
@@ -186,7 +186,7 @@ messages_{message_id}_attachments:
         description: Request entity too large
       '415':
         description: Unsupported media type
-messages_{message_id}_attachments_{attachment_index}:
+messages_{message_id}_attachments_{attachment_id}:
   get:
     description: Download file from server
     tags:
@@ -199,7 +199,7 @@ messages_{message_id}_attachments_{attachment_index}:
       in: path
       required: true
       type: string
-    - name: attachment_index
+    - name: attachment_id
       description: attachment position within message
       in: path
       required: true
@@ -230,8 +230,8 @@ messages_{message_id}_attachments_{attachment_index}:
       in: path
       required: true
       type: string
-    - name: attachment_index
-      description: attachment position within message
+    - name: attachment_id
+      description: attachment's temporary id.
       in: path
       required: true
       type: string

@@ -60,6 +60,7 @@ class IndexedMessage(BaseIndexDocument):
                                           "file_name": Keyword(),
                                           "is_inline": Boolean(),
                                           "size": Integer(),
+                                          "temp_id": Keyword(),
                                           "url": Keyword(),
                                           "mime_boundary": Keyword()
                                       })

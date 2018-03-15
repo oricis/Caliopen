@@ -16,5 +16,6 @@ class IndexedMessageAttachment(InnerObjectWrapper):
     file_name = Keyword()
     is_inline = Boolean()
     size = Integer()
+    temp_id = Keyword()
     url = Keyword()  # objectsStore uri for temporary file (draft)
     mime_boundary = Keyword()  # for attachments embedded in raw messages

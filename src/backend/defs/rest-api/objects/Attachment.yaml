@@ -10,6 +10,8 @@ properties:
   size:             # size calculated during parsing, for future reference
     type: integer
     format: int64
+  temp_id:
+    type: string    # temporary attachment id, for draft's attachments only.
   url:              # ObjectStore url for temporary file (draft) or boundary reference for mime-part attachment
     type: string
   mime_boundary:    # for attachments embedded in raw messages

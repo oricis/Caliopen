@@ -1102,6 +1102,9 @@
                             "type": "integer",
                             "format": "int64"
                           },
+                          "temp_id": {
+                            "type": "string"
+                          },
                           "url": {
                             "type": "string"
                           },
@@ -1284,6 +1287,9 @@
                       "size": {
                         "type": "integer",
                         "format": "int64"
+                      },
+                      "temp_id": {
+                        "type": "string"
                       },
                       "url": {
                         "type": "string"
@@ -1655,6 +1661,9 @@
                       "size": {
                         "type": "integer",
                         "format": "int64"
+                      },
+                      "temp_id": {
+                        "type": "string"
                       },
                       "url": {
                         "type": "string"
@@ -8375,6 +8384,9 @@
                         "type": "integer",
                         "format": "int64"
                       },
+                      "temp_id": {
+                        "type": "string"
+                      },
                       "url": {
                         "type": "string"
                       },
@@ -8635,6 +8647,9 @@
                             "size": {
                               "type": "integer",
                               "format": "int64"
+                            },
+                            "temp_id": {
+                              "type": "string"
                             },
                             "url": {
                               "type": "string"
@@ -8902,6 +8917,9 @@
                             "type": "integer",
                             "format": "int64"
                           },
+                          "temp_id": {
+                            "type": "string"
+                          },
                           "url": {
                             "type": "string"
                           },
@@ -9084,6 +9102,9 @@
                       "size": {
                         "type": "integer",
                         "format": "int64"
+                      },
+                      "temp_id": {
+                        "type": "string"
                       },
                       "url": {
                         "type": "string"
@@ -9518,6 +9539,9 @@
                       "size": {
                         "type": "integer",
                         "format": "int64"
+                      },
+                      "temp_id": {
+                        "type": "string"
                       },
                       "url": {
                         "type": "string"
@@ -10013,6 +10037,9 @@
                         "type": "integer",
                         "format": "int64"
                       },
+                      "temp_id": {
+                        "type": "string"
+                      },
                       "url": {
                         "type": "string"
                       },
@@ -10202,6 +10229,9 @@
                       "size": {
                         "type": "integer",
                         "format": "int64"
+                      },
+                      "temp_id": {
+                        "type": "string"
                       },
                       "url": {
                         "type": "string"
@@ -10546,13 +10576,13 @@
         ],
         "responses": {
           "201": {
-            "description": "File uploaded sucessfully. Backend sends back attachment's url.",
+            "description": "File uploaded sucessfully. Backend sends back attachment's temp_id.",
             "schema": {
               "type": "object",
               "properties": {
-                "location": {
+                "temp_id": {
                   "type": "string",
-                  "description": "url to retrieve attachment at /messages/{message_id}/attachments/{attachment_index}"
+                  "description": "attachment's temporary id. temp_id exists as long as message has 'draft' status."
                 }
               }
             }
@@ -10575,7 +10605,7 @@
         }
       }
     },
-    "/v2/messages/{message_id}/attachments/{attachment_index}": {
+    "/v2/messages/{message_id}/attachments/{attachment_id}": {
       "get": {
         "description": "Download file from server",
         "tags": [
@@ -10595,7 +10625,7 @@
             "type": "string"
           },
           {
-            "name": "attachment_index",
+            "name": "attachment_id",
             "description": "attachment position within message",
             "in": "path",
             "required": true,
@@ -10660,8 +10690,8 @@
             "type": "string"
           },
           {
-            "name": "attachment_index",
-            "description": "attachment position within message",
+            "name": "attachment_id",
+            "description": "attachment's temporary id.",
             "in": "path",
             "required": true,
             "type": "string"
