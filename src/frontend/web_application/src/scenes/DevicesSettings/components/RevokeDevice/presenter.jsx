@@ -39,7 +39,7 @@ class RevokeDevice extends Component {
     return (
       <div className="m-device-revoke">
         <span className="m-device-revoke__info">
-          <Trans id="device.revoke_info">Vous pouvez interdire à cet appareil de se connecter à votre compte à l avenir.</Trans>
+          <Trans id="device.revoke_info">You can prevent this device to connect to your account in the future.</Trans>
         </span>
         <Button
           className="m-device-revoke__button"

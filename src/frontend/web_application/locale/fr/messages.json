@@ -234,6 +234,7 @@
   "device.info.title": "Informations sur l'appareil",
   "device.revoke.title": "Révoquer cet appareil",
   "device.revoke.descr": "Merci de prêter attention à cette section ! Cette opération va supprimer l'appareil qui ne sera alors plus en mesure d'accéder à votre compte Caliopen.",
+  "device.revoke_info": "Vous pouvez interdire à cet appareil de se connecter à votre compte à l'avenir.",
   "device.verify.title": "Vérifier votre appareil",
   "device.verify.descr": "Vous devez vérifier cet appareil afin de lui permettre de se connecter à votre compte Caliopen. Merci de noter que cette opération a un impact sur l'Index de Confidentialité selon ses informations et paramétrages. Vous trouverez ci-dessous quelques informations à propos de cet appareil, qui a essayé de se connecter à votre compte Caliopen.",
   "device.action.revoke": "Révoquer",
