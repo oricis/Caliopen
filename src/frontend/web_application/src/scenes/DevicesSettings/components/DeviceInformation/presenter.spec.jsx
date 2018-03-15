@@ -3,16 +3,17 @@ import { shallow } from 'enzyme';
 import Presenter from './presenter';
 
 describe('component Device DeviceInformation', () => {
-  it('render', () => {
+  it('render current device', () => {
     const props = {
       device: {},
       i18n: { _: id => id },
+      isCurrentDevice: true,
     };
 
     const comp = shallow(
       <Presenter {...props} />
     );
 
-    expect(comp.find('DefList').length).toEqual(1);
+    expect(comp.find('.m-device-information__current-device').length).toEqual(1);
   });
 });
