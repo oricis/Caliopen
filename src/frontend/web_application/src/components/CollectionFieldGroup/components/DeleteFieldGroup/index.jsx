@@ -20,7 +20,6 @@ const DeleteFieldGroup = ({ template, item, position, onDelete, onChange, classN
       <Button
         onClick={handleDelete}
         shape="plain"
-        display="inline"
         className="m-delete-field-group__button"
       ><Icon type="remove" /></Button>
     </div>

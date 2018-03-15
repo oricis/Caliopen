@@ -6,11 +6,8 @@ import { withDevice } from '../../../../modules/device';
 import Presenter from './presenter';
 
 const devicesSelector = state => state.device.devicesById;
-const deviceIdSelector = (state, ownProps) => ownProps.match.params.deviceId;
-const deviceSelector = createSelector(
-  [devicesSelector, deviceIdSelector],
-  (devicesById, deviceId) => devicesById[deviceId]
-);
+const deviceSelector = (state, ownProps) => ownProps.device;
+
 const clientDeviceSelector = (state, { clientDevice }) => clientDevice;
 const currentDeviceSelector = createSelector(
   [clientDeviceSelector, devicesSelector],

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { Button } from '../../../../components';
+import { Button, Icon } from '../../../../components';
 import './style.scss';
 
 class RevokeDevice extends Component {
@@ -38,12 +38,15 @@ class RevokeDevice extends Component {
   render() {
     return (
       <div className="m-device-revoke">
+        <span className="m-device-revoke__info">
+          <Trans id="device.revoke_info">Vous pouvez interdire à cet appareil de se connecter à votre compte à l avenir.</Trans>
+        </span>
         <Button
           className="m-device-revoke__button"
           shape="plain"
           color="alert"
           onClick={this.handleRevoke}
-        ><Trans id="device.action.revoke">Revoke this device</Trans></Button>
+        ><Icon type="remove" rightSpaced /><Trans id="device.action.revoke">Revoke this device</Trans></Button>
       </div>
     );
   }
