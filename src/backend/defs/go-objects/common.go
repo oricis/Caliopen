@@ -237,7 +237,7 @@ func marshallField(obj interface{}, field, context string, jsonBuf *bytes.Buffer
 func isEmptyValue(v reflect.Value) bool {
 	switch v.Kind() {
 	case reflect.Array:
-		if reflect.TypeOf(v) == reflect.TypeOf(EmptyUUID) {
+		if reflect.TypeOf(v.Interface()) == reflect.TypeOf(EmptyUUID) {
 			return v.Len() == 0 || (bytes.Equal(v.Interface().(UUID).Bytes(), EmptyUUID.Bytes()))
 		} else {
 			return v.Len() == 0
