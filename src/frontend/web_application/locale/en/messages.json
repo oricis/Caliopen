@@ -206,6 +206,7 @@
   "import-contact.action.import_contacts": "Import contacts",
   "header.menu.contacts": "Contacts",
   "general.action.load_more": "Load more",
+  "device.current_device": "Current device",
   "device.feedback.invalid_ip": "IP or subnet address is invalid.",
   "device.type.desktop": "Desktop",
   "device.type.laptop": "Laptop",

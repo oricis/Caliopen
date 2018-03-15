@@ -206,6 +206,7 @@
   "import-contact.action.import_contacts": "Importer des contacts",
   "header.menu.contacts": "Contacts",
   "general.action.load_more": "Charger plus",
+  "device.current_device": "Cet appareil",
   "device.feedback.invalid_ip": "Adresse IP ou de sous-réseau invalide.",
   "device.type.desktop": "Ordinateur fixe",
   "device.type.laptop": "Ordinateur portable",
