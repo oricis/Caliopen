@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { Trans, withI18n } from 'lingui-react';
 import FieldGroup from '../FieldGroup';
 import InputFile from '../InputFile';
+import FileSize from '../FileSize';
 
 import File from './components/File';
 
@@ -15,7 +16,7 @@ class InputFileGroup extends Component {
     onInputChange: PropTypes.func.isRequired,
     errors: PropTypes.shape({}),
     i18n: PropTypes.shape({}).isRequired,
-    // multiple: PropTypes.bool,
+    multiple: PropTypes.bool,
     fileTypes: PropTypes.arrayOf(PropTypes.string),
     maxSize: PropTypes.number,
     className: PropTypes.string,
@@ -27,35 +28,40 @@ class InputFileGroup extends Component {
     errors: {},
     fileTypes: undefined,
     maxSize: undefined,
-    // multiple: false,
+    multiple: false,
     className: null,
     descr: null,
   }
 
   state = {
-    file: null,
-    fieldError: [],
+    files: [],
+    fieldErrors: [],
   };
 
   handleInputChange = (ev) => {
-    const files = ev.target.files.length > 0 ? ev.target.files : [];
+    const { onInputChange, multiple } = this.props;
+    const files = ev.target.files.length > 0 ? Array.from(ev.target.files) : [];
 
-    return this.validate(files[0])
-      .then((file) => {
-        const { onInputChange } = this.props;
-        this.setState({ file });
-        onInputChange(file);
+    return Promise.all(files.map(file => this.validate(file)))
+      .then((validatedFiles) => {
+        this.setState({ files: validatedFiles });
+
+        if (!multiple) {
+          return onInputChange(validatedFiles[0]);
+        }
+
+        return onInputChange(validatedFiles);
       })
-      .catch(fieldError => this.setState({ fieldError }));
+      .catch(fieldErrors => this.setState({ fieldErrors }));
   }
 
   resetForm = () => {
     this.setState({
-      file: null,
-      fieldError: [],
+      files: [],
+      fieldErrors: [],
     });
 
-    return this.props.onInputChange(null);
+    return this.props.onInputChange([]);
   }
 
   validate = (file) => {
@@ -78,7 +84,8 @@ class InputFileGroup extends Component {
         (
           <Trans
             id="input-file-group.error.max_size"
-          >The file size must be under {Math.round(maxSize / 100) / 10} ko</Trans>)
+          >The file size must be under <FileSize size={maxSize} /></Trans>
+        )
       );
     }
 
@@ -90,7 +97,7 @@ class InputFileGroup extends Component {
   }
 
   render() {
-    const { errors, descr, className, fileTypes } = this.props;
+    const { errors, descr, className, fileTypes, multiple } = this.props;
     const allErrors = errors ? Object.keys(errors).map(key => errors[key]) : null;
     const acceptProp = fileTypes ? { accept: fileTypes } : {};
 
@@ -98,19 +105,16 @@ class InputFileGroup extends Component {
       <FieldGroup className={classnames('m-input-file-group', className)} errors={allErrors} >
         {descr && <p>{descr}</p>}
 
-        {this.state.file ?
-          <File
-            file={this.state.file}
-            onRemove={this.resetForm}
-          />
-          :
+        {this.state.files.length > 0 ? this.state.files.map(file => (
+          <File file={file} onRemove={this.resetForm} />
+        )) : (
           <InputFile
             onChange={this.handleInputChange}
-            errors={this.state.fieldError}
+            errors={this.state.fieldErrors}
             {...acceptProp}
-            // multiple={multiple}
+            multiple={multiple}
           />
-        }
+        )}
       </FieldGroup>
     );
   }

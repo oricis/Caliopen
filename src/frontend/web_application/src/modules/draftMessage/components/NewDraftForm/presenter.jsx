@@ -29,6 +29,7 @@ class NewDraftForm extends Component {
     onChange: PropTypes.func,
     user: PropTypes.shape({}),
     renderDraftMessageActionsContainer: PropTypes.func.isRequired,
+    renderAttachments: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
     isSending: PropTypes.bool.isRequired,
   };
@@ -114,7 +115,9 @@ class NewDraftForm extends Component {
   }
 
   render() {
-    const { user, internalId, renderDraftMessageActionsContainer, i18n, isSending } = this.props;
+    const {
+      user, internalId, renderDraftMessageActionsContainer, i18n, isSending, renderAttachments,
+    } = this.props;
     const dropdownId = uuidV1();
     const recipients = this.state.draft.participants && this.state.draft.participants
       .filter(participant => participant.type.toLowerCase() !== 'from');
@@ -167,6 +170,9 @@ class NewDraftForm extends Component {
               onChange={this.handleChange}
             />
           </BodyRow>
+          <BottomRow className="m-new-draft__attachements">
+            {renderAttachments()}
+          </BottomRow>
           <BottomRow className="m-new-draft__bottom-bar">
             <Button
               className="m-new-draft__bottom-action"

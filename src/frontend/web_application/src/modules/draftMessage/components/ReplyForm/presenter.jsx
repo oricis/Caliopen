@@ -25,6 +25,7 @@ class ReplyForm extends Component {
     onChange: PropTypes.func,
     user: PropTypes.shape({}),
     renderDraftMessageActionsContainer: PropTypes.func.isRequired,
+    renderAttachments: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
     isSending: PropTypes.bool.isRequired,
   };
@@ -100,7 +101,9 @@ class ReplyForm extends Component {
   }
 
   render() {
-    const { user, parentMessage, renderDraftMessageActionsContainer, isSending } = this.props;
+    const {
+      user, parentMessage, renderDraftMessageActionsContainer, isSending, renderAttachments,
+    } = this.props;
     const dropdownId = uuidV1();
     const excerpt = parentMessage && parentMessage.excerpt;
 
@@ -143,6 +146,9 @@ class ReplyForm extends Component {
               onChange={this.handleChange}
             />
           </BodyRow>
+          <BottomRow className="m-new-draft__attachements">
+            {renderAttachments()}
+          </BottomRow>
           <BottomRow className="m-reply__bottom-bar">
             <Button
               className="m-reply__bottom-action"

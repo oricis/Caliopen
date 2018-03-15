@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Manage draft's attachements
 - Download message's attachements
 - Set context (safe, public, not safe) on signin (it has no effects yet)
 - Identify the device using an ecdsa key

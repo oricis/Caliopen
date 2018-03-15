@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ReplyForm as ReplyFormBase, NewDraftForm, DraftMessageActionsContainer } from '../../../../modules/draftMessage';
+import { ReplyForm as ReplyFormBase, NewDraftForm, DraftMessageActionsContainer, AttachmentManager } from '../../../../modules/draftMessage';
 
 class DraftForm extends Component {
   static propTypes = {
@@ -17,6 +17,8 @@ class DraftForm extends Component {
     onDeleteMessage: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
     onUpdateEntityTags: PropTypes.func.isRequired,
+    onUploadAttachments: PropTypes.func.isRequired,
+    onDeleteAttachement: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -25,6 +27,7 @@ class DraftForm extends Component {
     parentMessage: undefined,
     draft: undefined,
     user: undefined,
+    isAttachmentsLoading: false,
   };
 
   state = {
@@ -92,6 +95,18 @@ class DraftForm extends Component {
     return onUpdateEntityTags(discussionId, i18n, message, { type: 'message', entity: draft, tags });
   }
 
+  handleFilesChange = async ({ attachments }) => {
+    const { onUploadAttachments, i18n, message, draft, discussionId } = this.props;
+
+    return onUploadAttachments(discussionId, i18n, message, { draft, attachments });
+  }
+
+  handleDeleteAttachement = (attachment) => {
+    const { onDeleteAttachement, i18n, message, draft, discussionId } = this.props;
+
+    return onDeleteAttachement(discussionId, i18n, message, { draft, attachment });
+  }
+
   renderDraftMessageActionsContainer = () => {
     const { message, discussionId } = this.props;
 
@@ -101,6 +116,20 @@ class DraftForm extends Component {
       onDelete={this.handleDelete}
       onTagsChange={this.handleTagsChange}
     />);
+  }
+
+  renderAttachments = () => {
+    const { draft } = this.props;
+
+    const props = {
+      message: draft,
+      onUploadAttachments: this.handleFilesChange,
+      onDeleteAttachement: this.handleDeleteAttachement,
+    };
+
+    return (
+      <AttachmentManager {...props} />
+    );
   }
 
   render() {
@@ -116,6 +145,7 @@ class DraftForm extends Component {
         onSave={this.handleSave}
         onSend={this.handleSend}
         renderDraftMessageActionsContainer={this.renderDraftMessageActionsContainer}
+        renderAttachments={this.renderAttachments}
         user={user}
         isSending={this.state.isSending}
       />);
@@ -131,6 +161,7 @@ class DraftForm extends Component {
           onSend={this.handleSend}
           isSending={this.state.isSending}
           renderDraftMessageActionsContainer={this.renderDraftMessageActionsContainer}
+          renderAttachments={this.renderAttachments}
           user={user}
         />
       </div>

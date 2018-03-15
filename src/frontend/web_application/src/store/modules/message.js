@@ -23,6 +23,8 @@ export const REPLY_TO_MESSAGE = 'co/message/REPLY_TO_MESSAGE';
 export const UPDATE_TAGS = 'co/message/UPDATE_TAGS';
 export const UPDATE_TAGS_SUCCESS = 'co/message/UPDATE_TAGS_SUCCESS';
 export const UPDATE_TAGS_FAIL = 'co/message/UPDATE_TAGS_FAIL';
+export const UPLOAD_ATTACHMENT = 'co/message/UPLOAD_ATTACHMENT';
+export const DELETE_ATTACHMENT = 'co/message/DELETE_ATTACHMENT';
 
 export const TIMELINE_FILTER_ALL = 'all';
 export const TIMELINE_FILTER_RECEIVED = 'received';
@@ -169,6 +171,31 @@ export function updateTags({ message, tags }) {
         method: 'patch',
         url: `/api/v2/messages/${message.message_id}/tags`,
         data,
+      },
+    },
+  };
+}
+
+export function uploadAttachment({ message, attachment }) {
+  return {
+    type: UPLOAD_ATTACHMENT,
+    payload: {
+      request: {
+        method: 'post',
+        url: `/api/v2/messages/${message.message_id}/attachments`,
+        data: attachment,
+      },
+    },
+  };
+}
+
+export function deleteAttachment({ message, attachment }) {
+  return {
+    type: DELETE_ATTACHMENT,
+    payload: {
+      request: {
+        method: 'delete',
+        url: `/api/v2/messages/${message.message_id}/attachments/${attachment.temp_id}`,
       },
     },
   };

@@ -8,6 +8,7 @@ import { createMessageCollectionStateSelector } from '../../../../store/selector
 import { requestDraft, clearDraft, syncDraft } from '../../../../store/modules/draft-message';
 import { updateTagCollection, withTags } from '../../../../modules/tags';
 import { saveDraft, sendDraft } from '../../../../modules/draftMessage';
+import { uploadDraftAttachments, deleteDraftAttachment } from '../../../../modules/file';
 import { deleteMessage } from '../../../../store/modules/message';
 import { getLastMessage } from '../../../../services/message';
 import Presenter from './presenter';
@@ -66,6 +67,34 @@ const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =
     return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
   };
 
+const onUploadAttachments = (internalId, i18n, message, { draft, attachments }) =>
+  async (dispatch) => {
+    const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
+      withThrottle: false,
+      force: true,
+    }));
+
+    const messageUpTodate = await dispatch(uploadDraftAttachments({
+      message: savedDraft, attachments,
+    }));
+
+    return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+  };
+
+const onDeleteAttachement = (internalId, i18n, message, { draft, attachment }) =>
+  async (dispatch) => {
+    const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
+      withThrottle: false,
+      force: true,
+    }));
+
+    const messageUpTodate = await dispatch(deleteDraftAttachment({
+      message: savedDraft, attachment,
+    }));
+
+    return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+  };
+
 const onSendDraft = ({ draft, message, internalId }) => async (dispatch) => {
   try {
     const messageUpToDate = await dispatch(saveDraft({ draft, message, internalId }, {
@@ -86,6 +115,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   requestDraft,
   onDeleteMessage,
   onUpdateEntityTags,
+  onUploadAttachments,
+  onDeleteAttachement,
 }, dispatch);
 
 export default compose(...[
