@@ -31,7 +31,7 @@ class Notification(BaseModel):
     body = columns.Blob()
 
 
-class Notification_ttl(BaseModel):
+class NotificationTtl(BaseModel):
     """
     Table to store ttl configuration for each kind of notification
 
