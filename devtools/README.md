@@ -97,6 +97,10 @@ Using caliopen cli tool:
 cd devtools
 docker-compose run cli setup
 ```
+* and fill-in notification_ttl table : 
+```
+docker-compose run cli set_notifs_ttls
+```
 * You should create an admin user with the same username as in `configs/caliopen-go-api_dev.yaml`
 ```
 docker-compose run cli create_user -e admin -p 123456
