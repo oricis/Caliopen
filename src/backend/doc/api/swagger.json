@@ -12732,15 +12732,12 @@
                       "emitter": {
                         "type": "string"
                       },
-                      "id": {
+                      "notif_id": {
+                        "description": "notif_id is UUIDv1, including a timestamp",
                         "type": "string"
                       },
                       "reference": {
                         "type": "string"
-                      },
-                      "timestamp": {
-                        "type": "string",
-                        "format": "date-time"
                       },
                       "type": {
                         "type": "string"

@@ -22,20 +22,19 @@ func (cb *CassandraBackend) PutNotificationInQueue(notif *Notification) error {
 	// TODO: find a way to avoid retrieving duration from cassandra for each Put
 	err := cb.Session.Query(`SELECT * FROM notification_ttl WHERE ttl_code = ?`, notif.TTLcode).Scan(&ttl.TTLcode, &ttl.Description, &ttl.TTLduration)
 	if err != nil {
-		log.Error(err)
+		log.WithError(err).Error("[CassandraBackend]PutNotificationInQueue failed to retrieve ttl")
 		return err
 	}
 
 	notifT := cb.IKeyspace.Table("notification", &NotificationModel{}, gocassa.Keys{
-		PartitionKeys: []string{"user_id", "timestamp_", "id"},
+		PartitionKeys: []string{"user_id", "notif_id"},
 	}).WithOptions(gocassa.Options{TableName: "notification"})
 
 	n := NotificationModel{
 		Body:      notif.Body,
 		Emitter:   notif.Emitter,
-		Id:        notif.Id.String(),
+		NotifId:   notif.NotifId.String(),
 		Reference: notif.Reference,
-		Timestamp: notif.Timestamp,
 		Type:      notif.Type,
 		UserId:    notif.User.UserId.String(),
 	}
@@ -52,12 +51,12 @@ func (cb *CassandraBackend) RetrieveNotifications(userId string, from, to time.T
 	query_builder.WriteString(`SELECT * FROM notification WHERE user_id = ?`)
 
 	if !from.IsZero() {
-		query_builder.WriteString(` AND timestamp_ > ?`)
+		query_builder.WriteString(` AND notif_id > minTimeuuid(?)`)
 		values = append(values, from)
 	}
 
 	if !to.IsZero() {
-		query_builder.WriteString(` AND timestamp_ < ?`)
+		query_builder.WriteString(` AND notif_id < maxTimeuuid(?)`)
 		values = append(values, to)
 	}
 
@@ -86,7 +85,7 @@ func (cb *CassandraBackend) DeleteNotifications(userId string, until time.Time) 
 	query_builder.WriteString(`DELETE FROM notification WHERE user_id = ?`)
 
 	if !until.IsZero() {
-		query_builder.WriteString(` AND timestamp_ < ?`)
+		query_builder.WriteString(` AND notif_id < maxTimeuuid(?)`)
 		values = append(values, until)
 	}
 

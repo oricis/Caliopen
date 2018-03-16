@@ -13,8 +13,7 @@ class Notification(BaseModel):
     Table to store notifications queues in cassandra
 
     user_id: user's id to which notification belongs to.
-    timestamp: unix timestamp at which backend created the notification.
-    id: universally unique id to unambiguously identify a notification.
+    notif_id: time UUID V1 (en.wikipedia.org/wiki/Universally_unique_identifier)
     emitter : backend entity that's emitting the message.
     type: a single word to describe notification's type: event, info, feedback..
     reference: (optional) a reference number previously sent by frontend.
@@ -23,8 +22,7 @@ class Notification(BaseModel):
     """
 
     user_id = columns.UUID(primary_key=True)
-    timestamp_ = columns.DateTime(primary_key=True)
-    id = columns.UUID(primary_key=True)
+    notif_id = columns.TimeUUID(primary_key=True)
     emitter = columns.Text()
     type = columns.Ascii()
     reference = columns.Text()

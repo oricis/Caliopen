@@ -154,16 +154,16 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 				}
 
 				notif := Notification{
-					Emitter:   "smtp",
-					Timestamp: time.Now(),
-					Type:      EventNotif,
-					TTLcode:   LongLived,
+					Emitter: "smtp",
+					Type:    EventNotif,
+					TTLcode: LongLived,
 					User: &User{
 						UserId: rcptId,
 					},
-					Body: `{"emailReceived": "` + (*nats_ack)["message_id"].(string) + `"}`,
+					NotifId: UUID(uuid.NewV1()),
+					Body:    `{"emailReceived": "` + (*nats_ack)["message_id"].(string) + `"}`,
 				}
-				notif.Id.UnmarshalBinary(uuid.NewV4().Bytes())
+
 				go b.Notifier.ByNotifQueue(&notif)
 			}
 		}(rcptId)

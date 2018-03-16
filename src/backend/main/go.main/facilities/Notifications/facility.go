@@ -120,8 +120,8 @@ func (N *Notifier) LogNotification(method string, notif *Notification) {
 			userId = "<unknown user id>"
 		}
 		N.log.WithFields(log.Fields{
-			"method": method,
-			"id":     notif.Id.String(),
+			"method":   method,
+			"notif_id": notif.NotifId.String(),
 		}).Infof("[Notifier] a notification has been issued for user %s", userId)
 	}
 }

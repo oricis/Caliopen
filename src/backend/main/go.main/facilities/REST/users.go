@@ -48,16 +48,15 @@ func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result, notify 
 		}
 		// compose and send a notification via email
 		notif := &Notification{
-			User: user,
+			Body: fmt.Sprintf("password changed for user %s", user.UserId.String()),
 			InternalPayload: &Message{
 				Body_plain: changePasswordBodyPlain,
 				Body_html:  changePasswordBodyRich,
 				Subject:    changePasswordSubject,
 			},
-			Timestamp: time.Now(),
-			Id:        UUID(uuid.NewV4()),
-			Body:      fmt.Sprintf("password changed for user %s", user.UserId.String()),
-			Type:      NotifAdminMail,
+			NotifId: UUID(uuid.NewV1()),
+			Type:    NotifAdminMail,
+			User:    user,
 		}
 		go notify.ByEmail(notif)
 		return nil
@@ -153,8 +152,7 @@ func (rest *RESTfacility) RequestPasswordReset(payload PasswordResetRequest, not
 	notif := &Notification{
 		User:            user,
 		InternalPayload: reset_session,
-		Timestamp:       time.Now(),
-		Id:              UUID(uuid.NewV4()),
+		NotifId:         UUID(uuid.NewV1()),
 		Body:            fmt.Sprintf("reset link for user %s", user.UserId.String()),
 		Type:            NotifPasswordReset,
 	}
@@ -210,10 +208,9 @@ func (rest *RESTfacility) ResetUserPassword(token, new_password string, notify N
 			Body_html:  changePasswordBodyRich,
 			Subject:    changePasswordSubject,
 		},
-		Timestamp: time.Now(),
-		Id:        UUID(uuid.NewV4()),
-		Body:      fmt.Sprintf("password changed for user %s", user.UserId.String()),
-		Type:      NotifAdminMail,
+		NotifId: UUID(uuid.NewV1()),
+		Body:    fmt.Sprintf("password changed for user %s", user.UserId.String()),
+		Type:    NotifAdminMail,
 	}
 	go notify.ByEmail(&notif)
 
