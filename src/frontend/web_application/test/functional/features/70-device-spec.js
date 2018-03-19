@@ -7,19 +7,18 @@ describe('device', () => {
 
   it('redirect to device management on a new device for an existing account', () => {
     signin()
-      .then(() => expect(browser.getCurrentUrl()).not.toContain('/settings/devices/'))
+      .then(() => expect(browser.getCurrentUrl()).not.toContain('/settings/devices'))
       .then(() => clearKeypairInLocalStorage({ save: true }))
       .then(() => signin())
-      .then(() => expect(browser.getCurrentUrl()).toContain('/settings/devices/'))
+      .then(() => expect(browser.getCurrentUrl()).toContain('/settings/devices'))
       .then(() => restoreKeypairInLocalStorage())
       .then(() => signin())
-      .then(() => expect(browser.getCurrentUrl()).not.toContain('/settings/devices/'))
+      .then(() => expect(browser.getCurrentUrl()).not.toContain('/settings/devices'))
       // delete the created device
       .then(() => showSettings('Devices'))
-      .then(() => element(by.cssContainingText('.s-devices-settings__nav-item', 'desktop 2')).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-device-settings')), 5 * 1000))
-      .then(() => element(by.cssContainingText('.m-button', 'Revoke this device')).click())
-      .then(() => browser.wait(EC.presenceOf($('.s-devices-settings')), 5 * 1000))
+      .then(() => element(by.cssContainingText('.m-device-settings', 'desktop 2')))
+      .then(deviceBlock => deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).click())
+      .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.l-notification-center', 'The device has been revoked'))), 5 * 1000))
     ;
   });
 
@@ -30,21 +29,20 @@ describe('device', () => {
 
     it('hides the button for the last verified device', () => {
       showSettings('Devices')
-        .then(() => element(by.cssContainingText('.s-devices-settings__nav-item', 'default')).click())
-        .then(() => browser.wait(EC.presenceOf($('.m-device-settings')), 5 * 1000))
-        .then(() => expect(element(by.cssContainingText('.m-button', 'Revoke this device')).isPresent()).toEqual(false))
+        .then(() => element(by.cssContainingText('.m-device-settings', 'default')))
+        .then(deviceBlock => expect(
+          deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).isPresent()
+        ).toEqual(false))
       ;
     });
 
-    it('revoke an other device then redirect to list', () => {
+    it('revoke an other device', () => {
       showSettings('Devices')
-        .then(() => expect(element.all(by.css('.s-devices-settings__nav-item')).count()).toEqual(2))
-        .then(() => element(by.cssContainingText('.s-devices-settings__nav-item', 'device to revoke')).click())
-        .then(() => browser.wait(EC.presenceOf($('.m-device-settings')), 5 * 1000))
-        .then(() => element(by.cssContainingText('.m-button', 'Revoke this device')).click())
-        .then(() => browser.wait(EC.presenceOf($('.s-devices-settings')), 5 * 1000))
-        .then(() => expect(browser.getCurrentUrl()).toMatch(/\/settings\/devices$/))
-        .then(() => expect(element.all(by.css('.s-devices-settings__nav-item')).count()).toEqual(1))
+        .then(() => expect(element.all(by.css('.m-device-settings')).count()).toEqual(2))
+        .then(() => element(by.cssContainingText('.m-device-settings', 'device to revoke')))
+        .then(deviceBlock => deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).click())
+        .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.l-notification-center', 'The device has been revoked'))), 5 * 1000))
+        .then(() => expect(element.all(by.css('.m-device-settings')).count()).toEqual(1))
       ;
     });
   });
@@ -58,28 +56,25 @@ describe('device', () => {
         .then(() => signin())
         .then(() => clearKeypairInLocalStorage())
         .then(() => signin())
-        .then(() => element.all(by.css('.s-devices-settings__nav-item')).count().then((nb) => {
+        .then(() => browser.wait(EC.presenceOf(element(by.css('.m-device-settings')), 5 * 1000)))
+        .then(() => element.all(by.css('.m-device-settings')).count().then((nb) => {
           nbDevices = nb;
         }))
-        .then(() => element(by.cssContainingText('.s-devices-settings__nav-item', `desktop ${nbDevices - 2}`)).click())
-        .then(() => browser.wait(EC.presenceOf($('.m-device-settings')), 5 * 1000))
-        .then(() => expect(element(by.cssContainingText('.m-button', 'Revoke this device')).isPresent()).toEqual(false))
-        // .then(() => browser.pause())
-        .then(() => element(by.cssContainingText('.s-devices-settings__nav-item', `desktop ${nbDevices - 1}`)).click())
-        .then(() => browser.wait(EC.presenceOf($('.m-device-settings')), 5 * 1000))
-        .then(() => expect(element(by.cssContainingText('.m-button', 'Revoke this device')).isPresent()).toEqual(true))
+        .then(() => browser.pause())
+        .then(() => element(by.cssContainingText('.m-device-settings', `desktop ${nbDevices - 2}`)))
+        .then(deviceBlock => expect(deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).isPresent()).toEqual(false))
+        .then(() => element(by.cssContainingText('.m-device-settings', `desktop ${nbDevices - 1}`)))
+        .then(deviceBlock => expect(deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).isPresent()).toEqual(true))
         // clear created devices
         .then(() => restoreKeypairInLocalStorage())
         .then(() => signin())
         .then(() => showSettings('Devices'))
-        .then(() => element(by.cssContainingText('.s-devices-settings__nav-item', `desktop ${nbDevices - 2}`)).click())
-        .then(() => browser.wait(EC.presenceOf($('.m-device-settings')), 5 * 1000))
-        .then(() => element(by.cssContainingText('.m-button', 'Revoke this device')).click())
-        .then(() => browser.wait(EC.presenceOf($('.s-devices-settings')), 5 * 1000))
-        .then(() => element(by.cssContainingText('.s-devices-settings__nav-item', `desktop ${nbDevices - 1}`)).click())
-        .then(() => browser.wait(EC.presenceOf($('.m-device-settings')), 5 * 1000))
-        .then(() => element(by.cssContainingText('.m-button', 'Revoke this device')).click())
-        .then(() => browser.wait(EC.presenceOf($('.s-devices-settings')), 5 * 1000))
+
+        .then(() => element(by.cssContainingText('.m-device-settings', `desktop ${nbDevices - 2}`)))
+        .then(deviceBlock => deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).click())
+        .then(() => element(by.cssContainingText('.m-device-settings', `desktop ${nbDevices - 1}`)))
+        .then(deviceBlock => deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).click())
+        .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.l-notification-center', 'The device has been revoked'))), 5 * 1000))
       ;
     });
 
@@ -88,12 +83,11 @@ describe('device', () => {
       signin()
         .then(() => clearKeypairInLocalStorage({ save: true }))
         .then(() => signin())
-        .then(() => element.all(by.css('.s-devices-settings__nav-item')).count().then((nb) => {
+        .then(() => element.all(by.css('.m-device-settings')).count().then((nb) => {
           nbDevices = nb;
         }))
-        .then(() => element(by.cssContainingText('.s-devices-settings__nav-item', `desktop ${nbDevices - 1}`)).click())
-        .then(() => browser.wait(EC.presenceOf($('.m-device-settings')), 5 * 1000))
-        .then(() => element(by.cssContainingText('.m-button', 'Revoke this device')).click())
+        .then(() => element(by.cssContainingText('.m-device-settings', `desktop ${nbDevices - 1}`)))
+        .then(deviceBlock => deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).click())
         .then(() => expect(browser.getCurrentUrl()).toContain('signin'))
         .then(() => restoreKeypairInLocalStorage())
       ;
