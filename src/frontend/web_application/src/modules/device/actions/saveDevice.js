@@ -1,12 +1,15 @@
-import { createDevice, updateDevice, invalidate, requestDevice } from '../../../store/modules/device';
+import { createDevice, updateDevice, invalidate } from '../../../store/modules/device';
+import { tryCatchAxiosPromise } from '../../../services/api-client';
 
 export const saveDevice = ({ device, original }) => async (dispatch) => {
+  let result;
+
   if (!original) {
-    await dispatch(createDevice({ device }));
-    dispatch(invalidate());
-
-    return dispatch(requestDevice({ deviceId: device.device_id }));
+    result = await tryCatchAxiosPromise(dispatch(createDevice({ device })));
+  } else {
+    result = await tryCatchAxiosPromise(dispatch(updateDevice({ device, original })));
   }
+  dispatch(invalidate());
 
-  return dispatch(updateDevice({ device, original }));
+  return result;
 };

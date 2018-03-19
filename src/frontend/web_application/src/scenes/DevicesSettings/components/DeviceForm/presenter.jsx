@@ -20,6 +20,8 @@ class DeviceForm extends Component {
   static propTypes = {
     device: PropTypes.shape({}).isRequired,
     onChange: PropTypes.func.isRequired,
+    notifyError: PropTypes.func.isRequired,
+    notifySuccess: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
 
@@ -64,9 +66,15 @@ class DeviceForm extends Component {
     return { isValid: false, errors: [i18n._('device.feedback.invalid_ip', { defaults: 'IP or subnet address is invalid.' })] };
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
+    const { onChange, notifyError, notifySuccess } = this.props;
     event.preventDefault();
-    this.props.onChange({ device: this.state.device, original: this.props.device });
+    try {
+      await onChange({ device: this.state.device, original: this.props.device });
+      notifySuccess({ message: (<Trans id="device.feedback.save_success">The device has been saved</Trans>) });
+    } catch (errors) {
+      errors.forEach(({ message }) => notifyError({ message }));
+    }
   }
 
   render() {
