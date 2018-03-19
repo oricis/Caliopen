@@ -88,10 +88,8 @@ class Signin extends Component {
   }
 
   render() {
-    const { clientDevice } = this.props;
-
     if (this.state.isAuthenticated && this.state.redirectDevice) {
-      return <Redirect push to={`${URL_DEVICES}/${clientDevice.device_id}`} />;
+      return <Redirect push to={URL_DEVICES} />;
     }
 
     if (this.state.isAuthenticated) {
