@@ -5,23 +5,24 @@
 package objects
 
 type Attachment struct {
-	Content_type string `cql:"content_type"     json:"content_type,omitempty"`
-	File_name    string `cql:"file_name"        json:"file_name"`
-	Is_inline    bool   `cql:"is_inline"        json:"is_inline"`
-	Size         int    `cql:"size"             json:"size"`
-	URL          string `cql:"url"              json:"url"`           // ObjectStore url for temporary file (draft)
-	MimeBoundary string `cql:"mime_boundary"    json:"mime_boundary"` // for attachments embedded in raw messages
+	ContentType  string `cql:"content_type"     json:"content_type,omitempty"`
+	FileName     string `cql:"file_name"        json:"file_name,omitempty"`
+	IsInline     bool   `cql:"is_inline"        json:"is_inline,omitempty"`
+	Size         int    `cql:"size"             json:"size,omitempty"`
+	TempID       UUID   `cql:"temp_id"          json:"temp_id,omitempty"`
+	URL          string `cql:"url"              json:"url,omitempty"`           // ObjectStore url for temporary file (draft)
+	MimeBoundary string `cql:"mime_boundary"    json:"mime_boundary,omitempty"` // for attachments embedded in raw messages
 }
 
 func (a *Attachment) UnmarshalMap(input map[string]interface{}) error {
 	if content_type, ok := input["content_type"].(string); ok {
-		a.Content_type = content_type
+		a.ContentType = content_type
 	}
 	if file_name, ok := input["file_name"].(string); ok {
-		a.File_name = file_name
+		a.FileName = file_name
 	}
 	if is_inline, ok := input["is_inline"].(bool); ok {
-		a.Is_inline = is_inline
+		a.IsInline = is_inline
 	}
 	if size, ok := input["size"].(float64); ok {
 		a.Size = int(size)
@@ -33,6 +34,15 @@ func (a *Attachment) UnmarshalMap(input map[string]interface{}) error {
 		a.MimeBoundary = mimeBoundary
 	}
 	return nil //TODO: error handling
+}
+
+func (a *Attachment) JSONMarshaller() ([]byte, error) {
+	return JSONMarshaller("", a)
+}
+
+// return a JSON representation of Device suitable for frontend client
+func (a *Attachment) MarshalFrontEnd() ([]byte, error) {
+	return JSONMarshaller("frontend", a)
 }
 
 // part of CaliopenObject interface
@@ -48,7 +58,7 @@ func (a ByFileName) Len() int {
 }
 
 func (a ByFileName) Less(i, j int) bool {
-	return a[i].File_name < a[j].File_name
+	return a[i].FileName < a[j].FileName
 }
 
 func (a ByFileName) Swap(i, j int) {

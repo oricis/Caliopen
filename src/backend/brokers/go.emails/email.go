@@ -120,9 +120,9 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 		if b.Store.AttachmentExists(attachment.URL) {
 			//give method to retrieve file from broker storage interface (instead of default filesystem)
 			size_str := fmt.Sprintf("%d", attachment.Size)
-			content_disposition := `attachment; filename="` + attachment.File_name + `"; size=` + size_str
+			content_disposition := `attachment; filename="` + attachment.FileName + `"; size=` + size_str
 
-			m.Attach(attachment.File_name,
+			m.Attach(attachment.FileName,
 				gomail.SetCopyFunc(func(w io.Writer) error {
 					file, err := b.Store.GetAttachment(attachment.URL)
 					if err != nil {
@@ -195,9 +195,9 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 				}
 				size, _ := strconv.Atoi(dparams["size"])
 				ack.EmailMessage.Message.Attachments = append(ack.EmailMessage.Message.Attachments, Attachment{
-					Content_type: part.ContentType,
-					File_name:    dparams["filename"],
-					Is_inline:    is_inline,
+					ContentType:  part.ContentType,
+					FileName:     dparams["filename"],
+					IsInline:     is_inline,
 					Size:         size,
 					MimeBoundary: part.Boundary,
 				})
