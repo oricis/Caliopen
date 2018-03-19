@@ -7,7 +7,7 @@ import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
 import { MultidimensionalPi } from '../../../../modules/pi';
 import { ContactAvatarLetter } from '../../../../modules/avatar';
-import { Button, Icon, TextBlock, Dropdown, withDropdownControl, FileSize } from '../../../../components';
+import { Button, Link, Icon, TextBlock, Dropdown, withDropdownControl, FileSize } from '../../../../components';
 import MessageActionsContainer from '../MessageActionsContainer';
 import { getAuthor } from '../../../../services/message';
 
@@ -136,14 +136,30 @@ class Message extends Component {
     }
 
     return (
-      <div className="m-message__attachements">
+      <ul className="m-message__attachements-list">
         {attachments.map((attachement, index) => (
-          <a key={attachement.file_name} href={`/api/v2/messages/${messageId}/attachments/${index}`} download={attachement.file_name}>
-            <FileSize size={attachement.size} />
-            {attachement.file_name}
-          </a>
+          <li key={index}>
+            <Link
+              className="m-message__attachements-item"
+              button
+              expanded
+              href={`/api/v2/messages/${messageId}/attachments/${index}`}
+              download={attachement.file_name}
+              title={attachement.file_name}
+            >
+              <TextBlock className="m-message__attachement-name">
+                {attachement.file_name}
+              </TextBlock>
+              <TextBlock className="m-message__attachement-size">
+                <FileSize size={attachement.size} />
+              </TextBlock>
+              <span className="m-message__attachement-icon">
+                <Icon type="download" />
+              </span>
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     );
   }
 
