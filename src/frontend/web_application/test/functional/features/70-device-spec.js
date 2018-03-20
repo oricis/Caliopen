@@ -60,7 +60,6 @@ describe('device', () => {
         .then(() => element.all(by.css('.m-device-settings')).count().then((nb) => {
           nbDevices = nb;
         }))
-        .then(() => browser.pause())
         .then(() => element(by.cssContainingText('.m-device-settings', `desktop ${nbDevices - 2}`)))
         .then(deviceBlock => expect(deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).isPresent()).toEqual(false))
         .then(() => element(by.cssContainingText('.m-device-settings', `desktop ${nbDevices - 1}`)))
