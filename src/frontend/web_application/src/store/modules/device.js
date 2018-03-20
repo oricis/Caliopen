@@ -84,6 +84,7 @@ export function removeDevice({ device }) {
   };
 }
 
+// TODO: move to a device's module action
 export function verifyDevice({ device }) {
   return {
     type: VERIFY_DEVICE,

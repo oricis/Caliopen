@@ -5,11 +5,15 @@
   @include flex-grid-row($size: expand);
   padding: $co-margin / 2;
 
+  &__info,
   &__device {
     @include flex-grid-size(12);
   }
 
   @include breakpoint(large) {
+    &__info {
+      @include flex-grid-column(12);
+    }
     &__device {
       @include flex-grid-column(6);
     }

@@ -71,6 +71,7 @@ class DeviceSettings extends Component {
   renderDevice() {
     const { device, i18n } = this.props;
 
+    // FIXME: verify device should be displayed on a verified device or ...
     return device.signature_key === null ?
       this.renderVerifyDevice(device, i18n) :
       this.renderForm(device, i18n);
