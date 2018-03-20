@@ -25,15 +25,19 @@ class DevicesSettings extends Component {
         {isCurrentDeviceVerified === false && (
           <div className="s-devices-settings__info">
             <Section>
-              <Trans id="devices.feedback.unverified_device">
-                It&apos;s the first time you attempt to connect to your Caliopen account on this
-                device.
-              </Trans>
-              <Trans id="devices.feedback.unverified_device_more">
-                To respect privacy and seurity rules, your directussions history will not fully
-                appear according to Privacy settings<br /> Please verify this device and eventually
-                set restrictions from your trusted device.
-              </Trans>
+              <div>
+                <Trans id="devices.feedback.unverified_device">
+                  It&apos;s the first time you attempt to connect to your Caliopen account on this
+                  device.
+                </Trans>
+              </div>
+              <div>
+                <Trans id="devices.feedback.unverified_device_more">
+                  To respect privacy and security rules, your discussions history will not fully
+                  appear according to Privacy settings<br /> Please verify this device and
+                  eventually set restrictions from your trusted device.
+                </Trans>
+              </div>
             </Section>
           </div>
         )}
