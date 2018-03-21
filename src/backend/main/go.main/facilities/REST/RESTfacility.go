@@ -41,7 +41,7 @@ type (
 		//attachments
 		AddAttachment(user_id, message_id, filename, content_type string, file io.Reader) (tempId string, err error)
 		DeleteAttachment(user_id, message_id, attchmt_id string) CaliopenError
-		OpenAttachment(user_id, message_id string, attchmtIndex int) (meta map[string]string, content io.Reader, err error)
+		OpenAttachment(user_id, message_id, attchmtIndex string) (meta map[string]string, content io.Reader, err error)
 		//tags
 		RetrieveUserTags(user_id string) (tags []Tag, err CaliopenError)
 		CreateTag(tag *Tag) CaliopenError

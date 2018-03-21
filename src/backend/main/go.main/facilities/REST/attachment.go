@@ -111,25 +111,50 @@ func (rest *RESTfacility) DeleteAttachment(user_id, message_id, attchmt_id strin
 }
 
 // returns an io.Reader and metadata to conveniently read the attachment
-func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtIndex int) (meta map[string]string, content io.Reader, err error) {
+func (rest *RESTfacility) OpenAttachment(user_id, message_id, attchmtIndex string) (meta map[string]string, content io.Reader, err error) {
+	if attchmtIndex == "" {
+		return meta, nil, errors.New(fmt.Sprint("empty attachment id"))
+	}
 	meta = make(map[string]string)
 	//check if message_id belongs to user and index is consistent
 	msg, err := rest.store.RetrieveMessage(user_id, message_id)
 	if err != nil {
 		return meta, nil, err
 	}
-	if attchmtIndex < 0 || attchmtIndex > (len(msg.Attachments)-1) {
-		return meta, nil, errors.New(fmt.Sprintf("index %d for message %s is not consistent.", attchmtIndex, message_id))
+	var index int
+	if msg.Is_draft {
+		// retrieve attachment by temp_id
+		notfound := true
+		for _, att := range msg.Attachments {
+			if att.TempID.String() == attchmtIndex {
+				meta["Content-Type"] = att.ContentType
+				meta["Message-Size"] = strconv.Itoa(att.Size)
+				meta["Filename"] = att.FileName
+				meta["Url"] = att.URL
+				notfound = false
+				break
+			}
+		}
+		if notfound {
+			return meta, nil, NewCaliopenErr(NotFoundCaliopenErr, "attachment not found")
+		}
+
+	} else {
+		// retrieve attachment by index
+		index, err = strconv.Atoi(attchmtIndex)
+		if err != nil || index < 0 || index > (len(msg.Attachments)-1) {
+			return meta, nil, NewCaliopenErr(NotFoundCaliopenErr, "attachment not found")
+		}
+		meta["Content-Type"] = msg.Attachments[index].ContentType
+		meta["Message-Size"] = strconv.Itoa(msg.Attachments[index].Size)
+		meta["Filename"] = msg.Attachments[index].FileName
 	}
-	meta["Content-Type"] = msg.Attachments[attchmtIndex].ContentType
-	meta["Message-Size"] = strconv.Itoa(msg.Attachments[attchmtIndex].Size)
-	meta["Filename"] = msg.Attachments[attchmtIndex].FileName
 
 	// create a Reader
 	// either from object store (draft context)
 	// or from raw message's mime part (non-draft context)
 	if msg.Is_draft {
-		attachment, e := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URL)
+		attachment, e := rest.store.GetAttachment(meta["Url"])
 		if e != nil {
 			return map[string]string{}, nil, e
 		}
@@ -145,7 +170,7 @@ func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtInde
 		if e != nil {
 			return map[string]string{}, nil, e
 		}
-		attachments, e := json_email.ExtractAttachments(attchmtIndex)
+		attachments, e := json_email.ExtractAttachments(index)
 		if e != nil {
 			return map[string]string{}, nil, e
 		}

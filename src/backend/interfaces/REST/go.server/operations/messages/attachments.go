@@ -101,16 +101,14 @@ func DownloadAttachment(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	attch_id, err := strconv.Atoi(ctx.Param("attachment_id"))
-	if err != nil || msg_id == "" {
-		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
-		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-		ctx.Abort()
-		return
-	}
-	meta, content, err := caliopen.Facilities.RESTfacility.OpenAttachment(user_id, msg_id, attch_id)
+	meta, content, err := caliopen.Facilities.RESTfacility.OpenAttachment(user_id, msg_id, ctx.Param("attachment_id"))
 	if err != nil {
-		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		var e error
+		if err.Error() == "attachment not found" {
+			e = swgErr.New(http.StatusNotFound, err.Error())
+		} else {
+			e = swgErr.New(http.StatusFailedDependency, err.Error())
+		}
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
