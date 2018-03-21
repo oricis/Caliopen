@@ -8,38 +8,20 @@ package imap_worker
 
 import (
 	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 type (
-	SMTPConfig struct {
-		AppConfig AppConfig
-		LDAConfig broker.LDAConfig
+	WorkerConfig struct {
+		Workers     uint8       `mapstructure:"workers"`
+		NatsQueue   string      `mapstructure:"nats_queue"`
+		NatsUrl     string      `mapstructure:"nats_url"`
+		StoreName   string      `mapstructure:"store_name"`
+		StoreConfig StoreConfig `mapstructure:"store_settings"`
+		LDAConfig   broker.LDAConfig
 	}
 
-	AppConfig struct {
-		AppVersion      string         `mapstructure:"version"`
-		Servers         []ServerConfig `mapstructure:"inbound_servers"`
-		AllowedHosts    []string       `mapstructure:"allowed_hosts"`
-		PrimaryMailHost string         `mapstructure:"primary_mail_host"`
-		SubmitAddress   string         `mapstructure:"submit_address"`
-		SubmitPort      int            `mapstructure:"submit_port"`
-		SubmitUser      string         `mapstructure:"submit_user"`
-		SubmitPassword  string         `mapstructure:"submit_password"`
-		OutWorkers      int            `mapstructure:"submit_workers"`
-	}
-
-	// ServerConfig specifies config options for a single smtp server
-	ServerConfig struct {
-		IsEnabled       bool   `mapstructure:"is_enabled"`
-		Hostname        string `mapstructure:"host_name"`
-		AllowedHosts    []string
-		MaxSize         uint64 `mapstructure:"max_size"` //max size for emails
-		PrivateKeyFile  string `mapstructure:"private_key_file"`
-		PublicKeyFile   string `mapstructure:"public_key_file"`
-		Timeout         int    `mapstructure:"timeout"`
-		ListenInterface string `mapstructure:"listen_interface"`
-		StartTLSOn      bool   `mapstructure:"start_tls_on,omitempty"`
-		TLSAlwaysOn     bool   `mapstructure:"tls_always_on,omitempty"`
-		MaxClients      int    `mapstructure:"max_clients"`
+	IndexConfig struct {
+		Urls []string `mapstructure:"urls"`
 	}
 )

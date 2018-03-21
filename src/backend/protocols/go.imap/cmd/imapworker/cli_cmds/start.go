@@ -7,7 +7,6 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	imapWorker "github.com/CaliOpen/Caliopen/src/backend/protocols/go.imap"
 	log "github.com/Sirupsen/logrus"
@@ -24,10 +23,11 @@ var (
 	pidFile       string
 	signalChannel chan os.Signal // for trapping SIG_HUP
 	cmdConfig     CmdConfig
+	imapWorkers   []*imapWorker.Worker
 
 	startCmd = &cobra.Command{
 		Use:   "start",
-		Short: "Starts an IMAP worker",
+		Short: "Starts IMAP worker(s)",
 		Run:   start,
 	}
 )
@@ -45,7 +45,7 @@ func init() {
 	cmdConfig = CmdConfig{}
 }
 
-func sigHandler() {
+func sigHandler(workers []*imapWorker.Worker) {
 	// handle SIGHUP for reloading the configuration while running
 	signal.Notify(signalChannel, syscall.SIGHUP, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGKILL)
 
@@ -60,9 +60,11 @@ func sigHandler() {
 			}
 			// TODO: reinitialize
 		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT {
-			log.Infof("Shutdown signal caught")
-			//imapWorker.Shutdown()
-			log.Infof("Shutdown completed, exiting.")
+			log.Info("Shutdown signal caught")
+			for i, w := range workers {
+				w.Stop(uint8(i))
+			}
+			log.Info("Shutdown completed, exiting")
 			os.Exit(0)
 		} else {
 			os.Exit(0)
@@ -89,18 +91,22 @@ func start(cmd *cobra.Command, args []string) {
 			log.WithError(err).Fatalf("Error while creating pidFile (%s)", pidFile)
 		}
 	}
-	/*
-		err = imapWorker.InitializeServer(csmtp.SMTPConfig(cmdConfig))
-		if err != nil {
-			log.WithError(err).Fatal("Failed to init LMTP server")
-		}
 
-		go imapWorker.Start()
-	*/
-	sigHandler()
+	// init and start worker(s)
+	var i uint8
+	imapWorkers = make([]*imapWorker.Worker, cmdConfig.Workers)
+	for i = 0; i < cmdConfig.Workers; i++ {
+		log.Infof("initializing IMAP worker %d", i)
+		imapWorkers[i], err = imapWorker.NewWorker(imapWorker.WorkerConfig(cmdConfig))
+		if err != nil {
+			log.WithError(err).Fatal("Failed to init IMAP Worker")
+		}
+		go imapWorkers[i].Start(i)
+	}
+	sigHandler(imapWorkers)
 }
 
-type CmdConfig imapWorker.SMTPConfig
+type CmdConfig imapWorker.WorkerConfig
 
 // ReadConfig which should be called at startup, or when a SIG_HUP is caught
 func readConfig(config *CmdConfig) error {
@@ -122,11 +128,6 @@ func readConfig(config *CmdConfig) error {
 		return err
 	}
 
-	if len(config.AppConfig.AllowedHosts) == 0 {
-		return errors.New("Empty `allowed_hosts` is not allowed")
-	}
-	config.AppConfig.AppVersion = __version__
-	config.LDAConfig.AppVersion = config.AppConfig.AppVersion
-	config.LDAConfig.PrimaryMailHost = config.AppConfig.PrimaryMailHost
+	config.LDAConfig.AppVersion = __version__
 	return nil
 }

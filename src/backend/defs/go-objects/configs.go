@@ -38,6 +38,16 @@ type (
 		OutSMTP_topic  string `mapstructure:"outSMTP_topic"`
 		Contacts_topic string `mapstructure:"contacts_topic"`
 	}
+	// Cassandra
+	StoreConfig struct {
+		Hosts       []string  `mapstructure:"hosts"`
+		Keyspace    string    `mapstructure:"keyspace"`
+		Consistency uint16    `mapstructure:"consistency_level"`
+		SizeLimit   uint64    `mapstructure:"raw_size_limit"` // max size to store (in bytes)
+		ObjectStore string    `mapstructure:"object_store"`
+		OSSConfig   OSSConfig `mapstructure:"object_store_settings"`
+	}
+
 	// Objects Store
 	OSSConfig struct {
 		Endpoint  string            `mapstructure:"endpoint"`

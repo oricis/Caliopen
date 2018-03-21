@@ -78,7 +78,7 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 		b, e := store.InitializeCassandraBackend(c)
 		if e != nil {
 			err = e
-			log.WithError(err).Warnf("EmailBroker : initalization of %s backend failed", conf.StoreName)
+			log.WithError(err).Warnf("[EmailBroker] initalization of %s backend failed", conf.StoreName)
 			return
 		}
 
@@ -86,8 +86,8 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 	case "BOBcassandra":
 	// NotImplemented… yet ! ;-)
 	default:
-		log.Warn("EmailBroker : unknown store backend: %s", conf.StoreName)
-		err = errors.New("EmailBroker : unknown store backend")
+		log.Warnf("[EmailBroker] unknown store backend: %s", conf.StoreName)
+		err = errors.New("[EmailBroker] unknown store backend")
 		return
 	}
 
