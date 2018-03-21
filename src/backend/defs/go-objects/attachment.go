@@ -4,6 +4,8 @@
 
 package objects
 
+import "github.com/satori/go.uuid"
+
 type Attachment struct {
 	ContentType  string `cql:"content_type"     json:"content_type,omitempty"`
 	FileName     string `cql:"file_name"        json:"file_name,omitempty"`
@@ -26,6 +28,9 @@ func (a *Attachment) UnmarshalMap(input map[string]interface{}) error {
 	}
 	if size, ok := input["size"].(float64); ok {
 		a.Size = int(size)
+	}
+	if tmpid, ok := input["temp_id"].(string); ok {
+		a.TempID = UUID(uuid.FromStringOrNil(tmpid))
 	}
 	if url, ok := input["url"].(string); ok {
 		a.URL = url
