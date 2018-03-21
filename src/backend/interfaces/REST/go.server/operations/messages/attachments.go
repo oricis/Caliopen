@@ -40,7 +40,12 @@ func UploadAttachment(ctx *gin.Context) {
 	content_type := header.Header["Content-Type"][0]
 	tempId, err := caliopen.Facilities.RESTfacility.AddAttachment(user_id, msg_id, filename, content_type, file)
 	if err != nil {
-		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		var e error
+		if err.Error() == "not found" {
+			e = swgErr.New(http.StatusNotFound, err.Error())
+		} else {
+			e = swgErr.New(http.StatusFailedDependency, err.Error())
+		}
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return

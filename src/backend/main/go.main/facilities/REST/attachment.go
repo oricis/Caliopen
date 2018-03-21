@@ -39,6 +39,7 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 		FileName:    filename,
 		IsInline:    false,
 		Size:        size,
+		TempID:      UUID(tmpId),
 		URL:         url,
 	}
 	draftAttchmnt.TempID.UnmarshalBinary(tmpId.Bytes())
