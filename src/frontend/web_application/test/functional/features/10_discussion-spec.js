@@ -31,10 +31,10 @@ describe('Discussions', () => {
         .then(() => element(by.cssContainingText(
           '.s-message-item .s-message-item__topic .s-message-item__excerpt',
           'Fry! Stay back! He\'s too powerful!'
-        )).click());
-      // TODO tabs
-      // expect(element(by.css('.m-tab.m-navbar__item--is-active .m-tab__link')).getText())
-      //   .toContain('zoidberg, john');
+        )).click())
+        .then(() => expect(element(by.cssContainingText('.m-navbar-item--is-active .m-navbar-item__content', 'Jaune john')).isPresent())
+          .toEqual(true)
+        );
     });
   });
 });
