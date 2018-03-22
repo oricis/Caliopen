@@ -4,7 +4,11 @@
 
 package objects
 
-import "github.com/satori/go.uuid"
+import (
+	"bytes"
+	"encoding/json"
+	"github.com/satori/go.uuid"
+)
 
 type Attachment struct {
 	ContentType  string `cql:"content_type"     json:"content_type,omitempty"`
@@ -30,7 +34,9 @@ func (a *Attachment) UnmarshalMap(input map[string]interface{}) error {
 		a.Size = int(size)
 	}
 	if tmpid, ok := input["temp_id"].(string); ok {
-		a.TempID = UUID(uuid.FromStringOrNil(tmpid))
+		if id, err := uuid.FromString(tmpid); err == nil {
+			a.TempID.UnmarshalBinary(id.Bytes())
+		}
 	}
 	if url, ok := input["url"].(string); ok {
 		a.URL = url
@@ -52,7 +58,30 @@ func (a *Attachment) MarshalFrontEnd() ([]byte, error) {
 
 // part of CaliopenObject interface
 func (a *Attachment) MarshallNew(...interface{}) {
-	// nothing to enforce
+	if len(a.TempID) == 0 || (bytes.Equal(a.TempID.Bytes(), EmptyUUID.Bytes())) {
+		a.TempID.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
+}
+
+func (a *Attachment) UnmarshalJSON(b []byte) error {
+	input := map[string]interface{}{}
+	if err := json.Unmarshal(b, &input); err != nil {
+		return err
+	}
+
+	return a.UnmarshalMap(input)
+}
+
+func (a *Attachment) NewEmpty() interface{} {
+	return new(Attachment)
+}
+
+func (a *Attachment) JsonTags() map[string]string {
+	return jsonTags(a)
+}
+
+func (a *Attachment) SortSlices() {
+	//nothing to sort
 }
 
 // Sort interface implementation
