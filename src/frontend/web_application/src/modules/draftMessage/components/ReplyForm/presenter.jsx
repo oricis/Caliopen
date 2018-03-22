@@ -27,7 +27,7 @@ class ReplyForm extends Component {
     renderDraftMessageActionsContainer: PropTypes.func.isRequired,
     renderAttachments: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
-    isSending: PropTypes.bool.isRequired,
+    isSending: PropTypes.bool,
   };
   static defaultProps = {
     draft: {
@@ -36,6 +36,7 @@ class ReplyForm extends Component {
     parentMessage: undefined,
     onChange: () => {},
     user: { contact: {} },
+    isSending: false,
   };
 
   state = {

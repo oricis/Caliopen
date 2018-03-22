@@ -85,12 +85,14 @@ function syncReadOnlyProps(state, draft) {
   const {
     excerpt,
     tags,
+    attachments,
   } = draft;
 
   return {
     ...state,
     excerpt,
     tags,
+    attachments,
   };
 }
 

@@ -6,14 +6,16 @@ export const uploadDraftAttachments = ({ message, attachments }) => async (dispa
     throw new Error('not a browser environment');
   }
 
-  const results = await Promise.all(attachments.map((file) => {
-    const attachment = new FormData();
-    attachment.append('attachment', file);
+  try {
+    await Promise.all(attachments.map((file) => {
+      const attachment = new FormData();
+      attachment.append('attachment', file);
 
-    return tryCatchAxiosPromise(dispatch(uploadAttachment({ message, attachment })));
-  }));
+      return tryCatchAxiosPromise(dispatch(uploadAttachment({ message, attachment })));
+    }));
 
-  await dispatch(requestMessage(message.message_id));
-
-  return results;
+    return tryCatchAxiosPromise(dispatch(requestMessage(message.message_id)));
+  } catch (err) {
+    return Promise.reject(err);
+  }
 };

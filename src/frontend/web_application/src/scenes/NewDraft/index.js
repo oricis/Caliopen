@@ -51,30 +51,38 @@ const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =
 
 const onUploadAttachments = (internalId, i18n, message, { draft, attachments }) =>
   async (dispatch) => {
-    const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
-      withThrottle: false,
-      force: true,
-    }));
+    try {
+      const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
+        withThrottle: false,
+        force: true,
+      }));
 
-    const messageUpTodate = await dispatch(uploadDraftAttachments({
-      message: savedDraft, attachments,
-    }));
+      const messageUpTodate = await dispatch(uploadDraftAttachments({
+        message: savedDraft, attachments,
+      }));
 
-    return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+      return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+    } catch (err) {
+      return Promise.reject(err);
+    }
   };
 
 const onDeleteAttachement = (internalId, i18n, message, { draft, attachment }) =>
   async (dispatch) => {
-    const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
-      withThrottle: false,
-      force: true,
-    }));
+    try {
+      const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
+        withThrottle: false,
+        force: true,
+      }));
 
-    const messageUpTodate = await dispatch(deleteDraftAttachment({
-      message: savedDraft, attachment,
-    }));
+      const messageUpTodate = await dispatch(deleteDraftAttachment({
+        message: savedDraft, attachment,
+      }));
 
-    return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+      return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+    } catch (err) {
+      return Promise.reject(err);
+    }
   };
 
 const onSendDraft = (currentTab, { draft, message, internalId }) => async (dispatch) => {

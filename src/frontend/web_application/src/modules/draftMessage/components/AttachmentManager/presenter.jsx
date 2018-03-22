@@ -8,8 +8,8 @@ import './style.scss';
 function generateStateFromProps(props) {
   const { message } = props;
 
-  if (message && message.attachments) {
-    return { attachments: message.attachments };
+  if (message) {
+    return { attachments: message.attachments || [] };
   }
 
   return {};
@@ -42,18 +42,20 @@ class AttachmentManager extends Component {
     }
   }
 
-  createHandleDeleteAttachement = index => async () => {
+  createHandleDeleteAttachement = tempId => async () => {
     this.setState(state => ({
       isFetching: {
         ...state.isFetching,
-        [index]: true,
+        [tempId]: true,
       },
     }));
 
     const { onDeleteAttachement, notifyError } = this.props;
 
     try {
-      await onDeleteAttachement();
+      await onDeleteAttachement(
+        this.state.attachments.find(attachement => attachement.temp_id === tempId)
+      );
     } catch ({ message }) {
       notifyError({ message });
     }
@@ -61,7 +63,7 @@ class AttachmentManager extends Component {
     this.setState(state => ({
       isFetching: {
         ...state.isFetching,
-        [index]: undefined,
+        [tempId]: undefined,
       },
     }));
   }
@@ -122,15 +124,15 @@ class AttachmentManager extends Component {
   }
 
   render() {
-    const { i18n } = this.props;
+    const { i18n, message } = this.props;
 
     return (
       <div className="m-attachement-manager">
         <ul className="m-attachement-manager__list">
           {this.state.attachments
-            .map((attachement, index) => (
-              <li key={index} className="m-attachement-manager__item">
-                <Link className="m-attachement-manager__file-name" href={`/api/v2/messages/${this.state.message_id}/attachments/${index}`} download={attachement.file_name}>
+            .map(attachement => (
+              <li key={attachement.temp_id} className="m-attachement-manager__item">
+                <Link className="m-attachement-manager__file-name" href={`/api/v2/messages/${message.message_id}/attachments/${attachement.temp_id}`} download={attachement.file_name}>
                   {attachement.file_name}
                 </Link>
                 <TextBlock className="m-attachement-manager__file-size">
@@ -138,8 +140,8 @@ class AttachmentManager extends Component {
                 </TextBlock>
                 <Button
                   className="m-attachement-manager__file-delete"
-                  onClick={this.createHandleDeleteAttachement(index)}
-                  icon={this.state.isFetching[index] ? <Spinner isLoading display="inline" /> : <Icon type="remove" />}
+                  onClick={this.createHandleDeleteAttachement(attachement.temp_id)}
+                  icon={this.state.isFetching[attachement.temp_id] ? <Spinner isLoading display="inline" /> : <Icon type="remove" />}
                   aria-label={i18n._('message.compose.action.delete_attachement')}
                 />
               </li>
