@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
 import Button from '../../../Button';
+import FileSize from '../../../FileSize';
 
 class File extends PureComponent {
   static propTypes = {
@@ -14,7 +14,6 @@ class File extends PureComponent {
 
   render() {
     const { file, onRemove } = this.props;
-    const size = Math.round(file.size / 100) / 10;
 
     return (
       <div className="m-input-file-group__file">
@@ -27,9 +26,7 @@ class File extends PureComponent {
         />
         <span className="m-input-file-group__file__name">{file.name}</span>
         <span className="m-input-file-group__file__size">
-          <Trans id="input-file-group.file.size">
-            {size} kB
-          </Trans>
+          <FileSize size={file.size} />
         </span>
       </div>
     );

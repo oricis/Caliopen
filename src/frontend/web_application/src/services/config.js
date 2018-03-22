@@ -20,10 +20,19 @@ const getBaseUrl = () => {
 };
 const getAPIBaseUrl = () => `${getBaseUrl()}/api`;
 
+const getMaxSize = () => {
+  const { maxBodySize } = getConfig();
+  const numberSize = maxBodySize.toLowerCase()
+    .replace('kb', '000')
+    .replace('mb', '000000');
+
+  return Number(numberSize);
+};
 
 export {
   getBaseUrl,
   getAPIBaseUrl,
   initConfig,
   getConfig,
+  getMaxSize,
 };

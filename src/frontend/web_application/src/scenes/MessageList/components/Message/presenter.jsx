@@ -7,7 +7,7 @@ import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
 import { MultidimensionalPi } from '../../../../modules/pi';
 import { ContactAvatarLetter } from '../../../../modules/avatar';
-import { Button, Icon, TextBlock, Dropdown, withDropdownControl } from '../../../../components';
+import { Button, Link, Icon, TextBlock, Dropdown, withDropdownControl, FileSize } from '../../../../components';
 import MessageActionsContainer from '../MessageActionsContainer';
 import { getAuthor } from '../../../../services/message';
 
@@ -128,6 +128,41 @@ class Message extends Component {
     );
   }
 
+  renderAttachements() {
+    const { message: { message_id: messageId, attachments } } = this.props;
+
+    if (!attachments || attachments.length === 0) {
+      return null;
+    }
+
+    return (
+      <ul className="m-message__attachements-list">
+        {attachments.map((attachement, index) => (
+          <li key={index}>
+            <Link
+              className="m-message__attachements-item"
+              button
+              expanded
+              href={`/api/v2/messages/${messageId}/attachments/${index}`}
+              download={attachement.file_name}
+              title={attachement.file_name}
+            >
+              <TextBlock className="m-message__attachement-name">
+                {attachement.file_name}
+              </TextBlock>
+              <TextBlock className="m-message__attachement-size">
+                <FileSize size={attachement.size} />
+              </TextBlock>
+              <span className="m-message__attachement-icon">
+                <Icon type="download" />
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   render() {
     const {
       message, onDelete, onMessageUnread, onMessageRead,
@@ -163,6 +198,9 @@ class Message extends Component {
           <div className={topBarClassName}>
             {message.pi && <MultidimensionalPi pi={message.pi} className="m-message__pi" mini />}
             {author.address && <TextBlock className="m-message__author">{author.address}</TextBlock>}
+            {message.attachments && message.attachments.length !== 0 && (
+              <div className="m-message__with-attachements"><Icon type="paperclip" /></div>
+            )}
             {message.type &&
               (<div className="m-message__type">
                 <span className="m-message__type-label">
@@ -218,6 +256,7 @@ class Message extends Component {
                 }
               </Button>
             }
+            {this.renderAttachements()}
           </div>
         </div>
       </div>

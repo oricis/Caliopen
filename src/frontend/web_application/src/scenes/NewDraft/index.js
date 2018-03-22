@@ -6,6 +6,7 @@ import { push } from 'react-router-redux';
 import { requestNewDraft, clearDraft, syncDraft } from '../../store/modules/draft-message';
 import { removeTab } from '../../store/modules/tab';
 import { saveDraft, sendDraft } from '../../modules/draftMessage';
+import { uploadDraftAttachments, deleteDraftAttachment } from '../../modules/file';
 import { withNotification } from '../../hoc/notification';
 import { withCurrentTab } from '../../hoc/tab';
 import { deleteMessage } from '../../store/modules/message';
@@ -48,6 +49,42 @@ const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =
     return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
   };
 
+const onUploadAttachments = (internalId, i18n, message, { draft, attachments }) =>
+  async (dispatch) => {
+    try {
+      const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
+        withThrottle: false,
+        force: true,
+      }));
+
+      const messageUpTodate = await dispatch(uploadDraftAttachments({
+        message: savedDraft, attachments,
+      }));
+
+      return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  };
+
+const onDeleteAttachement = (internalId, i18n, message, { draft, attachment }) =>
+  async (dispatch) => {
+    try {
+      const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
+        withThrottle: false,
+        force: true,
+      }));
+
+      const messageUpTodate = await dispatch(deleteDraftAttachment({
+        message: savedDraft, attachment,
+      }));
+
+      return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  };
+
 const onSendDraft = (currentTab, { draft, message, internalId }) => async (dispatch) => {
   try {
     const messageUpToDate = await dispatch(saveDraft({ draft, message, internalId }, {
@@ -76,6 +113,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   onSendDraft,
   onDeleteMessage,
   onUpdateEntityTags,
+  onUploadAttachments,
+  onDeleteAttachement,
 }, dispatch);
 
 export default compose(

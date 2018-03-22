@@ -1,5 +1,6 @@
 import throttle from 'lodash.throttle';
 import { v4 as uuidv4 } from 'uuid';
+import isEqual from 'lodash.isequal';
 import { createMessage, updateMessage } from '../../../store/actions/message';
 import { editDraft as editDraftBase, syncDraft } from '../../../store/modules/draft-message';
 
@@ -51,6 +52,12 @@ const createThrottle = (resolve, reject, dispatch, { internalId, draft, message 
 export const saveDraft = (
   { internalId, draft, message }, { withThrottle = false, force = false } = {}
 ) => dispatch => new Promise(async (resolve, reject) => {
+  if (isEqual(message, draft)) {
+    resolve(message);
+
+    return;
+  }
+
   if (throttled[internalId]) {
     throttled[internalId].cancel();
   }

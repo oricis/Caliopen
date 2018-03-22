@@ -10,7 +10,7 @@ import Icon from '../Icon';
 
 import './style.scss';
 
-const InputFile = ({ onChange, className, accept, errors }) => {
+const InputFile = ({ onChange, className, accept, errors, multiple }) => {
   const id = uuidV1();
 
   return (
@@ -26,7 +26,7 @@ const InputFile = ({ onChange, className, accept, errors }) => {
           className="m-input-file__input"
           onChange={onChange}
           accept={accept}
-          // multiple={multiple}
+          multiple={multiple}
         />
       </Label>
       { errors.length > 0 && <FieldErrors errors={errors} /> }
@@ -36,16 +36,17 @@ const InputFile = ({ onChange, className, accept, errors }) => {
 
 InputFile.propTypes = {
   onChange: PropTypes.func.isRequired,
-  // multiple: PropTypes.bool, multiple is disabled
-  accept: PropTypes.arrayOf(PropTypes.string).isRequired,
-  errors: PropTypes.arrayOf(PropTypes.string),
+  multiple: PropTypes.bool,
+  accept: PropTypes.arrayOf(PropTypes.string),
+  errors: PropTypes.arrayOf(PropTypes.node),
   className: PropTypes.string,
 };
 
 InputFile.defaultProps = {
   className: null,
   errors: null,
-  // multiple: false,
+  multiple: false,
+  accept: undefined,
 };
 
 export default InputFile;

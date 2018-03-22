@@ -31,7 +31,7 @@ describe('tag', () => {
       .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', __('Amphibians')))), 5 * 1000))
       .then(() => browser.element(by.css('.m-tags-form .m-input-text')).sendKeys(tagName))
       .then(() => browser.element(by.css(`.m-tags-search__button[aria-label=${__('Add')}]`)).click())
-      .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 5 * 1000))
+      .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 8 * 1000))
       .then(() => element(by.cssContainingText('.m-tags-form__section .m-tag-item', __('Inbox'))).element(by.css(`[aria-label="${__('Remove')}"]`)).click())
       .then(() => browser.sleep(1))
       .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', __('Inbox'))).isPresent()).toEqual(false))
