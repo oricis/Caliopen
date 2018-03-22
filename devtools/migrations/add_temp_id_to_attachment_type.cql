@@ -1,0 +1,1 @@
+ALTER TYPE message_attachment ADD temp_id uuid;

@@ -1,0 +1,1309 @@
+<!doctype html>
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:v=3D"urn:schemas-micros=
+oft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office:office">
+=09<head>
+=09=09<!-- NAME: 1 COLUMN -->
+=09=09<!--[if gte mso 15]>
+=09=09<xml>
+=09=09=09<o:OfficeDocumentSettings>
+=09=09=09<o:AllowPNG/>
+=09=09=09<o:PixelsPerInch>96</o:PixelsPerInch>
+=09=09=09</o:OfficeDocumentSettings>
+=09=09</xml>
+=09=09<![endif]-->
+=09=09<meta charset=3D"UTF-8">
+        <meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+        <meta name=3D"viewport" content=3D"width=3Ddevice-width=2C initial=
+-scale=3D1">
+=09=09<title>GolangLibs: March 7</title>
+
+    <style type=3D"text/css">
+=09=09p{
+=09=09=09margin:10px 0;
+=09=09=09padding:0;
+=09=09}
+=09=09table{
+=09=09=09border-collapse:collapse;
+=09=09}
+=09=09h1=2Ch2=2Ch3=2Ch4=2Ch5=2Ch6{
+=09=09=09display:block;
+=09=09=09margin:0;
+=09=09=09padding:0;
+=09=09}
+=09=09img=2Ca img{
+=09=09=09border:0;
+=09=09=09height:auto;
+=09=09=09outline:none;
+=09=09=09text-decoration:none;
+=09=09}
+=09=09body=2C#bodyTable=2C#bodyCell{
+=09=09=09height:100%;
+=09=09=09margin:0;
+=09=09=09padding:0;
+=09=09=09width:100%;
+=09=09}
+=09=09.mcnPreviewText{
+=09=09=09display:none !important;
+=09=09}
+=09=09#outlook a{
+=09=09=09padding:0;
+=09=09}
+=09=09img{
+=09=09=09-ms-interpolation-mode:bicubic;
+=09=09}
+=09=09table{
+=09=09=09mso-table-lspace:0pt;
+=09=09=09mso-table-rspace:0pt;
+=09=09}
+=09=09.ReadMsgBody{
+=09=09=09width:100%;
+=09=09}
+=09=09.ExternalClass{
+=09=09=09width:100%;
+=09=09}
+=09=09p=2Ca=2Cli=2Ctd=2Cblockquote{
+=09=09=09mso-line-height-rule:exactly;
+=09=09}
+=09=09a[href^=3Dtel]=2Ca[href^=3Dsms]{
+=09=09=09color:inherit;
+=09=09=09cursor:default;
+=09=09=09text-decoration:none;
+=09=09}
+=09=09p=2Ca=2Cli=2Ctd=2Cbody=2Ctable=2Cblockquote{
+=09=09=09-ms-text-size-adjust:100%;
+=09=09=09-webkit-text-size-adjust:100%;
+=09=09}
+=09=09.ExternalClass=2C.ExternalClass p=2C.ExternalClass td=2C.ExternalCla=
+ss div=2C.ExternalClass span=2C.ExternalClass font{
+=09=09=09line-height:100%;
+=09=09}
+=09=09a[x-apple-data-detectors]{
+=09=09=09color:inherit !important;
+=09=09=09text-decoration:none !important;
+=09=09=09font-size:inherit !important;
+=09=09=09font-family:inherit !important;
+=09=09=09font-weight:inherit !important;
+=09=09=09line-height:inherit !important;
+=09=09}
+=09=09#bodyCell{
+=09=09=09padding:10px;
+=09=09}
+=09=09.templateContainer{
+=09=09=09max-width:600px !important;
+=09=09}
+=09=09a.mcnButton{
+=09=09=09display:block;
+=09=09}
+=09=09.mcnImage=2C.mcnRetinaImage{
+=09=09=09vertical-align:bottom;
+=09=09}
+=09=09.mcnTextContent{
+=09=09=09word-break:break-word;
+=09=09}
+=09=09.mcnTextContent img{
+=09=09=09height:auto !important;
+=09=09}
+=09=09.mcnDividerBlock{
+=09=09=09table-layout:fixed !important;
+=09=09}
+=09=09body=2C#bodyTable{
+=09=09=09background-color:#FAFAFA;
+=09=09}
+=09=09#bodyCell{
+=09=09=09border-top:0;
+=09=09}
+=09=09.templateContainer{
+=09=09=09border:0;
+=09=09}
+=09=09h1{
+=09=09=09color:#202020;
+=09=09=09font-family:Helvetica;
+=09=09=09font-size:26px;
+=09=09=09font-style:normal;
+=09=09=09font-weight:bold;
+=09=09=09line-height:125%;
+=09=09=09letter-spacing:normal;
+=09=09=09text-align:left;
+=09=09}
+=09=09h2{
+=09=09=09color:#202020;
+=09=09=09font-family:Helvetica;
+=09=09=09font-size:22px;
+=09=09=09font-style:normal;
+=09=09=09font-weight:bold;
+=09=09=09line-height:125%;
+=09=09=09letter-spacing:normal;
+=09=09=09text-align:left;
+=09=09}
+=09=09h3{
+=09=09=09color:#202020;
+=09=09=09font-family:Helvetica;
+=09=09=09font-size:20px;
+=09=09=09font-style:normal;
+=09=09=09font-weight:bold;
+=09=09=09line-height:125%;
+=09=09=09letter-spacing:normal;
+=09=09=09text-align:left;
+=09=09}
+=09=09h4{
+=09=09=09color:#202020;
+=09=09=09font-family:Helvetica;
+=09=09=09font-size:18px;
+=09=09=09font-style:normal;
+=09=09=09font-weight:bold;
+=09=09=09line-height:125%;
+=09=09=09letter-spacing:normal;
+=09=09=09text-align:left;
+=09=09}
+=09=09#templatePreheader{
+=09=09=09background-color:#FAFAFA;
+=09=09=09background-image:none;
+=09=09=09background-repeat:no-repeat;
+=09=09=09background-position:center;
+=09=09=09background-size:cover;
+=09=09=09border-top:0;
+=09=09=09border-bottom:0;
+=09=09=09padding-top:9px;
+=09=09=09padding-bottom:9px;
+=09=09}
+=09=09#templatePreheader .mcnTextContent=2C#templatePreheader .mcnTextCont=
+ent p{
+=09=09=09color:#656565;
+=09=09=09font-family:Helvetica;
+=09=09=09font-size:12px;
+=09=09=09line-height:150%;
+=09=09=09text-align:left;
+=09=09}
+=09=09#templatePreheader .mcnTextContent a=2C#templatePreheader .mcnTextCo=
+ntent p a{
+=09=09=09color:#656565;
+=09=09=09font-weight:normal;
+=09=09=09text-decoration:underline;
+=09=09}
+=09=09#templateHeader{
+=09=09=09background-color:#FFFFFF;
+=09=09=09background-image:none;
+=09=09=09background-repeat:no-repeat;
+=09=09=09background-position:center;
+=09=09=09background-size:cover;
+=09=09=09border-top:0;
+=09=09=09border-bottom:0;
+=09=09=09padding-top:9px;
+=09=09=09padding-bottom:0;
+=09=09}
+=09=09#templateHeader .mcnTextContent=2C#templateHeader .mcnTextContent p{
+=09=09=09color:#202020;
+=09=09=09font-family:Helvetica;
+=09=09=09font-size:16px;
+=09=09=09line-height:150%;
+=09=09=09text-align:left;
+=09=09}
+=09=09#templateHeader .mcnTextContent a=2C#templateHeader .mcnTextContent=
+ p a{
+=09=09=09color:#2BAADF;
+=09=09=09font-weight:normal;
+=09=09=09text-decoration:underline;
+=09=09}
+=09=09#templateBody{
+=09=09=09background-color:#FFFFFF;
+=09=09=09background-image:none;
+=09=09=09background-repeat:no-repeat;
+=09=09=09background-position:center;
+=09=09=09background-size:cover;
+=09=09=09border-top:0;
+=09=09=09border-bottom:2px solid #EAEAEA;
+=09=09=09padding-top:0;
+=09=09=09padding-bottom:9px;
+=09=09}
+=09=09#templateBody .mcnTextContent=2C#templateBody .mcnTextContent p{
+=09=09=09color:#202020;
+=09=09=09font-family:Helvetica;
+=09=09=09font-size:16px;
+=09=09=09line-height:150%;
+=09=09=09text-align:left;
+=09=09}
+=09=09#templateBody .mcnTextContent a=2C#templateBody .mcnTextContent p a{
+=09=09=09color:#2BAADF;
+=09=09=09font-weight:normal;
+=09=09=09text-decoration:underline;
+=09=09}
+=09=09#templateFooter{
+=09=09=09background-color:#FAFAFA;
+=09=09=09background-image:none;
+=09=09=09background-repeat:no-repeat;
+=09=09=09background-position:center;
+=09=09=09background-size:cover;
+=09=09=09border-top:0;
+=09=09=09border-bottom:0;
+=09=09=09padding-top:9px;
+=09=09=09padding-bottom:9px;
+=09=09}
+=09=09#templateFooter .mcnTextContent=2C#templateFooter .mcnTextContent p{
+=09=09=09color:#656565;
+=09=09=09font-family:Helvetica;
+=09=09=09font-size:12px;
+=09=09=09line-height:150%;
+=09=09=09text-align:center;
+=09=09}
+=09=09#templateFooter .mcnTextContent a=2C#templateFooter .mcnTextContent=
+ p a{
+=09=09=09color:#656565;
+=09=09=09font-weight:normal;
+=09=09=09text-decoration:underline;
+=09=09}
+=09@media only screen and (min-width:768px){
+=09=09.templateContainer{
+=09=09=09width:600px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09body=2Ctable=2Ctd=2Cp=2Ca=2Cli=2Cblockquote{
+=09=09=09-webkit-text-size-adjust:none !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09body{
+=09=09=09width:100% !important;
+=09=09=09min-width:100% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#bodyCell{
+=09=09=09padding-top:10px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnRetinaImage{
+=09=09=09max-width:100% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImage{
+=09=09=09width:100% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnCartContainer=2C.mcnCaptionTopContent=2C.mcnRecContentContainer=
+=2C.mcnCaptionBottomContent=2C.mcnTextContentContainer=2C.mcnBoxedTextCont=
+entContainer=2C.mcnImageGroupContentContainer=2C.mcnCaptionLeftTextContent=
+Container=2C.mcnCaptionRightTextContentContainer=2C.mcnCaptionLeftImageCon=
+tentContainer=2C.mcnCaptionRightImageContentContainer=2C.mcnImageCardLeftT=
+extContentContainer=2C.mcnImageCardRightTextContentContainer=2C.mcnImageCa=
+rdLeftImageContentContainer=2C.mcnImageCardRightImageContentContainer{
+=09=09=09max-width:100% !important;
+=09=09=09width:100% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnBoxedTextContentContainer{
+=09=09=09min-width:100% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageGroupContent{
+=09=09=09padding:9px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnCaptionLeftContentOuter .mcnTextContent=2C.mcnCaptionRightConten=
+tOuter .mcnTextContent{
+=09=09=09padding-top:9px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageCardTopImageContent=2C.mcnCaptionBottomContent:last-child .=
+mcnCaptionBottomImageContent=2C.mcnCaptionBlockInner .mcnCaptionTopContent=
+:last-child .mcnTextContent{
+=09=09=09padding-top:18px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageCardBottomImageContent{
+=09=09=09padding-bottom:9px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageGroupBlockInner{
+=09=09=09padding-top:0 !important;
+=09=09=09padding-bottom:0 !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageGroupBlockOuter{
+=09=09=09padding-top:9px !important;
+=09=09=09padding-bottom:9px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnTextContent=2C.mcnBoxedTextContentColumn{
+=09=09=09padding-right:18px !important;
+=09=09=09padding-left:18px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageCardLeftImageContent=2C.mcnImageCardRightImageContent{
+=09=09=09padding-right:18px !important;
+=09=09=09padding-bottom:0 !important;
+=09=09=09padding-left:18px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcpreview-image-uploader{
+=09=09=09display:none !important;
+=09=09=09width:100% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09h1{
+=09=09=09font-size:22px !important;
+=09=09=09line-height:125% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09h2{
+=09=09=09font-size:20px !important;
+=09=09=09line-height:125% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09h3{
+=09=09=09font-size:18px !important;
+=09=09=09line-height:125% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09h4{
+=09=09=09font-size:16px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnBoxedTextContentContainer .mcnTextContent=2C.mcnBoxedTextContent=
+Container .mcnTextContent p{
+=09=09=09font-size:14px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#templatePreheader{
+=09=09=09display:block !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#templatePreheader .mcnTextContent=2C#templatePreheader .mcnTextCont=
+ent p{
+=09=09=09font-size:14px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#templateHeader .mcnTextContent=2C#templateHeader .mcnTextContent p{
+=09=09=09font-size:16px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#templateBody .mcnTextContent=2C#templateBody .mcnTextContent p{
+=09=09=09font-size:16px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#templateFooter .mcnTextContent=2C#templateFooter .mcnTextContent p{
+=09=09=09font-size:14px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}</style></head>
+    <body style=3D"height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-=
+size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FAFAFA=
+;">
+=09=09<!--
+-->
+        <center>
+            <table align=3D"center" border=3D"0" cellpadding=3D"0" cellspa=
+cing=3D"0" height=3D"100%" width=3D"100%" id=3D"bodyTable" style=3D"border=
+-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-s=
+ize-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;pad=
+ding: 0;width: 100%;background-color: #FAFAFA;">
+                <tr>
+                    <td align=3D"center" valign=3D"top" id=3D"bodyCell" st=
+yle=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-te=
+xt-size-adjust: 100%;height: 100%;margin: 0;padding: 10px;width: 100%;bord=
+er-top: 0;">
+                        <!-- BEGIN TEMPLATE // -->
+=09=09=09=09=09=09<!--[if (gte mso 9)|(IE)]>
+=09=09=09=09=09=09<table align=3D"center" border=3D"0" cellspacing=3D"0" c=
+ellpadding=3D"0" width=3D"600" style=3D"width:600px;">
+=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td align=3D"center" valign=3D"top" width=3D"600" style=
+=3D"width:600px;">
+=09=09=09=09=09=09<![endif]-->
+                        <table border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" width=3D"100%" class=3D"templateContainer" style=3D"border-collapse=
+: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjus=
+t: 100%;-webkit-text-size-adjust: 100%;border: 0;max-width: 600px !importa=
+nt;">
+                            <tr>
+                                <td valign=3D"top" id=3D"templatePreheader=
+" style=3D"background:#FAFAFA none no-repeat center/cover;mso-line-height-=
+rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;ba=
+ckground-color: #FAFAFA;background-image: none;background-repeat: no-repea=
+t;background-position: center;background-size: cover;border-top: 0;border-=
+bottom: 0;padding-top: 9px;padding-bottom: 9px;"><table border=3D"0" cellp=
+adding=3D"0" cellspacing=3D"0" width=3D"100%" class=3D"mcnTextBlock" style=
+=3D"min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-ta=
+ble-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;=
+">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"390" style=3D"width:390px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 390px;border-collapse: collapse;mso-table=
+-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text=
+-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-left: 18px;padding-bottom: 9px;padding-right: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #656565;font-family: Helve=
+tica;font-size: 12px;line-height: 150%;text-align: left;">
+
+                            GoLangLibs
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"210" style=3D"width:210px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 210px;border-collapse: collapse;mso-table=
+-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text=
+-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-left: 18px;padding-bottom: 9px;padding-right: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #656565;font-family: Helve=
+tica;font-size: 12px;line-height: 150%;text-align: left;">
+
+                            <a href=3D"http://mailchi.mp/5e203dc433d0/gola=
+nglibs-19-april-1523561?e=3Dcbcfab6cd7" target=3D"_blank" style=3D"mso-line-=
+height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust:=
+ 100%;color: #656565;font-weight: normal;text-decoration: underline;">View=
+ this email in your browser</a>
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                            <tr>
+                                <td valign=3D"top" id=3D"templateHeader" s=
+tyle=3D"background:#FFFFFF none no-repeat center/cover;mso-line-height-rul=
+e: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;backg=
+round-color: #FFFFFF;background-image: none;background-repeat: no-repeat;b=
+ackground-position: center;background-size: cover;border-top: 0;border-bot=
+tom: 0;padding-top: 9px;padding-bottom: 0;"></td>
+                            </tr>
+                            <tr>
+                                <td valign=3D"top" id=3D"templateBody" sty=
+le=3D"background:#FFFFFF none no-repeat center/cover;mso-line-height-rule:=
+ exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;backgro=
+und-color: #FFFFFF;background-image: none;background-repeat: no-repeat;bac=
+kground-position: center;background-size: cover;border-top: 0;border-botto=
+m: 2px solid #EAEAEA;padding-top: 0;padding-bottom: 9px;"><table border=3D=
+"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" class=3D"mcnTextBlo=
+ck" style=3D"min-width: 100%;border-collapse: collapse;mso-table-lspace: 0=
+pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adju=
+st: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #202020;font-family: Helve=
+tica;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <strong>Go libraries and applications</strong>=
+<br>
+<a href=3D"https://phptrends.us11.list-manage.com/track/click?u=3D98e163a8=
+883174330aa8e29f0&id=3D50b3bc0209&e=3Dcbcfab6cd7" target=3D"_blank" style=
+=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;color: #2BAADF;font-weight: normal;text-decoration: unde=
+rline;">golanglibs.com</a><br>
+<br>
+Some interesting new stuff in Go world:
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #202020;font-family: Helve=
+tica;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <ul>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dded6672b63&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">marketstore</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs=
+) =E2=80=94 DataFrame Server for Financial Timeseries Data</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D5b29a6012d&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">aws-env</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Secure way to handle environment variables in Docker with AWS P=
+arameter Store</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D3e11c18822&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">go-libp2p</a>&nbsp;(Reached 1000=E2=AD=90=EF=
+=B8=8Fs) =E2=80=94 libp2p implementation in Go</strong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D3e819a3af9&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">gloo</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 The Function Gateway built on top of Envoy</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dfafcdc1993&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">one-file-pdf</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8F=
+s) =E2=80=94 A minimalist Go PDF writer in &lt;2K lines and 1 file</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D72b2acb1e7&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">git-sizer</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Compute various size metrics for a Git repository=2C flagging t=
+hose that might cause problems</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dadca8cce07&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">kubicorn</a>&nbsp;(Reached 1000=E2=AD=90=EF=
+=B8=8Fs) =E2=80=94 Simple. Cloud Native. Kubernetes. Rainbow. Infrastructu=
+re.</strong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D3139e8c9c8&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">wonaming</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Wonaming is a simple grpc-go balancer &amp; naming implementati=
+on=2C supporting etcd and Consul as the service register/discovery backend=
+=2E Wonaming also supports self-register to etcd/consul.</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D75ce6f1930&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">statsdaemon</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs=
+) =E2=80=94 an implementation of Etsy's statsd in Go</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dc1a1cc1150&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">monocular</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Web UI for Helm Chart repositories</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D4c4bacc8bb&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">chasquid</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 [mirror] SMTP (email) server</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dbdf6b5d649&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">goloader</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 a golang dynamic loader</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D34bd4c2849&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">mage</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 a Make/rake-like build tool using Go</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D6c0308f85f&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">silenceper/wechat</a>&nbsp;(Reached 500=E2=AD=90=EF=
+=B8=8Fs) =E2=80=94 WeChat SDK for Go =EF=BC=88=E5=BE=AE=E4=BF=A1SDK=EF=BC=
+=9A=E7=AE=80=E5=8D=95=E3=80=81=E6=98=93=E7=94=A8=EF=BC=89</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D9989ebb0ff&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">fastway</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 yet another gateway</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D8872054668&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">openebs</a>&nbsp;(Reached 5000=E2=AD=90=EF=
+=B8=8Fs) =E2=80=94 OpenEBS is containerized block storage written in Go fo=
+r cloud native and other environments w/ per container (or pod) QoS SLAs=
+=2C tiering and replica policies across AZs and environments=2C and predic=
+table and scalable performance.</strong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dbb8d8e9cb2&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">caspaxos</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 A Go implementation of the CASPaxos protocol</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D329180f3a2&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">books</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 Programming books. For the people=2C by the people.</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D74269840dc&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">yourbasic/graph</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=
+=8Fs) =E2=80=94 Library of basic graph algorithms</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D23c7b470a5&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">grmon</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 Command line monitoring for goroutines</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D78af8b9f81&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">drone-docker</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8F=
+s) =E2=80=94 Drone plugin for publishing Docker images</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D71a1ae705f&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">webloop</a>&nbsp;(Reached 1000=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 WebLoop: Scriptable=2C headless WebKit with a Go API. Like Phan=
+tomJS=2C but for Go.</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D9cba7e5810&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">jetserver</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Jetbrains License Server's algorithm implemented in Golang</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D964fe7c4c8&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">ggr</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs) =E2=80=
+=94 A lightweight load balancer used to create big Selenium clusters</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dabaa78cc9d&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">kubectl</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Issue tracker and mirror of kubectl code</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D99dc749069&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">shiori</a>&nbsp;(Reached 1000=E2=AD=90=EF=B8=
+=8Fs) =E2=80=94 Simple bookmark manager built with Go</strong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D75e50beb79&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">go-ps</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 Find=2C list=2C and inspect processes from Go (golang).</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dbd3ca4df93&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">gormigrate</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Minimalistic database migration helper for Gorm ORM</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D2edcc47be2&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">libvirt/libvirt-go</a>&nbsp;(Reached 100=E2=AD=90=EF=
+=B8=8Fs) =E2=80=94 Automatic read-only mirror of http://libvirt.org/git/?p=
+=3Dlibvirt-go.git;a=3Dsummary</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D93d36a244a&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">launcher</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Osquery launcher=2C autoupdater=2C and packager</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dd2d3546122&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">slack-term</a>&nbsp;(Reached 2000=E2=AD=90=
+=EF=B8=8Fs) =E2=80=94 Slack client for your terminal</strong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D956e2e1277&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">cdp</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs) =E2=80=
+=94 Package cdp provides type-safe bindings for the Chrome Debugging Proto=
+col (CDP)=2C written in the Go programming language.</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Df2265a8137&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">GoQuiet</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 A shadowsocks plugin that obfuscates SS traffic and can defend=
+ against active probing</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3De952bf0005&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">gocaml</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 :camel: Practical statically typed functional programming language=
+ implementation with Go and LLVM</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D56d753fbd8&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">yarpc-go</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 A message passing platform for Go</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D4db13ca478&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">go-p2p</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 DEPRECATED (moved to tendermint/tendermint): Golang P2P library</li=
+>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D4291a4492e&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">aws-vault</a>&nbsp;(Reached 1000=E2=AD=90=EF=
+=B8=8Fs) =E2=80=94 A vault for securely storing and accessing AWS credenti=
+als in development environments</strong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dbd13136bf9&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">shippy</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 Code for the tutorial series on creating Microservices with Golang<=
+/li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D344defbf10&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">transfer.sh</a>&nbsp;(Reached 5000=E2=AD=90=
+=EF=B8=8Fs) =E2=80=94 Easy and fast file sharing from the command-line.</s=
+trong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Df18309ae48&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">gofaas</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 A boilerplate Go and AWS Lambda app. Demonstrates an expert configu=
+ration of 10+ AWS services to support running Go functions-as-a-service (F=
+aaS).</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dd556a4f4b5&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">shiori</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 Simple bookmark manager built with Go</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D4d3a316a9f&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">chainlink</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 node of the decentralized oracle network=2C bridging on and off=
+-chain computation</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dc3fc43cede&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">gophers</a>&nbsp;(Reached 1000=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Gopher Artwork by Ashley McNamara</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3De3d01cdd3d&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">img</a>&nbsp;(Reached 1000=E2=AD=90=EF=B8=8F=
+s) =E2=80=94 Standalone=2C daemon-less=2C unprivileged Dockerfile and OCI=
+ compatible container image builder.</strong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D5264ef3615&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">sensu-go</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 The next generation of the Sensu you know and love. We'd love h=
+aving you involved =E2=9D=A4</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D5b8d19a805&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">pkg</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs) =E2=80=
+=94 CoreStore: A standard library for e-commerce based on an optimized Mag=
+ento 2 database structure. =E2=9A=A0=EF=B8=8F Under full development. DON'=
+T use/test it! =E2=9A=A0=EF=B8=8F</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dbac6183b83&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">vgo</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs) =E2=80=
+=94 [mirror] Versioned Go Prototype</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D784adf7046&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">go-genesis</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Public blockchain platform for building digital ecosystems</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D8a086c6ddb&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">matterircd</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Connect to your local/remote mattermost installation or to slac=
+k via your IRC-client.</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Da70c46976a&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">slack-term</a>&nbsp;(Reached 1000=E2=AD=90=
+=EF=B8=8Fs) =E2=80=94 Slack client for your terminal</strong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D7a7f5902aa&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">kube-arbitrator</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=
+=8Fs) =E2=80=94 Policy based resource sharing for Kubernetes cluster</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D9bc221940d&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">truss</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 Truss helps you build go-kit microservices without having to worry=
+ about writing or maintaining boilerplate code.</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Db121db9dba&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">rulio</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 Rulio</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D2e6273ba7c&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">shiori</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 Simple bookmark manager built with Go</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D589e726f04&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">shortme</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Yet Another URL Shortening Service in Golang</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Df297757832&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">dat</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs) =E2=80=
+=94 Go Postgres Data Access Toolkit</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D8d059912a7&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">gosu</a>&nbsp;(Reached 2000=E2=AD=90=EF=B8=
+=8Fs) =E2=80=94 Simple Go-based setuid+setgid+setgroups+exec</strong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D9f2a6a3ef4&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">cyclone</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 A cloud native CI/CD platform built for container workflow</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D2212fb0695&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">freshpod</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Restart Pods on Minikube automatically on image rebuilds</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Deb325df760&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">kaneshin/pigeon</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=
+=8Fs) =E2=80=94 Google Cloud Vision API on Golang.</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D0e0a34fd3e&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">gopdf</a>&nbsp;(Reached 500=E2=AD=90=EF=B8=8Fs) =E2=
+=80=94 A simple library for generating PDF written in Go lang</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D37ae705cd8&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">go-swagger</a>&nbsp;(Reached 2000=E2=AD=90=
+=EF=B8=8Fs) =E2=80=94 Swagger 2.0 implementation for go</strong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dcabbf05bc7&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">firecamp</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Serverless Platform for the stateful services</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Dd1c1857bb2&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">goss</a>&nbsp;(Reached 2000=E2=AD=90=EF=B8=
+=8Fs) =E2=80=94 Quick and Easy server testing/validation</strong></li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><a href=3D"https://phptrends.us11.list-man=
+age.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3D35cefb7661&e=3D=
+cbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%=
+;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-de=
+coration: underline;">replicator</a>&nbsp;(Reached 100=E2=AD=90=EF=B8=8Fs)=
+ =E2=80=94 Automated Cluster and Job Scaling For HashiCorp Nomad</li>
+=09<li style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-=
+webkit-text-size-adjust: 100%;"><strong><a href=3D"https://phptrends.us11.=
+list-manage.com/track/click?u=3D98e163a8883174330aa8e29f0&id=3Df35b72107b&=
+e=3Dcbcfab6cd7" style=3D"mso-line-height-rule: exactly;-ms-text-size-adju=
+st: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal=
+;text-decoration: underline;">bettercap</a>&nbsp;(Reached 1000=E2=AD=90=EF=
+=B8=8Fs) =E2=80=94 The state of the art network attack and monitoring fram=
+ework.</strong></li>
+</ul>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #202020;font-family: Helve=
+tica;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            Have fun and a productive week!<br>
+- Slava
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                            <tr>
+                                <td valign=3D"top" id=3D"templateFooter" s=
+tyle=3D"background:#FAFAFA none no-repeat center/cover;mso-line-height-rul=
+e: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;backg=
+round-color: #FAFAFA;background-image: none;background-repeat: no-repeat;b=
+ackground-position: center;background-size: cover;border-top: 0;border-bot=
+tom: 0;padding-top: 9px;padding-bottom: 9px;"><table border=3D"0" cellpadd=
+ing=3D"0" cellspacing=3D"0" width=3D"100%" class=3D"mcnDividerBlock" style=
+=3D"min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-ta=
+ble-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;=
+table-layout: fixed !important;">
+    <tbody class=3D"mcnDividerBlockOuter">
+        <tr>
+            <td class=3D"mcnDividerBlockInner" style=3D"min-width: 100%;pa=
+dding: 10px 18px 25px;mso-line-height-rule: exactly;-ms-text-size-adjust:=
+ 100%;-webkit-text-size-adjust: 100%;">
+                <table class=3D"mcnDividerContent" border=3D"0" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"min-width: 100%;border-t=
+op: 2px solid #EEEEEE;border-collapse: collapse;mso-table-lspace: 0pt;mso-=
+table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100=
+%;">
+                    <tbody><tr>
+                        <td style=3D"mso-line-height-rule: exactly;-ms-tex=
+t-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                            <span></span>
+                        </td>
+                    </tr>
+                </tbody></table>
+<!--
+                <td class=3D"mcnDividerBlockInner" style=3D"padding: 18px;=
+">
+                <hr class=3D"mcnDividerContent" style=3D"border-bottom-col=
+or:none; border-left-color:none; border-right-color:none; border-bottom-wi=
+dth:0; border-left-width:0; border-right-width:0; margin-top:0; margin-rig=
+ht:0; margin-bottom:0; margin-left:0;" />
+-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #656565;font-family: Helve=
+tica;font-size: 12px;line-height: 150%;text-align: center;">
+
+                            <strong>Our mailing address is:</strong><br>
+<div class=3D"vcard"><span class=3D"org fn">Slava Vishnyakov</span><div cl=
+ass=3D"adr"><div class=3D"street-address">Ugreshskaya 18</div><div class=
+=3D"extended-address">Moscow reg</div><span class=3D"locality">Dzerzhinsky=
+</span> <span class=3D"postal-code">140091</span> <div class=3D"country-na=
+me">Russia</div></div><br><a href=3D"//phptrends.us11.list-manage.com/vcar=
+d?u=3D98e163a8883174330aa8e29f0&id=3Dbaee93b39f" class=3D"hcard-download">=
+Add us to your address book</a></div> <br>
+<br>
+Want to change how you receive these emails?<br>
+You can <a href=3D"https://phptrends.us11.list-manage.com/profile?u=3D98e1=
+63a8883174330aa8e29f0&id=3Dbaee93b39f&e=3Dcbcfab6cd7" style=3D"mso-line-heig=
+ht-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%=
+;color: #656565;font-weight: normal;text-decoration: underline;">update yo=
+ur preferences</a> or <a href=3D"https://phptrends.us11.list-manage.com/un=
+subscribe?u=3D98e163a8883174330aa8e29f0&id=3Dbaee93b39f&e=3Dcbcfab6cd7&c=3D6=
+9e50544c0" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;color: #656565;font-weight: normal;text-=
+decoration: underline;">unsubscribe from this list</a><br>
+<a href=3D"http://www.mailchimp.com/monkey-rewards/?utm_source=3Dfreemium_=
+newsletter&utm_medium=3Demail&utm_campaign=3Dmonkey_rewards&aid=3D98e163a8=
+883174330aa8e29f0&afl=3D1"><img src=3D"https://cdn-images.mailchimp.com/mo=
+nkey_rewards/MC_MonkeyReward_15.png" border=3D"0" alt=3D"Email Marketing P=
+owered by MailChimp" title=3D"MailChimp Email Marketing" width=3D"139" hei=
+ght=3D"54"></a>&nbsp;
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                        </table>
+=09=09=09=09=09=09<!--[if (gte mso 9)|(IE)]>
+=09=09=09=09=09=09</td>
+=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09</table>
+=09=09=09=09=09=09<![endif]-->
+                        <!-- // END TEMPLATE -->
+                    </td>
+                </tr>
+            </table>
+        </center>
+    <img src=3D"https://phptrends.us11.list-manage.com/track/open.php?u=3D=
+98e163a8883174330aa8e29f0&id=3D69e50544c0&e=3Dcbcfab6cd7" height=3D"1" wi=
+dth=3D"1"></body>
+</html>
