@@ -61,8 +61,8 @@ func sigHandler(workers []*imapWorker.Worker) {
 			// TODO: reinitialize
 		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT {
 			log.Info("Shutdown signal caught")
-			for i, w := range workers {
-				w.Stop(uint8(i))
+			for _, w := range workers {
+				w.Stop()
 			}
 			log.Info("Shutdown completed, exiting")
 			os.Exit(0)
@@ -97,11 +97,11 @@ func start(cmd *cobra.Command, args []string) {
 	imapWorkers = make([]*imapWorker.Worker, cmdConfig.Workers)
 	for i = 0; i < cmdConfig.Workers; i++ {
 		log.Infof("initializing IMAP worker %d", i)
-		imapWorkers[i], err = imapWorker.NewWorker(imapWorker.WorkerConfig(cmdConfig))
+		imapWorkers[i], err = imapWorker.NewWorker(imapWorker.WorkerConfig(cmdConfig), i)
 		if err != nil {
 			log.WithError(err).Fatal("Failed to init IMAP Worker")
 		}
-		go imapWorkers[i].Start(i)
+		go imapWorkers[i].Start()
 	}
 	sigHandler(imapWorkers)
 }

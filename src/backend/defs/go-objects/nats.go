@@ -6,8 +6,9 @@
 
 package objects
 
-type DeliveryAck struct {
-	EmailMessage *EmailMessage `json:"-"`
-	Err          bool          `json:"error"`
-	Response     string        `json:"message,omitempty"`
+// IMAPfetchOrder is model for message sent on topic 'IMAPfetcher' in NATS's queue 'IMAPworkers'
+type IMAPfetchOrder struct {
+	Order          string `json:"order"`
+	UserId         UUID   `json:"user_id"`
+	RemoteIdentity string `json:"remote_identity"`
 }

@@ -1,7 +1,8 @@
 workers: 2                                             # number of concurrent workers
 #messaging system
-nats_queue: IMAPqueue                                  # NATS group queue to listen to orders
 nats_url: nats://nats.dev.caliopen.org:4222
+nats_queue: IMAPworkers                                # NATS group queue for workers
+nats_topic: IMAPfetcher                                # NATS topic to listen to actions to execute
 #storage facility
 store_name: cassandra                                  # backend to store raw emails and messages (inbound & outbound)
 store_settings:

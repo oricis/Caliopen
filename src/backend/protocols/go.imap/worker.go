@@ -15,15 +15,20 @@ import (
 
 type Worker struct {
 	Config   WorkerConfig
+	Id       uint8
 	Lda      *Lda
 	NatsConn *nats.Conn
+	NatsSub  *nats.Subscription
 	Store    *store.CassandraBackend
 }
 
 // NewWorker loads config, checks for errors then returns a worker ready to start.
-func NewWorker(config WorkerConfig) (worker *Worker, err error) {
+func NewWorker(config WorkerConfig, id uint8) (worker *Worker, err error) {
 
-	w := Worker{Config: config}
+	w := Worker{
+		Config: config,
+		Id:     id,
+	}
 	//copy relevant config to LDAConfig
 	w.Config.LDAConfig.StoreName = w.Config.StoreName
 	w.Config.LDAConfig.NatsURL = w.Config.NatsUrl
@@ -72,11 +77,23 @@ func NewWorker(config WorkerConfig) (worker *Worker, err error) {
 	return &w, nil
 }
 
-func (worker *Worker) Start(index uint8) {
-	log.Infof("IMAP worker %d started", index)
+func (worker *Worker) Start() error {
+	var err error
+	(*worker).NatsSub, err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopic, worker.Config.NatsQueue, worker.natsMsgHandler)
+	if err != nil {
+		return err
+	}
+	log.Infof("IMAP worker %d started", worker.Id)
+	return nil
 }
 
-func (worker *Worker) Stop(index uint8) {
-	log.Infof("stopping IMAP worker %d", index)
-	log.Infof("worker %d stopped", index)
+func (worker *Worker) Stop() {
+	log.Infof("stopping IMAP worker %d", worker.Id)
+	// check for pending jobs
+	//close nats conn
+	log.Infof("worker %d stopped", worker.Id)
+}
+
+func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
+	log.Infof("Worker %d got your order ! : %s", worker.Id, string(msg.Data))
 }

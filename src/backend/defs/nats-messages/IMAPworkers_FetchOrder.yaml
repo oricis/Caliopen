@@ -1,0 +1,4 @@
+# this is the model of the json payload that must be sent to 'IMAPfetcher' topic on NATS's queue 'IMAPworkers'
+order: fetch
+user_id: 1aae81ea-2f21-483e-8e68-b4fcf664df5a
+remote_identity: xxxx@xxxx.xxx

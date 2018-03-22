@@ -15,6 +15,7 @@ type (
 	WorkerConfig struct {
 		Workers     uint8       `mapstructure:"workers"`
 		NatsQueue   string      `mapstructure:"nats_queue"`
+		NatsTopic   string      `mapstructure:"nats_topic"`
 		NatsUrl     string      `mapstructure:"nats_url"`
 		StoreName   string      `mapstructure:"store_name"`
 		StoreConfig StoreConfig `mapstructure:"store_settings"`
