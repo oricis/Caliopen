@@ -74,7 +74,6 @@ class AddFieldGroup extends Component {
         })}
         <Button
           shape="plain"
-          display="inline"
           className="m-add-field-group__button"
           onClick={this.handleAdd}
           disabled={this.state.item.length === 0}

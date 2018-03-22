@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import classnames from 'classnames';
-import Button from '../../../../components/Button';
-import { FormGrid, FormRow, FormColumn, Fieldset, Legend, TextFieldGroup, SelectFieldGroup, CollectionFieldGroup } from '../../../../components';
+import { Button, FormGrid, FormRow, FormColumn, Label, TextFieldGroup, SelectFieldGroup, CollectionFieldGroup } from '../../../../components';
 import './style.scss';
 
 function generateStateFromProps(props) {
@@ -21,6 +20,8 @@ class DeviceForm extends Component {
   static propTypes = {
     device: PropTypes.shape({}).isRequired,
     onChange: PropTypes.func.isRequired,
+    notifyError: PropTypes.func.isRequired,
+    notifySuccess: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
 
@@ -65,9 +66,15 @@ class DeviceForm extends Component {
     return { isValid: false, errors: [i18n._('device.feedback.invalid_ip', { defaults: 'IP or subnet address is invalid.' })] };
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
+    const { onChange, notifyError, notifySuccess } = this.props;
     event.preventDefault();
-    this.props.onChange({ device: this.state.device, original: this.props.device });
+    try {
+      await onChange({ device: this.state.device, original: this.props.device });
+      notifySuccess({ message: (<Trans id="device.feedback.save_success">The device has been saved</Trans>) });
+    } catch (errors) {
+      errors.forEach(({ message }) => notifyError({ message }));
+    }
   }
 
   render() {
@@ -123,63 +130,45 @@ class DeviceForm extends Component {
     return (
       <FormGrid className="m-device-form">
         <form method="post" onSubmit={this.handleSubmit}>
-          <Fieldset className="m-device-form__fieldset">
-            <Legend><Trans id="device.manage_form.name.label">Name:</Trans></Legend>
-            <FormRow reverse>
-              <FormColumn bottomSpace size="medium">
-                <label htmlFor="device-name"><Trans id="device.manage_form.name.infotext">This is the name which allows you to identify your device everywhere.</Trans></label>
-              </FormColumn>
-              <FormColumn bottomSpace size="medium">
-                <TextFieldGroup
-                  label={i18n._('device.manage_form.name.label', { defaults: 'Name:' })}
-                  name="name"
-                  id="device-name"
-                  showLabelforSr
-                  value={this.state.device.name}
-                  onChange={this.handleFieldChange}
-                />
-              </FormColumn>
-            </FormRow>
-          </Fieldset>
-          <Fieldset className="m-device-form__fieldset">
-            <Legend><Trans id="device.manage_form.type.label">Type:</Trans></Legend>
-            <FormRow reverse>
-              <FormColumn bottomSpace size="medium">
-                <label htmlFor="device-type"><Trans id="device.manage_form.type.infotext">You can select the type of your device: smartphone, tablet, laptop or desktop.</Trans></label>
-              </FormColumn>
-              <FormColumn size="medium">
-                <SelectFieldGroup
-                  className="m-device-form__type"
-                  label={i18n._('device.manage_form.type.label', { defaults: 'Type:' })}
-                  name="type"
-                  id="device-type"
-                  showLabelforSr
-                  value={this.state.device.type}
-                  options={deviceTypes}
-                  onChange={this.handleFieldChange}
-                />
-              </FormColumn>
-            </FormRow>
-          </Fieldset>
-          <Fieldset className="m-device-form__fieldset">
-            <Legend><Trans id="device.manage_form.ips.label">IP or subnet address</Trans></Legend>
-            <FormRow reverse>
-              <FormColumn bottomSpace size="medium">
-                <label htmlFor="device-ips"><Trans id="device.manage_form.ips.infotext">Restrict the access of your account to certain IP addresses for this device. (e.g. 192.168.10 or 192.168.1.1/24 or 192.168.1.1-20)</Trans></label>
-              </FormColumn>
-              <FormColumn bottomSpace size="medium">
-                <CollectionFieldGroup
-                  defaultValue={defaultLocation}
-                  collection={this.state.device.locations}
-                  addTemplate={locationTemplate}
-                  editTemplate={locationTemplate}
-                  onChange={this.handleLocationsChange}
-                />
-              </FormColumn>
-            </FormRow>
-          </Fieldset>
           <FormRow>
-            <FormColumn size="medium">
+            <FormColumn bottomSpace rightSpace={false}>
+              <TextFieldGroup
+                label={i18n._('device.manage_form.name.label', { defaults: 'Name:' })}
+                name="name"
+                id="device-name"
+                value={this.state.device.name}
+                onChange={this.handleFieldChange}
+              />
+            </FormColumn>
+            <FormColumn bottomSpace rightSpace={false}>
+              <Label htmlFor="device-ips" className="m-device-form__label">
+                <Trans id="device.manage_form.ips.infotext">Restrict the access of your account to certain IP addresses for this device. (e.g. 192.168.10 or 192.168.1.1/24 or 192.168.1.1-20)</Trans>
+              </Label>
+              <CollectionFieldGroup
+                defaultValue={defaultLocation}
+                collection={this.state.device.locations}
+                addTemplate={locationTemplate}
+                editTemplate={locationTemplate}
+                onChange={this.handleLocationsChange}
+              />
+            </FormColumn>
+          </FormRow>
+          <FormRow>
+            <FormColumn rightSpace={false} bottomSpace >
+              <SelectFieldGroup
+                className="m-device-form__type"
+                label={i18n._('device.manage_form.type.label', { defaults: 'Type:' })}
+                name="type"
+                id="device-type"
+                value={this.state.device.type}
+                options={deviceTypes}
+                onChange={this.handleFieldChange}
+                expanded
+              />
+            </FormColumn>
+          </FormRow>
+          <FormRow>
+            <FormColumn>
               <Button shape="plain" type="submit"><Trans id="device.action.save_changes">Save modifications</Trans></Button>
             </FormColumn>
           </FormRow>

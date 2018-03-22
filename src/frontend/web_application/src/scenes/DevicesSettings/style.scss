@@ -3,24 +3,19 @@
 
 .s-devices-settings {
   @include flex-grid-row($size: expand);
+  padding: $co-margin / 2;
 
-  &__nav {
-    @include flex-grid-size;
-  }
-
-  &__nav-item {
-    &--verify {
-      color: map-get($caliopen-palette, 'warning');
-    }
-  }
-
+  &__info,
   &__device {
-    @include flex-grid-size;
+    @include flex-grid-size(12);
   }
 
-  @include breakpoint(medium) {
-    &__nav {
-      @include flex-grid-size(3);
+  @include breakpoint(large) {
+    &__info {
+      @include flex-grid-column(12);
+    }
+    &__device {
+      @include flex-grid-column(6);
     }
   }
 }

@@ -24,7 +24,7 @@ class VerifyDevice extends Component {
     return (
       <div className="m-device-verify">
         <Button
-          plain
+          shape="plain"
           className="m-device-verify__button"
           onClick={this.handleVerify}
         ><Trans id="device.action.verify">Verify this device</Trans></Button>

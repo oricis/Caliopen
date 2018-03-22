@@ -8,3 +8,4 @@ export * from './hoc/withDevice';
 export * from './hoc/withDevices';
 export * from './services/ecdsa';
 export * from './services/storage';
+export * from './services/status';

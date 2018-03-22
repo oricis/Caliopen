@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import SigninForm from './components/SigninForm';
 import getClient from '../../services/api-client';
+import { STATUS_VERIFIED } from '../../modules/device';
 
 const URL_DEVICES = '/settings/devices';
 
@@ -60,7 +61,7 @@ class Signin extends Component {
       isAuthenticated: true,
     };
 
-    if (response.data.device.status !== 'verified') {
+    if (response.data.device.status !== STATUS_VERIFIED) {
       nextState.redirectDevice = true;
     }
 
@@ -88,10 +89,8 @@ class Signin extends Component {
   }
 
   render() {
-    const { clientDevice } = this.props;
-
     if (this.state.isAuthenticated && this.state.redirectDevice) {
-      return <Redirect push to={`${URL_DEVICES}/${clientDevice.device_id}`} />;
+      return <Redirect push to={URL_DEVICES} />;
     }
 
     if (this.state.isAuthenticated) {

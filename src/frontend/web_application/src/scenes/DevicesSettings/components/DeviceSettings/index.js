@@ -2,15 +2,12 @@ import { createSelector } from 'reselect';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
-import { withDevice } from '../../../../modules/device';
+import { withDevice, STATUS_VERIFIED } from '../../../../modules/device';
 import Presenter from './presenter';
 
 const devicesSelector = state => state.device.devicesById;
-const deviceIdSelector = (state, ownProps) => ownProps.match.params.deviceId;
-const deviceSelector = createSelector(
-  [devicesSelector, deviceIdSelector],
-  (devicesById, deviceId) => devicesById[deviceId]
-);
+const deviceSelector = (state, ownProps) => ownProps.device;
+
 const clientDeviceSelector = (state, { clientDevice }) => clientDevice;
 const currentDeviceSelector = createSelector(
   [clientDeviceSelector, devicesSelector],
@@ -21,11 +18,11 @@ const mapStateToProps = createSelector(
   [devicesSelector, deviceSelector, currentDeviceSelector],
   (devicesById, device, currentDevice) => ({
     device,
-    isLastVerifiedDevice: device && device.status === 'verified' && Object.keys(devicesById)
-      .filter(id => devicesById[id].status === 'verified')
+    isLastVerifiedDevice: device && device.status === STATUS_VERIFIED && Object.keys(devicesById)
+      .filter(id => devicesById[id].status === STATUS_VERIFIED)
       .length <= 1,
     isCurrentDevice: currentDevice && currentDevice === device,
-    isCurrentDeviceVerified: currentDevice && currentDevice.status === 'verified',
+    isCurrentDeviceVerified: currentDevice && currentDevice.status === STATUS_VERIFIED,
   })
 );
 
