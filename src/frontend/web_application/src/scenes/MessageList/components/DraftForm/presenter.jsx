@@ -121,6 +121,10 @@ class DraftForm extends Component {
   renderAttachments = () => {
     const { draft } = this.props;
 
+    if (!draft) {
+      return null;
+    }
+
     const props = {
       message: draft,
       onUploadAttachments: this.handleFilesChange,

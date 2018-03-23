@@ -9,7 +9,7 @@ import { requestDraft, clearDraft, syncDraft } from '../../../../store/modules/d
 import { updateTagCollection, withTags } from '../../../../modules/tags';
 import { saveDraft, sendDraft } from '../../../../modules/draftMessage';
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../../../modules/file';
-import { deleteMessage } from '../../../../store/modules/message';
+import { deleteMessage, invalidate } from '../../../../store/modules/message';
 import { getLastMessage } from '../../../../services/message';
 import Presenter from './presenter';
 
@@ -64,6 +64,8 @@ const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =
       i18n, { type, entity: savedDraft, tags }
     ));
 
+    dispatch(invalidate('discussion', internalId));
+
     return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
   };
 
@@ -78,6 +80,8 @@ const onUploadAttachments = (internalId, i18n, message, { draft, attachments }) 
       const messageUpTodate = await dispatch(uploadDraftAttachments({
         message: savedDraft, attachments,
       }));
+
+      dispatch(invalidate('discussion', internalId));
 
       return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
     } catch (err) {
