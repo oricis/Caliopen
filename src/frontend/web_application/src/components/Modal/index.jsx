@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import classnames from 'classnames';
 import Button from '../Button';
 import './style.scss';
 
-class Modal extends PureComponent {
+class Modal extends Component {
   static propTypes = {
     className: PropTypes.string,
     title: PropTypes.node,
@@ -20,15 +20,17 @@ class Modal extends PureComponent {
     onClose: () => {},
   };
 
+  componentWillMount() {
+    ReactModal.setAppElement('#root');
+  }
+
   render() {
     const { className, title, children, onClose, ...props } = this.props;
-    const rootElement = document.getElementById('root');
 
     return (
       <ReactModal
         className={classnames('m-modal', className)}
         overlayClassName="m-modal__overlay"
-        appElement={rootElement}
         {...props}
       >
         <header className="m-modal__header">
