@@ -8,7 +8,7 @@ import (
 
 type (
 	// EmailMessage is a wrapper to handle the relationship
-	// between a raw email, its json representation and its Caliopen message counterpart
+	// between a raw email, its json representation and its Caliopen counterpart
 	EmailMessage struct {
 		Email      *Email
 		Email_json *EmailJson

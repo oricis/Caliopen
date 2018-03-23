@@ -7,6 +7,8 @@
 package imap_worker
 
 import (
+	"encoding/json"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
@@ -83,6 +85,7 @@ func (worker *Worker) Start() error {
 	if err != nil {
 		return err
 	}
+	worker.NatsConn.Flush()
 	log.Infof("IMAP worker %d started", worker.Id)
 	return nil
 }
@@ -90,10 +93,31 @@ func (worker *Worker) Start() error {
 func (worker *Worker) Stop() {
 	log.Infof("stopping IMAP worker %d", worker.Id)
 	// check for pending jobs
-	//close nats conn
+	// TODO
+	// properly close all connexions
+	worker.NatsConn.Close()
+	worker.Store.Close()
+	worker.Lda.broker.Store.Close()
+	worker.Lda.broker.NatsConn.Close()
 	log.Infof("worker %d stopped", worker.Id)
 }
 
+// natsMsgHandler parses message and launches appropriate goroutine to handle requested operations
 func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
-	log.Infof("Worker %d got your order ! : %s", worker.Id, string(msg.Data))
+	message := IMAPfetchOrder{}
+	err := json.Unmarshal(msg.Data, &message)
+	if err != nil {
+		log.WithError(err).Errorf("Unable to unmarshal message from NATS. Payload was <%s>", string(msg.Data))
+		return
+	}
+	switch message.Order {
+	case "fetch":
+		fetcher := Fetcher{
+			Store: worker.Store,
+			Lda:   worker.Lda,
+		}
+		go fetcher.SyncRemoteWithLocal(message)
+	case "test":
+		log.Info("Order « test » received")
+	}
 }

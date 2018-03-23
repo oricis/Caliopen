@@ -22,19 +22,14 @@ func TestSendFetchNatsOrder(t *testing.T) {
 		t.Fatal(err)
 	}
 	order := IMAPfetchOrder{
-		Order:          "test",
-		UserId:         UUID(uuid.NewV4()),
-		RemoteIdentity: "test@test",
+		Order:          "fetch",
+		UserId:         uuid.NewV4().String(),
+		RemoteIdentity: "test@test.test",
 	}
 
 	o, _ := json.Marshal(order)
 
 	msg := &nats.Msg{Subject: "IMAPfetcher", Data: o}
-	err = nc.PublishMsg(msg)
-	if err != nil {
-		t.Error(err)
-	}
-	msg = &nats.Msg{Subject: "IMAPfetcher", Data: []byte("hello stan")}
 	err = nc.PublishMsg(msg)
 	if err != nil {
 		t.Error(err)

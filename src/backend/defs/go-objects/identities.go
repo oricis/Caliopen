@@ -7,6 +7,7 @@ package objects
 import (
 	"bytes"
 	"github.com/satori/go.uuid"
+	"time"
 )
 
 type (
@@ -48,6 +49,17 @@ type (
 		Label      string `json:"label,omitempty"`      // name of contact or <display-name> in case of an address returned from participants lookup, if any
 		Protocol   string `json:"protocol,omitempty"`   // email, IRC…
 		Source     string `json:"source,omitempty"`     // "participant" or "contact", ie from where this suggestion came from
+	}
+
+	//struct to store external user accounts
+	RemoteIdentity struct {
+		DisplayName string            `cql:"display_name"       json:"display_name"`
+		Identifier  string            `cql:"identifier"         json:"identifier"`
+		Infos       map[string]string `cql:"infos"              json:"infos"`
+		LastCheck   time.Time         `cql:"last_check"         json:"last_check"`
+		Status      string            `cql:"status"             json:"status"` // for example : active, inactive, deleted
+		Type        string            `cql:"type"               json:"type"`   // for example : imap, twitter…
+		UserId      UUID              `cql:"user_id"            json:"user_id"`
 	}
 )
 
@@ -92,6 +104,18 @@ func (si *SocialIdentity) MarshallNew(...interface{}) {
 
 func (i *Identity) MarshallNew(...interface{}) {
 	//nothing to enforce
+}
+
+// SetDefaultInfos fill Infos properties map with default keys and values
+func (ri *RemoteIdentity) SetDefaultInfos() {
+	(*ri).Infos = map[string]string{
+		"lastseenuid": "",
+		"lastsync":    "",
+		"password":    "",
+		"server":      "",
+		"uidvalidity": "",
+		"username":    "",
+	}
 }
 
 // Sort interface implementations

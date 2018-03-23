@@ -8,6 +8,7 @@ package imap_worker
 
 import (
 	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 //Local Delivery Agent, in charge of IO between fetcher and our email broker
@@ -27,4 +28,9 @@ func NewLda(config WorkerConfig) (lda *Lda, err error) {
 func (lda *Lda) shutdown() error {
 	lda.broker.ShutDown()
 	return nil
+}
+
+func (lda *Lda) deliverMail(mail *Email) (ack *broker.DeliveryAck) {
+
+	return
 }
