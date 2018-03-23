@@ -24,7 +24,7 @@ import Tags from './scenes/TagsSettings';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
 import PageNotFound from './scenes/PageNotFound';
-import DevicesSettings, { DeviceSettings } from './scenes/DevicesSettings';
+import DevicesSettings from './scenes/DevicesSettings';
 
 export const getRouteConfig = ({ __ }) => [
   {
@@ -138,12 +138,6 @@ export const getRouteConfig = ({ __ }) => [
             path: '/settings/devices',
             label: __('settings.route.label.devices'),
             component: DevicesSettings,
-            routes: [
-              {
-                path: '/settings/devices/:deviceId',
-                component: DeviceSettings,
-              },
-            ],
           },
 
           // TODO: enable signatures

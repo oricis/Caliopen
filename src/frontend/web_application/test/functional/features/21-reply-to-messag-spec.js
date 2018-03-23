@@ -32,7 +32,7 @@ describe('Save a draft and send', () => {
     const text1 = 'Automatically saves a draft, then refresh.';
     const text2 = ' Automatically updates a draft, then refresh.';
 
-    browser.get('/')
+    home()
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000))
@@ -75,7 +75,7 @@ describe('Save a draft and send', () => {
       'Shut up and take my money'
     );
     const text3 = 'Add an answer to second discussion, don\'t wait and go to first one.';
-    browser.get('/')
+    home()
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion2Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000))
@@ -115,7 +115,7 @@ describe('Save a draft and send', () => {
       'Fry! Stay back! He\'s too powerful!'
     );
     const text1 = 'Force save a draft.';
-    browser.get('/')
+    home()
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000))
@@ -144,7 +144,7 @@ describe('Save a draft and send', () => {
       'Fry! Stay back! He\'s too powerful!'
     );
     const text1 = 'yes I am!';
-    browser.get('/')
+    home()
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(discussion1Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000))

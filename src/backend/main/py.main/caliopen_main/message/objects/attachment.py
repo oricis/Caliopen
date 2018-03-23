@@ -3,6 +3,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import types
+from uuid import UUID
 from caliopen_main.common.objects.base import ObjectJsonDictifiable
 from ..store.attachment import MessageAttachment as ModelMessageAttachment
 from ..store.attachment_index import IndexedMessageAttachment
@@ -17,6 +18,7 @@ class MessageAttachment(ObjectJsonDictifiable):
         'file_name': types.SliceType,
         'is_inline': types.BooleanType,
         'size': types.IntType,
+        'temp_id': UUID,
         'url': types.StringType,
         'mime_boundary': types.StringType
     }

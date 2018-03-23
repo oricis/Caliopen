@@ -268,12 +268,15 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 		msg.Attachments = []Attachment{}
 		for _, attachment := range input["attachments"].([]map[string]interface{}) {
 			a := Attachment{}
-			a.Content_type, _ = attachment["content_type"].(string)
-			a.File_name, _ = attachment["file_name"].(string)
-			a.Is_inline, _ = attachment["is_inline"].(bool)
+			a.ContentType, _ = attachment["content_type"].(string)
+			a.FileName, _ = attachment["file_name"].(string)
+			a.IsInline, _ = attachment["is_inline"].(bool)
 			a.Size, _ = attachment["size"].(int)
 			a.URL, _ = attachment["url"].(string)
 			a.MimeBoundary, _ = attachment["mime_boundary"].(string)
+			if temp_id, ok := attachment["temp_id"].(gocql.UUID); ok {
+				a.TempID.UnmarshalBinary(temp_id.Bytes())
+			}
 			msg.Attachments = append(msg.Attachments, a)
 		}
 	}

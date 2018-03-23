@@ -6,39 +6,52 @@ import { getKeypair } from '../../services/ecdsa';
 class WithDevice extends Component {
   static propTypes = {
     render: PropTypes.func.isRequired,
-    isNew: PropTypes.bool.isRequired,
-    isGenerated: PropTypes.bool.isRequired,
+    requestDevice: PropTypes.func.isRequired,
   };
-  static defaultProps = {
+
+  state = {
+    initialized: false,
+    clientDevice: undefined,
   };
-  state = {};
 
   componentDidMount() {
     this.initialize();
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isGenerated !== this.props.isGenerated) {
-      this.initialize();
-    }
+
+  componentWillReceiveProps() {
+    this.initialize();
   }
 
   initialize = async () => {
+    if (this.state.initialized) {
+      return;
+    }
+
     const config = getConfig();
     if (!config) {
       return;
     }
 
     const { id, priv } = config;
-    const keypair = getKeypair(priv);
-    const device = getPublicDevice({ id, keypair });
 
-    await this.setState({ device });
+    const keypair = getKeypair(priv);
+    const clientDevice = getPublicDevice({ id, keypair });
+    await this.setState({ clientDevice, initialized: true });
+  }
+
+  requestDevice = () => {
+    const { requestDevice } = this.props;
+
+    return requestDevice({ deviceId: this.state.clientDevice.device_id });
   }
 
   render() {
-    const { render, isNew, isGenerated } = this.props;
+    const { render } = this.props;
 
-    return render({ device: this.state.device, isNew, isGenerated });
+    return render({
+      requestDevice: this.requestDevice,
+      clientDevice: this.state.clientDevice,
+    });
   }
 }
 

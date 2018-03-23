@@ -1,0 +1,13 @@
+[
+  {
+    "device_id": "00001",
+    "ecdsa_key": {
+      "curve": "P-256",
+      "hash": "SHA256",
+      "x": "fd73920f7e2ad3ce524b5b08cab21357dd6a4d7d5d3c267e42a834d8ac1af244",
+      "y": "1bf08f940c720b5a021863f03029cbf62ea7a4837460da957be9f4704eff76bd"
+    },
+    "status": "unverified",
+    "name": "device to revoke"
+  }
+]

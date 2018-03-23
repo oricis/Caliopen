@@ -12,9 +12,10 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/satori/go.uuid"
 	"io"
+	"strconv"
 )
 
-func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_type string, file io.Reader) (attachmentPath string, err error) {
+func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_type string, file io.Reader) (tempId string, err error) {
 	//check if message_id belongs to user and is a draft
 	msg, err := rest.store.RetrieveMessage(user_id, message_id)
 	if err != nil {
@@ -25,22 +26,25 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 	}
 
 	//store temporary file in objectStore facility
-	tmpAttachmentID := uuid.NewV4()
-	url, size, err := rest.store.StoreAttachment(tmpAttachmentID.String(), file)
+	tmpId := uuid.NewV4()
+	tempId = tmpId.String()
+	url, size, err := rest.store.StoreAttachment(tempId, file)
 	if err != nil {
 		return "", err
 	}
 
 	//update draft with new attachment references
 	draftAttchmnt := Attachment{
-		Content_type: content_type,
-		File_name:    filename,
-		Is_inline:    false,
-		Size:         size,
-		URL:          url,
+		ContentType: content_type,
+		FileName:    filename,
+		IsInline:    false,
+		Size:        size,
+		TempID:      UUID(tmpId),
+		URL:         url,
 	}
-	attchmntIndex := len(msg.Attachments)
+	draftAttchmnt.TempID.UnmarshalBinary(tmpId.Bytes())
 	msg.Attachments = append(msg.Attachments, draftAttchmnt)
+
 	//update store
 	fields := make(map[string]interface{})
 	fields["Attachments"] = msg.Attachments
@@ -54,73 +58,105 @@ func (rest *RESTfacility) AddAttachment(user_id, message_id, filename, content_t
 	err = rest.index.UpdateMessage(msg, fields)
 	if err != nil {
 		//roll-back attachment storage before returning the error
-		fields["Attachments"] = msg.Attachments[:attchmntIndex]
+		fields["Attachments"] = msg.Attachments[:len(msg.Attachments)-1]
 		rest.store.UpdateMessage(msg, fields)
 		rest.store.DeleteAttachment(url)
 		return "", err
 	}
 
-	attachmentPath = fmt.Sprintf("%s/attachments/%d", message_id, attchmntIndex)
 	return
 }
 
-func (rest *RESTfacility) DeleteAttachment(user_id, message_id string, attchmtIndex int) error {
+func (rest *RESTfacility) DeleteAttachment(user_id, message_id, attchmt_id string) CaliopenError {
 	//check if message_id belongs to user and is a draft and index is consistent
 	msg, err := rest.store.RetrieveMessage(user_id, message_id)
 	if err != nil {
-		return err
+		var msg string
+		if err.Error() == "not found" {
+			msg = "message not found"
+		}
+		return WrapCaliopenErr(err, DbCaliopenErr, msg)
 	}
 
 	if !msg.Is_draft {
-		return errors.New("message " + message_id + " is not a draft.")
-	}
-	if attchmtIndex < 0 || attchmtIndex > (len(msg.Attachments)-1) {
-		return errors.New(fmt.Sprintf("index %d for message %s is not consistent.", attchmtIndex, message_id))
+		return NewCaliopenErrf(ForbiddenCaliopenErr, "message %s is not a draft", message_id)
 	}
 
-	//remove attachment's reference from draft
-	attachment_uri := msg.Attachments[attchmtIndex].URL
-	msg.Attachments = append(msg.Attachments[:attchmtIndex], msg.Attachments[attchmtIndex+1:]...)
+	//find and remove attachment's from draft
+	for i, attachment := range msg.Attachments {
+		if attachment.TempID.String() == attchmt_id {
+			msg.Attachments = append(msg.Attachments[:i], msg.Attachments[i+1:]...)
 
-	//update store
-	fields := make(map[string]interface{})
-	fields["Attachments"] = msg.Attachments
-	rest.store.UpdateMessage(msg, fields)
-	if err != nil {
-		return err
+			//update store
+			fields := make(map[string]interface{})
+			fields["Attachments"] = msg.Attachments
+			rest.store.UpdateMessage(msg, fields)
+			if err != nil {
+				return WrapCaliopenErr(err, DbCaliopenErr, "")
+			}
+			//update index
+			err = rest.index.UpdateMessage(msg, fields)
+
+			//remove temporary file from object store
+			err = rest.store.DeleteAttachment(attachment.URL)
+			if err != nil {
+				return WrapCaliopenErrf(err, DbCaliopenErr, "failed to remove temp attachment at uri '%s' with error <%s>", attachment.URL, err.Error())
+			}
+			return nil
+		}
 	}
-	//update index
-	err = rest.index.UpdateMessage(msg, fields)
 
-	//remove temporary file from object store
-	err = rest.store.DeleteAttachment(attachment_uri)
-	if err != nil {
-		return errors.New(fmt.Sprintf("failed to remove temp attachment at uri '%s' with error <%s>", attachment_uri, err.Error()))
-	}
+	return NewCaliopenErr(NotFoundCaliopenErr, "attachment not found")
 
-	return nil
 }
 
 // returns an io.Reader and metadata to conveniently read the attachment
-func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error) {
+func (rest *RESTfacility) OpenAttachment(user_id, message_id, attchmtIndex string) (meta map[string]string, content io.Reader, err error) {
+	if attchmtIndex == "" {
+		return meta, nil, errors.New(fmt.Sprint("empty attachment id"))
+	}
+	meta = make(map[string]string)
 	//check if message_id belongs to user and index is consistent
 	msg, err := rest.store.RetrieveMessage(user_id, message_id)
 	if err != nil {
-		return "", 0, nil, err
+		return meta, nil, err
 	}
-	if attchmtIndex < 0 || attchmtIndex > (len(msg.Attachments)-1) {
-		return "", 0, nil, errors.New(fmt.Sprintf("index %d for message %s is not consistent.", attchmtIndex, message_id))
+	var index int
+	if msg.Is_draft {
+		// retrieve attachment by temp_id
+		notfound := true
+		for _, att := range msg.Attachments {
+			if att.TempID.String() == attchmtIndex {
+				meta["Content-Type"] = att.ContentType
+				meta["Message-Size"] = strconv.Itoa(att.Size)
+				meta["Filename"] = att.FileName
+				meta["Url"] = att.URL
+				notfound = false
+				break
+			}
+		}
+		if notfound {
+			return meta, nil, NewCaliopenErr(NotFoundCaliopenErr, "attachment not found")
+		}
+
+	} else {
+		// retrieve attachment by index
+		index, err = strconv.Atoi(attchmtIndex)
+		if err != nil || index < 0 || index > (len(msg.Attachments)-1) {
+			return meta, nil, NewCaliopenErr(NotFoundCaliopenErr, "attachment not found")
+		}
+		meta["Content-Type"] = msg.Attachments[index].ContentType
+		meta["Message-Size"] = strconv.Itoa(msg.Attachments[index].Size)
+		meta["Filename"] = msg.Attachments[index].FileName
 	}
-	contentType = msg.Attachments[attchmtIndex].Content_type
-	size = msg.Attachments[attchmtIndex].Size
 
 	// create a Reader
 	// either from object store (draft context)
 	// or from raw message's mime part (non-draft context)
 	if msg.Is_draft {
-		attachment, e := rest.store.GetAttachment(msg.Attachments[attchmtIndex].URL)
+		attachment, e := rest.store.GetAttachment(meta["Url"])
 		if e != nil {
-			return "", 0, nil, e
+			return map[string]string{}, nil, e
 		}
 		content = attachment
 		return
@@ -128,15 +164,15 @@ func (rest *RESTfacility) OpenAttachment(user_id, message_id string, attchmtInde
 	} else {
 		rawMsg, e := rest.store.GetRawMessage(msg.Raw_msg_id.String())
 		if e != nil {
-			return "", 0, nil, e
+			return map[string]string{}, nil, e
 		}
 		json_email, e := email_broker.EmailToJsonRep(rawMsg.Raw_data)
 		if e != nil {
-			return "", 0, nil, e
+			return map[string]string{}, nil, e
 		}
-		attachments, e := json_email.ExtractAttachments(attchmtIndex)
+		attachments, e := json_email.ExtractAttachments(index)
 		if e != nil {
-			return "", 0, nil, e
+			return map[string]string{}, nil, e
 		}
 		content = bytes.NewReader(attachments[0])
 		return

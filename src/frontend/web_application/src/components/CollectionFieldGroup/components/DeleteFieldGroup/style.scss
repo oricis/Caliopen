@@ -5,7 +5,6 @@
 
   &__input {
     @include flex-grid-size;
-    margin-right: map-get($co-form__spacing, 'small');
   }
 
   &__button {

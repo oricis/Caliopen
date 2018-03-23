@@ -36,7 +36,11 @@ class ContactImport(Api):
             raise ValidationError(exc)
 
         data = self.request.POST['file'].file
-        parser = VcardParser(data)
+        try:
+            parser = VcardParser(data)
+        except Exception as exc:
+            log.exception('Exception during vcard file parsing %r' % exc)
+            raise ValidationError(exc)
         try:
             new_contacts = parser.parse()
         except Exception as exc:

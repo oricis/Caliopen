@@ -3,29 +3,42 @@ const https = require('https');
 const debug = require('debug')('caliopen.web:app:api-query');
 const { getConfig } = require('../../config');
 
-
-function query(params) {
+const query = (requestParams = {}, opts = {}) => {
   const { api: { protocol, hostname, port, checkCertificate } } = getConfig();
-  const options = Object.assign({
-    protocol: `${protocol}:`, hostname, port,
-  }, this.defaults || {}, params);
+  const params = {
+    protocol: `${protocol}:`,
+    hostname,
+    port,
+    ...requestParams,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      ...requestParams.headers || {},
+    },
+  };
+
+  const options = {
+    body: undefined,
+    response: () => {},
+    success: () => {},
+    error: () => {},
+    ...opts,
+  };
+
   let postData;
-
-
   if (options.body) {
     postData = JSON.stringify(options.body);
-    delete options.body;
-    options.headers['Content-Length'] = Buffer.byteLength(postData);
+    params.headers['Content-Length'] = Buffer.byteLength(postData);
   }
 
   if (!checkCertificate) {
-    options.rejectUnauthorized = false;
+    params.rejectUnauthorized = false;
   }
 
-  debug('\n', 'Preparing API query:', '\n', options);
+  debug('\n', 'Preparing API query:', '\n', params);
 
   const request = protocol === 'https' ? https.request : http.request;
-  const req = request(options, function queryResponseCallback(res) {
+  const req = request(params, (res) => {
     debug(
       '\n',
       'API query response:',
@@ -37,11 +50,11 @@ function query(params) {
 
     const data = [];
 
-    res.on('data', function dataCallback(chunk) {
+    res.on('data', (chunk) => {
       data.push(chunk);
     });
 
-    res.on('end', function endCallback() {
+    res.on('end', () => {
       try {
         let responseBody = Buffer.concat(data).toString();
 
@@ -50,34 +63,32 @@ function query(params) {
         }
 
         if (res && res.statusCode >= 200 && res.statusCode < 300) {
-          !options.success || options.success(responseBody);
+          options.success(responseBody);
         } else {
-          const error = new Error(
-            'API Query Error ' + res.statusCode + ' : ' + res.statusMessage
-          );
+          const error = new Error(`API Query Error ${res.statusCode} : ${res.statusMessage}`);
           error.status = res.statusCode;
           throw error;
         }
       } catch (e) {
         e.status = e.status || 500;
-        !options.error || options.error(e);
+        options.error(e);
       }
     });
-
-  }).on('response', options.response)
-    .on('error', options.error);
+  })
+  .on('response', options.response)
+  .on('error', options.error);
 
   if (postData) {
     req.write(postData);
   }
 
-  debug('\n','Outgoing API query:', '\n', req);
+  debug('\n', 'Outgoing API query:', '\n', req);
 
   req.end();
 
   return req;
-}
+};
 
 module.exports = {
-  query: query,
+  query,
 };

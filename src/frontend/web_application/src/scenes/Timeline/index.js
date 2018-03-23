@@ -3,11 +3,10 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
 import { withUser } from '../../hoc/user';
-import { withNotification } from '../../hoc/notification';
 import Presenter from './presenter';
 import { filterTimeline } from '../../store/actions/timeline';
 import { replyToMessage, deleteMessage, loadMore, hasMore } from '../../store/modules/message';
-import { updateTagCollection, withTags } from '../../modules/tags';
+import { updateMessagesTags, withTags } from '../../modules/tags';
 import { clearDraft } from '../../store/modules/draft-message';
 import { timelineFilterSelector } from '../../store/selectors/timeline';
 
@@ -43,13 +42,12 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   loadMore: loadMore.bind(null, 'timeline'),
   replyToMessage,
   deleteMessage: onDeleteMessage,
-  onUpdateEntityTags: updateTagCollection,
+  updateMessagesTags,
 }, dispatch);
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withUser(),
-  withNotification(),
   withI18n(),
   withTags(),
 )(Presenter);

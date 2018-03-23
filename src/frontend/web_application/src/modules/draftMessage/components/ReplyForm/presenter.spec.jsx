@@ -9,6 +9,7 @@ describe('component DiscussionDraft', () => {
       onSave: jest.fn(),
       onSend: jest.fn(),
       renderDraftMessageActionsContainer: jest.fn(),
+      renderAttachments: jest.fn(),
       draft: {
         discussion_id: undefined,
         type: 'email',

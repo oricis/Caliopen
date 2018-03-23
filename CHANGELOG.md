@@ -7,12 +7,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
+
+- Manage draft's attachements
+- Download message's attachements
+- Set context (safe, public, not safe) on signin (it has no effects yet)
+- Identify the device using an ecdsa key
 - Multiple messages delete on Timeline
+- Multiple messages' tags management on Timeline
+
+### Fixed
+
+- Explain that the NSA joke is a joke using a `:)`
 
 ## [0.8.1] 2018-01-25
 
 ### Fixed
 
+- messages filtered by status draft/sent/received wasn't up-to-date
+- checkbox wasn't correctly checked in settings
 - fix BSOD (Black Screen Of Death) when an author is not in user's contact book
 
 ## [0.8.0] 2018-01-19

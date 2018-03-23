@@ -1,4 +1,5 @@
 const userUtil = require('../utils/user-util');
+const { home } = require('../utils/navigation');
 
 describe('Discussions', () => {
   const EC = protractor.ExpectedConditions;
@@ -8,7 +9,7 @@ describe('Discussions', () => {
   });
 
   it('list', () => {
-    browser.get('/')
+    home()
       .then(() => {
         expect(element(by.css('.m-application-switcher .m-navbar-item__content')).getText()).toContain('MESSAGES');
       })
@@ -25,15 +26,15 @@ describe('Discussions', () => {
 
   describe('thread', () => {
     it('render and listed contacts describe the thread', () => {
-      browser.get('/');
-      browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
-      element(by.cssContainingText(
-        '.s-message-item .s-message-item__topic .s-message-item__excerpt',
-        'Fry! Stay back! He\'s too powerful!'
-      )).click();
-      // TODO tabs
-      // expect(element(by.css('.m-tab.m-navbar__item--is-active .m-tab__link')).getText())
-      //   .toContain('zoidberg, john');
+      home()
+        .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
+        .then(() => element(by.cssContainingText(
+          '.s-message-item .s-message-item__topic .s-message-item__excerpt',
+          'Fry! Stay back! He\'s too powerful!'
+        )).click())
+        .then(() => expect(element(by.cssContainingText('.m-navbar-item--is-active .m-navbar-item__content', 'Jaune john')).isPresent())
+          .toEqual(true)
+        );
     });
   });
 });

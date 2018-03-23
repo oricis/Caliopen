@@ -6,10 +6,11 @@ import { push } from 'react-router-redux';
 import { requestNewDraft, clearDraft, syncDraft } from '../../store/modules/draft-message';
 import { removeTab } from '../../store/modules/tab';
 import { saveDraft, sendDraft } from '../../modules/draftMessage';
+import { uploadDraftAttachments, deleteDraftAttachment } from '../../modules/file';
 import { withNotification } from '../../hoc/notification';
 import { withCurrentTab } from '../../hoc/tab';
 import { deleteMessage } from '../../store/modules/message';
-import { updateTagCollection, withTags } from '../../modules/tags';
+import { updateTagCollection } from '../../modules/tags';
 import Presenter from './presenter';
 
 const messageDraftSelector = state => state.draftMessage.draftsByInternalId;
@@ -35,17 +36,53 @@ const onSaveDraft = ({ internalId, draft, message }) => dispatch =>
 const onEditDraft = ({ draft, message, internalId }) => dispatch =>
   dispatch(saveDraft({ draft, message, internalId }, { withThrottle: true }));
 
-const onUpdateEntityTags = (internalId, i18n, userTags, message, { type, entity, tags }) =>
+const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =>
   async (dispatch) => {
     const savedDraft = await dispatch(saveDraft({ internalId, draft: entity, message }, {
       withThrottle: false,
       force: true,
     }));
     const messageUpTodate = await dispatch(updateTagCollection(
-      i18n, userTags, { type, entity: savedDraft, tags }
+      i18n, { type, entity: savedDraft, tags }
     ));
 
     return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+  };
+
+const onUploadAttachments = (internalId, i18n, message, { draft, attachments }) =>
+  async (dispatch) => {
+    try {
+      const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
+        withThrottle: false,
+        force: true,
+      }));
+
+      const messageUpTodate = await dispatch(uploadDraftAttachments({
+        message: savedDraft, attachments,
+      }));
+
+      return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  };
+
+const onDeleteAttachement = (internalId, i18n, message, { draft, attachment }) =>
+  async (dispatch) => {
+    try {
+      const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
+        withThrottle: false,
+        force: true,
+      }));
+
+      const messageUpTodate = await dispatch(deleteDraftAttachment({
+        message: savedDraft, attachment,
+      }));
+
+      return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+    } catch (err) {
+      return Promise.reject(err);
+    }
   };
 
 const onSendDraft = (currentTab, { draft, message, internalId }) => async (dispatch) => {
@@ -76,12 +113,13 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   onSendDraft,
   onDeleteMessage,
   onUpdateEntityTags,
+  onUploadAttachments,
+  onDeleteAttachement,
 }, dispatch);
 
 export default compose(
   withI18n(),
   withNotification(),
   withCurrentTab(),
-  withTags(),
   connect(mapStateToProps, mapDispatchToProps)
 )(Presenter);

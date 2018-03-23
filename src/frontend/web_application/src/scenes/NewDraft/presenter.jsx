@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { NewDraftForm, DraftMessageActionsContainer } from '../../modules/draftMessage';
+import { NewDraftForm, DraftMessageActionsContainer, AttachmentManager } from '../../modules/draftMessage';
 
 class NewDraft extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
-    tags: PropTypes.arrayOf(PropTypes.shape({})),
     draft: PropTypes.shape({}),
     message: PropTypes.shape({}),
     currentTab: PropTypes.shape({}),
@@ -18,10 +17,11 @@ class NewDraft extends Component {
     onUpdateEntityTags: PropTypes.func.isRequired,
     notifySuccess: PropTypes.func.isRequired,
     notifyError: PropTypes.func.isRequired,
+    onUploadAttachments: PropTypes.func.isRequired,
+    onDeleteAttachement: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    tags: [],
     draft: undefined,
     message: undefined,
     internalId: undefined,
@@ -46,9 +46,9 @@ class NewDraft extends Component {
   };
 
   handleTagsChange = ({ tags }) => {
-    const { internalId, draft, onUpdateEntityTags, i18n, tags: userTags, message } = this.props;
+    const { internalId, draft, onUpdateEntityTags, i18n, message } = this.props;
 
-    return onUpdateEntityTags(internalId, i18n, userTags, message, { type: 'message', entity: draft, tags });
+    return onUpdateEntityTags(internalId, i18n, message, { type: 'message', entity: draft, tags });
   }
 
   handleSaveDraft = async ({ draft }) => {
@@ -84,6 +84,18 @@ class NewDraft extends Component {
     onDeleteMessage({ message });
   };
 
+  handleFilesChange = ({ attachments }) => {
+    const { onUploadAttachments, i18n, message, draft, internalId } = this.props;
+
+    return onUploadAttachments(internalId, i18n, message, { draft, attachments });
+  }
+
+  handleDeleteAttachement = (attachment) => {
+    const { onDeleteAttachement, i18n, message, draft, internalId } = this.props;
+
+    return onDeleteAttachement(internalId, i18n, message, { draft, attachment });
+  }
+
   renderDraftMessageActionsContainer = () => {
     const { draft, internalId } = this.props;
 
@@ -94,6 +106,20 @@ class NewDraft extends Component {
         onDelete={this.handleDelete}
         onTagsChange={this.handleTagsChange}
       />
+    );
+  }
+
+  renderAttachments = () => {
+    const { draft } = this.props;
+
+    const props = {
+      message: draft,
+      onUploadAttachments: this.handleFilesChange,
+      onDeleteAttachement: this.handleDeleteAttachement,
+    };
+
+    return (
+      <AttachmentManager {...props} />
     );
   }
 
@@ -109,6 +135,7 @@ class NewDraft extends Component {
         onSend={this.handleSend}
         isSending={this.state.isSending}
         renderDraftMessageActionsContainer={this.renderDraftMessageActionsContainer}
+        renderAttachments={this.renderAttachments}
       />
     );
   }

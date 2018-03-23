@@ -62,3 +62,13 @@ export const tryCatchAxiosAction = async (action) => {
     return handleClientResponseError(err);
   }
 };
+
+export const tryCatchAxiosPromise = async (prom) => {
+  try {
+    const response = await prom;
+
+    return handleClientResponseSuccess(response);
+  } catch (err) {
+    return handleClientResponseError(err);
+  }
+};

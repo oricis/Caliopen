@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import TagSearch from './';
+import TagFieldGroup from './';
 
 jest.mock('lingui-react', () => ({
   withI18n: () => whatever => whatever,
 }));
 
-describe('component TagSearch', () => {
+describe('component TagFieldGroup', () => {
   const props = {
     i18n: { _: id => id },
   };
@@ -14,7 +14,7 @@ describe('component TagSearch', () => {
   it('render', () => {
     const noop = str => str;
     const comp = shallow(
-      <TagSearch onSubmit={noop} {...props} />
+      <TagFieldGroup onSubmit={noop} {...props} />
     );
 
     expect(() => {

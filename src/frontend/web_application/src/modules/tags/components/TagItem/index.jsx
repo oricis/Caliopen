@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
-import { Button, Spinner } from '../../../../components';
+import { Button, Spinner, Badge } from '../../../../components';
 import { getTagLabel } from '../../';
 
 import './style.scss';
@@ -30,16 +30,16 @@ class TagItem extends Component {
     const { tag, i18n } = this.props;
 
     return (
-      <div className="m-tag">
-        <span className="m-tag__text">{getTagLabel(i18n, tag)}</span>
+      <Badge className="m-tag-item">
+        <span className="m-tag-item__text">{getTagLabel(i18n, tag)}</span>
         <Button
-          className="m-tag__button"
-          display="inline-block"
+          className="m-tag-item__button"
+          display="inline"
           onClick={this.handleDeleteTag}
           icon={this.state.isTagCollectionUpdating ? (<Spinner isLoading display="inline" />) : 'remove'}
           aria-label={i18n._('tags.action.remove', { defaults: 'Remove' })}
         />
-      </div>
+      </Badge>
     );
   }
 }

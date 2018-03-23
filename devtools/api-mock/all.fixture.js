@@ -8,6 +8,7 @@ module.exports = {
     require('./discussions').default,
     require('./local_identities').default,
     require('./contacts').default,
+    require('./devices').default,
     require('./messages').default,
     require('./participants').default,
     require('./search').default,

@@ -2,8 +2,11 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-device-form {
-  &__fieldset {
-    margin-bottom: map-get($co-form__spacing, 'large');
+  margin-bottom: $co-margin;
+
+  &__label {
+    display: inline-block;
+    margin-bottom: $co-component__spacing;
   }
 
   &__location-group {
@@ -13,10 +16,9 @@
 
   &__location-address {
     @include flex-grid-size;
-    margin-right: map-get($co-form__spacing, 'small');
   }
 
   &__location-type {
-    @include flex-grid-size(shrink);
+    @include flex-grid-column(shrink);
   }
 }
