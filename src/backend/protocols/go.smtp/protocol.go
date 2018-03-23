@@ -207,7 +207,7 @@ func (session *session) handleMAIL(cmd command) {
 		}
 	}
 
-	session.envelope = &Envelope{
+	session.envelope = &SmtpEnvelope{
 		Sender: addr,
 	}
 

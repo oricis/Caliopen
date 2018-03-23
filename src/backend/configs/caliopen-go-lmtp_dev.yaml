@@ -48,10 +48,17 @@ LDAConfig:
     - http://es.dev.caliopen.org:9200
 
   #inbound
-  in_topic: inboundSMTP # NATS topic to listen to
+  in_topic: inboundSMTP                                  # NATS topic to listen to
   lda_workers_size: 2                                    # number of concurrent workers
   log_received_mails: true
 
   # outbound
   out_topic: outboundSMTP                                # NATS topic to listen to
   nats_listeners: 2                                      # number of concurrent nats listeners
+
+  # notifications
+  contacts_topic: contactAction                             # topic's name to post messages regarding contacts' events
+  NotifierConfig:
+    base_url: http://localhost:4000                         # url upon which to build custom links sent to users. NO trailing slash please.
+    admin_username: admin                                   # username on whose behalf notifiers will act. This admin user must have been created before by other means.
+    templates_path: "../defs/notifiers/templates/"          # path to yaml/j2 templates directory, WITH trailing slash please.

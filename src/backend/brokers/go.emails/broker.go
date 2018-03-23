@@ -7,10 +7,11 @@ package email_broker
 
 import (
 	"errors"
-	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
@@ -18,11 +19,12 @@ import (
 
 type (
 	EmailBroker struct {
-		Store             backends.LDAStore
+		Config            LDAConfig
+		Connectors        EmailBrokerConnectors
 		Index             backends.LDAIndex
 		NatsConn          *nats.Conn
-		Connectors        EmailBrokerConnectors
-		Config            LDAConfig
+		Notifier          Notifications.Notifiers
+		Store             backends.LDAStore
 		natsSubscriptions []*nats.Subscription
 	}
 
@@ -32,7 +34,7 @@ type (
 	}
 
 	SmtpEmail struct {
-		EmailMessage *obj.EmailMessage
+		EmailMessage *EmailMessage
 		Response     chan *DeliveryAck
 	}
 
@@ -45,12 +47,6 @@ type (
 	natsAck struct {
 		Error   string `json:"error,omitempty"`
 		Message string `json:"message"`
-	}
-
-	DeliveryAck struct {
-		EmailMessage *obj.EmailMessage `json:"-"`
-		Err          bool              `json:"error"`
-		Response     string            `json:"message,omitempty"`
 	}
 )
 
@@ -137,7 +133,28 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 
 		connectors = broker.Connectors
 	}
-
+	caliopenConfig := CaliopenConfig{
+		NotifierConfig: conf.NotifierConfig,
+		NatsConfig: NatsConfig{
+			Url:            conf.NatsURL,
+			OutSMTP_topic:  conf.OutTopic,
+			Contacts_topic: conf.ContactsTopic,
+		},
+		RESTstoreConfig: RESTstoreConfig{
+			BackendName:  conf.StoreName,
+			Consistency:  conf.StoreConfig.Consistency,
+			Hosts:        conf.StoreConfig.Hosts,
+			Keyspace:     conf.StoreConfig.Keyspace,
+			OSSConfig:    conf.StoreConfig.OSSConfig,
+			ObjStoreType: conf.StoreConfig.ObjectStore,
+			SizeLimit:    conf.StoreConfig.SizeLimit,
+		},
+		RESTindexConfig: RESTIndexConfig{
+			Hosts:     conf.IndexConfig.Urls,
+			IndexName: conf.IndexName,
+		},
+	}
+	broker.Notifier = Notifications.NewNotificationsFacility(caliopenConfig, broker.NatsConn)
 	log.WithField("EmailBroker", conf.BrokerType).Info("EmailBroker started.")
 	return
 }

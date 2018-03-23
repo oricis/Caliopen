@@ -83,14 +83,12 @@ func NewDevice(ctx *gin.Context) {
 func GetDevicesList(ctx *gin.Context) {
 	userId := ctx.MustGet("user_id").(string)
 	devices, err := caliopen.Facilities.RESTfacility.RetrieveDevices(userId)
-	if err != nil {
+	if err != nil && err.Cause().Error() != "devices not found" {
 		returnedErr := new(swgErr.CompositeError)
-		if err.Cause().Error() != "devices not found" {
-			returnedErr = swgErr.CompositeValidationError(err, err.Cause())
-			http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
-			ctx.Abort()
-			return
-		}
+		returnedErr = swgErr.CompositeValidationError(err, err.Cause())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
+		ctx.Abort()
+		return
 	}
 	var respBuf bytes.Buffer
 	respBuf.WriteString("{\"total\": " + strconv.Itoa(len(devices)) + ",")
@@ -109,7 +107,6 @@ func GetDevicesList(ctx *gin.Context) {
 	}
 	respBuf.WriteString("]}")
 	ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
-
 }
 
 // GetDevice handles GET /devices/:deviceID

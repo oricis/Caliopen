@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"gopkg.in/gomail.v2"
 	"io"
@@ -103,7 +104,7 @@ func (lda *Lda) OutboundWorker() {
 			var raw bytes.Buffer
 			raw.WriteString((&outcoming.EmailMessage.Email.Raw).String())
 			err = smtp_sender.Send(from, to, &raw)
-			var ack broker.DeliveryAck
+			var ack DeliveryAck
 			if err != nil {
 				log.WithError(err).Warn("outbound: unable to send to MTA")
 				ack.Err = true

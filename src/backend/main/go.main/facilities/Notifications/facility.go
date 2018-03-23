@@ -12,21 +12,27 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
+	"os"
+	"time"
 )
 
 type (
 	Notifiers interface {
-		EmailNotifiers
+		ByEmail(*Notification) CaliopenError
+		ByNotifQueue(*Notification) CaliopenError
+		RetrieveNotifications(userId string, from, to time.Time) ([]Notification, CaliopenError)
+		DeleteNotifications(userId string, until time.Time) CaliopenError
 	}
 
 	Notifier struct {
-		index              backends.NotificationsIndex
-		nats_outSMTP_topic string
-		queue              *nats.Conn
-		store              backends.NotificationsStore
-		admin              *User          //Admin user on whose behalf actions could be done
-		adminLocalID       *LocalIdentity // admin's local identity used to send emails
-		config             *NotifierConfig
+		admin        *User          // Admin user on whose behalf actions could be done
+		adminLocalID *LocalIdentity // Admin's local identity used to send emails
+		config       *NotifierConfig
+		index        backends.NotificationsIndex
+		natsQueue    *nats.Conn
+		natsTopics   map[string]string
+		store        backends.NotificationsStore
+		log          *log.Logger
 	}
 )
 
@@ -34,9 +40,21 @@ type (
 // it takes the same store & index configurations than the REST API for now
 func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notifier *Notifier) {
 	notifier = new(Notifier)
-	notifier.queue = queue
+	notifier.log = log.New()
+	notifier.log.Out = os.Stdout
+	// We could set this to any `io.Writer` such as a file
+	// file, err := os.OpenFile("notifications.log", os.O_CREATE|os.O_WRONLY, 0666)
+	// if err == nil {
+	//  notifier.log.Out = file
+	// } else {
+	//  log.Info("Failed to log to file, using default stdout")
+	//  notifier.log.Out = os.Stdout
+	// }
+	notifier.natsQueue = queue
 	notifier.config = &config.NotifierConfig
-	notifier.nats_outSMTP_topic = config.NatsConfig.OutSMTP_topic
+	notifier.natsTopics = make(map[string]string)
+	notifier.natsTopics[Nats_outSMTP_topicKey] = config.NatsConfig.OutSMTP_topic
+	notifier.natsTopics[Nats_Contacts_topicKey] = config.NatsConfig.Contacts_topic
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":
 		cassaConfig := store.CassandraConfig{
@@ -91,4 +109,39 @@ func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notifier
 	}
 
 	return notifier
+}
+
+func (N *Notifier) LogNotification(method string, notif *Notification) {
+	if notif != nil {
+		var userId string
+		if notif.User != nil {
+			userId = notif.User.UserId.String()
+		} else {
+			userId = "<unknown user id>"
+		}
+		N.log.WithFields(log.Fields{
+			"method":   method,
+			"notif_id": notif.NotifId.String(),
+		}).Infof("[Notifier] a notification has been issued for user %s", userId)
+	}
+}
+
+func (N *Notifier) RetrieveNotifications(userId string, from, to time.Time) ([]Notification, CaliopenError) {
+
+	notifs, err := N.store.RetrieveNotifications(userId, from, to)
+	if err != nil {
+		return []Notification{}, WrapCaliopenErr(err, DbCaliopenErr, "[RetrieveNotifications] failed")
+	}
+
+	return notifs, nil
+}
+
+func (N *Notifier) DeleteNotifications(userId string, until time.Time) CaliopenError {
+
+	err := N.store.DeleteNotifications(userId, until)
+	if err != nil {
+		return WrapCaliopenErr(err, DbCaliopenErr, "[Notifier]DeleteNotifications failed")
+	}
+
+	return nil
 }

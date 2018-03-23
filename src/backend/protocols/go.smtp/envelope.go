@@ -12,14 +12,14 @@ import (
 )
 
 // Envelope holds a message
-type Envelope struct {
+type SmtpEnvelope struct {
 	Sender     string
 	Recipients []string
 	Data       []byte
 }
 
 // AddReceivedLine prepends a Received header to the Data
-func (env *Envelope) AddReceivedLine(peer Peer) {
+func (env *SmtpEnvelope) AddReceivedLine(peer Peer) {
 
 	tlsDetails := ""
 

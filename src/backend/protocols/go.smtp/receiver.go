@@ -9,26 +9,26 @@ import (
 	"errors"
 	"fmt"
 	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
-	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"time"
 )
 
 // handler is called by smtpd for each incoming email
-func (lda *Lda) handler(peer Peer, ev Envelope) error {
+func (lda *Lda) handler(peer Peer, ev SmtpEnvelope) error {
 	var raw_email bytes.Buffer
 	raw_email.WriteString(string(ev.Data))
 
-	emailMessage := obj.EmailMessage{
-		Email: &obj.Email{
+	emailMessage := EmailMessage{
+		Email: &Email{
 			SmtpMailFrom: []string{ev.Sender}, //TODO: handle multiple senders
 			SmtpRcpTo:    ev.Recipients,
 			Raw:          raw_email,
 		},
-		Message: &obj.Message{},
+		Message: &Message{},
 	}
 	incoming := &broker.SmtpEmail{
 		EmailMessage: &emailMessage,
-		Response:     make(chan *broker.DeliveryAck),
+		Response:     make(chan *DeliveryAck),
 	}
 	defer close(incoming.Response)
 
