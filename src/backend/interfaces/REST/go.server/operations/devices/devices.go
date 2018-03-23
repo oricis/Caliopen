@@ -88,8 +88,7 @@ func GetDevicesList(ctx *gin.Context) {
 		returnedErr = swgErr.CompositeValidationError(err, err.Cause())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 		ctx.Abort()
-			return
-		}
+		return
 	}
 	var respBuf bytes.Buffer
 	respBuf.WriteString("{\"total\": " + strconv.Itoa(len(devices)) + ",")
