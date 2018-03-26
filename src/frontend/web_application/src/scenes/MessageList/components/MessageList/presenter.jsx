@@ -69,6 +69,7 @@ class MessageList extends Component {
               onReply={onMessageReply}
               onCopyTo={onMessageCopyTo}
               updateTagCollection={updateTagCollection}
+              user={user}
             />
           ))}
         </DayMessageList>

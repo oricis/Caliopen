@@ -3,17 +3,18 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
 import Moment from 'react-moment';
-import { Trans } from 'lingui-react';
+import { Trans, Plural } from 'lingui-react';
 import { MultidimensionalPi } from '../../../../modules/pi';
 import { Icon, TextBlock } from '../../../../components';
 import MessageActionsContainer from '../MessageActionsContainer';
 import MessageAttachments from '../MessageAttachments';
-import { getAuthor, renderParticipant } from '../../../../services/message';
+import { getAuthor, renderParticipant, getRecipientsExceptUser, isUserRecipient } from '../../../../services/message';
 import './style.scss';
 
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
+    user: PropTypes.shape({}),
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     updateTagCollection: PropTypes.func.isRequired,
@@ -27,6 +28,7 @@ class Message extends Component {
 
   static defaultProps = {
     isMessageFromUser: false,
+    user: undefined,
   }
 
   state = {}
@@ -35,6 +37,41 @@ class Message extends Component {
     const { updateTagCollection, i18n, message: entity } = this.props;
 
     return updateTagCollection(i18n, { type: 'message', entity, tags });
+  }
+
+  renderRecipients() {
+    const { message, user } = this.props;
+
+    if (!user) {
+      return null;
+    }
+
+    const isMessageForUser = isUserRecipient(message, user);
+    const recipients = getRecipientsExceptUser(message, user);
+
+    if (isMessageForUser) {
+      return (
+        <Plural
+          className="m-message__info-label"
+          id="message-list.message.to-me-nb"
+          value={recipients.length}
+          _0="To: You"
+          _1="To: You and 1 other person"
+          other="To: You and # other persons"
+        />
+      );
+    }
+
+    return (
+      <Plural
+        className="m-message__info-label"
+        id="message-list.message.to-nb"
+        _0="To:"
+        _1={`To: ${recipients.length && renderParticipant(recipients[0])}`}
+        other="To: # persons"
+        value={recipients.length}
+      />
+    );
   }
 
   renderDate = () => {
@@ -109,12 +146,9 @@ class Message extends Component {
               <TextBlock className="m-message__info-author">{author.address}</TextBlock>
             }
           </div>
-          {/*
-            <div className="m-message__to">
-              <Trans className="m-message__info-label" id="message-list.message.to">To:</Trans>
-              // TODO: display recipients count
-            </div>
-          */}
+          <div className="m-message__to">
+            {this.renderRecipients()}
+          </div>
         </aside>
         <div className="m-message__container">
           <header>
