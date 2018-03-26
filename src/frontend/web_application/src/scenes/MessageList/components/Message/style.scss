@@ -77,7 +77,8 @@ $message_content_width: 45rem;
   }
 
   &__subject {
-    margin: $co-margin 0;
+    max-width: $message_content_width;
+    margin: $co-margin auto;
     padding-bottom: $co-component__spacing;
     border-bottom: 1px solid $co-color__fg__border--higher;
     font-size: 1.5rem;

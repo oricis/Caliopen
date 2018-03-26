@@ -67,9 +67,6 @@ class Message extends Component {
 
     return (
       <div className="m-message__content">
-        {message.subject &&
-          <div className="m-message__subject">{message.subject}</div>
-        }
         {!message.body_is_plain ? (
           <div {...bodyProps} dangerouslySetInnerHTML={{ __html: message.body }} />
         ) : (
@@ -100,8 +97,8 @@ class Message extends Component {
     );
 
     return (
-      <div id={message.message_id} className="m-message">
-        <div className="m-message__info">
+      <article id={message.message_id} className="m-message">
+        <aside className="m-message__info">
           <div className="m-message__pi">
             <Trans className="m-message__info-label" id="message-list.message.pi">Privacy Index</Trans>
             {message.pi && <MultidimensionalPi pi={message.pi} mini />}
@@ -112,36 +109,48 @@ class Message extends Component {
               <TextBlock className="m-message__info-author">{author.address}</TextBlock>
             }
           </div>
-        </div>
+          {/*
+            <div className="m-message__to">
+              <Trans className="m-message__info-label" id="message-list.message.to">To:</Trans>
+              // TODO: display recipients count
+            </div>
+          */}
+        </aside>
         <div className="m-message__container">
-          <div className="m-message__top-bar">
-            {message.is_unread &&
-              <span className="m-message__new"><Trans id="message-list.message.new">new</Trans></span>
+          <header>
+            <div className="m-message__top-bar">
+              {message.is_unread &&
+                <span className="m-message__new"><Trans id="message-list.message.new">new</Trans></span>
+              }
+              {message.type &&
+                (<div className="m-message__type">
+                  <span className="m-message__type-label">
+                    <Trans id="message-list.message.by">by {messageType}</Trans>
+                  </span>
+                  {' '}
+                  <Icon type={message.type} className="m-message__type-icon" spaced />
+                </div>
+              )}
+              {this.renderDate()}
+              <ul className="m-message__participants">
+                {participants.map((participant, index) => (
+                  <li key={index} className="m-message__participant">
+                    {renderParticipant(participant)}
+                    {index + 1 !== participants.length && ','}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {message.subject &&
+              <h2 className="m-message__subject">{message.subject}</h2>
             }
-            {message.type &&
-              (<div className="m-message__type">
-                <span className="m-message__type-label">
-                  <Trans id="message-list.message.by">by {messageType}</Trans>
-                </span>
-                {' '}
-                <Icon type={message.type} className="m-message__type-icon" spaced />
-              </div>
-            )}
-            {this.renderDate()}
-            <ul className="m-message__participants">
-              {participants.map((participant, index) => (
-                <li key={index} className="m-message__participant">
-                  {renderParticipant(participant)}
-                  {index + 1 !== participants.length && ','}
-                </li>
-              ))}
-            </ul>
-          </div>
+          </header>
+
 
           {this.renderMessageContent()}
           <VisibilitySensor onChange={this.onChange} scrollCheck scrollThrottle={100} />
 
-          <div className="m-message__footer">
+          <footer className="m-message__footer">
             <MessageActionsContainer
               message={message}
               onDelete={onDelete}
@@ -151,9 +160,9 @@ class Message extends Component {
               onCopyTo={onCopyTo}
               onTagsChange={this.handleTagsChange}
             />
-          </div>
+          </footer>
         </div>
-      </div>
+      </article>
     );
   }
 }
