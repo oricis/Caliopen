@@ -3,11 +3,6 @@ const { switchApp, home } = require('../utils/navigation');
 
 describe('tag', () => {
   const EC = protractor.ExpectedConditions;
-  const locale = 'en';
-  const __ = key => ({
-    en: {},
-  }[locale][key] || key);
-
   const subject = "It's okay, Bender. I like cooking too";
 
   beforeEach(() => {
@@ -23,20 +18,21 @@ describe('tag', () => {
 
         return messageElement.element(by.css('.s-message-item__col-select input[type=checkbox]')).click()
           .then(() => element(by.css('.m-message-selector__actions .m-button[aria-label="Manage tags"]')).click())
-          .then(() => expect(element(by.cssContainingText('.m-modal', __('Tags'))).isPresent()).toEqual(true))
+          .then(() => expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true))
           .then(() => expect(element.all(by.css('.m-tags-form__section .m-tag-item')).count()).toEqual(2));
       })
       .then(() => browser.element(by.css('.m-tags-form .m-input-text')).sendKeys('am'))
-      .then(() => browser.element(by.cssContainingText('.m-tags-form__found-tag', __('Amphibians'))).click())
-      .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', __('Amphibians')))), 5 * 1000))
+      .then(() => browser.element(by.cssContainingText('.m-tags-form__found-tag', 'Amphibians')).click())
+      .then(() => browser.sleep(1))
+      .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Amphibians')).isPresent()).toEqual(true))
       .then(() => browser.element(by.css('.m-tags-form .m-input-text')).sendKeys(tagName))
-      .then(() => browser.element(by.css(`.m-tags-search__button[aria-label=${__('Add')}]`)).click())
+      .then(() => browser.element(by.css(`.m-tags-search__button[aria-label=${'Add'}]`)).click())
       .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 8 * 1000))
-      .then(() => element(by.cssContainingText('.m-tags-form__section .m-tag-item', __('Inbox'))).element(by.css(`[aria-label="${__('Remove')}"]`)).click())
+      .then(() => element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).element(by.css(`[aria-label="${'Remove'}"]`)).click())
       .then(() => browser.sleep(1))
-      .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', __('Inbox'))).isPresent()).toEqual(false))
+      .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).isPresent()).toEqual(false))
       .then(() => browser.sleep(1))
-      .then(() => element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).element(by.css(`[aria-label="${__('Remove')}"]`)).click())
+      .then(() => element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).element(by.css(`[aria-label="${'Remove'}"]`)).click())
       .then(() => browser.sleep(1))
       .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).isPresent()).toEqual(false))
     ;
