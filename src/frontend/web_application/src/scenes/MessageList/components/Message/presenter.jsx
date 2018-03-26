@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { v1 as uuidV1 } from 'uuid';
 import VisibilitySensor from 'react-visibility-sensor';
 import Moment from 'react-moment';
 import { Trans } from 'lingui-react';
@@ -69,7 +68,7 @@ class Message extends Component {
     return (
       <div className="m-message__content">
         {message.subject &&
-          <span className="m-message__subject">{message.subject}</span>
+          <div className="m-message__subject">{message.subject}</div>
         }
         {!message.body_is_plain ? (
           <div {...bodyProps} dangerouslySetInnerHTML={{ __html: message.body }} />
@@ -129,11 +128,14 @@ class Message extends Component {
               </div>
             )}
             {this.renderDate()}
-            <TextBlock className="m-message__participants">
-              {participants.map(participant => (
-                <span key={uuidV1()} className="m-message__participant">{renderParticipant(participant)}</span>
+            <ul className="m-message__participants">
+              {participants.map((participant, index) => (
+                <li key={index} className="m-message__participant">
+                  {renderParticipant(participant)}
+                  {index + 1 !== participants.length && ','}
+                </li>
               ))}
-            </TextBlock>
+            </ul>
           </div>
 
           {this.renderMessageContent()}
