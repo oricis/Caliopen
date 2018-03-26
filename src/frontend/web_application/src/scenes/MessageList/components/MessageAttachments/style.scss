@@ -1,0 +1,30 @@
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-message-attachments {
+  padding-top: $co-component__spacing;
+  border-top: 1px solid $co-color__fg__border--higher;
+
+  &__item {
+    @include flex-grid-row;
+    margin-top: $co-component__spacing;
+    background: $co-color__fg__border--higher;
+    font-size: $co-font__size--small;
+    font-weight: 700;
+    line-height: $co-component__height;
+    text-align: left;
+  }
+
+  &__name {
+    @include flex-grid-size;
+  }
+
+  &__size {
+    @include flex-grid-column(shrink);
+    margin-left: auto;
+  }
+
+  &__icon {
+    @include flex-grid-size(shrink);
+    margin-left: auto;
+  }
+}
