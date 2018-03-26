@@ -76,7 +76,7 @@ describe('tag', () => {
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(by.cssContainingText('.s-timeline .s-message-item .s-message-item__topic .s-message-item__subject', subject)).click())
       .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-message__container', 'zoidberg@planet-express.tld'))), 5 * 1000))
-      .then(() => element(by.cssContainingText('.m-message__container', 'zoidberg@planet-express.tld')).element(by.cssContainingText('.m-message-actions-container__action', __('Tags'))).click())
+      .then(() => element(by.cssContainingText('.m-message__container', subject)).element(by.cssContainingText('.m-message-actions-container__action', __('Tags'))).click())
       .then(() => expect(element(by.cssContainingText('.m-modal', __('Tags'))).isPresent()).toEqual(true));
   });
 
