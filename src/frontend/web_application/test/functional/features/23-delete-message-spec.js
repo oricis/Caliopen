@@ -27,8 +27,7 @@ describe('Delete message', () => {
     const deleteAMessage = (messageText) => {
       const messageElem = element(by.cssContainingText('.m-message', messageText));
 
-      return messageElem.element(by.css('.m-message__actions-switcher')).click()
-        .then(() => messageElem.element(by.cssContainingText('.m-message-actions-container__action', __('delete'))).click());
+      return messageElem.element(by.cssContainingText('.m-message-actions-container__action', __('delete'))).click();
     };
 
     home()

@@ -1,8 +1,10 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-message-actions-container {
+  @include flex-grid-row;
+  justify-content: flex-end;
 
   &__action {
-    line-height: $co-component__height;
+    @include flex-grid-size(shrink);
   }
 }

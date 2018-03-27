@@ -8,14 +8,28 @@ export const sortMessages = (messages, reversed) => messages.sort((a, b) => {
 
 export const renderParticipant = participant => `${participant.label}` || `(${participant.address})`;
 
+export const isParticipantUser = (participant, user) => {
+  const isUserContactId = contactId => contactId === user.contact.contact_id;
+
+  return (participant.contact_ids && participant.contact_ids.some(isUserContactId)) || false;
+};
+
 export const getLastMessage = messages => sortMessages(messages, true)[0];
 
-export const getAuthor = message => message.participants && message.participants.find(participant => participant.type === 'From');
+export const getAuthor = message => message.participants && message.participants
+  .find(participant => participant.type === 'From');
+
+export const getRecipients = message => message.participants && message.participants
+  .filter(participant => participant.type !== 'From');
+
+export const getRecipientsExceptUser = (message, user) => getRecipients(message)
+  .filter(participant => !isParticipantUser(participant, user));
 
 export const isMessageFromUser = (message, user) => {
   const author = getAuthor(message);
-  const userContactId = user.contact.contact_id;
-  const isFromUser = authorContactId => authorContactId === userContactId;
 
-  return (author.contact_ids && author.contact_ids.some(isFromUser)) || false;
+  return isParticipantUser(author, user);
 };
+
+export const isUserRecipient = (message, user) => getRecipients(message)
+  .some(recipient => isParticipantUser(recipient, user));

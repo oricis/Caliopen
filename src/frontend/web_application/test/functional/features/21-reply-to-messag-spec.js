@@ -89,6 +89,8 @@ describe('Save a draft and send', () => {
 
         return home();
       })
+      // force scroll top to click on discussion
+      .then(() => browser.executeScript('window.scrollTo(0,0);'))
       .then(() => element(discussion1Selector).click())
       .then(() => browser.wait(EC.presenceOf($('.m-message-list__list')), 5 * 1000))
       .then(() => {
