@@ -31,3 +31,25 @@ A --> C(Round Rect)
 B --> D{Rhombus}
 C --> D
 ```
+
+```puml
+@startuml
+title User signin with an unknown device
+
+User -> Client: signin
+Client -> Client: generate ecdsa keypair and a device_id
+
+Client -> Api: POST /authentication {username, password, device}
+Api -> Backend: User.authenticate(username, password)
+Backend -> Api: user
+
+Api -> Backend: Device.get(user, device_id)
+Backend -> Api: Notfound
+Api -> Backend: Device.create(user, device_id, ecdsa_param)
+Backend -> Api: new_device
+
+Api -> Api: generate_token()
+Api -> Cache: set_token(user_id, device_id, token, device_state)
+Api -> Client: 200 {user_id, token, device_id, device_state}
+@enduml
+```
