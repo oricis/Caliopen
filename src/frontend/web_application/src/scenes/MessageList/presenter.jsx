@@ -16,7 +16,6 @@ class MessageList extends Component {
     discussionId: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     push: PropTypes.func.isRequired,
-    hasDraft: PropTypes.bool,
     didInvalidate: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
     setMessageRead: PropTypes.func.isRequired,
@@ -34,7 +33,6 @@ class MessageList extends Component {
     messages: [],
     discussion: {},
     currentTab: undefined,
-    hasDraft: false,
   };
 
   state = {
@@ -70,12 +68,12 @@ class MessageList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { didInvalidate, isFetching, messages, hasDraft, currentTab } = nextProps;
+    const { didInvalidate, isFetching, messages, currentTab } = nextProps;
     if (didInvalidate && !isFetching) {
       this.props.requestMessages({ discussion_id: nextProps.discussionId });
     }
 
-    if (!didInvalidate && !isFetching && messages.length === 0 && !hasDraft) {
+    if (!didInvalidate && !isFetching && messages.length === 0) {
       this.closeTab({ currentTab });
     }
   }
@@ -140,12 +138,13 @@ class MessageList extends Component {
       messages, discussionId, isFetching, copyMessageTo, updateTagCollection,
     } = this.props;
     const internalId = discussionId;
+    const messagesExceptDrafts = messages.filter(message => message.is_draft !== true);
 
     return (
       <div>
         <PageTitle />
         <MessageListBase
-          messages={messages}
+          messages={messagesExceptDrafts}
           onMessageRead={this.handleSetMessageRead}
           onMessageUnread={this.handleSetMessageUnread}
           isFetching={isFetching}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import classnames from 'classnames';
-import { Button, MenuBar, Spinner } from '../../../../components';
+import { Button, MenuBar, Spinner, Confirm } from '../../../../components';
 import DayMessageList from '../DayMessageList';
 import Message from '../Message';
 import groupMessages from '../../services/groupMessages';
@@ -98,9 +98,17 @@ class MessageList extends Component {
                 <Trans id="message-list.action.copy-to">Copy to</Trans>
               </Button>
             */}
-            <Button className="m-message-list__action" onClick={onDelete} icon="trash" responsive="icon-only" >
-              <Trans id="message-list.action.delete">Delete</Trans>
-            </Button>
+            <Confirm
+              className="m-message-list__action"
+              onConfirm={onDelete}
+              title={(<Trans id="message-list.confirm-delete.title">Delete the discussion</Trans>)}
+              content={(<Trans id="message-list.confirm-delete.content">The deletion is permanent, are you sure you want to delete the messages including eventual drafts ?</Trans>)}
+              render={confirm => (
+                <Button onClick={confirm} icon="trash" responsive="icon-only" >
+                  <Trans id="message-list.action.delete">Delete</Trans>
+                </Button>
+              )}
+            />
             <Spinner isLoading={isFetching} className="m-message-list__spinner" />
           </MenuBar>
           { ((messages.length > 0 || !isFetching) && settings) && (
