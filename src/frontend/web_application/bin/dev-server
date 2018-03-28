@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+const path = require('path');
+const webpack = require('webpack');
+const fork = require('child_process').fork;
+const config = require('../webpack/webpack.config.server');
+
+let caliopen;
+const compiler = webpack(config);
+compiler.apply(new webpack.ProgressPlugin({ profile: true }));
+
+const watching = compiler.watch({
+  aggregateTimeout: 300,
+  poll: undefined,
+  ignored: [
+    path.join(__dirname, '../src/'),
+    path.join(__dirname, '../locale/'),
+  ],
+}, (err, stats) => {
+  if (caliopen) {
+    caliopen.kill();
+  }
+
+  console.log(stats.toString({ chunk: false, colors: true }));
+  if (err || stats.hasErrors()) {
+    console.error('[webpack server] unable to compile');
+
+    return;
+  }
+  console.log('[webpack server] done');
+  caliopen = fork(path.join(__dirname, '../dist/server/index.js'), { cwd: path.join(__dirname, '../') });
+});

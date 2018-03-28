@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import { Trans } from 'lingui-react';
-import { Button } from '../../components';
-import PageTitle from '../../components/PageTitle';
+import { PageTitle, Button } from '../../components';
 import MessageListBase from './components/MessageList';
 import ReplyForm from './components/DraftForm';
 
@@ -25,6 +24,7 @@ class MessageList extends Component {
     removeTab: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     hasMore: PropTypes.bool.isRequired,
+    updateTagCollection: PropTypes.func.isRequired,
     currentTab: PropTypes.shape({}),
   };
 
@@ -104,7 +104,7 @@ class MessageList extends Component {
 
   render() {
     const {
-      messages, discussionId, isFetching, copyMessageTo,
+      messages, discussionId, isFetching, copyMessageTo, updateTagCollection,
     } = this.props;
     const internalId = discussionId;
 
@@ -123,6 +123,7 @@ class MessageList extends Component {
           onMessageReply={this.makeHandleReplyToMessage(internalId)}
           loadMore={this.renderLoadMore()}
           onMessageCopyTo={copyMessageTo}
+          updateTagCollection={updateTagCollection}
         />
       </div>
     );

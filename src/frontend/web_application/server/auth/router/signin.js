@@ -1,97 +1,26 @@
-const seal = require('../lib/seal');
-const Auth = require('../lib/Auth');
-const { getConfig } = require('../../config');
-const { COOKIE_NAME, COOKIE_OPTIONS } = require('../lib/cookie');
-const { DEFAULT_REDIRECT } = require('../lib/redirect');
-
-const ERR_REQUIRED = 'ERR_REQUIRED';
-const ERR_INVALID = 'ERR_INVALID';
+const proxy = require('express-http-proxy');
+const { getApiHost } = require('../../config');
+const { COOKIE_NAME, authenticate } = require('../lib/cookie');
 
 const createLoginRouting = (router) => {
-  router.post('/signin', (req, res, next) => {
-    const { seal: { secret } } = getConfig();
-    let hasError = false;
-    const errors = {};
-    const auth = new Auth();
+  const target = getApiHost();
 
-    if (!req.body || !Object.keys(req.body).length) {
-      const err = new Error('Bad request');
-      err.status = 400;
+  router.post('/signin', proxy(target, {
+    proxyReqPathResolver: () => '/api/v1/authentications',
+    userResDecorator: async (proxyRes, proxyResData, userReq, userRes) => {
+      if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 400) {
+        const { device, ...user } = JSON.parse(proxyResData.toString('utf8'));
 
-      throw err;
-    }
+        // according to the doc, cookie manipulation.should not be done in userResDecorator but
+        // possible since userRes is pass as a reference
+        await authenticate(userRes, { user });
 
-    const values = {
-      username: req.body.username,
-      password: req.body.password,
-    };
+        return JSON.stringify({ device });
+      }
 
-    if (!values.username) {
-      hasError = true;
-      errors.username = [ERR_REQUIRED];
-    }
-
-    if (!values.password) {
-      hasError = true;
-      errors.password = [ERR_REQUIRED];
-    }
-
-    if (hasError) {
-      res.status(400).send({ errors });
-
-      return;
-    }
-
-    auth.authenticate({
-      username: values.username,
-      password: values.password,
-
-      response: function responseCallback(response) {
-        if (req.accepts('json')) {
-          res.status(response.statusCode);
-        }
-      },
-      success: function successCallback(user) {
-        if (!user || !Object.keys(user).length) {
-          next(new Error('Expected user to be defined and not empty in Auth API success callback'));
-
-          return;
-        }
-
-        seal.encode(
-          user,
-          secret,
-          (err, sealed) => {
-            if (err || !seal) {
-              next(err || new Error('Unexpected Error'));
-
-              return;
-            }
-            res.cookie(COOKIE_NAME, sealed, COOKIE_OPTIONS);
-
-            if (!req.xhr) {
-              const redirect = req.query.redirect || DEFAULT_REDIRECT;
-              res.redirect(redirect);
-            } else {
-              res.send({ success: 'success' });
-            }
-          }
-        );
-      },
-      error: (error) => {
-        error = error || new Error('Bad gateway');
-        if (error.status && error.status >= 400 && error.status < 500) {
-          errors.global = [ERR_INVALID];
-          res.status(error.status).send({ errors });
-
-          return;
-        }
-
-        error.status = error.status || 502;
-        next(error);
-      },
-    });
-  });
+      return proxyResData;
+    },
+  }));
 
   router.get('/signout', (req, res) => {
     res.clearCookie(COOKIE_NAME);

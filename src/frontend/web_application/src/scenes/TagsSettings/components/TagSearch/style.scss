@@ -5,11 +5,11 @@
   @include flex-grid-row($size: expanded);
   margin-bottom: map-get($co-form__spacing, 'large');
 
-  &__input { @include flex-grid-size; }
+  &__input {
+    @include flex-grid-size;
+  }
 
   &__button {
-    margin-left: 1px;
-    background: $co-color__fg__back--lower;
-    font-size: $co-font__size--xsmall;
+    @include flex-grid-size(shrink);
   }
 }

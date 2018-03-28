@@ -9,8 +9,14 @@ properties:
     type: string
   recovery_email:
     type: string
+  tos:
+    type: boolean
+  privacy:
+    type: boolean
   settings:
     "$ref": Settings.yaml
+  device:
+    "$ref": DefaultDevice.yaml
 additionalProperties: false
 required:
 - username

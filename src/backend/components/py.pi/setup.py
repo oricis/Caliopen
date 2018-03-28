@@ -17,7 +17,8 @@ with open(init_file) as v_file:
 requires = [
     'schematics',
     'pgpy',
-    'caliopen_main',
+    'user-agents',
+    'geoip2',
 ]
 
 extras_require = {

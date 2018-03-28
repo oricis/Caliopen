@@ -4,12 +4,8 @@ import { Trans } from 'lingui-react';
 import ContactList from './components/ContactList';
 import ContactFilters from './components/ContactFilters';
 import ImportContact from './components/ImportContact';
-import Modal from '../../components/Modal';
-import MenuBar from '../../components/MenuBar';
 import TagList from './components/TagList';
-import Spinner from '../../components/Spinner';
-import Button from '../../components/Button';
-import PageTitle from '../../components/PageTitle';
+import { PageTitle, Spinner, Button, MenuBar, Modal } from '../../components';
 import './style.scss';
 
 export const SORT_VIEW_GIVEN_NAME = 'given_name';

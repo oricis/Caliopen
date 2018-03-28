@@ -15,7 +15,7 @@ export function requestTags() {
     type: REQUEST_TAGS,
     payload: {
       request: {
-        url: '/v2/tags',
+        url: '/api/v2/tags',
       },
     },
   };
@@ -33,7 +33,7 @@ export function createTag({ tag }) {
     type: CREATE_TAG,
     payload: {
       request: {
-        url: '/v2/tags',
+        url: '/api/v2/tags',
         method: 'post',
         data: tag,
       },
@@ -46,7 +46,7 @@ export function requestTag({ name }) {
     type: REQUEST_TAG,
     payload: {
       request: {
-        url: `/v2/tags/${name}`,
+        url: `/api/v2/tags/${name}`,
       },
     },
   };
@@ -59,7 +59,7 @@ export function deleteTag({ tag }) {
     payload: {
       request: {
         method: 'delete',
-        url: `/v2/tags/${tag.name}`,
+        url: `/api/v2/tags/${tag.name}`,
       },
     },
   };
@@ -73,7 +73,7 @@ export function updateTag({ tag, original }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v2/tags/${original.name}`,
+        url: `/api/v2/tags/${original.name}`,
         data,
       },
     },

@@ -6,10 +6,8 @@ import Navbar, { NavbarItem } from './components/Navbar';
 import StickyNavbar from './components/StickyNavBar';
 import TabList from './components/TabList';
 import TimelineFilterContainer from './components/TimelineFilterContainer';
-import SliderContainer from '../../../../components/ImportanceSliderContainer';
-import Dropdown, { withDropdownControl } from '../../../../components/Dropdown';
-import Button from '../../../../components/Button';
-import Icon from '../../../../components/Icon';
+import SliderContainer from '../ImportanceSliderContainer';
+import { Icon, Dropdown, withDropdownControl, Button } from '../../../../components/';
 import './style.scss';
 
 const ToggleSliderButton = withDropdownControl(Button);
@@ -42,6 +40,7 @@ class Navigation extends PureComponent {
             <Dropdown
               id="IL_navigation_slider_dropdown"
               className="l-navigation__sliders-dropdown"
+              closeOnClick="exceptSelf"
             >
               <SliderContainer vertical className="l-navigation__sliders-container" />
             </Dropdown>

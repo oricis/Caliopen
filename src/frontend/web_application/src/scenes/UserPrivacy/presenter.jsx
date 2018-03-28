@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MultidimensionalPi from '../../components/MultidimensionalPi';
-import PageTitle from '../../components/PageTitle';
-import Section from '../../components/Section';
-import TextList, { ItemContent } from '../../components/TextList';
+import { Section, PageTitle, MultidimensionalPi, TextList, TextItem } from '../../components/';
 
 import './style.scss';
 
@@ -36,10 +33,10 @@ class UserPrivacy extends Component {
         <Section className="s-user-privacy__info" title={i18n._('user.privacy.improve_pi', { defaults: 'Improve your privacy index' })}>
           <TextList className="s-user-privacy__tips">
             {privacyTips.map(tip => (
-              <ItemContent
+              <TextItem
                 className="s-user-privacy__tip"
                 key={tip.name}
-              >{tip.content}</ItemContent>
+              >{tip.content}</TextItem>
             ))}
           </TextList>
         </Section>

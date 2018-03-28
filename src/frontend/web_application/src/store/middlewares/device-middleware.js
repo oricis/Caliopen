@@ -1,5 +1,6 @@
 import * as module from '../modules/device';
 
+// TODO: refactor, drop this and move it into an action
 export default store => next => (action) => {
   const result = next(action);
 

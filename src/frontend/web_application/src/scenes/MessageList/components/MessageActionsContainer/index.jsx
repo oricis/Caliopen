@@ -21,6 +21,7 @@ class MessageActionsContainer extends Component {
     onDelete: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     onMessageRead: PropTypes.func.isRequired,
+    onTagsChange: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
     onCopyTo: PropTypes.func.isRequired,
     className: PropTypes.string,
@@ -80,7 +81,7 @@ class MessageActionsContainer extends Component {
   }
 
   renderTagsModal = () => {
-    const { message, i18n } = this.props;
+    const { message, i18n, onTagsChange } = this.props;
     const nb = message.tags ? message.tags.length : 0;
     const title = (
       <Trans
@@ -100,7 +101,7 @@ class MessageActionsContainer extends Component {
         title={title}
         onClose={this.handleCloseTags}
       >
-        <ManageEntityTags type="message" entity={message} />
+        <ManageEntityTags type="message" entity={message} onChange={onTagsChange} />
       </Modal>
     );
   }
@@ -114,13 +115,12 @@ class MessageActionsContainer extends Component {
 
     return (
       <div className={messageActionsContainerClassName}>
-        <Button onClick={this.handleReply} className="m-message-actions-container__action" display="expanded" icon="reply" responsive="icon-only"><Trans id="message-list.message.action.reply">Reply</Trans></Button>
-        <Button onClick={this.makeHandle(onCopyTo)} className="m-message-actions-container__action" display="expanded" icon="share" responsive="icon-only"><Trans id="message-list.message.action.copy-to">Copy to</Trans></Button>
-        <Button onClick={this.handleOpenTags} className="m-message-actions-container__action" display="expanded" icon="tags" responsive="icon-only"><Trans id="message-list.message.action.tags">Tags</Trans></Button>
-        <Button onClick={this.makeHandle(onDelete)} className="m-message-actions-container__action" display="expanded" icon="trash" responsive="icon-only"><Trans id="message-list.message.action.delete">Delete</Trans></Button>
+        <Button onClick={this.handleReply} className="m-message-actions-container__action" icon="reply" responsive="icon-only"><Trans id="message-list.message.action.reply">Reply</Trans></Button>
+        <Button onClick={this.makeHandle(onCopyTo)} className="m-message-actions-container__action" icon="share" responsive="icon-only"><Trans id="message-list.message.action.copy-to">Copy to</Trans></Button>
+        <Button onClick={this.handleOpenTags} className="m-message-actions-container__action" icon="tags" responsive="icon-only"><Trans id="message-list.message.action.tags">Tags</Trans></Button>
+        <Button onClick={this.makeHandle(onDelete)} className="m-message-actions-container__action" icon="trash" responsive="icon-only"><Trans id="message-list.message.action.delete">Delete</Trans></Button>
         <Button
           className="m-message-actions-container__action"
-          display="expanded"
           onClick={this.handleToggle}
         >
           {!this.state.isRead ? (

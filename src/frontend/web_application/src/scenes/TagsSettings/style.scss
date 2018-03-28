@@ -3,18 +3,18 @@
 
 .s-tags-settings {
   @include flex-grid-row($size: expand);
+  padding: $co-margin ($co-margin / 2);
+  background: $co-color__fg__back;
+
   &__tags,
-  &__search {
+  &__create {
     @include flex-grid-column(12);
   }
 
   @include breakpoint(medium) {
-    &__tags { @include flex-grid-size(4); }
-    &__search { @include flex-grid-size(8); }
-  }
-
-  @include breakpoint(large) {
-    &__tags { @include flex-grid-size(3); }
-    &__search { @include flex-grid-size(9); }
+    &__tags,
+    &__create {
+      @include flex-grid-column(6);
+    }
   }
 }

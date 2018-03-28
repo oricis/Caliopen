@@ -1,0 +1,48 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-attachement-manager {
+  @include flex-grid-row;
+
+  &__list {
+    @include flex-grid-size(12);
+  }
+
+  &__button {
+    @include flex-grid-size(shrink);
+    margin-top: $co-component__spacing;
+    margin-left: auto;
+    color: $co-color__primary;
+    font-weight: 700;
+  }
+
+  &__item {
+    @include flex-grid-row;
+    align-items: center;
+    margin-top: 1px;
+    background: $co-color__primary--high;
+    font-weight: 700;
+  }
+
+  &__file-name {
+    @include flex-grid-column;
+    color: $co-color__fg__text;
+    text-decoration: none;
+
+    &:hover {
+      color: $co-color__fg__text;
+      text-decoration: underline;
+    }
+  }
+
+  &__file-size {
+    @include flex-grid-column(shrink);
+    margin-left: auto;
+  }
+
+  &__file-delete {
+    @include flex-grid-size(shrink);
+    margin-left: auto;
+  }
+
+}

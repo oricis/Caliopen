@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import { ItemLink, NavbarItem } from '../Navbar';
-import Link from '../../../../../../components/Link';
-import Icon from '../../../../../../components/Icon';
-import Button from '../../../../../../components/Button';
-import Dropdown, { withDropdownControl } from '../../../../../../components/Dropdown';
-import VerticalMenu, { VerticalMenuItem } from '../../../../../../components/VerticalMenu';
+import { Link, Button, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem } from '../../../../../../components/';
 import { getLabels } from '../../../../../../services/application-manager';
 import './style.scss';
 
@@ -60,7 +56,7 @@ class ApplicationSwitcher extends Component {
       >
         <Dropdown
           id="co-application-switcher"
-          closeOnClick
+          closeOnClick="all"
           alignRight
           className="m-application-switcher__dropdown"
           onToggle={this.handleDropdownToggle}

@@ -38,6 +38,10 @@ paths:
     "$ref": paths/contacts.yaml#/contacts
   "/v1/contacts/{contact_id}":
     "$ref": paths/contacts.yaml#/contacts_{contact_id}
+  "/v2/contacts":
+    "$ref": paths/contactsV2.yaml#/contacts
+  "/v2/contacts/{contact_id}":
+    "$ref": paths/contactsV2.yaml#/contacts_{contact_id}
   "/v2/contacts/{contact_id}/identities":
     "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_identities
   "/v2/contacts/{contact_id}/tags":
@@ -63,8 +67,8 @@ paths:
     "$ref": paths/messagesV2.yaml#/messages_{message_id}_actions
   "/v2/messages/{message_id}/attachments":
     "$ref": paths/messagesV2.yaml#/messages_{message_id}_attachments
-  "/v2/messages/{message_id}/attachments/{attachment_index}":
-    "$ref": paths/messagesV2.yaml#/messages_{message_id}_attachments_{attachment_index}
+  "/v2/messages/{message_id}/attachments/{attachment_id}":
+    "$ref": paths/messagesV2.yaml#/messages_{message_id}_attachments_{attachment_id}
   "/v1/raws/{raw_msg_id}":
     "$ref": paths/raws.yaml#/raws_{raw_msg_id}
 ## tags ##
@@ -73,15 +77,18 @@ paths:
   "/v2/tags/{tag_id}":
     "$ref": paths/tags.yaml#/tags_{tag_id}
 ## devices ##
-  "/v1/devices":
+  "/v2/devices":
     "$ref": paths/devices.yaml#/devices
-  "/v1/devices/{device_id}":
+  "/v2/devices/{device_id}":
     "$ref": paths/devices.yaml#/devices_{device_id}
 ## search/suggest ##
   "/v2/participants/suggest":
     "$ref": paths/participants.yaml#/participants_suggest
   "/v2/search":
     "$ref": paths/search.yaml#/search
+## notifications
+  "/v2/notifications":
+    "$ref": paths/notifications.yaml#/notifications
 
 securityDefinitions:
   basicAuth:

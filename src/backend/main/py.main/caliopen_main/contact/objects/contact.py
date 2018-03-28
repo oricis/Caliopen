@@ -9,8 +9,7 @@ import datetime
 from caliopen_main.common.objects.base import ObjectStorable, ObjectIndexable
 
 from ..store.contact import (Contact as ModelContact,
-                             ContactLookup as ModelContactLookup,
-                             PublicKey as ModelPublicKey)
+                             ContactLookup as ModelContactLookup)
 from ..store.contact_index import IndexedContact
 from ..parameters import Contact as ParamContact
 
@@ -36,41 +35,33 @@ class ContactLookup(ObjectStorable):
         self._pkey_name = 'value'
 
 
-class PublicKey(ObjectStorable):
-
-    def __init__(self):
-        self._model_class = ModelPublicKey
-        self._pkey_name = 'name'
-
-
 class Contact(ObjectIndexable):
 
     # TODO : manage attrs that should not be modifiable directly by users
     _attrs = {
-        'additional_name':     types.StringType,
-        'addresses':           [PostalAddress],
-        'avatar':              types.StringType,
-        'contact_id':          UUID,
-        'date_insert':         datetime.datetime,
-        'date_update':         datetime.datetime,
-        'deleted':             types.BooleanType,
-        'emails':              [Email],
-        'family_name':         types.StringType,
-        'given_name':          types.StringType,
-        'groups':              [types.StringType],
-        'identities':          [SocialIdentity],
-        'ims':                 [IM],
-        'infos':               types.DictType,
-        'name_prefix':         types.StringType,
-        'name_suffix':         types.StringType,
-        'organizations':       [Organization],
-        'phones':              [Phone],
-        'pi':                  PIObject,
+        'additional_name': types.StringType,
+        'addresses': [PostalAddress],
+        'avatar': types.StringType,
+        'contact_id': UUID,
+        'date_insert': datetime.datetime,
+        'date_update': datetime.datetime,
+        'deleted': datetime.datetime,
+        'emails': [Email],
+        'family_name': types.StringType,
+        'given_name': types.StringType,
+        'groups': [types.StringType],
+        'identities': [SocialIdentity],
+        'ims': [IM],
+        'infos': types.DictType,
+        'name_prefix': types.StringType,
+        'name_suffix': types.StringType,
+        'organizations': [Organization],
+        'phones': [Phone],
+        'pi': PIObject,
         'privacy_features': types.DictType,
-        'public_keys':         [PublicKey],
         'tags': [types.StringType],
-        'title':               types.StringType,
-        'user_id':             UUID
+        'title': types.StringType,
+        'user_id': UUID
     }
 
     _json_model = ParamContact
@@ -79,9 +70,6 @@ class Contact(ObjectIndexable):
     _model_class = ModelContact
     _db = None  # model instance with datas from db
     _pkey_name = "contact_id"
-    _relations = {
-        'public_keys': PublicKey,
-    }
     _lookup_class = ContactLookup
     _lookup_values = {
         'emails': {'value': 'address', 'type': 'email'},

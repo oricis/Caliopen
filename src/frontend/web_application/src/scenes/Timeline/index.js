@@ -5,7 +5,9 @@ import { withI18n } from 'lingui-react';
 import { withUser } from '../../hoc/user';
 import Presenter from './presenter';
 import { filterTimeline } from '../../store/actions/timeline';
-import { loadMore, hasMore } from '../../store/modules/message';
+import { replyToMessage, deleteMessage, loadMore, hasMore } from '../../store/modules/message';
+import { updateMessagesTags, withTags } from '../../modules/tags';
+import { clearDraft } from '../../store/modules/draft-message';
 import { timelineFilterSelector } from '../../store/selectors/timeline';
 
 const timelineSelector = createSelector([
@@ -13,6 +15,16 @@ const timelineSelector = createSelector([
   timelineFilterSelector,
 ], (collection, timelineFilter) => collection && collection[timelineFilter]);
 const messagesSelector = state => state.message.messagesById;
+
+const onDeleteMessage = ({ message }) => dispatch =>
+  dispatch(deleteMessage({ message }))
+    .then(() => {
+      if (!message.is_draft) {
+        return undefined;
+      }
+
+      return dispatch(clearDraft({ internalId: message.discussion_id }));
+    });
 
 const mapStateToProps = createSelector(
   [timelineSelector, messagesSelector, timelineFilterSelector],
@@ -28,10 +40,14 @@ const mapStateToProps = createSelector(
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestMessages: filterTimeline,
   loadMore: loadMore.bind(null, 'timeline'),
+  replyToMessage,
+  deleteMessage: onDeleteMessage,
+  updateMessagesTags,
 }, dispatch);
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withUser(),
-  withI18n()
+  withI18n(),
+  withTags(),
 )(Presenter);

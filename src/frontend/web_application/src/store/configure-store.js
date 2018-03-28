@@ -5,7 +5,7 @@ import axiosMiddleware from './middlewares/axios-middleware';
 import contactMiddleware from './middlewares/contacts-middleware';
 import deviceMiddleware from './middlewares/device-middleware';
 import discussionMiddleware from './middlewares/discussions-middleware';
-import draftMessageMiddleware, { middlewares as draftMessageMiddlewares } from './middlewares/draft-messages-middleware';
+import draftMessageMiddleware from './middlewares/draft-messages-middleware';
 import i18nMiddleware from './middlewares/i18n-middleware';
 import importanceLevelMiddleware from './middlewares/importance-level-middleware';
 import messageMiddleware from './middlewares/messages-middleware';
@@ -14,7 +14,6 @@ import promiseMiddleware from './middlewares/promise-middleware';
 import reactRouterMiddleware from './middlewares/react-router-redux-middleware';
 import searchMiddleware from './middlewares/search-middleware';
 import tabsMiddleware from './middlewares/tabs-middleware';
-import tagsMiddleware from './middlewares/tags-middleware';
 import thunkMiddleware from './middlewares/thunk-middleware';
 
 const middlewares = [
@@ -24,7 +23,6 @@ const middlewares = [
   deviceMiddleware,
   discussionMiddleware,
   draftMessageMiddleware,
-  ...draftMessageMiddlewares,
   i18nMiddleware,
   importanceLevelMiddleware,
   messageMiddleware,
@@ -33,7 +31,6 @@ const middlewares = [
   reactRouterMiddleware,
   searchMiddleware,
   tabsMiddleware,
-  tagsMiddleware,
   thunkMiddleware,
 ];
 

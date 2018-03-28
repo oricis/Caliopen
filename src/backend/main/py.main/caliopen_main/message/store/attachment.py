@@ -14,5 +14,6 @@ class MessageAttachment(BaseUserType):
     file_name = columns.Text()
     is_inline = columns.Boolean()
     size = columns.Integer()
+    temp_id = columns.UUID()
     url = columns.Text()  # objectsStore uri for temporary file (draft)
     mime_boundary = columns.Text()  # for attachments embedded in raw messages

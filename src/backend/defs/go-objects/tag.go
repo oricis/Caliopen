@@ -153,3 +153,24 @@ func (tag *Tag) JsonTags() (tags map[string]string) {
 func (tag *Tag) NewEmpty() interface{} {
 	return new(Tag)
 }
+
+// an UUID should be provided to fill User_id with
+func (tag *Tag) MarshallNew(args ...interface{}) {
+	if len(tag.User_id) == 0 || (bytes.Equal(tag.User_id.Bytes(), EmptyUUID.Bytes())) {
+		if len(args) == 1 {
+			switch args[0].(type) {
+			case UUID:
+				tag.User_id = args[0].(UUID)
+			}
+		}
+	}
+
+	if tag.Date_insert.IsZero() {
+		tag.Date_insert = time.Now()
+	}
+}
+
+// part of CaliopenObject interface
+func (tag *Tag) SortSlices() {
+	// nothing to sort
+}

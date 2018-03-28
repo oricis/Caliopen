@@ -1,20 +1,29 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import axios from 'axios';
 import SigninForm from './components/SigninForm';
+import getClient from '../../services/api-client';
+import { STATUS_VERIFIED } from '../../modules/device';
 
-function getRedirect(queryString) {
+const URL_DEVICES = '/settings/devices';
+
+const getRedirect = (queryString) => {
   const paramRedirect = queryString.split(/[?|&]/).find(str => /^redirect/.test(str));
 
   return paramRedirect ? paramRedirect.split('=')[1] : undefined;
-}
+};
 
 class Signin extends Component {
   static propTypes = {
     initSettings: PropTypes.func.isRequired,
     location: PropTypes.shape({}).isRequired,
     i18n: PropTypes.shape({}).isRequired,
+    clientDevice: PropTypes.shape({}),
+  };
+
+  static defaultProps = {
+    clientDevice: undefined,
+    isNewDevice: false,
   };
 
   state = {
@@ -35,15 +44,29 @@ class Signin extends Component {
     };
   }
 
-  handleSignin = (formValues) => {
-    axios.post('/auth/signin', formValues, {
-      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+  handleSignin = (context, formValues) => {
+    const { clientDevice: device } = this.props;
+
+    getClient().post('/auth/signin', {
+      context,
+      ...formValues,
+      device,
     }).then(this.handleSigninSuccess, this.handleSigninError);
   }
 
-  handleSigninSuccess = () => {
-    this.props.initSettings();
-    this.setState({ isAuthenticated: true });
+  handleSigninSuccess = async (response) => {
+    const { initSettings } = this.props;
+
+    const nextState = {
+      isAuthenticated: true,
+    };
+
+    if (response.data.device.status !== STATUS_VERIFIED) {
+      nextState.redirectDevice = true;
+    }
+
+    initSettings();
+    this.setState(nextState);
   }
 
   handleSigninError = (err) => {
@@ -66,15 +89,22 @@ class Signin extends Component {
   }
 
   render() {
-    const { location: { search } } = this.props;
-    const redirect = getRedirect(search) || '/';
+    if (this.state.isAuthenticated && this.state.redirectDevice) {
+      return <Redirect push to={URL_DEVICES} />;
+    }
 
     if (this.state.isAuthenticated) {
+      const { location: { search } } = this.props;
+      const redirect = getRedirect(search) || '/';
+
       return <Redirect push to={redirect} />;
     }
 
     return (
-      <SigninForm onSubmit={this.handleSignin} errors={this.state.errors} />
+      <SigninForm
+        onSubmit={this.handleSignin}
+        errors={this.state.errors}
+      />
     );
   }
 }

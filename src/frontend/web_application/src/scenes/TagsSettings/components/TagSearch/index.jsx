@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
 import { Button, Spinner } from '../../../../components';
-import { TextFieldGroup } from '../../../../components/form';
+import TextFieldGroup from '../../../../components/TextFieldGroup';
 
 import './style.scss';
 
@@ -75,6 +75,7 @@ class TagSearch extends Component {
           className="m-add-tag__button"
           icon={isFetching ? (<Spinner isLoading display="inline" />) : 'plus'}
           disabled={isFetching}
+          shape="plain"
           onClick={this.handleSubmit}
           aria-label={i18n._('tags.action.add', { defaults: 'Add' })}
         />

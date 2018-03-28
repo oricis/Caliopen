@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
@@ -24,6 +23,20 @@ const (
 	resetPasswordTemplate = "email-reset-password-link.yaml"
 	resetLinkFmt          = "%s/auth/passwords/reset/%s"
 )
+
+// ByEmail notifies an user by the mean of an email.
+func (N *Notifier) ByEmail(notif *Notification) CaliopenError {
+	N.LogNotification("ByEmail", notif)
+	switch notif.Type {
+	case NotifAdminMail:
+		N.SendEmailAdminToUser(notif.User, notif.InternalPayload.(*Message))
+	case NotifPasswordReset:
+		N.SendPasswordResetEmail(notif.User, notif.InternalPayload.(*Pass_reset_session))
+	default:
+		return NewCaliopenErrf(UnprocessableCaliopenErr, "[Notifier]ByEmail : unknown notification type <%s>", notif.Type)
+	}
+	return nil
+}
 
 // SendEmailAdminToUser sends an administrative email to user, ie :
 // this is an email composed by the backend to inform user that something happened related to its account
@@ -73,16 +86,16 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 	log.Infof("[NotificationsFacility] sending email admin for user <%s> [%s]", user.Name, user.UserId.String())
 	const nats_order = "deliver"
 	natsMessage := fmt.Sprintf(Nats_message_tmpl, nats_order, email.Message_id.String(), notif.admin.UserId.String())
-	rep, err := notif.queue.Request(notif.nats_outSMTP_topic, []byte(natsMessage), 30*time.Second)
+	rep, err := notif.natsQueue.Request(notif.natsTopics[Nats_outSMTP_topicKey], []byte(natsMessage), 30*time.Second)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser error")
-		if notif.queue.LastError() != nil {
-			log.WithError(notif.queue.LastError()).Warn("[EmailNotifiers]: SendEmailAdminToUser error")
+		if notif.natsQueue.LastError() != nil {
+			log.WithError(notif.natsQueue.LastError()).Warn("[EmailNotifiers]: SendEmailAdminToUser error")
 			return err
 		}
 		return err
 	}
-	var reply email_broker.DeliveryAck
+	var reply DeliveryAck
 	err = json.Unmarshal(rep.Data, &reply)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser error")

@@ -1,3 +1,5 @@
+$co-site-width: 1380px;
+
 $co-brand-width: 10rem;
 $co-pi-width: (
   graph: 15rem,
@@ -21,7 +23,7 @@ $co-form__width: (
   small:  10rem,  // 160 px
   medium: 13rem,  // 208 px
   large:  16rem,  // 256 px
-  xlarge: 20rem,  // 320 px
+  xlarge: 23.75rem,  // 380 px
 );
 
 $co-form__height: (
@@ -38,12 +40,13 @@ $co-form__spacing: (
   xlarge:  2.625rem, // 42px
 );
 
-$co-grid__gutter: 30px;
+$co-grid__gutter: $co-margin;
 $co-grid__gutter--small: 20px;
 
 $co-animation__clickable-transition: background-color .1s ease-out, color .1s ease-out !default;
 $co-animation__box-transition: box-shadow .15s, border-color .15s ease-in-out !default;
 $co-animation__margin-transition: margin .15s, padding .15s ease !default;
+$co-animation__width-transition: width .15s ease-in-out !default;
 
 $l-z-index__navbar-shadow: -1;
 $l-z-index__navbar: 1;

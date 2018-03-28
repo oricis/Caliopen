@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'lingui-react';
-import { PasswordStrength, TextFieldGroup, FormGrid, FormColumn, FormRow } from '../../../../components/form';
-import Button from '../../../../components/Button';
+import { TextFieldGroup, Button, PasswordStrength, FormGrid, FormColumn, FormRow } from '../../../../components/';
 import './style.scss';
 
 @withI18n()
@@ -110,7 +109,6 @@ class PasswordForm extends Component {
               onChange={this.handleInputChange}
               label={i18n._('password.form.current_password.label', { defaults: 'Current password:' })}
               placeholder={i18n._('password.form.current_password.placeholder', { defaults: 'Enter your current password' })}
-              showLabelforSr
               required
             />
           </FormColumn>

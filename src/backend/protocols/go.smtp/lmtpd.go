@@ -32,7 +32,7 @@ type Server struct {
 	// New e-mails are handed off to this function.
 	// Can be left empty for a NOOP server.
 	// If an error is returned, it will be reported in the SMTP session.
-	Handler func(peer Peer, env Envelope) error
+	Handler func(peer Peer, env SmtpEnvelope) error
 
 	// Enable various checks during the SMTP session.
 	// Can be left empty for no restrictions.
@@ -87,7 +87,7 @@ type session struct {
 	server *Server
 
 	peer     Peer
-	envelope *Envelope
+	envelope *SmtpEnvelope
 
 	conn net.Conn
 

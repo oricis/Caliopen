@@ -29,7 +29,7 @@ export function suggest(terms, context = 'msg_compose') {
     type: SUGGEST,
     payload: {
       request: {
-        url: '/v2/participants/suggest',
+        url: '/api/v2/participants/suggest',
         params: { q: terms, context },
       },
     },

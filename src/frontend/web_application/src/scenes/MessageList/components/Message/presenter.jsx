@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { v1 as uuidV1 } from 'uuid';
 import VisibilitySensor from 'react-visibility-sensor';
 import Moment from 'react-moment';
-import { Trans } from 'lingui-react';
-import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
-import { Button, Icon, TextBlock, Dropdown, withDropdownControl } from '../../../../components';
-import MultidimensionalPi from '../../../../components/MultidimensionalPi';
+import { Trans, Plural } from 'lingui-react';
+import { MultidimensionalPi } from '../../../../modules/pi';
+import { Icon, TextBlock } from '../../../../components';
 import MessageActionsContainer from '../MessageActionsContainer';
-import { getAuthor } from '../../../../services/message';
-
+import MessageAttachments from '../MessageAttachments';
+import { getAuthor, renderParticipant, getRecipientsExceptUser, isUserRecipient } from '../../../../services/message';
 import './style.scss';
-
-const DropdownControl = withDropdownControl(Button);
-
-const FOLD_HEIGHT = 80; // = .m-message__content--fold height
 
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
+    user: PropTypes.shape({}),
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
+    updateTagCollection: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
     onCopyTo: PropTypes.func.isRequired,
@@ -32,43 +28,50 @@ class Message extends Component {
 
   static defaultProps = {
     isMessageFromUser: false,
+    user: undefined,
   }
 
-  state = {
-    isFold: true,
-    isTooLong: false,
-    isOnTop: undefined,
+  state = {}
+
+  handleTagsChange = async ({ tags }) => {
+    const { updateTagCollection, i18n, message: entity } = this.props;
+
+    return updateTagCollection(i18n, { type: 'message', entity, tags });
   }
 
-  componentWillMount() {
-    this.dropdownId = uuidV1();
-  }
+  renderRecipients() {
+    const { message, user } = this.props;
 
-  componentDidMount() {
-    setTimeout(this.setContentHeight(), 1);
-  }
+    if (!user) {
+      return null;
+    }
 
-  onChange = (isVisible) => {
-    const { message, onMessageRead } = this.props;
-    if (isVisible && message.is_unread) { onMessageRead({ message }); }
-  }
+    const isMessageForUser = isUserRecipient(message, user);
+    const recipients = getRecipientsExceptUser(message, user);
 
-  setContentHeight = () => {
-    const { message } = this.props;
-    const isTooLong = this.bodyEl.clientHeight > FOLD_HEIGHT;
+    if (isMessageForUser) {
+      return (
+        <Plural
+          className="m-message__info-label"
+          id="message-list.message.to-me-nb"
+          value={recipients.length}
+          _0="To: You"
+          _1="To: You and 1 other person"
+          other="To: You and # other persons"
+        />
+      );
+    }
 
-    this.setState(prevState => ({
-      ...prevState,
-      isTooLong,
-      isFold: isTooLong && !message.is_unread,
-    }));
-  }
-
-  handleExpandClick = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      isFold: !prevState.isFold,
-    }));
+    return (
+      <Plural
+        className="m-message__info-label"
+        id="message-list.message.to-nb"
+        _0="To:"
+        _1={`To: ${recipients.length && renderParticipant(recipients[0])}`}
+        other="To: # persons"
+        value={recipients.length}
+      />
+    );
   }
 
   renderDate = () => {
@@ -91,16 +94,6 @@ class Message extends Component {
   renderMessageContent = () => {
     const { message } = this.props;
 
-    const contentProps = {
-      className: classnames(
-        'm-message__content',
-        { 'm-message__content--fold': this.state.isFold },
-      ),
-      style: {
-        height: this.state.isFold ? FOLD_HEIGHT : 'auto',
-      },
-    };
-
     const bodyProps = {
       className: classnames(
         'm-message__body',
@@ -110,13 +103,16 @@ class Message extends Component {
     };
 
     return (
-      <div {...contentProps}>
+      <div className="m-message__content">
         {!message.body_is_plain ? (
           <div {...bodyProps} dangerouslySetInnerHTML={{ __html: message.body }} />
         ) : (
           <pre {...bodyProps}>{message.body}</pre>
         )
         }
+        <div className="m-message__attachments">
+          <MessageAttachments message={message} />
+        </div>
       </div>
     );
   }
@@ -131,88 +127,76 @@ class Message extends Component {
       email: i18n._('message-list.message.protocol.email', { defaults: 'email' }),
     };
 
-    const topBarClassName = classnames(
-      'm-message__top-bar',
-      { 'm-message__top-bar--is-unread': message.is_unread },
-    );
-
-    const subjectClassName = classnames(
-      'm-message__subject',
-      { 'm-message__subject--is-unread': message.is_unread },
-    );
-
     const messageType = typeTranslations[message.type];
 
+    const participants = message.participants.filter(
+      participant => participant.address !== author.address
+    );
+
     return (
-      <div id={message.message_id} className="m-message">
-        <div className="m-message__avatar-col">
-          <ContactAvatarLetter
-            contact={author}
-            className="m-message__avatar"
-            contactDisplayFormat="address"
-          />
-        </div>
-        <div className="m-message__container">
-          <div className={topBarClassName}>
-            {message.pi && <MultidimensionalPi pi={message.pi} className="m-message__pi" mini />}
-            {author.address && <TextBlock className="m-message__author">{author.address}</TextBlock>}
-            {message.type &&
-              (<div className="m-message__type">
-                <span className="m-message__type-label">
-                  <Trans id="message-list.message.by">by {messageType}</Trans>
-                </span>
-                {' '}
-                <Icon type={message.type} className="m-message__type-icon" spaced />
-              </div>
-            )}
-            {this.renderDate()}
-
-            <DropdownControl toggleId={this.dropdownId} className="m-message__actions-switcher" icon="ellipsis-v" />
-
-            <Dropdown
-              id={this.dropdownId}
-              alignRight
-              isMenu
-              closeOnClick
-              closeOnScroll
-            >
-              <MessageActionsContainer
-                message={message}
-                onDelete={onDelete}
-                onMessageRead={onMessageRead}
-                onMessageUnread={onMessageUnread}
-                onReply={onReply}
-                onCopyTo={onCopyTo}
-              />
-            </Dropdown>
-
+      <article id={message.message_id} className="m-message">
+        <aside className="m-message__info">
+          <div className="m-message__pi">
+            <Trans className="m-message__info-label" id="message-list.message.pi">Privacy Index</Trans>
+            {message.pi && <MultidimensionalPi pi={message.pi} mini />}
           </div>
+          <div className="m-message__from">
+            <Trans className="m-message__info-label" id="message-list.message.from">From:</Trans>
+            {author.address &&
+              <TextBlock className="m-message__info-author">{author.address}</TextBlock>
+            }
+          </div>
+          <div className="m-message__to">
+            {this.renderRecipients()}
+          </div>
+        </aside>
+        <div className="m-message__container">
+          <header>
+            <div className="m-message__top-bar">
+              {message.is_unread &&
+                <span className="m-message__new"><Trans id="message-list.message.new">new</Trans></span>
+              }
+              {message.type &&
+                (<div className="m-message__type">
+                  <span className="m-message__type-label">
+                    <Trans id="message-list.message.by">by {messageType}</Trans>
+                  </span>
+                  {' '}
+                  <Icon type={message.type} className="m-message__type-icon" spaced />
+                </div>
+              )}
+              {this.renderDate()}
+              <ul className="m-message__participants">
+                {participants.map((participant, index) => (
+                  <li key={index} className="m-message__participant">
+                    {renderParticipant(participant)}
+                    {index + 1 !== participants.length && ','}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {message.subject &&
+              <h2 className="m-message__subject">{message.subject}</h2>
+            }
+          </header>
 
-          {message.subject &&
-            <TextBlock className={subjectClassName}>
-              {message.subject}
-            </TextBlock>
-          }
 
           {this.renderMessageContent()}
           <VisibilitySensor onChange={this.onChange} scrollCheck scrollThrottle={100} />
 
-          <div className="m-message__footer">
-            {this.state.isTooLong &&
-              <Button
-                onClick={this.handleExpandClick}
-                display="expanded"
-                className="m-message__footer-button"
-              >
-                {this.state.isFold ?
-                  (<Trans id="message-list.message.action.expand">Expand</Trans>) :
-                  (<Trans id="message-list.message.action.collapse">Collapse</Trans>)
-                }
-              </Button>
-            }
-          </div>
+          <footer className="m-message__footer">
+            <MessageActionsContainer
+              message={message}
+              onDelete={onDelete}
+              onMessageRead={onMessageRead}
+              onMessageUnread={onMessageUnread}
+              onReply={onReply}
+              onCopyTo={onCopyTo}
+              onTagsChange={this.handleTagsChange}
+            />
+          </footer>
         </div>
-      </div>
+      </article>
     );
   }
 }

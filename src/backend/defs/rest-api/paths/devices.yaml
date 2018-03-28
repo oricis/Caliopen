@@ -40,31 +40,6 @@ devices:
               type: array
               items:
                 "$ref": "../objects/Device.yaml"
-  post:
-    description: Create a new device for the logged-in user
-    tags:
-    - devices
-    security:
-    - basicAuth: []
-    consumes:
-    - application/json
-    parameters:
-    - name: device
-      in: body
-      description: the device to create
-      schema:
-        "$ref": "../objects/NewDevice.yaml"
-    produces:
-    - application/json
-    responses:
-      '200':
-        description: Device created
-        schema:
-          type: object
-          properties:
-            location:
-              type: string
-              description: url to retrieve new device's infos at /devices/{device_id}
 devices_{device_id}:
   get:
     description: Returns a device
@@ -93,7 +68,7 @@ devices_{device_id}:
         schema:
           "$ref": "../objects/Error.yaml"
   delete:
-    description: Not Yet Implemented
+    description: Delete a device
     tags:
     - devices
     security:
@@ -104,14 +79,24 @@ devices_{device_id}:
       required: true
       type: string
     responses:
-      default:
-        description: route not implemented, should raise an error
+      '204':
+        description: Device deleted
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '404':
+        description: Device not found
+        schema:
+          "$ref": "../objects/Error.yaml"
   patch:
     description: update a device with rfc5789 and rfc7396 specifications
     tags:
     - devices
     security:
     - basicAuth: []
+    consumes:
+    - application/json
     parameters:
     - name: device_id
       in: path
@@ -129,13 +114,24 @@ devices_{device_id}:
             type: object
             properties:
               "$ref": "../objects/Device.yaml#/properties"
-    consumes:
+        required:
+        - current_state
+    produces:
     - application/json
     responses:
       '204':
         description: Update successful. No body is returned.
       '400':
         description: json payload malformed
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '403':
+        description: Forbidden patch. Server is refusing to apply the given patch's
+          properties to this ressource
         schema:
           "$ref": "../objects/Error.yaml"
       '404':

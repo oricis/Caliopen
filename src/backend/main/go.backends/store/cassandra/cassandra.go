@@ -28,6 +28,12 @@ type (
 		WithObjStore bool              // whether to use an objects store service for objects above SizeLimit
 		object_store.OSSConfig
 	}
+
+	HasTable interface {
+		// GetTableInfos returns the table name and maps with couple [PropertyName]CassandryKeys
+		GetTableInfos() (table string, partitionKeys map[string]string, collectionKeys map[string]string)
+		UnmarshalCQLMap(input map[string]interface{})
+	}
 )
 
 func InitializeCassandraBackend(config CassandraConfig) (cb *CassandraBackend, err error) {

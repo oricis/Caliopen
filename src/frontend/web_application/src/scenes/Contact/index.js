@@ -7,6 +7,7 @@ import { push } from 'react-router-redux';
 import { requestContact, updateContact, createContact, deleteContact, invalidate as invalidateContacts } from '../../store/modules/contact';
 import { withNotification } from '../../hoc/notification';
 import { removeTab, updateTab } from '../../store/modules/tab';
+import { updateTagCollection, withTags } from '../../modules/tags';
 import { getNewContact } from '../../services/contact';
 import { withCurrentTab } from '../../hoc/tab';
 import Presenter from './presenter';
@@ -39,6 +40,7 @@ const mapDispatchToProps = dispatch => ({
     removeTab,
     updateTab,
     push,
+    updateTagCollection,
   }, dispatch),
   onSubmit: values => Promise.resolve(values),
 });
@@ -53,4 +55,5 @@ export default compose(
   withI18n(),
   withCurrentTab(),
   withNotification(),
+  withTags(),
 )(Presenter);

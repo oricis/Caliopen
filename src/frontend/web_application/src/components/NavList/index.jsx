@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import ItemContent from './components/ItemContent';
+import NavItem from './components/NavItem';
 import './style.scss';
 
 const NavList = ({ className, dir, ...props }) => {
@@ -29,6 +29,6 @@ NavList.defaultProps = {
   dir: null,
 };
 
-export { ItemContent };
+export { NavItem };
 
 export default NavList;

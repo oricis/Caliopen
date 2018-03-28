@@ -23,6 +23,8 @@ export const REPLY_TO_MESSAGE = 'co/message/REPLY_TO_MESSAGE';
 export const UPDATE_TAGS = 'co/message/UPDATE_TAGS';
 export const UPDATE_TAGS_SUCCESS = 'co/message/UPDATE_TAGS_SUCCESS';
 export const UPDATE_TAGS_FAIL = 'co/message/UPDATE_TAGS_FAIL';
+export const UPLOAD_ATTACHMENT = 'co/message/UPLOAD_ATTACHMENT';
+export const DELETE_ATTACHMENT = 'co/message/DELETE_ATTACHMENT';
 
 export const TIMELINE_FILTER_ALL = 'all';
 export const TIMELINE_FILTER_RECEIVED = 'received';
@@ -38,7 +40,7 @@ export function requestMessages(type = 'timeline', key = '0', { offset = 0, limi
       type,
       key,
       request: {
-        url: '/v2/messages',
+        url: '/api/v2/messages',
         params,
       },
     },
@@ -78,7 +80,7 @@ export function createMessage({ message }) {
     type: CREATE_MESSAGE,
     payload: {
       request: {
-        url: '/v1/messages',
+        url: '/api/v1/messages',
         method: 'post',
         data: { ...message },
       },
@@ -91,7 +93,7 @@ export function requestMessage(messageId) {
     type: REQUEST_MESSAGE,
     payload: {
       request: {
-        url: `/v2/messages/${messageId}`,
+        url: `/api/v2/messages/${messageId}`,
       },
     },
   };
@@ -105,7 +107,7 @@ export function updateMessage({ message, original }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v1/messages/${message.message_id}`,
+        url: `/api/v1/messages/${message.message_id}`,
         data,
       },
     },
@@ -120,7 +122,7 @@ export function deleteMessage({ message }) {
       discussionId: message.discussion_id,
       request: {
         method: 'delete',
-        url: `/v1/messages/${message.message_id}`,
+        url: `/api/v1/messages/${message.message_id}`,
       },
     },
   };
@@ -140,7 +142,7 @@ export function postActions({ message, actions }) {
       message,
       request: {
         method: 'post',
-        url: `/v2/messages/${message.message_id}/actions`,
+        url: `/api/v2/messages/${message.message_id}/actions`,
         data: {
           actions,
         },
@@ -167,8 +169,33 @@ export function updateTags({ message, tags }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v2/messages/${message.message_id}/tags`,
+        url: `/api/v2/messages/${message.message_id}/tags`,
         data,
+      },
+    },
+  };
+}
+
+export function uploadAttachment({ message, attachment }) {
+  return {
+    type: UPLOAD_ATTACHMENT,
+    payload: {
+      request: {
+        method: 'post',
+        url: `/api/v2/messages/${message.message_id}/attachments`,
+        data: attachment,
+      },
+    },
+  };
+}
+
+export function deleteAttachment({ message, attachment }) {
+  return {
+    type: DELETE_ATTACHMENT,
+    payload: {
+      request: {
+        method: 'delete',
+        url: `/api/v2/messages/${message.message_id}/attachments/${attachment.temp_id}`,
       },
     },
   };

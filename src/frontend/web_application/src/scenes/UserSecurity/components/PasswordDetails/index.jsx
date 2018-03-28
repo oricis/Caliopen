@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import Button from '../../../../components/Button';
-import { PasswordStrength } from '../../../../components/form';
+import { PasswordStrength, Button, TextBlock } from '../../../../components/';
 import PasswordForm from '../PasswordForm';
-import TextBlock from '../../../../components/TextBlock';
 import './style.scss';
 
 function generateStateFromProps(props, prevState) {

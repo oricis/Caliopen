@@ -8,7 +8,8 @@ const securityMiddleware = (req, res, next) => {
       auth: {
         paths: [
           /^\/auth\/.*/,
-          '/api/v2/username/isAvailable', /^\/api\/v2\/passwords\/reset(\/.*)?/,
+          '/api/v2/username/isAvailable',
+          /^\/api\/v2\/passwords\/reset(\/.*)?/,
         ],
         security: false,
       },

@@ -6,11 +6,13 @@ package messages
 
 import (
 	"bytes"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
-	"gopkg.in/gin-gonic/gin.v1"
+	"mime"
 	"net/http"
 	"strconv"
 	"time"
@@ -36,20 +38,25 @@ func UploadAttachment(ctx *gin.Context) {
 
 	filename := header.Filename
 	content_type := header.Header["Content-Type"][0]
-	attchmtUrl, err := caliopen.Facilities.RESTfacility.AddAttachment(user_id, msg_id, filename, content_type, file)
+	tempId, err := caliopen.Facilities.RESTfacility.AddAttachment(user_id, msg_id, filename, content_type, file)
 	if err != nil {
-		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		var e error
+		if err.Error() == "not found" {
+			e = swgErr.New(http.StatusNotFound, err.Error())
+		} else {
+			e = swgErr.New(http.StatusFailedDependency, err.Error())
+		}
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
 	resp := struct {
-		Location string
-	}{attchmtUrl}
+		TempId string `json:"temp_id"`
+	}{tempId}
 	ctx.JSON(http.StatusOK, resp)
 }
 
-// DELETE …/:message_id/attachments/:attachment_index
+// DELETE …/:message_id/attachments/:attachment_id
 func DeleteAttachment(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	msg_id, err := operations.NormalizeUUIDstring(ctx.Param("message_id"))
@@ -59,24 +66,31 @@ func DeleteAttachment(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	attch_id, err := strconv.Atoi(ctx.Param("attachment_id"))
+	attch_id, err := operations.NormalizeUUIDstring(ctx.Param("attachment_id"))
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	err = caliopen.Facilities.RESTfacility.DeleteAttachment(user_id, msg_id, attch_id)
-	if err != nil {
-		e := swgErr.New(http.StatusFailedDependency, err.Error())
-		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+	caliopenErr := caliopen.Facilities.RESTfacility.DeleteAttachment(user_id, msg_id, attch_id)
+	if caliopenErr != nil {
+		returnedErr := new(swgErr.CompositeError)
+		if caliopenErr.Error() == "message not found" ||
+			caliopenErr.Error() == "attachment not found" ||
+			caliopenErr.Code() == NotFoundCaliopenErr {
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), caliopenErr, caliopenErr.Cause())
+		} else {
+			returnedErr = swgErr.CompositeValidationError(caliopenErr, caliopenErr.Cause())
+		}
+		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 		ctx.Abort()
 		return
 	}
 	ctx.Status(http.StatusOK)
 }
 
-// GET …/:message_id/attachments/:attachment_index
+// GET …/:message_id/attachments/:attachment_id
 // sends attachment as a file to client
 func DownloadAttachment(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
@@ -87,25 +101,31 @@ func DownloadAttachment(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	attch_id, err := strconv.Atoi(ctx.Param("attachment_id"))
-	if err != nil || msg_id == "" {
-		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+	meta, content, err := caliopen.Facilities.RESTfacility.OpenAttachment(user_id, msg_id, ctx.Param("attachment_id"))
+	if err != nil {
+		var e error
+		if err.Error() == "attachment not found" {
+			e = swgErr.New(http.StatusNotFound, err.Error())
+		} else {
+			e = swgErr.New(http.StatusFailedDependency, err.Error())
+		}
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	contentType, size, content, err := caliopen.Facilities.RESTfacility.OpenAttachment(user_id, msg_id, attch_id)
+	// create a ReaderSeeker from the io.Reader returned by OpenAttachment
+	size, err := strconv.ParseInt(meta["Message-Size"], 10, 64)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	// create a ReaderSeeker from the io.Reader returned by OpenAttachment
 	attch_bytes := make([]byte, size)
 	content.Read(attch_bytes)
 	rs := bytes.NewReader(attch_bytes)
 
-	ctx.Header("Content-Type", contentType)
+	ctx.Header("Content-Type", meta["Content-Type"])
+	ctx.Header("Content-Disposition", `attachment; filename="`+mime.BEncoding.Encode("UTF-8", meta["Filename"])+`"`)
 	http.ServeContent(ctx.Writer, ctx.Request, "", time.Time{}, rs)
 }

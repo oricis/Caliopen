@@ -1,4 +1,5 @@
 const userUtil = require('../utils/user-util');
+const { home } = require('../utils/navigation');
 
 describe('Create new contact', () => {
   const EC = protractor.ExpectedConditions;
@@ -25,7 +26,7 @@ describe('Create new contact', () => {
     const createButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('new contact'));
     const name = 'Foobar';
 
-    browser.get('./')
+    home()
       // XXX: click .btn--principal to force :hover callback actions
       .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
       .then(() => element(createButtonSelector).click())

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'lingui-react';
-// import Button from '../../../../components/Button';
-import TextBlock from '../../../../components/TextBlock';
-import { TextFieldGroup } from '../../../../components/form';
+// import { Button } from '../../../../components/';
+import { TextBlock, TextFieldGroup } from '../../../../components';
 import './style.scss';
 
 @withI18n()

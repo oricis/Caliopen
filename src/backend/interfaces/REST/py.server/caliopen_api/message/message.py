@@ -28,23 +28,7 @@ class Message(Api):
 
     @view(renderer='json', permission='authenticated')
     def collection_get(self):
-        # LEGACY CODE. ROUTE MOVED TO API V2
-        # discussion_id = self.request.swagger_data['discussion_id']
-        # pi_range = self.request.authenticated_userid.pi_range
-        # try:
-        #     messages = ObjectMessage.by_discussion_id(self.user, discussion_id,
-        #                                               min_pi=pi_range[0],
-        #                                               max_pi=pi_range[1],
-        #                                               limit=self.get_limit(),
-        #                                               offset=self.get_offset())
-        #     results = []
-        # except Exception as exc:
-        #     log.warn(exc)
-        #     raise ResourceNotFound
-        #
-        # for msg in messages['hits']:
-        #     results.append(msg.marshall_json_dict())
-        # return {'messages': results, 'total': messages['total']}
+        log.warn('Deprecated GET /messages API')
         raise HTTPMovedPermanently(location="/V2/messages")
 
     @view(renderer='json', permission='authenticated')
@@ -68,18 +52,7 @@ class Message(Api):
 
     @view(renderer='json', permission='authenticated')
     def get(self):
-        # LEGACY CODE. ROUTE MOVED TO API V2
-        #     # pi_range = self.request.authenticated_userid.pi_range
-        #     message_id = self.request.swagger_data["message_id"]
-        #     message = ObjectMessage(self.user.user_id, message_id=message_id)
-        #     try:
-        #         message.get_db()
-        #     except Exception as exc:
-        #         log.warn(exc)
-        #         raise ResourceNotFound
-        #
-        #     message.unmarshall_db()
-        #     return message.marshall_json_dict()
+        log.warn('Deprecated GET /messages/<id> API')
         message_id = self.request.swagger_data["message_id"]
         message_url = self.request.route_path('message', message_id=message_id)
         message_url = message_url.replace("/v1/", "/v2/")
@@ -128,6 +101,7 @@ class Message(Api):
             raise HTTPServerError(exc)
 
         return Response(None, 204)
+
 
 @resource(path='/raws/{raw_msg_id}')
 class Raw(Api):

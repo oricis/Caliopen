@@ -18,6 +18,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/hashicorp/go-multierror"
+	"github.com/satori/go.uuid"
 	"sync"
 	"time"
 )
@@ -142,7 +143,7 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 				}
 				if err, ok := (*nats_ack)["error"]; ok {
 					log.WithError(b.NatsConn.LastError()).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", rcptId.String())
-					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
+					log.Infof("natsMessage: %s\nnatsResponse: %s\n", natsMessage, resp)
 					errs = multierror.Append(errors.New(err.(string)))
 					return
 				}
@@ -151,6 +152,19 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 				if b.Config.LogReceivedMails {
 					log.Infof("EmailBroker : NATS inbound request successfully handled for user %s : %s", rcptId.String(), (*nats_ack)["message"])
 				}
+
+				notif := Notification{
+					Emitter: "smtp",
+					Type:    EventNotif,
+					TTLcode: LongLived,
+					User: &User{
+						UserId: rcptId,
+					},
+					NotifId: UUID(uuid.NewV1()),
+					Body:    `{"emailReceived": "` + (*nats_ack)["message_id"].(string) + `"}`,
+				}
+
+				go b.Notifier.ByNotifQueue(&notif)
 			}
 		}(rcptId)
 	}

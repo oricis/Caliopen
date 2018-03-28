@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
-import { InputText } from '../../../../../../components/form';
-import Icon from '../../../../../../components/Icon';
+import { Icon, InputText } from '../../../../../../components/';
 import RawButton from '../../../../../../components/RawButton';
 
 const generateStateFromProps = ({ term }) => ({ term });
 
 const SEARCH_PATH = '/search-results';
+const MIN_TERM_LENGTH = 3;
 
 class SearchField extends Component {
   static propTypes = {
@@ -57,13 +57,15 @@ class SearchField extends Component {
             name="term"
             onChange={this.handleInputChange}
             value={this.state.term}
+            theme="dark"
             placeholder={i18n._('header.menu.search', { defaults: 'Search' })}
-            className="m-search-field__input m-input-text"
+            className="m-search-field__input"
           />
           <RawButton
             className="m-search-field__button"
             type="submit"
             aria-label={i18n._('header.menu.search', { defaults: 'Search' })}
+            disabled={this.state.term.length < MIN_TERM_LENGTH}
           ><Icon type="search" /></RawButton>
         </form>
       </div>

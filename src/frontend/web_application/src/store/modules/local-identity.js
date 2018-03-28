@@ -7,7 +7,7 @@ export function requestLocalIdentities() {
     type: REQUEST_LOCAL_IDENTITIES,
     payload: {
       request: {
-        url: '/v2/identities/locals',
+        url: '/api/v2/identities/locals',
       },
     },
   };

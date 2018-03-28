@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Caliopen mail message privacy features extraction methods."""
+"""Caliopen contact privacy features extraction methods."""
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
@@ -63,7 +63,7 @@ class ContactFeature(object):
     def _get_technical(self, contact):
         """Get technical features for a contact."""
         features = {}
-        if contact.public_keys:
+        if hasattr(contact, 'public_keys') and contact.public_keys:
             max_size = max([x.size for x in contact.public_keys])
             if max_size:
                 features.update({'public_key_best_size': max_size})

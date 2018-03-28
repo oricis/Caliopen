@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { matchPath } from 'react-router-dom';
 import MenuBar from '../../components/MenuBar';
+import './style.scss';
 
 class Settings extends PureComponent {
   static propTypes = {
@@ -22,9 +23,9 @@ class Settings extends PureComponent {
 // to: '/settings/identities' },
       { key: 'settings.application', label: i18n._('settings.application', { defaults: 'Application' }), to: '/settings/application' },
       { key: 'settings.tags', label: i18n._('settings.tags', { defaults: 'Tags' }), to: '/settings/tags' },
-// { key: 'settings.devices', label: i18n._('settings.devices', { defaults:
-// 'Devices' }), to: '/settings/devices' }, //{ key: 'settings.signatures', label:
-// i18n._('settings.signatures', { defaults: 'Signatures' }), to: '/settings/signatures' },
+      { key: 'settings.devices', label: i18n._('settings.devices', { defaults: 'Devices' }), to: '/settings/devices' },
+//{ key: 'settings.signatures', label: i18n._('settings.signatures', { defaults: 'Signatures' }),
+//to: '/settings/signatures' },
     ].map(link => ({
       ...link,
       isActive: matchPath(pathname, { path: link.to, exact: false, strict: false }) && true,

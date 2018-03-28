@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans, withI18n } from 'lingui-react';
-import PageTitle from '../../components/PageTitle';
+import { PageTitle } from '../../components/';
 
 @withI18n()
 class PageNotFound extends PureComponent {

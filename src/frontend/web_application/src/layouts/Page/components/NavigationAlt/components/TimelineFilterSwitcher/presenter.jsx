@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { SelectFieldGroup } from '../../../../../../components/form';
+import SelectFieldGroup from '../../../../../../components/SelectFieldGroup';
 import TimelineFilter from '../../../TimelineFilter';
 import './style.scss';
 

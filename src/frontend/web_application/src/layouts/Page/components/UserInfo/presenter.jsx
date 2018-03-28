@@ -1,27 +1,52 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import ContactAvatarLetter from '../../../../components/ContactAvatarLetter';
+import { ContactAvatarLetter } from '../../../../modules/avatar';
+import { WithSettings } from '../../../../modules/settings';
 import './style.scss';
 
-const UserInfo = ({ user, className }) => (
-  <div className={classnames('m-user-info', className)}>
-    {user && user.contact && (
-      <div className="m-user-info__avatar">
-        <ContactAvatarLetter contact={user.contact} modifiers={{ size: 'small' }} />
-      </div>
-    )}
-    <div className="m-user-info__username">{user.name}</div>
-  </div>
-);
+class UserInfo extends PureComponent {
+  static propTypes = {
+    user: PropTypes.shape({}),
+    className: PropTypes.string,
+  };
+  static defaultProps = {
+    user: {},
+    className: undefined,
+  };
 
-UserInfo.propTypes = {
-  user: PropTypes.shape(),
-  className: PropTypes.string,
-};
-UserInfo.defaultProps = {
-  user: {},
-  className: undefined,
-};
+  renderAvatar = () => {
+    const { user } = this.props;
+    const contact = user && user.contact;
+
+    return contact && (
+      <WithSettings
+        render={(settings) => {
+          const format = settings.contact_display_format;
+
+          return (
+            <ContactAvatarLetter
+              contact={contact}
+              contactDisplayFormat={format}
+            />
+          );
+        }}
+      />
+    );
+  }
+
+  render() {
+    const { user, className } = this.props;
+
+    return (
+      <div className={classnames('m-user-info', className)}>
+        <div className="m-user-info__avatar">
+          {this.renderAvatar()}
+        </div>
+        <div className="m-user-info__username">{user.name}</div>
+      </div>
+    );
+  }
+}
 
 export default UserInfo;

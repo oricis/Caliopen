@@ -73,11 +73,11 @@ type (
 
 	// emails model embedded in contact
 	EmailContact struct {
-		Address   string `cql:"address"     json:"address"`
-		EmailId   UUID   `cql:"email_id"    json:"email_id"`
-		IsPrimary bool   `cql:"is_primary"  json:"is_primary"`
-		Label     string `cql:"label"       json:"label"`
-		Type      string `cql:"type"        json:"type"`
+		Address   string `cql:"address"     json:"address,omitempty"      patch:"user"`
+		EmailId   UUID   `cql:"email_id"    json:"email_id,omitempty"     patch:"system"`
+		IsPrimary bool   `cql:"is_primary"  json:"is_primary"   patch:"user"`
+		Label     string `cql:"label"       json:"label,omitempty"        patch:"user"`
+		Type      string `cql:"type"        json:"type,omitempty"         patch:"user"`
 	}
 )
 
@@ -142,4 +142,27 @@ func (ec *EmailContact) UnmarshalMap(input map[string]interface{}) error {
 	ec.Label, _ = input["label"].(string)
 	ec.Type, _ = input["type"].(string)
 	return nil //TODO: errors handling
+}
+
+// MarshallNew must be a variadic func to implement NewMarshaller interface,
+// but EmailContact does not need params to marshal a well-formed EmailContact: ...interface{} is ignored
+func (ec *EmailContact) MarshallNew(...interface{}) {
+	if len(ec.EmailId) == 0 || (bytes.Equal(ec.EmailId.Bytes(), EmptyUUID.Bytes())) {
+		ec.EmailId.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
+}
+
+// Sort interface implementation
+type ByEmailContactID []EmailContact
+
+func (p ByEmailContactID) Len() int {
+	return len(p)
+}
+
+func (p ByEmailContactID) Less(i, j int) bool {
+	return p[i].EmailId.String() < p[j].EmailId.String()
+}
+
+func (p ByEmailContactID) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
 }

@@ -12,6 +12,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/users"
 	"github.com/Sirupsen/logrus"
 	"github.com/renstrom/shortuuid"
+	"github.com/satori/go.uuid"
 	"github.com/tidwall/gjson"
 	"time"
 )
@@ -26,7 +27,7 @@ const (
 
 // as of oct. 2017, PatchUser only implemented for changing user's password
 // any attempt to patch something else should trigger an error
-func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result, notifiers Notifications.Notifiers) error {
+func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result, notify Notifications.Notifiers) error {
 
 	user, err := rest.store.RetrieveUser(user_id)
 	if err != nil {
@@ -45,13 +46,19 @@ func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result, notifie
 		if err != nil {
 			return err
 		}
-		// compose and send a notification email to user
-		notif := &Message{
-			Body_plain: changePasswordBodyPlain,
-			Body_html:  changePasswordBodyRich,
-			Subject:    changePasswordSubject,
+		// compose and send a notification via email
+		notif := &Notification{
+			Body: fmt.Sprintf("password changed for user %s", user.UserId.String()),
+			InternalPayload: &Message{
+				Body_plain: changePasswordBodyPlain,
+				Body_html:  changePasswordBodyRich,
+				Subject:    changePasswordSubject,
+			},
+			NotifId: UUID(uuid.NewV1()),
+			Type:    NotifAdminMail,
+			User:    user,
 		}
-		go notifiers.SendEmailAdminToUser(user, notif)
+		go notify.ByEmail(notif)
 		return nil
 	} else {
 		// hack to ensure that patch is for password only
@@ -95,7 +102,7 @@ func validatePasswordPatch(patch *gjson.Result) error {
 
 // RequestPasswordReset checks if an user could be found with provided payload request,
 // if found, it will trigger the password reset procedure that ends by notifying the user via the provided notifiers interface
-func (rest *RESTfacility) RequestPasswordReset(payload PasswordResetRequest, notifier Notifications.EmailNotifiers) error {
+func (rest *RESTfacility) RequestPasswordReset(payload PasswordResetRequest, notify Notifications.Notifiers) error {
 	var user *User
 	var err error
 	// 1. check if user exist
@@ -142,7 +149,15 @@ func (rest *RESTfacility) RequestPasswordReset(payload PasswordResetRequest, not
 	}
 
 	// 4. send reset link to user's recovery email address.
-	go notifier.SendPasswordResetEmail(user, reset_session)
+	notif := &Notification{
+		User:            user,
+		InternalPayload: reset_session,
+		NotifId:         UUID(uuid.NewV1()),
+		Body:            fmt.Sprintf("reset link for user %s", user.UserId.String()),
+		Type:            NotifPasswordReset,
+	}
+	go notify.ByEmail(notif)
+
 	logrus.Infof("[RESTFacility] reset password session ignited for user <%s> [%s]", user.Name, user.UserId.String())
 
 	return nil
@@ -159,7 +174,7 @@ func (rest *RESTfacility) ValidatePasswordResetToken(token string) (session *Pas
 	return session, nil
 }
 
-func (rest *RESTfacility) ResetUserPassword(token, new_password string, notifier Notifications.EmailNotifiers) error {
+func (rest *RESTfacility) ResetUserPassword(token, new_password string, notify Notifications.Notifiers) error {
 	session, err := rest.ValidatePasswordResetToken(token)
 	if err != nil {
 		return err
@@ -186,12 +201,18 @@ func (rest *RESTfacility) ResetUserPassword(token, new_password string, notifier
 	}
 
 	// send email notification to user's recovery email address
-	notif := &Message{
-		Body_plain: changePasswordBodyPlain,
-		Body_html:  changePasswordBodyRich,
-		Subject:    changePasswordSubject,
+	notif := Notification{
+		User: user,
+		InternalPayload: &Message{
+			Body_plain: changePasswordBodyPlain,
+			Body_html:  changePasswordBodyRich,
+			Subject:    changePasswordSubject,
+		},
+		NotifId: UUID(uuid.NewV1()),
+		Body:    fmt.Sprintf("password changed for user %s", user.UserId.String()),
+		Type:    NotifAdminMail,
 	}
-	go notifier.SendEmailAdminToUser(user, notif)
+	go notify.ByEmail(&notif)
 
 	return nil
 }

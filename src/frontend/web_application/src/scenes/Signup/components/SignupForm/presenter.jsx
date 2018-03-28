@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import Button from '../../../../components/Button';
-import Link from '../../../../components/Link';
-import Section from '../../../../components/Section';
-import Modal from '../../../../components/Modal';
-import TextBlock from '../../../../components/TextBlock';
-
-import { TextFieldGroup, FormGrid, FormRow, FormColumn, PasswordStrength, CheckboxFieldGroup, FieldErrors } from '../../../../components/form';
+import { Spinner, Link, Label, Subtitle, PasswordStrength, FieldErrors, TextBlock, Modal, Button, TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components/';
 import './style.scss';
 
 function generateStateFromProps(props) {
@@ -23,16 +17,17 @@ class SignupForm extends Component {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
     onSubmit: PropTypes.func.isRequired,
-    onUsernameChange: PropTypes.func,
-    onUsernameBlur: PropTypes.func,
+    onFieldChange: PropTypes.func,
+    onFieldBlur: PropTypes.func,
+    isValidating: PropTypes.bool.isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
     errors: {},
     form: {},
-    onUsernameChange: noop,
-    onUsernameBlur: noop,
+    onFieldChange: noop,
+    onFieldBlur: noop,
   }
 
   state = {
@@ -73,12 +68,6 @@ class SignupForm extends Component {
     });
   };
 
-  handleUsernameChange = (event) => {
-    this.handleInputChange(event);
-
-    this.props.onUsernameChange(event);
-  };
-
   handlePasswordChange = (event) => {
     this.handleInputChange(event);
     this.calcPasswordStrengh();
@@ -98,25 +87,26 @@ class SignupForm extends Component {
     }
   }
 
-
   handleInputChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value: inputValue, type, checked } = event.target;
+    const value = type === 'checkbox' ? checked : inputValue;
+    const { onFieldChange } = this.props;
+
     this.setState(prevState => ({
       formValues: {
         ...prevState.formValues,
         [name]: value,
       },
-    }));
+    }), () => {
+      onFieldChange(name, value);
+    });
   };
 
-  handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    this.setState(prevState => ({
-      formValues: {
-        ...prevState.formValues,
-        [name]: checked,
-      },
-    }));
+  handleInputBlur = (event) => {
+    const { name, value } = event.target;
+    const { onFieldBlur } = this.props;
+
+    onFieldBlur(name, value);
   };
 
   handleSubmit = (ev) => {
@@ -166,10 +156,10 @@ class SignupForm extends Component {
   }
 
   render() {
-    const { form, errors = {}, i18n } = this.props;
+    const { form, errors = {}, i18n, isValidating } = this.props;
 
     return (
-      <Section className="s-signup" title={i18n._('signup.title', { defaults: 'Please Log In' })}>
+      <div className="s-signup">
         <FormGrid className="s-signup__form">
           <form method="post" name="ac_form" {...form}>
             <FormRow>
@@ -189,13 +179,13 @@ class SignupForm extends Component {
                 <TextFieldGroup
                   id="signup_username"
                   name="username"
+                  theme="contrasted"
                   label={i18n._('signup.form.username.label', { defaults: 'Username' })}
                   placeholder={i18n._('signup.form.username.placeholder', { defaults: 'username' })}
                   value={this.state.formValues.username}
                   errors={errors.username}
-                  onChange={this.handleUsernameChange}
-                  onBlur={this.props.onUsernameBlur}
-                  showLabelforSr
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
                 />
                 <TextBlock className="s-signup__user">
                   <span className="s-signup__username">{this.state.formValues.username}</span>@alpha.caliopen.org
@@ -206,14 +196,15 @@ class SignupForm extends Component {
               <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signup_password"
+                  theme="contrasted"
                   name="password"
                   label={i18n._('signup.form.password.label', { defaults: 'Password' })}
                   placeholder={i18n._('signup.form.password.placeholder', { defaults: 'password' })}
-                  showLabelforSr
                   type="password"
                   value={this.state.formValues.password}
                   errors={errors.password}
                   onChange={this.handlePasswordChange}
+                  onBlur={this.handleInputBlur}
                 />
               </FormColumn>
               {this.state.passwordStrength.length !== 0 && (
@@ -226,18 +217,21 @@ class SignupForm extends Component {
               <FormColumn rightSpace={false} bottomSpace >
                 <TextFieldGroup
                   id="signup_recovery_email"
+                  theme="contrasted"
                   name="recovery_email"
                   // Alpha: label "recovery email" replaced by "invitation email"
         // label={i18n._('signup.form.recovery_email.label', { defaults: 'Backup email address' })}
         // placeholder={i18n._('signup.form.recovery_email.placeholder', { defaults: '' })}
-                  label={i18n._('signup.form.invitation_email.label', { defaults: 'Please fill with the email provided when you requested an invitation.' })}
-                  placeholder={i18n._('signup.form.invitation_email.placeholder', { defaults: 'Invitation email' })}
+                  label={i18n._('signup.form.invitation_email.label', { defaults: 'Invitation email:' })}
+                  placeholder={i18n._('signup.form.invitation_email.placeholder', { defaults: 'example@domain.tld' })}
                   value={this.state.formValues.recovery_email}
                   errors={errors.recovery_email}
                   onChange={this.handleInputChange}
-                  showLabelforSr
+                  onBlur={this.handleInputBlur}
                 />
-                <span><Trans id="signup.form.invitation_email.label">Please fill with the email provided when you requested an invitation.</Trans></span>
+                <Label htmlFor="signup_recovery_email" className="s-signup__recovery-label">
+                  <Trans id="signup.form.invitation_email.tip">Please fill with the email provided when you requested an invitation.</Trans>
+                </Label>
               </FormColumn>
             </FormRow>
             {/* Alpha: hide TOS checkbox
@@ -250,22 +244,23 @@ class SignupForm extends Component {
                     name="tos"
                     checked={this.state.formValues.tos}
                     errors={errors.tos}
-                    onChange={this.handleCheckboxChange}
+                    onChange={this.handleInputChange}
                   />
                 </FormColumn>
               </FormRow>
               */}
             <FormRow>
               <FormColumn rightSpace={false} className="s-signup__privacy" bottomSpace>
-                <h4><Trans id="signup.form.privacy.title">Privacy policy</Trans></h4>
+                <Subtitle><Trans id="signup.form.privacy.title">Privacy policy</Trans></Subtitle>
                 <p className="s-signup__privacy-text">
                   <Trans id="signup.form.privacy.intro">Throughout the development phase, we collect some data (but no more than the NSA).</Trans>
+                  {' '}
+                  <Button
+                    className="s-signup__privacy-link"
+                    onClick={this.handleOpenModal}
+                    display="inline"
+                  ><Trans id="signup.form.privacy.more_info">More info</Trans></Button>
                 </p>
-                <Button
-                  className="s-signup__privacy-link"
-                  onClick={this.handleOpenModal}
-                  icon="question-circle"
-                ><Trans id="signup.form.privacy.more_info">More info</Trans></Button>
                 {this.renderModal()}
                 <CheckboxFieldGroup
                   id="signup_privacy"
@@ -274,7 +269,7 @@ class SignupForm extends Component {
                   name="privacy"
                   checked={this.state.formValues.privacy}
                   errors={errors.privacy}
-                  onChange={this.handleCheckboxChange}
+                  onChange={this.handleInputChange}
                 />
               </FormColumn>
             </FormRow>
@@ -285,17 +280,19 @@ class SignupForm extends Component {
                   onClick={this.handleSubmit}
                   display="expanded"
                   shape="plain"
+                  disabled={isValidating}
+                  icon={isValidating ? (<Spinner isLoading display="inline" />) : null}
                 ><Trans id="signup.action.create">Create</Trans></Button>
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn rightSpace={false}>
+              <FormColumn rightSpace={false} className="s-signup__link">
                 <Link to="/auth/signin"><Trans id="signup.go_signin">I already have an account</Trans></Link>
               </FormColumn>
             </FormRow>
           </form>
         </FormGrid>
-      </Section>
+      </div>
     );
   }
 }

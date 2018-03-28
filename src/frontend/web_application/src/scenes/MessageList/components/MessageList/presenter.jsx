@@ -23,6 +23,7 @@ class MessageList extends Component {
     onDelete: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     replyForm: PropTypes.node.isRequired,
+    updateTagCollection: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
   };
 
@@ -47,7 +48,7 @@ class MessageList extends Component {
   renderDayGroups(settings) {
     const {
       messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply, onMessageCopyTo,
-      user,
+      user, updateTagCollection,
     } = this.props;
 
     const messagesGroupedByday = groupMessages(messages, user);
@@ -67,6 +68,8 @@ class MessageList extends Component {
               onDelete={onMessageDelete}
               onReply={onMessageReply}
               onCopyTo={onMessageCopyTo}
+              updateTagCollection={updateTagCollection}
+              user={user}
             />
           ))}
         </DayMessageList>

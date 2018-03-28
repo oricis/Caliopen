@@ -3,7 +3,7 @@ delivery_agent:
 
 elasticsearch:
     url: http://es.dev.caliopen.org:9200
-    mappings_version: v3
+    mappings_version: v4
 
 cassandra:
     keyspace: caliopen
@@ -67,3 +67,7 @@ key_discovery:
     dns:
         enable: True
         name_server: ns.example.com
+
+qualifiers:
+    geoip:
+        file: "{{ geoip2_file }}"

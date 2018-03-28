@@ -1,18 +1,15 @@
-@import '../../styles/vendor/bootstrap_foundation-sites';
+@import '../../styles/common';
 
 .m-section {
-  padding: map-get($co-form__spacing, 'large');
-  background: $co-color__fg__back;
+  padding: map-get($co-form__spacing, 'medium');
+  background-color: $co-color__bg__back--higher;
 
   &--separator {
     border-bottom: 1px solid $co-color__bg__back;
   }
 
   &__header {
-    margin-bottom: map-get($co-form__spacing, 'large');
+    margin-bottom: map-get($co-form__spacing, 'medium');
   }
 
-  &__title {
-    text-align: center;
-  }
 }

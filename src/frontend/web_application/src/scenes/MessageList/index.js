@@ -8,6 +8,7 @@ import { createMessageCollectionStateSelector } from '../../store/selectors/mess
 import { requestMessages, postActions, deleteMessage, loadMore, replyToMessage } from '../../store/modules/message';
 import { removeTab, updateTab } from '../../store/modules/tab';
 import { clearDraft } from '../../store/modules/draft-message';
+import { updateTagCollection, withTags } from '../../modules/tags';
 import { withCurrentTab } from '../../hoc/tab';
 import Presenter from './presenter';
 
@@ -64,9 +65,11 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   replyToMessage,
   copyMessageTo: () => notif,
   push,
+  updateTagCollection,
 }, dispatch);
 
 export default compose(
+  withTags(),
   connect(mapStateToProps, mapDispatchToProps),
   withI18n(),
   withCurrentTab()

@@ -3,21 +3,21 @@
 $co-font-path: '../../fonts';
 @import '../../styles/base/fonts';
 @import '../../styles/base/reset';
-
 // --- Vendor ---
 @import '../../styles/vendor/bootstrap_foundation-sites';
-
 @import '../../styles/common';
 
 $navigation__height: $co-component__height;
 $navigation__padding: .75rem;
 $navigation-after__height: $co-component__spacing;
 
-
 .l-body {
   &__content {
     // XXX: need a better fix for call-to-action override on mobile
     margin-bottom: 280px;
+    max-width: $co-site-width;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   &__footer-alpha {

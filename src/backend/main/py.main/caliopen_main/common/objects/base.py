@@ -186,33 +186,16 @@ class ObjectStorable(ObjectJsonDictifiable):
         try:
             self._db.save()
         except Exception as exc:
-            log.info(exc)
+            log.exception(exc)
             return exc
 
         return None
-
-    # def create_db(self, **options):
-    #     """ Create an instance of this model in the database
-    #
-    #         from current object's attributes
-    #     """
-    #
-    #     params = self.marshall_dict()
-    #     p_key = params.pop(self._pkey_name)
-    #     #primary key must be set as first argument for create
-    #     try:
-    #         self._db.create(p_key, params)
-    #     except Exception as exc:
-    #         log.info(exc)
-    #         raise exc
-    #
-    #     return None
 
     def delete_db(self, **options):
         try:
             self._db.delete()
         except Exception as exc:
-            log.info(exc)
+            log.exception(exc)
             return exc
 
         return None
@@ -223,7 +206,7 @@ class ObjectStorable(ObjectJsonDictifiable):
         try:
             self._db.update()
         except Exception as exc:
-            log.info(exc)
+            log.exception(exc)
             return exc
 
         return None
@@ -339,14 +322,14 @@ class ObjectUser(ObjectStorable):
         try:
             obj_patch_new.unmarshall_json_dict(patch)
         except Exception as exc:
-            log.info(exc)
+            log.exception(exc)
             raise main_errors.PatchUnprocessable(message= \
                 "unable to unmarshall patch into object <{}>".format(
                     exc))
         try:
             obj_patch_old.unmarshall_json_dict(patch_current)
         except Exception as exc:
-            log.info(exc)
+            log.exception(exc)
             raise main_errors.PatchUnprocessable(message= \
                 "unable to unmarshall patch into object <{}>".format(
                     exc))
@@ -368,7 +351,8 @@ class ObjectUser(ObjectStorable):
                                             obj_patch_old,
                                             obj_patch_new)
             except Exception as exc:
-                log.info("key consistency checking failed: {}".format(exc))
+                log.exception("key consistency checking failed: {}".
+                              format(exc))
                 raise exc
 
             # all controls passed, we can actually set the new attribute
@@ -394,7 +378,7 @@ class ObjectUser(ObjectStorable):
                 try:
                     self._json_model(d).validate()
                 except Exception as exc:
-                    log.info("document is not valid: {}".format(exc))
+                    log.exception("document is not valid: {}".format(exc))
                     raise main_errors.PatchUnprocessable(
                         message="document is not valid,"
                                 " can't insert it into db: <{}>".format(exc))
@@ -403,7 +387,7 @@ class ObjectUser(ObjectStorable):
             try:
                 self.update_db()
             except Exception as exc:
-                log.info(exc)
+                log.exception(exc)
                 raise main_errors.PatchError(message="Error when updating db")
 
     def _check_key_consistency(self, current_attr, key, obj_patch_old,
@@ -482,7 +466,7 @@ class ObjectIndexable(ObjectUser):
                                                 using=self._index_class.client())
         except Exception as exc:
             if isinstance(exc, ESexceptions.NotFoundError):
-                log.info("indexed doc not found")
+                log.exception("indexed doc not found")
                 self._index = None
                 raise NotFound('%s #%s not found for user %s' %
                                (self.__class__.__name__, obj_id, self.user_id))
@@ -507,7 +491,7 @@ class ObjectIndexable(ObjectUser):
             self._index.delete(using=self._index_class.client(),
                                refresh="wait_for")
         except Exception as exc:
-            log.info(exc)
+            log.exception(exc)
             return exc
 
         return None
@@ -530,7 +514,7 @@ class ObjectIndexable(ObjectUser):
                     self._index.update(using=self._index_class.client(),
                                        **update_dict)
             except Exception as exc:
-                log.info("update index failed: {}".format(exc))
+                log.exception("update index failed: {}".format(exc))
 
         else:
             # for some reasons, index doc not found... create one from scratch
@@ -598,8 +582,8 @@ class ObjectIndexable(ObjectUser):
         try:
             super(ObjectIndexable, self).apply_patch(patch, **options)
         except Exception as exc:
-            log.info("ObjectIndexable apply_patch() returned error: {}".format(
-                exc))
+            log.exception("ObjectIndexable apply_patch() returned error: {}".
+                          format(exc))
             raise exc
 
         if "index" in options and options["index"] is True:
@@ -607,7 +591,8 @@ class ObjectIndexable(ObjectUser):
             try:
                 self.update_index(wait_for=True)
             except Exception as exc:
-                log.info("apply_patch update_index() exception: {}".format(exc))
+                log.exception("apply_patch update_index() exception: {}".
+                              format(exc))
                 raise exc
 
 

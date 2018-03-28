@@ -36,7 +36,7 @@ export default axiosMiddleware(getClient(), {
         if (error.response.status >= 500) {
           const { translate: __ } = getTranslator();
           const notification = {
-            message: __('Sorry, an unexptected error occured. developers will work hard on this error during alpha phase. Please feel free to describe us what happened.'),
+            message: __('Sorry, an unexpected error occured. developers will work hard on this error during alpha phase. Please feel free to describe us what happened.'),
             type: NOTIFICATION_TYPE_ERROR,
             duration: 0,
             canDismiss: true,

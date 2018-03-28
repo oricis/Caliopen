@@ -11,7 +11,7 @@ export function requestUser() {
     type: REQUEST_USER,
     payload: {
       request: {
-        url: '/v1/me',
+        url: '/api/v1/me',
       },
     },
   };
@@ -32,7 +32,7 @@ export function updateUser({ user, original }) {
     payload: {
       request: {
         method: 'patch',
-        url: `/v2/users/${user.user_id}`,
+        url: `/api/v2/users/${user.user_id}`,
         data,
       },
     },

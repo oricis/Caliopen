@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
-import Link from '../../../../components/Link';
-import Badge from '../../../../components/Badge';
-import ContactAvatarLetter, { SIZE_SMALL } from '../../../../components/ContactAvatarLetter';
-import TextBlock from '../../../../components/TextBlock';
+import { ContactAvatarLetter, SIZE_SMALL } from '../../../../modules/avatar';
+import { Badge, Link, TextBlock } from '../../../../components/';
 import { formatName } from '../../../../services/contact';
 import Highlights from '../Highlights';
 import './style.scss';
@@ -33,13 +31,16 @@ class ContactResultItem extends PureComponent {
   renderTags() {
     const { i18n, contact } = this.props;
 
+    if (!contact.tags) {
+      return null;
+    }
+
     return (
-      <WithTags render={userTags =>
-        contact.tags && getCleanedTagCollection(userTags, contact.tags).map(tag => (
-          <span key={tag.name}>
-            {' '}
-            <Badge className="m-contact-result-item__tag">{getTagLabel(i18n, tag)}</Badge>
-          </span>
+      <WithTags render={userTags => getCleanedTagCollection(userTags, contact.tags).map(tag => (
+        <span key={tag.name}>
+          {' '}
+          <Badge className="m-contact-result-item__tag">{getTagLabel(i18n, tag)}</Badge>
+        </span>
         ))}
       />
     );
@@ -64,15 +65,15 @@ class ContactResultItem extends PureComponent {
         <div className="m-contact-result-item__contact-avatar">
           <ContactAvatarLetter isRound contact={contact} size={SIZE_SMALL} />
         </div>
-        <TextBlock>
+        <TextBlock className="m-contact-result-item__col-title">
           {contact.name_prefix && (<span className="m-contact-result-item__contact-prefix"><Highlights term={term} highlights={contact.name_prefix} /></span>)}
           <span className="m-contact-result-item__contact-title">{this.renderTitle()}</span>
           {contact.name_suffix && (<span className="m-contact-result-item__contact-suffix">, <Highlights term={term} highlights={contact.name_suffix} /></span>)}
         </TextBlock>
-        <TextBlock>
+        <TextBlock className="m-contact-result-item__col-highlights">
           {this.renderHighlights()}
         </TextBlock>
-        <TextBlock>
+        <TextBlock className="m-contact-result-item__col-tags">
           {this.renderTags()}
         </TextBlock>
       </Link>

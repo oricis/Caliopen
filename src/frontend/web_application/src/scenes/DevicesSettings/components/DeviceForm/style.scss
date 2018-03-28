@@ -1,0 +1,24 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-device-form {
+  margin-bottom: $co-margin;
+
+  &__label {
+    display: inline-block;
+    margin-bottom: $co-component__spacing;
+  }
+
+  &__location-group {
+    display: flex;
+    flex-flow: row wrap;
+  }
+
+  &__location-address {
+    @include flex-grid-size;
+  }
+
+  &__location-type {
+    @include flex-grid-column(shrink);
+  }
+}

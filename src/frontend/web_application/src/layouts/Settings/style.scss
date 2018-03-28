@@ -1,10 +1,9 @@
 @import '../../styles/common';
-@import '../../styles/object/o-form-element';
-@import '../../styles/vendor/bootstrap_foundation-sites';
 
 .l-settings {
+  background-color: $co-color__fg__back;
 
   &__panel {
-    padding-top: $co-margin;
+    font-size: $co-font__size--small;
   }
 }

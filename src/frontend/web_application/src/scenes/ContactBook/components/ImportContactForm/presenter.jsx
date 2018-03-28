@@ -1,22 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import InputFileGroup from '../../../../components/form/InputFileGroup';
-import Button from '../../../../components/Button';
-import Spinner from '../../../../components/Spinner';
-import { getConfig } from '../../../../services/config';
+import { Button, InputFileGroup, Spinner } from '../../../../components/';
+import { getMaxSize } from '../../../../services/config';
 
 
 import './style.scss';
 
 const VALID_EXT = ['.vcf', '.vcard']; // Valid file extensions for input#file
-const getMaxSize = (literalSize) => {
-  const numberSize = literalSize.toLowerCase()
-    .replace('kb', '000')
-    .replace('mb', '000000');
-
-  return Number(numberSize);
-};
 
 class ImportContactForm extends Component {
   static propTypes = {
@@ -89,7 +80,6 @@ class ImportContactForm extends Component {
 
   render() {
     const { i18n, hasImported, errors, formAction } = this.props;
-    const { maxBodySize } = getConfig();
 
     return (
       <form
@@ -105,7 +95,7 @@ class ImportContactForm extends Component {
             errors={errors}
             descr={i18n._('import-contact.form.descr', { defaults: 'You can import one .vcf or .vcard file.' })}
             fileTypes={VALID_EXT}
-            maxSize={getMaxSize(maxBodySize)}
+            maxSize={getMaxSize()}
           />
         :
           <p><Trans id="import-contact.form.success">Successfuly imported !</Trans></p>

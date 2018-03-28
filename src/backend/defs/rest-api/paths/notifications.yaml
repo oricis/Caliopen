@@ -1,0 +1,74 @@
+---
+notifications:
+  get:
+    description: Returns pending notifications
+    tags:
+    - notifications
+    security:
+    - basicAuth: []
+    parameters:
+    - name: from
+      in: query
+      required: false
+      description: oldest timestamp to retrieve (older notifications will not be fetched). RFC3339 format.
+      type: string
+      format: date-time
+    - name: to
+      in: query
+      required: false
+      description: earlest timestamp to retrieve (earler notifications will not be fetched). RFC3339 format.
+      type: string
+      format: date-time
+    produces:
+    - application/json
+    responses:
+      '200':
+        description: json document with an array of pending notifications
+        schema:
+          type: object
+          properties:
+            total:
+              type: integer
+              format: int32
+            notifications:
+              type: array
+              items:
+                "$ref": "../objects/Notification.yaml"
+      '400':
+        description: malform request
+        schema:
+          type: object
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+  delete:
+    description: Delete pending notifications
+    tags:
+    - notifications
+    security:
+    - basicAuth: []
+    parameters:
+    - name: until
+      in: query
+      required: false
+      description: delete all notifications with a timestamp before `until` time (RFC3339 format)
+      type: string
+      format: date-time
+    produces:
+    - application/json
+    responses:
+      '204':
+        description: deletions executed, no body returned.
+      '400':
+        description: malform request
+        schema:
+          type: object
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+
+

@@ -1,42 +1,55 @@
 package objects
 
 import (
+	"bytes"
 	"encoding/json"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
+	"sort"
+	"sync"
 	"time"
 )
 
 type (
 	Contact struct {
-		AdditionalName  string            `cql:"additional_name"    json:"additional_name"`
-		Addresses       []PostalAddress   `cql:"addresses"          json:"addresses"`
-		Avatar          string            `cql:"avatar"             json:"avatar"`
-		ContactId       UUID              `cql:"contact_id"         json:"contact_id"`
-		DateInsert      time.Time         `cql:"date_insert"        json:"date_insert"`
-		DateUpdate      time.Time         `cql:"date_update"        json:"date_update"`
-		Deleted         bool              `cql:"deleted"            json:"deleted"`
-		Emails          []EmailContact    `cql:"emails"             json:"emails"`
-		FamilyName      string            `cql:"family_name"        json:"family_name"`
-		GivenName       string            `cql:"given_name"         json:"given_name"`
-		Groups          []string          `cql:"groups"             json:"groups"`
-		Identities      []SocialIdentity  `cql:"identities"         json:"identities"`
-		Ims             []IM              `cql:"ims"                json:"ims"`
-		Infos           map[string]string `cql:"infos"              json:"infos"`
-		NamePrefix      string            `cql:"name_prefix"        json:"name_prefix"`
-		NameSuffix      string            `cql:"name_suffix"        json:"name_suffix"`
-		Organizations   []Organization    `cql:"organizations"      json:"organizations"`
-		Phones          []Phone           `cql:"phones"             json:"phones"`
-		PrivacyIndex    *PrivacyIndex     `cql:"pi"                 json:"pi"`
-		PublicKeys      []PublicKey       `cql:"public_keys"        json:"public_keys"`
-		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features"`
-		Tags            []string          `cql:"tagnames"           json:"tags"                 patch:"user"`
-		Title           string            `cql:"title"              json:"title"`
-		UserId          UUID              `cql:"user_id"            json:"user_id"`
+		Locker          *sync.Mutex       `cql:"-"                  json:"-"`
+		AdditionalName  string            `cql:"additional_name"    json:"additional_name,omitempty"      patch:"user"`
+		Addresses       []PostalAddress   `cql:"addresses"          json:"addresses,omitempty"            patch:"user"`
+		Avatar          string            `cql:"avatar"             json:"avatar,omitempty"               patch:"user"`
+		ContactId       UUID              `cql:"contact_id"         json:"contact_id,omitempty"   elastic:"omit"`
+		DateInsert      time.Time         `cql:"date_insert"        json:"date_insert,omitempty"          formatter:"RFC3339Milli"`
+		DateUpdate      time.Time         `cql:"date_update"        json:"date_update,omitempty"          formatter:"RFC3339Milli"`
+		Deleted         time.Time         `cql:"deleted"            json:"deleted,omitempty"              formatter:"RFC3339Milli"`
+		Emails          []EmailContact    `cql:"emails"             json:"emails,omitempty"               patch:"user"`
+		FamilyName      string            `cql:"family_name"        json:"family_name,omitempty"          patch:"user"`
+		GivenName       string            `cql:"given_name"         json:"given_name,omitempty"           patch:"user"`
+		Groups          []string          `cql:"groups"             json:"groups,omitempty"               patch:"user"`
+		Identities      []SocialIdentity  `cql:"identities"         json:"identities,omitempty"           patch:"user"`
+		Ims             []IM              `cql:"ims"                json:"ims,omitempty"                  patch:"user"`
+		Infos           map[string]string `cql:"infos"              json:"infos,omitempty"                patch:"user"`
+		NamePrefix      string            `cql:"name_prefix"        json:"name_prefix,omitempty"          patch:"user"`
+		NameSuffix      string            `cql:"name_suffix"        json:"name_suffix,omitempty"          patch:"user"`
+		Organizations   []Organization    `cql:"organizations"      json:"organizations,omitempty"        patch:"user"`
+		Phones          []Phone           `cql:"phones"             json:"phones,omitempty"               patch:"user"`
+		PrivacyIndex    *PrivacyIndex     `cql:"pi"                 json:"pi,omitempty"`
+		PublicKeys      []PublicKey       `cql:"-"                  json:"public_keys,omitempty"          patch:"user"`
+		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features,omitempty"`
+		Tags            []string          `cql:"tagnames"           json:"tags,omitempty"                 patch:"system"`
+		Title           string            `cql:"title"              json:"title,omitempty"                patch:"user"`
+		UserId          UUID              `cql:"user_id"            json:"user_id,omitempty"      elastic:"omit"`
+	}
+
+	// ContactByContactPoints is the model of a Cassandra table to lookup contacts by address/email/phone/etc.
+	ContactByContactPoints struct {
+		ContactIDs []string `cql:"contact_ids"`
+		Type       string   `cql:"type"`
+		UserID     string   `cql:"user_id"`
+		Value      string   `cql:"value"`
 	}
 )
 
-// unmarshal a map[string]interface{} that must owns all Contact's fields
+// UnmarshalCQLMap hydrates a Contact with data from a map[string]interface{}
 // typical usage is for unmarshaling response from Cassandra backend
 func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 	if additionalName, ok := input["additional_name"].(string); ok {
@@ -72,7 +85,7 @@ func (contact *Contact) UnmarshalCQLMap(input map[string]interface{}) {
 	if dateUpdate, ok := input["date_update"].(time.Time); ok {
 		contact.DateUpdate = dateUpdate
 	}
-	if deleted, ok := input["deleted"].(bool); ok {
+	if deleted, ok := input["deleted"].(time.Time); ok {
 		contact.Deleted = deleted
 	}
 	if emails, ok := input["emails"]; ok && emails != nil {
@@ -208,6 +221,7 @@ func (c *Contact) UnmarshalJSON(b []byte) error {
 	return c.UnmarshalMap(input)
 }
 
+// UnmarshalMap hydrates a Contact with data from a map[string]interface{}
 func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 
 	if additionalName, ok := input["additional_name"].(string); ok {
@@ -237,8 +251,8 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	if date, ok := input["date_update"]; ok {
 		c.DateUpdate, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
-	if deleted, ok := input["deleted"].(bool); ok {
-		c.Deleted = deleted
+	if deleted, ok := input["deleted"]; ok {
+		c.Deleted, _ = time.Parse(time.RFC3339Nano, deleted.(string))
 	}
 	//emails
 	if emails, ok := input["emails"]; ok && emails != nil {
@@ -316,14 +330,14 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	//PrivacyIndex
-	if pi, ok := input["pi"]; ok {
+	if pi, ok := input["pi"]; ok && pi != nil {
 		PI := new(PrivacyIndex)
 		if err := PI.UnmarshalMap(pi.(map[string]interface{})); err == nil {
 			c.PrivacyIndex = PI
 		}
 	}
 	//PublicKeys
-	if pks, ok := input["public_keys"]; ok {
+	if pks, ok := input["public_keys"]; ok && pks != nil {
 		c.PublicKeys = []PublicKey{}
 		for _, pk := range pks.([]interface{}) {
 			K := new(PublicKey)
@@ -356,21 +370,398 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 	return nil
 }
 
+// return a JSON representation of Contact suitable for frontend client
+func (c *Contact) MarshalFrontEnd() ([]byte, error) {
+	return JSONMarshaller("frontend", c)
+}
+
+func (c *Contact) MarshelES() ([]byte, error) {
+	return JSONMarshaller("elastic", c)
+}
+
+// bespoke implementation of the json.Marshaller interface
+// outputs a JSON representation of an object
+// this marshaller takes account of custom tags for given 'context'
+func (c *Contact) JSONMarshaller() ([]byte, error) {
+	return JSONMarshaller("", c)
+}
+
 func (c *Contact) JsonTags() map[string]string {
 	return jsonTags(c)
 }
 
 func (c *Contact) NewEmpty() interface{} {
-	c = new(Contact)
-	c.Addresses = []PostalAddress{}
-	c.Emails = []EmailContact{}
-	c.Groups = []string{}
-	c.Identities = []SocialIdentity{}
-	c.Ims = []IM{}
-	c.Infos = map[string]string{}
-	c.Organizations = []Organization{}
-	c.Phones = []Phone{}
-	c.PublicKeys = []PublicKey{}
-	c.Tags = []string{}
-	return c
+	nc := new(Contact)
+	nc.Addresses = []PostalAddress{}
+	nc.Emails = []EmailContact{}
+	nc.Groups = []string{}
+	nc.Identities = []SocialIdentity{}
+	nc.Ims = []IM{}
+	nc.Infos = map[string]string{}
+	nc.Organizations = []Organization{}
+	nc.Phones = []Phone{}
+	nc.PublicKeys = []PublicKey{}
+	nc.Tags = []string{}
+	return nc
+}
+
+// GetSetNested returns a chan to iterate over pointers to embedded structs.
+// It allows the caller to get and/or set embedded structs, concurrent safely.
+func (c *Contact) GetSetNested() <-chan interface{} {
+	getSet := make(chan interface{})
+	if c.Locker == nil {
+		c.Locker = new(sync.Mutex)
+	}
+	go func(*sync.Mutex, chan interface{}) {
+		c.Locker.Lock()
+		// Addresses
+		for i, _ := range c.Addresses {
+			getSet <- &(c.Addresses[i])
+		}
+		// Emails
+		for i, _ := range c.Emails {
+			getSet <- &(c.Emails[i])
+		}
+		// Identities
+		for i, _ := range c.Identities {
+			getSet <- &(c.Identities[i])
+		}
+		// Ims
+		for i, _ := range c.Ims {
+			getSet <- &(c.Ims[i])
+		}
+		// Organizations
+		for i, _ := range c.Organizations {
+			getSet <- &(c.Organizations[i])
+		}
+		// Phones
+		for i, _ := range c.Phones {
+			getSet <- &(c.Phones[i])
+		}
+		close(getSet)
+		c.Locker.Unlock()
+	}(c.Locker, getSet)
+
+	return getSet
+}
+
+// GetRelatedList returns a map[PropertyKey]Type of structs that are embedded into a Contact from joined tables
+func (c *Contact) GetRelatedList() map[string]interface{} {
+	/* TODO
+	return map[string]interface{}{
+		"PublicKeys": &PublicKey{},
+	}
+	*/
+	return map[string]interface{}{}
+}
+
+// GetSetRelated returns a chan to iterate over pointers to embedded structs that are stored in separate tables.
+// It allows the caller to get and/or set these structs, concurrent safely.
+func (c *Contact) GetSetRelated() <-chan interface{} {
+	getSet := make(chan interface{})
+	if c.Locker == nil {
+		c.Locker = new(sync.Mutex)
+	}
+	go func(*sync.Mutex, chan interface{}) {
+		c.Locker.Lock()
+		/* TODO
+		for i, _ := range c.PublicKeys {
+			getSet <- &(c.PublicKeys[i])
+		}
+		*/
+		close(getSet)
+		c.Locker.Unlock()
+	}(c.Locker, getSet)
+
+	return getSet
+}
+
+// GetLookups returns a map of table(s) and model(s) that must be up-to-date with Contact.
+// These structs must implement StoreLookup interface
+func (c *Contact) GetLookupsTables() map[string]StoreLookup {
+	return map[string]StoreLookup{
+		"contact_lookup": &ContactByContactPoints{},
+	}
+}
+
+// SortSlices implements CaliopenObject interface.
+// It ensure that all embedded slices are sorted in a determinist way
+func (c *Contact) SortSlices() {
+	sort.Sort(ByPostalAddressID(c.Addresses))
+	sort.Sort(ByEmailContactID(c.Emails))
+	sort.Strings(c.Groups)
+	sort.Sort(BySocialIdentityID(c.Identities))
+	sort.Sort(ByIMID(c.Ims))
+	sort.Sort(ByOrganizationID(c.Organizations))
+	sort.Sort(ByPhoneID(c.Phones))
+	sort.Sort(ByKeyId(c.PublicKeys))
+	sort.Strings(c.Tags)
+}
+
+// MarshallNew implements CaliopenObject interface
+func (c *Contact) MarshallNew(args ...interface{}) {
+	if len(c.ContactId) == 0 || (bytes.Equal(c.ContactId.Bytes(), EmptyUUID.Bytes())) {
+		c.ContactId.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
+	if len(c.UserId) == 0 || (bytes.Equal(c.UserId.Bytes(), EmptyUUID.Bytes())) {
+		if len(args) == 1 {
+			switch args[0].(type) {
+			case UUID:
+				c.UserId = args[0].(UUID)
+			}
+		}
+	}
+
+	if c.DateInsert.IsZero() {
+		c.DateInsert = time.Now()
+		c.DateUpdate = time.Now()
+	}
+
+	c.Deleted = time.Time{}
+
+	for i, _ := range c.Addresses {
+		c.Addresses[i].MarshallNew()
+	}
+
+	for i, _ := range c.Emails {
+		c.Emails[i].MarshallNew()
+	}
+
+	for i, _ := range c.Identities {
+		c.Identities[i].MarshallNew()
+	}
+
+	for i, _ := range c.Organizations {
+		c.Organizations[i].MarshallNew()
+	}
+
+	for i, _ := range c.Phones {
+		c.Phones[i].MarshallNew()
+	}
+
+	for i, _ := range c.PublicKeys {
+		c.PublicKeys[i].MarshallNew(c)
+	}
+
+}
+
+// GetLookupKeys returns a chan to iterate over fields and values that make up the lookup tables keys
+func (c *Contact) GetLookupKeys() <-chan StoreLookup {
+	getter := make(chan StoreLookup)
+
+	go func(chan StoreLookup) {
+		// emails
+		for _, email := range c.Emails {
+			key := ContactByContactPoints{
+				UserID: c.UserId.String(),
+				Type:   "email",
+				Value:  email.Address,
+			}
+			getter <- &key
+		}
+		// identities
+		for _, identity := range c.Identities {
+			key := ContactByContactPoints{
+				UserID: c.UserId.String(),
+				Type:   "social",
+				Value:  identity.Name,
+			}
+			getter <- &key
+		}
+		// Ims
+		for _, im := range c.Ims {
+			key := ContactByContactPoints{
+				UserID: c.UserId.String(),
+				Type:   "im",
+				Value:  im.Address,
+			}
+			getter <- &key
+		}
+		// phones
+		for _, phone := range c.Phones {
+			key := ContactByContactPoints{
+				UserID: c.UserId.String(),
+				Type:   "phone",
+				Value:  phone.Number,
+			}
+			getter <- &key
+
+		}
+		close(getter)
+	}(getter)
+
+	return getter
+}
+
+// UpdateLookups iterates over contact's lookups to add or update them to the relevant table,
+// then it deletes lookups references that are no more linked to an embedded key which has been removed.
+// contacts should have one item in the context of a creation or two items [new, old] in the context of an update
+func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) func(session *gocql.Session) error {
+	contactsLen := len(contacts)
+	update := false
+	if contactsLen > 0 {
+		newContact := contacts[0].(*Contact)
+		var oldLookups map[string]*ContactByContactPoints
+		return func(session *gocql.Session) error {
+			if contactsLen == 2 && contacts[1] != nil {
+				// it's an update, get a list of old lookupKeys to later find those that have been removed
+				update = true
+				oldContact := contacts[1].(*Contact)
+				oldLookups = map[string]*ContactByContactPoints{} // we'll build strings with cassa's keys
+				for lookup := range oldContact.GetLookupKeys() {
+					lkp := lookup.(*ContactByContactPoints)
+					oldLookups[lkp.UserID+lkp.Value+lkp.Type] = lkp
+				}
+
+			}
+			// iterate over contact's current state to add or update lookups
+			for lookup := range newContact.GetLookupKeys() {
+				lkp := lookup.(*ContactByContactPoints)
+				// try to get the contact_lookup
+				contactIds := new([]string)
+				session.Query(`SELECT contact_ids from contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
+					lkp.UserID,
+					lkp.Value,
+					lkp.Type,
+				).Scan(contactIds)
+
+				if len(*contactIds) < 1 { // contact_lookup not found or empty => set one
+					err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_ids) VALUES (?,?,?,?)`,
+						(*lkp).UserID,
+						(*lkp).Value,
+						(*lkp).Type,
+						[]string{newContact.ContactId.String()},
+					).Exec()
+					if err != nil {
+						log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
+							lkp.UserID,
+							lkp.Value,
+							lkp.Type)
+					}
+				} else { // contact_lookup found with contact_ids => udpate if needed
+					idFound := false
+					for _, contactId := range *contactIds {
+						if contactId == newContact.ContactId.String() {
+							idFound = true
+							break
+						}
+					}
+					if !idFound {
+						(*contactIds) = append((*contactIds), newContact.ContactId.String())
+						err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_ids) VALUES (?,?,?,?)`,
+							(*lkp).UserID,
+							(*lkp).Value,
+							(*lkp).Type,
+							*contactIds,
+						).Exec()
+						if err != nil {
+							log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
+								lkp.UserID,
+								lkp.Value,
+								lkp.Type)
+						}
+					}
+				}
+				if update {
+					// remove keys in current states,
+					// thus oldLookups map will only holds remaining entries that are not in the new state
+					delete(oldLookups, lkp.UserID+lkp.Value+lkp.Type)
+				}
+			}
+
+			if len(oldLookups) > 0 {
+				// it remains lookups in the map, meaning these lookups references have been removed from contact
+				// need to remove contactID from lookup table
+				for _, lookup := range oldLookups {
+					// try to get the contact_lookup
+					contactIds := []string{}
+					session.Query(`SELECT contact_ids from contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
+						lookup.UserID,
+						lookup.Value,
+						lookup.Type,
+					).Scan(&contactIds)
+					if len(contactIds) > 0 {
+						updated := false
+						for i, id := range contactIds {
+							if id == newContact.ContactId.String() {
+								// pop contactID
+								contactIds = append(contactIds[:i], contactIds[i+1:]...)
+								updated = true
+							}
+						}
+						if updated {
+							if len(contactIds) == 0 {
+								// no contactIDs left for this lookup, remove it from db
+								err := session.Query(`DELETE FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
+									lookup.UserID,
+									lookup.Value,
+									lookup.Type).Exec()
+								if err != nil {
+									return err
+								}
+							} else {
+								// update lookup with clean contactIDs slice
+								err := session.Query(`UPDATE contact_lookup SET contact_ids = ? WHERE user_id = ? AND value = ? AND type = ?`,
+									contactIds,
+									lookup.UserID,
+									lookup.Value,
+									lookup.Type).Exec()
+								if err != nil {
+									return err
+								}
+							}
+						}
+					}
+
+				}
+			}
+			return nil
+		}
+	}
+	return nil
+}
+
+// CleanupLookups implements StoreLookup interface.
+// It returns a func which removes all contact points related to the contact given as param of the variadic func.
+func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) func(session *gocql.Session) error {
+	if len(contacts) == 1 {
+		contact := contacts[0].(*Contact)
+		return func(session *gocql.Session) error {
+			// seek into contact_lookup to delete references to the deleted contact
+			related, err := session.Query(`SELECT * from contact_lookup WHERE user_id = ?`, contact.UserId.String()).Iter().SliceMap()
+			if err != nil {
+				return err
+			}
+			for _, lookup := range related {
+				ids := lookup["contact_ids"].([]gocql.UUID)
+				updated_ids := []string{}
+				for _, id := range ids {
+					if id.String() != contact.ContactId.String() { // keep only contact_ids that are not from the deleted contact
+						updated_ids = append(updated_ids, id.String())
+					}
+				}
+				if len(ids) == 0 || // we found an empty lookup: it should have been removed ! cleaning up
+					len(updated_ids) == 0 { // lookup had only one contact_ids and we just deleted it. cleaning up
+					err := session.Query(`DELETE FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
+						lookup["user_id"],
+						lookup["value"],
+						lookup["type"]).Exec()
+					if err != nil {
+						return err
+					}
+				} else if len(ids) != len(updated_ids) { // an id has been pop, need to update contact_lookup
+					err := session.Query(`UPDATE contact_lookup SET contact_ids = ? WHERE user_id = ? AND value = ? AND type = ?`,
+						updated_ids,
+						lookup["user_id"],
+						lookup["value"],
+						lookup["type"]).Exec()
+					if err != nil {
+						return err
+					}
+				}
+			}
+			return nil
+		}
+	}
+	return nil
 }

@@ -24,7 +24,7 @@ import Tags from './scenes/TagsSettings';
 import MessageList from './scenes/MessageList';
 import ContactBook from './scenes/ContactBook';
 import PageNotFound from './scenes/PageNotFound';
-// import { Device } from './scenes/Devices';
+import DevicesSettings from './scenes/DevicesSettings';
 
 export const getRouteConfig = ({ __ }) => [
   {
@@ -134,16 +134,11 @@ export const getRouteConfig = ({ __ }) => [
           },
 
           // TODO: enable devices when API ready: https://tree.taiga.io/project/caliopen-caliopen/us/314?no-milestone=1
-          // {
-          //   path: '/settings/devices',
-          //   label: __('settings.route.label.devices'),
-          //   routes: [
-          //     {
-          //       path: '/settings/devices/:deviceId',
-          //       component: Device,
-          //     },
-          //   ],
-          // },
+          {
+            path: '/settings/devices',
+            label: __('settings.route.label.devices'),
+            component: DevicesSettings,
+          },
 
           // TODO: enable signatures
           // {

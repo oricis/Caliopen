@@ -1,0 +1,22 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+$section_border-width: 5px;
+
+.m-device-settings {
+  margin-top: $co-margin / 2;
+  margin-bottom: $co-margin / 2;
+  border-left: $section_border-width solid map-get($context-palette, 'disabled');
+
+  &--safe {
+    border-color: map-get($context-palette, 'safe');
+  }
+
+  &--public {
+    border-color: map-get($context-palette, 'public');
+  }
+
+  &--unsecure {
+    border-color: map-get($context-palette, 'unsecure');
+  }
+}

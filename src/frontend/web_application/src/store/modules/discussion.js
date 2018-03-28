@@ -19,7 +19,7 @@ export function requestDiscussions(params = {}) {
     type: REQUEST_DISCUSSIONS,
     payload: {
       request: {
-        url: '/v1/discussions',
+        url: '/api/v1/discussions',
         params: { offset, limit },
       },
     },
@@ -41,7 +41,7 @@ export function requestDiscussion({ discussionId }) {
     type: REQUEST_DISCUSSION,
     payload: {
       request: {
-        url: `/v1/discussions/${discussionId}`,
+        url: `/api/v1/discussions/${discussionId}`,
       },
     },
   };

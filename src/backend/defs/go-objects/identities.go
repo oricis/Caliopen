@@ -4,7 +4,10 @@
 
 package objects
 
-import "github.com/satori/go.uuid"
+import (
+	"bytes"
+	"github.com/satori/go.uuid"
+)
 
 type (
 	//object stored in db
@@ -18,10 +21,10 @@ type (
 
 	// embedded in a contact
 	SocialIdentity struct {
-		Infos    map[string]string `cql:"infos"     json:"infos"`
-		Name     string            `cql:"name"      json:"name"`
-		SocialId UUID              `cql:"social_id" json:"social_id"`
-		Type     string            `cql:"type"      json:"type"`
+		Infos    map[string]string `cql:"infos"     json:"infos,omitempty"        patch:"user"`
+		Name     string            `cql:"name"      json:"name,omitempty"         patch:"user"`
+		SocialId UUID              `cql:"social_id" json:"social_id,omitempty"    patch:"system"`
+		Type     string            `cql:"type"      json:"type,omitempty"         patch:"user"`
 	}
 
 	//reference embedded in a message
@@ -77,4 +80,45 @@ func (i *Identity) UnmarshalMap(input map[string]interface{}) error {
 	i.Identifier, _ = input["identifier"].(string)
 	i.Type, _ = input["type"].(string)
 	return nil //TODO: errors handling
+}
+
+// MarshallNew must be a variadic func to implement NewMarshaller interface,
+// but SocialIdentity does not need params to marshal a well-formed SocialIdentity: ...interface{} is ignored
+func (si *SocialIdentity) MarshallNew(...interface{}) {
+	if len(si.SocialId) == 0 || (bytes.Equal(si.SocialId.Bytes(), EmptyUUID.Bytes())) {
+		si.SocialId.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
+}
+
+func (i *Identity) MarshallNew(...interface{}) {
+	//nothing to enforce
+}
+
+// Sort interface implementations
+type BySocialIdentityID []SocialIdentity
+
+func (p BySocialIdentityID) Len() int {
+	return len(p)
+}
+
+func (p BySocialIdentityID) Less(i, j int) bool {
+	return p[i].SocialId.String() < p[j].SocialId.String()
+}
+
+func (p BySocialIdentityID) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
+}
+
+type ByIdentifier []Identity
+
+func (p ByIdentifier) Len() int {
+	return len(p)
+}
+
+func (p ByIdentifier) Less(i, j int) bool {
+	return p[i].Identifier < p[j].Identifier
+}
+
+func (p ByIdentifier) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
 }

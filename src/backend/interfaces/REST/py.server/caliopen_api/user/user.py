@@ -14,12 +14,21 @@ from .util import create_token
 from ..base import Api
 from ..base.exception import AuthenticationError, NotAcceptable, Unprocessable
 
+from caliopen_storage.exception import NotFound
 from caliopen_main.user.core import User
 from caliopen_main.user.parameters import NewUser, NewRemoteIdentity, Settings
 from caliopen_main.user.returns.user import ReturnUser, ReturnRemoteIdentity
 from caliopen_main.contact.parameters import NewContact, NewEmail
+from caliopen_main.device.core import Device
 
 log = logging.getLogger(__name__)
+
+
+class FakeDevice(object):
+    """Fake device needed until we do not enforce device parameter."""
+
+    device_id = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+    status = 'fake'
 
 
 @resource(path='',
@@ -46,6 +55,22 @@ class AuthenticationAPI(Api):
             log.info('Authentication error for {name} : {error}'.
                      format(name=params['username'], error=exc))
             raise AuthenticationError(detail=exc.message)
+        # Device management
+        in_device = self.request.swagger_data['authentication']['device']
+        if in_device:
+            try:
+                device = Device.get(user, in_device['device_id'])
+            except NotFound:
+                devices = Device.find(user)
+                if devices.get('objects', []):
+                    in_device['status'] = 'unverified'
+                else:
+                    in_device['name'] = 'default'
+                # we must declare a new device
+                device = Device.create_from_parameter(user, in_device,
+                                                      self.request.headers)
+        else:
+            device = FakeDevice()
 
         access_token = create_token()
         refresh_token = create_token(80)
@@ -59,11 +84,17 @@ class AuthenticationAPI(Api):
                   'refresh_token': refresh_token,
                   'expires_in': ttl,  # TODO : remove this value
                   'expires_at': expires_at.isoformat()}
+        cache_key = '{}-{}'.format(user.user_id, device.device_id)
+        self.request.cache.set(cache_key, tokens)
+
+        # XXX to remove when all authenticated API will use X-Device-ID
         self.request.cache.set(user.user_id, tokens)
 
         return {'user_id': user.user_id,
                 'username': user.name,
-                'tokens': tokens}
+                'tokens': tokens,
+                'device': {'device_id': device.device_id,
+                           'status': device.status}}
 
 
 def no_such_user(request):
@@ -118,6 +149,18 @@ class UserAPI(Api):
 
         log.info('Created user {} with name {}'.
                  format(user.user_id, user.name))
+        # default device management
+        in_device = self.request.swagger_data['user']['device']
+        if in_device:
+            try:
+                in_device['name'] = 'default'
+                device = Device.create_from_parameter(user, in_device,
+                                                      self.request.headers)
+                log.info('Device %r created' % device.device_id)
+            except Exception as exc:
+                log.exception('Error during default device creation %r' % exc)
+        else:
+            log.warn('Missing default device parameter')
         user_url = self.request.route_path('User', user_id=user.user_id)
         self.request.response.location = user_url.encode('utf-8')
         return {'location': user_url}

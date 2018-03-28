@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Presenter from './presenter';
 
-describe('component NavigationAlt', () => {
+describe('component UserInfo', () => {
   const user = {
     name: 'Bender',
     contact: {

@@ -1,0 +1,12 @@
+---
+type: object
+properties:
+  device_id:
+    type: string
+  ecdsa_key:
+    type: object
+    "$ref": ECKey.yaml
+required:
+- device_id
+- ecdsa_key
+additionalProperties: false

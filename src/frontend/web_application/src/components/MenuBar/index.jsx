@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import NavList, { ItemContent } from '../../components/NavList';
-import Link from '../../components/Link';
+import NavList, { NavItem } from '../NavList';
+import Link from '../Link';
 import './style.scss';
 
 class MenuBar extends Component {
@@ -34,11 +34,11 @@ class MenuBar extends Component {
     return (
       <div className={menuBarClassName}>
         {navLinks &&
-          <NavList>
+          <NavList className="m-menu-bar__navlist">
             {navLinks.map(link => (
-              <ItemContent active={link.isActive} large key={link.key}>
-                <Link noDecoration title={link.title} to={link.to}>{link.label}</Link>
-              </ItemContent>
+              <NavItem active={link.isActive} large key={link.key}>
+                <Link display="button" noDecoration title={link.title} to={link.to}>{link.label}</Link>
+              </NavItem>
             ))}
           </NavList>
         }

@@ -1,0 +1,24 @@
+---
+type: object
+properties:
+  curve:
+    type: string
+    enum:
+      - P-256
+      - P-384
+      - P-512
+  hash:
+    type: string
+    enum:
+      - SHA256
+      - SHA384
+      - SHA512
+  x:
+    type: string
+  y:
+    type: string
+required:
+ - curve
+ - x
+ - y
+additionalProperties: false
