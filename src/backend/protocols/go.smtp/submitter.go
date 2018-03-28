@@ -52,7 +52,7 @@ func (lda *Lda) newSubmitter() (submit *submitter, err error) {
 
 func (lda *Lda) runSubmitterAgent() {
 
-	for email := range lda.brokerConnectors.OutcomingSmtp {
+	for email := range lda.brokerConnectors.Egress {
 		go func(email *broker.SmtpEmail) {
 			lda.outboundListener.workersCountMux.Lock()
 			if lda.outboundListener.runningWorkers < lda.Config.AppConfig.OutWorkers {

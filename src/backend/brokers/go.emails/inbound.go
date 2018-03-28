@@ -25,7 +25,7 @@ import (
 
 const nats_message_tmpl = "{\"order\":\"%s\",\"user_id\": \"%s\", \"message_id\": \"%s\"}"
 
-func (b *EmailBroker) startIncomingSmtpAgent() error {
+func (b *EmailBroker) startIncomingSmtpAgents() error {
 	for i := 0; i < b.Config.InWorkers; i++ {
 		go b.incomingSmtpWorker()
 	}
@@ -35,9 +35,9 @@ func (b *EmailBroker) startIncomingSmtpAgent() error {
 
 func (b *EmailBroker) incomingSmtpWorker() {
 	//  receives values from the channel repeatedly until channel is closed
-	for in := range b.Connectors.IncomingSmtp {
+	for in := range b.Connectors.Ingress {
 		if in.EmailMessage == nil {
-			log.Warn("broker error : incomingSmtpWorker received an empty payload")
+			log.Warn("[EmailBroker] incomingSmtpWorker received an empty payload")
 			ack := &DeliveryAck{
 				EmailMessage: in.EmailMessage,
 				Err:          true,
@@ -50,28 +50,52 @@ func (b *EmailBroker) incomingSmtpWorker() {
 				//unable to write, don't block
 			}
 		}
-		go b.processInbound(in, true)
+		go b.processInboundSMTP(in, true)
 	}
 }
 
-// stores raw email + json + message and sends an order on NATS topic for next composant to process it
-// if raw_only is true, only stores the raw email with its json representation but do not unmarshal to our message model
-func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
+func (b *EmailBroker) startImapAgents() error {
+	for i := 0; i < b.Config.InWorkers; i++ {
+		go b.imapWorker()
+	}
+	//TODO: error handling
+	return nil
+}
+
+func (b *EmailBroker) imapWorker() {
+	//  receives values from the channel repeatedly until channel is closed
+	for in := range b.Connectors.Ingress {
+		if in.EmailMessage == nil {
+			log.Warn("[EmailBroker] imapWorker received an empty payload")
+			ack := &DeliveryAck{
+				EmailMessage: in.EmailMessage,
+				Err:          true,
+				Response:     "empty payload",
+			}
+			select {
+			case in.Response <- ack:
+				//write was OK
+			default:
+				//unable to write, don't block
+			}
+		}
+		go b.processInboundIMAP(in)
+	}
+}
+
+func (b *EmailBroker) processInboundSMTP(in *SmtpEmail, raw_only bool) {
 	resp := &DeliveryAck{
 		EmailMessage: in.EmailMessage,
 		Err:          false,
 		Response:     "",
 	}
-	defer func(r *DeliveryAck) {
-		in.Response <- r
-	}(resp)
 
-	//step 1 : recipients lookup
-	//         we need at least one valid recipient before processing further
-
+	// recipients lookup
+	// we need at least one valid local recipient before processing further
 	if len(in.EmailMessage.Email.SmtpRcpTo) == 0 {
 		resp.Response = "no recipient"
 		resp.Err = true
+		in.Response <- resp
 		return
 	}
 
@@ -85,16 +109,53 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 		log.WithError(err).Warn("inbound: recipients lookup failed")
 		resp.Response = "recipients store lookup failed"
 		resp.Err = true
+		in.Response <- resp
 		return
 	}
 
 	if len(rcptsIds) == 0 {
 		resp.Response = "no recipient found in Caliopen domain"
 		resp.Err = true
+		in.Response <- resp
 		return
 	}
 
-	//step 2 : store raw email and get its raw_id
+	b.processInbound(rcptsIds, in, true, resp)
+}
+
+func (b *EmailBroker) processInboundIMAP(in *SmtpEmail) {
+	// emails coming from imap fetches are not addressed to a local recipient
+	// local recipient MUST be embedded in SmtpEmail.Message before calling this method
+	resp := &DeliveryAck{
+		EmailMessage: in.EmailMessage,
+		Err:          false,
+		Response:     "",
+	}
+
+	if in != nil &&
+		in.EmailMessage != nil &&
+		in.EmailMessage.Message != nil &&
+		in.EmailMessage.Message.User_id.String() != EmptyUUID.String() {
+		b.processInbound([]UUID{in.EmailMessage.Message.User_id}, in, true, resp)
+	} else {
+		resp.Response = "missing user recipient for ingress IMAP message"
+		resp.Err = true
+		in.Response <- resp
+	}
+}
+
+// stores raw email + json + message and sends an order on NATS topic for next composant to process it
+// if raw_only is true, only stores the raw email with its json representation but do not unmarshal to our message model
+func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bool, resp *DeliveryAck) {
+	// do not forget to send back ack
+	defer func(r *DeliveryAck) {
+		in.Response <- r
+	}(resp)
+
+	if len(rcptsIds) == 0 {
+		return
+	}
+	// store raw email and get its raw_id
 	raw_uuid, err := gocql.RandomUUID()
 	var msg_id UUID
 	msg_id.UnmarshalBinary(raw_uuid.Bytes())
@@ -111,7 +172,7 @@ func (b *EmailBroker) processInbound(in *SmtpEmail, raw_only bool) {
 		return
 	}
 
-	//step 3 : send process order to nats for each rcpt
+	// send process order to nats for each rcpt
 	var errs error
 	wg := new(sync.WaitGroup)
 	wg.Add(len(rcptsIds))
