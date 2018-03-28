@@ -142,7 +142,7 @@ class AttachmentManager extends Component {
                   className="m-attachement-manager__file-delete"
                   onClick={this.createHandleDeleteAttachement(attachement.temp_id)}
                   icon={this.state.isFetching[attachement.temp_id] ? <Spinner isLoading display="inline" /> : <Icon type="remove" />}
-                  aria-label={i18n._('message.compose.action.delete_attachement')}
+                  aria-label={i18n._('message.compose.action.delete_attachement', { defaults: 'Delete the attachment' })}
                 />
               </li>
             ))}
