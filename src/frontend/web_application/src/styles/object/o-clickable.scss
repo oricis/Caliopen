@@ -30,8 +30,10 @@
       &-plain,
       &:hover,
       &:focus {
-        background-color: $color-hover;
-        color: $co-color__fg__text--high;
+        &:not(:disabled) {
+          background-color: $color-hover;
+          color: $co-color__fg__text--high;
+        }
       }
     }
     // &--#{$name}#{'-plain'} {
@@ -62,12 +64,10 @@
   white-space: nowrap;
 
   &:hover {
-    background-color: $co-color__primary;
     color: $co-color__contrast__text;
 
-    &:disabled {
-      background-color: $co-color__primary--lower;
-      color: $co-color__contrast__text;
+    &:not(:disabled) {
+      background-color: $co-color__primary;
     }
   }
 
