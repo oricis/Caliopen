@@ -6,14 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.9.0] 2018-03-29
+
 ### Added
 
 - Manage draft's attachements
 - Download message's attachements
 - Set context (safe, public, not safe) on signin (it has no effects yet)
-- Identify the device using an ecdsa key
 - Multiple messages delete on Timeline
 - Multiple messages' tags management on Timeline
+- Device management first part: declare new device with an ecdsa key
+- Backend notification base principle with a related API
+
+
+### Changed
+- Refactor vcard parsing logic to get more informations
+- Contacts API are now v2
+- Authenticate with a context and a device (known or a new one to declare)
+- Better email body sanitization
+- When updating a contact, compute it's new PI asynchronously
 
 ### Fixed
 
