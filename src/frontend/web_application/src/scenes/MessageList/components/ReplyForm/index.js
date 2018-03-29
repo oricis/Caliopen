@@ -13,7 +13,7 @@ import { deleteMessage, invalidate } from '../../../../store/modules/message';
 import { getLastMessage } from '../../../../services/message';
 import Presenter from './presenter';
 
-const messageDraftSelector = state => state.draftMessage.draftsByInternalId;
+const messageDraftSelector = state => state.draftMessage;
 const discussionIdSelector = (state, ownProps) => ownProps.discussionId;
 const internalIdSelector = (state, ownProps) => ownProps.internalId;
 const userSelector = state => state.user.user;
@@ -24,11 +24,12 @@ const mapStateToProps = createSelector(
     messageDraftSelector, discussionIdSelector, internalIdSelector, messageCollectionStateSelector,
     userSelector,
   ],
-  (drafts, discussionId, internalId, { messages }, user) => {
+  (draftState, discussionId, internalId, { messages }, user) => {
     const message = messages && messages.find(item => item.is_draft === true);
     const sentMessages = messages.filter(item => item.is_draft !== true);
     const lastMessage = getLastMessage(sentMessages);
-    const draft = drafts[internalId] || message;
+    const { isFetching, draftsByInternalId } = draftState;
+    const draft = draftsByInternalId[internalId] || message;
     const parentMessage = draft && sentMessages
       .find(item => item.message_id === draft.parent_id && item !== lastMessage);
 
@@ -37,6 +38,7 @@ const mapStateToProps = createSelector(
       message,
       parentMessage,
       draft,
+      isFetching,
       discussionId,
       user,
     };

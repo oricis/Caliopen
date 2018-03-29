@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- in mobile view, draft form can toggle with an excerpt to not use half of the screen
+
 ### Fixed
 
 - The draft delete button was always disabled even when draft was saved

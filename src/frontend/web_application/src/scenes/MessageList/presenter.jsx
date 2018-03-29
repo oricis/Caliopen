@@ -4,7 +4,9 @@ import throttle from 'lodash.throttle';
 import { Trans } from 'lingui-react';
 import { PageTitle, Button } from '../../components';
 import MessageListBase from './components/MessageList';
-import ReplyForm from './components/DraftForm';
+import ReplyForm from './components/ReplyForm';
+import ReplyExcerpt from './components/ReplyExcerpt';
+import { addEventListener } from '../../services/event-manager';
 
 const LOAD_MORE_THROTTLE = 1000;
 
@@ -35,6 +37,10 @@ class MessageList extends Component {
     hasDraft: false,
   };
 
+  state = {
+    isDraftFocus: false,
+  };
+
   componentDidMount() {
     const { discussionId } = this.props;
     this.props.requestMessages({ discussion_id: discussionId });
@@ -44,6 +50,23 @@ class MessageList extends Component {
       LOAD_MORE_THROTTLE,
       { trailing: false }
     );
+
+    this.unsubscribeClickEvent = addEventListener('click', (ev) => {
+      const { target } = ev;
+      const testClick = (tg, node) => node === tg || node.contains(tg);
+
+      if (
+        !(this.replyFormRef && testClick(target, this.replyFormRef)) &&
+        !(this.replyExcerptRef && testClick(target, this.replyExcerptRef))
+      ) {
+        if (this.state.isDraftFocus) {
+          ev.preventDefault();
+        }
+        this.setState({
+          isDraftFocus: false,
+        });
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,12 +80,22 @@ class MessageList extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.unsubscribeClickEvent();
+  }
+
   closeTab({ currentTab }) {
     if (currentTab) {
       return this.props.removeTab(currentTab);
     }
 
     return this.props.push('/');
+  }
+
+  handleFocusDraft = () => {
+    this.setState({
+      isDraftFocus: true,
+    });
   }
 
   handleSetMessageRead = ({ message }) => {
@@ -116,7 +149,22 @@ class MessageList extends Component {
           onMessageRead={this.handleSetMessageRead}
           onMessageUnread={this.handleSetMessageUnread}
           isFetching={isFetching}
-          replyForm={<ReplyForm discussionId={discussionId} internalId={internalId} />}
+          replyForm={(
+            <ReplyForm
+              discussionId={discussionId}
+              internalId={internalId}
+              onFocus={this.handleFocusDraft}
+              draftFormRef={(node) => { this.replyFormRef = node; }}
+            />
+          )}
+          replyExcerpt={(
+            <ReplyExcerpt
+              discussionId={discussionId}
+              internalId={internalId}
+              onFocus={this.handleFocusDraft}
+              draftExcerptRef={(node) => { this.replyExcerptRef = node; }}
+            />
+           )}
           onForward={() => {}}
           onDelete={this.handleDelete}
           onMessageDelete={this.handleDeleteMessage}
@@ -124,6 +172,7 @@ class MessageList extends Component {
           loadMore={this.renderLoadMore()}
           onMessageCopyTo={copyMessageTo}
           updateTagCollection={updateTagCollection}
+          isDraftFocus={this.state.isDraftFocus}
         />
       </div>
     );

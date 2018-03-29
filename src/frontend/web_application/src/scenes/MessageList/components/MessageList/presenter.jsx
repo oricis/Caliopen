@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
+import classnames from 'classnames';
 import { Button, MenuBar, Spinner } from '../../../../components';
 import DayMessageList from '../DayMessageList';
 import Message from '../Message';
@@ -13,6 +14,7 @@ import './style.scss';
 class MessageList extends Component {
   static propTypes = {
     isFetching: PropTypes.bool,
+    isDraftFocus: PropTypes.bool,
     loadMore: PropTypes.node,
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
@@ -23,12 +25,14 @@ class MessageList extends Component {
     onDelete: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     replyForm: PropTypes.node.isRequired,
+    replyExcerpt: PropTypes.node.isRequired,
     updateTagCollection: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
   };
 
   static defaultProps = {
     isFetching: false,
+    isDraftFocus: false,
     loadMore: null,
     onMessageView: null,
     user: undefined,
@@ -77,7 +81,9 @@ class MessageList extends Component {
   }
 
   render() {
-    const { messages, isFetching, loadMore, onDelete, replyForm } = this.props;
+    const {
+      messages, isFetching, loadMore, onDelete, replyForm, replyExcerpt, isDraftFocus,
+    } = this.props;
 
     return (
       <WithSettings render={settings => (
@@ -105,7 +111,10 @@ class MessageList extends Component {
               <div className="m-message-list__list">
                 {this.renderDayGroups(settings)}
               </div>
-              <div className="m-message-list__reply">
+              <div className={classnames('m-message-list__reply-excerpt', { 'm-message-list__reply-excerpt--close': isDraftFocus })}>
+                {replyExcerpt}
+              </div>
+              <div className={classnames('m-message-list__reply', { 'm-message-list__reply--open': isDraftFocus })}>
                 {replyForm}
               </div>
             </div>
