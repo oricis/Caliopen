@@ -14,7 +14,7 @@ import (
 func (mb *MinioBackend) PutObject(name, bucket string, object io.Reader) (uri string, size int64, err error) {
 	const uriTemplate = "s3://%s/%s"
 
-	size, err = mb.Client.PutObject(bucket, name, object, "application/octet-stream")
+	size, err = mb.Client.PutObject(bucket, name, object, -1, minio.PutObjectOptions{ContentType: "application/octet-stream"})
 	if err != nil {
 		return "", 0, err
 	}
@@ -35,7 +35,7 @@ func (mb *MinioBackend) GetObject(objURI string) (file io.Reader, err error) {
 	if err != nil || len(uri.Host) < 1 || len(uri.Path) < 2 {
 		return nil, err
 	}
-	return mb.Client.GetObject(uri.Host, uri.Path[1:])
+	return mb.Client.GetObject(uri.Host, uri.Path[1:], minio.GetObjectOptions{})
 }
 
 func (mb *MinioBackend) StatObject(objURI string) (info minio.ObjectInfo, err error) {
@@ -43,5 +43,5 @@ func (mb *MinioBackend) StatObject(objURI string) (info minio.ObjectInfo, err er
 	if err != nil || len(uri.Host) < 1 || len(uri.Path) < 2 {
 		return
 	}
-	return mb.Client.StatObject(uri.Host, uri.Path[1:])
+	return mb.Client.StatObject(uri.Host, uri.Path[1:], minio.StatObjectOptions{})
 }
