@@ -117,7 +117,7 @@ class AttachmentManager extends Component {
           errors={errors}
           descr={i18n._('draft.attachement.form.descr', { defaults: 'Attach a file.' })}
           maxSize={getMaxSize()}
-          multiple
+          multiple={false} // disable multiple due to issue in api cf. #840
         />
       </Modal>
     );
