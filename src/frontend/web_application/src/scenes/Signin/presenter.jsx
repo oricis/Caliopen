@@ -75,17 +75,17 @@ class Signin extends Component {
       err.response.status < 500 &&
       err.response.data.errors;
 
-    const getLocalizedError = (msg, field) => this.localizedErrors[`${msg}_${field.toUpperCase()}`];
-
     if (isExpectedError) {
-      const { errors } = err.response.data;
-      const localizedErrors = Object.keys(errors).reduce((prev, field) => (
-        { ...prev, [field]: errors[field].map(msg => getLocalizedError(msg, field)) }
-      ), {});
-      this.setState({ errors: localizedErrors });
+      this.setState({
+        errors: { global: [this.localizedErrors.ERR_INVALID_GLOBAL] },
+      });
     } else {
       throw err;
     }
+  }
+
+  handleChange = () => {
+    this.setState({ errors: {} });
   }
 
   render() {
@@ -102,6 +102,7 @@ class Signin extends Component {
 
     return (
       <SigninForm
+        onChange={this.handleChange}
         onSubmit={this.handleSignin}
         errors={this.state.errors}
       />

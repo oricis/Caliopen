@@ -21,12 +21,14 @@ class SigninForm extends Component {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
     onSubmit: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
     errors: {},
     form: {},
+    onChange: () => {},
   };
 
   state = {
@@ -61,12 +63,14 @@ class SigninForm extends Component {
 
   handleInputChange = (event) => {
     const { name, value } = event.target;
+    const { onChange } = this.props;
+
     this.setState(prevState => ({
       formValues: {
         ...prevState.formValues,
         [name]: value,
       },
-    }));
+    }), () => onChange());
   }
 
   createHandleSubmit = context => (ev) => {
