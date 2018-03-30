@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/nats-io/go-nats"
-	"github.com/satori/go.uuid"
 	"testing"
 )
 
@@ -23,8 +22,8 @@ func TestSendFetchNatsOrder(t *testing.T) {
 	}
 	order := IMAPfetchOrder{
 		Order:          "fetch",
-		UserId:         uuid.NewV4().String(),
-		RemoteIdentity: "test@test.test",
+		UserId:         "2b68fc50-f6e2-4c3a-b81c-50c5a3de594e",
+		RemoteIdentity: "user@remote.imap",
 	}
 
 	o, _ := json.Marshal(order)

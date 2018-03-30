@@ -111,12 +111,18 @@ func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
 		return
 	}
 	switch message.Order {
-	case "fetch":
+	case "fetch": // simplest order sent by local agent to initiate a sync op for a stored remote identity
 		fetcher := Fetcher{
 			Store: worker.Store,
 			Lda:   worker.Lda,
 		}
 		go fetcher.SyncRemoteWithLocal(message)
+	case "fullfetch": // order sent by imapctl to initiate a fetch op for an user
+		fetcher := Fetcher{
+			Store: worker.Store,
+			Lda:   worker.Lda,
+		}
+		go fetcher.FetchRemoteToLocal(message)
 	case "test":
 		log.Info("Order « test » received")
 	}

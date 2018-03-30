@@ -17,7 +17,6 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
-	"log"
 )
 
 var (
@@ -74,9 +73,7 @@ func fullFetch(cmd *cobra.Command, args []string) {
 
 	if err := nc.LastError(); err != nil {
 		logrus.WithError(err).Fatal("nats publish failed")
-	} else {
-		log.Printf("Published [%s] : '%s'\n", cmdConfig.NatsTopic, msg)
 	}
-	logrus.Infof("ordering to fetch all mails from %s for user %s", id.Server, id.UserId)
 
+	logrus.Infof("ordering to fetch all mails from %s for user %s", id.Server, id.UserId)
 }

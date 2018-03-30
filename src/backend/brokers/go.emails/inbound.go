@@ -136,6 +136,7 @@ func (b *EmailBroker) processInboundIMAP(in *SmtpEmail) {
 		in.EmailMessage != nil &&
 		in.EmailMessage.Message != nil &&
 		in.EmailMessage.Message.User_id.String() != EmptyUUID.String() {
+		//TODO : check if user exists
 		b.processInbound([]UUID{in.EmailMessage.Message.User_id}, in, true, resp)
 	} else {
 		resp.Response = "missing user recipient for ingress IMAP message"

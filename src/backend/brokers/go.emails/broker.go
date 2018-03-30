@@ -83,8 +83,6 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 		}
 
 		broker.Store = backends.LDAStore(b) // type conversion to LDA interface
-	case "BOBcassandra":
-	// NotImplemented… yet ! ;-)
 	default:
 		log.Warnf("[EmailBroker] unknown store backend: %s", conf.StoreName)
 		err = errors.New("[EmailBroker] unknown store backend")
@@ -140,6 +138,10 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 			log.WithError(err).Warn("[EmailBroker] failed to start imap agent(s)")
 			return
 		}
+		connectors = broker.Connectors
+	default:
+		log.Errorf("[EmailBroker] initialize unknown broker type : <%s>", conf.BrokerType)
+		return
 	}
 	caliopenConfig := CaliopenConfig{
 		NotifierConfig: conf.NotifierConfig,

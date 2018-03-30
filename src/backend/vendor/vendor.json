@@ -33,6 +33,52 @@
 			"revisionTime": "2017-10-23T17:51:54Z"
 		},
 		{
+			"checksumSHA1": "kEy5i/jCIjemJK/sytEXjV5qWl4=",
+			"path": "github.com/emersion/go-imap",
+			"revision": "b63c7c7011cba491f40dcc43026cc30e2fbdf337",
+			"revisionTime": "2018-03-19T18:19:01Z",
+			"version": "v1",
+			"versionExact": "v1"
+		},
+		{
+			"checksumSHA1": "m1UQ9TN1mpTio7EoixtE84USirA=",
+			"path": "github.com/emersion/go-imap/client",
+			"revision": "b63c7c7011cba491f40dcc43026cc30e2fbdf337",
+			"revisionTime": "2018-03-19T18:19:01Z",
+			"version": "v1",
+			"versionExact": "v1"
+		},
+		{
+			"checksumSHA1": "6erZwD6QaIdhAdgasbTiatDgd8A=",
+			"path": "github.com/emersion/go-imap/commands",
+			"revision": "b63c7c7011cba491f40dcc43026cc30e2fbdf337",
+			"revisionTime": "2018-03-19T18:19:01Z",
+			"version": "v1",
+			"versionExact": "v1"
+		},
+		{
+			"checksumSHA1": "XNQ6ZbE8XFjdjg/M/iRrOu3j6h8=",
+			"path": "github.com/emersion/go-imap/responses",
+			"revision": "b63c7c7011cba491f40dcc43026cc30e2fbdf337",
+			"revisionTime": "2018-03-19T18:19:01Z",
+			"version": "v1",
+			"versionExact": "v1"
+		},
+		{
+			"checksumSHA1": "1K8gxGND9yVG8p+ZQdxVczy6x/w=",
+			"path": "github.com/emersion/go-imap/utf7",
+			"revision": "b63c7c7011cba491f40dcc43026cc30e2fbdf337",
+			"revisionTime": "2018-03-19T18:19:01Z",
+			"version": "v1",
+			"versionExact": "v1"
+		},
+		{
+			"checksumSHA1": "VGdrJ5SV27dfTYVafzkH03uotLA=",
+			"path": "github.com/emersion/go-sasl",
+			"revision": "7e096a0a6197b89989e8cc31016daa67c8c62051",
+			"revisionTime": "2016-11-16T18:30:48Z"
+		},
+		{
 			"checksumSHA1": "x2Km0Qy3WgJJnV19Zv25VwTJcBM=",
 			"path": "github.com/fsnotify/fsnotify",
 			"revision": "4da3e2cfbabc9f751898f250b49f2439785783a1",

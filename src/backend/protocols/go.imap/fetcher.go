@@ -7,16 +7,12 @@
 package imap_worker
 
 import (
-	"crypto/tls"
 	"fmt"
-	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	log "github.com/Sirupsen/logrus"
 	"github.com/emersion/go-imap"
-	"github.com/emersion/go-imap/client"
 	"github.com/satori/go.uuid"
-	"strconv"
 	"time"
 )
 
@@ -38,7 +34,7 @@ type imapBox struct {
 // updates last sync data for identity in db.
 func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 
-	log.Infof("[Fetcher] will fetch mails from %s", order.RemoteIdentity)
+	log.Infof("[Fetcher] will fetch mails from %s", order.RemoteId)
 
 	// 1. retrieve infos from db
 	//TODO
@@ -49,7 +45,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 		time.Time{},
 		"active",
 		"imap",
-		UUID(uuid.FromStringOrNil(order.RemoteIdentity)),
+		UUID(uuid.FromStringOrNil("2b68fc50-f6e2-4c3a-b81c-50c5a3de594e")),
 	}
 	rId.Infos["lastseenuid"] = ""
 	rId.Infos["lastsync"] = ""
@@ -60,91 +56,83 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 
 	// 2. sync/fetch with remote IMAP
 	mails := make(chan *Email, 10)
-	go f.fetchMails(&rId, mails)
+	// TODO : manage closing
+	go f.syncMails(&rId, mails)
 	//TODO errors handling
 
-	// 3. forward fetched mails to lda
-	acks := make([]*broker.DeliveryAck, len(mails))
+	// 3. forward mails to lda
+	errs := make([]error, len(mails))
+	// TODO : manage closing
 	for mail := range mails {
-		ack := f.Lda.deliverMail(mail)
-		acks = append(acks, ack)
+		err := f.Lda.deliverMail(mail, order.UserId)
+		errs = append(errs, err)
 	}
 
 	// 4. backup sync state in db
-	for _, ack := range acks {
+	for i, err := range errs {
 		// check if errors occurred and stop sync state at first error encountered
 		// TODO: improve this error handling protocol
-		if ack.Err {
-			break
+		if err != nil {
+			return fmt.Errorf("[Fetcher] syncRemoteWithLocal error delivering mail #%d : %s", i, err.Error())
 		}
 	}
 
 	return nil
 }
 
-// fetchMails reads last sync state for remote identity,
-// fetches new emails accordingly,
-// adds `X-Fetched-Imap` headers to each email retrieved.
-func (f *Fetcher) fetchMails(rId *RemoteIdentity, ch chan *Email) (err error) {
-
-	log.Println("Connecting to server...")
-	// Dial TLS directly to be able to dump tls connection state
-	conn, err := tls.Dial("tcp", rId.Infos["server"], nil)
-	if err != nil {
-		log.WithError(err).Error("[fetchMail] failed to dial tls")
-		return
+func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
+	rId := RemoteIdentity{
+		Identifier: order.Login,
+		UserId:     UUID(uuid.FromStringOrNil(order.UserId)),
+		Infos: map[string]string{
+			"server":   order.Server,
+			"username": order.Login,
+			"password": order.Password,
+		},
 	}
-	c, err := client.New(conn)
-	if err != nil {
-		log.WithError(err).Error("[fetchMail] failed to create IMAP client")
-		return
-	}
-	log.Println("Connected")
 
-	// Login
-	if err = c.Login(rId.Infos["username"], rId.Infos["password"]); err != nil {
-		log.WithError(err).Error("[fetchMail] failed to login IMAP")
-		return
-	}
-	log.Println("Logged in")
-	// Don't forget to logout
-	defer func() {
-		c.Logout()
-		log.Println("Logged out")
-	}()
-
-	// build handshake string to put in X-Fetched header
-	xHeaders := make(ImapFetcherHeaders)
-	connState := conn.ConnectionState()
-	capability, _ := c.Capability()
-	var proto string
-	if capability["IMAP4rev1"] == true {
-		proto = "with IMAP4rev1 protocol"
-	}
-	xHeaders["X-Fetched"] = fmt.Sprintf(`from %s ([%s])
-    (using %s with cipher %s)
-	by imap-fetcher (Caliopen) %s;
-	%s`,
-		rId.Infos["server"],
-		conn.RemoteAddr().String(),
-		TlsVersions[connState.Version],
-		TlsSuites[connState.CipherSuite],
-		proto,
-		time.Now().Format(time.RFC1123Z))
-
-	// Sync INBOX (only INBOX for now)
-	// TODO : sync other mailbox(es) from rId.Infos params
-	inbox := imapBox{
+	box := imapBox{
 		lastSeenUid: "",
 		lastSync:    time.Time{},
-		name:        "INBOX",
+		name:        order.Mailbox,
 		uidValidity: "",
 	}
+
+	// 2. fetch remote messages
+	mails := make(chan *Email, 10)
+	// TODO : manage closing
+	go f.fetchMails(&rId, &box, mails)
+	//TODO errors handling
+
+	// 3. forward mails to lda
+	errs := make([]error, len(mails))
+	// TODO : manage closing
+	for mail := range mails {
+		err := f.Lda.deliverMail(mail, order.UserId)
+		errs = append(errs, err)
+	}
+
+	return nil
+}
+
+// fetchMails fetches all messages from remote mailbox and returns well-formed Emails for lda.
+func (f *Fetcher) fetchMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) (err error) {
+
+	tlsConn, imapClient, err := imapLogin(rId)
+	// Don't forget to logout
+	defer func() {
+		imapClient.Logout()
+		log.Println("Logged out")
+	}()
+	if err != nil {
+		return err
+	}
+
 	newMessages := make(chan *imap.Message, 10)
-	go syncMailbox(inbox, c, newMessages)
-	//TODO : errors handling
+	//TODO : manage closing
+	go fetchMailbox(box, imapClient, newMessages) //TODO : errors handling
+	xHeaders := buildXheaders(tlsConn, imapClient, rId, box)
 	for msg := range newMessages {
-		// add `X-Fetched` headers and build RFC5322 mails
 		mail, err := MarshalImap(msg, xHeaders)
 		if err != nil {
 			//todo
@@ -156,50 +144,41 @@ func (f *Fetcher) fetchMails(rId *RemoteIdentity, ch chan *Email) (err error) {
 	return
 }
 
-func syncMailbox(ibox imapBox, c *client.Client, ch chan *imap.Message) (err error) {
+// fetchSyncMails reads last sync state for remote identity,
+// fetches new messages accordingly, and returns well-formed Emails for lda.
+func (f *Fetcher) syncMails(rId *RemoteIdentity, ch chan *Email) (err error) {
 
-	mbox, err := c.Select(ibox.name, false)
+	// Sync INBOX (only INBOX for now)
+	// TODO : sync other mailbox(es) from rId.Infos params
+	box := imapBox{
+		lastSeenUid: "",
+		lastSync:    time.Time{},
+		name:        "INBOX",
+		uidValidity: "",
+	}
+
+	tlsConn, imapClient, err := imapLogin(rId)
+	// Don't forget to logout
+	defer func() {
+		imapClient.Logout()
+		log.Println("Logged out")
+	}()
 	if err != nil {
-		log.WithError(err).Error("[fetchMail] failed to select INBOX")
 		return
 	}
 
-	// check mailbox UIDVALIDITY
-	lastUIDVALIDITY, _ := strconv.Atoi(ibox.uidValidity)
-	if mbox.UidValidity != uint32(lastUIDVALIDITY) {
-		// TODO
-		// MUST empty the local cache of that mailbox and resync mailbox
+	newMessages := make(chan *imap.Message, 10)
+	//TODO : manage closing
+	go syncMailbox(box, imapClient, rId, newMessages) //TODO : errors handling
+	xHeaders := buildXheaders(tlsConn, imapClient, rId, &box)
+	for msg := range newMessages {
+		mail, err := MarshalImap(msg, xHeaders)
+		if err != nil {
+			//todo
+			continue
+		}
+		ch <- mail
 	}
 
-	// discover new messages
-
-	// retrieve new messages
-
-	// Get the last 3 messages
-
-	from := uint32(1)
-	to := mbox.Messages
-	if mbox.Messages > 2 {
-		// We're using unsigned integers here, only substract if the result is > 0
-		from = mbox.Messages - 2
-	}
-	seqset := new(imap.SeqSet)
-	seqset.AddRange(from, to)
-
-	done := make(chan error, 1)
-	section := &imap.BodySectionName{} // get a pointer to a BodySectionName to easier body retrieving
-	items := []imap.FetchItem{imap.FetchFlags, imap.FetchInternalDate, imap.FetchRFC822Size, section.FetchItem()}
-
-	go func() {
-		log.Info("begin fetching")
-		c.Fetch(seqset, items, ch)
-		log.Info("end fetching")
-	}()
-
-	if err = <-done; err != nil {
-		log.WithError(err).Errorf("[fetchMails] failed")
-		return err
-	}
-
-	return nil
+	return
 }
