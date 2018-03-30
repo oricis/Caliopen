@@ -29,4 +29,12 @@ describe('Home', () => {
       expect(element(by.css('.s-signin__action .m-button')).getText()).toContain('I\'m in a safe place');
     });
   });
+
+  fit('Page not found', async () => {
+    await userUtil.signin();
+    await browser.get('/whatever');
+    await browser.wait(EC.presenceOf(element(by.css('.s-page-not-found fail'))), 60 * 1000);
+
+    expect(element(by.css('.s-page-not-found__unicorn')).isPresent()).toEqual(true);
+  });
 });

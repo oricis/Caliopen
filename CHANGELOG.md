@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - in mobile view, draft form can toggle with an excerpt to not use half of the screen
+- Power to the not found unicorn
 
 
 ## [Unreleased]
