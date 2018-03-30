@@ -118,7 +118,7 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
 // fetchMails fetches all messages from remote mailbox and returns well-formed Emails for lda.
 func (f *Fetcher) fetchMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) (err error) {
 
-	tlsConn, imapClient, err := imapLogin(rId)
+	tlsConn, imapClient, provider, err := imapLogin(rId)
 	// Don't forget to logout
 	defer func() {
 		imapClient.Logout()
@@ -130,10 +130,9 @@ func (f *Fetcher) fetchMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) 
 
 	newMessages := make(chan *imap.Message, 10)
 	//TODO : manage closing
-	go fetchMailbox(box, imapClient, newMessages) //TODO : errors handling
-	xHeaders := buildXheaders(tlsConn, imapClient, rId, box)
+	go fetchMailbox(box, imapClient, provider, newMessages) //TODO : errors handling
 	for msg := range newMessages {
-		mail, err := MarshalImap(msg, xHeaders)
+		mail, err := MarshalImap(msg, buildXheaders(tlsConn, imapClient, rId, box, msg, provider))
 		if err != nil {
 			//todo
 			continue
@@ -157,7 +156,7 @@ func (f *Fetcher) syncMails(rId *RemoteIdentity, ch chan *Email) (err error) {
 		uidValidity: "",
 	}
 
-	tlsConn, imapClient, err := imapLogin(rId)
+	tlsConn, imapClient, provider, err := imapLogin(rId)
 	// Don't forget to logout
 	defer func() {
 		imapClient.Logout()
@@ -169,9 +168,9 @@ func (f *Fetcher) syncMails(rId *RemoteIdentity, ch chan *Email) (err error) {
 
 	newMessages := make(chan *imap.Message, 10)
 	//TODO : manage closing
-	go syncMailbox(box, imapClient, rId, newMessages) //TODO : errors handling
-	xHeaders := buildXheaders(tlsConn, imapClient, rId, &box)
+	go syncMailbox(box, imapClient, provider, newMessages) //TODO : errors handling
 	for msg := range newMessages {
+		xHeaders := buildXheaders(tlsConn, imapClient, rId, &box, msg, provider)
 		mail, err := MarshalImap(msg, xHeaders)
 		if err != nil {
 			//todo

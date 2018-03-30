@@ -22,7 +22,32 @@ import (
 // ImapFetcherHeaders are headers added to emails fetched from remote IMAP
 type ImapFetcherHeaders map[string]string
 
-func imapLogin(rId *RemoteIdentity) (tlsConn *tls.Conn, imapClient *client.Client, err error) {
+type Provider struct {
+	name         string           // gmail, yahoo, etc.
+	capabilities map[string]bool  // capabilites sent back by provider at connection time
+	fetchItems   []imap.FetchItem // provider specific items that we want to fetch
+}
+
+const (
+	//gmail related
+	gmail_msgid  = "X-GM-MSGID"
+	gmail_labels = "X-GM-LABELS"
+)
+
+var providers map[string]Provider
+
+func init() {
+	// extensions to seek in IMAP server capabilities to identify remote provider
+	providers = map[string]Provider{
+		// as of april, 2018 (see https://developers.google.com/gmail/imap/imap-extensions)
+		"X-GM-EXT-1": {
+			name:       "gmail",
+			fetchItems: []imap.FetchItem{gmail_msgid, gmail_labels},
+		},
+	}
+}
+
+func imapLogin(rId *RemoteIdentity) (tlsConn *tls.Conn, imapClient *client.Client, provider Provider, err error) {
 	log.Println("Connecting to server...")
 	// Dial TLS directly to be able to dump tls connection state
 	tlsConn, err = tls.Dial("tcp", rId.Infos["server"], nil)
@@ -37,6 +62,16 @@ func imapLogin(rId *RemoteIdentity) (tlsConn *tls.Conn, imapClient *client.Clien
 	}
 	log.Println("Connected")
 
+	// identify provider
+	capabilities, _ := imapClient.Capability()
+	provider = Provider{capabilities: capabilities}
+	for capability, _ := range capabilities {
+		if p, ok := providers[capability]; ok {
+			provider.name = p.name
+			provider.fetchItems = p.fetchItems
+		}
+	}
+
 	// Login
 	if err = imapClient.Login(rId.Infos["username"], rId.Infos["password"]); err != nil {
 		log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
@@ -49,7 +84,7 @@ func imapLogin(rId *RemoteIdentity) (tlsConn *tls.Conn, imapClient *client.Clien
 
 // syncMailbox will check uidvalidity and fetch only new messages since last sync state saved in RemoteIdentity.
 // If no previous state found in RemoteIdentity or uidvalidity has changed, syncMailbox will do a full fetch instead.
-func syncMailbox(ibox imapBox, imapClient *client.Client, rId *RemoteIdentity, ch chan *imap.Message) (err error) {
+func syncMailbox(ibox imapBox, imapClient *client.Client, provider Provider, ch chan *imap.Message) (err error) {
 
 	mbox, err := imapClient.Select(ibox.name, false)
 	if err != nil {
@@ -78,9 +113,11 @@ func syncMailbox(ibox imapBox, imapClient *client.Client, rId *RemoteIdentity, c
 
 	done := make(chan error, 1)
 	//TODO : manage closing
-	// TODO: check for capabilities before fetching to look for IMAP specific extensions, like X-GM-EXT-1 for gmail
-	items := []imap.FetchItem{imap.FetchFlags, imap.FetchUid, "BODY.PEEK[]", "X-GM-LABELS"}
 
+	items := []imap.FetchItem{imap.FetchFlags, imap.FetchUid, "BODY.PEEK[]"}
+	if len(provider.fetchItems) > 0 {
+		items = append(items, provider.fetchItems...)
+	}
 	go func() {
 		imapClient.Fetch(seqset, items, ch)
 	}()
@@ -94,7 +131,7 @@ func syncMailbox(ibox imapBox, imapClient *client.Client, rId *RemoteIdentity, c
 }
 
 // fetchMailbox retrieves all messages found within remote mailbox
-func fetchMailbox(ibox *imapBox, imapClient *client.Client, ch chan *imap.Message) (err error) {
+func fetchMailbox(ibox *imapBox, imapClient *client.Client, provider Provider, ch chan *imap.Message) (err error) {
 
 	mbox, err := imapClient.Select(ibox.name, true)
 	if err != nil {
@@ -108,11 +145,13 @@ func fetchMailbox(ibox *imapBox, imapClient *client.Client, ch chan *imap.Messag
 	seqset := new(imap.SeqSet)
 	seqset.AddRange(from, to)
 
-	log.Infof("begining to fetch %d messages.", to-from)
+	log.Infof("begining to fetch %d messages.", to-from+1)
 	done := make(chan error, 1)
 	//TODO : manage closing
-	// TODO: check for capabilities before fetching to look for IMAP specific extensions, like X-GM-EXT-1 for gmail
-	items := []imap.FetchItem{imap.FetchFlags, imap.FetchUid, "BODY.PEEK[]", "X-GM-LABELS"}
+	items := []imap.FetchItem{imap.FetchFlags, imap.FetchUid, "BODY.PEEK[]"}
+	if len(provider.fetchItems) > 0 {
+		items = append(items, provider.fetchItems...)
+	}
 
 	go func() {
 		imapClient.Fetch(seqset, items, ch)
@@ -128,14 +167,12 @@ func fetchMailbox(ibox *imapBox, imapClient *client.Client, ch chan *imap.Messag
 	return
 }
 
-// MashalImap build RFC5322 mail from imap.Message and add `X-Fetched` headers.
-// Returns an Email suitable to send to our email lda.
+// MashalImap build RFC5322 mail from imap.Message,
+// adds custom `X-Fetched` headers,
+// returns an Email suitable to send to our email lda.
 func MarshalImap(message *imap.Message, xHeaders ImapFetcherHeaders) (mail *Email, err error) {
 
 	var mailBuff bytes.Buffer
-
-	xHeaders["X-Fetched-Imap-Uid"] = strconv.Itoa(int(message.Uid))
-	xHeaders["X-Fetched-Imap-Flags"] = strings.Join(message.Flags, "\r    ")
 
 	for k, v := range xHeaders {
 		mailBuff.WriteString(k + ": " + v + "\r")
@@ -156,12 +193,13 @@ func MarshalImap(message *imap.Message, xHeaders ImapFetcherHeaders) (mail *Emai
 	return
 }
 
-// buildXheaders builds handshake string to put in X-Fetched header
-func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *RemoteIdentity, box *imapBox) (xHeaders ImapFetcherHeaders) {
+// buildXheaders builds custom X-Fetched headers
+// with provider specific information
+func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *RemoteIdentity, box *imapBox, message *imap.Message, provider Provider) (xHeaders ImapFetcherHeaders) {
 	connState := tlsConn.ConnectionState()
-	capabilities, _ := imapClient.Capability()
+
 	var proto string
-	if capabilities["IMAP4rev1"] == true {
+	if provider.capabilities["IMAP4rev1"] == true {
 		proto = "with IMAP4rev1 protocol"
 	}
 	xHeaders = make(ImapFetcherHeaders)
@@ -179,6 +217,21 @@ func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *RemoteIden
 	xHeaders["X-Fetched-Imap-Account"] = rId.Identifier
 	xHeaders["X-Fetched-Imap-Box"] = box.name
 	xHeaders["X-Fetched-Imap-For"] = rId.UserId.String()
+	xHeaders["X-Fetched-Imap-Uid"] = strconv.Itoa(int(message.Uid))
+	xHeaders["X-Fetched-Imap-Flags"] = strings.Join(message.Flags, "\r        ")
+	switch provider.name {
+	case "gmail":
+		gLabels := strings.Builder{}
+		for i, label := range message.Items[gmail_labels].([]interface{}) {
+			if i == 0 {
+				gLabels.WriteString(label.(string))
+			} else {
+				gLabels.WriteString("\r        " + label.(string))
+			}
+		}
+		xHeaders["X-Fetched-"+gmail_labels] = gLabels.String()
+		xHeaders["X-Fetched-"+gmail_msgid] = message.Items[gmail_msgid].(string)
 
+	}
 	return
 }
