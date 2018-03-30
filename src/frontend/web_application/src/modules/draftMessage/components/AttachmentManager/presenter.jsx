@@ -80,7 +80,7 @@ class AttachmentManager extends Component {
     });
   };
 
-  handleInputFileChange = async (attachments) => {
+  handleInputFileChange = async (attachment) => {
     const { onUploadAttachments, notifyError } = this.props;
 
     this.setState({
@@ -89,7 +89,8 @@ class AttachmentManager extends Component {
     });
 
     try {
-      await onUploadAttachments({ attachments });
+      // const FIXME cf. #480 multiple files
+      await onUploadAttachments({ attachments: [attachment] });
     } catch (errors) {
       (new Set(errors.map(err => err.message)))
         .forEach(message => notifyError({ message }));
