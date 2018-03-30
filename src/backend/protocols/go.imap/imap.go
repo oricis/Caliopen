@@ -9,6 +9,7 @@ package imap_worker
 import (
 	"bytes"
 	"crypto/tls"
+	"encoding/base64"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
@@ -215,22 +216,26 @@ func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *RemoteIden
 		time.Now().Format(time.RFC1123Z))
 
 	xHeaders["X-Fetched-Imap-Account"] = rId.Identifier
-	xHeaders["X-Fetched-Imap-Box"] = box.name
+	xHeaders["X-Fetched-Imap-Box"] = base64.StdEncoding.EncodeToString([]byte(box.name))
 	xHeaders["X-Fetched-Imap-For"] = rId.UserId.String()
 	xHeaders["X-Fetched-Imap-Uid"] = strconv.Itoa(int(message.Uid))
-	xHeaders["X-Fetched-Imap-Flags"] = strings.Join(message.Flags, "\r        ")
+	if len(message.Flags) > 0 {
+		xHeaders["X-Fetched-Imap-Flags"] = base64.StdEncoding.EncodeToString([]byte(strings.Join(message.Flags, "\r\n")))
+	}
 	switch provider.name {
 	case "gmail":
+		xHeaders["X-Fetched-"+gmail_msgid] = message.Items[gmail_msgid].(string)
 		gLabels := strings.Builder{}
 		for i, label := range message.Items[gmail_labels].([]interface{}) {
 			if i == 0 {
 				gLabels.WriteString(label.(string))
 			} else {
-				gLabels.WriteString("\r        " + label.(string))
+				gLabels.WriteString("\r\n" + label.(string))
 			}
 		}
-		xHeaders["X-Fetched-"+gmail_labels] = gLabels.String()
-		xHeaders["X-Fetched-"+gmail_msgid] = message.Items[gmail_msgid].(string)
+		if gLabels.Len() > 0 {
+			xHeaders["X-Fetched-"+gmail_labels] = base64.StdEncoding.EncodeToString([]byte(gLabels.String()))
+		}
 
 	}
 	return
