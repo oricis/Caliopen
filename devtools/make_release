@@ -32,9 +32,8 @@ log.setLevel(logging.DEBUG)
 COMMIT_MESSAGE = 'Release {version}'
 
 PY_BUILD_CMD = 'python setup.py bdist_wheel --universal --dist-dir {}'
-JS_BUILD_CMD = 'yarn {target}'
-GO_BUILD_CMD = 'govendor sync; ' \
-               'go build -o {out} {target}'
+JS_BUILD_CMD = 'yarn && yarn {target}'
+GO_BUILD_CMD = 'go build -o {out} {target}'
 
 # Files updated to consider for commit or rollback
 UPDATE_FILES = []
@@ -89,7 +88,7 @@ def make_javascript_package(package, directory, version, output_directory):
     if not res:
         return False
     # Move build distribution
-    distdir = '{}/dist/{}'.format(directory, package['name'])
+    distdir = '{}/dist/server'.format(directory)
     if not os.path.isdir(distdir):
         log.error('No dist directory after build')
         sys.exit(1)
