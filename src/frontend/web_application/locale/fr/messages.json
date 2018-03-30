@@ -315,7 +315,7 @@
   "signup.form.invitation_email.placeholder": "example@domaine.tld",
   "signup.form.invitation_email.tip": "Merci de renseigner l'email que vous avez fourni lors de la demande d'invitation.",
   "signup.form.privacy.title": "Confidentialité",
-  "signup.form.privacy.intro": "Durant toute la phase de développement, nous recueillons certaines données d'utilisation (mais pas plus que la NSA :) ).",
+  "signup.form.privacy.intro": "Durant toute la phase de développement, nous recueillons certaines données d'utilisation, mais pas plus que la NSA :-).",
   "signup.form.privacy.more_info": "En savoir plus",
   "signup.form.privacy.checkbox.label": "Je comprends et j'accepte",
   "signup.action.create": "Créer",
