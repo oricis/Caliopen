@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- check if contact.title is null or undefined when displaying ContactBook
+
 ## [0.9.0] 2018-03-29
 
 ### Added
