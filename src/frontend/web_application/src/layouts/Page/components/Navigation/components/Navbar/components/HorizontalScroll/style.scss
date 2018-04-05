@@ -1,11 +1,10 @@
 @import '../../../../../../../../styles/common';
+@import '../../../../../../../../styles/object/o-navigation';
 @import '../../../../../../../../styles/vendor/bootstrap_foundation-sites';
-@import '../NavbarItem/style';
 
 .m-horizontal-scroll {
   display: flex;
-  height: $m-navbar-item--height;
-  background-color: $co-color__bg__back;
+  height: $l-navigation__height;
 
   &__anchor,
   &__visible-zone {
@@ -14,12 +13,12 @@
 
   &__anchor {
     flex: 0;
+    background-color: $co-color__bg__back--high;
   }
 
   &__visible-zone {
     position: relative;
     flex: 1;
-    margin-right: $m-navbar-item--border-top-size;
     overflow: hidden;
   }
 

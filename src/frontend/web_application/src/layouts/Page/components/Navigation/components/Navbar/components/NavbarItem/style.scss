@@ -1,29 +1,13 @@
 @import '../../../../../../../../styles/common';
+@import '../../../../../../../../styles/object/o-navigation';
 
 $m-navbar-item__content--max-width: 12rem !default;
-$m-navbar-item--border-top-size: .25rem !default;
-$m-navbar-item--height: $co-component__height + $m-navbar-item--border-top-size !default;
 
 .m-navbar-item {
+  @include o-navigation-item;
   display: flex;
-  height: $m-navbar-item--height;
-  margin-right: 2px;
-  border-top: $m-navbar-item--border-top-size solid $co-color__bg__back;
-  background-color: $co-color__bg__back__higher;
-  color: $co-color__fg__text;
   font-weight: 600;
   text-transform: uppercase;
-
-  &--is-active {
-    border-top-color: $co-color__primary--low;
-    background: $co-color__fg__back;
-    color: $co-color__primary--lower;
-  }
-
-  &--last,
-  &:last-child {
-    margin-right: 0;
-  }
 
   &__content {
     max-width: $m-navbar-item__content--max-width;

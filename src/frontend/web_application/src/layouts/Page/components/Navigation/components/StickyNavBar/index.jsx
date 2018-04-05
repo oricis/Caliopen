@@ -25,12 +25,12 @@ class StickyNavbarClass extends Component {
   componentDidMount() {
     this.unsubscribeScrollEvent = addEventListener('scroll', throttle(() => {
       const scrollSize = window.scrollY || document.documentElement.scrollTop;
-      const isSticky = scrollSize > 10;
+      const isSticky = scrollSize > 96; // 96px = 6rem = .l-navigation__wrapper margin-top
 
       if (this.state.isSticky !== isSticky) {
         this.setState({ isSticky });
       }
-    }, 100, { leading: true, trailing: true }));
+    }, 10, { leading: true, trailing: true }));
   }
 
   componentWillUnmount() {

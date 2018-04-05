@@ -6,12 +6,13 @@ $co-font-path: '../../fonts';
 // --- Vendor ---
 @import '../../styles/vendor/bootstrap_foundation-sites';
 @import '../../styles/common';
+@import '../../styles/object/o-navigation';
 
-$navigation__height: $co-component__height;
-$navigation__padding: .75rem;
-$navigation-after__height: $co-component__spacing;
+$l-body__content--padding-top: $l-navigation__height + $l-navigation__margin-top;
 
 .l-body {
+  min-height: 100vh;
+
   &__content {
     max-width: $co-site-width;
     margin-right: auto;
@@ -28,7 +29,7 @@ $navigation-after__height: $co-component__spacing;
 
   @include breakpoint(medium) {
     &__content {
-      padding-top: ($navigation__height + $navigation__padding + $navigation-after__height);
+      padding-top: $l-body__content--padding-top;
     }
   }
 }
