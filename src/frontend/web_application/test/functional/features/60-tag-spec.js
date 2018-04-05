@@ -122,15 +122,14 @@ describe('tag', () => {
       ;
     });
 
-    it('rename a tag', () => {
-      const tagName = 'Edited ';
-      showSettings('Tags')
-        .then(() => browser.wait(EC.presenceOf($('.m-add-tag .m-input-text')), 5 * 1000))
-        .then(() => element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', 'Inbox')).click())
-        .then(() => element(by.css('.m-tag-input__input .m-input-text')).sendKeys(tagName))
-        .then(() => element(by.css('.m-tag-input .m-button[aria-label=Save]')).click())
-        .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', 'Edited Inbox')), 5 * 1000)))
-      ;
+    it('rename a tag', async () => {
+      const tagName = ' Edited';
+      await showSettings('Tags');
+      await browser.wait(EC.presenceOf($('.m-add-tag .m-input-text')), 5 * 1000);
+      await element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', 'Inbox')).click();
+      await element(by.css('.m-tag-input__input .m-input-text')).sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), tagName);
+      await element(by.css('.m-tag-input .m-button[aria-label=Save]')).click();
+      await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', 'Inbox Edited')), 5 * 1000));
     });
   });
 });

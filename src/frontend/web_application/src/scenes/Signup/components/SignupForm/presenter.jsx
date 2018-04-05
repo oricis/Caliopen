@@ -46,8 +46,8 @@ class SignupForm extends Component {
     this.setState(generateStateFromProps(this.props));
   }
 
-  componentDidMount() {
-    import(/* webpackChunkName: "zxcvbn" */ 'zxcvbn').then((zxcvbn) => {
+  async componentDidMount() {
+    import(/* webpackChunkName: "zxcvbn" */ 'zxcvbn').then(({ default: zxcvbn }) => {
       this.zxcvbn = zxcvbn;
     });
   }

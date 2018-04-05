@@ -2,6 +2,7 @@ const path = require('path');
 const webpackMerge = require('webpack-merge');
 const configs = require('./config.js');
 const common = require('./webpack.common.js');
+const { WatchIgnorePlugin } = require('webpack');
 
 const base = {
   target: 'node',
@@ -45,6 +46,12 @@ const base = {
   optimization: {
     minimize: false,
   },
+  plugins: [
+    new WatchIgnorePlugin([
+      path.join(__dirname, '../src/'),
+      path.join(__dirname, '../locale/'),
+    ]),
+  ],
 };
 
 const config = webpackMerge(
