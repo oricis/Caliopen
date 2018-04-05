@@ -13,6 +13,7 @@ import (
 type (
 	IdentityStorage interface {
 		CreateRemoteIdentity(rId *RemoteIdentity) error
+		RetrieveRemoteIdentity(userId, identifier string) (*RemoteIdentity, error)
 		GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 	}
 )
