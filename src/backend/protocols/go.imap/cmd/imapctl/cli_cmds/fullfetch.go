@@ -4,12 +4,6 @@
  * // license (AGPL) that can be found in the LICENSE file.
  */
 
-/*
- * // Copyleft (ɔ) 2018 The Caliopen contributors.
- * // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
- * // license (AGPL) that can be found in the LICENSE file.
- */
-
 package cmd
 
 import (
@@ -20,7 +14,6 @@ import (
 )
 
 var (
-	id           remoteId
 	fullFetchCmd = &cobra.Command{
 		Use:   "fullfetch",
 		Short: "blindly imports all mails from a remote IMAP mailbox into user's account.",
@@ -28,25 +21,17 @@ var (
 	}
 )
 
-type remoteId struct {
-	Password string
-	Login    string
-	Server   string
-	Mailbox  string
-	UserId   string
-}
-
 type natsOrder struct {
 	Order string
 	remoteId
 }
 
 func init() {
-	fullFetchCmd.Flags().StringVarP(&id.UserId, "userid", "u", "", "user account uuid in which mails will be imported")
-	fullFetchCmd.Flags().StringVarP(&id.Server, "server", "s", "", "remote hostname[:port] IMAP server address")
-	fullFetchCmd.Flags().StringVarP(&id.Mailbox, "mailbox", "m", "INBOX", "IMAP mailbox name to fetch mail from (case sensitive, default to 'INBOX'")
-	fullFetchCmd.Flags().StringVarP(&id.Login, "login", "l", "", "IMAP login credential")
-	fullFetchCmd.Flags().StringVarP(&id.Password, "pass", "p", "", "IMAP password credential")
+	fullFetchCmd.Flags().StringVarP(&id.UserId, "userid", "u", "", "user account uuid in which mails will be imported (required)")
+	fullFetchCmd.Flags().StringVarP(&id.Server, "server", "s", "", "remote hostname[:port] IMAP server address (required)")
+	fullFetchCmd.Flags().StringVarP(&id.Mailbox, "mailbox", "m", "INBOX", "IMAP mailbox name to fetch mail from, case sensitive")
+	fullFetchCmd.Flags().StringVarP(&id.Login, "login", "l", "", "IMAP login credential (required)")
+	fullFetchCmd.Flags().StringVarP(&id.Password, "pass", "p", "", "IMAP password credential (required)")
 	fullFetchCmd.MarkFlagRequired("userid")
 	fullFetchCmd.MarkFlagRequired("server")
 	fullFetchCmd.MarkFlagRequired("login")

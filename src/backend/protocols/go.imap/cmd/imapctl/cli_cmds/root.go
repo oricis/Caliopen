@@ -28,7 +28,7 @@ var (
 	RootCmd    = &cobra.Command{
 		Use:   "imapctl",
 		Short: "cli for IMAP operations",
-		Long:  "IMAPctl is a cli to order fetch operations and/or to create remote IMAP ids",
+		Long:  "IMAPctl is a cli to control IMAP related operations.",
 		Run:   nil,
 	}
 )
