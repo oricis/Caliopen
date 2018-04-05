@@ -18,9 +18,6 @@ import (
 // if sanitation failed, message's string bodies are emptied
 func SanitizeMessageBodies(msg *objects.Message) {
 	p := CaliopenPolicy()
-	(*msg).Body_plain = html.UnescapeString(msg.Body_plain)
-	(*msg).Body_plain = p.Sanitize(msg.Body_plain)
-	(*msg).Body_plain = replaceBodyTag(msg.Body_plain)
 	(*msg).Body_html = p.Sanitize(msg.Body_html)
 	(*msg).Body_html = replaceBodyTag(msg.Body_html)
 }
@@ -108,6 +105,7 @@ func excerptFromHMTL(source string) (excerpt string, err error) {
 
 	f(doc)
 	excerpt = strings.Join(excerpt_strings, " ")
+	excerpt = html.UnescapeString(excerpt)
 	return
 }
 
