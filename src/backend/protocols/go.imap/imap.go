@@ -111,11 +111,6 @@ func syncMailbox(ibox *imapBox, imapClient *client.Client, provider Provider, ch
 			if ibox.lastSeenUid == 0 {
 				from, to = 1, 0
 			} else {
-				if ibox.lastSeenUid+1 == mbox.UidNext {
-					log.Info("no new message to fetch")
-					close(ch)
-					return
-				}
 				from = ibox.lastSeenUid + 1
 				to = 0
 			}

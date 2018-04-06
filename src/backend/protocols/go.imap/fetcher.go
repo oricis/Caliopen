@@ -77,6 +77,10 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 	// 3. forward mails to lda
 	errs := []error{}
 	for mail := range mails {
+		if box.lastSeenUid == mail.ImapUid {
+			// do not forward last seen message, we already have it
+			continue
+		}
 		err := f.Lda.deliverMail(mail, order.UserId)
 		errs = append(errs, err)
 		if err == nil {
