@@ -1,6 +1,7 @@
 const { SpecReporter } = require('jasmine-spec-reporter');
 
 const cfg = {
+  SELENIUM_PROMISE_MANAGER: true,
   capabilities: {
     // firefox
     browserName: 'chrome',
@@ -35,6 +36,7 @@ const cfg = {
 };
 
 if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
+  // platform config: https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
   const branch = (process.env.TRAVIS_PULL_REQUEST_BRANCH.length > 0) ?
     process.env.TRAVIS_PULL_REQUEST_BRANCH :
     process.env.TRAVIS_BRANCH;
@@ -45,6 +47,10 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
     {
       browserName: 'firefox',
       platform: 'Linux',
+      // version is 45 max for linux, it requires to not use marionette
+      // cf. https://github.com/angular/protractor/blob/master/CHANGELOG.md#breaking-changes-1
+      marionette: false,
+      version: 'latest',
       'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
       build: process.env.TRAVIS_JOB_NUMBER,
       name: `CaliOpen e2e - ${branch}`,
@@ -59,7 +65,7 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
     // {
     //   browserName: 'Internet Explorer',
     //   plateform: 'Windows 10',
-    //   version: '11.103',
+    //   version: 'latest',
     //   'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     //   build: process.env.TRAVIS_JOB_NUMBER,
     //   name: `CaliOpen e2e - ${branch}`,
@@ -67,7 +73,7 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
     // {
     //   browserName: 'Safari',
     //   plateform: 'OS X 10.11',
-    //   version: '9.0',
+    //   version: 'latest ',
     //   'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     //   build: process.env.TRAVIS_JOB_NUMBER,
     //   name: `CaliOpen e2e - ${branch}`,

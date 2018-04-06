@@ -10,10 +10,10 @@ const base = {
   target: 'web',
   entry: {
     app: [
-      'babel-polyfill',
       path.join(__dirname, '../src/index.jsx'),
     ],
     vendor: [
+      'babel-polyfill',
       'script-loader!jquery',
       'script-loader!foundation-sites',
     ],

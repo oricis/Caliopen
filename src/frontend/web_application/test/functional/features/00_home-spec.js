@@ -8,22 +8,24 @@ describe('Home', () => {
       userUtil.signout();
     });
 
-    it('Log In', () => {
-      userUtil.signin();
-      browser.get('/');
+    it('Log In', async () => {
+      await userUtil.signin();
+      await browser.wait(EC.presenceOf(element(by.css('.m-application-switcher .m-navbar-item__content'))));
       expect(element(by.css('.m-application-switcher .m-navbar-item__content')).getText()).toContain('MESSAGES');
     });
 
-    it('Requires authentication', () => {
+    it('Requires authentication', async () => {
       browser.get('/');
-      browser.wait(EC.presenceOf($('.s-signin__action')), 1000);
+      await browser.wait(EC.presenceOf(element(by.css('.s-signin__action'))), 1000);
 
       expect(element(by.css('.s-signin__action .m-button')).getText()).toContain('I\'m in a safe place');
     });
 
-    it('Log out', () => {
-      userUtil.signin();
-      userUtil.signout();
+    it('Log out', async () => {
+      await userUtil.signin();
+      await userUtil.signout();
+      await browser.wait(EC.presenceOf(element(by.css('.s-signin__action'))), 1000);
+
       expect(element(by.css('.s-signin__action .m-button')).getText()).toContain('I\'m in a safe place');
     });
   });
