@@ -7,7 +7,9 @@ rules:
 
   # Allow a bigger nesting depth max in waiting of:
   # https://github.com/sasstools/sass-lint/issues/603
-  max-nesting-depth: 3
+  max-nesting-depth:
+    - 3
+    - severity: "warning"
 
   # Name Formats
   #
@@ -31,7 +33,9 @@ rules:
   #     convention: '(?![A-Z]|-{3}|_{3}|[^_]_[^_])' # hyphenatedbem
   #   }]
   #
-  selector-max-class: 1
+  selector-max-class:
+    - 1
+    - severity: "warning"
 
   # Property sort order, inspired from SMACCS
   # https://github.com/sasstools/sass-lint/blob/develop/lib/config/property-sort-orders/smacss.yml

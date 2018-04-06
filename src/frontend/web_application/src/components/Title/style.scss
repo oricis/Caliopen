@@ -14,9 +14,9 @@ $m-title__height: $co-component__height !default;
   }
 
   &--hr {
-    line-height: $m-title__height;
     border-width: 1px 0;
     border-style: solid;
     border-color: $co-color__fg__border;
+    line-height: $m-title__height;
   }
 }

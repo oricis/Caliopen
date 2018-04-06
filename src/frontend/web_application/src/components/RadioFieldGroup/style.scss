@@ -20,22 +20,22 @@ $co-radio-size: 14px;
 
   &__input {
     @include flex-grid-size(shrink);
-    height: $co-radio-size;
     width: $co-radio-size;
+    height: $co-radio-size;
     appearance: none;
-    background: $co-color__fg__back;
     border: 1px solid $co-color__primary;
     border-radius: 50%;
+    background: $co-color__fg__back;
     cursor: pointer;
 
     &:before {
-      content: ' ';
       display: none;
-      background: $co-color__primary--low;
-      border-radius: 50%;
+      content: ' ';
       position: absolute;
       right: 1px;
       left: 1px;
+      border-radius: 50%;
+      background: $co-color__primary--low;
     }
 
 
