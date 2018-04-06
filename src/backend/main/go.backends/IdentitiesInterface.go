@@ -14,6 +14,7 @@ type (
 	IdentityStorage interface {
 		CreateRemoteIdentity(rId *RemoteIdentity) error
 		RetrieveRemoteIdentity(userId, identifier string) (*RemoteIdentity, error)
+		UpdateRemoteIdentity(rId *RemoteIdentity, fields map[string]interface{}) error
 		GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 	}
 )

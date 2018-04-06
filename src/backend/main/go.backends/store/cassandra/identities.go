@@ -8,11 +8,11 @@ package store
 
 import (
 	"errors"
-	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/gocql/gocql"
-
 	"fmt"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/gocassa/gocassa"
+	"github.com/gocql/gocql"
+	"gopkg.in/oleiade/reflections.v1"
 )
 
 func (cb *CassandraBackend) GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error) {
@@ -54,4 +54,39 @@ func (cb *CassandraBackend) CreateRemoteIdentity(rId *RemoteIdentity) error {
 	}
 
 	return nil
+}
+
+func (cb *CassandraBackend) RetrieveRemoteIdentity(userId, identifier string) (rId *RemoteIdentity, err error) {
+
+	rId = new(RemoteIdentity)
+	m := map[string]interface{}{}
+	q := cb.Session.Query(`SELECT * FROM remote_identity WHERE user_id = ? AND identifier = ?`, userId, identifier)
+	err = q.MapScan(m)
+	if err != nil {
+		return nil, err
+	}
+	rId.UnmarshalCQLMap(m)
+
+	return
+}
+
+func (cb *CassandraBackend) UpdateRemoteIdentity(rId *RemoteIdentity, fields map[string]interface{}) error {
+	//get cassandra's field name for each field to modify
+	cassaFields := map[string]interface{}{}
+	for field, value := range fields {
+		cassaField, err := reflections.GetFieldTag(rId, field, "cql")
+		if err != nil {
+			return fmt.Errorf("[CassandraBackend] UpdateRemoteIdentity failed to find a cql field for object field %s", field)
+		}
+		if cassaField != "-" {
+			cassaFields[cassaField] = value
+		}
+	}
+
+	ridT := cb.IKeyspace.Table("remote_identity", &RemoteIdentity{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "identifier"},
+	}).WithOptions(gocassa.Options{TableName: "remote_identity"})
+
+	return ridT.Where(gocassa.Eq("user_id", rId.UserId.String()), gocassa.Eq("identifier", rId.Identifier)).
+		Update(cassaFields).Run()
 }

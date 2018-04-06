@@ -6,6 +6,7 @@ package objects
 
 import (
 	"bytes"
+	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"time"
 )
@@ -116,6 +117,34 @@ func (ri *RemoteIdentity) SetDefaultInfos() {
 		"uidvalidity": "", // uidvalidity to invalidate data if needed (see RFC4549#section-4.1)
 		"username":    "", // credentials
 	}
+}
+
+func (ri *RemoteIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
+	if dn, ok := input["display_name"].(string); ok {
+		ri.DisplayName = dn
+	}
+	if identifier, ok := input["identifier"].(string); ok {
+		ri.Identifier = identifier
+	}
+	if infos, ok := input["infos"].(map[string]string); ok {
+		ri.Infos = make(map[string]string)
+		for k, v := range infos {
+			ri.Infos[k] = v
+		}
+	}
+	if lc, ok := input["last_check"].(time.Time); ok {
+		ri.LastCheck = lc
+	}
+	if status, ok := input["status"].(string); ok {
+		ri.Status = status
+	}
+	if t, ok := input["type"].(string); ok {
+		ri.Type = t
+	}
+	if userid, ok := input["user_id"].(gocql.UUID); ok {
+		ri.UserId.UnmarshalBinary(userid.Bytes())
+	}
+	return nil
 }
 
 // Sort interface implementations
