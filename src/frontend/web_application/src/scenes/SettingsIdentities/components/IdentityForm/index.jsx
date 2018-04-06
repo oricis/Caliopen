@@ -32,10 +32,8 @@ class IdentityForm extends Component {
 
   getRemoteIdentity(identityType, identityId) {
     return this.props.remoteIdentities
-      .find(
-        remoteIdentity => remoteIdentity.identity_type === identityType
-          && remoteIdentity.identity_id === identityId
-      );
+      .find(remoteIdentity => remoteIdentity.identity_type === identityType
+          && remoteIdentity.identity_id === identityId);
   }
 
   initDetailsTranslations() {

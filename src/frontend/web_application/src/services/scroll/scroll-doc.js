@@ -46,4 +46,10 @@ const detectScrollElem = () => {
   return doc.scrollingElement || doc.body;
 };
 
-export default () => scrollElem || (scrollElem = detectScrollElem());
+export default () => {
+  if (!scrollElem) {
+    scrollElem = detectScrollElem();
+  }
+
+  return scrollElem;
+};

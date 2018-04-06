@@ -22,26 +22,26 @@ const FORM_TYPE_RAW = 'raw';
 //     this.formType = 'generate';
 //   }
 //
-  // $onChanges(changes) {
-  //   if (changes.emails && !!this.emails) {
-  //     this.emailOptions = this.emails.map(email => email.address);
-  //     if (this.emailOptions.length === 1) {
-  //       this.generateForm = { ...this.generateForm, email: this.emailOptions[0] };
-  //     }
-  //   }
-  // }
+// $onChanges(changes) {
+//   if (changes.emails && !!this.emails) {
+//     this.emailOptions = this.emails.map(email => email.address);
+//     if (this.emailOptions.length === 1) {
+//       this.generateForm = { ...this.generateForm, email: this.emailOptions[0] };
+//     }
+//   }
+// }
 //
-  // handleImportChanges(property, $event) {
-  //   this.importForm = { ...this.importForm, [property]: $event.model };
-  // }
+// handleImportChanges(property, $event) {
+//   this.importForm = { ...this.importForm, [property]: $event.model };
+// }
 //
-  // handleGenerateChanges(property, $event) {
-  //   this.generateForm = { ...this.generateForm, [property]: $event.model };
-  // }
+// handleGenerateChanges(property, $event) {
+//   this.generateForm = { ...this.generateForm, [property]: $event.model };
+// }
 //
-  // generate() {
-  //   this.onGenerate({ $event: this.generateForm });
-  // }
+// generate() {
+//   this.onGenerate({ $event: this.generateForm });
+// }
 //
 //   import() {
 //     this.onImport({ $event: this.importForm });
@@ -161,7 +161,9 @@ class OpenPGPKeyForm extends Component {
   render() {
     // XXX: note on importForm, errors comes from props and form items from this.state since form is
     // not real time saved in redux store
-    const { i18n, isLoading, className, importForm, children } = this.props;
+    const {
+      i18n, isLoading, className, importForm, children,
+    } = this.props;
     const generateHollowProp = this.state.formType === FORM_TYPE_GENERATE ? { shape: 'hollow' } : {};
     const rawHollowProp = this.state.formType === FORM_TYPE_RAW ? { shape: 'hollow' } : {};
 

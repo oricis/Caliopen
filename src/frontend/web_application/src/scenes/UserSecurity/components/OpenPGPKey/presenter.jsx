@@ -81,7 +81,9 @@ class OpenPGPKey extends Component {
   }
 
   render() {
-    const { i18n, locale, children, publicKeyArmored, privateKeyArmored, editMode } = this.props;
+    const {
+      i18n, locale, children, publicKeyArmored, privateKeyArmored, editMode,
+    } = this.props;
     const openpgpStatuses = {
       invalid: i18n._('openpgp.status.invalid', { defaults: 'Invalid' }),
       expired: i18n._('openpgp.status.expired', { defaults: 'Expired' }),
