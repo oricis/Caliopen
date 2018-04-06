@@ -85,53 +85,48 @@ func imapLogin(rId *RemoteIdentity) (tlsConn *tls.Conn, imapClient *client.Clien
 
 // syncMailbox will check uidvalidity and fetch only new messages since last sync state saved in RemoteIdentity.
 // If no previous state found in RemoteIdentity or uidvalidity has changed, syncMailbox will do a full fetch instead.
-func syncMailbox(ibox imapBox, imapClient *client.Client, provider Provider, ch chan *imap.Message) (err error) {
+func syncMailbox(ibox *imapBox, imapClient *client.Client, provider Provider, ch chan *imap.Message) (err error) {
 
 	mbox, err := imapClient.Select(ibox.name, false)
 	if err != nil {
-		log.WithError(err).Error("[fetchMail] failed to select INBOX")
+		log.WithError(err).Errorf("[syncMailbox] failed to select mailbox <%s>", ibox.name)
+		close(ch)
 		return
 	}
-
-	// check mailbox UIDVALIDITY
-	lastUIDVALIDITY, _ := strconv.Atoi(ibox.uidValidity)
-	if mbox.UidValidity != uint32(lastUIDVALIDITY) {
-		// TODO
-		// MUST empty the local cache of that mailbox and resync mailbox
+	var from, to uint32
+	if ibox.lastSync.IsZero() {
+		// first sync, blindly fetch all messages
+		from, to = 1, 0
+		ibox.uidValidity = mbox.UidValidity
+	} else {
+		// check mailbox UIDVALIDITY
+		if ibox.uidValidity != mbox.UidValidity {
+			// TODO
+			// MUST empty the local cache of that mailbox and resync mailbox
+			log.Warnf("[syncMailbox] uidValidity has changed from %d to %d. Local mailbox should resync.", ibox.uidValidity, mbox.UidValidity)
+			// for now, we blindly (re)fetch all messages
+			from, to = 1, 0
+			ibox.uidValidity = mbox.UidValidity
+		} else {
+			if ibox.lastSeenUid == 0 {
+				from, to = 1, 0
+			} else {
+				if ibox.lastSeenUid+1 == mbox.UidNext {
+					log.Info("no new message to fetch")
+					close(ch)
+					return
+				}
+				from = ibox.lastSeenUid + 1
+				to = 0
+			}
+		}
 	}
 
-	// discover new messages
-
-	// retrieve new messages
-	from := uint32(1)
-	to := mbox.Messages
-	if mbox.Messages > 10 {
-		// We're using unsigned integers here, only substract if the result is > 0
-		from = mbox.Messages - 10
-	}
-	seqset := new(imap.SeqSet)
-	seqset.AddRange(from, to)
-
-	done := make(chan error, 1)
-	//TODO : manage closing
-
-	items := []imap.FetchItem{imap.FetchFlags, imap.FetchUid, "BODY.PEEK[]"}
-	if len(provider.fetchItems) > 0 {
-		items = append(items, provider.fetchItems...)
-	}
-	go func() {
-		imapClient.Fetch(seqset, items, ch)
-	}()
-
-	if err = <-done; err != nil {
-		log.WithError(err).Errorf("[fetchMails] failed")
-		return err
-	}
-
-	return nil
+	return fetch(imapClient, provider, from, to, ch)
 }
 
 // fetchMailbox retrieves all messages found within remote mailbox
+// unaware of synchronization
 func fetchMailbox(ibox *imapBox, imapClient *client.Client, provider Provider, ch chan *imap.Message) (err error) {
 
 	mbox, err := imapClient.Select(ibox.name, true)
@@ -143,29 +138,8 @@ func fetchMailbox(ibox *imapBox, imapClient *client.Client, provider Provider, c
 	from := uint32(1)
 	to := mbox.Messages
 
-	seqset := new(imap.SeqSet)
-	seqset.AddRange(from, to)
+	return fetch(imapClient, provider, from, to, ch)
 
-	log.Infof("begining to fetch %d messages.", to-from+1)
-	done := make(chan error, 1)
-	//TODO : manage closing
-	items := []imap.FetchItem{imap.FetchFlags, imap.FetchUid, "BODY.PEEK[]"}
-	if len(provider.fetchItems) > 0 {
-		items = append(items, provider.fetchItems...)
-	}
-
-	go func() {
-		imapClient.Fetch(seqset, items, ch)
-	}()
-
-	if err = <-done; err != nil {
-		log.WithError(err).Errorf("[fetchMails] failed")
-		return err
-	}
-
-	return nil
-
-	return
 }
 
 // MashalImap build RFC5322 mail from imap.Message,
@@ -189,7 +163,8 @@ func MarshalImap(message *imap.Message, xHeaders ImapFetcherHeaders) (mail *Emai
 	}
 
 	mail = &Email{
-		Raw: mailBuff,
+		Raw:     mailBuff,
+		ImapUid: message.Uid,
 	}
 	return
 }
@@ -239,4 +214,29 @@ func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *RemoteIden
 
 	}
 	return
+}
+
+// from and to must be uid
+// zero values will be replaced by * wildcard
+func fetch(imapClient *client.Client, provider Provider, from, to uint32, ch chan *imap.Message) error {
+	if from != 0 && to != 0 && from > to {
+		close(ch)
+		return fmt.Errorf("[fetch] 'to' param is lower than 'from'")
+	}
+
+	if from != 0 && from == to {
+		log.Info("nothing to fetch")
+		close(ch)
+		return nil
+	}
+	seqset := new(imap.SeqSet)
+	seqset.AddRange(from, to)
+
+	log.Info("beginning to fetch messages.")
+	items := []imap.FetchItem{imap.FetchFlags, imap.FetchUid, "BODY.PEEK[]"}
+	if len(provider.fetchItems) > 0 {
+		items = append(items, provider.fetchItems...)
+	}
+
+	return imapClient.UidFetch(seqset, items, ch)
 }

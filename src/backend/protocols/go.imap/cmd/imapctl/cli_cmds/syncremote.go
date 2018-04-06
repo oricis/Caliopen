@@ -38,7 +38,7 @@ func syncRemote(cmd *cobra.Command, args []string) {
 	}
 	defer nc.Close()
 
-	msg, err := json.Marshal(natsOrder{"syncremote", id})
+	msg, err := json.Marshal(natsOrder{"sync", id})
 	if err != nil {
 		logrus.WithError(err).Fatal("unable to marshal natsOrder")
 	}

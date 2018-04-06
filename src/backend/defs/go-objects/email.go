@@ -20,6 +20,7 @@ type (
 		SmtpMailFrom []string     // from or for the smtp agent
 		SmtpRcpTo    []string     // from or for the smtp agent
 		Raw          bytes.Buffer // raw email (without the Bcc header)
+		ImapUid      uint32       // optional uid fetched from remote imap account
 		//TODO: add more infos from mta
 	}
 
