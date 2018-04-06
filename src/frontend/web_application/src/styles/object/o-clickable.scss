@@ -18,7 +18,7 @@
   }
 
   &:active {
-    color: $co-color__fg__text--high;
+    color: $co-color__contrast__text;
   }
 
   @each $name, $color in $caliopen-palette {
@@ -93,7 +93,7 @@
 
 
 @mixin o-clickable--active-text {
-  color: $co-color__fg__text--high;
+  color: $co-color__contrast__text;
   cursor: default;
 }
 
