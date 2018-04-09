@@ -52,7 +52,7 @@ const configureDevServer = () => {
 
 const config = webpackMerge(
   common,
-  configs.configureStylesheet('client.css'),
+  configs.configureStylesheet(),
   configs.configureAssets(),
   configs.configureVendorSplit(),
   configs.configureHTMLTemplate(),

@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const clientOptions = require('../config/client.default.js');
 
-const configureStylesheet = (filename = 'client_[name]', relativePath = '') => {
+const configureStylesheet = () => {
   return {
     plugins: [
       new StyleLintPlugin({
@@ -18,8 +18,7 @@ const configureStylesheet = (filename = 'client_[name]', relativePath = '') => {
         canPrint: false,
       }),
       new MiniCssExtractPlugin({
-        filename: `${filename}.css`,
-        chunkFilename: '[id].css',
+        filename: 'client.[hash].css',
       }),
     ],
     module: {
