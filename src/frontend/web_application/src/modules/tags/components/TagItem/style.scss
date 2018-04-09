@@ -1,8 +1,8 @@
 @import '../../../../styles/common';
 
 .m-tag-item {
-  margin-left: map-get($co-form__spacing, 'small');
   margin-bottom: map-get($co-form__spacing, 'small');
+  margin-left: map-get($co-form__spacing, 'small');
 
   &:first-child {
     margin-left: 0;

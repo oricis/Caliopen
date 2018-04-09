@@ -22,14 +22,14 @@
   }
 
   &__btn {
+    display: none;
     margin-bottom: 1rem;
     box-shadow: $co-shadow;
-    display: none;
 
     &--principal {
+      display: block;
       margin-bottom: 0;
       font-size: 1em;
-      display: block;
     }
   }
 }

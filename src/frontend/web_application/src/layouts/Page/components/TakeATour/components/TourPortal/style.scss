@@ -3,17 +3,17 @@
 .m-tour-portal {
   display: flex;
   flex-flow: row wrap;
-  color: $co-color__fg__text--lower;
   background: $co-color__fg__back;
+  color: $co-color__fg__text--lower;
 
   &__badge,
   &__close {
     border-bottom: 1px solid $co-color__bg__back;
   }
   &__badge {
+    flex: 1 0;
     padding-left: map-get($co-form__spacing, 'medium');
     line-height: $co-component__height;
-    flex: 1 0;
   }
 
   &__close {
@@ -22,8 +22,8 @@
 
   &__content {
     flex: 1 0 100%;
-    padding-left: map-get($co-form__spacing, 'medium');
     padding-right: map-get($co-form__spacing, 'medium');
+    padding-left: map-get($co-form__spacing, 'medium');
   }
 
   &__controls {

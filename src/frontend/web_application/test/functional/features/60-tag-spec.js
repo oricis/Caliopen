@@ -1,7 +1,7 @@
 const { signin, showSettings } = require('../utils/user-util');
 const { switchApp, home } = require('../utils/navigation');
 
-describe('tag', () => {
+describe('Tag', () => {
   const EC = protractor.ExpectedConditions;
   const subject = "It's okay, Bender. I like cooking too";
 
@@ -9,7 +9,7 @@ describe('tag', () => {
     signin();
   });
 
-  it('manage tags on timeline', () => {
+  it('Manage tags on timeline', () => {
     const tagName = 'Mon tag';
     let messageElement;
 
@@ -41,7 +41,7 @@ describe('tag', () => {
     ;
   });
 
-  it('manage tags for multiple messages on timeline', () => {
+  it('Manage tags for multiple messages on timeline', () => {
     const tagName = 'Mon tag';
     home()
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
@@ -70,7 +70,7 @@ describe('tag', () => {
     ;
   });
 
-  it('manage tags on a message of a discussion', () => {
+  it('Manage tags on a message of a discussion', () => {
     home()
       .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
       .then(() => element(by.cssContainingText('.s-timeline .s-message-item .s-message-item__topic .s-message-item__subject', subject)).click())
@@ -79,7 +79,7 @@ describe('tag', () => {
       .then(() => expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true));
   });
 
-  it('manage tags on a contact', () => {
+  it('Manage tags on a contact', () => {
     switchApp('Contacts')
       .then(() => browser.wait(EC.presenceOf($('.m-contact-list__contact')), 5 * 1000))
       .then(() => element(by.cssContainingText('.m-contact-list__contact', 'Bender Bending Rodriguez')).click())
@@ -89,8 +89,8 @@ describe('tag', () => {
       .then(() => expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true));
   });
 
-  describe('manage tags in settings', () => {
-    it('add and remove a new tag', () => {
+  describe('Manage tags in settings', () => {
+    it('Add and remove a new tag', () => {
       const tagName = 'Mon nouveau tag';
       showSettings('Tags')
         .then(() => browser.wait(EC.presenceOf($('.m-add-tag .m-input-text')), 5 * 1000))
@@ -103,7 +103,7 @@ describe('tag', () => {
       ;
     });
 
-    it('should not allow to create a tag that already exist', () => {
+    it('Should not allow to create a tag that already exist', () => {
       const tagName = 'my_tag';
       showSettings('Tags')
         .then(() => browser.wait(EC.presenceOf($('.m-add-tag .m-input-text')), 5 * 1000))
@@ -122,15 +122,15 @@ describe('tag', () => {
       ;
     });
 
-    it('rename a tag', () => {
-      const tagName = 'Edited ';
-      showSettings('Tags')
-        .then(() => browser.wait(EC.presenceOf($('.m-add-tag .m-input-text')), 5 * 1000))
-        .then(() => element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', 'Inbox')).click())
-        .then(() => element(by.css('.m-tag-input__input .m-input-text')).sendKeys(tagName))
-        .then(() => element(by.css('.m-tag-input .m-button[aria-label=Save]')).click())
-        .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', 'Edited Inbox')), 5 * 1000)))
-      ;
+    it('Rename a tag', async () => {
+      const tagName = ' Edited';
+      await showSettings('Tags');
+      await browser.wait(EC.presenceOf(element(by.css('.m-add-tag .m-input-text'))), 5 * 1000);
+      await element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', 'Inbox')).click();
+      // key chord works on FF not chrome
+      await element(by.css('.m-tag-input__input .m-input-text')).sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), tagName);
+      await element(by.css('.m-tag-input .m-button[aria-label=Save]')).click();
+      await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', tagName)), 5 * 1000));
     });
   });
 });

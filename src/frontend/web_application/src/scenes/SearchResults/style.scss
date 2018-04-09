@@ -10,8 +10,8 @@
     @include flex-grid-column(12);
     padding-top: $co-component__spacing;
     padding-bottom: $co-component__spacing;
-    color: $co-color__fg__text--low;
     background: $co-color__bg__back--high;
+    color: $co-color__fg__text--low;
     font-weight: 600;
   }
 

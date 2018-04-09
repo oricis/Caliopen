@@ -7,6 +7,7 @@ const PUBLIC_PATH = '/assets/';
 const isDev = process.env.NODE_ENV === 'development';
 
 const base = {
+  target: 'web',
   entry: {
     app: [
       path.join(__dirname, '../src/index.jsx'),
@@ -51,7 +52,7 @@ const configureDevServer = () => {
 
 const config = webpackMerge(
   common,
-  configs.configureStylesheet('client.css'),
+  configs.configureStylesheet(),
   configs.configureAssets(),
   configs.configureVendorSplit(),
   configs.configureHTMLTemplate(),

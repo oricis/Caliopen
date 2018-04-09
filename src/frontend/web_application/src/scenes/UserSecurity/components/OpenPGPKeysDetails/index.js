@@ -7,7 +7,7 @@ import * as openPGPKeychain from '../../../../store/modules/openpgp-keychain';
 const privateKeysSelector = createSelector(
   state => state.openPGPKeychain,
   openPGPKeychainState => openPGPKeychainState.privateKeys
-      .map(fingerprint => openPGPKeychainState.keychainByFingerprint[fingerprint]),
+    .map(fingerprint => openPGPKeychainState.keychainByFingerprint[fingerprint]),
 );
 
 const importFormSelector = createSelector(

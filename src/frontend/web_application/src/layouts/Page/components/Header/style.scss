@@ -21,10 +21,10 @@ $l-header__margin: ($co-margin / 2) !default;
 
   &__brand {
     @include flex-grid-column;
+    display: none;
     height: $l-header__height;
     padding: 0 $co-margin;
     line-height: $l-header__height;
-    display: none;
   }
 
   &__menu-icon {
@@ -46,11 +46,11 @@ $l-header__margin: ($co-margin / 2) !default;
   }
 
   &__search {
+    flex: 0 1;
     height: $l-header__height;
-    line-height: $l-header__height;
     margin-left: auto;
     padding-right: $co-component__spacing;
-    flex: 0 1;
+    line-height: $l-header__height;
   }
 
   &__toggle-nav,
