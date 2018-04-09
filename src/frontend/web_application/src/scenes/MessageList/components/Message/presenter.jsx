@@ -33,6 +33,11 @@ class Message extends Component {
 
   state = {}
 
+  onVisibilityChange = (isVisible) => {
+    const { message, onMessageRead } = this.props;
+    if (isVisible && message.is_unread) { onMessageRead({ message }); }
+  }
+
   handleTagsChange = async ({ tags }) => {
     const { updateTagCollection, i18n, message: entity } = this.props;
 
@@ -179,9 +184,8 @@ class Message extends Component {
             }
           </header>
 
-
           {this.renderMessageContent()}
-          <VisibilitySensor onChange={this.onChange} scrollCheck scrollThrottle={100} />
+          <VisibilitySensor onChange={this.onVisibilityChange} scrollCheck scrollThrottle={100} />
 
           <footer className="m-message__footer">
             <MessageActionsContainer
