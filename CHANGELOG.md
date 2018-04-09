@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- prevent button background color to change on hover when disabled
 - The draft delete button was always disabled even when draft was saved
 
 ## [0.9.1] 2018-04-05
