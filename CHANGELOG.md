@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - The draft delete button was always disabled even when draft was saved
+- The max file size was not rendered (attachments/contacts..)
 
 ## [0.9.1] 2018-04-05
 
