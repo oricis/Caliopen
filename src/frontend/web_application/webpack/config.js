@@ -128,7 +128,13 @@ const configureHTMLTemplate = () => ({
       filename: path.resolve(__dirname, '../dist/server/template.html'),
       template: path.resolve(__dirname, '../template/index.ejs'),
       alwaysWriteToDisk: true,
-      chunksSortMode: 'none',
+      chunksSortMode: (chunk1, chunk2) => {
+        const order = ['manifest', 'vendor', 'app'];
+        const order1 = order.indexOf(chunk1.names[0]);
+        const order2 = order.indexOf(chunk2.names[0]);
+
+        return order1 - order2;
+      },
     }),
     new HtmlWebpackHarddiskPlugin(),
   ],
