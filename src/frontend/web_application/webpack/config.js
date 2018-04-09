@@ -116,6 +116,11 @@ const configureVendorSplit = () => ({
       'xregexp',
     ],
   },
+  optimization: {
+    runtimeChunk: {
+      name: 'manifest',
+    },
+  },
 });
 
 const configureHTMLTemplate = () => ({
@@ -124,6 +129,7 @@ const configureHTMLTemplate = () => ({
       filename: path.resolve(__dirname, '../dist/server/template.html'),
       template: path.resolve(__dirname, '../template/index.ejs'),
       alwaysWriteToDisk: true,
+      chunksSortMode: 'none',
     }),
     new HtmlWebpackHarddiskPlugin(),
   ],
