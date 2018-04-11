@@ -29,8 +29,8 @@ type (
 	}
 
 	EmailBrokerConnectors struct {
-		IncomingSmtp  chan *SmtpEmail
-		OutcomingSmtp chan *SmtpEmail
+		Ingress chan *SmtpEmail
+		Egress  chan *SmtpEmail
 	}
 
 	SmtpEmail struct {
@@ -78,16 +78,14 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 		b, e := store.InitializeCassandraBackend(c)
 		if e != nil {
 			err = e
-			log.WithError(err).Warnf("EmailBroker : initalization of %s backend failed", conf.StoreName)
+			log.WithError(err).Warnf("[EmailBroker] initalization of %s backend failed", conf.StoreName)
 			return
 		}
 
 		broker.Store = backends.LDAStore(b) // type conversion to LDA interface
-	case "BOBcassandra":
-	// NotImplemented… yet ! ;-)
 	default:
-		log.Warn("EmailBroker : unknown store backend: %s", conf.StoreName)
-		err = errors.New("EmailBroker : unknown store backend")
+		log.Warnf("[EmailBroker] unknown store backend: %s", conf.StoreName)
+		err = errors.New("[EmailBroker] unknown store backend")
 		return
 	}
 
@@ -99,7 +97,7 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 		i, e := index.InitializeElasticSearchIndex(c)
 		if e != nil {
 			err = e
-			log.WithError(err).Warnf("EmailBroker : initalization of %s backend failed", conf.IndexName)
+			log.WithError(err).Warnf("[EmailBroker] initalization of %s backend failed", conf.IndexName)
 			return
 		}
 
@@ -109,29 +107,41 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 	broker.NatsConn, e = nats.Connect(conf.NatsURL)
 	if e != nil {
 		err = e
-		log.WithError(err).Warn("EmailBroker : initalization of NATS connexion failed")
+		log.WithError(err).Warn("[EmailBroker] initalization of NATS connexion failed")
 		return
 	}
-	if conf.BrokerType == "smtp" {
-		broker.Connectors.IncomingSmtp = make(chan *SmtpEmail)
-		broker.Connectors.OutcomingSmtp = make(chan *SmtpEmail)
+	switch conf.BrokerType {
+	case "smtp":
+		broker.Connectors.Ingress = make(chan *SmtpEmail)
+		broker.Connectors.Egress = make(chan *SmtpEmail)
 
-		e = broker.startIncomingSmtpAgent()
+		e = broker.startIncomingSmtpAgents()
 		if e != nil {
 			err = e
-			log.WithError(err).Warn("EmailBroker : failed to start incoming smtp agent")
+			log.WithError(err).Warn("[EmailBroker] failed to start incoming smtp agent(s)")
 			return
 		}
 		for i := 0; i < conf.NatsListeners; i++ {
-			e = broker.startOutcomingSmtpAgent()
+			e = broker.startOutcomingSmtpAgents()
 			if e != nil {
 				err = e
-				log.WithError(err).Warn("EmailBroker : failed to start outcoming smtp agent")
+				log.WithError(err).Warn("[EmailBroker] failed to start outcoming smtp agent(s)")
 				return
 			}
 		}
-
 		connectors = broker.Connectors
+	case "imap":
+		broker.Connectors.Ingress = make(chan *SmtpEmail)
+		e = broker.startImapAgents()
+		if e != nil {
+			err = e
+			log.WithError(err).Warn("[EmailBroker] failed to start imap agent(s)")
+			return
+		}
+		connectors = broker.Connectors
+	default:
+		log.Errorf("[EmailBroker] initialize unknown broker type : <%s>", conf.BrokerType)
+		return
 	}
 	caliopenConfig := CaliopenConfig{
 		NotifierConfig: conf.NotifierConfig,

@@ -33,6 +33,52 @@
 			"revisionTime": "2017-10-23T17:51:54Z"
 		},
 		{
+			"checksumSHA1": "kEy5i/jCIjemJK/sytEXjV5qWl4=",
+			"path": "github.com/emersion/go-imap",
+			"revision": "b63c7c7011cba491f40dcc43026cc30e2fbdf337",
+			"revisionTime": "2018-03-19T18:19:01Z",
+			"version": "v1",
+			"versionExact": "v1"
+		},
+		{
+			"checksumSHA1": "m1UQ9TN1mpTio7EoixtE84USirA=",
+			"path": "github.com/emersion/go-imap/client",
+			"revision": "b63c7c7011cba491f40dcc43026cc30e2fbdf337",
+			"revisionTime": "2018-03-19T18:19:01Z",
+			"version": "v1",
+			"versionExact": "v1"
+		},
+		{
+			"checksumSHA1": "6erZwD6QaIdhAdgasbTiatDgd8A=",
+			"path": "github.com/emersion/go-imap/commands",
+			"revision": "b63c7c7011cba491f40dcc43026cc30e2fbdf337",
+			"revisionTime": "2018-03-19T18:19:01Z",
+			"version": "v1",
+			"versionExact": "v1"
+		},
+		{
+			"checksumSHA1": "XNQ6ZbE8XFjdjg/M/iRrOu3j6h8=",
+			"path": "github.com/emersion/go-imap/responses",
+			"revision": "b63c7c7011cba491f40dcc43026cc30e2fbdf337",
+			"revisionTime": "2018-03-19T18:19:01Z",
+			"version": "v1",
+			"versionExact": "v1"
+		},
+		{
+			"checksumSHA1": "1K8gxGND9yVG8p+ZQdxVczy6x/w=",
+			"path": "github.com/emersion/go-imap/utf7",
+			"revision": "b63c7c7011cba491f40dcc43026cc30e2fbdf337",
+			"revisionTime": "2018-03-19T18:19:01Z",
+			"version": "v1",
+			"versionExact": "v1"
+		},
+		{
+			"checksumSHA1": "VGdrJ5SV27dfTYVafzkH03uotLA=",
+			"path": "github.com/emersion/go-sasl",
+			"revision": "7e096a0a6197b89989e8cc31016daa67c8c62051",
+			"revisionTime": "2016-11-16T18:30:48Z"
+		},
+		{
 			"checksumSHA1": "x2Km0Qy3WgJJnV19Zv25VwTJcBM=",
 			"path": "github.com/fsnotify/fsnotify",
 			"revision": "4da3e2cfbabc9f751898f250b49f2439785783a1",
@@ -447,10 +493,10 @@
 			"revisionTime": "2016-11-07T13:59:01Z"
 		},
 		{
-			"checksumSHA1": "WD1vH1wVNKcnnFE6tbTxSYrr+1o=",
+			"checksumSHA1": "11S7rNUzdp9JDgZOwfw00/MR2+4=",
 			"path": "github.com/nats-io/go-nats",
-			"revision": "5de724c34e492d986d0c7cb95ac7ba38935dacc6",
-			"revisionTime": "2017-05-02T05:17:01Z"
+			"revision": "2485387d6ede89c1c8c3445cd1935fd41a2e9ee9",
+			"revisionTime": "2018-03-17T20:41:12Z"
 		},
 		{
 			"checksumSHA1": "Q2c9uTEIGhSIddv5pntYdFNtUdk=",
@@ -579,10 +625,10 @@
 			"revisionTime": "2017-04-13T08:50:28Z"
 		},
 		{
-			"checksumSHA1": "OBjQVzoYfwTeNh4259tnPIhCBxA=",
+			"checksumSHA1": "12g3NDgLPvSJcPKEKzU42m6GWVI=",
 			"path": "github.com/spf13/cobra",
-			"revision": "4061f41c9aacfb1d66b941fefab8a3e900964217",
-			"revisionTime": "2017-05-05T06:08:38Z"
+			"revision": "a1f051bc3eba734da4772d60e2d677f47cf93ef4",
+			"revisionTime": "2018-03-21T14:39:34Z"
 		},
 		{
 			"checksumSHA1": "9pkkhgKp3mwSreiML3plQlQYdLQ=",

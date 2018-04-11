@@ -6,7 +6,9 @@ package objects
 
 import (
 	"bytes"
+	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
+	"time"
 )
 
 type (
@@ -48,6 +50,17 @@ type (
 		Label      string `json:"label,omitempty"`      // name of contact or <display-name> in case of an address returned from participants lookup, if any
 		Protocol   string `json:"protocol,omitempty"`   // email, IRC…
 		Source     string `json:"source,omitempty"`     // "participant" or "contact", ie from where this suggestion came from
+	}
+
+	//struct to store external user accounts
+	RemoteIdentity struct {
+		DisplayName string            `cql:"display_name"       json:"display_name"`
+		Identifier  string            `cql:"identifier"         json:"identifier"`
+		Infos       map[string]string `cql:"infos"              json:"infos"`
+		LastCheck   time.Time         `cql:"last_check"         json:"last_check"`
+		Status      string            `cql:"status"             json:"status"` // for example : active, inactive, deleted
+		Type        string            `cql:"type"               json:"type"`   // for example : imap, twitter…
+		UserId      UUID              `cql:"user_id"            json:"user_id"`
 	}
 )
 
@@ -92,6 +105,46 @@ func (si *SocialIdentity) MarshallNew(...interface{}) {
 
 func (i *Identity) MarshallNew(...interface{}) {
 	//nothing to enforce
+}
+
+// SetDefaultInfos fill Infos properties map with default keys and values
+func (ri *RemoteIdentity) SetDefaultInfos() {
+	(*ri).Infos = map[string]string{
+		"lastseenuid": "",
+		"lastsync":    "", // RFC3339 date string
+		"password":    "", // credentials, SHOULD NOT BE HERE !! TODO.
+		"server":      "", // server hostname[|port]
+		"uidvalidity": "", // uidvalidity to invalidate data if needed (see RFC4549#section-4.1)
+		"username":    "", // credentials
+	}
+}
+
+func (ri *RemoteIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
+	if dn, ok := input["display_name"].(string); ok {
+		ri.DisplayName = dn
+	}
+	if identifier, ok := input["identifier"].(string); ok {
+		ri.Identifier = identifier
+	}
+	if infos, ok := input["infos"].(map[string]string); ok {
+		ri.Infos = make(map[string]string)
+		for k, v := range infos {
+			ri.Infos[k] = v
+		}
+	}
+	if lc, ok := input["last_check"].(time.Time); ok {
+		ri.LastCheck = lc
+	}
+	if status, ok := input["status"].(string); ok {
+		ri.Status = status
+	}
+	if t, ok := input["type"].(string); ok {
+		ri.Type = t
+	}
+	if userid, ok := input["user_id"].(gocql.UUID); ok {
+		ri.UserId.UnmarshalBinary(userid.Bytes())
+	}
+	return nil
 }
 
 // Sort interface implementations
