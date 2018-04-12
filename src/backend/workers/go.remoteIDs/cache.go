@@ -8,6 +8,8 @@ package go_remoteIDs
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/Sirupsen/logrus"
+	"strconv"
 )
 
 type cacheEntry struct {
@@ -20,30 +22,45 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 	added = make(map[string]bool)
 	removed = make(map[string]bool)
 	updated = make(map[string]bool)
-	fetched := make(map[string]bool)
+	active := make(map[string]bool)
 	remotes, err := p.Store.RetrieveAllRemotes()
 	if err != nil {
-		//TODO
+		logrus.WithError(err).Warn("[updateCache] failed to retrieve remote identities")
+		return
 	}
 
 	for remote := range remotes {
-		idkey := remote.UserId.String() + remote.Identifier
-		fetched[idkey] = true
-		if entry, ok := p.Cache[idkey]; ok {
-			//TODO : check if pollinterval has changed
-			entry.pollInterval = entry.pollInterval
-		} else {
-			p.Cache[idkey] = cacheEntry{
-				iDkey:        idkey,
-				pollInterval: 15, //TODO
-				remoteID:     *remote,
+		if remote.Status == "active" {
+			idkey := remote.UserId.String() + remote.Identifier
+			active[idkey] = true
+			if entry, ok := p.Cache[idkey]; ok {
+				//check if pollinterval has changed
+				pollInterval, err := strconv.Atoi(remote.Infos["pollinterval"])
+				if err != nil {
+					// do not resign, take a default value instead
+					pollInterval = 15
+				}
+				if entry.pollInterval != uint16(pollInterval) {
+					entry.pollInterval = uint16(pollInterval)
+					updated[idkey] = true
+				}
+			} else {
+				pollInterval, err := strconv.Atoi(remote.Infos["pollinterval"])
+				if err != nil {
+					// do not resign, take a default value instead
+					pollInterval = 15
+				}
+				p.Cache[idkey] = cacheEntry{
+					iDkey:        idkey,
+					pollInterval: uint16(pollInterval),
+					remoteID:     *remote,
+				}
+				added[idkey] = true
 			}
-			added[idkey] = true
 		}
 	}
 	for key, _ := range p.Cache {
-		if _, ok := fetched[key]; !ok {
-			delete(p.Cache, key)
+		if _, ok := active[key]; !ok {
 			removed[key] = true
 		}
 	}

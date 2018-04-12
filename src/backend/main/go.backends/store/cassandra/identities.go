@@ -108,7 +108,6 @@ func (cb *CassandraBackend) RetrieveAllRemotes() (<-chan *RemoteIdentity, error)
 			rId := new(RemoteIdentity)
 			rId.SetDefaultInfos()
 			rId.UnmarshalCQLMap(remoteID)
-			logrus.Info(remoteID)
 			select {
 			case ch <- rId:
 			case <-time.After(cb.Timeout):

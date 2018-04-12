@@ -93,6 +93,7 @@ func (p *Poller) poll() {
 		// TODO
 	}
 	// 2. iterate over cache to add/remove jobs to MainCron
+
 	log.Info(added, removed, updated)
 	log.Info(p.Cache)
 }
