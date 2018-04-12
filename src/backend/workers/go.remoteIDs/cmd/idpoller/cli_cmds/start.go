@@ -8,6 +8,7 @@ package cmd
 
 import (
 	"fmt"
+	poller "github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs"
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"os"
@@ -18,6 +19,7 @@ import (
 var (
 	pidFile       string
 	signalChannel chan os.Signal // for trapping SIG_HUP
+	cmdConfig     poller.PollerConfig
 	startCmd      = &cobra.Command{
 		Use:   "start",
 		Short: "Starts remote identities poller daemon",
@@ -35,26 +37,26 @@ func init() {
 
 	RootCmd.AddCommand(startCmd)
 	signalChannel = make(chan os.Signal, 1)
-	cmdConfig = CmdConfig{}
+	config = poller.PollerConfig{}
 }
 
-func sigHandler() {
+func sigHandler(p *poller.Poller) {
 	// handle SIGHUP for reloading the configuration while running
 	signal.Notify(signalChannel, syscall.SIGHUP, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGKILL)
 
 	for sig := range signalChannel {
 
 		if sig == syscall.SIGHUP {
-			err := readConfig(&cmdConfig)
+			err := readConfig(&config)
 			if err != nil {
 				log.WithError(err).Error("Error while ReadConfig (reload)")
 			} else {
 				log.Info("Configuration is reloaded")
 			}
-			// TODO: reinitialize
+			// TODO: reinitialize poller
 		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT {
 			log.Info("Shutdown signal caught")
-
+			p.Stop()
 			log.Info("Shutdown completed, exiting")
 			os.Exit(0)
 		} else {
@@ -66,7 +68,6 @@ func sigHandler() {
 func start(cmd *cobra.Command, args []string) {
 
 	err := readConfig(&cmdConfig)
-	log.Infof("%+v", cmdConfig)
 	if err != nil {
 		log.WithError(err).Fatal("Error while reading config")
 	}
@@ -84,4 +85,12 @@ func start(cmd *cobra.Command, args []string) {
 		}
 	}
 
+	poll, err := poller.NewPoller(cmdConfig)
+	if err != nil {
+		log.WithError(err).Fatal("can't start poller")
+	}
+
+	go poll.Start()
+	log.Info("poller started")
+	sigHandler(poll)
 }

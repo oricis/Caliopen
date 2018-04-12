@@ -13,14 +13,14 @@
 package cmd
 
 import (
-	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs"
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var (
-	cmdConfig  CmdConfig
+	config     PollerConfig
 	configFile string
 	configPath string
 	verbose    bool
@@ -32,16 +32,6 @@ var (
 		Run:   nil,
 	}
 )
-
-type CmdConfig struct {
-	ScanInterval uint16            `mapstructure:"scan_interval"`
-	RemoteTypes  []string          `mapstructure:"remote_types"`
-	StoreName    string            `mapstructure:"store_name"`
-	StoreConfig  StoreConfig       `mapstructure:"store_settings"`
-	NatsUrl      string            `mapstructure:"nats_url"`
-	NatsQueues   map[string]string `mapstructure:"nats_queues"`
-	NatsTopics   map[string]string `mapstructure:"nats_topics"`
-}
 
 const __version__ = "0.1.0"
 
@@ -57,7 +47,7 @@ func init() {
 		if len(args) == 0 {
 			cmd.Help()
 		}
-		readConfig(&cmdConfig)
+		readConfig(&config)
 	}
 	RootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		if verbose {
@@ -79,7 +69,7 @@ var versionCmd = &cobra.Command{
 }
 
 // ReadConfig which should be called at startup, or when a SIG_HUP is caught
-func readConfig(config *CmdConfig) error {
+func readConfig(config *PollerConfig) error {
 	// load in the main config. Reading from YAML, TOML, JSON, HCL and Java properties config files
 	v := viper.New()
 	v.SetConfigName(configFile)                           // name of config file (without extension)
