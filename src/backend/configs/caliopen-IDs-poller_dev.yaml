@@ -11,7 +11,5 @@ store_settings:
   consistency_level: 1
 #messaging system
 nats_url: nats://nats.dev.caliopen.org:4222
-nats_queues:                                    # NATS group queue for each kind of remote identities
-  imap: IMAPworkers
-nats_topics:                                    # NATS topic to listen to actions to execute
+nats_topics:                                    # NATS topics for each kind of remote identities
   imap: IMAPfetcher

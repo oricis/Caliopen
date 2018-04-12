@@ -83,7 +83,6 @@ func readConfig(config *PollerConfig) error {
 		return err
 	}
 	err = v.Unmarshal(config)
-	config.NatsQueues = v.GetStringMapString("nats_queues")
 	if err != nil {
 		log.WithError(err).Infof("Could not parse config file: <%s>", configFile)
 		return err

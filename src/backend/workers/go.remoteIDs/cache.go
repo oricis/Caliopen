@@ -9,11 +9,13 @@ package go_remoteIDs
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/Sirupsen/logrus"
+	"gopkg.in/robfig/cron.v2"
 	"strconv"
 )
 
 type cacheEntry struct {
 	iDkey        string
+	cronId       cron.EntryID
 	pollInterval uint16
 	remoteID     RemoteIdentity
 }
@@ -23,6 +25,7 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 	removed = make(map[string]bool)
 	updated = make(map[string]bool)
 	active := make(map[string]bool)
+	const defaultInterval = 15
 	remotes, err := p.Store.RetrieveAllRemotes()
 	if err != nil {
 		logrus.WithError(err).Warn("[updateCache] failed to retrieve remote identities")
@@ -31,6 +34,7 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 
 	for remote := range remotes {
 		if remote.Status == "active" {
+			//TODO: filter identities by p.Config.RemoteTypes
 			idkey := remote.UserId.String() + remote.Identifier
 			active[idkey] = true
 			if entry, ok := p.Cache[idkey]; ok {
@@ -38,7 +42,7 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 				pollInterval, err := strconv.Atoi(remote.Infos["pollinterval"])
 				if err != nil {
 					// do not resign, take a default value instead
-					pollInterval = 15
+					pollInterval = defaultInterval
 				}
 				if entry.pollInterval != uint16(pollInterval) {
 					entry.pollInterval = uint16(pollInterval)
@@ -48,7 +52,7 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 				pollInterval, err := strconv.Atoi(remote.Infos["pollinterval"])
 				if err != nil {
 					// do not resign, take a default value instead
-					pollInterval = 15
+					pollInterval = defaultInterval
 				}
 				p.Cache[idkey] = cacheEntry{
 					iDkey:        idkey,

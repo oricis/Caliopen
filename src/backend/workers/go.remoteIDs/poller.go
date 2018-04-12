@@ -81,19 +81,27 @@ func (p *Poller) Start() error {
 func (p *Poller) Stop() {
 	//TODO : iterate over running jobs ?
 	p.MainCron.Stop()
+	p.NatsConn.Close()
 	p.Store.Close()
 }
 
 func (p *Poller) poll() {
 
-	log.Info("will poll")
+	log.Info("updating poll crons")
 	// 1. update cache with 'active' remote identities found in db
 	added, removed, updated, err := p.updateCache()
 	if err != nil {
-		// TODO
+		log.WithError(err).Warn("[poll] failed to update cache")
+		return
 	}
-	// 2. iterate over cache to add/remove jobs to MainCron
-
-	log.Info(added, removed, updated)
-	log.Info(p.Cache)
+	// 2. iterate to add/remove jobs to MainCron
+	for idkey := range added {
+		p.AddJobFor(idkey)
+	}
+	for idkey := range removed {
+		p.RemoveJobFor(idkey)
+	}
+	for idkey := range updated {
+		p.UpdateJobFor(idkey)
+	}
 }
