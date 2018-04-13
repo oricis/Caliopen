@@ -10,13 +10,12 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/Sirupsen/logrus"
 	"gopkg.in/robfig/cron.v2"
-	"strconv"
 )
 
 type cacheEntry struct {
 	iDkey        string
 	cronId       cron.EntryID
-	pollInterval uint16
+	pollInterval string
 	remoteID     RemoteIdentity
 }
 
@@ -25,7 +24,8 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 	removed = make(map[string]bool)
 	updated = make(map[string]bool)
 	active := make(map[string]bool)
-	const defaultInterval = 15
+	const defaultInterval = "15"
+
 	remotes, err := p.Store.RetrieveAllRemotes()
 	if err != nil {
 		logrus.WithError(err).Warn("[updateCache] failed to retrieve remote identities")
@@ -33,30 +33,32 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 	}
 
 	for remote := range remotes {
-		if remote.Status == "active" {
-			//TODO: filter identities by p.Config.RemoteTypes
+		if p.statusTypeOK(remote) {
 			idkey := remote.UserId.String() + remote.Identifier
 			active[idkey] = true
 			if entry, ok := p.Cache[idkey]; ok {
 				//check if pollinterval has changed
-				pollInterval, err := strconv.Atoi(remote.Infos["pollinterval"])
-				if err != nil {
+				var pollInterval string
+				var ok bool
+				if pollInterval, ok = remote.Infos["pollinterval"]; !ok || pollInterval == "" {
 					// do not resign, take a default value instead
 					pollInterval = defaultInterval
 				}
-				if entry.pollInterval != uint16(pollInterval) {
-					entry.pollInterval = uint16(pollInterval)
+				if entry.pollInterval != pollInterval {
+					entry.pollInterval = pollInterval
 					updated[idkey] = true
 				}
+				p.Cache[idkey] = entry
 			} else {
-				pollInterval, err := strconv.Atoi(remote.Infos["pollinterval"])
-				if err != nil {
+				var pollInterval string
+				var ok bool
+				if pollInterval, ok = remote.Infos["pollinterval"]; !ok || pollInterval == "" {
 					// do not resign, take a default value instead
 					pollInterval = defaultInterval
 				}
 				p.Cache[idkey] = cacheEntry{
 					iDkey:        idkey,
-					pollInterval: uint16(pollInterval),
+					pollInterval: pollInterval,
 					remoteID:     *remote,
 				}
 				added[idkey] = true
@@ -69,4 +71,17 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 		}
 	}
 	return
+}
+
+// statusTypeOK checks if remote identity is 'active' and its type is within poller's scope
+func (p *Poller) statusTypeOK(remote *RemoteIdentity) bool {
+	if remote.Status != "active" {
+		return false
+	}
+	for _, t := range p.Config.RemoteTypes {
+		if t == remote.Type {
+			return true
+		}
+	}
+	return false
 }

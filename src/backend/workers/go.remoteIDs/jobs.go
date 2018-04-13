@@ -10,19 +10,12 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-const defaultInterval = "15"
-
 // AddJobFor parses remote identity data to build appropriate job and adds it to MainCron
 func (p *Poller) AddJobFor(idkey string) (err error) {
 	if entry, ok := p.Cache[idkey]; ok {
 		switch entry.remoteID.Type {
 		case "imap":
-			var pollInterval string
-			var ok bool
-			if pollInterval, ok = entry.remoteID.Infos["pollinterval"]; !ok || pollInterval == "" {
-				pollInterval = defaultInterval
-			}
-			cronStr := "@every " + pollInterval + "m"
+			cronStr := "@every " + entry.pollInterval + "m"
 			entry.cronId, err = p.MainCron.AddJob(cronStr, imapJob{
 				remoteId:  &entry.remoteID,
 				poller:    p,
@@ -30,7 +23,9 @@ func (p *Poller) AddJobFor(idkey string) (err error) {
 			})
 			if err != nil {
 				log.WithError(err).Warn("[AddJobFor] failed to add job to MainCron")
+				return
 			}
+			p.Cache[idkey] = entry
 		default:
 			log.WithError(err).Warnf("[AddJobFor] unknow Remote Identity type <%s>", entry.remoteID.Type)
 			return
@@ -42,9 +37,10 @@ func (p *Poller) AddJobFor(idkey string) (err error) {
 	}
 }
 
+// RemoveJobFor removes remote identity's job from being run in the future
 func (p *Poller) RemoveJobFor(idkey string) (err error) {
 	if entry, ok := p.Cache[idkey]; ok {
-		log.Info(entry)
+		p.MainCron.Remove(entry.cronId)
 		return
 	} else {
 		log.WithError(err).Warnf("[RemoveJobFor] failed to retrieve cache key <%s>", idkey)
@@ -53,13 +49,11 @@ func (p *Poller) RemoveJobFor(idkey string) (err error) {
 	return
 }
 
+// UpdateJobFor removes remote identity's job and re-schedule it with new pollinterval
 func (p *Poller) UpdateJobFor(idkey string) (err error) {
-	if entry, ok := p.Cache[idkey]; ok {
-		log.Info(entry)
-		return
-	} else {
-		log.WithError(err).Warnf("[UpdateJobFor] failed to retrieve cache key <%s>", idkey)
+	err = p.RemoveJobFor(idkey)
+	if err != nil {
 		return
 	}
-	return
+	return p.AddJobFor(idkey)
 }

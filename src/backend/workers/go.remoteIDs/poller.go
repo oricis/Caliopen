@@ -99,9 +99,16 @@ func (p *Poller) poll() {
 		p.AddJobFor(idkey)
 	}
 	for idkey := range removed {
-		p.RemoveJobFor(idkey)
+		err := p.RemoveJobFor(idkey)
+		// removes identity from our cache
+		if err == nil {
+			delete(p.Cache, idkey)
+		}
 	}
 	for idkey := range updated {
 		p.UpdateJobFor(idkey)
 	}
+
+	log.Infof("%d jobs added, %d jobs removed, %d jobs updated.\n           => %d jobs scheduled in cron table.",
+		len(added), len(removed), len(updated), len(p.MainCron.Entries()))
 }
