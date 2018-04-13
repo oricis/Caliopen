@@ -8,6 +8,7 @@ package cmd
 
 import (
 	"encoding/json"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
@@ -38,7 +39,15 @@ func syncRemote(cmd *cobra.Command, args []string) {
 	}
 	defer nc.Close()
 
-	msg, err := json.Marshal(natsOrder{"sync", id})
+	msg, err := json.Marshal(IMAPfetchOrder{
+		Order:      "sync",
+		UserId:     id.UserId,
+		Identifier: id.Identifier,
+		Server:     id.Server,
+		Mailbox:    id.Mailbox,
+		Login:      id.Login,
+		Password:   id.Password,
+	})
 	if err != nil {
 		logrus.WithError(err).Fatal("unable to marshal natsOrder")
 	}

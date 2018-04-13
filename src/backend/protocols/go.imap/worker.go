@@ -9,6 +9,7 @@ package imap_worker
 import (
 	"encoding/json"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
@@ -21,7 +22,7 @@ type Worker struct {
 	Lda      *Lda
 	NatsConn *nats.Conn
 	NatsSub  *nats.Subscription
-	Store    *store.CassandraBackend
+	Store    backends.IdentityStorage
 }
 
 // NewWorker loads config, checks for errors then returns a worker ready to start.

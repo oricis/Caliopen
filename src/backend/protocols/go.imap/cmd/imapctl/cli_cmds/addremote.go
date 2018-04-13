@@ -26,13 +26,14 @@ var (
 )
 
 type remoteId struct {
-	DisplayName string
-	Identifier  string
-	Login       string
-	Mailbox     string
-	Password    string
-	Server      string
-	UserId      string
+	DisplayName  string
+	Identifier   string
+	Login        string
+	Mailbox      string
+	Password     string
+	PollInterval string
+	Server       string
+	UserId       string
 }
 
 func init() {
@@ -54,6 +55,7 @@ func init() {
 func addRemote(cmd *cobra.Command, args []string) {
 	var is backends.IdentityStorage
 	var rId RemoteIdentity
+	var err error
 	switch cmdConfig.StoreName {
 	case "cassandra":
 		c := store.CassandraConfig{
@@ -63,11 +65,10 @@ func addRemote(cmd *cobra.Command, args []string) {
 			SizeLimit:   cmdConfig.StoreConfig.SizeLimit,
 		}
 
-		storage, err := store.InitializeCassandraBackend(c)
+		is, err = store.InitializeCassandraBackend(c)
 		if err != nil {
 			log.WithError(err).Fatalf("[addRemote] initalization of %s backend failed", cmdConfig.StoreName)
 		}
-		is = backends.IdentityStorage(storage) // interface casting
 
 	}
 	if id.Identifier == "" {
@@ -79,6 +80,7 @@ func addRemote(cmd *cobra.Command, args []string) {
 	rId = RemoteIdentity{
 		DisplayName: id.DisplayName,
 		Identifier:  id.Identifier,
+		Status:      "active",
 		Type:        "imap",
 		UserId:      UUID(uuid.FromStringOrNil(id.UserId)),
 	}
@@ -87,7 +89,7 @@ func addRemote(cmd *cobra.Command, args []string) {
 	rId.Infos["server"] = id.Server
 	rId.Infos["username"] = id.Login
 
-	err := is.CreateRemoteIdentity(&rId)
+	err = is.CreateRemoteIdentity(&rId)
 	if err != nil {
 		log.WithError(err).Warn("[addRemote] storage failed to store remote identity")
 	} else {

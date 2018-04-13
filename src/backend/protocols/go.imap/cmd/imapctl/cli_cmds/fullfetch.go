@@ -8,6 +8,7 @@ package cmd
 
 import (
 	"encoding/json"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
@@ -20,11 +21,6 @@ var (
 		Run:   fullFetch,
 	}
 )
-
-type natsOrder struct {
-	Order string
-	remoteId
-}
 
 func init() {
 	fullFetchCmd.Flags().StringVarP(&id.UserId, "userid", "u", "", "user account uuid in which mails will be imported (required)")
@@ -48,7 +44,15 @@ func fullFetch(cmd *cobra.Command, args []string) {
 	}
 	defer nc.Close()
 
-	msg, err := json.Marshal(natsOrder{"fullfetch", id})
+	msg, err := json.Marshal(IMAPfetchOrder{
+		Order:      "fullfetch",
+		UserId:     id.UserId,
+		Identifier: id.Identifier,
+		Server:     id.Server,
+		Mailbox:    id.Mailbox,
+		Login:      id.Login,
+		Password:   id.Password,
+	})
 	if err != nil {
 		logrus.WithError(err).Fatal("unable to marshal natsOrder")
 	}
