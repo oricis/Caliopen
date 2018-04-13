@@ -3,38 +3,26 @@ const { home } = require('../utils/navigation');
 
 describe('Create new contact', () => {
   const EC = protractor.ExpectedConditions;
-  const locale = 'en';
-  const __ = key => ({
-    fr: {
-      'new contact': 'Créer un contact',
-      save: 'Valider',
-      compose: 'Écrire',
-    },
-    en: {
-      'new contact': 'Create a contact',
-      save: 'Validate',
-      compose: 'Compose',
-    },
-  }[locale][key]);
 
-  beforeEach(() => {
-    userUtil.signin();
+  beforeAll(async () => {
+    await userUtil.signin();
   });
 
-  it('creates a new contact', () => {
-    // const text1 = 'Compose creates a new draft';
-    const createButtonSelector = by.cssContainingText('.m-call-to-action__btn', __('new contact'));
+  beforeEach(async () => {
+    await home();
+  });
+
+  it('Creates a new contact', async () => {
+    const createButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Create a contact');
     const name = 'Foobar';
 
-    home()
-      // XXX: click .btn--principal to force :hover callback actions
-      .then(() => element(by.css('.m-call-to-action__btn--principal')).click())
-      .then(() => element(createButtonSelector).click())
-      .then(() => browser.wait(EC.presenceOf($('.s-contact .m-contact-profile-form')), 1000))
-      .then(() => element(by.css('.m-contact-profile-form__input input[name="given_name"]')).sendKeys(name))
-      .then(() => element(by.cssContainingText('.s-contact__action', __('save'))).click())
-      .then(() => browser.wait(EC.presenceOf($('.s-contact .m-contact-profile')), 1000))
-      .then(() => expect(element(by.css('.m-contact-profile__name')).getText()).toEqual(name))
-      ;
+    // XXX: click .btn--principal to force :hover callback actions
+    await element(by.css('.m-call-to-action__btn--principal')).click();
+    await element(createButtonSelector).click();
+    await browser.wait(EC.presenceOf($('.s-contact .m-contact-profile-form')), 1000);
+    await element(by.css('.m-contact-profile-form__input input[name="given_name"]')).sendKeys(name);
+    await element(by.cssContainingText('.s-contact__action', 'Validate')).click();
+    await browser.wait(EC.presenceOf($('.s-contact .m-contact-profile')), 1000);
+    expect(element(by.css('.m-contact-profile__name')).getText()).toEqual(name);
   });
 });

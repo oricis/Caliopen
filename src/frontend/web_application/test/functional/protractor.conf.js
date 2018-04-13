@@ -23,16 +23,27 @@ const cfg = {
   onPrepare: () => {
     browser.ignoreSynchronization = true;
     jasmine.getEnv().addReporter(new SpecReporter({
+      suite: {
+        displayNumber: true,
+      },
       spec: {
         displayErrorMessages: true,
         displayFailed: true,
         displayStacktrace: true,
       },
+      // summary: {
+      //   displayErrorMessages: true,
+      //   displayStacktrace: true,
+      //   displaySuccessful: true,
+      //   displayFailed: true,
+      // },
     }));
   },
   plugins: [
     { package: 'protractor-console-plugin', failOnWarning: false, logWarnings: false, exclude: [/Warning:/] },
   ],
+  logLevel: 'INFO',
+  debug: true,
 };
 
 if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
