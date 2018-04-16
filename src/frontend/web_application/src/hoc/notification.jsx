@@ -34,6 +34,12 @@ const withNotification = () => (Component) => {
         },
       } = this.props;
 
+      const customStyles = {// customStyles applied to Notification component
+        'has-close': 'l-notification-center__notification--has-close',
+        'has-close-all': 'l-notification-center__notification--has-close-all',
+        item__message: 'l-notification-center__notification-item-message',
+      };
+
       if (notificationEnabled) {
         notify({
           ...opts,
@@ -41,6 +47,7 @@ const withNotification = () => (Component) => {
           type,
           duration: (duration >= 0) ? duration : notificationDelayDisappear * 1000,
           canDismiss,
+          customStyles,
         });
       }
     }

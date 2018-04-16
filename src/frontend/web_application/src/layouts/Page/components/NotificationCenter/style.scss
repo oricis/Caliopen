@@ -1,8 +1,41 @@
 @import '../../../../styles/vendor/bootstrap_react-redux-notify';
 
 .l-notification-center {
+  // overrides react-redux-notify/src/components/Notify/Notify.scss
   @include container;
   top: 50px; // cf. header
   right: 0;
   flex-direction: column;
+
+  &__notification {
+    // see react-redux-notify/src/components/Notification/Notification.scss
+    &--has-close {
+      // overrides `.has-close .item--message`
+      .l-notification-center__notification-item-message {
+        padding-right: 10px + 24px; // right space for close icon
+      }
+    }
+
+    &--has-close-all {
+      // overrides `.has-close-all .item--message`
+      .l-notification-center__notification-item-message {
+        padding-right: 10px * 2 + 95px; // right space for close icon and button 'close all'
+      }
+    }
+  }
+
+  &__notification-item-message {
+    // see react-redux-notify/src/components/Notification/Notification.scss
+    // overrides `.item__message`
+    max-height: $max-height;
+    padding: 10px;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+    font-size: 0.9rem;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 700;
+    overflow-y: auto;
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
