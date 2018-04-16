@@ -11,8 +11,6 @@ $co-font-path: '../../fonts';
 $l-body__content--padding-top: $l-navigation__height + $l-navigation__margin-top;
 
 .l-body {
-  min-height: 100vh;
-
   &__content {
     max-width: $co-site-width;
     margin-right: auto;
