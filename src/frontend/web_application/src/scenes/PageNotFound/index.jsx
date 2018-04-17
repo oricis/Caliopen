@@ -18,12 +18,11 @@ class PageNotFound extends PureComponent {
     return (
       <div className="s-page-not-found">
         <PageTitle title={i18n._('page_not_found.page_title', { defaults: 'Page not found' })} />
-        <h2>
+        <h2 className="s-page-not-found__title">
           <Trans id="page_not_found.title">Unicorn not found</Trans>
         </h2>
-        <div className="s-page-not-found__unicorn" />
         <div>
-          <Trans id="page_not_found.thank_you">Thank you for using</Trans>
+          <Trans className="s-page-not-found__thanks" id="page_not_found.thank_you">Thank you for using</Trans>
           <pre className="s-page-not-found__ascii" aria-label={i18n._('page_not_found.caliopen-ascii', { defaults: 'Caliopen is draw using ASCIi art' })}>
             {`
         ▄▀▀▀▀▀▀▄                     █   ▀
