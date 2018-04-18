@@ -15,10 +15,10 @@ log = logging.getLogger(__name__)
 
 
 def inject_email(recipient, email, **kwargs):
-    """Import emails for an user."""
+    """Inject an email for an user."""
 
     with open(email) as f:
-        conn = smtplib.SMTP('localhost', 2525)
+        conn = smtplib.SMTP('broker.dev.caliopen.org', 2525)
         try:
             conn.sendmail("inject_email@py.cli.caliopen", [recipient],
                           str(f.read()))
