@@ -132,6 +132,14 @@ docker-compose up -d broker
 You will have a Caliopen instance filled with data, accessible from your browser on localhost:4000.  
 You could check outgoing emails by pointing your browser at localhost:8888.  
 
+##### How to inject emails into Caliopen docker stack :
+Make use of the CLI's `inject` command. It takes two args : a recipient `-r` (ie. an account within Caliopen) and a file name that should be an email text file conforming to RFC5322.  
+For example : 
+```shell
+docker-compose run cli inject -r dev@caliopen.local -e devtools/fixtures/raw_emails/multipart-html
+```
+You'll find few raw emails files examples within `devtools/fixtures/raw_emails`. You could also dump the raw source of an email into a file, from your favorite emails software, then inject this file into Caliopen.
+
 ### Fresh install
 
 To reset containers and data:
