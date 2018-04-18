@@ -15,6 +15,12 @@
 			"revisionTime": "2017-03-24T14:02:28Z"
 		},
 		{
+			"checksumSHA1": "jvpl+CkbGhNPxhcVUCQ6jLIy2+E=",
+			"path": "github.com/Sirupsen/logrus",
+			"revision": "8c0189d9f6bbf301e5d055d34268156b317016af",
+			"revisionTime": "2018-02-13T14:31:10Z"
+		},
+		{
 			"checksumSHA1": "GV9XAIGfRWd6823mxcT9z7grfk0=",
 			"path": "github.com/asaskevich/govalidator",
 			"revision": "133eba7d8257761201f2d4d8dcbf774692fdb946",
@@ -599,24 +605,6 @@
 			"path": "github.com/satori/go.uuid",
 			"revision": "5bf94b69c6b68ee1b541973bb8e1144db23a194b",
 			"revisionTime": "2017-03-21T23:07:31Z"
-		},
-		{
-			"checksumSHA1": "jvpl+CkbGhNPxhcVUCQ6jLIy2+E=",
-			"path": "github.com/sirupsen/logrus",
-			"revision": "8c0189d9f6bbf301e5d055d34268156b317016af",
-			"revisionTime": "2018-02-13T14:31:10Z"
-		},
-		{
-			"checksumSHA1": "9ZSqjmvF/JE6Qj/5xOoCAmUgXz8=",
-			"path": "github.com/sirupsen/logrus",
-			"revision": "778f2e774c725116edbc3d039dc0dfc1cc62aae8",
-			"revisionTime": "2018-03-29T22:59:52Z"
-		},
-		{
-			"checksumSHA1": "Xl1z9/GxSKSXE0qSr4h7Fdusp3I=",
-			"path": "github.com/sirupsen/logrus/hooks/syslog",
-			"revision": "778f2e774c725116edbc3d039dc0dfc1cc62aae8",
-			"revisionTime": "2018-03-29T22:59:52Z"
 		},
 		{
 			"checksumSHA1": "lBehULzb2/kIK3wZ0gz2yNmHq9s=",
