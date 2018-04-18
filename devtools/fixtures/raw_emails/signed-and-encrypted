@@ -1,0 +1,120 @@
+Return-Path: <xxxx@caliopen.org>
+Delivered-To: xxxx@caliopen.org
+Received: from post2.caliopen.net ([178.32.78.240])
+	by box.caliopen.net (Dovecot) with LMTP id LZqzCARN11qW2QAAz9GZsw
+	for <xxxx@caliopen.org>; Wed, 18 Apr 2018 15:50:51 +0200
+Received: from post2.caliopen.net (post2.caliopen.net [178.32.78.240])
+	by post2.caliopen.net (Postfix) with ESMTP id D002452321
+	for <xxxx@caliopen.org>; Wed, 18 Apr 2018 15:50:51 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at caliopen.net
+X-Spam-Flag: NO
+X-Spam-Score: -0.099
+X-Spam-Level:
+X-Spam-Status: No, score=-0.099 tagged_above=-999 required=4.2
+	tests=[DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+	UNPARSEABLE_RELAY=0.001] autolearn=ham autolearn_force=no
+Authentication-Results: post2.caliopen.net (amavisd-new);
+	dkim=pass (1024-bit key) header.d=caliopen.net
+Received: from --IP masked by caliopen--
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by post2.caliopen.net (Postfix) with ESMTPSA id 6EE925230E
+	for <xxxx@caliopen.org>; Wed, 18 Apr 2018 15:50:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=caliopen.net;
+	s=20140504caliopen; t=1524059430;
+	bh=yqiDEOfmDMKEHhITxSBC1PfpAvPv60JY4TadrwiGx6E=;
+	h=From:To:Subject:Date;
+	b=LhFR4yATuQWzdL2xDOCZIJpXo3ZbNF6Bmbff8ZFsLvfW+M5MU4sHlV4jVsyD6sLz2
+	 2tLmHOdGy8yMzl/hMq63cayNoYtIl8/37PPbC66wo5mH0xWJ8kH1++VNwcAsHJUWKE
+	 447LZXm09vf0CXFXdeBIgqz9h0qwRfoJ2mT451qQ=
+From: "Neil DIAMOND" <xxxx@caliopen.org>
+To: "Neil DIAMOND" <xxxx@caliopen.org>
+Subject: ***UNCHECKED*** Do not read this !
+Date: Wed, 18 Apr 2018 15:49:57 +0200
+Message-ID: <9D144EF0-E966-4CCD-AE5E-0DF3D3F4FB3A@caliopen.net>
+MIME-Version: 1.0
+Content-Type: multipart/encrypted;
+ boundary="=_MailMate_B04DF9F4-DED0-46A2-8E27-A1E440263F2F_=";
+ protocol="application/pgp-encrypted"
+
+This is an OpenPGP/MIME encrypted message (RFC 3156 and 4880).
+
+--=_MailMate_B04DF9F4-DED0-46A2-8E27-A1E440263F2F_=
+Content-Description: OpenPGP control information
+Content-Type: application/pgp-encrypted
+
+Version: 1
+
+--=_MailMate_B04DF9F4-DED0-46A2-8E27-A1E440263F2F_=
+Content-Description: OpenPGP encrypted data
+Content-Disposition: inline; filename=encrypted.asc
+Content-Type: application/octet-stream; name=encrypted.asc
+
+-----BEGIN PGP MESSAGE-----
+
+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
+=ncno
+-----END PGP MESSAGE-----
+
+--=_MailMate_B04DF9F4-DED0-46A2-8E27-A1E440263F2F_=--
+			
