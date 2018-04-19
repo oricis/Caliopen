@@ -116,7 +116,7 @@ class Message(ObjectIndexable):
         message.is_draft = True
         message.is_received = False
         message.type = "email"  # TODO: type handling inferred from participants
-        message.date_insert = datetime.datetime.now(tz=pytz.utc)
+        message.date = message.date_insert = datetime.datetime.now(tz=pytz.utc)
 
         try:
             message.marshall_db()
@@ -202,8 +202,11 @@ class Message(ObjectIndexable):
             current_state["body_plain"] = current_state["body"]
             del (current_state["body"])
 
-        validated_params["current_state"] = current_state
+        # date should reflect last edit time
+        current_state["date"] = self.date
+        validated_params["date"] = datetime.datetime.now(tz=pytz.utc)
 
+        validated_params["current_state"] = current_state
         try:
             self.apply_patch(validated_params, **options)
         except Exception as exc:
