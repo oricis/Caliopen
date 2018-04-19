@@ -135,6 +135,27 @@ services:
     command:
       server --address :9090 -C /configs/minio /export
 
+  # IMAP worker for remote identities
+  imap_worker:
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.imap-worker
+      links:
+        - cassandra:cassandra.dev.caliopen.org
+        - object_store:minio.dev.caliopen.org
+        - elasticsearch:es.dev.caliopen.org
+        - nats:nats.dev.caliopen.org
+
+  # Poller for remote identities
+  ids_poller:
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.ids-poller
+      links:
+        - imap_worker:imapworker.dev.caliopen.org
+        - cassandra:cassandra.dev.caliopen.org
+        - nats:nats.dev.caliopen.org
+
   # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
   # point your browser at localhost:8888
   inbucket:
