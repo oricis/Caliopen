@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - in mobile view, draft form can toggle with an excerpt to not use half of the screen
 
+### Fixed
+
+- Make favicon accessible without authentication
 
 ## [Unreleased]
 
