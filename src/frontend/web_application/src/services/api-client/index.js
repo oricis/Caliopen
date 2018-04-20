@@ -36,7 +36,6 @@ export default function getClient() {
   return client;
 }
 
-
 export const handleClientResponseSuccess = (response) => {
   if (!response || !response.payload) {
     throw new Error('Not an axios success Promise');

@@ -15,11 +15,25 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /(?<!\.worker)\.jsx?$/,
         include: [
           path.join(__dirname, '../src/'),
         ],
         use: [
+          { loader: 'babel-loader' },
+          {
+            loader: 'eslint-loader',
+            options: {
+              cache: true,
+              failOnError: false,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.worker\.js$/,
+        use: [
+          { loader: 'worker-loader' },
           { loader: 'babel-loader' },
           {
             loader: 'eslint-loader',

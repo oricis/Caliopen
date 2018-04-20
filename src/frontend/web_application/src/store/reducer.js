@@ -11,6 +11,7 @@ import i18nReducer from './modules/i18n';
 import importanceLevelReducer from './modules/importance-level';
 import localIdentityReducer from './modules/local-identity';
 import messageReducer from './modules/message';
+import notificationReducer from './modules/notification';
 import openPGPKeychainReducer from './modules/openpgp-keychain';
 import participantSuggestionsReducer from './modules/participant-suggestions';
 import searchReducer from './modules/search';
@@ -30,6 +31,7 @@ const reducer = combineReducers({
   importanceLevel: importanceLevelReducer,
   localIdentity: localIdentityReducer,
   message: messageReducer,
+  notification: notificationReducer,
   openPGPKeychain: openPGPKeychainReducer,
   participantSuggestions: participantSuggestionsReducer,
   search: searchReducer,
