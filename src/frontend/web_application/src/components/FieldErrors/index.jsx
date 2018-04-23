@@ -22,8 +22,8 @@ class FieldErrors extends PureComponent {
 
     return (
       <ul className={classnames('m-field-errors', className)}>
-        {errors.map(error => (
-          <li key={error}>{error}</li>
+        {errors.map((error, idx) => (
+          <li key={idx}>{error}</li>
         ))}
       </ul>
     );

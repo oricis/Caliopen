@@ -9,7 +9,7 @@
   "input-file-group.file.size": "{size} ko",
   "input-file-group.error.file_is_required": "Un fichier est requis",
   "input-file-group.error.no_valid_ext": "Seulement des fichiers {0}",
-  "input-file-group.error.max_size": "La taille du fichier doit être inférieur à {0} ko",
+  "input-file-group.error.max_size": "La taille du fichier doit être inférieur à <0/>",
   "password_strength.feedback.weak": "Complexité : faible",
   "password_strength.feedback.moderate": "Complexité : moyenne",
   "password_strength.feedback.strong": "Complexité : forte",

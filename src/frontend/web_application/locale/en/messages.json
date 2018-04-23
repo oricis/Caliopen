@@ -9,7 +9,7 @@
   "input-file-group.file.size": "{size} kB",
   "input-file-group.error.file_is_required": "A file is required",
   "input-file-group.error.no_valid_ext": "Only files {0}",
-  "input-file-group.error.max_size": "The file size must be under {0} ko",
+  "input-file-group.error.max_size": "The file size must be under <0/>",
   "password_strength.feedback.weak": "Strength: weak",
   "password_strength.feedback.moderate": "Strength: moderate",
   "password_strength.feedback.strong": "Strength: strong",
