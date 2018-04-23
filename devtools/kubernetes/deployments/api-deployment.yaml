@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  #strategy:
+  #  type: Recreate / RollingUpdate
+  #    maxUnavailable:
+  template:
+    metadata:
+      labels:
+        type: api
+        tier: backend
+        app: api
+    spec:
+      containers:
+      - image: api:new
+        imagePullPolicy: Never
+        name: api
+        ports:
+        - containerPort: 31415
+      restartPolicy: Always

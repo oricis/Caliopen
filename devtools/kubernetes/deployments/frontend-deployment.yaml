@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  #strategy:
+  #  type: Recreate / RollingUpdate
+  #    maxUnavailable:
+  template:
+    metadata:
+      labels:
+        type: frontend
+        tier: frontend
+        app: frontend
+    spec:
+      containers:
+      - image: frontend:new
+        imagePullPolicy: Never
+        name: frontend
+        ports:
+        - containerPort: 4000
+      restartPolicy: Always

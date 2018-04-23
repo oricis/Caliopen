@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apiv1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apiv1
+  #strategy:
+  #  type: Recreate / RollingUpdate
+  #    maxUnavailable:
+  template:
+    metadata:
+      labels:
+        type: api
+        tier: backend
+        app: apiv1
+    spec:
+      containers:
+      - image: apiv1:new
+        imagePullPolicy: Never
+        name: apiv1
+        ports:
+        - containerPort: 6543
+      restartPolicy: Always

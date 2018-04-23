@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: apiv1
+spec:
+  type: NodePort
+  #nodePort: 6543
+  selector:
+    app: apiv1
+  ports:
+  - name: "apiv1"
+    port: 6543
+    targetPort: 6543
+    nodePort: 31416

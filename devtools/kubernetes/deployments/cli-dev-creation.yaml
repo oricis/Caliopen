@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cli-dev
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: "Never"
+      containers:
+      - image: cli:new
+        name: cli-dev
+        imagePullPolicy: Never
+        args: ["create_user", "-e", "dev", "-p", "123456"]
+        env:
+        - name: CQLENG_ALLOW_SCHEMA_MANAGEMENT
+          value: "1"
+        volumeMounts:
+        - mountPath: /srv/caliopen/src/backend/devtools
+          name: cli-volume
+      volumes:
+      - name: cli-volume
+        hostPath:
+          #ABSOLUTE PATH TO src/backend
+          path: $$SRCBACKEND

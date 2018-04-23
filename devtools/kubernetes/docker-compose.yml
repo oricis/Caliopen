@@ -1,0 +1,45 @@
+version: '2'
+services:
+  # Caliopen APIv2
+  api:
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.go-api
+      image: api:new
+
+  # Caliopen APIv1
+  apiv1:
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.py-api
+      image: apiv1:new
+
+  # Caliopen cli tool
+  cli:
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.cli
+      image: cli:new
+
+  # Caliopen frontend
+  frontend:
+      build:
+        context: ../src/frontend/web_application
+      image: frontend:new
+
+  # Broker
+  broker:
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.go-lmtp
+      image: broker:new
+
+  # NATS Message Handler
+  message-handler:
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.message_handler
+      image: message-handler:new
+
+  # Postfix : a complete smpt server that act as the Caliopen's MTA
+  # TODO

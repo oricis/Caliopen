@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        type: storage
+        tier: backend
+        app: minio
+    spec:
+      containers:     
+      - image: minio/minio
+        name: minio
+        args:
+          - server
+          - --address
+          - :9090
+          - -C
+          - /configs/minio
+          - /export
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - mountPath: /configs
+          name: dev-configs
+        - mountPath: /export
+          name: dev-store
+      restartPolicy: Always
+      volumes:
+      - name: dev-store
+        persistentVolumeClaim:
+          claimName: dev-store
+      - name: dev-configs
+        hostPath:
+          #ABSOLUTE PATH TO SRC/BACKEND/CONFIGS
+          path: $$SRCBACKEND/configs

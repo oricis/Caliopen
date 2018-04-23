@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cassandra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cassandra
+  #strategy:
+  #  type: Recreate / RollingUpdate
+  #    maxUnavailable:
+  template:
+    metadata:
+      labels:
+        type: storage
+        tier: backend
+        app: cassandra
+    spec:
+      containers:
+      - command:
+        - /docker-entrypoint.py
+        - --memory
+        #TODO: ADD MORE MEMORY
+        - 512M
+        image: scylladb/scylla
+        name: cassandra
+        resources:
+          requests:
+            memory: "1024Mi"
+        ports:
+        - containerPort: 9042
+          name: cql
+        - containerPort: 9160
+        - containerPort: 7000
+          name: intra-node
+        volumeMounts:
+        - mountPath: /var/lib/scylla
+          name: dev-db
+      restartPolicy: Always
+      volumes:
+      - name: dev-db
+        persistentVolumeClaim:
+          claimName: dev-db

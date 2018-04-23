@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: broker
+  #strategy:
+  #  type: Recreate / RollingUpdate
+  #    maxUnavailable:
+  template:
+    metadata:
+      labels:
+        type: broker
+        tier: backend
+        app: broker
+    spec:
+      containers:
+      - image: broker:new
+        name: broker
+        ports:
+        - containerPort: 2525
+      restartPolicy: Always

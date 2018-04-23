@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cli-import
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: "Never"
+      containers:
+      - image: cli:new
+        name: cli-import
+        imagePullPolicy: Never
+        args: ["import", "-e", "dev@caliopen.local", "-f", "mbox", "-p", "fixtures/mbox/dev@caliopen.local"]
+        env:
+        - name: CQLENG_ALLOW_SCHEMA_MANAGEMENT
+          value: "1"
+        volumeMounts:
+        - mountPath: /srv/caliopen/src/backend/devtools
+          name: cli-volume
+        - mountPath: /srv/caliopen/src/backend/fixtures
+          name: cli-mails
+      volumes:
+      - name: cli-volume
+        hostPath:
+          #ABSOLUTE PATH TO src/backend
+          path: $$SRCBACKEND
+      - name: cli-mails
+        hostPath:
+          #ABSOLUTE PATH TO devtools/fixtures
+          path: $$DEVTOOLSFIXTURES

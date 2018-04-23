@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nats
+  template:
+    metadata:
+      labels:
+        type: nats
+        tier: backend
+        app: nats
+    spec:
+      containers:     
+      - image: nats:0.9.6
+        name: smtp-server
+        ports:
+        - containerPort: 4222
+      restartPolicy: Always

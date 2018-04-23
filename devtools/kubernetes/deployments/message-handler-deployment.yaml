@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-handler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: message-handler
+  template:
+    metadata:
+      labels:
+        type: message-handler
+        tier: backend
+        app: message-handler
+    spec:
+      containers:     
+      - image: message-handler:new
+        name: message-handler
+        imagePullPolicy: Never
+      restartPolicy: Always
