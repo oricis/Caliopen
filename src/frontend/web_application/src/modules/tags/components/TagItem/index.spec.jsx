@@ -20,6 +20,6 @@ describe('component TagItem', () => {
 
     const comp = shallow(<TagItem {...props} {...connectedProps} />);
 
-    expect(comp.render().find('.m-tag-item__text').text()).toEqual('Foo');
+    expect(comp.find('Badge').length).toEqual(1);
   });
 });
