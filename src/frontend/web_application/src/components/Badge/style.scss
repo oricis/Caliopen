@@ -1,21 +1,51 @@
 @import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
 
-$m-badge__height: 1.5rem !default;
+$m-badge__height: 1.6rem !default;
 $m-badge__font-size: ($m-badge__height / 2) !default;
+$m-badge__padding: ($m-badge__height - $m-badge__font-size) / 2;
 $m-badge--large__height: $co-component__height !default;
 $m-badge--large__font-size: $co-font__size !default;
+$m-badge--large__padding: ($m-badge--large__height - $m-badge--large__font-size) / 2;
 
 .m-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   height: $m-badge__height;
-  padding-right: .5rem;
-  padding-left: .5rem;
   background: $co-color__primary--low;
   color: $co-color__contrast__text;
   font-size: $m-badge__font-size;
   font-weight: 600;
   line-height: $m-badge__height;
   white-space: nowrap;
+
+  &__text {
+    @include flex-grid-size;
+    padding: $m-badge__padding;
+
+    &--large {
+      padding: $m-badge--large__padding;
+    }
+
+    &--has-button {
+      padding-right: 0;
+    }
+  }
+
+  &__button {
+    @include flex-grid-size(shrink);
+    padding: $m-badge__padding;
+    color: $co-color__contrast__text;
+    font-size: $co-font__size;
+
+    &--large {
+      padding: $m-badge--large__padding;
+    }
+
+    &:hover {
+      color: $co-color__primary;
+    }
+  }
 
   &--no-radius {
     border-radius: 0;

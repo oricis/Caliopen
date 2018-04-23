@@ -1,15 +1,7 @@
 @import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-tag-item {
+  margin-right: map-get($co-form__spacing, 'small');
   margin-bottom: map-get($co-form__spacing, 'small');
-  margin-left: map-get($co-form__spacing, 'small');
-
-  &:first-child {
-    margin-left: 0;
-  }
-
-  // FIXME: the button is too small for mobile devices
-  &__button {
-    color: $co-color__contrast__text;
-  }
 }
