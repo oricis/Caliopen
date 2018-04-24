@@ -4,9 +4,8 @@ First of all, thank you for contributing, you are awesome!
 
 CONTRIBUTING.md file may be present in sub-directries with specific informations.
 
-* home of contributors: http://caliopen.github.io/
-* report a bug or post a feature request: https://github.com/CaliOpen/Caliopen/issues
-* Installation process for development purpose: [Devtools](devtools/README.md)
+* report a bug or post a feature request: https://feedback.caliopen.org/
+* [Installation process](doc/installation) for development purpose
 
 ## Code of conduct
 
@@ -27,7 +26,7 @@ _(This code of conduct may evolve)_.
 
 ## Contributors
 
-_(People involved in the project)_
+Of course we can't show all of you from https://feedback.caliopen.org/. Thank you all!
 
 * [@mardiros](https://github.com/mardiros)
 * [@cr0cK](https://github.com/cr0cK)

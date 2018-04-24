@@ -20,7 +20,7 @@ The device crypt using AES the private key with the password choosen and keep it
 
 A device_id is assigned and must also be stored on the device.
 
-[Sequence diagram for user registration and device declaration](../UML/create_user_and_device.png)
+![Sequence diagram for user registration and device declaration](./assets/create_user_and_device.png)
 
 ## How a device is identified
 
@@ -35,7 +35,7 @@ X-Caliopen-Device-Signature: BASE64(privkey.sign(access_token))
 Authentication: bearer;user_id:access_token
 ```
 
-[Sequence diagram for user authentication and device signature during API call](../UML/user_and_device_authentication.png)
+![Sequence diagram for user authentication and device signature during API call](./assets/user_and_device_authentication.png)
 
 ### Backend validation
 
@@ -52,4 +52,4 @@ The crypted private key can't be recover on a device when the user had change or
 another device. Upon authentication with such device, Caliopen reply that this device must be reset and
 generate a new ECDSA keypair.
 
-[Sequence diagram for user password update and device reset](../UML/user_update_credential.png)
+![Sequence diagram for user password update and device reset](./assets/user_update_credential.png)

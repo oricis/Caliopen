@@ -1,28 +1,41 @@
 # Caliopen IMAP binaries
+
 2 programs to handle IMAP related operations :
 - **imapworker** : daemon that listen to NATS orders to fetch/sync remote accounts.  
 Must be launched with the rest of Caliopen's stack.
 - **imapctl** : cli for on-demand IMAP operations and/or remote identities operations.
+
 ## imapworker
+
 A daemon to launch before requesting any IMAP operations.  
 It needs a config file. A default one is at `src/backend/configs/caliopen-imap-worker_dev.yaml`
-##### dependencies
+
+### dependencies
+
 _imapworker_'s dependencies will be installed with Caliopen's stack. If you checked-out `feature/worker/imap-fetcher` into your current stack, run `govendor sync` to ensure all required dependencies.
-##### launching
+
+### launching
+
 ```shell
 cd src/backend/protocols/go.imap/cmd/imapworker
 go run main.go start
 # if binary has been build :
 imapworker start
 ```
-##### building
+
+### building
+
 ```shell
 go build github.com/CaliOpen/Caliopen/src/backend/protocols/go.imap/cmd/imapworker
 ```
-##### using
+
+### using
+
 Start _imapworker_ once with the rest of the stack and keep it running as a daemon.
 If you need help : `go run main.go` or `imapworker` without any command will prompt available commands and flags.
+
 ## imapctl
+
 _imapctl_ is a CLI to do on-demand operations.  
 For now it has three available commands :
 - `fullfetch` : to fetch all mails from a remote IMAP mailbox into user account, without any synchronization and without keeping last state sync.
@@ -31,22 +44,32 @@ For now it has three available commands :
 
 **NB** : `fullfetch` and `syncremote` commands need `imapworker` to run in background to work properly.  
 _imapctl_ needs the same config file as _imapworker_'s one.
-##### dependencies
+
+### dependencies
+
 _imapctl_'s dependencies will be installed with Caliopen's stack. If you checked-out `feature/worker/imap-fetcher` into your current stack, run `govendor sync` to ensure all required dependencies.
-##### launching
+
+### launching
+
 ```shell
 cd src/backend/protocols/go.imap/cmd/imapctl
 go run main.go [command] [flags]
 # if binary has been build :
 imapctl [command] [flags]
 ```
-##### building
+
+### building
+
 ```shell
 go build github.com/CaliOpen/Caliopen/src/backend/protocols/go.imap/cmd/imapctl
 ```
-##### using
+
+### using
+
 Invoke _imapctl_ without any command or flags to print help message.
-###### examples :
+
+### examples :
+
 - To blindly fetch all mails from a remote mailbox into user account :
 
   ```shell
