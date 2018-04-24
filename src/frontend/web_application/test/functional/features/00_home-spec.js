@@ -30,10 +30,10 @@ describe('Home', () => {
     });
   });
 
-  fit('Page not found', async () => {
+  it('Page not found', async () => {
     await userUtil.signin();
     await browser.get('/whatever');
-    await browser.wait(EC.presenceOf(element(by.css('.s-page-not-found fail'))), 60 * 1000);
+    await browser.wait(EC.presenceOf(element(by.css('.s-page-not-found'))), 5 * 1000);
 
     expect(element(by.css('.s-page-not-found__unicorn')).isPresent()).toEqual(true);
   });

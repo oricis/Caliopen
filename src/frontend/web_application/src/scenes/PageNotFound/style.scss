@@ -43,13 +43,13 @@
 
   &__ascii {
     display: none;
-    width: 45em;
+    width: 500px;
     @include breakpoint(medium) {
       display: block;
     }
   }
   &__ascii-short {
-    width: 11em;
+    width: 120px;
 
     @include breakpoint(medium) {
       display: none;
