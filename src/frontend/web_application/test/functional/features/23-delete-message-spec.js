@@ -4,52 +4,52 @@ const { home } = require('../utils/navigation');
 describe('Delete message', () => {
   const EC = protractor.ExpectedConditions;
 
-  beforeEach(() => {
-    userUtil.signin();
+  beforeAll(async () => {
+    await userUtil.signin();
+  });
+
+  beforeEach(async () => {
+    await home();
   });
 
   const clickBtnInModal = btnText => element(by.cssContainingText('.m-modal button', btnText)).click();
 
-  it('delete message one by one', () => {
+  it('Delete message one by one', async () => {
     const discussion1Selector = by.cssContainingText(
       '.s-timeline .s-message-item .s-message-item__topic .s-message-item__excerpt',
       'last message to remove individually'
     );
     const message1ToDel = 'first message to remove individually';
     const message2ToDel = 'last message to remove individually';
-    const deleteAMessage = (messageText) => {
+    const deleteAMessage = async (messageText) => {
       const messageElem = element(by.cssContainingText('.m-message', messageText));
+      await messageElem.element(by.cssContainingText('.m-message-actions-container__action button', 'Delete')).click();
 
-      return messageElem.element(by.cssContainingText('.m-message-actions-container__action button', 'Delete')).click()
-        .then(() => clickBtnInModal('Yes I\'m sure'));
+      return clickBtnInModal('Yes I\'m sure');
     };
 
-    home()
-      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
-      .then(() => element(discussion1Selector).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message')), 5 * 1000))
-      .then(() => deleteAMessage(message1ToDel))
-      .then(() => browser.wait(EC.presenceOf($('.m-message')), 5 * 1000))
-      .then(() => expect(element(by.cssContainingText('.m-message', message1ToDel)).isPresent()).toBe(false))
-      .then(() => deleteAMessage(message2ToDel))
-      .then(() => browser.wait(EC.presenceOf($('.s-timeline')), 5 * 1000))
-      ;
+    await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
+    await element(discussion1Selector).click();
+    await browser.wait(EC.presenceOf($('.m-message')), 5 * 1000);
+    await deleteAMessage(message1ToDel);
+    await browser.wait(EC.presenceOf($('.m-message')), 5 * 1000);
+    expect(element(by.cssContainingText('.m-message', message1ToDel)).isPresent()).toBe(false);
+    await deleteAMessage(message2ToDel);
+    await browser.wait(EC.presenceOf($('.s-timeline')), 5 * 1000);
   });
 
-  it('delete all messages of a collection', () => {
+  it('Delete all messages of a collection', async () => {
     const discussionSelector = by.cssContainingText(
       '.s-timeline .s-message-item .s-message-item__topic .s-message-item__excerpt',
       'a message of a collection to remove'
     );
 
-    home()
-      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
-      .then(() => element(discussionSelector).click())
-      .then(() => browser.wait(EC.presenceOf($('.m-message-list__action')), 5 * 1000))
-      .then(() => browser.executeScript('window.scrollTo(0,0);'))
-      .then(() => element(by.cssContainingText('.m-message-list__action', 'Delete')).click())
-      .then(() => clickBtnInModal('Yes I\'m sure'))
-      .then(() => browser.wait(EC.presenceOf($('.s-timeline')), 5 * 1000))
-      ;
+    await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
+    await element(discussionSelector).click();
+    await browser.wait(EC.presenceOf($('.m-message-list__action')), 5 * 1000);
+    await browser.executeScript('window.scrollTo(0,0);');
+    await element(by.cssContainingText('.m-message-list__action', 'Delete')).click();
+    await clickBtnInModal('Yes I\'m sure');
+    await browser.wait(EC.presenceOf($('.s-timeline')), 5 * 1000);
   });
 });

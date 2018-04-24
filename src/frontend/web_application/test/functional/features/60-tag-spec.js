@@ -5,121 +5,117 @@ describe('Tag', () => {
   const EC = protractor.ExpectedConditions;
   const subject = "It's okay, Bender. I like cooking too";
 
-  beforeEach(() => {
-    signin();
+  beforeAll(async () => {
+    await signin();
   });
 
-  it('Manage tags on timeline', () => {
+  beforeEach(async () => {
+    await home();
+  });
+
+  it('Manage tags on timeline', async () => {
     const tagName = 'Mon tag';
-    let messageElement;
 
-    home()
-      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
-      .then(() => {
-        messageElement = element(by.cssContainingText('.s-message-item', 'Shut up and take my money! Leela'));
+    await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
+    const messageElement = element(by.cssContainingText('.s-message-item', 'Fry! Stay back! He\'s too powerful!'));
+    await messageElement.element(by.css('.s-message-item__col-select input[type=checkbox]')).click();
 
-        return messageElement.element(by.css('.s-message-item__col-select input[type=checkbox]')).click()
-          .then(() => element(by.css('.m-message-selector__actions .m-button[aria-label="Manage tags"]')).click())
-          .then(() => expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true))
-          .then(() => expect(element.all(by.css('.m-tags-form__section .m-tag-item')).count()).toEqual(2));
-      })
-      .then(() => browser.element(by.css('.m-tags-form .m-input-text')).sendKeys('am'))
-      .then(() => browser.element(by.cssContainingText('.m-tags-form__found-tag', 'Amphibians')).click())
-      .then(() => browser.sleep(1))
-      .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Amphibians')).isPresent()).toEqual(true))
-      .then(() => browser.element(by.css('.m-tags-form .m-input-text')).sendKeys(tagName))
-      .then(() => browser.element(by.css('.m-tags-search__button[aria-label=Add]')).click())
-      .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 8 * 1000))
-      .then(() => element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).element(by.css('[aria-label="Remove"]')).click())
-      .then(() => browser.sleep(1))
-      .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).isPresent()).toEqual(false))
-      .then(() => browser.sleep(1))
-      .then(() => element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).element(by.css('[aria-label="Remove"]')).click())
-      .then(() => browser.sleep(1))
-      .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).isPresent()).toEqual(false))
-      .then(() => browser.wait(EC.stalenessOf(messageElement.element(by.cssContainingText('.s-message-item__tags', tagName))), 5 * 1000))
-    ;
+    await element(by.css('.m-message-selector__actions .m-button[aria-label="Manage tags"]')).click();
+    expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true);
+    expect(element.all(by.css('.m-tags-form__section .m-tag-item')).count()).toEqual(2);
+    await browser.element(by.css('.m-tags-form .m-input-text')).sendKeys('am');
+    await browser.element(by.cssContainingText('.m-tags-form__found-tag', 'Amphibians')).click();
+    await browser.sleep(1);
+    expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Amphibians')).isPresent()).toEqual(true);
+    await browser.element(by.css('.m-tags-form .m-input-text')).sendKeys(tagName);
+    await browser.element(by.css('.m-tags-search__button[aria-label=Add]')).click();
+    await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 8 * 1000);
+    await element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).element(by.css('[aria-label="Remove"]')).click();
+    await browser.sleep(1);
+    expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).isPresent()).toEqual(false);
+    await browser.sleep(1);
+    await element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).element(by.css('[aria-label="Remove"]')).click();
+    await browser.sleep(1);
+    expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).isPresent()).toEqual(false);
+    await browser.wait(EC.stalenessOf(messageElement.element(by.cssContainingText('.s-message-item__tags', tagName))), 5 * 1000);
+    await element(by.css('.m-modal__close')).click();
   });
 
-  it('Manage tags for multiple messages on timeline', () => {
+  it('Manage tags for multiple messages on timeline', async () => {
     const tagName = 'Mon tag';
-    home()
-      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
-      .then(() => {
-        const messageElement1 = element(by.cssContainingText('.s-message-item', 'zoidberg'));
-        const messageElement2 = element(by.cssContainingText('.s-message-item', 'Fry! Stay back!'));
+    await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
+    const messageElement1 = element(by.cssContainingText('.s-message-item', 'zoidberg'));
+    const messageElement2 = element(by.cssContainingText('.s-message-item', 'Fry! Stay back!'));
 
-        return messageElement1.element(by.css('.s-message-item__col-select input[type=checkbox]')).click()
-          .then(() => messageElement2.element(by.css('.s-message-item__col-select input[type=checkbox]')).click())
-          .then(() => element(by.css('.m-message-selector__actions .m-button[aria-label="Manage tags"]')).click())
-          .then(() => expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true))
-          .then(() => expect(element.all(by.css('.m-tags-form__section .m-tag-item')).count()).toEqual(1));
-      })
-      .then(() => browser.element(by.css('.m-tags-form .m-input-text')).sendKeys('in'))
-      .then(() => browser.element(by.cssContainingText('.m-tags-form__found-tag', 'Inbox')).click())
-      .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox'))), 5 * 1000))
-      .then(() => browser.element(by.css('.m-tags-form .m-input-text')).sendKeys(tagName))
-      .then(() => browser.element(by.css('.m-tags-search__button[aria-label=Add]')).click())
-      .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 5 * 1000))
-      .then(() => element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).element(by.css('[aria-label="Remove"]')).click())
-      .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).isPresent()).toEqual(false))
-      .then(() => browser.sleep(1))
-      .then(() => element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).element(by.css('[aria-label="Remove"]')).click())
-      .then(() => browser.sleep(1))
-      .then(() => expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).isPresent()).toEqual(false))
-    ;
+    await messageElement1.element(by.css('.s-message-item__col-select input[type=checkbox]')).click();
+    await messageElement2.element(by.css('.s-message-item__col-select input[type=checkbox]')).click();
+    await element(by.css('.m-message-selector__actions .m-button[aria-label="Manage tags"]')).click();
+    expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true);
+    expect(element.all(by.css('.m-tags-form__section .m-tag-item')).count()).toEqual(1);
+    await browser.element(by.css('.m-tags-form .m-input-text')).sendKeys('in');
+    await browser.element(by.cssContainingText('.m-tags-form__found-tag', 'Inbox')).click();
+    await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox'))), 5 * 1000);
+    await browser.element(by.css('.m-tags-form .m-input-text')).sendKeys(tagName);
+    await browser.element(by.css('.m-tags-search__button[aria-label=Add]')).click();
+    await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 5 * 1000);
+    await element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).element(by.css('[aria-label="Remove"]')).click();
+    expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).isPresent()).toEqual(false);
+    await browser.sleep(1);
+    await element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).element(by.css('[aria-label="Remove"]')).click();
+    await browser.sleep(1);
+    expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).isPresent()).toEqual(false);
+    await element(by.css('.m-modal__close')).click();
   });
 
-  it('Manage tags on a message of a discussion', () => {
-    home()
-      .then(() => browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000))
-      .then(() => element(by.cssContainingText('.s-timeline .s-message-item .s-message-item__topic .s-message-item__subject', subject)).click())
-      .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-message__container', subject))), 5 * 1000))
-      .then(() => element(by.cssContainingText('.m-message__container', subject)).element(by.cssContainingText('.m-message-actions-container__action', 'Tags')).click())
-      .then(() => expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true));
+  it('Manage tags on a message of a discussion', async () => {
+    await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
+    await element(by.cssContainingText('.s-timeline .s-message-item .s-message-item__topic .s-message-item__subject', subject)).click();
+    await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-message__container', subject))), 5 * 1000);
+    await element(by.cssContainingText('.m-message__container', subject)).element(by.cssContainingText('.m-message-actions-container__action', 'Tags')).click();
+    expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true);
+    await element(by.css('.m-modal__close')).click();
   });
 
-  it('Manage tags on a contact', () => {
-    switchApp('Contacts')
-      .then(() => browser.wait(EC.presenceOf($('.m-contact-list__contact')), 5 * 1000))
-      .then(() => element(by.cssContainingText('.m-contact-list__contact', 'Bender Bending Rodriguez')).click())
-      .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-contact-profile__name', 'Bender Bending Rodriguez'))), 5 * 1000))
-      .then(() => element(by.css('.s-contact__actions-switcher')).click())
-      .then(() => element(by.cssContainingText('.s-contact__action', 'Edit tags')).click())
-      .then(() => expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true));
+  it('Manage tags on a contact', async () => {
+    await switchApp('Contacts');
+    await browser.wait(EC.presenceOf($('.m-contact-list__contact')), 5 * 1000);
+    await element(by.cssContainingText('.m-contact-list__contact', 'Bender Bending Rodriguez')).click();
+    await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-contact-profile__name', 'Bender Bending Rodriguez'))), 5 * 1000);
+    await element(by.css('.s-contact__actions-switcher')).click();
+    await element(by.cssContainingText('.s-contact__action', 'Edit tags')).click();
+    expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true);
+    await element(by.css('.m-modal__close')).click();
   });
 
   describe('Manage tags in settings', () => {
-    it('Add and remove a new tag', () => {
+    it('Add and remove a new tag', async () => {
       const tagName = 'Mon nouveau tag';
-      showSettings('Tags')
-        .then(() => browser.wait(EC.presenceOf($('.m-add-tag .m-input-text')), 5 * 1000))
-        .then(() => element(by.css('.m-add-tag .m-input-text')).sendKeys(tagName))
-        .then(() => element(by.css('.m-add-tag__button[aria-label=Add]')).click())
-        .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName))), 5 * 1000))
-        .then(() => element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).element(by.css('.m-tag-input__delete')).click())
-        .then(() => browser.sleep(1))
-        .then(() => expect(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).isPresent()).toEqual(false))
-      ;
+      await showSettings('Tags');
+      await browser.wait(EC.presenceOf($('.m-add-tag .m-input-text')), 5 * 1000);
+      await element(by.css('.m-add-tag .m-input-text')).sendKeys(tagName);
+      await element(by.css('.m-add-tag__button[aria-label=Add]')).click();
+      await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName))), 5 * 1000);
+      await element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).element(by.css('.m-tag-input__delete')).click();
+      await browser.sleep(1);
+      expect(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).isPresent()).toEqual(false);
     });
 
-    it('Should not allow to create a tag that already exist', () => {
+    it('Should not allow to create a tag that already exist', async () => {
       const tagName = 'my_tag';
-      showSettings('Tags')
-        .then(() => browser.wait(EC.presenceOf($('.m-add-tag .m-input-text')), 5 * 1000))
-        .then(() => element(by.css('.m-add-tag .m-input-text')).sendKeys(tagName))
-        .then(() => element(by.css('.m-add-tag__button[aria-label=Add]')).click())
-        .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName))), 5 * 1000))
-        .then(() => element(by.css('.m-add-tag .m-input-text')).sendKeys(tagName))
-        .then(() => element(by.css('.m-add-tag__button[aria-label=Add]')).click())
-        .then(() => browser.wait(EC.presenceOf(element(by.cssContainingText('.m-field-errors', 'Unable to create the tag. A tag with the same id may already exist.'))), 5 * 1000))
-        // FIXME: do not click on floating action button instead of delete
-        .then(() => browser.executeScript('window.scrollTo(0, document.body.scrollHeight);'))
-        // ---
-        .then(() => element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).element(by.css('.m-tag-input__delete')).click())
-        .then(() => browser.sleep(1))
-        .then(() => expect(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).isPresent()).toEqual(false))
-      ;
+      await showSettings('Tags');
+      await browser.wait(EC.presenceOf($('.m-add-tag .m-input-text')), 5 * 1000);
+      await element(by.css('.m-add-tag .m-input-text')).sendKeys(tagName);
+      await element(by.css('.m-add-tag__button[aria-label=Add]')).click();
+      await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName))), 5 * 1000);
+      await element(by.css('.m-add-tag .m-input-text')).sendKeys(tagName);
+      await element(by.css('.m-add-tag__button[aria-label=Add]')).click();
+      await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-field-errors', 'Unable to create the tag. A tag with the same id may already exist.'))), 5 * 1000);
+      // FIXME: do not click on floating action button instead of delete
+      await browser.executeScript('window.scrollTo(0, document.body.scrollHeight);');
+      // ---
+      await element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).element(by.css('.m-tag-input__delete')).click();
+      await browser.sleep(1);
+      expect(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).isPresent()).toEqual(false);
     });
 
     it('Rename a tag', async () => {
