@@ -66,8 +66,24 @@ const configureAssets = (outputPath = 'assets/') => ({
             options: { hash: 'sha512', digest: 'hex', name: '[name].[ext]', outputPath },
           },
           {
+            // XXX: image-webpack-loader does'nt work well on debian 9 and travis for now
+            // https://github.com/tcoopman/image-webpack-loader/issues/142#issuecomment-380751197
+
             loader: 'image-webpack-loader',
-            options: { bypassOnDebug: true, optimizationLevel: 7, interlaced: false },
+            options: {
+              bypassOnDebug: true,
+              // XXX: dosen't work on travis
+              mozjpeg: {
+                enabled: false,
+              },
+              // XXX: doesn't work on debian 9
+              pngquant: {
+                enabled: false,
+              },
+              webp: {
+                quality: 75,
+              },
+            },
           },
         ],
       },
