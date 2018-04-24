@@ -1,12 +1,11 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
-$l-header__height: 52px !default;
 $l-header__brand-icon-height: 32px !default;
 $l-header__margin: ($co-margin / 2) !default;
 
 .l-header {
-  height: $l-header__height;
+  height: $co-header__height;
 
   &__wrapper {
     @include flex-grid-row($size: expand);
@@ -14,7 +13,7 @@ $l-header__margin: ($co-margin / 2) !default;
     z-index: $l-z-index__header;
 
     width: 100%;
-    min-height: $l-header__height;
+    min-height: $co-header__height;
     background: $co-color__contrast__back;
     box-shadow: $co-shadow;
   }
@@ -22,9 +21,9 @@ $l-header__margin: ($co-margin / 2) !default;
   &__brand {
     @include flex-grid-column;
     display: none;
-    height: $l-header__height;
+    height: $co-header__height;
     padding: 0 $co-margin;
-    line-height: $l-header__height;
+    line-height: $co-header__height;
   }
 
   &__menu-icon {
@@ -41,23 +40,23 @@ $l-header__margin: ($co-margin / 2) !default;
   &__take-a-tour,
   &__user {
     display: none;
-    height: $l-header__height;
-    line-height: $l-header__height;
+    height: $co-header__height;
+    line-height: $co-header__height;
   }
 
   &__search {
     flex: 0 1;
-    height: $l-header__height;
+    height: $co-header__height;
     margin-left: auto;
     padding-right: $co-component__spacing;
-    line-height: $l-header__height;
+    line-height: $co-header__height;
   }
 
   &__toggle-nav,
   &__search-toggler {
     @include flex-grid-column(shrink);
-    height: $l-header__height;
-    line-height: $l-header__height;
+    height: $co-header__height;
+    line-height: $co-header__height;
   }
 
   @include breakpoint(medium) {

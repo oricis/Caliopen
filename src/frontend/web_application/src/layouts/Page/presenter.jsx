@@ -6,6 +6,7 @@ import Navigation from './components/Navigation';
 import NavigationAlt from './components/NavigationAlt';
 import NotificationCenter from './components/NotificationCenter';
 import CallToAction from './components/CallToAction';
+
 import './style.scss';
 
 class PageContainer extends Component {

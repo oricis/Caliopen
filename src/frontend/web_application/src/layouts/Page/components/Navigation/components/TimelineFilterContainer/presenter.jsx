@@ -32,6 +32,7 @@ class TimelineFilterContainer extends Component {
             id="timeline-filter_navigation_dropdown"
             className="m-timeline-filter-container__dropdown"
             closeOnClick="all"
+            alignRight
           >
             <VerticalMenu>
               {options.map((option, i) => (

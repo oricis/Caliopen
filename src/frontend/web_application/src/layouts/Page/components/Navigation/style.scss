@@ -1,39 +1,16 @@
 @import '../../../../styles/common';
+@import '../../../../styles/object/o-navigation';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .l-navigation {
+  position: relative;
   max-width: $co-site-width;
   margin-right: auto;
   margin-left: auto;
 
   &__wrapper {
     @include flex-grid-row($size: expand);
-    position: fixed;
-    z-index: $l-z-index__navbar;
-    width: 100%;
-    max-width: $co-site-width;
-    min-height: $co-component__height;
-    padding-top: .75rem;
-    transition: $co-animation__margin-transition;
-    background-color: $co-color__bg__back;
-
-    &::after {
-      display: block;
-      content: ' ';
-      z-index: $l-z-index__navbar-shadow;
-      width: 100%;
-      height: $co-component__spacing;
-      transition: $co-animation__box-transition;
-      background-color: $co-color__fg__back;
-    }
-
-    &--sticky {
-      padding-top: .25rem;
-
-      &::after {
-        box-shadow: $co-shadow;
-      }
-    }
+    @include o-navigation-wrapper;
   }
 
   &__application-switcher {
