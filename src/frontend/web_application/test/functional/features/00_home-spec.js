@@ -35,6 +35,6 @@ describe('Home', () => {
     await browser.get('/whatever');
     await browser.wait(EC.presenceOf(element(by.css('.s-page-not-found'))), 5 * 1000);
 
-    expect(element(by.css('.s-page-not-found__unicorn')).isPresent()).toEqual(true);
+    expect(element(by.css('.s-page-not-found__title')).isPresent()).toEqual(true);
   });
 });
