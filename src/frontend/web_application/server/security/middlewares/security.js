@@ -2,7 +2,10 @@ const securityMiddleware = (req, res, next) => {
   const security = {
     firewalls: {
       assets: {
-        paths: [/^\/assets\/.*$/],
+        paths: [
+          '/favicon.ico',
+          /^\/assets\/.*$/,
+        ],
         security: false,
       },
       auth: {

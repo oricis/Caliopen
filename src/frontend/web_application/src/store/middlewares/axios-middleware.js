@@ -19,6 +19,12 @@ export default axiosMiddleware(getClient(), {
     }],
     response: [{
       error: ({ getState, dispatch }, error) => {
+        // customStyles applied to Notification component
+        const customStyles = {
+          'has-close': 'l-notification-center__notification--has-close',
+          'has-close-all': 'l-notification-center__notification--has-close-all',
+          item__message: 'l-notification-center__notification-item-message',
+        };
         if (error.response.status === 401) {
           const { translate: __ } = getTranslator();
           const notification = {
@@ -26,6 +32,7 @@ export default axiosMiddleware(getClient(), {
             type: NOTIFICATION_TYPE_ERROR,
             duration: 0,
             canDismiss: true,
+            customStyles,
           };
 
           if (!getState().notifications.find(({ message }) => message === notification.message)) {
@@ -40,6 +47,7 @@ export default axiosMiddleware(getClient(), {
             type: NOTIFICATION_TYPE_ERROR,
             duration: 0,
             canDismiss: true,
+            customStyles,
           };
 
           if (!getState().notifications.find(({ message }) => message === notification.message)) {

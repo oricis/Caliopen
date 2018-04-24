@@ -62,7 +62,7 @@ class ContactResultItem extends PureComponent {
     return (
       <Link noDecoration className="m-contact-result-item" to={`/contacts/${contact.contact_id}`}>
         <div className="m-contact-result-item__contact-avatar">
-          <ContactAvatarLetter isRound contact={contact} size={SIZE_SMALL} />
+          <ContactAvatarLetter contact={contact} size={SIZE_SMALL} />
         </div>
         <TextBlock className="m-contact-result-item__col-title">
           {contact.name_prefix && (<span className="m-contact-result-item__contact-prefix"><Highlights term={term} highlights={contact.name_prefix} /></span>)}

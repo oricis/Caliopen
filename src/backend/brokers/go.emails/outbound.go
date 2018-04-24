@@ -25,7 +25,7 @@ import (
 	"time"
 )
 
-func (b *EmailBroker) startOutcomingSmtpAgent() error {
+func (b *EmailBroker) startOutcomingSmtpAgents() error {
 
 	sub, err := b.NatsConn.QueueSubscribe(b.Config.OutTopic, b.Config.NatsQueue, func(msg *nats.Msg) {
 		_, err := b.natsMsgHandler(msg)
@@ -90,7 +90,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 			Response:     make(chan *DeliveryAck),
 		}
 
-		b.Connectors.OutcomingSmtp <- &out
+		b.Connectors.Egress <- &out
 		// non-blocking wait for delivery ack
 		go func(out *SmtpEmail, natsMsg *nats.Msg) {
 			select {

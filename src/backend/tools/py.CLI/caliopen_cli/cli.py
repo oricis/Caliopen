@@ -33,6 +33,7 @@ def main(args=sys.argv):
     sp_import.add_argument('-e', dest='email')
     sp_import.add_argument('--contact-probability', dest='contact_probability',
                            default=1.0)
+    sp_import.add_argument('-t', dest='to')
 
     sp_import_vcard = subparsers.add_parser('import_vcard',
                                             help='import vcard')
@@ -79,12 +80,8 @@ def main(args=sys.argv):
 
     sp_inject = subparsers.add_parser('inject')
     sp_inject.set_defaults(func=inject_email)
-    sp_inject.add_argument('-f', dest='format', choices=['mbox', 'maildir'],
-                           default='mbox')
-    sp_inject.add_argument('-p', dest='import_path')
     sp_inject.add_argument('-e', dest='email')
-    sp_inject.add_argument('--host', dest='host', help='host to send mail to',
-                           default='localhost:25')
+    sp_inject.add_argument('-r', dest='recipient')
 
     sp_compute = subparsers.add_parser('compute', help='Launch basic compute')
     sp_compute.set_defaults(func=basic_compute)

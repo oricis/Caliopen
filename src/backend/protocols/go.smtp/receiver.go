@@ -32,7 +32,7 @@ func (lda *Lda) handler(peer Peer, ev SmtpEnvelope) error {
 	}
 	defer close(incoming.Response)
 
-	lda.brokerConnectors.IncomingSmtp <- incoming
+	lda.brokerConnectors.Ingress <- incoming
 
 	select {
 	case response := <-incoming.Response:

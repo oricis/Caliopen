@@ -35,11 +35,19 @@ const mapStateToProps = createSelector(
   }
 );
 
+// customStyles applied to Notification component
+const customStyles = {
+  'has-close': 'l-notification-center__notification--has-close',
+  'has-close-all': 'l-notification-center__notification--has-close-all',
+  item__message: 'l-notification-center__notification-item-message',
+};
+
 const notif = createNotification({
   message: 'Functionnality is not yet available',
   type: NOTIFICATION_TYPE_INFO,
   duration: 10000,
   canDismiss: true,
+  customStyles,
 });
 
 const onDeleteMessage = ({ message }) => dispatch =>

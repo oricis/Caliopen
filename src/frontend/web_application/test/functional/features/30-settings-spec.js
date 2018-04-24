@@ -3,8 +3,8 @@ const userUtil = require('../utils/user-util');
 describe('Settings', () => {
   const EC = protractor.ExpectedConditions;
 
-  beforeEach(() => {
-    userUtil.signin();
+  beforeAll(async () => {
+    await userUtil.signin();
   });
 
   it('Display form', async () => {

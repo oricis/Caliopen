@@ -1,0 +1,9 @@
+# this is the model of the json payload that must be sent to 'IMAPfetcher' topic on NATS's queue 'IMAPworkers'
+Order: fetch
+Userid: 1aae81ea-2f21-483e-8e68-b4fcf664df5a
+Remoteid: xxxx@xxxx.xxx
+# optional fields
+Server: imap.gmail.com:993
+Mailbox: INBOX
+Login: user@gmail.com
+Password: xxxx

@@ -56,32 +56,6 @@ func (cb *CassandraBackend) UpdateUserPasswordHash(user *User) error {
 	).Exec()
 }
 
-func (cb *CassandraBackend) GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error) {
-	user_identities := make(map[string]interface{})
-	err = cb.Session.Query(`SELECT local_identities from user where user_id = ?`, user_id).MapScan(user_identities)
-	if err != nil {
-		return
-	}
-	if user_identities["local_identities"] == nil {
-		err = errors.New("[cassandra] : local identities lookup returns empty")
-		return
-	}
-	for _, identifier := range user_identities["local_identities"].([]string) {
-		i := make(map[string]interface{})
-		cb.Session.Query(`SELECT * FROM local_identity where identifier = ?`, identifier).MapScan(i)
-		identity := LocalIdentity{
-			Display_name: i["display_name"].(string),
-			Identifier:   i["identifier"].(string),
-			Status:       i["status"].(string),
-			Type:         i["type"].(string),
-		}
-		identity.User_id.UnmarshalBinary(i["user_id"].(gocql.UUID).Bytes())
-		identities = append(identities, identity)
-	}
-
-	return
-}
-
 // UserByRecoveryEmail lookups table user_recovery_email to get the user_id for the given email
 // if a user_id is found, the user is fetched from user table.
 func (cb *CassandraBackend) UserByRecoveryEmail(email string) (user *User, err error) {

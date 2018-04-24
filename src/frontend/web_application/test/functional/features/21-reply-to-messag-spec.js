@@ -11,8 +11,12 @@ describe('Reply to message -', () => {
     console.log('page refreshed');
   };
 
-  beforeEach(async () => {
-    await userUtil.signin();
+  beforeAll(() => {
+    userUtil.signin();
+  });
+
+  beforeEach(() => {
+    home();
   });
 
   it('Automatically saves a draft', async () => {
@@ -23,7 +27,6 @@ describe('Reply to message -', () => {
     const text1 = 'Automatically saves a draft, then refresh.';
     const text2 = ' Automatically updates a draft, then refresh.';
 
-    await home();
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
     await element(discussion1Selector).click();
     await browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000);
@@ -54,7 +57,6 @@ describe('Reply to message -', () => {
       'Shut up and take my money'
     );
     const text3 = 'Add an answer to second discussion, don\'t wait and go to first one.';
-    await home();
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
     await element(discussion2Selector).click();
     await browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000);
@@ -85,7 +87,6 @@ describe('Reply to message -', () => {
       'Fry! Stay back! He\'s too powerful!'
     );
     const text1 = 'Force save a draft.';
-    await home();
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
     await element(discussion1Selector).click();
     await browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000);
@@ -102,30 +103,24 @@ describe('Reply to message -', () => {
     await browser.wait(EC.presenceOf(element(by.css('.m-message-list__list'))), 5 * 1000);
   });
 
-  it('Sends a draft', () => {
+  it('Sends a draft', async () => {
     const discussion1Selector = by.cssContainingText(
       '.s-timeline .s-message-item .s-message-item__topic .s-message-item__excerpt',
       'Fry! Stay back! He\'s too powerful!'
     );
     const text1 = 'yes I am!';
-    home()
-      .then(() => browser.wait(EC.presenceOf(element(by.css('.s-timeline .s-message-item'))), 5 * 1000))
-      .then(() => element(discussion1Selector).click())
-      .then(() => browser.wait(EC.presenceOf(element(by.css('.m-discussion-textarea__body'))), 5 * 1000))
-      .then(() => {
-        console.info('write msg');
-        const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
-        draftBodyElement1.sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), text1);
+    await browser.wait(EC.presenceOf(element(by.css('.s-timeline .s-message-item'))), 5 * 1000);
+    await element(discussion1Selector).click();
+    await browser.wait(EC.presenceOf(element(by.css('.m-discussion-textarea__body'))), 5 * 1000);
+    console.info('write msg');
+    const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
+    draftBodyElement1.sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), text1);
 
-        return element(by.cssContainingText('button', 'Send')).click();
-      })
-      .then(() => browser.sleep(1 * 1000))
-      .then(() => browser.wait(EC.presenceOf(element(by.css('.m-discussion-textarea__body'))), 5 * 1000))
-      .then(() => {
-        const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
-        expect(draftBodyElement1.getText()).toEqual('');
-        expect(element(by.cssContainingText('.m-message__body', text1)).isPresent()).toEqual(true);
-      })
-    ;
+    await element(by.cssContainingText('button', 'Send')).click();
+    await browser.sleep(1 * 1000);
+    await browser.wait(EC.presenceOf(element(by.css('.m-discussion-textarea__body'))), 5 * 1000);
+    const draftBodyElement2 = element(by.css('.m-discussion-textarea__body'));
+    expect(draftBodyElement2.getText()).toEqual('');
+    expect(element(by.cssContainingText('.m-message__body', text1)).isPresent()).toEqual(true);
   });
 });

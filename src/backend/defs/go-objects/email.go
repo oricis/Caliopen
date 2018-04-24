@@ -8,7 +8,7 @@ import (
 
 type (
 	// EmailMessage is a wrapper to handle the relationship
-	// between a raw email, its json representation and its Caliopen message counterpart
+	// between a raw email, its json representation and its Caliopen counterpart
 	EmailMessage struct {
 		Email      *Email
 		Email_json *EmailJson
@@ -20,6 +20,7 @@ type (
 		SmtpMailFrom []string     // from or for the smtp agent
 		SmtpRcpTo    []string     // from or for the smtp agent
 		Raw          bytes.Buffer // raw email (without the Bcc header)
+		ImapUid      uint32       // optional uid fetched from remote imap account
 		//TODO: add more infos from mta
 	}
 

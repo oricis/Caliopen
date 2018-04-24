@@ -7,10 +7,11 @@ User must be created before import
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
+import re
 from random import random
 import logging
 
-from email import message_from_file
+from email import message_from_string, message_from_file
 from mailbox import mbox, Maildir
 
 from caliopen_storage.exception import NotFound
@@ -31,7 +32,14 @@ def import_email(email, import_path, format, contact_probability,
 
     max_size = int(Configuration("global").get("object_store.db_size_limit"))
 
+    if 'to' in kwargs:
+        dest_email = kwargs['to']
+    else:
+        dest_email = email
+
     if format == 'maildir':
+        if dest_email != email:
+            raise Exception('Cannot change To email using maildir format')
         emails = Maildir(import_path, factory=message_from_file)
         mode = 'maildir'
     else:
@@ -44,14 +52,17 @@ def import_email(email, import_path, format, contact_probability,
                 try:
                     log.debug('Importing mail from file {}'.format(f))
                     with open('%s/%s' % (import_path, f)) as fh:
-                        emails[f] = message_from_file(fh)
+                        data = fh.read()
+                        data = re.sub('^To: (.*)', 'To: %s' % dest_email,
+                                      data, flags=re.MULTILINE)
+                        emails[f] = message_from_string(data)
                 except Exception as exc:
                     log.error('Error importing email {}'.format(exc))
         else:
             mode = 'mbox'
             emails = mbox(import_path)
 
-    user = User.by_local_identity(email)
+    user = User.by_local_identity(dest_email)
 
     log.info("Processing mode %s" % mode)
 
