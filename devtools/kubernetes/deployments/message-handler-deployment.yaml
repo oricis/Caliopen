@@ -18,4 +18,14 @@ spec:
       - image: message-handler:new
         name: message-handler
         imagePullPolicy: Never
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/caliopen
+      volumes:
+      - name: config-volume
+        configMap:
+          name: caliopen-config
+          items:
+          - key: caliopen.yaml
+            path: caliopen.yaml
       restartPolicy: Always

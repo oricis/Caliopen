@@ -22,4 +22,14 @@ spec:
         name: broker
         ports:
         - containerPort: 2525
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/caliopen
+      volumes:
+      - name: config-volume
+        configMap:
+          name: caliopen-config
+          items:
+          - key: lmtp.yaml
+            path: lmtp.yaml
       restartPolicy: Always

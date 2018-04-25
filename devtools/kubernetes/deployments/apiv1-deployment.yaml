@@ -23,4 +23,16 @@ spec:
         name: apiv1
         ports:
         - containerPort: 6543
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/caliopen
+      volumes:
+      - name: config-volume
+        configMap:
+          name: caliopen-config
+          items:
+          - key: apiv1.ini
+            path: apiv1.ini
+          - key: caliopen.yaml
+            path: caliopen.yaml
       restartPolicy: Always

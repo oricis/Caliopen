@@ -23,4 +23,14 @@ spec:
         name: api
         ports:
         - containerPort: 31415
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/caliopen
       restartPolicy: Always
+      volumes:
+      - name: config-volume
+        configMap:
+          name: caliopen-config
+          items:
+          - key: apiv2.yaml
+            path: apiv2.yaml
