@@ -26,7 +26,6 @@ spec:
         volumeMounts:
         - name: config-volume
           mountPath: /etc/caliopen
-      restartPolicy: Always
       volumes:
       - name: config-volume
         configMap:
@@ -34,3 +33,6 @@ spec:
           items:
           - key: apiv2.yaml
             path: apiv2.yaml
+          - key: swagger.json
+            path: swagger.json
+      restartPolicy: Always

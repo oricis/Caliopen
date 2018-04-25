@@ -35,4 +35,6 @@ spec:
             path: apiv1.ini
           - key: caliopen.yaml
             path: caliopen.yaml
+          - key: swagger.json
+            path: swagger.json
       restartPolicy: Always
