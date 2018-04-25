@@ -1,0 +1,14 @@
+$co-background-image__path: '../../../../backgrounds/' !default;
+
+$co-background-image__files: (
+  secure: 'co_bg_secure.jpg',
+  // public: 'co_bg_public.jpg',
+);
+
+@mixin o-background-image {
+  @each $context, $file in $co-background-image__files {
+    &--#{$context} {
+      background-image: url('#{$co-background-image__path}#{$file}');
+    }
+  }
+};
