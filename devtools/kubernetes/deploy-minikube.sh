@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+KUBE_DRIVER="none"
+BACKEND_CONF_DIR=$(pwd | rev | cut -d'/' --complement -f1-2 | rev)"/src/backend/configs"
+
 substitute_paths()
 {
 srcbackendpath=$(pwd | rev | cut -d'/' --complement -f1-2 | rev)"/src/backend"
@@ -28,7 +31,7 @@ fi
 command -v minikube >/dev/null 2>&1 || { echo "Minikube required but not installed. Aborting." >&2; exit 1; }
 command -v docker >/dev/null 2>&1 || { echo "Docker required but not installed. Aborting." >&2; exit 1; }
 
-minikube start --memory 6144 --cpus=2 --vm-driver=none
+minikube start --memory 6144 --cpus=2 --vm-driver=${KUBE_DRIVER}
 read -p "Running elasticsearch needs modification of kernel parameter vm.max_map_count, confirm action.(y/n)" -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -39,8 +42,14 @@ else
 fi
 
 echo
+echo "Configmap creation"
+echo "------------------"
+kubectl create configmap caliopen-config --from-file=${BACKEND_CONF_DIR}
+
+
+echo
 echo "Service creation:"
-echo "-----------------" 
+echo "-----------------"
 kubectl create -f ./services
 
 echo
