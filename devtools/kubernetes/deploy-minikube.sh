@@ -14,11 +14,11 @@ echo "------------"
 echo $srcbackendpath
 echo $devtoolsfixturespath
 
-sed -i 's@\$\$SRCBACKEND@'"$srcbackendpath"'@' deployments/cli-admin-creation.yaml \
-deployments/cli-setup.yaml deployments/cli-dev-creation.yaml \
-deployments/cli-mail-import.yaml deployments/minio-deployment.yaml
+sed -i 's@\$\$SRCBACKEND@'"$srcbackendpath"'@' jobs/cli-admin-creation.yaml \
+jobs/cli-setup.yaml jobs/cli-dev-creation.yaml \
+jobs/cli-mail-import.yaml deployments/minio-deployment.yaml
 
-sed -i 's@\$\$DEVTOOLSFIXTURES@'"$devtoolsfixturespath"'@' deployments/cli-mail-import.yaml
+sed -i 's@\$\$DEVTOOLSFIXTURES@'"$devtoolsfixturespath"'@' jobs/cli-mail-import.yaml
 }
 
 if [ "$EUID" -ne 0 ]
@@ -82,7 +82,7 @@ echo
 echo "Setting up storage:"
 echo "-------------------"
 echo -n "Wait."
-kubectl create -f deployments/cli-setup.yaml >/dev/null 2>&1
+kubectl create -f jobs/cli-setup.yaml >/dev/null 2>&1
 while [ $(kubectl get jobs | awk '/cli-setup/ { print $3 }') != "1" ]
 do
 	echo -n "."
@@ -93,7 +93,7 @@ echo
 echo "Creating admin:"
 echo "---------------"
 echo -n "Wait."
-kubectl create -f deployments/cli-admin-creation.yaml >/dev/null 2>&1
+kubectl create -f jobs/cli-admin-creation.yaml > /dev/null 2>&1
 while [ $(kubectl get jobs | awk '/cli-admin/ { print $3 }') != "1" ]
 do
 	echo -n "."
@@ -104,7 +104,7 @@ echo
 echo "Creating dev user:"
 echo "------------------"
 echo -n "Wait."
-kubectl create -f deployments/cli-dev-creation.yaml >/dev/null 2>&1
+kubectl create -f jobs/cli-dev-creation.yaml >/dev/null 2>&1
 while [ $(kubectl get jobs | awk '/cli-dev/ { print $3 }') != "1" ]
 do
 	echo -n "."
@@ -115,7 +115,7 @@ echo
 echo "Importing sample mail:"
 echo "-----------------------------"
 echo -n "Wait."
-kubectl create -f deployments/cli-mail-import.yaml >/dev/null 2>&1
+kubectl create -f jobs/cli-mail-import.yaml >/dev/null 2>&1
 res=$(kubectl get pods | awk '/cli-import/ { print $3 }' | awk 'FNR == 1')
 while [ $res != "Error" ] && [ $res != "Completed" ]
 do
