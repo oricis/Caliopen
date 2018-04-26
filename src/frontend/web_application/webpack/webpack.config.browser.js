@@ -21,7 +21,7 @@ const base = {
   output: {
     path: path.join(__dirname, '..', 'dist/server/public/assets'),
     filename: '[name].[chunkhash].js',
-    chunkFilename: '[name].js',
+    chunkFilename: '[name].[chunkhash].js',
     publicPath: PUBLIC_PATH,
   },
 };

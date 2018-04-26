@@ -14,7 +14,7 @@ const base = {
   output: {
     path: path.join(__dirname, '../dist/server/'),
     filename: 'index.js',
-    chunkFilename: '[name].js',
+    chunkFilename: '[name].[chunkhash].js',
     publicPath: '/',
   },
   externals: [
