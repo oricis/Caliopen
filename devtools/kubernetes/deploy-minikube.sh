@@ -45,7 +45,7 @@ echo
 echo "Configmap creation"
 echo "------------------"
 kubectl create configmap caliopen-config --from-file=${BACKEND_CONF_DIR}
-
+kubectl create -f configs/dns-config.yaml
 
 echo
 echo "Service creation:"
