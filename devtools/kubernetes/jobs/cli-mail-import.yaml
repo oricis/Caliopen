@@ -32,8 +32,8 @@ spec:
       - name: cli-volume
         hostPath:
           #ABSOLUTE PATH TO src/backend
-          path: /home/pablo/gandi/Caliopen/src/backend
+          path: $$SRCBACKEND
       - name: cli-mails
         hostPath:
           #ABSOLUTE PATH TO devtools/fixtures
-          path: /home/pablo/gandi/Caliopen/devtools/fixtures
+          path: $$DEVTOOLSFIXTURES
