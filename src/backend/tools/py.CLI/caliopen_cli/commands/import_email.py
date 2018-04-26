@@ -32,7 +32,7 @@ def import_email(email, import_path, format, contact_probability,
 
     max_size = int(Configuration("global").get("object_store.db_size_limit"))
 
-    if 'to' in kwargs:
+    if 'to' in kwargs and kwargs['to']:
         dest_email = kwargs['to']
     else:
         dest_email = email
