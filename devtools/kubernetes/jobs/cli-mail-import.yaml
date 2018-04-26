@@ -16,16 +16,24 @@ spec:
         - name: CQLENG_ALLOW_SCHEMA_MANAGEMENT
           value: "1"
         volumeMounts:
-        - mountPath: /srv/caliopen/src/backend/devtools
-          name: cli-volume
-        - mountPath: /srv/caliopen/src/backend/fixtures
-          name: cli-mails
+        - name: cli-volume
+          mountPath: /srv/caliopen/src/backend/devtools
+        - name: cli-mails
+          mountPath: /srv/caliopen/src/backend/fixtures          
+        - name: config-volume
+          mountPath: /etc/caliopen
       volumes:
+      - name: config-volume
+        configMap:
+          name: caliopen-config
+          items:
+          - key: caliopen.yaml
+            path: caliopen.yaml
       - name: cli-volume
         hostPath:
           #ABSOLUTE PATH TO src/backend
-          path: $$SRCBACKEND
+          path: /home/pablo/gandi/Caliopen/src/backend
       - name: cli-mails
         hostPath:
           #ABSOLUTE PATH TO devtools/fixtures
-          path: $$DEVTOOLSFIXTURES
+          path: /home/pablo/gandi/Caliopen/devtools/fixtures

@@ -30,5 +30,4 @@ spec:
       - name: cli-volume
         hostPath:
           #ABSOLUTE PATH TO src/backend
-          path: $$SRCBACKEND
-      restartPolicy: Always
+          path: /home/pablo/gandi/Caliopen/src/backend
