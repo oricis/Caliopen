@@ -6,20 +6,33 @@ spec:
   backoffLimit: 3
   template:
     spec:
-      restartPolicy: "Never"
+      restartPolicy: "OnFailure"
+      initContainers:
+        - name: git-clone
+          image: alpine/git
+          args:
+            - clone
+            - --single-branch
+            - https://github.com/CaliOpen/Caliopen.git
+            - /caliopen
+          securityContext:
+            runAsUser: 1
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          volumeMounts:
+          - name: caliopen-repo
+            mountPath: /caliopen
       containers:
       - image: cli:new
         name: cli-import
         imagePullPolicy: Never
-        args: ["import", "-e", "dev@caliopen.local", "-f", "mbox", "-p", "fixtures/mbox/dev@caliopen.local"]
+        args: ["import", "-e", "dev@caliopen.local", "-f", "mbox", "-p", "/caliopen/devtools/fixtures/mbox/dev@caliopen.local"]
         env:
         - name: CQLENG_ALLOW_SCHEMA_MANAGEMENT
           value: "1"
         volumeMounts:
-        - name: cli-volume
-          mountPath: /srv/caliopen/src/backend/devtools
-        - name: cli-mails
-          mountPath: /srv/caliopen/src/backend/fixtures          
+        - name: caliopen-repo
+          mountPath: /caliopen          
         - name: config-volume
           mountPath: /etc/caliopen
       volumes:
@@ -29,11 +42,5 @@ spec:
           items:
           - key: caliopen.yaml
             path: caliopen.yaml
-      - name: cli-volume
-        hostPath:
-          #ABSOLUTE PATH TO src/backend
-          path: $$SRCBACKEND
-      - name: cli-mails
-        hostPath:
-          #ABSOLUTE PATH TO devtools/fixtures
-          path: $$DEVTOOLSFIXTURES
+      - name: caliopen-repo
+        emptyDir: {}
