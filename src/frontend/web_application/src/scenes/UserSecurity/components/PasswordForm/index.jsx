@@ -25,7 +25,7 @@ class PasswordForm extends Component {
   }
 
   componentDidMount() {
-    import(/* webpackChunkName: "zxcvbn" */ 'zxcvbn').then((zxcvbn) => {
+    import(/* webpackChunkName: "zxcvbn" */ 'zxcvbn').then(({ default: zxcvbn }) => {
       this.zxcvbn = zxcvbn;
     });
   }

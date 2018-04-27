@@ -15,11 +15,11 @@ module.exports = {
   signout: () => { browser.get('/auth/signout'); },
   showAccount: () => {
     const userMenu = element(by.css('.l-header__user'));
-    userMenu.element(by.css('[data-toggle="co-user-menu"]')).click();
+    userMenu.element(by.css('.m-user-menu__dropdown-control')).click();
     userMenu.element(by.cssContainingText('.m-link', 'Account')).click();
-    userMenu.element(by.css('[data-toggle="co-user-menu"]')).click();
+    userMenu.element(by.css('.m-user-menu__dropdown-control')).click();
 
-    return browser.wait(EC.urlContains('settings/account'), 5 * 1000);
+    return browser.wait(EC.urlContains('user/profile'), 5 * 1000);
   },
   showSettings: (pageName = null) => element(by.css('.m-user-menu .m-dropdown__trigger')).click()
     .then(() => element(by.cssContainingText('.m-user-menu .m-link', 'Settings')).click())
