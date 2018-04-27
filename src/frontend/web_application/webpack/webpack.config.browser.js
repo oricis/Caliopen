@@ -10,6 +10,9 @@ const base = {
   target: 'web',
   entry: {
     app: [
+      'babel-polyfill',
+      'script-loader!jquery',
+      'script-loader!foundation-sites',
       path.join(__dirname, '../src/index.jsx'),
     ],
     vendor: [
@@ -21,7 +24,7 @@ const base = {
   output: {
     path: path.join(__dirname, '..', 'dist/server/public/assets'),
     filename: '[name].[chunkhash].js',
-    chunkFilename: '[name].js',
+    chunkFilename: '[name].[chunkhash].js',
     publicPath: PUBLIC_PATH,
   },
 };
