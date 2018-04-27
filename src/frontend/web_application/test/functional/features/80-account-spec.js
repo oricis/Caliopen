@@ -1,6 +1,6 @@
 const userUtil = require('../utils/user-util');
 
-fdescribe('Account', () => {
+describe('Account', () => {
   const EC = protractor.ExpectedConditions;
 
   beforeAll(async () => {
