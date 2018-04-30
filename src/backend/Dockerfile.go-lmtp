@@ -10,6 +10,6 @@ RUN govendor sync -v
 RUN go build github.com/CaliOpen/Caliopen/src/backend/protocols/go.smtp/cmd/caliopen_lmtpd
 
 WORKDIR /go/src/github.com/CaliOpen/Caliopen/src/backend/configs
-ENTRYPOINT ../caliopen_lmtpd serve -c lmtp
+ENTRYPOINT ../caliopen_lmtpd serve -c lmtp --configpath /etc/caliopen
 
 EXPOSE 2525
