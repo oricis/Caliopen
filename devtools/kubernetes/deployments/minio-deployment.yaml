@@ -14,7 +14,7 @@ spec:
         tier: backend
         app: minio
     spec:
-      containers:     
+      containers:
       - image: minio/minio
         name: minio
         args:
@@ -22,13 +22,13 @@ spec:
           - --address
           - :9090
           - -C
-          - /configs/minio
+          - /configs
           - /export
         ports:
         - containerPort: 9090
         volumeMounts:
         - mountPath: /configs
-          name: dev-configs
+          name: config-volume
         - mountPath: /export
           name: dev-store
       restartPolicy: Always
@@ -36,7 +36,9 @@ spec:
       - name: dev-store
         persistentVolumeClaim:
           claimName: dev-store
-      - name: dev-configs
-        hostPath:
-          #ABSOLUTE PATH TO SRC/BACKEND/CONFIGS
-          path: $$SRCBACKEND/configs
+      - name: config-volume
+        configMap:
+          name: minio-config
+          items:
+          - key: config.json
+            path: config.json
