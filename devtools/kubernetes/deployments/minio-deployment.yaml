@@ -22,13 +22,14 @@ spec:
           - --address
           - :9090
           - -C
-          - /configs
+          - /configs/minio
           - /export
         ports:
         - containerPort: 9090
         volumeMounts:
-        - mountPath: /configs
+        - mountPath: /configs/minio/config.json
           name: config-volume
+          subPath: config.json
         - mountPath: /export
           name: dev-store
       restartPolicy: Always
