@@ -19,10 +19,11 @@ type Message struct {
 	Body_html           string             `cql:"body_html"                json:"body_html"         `
 	Body_plain          string             `cql:"body_plain"               json:"body_plain"        `
 	Body_excerpt        string             `cql:"-"                        json:"excerpt"           `
-	Date                time.Time          `cql:"date"                     json:"date"                                         formatter:"RFC3339Milli"`
-	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete"                                  formatter:"RFC3339Milli"`
-	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                  formatter:"RFC3339Milli"`
-	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id,omitempty"                                formatter:"rfc4122"`
+	Date                time.Time          `cql:"date"                     json:"date"                                                      formatter:"RFC3339Milli"`
+	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete,omitempty"                                     formatter:"RFC3339Milli"`
+	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                               formatter:"RFC3339Milli"`
+	Date_update         time.Time          `cql:"date_update"              json:"date_update"                         frontend:"omit"       formatter:"RFC3339Milli"`
+	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id,omitempty"                                   formatter:"rfc4122"`
 	External_references ExternalReferences `cql:"external_references"      json:"external_references,omitempty"`
 	Identities          []Identity         `cql:"identities"               json:"identities,omitempty"       `
 	Importance_level    int32              `cql:"importance_level"         json:"importance_level" `
@@ -30,16 +31,16 @@ type Message struct {
 	Is_draft            bool               `cql:"is_draft"                 json:"is_draft"         `
 	Is_unread           bool               `cql:"is_unread"                json:"is_unread"        `
 	Is_received         bool               `cql:"is_received"              json:"is_received"      `
-	Message_id          UUID               `cql:"message_id"               json:"message_id,omitempty"                                   formatter:"rfc4122"`
+	Message_id          UUID               `cql:"message_id"               json:"message_id,omitempty"                                      formatter:"rfc4122"`
 	Parent_id           UUID               `cql:"parent_id"                json:"parent_id,omitempty"        `
 	Participants        []Participant      `cql:"participants"             json:"participants,omitempty"     `
 	Privacy_features    *PrivacyFeatures   `cql:"privacy_features"         json:"privacy_features,omitempty" `
 	PrivacyIndex        *PrivacyIndex      `cql:"pi"                       json:"pi,omitempty"`
-	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id,omitempty"                                   formatter:"rfc4122"`
+	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id,omitempty"                                      formatter:"rfc4122"`
 	Subject             string             `cql:"subject"                  json:"subject"          `
 	Tags                []string           `cql:"tagnames"                 json:"tags,omitempty"                     patch:"system" `
 	Type                string             `cql:"type"                     json:"type,omitempty"             `
-	User_id             UUID               `cql:"user_id"                  json:"user_id,omitempty"                  elastic:"omit"      formatter:"rfc4122"`
+	User_id             UUID               `cql:"user_id"                  json:"user_id,omitempty"                  elastic:"omit"         formatter:"rfc4122"`
 }
 
 // bespoke implementation of the json.Marshaller interface
@@ -168,6 +169,9 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 	if date, ok := input["date_insert"]; ok {
 		msg.Date_insert, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
+	if date, ok := input["date_update"]; ok {
+		msg.Date_update, _ = time.Parse(time.RFC3339Nano, date.(string))
+	}
 	if discussion_id, ok := input["discussion_id"].(string); ok {
 		if id, err := uuid.FromString(discussion_id); err == nil {
 			msg.Discussion_id.UnmarshalBinary(id.Bytes())
@@ -294,6 +298,9 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	}
 	if date_insert, ok := input["date_insert"].(time.Time); ok {
 		msg.Date_insert = date_insert
+	}
+	if date_update, ok := input["date_update"].(time.Time); ok {
+		msg.Date_update = date_update
 	}
 	if discussion_id, ok := input["discussion_id"].(gocql.UUID); ok {
 		msg.Discussion_id.UnmarshalBinary(discussion_id.Bytes())
@@ -433,6 +440,10 @@ func (msg *Message) MarshallNew(args ...interface{}) {
 
 	if msg.Date_insert.IsZero() {
 		msg.Date_insert = time.Now()
+	}
+
+	if msg.Date_update.IsZero() {
+		msg.Date_update = time.Now()
 	}
 
 	for i, _ := range msg.Attachments {
