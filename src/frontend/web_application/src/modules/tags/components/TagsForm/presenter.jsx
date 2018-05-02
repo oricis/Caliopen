@@ -117,6 +117,7 @@ class TagsForm extends Component {
   }
 
   createHandleAddTag = tag => async () => {
+    this.handleSearchChange('');
     this.setState(
       prevState => ({
         tags: [
@@ -126,7 +127,6 @@ class TagsForm extends Component {
       }),
       async () => {
         await this.updateTags();
-        this.handleSearchChange('');
       }
     );
   }
