@@ -25,6 +25,9 @@ function getMarkup({ store, context, location }) {
 
     return [
       { key: '</title>', value: `${documentTitle}</title>` },
+      // XXX: the serialize here is vulnerable to xss. We are not affected since we have absolutly
+      // no prefetch or variable injection
+      // cf. https://github.com/yahoo/serialize-javascript#automatic-escaping-of-html-characters
       { key: '</head>', value: `<script>window.__STORE__ = ${JSON.stringify(initialState)};</script></head>` },
       { key: '%MARKUP%', value: markup },
     ].reduce((str, current) => str.replace(current.key, current.value), template);
