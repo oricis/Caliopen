@@ -1,18 +1,18 @@
-##Caliopen « Patch » RFC
+# Caliopen « Patch » RFC
 
-##### Abstract
+## Abstract
 This specification defines the format of the JSON body that should be sent to the REST API to update a resource with the PATCH verb.
 
-##### Introduction
+## Introduction
 This specification extends [RFC 7396](https://tools.ietf.org/html/rfc7396) by adding a `current_state` field to the JSON patch object.
 
-##### Json patch object specification
+## Json patch object specification
 The JSON should indicate the fields to be changed, with the desired value for these fields, as describe in RFC 7396  
 **plus**  
 a field called `current_state`.  
 `current_state` is an object that describes the values of the fields as seen by the client, before the patch application.
 
-### Examples :
+## Examples :
 Given the following document (client side) :
 ```
 {
@@ -35,7 +35,7 @@ Given the following document (client side) :
   "avatar": "avatar.png"
 }
 ```
-To change the email address and the title, send the JSON below with `PATCH` verb on route `/contacts/{contact_id}` : 
+To change the email address and the title, send the JSON below with `PATCH` verb on route `/contacts/{contact_id}` :
 ```
 {
   "title": "New Title",

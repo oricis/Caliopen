@@ -1,9 +1,11 @@
-# Go development for CaliOpen
+# Native installation of Caliopen
+
+## Go developments for CaliOpen
 
 As Caliopen use a mono repository structure and use many languages,
 the setup for a go development environment need some specific considerations.
 
-## A specific GOPATH is privilegied
+### A specific GOPATH is privilegied
 
 We use [govendor](https://github.com/kardianos/govendor) for external dependencies
 it's better to have a specific GOPATH to develop on Caliopen.
@@ -30,7 +32,7 @@ NOTE: you will need to setup frequently this GOPATH, add an alias into your shel
 alias tocaliopen="export GOPATH=$HOME/caliopen; cd $GOPATH/src/github.com/CaliOpen"
 ```
 
-## Setup external dependencies
+### Setup external dependencies
 
 Using govendor external dependencies will be fetch into your Caliopen repository
 
@@ -40,11 +42,11 @@ go get -u github.com/kardianos/govendor
 govendor sync -v
 ```
 
-Directory $GOPATH/src/github.com/CaliOpen/Caliopen/src/backend/vendor contain
+Directory `$GOPATH/src/github.com/CaliOpen/Caliopen/src/backend/vendor` contain
 all external golang dependencies for all CaliOpen services written in this
 language.
 
-## Build
+### Build
 
 Refer to devtools/package.yaml file for services in go language and their
 build command
@@ -56,3 +58,7 @@ go build github.com/CaliOpen/Caliopen/src/backend/protocols/go.smtp/cmd/caliopen
 ```
 
 Will produce a caliopen_lmtp binary from where this command is launched inside the $GOPATH
+
+## Python developments for CaliOpen
+
+**// FIXME**

@@ -1,20 +1,20 @@
-#### _Username_ specifications for Caliopen accounts
+# _Username_ specifications for Caliopen accounts
 
 This document describes valid **username** for the creation of an account within Caliopen instances.
 
-#### Preambule
+## Preambule
 Caliopen's users should be able to take (almost) any username they want to, as long as this username could make the local-part of an email address.  
 The current specification is based on RFC 5322 for the Internet Message Format, but it does not allow "comment" and "quoted-string" lexical tokens. Consequently, some special characters are not allowed (see below).
 
-##### Definition :
-An **username** is the unique identifier an user makes use of to create an account within a Caliopen instance. 
+### Definition :
+An **username** is the unique identifier an user makes use of to create an account within a Caliopen instance.
 Username is an identifier for the user's account : it is not necessarily the user's real name, or email, or nickname… It will be used as a credential for the purpose of identifying the user when logging in Caliopen. The username is unique within a Caliopen instance.  
 The **username** could form the _local-part_ of an email address within Caliopen's domain. (i.e. : _<username@caliopen.org>_)
 
 NB : once an user has chosen an username, she/he will be able to create or add some « identities », that are made of : first name, family name, email, etc.
 
-##### Format :
- 
+## Format :
+
 * Username are made of utf-8 "characters".  
 By "character" we mean a single Unicode grapheme, encoded as a single Unicode code point.
 * Username **is not** case sensitive. (means that all case variations of the username will be considered as forming the same username)
@@ -42,18 +42,20 @@ By "character" we mean a single Unicode grapheme, encoded as a single Unicode co
     * `\ ` (U+005C)
     * `]` (U+005D)
 
-##### Technical overview
+## Technical overview
 On a technical point of view, `username` is a string of utf-8 characters. In other words it is an array of _Unicode code point_, meaning that each character is encoded as a single Unicode code point. For example, the character `à` (grave accent) should be encoded as U+00E0, and **not** as the sequence of the two code points U+0061 (a) and U+0300 (\`).  
 The regex engines used to validate the username string must be unicode aware/compliant. This means that the regex engines **must** make use of _Single Unicode Grapheme_, and must be able to handle _Unicode property escapes_ patterns (i.e.: `\p{category}`).
 
-##### Regex :
+## Regex :
 Here is the general utf-8 PCRE regex implementation of the username format rules described above :
 ```
 ^[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]|[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]])){1,40}((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]])|([^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]))$
 ```
 
-##### Languages implementations :
-###### Go
+## Languages implementations :
+
+### Go
+
 The PCRE regex is directly used, thanks to the `regexp` standard package.
 ```
 package main
@@ -66,7 +68,7 @@ import (
 func main() {
     var re = regexp.MustCompile(`^[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]|[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]])){1,40}((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]])|([^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]))$`)
     var str = `John.Dœuf`
-    
+
     for i, match := range re.FindAllString(str, -1) {
         fmt.Println(match, "found at index", i)
         return
@@ -74,10 +76,11 @@ func main() {
     fmt.Println("not found")
 }
 ```
-###### Python
+### Python
 Must install the "regex" package : `pip install regex`  
-Must replace the `\x{0000}` unicode reference pattern by `\u0000`  
-###### Note: for Python 2.7 compatibility, use ur"" to prefix the regex and u"" to prefix the test string and substitution.
+Must replace the `\x{0000}` unicode reference pattern by `\u0000`
+
+_Note: for Python 2.7 compatibility, use ur"" to prefix the regex and u"" to prefix the test string and substitution._
 
 ```
 # coding=utf8
@@ -95,7 +98,8 @@ if match is not None:
 else:
     print("INVALID username")
 ```
-###### Javascript
+### Javascript
+
 Built-in ECMAScript 6 regex implementation does not support the Unicode property escapes syntax. There are currently two options :
 
 * Use a library such as [XRegExp](https://github.com/slevithan/xregexp) to create the regular expressions at run-time:  
