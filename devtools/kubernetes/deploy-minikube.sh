@@ -3,24 +3,9 @@ set -e
 
 KUBE_DRIVER="none"
 BACKEND_CONF_DIR=$(pwd | rev | cut -d'/' --complement -f1-2 | rev)"/src/backend/configs"
+MINIO_CONF_DIR=$(pwd | rev | cut -d'/' --complement -f1-2 | rev)"/src/backend/configs/minio"
 
-substitute_paths()
-{
-srcbackendpath=$(pwd | rev | cut -d'/' --complement -f1-2 | rev)"/src/backend"
-devtoolsfixturespath=$(pwd | rev | cut -d'/' --complement -f1 | rev)"/fixtures"
-echo
-echo "Paths found:"
-echo "------------"
-echo $srcbackendpath
-echo $devtoolsfixturespath
-
-sed -i 's@\$\$SRCBACKEND@'"$srcbackendpath"'@' jobs/cli-admin-creation.yaml \
-jobs/cli-setup.yaml jobs/cli-dev-creation.yaml \
-jobs/cli-mail-import.yaml deployments/minio-deployment.yaml
-
-sed -i 's@\$\$DEVTOOLSFIXTURES@'"$devtoolsfixturespath"'@' jobs/cli-mail-import.yaml
-}
-
+#If the user is running the stack with virtualbox he does not need root
 if [ "$EUID" -ne 0 ]
   then echo "Minikube needs to be run as root for local kubernetes deployment."
   exit
@@ -45,6 +30,7 @@ echo
 echo "Configmap creation"
 echo "------------------"
 kubectl create configmap caliopen-config --from-file=${BACKEND_CONF_DIR}
+kubectl create configmap minio-config --from-file=${MINIO_CONF_DIR}
 kubectl create -f configs/dns-config.yaml
 
 echo
@@ -56,8 +42,6 @@ echo
 echo "Persistent storage creation:"
 echo "----------------------------"
 kubectl create  -f ./volumeclaims
-
-substitute_paths
 
 echo
 echo "Basic deployments creation:"
