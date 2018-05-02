@@ -22,7 +22,7 @@ type Message struct {
 	Date                time.Time          `cql:"date"                     json:"date"                                                      formatter:"RFC3339Milli"`
 	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete,omitempty"                                     formatter:"RFC3339Milli"`
 	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                               formatter:"RFC3339Milli"`
-	Date_update         time.Time          `cql:"date_update"              json:"date_update"                         frontend:"omit"       formatter:"RFC3339Milli"`
+	Date_sort           time.Time          `cql:"date_sort"                json:"date_sort"                                                 formatter:"RFC3339Milli"`
 	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id,omitempty"                                   formatter:"rfc4122"`
 	External_references ExternalReferences `cql:"external_references"      json:"external_references,omitempty"`
 	Identities          []Identity         `cql:"identities"               json:"identities,omitempty"       `
@@ -169,8 +169,8 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 	if date, ok := input["date_insert"]; ok {
 		msg.Date_insert, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
-	if date, ok := input["date_update"]; ok {
-		msg.Date_update, _ = time.Parse(time.RFC3339Nano, date.(string))
+	if date, ok := input["date_sort"]; ok {
+		msg.Date_sort, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
 	if discussion_id, ok := input["discussion_id"].(string); ok {
 		if id, err := uuid.FromString(discussion_id); err == nil {
@@ -299,8 +299,8 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	if date_insert, ok := input["date_insert"].(time.Time); ok {
 		msg.Date_insert = date_insert
 	}
-	if date_update, ok := input["date_update"].(time.Time); ok {
-		msg.Date_update = date_update
+	if date_sort, ok := input["date_sort"].(time.Time); ok {
+		msg.Date_sort = date_sort
 	}
 	if discussion_id, ok := input["discussion_id"].(gocql.UUID); ok {
 		msg.Discussion_id.UnmarshalBinary(discussion_id.Bytes())
@@ -373,7 +373,7 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 		pi := PrivacyIndex{}
 		pi.Comportment, _ = i_pi["comportment"].(int)
 		pi.Context, _ = i_pi["context"].(int)
-		pi.DateUpdate, _ = i_pi["date_update"].(time.Time)
+		pi.DateUpdate, _ = i_pi["date_sort"].(time.Time)
 		pi.Technic, _ = i_pi["technic"].(int)
 		pi.Version, _ = i_pi["version"].(int)
 		msg.PrivacyIndex = &pi
@@ -442,8 +442,8 @@ func (msg *Message) MarshallNew(args ...interface{}) {
 		msg.Date_insert = time.Now()
 	}
 
-	if msg.Date_update.IsZero() {
-		msg.Date_update = time.Now()
+	if msg.Date_sort.IsZero() {
+		msg.Date_sort = time.Now()
 	}
 
 	for i, _ := range msg.Attachments {
