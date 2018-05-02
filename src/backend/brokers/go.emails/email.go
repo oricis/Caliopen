@@ -83,6 +83,7 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 	}
 
 	em.Message.Date = time.Now()
+	em.Message.Date_sort = em.Message.Date
 	m.SetHeader("Date", em.Message.Date.Format(time.RFC1123Z))
 
 	// sha256 internal message id to form external message id
@@ -210,6 +211,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	fields["Raw_msg_id"] = m.Raw_msg_id.String()
 	fields["Is_draft"] = false
 	fields["Date"] = ack.EmailMessage.Message.Date
+	fields["Date_sort"] = ack.EmailMessage.Message.Date_sort
 	fields["Attachments"] = ack.EmailMessage.Message.Attachments
 	fields["External_references"] = ack.EmailMessage.Message.External_references
 	err = b.Store.UpdateMessage(ack.EmailMessage.Message, fields)
