@@ -117,7 +117,8 @@ class Message(ObjectIndexable):
         message.is_draft = True
         message.is_received = False
         message.type = "email"  # TODO: type handling inferred from participants
-        message.date = message.date_insert = datetime.datetime.now(tz=pytz.utc)
+        message.date = message.date_sort = message.date_insert = \
+            datetime.datetime.now(tz=pytz.utc)
 
         try:
             message.marshall_db()
@@ -205,7 +206,9 @@ class Message(ObjectIndexable):
 
         # date should reflect last edit time
         current_state["date"] = self.date
-        validated_params["date"] = datetime.datetime.now(tz=pytz.utc)
+        current_state["date_sort"] = self.date_sort
+        validated_params["date"] = validated_params["date_sort"] =\
+            datetime.datetime.now(tz=pytz.utc)
 
         validated_params["current_state"] = current_state
         try:
