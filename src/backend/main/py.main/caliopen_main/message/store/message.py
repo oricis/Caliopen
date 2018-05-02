@@ -28,6 +28,7 @@ class Message(BaseModel, IndexedModelMixin):
     date = columns.DateTime()
     date_delete = columns.DateTime()
     date_insert = columns.DateTime()
+    date_sort = columns.DateTime()
     discussion_id = columns.UUID()
     external_references = columns.UserDefinedType(ExternalReferences)
     identities = columns.List(columns.UserDefinedType(Identity))

@@ -45,6 +45,7 @@ class Message(ObjectIndexable):
         'date': datetime.datetime,
         'date_delete': datetime.datetime,
         'date_insert': datetime.datetime,
+        'date_sort': datetime.datetime,
         'discussion_id': UUID,
         'external_references': ExternalReferences,
         'identities': [Identity],
