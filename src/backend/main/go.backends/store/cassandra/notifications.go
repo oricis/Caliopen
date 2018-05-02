@@ -85,7 +85,7 @@ func (cb *CassandraBackend) DeleteNotifications(userId string, until time.Time) 
 	query_builder.WriteString(`DELETE FROM notification WHERE user_id = ?`)
 
 	if !until.IsZero() {
-		query_builder.WriteString(` AND notif_id < maxTimeuuid(?)`)
+		query_builder.WriteString(` AND notif_id > minTimeuuid(0) AND notif_id < maxTimeuuid(?)`)
 		values = append(values, until)
 	}
 
