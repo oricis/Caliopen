@@ -6,7 +6,7 @@ Here you will find tools for CaliOpen developments.
 There is many possibles scenarios for setup of an environment development, depending on what you want to do.
 
 * [Native](./native-installation.md) for backend development purposes (golang & python)
-* [Semi-dockerized](./semi-dockerized.md) for frontend (js & react)
+* [Frontend development](./frontend-development.md) (js & react)
 
 ## Tools
 
