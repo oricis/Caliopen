@@ -2,17 +2,30 @@ const { SpecReporter } = require('jasmine-spec-reporter');
 
 const cfg = {
   SELENIUM_PROMISE_MANAGER: true,
-  capabilities: {
-    // firefox
-    browserName: 'chrome',
-    maxInstances: 1,
-    chromeOptions: {
-      args: ['lang=en-US'],
-      prefs: {
-        intl: { accept_languages: 'en-US' },
+  multiCapabilities: [
+    {
+      browserName: 'chrome',
+      maxInstances: 1,
+      chromeOptions: {
+        args: ['lang=en-US'],
+        prefs: {
+          intl: { accept_languages: 'en-US' },
+        },
       },
     },
-  },
+    // {
+    //   browserName: 'firefox',
+    //   maxInstances: 1,
+    //   marionette: false,
+    //   'moz:firefoxOptions': {
+    //     // can't get this working :(
+    //     args: ['--UILocale en', '--safe-mode'],
+    //     prefs: {
+    //       intl: { accept_languages: 'en-US' },
+    //     },
+    //   },
+    // },
+  ],
   specs: ['./features/**/*-spec.js'],
   jasmineNodeOpts: {
     showColors: true,
@@ -22,6 +35,8 @@ const cfg = {
   baseUrl: 'http://localhost:4000/',
   onPrepare: () => {
     browser.ignoreSynchronization = true;
+    browser.manage().window().setSize(1024, 768);
+
     jasmine.getEnv().addReporter(new SpecReporter({
       suite: {
         displayNumber: true,

@@ -3,7 +3,6 @@ const { switchApp, home } = require('../utils/navigation');
 
 describe('Tag', () => {
   const EC = protractor.ExpectedConditions;
-  const subject = "It's okay, Bender. I like cooking too";
 
   beforeAll(async () => {
     await signin();
@@ -13,10 +12,26 @@ describe('Tag', () => {
     await home();
   });
 
+  it('Manage tags on a message of a discussion', async () => {
+    // make sure the discussion is only one message because of scroll and saucelabs that will try to click on header instead of Tag
+    const content = 'Shut up and take my money! Leela, are you alright?';
+    await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
+    await element(by.cssContainingText('.s-timeline .s-message-item .s-message-item__topic .s-message-item__excerpt', content)).click();
+    await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-message__container', content))), 5 * 1000);
+    console.log('click tag');
+    await browser.executeScript('window.scrollTo(0, 350);');
+    await element(by.cssContainingText('.m-message__container', content)).element(by.cssContainingText('.m-message-actions-container__action', 'Tags')).click();
+    expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true);
+    await element(by.css('.m-modal__close')).click();
+  });
+
   it('Manage tags on timeline', async () => {
     const tagName = 'Mon tag';
 
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
+    // XXX: force scroll du to call-to-action
+    await browser.executeScript('window.scrollTo(0, document.body.scrollHeight);');
+
     const messageElement = element(by.cssContainingText('.s-message-item', 'Fry! Stay back! He\'s too powerful!'));
     await messageElement.element(by.css('.s-message-item__col-select input[type=checkbox]')).click();
 
@@ -25,18 +40,17 @@ describe('Tag', () => {
     expect(element.all(by.css('.m-tags-form__section .m-tag-item')).count()).toEqual(2);
     await browser.element(by.css('.m-tags-form .m-input-text')).sendKeys('am');
     await browser.element(by.cssContainingText('.m-tags-form__found-tag', 'Amphibians')).click();
-    await browser.sleep(1);
-    expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Amphibians')).isPresent()).toEqual(true);
+    await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Amphibians'))), 5 * 1000);
+
     await browser.element(by.css('.m-tags-form .m-input-text')).sendKeys(tagName);
     await browser.element(by.css('.m-tags-search__button[aria-label=Add]')).click();
     await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 8 * 1000);
+
     await element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).element(by.css('[aria-label="Remove"]')).click();
-    await browser.sleep(1);
-    expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).isPresent()).toEqual(false);
-    await browser.sleep(1);
+    await browser.wait(EC.stalenessOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox'))), 5 * 1000);
+
     await element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).element(by.css('[aria-label="Remove"]')).click();
-    await browser.sleep(1);
-    expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).isPresent()).toEqual(false);
+    await browser.wait(EC.stalenessOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 5 * 1000);
     await browser.wait(EC.stalenessOf(messageElement.element(by.cssContainingText('.s-message-item__tags', tagName))), 5 * 1000);
     await element(by.css('.m-modal__close')).click();
   });
@@ -44,6 +58,8 @@ describe('Tag', () => {
   it('Manage tags for multiple messages on timeline', async () => {
     const tagName = 'Mon tag';
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
+    await browser.executeScript('window.scrollTo(0, document.body.scrollHeight);');
+
     const messageElement1 = element(by.cssContainingText('.s-message-item', 'zoidberg'));
     const messageElement2 = element(by.cssContainingText('.s-message-item', 'Fry! Stay back!'));
 
@@ -64,15 +80,6 @@ describe('Tag', () => {
     await element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).element(by.css('[aria-label="Remove"]')).click();
     await browser.sleep(1);
     expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).isPresent()).toEqual(false);
-    await element(by.css('.m-modal__close')).click();
-  });
-
-  it('Manage tags on a message of a discussion', async () => {
-    await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
-    await element(by.cssContainingText('.s-timeline .s-message-item .s-message-item__topic .s-message-item__subject', subject)).click();
-    await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-message__container', subject))), 5 * 1000);
-    await element(by.cssContainingText('.m-message__container', subject)).element(by.cssContainingText('.m-message-actions-container__action', 'Tags')).click();
-    expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true);
     await element(by.css('.m-modal__close')).click();
   });
 
