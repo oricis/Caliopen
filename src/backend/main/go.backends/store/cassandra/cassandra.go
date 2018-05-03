@@ -18,6 +18,7 @@ type (
 		Session      *gocql.Session
 		IKeyspace    gocassa.KeySpace //gocassa keyspace interface
 		ObjectsStore object_store.ObjectsStore
+		Timeout      time.Duration
 	}
 
 	CassandraConfig struct {
@@ -36,6 +37,8 @@ type (
 	}
 )
 
+const DefaultTimeout = time.Second * 2
+
 func InitializeCassandraBackend(config CassandraConfig) (cb *CassandraBackend, err error) {
 	cb = new(CassandraBackend)
 	err = cb.initialize(config)
@@ -45,6 +48,7 @@ func InitializeCassandraBackend(config CassandraConfig) (cb *CassandraBackend, e
 func (cb *CassandraBackend) initialize(config CassandraConfig) (err error) {
 
 	cb.CassandraConfig = config
+	cb.Timeout = DefaultTimeout
 	// connect to the cluster
 	cluster := gocql.NewCluster(cb.CassandraConfig.Hosts...)
 	cluster.Keyspace = cb.Keyspace

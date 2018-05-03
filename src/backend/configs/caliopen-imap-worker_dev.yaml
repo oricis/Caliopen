@@ -32,3 +32,6 @@ LDAConfig:
   #messaging system
   in_topic: inboundSMTP # NATS topic to listen to
   nats_queue: SMTPqueue
+  # notifications
+  NotifierConfig:
+    admin_username: admin                                # username on whose behalf notifiers will act. This admin user must have been created before by other means.

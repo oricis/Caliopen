@@ -110,12 +110,13 @@ func (i *Identity) MarshallNew(...interface{}) {
 // SetDefaultInfos fill Infos properties map with default keys and values
 func (ri *RemoteIdentity) SetDefaultInfos() {
 	(*ri).Infos = map[string]string{
-		"lastseenuid": "",
-		"lastsync":    "", // RFC3339 date string
-		"password":    "", // credentials, SHOULD NOT BE HERE !! TODO.
-		"server":      "", // server hostname[|port]
-		"uidvalidity": "", // uidvalidity to invalidate data if needed (see RFC4549#section-4.1)
-		"username":    "", // credentials
+		"lastseenuid":  "",
+		"lastsync":     "",   // RFC3339 date string
+		"password":     "",   // credentials, SHOULD NOT BE HERE !! TODO.
+		"pollinterval": "15", // how often remote account should be polled, in minutes.
+		"server":       "",   // server hostname[|port]
+		"uidvalidity":  "",   // uidvalidity to invalidate data if needed (see RFC4549#section-4.1)
+		"username":     "",   // credentials
 	}
 }
 

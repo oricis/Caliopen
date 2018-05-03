@@ -10,9 +10,11 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
 	"gopkg.in/oleiade/reflections.v1"
+	"time"
 )
 
 func (cb *CassandraBackend) GetLocalsIdentities(user_id string) (identities []LocalIdentity, err error) {
@@ -89,4 +91,32 @@ func (cb *CassandraBackend) UpdateRemoteIdentity(rId *RemoteIdentity, fields map
 
 	return ridT.Where(gocassa.Eq("user_id", rId.UserId.String()), gocassa.Eq("identifier", rId.Identifier)).
 		Update(cassaFields).Run()
+}
+
+func (cb *CassandraBackend) RetrieveAllRemotes() (<-chan *RemoteIdentity, error) {
+
+	ch := make(chan *RemoteIdentity)
+	go func(cb *CassandraBackend, ch chan *RemoteIdentity) {
+		iter := cb.Session.Query(`SELECT * from remote_identity`).Iter()
+
+		for {
+			//new map each iteration
+			remoteID := make(map[string]interface{})
+			if !iter.MapScan(remoteID) {
+				break
+			}
+			rId := new(RemoteIdentity)
+			rId.SetDefaultInfos()
+			rId.UnmarshalCQLMap(remoteID)
+			select {
+			case ch <- rId:
+			case <-time.After(cb.Timeout):
+				logrus.Warn("[RetrieveAllRemote] write timeout on chan")
+			}
+		}
+
+		close(ch)
+	}(cb, ch)
+
+	return ch, nil
 }
