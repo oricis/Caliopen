@@ -1,5 +1,5 @@
 from .shell import shell
-from .setup_storage import setup_storage
+from .setup import setup
 from .create_user import create_user
 from .import_email import import_email
 from .inject_email import inject_email
@@ -9,4 +9,3 @@ from .dump_indexes_mappings import dump_indexes
 from .migrate_index import migrate_index
 from .compute import basic_compute
 from .reserved_names import import_reserved_names
-from .set_notifications_ttls import set_notifications_ttls

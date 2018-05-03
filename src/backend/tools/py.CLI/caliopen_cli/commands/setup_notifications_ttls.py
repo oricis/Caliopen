@@ -6,7 +6,7 @@ import logging
 log = logging.getLogger(__name__)
 
 
-def set_notifications_ttls():
+def setup_notifications_ttls():
     """Fill up table `notification_ttl` with default ttls in seconds"""
 
     from caliopen_main.notification.core import NotificationTtl
