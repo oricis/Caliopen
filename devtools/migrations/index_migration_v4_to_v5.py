@@ -70,9 +70,10 @@ class IndexMigrator(object):
                 continue
 
             try:
-                self.fill_date_sort(index)
                 self.move_alias(alias, index, new_index)
                 self.delete_old_index(index)
+                self.es_client.indices.refresh(alias)
+                self.fill_date_sort(alias)
             except Exception:
                 errors += 1
                 continue
@@ -147,7 +148,7 @@ class IndexMigrator(object):
                 "dest": {
                     "index": new
                 }
-            })
+            }, wait_for_completion=True)
         except Exception as exc:
             log.error(
                 "failed to copy index {} to {} : {}".format(old, new, exc))
@@ -175,8 +176,8 @@ class IndexMigrator(object):
 
     def fill_date_sort(self, index):
         """
-        fill_date_sort iterates over all message docs in index
-        and copies either message's date or date_insert into date_sort,
+        fill_date_sort updates all message docs in index
+        with either message's date or date_insert into date_sort,
         depending of message being received or sent
 
         :param index: Elasticsearch index
