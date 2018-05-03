@@ -18,13 +18,15 @@ spec:
         app: broker
     spec:
       containers:
-      - image: broker:new
+      - image: registry.caliopen.org:5043/broker
         name: broker
         ports:
         - containerPort: 2525
         volumeMounts:
         - name: config-volume
           mountPath: /etc/caliopen
+      imagePullSecrets:
+        - name: registrypullsecret
       volumes:
       - name: config-volume
         configMap:

@@ -18,14 +18,15 @@ spec:
         app: api
     spec:
       containers:
-      - image: api:new
-        imagePullPolicy: Never
+      - image: registry.caliopen.org:5043/api
         name: api
         ports:
         - containerPort: 31415
         volumeMounts:
         - name: config-volume
           mountPath: /etc/caliopen
+      imagePullSecrets:
+        - name: registrypullsecret
       volumes:
       - name: config-volume
         configMap:

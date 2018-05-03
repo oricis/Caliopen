@@ -18,14 +18,15 @@ spec:
         app: apiv1
     spec:
       containers:
-      - image: apiv1:new
-        imagePullPolicy: Never
+      - image: registry.caliopen.org:5043/apiv1
         name: apiv1
         ports:
         - containerPort: 6543
         volumeMounts:
           - name: config-volume
             mountPath: /etc/caliopen
+      imagePullSecrets:
+        - name: registrypullsecret
       volumes:
       - name: config-volume
         configMap:

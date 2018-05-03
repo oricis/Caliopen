@@ -8,9 +8,8 @@ spec:
     spec:
       restartPolicy: "OnFailure"
       containers:
-      - image: cli:new
+      - image: registry.caliopen.org:5043/cli
         name: cli-admin
-        imagePullPolicy: Never
         args: ["create_user", "-e", "admin", "-p", "123456"]
         env:
         - name: CQLENG_ALLOW_SCHEMA_MANAGEMENT
@@ -18,6 +17,8 @@ spec:
         volumeMounts:
         - name: config-volume
           mountPath: /etc/caliopen
+      imagePullSecrets:
+        - name: registrypullsecret
       volumes:
       - name: config-volume
         configMap:

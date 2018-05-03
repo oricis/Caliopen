@@ -18,8 +18,7 @@ spec:
         app: frontend
     spec:
       containers:
-      - image: frontend:new
-        imagePullPolicy: Never
+      - image: registry.caliopen.org:5043/frontend
         name: frontend
         ports:
         - containerPort: 4000
@@ -30,4 +29,6 @@ spec:
           value: "http"
         - name: CALIOPEN_API_PORT
           value: "31415"
+      imagePullSecrets:
+        - name: registrypullsecret
       restartPolicy: Always
