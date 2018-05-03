@@ -3,7 +3,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 from caliopen_main.contact.objects.contact import Contact
 from caliopen_main.message.objects.message import Message
-from elasticsearch_dsl.search import Search
+import requests
+import json
 
 log = logging.getLogger(__name__)
 
@@ -12,10 +13,11 @@ NEW_PREFIX = '_v5'
 
 
 class IndexMigrator(object):
-    def __init__(self, client=None, mappings_version=None):
+    def __init__(self, client=None, mappings_version=None, url=None):
         self.es_client = client
         self.types = (Contact(), Message())
         self.mappings_version = mappings_version
+        self.url = url
 
     def check_empty_index(self, index):
         stats = self.es_client.indices.stats(index)
@@ -45,7 +47,7 @@ class IndexMigrator(object):
             if index.endswith(self.mappings_version):
                 if not self.check_empty_index(index):
                     log.warn('Index {} already in wanted version'.
-                             format(index))
+                         format(index))
                     skip += 1
                     continue
 
@@ -55,24 +57,25 @@ class IndexMigrator(object):
                     skip += 1
                     continue
 
-            log.info("Operation {}/{}".format(count, total))
+            log.info("\nOperation {}/{}".format(count, total))
             count += 1
+
             try:
                 self.create_new_index(new_index)
                 self.copy_old_to_new(index, new_index)
             except Exception as exc:
                 log.warn("Aborting migration operations for {}".format(index))
                 errors += 1
-                continue
                 # do not try operations below if above reindexation has failed
+                continue
+
             try:
-                self.fill_date_sort(new_index)
+                self.fill_date_sort(index)
                 self.move_alias(alias, index, new_index)
-                # self.delete_old_index(index)
+                self.delete_old_index(index)
             except Exception:
                 errors += 1
                 continue
-
 
             ok += 1
 
@@ -179,13 +182,16 @@ class IndexMigrator(object):
         :param index: Elasticsearch index
         :return: None
         """
+        log.warn("filling date_sort prop for index {}".format(index))
         q = {
             "script": {
                 "lang": "painless",
                 "inline": "if (ctx._source.is_received) {ctx._source.date_sort = ctx._source.date_insert} else {ctx._source.date_sort = ctx._source.date}"
-            },
-            "query": {
-                "match_all": {}
             }
         }
-        self.es_client.update_by_query(body=q, doc_type="indexed_message", index=index)
+        try:
+            resp = requests.post(self.url + "/" + index + "/indexed_message/_update_by_query", data=json.dumps(q), headers={'content-type': 'application/json'})
+            log.warn("{} docs updated in {}".format(resp.json()["updated"], index))
+        except Exception as exc:
+            log.error(
+                "failed to update_by_query index {} : {}".format(index, exc))
