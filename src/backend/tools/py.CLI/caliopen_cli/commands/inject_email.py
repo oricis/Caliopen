@@ -23,6 +23,5 @@ def inject_email(recipient, email, **kwargs):
             conn.sendmail("inject_email@py.cli.caliopen", [recipient],
                           str(f.read()))
         except Exception as exc:
-            log.warn(exc.message)
-
+            log.exception(exc)
         conn.quit()
