@@ -166,11 +166,12 @@ class Message extends Component {
                     <Trans id="message-list.message.by">by {messageType}</Trans>
                   </span>
                   {' '}
-                  <Icon type={message.type} className="m-message__type-icon" spaced />
+                  <Icon type={message.type} className="m-message__type-icon" />
                 </div>
               )}
               {this.renderDate()}
               <ul className="m-message__participants">
+                <Trans id="message-list.message.to">To:</Trans>
                 {participants.map((participant, index) => (
                   <li key={index} className="m-message__participant">
                     {renderParticipant(participant)}

@@ -262,6 +262,7 @@
   "message-list.message.protocol.email": "email",
   "message-list.message.pi": "Index de confidentialité",
   "message-list.message.from": "De :",
+  "message-list.message.to": "À :",
   "message-list.message.new": "nouveau",
   "message-list.message.by": "par {messageType}",
   "message-list.message.action.reply": "Répondre",
