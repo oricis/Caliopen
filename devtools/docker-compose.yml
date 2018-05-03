@@ -135,11 +135,11 @@ services:
     command:
       server --address :9090 -C /configs/minio /export
 
-  # IMAP worker for remote identities
-  imap_worker:
+  # Worker for remote identities
+  identity_worker:
       build:
         context: ../src/backend
-        dockerfile: Dockerfile.imap-worker
+        dockerfile: Dockerfile.identity-worker
       links:
         - cassandra:cassandra.dev.caliopen.org
         - object_store:minio.dev.caliopen.org
@@ -147,10 +147,10 @@ services:
         - nats:nats.dev.caliopen.org
 
   # Poller for remote identities
-  ids_poller:
+  identity_poller:
       build:
         context: ../src/backend
-        dockerfile: Dockerfile.ids-poller
+        dockerfile: Dockerfile.identity-poller
       links:
         - imap_worker:imapworker.dev.caliopen.org
         - cassandra:cassandra.dev.caliopen.org
