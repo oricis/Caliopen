@@ -38,6 +38,7 @@ class UserMessageDelivery(object):
         obj.user_id = uuid.UUID(self.user.user_id)
         obj.message_id = uuid.uuid4()
         obj.date_insert = datetime.datetime.now(tz=pytz.utc)
+        obj.date_sort = obj.date_insert
         obj.marshall_db()
         obj.save_db()
         obj.marshall_index()
