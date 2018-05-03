@@ -1,5 +1,9 @@
 # Caliopen frontend
 
+**Important note:**
+
+Please refer to global documentation on [readthedocs](http://caliopen.readthedocs.io/en/latest/) the following documentation wil not be maintained anymore. Some informations are still useful.
+
 This subtree is meant for building and serving CaliOpen frontend.
 
 * serving html, js and static files
