@@ -27,6 +27,7 @@ if __name__ == '__main__':
     sync_table(Message)
     log.info("setting date_sort for {} messages".format(Message.objects().count()))
     for message in Message.all():
-        message.date_sort = message.date_insert if message.is_received \
-            else message.date
+        if message.date_sort is None:
+            message.date_sort = message.date_insert if message.is_received \
+                else message.date
         message.update()
