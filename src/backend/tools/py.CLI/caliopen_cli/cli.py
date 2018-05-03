@@ -11,8 +11,7 @@ import logging
 
 from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage
-from caliopen_cli.commands import (shell, import_email, set_notifications_ttls,
-                                   setup_storage, create_user,
+from caliopen_cli.commands import (shell, import_email, setup, create_user,
                                    import_vcard, dump_model, dump_indexes,
                                    inject_email, basic_compute, migrate_index,
                                    import_reserved_names)
@@ -42,9 +41,9 @@ def main(args=sys.argv):
     sp_import_vcard.add_argument('-d', dest='directory', help='directory')
     sp_import_vcard.add_argument('-f', dest='file_vcard', help='file')
 
-    sp_setup_storage = subparsers.add_parser('setup',
-                                             help='initialize the storage engine')
-    sp_setup_storage.set_defaults(func=setup_storage)
+    sp_setup = subparsers.add_parser('setup',
+                                     help='initialize the storage engine')
+    sp_setup.set_defaults(func=setup)
 
     sp_create_user = subparsers.add_parser('create_user',
                                            help='Create a new user')
@@ -59,11 +58,6 @@ def main(args=sys.argv):
     sp_shell = subparsers.add_parser('shell')
     sp_shell.set_defaults(func=shell)
 
-    sp_set_ttls = subparsers.add_parser('set_notifs_ttls',
-                                        help='fillup table notification_ttl'
-                                             'with a set of default values')
-    sp_set_ttls.set_defaults(func=set_notifications_ttls)
-
     sp_dump = subparsers.add_parser('dump')
     sp_dump.set_defaults(func=dump_model)
     sp_dump.add_argument('-m', dest='model', help='model to dump')
@@ -76,7 +70,7 @@ def main(args=sys.argv):
     sp_migrate_index = subparsers.add_parser('migrate_index')
     sp_migrate_index.set_defaults(func=migrate_index)
     sp_migrate_index.add_argument('-s', dest='input_script',
-                                  help='python script to execute against index')
+                                  help='python script to execute on index')
 
     sp_inject = subparsers.add_parser('inject')
     sp_inject.set_defaults(func=inject_email)
