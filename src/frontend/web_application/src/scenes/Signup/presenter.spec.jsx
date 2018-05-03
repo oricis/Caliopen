@@ -6,13 +6,16 @@ jest.mock('lingui-react', () => ({
   withI18n: () => whatever => whatever,
 }));
 
-describe('scene - Signin', () => {
-  const translator = str => str;
-  const noop = () => {};
+fdescribe('scene - Signin', () => {
+  const props = {
+    i18n: { t: str => str },
+    onSignupSuccess: jest.fn(),
+    settings: {},
+  };
 
   it('render', () => {
     const comp = shallow(
-      <Presenter __={translator} onSignupSuccess={noop} />
+      <Presenter {...props} />
     );
 
     expect(comp.text()).toContain('SignupForm');
