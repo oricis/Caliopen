@@ -1132,6 +1132,10 @@
                       "type": "string",
                       "format": "date-time"
                     },
+                    "date_sort": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
                     "discussion_id": {
                       "type": "string"
                     },
@@ -1315,6 +1319,10 @@
                   "format": "date-time"
                 },
                 "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "date_sort": {
                   "type": "string",
                   "format": "date-time"
                 },
@@ -1689,6 +1697,10 @@
                   "format": "date-time"
                 },
                 "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "date_sort": {
                   "type": "string",
                   "format": "date-time"
                 },
@@ -8678,6 +8690,10 @@
                         "type": "string",
                         "format": "date-time"
                       },
+                      "date_sort": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
                       "discussion_id": {
                         "type": "string"
                       },
@@ -8947,6 +8963,10 @@
                       "type": "string",
                       "format": "date-time"
                     },
+                    "date_sort": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
                     "discussion_id": {
                       "type": "string"
                     },
@@ -9130,6 +9150,10 @@
                   "format": "date-time"
                 },
                 "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "date_sort": {
                   "type": "string",
                   "format": "date-time"
                 },
@@ -9567,6 +9591,10 @@
                   "format": "date-time"
                 },
                 "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "date_sort": {
                   "type": "string",
                   "format": "date-time"
                 },
@@ -10067,6 +10095,10 @@
                   "type": "string",
                   "format": "date-time"
                 },
+                "date_sort": {
+                  "type": "string",
+                  "format": "date-time"
+                },
                 "discussion_id": {
                   "type": "string"
                 },
@@ -10257,6 +10289,10 @@
                   "format": "date-time"
                 },
                 "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "date_sort": {
                   "type": "string",
                   "format": "date-time"
                 },
