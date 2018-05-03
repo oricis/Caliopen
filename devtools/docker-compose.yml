@@ -152,7 +152,7 @@ services:
         context: ../src/backend
         dockerfile: Dockerfile.identity-poller
       links:
-        - imap_worker:imapworker.dev.caliopen.org
+        - identity_worker:identityworker.dev.caliopen.org
         - cassandra:cassandra.dev.caliopen.org
         - nats:nats.dev.caliopen.org
 
