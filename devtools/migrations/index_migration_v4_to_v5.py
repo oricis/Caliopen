@@ -7,6 +7,7 @@ import requests
 import json
 
 log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
 
 OLD_PREFIX = '_v4'
 NEW_PREFIX = '_v5'
@@ -35,7 +36,7 @@ class IndexMigrator(object):
 
     def run(self):
         indexes = self.es_client.indices.get("_all")
-        log.warn("found {} indexes".format(len(indexes)))
+        log.info("found {} indexes".format(len(indexes)))
         total = len(indexes)
         ok = 0
         errors = 0
@@ -80,12 +81,12 @@ class IndexMigrator(object):
 
             ok += 1
 
-        log.warn("{} operations completed OK : {} "
+        log.info("{} operations completed OK : {} "
                  "Errors: {} Skip: {}".format(count, ok, errors, skip))
 
     def create_new_index(self, index):
         """Create user index and setups mappings."""
-        log.warn('Creating new index {}'.format(index))
+        log.info('Creating new index {}'.format(index))
 
         try:
             self.es_client.indices.create(
@@ -138,7 +139,7 @@ class IndexMigrator(object):
             kls._index_class().create_mapping(index)
 
     def copy_old_to_new(self, old, new):
-        log.warn("Copying data from {} to {}".format(old, new))
+        log.info("Copying data from {} to {}".format(old, new))
 
         try:
             self.es_client.reindex(timeout='1m', body={
@@ -164,7 +165,7 @@ class IndexMigrator(object):
             raise exc
 
     def move_alias(self, alias, old_index, new_index):
-        log.warn(
+        log.info(
             "Moving alias {} from {} to {}".format(alias, old_index, new_index))
 
         try:
@@ -183,7 +184,7 @@ class IndexMigrator(object):
         :param index: Elasticsearch index
         :return: None
         """
-        log.warn("filling date_sort prop for index {}".format(index))
+        log.info("filling date_sort prop for index {}".format(index))
         q = {
             "script": {
                 "lang": "painless",
@@ -192,7 +193,7 @@ class IndexMigrator(object):
         }
         try:
             resp = requests.post(self.url + "/" + index + "/indexed_message/_update_by_query", data=json.dumps(q), headers={'content-type': 'application/json'})
-            log.warn("{} docs updated in {}".format(resp.json()["updated"], index))
+            log.info("{} docs updated in {}".format(resp.json()["updated"], index))
         except Exception as exc:
             log.error(
                 "failed to update_by_query index {} : {}".format(index, exc))
