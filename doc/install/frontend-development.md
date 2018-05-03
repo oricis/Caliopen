@@ -72,7 +72,24 @@ docker-compose up -d broker
 You will have a Caliopen instance filled with data, accessible from your browser on localhost:4000.  
 You could check outgoing emails by pointing your browser at localhost:8888.  
 
+### Remote identities poller and workers
+To automatically fetch emails from remote IMAP accounts you need to :
+1. launch _imapworker_
+2. create a _remote identity_ for user _dev_
+3. launch _idspoller_
 
+##### 1. launch _imap_worker_
+`docker-compose up -d imap_worker`
+##### 2. create a _remote identity_ for user _dev_:
+Retrieve user_id for user _dev_ :  
+- Run `docker-compose exec cassandra cqlsh -k caliopen -e 'select name, user_id from user;'` and pickup user_id for _dev_ user.  
+- Create at least one remote identity for user _dev_. Enter email account (-l), password (-p), server address (-s) and user_id (-u) :  
+`docker-compose run --no-deps --entrypoint imapctl imap_worker addremote -l 'your_email@gmail.com' -p 'your_secret_password' -s 'imap.gmail.com:993' -u 'xxxxxxxx-xxxxx-xxxxx-xxxx-xxxxxxxx'`  
+##### 3. launch _ids_poller_
+`docker-compose up -d ids_poller`
+
+_ids_poller_ will retrieve remote identities from cassandra and schedule fetching jobs accordingly on a regularly basis.  
+You can add more remote identities later, they will be retrieve by _ids_poller_ as well.
 
 ## Start frontend natively
 
