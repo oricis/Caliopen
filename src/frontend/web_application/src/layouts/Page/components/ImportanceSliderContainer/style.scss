@@ -10,7 +10,7 @@ $m-strip-size: 2px;
   &__range {
     background: linear-gradient(
       $direction,
-      darken($color, 30),
+      $co-color__fg__back--low,
       lighten($color, 1)
     );
     box-shadow: none;
@@ -19,7 +19,7 @@ $m-strip-size: 2px;
   .rc-slider-rail,
   &__full-bar {
     // 8px is correct on both firefox/chrome :(
-    @include u-gradient-striped($color: darken($color, 20), $size: 8px);
+    @include u-gradient-striped($color: $co-color__fg__back--low, $size: 8px);
   }
 }
 
@@ -56,7 +56,8 @@ $m-strip-size: 2px;
       height: 20px;
       border-radius: 0 20px 20px;
       outline: none;
-      background-color: $co-color__fg__text--high;
+      background-color: $co-color__fg__text--higher;
+      cursor: grab;
 
       &-2 {
         margin-top: -5px;
