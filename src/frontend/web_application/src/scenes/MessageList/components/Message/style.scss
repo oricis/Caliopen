@@ -53,21 +53,21 @@ $message_content_width: 45rem;
   &__type-label { display: none; }
 
   &__participants {
-    @include flex-grid-size(shrink);
-    margin-left: auto;
+    @include flex-grid-size;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    white-space: nowrap;
   }
 
   &__participant {
     display: inline-block;
-    padding-right: $co-component__spacing / 2;
-
-    &:last-child {
-      padding-right: 0;
-    }
+    padding-left: $co-component__spacing / 2;
   }
 
   &__date {
-    @include flex-grid-size(shrink);
+    @include flex-grid-column(shrink);
   }
 
   &__content {
