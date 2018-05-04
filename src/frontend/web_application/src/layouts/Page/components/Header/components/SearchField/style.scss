@@ -1,4 +1,5 @@
 @import '../../../../../../styles/common';
+@import '../../../../../../styles/vendor/bootstrap_foundation-sites';
 
 @mixin m-search-field--width($width) {
   @if ($width == block) {
@@ -16,17 +17,22 @@
 
 .m-search-field {
   position: relative;
+  text-align: right;
 
   &__input {
     display: inline-block;
     width: 5rem;
-    max-width: 45rem;
     margin: 0;
     padding-right: 2rem;
     transition: $co-animation__width-transition;
+    text-align: left;
 
     &:focus {
-      width: 50vw;
+      width: 100%;
+    }
+
+    @include breakpoint(medium) {
+      width: 100%;
     }
   }
 
