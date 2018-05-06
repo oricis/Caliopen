@@ -76,19 +76,23 @@ $s-message-item__pi-width: 7px;
 
   &__author-name {
     color: $co-color__primary--lower;
-    font-size: $co-font__size;
     font-weight: 600;
   }
 
   &__topic {
     @include flex-grid-size(12);
+    font-weight: 400;
 
-    &--unread { font-weight: 600; }
+    // &--unread { font-weight: 600; }
     &--draft { font-style: italic; }
   }
 
-  &__subject { color: $co-color__fg__text--lower; }
-  &__excerpt { color: $co-color__fg__text--high; }
+  &__subject { color: $co-color__fg__text--low; }
+  &__excerpt { color: $co-color__fg__text--higher; }
+
+  &__tags {
+    @include flex-grid-size(12);
+  }
 
   &__col-file {
     @include flex-grid-column(shrink);
@@ -97,12 +101,8 @@ $s-message-item__pi-width: 7px;
 
   &__col-dates {
     @include flex-grid-column(shrink);
-    color: $co-color__fg__text--high;
+    color: $co-color__fg__text--higher;
     text-align: right;
-
-    &--unread {
-      color: $co-color__fg__text--low;
-    }
   }
 
   &__type-label { display: none; }
@@ -126,8 +126,12 @@ $s-message-item__pi-width: 7px;
 
     &__col-dates { @include flex-grid-size(shrink); }
 
-    &__author { @include flex-grid-size(shrink); }
+    &__author { @include flex-grid-size(3); }
 
-    &__type-label { display: inline }
+    // &__type-label { display: inline }
+
+    &__tags {
+      @include flex-grid-size(shrink);
+    }
   }
 }

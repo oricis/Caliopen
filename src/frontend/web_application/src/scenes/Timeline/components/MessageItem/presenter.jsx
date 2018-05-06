@@ -78,23 +78,28 @@ class MessageItem extends Component {
 
     return (
       <span className="s-message-item__title">
-        <TextBlock className="s-message-item__author">
+        <TextBlock className="s-message-item__author" title={this.renderAuthor()}>
           <span className="s-message-item__author-name">{this.renderAuthor()}</span>
-          <span className="s-message-item__tags">{this.renderTags()}</span>
         </TextBlock>
-        <TextBlock className={classnames(
-          's-message-item__topic',
-          {
-            's-message-item__topic--unread': message.is_unread,
-            's-message-item__topic--draft': message.is_draft,
-          }
-        )}
+        <Link
+          className={classnames(
+            's-message-item__topic',
+            {
+              's-message-item__topic--unread': message.is_unread,
+              's-message-item__topic--draft': message.is_draft,
+            }
+          )}
+          to={`/discussions/${message.discussion_id}#${hash}`}
+          noDecoration
         >
-          <Link to={`/discussions/${message.discussion_id}#${hash}`} noDecoration >
-            {message.is_draft && (<span className="s-message-item__draft-prefix"><Trans id="timeline.draft-prefix">Draft in progress:</Trans></span>)}
+          <TextBlock>
+            {message.is_draft && (<span className="s-message-item__draft-prefix"><Trans id="timeline.draft-prefix">Draft in progress:</Trans>{' '}</span>)}
             {message.subject && (<span className="s-message-item__subject">{message.subject}{' '}</span>)}
             <span className="s-message-item__excerpt">{message.excerpt}</span>
-          </Link>
+          </TextBlock>
+        </Link>
+        <TextBlock className="s-message-item__tags">
+          {this.renderTags()}
         </TextBlock>
       </span>
     );
@@ -157,11 +162,7 @@ class MessageItem extends Component {
         <div className="s-message-item__col-file">
           { attachments && attachments.length !== 0 && <Icon type="paperclip" /> }
         </div>
-        <div className={classnames(
-          's-message-item__col-dates',
-          { 's-message-item__col-dates--unread': message.is_unread }
-          )}
-        >
+        <div className="s-message-item__col-dates">
           {this.renderDate()}
         </div>
         <div className="s-message-item__col-select">
