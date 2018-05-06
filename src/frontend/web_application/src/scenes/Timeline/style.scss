@@ -21,4 +21,9 @@
     padding-bottom: $co-margin;
     text-align: center;
   }
+
+  &__new-msg {
+    background-color: $co-color__fg__back;
+    text-align: center;
+  }
 }

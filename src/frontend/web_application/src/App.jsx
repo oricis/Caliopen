@@ -8,6 +8,7 @@ import { PageTitle } from './components/';
 import Routes from './routes';
 import I18nProviderLegacy from './components/I18nProvider';
 import { initConfig } from './services/config';
+import { NotificationProvider } from './modules/notification';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
@@ -38,6 +39,7 @@ class App extends Component {
               <DeviceProvider>
                 <Routes />
               </DeviceProvider>
+              <NotificationProvider />
             </I18nLoader>
           </I18nProviderLegacy>
         )}

@@ -1,0 +1,93 @@
+@startuml
+actor User
+participant DesktopNotifier
+participant AppNotifier
+participant MessageNotifications
+participant NotificationProvider
+participant Redux
+participant Worker
+participant API
+
+note over User: Notications are up to date
+
+NotificationProvider -> Worker: subscribe
+activate Worker
+
+loop every N sec. until unsubscribe
+  Worker -> API: GET
+  activate API
+  API -> Worker
+  deactivate API
+  Worker -> API: DELETE until N sec.
+end
+
+alt page: Timeline or a discussion (containing new messages)
+
+  Worker -> NotificationProvider: message
+  activate NotificationProvider
+  NotificationProvider -> Redux: dispatch add
+  deactivate NotificationProvider
+  activate Redux
+  Redux -> MessageNotifications: update
+  activate MessageNotifications
+  deactivate Redux
+
+  alt messages only in the discussion
+    MessageNotifications -> User: render
+    activate User
+  else has messages not in the current discussion
+    MessageNotifications -> User: render + with N messages in other discussions
+    deactivate MessageNotifications
+  end
+
+  User -> MessageNotifications: clic
+  deactivate User
+  activate MessageNotifications
+  MessageNotifications -> Redux: dispatch delete
+  deactivate MessageNotifications
+  activate Redux
+  Redux -> NotificationProvider: update
+  deactivate Redux
+
+
+else page: other page
+
+  Worker -> NotificationProvider: message
+  activate NotificationProvider
+  NotificationProvider -> Redux: dispatch add
+  deactivate NotificationProvider
+  activate Redux
+  Redux -> MessageNotifications: update
+  activate MessageNotifications
+  deactivate Redux
+  MessageNotifications -> AppNotifier: fire
+  activate AppNotifier
+  MessageNotifications -> Redux: dispatch delete
+  deactivate MessageNotifications
+  deactivate MessageNotifications
+  AppNotifier -> User: notify
+  deactivate AppNotifier
+
+else window not active
+
+  Worker -> NotificationProvider: message
+  activate NotificationProvider
+  NotificationProvider -> Redux: dispatch add
+  deactivate NotificationProvider
+  activate Redux
+  Redux -> MessageNotifications: update
+  activate MessageNotifications
+  deactivate Redux
+  MessageNotifications -> DesktopNotifier: fire
+  activate DesktopNotifier
+  MessageNotifications -> Redux: dispatch delete
+  deactivate MessageNotifications
+  DesktopNotifier -> User: notify
+  deactivate DesktopNotifier
+
+end
+
+NotificationProvider -> Worker: unsubscribe
+deactivate Worker
+
+@enduml

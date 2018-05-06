@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import { Icon, Button } from '../../../../components/';
-import Notification, { isSupported, PERMISSION_DENIED, PERMISSION_GRANTED } from '../../../../services/browser-notification';
+import { notify, requestPermission, isSupported, PERMISSION_DENIED, PERMISSION_GRANTED } from '../../../../services/browser-notification';
 import './style.scss';
 
 class DesktopNotificationSettings extends Component {
@@ -16,16 +16,19 @@ class DesktopNotificationSettings extends Component {
     });
   }
 
-  handleRequestBrowserNotification = () => {
-    Notification.requestPermission(permission => this.setState({
+  handleRequestBrowserNotification = async () => {
+    const permission = await requestPermission();
+    this.setState({
       hasBrowserNotificationPermission: permission,
-    }));
+    });
   }
 
   handleClickTestBrowser = () => {
     const { i18n } = this.props;
 
-    return new Notification(i18n._('settings.desktop_notification.feedback.enabled', { defaults: 'Desktop notifications are enabled' }));
+    return notify({
+      message: i18n._('settings.desktop_notification.feedback.enabled', { defaults: 'Desktop notifications are enabled' }),
+    });
   }
 
   // eslint-disable-next-line
