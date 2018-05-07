@@ -26,7 +26,7 @@ describe('Discussions', () => {
     it('Render and listed contacts describe the thread', async () => {
       await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
       element(by.cssContainingText(
-        '.s-message-item .s-message-item__topic a',
+        '.s-message-item .s-message-item__topic',
         'Fry! Stay back! He\'s too powerful!'
       )).click();
 
