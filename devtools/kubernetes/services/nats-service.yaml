@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: nats
 spec:
+  type: NodePort
   selector:
     app: nats
   ports:
   - name: "nats"
     port: 4222
     targetPort: 4222
+    nodePort: 31422

@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: broker
 spec:
+  type: NodePort
   selector:
     app: broker
   ports:
   - name: "broker"
     port: 2525
     targetPort: 2525
+    nodePort: 32525

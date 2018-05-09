@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: elasticsearch
 spec:
+  type: NodePort
   selector:
     app: elasticsearch
   ports:
   - name: "elasticsearch"
     port: 9200
     targetPort: 9200
+    nodePort: 31920

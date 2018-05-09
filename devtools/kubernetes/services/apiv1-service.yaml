@@ -4,7 +4,6 @@ metadata:
   name: apiv1
 spec:
   type: NodePort
-  #nodePort: 6543
   selector:
     app: apiv1
   ports:
