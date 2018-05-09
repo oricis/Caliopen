@@ -14,23 +14,17 @@
   &__toggle-mini-pi {
     flex: auto;
     padding: 0;
-
-    &,
-    &:hover,
-    &:active {
-      background: inherit;
-    }
   }
 
 
   &__mini-graph {
     width: map-get($co-pi-width, 'ratings');
     padding: $co-component__spacing;
-    background: $co-color__fg__back--lower;
+    background: $co-color__fg__back;
     box-shadow: $co-shadow;
 
     &::before {
-      @include o-triangle('top', .5rem, $co-color__fg__back--lower);
+      @include o-triangle('top', .5rem, $co-color__fg__back);
       left: .5rem;
     }
   }

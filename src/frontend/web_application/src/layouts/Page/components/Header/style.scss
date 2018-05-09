@@ -5,13 +5,13 @@ $l-header__brand-icon-height: 32px !default;
 $l-header__margin: ($co-margin / 2) !default;
 
 .l-header {
-  height: $co-header__height;
+  min-height: $co-header__height;
 
   &__wrapper {
     @include flex-grid-row($size: expand);
     position: fixed;
     z-index: $l-z-index__header;
-
+    align-items: center;
     width: 100%;
     min-height: $co-header__height;
     background: $co-color__contrast__back;
@@ -27,7 +27,6 @@ $l-header__margin: ($co-margin / 2) !default;
   }
 
   &__menu-icon {
-    margin-right: ($co-margin / 2);
     border: 0;
     background: transparent;
   }
@@ -45,11 +44,8 @@ $l-header__margin: ($co-margin / 2) !default;
   }
 
   &__search {
-    flex: 0 1;
-    height: $co-header__height;
+    @include flex-grid-size;
     margin-left: auto;
-    padding-right: $co-component__spacing;
-    line-height: $co-header__height;
   }
 
   &__toggle-nav,
@@ -73,8 +69,16 @@ $l-header__margin: ($co-margin / 2) !default;
     &__user {
       display: block;
     }
-    &__user {
-      padding-right: $co-margin;
+
+    &__search {
+      @include flex-grid-size(5);
+      padding-right: $l-header__margin;
+    }
+  }
+
+  @include breakpoint(large) {
+    &__search {
+      @include flex-grid-size(4);
     }
   }
 }

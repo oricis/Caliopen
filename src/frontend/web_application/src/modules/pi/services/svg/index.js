@@ -30,7 +30,7 @@ export const calcPolygonPoints = ({ pi, axeLength }) => {
   const polygonPoints = [];
   let tilt = 0;
   PI_PROPERTIES.forEach((name) => {
-    const piLevel = pi[name];
+    const piLevel = pi[name] || 0;
 
     polygonPoints.push(
       calcXpoint(piLevel, tilt, axeLength),

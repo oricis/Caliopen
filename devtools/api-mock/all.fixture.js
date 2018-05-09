@@ -14,5 +14,6 @@ module.exports = {
     require('./search').default,
     require('./settings').default,
     require('./tags').default,
+    require('./notifications').default,
   ],
 };

@@ -7,7 +7,8 @@ import './style.scss';
 const Rating = ({
   name, level, piMax, className, mini,
 }) => {
-  const width = (level / piMax) * 100;
+  const pi = level <= piMax ? level : piMax;
+  const width = (pi / piMax) * 100;
   const style = { width: `${width}%` };
 
   return (
@@ -43,7 +44,7 @@ const Ratings = ({
     'm-pi-ratings',
     { 'm-pi-ratings--mini': mini },
   );
-  const title = PI_PROPERTIES.map(name => `${name}: ${pi[name]}`).join(', ');
+  const title = PI_PROPERTIES.map(name => `${name}: ${pi[name]}`).join(',\n');
 
   return (
     <div className={ratingsClassName} title={title}>
@@ -59,7 +60,7 @@ const Ratings = ({
       {PI_PROPERTIES.map(name => (
         <Rating
           name={name}
-          level={pi[name] <= piMax ? pi[name] : piMax}
+          level={pi[name] || 0}
           key={name}
           piMax={piMax}
           mini={mini}

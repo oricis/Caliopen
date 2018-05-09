@@ -84,7 +84,7 @@ class Confirm extends PureComponent {
       >
         {content}
         <div className="m-confirm__actions">
-          <Button shape="plain" onClick={this.handleCancel}><Trans id="confirm.action.confirm">Cancel</Trans></Button>
+          <Button shape="plain" onClick={this.handleCancel}><Trans id="confirm.action.cancel">Cancel</Trans></Button>
           {' '}
           <Button shape="plain" color="alert" onClick={this.handleConfirm}>{confirmBtn}</Button>
         </div>

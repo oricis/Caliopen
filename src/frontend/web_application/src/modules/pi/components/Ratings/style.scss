@@ -29,7 +29,7 @@ $mini-pi__height: 3 * ($mini-pi-bar__height + ($mini-pi-bar__margin * 2));
 
   &__item-level {
     @include flex-grid-size(5);
-    background: $co-color__fg__back--low;
+    background: $co-color__fg__back--lower;
   }
 
   &__item-level-label {
