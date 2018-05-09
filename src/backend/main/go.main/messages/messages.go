@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"strings"
 	"unicode"
+	"unicode/utf8"
 )
 
 // scrub message's bodies to make message displayable in frontend interfaces.
@@ -49,7 +50,7 @@ func CaliopenPolicy() *bluemonday.Policy {
 }
 
 // Returns an excerpt of Message from either body_plain, body_html or subject.
-// Excerpt is always a plain text without any markup, of a length of 'length' chars max.
+// Excerpt is always a plain text without any markup, of a length of 'length' runes max.
 // Best effort is made to retrieve relevant excerpt from html body (see excerptFromHMTL func)
 // A string is always returned, even if excerpt extraction failed.
 // If option "wordWrap" is true, string is trimmed at the end of a word, thus it may be shorter than length.
@@ -110,21 +111,49 @@ func excerptFromHMTL(source string) (excerpt string, err error) {
 }
 
 func trimExcerpt(s string, l int, wordWrap, addEllipsis bool) string {
-	if len(s) < l {
-		return s
-	}
-	s = s[:l-1]
+
+	trimmed := truncate_unicode(s, l)
+
 	if wordWrap {
-		if last_valid := strings.LastIndexAny(s, " !.?,;:([{=/"); last_valid != len(s) { //last char is not a space or punctuation
-			s = s[:last_valid+1]
+		last_valid, width := lastIndexPunctuation(trimmed)
+		if last_valid != len(trimmed) && last_valid != -1 { //punctuation found, but not at end of string
+			trimmed = trimmed[:last_valid-width]
 		}
 	}
 
 	if addEllipsis {
-		return s + "…"
+		if len(trimmed) < len(s) {
+			return trimmed + "…"
+		}
 	}
-	return s
+	return trimmed
 
+}
+
+func truncate_unicode(s string, l int) string {
+	if l == 0 {
+		return ""
+	}
+	runesCount := utf8.RuneCountInString(s)
+	if runesCount <= l {
+		return s
+	}
+	runesString := []rune(s)
+
+	return string(runesString[:l])
+
+}
+
+func lastIndexPunctuation(s string) (index, width int) {
+
+	for i, w := len(s), 0; i > 0; i -= w {
+		runeValue, width := utf8.DecodeLastRuneInString(s[:i])
+		if unicode.IsPunct(runeValue) || unicode.IsSpace(runeValue) {
+			return i, width
+		}
+		w = width
+	}
+	return -1, 0
 }
 
 func replaceBodyTag(in string) (out string) {
