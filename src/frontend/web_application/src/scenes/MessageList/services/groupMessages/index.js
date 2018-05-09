@@ -1,9 +1,6 @@
 import { isMessageFromUser } from '../../../../services/message';
 
-const groupMessages = (messages, user) => [...messages]
-  .sort((a, b) =>
-    Date.parse(user && isMessageFromUser(a, user) ? a.date : a.date_insert) -
-    Date.parse(user && isMessageFromUser(b, user) ? b.date : b.date_insert))
+const groupMessages = (messages, user) => messages
   .reduce((acc, message) => {
     const datetime =
       new Date(user && isMessageFromUser(message, user) ? message.date : message.date_insert);

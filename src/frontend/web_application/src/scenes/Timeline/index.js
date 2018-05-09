@@ -2,13 +2,13 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
-import { withUser } from '../../hoc/user';
 import Presenter from './presenter';
 import { filterTimeline } from '../../store/actions/timeline';
 import { replyToMessage, deleteMessage, loadMore, hasMore } from '../../store/modules/message';
 import { updateMessagesTags, withTags } from '../../modules/tags';
 import { clearDraft } from '../../store/modules/draft-message';
 import { timelineFilterSelector } from '../../store/selectors/timeline';
+import { UserSelector } from '../../store/selectors/user';
 
 const timelineSelector = createSelector([
   state => state.message.messagesCollections.timeline,
@@ -27,14 +27,14 @@ const onDeleteMessage = ({ message }) => dispatch =>
     });
 
 const mapStateToProps = createSelector(
-  [timelineSelector, messagesSelector, timelineFilterSelector],
-  (timeline, messagesById, timelineFilter) => ({
-    messages: timeline && timeline.messages.map(id => messagesById[id])
-      .sort((a, b) => new Date(b.date_insert) - new Date(a.date_insert)),
+  [timelineSelector, messagesSelector, timelineFilterSelector, UserSelector],
+  (timeline, messagesById, timelineFilter, userState) => ({
+    messages: timeline && timeline.messages.map(id => messagesById[id]),
     hasMore: timeline && hasMore(timeline),
     isFetching: timeline && timeline.isFetching,
     didInvalidate: timeline && timeline.didInvalidate,
     timelineFilter,
+    user: userState.user,
   })
 );
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -47,7 +47,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withUser(),
   withI18n(),
   withTags(),
 )(Presenter);
