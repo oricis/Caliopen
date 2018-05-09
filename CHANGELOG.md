@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Confirmation is asked before deleting a message, a discussion or a contact
+- Messages have new computed property : `date_sort`. Messages' list is sorted on.
 - Basic support of new message's notifications
 
 ### Changed

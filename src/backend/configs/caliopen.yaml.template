@@ -3,7 +3,7 @@ delivery_agent:
 
 elasticsearch:
     url: http://es.dev.caliopen.org:9200
-    mappings_version: v4
+    mappings_version: v5
 
 cassandra:
     keyspace: caliopen

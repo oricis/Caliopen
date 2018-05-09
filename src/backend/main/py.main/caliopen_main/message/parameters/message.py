@@ -63,6 +63,8 @@ class Message(NewInboundMessage):
                                tzd=u'utc')
     date_delete = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
+    date_sort = DateTimeType(serialized_format=helpers.RFC3339Milli,
+                               tzd=u'utc')
 
     class Options:
         roles = {'default': blacklist('user_id', 'date_delete')}

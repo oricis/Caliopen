@@ -26,7 +26,8 @@ def migrate_index(**kwargs):
         if url and mappings_version:
             client = Elasticsearch(url)
             migration = Migrator(client=client,
-                                 mappings_version=mappings_version)
+                                 mappings_version=mappings_version,
+                                 url=url)
             migration.run()
 
 

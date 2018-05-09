@@ -24,6 +24,7 @@ class IndexedMessage(BaseIndexDocument):
     date = Date()
     date_delete = Date()
     date_insert = Date()
+    date_sort = Date()
     discussion_id = Keyword()
     external_references = Nested(doc_class=IndexedExternalReferences)
     identities = Nested(doc_class=IndexedIdentity)
@@ -74,6 +75,7 @@ class IndexedMessage(BaseIndexDocument):
         m.field('date', 'date')
         m.field('date_delete', 'date')
         m.field('date_insert', 'date')
+        m.field('date_sort', 'date')
         m.field('discussion_id', 'keyword')
         # external references
         m.field('external_references',

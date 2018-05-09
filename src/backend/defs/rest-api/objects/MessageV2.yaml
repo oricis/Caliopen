@@ -18,6 +18,9 @@ properties:
   date_insert:
     type: string
     format: date-time
+  date_sort:
+    type: string
+    format: date-time
   discussion_id:
     type: string
   external_references:
