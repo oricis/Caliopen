@@ -17,13 +17,13 @@ wait_for_pods(){
 
 #For OS other than Linux, use Virtualbox
 check_os(){
-	if [[ $OS != 'Linux' ]]
+	if [[ ${OS} != 'Linux' ]]
 	then
 		KUBE_DRIVER="virtualbox"
 	else
 		while true; do
 		    read -p "On Linux Minikube can be run on Virtualbox or locally with Docker, which one should be used? (v/d) " dv
-		    case $dv in
+		    case ${dv} in
 		        [Dd]* ) break;;
 		        [Vv]* ) KUBE_DRIVER="virtualbox"; break;;
 		        * ) echo "Please answer Docker(d) or Virtualbox(v).";;
@@ -34,10 +34,14 @@ check_os(){
 
 #If the user is running the stack with virtualbox he does not need root
 check_driver_and_root(){
-	echo $KUBE_DRIVER
-	if [[ $KUBE_DRIVER = "virtualbox" ]]
+	if [[ ${KUBE_DRIVER} = "virtualbox" ]]
 	then
 		command -v vboxmanage >/dev/null 2>&1 || { echo "Virtualbox required but not installed. Aborting." >&2; exit 1; }
+		if [ "$EUID" -eq 0 ]
+			echo "  ---------------------------------------------------------------------"
+	  		then echo "  Minikube doesn't need to be run as root to deploy Kubernetes on a VM."
+	  		echo "  ---------------------------------------------------------------------"
+		fi
 	else
 		command -v docker >/dev/null 2>&1 || { echo "Docker required but not installed. Aborting." >&2; exit 1; }
 		if [ "$EUID" -ne 0 ]
@@ -49,13 +53,13 @@ check_driver_and_root(){
 
 #Check vm/max_map_count value for elasticsearch
 check_es(){
-	if [[ $KUBE_DRIVER = "none" ]]
+	if [[ ${KUBE_DRIVER} = "none" ]]
 	then
 		if [[  $(sysctl -n vm.max_map_count) -lt 262144 ]]
 		then
 			while true; do
 			    read -p "Running elasticsearch needs modification of kernel parameter vm.max_map_count, confirm action.(y/n) " yn
-			    case $yn in
+			    case ${yn} in
 			        [Yy]* ) sysctl -w vm.max_map_count=262144; break;;
 			        [Nn]* ) echo "You will need to manually modify vm.max_map_count to 262144 at least."; break;;
 			        * ) echo "Please answer yes(y) or no(n).";;
@@ -150,14 +154,14 @@ import_mail(){
 	echo -n "Wait."
 	kubectl create -f jobs/cli-mail-import.yaml >/dev/null 2>&1
 	res=$(kubectl get pods | awk '/cli-import/ { print $3 }' | awk 'FNR == 1')
-	while [ $res != "Error" ] && [ $res != "Completed" ]
+	while [ ${res} != "Error" ] && [ ${res} != "Completed" ]
 	do
 		echo -n "."
 		sleep 1
 		res=$(kubectl get pods | awk '/cli-import/ { print $3 }' | awk 'FNR == 1')
 	done
 
-	if [ $res == "Error" ]
+	if [ ${res} == "Error" ]
 	then
 		kubectl delete job cli-import
 		echo "Error importing mails. Ignoring."
@@ -207,6 +211,10 @@ command -v minikube >/dev/null 2>&1 || { echo "Minikube required but not install
 check_os
 check_driver_and_root
 minikube start --memory 6144 --cpus=2 --vm-driver=${KUBE_DRIVER}
+#--extra-config=apiserver.ServiceNodePortRange=1-32000 WORKS WITH LOCALKUBE BOOTSTRAPPER --bootstrapper=localkube
+#--dns-domain=dev.caliopen.org NOT WORKING
+# --apiserver-ips 127.0.0.1 --apiserver-name localhost
+# nodePortAddresses: [127.0.0.0/8] on kube-proxy configmap TO LIMIT EXTERNAL ACCESS
 check_es
 create_configmaps
 create_services
@@ -226,5 +234,5 @@ wait_for_pods
 
 echo
 echo "List of available services:"
-echo "------------------------------"
+echo 
 minikube service list
