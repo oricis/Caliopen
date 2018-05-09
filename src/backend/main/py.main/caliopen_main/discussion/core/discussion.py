@@ -20,6 +20,7 @@ from ..store.discussion_index import DiscussionIndexManager as DIM
 
 from caliopen_main.discussion.parameters import Discussion as DiscussionParam
 from caliopen_main.message.parameters.participant import Participant
+from caliopen_main.common.helpers.strings import unicode_truncate
 
 log = logging.getLogger(__name__)
 
@@ -63,7 +64,9 @@ def build_discussion(core, index):
     discuss.date_insert = core.date_insert
     discuss.date_update = index.last_message.date_insert
     # TODO : excerpt from plain or html body
-    discuss.excerpt = index.last_message.body_plain[:100]
+    maxsize = 100
+    discuss.excerpt = unicode_truncate(index.last_message.body_plain,
+                                       maxsize) if index.last_message.body_plain else u''
     discuss.total_count = index.total_count
 
     # TODO
@@ -121,14 +124,16 @@ class Discussion(BaseUserCore):
 
     @classmethod
     def create_from_message(cls, user, message):
-        new_id = uuid.uuid4()
         # TODO excerpt from plain or html body
-        excerpt = message.body_plain[:200] if message.body_plain else ""
-        kwargs = {'discussion_id': new_id,
-                  'date_insert': datetime.datetime.now(tz=pytz.utc),
+        maxsize = 200
+        excerpt = unicode_truncate(message.body_plain,
+                                   maxsize) if message.body_plain else u''
+        new_id = uuid.uuid4()
+        kwargs = {u'discussion_id': new_id,
+                  u'date_insert': datetime.datetime.now(tz=pytz.utc),
                   # 'privacy_index': message.privacy_index,
                   # 'importance_level': message.importance_level,
-                  'excerpt': excerpt,
+                  u'excerpt': excerpt,
                   }
         discussion = cls.create(user, **kwargs)
         log.debug('Created discussion {}'.format(discussion.discussion_id))
