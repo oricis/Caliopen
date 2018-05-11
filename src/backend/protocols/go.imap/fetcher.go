@@ -170,7 +170,6 @@ func (f *Fetcher) fetchMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) 
 		ch <- mail
 	}
 
-	close(newMessages)
 	return
 }
 
