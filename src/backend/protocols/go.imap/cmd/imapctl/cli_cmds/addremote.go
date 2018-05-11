@@ -12,7 +12,6 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
-	"github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
 )
 
@@ -33,12 +32,13 @@ type remoteId struct {
 	Password     string
 	PollInterval string
 	Server       string
-	UserId       string
+	UserId       UUID
+	UserName     string
 }
 
 func init() {
 	//mandatory
-	addRemoteCmd.Flags().StringVarP(&id.UserId, "userid", "u", "", "user account uuid in which mails will be imported (required)")
+	addRemoteCmd.Flags().StringVarP(&id.UserName, "username", "u", "", "user name account in which mails will be imported (required)")
 	addRemoteCmd.Flags().StringVarP(&id.Server, "server", "s", "", "remote hostname[:port] IMAP server address (required)")
 	addRemoteCmd.Flags().StringVarP(&id.Login, "login", "l", "", "IMAP login credential (required)")
 	//optional
@@ -54,6 +54,8 @@ func init() {
 
 func addRemote(cmd *cobra.Command, args []string) {
 	var is backends.IdentityStorage
+	var us backends.UserNameStorage
+	var cb *store.CassandraBackend
 	var rId RemoteIdentity
 	var err error
 	switch cmdConfig.StoreName {
@@ -65,12 +67,20 @@ func addRemote(cmd *cobra.Command, args []string) {
 			SizeLimit:   cmdConfig.StoreConfig.SizeLimit,
 		}
 
-		is, err = store.InitializeCassandraBackend(c)
+		cb, err = store.InitializeCassandraBackend(c)
 		if err != nil {
 			log.WithError(err).Fatalf("[addRemote] initalization of %s backend failed", cmdConfig.StoreName)
 		}
 
 	}
+	is = backends.IdentityStorage(cb)
+	us = backends.UserNameStorage(cb)
+
+	user, e := us.UserByUsername(id.UserName)
+	if e != nil {
+		log.WithError(e).Fatalf("[addRemote] failed to retrieve user name <%s>", id.UserName)
+	}
+	id.UserId = user.UserId
 	if id.Identifier == "" {
 		id.Identifier = id.Login
 	}
@@ -82,7 +92,7 @@ func addRemote(cmd *cobra.Command, args []string) {
 		Identifier:  id.Identifier,
 		Status:      "active",
 		Type:        "imap",
-		UserId:      UUID(uuid.FromStringOrNil(id.UserId)),
+		UserId:      id.UserId,
 	}
 	rId.SetDefaultInfos()
 	rId.Infos["password"] = id.Password
