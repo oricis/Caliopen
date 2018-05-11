@@ -134,5 +134,26 @@ services:
     command:
       server --address :9090 -C /configs/minio /export
 
+  # Worker for remote identities
+  identity_worker:
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.identity-worker
+      links:
+        - cassandra:cassandra.dev.caliopen.org
+        - object_store:minio.dev.caliopen.org
+        - elasticsearch:es.dev.caliopen.org
+        - nats:nats.dev.caliopen.org
+
+  # Poller for remote identities
+  identity_poller:
+      build:
+        context: ../src/backend
+        dockerfile: Dockerfile.identity-poller
+      links:
+        - identity_worker:identityworker.dev.caliopen.org
+        - cassandra:cassandra.dev.caliopen.org
+        - nats:nats.dev.caliopen.org
+
   # Postfix : a complete smpt server that act as the Caliopen's MTA
   # TODO
