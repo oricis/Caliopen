@@ -4,14 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-
 ## [Unreleased]
+
+## [0.10.0] 2018-05-14
 
 ### Added
 
 - Confirmation is asked before deleting a message, a discussion or a contact
 - Messages have new computed property : `date_sort`. Messages' list is sorted on.
 - Basic support of new message's notifications
+- Poller and worker for IMAP remote identities fetch in backend
 
 ### Changed
 
