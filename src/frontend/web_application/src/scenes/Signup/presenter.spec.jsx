@@ -6,7 +6,7 @@ jest.mock('lingui-react', () => ({
   withI18n: () => whatever => whatever,
 }));
 
-fdescribe('scene - Signin', () => {
+describe('scene - Signin', () => {
   const props = {
     i18n: { t: str => str },
     onSignupSuccess: jest.fn(),
