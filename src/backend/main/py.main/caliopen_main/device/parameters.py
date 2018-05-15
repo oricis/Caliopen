@@ -10,6 +10,8 @@ from schematics.types.compound import ListType, ModelType, DictType
 from caliopen_main.pi.parameters import PIParameter
 import caliopen_storage.helpers.json as helpers
 
+DEVICE_TYPES = ['other', 'desktop', 'laptop', 'smartphone', 'tablet']
+
 
 class DeviceLocation(Model):
     """Location structure for a device."""
@@ -29,7 +31,7 @@ class NewDevice(Model):
     """Structure to create a new user device."""
 
     name = StringType(required=True)
-    type = StringType(required=True, default='other')
+    type = StringType(required=True, choices=DEVICE_TYPES, default='other')
 
     locations = ListType(ModelType(DeviceLocation), default=lambda: [])
     user_agent = StringType()
