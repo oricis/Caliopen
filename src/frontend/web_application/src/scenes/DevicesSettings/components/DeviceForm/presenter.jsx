@@ -84,6 +84,7 @@ class DeviceForm extends Component {
       { value: 'laptop', label: i18n._('device.type.laptop', { defaults: 'Laptop' }) },
       { value: 'smartphone', label: i18n._('device.type.smartphone', { defaults: 'Smartphone' }) },
       { value: 'tablet', label: i18n._('device.type.tablet', { defaults: 'Tablet' }) },
+      { value: 'other', label: i18n._('device.type.other', { defaults: 'Other' }) },
     ];
     const locationTypes = [
       { label: i18n._('device.location.type.unknown', { defaults: 'Unknown' }), value: 'unknown' },
