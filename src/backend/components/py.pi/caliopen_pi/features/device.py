@@ -66,7 +66,7 @@ class DeviceFeature(object):
     def _get_device_type(self, ua):
         """Return guessed type of user agent."""
         if ua.is_mobile:
-            return 'mobile'
+            return 'smartphone'
         if ua.is_tablet:
             return 'tablet'
         if ua.is_pc:
