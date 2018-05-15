@@ -3,8 +3,9 @@ set -e
 
 OS=$(uname -s)
 KUBE_DRIVER="none"
-BACKEND_CONF_DIR=$(pwd | rev | cut -d'/' --complement -f1-2 | rev)"/src/backend/configs"
-MINIO_CONF_DIR=$(pwd | rev | cut -d'/' --complement -f1-2 | rev)"/src/backend/configs/minio"
+BACKEND_CONF_DIR="../../src/backend/configs"
+MINIO_CONF_DIR=${BACKEND_CONF_DIR}"/minio"
+OWNER=$(who am i | awk '{print $1}')
 
 wait_for_pods(){
 	echo
@@ -204,6 +205,18 @@ while true; do
 done
 }
 
+chown_kube_minikube_directories(){
+#This allows the user to use kubectl without sudo
+if [[ ${KUBE_DRIVER} = "none" ]]
+then
+	chown -R ${OWNER} $HOME/.kube
+	chgrp -R ${OWNER} $HOME/.kube
+
+	chown -R ${OWNER} $HOME/.minikube
+	chgrp -R ${OWNER} $HOME/.minikube
+fi
+}
+
 ############################################################
 
 command -v minikube >/dev/null 2>&1 || { echo "Minikube required but not installed. Aborting." >&2; exit 1; }
@@ -236,3 +249,4 @@ echo
 echo "List of available services:"
 echo 
 minikube service list
+chown_kube_minikube_directories
