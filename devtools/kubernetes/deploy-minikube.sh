@@ -5,7 +5,6 @@ OS=$(uname -s)
 KUBE_DRIVER="none"
 BACKEND_CONF_DIR="../../src/backend/configs"
 MINIO_CONF_DIR=${BACKEND_CONF_DIR}"/minio"
-OWNER=$(who am i | awk '{print $1}')
 
 wait_for_pods(){
 	echo
@@ -209,11 +208,11 @@ chown_kube_minikube_directories(){
 #This allows the user to use kubectl without sudo
 if [[ ${KUBE_DRIVER} = "none" ]]
 then
-	chown -R ${OWNER} $HOME/.kube
-	chgrp -R ${OWNER} $HOME/.kube
+	chown -R ${SUDO_USER} $HOME/.kube
+	chgrp -R ${SUDO_USER} $HOME/.kube
 
-	chown -R ${OWNER} $HOME/.minikube
-	chgrp -R ${OWNER} $HOME/.minikube
+	chown -R ${SUDO_USER} $HOME/.minikube
+	chgrp -R ${SUDO_USER} $HOME/.minikube
 fi
 }
 
