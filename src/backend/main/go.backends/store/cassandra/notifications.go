@@ -11,6 +11,7 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
+	"github.com/gocql/gocql"
 	"strings"
 	"time"
 )
@@ -82,6 +83,10 @@ func (cb *CassandraBackend) DeleteNotifications(userId string, until time.Time) 
 	var query_builder strings.Builder
 	values := []interface{}{userId}
 
+	/***
+		**** as of 2018 may 16th, production server is running cassandra 2.4.1,
+	    **** which is not able to do a range DELETE.
+
 	query_builder.WriteString(`DELETE FROM notification WHERE user_id = ?`)
 
 	if !until.IsZero() {
@@ -90,4 +95,27 @@ func (cb *CassandraBackend) DeleteNotifications(userId string, until time.Time) 
 	}
 
 	return cb.Session.Query(query_builder.String(), values...).Exec()
+	*/
+
+	query_builder.WriteString(`SELECT notif_id FROM notification WHERE user_id = ?`)
+
+	if !until.IsZero() {
+		query_builder.WriteString(` AND notif_id > minTimeuuid(0) AND notif_id < maxTimeuuid(?)`)
+		values = append(values, until)
+	}
+
+	var notifId gocql.UUID
+	iter := cb.Session.Query(query_builder.String(), values...).Iter()
+
+	for iter.Scan(&notifId) {
+		e := cb.Session.Query(`DELETE FROM notification WHERE user_id = ? AND notif_id = ?`, userId, notifId).Exec()
+		if e != nil {
+			log.WithError(e).Warnf("[DeleteNotifications] failed to delete notif %s for user %s", notifId.String(), userId)
+		}
+	}
+
+	if err := iter.Close(); err != nil {
+		return err
+	}
+	return nil
 }
