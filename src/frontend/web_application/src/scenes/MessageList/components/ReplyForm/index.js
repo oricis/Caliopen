@@ -45,20 +45,11 @@ const mapStateToProps = createSelector(
   }
 );
 
-const onEditDraft = ({ internalId, draft, message }) => async (dispatch) => {
-  const result = await dispatch(saveDraft({ internalId, draft, message }, { withThrottle: true }));
+const onEditDraft = ({ internalId, draft, message }) => dispatch =>
+  dispatch(saveDraft({ internalId, draft, message }, { withThrottle: true }));
 
-  dispatch(invalidate('discussion', internalId));
-
-  return result;
-};
-
-const onSaveDraft = ({ internalId, draft, message }) => async (dispatch) => {
-  const result = await dispatch(saveDraft({ internalId, draft, message }, { force: true }));
-  dispatch(invalidate('discussion', internalId));
-
-  return result;
-};
+const onSaveDraft = ({ internalId, draft, message }) => dispatch =>
+  dispatch(saveDraft({ internalId, draft, message }, { force: true }));
 
 const onDeleteMessage = ({ message, internalId, isNewDiscussion }) => dispatch =>
   dispatch(deleteMessage({ message }))

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- a discussion_id should not be removed when patching a draft
+
 ## [0.10.0] 2018-05-14
 
 ### Added
