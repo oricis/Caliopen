@@ -85,7 +85,6 @@ class MessageItem extends Component {
           className={classnames(
             's-message-item__topic',
             {
-              's-message-item__topic--unread': message.is_unread,
               's-message-item__topic--draft': message.is_draft,
             }
           )}
@@ -116,7 +115,7 @@ class MessageItem extends Component {
     return message.type && (
       <span className="s-message-item__type">
         <Icon type={message.type} spaced className="s-message-item__type-icon" />
-        <span className="s-message-item__type-label">
+        <span className="s-message-item__type-label sr-only">
           {messageType}
           {' '}
           <Trans id="message-list.message.received-on">received on</Trans>

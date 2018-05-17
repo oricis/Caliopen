@@ -83,7 +83,6 @@ $s-message-item__pi-width: 7px;
     @include flex-grid-size(12);
     font-weight: 400;
 
-    // &--unread { font-weight: 600; }
     &--draft { font-style: italic; }
   }
 
@@ -105,8 +104,6 @@ $s-message-item__pi-width: 7px;
     text-align: right;
   }
 
-  &__type-label { display: none; }
-
   &__col-select {
     display: none;
     @include flex-grid-column(shrink);
@@ -127,8 +124,6 @@ $s-message-item__pi-width: 7px;
     &__col-dates { @include flex-grid-size(shrink); }
 
     &__author { @include flex-grid-size(3); }
-
-    // &__type-label { display: inline }
 
     &__tags {
       @include flex-grid-size(shrink);
