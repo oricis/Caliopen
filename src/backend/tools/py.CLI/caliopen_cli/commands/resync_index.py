@@ -11,8 +11,8 @@ import sys
 from elasticsearch import Elasticsearch
 from caliopen_storage.config import Configuration
 
-log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
+log = logging.getLogger(__name__)
 
 
 def resync_index(user_name, **kwargs):
@@ -26,24 +26,33 @@ def resync_index(user_name, **kwargs):
 
     user = User.by_name(user_name)
 
-    # Delete current index
+    mapping_key = 'elasticsearch.mappings_version'
+    index_version = Configuration('global').get(mapping_key)
+    index = '{}_{}'.format(user.user_id, index_version)
+
     es_url = Configuration('global').get('elasticsearch.url')
     es_client = Elasticsearch(es_url)
-    if not es_client.indices.exists([user.user_id]):
+
+    # Delete current index
+    if not es_client.indices.exists([index]):
         log.warn('Index not found for user %s' % user_name)
         sys.exit(1)
-    es_client.indices.delete([user.user_id])
-    log.info('Index %r deleted for user %s' % (user.user_id, user_name))
+    es_client.indices.delete([index])
+    log.info('Index %r deleted for user %s' % (index, user_name))
+
+    # Recreate index and mappings
     setup_index(user)
 
     contacts = Contact.filter(user_id=user.user_id)
     for contact in contacts:
-        log.info('Reindex contact %r' % contact.contact_id)
+        log.debug('Reindex contact %r' % contact.contact_id)
         obj = ContactObject(user.user_id, contact_id=contact.contact_id)
         obj.create_index()
 
     messages = Message.filter(user_id=user.user_id).allow_filtering()
     for message in messages:
-        log.info('Reindex message %r' % message.message_id)
+        log.debug('Reindex message %r' % message.message_id)
         obj = MessageObject(user.user_id, message_id=message.message_id)
         obj.create_index()
+    log.info('Create index alias %r' % user.user_id)
+    es_client.indices.put_alias(index=index, name=user.user_id)
