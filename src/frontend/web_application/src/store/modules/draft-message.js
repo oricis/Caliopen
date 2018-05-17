@@ -81,18 +81,22 @@ export function setRecipientSearchTerms({ internalId, searchTerms }) {
   };
 }
 
-function syncReadOnlyProps(state, draft) {
+function syncDraftReducer(state, message) {
   const {
-    excerpt,
-    tags,
-    attachments,
-  } = draft;
+    body,
+    subject,
+    participants,
+    parent_id: parentId,
+    identities,
+  } = state;
 
   return {
-    ...state,
-    excerpt,
-    tags,
-    attachments,
+    ...message,
+    body,
+    subject,
+    participants,
+    parent_id: parentId,
+    identities,
   };
 }
 
@@ -106,11 +110,7 @@ function draftReducer(state = {}, action) {
         ...action.payload.draft,
       };
     case SYNC_DRAFT:
-      return {
-        ...action.payload.draft,
-        ...state,
-        ...syncReadOnlyProps(state, action.payload.draft),
-      };
+      return syncDraftReducer(state, action.payload.draft);
     default:
       return state;
   }
