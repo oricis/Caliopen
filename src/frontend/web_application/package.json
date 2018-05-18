@@ -105,6 +105,7 @@
     "styled-components": "3.2.5",
     "uuid": "^3.2.1",
     "winston": "^3.0.0-rc5",
+    "winston-syslog": "^2.0.0",
     "xregexp": "^4.1.1",
     "zxcvbn": "^4.4.1"
   },
