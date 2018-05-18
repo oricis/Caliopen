@@ -104,7 +104,7 @@ class Message(ObjectIndexable):
                 "body",
                 "identities",
                 "message_id",
-                "parent_id"
+                "parent_id",
                 "participants",
                 "subject",
             ]
@@ -166,7 +166,7 @@ class Message(ObjectIndexable):
                 "current_state",
                 "identities",
                 "message_id",
-                "parent_id"
+                "parent_id",
                 "participants",
                 "subject",
             ]
