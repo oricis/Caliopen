@@ -131,7 +131,7 @@ func fetchMailbox(ibox *imapBox, imapClient *client.Client, provider Provider, c
 	}
 
 	from := uint32(1)
-	to := mbox.Messages
+	to := mbox.Messages + 1
 
 	return fetch(imapClient, provider, from, to, ch)
 
