@@ -38,7 +38,11 @@ class MessageItem extends Component {
   renderAuthor = () => {
     const author = getAuthor(this.props.message);
 
-    return renderParticipant(author);
+    return (
+      <TextBlock className="s-message-item__author" title={renderParticipant(author)}>
+        {renderParticipant(author)}
+      </TextBlock>
+    );
   }
 
   renderDate = () => {
@@ -60,47 +64,51 @@ class MessageItem extends Component {
   }
 
   renderTags() {
-    // TODO: define render of tags in new UI
     const { userTags, message, i18n } = this.props;
 
-    return message.tags && getCleanedTagCollection(userTags, message.tags).map(tag => (
-      <span key={tag.name}>
-        {' '}
-        <Badge className="s-message-item__tag">{getTagLabel(i18n, tag)}</Badge>
-      </span>
-    ));
+    return message.tags && (
+      <ul className="s-message-item__tags">
+        {getCleanedTagCollection(userTags, message.tags).map(tag => (
+          <li key={tag.name} className="s-message-item__tag"><Badge>{getTagLabel(i18n, tag)}</Badge></li>
+        ))}
+      </ul>
+    );
   }
 
 
-  renderTitle = () => {
+  renderContent = () => {
     const { message } = this.props;
+    const { attachments } = message;
     const hash = message.is_draft ? 'reply' : message.message_id;
 
     return (
-      <span className="s-message-item__title">
-        <TextBlock className="s-message-item__author" title={this.renderAuthor()}>
-          <span className="s-message-item__author-name">{this.renderAuthor()}</span>
+      <Link
+        className={classnames(
+          's-message-item__content',
+          {
+            's-message-item__content--draft': message.is_draft,
+          }
+        )}
+        to={`/discussions/${message.discussion_id}#${hash}`}
+        noDecoration
+      >
+
+        {this.renderAuthor()}
+
+        <TextBlock className="s-message-item__title">
+          {message.is_draft && (<span className="s-message-item__draft-prefix"><Trans id="timeline.draft-prefix">Draft in progress:</Trans>{' '}</span>)}
+          {message.subject && (<span className="s-message-item__subject">{message.subject}{' '}</span>)}
+          <span className="s-message-item__excerpt">{message.excerpt}</span>
         </TextBlock>
-        <Link
-          className={classnames(
-            's-message-item__topic',
-            {
-              's-message-item__topic--draft': message.is_draft,
-            }
-          )}
-          to={`/discussions/${message.discussion_id}#${hash}`}
-          noDecoration
-        >
-          <TextBlock>
-            {message.is_draft && (<span className="s-message-item__draft-prefix"><Trans id="timeline.draft-prefix">Draft in progress:</Trans>{' '}</span>)}
-            {message.subject && (<span className="s-message-item__subject">{message.subject}{' '}</span>)}
-            <span className="s-message-item__excerpt">{message.excerpt}</span>
-          </TextBlock>
-        </Link>
-        <TextBlock className="s-message-item__tags">
-          {this.renderTags()}
-        </TextBlock>
-      </span>
+
+        {attachments && attachments.length !== 0 && (
+          <span className="s-message-item__file">
+            <Icon type="paperclip" />
+          </span>
+        )}
+
+        {this.renderTags()}
+      </Link>
     );
   }
 
@@ -128,7 +136,6 @@ class MessageItem extends Component {
     const {
       i18n, message, isMessageSelected, isDeleting,
     } = this.props;
-    const { /* pi, */attachments } = message;
 
     return (
       <div
@@ -146,7 +153,7 @@ class MessageItem extends Component {
           }
         )}
       >
-        <div className="s-message-item__col-avatar">
+        <div className="s-message-item__column--avatar">
           <label htmlFor={message.message_id}>
             <AuthorAvatarLetter
               size={SIZE_SMALL}
@@ -155,16 +162,13 @@ class MessageItem extends Component {
             />
           </label>
         </div>
-        <div className="s-message-item__col-title">
-          {this.renderTitle()}
+        <div className="s-message-item__column--content">
+          {this.renderContent()}
         </div>
-        <div className="s-message-item__col-file">
-          { attachments && attachments.length !== 0 && <Icon type="paperclip" /> }
-        </div>
-        <div className="s-message-item__col-dates">
+        <div className="s-message-item__column--date">
           {this.renderDate()}
         </div>
-        <div className="s-message-item__col-select">
+        <div className="s-message-item__column--select">
           <Checkbox
             label={i18n._('message-list.action.select_single_message', { defaults: 'Select/deselect this message' })}
             onChange={this.onCheckboxChange}
