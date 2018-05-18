@@ -5,13 +5,9 @@ const LOGGER_CATEGORY = 'caliopen-frontend';
 const stdFormat = winston.format.combine(
   winston.format.colorize(),
   winston.format.timestamp(),
-  winston.format.label({ label: LOGGER_CATEGORY }),
   winston.format.align(),
-  winston.format.printf((info) => {
-    // console.log('info log', info);
-
-    return `${info.timestamp} ${info.level} ${info.label} - ${info.message}`
-  }),
+  winston.format.label({ label: LOGGER_CATEGORY }),
+  winston.format.printf(info => `${info.timestamp} ${info.level} ${info.label} - ${info.message}`),
 );
 
 let logger;
@@ -19,18 +15,16 @@ let logger;
 const getLogger = () => {
   if (!logger) {
     logger = winston.createLogger({
+      format: winston.format.simple(),
       transports: [
         new winston.transports.Console({
           format: stdFormat,
         }),
-        // new winston.transports.File({
-        //   format: winston.format.uncolorize(),
-        //   filename: 'combined.log',
-        // }),
         new Syslog({
-          eol: '\n',
+          app_name: LOGGER_CATEGORY,
           facility: 'user',
-          type: '5424',
+          protocol: 'unix',
+          path: '/dev/log',
         }),
       ],
       levels: winston.config.syslog.levels,

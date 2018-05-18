@@ -21,7 +21,7 @@ const base = {
     (context, request, callback) => {
       if ([
         'body-parser', 'cookie-parser', 'debug', 'express', 'express-http-proxy', 'iron', 'locale',
-        'serve-favicon', 'config/server.defaults.js', 'argv',
+        'serve-favicon', 'config/server.defaults.js', 'argv', 'winston', 'winston-syslog',
       ].some(module => module === request)) {
         return callback(null, `commonjs ${request}`);
       }
