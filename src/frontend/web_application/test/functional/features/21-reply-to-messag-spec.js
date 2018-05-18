@@ -21,7 +21,7 @@ describe('Reply to message -', () => {
 
   it('Automatically saves a draft', async () => {
     const discussion1Selector = by.cssContainingText(
-      '.s-timeline .s-message-item .s-message-item__topic .s-message-item__excerpt',
+      '.s-timeline .s-message-item .s-message-item__title .s-message-item__excerpt',
       'Fry! Stay back! He\'s too powerful!'
     );
     const text1 = 'Automatically saves a draft, then refresh.';
@@ -49,11 +49,11 @@ describe('Reply to message -', () => {
 
   it('Automatically saves a draft while browsing', async () => {
     const discussion1Selector = by.cssContainingText(
-      '.s-timeline .s-message-item .s-message-item__topic .s-message-item__excerpt',
+      '.s-timeline .s-message-item .s-message-item__title .s-message-item__excerpt',
       'Fry! Stay back! He\'s too powerful!'
     );
     const discussion2Selector = by.cssContainingText(
-      '.s-timeline .s-message-item .s-message-item__topic .s-message-item__subject',
+      '.s-timeline .s-message-item .s-message-item__title .s-message-item__subject',
       'Shut up and take my money'
     );
     const text3 = 'Add an answer to second discussion, don\'t wait and go to first one.';
@@ -83,7 +83,7 @@ describe('Reply to message -', () => {
 
   it('Force saves a draft', async () => {
     const discussion1Selector = by.cssContainingText(
-      '.s-timeline .s-message-item .s-message-item__topic .s-message-item__excerpt',
+      '.s-timeline .s-message-item .s-message-item__title .s-message-item__excerpt',
       'Fry! Stay back! He\'s too powerful!'
     );
     const text1 = 'Force save a draft.';
@@ -105,7 +105,7 @@ describe('Reply to message -', () => {
 
   it('Sends a draft', async () => {
     const discussion1Selector = by.cssContainingText(
-      '.s-timeline .s-message-item .s-message-item__topic .s-message-item__excerpt',
+      '.s-timeline .s-message-item .s-message-item__title .s-message-item__excerpt',
       'Fry! Stay back! He\'s too powerful!'
     );
     const text1 = 'yes I am!';

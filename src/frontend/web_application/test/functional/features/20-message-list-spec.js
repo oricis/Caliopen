@@ -15,7 +15,7 @@ describe('Message list', () => {
   it('List', async () => {
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
     await element(by.cssContainingText(
-      '.s-timeline .s-message-item .s-message-item__topic .s-message-item__excerpt',
+      '.s-timeline .s-message-item .s-message-item__title .s-message-item__excerpt',
       'Fry! Stay back! He\'s too powerful!'
     )).click();
     await browser.wait(EC.presenceOf($('.m-message')), 5 * 1000);
