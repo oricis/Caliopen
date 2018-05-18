@@ -97,11 +97,26 @@ class Message(ObjectIndexable):
 
         :params: a NewMessage dict
         """
+        # silently remove unexpected props within patch if not in strict mode
+        strict_patch = Configuration('global').get('apiV1.strict_patch', False)
+        if not strict_patch:
+            allowed_properties = [
+                "body",
+                "identities",
+                "message_id",
+                "parent_id"
+                "participants",
+                "subject",
+            ]
+            for key, value in params.items():
+                if key not in allowed_properties:
+                    del (params[key])
+
         if user_id is None or user_id is "":
             raise ValueError
 
         try:
-            draft_param = Draft(params)
+            draft_param = Draft(params, strict=strict_patch)
             if draft_param.message_id:
                 draft_param.validate_uuid(user_id)
             else:
@@ -148,13 +163,12 @@ class Message(ObjectIndexable):
         if not strict_patch:
             allowed_properties = [
                 "body",
-                "subject",
                 "current_state",
-                "participants",
-                "message_id",
                 "identities",
-                "discussion_id",
+                "message_id",
                 "parent_id"
+                "participants",
+                "subject",
             ]
             for key, value in params.items():
                 if key not in allowed_properties:
