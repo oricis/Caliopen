@@ -91,6 +91,8 @@ def main(args=sys.argv):
                                       help='Resync index for an user')
     sp_resync.set_defaults(func=resync_index)
     sp_resync.add_argument('-u', dest='user_name', help='User name')
+    sp_resync.add_argument('-i', dest='user_id', help='User uuid')
+    sp_resync.add_argument('--version', dest='version', help='Index version')
 
     kwargs = parser.parse_args(args[1:])
     kwargs = vars(kwargs)

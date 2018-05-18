@@ -11,11 +11,11 @@ import sys
 from elasticsearch import Elasticsearch
 from caliopen_storage.config import Configuration
 
-logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
 
 
-def resync_index(user_name, **kwargs):
+def resync_index(**kwargs):
     """Resync an index for an user."""
     from caliopen_main.user.core import User
     from caliopen_main.user.core.setups import setup_index
@@ -24,21 +24,33 @@ def resync_index(user_name, **kwargs):
     from caliopen_main.message.store import Message
     from caliopen_main.message.objects import Message as MessageObject
 
-    user = User.by_name(user_name)
+    if 'user_name' in kwargs and kwargs['user_name']:
+        user = User.by_name(kwargs['user_name'])
+    elif 'user_id' in kwargs and kwargs['user_id']:
+        user = User.get(kwargs['user_id'])
+    else:
+        print('Need user_name or user_id parameter')
+        sys.exit(1)
 
     mapping_key = 'elasticsearch.mappings_version'
-    index_version = Configuration('global').get(mapping_key)
-    index = '{}_{}'.format(user.user_id, index_version)
+    current_version = Configuration('global').get(mapping_key)
+    new_index = '{}_{}'.format(user.user_id, current_version)
+
+    if 'version' in kwargs and kwargs['version']:
+        old_version = kwargs['version']
+        old_index = '{}_{}'.format(user.user_id, old_version)
+    else:
+        old_index = new_index
 
     es_url = Configuration('global').get('elasticsearch.url')
     es_client = Elasticsearch(es_url)
 
     # Delete current index
-    if not es_client.indices.exists([index]):
-        log.warn('Index not found for user %s' % user_name)
+    if not es_client.indices.exists([old_index]):
+        log.warn('Index %r not found for user %s' % (old_index, user.name))
         sys.exit(1)
-    es_client.indices.delete([index])
-    log.info('Index %r deleted for user %s' % (index, user_name))
+    es_client.indices.delete([old_index])
+    log.info('Index %r deleted for user %s' % (old_index, user.name))
 
     # Recreate index and mappings
     setup_index(user)
@@ -55,4 +67,4 @@ def resync_index(user_name, **kwargs):
         obj = MessageObject(user.user_id, message_id=message.message_id)
         obj.create_index()
     log.info('Create index alias %r' % user.user_id)
-    es_client.indices.put_alias(index=index, name=user.user_id)
+    es_client.indices.put_alias(index=new_index, name=user.user_id)
