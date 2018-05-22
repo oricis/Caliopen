@@ -7,6 +7,7 @@ import { ContactAvatarLetter } from '../../../../modules/avatar';
 import DiscussionDraft, { TopRow, BodyRow, BottomRow } from '../DiscussionDraft';
 import DiscussionTextarea from '../DiscussionTextarea';
 import RecipientList from '../RecipientList';
+import { getRecipients } from '../../../../services/message/';
 import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
@@ -116,11 +117,9 @@ class NewDraftForm extends Component {
     );
   }
 
-  renderSendButton() {
+  renderSendButton(recipients) {
     const { isSending } = this.props;
     const { body, subject } = this.state.draft;
-    const recipients = this.state.draft.participants && this.state.draft.participants
-      .filter(participant => participant.type.toLowerCase() !== 'from');
     const isMessageValid = (recipients && recipients.length !== 0);
     const needsConfirm = body === '' || (hasMailSupport(recipients) && subject === '');
 
@@ -166,8 +165,7 @@ class NewDraftForm extends Component {
       draftFormRef,
     } = this.props;
     const dropdownId = uuidV1();
-    const recipients = this.state.draft.participants && this.state.draft.participants
-      .filter(participant => participant.type.toLowerCase() !== 'from');
+    const recipients = getRecipients(this.state.draft);
 
     return (
       <DiscussionDraft className="m-new-draft" draftFormRef={draftFormRef}>
@@ -222,7 +220,7 @@ class NewDraftForm extends Component {
             {renderAttachments()}
           </BottomRow>
           <BottomRow className="m-new-draft__bottom-bar">
-            {this.renderSendButton()}
+            {this.renderSendButton(recipients)}
             <Button
               className="m-new-draft__bottom-action"
               onClick={this.handleSave}
