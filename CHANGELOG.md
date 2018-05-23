@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.10.1] 2018-05-18
+
+### Fixed
+
+- a discussion_id should not be removed when patching a draft
+- bad device type mapping for smartphone devices, authentication wasn't possible
+- read message are flagged correctly read
+- search bar is more visible
+
 ## [0.10.0] 2018-05-14
 
 ### Added

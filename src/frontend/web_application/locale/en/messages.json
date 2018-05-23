@@ -228,6 +228,7 @@
   "device.type.laptop": "Laptop",
   "device.type.smartphone": "Smartphone",
   "device.type.tablet": "Tablet",
+  "device.type.other": "Other",
   "device.location.type.unknown": "Unkown",
   "device.location.type.home": "Home",
   "device.location.type.work": "Work",

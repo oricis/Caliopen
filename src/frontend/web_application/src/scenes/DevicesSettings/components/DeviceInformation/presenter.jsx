@@ -18,11 +18,12 @@ class DeviceInformation extends PureComponent {
 
   render() {
     const { device, isCurrentDevice } = this.props;
+    const deviceType = device.type && device.type !== 'other' ? device.type : 'question-circle';
 
     return (
       <div className="m-device-information">
         <div className="m-device-information__icon">
-          <Icon type={device.type || 'question-circle'} />
+          <Icon type={deviceType} />
         </div>
         <div className="m-device-information__device">
           <div className="m-device-information__info">
