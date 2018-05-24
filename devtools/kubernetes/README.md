@@ -87,7 +87,7 @@ _**Starting the cluster:**_
 
 _**Stopping the cluster:**_
 
-```minikube stop```
+```sudo minikube stop```
 
 ## Additional info
 
