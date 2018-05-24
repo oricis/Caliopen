@@ -19,6 +19,7 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/hashicorp/go-multierror"
 	"github.com/satori/go.uuid"
+	"strings"
 	"sync"
 	"time"
 )
@@ -174,11 +175,14 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 	}
 
 	// send process order to nats for each rcpt
-	var errs error
+	errs := multierror.Error{
+		Errors:      []error{},
+		ErrorFormat: ListFormatFunc,
+	}
 	wg := new(sync.WaitGroup)
 	wg.Add(len(rcptsIds))
 	for _, rcptId := range rcptsIds {
-		go func(rcptId UUID) {
+		go func(rcptId UUID, errs *multierror.Error) {
 			defer wg.Done()
 			const nats_order = "process_raw"
 			natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, rcptId.String(), m.Raw_msg_id.String())
@@ -188,11 +192,11 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 				if b.NatsConn.LastError() != nil {
 					log.WithError(b.NatsConn.LastError()).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", rcptId.String())
 					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
-					errs = multierror.Append(errs, b.NatsConn.LastError())
+					multierror.Append(errs, b.NatsConn.LastError())
 				} else {
 					log.WithError(err).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", rcptId.String())
 					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
-					errs = multierror.Append(errs, err)
+					multierror.Append(errs, err)
 				}
 			} else {
 				nats_ack := new(map[string]interface{})
@@ -200,13 +204,13 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 				if err != nil {
 					log.WithError(err).Warnf("[EmailBroker] failed to parse inbound ack on NATS for user %s", rcptId.String())
 					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
-					errs = multierror.Append(err)
+					multierror.Append(errs, err)
 					return
 				}
 				if err, ok := (*nats_ack)["error"]; ok {
 					log.WithError(errors.New(err.(string))).Warnf("[EmailBroker] inbound delivery failed for user %s", rcptId.String())
 					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
-					errs = multierror.Append(errors.New(err.(string)))
+					multierror.Append(errs, errors.New(err.(string)))
 					return
 				}
 
@@ -228,13 +232,14 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 
 				go b.Notifier.ByNotifQueue(&notif)
 			}
-		}(rcptId)
+		}(rcptId, &errs)
 	}
 	wg.Wait()
 	// we assume the previous MTA did the rcpts lookup, so all rcpts should be OK
 	// consequently, we discard the whole delivery if there is at least one error
-	if errs != nil {
-		resp.Response = fmt.Sprint(errs.Error())
+	// TODO : only report recipients which failed to MTA
+	if errs.ErrorOrNil() != nil {
+		resp.Response = errs.Error()
 		resp.Err = true
 		return
 	}
@@ -244,3 +249,20 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 // deliverMsgToUser marshal an incoming email to the Caliopen message format
 // TODO
 func (b *EmailBroker) deliverMsgToUser() {}
+
+// ListFormatFunc is a basic formatter that outputs the number of errors
+// that occurred along with a bullet point list of the errors but without newlines.
+func ListFormatFunc(es []error) string {
+	if len(es) == 1 {
+		return fmt.Sprintf("1 error occurred:<BR>* %s", es[0])
+	}
+
+	points := make([]string, len(es))
+	for i, err := range es {
+		points[i] = fmt.Sprintf("* %s", err)
+	}
+
+	return fmt.Sprintf(
+		"%d errors occurred:<BR>%s",
+		len(es), strings.Join(points, "<BR>"))
+}
