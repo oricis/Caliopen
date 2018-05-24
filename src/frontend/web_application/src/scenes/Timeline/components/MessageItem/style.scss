@@ -57,29 +57,26 @@ $s-message-item__pi-width: 7px;
     background-color: $co-color__bg__back--high;
   }
 
-  &__column {
+  &__col-avatar {
+    @include flex-grid-column(shrink);
+    margin-left: $s-message-item__pi-width;
+  }
 
-    &--avatar {
-      @include flex-grid-column(shrink);
-      margin-left: $s-message-item__pi-width;
-    }
+  &__col-content {
+    @include flex-grid-size;
+    min-width: 0; // https://github.com/zurb/foundation-sites/pull/8511
+  }
 
-    &--content {
-      @include flex-grid-size;
-      min-width: 0; // https://github.com/zurb/foundation-sites/pull/8511
-    }
+  &__col-date {
+    @include flex-grid-column(shrink);
+    color: $co-color__fg__text--higher;
+    text-align: right;
+  }
 
-    &--date {
-      @include flex-grid-column(shrink);
-      color: $co-color__fg__text--higher;
-      text-align: right;
-    }
-
-    &--select {
-      display: none;
-      @include flex-grid-column(shrink);
-      margin-left: auto;
-    }
+  &__col-select {
+    display: none;
+    @include flex-grid-column(shrink);
+    margin-left: auto;
   }
 
   &__content {
@@ -125,13 +122,12 @@ $s-message-item__pi-width: 7px;
     padding-top: 0;
     padding-bottom: 0;
 
-    &__column {
-      &--select {
-        display: flex;
-      }
-      &--content {
-        @include flex-grid-size;
-      }
+    &__col-select {
+      display: flex;
+    }
+
+    &__col-content {
+      @include flex-grid-size;
     }
 
     &__author {

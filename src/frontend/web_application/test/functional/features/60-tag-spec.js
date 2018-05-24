@@ -33,7 +33,7 @@ describe('Tag', () => {
     await browser.executeScript('window.scrollTo(0, document.body.scrollHeight);');
 
     const messageElement = element(by.cssContainingText('.s-message-item', 'Fry! Stay back! He\'s too powerful!'));
-    await messageElement.element(by.css('.s-message-item__column--select input[type=checkbox]')).click();
+    await messageElement.element(by.css('.s-message-item__col-select input[type=checkbox]')).click();
 
     await element(by.css('.m-message-selector__actions .m-button[aria-label="Manage tags"]')).click();
     expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true);
@@ -63,8 +63,8 @@ describe('Tag', () => {
     const messageElement1 = element(by.cssContainingText('.s-message-item', 'zoidberg'));
     const messageElement2 = element(by.cssContainingText('.s-message-item', 'Fry! Stay back!'));
 
-    await messageElement1.element(by.css('.s-message-item__column--select input[type=checkbox]')).click();
-    await messageElement2.element(by.css('.s-message-item__column--select input[type=checkbox]')).click();
+    await messageElement1.element(by.css('.s-message-item__col-select input[type=checkbox]')).click();
+    await messageElement2.element(by.css('.s-message-item__col-select input[type=checkbox]')).click();
     await element(by.css('.m-message-selector__actions .m-button[aria-label="Manage tags"]')).click();
     expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true);
     expect(element.all(by.css('.m-tags-form__section .m-tag-item')).count()).toEqual(1);

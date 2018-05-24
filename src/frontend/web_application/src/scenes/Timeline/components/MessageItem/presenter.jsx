@@ -153,7 +153,7 @@ class MessageItem extends Component {
           }
         )}
       >
-        <div className="s-message-item__column--avatar">
+        <div className="s-message-item__col-avatar">
           <label htmlFor={message.message_id}>
             <AuthorAvatarLetter
               size={SIZE_SMALL}
@@ -162,13 +162,13 @@ class MessageItem extends Component {
             />
           </label>
         </div>
-        <div className="s-message-item__column--content">
+        <div className="s-message-item__col-content">
           {this.renderContent()}
         </div>
-        <div className="s-message-item__column--date">
+        <div className="s-message-item__col-date">
           {this.renderDate()}
         </div>
-        <div className="s-message-item__column--select">
+        <div className="s-message-item__col-select">
           <Checkbox
             label={i18n._('message-list.action.select_single_message', { defaults: 'Select/deselect this message' })}
             onChange={this.onCheckboxChange}
