@@ -204,8 +204,8 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 					return
 				}
 				if err, ok := (*nats_ack)["error"]; ok {
-					log.WithError(b.NatsConn.LastError()).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", rcptId.String())
-					log.Infof("natsMessage: %s\nnatsResponse: %s\n", natsMessage, resp)
+					log.WithError(errors.New(err.(string))).Warnf("[EmailBroker] inbound delivery failed for user %s", rcptId.String())
+					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 					errs = multierror.Append(errors.New(err.(string)))
 					return
 				}
