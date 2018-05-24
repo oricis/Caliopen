@@ -1,5 +1,6 @@
 const winston = require('winston');
 const { Syslog } = require('winston-syslog');
+const { getConfig } = require('../config');
 
 const LOGGER_CATEGORY = 'caliopen-frontend';
 const stdFormat = winston.format.combine(
@@ -14,18 +15,21 @@ let logger;
 
 const getLogger = () => {
   if (!logger) {
+    const { enableSyslog } = getConfig();
     logger = winston.createLogger({
       format: winston.format.simple(),
       transports: [
         new winston.transports.Console({
           format: stdFormat,
         }),
-        new Syslog({
-          app_name: LOGGER_CATEGORY,
-          facility: 'user',
-          protocol: 'unix',
-          path: '/dev/log',
-        }),
+        ...(enableSyslog ? [
+          new Syslog({
+            app_name: LOGGER_CATEGORY,
+            facility: 'user',
+            protocol: 'unix',
+            path: '/dev/log',
+          }),
+        ] : []),
       ],
       levels: winston.config.syslog.levels,
     });
