@@ -8,29 +8,32 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server"
+	"github.com/CaliOpen/Caliopen/src/backend/protocols/go.smtp"
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
 )
 
-var cfgPath string
-var apiCfgFile string
-var lmtpCfgFile string
-
-func init() {
-	cobra.OnInitialize(initConfig)
-
-	RootCmd.PersistentFlags().StringVar(&cfgPath, "confPath", "", "Path to seek the two mandatory config files: caliopen-go-api_dev.yaml and caliopen-go-lmtp_dev.yaml")
-	RootCmd.PersistentFlags().StringVar(&apiCfgFile, "apiConf", "", "Caliopen's API config file (default is ./caliopen-go-api_dev.yaml)")
-	RootCmd.PersistentFlags().StringVar(&lmtpCfgFile, "lmtpConf", "", "Caliopen's lmtpd config file (default is ./caliopen-go-lmtp_dev.yaml)")
+type CmdConfig struct {
+	rest_api.APIConfig
+	rest_api.IndexConfig
+	rest_api.ProxyConfig
 }
 
-// RootCmd represents the base command when called without any subcommands
-var RootCmd = &cobra.Command{
-	Use:   "gocaliopen",
-	Short: "Caliopen CLI to interact with stack",
-	Long: `gocaliopen needs two of Caliopen's config files : caliopen-go-api_dev.yaml and caliopen-go-lmtp_dev.yaml.
+var (
+	cfgPath     string
+	apiCfgFile  string
+	lmtpCfgFile string
+	apiConf     CmdConfig
+	lmtpConf    caliopen_smtp.SMTPConfig
+
+	// RootCmd represents the base command when called without any subcommands
+	RootCmd = &cobra.Command{
+		Use:   "gocaliopen",
+		Short: "Caliopen CLI to interact with stack",
+		Long: `gocaliopen needs two of Caliopen's config files : caliopen-go-api_dev.yaml and caliopen-go-lmtp_dev.yaml.
 It loads them from --confPath directory unless  path/filenames are specified with the --apiConf and --lmtpConf flags.
 gocaliopen subcommands could interact with
 	- store (Cassandra)
@@ -40,6 +43,15 @@ gocaliopen subcommands could interact with
 	- apiV1
 	- apiV2
 	- lmtpd`,
+	}
+)
+
+func init() {
+	cobra.OnInitialize(initConfig)
+
+	RootCmd.PersistentFlags().StringVar(&cfgPath, "confPath", "", "Path to seek the two mandatory config files: caliopen-go-api_dev.yaml and caliopen-go-lmtp_dev.yaml")
+	RootCmd.PersistentFlags().StringVar(&apiCfgFile, "apiConf", "", "Caliopen's API config file (default is ./caliopen-go-api_dev.yaml)")
+	RootCmd.PersistentFlags().StringVar(&lmtpCfgFile, "lmtpConf", "", "Caliopen's lmtpd config file (default is ./caliopen-go-lmtp_dev.yaml)")
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -53,44 +65,52 @@ func Execute() {
 
 // initConfig reads in config files and ENV variables if set.
 func initConfig() {
-	apiConf := viper.New()
-	lmtpConf := viper.New()
+	apiCfg := viper.New()
+	lmtpCfg := viper.New()
 
 	if cfgPath != "" {
 		// Use path from the flag
-		apiConf.AddConfigPath(cfgPath)
-		lmtpConf.AddConfigPath(cfgPath)
+		apiCfg.AddConfigPath(cfgPath)
+		lmtpCfg.AddConfigPath(cfgPath)
 	} else {
 		// set defaults to relative path from /tools/go.CLI
-		apiConf.AddConfigPath("../../configs")
-		lmtpConf.AddConfigPath("../../configs")
+		apiCfg.AddConfigPath("../../configs")
+		lmtpCfg.AddConfigPath("../../configs")
 		// set defaults to current dir
-		apiConf.AddConfigPath(".")
-		lmtpConf.AddConfigPath(".")
+		apiCfg.AddConfigPath(".")
+		lmtpCfg.AddConfigPath(".")
 	}
 
 	if apiCfgFile != "" {
 		// Use config file name and path from the flag.
-		apiConf.SetConfigFile(apiCfgFile)
+		apiCfg.SetConfigFile(apiCfgFile)
 	} else {
-		apiConf.SetConfigName("caliopen-go-api_dev")
+		apiCfg.SetConfigName("caliopen-go-api_dev")
 	}
 
 	if lmtpCfgFile != "" {
 		// Use config file name and path from the flag.
-		lmtpConf.SetConfigFile(lmtpCfgFile)
+		lmtpCfg.SetConfigFile(lmtpCfgFile)
 	} else {
-		lmtpConf.SetConfigName("caliopen-go-lmtp_dev")
+		lmtpCfg.SetConfigName("caliopen-go-lmtp_dev")
 	}
 
 	// read in environment variables that match
-	apiConf.AutomaticEnv()
-	lmtpConf.AutomaticEnv()
+	apiCfg.AutomaticEnv()
+	lmtpCfg.AutomaticEnv()
 
-	if err := apiConf.ReadInConfig(); err != nil {
-		log.Fatalf("can't load api config file %s", apiCfgFile)
+	if err := apiCfg.ReadInConfig(); err != nil {
+		log.WithError(err).Fatalf("can't load api config file %s", apiCfgFile)
 	}
-	if err := lmtpConf.ReadInConfig(); err != nil {
-		log.Fatalf("can't load lmtp config file %s", lmtpCfgFile)
+	if err := apiCfg.Unmarshal(&apiConf); err != nil {
+		log.WithError(err).Fatalf("can't parse api config file %s", apiCfgFile)
 	}
+
+	if err := lmtpCfg.ReadInConfig(); err != nil {
+		log.WithError(err).Fatalf("can't load lmtp config file %s", lmtpCfgFile)
+	}
+	if err := lmtpCfg.Unmarshal(&lmtpConf); err != nil {
+		log.WithError(err).Fatalf("can't parse lmtp config file %s", lmtpCfgFile)
+	}
+
 }
