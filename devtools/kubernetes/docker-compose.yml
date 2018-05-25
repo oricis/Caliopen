@@ -40,6 +40,17 @@ services:
         context: ../../src/backend
         dockerfile: Dockerfile.message_handler
       image: message-handler:new
+  identity_worker:
+      build:
+        context: ../../src/backend
+        dockerfile: Dockerfile.identity-worker
+
+  # Poller for remote identities
+  identity_poller:
+      build:
+        context: ../../src/backend
+        dockerfile: Dockerfile.identity-poller
+  
 
   # Postfix : a complete smpt server that act as the Caliopen's MTA
   # TODO
