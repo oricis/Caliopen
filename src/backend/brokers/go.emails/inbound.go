@@ -165,6 +165,7 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 		Raw_msg_id: msg_id,
 		Raw_Size:   uint64(len(in.EmailMessage.Email.Raw.String())),
 		Raw_data:   in.EmailMessage.Email.Raw.String(),
+		Delivered:  false,
 	}
 	err = b.Store.StoreRawMessage(m)
 	if err != nil {
@@ -242,6 +243,9 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 		resp.Response = errs.Error()
 		resp.Err = true
 		return
+	} else {
+		// update raw_message table to set raw_message.delivered=true
+		b.Store.SetDeliveredStatus(m.Raw_msg_id.String(), true)
 	}
 
 }
