@@ -161,8 +161,7 @@ services:
   inbucket:
       image: jhillyerd/inbucket
       ports:
-          - "8888:10080"
-          - "2500:10025"
+          - "8888:9000"
 
   # Postfix : a complete smpt server that act as the Caliopen's MTA
   # TODO
