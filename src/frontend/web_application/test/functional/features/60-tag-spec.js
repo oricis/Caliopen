@@ -16,7 +16,7 @@ describe('Tag', () => {
     // make sure the discussion is only one message because of scroll and saucelabs that will try to click on header instead of Tag
     const content = 'Shut up and take my money! Leela, are you alright?';
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
-    await element(by.cssContainingText('.s-timeline .s-message-item .s-message-item__topic .s-message-item__excerpt', content)).click();
+    await element(by.cssContainingText('.s-timeline .s-message-item .s-message-item__title .s-message-item__excerpt', content)).click();
     await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-message__container', content))), 5 * 1000);
     console.log('click tag');
     await browser.executeScript('window.scrollTo(0, 350);');
