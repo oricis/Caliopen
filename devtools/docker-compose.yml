@@ -17,8 +17,8 @@ services:
       - nats:nats.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
       - object_store:minio.dev.caliopen.org
-    expose:
-      - "31415"
+    ports:
+      - "31415:31415"
 
   # Caliopen APIv1
   apiv1:
@@ -35,18 +35,18 @@ services:
   # Used to store sessions.
   redis:
     image: redis
-    expose:
-      - "6379"
+    ports:
+        - "6379:6379"
 
   # ### Cassandra
   #
   # Cassandra is used as the reference storage for business data
   cassandra:
     image: scylladb/scylla
-    expose:
-      - "9042"
-      - "9160"
-      - "7000"
+    ports:
+      - "9042:9042"
+      - "9160:9160"
+      - "7000:7000"
     volumes:
       - db:/var/lib/scylla
     entrypoint:
@@ -59,8 +59,8 @@ services:
   # Used to index mail content and ensure great research performances.
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
-    expose:
-      - "9200"
+    ports:
+      - "9200:9200"
     environment:
       - xpack.security.enabled=false
       - xpack.monitoring.enabled=false
@@ -86,7 +86,7 @@ services:
     links:
       - api:api.dev.caliopen.org
     ports:
-      - "127.0.0.1:4000:4000"
+      - "4000:4000"
   # Broker
   broker:
     image: public-registry.caliopen.org/broker:compose
@@ -101,8 +101,8 @@ services:
   # NATS
   nats:
     image: nats:0.9.6
-    expose:
-      - "4222"
+    ports:
+      - "4222:4222"
 
   # NATS Message Handler
   message_handler:
@@ -115,8 +115,8 @@ services:
   # object storage
   object_store:
     image: minio/minio
-    expose:
-      - "9090"
+    ports:
+      - "9090:9090"
     volumes:
       - ../src/backend/configs:/configs
       - store:/export
@@ -125,20 +125,20 @@ services:
 
   # Worker for remote identities
   identity_worker:
-      image: public-registry.caliopen.org/identity-worker:compose
-      links:
-        - cassandra:cassandra.dev.caliopen.org
-        - object_store:minio.dev.caliopen.org
-        - elasticsearch:es.dev.caliopen.org
-        - nats:nats.dev.caliopen.org
+    image: public-registry.caliopen.org/identity-worker:compose
+    links:
+      - cassandra:cassandra.dev.caliopen.org
+      - object_store:minio.dev.caliopen.org
+      - elasticsearch:es.dev.caliopen.org
+      - nats:nats.dev.caliopen.org
 
   # Poller for remote identities
   identity_poller:
-      image: public-registry.caliopen.org/identity-poller:compose
-      links:
-        - identity_worker:identityworker.dev.caliopen.org
-        - cassandra:cassandra.dev.caliopen.org
-        - nats:nats.dev.caliopen.org
+    image: public-registry.caliopen.org/identity-poller:compose
+    links:
+      - identity_worker:identityworker.dev.caliopen.org
+      - cassandra:cassandra.dev.caliopen.org
+      - nats:nats.dev.caliopen.org
 
   # Postfix : a complete smpt server that act as the Caliopen's MTA
   # TODO

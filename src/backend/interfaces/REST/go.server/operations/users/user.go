@@ -157,6 +157,14 @@ func Create(ctx *gin.Context) {
 	return
 }
 
+// POST …/users/{user_id}/actions
+func Delete(ctx *gin.Context) {
+	e := swgErr.New(http.StatusNotImplemented, "not implemented!")
+	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+	ctx.Abort()
+	return
+}
+
 func Get(ctx *gin.Context) {
 	e := swgErr.New(http.StatusNotImplemented, "not implemented")
 	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
