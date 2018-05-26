@@ -1028,30 +1028,6 @@
       }
     },
     "/v2/users/{user_id}": {
-      "delete": {
-        "description": "Not Yet Implemented",
-        "tags": [
-          "users"
-        ],
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "route not implemented, should raise an error"
-          }
-        }
-      },
       "patch": {
         "description": "Partially implemented. Currently only for changing password.",
         "tags": [
@@ -1631,7 +1607,8 @@
                       "send",
                       "set_read",
                       "set_unread",
-                      "reset_password"
+                      "reset_password",
+                      "delete"
                     ]
                   }
                 }
@@ -10026,7 +10003,8 @@
                       "send",
                       "set_read",
                       "set_unread",
-                      "reset_password"
+                      "reset_password",
+                      "delete"
                     ]
                   }
                 }
