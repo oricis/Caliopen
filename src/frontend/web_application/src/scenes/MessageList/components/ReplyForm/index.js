@@ -9,7 +9,7 @@ import { requestDraft, clearDraft, syncDraft } from '../../../../store/modules/d
 import { updateTagCollection, withTags } from '../../../../modules/tags';
 import { saveDraft, sendDraft } from '../../../../modules/draftMessage';
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../../../modules/file';
-import { deleteMessage, invalidate } from '../../../../store/modules/message';
+import { deleteMessage } from '../../../../modules/message';
 import { getLastMessage } from '../../../../services/message';
 import Presenter from './presenter';
 
@@ -51,10 +51,16 @@ const onEditDraft = ({ internalId, draft, message }) => dispatch =>
 const onSaveDraft = ({ internalId, draft, message }) => dispatch =>
   dispatch(saveDraft({ internalId, draft, message }, { force: true }));
 
-const onDeleteMessage = ({ message, internalId, isNewDiscussion }) => dispatch =>
-  dispatch(deleteMessage({ message }))
-    .then(() => dispatch(clearDraft({ internalId })))
-    .then(() => isNewDiscussion && dispatch(push('/')));
+const onDeleteMessage = ({ message, internalId, isNewDiscussion }) => async (dispatch) => {
+  const result = dispatch(deleteMessage({ message }));
+  await dispatch(clearDraft({ internalId }));
+
+  if (isNewDiscussion) {
+    return dispatch(push('/'));
+  }
+
+  return result;
+};
 
 const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =>
   async (dispatch) => {
@@ -66,8 +72,6 @@ const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =
       i18n,
       { type, entity: savedDraft, tags }
     ));
-
-    dispatch(invalidate('discussion', internalId));
 
     return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
   };
@@ -83,8 +87,6 @@ const onUploadAttachments = (internalId, i18n, message, { draft, attachments }) 
       const messageUpTodate = await dispatch(uploadDraftAttachments({
         message: savedDraft, attachments,
       }));
-
-      dispatch(invalidate('discussion', internalId));
 
       return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
     } catch (err) {

@@ -25,6 +25,8 @@ export const UPDATE_TAGS_SUCCESS = 'co/message/UPDATE_TAGS_SUCCESS';
 export const UPDATE_TAGS_FAIL = 'co/message/UPDATE_TAGS_FAIL';
 export const UPLOAD_ATTACHMENT = 'co/message/UPLOAD_ATTACHMENT';
 export const DELETE_ATTACHMENT = 'co/message/DELETE_ATTACHMENT';
+export const REMOVE_FROM_COLLECTION = 'co/message/REMOVE_FROM_COLLECTION';
+export const ADD_TO_COLLECTION = 'co/message/ADD_TO_COLLECTION';
 
 export const TIMELINE_FILTER_ALL = 'all';
 export const TIMELINE_FILTER_RECEIVED = 'received';
@@ -201,6 +203,24 @@ export function deleteAttachment({ message, attachment }) {
   };
 }
 
+export function addToCollection({ message }) {
+  return {
+    type: ADD_TO_COLLECTION,
+    payload: {
+      message,
+    },
+  };
+}
+
+export function removeFromCollection({ message }) {
+  return {
+    type: REMOVE_FROM_COLLECTION,
+    payload: {
+      message,
+    },
+  };
+}
+
 export function getNextOffset(state) {
   return state.messages.length;
 }
@@ -249,6 +269,8 @@ const messagesCollectionReducer = (state = {
   total: 0,
   request: {},
 }, action) => {
+  const { type, key } = action.internal;
+
   switch (action.type) {
     case REQUEST_MESSAGES:
       return {
@@ -269,6 +291,22 @@ const messagesCollectionReducer = (state = {
         ],
         total: action.payload.data.total,
         request: action.meta.previousAction.payload.request,
+      };
+    case ADD_TO_COLLECTION:
+      return {
+        ...state,
+        messages: [
+          ...new Set([
+            ...(type === 'timeline' || key === action.payload.message.discussion_id ?
+              [action.payload.message.message_id] : []),
+            ...state.messages,
+          ]),
+        ],
+      };
+    case REMOVE_FROM_COLLECTION:
+      return {
+        ...state,
+        messages: state.messages.filter(id => id !== action.payload.message.message_id),
       };
     case INVALIDATE_ALL_MESSAGES:
     case INVALIDATE_MESSAGES:
@@ -303,7 +341,9 @@ const makeMessagesCollectionTypeReducer = (action) => {
     ...state,
     [type]: {
       ...(state[type] || {}),
-      [key]: messagesCollectionReducer(state[type] && state[type][key], act),
+      [key]: messagesCollectionReducer(state[type] && state[type][key], {
+        ...act, internal: { type, key },
+      }),
     },
   });
 };
@@ -313,7 +353,7 @@ const allMessagesCollectionsReducer = (state, action) => Object.keys(state)
     ...accType,
     [type]: Object.keys(state[type]).reduce((accKey, key) => ({
       ...accKey,
-      [key]: messagesCollectionReducer(state[type][key], action),
+      [key]: messagesCollectionReducer(state[type][key], { ...action, internal: { type, key } }),
     }), {}),
   }), {});
 
@@ -363,6 +403,8 @@ export default function reducer(state = initialState, action) {
           action
         ),
       };
+    case ADD_TO_COLLECTION:
+    case REMOVE_FROM_COLLECTION:
     case INVALIDATE_ALL_MESSAGES:
       return {
         ...state,
