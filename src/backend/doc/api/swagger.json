@@ -1611,6 +1611,9 @@
                       "delete"
                     ]
                   }
+                },
+                "params": {
+                  "type": "object"
                 }
               },
               "additionalProperties": false,
@@ -10007,6 +10010,9 @@
                       "delete"
                     ]
                   }
+                },
+                "params": {
+                  "type": "object"
                 }
               },
               "additionalProperties": false,
