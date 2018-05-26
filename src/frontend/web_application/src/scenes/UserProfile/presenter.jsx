@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { Section, PageTitle, Button } from '../../components/';
+import { Section, PageTitle, Button, Confirm } from '../../components/';
 import ProfileForm from './components/ProfileForm';
 import ProfileInfo from './components/ProfileInfo';
 
@@ -57,22 +57,36 @@ class UserProfile extends Component {
     return (
       <form method="post" name="user-profile" onSubmit={this.handleSubmit}>
         <ProfileForm editMode={this.state.editMode} />
-        {!this.state.editMode ? (
-          <Button onClick={this.toggleEditMode} shape="plain">
-            <Trans id="user.action.edit_profile">Edit</Trans>
-          </Button>
-        ) : (
-          <div>
-            <Button type="submit" shape="plain" disabled={submitting || pristine}>
-              <Trans id="user.action.update">Update</Trans>
+        <div className="s-user-profile__actions">
+          {!this.state.editMode ? (
+            <Button onClick={this.toggleEditMode} shape="plain">
+              <Trans id="user.action.edit_profile">Edit</Trans>
             </Button>
-            {' '}
-            <Button onClick={this.toggleEditMode} shape="hollow">
-              <Trans id="user.action.cancel_edit">Cancel</Trans>
-            </Button>
-          </div>
-        )}
-
+          ) : (
+            <div>
+              <Button type="submit" shape="plain" disabled={submitting || pristine}>
+                <Trans id="user.action.update">Update</Trans>
+              </Button>
+              {' '}
+              <Button onClick={this.toggleEditMode} shape="hollow">
+                <Trans id="user.action.cancel_edit">Cancel</Trans>
+              </Button>
+            </div>
+          )}
+          <Confirm
+            className="s-user-profile__delete"
+            render={confirm => (
+              <Button shape="plain" onClick={confirm} color="alert" >
+                <Trans id="user.action.delete">Delete account</Trans>
+              </Button>
+            )}
+            content={(
+              <div className="s-user-profile__modal-delete-form">
+                <h2>Suppression du compte</h2>
+              </div>
+            )}
+          />
+        </div>
       </form>
     );
   }
