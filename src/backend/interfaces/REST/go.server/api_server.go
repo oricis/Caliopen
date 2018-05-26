@@ -176,6 +176,7 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	/** users API **/
 	usrs := api.Group("/users", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	usrs.PATCH("/:user_id", users.PatchUser)
+	usrs.POST("/:user_id/actions", users.Delete)
 
 	identities := api.Group(http_middleware.IdentitiesRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	identities.GET("/locals", users.GetLocalsIdentities)
