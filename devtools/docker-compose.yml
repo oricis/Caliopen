@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 volumes:
   index:
     driver: local
@@ -6,17 +6,20 @@ volumes:
     driver: local
   store:
     driver: local
+
 services:
   # Caliopen APIv2
   api:
     image: public-registry.caliopen.org/api:compose
-    links:
-      - apiv1:apiv1.dev.caliopen.org
-      - redis:redis.dev.caliopen.org
-      - cassandra:cassandra.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - object_store:minio.dev.caliopen.org
+    ## this very bad config for a public machine
+    network_mode: "host"
+    extra_hosts:
+      - "apiv1.dev.caliopen.org:127.0.0.1"
+      - "redis.dev.caliopen.org:127.0.0.1"
+      - "cassandra.dev.caliopen.org:127.0.0.1"
+      - "nats.dev.caliopen.org:127.0.0.1"
+      - "es.dev.caliopen.org:127.0.0.1"
+      - "minio.dev.caliopen.org:127.0.0.1"
     ports:
       - "31415:31415"
 
@@ -27,8 +30,8 @@ services:
       - redis:redis.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
-    expose:
-      - "6543"
+    ports:
+      - "6543:6543"
 
   # ### Redis Database
   #
@@ -83,10 +86,12 @@ services:
   # Caliopen frontend
   frontend:
     image: public-registry.caliopen.org/frontend:compose
-    links:
-      - api:api.dev.caliopen.org
+    network_mode: "host"
     ports:
       - "4000:4000"
+    extra_hosts:
+      - "api.dev.caliopen.org:127.0.0.1"
+
   # Broker
   broker:
     image: public-registry.caliopen.org/broker:compose
@@ -96,8 +101,9 @@ services:
       - object_store:minio.dev.caliopen.org
       - nats:nats.dev.caliopen.org
       - message_handler:mc.dev.caliopen.org
+      - inbucket:smtp.dev.caliopen.org
     ports:
-      - "127.0.0.1:2525:2525"
+      - "2525:2525"
   # NATS
   nats:
     image: nats:0.9.6
@@ -140,5 +146,9 @@ services:
       - cassandra:cassandra.dev.caliopen.org
       - nats:nats.dev.caliopen.org
 
-  # Postfix : a complete smpt server that act as the Caliopen's MTA
-  # TODO
+  # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
+  # point your browser at localhost:8888
+  inbucket:
+    image: jhillyerd/inbucket
+    ports:
+      - "8888:9000"
