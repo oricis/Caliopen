@@ -475,5 +475,10 @@
   "signup.form.tos.label": "I agree Terms and conditions",
   "user.privacy": "Privacy",
   "user.security.section_pgpkeys.title": "PGP private keys",
-  "user.security.section_tfa.title": "Two-factor authentication"
+  "user.security.section_tfa.title": "Two-factor authentication",
+  "new-device-info.title": "It's the first time you attemp to connect to your Caliopen account on this client.",
+  "new-device-info.text": "To respect privacy and security rules, your discussion history will not appear here for now. Please verify this device and eventually set restrictions from your trust client to use Caliopen on this client.",
+  "new-device-info.learn-more": "Learn more",
+  "new-device-info.modal.title": "About new device",
+  "new-device-info.learn-more": "I understand"
 }
