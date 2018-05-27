@@ -163,6 +163,7 @@ func Delete(ctx *gin.Context) {
 	var err error
 	var caliopenErr CaliopenError
 	auth_user := ctx.MustGet("user_id").(string)
+	access_token := ctx.MustGet("access_token").(string)
 	user_id, err := operations.NormalizeUUIDstring(ctx.Param("user_id"))
 
 	if err != nil {
@@ -197,6 +198,7 @@ func Delete(ctx *gin.Context) {
 	}
 
 	payload.UserId = user_id
+	payload.Params.AccessToken = access_token
 
 	caliopenErr = caliopen.Facilities.RESTfacility.DeleteUser(payload)
 	if caliopenErr != nil {
