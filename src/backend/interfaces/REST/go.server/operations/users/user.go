@@ -171,7 +171,7 @@ func Delete(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	// for now, an user can only modify himself
+	//for now, an user can only modify himself
 	if auth_user != user_id {
 		e := swgErr.New(http.StatusUnauthorized, "user can only modify himself")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
@@ -200,7 +200,15 @@ func Delete(ctx *gin.Context) {
 
 	caliopenErr = caliopen.Facilities.RESTfacility.DeleteUser(payload)
 	if caliopenErr != nil {
-		returnedErr := swgErr.CompositeValidationError(caliopenErr, caliopenErr.Cause())
+		returnedErr := new(swgErr.CompositeError)
+		if caliopenErr.Code() == DbCaliopenErr && caliopenErr.Cause().Error() == "[CassandraBackend] user not found" {
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), caliopenErr, caliopenErr.Cause())
+		} else if caliopenErr.Code() == WrongCredentialsErr && caliopenErr.Cause().Error() == "[RESTfacility] DeleteUser Wrong password" {
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusUnauthorized, "wrong password"), caliopenErr, caliopenErr.Cause())
+		} else {
+			returnedErr = swgErr.CompositeValidationError(caliopenErr, caliopenErr.Cause())
+		}
+
 		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 		ctx.Abort()
 	} else {
