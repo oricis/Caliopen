@@ -69,7 +69,7 @@ func (cb *CassandraBackend) UserByRecoveryEmail(email string) (user *User, err e
 	return cb.RetrieveUser(user_id.String())
 }
 
-// Set the date_delete in the database
+// DeleteUser sets the date_delete in the database
 func (cb *CassandraBackend) DeleteUser(user_id string) error {
 	return cb.Session.Query(`UPDATE user SET date_delete = ? WHERE user_id = ?`, time.Now(), user_id).Exec()
 }
