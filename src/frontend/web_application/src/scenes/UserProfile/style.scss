@@ -5,10 +5,6 @@
   @include flex-grid-row($size: expand);
   margin-top: $co-margin;
 
-  &__actions {
-
-  }
-
   &__info {
     @include flex-grid-column(12);
   }

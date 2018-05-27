@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { Section, PageTitle, Button, Confirm } from '../../components/';
+import { Section, PageTitle, Button, Confirm, TextFieldGroup } from '../../components/';
 import ProfileForm from './components/ProfileForm';
 import ProfileInfo from './components/ProfileInfo';
+import { signout } from '../../modules/routing';
 
 import './style.scss';
 
@@ -14,8 +15,10 @@ class UserProfile extends Component {
     pristine: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
     notifyError: PropTypes.func.isRequired,
+    notifySuccess: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
     user: PropTypes.shape({}),
+    onDeleteUser: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -24,6 +27,8 @@ class UserProfile extends Component {
 
   state = {
     editMode: false,
+    password: undefined,
+    errorDeleteAccount: undefined,
   }
 
   componentDidMount() {
@@ -47,12 +52,26 @@ class UserProfile extends Component {
     notifyError({ message: i18n._('contact.feedback.unable_to_save', { defaults: 'Unable to save the contact' }) });
   }
 
+  handlePasswordChange = (ev) => {
+    this.setState({ password: ev.target.value, errorDeleteAccount: undefined });
+  };
+
+  handleDeleteAccount = async () => {
+    try {
+      await this.props.onDeleteUser({ password: this.state.password });
+      this.props.notifySuccess({ message: 'Your account have been deleted' });
+      signout();
+    } catch (error) {
+      this.setState({ errorDeleteAccount: error });
+    }
+  }
+
   toggleEditMode = () => {
     this.setState({ editMode: !this.state.editMode });
   }
 
   renderForm = () => {
-    const { pristine, submitting } = this.props;
+    const { pristine, submitting, i18n } = this.props;
 
     return (
       <form method="post" name="user-profile" onSubmit={this.handleSubmit}>
@@ -82,9 +101,26 @@ class UserProfile extends Component {
             )}
             content={(
               <div className="s-user-profile__modal-delete-form">
-                <h2>Suppression du compte</h2>
+                <h2>
+                  <Trans id="user.action.delete.modal.title">Are you sure to delete your Caliopen account ?</Trans>
+                </h2>
+                <TextFieldGroup
+                  id="confirm_password"
+                  label={i18n._('signin.form.password.label', { defaults: 'Password' })}
+                  placeholder={i18n._('signin.form.password.placeholder', { defaults: 'password' })}
+                  name="password"
+                  type="password"
+                  value={this.state.password}
+                  errors={this.state.errorDeleteAccount}
+                  onChange={this.handlePasswordChange}
+                  inputRef={(input) => { this.passwordInputRef = input; }}
+                />
               </div>
             )}
+            confirmButtonContent={(
+              <Trans id="user.action.delete.button">Delete my Caliopen account</Trans>
+            )}
+            onConfirm={this.handleDeleteAccount}
           />
         </div>
       </form>
