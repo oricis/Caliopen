@@ -228,14 +228,17 @@ func (rest *RESTfacility) DeleteUser(payload ActionsPayload) CaliopenError {
 		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to retrieve user")
 	}
 
+	if !user.DateDelete.IsZero() {
+		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] User already deleted.")
+	}
+
 	err = bcrypt.CompareHashAndPassword(user.Password, []byte(payload.Params.Password))
 	if err != nil {
 		return WrapCaliopenErr(err, WrongCredentialsErr, "[RESTfacility] DeleteUser Wrong password")
 	}
-	// err = rest.store.DeleteUser(payload.UserId)
-	// if err != nil {
-	// 	return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to delete user in store")
-	// }
-	// return nil
-	return WrapCaliopenErr(err, WrongCredentialsErr, "[RESTfacility] Not implemented")
+	err = rest.store.DeleteUser(payload.UserId)
+	if err != nil {
+		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to delete user in store")
+	}
+	return nil
 }
