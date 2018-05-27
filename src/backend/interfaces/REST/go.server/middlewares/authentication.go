@@ -6,12 +6,13 @@ package http_middleware
 
 import (
 	"encoding/base64"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
+	"github.com/gin-gonic/gin"
 )
 
 func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
@@ -49,6 +50,7 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 
 		//save user_id in context for future retreival
 		c.Set("user_id", user_id)
+		c.Set("access_token", "tokens::"+cache_key)
 	}
 }
 

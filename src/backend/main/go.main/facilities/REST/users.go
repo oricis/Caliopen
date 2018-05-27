@@ -240,5 +240,13 @@ func (rest *RESTfacility) DeleteUser(payload ActionsPayload) CaliopenError {
 	if err != nil {
 		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to delete user in store")
 	}
+
+	// Logout
+	err = rest.Cache.LogoutUser(payload.Params.AccessToken)
+
+	if err != nil {
+		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] Unable to logout.")
+	}
+
 	return nil
 }
