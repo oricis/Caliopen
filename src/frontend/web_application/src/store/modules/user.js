@@ -41,13 +41,13 @@ export function updateUser({ user, original }) {
   };
 }
 
-export function deleteUser({ password }) {
+export function deleteUser({ user, password }) {
   return {
     type: DELETE_USER,
     payload: {
       request: {
         method: 'post',
-        url: '/api/v2/me/actions',
+        url: `/api/v2/${user.user_id}/actions`,
         data: { password },
       },
     },

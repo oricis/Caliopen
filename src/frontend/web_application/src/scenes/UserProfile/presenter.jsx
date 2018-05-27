@@ -58,7 +58,7 @@ class UserProfile extends Component {
 
   handleDeleteAccount = async () => {
     try {
-      await this.props.onDeleteUser({ password: this.state.password });
+      await this.props.onDeleteUser({ user: this.props.user, password: this.state.password });
       this.props.notifySuccess({ message: 'Your account have been deleted' });
       signout();
     } catch (error) {
