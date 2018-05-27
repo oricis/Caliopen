@@ -159,7 +159,41 @@ func Create(ctx *gin.Context) {
 
 // POST …/users/{user_id}/actions
 func Delete(ctx *gin.Context) {
-	e := swgErr.New(http.StatusNotImplemented, "not implemented!")
+    var err error
+	auth_user := ctx.MustGet("user_id").(string)
+	user_id, err := operations.NormalizeUUIDstring(ctx.Param("user_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	// for now, an user can only modify himself
+	if auth_user != user_id {
+		e := swgErr.New(http.StatusUnauthorized, "user can only modify himself")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+    var payload ActionsPayload
+
+    err = ctx.BindJSON(&payload)
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, "unable to unmarshal payload : "+err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+    if payload.Params == nil || payload.Params.Password == "" {
+		e := swgErr.New(http.StatusBadRequest, "Password missing")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+    }
+
+	e := swgErr.New(http.StatusNotImplemented, "payload ok, do nothing")
 	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 	ctx.Abort()
 	return
