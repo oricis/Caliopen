@@ -44,7 +44,7 @@ class User(BaseModel):
     name = columns.Text(required=True)
     password = columns.Text(required=True)
     date_insert = columns.DateTime()
-    date_deleted = columns.DateTime()
+    date_delete = columns.DateTime()
     given_name = columns.Text()
     family_name = columns.Text()
     params = columns.Map(columns.Text, columns.Text)

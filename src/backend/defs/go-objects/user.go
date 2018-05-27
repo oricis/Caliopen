@@ -16,7 +16,7 @@ import (
 type User struct {
 	ContactId        UUID              `cql:"contact_id"               json:"contact_id"`
 	DateInsert       time.Time         `cql:"date_insert"              json:"date_insert"                              formatter:"RFC3339Milli"`
-	DateDeleted      time.Time         `cql:"date_deleted"             json:"date_deleted"                             formatter:"RCF3339Milli"`
+	DateDelete       time.Time         `cql:"date_delete"              json:"date_delete"                              formatter:"RCF3339Milli"`
 	FamilyName       string            `cql:"family_name"              json:"family_name"`
 	GivenName        string            `cql:"given_name"               json:"given_name"`
 	LocalIdentities  []string          `cql:"local_identities"         json:"local_identities"`
