@@ -5,6 +5,8 @@
 package REST
 
 import (
+	"io"
+
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/cache/redis"
@@ -15,7 +17,6 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
 	"github.com/tidwall/gjson"
-	"io"
 )
 
 type (
@@ -57,6 +58,7 @@ type (
 		RequestPasswordReset(payload PasswordResetRequest, notifier Notifications.Notifiers) error
 		ValidatePasswordResetToken(token string) (session *Pass_reset_session, err error)
 		ResetUserPassword(token, new_password string, notifier Notifications.Notifiers) error
+		DeleteUser(payload ActionsPayload) CaliopenError
 		//devices
 		CreateDevice(device *Device) CaliopenError
 		RetrieveDevices(userId string) ([]Device, CaliopenError)

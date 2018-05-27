@@ -7,8 +7,9 @@
 package objects
 
 type ActionsPayload struct {
-    Actions []string `json:"actions"`
-    Params *struct {
-        Password string `json:"password"`
-    } `json:"params"`
+	Actions []string `json:"actions"`
+	Params  *struct {
+		Password string `json:"password"`
+	} `json:"params"`
+	UserId string
 }
