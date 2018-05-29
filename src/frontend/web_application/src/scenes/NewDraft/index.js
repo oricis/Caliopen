@@ -9,8 +9,8 @@ import { saveDraft, sendDraft } from '../../modules/draftMessage';
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../modules/file';
 import { withNotification } from '../../hoc/notification';
 import { withCurrentTab } from '../../hoc/tab';
-import { deleteMessage } from '../../store/modules/message';
 import { updateTagCollection } from '../../modules/tags';
+import { deleteMessage } from '../../modules/message';
 import Presenter from './presenter';
 
 const messageDraftSelector = state => state.draftMessage.draftsByInternalId;

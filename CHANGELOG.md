@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- sending two consecutives messages was failing when the second message is saved before clicking on the send button.
+
 ## [0.10.1] 2018-05-18
 
 ### Fixed

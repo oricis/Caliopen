@@ -39,14 +39,18 @@ class Timeline extends Component {
   };
 
   state = {
+    initialized: false,
     selectedMessages: [],
     isTagModalOpen: false,
     isDeleting: false,
   }
 
   componentDidMount() {
-    const { requestMessages, timelineFilter, loadMore } = this.props;
-    requestMessages(timelineFilter);
+    const { timelineFilter, loadMore } = this.props;
+
+    this.loadMessages(this.props).finally(() => {
+      this.setState({ initialized: true });
+    });
 
     this.throttledLoadMore = throttle(
       () => loadMore(timelineFilter),
@@ -56,12 +60,7 @@ class Timeline extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {
-      requestMessages, timelineFilter, didInvalidate, isFetching,
-    } = nextProps;
-    if (didInvalidate && !isFetching) {
-      requestMessages(timelineFilter);
-    }
+    this.loadMessages(nextProps);
   }
 
   onSelectMessage = (type, messageId) => {
@@ -88,6 +87,17 @@ class Timeline extends Component {
       ...prevState,
       selectedMessages: checked ? messagesIds : [],
     }));
+  }
+
+  loadMessages = (props) => {
+    const {
+      requestMessages, timelineFilter, didInvalidate, isFetching,
+    } = props;
+    if ((!this.state.initialized || didInvalidate) && !isFetching) {
+      return requestMessages(timelineFilter);
+    }
+
+    return Promise.resolve();
   }
 
   handleOpenTags = () => {

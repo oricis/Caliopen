@@ -5,11 +5,11 @@ import { withI18n } from 'lingui-react';
 import { push } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_INFO } from 'react-redux-notify';
 import { createMessageCollectionStateSelector } from '../../store/selectors/message';
-import { requestMessages, deleteMessage, loadMore, replyToMessage } from '../../store/modules/message';
+import { requestMessages, loadMore, replyToMessage } from '../../store/modules/message';
 import { removeTab, updateTab } from '../../store/modules/tab';
 import { clearDraft } from '../../store/modules/draft-message';
 import { updateTagCollection, withTags } from '../../modules/tags';
-import { setMessageRead } from '../../modules/message';
+import { setMessageRead, deleteMessage } from '../../modules/message';
 import { withCurrentTab } from '../../hoc/tab';
 import Presenter from './presenter';
 
