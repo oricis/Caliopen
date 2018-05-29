@@ -47,8 +47,8 @@ export function deleteUser({ user, password }) {
     payload: {
       request: {
         method: 'post',
-        url: `/api/v2/${user.user_id}/actions`,
-        data: { password },
+        url: `/api/v2/users/${user.user_id}/actions`,
+        data: { actions: ['delete'], params: { password } },
       },
     },
   };
