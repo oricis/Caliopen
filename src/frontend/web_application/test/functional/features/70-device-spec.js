@@ -50,6 +50,7 @@ describe('Device', () => {
       await signin();
       await clearKeypairInLocalStorage();
       await signin();
+      await browser.wait(EC.presenceOf(element(by.css('.s-new-device-info__agreement')), 5 * 1000));
       await element(by.cssContainingText('.s-new-device-info__agreement', 'I understand')).click();
       await browser.wait(EC.presenceOf(element(by.css('.m-device-settings')), 5 * 1000));
       const nbDevices = await element.all(by.css('.m-device-settings')).count();
@@ -72,6 +73,7 @@ describe('Device', () => {
       await signin();
       await clearKeypairInLocalStorage({ save: true });
       await signin();
+      await browser.wait(EC.presenceOf(element(by.css('.s-new-device-info__agreement')), 5 * 1000));
       await element(by.cssContainingText('.s-new-device-info__agreement', 'I understand')).click();
       const nbDevices = await element.all(by.css('.m-device-settings')).count();
       const deviceBlock = element(by.cssContainingText('.m-device-settings', `desktop ${nbDevices - 1}`));
