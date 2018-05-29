@@ -37,16 +37,9 @@ Make sure to stop minikube before going offline to avoid any problems.
 
 ## Deployment
 
-After cloning the project, use git-crypt to unlock secret files, note that you have to be added as a collaborator in the project to do so.
-
-> **FIXME:** _*Pulling images from the registry should be allowed without authentication so we do not actually need git-crypt for contributors.*_
+To start the deployment:
 
 ```sh
-git-crypt unlock
-```
-Then start the deployment:
-
-```
 ./deploy-minikube.sh
 ```
 
@@ -69,7 +62,7 @@ To deploy the stack with docker you'll need to run the script as sudo. See [kube
 
 ## Deleting deployment 
 
-In case you are deploying the stack without a driver (locally) and the command fails or if you just want to restart the deployment, clean the stack beforehand:
+In case you are deploying the stack without a driver (locally) and the command fails or if you just want to restart the deployment from zero, clean the stack beforehand:
 
 ```sh
 sudo ./clean-minikube.sh
