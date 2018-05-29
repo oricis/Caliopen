@@ -17,19 +17,38 @@ class I18nLoader extends Component {
     children: null,
   };
 
-  constructor(props) {
-    super(props);
+  static getCatalogSync = (language) => {
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    const catalog = require(`../../../../../locale/${language}/messages.js`);
 
-    const catalogs = {};
-    const language = this.getLanguageFromProps(props);
-    const catalog = this.loadCatalog(language);
+    return unpackCatalog(catalog);
+  }
+
+  static getCatalog = async (language) => {
+    const catalog = await import(/* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */`../../../../../locale/${language}/messages.js`);
+
+    return unpackCatalog(catalog);
+  }
+
+  state = {
+    catalogs: {},
+  }
+
+  componentWillMount() {
+    const language = this.getLanguageFromProps(this.props);
+    const catalog = this.constructor.getCatalogSync(language);
+
     if (catalog) {
-      catalogs[language] = catalog;
+      this.setState({
+        catalogs: {
+          [language]: catalog,
+        },
+      });
     }
+  }
 
-    this.state = {
-      catalogs,
-    };
+  componentDidMount() {
+    this.updateCatalog(this.getLanguageFromProps(this.props));
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -47,19 +66,13 @@ class I18nLoader extends Component {
 
   getLanguageFromProps = props => getLanguage([props.locale])
 
-  loadCatalog = async (language) => {
-    const catalog = await import(/* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */`../../../../../locale/${language}/messages.js`);
-
-    return unpackCatalog(catalog);
-  }
-
-  updateCatalog = (language) => {
-    const catalog = this.loadCatalog(language);
+  updateCatalog = async (language) => {
+    const catalog = await this.constructor.getCatalog(language);
 
     this.setState(state => ({
       catalogs: {
         ...state.catalogs,
-        [language]: unpackCatalog(catalog),
+        [language]: catalog,
       },
     }));
   }
