@@ -10,7 +10,6 @@ volumes:
 services:
   # Caliopen APIv2
   api:
-    image: public-registry.caliopen.org/api:compose
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-api
@@ -28,7 +27,6 @@ services:
 
   # Caliopen APIv1
   apiv1:
-    image: public-registry.caliopen.org/apiv1:compose
     build:
       context: ../src/backend
       dockerfile: Dockerfile.py-api
@@ -79,7 +77,6 @@ services:
 
   # Caliopen cli tool
   cli:
-    image: public-registry.caliopen.org/cli:compose
     build:
       context: ../src/backend
       dockerfile: Dockerfile.cli
@@ -94,7 +91,6 @@ services:
 
   # Caliopen frontend
   frontend:
-    image: public-registry.caliopen.org/frontend:compose
     build:
       context: ../src/frontend/web_application
     network_mode: "host"
@@ -105,7 +101,6 @@ services:
 
   # Broker
   broker:
-    image: public-registry.caliopen.org/broker:compose
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-lmtp
@@ -126,7 +121,6 @@ services:
 
   # NATS Message Handler
   message_handler:
-    image: public-registry.caliopen.org/message-handler:compose
     build:
       context: ../src/backend
       dockerfile: Dockerfile.message_handler
@@ -148,7 +142,6 @@ services:
 
   # Worker for remote identities
   identity_worker:
-    image: public-registry.caliopen.org/identity-worker:compose
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-worker
@@ -160,7 +153,6 @@ services:
 
   # Poller for remote identities
   identity_poller:
-    image: public-registry.caliopen.org/identity-poller:compose
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-poller
