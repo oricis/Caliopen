@@ -5,8 +5,6 @@ export const REQUEST_USER_SUCCESS = 'co/user/REQUEST_USER_SUCCESS';
 export const REQUEST_USER_FAIL = 'co/user/REQUEST_USER_FAIL';
 export const UPDATE_USER = 'co/user/UPDATE_USER';
 export const INVALIDATE_USER = 'co/user/INVALIDATE_USER';
-export const DELETE_USER = 'co/user/DELETE_USER';
-export const DELETE_USER_FAIL = 'co/user/DELETE_USER_FAIL';
 
 export function requestUser() {
   return {
@@ -41,19 +39,6 @@ export function updateUser({ user, original }) {
   };
 }
 
-export function deleteUser({ user, password }) {
-  return {
-    type: DELETE_USER,
-    payload: {
-      request: {
-        method: 'post',
-        url: `/api/v2/users/${user.user_id}/actions`,
-        data: { actions: ['delete'], params: { password } },
-      },
-    },
-  };
-}
-
 export function updateUserContact(contact) {
   return (dispatch) => {
     dispatch(this.ContactsActions.updateContact(contact));
@@ -69,7 +54,6 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case DELETE_USER:
     case REQUEST_USER:
       return { ...state, isFetching: true };
     case REQUEST_USER_SUCCESS:
@@ -82,8 +66,6 @@ export default function reducer(state = initialState, action) {
       };
     case INVALIDATE_USER:
       return { ...state, didInvalidate: true };
-    case DELETE_USER_FAIL:
-      return { ...state, isFetching: false };
     default:
       return state;
   }

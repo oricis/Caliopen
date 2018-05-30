@@ -5,7 +5,7 @@ import { reduxForm } from 'redux-form';
 import { withI18n } from 'lingui-react';
 import { withNotification } from '../../hoc/notification';
 import { withUser } from '../../hoc/user';
-import { requestUser, updateUser, deleteUser } from '../../store/modules/user';
+import { requestUser, updateUser } from '../../store/modules/user';
 import { updateContact } from '../../store/modules/contact';
 import Presenter from './presenter';
 
@@ -26,7 +26,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   onSubmit: (values, disp, props) => updateContact({
     contact: values.contact, original: props.initialValues.contact,
   }),
-  onDeleteUser: deleteUser,
 }, dispatch);
 
 export default compose(
