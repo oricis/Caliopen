@@ -2359,10 +2359,18 @@
                         "format": "date-time"
                       },
                       "status": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                          "active",
+                          "inactive",
+                          "deleted"
+                        ]
                       },
                       "type": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                          "imap"
+                        ]
                       }
                     },
                     "required": [
@@ -2437,10 +2445,18 @@
                   "format": "date-time"
                 },
                 "status": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "inactive",
+                    "deleted"
+                  ]
                 },
                 "type": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [
+                    "imap"
+                  ]
                 }
               },
               "required": [
@@ -2517,10 +2533,18 @@
                   "format": "date-time"
                 },
                 "status": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "inactive",
+                    "deleted"
+                  ]
                 },
                 "type": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [
+                    "imap"
+                  ]
                 }
               },
               "required": [
@@ -2695,10 +2719,18 @@
                       "format": "date-time"
                     },
                     "status": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "active",
+                        "inactive",
+                        "deleted"
+                      ]
                     },
                     "type": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "imap"
+                      ]
                     }
                   }
                 },
@@ -2719,10 +2751,18 @@
                   "format": "date-time"
                 },
                 "status": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "inactive",
+                    "deleted"
+                  ]
                 },
                 "type": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [
+                    "imap"
+                  ]
                 }
               },
               "required": [
