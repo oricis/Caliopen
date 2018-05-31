@@ -106,7 +106,7 @@ services:
 
   # NATS Message Handler
   message_handler:
-    image: public-registry.caliopen.org/message-handler:compose
+    image: public-registry.caliopen.org/message_handler:compose
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -125,7 +125,7 @@ services:
 
   # Worker for remote identities
   identity_worker:
-    image: public-registry.caliopen.org/identity-worker:compose
+    image: public-registry.caliopen.org/identity_worker:compose
     links:
       - cassandra:cassandra.dev.caliopen.org
       - object_store:minio.dev.caliopen.org
@@ -134,7 +134,7 @@ services:
 
   # Poller for remote identities
   identity_poller:
-    image: public-registry.caliopen.org/identity-poller:compose
+    image: public-registry.caliopen.org/identity_poller:compose
     links:
       - identity_worker:identityworker.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
