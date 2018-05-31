@@ -5,6 +5,7 @@ import { Section, PageTitle, Button, Confirm, TextFieldGroup } from '../../compo
 import ProfileForm from './components/ProfileForm';
 import ProfileInfo from './components/ProfileInfo';
 import { signout } from '../../modules/routing';
+import { deleteUser } from '../../modules/user';
 
 import './style.scss';
 
@@ -18,7 +19,6 @@ class UserProfile extends Component {
     notifySuccess: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
     user: PropTypes.shape({}),
-    onDeleteUser: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -27,7 +27,7 @@ class UserProfile extends Component {
 
   state = {
     editMode: false,
-    password: undefined,
+    password: '',
     errorDeleteAccount: undefined,
   }
 
@@ -58,12 +58,32 @@ class UserProfile extends Component {
 
   handleDeleteAccount = async () => {
     try {
-      await this.props.onDeleteUser({ user: this.props.user, password: this.state.password });
-      this.props.notifySuccess({ message: 'Your account have been deleted' });
+      await deleteUser({ user: this.props.user, password: this.state.password });
+      await this.props.notifySuccess({ message: (<Trans id="user.feedback.delete_account_sucessful">Your account has been deleted, you  will be automatically disconnected.</Trans>) });
       signout();
-    } catch (error) {
-      this.setState({ errorDeleteAccount: error });
+
+      return undefined;
+    } catch (errors) {
+      if (errors.some(err => err.message === '[RESTfacility] DeleteUser Wrong password')) {
+        this.setState({
+          errorDeleteAccount: [(
+            <Trans id="user.delete-form.error.incorrect_password">
+              Unable to delete your account, the given password is incorrect.
+            </Trans>
+          )],
+        });
+      } else {
+        this.setState({
+          errorDeleteAccount: errors.map(err => err.message),
+        });
+      }
+
+      return Promise.reject('Unable to delete account');
     }
+  }
+
+  handleCloseDeleteConfirm = () => {
+    this.setState({ password: '', errorDeleteAccount: undefined });
   }
 
   toggleEditMode = () => {
@@ -99,28 +119,29 @@ class UserProfile extends Component {
                 <Trans id="user.action.delete">Delete account</Trans>
               </Button>
             )}
+            title={(<Trans id="user.delete-form.modal-title">Delete account</Trans>)}
             content={(
               <div className="s-user-profile__modal-delete-form">
-                <h2>
-                  <Trans id="user.action.delete.modal.title">Are you sure to delete your Caliopen account ?</Trans>
-                </h2>
+                <p>
+                  <Trans id="user.delete-form.modal-content">Are you sure to delete your Caliopen account ?</Trans>
+                </p>
                 <TextFieldGroup
-                  id="confirm_password"
-                  label={i18n._('signin.form.password.label', { defaults: 'Password' })}
-                  placeholder={i18n._('signin.form.password.placeholder', { defaults: 'password' })}
+                  label={i18n._('user.delete-form.password.label', { defaults: 'Password' })}
+                  placeholder={i18n._('user.delete-form.password.placeholder', { defaults: 'password' })}
                   name="password"
                   type="password"
                   value={this.state.password}
                   errors={this.state.errorDeleteAccount}
                   onChange={this.handlePasswordChange}
-                  inputRef={(input) => { this.passwordInputRef = input; }}
                 />
               </div>
             )}
             confirmButtonContent={(
-              <Trans id="user.action.delete.button">Delete my Caliopen account</Trans>
+              <Trans id="user.delete-form.action.delete">Delete my Caliopen account</Trans>
             )}
             onConfirm={this.handleDeleteAccount}
+            onCancel={this.handleCloseDeleteConfirm}
+            onClose={this.handleCloseDeleteConfirm}
           />
         </div>
       </form>
