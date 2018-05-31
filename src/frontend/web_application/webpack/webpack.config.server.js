@@ -22,7 +22,12 @@ const base = {
       if ([
         'body-parser', 'cookie-parser', 'debug', 'express', 'express-http-proxy', 'iron', 'locale',
         'serve-favicon', 'config/server.defaults.js', 'argv', 'winston', 'winston-syslog',
+        'lingui-react', 'lingui-i18n',
       ].some(module => module === request)) {
+        return callback(null, `commonjs ${request}`);
+      }
+
+      if (['locale/.*'].some(module => (new RegExp(module)).test(request))) {
         return callback(null, `commonjs ${request}`);
       }
 
@@ -39,6 +44,9 @@ const base = {
         test: /\.jsx?$/,
         include: path.join(__dirname, '../server/'),
         loader: 'babel-loader',
+        options: {
+          plugins: ['dynamic-import-node'],
+        },
       },
       { test: /\.html$/, loader: 'raw-loader' },
     ],

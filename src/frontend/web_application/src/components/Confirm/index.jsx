@@ -61,14 +61,17 @@ class Confirm extends PureComponent {
   }
 
 
-  handleConfirm = () => {
+  handleConfirm = async () => {
     const { onConfirm } = this.props;
-
-    this.setState({
-      isModalOpen: false,
-    }, () => {
-      onConfirm();
-    });
+    try {
+      await onConfirm();
+      this.setState({
+        isModalOpen: false,
+      });
+    } catch (err) {
+      // nothing to do
+      // the developer should display an error
+    }
   }
 
   renderModal() {
