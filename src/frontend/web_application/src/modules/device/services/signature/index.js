@@ -1,5 +1,5 @@
 import base64 from 'base64-js';
-import JsSHA from 'jssha';
+import { jsSHA as SHA } from 'jssha';
 import { getKeypair, sign } from '../ecdsa';
 import { getConfig } from '../storage';
 import { buildURL } from '../../../../services/url';
@@ -19,7 +19,7 @@ const toByteArray = (str) => {
 const buildMessage = async ({
   method, url, params, data,
 }) => {
-  const sha256 = new JsSHA('SHA-256', 'ARRAYBUFFER');
+  const sha256 = new SHA('SHA-256', 'ARRAYBUFFER');
   const methodBytes = toByteArray(method.toUpperCase());
   const builtURL = toByteArray(buildURL(url, params));
 
@@ -34,7 +34,7 @@ const buildMessage = async ({
     sha256.update(toByteArray(JSON.stringify(data)).buffer);
   }
 
-  return sha256.getHash('BYTES');
+  return sha256.getHash('HEX');
 };
 
 export const signRequest = async (req, privateKey) => {
