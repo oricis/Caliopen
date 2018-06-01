@@ -297,7 +297,7 @@ const messagesCollectionReducer = (state = {
         ...state,
         messages: [
           ...new Set([
-            ...(type === 'timeline' || key === action.payload.message.discussion_id ?
+            ...((type === 'timeline' && [TIMELINE_FILTER_ALL, TIMELINE_FILTER_DRAFT].some(k => k === key)) || key === action.payload.message.discussion_id ?
               [action.payload.message.message_id] : []),
             ...state.messages,
           ]),
