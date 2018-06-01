@@ -25,5 +25,3 @@ Tell us whatever you want:
 ## Installation
 
 Unfortunately Caliopen is not yet ready for production.
-
-Please refer to [production documentation](doc/production).
