@@ -1,9 +1,10 @@
 import base64 from 'base64-js';
-import { jsSHA as SHA } from 'jssha';
+import SHA from 'jssha';
 import { getKeypair, sign } from '../ecdsa';
 import { getConfig } from '../storage';
 import { buildURL } from '../../../../services/url';
 import { readAsArrayBuffer } from '../../../file/services';
+import UploadFileAsFormField from '../../../file/services/uploadFileAsFormField';
 
 // see : https://jsperf.com/string-to-uint8array
 const toByteArray = (str) => {
@@ -26,13 +27,17 @@ const buildMessage = async ({
   sha256.update(methodBytes.buffer);
   sha256.update(builtURL.buffer);
 
-  if (data instanceof Blob) {
-    sha256.update(await readAsArrayBuffer(data));
+  if (data instanceof UploadFileAsFormField) {
+    const file = await readAsArrayBuffer(data.file);
+
+    sha256.update(file);
   }
 
   if (data === Object(data)) {
     sha256.update(toByteArray(JSON.stringify(data)).buffer);
   }
+
+  console.log(sha256.getHash('HEX'));
 
   return sha256.getHash('HEX');
 };

@@ -3,6 +3,7 @@ import { getBaseUrl } from '../config';
 import { importanceLevelHeader } from '../importance-level';
 import { queryStringify } from '../url/QueryStringSerializer';
 import { getSignatureHeaders } from '../../modules/device/services/signature';
+import UploadFileAsFormField from '../../modules/file/services/uploadFileAsFormField';
 
 let client;
 let signingClient;
@@ -35,15 +36,8 @@ const buildClient = () =>
     headers,
     paramsSerializer: params => queryStringify(params, headers),
     transformRequest: ([(data) => {
-      if (data instanceof Blob) {
-        if (typeof FormData !== 'function') {
-          throw new Error('not a browser environment');
-        }
-
-        const transformedData = new FormData();
-        transformedData.append('attachment', data);
-
-        return transformedData;
+      if (data instanceof UploadFileAsFormField) {
+        return data.toFormData();
       }
 
       return data;

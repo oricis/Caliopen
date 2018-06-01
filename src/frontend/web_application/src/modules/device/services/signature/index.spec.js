@@ -2,6 +2,7 @@ import base64 from 'base64-js';
 import { ec as EC } from 'elliptic';
 import { getSignatureHeaders } from './';
 import { CURVE_TYPE } from '../ecdsa';
+import UploadFileAsFormField from '../../../file/services/uploadFileAsFormField';
 
 jest.mock('../storage', () => ({
   getConfig: () => ({
@@ -43,14 +44,18 @@ describe('HTTP Request signature headers', () => {
   });
 
   it('Creates a signature from URL + file', async () => {
-    const file = new Blob([0x4D, 0x65, 0x72, 0x64, 0x65, 0x20, 0x1F, 0x20, 0x63,
-      0x65, 0x6C, 0x75, 0x69, 0x20, 0x71, 0x75, 0x69, 0x20, 0x6C, 0x69, 0x72, 0x61, 0x2E]);
+    const file = new UploadFileAsFormField(
+      new Blob([0x004D, 0x0065, 0x0072, 0x0064, 0x0065, 0x0020, 0x001F, 0x0020, 0x0063,
+        0x0065, 0x006C, 0x0075, 0x0069, 0x0020, 0x0071, 0x0075, 0x0069, 0x0020,
+        0x006C, 0x0069, 0x0072, 0x0061, 0x002E]),
+      'attachment'
+    );
     const req = {
       method: 'post',
       url: '/run',
       data: file,
     };
-    const hash = 'b7eb58a73ec01fb877bce83634e9e767c02bc8034b9cbc94c6ed8189ab887e70';
+    const hash = 'eca6dce65e7cd2f48d880700ebcfcbf1903be7891bc0750546e48217f9911c4a';
 
     const signatureHeaders = await getSignatureHeaders(req);
     expect(signatureHeaders['X-Caliopen-Device-ID']).toEqual('THIS-IS-NOT-A-DEVICE');
