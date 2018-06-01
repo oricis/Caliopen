@@ -262,6 +262,31 @@ function messagesByIdReducer(state = {}, action = {}) {
   }
 }
 
+const sortTypeCollection = (type, messageIds) => {
+  // sort messages according to UX + API
+  // XXX: actually not the best way to do it, it would be better to share the algo between
+  // back and front and use it on rendering
+  if (type === 'timeline') {
+    return messageIds;
+  }
+
+  return [...messageIds].reverse();
+};
+
+const addToTypeCollection = (type, messageId, collection) => {
+  // sort messages according to UX + API
+  // XXX: cf. above in sortTypeCollection
+  if (!messageId) {
+    return collection;
+  }
+
+  if (type === 'timeline') {
+    return [messageId, ...collection];
+  }
+
+  return [...collection, messageId];
+};
+
 const messagesCollectionReducer = (state = {
   isFetching: false,
   didInvalidate: false,
@@ -283,25 +308,25 @@ const messagesCollectionReducer = (state = {
         ...state,
         isFetching: false,
         didInvalidate: false,
-        messages: [
-          ...new Set([
-            ...((state.didInvalidate && []) || state.messages),
-            ...action.payload.data.messages.map(message => message.message_id),
-          ]),
-        ],
+        messages: [...new Set([
+          ...((state.didInvalidate && []) || state.messages),
+          ...sortTypeCollection(
+            type,
+            action.payload.data.messages.map(message => message.message_id)
+          ),
+        ])],
         total: action.payload.data.total,
         request: action.meta.previousAction.payload.request,
       };
     case ADD_TO_COLLECTION:
       return {
         ...state,
-        messages: [
-          ...new Set([
-            ...((type === 'timeline' && [TIMELINE_FILTER_ALL, TIMELINE_FILTER_DRAFT].some(k => k === key)) || key === action.payload.message.discussion_id ?
-              [action.payload.message.message_id] : []),
-            ...state.messages,
-          ]),
-        ],
+        messages: [...new Set(addToTypeCollection(
+          type,
+          (type === 'timeline' && [TIMELINE_FILTER_ALL, TIMELINE_FILTER_DRAFT].some(k => k === key)) || key === action.payload.message.discussion_id ?
+            action.payload.message.message_id : undefined,
+          state.messages
+        ))],
       };
     case REMOVE_FROM_COLLECTION:
       return {
