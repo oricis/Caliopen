@@ -22,9 +22,12 @@ if __name__ == '__main__':
     connect_storage()
     from caliopen_main.common.store import PublicKey
     keys = PublicKey.all()
+    cpt = 0
     for key in keys:
         if key.resource_type == 'device' and key.use == 'sig':
             key.x = None
             key.y = None
             log.info('Updating key %r' % key.key_id)
             key.save()
+            cpt += 1
+    log.info('Update of %d keys' % cpt)
