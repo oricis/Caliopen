@@ -15,6 +15,7 @@ from ..base import Api
 from ..base.exception import AuthenticationError, NotAcceptable, Unprocessable
 
 from caliopen_storage.exception import NotFound
+from caliopen_main.common.core import PublicKey
 from caliopen_main.user.core import User
 from caliopen_main.user.parameters import NewUser, NewRemoteIdentity, Settings
 from caliopen_main.user.returns.user import ReturnUser, ReturnRemoteIdentity
@@ -29,6 +30,22 @@ class FakeDevice(object):
 
     device_id = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
     status = 'fake'
+
+
+def patch_device_key(user, device, param):
+    """Patch a device signature public key as X and Y points are not valid."""
+    keys = PublicKey._model_class.filter(user_id=user.user_id,
+                                         resource_id=device.device_id)
+    if keys:
+        keys = [x for x in keys if x.resource_type == 'device' and
+                x.use == 'sig']
+        key = keys[0]
+        if not key.x and not key.y:
+            key.x = int(param['ecdsa_key']['x'], 16)
+            key.y = int(param['ecdsa_key']['y'], 16)
+            key.save()
+            return True
+    return False
 
 
 @resource(path='',
@@ -60,6 +77,11 @@ class AuthenticationAPI(Api):
         if in_device:
             try:
                 device = Device.get(user, in_device['device_id'])
+                # Found a device, check if signature public key have X and Y
+                if patch_device_key(user, device, in_device):
+                    log.info('Patch device key OK')
+                else:
+                    log.warn('Patch device key does not work')
             except NotFound:
                 devices = Device.find(user)
                 if devices.get('objects', []):
