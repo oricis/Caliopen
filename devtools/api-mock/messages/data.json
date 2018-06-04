@@ -4,6 +4,7 @@
 	"excerpt": "Fry! Stay back! He's too powerful! Can I use the gun? I barely knew Philip, but as a ...",
 	"date": "2017-03-22T12:55:00.153000+00:00",
 	"date_insert": "2017-03-21T12:55:00.153000+00:00",
+	"date_sort": "2017-03-21T12:55:00.153000+00:00",
 	"discussion_id": "cd53e13a-267d-4d9c-97ee-d0fc59c64200",
 	"identities": [{
 		"display_name": "Jaune",
@@ -45,6 +46,7 @@
 	"excerpt": "It's okay, Bender. I like cooking too. You, minion. Lift my arm. AFTER HIM! I don't ...",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
+	"date_sort": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "cd53e13a-267d-4d9c-97ee-d0fc59c64200",
 	"identities": [{
 		"display_name": "Jaune",
@@ -87,6 +89,7 @@
 	"excerpt": "Shut up and take my money! Leela, are you alright? You got wanged on the head. Bender, ...",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
+	"date_sort": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "46d30c27-6cd8-407b-8536-fda4196c20ca",
 	"identities": [{
 		"display_name": "jaune",
@@ -128,6 +131,7 @@
 	"excerpt": "first message to remove individually",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
+	"date_sort": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "3330c27-6cd8-407b-8536-fda4196c20ca",
 	"identities": [{
 		"display_name": "jaune",
@@ -162,6 +166,7 @@
 	"excerpt": "last message to remove individually",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
+	"date_sort": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "3330c27-6cd8-407b-8536-fda4196c20ca",
 	"identities": [{
 		"display_name": "jaune",
@@ -196,6 +201,7 @@
 	"excerpt": "a message of a collection to remove ",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
+	"date_sort": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "44440c27-6cd8-407b-8536-fda4196c20ca",
 	"identities": [{
 		"display_name": "jaune",
@@ -230,6 +236,7 @@
 	"excerpt": "an other message of a collection to remove",
 	"date": "2017-03-21T10:55:00.153000+00:00",
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
+	"date_sort": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "44440c27-6cd8-407b-8536-fda4196c20ca",
 	"identities": [{
 		"display_name": "jaune",
