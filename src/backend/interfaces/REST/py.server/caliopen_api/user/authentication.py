@@ -37,8 +37,8 @@ class AuthenticatedUser(object):
 
         user_id, token = auth.split(':')
 
-        if 'X-Device-ID' in self.request.headers:
-            device_id = self.request.headers['X-Device-ID']
+        if 'X-Caliopen-Device-ID' in self.request.headers:
+            device_id = self.request.headers['X-Caliopen-Device-ID']
             cache_key = '{}-{}'.format(user_id, device_id)
         else:
             log.warn('No Device in API call')
