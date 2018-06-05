@@ -32,19 +32,24 @@ class FakeDevice(object):
     status = 'fake'
 
 
-def patch_device_key(user, device, param):
-    """Patch a device signature public key as X and Y points are not valid."""
+def get_device_sig_key(user, device):
+    """Get device signature key."""
     keys = PublicKey._model_class.filter(user_id=user.user_id,
                                          resource_id=device.device_id)
+    keys = [x for x in keys if x.resource_type == 'device' and
+            x.use == 'sig']
     if keys:
-        keys = [x for x in keys if x.resource_type == 'device' and
-                x.use == 'sig']
-        key = keys[0]
-        if not key.x and not key.y:
-            key.x = int(param['ecdsa_key']['x'], 16)
-            key.y = int(param['ecdsa_key']['y'], 16)
-            key.save()
-            return True
+        return keys[0]
+    return None
+
+
+def patch_device_key(key, param):
+    """Patch a device signature public key as X and Y points are not valid."""
+    if not key.x and not key.y:
+        key.x = int(param['ecdsa_key']['x'], 16)
+        key.y = int(param['ecdsa_key']['y'], 16)
+        key.save()
+        return True
     return False
 
 
@@ -74,14 +79,20 @@ class AuthenticationAPI(Api):
             raise AuthenticationError(detail=exc.message)
         # Device management
         in_device = self.request.swagger_data['authentication']['device']
+        key = None
         if in_device:
             try:
                 device = Device.get(user, in_device['device_id'])
                 # Found a device, check if signature public key have X and Y
-                if patch_device_key(user, device, in_device):
-                    log.info('Patch device key OK')
+                key = get_device_sig_key(user, device)
+                if not key:
+                    log.error('No signature key found for device %r'
+                              % device.device_id)
                 else:
-                    log.warn('Patch device key does not work')
+                    if patch_device_key(key, in_device):
+                        log.info('Patch device key OK')
+                    else:
+                        log.warn('Patch device key does not work')
             except NotFound:
                 devices = Device.find(user)
                 if devices.get('objects', []):
@@ -91,6 +102,11 @@ class AuthenticationAPI(Api):
                 # we must declare a new device
                 device = Device.create_from_parameter(user, in_device,
                                                       self.request.headers)
+                key = get_device_sig_key(user, device)
+                if not key:
+                    log.error('No signature key found for device %r'
+                              % device.device_id)
+
         else:
             device = FakeDevice()
 
