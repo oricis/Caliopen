@@ -98,11 +98,13 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 			valid, err := verifySignature(device_sign[0], query, auth.Curve, auth.X, auth.Y)
 			if err != nil {
 				log.Println("Error during signature verification: ", err)
-				kickUnauthorizedRequest(c, "Authorization error")
+				// kickUnauthorizedRequest(c, "Authorization error")
 			}
 			if valid == false {
 				log.Println("Verification of signature failed")
-				kickUnauthorizedRequest(c, "Authorization failed")
+				// kickUnauthorizedRequest(c, "Authorization failed")
+			} else {
+				log.Println("Verofication of signature OK")
 			}
 		} else {
 			log.Println("No signature found for device ")
