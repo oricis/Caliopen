@@ -37,8 +37,6 @@ const buildMessage = async ({
     sha256.update(toByteArray(JSON.stringify(data)).buffer);
   }
 
-  console.log(sha256.getHash('HEX'));
-
   return sha256.getHash('HEX');
 };
 
