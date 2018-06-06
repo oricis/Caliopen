@@ -2342,6 +2342,12 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "credentials": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
                       "display_name": {
                         "type": "string"
                       },
@@ -2428,6 +2434,12 @@
             "schema": {
               "type": "object",
               "properties": {
+                "credentials": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
                 "display_name": {
                   "type": "string"
                 },
@@ -2516,6 +2528,12 @@
             "schema": {
               "type": "object",
               "properties": {
+                "credentials": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
                 "display_name": {
                   "type": "string"
                 },
@@ -2702,6 +2720,12 @@
                 "current_state": {
                   "type": "object",
                   "properties": {
+                    "credentials": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
                     "display_name": {
                       "type": "string"
                     },
@@ -2732,6 +2756,12 @@
                         "imap"
                       ]
                     }
+                  }
+                },
+                "credentials": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
                   }
                 },
                 "display_name": {

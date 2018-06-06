@@ -1,6 +1,10 @@
 ---
 type: object
 properties:
+  credentials:    # set of key/value strings
+    type: object
+    additionalProperties:
+      type: string
   display_name:
     type: string
   identifier:

@@ -55,6 +55,7 @@ type (
 
 	//struct to store external user accounts
 	RemoteIdentity struct {
+		Credentials Credentials       `cql:"credentials"        json:"credentials,omitempty" frontend:"omit"            patch:"user"`
 		DisplayName string            `cql:"display_name"       json:"display_name"                                     patch:"user"`
 		Identifier  string            `cql:"identifier"         json:"identifier"                                       patch:"user"`
 		Infos       map[string]string `cql:"infos"              json:"infos"                                            patch:"user"`
@@ -111,6 +112,7 @@ func (i *Identity) MarshallNew(...interface{}) {
 /** remote identity **/
 func (ri *RemoteIdentity) NewEmpty() interface{} {
 	nri := new(RemoteIdentity)
+	nri.Credentials = Credentials{}
 	nri.Infos = map[string]string{}
 	return nri
 }
@@ -125,6 +127,12 @@ func (ri *RemoteIdentity) UnmarshalJSON(b []byte) error {
 }
 
 func (ri *RemoteIdentity) UnmarshalMap(input map[string]interface{}) error {
+	if credentials, ok := input["credentials"].(map[string]interface{}); ok {
+		ri.Credentials = Credentials{}
+		for k, v := range credentials {
+			ri.Credentials[k] = v.(string)
+		}
+	}
 	if dn, ok := input["display_name"].(string); ok {
 		ri.DisplayName = dn
 	}
@@ -194,15 +202,14 @@ func (ri *RemoteIdentity) SetDefaultsInfos() {
 	switch ri.Type {
 	case "imap":
 		defaults = map[string]string{
-			"lastseenuid":  "",
-			"lastsync":     "",   // RFC3339 date string
-			"password":     "",   // credentials, SHOULD NOT BE HERE !! TODO.
-			"pollinterval": "15", // how often remote account should be polled, in minutes.
-			"server":       "",   // server hostname[|port]
-			"uidvalidity":  "",   // uidvalidity to invalidate data if needed (see RFC4549#section-4.1)
-			"username":     "",   // credentials
+			"lastseenuid": "",
+			"lastsync":    "", // RFC3339 date string
+			"server":      "", // server hostname[|port]
+			"uidvalidity": "", // uidvalidity to invalidate data if needed (see RFC4549#section-4.1)
 		}
 	}
+	// defaults for every type
+	defaults["pollinterval"] = "15" // how often remote account should be polled, in minutes.
 
 	if ri.Infos == nil {
 		(*ri).Infos = defaults
@@ -222,12 +229,22 @@ func (ri *RemoteIdentity) SetDefaultsInfos() {
 	if ri.Identifier == "" {
 		switch ri.Type {
 		case "imap":
-			(*ri).Identifier = ri.Infos["username"]
+			(*ri).Identifier = ri.Credentials["username"]
 		}
+	}
+
+	if ri.Credentials == nil {
+		(*ri).Credentials = Credentials{}
 	}
 }
 
 func (ri *RemoteIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
+	if credentials, ok := input["credentials"].(map[string]string); ok {
+		ri.Credentials = Credentials{}
+		for k, v := range credentials {
+			ri.Credentials[k] = v
+		}
+	}
 	if dn, ok := input["display_name"].(string); ok {
 		ri.DisplayName = dn
 	}

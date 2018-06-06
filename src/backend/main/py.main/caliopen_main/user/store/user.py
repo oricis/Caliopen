@@ -88,6 +88,7 @@ class RemoteIdentity(BaseModel):
 
     user_id = columns.UUID(primary_key=True)
     identifier = columns.Text(primary_key=True)
+    credentials = columns.Map(columns.Text, columns.Text)
     display_name = columns.Text()
     type = columns.Text()
     status = columns.Text()
