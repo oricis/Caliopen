@@ -99,7 +99,7 @@ func (rest *RESTfacility) CreateRemoteIdentity(identity *RemoteIdentity) Caliope
 	}
 
 	// set defaults
-	identity.SetDefaultsInfos()
+	identity.SetDefaults()
 
 	// identifier should not be empty at this stage
 	if identity.Identifier == "" {

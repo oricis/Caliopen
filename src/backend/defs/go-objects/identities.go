@@ -195,8 +195,8 @@ func (ri *RemoteIdentity) MarshallNew(args ...interface{}) {
 	}
 }
 
-// SetDefaults fills `Infos` map with default keys and values according to the type of the remote identity
-func (ri *RemoteIdentity) SetDefaultsInfos() {
+// SetDefaults fills RemoteIdentity with default keys and values according to the type of the remote identity
+func (ri *RemoteIdentity) SetDefaults() {
 	defaults := map[string]string{}
 
 	switch ri.Type {
