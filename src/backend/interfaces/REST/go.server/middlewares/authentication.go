@@ -11,7 +11,7 @@ import (
 	"encoding/asn1"
 	"encoding/base64"
 	"errors"
-	"log"
+	log "github.com/Sirupsen/logrus"
 	"math/big"
 	"net/http"
 	"strconv"
@@ -32,7 +32,7 @@ func getSignedQuery(c * gin.Context) string {
 }
 
 // verifySignature, check for validity of device ecdsa signature
-func verifySignature(signature string, query string, curve string, x big.Int, y big.Int) (bool, error) {
+func verifySignature(signature, query, curve string, x, y big.Int) (bool, error) {
 	sign := &ecdsaSignature{}
 	decoded, err := base64.StdEncoding.DecodeString(signature)
 	if err != nil {
@@ -104,7 +104,7 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 				log.Println("Verification of signature failed")
 				// kickUnauthorizedRequest(c, "Authorization failed")
 			} else {
-				log.Println("Verofication of signature OK")
+				log.Println("Verification of signature OK")
 			}
 		} else {
 			log.Println("No signature found for device ")
