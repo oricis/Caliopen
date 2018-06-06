@@ -225,17 +225,18 @@ func (ri *RemoteIdentity) SetDefaults() {
 		(*ri).Status = "active"
 	}
 
+	if ri.Credentials == nil {
+		(*ri).Credentials = Credentials{}
+	}
+
 	// try to set identifier if it is missing
 	if ri.Identifier == "" {
 		switch ri.Type {
 		case "imap":
-			(*ri).Identifier = ri.Credentials["username"]
+			(*ri).Identifier, _ = ri.Credentials["username"]
 		}
 	}
 
-	if ri.Credentials == nil {
-		(*ri).Credentials = Credentials{}
-	}
 }
 
 func (ri *RemoteIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
