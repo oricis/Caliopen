@@ -141,6 +141,7 @@ func (cb *CassandraBackend) RetrieveAllRemotes() (<-chan *RemoteIdentity, error)
 			}
 		}
 
+		iter.Close()
 		close(ch)
 	}(cb, ch)
 

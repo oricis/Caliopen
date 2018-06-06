@@ -56,7 +56,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 		}
 	}
 	// Sync INBOX (only INBOX for now)
-	// TODO : sync other mailbox(es) from rId.Infos params
+	// TODO : sync other mailbox(es) from rId.Infos params or from order
 	lastseenuid, err := strconv.Atoi(rId.Infos["lastseenuid"])
 	if err != nil {
 		log.WithError(err).Warn("[SyncRemoteWithLocal] failed to get lastseenuid")
@@ -149,7 +149,6 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
 
 // fetchMails fetches all messages from remote mailbox and returns well-formed Emails for lda.
 func (f *Fetcher) fetchMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) (err error) {
-
 	tlsConn, imapClient, provider, err := imapLogin(rId)
 	// Don't forget to logout and close chan
 	defer func() {

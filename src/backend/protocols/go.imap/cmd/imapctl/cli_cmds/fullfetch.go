@@ -32,7 +32,7 @@ func init() {
 	fullFetchCmd.Flags().StringVarP(&id.Mailbox, "mailbox", "m", "INBOX", "IMAP mailbox name to fetch mail from, case sensitive")
 	fullFetchCmd.Flags().StringVarP(&id.Login, "login", "l", "", "IMAP login credential (required)")
 	fullFetchCmd.Flags().StringVarP(&id.Password, "pass", "p", "", "IMAP password credential (required)")
-	fullFetchCmd.MarkFlagRequired("userid")
+	fullFetchCmd.MarkFlagRequired("username")
 	fullFetchCmd.MarkFlagRequired("server")
 	fullFetchCmd.MarkFlagRequired("login")
 	fullFetchCmd.MarkFlagRequired("pass")
@@ -75,7 +75,7 @@ func fullFetch(cmd *cobra.Command, args []string) {
 	msg, err := json.Marshal(IMAPfetchOrder{
 		Order:      "fullfetch",
 		UserId:     id.UserId.String(),
-		Identifier: id.Identifier,
+		Identifier: id.Login,
 		Server:     id.Server,
 		Mailbox:    id.Mailbox,
 		Login:      id.Login,
@@ -92,5 +92,5 @@ func fullFetch(cmd *cobra.Command, args []string) {
 		logrus.WithError(err).Fatal("nats publish failed")
 	}
 
-	logrus.Infof("ordering to fetch all mails from %s for user %s", id.Identifier, id.UserId)
+	logrus.Infof("ordering to fetch all mails from %s for user %s", id.Login, id.UserId)
 }
