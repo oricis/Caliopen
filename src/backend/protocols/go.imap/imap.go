@@ -74,7 +74,7 @@ func imapLogin(rId *RemoteIdentity) (tlsConn *tls.Conn, imapClient *client.Clien
 	}
 
 	// Login
-	if err = imapClient.Login(rId.Infos["username"], rId.Infos["password"]); err != nil {
+	if err = imapClient.Login(rId.Credentials["username"], rId.Credentials["password"]); err != nil {
 		log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
 		return
 	}

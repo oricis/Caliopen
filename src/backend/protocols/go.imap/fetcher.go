@@ -43,7 +43,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 		return err
 	}
 	if order.Password != "" {
-		rId.Infos["password"] = order.Password
+		rId.Credentials["password"] = order.Password
 	}
 	// 2. sync/fetch with remote IMAP
 	mails := make(chan *Email)
@@ -119,7 +119,9 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
 		Identifier: order.Login,
 		UserId:     UUID(uuid.FromStringOrNil(order.UserId)),
 		Infos: map[string]string{
-			"server":   order.Server,
+			"server": order.Server,
+		},
+		Credentials: Credentials{
 			"username": order.Login,
 			"password": order.Password,
 		},
