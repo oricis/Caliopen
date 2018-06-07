@@ -43,7 +43,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 		return err
 	}
 	if order.Password != "" {
-		rId.Infos["password"] = order.Password
+		rId.Credentials["password"] = order.Password
 	}
 	// 2. sync/fetch with remote IMAP
 	mails := make(chan *Email)
@@ -56,7 +56,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 		}
 	}
 	// Sync INBOX (only INBOX for now)
-	// TODO : sync other mailbox(es) from rId.Infos params
+	// TODO : sync other mailbox(es) from rId.Infos params or from order
 	lastseenuid, err := strconv.Atoi(rId.Infos["lastseenuid"])
 	if err != nil {
 		log.WithError(err).Warn("[SyncRemoteWithLocal] failed to get lastseenuid")
@@ -119,7 +119,9 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
 		Identifier: order.Login,
 		UserId:     UUID(uuid.FromStringOrNil(order.UserId)),
 		Infos: map[string]string{
-			"server":   order.Server,
+			"server": order.Server,
+		},
+		Credentials: Credentials{
 			"username": order.Login,
 			"password": order.Password,
 		},
@@ -147,7 +149,6 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
 
 // fetchMails fetches all messages from remote mailbox and returns well-formed Emails for lda.
 func (f *Fetcher) fetchMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) (err error) {
-
 	tlsConn, imapClient, provider, err := imapLogin(rId)
 	// Don't forget to logout and close chan
 	defer func() {

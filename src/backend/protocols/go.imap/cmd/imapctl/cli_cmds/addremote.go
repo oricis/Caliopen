@@ -94,10 +94,10 @@ func addRemote(cmd *cobra.Command, args []string) {
 		Type:        "imap",
 		UserId:      id.UserId,
 	}
-	rId.SetDefaultInfos()
-	rId.Infos["password"] = id.Password
+	rId.SetDefaults()
 	rId.Infos["server"] = id.Server
-	rId.Infos["username"] = id.Login
+	rId.Credentials["password"] = id.Password
+	rId.Credentials["username"] = id.Login
 
 	err = is.CreateRemoteIdentity(&rId)
 	if err != nil {
