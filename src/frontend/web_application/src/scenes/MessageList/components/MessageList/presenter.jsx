@@ -51,7 +51,7 @@ class MessageList extends Component {
       user, updateTagCollection,
     } = this.props;
 
-    const messagesGroupedByday = groupMessages(messages, user);
+    const messagesGroupedByday = groupMessages(messages);
 
     return Object.keys(messagesGroupedByday)
       .map(date => (

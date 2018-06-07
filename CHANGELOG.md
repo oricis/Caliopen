@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- sort of the messages of a discussion
+- discussion might not be up to date after creating a draft
 - sending two consecutives messages was failing when the second message is saved before clicking on the send button.
 
 ## [0.10.1] 2018-05-18

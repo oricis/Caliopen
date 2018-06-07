@@ -61,6 +61,7 @@ const reducer = {
       is_unread: false,
       date: Date.now(),
       date_insert: Date.now(),
+      date_sort: Date.now(),
       pi: { technic: 50, context: 45, comportment: 25, version: 1 },
       participants: reduceParticipants(body),
     },
