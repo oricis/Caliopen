@@ -15,12 +15,17 @@ package cmd
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
+	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
+	"strings"
+	"time"
 )
 
 // fixMissingParticipantsCmd represents the fixMissingParticipants command
@@ -54,16 +59,22 @@ func fixMissingParticipants(cmd *cobra.Command, args []string) {
 	var Store *store.CassandraBackend
 	Store, err = getStoreFacility()
 	if err != nil {
-		log.WithError(err).Fatalf("initalization of %s backend failed", apiConf.BackendName)
+		log.WithError(err).Fatalf("initialization of %s backend failed", apiConf.BackendName)
 	}
 	defer Store.Close()
 	//index
 	var Index *index.ElasticSearchBackend
 	Index, err = getIndexFacility()
 	if err != nil {
-		log.WithError(err).Fatalf("initalization of %s index failed", apiConf.IndexConfig.IndexName)
+		log.WithError(err).Fatalf("initialization of %s index failed", apiConf.IndexConfig.IndexName)
 	}
 	defer Index.Close()
+	//nats
+	var MsgQueue *nats.Conn
+	MsgQueue, err = getMsgSystemFacility()
+	if err != nil {
+		log.WithError(err).Fatal("initiazation of message queue failed")
+	}
 
 	var total int
 	count := 0
@@ -75,43 +86,51 @@ func fixMissingParticipants(cmd *cobra.Command, args []string) {
 		invalidCount++
 		//try to fetch message from index and check if it has participants
 		result, err := Index.Client.Get().Index(usrId.String()).Type(objects.MessageIndexType).Id(msgId.String()).Do(context.TODO())
-		if err != nil {
+		if err != nil && !strings.Contains(err.Error(), "Not Found") {
 			log.Warn(err)
 			failedCount++
 			return
 		}
-		msg := new(objects.Message).NewEmpty().(*objects.Message)
-		if err := json.Unmarshal(*result.Source, msg); err != nil {
-			log.Warn(err)
-			failedCount++
-			return
-		}
-		err = msg.Message_id.UnmarshalBinary(msgId.Bytes())
-		if err != nil {
-			log.WithError(err).Warn("failed to unmarshal messageId")
-			failedCount++
-			return
-		}
-		if msg.Participants != nil && len(msg.Participants) > 0 {
-			err = Store.UpdateMessage(msg, map[string]interface{}{
-				"Participants": msg.Participants,
-			})
-			if err != nil {
-				log.WithError(err).Warnf("failed to update message in db")
+		if result != nil && result.Found {
+			msg := new(objects.Message).NewEmpty().(*objects.Message)
+			if err := json.Unmarshal(*result.Source, msg); err != nil {
+				log.Warn(err)
 				failedCount++
 				return
 			}
-		} else {
-			log.Infoln("no participant found in index, trying to reinject raw message")
-			//TODO
+			err = msg.Message_id.UnmarshalBinary(msgId.Bytes())
+			if err != nil {
+				log.WithError(err).Warn("failed to unmarshal messageId")
+				failedCount++
+				return
+			}
+			if msg.Participants != nil && len(msg.Participants) > 0 {
+				err = Store.UpdateMessage(msg, map[string]interface{}{
+					"Participants": msg.Participants,
+				})
+				if err != nil {
+					log.WithError(err).Warnf("failed to update message in db")
+					failedCount++
+					return
+				}
+				fixedCount++
+				return
+			}
+		}
+		log.Infoln("failed to retrieve participant from index, trying to reinject raw message")
+		err = reInjectRaw(usrId.String(), rawMsgId.String(), MsgQueue)
+		if err != nil {
+			log.WithError(err).Warn("failed to re-inject raw message in stack")
 			failedCount++
 			return
 		}
-
-		//if fix from index failed, try to rebuild participants from raw_msg
-		log.Infoln("message not found in index, trying to reinject raw message")
-		//TODO
+		//reinjection OK, delete former invalid message
+		err = Store.Session.Query(`DELETE FROM message WHERE message_id = ? AND user_id = ?`, msgId, usrId).Exec()
+		if err != nil {
+			log.WithError(err).Warnf("failed to delete former invalid message %s", msgId)
+		}
 		fixedCount++
+
 	}
 
 	//get an iterator on table message and iterate over all messages
@@ -138,4 +157,36 @@ func fixMissingParticipants(cmd *cobra.Command, args []string) {
 	}
 	log.Infof("%d invalid messages handled => %d fixed, %d failed", invalidCount, fixedCount, failedCount)
 
+}
+
+func reInjectRaw(userId, msgId string, msgQueue *nats.Conn) error {
+	const nats_message_tmpl = "{\"order\":\"process_raw\",\"user_id\": \"%s\", \"message_id\": \"%s\"}"
+	natsMessage := fmt.Sprintf(nats_message_tmpl, userId, msgId)
+
+	resp, err := msgQueue.Request(lmtpConf.LDAConfig.InTopic, []byte(natsMessage), 10*time.Second)
+	if err != nil {
+		if msgQueue.LastError() != nil {
+			log.WithError(msgQueue.LastError()).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", userId)
+			log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
+			return err
+		} else {
+			log.WithError(err).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", userId)
+			log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
+			return err
+		}
+	}
+
+	nats_ack := new(map[string]interface{})
+	err = json.Unmarshal(resp.Data, &nats_ack)
+	if err != nil {
+		log.WithError(err).Warnf("[EmailBroker] failed to parse inbound ack on NATS for user %s", userId)
+		log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
+		return err
+	}
+	if err, ok := (*nats_ack)["error"]; ok {
+		log.WithError(errors.New(err.(string))).Warnf("[EmailBroker] inbound delivery failed for user %s", userId)
+		log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
+		return errors.New(err.(string))
+	}
+	return nil
 }
