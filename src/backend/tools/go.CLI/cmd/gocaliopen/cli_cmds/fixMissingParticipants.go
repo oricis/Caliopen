@@ -4,6 +4,12 @@
  * // license (AGPL) that can be found in the LICENSE file.
  */
 
+/*
+ * // Copyleft (ɔ) 2018 The Caliopen contributors.
+ * // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
+ * // license (AGPL) that can be found in the LICENSE file.
+ */
+
 package cmd
 
 import (
@@ -23,7 +29,7 @@ var fixMissingParticipantsCmd = &cobra.Command{
 	Short: "Fill missing message.participants in db and index",
 	Long: `This command iterates over all messages in cassandra to find messages that miss participants.
 	If message.participants exists in index, db version is filled with it.
-	If not, command tries to rebuild participants from raw_message.`,
+	If not, command will reinject raw_message in stack to trigger again message inbound processing.`,
 	Run: fixMissingParticipants,
 }
 
@@ -57,7 +63,6 @@ func fixMissingParticipants(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.WithError(err).Fatalf("initalization of %s index failed", apiConf.IndexConfig.IndexName)
 	}
-	//TODO: cast to relevant interfaces
 	defer Index.Close()
 
 	var total int
@@ -97,12 +102,15 @@ func fixMissingParticipants(cmd *cobra.Command, args []string) {
 				return
 			}
 		} else {
-			log.Infoln("no participant found in index, trying from raw_message")
+			log.Infoln("no participant found in index, trying to reinject raw message")
+			//TODO
 			failedCount++
 			return
 		}
 
 		//if fix from index failed, try to rebuild participants from raw_msg
+		log.Infoln("message not found in index, trying to reinject raw message")
+		//TODO
 		fixedCount++
 	}
 

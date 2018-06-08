@@ -4,6 +4,12 @@
  * // license (AGPL) that can be found in the LICENSE file.
  */
 
+/*
+ * // Copyleft (ɔ) 2018 The Caliopen contributors.
+ * // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
+ * // license (AGPL) that can be found in the LICENSE file.
+ */
+
 package cmd
 
 import (
@@ -58,6 +64,8 @@ gocaliopen subcommands could interact with
 	}
 )
 
+const __version__ = "0.10.0"
+
 func init() {
 	cobra.OnInitialize(initConfig)
 
@@ -85,9 +93,9 @@ func initConfig() {
 		apiCfg.AddConfigPath(cfgPath)
 		lmtpCfg.AddConfigPath(cfgPath)
 	} else {
-		// set defaults to relative path from /tools/go.CLI
-		apiCfg.AddConfigPath("../../configs")
-		lmtpCfg.AddConfigPath("../../configs")
+		// set defaults to relative path from /tools/go.CLI/cmd/gocaliopen
+		apiCfg.AddConfigPath("../../../../configs")
+		lmtpCfg.AddConfigPath("../../../../configs")
 		// set defaults to current dir
 		apiCfg.AddConfigPath(".")
 		lmtpCfg.AddConfigPath(".")
