@@ -13,6 +13,7 @@
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
+	"is_received": false,
 	"message_id": "11111111-267d-4d9c-97ee-d0fc59c64202",
 	"participants": [{
 		"address": "test@caliopen.local",
@@ -55,6 +56,7 @@
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
+	"is_received": true,
 	"message_id": "11111111-267d-4d9c-97ee-d0fc59c64201",
 	"participants": [{
 		"address": "test@caliopen.local",
@@ -98,6 +100,7 @@
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
+	"is_received": true,
 	"message_id": "2222222-267d-4d9c-97ee-d0fc59c64201",
 	"participants": [{
 		"address": "john@caliopen.local",
@@ -140,6 +143,7 @@
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
+	"is_received": true,
 	"message_id": "3333-267d-4d9c-97ee-d0fc59c64201",
 	"participants": [{
 		"address": "john@caliopen.local",
@@ -175,6 +179,7 @@
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
+	"is_received": false,
 	"message_id": "4444-267d-4d9c-97ee-d0fc59c64201",
 	"participants": [{
 		"address": "john@caliopen.local",
@@ -210,6 +215,7 @@
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
+	"is_received": true,
 	"message_id": "5555-267d-4d9c-97ee-d0fc59c64201",
 	"participants": [{
 		"address": "john@caliopen.local",
@@ -245,6 +251,7 @@
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
+	"is_received": false,
 	"message_id": "6666-267d-4d9c-97ee-d0fc59c64201",
 	"participants": [{
 		"address": "john@caliopen.local",

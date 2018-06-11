@@ -1,9 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
-
-export const REQUEST_DRAFT = 'co/draft-message/REQUEST_DRAFT';
-export const REQUEST_DRAFT_SUCCESS = 'co/draft-message/REQUEST_DRAFT_SUCCESS';
-export const REQUEST_NEW_DRAFT = 'co/draft-message/REQUEST_NEW_DRAFT';
-export const REQUEST_NEW_DRAFT_SUCCESS = 'co/draft-message/REQUEST_NEW_DRAFT_SUCCESS';
+export const CREATE_DRAFT = 'co/draft-message/CREATE_DRAFT';
 export const SYNC_DRAFT = 'co/draft-message/SYNC_DRAFT';
 export const EDIT_DRAFT = 'co/draft-message/EDIT_DRAFT';
 export const SAVE_DRAFT = 'co/draft-message/SAVE_DRAFT';
@@ -25,30 +20,9 @@ export function saveDraft({ internalId, draft, message }) {
   };
 }
 
-export function requestNewDraft({ internalId = uuidv4() }) {
+export function createDraft({ internalId, draft }) {
   return {
-    type: REQUEST_NEW_DRAFT,
-    payload: { internalId },
-  };
-}
-
-export function requestNewDraftSuccess({ internalId, draft }) {
-  return {
-    type: REQUEST_NEW_DRAFT_SUCCESS,
-    payload: { internalId, draft },
-  };
-}
-
-export function requestDraft({ internalId = uuidv4(), discussionId }) {
-  return {
-    type: REQUEST_DRAFT,
-    payload: { internalId, discussionId },
-  };
-}
-
-export function requestDraftSuccess({ internalId, draft }) {
-  return {
-    type: REQUEST_DRAFT_SUCCESS,
+    type: CREATE_DRAFT,
     payload: { internalId, draft },
   };
 }
@@ -102,8 +76,7 @@ function syncDraftReducer(state, message) {
 
 function draftReducer(state = {}, action) {
   switch (action.type) {
-    case REQUEST_DRAFT_SUCCESS:
-    case REQUEST_NEW_DRAFT_SUCCESS:
+    case CREATE_DRAFT:
     case EDIT_DRAFT:
       return {
         ...state,
@@ -118,8 +91,7 @@ function draftReducer(state = {}, action) {
 
 function dratfsByInternalIdReducer(state, action) {
   switch (action.type) {
-    case REQUEST_DRAFT_SUCCESS:
-    case REQUEST_NEW_DRAFT_SUCCESS:
+    case CREATE_DRAFT:
     case SYNC_DRAFT:
       return {
         ...state,
@@ -142,7 +114,6 @@ function dratfsByInternalIdReducer(state, action) {
 }
 
 const initialState = {
-  isFetching: false,
   didInvalidate: false,
   draftsByInternalId: {},
   recipientSearchTermsByInternalId: {},
@@ -150,17 +121,9 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case REQUEST_DRAFT:
-    case REQUEST_NEW_DRAFT:
+    case CREATE_DRAFT:
       return {
         ...state,
-        isFetching: true,
-      };
-    case REQUEST_DRAFT_SUCCESS:
-    case REQUEST_NEW_DRAFT_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
         draftsByInternalId: dratfsByInternalIdReducer(state.draftsByInternalId, action),
       };
     case EDIT_DRAFT:

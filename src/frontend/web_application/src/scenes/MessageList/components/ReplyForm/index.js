@@ -5,9 +5,9 @@ import { push } from 'react-router-redux';
 import { withI18n } from 'lingui-react';
 import { withNotification } from '../../../../hoc/notification';
 import { createMessageCollectionStateSelector } from '../../../../store/selectors/message';
-import { requestDraft, clearDraft, syncDraft } from '../../../../store/modules/draft-message';
+import { clearDraft, syncDraft } from '../../../../store/modules/draft-message';
 import { updateTagCollection, withTags } from '../../../../modules/tags';
-import { saveDraft, sendDraft } from '../../../../modules/draftMessage';
+import { requestDiscussionDraft, saveDraft, sendDraft } from '../../../../modules/draftMessage';
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../../../modules/file';
 import { deleteMessage } from '../../../../modules/message';
 import { getLastMessage } from '../../../../services/message';
@@ -28,7 +28,7 @@ const mapStateToProps = createSelector(
     const message = messages && messages.find(item => item.is_draft === true);
     const sentMessages = messages.filter(item => item.is_draft !== true);
     const lastMessage = getLastMessage(sentMessages);
-    const { isFetching, draftsByInternalId } = draftState;
+    const { draftsByInternalId } = draftState;
     const draft = draftsByInternalId[internalId] || message;
     const parentMessage = draft && sentMessages
       .find(item => item.message_id === draft.parent_id && item !== lastMessage);
@@ -38,7 +38,6 @@ const mapStateToProps = createSelector(
       message,
       parentMessage,
       draft,
-      isFetching,
       discussionId,
       user,
     };
@@ -129,7 +128,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   onEditDraft,
   onSaveDraft,
   onSendDraft,
-  requestDraft,
+  requestDraft: requestDiscussionDraft,
   onDeleteMessage,
   onUpdateEntityTags,
   onUploadAttachments,

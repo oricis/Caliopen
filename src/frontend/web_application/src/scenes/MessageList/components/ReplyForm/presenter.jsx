@@ -10,7 +10,6 @@ class ReplyForm extends Component {
     message: PropTypes.shape({ }),
     parentMessage: PropTypes.shape({ }),
     draft: PropTypes.shape({ }),
-    isFetching: PropTypes.bool,
     requestDraft: PropTypes.func.isRequired,
     onEditDraft: PropTypes.func.isRequired,
     onSaveDraft: PropTypes.func.isRequired,
@@ -28,27 +27,30 @@ class ReplyForm extends Component {
     message: undefined,
     parentMessage: undefined,
     draft: undefined,
-    isFetching: false,
     user: undefined,
     draftFormRef: () => {},
   };
 
   state = {
     isSending: false,
+    // FIXME: use store state instead, because request can be done multiple times
+    isRequestingDraft: false,
   };
 
   componentDidMount() {
-    const { discussionId, draft, isFetching } = this.props;
-    if (!draft && !isFetching) {
-      this.props.requestDraft({ internalId: discussionId, discussionId });
-    }
+    this.initDraft(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.draft && !nextProps.isFetching) {
-      this.props.requestDraft({
-        internalId: nextProps.discussionId, discussionId: nextProps.discussionId,
-      });
+    this.initDraft(nextProps);
+  }
+
+  initDraft = async (props) => {
+    const { discussionId, draft, requestDraft } = props;
+    if (!draft && !this.state.isRequestingDraft) {
+      this.setState({ isRequestingDraft: true });
+      await requestDraft({ internalId: discussionId, discussionId });
+      this.setState({ isRequestingDraft: false });
     }
   }
 
@@ -156,6 +158,10 @@ class ReplyForm extends Component {
     const {
       draft, discussionId, allowEditRecipients, user, parentMessage, draftFormRef,
     } = this.props;
+
+    if (!draft) {
+      return null;
+    }
 
     if (allowEditRecipients) {
       return (<NewDraftForm

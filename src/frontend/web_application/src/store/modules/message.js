@@ -27,6 +27,8 @@ export const UPLOAD_ATTACHMENT = 'co/message/UPLOAD_ATTACHMENT';
 export const DELETE_ATTACHMENT = 'co/message/DELETE_ATTACHMENT';
 export const REMOVE_FROM_COLLECTION = 'co/message/REMOVE_FROM_COLLECTION';
 export const ADD_TO_COLLECTION = 'co/message/ADD_TO_COLLECTION';
+export const REQUEST_DRAFT = 'co/message/REQUEST_DRAFT';
+export const REQUEST_DRAFT_SUCCESS = 'co/message/REQUEST_DRAFT_SUCCESS';
 
 export const TIMELINE_FILTER_ALL = 'all';
 export const TIMELINE_FILTER_RECEIVED = 'received';
@@ -221,6 +223,23 @@ export function removeFromCollection({ message }) {
   };
 }
 
+
+export function requestDraft({ discussionId }) {
+  return {
+    type: REQUEST_DRAFT,
+    payload: {
+      request: {
+        method: 'get',
+        url: '/api/v2/messages',
+        params: {
+          discussion_id: discussionId,
+          is_draft: true,
+          limit: 1,
+        },
+      },
+    },
+  };
+}
 export function getNextOffset(state) {
   return state.messages.length;
 }
@@ -240,8 +259,27 @@ export function getMessagesFromCollection(type, key, { state }) {
   return state.messagesCollections[type][key].messages.map(id => state.messagesById[id]);
 }
 
+function draftMessageReducer(state = {}, action) {
+  if (action.type !== REQUEST_DRAFT_SUCCESS) {
+    return state;
+  }
+
+  const [draft] = action.payload.data.messages;
+
+  if (!draft) {
+    return state;
+  }
+
+  return {
+    ...state,
+    [draft.message_id]: draft,
+  };
+}
+
 function messagesByIdReducer(state = {}, action = {}) {
   switch (action.type) {
+    case REQUEST_DRAFT_SUCCESS:
+      return draftMessageReducer(state, action);
     case REQUEST_MESSAGE_SUCCESS:
       return {
         ...state,
@@ -391,12 +429,11 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case REQUEST_MESSAGE_SUCCESS:
+    case REQUEST_DRAFT_SUCCESS:
+    case SYNC_MESSAGE:
       return {
         ...state,
-        messagesById: messagesByIdReducer(
-          state.messagesById,
-          action
-        ),
+        messagesById: messagesByIdReducer(state.messagesById, action),
       };
     case REQUEST_MESSAGES:
       return {
@@ -435,11 +472,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         messagesCollections: allMessagesCollectionsReducer(state.messagesCollections, action),
       };
-    case SYNC_MESSAGE:
-      return {
-        ...state,
-        messagesById: messagesByIdReducer(state.messagesById, action),
-      };
+
     default:
       return state;
   }

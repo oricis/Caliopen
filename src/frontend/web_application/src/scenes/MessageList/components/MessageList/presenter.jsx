@@ -23,7 +23,6 @@ class MessageList extends Component {
     onMessageCopyTo: PropTypes.func.isRequired,
     onForward: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
-    refreshList: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     replyForm: PropTypes.node.isRequired,
     replyExcerpt: PropTypes.node.isRequired,
