@@ -11,14 +11,14 @@ import (
 	"encoding/asn1"
 	"encoding/base64"
 	"errors"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	log "github.com/Sirupsen/logrus"
+	"github.com/gin-gonic/gin"
 	"math/big"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
-	"github.com/gin-gonic/gin"
 )
 
 type ecdsaSignature struct {
@@ -26,7 +26,7 @@ type ecdsaSignature struct {
 }
 
 // getSignedQuery, build the HTTP query that has been signed
-func getSignedQuery(c * gin.Context) string {
+func getSignedQuery(c *gin.Context) string {
 	query := c.Request.Method + c.Request.URL.String()
 	return query
 }
