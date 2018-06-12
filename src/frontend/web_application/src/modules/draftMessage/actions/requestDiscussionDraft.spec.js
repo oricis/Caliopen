@@ -2,48 +2,37 @@ import configureMockStore from 'redux-mock-store';
 import promiseMiddleware from '../../../store/middlewares/promise-middleware';
 import thunkMiddleware from '../../../store/middlewares/thunk-middleware';
 import { requestDiscussionDraft } from './requestDiscussionDraft';
-import { createDraft } from '../../../store/modules/draft-message';
+import { createDraft, syncDraft } from '../../../store/modules/draft-message';
 
 const mockStore = configureMockStore([promiseMiddleware, thunkMiddleware]);
-jest.mock('../../../store/modules/message', () => ({
-  requestMessages: (type, key) => (dispatch) => {
-    dispatch({ type: 'requestMessages', payload: { type, key } });
+jest.mock('../../message', () => ({
+  getDraft: ({ discussionId }) => (dispatch) => {
+    dispatch({ type: 'getDraft', payload: { discussionId } });
 
-    switch (key) {
-      case 'foo':
+    switch (discussionId) {
+      case '01':
         return Promise.resolve({
-          payload: {
-            data: {
-              messages: [{
-                message_id: 'bar',
-                discussion_id: 'foo',
-                is_draft: true,
-              }],
-            },
-            status: 200,
-          },
-        });
-      case 'bar':
-        return Promise.resolve({
-          payload: {
-            data: {
-              messages: [{
-                message_id: 'bar',
-                discussion_id: 'bar',
-                is_draft: false,
-              }],
-            },
-            status: 200,
-          },
+          message_id: 'bar',
+          discussion_id: '01',
+          is_draft: true,
         });
       default:
+        return Promise.resolve(undefined);
+    }
+  },
+  getLastMessage: ({ discussionId }) => (dispatch) => {
+    dispatch({ type: 'getLastMessage', payload: { discussionId } });
+
+    switch (discussionId) {
+      case '02':
         return Promise.resolve({
-          payload: {
-            data: {
-              messages: [],
-            },
-          },
+          message_id: 'last-msg',
+          discussion_id: '01',
+          subject: 'Parent msg subject',
+          is_draft: false,
         });
+      default:
+        return Promise.resolve(undefined);
     }
   },
 }));
@@ -56,8 +45,11 @@ jest.mock('../../identity', () => ({
 }));
 
 describe('modules draftMessage - actions - requestDiscussionDraft', () => {
-  it('creates a new draft', async () => {
+  it('creates a new draft for a discussion without any messages', async () => {
     const store = mockStore({
+      message: {
+        messagesById: {},
+      },
       draftMessage: {
         draftsByInternalId: {
         },
@@ -73,11 +65,44 @@ describe('modules draftMessage - actions - requestDiscussionDraft', () => {
     };
 
     const expectedActions = [
-      { type: 'requestMessages', payload: { type: 'discussion', key: 'unknown' } },
+      { type: 'getDraft', payload: { discussionId: 'unknown' } },
+      { type: 'getLastMessage', payload: { discussionId: 'unknown' } },
       { type: 'getLocalIdentities', payload: { } },
       createDraft({ internalId: 'unknown', draft }),
     ];
     const action = requestDiscussionDraft({ internalId: 'unknown', discussionId: 'unknown' });
+
+    const result = await store.dispatch(action);
+    expect(result).toEqual(draft);
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('creates a new draft', async () => {
+    const store = mockStore({
+      message: {
+        messagesById: {},
+      },
+      draftMessage: {
+        draftsByInternalId: {
+        },
+      },
+    });
+    const draft = {
+      discussion_id: '02',
+      body: '',
+      identities: [],
+      parent_id: 'last-msg',
+      subject: 'Parent msg subject',
+      message_id: expect.anything(),
+    };
+
+    const expectedActions = [
+      { type: 'getDraft', payload: { discussionId: '02' } },
+      { type: 'getLastMessage', payload: { discussionId: '02' } },
+      { type: 'getLocalIdentities', payload: { } },
+      createDraft({ internalId: '02', draft }),
+    ];
+    const action = requestDiscussionDraft({ internalId: '02', discussionId: '02' });
 
     const result = await store.dispatch(action);
     expect(result).toEqual(draft);
@@ -92,6 +117,9 @@ describe('modules draftMessage - actions - requestDiscussionDraft', () => {
     };
 
     const store = mockStore({
+      message: {
+        messagesById: {},
+      },
       draftMessage: {
         draftsByInternalId: {
           foo: draft,
@@ -110,19 +138,23 @@ describe('modules draftMessage - actions - requestDiscussionDraft', () => {
   it('fetch discussion with a result', async () => {
     const draft = {
       message_id: 'bar',
-      discussion_id: 'foo',
+      discussion_id: '01',
       is_draft: true,
     };
     const store = mockStore({
+      message: {
+        messagesById: {},
+      },
       draftMessage: {
         draftsByInternalId: {},
       },
     });
 
     const expectedActions = [
-      { type: 'requestMessages', payload: { type: 'discussion', key: 'foo' } },
+      { type: 'getDraft', payload: { discussionId: '01' } },
+      syncDraft({ internalId: '01', draft }),
     ];
-    const action = requestDiscussionDraft({ internalId: 'foo', discussionId: 'foo' });
+    const action = requestDiscussionDraft({ internalId: '01', discussionId: '01' });
 
     const result = await store.dispatch(action);
     expect(result).toEqual(draft);

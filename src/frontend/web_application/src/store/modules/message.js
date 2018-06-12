@@ -29,6 +29,8 @@ export const REMOVE_FROM_COLLECTION = 'co/message/REMOVE_FROM_COLLECTION';
 export const ADD_TO_COLLECTION = 'co/message/ADD_TO_COLLECTION';
 export const REQUEST_DRAFT = 'co/message/REQUEST_DRAFT';
 export const REQUEST_DRAFT_SUCCESS = 'co/message/REQUEST_DRAFT_SUCCESS';
+export const FETCH_MESSAGES = 'co/message/FETCH_MESSAGES';
+export const FETCH_MESSAGES_SUCCESS = 'co/message/FETCH_MESSAGES_SUCCESS';
 
 export const TIMELINE_FILTER_ALL = 'all';
 export const TIMELINE_FILTER_RECEIVED = 'received';
@@ -223,6 +225,21 @@ export function removeFromCollection({ message }) {
   };
 }
 
+// TODO: refactor me should be named requestMessages
+// and requestMessages -> requestCollection
+export function fetchMessages(params) {
+  return {
+    type: FETCH_MESSAGES,
+    payload: {
+      request: {
+        method: 'get',
+        url: '/api/v2/messages',
+        params,
+      },
+    },
+  };
+}
+
 
 export function requestDraft({ discussionId }) {
   return {
@@ -285,6 +302,7 @@ function messagesByIdReducer(state = {}, action = {}) {
         ...state,
         [action.payload.data.message_id]: action.payload.data,
       };
+    case FETCH_MESSAGES_SUCCESS:
     case REQUEST_MESSAGES_SUCCESS:
       return action.payload.data.messages.reduce((previousState, message) => ({
         ...previousState,
@@ -451,6 +469,11 @@ export default function reducer(state = initialState, action) {
           state.messagesCollections,
           action
         ),
+      };
+    case FETCH_MESSAGES_SUCCESS:
+      return {
+        ...state,
+        messagesById: messagesByIdReducer(state.messagesById, action),
       };
     case SET_TIMELINE_FILTER:
       return {

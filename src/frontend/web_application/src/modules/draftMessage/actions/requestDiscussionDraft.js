@@ -1,9 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-import { tryCatchAxiosAction } from '../../../services/api-client';
 import { draftSelector } from '../selectors/draft';
-import { requestDraft } from '../../../store/modules/message';
 import { syncDraft } from '../../../store/modules/draft-message';
 import { newDraft } from './newDraft';
+import { getDraft, getLastMessage } from '../../message';
 
 export const requestDiscussionDraft = ({ internalId = uuidv4(), discussionId }) =>
   async (dispatch, getState) => {
@@ -13,9 +12,7 @@ export const requestDiscussionDraft = ({ internalId = uuidv4(), discussionId }) 
       return draft;
     }
 
-    const response = await tryCatchAxiosAction(() =>
-      dispatch(requestDraft({ discussionId })));
-    [draft] = response.messages;
+    draft = await dispatch(getDraft({ discussionId }));
 
     if (draft) {
       dispatch(syncDraft({ internalId: discussionId, draft }));
@@ -25,14 +22,12 @@ export const requestDiscussionDraft = ({ internalId = uuidv4(), discussionId }) 
 
     draft = {};
 
-    // FIXME: this can be done in the component
-    // first is the last received message
-    // const messageInReply = messages[0] || {};
+    const messageInReply = await dispatch(getLastMessage({ discussionId })) || {};
 
     draft = {
       discussion_id: discussionId,
-      // subject: messageInReply.subject || '',
-      // parent_id: messageInReply.message_id || '',
+      subject: messageInReply.subject || '',
+      parent_id: messageInReply.message_id || '',
     };
 
     draft = dispatch(newDraft({ internalId, draft }));
