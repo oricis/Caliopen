@@ -35,8 +35,8 @@ type (
 		RetrieveContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 		RetrieveLocalsIdentities(user_id string) (identities []LocalIdentity, err error)
 		CreateRemoteIdentity(identity *RemoteIdentity) CaliopenError
-		RetrieveRemoteIdentities(userId string) (ids []*RemoteIdentity, err CaliopenError)
-		RetrieveRemoteIdentity(userId, RemoteId string) (id *RemoteIdentity, err CaliopenError)
+		RetrieveRemoteIdentities(userId string, withCredentials bool) (ids []*RemoteIdentity, err CaliopenError)
+		RetrieveRemoteIdentity(userId, RemoteId string, withCredentials bool) (id *RemoteIdentity, err CaliopenError)
 		UpdateRemoteIdentity(identity, oldIdentity *RemoteIdentity, update map[string]interface{}) CaliopenError
 		PatchRemoteIdentity(patch []byte, userId, RemoteId string) CaliopenError
 		DeleteRemoteIdentity(userId, RemoteId string) CaliopenError

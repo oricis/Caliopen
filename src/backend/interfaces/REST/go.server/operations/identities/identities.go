@@ -58,8 +58,8 @@ func GetRemoteIdentities(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	}
-
-	list, e := caliopen.Facilities.RESTfacility.RetrieveRemoteIdentities(userID)
+	noCredentials := false
+	list, e := caliopen.Facilities.RESTfacility.RetrieveRemoteIdentities(userID, noCredentials)
 	if e != nil && e.Code() != NotFoundCaliopenErr {
 		returnedErr := new(swgErr.CompositeError)
 		returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "RESTfacility returned error"), e, e.Cause())
@@ -102,7 +102,8 @@ func GetRemoteIdentity(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	identity, e := caliopen.Facilities.RESTfacility.RetrieveRemoteIdentity(userID, remote_id)
+	noCredentials := false
+	identity, e := caliopen.Facilities.RESTfacility.RetrieveRemoteIdentity(userID, remote_id, noCredentials)
 	if e != nil {
 		returnedErr := new(swgErr.CompositeError)
 		if e.Code() == NotFoundCaliopenErr {

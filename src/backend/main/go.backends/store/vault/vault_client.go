@@ -10,6 +10,9 @@ package vault
 
 import "errors"
 
+type HVaultClient struct {
+}
+
 // InitializeVaultBackend checks if a Vault server is available and returns a VaultClient
 func InitializeVaultBackend() (vault HVault, err error) {
 

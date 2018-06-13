@@ -6,9 +6,13 @@
 
 package backends
 
+import (
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+)
+
 type CredentialsStorage interface {
-	CreateCredential()
-	RetrieveCredential()
-	UpdateCredential()
-	DeleteCredential()
+	CreateCredentials(rId *RemoteIdentity, cred Credentials) error
+	RetrieveCredentials(userId, identifier string) (Credentials, error)
+	UpdateCredentials()
+	DeleteCredentials()
 }

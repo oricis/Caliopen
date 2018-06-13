@@ -55,7 +55,7 @@ type (
 
 	//struct to store external user accounts
 	RemoteIdentity struct {
-		Credentials Credentials       `cql:"credentials"        json:"credentials,omitempty" frontend:"omit"            patch:"user"`
+		Credentials Credentials       `cql:"credentials"        json:"credentials,omitempty"                            patch:"user"`
 		DisplayName string            `cql:"display_name"       json:"display_name"                                     patch:"user"`
 		Infos       map[string]string `cql:"infos"              json:"infos"                                            patch:"user"`
 		LastCheck   time.Time         `cql:"last_check"         json:"last_check"           formatter:"RFC3339Milli"`

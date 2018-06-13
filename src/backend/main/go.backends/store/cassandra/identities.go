@@ -59,16 +59,26 @@ func (cb *CassandraBackend) CreateRemoteIdentity(rId *RemoteIdentity) CaliopenEr
 		return NewCaliopenErrf(ForbiddenCaliopenErr, "[CassandraBackend] CreateRemoteIdentity error : remote identity <%s> already exist for user <%s>", rId.RemoteId, rId.UserId.String())
 	}
 
-	//save remote identity
+	//extract credentials from struct
+	cred := rId.Credentials
+	(*rId).Credentials = Credentials{}
+
+	//create remote identity
 	err = ridT.Set(rId).Run()
 	if err != nil {
 		return WrapCaliopenErrf(err, DbCaliopenErr, "[CassandraBackend] CreateRemoteIdentity fails : %s", err.Error())
 	}
 
+	//create credentials
+	err = cb.CreateCredentials(rId, cred)
+	if err != nil {
+		return WrapCaliopenErr(err, DbCaliopenErr, "[CassandraBackend) CreateRemoteIdentity failed to createCredentials")
+	}
+
 	return nil
 }
 
-func (cb *CassandraBackend) RetrieveRemoteIdentity(userId, remoteId string) (rId *RemoteIdentity, err error) {
+func (cb *CassandraBackend) RetrieveRemoteIdentity(userId, remoteId string, withCredentials bool) (rId *RemoteIdentity, err error) {
 
 	rId = new(RemoteIdentity)
 	m := map[string]interface{}{}
@@ -78,6 +88,16 @@ func (cb *CassandraBackend) RetrieveRemoteIdentity(userId, remoteId string) (rId
 		return nil, err
 	}
 	rId.UnmarshalCQLMap(m)
+	if withCredentials {
+		cred, err := cb.RetrieveCredentials(userId, identifier)
+		if err != nil {
+			return nil, err
+		}
+		rId.Credentials = cred
+	} else {
+		// discard credentials
+		rId.Credentials = Credentials{}
+	}
 
 	return
 }
@@ -103,7 +123,7 @@ func (cb *CassandraBackend) UpdateRemoteIdentity(rId *RemoteIdentity, fields map
 		Update(cassaFields).Run()
 }
 
-func (cb *CassandraBackend) RetrieveRemoteIdentities(userId string) (rIds []*RemoteIdentity, err error) {
+func (cb *CassandraBackend) RetrieveRemoteIdentities(userId string, withCredentials bool) (rIds []*RemoteIdentity, err error) {
 	all_ids, err := cb.Session.Query(`SELECT * FROM remote_identity WHERE user_id = ?`, userId).Iter().SliceMap()
 	if err != nil {
 		return
@@ -115,6 +135,16 @@ func (cb *CassandraBackend) RetrieveRemoteIdentities(userId string) (rIds []*Rem
 	for _, identity := range all_ids {
 		id := new(RemoteIdentity).NewEmpty().(*RemoteIdentity)
 		id.UnmarshalCQLMap(identity)
+		if withCredentials {
+			cred, err := cb.RetrieveCredentials(userId, id.Identifier)
+			if err != nil {
+				return nil, err
+			}
+			id.Credentials = cred
+		} else {
+			// discard credentials
+			id.Credentials = Credentials{}
+		}
 		rIds = append(rIds, id)
 	}
 	return
