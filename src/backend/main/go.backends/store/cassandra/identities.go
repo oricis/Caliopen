@@ -102,18 +102,30 @@ func (cb *CassandraBackend) RetrieveRemoteIdentity(userId, remoteId string, with
 	return
 }
 
-func (cb *CassandraBackend) UpdateRemoteIdentity(rId *RemoteIdentity, fields map[string]interface{}) error {
-	//get cassandra's field name for each field to modify
-	cassaFields := map[string]interface{}{}
-	for field, value := range fields {
-		cassaField, err := reflections.GetFieldTag(rId, field, "cql")
+func (cb *CassandraBackend) UpdateRemoteIdentity(rId *RemoteIdentity, fields map[string]interface{}) (err error) {
+	//remove Credentials from rId and process this special property apart
+	if cred, ok := fields["Credentials"].(Credentials); ok {
+		(*rId).Credentials = Credentials{}
+		delete(fields, "Credentials")
+		err = cb.UpdateCredentials(rId.UserId.String(), rId.Identifier, cred)
 		if err != nil {
-			return fmt.Errorf("[CassandraBackend] UpdateRemoteIdentity failed to find a cql field for object field %s", field)
-		}
-		if cassaField != "-" {
-			cassaFields[cassaField] = value
+			logrus.WithError(err).Warn("[CassandraBackend] UpdateRemoteIdentity failed to update credentials")
 		}
 	}
+
+	if len(fields) > 0 {
+		//get cassandra's field name for each field to modify
+		//TODO: handle special case where identifier is updated, because it's a primary key
+		cassaFields := map[string]interface{}{}
+		for field, value := range fields {
+			cassaField, err := reflections.GetFieldTag(rId, field, "cql")
+			if err != nil {
+				return fmt.Errorf("[CassandraBackend] UpdateRemoteIdentity failed to find a cql field for object field %s", field)
+			}
+			if cassaField != "-" {
+				cassaFields[cassaField] = value
+			}
+		}
 
 	ridT := cb.IKeyspace.Table("remote_identity", &RemoteIdentity{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "remote_id"},
@@ -121,6 +133,9 @@ func (cb *CassandraBackend) UpdateRemoteIdentity(rId *RemoteIdentity, fields map
 
 	return ridT.Where(gocassa.Eq("user_id", rId.UserId.String()), gocassa.Eq("remote_id", rId.RemoteId.String())).
 		Update(cassaFields).Run()
+}
+
+	return err
 }
 
 func (cb *CassandraBackend) RetrieveRemoteIdentities(userId string, withCredentials bool) (rIds []*RemoteIdentity, err error) {
@@ -165,10 +180,14 @@ func (cb *CassandraBackend) RetrieveAllRemotes() (<-chan *RemoteIdentity, error)
 			}
 			rId := new(RemoteIdentity)
 			rId.UnmarshalCQLMap(remoteID)
-			select {
-			case ch <- rId:
-			case <-time.After(cb.Timeout):
-				logrus.Warn("[RetrieveAllRemote] write timeout on chan")
+			cred, err := cb.RetrieveCredentials(rId.UserId.String(), rId.Identifier)
+			if err == nil {
+				rId.Credentials = cred
+				select {
+				case ch <- rId:
+				case <-time.After(cb.Timeout):
+					logrus.Warn("[RetrieveAllRemote] write timeout on chan")
+				}
 			}
 		}
 
@@ -180,5 +199,11 @@ func (cb *CassandraBackend) RetrieveAllRemotes() (<-chan *RemoteIdentity, error)
 }
 
 func (cb *CassandraBackend) DeleteRemoteIdentity(rId *RemoteIdentity) error {
+	if cb.UseVault {
+		err := cb.Vault.DeleteCredentials(rId.UserId.String(), rId.Identifier)
+		if err != nil {
+			logrus.WithError(err).Warn("[CassandraBackend] DeleteRemoteIdentity failed to delete credentials in vault")
+		}
+	}
 	return cb.Session.Query(`DELETE FROM remote_identity WHERE user_id = ? AND remote_id = ?`, rId.UserId, rId.RemoteId).Exec()
 }

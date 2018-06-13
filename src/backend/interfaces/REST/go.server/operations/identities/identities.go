@@ -58,7 +58,7 @@ func GetRemoteIdentities(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	}
-	noCredentials := false
+	noCredentials := false // by default do not return Credentials
 	list, e := caliopen.Facilities.RESTfacility.RetrieveRemoteIdentities(userID, noCredentials)
 	if e != nil && e.Code() != NotFoundCaliopenErr {
 		returnedErr := new(swgErr.CompositeError)
@@ -102,7 +102,7 @@ func GetRemoteIdentity(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	noCredentials := false
+	noCredentials := false // by default do not return Credentials
 	identity, e := caliopen.Facilities.RESTfacility.RetrieveRemoteIdentity(userID, remote_id, noCredentials)
 	if e != nil {
 		returnedErr := new(swgErr.CompositeError)

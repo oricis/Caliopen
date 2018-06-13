@@ -14,8 +14,8 @@ import (
 type VaultCredentials interface {
 	CreateCredentials(rId *RemoteIdentity, cred Credentials) error
 	RetrieveCredentials(userId, identifier string) (Credentials, error)
-	UpdateCredentials()
-	DeleteCredentials()
+	UpdateCredentials(userId, identifier string, cred Credentials) error
+	DeleteCredentials(userId, identifier string) error
 }
 
 func (vault *HVaultClient) CreateCredentials(rId *RemoteIdentity, cred Credentials) error {
@@ -27,4 +27,12 @@ func (vault *HVaultClient) RetrieveCredentials(userId, identifier string) (cred 
 	cred = Credentials{}
 	err = errors.New("[HVaultClient] RetrieveCredentials not implemented")
 	return
+}
+
+func (vault *HVaultClient) UpdateCredentials(userId, identifier string, cred Credentials) error {
+	return errors.New("[HVaultClient] UpdateCredentials not implemented")
+}
+
+func (vault *HVaultClient) DeleteCredentials(userId, identifier string) error {
+	return errors.New("[HVaultClient] UpdateCredentials not implemented")
 }

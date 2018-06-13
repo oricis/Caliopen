@@ -8,6 +8,7 @@ package store
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/gocassa/gocassa"
 )
 
 func (cb *CassandraBackend) CreateCredentials(rId *RemoteIdentity, cred Credentials) error {
@@ -34,5 +35,29 @@ func (cb *CassandraBackend) RetrieveCredentials(userId, identifier string) (cred
 	return
 }
 
-func (cb *CassandraBackend) UpdateCredentials() {}
-func (cb *CassandraBackend) DeleteCredentials() {}
+func (cb *CassandraBackend) UpdateCredentials(userId, identifier string, cred Credentials) error {
+
+	if cb.UseVault {
+		return cb.Vault.UpdateCredentials(userId, identifier, cred)
+	}
+
+	ridT := cb.IKeyspace.Table("remote_identity", &RemoteIdentity{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "identifier"},
+	}).WithOptions(gocassa.Options{TableName: "remote_identity"})
+
+	return ridT.Where(gocassa.Eq("user_id", userId), gocassa.Eq("identifier", identifier)).
+		Update(map[string]interface{}{
+			"credentials": cred,
+		}).Run()
+}
+
+func (cb *CassandraBackend) DeleteCredentials(userId, identifier string) error {
+
+	if cb.UseVault {
+		return cb.Vault.DeleteCredentials(userId, identifier)
+	}
+
+	return cb.UpdateCredentials(userId, identifier, Credentials{})
+
+	return nil
+}
