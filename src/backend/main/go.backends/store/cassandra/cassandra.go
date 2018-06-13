@@ -6,6 +6,7 @@ package store
 
 import (
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/object_store"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/vault"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
@@ -19,6 +20,7 @@ type (
 		IKeyspace    gocassa.KeySpace //gocassa keyspace interface
 		ObjectsStore object_store.ObjectsStore
 		Timeout      time.Duration
+		Vault        vault.HVault
 	}
 
 	CassandraConfig struct {
@@ -28,6 +30,7 @@ type (
 		SizeLimit    uint64            `mapstructure:"raw_size_limit"` // max size to store (in bytes)
 		WithObjStore bool              // whether to use an objects store service for objects above SizeLimit
 		object_store.OSSConfig
+		UseVault bool `mapstructure:"use_vault"`
 	}
 
 	HasTable interface {
@@ -49,15 +52,19 @@ func InitializeCassandraBackend(config CassandraConfig) (cb *CassandraBackend, e
 	if config.WithObjStore {
 		cb.ObjectsStore, err = object_store.InitializeObjectsStore(config.OSSConfig)
 		if err != nil {
-			log.Warn("Object store initialization failed.")
+			log.Warn("[InitializeCassandraBackend] object store initialization failed")
 			return nil, err
 		}
 	}
 
 	// credentials store
-	err = cb.initializeCredentialBackend()
-	if err != nil {
-		return nil, err
+	cb.UseVault = config.UseVault
+	if cb.UseVault {
+		cb.Vault, err = vault.InitializeVaultBackend()
+		if err != nil {
+			log.Warn("[InitializeCassandraBackend] vault initialization failed")
+			return nil, err
+		}
 	}
 
 	return
@@ -94,9 +101,4 @@ func (cb *CassandraBackend) initialize(config CassandraConfig) (err error) {
 
 func (cb *CassandraBackend) Close() {
 	cb.Session.Close()
-}
-
-func (cb *CassandraBackend) initializeCredentialBackend() error {
-
-	return nil
 }

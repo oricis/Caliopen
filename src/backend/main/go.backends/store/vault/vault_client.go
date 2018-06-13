@@ -8,7 +8,10 @@
 
 package vault
 
-// InitializeVaultBackend checks if a Vault server is available and returns a VaultClient
-func InitializeVaultBackend() {
+import "errors"
 
+// InitializeVaultBackend checks if a Vault server is available and returns a VaultClient
+func InitializeVaultBackend() (vault HVault, err error) {
+
+	return nil, errors.New("HVault not implemented")
 }

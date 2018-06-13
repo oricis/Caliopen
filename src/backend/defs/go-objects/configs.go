@@ -22,6 +22,7 @@ type (
 		SizeLimit    uint64   `mapstructure:"raw_size_limit"` // max size for db (in bytes)
 		ObjStoreType string   `mapstructure:"object_store"`
 		OSSConfig    `mapstructure:"object_store_settings"`
+		UseVault     bool `mapstructure:"use_vault"`
 	}
 
 	RESTIndexConfig struct {
