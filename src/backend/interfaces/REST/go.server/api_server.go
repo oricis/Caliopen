@@ -185,9 +185,9 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	ids.GET("/locals/:identity_id", identities.GetLocalIdentity)
 	ids.GET("/remotes", identities.GetRemoteIdentities)
 	ids.POST("/remotes", identities.NewRemoteIdentity)
-	ids.GET("/remotes/:identifier", identities.GetRemoteIdentity)
-	ids.PATCH("/remotes/:identifier", identities.PatchRemoteIdentity)
-	ids.DELETE("/remotes/:identifier", identities.DeleteRemoteIdentity)
+	ids.GET("/remotes/:remote_id", identities.GetRemoteIdentity)
+	ids.PATCH("/remotes/:remote_id", identities.PatchRemoteIdentity)
+	ids.DELETE("/remotes/:remote_id", identities.DeleteRemoteIdentity)
 
 	/** passwords API **/
 	passwords := api.Group("/passwords")

@@ -60,13 +60,9 @@ func GetRemoteIdentities(ctx *gin.Context) {
 	}
 
 	list, e := caliopen.Facilities.RESTfacility.RetrieveRemoteIdentities(userID)
-	if e != nil {
+	if e != nil && e.Code() != NotFoundCaliopenErr {
 		returnedErr := new(swgErr.CompositeError)
-		if e.Code() == DbCaliopenErr && e.Cause().Error() == "ids not found" {
-			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), e, e.Cause())
-		} else {
-			returnedErr = swgErr.CompositeValidationError(e, e.Cause())
-		}
+		returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "RESTfacility returned error"), e, e.Cause())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 		ctx.Abort()
 		return
@@ -91,7 +87,7 @@ func GetRemoteIdentities(ctx *gin.Context) {
 
 }
 
-// GetRemoteIdentity handles GET …/identities/remotes/:identifier
+// GetRemoteIdentity handles GET …/identities/remotes/:remote_id
 func GetRemoteIdentity(ctx *gin.Context) {
 	userID, err := operations.NormalizeUUIDstring(ctx.GetString("user_id"))
 	if err != nil {
@@ -99,14 +95,14 @@ func GetRemoteIdentity(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	}
-	identifier := ctx.Param("identifier")
-	if identifier == "" {
-		e := swgErr.New(http.StatusUnprocessableEntity, "empty identifier")
+	remote_id := ctx.Param("remote_id")
+	if remote_id == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "empty remote_id")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	identity, e := caliopen.Facilities.RESTfacility.RetrieveRemoteIdentity(userID, identifier)
+	identity, e := caliopen.Facilities.RESTfacility.RetrieveRemoteIdentity(userID, remote_id)
 	if e != nil {
 		returnedErr := new(swgErr.CompositeError)
 		if e.Code() == NotFoundCaliopenErr {
@@ -180,17 +176,17 @@ func NewRemoteIdentity(ctx *gin.Context) {
 		ctx.Abort()
 	} else {
 		ctx.JSON(http.StatusOK, struct {
-			Location   string `json:"location"`
-			Identifier string `json:"identifier"`
+			Location string `json:"location"`
+			RemoteId string `json:"remote_id"`
 		}{
-			http_middleware.RoutePrefix + http_middleware.IdentitiesRoute + "/" + identity.UserId.String() + "/" + identity.Identifier,
-			identity.Identifier,
+			http_middleware.RoutePrefix + http_middleware.IdentitiesRoute + "/remotes/" + identity.RemoteId.String(),
+			identity.RemoteId.String(),
 		})
 	}
 	return
 }
 
-// PatchRemoteIdentity handles PATCH …/identities/remotes/:identifier
+// PatchRemoteIdentity handles PATCH …/identities/remotes/:remote_id
 func PatchRemoteIdentity(ctx *gin.Context) {
 	var err error
 	userId, err := operations.NormalizeUUIDstring(ctx.MustGet("user_id").(string))
@@ -201,9 +197,9 @@ func PatchRemoteIdentity(ctx *gin.Context) {
 		return
 	}
 
-	identifier := ctx.Param("identifier")
-	if identifier == "" {
-		e := swgErr.New(http.StatusBadRequest, "empty identifier")
+	remote_id := ctx.Param("remote_id")
+	if remote_id == "" {
+		e := swgErr.New(http.StatusBadRequest, "empty remote_id")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
@@ -219,7 +215,7 @@ func PatchRemoteIdentity(ctx *gin.Context) {
 	}
 
 	// call REST facility with payload
-	apiErr := caliopen.Facilities.RESTfacility.PatchRemoteIdentity(patch, userId, identifier)
+	apiErr := caliopen.Facilities.RESTfacility.PatchRemoteIdentity(patch, userId, remote_id)
 	if apiErr != nil {
 		returnedErr := new(swgErr.CompositeError)
 		switch apiErr.Code() {
@@ -248,7 +244,7 @@ func PatchRemoteIdentity(ctx *gin.Context) {
 	}
 }
 
-// DeleteRemoteIdentity handles DELETE …/identities/remotes/:identifier
+// DeleteRemoteIdentity handles DELETE …/identities/remotes/:remote_id
 func DeleteRemoteIdentity(ctx *gin.Context) {
 	var err error
 	// check request
@@ -259,16 +255,16 @@ func DeleteRemoteIdentity(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	identifier := ctx.Param("identifier")
-	if identifier == "" {
-		e := swgErr.New(http.StatusBadRequest, "empty identifier")
+	remote_id := ctx.Param("remote_id")
+	if remote_id == "" {
+		e := swgErr.New(http.StatusBadRequest, "empty remote_id")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
 
 	// call api
-	apiErr := caliopen.Facilities.RESTfacility.DeleteRemoteIdentity(userId, identifier)
+	apiErr := caliopen.Facilities.RESTfacility.DeleteRemoteIdentity(userId, remote_id)
 	if apiErr != nil {
 		returnedErr := new(swgErr.CompositeError)
 		switch apiErr.Code() {

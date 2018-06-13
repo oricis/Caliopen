@@ -7,8 +7,6 @@ properties:
       type: string
   display_name:
     type: string
-  identifier:
-    type: string
   infos:          # set of key/value strings
     type: object
     additionalProperties:
@@ -16,6 +14,8 @@ properties:
   last_check:
     type: string
     format: date-time
+  remote_id:
+    type: string
   status:
     type: string
     enum:

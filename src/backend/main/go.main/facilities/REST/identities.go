@@ -13,7 +13,6 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/pi"
 	"github.com/bitly/go-simplejson"
 	"github.com/satori/go.uuid"
-	"net/http"
 )
 
 func (rest *RESTfacility) RetrieveLocalsIdentities(user_id string) ([]LocalIdentity, error) {
@@ -84,7 +83,11 @@ func (rest *RESTfacility) RetrieveRemoteIdentities(userId string) (ids []*Remote
 	var e error
 	ids, e = rest.store.RetrieveRemoteIdentities(userId)
 	if e != nil {
-		err = WrapCaliopenErr(e, http.StatusFailedDependency, "store failed to retrieve remote ids")
+		if e.Error() == "remote ids not found" {
+			err = WrapCaliopenErr(e, NotFoundCaliopenErr, "store did not found remote ids")
+		} else {
+			err = WrapCaliopenErr(e, DbCaliopenErr, "store failed to retrieve remote ids")
+		}
 	}
 	return
 }
@@ -98,13 +101,10 @@ func (rest *RESTfacility) CreateRemoteIdentity(identity *RemoteIdentity) Caliope
 		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateRemoteIdentity] empty remote identity.type")
 	}
 
+	(*identity).RemoteId.UnmarshalBinary(uuid.NewV4().Bytes())
+
 	// set defaults
 	identity.SetDefaults()
-
-	// identifier should not be empty at this stage
-	if identity.Identifier == "" {
-		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateRemoteIdentity] empty remote identity.identifier")
-	}
 
 	err := rest.store.CreateRemoteIdentity(identity)
 	if err != nil {
@@ -114,9 +114,9 @@ func (rest *RESTfacility) CreateRemoteIdentity(identity *RemoteIdentity) Caliope
 	return nil
 }
 
-func (rest *RESTfacility) RetrieveRemoteIdentity(userId, identifier string) (id *RemoteIdentity, err CaliopenError) {
+func (rest *RESTfacility) RetrieveRemoteIdentity(userId, remoteId string) (id *RemoteIdentity, err CaliopenError) {
 	var e error
-	id, e = rest.store.RetrieveRemoteIdentity(userId, identifier)
+	id, e = rest.store.RetrieveRemoteIdentity(userId, remoteId)
 	if e != nil {
 		if e.Error() == "not found" {
 			err = WrapCaliopenErr(e, NotFoundCaliopenErr, "remote identity not found")
@@ -135,8 +135,8 @@ func (rest *RESTfacility) UpdateRemoteIdentity(identity, oldIdentity *RemoteIden
 	return nil
 }
 
-func (rest *RESTfacility) PatchRemoteIdentity(patch []byte, userId, identifier string) CaliopenError {
-	currentRemoteID, err1 := rest.RetrieveRemoteIdentity(userId, identifier)
+func (rest *RESTfacility) PatchRemoteIdentity(patch []byte, userId, remoteId string) CaliopenError {
+	currentRemoteID, err1 := rest.RetrieveRemoteIdentity(userId, remoteId)
 	if err1 != nil {
 		if err1.Error() == "not found" {
 			return WrapCaliopenErr(err1, NotFoundCaliopenErr, "remote identity not found")
@@ -169,8 +169,8 @@ func (rest *RESTfacility) PatchRemoteIdentity(patch []byte, userId, identifier s
 	return nil
 }
 
-func (rest *RESTfacility) DeleteRemoteIdentity(userId, identifier string) CaliopenError {
-	remoteID, err1 := rest.RetrieveRemoteIdentity(userId, identifier)
+func (rest *RESTfacility) DeleteRemoteIdentity(userId, remoteId string) CaliopenError {
+	remoteID, err1 := rest.RetrieveRemoteIdentity(userId, remoteId)
 	if err1 != nil {
 		if err1.Error() == "not found" {
 			return WrapCaliopenErr(err1, NotFoundCaliopenErr, "remote identity not found")

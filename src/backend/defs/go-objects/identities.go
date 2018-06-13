@@ -57,9 +57,9 @@ type (
 	RemoteIdentity struct {
 		Credentials Credentials       `cql:"credentials"        json:"credentials,omitempty" frontend:"omit"            patch:"user"`
 		DisplayName string            `cql:"display_name"       json:"display_name"                                     patch:"user"`
-		Identifier  string            `cql:"identifier"         json:"identifier"                                       patch:"user"`
 		Infos       map[string]string `cql:"infos"              json:"infos"                                            patch:"user"`
 		LastCheck   time.Time         `cql:"last_check"         json:"last_check"           formatter:"RFC3339Milli"`
+		RemoteId    UUID              `cql:"remote_id"          json:"remote_id"`
 		Status      string            `cql:"status"             json:"status"                                           patch:"user"` // for example : active, inactive, deleted
 		Type        string            `cql:"type"               json:"type"                                             patch:"user"` // for example : imap, twitter…
 		UserId      UUID              `cql:"user_id"            json:"user_id"              frontend:"omit"`
@@ -136,9 +136,6 @@ func (ri *RemoteIdentity) UnmarshalMap(input map[string]interface{}) error {
 	if dn, ok := input["display_name"].(string); ok {
 		ri.DisplayName = dn
 	}
-	if identifier, ok := input["identifier"].(string); ok {
-		ri.Identifier = identifier
-	}
 	if infos, ok := input["infos"].(map[string]interface{}); ok {
 		/*
 			// create a new map, fill it with current values if any, then with values from input,
@@ -160,13 +157,17 @@ func (ri *RemoteIdentity) UnmarshalMap(input map[string]interface{}) error {
 	if lc, ok := input["last_check"]; ok {
 		ri.LastCheck, _ = time.Parse(time.RFC3339Nano, lc.(string))
 	}
+	if remote_id, ok := input["remote_id"].(string); ok {
+		if id, err := uuid.FromString(remote_id); err == nil {
+			ri.RemoteId.UnmarshalBinary(id.Bytes())
+		}
+	}
 	if status, ok := input["status"].(string); ok {
 		ri.Status = status
 	}
 	if t, ok := input["type"].(string); ok {
 		ri.Type = t
 	}
-
 	if userid, ok := input["user_id"].(string); ok {
 		if id, err := uuid.FromString(userid); err == nil {
 			ri.UserId.UnmarshalBinary(id.Bytes())
@@ -185,6 +186,9 @@ func (ri *RemoteIdentity) SortSlices() {
 
 // ensure mandatory properties are set, also default values.
 func (ri *RemoteIdentity) MarshallNew(args ...interface{}) {
+	if len(ri.RemoteId) == 0 || (bytes.Equal(ri.RemoteId.Bytes(), EmptyUUID.Bytes())) {
+		ri.RemoteId.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
 	if len(ri.UserId) == 0 || (bytes.Equal(ri.UserId.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
@@ -229,11 +233,11 @@ func (ri *RemoteIdentity) SetDefaults() {
 		(*ri).Credentials = Credentials{}
 	}
 
-	// try to set identifier if it is missing
-	if ri.Identifier == "" {
+	// try to set DisplayName if it is missing
+	if ri.DisplayName == "" {
 		switch ri.Type {
 		case "imap":
-			(*ri).Identifier, _ = ri.Credentials["username"]
+			(*ri).DisplayName, _ = ri.Credentials["username"]
 		}
 	}
 
@@ -249,9 +253,7 @@ func (ri *RemoteIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
 	if dn, ok := input["display_name"].(string); ok {
 		ri.DisplayName = dn
 	}
-	if identifier, ok := input["identifier"].(string); ok {
-		ri.Identifier = identifier
-	}
+
 	if infos, ok := input["infos"].(map[string]string); ok {
 		ri.Infos = make(map[string]string)
 		for k, v := range infos {
@@ -260,6 +262,9 @@ func (ri *RemoteIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
 	}
 	if lc, ok := input["last_check"].(time.Time); ok {
 		ri.LastCheck = lc
+	}
+	if remote_id, ok := input["remote_id"].(gocql.UUID); ok {
+		ri.RemoteId.UnmarshalBinary(remote_id.Bytes())
 	}
 	if status, ok := input["status"].(string); ok {
 		ri.Status = status
