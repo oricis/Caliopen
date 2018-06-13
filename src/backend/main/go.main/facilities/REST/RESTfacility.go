@@ -109,11 +109,13 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 		}
 		backend, err := store.InitializeCassandraBackend(cassaConfig)
 		if err != nil {
-			log.WithError(err).Fatalf("Initalization of %s backend failed", config.RESTstoreConfig.BackendName)
+			log.WithError(err).Fatalf("initalization of %s backend failed", config.RESTstoreConfig.BackendName)
 		}
+
 		rest_facility.store = backends.APIStorage(backend) // type conversion
+
 	default:
-		log.Fatalf("Unknown backend: %s", config.RESTstoreConfig.BackendName)
+		log.Fatalf("unknown backend: %s", config.RESTstoreConfig.BackendName)
 	}
 
 	switch config.RESTindexConfig.IndexName {
@@ -123,16 +125,16 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 		}
 		indx, err := index.InitializeElasticSearchIndex(esConfig)
 		if err != nil {
-			log.WithError(err).Fatalf("Initalization of %s index failed", config.RESTindexConfig.IndexName)
+			log.WithError(err).Fatalf("initalization of %s index failed", config.RESTindexConfig.IndexName)
 		}
 		rest_facility.index = backends.APIIndex(indx) // type conversion
 	default:
-		log.Fatalf("Unknown index: %s", config.RESTindexConfig.IndexName)
+		log.Fatalf("unknown index: %s", config.RESTindexConfig.IndexName)
 	}
 
 	cach, err := cache.InitializeRedisBackend(config.CacheConfig)
 	if err != nil {
-		log.WithError(err).Fatal("Initialization of Redis cache failed")
+		log.WithError(err).Fatal("initialization of Redis cache failed")
 	}
 
 	rest_facility.Cache = backends.APICache(cach) // type conversion

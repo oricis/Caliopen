@@ -42,6 +42,24 @@ const DefaultTimeout = time.Second * 2
 func InitializeCassandraBackend(config CassandraConfig) (cb *CassandraBackend, err error) {
 	cb = new(CassandraBackend)
 	err = cb.initialize(config)
+	if err != nil {
+		return nil, err
+	}
+	// objects store
+	if config.WithObjStore {
+		cb.ObjectsStore, err = object_store.InitializeObjectsStore(config.OSSConfig)
+		if err != nil {
+			log.Warn("Object store initialization failed.")
+			return nil, err
+		}
+	}
+
+	// credentials store
+	err = cb.initializeCredentialBackend()
+	if err != nil {
+		return nil, err
+	}
+
 	return
 }
 
@@ -71,16 +89,14 @@ func (cb *CassandraBackend) initialize(config CassandraConfig) (err error) {
 	connection := gocassa.NewConnection(gocassa.GoCQLSessionToQueryExecutor(cb.Session))
 	cb.IKeyspace = connection.KeySpace(cb.Keyspace)
 
-	if config.WithObjStore {
-		cb.ObjectsStore, err = object_store.InitializeObjectsStore(config.OSSConfig)
-		if err != nil {
-			log.Warn("Object store initialization failed.")
-			return err
-		}
-	}
 	return
 }
 
 func (cb *CassandraBackend) Close() {
 	cb.Session.Close()
+}
+
+func (cb *CassandraBackend) initializeCredentialBackend() error {
+
+	return nil
 }
