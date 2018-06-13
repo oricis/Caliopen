@@ -10,6 +10,8 @@ class ReplyForm extends Component {
     message: PropTypes.shape({ }),
     parentMessage: PropTypes.shape({ }),
     draft: PropTypes.shape({ }),
+    isRequestingDraft: PropTypes.bool,
+    isDeletingDraft: PropTypes.bool,
     requestDraft: PropTypes.func.isRequired,
     onEditDraft: PropTypes.func.isRequired,
     onSaveDraft: PropTypes.func.isRequired,
@@ -27,31 +29,34 @@ class ReplyForm extends Component {
     message: undefined,
     parentMessage: undefined,
     draft: undefined,
+    isRequestingDraft: false,
+    isDeletingDraft: false,
     user: undefined,
     draftFormRef: () => {},
   };
 
   state = {
     isSending: false,
-    // FIXME: use store state instead, because request can be done multiple times
-    isRequestingDraft: false,
   };
 
   componentDidMount() {
-    this.initDraft(this.props);
+    return this.initDraft(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.initDraft(nextProps);
+    return this.initDraft(nextProps);
   }
 
   initDraft = async (props) => {
-    const { discussionId, draft, requestDraft } = props;
-    if (!draft && !this.state.isRequestingDraft) {
-      this.setState({ isRequestingDraft: true });
-      await requestDraft({ internalId: discussionId, discussionId });
-      this.setState({ isRequestingDraft: false });
+    const {
+      discussionId, draft, requestDraft, isRequestingDraft, isDeletingDraft,
+    } = props;
+
+    if (!draft && !isRequestingDraft && !isDeletingDraft) {
+      return requestDraft({ internalId: discussionId, discussionId });
     }
+
+    return undefined;
   }
 
   handleSave = async ({ draft }) => {
@@ -95,10 +100,10 @@ class ReplyForm extends Component {
 
   handleDelete = () => {
     const {
-      message, discussionId, onDeleteMessage, allowEditRecipients,
+      message, discussionId, onDeleteMessage,
     } = this.props;
 
-    onDeleteMessage({ message, internalId: discussionId, isNewDiscussion: allowEditRecipients });
+    onDeleteMessage({ message, internalId: discussionId });
   }
 
   handleTagsChange = async ({ tags }) => {

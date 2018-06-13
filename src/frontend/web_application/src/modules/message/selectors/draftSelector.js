@@ -6,8 +6,6 @@ export const draftSelector = (state, { discussionId }) => createSelector(
   (messages) => {
     const [draft] = messages.filter(message => message.is_draft === true);
 
-    console.log('draft selector', draft);
-
     return draft;
   }
 )(state, { discussionId });

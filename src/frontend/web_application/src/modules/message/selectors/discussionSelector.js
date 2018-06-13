@@ -13,7 +13,8 @@ export const discussionSelector = createSelector(
   [messagesByIdSelector, discussionIdSelector],
   (messagesById, discussId) => {
     const results = Object.keys(messagesById)
-      .filter(messageId => messagesById[messageId].discussion_id === discussId)
+      .filter(messageId =>
+        messagesById[messageId] && messagesById[messageId].discussion_id === discussId)
       .map(messageId => messagesById[messageId]);
 
     return results;

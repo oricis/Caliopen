@@ -1,11 +1,10 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
 import { withI18n } from 'lingui-react';
 import { withNotification } from '../../../../hoc/notification';
 import { createMessageCollectionStateSelector } from '../../../../store/selectors/message';
-import { clearDraft, syncDraft } from '../../../../store/modules/draft-message';
+import { deleteDraft, deleteDraftSuccess, clearDraft, syncDraft } from '../../../../store/modules/draft-message';
 import { updateTagCollection, withTags } from '../../../../modules/tags';
 import { requestDiscussionDraft, saveDraft, sendDraft } from '../../../../modules/draftMessage';
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../../../modules/file';
@@ -18,26 +17,33 @@ const discussionIdSelector = (state, ownProps) => ownProps.discussionId;
 const internalIdSelector = (state, ownProps) => ownProps.internalId;
 const userSelector = state => state.user.user;
 const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
+const draftActivitySelector = createSelector(
+  [messageDraftSelector, internalIdSelector],
+  (draftState, internalId) => draftState.draftActivityByInternalId[internalId] || {}
+);
 
 const mapStateToProps = createSelector(
   [
     messageDraftSelector, discussionIdSelector, internalIdSelector, messageCollectionStateSelector,
-    userSelector,
+    userSelector, draftActivitySelector,
   ],
-  (draftState, discussionId, internalId, { messages }, user) => {
+  (draftState, discussionId, internalId, { messages }, user, draftActivity) => {
     const message = messages && messages.find(item => item.is_draft === true);
     const sentMessages = messages.filter(item => item.is_draft !== true);
     const lastMessage = getLastMessage(sentMessages);
     const { draftsByInternalId } = draftState;
-    const draft = draftsByInternalId[internalId] || message;
+    const draft = draftsByInternalId[internalId];
     const parentMessage = draft && sentMessages
       .find(item => item.message_id === draft.parent_id && item !== lastMessage);
+    const { isRequestingDraft, isDeletingDraft } = draftActivity;
 
     return {
       allowEditRecipients: messages.length === 1 && message && true,
       message,
       parentMessage,
       draft,
+      isRequestingDraft,
+      isDeletingDraft,
       discussionId,
       user,
     };
@@ -50,13 +56,12 @@ const onEditDraft = ({ internalId, draft, message }) => dispatch =>
 const onSaveDraft = ({ internalId, draft, message }) => dispatch =>
   dispatch(saveDraft({ internalId, draft, message }, { force: true }));
 
-const onDeleteMessage = ({ message, internalId, isNewDiscussion }) => async (dispatch) => {
-  const result = dispatch(deleteMessage({ message }));
-  await dispatch(clearDraft({ internalId }));
+const onDeleteMessage = ({ message, internalId }) => async (dispatch) => {
+  dispatch(deleteDraft({ internalId }));
+  const result = await dispatch(deleteMessage({ message }));
 
-  if (isNewDiscussion) {
-    return dispatch(push('/'));
-  }
+  await dispatch(clearDraft({ internalId }));
+  dispatch(deleteDraftSuccess({ internalId }));
 
   return result;
 };

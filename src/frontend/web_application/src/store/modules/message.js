@@ -313,6 +313,11 @@ function messagesByIdReducer(state = {}, action = {}) {
         ...state,
         [action.payload.message.message_id]: action.payload.message,
       };
+    case REMOVE_FROM_COLLECTION:
+      return {
+        ...state,
+        [action.payload.message.message_id]: undefined,
+      };
     default:
       return state;
   }
@@ -489,10 +494,15 @@ export default function reducer(state = initialState, action) {
         ),
       };
     case ADD_TO_COLLECTION:
-    case REMOVE_FROM_COLLECTION:
     case INVALIDATE_ALL_MESSAGES:
       return {
         ...state,
+        messagesCollections: allMessagesCollectionsReducer(state.messagesCollections, action),
+      };
+    case REMOVE_FROM_COLLECTION:
+      return {
+        ...state,
+        messagesById: messagesByIdReducer(state.messagesById, action),
         messagesCollections: allMessagesCollectionsReducer(state.messagesCollections, action),
       };
 

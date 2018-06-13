@@ -2,7 +2,8 @@ import configureMockStore from 'redux-mock-store';
 import promiseMiddleware from '../../../store/middlewares/promise-middleware';
 import thunkMiddleware from '../../../store/middlewares/thunk-middleware';
 import { requestDiscussionDraft } from './requestDiscussionDraft';
-import { createDraft, syncDraft } from '../../../store/modules/draft-message';
+import { requestDraft, requestDraftSuccess, createDraft } from '../../../store/modules/draft-message';
+
 
 const mockStore = configureMockStore([promiseMiddleware, thunkMiddleware]);
 jest.mock('../../message', () => ({
@@ -65,10 +66,12 @@ describe('modules draftMessage - actions - requestDiscussionDraft', () => {
     };
 
     const expectedActions = [
+      requestDraft({ internalId: 'unknown' }),
       { type: 'getDraft', payload: { discussionId: 'unknown' } },
       { type: 'getLastMessage', payload: { discussionId: 'unknown' } },
       { type: 'getLocalIdentities', payload: { } },
       createDraft({ internalId: 'unknown', draft }),
+      requestDraftSuccess({ internalId: 'unknown', draft }),
     ];
     const action = requestDiscussionDraft({ internalId: 'unknown', discussionId: 'unknown' });
 
@@ -97,10 +100,12 @@ describe('modules draftMessage - actions - requestDiscussionDraft', () => {
     };
 
     const expectedActions = [
+      requestDraft({ internalId: '02' }),
       { type: 'getDraft', payload: { discussionId: '02' } },
       { type: 'getLastMessage', payload: { discussionId: '02' } },
       { type: 'getLocalIdentities', payload: { } },
       createDraft({ internalId: '02', draft }),
+      requestDraftSuccess({ internalId: '02', draft }),
     ];
     const action = requestDiscussionDraft({ internalId: '02', discussionId: '02' });
 
@@ -151,8 +156,9 @@ describe('modules draftMessage - actions - requestDiscussionDraft', () => {
     });
 
     const expectedActions = [
+      requestDraft({ internalId: '01' }),
       { type: 'getDraft', payload: { discussionId: '01' } },
-      syncDraft({ internalId: '01', draft }),
+      requestDraftSuccess({ internalId: '01', draft }),
     ];
     const action = requestDiscussionDraft({ internalId: '01', discussionId: '01' });
 

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { draftSelector } from '../selectors/draft';
-import { syncDraft } from '../../../store/modules/draft-message';
+import { requestDraft, requestDraftSuccess } from '../../../store/modules/draft-message';
 import { newDraft } from './newDraft';
 import { getDraft, getLastMessage } from '../../message';
 
@@ -12,10 +12,11 @@ export const requestDiscussionDraft = ({ internalId = uuidv4(), discussionId }) 
       return draft;
     }
 
+    dispatch(requestDraft({ internalId }));
     draft = await dispatch(getDraft({ discussionId }));
 
     if (draft) {
-      dispatch(syncDraft({ internalId: discussionId, draft }));
+      dispatch(requestDraftSuccess({ internalId, draft }));
 
       return draft;
     }
@@ -30,7 +31,8 @@ export const requestDiscussionDraft = ({ internalId = uuidv4(), discussionId }) 
       parent_id: messageInReply.message_id || '',
     };
 
-    draft = dispatch(newDraft({ internalId, draft }));
+    draft = await dispatch(newDraft({ internalId, draft }));
+    dispatch(requestDraftSuccess({ internalId, draft }));
 
     return draft;
   };
