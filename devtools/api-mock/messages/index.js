@@ -67,6 +67,7 @@ const reducer = {
       message_id: body.message_id || uuidv4(),
       is_draft: true,
       is_unread: false,
+      is_received: false,
       date: Date.now(),
       date_insert: Date.now(),
       date_sort: Date.now(),

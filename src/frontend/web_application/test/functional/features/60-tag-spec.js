@@ -28,8 +28,10 @@ describe('Tag', () => {
   it('Manage tags on timeline', async () => {
     const tagName = 'Mon tag';
 
+    await element(by.cssContainingText('.m-button', 'Received')).click();
+    await element(by.cssContainingText('.m-button', 'Sent')).click();
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
-    // XXX: force scroll du to call-to-action
+    // XXX: force scroll due to call-to-action
     await browser.executeScript('window.scrollTo(0, document.body.scrollHeight);');
 
     const messageElement = element(by.cssContainingText('.s-message-item', 'Fry! Stay back! He\'s too powerful!'));
@@ -57,6 +59,8 @@ describe('Tag', () => {
 
   it('Manage tags for multiple messages on timeline', async () => {
     const tagName = 'Mon tag';
+    await element(by.cssContainingText('.m-button', 'Received')).click();
+    await element(by.cssContainingText('.m-button', 'All')).click();
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
     await browser.executeScript('window.scrollTo(0, document.body.scrollHeight);');
 

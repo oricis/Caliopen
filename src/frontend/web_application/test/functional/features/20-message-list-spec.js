@@ -13,6 +13,8 @@ describe('Message list', () => {
   });
 
   it('List', async () => {
+    await element(by.cssContainingText('.m-button', 'Received')).click();
+    await element(by.cssContainingText('.m-button', 'Sent')).click();
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
     await element(by.cssContainingText(
       '.s-timeline .s-message-item .s-message-item__title .s-message-item__excerpt',
