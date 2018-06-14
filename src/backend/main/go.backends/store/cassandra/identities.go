@@ -89,7 +89,7 @@ func (cb *CassandraBackend) RetrieveRemoteIdentity(userId, remoteId string, with
 	}
 	rId.UnmarshalCQLMap(m)
 	if withCredentials {
-		cred, err := cb.RetrieveCredentials(userId, identifier)
+		cred, err := cb.RetrieveCredentials(userId, remoteId)
 		if err != nil {
 			return nil, err
 		}
@@ -107,7 +107,7 @@ func (cb *CassandraBackend) UpdateRemoteIdentity(rId *RemoteIdentity, fields map
 	if cred, ok := fields["Credentials"].(Credentials); ok {
 		(*rId).Credentials = Credentials{}
 		delete(fields, "Credentials")
-		err = cb.UpdateCredentials(rId.UserId.String(), rId.Identifier, cred)
+		err = cb.UpdateCredentials(rId.UserId.String(), rId.RemoteId.String(), cred)
 		if err != nil {
 			logrus.WithError(err).Warn("[CassandraBackend] UpdateRemoteIdentity failed to update credentials")
 		}
@@ -127,13 +127,13 @@ func (cb *CassandraBackend) UpdateRemoteIdentity(rId *RemoteIdentity, fields map
 			}
 		}
 
-	ridT := cb.IKeyspace.Table("remote_identity", &RemoteIdentity{}, gocassa.Keys{
-		PartitionKeys: []string{"user_id", "remote_id"},
-	}).WithOptions(gocassa.Options{TableName: "remote_identity"})
+		ridT := cb.IKeyspace.Table("remote_identity", &RemoteIdentity{}, gocassa.Keys{
+			PartitionKeys: []string{"user_id", "remote_id"},
+		}).WithOptions(gocassa.Options{TableName: "remote_identity"})
 
-	return ridT.Where(gocassa.Eq("user_id", rId.UserId.String()), gocassa.Eq("remote_id", rId.RemoteId.String())).
-		Update(cassaFields).Run()
-}
+		return ridT.Where(gocassa.Eq("user_id", rId.UserId.String()), gocassa.Eq("remote_id", rId.RemoteId.String())).
+			Update(cassaFields).Run()
+	}
 
 	return err
 }
@@ -151,7 +151,7 @@ func (cb *CassandraBackend) RetrieveRemoteIdentities(userId string, withCredenti
 		id := new(RemoteIdentity).NewEmpty().(*RemoteIdentity)
 		id.UnmarshalCQLMap(identity)
 		if withCredentials {
-			cred, err := cb.RetrieveCredentials(userId, id.Identifier)
+			cred, err := cb.RetrieveCredentials(userId, id.RemoteId.String())
 			if err != nil {
 				return nil, err
 			}
@@ -180,7 +180,7 @@ func (cb *CassandraBackend) RetrieveAllRemotes() (<-chan *RemoteIdentity, error)
 			}
 			rId := new(RemoteIdentity)
 			rId.UnmarshalCQLMap(remoteID)
-			cred, err := cb.RetrieveCredentials(rId.UserId.String(), rId.Identifier)
+			cred, err := cb.RetrieveCredentials(rId.UserId.String(), rId.RemoteId.String())
 			if err == nil {
 				rId.Credentials = cred
 				select {
@@ -200,7 +200,7 @@ func (cb *CassandraBackend) RetrieveAllRemotes() (<-chan *RemoteIdentity, error)
 
 func (cb *CassandraBackend) DeleteRemoteIdentity(rId *RemoteIdentity) error {
 	if cb.UseVault {
-		err := cb.Vault.DeleteCredentials(rId.UserId.String(), rId.Identifier)
+		err := cb.Vault.DeleteCredentials(rId.UserId.String(), rId.RemoteId.String())
 		if err != nil {
 			logrus.WithError(err).Warn("[CassandraBackend] DeleteRemoteIdentity failed to delete credentials in vault")
 		}
