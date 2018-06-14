@@ -1,5 +1,6 @@
 const userUtil = require('../utils/user-util');
 const { home } = require('../utils/navigation');
+const { filter } = require('../utils/timeline');
 
 describe('Reply to message -', () => {
   const EC = protractor.ExpectedConditions;
@@ -27,8 +28,7 @@ describe('Reply to message -', () => {
     const text1 = 'Automatically saves a draft, then refresh.';
     const text2 = ' Automatically updates a draft, then refresh.';
 
-    await element(by.cssContainingText('.m-button', 'Received')).click();
-    await element(by.cssContainingText('.m-button', 'Sent')).click();
+    await filter('All');
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
     await element(discussion1Selector).click();
     await browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000);
@@ -66,8 +66,7 @@ describe('Reply to message -', () => {
 
     console.log('back to first discussion, don\'t wait');
     await home();
-    await element(by.cssContainingText('.m-button', 'Received')).click();
-    await element(by.cssContainingText('.m-button', 'Sent')).click();
+    await filter('All');
     // force scroll top to click on discussion
     await browser.executeScript('window.scrollTo(0,0);');
     await element(discussion1Selector).click();
@@ -75,8 +74,6 @@ describe('Reply to message -', () => {
     console.log('go to 2nd discussion, wait then refresh');
 
     await home();
-    await element(by.cssContainingText('.m-button', 'Sent')).click();
-    await element(by.cssContainingText('.m-button', 'Received')).click();
     await element(discussion2Selector).click();
     await browser.wait(EC.presenceOf(element(by.css('.m-message-list__list'))), 5 * 1000);
     await waitAndRefresh(element(by.css('.m-discussion-textarea__body')));
@@ -93,8 +90,7 @@ describe('Reply to message -', () => {
       'Fry! Stay back! He\'s too powerful!'
     );
     const text1 = 'Force save a draft.';
-    await element(by.cssContainingText('.m-button', 'Received')).click();
-    await element(by.cssContainingText('.m-button', 'Sent')).click();
+    await filter('All');
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
     await element(discussion1Selector).click();
     await browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 5 * 1000);
@@ -118,8 +114,7 @@ describe('Reply to message -', () => {
     );
     const text1 = 'yes I am!';
 
-    await element(by.cssContainingText('.m-button', 'Received')).click();
-    await element(by.cssContainingText('.m-button', 'Sent')).click();
+    await filter('All');
     await browser.wait(EC.presenceOf(element(by.css('.s-timeline .s-message-item'))), 5 * 1000);
     await element(discussion1Selector).click();
     await browser.wait(EC.presenceOf(element(by.css('.m-discussion-textarea__body'))), 5 * 1000);
