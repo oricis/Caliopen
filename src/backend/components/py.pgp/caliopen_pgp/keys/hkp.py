@@ -57,7 +57,7 @@ class HKPDiscovery(BaseDiscovery):
     def __init__(self, conf):
         self.url = conf.get('url', self.DEFAULT_HKP_URL)
 
-    def find_by_mail(self, email):
+    def find_by_email(self, email):
         """Find pgp keys by user email."""
         pub_keys = self._search_keys(email)
         result_keys = []
