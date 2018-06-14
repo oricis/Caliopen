@@ -188,7 +188,7 @@ func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *RemoteIden
 		proto,
 		time.Now().Format(time.RFC1123Z))
 
-	xHeaders["X-Fetched-Imap-Account"] = rId.Identifier
+	xHeaders["X-Fetched-Imap-Account"] = rId.DisplayName
 	xHeaders["X-Fetched-Imap-Box"] = base64.StdEncoding.EncodeToString([]byte(box.name))
 	xHeaders["X-Fetched-Imap-For"] = rId.UserId.String()
 	xHeaders["X-Fetched-Imap-Uid"] = strconv.Itoa(int(message.Uid))

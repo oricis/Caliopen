@@ -34,12 +34,12 @@ type imapBox struct {
 // updates last sync data for identity in db.
 func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 
-	log.Infof("[Fetcher] will fetch mails from %s", order.Identifier)
+	log.Infof("[Fetcher] will fetch mails for remote %s", order.RemoteId)
 
 	// 1. retrieve infos from db
-	rId, err := f.Store.RetrieveRemoteIdentity(order.UserId, order.Identifier)
+	rId, err := f.Store.RetrieveRemoteIdentity(order.UserId, order.RemoteId)
 	if err != nil {
-		log.WithError(err).Infof("[SyncRemoteWithLocal] failed to retrieve remote identity <%s> : <%s>", order.UserId, order.Identifier)
+		log.WithError(err).Infof("[SyncRemoteWithLocal] failed to retrieve remote identity <%s> : <%s>", order.UserId, order.RemoteId)
 		return err
 	}
 	if order.Password != "" {
@@ -110,14 +110,13 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 		return err
 	}
 
-	log.Infof("[Fetcher] all done for %s : %d new mail(s) fetched", order.Identifier, len(errs))
+	log.Infof("[Fetcher] all done for %s : %d new mail(s) fetched", order.RemoteId, len(errs))
 	return nil
 }
 
 func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
 	rId := RemoteIdentity{
-		Identifier: order.Login,
-		UserId:     UUID(uuid.FromStringOrNil(order.UserId)),
+		UserId: UUID(uuid.FromStringOrNil(order.UserId)),
 		Infos: map[string]string{
 			"server": order.Server,
 		},

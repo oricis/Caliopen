@@ -73,13 +73,12 @@ func fullFetch(cmd *cobra.Command, args []string) {
 	defer nc.Close()
 
 	msg, err := json.Marshal(IMAPfetchOrder{
-		Order:      "fullfetch",
-		UserId:     id.UserId.String(),
-		Identifier: id.Login,
-		Server:     id.Server,
-		Mailbox:    id.Mailbox,
-		Login:      id.Login,
-		Password:   id.Password,
+		Order:    "fullfetch",
+		UserId:   id.UserId.String(),
+		Server:   id.Server,
+		Mailbox:  id.Mailbox,
+		Login:    id.Login,
+		Password: id.Password,
 	})
 	if err != nil {
 		logrus.WithError(err).Fatal("unable to marshal natsOrder")

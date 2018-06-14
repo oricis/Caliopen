@@ -28,10 +28,10 @@ var (
 
 func init() {
 	syncRemoteCmd.Flags().StringVarP(&id.UserName, "username", "u", "", "remote identity's user name (required)")
-	syncRemoteCmd.Flags().StringVarP(&id.Identifier, "identifier", "i", "", "remote identity's identifier (required)")
+	syncRemoteCmd.Flags().StringVarP(&id.RemoteId, "remoteid", "r", "", "remote identity's uuid (required)")
 	syncRemoteCmd.Flags().StringVarP(&id.Password, "pass", "p", "", "IMAP password (if not stored in db)")
 	syncRemoteCmd.MarkFlagRequired("userid")
-	syncRemoteCmd.MarkFlagRequired("identifier")
+	syncRemoteCmd.MarkFlagRequired("remoteid")
 	RootCmd.AddCommand(syncRemoteCmd)
 }
 
@@ -69,13 +69,12 @@ func syncRemote(cmd *cobra.Command, args []string) {
 	defer nc.Close()
 
 	msg, err := json.Marshal(IMAPfetchOrder{
-		Order:      "sync",
-		UserId:     user.UserId.String(),
-		Identifier: id.Identifier,
-		Server:     id.Server,
-		Mailbox:    id.Mailbox,
-		Login:      id.Login,
-		Password:   id.Password,
+		Order:    "sync",
+		UserId:   user.UserId.String(),
+		Server:   id.Server,
+		Mailbox:  id.Mailbox,
+		Login:    id.Login,
+		Password: id.Password,
 	})
 	if err != nil {
 		logrus.WithError(err).Fatal("unable to marshal natsOrder")
@@ -88,5 +87,5 @@ func syncRemote(cmd *cobra.Command, args []string) {
 		logrus.WithError(err).Fatal("nats publish failed")
 	}
 
-	logrus.Infof("ordering to sync mailbox from %s for user %s", id.Identifier, user.UserId.String())
+	logrus.Infof("ordering to sync mailbox from %s for user %s", id.DisplayName, user.UserId.String())
 }

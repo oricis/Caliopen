@@ -12,6 +12,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
+	"github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
 )
 
@@ -26,11 +27,11 @@ var (
 
 type remoteId struct {
 	DisplayName  string
-	Identifier   string
 	Login        string
 	Mailbox      string
 	Password     string
 	PollInterval string
+	RemoteId     string
 	Server       string
 	UserId       UUID
 	UserName     string
@@ -44,9 +45,8 @@ func init() {
 	//optional
 	addRemoteCmd.Flags().StringVarP(&id.Password, "pass", "p", "", "IMAP password credential")
 	addRemoteCmd.Flags().StringVarP(&id.Mailbox, "mailbox", "m", "INBOX", "IMAP mailbox name to fetch mail from (case sensitive, default to 'INBOX'")
-	addRemoteCmd.Flags().StringVarP(&id.Identifier, "identifier", "i", id.Login, "identifier for remote identity (default to login)")
-	addRemoteCmd.Flags().StringVarP(&id.DisplayName, "display", "d", "", "display name for remote identity")
-	addRemoteCmd.MarkFlagRequired("userid")
+	addRemoteCmd.Flags().StringVarP(&id.DisplayName, "display", "d", "", "display name for remote identity (default to login)")
+	addRemoteCmd.MarkFlagRequired("username")
 	addRemoteCmd.MarkFlagRequired("server")
 	addRemoteCmd.MarkFlagRequired("login")
 	RootCmd.AddCommand(addRemoteCmd)
@@ -81,19 +81,16 @@ func addRemote(cmd *cobra.Command, args []string) {
 		log.WithError(e).Fatalf("[addRemote] failed to retrieve user name <%s>", id.UserName)
 	}
 	id.UserId = user.UserId
-	if id.Identifier == "" {
-		id.Identifier = id.Login
-	}
 	if id.DisplayName == "" {
-		id.DisplayName = id.Identifier
+		id.DisplayName = id.Login
 	}
 	rId = RemoteIdentity{
 		DisplayName: id.DisplayName,
-		Identifier:  id.Identifier,
 		Status:      "active",
 		Type:        "imap",
 		UserId:      id.UserId,
 	}
+	rId.RemoteId.UnmarshalBinary(uuid.NewV4().Bytes())
 	rId.SetDefaults()
 	rId.Infos["server"] = id.Server
 	rId.Credentials["password"] = id.Password
