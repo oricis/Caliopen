@@ -25,7 +25,9 @@ requires = [
     'cornice==1.2.1',
     'colander',
     'pyramid-swagger',
-    'rfc3987']
+    'rfc3987',
+    'webcolors',
+    'strict-rfc3339']
 
 tests_require = ['nose', 'coverage']
 if sys.version_info < (3, 3):
