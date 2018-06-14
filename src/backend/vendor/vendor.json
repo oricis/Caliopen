@@ -289,10 +289,22 @@
 			"revisionTime": "2014-10-28T05:47:10Z"
 		},
 		{
+			"checksumSHA1": "YAq1rqZIp+M74Q+jMBQkkMKm3VM=",
+			"path": "github.com/hashicorp/go-cleanhttp",
+			"revision": "d5fe4b57a186c716b0e00b8c301cbd9b4182694d",
+			"revisionTime": "2017-12-18T14:54:08Z"
+		},
+		{
 			"checksumSHA1": "4fgV2vzKKVyIlQ9nMyXIP5muq9E=",
 			"path": "github.com/hashicorp/go-multierror",
 			"revision": "ed905158d87462226a13fe39ddf685ea65f1c11f",
 			"revisionTime": "2016-12-16T18:43:04Z"
+		},
+		{
+			"checksumSHA1": "A1PcINvF3UiwHRKn8UcgARgvGRs=",
+			"path": "github.com/hashicorp/go-rootcerts",
+			"revision": "6bb64b370b90e7ef1fa532be9e591a81c3493e00",
+			"revisionTime": "2016-05-03T14:34:40Z"
 		},
 		{
 			"checksumSHA1": "o3XZZdOnSnwQSpYw215QV75ZDeI=",
@@ -347,6 +359,30 @@
 			"path": "github.com/hashicorp/hcl/json/token",
 			"revision": "a4b07c25de5ff55ad3b8936cea69a79a3d95a855",
 			"revisionTime": "2017-05-04T19:02:34Z"
+		},
+		{
+			"checksumSHA1": "JSf2CkOiPHlxi6hGFvjlZuac+LY=",
+			"path": "github.com/hashicorp/vault/api",
+			"revision": "85d7ffea83a62f6c9cacfbce37948044bfed2b1d",
+			"revisionTime": "2018-06-14T04:06:19Z"
+		},
+		{
+			"checksumSHA1": "bSdPFOHaTwEvM4PIvn0PZfn75jM=",
+			"path": "github.com/hashicorp/vault/helper/compressutil",
+			"revision": "85d7ffea83a62f6c9cacfbce37948044bfed2b1d",
+			"revisionTime": "2018-06-14T04:06:19Z"
+		},
+		{
+			"checksumSHA1": "RlqPBLOexQ0jj6jomhiompWKaUg=",
+			"path": "github.com/hashicorp/vault/helper/hclutil",
+			"revision": "85d7ffea83a62f6c9cacfbce37948044bfed2b1d",
+			"revisionTime": "2018-06-14T04:06:19Z"
+		},
+		{
+			"checksumSHA1": "POgkM3GrjRFw6H3sw95YNEs552A=",
+			"path": "github.com/hashicorp/vault/helper/jsonutil",
+			"revision": "85d7ffea83a62f6c9cacfbce37948044bfed2b1d",
+			"revisionTime": "2018-06-14T04:06:19Z"
 		},
 		{
 			"checksumSHA1": "40vJyUB4ezQSn/NSadsKEOrudMc=",
@@ -601,6 +637,12 @@
 			"revisionTime": "2016-02-20T08:48:02Z"
 		},
 		{
+			"checksumSHA1": "6JP37UqrI0H80Gpk0Y2P+KXgn5M=",
+			"path": "github.com/ryanuber/go-glob",
+			"revision": "256dc444b735e061061cf46c809487313d5b0065",
+			"revisionTime": "2017-01-28T01:21:29Z"
+		},
+		{
 			"checksumSHA1": "zmC8/3V4ls53DJlNTKDZwPSC/dA=",
 			"path": "github.com/satori/go.uuid",
 			"revision": "5bf94b69c6b68ee1b541973bb8e1144db23a194b",
@@ -731,6 +773,12 @@
 			"path": "golang.org/x/net/html/atom",
 			"revision": "feeb485667d1fdabe727840fe00adc22431bc86e",
 			"revisionTime": "2017-05-02T17:39:58Z"
+		},
+		{
+			"checksumSHA1": "pCY4YtdNKVBYRbNvODjx8hj0hIs=",
+			"path": "golang.org/x/net/http/httpguts",
+			"revision": "db08ff08e8622530d9ed3a0e8ac279f6d4c02196",
+			"revisionTime": "2018-06-11T16:35:41Z"
 		},
 		{
 			"checksumSHA1": "VrzPJyWI6disCgYuVEQzkjqUsJk=",

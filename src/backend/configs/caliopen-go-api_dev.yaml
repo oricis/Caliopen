@@ -18,7 +18,7 @@ ApiConfig:
         buckets:
           raw_messages: caliopen-raw-messages                # bucket name to put raw messages to
           temporary_attachments: caliopen-tmp-attachments    # bucket name to store draft attachments
-      use_vault: false
+      use_vault: true
   IndexConfig:
     index_name: elasticsearch
     index_settings:

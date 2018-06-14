@@ -153,7 +153,8 @@ func (cb *CassandraBackend) RetrieveRemoteIdentities(userId string, withCredenti
 		if withCredentials {
 			cred, err := cb.RetrieveCredentials(userId, id.RemoteId.String())
 			if err != nil {
-				return nil, err
+				// return remote identity even if credentials retrieval failed
+				cred = Credentials{}
 			}
 			id.Credentials = cred
 		} else {
