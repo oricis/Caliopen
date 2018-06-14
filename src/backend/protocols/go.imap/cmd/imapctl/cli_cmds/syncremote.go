@@ -27,7 +27,7 @@ var (
 )
 
 func init() {
-	syncRemoteCmd.Flags().StringVarP(&id.UserName, "username", "u", "", "remote identity's user name (required)")
+	syncRemoteCmd.Flags().StringVarP(&id.UserName, "username", "u", "", "Caliopen username account to which mails will be delivered (required)")
 	syncRemoteCmd.Flags().StringVarP(&id.RemoteId, "remoteid", "r", "", "remote identity's uuid (required)")
 	syncRemoteCmd.Flags().StringVarP(&id.Password, "pass", "p", "", "IMAP password (if not stored in db)")
 	syncRemoteCmd.MarkFlagRequired("userid")
@@ -69,12 +69,13 @@ func syncRemote(cmd *cobra.Command, args []string) {
 	defer nc.Close()
 
 	msg, err := json.Marshal(IMAPfetchOrder{
-		Order:    "sync",
-		UserId:   user.UserId.String(),
-		Server:   id.Server,
-		Mailbox:  id.Mailbox,
 		Login:    id.Login,
+		Mailbox:  id.Mailbox,
+		Order:    "sync",
 		Password: id.Password,
+		RemoteId: id.RemoteId,
+		Server:   id.Server,
+		UserId:   user.UserId.String(),
 	})
 	if err != nil {
 		logrus.WithError(err).Fatal("unable to marshal natsOrder")

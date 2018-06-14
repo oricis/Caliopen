@@ -17,10 +17,10 @@ func (p *Poller) AddJobFor(idkey string) (err error) {
 		case "imap":
 			cronStr := "@every " + entry.pollInterval + "m"
 			entry.cronId, err = p.MainCron.AddJob(cronStr, imapJob{
-				identifier: entry.remoteID.Identifier,
-				natsTopic:  p.Config.NatsTopics["imap"],
-				poller:     p,
-				userId:     entry.remoteID.UserId.String(),
+				remoteId:  entry.remoteID.RemoteId.String(),
+				natsTopic: p.Config.NatsTopics["imap"],
+				poller:    p,
+				userId:    entry.remoteID.UserId.String(),
 			})
 			if err != nil {
 				log.WithError(err).Warn("[AddJobFor] failed to add job to MainCron")

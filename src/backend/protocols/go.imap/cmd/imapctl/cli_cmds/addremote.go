@@ -100,6 +100,6 @@ func addRemote(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.WithError(err).Warn("[addRemote] storage failed to store remote identity")
 	} else {
-		log.Info("OK, new remote identity added ! Bye.")
+		log.Infof("OK, new remote identity added with id %s ! Bye.", rId.RemoteId.String())
 	}
 }

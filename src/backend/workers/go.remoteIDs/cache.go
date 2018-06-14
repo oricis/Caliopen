@@ -34,7 +34,7 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 
 	for remote := range remotes {
 		if p.statusTypeOK(remote) {
-			idkey := remote.UserId.String() + remote.Identifier
+			idkey := remote.UserId.String() + remote.RemoteId.String()
 			active[idkey] = true
 			if entry, ok := p.Cache[idkey]; ok {
 				//check if pollinterval has changed
