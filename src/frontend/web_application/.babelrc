@@ -3,7 +3,8 @@
     "es2015",
     "react",
     "stage-2",
-    "lingui-react"
+    "lingui-react",
+    "flow"
   ],
   "plugins": [
     "transform-decorators-legacy"

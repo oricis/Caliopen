@@ -124,6 +124,24 @@ docker-compose rm
 docker volume rm devtools_db devtools_index devtools_store
 ```
 
+## Developing using flow type
+
+Caliopen includes [Flow](https://flow.org) in the client code to make it more friendly.
+
+![flow type](./assets/flowtype.gif)
+
+You need to start a flow server and you would be able to see the flow status with the same command:
+
+```
+yarn flow
+```
+
+_(use `yarn flow --help` for more informations)_
+
+And then use a [plugin](https://flow.org/en/docs/editors/) on your editor to make the thing available.
+
+**note:** It is not mandatory to type the code when you are contributing. And so not the whole code is typed as well.
+
 ## Troubleshoutings
 
 **elasticsearch won't start**:
