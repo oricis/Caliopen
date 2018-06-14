@@ -37,7 +37,7 @@ class PublicKeyDiscoverer(object):
             if hasattr(self.discoverers[disco], 'find_by_email'):
                 try:
                     key = self.discoverers[disco].find_by_email(email)
-                    found_keys.append(key)
+                    found_keys.extend(key)
                 except Exception as exc:
                     log.error('Exception during key lookup using {0} '
                               'for email {1}: {2}'.format(disco, email, exc))
