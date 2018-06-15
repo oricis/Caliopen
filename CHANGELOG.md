@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- API v1 and v2 validate signed ecdsa http queries
+- delete an account
+
 ### Changed
 
 - optimization, prevent timeline to fetch multiple times the API

@@ -27,7 +27,8 @@ requires = [
     'pyramid-swagger',
     'rfc3987',
     'webcolors',
-    'strict-rfc3339']
+    'strict-rfc3339',
+    'ecdsa']
 
 tests_require = ['nose', 'coverage']
 if sys.version_info < (3, 3):

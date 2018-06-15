@@ -123,7 +123,13 @@ class AuthenticationAPI(Api):
                   'expires_in': ttl,  # TODO : remove this value
                   'expires_at': expires_at.isoformat()}
         cache_key = '{}-{}'.format(user.user_id, device.device_id)
-        self.request.cache.set(cache_key, tokens)
+        session_data = tokens.copy()
+        if key:
+            session_data.update({'key_id': str(key.key_id),
+                                 'x': key.x,
+                                 'y': key.y,
+                                 'curve': key.crv})
+        self.request.cache.set(cache_key, session_data)
 
         # XXX to remove when all authenticated API will use X-Device-ID
         self.request.cache.set(user.user_id, tokens)
