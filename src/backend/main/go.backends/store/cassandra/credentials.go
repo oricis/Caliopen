@@ -24,40 +24,40 @@ func (cb *CassandraBackend) CreateCredentials(rId *RemoteIdentity, cred Credenti
 	})
 }
 
-func (cb *CassandraBackend) RetrieveCredentials(userId, identifier string) (cred Credentials, err error) {
+func (cb *CassandraBackend) RetrieveCredentials(userId, remoteId string) (cred Credentials, err error) {
 
 	if cb.UseVault {
-		return cb.Vault.RetrieveCredentials(userId, identifier)
+		return cb.Vault.RetrieveCredentials(userId, remoteId)
 	}
 
-	err = cb.Session.Query(`SELECT credentials FROM remote_identity WHERE user_id = ? AND identifier = ?`, userId, identifier).Scan(&cred)
+	err = cb.Session.Query(`SELECT credentials FROM remote_identity WHERE user_id = ? AND remote_id = ?`, userId, remoteId).Scan(&cred)
 
 	return
 }
 
-func (cb *CassandraBackend) UpdateCredentials(userId, identifier string, cred Credentials) error {
+func (cb *CassandraBackend) UpdateCredentials(userId, remoteId string, cred Credentials) error {
 
 	if cb.UseVault {
-		return cb.Vault.UpdateCredentials(userId, identifier, cred)
+		return cb.Vault.UpdateCredentials(userId, remoteId, cred)
 	}
 
 	ridT := cb.IKeyspace.Table("remote_identity", &RemoteIdentity{}, gocassa.Keys{
-		PartitionKeys: []string{"user_id", "identifier"},
+		PartitionKeys: []string{"user_id", "remote_id"},
 	}).WithOptions(gocassa.Options{TableName: "remote_identity"})
 
-	return ridT.Where(gocassa.Eq("user_id", userId), gocassa.Eq("identifier", identifier)).
+	return ridT.Where(gocassa.Eq("user_id", userId), gocassa.Eq("remote_id", remoteId)).
 		Update(map[string]interface{}{
 			"credentials": cred,
 		}).Run()
 }
 
-func (cb *CassandraBackend) DeleteCredentials(userId, identifier string) error {
+func (cb *CassandraBackend) DeleteCredentials(userId, remoteId string) error {
 
 	if cb.UseVault {
-		return cb.Vault.DeleteCredentials(userId, identifier)
+		return cb.Vault.DeleteCredentials(userId, remoteId)
 	}
 
-	return cb.UpdateCredentials(userId, identifier, Credentials{})
+	return cb.UpdateCredentials(userId, remoteId, Credentials{})
 
 	return nil
 }

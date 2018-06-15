@@ -115,7 +115,6 @@ func (cb *CassandraBackend) UpdateRemoteIdentity(rId *RemoteIdentity, fields map
 
 	if len(fields) > 0 {
 		//get cassandra's field name for each field to modify
-		//TODO: handle special case where identifier is updated, because it's a primary key
 		cassaFields := map[string]interface{}{}
 		for field, value := range fields {
 			cassaField, err := reflections.GetFieldTag(rId, field, "cql")
@@ -167,7 +166,7 @@ func (cb *CassandraBackend) RetrieveRemoteIdentities(userId string, withCredenti
 }
 
 // RetrieveAllRemotes returns a chan to range over all remote identities found in db
-func (cb *CassandraBackend) RetrieveAllRemotes() (<-chan *RemoteIdentity, error) {
+func (cb *CassandraBackend) RetrieveAllRemotes(withCredentials bool) (<-chan *RemoteIdentity, error) {
 
 	ch := make(chan *RemoteIdentity)
 	go func(cb *CassandraBackend, ch chan *RemoteIdentity) {
@@ -181,14 +180,21 @@ func (cb *CassandraBackend) RetrieveAllRemotes() (<-chan *RemoteIdentity, error)
 			}
 			rId := new(RemoteIdentity)
 			rId.UnmarshalCQLMap(remoteID)
-			cred, err := cb.RetrieveCredentials(rId.UserId.String(), rId.RemoteId.String())
-			if err == nil {
-				rId.Credentials = cred
-				select {
-				case ch <- rId:
-				case <-time.After(cb.Timeout):
-					logrus.Warn("[RetrieveAllRemote] write timeout on chan")
+			if withCredentials {
+				cred, err := cb.RetrieveCredentials(rId.UserId.String(), rId.RemoteId.String())
+				if err != nil {
+					rId.Credentials = cred
+				} else {
+					rId.Credentials = Credentials{}
 				}
+			} else {
+				rId.Credentials = Credentials{}
+			}
+
+			select {
+			case ch <- rId:
+			case <-time.After(cb.Timeout):
+				logrus.Warn("[RetrieveAllRemote] write timeout on chan")
 			}
 		}
 

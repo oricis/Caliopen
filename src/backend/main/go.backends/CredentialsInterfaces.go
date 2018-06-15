@@ -12,7 +12,7 @@ import (
 
 type CredentialsStorage interface {
 	CreateCredentials(rId *RemoteIdentity, cred Credentials) error
-	RetrieveCredentials(userId, identifier string) (Credentials, error)
-	UpdateCredentials(userId, identifier string, cred Credentials) error
-	DeleteCredentials(userId, identifier string) error
+	RetrieveCredentials(userId, remoteId string) (Credentials, error)
+	UpdateCredentials(userId, remoteId string, cred Credentials) error
+	DeleteCredentials(userId, remoteId string) error
 }

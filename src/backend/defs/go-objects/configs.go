@@ -46,12 +46,14 @@ type (
 	}
 	// Cassandra
 	StoreConfig struct {
-		Hosts       []string  `mapstructure:"hosts"`
-		Keyspace    string    `mapstructure:"keyspace"`
-		Consistency uint16    `mapstructure:"consistency_level"`
-		SizeLimit   uint64    `mapstructure:"raw_size_limit"` // max size to store (in bytes)
-		ObjectStore string    `mapstructure:"object_store"`
-		OSSConfig   OSSConfig `mapstructure:"object_store_settings"`
+		Hosts       []string    `mapstructure:"hosts"`
+		Keyspace    string      `mapstructure:"keyspace"`
+		Consistency uint16      `mapstructure:"consistency_level"`
+		SizeLimit   uint64      `mapstructure:"raw_size_limit"` // max size to store (in bytes)
+		ObjectStore string      `mapstructure:"object_store"`
+		OSSConfig   OSSConfig   `mapstructure:"object_store_settings"`
+		UseVault    bool        `mapstructure:"use_vault"`
+		VaultConfig VaultConfig `mapstructure:"vault_settings"`
 	}
 
 	// Objects Store

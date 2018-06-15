@@ -18,7 +18,7 @@ type (
 		UpdateRemoteIdentity(rId *RemoteIdentity, fields map[string]interface{}) error
 		DeleteRemoteIdentity(rId *RemoteIdentity) error
 		RetrieveRemoteIdentities(userId string, withCredentials bool) ([]*RemoteIdentity, error)
-		RetrieveAllRemotes() (<-chan *RemoteIdentity, error)
+		RetrieveAllRemotes(withCredentials bool) (<-chan *RemoteIdentity, error)
 		Close()
 	}
 )
