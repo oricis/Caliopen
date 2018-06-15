@@ -13,8 +13,8 @@ describe('service MessageList groupMessages', () => {
     ];
 
     expect(groupMessages(messages)).toEqual({
-      [(new Date(Date.UTC(2017, 0, 1))).toISOString()]: [messages[1], messages[2]],
-      [(new Date(Date.UTC(2017, 0, 3))).toISOString()]: [messages[0]],
+      [(new Date(2017, 0, 1)).toISOString()]: [messages[1], messages[2]],
+      [(new Date(2017, 0, 3)).toISOString()]: [messages[0]],
     });
   });
 
@@ -46,13 +46,14 @@ describe('service MessageList groupMessages', () => {
       { body: 'now', date_sort: now.toJSON() },
     ];
 
-    const today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
     expect(groupMessages(messages)).toEqual({
-      [(new Date('2018-05-29')).toISOString()]: [
+      [(new Date(2018, 4, 29)).toISOString()]: [
         messages[0],
       ],
-      [(new Date('2018-06-01')).toISOString()]: [
+      [(new Date(2018, 5, 1)).toISOString()]: [
         messages[1], messages[2],
       ],
       [today.toISOString()]: [

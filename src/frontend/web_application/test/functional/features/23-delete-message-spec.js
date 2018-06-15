@@ -1,5 +1,6 @@
 const userUtil = require('../utils/user-util');
 const { home } = require('../utils/navigation');
+const { filter } = require('../utils/timeline');
 
 describe('Delete message', () => {
   const EC = protractor.ExpectedConditions;
@@ -28,6 +29,7 @@ describe('Delete message', () => {
       return clickBtnInModal('Yes I\'m sure');
     };
 
+    await filter('All');
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
     await element(discussion1Selector).click();
     await browser.wait(EC.presenceOf($('.m-message')), 5 * 1000);
@@ -44,6 +46,7 @@ describe('Delete message', () => {
       'a message of a collection to remove'
     );
 
+    await filter('All');
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
     await element(discussionSelector).click();
     await browser.wait(EC.presenceOf($('.m-message-list__action')), 5 * 1000);

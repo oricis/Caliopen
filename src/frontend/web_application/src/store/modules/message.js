@@ -27,6 +27,10 @@ export const UPLOAD_ATTACHMENT = 'co/message/UPLOAD_ATTACHMENT';
 export const DELETE_ATTACHMENT = 'co/message/DELETE_ATTACHMENT';
 export const REMOVE_FROM_COLLECTION = 'co/message/REMOVE_FROM_COLLECTION';
 export const ADD_TO_COLLECTION = 'co/message/ADD_TO_COLLECTION';
+export const REQUEST_DRAFT = 'co/message/REQUEST_DRAFT';
+export const REQUEST_DRAFT_SUCCESS = 'co/message/REQUEST_DRAFT_SUCCESS';
+export const FETCH_MESSAGES = 'co/message/FETCH_MESSAGES';
+export const FETCH_MESSAGES_SUCCESS = 'co/message/FETCH_MESSAGES_SUCCESS';
 
 export const TIMELINE_FILTER_ALL = 'all';
 export const TIMELINE_FILTER_RECEIVED = 'received';
@@ -221,6 +225,38 @@ export function removeFromCollection({ message }) {
   };
 }
 
+// TODO: refactor me should be named requestMessages
+// and requestMessages -> requestCollection
+export function fetchMessages(params) {
+  return {
+    type: FETCH_MESSAGES,
+    payload: {
+      request: {
+        method: 'get',
+        url: '/api/v2/messages',
+        params,
+      },
+    },
+  };
+}
+
+
+export function requestDraft({ discussionId }) {
+  return {
+    type: REQUEST_DRAFT,
+    payload: {
+      request: {
+        method: 'get',
+        url: '/api/v2/messages',
+        params: {
+          discussion_id: discussionId,
+          is_draft: true,
+          limit: 1,
+        },
+      },
+    },
+  };
+}
 export function getNextOffset(state) {
   return state.messages.length;
 }
@@ -240,13 +276,33 @@ export function getMessagesFromCollection(type, key, { state }) {
   return state.messagesCollections[type][key].messages.map(id => state.messagesById[id]);
 }
 
+function draftMessageReducer(state = {}, action) {
+  if (action.type !== REQUEST_DRAFT_SUCCESS) {
+    return state;
+  }
+
+  const [draft] = action.payload.data.messages;
+
+  if (!draft) {
+    return state;
+  }
+
+  return {
+    ...state,
+    [draft.message_id]: draft,
+  };
+}
+
 function messagesByIdReducer(state = {}, action = {}) {
   switch (action.type) {
+    case REQUEST_DRAFT_SUCCESS:
+      return draftMessageReducer(state, action);
     case REQUEST_MESSAGE_SUCCESS:
       return {
         ...state,
         [action.payload.data.message_id]: action.payload.data,
       };
+    case FETCH_MESSAGES_SUCCESS:
     case REQUEST_MESSAGES_SUCCESS:
       return action.payload.data.messages.reduce((previousState, message) => ({
         ...previousState,
@@ -256,6 +312,11 @@ function messagesByIdReducer(state = {}, action = {}) {
       return {
         ...state,
         [action.payload.message.message_id]: action.payload.message,
+      };
+    case REMOVE_FROM_COLLECTION:
+      return {
+        ...state,
+        [action.payload.message.message_id]: undefined,
       };
     default:
       return state;
@@ -391,12 +452,11 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case REQUEST_MESSAGE_SUCCESS:
+    case REQUEST_DRAFT_SUCCESS:
+    case SYNC_MESSAGE:
       return {
         ...state,
-        messagesById: messagesByIdReducer(
-          state.messagesById,
-          action
-        ),
+        messagesById: messagesByIdReducer(state.messagesById, action),
       };
     case REQUEST_MESSAGES:
       return {
@@ -415,6 +475,11 @@ export default function reducer(state = initialState, action) {
           action
         ),
       };
+    case FETCH_MESSAGES_SUCCESS:
+      return {
+        ...state,
+        messagesById: messagesByIdReducer(state.messagesById, action),
+      };
     case SET_TIMELINE_FILTER:
       return {
         ...state,
@@ -429,17 +494,18 @@ export default function reducer(state = initialState, action) {
         ),
       };
     case ADD_TO_COLLECTION:
-    case REMOVE_FROM_COLLECTION:
     case INVALIDATE_ALL_MESSAGES:
       return {
         ...state,
         messagesCollections: allMessagesCollectionsReducer(state.messagesCollections, action),
       };
-    case SYNC_MESSAGE:
+    case REMOVE_FROM_COLLECTION:
       return {
         ...state,
         messagesById: messagesByIdReducer(state.messagesById, action),
+        messagesCollections: allMessagesCollectionsReducer(state.messagesCollections, action),
       };
+
     default:
       return state;
   }
