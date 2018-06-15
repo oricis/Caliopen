@@ -48,9 +48,7 @@ class Timeline extends Component {
   componentDidMount() {
     const { timelineFilter, loadMore } = this.props;
 
-    this.loadMessages(this.props).finally(() => {
-      this.setState({ initialized: true });
-    });
+    this.loadMessages(this.props);
 
     this.throttledLoadMore = throttle(
       () => loadMore(timelineFilter),
@@ -89,12 +87,17 @@ class Timeline extends Component {
     }));
   }
 
-  loadMessages = (props) => {
+  loadMessages = async (props) => {
     const {
       requestMessages, timelineFilter, didInvalidate, isFetching,
     } = props;
     if ((!this.state.initialized || didInvalidate) && !isFetching) {
-      return requestMessages(timelineFilter);
+      // "initialized" is not well named,
+      // we consider it "initialized" as soon as we start fetching messages to prevent multiple
+      // fetchs because setState would be applied at the very end after multiple
+      // componentWillReceiveProps
+      this.setState({ initialized: true });
+      requestMessages(timelineFilter);
     }
 
     return Promise.resolve();
