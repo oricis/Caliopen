@@ -301,6 +301,12 @@
 			"revisionTime": "2016-12-16T18:43:04Z"
 		},
 		{
+			"checksumSHA1": "s6mKR1dSKP04+A3kwSsFr/PvsOU=",
+			"path": "github.com/hashicorp/go-retryablehttp",
+			"revision": "3b087ef2d313afe6c55b2f511d20db04ca767075",
+			"revisionTime": "2018-05-31T21:13:21Z"
+		},
+		{
 			"checksumSHA1": "A1PcINvF3UiwHRKn8UcgARgvGRs=",
 			"path": "github.com/hashicorp/go-rootcerts",
 			"revision": "6bb64b370b90e7ef1fa532be9e591a81c3493e00",
@@ -383,6 +389,12 @@
 			"path": "github.com/hashicorp/vault/helper/jsonutil",
 			"revision": "85d7ffea83a62f6c9cacfbce37948044bfed2b1d",
 			"revisionTime": "2018-06-14T04:06:19Z"
+		},
+		{
+			"checksumSHA1": "zPHu2orsbQqIuiuQ/8elJIUR2Po=",
+			"path": "github.com/hashicorp/vault/helper/parseutil",
+			"revision": "bd0b7f1861c90d162d3d461e79a93cf0f331cac4",
+			"revisionTime": "2018-06-15T13:09:27Z"
 		},
 		{
 			"checksumSHA1": "40vJyUB4ezQSn/NSadsKEOrudMc=",
@@ -529,10 +541,10 @@
 			"revisionTime": "2016-11-07T13:59:01Z"
 		},
 		{
-			"checksumSHA1": "11S7rNUzdp9JDgZOwfw00/MR2+4=",
+			"checksumSHA1": "mNIK6LfMGR+IzGogT1PNvJysmdQ=",
 			"path": "github.com/nats-io/go-nats",
-			"revision": "2485387d6ede89c1c8c3445cd1935fd41a2e9ee9",
-			"revisionTime": "2018-03-17T20:41:12Z"
+			"revision": "4cf007b2f724143321da6c887060853c8a855696",
+			"revisionTime": "2018-06-12T15:49:07Z"
 		},
 		{
 			"checksumSHA1": "Q2c9uTEIGhSIddv5pntYdFNtUdk=",
@@ -781,6 +793,18 @@
 			"revisionTime": "2018-06-11T16:35:41Z"
 		},
 		{
+			"checksumSHA1": "NNo0AcF8P5+b/140t0Wox/HFkkw=",
+			"path": "golang.org/x/net/http2",
+			"revision": "db08ff08e8622530d9ed3a0e8ac279f6d4c02196",
+			"revisionTime": "2018-06-11T16:35:41Z"
+		},
+		{
+			"checksumSHA1": "leSW9aM30mATlWs/eeqhQQh/3eo=",
+			"path": "golang.org/x/net/http2/hpack",
+			"revision": "db08ff08e8622530d9ed3a0e8ac279f6d4c02196",
+			"revisionTime": "2018-06-11T16:35:41Z"
+		},
+		{
 			"checksumSHA1": "VrzPJyWI6disCgYuVEQzkjqUsJk=",
 			"path": "golang.org/x/net/idna",
 			"revision": "feeb485667d1fdabe727840fe00adc22431bc86e",
@@ -901,6 +925,12 @@
 			"revisionTime": "2017-04-25T18:31:26Z"
 		},
 		{
+			"checksumSHA1": "HoCvrd3hEhsFeBOdEw7cbcfyk50=",
+			"path": "golang.org/x/time/rate",
+			"revision": "fbb02b2291d28baffd63558aa44b4b56f178d650",
+			"revisionTime": "2018-04-12T16:56:04Z"
+		},
+		{
 			"checksumSHA1": "6IzzHO9p32aHJhMYMwijccDUIVA=",
 			"path": "gopkg.in/alexcesaro/quotedprintable.v3",
 			"revision": "2caba252f4dc53eaf6b553000885530023f54623",
@@ -1003,10 +1033,10 @@
 			"revisionTime": "2015-01-07T22:02:07Z"
 		},
 		{
-			"checksumSHA1": "RDJpJQwkF012L6m/2BJizyOksNw=",
+			"checksumSHA1": "ZSWoOPUNRr5+3dhkLK3C4cZAQPk=",
 			"path": "gopkg.in/yaml.v2",
-			"revision": "eb3733d160e74a9c7e442f435eb3bea458e1d19f",
-			"revisionTime": "2017-08-12T16:00:11Z"
+			"revision": "5420a8b6744d3b0345ab293f6fcba19c978f1183",
+			"revisionTime": "2018-03-28T19:50:20Z"
 		}
 	],
 	"rootPath": "github.com/CaliOpen/Caliopen/src/backend"
