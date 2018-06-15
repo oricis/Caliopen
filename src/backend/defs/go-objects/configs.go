@@ -23,6 +23,7 @@ type (
 		ObjStoreType string   `mapstructure:"object_store"`
 		OSSConfig    `mapstructure:"object_store_settings"`
 		UseVault     bool `mapstructure:"use_vault"`
+		VaultConfig  `mapstructure:"vault_settings"`
 	}
 
 	RESTIndexConfig struct {
@@ -67,5 +68,12 @@ type (
 		AdminUsername string `mapstructure:"admin_username"`
 		BaseUrl       string `mapstructure:"base_url"`       // url upon which to build custom links sent to users. No trailing slash please.
 		TemplatesPath string `mapstructure:"templates_path"` // path to templates Notifiers may need to access to
+	}
+
+	// Hashicorp Vault
+	VaultConfig struct {
+		Url      string `mapstructure:"url"`
+		Username string `mapstructure:"username"`
+		Password string `mapstructure:"password"`
 	}
 )

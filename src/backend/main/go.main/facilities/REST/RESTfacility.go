@@ -108,6 +108,11 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 			cassaConfig.OSSConfig.RawMsgBucket = config.RESTstoreConfig.OSSConfig.Buckets["raw_messages"]
 			cassaConfig.OSSConfig.AttachmentBucket = config.RESTstoreConfig.OSSConfig.Buckets["temporary_attachments"]
 		}
+		if config.RESTstoreConfig.UseVault {
+			cassaConfig.HVaultConfig.Url = config.RESTstoreConfig.VaultConfig.Url
+			cassaConfig.HVaultConfig.Username = config.RESTstoreConfig.VaultConfig.Username
+			cassaConfig.HVaultConfig.Password = config.RESTstoreConfig.VaultConfig.Password
+		}
 		backend, err := store.InitializeCassandraBackend(cassaConfig)
 		if err != nil {
 			log.WithError(err).Fatalf("initalization of %s backend failed", config.RESTstoreConfig.BackendName)

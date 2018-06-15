@@ -9,29 +9,52 @@
 package vault
 
 import (
+	"fmt"
 	hvault "github.com/hashicorp/vault/api"
 )
 
 type HVaultClient struct {
 	hclient *hvault.Client
+	HVaultConfig
 }
 
-const credentialsPath = "secret/data/%s/%s" // path to store credentials => secret/data/user_id/remote_id
+type HVaultConfig struct {
+	Url      string `mapstructure:"url"`
+	Username string `mapstructure:"username"`
+	Password string `mapstructure:"password"`
+}
 
-// InitializeVaultBackend checks if a Vault server is available and returns a VaultClient
-func InitializeVaultBackend() (hv HVault, err error) {
+const credentialsPath = "secret/data/remoteid/credentials/%s/%s" // path to store credentials => secret/data/remoteid/credentials/user_id/remote_id
+const loginPath = "auth/userpass/login/%s"
+
+// InitializeVaultBackend checks if a Vault server is available and returns an authenticated VaultClient
+func InitializeVaultBackend(hvConf HVaultConfig) (hv HVault, err error) {
 	config := hvault.DefaultConfig()
-	config.Address = "http://127.0.0.1:8200"
+	config.Address = hvConf.Url
 
 	var hc HVaultClient
+
+	hc.Url = hvConf.Url
+	hc.Username = hvConf.Username
+	hc.Password = hvConf.Password
 
 	hc.hclient, err = hvault.NewClient(config)
 	if err != nil {
 		return nil, err
 	}
 
-	hc.hclient.SetToken("3a995021-7b93-b4bd-f327-28a7bfa4ef50")
-	hc.hclient.Auth()
+	//authentication with user/password method
+	options := map[string]interface{}{
+		"password": hvConf.Password,
+	}
+	path := fmt.Sprintf(loginPath, hvConf.Username)
+	secret, err := hc.hclient.Logical().Write(path, options)
+	if err != nil {
+		return nil, err
+	}
+	hc.hclient.SetToken(secret.Auth.ClientToken)
+
+	//TODO: manage token expiration (default TTL is 32 days)
 
 	_, err = hc.hclient.Sys().Health()
 	if err != nil {

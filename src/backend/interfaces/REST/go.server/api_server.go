@@ -50,13 +50,14 @@ type (
 	}
 
 	BackendSettings struct {
-		Hosts            []string      `mapstructure:"hosts"`
-		Keyspace         string        `mapstructure:"keyspace"`
-		Consistency      uint16        `mapstructure:"consistency_level"`
-		SizeLimit        uint64        `mapstructure:"raw_size_limit"` // max size for db (in bytes)
-		ObjStoreType     string        `mapstructure:"object_store"`
-		ObjStoreSettings obj.OSSConfig `mapstructure:"object_store_settings"`
-		UseVault         bool          `mapstructure:"use_vault"`
+		Hosts            []string        `mapstructure:"hosts"`
+		Keyspace         string          `mapstructure:"keyspace"`
+		Consistency      uint16          `mapstructure:"consistency_level"`
+		SizeLimit        uint64          `mapstructure:"raw_size_limit"` // max size for db (in bytes)
+		ObjStoreType     string          `mapstructure:"object_store"`
+		ObjStoreSettings obj.OSSConfig   `mapstructure:"object_store_settings"`
+		UseVault         bool            `mapstructure:"use_vault"`
+		VaultSettings    obj.VaultConfig `mapstructure:"vault_settings"`
 	}
 
 	IndexConfig struct {
@@ -106,6 +107,7 @@ func (server *REST_API) initialize(config APIConfig) error {
 			ObjStoreType: config.BackendConfig.Settings.ObjStoreType,
 			OSSConfig:    config.BackendConfig.Settings.ObjStoreSettings,
 			UseVault:     config.BackendConfig.Settings.UseVault,
+			VaultConfig:  config.BackendConfig.Settings.VaultSettings,
 		},
 		RESTindexConfig: obj.RESTIndexConfig{
 			IndexName: config.IndexConfig.IndexName,

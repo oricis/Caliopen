@@ -31,6 +31,7 @@ type (
 		WithObjStore bool              // whether to use an objects store service for objects above SizeLimit
 		object_store.OSSConfig
 		UseVault bool `mapstructure:"use_vault"`
+		vault.HVaultConfig
 	}
 
 	HasTable interface {
@@ -60,7 +61,7 @@ func InitializeCassandraBackend(config CassandraConfig) (cb *CassandraBackend, e
 	// credentials store
 	cb.UseVault = config.UseVault
 	if cb.UseVault {
-		cb.Vault, err = vault.InitializeVaultBackend()
+		cb.Vault, err = vault.InitializeVaultBackend(config.HVaultConfig)
 		if err != nil {
 			log.Warn("[InitializeCassandraBackend] vault initialization failed")
 			return nil, err
