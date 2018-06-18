@@ -15,6 +15,7 @@ class KeybaseDiscovery(BaseDiscovery):
 
     KEYBASE_DEFAULT_BASE_URL = 'https://keybase.io'
     KEYBASE_DEFAULT_HEADERS = {'Content-Type': 'application/json'}
+    DEFAULT_TIMEOUT = 10
 
     _types = ['twitter', 'github']
 
@@ -22,6 +23,7 @@ class KeybaseDiscovery(BaseDiscovery):
         self.base_url = conf.get('url', self.KEYBASE_DEFAULT_BASE_URL)
         self.url = '{}/_/api/1.0'.format(self.base_url)
         self.headers = conf.get('headers', self.KEYBASE_DEFAULT_HEADERS)
+        self.timeout = conf.get('timeout', self.DEFAULT_TIMEOUT)
 
     def find_by_type(self, name, type):
         """Find by name and type."""
@@ -55,7 +57,7 @@ class KeybaseDiscovery(BaseDiscovery):
         url = '{}/user/discover.json?{}={}'. \
               format(self.url, type, clean_name)
         log.debug('Will query keybase url {}'.format(url))
-        res = requests.get(url, headers=self.headers)
+        res = requests.get(url, headers=self.headers, timeout=self.timeout)
         if res.status_code != 200:
             log.error('Keybase discover status {} for {} on {}'.
                       format(res.status_code, clean_name, type))
@@ -75,7 +77,7 @@ class KeybaseDiscovery(BaseDiscovery):
         """Fetch a public key for an user'"""
         url = '{}/{}/key.asc'.format(self.base_url, username)
         log.debug('Will query keybase url {}'.format(url))
-        res = requests.get(url, headers=self.headers)
+        res = requests.get(url, headers=self.headers, timeout=self.timeout)
         if res.status_code != 200:
             log.error('Keybase user key fetch status {} for {}'.
                       format(res.status_code, username))
