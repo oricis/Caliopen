@@ -10,6 +10,8 @@ from .hkp import HKPDiscovery
 
 log = logging.getLogger(__name__)
 
+log.setLevel(logging.DEBUG)
+
 
 class PublicKeyDiscoverer(object):
     """Discover of public keys for a contact information."""
@@ -35,9 +37,14 @@ class PublicKeyDiscoverer(object):
         found_keys = []
         for disco in self.discoverers:
             if type_ in self.discoverers[disco]._types:
+                fn = 'find_by_{}'.format(type_)
+                discoverer = self.discoverers[disco]
                 try:
-                    fn = 'find_by_{}'.format(type_)
-                    keys = getattr(self.discoverers[disco], fn)(identifier)
+                    if hasattr(self.discoverers[disco], fn):
+                        keys = getattr(discoverer, fn)(identifier)
+                    else:
+                        keys = discoverer.find_by_type(identifier, type_)
+
                     found_keys.extend(keys)
                 except Exception as exc:
                     log.error('Exception during key lookup using {0} '
