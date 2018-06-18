@@ -30,6 +30,8 @@ def compute_qname(username, domain):
 class DNSDiscovery(BaseDiscovery):
     """Class to discover OPENPGPKEY using Dns."""
 
+    _types = ['email']
+
     def __init__(self, conf):
         self.default_name_server = conf.get('name_server')
         self.resolve_timeout = conf.get('timeout', 5)

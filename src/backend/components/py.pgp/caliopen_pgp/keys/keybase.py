@@ -11,12 +11,12 @@ log = logging.getLogger(__name__)
 
 
 class KeybaseDiscovery(BaseDiscovery):
-
     """Discover pgp keys and others contact identities in keybase."""
 
     KEYBASE_DEFAULT_BASE_URL = 'https://keybase.io'
     KEYBASE_DEFAULT_HEADERS = {'Content-Type': 'application/json'}
-    KEYBASE_IDENTITY_TYPES = ['twitter', 'github']
+
+    _types = ['twitter', 'github']
 
     def __init__(self, conf):
         self.base_url = conf.get('url', self.KEYBASE_DEFAULT_BASE_URL)
@@ -25,7 +25,7 @@ class KeybaseDiscovery(BaseDiscovery):
 
     def find_by_type(self, name, type):
         """Find by name and type."""
-        if type not in self.KEYBASE_IDENTITY_TYPES:
+        if type not in self._types:
             raise Exception('Invalid identity type {}'.format(type))
         users = []
         find = self._fetch_identity(name, type)
