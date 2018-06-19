@@ -25,12 +25,12 @@ class KeybaseDiscovery(BaseDiscovery):
         self.headers = conf.get('headers', self.KEYBASE_DEFAULT_HEADERS)
         self.timeout = conf.get('timeout', self.DEFAULT_TIMEOUT)
 
-    def find_by_type(self, name, type):
+    def lookup_identifier(self, identifier, type_):
         """Find by name and type."""
-        if type not in self._types:
-            raise Exception('Invalid identity type {}'.format(type))
+        if type_ not in self._types:
+            raise Exception('Invalid identity type {}'.format(type_))
         users = []
-        find = self._fetch_identity(name, type)
+        find = self._fetch_identity(identifier, type_)
         if find:
             log.debug('Got keybase result : {}'.format(find))
             users.extend(find)
@@ -51,30 +51,30 @@ class KeybaseDiscovery(BaseDiscovery):
                 return name.lstrip('@').lower()
         return name.lower()
 
-    def _fetch_identity(self, name, type):
+    def _fetch_identity(self, name, type_):
         """Make a user discover API call on keybase for a name and type."""
-        clean_name = self._clean_name(name, type)
+        clean_name = self._clean_name(name, type_)
         url = '{}/user/discover.json?{}={}'. \
-              format(self.url, type, clean_name)
+              format(self.url, type_, clean_name)
         log.debug('Will query keybase url {}'.format(url))
         res = requests.get(url, headers=self.headers, timeout=self.timeout)
         if res.status_code != 200:
             log.error('Keybase discover status {} for {} on {}'.
-                      format(res.status_code, clean_name, type))
+                      format(res.status_code, clean_name, type_))
             return []
         result = res.json()
         if not result.get('matches'):
             log.debug('No match for keybase discovery of {} {}'.
-                      format(clean_name, type))
+                      format(clean_name, type_))
             return []
-        matches = result['matches'].get(type, [[]])
+        matches = result['matches'].get(type_, [[]])
         res = []
         for match in matches:
             res.extend(match)
         return res
 
     def _get_public_key(self, username):
-        """Fetch a public key for an user'"""
+        """Fetch a public key for an user."""
         url = '{}/{}/key.asc'.format(self.base_url, username)
         log.debug('Will query keybase url {}'.format(url))
         res = requests.get(url, headers=self.headers, timeout=self.timeout)

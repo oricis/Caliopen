@@ -61,9 +61,9 @@ class HKPDiscovery(BaseDiscovery):
         self.url = conf.get('url', self.DEFAULT_HKP_URL)
         self.timeout = conf.get('timeout', self.DEFAULT_TIMEOUT)
 
-    def find_by_email(self, email):
+    def lookup_identity(self, identity, type_):
         """Find pgp keys by user email."""
-        pub_keys = self._search_keys(email)
+        pub_keys = self._search_keys(identity)
         result_keys = []
         for key in pub_keys:
             asc_key = self._search_key(key)

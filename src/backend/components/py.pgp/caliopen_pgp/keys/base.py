@@ -84,6 +84,10 @@ class BaseDiscovery(object):
         """No result found."""
         return DiscoveryResult([])
 
+    def lookup_identity(self, identity, type_):
+        """Method to be implemented by sub class for discovery."""
+        raise NotImplementedError
+
     def _parse_key(self, armored):
         pgpkey = pgpy.PGPKey()
         try:

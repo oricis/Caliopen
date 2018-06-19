@@ -32,23 +32,18 @@ class PublicKeyDiscoverer(object):
             disco = HKPDiscovery(params)
             self.discoverers['hkp'] = disco
 
-    def find_by_type(self, identifier, type_):
+    def lookup_identity(self, identity, type_):
         """Search for public key for an identifier and a protocol type."""
         found_keys = []
         for disco in self.discoverers:
             if type_ in self.discoverers[disco]._types:
-                fn = 'find_by_{}'.format(type_)
                 discoverer = self.discoverers[disco]
                 try:
-                    if hasattr(self.discoverers[disco], fn):
-                        keys = getattr(discoverer, fn)(identifier)
-                    else:
-                        keys = discoverer.find_by_type(identifier, type_)
-
+                    keys = discoverer.lookup_identity(identity, type_)
                     found_keys.extend(keys)
                 except Exception as exc:
                     log.error('Exception during key lookup using {0} '
                               'for identifier {1}: {2}'.format(disco,
-                                                               identifier,
+                                                               identity,
                                                                exc))
         return found_keys

@@ -36,9 +36,9 @@ class DNSDiscovery(BaseDiscovery):
         self.default_name_server = conf.get('name_server')
         self.resolve_timeout = conf.get('timeout', 5)
 
-    def find_by_email(self, email):
+    def lookup_identity(self, identity, type_):
         """Find for a given email an openpgp key in its DNS zone."""
-        clean = clean_email_address(email)
+        clean = clean_email_address(identity)
         local_part, domain = clean[0].split('@', 2)
         qname = compute_qname(local_part, domain)
         ns = resolver.ns_for(domain)
