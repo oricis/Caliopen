@@ -17,7 +17,8 @@ class KeybaseDiscovery(BaseDiscovery):
     KEYBASE_DEFAULT_HEADERS = {'Content-Type': 'application/json'}
     DEFAULT_TIMEOUT = 10
 
-    _types = ['twitter', 'github']
+    _types = ['twitter', 'github', 'facebook', 'coinbase', 'hackernews',
+              'reddit']
 
     def __init__(self, conf):
         self.base_url = conf.get('url', self.KEYBASE_DEFAULT_BASE_URL)
@@ -35,14 +36,18 @@ class KeybaseDiscovery(BaseDiscovery):
             log.debug('Got keybase result : {}'.format(find))
             users.extend(find)
         keys = []
+        identities = []
         for user in users:
             user_key = self._get_public_key(user['username'])
             if user_key:
                 keys.append(user_key)
+            for ident in self._types:
+                if user['remote_proofs'].get(ident) and type_ != ident:
+                    identities.append((ident, user['remote_proofs'][ident]))
         public_keys = []
         for key in keys:
             public_keys.extend(self._parse_key(key))
-        return DiscoveryResult(public_keys)
+        return DiscoveryResult(public_keys, identities)
 
     def _clean_name(self, name, type_):
         """Format a clean user name depending on type."""
