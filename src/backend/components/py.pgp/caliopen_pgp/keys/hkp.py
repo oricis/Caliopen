@@ -12,7 +12,7 @@ import logging
 
 import requests
 
-from .base import BaseDiscovery
+from .base import BaseDiscovery, DiscoveryResult
 
 log = logging.getLogger(__name__)
 
@@ -72,7 +72,7 @@ class HKPDiscovery(BaseDiscovery):
             else:
                 txt_key = asc_key.encode('utf-8').rstrip()
                 result_keys.extend(self._parse_key(txt_key))
-        return result_keys
+        return DiscoveryResult(result_keys)
 
     def _search_keys(self, email):
         encoded = urllib.quote(email)

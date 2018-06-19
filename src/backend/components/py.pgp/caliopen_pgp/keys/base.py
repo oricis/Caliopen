@@ -70,6 +70,14 @@ class PGPPublicKey(object):
                 for u in ids]
 
 
+class DiscoveryResult(object):
+    """Class to produce discovered public keys and extra informations."""
+
+    def __init__(self, keys, extra_identities=None):
+        self.keys = keys
+        self.identities = extra_identities if extra_identities else []
+
+
 class BaseDiscovery(object):
 
     """Base class for discovery and public key parsing logic."""

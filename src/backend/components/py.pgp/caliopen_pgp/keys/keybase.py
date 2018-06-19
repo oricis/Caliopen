@@ -5,7 +5,7 @@ import logging
 
 import requests
 
-from .base import BaseDiscovery
+from .base import BaseDiscovery, DiscoveryResult
 
 log = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ class KeybaseDiscovery(BaseDiscovery):
         public_keys = []
         for key in keys:
             public_keys.extend(self._parse_key(key))
-        return public_keys
+        return DiscoveryResult(public_keys)
 
     def _clean_name(self, name, type_):
         """Format a clean user name depending on type."""

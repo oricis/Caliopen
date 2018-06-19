@@ -12,7 +12,7 @@ import logging
 
 from dnsknife import resolver
 
-from .base import BaseDiscovery
+from .base import BaseDiscovery, DiscoveryResult
 
 from caliopen_main.common.helpers.normalize import clean_email_address
 
@@ -61,7 +61,8 @@ class DNSDiscovery(BaseDiscovery):
             return []
         # XXX many rrset, key and signature, must be considered
         key = self._extract_key(rrsets[0])
-        return self._parse_key(key)
+        keys = self._parse_key(key)
+        return DiscoveryResult(keys)
 
     def _extract_key(self, record):
         """Extract an armored representation of key from dns record."""
