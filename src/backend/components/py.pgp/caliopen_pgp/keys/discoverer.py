@@ -34,16 +34,17 @@ class PublicKeyDiscoverer(object):
 
     def lookup_identity(self, identity, type_):
         """Search for public key for an identifier and a protocol type."""
-        found_keys = []
+        results = []
         for disco in self.discoverers:
             if type_ in self.discoverers[disco]._types:
                 discoverer = self.discoverers[disco]
                 try:
-                    keys = discoverer.lookup_identity(identity, type_)
-                    found_keys.extend(keys)
+                    result = discoverer.lookup_identity(identity, type_)
+                    if result.keys:
+                        results.append(result)
                 except Exception as exc:
                     log.error('Exception during key lookup using {0} '
                               'for identifier {1}: {2}'.format(disco,
                                                                identity,
                                                                exc))
-        return found_keys
+        return results

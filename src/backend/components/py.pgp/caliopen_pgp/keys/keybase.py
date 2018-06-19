@@ -25,7 +25,7 @@ class KeybaseDiscovery(BaseDiscovery):
         self.headers = conf.get('headers', self.KEYBASE_DEFAULT_HEADERS)
         self.timeout = conf.get('timeout', self.DEFAULT_TIMEOUT)
 
-    def lookup_identifier(self, identifier, type_):
+    def lookup_identity(self, identifier, type_):
         """Find by name and type."""
         if type_ not in self._types:
             raise Exception('Invalid identity type {}'.format(type_))
