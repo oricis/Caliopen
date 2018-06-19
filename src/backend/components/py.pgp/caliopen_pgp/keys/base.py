@@ -11,7 +11,6 @@ log = logging.getLogger(__name__)
 
 
 class PGPUserId(object):
-
     """PGP UserId related to a key."""
 
     def __init__(self, name, email, is_primary, comment=None, signers=None):
@@ -23,7 +22,6 @@ class PGPUserId(object):
 
 
 class PGPPublicKey(object):
-
     """PGP public key representation."""
 
     _map_algos = {
@@ -79,8 +77,12 @@ class DiscoveryResult(object):
 
 
 class BaseDiscovery(object):
-
     """Base class for discovery and public key parsing logic."""
+
+    @property
+    def empty_result(self):
+        """No result found."""
+        return DiscoveryResult([])
 
     def _parse_key(self, armored):
         pgpkey = pgpy.PGPKey()

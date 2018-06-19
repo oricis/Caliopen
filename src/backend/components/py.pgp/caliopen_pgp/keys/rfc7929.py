@@ -44,7 +44,7 @@ class DNSDiscovery(BaseDiscovery):
         ns = resolver.ns_for(domain)
         if not ns:
             log.warn('No nameservers found for domain {}'.format(domain))
-            return []
+            return self.empty_result
 
         # XXX use a random one
         use_ns = ns[0]
@@ -54,11 +54,11 @@ class DNSDiscovery(BaseDiscovery):
         response = query.get()
         if not response:
             log.warn('No response for OPENPGPKEY dns query')
-            return []
+            return self.empty_result
         rrsets = response.rrset
         if not rrsets:
             log.warn('No rrsets for OPENPGPKEY dns query')
-            return []
+            return self.empty_result
         # XXX many rrset, key and signature, must be considered
         key = self._extract_key(rrsets[0])
         keys = self._parse_key(key)
