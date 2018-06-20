@@ -67,6 +67,11 @@ class PGPPublicKey(object):
         return [PGPUserId(u.name, u.email, u.is_primary, u.comment, u.signers)
                 for u in ids]
 
+    @property
+    def armored_key(self):
+        """Return the armored key."""
+        return str(self._pgpkey)
+
 
 class DiscoveryResult(object):
     """Class to produce discovered public keys and extra informations."""
