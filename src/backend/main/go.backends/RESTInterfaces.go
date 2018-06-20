@@ -10,13 +10,14 @@ import (
 
 type APIStorage interface {
 	AttachmentStorage
+	CredentialsStorage
 	ContactStorage
+	DevicesStorage
 	IdentityStorage
 	MessageStorage
 	TagsStorage
 	UserNameStorage
 	UserStorage
-	DevicesStorage
 }
 
 type APIIndex interface {

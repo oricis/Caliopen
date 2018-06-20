@@ -14,11 +14,11 @@ type (
 	IdentityStorage interface {
 		RetrieveLocalsIdentities(user_id string) ([]LocalIdentity, error)
 		CreateRemoteIdentity(rId *RemoteIdentity) CaliopenError
-		RetrieveRemoteIdentity(userId, RemoteId string) (*RemoteIdentity, error)
+		RetrieveRemoteIdentity(userId, RemoteId string, withCredentials bool) (*RemoteIdentity, error)
 		UpdateRemoteIdentity(rId *RemoteIdentity, fields map[string]interface{}) error
 		DeleteRemoteIdentity(rId *RemoteIdentity) error
-		RetrieveRemoteIdentities(userId string) ([]*RemoteIdentity, error)
-		RetrieveAllRemotes() (<-chan *RemoteIdentity, error)
+		RetrieveRemoteIdentities(userId string, withCredentials bool) ([]*RemoteIdentity, error)
+		RetrieveAllRemotes(withCredentials bool) (<-chan *RemoteIdentity, error)
 		Close()
 	}
 )

@@ -37,7 +37,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 	log.Infof("[Fetcher] will fetch mails for remote %s", order.RemoteId)
 
 	// 1. retrieve infos from db
-	rId, err := f.Store.RetrieveRemoteIdentity(order.UserId, order.RemoteId)
+	rId, err := f.Store.RetrieveRemoteIdentity(order.UserId, order.RemoteId, true)
 	if err != nil {
 		log.WithError(err).Infof("[SyncRemoteWithLocal] failed to retrieve remote identity <%s> : <%s>", order.UserId, order.RemoteId)
 		return err

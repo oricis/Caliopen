@@ -79,9 +79,9 @@ func (rest *RESTfacility) RetrieveContactIdentities(user_id, contact_id string) 
 	return
 }
 
-func (rest *RESTfacility) RetrieveRemoteIdentities(userId string) (ids []*RemoteIdentity, err CaliopenError) {
+func (rest *RESTfacility) RetrieveRemoteIdentities(userId string, withCredentials bool) (ids []*RemoteIdentity, err CaliopenError) {
 	var e error
-	ids, e = rest.store.RetrieveRemoteIdentities(userId)
+	ids, e = rest.store.RetrieveRemoteIdentities(userId, withCredentials)
 	if e != nil {
 		if e.Error() == "remote ids not found" {
 			err = WrapCaliopenErr(e, NotFoundCaliopenErr, "store did not found remote ids")
@@ -114,9 +114,9 @@ func (rest *RESTfacility) CreateRemoteIdentity(identity *RemoteIdentity) Caliope
 	return nil
 }
 
-func (rest *RESTfacility) RetrieveRemoteIdentity(userId, remoteId string) (id *RemoteIdentity, err CaliopenError) {
+func (rest *RESTfacility) RetrieveRemoteIdentity(userId, remoteId string, withCredentials bool) (id *RemoteIdentity, err CaliopenError) {
 	var e error
-	id, e = rest.store.RetrieveRemoteIdentity(userId, remoteId)
+	id, e = rest.store.RetrieveRemoteIdentity(userId, remoteId, withCredentials)
 	if e != nil {
 		if e.Error() == "not found" {
 			err = WrapCaliopenErr(e, NotFoundCaliopenErr, "remote identity not found")
@@ -136,7 +136,7 @@ func (rest *RESTfacility) UpdateRemoteIdentity(identity, oldIdentity *RemoteIden
 }
 
 func (rest *RESTfacility) PatchRemoteIdentity(patch []byte, userId, remoteId string) CaliopenError {
-	currentRemoteID, err1 := rest.RetrieveRemoteIdentity(userId, remoteId)
+	currentRemoteID, err1 := rest.RetrieveRemoteIdentity(userId, remoteId, true)
 	if err1 != nil {
 		if err1.Error() == "not found" {
 			return WrapCaliopenErr(err1, NotFoundCaliopenErr, "remote identity not found")
@@ -170,7 +170,7 @@ func (rest *RESTfacility) PatchRemoteIdentity(patch []byte, userId, remoteId str
 }
 
 func (rest *RESTfacility) DeleteRemoteIdentity(userId, remoteId string) CaliopenError {
-	remoteID, err1 := rest.RetrieveRemoteIdentity(userId, remoteId)
+	remoteID, err1 := rest.RetrieveRemoteIdentity(userId, remoteId, false)
 	if err1 != nil {
 		if err1.Error() == "not found" {
 			return WrapCaliopenErr(err1, NotFoundCaliopenErr, "remote identity not found")
