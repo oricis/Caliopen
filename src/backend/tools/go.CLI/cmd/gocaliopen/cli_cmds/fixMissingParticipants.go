@@ -118,13 +118,29 @@ func fixMissingParticipants(cmd *cobra.Command, args []string) {
 			}
 		}
 		log.Infoln("failed to retrieve participant from index, trying to reinject raw message")
-		err = reInjectRaw(usrId.String(), rawMsgId.String(), MsgQueue)
+		var newMsgId string
+		newMsgId, err = reInjectRaw(usrId.String(), rawMsgId.String(), MsgQueue)
 		if err != nil {
 			log.WithError(err).Warn("failed to re-inject raw message in stack")
 			failedCount++
 			return
 		}
-		//reinjection OK, delete former invalid message
+		//reinjection OK, get previous status and delete former invalid message
+		formerMsg, err := Store.RetrieveMessage(usrId.String(), msgId.String())
+		if err == nil {
+			newMsg, err := Store.RetrieveMessage(usrId.String(), newMsgId)
+			if err == nil {
+				err = Store.UpdateMessage(newMsg, map[string]interface{}{
+					"Date_sort":   formerMsg.Date_sort,
+					"Is_answered": formerMsg.Is_answered,
+					"Is_unread":   formerMsg.Is_unread,
+					"Tags":        formerMsg.Tags,
+				})
+				if err != nil {
+					log.WithError(err).Warnf("failed to update new message with former status %s", msgId)
+				}
+			}
+		}
 		err = Store.Session.Query(`DELETE FROM message WHERE message_id = ? AND user_id = ?`, msgId, usrId).Exec()
 		if err != nil {
 			log.WithError(err).Warnf("failed to delete former invalid message %s", msgId)
@@ -159,7 +175,7 @@ func fixMissingParticipants(cmd *cobra.Command, args []string) {
 
 }
 
-func reInjectRaw(userId, msgId string, msgQueue *nats.Conn) error {
+func reInjectRaw(userId, msgId string, msgQueue *nats.Conn) (newMsgId string, err error) {
 	const nats_message_tmpl = "{\"order\":\"process_raw\",\"user_id\": \"%s\", \"message_id\": \"%s\"}"
 	natsMessage := fmt.Sprintf(nats_message_tmpl, userId, msgId)
 
@@ -168,11 +184,11 @@ func reInjectRaw(userId, msgId string, msgQueue *nats.Conn) error {
 		if msgQueue.LastError() != nil {
 			log.WithError(msgQueue.LastError()).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", userId)
 			log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
-			return err
+			return
 		} else {
 			log.WithError(err).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", userId)
 			log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
-			return err
+			return
 		}
 	}
 
@@ -181,12 +197,15 @@ func reInjectRaw(userId, msgId string, msgQueue *nats.Conn) error {
 	if err != nil {
 		log.WithError(err).Warnf("[EmailBroker] failed to parse inbound ack on NATS for user %s", userId)
 		log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
-		return err
+		return
 	}
-	if err, ok := (*nats_ack)["error"]; ok {
-		log.WithError(errors.New(err.(string))).Warnf("[EmailBroker] inbound delivery failed for user %s", userId)
+	if e, ok := (*nats_ack)["error"]; ok {
+		log.WithError(errors.New(e.(string))).Warnf("[EmailBroker] inbound delivery failed for user %s", userId)
 		log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
-		return errors.New(err.(string))
+		err = errors.New(e.(string))
+		return
 	}
-	return nil
+
+	newMsgId = (*nats_ack)["message_id"].(string)
+	return
 }
