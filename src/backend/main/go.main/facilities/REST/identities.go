@@ -154,6 +154,13 @@ func (rest *RESTfacility) PatchRemoteIdentity(patch []byte, userId, remoteId str
 		return NewCaliopenErr(ForbiddenCaliopenErr, "[RESTfacility] PatchRemoteIdentity : current_state property must be in patch")
 	}
 
+	// special case : updating credentials. Credentials' current state should not be provided by caller.
+	// we need to get current credentials from db and put them in "current_state" before applying generic UpdateWithPatch()
+	if _, hasCredentials := patchReader.CheckGet("credentials"); hasCredentials {
+		patchReader.SetPath([]string{"current_state", "credentials"}, currentRemoteID.Credentials)
+		patch, _ = patchReader.MarshalJSON()
+	}
+
 	// patch seams OK, apply it to the resource
 	newRemoteID, modifiedFields, err3 := helpers.UpdateWithPatch(patch, currentRemoteID, UserActor)
 	if err3 != nil {
