@@ -70,8 +70,8 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	RootCmd.PersistentFlags().StringVar(&cfgPath, "confPath", "", "Path to seek the two mandatory config files: caliopen-go-api_dev.yaml and caliopen-go-lmtp_dev.yaml")
-	RootCmd.PersistentFlags().StringVar(&apiCfgFile, "apiConf", "", "Caliopen's API config file (default is ./caliopen-go-api_dev.yaml)")
-	RootCmd.PersistentFlags().StringVar(&lmtpCfgFile, "lmtpConf", "", "Caliopen's lmtpd config file (default is ./caliopen-go-lmtp_dev.yaml)")
+	RootCmd.PersistentFlags().StringVar(&apiCfgFile, "apiConf", "", "Caliopen's API config file")
+	RootCmd.PersistentFlags().StringVar(&lmtpCfgFile, "lmtpConf", "", "Caliopen's lmtpd config file")
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -93,9 +93,6 @@ func initConfig() {
 		apiCfg.AddConfigPath(cfgPath)
 		lmtpCfg.AddConfigPath(cfgPath)
 	} else {
-		// set defaults to relative path from /tools/go.CLI/cmd/gocaliopen
-		apiCfg.AddConfigPath("../../../../configs")
-		lmtpCfg.AddConfigPath("../../../../configs")
 		// set defaults to current dir
 		apiCfg.AddConfigPath(".")
 		lmtpCfg.AddConfigPath(".")
