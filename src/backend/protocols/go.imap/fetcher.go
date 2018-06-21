@@ -311,5 +311,5 @@ func (f *Fetcher) disableRemoteIdentity(rId *RemoteIdentity) {
 }
 
 func (f Fetcher) emitNotification() {
-
+	//TODO
 }
