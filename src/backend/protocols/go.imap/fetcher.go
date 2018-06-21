@@ -28,6 +28,13 @@ type imapBox struct {
 	uidValidity uint32
 }
 
+const (
+	lastErrorKey      = "lastFetchError"
+	dateFirstErrorKey = "firstErrorDate"
+	dateLastErrorKey  = "lastErrorDate"
+	errorsCountKey    = "errorsCount"
+)
+
 // FetchSyncRemote retrieves remote identity credentials and last sync data,
 // connects to remote IMAP server to fetch new mails,
 // adds X-Fetched-Imap headers before forwarding mails to lda,
@@ -72,9 +79,8 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 		uidValidity: uint32(uidvalidity),
 	}
 	go f.syncMails(rId, &box, mails)
-	//TODO errors handling
 
-	// 3. forward mails to lda
+	// 3. forward mails to lda as they come on mails chan
 	errs := []error{}
 	for mail := range mails {
 		if box.lastSeenUid == mail.ImapUid {
@@ -96,13 +102,22 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 	}
 
 	// 4. backup sync state in db
-	rId.LastCheck = time.Now()
-	rId.Infos["uidvalidity"] = strconv.Itoa(int(box.uidValidity))
-	rId.Infos["lastsync"] = rId.LastCheck.Format(time.RFC3339)
-	rId.Infos["lastseenuid"] = strconv.Itoa(int(box.lastSeenUid))
-	fields := map[string]interface{}{
-		"LastCheck": rId.LastCheck,
-		"Infos":     rId.Infos,
+	var fields map[string]interface{}
+	if _, ok := rId.Infos[errorsCountKey]; ok {
+		// if this key is in Infos then imap connection failed
+		// do not update LastCheck time
+		fields = map[string]interface{}{
+			"Infos": rId.Infos,
+		}
+	} else {
+		rId.LastCheck = time.Now()
+		rId.Infos["uidvalidity"] = strconv.Itoa(int(box.uidValidity))
+		rId.Infos["lastsync"] = rId.LastCheck.Format(time.RFC3339)
+		rId.Infos["lastseenuid"] = strconv.Itoa(int(box.lastSeenUid))
+		fields = map[string]interface{}{
+			"LastCheck": rId.LastCheck,
+			"Infos":     rId.Infos,
+		}
 	}
 	err = f.Store.UpdateRemoteIdentity(rId, fields)
 	if err != nil {
@@ -114,6 +129,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 	return nil
 }
 
+// FetchRemoteToLocal blindly fetches all mails from remote without retrieving/saving any state in RemoteIdentity
 func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
 	rId := RemoteIdentity{
 		UserId: UUID(uuid.FromStringOrNil(order.UserId)),
@@ -156,7 +172,12 @@ func (f *Fetcher) fetchMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) 
 		close(ch)
 	}()
 	if err != nil {
-		return err
+		return f.handleFetchFailure(rId, WrapCaliopenErr(err, WrongCredentialsErr, "imapLogin failure"))
+	} else {
+		delete((*rId).Infos, lastErrorKey)
+		delete((*rId).Infos, errorsCountKey)
+		delete((*rId).Infos, dateFirstErrorKey)
+		delete((*rId).Infos, dateLastErrorKey)
 	}
 
 	newMessages := make(chan *imap.Message, 10)
@@ -179,7 +200,12 @@ func (f *Fetcher) syncMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) (
 
 	tlsConn, imapClient, provider, err := imapLogin(rId)
 	if err != nil {
-		return err
+		return f.handleFetchFailure(rId, WrapCaliopenErr(err, WrongCredentialsErr, "imapLogin failure"))
+	} else {
+		delete((*rId).Infos, lastErrorKey)
+		delete((*rId).Infos, errorsCountKey)
+		delete((*rId).Infos, dateFirstErrorKey)
+		delete((*rId).Infos, dateLastErrorKey)
 	}
 	// Don't forget to logout and close chan
 	defer func() {
@@ -204,4 +230,63 @@ func (f *Fetcher) syncMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) (
 		}
 	}
 	return
+}
+
+// handleFetchFailure logs a warn and save failure log in db.
+// If failures reach failuresThreshold, remote id is disabled and a new notification is emitted.
+func (f *Fetcher) handleFetchFailure(rId *RemoteIdentity, err CaliopenError) error {
+
+	// ensure errors data fields are present
+	if _, ok := rId.Infos[lastErrorKey]; !ok {
+		(*rId).Infos[lastErrorKey] = ""
+	}
+	if _, ok := rId.Infos[dateFirstErrorKey]; !ok {
+		(*rId).Infos[dateFirstErrorKey] = ""
+	}
+	if _, ok := rId.Infos[dateLastErrorKey]; !ok {
+		(*rId).Infos[dateLastErrorKey] = ""
+	}
+	if _, ok := rId.Infos[errorsCountKey]; !ok {
+		(*rId).Infos[errorsCountKey] = "0"
+	}
+
+	// log last error
+	(*rId).Infos[lastErrorKey] = "imap connection failed : " + err.Cause().Error()
+	// increment counter
+	count, _ := strconv.Atoi(rId.Infos[errorsCountKey])
+	count++
+	(*rId).Infos[errorsCountKey] = strconv.Itoa(count)
+
+	// update dates
+	lastDate := time.Now()
+	var firstDate time.Time
+	firstDate, _ = time.Parse(time.RFC3339, rId.Infos[dateFirstErrorKey])
+	if firstDate.IsZero() {
+		firstDate = lastDate
+	}
+	(*rId).Infos[dateFirstErrorKey] = firstDate.Format(time.RFC3339)
+	(*rId).Infos[dateLastErrorKey] = lastDate.Format(time.RFC3339)
+
+	// check failuresThreshold
+	if lastDate.Sub(firstDate)/time.Hour > failuresThreshold {
+		f.disableRemoteIdentity(rId)
+	}
+
+	// udpate RemoteIdentity in db
+	return f.Store.UpdateRemoteIdentity(rId, map[string]interface{}{
+		"Infos": rId.Infos,
+	})
+
+}
+
+func (f *Fetcher) disableRemoteIdentity(rId *RemoteIdentity) {
+	(*rId).Status = "inactive"
+	f.Store.UpdateRemoteIdentity(rId, map[string]interface{}{
+		"Status": "inactive",
+	})
+	f.emitNotification()
+}
+
+func (f Fetcher) emitNotification() {
+
 }
