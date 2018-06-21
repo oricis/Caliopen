@@ -27,4 +27,4 @@ type (
 	}
 )
 
-const failuresThreshold = 1 // how many hours to wait before disabling a faulty remote.
+const failuresThreshold = 48 // how many hours to wait before disabling a faulty remote.
