@@ -52,6 +52,21 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 	if order.Password != "" {
 		rId.Credentials["password"] = order.Password
 	}
+
+	// 1.2 check if a sync process is running
+	if syncing, ok := rId.Infos["syncing"]; ok {
+		startDate, _ := time.Parse(time.RFC3339, syncing)
+		if time.Since(startDate)/time.Hour < failuresThreshold {
+			log.Infof("[SyncRemoteWithLocal] avoiding concurrent sync for <%s>. Syncing in progress since %s", order.RemoteId, rId.Infos["syncing"])
+			return nil
+		}
+	}
+	// save syncing state in db to prevent concurrent sync
+	(*rId).Infos["syncing"] = time.Now().Format(time.RFC3339)
+	f.Store.UpdateRemoteIdentity(rId, map[string]interface{}{
+		"Infos": rId.Infos,
+	})
+
 	// 2. sync/fetch with remote IMAP
 	mails := make(chan *Email)
 	lastsync := time.Time{}
@@ -103,6 +118,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 
 	// 4. backup sync state in db
 	var fields map[string]interface{}
+	delete((*rId).Infos, "syncing")
 	if _, ok := rId.Infos[errorsCountKey]; ok {
 		// if this key is in Infos then imap connection failed
 		// do not update LastCheck time
