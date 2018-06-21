@@ -7,6 +7,7 @@
 package imap_worker
 
 import (
+	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	log "github.com/Sirupsen/logrus"
@@ -97,6 +98,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 
 	// 3. forward mails to lda as they come on mails chan
 	errs := []error{}
+	syncTimeout := time.Now()
 	for mail := range mails {
 		if box.lastSeenUid == mail.ImapUid {
 			// do not forward last seen message, we already have it
@@ -106,6 +108,11 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 		errs = append(errs, err)
 		if err == nil {
 			box.lastSeenUid = mail.ImapUid
+		}
+		if time.Since(syncTimeout)/time.Hour > failuresThreshold {
+			errs = append(errs, errors.New("[Fetcher] sync timeout, aborting for "+order.RemoteId))
+			close(mails)
+			break
 		}
 	}
 
