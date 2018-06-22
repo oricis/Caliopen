@@ -45,6 +45,27 @@ func GetMessagesList(ctx *gin.Context) {
 		query_values.Del("offset")
 	}
 
+	// check for params to retrieve a range of messages 'around' a specific one
+	// params `msg_id` and `range[]` must be both present
+	var msgID string
+	var msgRange []string
+	if id, ok := query_values["msg_id"]; ok {
+		msgID = id[0]
+	}
+	msgRange = query_values["range[]"]
+	if msgID != "" && len(msgRange) == 0 {
+		e := swgErr.New(http.StatusBadRequest, "range[] param must be provided with msg_id param")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	if msgID == "" && len(msgRange) != 0 {
+		e := swgErr.New(http.StatusBadRequest, "msg_id param must be provided with range[] param")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
 	filter := IndexSearch{
 		User_id: user_UUID,
 		Terms:   map[string][]string(query_values),
@@ -52,7 +73,14 @@ func GetMessagesList(ctx *gin.Context) {
 		Offset:  offset,
 		ILrange: operations.GetImportanceLevel(ctx),
 	}
-	list, totalFound, err := caliopen.Facilities.RESTfacility.GetMessagesList(filter)
+	var list []*Message
+	var totalFound int64
+	var err error
+	if msgID != "" && len(msgRange) != 0 {
+		list, totalFound, err = caliopen.Facilities.RESTfacility.GetMessagesRange(filter)
+	} else {
+		list, totalFound, err = caliopen.Facilities.RESTfacility.GetMessagesList(filter)
+	}
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
