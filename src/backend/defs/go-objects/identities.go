@@ -58,7 +58,7 @@ type (
 		Credentials Credentials       `cql:"credentials"        json:"credentials,omitempty"                            patch:"user"`
 		DisplayName string            `cql:"display_name"       json:"display_name"                                     patch:"user"`
 		Infos       map[string]string `cql:"infos"              json:"infos"                                            patch:"user"`
-		LastCheck   time.Time         `cql:"last_check"         json:"last_check"           formatter:"RFC3339Milli"`
+		LastCheck   time.Time         `cql:"last_check"         json:"last_check,omitempty"                 formatter:"RFC3339Milli"`
 		RemoteId    UUID              `cql:"remote_id"          json:"remote_id"`
 		Status      string            `cql:"status"             json:"status"                                           patch:"user"` // for example : active, inactive, deleted
 		Type        string            `cql:"type"               json:"type"                                             patch:"user"` // for example : imap, twitter…
