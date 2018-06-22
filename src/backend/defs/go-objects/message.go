@@ -43,6 +43,8 @@ type Message struct {
 	User_id             UUID               `cql:"user_id"                  json:"user_id,omitempty"                  elastic:"omit"         formatter:"rfc4122"`
 }
 
+type Messages []*Message
+
 // bespoke implementation of the json.Marshaller interface
 // outputs a JSON representation of an object
 // this marshaler takes account of custom tags for given 'context'
@@ -470,4 +472,19 @@ func (msg *Message) SortSlices() {
 	sort.Sort(ByIdentifier(msg.Identities))
 	sort.Sort(ByAddress(msg.Participants))
 	sort.Strings(msg.Tags)
+}
+
+// sort interfaces
+type ByDateSortAsc Messages
+
+func (ds ByDateSortAsc) Len() int {
+	return len(ds)
+}
+
+func (ds ByDateSortAsc) Less(i, j int) bool {
+	return ds[i].Date_sort.After(ds[j].Date_sort)
+}
+
+func (ds ByDateSortAsc) Swap(i, j int) {
+	ds[i], ds[j] = ds[j], ds[i]
 }

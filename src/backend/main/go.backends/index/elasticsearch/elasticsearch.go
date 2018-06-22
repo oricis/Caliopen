@@ -29,6 +29,7 @@ func (es *ElasticSearchBackend) initialize(config ElasticSearchConfig) (err erro
 	// Create elastic client
 	es.Client, err = elastic.NewClient(
 		elastic.SetURL(config.Urls...),
+		//elastic.SetTraceLog(log.StandardLogger()), // comment out to stop tracing requests & responses
 	)
 
 	if err != nil {
