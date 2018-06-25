@@ -14,6 +14,7 @@ function generateStateFromProps(props) {
 class AddFieldGroup extends Component {
   static propTypes = {
     template: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
     defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]),
     onAdd: PropTypes.func.isRequired,
     validate: PropTypes.func,
