@@ -42,7 +42,7 @@ class PGPPublicKey(object):
         self._pgpkey = public_key
         self.version = public_key._key.header.version
         self.created = public_key.created
-        # self.expire_at = public_key.expire_at
+        self.expire_date = public_key.expires_at
         self.is_expired = public_key.is_expired
         self.keyid = public_key.fingerprint.keyid
         self.fingerprint = public_key.fingerprint.replace(' ', '')
