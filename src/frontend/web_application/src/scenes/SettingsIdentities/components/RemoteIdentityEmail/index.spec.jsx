@@ -6,15 +6,27 @@ describe('component RemoteIdentityEmail', () => {
   it('init form', () => {
     const props = {
       remoteIdentity: {},
-      onConnect: jest.fn(),
-      onDisconnect: jest.fn(),
-      i18n: { _: (id, values) => id },
+      onChange: jest.fn(),
+      onDelete: jest.fn(),
+      onCancel: jest.fn(),
     };
 
-    const comp = shallow(
-      <RemoteIdentityEmail {...props} />
-    );
+    const wrapper = shallow(<RemoteIdentityEmail {...props} />);
+    expect(wrapper.state().phase).toEqual(1);
+  });
 
-    expect(comp.state().phase).toEqual(1);
+  it('existing remoteIdentity', () => {
+    const props = {
+      remoteIdentity: {
+        remote_id: 'foo',
+        display_name: 'Foo',
+      },
+      onChange: jest.fn(),
+      onDelete: jest.fn(),
+      onCancel: jest.fn(),
+    };
+
+    const wrapper = shallow(<RemoteIdentityEmail {...props} />);
+    expect(wrapper.state().phase).toEqual(0);
   });
 });

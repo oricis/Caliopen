@@ -1,57 +1,90 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import { Button, Spinner, TextFieldGroup, SelectFieldGroup, RadioFieldGroup } from '../../../../components/';
+import { Confirm, Button, TextFieldGroup, SelectFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components';
+import LastConnection from '../LastConnection';
+import './style.scss';
 
 const MAX_PHASE = 3;
-const MAIL_PROTOCOLS = ['', 'IMAP', 'POP'];
-const FETCH_METHODS = ['from_now', 'fetch_all'];
+const MAIL_PROTOCOLS = ['imap'];
+const REMOTE_IDENTITY_STATUS = ['active', 'inactive'];
 
 function generateStateFromProps(props, prevState) {
+  const {
+    remoteIdentity: {
+      remote_id: remoteId, infos, credentials, status, type,
+      display_name: displayName = prevState.remoteIdentity.displayName,
+    },
+  } = props;
+  const [serverHostname = '', serverPort = ''] = infos && infos.server ? infos.server.split(':') : [];
+  const active = status ? status === REMOTE_IDENTITY_STATUS[0] : prevState.remoteIdentity.status;
+  const typeProtocol = type || prevState.remoteIdentity.type;
+
   return {
+    phase: remoteId ? 0 : 1,
     remoteIdentity: {
       ...prevState.remoteIdentity,
-      ...props.remoteIdentity,
+      displayName,
+      serverHostname,
+      serverPort,
+      username: credentials ? credentials.username : '',
+      password: credentials ? credentials.password : '',
+      active,
+      type: typeProtocol,
     },
+  };
+}
+
+function getRemoteIdentityFromState(state, props) {
+  const {
+    remoteIdentity: {
+      displayName, serverHostname, serverPort, username, password, active, type,
+    },
+  } = state;
+  const { remoteIdentity } = props;
+  const credentials = (username || password) ? {
+    ...(remoteIdentity.credentials ? remoteIdentity.credentials : {}),
+    username,
+    password,
+  } : undefined;
+
+  return {
+    ...remoteIdentity,
+    display_name: displayName,
+    infos: {
+      ...(remoteIdentity.server ? remoteIdentity.server : {}),
+      server: `${serverHostname}:${serverPort}`,
+    },
+    credentials,
+    status: active ? 'active' : 'inactive',
+    type,
   };
 }
 
 class RemoteIdentityEmail extends Component {
   static propTypes = {
     remoteIdentity: PropTypes.shape({}).isRequired,
-    onConnect: PropTypes.func.isRequired,
-    onDisconnect: PropTypes.func.isRequired,
-    i18n: PropTypes.shape({}).isRequired,
+    onChange: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      phase: 1,
-      formErrors: {},
-      remoteIdentity: {
-        connected: false,
-        cancel_fetch_required: false,
-        params: {
-          login: '',
-          password: '',
-          mailProtocol: '',
-          incommingMailServer: '',
-          mailPort: '',
-          fetchMethod: '',
-        },
-      },
-    };
-    this.handleParamsChange = this.handleParamsChange.bind(this);
-    this.handleDisconnect = this.handleDisconnect.bind(this);
-    this.handleClickPrevious = this.handleClickPrevious.bind(this);
-    this.handleClickNext = this.handleClickNext.bind(this);
-    this.handleClickFinish = this.handleClickFinish.bind(this);
-    this.renderFormPhase1 = this.renderFormPhase1.bind(this);
-    this.renderFormPhase2 = this.renderFormPhase2.bind(this);
-    this.renderFormPhase3 = this.renderFormPhase3.bind(this);
-    this.initTranslations();
+  static defaultProps = {
   }
+
+  state = {
+    phase: 0,
+    formErrors: {},
+    remoteIdentity: {
+      displayName: '',
+      serverHostname: '',
+      serverPort: '',
+      username: '',
+      password: '',
+      active: true,
+      type: 'imap',
+    },
+  };
 
   componentWillMount() {
     this.setState(prevState => generateStateFromProps(this.props, prevState));
@@ -61,21 +94,17 @@ class RemoteIdentityEmail extends Component {
     this.setState(prevState => generateStateFromProps(newProps, prevState));
   }
 
-  initTranslations() {
-    const { i18n } = this.props;
-    this.translations = {
-      from_now: i18n._('remote_identity.fetch_method.from_now', { defaults: 'Only all messages from now' }),
-      fetch_all: i18n._('remote_identity.fetch_method.fetch_all', { defaults: 'All messages from now and the historical' }),
-    };
+  handleEdit = () => {
+    this.setState({ phase: 1 });
   }
 
-  handleClickPrevious() {
+  handleClickPrevious = () => {
     this.setState(prevState => ({
       phase: prevState.phase - 1,
     }));
   }
 
-  handleClickNext() {
+  handleClickNext = () => {
     if (this.validate({ phase: this.state.phase })) {
       this.setState(prevState => ({
         phase: prevState.phase + 1,
@@ -83,46 +112,57 @@ class RemoteIdentityEmail extends Component {
     }
   }
 
-  handleDisconnect() {
-    this.props.onDisconnect({ remoteIdentity: this.state.remoteIdentity });
+  handleSave = async () => {
+    await this.props.onChange({
+      remoteIdentity: getRemoteIdentityFromState(this.state, this.props),
+    });
+    this.setState({ phase: 0 });
   }
 
-  handleClickFinish() {
-    if (!this.validate({ phase: MAX_PHASE })) {
-      return;
-    }
+  handleDelete = () => {
+    this.props.onDelete({ remoteIdentity: getRemoteIdentityFromState(this.state, this.props) });
+  }
 
+  handleCancel = () => {
+    const { onCancel } = this.props;
     this.setState({
-      phase: 1,
-    });
-
-    this.props.onConnect({
-      remoteIdentity: this.state.remoteIdentity,
+      phase: 0,
+    }, () => {
+      onCancel();
     });
   }
 
-  handleParamsChange(event) {
+  handleParamsChange = (event) => {
     const { name, value } = event.target;
 
     this.setState(prevState => ({
       remoteIdentity: {
         ...prevState.remoteIdentity,
-        params: {
-          ...prevState.remoteIdentity.params,
-          [name]: value,
-        },
+        [name]: value,
       },
     }));
   }
 
-  validate({ phase }) {
+  handleActivate = (event) => {
+    const { checked } = event.target;
+
+    this.setState(prevState => ({
+      remoteIdentity: {
+        ...prevState.remoteIdentity,
+        active: checked,
+      },
+    }), () => {
+      this.props.onChange({ remoteIdentity: getRemoteIdentityFromState(this.state, this.props) });
+    });
+  }
+
+  validate = ({ phase }) => {
     let isValid = true;
 
     const phaseValidation = (properties) => {
       properties.forEach(({ formProperty, error }) => {
         const value = !!this.state.remoteIdentity
-          && this.state.remoteIdentity.params
-          && this.state.remoteIdentity.params[formProperty];
+          && this.state.remoteIdentity[formProperty];
 
         if (!value || value.length === 0) {
           this.setState(prevState => ({
@@ -145,182 +185,274 @@ class RemoteIdentityEmail extends Component {
 
     if (phase >= 1) {
       phaseValidation([
-        { formProperty: 'login', error: 'login is required' },
+        { formProperty: 'displayName', error: 'a name is required' },
+      ]);
+    }
+
+    if (phase >= 3) {
+      phaseValidation([
+        { formProperty: 'username', error: 'login is required' },
         { formProperty: 'password', error: 'password is required' },
       ]);
     }
+
     if (phase >= 2) {
       phaseValidation([
-        { formProperty: 'mailProtocol', error: 'protocol is required' },
-        { formProperty: 'incommingMailServer', error: 'mail server is required' },
-        { formProperty: 'mailPort', error: 'port is required' },
-      ]);
-    }
-    if (phase >= 3) {
-      phaseValidation([
-        { formProperty: 'fetchMethod', error: 'Fetch method must be defined' },
+        { formProperty: 'serverHostname', error: 'mail server is required' },
+        { formProperty: 'serverPort', error: 'port is required' },
+        { formProperty: 'type', error: 'protocol is required' },
       ]);
     }
 
     return isValid;
   }
 
-  renderFetchingPanel = () => (
-    <div className="m-remote-identity__fetching-panel">
-      <div className="m-remote-identity__fetching-panel-text">
-        <Spinner isLoading />
-        <Trans id="remote_identity.feedback.loading_messages">Loading your messages, please wait.</Trans>
-      </div>
-      <Button
-        disabled="$ctrl.remoteIdentity.cancel_fetch_required"
-        onClick={this.handleDisconnect}
-        color="alert"
-      >
-        <Trans id="remote_identity.action.cancel">Cancel</Trans>
-      </Button>
-    </div>
-  );
+  renderStatus = (status) => {
+    const statusLabels = {
+      active: (<Trans id="remote_identity.status.active">Enabled</Trans>),
+      inactive: (<Trans id="remote_identity.status.inactive">Disabled</Trans>),
+    };
 
-  renderFormPhase1() {
-    const { i18n } = this.props;
+    return statusLabels[status];
+  }
+
+  renderFormPhase0() {
+    const { remoteIdentity } = this.props;
+
+    if (!remoteIdentity.remote_id) {
+      return null;
+    }
 
     return (
-      <div>
-        <TextFieldGroup
-          label={i18n._('remote_identity.form.login.label', { defaults: 'Login:' })}
-          value={this.state.remoteIdentity.params.login}
-          errors={this.state.formErrors.login}
-          onChange={this.handleParamsChange}
-          name="login"
-          required
-        />
-        <TextFieldGroup
-          label={i18n._('remote_identity.form.password.label', { defaults: 'Password:' })}
-          type="password"
-          value={this.state.remoteIdentity.params.password}
-          errors={this.state.formErrors.password}
-          onChange={this.handleParamsChange}
-          name="password"
-          required
-        />
-      </div>
+      <FormGrid>
+        <FormRow>
+          <FormColumn bottomSpace>
+            <Trans id="remote_identity.last_connection">Last connection: <LastConnection lastCheck={remoteIdentity.last_check} /></Trans>
+          </FormColumn>
+        </FormRow>
+        <FormRow>
+          <FormColumn bottomSpace>
+            <CheckboxFieldGroup
+              value={this.state.remoteIdentity.active}
+              errors={this.state.formErrors.status}
+              onChange={this.handleActivate}
+              name="active"
+              label={this.renderStatus(this.state.remoteIdentity.active ? 'active' : 'inactive')}
+              displaySwitch
+              showTextLabel
+            />
+          </FormColumn>
+        </FormRow>
+      </FormGrid>
+    );
+  }
+
+  renderFormPhase1() {
+    const { remoteIdentity } = this.props;
+
+    return (
+      <FormGrid>
+        <FormRow>
+          <FormColumn bottomSpace>
+            <TextFieldGroup
+              label={<Trans id="remote_identity.form.display_name.label">Name:</Trans>}
+              placeholder={<Trans id="remote_identity.form.display_name.placeholder">john@doe.tld</Trans>}
+              value={this.state.remoteIdentity.displayName}
+              errors={this.state.formErrors.displayName}
+              onChange={this.handleParamsChange}
+              name="displayName"
+              required
+            />
+          </FormColumn>
+          <FormColumn bottomSpace>
+            {remoteIdentity.remote_id && (
+              <CheckboxFieldGroup
+                value={this.state.remoteIdentity.active}
+                errors={this.state.formErrors.status}
+                onChange={this.handleParamsChange}
+                name="active"
+                label={this.renderStatus(this.state.remoteIdentity.active ? 'active' : 'inactive')}
+                displaySwitch
+                showTextLabel
+              />
+            )}
+          </FormColumn>
+        </FormRow>
+      </FormGrid>
     );
   }
 
   renderFormPhase2() {
-    const { i18n } = this.props;
-
     return (
-      <div>
-        <SelectFieldGroup
-          label={i18n._('remote_identity.form.protocol.label', { defaults: 'Protocol:' })}
-          value={this.state.remoteIdentity.params.mailProtocol}
-          options={MAIL_PROTOCOLS.map(key => ({ value: key, label: key }))}
-          errors={this.state.formErrors.mailProtocol}
-          onChange={this.handleParamsChange}
-          name="mailProtocol"
-          required
-        />
-        <TextFieldGroup
-          label={i18n._('remote_identity.form.incomming_mail_server.label', { defaults: 'Incoming mail server:' })}
-          value={this.state.remoteIdentity.params.incommingMailServer}
-          errors={this.state.formErrors.incommingMailServer}
-          onChange={this.handleParamsChange}
-          name="incommingMailServer"
-          required
-        />
-        <TextFieldGroup
-          label={i18n._('remote_identity.form.port.label', { defaults: 'Port:' })}
-          value={this.state.remoteIdentity.params.mailPort}
-          errors={this.state.formErrors.mailPort}
-          onChange={this.handleParamsChange}
-          name="mailPort"
-          required
-        />
-      </div>
+      <FormGrid>
+        <FormRow>
+          <FormColumn bottomSpace>
+            <SelectFieldGroup
+              label={<Trans id="remote_identity.form.protocol.label">Protocol:</Trans>}
+              value={this.state.remoteIdentity.type}
+              options={MAIL_PROTOCOLS.map(key => ({ value: key, label: key }))}
+              errors={this.state.formErrors.type}
+              onChange={this.handleParamsChange}
+              name="type"
+              required
+              disabled
+            />
+          </FormColumn>
+          <FormColumn bottomSpace>
+            <TextFieldGroup
+              label={<Trans id="remote_identity.form.incomming_mail_server.label">Incoming mail server:</Trans>}
+              value={this.state.remoteIdentity.serverHostname}
+              errors={this.state.formErrors.serverHostname}
+              onChange={this.handleParamsChange}
+              name="serverHostname"
+              required
+            />
+          </FormColumn>
+          <FormColumn bottomSpace>
+            <TextFieldGroup
+              label={<Trans id="remote_identity.form.port.label">Port:</Trans>}
+              value={this.state.remoteIdentity.serverPort}
+              errors={this.state.formErrors.serverPort}
+              onChange={this.handleParamsChange}
+              name="serverPort"
+              required
+            />
+          </FormColumn>
+        </FormRow>
+      </FormGrid>
     );
   }
 
   renderFormPhase3() {
-    const fetchMethods = FETCH_METHODS.map(fetchMethod => ({
-      value: fetchMethod,
-      label: this.translations[fetchMethod],
-    }));
+    return (
+      <FormGrid>
+        <FormRow>
+          <FormColumn bottomSpace>
+            <TextFieldGroup
+              label={<Trans id="remote_identity.form.username.label">Login:</Trans>}
+              value={this.state.remoteIdentity.username}
+              errors={this.state.formErrors.username}
+              onChange={this.handleParamsChange}
+              name="username"
+              autoComplete="off"
+              required
+            />
+          </FormColumn>
+          <FormColumn bottomSpace>
+            <TextFieldGroup
+              label={<Trans id="remote_identity.form.password.label">Password:</Trans>}
+              type="password"
+              value={this.state.remoteIdentity.password}
+              errors={this.state.formErrors.password}
+              onChange={this.handleParamsChange}
+              name="password"
+              autoComplete="off"
+              required
+            />
+          </FormColumn>
+        </FormRow>
+      </FormGrid>
+    );
+  }
 
+  renderActionsCreate() {
     return (
       <div>
-        <RadioFieldGroup
-          value={this.state.remoteIdentity.params.fetchMethod}
-          options={fetchMethods}
-          errors={this.state.formErrors.fetchMethod}
-          onChange={this.handleParamsChange}
-          name="fetchMethod"
-        />
+        {this.state.phase >= 1 && (
+          <Button onClick={this.handleCancel} shape="plain" className="m-remote-identity-email__action">
+            <Trans id="remote_identity.action.cancel">Cancel</Trans>
+          </Button>
+        )}
+        {this.state.phase > 1 && (
+          <Button onClick={this.handleClickPrevious} shape="hollow" className="m-remote-identity-email__action">
+            <Trans id="remote_identity.action.back">Previous</Trans>
+          </Button>
+        )}
+        {this.state.phase < MAX_PHASE && (
+          <Button shape="plain" onClick={this.handleClickNext} className="m-remote-identity-email__action">
+            <Trans id="remote_identity.action.next">Next</Trans>
+          </Button>
+        )}
+        {this.state.phase === MAX_PHASE && (
+          <Button onClick={this.handleSave} shape="plain" color="secondary" className="m-remote-identity-email__action m-remote-identity-email__action--push-right">
+            <Trans id="remote_identity.action.finish">Connect</Trans>
+          </Button>
+        )}
       </div>
     );
   }
 
-  renderForm() {
-    let formPhase;
+  renderActionsEdit() {
+    return (
+      <div>
+        <Confirm
+          title={<Trans id="remote_identity.confirm-delete.title">Delete the external account</Trans>}
+          content={<Trans id="remote_identity.confirm-delete.content">The external account will deactivated then deleted.</Trans>}
+          onConfirm={this.handleDelete}
+          render={confirm => (
+            <Button onClick={confirm} shape="plain" color="alert" className="m-remote-identity-email__action">
+              <Trans id="remote_identity.action.delete">Delete</Trans>
+            </Button>
+          )}
+        />
+        {this.state.phase === 0 && (
+          <Button onClick={this.handleEdit} shape="hollow" className="m-remote-identity-email__action">
+            <Trans id="remote_identity.action.edit">Edit</Trans>
+          </Button>
+        )}
+        {this.state.phase >= 1 && (
+          <Button onClick={this.handleCancel} shape="hollow" className="m-remote-identity-email__action">
+            <Trans id="remote_identity.action.cancel">Cancel</Trans>
+          </Button>
+        )}
+        {this.state.phase > 1 && (
+          <Button onClick={this.handleClickPrevious} shape="hollow" className="m-remote-identity-email__action">
+            <Trans id="remote_identity.action.back">Previous</Trans>
+          </Button>
+        )}
+        {this.state.phase >= 1 && this.state.phase < MAX_PHASE && (
+          <Button shape="plain" onClick={this.handleClickNext} className="m-remote-identity-email__action">
+            <Trans id="remote_identity.action.next">Next</Trans>
+          </Button>
+        )}
+        {this.state.phase >= 1 && (
+          <Button onClick={this.handleSave} shape="plain" className="m-remote-identity-email__action m-remote-identity-email__action--push-right">
+            <Trans id="remote_identity.action.save">Save</Trans>
+          </Button>
+        )}
+      </div>
+    );
+  }
 
-    switch (this.state.phase) {
-      default:
-      case 1:
-        formPhase = this.renderFormPhase1;
-        break;
-      case 2:
-        formPhase = this.renderFormPhase2;
-        break;
-      case 3:
-        formPhase = this.renderFormPhase3;
-        break;
+  renderActions() {
+    const { remoteIdentity } = this.props;
+
+    if (remoteIdentity && remoteIdentity.remote_id) {
+      return this.renderActionsEdit();
     }
 
-    return (
-      <form className="m-remote-identity__form">
-        {formPhase()}
-        <div>
-          {this.state.remoteIdentity.connected && (
-            <Button
-              disabled={this.state.remoteIdentity.cancel_fetch_required}
-              onClick={this.handleDisconnect}
-              color="alert"
-            >
-              <Trans id="remote_identity.action.disconnect">Disconnect</Trans>
-            </Button>
-          )}
-          {this.state.phase > 1 && (
-            <Button onClick={this.handleClickPrevious} shape="hollow">
-              <Trans id="remote_identity.action.back">Previous</Trans>
-            </Button>
-          )}
-          {this.state.phase < MAX_PHASE && (
-            <Button shape="plain" onClick={this.handleClickNext}>
-              <Trans id="remote_identity.action.next">Next</Trans>
-            </Button>
-          )}
-          {this.state.phase === MAX_PHASE && (
-            <Button onClick={this.handleClickFinish} shape="plain" color="secondary">
-              <Trans id="remote_identity.action.finish">Connect</Trans>
-            </Button>
-          )}
-        </div>
-      </form>
-    );
+    return this.renderActionsCreate();
+  }
+
+  renderPhase() {
+    switch (this.state.phase) {
+      default:
+      case 0:
+        return this.renderFormPhase0();
+      case 1:
+        return this.renderFormPhase1();
+      case 2:
+        return this.renderFormPhase2();
+      case 3:
+        return this.renderFormPhase3();
+    }
   }
 
   render() {
     return (
-      <div className="m-remote-identity">
-        {
-          this.state.remoteIdentity &&
-            this.state.remoteIdentity.is_fetching &&
-            this.renderFetchingPanel()
-        }
-        {
-          (!this.state.remoteIdentity || !this.state.remoteIdentity.is_fetching) &&
-            this.renderForm()
-        }
+      <div className="m-remote-identity-email">
+        {this.renderPhase()}
+        {this.renderActions()}
       </div>
     );
   }

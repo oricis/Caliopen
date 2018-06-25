@@ -77,7 +77,7 @@ export const handleClientResponseSuccess = (response) => {
     throw new Error('Not an axios success Promise');
   }
 
-  return Promise.resolve(response.payload.data);
+  return response.payload.data;
 };
 
 export const handleClientResponseError = (payload) => {
@@ -85,7 +85,7 @@ export const handleClientResponseError = (payload) => {
     throw new Error('Not an axios catched Promise', payload);
   }
 
-  return Promise.reject(payload.error.response.data.errors);
+  return payload.error.response.data.errors;
 };
 
 export const tryCatchAxiosAction = async (action) => {

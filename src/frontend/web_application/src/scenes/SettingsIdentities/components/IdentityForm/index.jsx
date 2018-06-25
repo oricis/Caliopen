@@ -1,127 +1,131 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
+import { RadioFieldGroup, Button, Section, FormGrid, FormRow, FormColumn } from '../../../../components';
 import RemoteIdentityEmail from '../RemoteIdentityEmail';
-import TextList from '../../../../components/TextList';
+
+function generateStateFromProps({ remoteIdentity }) {
+  return { remoteIdentity };
+}
 
 class IdentityForm extends Component {
   static propTypes = {
-    contact: PropTypes.shape({}).isRequired,
-    onUpdateContact: PropTypes.func,
-    allowConnectRemoteEntity: PropTypes.bool,
-    onConnectRemoteIdentity: PropTypes.func,
-    onDisconnectRemoteIdentity: PropTypes.func,
-    remoteIdentities: PropTypes.arrayOf(PropTypes.shape({})),
-    i18n: PropTypes.shape({}).isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    remoteIdentity: PropTypes.shape({}),
+    onRemoteIdentityChange: PropTypes.func.isRequired,
+    onRemoteIdentityDelete: PropTypes.func.isRequired,
   };
   static defaultProps = {
-    allowConnectRemoteEntity: false,
-    onUpdateContact: () => {},
-    onConnectRemoteIdentity: () => {},
-    onDisconnectRemoteIdentity: () => {},
-    remoteIdentities: [],
+    remoteIdentity: undefined,
   };
 
-  constructor(props) {
-    super(props);
-    this.renderEmail = this.renderEmail.bind(this);
-    this.makeHandleAddContactDetail = this.makeHandleAddContactDetail.bind(this);
-    this.makeHandleDeleteContactDetail = this.makeHandleDeleteContactDetail.bind(this);
+  state = {
+    type: 'imap',
+    remoteIdentity: undefined,
+  };
 
-    this.initDetailsTranslations();
+  componentWillMount() {
+    this.setState(generateStateFromProps(this.props));
   }
 
-  getRemoteIdentity(identityType, identityId) {
-    return this.props.remoteIdentities
-      .find(remoteIdentity => remoteIdentity.identity_type === identityType
-          && remoteIdentity.identity_id === identityId);
+  componentWillReceiveProps(nextProps) {
+    this.setState(generateStateFromProps(nextProps));
   }
 
-  initDetailsTranslations() {
-    const { i18n } = this.props;
-    this.detailsTranslations = {
-      address_type: {
-        work: i18n._('contact.address_type.work', { defaults: 'Professional' }),
-        home: i18n._('contact.address_type.home', { defaults: 'Personal' }),
-        other: i18n._('contact.address_type.other', { defaults: 'Other' }),
-      },
-      im_type: {
-        work: i18n._('contact.im_type.work', { defaults: 'Work' }),
-        home: i18n._('contact.im_type.home', { defaults: 'Home' }),
-        other: i18n._('contact.im_type.other', { defaults: 'Other' }),
-        netmeeting: i18n._('contact.im_type.netmeeting', { defaults: 'Netmeeting' }),
-      },
-    };
-  }
-
-  makeHandleAddContactDetail(type) {
-    const { onUpdateContact, contact } = this.props;
-
-    return ({ contactDetail }) => onUpdateContact({
-      contact: {
-        ...contact,
-        [type]: [
-          ...(contact[type] ? contact[type] : []),
-          contactDetail,
-        ],
-      },
-      original: contact,
-    });
-  }
-
-  makeHandleDeleteContactDetail(type) {
-    const { onUpdateContact, contact } = this.props;
-
-    return ({ contactDetail }) => onUpdateContact({
-      contact: {
-        ...contact,
-        [type]: contact[type].filter(entity => entity !== contactDetail),
-      },
-      original: contact,
-    });
-  }
-
-  renderEmail(email) {
+  handleCreateChange = (event) => {
     const {
-      allowConnectRemoteEntity,
-      onConnectRemoteIdentity,
-      onDisconnectRemoteIdentity,
+      target: {
+        name, type, checked, value: inputValue,
+      },
+    } = event;
+    const value = type === 'checkbox' ? checked : inputValue;
+
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  handleCreate = () => {
+    this.setState(prevState => ({
+      remoteIdentity: {
+        type: prevState.type,
+      },
+    }));
+  }
+
+  handleCancel = () => {
+    this.setState(generateStateFromProps(this.props));
+  }
+
+  renderType(remoteIdentity) {
+    const {
+      onRemoteIdentityChange,
+      onRemoteIdentityDelete,
     } = this.props;
 
-    const remoteIdentity = allowConnectRemoteEntity ?
-      this.getRemoteIdentity('email', email.email_id) :
-      undefined;
-
-    return (
-      <RemoteIdentityEmail
-        remoteIdentity={remoteIdentity}
-        contactSubObjectId={email.email_id}
-        onConnect={onConnectRemoteIdentity}
-        onDisconnect={onDisconnectRemoteIdentity}
-      />
-    );
+    switch (remoteIdentity.type) {
+      default:
+      case 'imap':
+        return (
+          <RemoteIdentityEmail
+            remoteIdentity={remoteIdentity}
+            onChange={onRemoteIdentityChange}
+            onDelete={onRemoteIdentityDelete}
+            onCancel={this.handleCancel}
+          />
+        );
+    }
   }
 
-  renderContactDetailsForm() {
-    const { contact } = this.props;
-    const emails = contact.emails ?
-      [...contact.emails].sort((a, b) => a.address.localeCompare(b.address)) : [];
-    const contactDetails = [
-      ...emails.map(detail => this.renderEmail(detail)),
+  renderCreate() {
+    const options = [
+      { value: 'imap', label: (<Trans>Mail</Trans>) },
     ];
 
     return (
-      <TextList>
-        {contactDetails.map((C, key) => <C.type {...C.props} key={key} />)}
-      </TextList>
+      <Section
+        title={(<Trans>Add an external account</Trans>)}
+      >
+        <FormGrid>
+          <FormRow>
+            <FormColumn bottomSpace>
+              <ul>
+                <li>
+                  <RadioFieldGroup
+                    onChange={this.handleCreateChange}
+                    value={this.state.type}
+                    options={options}
+                    name="type"
+                  />
+                </li>
+              </ul>
+            </FormColumn>
+          </FormRow>
+          <FormRow>
+            <FormColumn bottomSpace>
+              <Button onClick={this.handleCreate} shape="plain"><Trans>Continue</Trans></Button>
+            </FormColumn>
+          </FormRow>
+        </FormGrid>
+      </Section>
     );
   }
 
   render() {
-    return (
-      <div className="m-identity-form">
-        { this.renderContactDetailsForm() }
-      </div>
-    );
+    if (this.state.remoteIdentity) {
+      const context = this.state.remoteIdentity.status === 'active' ? 'safe' : 'disabled';
+
+      return (
+        <Section
+          title={(<Trans>{this.state.remoteIdentity.display_name}</Trans>)}
+          borderContext={context}
+        >
+          {this.renderType(this.state.remoteIdentity)}
+        </Section>
+      );
+    }
+
+    return this.renderCreate();
   }
 }
 

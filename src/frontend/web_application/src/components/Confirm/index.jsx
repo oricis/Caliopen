@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans } from 'lingui-react';
 import classnames from 'classnames';
 import Button from '../Button';
 import Modal from '../Modal';
@@ -10,7 +10,6 @@ import './style.scss';
 //   <Confirm render={confirm => (<Button onClick={confirm}>Delete</Button>)} />
 // );
 
-@withI18n()
 class Confirm extends PureComponent {
   static propTypes = {
     onConfirm: PropTypes.func.isRequired,
@@ -93,7 +92,6 @@ class Confirm extends PureComponent {
           {' '}
           <Button shape="plain" color="alert" onClick={this.handleConfirm}>{confirmBtn}</Button>
         </div>
-
       </Modal>
     );
   }

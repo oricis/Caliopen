@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - API v1 and v2 validate signed ecdsa http queries
 - delete an account
+- Connect an external IMAP account
 
 ### Changed
 

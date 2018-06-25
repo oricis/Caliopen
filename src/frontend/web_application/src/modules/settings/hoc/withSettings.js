@@ -11,4 +11,5 @@ const mapStateToProps = createSelector(
 
 const withSettings = () => Component => connect(mapStateToProps)(Component);
 
+// TODO: refactor  with the new context API
 export default withSettings;

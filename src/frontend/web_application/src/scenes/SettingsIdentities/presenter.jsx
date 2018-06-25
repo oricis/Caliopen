@@ -1,77 +1,85 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IdentityForm from './components/IdentityForm';
-import { Section, Link, PageTitle, NavList, NavItem } from '../../components/';
+import { PageTitle } from '../../components/';
 
 import './style.scss';
 
+function generateStateFromProps({ remoteIdentities }) {
+  return {
+    remoteIdentities,
+  };
+}
+
 class SettingsIdentities extends Component {
   static propTypes = {
-    requestUser: PropTypes.func.isRequired,
-    updateContact: PropTypes.func.isRequired,
+    requestRemoteIdentities: PropTypes.func.isRequired,
     onRemoteIdentityChange: PropTypes.func.isRequired,
-    user: PropTypes.shape({}),
+    onRemoteIdentityDelete: PropTypes.func.isRequired,
+    remoteIdentities: PropTypes.arrayOf(PropTypes.shape({})),
   };
   static defaultProps = {
-    user: undefined,
+    remoteIdentities: undefined,
   };
 
+  state = {
+    remoteIdentities: [],
+  }
+
+  componentWillMount() {
+    this.setState(generateStateFromProps(this.props));
+  }
+
   componentDidMount() {
-    this.props.requestUser();
+    this.props.requestRemoteIdentities();
   }
 
-  handleContactChange = ({ contact, original }) => {
-    this.props.updateContact({ contact, original }).then(() => this.props.requestUser());
+  componentWillReceiveProps(nextProps) {
+    this.setState(generateStateFromProps(nextProps));
   }
 
-  handleConnectRemoteIdentity = () => {
-    this.props.onRemoteIdentityChange();
-  }
+  // handleCreate = () => {
+  //   this.setState(prevState => ({
+  //     remoteIdentities: [...prevState.remoteIdentities, {
+  //       credentials: {},
+  //       display_name: '',
+  //       infos: {},
+  //       status: 'inactive',
+  //       type: 'imap',
+  //     }],
+  //   }));
+  // }
 
-  handleDisonnectRemoteIdentity = () => {
-    this.props.onRemoteIdentityChange();
+  renderRemoteIdentity(remoteIdentity) {
+    const { onRemoteIdentityChange, onRemoteIdentityDelete } = this.props;
+
+    return (
+      <div className="s-settings-identities__identity" key={remoteIdentity.remote_id}>
+        <IdentityForm
+          remoteIdentity={remoteIdentity}
+          onRemoteIdentityChange={onRemoteIdentityChange}
+          onRemoteIdentityDelete={onRemoteIdentityDelete}
+        />
+      </div>
+    );
   }
 
   render() {
-    const { user } = this.props;
-
-    const navLinks = [
-      { title: 'myself@caliopen.local', to: '/settings/identities' },
-      { title: 'myothermyself@caliopen.local', to: '/settings/identities' },
-    ];
+    const { onRemoteIdentityChange, onRemoteIdentityDelete } = this.props;
 
     return (
       <div className="s-settings-identities">
         <PageTitle />
-        {navLinks &&
-          <NavList dir="vertical" className="s-settings-identities__menu">
-            {navLinks.map(link => (
-              // this should be identities.map(identity => ... )
-              <NavItem active={false} large key={link.title}>
-                <Link noDecoration {...link}>{link.title}</Link>
-              </NavItem>
-            ))}
-          </NavList>
-        }
-        <div className="s-settings-identities__panel">
-          <Section title="Update your identity">
-            { user && (
-              <IdentityForm
-                contact={user.contact}
-                onUpdateContact={this.handleContactChange}
-                remoteIdentities={user.remoteIdentities}
-                onConnectRemoteIdentity={this.handleConnectRemoteIdentity}
-                onDisconnectRemoteIdentity={this.handleDisonnectRemoteIdentity}
-                allowConnectRemoteEntity
-              />
-            )}
-          </Section>
-          <Section title="Identity options">
-            <p>Signature : (select signature from settings.signatures)</p>
-            <p>Download directory: (browse directories)</p>
-            <p>refresh: (select list)</p>
-          </Section>
+        <div className="s-settings-identities__create">
+          <IdentityForm
+            onRemoteIdentityChange={onRemoteIdentityChange}
+            onRemoteIdentityDelete={onRemoteIdentityDelete}
+          />
         </div>
+        {
+          this.state.remoteIdentities
+            .map(remoteIdentity => this.renderRemoteIdentity(remoteIdentity))
+        }
       </div>
     );
   }
