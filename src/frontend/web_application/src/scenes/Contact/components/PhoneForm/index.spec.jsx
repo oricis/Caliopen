@@ -2,10 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import PhoneForm from './';
 
-jest.mock('lingui-react', () => ({
-  withI18n: () => whatever => whatever,
-}));
-
 describe('component PhoneForm', () => {
   it('init form', () => {
     const props = {
@@ -15,7 +11,7 @@ describe('component PhoneForm', () => {
 
     const comp = shallow(
       <PhoneForm {...props} />
-    );
+    ).dive();
 
     expect(comp.text()).toEqual('<FormGrid />');
   });

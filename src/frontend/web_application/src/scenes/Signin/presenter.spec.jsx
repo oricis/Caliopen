@@ -2,10 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Presenter from './presenter';
 
-jest.mock('lingui-react', () => ({
-  withI18n: () => whatever => whatever,
-}));
-
 describe('scene - Signin', () => {
   const props = {
     i18n: { _: id => id },
@@ -16,7 +12,7 @@ describe('scene - Signin', () => {
   it('render', () => {
     const comp = shallow(
       <Presenter {...props} />
-    );
+    ).dive();
 
     expect(comp.text()).toContain('SigninForm');
   });
