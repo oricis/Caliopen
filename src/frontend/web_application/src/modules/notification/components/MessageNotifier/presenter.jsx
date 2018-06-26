@@ -14,7 +14,7 @@ const PATHS_TO_IGNORE = [
 
 class MessageNotifier extends Component {
   static propTypes = {
-    notify: PropTypes.func.isRequired,
+    notifyInfo: PropTypes.func.isRequired,
     notifications: PropTypes.arrayOf(PropTypes.shape({})),
     settings: PropTypes.shape({}),
     i18n: PropTypes.shape({ _: PropTypes.func.isRequired }).isRequired,
@@ -64,11 +64,11 @@ class MessageNotifier extends Component {
       return;
     }
 
-    const { notify } = this.props;
+    const { notifyInfo } = this.props;
 
     if ((settings.notification_enabled)) {
       // XXX: should be better to display in tabs
-      notify({
+      notifyInfo({
         message: (<Trans id="app.notification.new_messages">You received {notifications.length} new messages</Trans>),
       });
     }

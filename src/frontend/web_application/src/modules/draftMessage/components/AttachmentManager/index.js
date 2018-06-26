@@ -1,6 +1,6 @@
 import { compose } from 'redux';
 import { withI18n } from 'lingui-react';
-import { withNotification } from '../../../../hoc/notification';
+import { withNotification } from '../../../../modules/userNotify';
 import Presenter from './presenter';
 
 export default compose(

@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
-import { withNotification } from '../../../../hoc/notification';
+import { withNotification } from '../../../../modules/userNotify';
 import { createMessageCollectionStateSelector } from '../../../../store/selectors/message';
 import { deleteDraft, deleteDraftSuccess, clearDraft, syncDraft } from '../../../../store/modules/draft-message';
 import { updateTagCollection, withTags } from '../../../../modules/tags';
