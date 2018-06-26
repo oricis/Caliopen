@@ -187,22 +187,22 @@ class RemoteIdentityEmail extends Component {
 
     if (phase >= 1) {
       phaseValidation([
-        { formProperty: 'displayName', error: 'a name is required' },
+        { formProperty: 'displayName', error: <Trans id="remote_identity.form.display_name.error">a name is required</Trans> },
       ]);
     }
 
     if (phase >= 3) {
       phaseValidation([
-        { formProperty: 'username', error: 'login is required' },
-        { formProperty: 'password', error: 'password is required' },
+        { formProperty: 'username', error: <Trans id="remote_identity.form.username.error">login is required</Trans> },
+        { formProperty: 'password', error: <Trans id="remote_identity.form.password.error">password is required</Trans> },
       ]);
     }
 
     if (phase >= 2) {
       phaseValidation([
-        { formProperty: 'serverHostname', error: 'mail server is required' },
-        { formProperty: 'serverPort', error: 'port is required' },
-        { formProperty: 'type', error: 'protocol is required' },
+        { formProperty: 'serverHostname', error: <Trans id="remote_identity.form.serverHostname.error">mail server is required</Trans> },
+        { formProperty: 'serverPort', error: <Trans id="remote_identity.form.serverPort.error">port is required</Trans> },
+        { formProperty: 'type', error: <Trans id="remote_identity.form.type.error">protocol is required</Trans> },
       ]);
     }
 

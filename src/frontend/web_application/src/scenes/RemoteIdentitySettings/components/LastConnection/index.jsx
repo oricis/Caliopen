@@ -22,7 +22,7 @@ class lastConnection extends PureComponent {
     }
 
     return (
-      <Trans>Never</Trans>
+      <Trans id="remote_identity.last_connection.never">Never</Trans>
     );
   }
 }

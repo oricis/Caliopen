@@ -79,12 +79,12 @@ class IdentityForm extends Component {
 
   renderCreate() {
     const options = [
-      { value: 'imap', label: (<Trans>Mail</Trans>) },
+      { value: 'imap', label: (<Trans id="remote_identity.type.mail">Mail</Trans>) },
     ];
 
     return (
       <Section
-        title={(<Trans>Add an external account</Trans>)}
+        title={(<Trans id="remote_identity.add_account">Add an external account</Trans>)}
       >
         <FormGrid>
           <FormRow>
@@ -103,7 +103,7 @@ class IdentityForm extends Component {
           </FormRow>
           <FormRow>
             <FormColumn bottomSpace>
-              <Button onClick={this.handleCreate} shape="plain"><Trans>Continue</Trans></Button>
+              <Button onClick={this.handleCreate} shape="plain"><Trans id="remote_identity.action.continue">Continue</Trans></Button>
             </FormColumn>
           </FormRow>
         </FormGrid>
@@ -117,7 +117,7 @@ class IdentityForm extends Component {
 
       return (
         <Section
-          title={(<Trans>{this.state.remoteIdentity.display_name}</Trans>)}
+          title={this.state.remoteIdentity.display_name}
           borderContext={context}
         >
           {this.renderType(this.state.remoteIdentity)}
