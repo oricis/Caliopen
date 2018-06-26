@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans, withI18n } from 'lingui-react';
 import { Confirm, Button, TextFieldGroup, SelectFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components';
 import LastConnection from '../LastConnection';
 import './style.scss';
@@ -61,12 +61,14 @@ function getRemoteIdentityFromState(state, props) {
   };
 }
 
+@withI18n()
 class RemoteIdentityEmail extends Component {
   static propTypes = {
     remoteIdentity: PropTypes.shape({}).isRequired,
     onChange: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -233,7 +235,7 @@ class RemoteIdentityEmail extends Component {
         <FormRow>
           <FormColumn bottomSpace>
             <CheckboxFieldGroup
-              value={this.state.remoteIdentity.active}
+              checked={this.state.remoteIdentity.active}
               errors={this.state.formErrors.status}
               onChange={this.handleActivate}
               name="active"
@@ -248,7 +250,7 @@ class RemoteIdentityEmail extends Component {
   }
 
   renderFormPhase1() {
-    const { remoteIdentity } = this.props;
+    const { remoteIdentity, i18n } = this.props;
 
     return (
       <FormGrid>
@@ -256,7 +258,7 @@ class RemoteIdentityEmail extends Component {
           <FormColumn bottomSpace>
             <TextFieldGroup
               label={<Trans id="remote_identity.form.display_name.label">Name:</Trans>}
-              placeholder={<Trans id="remote_identity.form.display_name.placeholder">john@doe.tld</Trans>}
+              placeholder={i18n._('remote_identity.form.display_name.placeholder', { defaults: 'john@doe.tld' })}
               value={this.state.remoteIdentity.displayName}
               errors={this.state.formErrors.displayName}
               onChange={this.handleParamsChange}

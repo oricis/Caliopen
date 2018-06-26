@@ -17,7 +17,7 @@ class lastConnection extends PureComponent {
   render() {
     const { lastCheck, settings: { default_locale: locale } } = this.props;
 
-    if (lastCheck.length) {
+    if (lastCheck && lastCheck.length) {
       return (<Moment fromNow locale={locale}>{lastCheck}</Moment>);
     }
 

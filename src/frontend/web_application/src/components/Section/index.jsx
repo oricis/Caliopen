@@ -7,8 +7,8 @@ import './style.scss';
 class Section extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
-    title: PropTypes.string,
-    descr: PropTypes.string,
+    title: PropTypes.node,
+    descr: PropTypes.node,
     hasSeparator: PropTypes.bool,
     children: PropTypes.node,
     borderContext: PropTypes.oneOf(['disabled', 'safe', 'public', 'unsecure']),

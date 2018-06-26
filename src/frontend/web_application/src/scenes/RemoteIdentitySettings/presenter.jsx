@@ -11,7 +11,7 @@ function generateStateFromProps({ remoteIdentities }) {
   };
 }
 
-class SettingsIdentities extends Component {
+class RemoteIdentitySettings extends Component {
   static propTypes = {
     requestRemoteIdentities: PropTypes.func.isRequired,
     onRemoteIdentityChange: PropTypes.func.isRequired,
@@ -37,18 +37,6 @@ class SettingsIdentities extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState(generateStateFromProps(nextProps));
   }
-
-  // handleCreate = () => {
-  //   this.setState(prevState => ({
-  //     remoteIdentities: [...prevState.remoteIdentities, {
-  //       credentials: {},
-  //       display_name: '',
-  //       infos: {},
-  //       status: 'inactive',
-  //       type: 'imap',
-  //     }],
-  //   }));
-  // }
 
   renderRemoteIdentity(remoteIdentity) {
     const { onRemoteIdentityChange, onRemoteIdentityDelete } = this.props;
@@ -85,4 +73,4 @@ class SettingsIdentities extends Component {
   }
 }
 
-export default SettingsIdentities;
+export default RemoteIdentitySettings;

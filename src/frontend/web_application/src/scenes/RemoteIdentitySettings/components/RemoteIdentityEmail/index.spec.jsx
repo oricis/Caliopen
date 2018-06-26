@@ -11,7 +11,7 @@ describe('component RemoteIdentityEmail', () => {
       onCancel: jest.fn(),
     };
 
-    const wrapper = shallow(<RemoteIdentityEmail {...props} />);
+    const wrapper = shallow(<RemoteIdentityEmail {...props} />).dive();
     expect(wrapper.state().phase).toEqual(1);
   });
 
@@ -26,7 +26,7 @@ describe('component RemoteIdentityEmail', () => {
       onCancel: jest.fn(),
     };
 
-    const wrapper = shallow(<RemoteIdentityEmail {...props} />);
+    const wrapper = shallow(<RemoteIdentityEmail {...props} />).dive();
     expect(wrapper.state().phase).toEqual(0);
   });
 });

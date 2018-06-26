@@ -9,7 +9,7 @@ import './style.scss';
 
 class TextareaFieldGroup extends PureComponent {
   static propTypes = {
-    label: PropTypes.string.isRequired,
+    label: PropTypes.node.isRequired,
     expanded: PropTypes.bool,
     errors: PropTypes.arrayOf(PropTypes.node),
     onChange: PropTypes.func,

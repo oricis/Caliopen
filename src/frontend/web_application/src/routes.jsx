@@ -17,7 +17,7 @@ import User from './layouts/User';
 import UserProfile from './scenes/UserProfile';
 import UserSecurity from './scenes/UserSecurity';
 import UserPrivacy from './scenes/UserPrivacy';
-import SettingsIdentities from './scenes/SettingsIdentities';
+import RemoteIdentitySettings from './scenes/RemoteIdentitySettings';
 // import SettingsSignatures from './scenes/SettingsSignatures';
 import ApplicationSettings from './scenes/ApplicationSettings';
 import Tags from './scenes/TagsSettings';
@@ -120,7 +120,7 @@ export const getRouteConfig = ({ __ }) => [
         routes: [
           {
             path: '/settings/identities',
-            component: SettingsIdentities,
+            component: RemoteIdentitySettings,
             label: __('settings.route.label.identities'),
           },
           {
