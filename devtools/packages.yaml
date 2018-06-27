@@ -83,3 +83,10 @@ packages:
           description: daemon that trigger polling operations.
           dependencies:
             go: "^1.7"
+      -
+          name: gocaliopen
+          build_target: github.com/CaliOpen/Caliopen/src/backend/tools/go.CLI/cmd/gocaliopen
+          path: src/backend/tools/go.CLI
+          description: another CLI to manage Caliopen stack.
+          dependencies:
+            go: "^1.7"
