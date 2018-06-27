@@ -26,7 +26,7 @@ services:
       - "31415:31415"
     volumes: 
       - ../src/backend/configs/apiv2.yaml:/etc/caliopen/apiv2.yaml
-
+      - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
   # Caliopen APIv1
   apiv1:
     build:
@@ -40,7 +40,8 @@ services:
       - "6543:6543"
     volumes:
       - ../src/backend/configs/caliopen-api-development.ini:/etc/caliopen/caliopen-api-development.ini
-
+      - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
+      - ../src/backend/configs/swagger.json:/etc/caliopen/swagger.json
 
   # ### Redis Database
   #
