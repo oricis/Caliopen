@@ -58,6 +58,4 @@ func (cb *CassandraBackend) DeleteCredentials(userId, remoteId string) error {
 	}
 
 	return cb.UpdateCredentials(userId, remoteId, Credentials{})
-
-	return nil
 }

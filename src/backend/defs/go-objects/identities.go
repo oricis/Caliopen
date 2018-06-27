@@ -189,14 +189,13 @@ func (ri *RemoteIdentity) MarshallNew(args ...interface{}) {
 	if len(ri.RemoteId) == 0 || (bytes.Equal(ri.RemoteId.Bytes(), EmptyUUID.Bytes())) {
 		ri.RemoteId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
-	if len(ri.UserId) == 0 || (bytes.Equal(ri.UserId.Bytes(), EmptyUUID.Bytes())) {
-		if len(args) == 1 {
-			switch args[0].(type) {
-			case UUID:
-				ri.UserId = args[0].(UUID)
-			}
+	if (len(ri.UserId) == 0 || bytes.Equal(ri.UserId.Bytes(), EmptyUUID.Bytes())) && len(args) == 1 {
+		switch args[0].(type) {
+		case UUID:
+			ri.UserId = args[0].(UUID)
 		}
 	}
+
 }
 
 // SetDefaults fills RemoteIdentity with default keys and values according to the type of the remote identity
