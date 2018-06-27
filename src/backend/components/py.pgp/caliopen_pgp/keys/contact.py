@@ -33,16 +33,14 @@ class ContactPublicKeyManager(object):
         results = self.discoverer.lookup_identity(new_identifier, type_)
         current_keys = PublicKey.find(user, contact.contact_id)
         known_keys = [x.fingerprint for x in current_keys]
-        new_keys = []
         if results:
             for result in results:
                 for key in result.keys:
                     if key.fingerprint not in known_keys:
                         log.info('Found new key {0}'.format(key.fingerprint))
-                        new_keys.append(result)
+                        yield result
                     else:
                         log.info('Known key {0}'.format(key.fingerprint))
-        return new_keys
 
     def _filter_new_emails(self, contact, key):
         """Find new emails related to a contact public key."""
@@ -59,7 +57,7 @@ class ContactPublicKeyManager(object):
             if identity not in known_ids:
                 yield identity
 
-    def process_contact_identity(self, user, contact, new_identifier, type_):
+    def process_identity(self, user, contact, new_identifier, type_):
         """Process a contact new identity."""
         result = ContactDiscoveryResult()
         discovers = self._find_keys(user, contact, new_identifier, type_)
