@@ -5,7 +5,8 @@
 package messages
 
 import (
-	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"errors"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/microcosm-cc/bluemonday"
 	"golang.org/x/net/html"
 	"regexp"
@@ -17,7 +18,7 @@ import (
 // scrub message's bodies to make message displayable in frontend interfaces.
 // message is modified in-place.
 // if sanitation failed, message's string bodies are emptied
-func SanitizeMessageBodies(msg *objects.Message) {
+func SanitizeMessageBodies(msg *Message) {
 	p := CaliopenPolicy()
 	(*msg).Body_html = p.Sanitize(msg.Body_html)
 	(*msg).Body_html = replaceBodyTag(msg.Body_html)
@@ -55,7 +56,7 @@ func CaliopenPolicy() *bluemonday.Policy {
 // A string is always returned, even if excerpt extraction failed.
 // If option "wordWrap" is true, string is trimmed at the end of a word, thus it may be shorter than length.
 // If option "addEllipsis" is true, … (unicode 2026) is added at the end of the string if the string has been shortened.
-func ExcerptMessage(msg objects.Message, length int, wordWrap, addEllipsis bool) (excerpt string) {
+func ExcerptMessage(msg Message, length int, wordWrap, addEllipsis bool) (excerpt string) {
 	// 1. try to extract excerpt from HTML
 	if msg.Body_html != "" {
 		var err error
@@ -108,6 +109,18 @@ func excerptFromHMTL(source string) (excerpt string, err error) {
 	excerpt = strings.Join(excerpt_strings, " ")
 	excerpt = html.UnescapeString(excerpt)
 	return
+}
+
+// ResolveSenderProtocol returns outbound protocol to use for sending draft by resolving draft's sender identity
+func ResolveSenderProtocol(draft *Message) (string, error) {
+	switch draft.Identities[0].Type { // handle one identity only for now
+	case EmailProtocol:
+		return SmtpProtocol, nil
+	case ImapProtocol:
+		return ImapProtocol, nil
+	default:
+		return "", errors.New("sender not found in participants")
+	}
 }
 
 func trimExcerpt(s string, l int, wordWrap, addEllipsis bool) string {
