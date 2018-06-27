@@ -10,4 +10,4 @@ RUN govendor sync -v
 RUN go install github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs/cmd/idpoller
 
 WORKDIR /go/src/github.com/CaliOpen/Caliopen/src/backend/configs
-ENTRYPOINT idpoller start
+ENTRYPOINT idpoller start -c caliopen-IDs-poller --confipath /etc/caliopen

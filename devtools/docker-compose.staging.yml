@@ -19,6 +19,8 @@ services:
       - object_store:minio.dev.caliopen.org
     expose:
       - "31415"
+    volumes: 
+      - ../src/backend/configs/apiv2.yaml:/etc/caliopen/apiv2.yaml
 
   # Caliopen APIv1
   apiv1:
@@ -29,6 +31,8 @@ services:
       - elasticsearch:es.dev.caliopen.org
     expose:
       - "6543"
+    volumes:
+      - ../src/backend/configs/apiv1.ini:/etc/caliopen/apiv1.ini
 
   # ### Redis Database
   #
@@ -79,6 +83,7 @@ services:
       CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
     volumes:
       - .:/srv/caliopen/src/backend/devtools
+      - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
 
   # Caliopen frontend
   frontend:
@@ -98,6 +103,9 @@ services:
       - message_handler:mc.dev.caliopen.org
     ports:
       - "127.0.0.1:2525:2525"
+    volumes:
+      - ../src/backend/configs/lmtp.yaml:/etc/caliopen/lmtp.yaml
+
   # NATS
   nats:
     image: nats:0.9.6
@@ -118,10 +126,10 @@ services:
     expose:
       - "9090"
     volumes:
-      - ../src/backend/configs:/configs
+      - ../src/backend/configs/minio:/etc/caliopen/minio
       - store:/export
     command:
-      server --address :9090 -C /configs/minio /export
+      server --address :9090 -C /etc/caliopen/minio /export
 
   # Worker for remote identities
   identity_worker:
@@ -131,6 +139,9 @@ services:
       - object_store:minio.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
       - nats:nats.dev.caliopen.org
+    volumes:
+      - ../src/backend/configs/caliopen-imap-worker.yaml:/etc/caliopen/caliopen-imap-worker.yaml
+
 
   # Poller for remote identities
   identity_poller:
@@ -139,6 +150,9 @@ services:
       - identity_worker:identityworker.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
       - nats:nats.dev.caliopen.org
+    volumes:
+      - ../src/backend/configs/caliopen-IDs-poller.yaml:/etc/caliopen/caliopen-IDs-poller.yaml
+
 
   # Postfix : a complete smpt server that act as the Caliopen's MTA
   # TODO
