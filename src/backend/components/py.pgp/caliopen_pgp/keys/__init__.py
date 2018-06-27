@@ -10,7 +10,8 @@ from .hkp import HKPDiscovery
 from .keybase import KeybaseDiscovery
 from .base import PGPPublicKey, PGPUserId, DiscoveryResult
 from .discoverer import PublicKeyDiscoverer
+from .contact import ContactPublicKeyManager
 
 __all__ = ['DNSDiscovery', 'HKPDiscovery', 'KeybaseDiscovery',
            'PGPPublicKey', 'PGPUserId', 'DiscoveryResult',
-           'PublicKeyDiscoverer']
+           'PublicKeyDiscoverer', 'ContactPublicKeyManager']
