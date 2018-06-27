@@ -51,7 +51,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 		return err
 	}
 	if order.Password != "" {
-		(*userId.Credentials)["password"] = order.Password
+		(*userId.Credentials)["inpassword"] = order.Password
 	}
 
 	// 1.2 check if a sync process is running
@@ -157,11 +157,11 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
 	userId := UserIdentity{
 		UserId: UUID(uuid.FromStringOrNil(order.UserId)),
 		Infos: map[string]string{
-			"server": order.Server,
+			"inserver": order.Server,
 		},
 		Credentials: &Credentials{
-			"username": order.Login,
-			"password": order.Password,
+			"inusername": order.Login,
+			"inpassword": order.Password,
 		},
 	}
 
@@ -221,7 +221,9 @@ func (f *Fetcher) fetchMails(userId *UserIdentity, box *imapBox, ch chan *Email)
 // fetches new messages accordingly, and returns well-formed Emails for lda.
 func (f *Fetcher) syncMails(userId *UserIdentity, box *imapBox, ch chan *Email) (err error) {
 
-	tlsConn, imapClient, provider, err := imapLogin(userId)
+	// Don't forget to close chan before leaving
+	defer close(ch)
+	tlsConn, imapClient, provider, err := imapLogin(rId)
 	if err != nil {
 		return f.handleFetchFailure(userId, WrapCaliopenErr(err, WrongCredentialsErr, "imapLogin failure"))
 	} else {
@@ -230,10 +232,9 @@ func (f *Fetcher) syncMails(userId *UserIdentity, box *imapBox, ch chan *Email) 
 		delete((*userId).Infos, dateFirstErrorKey)
 		delete((*userId).Infos, dateLastErrorKey)
 	}
-	// Don't forget to logout and close chan
+	// Don't forget to logout
 	defer func() {
 		imapClient.Logout()
-		close(ch)
 		log.Println("Logged out")
 	}()
 

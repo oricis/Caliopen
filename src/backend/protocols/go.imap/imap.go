@@ -51,7 +51,7 @@ func init() {
 func imapLogin(rId *UserIdentity) (tlsConn *tls.Conn, imapClient *client.Client, provider Provider, err error) {
 	log.Println("Connecting to server...")
 	// Dial TLS directly to be able to dump tls connection state
-	tlsConn, err = tls.Dial("tcp", rId.Infos["server"], nil)
+	tlsConn, err = tls.Dial("tcp", rId.Infos["inserver"], nil)
 	if err != nil {
 		log.WithError(err).Error("[fetchMail] imapLogin failed to dial tls")
 		return
@@ -74,7 +74,7 @@ func imapLogin(rId *UserIdentity) (tlsConn *tls.Conn, imapClient *client.Client,
 	}
 
 	// Login
-	if err = imapClient.Login((*rId.Credentials)["username"], (*rId.Credentials)["password"]); err != nil {
+	if err = imapClient.Login((*rId.Credentials)["inusername"], (*rId.Credentials)["inpassword"]); err != nil {
 		log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
 		return
 	}
@@ -183,7 +183,7 @@ func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *UserIdenti
         (using %s with cipher %s)
         by imap-fetcher (Caliopen) %s;
         %s`,
-		rId.Infos["server"],
+		rId.Infos["inserver"],
 		tlsConn.RemoteAddr().String(),
 		TlsVersions[connState.Version],
 		TlsSuites[connState.CipherSuite],
