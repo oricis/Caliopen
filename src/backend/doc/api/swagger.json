@@ -9087,6 +9087,20 @@
             "type": "integer",
             "required": false,
             "description": "number of pages to skip from the response"
+          },
+          {
+            "name": "msg_id",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "if provided with range[] param, specify a message_id around which messages will be fetched"
+          },
+          {
+            "name": "range[]",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "boundaries param if message_id param is provided [before, after]"
           }
         ],
         "produces": [

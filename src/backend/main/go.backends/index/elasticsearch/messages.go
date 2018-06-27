@@ -7,22 +7,25 @@ package index
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
-	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
 	"gopkg.in/oleiade/reflections.v1"
+	"gopkg.in/olivere/elastic.v5"
+	"sort"
 	"strings"
 )
 
-func (es *ElasticSearchBackend) CreateMessage(msg *objects.Message) error {
+func (es *ElasticSearchBackend) CreateMessage(msg *Message) error {
 
 	es_msg, err := msg.MarshalES()
 	if err != nil {
 		return err
 	}
 
-	resp, err := es.Client.Index().Index(msg.User_id.String()).Type(objects.MessageIndexType).Id(msg.Message_id.String()).
+	resp, err := es.Client.Index().Index(msg.User_id.String()).Type(MessageIndexType).Id(msg.Message_id.String()).
 		BodyString(string(es_msg)).
 		Refresh("wait_for").
 		Do(context.TODO())
@@ -35,7 +38,7 @@ func (es *ElasticSearchBackend) CreateMessage(msg *objects.Message) error {
 
 }
 
-func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[string]interface{}) error {
+func (es *ElasticSearchBackend) UpdateMessage(msg *Message, fields map[string]interface{}) error {
 
 	//get json field name for each field to modify
 	jsonFields := map[string]interface{}{}
@@ -48,7 +51,7 @@ func (es *ElasticSearchBackend) UpdateMessage(msg *objects.Message, fields map[s
 		jsonFields[split[0]] = value
 	}
 
-	update, err := es.Client.Update().Index(msg.User_id.String()).Type(objects.MessageIndexType).Id(msg.Message_id.String()).
+	update, err := es.Client.Update().Index(msg.User_id.String()).Type(MessageIndexType).Id(msg.Message_id.String()).
 		Doc(jsonFields).
 		Refresh("wait_for").
 		Do(context.TODO())
@@ -65,15 +68,14 @@ func (es *ElasticSearchBackend) SetMessageUnread(user_id, message_id string, sta
 		Is_unread bool `json:"is_unread"`
 	}{status}
 
-	update := es.Client.Update().Index(user_id).Type(objects.MessageIndexType).Id(message_id)
+	update := es.Client.Update().Index(user_id).Type(MessageIndexType).Id(message_id)
 	_, err = update.Doc(payload).Refresh("true").Do(context.TODO())
 
 	return
 }
 
-func (es *ElasticSearchBackend) FilterMessages(filter objects.IndexSearch) (messages []*objects.Message, totalFound int64, err error) {
-
-	search := es.Client.Search().Index(filter.User_id.String()).Type(objects.MessageIndexType)
+func (es *ElasticSearchBackend) FilterMessages(filter IndexSearch) (messages []*Message, totalFound int64, err error) {
+	search := es.Client.Search().Index(filter.User_id.String()).Type(MessageIndexType)
 	search = filter.FilterQuery(search, true).Sort("date_sort", false)
 
 	if filter.Offset > 0 {
@@ -83,6 +85,95 @@ func (es *ElasticSearchBackend) FilterMessages(filter objects.IndexSearch) (mess
 		search = search.Size(filter.Limit)
 	}
 
+	return executeMessagesQuery(search)
+
+}
+
+// GetMessagesRange build a `search_after` query to retrieve messages before and/or after a specific message within a discussion
+func (es *ElasticSearchBackend) GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error) {
+
+	messages = []*Message{}
+	var msg *Message
+
+	// remove range[] and msg_id from terms
+	msgId := filter.Terms["msg_id"][0]
+	delete(filter.Terms, "msg_id")
+	var wantBefore bool
+	var wantAfter bool
+	for _, param := range filter.Terms["range[]"] {
+		if param == "before" {
+			wantBefore = true
+		} else if param == "after" {
+			wantAfter = true
+		}
+	}
+	delete(filter.Terms, "range[]")
+
+	// retrieve message with msg_id because search_after will not return it
+	esMsg, esErr := es.Client.Get().Index(filter.User_id.String()).Type(MessageIndexType).Id(msgId).Do(context.TODO())
+	if esErr != nil {
+		return nil, 0, esErr
+	}
+	if !esMsg.Found {
+		return nil, 0, errors.New("not found")
+	}
+	msg = new(Message).NewEmpty().(*Message)
+	if err := json.Unmarshal(*esMsg.Source, msg); err != nil {
+		return nil, 0, err
+	}
+	if e := msg.Message_id.UnmarshalBinary(uuid.FromStringOrNil(msgId).Bytes()); e != nil {
+		log.WithError(e).Warnf("failed to unmarshal %s", msgId)
+	}
+	messages = append(messages, msg)
+
+	// add discussion_id to filter.Terms
+	filter.Terms["discussion_id"] = []string{msg.Discussion_id.String()}
+
+	// prepare search
+
+	// make search_after query for `after` param
+	if wantAfter {
+		searchAfter := es.Client.Search().Index(filter.User_id.String()).Type(MessageIndexType)
+		if filter.Offset > 0 {
+			searchAfter = searchAfter.From(filter.Offset)
+		}
+		if filter.Limit > 0 {
+			searchAfter = searchAfter.Size(filter.Limit)
+		}
+		searchAfter = filter.FilterQuery(searchAfter, true).Sort("date_sort", false).Sort("_uid", false)
+		searchAfter = searchAfter.SearchAfter(msg.Date_sort.UnixNano()/10e5, MessageIndexType+"#"+msgId)
+		after, afterTotal, afterErr := executeMessagesQuery(searchAfter)
+		if afterErr != nil {
+			return nil, 0, afterErr
+		}
+		messages = append(messages, after...)
+		totalFound = afterTotal
+	}
+
+	// make search_after query for `before` param
+	if wantBefore {
+		searchBefore := es.Client.Search().Index(filter.User_id.String()).Type(MessageIndexType)
+		if filter.Offset > 0 {
+			searchBefore = searchBefore.From(filter.Offset)
+		}
+		if filter.Limit > 0 {
+			searchBefore = searchBefore.Size(filter.Limit)
+		}
+		searchBefore = filter.FilterQuery(searchBefore, true).Sort("date_sort", true).Sort("_uid", true)
+		searchBefore = searchBefore.SearchAfter(msg.Date_sort.UnixNano()/10e5, MessageIndexType+"#"+msgId)
+
+		before, beforeTotal, beforeErr := executeMessagesQuery(searchBefore)
+		if beforeErr != nil {
+			return nil, 0, beforeErr
+		}
+		messages = append(messages, before...)
+		totalFound = beforeTotal
+	}
+	sort.Sort(ByDateSortAsc(messages))
+	return messages, totalFound, nil
+}
+
+func executeMessagesQuery(search *elastic.SearchService) (messages []*Message, totalFound int64, err error) {
 	result, err := search.Do(context.TODO())
 
 	if err != nil {
@@ -90,7 +181,7 @@ func (es *ElasticSearchBackend) FilterMessages(filter objects.IndexSearch) (mess
 	}
 
 	for _, hit := range result.Hits.Hits {
-		msg := new(objects.Message).NewEmpty().(*objects.Message)
+		msg := new(Message).NewEmpty().(*Message)
 		if err := json.Unmarshal(*hit.Source, msg); err != nil {
 			log.Info(err)
 			continue

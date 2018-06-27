@@ -42,6 +42,7 @@ type (
 		DeleteRemoteIdentity(userId, RemoteId string) CaliopenError
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
+		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessage(user_id, message_id string) (message *Message, err error)
 		SendDraft(user_id, msg_id string) (msg *Message, err error)
 		SetMessageUnread(user_id, message_id string, status bool) error
