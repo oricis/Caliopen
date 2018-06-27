@@ -16,7 +16,7 @@ class PGPUserId(object):
     def __init__(self, name, email, is_primary, comment=None, signers=None):
         self.name = name
         self.email = email
-        self.is_primay = is_primary
+        self.is_primary = is_primary
         self.comment = comment
         self.signers = signers if signers else set()
 
