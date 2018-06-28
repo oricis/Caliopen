@@ -2351,6 +2351,9 @@
                       "display_name": {
                         "type": "string"
                       },
+                      "identifier": {
+                        "type": "string"
+                      },
                       "infos": {
                         "type": "object",
                         "additionalProperties": {
@@ -2441,6 +2444,9 @@
                   }
                 },
                 "display_name": {
+                  "type": "string"
+                },
+                "identifier": {
                   "type": "string"
                 },
                 "infos": {
@@ -2535,6 +2541,9 @@
                   }
                 },
                 "display_name": {
+                  "type": "string"
+                },
+                "identifier": {
                   "type": "string"
                 },
                 "infos": {
@@ -2729,6 +2738,9 @@
                     "display_name": {
                       "type": "string"
                     },
+                    "identifier": {
+                      "type": "string"
+                    },
                     "infos": {
                       "type": "object",
                       "additionalProperties": {
@@ -2765,6 +2777,9 @@
                   }
                 },
                 "display_name": {
+                  "type": "string"
+                },
+                "identifier": {
                   "type": "string"
                 },
                 "infos": {

@@ -7,6 +7,8 @@ properties:
       type: string
   display_name:
     type: string
+  identifier:
+    type: string
   infos:          # set of key/value strings
     type: object
     additionalProperties:
