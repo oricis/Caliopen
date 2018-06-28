@@ -18,7 +18,7 @@ spec:
         app: broker
     spec:
       containers:
-      - image: registry.caliopen.org:5043/broker
+      - image: public-registry.caliopen.org/broker
         name: broker
         ports:
         - containerPort: 2525

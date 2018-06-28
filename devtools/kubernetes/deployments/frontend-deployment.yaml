@@ -18,7 +18,7 @@ spec:
         app: frontend
     spec:
       containers:
-      - image: registry.caliopen.org:5043/frontend
+      - image: public-registry.caliopen.org/frontend
         name: frontend
         ports:
         - containerPort: 4000

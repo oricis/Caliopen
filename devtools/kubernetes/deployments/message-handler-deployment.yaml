@@ -15,7 +15,7 @@ spec:
         app: message-handler
     spec:
       containers:     
-      - image: registry.caliopen.org:5043/message-handler
+      - image: public-registry.caliopen.org/message-handler
         name: message-handler
         volumeMounts:
         - name: config-volume
