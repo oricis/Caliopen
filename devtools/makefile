@@ -10,29 +10,28 @@ help: ## Show help.
 .DEFAULT_GOAL := help
 
 # DOCKER TASKS
-# Build the image
 build: ## Build the image
 	docker-compose build $(APP_NAME)
 
-build-nc: ## Build the container without caching
+build-nc: ## Build the image without caching
 	docker-compose build --no-cache $(APP_NAME)
 
 # Master images
-master: build repo-login publish-latest publish-version ## Publish the `{version}`,`latest` tagged images
+master: build repo-login publish-latest publish-version ## Publish the `{version}`,`latest` tagged image
 
-publish-latest: tag-latest ## Publish the `latest` tagged images
+publish-latest: tag-latest ## Publish the `latest` tagged image
 	@echo 'publish latest to $(DOCKER_REPO)'
 	docker push $(DOCKER_REPO)/$(APP_NAME):latest
 
-publish-version: tag-version ## Publish the `{version}` tagged images
+publish-version: tag-version ## Publish the `{version}` tagged image
 	@echo 'publish $(VERSION) to $(DOCKER_REPO)'
 	docker push $(DOCKER_REPO)/$(APP_NAME):$(VERSION)
 
-tag-latest: ## Generate image `{version}`:latest
+tag-latest: ## Generate image `app`:latest
 	@echo 'create tag latest'
 	docker tag $(APP_NAME) $(DOCKER_REPO)/$(APP_NAME):latest
 
-tag-version: ## Generate image `latest`:`{version}`
+tag-version: ## Generate image `app`:`{version}`
 	@echo 'create tag $(VERSION)'
 	docker tag $(APP_NAME) $(DOCKER_REPO)/$(APP_NAME):$(VERSION)
 
