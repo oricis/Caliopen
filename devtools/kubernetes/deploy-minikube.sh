@@ -85,7 +85,14 @@ create_services(){
 	echo
 	echo "Service creation:"
 	echo "-----------------"
-	kubectl create -f ./services
+	kubectl create -f services/cassandra-service.yaml \
+	-f services/elasticsearch-service.yaml \
+	-f services/external-go-service.yaml \
+	-f services/external-python-service.yaml \
+	-f services/minio-service.yaml \
+	-f services/nats-service.yaml \
+	-f services/redis-service.yaml \
+	-f services/smtp-service.yaml
 }
 
 create_pvc(){
@@ -172,6 +179,9 @@ create_go_deployments(){
 	echo
 	echo "GO applications deployment:"
 	echo "---------------------------"
+	kubectl delete -f services/external-go-service.yaml
+	kubectl create -f services/api-service.yaml \
+	-f services/broker-service.yaml
 	kubectl create -f deployments/broker-deployment.yaml \
 	-f deployments/api-deployment.yaml 
 }
@@ -180,6 +190,8 @@ create_python_deployments(){
 	echo
 	echo "Python applications deployment:"
 	echo "---------------------------"
+	kubectl delete -f services/external-python-service.yaml
+	kubectl create -f services/apiv1-service.yaml
 	kubectl create -f deployments/message-handler-deployment.yaml \
 	-f deployments/apiv1-deployment.yaml
 }
@@ -188,6 +200,7 @@ create_frontend_deployment(){
 	echo
 	echo "Web Client deployment:"
 	echo "---------------------------"
+	kubectl create -f services/frontend-service.yaml
 	kubectl create -f deployments/frontend-deployment.yaml
 
 }

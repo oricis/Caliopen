@@ -1,0 +1,44 @@
+apiVersion: v1
+metadata:
+  name: api
+spec:
+  ports:
+    - name: api
+      protocol: "TCP"
+      port: 31415
+  selector: {}
+---
+
+apiVersion: v1
+metadata:
+  name: broker
+spec:
+  ports:
+    - name: broker
+      protocol: "TCP"
+      port: 2525
+  selector: {}
+---
+
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: api 
+subsets: 
+  - addresses:
+      - ip: localhost
+    ports:
+      - port: 31415
+        name: "api"
+---
+
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: broker 
+subsets: 
+  - addresses:
+      - ip: localhost
+    ports:
+      - port: 2525
+        name: "broker"
