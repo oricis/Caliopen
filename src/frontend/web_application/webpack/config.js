@@ -7,6 +7,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const clientOptions = require('../config/client.default.js');
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const configureStylesheet = () => {
   return {
     plugins: [
@@ -14,9 +16,9 @@ const configureStylesheet = () => {
         syntax: 'scss',
         emitErrors: false,
       }),
-      new OptimizeCssAssetsPlugin({
-        canPrint: false,
-      }),
+      // FIXME: useful for deduplication, we need a way prevent that.
+      // disabled for dev for build time (10sec instead of 30+)
+      ...(!isDev ? [new OptimizeCssAssetsPlugin({ canPrint: false })] : []),
       new MiniCssExtractPlugin({
         filename: 'client.[hash].css',
       }),
