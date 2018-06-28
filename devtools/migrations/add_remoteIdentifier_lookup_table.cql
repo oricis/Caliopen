@@ -4,3 +4,4 @@ CREATE TABLE remote_identifier (
     remote_id uuid,
     PRIMARY KEY (user_id, identifier)
 );
+ALTER TABLE remote_identity ADD identifier text;

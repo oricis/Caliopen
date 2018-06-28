@@ -7,3 +7,9 @@
 package objects
 
 type Credentials map[string]string
+
+type SmtpCredentials struct {
+	Server   string
+	Username string
+	Password string
+}

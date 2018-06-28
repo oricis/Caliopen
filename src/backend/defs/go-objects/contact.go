@@ -612,14 +612,14 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 					lkp := lookup.(*ContactByContactPoints)
 					oldLookups[lkp.UserID+lkp.Value+lkp.Type] = lkp
 				}
-
 			}
+
 			// iterate over contact's current state to add or update lookups
 			for lookup := range newContact.GetLookupKeys() {
 				lkp := lookup.(*ContactByContactPoints)
 				// try to get the contact_lookup
 				contactIds := new([]string)
-				session.Query(`SELECT contact_ids from contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
+				session.Query(`SELECT contact_ids FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
 					lkp.UserID,
 					lkp.Value,
 					lkp.Type,

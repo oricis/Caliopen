@@ -170,7 +170,7 @@ func (rest *RESTfacility) PatchRemoteIdentity(patch []byte, userId, remoteId str
 	// save updated resource
 	err4 := rest.UpdateRemoteIdentity(newRemoteID.(*RemoteIdentity), currentRemoteID, modifiedFields)
 	if err4 != nil {
-		return WrapCaliopenErrf(err4, FailDependencyCaliopenErr, "[RESTfacility] PatchRemoteIdentity failed with UpdateRemoteIdentity error : %s", err4)
+		return WrapCaliopenErrf(err4, FailDependencyCaliopenErr, "[RESTfacility] PatchRemoteIdentity failed with UpdateRemoteIdentity error : %s", err4.Cause())
 	}
 
 	return nil

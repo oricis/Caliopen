@@ -75,6 +75,14 @@ func (cb *CassandraBackend) CreateRemoteIdentity(rId *RemoteIdentity) CaliopenEr
 		return WrapCaliopenErr(err, DbCaliopenErr, "[CassandraBackend) CreateRemoteIdentity failed to createCredentials")
 	}
 
+	// create related rows in relevant lookup tables
+	go func(*CassandraBackend, *RemoteIdentity, bool) {
+		err := cb.UpdateLookups(rId, nil, true)
+		if err != nil {
+			logrus.WithError(err).Error("[CassandraBackend] CreateRemoteIdentity : failed to UpdateLookups")
+		}
+	}(cb, rId, true)
+
 	return nil
 }
 
@@ -103,6 +111,11 @@ func (cb *CassandraBackend) RetrieveRemoteIdentity(userId, remoteId string, with
 }
 
 func (cb *CassandraBackend) UpdateRemoteIdentity(rId *RemoteIdentity, fields map[string]interface{}) (err error) {
+
+	oldRemote, err := cb.RetrieveRemoteIdentity(rId.UserId.String(), rId.RemoteId.String(), false)
+	if err != nil {
+		return err
+	}
 	//remove Credentials from rId and process this special property apart
 	if cred, ok := fields["Credentials"].(Credentials); ok {
 		(*rId).Credentials = Credentials{}
@@ -126,15 +139,22 @@ func (cb *CassandraBackend) UpdateRemoteIdentity(rId *RemoteIdentity, fields map
 			}
 		}
 
+		// update related rows in relevant lookup tables
+		go func(cb *CassandraBackend, new, old *RemoteIdentity, isNew bool) {
+			err := cb.UpdateLookups(rId, nil, false)
+			if err != nil {
+				logrus.WithError(err).Error("[CassandraBackend] CreateRemoteIdentity : failed to UpdateLookups")
+			}
+		}(cb, rId, oldRemote, false)
+
 		ridT := cb.IKeyspace.Table("remote_identity", &RemoteIdentity{}, gocassa.Keys{
 			PartitionKeys: []string{"user_id", "remote_id"},
 		}).WithOptions(gocassa.Options{TableName: "remote_identity"})
-
 		return ridT.Where(gocassa.Eq("user_id", rId.UserId.String()), gocassa.Eq("remote_id", rId.RemoteId.String())).
 			Update(cassaFields).Run()
 	}
 
-	return err
+	return nil
 }
 
 func (cb *CassandraBackend) RetrieveRemoteIdentities(userId string, withCredentials bool) (rIds []*RemoteIdentity, err error) {
@@ -212,5 +232,14 @@ func (cb *CassandraBackend) DeleteRemoteIdentity(rId *RemoteIdentity) error {
 			logrus.WithError(err).Warn("[CassandraBackend] DeleteRemoteIdentity failed to delete credentials in vault")
 		}
 	}
+
+	// delet related rows in relevant lookup tables
+	go func(*CassandraBackend, *RemoteIdentity) {
+		err := cb.DeleteLookups(rId)
+		if err != nil {
+			logrus.WithError(err).Error("[CassandraBackend] DeleteRemoteIdentity : failed to DeleteLookups")
+		}
+	}(cb, rId)
+
 	return cb.Session.Query(`DELETE FROM remote_identity WHERE user_id = ? AND remote_id = ?`, rId.UserId, rId.RemoteId).Exec()
 }

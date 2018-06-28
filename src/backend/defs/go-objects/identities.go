@@ -7,6 +7,7 @@ package objects
 import (
 	"bytes"
 	"encoding/json"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"time"
@@ -64,6 +65,13 @@ type (
 		Status      string            `cql:"status"             json:"status"                                           patch:"user"` // for example : active, inactive, deleted
 		Type        string            `cql:"type"               json:"type"                                             patch:"user"` // for example : imap, twitter…
 		UserId      UUID              `cql:"user_id"            json:"user_id"              frontend:"omit"`
+	}
+
+	// RemoteByIdentifier is the model of a Cassandrà table to lookup remote identities by their identifier
+	RemoteByIdentifier struct {
+		UserId     string `cql:"user_id"`
+		Identifier string `cql:"identifier"`
+		RemoteId   string `cql:"remote_id"`
 	}
 )
 
@@ -136,6 +144,9 @@ func (ri *RemoteIdentity) UnmarshalMap(input map[string]interface{}) error {
 	}
 	if dn, ok := input["display_name"].(string); ok {
 		ri.DisplayName = dn
+	}
+	if identifier, ok := input["identifier"].(string); ok {
+		ri.Identifier = identifier
 	}
 	if infos, ok := input["infos"].(map[string]interface{}); ok {
 		/*
@@ -233,14 +244,17 @@ func (ri *RemoteIdentity) SetDefaults() {
 		(*ri).Credentials = Credentials{}
 	}
 
-	// try to set DisplayName if it is missing
-	if ri.DisplayName == "" {
+	// try to set identifier if it is missing
+	if ri.Identifier == "" {
 		switch ri.Type {
 		case "imap":
-			(*ri).DisplayName, _ = ri.Credentials["username"]
+			(*ri).Identifier, _ = ri.Credentials["username"]
 		}
 	}
 
+	if ri.DisplayName == "" {
+		(*ri).DisplayName = ri.Identifier
+	}
 }
 
 func (ri *RemoteIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
@@ -253,7 +267,9 @@ func (ri *RemoteIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
 	if dn, ok := input["display_name"].(string); ok {
 		ri.DisplayName = dn
 	}
-
+	if identifier, ok := input["identifier"].(string); ok {
+		ri.Identifier = identifier
+	}
 	if infos, ok := input["infos"].(map[string]string); ok {
 		ri.Infos = make(map[string]string)
 		for k, v := range infos {
@@ -280,6 +296,125 @@ func (ri *RemoteIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
 
 func (ri *RemoteIdentity) MarshalFrontEnd() ([]byte, error) {
 	return JSONMarshaller("frontend", ri)
+}
+
+// HasLookup interface to update remote_identifier lookup table
+// this lookup table allow to retrieve a remote by its identifier
+func (ri *RemoteIdentity) GetLookupsTables() map[string]StoreLookup {
+	return map[string]StoreLookup{
+		"remote_identifier": &RemoteByIdentifier{},
+	}
+}
+
+// GetLookupKeys returns a chan to iterate over fields and values that make up the lookup tables keys
+func (ri *RemoteIdentity) GetLookupKeys() <-chan StoreLookup {
+	getter := make(chan StoreLookup)
+
+	go func(chan StoreLookup) {
+		getter <- &RemoteByIdentifier{
+			UserId:     ri.UserId.String(),
+			Identifier: ri.Identifier,
+			RemoteId:   ri.RemoteId.String(),
+		}
+		close(getter)
+	}(getter)
+
+	return getter
+}
+
+// CleanupLookups implements StoreLookup interface.
+// It returns a func which removes all RemoteByIdentifier related to the RemoteIdentity given as param of the variadic func.
+func (rbi *RemoteByIdentifier) CleanupLookups(remotes ...interface{}) func(session *gocql.Session) error {
+	if len(remotes) == 1 {
+		remote := remotes[0].(*RemoteIdentity)
+		return func(session *gocql.Session) error {
+			err := session.Query(`DELETE FROM remote_identifier WHERE user_id = ? AND identifier = ?`,
+				remote.UserId.String(), remote.Identifier).Exec()
+			if err != nil {
+				return err
+			}
+
+			return nil
+		}
+	}
+	return nil
+}
+
+// UpdateLookups iterates over remote identity's lokups to add/update them to the relevant table,
+// then it deletes lookups referencs that are no more linked to an embedded key which has been removed,
+// `remotes` param should have one item in the context of a creation or 2 items [new, old] in the context of an update
+func (rbi *RemoteByIdentifier) UpdateLookups(remotes ...interface{}) func(session *gocql.Session) error {
+	remotesLen := len(remotes)
+	update := false
+	if remotesLen > 0 {
+		newRemote := remotes[0].(*RemoteIdentity)
+		var oldLookup map[string]*RemoteByIdentifier
+		return func(session *gocql.Session) error {
+			if remotesLen == 2 && remotes[1] != nil {
+				// it's an update
+				update = true
+				oldRemote := remotes[1].(*RemoteIdentity)
+				oldLookup = map[string]*RemoteByIdentifier{} // build strings with cassa's keys
+				for lookup := range oldRemote.GetLookupKeys() {
+					lkp := lookup.(*RemoteByIdentifier)
+					oldLookup[lkp.UserId+lkp.Identifier] = lkp
+				}
+			}
+
+			// iterate over remote's current state to add or update lookups
+			for lookup := range newRemote.GetLookupKeys() {
+				lkp := lookup.(*RemoteByIdentifier)
+				// try te get remote_identifier
+				var remoteId gocql.UUID
+				session.Query(`SELECT remote_id FROM remote_identifier WHERE user_id = ? AND identifier = ?`,
+					lkp.UserId,
+					lkp.Identifier).Scan(&remoteId)
+				if remoteId.String() == "" { // remote_identifier lookup not found => set one
+					err := session.Query(`INSERT INTO remote_identifier (user_id, identifier, remote_id) VALUES (?,?,?)`,
+						lkp.UserId,
+						lkp.Identifier,
+						newRemote.RemoteId.String()).Exec()
+					if err != nil {
+						log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, identifier: %s`,
+							lkp.UserId,
+							lkp.Identifier)
+					}
+				} else { // remote_identifier entry found => update if needed
+					if remoteId.String() != newRemote.UserId.String() {
+						err := session.Query(`INSERT INTO remote_identifier (user_id, identifier, remote_id) VALUES (?,?,?)`,
+							lkp.UserId,
+							lkp.Identifier,
+							lkp.RemoteId).Exec()
+						if err != nil {
+							log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, identifier: %s`,
+								lkp.UserId,
+								lkp.Identifier)
+						}
+					}
+
+				}
+				if update {
+					// remove keys in current states,
+					// thus oldLookup map will only holds remaining entries that are not in the new state
+					delete(oldLookup, lkp.UserId+lkp.Identifier)
+				}
+			}
+			if len(oldLookup) > 0 {
+				// it remains lookups in the map, meaning identifier has been changed
+				// need to remove it from lookup table
+				for _, lookup := range oldLookup {
+					err := session.Query(`DELETE FROM remote_identifier WHERE user_id = ? AND identifier = ?`,
+						lookup.UserId, lookup.Identifier).Exec()
+					if err != nil {
+						return err
+					}
+				}
+			}
+
+			return nil
+		}
+	}
+	return nil
 }
 
 // Sort interface implementations
