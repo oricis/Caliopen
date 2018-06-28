@@ -9,7 +9,8 @@ const tabsSelector = state => state.tab.tabs;
 const mapStateToProps = createSelector(
   [tabsSelector],
   tabs => ({
-    tabs,
+    // XXX; remove filter once we use real tabs for home & contact
+    tabs: tabs.filter(tab => (tab.pathname !== '/' && tab.pathname !== '/contacts')),
   })
 );
 

@@ -28,6 +28,8 @@ class MessageList extends Component {
     replyExcerpt: PropTypes.node.isRequired,
     updateTagCollection: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
+    hash: PropTypes.string,
+    scrollToTarget: PropTypes.func,
   };
 
   static defaultProps = {
@@ -35,6 +37,8 @@ class MessageList extends Component {
     isDraftFocus: false,
     loadMore: null,
     user: undefined,
+    hash: undefined,
+    scrollToTarget: undefined,
   };
 
   handleReplyToLastMessage = () => {
@@ -46,8 +50,8 @@ class MessageList extends Component {
 
   renderDayGroups(settings) {
     const {
-      messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply, onMessageCopyTo,
-      user, updateTagCollection,
+      hash, messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply,
+      onMessageCopyTo, scrollToTarget, user, updateTagCollection,
     } = this.props;
 
     const messagesGroupedByday = groupMessages(messages);
@@ -69,6 +73,7 @@ class MessageList extends Component {
               onCopyTo={onMessageCopyTo}
               updateTagCollection={updateTagCollection}
               user={user}
+              scrollToMe={message.message_id === hash ? scrollToTarget : undefined}
             />
           ))}
         </DayMessageList>

@@ -7,6 +7,10 @@ export const hashSelector = createSelector(
   [locationSelector],
   location => location && location.hash
 );
+export const locationKeySelector = createSelector(
+  [locationSelector],
+  location => location && location.key
+);
 export const paramsSelector = createSelector(
   [locationSelector],
   (location) => {

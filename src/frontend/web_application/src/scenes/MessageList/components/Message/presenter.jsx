@@ -9,6 +9,7 @@ import { Icon, TextBlock } from '../../../../components';
 import MessageActionsContainer from '../MessageActionsContainer';
 import MessageAttachments from '../MessageAttachments';
 import { getAuthor, renderParticipant, getRecipientsExceptUser, isUserRecipient } from '../../../../services/message';
+
 import './style.scss';
 
 class Message extends Component {
@@ -24,18 +25,25 @@ class Message extends Component {
     settings: PropTypes.shape({}).isRequired,
     isMessageFromUser: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
+    scrollToMe: PropTypes.func,
+    forwardRef: PropTypes.func,
   }
 
   static defaultProps = {
     isMessageFromUser: false,
     user: undefined,
+    scrollToMe: undefined,
+    forwardRef: undefined,
   }
-
-  state = {}
 
   onVisibilityChange = (isVisible) => {
     const { message, onMessageRead } = this.props;
-    if (isVisible && message.is_unread) { onMessageRead({ message }); }
+
+    if (isVisible) {
+      this.setState({ needsScroll: false });
+
+      if (message.is_unread) { onMessageRead({ message }); }
+    }
   }
 
   handleTagsChange = async ({ tags }) => {
@@ -124,7 +132,7 @@ class Message extends Component {
 
   render() {
     const {
-      message, onDelete, onMessageUnread, onMessageRead,
+      forwardRef, message, onDelete, onMessageUnread, onMessageRead,
       onReply, onCopyTo, i18n,
     } = this.props;
     const author = getAuthor(message);
@@ -138,7 +146,7 @@ class Message extends Component {
       .filter(participant => participant.address !== author.address);
 
     return (
-      <article id={message.message_id} className="m-message">
+      <article id={message.message_id} ref={forwardRef} className="m-message">
         <aside className="m-message__info">
           <div className="m-message__pi">
             <Trans className="m-message__info-label" id="message-list.message.pi">Privacy Index</Trans>

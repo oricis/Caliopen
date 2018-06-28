@@ -26,12 +26,15 @@ class MessageList extends Component {
     loadMore: PropTypes.func.isRequired,
     hasMore: PropTypes.bool.isRequired,
     updateTagCollection: PropTypes.func.isRequired,
+    scrollToTarget: PropTypes.func.isRequired,
     currentTab: PropTypes.shape({}),
+    hash: PropTypes.string,
   };
 
   static defaultProps = {
     messages: [],
     currentTab: undefined,
+    hash: undefined,
   };
 
   state = {
@@ -136,7 +139,7 @@ class MessageList extends Component {
 
   render() {
     const {
-      messages, discussionId, isFetching, copyMessageTo, updateTagCollection,
+      hash, messages, discussionId, isFetching, copyMessageTo, scrollToTarget, updateTagCollection,
     } = this.props;
     const internalId = discussionId;
     const messagesExceptDrafts = messages.filter(message => message.is_draft !== true);
@@ -145,12 +148,15 @@ class MessageList extends Component {
       <div>
         <PageTitle />
         <MessageListBase
+          hash={hash}
+          scrollToTarget={scrollToTarget}
           messages={messagesExceptDrafts}
           onMessageRead={this.handleSetMessageRead}
           onMessageUnread={this.handleSetMessageUnread}
           isFetching={isFetching}
           replyForm={(
             <ReplyForm
+              scrollToMe={hash === 'reply' ? scrollToTarget : undefined}
               discussionId={discussionId}
               internalId={internalId}
               onFocus={this.handleFocusDraft}

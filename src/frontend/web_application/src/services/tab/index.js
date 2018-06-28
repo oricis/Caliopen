@@ -1,1 +1,1 @@
-export const getTabUrl = ({ pathname, search, hash }) => `${pathname}${search}${hash}`;
+export const getTabUrl = ({ pathname, search }) => `${pathname}${search}`;

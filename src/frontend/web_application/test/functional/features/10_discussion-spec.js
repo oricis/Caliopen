@@ -18,7 +18,7 @@ describe('Discussions', () => {
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
     expect(element.all(by.css('.s-timeline .s-message-item .s-message-item__title .s-message-item__excerpt')).first().getText())
       .toContain('It\'s okay, Bender. I like cooking too.');
-    expect(element.all(by.css('.s-message-item')).count()).toEqual(4);
+    expect(element.all(by.css('.s-message-item')).count()).toEqual(16);
     expect(element(by.cssContainingText('.s-timeline__load-more', 'Load more')).isPresent())
       .toBe(false);
   });
