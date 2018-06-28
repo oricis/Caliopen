@@ -56,6 +56,7 @@ describe('Tag', () => {
     await browser.wait(EC.stalenessOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 5 * 1000);
     await browser.wait(EC.stalenessOf(messageElement.element(by.cssContainingText('.s-message-item__tags', tagName))), 5 * 1000);
     await element(by.css('.m-modal__close')).click();
+    await browser.executeScript('window.scrollTo(0,0);');
   });
 
   it('Manage tags for multiple messages on timeline', async () => {
@@ -79,12 +80,12 @@ describe('Tag', () => {
     await browser.element(by.css('.m-tags-search__button[aria-label=Add]')).click();
     await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 5 * 1000);
     await element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).element(by.css('[aria-label="Remove"]')).click();
-    expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox')).isPresent()).toEqual(false);
-    await browser.sleep(1);
+    await browser.wait(EC.stalenessOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', 'Inbox'))), 5 * 1000);
     await element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).element(by.css('[aria-label="Remove"]')).click();
-    await browser.sleep(1);
-    expect(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName)).isPresent()).toEqual(false);
+    await browser.wait(EC.stalenessOf(element(by.cssContainingText('.m-tags-form__section .m-tag-item', tagName))), 5 * 1000);
+
     await element(by.css('.m-modal__close')).click();
+    await browser.executeScript('window.scrollTo(0,0);');
   });
 
   it('Manage tags on a contact', async () => {
@@ -109,8 +110,8 @@ describe('Tag', () => {
       // XXX: force scroll due to call-to-action
       await browser.executeScript('window.scrollTo(0, document.body.scrollHeight);');
       await element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).element(by.css('.m-tag-input__delete')).click();
-      await browser.sleep(1);
-      expect(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).isPresent()).toEqual(false);
+      await browser.wait(EC.stalenessOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName))), 5 * 1000);
+      await browser.executeScript('window.scrollTo(0, 0);');
     });
 
     it('Should not allow to create a tag that already exist', async () => {
@@ -127,8 +128,8 @@ describe('Tag', () => {
       await browser.executeScript('window.scrollTo(0, document.body.scrollHeight);');
       // ---
       await element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).element(by.css('.m-tag-input__delete')).click();
-      await browser.sleep(1);
-      expect(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).isPresent()).toEqual(false);
+      await browser.wait(EC.stalenessOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName))), 5 * 1000);
+      await browser.executeScript('window.scrollTo(0, 0);');
     });
 
     it('Rename a tag', async () => {
