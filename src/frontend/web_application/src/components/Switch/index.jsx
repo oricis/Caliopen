@@ -17,7 +17,7 @@ const Switch = ({ label, id, ...inputProps }) => (
 );
 
 Switch.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   id: PropTypes.string.isRequired,
 };
 

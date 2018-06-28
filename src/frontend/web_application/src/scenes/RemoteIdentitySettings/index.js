@@ -15,16 +15,15 @@ const mapStateToProps = createSelector(
   })
 );
 
-const onRemoteIdentityChange = ({ remoteIdentity }) => (dispatch) => {
+const onRemoteIdentityChange = ({ remoteIdentity }) => async (dispatch) => {
   try {
     if (!remoteIdentity.remote_id) {
-      return dispatch(createRemoteIdentity({ remoteIdentity }));
+      return await dispatch(createRemoteIdentity({ remoteIdentity }));
     }
 
-    return dispatch(updateRemoteIdentity({ remoteIdentity }));
+    return await dispatch(updateRemoteIdentity({ remoteIdentity }));
   } catch (err) {
-    // FIXME
-    return dispatch(notifyError({ message: err }));
+    return dispatch(notifyError({ message: err.map(({ message }) => message) }));
   }
 };
 
