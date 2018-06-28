@@ -7,8 +7,6 @@
 	* Use VirtualBox 
 	* Run the stack locally with [Docker](https://docs.docker.com/install/).
 * [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) & [Minikube](https://github.com/kubernetes/minikube/releases)
-* git-crypt (eventually via your distribution package manager) to be able to pull images from our registry
-
 
 ## WARNING
 
