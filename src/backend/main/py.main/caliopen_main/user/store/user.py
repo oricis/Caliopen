@@ -96,6 +96,12 @@ class RemoteIdentity(BaseModel):
     last_check = columns.DateTime()
     infos = columns.Map(columns.Text, columns.Text)
 
+class RemoteIdentifier(BaseModel):
+    """Allow to lookup remote identities by their identifier"""
+
+    user_id = columns.UUID(primary_key=True)
+    identifier = columns.Text(primary_key=True)
+    remote_id = columns.UUID(required=True)
 
 class IndexUser(object):
     """User index management class."""
