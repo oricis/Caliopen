@@ -23,6 +23,8 @@ describe('Remote Identity Settings', () => {
 
     await element(by.cssContainingText('.m-button', 'Edit')).click();
     await element(by.css('input[name=displayName]')).sendKeys(' edit');
+    // XXX: force scroll due to call-to-action
+    await browser.executeScript('window.scrollTo(0, document.body.scrollHeight);');
     await element(by.cssContainingText('.m-button', 'Save')).click();
     await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-title__text', 'foobar edit'))), 5 * 1000);
     expect(element(by.css('input[name=displayName]')).isPresent()).toBe(false);

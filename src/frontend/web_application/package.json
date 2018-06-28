@@ -33,7 +33,7 @@
     "test:unit:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:functional": "npm-run-all --sequential -n build:browser:test build:server:test test:functional:start",
     "test:functional:start": "npm-run-all -n --parallel --race start:mock-api test:functional:serve test:e2e:delay",
-    "test:functional:serve": "NODE_ENV=test CALIOPEN_API_HOSTNAME=localhost ./bin/server",
+    "test:functional:serve": "NODE_ENV=production CALIOPEN_API_HOSTNAME=localhost ./bin/server",
     "test:e2e": "protractor ./test/functional/protractor.conf.js",
     "test:e2e:debug": "node --inspect-brk node_modules/.bin/protractor ./test/functional/protractor.conf.js",
     "test:e2e:delay": "sleep 3 && protractor ./test/functional/protractor.conf.js",

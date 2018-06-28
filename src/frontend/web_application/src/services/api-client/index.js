@@ -94,7 +94,7 @@ export const tryCatchAxiosAction = async (action) => {
 
     return handleClientResponseSuccess(response);
   } catch (err) {
-    return handleClientResponseError(err);
+    return Promise.reject(handleClientResponseError(err));
   }
 };
 
@@ -104,6 +104,6 @@ export const tryCatchAxiosPromise = async (prom) => {
 
     return handleClientResponseSuccess(response);
   } catch (err) {
-    return handleClientResponseError(err);
+    return Promise.reject(handleClientResponseError(err));
   }
 };

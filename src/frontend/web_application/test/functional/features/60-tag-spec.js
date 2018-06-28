@@ -14,10 +14,11 @@ describe('Tag', () => {
   });
 
   it('Manage tags on a message of a discussion', async () => {
+    await filter('All');
     // make sure the discussion is only one message because of scroll and saucelabs that will try to click on header instead of Tag
-    const content = 'Shut up and take my money! Leela, are you alright?';
+    const content = 'Shut up and take my money! Leela, are you alright';
     await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 5 * 1000);
-    await element(by.cssContainingText('.s-timeline .s-message-item .s-message-item__title .s-message-item__excerpt', content)).click();
+    await element(by.cssContainingText('.m-link', content)).click();
     await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-message__container', content))), 5 * 1000);
     console.log('click tag');
     await browser.executeScript('window.scrollTo(0, 350);');
@@ -105,6 +106,8 @@ describe('Tag', () => {
       await element(by.css('.m-add-tag .m-input-text')).sendKeys(tagName);
       await element(by.css('.m-add-tag__button[aria-label=Add]')).click();
       await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName))), 5 * 1000);
+      // XXX: force scroll due to call-to-action
+      await browser.executeScript('window.scrollTo(0, document.body.scrollHeight);');
       await element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).element(by.css('.m-tag-input__delete')).click();
       await browser.sleep(1);
       expect(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input', tagName)).isPresent()).toEqual(false);
