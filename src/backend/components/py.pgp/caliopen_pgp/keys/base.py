@@ -80,6 +80,16 @@ class DiscoveryResult(object):
         self.keys = keys
         self.identities = extra_identities if extra_identities else []
 
+    @property
+    def emails(self):
+        """Return distinct list of emails found in keys."""
+        found_emails = []
+        for key in self.keys:
+            for userid in key.userids:
+                if userid.email not in found_emails and userid.is_uid:
+                    found_emails.append(userid.email)
+                    yield userid
+
 
 class BaseDiscovery(object):
     """Base class for discovery and public key parsing logic."""
