@@ -79,6 +79,7 @@ type (
 		Url            string `mapstructure:"url"`
 		OutSMTP_topic  string `mapstructure:"outSMTP_topic"`
 		Contacts_topic string `mapstructure:"contacts_topic"`
+		Keys_topic     string `mapstructure:"keys_topic"`
 	}
 
 	NotifierConfig struct {
@@ -122,6 +123,7 @@ func (server *REST_API) initialize(config APIConfig) error {
 			Url:            config.NatsConfig.Url,
 			OutSMTP_topic:  config.NatsConfig.OutSMTP_topic,
 			Contacts_topic: config.NatsConfig.Contacts_topic,
+			Keys_topic:     config.NatsConfig.Keys_topic,
 		},
 		NotifierConfig: obj.NotifierConfig{
 			AdminUsername: config.NotifierConfig.AdminUsername,
