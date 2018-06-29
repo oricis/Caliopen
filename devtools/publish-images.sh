@@ -1,11 +1,12 @@
 #!/bin/bash
+set -e
 
 APPS="api apiv1 cli frontend broker message_handler identity_worker identity_poller"
 STAGE=$1
 DOCKER_REPO="registry.caliopen.org"
 REPO_USER=""
 REPO_PASS=""
-VERSION="0.10"
+VERSION="${CALIOPEN_VERSION}"
 
 if [[ ${STAGE} =~ ^(develop|master)$ ]]
 then
