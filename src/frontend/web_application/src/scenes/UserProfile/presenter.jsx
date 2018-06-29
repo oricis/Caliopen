@@ -78,7 +78,7 @@ class UserProfile extends Component {
         });
       }
 
-      return Promise.reject('Unable to delete account');
+      return Promise.reject(new Error('Unable to delete account'));
     }
   }
 

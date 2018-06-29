@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { withI18n } from 'lingui-react';
 import { withDevice, STATUS_VERIFIED } from '../../../../modules/device';
 import Presenter from './presenter';
 
@@ -27,7 +26,6 @@ const mapStateToProps = createSelector(
 );
 
 export default compose(
-  withI18n(),
   withDevice(),
   connect(mapStateToProps)
 )(Presenter);
