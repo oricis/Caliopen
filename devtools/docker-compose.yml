@@ -13,6 +13,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-api
+    image: api
     ## this very bad config for a public machine
     network_mode: "host"
     extra_hosts:
@@ -32,6 +33,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.py-api
+    image: apiv1
     links:
       - redis:redis.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
@@ -86,6 +88,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.cli
+    image: cli
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -100,6 +103,7 @@ services:
   frontend:
     build:
       context: ../src/frontend/web_application
+    image: frontend
     network_mode: "host"
     ports:
       - "4000:4000"
@@ -111,6 +115,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-lmtp
+    image: broker
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -134,6 +139,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.message_handler
+    image: message_handler
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -155,6 +161,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-worker
+    image: identity_worker
     links:
       - cassandra:cassandra.dev.caliopen.org
       - object_store:minio.dev.caliopen.org
@@ -168,6 +175,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-poller
+    image: identity_poller
     links:
       - identity_worker:identityworker.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
