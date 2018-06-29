@@ -5,6 +5,7 @@ OS=$(uname -s)
 KUBE_DRIVER="none"
 BACKEND_CONF_DIR="../../src/backend/configs"
 MINIO_CONF_DIR=${BACKEND_CONF_DIR}"/minio"
+SKIP_SETUP=$1
 
 wait_for_pods(){
 	echo
@@ -77,15 +78,14 @@ create_configmaps(){
 	echo "-----------------------------"
 	kubectl create configmap caliopen-config --from-file=${BACKEND_CONF_DIR}
 	kubectl create configmap minio-config --from-file=${MINIO_CONF_DIR}
-	kubectl create -f configs/dns-config.yaml
-	kubectl create -f secrets/registry-secret.yaml
+	kubectl apply -f configs/dns-config.yaml
 }
 
 create_services(){
 	echo
 	echo "Service creation:"
 	echo "-----------------"
-	kubectl create -f services/cassandra-service.yaml \
+	kubectl apply -f services/cassandra-service.yaml \
 	-f services/elasticsearch-service.yaml \
 	-f services/external-go-service.yaml \
 	-f services/external-python-service.yaml \
@@ -99,14 +99,14 @@ create_pvc(){
 	echo
 	echo "Persistent storage creation:"
 	echo "----------------------------"
-	kubectl create  -f ./volumeclaims
+	kubectl apply  -f ./volumeclaims
 }
 
 create_basic_deployments(){
 	echo
 	echo "Basic deployments creation:"
 	echo "---------------------------"
-	kubectl create -f deployments/cassandra-deployment.yaml \
+	kubectl apply -f deployments/cassandra-deployment.yaml \
 	-f deployments/redis-deployment.yaml \
 	-f deployments/elasticsearch-deployment.yaml \
 	-f deployments/minio-deployment.yaml \
@@ -180,9 +180,9 @@ create_go_deployments(){
 	echo "GO applications deployment:"
 	echo "---------------------------"
 	kubectl delete -f services/external-go-service.yaml
-	kubectl create -f services/api-service.yaml \
+	kubectl apply -f services/api-service.yaml \
 	-f services/broker-service.yaml
-	kubectl create -f deployments/broker-deployment.yaml \
+	kubectl apply -f deployments/broker-deployment.yaml \
 	-f deployments/api-deployment.yaml 
 }
 
@@ -191,8 +191,8 @@ create_python_deployments(){
 	echo "Python applications deployment:"
 	echo "---------------------------"
 	kubectl delete -f services/external-python-service.yaml
-	kubectl create -f services/apiv1-service.yaml
-	kubectl create -f deployments/message-handler-deployment.yaml \
+	kubectl apply -f services/apiv1-service.yaml
+	kubectl apply -f deployments/message-handler-deployment.yaml \
 	-f deployments/apiv1-deployment.yaml
 }
 
@@ -200,8 +200,8 @@ create_frontend_deployment(){
 	echo
 	echo "Web Client deployment:"
 	echo "---------------------------"
-	kubectl create -f services/frontend-service.yaml
-	kubectl create -f deployments/frontend-deployment.yaml
+	kubectl apply -f services/frontend-service.yaml
+	kubectl apply -f deployments/frontend-deployment.yaml
 
 }
 
@@ -230,18 +230,20 @@ fi
 }
 
 ############################################################
+if [[ $SKIP_SETUP != "skip-setup" ]]
+then
+	command -v minikube >/dev/null 2>&1 || { echo "Minikube required but not installed. Aborting." >&2; exit 1; }
 
-command -v minikube >/dev/null 2>&1 || { echo "Minikube required but not installed. Aborting." >&2; exit 1; }
-
-check_os
-check_driver_and_root
-minikube start --memory 6144 --cpus=2 --vm-driver=${KUBE_DRIVER}
-#--extra-config=apiserver.ServiceNodePortRange=1-32000 WORKS WITH LOCALKUBE BOOTSTRAPPER --bootstrapper=localkube
-#--dns-domain=dev.caliopen.org NOT WORKING
-# --apiserver-ips 127.0.0.1 --apiserver-name localhost
-# nodePortAddresses: [127.0.0.0/8] on kube-proxy configmap TO LIMIT EXTERNAL ACCESS
-check_es
-create_configmaps
+	check_os
+	check_driver_and_root
+	minikube start --memory 6144 --cpus=2 --vm-driver=${KUBE_DRIVER}
+	#--extra-config=apiserver.ServiceNodePortRange=1-32000 WORKS WITH LOCALKUBE BOOTSTRAPPER --bootstrapper=localkube
+	#--dns-domain=dev.caliopen.org NOT WORKING
+	# --apiserver-ips 127.0.0.1 --apiserver-name localhost
+	# nodePortAddresses: [127.0.0.0/8] on kube-proxy configmap TO LIMIT EXTERNAL ACCESS
+	check_es
+	create_configmaps
+fi
 create_services
 create_pvc
 create_basic_deployments
