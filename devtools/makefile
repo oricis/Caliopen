@@ -1,3 +1,8 @@
+#SET THIS VARIABLE TO DEFINE WHICH APP YOU WANT TO PUBLISH
+#APP_NAME=
+VERSION := ${CALIOPEN_VERSION}
+CONF ?= registry.conf
+include $(CONF)
 # HELP
 # This will output the help for each task
 # Based on https://gist.github.com/mpneuried/0594963ad38e68917ef189b4e6a269db
