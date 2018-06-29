@@ -22,6 +22,8 @@ class ReplyForm extends Component {
     onUploadAttachments: PropTypes.func.isRequired,
     onDeleteAttachement: PropTypes.func.isRequired,
     draftFormRef: PropTypes.func,
+    forwardRef: PropTypes.func,
+    scrollToMe: PropTypes.func,
   };
 
   static defaultProps = {
@@ -33,6 +35,8 @@ class ReplyForm extends Component {
     isDeletingDraft: false,
     user: undefined,
     draftFormRef: () => {},
+    forwardRef: undefined,
+    scrollToMe: undefined,
   };
 
   state = {
@@ -184,7 +188,7 @@ class ReplyForm extends Component {
     }
 
     return (
-      <div id="reply">
+      <div id="reply" ref={this.props.forwardRef}>
         <ReplyFormBase
           parentMessage={parentMessage}
           draft={draft}

@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- scrolls to specific message, and restore scroll positions when navigating between tabs.
 - change parent of a draft has no effects
 - sort of the messages of a discussion
 - discussion might not be up to date after creating a draft

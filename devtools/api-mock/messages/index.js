@@ -57,7 +57,7 @@ const reduceParticipants = message => [
 ];
 
 const reducer = {
-  [actions.get]: state => state,
+  [actions.get]: state => state.sort((a, b) => new Date(b.date_sort) - new Date(a.date_sort)),
   [actions.post]: (state, { body, req: { discussionId } }) => ([
     ...state,
     {

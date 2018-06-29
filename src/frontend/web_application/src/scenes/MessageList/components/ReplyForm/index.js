@@ -3,6 +3,7 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
 import { withNotification } from '../../../../modules/userNotify';
+import withScrollTarget from '../../../../modules/scroll/hoc/scrollTarget';
 import { createMessageCollectionStateSelector } from '../../../../store/selectors/message';
 import { deleteDraft, deleteDraftSuccess, clearDraft, syncDraft } from '../../../../store/modules/draft-message';
 import { updateTagCollection, withTags } from '../../../../modules/tags';
@@ -144,5 +145,6 @@ export default compose(...[
   withI18n(),
   withNotification(),
   withTags(),
+  withScrollTarget(),
   connect(mapStateToProps, mapDispatchToProps),
 ])(Presenter);

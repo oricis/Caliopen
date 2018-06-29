@@ -11,7 +11,7 @@ import { clearDraft } from '../../store/modules/draft-message';
 import { updateTagCollection, withTags } from '../../modules/tags';
 import { setMessageRead, deleteMessage } from '../../modules/message';
 import { reply } from '../../modules/draftMessage';
-import { withCurrentTab } from '../../hoc/tab';
+import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import Presenter from './presenter';
 
 const getDiscussionIdFromProps = props => props.match.params.discussionId;
@@ -62,6 +62,11 @@ const onDeleteMessage = ({ message }) => dispatch =>
       return dispatch(clearDraft({ internalId: message.discussion_id }));
     });
 
+const onReplyMessage = ({ message }) => (dispatch) => {
+  dispatch(reply({ internalId: message.discussion_id, message }));
+  dispatch(push({ hash: 'reply' }));
+};
+
 const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   requestMessages: requestMessages.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
   loadMore: loadMore.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
@@ -69,7 +74,7 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   setMessageRead,
   removeTab,
   updateTab,
-  replyToMessage: reply,
+  replyToMessage: onReplyMessage,
   copyMessageTo: () => notif,
   push,
   updateTagCollection,
@@ -79,5 +84,5 @@ export default compose(
   withTags(),
   connect(mapStateToProps, mapDispatchToProps),
   withI18n(),
-  withCurrentTab()
+  withScrollManager(),
 )(Presenter);
