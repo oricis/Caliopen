@@ -14,12 +14,17 @@ import (
 
 type (
 	//object stored in db
-	LocalIdentity struct {
-		Display_name string `cql:"display_name"            json:"display_name"`
-		Identifier   string `cql:"identifier"              json:"identifier"`
-		Status       string `cql:"status"                  json:"status"`
-		Type         string `cql:"type"                    json:"type"`
-		User_id      UUID   `cql:"user_id"                 json:"user_id"           formatter:"rfc4122"`
+	UserIdentity struct {
+		Credentials Credentials       `cql:"credentials"        json:"credentials,omitempty"                            patch:"user"`
+		DisplayName string            `cql:"display_name"       json:"display_name"                                     patch:"user"`
+		Identifier  string            `cql:"identifier"         json:"identifier"                                       patch:"identifier"` // for example: me@caliopen.org, @mastodon_account
+		Infos       map[string]string `cql:"infos"              json:"infos"                                            patch:"user"`
+		LastCheck   time.Time         `cql:"last_check"         json:"last_check,omitempty"                 formatter:"RFC3339Milli"`
+		Protocol    string            `cql:"protocol"           json:"protocol"                                         patch:"user"` // for example: smtp,imap, mastodon
+		Id          UUID              `cql:"identity_id"          json:"identity_id"`
+		Status      string            `cql:"status"             json:"status"                                           patch:"user"` // for example : active, inactive, deleted
+		Type        string            `cql:"type"               json:"type"                                             patch:"user"` // for example : local, remote
+		UserId      UUID              `cql:"user_id"            json:"user_id"              frontend:"omit"`
 	}
 
 	// embedded in a contact
@@ -32,8 +37,9 @@ type (
 
 	//reference embedded in a message
 	Identity struct {
-		Identifier string `cql:"identifier"     json:"identifier"`
-		Type       string `cql:"type"           json:"type"`
+		Identifier string `cql:"identifier"     json:"identifier"` // legacy field, should be empty most of time
+		Type       string `cql:"type"           json:"type"`       // legacy field, should be empty most of time
+		Id         UUID   `cql:"identity_id"    json:"identity_id"`
 	}
 
 	// Mean of communication for a contact, with on-demand calculated PI.
@@ -53,18 +59,186 @@ type (
 		Source     string `json:"source,omitempty"`     // "participant" or "contact", ie from where this suggestion came from
 	}
 
-	//struct to store external user accounts
-	RemoteIdentity struct {
-		Credentials Credentials       `cql:"credentials"        json:"credentials,omitempty"                            patch:"user"`
-		DisplayName string            `cql:"display_name"       json:"display_name"                                     patch:"user"`
-		Infos       map[string]string `cql:"infos"              json:"infos"                                            patch:"user"`
-		LastCheck   time.Time         `cql:"last_check"         json:"last_check,omitempty"                 formatter:"RFC3339Milli"`
-		RemoteId    UUID              `cql:"remote_id"          json:"remote_id"`
-		Status      string            `cql:"status"             json:"status"                                           patch:"user"` // for example : active, inactive, deleted
-		Type        string            `cql:"type"               json:"type"                                             patch:"user"` // for example : imap, twitter…
-		UserId      UUID              `cql:"user_id"            json:"user_id"              frontend:"omit"`
+	// cassandra table to lookup identities by identifier [and protocol]
+	IdentityLookup struct {
+		UserId     UUID   `cql:"user_id"`
+		Identifier string `cql:"identifier"`
+		Protocol   string `cql:"protocol"`
+		IdentityId UUID   `cql:"identity_id"`
 	}
 )
+
+/** identity **/
+func (ui *UserIdentity) NewEmpty() interface{} {
+	nui := new(UserIdentity)
+	nui.Credentials = Credentials{}
+	nui.Infos = map[string]string{}
+	return nui
+}
+
+func (ui *UserIdentity) UnmarshalJSON(b []byte) error {
+	input := map[string]interface{}{}
+	if err := json.Unmarshal(b, &input); err != nil {
+		return err
+	}
+
+	return ui.UnmarshalMap(input)
+}
+
+func (ui *UserIdentity) UnmarshalMap(input map[string]interface{}) error {
+	if credentials, ok := input["credentials"].(map[string]interface{}); ok {
+		ui.Credentials = Credentials{}
+		for k, v := range credentials {
+			ui.Credentials[k] = v.(string)
+		}
+	}
+	if dn, ok := input["display_name"].(string); ok {
+		ui.DisplayName = dn
+	}
+	if infos, ok := input["infos"].(map[string]interface{}); ok {
+		/*
+			// create a new map, fill it with current values if any, then with values from input,
+			// at last replace current map with new one.
+			newMap := make(map[string]string)
+			for k, v := range ui.Infos {
+				newMap[k] = v
+			}
+			for k, v := range infos {
+				newMap[k] = v.(string)
+			}
+			ui.Infos = newMap*/
+		ui.Infos = make(map[string]string)
+		for k, v := range infos {
+			ui.Infos[k] = v.(string)
+		}
+	}
+
+	if lc, ok := input["last_check"]; ok {
+		ui.LastCheck, _ = time.Parse(time.RFC3339Nano, lc.(string))
+	}
+	if remote_id, ok := input["remote_id"].(string); ok {
+		if id, err := uuid.FromString(remote_id); err == nil {
+			ui.Id.UnmarshalBinary(id.Bytes())
+		}
+	}
+	if status, ok := input["status"].(string); ok {
+		ui.Status = status
+	}
+	if t, ok := input["type"].(string); ok {
+		ui.Type = t
+	}
+	if userid, ok := input["user_id"].(string); ok {
+		if id, err := uuid.FromString(userid); err == nil {
+			ui.UserId.UnmarshalBinary(id.Bytes())
+		}
+	}
+	return nil
+}
+
+func (ui *UserIdentity) JsonTags() (tags map[string]string) {
+	return jsonTags(ui)
+}
+
+func (ui *UserIdentity) SortSlices() {
+	//no slice to sort
+}
+
+// ensure mandatory properties are set, also default values.
+func (ui *UserIdentity) MarshallNew(args ...interface{}) {
+	if len(ui.Id) == 0 || (bytes.Equal(ui.Id.Bytes(), EmptyUUID.Bytes())) {
+		ui.Id.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
+	if (len(ui.UserId) == 0 || bytes.Equal(ui.UserId.Bytes(), EmptyUUID.Bytes())) && len(args) == 1 {
+		switch args[0].(type) {
+		case UUID:
+			ui.UserId = args[0].(UUID)
+		}
+	}
+
+}
+
+// SetDefaults fills UserIdentity with default keys and values according to the type of the remote identity
+func (ui *UserIdentity) SetDefaults() {
+	defaults := map[string]string{}
+
+	switch ui.Type {
+	case "imap":
+		defaults = map[string]string{
+			"lastseenuid": "",
+			"lastsync":    "", // RFC3339 date string
+			"server":      "", // server hostname[|port]
+			"uidvalidity": "", // uidvalidity to invalidate data if needed (see RFC4549#section-4.1)
+		}
+	}
+	// defaults for every type
+	defaults["pollinterval"] = "15" // how often remote account should be polled, in minutes.
+
+	if ui.Infos == nil {
+		(*ui).Infos = defaults
+	} else {
+		for default_key, default_value := range defaults {
+			if v, ok := ui.Infos[default_key]; !ok || v == "" {
+				(*ui).Infos[default_key] = default_value
+			}
+		}
+	}
+
+	if ui.Status == "" {
+		(*ui).Status = "active"
+	}
+
+	if ui.Credentials == nil {
+		(*ui).Credentials = Credentials{}
+	}
+
+	// try to set DisplayName if it is missing
+	if ui.DisplayName == "" {
+		switch ui.Type {
+		case "imap":
+			(*ui).DisplayName, _ = ui.Credentials["username"]
+		}
+	}
+
+}
+
+func (ui *UserIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
+	if credentials, ok := input["credentials"].(map[string]string); ok {
+		ui.Credentials = Credentials{}
+		for k, v := range credentials {
+			ui.Credentials[k] = v
+		}
+	}
+	if dn, ok := input["display_name"].(string); ok {
+		ui.DisplayName = dn
+	}
+
+	if infos, ok := input["infos"].(map[string]string); ok {
+		ui.Infos = make(map[string]string)
+		for k, v := range infos {
+			ui.Infos[k] = v
+		}
+	}
+	if lc, ok := input["last_check"].(time.Time); ok {
+		ui.LastCheck = lc
+	}
+	if remote_id, ok := input["remote_id"].(gocql.UUID); ok {
+		ui.Id.UnmarshalBinary(remote_id.Bytes())
+	}
+	if status, ok := input["status"].(string); ok {
+		ui.Status = status
+	}
+	if t, ok := input["type"].(string); ok {
+		ui.Type = t
+	}
+	if userid, ok := input["user_id"].(gocql.UUID); ok {
+		ui.UserId.UnmarshalBinary(userid.Bytes())
+	}
+	return nil
+}
+
+func (ui *UserIdentity) MarshalFrontEnd() ([]byte, error) {
+	return JSONMarshaller("frontend", ui)
+}
 
 func (si *SocialIdentity) UnmarshalMap(input map[string]interface{}) error {
 	si.Infos, _ = input["infos"].(map[string]string)
@@ -75,19 +249,6 @@ func (si *SocialIdentity) UnmarshalMap(input map[string]interface{}) error {
 		}
 	}
 	si.Type, _ = input["type"].(string)
-	return nil //TODO: errors handling
-}
-
-func (li *LocalIdentity) UnmarshalMap(input map[string]interface{}) error {
-	li.Display_name, _ = input["display_name"].(string)
-	li.Identifier, _ = input["identifier"].(string)
-	li.Status, _ = input["status"].(string)
-	li.Type, _ = input["type"].(string)
-	if user_id, ok := input["user_id"].(string); ok {
-		if id, err := uuid.FromString(user_id); err == nil {
-			li.User_id.UnmarshalBinary(id.Bytes())
-		}
-	}
 	return nil //TODO: errors handling
 }
 
@@ -107,178 +268,6 @@ func (si *SocialIdentity) MarshallNew(...interface{}) {
 
 func (i *Identity) MarshallNew(...interface{}) {
 	//nothing to enforce
-}
-
-/** remote identity **/
-func (ri *RemoteIdentity) NewEmpty() interface{} {
-	nri := new(RemoteIdentity)
-	nri.Credentials = Credentials{}
-	nri.Infos = map[string]string{}
-	return nri
-}
-
-func (ri *RemoteIdentity) UnmarshalJSON(b []byte) error {
-	input := map[string]interface{}{}
-	if err := json.Unmarshal(b, &input); err != nil {
-		return err
-	}
-
-	return ri.UnmarshalMap(input)
-}
-
-func (ri *RemoteIdentity) UnmarshalMap(input map[string]interface{}) error {
-	if credentials, ok := input["credentials"].(map[string]interface{}); ok {
-		ri.Credentials = Credentials{}
-		for k, v := range credentials {
-			ri.Credentials[k] = v.(string)
-		}
-	}
-	if dn, ok := input["display_name"].(string); ok {
-		ri.DisplayName = dn
-	}
-	if infos, ok := input["infos"].(map[string]interface{}); ok {
-		/*
-			// create a new map, fill it with current values if any, then with values from input,
-			// at last replace current map with new one.
-			newMap := make(map[string]string)
-			for k, v := range ri.Infos {
-				newMap[k] = v
-			}
-			for k, v := range infos {
-				newMap[k] = v.(string)
-			}
-			ri.Infos = newMap*/
-		ri.Infos = make(map[string]string)
-		for k, v := range infos {
-			ri.Infos[k] = v.(string)
-		}
-	}
-
-	if lc, ok := input["last_check"]; ok {
-		ri.LastCheck, _ = time.Parse(time.RFC3339Nano, lc.(string))
-	}
-	if remote_id, ok := input["remote_id"].(string); ok {
-		if id, err := uuid.FromString(remote_id); err == nil {
-			ri.RemoteId.UnmarshalBinary(id.Bytes())
-		}
-	}
-	if status, ok := input["status"].(string); ok {
-		ri.Status = status
-	}
-	if t, ok := input["type"].(string); ok {
-		ri.Type = t
-	}
-	if userid, ok := input["user_id"].(string); ok {
-		if id, err := uuid.FromString(userid); err == nil {
-			ri.UserId.UnmarshalBinary(id.Bytes())
-		}
-	}
-	return nil
-}
-
-func (ri *RemoteIdentity) JsonTags() (tags map[string]string) {
-	return jsonTags(ri)
-}
-
-func (ri *RemoteIdentity) SortSlices() {
-	//no slice to sort
-}
-
-// ensure mandatory properties are set, also default values.
-func (ri *RemoteIdentity) MarshallNew(args ...interface{}) {
-	if len(ri.RemoteId) == 0 || (bytes.Equal(ri.RemoteId.Bytes(), EmptyUUID.Bytes())) {
-		ri.RemoteId.UnmarshalBinary(uuid.NewV4().Bytes())
-	}
-	if (len(ri.UserId) == 0 || bytes.Equal(ri.UserId.Bytes(), EmptyUUID.Bytes())) && len(args) == 1 {
-		switch args[0].(type) {
-		case UUID:
-			ri.UserId = args[0].(UUID)
-		}
-	}
-
-}
-
-// SetDefaults fills RemoteIdentity with default keys and values according to the type of the remote identity
-func (ri *RemoteIdentity) SetDefaults() {
-	defaults := map[string]string{}
-
-	switch ri.Type {
-	case "imap":
-		defaults = map[string]string{
-			"lastseenuid": "",
-			"lastsync":    "", // RFC3339 date string
-			"server":      "", // server hostname[|port]
-			"uidvalidity": "", // uidvalidity to invalidate data if needed (see RFC4549#section-4.1)
-		}
-	}
-	// defaults for every type
-	defaults["pollinterval"] = "15" // how often remote account should be polled, in minutes.
-
-	if ri.Infos == nil {
-		(*ri).Infos = defaults
-	} else {
-		for default_key, default_value := range defaults {
-			if v, ok := ri.Infos[default_key]; !ok || v == "" {
-				(*ri).Infos[default_key] = default_value
-			}
-		}
-	}
-
-	if ri.Status == "" {
-		(*ri).Status = "active"
-	}
-
-	if ri.Credentials == nil {
-		(*ri).Credentials = Credentials{}
-	}
-
-	// try to set DisplayName if it is missing
-	if ri.DisplayName == "" {
-		switch ri.Type {
-		case "imap":
-			(*ri).DisplayName, _ = ri.Credentials["username"]
-		}
-	}
-
-}
-
-func (ri *RemoteIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
-	if credentials, ok := input["credentials"].(map[string]string); ok {
-		ri.Credentials = Credentials{}
-		for k, v := range credentials {
-			ri.Credentials[k] = v
-		}
-	}
-	if dn, ok := input["display_name"].(string); ok {
-		ri.DisplayName = dn
-	}
-
-	if infos, ok := input["infos"].(map[string]string); ok {
-		ri.Infos = make(map[string]string)
-		for k, v := range infos {
-			ri.Infos[k] = v
-		}
-	}
-	if lc, ok := input["last_check"].(time.Time); ok {
-		ri.LastCheck = lc
-	}
-	if remote_id, ok := input["remote_id"].(gocql.UUID); ok {
-		ri.RemoteId.UnmarshalBinary(remote_id.Bytes())
-	}
-	if status, ok := input["status"].(string); ok {
-		ri.Status = status
-	}
-	if t, ok := input["type"].(string); ok {
-		ri.Type = t
-	}
-	if userid, ok := input["user_id"].(gocql.UUID); ok {
-		ri.UserId.UnmarshalBinary(userid.Bytes())
-	}
-	return nil
-}
-
-func (ri *RemoteIdentity) MarshalFrontEnd() ([]byte, error) {
-	return JSONMarshaller("frontend", ri)
 }
 
 // Sort interface implementations
