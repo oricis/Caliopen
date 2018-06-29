@@ -9,7 +9,7 @@ spec:
       restartPolicy: "OnFailure"
       containers:
       - name: cli-setup
-        image: registry.caliopen.org:5043/cli
+        image: public-registry.caliopen.org/cli
         args: ["setup"]
         env:
         - name: CQLENG_ALLOW_SCHEMA_MANAGEMENT

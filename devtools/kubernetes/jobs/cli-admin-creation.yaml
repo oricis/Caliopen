@@ -8,7 +8,7 @@ spec:
     spec:
       restartPolicy: "OnFailure"
       containers:
-      - image: registry.caliopen.org:5043/cli
+      - image: public-registry.caliopen.org/cli
         name: cli-admin
         args: ["create_user", "-e", "admin", "-p", "123456"]
         env:
