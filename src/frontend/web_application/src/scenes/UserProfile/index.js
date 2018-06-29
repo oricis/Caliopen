@@ -3,7 +3,7 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { withI18n } from 'lingui-react';
-import { withNotification } from '../../hoc/notification';
+import { withNotification } from '../../modules/userNotify';
 import { withUser } from '../../hoc/user';
 import { requestUser, updateUser } from '../../store/modules/user';
 import { updateContact } from '../../store/modules/contact';

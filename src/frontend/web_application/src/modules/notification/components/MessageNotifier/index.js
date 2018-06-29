@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
 import { withRouter } from 'react-router-dom';
 import { withSettings } from '../../../settings';
-import { withNotification } from '../../../../hoc/notification';
+import { withNotification } from '../../../../modules/userNotify';
 import { messageNotificationsSelector } from '../../../../store/selectors/notification';
 import Presenter from './presenter';
 

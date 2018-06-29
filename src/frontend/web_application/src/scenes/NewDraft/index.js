@@ -7,7 +7,7 @@ import { clearDraft, syncDraft } from '../../store/modules/draft-message';
 import { removeTab, updateTab } from '../../store/modules/tab';
 import { newDraft, saveDraft, sendDraft } from '../../modules/draftMessage';
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../modules/file';
-import { withNotification } from '../../hoc/notification';
+import { withNotification } from '../../modules/userNotify';
 import { withCurrentTab } from '../../hoc/tab';
 import { updateTagCollection } from '../../modules/tags';
 import { deleteMessage } from '../../modules/message';

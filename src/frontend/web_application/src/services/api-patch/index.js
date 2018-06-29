@@ -1,5 +1,8 @@
 import isEqual from 'lodash.isequal';
 
+
+// /!\ this function is not recursive; sub-objects are not properly calculated
+// actually remote-identity patch requires full sub-objects : credentials & infos
 const calcObjectForPatch = (newObj, previousObj) =>
   Array.from(new Set(Object.keys(newObj).concat(Object.keys(previousObj))))
     .reduce((acc, prop) => {

@@ -2,10 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import RemoteIdentityEmail from './';
 
-jest.mock('lingui-react', () => ({
-  withI18n: () => whatever => whatever,
-}));
-
 describe('component RemoteIdentityEmail', () => {
   it('init form', () => {
     const props = {
@@ -17,7 +13,7 @@ describe('component RemoteIdentityEmail', () => {
 
     const comp = shallow(
       <RemoteIdentityEmail {...props} />
-    );
+    ).dive();
 
     expect(comp.state().phase).toEqual(1);
   });

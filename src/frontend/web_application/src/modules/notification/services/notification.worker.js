@@ -3,7 +3,7 @@ import 'babel-polyfill';
 import { getUnsignedClient } from '../../../services/api-client';
 import { getSignatureHeaders } from '../../device/services/signature';
 
-const THROTTLE_DURATION = 50 * 1000;
+const THROTTLE_DURATION = 40 * 1000;
 
 class Poller {
   client = getUnsignedClient();

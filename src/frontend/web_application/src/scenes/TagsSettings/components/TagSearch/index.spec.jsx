@@ -2,10 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import TagSearch from './';
 
-jest.mock('lingui-react', () => ({
-  withI18n: () => whatever => whatever,
-}));
-
 describe('component TagSearch', () => {
   const props = {
     i18n: { _: id => id },

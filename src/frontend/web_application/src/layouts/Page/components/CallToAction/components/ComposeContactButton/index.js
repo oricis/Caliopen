@@ -1,4 +1,4 @@
 import Presenter from './presenter';
-import { withNotification } from '../../../../../../hoc/notification';
+import { withNotification } from '../../../../../../modules/userNotify';
 
 export default withNotification()(Presenter);

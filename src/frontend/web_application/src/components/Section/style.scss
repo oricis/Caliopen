@@ -1,11 +1,19 @@
 @import '../../styles/common';
 
+$section_border-width: 5px;
+
 .m-section {
   padding: map-get($co-form__spacing, 'medium');
   background-color: $co-color__bg__back--higher;
 
   &--separator {
     border-bottom: 1px solid $co-color__bg__back;
+  }
+
+  @each $name, $color in $context-palette {
+    &--border-#{$name} {
+      border-left: $section_border-width solid $color;
+    }
   }
 
   &__header {

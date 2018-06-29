@@ -30,7 +30,7 @@ const cfg = {
   jasmineNodeOpts: {
     showColors: true,
     // print: () => {},
-    defaultTimeoutInterval: 60 * 1000,
+    defaultTimeoutInterval: 70 * 1000,
   },
   baseUrl: 'http://localhost:4000/',
   onPrepare: () => {

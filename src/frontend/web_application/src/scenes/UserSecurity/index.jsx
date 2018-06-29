@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
-import { withNotification } from '../../hoc/notification';
+import { withNotification } from '../../modules/userNotify';
 import { withUser } from '../../hoc/user';
 import { requestUser } from '../../store/modules/user';
 import Presenter from './presenter';
