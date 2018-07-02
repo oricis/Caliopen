@@ -10,8 +10,8 @@ spec:
   - name: "smtp"
     port: 2500
     targetPort: 2500
-    nodePort: 32001
+    nodePort: 2500
   - name: "smtp1"
     port: 8888
     targetPort: 8888
-    nodePort: 32002
+    nodePort: 8888

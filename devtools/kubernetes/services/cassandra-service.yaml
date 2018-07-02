@@ -10,12 +10,12 @@ spec:
   - name: "9042"
     port: 9042
     targetPort: 9042
-    nodePort: 31942
+    nodePort: 9042
   - name: "9160"
     port: 9160
     targetPort: 9160
-    nodePort: 31916
+    nodePort: 9160
   - name: "7000"
     port: 7000
     targetPort: 7000
-    nodePort: 31700
+    nodePort: 7000

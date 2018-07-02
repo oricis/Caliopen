@@ -10,4 +10,4 @@ spec:
   - name: "elasticsearch"
     port: 9200
     targetPort: 9200
-    nodePort: 31920
+    nodePort: 9200

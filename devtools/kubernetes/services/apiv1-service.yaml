@@ -10,4 +10,4 @@ spec:
   - name: "apiv1"
     port: 6543
     targetPort: 6543
-    nodePort: 31416
+    nodePort: 6543

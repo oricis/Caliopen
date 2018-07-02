@@ -28,7 +28,7 @@ metadata:
   name: api 
 subsets: 
   - addresses:
-      - ip: 192.168.120.69
+      - ip: 172.17.0.1
     ports:
       - port: 31415
         name: "api"
@@ -40,7 +40,7 @@ metadata:
   name: broker 
 subsets: 
   - addresses:
-      - ip: 192.168.120.69
+      - ip: 172.17.0.1
     ports:
       - port: 2525
         name: "broker"

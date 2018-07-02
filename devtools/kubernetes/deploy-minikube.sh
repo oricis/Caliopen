@@ -39,15 +39,17 @@ check_driver_and_root(){
 	then
 		command -v vboxmanage >/dev/null 2>&1 || { echo "Virtualbox required but not installed. Aborting." >&2; exit 1; }
 		if [ "$EUID" -eq 0 ]
+		then
 			echo "  ---------------------------------------------------------------------"
-	  		then echo "  Minikube doesn't need to be run as root to deploy Kubernetes on a VM."
-	  		echo "  ---------------------------------------------------------------------"
+			echo "  Minikube doesn't need to be run as root to deploy Kubernetes on a VM."
+			echo "  ---------------------------------------------------------------------"
 		fi
 	else
 		command -v docker >/dev/null 2>&1 || { echo "Docker required but not installed. Aborting." >&2; exit 1; }
 		if [ "$EUID" -ne 0 ]
-	  		then echo "Minikube needs to be run as root for local kubernetes deployment."
-	  		exit 1
+		then
+			echo "Minikube needs to be run as root for local kubernetes deployment."
+			exit 1
 		fi
 	fi
 }
@@ -179,7 +181,7 @@ create_go_deployments(){
 	echo
 	echo "GO applications deployment:"
 	echo "---------------------------"
-	kubectl delete -f services/external-go-service.yaml
+	kubectl delete svc api broker
 	kubectl apply -f services/api-service.yaml \
 	-f services/broker-service.yaml
 	kubectl apply -f deployments/broker-deployment.yaml \
@@ -190,7 +192,7 @@ create_python_deployments(){
 	echo
 	echo "Python applications deployment:"
 	echo "---------------------------"
-	kubectl delete -f services/external-python-service.yaml
+	kubectl delete svc apiv1 message-handler
 	kubectl apply -f services/apiv1-service.yaml
 	kubectl apply -f deployments/message-handler-deployment.yaml \
 	-f deployments/apiv1-deployment.yaml
@@ -236,8 +238,7 @@ then
 
 	check_os
 	check_driver_and_root
-	minikube start --memory 6144 --cpus=2 --vm-driver=${KUBE_DRIVER}
-	#--extra-config=apiserver.ServiceNodePortRange=1-32000 WORKS WITH LOCALKUBE BOOTSTRAPPER --bootstrapper=localkube
+	minikube start --memory 6144 --cpus=2 --vm-driver=${KUBE_DRIVER} --extra-config=apiserver.service-node-port-range=1-35000
 	#--dns-domain=dev.caliopen.org NOT WORKING
 	# --apiserver-ips 127.0.0.1 --apiserver-name localhost
 	# nodePortAddresses: [127.0.0.0/8] on kube-proxy configmap TO LIMIT EXTERNAL ACCESS

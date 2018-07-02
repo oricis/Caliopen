@@ -16,7 +16,7 @@ metadata:
   name: apiv1
 subsets: 
   - addresses:
-      - ip: 192.168.120.69
+      - ip: 172.17.0.1
     ports:
-      - port: 31415
+      - port: 6543
         name: "apiv1"

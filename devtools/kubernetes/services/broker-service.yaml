@@ -10,4 +10,4 @@ spec:
   - name: "broker"
     port: 2525
     targetPort: 2525
-    nodePort: 32525
+    nodePort: 2525

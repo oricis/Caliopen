@@ -10,4 +10,4 @@ spec:
   - name: "nats"
     port: 4222
     targetPort: 4222
-    nodePort: 31422
+    nodePort: 4222

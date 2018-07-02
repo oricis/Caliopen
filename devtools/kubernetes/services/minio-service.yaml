@@ -10,4 +10,4 @@ spec:
   - name: "minio"
     port: 9090
     targetPort: 9090
-    nodePort: 31909
+    nodePort: 9090
