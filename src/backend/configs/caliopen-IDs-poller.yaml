@@ -6,10 +6,10 @@ remote_types:                                   # which kind of remote identitie
 store_name: cassandra                           # backend for remote identities data
 store_settings:
   hosts: # many allowed
-  - cassandra.dev.caliopen.org
+  - cassandra
   keyspace: caliopen
   consistency_level: 1
 #messaging system
-nats_url: nats://nats.dev.caliopen.org:4222
+nats_url: nats://nats:4222
 nats_topics:                                    # NATS topics for each kind of remote identities
   imap: IMAPfetcher
