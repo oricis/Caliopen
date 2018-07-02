@@ -19,4 +19,3 @@ spec:
         name: smtp-server
         ports:
         - containerPort: 4222
-      restartPolicy: Always

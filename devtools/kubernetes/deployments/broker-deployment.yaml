@@ -18,15 +18,14 @@ spec:
         app: broker
     spec:
       containers:
-      - image: public-registry.caliopen.org/broker
+      - image: public-registry.caliopen.org/broker:develop
+        imagePullPolicy: Always
         name: broker
         ports:
         - containerPort: 2525
         volumeMounts:
         - name: config-volume
           mountPath: /etc/caliopen
-      imagePullSecrets:
-        - name: registrypullsecret
       volumes:
       - name: config-volume
         configMap:
@@ -34,4 +33,3 @@ spec:
           items:
           - key: lmtp.yaml
             path: lmtp.yaml
-      restartPolicy: Always

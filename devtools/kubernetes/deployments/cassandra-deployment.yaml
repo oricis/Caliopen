@@ -37,7 +37,6 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/scylla
           name: dev-db
-      restartPolicy: Always
       volumes:
       - name: dev-db
         persistentVolumeClaim:

@@ -29,9 +29,7 @@ spec:
         volumeMounts:
         - mountPath: /usr/share/elasticsearch/data
           name: dev-index
-      restartPolicy: Always
       volumes:
       - name: dev-index
         persistentVolumeClaim:
           claimName: dev-index
-

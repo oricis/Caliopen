@@ -15,13 +15,12 @@ spec:
         app: message-handler
     spec:
       containers:     
-      - image: public-registry.caliopen.org/message-handler
+      - image: public-registry.caliopen.org/message_handler:develop
+        imagePullPolicy: Always
         name: message-handler
         volumeMounts:
         - name: config-volume
           mountPath: /etc/caliopen
-      imagePullSecrets:
-        - name: registrypullsecret
       volumes:
       - name: config-volume
         configMap:
@@ -29,4 +28,3 @@ spec:
           items:
           - key: caliopen.yaml
             path: caliopen.yaml
-      restartPolicy: Always

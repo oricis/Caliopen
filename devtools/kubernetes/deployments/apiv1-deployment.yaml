@@ -18,15 +18,14 @@ spec:
         app: apiv1
     spec:
       containers:
-      - image: public-registry.caliopen.org/apiv1
+      - image: public-registry.caliopen.org/apiv1:develop
+        imagePullPolicy: Always
         name: apiv1
         ports:
         - containerPort: 6543
         volumeMounts:
           - name: config-volume
             mountPath: /etc/caliopen
-      imagePullSecrets:
-        - name: registrypullsecret
       volumes:
       - name: config-volume
         configMap:
@@ -38,4 +37,3 @@ spec:
             path: caliopen.yaml
           - key: swagger.json
             path: swagger.json
-      restartPolicy: Always

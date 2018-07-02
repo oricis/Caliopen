@@ -20,4 +20,3 @@ spec:
         ports:
         - containerPort: 8888
         - containerPort: 2500
-      restartPolicy: Always

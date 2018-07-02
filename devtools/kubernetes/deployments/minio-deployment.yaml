@@ -17,6 +17,11 @@ spec:
       containers:
       - image: minio/minio
         name: minio
+        env:
+        - name: MINIO_ACCESS_KEY
+          value: "CALIOPEN_ACCESS_KEY_"
+        - name: MINIO_SECRET_KEY
+          value: "CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD"
         args:
           - server
           - --address
@@ -27,12 +32,8 @@ spec:
         ports:
         - containerPort: 9090
         volumeMounts:
-        - mountPath: /configs/minio/config.json
-          name: config-volume
-          subPath: config.json
         - mountPath: /export
           name: dev-store
-      restartPolicy: Always
       volumes:
       - name: dev-store
         persistentVolumeClaim:
