@@ -17,7 +17,7 @@ function generateStateFromProps(props, prevState) {
     },
   } = props;
   const [serverHostname = '', serverPort = ''] = infos && infos.server ? infos.server.split(':') : [];
-  const active = status ? status === REMOTE_IDENTITY_STATUS[0] : prevState.remoteIdentity.status;
+  const active = status ? status === REMOTE_IDENTITY_STATUS[0] : prevState.remoteIdentity.active;
   const typeProtocol = type || prevState.remoteIdentity.type;
 
   return {
@@ -52,7 +52,7 @@ function getRemoteIdentityFromState(state, props) {
     ...remoteIdentity,
     display_name: displayName,
     infos: {
-      ...(remoteIdentity.server ? remoteIdentity.server : {}),
+      ...(remoteIdentity.infos ? remoteIdentity.infos : {}),
       server: `${serverHostname}:${serverPort}`,
     },
     credentials,
