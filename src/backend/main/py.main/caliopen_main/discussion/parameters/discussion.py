@@ -28,6 +28,7 @@ class Discussion(Model):
     attachment_count = IntType(default=0)
     subject = StringType()
     protocol = StringType()
+    last_message_id = UUIDType(required=True)
 
     class Options:
         roles = {'default': blacklist('user_id')}
