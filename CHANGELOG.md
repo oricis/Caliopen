@@ -6,24 +6,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.11.0] 2018-07-04
+
 ### Added
 
-- API v1 and v2 validate signed ecdsa http queries
-- delete an account
-- Connect an external IMAP account
+- client sign HTTP queries
+- API v1 and v2 check signed ecdsa http queries, but only log result
+- delete an user account
+- API for remote identities management
+- client can create an IMAP remote identities
+- poll remote identities to fetch an IMAP source
+- can use hashicorp vault to store sensible informations
+- fetch list of messages surrounding a given message
+- a go CLI to fix empty message participants
 
 ### Changed
 
 - optimization, prevent timeline to fetch multiple times the API
 - Internal email delivery is more reliable, with better error handling, reporting and logging.
+- scroll better on messages list
 
 ### Fixed
 
 - scrolls to specific message, and restore scroll positions when navigating between tabs.
 - change parent of a draft has no effects
-- sort of the messages of a discussion
+- sort messages of a discussion
 - discussion might not be up to date after creating a draft
 - sending two consecutives messages was failing when the second message is saved before clicking on the send button.
+- contact lookup can reference a deleted contact, don't fail
 
 ## [0.10.1] 2018-05-18
 
