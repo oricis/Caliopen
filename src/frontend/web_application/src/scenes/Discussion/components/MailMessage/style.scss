@@ -1,5 +1,9 @@
 @import '../../../../styles/common';
 
+.instant+.s-mail-message {
+  margin-top: 2rem;
+}
+
 .s-mail-message {
   margin-bottom: 1rem;
 
@@ -15,22 +19,41 @@
     flex-shrink: 0;
     width: 13rem;
     padding: 3rem 1.5rem;
+
+    .from, .to {
+      font-size: 0.625rem;
+
+      a, a:visited {
+        color: #515151;
+        font-weight: 600;
+      }
+    }
   }
 
   &__pi-progress {
     height: 0.25rem;
     margin-bottom: 0;
-  }
 
-  .from, .to {
-    font-size: 0.625rem;
+    &--weak-pi {
+      background-color: #edccd4;
+    }
 
-    a, a:visited {
-      color: #515151;
-      font-weight: 600;
+    &--strong-pi {
+      background-color: #cbe8e3;
     }
   }
 
+  &__pi-progress-meter {
+    height: 0.25rem;
+
+    &--weak-pi {
+      background-color: #ec0f48;
+    }
+
+    &--strong-pi  {
+      background-color: #07b798;
+    }
+  }
 
   a.from, .to {
     color: #515151;
@@ -88,7 +111,7 @@
     width: 2rem;
   }
 
-  .metaphor {
+  &__pi-metaphor {
     padding: 0.825rem 0;
     border-top: 2px solid #999999;
     border-bottom: 2px solid #999999;
@@ -98,37 +121,13 @@
   }
 
   &.weak-pi {
-    aside {
-      background-color: #fff4f7;
-    }
-
-    .progress {
-      background-color: #edccd4;
-
-      .progress-meter {
-        background-color: #ec0f48;
-      }
-    }
-
-    .metaphor { border-color: #edccd4; }
-    .numeric-pi .value { color: #ec0f48; }
+    .s-mail-message__pi-metaphor { border-color: #edccd4; }
+    .value { color: #ec0f48; }
   }
 
   &.strong-pi {
-    aside {
-      background-color: #edfffc;
-    }
-
-    .progress {
-      background-color: #cbe8e3;
-
-      .progress-meter {
-        background-color: #07b798;
-      }
-    }
-
-    .metaphor { border-color: #cbe8e3; }
-    .numeric-pi .value { color: #07b798; }
+    .s-mail-message__pi-metaphor { border-color: #cbe8e3; }
+    .value { color: #07b798; }
   }
 
   .details {
