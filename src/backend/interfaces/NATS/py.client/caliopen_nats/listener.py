@@ -14,6 +14,7 @@ from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage
 
 log = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 
 @tornado.gen.coroutine
@@ -52,6 +53,25 @@ def contact_update_handler(config):
     future.result()
 
 
+@tornado.gen.coroutine
+def discovey_key_handler(config):
+    """NATS handler for discover_key events."""
+    client = Nats()
+    server = 'nats://{}:{}'.format(config['host'], config['port'])
+    servers = [server]
+
+    opts = {"servers": servers}
+    yield client.connect(**opts)
+
+    # create and register subscriber(s)
+    key_subscriber = subscribers.DiscoverKeyAction(client)
+    future = client.subscribe("discoverKeyAction",
+                              "discoverKeyQueue",
+                              key_subscriber.handler)
+    log.info("nats subscription started for discoverKeyAction")
+    future.result()
+
+
 if __name__ == '__main__':
     # load Caliopen config
     args = sys.argv
@@ -64,7 +84,8 @@ if __name__ == '__main__':
     import subscribers
 
     connect_storage()
-    inbound_handler(Configuration('global').get('message_queue'))
-    contact_update_handler(Configuration('global').get('message_queue'))
+    # inbound_handler(Configuration('global').get('message_queue'))
+    # contact_update_handler(Configuration('global').get('message_queue'))
+    discovey_key_handler(Configuration('global').get('message_queue'))
     loop_instance = tornado.ioloop.IOLoop.instance()
     loop_instance.start()
