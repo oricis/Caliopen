@@ -1,10 +1,5 @@
 import { searchTags } from './searchTags';
 
-jest.mock('lingui-react', () => ({
-  withI18n: () => whatever => whatever,
-  i18nMark: () => whatever => whatever,
-}));
-
 describe('modules tags - services - searchTags', () => {
   it('searchTags', async () => {
     const i18n = { _: id => id };

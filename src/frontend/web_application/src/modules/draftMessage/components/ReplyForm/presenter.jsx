@@ -18,6 +18,7 @@ function generateStateFromProps(props) {
 
 class ReplyForm extends Component {
   static propTypes = {
+    // eslint-disable-next-line react/no-unused-prop-types
     draft: PropTypes.shape({}),
     parentMessage: PropTypes.shape({}),
     onSave: PropTypes.func.isRequired,
@@ -42,8 +43,6 @@ class ReplyForm extends Component {
   };
 
   state = {
-    isActive: true,
-    protocol: 'email',
     hasChanged: false,
   };
 
@@ -75,12 +74,6 @@ class ReplyForm extends Component {
     }, () => {
       this.props.onChange({ draft: this.state.draft });
     });
-  };
-
-  handleActiveClick = () => {
-    this.setState(prevState => ({
-      isActive: !prevState.isActive,
-    }));
   };
 
   renderDraftType() {

@@ -4,8 +4,10 @@ import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
 import Presenter from './presenter';
 import { filterTimeline } from '../../store/actions/timeline';
-import { replyToMessage, deleteMessage, loadMore, hasMore } from '../../store/modules/message';
+import { replyToMessage, loadMore, hasMore } from '../../store/modules/message';
 import { updateMessagesTags, withTags } from '../../modules/tags';
+import withScrollManager from '../../modules/scroll/hoc/scrollManager';
+import { deleteMessage } from '../../modules/message';
 import { clearDraft } from '../../store/modules/draft-message';
 import { timelineFilterSelector } from '../../store/selectors/timeline';
 import { UserSelector } from '../../store/selectors/user';
@@ -49,4 +51,5 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withI18n(),
   withTags(),
+  withScrollManager(),
 )(Presenter);

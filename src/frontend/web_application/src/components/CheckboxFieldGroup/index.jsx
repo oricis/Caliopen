@@ -13,7 +13,7 @@ class CheckboxFieldGroup extends PureComponent {
   static propTypes = {
     id: PropTypes.string,
     className: PropTypes.string,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.node.isRequired,
     labelClassname: PropTypes.string,
     showTextLabel: PropTypes.bool,
     displaySwitch: PropTypes.bool,

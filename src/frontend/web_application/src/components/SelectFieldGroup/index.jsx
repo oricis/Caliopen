@@ -12,7 +12,7 @@ const alphaNumPropType = PropTypes.oneOfType([PropTypes.string, PropTypes.number
 
 class SelectFieldGroup extends PureComponent {
   static propTypes = {
-    label: PropTypes.string,
+    label: PropTypes.node,
     showLabelforSr: PropTypes.bool,
     value: alphaNumPropType,
     expanded: PropTypes.bool,

@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { Trans } from 'lingui-react';
-import { Spinner, Section } from '../../../../components';
+import { Section } from '../../../../components';
 import DeviceForm from '../DeviceForm';
 import DeviceInformation from '../DeviceInformation';
 import VerifyDevice from '../VerifyDevice';
 import RevokeDevice from '../RevokeDevice';
-import './style.scss';
 
 class DeviceSettings extends Component {
   static propTypes = {
@@ -15,8 +13,6 @@ class DeviceSettings extends Component {
     isCurrentDevice: PropTypes.bool,
     isCurrentDeviceVerified: PropTypes.bool,
     device: PropTypes.shape({}),
-    isFetching: PropTypes.bool,
-    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -24,7 +20,6 @@ class DeviceSettings extends Component {
     isCurrentDevice: undefined,
     isCurrentDeviceVerified: undefined,
     device: null,
-    isFetching: false,
   };
 
   renderRevokeButton() {
@@ -51,11 +46,11 @@ class DeviceSettings extends Component {
     const { device, isCurrentDevice } = this.props;
 
     return (
-      <Section>
+      <Fragment>
         <DeviceInformation device={device} isCurrentDevice={isCurrentDevice} />
         <DeviceForm device={device} />
         {this.renderRevokeButton()}
-      </Section>
+      </Fragment>
     );
   }
 
@@ -63,39 +58,30 @@ class DeviceSettings extends Component {
     const { device, isCurrentDevice } = this.props;
 
     return (
-      <Section>
+      <Fragment>
         <DeviceInformation device={device} isCurrentDevice={isCurrentDevice} />
         <VerifyDevice device={device} />
-      </Section>
+      </Fragment>
     );
   }
 
   renderDevice() {
-    const { device, i18n } = this.props;
+    const { device } = this.props;
 
     // FIXME: verify device should be displayed on a verified device or ...
     return device.signature_key === null ?
-      this.renderVerifyDevice(device, i18n) :
-      this.renderForm(device, i18n);
+      this.renderVerifyDevice(device) :
+      this.renderForm(device);
   }
 
   render() {
-    const { device, isFetching } = this.props;
-    const deviceClassName = classnames(
-      'm-device-settings',
-      {
-        // TODO: set className according to security level
-        // 'm-device-settings--safe': safe,
-        // 'm-device-settings--public': public,
-        // 'm-device-settings--insecure': insecure,
-      },
-    );
+    // TODO: set context according to security level
+    const borderContext = 'disabled';
 
     return (
-      <div className={deviceClassName}>
-        {isFetching && <Spinner isLoading />}
-        {device && this.renderDevice()}
-      </div>
+      <Section borderContext={borderContext}>
+        {this.renderDevice()}
+      </Section>
     );
   }
 }

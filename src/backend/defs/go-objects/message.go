@@ -33,7 +33,7 @@ type Message struct {
 	Is_received         bool               `cql:"is_received"              json:"is_received"      `
 	Message_id          UUID               `cql:"message_id"               json:"message_id,omitempty"                                      formatter:"rfc4122"`
 	Parent_id           UUID               `cql:"parent_id"                json:"parent_id,omitempty"        `
-	Participants        []Participant      `cql:"participants"             json:"participants,omitempty"     `
+	Participants        []Participant      `cql:"participants"             json:"participants"     `
 	Privacy_features    *PrivacyFeatures   `cql:"privacy_features"         json:"privacy_features,omitempty" `
 	PrivacyIndex        *PrivacyIndex      `cql:"pi"                       json:"pi,omitempty"`
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id,omitempty"                                      formatter:"rfc4122"`
@@ -42,6 +42,8 @@ type Message struct {
 	Type                string             `cql:"type"                     json:"type,omitempty"             `
 	User_id             UUID               `cql:"user_id"                  json:"user_id,omitempty"                  elastic:"omit"         formatter:"rfc4122"`
 }
+
+type Messages []*Message
 
 // bespoke implementation of the json.Marshaller interface
 // outputs a JSON representation of an object
@@ -470,4 +472,19 @@ func (msg *Message) SortSlices() {
 	sort.Sort(ByIdentifier(msg.Identities))
 	sort.Sort(ByAddress(msg.Participants))
 	sort.Strings(msg.Tags)
+}
+
+// sort interfaces
+type ByDateSortAsc Messages
+
+func (ds ByDateSortAsc) Len() int {
+	return len(ds)
+}
+
+func (ds ByDateSortAsc) Less(i, j int) bool {
+	return ds[i].Date_sort.After(ds[j].Date_sort)
+}
+
+func (ds ByDateSortAsc) Swap(i, j int) {
+	ds[i], ds[j] = ds[j], ds[i]
 }

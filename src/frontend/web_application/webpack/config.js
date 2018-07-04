@@ -7,6 +7,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const clientOptions = require('../config/client.default.js');
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const configureStylesheet = () => {
   return {
     plugins: [
@@ -14,9 +16,9 @@ const configureStylesheet = () => {
         syntax: 'scss',
         emitErrors: false,
       }),
-      new OptimizeCssAssetsPlugin({
-        canPrint: false,
-      }),
+      // FIXME: useful for deduplication, we need a way prevent that.
+      // disabled for dev for build time (10sec instead of 30+)
+      ...(!isDev ? [new OptimizeCssAssetsPlugin({ canPrint: false })] : []),
       new MiniCssExtractPlugin({
         filename: 'client.[hash].css',
       }),
@@ -65,26 +67,27 @@ const configureAssets = (outputPath = 'assets/') => ({
             loader: 'file-loader',
             options: { hash: 'sha512', digest: 'hex', name: '[name].[ext]', outputPath },
           },
-          {
-            // XXX: image-webpack-loader does'nt work well on debian 9 and travis for now
-            // https://github.com/tcoopman/image-webpack-loader/issues/142#issuecomment-380751197
-
-            loader: 'image-webpack-loader',
-            options: {
-              bypassOnDebug: true,
-              // XXX: dosen't work on travis
-              mozjpeg: {
-                enabled: false,
-              },
-              // XXX: doesn't work on debian 9
-              pngquant: {
-                enabled: false,
-              },
-              webp: {
-                quality: 75,
-              },
-            },
-          },
+          // XXX: disabled for now as it always output webp, which is not diplayed
+          // by many browsers.
+          // image-webpack-loader does'nt work well on debian 9 and travis for now
+          // https://github.com/tcoopman/image-webpack-loader/issues/142#issuecomment-380751197
+          // {
+          //   loader: 'image-webpack-loader',
+          //   options: {
+          //     bypassOnDebug: true,
+          //     // XXX: dosen't work on travis
+          //     mozjpeg: {
+          //       enabled: false,
+          //     },
+          //     // XXX: doesn't work on debian 9
+          //     pngquant: {
+          //       enabled: false,
+          //     },
+          //     webp: {
+          //       quality: 75,
+          //     },
+          //   },
+          // },
         ],
       },
       { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader', options: { mimetype: 'image/svg+xml', name: '[name].[ext]', outputPath } },

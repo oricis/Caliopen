@@ -42,6 +42,7 @@ export function removeTab(tab) {
 function updateTabReducer(state = [], action) {
   const i = state.indexOf(action.payload.original);
   const nextState = [...state];
+
   nextState[i] = action.payload.tab;
 
   return nextState;

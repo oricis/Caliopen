@@ -11,6 +11,8 @@ import { getRouteConfig, flattenRouteConfig } from '../../routes';
 import { getLastMessage, renderParticipant } from '../../services/message';
 
 const registeredRoutes = [
+  '/',
+  '/contacts',
   '/discussions/:discussionId',
   '/contacts/:contactId',
   '/compose',
@@ -34,6 +36,14 @@ const routeActionHandler = ({ store, action }) => {
 const selectTabByPathname = ({ store, pathname }) =>
   store.getState().tab.tabs.find(tab => pathname === tab.pathname);
 
+const createHomeTab = async (store, { pathname, search, hash }) => ({
+  pathname,
+  search,
+  hash,
+  // Nice side effect : no more "undefined" in title while loading
+  label: 'Caliopen',
+});
+
 const createDiscussionTab = async (store, discussionId, { pathname, search, hash }) => {
   await store.dispatch(requestMessages('discussion', discussionId, { discussion_id: discussionId }));
   const state = store.getState().message;
@@ -54,6 +64,13 @@ const createDiscussionTab = async (store, discussionId, { pathname, search, hash
 
   return Promise.reject('no messages');
 };
+
+const createContactsTab = async (store, { pathname, search, hash }) => ({
+  pathname,
+  search,
+  hash,
+  label: 'Caliopen',
+});
 
 const createContactTab = async (store, contactId, { pathname, search, hash }) =>
   store.dispatch(requestContact(contactId))
@@ -107,6 +124,46 @@ const createSearchResultTab = ({ pathname, search, hash }) => {
     label: __('search-results.route.label', { term }),
     icon: 'search',
   };
+};
+
+const selectOrAddHomeTab = (store, { pathname, search, hash }) => {
+  const match = matchPath(pathname, { path: '/' });
+  if (!(match && match.isExact)) {
+    return null;
+  }
+
+  const original = selectTabByPathname({ store, pathname });
+  if (original) {
+    return store.dispatch(updateTab({
+      original,
+      tab: {
+        ...original, pathname, search, hash,
+      },
+    }));
+  }
+
+  return createHomeTab(store, { pathname, search, hash })
+    .then(tab => store.dispatch(addTab(tab)));
+};
+
+const selectOrAddTabContacts = (store, { pathname, search, hash }) => {
+  const match = matchPath(pathname, { path: '/contacts' });
+  if (!(match && match.isExact)) {
+    return null;
+  }
+
+  const original = selectTabByPathname({ store, pathname });
+  if (original) {
+    return store.dispatch(updateTab({
+      original,
+      tab: {
+        ...original, pathname, search, hash,
+      },
+    }));
+  }
+
+  return createContactsTab(store, { pathname, search, hash })
+    .then(tab => store.dispatch(addTab(tab)));
 };
 
 const selectOrAddTabDiscussion = async (store, { pathname, search, hash }) => {
@@ -273,7 +330,7 @@ const selectOrAddTabSearch = (store, { pathname, search, hash }) => {
 
   const tab = createSearchResultTab({ pathname, search, hash });
   if (original) {
-    return store.dispatch(updateTab({ original, tab }));
+    return store.dispatch(updateTab({ original, tab: { ...original, ...tab } }));
   }
 
   return store.dispatch(addTab(tab));
@@ -287,8 +344,9 @@ export default store => next => (action) => {
   if (action.type === SELECT_OR_ADD_TAB) {
     const { payload: { pathname, search, hash } } = action;
     [
-      selectOrAddTabDiscussion, selectOrAddTabContact, selectOrAddTabNewContact,
-      selectOrAddTabSetting, selectOrAddTabUser, selectOrAddTabCompose, selectOrAddTabSearch,
+      selectOrAddHomeTab, selectOrAddTabContacts, selectOrAddTabDiscussion, selectOrAddTabContact,
+      selectOrAddTabNewContact, selectOrAddTabSetting, selectOrAddTabUser, selectOrAddTabCompose,
+      selectOrAddTabSearch,
     ]
       .forEach(fn => fn(store, { pathname, search, hash }));
   }

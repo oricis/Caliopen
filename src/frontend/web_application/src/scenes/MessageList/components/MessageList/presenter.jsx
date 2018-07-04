@@ -23,12 +23,13 @@ class MessageList extends Component {
     onMessageCopyTo: PropTypes.func.isRequired,
     onForward: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
-    refreshList: PropTypes.func.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     replyForm: PropTypes.node.isRequired,
     replyExcerpt: PropTypes.node.isRequired,
     updateTagCollection: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
+    hash: PropTypes.string,
+    scrollToTarget: PropTypes.func,
   };
 
   static defaultProps = {
@@ -36,6 +37,8 @@ class MessageList extends Component {
     isDraftFocus: false,
     loadMore: null,
     user: undefined,
+    hash: undefined,
+    scrollToTarget: undefined,
   };
 
   handleReplyToLastMessage = () => {
@@ -47,11 +50,11 @@ class MessageList extends Component {
 
   renderDayGroups(settings) {
     const {
-      messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply, onMessageCopyTo,
-      user, updateTagCollection,
+      hash, messages, onMessageRead, onMessageUnread, onMessageDelete, onMessageReply,
+      onMessageCopyTo, scrollToTarget, user, updateTagCollection,
     } = this.props;
 
-    const messagesGroupedByday = groupMessages(messages, user);
+    const messagesGroupedByday = groupMessages(messages);
 
     return Object.keys(messagesGroupedByday)
       .map(date => (
@@ -70,6 +73,7 @@ class MessageList extends Component {
               onCopyTo={onMessageCopyTo}
               updateTagCollection={updateTagCollection}
               user={user}
+              scrollToMe={message.message_id === hash ? scrollToTarget : undefined}
             />
           ))}
         </DayMessageList>

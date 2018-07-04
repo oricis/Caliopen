@@ -1,7 +1,7 @@
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { revokeDevice, withDevice } from '../../../../modules/device';
-import { withNotification } from '../../../../hoc/notification';
+import { withNotification } from '../../../../modules/userNotify';
 import Presenter from './presenter';
 
 const mapDispatchToProps = dispatch => bindActionCreators({

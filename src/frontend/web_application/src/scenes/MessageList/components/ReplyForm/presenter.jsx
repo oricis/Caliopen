@@ -10,7 +10,8 @@ class ReplyForm extends Component {
     message: PropTypes.shape({ }),
     parentMessage: PropTypes.shape({ }),
     draft: PropTypes.shape({ }),
-    isFetching: PropTypes.bool,
+    isRequestingDraft: PropTypes.bool,
+    isDeletingDraft: PropTypes.bool,
     requestDraft: PropTypes.func.isRequired,
     onEditDraft: PropTypes.func.isRequired,
     onSaveDraft: PropTypes.func.isRequired,
@@ -21,6 +22,8 @@ class ReplyForm extends Component {
     onUploadAttachments: PropTypes.func.isRequired,
     onDeleteAttachement: PropTypes.func.isRequired,
     draftFormRef: PropTypes.func,
+    forwardRef: PropTypes.func,
+    scrollToMe: PropTypes.func,
   };
 
   static defaultProps = {
@@ -28,9 +31,12 @@ class ReplyForm extends Component {
     message: undefined,
     parentMessage: undefined,
     draft: undefined,
-    isFetching: false,
+    isRequestingDraft: false,
+    isDeletingDraft: false,
     user: undefined,
     draftFormRef: () => {},
+    forwardRef: undefined,
+    scrollToMe: undefined,
   };
 
   state = {
@@ -38,18 +44,23 @@ class ReplyForm extends Component {
   };
 
   componentDidMount() {
-    const { discussionId, draft, isFetching } = this.props;
-    if (!draft && !isFetching) {
-      this.props.requestDraft({ internalId: discussionId, discussionId });
-    }
+    return this.initDraft(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.draft && !nextProps.isFetching) {
-      this.props.requestDraft({
-        internalId: nextProps.discussionId, discussionId: nextProps.discussionId,
-      });
+    return this.initDraft(nextProps);
+  }
+
+  initDraft = async (props) => {
+    const {
+      discussionId, draft, requestDraft, isRequestingDraft, isDeletingDraft,
+    } = props;
+
+    if (!draft && !isRequestingDraft && !isDeletingDraft) {
+      return requestDraft({ internalId: discussionId, discussionId });
     }
+
+    return undefined;
   }
 
   handleSave = async ({ draft }) => {
@@ -93,10 +104,10 @@ class ReplyForm extends Component {
 
   handleDelete = () => {
     const {
-      message, discussionId, onDeleteMessage, allowEditRecipients,
+      message, discussionId, onDeleteMessage,
     } = this.props;
 
-    onDeleteMessage({ message, internalId: discussionId, isNewDiscussion: allowEditRecipients });
+    onDeleteMessage({ message, internalId: discussionId });
   }
 
   handleTagsChange = async ({ tags }) => {
@@ -157,6 +168,10 @@ class ReplyForm extends Component {
       draft, discussionId, allowEditRecipients, user, parentMessage, draftFormRef,
     } = this.props;
 
+    if (!draft) {
+      return null;
+    }
+
     if (allowEditRecipients) {
       return (<NewDraftForm
         draft={draft}
@@ -173,7 +188,7 @@ class ReplyForm extends Component {
     }
 
     return (
-      <div id="reply">
+      <div id="reply" ref={this.props.forwardRef}>
         <ReplyFormBase
           parentMessage={parentMessage}
           draft={draft}

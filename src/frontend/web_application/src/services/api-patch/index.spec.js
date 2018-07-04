@@ -46,5 +46,29 @@ describe('Service calcObjectForPatch', () => {
         current_state: {},
       });
     });
+
+    describe('does not calc difference for sub-objects', () => {
+      it('has a new property', () => {
+        const sub = { a: 1 };
+        const previous = { foo: { sub }, bar: 'hello' };
+        const updated = { ...previous, foo: { ...sub, b: 2 } };
+
+        expect(calcObjectForPatch(updated, previous)).toEqual({
+          foo: { ...updated.foo },
+          current_state: { foo: { ...previous.foo } },
+        });
+      });
+
+      it('has a changed property', () => {
+        const sub = { a: 1, b: 2 };
+        const previous = { foo: { sub }, bar: 'hello' };
+        const updated = { ...previous, foo: { ...sub, b: 3 } };
+
+        expect(calcObjectForPatch(updated, previous)).toEqual({
+          foo: { ...updated.foo },
+          current_state: { foo: { ...previous.foo } },
+        });
+      });
+    });
   });
 });

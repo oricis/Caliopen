@@ -11,6 +11,7 @@ module.exports = {
     require('./devices').default,
     require('./messages').default,
     require('./participants').default,
+    require('./remote_identities').default,
     require('./search').default,
     require('./settings').default,
     require('./tags').default,

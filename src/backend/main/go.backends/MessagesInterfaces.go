@@ -18,4 +18,5 @@ type MessageIndex interface {
 	CreateMessage(msg *Message) error
 	UpdateMessage(msg *Message, fields map[string]interface{}) error // 'fields' are the struct fields names that have been modified
 	FilterMessages(search IndexSearch) (messages []*Message, totalFound int64, err error)
+	GetMessagesRange(search IndexSearch) (messages []*Message, totalFound int64, err error)
 }

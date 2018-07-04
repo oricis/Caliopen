@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import { PageTitle, Section } from '../../components/';
 import DeviceSettings from './components/DeviceSettings';
 import './style.scss';
 
-class DevicesSettings extends Component {
+class DevicesSettings extends PureComponent {
   static propTypes = {
     devices: PropTypes.arrayOf(PropTypes.shape({})),
     isCurrentDeviceVerified: PropTypes.bool,

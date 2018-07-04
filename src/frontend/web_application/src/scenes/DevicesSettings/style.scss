@@ -10,6 +10,11 @@
     @include flex-grid-size(12);
   }
 
+  &__device {
+    margin-top: $co-margin / 2;
+    margin-bottom: $co-margin / 2;
+  }
+
   @include breakpoint(large) {
     &__info {
       @include flex-grid-column(12);

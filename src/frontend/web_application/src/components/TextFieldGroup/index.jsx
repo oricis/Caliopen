@@ -12,7 +12,7 @@ import './style.scss';
 class TextFieldGroup extends PureComponent {
   static propTypes = {
     id: PropTypes.string,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.node.isRequired,
     showLabelforSr: PropTypes.bool,
     errors: PropTypes.arrayOf(PropTypes.node),
     expanded: PropTypes.bool,

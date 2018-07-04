@@ -5,11 +5,13 @@ import { withI18n } from 'lingui-react';
 import { push } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_INFO } from 'react-redux-notify';
 import { createMessageCollectionStateSelector } from '../../store/selectors/message';
-import { requestMessages, postActions, deleteMessage, loadMore, replyToMessage } from '../../store/modules/message';
+import { requestMessages, loadMore } from '../../store/modules/message';
 import { removeTab, updateTab } from '../../store/modules/tab';
 import { clearDraft } from '../../store/modules/draft-message';
 import { updateTagCollection, withTags } from '../../modules/tags';
-import { withCurrentTab } from '../../hoc/tab';
+import { setMessageRead, deleteMessage } from '../../modules/message';
+import { reply } from '../../modules/draftMessage';
+import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import Presenter from './presenter';
 
 const getDiscussionIdFromProps = props => props.match.params.discussionId;
@@ -60,18 +62,19 @@ const onDeleteMessage = ({ message }) => dispatch =>
       return dispatch(clearDraft({ internalId: message.discussion_id }));
     });
 
+const onReplyMessage = ({ message }) => (dispatch) => {
+  dispatch(reply({ internalId: message.discussion_id, message }));
+  dispatch(push({ hash: 'reply' }));
+};
+
 const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   requestMessages: requestMessages.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
   loadMore: loadMore.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
   deleteMessage: onDeleteMessage,
-  setMessageRead: ({ message, isRead = true }) => {
-    const action = isRead ? 'set_read' : 'set_unread';
-
-    return postActions({ message, actions: [action] });
-  },
+  setMessageRead,
   removeTab,
   updateTab,
-  replyToMessage,
+  replyToMessage: onReplyMessage,
   copyMessageTo: () => notif,
   push,
   updateTagCollection,
@@ -81,5 +84,5 @@ export default compose(
   withTags(),
   connect(mapStateToProps, mapDispatchToProps),
   withI18n(),
-  withCurrentTab()
+  withScrollManager(),
 )(Presenter);

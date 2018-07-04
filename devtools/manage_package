@@ -132,16 +132,37 @@ def find_package(config, name):
 
 
 def create_package_version(config, opts):
-    """Update a package to a new version."""
+    """Update one package or all to a new version."""
     basedir = get_repository_directory(config)
     repo = get_repository(basedir)
+    if not opts.no_check:
+        assert not repo.is_dirty(), 'Current head is dirty'
 
-    lang, package = find_package(config, opts.package)
+    if opts.package == 'all':
+        all_packages = config.get('packages', {})
+        for lang, packages in all_packages.items():
+            for package in packages:
+                process_package_version(config, opts, package,
+                                        lang, repo, tag=False)
+        tag_name = 'packages-{}'.format(opts.version)
+        log.info('Creating tag {}'.format(tag_name))
+        repo.create_tag(tag_name)
+    else:
+        lang, package = find_package(config, opts.package)
+        process_package_version(config, opts, package, lang, repo, tag=True)
+    repo.index.commit('Version {} for package {}'.
+                      format(opts.version, opts.package))
+    repo.index.write_tree()
+
+
+def process_package_version(config, opts, package, lang, repo, tag=False):
+    """Process package to update version."""
+    basedir = get_repository_directory(config)
+    print('###### %r' % package)
     tag_name = '{}-{}'.format(package['name'], opts.version)
     pkg_dir = '{}/{}'.format(basedir, package['path'])
 
     if not opts.no_check:
-        assert not repo.is_dirty(), 'Current head is dirty'
         assert tag_name not in repo.tags, 'Tag {} exists'.format(opts.version)
 
     if lang == 'python':
@@ -161,15 +182,13 @@ def create_package_version(config, opts):
         raise Exception('Language {} not managed'.format(lang))
 
     if update == 0:
-        log.info('Creating tag {}'.format(tag_name))
-        repo.create_tag(tag_name)
-        index = repo.index
-        index.add([file])
-        index.commit('Version {} for package {}'.
-                     format(opts.version, package['name']))
-        index.write_tree()
+        if tag:
+            log.info('Creating tag {}'.format(tag_name))
+            repo.create_tag(tag_name)
+        repo.index.add([file])
     else:
         raise Exception('Invalid return value when updating package version')
+    return update
 
 
 if __name__ == '__main__':

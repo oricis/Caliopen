@@ -1,0 +1,27 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-settings-identities {
+  @include flex-grid-row($size: expand);
+  padding: $co-margin / 2;
+
+  &__menu {
+    @include flex-grid-column(12);
+  }
+
+  &__create,
+  &__identity {
+    @include flex-grid-size(12);
+    margin-top: $co-margin / 2;
+    margin-bottom: $co-margin / 2;
+  }
+
+  @include breakpoint(large) {
+    &__create,
+    &__identity {
+      @include flex-grid-column(6);
+      margin-top: $co-margin / 2;
+      margin-bottom: $co-margin / 2;
+    }
+  }
+}

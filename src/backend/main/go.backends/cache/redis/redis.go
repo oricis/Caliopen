@@ -36,3 +36,7 @@ func (cache *RedisBackend) initialize(config CacheConfig) (err error) {
 	cache.client = client
 	return nil
 }
+
+func (cache *RedisBackend) GetClient() *redis.Client {
+	return cache.client
+}
