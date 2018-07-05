@@ -136,7 +136,7 @@ func (rest *RESTfacility) UpdateRemoteIdentity(identity, oldIdentity *RemoteIden
 }
 
 func (rest *RESTfacility) PatchRemoteIdentity(patch []byte, userId, remoteId string) CaliopenError {
-	currentRemoteID, err1 := rest.RetrieveRemoteIdentity(userId, remoteId, true)
+	currentRemoteID, err1 := rest.RetrieveRemoteIdentity(userId, remoteId, false)
 	if err1 != nil {
 		if err1.Error() == "not found" {
 			return WrapCaliopenErr(err1, NotFoundCaliopenErr, "remote identity not found")
