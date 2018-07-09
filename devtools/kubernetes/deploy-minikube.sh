@@ -192,7 +192,7 @@ create_python_deployments(){
 	echo
 	echo "Python applications deployment:"
 	echo "---------------------------"
-	kubectl delete svc apiv1 message-handler
+	kubectl delete svc apiv1
 	kubectl apply -f services/apiv1-service.yaml
 	kubectl apply -f deployments/message-handler-deployment.yaml \
 	-f deployments/apiv1-deployment.yaml
