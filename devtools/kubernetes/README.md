@@ -49,9 +49,12 @@ You can select for which kind of development your deployment is:
 * Python
 * Frontend
 
+Refer to [this file](../../doc/install/minikube-local-development.md) for informations related to local development
+
  You can individually select them. Based on your choices some services are not deployed so that you can plug in your local development environment.
 
 >_For example, you want to do some frontend development, answer [y] for that choice only, then refer to [frontend native installation](./FIXME)._
+
 
 ##### NOTE:
 
