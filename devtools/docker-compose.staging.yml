@@ -145,7 +145,7 @@ services:
       - elasticsearch:es.dev.caliopen.org
       - nats:nats.dev.caliopen.org
     volumes:
-      - ../src/backend/configs/caliopen-imap-worker.yaml:/etc/caliopen/caliopen-imap-worker.yaml
+      - ../src/backend/configs/imapworker.yaml:/etc/caliopen/imapworker.yaml
 
 
   # Poller for remote identities
@@ -156,7 +156,7 @@ services:
       - cassandra:cassandra.dev.caliopen.org
       - nats:nats.dev.caliopen.org
     volumes:
-      - ../src/backend/configs/caliopen-IDs-poller.yaml:/etc/caliopen/caliopen-IDs-poller.yaml
+      - ../src/backend/configs/idpoller.yaml:/etc/caliopen/idpoller.yaml
 
 
   # Postfix : a complete smpt server that act as the Caliopen's MTA

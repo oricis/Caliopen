@@ -34,7 +34,7 @@ var (
 
 func init() {
 	startCmd.PersistentFlags().StringVarP(&configFile, "config", "c",
-		"caliopen-imap-worker_dev", "Name of the configuration file, without extension. (YAML, TOML, JSON… allowed)")
+		"imapworker", "Name of the configuration file, without extension. (YAML, TOML, JSON… allowed)")
 	startCmd.PersistentFlags().StringVarP(&configPath, "configpath", "",
 		"../../../../configs/", "Main config file path.")
 	startCmd.PersistentFlags().StringVarP(&pidFile, "pid-file", "p",
