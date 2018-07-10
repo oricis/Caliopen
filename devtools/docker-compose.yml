@@ -31,9 +31,9 @@ services:
       context: ../src/backend
       dockerfile: Dockerfile.py-api
     links:
-      - redis:redis.dev.caliopen.org
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
+      - redis:redis
+      - cassandra:cassandra
+      - elasticsearch:elasticsearch
     ports:
       - "6543:6543"
     volumes:
@@ -83,9 +83,9 @@ services:
       context: ../src/backend
       dockerfile: Dockerfile.cli
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - broker:broker.dev.caliopen.org
+      - cassandra:cassandra
+      - elasticsearch:elasticsearch
+      - broker:broker
     environment:
       CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
     volumes:
@@ -97,11 +97,12 @@ services:
     build:
       context: ../src/frontend/web_application
     image: frontend
-    network_mode: "host"
     ports:
       - "4000:4000"
     links:
       - api:api
+    environment:
+      CALIOPEN_API_HOSTNAME: api
   # Broker
   broker:
     build:
@@ -130,9 +131,9 @@ services:
       context: ../src/backend
       dockerfile: Dockerfile.message_handler
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
+      - cassandra:cassandra
+      - elasticsearch:elasticsearch
+      - nats:nats
 
   # object storage
   object_store:
