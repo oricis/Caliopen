@@ -127,6 +127,7 @@ setup_storage(){
 		echo -n "."
 		sleep 1
 	done
+	kubectl delete -f jobs/cli-setup.yaml >/dev/null 2>&1
 }
 
 create_admin_user(){
@@ -169,12 +170,11 @@ import_mail(){
 		sleep 1
 		res=$(kubectl get pods | awk '/cli-import/ { print $3 }' | awk 'FNR == 1')
 	done
-
 	if [ ${res} == "Error" ]
 	then
-		kubectl delete job cli-import
 		echo "Error importing mails. Ignoring."
 	fi
+	kubectl delete -f jobs/cli-mail-import.yaml >/dev/null 2>&1
 }
 
 create_go_deployments(){
@@ -251,8 +251,8 @@ create_basic_deployments
 #Wait for storage to be ready
 wait_for_pods
 setup_storage
-create_admin_user
-create_dev_user
+create_admin_user || true
+create_dev_user || true
 import_mail
 conditional_deployment "GO" "create_go_deployments"
 conditional_deployment "Python" "create_python_deployments"
