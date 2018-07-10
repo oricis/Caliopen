@@ -15,7 +15,7 @@ Before starting the installation, make sure to read this carefully.
 There is currently a bug with the Kubernetes dashboard **when running the stack locally with docker**: if you change networks while Kubernetes is running it might go into a crash loop and use 100% of your cpu after some time. To fix that you can manually delete the pod so that it is recreated:
 
 ```sh
-kubectl delete pod kubernetes-dashboard-ID
+kubectl delete pod $DASHBOARD_POD_NAME
 
 ```
 
@@ -39,6 +39,12 @@ To start the deployment:
 
 ```sh
 ./deploy-minikube.sh
+```
+
+If it fails during the deployment but minikube started you can skip that part with the flag skip-setup:
+
+```sh
+ ./deploy-minikube.sh skip-setup
 ```
 
 ###### During the installation:
@@ -71,7 +77,7 @@ sudo ./clean-minikube.sh
 
 ##### NOTE:
 
-This command resets kubeadm, so be careful if you have any other kubernetes configs on your machine.
+This command resets kubeadm, so be careful if you have any other kubernetes clusters running on your machine (no need to worry about kube configs).
 
 ## Usage
 
