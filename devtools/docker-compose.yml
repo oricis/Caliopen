@@ -13,27 +13,23 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-api
-    image: api
     ## this very bad config for a public machine
-    network_mode: "host"
-    extra_hosts:
-      - "apiv1.dev.caliopen.org:127.0.0.1"
-      - "redis.dev.caliopen.org:127.0.0.1"
-      - "cassandra.dev.caliopen.org:127.0.0.1"
-      - "nats.dev.caliopen.org:127.0.0.1"
-      - "es.dev.caliopen.org:127.0.0.1"
-      - "minio.dev.caliopen.org:127.0.0.1"
+    links:
+      - apiv1:apiv1
+      - redis:redis
+      - cassandra:cassandra
+      - elasticsearch:elasticsearch
+      - nats:nats
+      - object_store:minio
     ports:
       - "31415:31415"
     volumes: 
-      - ../src/backend/configs/apiv2.yaml:/etc/caliopen/apiv2.yaml
-      - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
+      - ../src/backend/configs:/etc/caliopen
   # Caliopen APIv1
   apiv1:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.py-api
-    image: apiv1
     links:
       - redis:redis.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
@@ -41,9 +37,7 @@ services:
     ports:
       - "6543:6543"
     volumes:
-      - ../src/backend/configs/caliopen-api-development.ini:/etc/caliopen/caliopen-api-development.ini
-      - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
-      - ../src/backend/configs/swagger.json:/etc/caliopen/swagger.json
+      - ../src/backend/configs:/etc/caliopen
 
   # ### Redis Database
   #
@@ -88,7 +82,6 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.cli
-    image: cli
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -97,7 +90,7 @@ services:
       CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
     volumes:
       - .:/srv/caliopen/src/backend/devtools
-      - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
+      - ../src/backend/configs:/etc/caliopen
 
   # Caliopen frontend
   frontend:
@@ -107,26 +100,23 @@ services:
     network_mode: "host"
     ports:
       - "4000:4000"
-    extra_hosts:
-      - "api.dev.caliopen.org:127.0.0.1"
-
+    links:
+      - api:api
   # Broker
   broker:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-lmtp
-    image: broker
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - object_store:minio.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
-      - message_handler:mc.dev.caliopen.org
-      - inbucket:smtp.dev.caliopen.org
+      - cassandra:cassandra
+      - elasticsearch:elasticsearch
+      - object_store:minio
+      - nats:nats
+      - inbucket:inbucket
     ports:
       - "2525:2525"
     volumes:
-      - ../src/backend/configs/lmtp.yaml:/etc/caliopen/lmtp.yaml
+      - ../src/backend/configs:/etc/caliopen
 
   # NATS
   nats:
@@ -139,7 +129,6 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.message_handler
-    image: message_handler
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -161,27 +150,25 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-worker
-    image: identity_worker
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - object_store:minio.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
+      - cassandra:cassandra
+      - object_store:minio
+      - elasticsearch:elasticsearch
+      - nats:nats
     volumes:
-      - ../src/backend/configs/imapworker.yaml:/etc/caliopen/imapworker.yaml
+      - ../src/backend/configs:/etc/caliopen
 
   # Poller for remote identities
   identity_poller:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-poller
-    image: identity_poller
     links:
-      - identity_worker:identityworker.dev.caliopen.org
-      - cassandra:cassandra.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
+      - identity_worker:imapworker
+      - cassandra:cassandra
+      - nats:nats
     volumes:
-      - ../src/backend/configs/idpoller.yaml:/etc/caliopen/idpoller.yaml
+      - ../src/backend/configs:/etc/caliopen
 
   # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
   # point your browser at localhost:8888
