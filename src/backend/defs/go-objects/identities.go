@@ -15,13 +15,13 @@ import (
 type (
 	//object stored in db
 	UserIdentity struct {
-		Credentials Credentials       `cql:"credentials"        json:"credentials,omitempty"                            patch:"user"`
+		Credentials *Credentials      `cql:"credentials"        json:"credentials,omitempty"                            patch:"user"`
 		DisplayName string            `cql:"display_name"       json:"display_name"                                     patch:"user"`
+		Id          UUID              `cql:"identity_id"        json:"identity_id"`
 		Identifier  string            `cql:"identifier"         json:"identifier"                                       patch:"identifier"` // for example: me@caliopen.org, @mastodon_account
 		Infos       map[string]string `cql:"infos"              json:"infos"                                            patch:"user"`
 		LastCheck   time.Time         `cql:"last_check"         json:"last_check,omitempty"                 formatter:"RFC3339Milli"`
 		Protocol    string            `cql:"protocol"           json:"protocol"                                         patch:"user"` // for example: smtp,imap, mastodon
-		Id          UUID              `cql:"identity_id"          json:"identity_id"`
 		Status      string            `cql:"status"             json:"status"                                           patch:"user"` // for example : active, inactive, deleted
 		Type        string            `cql:"type"               json:"type"                                             patch:"user"` // for example : local, remote
 		UserId      UUID              `cql:"user_id"            json:"user_id"              frontend:"omit"`
@@ -71,7 +71,6 @@ type (
 /** identity **/
 func (ui *UserIdentity) NewEmpty() interface{} {
 	nui := new(UserIdentity)
-	nui.Credentials = Credentials{}
 	nui.Infos = map[string]string{}
 	return nui
 }
@@ -86,27 +85,23 @@ func (ui *UserIdentity) UnmarshalJSON(b []byte) error {
 }
 
 func (ui *UserIdentity) UnmarshalMap(input map[string]interface{}) error {
-	if credentials, ok := input["credentials"].(map[string]interface{}); ok {
-		ui.Credentials = Credentials{}
-		for k, v := range credentials {
-			ui.Credentials[k] = v.(string)
-		}
+	if credentials, ok := input["credentials"]; ok && credentials != nil {
+		cred := &Credentials{}
+		cred.UnmarshalMap(credentials.(map[string]interface{}))
+		ui.Credentials = cred
 	}
 	if dn, ok := input["display_name"].(string); ok {
 		ui.DisplayName = dn
 	}
+	if id, ok := input["identity_id"].(string); ok {
+		if id, err := uuid.FromString(id); err == nil {
+			ui.Id.UnmarshalBinary(id.Bytes())
+		}
+	}
+	if identifier, ok := input["identifier"].(string); ok {
+		ui.Identifier = identifier
+	}
 	if infos, ok := input["infos"].(map[string]interface{}); ok {
-		/*
-			// create a new map, fill it with current values if any, then with values from input,
-			// at last replace current map with new one.
-			newMap := make(map[string]string)
-			for k, v := range ui.Infos {
-				newMap[k] = v
-			}
-			for k, v := range infos {
-				newMap[k] = v.(string)
-			}
-			ui.Infos = newMap*/
 		ui.Infos = make(map[string]string)
 		for k, v := range infos {
 			ui.Infos[k] = v.(string)
@@ -116,10 +111,8 @@ func (ui *UserIdentity) UnmarshalMap(input map[string]interface{}) error {
 	if lc, ok := input["last_check"]; ok {
 		ui.LastCheck, _ = time.Parse(time.RFC3339Nano, lc.(string))
 	}
-	if remote_id, ok := input["remote_id"].(string); ok {
-		if id, err := uuid.FromString(remote_id); err == nil {
-			ui.Id.UnmarshalBinary(id.Bytes())
-		}
+	if protocol, ok := input["protocol"].(string); ok {
+		ui.Protocol = protocol
 	}
 	if status, ok := input["status"].(string); ok {
 		ui.Status = status
@@ -161,7 +154,7 @@ func (ui *UserIdentity) MarshallNew(args ...interface{}) {
 func (ui *UserIdentity) SetDefaults() {
 	defaults := map[string]string{}
 
-	switch ui.Type {
+	switch ui.Protocol {
 	case "imap":
 		defaults = map[string]string{
 			"lastseenuid": "",
@@ -187,31 +180,33 @@ func (ui *UserIdentity) SetDefaults() {
 		(*ui).Status = "active"
 	}
 
-	if ui.Credentials == nil {
-		(*ui).Credentials = Credentials{}
-	}
-
-	// try to set DisplayName if it is missing
-	if ui.DisplayName == "" {
-		switch ui.Type {
+	// try to set DisplayName and Identifier if it is missing
+	if ui.Identifier == "" {
+		switch ui.Protocol {
 		case "imap":
-			(*ui).DisplayName, _ = ui.Credentials["username"]
+			(*ui).Identifier, _ = (*ui.Credentials)["username"]
 		}
 	}
-
+	if ui.DisplayName == "" {
+		ui.DisplayName = ui.Identifier
+	}
 }
 
 func (ui *UserIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
-	if credentials, ok := input["credentials"].(map[string]string); ok {
-		ui.Credentials = Credentials{}
-		for k, v := range credentials {
-			ui.Credentials[k] = v
-		}
+	if credentials, ok := input["credentials"]; ok && credentials != nil {
+		cred := &Credentials{}
+		cred.UnmarshalCQLMap(credentials.(map[string]string))
+		ui.Credentials = cred
 	}
 	if dn, ok := input["display_name"].(string); ok {
 		ui.DisplayName = dn
 	}
-
+	if id, ok := input["identity_id"].(gocql.UUID); ok {
+		ui.Id.UnmarshalBinary(id.Bytes())
+	}
+	if identifier, ok := input["identifier"].(string); ok {
+		ui.Identifier = identifier
+	}
 	if infos, ok := input["infos"].(map[string]string); ok {
 		ui.Infos = make(map[string]string)
 		for k, v := range infos {
@@ -221,8 +216,8 @@ func (ui *UserIdentity) UnmarshalCQLMap(input map[string]interface{}) error {
 	if lc, ok := input["last_check"].(time.Time); ok {
 		ui.LastCheck = lc
 	}
-	if remote_id, ok := input["remote_id"].(gocql.UUID); ok {
-		ui.Id.UnmarshalBinary(remote_id.Bytes())
+	if protocol, ok := input["protocol"].(string); ok {
+		ui.Protocol = protocol
 	}
 	if status, ok := input["status"].(string); ok {
 		ui.Status = status
@@ -240,6 +235,7 @@ func (ui *UserIdentity) MarshalFrontEnd() ([]byte, error) {
 	return JSONMarshaller("frontend", ui)
 }
 
+// Social Identity
 func (si *SocialIdentity) UnmarshalMap(input map[string]interface{}) error {
 	si.Infos, _ = input["infos"].(map[string]string)
 	si.Name, _ = input["name"].(string)
