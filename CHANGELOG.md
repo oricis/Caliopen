@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.11.1] 2018-04-12
+
+### Added
+
+- explain how to authorize retrieve of an imap gmail account
+
+### Fixed
+
+- do not try to parse a null date_sort
+- ensure to not retrieve credentials when patching a remote identity
+
 ## [0.11.0] 2018-07-04
 
 ### Added
