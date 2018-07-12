@@ -185,7 +185,9 @@ create_go_deployments(){
 	kubectl apply -f services/api-service.yaml \
 	-f services/broker-service.yaml
 	kubectl apply -f deployments/broker-deployment.yaml \
-	-f deployments/api-deployment.yaml 
+	-f deployments/api-deployment.yaml \
+	-f deployments/identity-poller-deployment.yaml \
+	-f deployments/identity-worker-deployment.yaml
 }
 
 create_python_deployments(){
