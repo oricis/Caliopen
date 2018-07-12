@@ -15,15 +15,16 @@ Before starting the installation, make sure to read this carefully.
 There is currently a bug with the Kubernetes dashboard **when running the stack locally with docker**: if you change networks while Kubernetes is running it might go into a crash loop and use 100% of your cpu after some time. To fix that you can manually delete the pod so that it is recreated:
 
 ```sh
-kubectl delete pod $DASHBOARD_POD_NAME
+kubectl delete pod $DASHBOARD_POD_NAME --namespace kube-system
 
 ```
 
-You can find your pod's ID with:
+You can find your pod's name with:
 
 ```sh
 kubectl get pods --namespace kube-system
 ```
+The pod's name should start with "kubernetes-dashboard" followed by a number.
 
 You can also disable and re-enable the dashboard addon with minikube:
 
