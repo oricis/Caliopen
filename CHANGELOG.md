@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- prevent signin until JS is fully loaded, previously a json shows up with informations about a fake device.
+
+### Changed
+
+- remove unused safe/public/unsafe login buttons
+
 ## [0.11.1] 2018-04-12
 
 ### Added
