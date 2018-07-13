@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- prevent invalidation of whole discussion during scroll
+
+### Fixed
+
+- message sort on "Load More" in discussion view
+
 ## [0.11.0] 2018-07-04
 
 ### Added
