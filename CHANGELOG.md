@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - do not try to parse a null date_sort
 - ensure to not retrieve credentials when patching a remote identity
+- RawMessage.get raise correctly
+- request body must be utf8 encoded correctly, do not use it for the moment
 
 ## [0.11.0] 2018-07-04
 
