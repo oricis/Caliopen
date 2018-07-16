@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- load more doesn't load correctly when filter has been changed
 - prevent signin until JS is fully loaded, previously a json shows up with informations about a fake device.
 
 ### Changed
