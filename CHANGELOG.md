@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.11.2] 2018-07-16
+
 ### Fixed
 
 - load more doesn't load correctly when filter has been changed
@@ -17,7 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - remove unused safe/public/unsafe login buttons
 
-## [0.11.1] 2018-04-12
+## [0.11.1] 2018-07-12
 
 ### Added
 
