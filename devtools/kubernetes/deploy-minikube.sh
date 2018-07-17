@@ -264,6 +264,6 @@ wait_for_pods
 
 echo
 echo "List of available services:"
-echo 
+echo
 minikube service list
 chown_kube_minikube_directories

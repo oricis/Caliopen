@@ -24,7 +24,7 @@ services:
       - object_store:minio
     ports:
       - "31415:31415"
-    volumes: 
+    volumes:
       - ../src/backend/configs:/etc/caliopen
   # Caliopen APIv1
   apiv1:

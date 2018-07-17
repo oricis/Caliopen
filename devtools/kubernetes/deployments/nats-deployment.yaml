@@ -14,7 +14,7 @@ spec:
         tier: backend
         app: nats
     spec:
-      containers:     
+      containers:
       - image: nats:0.9.6
         name: smtp-server
         ports:

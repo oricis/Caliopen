@@ -4,7 +4,7 @@
 
 * If you are **NOT** running Linux, you need to install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 * If you are running Linux, you can **either**:
-	* Use VirtualBox 
+	* Use VirtualBox
 	* Run the stack locally with [Docker](https://docs.docker.com/install/).
 * [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) & [Minikube](https://github.com/kubernetes/minikube/releases)
 
@@ -68,7 +68,7 @@ Refer to [this file](../../doc/install/minikube-local-development.md) for inform
 To deploy the stack with docker you'll need to run the script as sudo. See [kubernetes/kubeadm#57](https://github.com/kubernetes/kubeadm/issues/57).
 
 
-## Deleting deployment 
+## Deleting deployment
 
 In case you are deploying the stack without a driver (locally) and the command fails or if you just want to restart the deployment from zero, clean the stack beforehand:
 

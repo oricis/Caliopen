@@ -14,7 +14,7 @@ spec:
         tier: backend
         app: inbucket
     spec:
-      containers:     
+      containers:
       - image: jhillyerd/inbucket
         name: smtp-server
         ports:

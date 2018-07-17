@@ -14,7 +14,7 @@ spec:
         tier: backend
         app: message-handler
     spec:
-      containers:     
+      containers:
       - image: public-registry.caliopen.org/message_handler:develop
         imagePullPolicy: Always
         name: message-handler

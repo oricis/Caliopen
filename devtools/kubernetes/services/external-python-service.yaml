@@ -14,7 +14,7 @@ kind: Endpoints
 apiVersion: v1
 metadata:
   name: apiv1
-subsets: 
+subsets:
   - addresses:
       - ip: 172.17.0.1
     ports:
