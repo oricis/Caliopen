@@ -14,8 +14,6 @@ const configureStylesheet = () => {
         syntax: 'scss',
         emitErrors: false,
       }),
-      // FIXME: useful for deduplication, we need a way prevent that.
-      // disabled for dev for build time (10sec instead of 30+)
       new OptimizeCssAssetsPlugin({ canPrint: false }),
       new MiniCssExtractPlugin({
         filename: 'client.[hash].css',
