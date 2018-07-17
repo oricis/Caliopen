@@ -13,6 +13,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-api
+    image: caliopen_api
     ## this very bad config for a public machine
     links:
       - apiv1:apiv1
@@ -30,6 +31,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.py-api
+    image: caliopen_apiv1
     links:
       - redis:redis
       - cassandra:cassandra
@@ -82,6 +84,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.cli
+    image: caliopen_cli
     links:
       - cassandra:cassandra
       - elasticsearch:elasticsearch
@@ -96,7 +99,7 @@ services:
   frontend:
     build:
       context: ../src/frontend/web_application
-    image: frontend
+    image: caliopen_frontend
     ports:
       - "4000:4000"
     links:
@@ -108,6 +111,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-lmtp
+    image: caliopen_broker
     links:
       - cassandra:cassandra
       - elasticsearch:elasticsearch
@@ -130,10 +134,13 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.message_handler
+    image: caliopen_message_handler
     links:
       - cassandra:cassandra
       - elasticsearch:elasticsearch
       - nats:nats
+    volumes:
+      - ../src/backend/configs:/etc/caliopen
 
   # object storage
   object_store:
@@ -151,6 +158,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-worker
+    image: caliopen_imapworker
     links:
       - cassandra:cassandra
       - object_store:minio
@@ -164,9 +172,10 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-poller
+    image: caliopen_idpoller
     links:
       - identity_worker:imapworker
-      - cassandra:cassandra
+      - message_handler:message_handler
       - nats:nats
     volumes:
       - ../src/backend/configs:/etc/caliopen
