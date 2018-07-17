@@ -160,3 +160,6 @@ node_modules
 
 # private fixtures
 /devtools/email-with-parts-and-attachments
+
+# registry configuration
+/devtools/registry.conf

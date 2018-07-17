@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apiv1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apiv1
+  #strategy:
+  #  type: Recreate / RollingUpdate
+  #    maxUnavailable:
+  template:
+    metadata:
+      labels:
+        type: api
+        tier: backend
+        app: apiv1
+    spec:
+      containers:
+      - image: public-registry.caliopen.org/apiv1:develop
+        imagePullPolicy: Always
+        name: apiv1
+        ports:
+        - containerPort: 6543
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/caliopen
+      volumes:
+      - name: config-volume
+        configMap:
+          name: caliopen-config
+          items:
+          - key: apiv1.ini
+            path: apiv1.ini
+          - key: caliopen.yaml
+            path: caliopen.yaml
+          - key: swagger.json
+            path: swagger.json

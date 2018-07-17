@@ -11,4 +11,4 @@ RUN go install github.com/CaliOpen/Caliopen/src/backend/protocols/go.imap/cmd/im
 RUN go install github.com/CaliOpen/Caliopen/src/backend/protocols/go.imap/cmd/imapctl
 
 WORKDIR /go/src/github.com/CaliOpen/Caliopen/src/backend/configs
-ENTRYPOINT imapworker start
+ENTRYPOINT imapworker start -c imapworker --configpath /etc/caliopen

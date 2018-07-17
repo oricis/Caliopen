@@ -9,7 +9,7 @@ volumes:
 services:
   # Caliopen APIv2
   api:
-    image: public-registry.caliopen.org/api:compose
+    image: public-registry.caliopen.org/api
     links:
       - apiv1:apiv1.dev.caliopen.org
       - redis:redis.dev.caliopen.org
@@ -19,16 +19,23 @@ services:
       - object_store:minio.dev.caliopen.org
     expose:
       - "31415"
+    volumes:
+      - ../src/backend/configs/apiv2.yaml:/etc/caliopen/apiv2.yaml
+      - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
 
   # Caliopen APIv1
   apiv1:
-    image: public-registry.caliopen.org/apiv1:compose
+    image: public-registry.caliopen.org/apiv1
     links:
       - redis:redis.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
     expose:
       - "6543"
+    volumes:
+      - ../src/backend/configs/apiv1.ini:/etc/caliopen/apiv1.ini
+      - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
+      - ../src/backend/configs/swagger.json:/etc/caliopen/swagger.json
 
   # ### Redis Database
   #
@@ -70,7 +77,7 @@ services:
 
   # Caliopen cli tool
   cli:
-    image: public-registry.caliopen.org/cli:compose
+    image: public-registry.caliopen.org/cli
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -79,17 +86,18 @@ services:
       CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
     volumes:
       - .:/srv/caliopen/src/backend/devtools
+      - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
 
   # Caliopen frontend
   frontend:
-    image: public-registry.caliopen.org/frontend:compose
+    image: public-registry.caliopen.org/frontend
     links:
       - api:api.dev.caliopen.org
     ports:
       - "127.0.0.1:4000:4000"
   # Broker
   broker:
-    image: public-registry.caliopen.org/broker:compose
+    image: public-registry.caliopen.org/broker
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -98,6 +106,9 @@ services:
       - message_handler:mc.dev.caliopen.org
     ports:
       - "127.0.0.1:2525:2525"
+    volumes:
+      - ../src/backend/configs/lmtp.yaml:/etc/caliopen/lmtp.yaml
+
   # NATS
   nats:
     image: nats:0.9.6
@@ -106,11 +117,13 @@ services:
 
   # NATS Message Handler
   message_handler:
-    image: public-registry.caliopen.org/message_handler:compose
+    image: public-registry.caliopen.org/message_handler
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
       - nats:nats.dev.caliopen.org
+    volumes:
+      - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
 
   # object storage
   object_store:
@@ -118,27 +131,33 @@ services:
     expose:
       - "9090"
     volumes:
-      - ../src/backend/configs:/configs
+      - ../src/backend/configs/minio:/etc/caliopen/minio
       - store:/export
     command:
-      server --address :9090 -C /configs/minio /export
+      server --address :9090 -C /etc/caliopen/minio /export
 
   # Worker for remote identities
   identity_worker:
-    image: public-registry.caliopen.org/identity_worker:compose
+    image: public-registry.caliopen.org/identity_worker
     links:
       - cassandra:cassandra.dev.caliopen.org
       - object_store:minio.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
       - nats:nats.dev.caliopen.org
+    volumes:
+      - ../src/backend/configs/imapworker.yaml:/etc/caliopen/imapworker.yaml
+
 
   # Poller for remote identities
   identity_poller:
-    image: public-registry.caliopen.org/identity_poller:compose
+    image: public-registry.caliopen.org/identity_poller
     links:
       - identity_worker:identityworker.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
       - nats:nats.dev.caliopen.org
+    volumes:
+      - ../src/backend/configs/idpoller.yaml:/etc/caliopen/idpoller.yaml
+
 
   # Postfix : a complete smpt server that act as the Caliopen's MTA
   # TODO

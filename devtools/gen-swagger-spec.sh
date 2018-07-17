@@ -5,7 +5,7 @@
 set -e
 PROJECT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
-DEST_DIR=${PROJECT_DIRECTORY}/src/backend/doc/api
+DEST_DIR=${PROJECT_DIRECTORY}/src/backend/configs
 SRC_DIR=${PROJECT_DIRECTORY}/src/backend/defs/rest-api
 SWAGGER_CLI_DIR=${PROJECT_DIRECTORY}/devtools/swagger-cli
 SWAGGER_JS=${SWAGGER_CLI_DIR}/node_modules/.bin/swagger

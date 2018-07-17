@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cli-dev
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: "OnFailure"
+      containers:
+      - image: public-registry.caliopen.org/cli
+        name: cli-dev
+        args: ["create_user", "-e", "dev", "-p", "123456"]
+        env:
+        - name: CQLENG_ALLOW_SCHEMA_MANAGEMENT
+          value: "1"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/caliopen
+      imagePullSecrets:
+        - name: registrypullsecret
+      volumes:
+      - name: config-volume
+        configMap:
+          name: caliopen-config
+          items:
+          - key: caliopen.yaml
+            path: caliopen.yaml

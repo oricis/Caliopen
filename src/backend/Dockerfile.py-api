@@ -54,4 +54,4 @@ RUN pip install -e .
 
 EXPOSE 6543
 
-CMD ["pserve", "/srv/caliopen/src/backend/configs/caliopen-api.docker.ini", "--reload"]
+CMD ["pserve", "/etc/caliopen/apiv1.ini", "--reload"]

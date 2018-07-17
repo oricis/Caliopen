@@ -11,13 +11,13 @@ delivery_agent:
     direct: True
 
 elasticsearch:
-    url: http://es.dev.caliopen.org:9200
+    url: http://elasticsearch:9200
     mappings_version: v5
 
 cassandra:
     keyspace: caliopen
     hosts:
-        - 'cassandra.dev.caliopen.org'
+        - 'cassandra'
     consistency_level: 1
     protocol_version: 3
 
@@ -27,16 +27,16 @@ lmtp:
 
 broker:
     port: 2525
-    host: broker.dev.caliopen.org
+    host: broker
 
 message_queue:
     port: 4222
-    host: nats.dev.caliopen.org
+    host: nats
 
 object_store:
     db_size_limit: 1048576
     service: s3
-    endpoint: minio.dev.caliopen.org:9090
+    endpoint: minio:9090
     access_key: CALIOPEN_ACCESS_KEY_
     secret_key: CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
     location: eu-fr-localhost
